@@ -7,6 +7,9 @@ import { MessengerSectionRouter } from "@/pages/messenger-section/MessengerSecti
 import { OrdersSectionRouter } from "@/pages/orders-section/OrdersSectionRouter.tsx";
 import { SettingsSectionRouter } from "@/pages/settings-section/SettingsSectionRouting.tsx";
 import { SupportSectionRouter } from "@/pages/support-section/SupportSectionRouter.tsx";
+import { TransmissionsSectionRouter } from "@/pages/transmissions-section/TransmissionsSectionRouter.tsx";
+import { UsersSectionRouter } from "@/pages/users-section/UsersSectionRouter.tsx";
+import { ProductsSectionRouter } from "@/pages/products-section/ProductsSectionRouter.tsx";
 
 const mainRouter = createBrowserRouter([
   {
@@ -43,6 +46,9 @@ const mainRouter = createBrowserRouter([
           };
         },
         children: MessengerSectionRouter,
+        handle: {
+          crumb: () => <Link to={NavUrlEnum.MESSENGER}>messenger</Link>,
+        },
       },
       {
         path: NavUrlEnum.ORDERS,
@@ -55,6 +61,9 @@ const mainRouter = createBrowserRouter([
           };
         },
         children: OrdersSectionRouter,
+        handle: {
+          crumb: () => <Link to={NavUrlEnum.ORDERS}>orders</Link>,
+        },
       },
       {
         path: NavUrlEnum.PRODUCTS,
@@ -66,7 +75,10 @@ const mainRouter = createBrowserRouter([
             element: <ProductsSection />,
           };
         },
-        children: OrdersSectionRouter,
+        children: ProductsSectionRouter,
+        handle: {
+          crumb: () => <Link to={NavUrlEnum.PRODUCTS}>products</Link>,
+        },
       },
       {
         path: NavUrlEnum.PROFILE,
@@ -77,6 +89,9 @@ const mainRouter = createBrowserRouter([
           return {
             element: <ProfilePage />,
           };
+        },
+        handle: {
+          crumb: () => <Link to={NavUrlEnum.PROFILE}>profile</Link>,
         },
       },
       {
@@ -90,6 +105,9 @@ const mainRouter = createBrowserRouter([
           };
         },
         children: SettingsSectionRouter,
+        handle: {
+          crumb: () => <Link to={NavUrlEnum.SETTINGS}>settings</Link>,
+        },
       },
       {
         path: NavUrlEnum.SUPPORT,
@@ -102,6 +120,39 @@ const mainRouter = createBrowserRouter([
           };
         },
         children: SupportSectionRouter,
+        handle: {
+          crumb: () => <Link to={NavUrlEnum.SUPPORT}>support</Link>,
+        },
+      },
+      {
+        path: NavUrlEnum.TRANSMISSIONS,
+        lazy: async () => {
+          const { TransmissionsSection } = await import(
+            "@/pages/transmissions-section/TransmissionsSection.tsx"
+          );
+          return {
+            element: <TransmissionsSection />,
+          };
+        },
+        children: TransmissionsSectionRouter,
+        handle: {
+          crumb: () => <Link to={NavUrlEnum.TRANSMISSIONS}>transmissions</Link>,
+        },
+      },
+      {
+        path: NavUrlEnum.USERS,
+        lazy: async () => {
+          const { UsersSection } = await import(
+            "@/pages/users-section/UsersSection.tsx"
+          );
+          return {
+            element: <UsersSection />,
+          };
+        },
+        children: UsersSectionRouter,
+        handle: {
+          crumb: () => <Link to={NavUrlEnum.USERS}>users</Link>,
+        },
       },
     ],
   },
