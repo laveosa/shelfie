@@ -1,9 +1,12 @@
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { createBrowserRouter, Link, Navigate } from "react-router-dom";
 
 import App from "@/App.tsx";
 import ErrorPage from "@/pages/error-page/ErrorPage.tsx";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { MessengerSectionRouter } from "@/pages/messenger-section/MessengerSectionRouter.tsx";
+import { OrdersSectionRouter } from "@/pages/orders-section/OrdersSectionRouter.tsx";
+import { SettingsSectionRouter } from "@/pages/settings-section/SettingsSectionRouting.tsx";
+import { SupportSectionRouter } from "@/pages/support-section/SupportSectionRouter.tsx";
 
 const mainRouter = createBrowserRouter([
   {
@@ -25,6 +28,9 @@ const mainRouter = createBrowserRouter([
             element: <DashboardPage />,
           };
         },
+        handle: {
+          crumb: () => <Link to={NavUrlEnum.DASHBOARD}>dashboard</Link>,
+        },
       },
       {
         path: NavUrlEnum.MESSENGER,
@@ -37,6 +43,65 @@ const mainRouter = createBrowserRouter([
           };
         },
         children: MessengerSectionRouter,
+      },
+      {
+        path: NavUrlEnum.ORDERS,
+        lazy: async () => {
+          const { OrdersSection } = await import(
+            "@/pages/orders-section/OrdersSection.tsx"
+          );
+          return {
+            element: <OrdersSection />,
+          };
+        },
+        children: OrdersSectionRouter,
+      },
+      {
+        path: NavUrlEnum.PRODUCTS,
+        lazy: async () => {
+          const { ProductsSection } = await import(
+            "@/pages/products-section/ProductsSection.tsx"
+          );
+          return {
+            element: <ProductsSection />,
+          };
+        },
+        children: OrdersSectionRouter,
+      },
+      {
+        path: NavUrlEnum.PROFILE,
+        lazy: async () => {
+          const { ProfilePage } = await import(
+            "@/pages/profile-page/ProfilePage.tsx"
+          );
+          return {
+            element: <ProfilePage />,
+          };
+        },
+      },
+      {
+        path: NavUrlEnum.SETTINGS,
+        lazy: async () => {
+          const { SettingsSection } = await import(
+            "@/pages/settings-section/SettingsSection.tsx"
+          );
+          return {
+            element: <SettingsSection />,
+          };
+        },
+        children: SettingsSectionRouter,
+      },
+      {
+        path: NavUrlEnum.SUPPORT,
+        lazy: async () => {
+          const { SupportSection } = await import(
+            "@/pages/support-section/SupportSection.tsx"
+          );
+          return {
+            element: <SupportSection />,
+          };
+        },
+        children: SupportSectionRouter,
       },
     ],
   },

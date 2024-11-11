@@ -1,3 +1,5 @@
-export default function ProfilePage() {
-  return <div>Profile Section</div>;
+import cs from "./ProfilePage.module.scss";
+
+export function ProfilePage() {
+  return <div id={cs.ProfileSection}>Profile Page</div>;
 }
