@@ -1,4 +1,4 @@
-@import "@/styles/variables";
+@use "@/styles/variables" as vars;
 
 #ApplicationNameWrapper {
   min-height: 100vh;
@@ -20,30 +20,30 @@ body {
 /*// -------------------------------------------------------------------------- TEXT*/
 
 .she-text {
-  color: $textColor;
+  color: vars.$textColor;
   line-height: normal;
-  font-size: $fontSizeText;
+  font-size: vars.$fontSizeText;
   font-weight: 400;
   letter-spacing: normal;
 }
 
 .she-title {
   @extend .she-text;
-  color: $titleColor;
-  font-size: $fontSizeTitle;
+  color: vars.$titleColor;
+  font-size: vars.$fontSizeTitle;
   font-weight: 700;
   letter-spacing: 0.2px;
 }
 
 .she-subtext {
   @extend .she-text;
-  color: $subtextColor;
-  font-size: $fontSizeSubtext;
+  color: vars.$subtextColor;
+  font-size: vars.$fontSizeSubtext;
 }
 
 .she-text-link {
   @extend .she-text;
-  color: $textLinkColor;
+  color: vars.$textLinkColor;
   text-decoration: underline;
   cursor: pointer;
 }
@@ -88,4 +88,8 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
+}
+
+.buttonTest {
+  color: red !important;
 }
