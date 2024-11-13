@@ -4,6 +4,7 @@ function App() {
   return (
     <div id="ApplicationNameWrapper">
       <h1>Shelfie App</h1>
+
       <p className="she-title">
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius, velit.
       </p>
