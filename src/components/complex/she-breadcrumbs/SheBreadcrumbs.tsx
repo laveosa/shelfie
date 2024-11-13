@@ -14,29 +14,31 @@ export default function SheBreadcrumbs() {
   const { crumbs } = useBreadcrumbs();
 
   return (
-    <Breadcrumb className={cs.sheBreadcrumbs}>
-      <BreadcrumbList className={cs.BreadcrumbList}>
-        {crumbs.map((crumb: string, index: number) => {
-          const isLast: boolean = index === crumbs.length - 1;
+    <div className={cs.sheBreadcrumbs}>
+      <Breadcrumb>
+        <BreadcrumbList className={cs.BreadcrumbList}>
+          {crumbs.map((crumb: string, index: number) => {
+            const isLast: boolean = index === crumbs.length - 1;
 
-          return (
-            <BreadcrumbItem key={index}>
-              {isLast ? (
-                <BreadcrumbPage className={cs.BreadcrumbPage}>
-                  {crumb}
-                </BreadcrumbPage>
-              ) : (
-                <>
-                  <BreadcrumbLink href="#">{crumb}</BreadcrumbLink>
-                  <BreadcrumbSeparator>
-                    <ChevronRight className="h-4 w-4" />
-                  </BreadcrumbSeparator>
-                </>
-              )}
-            </BreadcrumbItem>
-          );
-        })}
-      </BreadcrumbList>
-    </Breadcrumb>
+            return (
+              <BreadcrumbItem key={index}>
+                {isLast ? (
+                  <BreadcrumbPage className={cs.BreadcrumbPage}>
+                    {crumb}
+                  </BreadcrumbPage>
+                ) : (
+                  <>
+                    <BreadcrumbLink href="#">{crumb}</BreadcrumbLink>
+                    <BreadcrumbSeparator>
+                      <ChevronRight className="h-4 w-4" />
+                    </BreadcrumbSeparator>
+                  </>
+                )}
+              </BreadcrumbItem>
+            );
+          })}
+        </BreadcrumbList>
+      </Breadcrumb>
+    </div>
   );
 }
