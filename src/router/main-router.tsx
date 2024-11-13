@@ -193,6 +193,15 @@ const mainRouter = createBrowserRouter([
       },
     ],
   },
+  {
+    path: NavUrlEnum.AUTH,
+    lazy: async () => {
+      const { AuthPage } = await import("@/pages/auth-page/AuthPage.tsx");
+      return {
+        element: <AuthPage />,
+      };
+    },
+  },
 ]);
 
 export default mainRouter;
