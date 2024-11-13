@@ -1,0 +1,17 @@
+.sheBreadcrumbs {
+  .BreadcrumbList {
+    .BreadcrumbPage {
+      text-decoration: none;
+      text-transform: lowercase;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.1px;
+      color: #282828;
+      transition: color 130ms ease-in-out;
+
+      &:hover {
+        color: #6c0033;
+      }
+    }
+  }
+}
