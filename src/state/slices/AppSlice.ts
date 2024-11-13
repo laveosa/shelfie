@@ -12,8 +12,16 @@ const initialState: IAppSlice = {
 const AppSlice = createSlice({
   name: StoreSliceEnum.APP,
   initialState,
-  reducers: {},
+  reducers: {
+    refreshUser: (state: IAppSlice, action) => {
+      storageService.setLocalStorage(StorageKeyEnum.USER, action.payload);
+      state.user = storageService.getLocalStorage(StorageKeyEnum.USER);
+    },
+    refreshToken: (_state: IAppSlice, action) => {
+      storageService.setLocalStorage(StorageKeyEnum.TOKEN, action.payload);
+    },
+  },
 });
 
-export const appActions = AppSlice.actions;
+export const AppSliceActions = AppSlice.actions;
 export default AppSlice;
