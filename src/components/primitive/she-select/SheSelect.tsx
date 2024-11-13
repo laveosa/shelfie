@@ -4,7 +4,7 @@ import { Select } from "@/components/ui/select.tsx";
 export default function SheSelect() {
   return (
     <div className={cs.SheSelect}>
-      <Select />
+      <Select></Select>
     </div>
   );
 }

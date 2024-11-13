@@ -10,6 +10,6 @@ export default function SheCalendar() {
       selected={date}
       onSelect={setDate}
       className={cs.SheCalendar}
-    />
+    ></Calendar>
   );
 }
