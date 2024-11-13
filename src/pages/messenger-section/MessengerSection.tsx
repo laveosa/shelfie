@@ -1,3 +1,11 @@
-export default function messengerSection() {
-  return <div>Messenger Section</div>;
+import { Outlet } from "react-router-dom";
+
+import cs from "./MessengerSection.module.scss";
+
+export function MessengerSection() {
+  return (
+    <div id={cs.MessengerSection}>
+      <Outlet />
+    </div>
+  );
 }
