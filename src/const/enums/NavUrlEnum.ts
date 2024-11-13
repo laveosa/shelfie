@@ -1,4 +1,5 @@
 export enum NavUrlEnum {
+  AUTH = "auth",
   DASHBOARD = "dashboard",
   ERROR = "error",
   MESSENGER = "messenger",

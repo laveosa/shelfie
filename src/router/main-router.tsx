@@ -10,6 +10,7 @@ import { SupportSectionRouter } from "@/pages/support-section/SupportSectionRout
 import { TransmissionsSectionRouter } from "@/pages/transmissions-section/TransmissionsSectionRouter.tsx";
 import { UsersSectionRouter } from "@/pages/users-section/UsersSectionRouter.tsx";
 import { ProductsSectionRouter } from "@/pages/products-section/ProductsSectionRouter.tsx";
+import RouterGuard from "@/utils/guards/RouterGuard.tsx";
 
 const mainRouter = createBrowserRouter([
   {
@@ -28,7 +29,11 @@ const mainRouter = createBrowserRouter([
             "@/pages/dashboard-page/DashboardPage.tsx"
           );
           return {
-            element: <DashboardPage />,
+            element: (
+              <RouterGuard>
+                <DashboardPage />
+              </RouterGuard>
+            ),
           };
         },
         handle: {
@@ -42,7 +47,11 @@ const mainRouter = createBrowserRouter([
             "@/pages/messenger-section/MessengerSection.tsx"
           );
           return {
-            element: <MessengerSection />,
+            element: (
+              <RouterGuard>
+                <MessengerSection />
+              </RouterGuard>
+            ),
           };
         },
         children: MessengerSectionRouter,
@@ -57,7 +66,11 @@ const mainRouter = createBrowserRouter([
             "@/pages/orders-section/OrdersSection.tsx"
           );
           return {
-            element: <OrdersSection />,
+            element: (
+              <RouterGuard>
+                <OrdersSection />
+              </RouterGuard>
+            ),
           };
         },
         children: OrdersSectionRouter,
@@ -72,7 +85,11 @@ const mainRouter = createBrowserRouter([
             "@/pages/products-section/ProductsSection.tsx"
           );
           return {
-            element: <ProductsSection />,
+            element: (
+              <RouterGuard>
+                <ProductsSection />
+              </RouterGuard>
+            ),
           };
         },
         children: ProductsSectionRouter,
@@ -87,7 +104,11 @@ const mainRouter = createBrowserRouter([
             "@/pages/profile-page/ProfilePage.tsx"
           );
           return {
-            element: <ProfilePage />,
+            element: (
+              <RouterGuard>
+                <ProfilePage />
+              </RouterGuard>
+            ),
           };
         },
         handle: {
@@ -101,7 +122,11 @@ const mainRouter = createBrowserRouter([
             "@/pages/settings-section/SettingsSection.tsx"
           );
           return {
-            element: <SettingsSection />,
+            element: (
+              <RouterGuard>
+                <SettingsSection />
+              </RouterGuard>
+            ),
           };
         },
         children: SettingsSectionRouter,
@@ -116,7 +141,11 @@ const mainRouter = createBrowserRouter([
             "@/pages/support-section/SupportSection.tsx"
           );
           return {
-            element: <SupportSection />,
+            element: (
+              <RouterGuard>
+                <SupportSection />
+              </RouterGuard>
+            ),
           };
         },
         children: SupportSectionRouter,
@@ -131,7 +160,11 @@ const mainRouter = createBrowserRouter([
             "@/pages/transmissions-section/TransmissionsSection.tsx"
           );
           return {
-            element: <TransmissionsSection />,
+            element: (
+              <RouterGuard>
+                <TransmissionsSection />
+              </RouterGuard>
+            ),
           };
         },
         children: TransmissionsSectionRouter,
@@ -146,7 +179,11 @@ const mainRouter = createBrowserRouter([
             "@/pages/users-section/UsersSection.tsx"
           );
           return {
-            element: <UsersSection />,
+            element: (
+              <RouterGuard>
+                <UsersSection />
+              </RouterGuard>
+            ),
           };
         },
         children: UsersSectionRouter,
@@ -155,6 +192,15 @@ const mainRouter = createBrowserRouter([
         },
       },
     ],
+  },
+  {
+    path: NavUrlEnum.AUTH,
+    lazy: async () => {
+      const { AuthPage } = await import("@/pages/auth-page/AuthPage.tsx");
+      return {
+        element: <AuthPage />,
+      };
+    },
   },
 ]);
 
