@@ -11,10 +11,12 @@ import SupportPageSlice from "@/state/slices/SupportPageSlice.ts";
 import TransmissionsPageSlice from "@/state/slices/TransmissionsPageSlice.ts";
 import UsersPageSlice from "@/state/slices/UsersPAgeSlice.ts";
 import ProductsPageSlice from "@/state/slices/ProductsPageSlice.ts";
+import AuthPageSlice from "@/state/slices/AuthPageSlice.ts";
 
 export const store = configureStore({
   reducer: {
     [StoreSliceEnum.APP]: AppSlice.reducer,
+    [StoreSliceEnum.AUTH]: AuthPageSlice.reducer,
     [StoreSliceEnum.DASHBOARD]: DashboardPageSlice.reducer,
     [StoreSliceEnum.MESSENGER]: MessengerPageSlice.reducer,
     [StoreSliceEnum.ORDERS]: OrdersPageSlice.reducer,

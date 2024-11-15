@@ -5,13 +5,15 @@ import useAppService from "@/useAppService.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import storageService from "@/utils/services/StorageService.ts";
 import { StorageKeyEnum } from "@/const/enums/StorageKeyEnum.ts";
+import useAuthPageService from "@/pages/auth-page/useAuthPageService.ts";
 
 export function AuthPage() {
-  const service = useAppService();
+  const service = useAuthPageService();
+  const appService = useAppService();
   const navigate = useNavigate();
 
   function refreshUser() {
-    service.refreshUser({ id: 2 });
+    appService.refreshUser({ id: 2 });
     navigate("/");
   }
 
