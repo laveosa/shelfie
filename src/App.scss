@@ -2,6 +2,12 @@
 
 #ApplicationNameWrapper {
   min-height: 100vh;
+
+  .applicationContentWrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
 }
 
 /*// ========================================================================== CUSTOM*/

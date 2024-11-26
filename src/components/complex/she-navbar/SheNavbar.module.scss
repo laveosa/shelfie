@@ -1,0 +1,34 @@
+@use "@/styles/variables" as vars;
+
+.SheNavbar {
+  display: flex;
+  border-bottom: vars.$brdLight;
+  justify-content: center;
+
+  .SidebarTrigger {
+    margin: 10px 15px;
+    min-width: 15px;
+    min-height: 15px;
+  }
+
+  .SearchWrapper {
+    position: relative;
+    height: 100%;
+    width: 100%;
+
+    .SearchIcon {
+      position: absolute;
+      left: 5px;
+      top: 9px;
+      color: #71717a;
+    }
+
+    .SearchInput {
+      width: 200px;
+      height: 25px;
+      margin-top: 9px;
+      background-color: vars.$colorMuted;
+      padding: 2px 3px 2px 35px;
+    }
+  }
+}
