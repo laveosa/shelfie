@@ -3,10 +3,11 @@
 .SheNavbar {
   display: flex;
   border-bottom: vars.$brdLight;
-  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
 
   .SidebarTrigger {
-    margin: 10px 15px;
     min-width: 15px;
     min-height: 15px;
   }
@@ -19,22 +20,24 @@
     .SearchIcon {
       position: absolute;
       left: 5px;
-      top: 9px;
+      top: 2px;
       color: #71717a;
     }
 
     .SearchInput {
       width: 200px;
-      height: 25px;
-      margin-top: 9px;
+      height: 100%;
       background-color: vars.$colorMuted;
       padding: 2px 3px 2px 35px;
+
+      &:focus-visible {
+        box-shadow: none;
+      }
     }
   }
 
   .BellIcon {
     color: #71717a;
-    margin: 10px;
     cursor: pointer;
     min-width: 30px;
     max-width: 30px;
@@ -43,7 +46,6 @@
   .UserAvatar {
     width: 30px;
     height: 30px;
-    margin: 5px 10px 0 0;
     border-radius: vars.$paddingSmall;
     cursor: pointer;
   }
