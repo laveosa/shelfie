@@ -31,4 +31,20 @@
       padding: 2px 3px 2px 35px;
     }
   }
+
+  .BellIcon {
+    color: #71717a;
+    margin: 10px;
+    cursor: pointer;
+    min-width: 30px;
+    max-width: 30px;
+  }
+
+  .UserAvatar {
+    width: 30px;
+    height: 30px;
+    margin: 5px 10px 0 0;
+    border-radius: vars.$paddingSmall;
+    cursor: pointer;
+  }
 }

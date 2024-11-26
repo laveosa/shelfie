@@ -4,6 +4,7 @@ import "@/App.scss";
 import { SidebarProvider } from "@/components/ui/sidebar.tsx";
 import SheSidebar from "@/components/complex/she-sidebar/SheSidebar.tsx";
 import SheNavbar from "@/components/complex/she-navbar/SheNavbar.tsx";
+import { Toaster } from "@/components/ui/toaster.tsx";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <SheNavbar />
           <Outlet />
         </div>
+        <Toaster />
       </SidebarProvider>
     </div>
   );
