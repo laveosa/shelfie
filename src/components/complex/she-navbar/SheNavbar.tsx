@@ -1,54 +1,37 @@
-import { useState, KeyboardEvent, useCallback } from "react";
+import { useState, KeyboardEvent } from "react";
 import { AvatarImage } from "@radix-ui/react-avatar";
 import { BellDot, Search } from "lucide-react";
-import debounce from "lodash/debounce";
 
 import cs from "./SheNavbar.module.scss";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Input } from "@/components/ui/input";
 import { Avatar } from "@/components/ui/avatar";
-import { useToast } from "@/hooks/use-toast.ts";
 import { useNavigate } from "react-router-dom";
 
 export default function SheNavbar() {
   const [searchValue, setSearchValue] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const navigate = useNavigate();
-  const { toast } = useToast();
-
-  const debouncedSearch = useCallback(
-    debounce(async (query: string) => {
-      if (!query.trim()) return;
-
-      try {
-        setIsSearching(true);
-        // Add your search logic here
-        console.log("Searching for:", query);
-      } catch (error) {
-        console.error("Search failed:", error);
-        toast({
-          variant: "destructive",
-          title: "Search failed",
-          description: "Please try again later",
-        });
-      } finally {
-        setIsSearching(false);
-      }
-    }, 500),
-    [toast],
-  );
 
   function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
+    setIsSearching(true);
     if (event.key === "Enter") {
       event.preventDefault();
-      debouncedSearch(searchValue);
+      console.log(searchValue);
+      // API call for search
+      setSearchValue("");
     }
+    setIsSearching(false);
   }
 
   function handleBlur() {
+    setIsSearching(true);
     if (searchValue.trim()) {
-      debouncedSearch(searchValue);
+      console.log(searchValue);
+      // API call for search
     }
+    setSearchValue("");
+    setIsSearching(false);
   }
 
   function handleBellClick() {}
