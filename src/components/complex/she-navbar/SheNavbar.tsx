@@ -8,10 +8,12 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Input } from "@/components/ui/input";
 import { Avatar } from "@/components/ui/avatar";
 import { useToast } from "@/hooks/use-toast.ts";
+import { useNavigate } from "react-router-dom";
 
 export default function SheNavbar() {
   const [searchValue, setSearchValue] = useState("");
   const [isSearching, setIsSearching] = useState(false);
+  const navigate = useNavigate();
   const { toast } = useToast();
 
   const debouncedSearch = useCallback(
@@ -51,7 +53,9 @@ export default function SheNavbar() {
 
   function handleBellClick() {}
 
-  function handleUserAvatarClick() {}
+  function handleUserAvatarClick() {
+    navigate("/profile");
+  }
 
   return (
     <div className={cs.SheNavbar}>

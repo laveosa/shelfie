@@ -61,5 +61,12 @@
     height: 30px;
     border-radius: vars.$paddingSmall;
     cursor: pointer;
+
+    &:hover {
+      box-shadow:
+        rgba(0, 0, 0, 0.19) 0 10px 20px,
+        rgba(0, 0, 0, 0.23) 0 6px 6px;
+      transition: all 0.2s ease-in 0s;
+    }
   }
 }
