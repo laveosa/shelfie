@@ -96,7 +96,7 @@ export default function SheSidebar() {
   return (
     <Sidebar className={cs.SheSidebar} collapsible="icon">
       <Collapsible className="group/collapsible">
-        <SidebarContent>
+        <SidebarContent className={cs.SidebarContent}>
           <SidebarGroup>
             <SidebarGroupLabel asChild>
               <CollapsibleTrigger>
@@ -140,7 +140,7 @@ export default function SheSidebar() {
           </SidebarGroup>
         </SidebarContent>
       </Collapsible>
-      <SidebarContent>
+      <SidebarContent className={cs.SidebarContent}>
         <SidebarGroup>
           <SidebarGroupLabel>ACTIVITY</SidebarGroupLabel>
           <SidebarMenu>
