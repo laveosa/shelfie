@@ -1,2 +1,14 @@
 .SheSidebar {
+  a {
+    color: #b7d5c7;
+
+    &:hover {
+      background: #385a4a;
+      color: white;
+
+      svg {
+        color: #39e97b;
+      }
+    }
+  }
 }
