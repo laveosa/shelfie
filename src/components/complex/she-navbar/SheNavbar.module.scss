@@ -13,6 +13,7 @@
     &:hover {
       background-color: transparent;
       color: vars.$colorDark;
+      transform: scale(1.1);
     }
 
     svg {
@@ -53,6 +54,7 @@
 
     &:hover {
       color: vars.$colorDark;
+      transform: scale(1.1);
     }
   }
 
