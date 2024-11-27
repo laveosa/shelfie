@@ -102,10 +102,11 @@ export default function SheSidebar() {
               <CollapsibleTrigger>
                 <Avatar style={{ borderRadius: "10px" }}>
                   <AvatarImage
+                    className={cs.SidebarAvatarImage}
                     src={logo}
                     alt="@shadcn"
                     style={{ zIndex: 999 }}
-                  ></AvatarImage>
+                  />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
                 <div
@@ -122,7 +123,7 @@ export default function SheSidebar() {
               </CollapsibleTrigger>
             </SidebarGroupLabel>
             <CollapsibleContent>
-              <SidebarGroupContent>
+              <SidebarGroupContent className={cs.SidebarGroupContent}>
                 <SidebarMenu>
                   {projects.map((item) => (
                     <SidebarMenuItem key={item.title}>
