@@ -8,6 +8,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarRail,
 } from "@/components/ui/sidebar.tsx";
 import {
   LayoutDashboard,
@@ -26,6 +27,7 @@ import { ISheSidebarGroup } from "@/const/interfaces/complex-components/ISheSide
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { ISheSidebarItem } from "@/const/interfaces/complex-components/ISheSidebarItem.ts";
 import { NavLink } from "react-router-dom";
+import { useState } from "react";
 
 const companies: CompanyModel[] = [
   {
@@ -104,6 +106,8 @@ const navGroups: ISheSidebarGroup[] = [
 ];
 
 export default function SheSidebar({}: ISheSidebar) {
+  const [selected, setSelected] = useState<NavUrlEnum>(NavUrlEnum.DASHBOARD);
+
   return (
     <Sidebar className={cs.sheSidebar} collapsible="icon">
       <SheSidebarHeader items={companies} />
@@ -114,7 +118,14 @@ export default function SheSidebar({}: ISheSidebar) {
             <SidebarMenu>
               {group.items.map((item: ISheSidebarItem) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton
+                    asChild
+                    className={
+                      selected === item.url ? cs.sidebarItemActive : ""
+                    }
+                    tooltip={item.title}
+                    onClick={() => setSelected(item.url)}
+                  >
                     <NavLink to={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
@@ -126,6 +137,7 @@ export default function SheSidebar({}: ISheSidebar) {
           </SidebarGroup>
         ))}
       </SidebarContent>
+      <SidebarRail />
     </Sidebar>
   );
 }
