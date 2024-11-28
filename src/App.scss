@@ -18,8 +18,8 @@ body {
   min-height: 100vh;
 
   * {
-    outline: none;
-    box-sizing: border-box;
+    outline: none !important;
+    box-sizing: border-box !important;
   }
 }
 
@@ -94,8 +94,4 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-}
-
-.buttonTest {
-  color: red !important;
 }

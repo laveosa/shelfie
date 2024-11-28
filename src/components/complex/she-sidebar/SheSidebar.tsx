@@ -1,20 +1,16 @@
 import cs from "./SheSidebar.module.scss";
-import logo from "@/assets/icons/TNF_logo.svg";
 
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
-  SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarRail,
 } from "@/components/ui/sidebar.tsx";
 import {
-  ChevronDown,
-  IceCreamBowl,
-  IdCard,
   LayoutDashboard,
   LifeBuoy,
   MessageCircle,
@@ -24,169 +20,124 @@ import {
   Users,
   Video,
 } from "lucide-react";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@radix-ui/react-collapsible";
-import { Avatar } from "@/components/ui/avatar.tsx";
-import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { CompanyModel } from "@/const/models/CompanyModel.ts";
+import SheSidebarHeader from "@/components/complex/she-sidebar/components/she-sidebar-header/SheSidebarHeader.tsx";
+import { ISheSidebar } from "@/const/interfaces/complex-components/ISheSidebar.ts";
+import { ISheSidebarGroup } from "@/const/interfaces/complex-components/ISheSidebarGroup.ts";
+import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
+import { ISheSidebarItem } from "@/const/interfaces/complex-components/ISheSidebarItem.ts";
+import { NavLink } from "react-router-dom";
+import { useState } from "react";
 
-const projects = [
+const companies: CompanyModel[] = [
   {
+    id: 1,
     title: "First",
-    icon: IceCreamBowl,
+    description: "First description",
+    isActive: true,
+    image:
+      "https://res.cloudinary.com/vistaprint/images/c_scale,w_448,h_448,dpr_1.5/f_auto,q_auto/v1711116929/ideas-and-advice-prod/en-gb/hbo/hbo.png?_i=AA",
   },
   {
+    id: 2,
     title: "Second",
-    icon: IdCard,
+    description: "Second description",
+    image:
+      "https://res.cloudinary.com/vistaprint/images/c_scale,w_448,h_448,dpr_1.5/f_auto,q_auto/v1711116920/ideas-and-advice-prod/en-gb/nasa/nasa.png?_i=AA",
   },
 ];
 
-const activityItems = [
+const navGroups: ISheSidebarGroup[] = [
   {
-    title: "Dashboard",
-    url: "/",
-    icon: LayoutDashboard,
+    title: "ACTIVITY",
+    items: [
+      {
+        title: "Dashboard",
+        url: NavUrlEnum.DASHBOARD,
+        icon: LayoutDashboard,
+      },
+      {
+        title: "Products",
+        url: NavUrlEnum.PRODUCTS,
+        icon: Shirt,
+      },
+      {
+        title: "Messenger",
+        url: NavUrlEnum.MESSENGER,
+        icon: MessageCircle,
+      },
+      {
+        title: "Orders",
+        url: NavUrlEnum.ORDERS,
+        icon: ReceiptEuro,
+      },
+      {
+        title: "Transmissions",
+        url: NavUrlEnum.TRANSMISSIONS,
+        icon: Video,
+      },
+    ],
   },
   {
-    title: "Products",
-    url: "/products",
-    icon: Shirt,
+    title: "USERS",
+    items: [
+      {
+        title: "Users",
+        url: NavUrlEnum.USERS,
+        icon: Users,
+      },
+    ],
   },
   {
-    title: "Messenger",
-    url: "/messenger",
-    icon: MessageCircle,
-  },
-  {
-    title: "Orders",
-    url: "/orders",
-    icon: ReceiptEuro,
-  },
-  {
-    title: "Transmissions",
-    url: "/transmissions",
-    icon: Video,
+    title: "SETUP",
+    items: [
+      {
+        title: "Setting",
+        url: NavUrlEnum.SETTINGS,
+        icon: Settings,
+      },
+      {
+        title: "Support",
+        url: NavUrlEnum.SUPPORT,
+        icon: LifeBuoy,
+      },
+    ],
   },
 ];
 
-const usersItems = [
-  {
-    title: "Users",
-    url: "/users",
-    icon: Users,
-  },
-];
+export default function SheSidebar({}: ISheSidebar) {
+  const [selected, setSelected] = useState<NavUrlEnum>(NavUrlEnum.DASHBOARD);
 
-const setupItems = [
-  {
-    title: "Setting",
-    url: "/settings",
-    icon: Settings,
-  },
-  {
-    title: "Support",
-    url: "/support",
-    icon: LifeBuoy,
-  },
-];
-
-export default function SheSidebar() {
   return (
-    <Sidebar className={cs.SheSidebar} collapsible="icon">
-      <Collapsible className="group/collapsible">
-        <SidebarContent>
+    <Sidebar className={cs.sheSidebar} collapsible="icon">
+      <SheSidebarHeader items={companies} />
+      <SidebarContent className={cs.sidebarContent}>
+        {navGroups.map((group: ISheSidebarGroup) => (
           <SidebarGroup>
-            <SidebarGroupLabel asChild>
-              <CollapsibleTrigger>
-                <Avatar style={{ borderRadius: "10px" }}>
-                  <AvatarImage
-                    src={logo}
-                    alt="@shadcn"
-                    style={{ zIndex: 999 }}
-                  ></AvatarImage>
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    paddingLeft: "10px",
-                  }}
-                >
-                  <p>To NIE Fabryka</p>
-                  <p style={{ fontSize: "8px" }}>Subscription Active</p>
-                </div>
-                <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
-              </CollapsibleTrigger>
-            </SidebarGroupLabel>
-            <CollapsibleContent>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  {projects.map((item) => (
-                    <SidebarMenuItem key={item.title}>
-                      <SidebarMenuButton asChild>
-                        <a href={"https://www.google.com"}>
-                          <item.icon />
-                          <span>{item.title}</span>
-                        </a>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </CollapsibleContent>
+            <SidebarGroupLabel>{group.title}</SidebarGroupLabel>
+            <SidebarMenu>
+              {group.items.map((item: ISheSidebarItem) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton
+                    asChild
+                    className={
+                      selected === item.url ? cs.sidebarItemActive : ""
+                    }
+                    tooltip={item.title}
+                    onClick={() => setSelected(item.url)}
+                  >
+                    <NavLink to={item.url}>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </NavLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
           </SidebarGroup>
-        </SidebarContent>
-      </Collapsible>
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>ACTIVITY</SidebarGroupLabel>
-          <SidebarMenu>
-            {activityItems.map((item) => (
-              <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild>
-                  <a href={item.url}>
-                    <item.icon />
-                    <span>{item.title}</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
-        </SidebarGroup>
-        <SidebarGroup>
-          <SidebarGroupLabel>USERS</SidebarGroupLabel>
-          <SidebarMenu>
-            {usersItems.map((item) => (
-              <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild>
-                  <a href={item.url}>
-                    <item.icon />
-                    <span>{item.title}</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
-        </SidebarGroup>
-        <SidebarGroup>
-          <SidebarGroupLabel>SETUP</SidebarGroupLabel>
-          <SidebarMenu>
-            {setupItems.map((item) => (
-              <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild>
-                  <a href={item.url}>
-                    <item.icon />
-                    <span>{item.title}</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
-        </SidebarGroup>
+        ))}
       </SidebarContent>
+      <SidebarRail />
     </Sidebar>
   );
 }

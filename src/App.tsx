@@ -1,21 +1,18 @@
 import { Outlet } from "react-router-dom";
 
 import "@/App.scss";
-import { SidebarProvider } from "@/components/ui/sidebar.tsx";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar.tsx";
 import SheSidebar from "@/components/complex/she-sidebar/SheSidebar.tsx";
-import SheNavbar from "@/components/complex/she-navbar/SheNavbar.tsx";
-import { Toaster } from "@/components/ui/toaster.tsx";
 
 function App() {
   return (
     <div id="ApplicationNameWrapper">
       <SidebarProvider>
         <SheSidebar />
-        <div className="applicationContentWrapper">
-          <SheNavbar />
+        <main className="w-full min-h-screen">
+          <SidebarTrigger />
           <Outlet />
-        </div>
-        <Toaster />
+        </main>
       </SidebarProvider>
     </div>
   );
