@@ -21,6 +21,11 @@ import {
 } from "lucide-react";
 import { CompanyModel } from "@/const/models/CompanyModel.ts";
 import SheSidebarHeader from "@/components/complex/she-sidebar/components/she-sidebar-header/SheSidebarHeader.tsx";
+import { ISheSidebar } from "@/const/interfaces/complex-components/ISheSidebar.ts";
+import { ISheSidebarGroup } from "@/const/interfaces/complex-components/ISheSidebarGroup.ts";
+import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
+import { ISheSidebarItem } from "@/const/interfaces/complex-components/ISheSidebarItem.ts";
+import { NavLink } from "react-router-dom";
 
 const companies: CompanyModel[] = [
   {
@@ -40,105 +45,86 @@ const companies: CompanyModel[] = [
   },
 ];
 
-const activityItems = [
+const navGroups: ISheSidebarGroup[] = [
   {
-    title: "Dashboard",
-    url: "/",
-    icon: LayoutDashboard,
+    title: "ACTIVITY",
+    items: [
+      {
+        title: "Dashboard",
+        url: NavUrlEnum.DASHBOARD,
+        icon: LayoutDashboard,
+      },
+      {
+        title: "Products",
+        url: NavUrlEnum.PRODUCTS,
+        icon: Shirt,
+      },
+      {
+        title: "Messenger",
+        url: NavUrlEnum.MESSENGER,
+        icon: MessageCircle,
+      },
+      {
+        title: "Orders",
+        url: NavUrlEnum.ORDERS,
+        icon: ReceiptEuro,
+      },
+      {
+        title: "Transmissions",
+        url: NavUrlEnum.TRANSMISSIONS,
+        icon: Video,
+      },
+    ],
   },
   {
-    title: "Products",
-    url: "/products",
-    icon: Shirt,
+    title: "USERS",
+    items: [
+      {
+        title: "Users",
+        url: NavUrlEnum.USERS,
+        icon: Users,
+      },
+    ],
   },
   {
-    title: "Messenger",
-    url: "/messenger",
-    icon: MessageCircle,
-  },
-  {
-    title: "Orders",
-    url: "/orders",
-    icon: ReceiptEuro,
-  },
-  {
-    title: "Transmissions",
-    url: "/transmissions",
-    icon: Video,
+    title: "SETUP",
+    items: [
+      {
+        title: "Setting",
+        url: NavUrlEnum.SETTINGS,
+        icon: Settings,
+      },
+      {
+        title: "Support",
+        url: NavUrlEnum.SUPPORT,
+        icon: LifeBuoy,
+      },
+    ],
   },
 ];
 
-const usersItems = [
-  {
-    title: "Users",
-    url: "/users",
-    icon: Users,
-  },
-];
-
-const setupItems = [
-  {
-    title: "Setting",
-    url: "/settings",
-    icon: Settings,
-  },
-  {
-    title: "Support",
-    url: "/support",
-    icon: LifeBuoy,
-  },
-];
-
-export default function SheSidebar() {
+export default function SheSidebar({}: ISheSidebar) {
   return (
-    <Sidebar className={cs.SheSidebar} collapsible="icon">
+    <Sidebar className={cs.sheSidebar} collapsible="icon">
       <SheSidebarHeader items={companies} />
-      <SidebarContent className={cs.SidebarContent}>
-        <SidebarGroup>
-          <SidebarGroupLabel>ACTIVITY</SidebarGroupLabel>
-          <SidebarMenu>
-            {activityItems.map((item) => (
-              <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild>
-                  <a href={item.url}>
-                    <item.icon />
-                    <span>{item.title}</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
-        </SidebarGroup>
-        <SidebarGroup>
-          <SidebarGroupLabel>USERS</SidebarGroupLabel>
-          <SidebarMenu>
-            {usersItems.map((item) => (
-              <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild>
-                  <a href={item.url}>
-                    <item.icon />
-                    <span>{item.title}</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
-        </SidebarGroup>
-        <SidebarGroup>
-          <SidebarGroupLabel>SETUP</SidebarGroupLabel>
-          <SidebarMenu>
-            {setupItems.map((item) => (
-              <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild>
-                  <a href={item.url}>
-                    <item.icon />
-                    <span>{item.title}</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
-        </SidebarGroup>
+      <SidebarContent className={cs.sidebarContent}>
+        {navGroups.map((group: ISheSidebarGroup) => (
+          <SidebarGroup>
+            <SidebarGroupLabel>{group.title}</SidebarGroupLabel>
+            <SidebarMenu>
+              {group.items.map((item: ISheSidebarItem) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild>
+                    <NavLink to={item.url}>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </NavLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroup>
+        ))}
       </SidebarContent>
     </Sidebar>
   );
