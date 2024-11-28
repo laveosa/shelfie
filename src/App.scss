@@ -12,8 +12,8 @@ body {
   min-height: 100vh;
 
   * {
-    outline: none;
-    box-sizing: border-box;
+    outline: none !important;
+    box-sizing: border-box !important;
   }
 }
 

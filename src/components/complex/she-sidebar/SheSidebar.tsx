@@ -1,20 +1,15 @@
 import cs from "./SheSidebar.module.scss";
-import logo from "@/assets/icons/TNF_logo.svg";
 
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
-  SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar.tsx";
 import {
-  ChevronDown,
-  IceCreamBowl,
-  IdCard,
   LayoutDashboard,
   LifeBuoy,
   MessageCircle,
@@ -24,22 +19,24 @@ import {
   Users,
   Video,
 } from "lucide-react";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@radix-ui/react-collapsible";
-import { Avatar } from "@/components/ui/avatar.tsx";
-import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { CompanyModel } from "@/const/models/CompanyModel.ts";
+import SheSidebarHeader from "@/components/complex/she-sidebar/components/she-sidebar-header/SheSidebarHeader.tsx";
 
-const projects = [
+const companies: CompanyModel[] = [
   {
+    id: 1,
     title: "First",
-    icon: IceCreamBowl,
+    description: "First description",
+    isActive: true,
+    image:
+      "https://res.cloudinary.com/vistaprint/images/c_scale,w_448,h_448,dpr_1.5/f_auto,q_auto/v1711116929/ideas-and-advice-prod/en-gb/hbo/hbo.png?_i=AA",
   },
   {
+    id: 2,
     title: "Second",
-    icon: IdCard,
+    description: "Second description",
+    image:
+      "https://res.cloudinary.com/vistaprint/images/c_scale,w_448,h_448,dpr_1.5/f_auto,q_auto/v1711116920/ideas-and-advice-prod/en-gb/nasa/nasa.png?_i=AA",
   },
 ];
 
@@ -95,52 +92,7 @@ const setupItems = [
 export default function SheSidebar() {
   return (
     <Sidebar className={cs.SheSidebar} collapsible="icon">
-      <Collapsible className="group/collapsible">
-        <SidebarContent className={cs.SidebarContent}>
-          <SidebarGroup>
-            <SidebarGroupLabel asChild>
-              <CollapsibleTrigger>
-                <Avatar style={{ borderRadius: "10px" }}>
-                  <AvatarImage
-                    className={cs.SidebarAvatarImage}
-                    src={logo}
-                    alt="@shadcn"
-                    style={{ zIndex: 999 }}
-                  />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    paddingLeft: "10px",
-                  }}
-                >
-                  <p>To NIE Fabryka</p>
-                  <p style={{ fontSize: "8px" }}>Subscription Active</p>
-                </div>
-                <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
-              </CollapsibleTrigger>
-            </SidebarGroupLabel>
-            <CollapsibleContent>
-              <SidebarGroupContent className={cs.SidebarGroupContent}>
-                <SidebarMenu>
-                  {projects.map((item) => (
-                    <SidebarMenuItem key={item.title}>
-                      <SidebarMenuButton asChild>
-                        <a href={"https://www.google.com"}>
-                          <item.icon />
-                          <span>{item.title}</span>
-                        </a>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </CollapsibleContent>
-          </SidebarGroup>
-        </SidebarContent>
-      </Collapsible>
+      <SheSidebarHeader items={companies} />
       <SidebarContent className={cs.SidebarContent}>
         <SidebarGroup>
           <SidebarGroupLabel>ACTIVITY</SidebarGroupLabel>
