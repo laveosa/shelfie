@@ -1,0 +1,77 @@
+@use "@/styles/variables" as vars;
+
+.sheHeader {
+  display: flex;
+  border-bottom: vars.$brdLight;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  min-height: 52px;
+
+  .sidebarTrigger {
+    color: #71717a;
+
+    &:hover {
+      background-color: transparent;
+      color: vars.$colorDark;
+      transform: scale(1.1);
+    }
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  .searchWrapper {
+    position: relative;
+    height: 100%;
+    width: 100%;
+
+    .searchIcon {
+      position: absolute;
+      left: 6px;
+      color: #71717a;
+      min-width: 14px;
+      max-width: 14px;
+    }
+
+    .searchInput {
+      width: 250px;
+      height: 100%;
+      background-color: vars.$colorMuted;
+      padding: 2px 3px 2px 25px;
+
+      &:focus-visible {
+        box-shadow: none;
+      }
+    }
+  }
+
+  .bellIcon {
+    color: #71717a;
+    cursor: pointer;
+    min-width: 30px;
+    max-width: 30px;
+
+    &:hover {
+      color: vars.$colorDark;
+      transform: scale(1.1);
+    }
+  }
+
+  .userAvatar {
+    width: 30px;
+    height: 30px;
+    border-radius: vars.$paddingSmall;
+    cursor: pointer;
+
+    &:hover {
+      box-shadow:
+        rgba(0, 0, 0, 0.19) 0 10px 20px,
+        rgba(0, 0, 0, 0.23) 0 6px 6px;
+      transition: all 0.2s ease-in 0s;
+      transform: scale(1.1);
+    }
+  }
+}
