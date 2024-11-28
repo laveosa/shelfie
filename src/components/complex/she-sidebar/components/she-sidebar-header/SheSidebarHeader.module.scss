@@ -1,0 +1,79 @@
+@use "@/styles/variables" as vars;
+
+.sheSidebarHeader {
+  background: linear-gradient(270deg, #1b3529 0%, #244637 100%);
+
+  img {
+    width: 100%;
+  }
+
+  .selectedHeaderItem {
+    background: linear-gradient(270deg, #1b3529 0%, #244637 100%);
+    box-shadow: none;
+    height: 40px;
+
+    &:hover {
+      background: #385a4a;
+    }
+
+    .headerImage {
+      min-width: 32px;
+      max-width: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-radius: vars.$brdR_03;
+    }
+
+    .headerInfo {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      width: 100%;
+
+      span {
+        color: #b7d5c7;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
+
+    .headerChevron {
+      color: #b7d5c7 !important;
+    }
+
+    &.isCollapsed {
+      padding: 0 !important;
+
+      .headerInfo {
+        display: none;
+      }
+    }
+  }
+}
+
+.headerItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-grow: 1;
+
+  img {
+    max-width: 30px;
+    min-width: 30px;
+  }
+}
+
+// =================================================== ADAPTATION
+
+/*@media only screen and (max-width: 768px) {
+  .sheSidebarHeader {
+    .selectedHeaderItem {
+
+      .headerInfo {
+        display: none;
+      }
+    }
+  }
+}*/
