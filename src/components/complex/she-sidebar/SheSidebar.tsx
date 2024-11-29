@@ -113,7 +113,7 @@ export default function SheSidebar({}: ISheSidebar) {
       <SheSidebarHeader items={companies} />
       <SidebarContent className={cs.sidebarContent}>
         {navGroups.map((group: ISheSidebarGroup) => (
-          <SidebarGroup>
+          <SidebarGroup key={group.title}>
             <SidebarGroupLabel>{group.title}</SidebarGroupLabel>
             <SidebarMenu>
               {group.items.map((item: ISheSidebarItem) => (
