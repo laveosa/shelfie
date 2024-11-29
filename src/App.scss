@@ -2,6 +2,12 @@
 
 #ApplicationNameWrapper {
   min-height: 100vh;
+
+  .applicationContentWrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
 }
 
 /*// ========================================================================== CUSTOM*/
@@ -12,8 +18,8 @@ body {
   min-height: 100vh;
 
   * {
-    outline: none;
-    box-sizing: border-box;
+    outline: none !important;
+    box-sizing: border-box !important;
   }
 }
 
@@ -83,13 +89,21 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3c3c3c;
+  background: #605e5e;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
 }
 
-.buttonTest {
-  color: red !important;
+/*// -------------------------------------------------------------------------- CONTENT PAGE*/
+
+.contentPage {
+  min-height: calc(100vh - 52px);
+
+  > div {
+    max-height: calc(100vh - 52px);
+    overflow-y: auto;
+    padding: 20px;
+  }
 }

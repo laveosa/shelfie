@@ -1,7 +1,7 @@
 import { Loader2 } from "lucide-react";
 
 import cs from "./SheButton.module.scss";
-import { ISheButton } from "@/const/interfaces/ISheButton.ts";
+import { ISheButton } from "@/const/interfaces/primitive-components/ISheButton.ts";
 import { Button } from "@/components/ui/button.tsx";
 
 export default function SheButton({
