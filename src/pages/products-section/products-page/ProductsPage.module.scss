@@ -1,3 +1,7 @@
+@use "@/styles/variables" as vars;
+
+//----------------------------------------------------------------HEADER
+
 #ProductsPage {
   .productsPageHeader {
     display: flex;
@@ -8,4 +12,42 @@
       gap: 10px;
     }
   }
+}
+
+//-------------------------------------------------------------------TABS
+
+#ProductsPage {
+  .productsPageContent {
+    .tabItemsWrapper {
+      margin: 0 -20px;
+      border-bottom: 2px solid vars.$colorMedium;
+
+      .tabItems {
+        background-color: transparent;
+        padding-bottom: 0;
+        margin-bottom: -3px;
+
+        .tabItemTrigger {
+          box-shadow: none;
+          border-radius: 0;
+
+          &[data-state="active"] {
+            border-bottom: 2px solid #38bf5e;
+          }
+
+          .tabBlock {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+          }
+        }
+      }
+    }
+  }
+}
+
+//----------------------------------------------------------------------CONTENT
+
+#ProductsPage {
 }
