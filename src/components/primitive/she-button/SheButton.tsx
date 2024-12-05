@@ -10,6 +10,10 @@ export default function SheButton({
   disabled,
   minWidth,
   minHeight,
+  icon: Icon,
+  iconPosition = "left",
+  iconSize = 16,
+  iconClassName,
   ...props
 }: ISheButton) {
   const loaderColor: string = isLoaderDark();
@@ -30,7 +34,9 @@ export default function SheButton({
     <Button
       {...props}
       disabled={loading || disabled}
-      className={`${className || ""} ${cs.sheButton || ""}`}
+      className={`${className || ""} ${cs.sheButton || ""} ${
+        Icon ? cs.withIcon : ""
+      } ${cs[`icon-${iconPosition}`] || ""}`}
       style={{
         minWidth,
         minHeight,
@@ -49,7 +55,21 @@ export default function SheButton({
             />
           </div>
         )}
-        {props.children}
+        <>
+          {Icon && iconPosition === "left" && (
+            <Icon
+              className={`${cs.buttonIcon} ${cs.leftIcon} ${iconClassName || ""}`}
+              size={iconSize}
+            />
+          )}
+          <span className={cs.buttonContent}>{props.children}</span>
+          {Icon && iconPosition === "right" && (
+            <Icon
+              className={`${cs.buttonIcon} ${cs.rightIcon} ${iconClassName || ""}`}
+              size={iconSize}
+            />
+          )}
+        </>
       </>
     </Button>
   );
