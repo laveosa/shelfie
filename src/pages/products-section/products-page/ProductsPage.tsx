@@ -15,6 +15,8 @@ import SheTabs from "@/components/complex/she-tabs/SheTabs.tsx";
 export function ProductsPage() {
   const service = useProductsPageService();
 
+  //Needs to add handles functionality later
+
   function handleAddProduct() {}
 
   function handleImportProducts() {}
