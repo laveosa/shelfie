@@ -73,7 +73,6 @@ export function ProductsPage() {
               </TabsTrigger>
             </TabsList>
           </div>
-
           <TabsContent value="Products">Products</TabsContent>
           <TabsContent value="Variants">Variants</TabsContent>
           <TabsContent value="Purchases">Purchases</TabsContent>
