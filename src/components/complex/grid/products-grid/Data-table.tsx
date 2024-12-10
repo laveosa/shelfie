@@ -4,7 +4,6 @@ import {
   getCoreRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  SortingState,
   useReactTable,
 } from "@tanstack/react-table";
 
@@ -18,6 +17,7 @@ import {
 } from "@/components/ui/table";
 import React from "react";
 import { ProductsGridPagination } from "@/components/complex/grid/products-grid/ProductsGridPagination.tsx";
+import { ColumnsViewOptions } from "@/components/complex/grid/products-grid/ColumnsViewOptions.tsx";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -28,23 +28,18 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
-    state: {
-      sorting,
-    },
   });
 
   return (
     <div>
-      <div className="flex items-center justify-end space-x-2 py-4">
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <ColumnsViewOptions table={table} />
         <ProductsGridPagination table={table} />
       </div>
       <div className="rounded-md border">
