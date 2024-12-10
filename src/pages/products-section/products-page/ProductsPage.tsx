@@ -11,6 +11,18 @@ import {
 } from "lucide-react";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SheTabs from "@/components/complex/she-tabs/SheTabs.tsx";
+import { columns } from "@/components/complex/grid/products-grid/Columns";
+import { DataTable } from "@/components/complex/grid/products-grid/Data-table";
+import {
+  getProductsFakeData,
+  getPurchasesFakeData,
+  getVariantsFakeData,
+} from "@/pages/products-section/products-page/FakeData.ts";
+
+//TODO Replace after we will have API to receiving actual data
+const productsData = getProductsFakeData();
+const variantsData = getVariantsFakeData();
+const purchasesData = getPurchasesFakeData();
 
 export function ProductsPage() {
   const service = useProductsPageService();
@@ -55,29 +67,35 @@ export function ProductsPage() {
         </div>
       </div>
       <div className={cs.productsPageContent}>
-        <SheTabs defaultValue="Products">
+        <SheTabs defaultValue="products">
           <div className={cs.tabItemsWrapper}>
             <TabsList className={cs.tabItems}>
-              <TabsTrigger className={cs.tabItemTrigger} value="Products">
+              <TabsTrigger className={cs.tabItemTrigger} value="products">
                 <div className={cs.tabBlock}>
                   <Shirt size="16" /> Products
                 </div>
               </TabsTrigger>
-              <TabsTrigger className={cs.tabItemTrigger} value="Variants">
+              <TabsTrigger className={cs.tabItemTrigger} value="variants">
                 <div className={cs.tabBlock}>
                   <Layers2 size="16" /> Variants
                 </div>
               </TabsTrigger>
-              <TabsTrigger className={cs.tabItemTrigger} value="Purchases">
+              <TabsTrigger className={cs.tabItemTrigger} value="purchases">
                 <div className={cs.tabBlock}>
                   <Receipt size="16" /> Purchases
                 </div>
               </TabsTrigger>
             </TabsList>
           </div>
-          <TabsContent value="Products">Products</TabsContent>
-          <TabsContent value="Variants">Variants</TabsContent>
-          <TabsContent value="Purchases">Purchases</TabsContent>
+          <TabsContent value="products">
+            <DataTable columns={columns} data={productsData} />
+          </TabsContent>
+          <TabsContent value="variants">
+            <DataTable columns={columns} data={variantsData} />
+          </TabsContent>
+          <TabsContent value="purchases">
+            <DataTable columns={columns} data={purchasesData} />
+          </TabsContent>
         </SheTabs>
       </div>
     </div>
