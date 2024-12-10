@@ -1,6 +1,4 @@
 import { ColumnDef } from "@tanstack/react-table";
-import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { ArrowUpDown } from "lucide-react";
 
 export type Products = {
   id: any;
@@ -19,17 +17,7 @@ export type Products = {
 export const columns: ColumnDef<Products>[] = [
   {
     accessorKey: "id",
-    header: ({ column }) => {
-      return (
-        <SheButton
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          ID
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </SheButton>
-      );
-    },
+    header: "ID",
   },
   {
     accessorKey: "imageUrl",
