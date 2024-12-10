@@ -18,6 +18,7 @@ import {
 import React from "react";
 import { ProductsGridPagination } from "@/components/complex/grid/products-grid/ProductsGridPagination.tsx";
 import { ColumnsViewOptions } from "@/components/complex/grid/products-grid/ColumnsViewOptions.tsx";
+import { ProductsGridSorting } from "@/components/complex/grid/products-grid/ProductsGridSorting.tsx";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -39,7 +40,10 @@ export function DataTable<TData, TValue>({
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <ColumnsViewOptions table={table} />
+        <div style={{ display: "flex", gap: "10px" }}>
+          <ColumnsViewOptions table={table} />
+          <ProductsGridSorting table={table} />
+        </div>
         <ProductsGridPagination table={table} />
       </div>
       <div className="rounded-md border">

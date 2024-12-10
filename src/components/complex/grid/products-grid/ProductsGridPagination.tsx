@@ -10,13 +10,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-interface DataTablePaginationProps<TData> {
+interface IProductsGridPagination<TData> {
   table: Table<TData>;
 }
 
 export function ProductsGridPagination<TData>({
   table,
-}: DataTablePaginationProps<TData>) {
+}: IProductsGridPagination<TData>) {
   const currentPage = table.getState().pagination.pageIndex + 1;
   const totalPages = table.getPageCount();
 

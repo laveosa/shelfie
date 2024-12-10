@@ -1,9 +1,7 @@
-import { useState } from "react";
-import { Settings2 } from "lucide-react";
+import { ChevronDown, Settings2 } from "lucide-react";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 
 import { Table } from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -11,43 +9,44 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 
-interface DataTableViewOptionsProps<TData> {
+interface IColumnsViewOptions<TData> {
   table: Table<TData>;
 }
 
 export function ColumnsViewOptions<TData>({
   table,
-}: DataTableViewOptionsProps<TData>) {
-  const [isOpen, setIsOpen] = useState(false);
-
+}: IColumnsViewOptions<TData>) {
   const handleCheckedChange = (value: boolean, column: any) => {
-    event?.preventDefault();
-    event?.stopPropagation();
-
     column.toggleVisibility(!!value);
   };
 
   return (
-    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+    <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className="ml-auto hidden h-8 lg:flex"
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+          }}
         >
-          <Settings2 className="mr-2 h-4 w-4" />
-          View
-        </Button>
+          <SheButton variant="outline" icon={Settings2}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+              }}
+            >
+              Columns
+              <ChevronDown style={{ paddingTop: "4px" }} />
+            </div>
+          </SheButton>
+        </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent
-        align="end"
-        className="w-[150px]"
-        onCloseAutoFocus={(event) => {
-          event.preventDefault();
-        }}
-      >
-        <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+      <DropdownMenuContent align="start" className="w-[150px]">
+        <DropdownMenuLabel>Select Columns</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {table
           .getAllColumns()
