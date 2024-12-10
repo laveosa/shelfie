@@ -1,6 +1,5 @@
 import { Table } from "@tanstack/react-table";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 import SheButton from "@/components/primitive/she-button/SheButton";
 import {
@@ -70,7 +69,7 @@ export function ProductsGridPagination<TData>({
 
           <div className="flex items-center gap-1">
             {getPageNumbers().map((pageNum, idx) => (
-              <Button
+              <SheButton
                 key={idx}
                 variant={pageNum === currentPage ? "default" : "outline"}
                 className={`h-8 w-8 p-0 ${
@@ -84,7 +83,7 @@ export function ProductsGridPagination<TData>({
                 disabled={pageNum === "..."}
               >
                 {pageNum}
-              </Button>
+              </SheButton>
             ))}
           </div>
 
