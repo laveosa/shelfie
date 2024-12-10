@@ -14,7 +14,7 @@ export type Products = {
   stock: boolean;
 };
 
-export const columns: ColumnDef<Products>[] = [
+export const productsGridColumns: ColumnDef<Products>[] = [
   {
     accessorKey: "id",
     header: "ID",

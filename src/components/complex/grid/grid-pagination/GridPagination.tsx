@@ -1,20 +1,20 @@
 import { Table } from "@tanstack/react-table";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-import SheButton from "@/components/primitive/she-button/SheButton";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@/components/ui/select.tsx";
 
 interface IProductsGridPagination<TData> {
   table: Table<TData>;
 }
 
-export function ProductsGridPagination<TData>({
+export function GridPagination<TData>({
   table,
 }: IProductsGridPagination<TData>) {
   const currentPage = table.getState().pagination.pageIndex + 1;

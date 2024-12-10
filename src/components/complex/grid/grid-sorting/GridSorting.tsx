@@ -10,16 +10,14 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 
 interface IProductsGridSorting<TData> {
   table: Table<TData>;
 }
 
-export function ProductsGridSorting<TData>({
-  table,
-}: IProductsGridSorting<TData>) {
+export function GridSorting<TData>({ table }: IProductsGridSorting<TData>) {
   const sortableColumns = table
     .getAllColumns()
     .filter((column) => column.getCanSort());

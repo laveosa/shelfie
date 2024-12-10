@@ -1,4 +1,4 @@
-import { Products } from "@/components/complex/grid/products-grid/Columns.tsx";
+import { Products } from "@/components/complex/grid/products-grid/ProductsGridColumns.tsx";
 
 //TODO Delete this file after API for real products data will be ready
 

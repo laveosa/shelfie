@@ -11,13 +11,13 @@ import {
 } from "lucide-react";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SheTabs from "@/components/complex/she-tabs/SheTabs.tsx";
-import { columns } from "@/components/complex/grid/products-grid/Columns";
-import { DataTable } from "@/components/complex/grid/products-grid/Data-table";
+import { productsGridColumns } from "@/components/complex/grid/products-grid/ProductsGridColumns.tsx";
+import { GridDataTable } from "@/components/complex/grid/grid-data-table/GridDataTable.tsx";
 import {
   getProductsFakeData,
   getPurchasesFakeData,
   getVariantsFakeData,
-} from "@/pages/products-section/products-page/FakeData.ts";
+} from "@/components/complex/grid/products-grid/FakeData.ts";
 
 //TODO Replace after we will have API to receiving actual data
 const productsData = getProductsFakeData();
@@ -88,13 +88,13 @@ export function ProductsPage() {
             </TabsList>
           </div>
           <TabsContent value="products">
-            <DataTable columns={columns} data={productsData} />
+            <GridDataTable columns={productsGridColumns} data={productsData} />
           </TabsContent>
           <TabsContent value="variants">
-            <DataTable columns={columns} data={variantsData} />
+            <GridDataTable columns={productsGridColumns} data={variantsData} />
           </TabsContent>
           <TabsContent value="purchases">
-            <DataTable columns={columns} data={purchasesData} />
+            <GridDataTable columns={productsGridColumns} data={purchasesData} />
           </TabsContent>
         </SheTabs>
       </div>

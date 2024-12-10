@@ -14,18 +14,18 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@/components/ui/table.tsx";
 import React from "react";
-import { ProductsGridPagination } from "@/components/complex/grid/products-grid/ProductsGridPagination.tsx";
-import { ColumnsViewOptions } from "@/components/complex/grid/products-grid/ColumnsViewOptions.tsx";
-import { ProductsGridSorting } from "@/components/complex/grid/products-grid/ProductsGridSorting.tsx";
+import { GridPagination } from "@/components/complex/grid/grid-pagination/GridPagination.tsx";
+import { ColumnsViewOptions } from "@/components/complex/grid/grid-columns-view-options/ColumnsViewOptions.tsx";
+import { GridSorting } from "@/components/complex/grid/grid-sorting/GridSorting.tsx";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
-export function DataTable<TData, TValue>({
+export function GridDataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -42,12 +42,12 @@ export function DataTable<TData, TValue>({
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <div style={{ display: "flex", gap: "10px" }}>
           <ColumnsViewOptions table={table} />
-          <ProductsGridSorting table={table} />
+          <GridSorting table={table} />
         </div>
-        <ProductsGridPagination table={table} />
+        <GridPagination table={table} />
       </div>
       <div className="rounded-md border">
-        <Table>
+        <Table style={{ overflow: "hidden" }}>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -89,7 +89,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No products.
+                  NO DATA TO DISPLAY
                 </TableCell>
               </TableRow>
             )}
