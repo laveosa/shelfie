@@ -15,7 +15,8 @@ export function getProductsFakeData(): Products[] {
       status: "Available",
       salePrice: 299.99,
       variantCount: 3,
-      stock: true,
+      stock: 5,
+      active: true,
     },
     {
       id: 2,
@@ -28,7 +29,8 @@ export function getProductsFakeData(): Products[] {
       status: "Low Stock",
       salePrice: 129.99,
       variantCount: 5,
-      stock: true,
+      stock: 5,
+      active: false,
     },
     {
       id: 3,
@@ -41,7 +43,8 @@ export function getProductsFakeData(): Products[] {
       status: "Available",
       salePrice: 399.99,
       variantCount: 2,
-      stock: true,
+      stock: 5,
+      active: true,
     },
     {
       id: 4,
@@ -54,7 +57,8 @@ export function getProductsFakeData(): Products[] {
       status: "Available",
       salePrice: 149.99,
       variantCount: 4,
-      stock: true,
+      stock: 5,
+      active: false,
     },
     {
       id: 5,
@@ -67,7 +71,8 @@ export function getProductsFakeData(): Products[] {
       status: "Out of Stock",
       salePrice: 79.99,
       variantCount: 1,
-      stock: false,
+      stock: 5,
+      active: false,
     },
     {
       id: 6,
@@ -80,7 +85,8 @@ export function getProductsFakeData(): Products[] {
       status: "Available",
       salePrice: 34.99,
       variantCount: 6,
-      stock: true,
+      stock: 5,
+      active: true,
     },
     {
       id: 7,
@@ -93,7 +99,8 @@ export function getProductsFakeData(): Products[] {
       status: "Low Stock",
       salePrice: 199.99,
       variantCount: 2,
-      stock: true,
+      stock: 5,
+      active: true,
     },
     {
       id: 8,
@@ -106,7 +113,8 @@ export function getProductsFakeData(): Products[] {
       status: "Available",
       salePrice: 49.99,
       variantCount: 3,
-      stock: true,
+      stock: 5,
+      active: true,
     },
     {
       id: 9,
@@ -119,7 +127,8 @@ export function getProductsFakeData(): Products[] {
       status: "Discontinued",
       salePrice: 499.99,
       variantCount: 1,
-      stock: false,
+      stock: 5,
+      active: false,
     },
     {
       id: 10,
@@ -132,7 +141,8 @@ export function getProductsFakeData(): Products[] {
       status: "Available",
       salePrice: 89.99,
       variantCount: 4,
-      stock: true,
+      stock: 5,
+      active: true,
     },
     {
       id: 11,
@@ -145,7 +155,8 @@ export function getProductsFakeData(): Products[] {
       status: "Available",
       salePrice: 199.99,
       variantCount: 4,
-      stock: true,
+      stock: 5,
+      active: true,
     },
     {
       id: 12,
@@ -158,7 +169,8 @@ export function getProductsFakeData(): Products[] {
       status: "Low Stock",
       salePrice: 79.99,
       variantCount: 6,
-      stock: true,
+      stock: 5,
+      active: true,
     },
     {
       id: 13,
@@ -171,7 +183,8 @@ export function getProductsFakeData(): Products[] {
       status: "Available",
       salePrice: 299.99,
       variantCount: 3,
-      stock: true,
+      stock: 5,
+      active: true,
     },
     {
       id: 14,
@@ -184,7 +197,8 @@ export function getProductsFakeData(): Products[] {
       status: "Available",
       salePrice: 89.99,
       variantCount: 5,
-      stock: true,
+      stock: 5,
+      active: true,
     },
     {
       id: 15,
@@ -197,7 +211,8 @@ export function getProductsFakeData(): Products[] {
       status: "Out of Stock",
       salePrice: 149.99,
       variantCount: 2,
-      stock: false,
+      stock: 5,
+      active: false,
     },
     {
       id: 16,
@@ -210,7 +225,8 @@ export function getProductsFakeData(): Products[] {
       status: "Available",
       salePrice: 59.99,
       variantCount: 3,
-      stock: true,
+      stock: 5,
+      active: true,
     },
     {
       id: 17,
@@ -223,7 +239,8 @@ export function getProductsFakeData(): Products[] {
       status: "Low Stock",
       salePrice: 599.99,
       variantCount: 4,
-      stock: true,
+      stock: 5,
+      active: true,
     },
     {
       id: 18,
@@ -236,7 +253,8 @@ export function getProductsFakeData(): Products[] {
       status: "Available",
       salePrice: 129.99,
       variantCount: 7,
-      stock: true,
+      stock: 5,
+      active: true,
     },
     {
       id: 19,
@@ -249,7 +267,8 @@ export function getProductsFakeData(): Products[] {
       status: "Discontinued",
       salePrice: 199.99,
       variantCount: 2,
-      stock: false,
+      stock: 5,
+      active: false,
     },
     {
       id: 20,
@@ -262,7 +281,8 @@ export function getProductsFakeData(): Products[] {
       status: "Available",
       salePrice: 179.99,
       variantCount: 3,
-      stock: true,
+      stock: 5,
+      active: true,
     },
     {
       id: 1,
@@ -275,7 +295,8 @@ export function getProductsFakeData(): Products[] {
       status: "Available",
       salePrice: 299.99,
       variantCount: 3,
-      stock: true,
+      stock: 5,
+      active: true,
     },
     {
       id: 2,
@@ -288,7 +309,8 @@ export function getProductsFakeData(): Products[] {
       status: "Low Stock",
       salePrice: 129.99,
       variantCount: 5,
-      stock: true,
+      stock: 5,
+      active: true,
     },
     {
       id: 3,
@@ -301,7 +323,8 @@ export function getProductsFakeData(): Products[] {
       status: "Available",
       salePrice: 399.99,
       variantCount: 2,
-      stock: true,
+      stock: 5,
+      active: true,
     },
     {
       id: 4,
@@ -314,7 +337,8 @@ export function getProductsFakeData(): Products[] {
       status: "Available",
       salePrice: 149.99,
       variantCount: 4,
-      stock: true,
+      stock: 5,
+      active: true,
     },
     {
       id: 5,
@@ -327,7 +351,8 @@ export function getProductsFakeData(): Products[] {
       status: "Out of Stock",
       salePrice: 79.99,
       variantCount: 1,
-      stock: false,
+      stock: 5,
+      active: false,
     },
     {
       id: 6,
@@ -340,7 +365,8 @@ export function getProductsFakeData(): Products[] {
       status: "Available",
       salePrice: 34.99,
       variantCount: 6,
-      stock: true,
+      stock: 5,
+      active: true,
     },
     {
       id: 7,
@@ -353,7 +379,8 @@ export function getProductsFakeData(): Products[] {
       status: "Low Stock",
       salePrice: 199.99,
       variantCount: 2,
-      stock: true,
+      stock: 5,
+      active: true,
     },
     {
       id: 8,
@@ -366,7 +393,8 @@ export function getProductsFakeData(): Products[] {
       status: "Available",
       salePrice: 49.99,
       variantCount: 3,
-      stock: true,
+      stock: 5,
+      active: true,
     },
     {
       id: 9,
@@ -379,7 +407,8 @@ export function getProductsFakeData(): Products[] {
       status: "Discontinued",
       salePrice: 499.99,
       variantCount: 1,
-      stock: false,
+      stock: 5,
+      active: false,
     },
     {
       id: 10,
@@ -392,7 +421,8 @@ export function getProductsFakeData(): Products[] {
       status: "Available",
       salePrice: 89.99,
       variantCount: 4,
-      stock: true,
+      stock: 5,
+      active: true,
     },
     {
       id: 11,
@@ -405,7 +435,8 @@ export function getProductsFakeData(): Products[] {
       status: "Available",
       salePrice: 199.99,
       variantCount: 4,
-      stock: true,
+      stock: 5,
+      active: true,
     },
     {
       id: 12,
@@ -418,7 +449,8 @@ export function getProductsFakeData(): Products[] {
       status: "Low Stock",
       salePrice: 79.99,
       variantCount: 6,
-      stock: true,
+      stock: 5,
+      active: true,
     },
     {
       id: 13,
@@ -431,7 +463,8 @@ export function getProductsFakeData(): Products[] {
       status: "Available",
       salePrice: 299.99,
       variantCount: 3,
-      stock: true,
+      stock: 5,
+      active: true,
     },
     {
       id: 14,
@@ -444,7 +477,8 @@ export function getProductsFakeData(): Products[] {
       status: "Available",
       salePrice: 89.99,
       variantCount: 5,
-      stock: true,
+      stock: 5,
+      active: true,
     },
     {
       id: 15,
@@ -457,7 +491,8 @@ export function getProductsFakeData(): Products[] {
       status: "Out of Stock",
       salePrice: 149.99,
       variantCount: 2,
-      stock: false,
+      stock: 5,
+      active: false,
     },
     {
       id: 16,
@@ -470,7 +505,8 @@ export function getProductsFakeData(): Products[] {
       status: "Available",
       salePrice: 59.99,
       variantCount: 3,
-      stock: true,
+      stock: 5,
+      active: true,
     },
     {
       id: 17,
@@ -483,7 +519,8 @@ export function getProductsFakeData(): Products[] {
       status: "Low Stock",
       salePrice: 599.99,
       variantCount: 4,
-      stock: true,
+      stock: 5,
+      active: true,
     },
     {
       id: 18,
@@ -496,7 +533,8 @@ export function getProductsFakeData(): Products[] {
       status: "Available",
       salePrice: 129.99,
       variantCount: 7,
-      stock: true,
+      stock: 5,
+      active: true,
     },
     {
       id: 19,
@@ -509,7 +547,8 @@ export function getProductsFakeData(): Products[] {
       status: "Discontinued",
       salePrice: 199.99,
       variantCount: 2,
-      stock: false,
+      stock: 5,
+      active: false,
     },
     {
       id: 20,
@@ -522,7 +561,8 @@ export function getProductsFakeData(): Products[] {
       status: "Available",
       salePrice: 179.99,
       variantCount: 3,
-      stock: true,
+      stock: 5,
+      active: true,
     },
   ];
 }
@@ -540,7 +580,7 @@ export function getVariantsFakeData(): Products[] {
       status: "Available",
       salePrice: 199.99,
       variantCount: 4,
-      stock: true,
+      active: true,
     },
     {
       id: 12,
@@ -553,7 +593,7 @@ export function getVariantsFakeData(): Products[] {
       status: "Low Stock",
       salePrice: 79.99,
       variantCount: 6,
-      stock: true,
+      active: true,
     },
     {
       id: 13,
@@ -566,7 +606,7 @@ export function getVariantsFakeData(): Products[] {
       status: "Available",
       salePrice: 299.99,
       variantCount: 3,
-      stock: true,
+      active: true,
     },
     {
       id: 14,
@@ -579,7 +619,7 @@ export function getVariantsFakeData(): Products[] {
       status: "Available",
       salePrice: 89.99,
       variantCount: 5,
-      stock: true,
+      active: true,
     },
     {
       id: 15,
@@ -592,7 +632,7 @@ export function getVariantsFakeData(): Products[] {
       status: "Out of Stock",
       salePrice: 149.99,
       variantCount: 2,
-      stock: false,
+      active: false,
     },
     {
       id: 16,
@@ -605,7 +645,7 @@ export function getVariantsFakeData(): Products[] {
       status: "Available",
       salePrice: 59.99,
       variantCount: 3,
-      stock: true,
+      active: true,
     },
     {
       id: 17,
@@ -618,7 +658,7 @@ export function getVariantsFakeData(): Products[] {
       status: "Low Stock",
       salePrice: 599.99,
       variantCount: 4,
-      stock: true,
+      active: true,
     },
     {
       id: 18,
@@ -631,7 +671,7 @@ export function getVariantsFakeData(): Products[] {
       status: "Available",
       salePrice: 129.99,
       variantCount: 7,
-      stock: true,
+      active: true,
     },
     {
       id: 19,
@@ -644,7 +684,7 @@ export function getVariantsFakeData(): Products[] {
       status: "Discontinued",
       salePrice: 199.99,
       variantCount: 2,
-      stock: false,
+      active: false,
     },
     {
       id: 20,
@@ -657,7 +697,7 @@ export function getVariantsFakeData(): Products[] {
       status: "Available",
       salePrice: 179.99,
       variantCount: 3,
-      stock: true,
+      active: true,
     },
   ];
 }
@@ -675,7 +715,7 @@ export function getPurchasesFakeData(): Products[] {
       status: "Available",
       salePrice: 89.99,
       variantCount: 4,
-      stock: true,
+      active: true,
     },
     {
       id: 22,
@@ -688,7 +728,7 @@ export function getPurchasesFakeData(): Products[] {
       status: "Low Stock",
       salePrice: 299.99,
       variantCount: 5,
-      stock: true,
+      active: true,
     },
     {
       id: 23,
@@ -701,7 +741,7 @@ export function getPurchasesFakeData(): Products[] {
       status: "Available",
       salePrice: 199.99,
       variantCount: 3,
-      stock: true,
+      active: true,
     },
     {
       id: 24,
@@ -714,7 +754,7 @@ export function getPurchasesFakeData(): Products[] {
       status: "Available",
       salePrice: 29.99,
       variantCount: 2,
-      stock: true,
+      active: true,
     },
     {
       id: 25,
@@ -727,7 +767,7 @@ export function getPurchasesFakeData(): Products[] {
       status: "Out of Stock",
       salePrice: 149.99,
       variantCount: 4,
-      stock: false,
+      active: false,
     },
     {
       id: 26,
@@ -740,7 +780,7 @@ export function getPurchasesFakeData(): Products[] {
       status: "Available",
       salePrice: 39.99,
       variantCount: 6,
-      stock: true,
+      active: true,
     },
     {
       id: 27,
@@ -753,7 +793,7 @@ export function getPurchasesFakeData(): Products[] {
       status: "Low Stock",
       salePrice: 24.99,
       variantCount: 3,
-      stock: true,
+      active: true,
     },
     {
       id: 28,
@@ -766,7 +806,7 @@ export function getPurchasesFakeData(): Products[] {
       status: "Available",
       salePrice: 79.99,
       variantCount: 4,
-      stock: true,
+      active: true,
     },
     {
       id: 29,
@@ -779,7 +819,7 @@ export function getPurchasesFakeData(): Products[] {
       status: "Discontinued",
       salePrice: 49.99,
       variantCount: 2,
-      stock: false,
+      active: false,
     },
     {
       id: 30,
@@ -792,7 +832,7 @@ export function getPurchasesFakeData(): Products[] {
       status: "Available",
       salePrice: 19.99,
       variantCount: 5,
-      stock: true,
+      active: true,
     },
   ];
 }

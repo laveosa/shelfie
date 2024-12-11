@@ -21,7 +21,8 @@ export type Products = {
   status: string;
   salePrice: number;
   variantCount: number;
-  stock: boolean;
+  stock?: number;
+  active: boolean;
 };
 
 export const productsGridColumns: ColumnDef<Products>[] = [
@@ -102,13 +103,20 @@ export const productsGridColumns: ColumnDef<Products>[] = [
   },
   {
     accessorKey: "variantCount",
-    header: "Variant Count",
+    header: "Variants",
   },
   {
     accessorKey: "stock",
     header: "Stock",
     cell: ({ row }) => {
-      return <Switch checked={row.getValue("stock")} />;
+      return <span>{`${row.getValue("stock")} units`}</span>;
+    },
+  },
+  {
+    accessorKey: "active",
+    header: "Active",
+    cell: ({ row }) => {
+      return <Switch checked={row.getValue("active")} />;
     },
   },
   {
