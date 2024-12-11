@@ -1,0 +1,84 @@
+import { IApiQueryDefinition } from "@/const/interfaces/IApiQueryDefinition.ts";
+import { ApiServiceNameEnum } from "@/const/enums/ApiServiceNameEnum.ts";
+import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
+import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
+export class ApiConfigurationService {
+  public static baseQueryWithInterceptors = async (
+    args: any,
+    api: any,
+    extraOptions: any,
+  ) => {
+    try {
+      this.requestHandler(args);
+      const result = await this.customBaseQuery()(args, api, extraOptions);
+      this.responseHandler(result);
+      return result;
+    } catch (error) {
+      console.error("Unexpected Error:", error);
+      throw error;
+    }
+  };
+
+  public static createQuery<TData, TParams>(
+    builder: any,
+    config: Partial<IApiQueryDefinition<TData, TParams>>,
+  ) {
+    return builder.query<TData, TParams>({
+      ...config,
+    });
+  }
+
+  public static createMutation<TData, TParams>(
+    builder: any,
+    config: Partial<IApiQueryDefinition<TData, TParams>>,
+  ) {
+    return builder.mutation<TData, TParams>({
+      ...config,
+    });
+  }
+
+  public static providesTags<T>(
+    result: T[] | undefined,
+    type: ApiServiceNameEnum,
+  ) {
+    return result
+      ? [
+          ...result.map(({ id }: T) => ({ type: type, id })),
+          { type: type, id: "LIST" },
+        ]
+      : [{ type: type, id: "LIST" }];
+  }
+
+  // ============================================================ PRIVATE
+
+  private static requestHandler(args: any): void {
+    // TODO ad bearer token logic
+  }
+
+  private static responseHandler(result: any): void {
+    if (result.error) {
+      const { status, data } = result.error;
+      const message = data?.message || "Unknown error occurred";
+
+      if (status === 401) {
+        console.error("Unauthorized! Redirecting to login...");
+      } else {
+        console.error(`Error ${status}: ${message}`);
+      }
+    }
+  }
+
+  private static customBaseQuery(baseUrl = ApiUrlEnum.BASE_URL) {
+    return fetchBaseQuery({
+      baseUrl,
+      prepareHeaders: (headers) => {
+        const token = localStorage.getItem("token");
+        if (token) {
+          headers.set("Authorization", `Bearer ${token}`);
+        }
+        return headers;
+      },
+    });
+  }
+}

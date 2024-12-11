@@ -1,22 +1,35 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
 import { ApiServiceNameEnum } from "@/const/enums/ApiServiceNameEnum.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
+import { ApiConfigurationService as apiConfig } from "@/utils/services/api/ApiConfigurationService.ts";
 
 export const ProductsApiService = createApi({
   reducerPath: ApiServiceNameEnum.PRODUCTS,
-  baseQuery: fetchBaseQuery({ baseUrl: ApiUrlEnum.BASE_URL }),
+  baseQuery: apiConfig.baseQueryWithInterceptors,
   tagTypes: [ApiServiceNameEnum.PRODUCTS],
   endpoints: (builder) => ({
-    getAllProducts: builder.query<ProductModel[], void>({
+    getAllProducts: apiConfig.createQuery<ProductModel[], void>(builder, {
       query: () => ({
         url: ApiUrlEnum.PRODUCTS,
       }),
+      providesTags: (result: ProductModel[]) =>
+        apiConfig.providesTags<ProductModel>(
+          result,
+          ApiServiceNameEnum.PRODUCTS,
+        ),
     }),
+
     getProductById: builder.query<ProductModel, number>({
       query: (id: number) => ({
         url: `${ApiUrlEnum.PRODUCTS}/${id}`,
       }),
+      providesTags: (result, error, id) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          id,
+        },
+      ],
     }),
     manageProduct: builder.mutation<void, ProductModel>({
       query: (product: ProductModel) => ({
@@ -24,19 +37,27 @@ export const ProductsApiService = createApi({
         method: "PUT",
         body: JSON.stringify(product),
       }),
+      invalidatesTags: (result) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          result,
+        },
+      ],
     }),
     deleteProduct: builder.mutation<void, number>({
       query: (id: number) => ({
         url: `${ApiUrlEnum.PRODUCTS}/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: (result, error, id) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          id,
+        },
+      ],
     }),
   }),
 });
 
-export const {
-  useGetAllProductsQuery,
-  useGetProductByIdQuery,
-  useManageProductMutation,
-  useDeleteProductMutation,
-} = ProductsApiService;
+export const { endpoints, ...ProductsApiHooks } = ProductsApiService;
+export default ProductsApiHooks;
