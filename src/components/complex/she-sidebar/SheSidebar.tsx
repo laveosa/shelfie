@@ -55,26 +55,31 @@ const navGroups: ISheSidebarGroup[] = [
     items: [
       {
         title: "Dashboard",
+        transKey: "SheSidebar.NavItems.Dashboard",
         url: NavUrlEnum.DASHBOARD,
         icon: LayoutDashboard,
       },
       {
         title: "Products",
+        transKey: "SheSidebar.NavItems.Products",
         url: NavUrlEnum.PRODUCTS,
         icon: Shirt,
       },
       {
         title: "Messenger",
+        transKey: "SheSidebar.NavItems.Messenger",
         url: NavUrlEnum.MESSENGER,
         icon: MessageCircle,
       },
       {
         title: "Orders",
+        transKey: "SheSidebar.NavItems.Orders",
         url: NavUrlEnum.ORDERS,
         icon: ReceiptEuro,
       },
       {
         title: "Transmissions",
+        transKey: "SheSidebar.NavItems.Transmissions",
         url: NavUrlEnum.TRANSMISSIONS,
         icon: Video,
       },
@@ -82,9 +87,11 @@ const navGroups: ISheSidebarGroup[] = [
   },
   {
     title: "USERS",
+    transKey: "SheSidebar.GroupTitle.Users",
     items: [
       {
         title: "Users",
+        transKey: "SheSidebar.NavItems.Users",
         url: NavUrlEnum.USERS,
         icon: Users,
       },
@@ -92,14 +99,17 @@ const navGroups: ISheSidebarGroup[] = [
   },
   {
     title: "SETUP",
+    transKey: "SheSidebar.GroupTitle.Setup",
     items: [
       {
         title: "Setting",
+        transKey: "SheSidebar.NavItems.Settings",
         url: NavUrlEnum.SETTINGS,
         icon: Settings,
       },
       {
         title: "Support",
+        transKey: "SheSidebar.NavItems.Support",
         url: NavUrlEnum.SUPPORT,
         icon: LifeBuoy,
       },
@@ -117,7 +127,9 @@ export default function SheSidebar({}: ISheSidebar) {
         {navGroups.map((group: ISheSidebarGroup) => (
           <SidebarGroup key={group.title}>
             <SidebarGroupLabel>
-              <Trans i18nKey={group.transKey}>{group.title}</Trans>
+              <span className={cs.groupTitle}>
+                <Trans i18nKey={group.transKey}>{group.title}</Trans>
+              </span>
             </SidebarGroupLabel>
             <SidebarMenu>
               {group.items.map((item: ISheSidebarItem) => (
@@ -132,7 +144,9 @@ export default function SheSidebar({}: ISheSidebar) {
                   >
                     <NavLink to={item.url}>
                       <item.icon />
-                      <span>{item.title}</span>
+                      <span className={cs.navItemTitle}>
+                        <Trans i18nKey={item.transKey}>{item.title}</Trans>
+                      </span>
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
