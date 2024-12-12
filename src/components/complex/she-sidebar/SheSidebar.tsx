@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Trans } from "react-i18next";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 import cs from "./SheSidebar.module.scss";
 import {
@@ -29,6 +29,7 @@ import { ISheSidebar } from "@/const/interfaces/complex-components/ISheSidebar.t
 import { ISheSidebarGroup } from "@/const/interfaces/complex-components/ISheSidebarGroup.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { ISheSidebarItem } from "@/const/interfaces/complex-components/ISheSidebarItem.ts";
+import { getCurrentSectionUrl } from "@/utils/helpers/quick-helper.ts";
 
 const companies: CompanyModel[] = [
   {
@@ -118,7 +119,10 @@ const navGroups: ISheSidebarGroup[] = [
 ];
 
 export default function SheSidebar({}: ISheSidebar) {
-  const [selected, setSelected] = useState<NavUrlEnum>(NavUrlEnum.DASHBOARD);
+  const location = useLocation();
+  const [selected, setSelected] = useState<NavUrlEnum>(
+    getCurrentSectionUrl(location.pathname),
+  );
 
   return (
     <Sidebar className={cs.sheSidebar} collapsible="icon">
