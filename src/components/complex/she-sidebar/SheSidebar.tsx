@@ -1,5 +1,8 @@
-import cs from "./SheSidebar.module.scss";
+import { useState } from "react";
+import { Trans } from "react-i18next";
+import { NavLink } from "react-router-dom";
 
+import cs from "./SheSidebar.module.scss";
 import {
   Sidebar,
   SidebarContent,
@@ -26,8 +29,6 @@ import { ISheSidebar } from "@/const/interfaces/complex-components/ISheSidebar.t
 import { ISheSidebarGroup } from "@/const/interfaces/complex-components/ISheSidebarGroup.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { ISheSidebarItem } from "@/const/interfaces/complex-components/ISheSidebarItem.ts";
-import { NavLink } from "react-router-dom";
-import { useState } from "react";
 
 const companies: CompanyModel[] = [
   {
@@ -50,6 +51,7 @@ const companies: CompanyModel[] = [
 const navGroups: ISheSidebarGroup[] = [
   {
     title: "ACTIVITY",
+    transKey: "SheSidebar.GroupTitle.Active",
     items: [
       {
         title: "Dashboard",
@@ -114,7 +116,9 @@ export default function SheSidebar({}: ISheSidebar) {
       <SidebarContent className={cs.sidebarContent}>
         {navGroups.map((group: ISheSidebarGroup) => (
           <SidebarGroup key={group.title}>
-            <SidebarGroupLabel>{group.title}</SidebarGroupLabel>
+            <SidebarGroupLabel>
+              <Trans i18nKey={group.transKey}>{group.title}</Trans>
+            </SidebarGroupLabel>
             <SidebarMenu>
               {group.items.map((item: ISheSidebarItem) => (
                 <SidebarMenuItem key={item.title}>

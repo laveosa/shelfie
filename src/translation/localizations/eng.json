@@ -1,0 +1,19 @@
+{
+  "SheSidebar": {
+    "GroupTitle": {
+      "Active": "active",
+      "Users": "users",
+      "Setup": "setup"
+    },
+    "NavItems": {
+      "Dashboard": "dashboard",
+      "Products": "products",
+      "Messenger": "messenger",
+      "Orders": "orders",
+      "Transmissions": "transmissions",
+      "Users": "users",
+      "Settings": "settings",
+      "Support": "support"
+    }
+  }
+}
