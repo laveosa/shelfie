@@ -16,6 +16,7 @@ export interface IApiQueryOptions {
   pollingInterval?: number;
   refetchOnFocus?: boolean;
   refetchOnReconnect?: boolean;
+  transformResponse?: (data: any) => any;
 }
 
 export type IApiQueryDefinition<TData, TParams> = IApiQueryCoreDefinition<

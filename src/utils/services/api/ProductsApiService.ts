@@ -13,6 +13,7 @@ export const ProductsApiService = createApi({
       query: () => ({
         url: ApiUrlEnum.PRODUCTS,
       }),
+      transformResponse: (res: any) => res.products, //TODO delete this code after we will receive real data
       providesTags: (result: ProductModel[]) =>
         apiConfig.providesTags<ProductModel>(
           result,
@@ -24,7 +25,7 @@ export const ProductsApiService = createApi({
       query: (id: number) => ({
         url: `${ApiUrlEnum.PRODUCTS}/${id}`,
       }),
-      providesTags: (result, error, id) => [
+      providesTags: (_result, _error, id) => [
         {
           type: ApiServiceNameEnum.PRODUCTS,
           id,
@@ -49,7 +50,7 @@ export const ProductsApiService = createApi({
         url: `${ApiUrlEnum.PRODUCTS}/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: (result, error, id) => [
+      invalidatesTags: (_result, _error, id) => [
         {
           type: ApiServiceNameEnum.PRODUCTS,
           id,
