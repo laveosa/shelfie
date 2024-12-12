@@ -12,6 +12,7 @@ import TransmissionsPageSlice from "@/state/slices/TransmissionsPageSlice.ts";
 import UsersPageSlice from "@/state/slices/UsersPAgeSlice.ts";
 import ProductsPageSlice from "@/state/slices/ProductsPageSlice.ts";
 import AuthPageSlice from "@/state/slices/AuthPageSlice.ts";
+import { ProductsApiService } from "@/utils/services/api/ProductsApiService.ts";
 
 export const store = configureStore({
   reducer: {
@@ -26,7 +27,10 @@ export const store = configureStore({
     [StoreSliceEnum.SUPPORT]: SupportPageSlice.reducer,
     [StoreSliceEnum.TRANSMISSIONS]: TransmissionsPageSlice.reducer,
     [StoreSliceEnum.USERS]: UsersPageSlice.reducer,
+    [ProductsApiService.reducerPath]: ProductsApiService.reducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(ProductsApiService.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
