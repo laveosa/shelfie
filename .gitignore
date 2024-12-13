@@ -22,5 +22,4 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-copilot-char\*
-/.vs/ShelfieFrontend/copilot-chat/7cad61e1/sessions
+/.vs/*
