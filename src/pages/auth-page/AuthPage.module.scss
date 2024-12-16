@@ -1,2 +1,11 @@
+@use "@/styles/variables" as vars;
+
 #AuthPage {
+  border: vars.$brdLight;
+  border-radius: vars.$brdR_075;
+
+  .authHeader {
+    display: flex;
+    flex-direction: column;
+  }
 }
