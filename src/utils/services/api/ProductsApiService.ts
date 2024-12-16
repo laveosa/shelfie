@@ -21,7 +21,7 @@ export const ProductsApiService = createApi({
         ),
     }),
 
-    getProductById: builder.query<ProductModel, number>({
+    getProductById: apiConfig.createQuery<ProductModel, number>(builder, {
       query: (id: number) => ({
         url: `${ApiUrlEnum.PRODUCTS}/${id}`,
       }),
@@ -32,7 +32,8 @@ export const ProductsApiService = createApi({
         },
       ],
     }),
-    manageProduct: builder.mutation<void, ProductModel>({
+
+    manageProduct: apiConfig.createMutation<void, ProductModel>(builder, {
       query: (product: ProductModel) => ({
         url: `${ApiUrlEnum.PRODUCTS}/${product.id}`,
         method: "PUT",
@@ -45,7 +46,8 @@ export const ProductsApiService = createApi({
         },
       ],
     }),
-    deleteProduct: builder.mutation<void, number>({
+
+    deleteProduct: apiConfig.createMutation<void, number>(builder, {
       query: (id: number) => ({
         url: `${ApiUrlEnum.PRODUCTS}/${id}`,
         method: "DELETE",
