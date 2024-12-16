@@ -1,5 +1,8 @@
-import cs from "./SheSidebar.module.scss";
+import { useState } from "react";
+import { Trans } from "react-i18next";
+import { NavLink, useLocation } from "react-router-dom";
 
+import cs from "./SheSidebar.module.scss";
 import {
   Sidebar,
   SidebarContent,
@@ -26,8 +29,7 @@ import { ISheSidebar } from "@/const/interfaces/complex-components/ISheSidebar.t
 import { ISheSidebarGroup } from "@/const/interfaces/complex-components/ISheSidebarGroup.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { ISheSidebarItem } from "@/const/interfaces/complex-components/ISheSidebarItem.ts";
-import { NavLink } from "react-router-dom";
-import { useState } from "react";
+import { getCurrentSectionUrl } from "@/utils/helpers/quick-helper.ts";
 
 const companies: CompanyModel[] = [
   {
@@ -50,29 +52,35 @@ const companies: CompanyModel[] = [
 const navGroups: ISheSidebarGroup[] = [
   {
     title: "ACTIVITY",
+    transKey: "SheSidebar.GroupTitle.Active",
     items: [
       {
         title: "Dashboard",
+        transKey: "SheSidebar.NavItems.Dashboard",
         url: NavUrlEnum.DASHBOARD,
         icon: LayoutDashboard,
       },
       {
         title: "Products",
+        transKey: "SheSidebar.NavItems.Products",
         url: NavUrlEnum.PRODUCTS,
         icon: Shirt,
       },
       {
         title: "Messenger",
+        transKey: "SheSidebar.NavItems.Messenger",
         url: NavUrlEnum.MESSENGER,
         icon: MessageCircle,
       },
       {
         title: "Orders",
+        transKey: "SheSidebar.NavItems.Orders",
         url: NavUrlEnum.ORDERS,
         icon: ReceiptEuro,
       },
       {
         title: "Transmissions",
+        transKey: "SheSidebar.NavItems.Transmissions",
         url: NavUrlEnum.TRANSMISSIONS,
         icon: Video,
       },
@@ -80,9 +88,11 @@ const navGroups: ISheSidebarGroup[] = [
   },
   {
     title: "USERS",
+    transKey: "SheSidebar.GroupTitle.Users",
     items: [
       {
         title: "Users",
+        transKey: "SheSidebar.NavItems.Users",
         url: NavUrlEnum.USERS,
         icon: Users,
       },
@@ -90,14 +100,17 @@ const navGroups: ISheSidebarGroup[] = [
   },
   {
     title: "SETUP",
+    transKey: "SheSidebar.GroupTitle.Setup",
     items: [
       {
         title: "Setting",
+        transKey: "SheSidebar.NavItems.Settings",
         url: NavUrlEnum.SETTINGS,
         icon: Settings,
       },
       {
         title: "Support",
+        transKey: "SheSidebar.NavItems.Support",
         url: NavUrlEnum.SUPPORT,
         icon: LifeBuoy,
       },
@@ -106,7 +119,10 @@ const navGroups: ISheSidebarGroup[] = [
 ];
 
 export default function SheSidebar({}: ISheSidebar) {
-  const [selected, setSelected] = useState<NavUrlEnum>(NavUrlEnum.DASHBOARD);
+  const location = useLocation();
+  const [selected, setSelected] = useState<NavUrlEnum>(
+    getCurrentSectionUrl(location.pathname),
+  );
 
   return (
     <Sidebar className={cs.sheSidebar} collapsible="icon">
@@ -114,7 +130,11 @@ export default function SheSidebar({}: ISheSidebar) {
       <SidebarContent className={cs.sidebarContent}>
         {navGroups.map((group: ISheSidebarGroup) => (
           <SidebarGroup key={group.title}>
-            <SidebarGroupLabel>{group.title}</SidebarGroupLabel>
+            <SidebarGroupLabel>
+              <span className={cs.groupTitle}>
+                <Trans i18nKey={group.transKey}>{group.title}</Trans>
+              </span>
+            </SidebarGroupLabel>
             <SidebarMenu>
               {group.items.map((item: ISheSidebarItem) => (
                 <SidebarMenuItem key={item.title}>
@@ -128,7 +148,9 @@ export default function SheSidebar({}: ISheSidebar) {
                   >
                     <NavLink to={item.url}>
                       <item.icon />
-                      <span>{item.title}</span>
+                      <span className={cs.navItemTitle}>
+                        <Trans i18nKey={item.transKey}>{item.title}</Trans>
+                      </span>
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
