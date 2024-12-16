@@ -1,3 +1,5 @@
+import { BaseQueryFn, EndpointBuilder } from "@reduxjs/toolkit/query";
+
 import { IApiQueryDefinition } from "@/const/interfaces/IApiQueryDefinition.ts";
 import { ApiServiceNameEnum } from "@/const/enums/ApiServiceNameEnum.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
@@ -21,30 +23,27 @@ export class ApiConfigurationService {
   };
 
   public static createQuery<TData, TParams>(
-    builder: any,
+    builder: EndpointBuilder<BaseQueryFn, string, string>,
     config: Partial<IApiQueryDefinition<TData, TParams>>,
   ) {
     return builder.query<TData, TParams>({
-      ...config,
+      ...(config as any),
     });
   }
 
   public static createMutation<TData, TParams>(
-    builder: any,
+    builder: EndpointBuilder<BaseQueryFn, string, string>,
     config: Partial<IApiQueryDefinition<TData, TParams>>,
   ) {
     return builder.mutation<TData, TParams>({
-      ...config,
+      ...(config as any),
     });
   }
 
-  public static providesTags<T>(
-    result: T[] | undefined,
-    type: ApiServiceNameEnum,
-  ) {
+  public static providesTags<T>(result: T[] | any, type: ApiServiceNameEnum) {
     return result
       ? [
-          ...result.map(({ id }: T) => ({ type: type, id })),
+          ...result.map(({ id }: T | any) => ({ type: type, id })),
           { type: type, id: "LIST" },
         ]
       : [{ type: type, id: "LIST" }];
@@ -52,7 +51,7 @@ export class ApiConfigurationService {
 
   // ============================================================ PRIVATE
 
-  private static requestHandler(args: any): void {
+  private static requestHandler(_args: any): void {
     // TODO ad bearer token logic
   }
 
