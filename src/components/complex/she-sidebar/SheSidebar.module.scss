@@ -1,13 +1,21 @@
 .sheSidebar {
-}
+  .sidebarContent {
+    background: linear-gradient(270deg, #1b3529 0%, #244637 100%);
 
-.sidebarContent {
-  background: linear-gradient(270deg, #1b3529 0%, #244637 100%);
+    a {
+      color: #b7d5c7;
 
-  a {
-    color: #b7d5c7;
+      &:hover {
+        background: #385a4a;
+        color: white;
 
-    &:hover {
+        svg {
+          color: #39e97b;
+        }
+      }
+    }
+
+    .sidebarItemActive {
       background: #385a4a;
       color: white;
 
@@ -15,14 +23,13 @@
         color: #39e97b;
       }
     }
-  }
 
-  .sidebarItemActive {
-    background: #385a4a;
-    color: white;
+    .groupTitle {
+      text-transform: uppercase;
+    }
 
-    svg {
-      color: #39e97b;
+    .navItemTitle {
+      text-transform: capitalize;
     }
   }
 }

@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import "./index.css";
 import mainRouter from "@/router/main-router.tsx";
 import { store } from "@/state/store.ts";
+import "@/translation/i18n";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
