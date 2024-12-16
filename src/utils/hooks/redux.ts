@@ -4,4 +4,4 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector = <T>(sliceName: StoreSliceEnum) =>
-  useSelector((state: RootState): T => state[sliceName]);
+  useSelector((state: RootState): T | any => state[sliceName]);

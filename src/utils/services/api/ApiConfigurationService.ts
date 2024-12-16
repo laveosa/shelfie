@@ -38,13 +38,10 @@ export class ApiConfigurationService {
     });
   }
 
-  public static providesTags<T>(
-    result: T[] | undefined,
-    type: ApiServiceNameEnum,
-  ) {
+  public static providesTags<T>(result: T[] | any, type: ApiServiceNameEnum) {
     return result
       ? [
-          ...result.map(({ id }: T) => ({ type: type, id })),
+          ...result.map(({ id }: T | any) => ({ type: type, id })),
           { type: type, id: "LIST" },
         ]
       : [{ type: type, id: "LIST" }];
@@ -52,7 +49,7 @@ export class ApiConfigurationService {
 
   // ============================================================ PRIVATE
 
-  private static requestHandler(args: any): void {
+  private static requestHandler(_args: any): void {
     // TODO ad bearer token logic
   }
 
