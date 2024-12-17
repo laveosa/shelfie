@@ -1,4 +1,5 @@
 import React from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import cs from "./AuthPage.module.scss";
@@ -8,7 +9,6 @@ import useAuthPageService, {
 } from "@/pages/auth-page/useAuthPageService.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
-import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input.tsx";
 
 export function AuthPage() {
@@ -44,17 +44,9 @@ export function AuthPage() {
             src="src/assets/icons/Shelfie_logo.svg"
             alt="shelfie-logo"
           />
-          <span className="she-title">
-            {service.isLogIn && "Log in with your email"}
-            {service.isChangePassword && "Change password"}
-            {service.isForgotPassword && "Forgot password"}
-            {service.isSignUp && "Sign up with your email"}
-          </span>
+          <span className="she-title">{service.authPageStaticText.title}</span>
           <span className="she-subtext">
-            {service.isLogIn && "Enter your information to login"}
-            {service.isSignUp && "Enter your information to sign up"}
-            {(service.isForgotPassword || service.isChangePassword) &&
-              "Enter your email to change password"}
+            {service.authPageStaticText.subTitle}
           </span>
         </div>
         <div className={cs.authContent}>
@@ -100,12 +92,12 @@ export function AuthPage() {
                     href=""
                     onClick={handleAuthStateChange("isForgotPassword")}
                   >
-                    Forgot password
+                    {service.authPageStaticText.forgotPasswordLink}
                   </a>
                 )}
                 {service.isForgotPassword && (
                   <a href="" onClick={handleAuthStateChange("isLogin")}>
-                    Return to login
+                    {service.authPageStaticText.forgotPasswordLink}
                   </a>
                 )}
               </div>
@@ -152,10 +144,7 @@ export function AuthPage() {
                 </div>
               )}
               <SheForm.Submit>
-                {service.isLogIn && "Log in"}
-                {service.isSignUp && "Sign up"}
-                {service.isForgotPassword && "Send"}
-                {service.isChangePassword && "Change password"}
+                {service.authPageStaticText.buttonText}
               </SheForm.Submit>
             </SheForm>
           </div>
@@ -165,7 +154,7 @@ export function AuthPage() {
             <div className={cs.footerText}>
               <span>Don’t have an account yet? </span>
               <a href="" onClick={handleAuthStateChange("isSignUp")}>
-                Sign up
+                {service.authPageStaticText.footerText}
               </a>
             </div>
           )}
@@ -173,7 +162,7 @@ export function AuthPage() {
             <div className={cs.footerText}>
               <span>Already have account? </span>
               <a href="" onClick={handleAuthStateChange("isLogin")}>
-                Log in
+                {service.authPageStaticText.footerText}
               </a>
             </div>
           )}

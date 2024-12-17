@@ -17,6 +17,46 @@ export default function useAuthPageService() {
   );
   const dispatch = useDispatch();
 
+  const getAuthPageStaticText = () => {
+    if (state.isChangePassword) {
+      return {
+        title: "Change password",
+        subTitle: "Enter your new password",
+        forgotPasswordLink: "",
+        buttonText: "Change password",
+        footerText: "",
+      };
+    }
+
+    if (state.isForgotPassword) {
+      return {
+        title: "Forgot password",
+        subTitle: "Enter your email to reset password",
+        forgotPasswordLink: "Return to login",
+        buttonText: "Send reset link",
+        footerText: "",
+      };
+    }
+
+    if (state.isSignUp) {
+      return {
+        title: "Sign up with your email",
+        subTitle: "Create your account",
+        forgotPasswordLink: "",
+        buttonText: "Sign up",
+        footerText: "Already have an account? Log in",
+      };
+    }
+
+    return {
+      title: "Log in with your email",
+      subTitle: "Enter your information to login",
+      forgotPasswordLink: "Forgot password",
+      buttonText: "Log in",
+      footerText: "Sign up",
+    };
+  };
+
   function setAuthState(stateToActivate: AuthState) {
     dispatch(
       action.setIsChangePassword(stateToActivate === "isChangePassword"),
@@ -31,5 +71,6 @@ export default function useAuthPageService() {
   return {
     ...state,
     setAuthState,
+    authPageStaticText: getAuthPageStaticText(),
   };
 }
