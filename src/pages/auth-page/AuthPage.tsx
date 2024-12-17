@@ -27,6 +27,7 @@ export function AuthPage() {
   function submitHandler(data) {
     console.log(data);
     handleAuthStateChange("isChangePassword");
+    navigate("/");
   }
 
   const handleAuthStateChange =
