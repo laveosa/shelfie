@@ -10,6 +10,8 @@ import useAuthPageService, {
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
 import { Input } from "@/components/ui/input.tsx";
+import { AuthStateEnum } from "@/const/enums/AuthStateEnum.ts";
+import { AuthModel } from "@/const/models/AuthModel.ts";
 
 export function AuthPage() {
   const service = useAuthPageService();
@@ -24,17 +26,17 @@ export function AuthPage() {
     },
   });
 
-  function submitHandler(data) {
-    console.log(data);
-    handleAuthStateChange("isChangePassword");
-    navigate("/");
-  }
-
   const handleAuthStateChange =
     (stateToActivate: AuthState) => (e: React.MouseEvent) => {
       e.preventDefault();
       service.setAuthState(stateToActivate);
     };
+
+  function submitHandler(data: AuthModel) {
+    console.log(data);
+    handleAuthStateChange(AuthStateEnum.IS_CHANGE_PASSWORD);
+    navigate("/");
+  }
 
   return (
     <div id={cs.AuthPage}>
@@ -55,7 +57,9 @@ export function AuthPage() {
             <div className={cs.FacebookButtonBlock}>
               <SheButton
                 variant="outline"
-                onClick={handleAuthStateChange("isChangePassword")}
+                onClick={handleAuthStateChange(
+                  AuthStateEnum.IS_CHANGE_PASSWORD,
+                )}
               >
                 Sign in with Facebook
               </SheButton>
@@ -91,13 +95,18 @@ export function AuthPage() {
                 {service.isLogIn && (
                   <a
                     href=""
-                    onClick={handleAuthStateChange("isForgotPassword")}
+                    onClick={handleAuthStateChange(
+                      AuthStateEnum.IS_FORGOT_PASSWORD,
+                    )}
                   >
                     {service.authPageStaticText.forgotPasswordLink}
                   </a>
                 )}
                 {service.isForgotPassword && (
-                  <a href="" onClick={handleAuthStateChange("isLogin")}>
+                  <a
+                    href=""
+                    onClick={handleAuthStateChange(AuthStateEnum.IS_LOGIN)}
+                  >
                     {service.authPageStaticText.forgotPasswordLink}
                   </a>
                 )}
@@ -145,7 +154,9 @@ export function AuthPage() {
                 </div>
               )}
               <SheForm.Submit>
-                {service.authPageStaticText.buttonText}
+                {form.formState.isSubmitting
+                  ? "Submitting..."
+                  : service.authPageStaticText.buttonText}
               </SheForm.Submit>
             </SheForm>
           </div>
@@ -154,7 +165,10 @@ export function AuthPage() {
           {service.isLogIn && (
             <div className={cs.footerText}>
               <span>Don’t have an account yet? </span>
-              <a href="" onClick={handleAuthStateChange("isSignUp")}>
+              <a
+                href=""
+                onClick={handleAuthStateChange(AuthStateEnum.iS_SIGN_UP)}
+              >
                 {service.authPageStaticText.footerText}
               </a>
             </div>
@@ -162,7 +176,10 @@ export function AuthPage() {
           {service.isSignUp && (
             <div className={cs.footerText}>
               <span>Already have account? </span>
-              <a href="" onClick={handleAuthStateChange("isLogin")}>
+              <a
+                href=""
+                onClick={handleAuthStateChange(AuthStateEnum.IS_LOGIN)}
+              >
                 {service.authPageStaticText.footerText}
               </a>
             </div>

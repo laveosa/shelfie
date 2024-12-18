@@ -64,7 +64,7 @@
 
       .forgotPasswordLink {
         position: absolute;
-        top: 28%;
+        top: 43%;
         left: 70%;
         padding: 0;
         font-size: vars.$fontSizeSubtext;
@@ -76,7 +76,7 @@
       }
 
       .passwordInput {
-        margin-top: vars.$paddingStandard;
+        margin: vars.$paddingStandard 0;
       }
 
       input {
