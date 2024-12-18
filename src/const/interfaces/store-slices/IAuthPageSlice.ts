@@ -1,6 +1,8 @@
+import { RequestAuthModel } from "@/const/models/RequestAuthModel.ts";
+import { AuthFormViewEnum } from "@/const/enums/AuthFormViewEnum.ts";
+
 export interface IAuthPageSlice {
-  isLogIn?: boolean;
-  isSignUp?: boolean;
-  isForgotPassword?: boolean;
-  isChangePassword?: boolean;
+  isLoading?: boolean;
+  authModel?: RequestAuthModel;
+  authFormView?: AuthFormViewEnum;
 }

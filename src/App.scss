@@ -49,6 +49,7 @@ body {
 
 .she-text-link {
   @extend .she-text;
+  font-size: vars.$fontSizeSubtext;
   color: vars.$textLinkColor;
   text-decoration: underline;
   cursor: pointer;

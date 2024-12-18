@@ -2,36 +2,27 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IAuthPageSlice } from "@/const/interfaces/store-slices/IAuthPageSlice.ts";
+import { AuthFormViewEnum } from "@/const/enums/AuthFormViewEnum.ts";
 
-const initialState: IAuthPageSlice = { isLogIn: true };
+const initialState: IAuthPageSlice = {
+  authFormView: AuthFormViewEnum.LOGIN,
+};
 
 const AuthPageSlice = createSlice({
   name: StoreSliceEnum.AUTH,
   initialState,
   reducers: {
-    setIsLogin: (
+    setLoading: (
       state: IAuthPageSlice,
       { payload }: PayloadAction<boolean>,
     ) => {
-      state.isLogIn = payload;
+      state.isLoading = payload;
     },
-    setIsSignUp: (
+    setAuthFormView: (
       state: IAuthPageSlice,
-      { payload }: PayloadAction<boolean>,
+      { payload }: PayloadAction<AuthFormViewEnum>,
     ) => {
-      state.isSignUp = payload;
-    },
-    setIsForgotPassword: (
-      state: IAuthPageSlice,
-      { payload }: PayloadAction<boolean>,
-    ) => {
-      state.isForgotPassword = payload;
-    },
-    setIsChangePassword: (
-      state: IAuthPageSlice,
-      { payload }: PayloadAction<boolean>,
-    ) => {
-      state.isChangePassword = payload;
+      state.authFormView = payload;
     },
   },
 });
