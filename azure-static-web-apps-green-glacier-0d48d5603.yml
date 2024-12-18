@@ -22,14 +22,14 @@ jobs:
     submodules: true
   - task: NodeTool@0
     inputs:
-      versionSpec: '14.x' # Wersja Node.js, któr¹ chcesz u¿yæ
+      versionSpec: '14.x' # Wersja Node.js, ktÃ³rÂ¹ chcesz uÂ¿yÃ¦
   - script: |
       npm install
-      npm run dev
+      npm run build
     displayName: 'Install and Build'
   - task: AzureStaticWebApp@0
     inputs:
       azure_static_web_apps_api_token: $(AZURE_STATIC_WEB_APPS_API_TOKEN_GREEN_GLACIER_0D48D5603)
-      app_location: "/" # Œcie¿ka do kodu Ÿród³owego aplikacji
-      api_location: "" # Œcie¿ka do kodu Ÿród³owego API - opcjonalne
+      app_location: "/" # Å’cieÂ¿ka do kodu Å¸rÃ³dÂ³owego aplikacji
+      api_location: "" # Å’cieÂ¿ka do kodu Å¸rÃ³dÂ³owego API - opcjonalne
       output_location: "build" # Katalog zbudowanej aplikacji
