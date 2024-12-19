@@ -37,7 +37,7 @@ export default function useAuthPageService() {
     return userLogin(model).then((res: any) => {
       dispatch(action.setLoading(false));
       console.log("RES Login", res);
-      navigate(NavUrlEnum.DASHBOARD);
+      navigate(`/${NavUrlEnum.DASHBOARD}`);
     });
   }
 
