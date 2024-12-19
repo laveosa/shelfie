@@ -1,19 +1,17 @@
+import { useEffect } from "react";
+
 import cs from "./ProductsPage.module.scss";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
-import { useEffect } from "react";
 
 export function ProductsPage() {
   const service = useProductsPageService();
 
   useEffect(() => {
-    // service.getAllProductsHandler();
-    Promise.all([service.getAllProductsHandler()]).then((res) => {
-      console.log(res);
-    });
+    service.getAllProductsHandler();
   }, []);
 
   return (
-    <div id={cs.ProductsPage}>
+    <div id={cs["ProductsPage"]}>
       <h1>Products Page</h1>
       {service.isLoading && <div>isLoading...</div>}
       {service.products && (
