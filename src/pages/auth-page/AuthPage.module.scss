@@ -1,2 +1,89 @@
+@use "@/styles/variables" as vars;
+
+@mixin flex-settings {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+#AuthPage {
+  @include flex-settings;
+  padding: 100px;
+  justify-content: center;
+
+  .authPageWrapper {
+    @include flex-settings;
+    width: 100%;
+    max-width: 350px;
+    min-width: 240px;
+    padding: 20px;
+    border: vars.$brdLight;
+    border-radius: vars.$brdR_075;
+
+    .authHeader {
+      @include flex-settings;
+      gap: 10px;
+      width: 100%;
+      margin-bottom: 20px;
+
+      .authHeaderLogo {
+        width: 40px;
+      }
+    }
+
+    .authContent {
+      width: 100%;
+
+      .authInputBlock {
+        position: relative;
+
+        .formItem {
+          margin-bottom: vars.$marginStandard;
+        }
+
+        .formButton {
+          padding: vars.$paddingSmall 0;
+        }
+
+        input {
+          box-shadow: none;
+        }
+
+        button {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+//------------------------------------------------------------------- SOCIAL MEDIA AUTH
+
+#AuthPage {
+  .facebookButtonBlock {
+    @include flex-settings;
+    gap: 20px;
+
+    .authContentBorder {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      width: 100%;
+      font-size: vars.$fontSizeSubtext;
+      color: vars.$subtextColor;
+    }
+
+    .authContentBorder::before,
+    .authContentBorder::after {
+      content: "";
+      flex: 1;
+      margin: 0 2px;
+      border-bottom: 1px solid vars.$brdColor;
+    }
+  }
+}
+
+//------------------------------------------------------------------- SOCIAL MEDIA AUTH
+
 #AuthPage {
 }
