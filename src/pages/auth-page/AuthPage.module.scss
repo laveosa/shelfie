@@ -1,100 +1,97 @@
 @use "@/styles/variables" as vars;
 
-#AuthPage {
-  padding: 100px;
+@mixin flex-settings {
   display: flex;
   align-items: center;
-  justify-content: center;
   flex-direction: column;
 }
 
-.authPageWrapper {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;
-  max-width: 350px;
-  min-width: 240px;
-  padding: 20px;
-  border: vars.$brdLight;
-  border-radius: vars.$brdR_075;
+#AuthPage {
+  @include flex-settings;
+  padding: 100px;
+  justify-content: center;
 
-  .authHeader {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    gap: 10px;
+  .authPageWrapper {
+    @include flex-settings;
     width: 100%;
-    margin-bottom: 20px;
+    max-width: 350px;
+    min-width: 240px;
+    padding: 20px;
+    border: vars.$brdLight;
+    border-radius: vars.$brdR_075;
 
-    .authHeaderLogo {
-      width: 40px;
-    }
-  }
+    .authHeader {
+      @include flex-settings;
+      gap: 10px;
+      width: 100%;
+      margin-bottom: 20px;
 
-  .authContent {
-    width: 100%;
-
-    .FacebookButtonBlock {
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-      gap: 20px;
-
-      .authContentBorder {
-        display: flex;
-        align-items: center;
-        text-align: center;
-        width: 100%;
-        font-size: vars.$fontSizeSubtext;
-        color: vars.$subtextColor;
-      }
-
-      .authContentBorder::before,
-      .authContentBorder::after {
-        content: "";
-        flex: 1;
-        margin: 0 2px;
-        border-bottom: 1px solid vars.$brdColor;
+      .authHeaderLogo {
+        width: 40px;
       }
     }
 
-    .authInputBlock {
-      position: relative;
+    .authContent {
+      width: 100%;
 
-      .forgotPasswordLink {
-        position: absolute;
-        top: 43%;
-        left: 70%;
-        padding: 0;
-        font-size: vars.$fontSizeSubtext;
+      .authInputBlock {
+        position: relative;
 
-        &:hover {
-          opacity: 0.5;
-          border-bottom: 1px solid vars.$brdColor;
+        .forgotPasswordLink {
+          position: absolute;
+          top: 25%;
+          left: 70%;
+          padding: 0;
+          font-size: vars.$fontSizeSubtext;
+        }
+
+        .passwordInput {
+          margin: vars.$paddingStandard 0;
+        }
+
+        input {
+          box-shadow: none;
+        }
+
+        button {
+          width: 100%;
         }
       }
+    }
 
-      .passwordInput {
-        margin: vars.$paddingStandard 0;
-      }
-
-      input {
-        box-shadow: none;
-      }
-
-      button {
-        width: 100%;
-      }
+    .footerText {
+      margin-top: vars.$paddingSmall;
     }
   }
+}
 
-  .footerText {
-    margin-top: 10px;
+//------------------------------------------------------------------- SOCIAL MEDIA AUTH
 
-    span,
-    a {
+#AuthPage {
+  .facebookButtonBlock {
+    @include flex-settings;
+    gap: 20px;
+
+    .authContentBorder {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      width: 100%;
       font-size: vars.$fontSizeSubtext;
+      color: vars.$subtextColor;
+    }
+
+    .authContentBorder::before,
+    .authContentBorder::after {
+      content: "";
+      flex: 1;
+      margin: 0 2px;
+      border-bottom: 1px solid vars.$brdColor;
     }
   }
+}
+
+//------------------------------------------------------------------- SOCIAL MEDIA AUTH
+
+#AuthPage {
 }

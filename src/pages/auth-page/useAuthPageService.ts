@@ -12,11 +12,18 @@ import { IAuthForm } from "@/const/interfaces/forms/IAuthForm.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 
 export default function useAuthPageService() {
-  const { useUserLoginMutation, useRegisterNewUserMutation } = AuthApiHooks;
+  const {
+    useUserLoginMutation,
+    useRegisterNewUserMutation,
+    useForgotPasswordMutation,
+    useResetPasswordMutation,
+  } = AuthApiHooks;
   const state = useAppSelector<IAuthPageSlice>(StoreSliceEnum.AUTH);
   const dispatch = useAppDispatch();
   const [userLogin] = useUserLoginMutation();
   const [registerNewUser] = useRegisterNewUserMutation();
+  const [forgotPassword] = useForgotPasswordMutation();
+  const [resetPassword] = useResetPasswordMutation();
 
   const navigate = useNavigate();
   let [formStaticText, setFormStaticText] = useState<IAuthForm>(
@@ -29,7 +36,7 @@ export default function useAuthPageService() {
     dispatch(action.setLoading(true));
     return userLogin(model).then((res: any) => {
       dispatch(action.setLoading(false));
-      console.log(res);
+      console.log("RES Login", res);
       navigate(NavUrlEnum.DASHBOARD);
     });
   }
@@ -38,8 +45,23 @@ export default function useAuthPageService() {
     dispatch(action.setLoading(true));
     return registerNewUser(model).then((res: any) => {
       dispatch(action.setLoading(false));
-      console.log(res);
-      navigate(NavUrlEnum.DASHBOARD);
+      console.log("RES Register", res);
+    });
+  }
+
+  function forgotPasswordHandler(model: RequestAuthModel) {
+    dispatch(action.setLoading(true));
+    return forgotPassword(model).then((res: any) => {
+      dispatch(action.setLoading(false));
+      console.log("RES Forgot", res);
+    });
+  }
+
+  function resetPasswordHandler(model: RequestAuthModel) {
+    dispatch(action.setLoading(true));
+    return resetPassword(model).then((res: any) => {
+      dispatch(action.setLoading(false));
+      console.log("RES Reset", res);
     });
   }
 
@@ -92,7 +114,8 @@ export default function useAuthPageService() {
     formStaticText,
     userLoginHandler,
     registerNewUserHandler,
+    forgotPasswordHandler,
+    resetPasswordHandler,
     authFormViewChangeHandler,
-    getAuthPageStaticText: _getAuthPageStaticText,
   };
 }

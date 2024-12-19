@@ -21,7 +21,20 @@ export function AuthPage() {
   });
 
   function onSubmit(data: RequestAuthModel) {
-    console.log(data);
+    switch (service.authFormView) {
+      case AuthFormViewEnum.LOGIN:
+        service.userLoginHandler(data);
+        break;
+      case AuthFormViewEnum.SIGN_UP:
+        service.registerNewUserHandler(data);
+        break;
+      case AuthFormViewEnum.FORGOT_PASSWORD:
+        service.forgotPasswordHandler(data);
+        break;
+      case AuthFormViewEnum.CHANGE_PASSWORD:
+        service.resetPasswordHandler(data);
+        break;
+    }
   }
 
   return (
@@ -38,7 +51,7 @@ export function AuthPage() {
         </div>
         <div className={cs.authContent}>
           {service.authFormView === AuthFormViewEnum.LOGIN && (
-            <div className={cs.FacebookButtonBlock}>
+            <div className={cs.facebookButtonBlock}>
               <SheButton
                 variant="outline"
                 onClick={() =>

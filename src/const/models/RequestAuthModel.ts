@@ -4,4 +4,5 @@ export interface RequestAuthModel {
   confirmPassword?: string;
   defaultOrganizationId?: number;
   organizationId?: number;
+  resetToken?: string;
 }

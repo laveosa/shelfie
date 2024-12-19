@@ -59,6 +59,38 @@ export const AuthApiService = createApi({
         ],
       },
     ),
+    forgotPassword: apiConfig.createMutation<
+      ResponseAuthModel,
+      RequestAuthModel
+    >(builder, {
+      query: (model: RequestAuthModel) => ({
+        url: `${ApiUrlEnum.AUTH}/forgot-password`,
+        method: "POST",
+        body: JSON.stringify(model),
+      }),
+      invalidatesTags: (result) => [
+        {
+          type: ApiServiceNameEnum.AUTH,
+          result,
+        },
+      ],
+    }),
+    resetPassword: apiConfig.createMutation<
+      ResponseAuthModel,
+      RequestAuthModel
+    >(builder, {
+      query: (model: RequestAuthModel) => ({
+        url: `${ApiUrlEnum.AUTH}/reset-password`,
+        method: "POST",
+        body: JSON.stringify(model),
+      }),
+      invalidatesTags: (result) => [
+        {
+          type: ApiServiceNameEnum.AUTH,
+          result,
+        },
+      ],
+    }),
   }),
 });
 
