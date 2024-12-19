@@ -1,2 +1,79 @@
-.SheInput {
+@use "@/styles/variables" as vars;
+
+$iconSize: 20px;
+$clearBtnSize: 30px;
+
+.sheInput {
+  .sheInputComponent {
+    position: relative;
+
+    > label {
+    }
+
+    .sheInputControl {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .iconBlock {
+        position: absolute;
+        color: vars.$subtextColor;
+        left: 8px;
+        max-width: $iconSize;
+        min-width: $iconSize;
+        max-height: $iconSize;
+        min-height: $iconSize;
+
+        svg {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      > input {
+        &:focus-visible {
+          box-shadow: 0 0 0 1px lightgray inset;
+        }
+      }
+
+      [class*="sheButton"] {
+        border-radius: 100%;
+        max-width: $clearBtnSize;
+        min-width: $clearBtnSize;
+        max-height: $clearBtnSize;
+        min-height: $clearBtnSize;
+      }
+    }
+
+    > [class*="she-text-error"] {
+    }
+  }
+}
+
+// ======================================================== WITH ICON
+
+.sheInput.withIcon {
+  .sheInputComponent {
+    .sheInputControl {
+      > input {
+        padding-left: 36px;
+      }
+    }
+  }
+}
+
+// ======================================================== ERROR MESSAGE
+
+.sheInput {
+  .errorMessageBlock {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 0;
+
+    span {
+      position: absolute;
+    }
+  }
 }
