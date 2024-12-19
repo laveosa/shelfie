@@ -19,7 +19,7 @@ export function SheForm<T extends FieldValues>({
   form,
   onSubmit,
   children,
-  className = "space-y-8",
+  className,
 }: ISheFormProps<T>) {
   return (
     <Form {...form}>

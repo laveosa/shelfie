@@ -68,7 +68,7 @@ export function AuthPage() {
           <div className={cs.authInputBlock}>
             <SheForm form={form} onSubmit={onSubmit}>
               {service.authFormView !== AuthFormViewEnum.CHANGE_PASSWORD && (
-                <div>
+                <div className={cs.formItem}>
                   <SheForm.Field
                     rules={{
                       required: "Email is required",
@@ -92,26 +92,8 @@ export function AuthPage() {
                   </SheForm.Field>
                 </div>
               )}
-              <div className={cs.forgotPasswordLink}>
-                {(service.authFormView === AuthFormViewEnum.LOGIN ||
-                  service.authFormView ===
-                    AuthFormViewEnum.FORGOT_PASSWORD) && (
-                  <span
-                    className="she-text-link"
-                    onClick={() =>
-                      service.authFormViewChangeHandler(
-                        service.authFormView === AuthFormViewEnum.LOGIN
-                          ? AuthFormViewEnum.FORGOT_PASSWORD
-                          : AuthFormViewEnum.LOGIN,
-                      )
-                    }
-                  >
-                    {service.formStaticText.forgotPasswordLink}
-                  </span>
-                )}
-              </div>
               {service.authFormView !== AuthFormViewEnum.FORGOT_PASSWORD && (
-                <div className={cs.passwordInput}>
+                <div className={cs.formItem}>
                   <SheForm.Field
                     rules={{
                       required: "Password is required",
@@ -128,7 +110,7 @@ export function AuthPage() {
                 </div>
               )}
               {service.authFormView === AuthFormViewEnum.CHANGE_PASSWORD && (
-                <div className={cs.passwordInput}>
+                <div className={cs.formItem}>
                   <SheForm.Field
                     rules={{
                       required: "Please confirm your password",
@@ -143,9 +125,11 @@ export function AuthPage() {
                   </SheForm.Field>
                 </div>
               )}
-              <SheForm.Submit>
-                {service.formStaticText.buttonText}
-              </SheForm.Submit>
+              <div className={cs.formButton}>
+                <SheForm.Submit>
+                  {service.formStaticText.buttonText}
+                </SheForm.Submit>
+              </div>
             </SheForm>
           </div>
         </div>
@@ -171,6 +155,23 @@ export function AuthPage() {
                 {service.formStaticText.footerText}
               </span>
             </div>
+          )}
+        </div>
+        <div className={cs.forgotPasswordLink}>
+          {(service.authFormView === AuthFormViewEnum.LOGIN ||
+            service.authFormView === AuthFormViewEnum.FORGOT_PASSWORD) && (
+            <span
+              className="she-text-link"
+              onClick={() =>
+                service.authFormViewChangeHandler(
+                  service.authFormView === AuthFormViewEnum.LOGIN
+                    ? AuthFormViewEnum.FORGOT_PASSWORD
+                    : AuthFormViewEnum.LOGIN,
+                )
+              }
+            >
+              {service.formStaticText.forgotPasswordLink}
+            </span>
           )}
         </div>
       </div>
