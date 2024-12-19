@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Search, X } from "lucide-react";
 
 import {
@@ -10,10 +10,16 @@ import cs from "./SheInput.module.scss";
 import { Input } from "@/components/ui/input.tsx";
 import { ISheInput } from "@/const/interfaces/complex-components/ISheInput.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import { useDebounce } from "@/utils/hooks/useDebounce.ts";
 
 export default function SheInput(props: ISheInput) {
   const [value, setValue] = useState(props.value || props.defaultValue || "");
   const [icon] = useState(props.isSearch ? <Search /> : props.icon);
+  const delaySearch = useDebounce(value);
+
+  useEffect(() => {
+    if (props.onDelay) props.onDelay(delaySearch);
+  }, [delaySearch]);
 
   function onChange(e) {
     const value = e.target.value;

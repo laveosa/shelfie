@@ -24,7 +24,7 @@ export function DashboardPage() {
           showCleatBtn={true}
           isSearch={true}
           autoFocus={true}
-          onChange={(value) => inputAction(value)}
+          onDelay={(value) => inputAction(value)}
         />
       </div>
     </div>
