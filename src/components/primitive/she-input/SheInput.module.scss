@@ -51,6 +51,23 @@ $clearBtnSize: 30px;
   }
 }
 
+// ======================================================== REQUIRED
+
+.sheInput.required {
+  label:before {
+    position: absolute;
+    left: -8px;
+    color: #e32;
+    content: " *";
+    display: inline;
+  }
+}
+
+// ======================================================== INVALID
+
+.sheInput.invalid {
+}
+
 // ======================================================== WITH ICON
 
 .sheInput.withIcon {

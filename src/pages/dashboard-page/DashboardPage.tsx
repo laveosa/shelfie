@@ -22,6 +22,7 @@ export function DashboardPage() {
           label="Product"
           placeholder="enter new product..."
           isSearch
+          required
           onDelay={(value) => inputAction(value)}
         />
 

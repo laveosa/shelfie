@@ -19,15 +19,17 @@ export default function SheInput({
   placeholder = "enter text...",
   placeholderTransKey,
   icon = <Search />,
+  isLoading,
+  isSearch,
+  isInvalid,
+  required,
+  showClearBtn,
   error,
   errorTransKey,
   tooltip,
   tooltipTransKey,
   tooltipSide,
   tooltipAlign,
-  showClearBtn,
-  isSearch,
-  isLoading,
   disabled,
   onChange,
   onBlur,
@@ -67,7 +69,7 @@ export default function SheInput({
 
   return (
     <div
-      className={`${cs.sheInput || ""} ${className} ${icon ? cs.withIcon : ""}`}
+      className={`${cs.sheInput || null} ${className} ${icon ? cs.withIcon : null}  ${isInvalid ? cs.invalid : null} ${required ? cs.required : null}`}
     >
       <Tooltip>
         <TooltipTrigger asChild>
@@ -84,7 +86,12 @@ export default function SheInput({
                 onBlur={(e) => onBlurHandler(e)}
               />
               {(showClearBtn || isSearch) && (
-                <SheButton variant="ghost" size="icon" onClick={onClearHandler}>
+                <SheButton
+                  variant="ghost"
+                  size="icon"
+                  disabled={value.toString().length === 0}
+                  onClick={onClearHandler}
+                >
                   <X />
                 </SheButton>
               )}
