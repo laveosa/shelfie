@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Search, X } from "lucide-react";
 
 import {
@@ -12,81 +12,95 @@ import { ISheInput } from "@/const/interfaces/complex-components/ISheInput.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { useDebounce } from "@/utils/hooks/useDebounce.ts";
 
-export default function SheInput(props: ISheInput) {
+export default function SheInput({
+  className = "",
+  label,
+  labelTransKey,
+  placeholder = "enter text...",
+  placeholderTransKey,
+  icon = <Search />,
+  error,
+  errorTransKey,
+  tooltip,
+  tooltipTransKey,
+  tooltipSide,
+  tooltipAlign,
+  showClearBtn,
+  isSearch,
+  isLoading,
+  disabled,
+  onChange,
+  onBlur,
+  onDelay,
+  ...props
+}: ISheInput) {
   const [value, setValue] = useState(props.value || props.defaultValue || "");
-  const [icon] = useState(props.isSearch ? <Search /> : props.icon);
   const delaySearch = useDebounce(value);
+  const isInitialized = useRef(false);
 
   useEffect(() => {
-    if (props.onDelay) props.onDelay(delaySearch);
+    if (isInitialized.current && onDelay) {
+      onDelay(delaySearch);
+    }
   }, [delaySearch]);
 
-  function onChange(e) {
-    const value = e.target.value;
-    setValue(() => {
-      if (props.onChange) props.onChange(value);
-      return value;
-    });
-  }
+  const onChangeHandler = (e) => {
+    isInitialized.current = true;
+    const newValue = e.target.value;
+    setValue(newValue);
+    if (onChange) onChange(newValue);
+  };
 
-  function onBlur(e) {
-    const value = e.target.value;
-    setValue(() => {
-      if (props.onBlur) props.onBlur(value);
-      return value;
-    });
-  }
+  const onBlurHandler = (e) => {
+    const newValue = e.target.value;
+    if (onBlur) onBlur(newValue);
+  };
 
-  function onCleat() {
-    const value = "";
-    setValue(() => {
-      if (props.onChange) props.onChange(value);
-      if (props.onBlur) props.onBlur(value);
-      return value;
-    });
-  }
+  const onClearHandler = () => {
+    isInitialized.current = false;
+    const newValue = "";
+    setValue(newValue);
+    if (onChange) onChange(newValue);
+    if (onBlur) onBlur(newValue);
+    if (onDelay) onDelay(newValue);
+  };
 
   return (
     <div
-      className={`${cs.sheInput || ""} ${props.className || ""} ${icon ? cs.withIcon : ""}`}
+      className={`${cs.sheInput || ""} ${className} ${icon ? cs.withIcon : ""}`}
     >
       <Tooltip>
         <TooltipTrigger asChild>
           <div className={cs.sheInputComponent}>
-            {props.label && <label className="she-text">{props.label}</label>}
+            {label && <label className="she-text">{label}</label>}
             <div className={cs.sheInputControl}>
               {icon && <div className={cs.iconBlock}>{icon}</div>}
               <Input
+                {...props}
                 value={value}
-                placeholder={props.placeholder}
-                type={props.type}
-                name={props.name}
-                title={props.title}
-                readOnly={props.readOnly}
-                required={props.required}
-                pattern={props.pattern}
-                disabled={props.disabled || props.isLoading}
-                maxLength={props.maxLength}
-                minLength={props.minLength}
-                autoFocus={props.autoFocus}
-                aria-label={props["aria-label"]}
-                onChange={(e) => onChange(e)}
-                onBlur={(e) => onBlur(e)}
+                placeholder={placeholder}
+                disabled={disabled || isLoading}
+                onChange={(e) => onChangeHandler(e)}
+                onBlur={(e) => onBlurHandler(e)}
               />
-              {props.showCleatBtn && (
-                <SheButton variant="ghost" size="icon" onClick={onCleat}>
+              {(showClearBtn || isSearch) && (
+                <SheButton variant="ghost" size="icon" onClick={onClearHandler}>
                   <X />
                 </SheButton>
               )}
             </div>
-            {props.error && (
+            {error && (
               <div className={cs.errorMessageBlock}>
-                <span className="she-text-error">{props.error}</span>
+                <span className="she-text-error">{error}</span>
               </div>
             )}
           </div>
         </TooltipTrigger>
-        {props.showTooltip && <TooltipContent>{props.tooltip}</TooltipContent>}
+        {tooltip && (
+          <TooltipContent side={tooltipSide} align={tooltipAlign}>
+            {tooltip}
+          </TooltipContent>
+        )}
       </Tooltip>
     </div>
   );

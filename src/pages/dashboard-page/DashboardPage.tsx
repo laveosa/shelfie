@@ -6,7 +6,7 @@ export function DashboardPage() {
   const service = useDashboardPageService();
 
   function inputAction(data: any) {
-    console.log(data);
+    console.log("Input action: ", data);
   }
 
   return (
@@ -17,7 +17,15 @@ export function DashboardPage() {
         <br />
         <br />
         <br />
+
         <SheInput
+          label="Product"
+          placeholder="enter new product..."
+          isSearch
+          onDelay={(value) => inputAction(value)}
+        />
+
+        {/*<SheInput
           label="Lable"
           placeholder="test placeholder"
           error="some error message just for the test"
@@ -25,7 +33,7 @@ export function DashboardPage() {
           isSearch={true}
           autoFocus={true}
           onDelay={(value) => inputAction(value)}
-        />
+        />*/}
       </div>
     </div>
   );

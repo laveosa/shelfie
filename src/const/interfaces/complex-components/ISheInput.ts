@@ -2,16 +2,22 @@ import { ReactNode } from "react";
 
 import { IBaseComponent } from "@/const/interfaces/IBaseComponent.ts";
 import { InputProps } from "@/components/ui/input.tsx";
+import { ALIGN_OPTIONS, SIDE_OPTIONS } from "@radix-ui/react-popper";
 
 export interface ISheInput extends IBaseComponent, InputProps {
   label?: string;
+  labelTransKey?: string;
+  placeholderTransKey?: string;
   icon?: ReactNode;
   error?: string;
+  errorTransKey?: string;
   tooltip?: string;
-  showTooltip?: boolean;
-  showCleatBtn?: boolean;
+  tooltipTransKey?: string;
+  tooltipSide?: (typeof SIDE_OPTIONS)[number];
+  tooltipAlign?: (typeof ALIGN_OPTIONS)[number];
+  showClearBtn?: boolean;
   isSearch?: boolean;
-  onChange?: (value: any) => any;
-  onBlur?: (value: any) => any;
-  onDelay?: (value: any) => any;
+  onChange?: (value: any) => void;
+  onBlur?: (value: any) => void;
+  onDelay?: (value: any) => void;
 }
