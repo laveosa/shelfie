@@ -1,6 +1,8 @@
 import cs from "./DashboardPage.module.scss";
 import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageService.ts";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
+import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
+import { Users } from "lucide-react";
 
 export function DashboardPage() {
   const service = useDashboardPageService();
@@ -12,17 +14,14 @@ export function DashboardPage() {
   return (
     <div id={cs["DashboardPage"]}>
       <h1>Dashboard Section</h1>
+      <br />
       <div>
-        <h3>Input</h3>
-        <br />
-        <br />
+        <p>Input</p>
         <br />
 
         <SheInput
           label="Product"
           placeholder="enter new product..."
-          isSearch
-          required
           onDelay={(value) => inputAction(value)}
         />
 

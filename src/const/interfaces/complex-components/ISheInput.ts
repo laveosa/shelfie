@@ -12,6 +12,7 @@ export interface ISheInput extends IBaseComponent, InputProps {
   isSearch?: boolean;
   isInvalid?: boolean;
   showClearBtn?: boolean;
+  fullWidth?: boolean;
   error?: string;
   errorTransKey?: string;
   tooltip?: string;

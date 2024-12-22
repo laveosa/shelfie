@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { Search, X } from "lucide-react";
 
 import {
@@ -18,12 +18,12 @@ export default function SheInput({
   labelTransKey,
   placeholder = "enter text...",
   placeholderTransKey,
-  icon = <Search />,
   isLoading,
   isSearch,
   isInvalid,
   required,
   showClearBtn,
+  fullWidth,
   error,
   errorTransKey,
   tooltip,
@@ -37,6 +37,9 @@ export default function SheInput({
   ...props
 }: ISheInput) {
   const [value, setValue] = useState(props.value || props.defaultValue || "");
+  const [icon, setIcon] = useState(
+    !props.icon && isSearch ? <Search /> : props.icon,
+  );
   const delaySearch = useDebounce(value);
   const isInitialized = useRef(false);
 
@@ -46,30 +49,46 @@ export default function SheInput({
     }
   }, [delaySearch]);
 
-  const onChangeHandler = (e) => {
+  useEffect(() => {
+    setIcon(!props.icon && isSearch ? <Search /> : props.icon);
+  }, [props]);
+
+  // ==================================================================== EVENT
+
+  function onChangeHandler(e) {
     isInitialized.current = true;
     const newValue = e.target.value;
     setValue(newValue);
     if (onChange) onChange(newValue);
-  };
+  }
 
-  const onBlurHandler = (e) => {
+  function onBlurHandler(e) {
     const newValue = e.target.value;
     if (onBlur) onBlur(newValue);
-  };
+  }
 
-  const onClearHandler = () => {
+  function onClearHandler() {
     isInitialized.current = false;
     const newValue = "";
     setValue(newValue);
     if (onChange) onChange(newValue);
     if (onBlur) onBlur(newValue);
     if (onDelay) onDelay(newValue);
-  };
+  }
+
+  // ==================================================================== PRIVATE
+
+  // ==================================================================== LAYOUT
 
   return (
     <div
-      className={`${cs.sheInput || null} ${className} ${icon ? cs.withIcon : null}  ${isInvalid ? cs.invalid : null} ${required ? cs.required : null}`}
+      className={`
+      ${className} 
+      ${cs.sheInput || null} 
+      ${icon ? cs.withIcon : null}  
+      ${fullWidth ? cs.fullWidth : null} 
+      ${isInvalid ? cs.invalid : null} 
+      ${required ? cs.required : null}`}
     >
       <Tooltip>
         <TooltipTrigger asChild>

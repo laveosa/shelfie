@@ -4,6 +4,8 @@ $iconSize: 20px;
 $clearBtnSize: 30px;
 
 .sheInput {
+  max-width: vars.$maxWidth;
+
   .sheInputComponent {
     position: relative;
 
@@ -49,6 +51,13 @@ $clearBtnSize: 30px;
     > [class*="she-text-error"] {
     }
   }
+}
+
+// ======================================================== FULL WIDTH
+
+.sheInput.fullWidth {
+  max-width: none;
+  width: 100%;
 }
 
 // ======================================================== REQUIRED
