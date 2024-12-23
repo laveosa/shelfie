@@ -10,11 +10,13 @@ export interface ISheInput extends IBaseComponent, InputProps {
   placeholderTransKey?: string;
   icon?: ReactNode;
   isSearch?: boolean;
-  isInvalid?: boolean;
+  isValid?: boolean;
   showClearBtn?: boolean;
   fullWidth?: boolean;
+  showError?: boolean;
   error?: string;
   errorTransKey?: string;
+  strict?: boolean;
   tooltip?: string;
   tooltipTransKey?: string;
   tooltipSide?: (typeof SIDE_OPTIONS)[number];

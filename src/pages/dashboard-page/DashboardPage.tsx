@@ -8,7 +8,7 @@ export function DashboardPage() {
   const service = useDashboardPageService();
 
   function inputAction(data: any) {
-    console.log("Input action: ", data);
+    // console.log("Input action: ", data);
   }
 
   return (
@@ -22,7 +22,10 @@ export function DashboardPage() {
         <SheInput
           label="Product"
           placeholder="enter new product..."
-          onDelay={(value) => inputAction(value)}
+          isSearch
+          minLength={4}
+          maxLength={10}
+          onChange={(value) => inputAction(value)}
         />
 
         {/*<SheInput
