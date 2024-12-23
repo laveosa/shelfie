@@ -5,7 +5,7 @@ import { IAuthPageSlice } from "@/const/interfaces/store-slices/IAuthPageSlice.t
 import { AuthFormViewEnum } from "@/const/enums/AuthFormViewEnum.ts";
 
 const initialState: IAuthPageSlice = {
-  authFormView: AuthFormViewEnum.LOGIN,
+  authFormView: AuthFormViewEnum.SIGN_IN,
 };
 
 const AuthPageSlice = createSlice({

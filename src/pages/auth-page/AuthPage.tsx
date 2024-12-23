@@ -8,6 +8,7 @@ import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { AuthFormViewEnum } from "@/const/enums/AuthFormViewEnum.ts";
 import { RequestAuthModel } from "@/const/models/RequestAuthModel.ts";
+import ShePhoneNumber from "@/components/complex/she-phone-number/ShePhoneNumber.tsx";
 
 export function AuthPage() {
   const service = useAuthPageService();
@@ -17,25 +18,34 @@ export function AuthPage() {
       email: "",
       password: "",
       confirmPassword: "",
+      firstName: "",
+      lastName: "",
+      phoneNumber: undefined,
+      verifyPhoneNumber: undefined,
+      verifyCode: undefined,
     },
   });
 
   function onSubmit(data: RequestAuthModel) {
-    switch (service.authFormView) {
-      case AuthFormViewEnum.LOGIN:
-        service.userLoginHandler(data);
-        break;
-      case AuthFormViewEnum.SIGN_UP:
-        service.registerNewUserHandler(data);
-        break;
-      case AuthFormViewEnum.FORGOT_PASSWORD:
-        service.forgotPasswordHandler(data);
-        break;
-      case AuthFormViewEnum.CHANGE_PASSWORD:
-        service.resetPasswordHandler(data);
-        break;
-    }
+    // switch (service.authFormView) {
+    //   case AuthFormViewEnum.SIGN_IN:
+    //     service.userLoginHandler(data);
+    //     break;
+    //   case AuthFormViewEnum.SIGN_UP:
+    //     service.registerNewUserHandler(data);
+    //     break;
+    //   case AuthFormViewEnum.FORGOT_PASSWORD:
+    //     service.forgotPasswordHandler(data);
+    //     break;
+    //   case AuthFormViewEnum.CHANGE_PASSWORD:
+    //     service.resetPasswordHandler(data);
+    //     break;
+    // }
+    console.log(data);
+    console.log(service.authFormView);
   }
+
+  function footerLinkHandler() {}
 
   return (
     <div id={cs["AuthPage"]}>
@@ -43,72 +53,125 @@ export function AuthPage() {
         <div className={cs.authHeader}>
           <img
             className={cs.authHeaderLogo}
-            src="src/assets/icons/Shelfie_logo.svg"
+            src="src/assets/images/AuthLogo.png"
             alt="shelfie-logo"
           />
           <span className="she-title">{service.formStaticText.title}</span>
           <span className="she-subtext">{service.formStaticText.subTitle}</span>
         </div>
         <div className={cs.authContent}>
-          {service.authFormView === AuthFormViewEnum.LOGIN && (
-            <div className={cs.facebookButtonBlock}>
-              <SheButton
-                variant="outline"
-                onClick={() =>
-                  service.authFormViewChangeHandler(
-                    AuthFormViewEnum.CHANGE_PASSWORD,
-                  )
-                }
-              >
-                Sign in with Facebook
-              </SheButton>
-              <div className={cs.authContentBorder}>OR</div>
-            </div>
-          )}
           <div className={cs.authInputBlock}>
             <SheForm form={form} onSubmit={onSubmit}>
-              {service.authFormView !== AuthFormViewEnum.CHANGE_PASSWORD && (
-                <div className={cs.formItem}>
-                  <SheForm.Field
-                    rules={{
-                      required: "Email is required",
-                      pattern: {
-                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                        message: "Invalid email address",
-                      },
-                      minLength: {
-                        value: 5,
-                        message: "Email must be at least 5 characters",
-                      },
-                      maxLength: {
-                        value: 50,
-                        message: "Email cannot exceed 50 characters",
-                      },
-                    }}
-                    name="email"
-                    label="Email"
-                  >
-                    <Input placeholder="enter email..." />
-                  </SheForm.Field>
-                </div>
+              {service.authFormView === AuthFormViewEnum.SIGN_UP && (
+                <>
+                  <div className={cs.formItem}>
+                    <SheForm.Field
+                      rules={{
+                        required: "First name is required",
+                        minLength: {
+                          value: 5,
+                          message: "First name must be at least 5 characters",
+                        },
+                        maxLength: {
+                          value: 50,
+                          message: "First name cannot exceed 50 characters",
+                        },
+                      }}
+                      name="firstName"
+                      label="First Name"
+                    >
+                      <Input placeholder="enter first name..." />
+                    </SheForm.Field>
+                  </div>
+                  <div className={cs.formItem}>
+                    <SheForm.Field
+                      rules={{
+                        required: "Last name is required",
+                        minLength: {
+                          value: 5,
+                          message: "Last name must be at least 5 characters",
+                        },
+                        maxLength: {
+                          value: 50,
+                          message: "Last name cannot exceed 50 characters",
+                        },
+                      }}
+                      name="lastName"
+                      label="Last Name"
+                    >
+                      <Input placeholder="enter first name..." />
+                    </SheForm.Field>
+                  </div>
+                </>
               )}
-              {service.authFormView !== AuthFormViewEnum.FORGOT_PASSWORD && (
-                <div className={cs.formItem}>
-                  <SheForm.Field
-                    rules={{
-                      required: "Password is required",
-                      minLength: {
-                        value: 8,
-                        message: "Password must be at least 8 characters",
-                      },
-                    }}
-                    name="password"
-                    label="Password"
+              {service.authFormView !== AuthFormViewEnum.CHANGE_PASSWORD &&
+                service.authFormView !== AuthFormViewEnum.VERIFY_PHONE_NUMBER &&
+                service.authFormView !== AuthFormViewEnum.VERIFY_CODE && (
+                  <>
+                    <div className={cs.formItem}>
+                      <SheForm.Field
+                        rules={{
+                          required: "Email is required",
+                          pattern: {
+                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                            message: "Invalid email address",
+                          },
+                          minLength: {
+                            value: 5,
+                            message: "Email must be at least 5 characters",
+                          },
+                          maxLength: {
+                            value: 50,
+                            message: "Email cannot exceed 50 characters",
+                          },
+                        }}
+                        name="email"
+                        label="Email"
+                      >
+                        <Input placeholder="enter email..." />
+                      </SheForm.Field>
+                    </div>
+                  </>
+                )}
+              {service.authFormView !== AuthFormViewEnum.FORGOT_PASSWORD &&
+                service.authFormView !== AuthFormViewEnum.VERIFY_PHONE_NUMBER &&
+                service.authFormView !== AuthFormViewEnum.VERIFY_CODE && (
+                  <div className={cs.formItem}>
+                    <SheForm.Field
+                      rules={{
+                        required: "Password is required",
+                        minLength: {
+                          value: 8,
+                          message: "Password must be at least 8 characters",
+                        },
+                      }}
+                      name="password"
+                      label="Password"
+                    >
+                      <Input
+                        className={cs.passwordInput}
+                        type="password"
+                        placeholder="enter password..."
+                      />
+                    </SheForm.Field>
+                  </div>
+                )}
+              <div className={cs.forgotPasswordLink}>
+                {service.authFormView === AuthFormViewEnum.SIGN_IN && (
+                  <span
+                    className="she-text-link"
+                    onClick={() =>
+                      service.authFormViewChangeHandler(
+                        service.authFormView === AuthFormViewEnum.SIGN_IN
+                          ? AuthFormViewEnum.FORGOT_PASSWORD
+                          : AuthFormViewEnum.SIGN_IN,
+                      )
+                    }
                   >
-                    <Input type="password" placeholder="enter password..." />
-                  </SheForm.Field>
-                </div>
-              )}
+                    {service.formStaticText.forgotPasswordLink}
+                  </span>
+                )}
+              </div>
               {service.authFormView === AuthFormViewEnum.CHANGE_PASSWORD && (
                 <div className={cs.formItem}>
                   <SheForm.Field
@@ -125,6 +188,48 @@ export function AuthPage() {
                   </SheForm.Field>
                 </div>
               )}
+              {service.authFormView ===
+                AuthFormViewEnum.VERIFY_PHONE_NUMBER && (
+                <>
+                  <div className={cs.formItem}>
+                    <ShePhoneNumber />
+                  </div>
+                </>
+              )}
+              {service.authFormView === AuthFormViewEnum.VERIFY_CODE && (
+                <>
+                  <div className={cs.formItem}>
+                    <SheForm.Field
+                      rules={{
+                        required: "Please enter your phone number",
+                      }}
+                      name="verifyPhoneNumber"
+                      label="Phone Number"
+                    >
+                      <Input type="tel" placeholder="phone ending on..." />
+                    </SheForm.Field>
+                  </div>
+                  <div className={cs.formItem}>
+                    <SheForm.Field
+                      rules={{
+                        required: "Please enter code",
+                        minLength: {
+                          value: 6,
+                          message: "Code must be 6 characters",
+                        },
+                        maxLength: {
+                          value: 6,
+                          message: "Code must be 6 characters",
+                        },
+                      }}
+                      name="verifyCode"
+                      label="Enter the 6-digit code"
+                    >
+                      <Input type="number" placeholder="enter code..." />
+                    </SheForm.Field>
+                  </div>
+                </>
+              )}
               <div className={cs.formButton}>
                 <SheForm.Submit>
                   {service.formStaticText.buttonText}
@@ -132,48 +237,72 @@ export function AuthPage() {
               </div>
             </SheForm>
           </div>
-        </div>
-        <div>
-          {(service.authFormView === AuthFormViewEnum.LOGIN ||
+          {(service.authFormView === AuthFormViewEnum.SIGN_IN ||
             service.authFormView === AuthFormViewEnum.SIGN_UP) && (
-            <div className={cs.footerText}>
-              {service.authFormView === AuthFormViewEnum.LOGIN ? (
-                <span>Don’t have an account yet? </span>
-              ) : (
-                <span>Already have account? </span>
-              )}
-              <span
-                className="she-text-link"
-                onClick={() =>
-                  service.authFormViewChangeHandler(
-                    service.authFormView === AuthFormViewEnum.LOGIN
-                      ? AuthFormViewEnum.SIGN_UP
-                      : AuthFormViewEnum.LOGIN,
-                  )
-                }
-              >
-                {service.formStaticText.footerText}
-              </span>
+            <div className={cs.facebookButtonBlock}>
+              <div className={cs.authContentBorder}>OR</div>
+              <SheButton variant="outline">
+                {service.formStaticText.facebookButtonText}
+              </SheButton>
             </div>
           )}
         </div>
-        <div className={cs.forgotPasswordLink}>
-          {(service.authFormView === AuthFormViewEnum.LOGIN ||
-            service.authFormView === AuthFormViewEnum.FORGOT_PASSWORD) && (
-            <span
-              className="she-text-link"
-              onClick={() =>
-                service.authFormViewChangeHandler(
-                  service.authFormView === AuthFormViewEnum.LOGIN
-                    ? AuthFormViewEnum.FORGOT_PASSWORD
-                    : AuthFormViewEnum.LOGIN,
-                )
-              }
-            >
-              {service.formStaticText.forgotPasswordLink}
-            </span>
-          )}
-        </div>
+      </div>
+      <div className={cs.footerText}>
+        {(service.authFormView === AuthFormViewEnum.SIGN_IN ||
+          service.authFormView === AuthFormViewEnum.SIGN_UP ||
+          service.authFormView === AuthFormViewEnum.VERIFY_CODE ||
+          service.authFormView === AuthFormViewEnum.FORGOT_PASSWORD) && (
+          <span>{service.formStaticText.footerText} </span>
+        )}
+        <span className="she-text-link" onClick={footerLinkHandler}>
+          {service.formStaticText.footerLink}
+        </span>
+      </div>
+
+      <div style={{ display: "flex", paddingTop: "20px" }}>
+        <SheButton
+          variant="outline"
+          onClick={() =>
+            service.authFormViewChangeHandler(AuthFormViewEnum.FORGOT_PASSWORD)
+          }
+        >
+          Forgot Password
+        </SheButton>
+        <SheButton
+          variant="outline"
+          onClick={() =>
+            service.authFormViewChangeHandler(
+              AuthFormViewEnum.VERIFY_PHONE_NUMBER,
+            )
+          }
+        >
+          VERIFY_IDENTITY
+        </SheButton>
+        <SheButton
+          variant="outline"
+          onClick={() =>
+            service.authFormViewChangeHandler(AuthFormViewEnum.VERIFY_CODE)
+          }
+        >
+          VERIFY_PHONE_NUMBER
+        </SheButton>
+        <SheButton
+          variant="outline"
+          onClick={() =>
+            service.authFormViewChangeHandler(AuthFormViewEnum.CHANGE_PASSWORD)
+          }
+        >
+          CHANGE_PASSWORD
+        </SheButton>
+        <SheButton
+          variant="outline"
+          onClick={() =>
+            service.authFormViewChangeHandler(AuthFormViewEnum.SIGN_UP)
+          }
+        >
+          SIGN_UP
+        </SheButton>
       </div>
     </div>
   );

@@ -81,30 +81,50 @@ export default function useAuthPageService() {
       case AuthFormViewEnum.SIGN_UP:
         return {
           title: "Sign up with your email",
-          subTitle: "Create your account",
+          subTitle: "Enter your information to join",
+          facebookButtonText: "Sign up with Facebook",
           buttonText: "Sign up",
-          footerText: "Log in",
+          footerText: "Already have account?",
+          footerLink: "Sign in",
         };
-      case AuthFormViewEnum.LOGIN:
+      case AuthFormViewEnum.SIGN_IN:
         return {
-          title: "Log in with your email",
-          subTitle: "Enter your information to login",
+          title: "Sign in with your email",
+          subTitle: "Enter your information to sign in",
+          facebookButtonText: "Sign in with Facebook",
           forgotPasswordLink: "Forgot password",
-          buttonText: "Log in",
-          footerText: "Sign up",
+          buttonText: "Sign in",
+          footerText: "Don’t have an account yet? ",
+          footerLink: "Sign up",
         };
       case AuthFormViewEnum.FORGOT_PASSWORD:
         return {
           title: "Forgot password",
           subTitle: "Enter your email to reset password",
-          forgotPasswordLink: "Return to login",
           buttonText: "Send reset link",
+          footerText: "Already have account?",
+          footerLink: "Sign in",
         };
       case AuthFormViewEnum.CHANGE_PASSWORD:
         return {
           title: "Change password",
           subTitle: "Enter your new password",
           buttonText: "Change password",
+        };
+      case AuthFormViewEnum.VERIFY_CODE:
+        return {
+          title: "Verify Your Identity",
+          subTitle: "We’ve sent a text message to:",
+          buttonText: "Continue",
+          footerText: "Didn’t receive a code? ",
+          footerLink: "Resend",
+        };
+      case AuthFormViewEnum.VERIFY_PHONE_NUMBER:
+        return {
+          title: "Verify Your Identity",
+          subTitle:
+            "Please provide phone number so we could send you a message",
+          buttonText: "Send",
         };
     }
   }
