@@ -31,8 +31,6 @@ export function DashboardPage() {
             description: "some description text",
             align: "start",
             side: "bottom",
-            view: SheTooltipEnum.PRIMARY,
-            onClick: onAction,
           }}
           onChange={(value) => onAction(value)}
         />

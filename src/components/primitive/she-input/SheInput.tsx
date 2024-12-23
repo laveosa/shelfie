@@ -11,6 +11,9 @@ import SheTooltip from "@/components/complex/she-tooltip/SheTooltip.tsx";
 
 export default function SheInput({
   className = "",
+  styles,
+  minWidth,
+  maxWidth,
   label,
   labelTransKey,
   placeholder = "enter text...",
@@ -116,6 +119,10 @@ export default function SheInput({
       } ${fullWidth ? cs.fullWidth : ""} ${
         !isInputValid ? cs.invalid : ""
       } ${required ? cs.required : ""}`}
+      style={{
+        minWidth,
+        maxWidth,
+      }}
     >
       <SheTooltip {...tooltip}>
         <div className={cs.sheInputComponent}>
@@ -170,75 +177,4 @@ export default function SheInput({
       </SheTooltip>
     </div>
   );
-
-  /*return (
-    <div
-      className={`${className} ${cs.sheInput || ""} ${
-        icon ? cs.withIcon : ""
-      } ${fullWidth ? cs.fullWidth : ""} ${
-        !isInputValid ? cs.invalid : ""
-      } ${required ? cs.required : ""}`}
-    >
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <div className={cs.sheInputComponent}>
-            {label && <label className="she-text">{label}</label>}
-            <div className={cs.sheInputControl}>
-              {icon && <div className={cs.iconBlock}>{icon}</div>}
-              <Input
-                {...props}
-                value={value}
-                placeholder={placeholder}
-                disabled={disabled || isLoading}
-                onChange={(e) => onChangeHandler(e)}
-                onBlur={(e) => onBlurHandler(e)}
-              />
-              {(showClearBtn || isSearch) && (
-                <SheButton
-                  variant="ghost"
-                  size="icon"
-                  disabled={value.toString().length === 0}
-                  onClick={onClearHandler}
-                >
-                  <X />
-                </SheButton>
-              )}
-            </div>
-            {(minLength || maxLength) && (
-              <div className={cs.contextLengthRestriction}>
-                <div className={cs.contextLengthBock}>
-                  {minLength && (
-                    <span className="she-subtext">min: {minLength}</span>
-                  )}
-                  {props.type === "number" && (
-                    <span className="she-subtext">
-                      value: {value as number}
-                    </span>
-                  )}
-                  {props.type !== "number" && (
-                    <span className="she-subtext">
-                      value: {value.toString().length}
-                    </span>
-                  )}
-                  {maxLength && (
-                    <span className="she-subtext">max: {maxLength}</span>
-                  )}
-                </div>
-              </div>
-            )}
-            {showError && error && (
-              <div className={cs.errorMessageBlock}>
-                <span className="she-text-error">{error}</span>
-              </div>
-            )}
-          </div>
-        </TooltipTrigger>
-        {tooltip && (
-          <TooltipContent side={tooltipSide} align={tooltipAlign}>
-            {tooltip}
-          </TooltipContent>
-        )}
-      </Tooltip>
-    </div>
-  );*/
 }
