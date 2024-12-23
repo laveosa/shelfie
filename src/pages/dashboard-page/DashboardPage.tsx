@@ -25,6 +25,7 @@ export function DashboardPage() {
           isSearch
           minLength={4}
           maxLength={10}
+          pattern={/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/}
           onChange={(value) => inputAction(value)}
         />
 

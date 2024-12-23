@@ -17,6 +17,7 @@ export interface ISheInput extends IBaseComponent, InputProps {
   error?: string;
   errorTransKey?: string;
   strict?: boolean;
+  pattern?: any;
   tooltip?: string;
   tooltipTransKey?: string;
   tooltipSide?: (typeof SIDE_OPTIONS)[number];

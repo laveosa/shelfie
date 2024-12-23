@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input.tsx";
 import { ISheInput } from "@/const/interfaces/complex-components/ISheInput.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { useDebounce } from "@/utils/hooks/useDebounce.ts";
+import { isRegExp } from "lodash";
 
 export default function SheInput({
   className = "",
@@ -28,6 +29,7 @@ export default function SheInput({
   error,
   errorTransKey,
   strict,
+  pattern,
   tooltip,
   tooltipTransKey,
   tooltipSide,
@@ -93,6 +95,7 @@ export default function SheInput({
     let validation = !isInitialized.current;
     if (!validation) validation = !isTouched.current;
     if (!validation) validation = validateLength(inputValue);
+    if (!validation) validation = validatePattern(inputValue);
     setIsInputValid(validation);
   }
 
@@ -103,6 +106,12 @@ export default function SheInput({
         ? (inputValue as number)
         : inputValue.toString().length;
     return valueLength >= minLength && valueLength <= maxLength;
+  }
+
+  function validatePattern(inputValue) {
+    if (!pattern || pattern.length === 0) return true;
+    if (!isRegExp(pattern)) return false;
+    return pattern.test(inputValue);
   }
 
   // ==================================================================== LAYOUT
