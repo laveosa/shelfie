@@ -4,10 +4,11 @@ export interface RequestAuthModel {
   email?: string;
   password?: string;
   confirmPassword?: string;
-  phoneNumber?: number;
+  phoneNumber?: any;
   defaultOrganizationId?: number;
   organizationId?: number;
   resetToken?: string;
   verifyPhoneNumber?: number;
   verifyCode?: number;
+  countryCode?: any;
 }

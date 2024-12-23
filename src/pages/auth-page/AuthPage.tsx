@@ -8,10 +8,25 @@ import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { AuthFormViewEnum } from "@/const/enums/AuthFormViewEnum.ts";
 import { RequestAuthModel } from "@/const/models/RequestAuthModel.ts";
-import ShePhoneNumber from "@/components/complex/she-phone-number/ShePhoneNumber.tsx";
+import countryOptions from "@/const/jsons/country-options.json";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select.tsx";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form.tsx";
 
 export function AuthPage() {
   const service = useAuthPageService();
+
+  const defaultCountryCode = countryOptions[0]?.code || undefined;
 
   const form = useForm({
     defaultValues: {
@@ -20,11 +35,14 @@ export function AuthPage() {
       confirmPassword: "",
       firstName: "",
       lastName: "",
-      phoneNumber: undefined,
+      phoneNumber: "",
       verifyPhoneNumber: undefined,
       verifyCode: undefined,
+      countryCode: defaultCountryCode,
     },
   });
+
+  const selectedCountryCode = form.watch("countryCode");
 
   function onSubmit(data: RequestAuthModel) {
     // switch (service.authFormView) {
@@ -42,7 +60,7 @@ export function AuthPage() {
     //     break;
     // }
     console.log(data);
-    console.log(service.authFormView);
+    console.log(selectedCountryCode);
   }
 
   function footerLinkHandler() {}
@@ -190,11 +208,58 @@ export function AuthPage() {
               )}
               {service.authFormView ===
                 AuthFormViewEnum.VERIFY_PHONE_NUMBER && (
-                <>
+                <div className={cs.phoneInput}>
                   <div className={cs.formItem}>
-                    <ShePhoneNumber />
+                    <FormField
+                      control={form.control}
+                      name="countryCode"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Country Code</FormLabel>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {countryOptions.map((option) => (
+                                <SelectItem
+                                  key={option.code}
+                                  value={option.code}
+                                >
+                                  <div className="flex items-center">
+                                    {option.flag && (
+                                      <img
+                                        src={option.flag}
+                                        alt={`${option.code} flag`}
+                                        className="w-4 h-4 mr-2"
+                                      />
+                                    )}
+                                    {option.code}
+                                  </div>
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </FormItem>
+                      )}
+                    />
                   </div>
-                </>
+                  <div className={cs.formItem}>
+                    <SheForm.Field
+                      rules={{
+                        required: "Please select a country code",
+                      }}
+                      name="phoneNumber"
+                    >
+                      <Input type="number" placeholder="phone number..." />
+                    </SheForm.Field>
+                  </div>
+                </div>
               )}
               {service.authFormView === AuthFormViewEnum.VERIFY_CODE && (
                 <>

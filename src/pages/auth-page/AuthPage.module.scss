@@ -39,6 +39,17 @@
       .authInputBlock {
         position: relative;
 
+        .phoneInput {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+
+          input {
+            margin-top: 32px;
+          }
+        }
+
         .passwordInput {
           position: relative;
         }
