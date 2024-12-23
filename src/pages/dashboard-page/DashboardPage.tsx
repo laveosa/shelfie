@@ -1,14 +1,13 @@
 import cs from "./DashboardPage.module.scss";
 import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageService.ts";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
-import { Users } from "lucide-react";
+import { SheTooltipEnum } from "@/const/enums/SheTooltipEnum.ts";
 
 export function DashboardPage() {
   const service = useDashboardPageService();
 
-  function inputAction(data: any) {
-    // console.log("Input action: ", data);
+  function onAction(data: any) {
+    console.log("Action: ", data);
   }
 
   return (
@@ -26,18 +25,17 @@ export function DashboardPage() {
           minLength={4}
           maxLength={10}
           pattern={/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/}
-          onChange={(value) => inputAction(value)}
+          tooltip={{
+            title: "Title",
+            text: "text",
+            description: "some description text",
+            align: "start",
+            side: "bottom",
+            view: SheTooltipEnum.PRIMARY,
+            onClick: onAction,
+          }}
+          onChange={(value) => onAction(value)}
         />
-
-        {/*<SheInput
-          label="Lable"
-          placeholder="test placeholder"
-          error="some error message just for the test"
-          showCleatBtn={true}
-          isSearch={true}
-          autoFocus={true}
-          onDelay={(value) => inputAction(value)}
-        />*/}
       </div>
     </div>
   );
