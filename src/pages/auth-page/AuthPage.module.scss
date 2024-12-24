@@ -55,6 +55,10 @@
 
           input {
             margin-top: 32px;
+
+            &[aria-invalid="true"] {
+              margin-top: 60px;
+            }
           }
         }
 
