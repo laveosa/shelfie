@@ -45,20 +45,20 @@ export function AuthPage() {
   const selectedCountryCode = form.watch("countryCode");
 
   function onSubmit(data: RequestAuthModel) {
-    // switch (service.authFormView) {
-    //   case AuthFormViewEnum.SIGN_IN:
-    //     service.userLoginHandler(data);
-    //     break;
-    //   case AuthFormViewEnum.SIGN_UP:
-    //     service.registerNewUserHandler(data);
-    //     break;
-    //   case AuthFormViewEnum.FORGOT_PASSWORD:
-    //     service.forgotPasswordHandler(data);
-    //     break;
-    //   case AuthFormViewEnum.CHANGE_PASSWORD:
-    //     service.resetPasswordHandler(data);
-    //     break;
-    // }
+    switch (service.authFormView) {
+      case AuthFormViewEnum.SIGN_IN:
+        service.userLoginHandler(data);
+        break;
+      case AuthFormViewEnum.SIGN_UP:
+        service.registerNewUserHandler(data);
+        break;
+      case AuthFormViewEnum.FORGOT_PASSWORD:
+        service.forgotPasswordHandler(data);
+        break;
+      case AuthFormViewEnum.CHANGE_PASSWORD:
+        service.resetPasswordHandler(data);
+        break;
+    }
     console.log(data);
     console.log(selectedCountryCode);
   }
