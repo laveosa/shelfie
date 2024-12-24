@@ -8,7 +8,7 @@ import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { AuthFormViewEnum } from "@/const/enums/AuthFormViewEnum.ts";
 import { RequestAuthModel } from "@/const/models/RequestAuthModel.ts";
-import countryOptions from "@/const/jsons/country-options.json";
+import countryCodes from "@/const/jsons/country-codes.json";
 import {
   Select,
   SelectContent,
@@ -26,7 +26,7 @@ import {
 export function AuthPage() {
   const service = useAuthPageService();
 
-  const defaultCountryCode = countryOptions[0]?.code || undefined;
+  const defaultCountryCode = countryCodes[0]?.code || undefined;
 
   const form = useForm({
     defaultValues: {
@@ -226,7 +226,7 @@ export function AuthPage() {
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              {countryOptions.map((option) => (
+                              {countryCodes.map((option) => (
                                 <SelectItem
                                   key={option.code}
                                   value={option.code}
@@ -236,7 +236,7 @@ export function AuthPage() {
                                       <img
                                         src={option.flag}
                                         alt={`${option.code} flag`}
-                                        className="w-4 h-4 mr-2"
+                                        className="w-5 h-5 mr-2"
                                       />
                                     )}
                                     {option.code}

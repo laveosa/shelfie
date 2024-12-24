@@ -45,6 +45,14 @@
           justify-content: center;
           gap: 10px;
 
+          button {
+            box-shadow: none;
+
+            span {
+              padding-right: 5px;
+            }
+          }
+
           input {
             margin-top: 32px;
           }
