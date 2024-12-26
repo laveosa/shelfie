@@ -58,6 +58,10 @@ export function AuthPage() {
       case AuthFormViewEnum.CHANGE_PASSWORD:
         service.resetPasswordHandler(data);
         break;
+      case AuthFormViewEnum.VERIFY_PHONE_NUMBER:
+        const fullPhoneNumber = `${data.countryCode}${data.phoneNumber}`;
+        console.log(fullPhoneNumber);
+        break;
     }
     console.log(data);
     console.log(selectedCountryCode);

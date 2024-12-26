@@ -17,6 +17,9 @@ export const AuthApiService = createApi({
         query: (model: RequestAuthModel) => ({
           url: `${ApiUrlEnum.AUTH}/signin`,
           method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify(model),
         }),
         invalidatesTags: (result) => [
