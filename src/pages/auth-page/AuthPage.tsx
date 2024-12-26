@@ -47,12 +47,10 @@ export function AuthPage() {
   function onSubmit(data: RequestAuthModel) {
     switch (service.authFormView) {
       case AuthFormViewEnum.SIGN_IN:
-        // service.userLoginHandler(data);
-        service.authFormViewChangeHandler(AuthFormViewEnum.VERIFY_CODE);
+        service.userLoginHandler(data);
         break;
       case AuthFormViewEnum.SIGN_UP:
         service.registerNewUserHandler(data);
-        service.authFormViewChangeHandler(AuthFormViewEnum.VERIFY_PHONE_NUMBER);
         break;
       case AuthFormViewEnum.FORGOT_PASSWORD:
         service.forgotPasswordHandler(data);
@@ -61,8 +59,11 @@ export function AuthPage() {
         service.resetPasswordHandler(data);
         break;
       case AuthFormViewEnum.VERIFY_PHONE_NUMBER:
-        const fullPhoneNumber = `${data.countryCode}${data.phoneNumber}`;
-        console.log(fullPhoneNumber);
+        data.phoneNumber = `${data.countryCode}${data.phoneNumber}`;
+        service.verifyIdentityHandler(data);
+        break;
+      case AuthFormViewEnum.VERIFY_CODE:
+        service.verifyPhoneNumberHandler(data);
         break;
     }
     console.log(data);

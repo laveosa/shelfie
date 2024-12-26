@@ -17,6 +17,8 @@ export default function useAuthPageService() {
     useRegisterNewUserMutation,
     useForgotPasswordMutation,
     useResetPasswordMutation,
+    useVerifyIdentityMutation,
+    useVerifyPhoneNumberMutation,
   } = AuthApiHooks;
   const state = useAppSelector<IAuthPageSlice>(StoreSliceEnum.AUTH);
   const dispatch = useAppDispatch();
@@ -24,6 +26,8 @@ export default function useAuthPageService() {
   const [registerNewUser] = useRegisterNewUserMutation();
   const [forgotPassword] = useForgotPasswordMutation();
   const [resetPassword] = useResetPasswordMutation();
+  const [verifyIdentity] = useVerifyIdentityMutation();
+  const [verifyPhoneNumber] = useVerifyPhoneNumberMutation();
 
   const navigate = useNavigate();
   let [formStaticText, setFormStaticText] = useState<IAuthForm>(
@@ -36,8 +40,12 @@ export default function useAuthPageService() {
     dispatch(action.setLoading(true));
     return userLogin(model).then((res: any) => {
       dispatch(action.setLoading(false));
+      if (res.error) {
+        return;
+      } else {
+        authFormViewChangeHandler(AuthFormViewEnum.VERIFY_CODE);
+      }
       console.log("RES Login", res);
-      navigate(`/${NavUrlEnum.DASHBOARD}`);
     });
   }
 
@@ -45,6 +53,14 @@ export default function useAuthPageService() {
     dispatch(action.setLoading(true));
     return registerNewUser(model).then((res: any) => {
       dispatch(action.setLoading(false));
+
+      authFormViewChangeHandler(AuthFormViewEnum.VERIFY_PHONE_NUMBER);
+
+      // if (res.error) {
+      //   return;
+      // } else {
+      //   authFormViewChangeHandler(AuthFormViewEnum.VERIFY_PHONE_NUMBER);
+      // }
       console.log("RES Register", res);
     });
   }
@@ -60,6 +76,22 @@ export default function useAuthPageService() {
   function resetPasswordHandler(model: RequestAuthModel) {
     dispatch(action.setLoading(true));
     return resetPassword(model).then((res: any) => {
+      dispatch(action.setLoading(false));
+      console.log("RES Reset", res);
+    });
+  }
+
+  function verifyIdentityHandler(model: RequestAuthModel) {
+    dispatch(action.setLoading(true));
+    return verifyIdentity(model).then((res: any) => {
+      dispatch(action.setLoading(false));
+      console.log("RES Reset", res);
+    });
+  }
+
+  function verifyPhoneNumberHandler(model: RequestAuthModel) {
+    dispatch(action.setLoading(true));
+    return verifyPhoneNumber(model).then((res: any) => {
       dispatch(action.setLoading(false));
       console.log("RES Reset", res);
     });
@@ -137,5 +169,7 @@ export default function useAuthPageService() {
     forgotPasswordHandler,
     resetPasswordHandler,
     authFormViewChangeHandler,
+    verifyIdentityHandler,
+    verifyPhoneNumberHandler,
   };
 }

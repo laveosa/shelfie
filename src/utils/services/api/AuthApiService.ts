@@ -37,6 +37,9 @@ export const AuthApiService = createApi({
       query: (model: RequestAuthModel) => ({
         url: `${ApiUrlEnum.AUTH}/signup`,
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(model),
       }),
       invalidatesTags: (result) => [
@@ -52,6 +55,9 @@ export const AuthApiService = createApi({
         query: (model: RequestAuthModel) => ({
           url: `${ApiUrlEnum.AUTH}/switch-organization`,
           method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify(model),
         }),
         invalidatesTags: (result) => [
@@ -69,6 +75,9 @@ export const AuthApiService = createApi({
       query: (model: RequestAuthModel) => ({
         url: `${ApiUrlEnum.AUTH}/forgot-password`,
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(model),
       }),
       invalidatesTags: (result) => [
@@ -85,6 +94,47 @@ export const AuthApiService = createApi({
       query: (model: RequestAuthModel) => ({
         url: `${ApiUrlEnum.AUTH}/reset-password`,
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(model),
+      }),
+      invalidatesTags: (result) => [
+        {
+          type: ApiServiceNameEnum.AUTH,
+          result,
+        },
+      ],
+    }),
+    verifyIdentity: apiConfig.createMutation<
+      ResponseAuthModel,
+      RequestAuthModel
+    >(builder, {
+      query: (model: RequestAuthModel) => ({
+        url: `${ApiUrlEnum.AUTH}/verify-identity`,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(model),
+      }),
+      invalidatesTags: (result) => [
+        {
+          type: ApiServiceNameEnum.AUTH,
+          result,
+        },
+      ],
+    }),
+    verifyPhoneNumber: apiConfig.createMutation<
+      ResponseAuthModel,
+      RequestAuthModel
+    >(builder, {
+      query: (model: RequestAuthModel) => ({
+        url: `${ApiUrlEnum.AUTH}/verify-identity`,
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(model),
       }),
       invalidatesTags: (result) => [
