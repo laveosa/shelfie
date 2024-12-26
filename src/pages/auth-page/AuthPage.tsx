@@ -47,10 +47,12 @@ export function AuthPage() {
   function onSubmit(data: RequestAuthModel) {
     switch (service.authFormView) {
       case AuthFormViewEnum.SIGN_IN:
-        service.userLoginHandler(data);
+        // service.userLoginHandler(data);
+        service.authFormViewChangeHandler(AuthFormViewEnum.VERIFY_CODE);
         break;
       case AuthFormViewEnum.SIGN_UP:
         service.registerNewUserHandler(data);
+        service.authFormViewChangeHandler(AuthFormViewEnum.VERIFY_PHONE_NUMBER);
         break;
       case AuthFormViewEnum.FORGOT_PASSWORD:
         service.forgotPasswordHandler(data);
@@ -66,8 +68,6 @@ export function AuthPage() {
     console.log(data);
     console.log(selectedCountryCode);
   }
-
-  function footerLinkHandler() {}
 
   return (
     <div id={cs["AuthPage"]}>
@@ -126,58 +126,58 @@ export function AuthPage() {
                   </div>
                 </>
               )}
-              {service.authFormView !== AuthFormViewEnum.CHANGE_PASSWORD &&
-                service.authFormView !== AuthFormViewEnum.VERIFY_PHONE_NUMBER &&
-                service.authFormView !== AuthFormViewEnum.VERIFY_CODE && (
-                  <>
-                    <div className={cs.formItem}>
-                      <SheForm.Field
-                        rules={{
-                          required: "Email is required",
-                          pattern: {
-                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                            message: "Invalid email address",
-                          },
-                          minLength: {
-                            value: 5,
-                            message: "Email must be at least 5 characters",
-                          },
-                          maxLength: {
-                            value: 50,
-                            message: "Email cannot exceed 50 characters",
-                          },
-                        }}
-                        name="email"
-                        label="Email"
-                      >
-                        <Input placeholder="enter email..." />
-                      </SheForm.Field>
-                    </div>
-                  </>
-                )}
-              {service.authFormView !== AuthFormViewEnum.FORGOT_PASSWORD &&
-                service.authFormView !== AuthFormViewEnum.VERIFY_PHONE_NUMBER &&
-                service.authFormView !== AuthFormViewEnum.VERIFY_CODE && (
+              {(service.authFormView === AuthFormViewEnum.SIGN_IN ||
+                service.authFormView === AuthFormViewEnum.SIGN_UP ||
+                service.authFormView === AuthFormViewEnum.FORGOT_PASSWORD) && (
+                <>
                   <div className={cs.formItem}>
                     <SheForm.Field
                       rules={{
-                        required: "Password is required",
+                        required: "Email is required",
+                        pattern: {
+                          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                          message: "Invalid email address",
+                        },
                         minLength: {
-                          value: 8,
-                          message: "Password must be at least 8 characters",
+                          value: 5,
+                          message: "Email must be at least 5 characters",
+                        },
+                        maxLength: {
+                          value: 50,
+                          message: "Email cannot exceed 50 characters",
                         },
                       }}
-                      name="password"
-                      label="Password"
+                      name="email"
+                      label="Email"
                     >
-                      <Input
-                        className={cs.passwordInput}
-                        type="password"
-                        placeholder="enter password..."
-                      />
+                      <Input placeholder="enter email..." />
                     </SheForm.Field>
                   </div>
-                )}
+                </>
+              )}
+              {(service.authFormView === AuthFormViewEnum.SIGN_IN ||
+                service.authFormView === AuthFormViewEnum.SIGN_UP ||
+                service.authFormView === AuthFormViewEnum.CHANGE_PASSWORD) && (
+                <div className={cs.formItem}>
+                  <SheForm.Field
+                    rules={{
+                      required: "Password is required",
+                      minLength: {
+                        value: 8,
+                        message: "Password must be at least 8 characters",
+                      },
+                    }}
+                    name="password"
+                    label="Password"
+                  >
+                    <Input
+                      className={cs.passwordInput}
+                      type="password"
+                      placeholder="enter password..."
+                    />
+                  </SheForm.Field>
+                </div>
+              )}
               <div className={cs.forgotPasswordLink}>
                 {service.authFormView === AuthFormViewEnum.SIGN_IN && (
                   <span
@@ -324,7 +324,14 @@ export function AuthPage() {
           service.authFormView === AuthFormViewEnum.FORGOT_PASSWORD) && (
           <span>{service.formStaticText.footerText} </span>
         )}
-        <span className="she-text-link" onClick={footerLinkHandler}>
+        <span
+          className="she-text-link"
+          onClick={() =>
+            service.authFormView === AuthFormViewEnum.SIGN_IN
+              ? service.authFormViewChangeHandler(AuthFormViewEnum.SIGN_UP)
+              : service.authFormViewChangeHandler(AuthFormViewEnum.SIGN_IN)
+          }
+        >
           {service.formStaticText.footerLink}
         </span>
       </div>
