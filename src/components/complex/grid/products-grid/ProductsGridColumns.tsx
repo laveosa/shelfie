@@ -9,23 +9,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
 import { MoreHorizontal } from "lucide-react";
+import { ProductsModel } from "@/const/models/ProductsModel.ts";
 
-export type Products = {
-  id: any;
-  imageUrl: string;
-  code: number;
-  productName: string;
-  category: string;
-  brand: string;
-  barcode: number;
-  status: string;
-  salePrice: number;
-  variantCount: number;
-  stock?: number;
-  active: boolean;
-};
-
-export const productsGridColumns: ColumnDef<Products>[] = [
+export const productsGridColumns: ColumnDef<ProductsModel>[] = [
   {
     accessorKey: "id",
     header: "ID",

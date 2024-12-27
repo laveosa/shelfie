@@ -9,50 +9,60 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select.tsx";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 
 interface IProductsGridPagination<TData> {
+  gridRequestModel: GridRequestModel;
   table: Table<TData>;
 }
 
 export function GridPagination<TData>({
+  gridRequestModel,
   table,
 }: IProductsGridPagination<TData>) {
-  const currentPage = table.getState().pagination.pageIndex + 1;
-  const totalPages = table.getPageCount();
+  console.log("TEST: ", gridRequestModel);
+  const currentPage = gridRequestModel.pager.currentPage;
+  const totalPages = gridRequestModel.pager.totalPages;
 
-  // Generate page numbers to display
   const getPageNumbers = () => {
+    const { startPage, endPage } = gridRequestModel.pager;
     const pages = [];
-    const maxVisiblePages = 3;
 
-    // Always show first page
-    pages.push(1);
-
-    // Calculate range around current page
-    let start = Math.max(2, currentPage - 1);
-    let end = Math.min(totalPages - 1, currentPage + 1);
-
-    // Adjust if at the start or end
-    if (currentPage <= 1) end = Math.min(maxVisiblePages, totalPages - 1);
-    if (currentPage >= totalPages - 1)
-      start = Math.max(2, totalPages - maxVisiblePages + 1);
+    // Always show the first page
+    if (startPage > 1) {
+      pages.push(1);
+    }
 
     // Add ellipsis if needed
-    if (start > 2) pages.push("...");
+    if (startPage > 2) {
+      pages.push("...");
+    }
 
-    // Add middle pages
-    for (let i = start; i <= end; i++) {
+    // Add visible pages from startPage to endPage
+    for (let i = startPage; i <= endPage; i++) {
       pages.push(i);
     }
 
     // Add ellipsis if needed
-    if (end < totalPages - 1) pages.push("...");
+    if (endPage < totalPages - 1) {
+      pages.push("...");
+    }
 
-    // Add last page if there is more than one page
-    if (totalPages > 1) pages.push(totalPages);
+    // Always show the last page
+    if (endPage < totalPages) {
+      pages.push(totalPages);
+    }
 
     return pages;
   };
+
+  function getPreviousPage() {}
+
+  function getNextPage() {}
+
+  function setPageSize(_value) {
+    // ProductsFakeData.pager.pageSize = 5;
+  }
 
   return (
     <div className="flex items-center justify-between px-2">
@@ -61,14 +71,14 @@ export function GridPagination<TData>({
           <SheButton
             variant="outline"
             icon={ChevronLeft}
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
+            onClick={() => getPreviousPage()}
+            disabled={currentPage <= 1}
           >
             Previous
           </SheButton>
 
           <div className="flex items-center gap-1">
-            {getPageNumbers().map((pageNum, idx) => (
+            {getPageNumbers().map((pageNum: any, idx) => (
               <SheButton
                 key={idx}
                 variant={pageNum === currentPage ? "default" : "outline"}
@@ -76,9 +86,7 @@ export function GridPagination<TData>({
                   pageNum === "..." ? "pointer-events-none" : ""
                 }`}
                 onClick={() => {
-                  if (typeof pageNum === "number") {
-                    table.setPageIndex(pageNum - 1);
-                  }
+                  setPageSize;
                 }}
                 disabled={pageNum === "..."}
               >
@@ -91,8 +99,8 @@ export function GridPagination<TData>({
             variant="outline"
             icon={ChevronRight}
             iconPosition="right"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
+            onClick={() => getNextPage()}
+            disabled={currentPage >= gridRequestModel.pager.endPage}
           >
             Next
           </SheButton>
@@ -115,6 +123,24 @@ export function GridPagination<TData>({
               ))}
             </SelectContent>
           </Select>
+          ;
+          {/* <Select
+            value={gridRequestModel.pager.pageSize.toString()}
+            onValueChange={(value) => {
+              setPageSize(value);
+            }}
+          >
+            <SelectTrigger className="h-8 w-[70px]">
+              <SelectValue placeholder={gridRequestModel.pager.pageSize} />
+            </SelectTrigger>
+            <SelectContent side="top">
+              {[5, 10, 20, 30, 40, 50].map((pageSize) => (
+                <SelectItem key={pageSize} value={`${pageSize}`}>
+                  {pageSize}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>*/}
         </div>
       </div>
     </div>

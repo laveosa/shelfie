@@ -19,15 +19,18 @@ import React from "react";
 import { GridPagination } from "@/components/complex/grid/grid-pagination/GridPagination.tsx";
 import { ColumnsViewOptions } from "@/components/complex/grid/grid-columns-view-options/ColumnsViewOptions.tsx";
 import { GridSorting } from "@/components/complex/grid/grid-sorting/GridSorting.tsx";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  gridModel: GridRequestModel;
 }
 
 export function GridDataTable<TData, TValue>({
   columns,
   data,
+  gridModel,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -37,6 +40,8 @@ export function GridDataTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
   });
 
+  console.log(gridModel);
+
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -44,7 +49,7 @@ export function GridDataTable<TData, TValue>({
           <ColumnsViewOptions table={table} />
           <GridSorting table={table} />
         </div>
-        <GridPagination table={table} />
+        <GridPagination gridRequestModel={gridModel} table={table} />
       </div>
       <div className="rounded-md border">
         <Table style={{ overflow: "hidden" }}>

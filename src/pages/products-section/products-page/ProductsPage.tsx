@@ -14,15 +14,15 @@ import SheTabs from "@/components/complex/she-tabs/SheTabs.tsx";
 import { productsGridColumns } from "@/components/complex/grid/products-grid/ProductsGridColumns.tsx";
 import { GridDataTable } from "@/components/complex/grid/grid-data-table/GridDataTable.tsx";
 import {
-  getProductsFakeData,
-  getPurchasesFakeData,
-  getVariantsFakeData,
+  ProductsFakeData,
+  // getPurchasesFakeData,
+  // getVariantsFakeData,
 } from "@/components/complex/grid/products-grid/FakeData.ts";
 
 //TODO Replace after we will have API to receiving actual data
-const productsData = getProductsFakeData();
-const variantsData = getVariantsFakeData();
-const purchasesData = getPurchasesFakeData();
+const productsData = ProductsFakeData;
+// const variantsData = getVariantsFakeData();
+// const purchasesData = getPurchasesFakeData();
 
 export function ProductsPage() {
   const service = useProductsPageService();
@@ -88,13 +88,17 @@ export function ProductsPage() {
             </TabsList>
           </div>
           <TabsContent value="products">
-            <GridDataTable columns={productsGridColumns} data={productsData} />
+            <GridDataTable
+              columns={productsGridColumns}
+              data={productsData.items}
+              gridModel={productsData}
+            />
           </TabsContent>
           <TabsContent value="variants">
-            <GridDataTable columns={productsGridColumns} data={variantsData} />
+            {/*<GridDataTable columns={productsGridColumns} data={variantsData} />*/}
           </TabsContent>
           <TabsContent value="purchases">
-            <GridDataTable columns={productsGridColumns} data={purchasesData} />
+            {/*<GridDataTable columns={productsGridColumns} data={purchasesData} />*/}
           </TabsContent>
         </SheTabs>
       </div>
