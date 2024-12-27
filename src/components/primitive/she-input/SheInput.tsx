@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Search, X } from "lucide-react";
 import { isRegExp } from "lodash";
+import { Trans, useTranslation } from "react-i18next";
 
 import cs from "./SheInput.module.scss";
 import { Input } from "@/components/ui/input.tsx";
@@ -8,6 +9,7 @@ import { ISheInput } from "@/const/interfaces/primitive-components/ISheInput.ts"
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { useDebounce } from "@/utils/hooks/useDebounce.ts";
 import SheTooltip from "@/components/complex/she-tooltip/SheTooltip.tsx";
+import useAppTranslation from "@/hooks/useAppTranslation.ts";
 
 export default function SheInput({
   className = "",
@@ -38,6 +40,7 @@ export default function SheInput({
   onDelay,
   ...props
 }: ISheInput) {
+  const { translate } = useAppTranslation();
   const [value, setValue] = useState(props.value || props.defaultValue || "");
   const [icon, setIcon] = useState(
     !props.icon && isSearch ? <Search /> : props.icon,
@@ -176,13 +179,17 @@ export default function SheInput({
     >
       <SheTooltip {...tooltip}>
         <div className={cs.sheInputComponent}>
-          {label && <label className="she-text">{label}</label>}
+          {label && (
+            <label className="she-text">
+              <Trans i18nKey={labelTransKey}>{label}</Trans>
+            </label>
+          )}
           <div className={cs.sheInputControl}>
             {icon && <div className={cs.iconBlock}>{icon}</div>}
             <Input
               {...props}
               value={value}
-              placeholder={placeholder}
+              placeholder={translate(placeholderTransKey, placeholder)}
               disabled={disabled || isLoading}
               onChange={(e) => onChangeHandler(e)}
               onBlur={(e) => onBlurHandler(e)}
@@ -222,7 +229,9 @@ export default function SheInput({
           )}
           {_showError && _error && (
             <div className={cs.errorMessageBlock}>
-              <span className="she-text-error">{_error}</span>
+              <span className="she-text-error">
+                <Trans i18nKey={_errorTransKey}>{_error}</Trans>
+              </span>
             </div>
           )}
         </div>

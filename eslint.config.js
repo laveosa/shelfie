@@ -29,6 +29,7 @@ export default [
         { allowConstantExport: true },
       ],
       "react-hooks/exhaustive-deps": 0,
+      "@typescript-eslint/no-explicit-any": "off",
     },
     settings: {
       react: {

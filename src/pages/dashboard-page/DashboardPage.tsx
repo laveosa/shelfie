@@ -42,6 +42,7 @@ export function DashboardPage() {
 
         <SheInput
           label="Label"
+          placeholder="enter new product..."
           showClearBtn
           required
           minLength={2}
