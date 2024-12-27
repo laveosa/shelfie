@@ -22,6 +22,7 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form.tsx";
+import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 
 export function AuthPage() {
   const service = useAuthPageService();
@@ -101,9 +102,14 @@ export function AuthPage() {
                         },
                       }}
                       name="firstName"
-                      label="First Name"
                     >
-                      <Input placeholder="enter first name..." />
+                      <SheInput
+                        label="First Name"
+                        placeholder="enter first name..."
+                        isValid={!form.formState.errors.firstName}
+                        error={form.formState.errors.firstName?.message}
+                        showError={true}
+                      />
                     </SheForm.Field>
                   </div>
                   <div className={cs.formItem}>
