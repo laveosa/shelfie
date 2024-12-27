@@ -35,7 +35,7 @@ export default function SheTooltip({
   }
 
   return (
-    <div className={`${className} ${cs.sheTooltip || ""}`}>
+    <div className={`${className || ""} ${cs.sheTooltip || ""}`}>
       <TooltipProvider {...props}>
         <Tooltip>
           <TooltipTrigger asChild>{children}</TooltipTrigger>

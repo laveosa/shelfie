@@ -81,6 +81,16 @@ $clearBtnSize: 30px;
         border: 1px solid vars.$colorRed;
       }
     }
+  }
+}
+
+.sheInput.lengthInvalid {
+  .sheInputComponent {
+    .sheInputControl {
+      > input {
+        border: 1px solid vars.$colorRed;
+      }
+    }
 
     .contextLengthRestriction {
       .contextLengthBock {

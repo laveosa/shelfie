@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import { IBaseComponent } from "@/const/interfaces/IBaseComponent.ts";
 import { InputProps } from "@/components/ui/input.tsx";
 import { ISheTooltip } from "@/const/interfaces/complex-components/ISheTooltip.ts";
+import { InputPatternEnum } from "@/const/enums/InputPatternEnum.ts";
 
 export interface ISheInput extends IBaseComponent, InputProps {
   label?: string;
@@ -17,7 +18,7 @@ export interface ISheInput extends IBaseComponent, InputProps {
   error?: string;
   errorTransKey?: string;
   strict?: boolean;
-  pattern?: any;
+  pattern?: InputPatternEnum | any;
   tooltip?: ISheTooltip;
   onChange?: (value: any) => void;
   onBlur?: (value: any) => void;

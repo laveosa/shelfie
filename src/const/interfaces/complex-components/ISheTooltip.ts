@@ -12,5 +12,6 @@ export interface ISheTooltip extends IBaseComponent {
   side?: (typeof SIDE_OPTIONS)[number];
   align?: (typeof ALIGN_OPTIONS)[number];
   view?: SheTooltipEnum;
+  delayDuration?: any;
   onClick?: (value: any) => any;
 }

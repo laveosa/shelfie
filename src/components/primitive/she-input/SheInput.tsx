@@ -24,7 +24,7 @@ export default function SheInput({
   showClearBtn,
   fullWidth,
   isValid = true,
-  showError = true,
+  showError,
   error,
   errorTransKey,
   strict,
@@ -42,7 +42,12 @@ export default function SheInput({
   const [icon, setIcon] = useState(
     !props.icon && isSearch ? <Search /> : props.icon,
   );
-  const [isInputValid, setIsInputValid] = useState(isValid);
+  const [_isValid, setIsValid] = useState(isValid);
+  const [_isLengthValid, setIsLengthValid] = useState(isValid);
+  const [_showError, setShowError] = useState(showError);
+  const [_error, setError] = useState(error);
+  const [_errorTransKey, setErrorTransKey] = useState(errorTransKey);
+
   const delaySearch = useDebounce(value);
   const isInitialized = useRef(false);
   const isTouched = useRef(false);
@@ -77,9 +82,14 @@ export default function SheInput({
   function onClearHandler() {
     isInitialized.current = false;
     isTouched.current = false;
+    setIsValid(true);
+    setIsLengthValid(true);
+    setErrorCondition();
+
     const newValue = "";
     setValue(newValue);
     validateInput(newValue);
+
     if (onChange) onChange(newValue);
     if (onBlur) onBlur(newValue);
     if (onDelay) onDelay(newValue);
@@ -88,37 +98,85 @@ export default function SheInput({
   // ==================================================================== PRIVATE
 
   function validateInput(inputValue) {
-    let validation = !isInitialized.current;
-    if (!validation) validation = !isTouched.current;
-    if (!validation) validation = validateLength(inputValue);
-    if (!validation) validation = validatePattern(inputValue);
-    setIsInputValid(validation);
+    if (!isTouched.current) return true;
+    let validation = true;
+    validation = isRequiredValid(inputValue, validation);
+    validation = isPatternValid(inputValue, validation);
+    isLengthValid(inputValue);
+    setIsValid(validation);
   }
 
-  function validateLength(inputValue): boolean {
-    if (!minLength && !maxLength) return true;
+  function isRequiredValid(inputValue, validation) {
+    if (!required || !validation) return validation;
+
+    const result = inputValue.length > 0;
+
+    if (!result) {
+      setShowError(true);
+      setIsLengthValid(false);
+
+      if (!error) {
+        setShowError(true);
+        setErrorCondition(true, "input context is required", "REPLACE.ME"); // TODO replace with valid translation key
+      }
+    } else {
+      setShowError(false);
+      setErrorCondition();
+    }
+
+    return result;
+  }
+
+  function isPatternValid(inputValue, validation) {
+    if (!pattern || pattern.length === 0 || !validation) return validation;
+    if (!isRegExp(pattern)) return false;
+
+    const result = pattern.test(inputValue);
+
+    if (!result) {
+      setShowError(true);
+
+      if (!error) {
+        setShowError(true);
+        setErrorCondition(true, "error pattern validation", "REPLACE.ME"); // TODO replace with valid translation key
+      }
+    } else {
+      setShowError(false);
+      setErrorCondition();
+    }
+
+    return result;
+  }
+
+  function isLengthValid(inputValue) {
+    if (!minLength && !maxLength) {
+      setIsLengthValid(true);
+      return;
+    }
+
     const valueLength =
       props.type === "number"
         ? (inputValue as number)
         : inputValue.toString().length;
-    return valueLength >= minLength && valueLength <= maxLength;
+
+    setIsLengthValid(valueLength >= minLength && valueLength <= maxLength);
   }
 
-  function validatePattern(inputValue) {
-    if (!pattern || pattern.length === 0) return true;
-    if (!isRegExp(pattern)) return false;
-    return pattern.test(inputValue);
+  function setErrorCondition(
+    show: boolean = showError,
+    text: string = error,
+    transKey: string = errorTransKey,
+  ) {
+    setShowError(show);
+    setError(text);
+    setErrorTransKey(transKey);
   }
 
   // ==================================================================== LAYOUT
 
   return (
     <div
-      className={`${className} ${cs.sheInput || ""} ${
-        icon ? cs.withIcon : ""
-      } ${fullWidth ? cs.fullWidth : ""} ${
-        !isInputValid ? cs.invalid : ""
-      } ${required ? cs.required : ""}`}
+      className={`${className || ""} ${cs.sheInput || ""} ${icon ? cs.withIcon : ""} ${fullWidth ? cs.fullWidth : ""} ${!_isValid ? cs.invalid : ""} ${!_isLengthValid ? cs.lengthInvalid : ""} ${required ? cs.required : ""}`}
       style={{
         minWidth,
         maxWidth,
@@ -168,9 +226,9 @@ export default function SheInput({
               </div>
             </div>
           )}
-          {showError && error && (
+          {_showError && _error && (
             <div className={cs.errorMessageBlock}>
-              <span className="she-text-error">{error}</span>
+              <span className="she-text-error">{_error}</span>
             </div>
           )}
         </div>
