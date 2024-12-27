@@ -1,14 +1,30 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IAuthPageSlice } from "@/const/interfaces/store-slices/IAuthPageSlice.ts";
+import { AuthFormViewEnum } from "@/const/enums/AuthFormViewEnum.ts";
 
-const initialState: IAuthPageSlice = {};
+const initialState: IAuthPageSlice = {
+  authFormView: AuthFormViewEnum.LOGIN,
+};
 
 const AuthPageSlice = createSlice({
   name: StoreSliceEnum.AUTH,
   initialState,
-  reducers: {},
+  reducers: {
+    setLoading: (
+      state: IAuthPageSlice,
+      { payload }: PayloadAction<boolean>,
+    ) => {
+      state.isLoading = payload;
+    },
+    setAuthFormView: (
+      state: IAuthPageSlice,
+      { payload }: PayloadAction<AuthFormViewEnum>,
+    ) => {
+      state.authFormView = payload;
+    },
+  },
 });
 
 export const AuthPageSliceActions = AuthPageSlice.actions;

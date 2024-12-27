@@ -33,10 +33,10 @@ export const ProductsApiService = createApi({
       ],
     }),
     manageProduct: apiConfig.createMutation<void, ProductModel>(builder, {
-      query: (product: ProductModel) => ({
-        url: `${ApiUrlEnum.PRODUCTS}/${product.id}`,
+      query: (model: ProductModel) => ({
+        url: `${ApiUrlEnum.PRODUCTS}/${model.id}`,
         method: "PUT",
-        body: JSON.stringify(product),
+        body: JSON.stringify(model),
       }),
       invalidatesTags: (result) => [
         {
