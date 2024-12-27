@@ -199,7 +199,9 @@ export default function SheInput({
               <SheButton
                 variant="ghost"
                 size="icon"
-                disabled={value.toString().length === 0}
+                disabled={
+                  value.toString().length === 0 || disabled || isLoading
+                }
                 onClick={onClearHandler}
               >
                 <X />

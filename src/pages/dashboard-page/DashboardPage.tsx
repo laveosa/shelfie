@@ -43,11 +43,13 @@ export function DashboardPage() {
         <SheInput
           label="Label"
           showClearBtn
-          required
-          minLength={2}
-          maxLength={10}
-          pattern={InputPatternEnum.email}
-          error="Some Error Message"
+          value="sdkll sdiwe"
+          disabled
+          // required
+          // minLength={2}
+          // maxLength={10}
+          // pattern={InputPatternEnum.email}
+          // error="Some Error Message"
           onChange={(e) => onChange(e)}
         />
 
