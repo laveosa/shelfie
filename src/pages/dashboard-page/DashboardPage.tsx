@@ -4,5 +4,9 @@ import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageServ
 export function DashboardPage() {
   const service = useDashboardPageService();
 
-  return <div id={cs.DashboardPage}>Dashboard Section</div>;
+  return (
+    <div id={cs["DashboardPage"]}>
+      <h1>Dashboard Section</h1>
+    </div>
+  );
 }

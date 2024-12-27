@@ -5,6 +5,8 @@ export interface IBaseComponent extends PropsWithChildren {
   transKey?: string;
   className?: string;
   styles?: string;
+  minWidth?: string;
+  maxWidth?: string;
   isLoading?: boolean;
   disabled?: boolean;
 }

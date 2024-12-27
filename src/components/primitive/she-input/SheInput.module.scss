@@ -1,2 +1,142 @@
-.SheInput {
+@use "@/styles/variables" as vars;
+
+$iconSize: 20px;
+$clearBtnSize: 30px;
+
+.sheInput {
+  max-width: vars.$maxWidth;
+
+  .sheInputComponent {
+    position: relative;
+
+    > label {
+    }
+
+    .sheInputControl {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .iconBlock {
+        position: absolute;
+        color: vars.$subtextColor;
+        left: 8px;
+        max-width: $iconSize;
+        min-width: $iconSize;
+        max-height: $iconSize;
+        min-height: $iconSize;
+
+        svg {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      > input {
+        &:focus-visible {
+          box-shadow: 0 0 0 1px lightgray inset;
+        }
+      }
+
+      [class*="sheButton"] {
+        border-radius: 100%;
+        max-width: $clearBtnSize;
+        min-width: $clearBtnSize;
+        max-height: $clearBtnSize;
+        min-height: $clearBtnSize;
+      }
+    }
+
+    > [class*="she-text-error"] {
+    }
+  }
+}
+
+// ======================================================== FULL WIDTH
+
+.sheInput.fullWidth {
+  max-width: none;
+  width: 100%;
+}
+
+// ======================================================== REQUIRED
+
+.sheInput.required {
+  label:before {
+    position: absolute;
+    left: -8px;
+    color: vars.$colorRed;
+    content: " *";
+    display: inline;
+  }
+}
+
+// ======================================================== INVALID
+
+.sheInput.invalid {
+  .sheInputComponent {
+    .sheInputControl {
+      > input {
+        border: 1px solid vars.$colorRed;
+      }
+    }
+  }
+}
+
+.sheInput.lengthInvalid {
+  .sheInputComponent {
+    .sheInputControl {
+      > input {
+        border: 1px solid vars.$colorRed;
+      }
+    }
+
+    .contextLengthRestriction {
+      .contextLengthBock {
+        span {
+          color: vars.$colorRed;
+        }
+      }
+    }
+  }
+}
+
+// ======================================================== MIN MAX LENGTH
+
+.sheInput {
+  .contextLengthRestriction {
+    .contextLengthBock {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+  }
+}
+
+// ======================================================== WITH ICON
+
+.sheInput.withIcon {
+  .sheInputComponent {
+    .sheInputControl {
+      > input {
+        padding-left: 36px;
+      }
+    }
+  }
+}
+
+// ======================================================== ERROR MESSAGE
+
+.sheInput {
+  .errorMessageBlock {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 0;
+
+    span {
+      position: absolute;
+    }
+  }
 }
