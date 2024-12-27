@@ -10,21 +10,22 @@ import {
 } from "@/components/ui/dropdown-menu.tsx";
 import { MoreHorizontal } from "lucide-react";
 import { ProductsModel } from "@/const/models/ProductsModel.ts";
+import { ImageModel } from "@/const/models/ImageModel.ts";
 
-export const productsGridColumns: ColumnDef<ProductsModel>[] = [
+export const ProductsGridColumns: ColumnDef<ProductsModel>[] = [
   {
     accessorKey: "id",
     header: "ID",
   },
   {
-    accessorKey: "imageUrl",
+    accessorKey: "image",
     header: "Image",
     cell: ({ row }) => {
-      const imageUrl = row.getValue("imageUrl") as string;
+      const photoUrl: ImageModel = row.getValue("image");
       return (
         <div className="relative w-12 h-12">
           <img
-            src={imageUrl}
+            src={photoUrl.photoUrl}
             alt={row.getValue("productName")}
             className="object-cover rounded-md w-full h-full"
             onError={(e) => {

@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SheTabs from "@/components/complex/she-tabs/SheTabs.tsx";
-import { productsGridColumns } from "@/components/complex/grid/products-grid/ProductsGridColumns.tsx";
+import { ProductsGridColumns } from "@/components/complex/grid/products-grid/ProductsGridColumns.tsx";
 import { GridDataTable } from "@/components/complex/grid/grid-data-table/GridDataTable.tsx";
 import {
   ProductsFakeData,
@@ -89,7 +89,7 @@ export function ProductsPage() {
           </div>
           <TabsContent value="products">
             <GridDataTable
-              columns={productsGridColumns}
+              columns={ProductsGridColumns}
               data={productsData.items}
               gridModel={productsData}
             />
