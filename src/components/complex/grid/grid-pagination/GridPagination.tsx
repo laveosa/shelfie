@@ -69,7 +69,7 @@ export function GridPagination<TData>({
       <div className="flex items-center space-x-6 lg:space-x-8">
         <div className="flex items-center space-x-2">
           <SheButton
-            variant="outline"
+            variant="ghost"
             icon={ChevronLeft}
             onClick={() => getPreviousPage()}
             disabled={currentPage <= 1}
@@ -96,7 +96,7 @@ export function GridPagination<TData>({
           </div>
 
           <SheButton
-            variant="outline"
+            variant="ghost"
             icon={ChevronRight}
             iconPosition="right"
             onClick={() => getNextPage()}
