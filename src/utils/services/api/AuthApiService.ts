@@ -17,9 +17,6 @@ export const AuthApiService = createApi({
         query: (model: RequestAuthModel) => ({
           url: `${ApiUrlEnum.AUTH}/signin`,
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
           body: JSON.stringify(model),
         }),
         invalidatesTags: (result) => [
@@ -37,9 +34,6 @@ export const AuthApiService = createApi({
       query: (model: RequestAuthModel) => ({
         url: `${ApiUrlEnum.AUTH}/signup`,
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify(model),
       }),
       invalidatesTags: (result) => [
@@ -55,9 +49,6 @@ export const AuthApiService = createApi({
         query: (model: RequestAuthModel) => ({
           url: `${ApiUrlEnum.AUTH}/switch-organization`,
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
           body: JSON.stringify(model),
         }),
         invalidatesTags: (result) => [
@@ -75,9 +66,6 @@ export const AuthApiService = createApi({
       query: (model: RequestAuthModel) => ({
         url: `${ApiUrlEnum.AUTH}/forgot-password`,
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify(model),
       }),
       invalidatesTags: (result) => [
@@ -94,9 +82,6 @@ export const AuthApiService = createApi({
       query: (model: RequestAuthModel) => ({
         url: `${ApiUrlEnum.AUTH}/reset-password`,
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify(model),
       }),
       invalidatesTags: (result) => [
@@ -113,9 +98,6 @@ export const AuthApiService = createApi({
       query: (model: RequestAuthModel) => ({
         url: `${ApiUrlEnum.AUTH}/verify-identity`,
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify(model),
       }),
       invalidatesTags: (result) => [
@@ -130,11 +112,8 @@ export const AuthApiService = createApi({
       RequestAuthModel
     >(builder, {
       query: (model: RequestAuthModel) => ({
-        url: `${ApiUrlEnum.AUTH}/verify-identity`,
+        url: `${ApiUrlEnum.AUTH}/verify-phone-number`,
         method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify(model),
       }),
       invalidatesTags: (result) => [
