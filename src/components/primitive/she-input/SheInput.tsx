@@ -108,43 +108,17 @@ export default function SheInput({
 
   function isRequiredValid(inputValue, validation) {
     if (!required || !validation) return validation;
-
     const result = inputValue.length > 0;
-
-    if (!result) {
-      setShowError(true);
-      setIsLengthValid(false);
-
-      if (!error) {
-        setShowError(true);
-        setErrorCondition(true, "input context is required", "REPLACE.ME"); // TODO replace with valid translation key
-      }
-    } else {
-      setShowError(false);
-      setErrorCondition();
-    }
-
+    if (!result) setIsLengthValid(false);
+    setShowErrorCondition(result, "input context is required", "REPLACE.ME"); // TODO replace with valid translation key
     return result;
   }
 
   function isPatternValid(inputValue, validation) {
     if (!pattern || pattern.length === 0 || !validation) return validation;
     if (!isRegExp(pattern)) return false;
-
     const result = pattern.test(inputValue);
-
-    if (!result) {
-      setShowError(true);
-
-      if (!error) {
-        setShowError(true);
-        setErrorCondition(true, "error pattern validation", "REPLACE.ME"); // TODO replace with valid translation key
-      }
-    } else {
-      setShowError(false);
-      setErrorCondition();
-    }
-
+    setShowErrorCondition(result, "error pattern validation", "REPLACE.ME"); // TODO replace with valid translation key
     return result;
   }
 
@@ -160,6 +134,24 @@ export default function SheInput({
         : inputValue.toString().length;
 
     setIsLengthValid(valueLength >= minLength && valueLength <= maxLength);
+  }
+
+  function setShowErrorCondition(
+    isValid: boolean,
+    message: string,
+    messageTransKey?: string,
+  ) {
+    if (!isValid) {
+      setShowError(true);
+
+      if (!error) {
+        setShowError(true);
+        setErrorCondition(true, message, messageTransKey);
+      }
+    } else {
+      setShowError(false);
+      setErrorCondition();
+    }
   }
 
   function setErrorCondition(
