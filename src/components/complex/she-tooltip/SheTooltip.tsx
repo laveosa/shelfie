@@ -1,3 +1,5 @@
+import { Trans } from "react-i18next";
+
 import cs from "./SheTooltip.module.scss";
 import {
   Tooltip,
@@ -47,10 +49,20 @@ export default function SheTooltip({
               onClick={onClickHandler}
             >
               <div className={cs.tooltipMessageBlock}>
-                {title && <span className="she-title">{title}</span>}
-                {text && <span className="she-text">{text}</span>}
+                {title && (
+                  <span className="she-title">
+                    <Trans i18nKey={titleTransKey}>{title}</Trans>
+                  </span>
+                )}
+                {text && (
+                  <span className="she-text">
+                    <Trans i18nKey={textTransKey}>{text}</Trans>
+                  </span>
+                )}
                 {description && (
-                  <span className="she-subtext">{description}</span>
+                  <span className="she-subtext">
+                    <Trans i18nKey={descriptionTransKey}>{description}</Trans>
+                  </span>
                 )}
               </div>
             </TooltipContent>

@@ -49,6 +49,16 @@ export function DashboardPage() {
           maxLength={10}
           pattern={InputPatternEnum.email}
           // error="Some Error Message"
+          tooltip={{
+            title: "Title",
+            titleTransKey: null,
+            text: "k iweoiw eowie oiweo wi enweoi nwie weoie woei weoiwh oiwe oiwe owieh oweih owei woei k iweoiw eowie oiweo wi enweoi nwie weoie woei weoiwh oiwe oiwe owieh oweih owei woei k iweoiw eowie oiweo wi enweoi nwie weoie woei weoiwh oiwe oiwe owieh oweih owei woei k iweoiw eowie oiweo wi enweoi nwie weoie woei weoiwh oiwe oiwe owieh oweih owei woei",
+            textTransKey: null,
+            description: "some description text",
+            descriptionTransKey: null,
+            align: "start",
+            side: "bottom",
+          }}
           onChange={(e) => onChange(e)}
         />
 
