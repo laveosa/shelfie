@@ -4,12 +4,12 @@ import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 
 export const ProductsFakeData: GridRequestModel = {
   pager: {
-    currentPage: 1,
-    pageSize: 5,
+    currentPage: 8,
+    pageSize: 10,
     totalItems: 20,
-    totalPages: 2,
+    totalPages: 10,
     startPage: 1,
-    endPage: 2,
+    endPage: 10,
   },
   items: [
     {

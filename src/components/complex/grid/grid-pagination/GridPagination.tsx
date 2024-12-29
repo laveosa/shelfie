@@ -18,38 +18,67 @@ interface IProductsGridPagination<TData> {
 
 export function GridPagination<TData>({
   gridRequestModel,
-  table,
+  // table,
 }: IProductsGridPagination<TData>) {
   console.log("TEST: ", gridRequestModel);
-  const currentPage = gridRequestModel.pager.currentPage;
-  const totalPages = gridRequestModel.pager.totalPages;
+  const { currentPage, totalPages, pageSize } = gridRequestModel.pager;
 
   const getPageNumbers = () => {
-    const { startPage, endPage } = gridRequestModel.pager;
     const pages = [];
 
+    // // Always show the first page
+    // if (startPage > 1) {
+    //   pages.push(1);
+    // }
+    //
+    // // Add ellipsis if needed
+    // if (startPage > 2) {
+    //   pages.push("...");
+    // }
+    //
+    // // Add visible pages from startPage to endPage
+    // for (let i = startPage; i <= endPage; i++) {
+    //   pages.push(i);
+    // }
+    //
+    // // Add ellipsis if needed
+    // if (endPage < totalPages - 1) {
+    //   pages.push("...");
+    // }
+    //
+    // // Always show the last page
+    // if (endPage < totalPages) {
+    //   pages.push(totalPages);
+    // }
+
     // Always show the first page
-    if (startPage > 1) {
+    if (currentPage > 1) {
       pages.push(1);
     }
 
     // Add ellipsis if needed
-    if (startPage > 2) {
+    if (currentPage > 3) {
       pages.push("...");
     }
 
-    // Add visible pages from startPage to endPage
-    for (let i = startPage; i <= endPage; i++) {
-      pages.push(i);
+    // Show pages around the current page
+    if (currentPage > 1) {
+      pages.push(currentPage - 1); // One page before
+    }
+
+    pages.push(currentPage); // Current page
+
+    if (currentPage < totalPages) {
+      pages.push(currentPage + 1); // One page after
     }
 
     // Add ellipsis if needed
-    if (endPage < totalPages - 1) {
+    if (currentPage < totalPages - 2) {
       pages.push("...");
     }
 
     // Always show the last page
-    if (endPage < totalPages) {
+    if (totalPages > 1) {
       pages.push(totalPages);
     }
 
@@ -60,8 +89,12 @@ export function GridPagination<TData>({
 
   function getNextPage() {}
 
-  function setPageSize(_value) {
-    // ProductsFakeData.pager.pageSize = 5;
+  function setCurrentPage(e) {
+    console.log(e.target.innerText);
+  }
+
+  function setPageSize(pageSize) {
+    console.log(pageSize);
   }
 
   return (
@@ -85,8 +118,8 @@ export function GridPagination<TData>({
                 className={`h-8 w-8 p-0 ${
                   pageNum === "..." ? "pointer-events-none" : ""
                 }`}
-                onClick={() => {
-                  setPageSize;
+                onClick={(e) => {
+                  setCurrentPage(e);
                 }}
                 disabled={pageNum === "..."}
               >
@@ -107,13 +140,13 @@ export function GridPagination<TData>({
         </div>
         <div className="flex items-center space-x-2">
           <Select
-            value={`${table.getState().pagination.pageSize}`}
-            onValueChange={(value) => {
-              table.setPageSize(Number(value));
+            value={`${pageSize}`}
+            onValueChange={(pageSize) => {
+              setPageSize(pageSize);
             }}
           >
             <SelectTrigger className="h-8 w-[70px]">
-              <SelectValue placeholder={table.getState().pagination.pageSize} />
+              <SelectValue placeholder={pageSize} />
             </SelectTrigger>
             <SelectContent side="top">
               {[5, 10, 20, 30, 40, 50].map((pageSize) => (
@@ -123,24 +156,6 @@ export function GridPagination<TData>({
               ))}
             </SelectContent>
           </Select>
-          ;
-          {/* <Select
-            value={gridRequestModel.pager.pageSize.toString()}
-            onValueChange={(value) => {
-              setPageSize(value);
-            }}
-          >
-            <SelectTrigger className="h-8 w-[70px]">
-              <SelectValue placeholder={gridRequestModel.pager.pageSize} />
-            </SelectTrigger>
-            <SelectContent side="top">
-              {[5, 10, 20, 30, 40, 50].map((pageSize) => (
-                <SelectItem key={pageSize} value={`${pageSize}`}>
-                  {pageSize}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>*/}
         </div>
       </div>
     </div>
