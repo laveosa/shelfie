@@ -13,7 +13,7 @@ import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 
 interface IProductsGridPagination<TData> {
   gridRequestModel: GridRequestModel;
-  table: Table<TData>;
+  table?: Table<TData>;
 }
 
 export function GridPagination<TData>({

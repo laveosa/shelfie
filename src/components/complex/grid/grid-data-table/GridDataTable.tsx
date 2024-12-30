@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -15,7 +16,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table.tsx";
-import React from "react";
 import { GridPagination } from "@/components/complex/grid/grid-pagination/GridPagination.tsx";
 import { ColumnsViewOptions } from "@/components/complex/grid/grid-columns-view-options/ColumnsViewOptions.tsx";
 import { GridSorting } from "@/components/complex/grid/grid-sorting/GridSorting.tsx";
@@ -32,15 +32,29 @@ export function GridDataTable<TData, TValue>({
   data,
   gridModel,
 }: DataTableProps<TData, TValue>) {
+  const [loadingRows, setLoadingRows] = useState<Set<string>>(new Set());
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    meta: {
+      setLoadingRow: (rowId: string, loading: boolean) => {
+        setLoadingRows((prev) => {
+          const newSet = new Set(prev);
+          if (loading) {
+            newSet.add(rowId);
+          } else {
+            newSet.delete(rowId);
+          }
+          return newSet;
+        });
+      },
+      isRowLoading: (rowId: string) => loadingRows.has(rowId),
+    },
   });
-
-  console.log(gridModel);
 
   return (
     <div>
@@ -56,18 +70,16 @@ export function GridDataTable<TData, TValue>({
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
@@ -77,6 +89,12 @@ export function GridDataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  className={
+                    loadingRows.has(row.id) ? "bg-green-50 opacity-70" : ""
+                  }
+                  style={{
+                    pointerEvents: loadingRows.has(row.id) ? "none" : "auto",
+                  }}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
