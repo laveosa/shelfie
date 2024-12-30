@@ -20,6 +20,7 @@ import { GridPagination } from "@/components/complex/grid/grid-pagination/GridPa
 import { ColumnsViewOptions } from "@/components/complex/grid/grid-columns-view-options/ColumnsViewOptions.tsx";
 import { GridSorting } from "@/components/complex/grid/grid-sorting/GridSorting.tsx";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { ItemFilter } from "@/components/complex/grid/item-filter/ItemFilter.tsx";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -59,6 +60,7 @@ export function GridDataTable<TData, TValue>({
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <ItemFilter table={table} filteredColumn="brand" data={data} />
         <div style={{ display: "flex", gap: "10px" }}>
           <ColumnsViewOptions table={table} />
           <GridSorting table={table} />

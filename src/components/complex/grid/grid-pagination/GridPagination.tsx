@@ -20,36 +20,10 @@ export function GridPagination<TData>({
   gridRequestModel,
   // table,
 }: IProductsGridPagination<TData>) {
-  console.log("TEST: ", gridRequestModel);
   const { currentPage, totalPages, pageSize } = gridRequestModel.pager;
 
   const getPageNumbers = () => {
     const pages = [];
-
-    // // Always show the first page
-    // if (startPage > 1) {
-    //   pages.push(1);
-    // }
-    //
-    // // Add ellipsis if needed
-    // if (startPage > 2) {
-    //   pages.push("...");
-    // }
-    //
-    // // Add visible pages from startPage to endPage
-    // for (let i = startPage; i <= endPage; i++) {
-    //   pages.push(i);
-    // }
-    //
-    // // Add ellipsis if needed
-    // if (endPage < totalPages - 1) {
-    //   pages.push("...");
-    // }
-    //
-    // // Always show the last page
-    // if (endPage < totalPages) {
-    //   pages.push(totalPages);
-    // }
 
     // Always show the first page
     if (currentPage > 1) {
