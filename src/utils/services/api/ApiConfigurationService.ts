@@ -4,6 +4,8 @@ import { IApiQueryDefinition } from "@/const/interfaces/IApiQueryDefinition.ts";
 import { ApiServiceNameEnum } from "@/const/enums/ApiServiceNameEnum.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { StorageKeyEnum } from "@/const/enums/StorageKeyEnum.ts";
+import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 
 export class ApiConfigurationService {
   public static baseQueryWithInterceptors = async (
@@ -72,14 +74,15 @@ export class ApiConfigurationService {
     return fetchBaseQuery({
       baseUrl,
       prepareHeaders: (headers) => {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem(StorageKeyEnum.TOKEN);
 
-        if (token) {
-          headers.set("Authorization", `Bearer ${token}`);
+        if (!token) {
+          //TODO show error toast 'Missing token'
+          window.location.href = NavUrlEnum.AUTH;
         }
 
+        headers.set("Authorization", `Bearer ${token}`);
         headers.set("Content-Type", "application/json");
-
         return headers;
       },
     });

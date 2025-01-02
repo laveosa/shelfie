@@ -9,7 +9,9 @@ import { AuthFormViewEnum } from "@/const/enums/AuthFormViewEnum.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { IAuthPageSlice } from "@/const/interfaces/store-slices/IAuthPageSlice.ts";
 import { IAuthForm } from "@/const/interfaces/forms/IAuthForm.ts";
-import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
+import storageService from "@/utils/services/StorageService.ts";
+import { StorageKeyEnum } from "@/const/enums/StorageKeyEnum.ts";
+import { TokenModel } from "@/const/models/TokenModel.ts";
 
 export default function useAuthPageService() {
   const {
@@ -44,8 +46,10 @@ export default function useAuthPageService() {
         return;
       } else {
         authFormViewChangeHandler(AuthFormViewEnum.VERIFY_CODE);
+        storageService.setLocalStorage(StorageKeyEnum.TOKEN, {
+          bearerToken: res.data.token,
+        } as TokenModel);
       }
-      console.log("RES Login", res);
     });
   }
 
@@ -85,7 +89,7 @@ export default function useAuthPageService() {
     dispatch(action.setLoading(true));
     return verifyIdentity(model).then((res: any) => {
       dispatch(action.setLoading(false));
-      console.log("RES Reset", res);
+      console.log("RES Verify Identity", res);
     });
   }
 
@@ -93,7 +97,7 @@ export default function useAuthPageService() {
     dispatch(action.setLoading(true));
     return verifyPhoneNumber(model).then((res: any) => {
       dispatch(action.setLoading(false));
-      console.log("RES Reset", res);
+      console.log("RES verify Number", res);
     });
   }
 
