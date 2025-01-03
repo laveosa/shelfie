@@ -11,7 +11,7 @@ export const AuthApiService = createApi({
   baseQuery: apiConfig.baseQueryWithInterceptors,
   tagTypes: [ApiServiceNameEnum.AUTH],
   endpoints: (builder) => ({
-    userLogin: apiConfig.createMutation<ResponseAuthModel, RequestAuthModel>(
+    userSignIn: apiConfig.createMutation<ResponseAuthModel, RequestAuthModel>(
       builder,
       {
         query: (model: RequestAuthModel) => ({
@@ -27,22 +27,22 @@ export const AuthApiService = createApi({
         ],
       },
     ),
-    registerNewUser: apiConfig.createMutation<
-      ResponseAuthModel,
-      RequestAuthModel
-    >(builder, {
-      query: (model: RequestAuthModel) => ({
-        url: `${ApiUrlEnum.AUTH}/signup`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-      invalidatesTags: (result) => [
-        {
-          type: ApiServiceNameEnum.AUTH,
-          result,
-        },
-      ],
-    }),
+    userSignUp: apiConfig.createMutation<ResponseAuthModel, RequestAuthModel>(
+      builder,
+      {
+        query: (model: RequestAuthModel) => ({
+          url: `${ApiUrlEnum.AUTH}/signup`,
+          method: "POST",
+          body: JSON.stringify(model),
+        }),
+        invalidatesTags: (result) => [
+          {
+            type: ApiServiceNameEnum.AUTH,
+            result,
+          },
+        ],
+      },
+    ),
     switchOrganization: apiConfig.createMutation<void, RequestAuthModel>(
       builder,
       {
@@ -114,6 +114,22 @@ export const AuthApiService = createApi({
       query: (model: RequestAuthModel) => ({
         url: `${ApiUrlEnum.AUTH}/verify-phone-number`,
         method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+      invalidatesTags: (result) => [
+        {
+          type: ApiServiceNameEnum.AUTH,
+          result,
+        },
+      ],
+    }),
+    confirmSignInNumber: apiConfig.createMutation<
+      ResponseAuthModel,
+      RequestAuthModel
+    >(builder, {
+      query: (model: RequestAuthModel) => ({
+        url: `${ApiUrlEnum.AUTH}/confirm-signin-number`,
+        method: "POST",
         body: JSON.stringify(model),
       }),
       invalidatesTags: (result) => [

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import cs from "./AuthPage.module.scss";
@@ -44,6 +44,10 @@ export function AuthPage() {
   });
 
   const selectedCountryCode = form.watch("countryCode");
+
+  useEffect(() => {
+    service.getCountryCodeHandler();
+  }, []);
 
   function onSubmit(data: RequestAuthModel) {
     switch (service.authFormView) {

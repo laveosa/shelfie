@@ -12,24 +12,30 @@ import { IAuthForm } from "@/const/interfaces/forms/IAuthForm.ts";
 import storageService from "@/utils/services/StorageService.ts";
 import { StorageKeyEnum } from "@/const/enums/StorageKeyEnum.ts";
 import { TokenModel } from "@/const/models/TokenModel.ts";
+import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
 
 export default function useAuthPageService() {
   const {
-    useUserLoginMutation,
-    useRegisterNewUserMutation,
+    useUserSignInMutation,
+    useUserSignUpMutation,
     useForgotPasswordMutation,
     useResetPasswordMutation,
     useVerifyIdentityMutation,
     useVerifyPhoneNumberMutation,
+    useConfirmSignInNumberMutation,
   } = AuthApiHooks;
+  const { useLazyGetCountryCodeQuery } = DictionaryApiHooks;
+
   const state = useAppSelector<IAuthPageSlice>(StoreSliceEnum.AUTH);
   const dispatch = useAppDispatch();
-  const [userLogin] = useUserLoginMutation();
-  const [registerNewUser] = useRegisterNewUserMutation();
+  const [userLogin] = useUserSignInMutation();
+  const [registerNewUser] = useUserSignUpMutation();
   const [forgotPassword] = useForgotPasswordMutation();
   const [resetPassword] = useResetPasswordMutation();
   const [verifyIdentity] = useVerifyIdentityMutation();
   const [verifyPhoneNumber] = useVerifyPhoneNumberMutation();
+  const [confirmSignInNumber] = useConfirmSignInNumberMutation();
+  const [getCountryCode] = useLazyGetCountryCodeQuery();
 
   const navigate = useNavigate();
   let [formStaticText, setFormStaticText] = useState<IAuthForm>(
@@ -98,6 +104,22 @@ export default function useAuthPageService() {
     return verifyPhoneNumber(model).then((res: any) => {
       dispatch(action.setLoading(false));
       console.log("RES verify Number", res);
+    });
+  }
+
+  function confirmSignInNumberHandler(model: RequestAuthModel) {
+    dispatch(action.setLoading(true));
+    return confirmSignInNumber(model).then((res: any) => {
+      dispatch(action.setLoading(false));
+      console.log("RES confirm phone number", res);
+    });
+  }
+
+  function getCountryCodeHandler() {
+    dispatch(action.setLoading(true));
+    return getCountryCode().then((res: any) => {
+      dispatch(action.setLoading(false));
+      console.log("RES confirm phone number", res);
     });
   }
 
@@ -175,5 +197,7 @@ export default function useAuthPageService() {
     authFormViewChangeHandler,
     verifyIdentityHandler,
     verifyPhoneNumberHandler,
+    confirmSignInNumberHandler,
+    getCountryCodeHandler,
   };
 }
