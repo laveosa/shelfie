@@ -1,0 +1,15 @@
+.gridPagination {
+  .selectTrigger {
+    width: 60px;
+    height: 32px;
+    font-weight: 600;
+
+    &:focus {
+      box-shadow: none;
+    }
+
+    svg {
+      margin-top: 3px;
+    }
+  }
+}

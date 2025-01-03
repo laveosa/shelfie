@@ -10,6 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select.tsx";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import cs from "./GridPagination.module.scss";
 
 interface IProductsGridPagination<TData> {
   gridRequestModel: GridRequestModel;
@@ -72,7 +73,9 @@ export function GridPagination<TData>({
   }
 
   return (
-    <div className="flex items-center justify-between px-2">
+    <div
+      className={`${cs.gridPagination} flex items-center justify-between px-2`}
+    >
       <div className="flex items-center space-x-6 lg:space-x-8">
         <div className="flex items-center space-x-2">
           <SheButton
@@ -88,7 +91,7 @@ export function GridPagination<TData>({
             {getPageNumbers().map((pageNum: any, idx) => (
               <SheButton
                 key={idx}
-                variant={pageNum === currentPage ? "default" : "outline"}
+                variant={pageNum === currentPage ? "outline" : "ghost"}
                 className={`h-8 w-8 p-0 ${
                   pageNum === "..." ? "pointer-events-none" : ""
                 }`}
@@ -119,7 +122,7 @@ export function GridPagination<TData>({
               setPageSize(pageSize);
             }}
           >
-            <SelectTrigger className="h-8 w-[70px]">
+            <SelectTrigger className={cs.selectTrigger}>
               <SelectValue placeholder={pageSize} />
             </SelectTrigger>
             <SelectContent side="top">

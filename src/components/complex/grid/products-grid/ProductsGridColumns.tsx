@@ -1,21 +1,14 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Switch } from "@/components/ui/switch.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu.tsx";
-import { MoreHorizontal } from "lucide-react";
 import { ProductsModel } from "@/const/models/ProductsModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
+import ProductsGridColumnActions from "@/components/complex/grid/products-grid/ProductsGridColumnActions.tsx";
 
 function onAction(
   actionType: string,
-  rowId: string,
-  setLoadingRow: (rowId: string, loading: boolean) => void,
+  rowId?: string,
+  setLoadingRow?: (rowId: string, loading: boolean) => void,
 ) {
   setLoadingRow(rowId, true);
   setTimeout(() => {
@@ -61,13 +54,10 @@ export const ProductsGridColumns: ColumnDef<ProductsModel>[] = [
         isRowLoading: (rowId: string) => boolean;
       };
 
-      const handleManageClick = () => {
-        onAction("image", row.id, meta?.setLoadingRow);
-      };
       return (
         <div
           className="relative w-12 h-12 cursor-pointer"
-          onClick={handleManageClick}
+          onClick={() => onAction("image", row.id, meta?.setLoadingRow)}
         >
           <img
             src={photoUrl.photoUrl}
@@ -153,16 +143,13 @@ export const ProductsGridColumns: ColumnDef<ProductsModel>[] = [
         isRowLoading: (rowId: string) => boolean;
       };
 
-      const isLoading = meta?.isRowLoading(row.id);
-
-      const handleManageClick = () => {
-        onAction("active", row.id, meta?.setLoadingRow);
-      };
       return (
         <Switch
-          disabled={isLoading}
+          disabled={meta?.isRowLoading(row.id)}
           checked={row.getValue("active")}
-          onCheckedChange={handleManageClick}
+          onCheckedChange={() =>
+            onAction("active", row.id, meta?.setLoadingRow)
+          }
         />
       );
     },
@@ -176,15 +163,12 @@ export const ProductsGridColumns: ColumnDef<ProductsModel>[] = [
         isRowLoading: (rowId: string) => boolean;
       };
 
-      const isLoading = meta?.isRowLoading(row.id);
-
-      const handleManageClick = () => {
-        onAction("manage", row.id, meta?.setLoadingRow);
-      };
-
       return (
-        <SheButton onClick={handleManageClick} disabled={isLoading}>
-          {isLoading ? "Loading..." : "Manage"}
+        <SheButton
+          onClick={() => onAction("manage", row.id, meta?.setLoadingRow)}
+          disabled={meta?.isRowLoading(row.id)}
+        >
+          Manage
         </SheButton>
       );
     },
@@ -193,48 +177,12 @@ export const ProductsGridColumns: ColumnDef<ProductsModel>[] = [
     id: "rowActions",
     header: "",
     cell: ({ row, table }) => {
-      const meta = table.options.meta as {
-        setLoadingRow: (rowId: string, loading: boolean) => void;
-        isRowLoading: (rowId: string) => boolean;
-      };
-
-      const isLoading = meta?.isRowLoading(row.id);
-
-      const handleAction = (
-        actionType: "edit" | "copy" | "favorite" | "delete",
-      ) => {
-        onAction(actionType, row.id, meta?.setLoadingRow);
-      };
-
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <SheButton
-              variant="ghost"
-              className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
-              disabled={isLoading}
-            >
-              <MoreHorizontal />
-              <span className="sr-only">Open menu</span>
-            </SheButton>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-[160px]">
-            <DropdownMenuItem onClick={() => handleAction("edit")}>
-              Edit
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleAction("copy")}>
-              Make a copy
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleAction("favorite")}>
-              Favorite
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => handleAction("delete")}>
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <ProductsGridColumnActions
+          row={row}
+          onAction={onAction}
+          table={table}
+        />
       );
     },
   },
