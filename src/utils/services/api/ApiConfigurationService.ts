@@ -5,7 +5,6 @@ import { ApiServiceNameEnum } from "@/const/enums/ApiServiceNameEnum.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { StorageKeyEnum } from "@/const/enums/StorageKeyEnum.ts";
-import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 
 export class ApiConfigurationService {
   public static baseQueryWithInterceptors = async (
@@ -78,7 +77,7 @@ export class ApiConfigurationService {
 
         if (!token) {
           //TODO show error toast 'Missing token'
-          window.location.href = NavUrlEnum.AUTH;
+          // window.location.href = NavUrlEnum.AUTH;
         }
 
         headers.set("Authorization", `Bearer ${token}`);
