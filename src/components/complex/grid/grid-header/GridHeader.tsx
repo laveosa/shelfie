@@ -2,19 +2,27 @@ import { GridSorting } from "@/components/complex/grid/grid-sorting/GridSorting.
 import { GridPagination } from "@/components/complex/grid/grid-pagination/GridPagination.tsx";
 import { ColumnsViewOptions } from "@/components/complex/grid/grid-columns-view-options/ColumnsViewOptions.tsx";
 import { IGridHeader } from "@/const/interfaces/complex-components/IGridHeader.ts";
+import { Input } from "@/components/ui/input.tsx";
+import cs from "./GridHeader.module.scss";
 
 export default function GridHeader<TData>({
-  gridRequestModel,
+  gridModel,
   table,
   showPagination = true,
   showSorting = true,
   showColumnsViewOptions = true,
+  showSearch = true,
 }: IGridHeader<TData>) {
   return (
-    <div className="flex items-center justify-between px-2">
-      {showSorting && <GridSorting table={table} />}
-      {showPagination && <GridPagination gridRequestModel={gridRequestModel} />}
-      {showColumnsViewOptions && <ColumnsViewOptions table={table} />}
+    <div className={cs.gridHeader}>
+      <div className={cs.headerGroup}>
+        {showSearch && <Input />}
+        {showColumnsViewOptions && <ColumnsViewOptions table={table} />}
+        {showSorting && <GridSorting table={table} />}
+      </div>
+      <div className={cs.headerGroup}>
+        {showPagination && <GridPagination gridModel={gridModel} />}
+      </div>
     </div>
   );
 }

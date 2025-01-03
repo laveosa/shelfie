@@ -1,6 +1,3 @@
-import cs from "./ProductsPage.module.scss";
-import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
-import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import {
   Columns3Icon,
   Download,
@@ -9,15 +6,21 @@ import {
   Receipt,
   Shirt,
 } from "lucide-react";
+
+import cs from "./ProductsPage.module.scss";
+import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SheTabs from "@/components/complex/she-tabs/SheTabs.tsx";
+import { ProductsFakeData } from "@/components/complex/grid/products-grid/FakeData.ts";
+import SheGrid from "@/components/complex/grid/she-grid/SheGrid.tsx";
 import { ProductsGridColumns } from "@/components/complex/grid/products-grid/ProductsGridColumns.tsx";
-import { GridDataTable } from "@/components/complex/grid/grid-data-table/GridDataTable.tsx";
 import {
-  ProductsFakeData,
-  // getPurchasesFakeData,
-  // getVariantsFakeData,
-} from "@/components/complex/grid/products-grid/FakeData.ts";
+  getCoreRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 
 //TODO Replace after we will have API to receiving actual data
 const productsData = ProductsFakeData;
@@ -26,6 +29,14 @@ const productsData = ProductsFakeData;
 
 export function ProductsPage() {
   const service = useProductsPageService();
+
+  const table = useReactTable({
+    data: productsData.items,
+    columns: ProductsGridColumns,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+  });
 
   //Needs to add handles functionality later
 
@@ -88,10 +99,11 @@ export function ProductsPage() {
             </TabsList>
           </div>
           <TabsContent value="products">
-            <GridDataTable
-              columns={ProductsGridColumns}
-              data={productsData.items}
+            <SheGrid
+              table={table}
               gridModel={productsData}
+              data={productsData.items}
+              columns={ProductsGridColumns}
             />
           </TabsContent>
           <TabsContent value="variants">

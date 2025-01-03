@@ -16,26 +16,19 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table.tsx";
-import { GridPagination } from "@/components/complex/grid/grid-pagination/GridPagination.tsx";
-import { ColumnsViewOptions } from "@/components/complex/grid/grid-columns-view-options/ColumnsViewOptions.tsx";
-import { GridSorting } from "@/components/complex/grid/grid-sorting/GridSorting.tsx";
-import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
-import { ItemFilter } from "@/components/complex/grid/item-filter/ItemFilter.tsx";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  gridModel: GridRequestModel;
 }
 
 export function GridDataTable<TData, TValue>({
   columns,
   data,
-  gridModel,
 }: DataTableProps<TData, TValue>) {
   const [loadingRows, setLoadingRows] = useState<Set<string>>(new Set());
 
-  const table = useReactTable({
+  const table = useReactTable<TData>({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
@@ -59,14 +52,6 @@ export function GridDataTable<TData, TValue>({
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <ItemFilter table={table} filteredColumn="brand" data={data} />
-        <div style={{ display: "flex", gap: "10px" }}>
-          <ColumnsViewOptions table={table} />
-          <GridSorting table={table} />
-        </div>
-        <GridPagination gridRequestModel={gridModel} table={table} />
-      </div>
       <div className="rounded-md border">
         <Table style={{ overflow: "hidden" }}>
           <TableHeader>
