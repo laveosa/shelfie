@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -16,15 +16,26 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table.tsx";
+import GridHeader from "@/components/complex/grid/grid-header/GridHeader.tsx";
+import { IGridHeader } from "@/const/interfaces/complex-components/IGridHeader.ts";
 
-interface DataTableProps<TData, TValue> {
+interface DataTableProps<TData, TValue> extends IGridHeader<TData> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  showHeader?: boolean;
+  children?: ReactNode;
 }
 
 export function GridDataTable<TData, TValue>({
   columns,
   data,
+  gridModel,
+  showHeader = true,
+  showPagination = true,
+  showSorting = true,
+  showColumnsViewOptions = true,
+  showSearch = true,
+  children,
 }: DataTableProps<TData, TValue>) {
   const [loadingRows, setLoadingRows] = useState<Set<string>>(new Set());
 
@@ -52,6 +63,18 @@ export function GridDataTable<TData, TValue>({
 
   return (
     <div>
+      {showHeader && (
+        <GridHeader
+          gridModel={gridModel}
+          table={table}
+          showPagination={showPagination}
+          showSorting={showSorting}
+          showColumnsViewOptions={showColumnsViewOptions}
+          showSearch={showSearch}
+        >
+          {children}
+        </GridHeader>
+      )}
       <div className="rounded-md border">
         <Table style={{ overflow: "hidden" }}>
           <TableHeader>

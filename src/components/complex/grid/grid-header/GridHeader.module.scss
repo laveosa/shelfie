@@ -2,10 +2,15 @@
   display: flex;
   width: 100%;
   justify-content: space-between;
-  margin: 5px 0 10px;
+  margin: 5px 0;
 
   .headerGroup {
     display: flex;
     gap: 10px;
+    align-items: center;
+
+    input {
+      height: 30px;
+    }
   }
 }

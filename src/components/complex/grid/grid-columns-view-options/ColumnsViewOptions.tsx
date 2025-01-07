@@ -10,6 +10,7 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import cs from "./ColumnsViewOptions.module.scss";
 
 interface IColumnsViewOptions<TData> {
   table: Table<TData>;
@@ -24,26 +25,13 @@ export function ColumnsViewOptions<TData>({
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <SheButton variant="outline" icon={Settings2}>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-              }}
-            >
-              Columns
-              <ChevronDown style={{ paddingTop: "4px" }} />
-            </div>
-          </SheButton>
-        </div>
+      <DropdownMenuTrigger className={cs.columnsViewOptions} asChild>
+        <SheButton variant="outline" icon={Settings2}>
+          <div className={cs.buttonInnerItems}>
+            Columns
+            <ChevronDown />
+          </div>
+        </SheButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-[150px]">
         <DropdownMenuLabel>Select Columns</DropdownMenuLabel>

@@ -13,14 +13,8 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SheTabs from "@/components/complex/she-tabs/SheTabs.tsx";
 import { ProductsFakeData } from "@/components/complex/grid/products-grid/FakeData.ts";
-import SheGrid from "@/components/complex/grid/she-grid/SheGrid.tsx";
 import { ProductsGridColumns } from "@/components/complex/grid/products-grid/ProductsGridColumns.tsx";
-import {
-  getCoreRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { GridDataTable } from "@/components/complex/grid/grid-data-table/GridDataTable.tsx";
 
 //TODO Replace after we will have API to receiving actual data
 const productsData = ProductsFakeData;
@@ -29,16 +23,6 @@ const productsData = ProductsFakeData;
 
 export function ProductsPage() {
   const service = useProductsPageService();
-
-  const table = useReactTable({
-    data: productsData.items,
-    columns: ProductsGridColumns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-  });
-
-  //Needs to add handles functionality later
 
   function handleAddProduct() {}
 
@@ -99,11 +83,10 @@ export function ProductsPage() {
             </TabsList>
           </div>
           <TabsContent value="products">
-            <SheGrid
-              table={table}
-              gridModel={productsData}
-              data={productsData.items}
+            <GridDataTable
               columns={ProductsGridColumns}
+              data={productsData.items}
+              gridModel={productsData}
             />
           </TabsContent>
           <TabsContent value="variants">

@@ -12,6 +12,7 @@ export default function GridHeader<TData>({
   showSorting = true,
   showColumnsViewOptions = true,
   showSearch = true,
+  children,
 }: IGridHeader<TData>) {
   return (
     <div className={cs.gridHeader}>
@@ -19,6 +20,7 @@ export default function GridHeader<TData>({
         {showSearch && <Input />}
         {showColumnsViewOptions && <ColumnsViewOptions table={table} />}
         {showSorting && <GridSorting table={table} />}
+        {children}
       </div>
       <div className={cs.headerGroup}>
         {showPagination && <GridPagination gridModel={gridModel} />}

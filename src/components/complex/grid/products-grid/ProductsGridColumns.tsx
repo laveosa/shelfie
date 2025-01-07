@@ -1,9 +1,10 @@
 import { ColumnDef } from "@tanstack/react-table";
+
 import { Switch } from "@/components/ui/switch.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { ProductsModel } from "@/const/models/ProductsModel.ts";
-import { ImageModel } from "@/const/models/ImageModel.ts";
 import ProductsGridColumnActions from "@/components/complex/grid/products-grid/ProductsGridColumnActions.tsx";
+import { ImageModel } from "@/const/models/ImageModel.ts";
 
 function onAction(
   actionType: string,
