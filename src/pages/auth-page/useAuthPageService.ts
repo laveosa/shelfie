@@ -46,6 +46,9 @@ export default function useAuthPageService() {
     dispatch(action.setLoading(true));
     return getCountryCode().then((res: any) => {
       dispatch(action.setLoading(false));
+      if (res.data) {
+        dispatch(action.setCountryCode(res.data));
+      }
       return res;
     });
   }

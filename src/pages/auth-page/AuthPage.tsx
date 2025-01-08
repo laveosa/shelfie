@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import cs from "./AuthPage.module.scss";
@@ -22,10 +22,15 @@ import {
 } from "@/components/ui/form.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { RequestAuthModel } from "@/const/models/RequestAuthModel.ts";
+import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
+import { IAuthPageSlice } from "@/const/interfaces/store-slices/IAuthPageSlice.ts";
+import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
+import { AuthPageSliceActions as action } from "@/state/slices/AuthPageSlice";
 
 export function AuthPage() {
   const service = useAuthPageService();
-  const [countryCode, setCountryCode] = useState([]);
+  const dispatch = useAppDispatch();
+  const state = useAppSelector<IAuthPageSlice>(StoreSliceEnum.AUTH);
 
   const form = useForm({
     defaultValues: {
@@ -44,12 +49,12 @@ export function AuthPage() {
   useEffect(() => {
     const fetchCountryCodes = async () => {
       const codes = await service.getCountryCodeHandler();
-      setCountryCode(codes.data);
-      form.setValue("phoneCodeModel", countryCode[0]);
+      dispatch(action.setCountryCode(codes.data));
+      form.setValue("phoneCodeModel", state.countryCode[0]);
     };
 
     fetchCountryCodes();
-  }, [countryCode]);
+  }, [state.countryCode]);
 
   function onSubmit(data: RequestAuthModel) {
     switch (service.authFormView) {
@@ -236,7 +241,7 @@ export function AuthPage() {
                           <FormLabel>Country Code</FormLabel>
                           <Select
                             onValueChange={(value) => {
-                              const selectedCountry = countryCode.find(
+                              const selectedCountry = state.countryCode.find(
                                 (country) => country.phoneCode === value,
                               );
                               field.onChange(selectedCountry);
@@ -249,7 +254,7 @@ export function AuthPage() {
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              {countryCode.map((option) => (
+                              {state.countryCode.map((option) => (
                                 <SelectItem
                                   key={option.countryId}
                                   value={option.phoneCode}
