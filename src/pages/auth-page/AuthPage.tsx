@@ -21,6 +21,7 @@ import {
   FormLabel,
 } from "@/components/ui/form.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
+import { RequestAuthModel } from "@/const/models/RequestAuthModel.ts";
 
 export function AuthPage() {
   const service = useAuthPageService();
@@ -36,7 +37,7 @@ export function AuthPage() {
       phoneNumber: "",
       verifyPhoneNumber: undefined,
       verifyCode: undefined,
-      countryCode: "",
+      phoneCodeModel: null,
     },
   });
 
@@ -44,16 +45,13 @@ export function AuthPage() {
     const fetchCountryCodes = async () => {
       const codes = await service.getCountryCodeHandler();
       setCountryCode(codes.data);
+      form.setValue("phoneCodeModel", countryCode[0]);
     };
 
-    if (countryCode.length > 0) {
-      form.setValue("countryCode", countryCode[0].phoneCode);
-    }
-
     fetchCountryCodes();
-  }, [countryCode, form]);
+  }, [countryCode]);
 
-  function onSubmit(data: any) {
+  function onSubmit(data: RequestAuthModel) {
     switch (service.authFormView) {
       case AuthFormViewEnum.SIGN_IN:
         service.userLoginHandler(data);
@@ -229,7 +227,7 @@ export function AuthPage() {
                   <div className={cs.formItem}>
                     <FormField
                       control={form.control}
-                      name="countryCode"
+                      name="phoneCodeModel"
                       rules={{
                         required: "Country code is required",
                       }}
@@ -237,8 +235,13 @@ export function AuthPage() {
                         <FormItem>
                           <FormLabel>Country Code</FormLabel>
                           <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
+                            onValueChange={(value) => {
+                              const selectedCountry = countryCode.find(
+                                (country) => country.phoneCode === value,
+                              );
+                              field.onChange(selectedCountry);
+                            }}
+                            value={field.value?.phoneCode || ""}
                           >
                             <FormControl>
                               <SelectTrigger>

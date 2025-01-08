@@ -46,7 +46,6 @@ export default function useAuthPageService() {
     dispatch(action.setLoading(true));
     return getCountryCode().then((res: any) => {
       dispatch(action.setLoading(false));
-      console.log("RES country code", res);
       return res;
     });
   }
