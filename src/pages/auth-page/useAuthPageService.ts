@@ -21,7 +21,6 @@ export default function useAuthPageService() {
     useForgotPasswordMutation,
     useResetPasswordMutation,
     useVerifyIdentityMutation,
-    useVerifyPhoneNumberMutation,
     useConfirmSignInNumberMutation,
   } = AuthApiHooks;
   const { useLazyGetCountryCodeQuery } = DictionaryApiHooks;
@@ -33,7 +32,6 @@ export default function useAuthPageService() {
   const [forgotPassword] = useForgotPasswordMutation();
   const [resetPassword] = useResetPasswordMutation();
   const [verifyIdentity] = useVerifyIdentityMutation();
-  const [verifyPhoneNumber] = useVerifyPhoneNumberMutation();
   const [confirmSignInNumber] = useConfirmSignInNumberMutation();
   const [getCountryCode] = useLazyGetCountryCodeQuery();
 
@@ -43,6 +41,15 @@ export default function useAuthPageService() {
   );
 
   // ------------------------------------------------------------------- API
+
+  function getCountryCodeHandler() {
+    dispatch(action.setLoading(true));
+    return getCountryCode().then((res: any) => {
+      dispatch(action.setLoading(false));
+      console.log("RES country code", res);
+      return res;
+    });
+  }
 
   function userLoginHandler(model: RequestAuthModel) {
     dispatch(action.setLoading(true));
@@ -99,25 +106,17 @@ export default function useAuthPageService() {
     });
   }
 
-  function verifyPhoneNumberHandler(model: RequestAuthModel) {
-    dispatch(action.setLoading(true));
-    return verifyPhoneNumber(model).then((res: any) => {
-      dispatch(action.setLoading(false));
-      console.log("RES verify Number", res);
-    });
-  }
+  // function verifyPhoneNumberHandler(model: RequestAuthModel) {
+  //   dispatch(action.setLoading(true));
+  //   return verifyPhoneNumber(model).then((res: any) => {
+  //     dispatch(action.setLoading(false));
+  //     console.log("RES verify Number", res);
+  //   });
+  // }
 
   function confirmSignInNumberHandler(model: RequestAuthModel) {
     dispatch(action.setLoading(true));
     return confirmSignInNumber(model).then((res: any) => {
-      dispatch(action.setLoading(false));
-      console.log("RES confirm phone number", res);
-    });
-  }
-
-  function getCountryCodeHandler() {
-    dispatch(action.setLoading(true));
-    return getCountryCode().then((res: any) => {
       dispatch(action.setLoading(false));
       console.log("RES confirm phone number", res);
     });
@@ -196,7 +195,7 @@ export default function useAuthPageService() {
     resetPasswordHandler,
     authFormViewChangeHandler,
     verifyIdentityHandler,
-    verifyPhoneNumberHandler,
+    // verifyPhoneNumberHandler,
     confirmSignInNumberHandler,
     getCountryCodeHandler,
   };

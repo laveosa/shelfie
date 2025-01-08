@@ -14,7 +14,11 @@ export class ApiConfigurationService {
   ) => {
     try {
       this.requestHandler(args);
-      const result = await this.customBaseQuery()(args, api, extraOptions);
+      const result = await this.customBaseQuery(args.baseUrl)(
+        args,
+        api,
+        extraOptions,
+      );
       this.responseHandler(result);
       return result;
     } catch (error) {
@@ -69,7 +73,7 @@ export class ApiConfigurationService {
     }
   }
 
-  private static customBaseQuery(baseUrl = ApiUrlEnum.BASE_URL) {
+  private static customBaseQuery(baseUrl = ApiUrlEnum.AUTH_BASE_URL) {
     return fetchBaseQuery({
       baseUrl,
       prepareHeaders: (headers) => {

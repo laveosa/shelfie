@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import cs from "./AuthPage.module.scss";
@@ -7,8 +7,6 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { AuthFormViewEnum } from "@/const/enums/AuthFormViewEnum.ts";
-import { RequestAuthModel } from "@/const/models/RequestAuthModel.ts";
-import countryCodes from "@/const/jsons/country-codes.json";
 import {
   Select,
   SelectContent,
@@ -26,8 +24,7 @@ import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 
 export function AuthPage() {
   const service = useAuthPageService();
-
-  const defaultCountryCode = countryCodes[0]?.code || undefined;
+  const [countryCode, setCountryCode] = useState([]);
 
   const form = useForm({
     defaultValues: {
@@ -39,17 +36,24 @@ export function AuthPage() {
       phoneNumber: "",
       verifyPhoneNumber: undefined,
       verifyCode: undefined,
-      countryCode: defaultCountryCode,
+      countryCode: "",
     },
   });
 
-  const selectedCountryCode = form.watch("countryCode");
-
   useEffect(() => {
-    service.getCountryCodeHandler();
-  }, []);
+    const fetchCountryCodes = async () => {
+      const codes = await service.getCountryCodeHandler();
+      setCountryCode(codes.data);
+    };
 
-  function onSubmit(data: RequestAuthModel) {
+    if (countryCode.length > 0) {
+      form.setValue("countryCode", countryCode[0].phoneCode);
+    }
+
+    fetchCountryCodes();
+  }, [countryCode, form]);
+
+  function onSubmit(data: any) {
     switch (service.authFormView) {
       case AuthFormViewEnum.SIGN_IN:
         service.userLoginHandler(data);
@@ -64,7 +68,6 @@ export function AuthPage() {
         service.resetPasswordHandler(data);
         break;
       case AuthFormViewEnum.VERIFY_PHONE_NUMBER:
-        data.phoneNumber = `${data.countryCode}${data.phoneNumber}`;
         service.verifyIdentityHandler(data);
         break;
       case AuthFormViewEnum.VERIFY_CODE:
@@ -72,7 +75,6 @@ export function AuthPage() {
         break;
     }
     console.log(data);
-    console.log(selectedCountryCode);
   }
 
   return (
@@ -228,6 +230,9 @@ export function AuthPage() {
                     <FormField
                       control={form.control}
                       name="countryCode"
+                      rules={{
+                        required: "Country code is required",
+                      }}
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Country Code</FormLabel>
@@ -241,20 +246,18 @@ export function AuthPage() {
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              {countryCodes.map((option) => (
+                              {countryCode.map((option) => (
                                 <SelectItem
-                                  key={option.code}
-                                  value={option.code}
+                                  key={option.countryId}
+                                  value={option.phoneCode}
                                 >
                                   <div className="flex items-center">
-                                    {option.flag && (
-                                      <img
-                                        src={option.flag}
-                                        alt={`${option.code} flag`}
-                                        className="w-5 h-5 mr-2"
-                                      />
-                                    )}
-                                    {option.code}
+                                    <div
+                                      dangerouslySetInnerHTML={{
+                                        __html: option.flagIcon,
+                                      }}
+                                    />
+                                    {option.phoneCode}
                                   </div>
                                 </SelectItem>
                               ))}
@@ -268,6 +271,14 @@ export function AuthPage() {
                     <SheForm.Field
                       rules={{
                         required: "Please select a country code",
+                        minLength: {
+                          value: 8,
+                          message: "Phone number must be at least 8 characters",
+                        },
+                        maxLength: {
+                          value: 9,
+                          message: "Phone number cannot exceed 9 characters",
+                        },
                       }}
                       name="phoneNumber"
                     >

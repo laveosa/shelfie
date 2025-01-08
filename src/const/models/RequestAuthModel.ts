@@ -1,3 +1,5 @@
+import { PhoneCodeModel } from "@/const/models/PhoneCodeModel.ts";
+
 export interface RequestAuthModel {
   firstName?: string;
   lastName?: string;
@@ -10,5 +12,5 @@ export interface RequestAuthModel {
   resetToken?: string;
   verifyPhoneNumber?: number;
   verifyCode?: number;
-  countryCode?: any;
+  phoneCodeModel: PhoneCodeModel;
 }

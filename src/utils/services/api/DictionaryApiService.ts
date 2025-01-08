@@ -1,10 +1,19 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { ApiConfigurationService as apiConfig } from "@/utils/services/api/ApiConfigurationService.ts";
 import { ApiServiceNameEnum } from "@/const/enums/ApiServiceNameEnum.ts";
+import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 
 export const DictionaryApiService = createApi({
   reducerPath: "Countries",
-  baseQuery: apiConfig.baseQueryWithInterceptors,
+  baseQuery: (args: any, api: any, extraOptions: any) =>
+    apiConfig.baseQueryWithInterceptors(
+      {
+        ...args,
+        baseUrl: ApiUrlEnum.DICTIONARY_BASE_URL,
+      },
+      api,
+      extraOptions,
+    ),
   tagTypes: ["Countries"],
   endpoints: (builder) => ({
     getCountryCode: apiConfig.createQuery<any, void>(builder, {

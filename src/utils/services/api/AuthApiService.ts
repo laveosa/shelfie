@@ -107,13 +107,13 @@ export const AuthApiService = createApi({
         },
       ],
     }),
-    verifyPhoneNumber: apiConfig.createMutation<
+    confirmSignInNumber: apiConfig.createMutation<
       ResponseAuthModel,
       RequestAuthModel
     >(builder, {
       query: (model: RequestAuthModel) => ({
-        url: `${ApiUrlEnum.AUTH}/verify-phone-number`,
-        method: "PATCH",
+        url: `${ApiUrlEnum.AUTH}/confirm-signin-number`,
+        method: "POST",
         body: JSON.stringify(model),
       }),
       invalidatesTags: (result) => [
@@ -123,13 +123,13 @@ export const AuthApiService = createApi({
         },
       ],
     }),
-    confirmSignInNumber: apiConfig.createMutation<
+    verifySignUpNumber: apiConfig.createMutation<
       ResponseAuthModel,
       RequestAuthModel
     >(builder, {
       query: (model: RequestAuthModel) => ({
-        url: `${ApiUrlEnum.AUTH}/confirm-signin-number`,
-        method: "POST",
+        url: `${ApiUrlEnum.AUTH}/verify-phone-number`,
+        method: "PATCH",
         body: JSON.stringify(model),
       }),
       invalidatesTags: (result) => [
