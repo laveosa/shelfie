@@ -31,7 +31,6 @@ export function AuthPage() {
   const service = useAuthPageService();
   const dispatch = useAppDispatch();
   const state = useAppSelector<IAuthPageSlice>(StoreSliceEnum.AUTH);
-
   const form = useForm({
     defaultValues: {
       email: "",
@@ -46,6 +45,9 @@ export function AuthPage() {
     },
   });
 
+  const phoneNumber = form.watch("phoneNumber");
+  const phoneCode = form.watch("phoneCodeModel.phoneCode");
+
   useEffect(() => {
     const fetchCountryCodes = async () => {
       const codes = await service.getCountryCodeHandler();
@@ -55,8 +57,6 @@ export function AuthPage() {
 
     fetchCountryCodes();
   }, [state.countryCode]);
-
-  const fullPhoneNumber = `${form.watch("phoneCodeModel.phoneCode")}${form.watch("phoneNumber")}`;
 
   function onSubmit(data: RequestAuthModel) {
     switch (service.authFormView) {
@@ -79,7 +79,6 @@ export function AuthPage() {
         service.confirmSignUpPhoneNumberHandler(data);
         break;
     }
-    console.log(data);
   }
 
   return (
@@ -228,8 +227,8 @@ export function AuthPage() {
                   </SheForm.Field>
                 </div>
               )}
-              {service.authFormView ===
-                AuthFormViewEnum.VERIFY_PHONE_NUMBER && (
+              {(service.authFormView === AuthFormViewEnum.VERIFY_PHONE_NUMBER ||
+                service.authFormView === AuthFormViewEnum.VERIFY_CODE) && (
                 <div className={cs.phoneInput}>
                   <div className={cs.formItem}>
                     <FormField
@@ -240,15 +239,24 @@ export function AuthPage() {
                       }}
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Country Code</FormLabel>
+                          <FormLabel>Phone number</FormLabel>
                           <Select
+                            disabled={
+                              service.authFormView ===
+                              AuthFormViewEnum.VERIFY_CODE
+                            }
                             onValueChange={(value) => {
                               const selectedCountry = state.countryCode.find(
                                 (country) => country.phoneCode === value,
                               );
                               field.onChange(selectedCountry);
                             }}
-                            value={field.value?.phoneCode || ""}
+                            value={
+                              service.authFormView ===
+                              AuthFormViewEnum.VERIFY_CODE
+                                ? phoneCode
+                                : field.value?.phoneCode || ""
+                            }
                           >
                             <FormControl>
                               <SelectTrigger>
@@ -292,45 +300,41 @@ export function AuthPage() {
                       }}
                       name="phoneNumber"
                     >
-                      <Input type="number" placeholder="phone number..." />
+                      <Input
+                        disabled={
+                          service.authFormView === AuthFormViewEnum.VERIFY_CODE
+                        }
+                        type="number"
+                        placeholder={
+                          service.authFormView === AuthFormViewEnum.VERIFY_CODE
+                            ? phoneNumber
+                            : "phone number..."
+                        }
+                      />
                     </SheForm.Field>
                   </div>
                 </div>
               )}
               {service.authFormView === AuthFormViewEnum.VERIFY_CODE && (
-                <>
-                  <div className={cs.formItem}>
-                    <SheForm.Field
-                      name="verifyPhoneNumber"
-                      label="Phone Number"
-                    >
-                      <Input
-                        disabled={true}
-                        type="tel"
-                        placeholder={fullPhoneNumber}
-                      />
-                    </SheForm.Field>
-                  </div>
-                  <div className={cs.formItem}>
-                    <SheForm.Field
-                      rules={{
-                        required: "Please enter code",
-                        minLength: {
-                          value: 6,
-                          message: "Code must be 6 characters",
-                        },
-                        maxLength: {
-                          value: 6,
-                          message: "Code must be 6 characters",
-                        },
-                      }}
-                      name="verifyCode"
-                      label="Enter the 6-digit code"
-                    >
-                      <Input type="number" placeholder="enter code..." />
-                    </SheForm.Field>
-                  </div>
-                </>
+                <div className={cs.formItem}>
+                  <SheForm.Field
+                    rules={{
+                      required: "Please enter code",
+                      minLength: {
+                        value: 6,
+                        message: "Code must be 6 characters",
+                      },
+                      maxLength: {
+                        value: 6,
+                        message: "Code must be 6 characters",
+                      },
+                    }}
+                    name="verifyCode"
+                    label="Enter the 6-digit code"
+                  >
+                    <Input type="number" placeholder="enter code..." />
+                  </SheForm.Field>
+                </div>
               )}
               <div className={cs.formButton}>
                 <SheForm.Submit>
