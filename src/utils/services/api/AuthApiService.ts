@@ -91,7 +91,7 @@ export const AuthApiService = createApi({
         },
       ],
     }),
-    verifyIdentity: apiConfig.createMutation<
+    sendSmsToConfirmPhoneNumber: apiConfig.createMutation<
       ResponseAuthModel,
       RequestAuthModel
     >(builder, {
@@ -123,13 +123,29 @@ export const AuthApiService = createApi({
         },
       ],
     }),
+    confirmSignUpPhoneNumber: apiConfig.createMutation<
+      ResponseAuthModel,
+      RequestAuthModel
+    >(builder, {
+      query: (model: RequestAuthModel) => ({
+        url: `${ApiUrlEnum.AUTH}/confirm-signup-number`,
+        method: "POST",
+        body: JSON.stringify(model),
+      }),
+      invalidatesTags: (result) => [
+        {
+          type: ApiServiceNameEnum.AUTH,
+          result,
+        },
+      ],
+    }),
     verifySignUpNumber: apiConfig.createMutation<
       ResponseAuthModel,
       RequestAuthModel
     >(builder, {
       query: (model: RequestAuthModel) => ({
-        url: `${ApiUrlEnum.AUTH}/verify-phone-number`,
-        method: "PATCH",
+        url: `${ApiUrlEnum.AUTH}/verify-signup-number`,
+        method: "POST",
         body: JSON.stringify(model),
       }),
       invalidatesTags: (result) => [

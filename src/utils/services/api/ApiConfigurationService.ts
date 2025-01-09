@@ -5,6 +5,7 @@ import { ApiServiceNameEnum } from "@/const/enums/ApiServiceNameEnum.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { StorageKeyEnum } from "@/const/enums/StorageKeyEnum.ts";
+import storageService from "@/utils/services/StorageService.ts";
 
 export class ApiConfigurationService {
   public static baseQueryWithInterceptors = async (
@@ -77,7 +78,7 @@ export class ApiConfigurationService {
     return fetchBaseQuery({
       baseUrl,
       prepareHeaders: (headers) => {
-        const token = localStorage.getItem(StorageKeyEnum.TOKEN);
+        const token = storageService.getLocalStorage(StorageKeyEnum.TOKEN);
 
         if (!token) {
           //TODO show error toast 'Missing token'

@@ -11,6 +11,6 @@ export interface RequestAuthModel {
   organizationId?: number;
   resetToken?: string;
   verifyPhoneNumber?: number;
-  verifyCode?: number;
+  code?: number;
   phoneCodeModel?: PhoneCodeModel;
 }

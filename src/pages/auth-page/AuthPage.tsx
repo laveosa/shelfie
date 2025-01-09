@@ -56,6 +56,8 @@ export function AuthPage() {
     fetchCountryCodes();
   }, [state.countryCode]);
 
+  const fullPhoneNumber = `${form.watch("phoneCodeModel.phoneCode")}${form.watch("phoneNumber")}`;
+
   function onSubmit(data: RequestAuthModel) {
     switch (service.authFormView) {
       case AuthFormViewEnum.SIGN_IN:
@@ -71,10 +73,10 @@ export function AuthPage() {
         service.resetPasswordHandler(data);
         break;
       case AuthFormViewEnum.VERIFY_PHONE_NUMBER:
-        service.verifyIdentityHandler(data);
+        service.verifySignupNumberHandler(data);
         break;
       case AuthFormViewEnum.VERIFY_CODE:
-        service.verifyPhoneNumberHandler(data);
+        service.confirmSignUpPhoneNumberHandler(data);
         break;
     }
     console.log(data);
@@ -299,13 +301,14 @@ export function AuthPage() {
                 <>
                   <div className={cs.formItem}>
                     <SheForm.Field
-                      rules={{
-                        required: "Please enter your phone number",
-                      }}
                       name="verifyPhoneNumber"
                       label="Phone Number"
                     >
-                      <Input type="tel" placeholder="phone ending on..." />
+                      <Input
+                        disabled={true}
+                        type="tel"
+                        placeholder={fullPhoneNumber}
+                      />
                     </SheForm.Field>
                   </div>
                   <div className={cs.formItem}>

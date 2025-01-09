@@ -11,7 +11,6 @@ import { IAuthPageSlice } from "@/const/interfaces/store-slices/IAuthPageSlice.t
 import { IAuthForm } from "@/const/interfaces/forms/IAuthForm.ts";
 import storageService from "@/utils/services/StorageService.ts";
 import { StorageKeyEnum } from "@/const/enums/StorageKeyEnum.ts";
-import { TokenModel } from "@/const/models/TokenModel.ts";
 import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
 
 export default function useAuthPageService() {
@@ -20,20 +19,25 @@ export default function useAuthPageService() {
     useUserSignUpMutation,
     useForgotPasswordMutation,
     useResetPasswordMutation,
-    useVerifyIdentityMutation,
+    useSendSmsToConfirmPhoneNumberMutation,
     useConfirmSignInNumberMutation,
+    useVerifySignUpNumberMutation,
+    useConfirmSignUpPhoneNumberMutation,
   } = AuthApiHooks;
   const { useLazyGetCountryCodeQuery } = DictionaryApiHooks;
 
   const state = useAppSelector<IAuthPageSlice>(StoreSliceEnum.AUTH);
   const dispatch = useAppDispatch();
+  const [getCountryCode] = useLazyGetCountryCodeQuery();
   const [userLogin] = useUserSignInMutation();
   const [registerNewUser] = useUserSignUpMutation();
   const [forgotPassword] = useForgotPasswordMutation();
   const [resetPassword] = useResetPasswordMutation();
-  const [verifyIdentity] = useVerifyIdentityMutation();
+  const [sendSmsToConfirmPhoneNumber] =
+    useSendSmsToConfirmPhoneNumberMutation();
   const [confirmSignInNumber] = useConfirmSignInNumberMutation();
-  const [getCountryCode] = useLazyGetCountryCodeQuery();
+  const [verifySignupNumber] = useVerifySignUpNumberMutation();
+  const [confirmSignUpPhoneNumber] = useConfirmSignUpPhoneNumberMutation();
 
   const navigate = useNavigate();
   let [formStaticText, setFormStaticText] = useState<IAuthForm>(
@@ -61,9 +65,7 @@ export default function useAuthPageService() {
         return;
       } else {
         authFormViewChangeHandler(AuthFormViewEnum.VERIFY_CODE);
-        storageService.setLocalStorage(StorageKeyEnum.TOKEN, {
-          bearerToken: res.data.token,
-        } as TokenModel);
+        storageService.setLocalStorage(StorageKeyEnum.TOKEN, res.data.token);
       }
     });
   }
@@ -72,14 +74,12 @@ export default function useAuthPageService() {
     dispatch(action.setLoading(true));
     return registerNewUser(model).then((res: any) => {
       dispatch(action.setLoading(false));
-
-      authFormViewChangeHandler(AuthFormViewEnum.VERIFY_PHONE_NUMBER);
-
-      // if (res.error) {
-      //   return;
-      // } else {
-      //   authFormViewChangeHandler(AuthFormViewEnum.VERIFY_PHONE_NUMBER);
-      // }
+      if (res.error) {
+        return;
+      } else {
+        storageService.setLocalStorage(StorageKeyEnum.TOKEN, res.data.token);
+        authFormViewChangeHandler(AuthFormViewEnum.VERIFY_PHONE_NUMBER);
+      }
       console.log("RES Register", res);
     });
   }
@@ -100,27 +100,40 @@ export default function useAuthPageService() {
     });
   }
 
-  function verifyIdentityHandler(model: RequestAuthModel) {
+  function sendSmsToConfirmPhoneNumberHandler(model: RequestAuthModel) {
     dispatch(action.setLoading(true));
-    return verifyIdentity(model).then((res: any) => {
+    return sendSmsToConfirmPhoneNumber(model).then((res: any) => {
       dispatch(action.setLoading(false));
       console.log("RES Verify Identity", res);
     });
   }
 
-  // function verifyPhoneNumberHandler(model: RequestAuthModel) {
-  //   dispatch(action.setLoading(true));
-  //   return verifyPhoneNumber(model).then((res: any) => {
-  //     dispatch(action.setLoading(false));
-  //     console.log("RES verify Number", res);
-  //   });
-  // }
+  function verifySignupNumberHandler(model: RequestAuthModel) {
+    dispatch(action.setLoading(true));
+    return verifySignupNumber(model).then((res: any) => {
+      dispatch(action.setLoading(false));
+      if (res.error) {
+        return;
+      } else {
+        authFormViewChangeHandler(AuthFormViewEnum.VERIFY_CODE);
+      }
+      console.log("RES verify Number", res);
+    });
+  }
 
   function confirmSignInNumberHandler(model: RequestAuthModel) {
     dispatch(action.setLoading(true));
     return confirmSignInNumber(model).then((res: any) => {
       dispatch(action.setLoading(false));
       console.log("RES confirm phone number", res);
+    });
+  }
+
+  function confirmSignUpPhoneNumberHandler(model: RequestAuthModel) {
+    dispatch(action.setLoading(true));
+    return confirmSignUpPhoneNumber(model).then((res: any) => {
+      dispatch(action.setLoading(false));
+      console.log("RES confirm signup phone number", res);
     });
   }
 
@@ -196,9 +209,11 @@ export default function useAuthPageService() {
     forgotPasswordHandler,
     resetPasswordHandler,
     authFormViewChangeHandler,
-    verifyIdentityHandler,
+    sendSmsToConfirmPhoneNumberHandler,
     // verifyPhoneNumberHandler,
     confirmSignInNumberHandler,
+    verifySignupNumberHandler,
     getCountryCodeHandler,
+    confirmSignUpPhoneNumberHandler,
   };
 }
