@@ -26,6 +26,8 @@ import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { IAuthPageSlice } from "@/const/interfaces/store-slices/IAuthPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { AuthPageSliceActions as action } from "@/state/slices/AuthPageSlice";
+import storageService from "@/utils/services/StorageService.ts";
+import { StorageKeyEnum } from "@/const/enums/StorageKeyEnum.ts";
 
 export function AuthPage() {
   const service = useAuthPageService();
@@ -45,8 +47,9 @@ export function AuthPage() {
     },
   });
 
-  const phoneNumber = form.watch("phoneNumber");
-  const phoneCode = form.watch("phoneCodeModel.phoneCode");
+  const phoneNumber: string = form.watch("phoneNumber");
+  const phoneCode: string = form.watch("phoneCodeModel.phoneCode");
+  let hiddenPhoneNumber: string = "1234";
 
   useEffect(() => {
     const fetchCountryCodes = async () => {
@@ -61,10 +64,19 @@ export function AuthPage() {
   function onSubmit(data: RequestAuthModel) {
     switch (service.authFormView) {
       case AuthFormViewEnum.SIGN_IN:
-        service.userLoginHandler(data);
+        service.userSignInHandler(data).then((res) => {
+          console.log("AUT_PAGE", res);
+          if (!res.error) {
+            service.verifySignInNumberHandler().then(() => {
+              hiddenPhoneNumber = storageService.getLocalStorage(
+                StorageKeyEnum.HIDDEN_PHONE_NUMBER,
+              );
+            });
+          }
+        });
         break;
       case AuthFormViewEnum.SIGN_UP:
-        service.registerNewUserHandler(data);
+        service.userSignUpHandler(data);
         break;
       case AuthFormViewEnum.FORGOT_PASSWORD:
         service.forgotPasswordHandler(data);
@@ -76,7 +88,9 @@ export function AuthPage() {
         service.verifySignupNumberHandler(data);
         break;
       case AuthFormViewEnum.VERIFY_CODE:
-        service.confirmSignUpPhoneNumberHandler(data);
+        hiddenPhoneNumber
+          ? service.confirmSignInNumberHandler(data)
+          : service.confirmSignUpPhoneNumberHandler(data);
         break;
     }
   }
@@ -230,61 +244,63 @@ export function AuthPage() {
               {(service.authFormView === AuthFormViewEnum.VERIFY_PHONE_NUMBER ||
                 service.authFormView === AuthFormViewEnum.VERIFY_CODE) && (
                 <div className={cs.phoneInput}>
-                  <div className={cs.formItem}>
-                    <FormField
-                      control={form.control}
-                      name="phoneCodeModel"
-                      rules={{
-                        required: "Country code is required",
-                      }}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Phone number</FormLabel>
-                          <Select
-                            disabled={
-                              service.authFormView ===
-                              AuthFormViewEnum.VERIFY_CODE
-                            }
-                            onValueChange={(value) => {
-                              const selectedCountry = state.countryCode.find(
-                                (country) => country.phoneCode === value,
-                              );
-                              field.onChange(selectedCountry);
-                            }}
-                            value={
-                              service.authFormView ===
-                              AuthFormViewEnum.VERIFY_CODE
-                                ? phoneCode
-                                : field.value?.phoneCode || ""
-                            }
-                          >
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {state.countryCode.map((option) => (
-                                <SelectItem
-                                  key={option.countryId}
-                                  value={option.phoneCode}
-                                >
-                                  <div className="flex items-center">
-                                    <div
-                                      dangerouslySetInnerHTML={{
-                                        __html: option.flagIcon,
-                                      }}
-                                    />
-                                    {option.phoneCode}
-                                  </div>
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </FormItem>
-                      )}
-                    />
-                  </div>
+                  {!hiddenPhoneNumber && (
+                    <div className={cs.formItem}>
+                      <FormField
+                        control={form.control}
+                        name="phoneCodeModel"
+                        rules={{
+                          required: "Country code is required",
+                        }}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Phone number</FormLabel>
+                            <Select
+                              disabled={
+                                service.authFormView ===
+                                AuthFormViewEnum.VERIFY_CODE
+                              }
+                              onValueChange={(value) => {
+                                const selectedCountry = state.countryCode.find(
+                                  (country) => country.phoneCode === value,
+                                );
+                                field.onChange(selectedCountry);
+                              }}
+                              value={
+                                service.authFormView ===
+                                AuthFormViewEnum.VERIFY_CODE
+                                  ? phoneCode
+                                  : field.value?.phoneCode || ""
+                              }
+                            >
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {state.countryCode.map((option) => (
+                                  <SelectItem
+                                    key={option.countryId}
+                                    value={option.phoneCode}
+                                  >
+                                    <div className="flex items-center">
+                                      <div
+                                        dangerouslySetInnerHTML={{
+                                          __html: option.flagIcon,
+                                        }}
+                                      />
+                                      {option.phoneCode}
+                                    </div>
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  )}
                   <div className={cs.formItem}>
                     <SheForm.Field
                       rules={{
@@ -299,6 +315,7 @@ export function AuthPage() {
                         },
                       }}
                       name="phoneNumber"
+                      label={hiddenPhoneNumber ? "Phone number" : null}
                     >
                       <Input
                         disabled={
@@ -307,8 +324,17 @@ export function AuthPage() {
                         type="number"
                         placeholder={
                           service.authFormView === AuthFormViewEnum.VERIFY_CODE
-                            ? phoneNumber
+                            ? hiddenPhoneNumber
+                              ? `Phone ending in ${hiddenPhoneNumber}`
+                              : phoneNumber
                             : "phone number..."
+                        }
+                        style={
+                          hiddenPhoneNumber
+                            ? {
+                                marginTop: "10px",
+                              }
+                            : null
                         }
                       />
                     </SheForm.Field>
