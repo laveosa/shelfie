@@ -90,6 +90,9 @@ export default function useAuthPageService() {
     dispatch(action.setLoading(true));
     return forgotPassword(model).then((res: any) => {
       dispatch(action.setLoading(false));
+      if (!res.error) {
+        authFormViewChangeHandler(AuthFormViewEnum.SIGN_IN);
+      }
       console.log("RES Forgot", res);
     });
   }
