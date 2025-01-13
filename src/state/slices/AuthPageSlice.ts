@@ -8,6 +8,7 @@ import { PhoneCodeModel } from "@/const/models/PhoneCodeModel.ts";
 const initialState: IAuthPageSlice = {
   authFormView: AuthFormViewEnum.SIGN_IN,
   countryCode: [],
+  hiddenPhoneNumber: null,
 };
 
 const AuthPageSlice = createSlice({
@@ -31,6 +32,12 @@ const AuthPageSlice = createSlice({
       { payload }: PayloadAction<PhoneCodeModel[]>,
     ) => {
       state.countryCode = payload;
+    },
+    setHiddenPhoneNumber: (
+      state: IAuthPageSlice,
+      { payload }: PayloadAction<any>,
+    ) => {
+      state.hiddenPhoneNumber = payload;
     },
   },
 });

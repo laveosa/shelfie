@@ -42,16 +42,16 @@ export function AuthPage() {
       lastName: "",
       phoneNumber: "",
       verifyPhoneNumber: undefined,
-      verifyCode: undefined,
+      code: undefined,
       phoneCodeModel: null,
     },
   });
 
   const phoneNumber: string = form.watch("phoneNumber");
   const phoneCode: string = form.watch("phoneCodeModel.phoneCode");
-  let hiddenPhoneNumber: string = "1234";
 
   useEffect(() => {
+    storageService.removeLocalStorage(StorageKeyEnum.TOKEN);
     const fetchCountryCodes = async () => {
       const codes = await service.getCountryCodeHandler();
       dispatch(action.setCountryCode(codes.data));
@@ -67,11 +67,7 @@ export function AuthPage() {
         service.userSignInHandler(data).then((res) => {
           console.log("AUT_PAGE", res);
           if (!res.error) {
-            service.verifySignInNumberHandler().then(() => {
-              hiddenPhoneNumber = storageService.getLocalStorage(
-                StorageKeyEnum.HIDDEN_PHONE_NUMBER,
-              );
-            });
+            service.verifySignInNumberHandler();
           }
         });
         break;
@@ -88,7 +84,7 @@ export function AuthPage() {
         service.verifySignupNumberHandler(data);
         break;
       case AuthFormViewEnum.VERIFY_CODE:
-        hiddenPhoneNumber
+        state.hiddenPhoneNumber
           ? service.confirmSignInNumberHandler(data)
           : service.confirmSignUpPhoneNumberHandler(data);
         break;
@@ -244,7 +240,7 @@ export function AuthPage() {
               {(service.authFormView === AuthFormViewEnum.VERIFY_PHONE_NUMBER ||
                 service.authFormView === AuthFormViewEnum.VERIFY_CODE) && (
                 <div className={cs.phoneInput}>
-                  {!hiddenPhoneNumber && (
+                  {!state.hiddenPhoneNumber && (
                     <div className={cs.formItem}>
                       <FormField
                         control={form.control}
@@ -284,7 +280,7 @@ export function AuthPage() {
                                     key={option.countryId}
                                     value={option.phoneCode}
                                   >
-                                    <div className="flex items-center">
+                                    <div className="flex items-center gap-2">
                                       <div
                                         dangerouslySetInnerHTML={{
                                           __html: option.flagIcon,
@@ -301,21 +297,36 @@ export function AuthPage() {
                       />
                     </div>
                   )}
-                  <div className={cs.formItem}>
+                  <div
+                    className={cs.formItem}
+                    style={
+                      state.hiddenPhoneNumber
+                        ? {
+                            width: "100%",
+                          }
+                        : null
+                    }
+                  >
                     <SheForm.Field
-                      rules={{
-                        required: "Please select a country code",
-                        minLength: {
-                          value: 8,
-                          message: "Phone number must be at least 8 characters",
-                        },
-                        maxLength: {
-                          value: 9,
-                          message: "Phone number cannot exceed 9 characters",
-                        },
-                      }}
+                      rules={
+                        !state.hiddenPhoneNumber
+                          ? {
+                              required: "Please select a country code",
+                              minLength: {
+                                value: 8,
+                                message:
+                                  "Phone number must be at least 8 characters",
+                              },
+                              maxLength: {
+                                value: 9,
+                                message:
+                                  "Phone number cannot exceed 9 characters",
+                              },
+                            }
+                          : null
+                      }
                       name="phoneNumber"
-                      label={hiddenPhoneNumber ? "Phone number" : null}
+                      label={state.hiddenPhoneNumber ? "Phone number" : null}
                     >
                       <Input
                         disabled={
@@ -324,13 +335,13 @@ export function AuthPage() {
                         type="number"
                         placeholder={
                           service.authFormView === AuthFormViewEnum.VERIFY_CODE
-                            ? hiddenPhoneNumber
-                              ? `Phone ending in ${hiddenPhoneNumber}`
+                            ? state.hiddenPhoneNumber
+                              ? `Phone ending in ${state.hiddenPhoneNumber}`
                               : phoneNumber
                             : "phone number..."
                         }
                         style={
-                          hiddenPhoneNumber
+                          state.hiddenPhoneNumber
                             ? {
                                 marginTop: "10px",
                               }
@@ -339,6 +350,20 @@ export function AuthPage() {
                       />
                     </SheForm.Field>
                   </div>
+                  {!state.hiddenPhoneNumber && (
+                    <div className={cs.changePhoneNumber}>
+                      <span
+                        className="she-text-link"
+                        onClick={() =>
+                          service.authFormViewChangeHandler(
+                            AuthFormViewEnum.VERIFY_PHONE_NUMBER,
+                          )
+                        }
+                      >
+                        {service.formStaticText.changePhoneNumberLink}
+                      </span>
+                    </div>
+                  )}
                 </div>
               )}
               {service.authFormView === AuthFormViewEnum.VERIFY_CODE && (
@@ -355,7 +380,7 @@ export function AuthPage() {
                         message: "Code must be 6 characters",
                       },
                     }}
-                    name="verifyCode"
+                    name="code"
                     label="Enter the 6-digit code"
                   >
                     <Input type="number" placeholder="enter code..." />

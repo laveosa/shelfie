@@ -91,22 +91,6 @@ export const AuthApiService = createApi({
         },
       ],
     }),
-    sendSmsToConfirmPhoneNumber: apiConfig.createMutation<
-      ResponseAuthModel,
-      RequestAuthModel
-    >(builder, {
-      query: (model: RequestAuthModel) => ({
-        url: `${ApiUrlEnum.AUTH}/verify-identity`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-      invalidatesTags: (result) => [
-        {
-          type: ApiServiceNameEnum.AUTH,
-          result,
-        },
-      ],
-    }),
     confirmSignInNumber: apiConfig.createMutation<
       ResponseAuthModel,
       RequestAuthModel

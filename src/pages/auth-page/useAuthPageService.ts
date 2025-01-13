@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { AuthPageSliceActions as action } from "@/state/slices/AuthPageSlice";
@@ -19,7 +19,6 @@ export default function useAuthPageService() {
     useUserSignUpMutation,
     useForgotPasswordMutation,
     useResetPasswordMutation,
-    useSendSmsToConfirmPhoneNumberMutation,
     useConfirmSignInNumberMutation,
     useVerifySignUpNumberMutation,
     useConfirmSignUpPhoneNumberMutation,
@@ -34,13 +33,12 @@ export default function useAuthPageService() {
   const [userSignUp] = useUserSignUpMutation();
   const [forgotPassword] = useForgotPasswordMutation();
   const [resetPassword] = useResetPasswordMutation();
-  const [sendSmsToConfirmPhoneNumber] =
-    useSendSmsToConfirmPhoneNumberMutation();
   const [confirmSignInNumber] = useConfirmSignInNumberMutation();
   const [verifySignupNumber] = useVerifySignUpNumberMutation();
   const [confirmSignUpPhoneNumber] = useConfirmSignUpPhoneNumberMutation();
   const [verifySignInNumber] = useVerifySignInNumberMutation();
 
+  const location = useLocation();
   const navigate = useNavigate();
   let [formStaticText, setFormStaticText] = useState<IAuthForm>(
     _getAuthPageStaticText(state.authFormView),
@@ -105,19 +103,12 @@ export default function useAuthPageService() {
     });
   }
 
-  function sendSmsToConfirmPhoneNumberHandler(model: RequestAuthModel) {
-    dispatch(action.setLoading(true));
-    return sendSmsToConfirmPhoneNumber(model).then((res: any) => {
-      dispatch(action.setLoading(false));
-      console.log("RES Verify Identity", res);
-    });
-  }
-
   function confirmSignInNumberHandler(model: RequestAuthModel) {
     dispatch(action.setLoading(true));
     return confirmSignInNumber(model).then((res: any) => {
       dispatch(action.setLoading(false));
       console.log("RES confirm phone number", res);
+      navigate("/dashboard");
     });
   }
 
@@ -128,11 +119,9 @@ export default function useAuthPageService() {
       if (res.error) {
         authFormViewChangeHandler(AuthFormViewEnum.VERIFY_PHONE_NUMBER);
       } else {
-        storageService.setLocalStorage(
-          StorageKeyEnum.HIDDEN_PHONE_NUMBER,
-          res.data.hiddenPhoneNumber,
-        );
         authFormViewChangeHandler(AuthFormViewEnum.VERIFY_CODE);
+        dispatch(action.setHiddenPhoneNumber(res.data.hiddenPhoneNumber));
+        console.log("Phone number: ", state.hiddenPhoneNumber);
       }
     });
   }
@@ -145,6 +134,7 @@ export default function useAuthPageService() {
         storageService.removeLocalStorage(StorageKeyEnum.TOKEN);
         authFormViewChangeHandler(AuthFormViewEnum.SIGN_UP);
       } else {
+        navigate("/dashboard");
         console.log("RES confirm signup phone number", res);
       }
     });
@@ -164,6 +154,13 @@ export default function useAuthPageService() {
   }
 
   // ------------------------------------------------------------------- LOGIC
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.has("change-password")) {
+      authFormViewChangeHandler(AuthFormViewEnum.CHANGE_PASSWORD);
+    }
+  }, [location]);
 
   function authFormViewChangeHandler(view: AuthFormViewEnum) {
     dispatch(action.setAuthFormView(view));
@@ -214,6 +211,7 @@ export default function useAuthPageService() {
           title: "Verify Your Identity",
           subTitle: "We’ve sent a text message to:",
           buttonText: "Continue",
+          changePhoneNumberLink: "Change",
           footerText: "Didn’t receive a code? ",
           footerLink: "Resend",
         };
@@ -236,7 +234,6 @@ export default function useAuthPageService() {
     userSignUpHandler,
     forgotPasswordHandler,
     resetPasswordHandler,
-    sendSmsToConfirmPhoneNumberHandler,
     confirmSignInNumberHandler,
     verifySignupNumberHandler,
     confirmSignUpPhoneNumberHandler,

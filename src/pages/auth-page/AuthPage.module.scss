@@ -78,9 +78,34 @@
           }
         }
 
+        .changePhoneNumber {
+          position: absolute;
+          top: 38px;
+          left: 78%;
+
+          span {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: vars.$textColor;
+          }
+        }
+
         .formItem {
           margin-bottom: vars.$marginStandard;
-          width: 100%;
+
+          .selectItem {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+          }
+
+          select {
+            option {
+              display: flex;
+              align-items: center;
+              gap: 5px;
+            }
+          }
         }
 
         .formButton {

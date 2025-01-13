@@ -7,4 +7,5 @@ export interface IAuthPageSlice {
   authModel?: RequestAuthModel;
   authFormView?: AuthFormViewEnum;
   countryCode?: PhoneCodeModel[];
+  hiddenPhoneNumber?: number;
 }
