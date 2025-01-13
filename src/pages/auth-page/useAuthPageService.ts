@@ -44,6 +44,17 @@ export default function useAuthPageService() {
     _getAuthPageStaticText(state.authFormView),
   );
 
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.has("change-password")) {
+      authFormViewChangeHandler(AuthFormViewEnum.CHANGE_PASSWORD);
+    }
+    const token = params.get("token");
+    if (token) {
+      storageService.setLocalStorage(StorageKeyEnum.RESET_TOKEN, token);
+    }
+  }, [location]);
+
   // ------------------------------------------------------------------- API
 
   function getCountryCodeHandler() {
@@ -97,8 +108,12 @@ export default function useAuthPageService() {
 
   function resetPasswordHandler(model: RequestAuthModel) {
     dispatch(action.setLoading(true));
+    model.resetToken = storageService.getLocalStorage(
+      StorageKeyEnum.RESET_TOKEN,
+    );
     return resetPassword(model).then((res: any) => {
       dispatch(action.setLoading(false));
+
       console.log("RES Reset", res);
     });
   }
@@ -108,7 +123,7 @@ export default function useAuthPageService() {
     return confirmSignInNumber(model).then((res: any) => {
       dispatch(action.setLoading(false));
       console.log("RES confirm phone number", res);
-      navigate("/dashboard");
+      // navigate("/dashboard");
     });
   }
 
@@ -154,13 +169,6 @@ export default function useAuthPageService() {
   }
 
   // ------------------------------------------------------------------- LOGIC
-
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    if (params.has("change-password")) {
-      authFormViewChangeHandler(AuthFormViewEnum.CHANGE_PASSWORD);
-    }
-  }, [location]);
 
   function authFormViewChangeHandler(view: AuthFormViewEnum) {
     dispatch(action.setAuthFormView(view));
