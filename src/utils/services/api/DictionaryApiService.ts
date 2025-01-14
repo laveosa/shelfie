@@ -2,9 +2,10 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import { ApiConfigurationService as apiConfig } from "@/utils/services/api/ApiConfigurationService.ts";
 import { ApiServiceNameEnum } from "@/const/enums/ApiServiceNameEnum.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
+import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 
 export const DictionaryApiService = createApi({
-  reducerPath: "Countries",
+  reducerPath: ApiServiceNameEnum.DICTIONARY,
   baseQuery: (args: any, api: any, extraOptions: any) =>
     apiConfig.baseQueryWithInterceptors(
       {
@@ -14,14 +15,13 @@ export const DictionaryApiService = createApi({
       api,
       extraOptions,
     ),
-  tagTypes: ["Countries"],
+  tagTypes: [ApiServiceNameEnum.DICTIONARY],
   endpoints: (builder) => ({
-    getCountryCode: apiConfig.createQuery<any, void>(builder, {
+    getCountryCode: apiConfig.createQuery<CountryCodeModel[], void>(builder, {
       query: () => ({
-        url: "Countries/list",
+        url: `${ApiUrlEnum.COUNTRIES}/list`,
       }),
-      // transformResponse: (res: any) => res, //TODO delete this code after we will receive real data
-      providesTags: (result: any) =>
+      providesTags: (result: CountryCodeModel[]) =>
         apiConfig.providesTags(result, ApiServiceNameEnum.DICTIONARY),
     }),
   }),

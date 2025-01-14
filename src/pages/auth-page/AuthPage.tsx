@@ -65,7 +65,6 @@ export function AuthPage() {
     switch (service.authFormView) {
       case AuthFormViewEnum.SIGN_IN:
         service.userSignInHandler(data).then((res) => {
-          console.log("AUT_PAGE", res);
           if (!res.error) {
             service.verifySignInNumberHandler();
           }

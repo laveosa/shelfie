@@ -8,7 +8,15 @@ import { ResponseAuthModel } from "@/const/models/ResponseAuthModel.ts";
 
 export const AuthApiService = createApi({
   reducerPath: ApiServiceNameEnum.AUTH,
-  baseQuery: apiConfig.baseQueryWithInterceptors,
+  baseQuery: (args: any, api: any, extraOptions: any) =>
+    apiConfig.baseQueryWithInterceptors(
+      {
+        ...args,
+        baseUrl: ApiUrlEnum.AUTH_BASE_URL,
+      },
+      api,
+      extraOptions,
+    ),
   tagTypes: [ApiServiceNameEnum.AUTH],
   endpoints: (builder) => ({
     userSignIn: apiConfig.createMutation<ResponseAuthModel, RequestAuthModel>(

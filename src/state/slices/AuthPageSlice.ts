@@ -39,6 +39,9 @@ const AuthPageSlice = createSlice({
     ) => {
       state.hiddenPhoneNumber = payload;
     },
+    setResetToken: (state: IAuthPageSlice, { payload }: PayloadAction<any>) => {
+      state.resetToken = payload;
+    },
   },
 });
 

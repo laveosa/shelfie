@@ -74,7 +74,7 @@ export class ApiConfigurationService {
     }
   }
 
-  private static customBaseQuery(baseUrl = ApiUrlEnum.AUTH_BASE_URL) {
+  private static customBaseQuery(baseUrl: ApiUrlEnum) {
     return fetchBaseQuery({
       baseUrl,
       prepareHeaders: (headers) => {

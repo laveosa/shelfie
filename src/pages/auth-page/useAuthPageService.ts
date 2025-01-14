@@ -51,7 +51,7 @@ export default function useAuthPageService() {
     }
     const token = params.get("token");
     if (token) {
-      storageService.setLocalStorage(StorageKeyEnum.RESET_TOKEN, token);
+      dispatch(action.setResetToken(token));
     }
   }, [location]);
 
@@ -91,7 +91,6 @@ export default function useAuthPageService() {
         storageService.setLocalStorage(StorageKeyEnum.TOKEN, res.data.token);
         authFormViewChangeHandler(AuthFormViewEnum.VERIFY_PHONE_NUMBER);
       }
-      console.log("RES Register", res);
     });
   }
 
@@ -102,28 +101,22 @@ export default function useAuthPageService() {
       if (!res.error) {
         authFormViewChangeHandler(AuthFormViewEnum.SIGN_IN);
       }
-      console.log("RES Forgot", res);
     });
   }
 
   function resetPasswordHandler(model: RequestAuthModel) {
     dispatch(action.setLoading(true));
-    model.resetToken = storageService.getLocalStorage(
-      StorageKeyEnum.RESET_TOKEN,
-    );
-    return resetPassword(model).then((res: any) => {
+    model.resetToken = state.resetToken;
+    return resetPassword(model).then((_res: any) => {
       dispatch(action.setLoading(false));
-
-      console.log("RES Reset", res);
     });
   }
 
   function confirmSignInNumberHandler(model: RequestAuthModel) {
     dispatch(action.setLoading(true));
-    return confirmSignInNumber(model).then((res: any) => {
+    return confirmSignInNumber(model).then((_res: any) => {
       dispatch(action.setLoading(false));
-      console.log("RES confirm phone number", res);
-      // navigate("/dashboard");
+      navigate("/dashboard");
     });
   }
 
@@ -136,7 +129,6 @@ export default function useAuthPageService() {
       } else {
         authFormViewChangeHandler(AuthFormViewEnum.VERIFY_CODE);
         dispatch(action.setHiddenPhoneNumber(res.data.hiddenPhoneNumber));
-        console.log("Phone number: ", state.hiddenPhoneNumber);
       }
     });
   }
@@ -150,7 +142,6 @@ export default function useAuthPageService() {
         authFormViewChangeHandler(AuthFormViewEnum.SIGN_UP);
       } else {
         navigate("/dashboard");
-        console.log("RES confirm signup phone number", res);
       }
     });
   }
@@ -164,7 +155,6 @@ export default function useAuthPageService() {
       } else {
         authFormViewChangeHandler(AuthFormViewEnum.VERIFY_CODE);
       }
-      console.log("RES verify Number", res);
     });
   }
 
@@ -173,8 +163,6 @@ export default function useAuthPageService() {
   function authFormViewChangeHandler(view: AuthFormViewEnum) {
     dispatch(action.setAuthFormView(view));
     setFormStaticText(_getAuthPageStaticText(view));
-
-    console.log(view);
   }
 
   // ------------------------------------------------------------------- PRIVATE
