@@ -1,0 +1,14 @@
+.columnsViewOptions {
+  height: 30px;
+  padding: 8px;
+
+  .buttonInnerItems {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    svg {
+      padding-top: 4px;
+    }
+  }
+}
