@@ -14,17 +14,17 @@ import { StorageKeyEnum } from "@/const/enums/StorageKeyEnum.ts";
 import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
 
 export default function useAuthPageService() {
+  const { useLazyGetCountryCodeQuery } = DictionaryApiHooks;
   const {
     useUserSignInMutation,
-    useUserSignUpMutation,
-    useForgotPasswordMutation,
-    useResetPasswordMutation,
+    useVerifySignInNumberMutation,
     useConfirmSignInNumberMutation,
+    useUserSignUpMutation,
     useVerifySignUpNumberMutation,
     useConfirmSignUpPhoneNumberMutation,
-    useVerifySignInNumberMutation,
+    useForgotPasswordMutation,
+    useResetPasswordMutation,
   } = AuthApiHooks;
-  const { useLazyGetCountryCodeQuery } = DictionaryApiHooks;
 
   const state = useAppSelector<IAuthPageSlice>(StoreSliceEnum.AUTH);
   const dispatch = useAppDispatch();
@@ -40,10 +40,11 @@ export default function useAuthPageService() {
 
   const location = useLocation();
   const navigate = useNavigate();
-  let [formStaticText, setFormStaticText] = useState<IAuthForm>(
+  const [formStaticText, setFormStaticText] = useState<IAuthForm>(
     _getAuthPageStaticText(state.authFormView),
   );
 
+  //TODO extract logic into AUTH page component
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     if (params.has("change-password")) {
@@ -75,40 +76,10 @@ export default function useAuthPageService() {
       if (res.error) {
         return;
       } else {
+        //TODO update logic working with token logic in local storage and implement in all relates calls
         storageService.setLocalStorage(StorageKeyEnum.TOKEN, res.data.token);
         return res;
       }
-    });
-  }
-
-  function userSignUpHandler(model: RequestAuthModel) {
-    dispatch(action.setLoading(true));
-    return userSignUp(model).then((res: any) => {
-      dispatch(action.setLoading(false));
-      if (res.error) {
-        return;
-      } else {
-        storageService.setLocalStorage(StorageKeyEnum.TOKEN, res.data.token);
-        authFormViewChangeHandler(AuthFormViewEnum.VERIFY_PHONE_NUMBER);
-      }
-    });
-  }
-
-  function forgotPasswordHandler(model: RequestAuthModel) {
-    dispatch(action.setLoading(true));
-    return forgotPassword(model).then((res: any) => {
-      dispatch(action.setLoading(false));
-      if (!res.error) {
-        authFormViewChangeHandler(AuthFormViewEnum.SIGN_IN);
-      }
-    });
-  }
-
-  function resetPasswordHandler(model: RequestAuthModel) {
-    dispatch(action.setLoading(true));
-    model.resetToken = state.resetToken;
-    return resetPassword(model).then((_res: any) => {
-      dispatch(action.setLoading(false));
     });
   }
 
@@ -116,6 +87,7 @@ export default function useAuthPageService() {
     dispatch(action.setLoading(true));
     return confirmSignInNumber(model).then((_res: any) => {
       dispatch(action.setLoading(false));
+      //TODO update navigation logic to be able to use relative routes and test in dev environment
       navigate("/dashboard");
     });
   }
@@ -133,15 +105,15 @@ export default function useAuthPageService() {
     });
   }
 
-  function confirmSignUpPhoneNumberHandler(model: RequestAuthModel) {
+  function userSignUpHandler(model: RequestAuthModel) {
     dispatch(action.setLoading(true));
-    return confirmSignUpPhoneNumber(model).then((res: any) => {
+    return userSignUp(model).then((res: any) => {
       dispatch(action.setLoading(false));
       if (res.error) {
-        storageService.removeLocalStorage(StorageKeyEnum.TOKEN);
-        authFormViewChangeHandler(AuthFormViewEnum.SIGN_UP);
+        return;
       } else {
-        navigate("/dashboard");
+        storageService.setLocalStorage(StorageKeyEnum.TOKEN, res.data.token);
+        authFormViewChangeHandler(AuthFormViewEnum.VERIFY_PHONE_NUMBER);
       }
     });
   }
@@ -155,6 +127,40 @@ export default function useAuthPageService() {
       } else {
         authFormViewChangeHandler(AuthFormViewEnum.VERIFY_CODE);
       }
+    });
+  }
+
+  function confirmSignUpPhoneNumberHandler(model: RequestAuthModel) {
+    dispatch(action.setLoading(true));
+    return confirmSignUpPhoneNumber(model).then((res: any) => {
+      dispatch(action.setLoading(false));
+      if (res.error) {
+        storageService.removeLocalStorage(StorageKeyEnum.TOKEN);
+        authFormViewChangeHandler(AuthFormViewEnum.SIGN_UP);
+      } else {
+        navigate("/dashboard");
+      }
+    });
+  }
+
+  function forgotPasswordHandler(model: RequestAuthModel) {
+    dispatch(action.setLoading(true));
+    return forgotPassword(model).then((res: any) => {
+      dispatch(action.setLoading(false));
+      if (res.error) {
+        return;
+      } else {
+        authFormViewChangeHandler(AuthFormViewEnum.SIGN_IN);
+      }
+    });
+  }
+
+  function resetPasswordHandler(model: RequestAuthModel) {
+    dispatch(action.setLoading(true));
+    model.resetToken = state.resetToken;
+    return resetPassword(model).then((_res: any) => {
+      dispatch(action.setLoading(false));
+      authFormViewChangeHandler(AuthFormViewEnum.SIGN_IN);
     });
   }
 
@@ -224,15 +230,15 @@ export default function useAuthPageService() {
   return {
     ...state,
     formStaticText,
-    authFormViewChangeHandler,
     getCountryCodeHandler,
     userSignInHandler,
-    userSignUpHandler,
-    forgotPasswordHandler,
-    resetPasswordHandler,
+    verifySignInNumberHandler,
     confirmSignInNumberHandler,
+    userSignUpHandler,
     verifySignupNumberHandler,
     confirmSignUpPhoneNumberHandler,
-    verifySignInNumberHandler,
+    forgotPasswordHandler,
+    resetPasswordHandler,
+    authFormViewChangeHandler,
   };
 }
