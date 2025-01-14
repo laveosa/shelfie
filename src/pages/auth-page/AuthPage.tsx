@@ -61,6 +61,23 @@ export function AuthPage() {
     fetchCountryCodes();
   }, [state.countryCode]);
 
+  function onFooterLink() {
+    switch (service.authFormView) {
+      case AuthFormViewEnum.SIGN_IN:
+        service.authFormViewChangeHandler(AuthFormViewEnum.SIGN_UP);
+        break;
+      case AuthFormViewEnum.SIGN_UP:
+        service.authFormViewChangeHandler(AuthFormViewEnum.SIGN_IN);
+        break;
+      case AuthFormViewEnum.VERIFY_CODE:
+        //TODO implement resend verification code API
+        state.hiddenPhoneNumber
+          ? service.verifySignInNumberHandler()
+          : service.confirmSignUpPhoneNumberHandler(form.getValues());
+        break;
+    }
+  }
+
   function onSubmit(data: RequestAuthModel) {
     switch (service.authFormView) {
       case AuthFormViewEnum.SIGN_IN:
@@ -407,62 +424,54 @@ export function AuthPage() {
           service.authFormView === AuthFormViewEnum.FORGOT_PASSWORD) && (
           <span>{service.formStaticText.footerText} </span>
         )}
-        <span
-          className="she-text-link"
-          onClick={() =>
-            service.authFormView === AuthFormViewEnum.SIGN_IN
-              ? service.authFormViewChangeHandler(AuthFormViewEnum.SIGN_UP)
-              : service.authFormViewChangeHandler(AuthFormViewEnum.SIGN_IN)
-          }
-        >
+        <span className="she-text-link" onClick={onFooterLink}>
           {service.formStaticText.footerLink}
         </span>
       </div>
-
-      <div style={{ display: "flex", paddingTop: "20px" }}>
-        <SheButton
-          variant="outline"
-          onClick={() =>
-            service.authFormViewChangeHandler(AuthFormViewEnum.FORGOT_PASSWORD)
-          }
-        >
-          Forgot Password
-        </SheButton>
-        <SheButton
-          variant="outline"
-          onClick={() =>
-            service.authFormViewChangeHandler(
-              AuthFormViewEnum.VERIFY_PHONE_NUMBER,
-            )
-          }
-        >
-          VERIFY_IDENTITY
-        </SheButton>
-        <SheButton
-          variant="outline"
-          onClick={() =>
-            service.authFormViewChangeHandler(AuthFormViewEnum.VERIFY_CODE)
-          }
-        >
-          VERIFY_PHONE_NUMBER
-        </SheButton>
-        <SheButton
-          variant="outline"
-          onClick={() =>
-            service.authFormViewChangeHandler(AuthFormViewEnum.CHANGE_PASSWORD)
-          }
-        >
-          CHANGE_PASSWORD
-        </SheButton>
-        <SheButton
-          variant="outline"
-          onClick={() =>
-            service.authFormViewChangeHandler(AuthFormViewEnum.SIGN_UP)
-          }
-        >
-          SIGN_UP
-        </SheButton>
-      </div>
+      {/*<div style={{ display: "flex", paddingTop: "20px" }}>*/}
+      {/*  <SheButton*/}
+      {/*    variant="outline"*/}
+      {/*    onClick={() =>*/}
+      {/*      service.authFormViewChangeHandler(AuthFormViewEnum.FORGOT_PASSWORD)*/}
+      {/*    }*/}
+      {/*  >*/}
+      {/*    Forgot Password*/}
+      {/*  </SheButton>*/}
+      {/*  <SheButton*/}
+      {/*    variant="outline"*/}
+      {/*    onClick={() =>*/}
+      {/*      service.authFormViewChangeHandler(*/}
+      {/*        AuthFormViewEnum.VERIFY_PHONE_NUMBER,*/}
+      {/*      )*/}
+      {/*    }*/}
+      {/*  >*/}
+      {/*    VERIFY_IDENTITY*/}
+      {/*  </SheButton>*/}
+      {/*  <SheButton*/}
+      {/*    variant="outline"*/}
+      {/*    onClick={() =>*/}
+      {/*      service.authFormViewChangeHandler(AuthFormViewEnum.VERIFY_CODE)*/}
+      {/*    }*/}
+      {/*  >*/}
+      {/*    VERIFY_PHONE_NUMBER*/}
+      {/*  </SheButton>*/}
+      {/*  <SheButton*/}
+      {/*    variant="outline"*/}
+      {/*    onClick={() =>*/}
+      {/*      service.authFormViewChangeHandler(AuthFormViewEnum.CHANGE_PASSWORD)*/}
+      {/*    }*/}
+      {/*  >*/}
+      {/*    CHANGE_PASSWORD*/}
+      {/*  </SheButton>*/}
+      {/*  <SheButton*/}
+      {/*    variant="outline"*/}
+      {/*    onClick={() =>*/}
+      {/*      service.authFormViewChangeHandler(AuthFormViewEnum.SIGN_UP)*/}
+      {/*    }*/}
+      {/*  >*/}
+      {/*    SIGN_UP*/}
+      {/*  </SheButton>*/}
+      {/*</div>*/}
     </div>
   );
 }
