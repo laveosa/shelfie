@@ -147,22 +147,22 @@ export const AuthApiService = createApi({
         },
       ],
     }),
-    verifySignInNumber: apiConfig.createMutation<
-      ResponseAuthModel,
-      RequestAuthModel
-    >(builder, {
-      query: (model: RequestAuthModel) => ({
-        url: `${ApiUrlEnum.AUTH}/verify-signin-number`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-      invalidatesTags: (result) => [
-        {
-          type: ApiServiceNameEnum.AUTH,
-          result,
-        },
-      ],
-    }),
+    verifySignInNumber: apiConfig.createMutation<ResponseAuthModel, void>(
+      builder,
+      {
+        query: () => ({
+          url: `${ApiUrlEnum.AUTH}/verify-signin-number`,
+          method: "POST",
+          body: {},
+        }),
+        invalidatesTags: (result) => [
+          {
+            type: ApiServiceNameEnum.AUTH,
+            result,
+          },
+        ],
+      },
+    ),
   }),
 });
 

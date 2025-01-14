@@ -1,12 +1,6 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import cs from "./AuthPage.module.scss";
-import useAuthPageService from "@/pages/auth-page/useAuthPageService.ts";
-import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
-import { Input } from "@/components/ui/input.tsx";
-import { AuthFormViewEnum } from "@/const/enums/AuthFormViewEnum.ts";
 import {
   Select,
   SelectContent,
@@ -20,6 +14,12 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form.tsx";
+import cs from "./AuthPage.module.scss";
+import useAuthPageService from "@/pages/auth-page/useAuthPageService.ts";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
+import { Input } from "@/components/ui/input.tsx";
+import { AuthFormViewEnum } from "@/const/enums/AuthFormViewEnum.ts";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { RequestAuthModel } from "@/const/models/RequestAuthModel.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
@@ -41,8 +41,8 @@ export function AuthPage() {
       firstName: "",
       lastName: "",
       phoneNumber: "",
-      verifyPhoneNumber: undefined,
-      code: undefined,
+      verifyPhoneNumber: null,
+      code: null,
       phoneCodeModel: null,
     },
   });
@@ -64,11 +64,7 @@ export function AuthPage() {
   function onSubmit(data: RequestAuthModel) {
     switch (service.authFormView) {
       case AuthFormViewEnum.SIGN_IN:
-        service.userSignInHandler(data).then((res) => {
-          if (!res.error) {
-            service.verifySignInNumberHandler();
-          }
-        });
+        service.userSignInHandler(data);
         break;
       case AuthFormViewEnum.SIGN_UP:
         service.userSignUpHandler(data);

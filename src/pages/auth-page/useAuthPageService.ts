@@ -78,7 +78,7 @@ export default function useAuthPageService() {
       } else {
         //TODO update logic working with token logic in local storage and implement in all relates calls
         storageService.setLocalStorage(StorageKeyEnum.TOKEN, res.data.token);
-        return res;
+        verifySignInNumberHandler();
       }
     });
   }
@@ -92,9 +92,9 @@ export default function useAuthPageService() {
     });
   }
 
-  function verifySignInNumberHandler(model: RequestAuthModel) {
+  function verifySignInNumberHandler() {
     dispatch(action.setLoading(true));
-    return verifySignInNumber(model).then((res: any) => {
+    return verifySignInNumber().then((res: any) => {
       dispatch(action.setLoading(false));
       if (res.error) {
         authFormViewChangeHandler(AuthFormViewEnum.VERIFY_PHONE_NUMBER);
