@@ -1,2 +1,168 @@
+@use "@/styles/variables" as vars;
+
+@mixin flex-settings {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
 #AuthPage {
+  @include flex-settings;
+  padding: 100px;
+  justify-content: center;
+
+  .authPageWrapper {
+    @include flex-settings;
+    width: 100%;
+    max-width: 350px;
+    min-width: 240px;
+    padding: 20px;
+    border: vars.$brdLight;
+    border-radius: vars.$brdR_075;
+
+    .authHeader {
+      @include flex-settings;
+      gap: 10px;
+      width: 100%;
+      margin-bottom: 20px;
+      text-align: center;
+
+      .authHeaderLogo {
+        width: 40px;
+        border-radius: 50%;
+      }
+    }
+
+    .authContent {
+      width: 100%;
+
+      .authInputBlock {
+        position: relative;
+
+        .phoneInput {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+
+          button {
+            box-shadow: none;
+
+            span {
+              padding-right: 5px;
+            }
+          }
+
+          input {
+            margin-top: 32px;
+
+            &[aria-invalid="true"] {
+              margin-top: 60px;
+            }
+          }
+        }
+
+        .passwordInput {
+          position: relative;
+        }
+
+        .forgotPasswordLink {
+          position: absolute;
+          top: 92px;
+          left: 65%;
+
+          span {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: vars.$textColor;
+          }
+        }
+
+        .changePhoneNumber {
+          position: absolute;
+          top: 38px;
+          left: 78%;
+
+          span {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: vars.$textColor;
+          }
+        }
+
+        .formItem {
+          margin-bottom: vars.$marginStandard;
+
+          .selectItem {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+          }
+
+          select {
+            option {
+              display: flex;
+              align-items: center;
+              gap: 5px;
+            }
+          }
+        }
+
+        .formButton {
+          padding: vars.$paddingSmall 0;
+        }
+
+        input {
+          box-shadow: none;
+        }
+
+        button {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+//------------------------------------------------------------------- SOCIAL MEDIA AUTH
+
+#AuthPage {
+  .facebookButtonBlock {
+    @include flex-settings;
+    gap: 20px;
+    padding-top: 10px;
+
+    .authContentBorder {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      width: 100%;
+      font-size: vars.$fontSizeSubtext;
+      color: vars.$subtextColor;
+    }
+
+    .authContentBorder::before,
+    .authContentBorder::after {
+      content: "";
+      flex: 1;
+      margin: 0 2px;
+      border-bottom: 1px solid vars.$brdColor;
+    }
+  }
+}
+
+//------------------------------------------------------------------- FOOTER TEXT
+
+#AuthPage {
+  .footerText {
+    text-align: center;
+    padding-top: 20px;
+
+    span {
+      padding-left: 10px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: vars.$textColor;
+    }
+  }
 }

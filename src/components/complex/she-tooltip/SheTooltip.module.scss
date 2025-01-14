@@ -1,2 +1,54 @@
-.SheTooltip {
+.sheTooltip {
+  .tooltipMessageBlock {
+    display: flex;
+    flex-direction: column;
+    max-width: 200px;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+}
+
+// ====================================== VIEW
+
+.sheTooltip {
+  .tooltipMessageBlock {
+    display: flex;
+    flex-direction: column;
+
+    &.dark {
+      background-color: #18181b;
+
+      span {
+        color: #ffffff;
+      }
+    }
+
+    &.danger {
+      background-color: #db2626;
+
+      span {
+        color: #ffffff;
+      }
+    }
+
+    &.warning {
+      background-color: #facc15;
+    }
+
+    &.success {
+      background-color: #22c55e;
+
+      span {
+        color: #ffffff;
+      }
+    }
+
+    &.primary {
+      background: linear-gradient(270deg, #244434 0%, #315947 100%);
+
+      span {
+        color: #ffffff;
+      }
+    }
+  }
 }

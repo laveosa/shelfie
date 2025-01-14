@@ -1,0 +1,35 @@
+name: Azure Static Web Apps CI/CD
+
+pr:
+  branches:
+    include:
+      - main
+trigger:
+  branches:
+    include:
+      - main
+
+jobs:
+- job: build_and_deploy_job
+  displayName: Build and Deploy Job
+  condition: or(eq(variables['Build.Reason'], 'Manual'),or(eq(variables['Build.Reason'], 'PullRequest'),eq(variables['Build.Reason'], 'IndividualCI')))
+  pool:
+    vmImage: ubuntu-latest
+  variables:
+  - group: Azure-Static-Web-Apps-green-glacier-0d48d5603-variable-group
+  steps:
+  - checkout: self
+    submodules: true
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '14.x' 
+  - script: |
+      npm install
+      npm run build
+    displayName: 'Install and Build'
+  - task: AzureStaticWebApp@0
+    inputs:
+      azure_static_web_apps_api_token: $(AZURE_STATIC_WEB_APPS_API_TOKEN_GREEN_GLACIER_0D48D5603)
+      app_location: "/" 
+      api_location: "" 
+      output_location: "dist" 

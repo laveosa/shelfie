@@ -8,7 +8,7 @@ const initialState: IDashboardPageSlice = {};
 const DashboardPageSlice = createSlice({
   name: StoreSliceEnum.DASHBOARD,
   initialState,
-  reducers: {},
+  reducers: null,
 });
 
 export const DashboardPageSliceActions = DashboardPageSlice.actions;

@@ -49,9 +49,16 @@ body {
 
 .she-text-link {
   @extend .she-text;
+  //font-size: vars.$fontSizeSubtext;
   color: vars.$textLinkColor;
   text-decoration: underline;
   cursor: pointer;
+}
+
+.she-text-error {
+  @extend .she-text;
+  color: vars.$colorRed;
+  font-size: vars.$fontSizeSubtext;
 }
 
 /*// -------------------------------------------------------------------------- TOTAL*/
