@@ -6,6 +6,7 @@ import { ISheTooltip } from "@/const/interfaces/complex-components/ISheTooltip.t
 import { InputPatternEnum } from "@/const/enums/InputPatternEnum.ts";
 
 export interface ISheInput extends IBaseComponent, InputProps {
+  id?: any;
   label?: string;
   labelTransKey?: string;
   placeholderTransKey?: string;

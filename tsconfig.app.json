@@ -30,13 +30,12 @@
       ]
     },
     "strictNullChecks": false,
-    "suppressImplicitAnyIndexErrors": true,
     "noImplicitAny": false,
     "strictFunctionTypes": false,
     "strictPropertyInitialization": false,
     "noImplicitThis": false,
     "allowSyntheticDefaultImports": true,
-    "noUnusedLocals": false,
+    "noUnusedLocals": false
   },
   "include": [
     "src"
