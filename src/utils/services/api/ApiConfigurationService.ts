@@ -4,6 +4,8 @@ import { IApiQueryDefinition } from "@/const/interfaces/IApiQueryDefinition.ts";
 import { ApiServiceNameEnum } from "@/const/enums/ApiServiceNameEnum.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { StorageKeyEnum } from "@/const/enums/StorageKeyEnum.ts";
+import storageService from "@/utils/services/StorageService.ts";
 
 export class ApiConfigurationService {
   public static baseQueryWithInterceptors = async (
@@ -13,7 +15,11 @@ export class ApiConfigurationService {
   ) => {
     try {
       this.requestHandler(args);
-      const result = await this.customBaseQuery()(args, api, extraOptions);
+      const result = await this.customBaseQuery(args.baseUrl)(
+        args,
+        api,
+        extraOptions,
+      );
       this.responseHandler(result);
       return result;
     } catch (error) {
@@ -68,14 +74,19 @@ export class ApiConfigurationService {
     }
   }
 
-  private static customBaseQuery(baseUrl = ApiUrlEnum.BASE_URL) {
+  private static customBaseQuery(baseUrl: ApiUrlEnum) {
     return fetchBaseQuery({
       baseUrl,
       prepareHeaders: (headers) => {
-        const token = localStorage.getItem("token");
-        if (token) {
-          headers.set("Authorization", `Bearer ${token}`);
+        const token = storageService.getLocalStorage(StorageKeyEnum.TOKEN);
+
+        if (!token) {
+          //TODO show error toast 'Missing token'
+          // window.location.href = NavUrlEnum.AUTH;
         }
+
+        headers.set("Authorization", `Bearer ${token}`);
+        headers.set("Content-Type", "application/json");
         return headers;
       },
     });

@@ -25,9 +25,11 @@
       gap: 10px;
       width: 100%;
       margin-bottom: 20px;
+      text-align: center;
 
       .authHeaderLogo {
         width: 40px;
+        border-radius: 50%;
       }
     }
 
@@ -37,8 +39,73 @@
       .authInputBlock {
         position: relative;
 
+        .phoneInput {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+
+          button {
+            box-shadow: none;
+
+            span {
+              padding-right: 5px;
+            }
+          }
+
+          input {
+            margin-top: 32px;
+
+            &[aria-invalid="true"] {
+              margin-top: 60px;
+            }
+          }
+        }
+
+        .passwordInput {
+          position: relative;
+        }
+
+        .forgotPasswordLink {
+          position: absolute;
+          top: 92px;
+          left: 65%;
+
+          span {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: vars.$textColor;
+          }
+        }
+
+        .changePhoneNumber {
+          position: absolute;
+          top: 38px;
+          left: 78%;
+
+          span {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: vars.$textColor;
+          }
+        }
+
         .formItem {
           margin-bottom: vars.$marginStandard;
+
+          .selectItem {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+          }
+
+          select {
+            option {
+              display: flex;
+              align-items: center;
+              gap: 5px;
+            }
+          }
         }
 
         .formButton {
@@ -63,6 +130,7 @@
   .facebookButtonBlock {
     @include flex-settings;
     gap: 20px;
+    padding-top: 10px;
 
     .authContentBorder {
       display: flex;
@@ -83,7 +151,18 @@
   }
 }
 
-//------------------------------------------------------------------- SOCIAL MEDIA AUTH
+//------------------------------------------------------------------- FOOTER TEXT
 
 #AuthPage {
+  .footerText {
+    text-align: center;
+    padding-top: 20px;
+
+    span {
+      padding-left: 10px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: vars.$textColor;
+    }
+  }
 }

@@ -8,10 +8,18 @@ import { ResponseAuthModel } from "@/const/models/ResponseAuthModel.ts";
 
 export const AuthApiService = createApi({
   reducerPath: ApiServiceNameEnum.AUTH,
-  baseQuery: apiConfig.baseQueryWithInterceptors,
+  baseQuery: (args: any, api: any, extraOptions: any) =>
+    apiConfig.baseQueryWithInterceptors(
+      {
+        ...args,
+        baseUrl: ApiUrlEnum.AUTH_BASE_URL,
+      },
+      api,
+      extraOptions,
+    ),
   tagTypes: [ApiServiceNameEnum.AUTH],
   endpoints: (builder) => ({
-    userLogin: apiConfig.createMutation<ResponseAuthModel, RequestAuthModel>(
+    userSignIn: apiConfig.createMutation<ResponseAuthModel, RequestAuthModel>(
       builder,
       {
         query: (model: RequestAuthModel) => ({
@@ -27,22 +35,22 @@ export const AuthApiService = createApi({
         ],
       },
     ),
-    registerNewUser: apiConfig.createMutation<
-      ResponseAuthModel,
-      RequestAuthModel
-    >(builder, {
-      query: (model: RequestAuthModel) => ({
-        url: `${ApiUrlEnum.AUTH}/signup`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-      invalidatesTags: (result) => [
-        {
-          type: ApiServiceNameEnum.AUTH,
-          result,
-        },
-      ],
-    }),
+    userSignUp: apiConfig.createMutation<ResponseAuthModel, RequestAuthModel>(
+      builder,
+      {
+        query: (model: RequestAuthModel) => ({
+          url: `${ApiUrlEnum.AUTH}/signup`,
+          method: "POST",
+          body: JSON.stringify(model),
+        }),
+        invalidatesTags: (result) => [
+          {
+            type: ApiServiceNameEnum.AUTH,
+            result,
+          },
+        ],
+      },
+    ),
     switchOrganization: apiConfig.createMutation<void, RequestAuthModel>(
       builder,
       {
@@ -91,6 +99,70 @@ export const AuthApiService = createApi({
         },
       ],
     }),
+    confirmSignInNumber: apiConfig.createMutation<
+      ResponseAuthModel,
+      RequestAuthModel
+    >(builder, {
+      query: (model: RequestAuthModel) => ({
+        url: `${ApiUrlEnum.AUTH}/confirm-signin-number`,
+        method: "POST",
+        body: JSON.stringify(model),
+      }),
+      invalidatesTags: (result) => [
+        {
+          type: ApiServiceNameEnum.AUTH,
+          result,
+        },
+      ],
+    }),
+    confirmSignUpPhoneNumber: apiConfig.createMutation<
+      ResponseAuthModel,
+      RequestAuthModel
+    >(builder, {
+      query: (model: RequestAuthModel) => ({
+        url: `${ApiUrlEnum.AUTH}/confirm-signup-number`,
+        method: "POST",
+        body: JSON.stringify(model),
+      }),
+      invalidatesTags: (result) => [
+        {
+          type: ApiServiceNameEnum.AUTH,
+          result,
+        },
+      ],
+    }),
+    verifySignUpNumber: apiConfig.createMutation<
+      ResponseAuthModel,
+      RequestAuthModel
+    >(builder, {
+      query: (model: RequestAuthModel) => ({
+        url: `${ApiUrlEnum.AUTH}/verify-signup-number`,
+        method: "POST",
+        body: JSON.stringify(model),
+      }),
+      invalidatesTags: (result) => [
+        {
+          type: ApiServiceNameEnum.AUTH,
+          result,
+        },
+      ],
+    }),
+    verifySignInNumber: apiConfig.createMutation<ResponseAuthModel, void>(
+      builder,
+      {
+        query: () => ({
+          url: `${ApiUrlEnum.AUTH}/verify-signin-number`,
+          method: "POST",
+          body: {},
+        }),
+        invalidatesTags: (result) => [
+          {
+            type: ApiServiceNameEnum.AUTH,
+            result,
+          },
+        ],
+      },
+    ),
   }),
 });
 

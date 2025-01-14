@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { AuthPageSliceActions as action } from "@/state/slices/AuthPageSlice";
@@ -9,43 +9,137 @@ import { AuthFormViewEnum } from "@/const/enums/AuthFormViewEnum.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { IAuthPageSlice } from "@/const/interfaces/store-slices/IAuthPageSlice.ts";
 import { IAuthForm } from "@/const/interfaces/forms/IAuthForm.ts";
-import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
+import storageService from "@/utils/services/StorageService.ts";
+import { StorageKeyEnum } from "@/const/enums/StorageKeyEnum.ts";
+import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
 
 export default function useAuthPageService() {
+  const { useLazyGetCountryCodeQuery } = DictionaryApiHooks;
   const {
-    useUserLoginMutation,
-    useRegisterNewUserMutation,
+    useUserSignInMutation,
+    useVerifySignInNumberMutation,
+    useConfirmSignInNumberMutation,
+    useUserSignUpMutation,
+    useVerifySignUpNumberMutation,
+    useConfirmSignUpPhoneNumberMutation,
     useForgotPasswordMutation,
     useResetPasswordMutation,
   } = AuthApiHooks;
+
   const state = useAppSelector<IAuthPageSlice>(StoreSliceEnum.AUTH);
   const dispatch = useAppDispatch();
-  const [userLogin] = useUserLoginMutation();
-  const [registerNewUser] = useRegisterNewUserMutation();
+  const [getCountryCode] = useLazyGetCountryCodeQuery();
+  const [userSignIn] = useUserSignInMutation();
+  const [userSignUp] = useUserSignUpMutation();
   const [forgotPassword] = useForgotPasswordMutation();
   const [resetPassword] = useResetPasswordMutation();
+  const [confirmSignInNumber] = useConfirmSignInNumberMutation();
+  const [verifySignupNumber] = useVerifySignUpNumberMutation();
+  const [confirmSignUpPhoneNumber] = useConfirmSignUpPhoneNumberMutation();
+  const [verifySignInNumber] = useVerifySignInNumberMutation();
 
+  const location = useLocation();
   const navigate = useNavigate();
-  let [formStaticText, setFormStaticText] = useState<IAuthForm>(
+  const [formStaticText, setFormStaticText] = useState<IAuthForm>(
     _getAuthPageStaticText(state.authFormView),
   );
 
+  //TODO extract logic into AUTH page component
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.has("change-password")) {
+      authFormViewChangeHandler(AuthFormViewEnum.CHANGE_PASSWORD);
+    }
+    const token = params.get("token");
+    if (token) {
+      dispatch(action.setResetToken(token));
+    }
+  }, [location]);
+
   // ------------------------------------------------------------------- API
 
-  function userLoginHandler(model: RequestAuthModel) {
+  function getCountryCodeHandler() {
     dispatch(action.setLoading(true));
-    return userLogin(model).then((res: any) => {
+    return getCountryCode().then((res: any) => {
       dispatch(action.setLoading(false));
-      console.log("RES Login", res);
-      navigate(`/${NavUrlEnum.DASHBOARD}`);
+      if (res.data) {
+        dispatch(action.setCountryCode(res.data));
+      }
+      return res;
     });
   }
 
-  function registerNewUserHandler(model: RequestAuthModel) {
+  function userSignInHandler(model: RequestAuthModel) {
     dispatch(action.setLoading(true));
-    return registerNewUser(model).then((res: any) => {
+    return userSignIn(model).then((res: any) => {
       dispatch(action.setLoading(false));
-      console.log("RES Register", res);
+      if (res.error) {
+        return;
+      } else {
+        //TODO update logic working with token logic in local storage and implement in all relates calls
+        storageService.setLocalStorage(StorageKeyEnum.TOKEN, res.data.token);
+        verifySignInNumberHandler();
+      }
+    });
+  }
+
+  function confirmSignInNumberHandler(model: RequestAuthModel) {
+    dispatch(action.setLoading(true));
+    return confirmSignInNumber(model).then((_res: any) => {
+      dispatch(action.setLoading(false));
+      //TODO update navigation logic to be able to use relative routes and test in dev environment
+      navigate("/dashboard");
+    });
+  }
+
+  function verifySignInNumberHandler() {
+    dispatch(action.setLoading(true));
+    return verifySignInNumber().then((res: any) => {
+      dispatch(action.setLoading(false));
+      if (res.error) {
+        authFormViewChangeHandler(AuthFormViewEnum.VERIFY_PHONE_NUMBER);
+      } else {
+        authFormViewChangeHandler(AuthFormViewEnum.VERIFY_CODE);
+        dispatch(action.setHiddenPhoneNumber(res.data.hiddenPhoneNumber));
+      }
+    });
+  }
+
+  function userSignUpHandler(model: RequestAuthModel) {
+    dispatch(action.setLoading(true));
+    return userSignUp(model).then((res: any) => {
+      dispatch(action.setLoading(false));
+      if (res.error) {
+        return;
+      } else {
+        storageService.setLocalStorage(StorageKeyEnum.TOKEN, res.data.token);
+        authFormViewChangeHandler(AuthFormViewEnum.VERIFY_PHONE_NUMBER);
+      }
+    });
+  }
+
+  function verifySignupNumberHandler(model: RequestAuthModel) {
+    dispatch(action.setLoading(true));
+    return verifySignupNumber(model).then((res: any) => {
+      dispatch(action.setLoading(false));
+      if (res.error) {
+        return;
+      } else {
+        authFormViewChangeHandler(AuthFormViewEnum.VERIFY_CODE);
+      }
+    });
+  }
+
+  function confirmSignUpPhoneNumberHandler(model: RequestAuthModel) {
+    dispatch(action.setLoading(true));
+    return confirmSignUpPhoneNumber(model).then((res: any) => {
+      dispatch(action.setLoading(false));
+      if (res.error) {
+        storageService.removeLocalStorage(StorageKeyEnum.TOKEN);
+        authFormViewChangeHandler(AuthFormViewEnum.SIGN_UP);
+      } else {
+        navigate("/dashboard");
+      }
     });
   }
 
@@ -53,15 +147,20 @@ export default function useAuthPageService() {
     dispatch(action.setLoading(true));
     return forgotPassword(model).then((res: any) => {
       dispatch(action.setLoading(false));
-      console.log("RES Forgot", res);
+      if (res.error) {
+        return;
+      } else {
+        authFormViewChangeHandler(AuthFormViewEnum.SIGN_IN);
+      }
     });
   }
 
   function resetPasswordHandler(model: RequestAuthModel) {
     dispatch(action.setLoading(true));
-    return resetPassword(model).then((res: any) => {
+    model.resetToken = state.resetToken;
+    return resetPassword(model).then((_res: any) => {
       dispatch(action.setLoading(false));
-      console.log("RES Reset", res);
+      authFormViewChangeHandler(AuthFormViewEnum.SIGN_IN);
     });
   }
 
@@ -70,8 +169,6 @@ export default function useAuthPageService() {
   function authFormViewChangeHandler(view: AuthFormViewEnum) {
     dispatch(action.setAuthFormView(view));
     setFormStaticText(_getAuthPageStaticText(view));
-
-    console.log(view);
   }
 
   // ------------------------------------------------------------------- PRIVATE
@@ -81,24 +178,29 @@ export default function useAuthPageService() {
       case AuthFormViewEnum.SIGN_UP:
         return {
           title: "Sign up with your email",
-          subTitle: "Create your account",
+          subTitle: "Enter your information to join",
+          facebookButtonText: "Sign up with Facebook",
           buttonText: "Sign up",
-          footerText: "Log in",
+          footerText: "Already have account?",
+          footerLink: "Sign in",
         };
-      case AuthFormViewEnum.LOGIN:
+      case AuthFormViewEnum.SIGN_IN:
         return {
-          title: "Log in with your email",
-          subTitle: "Enter your information to login",
+          title: "Sign in with your email",
+          subTitle: "Enter your information to sign in",
+          facebookButtonText: "Sign in with Facebook",
           forgotPasswordLink: "Forgot password",
-          buttonText: "Log in",
-          footerText: "Sign up",
+          buttonText: "Sign in",
+          footerText: "Don’t have an account yet? ",
+          footerLink: "Sign up",
         };
       case AuthFormViewEnum.FORGOT_PASSWORD:
         return {
           title: "Forgot password",
           subTitle: "Enter your email to reset password",
-          forgotPasswordLink: "Return to login",
           buttonText: "Send reset link",
+          footerText: "Already have account?",
+          footerLink: "Sign in",
         };
       case AuthFormViewEnum.CHANGE_PASSWORD:
         return {
@@ -106,14 +208,35 @@ export default function useAuthPageService() {
           subTitle: "Enter your new password",
           buttonText: "Change password",
         };
+      case AuthFormViewEnum.VERIFY_CODE:
+        return {
+          title: "Verify Your Identity",
+          subTitle: "We’ve sent a text message to:",
+          buttonText: "Continue",
+          changePhoneNumberLink: "Change",
+          footerText: "Didn’t receive a code? ",
+          footerLink: "Resend",
+        };
+      case AuthFormViewEnum.VERIFY_PHONE_NUMBER:
+        return {
+          title: "Verify Your Identity",
+          subTitle:
+            "Please provide phone number so we could send you a message",
+          buttonText: "Send",
+        };
     }
   }
 
   return {
     ...state,
     formStaticText,
-    userLoginHandler,
-    registerNewUserHandler,
+    getCountryCodeHandler,
+    userSignInHandler,
+    verifySignInNumberHandler,
+    confirmSignInNumberHandler,
+    userSignUpHandler,
+    verifySignupNumberHandler,
+    confirmSignUpPhoneNumberHandler,
     forgotPasswordHandler,
     resetPasswordHandler,
     authFormViewChangeHandler,

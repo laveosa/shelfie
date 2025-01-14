@@ -3,9 +3,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IAuthPageSlice } from "@/const/interfaces/store-slices/IAuthPageSlice.ts";
 import { AuthFormViewEnum } from "@/const/enums/AuthFormViewEnum.ts";
+import { PhoneCodeModel } from "@/const/models/PhoneCodeModel.ts";
 
 const initialState: IAuthPageSlice = {
-  authFormView: AuthFormViewEnum.LOGIN,
+  authFormView: AuthFormViewEnum.SIGN_IN,
+  countryCode: [],
+  hiddenPhoneNumber: null,
 };
 
 const AuthPageSlice = createSlice({
@@ -23,6 +26,21 @@ const AuthPageSlice = createSlice({
       { payload }: PayloadAction<AuthFormViewEnum>,
     ) => {
       state.authFormView = payload;
+    },
+    setCountryCode: (
+      state: IAuthPageSlice,
+      { payload }: PayloadAction<PhoneCodeModel[]>,
+    ) => {
+      state.countryCode = payload;
+    },
+    setHiddenPhoneNumber: (
+      state: IAuthPageSlice,
+      { payload }: PayloadAction<any>,
+    ) => {
+      state.hiddenPhoneNumber = payload;
+    },
+    setResetToken: (state: IAuthPageSlice, { payload }: PayloadAction<any>) => {
+      state.resetToken = payload;
     },
   },
 });

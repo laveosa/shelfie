@@ -5,4 +5,5 @@ export interface ResponseAuthModel {
   resetToken?: string;
   tokenInterval?: string;
   user?: UserModel;
+  hiddenPhoneNumber?: string;
 }
