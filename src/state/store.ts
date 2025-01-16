@@ -15,6 +15,7 @@ import AuthPageSlice from "@/state/slices/AuthPageSlice.ts";
 import { ProductsApiService } from "@/utils/services/api/ProductsApiService.ts";
 import { AuthApiService } from "@/utils/services/api/AuthApiService.ts";
 import { DictionaryApiService } from "@/utils/services/api/DictionaryApiService.ts";
+import { UsersApiService } from "@/utils/services/api/UsersApiService.ts";
 
 export const store = configureStore({
   reducer: {
@@ -32,12 +33,14 @@ export const store = configureStore({
     [AuthApiService.reducerPath]: AuthApiService.reducer,
     [ProductsApiService.reducerPath]: ProductsApiService.reducer,
     [DictionaryApiService.reducerPath]: DictionaryApiService.reducer,
+    [UsersApiService.reducerPath]: UsersApiService.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .concat(AuthApiService.middleware)
       .concat(ProductsApiService.middleware)
-      .concat(DictionaryApiService.middleware),
+      .concat(DictionaryApiService.middleware)
+      .concat(UsersApiService.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

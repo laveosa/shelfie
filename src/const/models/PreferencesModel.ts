@@ -1,4 +1,4 @@
-export interface IPreferences {
+export interface PreferencesModel {
   globalPreferences: {};
   viewsReferences: {
     productReferences: {

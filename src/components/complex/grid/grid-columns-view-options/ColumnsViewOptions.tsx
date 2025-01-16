@@ -42,7 +42,6 @@ export function ColumnsViewOptions<TData>({
 }: IColumnsViewOptions<TData>) {
   const [selectedColumns, setSelectedColumns] = useState<string[]>([]); // State for selected columns
 
-  // Effect to initialize column visibility based on fakePreferences
   useEffect(() => {
     table.getAllColumns().forEach((column) => {
       const isVisibleInPreferences =
