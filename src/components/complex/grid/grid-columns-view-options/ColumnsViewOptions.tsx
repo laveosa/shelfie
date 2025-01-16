@@ -10,7 +10,28 @@ import {
 } from "@/components/ui/dropdown-menu.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import cs from "./ColumnsViewOptions.module.scss";
-import { useState } from "react"; // Import useState
+import { useEffect, useState } from "react";
+
+const fakePreferences = {
+  globalPreferences: {},
+  viewsReferences: {
+    productReferences: {
+      columns: {
+        id: false,
+        image: false,
+        code: true,
+        productName: true,
+        category: true,
+        brand: false,
+        barcode: false,
+        status: true,
+        salePrice: true,
+        variantCount: true,
+        stock: true,
+      },
+    },
+  },
+};
 
 interface IColumnsViewOptions<TData> {
   table: Table<TData>;
@@ -20,6 +41,18 @@ export function ColumnsViewOptions<TData>({
   table,
 }: IColumnsViewOptions<TData>) {
   const [selectedColumns, setSelectedColumns] = useState<string[]>([]); // State for selected columns
+
+  // Effect to initialize column visibility based on fakePreferences
+  useEffect(() => {
+    table.getAllColumns().forEach((column) => {
+      const isVisibleInPreferences =
+        fakePreferences.viewsReferences.productReferences.columns[column.id];
+      column.toggleVisibility(isVisibleInPreferences); // Set initial visibility
+      if (!isVisibleInPreferences) {
+        setSelectedColumns((prev) => [...prev, column.id]); // Mark hidden columns as selected
+      }
+    });
+  }, [table]);
 
   const handleCheckedChange = (value: boolean, column: any) => {
     if (value) {
@@ -32,7 +65,12 @@ export function ColumnsViewOptions<TData>({
 
   const applyChanges = () => {
     table.getAllColumns().forEach((column) => {
-      column.toggleVisibility(!selectedColumns.includes(column.id)); // Hide selected columns
+      const isVisibleInPreferences =
+        fakePreferences.viewsReferences.productReferences.columns[column.id];
+      const shouldHide = selectedColumns.includes(column.id)
+        ? !isVisibleInPreferences
+        : isVisibleInPreferences;
+      column.toggleVisibility(shouldHide); // Hide or show based on preferences and selection
     });
   };
 
@@ -80,9 +118,7 @@ export function ColumnsViewOptions<TData>({
         <DropdownMenuSeparator />
         <div className="flex justify-between">
           <SheButton onClick={resetToDefault}>Default</SheButton>{" "}
-          {/* Default button */}
           <SheButton onClick={applyChanges}>Apply</SheButton>{" "}
-          {/* Apply button */}
         </div>
       </DropdownMenuContent>
     </DropdownMenu>
