@@ -6,5 +6,5 @@ export enum ApiUrlEnum {
   COMPANIES = "/companies",
   LOGS = "/logs",
   AUTH = "/auth",
-  COUNTRIES = "/countries",
+  DICTIONARY = "/dictionary",
 }
