@@ -19,7 +19,7 @@ export const DictionaryApiService = createApi({
   endpoints: (builder) => ({
     getCountryCode: apiConfig.createQuery<CountryCodeModel[], void>(builder, {
       query: () => ({
-        url: `${ApiUrlEnum.COUNTRIES}/list`,
+        url: `${ApiUrlEnum.DICTIONARY}/countries/list`,
       }),
       providesTags: (result: CountryCodeModel[]) =>
         apiConfig.providesTags(result, ApiServiceNameEnum.DICTIONARY),
