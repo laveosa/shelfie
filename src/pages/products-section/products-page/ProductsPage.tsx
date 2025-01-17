@@ -16,7 +16,8 @@ import { ProductsFakeData } from "@/components/complex/grid/products-grid/FakeDa
 import { ProductsGridColumns } from "@/components/complex/grid/products-grid/ProductsGridColumns.tsx";
 import { GridDataTable } from "@/components/complex/grid/grid-data-table/GridDataTable.tsx";
 import { useEffect } from "react";
-import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
+import storageService from "@/utils/services/StorageService.ts";
+import { StorageKeyEnum } from "@/const/enums/StorageKeyEnum.ts";
 
 //TODO Replace after we will have API to receiving actual data
 const productsData = ProductsFakeData;
@@ -26,9 +27,58 @@ const productsData = ProductsFakeData;
 export function ProductsPage() {
   const service = useProductsPageService();
 
+  //TODO It`s temporary logic needs to be removed when we will receive real model
+  const fakePreferences = {
+    globalPreferences: {},
+    viewsReferences: {
+      productReferences: {
+        columns: {
+          id: false,
+          image: false,
+          code: true,
+          productName: true,
+          category: true,
+          brand: false,
+          barcode: false,
+          status: true,
+          salePrice: true,
+          variantCount: true,
+          stock: true,
+        },
+      },
+    },
+  };
+
+  storageService.setLocalStorage(StorageKeyEnum.PREFERENCES, fakePreferences);
+
   useEffect(() => {
-    service.getUserPreferencesHandler((res: PreferencesModel) => {
-      console.log("User preferences", res);
+    // const token = storageService.getLocalStorage(StorageKeyEnum.TOKEN);
+    // const url =
+    //   "https://userservice.redground-5e8b9eee.germanywestcentral.azurecontainerapps.io/api/v1/preferences";
+    // const fn = async () => {
+    //   const res = await fetch(url, {
+    //     headers: {
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //   });
+    //
+    //   if (!res.ok) {
+    //     if (res.status >= 300 && res.status < 400) {
+    //       const response = await fetch(res.url, {
+    //         headers: {
+    //           Authorization: `Bearer ${token}`,
+    //         },
+    //       });
+    //
+    //       console.log("FN RES: ", response);
+    //     }
+    //   }
+    // };
+    //
+    // fn();
+
+    service.getUserPreferencesHandler().then((res) => {
+      console.log("RES", res);
     });
   }, []);
 

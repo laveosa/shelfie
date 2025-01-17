@@ -4,8 +4,8 @@ import { IApiQueryDefinition } from "@/const/interfaces/IApiQueryDefinition.ts";
 import { ApiServiceNameEnum } from "@/const/enums/ApiServiceNameEnum.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { StorageKeyEnum } from "@/const/enums/StorageKeyEnum.ts";
 import storageService from "@/utils/services/StorageService.ts";
+import { StorageKeyEnum } from "@/const/enums/StorageKeyEnum.ts";
 
 export class ApiConfigurationService {
   public static baseQueryWithInterceptors = async (

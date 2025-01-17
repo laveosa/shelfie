@@ -15,6 +15,7 @@ export default function useProductsPageService() {
   } = ProductsApiHooks;
   const {
     useLazyGetUserPreferencesQuery,
+    useLazyGetDefaultUserPreferencesQuery,
     useUpdateUserPreferencesMutation,
     useResetUserPreferencesMutation,
   } = UsersApiHooks;
@@ -26,6 +27,7 @@ export default function useProductsPageService() {
   const [getUserPreferences] = useLazyGetUserPreferencesQuery();
   const [updateUserPreferences] = useUpdateUserPreferencesMutation();
   const [resetUserPreferences] = useResetUserPreferencesMutation();
+  const [getDefaultUserPreferences] = useLazyGetDefaultUserPreferencesQuery();
 
   function getAllProductsHandler() {
     dispatch(action.setLoading(true));
@@ -39,6 +41,14 @@ export default function useProductsPageService() {
   function getUserPreferencesHandler() {
     dispatch(action.setLoading(true));
     return getUserPreferences(null).then((res: any) => {
+      dispatch(action.setLoading(false));
+      return res.data;
+    });
+  }
+
+  function getDefaultUserPreferencesHandler() {
+    dispatch(action.setLoading(true));
+    return getDefaultUserPreferences(null).then((res: any) => {
       dispatch(action.setLoading(false));
       return res.data;
     });
@@ -76,5 +86,6 @@ export default function useProductsPageService() {
     deleteProductHandler,
     updateUserPreferencesHandler,
     resetUserPreferencesHandler,
+    getDefaultUserPreferencesHandler,
   };
 }

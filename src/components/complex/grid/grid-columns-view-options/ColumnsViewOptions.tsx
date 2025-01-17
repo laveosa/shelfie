@@ -11,27 +11,12 @@ import {
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import cs from "./ColumnsViewOptions.module.scss";
 import { useEffect, useState } from "react";
+import storageService from "@/utils/services/StorageService.ts";
+import { StorageKeyEnum } from "@/const/enums/StorageKeyEnum.ts";
+import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 
-const fakePreferences = {
-  globalPreferences: {},
-  viewsReferences: {
-    productReferences: {
-      columns: {
-        id: false,
-        image: false,
-        code: true,
-        productName: true,
-        category: true,
-        brand: false,
-        barcode: false,
-        status: true,
-        salePrice: true,
-        variantCount: true,
-        stock: true,
-      },
-    },
-  },
-};
+const preferences = storageService.getLocalStorage(StorageKeyEnum.PREFERENCES);
+console.log(preferences);
 
 interface IColumnsViewOptions<TData> {
   table: Table<TData>;
@@ -40,12 +25,13 @@ interface IColumnsViewOptions<TData> {
 export function ColumnsViewOptions<TData>({
   table,
 }: IColumnsViewOptions<TData>) {
+  const service = useProductsPageService();
   const [selectedColumns, setSelectedColumns] = useState<string[]>([]); // State for selected columns
 
   useEffect(() => {
     table.getAllColumns().forEach((column) => {
       const isVisibleInPreferences =
-        fakePreferences.viewsReferences.productReferences.columns[column.id];
+        preferences.viewsReferences.productReferences.columns[column.id];
       column.toggleVisibility(isVisibleInPreferences); // Set initial visibility
       if (!isVisibleInPreferences) {
         setSelectedColumns((prev) => [...prev, column.id]); // Mark hidden columns as selected
@@ -53,32 +39,51 @@ export function ColumnsViewOptions<TData>({
     });
   }, [table]);
 
-  const handleCheckedChange = (value: boolean, column: any) => {
+  function handleCheckedChange(value: boolean, column: any) {
     if (value) {
       setSelectedColumns((prev) => [...prev, column.id]); // Add column to selected
     } else {
       setSelectedColumns((prev) => prev.filter((id) => id !== column.id)); // Remove column from selected
     }
     // Do not toggle visibility here
-  };
+  }
 
-  const applyChanges = () => {
+  function applyChanges() {
     table.getAllColumns().forEach((column) => {
       const isVisibleInPreferences =
-        fakePreferences.viewsReferences.productReferences.columns[column.id];
+        preferences.viewsReferences.productReferences.columns[column.id];
+      console.log("Visible", isVisibleInPreferences);
       const shouldHide = selectedColumns.includes(column.id)
         ? !isVisibleInPreferences
         : isVisibleInPreferences;
       column.toggleVisibility(shouldHide); // Hide or show based on preferences and selection
     });
-  };
 
-  const resetToDefault = () => {
-    table.getAllColumns().forEach((column) => {
-      column.toggleVisibility(true); // Show all columns
-    });
-    setSelectedColumns([]); // Clear selected columns
-  };
+    const model = {
+      globalPreferences: {},
+      viewsReferences: {
+        productReferences: {
+          columns: Object.fromEntries(
+            table
+              .getAllColumns()
+              .map((column) => [
+                column.id,
+                selectedColumns.includes(column.id),
+              ]),
+          ),
+        },
+      },
+    };
+    service.updateUserPreferencesHandler(model);
+  }
+
+  function resetToDefault() {
+    // table.getAllColumns().forEach((column) => {
+    //   column.toggleVisibility(true);
+    // });
+    // setSelectedColumns([]);
+    service.resetUserPreferencesHandler();
+  }
 
   return (
     <DropdownMenu>

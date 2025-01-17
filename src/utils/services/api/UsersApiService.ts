@@ -21,14 +21,30 @@ export const UsersApiService = createApi({
     getUserPreferences: apiConfig.createQuery<PreferencesModel, void>(builder, {
       query: () => ({
         url: ApiUrlEnum.PREFERENCES,
+        responseType: "json",
+        // redirect: "manual",
       }),
-      // transformResponse: (res: any) => res.products, //TODO delete this code after we will receive real data
-      providesTags: (result: PreferencesModel) =>
-        apiConfig.providesTags<PreferencesModel>(
+      providesTags: (result, _error, _id) => [
+        {
+          type: ApiServiceNameEnum.USERS,
           result,
-          ApiServiceNameEnum.USERS,
-        ),
+        },
+      ],
     }),
+    getDefaultUserPreferences: apiConfig.createQuery<PreferencesModel, void>(
+      builder,
+      {
+        query: () => ({
+          url: `${ApiUrlEnum.PREFERENCES}/default`,
+        }),
+        providesTags: (result, _error, _id) => [
+          {
+            type: ApiServiceNameEnum.USERS,
+            result,
+          },
+        ],
+      },
+    ),
     updateUserPreferences: apiConfig.createMutation<void, PreferencesModel>(
       builder,
       {
