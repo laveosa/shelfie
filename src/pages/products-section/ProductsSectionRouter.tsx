@@ -12,4 +12,15 @@ export const ProductsSectionRouter: RouteObject[] = [
       };
     },
   },
+  {
+    path: "create-product",
+    lazy: async () => {
+      const { CreateProductPage } = await import(
+        "@/pages/products-section/create-product-page/CreateProductPage.tsx"
+      );
+      return {
+        element: <CreateProductPage />,
+      };
+    },
+  },
 ];

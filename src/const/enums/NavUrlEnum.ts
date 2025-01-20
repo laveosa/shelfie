@@ -5,6 +5,7 @@ export enum NavUrlEnum {
   MESSENGER = "/messenger",
   ORDERS = "/orders",
   PRODUCTS = "/products",
+  CREATE_PRODUCT = "/create-product",
   PROFILE = "/profile",
   SETTINGS = "/settings",
   SUPPORT = "/support",
