@@ -18,10 +18,6 @@
     ".woff": "font/woff",
     ".woff2": "font/woff2",
     ".ttf": "font/ttf"
-  },
-  "navigationFallback": {
-    "rewrite": "index.html",
-    "exclude": ["*.{svg,png,jpg,gif}","*.{css,scss}","*.js"]
   }
 }
 
