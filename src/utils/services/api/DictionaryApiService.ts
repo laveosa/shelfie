@@ -7,13 +7,14 @@ import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 
 export const DictionaryApiService = createApi({
   reducerPath: ApiServiceNameEnum.DICTIONARY,
-  baseQuery: ({ args, ...props }) =>
+  baseQuery: (args: any, api: any, extraOptions: any) =>
     apiConfig.baseQueryWithInterceptors(
       {
         ...args,
         baseUrl: ApiUrlEnum.DICTIONARY_BASE_URL,
       },
-      ...props,
+      api,
+      extraOptions,
     ),
   tagTypes: [ApiServiceNameEnum.DICTIONARY],
   endpoints: (builder) => ({
