@@ -1,5 +1,5 @@
 const StorageService = {
-  // Local Storage
+  // ----------------------------------------------------------------------- Local Storage
   setLocalStorage(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
   },
@@ -17,7 +17,7 @@ const StorageService = {
     localStorage.clear();
   },
 
-  // Session Storage
+  // ----------------------------------------------------------------------- Session Storage
   setSessionStorage(key, value) {
     sessionStorage.setItem(key, JSON.stringify(value));
   },
@@ -35,7 +35,7 @@ const StorageService = {
     sessionStorage.clear();
   },
 
-  // Cookies
+  // ----------------------------------------------------------------------- Cookies
   setCookie(name, value, days = 7) {
     const expires = new Date(Date.now() + days * 864e5).toUTCString();
     document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`;

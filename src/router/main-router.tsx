@@ -15,7 +15,11 @@ import RouterGuard from "@/utils/guards/RouterGuard.tsx";
 const mainRouter = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: (
+      <RouterGuard>
+        <App />
+      </RouterGuard>
+    ),
     errorElement: <ErrorPage />,
     children: [
       {
