@@ -10,6 +10,7 @@ export default function SheProductCard({
   className = "",
   view = "",
   loading,
+  width,
   minWidth,
   maxWidth,
   title,
@@ -47,8 +48,9 @@ export default function SheProductCard({
     <div
       className={`${className || ""} ${cs.sheProductCard || ""} ${view === "card" ? cs.card : ""}`}
       style={{
+        width,
         minWidth,
-        maxWidth: isMinimized ? "40px" : maxWidth,
+        maxWidth: isMinimized ? "50px" : maxWidth,
       }}
     >
       <div className={cs.cardHeader}>
@@ -89,7 +91,12 @@ export default function SheProductCard({
         )}
       </div>
       {loading && <div className={cs.loaderContainer}></div>}
-      <div className={cs.cardContent}>{children}</div>
+      <div
+        className={cs.cardContent}
+        style={isMinimized ? { paddingLeft: 0 } : {}}
+      >
+        {children}
+      </div>
       {!isMinimized && (showSecondaryButton || showPrimaryButton) && (
         <div className={cs.cardFooter}>
           {showSecondaryButton && (

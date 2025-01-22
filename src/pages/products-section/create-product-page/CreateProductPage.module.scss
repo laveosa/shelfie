@@ -1,4 +1,119 @@
 @use "@/styles/variables" as vars;
 
-#CreateProductPage {
+.CreateProductPage {
+  display: flex;
+  gap: 20px;
+}
+
+// ---------------------------------------------------------------- Products Card
+
+.CreateProductPage {
+  .productsCard {
+    .productsList {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      .productsListItem {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        border-radius: 5px;
+        height: 100%;
+        padding: 10px;
+
+        &:hover {
+          background: vars.$colorMedium;
+          font-weight: 500;
+        }
+      }
+
+      .productItemImage {
+        width: 30px;
+        height: 30px;
+      }
+
+      .productItemName {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+      }
+    }
+  }
+}
+
+// ---------------------------------------------------------------- Create Products Card
+
+.CreateProductPage {
+  .createProductCard {
+    .createProductItems {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      .createProductItem {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        cursor: pointer;
+        border-radius: 5px;
+
+
+        &:hover {
+          background: vars.$colorMedium;
+          font-weight: 500;
+        }
+
+        .itemIconText {
+          display: flex;
+          gap: 15px;
+        }
+
+        .itemBadge {
+          background-color: #F8F3FF;
+          color: #8439ED;
+        }
+      }
+    }
+  }
+}
+
+// ---------------------------------------------------------------- Create Product Form Card
+
+.CreateProductPage {
+  .createProductFormCard {
+    .createProductForm {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 0 10px;
+
+      .createProductFormRow {
+        display: flex;
+        align-items: end;
+        gap: 10px;
+        justify-content: space-between;
+
+        input, .select {
+          width: 214px;
+        }
+
+        .formRowButton {
+          padding: 8px;
+
+          svg {
+            width: 100%;
+            padding-left: 5px;
+          }
+        }
+      }
+
+      .createProductFormSwitch {
+        padding-top: 10px;
+        justify-content: flex-start;
+      }
+    }
+  }
 }
