@@ -15,7 +15,7 @@ const StorageService = {
   getLocalStorage(key) {
     let appModel = localStorage.getItem(appKey);
     appModel = appModel && JSON.parse(appModel);
-    return appModel ? appModel[key] : null;
+    return appModel ? (appModel[key] as any) : null;
   },
 
   removeLocalStorage(key) {
