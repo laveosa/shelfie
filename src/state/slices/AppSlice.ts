@@ -26,8 +26,9 @@ function refreshToken(state: IAppSlice, action: PayloadAction<any>) {
 }
 
 function logOut(state: IAppSlice) {
-  refreshUser(state, null);
-  refreshToken(state, null);
+  state.user = null;
+  state.token = null;
+  storageService.clearLocalStorage();
   window.location.href = EnvironmentService.isLocalEnvironment()
     ? `${NavUrlEnum.LOCAL}${NavUrlEnum.AUTH}`
     : `${NavUrlEnum.DEV}${NavUrlEnum.AUTH}`;
