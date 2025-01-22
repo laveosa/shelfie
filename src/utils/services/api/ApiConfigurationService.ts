@@ -8,11 +8,19 @@ import { StorageKeyEnum } from "@/const/enums/StorageKeyEnum.ts";
 import storageService from "@/utils/services/StorageService.ts";
 
 export class ApiConfigurationService {
-  public static baseQueryWithInterceptors = async (
+  public baseUrl: string;
+
+  constructor(baseUrl?: string) {
+    this.baseUrl = baseUrl || this.baseUrl;
+  }
+
+  public baseQueryWithInterceptors = async (
     args: any,
     api: any,
     extraOptions: any,
   ) => {
+    args.baseUrl = this.baseUrl || args.baseUrl;
+
     try {
       this.requestHandler(args);
       const result = await this.customBaseQuery(args.baseUrl)(
@@ -28,7 +36,7 @@ export class ApiConfigurationService {
     }
   };
 
-  public static createQuery<TData, TParams>(
+  public createQuery<TData, TParams>(
     builder: EndpointBuilder<BaseQueryFn, string, string>,
     config: Partial<IApiQueryDefinition<TData, TParams>>,
   ) {
@@ -37,7 +45,7 @@ export class ApiConfigurationService {
     });
   }
 
-  public static createMutation<TData, TParams>(
+  public createMutation<TData, TParams>(
     builder: EndpointBuilder<BaseQueryFn, string, string>,
     config: Partial<IApiQueryDefinition<TData, TParams>>,
   ) {
@@ -46,7 +54,7 @@ export class ApiConfigurationService {
     });
   }
 
-  public static providesTags<T>(result: T[] | any, type: ApiServiceNameEnum) {
+  public providesTags<T>(result: T[] | any, type: ApiServiceNameEnum) {
     return result
       ? [
           ...result.map(({ id }: T | any) => ({ type: type, id })),
@@ -57,11 +65,11 @@ export class ApiConfigurationService {
 
   // ============================================================ PRIVATE
 
-  private static requestHandler(_args: any): void {
+  private requestHandler(_args: any): void {
     // TODO ad bearer token logic
   }
 
-  private static responseHandler(result: any): void {
+  private responseHandler(result: any): void {
     if (result.error) {
       const { status, data } = result.error;
       const message = data?.message || "Unknown error occurred";
@@ -74,17 +82,11 @@ export class ApiConfigurationService {
     }
   }
 
-  private static customBaseQuery(baseUrl: ApiUrlEnum) {
+  private customBaseQuery(baseUrl: ApiUrlEnum) {
     return fetchBaseQuery({
       baseUrl,
       prepareHeaders: (headers) => {
         const token = storageService.getLocalStorage(StorageKeyEnum.TOKEN);
-
-        if (!token) {
-          //TODO show error toast 'Missing token'
-          // window.location.href = NavUrlEnum.AUTH;
-        }
-
         headers.set("Authorization", `Bearer ${token}`);
         headers.set("Content-Type", "application/json");
         return headers;

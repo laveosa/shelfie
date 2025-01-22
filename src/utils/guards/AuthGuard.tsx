@@ -5,14 +5,17 @@ import useAppService from "@/useAppService.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 
 export default function AuthGuard({ children }) {
-  const { token } = useAppService();
+  /*const { user } = useAppService();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (token) {
+    if (user) {
       navigate(NavUrlEnum.DASHBOARD);
     }
-  }, [token, navigate]);
+  }, [user, navigate]);
 
-  return <>{!token && children}</>;
+  return <>{!user && children}</>;*/
+
+  // TODO update this logic when user api will be updated
+  return children;
 }
