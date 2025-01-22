@@ -90,7 +90,7 @@ export default function SheProductCard({
       </div>
       {loading && <div className={cs.loaderContainer}></div>}
       <div className={cs.cardContent}>{children}</div>
-      {(isMinimized || showSecondaryButton || showPrimaryButton) && (
+      {!isMinimized && (showSecondaryButton || showPrimaryButton) && (
         <div className={cs.cardFooter}>
           {showSecondaryButton && (
             <SheButton

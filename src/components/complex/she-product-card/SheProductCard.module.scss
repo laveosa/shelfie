@@ -6,7 +6,6 @@
   width: 300px;
   height: calc(100vh - 92px);
   overflow: hidden;
-  padding: 10px;
 
   &.card {
     border-radius: 10px;
@@ -32,13 +31,13 @@
 
       .toggleButton {
         position: absolute;
-        top: 10px;
+        top: 0;
         left: 6px;
       }
 
       .closeButton {
         position: absolute;
-        top: 10px;
+        top: 0;
         right: 6px;
       }
 
