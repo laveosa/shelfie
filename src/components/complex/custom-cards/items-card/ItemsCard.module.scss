@@ -1,0 +1,36 @@
+@use "@/styles/variables" as vars;
+
+.productsCard {
+  .productsList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .productsListItem {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      height: 100%;
+      padding: 10px;
+
+      &:hover {
+        background: vars.$colorMedium;
+        font-weight: 500;
+      }
+    }
+
+    .productItemImage {
+      width: 30px;
+      height: 30px;
+    }
+
+    .productItemName {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+  }
+}

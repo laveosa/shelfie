@@ -1,0 +1,33 @@
+@use "@/styles/variables" as vars;
+
+.createProductCard {
+  .createProductItems {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .createProductItem {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+
+
+      &:hover {
+        background: vars.$colorMedium;
+        font-weight: 500;
+      }
+
+      .itemIconText {
+        display: flex;
+        gap: 15px;
+      }
+
+      .itemBadge {
+        background-color: #F8F3FF;
+        color: #8439ED;
+      }
+    }
+  }
+}

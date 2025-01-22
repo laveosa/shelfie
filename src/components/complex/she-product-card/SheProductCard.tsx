@@ -29,7 +29,7 @@ export default function SheProductCard({
   secondaryButtonTitle,
   secondaryButtonTitleTransKey,
   onPrimaryButtonClick,
-  onSecondaryButtonClick,
+  // onSecondaryButtonClick,
 }: ISheProductCard) {
   const [isVisible, setIsVisible] = useState(true);
   const [isMinimized, setIsMinimized] = useState(false);
@@ -102,7 +102,7 @@ export default function SheProductCard({
           {showSecondaryButton && (
             <SheButton
               variant="secondary"
-              onClick={onSecondaryButtonClick}
+              onClick={onCloseCardHandler}
               disabled={loading}
             >
               <Trans i18nKey={secondaryButtonTitleTransKey}>
