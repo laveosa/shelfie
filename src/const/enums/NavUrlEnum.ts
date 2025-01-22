@@ -1,4 +1,6 @@
 export enum NavUrlEnum {
+  DEV = "https://green-glacier-0d48d5603.4.azurestaticapps.net",
+  LOCAL = "http://localhost:8000",
   AUTH = "/auth",
   DASHBOARD = "/dashboard",
   ERROR = "/error",

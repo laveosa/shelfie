@@ -11,11 +11,16 @@ import { TransmissionsSectionRouter } from "@/pages/transmissions-section/Transm
 import { UsersSectionRouter } from "@/pages/users-section/UsersSectionRouter.tsx";
 import { ProductsSectionRouter } from "@/pages/products-section/ProductsSectionRouter.tsx";
 import RouterGuard from "@/utils/guards/RouterGuard.tsx";
+import AuthGuard from "@/utils/guards/AuthGuard.tsx";
 
 const mainRouter = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: (
+      <RouterGuard>
+        <App />
+      </RouterGuard>
+    ),
     errorElement: <ErrorPage />,
     children: [
       {
@@ -198,7 +203,11 @@ const mainRouter = createBrowserRouter([
     lazy: async () => {
       const { AuthPage } = await import("@/pages/auth-page/AuthPage.tsx");
       return {
-        element: <AuthPage />,
+        element: (
+          <AuthGuard>
+            <AuthPage />
+          </AuthGuard>
+        ),
       };
     },
   },

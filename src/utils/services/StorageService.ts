@@ -1,23 +1,38 @@
+import { StorageKeyEnum } from "@/const/enums/StorageKeyEnum.ts";
+import { removeObjectProperty } from "@/utils/helpers/quick-helper.ts";
+
+const appKey = StorageKeyEnum.APP;
+
 const StorageService = {
-  // Local Storage
+  // ----------------------------------------------------------------------- Local Storage
   setLocalStorage(key, value) {
-    localStorage.setItem(key, JSON.stringify(value));
+    let appModel: any = localStorage.getItem(appKey);
+    appModel = appModel ? JSON.parse(appModel) : {};
+    appModel[key] = value;
+    localStorage.setItem(appKey, JSON.stringify(appModel));
   },
 
   getLocalStorage(key) {
-    const item = localStorage.getItem(key);
-    return item ? JSON.parse(item) : null;
+    let appModel = localStorage.getItem(appKey);
+    appModel = appModel && JSON.parse(appModel);
+    return appModel ? appModel[key] : null;
   },
 
   removeLocalStorage(key) {
-    localStorage.removeItem(key);
+    let appModel: any = localStorage.getItem(appKey);
+    appModel = appModel && JSON.parse(appModel);
+
+    if (appModel) {
+      appModel = removeObjectProperty(appModel, key);
+      localStorage.setItem(appKey, JSON.stringify(appModel));
+    }
   },
 
   clearLocalStorage() {
-    localStorage.clear();
+    localStorage.removeItem(appKey);
   },
 
-  // Session Storage
+  // ----------------------------------------------------------------------- Session Storage
   setSessionStorage(key, value) {
     sessionStorage.setItem(key, JSON.stringify(value));
   },
@@ -35,7 +50,7 @@ const StorageService = {
     sessionStorage.clear();
   },
 
-  // Cookies
+  // ----------------------------------------------------------------------- Cookies
   setCookie(name, value, days = 7) {
     const expires = new Date(Date.now() + days * 864e5).toUTCString();
     document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`;

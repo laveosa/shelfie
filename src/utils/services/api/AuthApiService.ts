@@ -1,22 +1,16 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 
 import { ApiServiceNameEnum } from "@/const/enums/ApiServiceNameEnum.ts";
-import { ApiConfigurationService as apiConfig } from "@/utils/services/api/ApiConfigurationService.ts";
+import { ApiConfigurationService } from "@/utils/services/api/ApiConfigurationService.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { RequestAuthModel } from "@/const/models/RequestAuthModel.ts";
 import { ResponseAuthModel } from "@/const/models/ResponseAuthModel.ts";
 
+const apiConfig = new ApiConfigurationService(ApiUrlEnum.AUTH_BASE_URL);
+
 export const AuthApiService = createApi({
   reducerPath: ApiServiceNameEnum.AUTH,
-  baseQuery: (args: any, api: any, extraOptions: any) =>
-    apiConfig.baseQueryWithInterceptors(
-      {
-        ...args,
-        baseUrl: ApiUrlEnum.AUTH_BASE_URL,
-      },
-      api,
-      extraOptions,
-    ),
+  baseQuery: apiConfig.baseQueryWithInterceptors,
   tagTypes: [ApiServiceNameEnum.AUTH],
   endpoints: (builder) => ({
     userSignIn: apiConfig.createMutation<ResponseAuthModel, RequestAuthModel>(
