@@ -35,8 +35,10 @@ export default function ProductPhotosCard({ data, ...props }) {
         </div>
         {data.items.length > 0 && (
           <div className={cs.managePhotos}>
-            <div className="she-title">Manage Photos</div>
-            <div>
+            <div className={`${cs.managePhotosTitle} she-title`}>
+              Manage Photos
+            </div>
+            <div className={cs.managePhotosGrid}>
               <GridDataTable
                 showHeader={false}
                 columns={ProductPhotosGridColumns}

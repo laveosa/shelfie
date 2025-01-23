@@ -5,16 +5,16 @@
 
   .productPhotosFileUploader {
     display: flex;
-    gap: 10px;
+    gap: vars.$paddingSmall;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     border: 1px solid #ccc;
     border-radius: 5px;
-    padding: 20px;
+    padding: vars.$paddingStandard;
     cursor: pointer;
     background: vars.$colorMuted;
-    margin: 10px;
+    margin: vars.$marginSmall;
 
     &:hover {
       background-color: #f9f9f9;
@@ -26,6 +26,12 @@
 
     input {
       display: none;
+    }
+  }
+
+  .managePhotos {
+    .managePhotosTitle, .managePhotosGrid {
+      padding: vars.$paddingSmall;
     }
   }
 }
