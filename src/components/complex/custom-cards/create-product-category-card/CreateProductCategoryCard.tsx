@@ -4,7 +4,7 @@ import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { Plus } from "lucide-react";
 import React from "react";
 
-export default function CreateProductCategoryCard() {
+export default function CreateProductCategoryCard({ ...props }) {
   function handleFileUpload(event) {
     const files = event.target.files;
     console.log(files);
@@ -20,6 +20,7 @@ export default function CreateProductCategoryCard() {
         showSecondaryButton={true}
         secondaryButtonTitle="Cancel"
         className={cs.createProductCategoryCard}
+        {...props}
       >
         <div className={cs.productCategoryInput}>
           <SheInput

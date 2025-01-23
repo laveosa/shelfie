@@ -22,7 +22,10 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { ProductsFakeData } from "@/components/complex/grid/products-grid/FakeData.ts";
 
-export default function CreateProductFormCard({ ...props }) {
+export default function CreateProductFormCard({
+  onOpenCreateProductCategoryCard,
+  ...props
+}) {
   const productsData = ProductsFakeData;
 
   const form = useForm({
@@ -54,7 +57,7 @@ export default function CreateProductFormCard({ ...props }) {
           <SheForm form={form} onSubmit={onSubmit}>
             <SheForm.Field
               rules={{
-                required: "Product name is required",
+                // required: "Product name is required",
                 minLength: {
                   value: 3,
                   message: "Product name must be at least 3 characters",
@@ -76,9 +79,11 @@ export default function CreateProductFormCard({ ...props }) {
             </SheForm.Field>
             <div className={cs.createProductFormRow}>
               <SheForm.Field
-                rules={{
-                  required: "Product code is required",
-                }}
+                rules={
+                  {
+                    // required: "Product code is required",
+                  }
+                }
                 name="productCode"
               >
                 <SheInput
@@ -97,9 +102,11 @@ export default function CreateProductFormCard({ ...props }) {
             </div>
             <div className={cs.createProductFormRow}>
               <SheForm.Field
-                rules={{
-                  required: "Product barcode is required",
-                }}
+                rules={
+                  {
+                    // required: "Product barcode is required",
+                  }
+                }
                 name="productBarcode"
               >
                 <SheInput
@@ -120,9 +127,11 @@ export default function CreateProductFormCard({ ...props }) {
               <FormField
                 control={form.control}
                 name="productCategory"
-                rules={{
-                  required: "Country code is required",
-                }}
+                rules={
+                  {
+                    // required: "Country code is required",
+                  }
+                }
                 render={({ field }) => (
                   <FormItem className={cs.select}>
                     <FormLabel>Product Category</FormLabel>
@@ -150,15 +159,18 @@ export default function CreateProductFormCard({ ...props }) {
                 className={cs.formRowButton}
                 icon={Plus}
                 variant="outline"
+                onClick={onOpenCreateProductCategoryCard}
               />
             </div>
             <div className={cs.createProductFormRow}>
               <FormField
                 control={form.control}
                 name="productBrand"
-                rules={{
-                  required: "Country code is required",
-                }}
+                rules={
+                  {
+                    // required: "Country code is required",
+                  }
+                }
                 render={({ field }) => (
                   <FormItem className={cs.select}>
                     <FormLabel>Product Brand</FormLabel>

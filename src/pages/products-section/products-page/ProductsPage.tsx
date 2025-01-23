@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import {
   Columns3Icon,
   Download,
@@ -23,8 +24,11 @@ const productsData = ProductsFakeData;
 
 export function ProductsPage() {
   const service = useProductsPageService();
+  const navigate = useNavigate();
 
-  function handleAddProduct() {}
+  function handleAddProduct() {
+    navigate("/products/create-product");
+  }
 
   function handleImportProducts() {}
 
