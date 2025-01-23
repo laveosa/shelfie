@@ -22,7 +22,7 @@ export default function SizeChartCard({
   const [manageSizeChart, setManageSizeChart] = useState(false);
 
   const handleSelect = () => {
-    alert(`You selected: ${selectedOption}`);
+    console.log(`You selected: ${selectedOption}`);
     setManageSizeChart(true);
   };
 
