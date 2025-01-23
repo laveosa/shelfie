@@ -1,4 +1,4 @@
-import { CircleX, PanelLeft } from "lucide-react";
+import { PanelLeft, X } from "lucide-react";
 import { Trans } from "react-i18next";
 import { useState } from "react";
 
@@ -72,7 +72,7 @@ export default function SheProductCard({
           {!isMinimized && showCloseButton && (
             <SheButton
               className={cs.closeButton}
-              icon={CircleX}
+              icon={X}
               variant="ghost"
               onClick={onCloseCardHandler}
               disabled={loading}

@@ -26,7 +26,7 @@
       justify-content: center;
 
       .cardTitle {
-        padding-top: 10px;
+        padding-top: 7px;
       }
 
       .toggleButton {
@@ -37,15 +37,25 @@
 
       .closeButton {
         position: absolute;
-        top: 0;
+        top: 7px;
         right: 6px;
+        background: vars.$colorMuted;
+        height: 26px;
+
+        &:hover {
+          background: vars.$colorMuted;
+        }
       }
 
       Button {
         padding: 5px 0 5px 5px;
 
         &:hover {
-          background-color: transparent;
+          background: transparent;
+        }
+
+        svg {
+          color: #71717A
         }
       }
     }
