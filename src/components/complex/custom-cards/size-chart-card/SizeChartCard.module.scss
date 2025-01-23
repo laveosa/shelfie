@@ -1,0 +1,30 @@
+@use "@/styles/variables" as vars;
+
+.sizeChartCard {
+  .sizeChartCardContent {
+    display: flex;
+    flex-direction: column;
+    gap: vars.$paddingSmall;
+    padding: 0 vars.$paddingSmall;
+
+    .sizeChartCardSelectBlock {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      .sizeChartCardSelect {
+        display: flex;
+        gap: 10px;
+
+        .formRowButton {
+          padding: 8px;
+
+          svg {
+            width: 100%;
+            padding-left: 5px;
+          }
+        }
+      }
+    }
+  }
+}

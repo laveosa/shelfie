@@ -8,10 +8,13 @@ import CreateProductCard from "@/components/complex/custom-cards/create-product-
 import CreateProductBrandCard from "@/components/complex/custom-cards/create-product-brand-card/CreateProductBrandCard.tsx";
 import ProductPhotosCard from "@/components/complex/custom-cards/product-photos-card/ProductPhotosCard.tsx";
 import { ProductsFakeData } from "@/components/complex/grid/products-grid/FakeData.ts";
+import SizeChartCard from "@/components/complex/custom-cards/size-chart-card/SizeChartCard.tsx";
+import { SizeChartFakeData } from "@/components/complex/grid/size-chart-grid/SizeChartFakeData.ts";
 
 export function CreateProductPage() {
   const service = useCreateProductPageService();
   const productsData = ProductsFakeData;
+  const sizeChartData = SizeChartFakeData;
   const [activeCards, setActiveCards] = useState([]); // State to track active card
 
   const handleAction = (identifier) => {
@@ -61,6 +64,15 @@ export function CreateProductPage() {
         />
       )}
       {activeCards.includes("variants") && <div>Variants Card Content</div>}
+      {activeCards.includes("sizeChart") && (
+        <SizeChartCard
+          data={sizeChartData}
+          onOpenCreateProductCategoryCard={() =>
+            handleAction("openCreateProductCategoryCard")
+          }
+          onSecondaryButtonClick={() => handleAction("sizeChart")}
+        />
+      )}
     </div>
   );
 }
