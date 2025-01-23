@@ -24,6 +24,7 @@ import { ProductsFakeData } from "@/components/complex/grid/products-grid/FakeDa
 
 export default function CreateProductFormCard({
   onOpenCreateProductCategoryCard,
+  onOpenCreateProductBrandCard,
   ...props
 }) {
   const productsData = ProductsFakeData;
@@ -198,6 +199,7 @@ export default function CreateProductFormCard({
                 className={cs.formRowButton}
                 icon={Plus}
                 variant="outline"
+                onClick={onOpenCreateProductBrandCard}
               />
             </div>
             <SheForm.Field name="isActive">

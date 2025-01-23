@@ -1,13 +1,9 @@
 @use "@/styles/variables" as vars;
 
-.createProductCategoryCard {
+.productPhotosCard {
   display: flex;
 
-  .productCategoryInput {
-    padding: 0 10px;
-  }
-
-  .productCategoryFileUploader {
+  .productPhotosFileUploader {
     display: flex;
     gap: 10px;
     flex-direction: column;
