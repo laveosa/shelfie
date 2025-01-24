@@ -38,6 +38,7 @@ export default function SizeChartCard({
         showSecondaryButton={manageSizeChart && true}
         secondaryButtonTitle="Cancel"
         className={cs.sizeChartCard}
+        showCloseButton={true}
         {...props}
       >
         <div className={cs.sizeChartCardContent}>

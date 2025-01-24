@@ -1,6 +1,7 @@
+import React, { useState } from "react";
+
 import cs from "./CreateProductPage.module.scss";
 import useCreateProductPageService from "@/pages/products-section/create-product-page/useCreateProductPageService.ts";
-import React, { useState } from "react";
 import CreateProductFormCard from "@/components/complex/custom-cards/create-product-form-card/CreateProductFormCard.tsx";
 import CreateProductCategoryCard from "@/components/complex/custom-cards/create-product-category-card/CreateProductCategoryCard.tsx";
 import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
@@ -10,6 +11,8 @@ import ProductPhotosCard from "@/components/complex/custom-cards/product-photos-
 import { ProductsFakeData } from "@/components/complex/grid/products-grid/FakeData.ts";
 import SizeChartCard from "@/components/complex/custom-cards/size-chart-card/SizeChartCard.tsx";
 import { SizeChartFakeData } from "@/components/complex/grid/size-chart-grid/SizeChartFakeData.ts";
+import ChooseAttributesCard from "@/components/complex/custom-cards/choose-attributes-card/ChooseAttributesCard.tsx";
+import CreateAttributeCard from "@/components/complex/custom-cards/create-attribute-card/CreateAttributeCard.tsx";
 
 export function CreateProductPage() {
   const service = useCreateProductPageService();
@@ -42,6 +45,36 @@ export function CreateProductPage() {
           }
         />
       )}
+      {activeCards.includes("gallery") && (
+        <ProductPhotosCard
+          width={"400px"}
+          onSecondaryButtonClick={() => handleAction("gallery")}
+          data={productsData}
+        />
+      )}
+      {activeCards.includes("sizeChart") && (
+        <SizeChartCard
+          data={sizeChartData}
+          onOpenCreateProductCategoryCard={() =>
+            handleAction("openCreateProductCategoryCard")
+          }
+          onSecondaryButtonClick={() => handleAction("sizeChart")}
+        />
+      )}
+      {activeCards.includes("attributes") && (
+        <ChooseAttributesCard
+          onCreateAttributeHandle={() => {
+            handleAction("createAttributeCard");
+          }}
+          onSecondaryButtonClick={() => handleAction("attributes")}
+        />
+      )}
+      {activeCards.includes("createAttributeCard") && (
+        <CreateAttributeCard
+          data={productsData}
+          onSecondaryButtonClick={() => handleAction("createAttributeCard")}
+        />
+      )}
       {activeCards.includes("openCreateProductCategoryCard") && (
         <CreateProductCategoryCard
           onSecondaryButtonClick={() =>
@@ -56,23 +89,7 @@ export function CreateProductPage() {
           }
         />
       )}
-      {activeCards.includes("gallery") && (
-        <ProductPhotosCard
-          width={"400px"}
-          onSecondaryButtonClick={() => handleAction("gallery")}
-          data={productsData}
-        />
-      )}
       {activeCards.includes("variants") && <div>Variants Card Content</div>}
-      {activeCards.includes("sizeChart") && (
-        <SizeChartCard
-          data={sizeChartData}
-          onOpenCreateProductCategoryCard={() =>
-            handleAction("openCreateProductCategoryCard")
-          }
-          onSecondaryButtonClick={() => handleAction("sizeChart")}
-        />
-      )}
     </div>
   );
 }

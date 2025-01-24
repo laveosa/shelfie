@@ -62,7 +62,6 @@
   }
 
   .cardContent {
-    padding: 0 5px;
     overflow-y: auto;
     overflow-x: hidden;
     height: calc(100% - 100px);
@@ -72,9 +71,8 @@
   .cardFooter {
     display: flex;
     justify-content: space-between;
-    padding: 5px;
+    padding: 10px;
     width: 100%;
-    //height: 50px;
   }
 }
 
