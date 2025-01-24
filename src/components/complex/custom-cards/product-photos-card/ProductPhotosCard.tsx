@@ -1,7 +1,8 @@
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
-import cs from "./ProductPhotosCard.module.scss";
 import { CirclePlus } from "lucide-react";
 import React from "react";
+
+import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
+import cs from "./ProductPhotosCard.module.scss";
 import { GridDataTable } from "@/components/complex/grid/grid-data-table/GridDataTable.tsx";
 import { ProductPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/ProductPhotosGridColumns.tsx";
 

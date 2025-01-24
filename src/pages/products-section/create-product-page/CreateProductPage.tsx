@@ -13,6 +13,8 @@ import SizeChartCard from "@/components/complex/custom-cards/size-chart-card/Siz
 import { SizeChartFakeData } from "@/components/complex/grid/size-chart-grid/SizeChartFakeData.ts";
 import ChooseAttributesCard from "@/components/complex/custom-cards/choose-attributes-card/ChooseAttributesCard.tsx";
 import CreateAttributeCard from "@/components/complex/custom-cards/create-attribute-card/CreateAttributeCard.tsx";
+import ManageVariantsCard from "@/components/complex/custom-cards/manage-variants-card/ManageVariantsCard.tsx";
+import ChooseVariantTraitsCard from "@/components/complex/custom-cards/choose-variant-traits-card/ChooseVariantTraitsCard.tsx";
 
 export function CreateProductPage() {
   const service = useCreateProductPageService();
@@ -52,6 +54,13 @@ export function CreateProductPage() {
           data={productsData}
         />
       )}
+      {activeCards.includes("variants") && (
+        <ManageVariantsCard
+          onChooseVariantTraits={() =>
+            handleAction("openChooseVariantTraitsCard")
+          }
+        />
+      )}
       {activeCards.includes("sizeChart") && (
         <SizeChartCard
           data={sizeChartData}
@@ -89,7 +98,9 @@ export function CreateProductPage() {
           }
         />
       )}
-      {activeCards.includes("variants") && <div>Variants Card Content</div>}
+      {activeCards.includes("openChooseVariantTraitsCard") && (
+        <ChooseVariantTraitsCard />
+      )}
     </div>
   );
 }
