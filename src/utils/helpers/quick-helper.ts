@@ -1,4 +1,6 @@
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
+import { IUndefinedProperties } from "@/const/interfaces/IUndefinedProperties.ts";
+import { ComponentPropsWithRef } from "react";
 
 export function getCurrentSectionUrl(url: string): NavUrlEnum {
   const chang = url.split("/")[1].toUpperCase();
@@ -9,3 +11,28 @@ export function removeObjectProperty(obj: any, identifier: string) {
   const { [identifier]: _, ...rest } = obj;
   return rest;
 }
+
+export const createEmptyProps = <
+  T extends object,
+>(): IUndefinedProperties<T> => {
+  return {} as IUndefinedProperties<T>;
+};
+
+export const filterCustomProps = <
+  TCustomProps extends object,
+  TDefaultProps extends ComponentPropsWithRef<"div">,
+>(
+  props: TCustomProps & TDefaultProps,
+  customProps: Record<
+    keyof TCustomProps,
+    any
+  > = createEmptyProps<TCustomProps>(),
+) => {
+  const { ...defaultProps } = props;
+
+  (Object.keys(customProps) as Array<keyof TCustomProps>).forEach((key) => {
+    delete (defaultProps as any)[key];
+  });
+
+  return defaultProps as TDefaultProps;
+};
