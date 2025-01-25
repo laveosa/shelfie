@@ -7,6 +7,7 @@ export function DashboardPage() {
   return (
     <div id={cs["DashboardPage"]}>
       <h1>Dashboard Section</h1>
+      <span>some text for test</span>
     </div>
   );
 }

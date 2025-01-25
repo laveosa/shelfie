@@ -9,7 +9,7 @@ import { ISheInput } from "@/const/interfaces/primitive-components/ISheInput.ts"
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { useDebounce } from "@/utils/hooks/useDebounce.ts";
 import SheTooltip from "@/components/complex/she-tooltip/SheTooltip.tsx";
-import useAppTranslation from "@/hooks/useAppTranslation.ts";
+import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 
 export default function SheInput({
   className = "",
