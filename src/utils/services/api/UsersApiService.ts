@@ -22,7 +22,6 @@ export const UsersApiService = createApi({
       query: () => ({
         url: ApiUrlEnum.PREFERENCES,
         responseType: "json",
-        // redirect: "manual",
       }),
       providesTags: (result, _error, _id) => [
         {
@@ -37,10 +36,9 @@ export const UsersApiService = createApi({
         query: () => ({
           url: `${ApiUrlEnum.PREFERENCES}/default`,
         }),
-        providesTags: (result, _error, _id) => [
+        providesTags: (_result, _error, _id) => [
           {
             type: ApiServiceNameEnum.USERS,
-            result,
           },
         ],
       },

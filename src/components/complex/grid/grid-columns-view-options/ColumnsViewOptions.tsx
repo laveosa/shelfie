@@ -1,6 +1,8 @@
+import { useEffect, useState } from "react";
 import { ChevronDown, Settings2 } from "lucide-react";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { Table } from "@tanstack/react-table";
+
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -10,13 +12,9 @@ import {
 } from "@/components/ui/dropdown-menu.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import cs from "./ColumnsViewOptions.module.scss";
-import { useEffect, useState } from "react";
 import storageService from "@/utils/services/StorageService.ts";
 import { StorageKeyEnum } from "@/const/enums/StorageKeyEnum.ts";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
-
-const preferences = storageService.getLocalStorage(StorageKeyEnum.PREFERENCES);
-console.log(preferences);
 
 interface IColumnsViewOptions<TData> {
   table: Table<TData>;
@@ -26,37 +24,37 @@ export function ColumnsViewOptions<TData>({
   table,
 }: IColumnsViewOptions<TData>) {
   const service = useProductsPageService();
-  const [selectedColumns, setSelectedColumns] = useState<string[]>([]); // State for selected columns
+  const [selectedColumns, setSelectedColumns] = useState<string[]>([]);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
-    table.getAllColumns().forEach((column) => {
-      const isVisibleInPreferences =
-        preferences.viewsReferences.productReferences.columns[column.id];
-      column.toggleVisibility(isVisibleInPreferences); // Set initial visibility
-      if (!isVisibleInPreferences) {
-        setSelectedColumns((prev) => [...prev, column.id]); // Mark hidden columns as selected
-      }
-    });
+    const preferences = storageService.getLocalStorage(
+      StorageKeyEnum.PREFERENCES,
+    );
+    initializeColumns(preferences);
   }, [table]);
 
-  function handleCheckedChange(value: boolean, column: any) {
-    if (value) {
-      setSelectedColumns((prev) => [...prev, column.id]); // Add column to selected
-    } else {
-      setSelectedColumns((prev) => prev.filter((id) => id !== column.id)); // Remove column from selected
-    }
-    // Do not toggle visibility here
-  }
-
-  function applyChanges() {
+  const initializeColumns = (preferences: any) => {
     table.getAllColumns().forEach((column) => {
       const isVisibleInPreferences =
         preferences.viewsReferences.productReferences.columns[column.id];
-      console.log("Visible", isVisibleInPreferences);
-      const shouldHide = selectedColumns.includes(column.id)
-        ? !isVisibleInPreferences
-        : isVisibleInPreferences;
-      column.toggleVisibility(shouldHide); // Hide or show based on preferences and selection
+      column.toggleVisibility(!isVisibleInPreferences);
+      if (!isVisibleInPreferences) {
+        setSelectedColumns((prev) => [...prev, column.id]);
+      }
+    });
+  };
+
+  const handleCheckedChange = (value: boolean, column: any) => {
+    setSelectedColumns((prev) =>
+      value ? [...prev, column.id] : prev.filter((id) => id !== column.id),
+    );
+  };
+
+  const applyChanges = () => {
+    table.getAllColumns().forEach((column) => {
+      const shouldShow = selectedColumns.includes(column.id);
+      column.toggleVisibility(shouldShow);
     });
 
     const model = {
@@ -68,27 +66,42 @@ export function ColumnsViewOptions<TData>({
               .getAllColumns()
               .map((column) => [
                 column.id,
-                selectedColumns.includes(column.id),
+                !selectedColumns.includes(column.id),
               ]),
           ),
         },
       },
     };
     service.updateUserPreferencesHandler(model);
-  }
+    setDropdownOpen(false);
+  };
 
-  function resetToDefault() {
-    // table.getAllColumns().forEach((column) => {
-    //   column.toggleVisibility(true);
-    // });
-    // setSelectedColumns([]);
+  const resetToDefault = () => {
     service.resetUserPreferencesHandler();
-  }
+    const preferences = storageService.getLocalStorage(
+      StorageKeyEnum.PREFERENCES,
+    );
+    initializeColumns(preferences);
+    setSelectedColumns(
+      table
+        .getAllColumns()
+        .filter(
+          (column) =>
+            !preferences.viewsReferences.productReferences.columns[column.id],
+        )
+        .map((column) => column.id),
+    );
+    setDropdownOpen(false);
+  };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
       <DropdownMenuTrigger className={cs.columnsViewOptions} asChild>
-        <SheButton variant="outline" icon={Settings2}>
+        <SheButton
+          variant="outline"
+          icon={Settings2}
+          onClick={() => setDropdownOpen(true)}
+        >
           <div className={cs.buttonInnerItems}>
             Columns
             <ChevronDown />
@@ -104,25 +117,23 @@ export function ColumnsViewOptions<TData>({
             (column) =>
               typeof column.accessorFn !== "undefined" && column.getCanHide(),
           )
-          .map((column) => {
-            return (
-              <DropdownMenuCheckboxItem
-                key={column.id}
-                className="capitalize"
-                checked={selectedColumns.includes(column.id)} // Check based on selectedColumns
-                onCheckedChange={(value) => handleCheckedChange(value, column)}
-                onSelect={(event) => {
-                  event.preventDefault();
-                }}
-              >
-                {column.id}
-              </DropdownMenuCheckboxItem>
-            );
-          })}
+          .map((column) => (
+            <DropdownMenuCheckboxItem
+              key={column.id}
+              className="capitalize"
+              checked={selectedColumns.includes(column.id)}
+              onCheckedChange={(value) => handleCheckedChange(value, column)}
+              onSelect={(event) => {
+                event.preventDefault();
+              }}
+            >
+              {column.id}
+            </DropdownMenuCheckboxItem>
+          ))}
         <DropdownMenuSeparator />
         <div className="flex justify-between">
-          <SheButton onClick={resetToDefault}>Default</SheButton>{" "}
-          <SheButton onClick={applyChanges}>Apply</SheButton>{" "}
+          <SheButton onClick={resetToDefault}>Default</SheButton>
+          <SheButton onClick={applyChanges}>Apply</SheButton>
         </div>
       </DropdownMenuContent>
     </DropdownMenu>
