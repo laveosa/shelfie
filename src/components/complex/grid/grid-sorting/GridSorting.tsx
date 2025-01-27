@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import cs from "@/components/complex/grid/grid-columns-view-options/ColumnsViewOptions.module.scss";
 
 interface IProductsGridSorting<TData> {
   table: Table<TData>;
@@ -42,26 +43,13 @@ export function GridSorting<TData>({ table }: IProductsGridSorting<TData>) {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <SheButton variant="outline" icon={ArrowUpAZ}>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-              }}
-            >
-              {getSortLabel()}
-              <ChevronDown style={{ paddingTop: "4px" }} />
-            </div>
-          </SheButton>
-        </div>
+      <DropdownMenuTrigger className={cs.dropdownMenuTrigger} asChild>
+        <SheButton variant="outline" icon={ArrowUpAZ}>
+          <div className={cs.buttonInnerItems}>
+            {getSortLabel()}
+            <ChevronDown />
+          </div>
+        </SheButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-[200px]">
         {sortableColumns.map((column) => {
