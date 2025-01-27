@@ -26,6 +26,9 @@ export function ColumnsViewOptions<TData>({
   const service = useProductsPageService();
   const [selectedColumns, setSelectedColumns] = useState<string[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [previousSelectedColumns, setPreviousSelectedColumns] = useState<
+    string[]
+  >([]);
 
   useEffect(() => {
     const preferences = storageService.getLocalStorage(
@@ -82,21 +85,21 @@ export function ColumnsViewOptions<TData>({
       StorageKeyEnum.PREFERENCES,
     );
     initializeColumns(preferences);
-    setSelectedColumns(
-      table
-        .getAllColumns()
-        .filter(
-          (column) =>
-            !preferences.viewsReferences.productReferences.columns[column.id],
-        )
-        .map((column) => column.id),
-    );
     setDropdownOpen(false);
   };
 
+  const handleDropdownOpenChange = (open: boolean) => {
+    if (!open) {
+      setSelectedColumns(previousSelectedColumns);
+    } else {
+      setPreviousSelectedColumns(selectedColumns);
+    }
+    setDropdownOpen(open);
+  };
+
   return (
-    <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
-      <DropdownMenuTrigger className={cs.columnsViewOptions} asChild>
+    <DropdownMenu open={dropdownOpen} onOpenChange={handleDropdownOpenChange}>
+      <DropdownMenuTrigger className={cs.dropdownMenuTrigger} asChild>
         <SheButton
           variant="outline"
           icon={Settings2}
@@ -108,7 +111,7 @@ export function ColumnsViewOptions<TData>({
           </div>
         </SheButton>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" className="w-[150px]">
+      <DropdownMenuContent align="start" className={cs.dropdownMenuContent}>
         <DropdownMenuLabel>Select Columns</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {table
@@ -131,8 +134,10 @@ export function ColumnsViewOptions<TData>({
             </DropdownMenuCheckboxItem>
           ))}
         <DropdownMenuSeparator />
-        <div className="flex justify-between">
-          <SheButton onClick={resetToDefault}>Default</SheButton>
+        <div className={cs.buttonBlock}>
+          <SheButton onClick={resetToDefault} variant="outline">
+            Default
+          </SheButton>
           <SheButton onClick={applyChanges}>Apply</SheButton>
         </div>
       </DropdownMenuContent>
