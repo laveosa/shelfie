@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   Columns3Icon,
   Download,
@@ -15,6 +16,9 @@ import SheTabs from "@/components/complex/she-tabs/SheTabs.tsx";
 import { ProductsFakeData } from "@/components/complex/grid/products-grid/FakeData.ts";
 import { ProductsGridColumns } from "@/components/complex/grid/products-grid/ProductsGridColumns.tsx";
 import { GridDataTable } from "@/components/complex/grid/grid-data-table/GridDataTable.tsx";
+import storageService from "@/utils/services/StorageService.ts";
+import { StorageKeyEnum } from "@/const/enums/StorageKeyEnum.ts";
+import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 
 //TODO Replace after we will have API to receiving actual data
 const productsData = ProductsFakeData;
@@ -23,6 +27,12 @@ const productsData = ProductsFakeData;
 
 export function ProductsPage() {
   const service = useProductsPageService();
+
+  useEffect(() => {
+    service.getUserPreferencesHandler().then((res: PreferencesModel) => {
+      storageService.setLocalStorage(StorageKeyEnum.PREFERENCES, res);
+    });
+  }, []);
 
   function handleAddProduct() {}
 
