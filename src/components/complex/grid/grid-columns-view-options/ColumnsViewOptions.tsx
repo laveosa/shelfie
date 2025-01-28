@@ -38,6 +38,7 @@ export function ColumnsViewOptions<TData>({
   }, [table]);
 
   const initializeColumns = (preferences: any) => {
+    if (!preferences) return;
     table.getAllColumns().forEach((column) => {
       const isVisibleInPreferences =
         preferences.viewsReferences.productReferences.columns[column.id];
