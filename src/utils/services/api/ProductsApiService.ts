@@ -3,7 +3,10 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import { ApiServiceNameEnum } from "@/const/enums/ApiServiceNameEnum.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
-import { ApiConfigurationService as apiConfig } from "@/utils/services/api/ApiConfigurationService.ts";
+import { ApiConfigurationService } from "@/utils/services/api/ApiConfigurationService.ts";
+
+const apiConfig = new ApiConfigurationService();
+apiConfig.baseUrl = ApiUrlEnum.PRODUCTS_BASE_URL;
 
 export const ProductsApiService = createApi({
   reducerPath: ApiServiceNameEnum.PRODUCTS,
