@@ -1,6 +1,7 @@
 import { ProductModel } from "@/const/models/ProductModel.ts";
 
 export interface IProductsPageSlice {
-  isLoading?: boolean;
+  loading?: boolean;
   products?: ProductModel[];
+  columnsPreferences?: any;
 }

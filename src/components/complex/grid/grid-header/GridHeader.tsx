@@ -8,6 +8,7 @@ import cs from "./GridHeader.module.scss";
 export default function GridHeader<TData>({
   gridModel,
   table,
+  columnsPreferences,
   showPagination = true,
   showSorting = true,
   showColumnsViewOptions = true,
@@ -18,7 +19,12 @@ export default function GridHeader<TData>({
     <div className={cs.gridHeader}>
       <div className={cs.headerGroup}>
         {showSearch && <Input />}
-        {showColumnsViewOptions && <ColumnsViewOptions table={table} />}
+        {showColumnsViewOptions && (
+          <ColumnsViewOptions
+            table={table}
+            columnsPreferences={columnsPreferences}
+          />
+        )}
         {showSorting && <GridSorting table={table} />}
         {children}
       </div>

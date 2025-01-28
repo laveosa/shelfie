@@ -10,4 +10,5 @@ export interface IGridHeader<TData> {
   showColumnsViewOptions?: boolean;
   showSearch?: boolean;
   children?: React.ReactNode;
+  columnsPreferences?: any;
 }
