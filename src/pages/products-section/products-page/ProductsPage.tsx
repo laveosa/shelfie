@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Columns3Icon,
   Download,
@@ -13,61 +13,71 @@ import useProductsPageService from "@/pages/products-section/products-page/usePr
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SheTabs from "@/components/complex/she-tabs/SheTabs.tsx";
-import { ProductsFakeData } from "@/components/complex/grid/products-grid/FakeData.ts";
 import { ProductsGridColumns } from "@/components/complex/grid/products-grid/ProductsGridColumns.tsx";
 import { GridDataTable } from "@/components/complex/grid/grid-data-table/GridDataTable.tsx";
 import { GridModel } from "@/const/models/GridModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { ProductCategoryModel } from "@/const/models/ProductCategoryModel.ts";
 import { ProductsGridRequestModel } from "@/const/models/ProductsGridRequestModel.ts";
-import { ItemFilter } from "@/components/complex/grid/item-filter/ItemFilter.tsx";
+import GridFilter from "@/components/complex/grid/item-filter/ItemFilter.tsx";
 
 //TODO Replace after we will have API to receiving actual data
-const productsData = ProductsFakeData;
-// const variantsData = getVariantsFakeData();
-// const purchasesData = getPurchasesFakeData();
-
-const BrandData = [
-  {
-    brandId: 1,
-    brandName: "one",
-  },
-  {
-    brandId: 2,
-    brandName: "two",
-  },
-  {
-    brandId: 3,
-    brandName: "three",
-  },
-];
+// const productsData = ProductsFakeData;
+//
+// const BrandData = [
+//   { brandId: 1, brandName: "one" },
+//   { brandId: 2, brandName: "two" },
+//   { brandId: 3, brandName: "three" },
+// ];
+//
+// const CategoryData = [
+//   { categoryId: 1, categoryName: "C one" },
+//   { categoryId: 2, categoryName: "C two" },
+//   { categoryId: 3, categoryName: "C three" },
+// ];
 
 export function ProductsPage() {
   const service = useProductsPageService();
-  const gridModel: ProductsGridRequestModel = {};
+  const [grid, _setGridModel] = useState<GridModel>({});
+  const [gridModel, setGridModel] = useState<ProductsGridRequestModel>({});
+  const [brands, setBrands] = useState<BrandModel[]>([]);
+  const [categories, setCategories] = useState<ProductCategoryModel[]>([]);
 
   useEffect(() => {
     service.getTheProductsForGridHandler(gridModel).then((res: GridModel) => {
       console.log("RES", res);
     });
+
     service.getBrandsForFilterHandler().then((res: BrandModel[]) => {
+      setBrands(res);
       console.log("BRANDS", res);
     });
+
     service
       .getCategoriesForFilterHandler()
       .then((res: ProductCategoryModel[]) => {
+        setCategories(res);
         console.log("CATEGORIES", res);
       });
-    // service.getUserPreferencesHandler().then((res: PreferencesModel) => {
-    //   storageService.setLocalStorage(StorageKeyEnum.PREFERENCES, res);
-    // });
-  }, []);
+  }, [gridModel]);
 
-  function handleAddProduct() {}
+  const handleAddProduct = () => {};
+  const handleImportProducts = () => {};
+  const handleConfigure = () => {};
 
-  function handleImportProducts() {}
+  const onBrandSelectHandler = (selectedIds: number[]) => {
+    setGridModel((prev) => ({
+      ...prev,
+      brands: selectedIds,
+    }));
+  };
 
-  function handleConfigure() {}
+  const onCategorySelectHandler = (selectedIds: number[]) => {
+    setGridModel((prev) => ({
+      ...prev,
+      categories: selectedIds,
+    }));
+  };
 
   return (
     <div id={cs.ProductsPage}>
@@ -124,10 +134,24 @@ export function ProductsPage() {
           <TabsContent value="products">
             <GridDataTable
               columns={ProductsGridColumns}
-              data={productsData.items}
-              gridModel={productsData}
+              data={grid.items}
+              gridModel={grid}
             >
-              <ItemFilter filteredColumn={"brand"} data={BrandData} />
+              <GridFilter
+                items={brands}
+                columnName={"Brands"}
+                onSelectionChange={onBrandSelectHandler}
+                getId={(item) => item.brandId}
+                getName={(item) => item.brandName}
+              />
+
+              <GridFilter
+                items={categories}
+                columnName={"Categories"}
+                onSelectionChange={onCategorySelectHandler}
+                getId={(item) => item.categoryId}
+                getName={(item) => item.categoryName}
+              />
             </GridDataTable>
           </TabsContent>
           <TabsContent value="variants">

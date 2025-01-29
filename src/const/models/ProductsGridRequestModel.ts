@@ -3,6 +3,6 @@ export interface ProductsGridRequestModel {
   pageSize?: number;
   searchQuery?: string;
   sortOption?: string;
-  brands?: string[];
-  categories?: string[];
+  brands?: number[];
+  categories?: number[];
 }
