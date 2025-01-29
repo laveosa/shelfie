@@ -1,9 +1,9 @@
 import { Table } from "@tanstack/react-table";
-import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { GridModel } from "@/const/models/GridModel.ts";
 import React from "react";
 
 export interface IGridHeader<TData> {
-  gridModel: GridRequestModel;
+  gridModel: GridModel;
   table?: Table<TData>;
   showPagination?: boolean;
   showSorting?: boolean;

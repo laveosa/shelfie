@@ -8,11 +8,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select.tsx";
-import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { GridModel } from "@/const/models/GridModel.ts";
 import cs from "./GridPagination.module.scss";
 
 interface IProductsGridPagination {
-  gridModel: GridRequestModel;
+  gridModel: GridModel;
 }
 
 export function GridPagination({

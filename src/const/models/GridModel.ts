@@ -1,6 +1,6 @@
 import { ProductsModel } from "@/const/models/ProductsModel.ts";
 
-export interface GridRequestModel {
+export interface GridModel {
   pager?: {
     currentPage?: number;
     pageSize?: number;
@@ -11,5 +11,5 @@ export interface GridRequestModel {
   };
   items?: ProductsModel[];
   searchQuery?: string;
-  productOrder?: string;
+  sortOption?: string;
 }

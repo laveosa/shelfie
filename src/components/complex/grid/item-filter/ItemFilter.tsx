@@ -1,5 +1,4 @@
 import { ChevronDown } from "lucide-react";
-import { Table } from "@tanstack/react-table";
 import { useRef, useState } from "react";
 
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
@@ -12,16 +11,12 @@ import {
 } from "@/components/ui/dropdown-menu.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 
-interface IItemFilter<TData> {
-  table: Table<TData>;
+interface IItemFilter {
+  data: [];
   filteredColumn: string;
-  data: TData[];
 }
 
-export function ItemFilter<TData>({
-  filteredColumn,
-  data,
-}: IItemFilter<TData>) {
+export function ItemFilter({ filteredColumn, data }: IItemFilter) {
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -32,13 +27,13 @@ export function ItemFilter<TData>({
     );
   };
 
-  const uniqueProductNames = Array.from(
-    new Set(data.map((item: any) => item[filteredColumn])),
-  );
+  // const uniqueProductNames = Array.from(
+  //   new Set(data.map((item: any) => item[filteredColumn])),
+  // );
 
-  const filteredItems = uniqueProductNames.filter((item) =>
-    item.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+  // const filteredItems = uniqueProductNames.filter((item) =>
+  //   item.toLowerCase().includes(searchTerm.toLowerCase()),
+  // );
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
@@ -83,7 +78,7 @@ export function ItemFilter<TData>({
         </div>
         <DropdownMenuSeparator />
         <div className="max-h-[200px] overflow-y-auto">
-          {filteredItems.map((item) => (
+          {data.map((item) => (
             <DropdownMenuCheckboxItem
               key={item}
               className="capitalize"

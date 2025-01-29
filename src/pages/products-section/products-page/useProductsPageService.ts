@@ -6,34 +6,57 @@ import { ProductsPageSliceActions as action } from "@/state/slices/ProductsPageS
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import UsersApiHooks from "@/utils/services/api/UsersApiService.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
+import { ProductsGridRequestModel } from "@/const/models/ProductsGridRequestModel.ts";
 
 export default function useProductsPageService() {
-  const {
-    useLazyGetAllProductsQuery,
-    useManageProductMutation,
-    useDeleteProductMutation,
-  } = ProductsApiHooks;
-  const {
-    useLazyGetUserPreferencesQuery,
-    useLazyGetDefaultUserPreferencesQuery,
-    useUpdateUserPreferencesMutation,
-    useResetUserPreferencesMutation,
-  } = UsersApiHooks;
   const state = useAppSelector<IProductsPageSlice>(StoreSliceEnum.PRODUCTS);
   const dispatch = useAppDispatch();
-  const [getAllProducts] = useLazyGetAllProductsQuery();
-  const [manageProduct] = useManageProductMutation();
-  const [deleteProduct] = useDeleteProductMutation();
-  const [getUserPreferences] = useLazyGetUserPreferencesQuery();
-  const [updateUserPreferences] = useUpdateUserPreferencesMutation();
-  const [resetUserPreferences] = useResetUserPreferencesMutation();
-  const [getDefaultUserPreferences] = useLazyGetDefaultUserPreferencesQuery();
+  // const [getAllProducts] = ProductsApiHooks.useLazyGetAllProductsQuery();
+  const [getTheProductsForGrid] =
+    ProductsApiHooks.useGetTheProductsForGridMutation();
+  const [getBrandsForFilter] =
+    ProductsApiHooks.useLazyGetBrandsForProductsFilterQuery();
+  const [getCategoriesForFilter] =
+    ProductsApiHooks.useLazyGetCategoriesForProductsFilterQuery();
+  const [manageProduct] = ProductsApiHooks.useManageProductMutation();
+  const [deleteProduct] = ProductsApiHooks.useDeleteProductMutation();
+  const [getUserPreferences] = UsersApiHooks.useLazyGetUserPreferencesQuery();
+  const [updateUserPreferences] =
+    UsersApiHooks.useUpdateUserPreferencesMutation();
+  const [resetUserPreferences] =
+    UsersApiHooks.useResetUserPreferencesMutation();
+  const [getDefaultUserPreferences] =
+    UsersApiHooks.useLazyGetDefaultUserPreferencesQuery();
 
-  function getAllProductsHandler() {
+  // function getAllProductsHandler() {
+  //   dispatch(action.setLoading(true));
+  //   return getAllProducts(null).then((res: any) => {
+  //     dispatch(action.setLoading(false));
+  //     dispatch(action.setProducts(res.data));
+  //     return res.data;
+  //   });
+  // }
+
+  function getTheProductsForGridHandler(data?: ProductsGridRequestModel) {
     dispatch(action.setLoading(true));
-    return getAllProducts(null).then((res: any) => {
+    return getTheProductsForGrid(data).then((res: any) => {
       dispatch(action.setLoading(false));
-      dispatch(action.setProducts(res.data));
+      return res.data;
+    });
+  }
+
+  function getBrandsForFilterHandler() {
+    dispatch(action.setLoading(true));
+    return getBrandsForFilter(null).then((res: any) => {
+      dispatch(action.setLoading(false));
+      return res.data;
+    });
+  }
+
+  function getCategoriesForFilterHandler() {
+    dispatch(action.setLoading(true));
+    return getCategoriesForFilter(null).then((res: any) => {
+      dispatch(action.setLoading(false));
       return res.data;
     });
   }
@@ -80,7 +103,10 @@ export default function useProductsPageService() {
 
   return {
     ...state,
-    getAllProductsHandler,
+    // getAllProductsHandler,
+    getTheProductsForGridHandler,
+    getBrandsForFilterHandler,
+    getCategoriesForFilterHandler,
     getUserPreferencesHandler,
     manageProductHandler,
     deleteProductHandler,

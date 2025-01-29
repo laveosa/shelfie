@@ -1,8 +1,8 @@
-import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { GridModel } from "@/const/models/GridModel.ts";
 
 //TODO Delete this file after API for real products data will be ready
 
-export const ProductsFakeData: GridRequestModel = {
+export const ProductsFakeData: GridModel = {
   pager: {
     currentPage: 8,
     pageSize: 10,
