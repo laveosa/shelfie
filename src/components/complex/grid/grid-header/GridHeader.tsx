@@ -23,7 +23,8 @@ export default function GridHeader<TData>({
         {children}
       </div>
       <div className={cs.headerGroup}>
-        {showPagination && <GridPagination gridModel={gridModel} />}
+        {showPagination ||
+          (gridModel.pager && <GridPagination gridModel={gridModel} />)}
       </div>
     </div>
   );

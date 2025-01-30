@@ -7,6 +7,7 @@ import { ProductModel } from "@/const/models/ProductModel.ts";
 import UsersApiHooks from "@/utils/services/api/UsersApiService.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import { ProductsGridRequestModel } from "@/const/models/ProductsGridRequestModel.ts";
+import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
 
 export default function useProductsPageService() {
   const state = useAppSelector<IProductsPageSlice>(StoreSliceEnum.PRODUCTS);
@@ -27,6 +28,8 @@ export default function useProductsPageService() {
     UsersApiHooks.useResetUserPreferencesMutation();
   const [getDefaultUserPreferences] =
     UsersApiHooks.useLazyGetDefaultUserPreferencesQuery();
+  const [getSortingOptionsForGrid] =
+    DictionaryApiHooks.useLazyGetSortingOptionsForGridQuery();
 
   // function getAllProductsHandler() {
   //   dispatch(action.setLoading(true));
@@ -56,6 +59,14 @@ export default function useProductsPageService() {
   function getCategoriesForFilterHandler() {
     dispatch(action.setLoading(true));
     return getCategoriesForFilter(null).then((res: any) => {
+      dispatch(action.setLoading(false));
+      return res.data;
+    });
+  }
+
+  function getSortingOptionsForGridHandler() {
+    dispatch(action.setLoading(true));
+    return getSortingOptionsForGrid(null).then((res: any) => {
       dispatch(action.setLoading(false));
       return res.data;
     });
@@ -107,6 +118,7 @@ export default function useProductsPageService() {
     getTheProductsForGridHandler,
     getBrandsForFilterHandler,
     getCategoriesForFilterHandler,
+    getSortingOptionsForGridHandler,
     getUserPreferencesHandler,
     manageProductHandler,
     deleteProductHandler,

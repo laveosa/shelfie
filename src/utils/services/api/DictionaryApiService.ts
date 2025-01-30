@@ -19,6 +19,16 @@ export const DictionaryApiService = createApi({
       providesTags: (result: CountryCodeModel[]) =>
         apiConfig.providesTags(result, ApiServiceNameEnum.DICTIONARY),
     }),
+    getSortingOptionsForGrid: apiConfig.createQuery<CountryCodeModel[], void>(
+      builder,
+      {
+        query: () => ({
+          url: "/sortingoptions/products",
+        }),
+        providesTags: (result: CountryCodeModel[]) =>
+          apiConfig.providesTags(result, ApiServiceNameEnum.DICTIONARY),
+      },
+    ),
   }),
 });
 

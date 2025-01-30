@@ -1,5 +1,5 @@
-// components/GridFilter.tsx
 import React, { useState } from "react";
+
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -8,10 +8,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
-import { Button } from "@/components/ui/button.tsx"; // Assuming you have a Button component
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { ChevronDown, Settings2 } from "lucide-react";
-import cs from "@/components/complex/grid/grid-columns-view-options/ColumnsViewOptions.module.scss"; // Assuming you have a Checkbox component
+import cs from "./GridItemsFilter.module.scss";
 
 interface GridFilterProps<T> {
   items: T[];
@@ -21,7 +20,7 @@ interface GridFilterProps<T> {
   getName: (item: T) => string;
 }
 
-export default function GridFilter<T>({
+export default function GridItemsFilter<T>({
   items,
   columnName,
   onSelectionChange,
@@ -31,7 +30,7 @@ export default function GridFilter<T>({
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  const handleSelect = (id: number) => {
+  function handleSelect(id: number) {
     setSelectedIds((prev) => {
       if (prev.includes(id)) {
         return prev.filter((selectedId) => selectedId !== id);
@@ -39,18 +38,23 @@ export default function GridFilter<T>({
         return [...prev, id];
       }
     });
-  };
+  }
 
-  const handleApply = () => {
+  function onResetHandle() {
+    setSelectedIds([]);
+    onSelectionChange([]);
+  }
+
+  function onApplyHandle() {
     if (selectedIds.length > 0) {
       onSelectionChange(selectedIds);
     }
     setDropdownOpen(false);
-  };
+  }
 
   return (
     <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger className={cs.dropdownMenuTrigger} asChild>
         <SheButton
           variant="outline"
           icon={Settings2}
@@ -62,7 +66,7 @@ export default function GridFilter<T>({
           </div>
         </SheButton>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" className="w-[200px]">
+      <DropdownMenuContent align="start" className={cs.dropdownMenuContent}>
         <DropdownMenuLabel>{columnName}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {items.map((item) => (
@@ -79,7 +83,12 @@ export default function GridFilter<T>({
           </DropdownMenuCheckboxItem>
         ))}
         <DropdownMenuSeparator />
-        <Button onClick={handleApply}>Apply</Button>
+        <div className={cs.buttonBlock}>
+          <SheButton onClick={onResetHandle} variant="outline">
+            Default
+          </SheButton>
+          <SheButton onClick={onApplyHandle}>Apply</SheButton>
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   );
