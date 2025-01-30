@@ -10,17 +10,17 @@ import {
 } from "@/components/ui/select.tsx";
 import { GridModel } from "@/const/models/GridModel.ts";
 import cs from "./GridPagination.module.scss";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 
-interface IProductsGridPagination {
+interface IGridPagination {
   gridModel: GridModel;
+  onChange: (updates: GridRequestModel) => void;
 }
 
-export function GridPagination({
-  gridModel: gridModel,
-}: IProductsGridPagination) {
-  const { currentPage, totalPages, pageSize } = gridModel.pager;
+export function GridPagination({ gridModel, onChange }: IGridPagination) {
+  const { currentPage, totalPages, pageSize, endPage } = gridModel.pager;
 
-  const getPageNumbers = () => {
+  function getPageNumbers() {
     const pages = [];
 
     // Always show the first page
@@ -55,18 +55,23 @@ export function GridPagination({
     }
 
     return pages;
-  };
-
-  function getPreviousPage() {}
-
-  function getNextPage() {}
-
-  function setCurrentPage(e) {
-    console.log(e.target.innerText);
   }
 
-  function setPageSize(pageSize) {
-    console.log(pageSize);
+  function onPreviousPageHandler() {
+    onChange({ currentPage: currentPage - 1 });
+  }
+
+  function onNextPageHandler() {
+    onChange({ currentPage: currentPage + 1 });
+  }
+
+  function onSetCurrentPageHandler(e) {
+    onChange({ currentPage: e.target.innerText });
+  }
+
+  function onSetPageSizeHandler(newPageSize) {
+    onChange({ pageSize: parseInt(newPageSize), currentPage: 1 });
+    console.log(newPageSize);
   }
 
   return (
@@ -78,7 +83,7 @@ export function GridPagination({
           <SheButton
             variant="ghost"
             icon={ChevronLeft}
-            onClick={() => getPreviousPage()}
+            onClick={() => onPreviousPageHandler()}
             disabled={currentPage <= 1}
           >
             Previous
@@ -92,7 +97,7 @@ export function GridPagination({
                   pageNum === "..." ? "pointer-events-none" : ""
                 }`}
                 onClick={(e) => {
-                  setCurrentPage(e);
+                  onSetCurrentPageHandler(e);
                 }}
                 disabled={pageNum === "..."}
               >
@@ -104,8 +109,8 @@ export function GridPagination({
             variant="ghost"
             icon={ChevronRight}
             iconPosition="right"
-            onClick={() => getNextPage()}
-            disabled={currentPage >= gridModel.pager.endPage}
+            onClick={() => onNextPageHandler()}
+            disabled={currentPage >= endPage}
           >
             Next
           </SheButton>
@@ -114,14 +119,14 @@ export function GridPagination({
           <Select
             value={`${pageSize}`}
             onValueChange={(pageSize) => {
-              setPageSize(pageSize);
+              onSetPageSizeHandler(pageSize);
             }}
           >
             <SelectTrigger className={cs.selectTrigger}>
               <SelectValue placeholder={pageSize} />
             </SelectTrigger>
-            <SelectContent side="top">
-              {[5, 10, 20, 30, 40, 50].map((pageSize) => (
+            <SelectContent side="bottom">
+              {[5, 10, 20, 50].map((pageSize) => (
                 <SelectItem key={pageSize} value={`${pageSize}`}>
                   {pageSize}
                 </SelectItem>

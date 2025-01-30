@@ -6,7 +6,7 @@ import { ProductsPageSliceActions as action } from "@/state/slices/ProductsPageS
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import UsersApiHooks from "@/utils/services/api/UsersApiService.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
-import { ProductsGridRequestModel } from "@/const/models/ProductsGridRequestModel.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
 
 export default function useProductsPageService() {
@@ -40,7 +40,7 @@ export default function useProductsPageService() {
   //   });
   // }
 
-  function getTheProductsForGridHandler(data?: ProductsGridRequestModel) {
+  function getTheProductsForGridHandler(data?: GridRequestModel) {
     dispatch(action.setLoading(true));
     return getTheProductsForGrid(data).then((res: any) => {
       dispatch(action.setLoading(false));

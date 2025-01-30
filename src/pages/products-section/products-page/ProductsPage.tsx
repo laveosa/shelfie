@@ -18,23 +18,31 @@ import { GridDataTable } from "@/components/complex/grid/grid-data-table/GridDat
 import { GridModel } from "@/const/models/GridModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { ProductCategoryModel } from "@/const/models/ProductCategoryModel.ts";
-import { ProductsGridRequestModel } from "@/const/models/ProductsGridRequestModel.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import GridItemsFilter from "@/components/complex/grid/grid-items-filter/GridItemsFilter.tsx";
-import GridItemsSorting from "@/components/complex/grid/grid-items-sorting/GridItemsSorting.tsx";
 import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
 
 export function ProductsPage() {
   const service = useProductsPageService();
-  const [grid, _setGridModel] = useState<GridModel>({ pager: {}, items: [] });
-  const [gridModel, setGridModel] = useState<ProductsGridRequestModel>({});
+  const [productsGridModel, setProductsGridModel] = useState<GridModel>({
+    pager: {},
+    items: [],
+  });
+  const [gridRequestModel, setGridRequestModel] = useState<GridRequestModel>({
+    currentPage: 1,
+    pageSize: 10,
+  });
   const [brands, setBrands] = useState<BrandModel[]>([]);
   const [categories, setCategories] = useState<ProductCategoryModel[]>([]);
   const [sortingOptions, setSortingOptions] = useState<GridSortingModel[]>([]);
 
   useEffect(() => {
-    service.getTheProductsForGridHandler(gridModel).then((res: GridModel) => {
-      console.log("Products", res);
-    });
+    service
+      .getTheProductsForGridHandler(gridRequestModel)
+      .then((res: GridModel) => {
+        setProductsGridModel(res);
+        console.log("Products", res);
+      });
 
     service.getBrandsForFilterHandler().then((res: BrandModel[]) => {
       setBrands(res);
@@ -51,10 +59,10 @@ export function ProductsPage() {
     service
       .getSortingOptionsForGridHandler()
       .then((res: GridSortingModel[]) => {
-        setSortingOptions(res); // Corrected line
+        setSortingOptions(res);
         console.log("Sorting Options", res);
       });
-  }, [gridModel]);
+  }, [gridRequestModel]);
 
   function handleAddProduct() {}
 
@@ -62,24 +70,24 @@ export function ProductsPage() {
 
   function handleConfigure() {}
 
+  function handleGridRequestChange(updates: GridRequestModel) {
+    setGridRequestModel((prev) => ({
+      ...prev,
+      ...updates,
+    }));
+  }
+
   function onBrandSelectHandler(selectedIds: number[]) {
-    setGridModel((prev) => ({
+    setGridRequestModel((prev) => ({
       ...prev,
       brands: selectedIds,
     }));
   }
 
   function onCategorySelectHandler(selectedIds: number[]) {
-    setGridModel((prev) => ({
+    setGridRequestModel((prev) => ({
       ...prev,
       categories: selectedIds,
-    }));
-  }
-
-  function onSortingOptionSelectHandler(value: string) {
-    setGridModel((prev) => ({
-      ...prev,
-      sortOption: value,
     }));
   }
 
@@ -138,8 +146,10 @@ export function ProductsPage() {
           <TabsContent value="products">
             <GridDataTable
               columns={ProductsGridColumns}
-              data={grid.items}
-              gridModel={grid}
+              data={productsGridModel.items}
+              gridModel={productsGridModel}
+              sortingItems={sortingOptions}
+              onGridRequestChange={handleGridRequestChange}
             >
               <GridItemsFilter
                 items={brands}
@@ -155,10 +165,6 @@ export function ProductsPage() {
                 onSelectionChange={onCategorySelectHandler}
                 getId={(item) => item.categoryId}
                 getName={(item) => item.categoryName}
-              />
-              <GridItemsSorting
-                items={sortingOptions}
-                onSelectionChange={onSortingOptionSelectHandler}
               />
             </GridDataTable>
           </TabsContent>

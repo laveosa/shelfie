@@ -18,10 +18,14 @@ import {
 } from "@/components/ui/table.tsx";
 import GridHeader from "@/components/complex/grid/grid-header/GridHeader.tsx";
 import { IGridHeader } from "@/const/interfaces/complex-components/IGridHeader.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
 
 interface DataTableProps<TData, TValue> extends IGridHeader<TData> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  sortingItems?: GridSortingModel[];
+  onGridRequestChange?: (updates: GridRequestModel) => void;
   showHeader?: boolean;
   children?: ReactNode;
 }
@@ -30,6 +34,8 @@ export function GridDataTable<TData, TValue>({
   columns,
   data,
   gridModel,
+  sortingItems,
+  onGridRequestChange,
   showHeader = true,
   showPagination = true,
   showSorting = true,
@@ -67,6 +73,8 @@ export function GridDataTable<TData, TValue>({
         <GridHeader
           gridModel={gridModel}
           table={table}
+          sortingItems={sortingItems}
+          onGridRequestChange={onGridRequestChange}
           showPagination={showPagination}
           showSorting={showSorting}
           showColumnsViewOptions={showColumnsViewOptions}

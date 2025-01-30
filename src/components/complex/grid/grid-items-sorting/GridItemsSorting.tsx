@@ -10,22 +10,23 @@ import {
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import cs from "./GridItemsSorting.module.scss";
 import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 
 interface GridItemsSortingProps {
   items: GridSortingModel[];
-  onSelectionChange: (selectedValue: string) => void;
+  onChange: (updates: GridRequestModel) => void;
 }
 
 export default function GridItemsSorting({
   items,
-  onSelectionChange,
+  onChange,
 }: GridItemsSortingProps) {
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   function handleSelect(value: string) {
     setSelectedValue(value);
-    onSelectionChange(value);
+    onChange({ sortOption: value });
     setDropdownOpen(false);
   }
 
