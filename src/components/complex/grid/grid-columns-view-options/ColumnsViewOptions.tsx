@@ -15,6 +15,7 @@ import cs from "./ColumnsViewOptions.module.scss";
 import storageService from "@/utils/services/StorageService.ts";
 import { StorageKeyEnum } from "@/const/enums/StorageKeyEnum.ts";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
+import { useGridContext } from "@/state/context/grid-context.ts";
 
 interface IColumnsViewOptions<TData> {
   table: Table<TData>;
@@ -24,6 +25,9 @@ interface IColumnsViewOptions<TData> {
 export function ColumnsViewOptions<TData>({
   table,
 }: IColumnsViewOptions<TData>) {
+  const { columnsPreferences, onApplyColumns, onDefaultColumns } =
+    useGridContext();
+
   const service = useProductsPageService();
   const [selectedColumns, setSelectedColumns] = useState<string[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -32,17 +36,14 @@ export function ColumnsViewOptions<TData>({
   >([]);
 
   useEffect(() => {
-    const preferences = storageService.getLocalStorage(
-      StorageKeyEnum.PREFERENCES,
-    );
-    initializeColumns(preferences);
-  }, [table]);
+    console.log("MESSAGE: ", columnsPreferences);
+    initializeColumns(columnsPreferences);
+  }, [columnsPreferences]);
 
-  function initializeColumns(preferences: any) {
-    if (!preferences) return;
+  function initializeColumns(columns: any) {
+    if (!columns) return;
     table.getAllColumns().forEach((column) => {
-      const isVisibleInPreferences =
-        preferences.viewsReferences.productReferences.columns[column.id];
+      const isVisibleInPreferences = columns[column.id];
       column.toggleVisibility(!isVisibleInPreferences);
       if (!isVisibleInPreferences) {
         setSelectedColumns((prev) => [...prev, column.id]);
@@ -50,13 +51,13 @@ export function ColumnsViewOptions<TData>({
     });
   }
 
-  function handleCheckedChange(value: boolean, column: any) {
+  function onCheckedHandler(value: boolean, column: any) {
     setSelectedColumns((prev) =>
       value ? [...prev, column.id] : prev.filter((id) => id !== column.id),
     );
   }
 
-  function applyChanges() {
+  function onApplyHandler() {
     table.getAllColumns().forEach((column) => {
       const shouldShow = selectedColumns.includes(column.id);
       column.toggleVisibility(shouldShow);
@@ -77,11 +78,13 @@ export function ColumnsViewOptions<TData>({
         },
       },
     };
+    onApplyColumns(model);
     service.updateUserPreferencesHandler(model);
     setDropdownOpen(false);
   }
 
-  function resetToDefault() {
+  function onResetHandler() {
+    onDefaultColumns();
     service.resetUserPreferencesHandler();
     const preferences = storageService.getLocalStorage(
       StorageKeyEnum.PREFERENCES,
@@ -90,7 +93,7 @@ export function ColumnsViewOptions<TData>({
     setDropdownOpen(false);
   }
 
-  function handleDropdownOpenChange(open: boolean) {
+  function onOpenChangeHandler(open: boolean) {
     if (!open) {
       setSelectedColumns(previousSelectedColumns);
     } else {
@@ -100,7 +103,7 @@ export function ColumnsViewOptions<TData>({
   }
 
   return (
-    <DropdownMenu open={dropdownOpen} onOpenChange={handleDropdownOpenChange}>
+    <DropdownMenu open={dropdownOpen} onOpenChange={onOpenChangeHandler}>
       <DropdownMenuTrigger className={cs.dropdownMenuTrigger} asChild>
         <SheButton
           variant="outline"
@@ -127,7 +130,7 @@ export function ColumnsViewOptions<TData>({
               key={column.id}
               className="capitalize"
               checked={selectedColumns.includes(column.id)}
-              onCheckedChange={(value) => handleCheckedChange(value, column)}
+              onCheckedChange={(value) => onCheckedHandler(value, column)}
               onSelect={(event) => {
                 event.preventDefault();
               }}
@@ -137,10 +140,10 @@ export function ColumnsViewOptions<TData>({
           ))}
         <DropdownMenuSeparator />
         <div className={cs.buttonBlock}>
-          <SheButton onClick={resetToDefault} variant="outline">
+          <SheButton onClick={onResetHandler} variant="outline">
             Default
           </SheButton>
-          <SheButton onClick={applyChanges}>Apply</SheButton>
+          <SheButton onClick={onApplyHandler}>Apply</SheButton>
         </div>
       </DropdownMenuContent>
     </DropdownMenu>
