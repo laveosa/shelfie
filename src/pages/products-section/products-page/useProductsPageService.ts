@@ -107,9 +107,7 @@ export default function useProductsPageService() {
   }
 
   function resetUserPreferencesHandler() {
-    return resetUserPreferences().then((res: any) => {
-      console.log(res);
-    });
+    return resetUserPreferences();
   }
 
   function refreshColumnsPreferencesHandler(columnsPreferences: any) {

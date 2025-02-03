@@ -1,10 +1,11 @@
+import { useState } from "react";
+
+import cs from "./GridHeader.module.scss";
 import { GridPagination } from "@/components/complex/grid/grid-pagination/GridPagination.tsx";
 import { ColumnsViewOptions } from "@/components/complex/grid/grid-columns-view-options/ColumnsViewOptions.tsx";
 import { IGridHeader } from "@/const/interfaces/complex-components/IGridHeader.ts";
-import cs from "./GridHeader.module.scss";
 import GridItemsSorting from "@/components/complex/grid/grid-items-sorting/GridItemsSorting.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import { useState } from "react";
 
 export default function GridHeader<TData>({
   gridModel,

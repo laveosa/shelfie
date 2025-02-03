@@ -71,7 +71,6 @@ export function GridPagination({ gridModel, onChange }: IGridPagination) {
 
   function onSetPageSizeHandler(newPageSize) {
     onChange({ pageSize: parseInt(newPageSize), currentPage: 1 });
-    console.log(newPageSize);
   }
 
   return (

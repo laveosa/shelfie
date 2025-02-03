@@ -22,8 +22,13 @@ import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import GridItemsFilter from "@/components/complex/grid/grid-items-filter/GridItemsFilter.tsx";
 import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
 import useAppService from "@/useAppService.ts";
+import { useAppSelector } from "@/utils/hooks/redux.ts";
+import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
+import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
+import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 
 export function ProductsPage() {
+  const state = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
   const service = useProductsPageService();
   const appService = useAppService();
   const [productsGridModel, setProductsGridModel] = useState<GridModel>({
@@ -43,26 +48,22 @@ export function ProductsPage() {
       .getTheProductsForGridHandler(gridRequestModel)
       .then((res: GridModel) => {
         setProductsGridModel(res);
-        console.log("Products", res);
       });
 
     service.getBrandsForFilterHandler().then((res: BrandModel[]) => {
       setBrands(res);
-      console.log("Brands", res);
     });
 
     service
       .getCategoriesForFilterHandler()
       .then((res: ProductCategoryModel[]) => {
         setCategories(res);
-        console.log("Categories", res);
       });
 
     service
       .getSortingOptionsForGridHandler()
       .then((res: GridSortingModel[]) => {
         setSortingOptions(res);
-        console.log("Sorting Options", res);
       });
 
     service.refreshColumnsPreferencesHandler(
@@ -95,6 +96,14 @@ export function ProductsPage() {
       ...prev,
       categories: selectedIds,
     }));
+  }
+
+  function onApplyColumnsHandler(model: PreferencesModel) {
+    service.updateUserPreferencesHandler(model);
+  }
+
+  function onResetColumnsHandler() {
+    service.resetUserPreferencesHandler();
   }
 
   return (
@@ -155,6 +164,9 @@ export function ProductsPage() {
               data={productsGridModel.items}
               gridModel={productsGridModel}
               sortingItems={sortingOptions}
+              columnsPreferences={state.preferences}
+              onApplyColumns={onApplyColumnsHandler}
+              onDefaultColumns={onResetColumnsHandler}
               onGridRequestChange={handleGridRequestChange}
             >
               <GridItemsFilter
