@@ -112,6 +112,10 @@ export default function useProductsPageService() {
     });
   }
 
+  function refreshColumnsPreferencesHandler(columnsPreferences: any) {
+    dispatch(action.refreshColumnsPreferences(columnsPreferences));
+  }
+
   return {
     ...state,
     // getAllProductsHandler,
@@ -125,5 +129,6 @@ export default function useProductsPageService() {
     updateUserPreferencesHandler,
     resetUserPreferencesHandler,
     getDefaultUserPreferencesHandler,
+    refreshColumnsPreferencesHandler,
   };
 }
