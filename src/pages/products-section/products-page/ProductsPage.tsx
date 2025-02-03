@@ -21,9 +21,11 @@ import { ProductCategoryModel } from "@/const/models/ProductCategoryModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import GridItemsFilter from "@/components/complex/grid/grid-items-filter/GridItemsFilter.tsx";
 import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
+import useAppService from "@/useAppService.ts";
 
 export function ProductsPage() {
   const service = useProductsPageService();
+  const appService = useAppService();
   const [productsGridModel, setProductsGridModel] = useState<GridModel>({
     pager: {},
     items: [],
@@ -62,6 +64,10 @@ export function ProductsPage() {
         setSortingOptions(res);
         console.log("Sorting Options", res);
       });
+
+    service.refreshColumnsPreferencesHandler(
+      appService.preferences.viewsReferences.productReferences,
+    );
   }, [gridRequestModel]);
 
   function handleAddProduct() {}
