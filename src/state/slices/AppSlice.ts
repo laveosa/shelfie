@@ -7,11 +7,21 @@ import { StorageKeyEnum } from "@/const/enums/StorageKeyEnum.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { EnvironmentService } from "@/utils/services/EnvironmentServise.ts";
 import { UserModel } from "@/const/models/UserModel.ts";
+import {
+  PreferencesModel,
+  PreferencesModelDefault,
+} from "@/const/models/PreferencesModel.ts";
 
 const initialState: IAppSlice = {
+  loading: false,
   user: storageService.getLocalStorage(StorageKeyEnum.USER),
   token: storageService.getLocalStorage(StorageKeyEnum.TOKEN),
+  preferences: PreferencesModelDefault,
 };
+
+function setLoading(state: IAppSlice, action: PayloadAction<boolean>) {
+  state.loading = action?.payload || state.loading;
+}
 
 function refreshUser(state: IAppSlice, action: PayloadAction<UserModel>) {
   const data: UserModel = action?.payload || null;
@@ -23,6 +33,13 @@ function refreshToken(state: IAppSlice, action: PayloadAction<any>) {
   const data = action?.payload || null;
   storageService.setLocalStorage(StorageKeyEnum.TOKEN, data);
   state.token = storageService.getLocalStorage(StorageKeyEnum.TOKEN);
+}
+
+function refreshPreferences(
+  state: IAppSlice,
+  action: PayloadAction<PreferencesModel>,
+) {
+  state.preferences = action?.payload || null;
 }
 
 function logOut(state: IAppSlice) {
@@ -38,8 +55,10 @@ const AppSlice = createSlice({
   name: StoreSliceEnum.APP,
   initialState,
   reducers: {
+    setLoading,
     refreshUser,
     refreshToken,
+    refreshPreferences,
     logOut,
   },
 });
