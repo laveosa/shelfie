@@ -1,6 +1,8 @@
 import { ProductModel } from "@/const/models/ProductModel.ts";
+import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 
 export interface IProductsPageSlice {
-  isLoading?: boolean;
+  loading?: boolean;
   products?: ProductModel[];
+  columnsPreferences?: PreferencesModel;
 }
