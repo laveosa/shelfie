@@ -18,6 +18,7 @@ import useProductsPageService from "@/pages/products-section/products-page/usePr
 
 interface IColumnsViewOptions<TData> {
   table: Table<TData>;
+  columnsPreferences?: any;
 }
 
 export function ColumnsViewOptions<TData>({
@@ -37,7 +38,7 @@ export function ColumnsViewOptions<TData>({
     initializeColumns(preferences);
   }, [table]);
 
-  const initializeColumns = (preferences: any) => {
+  function initializeColumns(preferences: any) {
     if (!preferences) return;
     table.getAllColumns().forEach((column) => {
       const isVisibleInPreferences =
@@ -47,15 +48,15 @@ export function ColumnsViewOptions<TData>({
         setSelectedColumns((prev) => [...prev, column.id]);
       }
     });
-  };
+  }
 
-  const handleCheckedChange = (value: boolean, column: any) => {
+  function handleCheckedChange(value: boolean, column: any) {
     setSelectedColumns((prev) =>
       value ? [...prev, column.id] : prev.filter((id) => id !== column.id),
     );
-  };
+  }
 
-  const applyChanges = () => {
+  function applyChanges() {
     table.getAllColumns().forEach((column) => {
       const shouldShow = selectedColumns.includes(column.id);
       column.toggleVisibility(shouldShow);
@@ -78,25 +79,25 @@ export function ColumnsViewOptions<TData>({
     };
     service.updateUserPreferencesHandler(model);
     setDropdownOpen(false);
-  };
+  }
 
-  const resetToDefault = () => {
+  function resetToDefault() {
     service.resetUserPreferencesHandler();
     const preferences = storageService.getLocalStorage(
       StorageKeyEnum.PREFERENCES,
     );
     initializeColumns(preferences);
     setDropdownOpen(false);
-  };
+  }
 
-  const handleDropdownOpenChange = (open: boolean) => {
+  function handleDropdownOpenChange(open: boolean) {
     if (!open) {
       setSelectedColumns(previousSelectedColumns);
     } else {
       setPreviousSelectedColumns(selectedColumns);
     }
     setDropdownOpen(open);
-  };
+  }
 
   return (
     <DropdownMenu open={dropdownOpen} onOpenChange={handleDropdownOpenChange}>
