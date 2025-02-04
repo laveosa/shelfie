@@ -21,7 +21,7 @@ import { IGridHeader } from "@/const/interfaces/complex-components/IGridHeader.t
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
 import { IGridContext } from "@/const/interfaces/context/IGridContext.ts";
-import { GridContext } from "@/state/context/grid-context.ts";
+import { GridContext } from "@/state/context/grid-context";
 
 interface DataTableProps<TData, TValue>
   extends IGridHeader<TData>,
@@ -32,6 +32,8 @@ interface DataTableProps<TData, TValue>
   sortingItems?: GridSortingModel[];
   onGridRequestChange?: (updates: GridRequestModel) => void;
   showHeader?: boolean;
+  onApplyColumns?: (data) => void;
+  onDefaultColumns?: () => void;
 }
 
 export function GridDataTable<TData, TValue>({

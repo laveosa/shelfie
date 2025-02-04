@@ -3,13 +3,11 @@ import { GridModel } from "@/const/models/GridModel.ts";
 import React from "react";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
-import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 
 export interface IGridHeader<TData> {
   gridModel: GridModel;
   table?: Table<TData>;
   sortingItems?: GridSortingModel[];
-  columnsPreferences?: PreferencesModel;
   showPagination?: boolean;
   showSorting?: boolean;
   showColumnsViewOptions?: boolean;

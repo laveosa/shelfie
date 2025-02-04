@@ -3,11 +3,17 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
+import { BrandModel } from "@/const/models/BrandModel.ts";
+import { ProductCategoryModel } from "@/const/models/ProductCategoryModel.ts";
+import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
 
 const initialState: IProductsPageSlice = {
   loading: false,
   products: null,
   columnsPreferences: null,
+  brands: [],
+  categories: [],
+  sortingOptions: [],
 };
 
 function setLoading(state: IProductsPageSlice, action: PayloadAction<boolean>) {
@@ -21,11 +27,25 @@ function refreshProducts(
   state.products = action?.payload || state.products;
 }
 
-function refreshColumnsPreferences(
+function refreshBrands(
   state: IProductsPageSlice,
-  action: PayloadAction<any>,
+  action: PayloadAction<BrandModel[]>,
 ) {
-  state.columnsPreferences = action?.payload || state.columnsPreferences;
+  state.brands = action?.payload || state.brands;
+}
+
+function refreshCategories(
+  state: IProductsPageSlice,
+  action: PayloadAction<ProductCategoryModel[]>,
+) {
+  state.categories = action?.payload || state.categories;
+}
+
+function refreshSortingOptions(
+  state: IProductsPageSlice,
+  action: PayloadAction<GridSortingModel[]>,
+) {
+  state.sortingOptions = action?.payload || state.sortingOptions;
 }
 
 const ProductsPageSlice = createSlice({
@@ -34,7 +54,9 @@ const ProductsPageSlice = createSlice({
   reducers: {
     setLoading,
     refreshProducts,
-    refreshColumnsPreferences,
+    refreshBrands,
+    refreshCategories,
+    refreshSortingOptions,
   },
 });
 

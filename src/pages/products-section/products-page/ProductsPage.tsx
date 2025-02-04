@@ -20,17 +20,16 @@ import { BrandModel } from "@/const/models/BrandModel.ts";
 import { ProductCategoryModel } from "@/const/models/ProductCategoryModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import GridItemsFilter from "@/components/complex/grid/grid-items-filter/GridItemsFilter.tsx";
-import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
-import useAppService from "@/useAppService.ts";
 import { useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
+import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 
 export function ProductsPage() {
-  const state = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
+  const state = useAppSelector<IProductsPageSlice>(StoreSliceEnum.PRODUCTS);
+  const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
   const service = useProductsPageService();
-  const appService = useAppService();
   const [productsGridModel, setProductsGridModel] = useState<GridModel>({
     pager: {},
     items: [],
@@ -39,9 +38,6 @@ export function ProductsPage() {
     currentPage: 1,
     pageSize: 10,
   });
-  const [brands, setBrands] = useState<BrandModel[]>([]);
-  const [categories, setCategories] = useState<ProductCategoryModel[]>([]);
-  const [sortingOptions, setSortingOptions] = useState<GridSortingModel[]>([]);
 
   useEffect(() => {
     service
@@ -50,25 +46,11 @@ export function ProductsPage() {
         setProductsGridModel(res);
       });
 
-    service.getBrandsForFilterHandler().then((res: BrandModel[]) => {
-      setBrands(res);
-    });
+    service.getBrandsForFilterHandler();
 
-    service
-      .getCategoriesForFilterHandler()
-      .then((res: ProductCategoryModel[]) => {
-        setCategories(res);
-      });
+    service.getCategoriesForFilterHandler();
 
-    service
-      .getSortingOptionsForGridHandler()
-      .then((res: GridSortingModel[]) => {
-        setSortingOptions(res);
-      });
-
-    service.refreshColumnsPreferencesHandler(
-      appService.preferences.viewsReferences.productReferences,
-    );
+    service.getSortingOptionsForGridHandler();
   }, [gridRequestModel]);
 
   function handleAddProduct() {}
@@ -163,26 +145,26 @@ export function ProductsPage() {
               columns={ProductsGridColumns}
               data={productsGridModel.items}
               gridModel={productsGridModel}
-              sortingItems={sortingOptions}
-              columnsPreferences={state.preferences}
+              sortingItems={state.sortingOptions}
+              columnsPreferences={appState.preferences}
               onApplyColumns={onApplyColumnsHandler}
               onDefaultColumns={onResetColumnsHandler}
               onGridRequestChange={handleGridRequestChange}
             >
               <GridItemsFilter
-                items={brands}
+                items={state.brands}
                 columnName={"Brands"}
                 onSelectionChange={onBrandSelectHandler}
-                getId={(item) => item.brandId}
-                getName={(item) => item.brandName}
+                getId={(item: BrandModel) => item.brandId}
+                getName={(item: BrandModel) => item.brandName}
               />
 
               <GridItemsFilter
-                items={categories}
+                items={state.categories}
                 columnName={"Categories"}
                 onSelectionChange={onCategorySelectHandler}
-                getId={(item) => item.categoryId}
-                getName={(item) => item.categoryName}
+                getId={(item: ProductCategoryModel) => item.categoryId}
+                getName={(item: ProductCategoryModel) => item.categoryName}
               />
             </GridDataTable>
           </TabsContent>

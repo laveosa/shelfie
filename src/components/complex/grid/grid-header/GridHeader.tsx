@@ -12,7 +12,6 @@ export default function GridHeader<TData>({
   onGridRequestChange,
   table,
   sortingItems,
-  columnsPreferences,
   showPagination = true,
   showSorting = true,
   showColumnsViewOptions = true,
@@ -36,12 +35,7 @@ export default function GridHeader<TData>({
             showClearBtn
           />
         )}
-        {showColumnsViewOptions && (
-          <ColumnsViewOptions
-            table={table}
-            columnsPreferences={columnsPreferences}
-          />
-        )}
+        {showColumnsViewOptions && <ColumnsViewOptions table={table} />}
         {showSorting && (
           <GridItemsSorting
             items={sortingItems}

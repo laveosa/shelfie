@@ -5,7 +5,7 @@ import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { ApiConfigurationService } from "@/utils/services/api/ApiConfigurationService.ts";
 import { GridModel } from "@/const/models/GridModel.ts";
-import { ProductsGridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { ProductCategoryModel } from "@/const/models/ProductCategoryModel.ts";
 
@@ -65,9 +65,9 @@ export const ProductsApiService = createApi({
     }),
     getTheProductsForGrid: apiConfig.createMutation<
       GridModel,
-      ProductsGridRequestModel
+      GridRequestModel
     >(builder, {
-      query: (model?: ProductsGridRequestModel) => ({
+      query: (model?: GridRequestModel) => ({
         url: `${ApiUrlEnum.PRODUCTS}/list`,
         method: "POST",
         body: JSON.stringify(model),

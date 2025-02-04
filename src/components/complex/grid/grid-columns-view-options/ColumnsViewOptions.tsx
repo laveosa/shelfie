@@ -13,11 +13,9 @@ import {
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import cs from "./ColumnsViewOptions.module.scss";
 import { useGridContext } from "@/state/context/grid-context.ts";
-import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 
 interface IColumnsViewOptions<TData> {
   table: Table<TData>;
-  columnsPreferences?: PreferencesModel;
 }
 
 export function ColumnsViewOptions<TData>({
@@ -38,13 +36,31 @@ export function ColumnsViewOptions<TData>({
     );
   }, [columnsPreferences]);
 
+  // function initializeColumns(columns: any) {
+  //   if (!columns) return;
+  //   const newSelectedColumns: string[] = [];
+  //   table.getAllColumns().forEach((column) => {
+  //     const isVisibleInPreferences = columns[column.id];
+  //     column.toggleVisibility(!isVisibleInPreferences);
+  //     if (!isVisibleInPreferences) {
+  //       newSelectedColumns.push(column.id);
+  //     }
+  //   });
+  //   setSelectedColumns(newSelectedColumns);
+  // }
+
   function initializeColumns(columns: any) {
     if (!columns) return;
     const newSelectedColumns: string[] = [];
     table.getAllColumns().forEach((column) => {
       const isVisibleInPreferences = columns[column.id];
-      column.toggleVisibility(!isVisibleInPreferences);
-      if (!isVisibleInPreferences) {
+      if (isVisibleInPreferences === false) {
+        column.toggleVisibility(true);
+        newSelectedColumns.push(column.id);
+      } else if (isVisibleInPreferences === true) {
+        column.toggleVisibility(false);
+      } else {
+        column.toggleVisibility(true);
         newSelectedColumns.push(column.id);
       }
     });
