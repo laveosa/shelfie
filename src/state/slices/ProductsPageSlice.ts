@@ -6,6 +6,8 @@ import { ProductModel } from "@/const/models/ProductModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { ProductCategoryModel } from "@/const/models/ProductCategoryModel.ts";
 import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
+import { GridModel } from "@/const/models/GridModel.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 
 const initialState: IProductsPageSlice = {
   loading: false,
@@ -14,6 +16,14 @@ const initialState: IProductsPageSlice = {
   brands: [],
   categories: [],
   sortingOptions: [],
+  productsGridModel: {
+    pager: {},
+    items: [],
+  },
+  gridRequestModel: {
+    currentPage: 1,
+    pageSize: 10,
+  },
 };
 
 function setLoading(state: IProductsPageSlice, action: PayloadAction<boolean>) {
@@ -25,6 +35,20 @@ function refreshProducts(
   action: PayloadAction<ProductModel[]>,
 ) {
   state.products = action?.payload || state.products;
+}
+
+function refreshProductsGridModel(
+  state: IProductsPageSlice,
+  action: PayloadAction<GridModel>,
+) {
+  state.productsGridModel = action?.payload || state.productsGridModel;
+}
+
+function refreshGridRequestModel(
+  state: IProductsPageSlice,
+  action: PayloadAction<GridRequestModel>,
+) {
+  state.gridRequestModel = action?.payload || state.gridRequestModel;
 }
 
 function refreshBrands(
@@ -54,6 +78,8 @@ const ProductsPageSlice = createSlice({
   reducers: {
     setLoading,
     refreshProducts,
+    refreshProductsGridModel,
+    refreshGridRequestModel,
     refreshBrands,
     refreshCategories,
     refreshSortingOptions,

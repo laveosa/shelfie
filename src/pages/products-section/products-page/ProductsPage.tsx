@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   Columns3Icon,
   Download,
@@ -20,30 +20,24 @@ import { BrandModel } from "@/const/models/BrandModel.ts";
 import { ProductCategoryModel } from "@/const/models/ProductCategoryModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import GridItemsFilter from "@/components/complex/grid/grid-items-filter/GridItemsFilter.tsx";
-import { useAppSelector } from "@/utils/hooks/redux.ts";
+import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import { ProductsPageSliceActions as actions } from "@/state/slices/ProductsPageSlice.ts";
 
 export function ProductsPage() {
+  const dispatch = useAppDispatch();
   const state = useAppSelector<IProductsPageSlice>(StoreSliceEnum.PRODUCTS);
   const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
   const service = useProductsPageService();
-  const [productsGridModel, setProductsGridModel] = useState<GridModel>({
-    pager: {},
-    items: [],
-  });
-  const [gridRequestModel, setGridRequestModel] = useState<GridRequestModel>({
-    currentPage: 1,
-    pageSize: 10,
-  });
 
   useEffect(() => {
     service
-      .getTheProductsForGridHandler(gridRequestModel)
+      .getTheProductsForGridHandler(state.gridRequestModel)
       .then((res: GridModel) => {
-        setProductsGridModel(res);
+        dispatch(actions.refreshProductsGridModel(res));
       });
 
     service.getBrandsForFilterHandler();
@@ -51,7 +45,7 @@ export function ProductsPage() {
     service.getCategoriesForFilterHandler();
 
     service.getSortingOptionsForGridHandler();
-  }, [gridRequestModel]);
+  }, [state.gridRequestModel]);
 
   function handleAddProduct() {}
 
@@ -60,24 +54,20 @@ export function ProductsPage() {
   function handleConfigure() {}
 
   function handleGridRequestChange(updates: GridRequestModel) {
-    setGridRequestModel((prev) => ({
-      ...prev,
-      ...updates,
-    }));
+    dispatch(
+      actions.refreshGridRequestModel({
+        ...state.gridRequestModel,
+        ...updates,
+      }),
+    );
   }
 
   function onBrandSelectHandler(selectedIds: number[]) {
-    setGridRequestModel((prev) => ({
-      ...prev,
-      brands: selectedIds,
-    }));
+    handleGridRequestChange({ brands: selectedIds });
   }
 
   function onCategorySelectHandler(selectedIds: number[]) {
-    setGridRequestModel((prev) => ({
-      ...prev,
-      categories: selectedIds,
-    }));
+    handleGridRequestChange({ categories: selectedIds });
   }
 
   function onApplyColumnsHandler(model: PreferencesModel) {
@@ -143,8 +133,8 @@ export function ProductsPage() {
           <TabsContent value="products">
             <GridDataTable
               columns={ProductsGridColumns}
-              data={productsGridModel.items}
-              gridModel={productsGridModel}
+              data={state.productsGridModel.items}
+              gridModel={state.productsGridModel}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
               onApplyColumns={onApplyColumnsHandler}
