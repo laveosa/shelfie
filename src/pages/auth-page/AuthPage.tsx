@@ -61,19 +61,31 @@ export function AuthPage() {
     fetchCountryCodes();
   }, [state.countryCode]);
 
+  useEffect(() => {
+    if (service.authFormView === AuthFormViewEnum.FORGOT_PASSWORD) {
+      form.reset();
+    }
+  }, [service.authFormView]);
+
   function onFooterLink() {
     switch (service.authFormView) {
       case AuthFormViewEnum.SIGN_IN:
         service.authFormViewChangeHandler(AuthFormViewEnum.SIGN_UP);
+        form.reset();
         break;
       case AuthFormViewEnum.SIGN_UP:
         service.authFormViewChangeHandler(AuthFormViewEnum.SIGN_IN);
+        form.reset();
         break;
       case AuthFormViewEnum.VERIFY_CODE:
         //TODO implement resend verification code API
         state.hiddenPhoneNumber
           ? service.verifySignInNumberHandler()
           : service.confirmSignUpPhoneNumberHandler(form.getValues());
+        break;
+      case AuthFormViewEnum.FORGOT_PASSWORD:
+        service.authFormViewChangeHandler(AuthFormViewEnum.SIGN_IN);
+        form.reset();
         break;
     }
   }
@@ -323,7 +335,7 @@ export function AuthPage() {
                       rules={
                         !state.hiddenPhoneNumber
                           ? {
-                              required: "Please select a country code",
+                              required: "Phone number is required",
                               minLength: {
                                 value: 8,
                                 message:
