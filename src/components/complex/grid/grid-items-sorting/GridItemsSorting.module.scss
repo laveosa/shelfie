@@ -1,8 +1,12 @@
+.dropdownMenuContent {
+  width: 100%;
+  padding: 10px;
+}
+
 .dropdownMenuTrigger {
   box-shadow: none;
   height: 30px;
   padding: 8px;
-  border: 1px solid red;
 
   &:focus-visible {
     box-shadow: none;

@@ -12,14 +12,10 @@ import {
 } from "@/components/ui/dropdown-menu.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import cs from "./ColumnsViewOptions.module.scss";
-import storageService from "@/utils/services/StorageService.ts";
-import { StorageKeyEnum } from "@/const/enums/StorageKeyEnum.ts";
-import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import { useGridContext } from "@/state/context/grid-context.ts";
 
 interface IColumnsViewOptions<TData> {
   table: Table<TData>;
-  columnsPreferences?: any;
 }
 
 export function ColumnsViewOptions<TData>({
@@ -28,7 +24,6 @@ export function ColumnsViewOptions<TData>({
   const { columnsPreferences, onApplyColumns, onDefaultColumns } =
     useGridContext();
 
-  const service = useProductsPageService();
   const [selectedColumns, setSelectedColumns] = useState<string[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [previousSelectedColumns, setPreviousSelectedColumns] = useState<
@@ -36,19 +31,40 @@ export function ColumnsViewOptions<TData>({
   >([]);
 
   useEffect(() => {
-    console.log("MESSAGE: ", columnsPreferences);
-    initializeColumns(columnsPreferences);
+    initializeColumns(
+      columnsPreferences.viewsReferences.productReferences.columns,
+    );
   }, [columnsPreferences]);
+
+  // function initializeColumns(columns: any) {
+  //   if (!columns) return;
+  //   const newSelectedColumns: string[] = [];
+  //   table.getAllColumns().forEach((column) => {
+  //     const isVisibleInPreferences = columns[column.id];
+  //     column.toggleVisibility(!isVisibleInPreferences);
+  //     if (!isVisibleInPreferences) {
+  //       newSelectedColumns.push(column.id);
+  //     }
+  //   });
+  //   setSelectedColumns(newSelectedColumns);
+  // }
 
   function initializeColumns(columns: any) {
     if (!columns) return;
+    const newSelectedColumns: string[] = [];
     table.getAllColumns().forEach((column) => {
       const isVisibleInPreferences = columns[column.id];
-      column.toggleVisibility(!isVisibleInPreferences);
-      if (!isVisibleInPreferences) {
-        setSelectedColumns((prev) => [...prev, column.id]);
+      if (isVisibleInPreferences === false) {
+        column.toggleVisibility(true);
+        newSelectedColumns.push(column.id);
+      } else if (isVisibleInPreferences === true) {
+        column.toggleVisibility(false);
+      } else {
+        column.toggleVisibility(true);
+        newSelectedColumns.push(column.id);
       }
     });
+    setSelectedColumns(newSelectedColumns);
   }
 
   function onCheckedHandler(value: boolean, column: any) {
@@ -79,17 +95,11 @@ export function ColumnsViewOptions<TData>({
       },
     };
     onApplyColumns(model);
-    service.updateUserPreferencesHandler(model);
     setDropdownOpen(false);
   }
 
   function onResetHandler() {
     onDefaultColumns();
-    service.resetUserPreferencesHandler();
-    const preferences = storageService.getLocalStorage(
-      StorageKeyEnum.PREFERENCES,
-    );
-    initializeColumns(preferences);
     setDropdownOpen(false);
   }
 

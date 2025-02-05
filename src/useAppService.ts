@@ -29,6 +29,7 @@ export default function useAppService() {
 
   function refreshPreferences(model) {
     dispatch(action.refreshPreferences(model));
+    return model;
   }
 
   function logOut() {
@@ -38,6 +39,7 @@ export default function useAppService() {
   return {
     ...state,
     getUserPreferencesHandler,
+    refreshPreferences,
     refreshUser,
     refreshToken,
     logOut,

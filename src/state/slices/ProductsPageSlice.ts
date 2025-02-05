@@ -3,11 +3,27 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
+import { BrandModel } from "@/const/models/BrandModel.ts";
+import { ProductCategoryModel } from "@/const/models/ProductCategoryModel.ts";
+import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
+import { GridModel } from "@/const/models/GridModel.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 
 const initialState: IProductsPageSlice = {
   loading: false,
   products: null,
   columnsPreferences: null,
+  brands: [],
+  categories: [],
+  sortingOptions: [],
+  productsGridModel: {
+    pager: {},
+    items: [],
+  },
+  gridRequestModel: {
+    currentPage: 1,
+    pageSize: 10,
+  },
 };
 
 function setLoading(state: IProductsPageSlice, action: PayloadAction<boolean>) {
@@ -21,11 +37,39 @@ function refreshProducts(
   state.products = action?.payload || state.products;
 }
 
-function refreshColumnsPreferences(
+function refreshProductsGridModel(
   state: IProductsPageSlice,
-  action: PayloadAction<any>,
+  action: PayloadAction<GridModel>,
 ) {
-  state.columnsPreferences = action?.payload || state.columnsPreferences;
+  state.productsGridModel = action?.payload || state.productsGridModel;
+}
+
+function refreshGridRequestModel(
+  state: IProductsPageSlice,
+  action: PayloadAction<GridRequestModel>,
+) {
+  state.gridRequestModel = action?.payload || state.gridRequestModel;
+}
+
+function refreshBrands(
+  state: IProductsPageSlice,
+  action: PayloadAction<BrandModel[]>,
+) {
+  state.brands = action?.payload || state.brands;
+}
+
+function refreshCategories(
+  state: IProductsPageSlice,
+  action: PayloadAction<ProductCategoryModel[]>,
+) {
+  state.categories = action?.payload || state.categories;
+}
+
+function refreshSortingOptions(
+  state: IProductsPageSlice,
+  action: PayloadAction<GridSortingModel[]>,
+) {
+  state.sortingOptions = action?.payload || state.sortingOptions;
 }
 
 const ProductsPageSlice = createSlice({
@@ -34,7 +78,11 @@ const ProductsPageSlice = createSlice({
   reducers: {
     setLoading,
     refreshProducts,
-    refreshColumnsPreferences,
+    refreshProductsGridModel,
+    refreshGridRequestModel,
+    refreshBrands,
+    refreshCategories,
+    refreshSortingOptions,
   },
 });
 

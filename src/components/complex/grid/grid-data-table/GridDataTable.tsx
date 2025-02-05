@@ -18,8 +18,10 @@ import {
 } from "@/components/ui/table.tsx";
 import GridHeader from "@/components/complex/grid/grid-header/GridHeader.tsx";
 import { IGridHeader } from "@/const/interfaces/complex-components/IGridHeader.ts";
-import { GridContext } from "@/state/context/grid-context.ts";
-import { IGridContext } from "@/const/interfaces/contexts/IGridContext.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
+import { IGridContext } from "@/const/interfaces/context/IGridContext.ts";
+import { GridContext } from "@/state/context/grid-context";
 
 interface DataTableProps<TData, TValue>
   extends IGridHeader<TData>,
@@ -27,20 +29,26 @@ interface DataTableProps<TData, TValue>
     PropsWithChildren {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  sortingItems?: GridSortingModel[];
+  onGridRequestChange?: (updates: GridRequestModel) => void;
   showHeader?: boolean;
+  onApplyColumns?: (data) => void;
+  onDefaultColumns?: () => void;
 }
 
 export function GridDataTable<TData, TValue>({
   columns,
   data,
-  gridModel,
   columnsPreferences,
+  gridModel,
+  sortingItems,
   showHeader = true,
   showPagination = true,
   showSorting = true,
   showColumnsViewOptions = true,
   showSearch = true,
   children,
+  onGridRequestChange,
   onApplyColumns,
   onDefaultColumns,
 }: DataTableProps<TData, TValue>) {
@@ -81,7 +89,8 @@ export function GridDataTable<TData, TValue>({
           <GridHeader
             gridModel={gridModel}
             table={table}
-            columnsPreferences={columnsPreferences}
+            sortingItems={sortingItems}
+            onGridRequestChange={onGridRequestChange}
             showPagination={showPagination}
             showSorting={showSorting}
             showColumnsViewOptions={showColumnsViewOptions}

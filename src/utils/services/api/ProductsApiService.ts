@@ -4,9 +4,12 @@ import { ApiServiceNameEnum } from "@/const/enums/ApiServiceNameEnum.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { ApiConfigurationService } from "@/utils/services/api/ApiConfigurationService.ts";
+import { GridModel } from "@/const/models/GridModel.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { BrandModel } from "@/const/models/BrandModel.ts";
+import { ProductCategoryModel } from "@/const/models/ProductCategoryModel.ts";
 
-const apiConfig = new ApiConfigurationService();
-apiConfig.baseUrl = ApiUrlEnum.PRODUCTS_BASE_URL;
+const apiConfig = new ApiConfigurationService(ApiUrlEnum.PRODUCTS_BASE_URL);
 
 export const ProductsApiService = createApi({
   reducerPath: ApiServiceNameEnum.PRODUCTS,
@@ -59,6 +62,42 @@ export const ProductsApiService = createApi({
           id,
         },
       ],
+    }),
+    getTheProductsForGrid: apiConfig.createMutation<
+      GridModel,
+      GridRequestModel
+    >(builder, {
+      query: (model?: GridRequestModel) => ({
+        url: `${ApiUrlEnum.PRODUCTS}/list`,
+        method: "POST",
+        body: JSON.stringify(model),
+      }),
+      invalidatesTags: (_result, _error, model) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          model,
+        },
+      ],
+    }),
+    getBrandsForProductsFilter: apiConfig.createQuery<BrandModel[], void>(
+      builder,
+      {
+        query: () => ({
+          url: `${ApiUrlEnum.BRANDS}/for-filter`,
+        }),
+        providesTags: (result: BrandModel[]) =>
+          apiConfig.providesTags(result, ApiServiceNameEnum.PRODUCTS),
+      },
+    ),
+    getCategoriesForProductsFilter: apiConfig.createQuery<
+      ProductCategoryModel[],
+      void
+    >(builder, {
+      query: () => ({
+        url: `${ApiUrlEnum.PRODUCT_CATEGORIES}/for-filter`,
+      }),
+      providesTags: (result: ProductCategoryModel[]) =>
+        apiConfig.providesTags(result, ApiServiceNameEnum.PRODUCTS),
     }),
   }),
 });

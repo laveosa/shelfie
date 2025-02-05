@@ -1,39 +1,67 @@
-import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
-import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
-import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import { useAppDispatch } from "@/utils/hooks/redux.ts";
 import { ProductsPageSliceActions as action } from "@/state/slices/ProductsPageSlice.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import UsersApiHooks from "@/utils/services/api/UsersApiService.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
+import useAppService from "@/useAppService.ts";
 
 export default function useProductsPageService() {
-  const state = useAppSelector<IProductsPageSlice>(StoreSliceEnum.PRODUCTS);
+  const appService = useAppService();
   const dispatch = useAppDispatch();
-  const [getAllProducts] = ProductsApiHooks.useLazyGetAllProductsQuery();
+  const [getTheProductsForGrid] =
+    ProductsApiHooks.useGetTheProductsForGridMutation();
+  const [getBrandsForFilter] =
+    ProductsApiHooks.useLazyGetBrandsForProductsFilterQuery();
+  const [getCategoriesForFilter] =
+    ProductsApiHooks.useLazyGetCategoriesForProductsFilterQuery();
   const [manageProduct] = ProductsApiHooks.useManageProductMutation();
   const [deleteProduct] = ProductsApiHooks.useDeleteProductMutation();
-
   const [updateUserPreferences] =
     UsersApiHooks.useUpdateUserPreferencesMutation();
   const [resetUserPreferences] =
     UsersApiHooks.useResetUserPreferencesMutation();
-  const [getDefaultUserPreferences] =
-    UsersApiHooks.useLazyGetDefaultUserPreferencesQuery();
+  const [getSortingOptionsForGrid] =
+    DictionaryApiHooks.useLazyGetSortingOptionsForGridQuery();
 
-  function getAllProductsHandler() {
+  function getTheProductsForGridHandler(data?: GridRequestModel) {
     dispatch(action.setLoading(true));
-    return getAllProducts(null).then((res: any) => {
+    return getTheProductsForGrid(data).then((res: any) => {
       dispatch(action.setLoading(false));
-      dispatch(action.refreshProducts(res.data));
+      if (res.error) {
+        console.error(res.error);
+        return;
+      } else {
+        return res.data;
+      }
+    });
+  }
+
+  function getBrandsForFilterHandler() {
+    dispatch(action.setLoading(true));
+    return getBrandsForFilter(null).then((res: any) => {
+      dispatch(action.setLoading(false));
+      dispatch(action.refreshBrands(res.data));
       return res.data;
     });
   }
 
-  function getDefaultUserPreferencesHandler() {
+  function getCategoriesForFilterHandler() {
     dispatch(action.setLoading(true));
-    return getDefaultUserPreferences(null).then((res: any) => {
+    return getCategoriesForFilter(null).then((res: any) => {
       dispatch(action.setLoading(false));
+      dispatch(action.refreshCategories(res.data));
+      return res.data;
+    });
+  }
+
+  function getSortingOptionsForGridHandler() {
+    dispatch(action.setLoading(true));
+    return getSortingOptionsForGrid(null).then((res: any) => {
+      dispatch(action.setLoading(false));
+      dispatch(action.refreshSortingOptions(res.data));
       return res.data;
     });
   }
@@ -51,29 +79,25 @@ export default function useProductsPageService() {
   }
 
   function updateUserPreferencesHandler(model: PreferencesModel) {
-    return updateUserPreferences(model).then((res: any) => {
-      console.log(res);
+    return updateUserPreferences(model).then(() => {
+      appService.getUserPreferencesHandler();
     });
   }
 
   function resetUserPreferencesHandler() {
-    return resetUserPreferences().then((res: any) => {
-      console.log(res);
+    return resetUserPreferences().then(() => {
+      appService.getUserPreferencesHandler();
     });
   }
 
-  function refreshColumnsPreferencesHandler(columnsPreferences: any) {
-    dispatch(action.refreshColumnsPreferences(columnsPreferences));
-  }
-
   return {
-    ...state,
-    getAllProductsHandler,
+    getTheProductsForGridHandler,
+    getBrandsForFilterHandler,
+    getCategoriesForFilterHandler,
+    getSortingOptionsForGridHandler,
     manageProductHandler,
     deleteProductHandler,
     updateUserPreferencesHandler,
     resetUserPreferencesHandler,
-    getDefaultUserPreferencesHandler,
-    refreshColumnsPreferencesHandler,
   };
 }

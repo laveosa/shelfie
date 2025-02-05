@@ -10,7 +10,6 @@ import useAppService from "@/useAppService.ts";
 function App() {
   const service = useAppService();
 
-  //TODO transfer this logic to new hook 'USE'
   useEffect(() => {
     service.getUserPreferencesHandler();
   }, []);

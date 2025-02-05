@@ -1,10 +1,9 @@
-import { useState, KeyboardEvent } from "react";
+import { KeyboardEvent, useState } from "react";
 import { AvatarImage } from "@radix-ui/react-avatar";
-import { BellDot, Search } from "lucide-react";
+import { BellDot } from "lucide-react";
 
 import cs from "./SheHeader.module.scss";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Input } from "@/components/ui/input";
 import { Avatar } from "@/components/ui/avatar";
 import { useNavigate } from "react-router-dom";
 
@@ -44,17 +43,17 @@ export default function SheHeader() {
     <div className={cs.sheHeader}>
       <SidebarTrigger className={cs.sidebarTrigger} />
       <div className={cs.searchWrapper}>
-        <Search className={cs.searchIcon} />
-        <Input
-          className={cs.searchInput}
-          type="search"
-          placeholder="Search"
-          value={searchValue}
-          onChange={(e) => setSearchValue(e.target.value)}
-          onKeyDown={handleKeyDown}
-          onBlur={handleBlur}
-          disabled={isSearching}
-        />
+        {/*<Search className={cs.searchIcon} />*/}
+        {/*<Input*/}
+        {/*  className={cs.searchInput}*/}
+        {/*  type="search"*/}
+        {/*  placeholder="Search"*/}
+        {/*  value={searchValue}*/}
+        {/*  onChange={(e) => setSearchValue(e.target.value)}*/}
+        {/*  onKeyDown={handleKeyDown}*/}
+        {/*  onBlur={handleBlur}*/}
+        {/*  disabled={isSearching}*/}
+        {/*/>*/}
       </div>
       <BellDot className={cs.bellIcon} onClick={handleBellClick} />
       <Avatar className={cs.userAvatar} onClick={handleUserAvatarClick}>
