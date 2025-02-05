@@ -9,24 +9,17 @@ import {
 } from "@/components/ui/dropdown-menu.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import cs from "./GridItemsSorting.module.scss";
-import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
-import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { useGridContext } from "@/state/context/grid-context.ts";
 
-interface GridItemsSortingProps {
-  items: GridSortingModel[];
-  onChange: (updates: GridRequestModel) => void;
-}
+export default function GridItemsSorting() {
+  const { sortingItems, onGridRequestChange } = useGridContext();
 
-export default function GridItemsSorting({
-  items,
-  onChange,
-}: GridItemsSortingProps) {
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   function handleSelect(value: string) {
     setSelectedValue(value);
-    onChange({ sortOption: value });
+    onGridRequestChange({ sortOption: value });
     setDropdownOpen(false);
   }
 
@@ -45,7 +38,7 @@ export default function GridItemsSorting({
         </SheButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className={cs.dropdownMenuContent}>
-        {items.map((item) => (
+        {sortingItems.map((item) => (
           <DropdownMenuCheckboxItem
             key={item.value}
             className="capitalize"

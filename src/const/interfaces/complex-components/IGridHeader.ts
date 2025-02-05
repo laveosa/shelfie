@@ -1,10 +1,10 @@
 import { Table } from "@tanstack/react-table";
 import { GridModel } from "@/const/models/GridModel.ts";
-import React from "react";
+import { PropsWithChildren } from "react";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
 
-export interface IGridHeader<TData> {
+export interface IGridHeader<TData> extends PropsWithChildren {
   gridModel: GridModel;
   table?: Table<TData>;
   sortingItems?: GridSortingModel[];
@@ -12,7 +12,6 @@ export interface IGridHeader<TData> {
   showSorting?: boolean;
   showColumnsViewOptions?: boolean;
   showSearch?: boolean;
-  children?: React.ReactNode;
   onSearchHandle?: () => void;
   onGridRequestChange?: (updates: GridRequestModel) => void;
 }

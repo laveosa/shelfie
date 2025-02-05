@@ -82,6 +82,14 @@ export function GridDataTable<TData, TValue>({
         columnsPreferences,
         onApplyColumns,
         onDefaultColumns,
+        showPagination,
+        showSorting,
+        showColumnsViewOptions,
+        showSearch,
+        gridModel,
+        onGridRequestChange,
+        sortingItems,
+        children,
       }}
     >
       <div>

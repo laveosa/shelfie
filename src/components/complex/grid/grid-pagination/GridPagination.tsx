@@ -8,16 +8,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select.tsx";
-import { GridModel } from "@/const/models/GridModel.ts";
 import cs from "./GridPagination.module.scss";
-import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { useGridContext } from "@/state/context/grid-context.ts";
 
-interface IGridPagination {
-  gridModel: GridModel;
-  onChange: (updates: GridRequestModel) => void;
-}
-
-export function GridPagination({ gridModel, onChange }: IGridPagination) {
+export function GridPagination() {
+  const { gridModel, onGridRequestChange } = useGridContext();
   const { currentPage, totalPages, pageSize, endPage } = gridModel.pager;
 
   function getPageNumbers() {
@@ -58,19 +53,19 @@ export function GridPagination({ gridModel, onChange }: IGridPagination) {
   }
 
   function onPreviousPageHandler() {
-    onChange({ currentPage: currentPage - 1 });
+    onGridRequestChange({ currentPage: currentPage - 1 });
   }
 
   function onNextPageHandler() {
-    onChange({ currentPage: currentPage + 1 });
+    onGridRequestChange({ currentPage: currentPage + 1 });
   }
 
   function onSetCurrentPageHandler(e) {
-    onChange({ currentPage: e.target.innerText });
+    onGridRequestChange({ currentPage: e.target.innerText });
   }
 
   function onSetPageSizeHandler(newPageSize) {
-    onChange({ pageSize: parseInt(newPageSize), currentPage: 1 });
+    onGridRequestChange({ pageSize: parseInt(newPageSize), currentPage: 1 });
   }
 
   return (

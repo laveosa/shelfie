@@ -1,3 +1,4 @@
+import { Search } from "lucide-react";
 import { useState } from "react";
 
 import cs from "./GridHeader.module.scss";
@@ -6,19 +7,17 @@ import { ColumnsViewOptions } from "@/components/complex/grid/grid-columns-view-
 import { IGridHeader } from "@/const/interfaces/complex-components/IGridHeader.ts";
 import GridItemsSorting from "@/components/complex/grid/grid-items-sorting/GridItemsSorting.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import { Search } from "lucide-react";
+import { useGridContext } from "@/state/context/grid-context.ts";
 
-export default function GridHeader<TData>({
-  gridModel,
-  onGridRequestChange,
-  table,
-  sortingItems,
-  showPagination = true,
-  showSorting = true,
-  showColumnsViewOptions = true,
-  showSearch = true,
-  children,
-}: IGridHeader<TData>) {
+export default function GridHeader<TData>({ table }: IGridHeader<TData>) {
+  const {
+    showPagination,
+    showSorting,
+    showColumnsViewOptions,
+    showSearch,
+    children,
+    onGridRequestChange,
+  } = useGridContext();
   const [searchValue, setSearchValue] = useState("");
 
   const handleInputChange = (event) => {
@@ -40,21 +39,11 @@ export default function GridHeader<TData>({
           />
         )}
         {showColumnsViewOptions && <ColumnsViewOptions table={table} />}
-        {showSorting && (
-          <GridItemsSorting
-            items={sortingItems}
-            onChange={onGridRequestChange}
-          />
-        )}
+        {showSorting && <GridItemsSorting />}
         {children}
       </div>
       <div className={cs.headerGroup}>
-        {showPagination && (
-          <GridPagination
-            gridModel={gridModel}
-            onChange={onGridRequestChange}
-          />
-        )}
+        {showPagination && <GridPagination />}
       </div>
     </div>
   );
