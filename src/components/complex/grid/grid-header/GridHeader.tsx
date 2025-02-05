@@ -6,6 +6,7 @@ import { ColumnsViewOptions } from "@/components/complex/grid/grid-columns-view-
 import { IGridHeader } from "@/const/interfaces/complex-components/IGridHeader.ts";
 import GridItemsSorting from "@/components/complex/grid/grid-items-sorting/GridItemsSorting.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
+import { Search } from "lucide-react";
 
 export default function GridHeader<TData>({
   gridModel,
@@ -30,8 +31,11 @@ export default function GridHeader<TData>({
       <div className={cs.headerGroup}>
         {showSearch && (
           <SheInput
+            className={cs.searchInput}
             value={searchValue}
             onDelay={handleInputChange}
+            placeholder={"Search"}
+            icon={<Search />}
             showClearBtn
           />
         )}
