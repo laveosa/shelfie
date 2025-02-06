@@ -18,17 +18,20 @@ import {
   SelectValue,
 } from "@/components/ui/select.tsx";
 import { Switch } from "@/components/ui/switch.tsx";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { ProductsFakeData } from "@/components/complex/grid/products-grid/FakeData.ts";
+import useCreateProductPageService from "@/pages/products-section/create-product-page/useCreateProductPageService.ts";
+import { Input } from "@/components/ui/input.tsx";
 
 export default function CreateProductFormCard({
   onOpenCreateProductCategoryCard,
   onOpenCreateProductBrandCard,
   ...props
 }) {
+  const [product, setProduct] = useState("");
+  const service = useCreateProductPageService();
   const productsData = ProductsFakeData;
-
   const form = useForm({
     defaultValues: {
       productName: "",
@@ -40,7 +43,25 @@ export default function CreateProductFormCard({
     },
   });
 
+  useEffect(() => {
+    service.getSimpleListOfAllBrandsHandler().then((res) => {
+      console.log("BRANDS", res);
+    });
+    service.getAllCategoriesByOrganizationHandler().then((res) => {
+      console.log("CATEGORIES", res);
+    });
+  }, []);
+
   function onSubmit(_data) {}
+
+  function onAction() {
+    service.generateProductCodeHandler();
+  }
+
+  function onCheckCode(value) {
+    console.log("VALUE", value);
+    service.checkProductCodeHandler({ code: value });
+  }
 
   return (
     <div>
@@ -54,6 +75,14 @@ export default function CreateProductFormCard({
         className={cs.createProductFormCard}
         {...props}
       >
+        <Input
+          name="product"
+          value={product} // Set the input value from state
+          onChange={(e) => setProduct(e.target.value)} // Update state on change
+          onBlur={() => onCheckCode(product)} // Call onCheckCode with the current value on blur
+          placeholder="Enter product code..."
+        />
+
         <div className={cs.createProductForm}>
           <SheForm form={form} onSubmit={onSubmit}>
             <SheForm.Field
@@ -93,12 +122,14 @@ export default function CreateProductFormCard({
                   isValid={!form.formState.errors.productCode}
                   error={form.formState.errors.productCode?.message}
                   showError={true}
+                  onBlur={() => onCheckCode(form.getValues("productCode"))}
                 />
               </SheForm.Field>
               <SheButton
                 className={cs.formRowButton}
                 icon={WandSparkles}
                 variant="outline"
+                onClick={onAction}
               />
             </div>
             <div className={cs.createProductFormRow}>

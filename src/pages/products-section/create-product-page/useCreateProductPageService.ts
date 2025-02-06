@@ -5,10 +5,17 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { ProductsPageSliceActions as action } from "@/state/slices/ProductsPageSlice.ts";
 
 export default function useCreateProductPageService() {
-  const { useLazyGetAllProductsQuery } = ProductsApiHooks;
   const state = useAppSelector<IProductsPageSlice>(StoreSliceEnum.PRODUCTS);
   const dispatch = useAppDispatch();
-  const [getAllProducts] = useLazyGetAllProductsQuery();
+  const [getAllProducts] = ProductsApiHooks.useLazyGetAllProductsQuery();
+  const [generateProductCode] =
+    ProductsApiHooks.useLazyGenerateProductCodeQuery();
+  const [getSimpleListOfAllBrands] =
+    ProductsApiHooks.useLazyGetSimpleListOfAllBrandsQuery();
+  const [getAllCategoriesByOrganization] =
+    ProductsApiHooks.useLazyGetAllCategoriesByOrganizationQuery();
+  const [checkProductCode] = ProductsApiHooks.useCheckProductCodeMutation();
+  const [createNewProduct] = ProductsApiHooks.useCreateNewProductMutation();
 
   function getAllProductsHandler() {
     dispatch(action.setLoading(true));
@@ -19,8 +26,43 @@ export default function useCreateProductPageService() {
     });
   }
 
+  function generateProductCodeHandler() {
+    return generateProductCode(null).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function getSimpleListOfAllBrandsHandler() {
+    return getSimpleListOfAllBrands(null).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function getAllCategoriesByOrganizationHandler() {
+    return getAllCategoriesByOrganization(null).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function checkProductCodeHandler(code) {
+    return checkProductCode(code).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function createNewProductHandler() {
+    return createNewProduct(null).then((res: any) => {
+      return res.data;
+    });
+  }
+
   return {
     ...state,
     getAllProductsHandler,
+    generateProductCodeHandler,
+    getSimpleListOfAllBrandsHandler,
+    getAllCategoriesByOrganizationHandler,
+    checkProductCodeHandler,
+    createNewProductHandler,
   };
 }
