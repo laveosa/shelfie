@@ -9,35 +9,25 @@ import { AuthFormViewEnum } from "@/const/enums/AuthFormViewEnum.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { IAuthPageSlice } from "@/const/interfaces/store-slices/IAuthPageSlice.ts";
 import { IAuthForm } from "@/const/interfaces/forms/IAuthForm.ts";
-import storageService from "@/utils/services/StorageService.ts";
-import { StorageKeyEnum } from "@/const/enums/StorageKeyEnum.ts";
 import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
+import useAppService from "@/useAppService.ts";
+import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 
 export default function useAuthPageService() {
-  const { useLazyGetCountryCodeQuery } = DictionaryApiHooks;
-  const {
-    useUserSignInMutation,
-    useVerifySignInNumberMutation,
-    useConfirmSignInNumberMutation,
-    useUserSignUpMutation,
-    useVerifySignUpNumberMutation,
-    useConfirmSignUpPhoneNumberMutation,
-    useForgotPasswordMutation,
-    useResetPasswordMutation,
-  } = AuthApiHooks;
+  const [getCountryCode] = DictionaryApiHooks.useLazyGetCountryCodeQuery();
+  const [userSignIn] = AuthApiHooks.useUserSignInMutation();
+  const [userSignUp] = AuthApiHooks.useUserSignUpMutation();
+  const [forgotPassword] = AuthApiHooks.useForgotPasswordMutation();
+  const [resetPassword] = AuthApiHooks.useResetPasswordMutation();
+  const [confirmSignInNumber] = AuthApiHooks.useConfirmSignInNumberMutation();
+  const [verifySignupNumber] = AuthApiHooks.useVerifySignUpNumberMutation();
+  const [confirmSignUpPhoneNumber] =
+    AuthApiHooks.useConfirmSignUpPhoneNumberMutation();
+  const [verifySignInNumber] = AuthApiHooks.useVerifySignInNumberMutation();
 
   const state = useAppSelector<IAuthPageSlice>(StoreSliceEnum.AUTH);
   const dispatch = useAppDispatch();
-  const [getCountryCode] = useLazyGetCountryCodeQuery();
-  const [userSignIn] = useUserSignInMutation();
-  const [userSignUp] = useUserSignUpMutation();
-  const [forgotPassword] = useForgotPasswordMutation();
-  const [resetPassword] = useResetPasswordMutation();
-  const [confirmSignInNumber] = useConfirmSignInNumberMutation();
-  const [verifySignupNumber] = useVerifySignUpNumberMutation();
-  const [confirmSignUpPhoneNumber] = useConfirmSignUpPhoneNumberMutation();
-  const [verifySignInNumber] = useVerifySignInNumberMutation();
-
+  const { refreshToken } = useAppService();
   const location = useLocation();
   const navigate = useNavigate();
   const [formStaticText, setFormStaticText] = useState<IAuthForm>(
@@ -60,7 +50,7 @@ export default function useAuthPageService() {
 
   function getCountryCodeHandler() {
     dispatch(action.setLoading(true));
-    return getCountryCode().then((res: any) => {
+    return getCountryCode(null).then((res: any) => {
       dispatch(action.setLoading(false));
       if (res.data) {
         dispatch(action.setCountryCode(res.data));
@@ -76,8 +66,7 @@ export default function useAuthPageService() {
       if (res.error) {
         return;
       } else {
-        //TODO update logic working with token logic in local storage and implement in all relates calls
-        storageService.setLocalStorage(StorageKeyEnum.TOKEN, res.data.token);
+        refreshToken(res.data.token);
         verifySignInNumberHandler();
       }
     });
@@ -85,16 +74,16 @@ export default function useAuthPageService() {
 
   function confirmSignInNumberHandler(model: RequestAuthModel) {
     dispatch(action.setLoading(true));
-    return confirmSignInNumber(model).then((_res: any) => {
+    return confirmSignInNumber(model).then((res: any) => {
       dispatch(action.setLoading(false));
-      //TODO update navigation logic to be able to use relative routes and test in dev environment
-      navigate("/dashboard");
+      refreshToken(res.data.token);
+      navigate(NavUrlEnum.DASHBOARD);
     });
   }
 
   function verifySignInNumberHandler() {
     dispatch(action.setLoading(true));
-    return verifySignInNumber().then((res: any) => {
+    return verifySignInNumber(null).then((res: any) => {
       dispatch(action.setLoading(false));
       if (res.error) {
         authFormViewChangeHandler(AuthFormViewEnum.VERIFY_PHONE_NUMBER);
@@ -112,7 +101,7 @@ export default function useAuthPageService() {
       if (res.error) {
         return;
       } else {
-        storageService.setLocalStorage(StorageKeyEnum.TOKEN, res.data.token);
+        refreshToken(res.data.token);
         authFormViewChangeHandler(AuthFormViewEnum.VERIFY_PHONE_NUMBER);
       }
     });
@@ -135,10 +124,10 @@ export default function useAuthPageService() {
     return confirmSignUpPhoneNumber(model).then((res: any) => {
       dispatch(action.setLoading(false));
       if (res.error) {
-        storageService.removeLocalStorage(StorageKeyEnum.TOKEN);
+        refreshToken(res.data.token);
         authFormViewChangeHandler(AuthFormViewEnum.SIGN_UP);
       } else {
-        navigate("/dashboard");
+        navigate(NavUrlEnum.DASHBOARD);
       }
     });
   }

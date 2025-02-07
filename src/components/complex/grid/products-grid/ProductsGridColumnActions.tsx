@@ -5,7 +5,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
@@ -41,23 +40,6 @@ export default function ProductsGridColumnActions<TData>({
         </SheButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-[160px]">
-        <DropdownMenuItem
-          onClick={() => onAction("edit", row.id, meta?.setLoadingRow)}
-        >
-          Edit
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => onAction("copy", row.id, meta?.setLoadingRow)}
-        >
-          Make a copy
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => onAction("favorite", row.id, meta?.setLoadingRow)}
-        >
-          Favorite
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() => onAction("delete", row.id, meta?.setLoadingRow)}
         >
