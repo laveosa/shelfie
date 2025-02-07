@@ -28,6 +28,7 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { AuthPageSliceActions as action } from "@/state/slices/AuthPageSlice";
 import storageService from "@/utils/services/StorageService.ts";
 import { StorageKeyEnum } from "@/const/enums/StorageKeyEnum.ts";
+import logo from "@/assets/images/AuthLogo.png";
 
 export function AuthPage() {
   const service = useAuthPageService();
@@ -61,19 +62,31 @@ export function AuthPage() {
     fetchCountryCodes();
   }, [state.countryCode]);
 
+  useEffect(() => {
+    if (service.authFormView === AuthFormViewEnum.FORGOT_PASSWORD) {
+      form.reset();
+    }
+  }, [service.authFormView]);
+
   function onFooterLink() {
     switch (service.authFormView) {
       case AuthFormViewEnum.SIGN_IN:
         service.authFormViewChangeHandler(AuthFormViewEnum.SIGN_UP);
+        form.reset();
         break;
       case AuthFormViewEnum.SIGN_UP:
         service.authFormViewChangeHandler(AuthFormViewEnum.SIGN_IN);
+        form.reset();
         break;
       case AuthFormViewEnum.VERIFY_CODE:
         //TODO implement resend verification code API
         state.hiddenPhoneNumber
           ? service.verifySignInNumberHandler()
           : service.confirmSignUpPhoneNumberHandler(form.getValues());
+        break;
+      case AuthFormViewEnum.FORGOT_PASSWORD:
+        service.authFormViewChangeHandler(AuthFormViewEnum.SIGN_IN);
+        form.reset();
         break;
     }
   }
@@ -107,11 +120,7 @@ export function AuthPage() {
     <div id={cs["AuthPage"]}>
       <div className={cs.authPageWrapper}>
         <div className={cs.authHeader}>
-          <img
-            className={cs.authHeaderLogo}
-            src="src/assets/images/AuthLogo.png"
-            alt="shelfie-logo"
-          />
+          <img className={cs.authHeaderLogo} src={logo} alt="shelfie-logo" />
           <span className="she-title">{service.formStaticText.title}</span>
           <span className="she-subtext">{service.formStaticText.subTitle}</span>
         </div>
@@ -323,7 +332,7 @@ export function AuthPage() {
                       rules={
                         !state.hiddenPhoneNumber
                           ? {
-                              required: "Please select a country code",
+                              required: "Phone number is required",
                               minLength: {
                                 value: 8,
                                 message:
