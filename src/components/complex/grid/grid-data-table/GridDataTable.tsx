@@ -93,20 +93,7 @@ export function GridDataTable<TData, TValue>({
       }}
     >
       <div>
-        {showHeader && (
-          <GridHeader
-            gridModel={gridModel}
-            table={table}
-            sortingItems={sortingItems}
-            onGridRequestChange={onGridRequestChange}
-            showPagination={showPagination}
-            showSorting={showSorting}
-            showColumnsViewOptions={showColumnsViewOptions}
-            showSearch={showSearch}
-          >
-            {children}
-          </GridHeader>
-        )}
+        {showHeader && <GridHeader table={table}>{children}</GridHeader>}
         <div className="rounded-md border">
           <Table style={{ overflow: "hidden" }}>
             <TableHeader>
