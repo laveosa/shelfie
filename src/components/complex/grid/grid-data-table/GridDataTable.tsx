@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from "react";
+import React, { PropsWithChildren, useState } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -18,24 +18,39 @@ import {
 } from "@/components/ui/table.tsx";
 import GridHeader from "@/components/complex/grid/grid-header/GridHeader.tsx";
 import { IGridHeader } from "@/const/interfaces/complex-components/IGridHeader.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
+import { IGridContext } from "@/const/interfaces/context/IGridContext.ts";
+import { GridContext } from "@/state/context/grid-context";
 
-interface DataTableProps<TData, TValue> extends IGridHeader<TData> {
+interface DataTableProps<TData, TValue>
+  extends IGridHeader<TData>,
+    IGridContext,
+    PropsWithChildren {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  sortingItems?: GridSortingModel[];
+  onGridRequestChange?: (updates: GridRequestModel) => void;
   showHeader?: boolean;
-  children?: ReactNode;
+  onApplyColumns?: (data) => void;
+  onDefaultColumns?: () => void;
 }
 
 export function GridDataTable<TData, TValue>({
   columns,
   data,
+  columnsPreferences,
   gridModel,
+  sortingItems,
   showHeader = true,
   showPagination = true,
   showSorting = true,
   showColumnsViewOptions = true,
   showSearch = true,
   children,
+  onGridRequestChange,
+  onApplyColumns,
+  onDefaultColumns,
 }: DataTableProps<TData, TValue>) {
   const [loadingRows, setLoadingRows] = useState<Set<string>>(new Set());
 
@@ -62,73 +77,78 @@ export function GridDataTable<TData, TValue>({
   });
 
   return (
-    <div>
-      {showHeader && (
-        <GridHeader
-          gridModel={gridModel}
-          table={table}
-          showPagination={showPagination}
-          showSorting={showSorting}
-          showColumnsViewOptions={showColumnsViewOptions}
-          showSearch={showSearch}
-        >
-          {children}
-        </GridHeader>
-      )}
-      <div className="rounded-md border">
-        <Table style={{ overflow: "hidden" }}>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                  className={
-                    loadingRows.has(row.id) ? "bg-green-50 opacity-70" : ""
-                  }
-                  style={{
-                    pointerEvents: loadingRows.has(row.id) ? "none" : "auto",
-                  }}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
+    <GridContext.Provider
+      value={{
+        columnsPreferences,
+        onApplyColumns,
+        onDefaultColumns,
+        showPagination,
+        showSorting,
+        showColumnsViewOptions,
+        showSearch,
+        gridModel,
+        onGridRequestChange,
+        sortingItems,
+        children,
+      }}
+    >
+      <div>
+        {showHeader && <GridHeader table={table}>{children}</GridHeader>}
+        <div className="rounded-md border">
+          <Table style={{ overflow: "hidden" }}>
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
+                    </TableHead>
                   ))}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  NO DATA TO DISPLAY
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                    className={
+                      loadingRows.has(row.id) ? "bg-green-50 opacity-70" : ""
+                    }
+                    style={{
+                      pointerEvents: loadingRows.has(row.id) ? "none" : "auto",
+                    }}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    NO DATA TO DISPLAY
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
       </div>
-    </div>
+    </GridContext.Provider>
   );
 }

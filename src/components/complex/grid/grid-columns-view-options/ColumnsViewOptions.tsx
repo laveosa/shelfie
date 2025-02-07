@@ -12,9 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import cs from "./ColumnsViewOptions.module.scss";
-import storageService from "@/utils/services/StorageService.ts";
-import { StorageKeyEnum } from "@/const/enums/StorageKeyEnum.ts";
-import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
+import { useGridContext } from "@/state/context/grid-context.ts";
 
 interface IColumnsViewOptions<TData> {
   table: Table<TData>;
@@ -23,7 +21,9 @@ interface IColumnsViewOptions<TData> {
 export function ColumnsViewOptions<TData>({
   table,
 }: IColumnsViewOptions<TData>) {
-  const service = useProductsPageService();
+  const { columnsPreferences, onApplyColumns, onDefaultColumns } =
+    useGridContext();
+
   const [selectedColumns, setSelectedColumns] = useState<string[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [previousSelectedColumns, setPreviousSelectedColumns] = useState<
@@ -31,31 +31,49 @@ export function ColumnsViewOptions<TData>({
   >([]);
 
   useEffect(() => {
-    const preferences = storageService.getLocalStorage(
-      StorageKeyEnum.PREFERENCES,
+    initializeColumns(
+      columnsPreferences.viewsReferences.productReferences.columns,
     );
-    initializeColumns(preferences);
-  }, [table]);
+  }, [columnsPreferences]);
 
-  const initializeColumns = (preferences: any) => {
-    if (!preferences) return;
+  // function initializeColumns(columns: any) {
+  //   if (!columns) return;
+  //   const newSelectedColumns: string[] = [];
+  //   table.getAllColumns().forEach((column) => {
+  //     const isVisibleInPreferences = columns[column.id];
+  //     column.toggleVisibility(!isVisibleInPreferences);
+  //     if (!isVisibleInPreferences) {
+  //       newSelectedColumns.push(column.id);
+  //     }
+  //   });
+  //   setSelectedColumns(newSelectedColumns);
+  // }
+
+  function initializeColumns(columns: any) {
+    if (!columns) return;
+    const newSelectedColumns: string[] = [];
     table.getAllColumns().forEach((column) => {
-      const isVisibleInPreferences =
-        preferences.viewsReferences.productReferences.columns[column.id];
-      column.toggleVisibility(!isVisibleInPreferences);
-      if (!isVisibleInPreferences) {
-        setSelectedColumns((prev) => [...prev, column.id]);
+      const isVisibleInPreferences = columns[column.id];
+      if (isVisibleInPreferences === false) {
+        column.toggleVisibility(true);
+        newSelectedColumns.push(column.id);
+      } else if (isVisibleInPreferences === true) {
+        column.toggleVisibility(false);
+      } else {
+        column.toggleVisibility(true);
+        newSelectedColumns.push(column.id);
       }
     });
-  };
+    setSelectedColumns(newSelectedColumns);
+  }
 
-  const handleCheckedChange = (value: boolean, column: any) => {
+  function onCheckedHandler(value: boolean, column: any) {
     setSelectedColumns((prev) =>
       value ? [...prev, column.id] : prev.filter((id) => id !== column.id),
     );
-  };
+  }
 
-  const applyChanges = () => {
+  function onApplyHandler() {
     table.getAllColumns().forEach((column) => {
       const shouldShow = selectedColumns.includes(column.id);
       column.toggleVisibility(shouldShow);
@@ -76,30 +94,26 @@ export function ColumnsViewOptions<TData>({
         },
       },
     };
-    service.updateUserPreferencesHandler(model);
+    onApplyColumns(model);
     setDropdownOpen(false);
-  };
+  }
 
-  const resetToDefault = () => {
-    service.resetUserPreferencesHandler();
-    const preferences = storageService.getLocalStorage(
-      StorageKeyEnum.PREFERENCES,
-    );
-    initializeColumns(preferences);
+  function onResetHandler() {
+    onDefaultColumns();
     setDropdownOpen(false);
-  };
+  }
 
-  const handleDropdownOpenChange = (open: boolean) => {
+  function onOpenChangeHandler(open: boolean) {
     if (!open) {
       setSelectedColumns(previousSelectedColumns);
     } else {
       setPreviousSelectedColumns(selectedColumns);
     }
     setDropdownOpen(open);
-  };
+  }
 
   return (
-    <DropdownMenu open={dropdownOpen} onOpenChange={handleDropdownOpenChange}>
+    <DropdownMenu open={dropdownOpen} onOpenChange={onOpenChangeHandler}>
       <DropdownMenuTrigger className={cs.dropdownMenuTrigger} asChild>
         <SheButton
           variant="outline"
@@ -126,7 +140,7 @@ export function ColumnsViewOptions<TData>({
               key={column.id}
               className="capitalize"
               checked={selectedColumns.includes(column.id)}
-              onCheckedChange={(value) => handleCheckedChange(value, column)}
+              onCheckedChange={(value) => onCheckedHandler(value, column)}
               onSelect={(event) => {
                 event.preventDefault();
               }}
@@ -136,10 +150,10 @@ export function ColumnsViewOptions<TData>({
           ))}
         <DropdownMenuSeparator />
         <div className={cs.buttonBlock}>
-          <SheButton onClick={resetToDefault} variant="outline">
+          <SheButton onClick={onResetHandler} variant="outline">
             Default
           </SheButton>
-          <SheButton onClick={applyChanges}>Apply</SheButton>
+          <SheButton onClick={onApplyHandler}>Apply</SheButton>
         </div>
       </DropdownMenuContent>
     </DropdownMenu>

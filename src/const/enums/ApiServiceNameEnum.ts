@@ -5,4 +5,6 @@ export enum ApiServiceNameEnum {
   LOGS = "Logs",
   AUTH = "Auth",
   DICTIONARY = "Dictionary",
+  BRANDS = "Brands",
+  PRODUCT_CATEGORIES = "ProductCategories",
 }
