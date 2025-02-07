@@ -28,6 +28,7 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { AuthPageSliceActions as action } from "@/state/slices/AuthPageSlice";
 import storageService from "@/utils/services/StorageService.ts";
 import { StorageKeyEnum } from "@/const/enums/StorageKeyEnum.ts";
+import logo from "@/assets/images/AuthLogo.png";
 
 export function AuthPage() {
   const service = useAuthPageService();
@@ -119,11 +120,7 @@ export function AuthPage() {
     <div id={cs["AuthPage"]}>
       <div className={cs.authPageWrapper}>
         <div className={cs.authHeader}>
-          <img
-            className={cs.authHeaderLogo}
-            src="src/assets/images/AuthLogo.png"
-            alt="shelfie-logo"
-          />
+          <img className={cs.authHeaderLogo} src={logo} alt="shelfie-logo" />
           <span className="she-title">{service.formStaticText.title}</span>
           <span className="she-subtext">{service.formStaticText.subTitle}</span>
         </div>
