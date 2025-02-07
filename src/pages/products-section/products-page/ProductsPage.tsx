@@ -39,13 +39,13 @@ export function ProductsPage() {
       .then((res: GridModel) => {
         dispatch(actions.refreshProductsGridModel(res));
       });
-
-    service.getBrandsForFilterHandler();
-
-    service.getCategoriesForFilterHandler();
-
-    service.getSortingOptionsForGridHandler();
   }, [state.gridRequestModel]);
+
+  useEffect(() => {
+    service.getBrandsForFilterHandler();
+    service.getCategoriesForFilterHandler();
+    service.getSortingOptionsForGridHandler();
+  }, []);
 
   function handleAddProduct() {}
 
