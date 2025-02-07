@@ -21,7 +21,7 @@ export default function useCreateProductPageService() {
     dispatch(action.setLoading(true));
     return getAllProducts(null).then((res: any) => {
       dispatch(action.setLoading(false));
-      dispatch(action.setProducts(res.data));
+      dispatch(action.refreshProducts(res.data));
       return res.data;
     });
   }
