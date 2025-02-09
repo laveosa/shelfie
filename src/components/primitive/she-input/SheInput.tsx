@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Search, X } from "lucide-react";
 import { isRegExp } from "lodash";
-import { Trans, useTranslation } from "react-i18next";
+import { Trans } from "react-i18next";
 
 import cs from "./SheInput.module.scss";
 import { Input } from "@/components/ui/input.tsx";
@@ -60,10 +60,6 @@ export default function SheInput({
       onDelay(delaySearch);
     }
   }, [delaySearch]);
-
-  useEffect(() => {
-    setIcon(!props.icon && isSearch ? <Search /> : props.icon);
-  }, [props]);
 
   // ==================================================================== EVENT
 
