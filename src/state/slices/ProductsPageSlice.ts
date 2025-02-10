@@ -4,7 +4,7 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
-import { ProductCategoryModel } from "@/const/models/ProductCategoryModel.ts";
+import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
 import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
@@ -60,7 +60,7 @@ function refreshBrands(
 
 function refreshCategories(
   state: IProductsPageSlice,
-  action: PayloadAction<ProductCategoryModel[]>,
+  action: PayloadAction<CategoryModel[]>,
 ) {
   state.categories = action?.payload || state.categories;
 }

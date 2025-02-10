@@ -7,7 +7,7 @@ import { ApiConfigurationService } from "@/utils/services/api/ApiConfigurationSe
 import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
-import { ProductCategoryModel } from "@/const/models/ProductCategoryModel.ts";
+import { CategoryModel } from "@/const/models/CategoryModel.ts";
 
 const apiConfig = new ApiConfigurationService(ApiUrlEnum.PRODUCTS_BASE_URL);
 
@@ -40,7 +40,7 @@ export const ProductsApiService = createApi({
     }),
     manageProduct: apiConfig.createMutation<void, ProductModel>(builder, {
       query: (model: ProductModel) => ({
-        url: `${ApiUrlEnum.PRODUCTS}/${model.id}`,
+        url: `${ApiUrlEnum.PRODUCTS}/${model.productId}`,
         method: "PUT",
         body: JSON.stringify(model),
       }),
@@ -90,13 +90,13 @@ export const ProductsApiService = createApi({
       },
     ),
     getCategoriesForProductsFilter: apiConfig.createQuery<
-      ProductCategoryModel[],
+      CategoryModel[],
       void
     >(builder, {
       query: () => ({
         url: `${ApiUrlEnum.PRODUCT_CATEGORIES}/for-filter`,
       }),
-      providesTags: (result: ProductCategoryModel[]) =>
+      providesTags: (result: CategoryModel[]) =>
         apiConfig.providesTags(result, ApiServiceNameEnum.PRODUCTS),
     }),
   }),
