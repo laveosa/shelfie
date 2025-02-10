@@ -75,7 +75,7 @@ export const ProductsGridColumns: ColumnDef<ProductModel>[] = [
     header: "Product Name",
   },
   {
-    accessorKey: "productCategory", // Updated accessorKey
+    accessorKey: "productCategory",
     header: "Category",
     cell: ({ row }) => {
       const category: CategoryModel = row.getValue("productCategory");
