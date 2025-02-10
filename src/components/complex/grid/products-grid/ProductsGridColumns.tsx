@@ -26,15 +26,6 @@ function onAction(
       case "active":
         console.log(`Active row ${rowId}`);
         break;
-      case "edit":
-        console.log(`Editing row ${rowId}`);
-        break;
-      case "copy":
-        console.log(`Copying row ${rowId}`);
-        break;
-      case "favorite":
-        console.log(`Favoriting row ${rowId}`);
-        break;
       case "delete":
         console.log(`Deleting row ${rowId}`);
         break;
