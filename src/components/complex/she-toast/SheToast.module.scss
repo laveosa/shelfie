@@ -1,2 +1,58 @@
-.SheToast {
+@use "@/styles/variables" as vars;
+
+.sheToast {
+  display: flex;
+  width: 350px;
+  min-width: 350px;
+  max-width: 350px;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border: vars.$brd;;
+  border-radius: vars.$brdR_05;
+
+  .toastIcon {
+    align-self: normal;
+    width: 46px;
+
+    img {
+      width: 36px;
+      height: 36px;
+    }
+  }
+
+  .toastContent {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    button {
+      width: 50px;
+      font-size: 14px;
+      margin-top: 5px;
+      color: #474D54;
+    }
+  }
+
+  .closeButton {
+    padding-bottom: 22px;
+    align-self: normal;
+
+    button {
+      width: 24px;
+      height: 24px;
+      background: vars.$colorMuted;
+      padding: 0;
+      color: vars.$colorDark;
+
+      span {
+        display: none;
+      }
+    }
+  }
+
+  .close-button:hover {
+    color: red;
+  }
 }
