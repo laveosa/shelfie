@@ -10,12 +10,13 @@
   padding: 10px;
   border: vars.$brd;;
   border-radius: vars.$brdR_05;
+  background-color: vars.$colorLight;
 
   .toastIcon {
     align-self: normal;
     width: 46px;
 
-    img {
+    svg {
       width: 36px;
       height: 36px;
     }
@@ -51,8 +52,51 @@
       }
     }
   }
+}
 
-  .close-button:hover {
-    color: red;
+// ----------------------------------------------------------------------- TOAST TYPES
+
+
+.success {
+  border-color: #d4edda;
+  color: #155724;
+
+  .toastContent {
+    span {
+      color: #155724;
+    }
+  }
+}
+
+.error {
+  border-color: #f8d7da;
+  color: #721c24;
+
+  .toastContent {
+    span {
+      color: #721c24;
+    }
+  }
+}
+
+.info {
+  border-color: #cce5ff;
+  color: #004085;
+
+  .toastContent {
+    span {
+      color: #004085;
+    }
+  }
+}
+
+.warning {
+  border-color: #fff3cd;
+  color: #856404;
+
+  .toastContent {
+    span {
+      color: #856404;
+    }
   }
 }
