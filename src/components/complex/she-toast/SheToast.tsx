@@ -1,16 +1,9 @@
+import { AlertCircle, AlertTriangle, CheckCircle, Info, X } from "lucide-react";
 import React from "react";
+
 import cs from "./SheToast.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { AlertCircle, AlertTriangle, CheckCircle, Info, X } from "lucide-react";
-
-interface ISheToast {
-  id?: string;
-  title?: string;
-  message: string;
-  description?: string;
-  dismiss?: () => void;
-  type?: "success" | "error" | "info" | "warning";
-}
+import { ISheToast } from "@/const/interfaces/complex-components/ISheToast.ts";
 
 const getIcon = (type: "success" | "error" | "info" | "warning") => {
   switch (type) {

@@ -1,27 +1,19 @@
 import React, { createContext, useContext, useState } from "react";
-import SheToast from "@/components/complex/she-toast/SheToast.tsx";
 
-interface Toast {
-  id?: string;
-  title?: string;
-  message: string;
-  description?: string;
-  type?: "success" | "error" | "info" | "warning";
-}
+import SheToast from "@/components/complex/she-toast/SheToast.tsx";
+import { ISheToast } from "@/const/interfaces/complex-components/ISheToast.ts";
 
 interface ToastContextType {
-  addToast: (toast: Toast) => void;
+  addToast: (toast: ISheToast) => void;
   removeToast: (id: string) => void;
 }
 
 const ToastContext = createContext<ToastContextType | undefined>(undefined);
 
-export const ToastProvider: React.FC<{
-  children: React.ReactNode;
-}> = ({ children }) => {
-  const [toasts, setToasts] = useState<Toast[]>([]);
+export function ToastProvider({ children }) {
+  const [toasts, setToasts] = useState<ISheToast[]>([]);
 
-  const addToast = (toast: Toast) => {
+  function addToast(toast: ISheToast) {
     const id = Date.now().toString();
 
     if (toasts.length >= 3) {
@@ -30,30 +22,19 @@ export const ToastProvider: React.FC<{
 
     setToasts((prev) => [...prev, { ...toast, id }]);
 
-    // setTimeout(() => {
-    //   removeToast(id);
-    // }, 3000);
-  };
+    setTimeout(() => {
+      removeToast(id);
+    }, 3000);
+  }
 
-  const removeToast = (id: string) => {
+  function removeToast(id: string) {
     setToasts((prev) => prev.filter((toast) => toast.id !== id));
-  };
+  }
 
   return (
     <ToastContext.Provider value={{ addToast, removeToast }}>
       {children}
-      <div
-        className="toast-container"
-        style={{
-          position: "fixed",
-          top: "20px",
-          right: "20px",
-          zIndex: "1000",
-          display: "flex",
-          flexDirection: "column",
-          gap: "10px",
-        }}
-      >
+      <div className="fixed top-5 right-5 z-50 flex flex-col gap-2.5">
         {toasts.map((toast) => (
           <SheToast
             key={toast.id}
@@ -64,12 +45,12 @@ export const ToastProvider: React.FC<{
       </div>
     </ToastContext.Provider>
   );
-};
+}
 
-export const useToast = () => {
+export function useToast() {
   const context = useContext(ToastContext);
   if (!context) {
     throw new Error("useToast must be used within a ToastProvider");
   }
   return context;
-};
+}
