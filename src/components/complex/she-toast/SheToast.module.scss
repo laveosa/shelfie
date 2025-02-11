@@ -11,6 +11,8 @@
   border: vars.$brd;;
   border-radius: vars.$brdR_05;
   background-color: vars.$colorLight;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
 
   .toastIcon {
     align-self: normal;
@@ -60,7 +62,6 @@
 .success {
   border-color: #d4edda;
   color: #155724;
-  background-color: #ebf1ec;
 
   .toastContent {
     span {
@@ -72,7 +73,6 @@
 .error {
   border-color: #f8d7da;
   color: #721c24;
-  background-color: #f8d7da;
 
   .toastContent {
     span {
@@ -84,7 +84,6 @@
 .info {
   border-color: #cce5ff;
   color: #004085;
-  background-color: #cce5ff;
 
   .toastContent {
     span {
@@ -96,7 +95,6 @@
 .warning {
   border-color: #fff3cd;
   color: #856404;
-  background-color: #fff3cd;
 
   .toastContent {
     span {

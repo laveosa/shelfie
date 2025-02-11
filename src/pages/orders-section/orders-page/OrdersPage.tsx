@@ -1,6 +1,6 @@
 import cs from "./OrdersPage.module.scss";
 import useOrdersPageService from "@/pages/orders-section/orders-page/useOrdersPageService.ts";
-import { useToast } from "@/utils/services/ToastService.tsx";
+import { useToast } from "@/utils/hooks/useToast";
 
 export function OrdersPage() {
   const service = useOrdersPageService();
@@ -10,28 +10,28 @@ export function OrdersPage() {
   const handleSuccess = () => {
     addToast({
       message: "Your action was successful.",
-      type: "success", // Specify type
+      type: "success",
     });
   };
 
   const handleError = () => {
     addToast({
       message: "There was an error processing your request.",
-      type: "error", // Specify type
+      type: "error",
     });
   };
 
   const handleWarning = () => {
     addToast({
       message: "There was an error processing your request.",
-      type: "warning", // Specify type
+      type: "warning",
     });
   };
 
   const handleInfo = () => {
     addToast({
       message: "There was an error processing your request.",
-      type: "info", // Specify type
+      type: "info",
     });
   };
 
