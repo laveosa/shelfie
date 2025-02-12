@@ -1,6 +1,6 @@
 import cs from "./OrdersPage.module.scss";
 import useOrdersPageService from "@/pages/orders-section/orders-page/useOrdersPageService.ts";
-import { useToast } from "@/utils/hooks/useToast";
+import { useToast } from "@/hooks/useToast.ts";
 
 export function OrdersPage() {
   const service = useOrdersPageService();
