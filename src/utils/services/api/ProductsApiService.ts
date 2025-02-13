@@ -143,6 +143,19 @@ export const ProductsApiService = createApi({
         ],
       },
     ),
+    checkBrandName: apiConfig.createMutation<void, BrandModel>(builder, {
+      query: (brandName: BrandModel) => ({
+        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.BRANDS}/check-name`,
+        method: "POST",
+        body: JSON.stringify(brandName),
+      }),
+      invalidatesTags: (_result, _error, brandName) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          brandName,
+        },
+      ],
+    }),
     createNewProduct: apiConfig.createMutation<void, ProductModel>(builder, {
       query: (model: ProductModel) => ({
         url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}`,

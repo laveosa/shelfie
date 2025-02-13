@@ -15,6 +15,7 @@ export default function useCreateProductPageService() {
   const [getAllCategoriesByOrganization] =
     ProductsApiHooks.useLazyGetAllCategoriesByOrganizationQuery();
   const [checkProductCode] = ProductsApiHooks.useCheckProductCodeMutation();
+  const [checkBrandName] = ProductsApiHooks.useCheckBrandNameMutation();
   const [createNewProduct] = ProductsApiHooks.useCreateNewProductMutation();
 
   function getAllProductsHandler() {
@@ -50,8 +51,14 @@ export default function useCreateProductPageService() {
     });
   }
 
-  function createNewProductHandler() {
-    return createNewProduct(null).then((res: any) => {
+  function checkBrandNameHandler(brandName) {
+    return checkProductCode(brandName).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function createNewProductHandler(model) {
+    return createNewProduct(model).then((res: any) => {
       return res.data;
     });
   }
@@ -63,6 +70,7 @@ export default function useCreateProductPageService() {
     getSimpleListOfAllBrandsHandler,
     getAllCategoriesByOrganizationHandler,
     checkProductCodeHandler,
+    checkBrandNameHandler,
     createNewProductHandler,
   };
 }
