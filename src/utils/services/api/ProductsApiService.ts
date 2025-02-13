@@ -100,19 +100,13 @@ export const ProductsApiService = createApi({
       providesTags: (result: ProductCategoryModel[]) =>
         apiConfig.providesTags(result, ApiServiceNameEnum.PRODUCTS),
     }),
-    generateProductCode: apiConfig.createQuery<ProductCodeModel, void>(
-      builder,
-      {
-        query: () => ({
-          url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/generate-code`,
-        }),
-        providesTags: (result: ProductCodeModel) =>
-          apiConfig.providesTags<ProductCodeModel>(
-            result,
-            ApiServiceNameEnum.PRODUCTS,
-          ),
-      },
-    ),
+    generateProductCode: apiConfig.createQuery<any, void>(builder, {
+      query: () => ({
+        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/generate-code`,
+      }),
+      // providesTags: (result: any) =>
+      //   apiConfig.providesTags(result, ApiServiceNameEnum.PRODUCTS),
+    }),
     getSimpleListOfAllBrands: apiConfig.createQuery<any[], void>(builder, {
       query: () => ({
         url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.BRANDS}/all`,

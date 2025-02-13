@@ -59,6 +59,10 @@ export default function SheInput({
     }
   }, [delaySearch]);
 
+  useEffect(() => {
+    setValue(props.value || "");
+  }, [props.value]);
+
   // ==================================================================== EVENT
 
   function onChangeHandler(e) {

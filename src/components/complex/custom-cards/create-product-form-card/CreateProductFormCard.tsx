@@ -20,10 +20,11 @@ import cs from "./CreateProductFormCard.module.scss";
 import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { Switch } from "@/components/ui/switch.tsx";
 import useCreateProductPageService from "@/pages/products-section/create-product-page/useCreateProductPageService.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { ProductCategoryModel } from "@/const/models/ProductCategoryModel.ts";
+import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
+import { Switch } from "@/components/ui/switch.tsx";
 
 export default function CreateProductFormCard({
   onOpenCreateProductCategoryCard,
@@ -39,9 +40,8 @@ export default function CreateProductFormCard({
       name: "",
       productCode: "",
       productBarcode: "",
-      categoryId: "",
+      categoryId: null,
       brandId: "",
-      productFake: null,
       isActive: true,
     },
   });
@@ -61,18 +61,20 @@ export default function CreateProductFormCard({
     });
   }, [brandsFetched]);
 
+  function onAction() {
+    service.generateProductCodeHandler().then((res: ProductCodeModel) => {
+      form.setValue("productCode", res.code);
+    });
+  }
+
+  function onCheckCode(value: string) {
+    service.checkProductCodeHandler({ code: value });
+  }
+
   function onSubmit(data) {
     service.createNewProductHandler(data).then((res) => {
       console.log("NEW PRODUCT", res);
     });
-  }
-
-  function onAction() {
-    service.generateProductCodeHandler();
-  }
-
-  function onCheckCode(value) {
-    service.checkProductCodeHandler({ code: value });
   }
 
   return (
@@ -119,6 +121,7 @@ export default function CreateProductFormCard({
                 onBlur={onCheckCode}
               >
                 <SheInput
+                  {...form.register("productCode")}
                   label="Product Code"
                   placeholder="enter product code..."
                   isValid={!form.formState.errors.productCode}
@@ -129,6 +132,7 @@ export default function CreateProductFormCard({
               <SheButton
                 className={cs.formRowButton}
                 icon={WandSparkles}
+                type="button"
                 variant="outline"
                 onClick={onAction}
               />
