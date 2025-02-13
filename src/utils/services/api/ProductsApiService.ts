@@ -163,6 +163,35 @@ export const ProductsApiService = createApi({
         },
       ],
     }),
+    createNewCategory: apiConfig.createMutation<void, ProductCategoryModel>(
+      builder,
+      {
+        query: (model: ProductCategoryModel) => ({
+          url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCT_CATEGORIES}`,
+          method: "POST",
+          body: JSON.stringify(model),
+        }),
+        invalidatesTags: (_result, _error, model) => [
+          {
+            type: ApiServiceNameEnum.PRODUCTS,
+            model,
+          },
+        ],
+      },
+    ),
+    createBrand: apiConfig.createMutation<void, BrandModel>(builder, {
+      query: (model: BrandModel) => ({
+        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.BRANDS}`,
+        method: "POST",
+        body: JSON.stringify(model),
+      }),
+      invalidatesTags: (_result, _error, model) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          model,
+        },
+      ],
+    }),
   }),
 });
 

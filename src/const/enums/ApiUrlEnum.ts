@@ -3,6 +3,7 @@ export enum ApiUrlEnum {
   AUTH_BASE_URL = "https://authservice.redground-5e8b9eee.germanywestcentral.azurecontainerapps.io/api/v1",
   USERS_BASE_URL = "https://userservice.redground-5e8b9eee.germanywestcentral.azurecontainerapps.io/api/v1",
   PRODUCTS_BASE_URL = "https://productservice.redground-5e8b9eee.germanywestcentral.azurecontainerapps.io/api/v1",
+  ASSETS_BASE_URL = "https://photoservice.redground-5e8b9eee.germanywestcentral.azurecontainerapps.io/api/v1",
   PRODUCTS = "/products",
   PRODUCT_CATEGORIES = "/productCategories",
   BRANDS = "/brands",
@@ -13,4 +14,5 @@ export enum ApiUrlEnum {
   DICTIONARY = "/dictionary",
   COUNTRIES = "/countries",
   PREFERENCES = "/preferences",
+  ASSETS = "/asset",
 }
