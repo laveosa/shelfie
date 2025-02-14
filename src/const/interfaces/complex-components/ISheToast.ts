@@ -1,8 +1,11 @@
 export interface ISheToast {
   id?: string;
   title?: string;
-  message: string;
+  titleTransKey?: string;
+  text: string;
+  textTransKey?: string;
   description?: string;
-  dismiss?: () => void;
+  descriptionTransKey?: string;
+  dismissButton?: () => void;
   type?: "success" | "error" | "info" | "warning";
 }

@@ -9,28 +9,28 @@ export function OrdersPage() {
 
   const handleSuccess = () => {
     addToast({
-      message: "Your action was successful.",
+      text: "Your action was successful.",
       type: "success",
     });
   };
 
   const handleError = () => {
     addToast({
-      message: "There was an error processing your request.",
+      text: "There was an error processing your request.",
       type: "error",
     });
   };
 
   const handleWarning = () => {
     addToast({
-      message: "There was an error processing your request.",
+      text: "There was an error processing your request.",
       type: "warning",
     });
   };
 
   const handleInfo = () => {
     addToast({
-      message: "There was an error processing your request.",
+      text: "There was an error processing your request.",
       type: "info",
     });
   };

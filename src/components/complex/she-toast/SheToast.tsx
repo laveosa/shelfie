@@ -1,4 +1,5 @@
 import { AlertCircle, AlertTriangle, CheckCircle, Info, X } from "lucide-react";
+import { Trans } from "react-i18next";
 import React from "react";
 
 import cs from "./SheToast.module.scss";
@@ -22,24 +23,37 @@ const getIcon = (type: "success" | "error" | "info" | "warning") => {
 
 export default function SheToast({
   title,
-  message,
-  dismiss,
+  titleTransKey,
+  text,
+  textTransKey,
   description,
+  descriptionTransKey,
+  dismissButton,
   type = "info",
 }: ISheToast) {
   return (
     <div className={`${cs.sheToast} ${cs[type]}`}>
       <div className={cs.toastIcon}>{getIcon(type)}</div>
       <div className={cs.toastContent}>
-        {title && <span className="she-title">{title}</span>}
-        <span className="she-text">{message}</span>
-        {description && <span className="she-subtext">{description}</span>}
-        <button onClick={dismiss} className={cs.dismissButton}>
+        {title && (
+          <span className="she-title">
+            <Trans i18nKey={titleTransKey}>{title}</Trans>
+          </span>
+        )}
+        <span className="she-text">
+          <Trans i18nKey={textTransKey}>{text}</Trans>
+        </span>
+        {description && (
+          <span className="she-subtext">
+            <Trans i18nKey={descriptionTransKey}>{description}</Trans>
+          </span>
+        )}
+        <button onClick={dismissButton} className={cs.dismissButton}>
           Dismiss
         </button>
       </div>
       <div className={cs.closeButton}>
-        <SheButton icon={X} onClick={dismiss} />
+        <SheButton icon={X} onClick={dismissButton} />
       </div>
     </div>
   );

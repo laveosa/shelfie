@@ -39,7 +39,7 @@ export function ToastProvider({ children }) {
           <SheToast
             key={toast.id}
             {...toast}
-            dismiss={() => removeToast(toast.id!)}
+            dismissButton={() => removeToast(toast.id!)}
           />
         ))}
       </div>
