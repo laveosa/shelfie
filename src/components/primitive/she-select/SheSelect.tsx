@@ -17,6 +17,7 @@ import cs from "./SheSelect.module.scss";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import SheTooltip from "@/components/complex/she-tooltip/SheTooltip.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import _ from "lodash";
 
 export default function SheSelect({
   className,
@@ -28,6 +29,7 @@ export default function SheSelect({
   selected,
   items,
   showClearBtn,
+  showFirstOption = true,
   tooltip,
   minWidth,
   maxWidth,
@@ -39,22 +41,35 @@ export default function SheSelect({
   ...props
 }: ISheSelect): React.ReactNode {
   const { translate } = useAppTranslation();
-  const [_selected, setSelected] = useState(selected || null);
-  const [_items, setItems] = useState(_addItemsIds(items));
+  const [_selected, setSelected] = useState<ISheSelectItem>(selected || null);
+  const [_items, setItems] = useState<ISheSelectItem[]>(_addItemsIds(items));
 
   useEffect(() => {
-    items?.unshift({
-      value: null,
-      text: "not selected",
-      textTransKey: "not_selected",
-    });
+    if (showFirstOption) {
+      items?.unshift({
+        value: null,
+        text: "not selected",
+        textTransKey: "not_selected",
+      });
+    }
+
     setItems(_addItemsIds(items));
   }, [items]);
+
+  useEffect(() => {
+    setSelected(selected);
+
+    if (selected && _items) {
+      onChangeHandler(getSelectedItemByValue(selected, _items).id);
+    }
+  }, [selected]);
 
   // ==================================================================== EVENT
 
   function onChangeHandler(id: string | null) {
-    let selected = id ? getSelectedItem(id) : null;
+    console.log("ID: ", id);
+
+    let selected = id ? getSelectedItemById(id, _items) : null;
     selected = selected.value ? selected : null;
     setSelected(selected);
     onSelect(selected ? selected.value : null);
@@ -74,8 +89,18 @@ export default function SheSelect({
     }));
   }
 
-  function getSelectedItem(id: any): ISheSelectItem {
-    return _items?.find((item) => item.id === id);
+  function getSelectedItemById(
+    id: any,
+    items: ISheSelectItem[],
+  ): ISheSelectItem {
+    return items?.find((item) => item.id === id);
+  }
+
+  function getSelectedItemByValue(
+    value: any,
+    items: ISheSelectItem[],
+  ): ISheSelectItem {
+    return items?.find((item) => _.isEqual(item.value, value));
   }
 
   return (

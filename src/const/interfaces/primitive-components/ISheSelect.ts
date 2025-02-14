@@ -18,9 +18,10 @@ export interface ISheSelect extends ComponentPropsWithRef<"div"> {
   placeholder?: string;
   placeholderTransKey?: string;
   icon?: any;
-  selected?: ISheSelectItem;
+  selected?: any;
   items?: ISheSelectItem[];
   showClearBtn?: boolean;
+  showFirstOption?: boolean;
   tooltip?: ISheTooltip;
   minWidth?: number;
   maxWidth?: number;

@@ -56,6 +56,10 @@ const products: ProductModel[] = [
 
 export default function SheForm() {
   const [_products, setProducts] = useState<ProductModel[]>(null);
+  /*const [_productsSelectItems, setProductsSelectItems] = useState(
+    convertProductToSelectModels(_products),
+  );*/
+  const [_selectedProduct, setSelectedProduct] = useState(null);
 
   const { t } = useTranslation();
   const form = useForm<z.output<typeof UserFormScheme>>({
@@ -67,6 +71,9 @@ export default function SheForm() {
   useEffect(() => {
     setTimeout(() => {
       setProducts(products);
+      setTimeout(() => {
+        setSelectedProduct(products[0]);
+      }, 2000);
     }, 1000);
   }, []);
 
@@ -170,34 +177,15 @@ export default function SheForm() {
                 <FormControl>
                   <SheSelect
                     label="Gender"
-                    items={convertProductToSelectModels(_products)}
+                    items={convertProductToSelectModels(products)}
+                    selected={_selectedProduct}
                     icon={<Search />}
                     showClearBtn
                     required
+                    showFirstOption={false}
                     onSelect={onSelectHandler}
                   />
                 </FormControl>
-
-                {/*<FormControl>
-                  <Select
-                    defaultValue={field.value}
-                    onValueChange={(value) => {
-                      field.onChange(value);
-                      void form.trigger("gender");
-                    }}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder={"select your gender..."} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {items?.map((item, idx) => (
-                        <SelectItem key={idx} value={item}>
-                          {item}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FormControl>*/}
                 <FormDescription>
                   You can find all available gender here{" "}
                   <a
