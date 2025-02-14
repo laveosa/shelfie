@@ -25,9 +25,7 @@
     /* Custom */
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     },
     "strictNullChecks": false,
     "suppressImplicitAnyIndexErrors": true,

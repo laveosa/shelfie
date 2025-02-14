@@ -8,6 +8,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { ISheTooltip } from "@/const/interfaces/complex-components/ISheTooltip.ts";
+import React from "react";
 
 export default function SheTooltip({
   className,
@@ -23,7 +24,7 @@ export default function SheTooltip({
   view,
   onClick,
   ...props
-}: ISheTooltip) {
+}: ISheTooltip): React.ReactNode {
   function onClickHandler(e) {
     e.preventDefault();
     onClick({

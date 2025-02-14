@@ -5,11 +5,16 @@ $clearBtnSize: 30px;
 
 .sheInput {
   max-width: vars.$maxWidth;
+  width: 100%;
 
   .sheInputComponent {
     position: relative;
 
     > label {
+      font-weight: 500;
+      position: relative;
+      top: -6px;
+      font-size: 14px;
     }
 
     .sheInputControl {
@@ -36,6 +41,10 @@ $clearBtnSize: 30px;
       > input {
         &:focus-visible {
           box-shadow: 0 0 0 1px lightgray inset;
+        }
+
+        &::placeholder {
+          color: vars.$placeholderColor;
         }
       }
 

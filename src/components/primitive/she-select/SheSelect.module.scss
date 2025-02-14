@@ -1,2 +1,90 @@
-.SheSelect {
+@use "@/styles/variables" as vars;
+
+$iconSize: 20px;
+$clearBtnSize: 30px;
+
+.sheSelect {
+  max-width: vars.$maxWidth;
+  width: 100%;
+
+  .sheSelectComponent {
+    position: relative;
+
+    > label {
+      font-weight: 500;
+      position: relative;
+      top: -6px;
+      font-size: 14px;
+    }
+
+    .sheSelectControl {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      > button {
+        > span {
+          color: vars.$placeholderColor;
+        }
+      }
+
+      .iconBlock {
+        position: absolute;
+        color: vars.$subtextColor;
+        left: 8px;
+        max-width: $iconSize;
+        min-width: $iconSize;
+        max-height: $iconSize;
+        min-height: $iconSize;
+
+        svg {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      .sheSelectItem {
+      }
+
+      [class*="sheButton"] {
+        border-radius: 100%;
+        max-width: $clearBtnSize;
+        min-width: $clearBtnSize;
+        max-height: $clearBtnSize;
+        min-height: $clearBtnSize;
+      }
+    }
+  }
+}
+
+// ======================================================== FULL WIDTH
+
+.sheSelect.fullWidth {
+  max-width: none;
+  width: 100%;
+}
+
+// ======================================================== REQUIRED
+
+.sheSelect.required {
+  label:before {
+    position: absolute;
+    left: -8px;
+    color: vars.$colorRed;
+    content: " *";
+    display: inline;
+  }
+}
+
+// ======================================================== WITH ICON
+
+.sheSelect.withIcon {
+  .sheSelectComponent {
+    .sheSelectControl {
+      > button:nth-child(1) {
+        padding-left: 36px;
+      }
+    }
+  }
 }
