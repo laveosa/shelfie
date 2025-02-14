@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Trans } from "react-i18next";
 import { X } from "lucide-react";
+import _ from "lodash";
 
 import {
   Select,
@@ -17,7 +18,6 @@ import cs from "./SheSelect.module.scss";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import SheTooltip from "@/components/complex/she-tooltip/SheTooltip.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import _ from "lodash";
 
 export default function SheSelect({
   className,
@@ -67,8 +67,6 @@ export default function SheSelect({
   // ==================================================================== EVENT
 
   function onChangeHandler(id: string | null) {
-    console.log("ID: ", id);
-
     let selected = id ? getSelectedItemById(id, _items) : null;
     selected = selected.value ? selected : null;
     setSelected(selected);
