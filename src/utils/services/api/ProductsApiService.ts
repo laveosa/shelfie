@@ -9,6 +9,7 @@ import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { ProductCategoryModel } from "@/const/models/ProductCategoryModel.ts";
 import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
+import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 
 const apiConfig = new ApiConfigurationService(ApiUrlEnum.PRODUCTS_BASE_URL);
 
@@ -150,6 +151,22 @@ export const ProductsApiService = createApi({
         },
       ],
     }),
+    checkCategoryName: apiConfig.createMutation<void, ProductCategoryModel>(
+      builder,
+      {
+        query: (categoryName: ProductCategoryModel) => ({
+          url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCT_CATEGORIES}/check-name`,
+          method: "POST",
+          body: JSON.stringify(categoryName),
+        }),
+        invalidatesTags: (_result, _error, categoryName) => [
+          {
+            type: ApiServiceNameEnum.PRODUCTS,
+            categoryName,
+          },
+        ],
+      },
+    ),
     createNewProduct: apiConfig.createMutation<void, ProductModel>(builder, {
       query: (model: ProductModel) => ({
         url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}`,
@@ -189,6 +206,22 @@ export const ProductsApiService = createApi({
         {
           type: ApiServiceNameEnum.PRODUCTS,
           model,
+        },
+      ],
+    }),
+    uploadPhoto: apiConfig.createMutation<void, any>(builder, {
+      query: (model: UploadPhotoModel) => ({
+        url: `${ApiUrlEnum.ASSETS_BASE_URL}/${model.contextName}/${model.contextId}/upload-photo`,
+        method: "POST",
+        body: model.file,
+        headers: {
+          "Content-Type": model.file.type,
+        },
+      }),
+      invalidatesTags: (_result, _error, file) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          file,
         },
       ],
     }),

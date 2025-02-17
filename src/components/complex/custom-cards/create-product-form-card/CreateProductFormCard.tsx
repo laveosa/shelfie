@@ -32,9 +32,11 @@ export default function CreateProductFormCard({
   ...props
 }) {
   const [brandsFetched, setBrandsFetched] = useState(false);
+  const [brandsList, setBrandsList] = useState<BrandModel[]>([]);
+  const [categoriesList, setCategoriesList] = useState<ProductCategoryModel[]>(
+    [],
+  );
   const service = useCreateProductPageService();
-  let brandsList: BrandModel[] = [];
-  let categoriesList: ProductCategoryModel[] = [];
   const form = useForm({
     defaultValues: {
       name: "",
@@ -51,13 +53,13 @@ export default function CreateProductFormCard({
       service.getSimpleListOfAllBrandsHandler().then((res) => {
         console.log("BRANDS", res);
         setBrandsFetched(true);
-        brandsList = res.data ? res.data : [];
+        setBrandsList(res ? res : []);
       });
     }
 
     service.getAllCategoriesByOrganizationHandler().then((res) => {
+      setCategoriesList(res ? res : []);
       console.log("CATEGORIES", res);
-      categoriesList = res.data ? res.data : [];
     });
   }, [brandsFetched]);
 
