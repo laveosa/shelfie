@@ -2,9 +2,12 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import { Switch } from "@/components/ui/switch.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { ProductsModel } from "@/const/models/ProductsModel.ts";
 import ProductsGridColumnActions from "@/components/complex/grid/products-grid/ProductsGridColumnActions.tsx";
 import { ImageModel } from "@/const/models/ImageModel.ts";
+import { ProductModel } from "@/const/models/ProductModel.ts";
+import placeholderImage from "@/assets/images/placeholder-image.png";
+import { CategoryModel } from "@/const/models/CategoryModel.ts";
+import { BrandModel } from "@/const/models/BrandModel.ts";
 
 function onAction(
   actionType: string,
@@ -23,15 +26,6 @@ function onAction(
       case "active":
         console.log(`Active row ${rowId}`);
         break;
-      case "edit":
-        console.log(`Editing row ${rowId}`);
-        break;
-      case "copy":
-        console.log(`Copying row ${rowId}`);
-        break;
-      case "favorite":
-        console.log(`Favoriting row ${rowId}`);
-        break;
       case "delete":
         console.log(`Deleting row ${rowId}`);
         break;
@@ -40,16 +34,16 @@ function onAction(
   }, 2000);
 }
 
-export const ProductsGridColumns: ColumnDef<ProductsModel>[] = [
+export const ProductsGridColumns: ColumnDef<ProductModel>[] = [
   {
-    accessorKey: "id",
+    accessorKey: "productId",
     header: "ID",
   },
   {
     accessorKey: "image",
     header: "Image",
     cell: ({ row, table }) => {
-      const photoUrl: ImageModel = row.getValue("image");
+      const image: ImageModel = row.getValue("image");
       const meta = table.options.meta as {
         setLoadingRow: (rowId: string, loading: boolean) => void;
         isRowLoading: (rowId: string) => boolean;
@@ -61,12 +55,11 @@ export const ProductsGridColumns: ColumnDef<ProductsModel>[] = [
           onClick={() => onAction("image", row.id, meta?.setLoadingRow)}
         >
           <img
-            src={photoUrl.photoUrl}
+            src={image?.photoUrl || placeholderImage}
             alt={row.getValue("productName")}
             className="object-cover rounded-md w-full h-full"
             onError={(e) => {
-              e.currentTarget.src =
-                "https://ircsan.com/wp-content/uploads/2024/03/placeholder-image.png";
+              e.currentTarget.src = placeholderImage;
             }}
           />
         </div>
@@ -74,7 +67,7 @@ export const ProductsGridColumns: ColumnDef<ProductsModel>[] = [
     },
   },
   {
-    accessorKey: "code",
+    accessorKey: "productCode",
     header: "Code",
   },
   {
@@ -82,12 +75,20 @@ export const ProductsGridColumns: ColumnDef<ProductsModel>[] = [
     header: "Product Name",
   },
   {
-    accessorKey: "category",
+    accessorKey: "productCategory",
     header: "Category",
+    cell: ({ row }) => {
+      const category: CategoryModel = row.getValue("productCategory");
+      return <span>{category?.categoryName || "N/A"}</span>;
+    },
   },
   {
     accessorKey: "brand",
     header: "Brand",
+    cell: ({ row }) => {
+      const brand: BrandModel = row.getValue("brand");
+      return <span>{brand?.brandName || "N/A"}</span>;
+    },
   },
   {
     accessorKey: "barcode",
@@ -129,7 +130,7 @@ export const ProductsGridColumns: ColumnDef<ProductsModel>[] = [
     header: "Variants",
   },
   {
-    accessorKey: "stock",
+    accessorKey: "stockAmount",
     header: "Stock",
     cell: ({ row }) => {
       return <span>{`${row.getValue("stock")} units`}</span>;

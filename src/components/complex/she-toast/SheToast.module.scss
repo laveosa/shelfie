@@ -1,2 +1,104 @@
-.SheToast {
+@use "@/styles/variables" as vars;
+
+.sheToast {
+  display: flex;
+  width: 350px;
+  min-width: 350px;
+  max-width: 350px;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border: vars.$brd;;
+  border-radius: vars.$brdR_05;
+  background-color: vars.$colorLight;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+
+  .toastIcon {
+    align-self: normal;
+    width: 46px;
+
+    svg {
+      width: 36px;
+      height: 36px;
+    }
+  }
+
+  .toastContent {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    button {
+      width: 50px;
+      font-size: 14px;
+      margin-top: 5px;
+      color: #474D54;
+    }
+  }
+
+  .closeButton {
+    padding-bottom: 22px;
+    align-self: normal;
+
+    button {
+      width: 24px;
+      height: 24px;
+      background: vars.$colorMuted;
+      padding: 0;
+      color: vars.$colorDark;
+
+      span {
+        display: none;
+      }
+    }
+  }
+}
+
+// ----------------------------------------------------------------------- TOAST TYPES
+
+
+.success {
+  border-color: #d4edda;
+  color: #155724;
+
+  .toastContent {
+    span {
+      color: #155724;
+    }
+  }
+}
+
+.error {
+  border-color: #f8d7da;
+  color: #721c24;
+
+  .toastContent {
+    span {
+      color: #721c24;
+    }
+  }
+}
+
+.info {
+  border-color: #cce5ff;
+  color: #004085;
+
+  .toastContent {
+    span {
+      color: #004085;
+    }
+  }
+}
+
+.warning {
+  border-color: #fff3cd;
+  color: #856404;
+
+  .toastContent {
+    span {
+      color: #856404;
+    }
+  }
 }

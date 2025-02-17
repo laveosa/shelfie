@@ -1,4 +1,4 @@
-import { ProductsModel } from "@/const/models/ProductsModel.ts";
+import { ProductModel } from "@/const/models/ProductModel.ts";
 
 export interface GridModel {
   pager?: {
@@ -9,7 +9,7 @@ export interface GridModel {
     startPage?: number;
     endPage?: number;
   };
-  items?: ProductsModel[];
+  items?: ProductModel[];
   searchQuery?: string;
   sortOption?: string;
 }

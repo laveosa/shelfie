@@ -18,7 +18,7 @@ import { ProductsGridColumns } from "@/components/complex/grid/products-grid/Pro
 import { GridDataTable } from "@/components/complex/grid/grid-data-table/GridDataTable.tsx";
 import { GridModel } from "@/const/models/GridModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
-import { ProductCategoryModel } from "@/const/models/ProductCategoryModel.ts";
+import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import GridItemsFilter from "@/components/complex/grid/grid-items-filter/GridItemsFilter.tsx";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
@@ -158,8 +158,8 @@ export function ProductsPage() {
                 items={state.categories}
                 columnName={"Categories"}
                 onSelectionChange={onCategorySelectHandler}
-                getId={(item: ProductCategoryModel) => item.categoryId}
-                getName={(item: ProductCategoryModel) => item.categoryName}
+                getId={(item: CategoryModel) => item.categoryId}
+                getName={(item: CategoryModel) => item.categoryName}
               />
             </GridDataTable>
           </TabsContent>
