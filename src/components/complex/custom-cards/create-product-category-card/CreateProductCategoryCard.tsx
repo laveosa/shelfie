@@ -1,16 +1,15 @@
-import { CirclePlus } from "lucide-react";
 import React, { useState } from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./CreateProductCategoryCard.module.scss";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import useCreateProductPageService from "@/pages/products-section/create-product-page/useCreateProductPageService.ts";
-import { ProductCategoryModel } from "@/const/models/ProductCategoryModel.ts";
+import { CategoryModel } from "@/const/models/CategoryModel.ts";
+import { CirclePlus } from "lucide-react";
 
 export default function CreateProductCategoryCard({ ...props }) {
   const service = useCreateProductPageService();
-
-  const [category, setCategory] = useState<ProductCategoryModel>({});
+  const [category, setCategory] = useState<CategoryModel>({});
 
   function handleFileUpload(event) {
     const files = event.target.files;

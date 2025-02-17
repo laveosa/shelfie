@@ -7,7 +7,6 @@ import { ApiConfigurationService } from "@/utils/services/api/ApiConfigurationSe
 import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
-import { ProductCategoryModel } from "@/const/models/ProductCategoryModel.ts";
 import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
@@ -152,22 +151,19 @@ export const ProductsApiService = createApi({
         },
       ],
     }),
-    checkCategoryName: apiConfig.createMutation<void, ProductCategoryModel>(
-      builder,
-      {
-        query: (categoryName: ProductCategoryModel) => ({
-          url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCT_CATEGORIES}/check-name`,
-          method: "POST",
-          body: JSON.stringify(categoryName),
-        }),
-        invalidatesTags: (_result, _error, categoryName) => [
-          {
-            type: ApiServiceNameEnum.PRODUCTS,
-            categoryName,
-          },
-        ],
-      },
-    ),
+    checkCategoryName: apiConfig.createMutation<void, CategoryModel>(builder, {
+      query: (categoryName: CategoryModel) => ({
+        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCT_CATEGORIES}/check-name`,
+        method: "POST",
+        body: JSON.stringify(categoryName),
+      }),
+      invalidatesTags: (_result, _error, categoryName) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          categoryName,
+        },
+      ],
+    }),
     createNewProduct: apiConfig.createMutation<void, ProductModel>(builder, {
       query: (model: ProductModel) => ({
         url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}`,
@@ -181,22 +177,19 @@ export const ProductsApiService = createApi({
         },
       ],
     }),
-    createNewCategory: apiConfig.createMutation<void, ProductCategoryModel>(
-      builder,
-      {
-        query: (model: ProductCategoryModel) => ({
-          url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCT_CATEGORIES}`,
-          method: "POST",
-          body: JSON.stringify(model),
-        }),
-        invalidatesTags: (_result, _error, model) => [
-          {
-            type: ApiServiceNameEnum.PRODUCTS,
-            model,
-          },
-        ],
-      },
-    ),
+    createNewCategory: apiConfig.createMutation<void, CategoryModel>(builder, {
+      query: (model: CategoryModel) => ({
+        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCT_CATEGORIES}`,
+        method: "POST",
+        body: JSON.stringify(model),
+      }),
+      invalidatesTags: (_result, _error, model) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          model,
+        },
+      ],
+    }),
     createBrand: apiConfig.createMutation<void, BrandModel>(builder, {
       query: (model: BrandModel) => ({
         url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.BRANDS}`,

@@ -22,9 +22,9 @@ import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import useCreateProductPageService from "@/pages/products-section/create-product-page/useCreateProductPageService.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
-import { ProductCategoryModel } from "@/const/models/ProductCategoryModel.ts";
 import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
 import { Switch } from "@/components/ui/switch.tsx";
+import { CategoryModel } from "@/const/models/CategoryModel.ts";
 
 export default function CreateProductFormCard({
   onOpenCreateProductCategoryCard,
@@ -33,9 +33,7 @@ export default function CreateProductFormCard({
 }) {
   const [brandsFetched, setBrandsFetched] = useState(false);
   const [brandsList, setBrandsList] = useState<BrandModel[]>([]);
-  const [categoriesList, setCategoriesList] = useState<ProductCategoryModel[]>(
-    [],
-  );
+  const [categoriesList, setCategoriesList] = useState<CategoryModel[]>([]);
   const service = useCreateProductPageService();
   const form = useForm({
     defaultValues: {
@@ -190,6 +188,7 @@ export default function CreateProductFormCard({
                 className={cs.formRowButton}
                 icon={Plus}
                 variant="outline"
+                type="button"
                 onClick={onOpenCreateProductCategoryCard}
               />
             </div>
@@ -228,6 +227,7 @@ export default function CreateProductFormCard({
                 className={cs.formRowButton}
                 icon={Plus}
                 variant="outline"
+                type="button"
                 onClick={onOpenCreateProductBrandCard}
               />
             </div>

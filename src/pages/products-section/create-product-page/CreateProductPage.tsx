@@ -1,14 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import cs from "./CreateProductPage.module.scss";
-import useCreateProductPageService from "@/pages/products-section/create-product-page/useCreateProductPageService.ts";
 import CreateProductFormCard from "@/components/complex/custom-cards/create-product-form-card/CreateProductFormCard.tsx";
 import CreateProductCategoryCard from "@/components/complex/custom-cards/create-product-category-card/CreateProductCategoryCard.tsx";
 import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
 import CreateProductCard from "@/components/complex/custom-cards/create-product-card/CreateProductCard.tsx";
 import CreateProductBrandCard from "@/components/complex/custom-cards/create-product-brand-card/CreateProductBrandCard.tsx";
 import ProductPhotosCard from "@/components/complex/custom-cards/product-photos-card/ProductPhotosCard.tsx";
-import { ProductsFakeData } from "@/components/complex/grid/products-grid/FakeData.ts";
 import SizeChartCard from "@/components/complex/custom-cards/size-chart-card/SizeChartCard.tsx";
 import { SizeChartFakeData } from "@/components/complex/grid/size-chart-grid/SizeChartFakeData.ts";
 import ChooseAttributesCard from "@/components/complex/custom-cards/choose-attributes-card/ChooseAttributesCard.tsx";
@@ -16,11 +14,26 @@ import CreateAttributeCard from "@/components/complex/custom-cards/create-attrib
 import ManageVariantsCard from "@/components/complex/custom-cards/manage-variants-card/ManageVariantsCard.tsx";
 import ChooseVariantTraitsCard from "@/components/complex/custom-cards/choose-variant-traits-card/ChooseVariantTraitsCard.tsx";
 
+import { GridModel } from "@/const/models/GridModel.ts";
+import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
+import { useAppSelector } from "@/utils/hooks/redux.ts";
+import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
+
 export function CreateProductPage() {
-  const service = useCreateProductPageService();
-  const productsData = ProductsFakeData;
+  const service = useProductsPageService();
+  const state = useAppSelector<IProductsPageSlice>(StoreSliceEnum.PRODUCTS);
+  const [productsData, setProductsData] = useState([]);
   const sizeChartData = SizeChartFakeData;
-  const [activeCards, setActiveCards] = useState([]); // State to track active card
+  const [activeCards, setActiveCards] = useState([]);
+
+  useEffect(() => {
+    service
+      .getTheProductsForGridHandler(state.gridRequestModel)
+      .then((res: GridModel) => {
+        setProductsData(res.items);
+      });
+  }, []);
 
   const handleAction = (identifier) => {
     setActiveCards((prev) => {
@@ -34,7 +47,7 @@ export function CreateProductPage() {
 
   return (
     <div className={cs.createProductPage}>
-      {productsData.items.length > 0 && <ItemsCard data={productsData.items} />}
+      {productsData.length > 0 && <ItemsCard data={productsData} />}
       <CreateProductCard onAction={handleAction} />
       {activeCards.includes("basicData") && (
         <CreateProductFormCard
