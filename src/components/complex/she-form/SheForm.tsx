@@ -176,13 +176,7 @@ export default function SheForm() {
 
                 <FormControl>
                   <SheSelect
-                    label="Gender"
                     items={convertProductToSelectModels(products)}
-                    selected={_selectedProduct}
-                    icon={<Search />}
-                    showClearBtn
-                    required
-                    showFirstOption={false}
                     onSelect={onSelectHandler}
                   />
                 </FormControl>

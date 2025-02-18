@@ -60,14 +60,16 @@ export default function SheSelect({
     setSelected(selected);
 
     if (selected && _items) {
-      onChangeHandler(_getSelectedItemByValue(selected, _items).id);
+      onChangeHandler(
+        _getSelectedItemByIdentifier(selected, "value", _items).id,
+      );
     }
   }, [selected]);
 
   // ==================================================================== EVENT
 
   function onChangeHandler(id: string | null) {
-    let selected = id ? _getSelectedItemById(id, _items) : null;
+    let selected = id ? _getSelectedItemByIdentifier(id, "id", _items) : null;
     selected = selected.value ? selected : null;
     setSelected(selected);
     onSelect(selected ? selected.value : null);
@@ -87,18 +89,12 @@ export default function SheSelect({
     }));
   }
 
-  function _getSelectedItemById(
-    id: any,
+  function _getSelectedItemByIdentifier(
+    data: any,
+    identifier: string,
     items: ISheSelectItem[],
   ): ISheSelectItem {
-    return items?.find((item) => item.id === id);
-  }
-
-  function _getSelectedItemByValue(
-    value: any,
-    items: ISheSelectItem[],
-  ): ISheSelectItem {
-    return items?.find((item) => _.isEqual(item.value, value));
+    return items?.find((item) => item[identifier] === data);
   }
 
   return (
