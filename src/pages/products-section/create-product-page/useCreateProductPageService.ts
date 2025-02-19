@@ -3,6 +3,8 @@ import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { ProductsPageSliceActions as action } from "@/state/slices/ProductsPageSlice.ts";
+import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";
+import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 
 export default function useCreateProductPageService() {
   const state = useAppSelector<IProductsPageSlice>(StoreSliceEnum.PRODUCTS);
@@ -20,6 +22,7 @@ export default function useCreateProductPageService() {
   const [createNewProduct] = ProductsApiHooks.useCreateNewProductMutation();
   const [createNewCategory] = ProductsApiHooks.useCreateNewCategoryMutation();
   const [createBrand] = ProductsApiHooks.useCreateBrandMutation();
+  const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
 
   function getAllProductsHandler() {
     dispatch(action.setLoading(true));
@@ -80,6 +83,12 @@ export default function useCreateProductPageService() {
 
   function createBrandHandler(model) {
     return createBrand(model).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function uploadPhotoHandler(model: UploadPhotoModel) {
+    return uploadPhoto(model).then((res: any) => {
       return res.data;
     });
   }

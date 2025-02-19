@@ -11,36 +11,14 @@ import {
   DropzoneTrigger,
   useDropzone,
 } from "@/components/ui/dropzone.tsx";
-import useSheImagesFileUploaderService from "@/components/complex/she-images-file-uploader/useSheImagesFileUploaderService.ts";
 import { ISheImageFileUploader } from "@/const/interfaces/complex-components/ISheImageFileUploader.ts";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
-
-function convertFileToBinary(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-
-    // Triggered when the file is read
-    reader.onload = () => {
-      const binaryData = reader.result; // The binary data of the file
-      resolve(binaryData);
-    };
-
-    // Triggered in case of an error
-    reader.onerror = (error) => {
-      reject(error);
-    };
-
-    // Read the file as an ArrayBuffer (binary format)
-    reader.readAsArrayBuffer(file);
-  });
-}
 
 export function SheImagesFileUploader({
   contextName,
   contextId,
+  onUpload,
 }: ISheImageFileUploader) {
-  const service = useSheImagesFileUploaderService();
-
   const dropzone = useDropzone({
     onDropFile: async (_file: any) => {
       const formData = new FormData();
@@ -53,7 +31,7 @@ export function SheImagesFileUploader({
           file: formData,
         };
 
-        await service.uploadPhotoHandler(uploadModel);
+        await onUpload(uploadModel);
 
         return {
           status: "success",
