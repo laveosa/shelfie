@@ -1,4 +1,3 @@
-import { CirclePlus } from "lucide-react";
 import React, { useState } from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
@@ -6,55 +5,60 @@ import cs from "./CreateProductBrandCard.module.scss";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import useCreateProductPageService from "@/pages/products-section/create-product-page/useCreateProductPageService.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import { SheImageUploader } from "@/components/complex/she-images-file-uploader/SheImageUploader.tsx";
+import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 
 export default function CreateProductBrandCard({ ...props }) {
   const service = useCreateProductPageService();
-
   const [brand, setBrand] = useState<BrandModel>({});
-
-  function handleFileUpload(event) {
-    const files = event.target.files;
-    console.log(files);
-  }
-
-  function onAction() {
-    service.createBrandHandler(brand); // Pass the category to the handler
-  }
+  const [contextId, setContextId] = useState<number | null>(null);
 
   const handleInputChange = (event) => {
-    setBrand({ ...brand, brandName: event });
+    const brandName = event;
+    setBrand({ ...brand, brandName });
+    service.checkBrandNameHandler({ brandName }).then(() => {});
   };
+
+  function onCreateBrandHandler() {
+    service.createBrandHandler(brand).then((res) => {
+      setContextId(res.brandId);
+    });
+  }
+
+  function handleFileUpload(uploadModel: UploadPhotoModel) {
+    service.uploadPhotoHandler(uploadModel);
+  }
 
   return (
     <div>
       <SheProductCard
         title="Create Product Brand"
         view="card"
-        showPrimaryButton={true}
-        primaryButtonTitle="Add Brand"
         showSecondaryButton={true}
-        secondaryButtonTitle="Cancel"
+        secondaryButtonTitle="Close"
         className={cs.createProductBrandCard}
-        onPrimaryButtonClick={onAction}
         {...props}
       >
-        <div className={cs.productBrandInput}>
+        <div className={cs.cardContent}>
           <SheInput
+            className={cs.productCategoryInput}
             label="Brand Name"
             placeholder="enter brand name..."
             value={brand.brandName || ""}
             onDelay={handleInputChange}
           />
-        </div>
-        <div
-          className={cs.productBrandFileUploader}
-          onClick={() => document.getElementById("fileInput").click()}
-        >
-          <CirclePlus />
-          <div className={`${cs.text} she-text`}>
-            Drag & drop or click to choose brand logo
+          <SheButton onClick={onCreateBrandHandler}>Create Brand</SheButton>
+          <div>
+            <div className={`${cs.imageUploaderLabel} she-text`}>
+              Brand images
+            </div>
+            <SheImageUploader
+              contextName={"brand"}
+              contextId={contextId}
+              onUpload={handleFileUpload}
+            />
           </div>
-          <input type="file" id="fileInput" onChange={handleFileUpload} />
         </div>
       </SheProductCard>
     </div>

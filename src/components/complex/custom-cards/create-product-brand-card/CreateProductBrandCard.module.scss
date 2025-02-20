@@ -3,34 +3,14 @@
 .createProductBrandCard {
   display: flex;
 
-  .productBrandInput {
-    padding: 0 10px;
-  }
-
-  .productBrandFileUploader {
+  .cardContent {
     display: flex;
-    gap: 10px;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 20px;
-    cursor: pointer;
-    background: vars.$colorMuted;
-    margin: 10px;
+    padding: vars.$paddingSmall;
+    gap: vars.$paddingStandard;
 
-    &:hover {
-      background-color: #f9f9f9;
+    .imageUploaderLabel {
+      padding-bottom: 5px;
     }
-
-    .text {
-      text-align: center;
-    }
-
-    input {
-      display: none;
-    }
-
   }
 }
