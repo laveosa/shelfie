@@ -105,5 +105,6 @@ export default function useCreateProductPageService() {
     createNewProductHandler,
     createNewCategoryHandler,
     createBrandHandler,
+    uploadPhotoHandler,
   };
 }

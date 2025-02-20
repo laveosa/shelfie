@@ -3,33 +3,10 @@
 .createProductCategoryCard {
   display: flex;
 
-  .productCategoryInput {
-    padding: 0 10px;
-  }
-
-  .productCategoryFileUploader {
+  .cardContent {
     display: flex;
-    gap: 10px;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 20px;
-    cursor: pointer;
-    background: vars.$colorMuted;
-    margin: 10px;
-
-    &:hover {
-      background-color: #f9f9f9;
-    }
-
-    .text {
-      text-align: center;
-    }
-
-    input {
-      display: none;
-    }
+    padding: vars.$paddingSmall;
+    gap: vars.$paddingStandard;
   }
 }

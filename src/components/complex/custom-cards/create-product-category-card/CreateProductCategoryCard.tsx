@@ -6,7 +6,8 @@ import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import useCreateProductPageService from "@/pages/products-section/create-product-page/useCreateProductPageService.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
-import { SheImagesFileUploader } from "@/components/complex/she-images-file-uploader/SheImagesFileUploader.tsx";
+import { SheImagesUploader } from "@/components/complex/she-images-file-uploader/SheImagesUploader.tsx";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 
 export default function CreateProductCategoryCard({ ...props }) {
   const service = useCreateProductPageService();
@@ -16,21 +17,16 @@ export default function CreateProductCategoryCard({ ...props }) {
   const handleInputChange = (event) => {
     const categoryName = event;
     setCategory({ ...category, categoryName });
-    service.checkCategoryNameHandler({ categoryName }).then(() => {
-      service
-        .createNewCategoryHandler({ categoryName: categoryName })
-        .then((res) => {
-          setContextId(res.categoryId);
-        });
-    });
+    service.checkCategoryNameHandler({ categoryName }).then(() => {});
   };
 
-  function handleFileUpload(event) {
-    const uploadModel: UploadPhotoModel = {
-      contextName: "category",
-      contextId,
-      file: event.target.files,
-    };
+  function onCreateCategoryHandler() {
+    service.createNewCategoryHandler(category).then((res) => {
+      setContextId(res.categoryId);
+    });
+  }
+
+  function handleFileUpload(uploadModel: UploadPhotoModel) {
     service.uploadPhotoHandler(uploadModel);
   }
 
@@ -45,19 +41,23 @@ export default function CreateProductCategoryCard({ ...props }) {
         className={cs.createProductCategoryCard}
         {...props}
       >
-        <div className={cs.productCategoryInput}>
+        <div className={cs.cardContent}>
           <SheInput
+            className={cs.productCategoryInput}
             label="Category Name"
             placeholder="enter category name..."
             value={category.categoryName || ""}
             onDelay={handleInputChange}
           />
+          <SheButton onClick={onCreateCategoryHandler}>
+            Create Category
+          </SheButton>
+          <SheImagesUploader
+            contextName={"category"}
+            contextId={contextId}
+            onUpload={handleFileUpload}
+          />
         </div>
-        <SheImagesFileUploader
-          contextName={"category"}
-          contextId={contextId}
-          onUpload={handleFileUpload}
-        />
       </SheProductCard>
     </div>
   );

@@ -11,18 +11,19 @@ import {
   DropzoneTrigger,
   useDropzone,
 } from "@/components/ui/dropzone.tsx";
-import { ISheImageFileUploader } from "@/const/interfaces/complex-components/ISheImageFileUploader.ts";
+import { ISheImageUploader } from "@/const/interfaces/complex-components/ISheImageUploader.ts";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
+import cs from "./SheImageUploader.module.scss";
 
-export function SheImagesFileUploader({
+export function SheImagesUploader({
   contextName,
   contextId,
   onUpload,
-}: ISheImageFileUploader) {
+}: ISheImageUploader) {
   const dropzone = useDropzone({
-    onDropFile: async (_file: any) => {
+    onDropFile: async (file: File) => {
       const formData = new FormData();
-      formData.append("file", _file);
+      formData.append("file", file);
 
       try {
         const uploadModel: UploadPhotoModel = {
@@ -35,7 +36,7 @@ export function SheImagesFileUploader({
 
         return {
           status: "success",
-          result: URL.createObjectURL(_file),
+          result: URL.createObjectURL(file),
         };
       } catch (error) {
         // Handle upload error
@@ -56,13 +57,10 @@ export function SheImagesFileUploader({
   });
 
   return (
-    <div className="not-prose flex flex-col gap-4">
+    <div className={`${cs.sheImageUploader} not-prose flex flex-col gap-4`}>
       <Dropzone {...dropzone}>
         <div>
           <div className="flex justify-between">
-            <DropzoneDescription>
-              Please select up to 10 images
-            </DropzoneDescription>
             <DropzoneMessage />
           </div>
           <DropZoneArea>
@@ -76,6 +74,9 @@ export function SheImagesFileUploader({
               </div>
             </DropzoneTrigger>
           </DropZoneArea>
+          <DropzoneDescription>
+            Please select up to 10 images
+          </DropzoneDescription>
         </div>
 
         <DropzoneFileList className="grid gap-3 p-0 md:grid-cols-2 lg:grid-cols-3">
