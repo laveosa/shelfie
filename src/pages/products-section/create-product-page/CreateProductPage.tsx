@@ -33,7 +33,7 @@ export function CreateProductPage() {
       .then((res: GridModel) => {
         setProductsData(res.items);
       });
-  }, []);
+  }, [state]);
 
   const handleAction = (identifier) => {
     setActiveCards((prev) => {

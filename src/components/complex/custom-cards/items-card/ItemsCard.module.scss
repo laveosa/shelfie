@@ -4,16 +4,16 @@
   .productsList {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: vars.$paddingSmall;
 
     .productsListItem {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: vars.$paddingSmall;
       cursor: pointer;
       border-radius: 5px;
       height: 100%;
-      padding: 10px;
+      padding: vars.$paddingSmall;
 
       &:hover {
         background: vars.$colorMedium;
@@ -24,6 +24,7 @@
     .productItemImage {
       width: 30px;
       height: 30px;
+      border-radius: vars.$brdR_03;
     }
 
     .productItemName {

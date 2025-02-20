@@ -32,4 +32,8 @@
       justify-content: flex-start;
     }
   }
+
+  *:focus {
+    box-shadow: none;
+  }
 }

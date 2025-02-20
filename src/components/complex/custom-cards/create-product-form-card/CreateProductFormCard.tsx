@@ -25,16 +25,26 @@ import { BrandModel } from "@/const/models/BrandModel.ts";
 import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
 import { Switch } from "@/components/ui/switch.tsx";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
+import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
+import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
+import { GridModel } from "@/const/models/GridModel.ts";
+import { ProductsPageSliceActions as actions } from "@/state/slices/ProductsPageSlice.ts";
+import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
+import { useToast } from "@/hooks/useToast.ts";
 
 export default function CreateProductFormCard({
   onOpenCreateProductCategoryCard,
   onOpenCreateProductBrandCard,
   ...props
 }) {
-  const [brandsFetched, setBrandsFetched] = useState(false);
+  const dispatch = useAppDispatch();
+  const state = useAppSelector<IProductsPageSlice>(StoreSliceEnum.PRODUCTS);
   const [brandsList, setBrandsList] = useState<BrandModel[]>([]);
   const [categoriesList, setCategoriesList] = useState<CategoryModel[]>([]);
   const service = useCreateProductPageService();
+  const productService = useProductsPageService();
+  const { addToast } = useToast();
   const form = useForm({
     defaultValues: {
       name: "",
@@ -47,19 +57,14 @@ export default function CreateProductFormCard({
   });
 
   useEffect(() => {
-    if (!brandsFetched) {
-      service.getSimpleListOfAllBrandsHandler().then((res) => {
-        console.log("BRANDS", res);
-        setBrandsFetched(true);
-        setBrandsList(res ? res : []);
-      });
-    }
+    service.getSimpleListOfAllBrandsHandler().then((res) => {
+      setBrandsList(res ? res : []);
+    });
 
     service.getAllCategoriesByOrganizationHandler().then((res) => {
       setCategoriesList(res ? res : []);
-      console.log("CATEGORIES", res);
     });
-  }, [brandsFetched]);
+  }, []);
 
   function onAction() {
     service.generateProductCodeHandler().then((res: ProductCodeModel) => {
@@ -73,7 +78,23 @@ export default function CreateProductFormCard({
 
   function onSubmit(data) {
     service.createNewProductHandler(data).then((res) => {
-      console.log("NEW PRODUCT", res);
+      if (res) {
+        addToast({
+          text: "Product created successfully",
+          type: "success",
+        });
+        form.reset();
+        productService
+          .getTheProductsForGridHandler(state.gridRequestModel)
+          .then((res: GridModel) => {
+            dispatch(actions.refreshProductsGridModel(res));
+          });
+      } else {
+        addToast({
+          text: "Failed to create product",
+          type: "error",
+        });
+      }
     });
   }
 
@@ -163,11 +184,11 @@ export default function CreateProductFormCard({
                     <FormLabel>Product Category</FormLabel>
                     <Select
                       onValueChange={(value) => field.onChange(Number(value))}
-                      value={field.value}
+                      value={field.value ? field.value.toString() : ""}
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue />
+                          <SelectValue placeholder="Select category" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -202,11 +223,11 @@ export default function CreateProductFormCard({
                     <FormLabel>Product Brand</FormLabel>
                     <Select
                       onValueChange={(value) => field.onChange(Number(value))}
-                      value={field.value}
+                      value={field.value ? field.value.toString() : ""}
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue />
+                          <SelectValue placeholder="Select brand" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
