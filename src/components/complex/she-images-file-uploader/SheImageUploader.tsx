@@ -15,9 +15,10 @@ import { ISheImageUploader } from "@/const/interfaces/complex-components/ISheIma
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import cs from "./SheImageUploader.module.scss";
 
-export function SheImagesUploader({
+export function SheImageUploader({
   contextName,
   contextId,
+  showBin = false,
   onUpload,
 }: ISheImageUploader) {
   const dropzone = useDropzone({
@@ -103,12 +104,14 @@ export function SheImagesUploader({
                     {(file.file.size / (1024 * 1024)).toFixed(2)} MB
                   </p>
                 </div>
-                <DropzoneRemoveFile
-                  variant="ghost"
-                  className="shrink-0 hover:outline"
-                >
-                  <Trash2Icon className="size-4" />
-                </DropzoneRemoveFile>
+                {showBin && (
+                  <DropzoneRemoveFile
+                    variant="ghost"
+                    className="shrink-0 hover:outline"
+                  >
+                    <Trash2Icon className="size-4" />
+                  </DropzoneRemoveFile>
+                )}
               </div>
             </DropzoneFileListItem>
           ))}

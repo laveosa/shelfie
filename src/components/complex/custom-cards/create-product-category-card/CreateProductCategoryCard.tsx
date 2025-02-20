@@ -6,7 +6,7 @@ import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import useCreateProductPageService from "@/pages/products-section/create-product-page/useCreateProductPageService.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
-import { SheImagesUploader } from "@/components/complex/she-images-file-uploader/SheImagesUploader.tsx";
+import { SheImageUploader } from "@/components/complex/she-images-file-uploader/SheImageUploader.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 
 export default function CreateProductCategoryCard({ ...props }) {
@@ -52,7 +52,7 @@ export default function CreateProductCategoryCard({ ...props }) {
           <SheButton onClick={onCreateCategoryHandler}>
             Create Category
           </SheButton>
-          <SheImagesUploader
+          <SheImageUploader
             contextName={"category"}
             contextId={contextId}
             onUpload={handleFileUpload}
