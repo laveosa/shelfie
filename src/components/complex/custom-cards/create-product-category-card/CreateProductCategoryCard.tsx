@@ -37,7 +37,7 @@ export default function CreateProductCategoryCard({ ...props }) {
         view="card"
         primaryButtonTitle="Add Category"
         showSecondaryButton={true}
-        secondaryButtonTitle="Cancel"
+        secondaryButtonTitle="Close"
         className={cs.createProductCategoryCard}
         {...props}
       >
@@ -52,11 +52,16 @@ export default function CreateProductCategoryCard({ ...props }) {
           <SheButton onClick={onCreateCategoryHandler}>
             Create Category
           </SheButton>
-          <SheImageUploader
-            contextName={"category"}
-            contextId={contextId}
-            onUpload={handleFileUpload}
-          />
+          <div>
+            <div className={`${cs.imageUploaderLabel} she-text`}>
+              Category images
+            </div>
+            <SheImageUploader
+              contextName={"category"}
+              contextId={contextId}
+              onUpload={handleFileUpload}
+            />
+          </div>
         </div>
       </SheProductCard>
     </div>
