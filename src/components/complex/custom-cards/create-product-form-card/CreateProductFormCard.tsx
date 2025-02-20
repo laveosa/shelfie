@@ -40,6 +40,7 @@ export default function CreateProductFormCard({
 }) {
   const dispatch = useAppDispatch();
   const state = useAppSelector<IProductsPageSlice>(StoreSliceEnum.PRODUCTS);
+  const [isLoading, setIsLoading] = useState(false);
   const [brandsList, setBrandsList] = useState<BrandModel[]>([]);
   const [categoriesList, setCategoriesList] = useState<CategoryModel[]>([]);
   const service = useCreateProductPageService();
@@ -67,17 +68,24 @@ export default function CreateProductFormCard({
   }, []);
 
   function onAction() {
+    setIsLoading(true);
     service.generateProductCodeHandler().then((res: ProductCodeModel) => {
+      setIsLoading(false);
       form.setValue("productCode", res.code);
     });
   }
 
   function onCheckCode(value: string) {
-    service.checkProductCodeHandler({ code: value });
+    setIsLoading(true);
+    service.checkProductCodeHandler({ code: value }).then(() => {
+      setIsLoading(false);
+    });
   }
 
   function onSubmit(data) {
+    setIsLoading(true);
     service.createNewProductHandler(data).then((res) => {
+      setIsLoading(false);
       if (res) {
         addToast({
           text: "Product created successfully",
@@ -115,6 +123,7 @@ export default function CreateProductFormCard({
           <SheForm form={form} onSubmit={onSubmit}>
             <SheForm.Field
               rules={{
+                required: true,
                 minLength: {
                   value: 3,
                   message: "Product name must be at least 3 characters",
@@ -132,12 +141,15 @@ export default function CreateProductFormCard({
                 isValid={!form.formState.errors.name}
                 error={form.formState.errors.name?.message}
                 showError={true}
+                disabled={isLoading}
               />
             </SheForm.Field>
             <div className={cs.createProductFormRow}>
               <SheForm.Field
                 name="productCode"
-                rules={{}}
+                rules={{
+                  required: true,
+                }}
                 onDelay={onCheckCode}
                 onBlur={onCheckCode}
               >
@@ -148,6 +160,7 @@ export default function CreateProductFormCard({
                   isValid={!form.formState.errors.productCode}
                   error={form.formState.errors.productCode?.message}
                   showError={true}
+                  disabled={isLoading}
                 />
               </SheForm.Field>
               <SheButton
@@ -156,6 +169,7 @@ export default function CreateProductFormCard({
                 type="button"
                 variant="outline"
                 onClick={onAction}
+                disabled={isLoading}
               />
             </div>
             <div className={cs.createProductFormRow}>
@@ -166,25 +180,30 @@ export default function CreateProductFormCard({
                   isValid={!form.formState.errors.productBarcode}
                   error={form.formState.errors.productBarcode?.message}
                   showError={true}
+                  disabled={isLoading}
                 />
               </SheForm.Field>
               <SheButton
                 className={cs.formRowButton}
                 icon={WandSparkles}
                 variant="outline"
+                disabled={isLoading}
               />
             </div>
             <div className={cs.createProductFormRow}>
               <FormField
                 control={form.control}
                 name="categoryId"
-                rules={{}}
+                rules={{
+                  required: true,
+                }}
                 render={({ field }) => (
                   <FormItem className={cs.select}>
                     <FormLabel>Product Category</FormLabel>
                     <Select
                       onValueChange={(value) => field.onChange(Number(value))}
                       value={field.value ? field.value.toString() : ""}
+                      disabled={isLoading}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -211,19 +230,23 @@ export default function CreateProductFormCard({
                 variant="outline"
                 type="button"
                 onClick={onOpenCreateProductCategoryCard}
+                disabled={isLoading}
               />
             </div>
             <div className={cs.createProductFormRow}>
               <FormField
                 control={form.control}
                 name="brandId"
-                rules={{}}
+                rules={{
+                  required: true,
+                }}
                 render={({ field }) => (
                   <FormItem className={cs.select}>
                     <FormLabel>Product Brand</FormLabel>
                     <Select
                       onValueChange={(value) => field.onChange(Number(value))}
                       value={field.value ? field.value.toString() : ""}
+                      disabled={isLoading}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -250,6 +273,7 @@ export default function CreateProductFormCard({
                 variant="outline"
                 type="button"
                 onClick={onOpenCreateProductBrandCard}
+                disabled={isLoading}
               />
             </div>
             <SheForm.Field name="isActive">
