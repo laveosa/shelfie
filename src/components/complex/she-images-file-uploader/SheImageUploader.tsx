@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { CloudUploadIcon, Trash2Icon } from "lucide-react";
 
 import {
@@ -14,39 +15,23 @@ import {
 import { ISheImageUploader } from "@/const/interfaces/complex-components/ISheImageUploader.ts";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import cs from "./SheImageUploader.module.scss";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 
 export function SheImageUploader({
   contextName,
   contextId,
-  showBin = false,
   onUpload,
 }: ISheImageUploader) {
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+
   const dropzone = useDropzone({
-    onDropFile: async (file: File) => {
-      const formData = new FormData();
-      formData.append("file", file);
+    onDropFile: (file: File) => {
+      setSelectedFiles((prevFiles) => [...prevFiles, file]);
 
-      try {
-        const uploadModel: UploadPhotoModel = {
-          contextName,
-          contextId,
-          file: formData,
-        };
-
-        await onUpload(uploadModel);
-
-        return {
-          status: "success",
-          result: URL.createObjectURL(file),
-        };
-      } catch (error) {
-        // Handle upload error
-        console.error("Upload failed:", error);
-        return {
-          status: "error",
-          error: "Failed to upload file",
-        };
-      }
+      return Promise.resolve({
+        status: "success",
+        result: URL.createObjectURL(file),
+      });
     },
     validation: {
       accept: {
@@ -57,28 +42,43 @@ export function SheImageUploader({
     },
   });
 
+  const handleUpload = async () => {
+    for (const file of selectedFiles) {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const uploadModel: UploadPhotoModel = {
+        contextName,
+        contextId,
+        file: formData,
+      };
+
+      console.log("uploadModel", uploadModel);
+
+      try {
+        await onUpload(uploadModel);
+      } catch (error) {
+        console.error("Upload failed:", error);
+      }
+    }
+  };
+
   return (
     <div className={`${cs.sheImageUploader} not-prose flex flex-col gap-4`}>
       <Dropzone {...dropzone}>
-        <div>
-          <div className="flex justify-between"></div>
-          <DropZoneArea>
-            <DropzoneTrigger className="flex flex-col items-center gap-4 bg-transparent p-10 text-center text-sm">
-              <CloudUploadIcon className="size-8" />
-              <div>
-                <p className="font-semibold">Upload images</p>
-                <p className="text-sm text-muted-foreground">
-                  Click here or drag and drop to upload
-                </p>
-              </div>
-            </DropzoneTrigger>
-          </DropZoneArea>
-          <DropzoneDescription>
-            Please select up to 10 images
-          </DropzoneDescription>
-          <DropzoneMessage />
-        </div>
-
+        <DropZoneArea>
+          <DropzoneTrigger className="flex flex-col items-center gap-4 bg-transparent p-10 text-center text-sm">
+            <CloudUploadIcon className="size-8" />
+            <div>
+              <p className="font-semibold">Upload images</p>
+              <p className="text-sm text-muted-foreground">
+                Click here or drag and drop to upload
+              </p>
+            </div>
+          </DropzoneTrigger>
+        </DropZoneArea>
+        <DropzoneDescription>Please select up to 10 images</DropzoneDescription>
+        <DropzoneMessage />
         <DropzoneFileList className="grid gap-3 p-0 md:grid-cols-2 lg:grid-cols-3">
           {dropzone.fileStatuses.map((file) => (
             <DropzoneFileListItem
@@ -103,19 +103,18 @@ export function SheImageUploader({
                     {(file.file.size / (1024 * 1024)).toFixed(2)} MB
                   </p>
                 </div>
-                {showBin && (
-                  <DropzoneRemoveFile
-                    variant="ghost"
-                    className="shrink-0 hover:outline"
-                  >
-                    <Trash2Icon className="size-4" />
-                  </DropzoneRemoveFile>
-                )}
+                <DropzoneRemoveFile
+                  variant="ghost"
+                  className="shrink-0 hover:outline"
+                >
+                  <Trash2Icon className="size-4" />
+                </DropzoneRemoveFile>
               </div>
             </DropzoneFileListItem>
           ))}
         </DropzoneFileList>
       </Dropzone>
+      <SheButton onClick={handleUpload}>Upload photo</SheButton>
     </div>
   );
 }

@@ -19,7 +19,14 @@ export default function CreateProductCategoryCard({ ...props }) {
   const handleInputChange = (event) => {
     const categoryName = event;
     setCategory({ ...category, categoryName });
-    service.checkCategoryNameHandler({ categoryName }).then(() => {});
+    service.checkCategoryNameHandler({ categoryName }).then((res) => {
+      if (res.error) {
+        addToast({
+          text: `${res.error.data.detail}`,
+          type: "error",
+        });
+      }
+    });
   };
 
   function onCreateCategoryHandler() {
@@ -41,7 +48,6 @@ export default function CreateProductCategoryCard({ ...props }) {
 
   function handleFileUpload(uploadModel: UploadPhotoModel) {
     service.uploadPhotoHandler(uploadModel).then((res) => {
-      console.log(res);
       if (res.data.photoId) {
         addToast({
           text: "Photos added successfully",

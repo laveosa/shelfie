@@ -59,13 +59,13 @@ export default function useCreateProductPageService() {
 
   function checkBrandNameHandler(brandName) {
     return checkBrandName(brandName).then((res: any) => {
-      return res.data;
+      return res;
     });
   }
 
   function checkCategoryNameHandler(categoryName) {
     return checkCategoryName(categoryName).then((res: any) => {
-      return res.data;
+      return res;
     });
   }
 
@@ -83,7 +83,7 @@ export default function useCreateProductPageService() {
 
   function createBrandHandler(model) {
     return createBrand(model).then((res: any) => {
-      return res.data;
+      return res;
     });
   }
 
