@@ -1,6 +1,10 @@
 @use "@/styles/variables" as vars;
 
 .sheImageUploader {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+
   ol {
     display: flex;
 

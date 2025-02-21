@@ -114,7 +114,9 @@ export function SheImageUploader({
           ))}
         </DropzoneFileList>
       </Dropzone>
-      <SheButton onClick={handleUpload}>Upload photo</SheButton>
+      <SheButton variant="secondary" onClick={handleUpload}>
+        Upload photo
+      </SheButton>
     </div>
   );
 }
