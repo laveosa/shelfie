@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import cs from "./CreateProductPage.module.scss";
 import CreateProductFormCard from "@/components/complex/custom-cards/create-product-form-card/CreateProductFormCard.tsx";
@@ -26,6 +27,7 @@ export function CreateProductPage() {
   const [productsData, setProductsData] = useState([]);
   const sizeChartData = SizeChartFakeData;
   const [activeCards, setActiveCards] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     service
@@ -51,7 +53,7 @@ export function CreateProductPage() {
       <CreateProductCard onAction={handleAction} />
       {activeCards.includes("basicData") && (
         <CreateProductFormCard
-          onSecondaryButtonClick={() => handleAction("basicData")}
+          onSecondaryButtonClick={() => navigate("/products")}
           onOpenCreateProductCategoryCard={() =>
             handleAction("openCreateProductCategoryCard")
           }

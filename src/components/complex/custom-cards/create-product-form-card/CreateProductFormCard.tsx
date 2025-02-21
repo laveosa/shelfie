@@ -86,7 +86,7 @@ export default function CreateProductFormCard({
     setIsLoading(true);
     service.createNewProductHandler(data).then((res) => {
       setIsLoading(false);
-      if (res) {
+      if (res.data) {
         addToast({
           text: "Product created successfully",
           type: "success",
@@ -99,7 +99,7 @@ export default function CreateProductFormCard({
           });
       } else {
         addToast({
-          text: "Failed to create product",
+          text: `${res.error.data.detail}`,
           type: "error",
         });
       }

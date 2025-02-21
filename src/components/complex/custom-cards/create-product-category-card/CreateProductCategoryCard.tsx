@@ -8,11 +8,13 @@ import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { SheImageUploader } from "@/components/complex/she-images-file-uploader/SheImageUploader.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import { useToast } from "@/hooks/useToast.ts";
 
 export default function CreateProductCategoryCard({ ...props }) {
   const service = useCreateProductPageService();
   const [category, setCategory] = useState<CategoryModel>({});
   const [contextId, setContextId] = useState<number | null>(null);
+  const { addToast } = useToast();
 
   const handleInputChange = (event) => {
     const categoryName = event;
@@ -22,12 +24,36 @@ export default function CreateProductCategoryCard({ ...props }) {
 
   function onCreateCategoryHandler() {
     service.createNewCategoryHandler(category).then((res) => {
-      setContextId(res.categoryId);
+      if (res.data) {
+        setContextId(res.data.categoryId);
+        addToast({
+          text: "Category created successfully",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: `${res.error.data.detail}`,
+          type: "error",
+        });
+      }
     });
   }
 
   function handleFileUpload(uploadModel: UploadPhotoModel) {
-    service.uploadPhotoHandler(uploadModel);
+    service.uploadPhotoHandler(uploadModel).then((res) => {
+      console.log(res);
+      if (res.data.photoId) {
+        addToast({
+          text: "Photos added successfully",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: `${res.error.data.detail}`,
+          type: "error",
+        });
+      }
+    });
   }
 
   return (

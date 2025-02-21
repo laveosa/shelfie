@@ -71,13 +71,13 @@ export default function useCreateProductPageService() {
 
   function createNewProductHandler(model) {
     return createNewProduct(model).then((res: any) => {
-      return res.data;
+      return res;
     });
   }
 
   function createNewCategoryHandler(model) {
     return createNewCategory(model).then((res: any) => {
-      return res.data;
+      return res;
     });
   }
 
@@ -89,7 +89,7 @@ export default function useCreateProductPageService() {
 
   function uploadPhotoHandler(model: UploadPhotoModel) {
     return uploadPhoto(model).then((res: any) => {
-      return res.data;
+      return res;
     });
   }
 
