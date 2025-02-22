@@ -96,9 +96,7 @@ export default function CreateProductCategoryCard({ ...props }) {
             value={state.category.categoryName || ""}
             onDelay={handleInputChange}
           />
-          <SheButton onClick={onCreateCategoryHandler}>
-            Create Category
-          </SheButton>
+          <SheButton onClick={onCreateCategoryHandler}>Add Category</SheButton>
           <div>
             <SheImageUploader
               contextName={"category"}

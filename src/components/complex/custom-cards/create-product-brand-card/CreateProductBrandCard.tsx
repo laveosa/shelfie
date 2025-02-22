@@ -96,7 +96,7 @@ export default function CreateProductBrandCard({ ...props }) {
             value={state.brand.brandName || ""}
             onDelay={handleInputChange}
           />
-          <SheButton onClick={onCreateBrandHandler}>Create Brand</SheButton>
+          <SheButton onClick={onCreateBrandHandler}>Add Brand</SheButton>
           <div>
             <SheImageUploader
               contextName={"brand"}
