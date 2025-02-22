@@ -31,7 +31,6 @@ export default function useProductsPageService() {
     return getTheProductsForGrid(data).then((res: any) => {
       dispatch(action.setLoading(false));
       if (res.error) {
-        console.error(res.error);
         return;
       } else {
         return res.data;

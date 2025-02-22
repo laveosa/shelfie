@@ -1,0 +1,42 @@
+@use "@/styles/variables" as vars;
+
+.sheImageUploader {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+
+  ol {
+    display: flex;
+
+    li {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      img {
+        padding-left: 10px;
+        object-fit: contain;
+        max-width: 50px;
+      }
+
+      div {
+        width: 100%;
+
+        p {
+          max-width: 155px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+
+  p {
+    text-align: center;
+  }
+
+  button {
+    margin-top: 10px;
+  }
+}

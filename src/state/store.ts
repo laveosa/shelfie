@@ -16,6 +16,8 @@ import { ProductsApiService } from "@/utils/services/api/ProductsApiService.ts";
 import { AuthApiService } from "@/utils/services/api/AuthApiService.ts";
 import { DictionaryApiService } from "@/utils/services/api/DictionaryApiService.ts";
 import { UsersApiService } from "@/utils/services/api/UsersApiService.ts";
+import { AssetsApiService } from "@/utils/services/api/AssetsApiService.ts";
+import CreateProductPageSlice from "@/state/slices/CreateProductPageSlice.ts";
 
 export const store = configureStore({
   reducer: {
@@ -25,6 +27,7 @@ export const store = configureStore({
     [StoreSliceEnum.MESSENGER]: MessengerPageSlice.reducer,
     [StoreSliceEnum.ORDERS]: OrdersPageSlice.reducer,
     [StoreSliceEnum.PRODUCTS]: ProductsPageSlice.reducer,
+    [StoreSliceEnum.CREATE_PRODUCT]: CreateProductPageSlice.reducer,
     [StoreSliceEnum.PROFILE]: ProfilePageSlice.reducer,
     [StoreSliceEnum.SETTINGS]: SettingsPageSlice.reducer,
     [StoreSliceEnum.SUPPORT]: SupportPageSlice.reducer,
@@ -34,13 +37,15 @@ export const store = configureStore({
     [ProductsApiService.reducerPath]: ProductsApiService.reducer,
     [DictionaryApiService.reducerPath]: DictionaryApiService.reducer,
     [UsersApiService.reducerPath]: UsersApiService.reducer,
+    [AssetsApiService.reducerPath]: AssetsApiService.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .concat(AuthApiService.middleware)
       .concat(ProductsApiService.middleware)
       .concat(DictionaryApiService.middleware)
-      .concat(UsersApiService.middleware),
+      .concat(UsersApiService.middleware)
+      .concat(AssetsApiService.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

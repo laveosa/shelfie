@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import {
   Columns3Icon,
@@ -32,6 +33,8 @@ export function ProductsPage() {
   const state = useAppSelector<IProductsPageSlice>(StoreSliceEnum.PRODUCTS);
   const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
   const service = useProductsPageService();
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     service
@@ -47,7 +50,9 @@ export function ProductsPage() {
     service.getSortingOptionsForGridHandler();
   }, []);
 
-  function handleAddProduct() {}
+  function handleAddProduct() {
+    navigate("/products/create-product");
+  }
 
   function handleImportProducts() {}
 

@@ -1,5 +1,5 @@
 import { FieldValues, UseFormReturn } from "react-hook-form";
-import React from "react";
+import React, { ComponentPropsWithRef } from "react";
 
 export interface ISheFormProps<T extends FieldValues> {
   form: UseFormReturn<T>;
@@ -8,10 +8,11 @@ export interface ISheFormProps<T extends FieldValues> {
   className?: string;
 }
 
-export interface ISheFormFieldProps {
+export interface ISheFormFieldProps extends ComponentPropsWithRef<any> {
   name: string;
   label?: string;
   rules?: object;
   children: React.ReactNode;
   description?: string;
+  onDelay?: (event) => void;
 }

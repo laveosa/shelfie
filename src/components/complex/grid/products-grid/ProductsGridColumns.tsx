@@ -122,7 +122,8 @@ export const ProductsGridColumns: ColumnDef<ProductModel>[] = [
     accessorKey: "salePrice",
     header: "Sale Price",
     cell: ({ row }) => {
-      return <span>{`${row.getValue("salePrice")}zł`}</span>;
+      const price = row.getValue("salePrice");
+      return <span>{price ? `${price}zł` : "N/A"}</span>;
     },
   },
   {
@@ -133,7 +134,7 @@ export const ProductsGridColumns: ColumnDef<ProductModel>[] = [
     accessorKey: "stockAmount",
     header: "Stock",
     cell: ({ row }) => {
-      return <span>{`${row.getValue("stock")} units`}</span>;
+      return <span>{`${row.getValue("stockAmount")} units`}</span>;
     },
   },
   {

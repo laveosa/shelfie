@@ -85,10 +85,21 @@ export class ApiConfigurationService {
   private customBaseQuery(baseUrl: ApiUrlEnum) {
     return fetchBaseQuery({
       baseUrl,
-      prepareHeaders: (headers) => {
+      prepareHeaders: (headers, { arg }) => {
         const token = storageService.getLocalStorage(StorageKeyEnum.TOKEN);
         headers.set("Authorization", `Bearer ${token}`);
-        headers.set("Content-Type", "application/json");
+
+        if (
+          !(
+            arg &&
+            typeof arg === "object" &&
+            "body" in arg &&
+            arg.body instanceof FormData
+          )
+        ) {
+          headers.set("Content-Type", "application/json");
+        }
+
         return headers;
       },
     });

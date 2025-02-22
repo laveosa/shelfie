@@ -1,0 +1,101 @@
+@use "@/styles/variables" as vars;
+
+.sheProductCard {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  height: calc(100vh - 92px);
+  overflow: hidden;
+
+  &.card {
+    border-radius: 10px;
+    border: 1px solid vars.$brdColor;
+  }
+
+  .cardHeader {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 10px;
+
+    .titleBlock {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .cardTitle {
+        padding-top: 7px;
+      }
+
+      .toggleButton {
+        position: absolute;
+        top: 0;
+        left: 11px;
+      }
+
+      .closeButton {
+        position: absolute;
+        top: 7px;
+        right: 6px;
+        background: vars.$colorMuted;
+        height: 26px;
+
+        &:hover {
+          background: vars.$colorMuted;
+        }
+      }
+
+      Button {
+        padding: 5px 0 5px 5px;
+
+        &:hover {
+          background: transparent;
+        }
+
+        svg {
+          color: #71717A
+        }
+      }
+    }
+  }
+
+  .cardContent {
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: calc(100% - 100px);
+    min-width: 290px;
+  }
+
+  .cardFooter {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    width: 100%;
+  }
+}
+
+
+// -------------------------------------------------------------------- LOADER
+
+.sheProductCard {
+  .loaderContainer {
+    height: 5px;
+    width: 100%;
+    background: repeating-linear-gradient(to right, gray 0%, lightblue 50%, gray 100%);
+    background-size: 200% auto;
+    animation: gradient 2s infinite;
+    animation-fill-mode: forwards;
+    animation-timing-function: linear;
+  }
+
+  @keyframes gradient {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+}
