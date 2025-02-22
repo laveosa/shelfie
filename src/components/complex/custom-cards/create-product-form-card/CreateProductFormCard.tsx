@@ -70,24 +70,17 @@ export default function CreateProductFormCard({
   }, []);
 
   function onAction() {
-    state.setLoading(true);
     service.generateProductCodeHandler().then((res: ProductCodeModel) => {
-      state.setLoading(false);
       form.setValue("productCode", res.code);
     });
   }
 
   function onCheckCode(value: string) {
-    state.setLoading(true);
-    service.checkProductCodeHandler({ code: value }).then(() => {
-      state.setLoading(false);
-    });
+    service.checkProductCodeHandler({ code: value }).then(() => {});
   }
 
   function onSubmit(data) {
-    state.setLoading(true);
     service.createNewProductHandler(data).then((res) => {
-      state.setLoading(false);
       if (res.data) {
         form.reset();
         productService
@@ -143,7 +136,6 @@ export default function CreateProductFormCard({
                 isValid={!form.formState.errors.name}
                 error={form.formState.errors.name?.message}
                 showError={true}
-                disabled={state.loading}
               />
             </SheForm.Field>
             <div className={cs.createProductFormRow}>
@@ -162,7 +154,6 @@ export default function CreateProductFormCard({
                   isValid={!form.formState.errors.productCode}
                   error={form.formState.errors.productCode?.message}
                   showError={true}
-                  disabled={state.loading}
                 />
               </SheForm.Field>
               <SheButton
@@ -171,7 +162,6 @@ export default function CreateProductFormCard({
                 type="button"
                 variant="outline"
                 onClick={onAction}
-                disabled={state.loading}
               />
             </div>
             <div className={cs.createProductFormRow}>
@@ -182,14 +172,12 @@ export default function CreateProductFormCard({
                   isValid={!form.formState.errors.productBarcode}
                   error={form.formState.errors.productBarcode?.message}
                   showError={true}
-                  disabled={state.loading}
                 />
               </SheForm.Field>
               <SheButton
                 className={cs.formRowButton}
                 icon={WandSparkles}
                 variant="outline"
-                disabled={state.loading}
               />
             </div>
             <div className={cs.createProductFormRow}>
@@ -205,7 +193,6 @@ export default function CreateProductFormCard({
                     <Select
                       onValueChange={(value) => field.onChange(Number(value))}
                       value={field.value ? field.value.toString() : ""}
-                      disabled={state.loading}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -232,7 +219,6 @@ export default function CreateProductFormCard({
                 variant="outline"
                 type="button"
                 onClick={onOpenCreateProductCategoryCard}
-                disabled={state.loading}
               />
             </div>
             <div className={cs.createProductFormRow}>
@@ -248,7 +234,6 @@ export default function CreateProductFormCard({
                     <Select
                       onValueChange={(value) => field.onChange(Number(value))}
                       value={field.value ? field.value.toString() : ""}
-                      disabled={state.loading}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -275,7 +260,6 @@ export default function CreateProductFormCard({
                 variant="outline"
                 type="button"
                 onClick={onOpenCreateProductBrandCard}
-                disabled={state.loading}
               />
             </div>
             <SheForm.Field name="isActive">
