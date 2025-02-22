@@ -2,7 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { GripVertical } from "lucide-react";
 
 import { Switch } from "@/components/ui/switch.tsx";
-import { ProductsModel } from "@/const/models/ProductsModel.ts";
+import { ProductModel } from "@/const/models/ProductModel.ts";
 import ProductsGridColumnActions from "@/components/complex/grid/products-grid/ProductsGridColumnActions.tsx";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 
@@ -40,7 +40,7 @@ function onAction(
   }, 2000);
 }
 
-export const ProductPhotosGridColumns: ColumnDef<ProductsModel>[] = [
+export const ProductPhotosGridColumns: ColumnDef<ProductModel>[] = [
   {
     accessorKey: "id",
     header: "",
