@@ -2,12 +2,14 @@ import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { ProductsPageSliceActions as action } from "@/state/slices/ProductsPageSlice.ts";
+import { ProductsPageSliceActions as productsAction } from "@/state/slices/ProductsPageSlice.ts";
 import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 
 export default function useCreateProductPageService() {
-  const state = useAppSelector<IProductsPageSlice>(StoreSliceEnum.PRODUCTS);
+  const productsState = useAppSelector<IProductsPageSlice>(
+    StoreSliceEnum.PRODUCTS,
+  );
   const dispatch = useAppDispatch();
   const [getAllProducts] = ProductsApiHooks.useLazyGetAllProductsQuery();
   const [generateProductCode] =
@@ -25,10 +27,10 @@ export default function useCreateProductPageService() {
   const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
 
   function getAllProductsHandler() {
-    dispatch(action.setLoading(true));
+    dispatch(productsAction.setLoading(true));
     return getAllProducts(null).then((res: any) => {
-      dispatch(action.setLoading(false));
-      dispatch(action.refreshProducts(res.data));
+      dispatch(productsAction.setLoading(false));
+      dispatch(productsAction.refreshProducts(res.data));
       return res.data;
     });
   }
@@ -94,7 +96,7 @@ export default function useCreateProductPageService() {
   }
 
   return {
-    ...state,
+    ...productsState,
     getAllProductsHandler,
     generateProductCodeHandler,
     getSimpleListOfAllBrandsHandler,
