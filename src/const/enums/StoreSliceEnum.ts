@@ -3,6 +3,7 @@ export enum StoreSliceEnum {
   AUTH = "authSlice",
   DASHBOARD = "dashboardSlice",
   PRODUCTS = "productsSlice",
+  CREATE_PRODUCT = "createProductSlice",
   PROFILE = "profileSlice",
   SETTINGS = "settingsSlice",
   MESSENGER = "messengerSlice",

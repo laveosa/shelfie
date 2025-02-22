@@ -1,24 +1,29 @@
-import React, { useState } from "react";
+import React from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./CreateProductCategoryCard.module.scss";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import useCreateProductPageService from "@/pages/products-section/create-product-page/useCreateProductPageService.ts";
-import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { SheImageUploader } from "@/components/complex/she-images-file-uploader/SheImageUploader.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { useToast } from "@/hooks/useToast.ts";
+import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
+import { CreateProductPageSliceActions as actions } from "@/state/slices/CreateProductPageSlice.ts";
+import { ICreateProductPageSlice } from "@/const/interfaces/store-slices/ICreateProductPageSlice.ts";
+import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 
 export default function CreateProductCategoryCard({ ...props }) {
   const service = useCreateProductPageService();
-  const [category, setCategory] = useState<CategoryModel>({});
-  const [contextId, setContextId] = useState<number | null>(null);
+  const state = useAppSelector<ICreateProductPageSlice>(
+    StoreSliceEnum.CREATE_PRODUCT,
+  );
+  const dispatch = useAppDispatch();
   const { addToast } = useToast();
 
   const handleInputChange = (event) => {
     const categoryName = event;
-    setCategory({ ...category, categoryName });
+    dispatch(actions.refreshCategory({ ...state.category, categoryName }));
     service.checkCategoryNameHandler({ categoryName }).then((res) => {
       if (res.error) {
         addToast({
@@ -30,9 +35,12 @@ export default function CreateProductCategoryCard({ ...props }) {
   };
 
   function onCreateCategoryHandler() {
-    service.createNewCategoryHandler(category).then((res) => {
+    service.createNewCategoryHandler(state.category).then((res) => {
       if (res.data) {
-        setContextId(res.data.categoryId);
+        dispatch(actions.refreshContextId(res.data.categoryId));
+        service.getAllCategoriesByOrganizationHandler().then((res) => {
+          dispatch(actions.refreshCategoriesList(res));
+        });
         addToast({
           text: "Category created successfully",
           type: "success",
@@ -48,16 +56,23 @@ export default function CreateProductCategoryCard({ ...props }) {
 
   function handleFileUpload(uploadModel: UploadPhotoModel) {
     service.uploadPhotoHandler(uploadModel).then((res) => {
-      if (res.data.photoId) {
+      if (!uploadModel.contextId) {
         addToast({
-          text: "Photos added successfully",
-          type: "success",
-        });
-      } else {
-        addToast({
-          text: `${res.error.data.detail}`,
+          text: "Create category first",
           type: "error",
         });
+      } else {
+        if (res.data.photoId) {
+          addToast({
+            text: "Photos added successfully",
+            type: "success",
+          });
+        } else {
+          addToast({
+            text: `${res.error.data.detail}`,
+            type: "error",
+          });
+        }
       }
     });
   }
@@ -78,19 +93,16 @@ export default function CreateProductCategoryCard({ ...props }) {
             className={cs.productCategoryInput}
             label="Category Name"
             placeholder="enter category name..."
-            value={category.categoryName || ""}
+            value={state.category.categoryName || ""}
             onDelay={handleInputChange}
           />
           <SheButton onClick={onCreateCategoryHandler}>
             Create Category
           </SheButton>
           <div>
-            <div className={`${cs.imageUploaderLabel} she-text`}>
-              Category images
-            </div>
             <SheImageUploader
               contextName={"category"}
-              contextId={contextId}
+              contextId={state.contextId}
               onUpload={handleFileUpload}
             />
           </div>

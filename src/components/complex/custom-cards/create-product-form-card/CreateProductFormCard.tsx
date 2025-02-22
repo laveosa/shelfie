@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Plus, WandSparkles } from "lucide-react";
 import { useForm } from "react-hook-form";
 
@@ -21,17 +21,17 @@ import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import useCreateProductPageService from "@/pages/products-section/create-product-page/useCreateProductPageService.ts";
-import { BrandModel } from "@/const/models/BrandModel.ts";
 import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
 import { Switch } from "@/components/ui/switch.tsx";
-import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { GridModel } from "@/const/models/GridModel.ts";
-import { ProductsPageSliceActions as actions } from "@/state/slices/ProductsPageSlice.ts";
+import { CreateProductPageSliceActions as actions } from "@/state/slices/CreateProductPageSlice.ts";
+import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import { useToast } from "@/hooks/useToast.ts";
+import { ICreateProductPageSlice } from "@/const/interfaces/store-slices/ICreateProductPageSlice.ts";
 
 export default function CreateProductFormCard({
   onOpenCreateProductCategoryCard,
@@ -39,10 +39,12 @@ export default function CreateProductFormCard({
   ...props
 }) {
   const dispatch = useAppDispatch();
-  const state = useAppSelector<IProductsPageSlice>(StoreSliceEnum.PRODUCTS);
-  const [isLoading, setIsLoading] = useState(false);
-  const [brandsList, setBrandsList] = useState<BrandModel[]>([]);
-  const [categoriesList, setCategoriesList] = useState<CategoryModel[]>([]);
+  const state = useAppSelector<ICreateProductPageSlice>(
+    StoreSliceEnum.CREATE_PRODUCT,
+  );
+  const productsState = useAppSelector<IProductsPageSlice>(
+    StoreSliceEnum.PRODUCTS,
+  );
   const service = useCreateProductPageService();
   const productService = useProductsPageService();
   const { addToast } = useToast();
@@ -59,44 +61,44 @@ export default function CreateProductFormCard({
 
   useEffect(() => {
     service.getSimpleListOfAllBrandsHandler().then((res) => {
-      setBrandsList(res ? res : []);
+      dispatch(actions.refreshBrandsList(res ? res : [])); // Dispatch action to set brands
     });
 
     service.getAllCategoriesByOrganizationHandler().then((res) => {
-      setCategoriesList(res ? res : []);
+      dispatch(actions.refreshCategoriesList(res ? res : [])); // Dispatch action to set categories
     });
   }, []);
 
   function onAction() {
-    setIsLoading(true);
+    state.setLoading(true);
     service.generateProductCodeHandler().then((res: ProductCodeModel) => {
-      setIsLoading(false);
+      state.setLoading(false);
       form.setValue("productCode", res.code);
     });
   }
 
   function onCheckCode(value: string) {
-    setIsLoading(true);
+    state.setLoading(true);
     service.checkProductCodeHandler({ code: value }).then(() => {
-      setIsLoading(false);
+      state.setLoading(false);
     });
   }
 
   function onSubmit(data) {
-    setIsLoading(true);
+    state.setLoading(true);
     service.createNewProductHandler(data).then((res) => {
-      setIsLoading(false);
+      state.setLoading(false);
       if (res.data) {
+        form.reset();
+        productService
+          .getTheProductsForGridHandler(productsState.gridRequestModel)
+          .then((res: GridModel) => {
+            dispatch(productsActions.refreshProductsGridModel(res));
+          });
         addToast({
           text: "Product created successfully",
           type: "success",
         });
-        form.reset();
-        productService
-          .getTheProductsForGridHandler(state.gridRequestModel)
-          .then((res: GridModel) => {
-            dispatch(actions.refreshProductsGridModel(res));
-          });
       } else {
         addToast({
           text: `${res.error.data.detail}`,
@@ -141,7 +143,7 @@ export default function CreateProductFormCard({
                 isValid={!form.formState.errors.name}
                 error={form.formState.errors.name?.message}
                 showError={true}
-                disabled={isLoading}
+                disabled={state.loading}
               />
             </SheForm.Field>
             <div className={cs.createProductFormRow}>
@@ -160,7 +162,7 @@ export default function CreateProductFormCard({
                   isValid={!form.formState.errors.productCode}
                   error={form.formState.errors.productCode?.message}
                   showError={true}
-                  disabled={isLoading}
+                  disabled={state.loading}
                 />
               </SheForm.Field>
               <SheButton
@@ -169,7 +171,7 @@ export default function CreateProductFormCard({
                 type="button"
                 variant="outline"
                 onClick={onAction}
-                disabled={isLoading}
+                disabled={state.loading}
               />
             </div>
             <div className={cs.createProductFormRow}>
@@ -180,14 +182,14 @@ export default function CreateProductFormCard({
                   isValid={!form.formState.errors.productBarcode}
                   error={form.formState.errors.productBarcode?.message}
                   showError={true}
-                  disabled={isLoading}
+                  disabled={state.loading}
                 />
               </SheForm.Field>
               <SheButton
                 className={cs.formRowButton}
                 icon={WandSparkles}
                 variant="outline"
-                disabled={isLoading}
+                disabled={state.loading}
               />
             </div>
             <div className={cs.createProductFormRow}>
@@ -203,7 +205,7 @@ export default function CreateProductFormCard({
                     <Select
                       onValueChange={(value) => field.onChange(Number(value))}
                       value={field.value ? field.value.toString() : ""}
-                      disabled={isLoading}
+                      disabled={state.loading}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -211,7 +213,7 @@ export default function CreateProductFormCard({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {categoriesList.map((option) => (
+                        {state.categoriesList.map((option) => (
                           <SelectItem
                             key={option.categoryId}
                             value={option.categoryId.toString()}
@@ -230,7 +232,7 @@ export default function CreateProductFormCard({
                 variant="outline"
                 type="button"
                 onClick={onOpenCreateProductCategoryCard}
-                disabled={isLoading}
+                disabled={state.loading}
               />
             </div>
             <div className={cs.createProductFormRow}>
@@ -246,7 +248,7 @@ export default function CreateProductFormCard({
                     <Select
                       onValueChange={(value) => field.onChange(Number(value))}
                       value={field.value ? field.value.toString() : ""}
-                      disabled={isLoading}
+                      disabled={state.loading}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -254,7 +256,7 @@ export default function CreateProductFormCard({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {brandsList.map((option) => (
+                        {state.brandsList.map((option) => (
                           <SelectItem
                             key={option.brandId}
                             value={option.brandId.toString()}
@@ -273,7 +275,7 @@ export default function CreateProductFormCard({
                 variant="outline"
                 type="button"
                 onClick={onOpenCreateProductBrandCard}
-                disabled={isLoading}
+                disabled={state.loading}
               />
             </div>
             <SheForm.Field name="isActive">

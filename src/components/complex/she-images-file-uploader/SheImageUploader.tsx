@@ -53,8 +53,6 @@ export function SheImageUploader({
         file: formData,
       };
 
-      console.log("uploadModel", uploadModel);
-
       try {
         await onUpload(uploadModel);
       } catch (error) {

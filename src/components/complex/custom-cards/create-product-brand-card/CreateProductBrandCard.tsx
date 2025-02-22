@@ -1,24 +1,29 @@
-import React, { useState } from "react";
+import React from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./CreateProductBrandCard.module.scss";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import useCreateProductPageService from "@/pages/products-section/create-product-page/useCreateProductPageService.ts";
-import { BrandModel } from "@/const/models/BrandModel.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { SheImageUploader } from "@/components/complex/she-images-file-uploader/SheImageUploader.tsx";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { useToast } from "@/hooks/useToast.ts";
+import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
+import { CreateProductPageSliceActions as actions } from "@/state/slices/CreateProductPageSlice.ts";
+import { ICreateProductPageSlice } from "@/const/interfaces/store-slices/ICreateProductPageSlice.ts";
+import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 
 export default function CreateProductBrandCard({ ...props }) {
   const service = useCreateProductPageService();
-  const [brand, setBrand] = useState<BrandModel>({});
-  const [contextId, setContextId] = useState<number | null>(null);
+  const state = useAppSelector<ICreateProductPageSlice>(
+    StoreSliceEnum.CREATE_PRODUCT,
+  );
+  const dispatch = useAppDispatch();
   const { addToast } = useToast();
 
   const handleInputChange = (event) => {
     const brandName = event;
-    setBrand({ ...brand, brandName });
+    dispatch(actions.refreshBrand({ ...state.brand, brandName }));
     service.checkBrandNameHandler({ brandName }).then((res) => {
       if (res.error) {
         addToast({
@@ -30,9 +35,12 @@ export default function CreateProductBrandCard({ ...props }) {
   };
 
   function onCreateBrandHandler() {
-    service.createBrandHandler(brand).then((res) => {
+    service.createBrandHandler(state.brand).then((res) => {
       if (res.data) {
-        setContextId(res.data.brandId);
+        dispatch(actions.refreshContextId(res.data.brandId));
+        service.getSimpleListOfAllBrandsHandler().then((res) => {
+          dispatch(actions.refreshBrandsList(res));
+        });
         addToast({
           text: "Brand created successfully",
           type: "success",
@@ -47,19 +55,27 @@ export default function CreateProductBrandCard({ ...props }) {
   }
 
   function handleFileUpload(uploadModel: UploadPhotoModel) {
-    service.uploadPhotoHandler(uploadModel).then((res) => {
-      if (res.data.photoId) {
-        addToast({
-          text: "Photos added successfully",
-          type: "success",
-        });
-      } else {
-        addToast({
-          text: `${res.error.data.detail}`,
-          type: "error",
-        });
-      }
-    });
+    if (!uploadModel.contextId) {
+      addToast({
+        text: "Create brand first",
+        type: "error",
+      });
+    } else {
+      service.uploadPhotoHandler(uploadModel).then((res) => {
+        console.log(res.status);
+        if (res.data.photoId) {
+          addToast({
+            text: "Photos added successfully",
+            type: "success",
+          });
+        } else {
+          addToast({
+            text: `${res.error.data.detail}`,
+            type: "error",
+          });
+        }
+      });
+    }
   }
 
   return (
@@ -77,17 +93,14 @@ export default function CreateProductBrandCard({ ...props }) {
             className={cs.productCategoryInput}
             label="Brand Name"
             placeholder="enter brand name..."
-            value={brand.brandName || ""}
+            value={state.brand.brandName || ""}
             onDelay={handleInputChange}
           />
           <SheButton onClick={onCreateBrandHandler}>Create Brand</SheButton>
           <div>
-            <div className={`${cs.imageUploaderLabel} she-text`}>
-              Brand images
-            </div>
             <SheImageUploader
               contextName={"brand"}
-              contextId={contextId}
+              contextId={state.contextId}
               onUpload={handleFileUpload}
             />
           </div>

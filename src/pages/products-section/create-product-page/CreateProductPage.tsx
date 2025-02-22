@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import cs from "./CreateProductPage.module.scss";
@@ -17,41 +17,45 @@ import ChooseVariantTraitsCard from "@/components/complex/custom-cards/choose-va
 
 import { GridModel } from "@/const/models/GridModel.ts";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
-import { useAppSelector } from "@/utils/hooks/redux.ts";
+import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
+import { ICreateProductPageSlice } from "@/const/interfaces/store-slices/ICreateProductPageSlice.ts";
+import { CreateProductPageSliceActions as actions } from "@/state/slices/CreateProductPageSlice.ts";
 
 export function CreateProductPage() {
   const service = useProductsPageService();
-  const state = useAppSelector<IProductsPageSlice>(StoreSliceEnum.PRODUCTS);
-  const [productsData, setProductsData] = useState([]);
+  const dispatch = useAppDispatch();
+  const state = useAppSelector<ICreateProductPageSlice>(
+    StoreSliceEnum.CREATE_PRODUCT,
+  );
+  const productsState = useAppSelector<IProductsPageSlice>(
+    StoreSliceEnum.PRODUCTS,
+  );
   const sizeChartData = SizeChartFakeData;
-  const [activeCards, setActiveCards] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     service
-      .getTheProductsForGridHandler(state.gridRequestModel)
+      .getTheProductsForGridHandler(productsState.gridRequestModel)
       .then((res: GridModel) => {
-        setProductsData(res.items);
+        dispatch(actions.refreshProducts(res.items));
       });
-  }, [state]);
+  }, [productsState]);
 
   const handleAction = (identifier) => {
-    setActiveCards((prev) => {
-      if (prev.includes(identifier)) {
-        return prev.filter((card) => card !== identifier);
-      } else {
-        return [...prev, identifier];
-      }
-    });
+    const updatedCards = state.activeCards.includes(identifier)
+      ? state.activeCards.filter((card) => card !== identifier)
+      : [...state.activeCards, identifier];
+
+    dispatch(actions.refreshActiveCards(updatedCards));
   };
 
   return (
     <div className={cs.createProductPage}>
-      {productsData.length > 0 && <ItemsCard data={productsData} />}
+      {state.products.length > 0 && <ItemsCard data={state.products} />}
       <CreateProductCard onAction={handleAction} />
-      {activeCards.includes("basicData") && (
+      {state.activeCards.includes("basicData") && (
         <CreateProductFormCard
           onSecondaryButtonClick={() => navigate("/products")}
           onOpenCreateProductCategoryCard={() =>
@@ -62,21 +66,21 @@ export function CreateProductPage() {
           }
         />
       )}
-      {activeCards.includes("gallery") && (
+      {state.activeCards.includes("gallery") && (
         <ProductPhotosCard
           width={"400px"}
           onSecondaryButtonClick={() => handleAction("gallery")}
-          data={productsData}
+          data={state.products}
         />
       )}
-      {activeCards.includes("variants") && (
+      {state.activeCards.includes("variants") && (
         <ManageVariantsCard
           onChooseVariantTraits={() =>
             handleAction("openChooseVariantTraitsCard")
           }
         />
       )}
-      {activeCards.includes("sizeChart") && (
+      {state.activeCards.includes("sizeChart") && (
         <SizeChartCard
           data={sizeChartData}
           onOpenCreateProductCategoryCard={() =>
@@ -85,7 +89,7 @@ export function CreateProductPage() {
           onSecondaryButtonClick={() => handleAction("sizeChart")}
         />
       )}
-      {activeCards.includes("attributes") && (
+      {state.activeCards.includes("attributes") && (
         <ChooseAttributesCard
           onCreateAttributeHandle={() => {
             handleAction("createAttributeCard");
@@ -93,27 +97,27 @@ export function CreateProductPage() {
           onSecondaryButtonClick={() => handleAction("attributes")}
         />
       )}
-      {activeCards.includes("createAttributeCard") && (
+      {state.activeCards.includes("createAttributeCard") && (
         <CreateAttributeCard
-          data={productsData}
+          data={state.products}
           onSecondaryButtonClick={() => handleAction("createAttributeCard")}
         />
       )}
-      {activeCards.includes("openCreateProductCategoryCard") && (
+      {state.activeCards.includes("openCreateProductCategoryCard") && (
         <CreateProductCategoryCard
           onSecondaryButtonClick={() =>
             handleAction("openCreateProductCategoryCard")
           }
         />
       )}
-      {activeCards.includes("openCreateBrandCategoryCard") && (
+      {state.activeCards.includes("openCreateBrandCategoryCard") && (
         <CreateProductBrandCard
           onSecondaryButtonClick={() =>
             handleAction("openCreateBrandCategoryCard")
           }
         />
       )}
-      {activeCards.includes("openChooseVariantTraitsCard") && (
+      {state.activeCards.includes("openChooseVariantTraitsCard") && (
         <ChooseVariantTraitsCard />
       )}
     </div>
