@@ -8,6 +8,7 @@ export interface IProductConfigurationCard {
   onGenerateProductCode?: () => Promise<any>;
   onOpenCreateProductCategoryCard?: () => void;
   onOpenCreateProductBrandCard?: () => void;
-  onPrimaryButtonClick?: (data: any) => void;
+  onPrimaryButtonClick?: (data: any, resetForm?: any) => void;
   onSecondaryButtonClick?: () => void;
+  resetForm?: (reset: any) => void;
 }

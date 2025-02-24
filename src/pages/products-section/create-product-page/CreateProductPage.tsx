@@ -66,9 +66,10 @@ export function CreateProductPage() {
     dispatch(actions.refreshActiveCards(updatedCards));
   };
 
-  function onSubmitProductData(data: any) {
+  function onSubmitProductData(data: any, resetForm: () => void) {
     service.createNewProductHandler(data).then((res) => {
       if (res.data) {
+        resetForm();
         productsService
           .getTheProductsForGridHandler(productsState.gridRequestModel)
           .then((res: GridModel) => {
@@ -104,7 +105,10 @@ export function CreateProductPage() {
             handleAction("openCreateBrandCategoryCard")
           }
           onSecondaryButtonClick={() => navigate("/products")}
-          onPrimaryButtonClick={(data) => onSubmitProductData(data)}
+          onPrimaryButtonClick={(data, resetForm) =>
+            onSubmitProductData(data, resetForm)
+          }
+          resetForm={(reset) => reset()}
         />
       )}
       {state.activeCards.includes("gallery") && (
