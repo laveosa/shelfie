@@ -25,12 +25,19 @@ export default function useProductConfigurationPageService() {
   const [createNewCategory] = ProductsApiHooks.useCreateNewCategoryMutation();
   const [createBrand] = ProductsApiHooks.useCreateBrandMutation();
   const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
+  const [getProductById] = ProductsApiHooks.useLazyGetProductByIdQuery();
 
   function getAllProductsHandler() {
     dispatch(productsAction.setLoading(true));
     return getAllProducts(null).then((res: any) => {
       dispatch(productsAction.setLoading(false));
       dispatch(productsAction.refreshProducts(res.data));
+      return res.data;
+    });
+  }
+
+  function getProductByIdHandler(id) {
+    return getProductById(id).then((res: any) => {
       return res.data;
     });
   }
@@ -98,6 +105,7 @@ export default function useProductConfigurationPageService() {
   return {
     ...productsState,
     getAllProductsHandler,
+    getProductByIdHandler,
     generateProductCodeHandler,
     getSimpleListOfAllBrandsHandler,
     getAllCategoriesByOrganizationHandler,

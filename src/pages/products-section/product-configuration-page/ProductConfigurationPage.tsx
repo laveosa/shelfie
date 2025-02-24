@@ -77,7 +77,6 @@ export function ProductConfigurationPage() {
             dispatch(productsActions.refreshProductsGridModel(res));
           });
         navigate(`/products/product-configuration/${res.data.productId}`);
-        console.log("ProductId", res.data.productId);
         addToast({
           text: "Product created successfully",
           type: "success",
