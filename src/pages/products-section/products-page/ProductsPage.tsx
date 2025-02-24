@@ -35,7 +35,6 @@ export function ProductsPage() {
   const service = useProductsPageService();
   const navigate = useNavigate();
 
-
   useEffect(() => {
     service
       .getTheProductsForGridHandler(state.gridRequestModel)
@@ -51,7 +50,7 @@ export function ProductsPage() {
   }, []);
 
   function handleAddProduct() {
-    navigate("/products/create-product");
+    navigate("/products/product-configuration");
   }
 
   function handleImportProducts() {}

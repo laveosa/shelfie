@@ -13,13 +13,13 @@ export const ProductsSectionRouter: RouteObject[] = [
     },
   },
   {
-    path: "create-product",
+    path: "product-configuration/:productId?",
     lazy: async () => {
-      const { CreateProductPage } = await import(
-        "@/pages/products-section/create-product-page/CreateProductPage.tsx"
+      const { ProductConfigurationPage } = await import(
+        "@/pages/products-section/product-configuration-page/ProductConfigurationPage.tsx"
       );
       return {
-        element: <CreateProductPage />,
+        element: <ProductConfigurationPage />,
       };
     },
   },

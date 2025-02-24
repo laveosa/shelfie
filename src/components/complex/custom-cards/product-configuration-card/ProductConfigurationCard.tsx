@@ -25,6 +25,7 @@ import { Switch } from "@/components/ui/switch.tsx";
 import { IProductConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IProductConfigurationCard.ts";
 
 export default function ProductConfigurationCard({
+  productId,
   brandsList,
   categoriesList,
   onProductCodeChange,
@@ -65,9 +66,9 @@ export default function ProductConfigurationCard({
     <div>
       <SheProductCard
         view="card"
-        title="Create Products"
+        title={productId ? "Manage Product" : "Create Product"}
         showPrimaryButton={true}
-        primaryButtonTitle="Add Product"
+        primaryButtonTitle={productId ? "Save" : "Add Product"}
         showSecondaryButton={true}
         secondaryButtonTitle="Cancel"
         className={cs.createProductFormCard}

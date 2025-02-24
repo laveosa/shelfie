@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-import cs from "./CreateProductPage.module.scss";
-import ProductConfigurationCard from "@/components/complex/custom-cards/create-product-form-card/ProductConfigurationCard.tsx";
+import cs from "./ProductConfigurationPage.module.scss";
+import ProductConfigurationCard from "@/components/complex/custom-cards/product-configuration-card/ProductConfigurationCard.tsx";
 import CreateProductCategoryCard from "@/components/complex/custom-cards/create-product-category-card/CreateProductCategoryCard.tsx";
 import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
-import CreateProductCard from "@/components/complex/custom-cards/create-product-card/CreateProductCard.tsx";
+import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
 import CreateProductBrandCard from "@/components/complex/custom-cards/create-product-brand-card/CreateProductBrandCard.tsx";
 import ProductPhotosCard from "@/components/complex/custom-cards/product-photos-card/ProductPhotosCard.tsx";
 import SizeChartCard from "@/components/complex/custom-cards/size-chart-card/SizeChartCard.tsx";
@@ -22,13 +22,13 @@ import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPag
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { ICreateProductPageSlice } from "@/const/interfaces/store-slices/ICreateProductPageSlice.ts";
 import { CreateProductPageSliceActions as actions } from "@/state/slices/CreateProductPageSlice.ts";
-import useCreateProductPageService from "@/pages/products-section/create-product-page/useCreateProductPageService.ts";
+import useProductConfigurationPageService from "@/pages/products-section/product-configuration-page/useProductConfigurationPageService.ts";
 import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
 import { useToast } from "@/hooks/useToast.ts";
 
-export function CreateProductPage() {
+export function ProductConfigurationPage() {
   const productsService = useProductsPageService();
-  const service = useCreateProductPageService();
+  const service = useProductConfigurationPageService();
   const dispatch = useAppDispatch();
   const state = useAppSelector<ICreateProductPageSlice>(
     StoreSliceEnum.CREATE_PRODUCT,
@@ -39,6 +39,7 @@ export function CreateProductPage() {
   const sizeChartData = SizeChartFakeData;
   const navigate = useNavigate();
   const { addToast } = useToast();
+  const { productId } = useParams();
 
   useEffect(() => {
     productsService
@@ -91,9 +92,10 @@ export function CreateProductPage() {
   return (
     <div className={cs.createProductPage}>
       {state.products.length > 0 && <ItemsCard data={state.products} />}
-      <CreateProductCard onAction={handleAction} />
+      <ProductMenuCard onAction={handleAction} productId={Number(productId)} />
       {state.activeCards.includes("basicData") && (
         <ProductConfigurationCard
+          productId={Number(productId)}
           brandsList={state.brandsList}
           categoriesList={state.categoriesList}
           onGenerateProductCode={service.generateProductCodeHandler}

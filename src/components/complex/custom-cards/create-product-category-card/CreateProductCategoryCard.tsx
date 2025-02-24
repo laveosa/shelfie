@@ -3,7 +3,7 @@ import React from "react";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./CreateProductCategoryCard.module.scss";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import useCreateProductPageService from "@/pages/products-section/create-product-page/useCreateProductPageService.ts";
+import useProductConfigurationPageService from "@/pages/products-section/product-configuration-page/useProductConfigurationPageService.ts";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { SheImageUploader } from "@/components/complex/she-images-file-uploader/SheImageUploader.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
@@ -14,7 +14,7 @@ import { ICreateProductPageSlice } from "@/const/interfaces/store-slices/ICreate
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 
 export default function CreateProductCategoryCard({ ...props }) {
-  const service = useCreateProductPageService();
+  const service = useProductConfigurationPageService();
   const state = useAppSelector<ICreateProductPageSlice>(
     StoreSliceEnum.CREATE_PRODUCT,
   );

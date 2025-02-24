@@ -1,6 +1,6 @@
 @use "@/styles/variables" as vars;
 
-.createProductCard {
+.productMenuCard {
   .createProductItems {
     display: flex;
     flex-direction: column;
@@ -8,7 +8,7 @@
 
     .createProductItem {
       display: flex;
-      justify-content: space-between;
+      gap: 20px;
       padding: 10px;
       cursor: pointer;
       border-radius: 5px;
@@ -19,15 +19,23 @@
         font-weight: 500;
       }
 
-      .itemIconText {
+      .textContainer {
+        width: 100%;
         display: flex;
+        justify-content: space-between;
         gap: 15px;
-      }
 
-      .itemBadge {
-        background-color: #F8F3FF;
-        color: #8439ED;
+        .itemBadge {
+          background-color: #F8F3FF;
+          color: #8439ED;
+        }
       }
     }
+  }
+
+  .disabled {
+    cursor: none;
+    pointer-events: none;
+    opacity: 0.8;
   }
 }
