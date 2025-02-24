@@ -9,13 +9,13 @@ import { SheImageUploader } from "@/components/complex/she-images-file-uploader/
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { useToast } from "@/hooks/useToast.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
-import { CreateProductPageSliceActions as actions } from "@/state/slices/CreateProductPageSlice.ts";
-import { ICreateProductPageSlice } from "@/const/interfaces/store-slices/ICreateProductPageSlice.ts";
+import { ProductConfigurationPageSliceActions as actions } from "@/state/slices/ProductConfigurationPageSlice.ts";
+import { IProductConfigurationPageSlice } from "@/const/interfaces/store-slices/IProductConfigurationPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 
 export default function CreateProductCategoryCard({ ...props }) {
   const service = useProductConfigurationPageService();
-  const state = useAppSelector<ICreateProductPageSlice>(
+  const state = useAppSelector<IProductConfigurationPageSlice>(
     StoreSliceEnum.CREATE_PRODUCT,
   );
   const dispatch = useAppDispatch();

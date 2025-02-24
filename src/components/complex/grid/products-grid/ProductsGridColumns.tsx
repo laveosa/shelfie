@@ -138,7 +138,7 @@ export const ProductsGridColumns: ColumnDef<ProductModel>[] = [
     },
   },
   {
-    accessorKey: "active",
+    accessorKey: "isActive",
     header: "Active",
     cell: ({ row, table }) => {
       const meta = table.options.meta as {

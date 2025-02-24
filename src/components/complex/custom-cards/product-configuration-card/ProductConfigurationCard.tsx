@@ -33,7 +33,6 @@ export default function ProductConfigurationCard({
   onOpenCreateProductCategoryCard,
   onOpenCreateProductBrandCard,
   onPrimaryButtonClick,
-  resetForm,
   ...props
 }: IProductConfigurationCard) {
   const form = useForm({
@@ -58,8 +57,7 @@ export default function ProductConfigurationCard({
   }
 
   function onSubmit(data) {
-    onPrimaryButtonClick(data, resetForm);
-    resetForm(form.reset);
+    onPrimaryButtonClick(data);
   }
 
   return (

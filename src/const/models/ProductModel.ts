@@ -15,5 +15,5 @@ export interface ProductModel {
   salePrice?: number;
   variantsCount?: number;
   stockAmount?: number;
-  active?: boolean;
+  isActive?: boolean;
 }

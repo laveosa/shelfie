@@ -3,12 +3,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
-import { ICreateProductPageSlice } from "@/const/interfaces/store-slices/ICreateProductPageSlice.ts";
+import { IProductConfigurationPageSlice } from "@/const/interfaces/store-slices/IProductConfigurationPageSlice.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 
-const initialState: ICreateProductPageSlice = {
+const initialState: IProductConfigurationPageSlice = {
   loading: false,
   products: [],
+  product: null,
   activeCards: [],
   brandsList: [],
   categoriesList: [],
@@ -18,67 +19,75 @@ const initialState: ICreateProductPageSlice = {
 };
 
 function setLoading(
-  state: ICreateProductPageSlice,
+  state: IProductConfigurationPageSlice,
   action: PayloadAction<boolean>,
 ) {
   state.loading = action?.payload;
 }
 
 function refreshProducts(
-  state: ICreateProductPageSlice,
+  state: IProductConfigurationPageSlice,
   action: PayloadAction<ProductModel[]>,
 ) {
   state.products = action?.payload || state.products;
 }
 
+function refreshProduct(
+  state: IProductConfigurationPageSlice,
+  action: PayloadAction<ProductModel>,
+) {
+  state.product = action?.payload || state.product;
+}
+
 function refreshActiveCards(
-  state: ICreateProductPageSlice,
+  state: IProductConfigurationPageSlice,
   action: PayloadAction<any[]>,
 ) {
   state.activeCards = action?.payload || state.activeCards;
 }
 
 function refreshBrandsList(
-  state: ICreateProductPageSlice,
+  state: IProductConfigurationPageSlice,
   action: PayloadAction<BrandModel[]>,
 ) {
   state.brandsList = action?.payload || state.brandsList;
 }
 
 function refreshCategoriesList(
-  state: ICreateProductPageSlice,
+  state: IProductConfigurationPageSlice,
   action: PayloadAction<CategoryModel[]>,
 ) {
   state.categoriesList = action?.payload || state.categoriesList;
 }
 
 function refreshBrand(
-  state: ICreateProductPageSlice,
+  state: IProductConfigurationPageSlice,
   action: PayloadAction<BrandModel>,
 ) {
   state.brand = action?.payload || state.brand;
 }
 
 function refreshCategory(
-  state: ICreateProductPageSlice,
+  state: IProductConfigurationPageSlice,
   action: PayloadAction<CategoryModel>,
 ) {
   state.category = action?.payload || state.category;
 }
 
 function refreshContextId(
-  state: ICreateProductPageSlice,
+  state: IProductConfigurationPageSlice,
   action: PayloadAction<number>,
 ) {
   state.contextId = action?.payload || state.contextId;
 }
 
-const CreateProductPageSlice = createSlice({
+const ProductConfigurationPageSlice = createSlice({
   name: StoreSliceEnum.CREATE_PRODUCT,
   initialState,
   reducers: {
     setLoading,
     refreshProducts,
+    refreshProduct,
     refreshActiveCards,
     refreshBrandsList,
     refreshCategoriesList,
@@ -88,5 +97,6 @@ const CreateProductPageSlice = createSlice({
   },
 });
 
-export const CreateProductPageSliceActions = CreateProductPageSlice.actions;
-export default CreateProductPageSlice;
+export const ProductConfigurationPageSliceActions =
+  ProductConfigurationPageSlice.actions;
+export default ProductConfigurationPageSlice;

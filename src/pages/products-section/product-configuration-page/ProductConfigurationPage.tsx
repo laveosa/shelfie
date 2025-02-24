@@ -20,8 +20,8 @@ import useProductsPageService from "@/pages/products-section/products-page/usePr
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { ICreateProductPageSlice } from "@/const/interfaces/store-slices/ICreateProductPageSlice.ts";
-import { CreateProductPageSliceActions as actions } from "@/state/slices/CreateProductPageSlice.ts";
+import { IProductConfigurationPageSlice } from "@/const/interfaces/store-slices/IProductConfigurationPageSlice.ts";
+import { ProductConfigurationPageSliceActions as actions } from "@/state/slices/ProductConfigurationPageSlice.ts";
 import useProductConfigurationPageService from "@/pages/products-section/product-configuration-page/useProductConfigurationPageService.ts";
 import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
 import { useToast } from "@/hooks/useToast.ts";
@@ -30,7 +30,7 @@ export function ProductConfigurationPage() {
   const productsService = useProductsPageService();
   const service = useProductConfigurationPageService();
   const dispatch = useAppDispatch();
-  const state = useAppSelector<ICreateProductPageSlice>(
+  const state = useAppSelector<IProductConfigurationPageSlice>(
     StoreSliceEnum.CREATE_PRODUCT,
   );
   const productsState = useAppSelector<IProductsPageSlice>(
@@ -67,15 +67,17 @@ export function ProductConfigurationPage() {
     dispatch(actions.refreshActiveCards(updatedCards));
   };
 
-  function onSubmitProductData(data: any, resetForm: () => void) {
+  function onSubmitProductData(data: any) {
     service.createNewProductHandler(data).then((res) => {
       if (res.data) {
-        resetForm();
+        dispatch(actions.refreshProduct(res.data));
         productsService
           .getTheProductsForGridHandler(productsState.gridRequestModel)
           .then((res: GridModel) => {
             dispatch(productsActions.refreshProductsGridModel(res));
           });
+        navigate(`/products/product-configuration/${res.data.productId}`);
+        console.log("ProductId", res.data.productId);
         addToast({
           text: "Product created successfully",
           type: "success",
@@ -107,10 +109,7 @@ export function ProductConfigurationPage() {
             handleAction("openCreateBrandCategoryCard")
           }
           onSecondaryButtonClick={() => navigate("/products")}
-          onPrimaryButtonClick={(data, resetForm) =>
-            onSubmitProductData(data, resetForm)
-          }
-          resetForm={(reset) => reset()}
+          onPrimaryButtonClick={(data) => onSubmitProductData(data)}
         />
       )}
       {state.activeCards.includes("gallery") && (
