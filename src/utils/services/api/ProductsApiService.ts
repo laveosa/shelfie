@@ -105,8 +105,12 @@ export const ProductsApiService = createApi({
       query: () => ({
         url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/generate-code`,
       }),
-      // providesTags: (result: any) =>
-      //   apiConfig.providesTags(result, ApiServiceNameEnum.PRODUCTS),
+      providesTags: (_result, _error, code) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          code,
+        },
+      ],
     }),
     getSimpleListOfAllBrands: apiConfig.createQuery<any[], void>(builder, {
       query: () => ({

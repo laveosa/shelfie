@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import cs from "./CreateProductPage.module.scss";
-import CreateProductFormCard from "@/components/complex/custom-cards/create-product-form-card/CreateProductFormCard.tsx";
+import ProductConfigurationCard from "@/components/complex/custom-cards/create-product-form-card/ProductConfigurationCard.tsx";
 import CreateProductCategoryCard from "@/components/complex/custom-cards/create-product-category-card/CreateProductCategoryCard.tsx";
 import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
 import CreateProductCard from "@/components/complex/custom-cards/create-product-card/CreateProductCard.tsx";
@@ -22,9 +22,13 @@ import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPag
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { ICreateProductPageSlice } from "@/const/interfaces/store-slices/ICreateProductPageSlice.ts";
 import { CreateProductPageSliceActions as actions } from "@/state/slices/CreateProductPageSlice.ts";
+import useCreateProductPageService from "@/pages/products-section/create-product-page/useCreateProductPageService.ts";
+import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
+import { useToast } from "@/hooks/useToast.ts";
 
 export function CreateProductPage() {
-  const service = useProductsPageService();
+  const productsService = useProductsPageService();
+  const service = useCreateProductPageService();
   const dispatch = useAppDispatch();
   const state = useAppSelector<ICreateProductPageSlice>(
     StoreSliceEnum.CREATE_PRODUCT,
@@ -34,14 +38,25 @@ export function CreateProductPage() {
   );
   const sizeChartData = SizeChartFakeData;
   const navigate = useNavigate();
+  const { addToast } = useToast();
 
   useEffect(() => {
-    service
+    productsService
       .getTheProductsForGridHandler(productsState.gridRequestModel)
       .then((res: GridModel) => {
         dispatch(actions.refreshProducts(res.items));
       });
   }, [productsState]);
+
+  useEffect(() => {
+    service.getSimpleListOfAllBrandsHandler().then((res) => {
+      dispatch(actions.refreshBrandsList(res ? res : []));
+    });
+
+    service.getAllCategoriesByOrganizationHandler().then((res) => {
+      dispatch(actions.refreshCategoriesList(res ? res : []));
+    });
+  }, []);
 
   const handleAction = (identifier) => {
     const updatedCards = state.activeCards.includes(identifier)
@@ -51,19 +66,45 @@ export function CreateProductPage() {
     dispatch(actions.refreshActiveCards(updatedCards));
   };
 
+  function onSubmitProductData(data: any) {
+    service.createNewProductHandler(data).then((res) => {
+      if (res.data) {
+        productsService
+          .getTheProductsForGridHandler(productsState.gridRequestModel)
+          .then((res: GridModel) => {
+            dispatch(productsActions.refreshProductsGridModel(res));
+          });
+        addToast({
+          text: "Product created successfully",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: `${res.error.data.detail}`,
+          type: "error",
+        });
+      }
+    });
+  }
+
   return (
     <div className={cs.createProductPage}>
       {state.products.length > 0 && <ItemsCard data={state.products} />}
       <CreateProductCard onAction={handleAction} />
       {state.activeCards.includes("basicData") && (
-        <CreateProductFormCard
-          onSecondaryButtonClick={() => navigate("/products")}
+        <ProductConfigurationCard
+          brandsList={state.brandsList}
+          categoriesList={state.categoriesList}
+          onGenerateProductCode={service.generateProductCodeHandler}
+          onProductCodeChange={service.checkProductCodeHandler}
           onOpenCreateProductCategoryCard={() =>
             handleAction("openCreateProductCategoryCard")
           }
           onOpenCreateProductBrandCard={() =>
             handleAction("openCreateBrandCategoryCard")
           }
+          onSecondaryButtonClick={() => navigate("/products")}
+          onPrimaryButtonClick={(data) => onSubmitProductData(data)}
         />
       )}
       {state.activeCards.includes("gallery") && (

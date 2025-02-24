@@ -21,7 +21,7 @@ function setLoading(
   state: ICreateProductPageSlice,
   action: PayloadAction<boolean>,
 ) {
-  state.loading = action?.payload || state.loading;
+  state.loading = action?.payload;
 }
 
 function refreshProducts(

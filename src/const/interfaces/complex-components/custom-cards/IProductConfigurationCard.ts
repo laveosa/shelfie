@@ -1,0 +1,13 @@
+import { BrandModel } from "@/const/models/BrandModel.ts";
+import { CategoryModel } from "@/const/models/CategoryModel.ts";
+
+export interface IProductConfigurationCard {
+  brandsList?: BrandModel[];
+  categoriesList?: CategoryModel[];
+  onProductCodeChange?: (data: any) => Promise<any>;
+  onGenerateProductCode?: () => Promise<any>;
+  onOpenCreateProductCategoryCard?: () => void;
+  onOpenCreateProductBrandCard?: () => void;
+  onPrimaryButtonClick?: (data: any) => void;
+  onSecondaryButtonClick?: () => void;
+}
