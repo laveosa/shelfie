@@ -14,7 +14,7 @@ import useProductsPageService from "@/pages/products-section/products-page/usePr
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SheTabs from "@/components/complex/she-tabs/SheTabs.tsx";
-import { ProductsGridColumns } from "@/components/complex/grid/products-grid/ProductsGridColumns.tsx";
+import { createProductsGridColumns } from "@/components/complex/grid/products-grid/ProductsGridColumns.tsx";
 import { GridDataTable } from "@/components/complex/grid/grid-data-table/GridDataTable.tsx";
 import { GridModel } from "@/const/models/GridModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
@@ -27,6 +27,7 @@ import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { ProductsPageSliceActions as actions } from "@/state/slices/ProductsPageSlice.ts";
+import { ProductModel } from "@/const/models/ProductModel.ts";
 
 export function ProductsPage() {
   const dispatch = useAppDispatch();
@@ -48,6 +49,36 @@ export function ProductsPage() {
     service.getCategoriesForFilterHandler();
     service.getSortingOptionsForGridHandler();
   }, []);
+
+  const onAction = (
+    actionType: string,
+    rowId?: string,
+    setLoadingRow?: (rowId: string, loading: boolean) => void,
+    rowData?: ProductModel,
+  ) => {
+    setLoadingRow(rowId, true);
+    setTimeout(() => {
+      switch (actionType) {
+        case "image":
+          console.log(`Image row ${rowId}`);
+          break;
+        case "manage":
+          console.log(`Managing row ${rowId}`);
+          const productId = rowData?.productId;
+          navigate(`/products/product-configuration/${productId}`);
+          break;
+        case "active":
+          console.log(`Active row ${rowId}`);
+          break;
+        case "delete":
+          console.log(`Deleting row ${rowId}`);
+          break;
+      }
+      setLoadingRow(rowId, false);
+    }, 2000);
+  };
+
+  const ProductsGridColumns = createProductsGridColumns(onAction);
 
   function handleAddProduct() {
     navigate("/products/product-configuration");

@@ -25,6 +25,10 @@ import { ProductConfigurationPageSliceActions as actions } from "@/state/slices/
 import useProductConfigurationPageService from "@/pages/products-section/product-configuration-page/useProductConfigurationPageService.ts";
 import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
 import { useToast } from "@/hooks/useToast.ts";
+import { BrandModel } from "@/const/models/BrandModel.ts";
+import { CategoryModel } from "@/const/models/CategoryModel.ts";
+import { ProductModel } from "@/const/models/ProductModel.ts";
+import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 
 export function ProductConfigurationPage() {
   const productsService = useProductsPageService();
@@ -50,13 +54,30 @@ export function ProductConfigurationPage() {
   }, [productsState]);
 
   useEffect(() => {
-    service.getSimpleListOfAllBrandsHandler().then((res) => {
+    service.getSimpleListOfAllBrandsHandler().then((res: BrandModel[]) => {
       dispatch(actions.refreshBrandsList(res ? res : []));
     });
 
-    service.getAllCategoriesByOrganizationHandler().then((res) => {
-      dispatch(actions.refreshCategoriesList(res ? res : []));
-    });
+    service
+      .getAllCategoriesByOrganizationHandler()
+      .then((res: CategoryModel[]) => {
+        dispatch(actions.refreshCategoriesList(res ? res : []));
+      });
+
+    if (productId) {
+      service.getProductByIdHandler(productId).then((res: ProductModel) => {
+        dispatch(actions.refreshProduct(res));
+      });
+
+      service
+        .getCountersForProductsHandler(productId)
+        .then((res: ProductCounterModel) => {
+          dispatch(actions.refreshProductCounter(res));
+        });
+    } else {
+      dispatch(actions.refreshProductCounter({}));
+      dispatch(actions.refreshProduct({}));
+    }
   }, []);
 
   const handleAction = (identifier) => {
@@ -93,7 +114,11 @@ export function ProductConfigurationPage() {
   return (
     <div className={cs.createProductPage}>
       {state.products.length > 0 && <ItemsCard data={state.products} />}
-      <ProductMenuCard onAction={handleAction} productId={Number(productId)} />
+      <ProductMenuCard
+        onAction={handleAction}
+        productId={Number(productId)}
+        productCounter={state.productCounter}
+      />
       {state.activeCards.includes("basicData") && (
         <ProductConfigurationCard
           productId={Number(productId)}

@@ -15,6 +15,7 @@ import { IProductMenuCard } from "@/const/interfaces/complex-components/custom-c
 
 export default function ProductMenuCard({
   productId,
+  productCounter,
   onAction,
   ...props
 }: IProductMenuCard) {
@@ -51,7 +52,9 @@ export default function ProductMenuCard({
             </div>
             <div className={cs.textContainer}>
               <span className="she-text">Gallery</span>
-              <Badge className={cs.itemBadge}>0</Badge>
+              <Badge className={cs.itemBadge}>
+                {productCounter?.gallery ?? 0}
+              </Badge>
             </div>
           </div>
           <div
@@ -67,7 +70,9 @@ export default function ProductMenuCard({
             </div>
             <div className={cs.textContainer}>
               <span className="she-text">Variants</span>
-              <Badge className={cs.itemBadge}>0</Badge>
+              <Badge className={cs.itemBadge}>
+                {productCounter?.variants ?? 0}
+              </Badge>
             </div>
           </div>
           <div
@@ -83,7 +88,9 @@ export default function ProductMenuCard({
             </div>
             <div className={cs.textContainer}>
               <span className="she-text">Attributes</span>
-              <Badge className={cs.itemBadge}>0</Badge>
+              <Badge className={cs.itemBadge}>
+                {productCounter?.attributes ?? 0}
+              </Badge>
             </div>
           </div>
           <div

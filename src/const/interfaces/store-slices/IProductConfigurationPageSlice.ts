@@ -1,6 +1,7 @@
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
+import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 
 export interface IProductConfigurationPageSlice {
   loading?: boolean;
@@ -12,4 +13,5 @@ export interface IProductConfigurationPageSlice {
   contextId?: number;
   products?: ProductModel[];
   activeCards?: any[];
+  productCounter?: ProductCounterModel;
 }

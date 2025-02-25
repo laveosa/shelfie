@@ -3,8 +3,8 @@ import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 
 export interface ProductModel {
-  productId: number;
-  productAppId: string;
+  productId?: number;
+  productAppId?: string;
   image?: ImageModel;
   productCode?: string;
   productName?: string;
