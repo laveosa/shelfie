@@ -77,6 +77,7 @@ export function ProductConfigurationPage() {
     } else {
       dispatch(actions.refreshProductCounter({}));
       dispatch(actions.refreshProduct({}));
+      dispatch(actions.refreshActiveCards(["basicData"]));
     }
   }, [productId]);
 
