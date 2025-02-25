@@ -115,13 +115,14 @@ export function ProductConfigurationPage() {
     <div className={cs.createProductPage}>
       {state.products.length > 0 && <ItemsCard data={state.products} />}
       <ProductMenuCard
-        onAction={handleAction}
-        productId={Number(productId)}
+        title={productId ? "Manage Product" : "Create Product"}
         productCounter={state.productCounter}
+        onAction={handleAction}
+        productId={state.productId}
       />
       {state.activeCards.includes("basicData") && (
         <ProductConfigurationCard
-          productId={Number(productId)}
+          product={state.product}
           brandsList={state.brandsList}
           categoriesList={state.categoriesList}
           onGenerateProductCode={service.generateProductCodeHandler}

@@ -14,6 +14,7 @@ import SheProductCard from "@/components/complex/she-product-card/SheProductCard
 import { IProductMenuCard } from "@/const/interfaces/complex-components/custom-cards/IProductMenuCard.ts";
 
 export default function ProductMenuCard({
+  title,
   productId,
   productCounter,
   onAction,
@@ -22,7 +23,7 @@ export default function ProductMenuCard({
   return (
     <div>
       <SheProductCard
-        title="Create Product"
+        title={title}
         showToggleButton={true}
         className={cs.productMenuCard}
         {...props}
