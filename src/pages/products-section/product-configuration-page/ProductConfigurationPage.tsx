@@ -35,7 +35,7 @@ export function ProductConfigurationPage() {
   const service = useProductConfigurationPageService();
   const dispatch = useAppDispatch();
   const state = useAppSelector<IProductConfigurationPageSlice>(
-    StoreSliceEnum.CREATE_PRODUCT,
+    StoreSliceEnum.PRODUCT_CONFIGURATION,
   );
   const productsState = useAppSelector<IProductsPageSlice>(
     StoreSliceEnum.PRODUCTS,
@@ -78,15 +78,23 @@ export function ProductConfigurationPage() {
       dispatch(actions.refreshProductCounter({}));
       dispatch(actions.refreshProduct({}));
     }
-  }, []);
+  }, [productId]);
 
-  const handleAction = (identifier) => {
+  function handleAction(identifier) {
     const updatedCards = state.activeCards.includes(identifier)
       ? state.activeCards.filter((card) => card !== identifier)
       : [...state.activeCards, identifier];
 
     dispatch(actions.refreshActiveCards(updatedCards));
-  };
+  }
+
+  function handleCloseProductConfigurationCard() {
+    if (productId) {
+      handleAction("basicData");
+    } else {
+      navigate("/products");
+    }
+  }
 
   function onSubmitProductData(data: any) {
     service.createNewProductHandler(data).then((res) => {
@@ -118,7 +126,7 @@ export function ProductConfigurationPage() {
         title={productId ? "Manage Product" : "Create Product"}
         productCounter={state.productCounter}
         onAction={handleAction}
-        productId={state.productId}
+        productId={Number(productId)}
       />
       {state.activeCards.includes("basicData") && (
         <ProductConfigurationCard
@@ -133,7 +141,7 @@ export function ProductConfigurationPage() {
           onOpenCreateProductBrandCard={() =>
             handleAction("openCreateBrandCategoryCard")
           }
-          onSecondaryButtonClick={() => navigate("/products")}
+          onSecondaryButtonClick={handleCloseProductConfigurationCard}
           onPrimaryButtonClick={(data) => onSubmitProductData(data)}
         />
       )}

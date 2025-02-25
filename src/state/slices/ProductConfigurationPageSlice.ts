@@ -91,7 +91,7 @@ function refreshProductCounter(
 }
 
 const ProductConfigurationPageSlice = createSlice({
-  name: StoreSliceEnum.CREATE_PRODUCT,
+  name: StoreSliceEnum.PRODUCT_CONFIGURATION,
   initialState,
   reducers: {
     setLoading,

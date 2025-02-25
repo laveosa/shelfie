@@ -63,7 +63,6 @@ export function ProductsPage() {
           console.log(`Image row ${rowId}`);
           break;
         case "manage":
-          console.log(`Managing row ${rowId}`);
           const productId = rowData?.productId;
           navigate(`/products/product-configuration/${productId}`);
           break;

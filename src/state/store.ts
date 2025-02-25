@@ -27,7 +27,8 @@ export const store = configureStore({
     [StoreSliceEnum.MESSENGER]: MessengerPageSlice.reducer,
     [StoreSliceEnum.ORDERS]: OrdersPageSlice.reducer,
     [StoreSliceEnum.PRODUCTS]: ProductsPageSlice.reducer,
-    [StoreSliceEnum.CREATE_PRODUCT]: ProductConfigurationPageSlice.reducer,
+    [StoreSliceEnum.PRODUCT_CONFIGURATION]:
+      ProductConfigurationPageSlice.reducer,
     [StoreSliceEnum.PROFILE]: ProfilePageSlice.reducer,
     [StoreSliceEnum.SETTINGS]: SettingsPageSlice.reducer,
     [StoreSliceEnum.SUPPORT]: SupportPageSlice.reducer,

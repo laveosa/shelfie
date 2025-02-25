@@ -16,7 +16,7 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 export default function CreateProductBrandCard({ ...props }) {
   const service = useProductConfigurationPageService();
   const state = useAppSelector<IProductConfigurationPageSlice>(
-    StoreSliceEnum.CREATE_PRODUCT,
+    StoreSliceEnum.PRODUCT_CONFIGURATION,
   );
   const dispatch = useAppDispatch();
   const { addToast } = useToast();

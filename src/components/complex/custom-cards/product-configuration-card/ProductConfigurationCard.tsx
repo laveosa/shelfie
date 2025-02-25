@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Plus, WandSparkles } from "lucide-react";
 import { useForm } from "react-hook-form";
 
@@ -37,14 +37,27 @@ export default function ProductConfigurationCard({
 }: IProductConfigurationCard) {
   const form = useForm({
     defaultValues: {
-      name: product?.productName || "",
-      productCode: product?.productCode || "",
-      productBarcode: product?.barcode || "",
-      categoryId: product?.categoryId || null,
+      name: "",
+      productCode: "",
+      productBarcode: "",
+      categoryId: null,
       brandId: null,
       isActive: true,
     },
   });
+
+  useEffect(() => {
+    if (product) {
+      form.reset({
+        name: product.productName,
+        productCode: product.productCode,
+        productBarcode: "",
+        categoryId: product.categoryId,
+        brandId: null,
+        isActive: null,
+      });
+    }
+  }, [product]);
 
   function onGenerateCode() {
     onGenerateProductCode().then((res: ProductCodeModel) => {
