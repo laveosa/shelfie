@@ -31,7 +31,7 @@ export function createProductsGridColumns(
             onClick={() => onAction("image", row.id, meta?.setLoadingRow)}
           >
             <img
-              src={image?.photoUrl || placeholderImage}
+              src={image?.thumbnailUrl || placeholderImage}
               alt={row.getValue("productName")}
               className="object-cover rounded-md w-full h-full"
               onError={(e) => {
