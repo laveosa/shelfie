@@ -68,7 +68,7 @@ export const ProductPhotosGridColumns: ColumnDef<ProductModel>[] = [
           onClick={() => onAction("image", row.id, meta?.setLoadingRow)}
         >
           <img
-            src={photoUrl.photoUrl}
+            src={photoUrl.thumbnailUrl}
             alt={row.getValue("id")}
             className="object-cover rounded-md w-full h-full"
             onError={(e) => {
