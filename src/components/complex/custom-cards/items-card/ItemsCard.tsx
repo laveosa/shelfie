@@ -19,7 +19,7 @@ export default function ItemsCard({ data, ...props }) {
             <div key={item.id || index}>
               <div className={cs.productsListItem}>
                 <img
-                  src={item.image?.photoUrl || placeholderImage}
+                  src={item.image?.thumbnailUrl || placeholderImage}
                   alt={item.productName}
                   className={cs.productItemImage}
                 />

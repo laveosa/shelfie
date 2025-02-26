@@ -79,6 +79,10 @@ export function ProductConfigurationPage() {
       dispatch(actions.refreshProduct({}));
       dispatch(actions.refreshActiveCards(["basicData"]));
     }
+
+    return () => {
+      dispatch(actions.refreshActiveCards([]));
+    };
   }, [productId]);
 
   function handleAction(identifier: string) {
