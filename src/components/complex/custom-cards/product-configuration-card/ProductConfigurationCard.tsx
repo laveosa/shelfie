@@ -77,7 +77,7 @@ export default function ProductConfigurationCard({
     <div>
       <SheProductCard
         view="card"
-        title={product.productId ? "Manage Product" : "Create Product"}
+        title={product.productId ? "Basic Product Data" : "Create Product"}
         showPrimaryButton={true}
         primaryButtonTitle={product?.productId ? "Save" : "Add Product"}
         showSecondaryButton={true}
