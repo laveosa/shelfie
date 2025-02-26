@@ -81,17 +81,44 @@ export function ProductConfigurationPage() {
     }
   }, [productId]);
 
-  function handleAction(identifier) {
-    const updatedCards = state.activeCards.includes(identifier)
-      ? state.activeCards.filter((card) => card !== identifier)
-      : [...state.activeCards, identifier];
+  function handleAction(identifier: string) {
+    const cardGroups = {
+      basicData: ["basicData", "createCategoryCard", "createBrandCard"],
+      gallery: ["gallery"],
+      variants: ["variants", "chooseVariantTraitsCard"],
+      sizeChart: ["sizeChart", "createSizeChartCategoryCard"],
+      attributes: ["attributes", "createAttributeCard"],
+    };
 
+    const groupToClose = Object.keys(cardGroups).find((group) =>
+      cardGroups[group].includes(identifier),
+    );
+
+    if (groupToClose) {
+      const updatedCards = state.activeCards.filter((card) =>
+        cardGroups[groupToClose].includes(card),
+      );
+      updatedCards.push(identifier);
+      dispatch(actions.refreshActiveCards(updatedCards));
+    } else {
+      const updatedCards = state.activeCards.includes(identifier)
+        ? state.activeCards.filter((card) => card !== identifier)
+        : [...state.activeCards, identifier];
+
+      dispatch(actions.refreshActiveCards(updatedCards));
+    }
+  }
+
+  function closeCard(identifier) {
+    const updatedCards = state.activeCards.filter(
+      (card) => card !== identifier,
+    );
     dispatch(actions.refreshActiveCards(updatedCards));
   }
 
   function handleCloseProductConfigurationCard() {
     if (productId) {
-      handleAction("basicData");
+      closeCard("basicData");
     } else {
       navigate("/products");
     }
@@ -137,11 +164,9 @@ export function ProductConfigurationPage() {
           onGenerateProductCode={service.generateProductCodeHandler}
           onProductCodeChange={service.checkProductCodeHandler}
           onOpenCreateProductCategoryCard={() =>
-            handleAction("openCreateProductCategoryCard")
+            handleAction("createCategoryCard")
           }
-          onOpenCreateProductBrandCard={() =>
-            handleAction("openCreateBrandCategoryCard")
-          }
+          onOpenCreateProductBrandCard={() => handleAction("createBrandCard")}
           onSecondaryButtonClick={handleCloseProductConfigurationCard}
           onPrimaryButtonClick={(data) => onSubmitProductData(data)}
         />
@@ -149,24 +174,23 @@ export function ProductConfigurationPage() {
       {state.activeCards.includes("gallery") && (
         <ProductPhotosCard
           width={"400px"}
-          onSecondaryButtonClick={() => handleAction("gallery")}
+          onSecondaryButtonClick={() => closeCard("gallery")}
           data={state.products}
         />
       )}
       {state.activeCards.includes("variants") && (
         <ManageVariantsCard
-          onChooseVariantTraits={() =>
-            handleAction("openChooseVariantTraitsCard")
-          }
+          onChooseVariantTraits={() => handleAction("chooseVariantTraitsCard")}
+          onSecondaryButtonClick={() => closeCard("variants")}
         />
       )}
       {state.activeCards.includes("sizeChart") && (
         <SizeChartCard
           data={sizeChartData}
           onOpenCreateProductCategoryCard={() =>
-            handleAction("openCreateProductCategoryCard")
+            handleAction("createSizeChartCategoryCard")
           }
-          onSecondaryButtonClick={() => handleAction("sizeChart")}
+          onSecondaryButtonClick={() => closeCard("sizeChart")}
         />
       )}
       {state.activeCards.includes("attributes") && (
@@ -174,31 +198,36 @@ export function ProductConfigurationPage() {
           onCreateAttributeHandle={() => {
             handleAction("createAttributeCard");
           }}
-          onSecondaryButtonClick={() => handleAction("attributes")}
+          onSecondaryButtonClick={() => closeCard("attributes")}
         />
       )}
       {state.activeCards.includes("createAttributeCard") && (
         <CreateAttributeCard
           data={state.products}
-          onSecondaryButtonClick={() => handleAction("createAttributeCard")}
+          onSecondaryButtonClick={() => closeCard("createAttributeCard")}
         />
       )}
-      {state.activeCards.includes("openCreateProductCategoryCard") && (
+      {state.activeCards.includes("createCategoryCard") && (
+        <CreateProductCategoryCard
+          onSecondaryButtonClick={() => closeCard("createCategoryCard")}
+        />
+      )}
+      {state.activeCards.includes("createSizeChartCategoryCard") && (
         <CreateProductCategoryCard
           onSecondaryButtonClick={() =>
-            handleAction("openCreateProductCategoryCard")
+            closeCard("createSizeChartCategoryCard")
           }
         />
       )}
-      {state.activeCards.includes("openCreateBrandCategoryCard") && (
+      {state.activeCards.includes("createBrandCard") && (
         <CreateProductBrandCard
-          onSecondaryButtonClick={() =>
-            handleAction("openCreateBrandCategoryCard")
-          }
+          onSecondaryButtonClick={() => closeCard("createBrandCard")}
         />
       )}
-      {state.activeCards.includes("openChooseVariantTraitsCard") && (
-        <ChooseVariantTraitsCard />
+      {state.activeCards.includes("chooseVariantTraitsCard") && (
+        <ChooseVariantTraitsCard
+          onSecondaryButtonClick={() => closeCard("chooseVariantTraitsCard")}
+        />
       )}
     </div>
   );

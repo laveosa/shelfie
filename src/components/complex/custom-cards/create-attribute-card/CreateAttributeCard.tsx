@@ -64,7 +64,7 @@ export default function CreateAttributeCard({ data, ...props }) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {data.items.map((option) => (
+                        {data?.items?.map((option) => (
                           <SelectItem
                             key={option.id}
                             value={option.productName}
