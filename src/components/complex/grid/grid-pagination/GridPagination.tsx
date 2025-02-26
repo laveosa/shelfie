@@ -19,7 +19,7 @@ export function GridPagination() {
     const pages = [];
 
     // Always show the first page
-    if (currentPage > 1) {
+    if (currentPage > 2) {
       pages.push(1);
     }
 
@@ -45,7 +45,7 @@ export function GridPagination() {
     }
 
     // Always show the last page
-    if (totalPages > 1) {
+    if (totalPages > 1 && currentPage < totalPages - 1) {
       pages.push(totalPages);
     }
 
