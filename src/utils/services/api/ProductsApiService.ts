@@ -10,6 +10,7 @@ import { BrandModel } from "@/const/models/BrandModel.ts";
 import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
+import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 
 const apiConfig = new ApiConfigurationService(ApiUrlEnum.PRODUCTS_BASE_URL);
 
@@ -105,8 +106,12 @@ export const ProductsApiService = createApi({
       query: () => ({
         url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/generate-code`,
       }),
-      // providesTags: (result: any) =>
-      //   apiConfig.providesTags(result, ApiServiceNameEnum.PRODUCTS),
+      providesTags: (_result, _error, code) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          code,
+        },
+      ],
     }),
     getSimpleListOfAllBrands: apiConfig.createQuery<any[], void>(builder, {
       query: () => ({
@@ -219,6 +224,20 @@ export const ProductsApiService = createApi({
         },
       ],
     }),
+    getCountersForProducts: apiConfig.createQuery<ProductCounterModel, number>(
+      builder,
+      {
+        query: (id: number) => ({
+          url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/${id}/counters`,
+        }),
+        providesTags: (_result, _error, result) => [
+          {
+            type: ApiServiceNameEnum.PRODUCTS,
+            result,
+          },
+        ],
+      },
+    ),
   }),
 });
 

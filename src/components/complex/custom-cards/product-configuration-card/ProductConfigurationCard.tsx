@@ -16,98 +16,70 @@ import {
   SelectValue,
 } from "@/components/ui/select.tsx";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
-import cs from "./CreateProductFormCard.module.scss";
+import cs from "./ProductConfigurationCard.module.scss";
 import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import useCreateProductPageService from "@/pages/products-section/create-product-page/useCreateProductPageService.ts";
 import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
 import { Switch } from "@/components/ui/switch.tsx";
-import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
-import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
-import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { GridModel } from "@/const/models/GridModel.ts";
-import { CreateProductPageSliceActions as actions } from "@/state/slices/CreateProductPageSlice.ts";
-import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
-import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
-import { useToast } from "@/hooks/useToast.ts";
-import { ICreateProductPageSlice } from "@/const/interfaces/store-slices/ICreateProductPageSlice.ts";
+import { IProductConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IProductConfigurationCard.ts";
 
-export default function CreateProductFormCard({
+export default function ProductConfigurationCard({
+  product,
+  brandsList,
+  categoriesList,
+  onProductCodeChange,
+  onGenerateProductCode,
   onOpenCreateProductCategoryCard,
   onOpenCreateProductBrandCard,
+  onPrimaryButtonClick,
   ...props
-}) {
-  const dispatch = useAppDispatch();
-  const state = useAppSelector<ICreateProductPageSlice>(
-    StoreSliceEnum.CREATE_PRODUCT,
-  );
-  const productsState = useAppSelector<IProductsPageSlice>(
-    StoreSliceEnum.PRODUCTS,
-  );
-  const service = useCreateProductPageService();
-  const productService = useProductsPageService();
-  const { addToast } = useToast();
+}: IProductConfigurationCard) {
   const form = useForm({
     defaultValues: {
       name: "",
       productCode: "",
       productBarcode: "",
       categoryId: null,
-      brandId: "",
+      brandId: null,
       isActive: true,
     },
   });
 
   useEffect(() => {
-    service.getSimpleListOfAllBrandsHandler().then((res) => {
-      dispatch(actions.refreshBrandsList(res ? res : [])); // Dispatch action to set brands
-    });
+    if (product) {
+      form.reset({
+        name: product.productName,
+        productCode: product.productCode,
+        productBarcode: "",
+        categoryId: product.categoryId,
+        brandId: null,
+        isActive: null,
+      });
+    }
+  }, [product]);
 
-    service.getAllCategoriesByOrganizationHandler().then((res) => {
-      dispatch(actions.refreshCategoriesList(res ? res : [])); // Dispatch action to set categories
-    });
-  }, []);
-
-  function onAction() {
-    service.generateProductCodeHandler().then((res: ProductCodeModel) => {
+  function onGenerateCode() {
+    onGenerateProductCode().then((res: ProductCodeModel) => {
       form.setValue("productCode", res.code);
     });
   }
 
   function onCheckCode(value: string) {
-    service.checkProductCodeHandler({ code: value }).then(() => {});
+    onProductCodeChange({ code: value }).then(() => {});
   }
 
   function onSubmit(data) {
-    service.createNewProductHandler(data).then((res) => {
-      if (res.data) {
-        form.reset();
-        productService
-          .getTheProductsForGridHandler(productsState.gridRequestModel)
-          .then((res: GridModel) => {
-            dispatch(productsActions.refreshProductsGridModel(res));
-          });
-        addToast({
-          text: "Product created successfully",
-          type: "success",
-        });
-      } else {
-        addToast({
-          text: `${res.error.data.detail}`,
-          type: "error",
-        });
-      }
-    });
+    onPrimaryButtonClick(data);
   }
 
   return (
     <div>
       <SheProductCard
         view="card"
-        title="Create Products"
+        title={product.productId ? "Basic Product Data" : "Create Product"}
         showPrimaryButton={true}
-        primaryButtonTitle="Add Product"
+        primaryButtonTitle={product?.productId ? "Save" : "Add Product"}
         showSecondaryButton={true}
         secondaryButtonTitle="Cancel"
         className={cs.createProductFormCard}
@@ -161,7 +133,7 @@ export default function CreateProductFormCard({
                 icon={WandSparkles}
                 type="button"
                 variant="outline"
-                onClick={onAction}
+                onClick={onGenerateCode}
               />
             </div>
             <div className={cs.createProductFormRow}>
@@ -200,7 +172,7 @@ export default function CreateProductFormCard({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {state.categoriesList.map((option) => (
+                        {categoriesList.map((option) => (
                           <SelectItem
                             key={option.categoryId}
                             value={option.categoryId.toString()}
@@ -241,7 +213,7 @@ export default function CreateProductFormCard({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {state.brandsList.map((option) => (
+                        {brandsList.map((option) => (
                           <SelectItem
                             key={option.brandId}
                             value={option.brandId.toString()}

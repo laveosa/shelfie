@@ -6,7 +6,7 @@ import { ProductsPageSliceActions as productsAction } from "@/state/slices/Produ
 import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 
-export default function useCreateProductPageService() {
+export default function useProductConfigurationPageService() {
   const productsState = useAppSelector<IProductsPageSlice>(
     StoreSliceEnum.PRODUCTS,
   );
@@ -25,12 +25,21 @@ export default function useCreateProductPageService() {
   const [createNewCategory] = ProductsApiHooks.useCreateNewCategoryMutation();
   const [createBrand] = ProductsApiHooks.useCreateBrandMutation();
   const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
+  const [getProductById] = ProductsApiHooks.useLazyGetProductByIdQuery();
+  const [getCountersForProducts] =
+    ProductsApiHooks.useLazyGetCountersForProductsQuery();
 
   function getAllProductsHandler() {
     dispatch(productsAction.setLoading(true));
     return getAllProducts(null).then((res: any) => {
       dispatch(productsAction.setLoading(false));
       dispatch(productsAction.refreshProducts(res.data));
+      return res.data;
+    });
+  }
+
+  function getProductByIdHandler(id) {
+    return getProductById(id).then((res: any) => {
       return res.data;
     });
   }
@@ -95,9 +104,16 @@ export default function useCreateProductPageService() {
     });
   }
 
+  function getCountersForProductsHandler(id: number) {
+    return getCountersForProducts(id).then((res: any) => {
+      return res.data;
+    });
+  }
+
   return {
     ...productsState,
     getAllProductsHandler,
+    getProductByIdHandler,
     generateProductCodeHandler,
     getSimpleListOfAllBrandsHandler,
     getAllCategoriesByOrganizationHandler,
@@ -108,5 +124,6 @@ export default function useCreateProductPageService() {
     createNewCategoryHandler,
     createBrandHandler,
     uploadPhotoHandler,
+    getCountersForProductsHandler,
   };
 }

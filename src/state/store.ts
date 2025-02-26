@@ -17,7 +17,7 @@ import { AuthApiService } from "@/utils/services/api/AuthApiService.ts";
 import { DictionaryApiService } from "@/utils/services/api/DictionaryApiService.ts";
 import { UsersApiService } from "@/utils/services/api/UsersApiService.ts";
 import { AssetsApiService } from "@/utils/services/api/AssetsApiService.ts";
-import CreateProductPageSlice from "@/state/slices/CreateProductPageSlice.ts";
+import ProductConfigurationPageSlice from "@/state/slices/ProductConfigurationPageSlice.ts";
 
 export const store = configureStore({
   reducer: {
@@ -27,7 +27,8 @@ export const store = configureStore({
     [StoreSliceEnum.MESSENGER]: MessengerPageSlice.reducer,
     [StoreSliceEnum.ORDERS]: OrdersPageSlice.reducer,
     [StoreSliceEnum.PRODUCTS]: ProductsPageSlice.reducer,
-    [StoreSliceEnum.CREATE_PRODUCT]: CreateProductPageSlice.reducer,
+    [StoreSliceEnum.PRODUCT_CONFIGURATION]:
+      ProductConfigurationPageSlice.reducer,
     [StoreSliceEnum.PROFILE]: ProfilePageSlice.reducer,
     [StoreSliceEnum.SETTINGS]: SettingsPageSlice.reducer,
     [StoreSliceEnum.SUPPORT]: SupportPageSlice.reducer,

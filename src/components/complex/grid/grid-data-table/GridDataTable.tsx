@@ -60,6 +60,12 @@ export function GridDataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    initialState: {
+      pagination: {
+        pageSize: gridModel.pager.pageSize,
+      },
+    },
+    manualPagination: true,
     meta: {
       setLoadingRow: (rowId: string, loading: boolean) => {
         setLoadingRows((prev) => {

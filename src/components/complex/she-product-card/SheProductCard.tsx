@@ -31,18 +31,11 @@ export default function SheProductCard({
   onPrimaryButtonClick,
   onSecondaryButtonClick,
 }: ISheProductCard) {
-  const [isVisible, setIsVisible] = useState(true);
   const [isMinimized, setIsMinimized] = useState(false);
 
   function onMinimizeCardHandler() {
     setIsMinimized((prev) => !prev);
   }
-
-  function onCloseCardHandler() {
-    setIsVisible(false);
-  }
-
-  if (!isVisible) return null;
 
   return (
     <div
@@ -74,7 +67,7 @@ export default function SheProductCard({
               className={cs.closeButton}
               icon={X}
               variant="ghost"
-              onClick={onCloseCardHandler}
+              onClick={onSecondaryButtonClick}
               disabled={loading}
             />
           )}

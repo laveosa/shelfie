@@ -43,6 +43,7 @@ export default function GridItemsFilter<T>({
   function onResetHandle() {
     setSelectedIds([]);
     onSelectionChange([]);
+    setDropdownOpen(false);
   }
 
   function onApplyHandle() {
@@ -67,22 +68,26 @@ export default function GridItemsFilter<T>({
         </SheButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className={cs.dropdownMenuContent}>
-        <DropdownMenuLabel>{columnName}</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        {items.map((item) => (
-          <DropdownMenuCheckboxItem
-            key={getId(item)}
-            className="capitalize"
-            checked={selectedIds.includes(getId(item))}
-            onCheckedChange={() => handleSelect(getId(item))}
-            onSelect={(event) => {
-              event.preventDefault();
-            }}
-          >
-            {getName(item)}
-          </DropdownMenuCheckboxItem>
-        ))}
-        <DropdownMenuSeparator />
+        <div className={cs.itemsList}>
+          <DropdownMenuLabel>{columnName}</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <div className={cs.itemsContainer}>
+            {items.map((item, index) => (
+              <DropdownMenuCheckboxItem
+                key={`${getId(item)}-${index}`}
+                className="capitalize"
+                checked={selectedIds.includes(getId(item))}
+                onCheckedChange={() => handleSelect(getId(item))}
+                onSelect={(event) => {
+                  event.preventDefault();
+                }}
+              >
+                {getName(item)}
+              </DropdownMenuCheckboxItem>
+            ))}
+          </div>
+          <DropdownMenuSeparator />
+        </div>
         <div className={cs.buttonBlock}>
           <SheButton onClick={onResetHandle} variant="outline">
             Default

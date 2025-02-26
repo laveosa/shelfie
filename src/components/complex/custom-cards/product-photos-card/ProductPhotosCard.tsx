@@ -34,7 +34,7 @@ export default function ProductPhotosCard({ data, ...props }) {
           </div>
           <input type="file" id="fileInput" onChange={handleFileUpload} />
         </div>
-        {data.items.length > 0 && (
+        {data?.items?.length > 0 && (
           <div className={cs.managePhotos}>
             <div className={`${cs.managePhotosTitle} she-title`}>
               Manage Photos
