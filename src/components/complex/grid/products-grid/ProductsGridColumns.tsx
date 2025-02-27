@@ -2,14 +2,11 @@ import { ColumnDef } from "@tanstack/react-table";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import ProductsGridColumnActions from "@/components/complex/grid/products-grid/ProductsGridColumnActions.tsx";
 import { ImageModel } from "@/const/models/ImageModel.ts";
-import { ProductModel } from "@/const/models/ProductModel.ts";
 import placeholderImage from "@/assets/images/placeholder-image.png";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 
-export function createProductsGridColumns(
-  onAction: any,
-): ColumnDef<ProductModel>[] {
+export function createProductsGridColumns(onAction: any): ColumnDef<any>[] {
   return [
     {
       accessorKey: "productId",

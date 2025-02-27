@@ -15,7 +15,6 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SheTabs from "@/components/complex/she-tabs/SheTabs.tsx";
 import { createProductsGridColumns } from "@/components/complex/grid/products-grid/ProductsGridColumns.tsx";
-import { GridDataTable } from "@/components/complex/grid/grid-data-table/GridDataTable.tsx";
 import { GridModel } from "@/const/models/GridModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
@@ -28,6 +27,7 @@ import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { ProductsPageSliceActions as actions } from "@/state/slices/ProductsPageSlice.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
+import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 
 export function ProductsPage() {
   const dispatch = useAppDispatch();
@@ -165,12 +165,15 @@ export function ProductsPage() {
             </TabsList>
           </div>
           <TabsContent value="products">
-            <GridDataTable
+            <DndGridDataTable
               columns={ProductsGridColumns}
               data={state.productsGridModel.items}
               gridModel={state.productsGridModel}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
+              itemId={state.productsGridModel.items.map(
+                (item) => item.productId,
+              )}
               onApplyColumns={onApplyColumnsHandler}
               onDefaultColumns={onResetColumnsHandler}
               onGridRequestChange={handleGridRequestChange}
@@ -190,7 +193,7 @@ export function ProductsPage() {
                 getId={(item: CategoryModel) => item.categoryId}
                 getName={(item: CategoryModel) => item.categoryName}
               />
-            </GridDataTable>
+            </DndGridDataTable>
           </TabsContent>
           <TabsContent value="variants">
             {/*<GridDataTable columns={productsGridColumns} data={variantsData} />*/}
