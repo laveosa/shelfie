@@ -166,6 +166,7 @@ export function ProductsPage() {
           </div>
           <TabsContent value="products">
             <DndGridDataTable
+              enableDnd
               columns={ProductsGridColumns}
               data={state.productsGridModel.items}
               gridModel={state.productsGridModel}

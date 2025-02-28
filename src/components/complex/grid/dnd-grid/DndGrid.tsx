@@ -60,25 +60,20 @@ const SortableHandle = ({ listeners }) => {
         textAlign: "center",
       }}
     >
-      <span role="img" aria-label="drag handle">
-        ☰
-      </span>{" "}
-      {/* You can use an icon here */}
+      <button className="DragHandle" {...listeners}>
+        <svg viewBox="0 0 20 20" width="12">
+          <path d="M7 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 2zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 14zm6-8a2 2 0 1 0-.001-4.001A2 2 0 0 0 13 6zm0 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 14z"></path>
+        </svg>
+      </button>
     </TableCell>
   );
 };
 
 const DraggableRow = ({ row, loadingRows }) => {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    isDragging,
-    transform,
-    transition,
-  } = useSortable({
-    id: row.original.id,
-  });
+  const { attributes, listeners, setNodeRef, isDragging, transform } =
+    useSortable({
+      id: row.original.id,
+    });
 
   return (
     <TableRow
@@ -87,16 +82,13 @@ const DraggableRow = ({ row, loadingRows }) => {
       {...listeners}
       key={row.id}
       data-state={row.getIsSelected() && "selected"}
-      className={
-        isDragging
-          ? "bg-blue-100 shadow-lg"
-          : loadingRows.has(row.id)
-            ? "bg-green-50 opacity-70"
-            : ""
-      }
+      className={`
+        ${isDragging ? "bg-blue-100 shadow-lg" : ""} 
+        ${loadingRows.has(row.id) ? "bg-green-50 opacity-70" : ""} 
+      `}
       style={{
         transform: CSS.Transform.toString(transform),
-        transition,
+        background: "white",
       }}
     >
       <SortableHandle listeners={listeners} />
@@ -143,19 +135,12 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
 
   const handleDragEnd = (event) => {
     const { active, over } = event;
-
-    console.log("Active Item:", active?.id);
-    console.log("Over Target:", over?.id);
-
-    if (!over) {
-      console.warn("Drag ended but no valid drop target found.");
-      return;
-    }
-
     const oldIndex = items.findIndex((item) => item.id === active.id);
     const newIndex = items.findIndex((item) => item.id === over.id);
 
-    console.log("Old Index:", oldIndex, "New Index:", newIndex);
+    if (!over) {
+      return;
+    }
 
     if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
       const updatedItems = arrayMove(items, oldIndex, newIndex);
@@ -232,7 +217,7 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
                 items={items.map((item) => item.id)}
                 strategy={verticalListSortingStrategy}
               >
-                <TableBody>
+                <TableBody style={{ background: "#f4f4f5" }}>
                   {table.getRowModel().rows?.length ? (
                     table
                       .getRowModel()
