@@ -172,9 +172,6 @@ export function ProductsPage() {
               gridModel={state.productsGridModel}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
-              itemId={state.productsGridModel.items.map(
-                (item) => item.productId,
-              )}
               onApplyColumns={onApplyColumnsHandler}
               onDefaultColumns={onResetColumnsHandler}
               onGridRequestChange={handleGridRequestChange}

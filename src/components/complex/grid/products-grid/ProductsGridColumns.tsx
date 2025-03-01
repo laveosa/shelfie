@@ -139,15 +139,21 @@ export function createProductsGridColumns(onAction: any): ColumnDef<any>[] {
           isRowLoading: (rowId: string) => boolean;
         };
 
+        const handleManageClick = (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          onAction("manage", row.id, meta?.setLoadingRow, row.original);
+        };
+
         return (
-          <SheButton
-            onClick={() =>
-              onAction("manage", row.id, meta?.setLoadingRow, row.original)
-            }
-            disabled={meta?.isRowLoading(row.id)}
-          >
-            Manage
-          </SheButton>
+          <div onClick={(e) => e.stopPropagation()}>
+            <SheButton
+              onClick={handleManageClick}
+              disabled={meta?.isRowLoading(row.id)}
+            >
+              Manage
+            </SheButton>
+          </div>
         );
       },
     },
