@@ -209,7 +209,7 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
-                  {enableDnd && <TableHead>Sort</TableHead>}
+                  {enableDnd && <TableHead></TableHead>}
                   {headerGroup.headers.map((header) => (
                     <TableHead key={header.id}>
                       {header.isPlaceholder

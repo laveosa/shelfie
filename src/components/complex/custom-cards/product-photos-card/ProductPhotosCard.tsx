@@ -3,8 +3,8 @@ import React from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ProductPhotosCard.module.scss";
-import { GridDataTable } from "@/components/complex/grid/grid-data-table/GridDataTable.tsx";
 import { ProductPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/ProductPhotosGridColumns.tsx";
+import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 
 export default function ProductPhotosCard({ data, ...props }) {
   function handleFileUpload(event) {
@@ -40,7 +40,7 @@ export default function ProductPhotosCard({ data, ...props }) {
               Manage Photos
             </div>
             <div className={cs.managePhotosGrid}>
-              <GridDataTable
+              <DndGridDataTable
                 showHeader={false}
                 columns={ProductPhotosGridColumns}
                 data={data.items}
