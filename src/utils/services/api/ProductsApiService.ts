@@ -238,6 +238,20 @@ export const ProductsApiService = createApi({
         ],
       },
     ),
+    getProductPhotos: apiConfig.createQuery<ProductCounterModel, number>(
+      builder,
+      {
+        query: (id: number) => ({
+          url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/${id}/photos`,
+        }),
+        providesTags: (_result, _error, result) => [
+          {
+            type: ApiServiceNameEnum.PRODUCTS,
+            result,
+          },
+        ],
+      },
+    ),
   }),
 });
 

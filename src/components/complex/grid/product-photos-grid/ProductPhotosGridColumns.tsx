@@ -1,9 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { GripVertical } from "lucide-react";
 
 import { Switch } from "@/components/ui/switch.tsx";
 import ProductsGridColumnActions from "@/components/complex/grid/products-grid/ProductsGridColumnActions.tsx";
-import { ImageModel } from "@/const/models/ImageModel.ts";
 
 function onAction(
   actionType: string,
@@ -41,21 +39,10 @@ function onAction(
 
 export const ProductPhotosGridColumns: ColumnDef<any>[] = [
   {
-    accessorKey: "id",
-    header: "",
-    cell: () => {
-      return (
-        <div>
-          <GripVertical />
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "image",
+    accessorKey: "thumbnailUrl",
     header: "Image",
     cell: ({ row, table }) => {
-      const photoUrl: ImageModel = row.getValue("image");
+      const photoUrl: string = row.getValue("thumbnailUrl");
       const meta = table.options.meta as {
         setLoadingRow: (rowId: string, loading: boolean) => void;
         isRowLoading: (rowId: string) => boolean;
@@ -67,7 +54,7 @@ export const ProductPhotosGridColumns: ColumnDef<any>[] = [
           onClick={() => onAction("image", row.id, meta?.setLoadingRow)}
         >
           <img
-            src={photoUrl.thumbnailUrl}
+            src={photoUrl}
             alt={row.getValue("id")}
             className="object-cover rounded-md w-full h-full"
             onError={(e) => {
@@ -95,7 +82,7 @@ export const ProductPhotosGridColumns: ColumnDef<any>[] = [
       return (
         <Switch
           disabled={meta?.isRowLoading(row.id)}
-          checked={row.getValue("active")}
+          checked={row.getValue("isActive")}
           onCheckedChange={() =>
             onAction("active", row.id, meta?.setLoadingRow)
           }

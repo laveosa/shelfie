@@ -74,6 +74,10 @@ export function ProductConfigurationPage() {
         .then((res: ProductCounterModel) => {
           dispatch(actions.refreshProductCounter(res));
         });
+
+      service.getProductPhotosHandler(productId).then((res) => {
+        dispatch(actions.refreshProductPhotos(res));
+      });
     } else {
       dispatch(actions.refreshProductCounter({}));
       dispatch(actions.refreshProduct({}));

@@ -5,8 +5,15 @@ import SheProductCard from "@/components/complex/she-product-card/SheProductCard
 import cs from "./ProductPhotosCard.module.scss";
 import { ProductPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/ProductPhotosGridColumns.tsx";
 import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import { useAppSelector } from "@/utils/hooks/redux.ts";
+import { IProductConfigurationPageSlice } from "@/const/interfaces/store-slices/IProductConfigurationPageSlice.ts";
+import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 
 export default function ProductPhotosCard({ data, ...props }) {
+  const state = useAppSelector<IProductConfigurationPageSlice>(
+    StoreSliceEnum.PRODUCT_CONFIGURATION,
+  );
+
   function handleFileUpload(event) {
     const files = event.target.files;
     console.log(files);
@@ -34,16 +41,17 @@ export default function ProductPhotosCard({ data, ...props }) {
           </div>
           <input type="file" id="fileInput" onChange={handleFileUpload} />
         </div>
-        {data?.items?.length > 0 && (
+        {data?.length > 0 && (
           <div className={cs.managePhotos}>
             <div className={`${cs.managePhotosTitle} she-title`}>
               Manage Photos
             </div>
             <div className={cs.managePhotosGrid}>
               <DndGridDataTable
+                enableDnd={true}
                 showHeader={false}
                 columns={ProductPhotosGridColumns}
-                data={data.items}
+                data={state.photos}
                 gridModel={data}
               />
             </div>

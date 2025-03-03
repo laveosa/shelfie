@@ -28,6 +28,7 @@ export default function useProductConfigurationPageService() {
   const [getProductById] = ProductsApiHooks.useLazyGetProductByIdQuery();
   const [getCountersForProducts] =
     ProductsApiHooks.useLazyGetCountersForProductsQuery();
+  const [getProductPhotos] = ProductsApiHooks.useLazyGetProductPhotosQuery();
 
   function getAllProductsHandler() {
     dispatch(productsAction.setLoading(true));
@@ -110,6 +111,12 @@ export default function useProductConfigurationPageService() {
     });
   }
 
+  function getProductPhotosHandler(id: number) {
+    return getProductPhotos(id).then((res: any) => {
+      return res.data;
+    });
+  }
+
   return {
     ...productsState,
     getAllProductsHandler,
@@ -125,5 +132,6 @@ export default function useProductConfigurationPageService() {
     createBrandHandler,
     uploadPhotoHandler,
     getCountersForProductsHandler,
+    getProductPhotosHandler,
   };
 }
