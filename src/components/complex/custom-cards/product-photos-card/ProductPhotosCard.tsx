@@ -1,4 +1,3 @@
-import { CirclePlus } from "lucide-react";
 import React from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
@@ -8,22 +7,29 @@ import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx
 import { useAppSelector } from "@/utils/hooks/redux.ts";
 import { IProductConfigurationPageSlice } from "@/const/interfaces/store-slices/IProductConfigurationPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
+import { SheImageUploader } from "@/components/complex/she-images-file-uploader/SheImageUploader.tsx";
+import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 
-export default function ProductPhotosCard({ data, ...props }) {
+export default function ProductPhotosCard({
+  data,
+  contextId,
+  onFileUpload,
+  ...props
+}) {
   const state = useAppSelector<IProductConfigurationPageSlice>(
     StoreSliceEnum.PRODUCT_CONFIGURATION,
   );
 
-  function handleFileUpload(event) {
-    const files = event.target.files;
-    console.log(files);
+  function onUpload(uploadModel: UploadPhotoModel) {
+    onFileUpload(uploadModel);
   }
 
   return (
-    <div>
+    <div className={cs.productPhotosCard}>
       <SheProductCard
         title="Product Photos"
         view="card"
+        minWidth="450px"
         showPrimaryButton={true}
         primaryButtonTitle="Upload Photos"
         showSecondaryButton={true}
@@ -31,32 +37,29 @@ export default function ProductPhotosCard({ data, ...props }) {
         className={cs.productPhotosCard}
         {...props}
       >
-        <div
-          className={cs.productPhotosFileUploader}
-          onClick={() => document.getElementById("fileInput").click()}
-        >
-          <CirclePlus />
-          <div className={`${cs.text} she-text`}>
-            Drag & drop or click to choose images
-          </div>
-          <input type="file" id="fileInput" onChange={handleFileUpload} />
+        <div className={cs.productPhotosCardContent}>
+          <SheImageUploader
+            contextName={"product"}
+            contextId={contextId}
+            onUpload={onUpload}
+          />
+          {state.photos?.length > 0 && (
+            <div className={cs.managePhotos}>
+              <div className={`${cs.managePhotosTitle} she-title`}>
+                Manage Photos
+              </div>
+              <div className={cs.managePhotosGrid}>
+                <DndGridDataTable
+                  enableDnd={true}
+                  showHeader={false}
+                  columns={ProductPhotosGridColumns}
+                  data={state.photos}
+                  gridModel={data}
+                />
+              </div>
+            </div>
+          )}
         </div>
-        {data?.length > 0 && (
-          <div className={cs.managePhotos}>
-            <div className={`${cs.managePhotosTitle} she-title`}>
-              Manage Photos
-            </div>
-            <div className={cs.managePhotosGrid}>
-              <DndGridDataTable
-                enableDnd={true}
-                showHeader={false}
-                columns={ProductPhotosGridColumns}
-                data={state.photos}
-                gridModel={data}
-              />
-            </div>
-          </div>
-        )}
       </SheProductCard>
     </div>
   );

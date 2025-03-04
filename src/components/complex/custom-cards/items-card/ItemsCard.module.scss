@@ -18,7 +18,12 @@
       &:hover {
         background: vars.$colorMedium;
         font-weight: 500;
+        cursor: pointer;
       }
+    }
+
+    .selected {
+      background: vars.$colorMedium;
     }
 
     .productItemImage {

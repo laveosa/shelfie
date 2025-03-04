@@ -40,7 +40,7 @@ function onAction(
 export const ProductPhotosGridColumns: ColumnDef<any>[] = [
   {
     accessorKey: "thumbnailUrl",
-    header: "Image",
+    header: "Preview",
     cell: ({ row, table }) => {
       const photoUrl: string = row.getValue("thumbnailUrl");
       const meta = table.options.meta as {
@@ -55,7 +55,7 @@ export const ProductPhotosGridColumns: ColumnDef<any>[] = [
         >
           <img
             src={photoUrl}
-            alt={row.getValue("id")}
+            alt="photo"
             className="object-cover rounded-md w-full h-full"
             onError={(e) => {
               e.currentTarget.src =
@@ -66,10 +66,17 @@ export const ProductPhotosGridColumns: ColumnDef<any>[] = [
       );
     },
   },
-  // {
-  //   accessorKey: "format",
-  //   header: "Format",
-  // },
+  {
+    accessorKey: "format",
+    header: "Format",
+    cell: ({ table, row }) => {
+      console.log("TABLE", table);
+      console.log("ROW", row);
+      return (
+        <span className="she-subtext">{`${row.original.height}px x ${row.original.width}px`}</span>
+      );
+    },
+  },
   {
     accessorKey: "isActive",
     header: "Active",
@@ -90,13 +97,9 @@ export const ProductPhotosGridColumns: ColumnDef<any>[] = [
       );
     },
   },
-  // {
-  //   accessorKey: "variants",
-  //   header: "Variants",
-  // },
   {
     id: "rowActions",
-    header: "",
+    header: "Actions",
     cell: ({ row, table }) => {
       return (
         <ProductsGridColumnActions

@@ -41,6 +41,7 @@ export function ProductsPage() {
       .getTheProductsForGridHandler(state.gridRequestModel)
       .then((res: GridModel) => {
         dispatch(actions.refreshProductsGridModel(res));
+        dispatch(actions.refreshProducts(res.items));
       });
   }, [state.gridRequestModel]);
 
@@ -57,24 +58,22 @@ export function ProductsPage() {
     rowData?: ProductModel,
   ) => {
     setLoadingRow(rowId, true);
-    setTimeout(() => {
-      switch (actionType) {
-        case "image":
-          console.log(`Image row ${rowId}`);
-          break;
-        case "manage":
-          const productId = rowData?.productId;
-          navigate(`/products/product-configuration/${productId}`);
-          break;
-        case "active":
-          console.log(`Active row ${rowId}`);
-          break;
-        case "delete":
-          console.log(`Deleting row ${rowId}`);
-          break;
-      }
-      setLoadingRow(rowId, false);
-    }, 2000);
+    switch (actionType) {
+      case "image":
+        console.log(`Image row ${rowId}`);
+        break;
+      case "manage":
+        const productId = rowData?.productId;
+        navigate(`/products/product-configuration/${productId}`);
+        break;
+      case "active":
+        console.log(`Active row ${rowId}`);
+        break;
+      case "delete":
+        console.log(`Deleting row ${rowId}`);
+        break;
+    }
+    setLoadingRow(rowId, false);
   };
 
   const ProductsGridColumns = createProductsGridColumns(onAction);
