@@ -47,6 +47,12 @@ export function ProductConfigurationPage() {
   const { productId } = useParams();
 
   useEffect(() => {
+    productsService
+      .getTheProductsForGridHandler(productsState.gridRequestModel)
+      .then((res: GridModel) => {
+        dispatch(actions.refreshProducts(res.items));
+      });
+
     service.getSimpleListOfAllBrandsHandler().then((res: BrandModel[]) => {
       dispatch(actions.refreshBrandsList(res ? res : []));
     });
@@ -129,7 +135,6 @@ export function ProductConfigurationPage() {
 
   function itemCardHandler(item) {
     navigate(`/products/product-configuration/${item.productId}`);
-    // dispatch(actions.refreshActiveCards(["basicData"]));
   }
 
   function onSubmitProductDataHandler(data: any) {
@@ -180,9 +185,9 @@ export function ProductConfigurationPage() {
 
   return (
     <div className={cs.createProductPage}>
-      {productsState.products?.length > 0 && (
+      {state.products?.length > 0 && (
         <ItemsCard
-          data={productsState.products}
+          data={state.products}
           selectedItem={productId}
           onAction={itemCardHandler}
         />

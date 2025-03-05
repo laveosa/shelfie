@@ -41,7 +41,6 @@ export function ProductsPage() {
       .getTheProductsForGridHandler(state.gridRequestModel)
       .then((res: GridModel) => {
         dispatch(actions.refreshProductsGridModel(res));
-        dispatch(actions.refreshProducts(res.items));
       });
   }, [state.gridRequestModel]);
 

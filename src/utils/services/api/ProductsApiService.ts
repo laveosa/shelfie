@@ -135,12 +135,12 @@ export const ProductsApiService = createApi({
           method: "POST",
           body: JSON.stringify(code),
         }),
-        invalidatesTags: (_result, _error, code) => [
-          {
-            type: ApiServiceNameEnum.PRODUCTS,
-            code,
-          },
-        ],
+        // invalidatesTags: (_result, _error, code) => [
+        //   {
+        //     type: ApiServiceNameEnum.PRODUCTS,
+        //     code,
+        //   },
+        // ],
       },
     ),
     checkBrandName: apiConfig.createMutation<void, BrandModel>(builder, {

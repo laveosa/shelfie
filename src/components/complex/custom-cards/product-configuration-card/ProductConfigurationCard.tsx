@@ -117,7 +117,6 @@ export default function ProductConfigurationCard({
                   required: true,
                 }}
                 onDelay={onCheckCode}
-                onBlur={onCheckCode}
               >
                 <SheInput
                   {...form.register("productCode")}
