@@ -32,9 +32,9 @@ import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 
 export function ProductConfigurationPage() {
+  const dispatch = useAppDispatch();
   const productsService = useProductsPageService();
   const service = useProductConfigurationPageService();
-  const dispatch = useAppDispatch();
   const state = useAppSelector<IProductConfigurationPageSlice>(
     StoreSliceEnum.PRODUCT_CONFIGURATION,
   );
@@ -60,6 +60,7 @@ export function ProductConfigurationPage() {
     dispatch(actions.refreshActiveCards(["basicData"]));
 
     if (productId) {
+      dispatch(actions.refreshActiveCards(["basicData"]));
       service.getProductByIdHandler(productId).then((res: ProductModel) => {
         dispatch(actions.refreshProduct(res));
       });
@@ -128,6 +129,7 @@ export function ProductConfigurationPage() {
 
   function itemCardHandler(item) {
     navigate(`/products/product-configuration/${item.productId}`);
+    // dispatch(actions.refreshActiveCards(["basicData"]));
   }
 
   function onSubmitProductDataHandler(data: any) {
@@ -178,7 +180,7 @@ export function ProductConfigurationPage() {
 
   return (
     <div className={cs.createProductPage}>
-      {productsState.products.length > 0 && (
+      {productsState.products?.length > 0 && (
         <ItemsCard
           data={productsState.products}
           selectedItem={productId}
@@ -190,6 +192,7 @@ export function ProductConfigurationPage() {
         productCounter={state.productCounter}
         onAction={handleCardAction}
         productId={Number(productId)}
+        activeCards={state.activeCards}
       />
       {state.activeCards.includes("basicData") && (
         <ProductConfigurationCard

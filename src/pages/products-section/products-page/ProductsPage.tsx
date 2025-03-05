@@ -63,8 +63,7 @@ export function ProductsPage() {
         console.log(`Image row ${rowId}`);
         break;
       case "manage":
-        const productId = rowData?.productId;
-        navigate(`/products/product-configuration/${productId}`);
+        navigate(`/products/product-configuration/${rowData?.productId}`);
         break;
       case "active":
         console.log(`Active row ${rowId}`);
@@ -165,7 +164,6 @@ export function ProductsPage() {
           </div>
           <TabsContent value="products">
             <DndGridDataTable
-              enableDnd
               columns={ProductsGridColumns}
               data={state.productsGridModel.items}
               gridModel={state.productsGridModel}

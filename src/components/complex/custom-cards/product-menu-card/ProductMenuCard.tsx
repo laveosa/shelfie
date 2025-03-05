@@ -13,13 +13,49 @@ import cs from "./ProductMenuCard.module.scss";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import { IProductMenuCard } from "@/const/interfaces/complex-components/custom-cards/IProductMenuCard.ts";
 
+const menuItems = [
+  { id: "basicData", icon: <FileText />, label: "Basic Data" },
+  { id: "gallery", icon: <ImagesIcon />, label: "Gallery" },
+  { id: "variants", icon: <Layers2 />, label: "Variants" },
+  { id: "attributes", icon: <SlidersHorizontal />, label: "Attributes" },
+  { id: "sizeChart", icon: <Ruler />, label: "Size Chart" },
+  { id: "purchase", icon: <ReceiptEuroIcon />, label: "Purchase" },
+];
+
 export default function ProductMenuCard({
   title,
   productId,
   productCounter,
   onAction,
+  activeCards = [],
   ...props
 }: IProductMenuCard) {
+  const selectedItem =
+    menuItems.find((item) => activeCards.includes(item.id))?.id || "basicData";
+
+  function handleMenuItemClick(item) {
+    onAction(item);
+  }
+
+  const renderMenuItem = ({ id, icon, label }) => {
+    const isDisabled = !productId && id !== "basicData";
+    return (
+      <div
+        className={`${cs.productMenuItem} ${selectedItem === id ? cs.selected : ""} ${isDisabled ? cs.disabled : ""}`}
+        onClick={() => !isDisabled && handleMenuItemClick(id)}
+        key={id}
+      >
+        <div className={cs.iconContainer}>{icon}</div>
+        <div className={cs.textContainer}>
+          <span className="she-text">{label}</span>
+          {productCounter && productCounter[id] !== undefined && (
+            <Badge className={cs.itemBadge}>{productCounter[id] ?? 0}</Badge>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div>
       <SheProductCard
@@ -28,102 +64,8 @@ export default function ProductMenuCard({
         className={cs.productMenuCard}
         {...props}
       >
-        <div className={cs.createProductItems}>
-          <div
-            className={cs.createProductItem}
-            onClick={() => onAction("basicData")}
-          >
-            <div className={cs.iconContainer}>
-              <FileText />
-            </div>
-            <div className={cs.textContainer}>
-              <span className="she-text">Basic Data</span>
-            </div>
-          </div>
-          <div
-            className={
-              productId
-                ? cs.createProductItem
-                : `${cs.createProductItem} ${cs.disabled}`
-            }
-            onClick={() => onAction("gallery")}
-          >
-            <div className={cs.iconContainer}>
-              <ImagesIcon />
-            </div>
-            <div className={cs.textContainer}>
-              <span className="she-text">Gallery</span>
-              <Badge className={cs.itemBadge}>
-                {productCounter?.gallery ?? 0}
-              </Badge>
-            </div>
-          </div>
-          <div
-            className={
-              productId
-                ? cs.createProductItem
-                : `${cs.createProductItem} ${cs.disabled}`
-            }
-            onClick={() => onAction("variants")}
-          >
-            <div className={cs.iconContainer}>
-              <Layers2 />
-            </div>
-            <div className={cs.textContainer}>
-              <span className="she-text">Variants</span>
-              <Badge className={cs.itemBadge}>
-                {productCounter?.variants ?? 0}
-              </Badge>
-            </div>
-          </div>
-          <div
-            className={
-              productId
-                ? cs.createProductItem
-                : `${cs.createProductItem} ${cs.disabled}`
-            }
-            onClick={() => onAction("attributes")}
-          >
-            <div className={cs.iconContainer}>
-              <SlidersHorizontal />
-            </div>
-            <div className={cs.textContainer}>
-              <span className="she-text">Attributes</span>
-              <Badge className={cs.itemBadge}>
-                {productCounter?.attributes ?? 0}
-              </Badge>
-            </div>
-          </div>
-          <div
-            className={
-              productId
-                ? cs.createProductItem
-                : `${cs.createProductItem} ${cs.disabled}`
-            }
-            onClick={() => onAction("sizeChart")}
-          >
-            <div className={cs.iconContainer}>
-              <Ruler />
-            </div>
-            <div className={cs.textContainer}>
-              <span className="she-text">Size Chart</span>
-            </div>
-          </div>
-          <div
-            className={
-              productId
-                ? cs.createProductItem
-                : `${cs.createProductItem} ${cs.disabled}`
-            }
-            onClick={() => onAction("purchase")}
-          >
-            <div className={cs.iconContainer}>
-              <ReceiptEuroIcon />
-            </div>
-            <div className={cs.textContainer}>
-              <span className="she-text">Purchase</span>
-            </div>
-          </div>
+        <div className={cs.productMenuItems}>
+          {menuItems.map(renderMenuItem)}
         </div>
       </SheProductCard>
     </div>

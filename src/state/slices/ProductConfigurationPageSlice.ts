@@ -11,7 +11,7 @@ import { ImageModel } from "@/const/models/ImageModel.ts";
 const initialState: IProductConfigurationPageSlice = {
   loading: false,
   products: [],
-  product: null,
+  product: {},
   activeCards: [],
   brandsList: [],
   categoriesList: [],
