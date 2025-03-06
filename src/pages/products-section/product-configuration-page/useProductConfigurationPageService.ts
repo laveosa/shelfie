@@ -25,7 +25,7 @@ export default function useProductConfigurationPageService() {
   const [createNewCategory] = ProductsApiHooks.useCreateNewCategoryMutation();
   const [createBrand] = ProductsApiHooks.useCreateBrandMutation();
   const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
-  const [getProductById] = ProductsApiHooks.useLazyGetProductByIdQuery();
+  const [getProductDetails] = ProductsApiHooks.useLazyGetProductDetailQuery();
   const [getCountersForProducts] =
     ProductsApiHooks.useLazyGetCountersForProductsQuery();
   const [getProductPhotos] = ProductsApiHooks.useLazyGetProductPhotosQuery();
@@ -39,8 +39,8 @@ export default function useProductConfigurationPageService() {
     });
   }
 
-  function getProductByIdHandler(id) {
-    return getProductById(id).then((res: any) => {
+  function getProductDetailsHandler(id) {
+    return getProductDetails(id).then((res: any) => {
       return res.data;
     });
   }
@@ -120,7 +120,7 @@ export default function useProductConfigurationPageService() {
   return {
     ...productsState,
     getAllProductsHandler,
-    getProductByIdHandler,
+    getProductDetailsHandler,
     generateProductCodeHandler,
     getSimpleListOfAllBrandsHandler,
     getAllCategoriesByOrganizationHandler,

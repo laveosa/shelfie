@@ -67,7 +67,7 @@ export function ProductConfigurationPage() {
 
     if (productId) {
       dispatch(actions.refreshActiveCards(["basicData"]));
-      service.getProductByIdHandler(productId).then((res: ProductModel) => {
+      service.getProductDetailsHandler(productId).then((res: ProductModel) => {
         dispatch(actions.refreshProduct(res));
       });
 
