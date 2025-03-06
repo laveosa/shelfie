@@ -246,6 +246,18 @@ export const ProductsApiService = createApi({
         ],
       },
     ),
+    putPhotoInNewPosition: apiConfig.createMutation<void, any>(builder, {
+      query: ({ productId, photoId, index }) => ({
+        url: `${ApiUrlEnum.ASSETS_BASE_URL}/${ApiUrlEnum.PRODUCTS}/${productId}/photo/${photoId}/${index}`,
+        method: "POST",
+      }),
+      invalidatesTags: (_result, _error, result) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          result,
+        },
+      ],
+    }),
   }),
 });
 

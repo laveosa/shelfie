@@ -29,6 +29,8 @@ export default function useProductConfigurationPageService() {
   const [getCountersForProducts] =
     ProductsApiHooks.useLazyGetCountersForProductsQuery();
   const [getProductPhotos] = ProductsApiHooks.useLazyGetProductPhotosQuery();
+  const [putPhotoInNewPosition] =
+    ProductsApiHooks.usePutPhotoInNewPositionMutation();
 
   function getAllProductsHandler() {
     dispatch(productsAction.setLoading(true));
@@ -117,6 +119,16 @@ export default function useProductConfigurationPageService() {
     });
   }
 
+  function putPhotoInNewPositionHandler(productId, photoId, index) {
+    return putPhotoInNewPosition({
+      productId,
+      photoId,
+      index,
+    }).then((res: any) => {
+      return res.data;
+    });
+  }
+
   return {
     ...productsState,
     getAllProductsHandler,
@@ -133,5 +145,6 @@ export default function useProductConfigurationPageService() {
     uploadPhotoHandler,
     getCountersForProductsHandler,
     getProductPhotosHandler,
+    putPhotoInNewPositionHandler,
   };
 }
