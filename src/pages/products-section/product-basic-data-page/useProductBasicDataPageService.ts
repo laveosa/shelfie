@@ -6,7 +6,7 @@ import { ProductsPageSliceActions as productsAction } from "@/state/slices/Produ
 import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 
-export default function useProductConfigurationPageService() {
+export default function useProductBasicDataPageService() {
   const productsState = useAppSelector<IProductsPageSlice>(
     StoreSliceEnum.PRODUCTS,
   );

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import cs from "./ProductConfigurationPage.module.scss";
+import cs from "./ProductBasicDataPage.module.scss";
 import ProductConfigurationCard from "@/components/complex/custom-cards/product-configuration-card/ProductConfigurationCard.tsx";
 import CreateProductCategoryCard from "@/components/complex/custom-cards/create-product-category-card/CreateProductCategoryCard.tsx";
 import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
@@ -20,9 +20,9 @@ import useProductsPageService from "@/pages/products-section/products-page/usePr
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { IProductConfigurationPageSlice } from "@/const/interfaces/store-slices/IProductConfigurationPageSlice.ts";
-import { ProductConfigurationPageSliceActions as actions } from "@/state/slices/ProductConfigurationPageSlice.ts";
-import useProductConfigurationPageService from "@/pages/products-section/product-configuration-page/useProductConfigurationPageService.ts";
+import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
+import { ProductBasicDataPageSliceActions as actions } from "@/state/slices/ProductBasicDataPageSlice.ts";
+import useProductBasicDataPageService from "@/pages/products-section/product-basic-data-page/useProductBasicDataPageService.ts";
 import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
@@ -30,13 +30,14 @@ import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
+import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 
-export function ProductConfigurationPage() {
+export function ProductBasicDataPage() {
   const dispatch = useAppDispatch();
   const productsService = useProductsPageService();
-  const service = useProductConfigurationPageService();
-  const state = useAppSelector<IProductConfigurationPageSlice>(
-    StoreSliceEnum.PRODUCT_CONFIGURATION,
+  const service = useProductBasicDataPageService();
+  const state = useAppSelector<IProductBasicDataPageSlice>(
+    StoreSliceEnum.PRODUCT_BASIC_DATA,
   );
   const productsState = useAppSelector<IProductsPageSlice>(
     StoreSliceEnum.PRODUCTS,
@@ -129,12 +130,14 @@ export function ProductConfigurationPage() {
     if (productId) {
       closeCardHandler("basicData");
     } else {
-      navigate("/products");
+      navigate(ApiUrlEnum.PRODUCTS);
     }
   }
 
   function itemCardHandler(item) {
-    navigate(`/products/product-configuration/${item.productId}`);
+    navigate(
+      `${ApiUrlEnum.PRODUCTS}${ApiUrlEnum.PRODUCT_BASIC_DATA}/${item.productId}`,
+    );
   }
 
   function onSubmitProductDataHandler(data: any) {
@@ -146,7 +149,9 @@ export function ProductConfigurationPage() {
           .then((res: GridModel) => {
             dispatch(productsActions.refreshProductsGridModel(res));
           });
-        navigate(`/products/product-configuration/${res.data.productId}`);
+        navigate(
+          `${ApiUrlEnum.PRODUCTS}${ApiUrlEnum.PRODUCT_BASIC_DATA}/${res.data.productId}`,
+        );
         addToast({
           text: "Product created successfully",
           type: "success",

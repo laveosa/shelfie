@@ -7,7 +7,7 @@ export enum NavUrlEnum {
   MESSENGER = "/messenger",
   ORDERS = "/orders",
   PRODUCTS = "/products",
-  CREATE_PRODUCT = "/create-product",
+  PRODUCT_BASIC_DATA = "/product-basic-data",
   PROFILE = "/profile",
   SETTINGS = "/settings",
   SUPPORT = "/support",

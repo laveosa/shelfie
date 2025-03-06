@@ -5,7 +5,7 @@ import cs from "./ProductPhotosCard.module.scss";
 import { ProductPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/ProductPhotosGridColumns.tsx";
 import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { useAppSelector } from "@/utils/hooks/redux.ts";
-import { IProductConfigurationPageSlice } from "@/const/interfaces/store-slices/IProductConfigurationPageSlice.ts";
+import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { SheImageUploader } from "@/components/complex/she-images-file-uploader/SheImageUploader.tsx";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
@@ -16,8 +16,8 @@ export default function ProductPhotosCard({
   onFileUpload,
   ...props
 }) {
-  const state = useAppSelector<IProductConfigurationPageSlice>(
-    StoreSliceEnum.PRODUCT_CONFIGURATION,
+  const state = useAppSelector<IProductBasicDataPageSlice>(
+    StoreSliceEnum.PRODUCT_BASIC_DATA,
   );
 
   function onUpload(uploadModel: UploadPhotoModel) {

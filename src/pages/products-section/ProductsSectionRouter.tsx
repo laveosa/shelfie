@@ -13,13 +13,24 @@ export const ProductsSectionRouter: RouteObject[] = [
     },
   },
   {
-    path: "product-configuration/:productId?",
+    path: "product-basic-data/:productId?",
     lazy: async () => {
-      const { ProductConfigurationPage } = await import(
-        "@/pages/products-section/product-configuration-page/ProductConfigurationPage.tsx"
+      const { ProductBasicDataPage } = await import(
+        "@/pages/products-section/product-basic-data-page/ProductBasicDataPage.tsx"
       );
       return {
-        element: <ProductConfigurationPage />,
+        element: <ProductBasicDataPage />,
+      };
+    },
+  },
+  {
+    path: "product-gallery/:productId?",
+    lazy: async () => {
+      const { ProductGalleryPage } = await import(
+        "@/pages/products-section/product-gallery-page/ProductGalleryPage.tsx"
+      );
+      return {
+        element: <ProductGalleryPage />,
       };
     },
   },

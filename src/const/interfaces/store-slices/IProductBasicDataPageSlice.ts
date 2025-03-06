@@ -4,7 +4,7 @@ import { ProductModel } from "@/const/models/ProductModel.ts";
 import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 
-export interface IProductConfigurationPageSlice {
+export interface IProductBasicDataPageSlice {
   loading?: boolean;
   product?: ProductModel;
   brandsList?: BrandModel[];
