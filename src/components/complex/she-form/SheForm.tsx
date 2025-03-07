@@ -32,65 +32,26 @@ import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelect.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
-import { Search } from "lucide-react";
+import { ISheFormProps } from "@/const/interfaces/forms/ISheForm.ts";
 
-const genders = ["male", "female", "unicorn", "banana"];
-
-const products: ProductModel[] = [
-  {
-    title: "Product ONE",
-    description: "Some description for the test",
-    price: "23.11",
-  },
-  {
-    title: "Product TWO",
-    description: "Some description for the test",
-    price: "12.99",
-  },
-  {
-    title: "Product THREE",
-    description: "Some description for the test",
-    price: "31.22",
-  },
-];
-
-export default function SheForm() {
-  const [_products, setProducts] = useState<ProductModel[]>(null);
-  /*const [_productsSelectItems, setProductsSelectItems] = useState(
-    convertProductToSelectModels(_products),
-  );*/
-  const [_selectedProduct, setSelectedProduct] = useState(null);
-
-  const { t } = useTranslation();
-  const form = useForm<z.output<typeof UserFormScheme>>({
-    mode: "onBlur",
-    resolver: zodResolver(UserFormScheme),
-    defaultValues: UserModelDefault,
-  });
-
-  useEffect(() => {
-    setTimeout(() => {
-      setProducts(products);
-      setTimeout(() => {
-        setSelectedProduct(products[0]);
-      }, 2000);
-    }, 1000);
-  }, []);
-
+export default function SheForm<T>({
+  className,
+  form,
+  onSubmit,
+  onCancel,
+}: ISheFormProps<T>) {
   // ==================================================================== LOGIC
 
-  function onSelectHandler(data) {
-    console.log(data);
-  }
-
   const onSubmitHandler: SubmitHandler<UserModel> = (data: UserModel) => {
-    console.log("Submit: ", data);
+    if (onSubmit) {
+      onSubmit(data);
+    }
   };
 
   const onErrorHandler: SubmitErrorHandler<UserModel> = (
     data: FieldErrors<UserModel>,
   ) => {
-    console.log("Error: ", data);
+    console.error("Form error: ", data);
   };
 
   function onCancelHandler() {
@@ -102,17 +63,6 @@ export default function SheForm() {
   }
 
   // ==================================================================== PRIVATE
-
-  function convertProductToSelectModels(
-    products: ProductModel[],
-  ): ISheSelectItem[] {
-    return products?.map(
-      (item: ProductModel): ISheSelectItem => ({
-        value: item,
-        text: item.title,
-      }),
-    );
-  }
 
   return (
     <Form {...form}>
@@ -175,10 +125,10 @@ export default function SheForm() {
                 {/*<FormLabel>Gender</FormLabel>*/}
 
                 <FormControl>
-                  <SheSelect
+                  {/*<SheSelect
                     items={convertProductToSelectModels(products)}
                     onSelect={onSelectHandler}
-                  />
+                  />*/}
                 </FormControl>
                 <FormDescription>
                   You can find all available gender here{" "}
