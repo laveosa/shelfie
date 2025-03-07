@@ -18,6 +18,7 @@ import { DictionaryApiService } from "@/utils/services/api/DictionaryApiService.
 import { UsersApiService } from "@/utils/services/api/UsersApiService.ts";
 import { AssetsApiService } from "@/utils/services/api/AssetsApiService.ts";
 import ProductBasicDataPageSlice from "@/state/slices/ProductBasicDataPageSlice.ts";
+import ProductGalleryPageSlice from "@/state/slices/ProductGalleryPageSlice.ts";
 
 export const store = configureStore({
   reducer: {
@@ -28,6 +29,7 @@ export const store = configureStore({
     [StoreSliceEnum.ORDERS]: OrdersPageSlice.reducer,
     [StoreSliceEnum.PRODUCTS]: ProductsPageSlice.reducer,
     [StoreSliceEnum.PRODUCT_BASIC_DATA]: ProductBasicDataPageSlice.reducer,
+    [StoreSliceEnum.PRODUCT_GALLERY]: ProductGalleryPageSlice.reducer,
     [StoreSliceEnum.PROFILE]: ProfilePageSlice.reducer,
     [StoreSliceEnum.SETTINGS]: SettingsPageSlice.reducer,
     [StoreSliceEnum.SUPPORT]: SupportPageSlice.reducer,

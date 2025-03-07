@@ -2,8 +2,9 @@ import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IPro
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
+import { IProductGalleryPageSlice } from "@/const/interfaces/store-slices/IProductGalleryPageSlice.ts";
 
-const initialState: IProductBasicDataPageSlice = {
+const initialState: IProductGalleryPageSlice = {
   loading: false,
   products: [],
   product: {},
