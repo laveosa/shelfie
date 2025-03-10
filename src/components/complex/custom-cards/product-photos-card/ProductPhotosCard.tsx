@@ -14,6 +14,7 @@ export default function ProductPhotosCard({
   data,
   contextId,
   onFileUpload,
+  onDndItem,
   ...props
 }) {
   const state = useAppSelector<IProductConfigurationPageSlice>(
@@ -22,6 +23,10 @@ export default function ProductPhotosCard({
 
   function onUpload(uploadModel: UploadPhotoModel) {
     onFileUpload(uploadModel);
+  }
+
+  function onChangeItemPosition(newIndex, activeItem) {
+    onDndItem(newIndex, activeItem);
   }
 
   return (
@@ -55,6 +60,7 @@ export default function ProductPhotosCard({
                   columns={ProductPhotosGridColumns}
                   data={state.photos}
                   gridModel={data}
+                  onNewItemPosition={onChangeItemPosition}
                 />
               </div>
             </div>

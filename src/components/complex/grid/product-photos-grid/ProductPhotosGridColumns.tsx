@@ -69,9 +69,7 @@ export const ProductPhotosGridColumns: ColumnDef<any>[] = [
   {
     accessorKey: "format",
     header: "Format",
-    cell: ({ table, row }) => {
-      console.log("TABLE", table);
-      console.log("ROW", row);
+    cell: ({ row }) => {
       return (
         <span className="she-subtext">{`${row.original.height}px x ${row.original.width}px`}</span>
       );

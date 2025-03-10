@@ -183,6 +183,14 @@ export function ProductConfigurationPage() {
     });
   }
 
+  function onDndItem(newIndex, activeItem) {
+    service.putPhotoInNewPositionHandler(
+      productId,
+      activeItem.photoId,
+      newIndex,
+    );
+  }
+
   return (
     <div className={cs.createProductPage}>
       {state.products?.length > 0 && (
@@ -223,6 +231,7 @@ export function ProductConfigurationPage() {
           data={state.products}
           contextId={productId}
           onFileUpload={onFileUploadHandler}
+          onDndItem={onDndItem}
         />
       )}
       {state.activeCards.includes("variants") && (
