@@ -1,43 +1,64 @@
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, Row } from "@tanstack/react-table";
 
 import { Switch } from "@/components/ui/switch.tsx";
-import ProductsGridColumnActions from "@/components/complex/grid/products-grid/ProductsGridColumnActions.tsx";
+import placeholderImage from "@/assets/images/placeholder-image.png";
+import ProductPhotosGridColumnActions from "@/components/complex/grid/product-photos-grid/ProductPhotosGridColumnActions.tsx";
 
-function onAction(
-  actionType: string,
-  rowId?: string,
-  setLoadingRow?: (rowId: string, loading: boolean) => void,
-) {
-  setLoadingRow(rowId, true);
-  setTimeout(() => {
-    switch (actionType) {
-      case "image":
-        console.log(`Image row ${rowId}`);
-        break;
-      case "manage":
-        console.log(`Managing row ${rowId}`);
-        break;
-      case "active":
-        console.log(`Active row ${rowId}`);
-        break;
-      case "edit":
-        console.log(`Editing row ${rowId}`);
-        break;
-      case "copy":
-        console.log(`Copying row ${rowId}`);
-        break;
-      case "favorite":
-        console.log(`Favoriting row ${rowId}`);
-        break;
-      case "delete":
-        console.log(`Deleting row ${rowId}`);
-        break;
-    }
-    setLoadingRow(rowId, false);
-  }, 2000);
+interface IProductPhotoGridColumns {
+  id: number | string;
+  thumbnailUrl: string;
+  height: number;
+  width: number;
+  isActive: boolean;
+  onAction: (
+    actionType: string,
+    rowId?: string,
+    setLoadingRow?: (rowId: string, loading: boolean) => void,
+    row?: Row<IProductPhotoGridColumns>,
+  ) => void;
 }
 
-export const ProductPhotosGridColumns: ColumnDef<any>[] = [
+// function onAction(
+//   actionType: string,
+//   rowId?: string,
+//   setLoadingRow?: (rowId: string, loading: boolean) => void,
+//   row?: any,
+// ) {
+//   setLoadingRow(rowId, true);
+//   switch (actionType) {
+//     case "image":
+//       console.log(`Image row ${rowId}`);
+//       break;
+//     case "manage":
+//       console.log(`Managing row ${rowId}`);
+//       break;
+//     case "active":
+//       console.log(`Active row ${rowId}`);
+//       break;
+//     case "edit":
+//       console.log(`Editing row ${rowId}`);
+//       break;
+//     case "copy":
+//       console.log(`Copying row ${rowId}`);
+//       break;
+//     case "favorite":
+//       console.log(`Favoriting row ${rowId}`);
+//       break;
+//     case "delete":
+//       console.log(`Deleting:`, row.original);
+//       break;
+//   }
+//   setLoadingRow(rowId, false);
+// }
+
+export const ProductPhotosGridColumns = (
+  onAction: (
+    actionType: string,
+    rowId?: string,
+    setLoadingRow?: (rowId: string, loading: boolean) => void,
+    row?: Row<IProductPhotoGridColumns>,
+  ) => void,
+): ColumnDef<IProductPhotoGridColumns>[] => [
   {
     accessorKey: "thumbnailUrl",
     header: "Preview",
@@ -58,8 +79,7 @@ export const ProductPhotosGridColumns: ColumnDef<any>[] = [
             alt="photo"
             className="object-cover rounded-md w-full h-full"
             onError={(e) => {
-              e.currentTarget.src =
-                "https://ircsan.com/wp-content/uploads/2024/03/placeholder-image.png";
+              e.currentTarget.src = placeholderImage;
             }}
           />
         </div>
@@ -100,7 +120,7 @@ export const ProductPhotosGridColumns: ColumnDef<any>[] = [
     header: "Actions",
     cell: ({ row, table }) => {
       return (
-        <ProductsGridColumnActions
+        <ProductPhotosGridColumnActions
           row={row}
           onAction={onAction}
           table={table}

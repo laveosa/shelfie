@@ -49,15 +49,15 @@ export default function ProductConfigurationCard({
   useEffect(() => {
     if (product) {
       form.reset({
-        name: product.productName,
-        productCode: product.productCode,
+        name: product?.productName,
+        productCode: product?.productCode,
         productBarcode: "",
-        categoryId: product.categoryId,
-        brandId: null,
-        isActive: null,
+        categoryId: product?.category?.categoryId || null,
+        brandId: product?.brand?.brandId || null,
+        isActive: product?.isActive,
       });
     }
-  }, [product]);
+  }, [product, form]);
 
   function onGenerateCode() {
     onGenerateProductCode().then((res: ProductCodeModel) => {
@@ -237,7 +237,12 @@ export default function ProductConfigurationCard({
               <div
                 className={`${cs.createProductFormRow} ${cs.createProductFormSwitch}`}
               >
-                <Switch />
+                <Switch
+                  checked={form.watch("isActive")}
+                  onCheckedChange={(checked) =>
+                    form.setValue("isActive", checked)
+                  }
+                />
                 <div>Is Active</div>
               </div>
             </SheForm.Field>

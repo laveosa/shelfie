@@ -68,7 +68,7 @@ export function ProductBasicDataPage() {
 
     if (productId) {
       dispatch(actions.refreshActiveCards(["basicData"]));
-      service.getProductByIdHandler(productId).then((res: ProductModel) => {
+      service.getProductDetailsHandler(productId).then((res: ProductModel) => {
         dispatch(actions.refreshProduct(res));
       });
 
@@ -188,6 +188,27 @@ export function ProductBasicDataPage() {
     });
   }
 
+  function onDndItem(newIndex, activeItem) {
+    service.putPhotoInNewPositionHandler(
+      productId,
+      activeItem.photoId,
+      newIndex,
+    );
+  }
+
+  function onDeleteItem(data) {
+    service.deletePhotoHandler(data.photoId).then(() => {
+      service.getProductPhotosHandler(productId).then((res) => {
+        dispatch(actions.refreshProductPhotos(res));
+      });
+      service
+        .getCountersForProductsHandler(productId)
+        .then((res: ProductCounterModel) => {
+          dispatch(actions.refreshProductCounter(res));
+        });
+    });
+  }
+
   return (
     <div className={cs.createProductPage}>
       {state.products?.length > 0 && (
@@ -228,6 +249,8 @@ export function ProductBasicDataPage() {
           data={state.products}
           contextId={productId}
           onFileUpload={onFileUploadHandler}
+          onDndItem={onDndItem}
+          onDeleteItem={onDeleteItem}
         />
       )}
       {state.activeCards.includes("variants") && (

@@ -30,7 +30,7 @@ export const ProductsApiService = createApi({
           ApiServiceNameEnum.PRODUCTS,
         ),
     }),
-    getProductById: apiConfig.createQuery<ProductModel, number>(builder, {
+    getProductDetail: apiConfig.createQuery<ProductModel, number>(builder, {
       query: (id: number) => ({
         url: `${ApiUrlEnum.PRODUCTS}/${id}`,
       }),
@@ -104,7 +104,7 @@ export const ProductsApiService = createApi({
     }),
     generateProductCode: apiConfig.createQuery<any, void>(builder, {
       query: () => ({
-        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/generate-code`,
+        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.CODES}/generate-code`,
       }),
       providesTags: (_result, _error, code) => [
         {
@@ -131,16 +131,10 @@ export const ProductsApiService = createApi({
       builder,
       {
         query: (code: ProductCodeModel) => ({
-          url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/check-code`,
+          url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.CODES}/check-code`,
           method: "POST",
           body: JSON.stringify(code),
         }),
-        // invalidatesTags: (_result, _error, code) => [
-        //   {
-        //     type: ApiServiceNameEnum.PRODUCTS,
-        //     code,
-        //   },
-        // ],
       },
     ),
     checkBrandName: apiConfig.createMutation<void, BrandModel>(builder, {
@@ -252,6 +246,18 @@ export const ProductsApiService = createApi({
         ],
       },
     ),
+    putPhotoInNewPosition: apiConfig.createMutation<void, any>(builder, {
+      query: ({ productId, photoId, index }) => ({
+        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/${productId}/photo/${photoId}/${index}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: (_result, _error, result) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          result,
+        },
+      ],
+    }),
   }),
 });
 

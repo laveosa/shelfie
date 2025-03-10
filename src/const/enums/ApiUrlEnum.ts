@@ -16,4 +16,5 @@ export enum ApiUrlEnum {
   COUNTRIES = "/countries",
   PREFERENCES = "/preferences",
   ASSETS = "/asset",
+  CODES = "/codes",
 }
