@@ -192,7 +192,16 @@ export function ProductConfigurationPage() {
   }
 
   function onDeleteItem(data) {
-    service.deletePhotoHandler(data.photoId);
+    service.deletePhotoHandler(data.photoId).then(() => {
+      service.getProductPhotosHandler(productId).then((res) => {
+        dispatch(actions.refreshProductPhotos(res));
+      });
+      service
+        .getCountersForProductsHandler(productId)
+        .then((res: ProductCounterModel) => {
+          dispatch(actions.refreshProductCounter(res));
+        });
+    });
   }
 
   return (
