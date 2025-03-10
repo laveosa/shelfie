@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 
-interface ProductsGridColumnActionsProps<TData> {
+interface ProductPhotoGridColumnActionsProps<TData> {
   row?: Row<TData>;
   table?: Table<TData>;
   onAction?: (
@@ -20,11 +20,11 @@ interface ProductsGridColumnActionsProps<TData> {
   ) => void;
 }
 
-export default function ProductsGridColumnActions<TData>({
+export default function ProductPhotosGridColumnActions<TData>({
   row,
   table,
   onAction,
-}: ProductsGridColumnActionsProps<TData>) {
+}: ProductPhotoGridColumnActionsProps<TData>) {
   const meta = table.options.meta as {
     setLoadingRow: (rowId: string, loading: boolean) => void;
     isRowLoading: (rowId: string) => boolean;
@@ -42,9 +42,14 @@ export default function ProductsGridColumnActions<TData>({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-[160px]">
         <DropdownMenuItem
-          onClick={() => onAction("delete", row.id, meta?.setLoadingRow, row)}
+          onClick={() => onAction("remove", row.id, meta?.setLoadingRow, row)}
         >
-          Delete
+          Remove Image
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => onAction("connect", row.id, meta?.setLoadingRow, row)}
+        >
+          Connect to Variants
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

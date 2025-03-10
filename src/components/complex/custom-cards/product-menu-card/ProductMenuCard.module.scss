@@ -1,12 +1,12 @@
 @use "@/styles/variables" as vars;
 
 .productMenuCard {
-  .createProductItems {
+  .productMenuItems {
     display: flex;
     flex-direction: column;
     gap: 10px;
 
-    .createProductItem {
+    .productMenuItem {
       display: flex;
       gap: 20px;
       padding: 10px;
@@ -37,5 +37,9 @@
     cursor: none;
     pointer-events: none;
     opacity: 0.8;
+  }
+
+  .selected {
+    background: vars.$colorMedium;
   }
 }

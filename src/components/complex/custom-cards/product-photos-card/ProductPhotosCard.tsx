@@ -1,22 +1,51 @@
-import { CirclePlus } from "lucide-react";
 import React from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ProductPhotosCard.module.scss";
-import { GridDataTable } from "@/components/complex/grid/grid-data-table/GridDataTable.tsx";
+import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import { useAppSelector } from "@/utils/hooks/redux.ts";
+import { IProductConfigurationPageSlice } from "@/const/interfaces/store-slices/IProductConfigurationPageSlice.ts";
+import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
+import { SheImageUploader } from "@/components/complex/she-images-file-uploader/SheImageUploader.tsx";
+import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { ProductPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/ProductPhotosGridColumns.tsx";
 
-export default function ProductPhotosCard({ data, ...props }) {
-  function handleFileUpload(event) {
-    const files = event.target.files;
-    console.log(files);
+export default function ProductPhotosCard({
+  data,
+  contextId,
+  onFileUpload,
+  onDeleteItem,
+  onDndItem,
+  ...props
+}) {
+  const state = useAppSelector<IProductConfigurationPageSlice>(
+    StoreSliceEnum.PRODUCT_CONFIGURATION,
+  );
+  const columns = ProductPhotosGridColumns(onAction);
+
+  function onUpload(uploadModel: UploadPhotoModel) {
+    onFileUpload(uploadModel);
+  }
+
+  function onChangeItemPosition(newIndex, activeItem) {
+    onDndItem(newIndex, activeItem);
+  }
+
+  function onAction(
+    _actionType: string,
+    _rowId?: string,
+    _setLoadingRow?: (rowId: string, loading: boolean) => void,
+    row?: any,
+  ) {
+    onDeleteItem(row.original);
   }
 
   return (
-    <div>
+    <div className={cs.productPhotosCard}>
       <SheProductCard
         title="Product Photos"
         view="card"
+        minWidth="450px"
         showPrimaryButton={true}
         primaryButtonTitle="Upload Photos"
         showSecondaryButton={true}
@@ -24,31 +53,30 @@ export default function ProductPhotosCard({ data, ...props }) {
         className={cs.productPhotosCard}
         {...props}
       >
-        <div
-          className={cs.productPhotosFileUploader}
-          onClick={() => document.getElementById("fileInput").click()}
-        >
-          <CirclePlus />
-          <div className={`${cs.text} she-text`}>
-            Drag & drop or click to choose images
-          </div>
-          <input type="file" id="fileInput" onChange={handleFileUpload} />
+        <div className={cs.productPhotosCardContent}>
+          <SheImageUploader
+            contextName={"product"}
+            contextId={contextId}
+            onUpload={onUpload}
+          />
+          {state.photos?.length > 0 && (
+            <div className={cs.managePhotos}>
+              <div className={`${cs.managePhotosTitle} she-title`}>
+                Manage Photos
+              </div>
+              <div className={cs.managePhotosGrid}>
+                <DndGridDataTable
+                  enableDnd={true}
+                  showHeader={false}
+                  columns={columns}
+                  data={state.photos}
+                  gridModel={data}
+                  onNewItemPosition={onChangeItemPosition}
+                />
+              </div>
+            </div>
+          )}
         </div>
-        {data?.items?.length > 0 && (
-          <div className={cs.managePhotos}>
-            <div className={`${cs.managePhotosTitle} she-title`}>
-              Manage Photos
-            </div>
-            <div className={cs.managePhotosGrid}>
-              <GridDataTable
-                showHeader={false}
-                columns={ProductPhotosGridColumns}
-                data={data.items}
-                gridModel={data}
-              />
-            </div>
-          </div>
-        )}
       </SheProductCard>
     </div>
   );

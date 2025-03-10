@@ -6,11 +6,12 @@ import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { IProductConfigurationPageSlice } from "@/const/interfaces/store-slices/IProductConfigurationPageSlice.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
+import { ImageModel } from "@/const/models/ImageModel.ts";
 
 const initialState: IProductConfigurationPageSlice = {
   loading: false,
   products: [],
-  product: null,
+  product: {},
   activeCards: [],
   brandsList: [],
   categoriesList: [],
@@ -18,6 +19,7 @@ const initialState: IProductConfigurationPageSlice = {
   category: {},
   contextId: null,
   productCounter: null,
+  photos: [],
 };
 
 function setLoading(
@@ -90,6 +92,13 @@ function refreshProductCounter(
   state.productCounter = action?.payload || state.productCounter;
 }
 
+function refreshProductPhotos(
+  state: IProductConfigurationPageSlice,
+  action: PayloadAction<ImageModel[]>,
+) {
+  state.photos = action?.payload || state.photos;
+}
+
 const ProductConfigurationPageSlice = createSlice({
   name: StoreSliceEnum.PRODUCT_CONFIGURATION,
   initialState,
@@ -104,6 +113,7 @@ const ProductConfigurationPageSlice = createSlice({
     refreshCategory,
     refreshContextId,
     refreshProductCounter,
+    refreshProductPhotos,
   },
 });
 

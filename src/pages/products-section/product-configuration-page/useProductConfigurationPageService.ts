@@ -25,9 +25,13 @@ export default function useProductConfigurationPageService() {
   const [createNewCategory] = ProductsApiHooks.useCreateNewCategoryMutation();
   const [createBrand] = ProductsApiHooks.useCreateBrandMutation();
   const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
-  const [getProductById] = ProductsApiHooks.useLazyGetProductByIdQuery();
+  const [getProductDetails] = ProductsApiHooks.useLazyGetProductDetailQuery();
   const [getCountersForProducts] =
     ProductsApiHooks.useLazyGetCountersForProductsQuery();
+  const [getProductPhotos] = ProductsApiHooks.useLazyGetProductPhotosQuery();
+  const [putPhotoInNewPosition] =
+    ProductsApiHooks.usePutPhotoInNewPositionMutation();
+  const [deletePhoto] = AssetsApiHooks.useDeletePhotoMutation();
 
   function getAllProductsHandler() {
     dispatch(productsAction.setLoading(true));
@@ -38,8 +42,8 @@ export default function useProductConfigurationPageService() {
     });
   }
 
-  function getProductByIdHandler(id) {
-    return getProductById(id).then((res: any) => {
+  function getProductDetailsHandler(id) {
+    return getProductDetails(id).then((res: any) => {
       return res.data;
     });
   }
@@ -110,10 +114,32 @@ export default function useProductConfigurationPageService() {
     });
   }
 
+  function getProductPhotosHandler(id: number) {
+    return getProductPhotos(id).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function putPhotoInNewPositionHandler(productId, photoId, index) {
+    return putPhotoInNewPosition({
+      productId,
+      photoId,
+      index,
+    }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function deletePhotoHandler(photoId) {
+    return deletePhoto(photoId).then((res: any) => {
+      return res.data;
+    });
+  }
+
   return {
     ...productsState,
     getAllProductsHandler,
-    getProductByIdHandler,
+    getProductDetailsHandler,
     generateProductCodeHandler,
     getSimpleListOfAllBrandsHandler,
     getAllCategoriesByOrganizationHandler,
@@ -125,5 +151,8 @@ export default function useProductConfigurationPageService() {
     createBrandHandler,
     uploadPhotoHandler,
     getCountersForProductsHandler,
+    getProductPhotosHandler,
+    putPhotoInNewPositionHandler,
+    deletePhotoHandler,
   };
 }

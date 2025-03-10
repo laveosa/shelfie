@@ -35,17 +35,5 @@ export function OrdersPage() {
     });
   };
 
-  return (
-    <div id={cs.OrdersPage}>
-      Orders Page
-      <div>
-        <div>
-          return <button onClick={handleSuccess}>success</button>
-          <button onClick={handleError}>Error</button>;
-          <button onClick={handleWarning}>Warning</button>;
-          <button onClick={handleInfo}>Info</button>;
-        </div>
-      </div>
-    </div>
-  );
+  return <div id={cs.OrdersPage}>Orders Page</div>;
 }

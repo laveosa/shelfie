@@ -29,11 +29,12 @@ import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
+import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 
 export function ProductConfigurationPage() {
+  const dispatch = useAppDispatch();
   const productsService = useProductsPageService();
   const service = useProductConfigurationPageService();
-  const dispatch = useAppDispatch();
   const state = useAppSelector<IProductConfigurationPageSlice>(
     StoreSliceEnum.PRODUCT_CONFIGURATION,
   );
@@ -51,9 +52,7 @@ export function ProductConfigurationPage() {
       .then((res: GridModel) => {
         dispatch(actions.refreshProducts(res.items));
       });
-  }, [productsState]);
 
-  useEffect(() => {
     service.getSimpleListOfAllBrandsHandler().then((res: BrandModel[]) => {
       dispatch(actions.refreshBrandsList(res ? res : []));
     });
@@ -64,8 +63,11 @@ export function ProductConfigurationPage() {
         dispatch(actions.refreshCategoriesList(res ? res : []));
       });
 
+    dispatch(actions.refreshActiveCards(["basicData"]));
+
     if (productId) {
-      service.getProductByIdHandler(productId).then((res: ProductModel) => {
+      dispatch(actions.refreshActiveCards(["basicData"]));
+      service.getProductDetailsHandler(productId).then((res: ProductModel) => {
         dispatch(actions.refreshProduct(res));
       });
 
@@ -74,10 +76,13 @@ export function ProductConfigurationPage() {
         .then((res: ProductCounterModel) => {
           dispatch(actions.refreshProductCounter(res));
         });
+
+      service.getProductPhotosHandler(productId).then((res) => {
+        dispatch(actions.refreshProductPhotos(res));
+      });
     } else {
       dispatch(actions.refreshProductCounter({}));
       dispatch(actions.refreshProduct({}));
-      dispatch(actions.refreshActiveCards(["basicData"]));
     }
 
     return () => {
@@ -85,7 +90,7 @@ export function ProductConfigurationPage() {
     };
   }, [productId]);
 
-  function handleAction(identifier: string) {
+  function handleCardAction(identifier: string) {
     const cardGroups = {
       basicData: ["basicData", "createCategoryCard", "createBrandCard"],
       gallery: ["gallery"],
@@ -113,22 +118,26 @@ export function ProductConfigurationPage() {
     }
   }
 
-  function closeCard(identifier) {
+  function closeCardHandler(identifier) {
     const updatedCards = state.activeCards.filter(
       (card) => card !== identifier,
     );
     dispatch(actions.refreshActiveCards(updatedCards));
   }
 
-  function handleCloseProductConfigurationCard() {
+  function closeProductConfigurationCardHandle() {
     if (productId) {
-      closeCard("basicData");
+      closeCardHandler("basicData");
     } else {
       navigate("/products");
     }
   }
 
-  function onSubmitProductData(data: any) {
+  function itemCardHandler(item) {
+    navigate(`/products/product-configuration/${item.productId}`);
+  }
+
+  function onSubmitProductDataHandler(data: any) {
     service.createNewProductHandler(data).then((res) => {
       if (res.data) {
         dispatch(actions.refreshProduct(res.data));
@@ -151,14 +160,65 @@ export function ProductConfigurationPage() {
     });
   }
 
+  function onFileUploadHandler(uploadModel: UploadPhotoModel) {
+    service.uploadPhotoHandler(uploadModel).then((res) => {
+      if (!uploadModel.contextId) {
+        addToast({
+          text: "Create category first",
+          type: "error",
+        });
+      } else {
+        if (res.data.photoId) {
+          addToast({
+            text: "Photos added successfully",
+            type: "success",
+          });
+        } else {
+          addToast({
+            text: `${res.error.data.detail}`,
+            type: "error",
+          });
+        }
+      }
+    });
+  }
+
+  function onDndItem(newIndex, activeItem) {
+    service.putPhotoInNewPositionHandler(
+      productId,
+      activeItem.photoId,
+      newIndex,
+    );
+  }
+
+  function onDeleteItem(data) {
+    service.deletePhotoHandler(data.photoId).then(() => {
+      service.getProductPhotosHandler(productId).then((res) => {
+        dispatch(actions.refreshProductPhotos(res));
+      });
+      service
+        .getCountersForProductsHandler(productId)
+        .then((res: ProductCounterModel) => {
+          dispatch(actions.refreshProductCounter(res));
+        });
+    });
+  }
+
   return (
     <div className={cs.createProductPage}>
-      {state.products.length > 0 && <ItemsCard data={state.products} />}
+      {state.products?.length > 0 && (
+        <ItemsCard
+          data={state.products}
+          selectedItem={productId}
+          onAction={itemCardHandler}
+        />
+      )}
       <ProductMenuCard
         title={productId ? "Manage Product" : "Create Product"}
         productCounter={state.productCounter}
-        onAction={handleAction}
+        onAction={handleCardAction}
         productId={Number(productId)}
+        activeCards={state.activeCards}
       />
       {state.activeCards.includes("basicData") && (
         <ProductConfigurationCard
@@ -168,69 +228,79 @@ export function ProductConfigurationPage() {
           onGenerateProductCode={service.generateProductCodeHandler}
           onProductCodeChange={service.checkProductCodeHandler}
           onOpenCreateProductCategoryCard={() =>
-            handleAction("createCategoryCard")
+            handleCardAction("createCategoryCard")
           }
-          onOpenCreateProductBrandCard={() => handleAction("createBrandCard")}
-          onSecondaryButtonClick={handleCloseProductConfigurationCard}
-          onPrimaryButtonClick={(data) => onSubmitProductData(data)}
+          onOpenCreateProductBrandCard={() =>
+            handleCardAction("createBrandCard")
+          }
+          onSecondaryButtonClick={closeProductConfigurationCardHandle}
+          onPrimaryButtonClick={(data) => onSubmitProductDataHandler(data)}
         />
       )}
       {state.activeCards.includes("gallery") && (
         <ProductPhotosCard
           width={"400px"}
-          onSecondaryButtonClick={() => closeCard("gallery")}
+          onSecondaryButtonClick={() => closeCardHandler("gallery")}
           data={state.products}
+          contextId={productId}
+          onFileUpload={onFileUploadHandler}
+          onDndItem={onDndItem}
+          onDeleteItem={onDeleteItem}
         />
       )}
       {state.activeCards.includes("variants") && (
         <ManageVariantsCard
-          onChooseVariantTraits={() => handleAction("chooseVariantTraitsCard")}
-          onSecondaryButtonClick={() => closeCard("variants")}
+          onChooseVariantTraits={() =>
+            handleCardAction("chooseVariantTraitsCard")
+          }
+          onSecondaryButtonClick={() => closeCardHandler("variants")}
         />
       )}
       {state.activeCards.includes("sizeChart") && (
         <SizeChartCard
           data={sizeChartData}
           onOpenCreateProductCategoryCard={() =>
-            handleAction("createSizeChartCategoryCard")
+            handleCardAction("createSizeChartCategoryCard")
           }
-          onSecondaryButtonClick={() => closeCard("sizeChart")}
+          onSecondaryButtonClick={() => closeCardHandler("sizeChart")}
         />
       )}
       {state.activeCards.includes("attributes") && (
         <ChooseAttributesCard
           onCreateAttributeHandle={() => {
-            handleAction("createAttributeCard");
+            handleCardAction("createAttributeCard");
           }}
-          onSecondaryButtonClick={() => closeCard("attributes")}
+          onSecondaryButtonClick={() => closeCardHandler("attributes")}
         />
       )}
       {state.activeCards.includes("createAttributeCard") && (
         <CreateAttributeCard
           data={state.products}
-          onSecondaryButtonClick={() => closeCard("createAttributeCard")}
+          onSecondaryButtonClick={() => closeCardHandler("createAttributeCard")}
         />
       )}
       {state.activeCards.includes("createCategoryCard") && (
         <CreateProductCategoryCard
-          onSecondaryButtonClick={() => closeCard("createCategoryCard")}
+          onSecondaryButtonClick={() => closeCardHandler("createCategoryCard")}
         />
       )}
       {state.activeCards.includes("createSizeChartCategoryCard") && (
         <CreateProductCategoryCard
           onSecondaryButtonClick={() =>
-            closeCard("createSizeChartCategoryCard")
+            closeCardHandler("createSizeChartCategoryCard")
           }
         />
       )}
       {state.activeCards.includes("createBrandCard") && (
         <CreateProductBrandCard
-          onSecondaryButtonClick={() => closeCard("createBrandCard")}
+          onSecondaryButtonClick={() => closeCardHandler("createBrandCard")}
         />
       )}
       {state.activeCards.includes("chooseVariantTraitsCard") && (
         <ChooseVariantTraitsCard
-          onSecondaryButtonClick={() => closeCard("chooseVariantTraitsCard")}
+          onSecondaryButtonClick={() =>
+            closeCardHandler("chooseVariantTraitsCard")
+          }
         />
       )}
     </div>
