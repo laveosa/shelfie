@@ -1,8 +1,8 @@
 import { ColumnDef, Row } from "@tanstack/react-table";
 
 import { Switch } from "@/components/ui/switch.tsx";
-import ProductsGridColumnActions from "@/components/complex/grid/products-grid/ProductsGridColumnActions.tsx";
 import placeholderImage from "@/assets/images/placeholder-image.png";
+import ProductPhotosGridColumnActions from "@/components/complex/grid/product-photos-grid/ProductPhotosGridColumnActions.tsx";
 
 interface IProductPhotoGridColumns {
   id: number | string;
@@ -120,7 +120,7 @@ export const ProductPhotosGridColumns = (
     header: "Actions",
     cell: ({ row, table }) => {
       return (
-        <ProductsGridColumnActions
+        <ProductPhotosGridColumnActions
           row={row}
           onAction={onAction}
           table={table}
