@@ -3,9 +3,6 @@ import React from "react";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ProductPhotosCard.module.scss";
 import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import { useAppSelector } from "@/utils/hooks/redux.ts";
-import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
-import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { SheImageUploader } from "@/components/complex/she-images-file-uploader/SheImageUploader.tsx";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { ProductPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/ProductPhotosGridColumns.tsx";
@@ -18,9 +15,6 @@ export default function ProductPhotosCard({
   onDndItem,
   ...props
 }) {
-  const state = useAppSelector<IProductBasicDataPageSlice>(
-    StoreSliceEnum.PRODUCT_BASIC_DATA,
-  );
   const columns = ProductPhotosGridColumns(onAction);
 
   function onUpload(uploadModel: UploadPhotoModel) {
@@ -59,7 +53,7 @@ export default function ProductPhotosCard({
             contextId={contextId}
             onUpload={onUpload}
           />
-          {state.photos?.length > 0 && (
+          {data?.length > 0 && (
             <div className={cs.managePhotos}>
               <div className={`${cs.managePhotosTitle} she-title`}>
                 Manage Photos
@@ -69,7 +63,7 @@ export default function ProductPhotosCard({
                   enableDnd={true}
                   showHeader={false}
                   columns={columns}
-                  data={state.photos}
+                  data={data}
                   gridModel={data}
                   onNewItemPosition={onChangeItemPosition}
                 />

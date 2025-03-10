@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { CloudUploadIcon, Trash2Icon } from "lucide-react";
+import { useState } from "react";
 
 import {
   Dropzone,
@@ -26,11 +26,19 @@ export function SheImageUploader({
 
   const dropzone = useDropzone({
     onDropFile: (file: File) => {
+      const newFile = {
+        id: crypto.randomUUID(),
+        file,
+        fileName: file.name,
+        status: "pending",
+        result: URL.createObjectURL(file),
+      };
+
       setSelectedFiles((prevFiles) => [...prevFiles, file]);
 
       return Promise.resolve({
         status: "success",
-        result: URL.createObjectURL(file),
+        result: newFile.result,
       });
     },
     validation: {
@@ -42,7 +50,7 @@ export function SheImageUploader({
     },
   });
 
-  const handleUpload = async () => {
+  async function handleUpload() {
     for (const file of selectedFiles) {
       const formData = new FormData();
       formData.append("file", file);
@@ -55,11 +63,29 @@ export function SheImageUploader({
 
       try {
         await onUpload(uploadModel);
+        setSelectedFiles([]);
+        dropzone.fileStatuses.forEach((file) => {
+          dropzone.onRemoveFile(file.id);
+        });
       } catch (error) {
         console.error("Upload failed:", error);
       }
     }
-  };
+  }
+
+  function handleRemoveFile(fileId: string) {
+    dropzone.onRemoveFile(fileId);
+
+    const fileToRemove = dropzone.fileStatuses.find(
+      (file) => file.id === fileId,
+    );
+
+    if (fileToRemove) {
+      setSelectedFiles((prevFiles) =>
+        prevFiles.filter((file) => file.name !== fileToRemove.fileName),
+      );
+    }
+  }
 
   return (
     <div className={`${cs.sheImageUploader} not-prose flex flex-col gap-4`}>
@@ -104,6 +130,7 @@ export function SheImageUploader({
                 <DropzoneRemoveFile
                   variant="ghost"
                   className="shrink-0 hover:outline"
+                  onClick={() => handleRemoveFile(file.id)}
                 >
                   <Trash2Icon className="size-4" />
                 </DropzoneRemoveFile>
@@ -112,7 +139,11 @@ export function SheImageUploader({
           ))}
         </DropzoneFileList>
       </Dropzone>
-      <SheButton variant="secondary" onClick={handleUpload}>
+      <SheButton
+        variant="secondary"
+        onClick={handleUpload}
+        disabled={selectedFiles.length === 0}
+      >
         Upload photo
       </SheButton>
     </div>
