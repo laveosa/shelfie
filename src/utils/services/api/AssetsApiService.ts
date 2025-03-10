@@ -27,6 +27,18 @@ export const AssetsApiService = createApi({
         },
       ],
     }),
+    deletePhoto: apiConfig.createMutation<void, number>(builder, {
+      query: (id: number) => ({
+        url: `${ApiUrlEnum.ASSETS_BASE_URL}${ApiUrlEnum.ASSETS}/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (_result, _error, id) => [
+        {
+          type: ApiServiceNameEnum.ASSETS,
+          id,
+        },
+      ],
+    }),
   }),
 });
 

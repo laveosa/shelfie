@@ -14,12 +14,14 @@ export default function ProductPhotosCard({
   data,
   contextId,
   onFileUpload,
+  onDeleteItem,
   onDndItem,
   ...props
 }) {
   const state = useAppSelector<IProductConfigurationPageSlice>(
     StoreSliceEnum.PRODUCT_CONFIGURATION,
   );
+  const columns = ProductPhotosGridColumns(onAction);
 
   function onUpload(uploadModel: UploadPhotoModel) {
     onFileUpload(uploadModel);
@@ -27,6 +29,15 @@ export default function ProductPhotosCard({
 
   function onChangeItemPosition(newIndex, activeItem) {
     onDndItem(newIndex, activeItem);
+  }
+
+  function onAction(
+    _actionType: string,
+    _rowId?: string,
+    _setLoadingRow?: (rowId: string, loading: boolean) => void,
+    row?: any,
+  ) {
+    onDeleteItem(row.original);
   }
 
   return (
@@ -57,7 +68,7 @@ export default function ProductPhotosCard({
                 <DndGridDataTable
                   enableDnd={true}
                   showHeader={false}
-                  columns={ProductPhotosGridColumns}
+                  columns={columns}
                   data={state.photos}
                   gridModel={data}
                   onNewItemPosition={onChangeItemPosition}

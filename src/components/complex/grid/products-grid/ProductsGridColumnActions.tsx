@@ -10,12 +10,13 @@ import {
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 
 interface ProductsGridColumnActionsProps<TData> {
-  row: Row<TData>;
+  row?: Row<TData>;
   table?: Table<TData>;
-  onAction: (
-    actionType: string,
+  onAction?: (
+    actionType?: string,
     rowId?: string,
     setLoadingRow?: (rowId: string, loading: boolean) => void,
+    row?: Row<TData>,
   ) => void;
 }
 
@@ -41,7 +42,7 @@ export default function ProductsGridColumnActions<TData>({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-[160px]">
         <DropdownMenuItem
-          onClick={() => onAction("delete", row.id, meta?.setLoadingRow)}
+          onClick={() => onAction("delete", row.id, meta?.setLoadingRow, row)}
         >
           Delete
         </DropdownMenuItem>

@@ -191,6 +191,10 @@ export function ProductConfigurationPage() {
     );
   }
 
+  function onDeleteItem(data) {
+    service.deletePhotoHandler(data.photoId);
+  }
+
   return (
     <div className={cs.createProductPage}>
       {state.products?.length > 0 && (
@@ -232,6 +236,7 @@ export function ProductConfigurationPage() {
           contextId={productId}
           onFileUpload={onFileUploadHandler}
           onDndItem={onDndItem}
+          onDeleteItem={onDeleteItem}
         />
       )}
       {state.activeCards.includes("variants") && (

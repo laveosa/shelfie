@@ -31,6 +31,7 @@ export default function useProductConfigurationPageService() {
   const [getProductPhotos] = ProductsApiHooks.useLazyGetProductPhotosQuery();
   const [putPhotoInNewPosition] =
     ProductsApiHooks.usePutPhotoInNewPositionMutation();
+  const [deletePhoto] = AssetsApiHooks.useDeletePhotoMutation();
 
   function getAllProductsHandler() {
     dispatch(productsAction.setLoading(true));
@@ -129,6 +130,12 @@ export default function useProductConfigurationPageService() {
     });
   }
 
+  function deletePhotoHandler(photoId) {
+    return deletePhoto(photoId).then((res: any) => {
+      return res.data;
+    });
+  }
+
   return {
     ...productsState,
     getAllProductsHandler,
@@ -146,5 +153,6 @@ export default function useProductConfigurationPageService() {
     getCountersForProductsHandler,
     getProductPhotosHandler,
     putPhotoInNewPositionHandler,
+    deletePhotoHandler,
   };
 }
