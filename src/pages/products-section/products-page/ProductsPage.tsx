@@ -43,6 +43,11 @@ export function ProductsPage() {
       .then((res: GridModel) => {
         dispatch(actions.refreshProductsGridModel(res));
       });
+    service
+      .getVariantsForGridHandler(state.gridRequestModel)
+      .then((res: GridModel) => {
+        dispatch(actions.refreshProductsGridModel(res));
+      });
   }, [state.gridRequestModel]);
 
   useEffect(() => {

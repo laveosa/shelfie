@@ -5,6 +5,7 @@ export enum StoreSliceEnum {
   PRODUCTS = "productsSlice",
   PRODUCT_BASIC_DATA = "productBasicDataSlice",
   PRODUCT_GALLERY = "productGallery",
+  MANAGE_VARIANTS = "manageVariants",
   PROFILE = "profileSlice",
   SETTINGS = "settingsSlice",
   MESSENGER = "messengerSlice",

@@ -1,4 +1,5 @@
 import { RouteObject } from "react-router-dom";
+import { ManageVariantsPage } from "@/pages/products-section/manage-variants-page/ManageVariantsPage.tsx";
 
 export const ProductsSectionRouter: RouteObject[] = [
   {
@@ -31,6 +32,17 @@ export const ProductsSectionRouter: RouteObject[] = [
       );
       return {
         element: <ProductGalleryPage />,
+      };
+    },
+  },
+  {
+    path: "manage-variants/:productId?",
+    lazy: async () => {
+      const { ManageVariantsPage } = await import(
+        "@/pages/products-section/manage-variants-page/ManageVariantsPage.tsx"
+      );
+      return {
+        element: <ManageVariantsPage />,
       };
     },
   },

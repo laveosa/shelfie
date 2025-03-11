@@ -9,7 +9,7 @@ export enum NavUrlEnum {
   PRODUCTS = "/products",
   PRODUCT_BASIC_DATA = "/product-basic-data",
   PRODUCT_GALLERY = "/product-gallery",
-  VARIANTS = "/variants",
+  PRODUCT_VARIANTS = "/manage-variants",
   SIZE_CHART = "/size-chart",
   ATTRIBUTES = "/attributes",
   PURCHASE = "/purchase",

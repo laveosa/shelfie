@@ -16,14 +16,20 @@ export default function ChooseVariantTraitsCard({ ...props }) {
       secondaryButtonTitle="Cancel"
       showCloseButton={true}
       className={cs.chooseVariantTraitsCard}
-      width="350px"
+      width="370px"
       {...props}
     >
       <div className={cs.chooseVariantTraitsContent}>
-        <div className={`${cs.textBlock} she-text`}>
-          You have not defined any product traits yet
+        <div className={cs.textBlock}>
+          <span className="she-text">
+            Pick the traits that describe the variety of the product options you
+            offer.
+          </span>
+          <span className="she-text"> Missing a trait? Add it!</span>
         </div>
-        <SheButton icon={Plus}>Create product trait</SheButton>
+        <SheButton icon={Plus} variant="outline">
+          Add trait
+        </SheButton>
       </div>
     </SheProductCard>
   );

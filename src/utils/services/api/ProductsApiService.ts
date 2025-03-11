@@ -258,6 +258,29 @@ export const ProductsApiService = createApi({
         },
       ],
     }),
+    getVariantsForGrid: apiConfig.createMutation<GridModel, GridRequestModel>(
+      builder,
+      {
+        query: (model?: GridRequestModel) => ({
+          url: `${ApiUrlEnum.VARIANTS}/list`,
+          method: "POST",
+          body: JSON.stringify(model),
+        }),
+        invalidatesTags: (_result, _error, model) => [
+          {
+            type: ApiServiceNameEnum.PRODUCTS,
+            model,
+          },
+        ],
+      },
+    ),
+    getListOfAllTraits: apiConfig.createQuery<any, void>(builder, {
+      query: () => ({
+        url: `${ApiUrlEnum.TRAITS}/all`,
+      }),
+      providesTags: (result: any) =>
+        apiConfig.providesTags(result, ApiServiceNameEnum.PRODUCTS),
+    }),
   }),
 });
 

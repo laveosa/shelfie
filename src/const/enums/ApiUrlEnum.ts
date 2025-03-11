@@ -5,6 +5,8 @@ export enum ApiUrlEnum {
   PRODUCTS_BASE_URL = "https://productservice.redground-5e8b9eee.germanywestcentral.azurecontainerapps.io/api/v1",
   ASSETS_BASE_URL = "https://photoservice.redground-5e8b9eee.germanywestcentral.azurecontainerapps.io/api/v1",
   PRODUCTS = "/products",
+  VARIANTS = "/variants",
+  TRAITS = "/traits",
   PRODUCT_BASIC_DATA = "/product-basic-data",
   PRODUCT_CATEGORIES = "/productCategories",
   BRANDS = "/brands",

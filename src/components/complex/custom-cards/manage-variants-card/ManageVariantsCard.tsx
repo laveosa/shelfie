@@ -5,6 +5,7 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { LayoutList, Plus } from "lucide-react";
 
 export default function ManageVariantsCard({
+  traits,
   onChooseVariantTraits,
   ...props
 }) {
@@ -22,8 +23,11 @@ export default function ManageVariantsCard({
       {...props}
     >
       <div className={cs.manageVariantsContent}>
-        <div className={`${cs.textBlock} she-text`}>
-          The product does not have any variants yet
+        <div className={cs.textBlock}>
+          <span className="she-text">
+            The product is not described by traits yet. Please select at least
+            one trait to create variants.
+          </span>
         </div>
         <div className={cs.buttonBlock}>
           <SheButton
@@ -33,10 +37,14 @@ export default function ManageVariantsCard({
           >
             Create Variant
           </SheButton>
-          or
-          <SheButton icon={LayoutList} variant="outline">
-            Generate Set
-          </SheButton>
+          {traits.length > 0 && (
+            <>
+              <span>or</span>
+              <SheButton icon={LayoutList} variant="outline">
+                Generate Set
+              </SheButton>
+            </>
+          )}
         </div>
       </div>
     </SheProductCard>

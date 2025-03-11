@@ -1,4 +1,3 @@
-import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
@@ -11,45 +10,41 @@ const initialState: IProductGalleryPageSlice = {
   products: [],
   product: {},
   activeCards: [],
-  brandsList: [],
-  categoriesList: [],
-  brand: {},
-  category: {},
   contextId: null,
   productCounter: null,
   photos: [],
 };
 
 function setLoading(
-  state: IProductBasicDataPageSlice,
+  state: IProductGalleryPageSlice,
   action: PayloadAction<boolean>,
 ) {
   state.loading = action?.payload;
 }
 
 function refreshProducts(
-  state: IProductBasicDataPageSlice,
+  state: IProductGalleryPageSlice,
   action: PayloadAction<ProductModel[]>,
 ) {
   state.products = action?.payload || state.products;
 }
 
 function refreshProduct(
-  state: IProductBasicDataPageSlice,
+  state: IProductGalleryPageSlice,
   action: PayloadAction<ProductModel>,
 ) {
   state.product = action?.payload || state.product;
 }
 
 function refreshProductCounter(
-  state: IProductBasicDataPageSlice,
+  state: IProductGalleryPageSlice,
   action: PayloadAction<ProductCounterModel>,
 ) {
   state.productCounter = action?.payload || state.productCounter;
 }
 
 function refreshProductPhotos(
-  state: IProductBasicDataPageSlice,
+  state: IProductGalleryPageSlice,
   action: PayloadAction<ImageModel[]>,
 ) {
   state.photos = action?.payload || state.photos;
