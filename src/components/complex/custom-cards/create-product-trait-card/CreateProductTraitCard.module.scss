@@ -1,0 +1,16 @@
+@use "@/styles/variables" as vars;
+
+.createProductTraitCard {
+  .createProductTraitContent {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 20px;
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+  }
+}

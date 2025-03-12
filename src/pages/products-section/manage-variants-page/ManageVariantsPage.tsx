@@ -10,12 +10,12 @@ import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import cs from "@/pages/products-section/product-basic-data-page/ProductBasicDataPage.module.scss";
 import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
 import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
-import CreateProductBrandCard from "@/components/complex/custom-cards/create-product-brand-card/CreateProductBrandCard.tsx";
 import useManageVariantsPageService from "@/pages/products-section/manage-variants-page/useManageVariantsPageService.ts";
 import { IManageVariantsPageSlice } from "@/const/interfaces/store-slices/IManageVariantsPageSlice.ts";
-import { ManageVariantsPageSliceActions as actions } from "@/state/slices/ManageVariantsSlice.ts";
+import { ManageVariantsPageSliceActions as actions } from "@/state/slices/ManageVariantsPageSlice.ts";
 import ManageVariantsCard from "@/components/complex/custom-cards/manage-variants-card/ManageVariantsCard.tsx";
 import ChooseVariantTraitsCard from "@/components/complex/custom-cards/choose-variant-traits-card/ChooseVariantTraitsCard.tsx";
+import CreateProductTraitCard from "@/components/complex/custom-cards/create-product-trait-card/CreateProductTraitCard.tsx";
 
 export function ManageVariantsPage() {
   const dispatch = useAppDispatch();
@@ -32,8 +32,12 @@ export function ManageVariantsPage() {
       .getVariantsForGridHandler(state.gridRequestModel)
       .then((res: GridModel) => {
         dispatch(actions.refreshVariants(res ? res.items : []));
-        console.log("RES", res);
       });
+
+    service.getListOfTypesOfTraitsHandler().then((res) => {
+      console.log("TYPES", res);
+      dispatch(actions.refreshTypesOfTraits(res));
+    });
 
     service
       .getCountersForProductsHandler(productId)
@@ -80,7 +84,53 @@ export function ManageVariantsPage() {
   //   });
   // }
 
-  function onAction() {}
+  // function onAction(data) {
+  //   console.log(data);
+  // }
+
+  function onDndItem(_newIndex, _activeItem) {
+    // service
+    //   .putPhotoInNewPositionHandler(productId, activeItem.photoId, newIndex)
+    //   .then(() => {
+    //     productsService
+    //       .getTheProductsForGridHandler(productsState.gridRequestModel)
+    //       .then((res: GridModel) => {
+    //         dispatch(actions.refreshProducts(res.items));
+    //       });
+    //   });
+  }
+
+  function onDeleteItem(_data) {
+    // service.deletePhotoHandler(data.photoId).then(() => {
+    //   service.getProductPhotosHandler(Number(productId)).then((res) => {
+    //     dispatch(actions.refreshProductPhotos(res));
+    //   });
+    //   service
+    //     .getCountersForProductsHandler(productId)
+    //     .then((res: ProductCounterModel) => {
+    //       dispatch(actions.refreshProductCounter(res));
+    //     });
+    //   productsService
+    //     .getTheProductsForGridHandler(productsState.gridRequestModel)
+    //     .then((res: GridModel) => {
+    //       dispatch(actions.refreshProducts(res.items));
+    //     });
+    // });
+  }
+
+  function onAction(actionType: string, payload: any) {
+    switch (actionType) {
+      case "submit":
+        console.log(payload);
+        break;
+      case "dnd":
+        console.log(payload);
+        break;
+      case "delete":
+        console.log(payload);
+        break;
+    }
+  }
 
   return (
     <div className={cs.createProductPage}>
@@ -106,12 +156,18 @@ export function ManageVariantsPage() {
       />
       {state.activeCards.includes("chooseVariantTraitsCard") && (
         <ChooseVariantTraitsCard
+          onAddTrait={() => handleCardAction("createProductTraitCard")}
           onSecondaryButtonClick={() => handleCardAction("createCategoryCard")}
         />
       )}
-      {state.activeCards.includes("createBrandCard") && (
-        <CreateProductBrandCard
-          onSecondaryButtonClick={() => handleCardAction("createBrandCard")}
+      {state.activeCards.includes("createProductTraitCard") && (
+        <CreateProductTraitCard
+          data={state.variants}
+          typesOfTraits={state.typesOfTraits}
+          onSecondaryButtonClick={() =>
+            handleCardAction("createProductTraitCard")
+          }
+          onAction={onAction}
         />
       )}
     </div>

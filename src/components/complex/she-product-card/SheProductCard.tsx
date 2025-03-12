@@ -22,10 +22,11 @@ export default function SheProductCard({
   showToggleButton,
   showCloseButton,
   children,
-  showPrimaryButton,
+  showPrimaryButton = false,
   primaryButtonTitle,
   primaryButtonTitleTransKey,
-  showSecondaryButton,
+  primaryButtonDisabled,
+  showSecondaryButton = false,
   secondaryButtonTitle,
   secondaryButtonTitleTransKey,
   onPrimaryButtonClick,
@@ -104,7 +105,10 @@ export default function SheProductCard({
             </SheButton>
           )}
           {showPrimaryButton && (
-            <SheButton onClick={onPrimaryButtonClick} disabled={loading}>
+            <SheButton
+              onClick={onPrimaryButtonClick}
+              disabled={loading || primaryButtonDisabled}
+            >
               <Trans i18nKey={primaryButtonTitleTransKey}>
                 {primaryButtonTitle}
               </Trans>

@@ -7,31 +7,38 @@ import { SheImageUploader } from "@/components/complex/she-images-file-uploader/
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { ProductPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/ProductPhotosGridColumns.tsx";
 
+type ActionType = "upload" | "delete" | "dnd";
+
 export default function ProductPhotosCard({
   data,
   contextId,
-  onFileUpload,
-  onDeleteItem,
-  onDndItem,
+  onAction,
   ...props
 }) {
-  const columns = ProductPhotosGridColumns(onAction);
+  const columns = ProductPhotosGridColumns(onGridAction);
 
-  function onUpload(uploadModel: UploadPhotoModel) {
-    onFileUpload(uploadModel);
+  function handleAction(actionType: ActionType, payload?: any) {
+    switch (actionType) {
+      case "upload":
+        onAction("upload", payload);
+        break;
+      case "delete":
+        onAction("delete", payload);
+        break;
+      case "dnd":
+        const { newIndex, activeItem } = payload;
+        onAction("dnd", { newIndex, activeItem });
+        break;
+    }
   }
 
-  function onChangeItemPosition(newIndex, activeItem) {
-    onDndItem(newIndex, activeItem);
-  }
-
-  function onAction(
+  function onGridAction(
     _actionType: string,
     _rowId?: string,
     _setLoadingRow?: (rowId: string, loading: boolean) => void,
     row?: any,
   ) {
-    onDeleteItem(row.original);
+    handleAction("delete", row.original);
   }
 
   return (
@@ -51,7 +58,9 @@ export default function ProductPhotosCard({
           <SheImageUploader
             contextName={"product"}
             contextId={contextId}
-            onUpload={onUpload}
+            onUpload={(uploadModel: UploadPhotoModel) =>
+              handleAction("upload", uploadModel)
+            }
           />
           {data?.length > 0 && (
             <div className={cs.managePhotos}>
@@ -65,7 +74,9 @@ export default function ProductPhotosCard({
                   columns={columns}
                   data={data}
                   gridModel={data}
-                  onNewItemPosition={onChangeItemPosition}
+                  onNewItemPosition={(newIndex, activeItem) =>
+                    handleAction("dnd", { newIndex, activeItem })
+                  }
                 />
               </div>
             </div>

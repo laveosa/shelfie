@@ -9,7 +9,6 @@ import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import useProductGalleryPageService from "@/pages/products-section/product-gallery-page/useProductGalleryPageService.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
-import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import cs from "@/pages/products-section/product-basic-data-page/ProductBasicDataPage.module.scss";
@@ -56,63 +55,70 @@ export function ProductGalleryPage() {
     );
   }
 
-  function onFileUploadHandler(uploadModel: UploadPhotoModel) {
-    service.uploadPhotoHandler(uploadModel).then((res) => {
-      if (!uploadModel.contextId) {
-        addToast({
-          text: "Create category first",
-          type: "error",
+  function onAction(actionType: string, payload: any) {
+    switch (actionType) {
+      case "upload":
+        service.uploadPhotoHandler(payload).then((res) => {
+          if (!payload.contextId) {
+            addToast({
+              text: "Create category first",
+              type: "error",
+            });
+          } else {
+            if (res.data.photoId) {
+              service.getProductPhotosHandler(Number(productId)).then((res) => {
+                dispatch(actions.refreshProductPhotos(res));
+              });
+              service.getCountersForProductsHandler(productId).then((res) => {
+                dispatch(actions.refreshProductCounter(res));
+              });
+              addToast({
+                text: "Photos added successfully",
+                type: "success",
+              });
+            } else {
+              addToast({
+                text: `${res.error.data.detail}`,
+                type: "error",
+              });
+            }
+          }
         });
-      } else {
-        if (res.data.photoId) {
+        break;
+      case "dnd":
+        service
+          .putPhotoInNewPositionHandler(
+            productId,
+            payload.activeItem.photoId,
+            payload.newIndex,
+          )
+          .then(() => {
+            productsService
+              .getTheProductsForGridHandler(productsState.gridRequestModel)
+              .then((res: GridModel) => {
+                dispatch(actions.refreshProducts(res.items));
+              });
+          });
+        break;
+      case "delete":
+        console.log(payload);
+        service.deletePhotoHandler(payload.photoId).then(() => {
           service.getProductPhotosHandler(Number(productId)).then((res) => {
             dispatch(actions.refreshProductPhotos(res));
           });
-          service.getCountersForProductsHandler(productId).then((res) => {
-            dispatch(actions.refreshProductCounter(res));
-          });
-          addToast({
-            text: "Photos added successfully",
-            type: "success",
-          });
-        } else {
-          addToast({
-            text: `${res.error.data.detail}`,
-            type: "error",
-          });
-        }
-      }
-    });
-  }
-
-  function onDndItem(newIndex, activeItem) {
-    service
-      .putPhotoInNewPositionHandler(productId, activeItem.photoId, newIndex)
-      .then(() => {
-        productsService
-          .getTheProductsForGridHandler(productsState.gridRequestModel)
-          .then((res: GridModel) => {
-            dispatch(actions.refreshProducts(res.items));
-          });
-      });
-  }
-
-  function onDeleteItem(data) {
-    service.deletePhotoHandler(data.photoId).then(() => {
-      service.getProductPhotosHandler(Number(productId)).then((res) => {
-        dispatch(actions.refreshProductPhotos(res));
-      });
-      service
-        .getCountersForProductsHandler(productId)
-        .then((res: ProductCounterModel) => {
-          dispatch(actions.refreshProductCounter(res));
+          service
+            .getCountersForProductsHandler(productId)
+            .then((res: ProductCounterModel) => {
+              dispatch(actions.refreshProductCounter(res));
+            });
+          productsService
+            .getTheProductsForGridHandler(productsState.gridRequestModel)
+            .then((res: GridModel) => {
+              dispatch(actions.refreshProducts(res.items));
+            });
         });
-      productsService
-        .getTheProductsForGridHandler(productsState.gridRequestModel)
-        .then((res: GridModel) => {
-          dispatch(actions.refreshProducts(res.items));
-        });
-    });
+        break;
+    }
   }
 
   return (
@@ -134,9 +140,7 @@ export function ProductGalleryPage() {
         width={"400px"}
         data={state.photos}
         contextId={productId}
-        onFileUpload={onFileUploadHandler}
-        onDndItem={onDndItem}
-        onDeleteItem={onDeleteItem}
+        onAction={onAction}
       />
     </div>
   );

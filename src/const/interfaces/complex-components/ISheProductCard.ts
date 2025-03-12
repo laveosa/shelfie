@@ -16,6 +16,7 @@ export interface ISheProductCard extends IBaseComponent {
   showPrimaryButton?: boolean;
   primaryButtonTitle?: string;
   primaryButtonTitleTransKey?: string;
+  primaryButtonDisabled?: any;
   showSecondaryButton?: boolean;
   secondaryButtonTitle?: string;
   secondaryButtonTitleTransKey?: string;

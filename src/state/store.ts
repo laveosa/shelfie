@@ -19,7 +19,7 @@ import { UsersApiService } from "@/utils/services/api/UsersApiService.ts";
 import { AssetsApiService } from "@/utils/services/api/AssetsApiService.ts";
 import ProductBasicDataPageSlice from "@/state/slices/ProductBasicDataPageSlice.ts";
 import ProductGalleryPageSlice from "@/state/slices/ProductGalleryPageSlice.ts";
-import ManageVariantsPageSlice from "@/state/slices/ManageVariantsSlice.ts";
+import ManageVariantsPageSlice from "@/state/slices/ManageVariantsPageSlice.ts";
 
 export const store = configureStore({
   reducer: {

@@ -3,11 +3,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { VariantModel } from "@/const/models/VariantModel.ts";
 import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
+import { TypeOfTraitModel } from "@/const/models/TypeOfTraitModel.ts";
 
 const initialState: IManageVariantsPageSlice = {
   loading: false,
   variants: [],
   traits: [],
+  typesOfTraits: [],
   activeCards: [],
   contextId: null,
   productCounter: null,
@@ -25,6 +27,13 @@ function refreshVariants(
   action: PayloadAction<VariantModel[]>,
 ) {
   state.variants = action?.payload || state.variants;
+}
+
+function refreshTypesOfTraits(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<TypeOfTraitModel[]>,
+) {
+  state.typesOfTraits = action?.payload || state.typesOfTraits;
 }
 
 function refreshProductCounter(
@@ -54,6 +63,7 @@ const ManageVariantsPageSlice = createSlice({
   reducers: {
     setLoading,
     refreshVariants,
+    refreshTypesOfTraits,
     refreshProductCounter,
     refreshActiveCards,
     refreshContextId,

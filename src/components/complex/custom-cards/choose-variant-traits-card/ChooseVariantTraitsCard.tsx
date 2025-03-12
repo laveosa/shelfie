@@ -5,14 +5,12 @@ import SheProductCard from "@/components/complex/she-product-card/SheProductCard
 import cs from "./ChooseVariantTraitsCard.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 
-export default function ChooseVariantTraitsCard({ ...props }) {
+export default function ChooseVariantTraitsCard({ onAddTrait, ...props }) {
   return (
     <SheProductCard
       title="Choose variant traits for product"
       view="card"
-      showPrimaryButton={false}
       primaryButtonTitle="Save"
-      showSecondaryButton={false}
       secondaryButtonTitle="Cancel"
       showCloseButton={true}
       className={cs.chooseVariantTraitsCard}
@@ -27,7 +25,7 @@ export default function ChooseVariantTraitsCard({ ...props }) {
           </span>
           <span className="she-text"> Missing a trait? Add it!</span>
         </div>
-        <SheButton icon={Plus} variant="outline">
+        <SheButton icon={Plus} variant="outline" onClick={onAddTrait}>
           Add trait
         </SheButton>
       </div>

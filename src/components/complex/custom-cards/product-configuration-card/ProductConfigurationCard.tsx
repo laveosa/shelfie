@@ -82,11 +82,11 @@ export default function ProductConfigurationCard({
         primaryButtonTitle={product?.productId ? "Save" : "Add Product"}
         showSecondaryButton={true}
         secondaryButtonTitle="Cancel"
-        className={cs.createProductFormCard}
+        className={cs.productConfigurationFormCard}
         onPrimaryButtonClick={form.handleSubmit(onSubmit)}
         {...props}
       >
-        <div className={cs.createProductForm}>
+        <div className={cs.productConfigurationForm}>
           <SheForm form={form} onSubmit={onSubmit}>
             <SheForm.Field
               rules={{
@@ -110,7 +110,7 @@ export default function ProductConfigurationCard({
                 showError={true}
               />
             </SheForm.Field>
-            <div className={cs.createProductFormRow}>
+            <div className={cs.productConfigurationFormRow}>
               <SheForm.Field
                 name="productCode"
                 rules={{
@@ -135,7 +135,7 @@ export default function ProductConfigurationCard({
                 onClick={onGenerateCode}
               />
             </div>
-            <div className={cs.createProductFormRow}>
+            <div className={cs.productConfigurationFormRow}>
               <SheForm.Field rules={{}} name="productBarcode">
                 <SheInput
                   label="Product Barcode"
@@ -151,7 +151,7 @@ export default function ProductConfigurationCard({
                 variant="outline"
               />
             </div>
-            <div className={cs.createProductFormRow}>
+            <div className={cs.productConfigurationFormRow}>
               <FormField
                 control={form.control}
                 name="categoryId"
@@ -192,7 +192,7 @@ export default function ProductConfigurationCard({
                 onClick={onOpenCreateProductCategoryCard}
               />
             </div>
-            <div className={cs.createProductFormRow}>
+            <div className={cs.productConfigurationFormRow}>
               <FormField
                 control={form.control}
                 name="brandId"
@@ -235,7 +235,7 @@ export default function ProductConfigurationCard({
             </div>
             <SheForm.Field name="isActive">
               <div
-                className={`${cs.createProductFormRow} ${cs.createProductFormSwitch}`}
+                className={`${cs.productConfigurationFormRow} ${cs.productConfigurationFormSwitch}`}
               >
                 <Switch
                   checked={form.watch("isActive")}
