@@ -10,6 +10,7 @@ export default function useManageVariantsPageService() {
     ProductsApiHooks.useLazyGetCountersForProductsQuery();
   const [getListOfTypesOfTraits] =
     DictionaryApiHooks.useLazyGetListOfTypesOfTraitsQuery();
+  const [createNewTrait] = ProductsApiHooks.useCreateNewTraitMutation();
 
   function getVariantsForGridHandler(data?: GridRequestModel) {
     return getVariantsForGrid(data).then((res: any) => {
@@ -35,10 +36,17 @@ export default function useManageVariantsPageService() {
     });
   }
 
+  function createNewTraitHandler(model) {
+    return createNewTrait(model).then((res: any) => {
+      return res.data;
+    });
+  }
+
   return {
     getVariantsForGridHandler,
     getListOfAllTraitsHandler,
     getCountersForProductsHandler,
     getListOfTypesOfTraitsHandler,
+    createNewTraitHandler,
   };
 }

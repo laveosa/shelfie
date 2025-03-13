@@ -49,7 +49,7 @@ interface DataTableProps<TData extends DataWithId, TValue>
   enableDnd?: boolean;
   onApplyColumns?: (data) => void;
   onDefaultColumns?: () => void;
-  onNewItemPosition?: (newIndex, activeItem) => void;
+  onNewItemPosition?: (newIndex: number, activeItem: TData) => void;
 }
 
 const DraggableRow = ({ row, loadingRows, isDragDisabled = false }) => {
@@ -126,16 +126,12 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
     function prepareItemsForGrid(data: any): TData[] {
       return data.map((item, index) => ({
         ...item,
-        id: index + 1,
+        id: item.id ?? index + 1,
       }));
     }
 
     if (data && data.length > 0) {
-      const hasId = data.some((item) => item.hasOwnProperty("id"));
-
-      if (!hasId) {
-        setItems(prepareItemsForGrid(data));
-      }
+      setItems(prepareItemsForGrid(data));
     }
   }, [data]);
 
@@ -159,9 +155,10 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
     if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
       const updatedItems = arrayMove(items, oldIndex, newIndex);
       setItems(updatedItems);
+      if (onNewItemPosition) {
+        onNewItemPosition(newIndex, activeItem as TData);
+      }
     }
-
-    onNewItemPosition(newIndex, activeItem);
   }
 
   const table = useReactTable<TData>({
@@ -189,6 +186,11 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
         });
       },
       isRowLoading: (rowId: string) => loadingRows.has(rowId),
+      updateData: (rowId: string, value: TData) => {
+        setItems((old) =>
+          old.map((item) => (item.id === rowId ? value : item)),
+        );
+      },
     },
   });
 

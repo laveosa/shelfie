@@ -35,7 +35,6 @@ export function ManageVariantsPage() {
       });
 
     service.getListOfTypesOfTraitsHandler().then((res) => {
-      console.log("TYPES", res);
       dispatch(actions.refreshTypesOfTraits(res));
     });
 
@@ -59,75 +58,34 @@ export function ManageVariantsPage() {
     );
   }
 
-  // function onSubmitProductDataHandler(data: any) {
-  //   service.createNewProductHandler(data).then((res) => {
-  //     if (res.data) {
-  //       dispatch(actions.refreshProduct(res.data));
-  //       productsService
-  //         .getTheProductsForGridHandler(productsState.gridRequestModel)
-  //         .then((res: GridModel) => {
-  //           dispatch(productsActions.refreshProductsGridModel(res));
-  //         });
-  //       navigate(
-  //         `${ApiUrlEnum.PRODUCTS}${ApiUrlEnum.PRODUCT_BASIC_DATA}/${res.data.productId}`,
-  //       );
-  //       addToast({
-  //         text: "Product created successfully",
-  //         type: "success",
-  //       });
-  //     } else {
-  //       addToast({
-  //         text: `${res.error.data.detail}`,
-  //         type: "error",
-  //       });
-  //     }
-  //   });
-  // }
-
-  // function onAction(data) {
-  //   console.log(data);
-  // }
-
-  function onDndItem(_newIndex, _activeItem) {
-    // service
-    //   .putPhotoInNewPositionHandler(productId, activeItem.photoId, newIndex)
-    //   .then(() => {
-    //     productsService
-    //       .getTheProductsForGridHandler(productsState.gridRequestModel)
-    //       .then((res: GridModel) => {
-    //         dispatch(actions.refreshProducts(res.items));
-    //       });
-    //   });
-  }
-
-  function onDeleteItem(_data) {
-    // service.deletePhotoHandler(data.photoId).then(() => {
-    //   service.getProductPhotosHandler(Number(productId)).then((res) => {
-    //     dispatch(actions.refreshProductPhotos(res));
-    //   });
-    //   service
-    //     .getCountersForProductsHandler(productId)
-    //     .then((res: ProductCounterModel) => {
-    //       dispatch(actions.refreshProductCounter(res));
-    //     });
-    //   productsService
-    //     .getTheProductsForGridHandler(productsState.gridRequestModel)
-    //     .then((res: GridModel) => {
-    //       dispatch(actions.refreshProducts(res.items));
-    //     });
-    // });
-  }
-
   function onAction(actionType: string, payload: any) {
     switch (actionType) {
       case "submit":
-        console.log(payload);
+        service.createNewTraitHandler(payload);
         break;
       case "dnd":
-        console.log(payload);
+        console.log("DnD action:", payload);
         break;
       case "delete":
-        console.log(payload);
+        console.log("Delete action:", payload);
+        break;
+      case "changeColor":
+        dispatch(
+          actions.refreshColorOption({
+            ...state.colorOption,
+            color: payload.color,
+          }),
+        );
+        console.log("Color changed:", payload.color);
+        break;
+      case "changeName":
+        dispatch(
+          actions.refreshColorOption({
+            ...state.colorOption,
+            optionName: payload.optionName,
+          }),
+        );
+        console.log("Name changed:", payload.optionName);
         break;
     }
   }
@@ -162,7 +120,7 @@ export function ManageVariantsPage() {
       )}
       {state.activeCards.includes("createProductTraitCard") && (
         <CreateProductTraitCard
-          data={state.variants}
+          data={[state.colorOption]}
           typesOfTraits={state.typesOfTraits}
           onSecondaryButtonClick={() =>
             handleCardAction("createProductTraitCard")

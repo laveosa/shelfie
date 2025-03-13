@@ -20,10 +20,8 @@ import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import { ProductPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/ProductPhotosGridColumns.tsx";
 import { ICreateProductTraitCard } from "@/const/interfaces/complex-components/custom-cards/ICreateProductTraitCard.ts";
-
-type ActionType = "submit" | "delete" | "dnd";
+import { CreateProductTraitGridColumns } from "@/components/complex/grid/create-product-trait-grid/CreateProductTraitGridColumns.tsx";
 
 export default function CreateProductTraitCard({
   data,
@@ -39,35 +37,40 @@ export default function CreateProductTraitCard({
     },
   });
 
-  function onSubmit(data) {
-    handleAction("submit", data);
+  function onSubmit(formData) {
+    onAction("submit", formData);
   }
 
-  const columns = ProductPhotosGridColumns(onGridAction);
-
-  function handleAction(actionType: ActionType, payload?: any) {
+  function onGridAction(
+    actionType: string,
+    _rowId?: string,
+    _setLoadingRow?: (rowId: string, loading: boolean) => void,
+    row?: any,
+    newColor?: string,
+    newName?: string,
+  ) {
     switch (actionType) {
-      case "submit":
-        onAction("submit", payload);
-        break;
       case "delete":
-        onAction("delete", payload);
+        if (row) {
+          onAction("delete", row.original);
+        }
         break;
-      case "dnd":
-        const { newIndex, activeItem } = payload;
-        onAction("dnd", { newIndex, activeItem });
+      case "changeColor":
+        if (newColor) {
+          console.log("Grid sending color update:", newColor);
+          onAction("changeColor", { color: newColor });
+        }
+        break;
+      case "changeName":
+        if (newName) {
+          console.log("Grid sending name update:", newName);
+          onAction("changeName", { optionName: newName });
+        }
         break;
     }
   }
 
-  function onGridAction(
-    _actionType: string,
-    _rowId?: string,
-    _setLoadingRow?: (rowId: string, loading: boolean) => void,
-    row?: any,
-  ) {
-    handleAction("delete", row.original);
-  }
+  const columns = CreateProductTraitGridColumns(onGridAction);
 
   return (
     <SheProductCard
@@ -81,6 +84,7 @@ export default function CreateProductTraitCard({
       primaryButtonDisabled={!form.formState.isValid}
       onPrimaryButtonClick={() => onSubmit(form.getValues())}
       className={cs.createProductTraitCard}
+      width="400px"
       {...props}
     >
       <div className={cs.createProductTraitContent}>
@@ -154,7 +158,7 @@ export default function CreateProductTraitCard({
             data={data}
             gridModel={data}
             onNewItemPosition={(newIndex, activeItem) =>
-              handleAction("dnd", { newIndex, activeItem })
+              onAction("dnd", { newIndex, activeItem })
             }
           />
         </div>

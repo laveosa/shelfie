@@ -11,6 +11,7 @@ import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
+import { TraitModel } from "@/const/models/TraitModel.ts";
 
 const apiConfig = new ApiConfigurationService(ApiUrlEnum.PRODUCTS_BASE_URL);
 
@@ -278,8 +279,21 @@ export const ProductsApiService = createApi({
       query: () => ({
         url: `${ApiUrlEnum.TRAITS}/all`,
       }),
-      providesTags: (result: any) =>
+      providesTags: (result: TraitModel[]) =>
         apiConfig.providesTags(result, ApiServiceNameEnum.PRODUCTS),
+    }),
+    createNewTrait: apiConfig.createMutation<any, TraitModel>(builder, {
+      query: (model?: any) => ({
+        url: `${ApiUrlEnum.TRAITS}`,
+        method: "POST",
+        body: JSON.stringify(model),
+      }),
+      invalidatesTags: (_result, _error, model: TraitModel) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          model,
+        },
+      ],
     }),
   }),
 });

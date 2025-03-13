@@ -13,6 +13,7 @@ const initialState: IManageVariantsPageSlice = {
   activeCards: [],
   contextId: null,
   productCounter: null,
+  colorOption: [{ color: null, optionName: null }],
 };
 
 function setLoading(
@@ -57,6 +58,13 @@ function refreshContextId(
   state.contextId = action?.payload || state.contextId;
 }
 
+function refreshColorOption(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<any>,
+) {
+  state.colorOption = action?.payload || state.colorOption;
+}
+
 const ManageVariantsPageSlice = createSlice({
   name: StoreSliceEnum.MANAGE_VARIANTS,
   initialState,
@@ -67,6 +75,7 @@ const ManageVariantsPageSlice = createSlice({
     refreshProductCounter,
     refreshActiveCards,
     refreshContextId,
+    refreshColorOption,
   },
 });
 
