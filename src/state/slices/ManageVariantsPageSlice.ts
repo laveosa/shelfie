@@ -4,6 +4,9 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { VariantModel } from "@/const/models/VariantModel.ts";
 import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 import { TypeOfTraitModel } from "@/const/models/TypeOfTraitModel.ts";
+import { GridModel } from "@/const/models/GridModel.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { TraitModel } from "@/const/models/TraitModel.ts";
 
 const initialState: IManageVariantsPageSlice = {
   loading: false,
@@ -12,8 +15,18 @@ const initialState: IManageVariantsPageSlice = {
   typesOfTraits: [],
   activeCards: [],
   contextId: null,
+  traitId: null,
   productCounter: null,
-  colorOption: [{ color: null, optionName: null }],
+  colorOptionsGridModel: null,
+  sizeOptionsGridModel: {
+    pager: {},
+    items: [],
+  },
+  gridRequestModel: {
+    currentPage: 1,
+    pageSize: 10,
+  },
+  traitOptions: [],
 };
 
 function setLoading(
@@ -28,6 +41,13 @@ function refreshVariants(
   action: PayloadAction<VariantModel[]>,
 ) {
   state.variants = action?.payload || state.variants;
+}
+
+function refreshTraits(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<TraitModel[]>,
+) {
+  state.traits = action?.payload || state.traits;
 }
 
 function refreshTypesOfTraits(
@@ -58,11 +78,39 @@ function refreshContextId(
   state.contextId = action?.payload || state.contextId;
 }
 
-function refreshColorOption(
+function refreshTraitId(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<number>,
+) {
+  state.traitId = action?.payload || state.traitId;
+}
+
+function refreshTraitOption(
   state: IManageVariantsPageSlice,
   action: PayloadAction<any>,
 ) {
-  state.colorOption = action?.payload || state.colorOption;
+  state.traitOptions = action?.payload || state.traitOptions;
+}
+
+function refreshColorOptionsGridModel(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<GridModel>,
+) {
+  state.colorOptionsGridModel = action?.payload || state.colorOptionsGridModel;
+}
+
+function refreshSizeOptionsGridModel(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<GridModel>,
+) {
+  state.sizeOptionsGridModel = action?.payload || state.sizeOptionsGridModel;
+}
+
+function refreshGridRequestModel(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<GridRequestModel>,
+) {
+  state.gridRequestModel = action?.payload || state.gridRequestModel;
 }
 
 const ManageVariantsPageSlice = createSlice({
@@ -71,11 +119,16 @@ const ManageVariantsPageSlice = createSlice({
   reducers: {
     setLoading,
     refreshVariants,
+    refreshTraits,
     refreshTypesOfTraits,
     refreshProductCounter,
     refreshActiveCards,
     refreshContextId,
-    refreshColorOption,
+    refreshTraitId,
+    refreshTraitOption,
+    refreshColorOptionsGridModel,
+    refreshSizeOptionsGridModel,
+    refreshGridRequestModel,
   },
 });
 

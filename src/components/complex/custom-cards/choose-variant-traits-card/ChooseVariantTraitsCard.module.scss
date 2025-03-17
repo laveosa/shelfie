@@ -16,5 +16,32 @@
     button {
       width: 100%;
     }
+
+    .traitsItems {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      .traitsItem {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px;
+        border: 1px solid gray;
+        border-radius: 10px;
+        background-color: #F8F3FF;
+
+        .traitsItemBlock {
+          display: flex;
+          gap: 20px;
+
+          .traitCheckbox {
+            width: 20px;
+            height: 20px;
+          }
+        }
+      }
+    }
   }
 }

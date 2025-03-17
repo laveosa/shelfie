@@ -4,8 +4,14 @@ import React from "react";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ChooseVariantTraitsCard.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import { Checkbox } from "@/components/ui/checkbox.tsx";
+import { TraitModel } from "@/const/models/TraitModel.ts";
 
-export default function ChooseVariantTraitsCard({ onAddTrait, ...props }) {
+export default function ChooseVariantTraitsCard({
+  items,
+  onAddTrait,
+  ...props
+}) {
   return (
     <SheProductCard
       title="Choose variant traits for product"
@@ -28,6 +34,20 @@ export default function ChooseVariantTraitsCard({ onAddTrait, ...props }) {
         <SheButton icon={Plus} variant="outline" onClick={onAddTrait}>
           Add trait
         </SheButton>
+        <div className={cs.traitsItems}>
+          {items.length > 0 &&
+            items.map((item: TraitModel) => (
+              <div key={item.traitId} className={cs.traitsItem}>
+                <div className={cs.traitsItemBlock}>
+                  <Checkbox className={cs.traitCheckbox} />
+                  <span>{item.traitName}</span>
+                </div>
+                <div className={cs.traitsItemBlock}>
+                  <span>{item.traitTypeId}</span>
+                </div>
+              </div>
+            ))}
+        </div>
       </div>
     </SheProductCard>
   );

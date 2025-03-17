@@ -9,6 +9,7 @@ export interface IGridContext extends PropsWithChildren {
   columnsPreferences?: PreferencesModel;
   onApplyColumns?: (data: any) => void;
   onDefaultColumns?: () => void;
+  showColumnsHeader?: boolean;
   showPagination?: boolean;
   showSorting?: boolean;
   showColumnsViewOptions?: boolean;

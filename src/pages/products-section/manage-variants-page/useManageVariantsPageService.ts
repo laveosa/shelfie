@@ -11,6 +11,14 @@ export default function useManageVariantsPageService() {
   const [getListOfTypesOfTraits] =
     DictionaryApiHooks.useLazyGetListOfTypesOfTraitsQuery();
   const [createNewTrait] = ProductsApiHooks.useCreateNewTraitMutation();
+  const [getOptionsForTrait] =
+    ProductsApiHooks.useLazyGetOptionsForTraitQuery();
+  const [createNewOptionForTrait] =
+    ProductsApiHooks.useCreateNewOptionForTraitMutation();
+  const [updateOptionsForTrait] =
+    ProductsApiHooks.useUpdateOptionOfTraitMutation();
+  const [deleteOptionsForTrait] =
+    ProductsApiHooks.useDeleteOptionOfTraitMutation();
 
   function getVariantsForGridHandler(data?: GridRequestModel) {
     return getVariantsForGrid(data).then((res: any) => {
@@ -42,11 +50,39 @@ export default function useManageVariantsPageService() {
     });
   }
 
+  function getOptionsForTraitHandler(id) {
+    return getOptionsForTrait(id).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function createNewOptionForTraitHandler(id, model) {
+    return createNewOptionForTrait({ id, model }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function updateOptionsForTraitHandler(id, model) {
+    return updateOptionsForTrait({ id, model }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function deleteOptionsForTraitHandler(id) {
+    return deleteOptionsForTrait(id).then((res: any) => {
+      return res.data;
+    });
+  }
+
   return {
     getVariantsForGridHandler,
     getListOfAllTraitsHandler,
     getCountersForProductsHandler,
     getListOfTypesOfTraitsHandler,
     createNewTraitHandler,
+    getOptionsForTraitHandler,
+    createNewOptionForTraitHandler,
+    updateOptionsForTraitHandler,
+    deleteOptionsForTraitHandler,
   };
 }

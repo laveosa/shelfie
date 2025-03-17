@@ -38,6 +38,10 @@ export function ManageVariantsPage() {
       dispatch(actions.refreshTypesOfTraits(res));
     });
 
+    service.getListOfAllTraitsHandler().then((res) => {
+      dispatch(actions.refreshTraits(res));
+    });
+
     service
       .getCountersForProductsHandler(productId)
       .then((res: ProductCounterModel) => {
@@ -61,31 +65,78 @@ export function ManageVariantsPage() {
   function onAction(actionType: string, payload: any) {
     switch (actionType) {
       case "submit":
-        service.createNewTraitHandler(payload);
+        service.createNewTraitHandler(payload).then((res) => {
+          if (res) {
+            const index = 0;
+            dispatch(actions.refreshTraitId(res.traitId));
+            service
+              .createNewOptionForTraitHandler(res.traitId, {
+                optionColor: "#fff",
+                optionName: `Default option ${index + 1}`,
+              })
+              .then((res) => {
+                if (res) {
+                  dispatch(
+                    actions.refreshColorOptionsGridModel({
+                      ...state.colorOptionsGridModel,
+                      items: [...state.colorOptionsGridModel.items, res],
+                    }),
+                  );
+                }
+              });
+          }
+        });
         break;
       case "dnd":
         console.log("DnD action:", payload);
         break;
       case "delete":
-        console.log("Delete action:", payload);
+        service.deleteOptionsForTraitHandler(payload.optionId).then((res) => {
+          if (res) {
+            service.getOptionsForTraitHandler(state.traitId).then((res) => {
+              dispatch(
+                actions.refreshColorOptionsGridModel({
+                  ...state.colorOptionsGridModel,
+                  items: [res],
+                }),
+              );
+            });
+          }
+        });
         break;
-      case "changeColor":
-        dispatch(
-          actions.refreshColorOption({
-            ...state.colorOption,
-            color: payload.color,
-          }),
-        );
-        console.log("Color changed:", payload.color);
+      case "updateOption":
+        console.log("Update option:", payload);
+        service
+          .updateOptionsForTraitHandler(payload.optionId, payload.updatedModel)
+          .then((res) => {
+            if (res) {
+              service.getOptionsForTraitHandler(state.traitId).then((res) => {
+                dispatch(
+                  actions.refreshColorOptionsGridModel({
+                    ...state.colorOptionsGridModel,
+                    items: [res],
+                  }),
+                );
+              });
+            }
+          });
         break;
-      case "changeName":
-        dispatch(
-          actions.refreshColorOption({
-            ...state.colorOption,
-            optionName: payload.optionName,
-          }),
-        );
-        console.log("Name changed:", payload.optionName);
+      case "addOption":
+        service
+          .createNewOptionForTraitHandler(state.traitId, {
+            optionColor: "#fff",
+            optionName: "Default option",
+          })
+          .then((res) => {
+            if (res) {
+              dispatch(
+                actions.refreshColorOptionsGridModel({
+                  ...state.colorOptionsGridModel,
+                  items: [...state.colorOptionsGridModel.items, res],
+                }),
+              );
+            }
+          });
         break;
     }
   }
@@ -114,13 +165,14 @@ export function ManageVariantsPage() {
       />
       {state.activeCards.includes("chooseVariantTraitsCard") && (
         <ChooseVariantTraitsCard
+          items={state.traits}
           onAddTrait={() => handleCardAction("createProductTraitCard")}
           onSecondaryButtonClick={() => handleCardAction("createCategoryCard")}
         />
       )}
       {state.activeCards.includes("createProductTraitCard") && (
         <CreateProductTraitCard
-          data={[state.colorOption]}
+          data={state.colorOptionsGridModel}
           typesOfTraits={state.typesOfTraits}
           onSecondaryButtonClick={() =>
             handleCardAction("createProductTraitCard")

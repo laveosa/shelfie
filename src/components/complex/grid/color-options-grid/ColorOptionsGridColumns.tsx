@@ -1,16 +1,17 @@
 import { ColumnDef, Row } from "@tanstack/react-table";
+
 import ProductPhotosGridColumnActions from "@/components/complex/grid/product-photos-grid/ProductPhotosGridColumnActions.tsx";
 import SheColorPicker from "@/components/complex/she-colorpicker/SheColorpicker.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 
-export const CreateProductTraitGridColumns = (
+export const ColorOptionsGridColumns = (
   onAction: (
     actionType: string,
     rowId?: string,
     setLoadingRow?: (rowId: string, loading: boolean) => void,
     row?: Row<any>,
-    newColor?: string,
-    newName?: string,
+    optionId?: number,
+    updatedModel?: { optionColor: string; optionName: string },
   ) => void,
 ): ColumnDef<any>[] => [
   {
@@ -18,13 +19,26 @@ export const CreateProductTraitGridColumns = (
     header: "",
     cell: ({ row }) => {
       const color: string = row.original.color || "#FFFFFF";
+      const optionName: string = row.original.optionName;
+      const optionId: number = row.original.optionId;
 
       return (
         <div className="relative w-12 h-12 cursor-pointer">
           <SheColorPicker
             value={color}
-            onChange={(value) => {
-              onAction("changeColor", row.id, undefined, row, value);
+            onChange={(newColor) => {
+              const updatedModel = {
+                optionColor: newColor,
+                optionName: optionName,
+              };
+              onAction(
+                "updateOption",
+                row.id,
+                undefined,
+                row,
+                optionId,
+                updatedModel,
+              );
             }}
           />
         </div>
@@ -35,14 +49,27 @@ export const CreateProductTraitGridColumns = (
     accessorKey: "optionName",
     header: "",
     cell: ({ row }) => {
+      const color: string = row.original.color || "#FFFFFF";
       const value: string = row.original.optionName || "";
+      const optionId: number = row.original.optionId;
 
       return (
         <SheInput
           value={value}
           placeholder={"Color name"}
           onDelay={(newName) => {
-            onAction("changeName", row.id, undefined, row, undefined, newName);
+            const updatedModel = {
+              optionColor: color,
+              optionName: newName,
+            };
+            onAction(
+              "updateOption",
+              row.id,
+              undefined,
+              row,
+              optionId,
+              updatedModel,
+            );
           }}
         />
       );

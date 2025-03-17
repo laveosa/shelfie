@@ -46,6 +46,7 @@ interface DataTableProps<TData extends DataWithId, TValue>
   sortingItems?: GridSortingModel[];
   onGridRequestChange?: (updates: GridRequestModel) => void;
   showHeader?: boolean;
+  showColumnsHeader?: boolean;
   enableDnd?: boolean;
   onApplyColumns?: (data) => void;
   onDefaultColumns?: () => void;
@@ -107,6 +108,7 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
   gridModel,
   sortingItems,
   showHeader = true,
+  showColumnsHeader = true,
   showPagination = true,
   showSorting = true,
   showColumnsViewOptions = true,
@@ -126,7 +128,7 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
     function prepareItemsForGrid(data: any): TData[] {
       return data.map((item, index) => ({
         ...item,
-        id: item.id ?? index + 1,
+        id: index + 1,
       }));
     }
 
@@ -203,6 +205,7 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
         showPagination,
         showSorting,
         showColumnsViewOptions,
+        showColumnsHeader,
         showSearch,
         gridModel,
         onGridRequestChange,
@@ -214,23 +217,25 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
         {showHeader && <GridHeader table={table}>{children}</GridHeader>}
         <div className="rounded-md border">
           <Table style={{ overflow: "hidden" }}>
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {enableDnd && <TableHead></TableHead>}
-                  {headerGroup.headers.map((header) => (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                    </TableHead>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHeader>
+            {showColumnsHeader && (
+              <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {enableDnd && <TableHead></TableHead>}
+                    {headerGroup.headers.map((header) => (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                      </TableHead>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableHeader>
+            )}
             <SortableContext
               items={items.map((item) => item.id)}
               strategy={verticalListSortingStrategy}

@@ -1,15 +1,22 @@
 import { VariantModel } from "@/const/models/VariantModel.ts";
 import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 import { TypeOfTraitModel } from "@/const/models/TypeOfTraitModel.ts";
-import { ColorOptionModel } from "@/const/models/ColorOptionModel.ts";
+import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
+import { GridModel } from "@/const/models/GridModel.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { TraitModel } from "@/const/models/TraitModel.ts";
 
 export interface IManageVariantsPageSlice {
   loading?: boolean;
   variants: VariantModel[];
-  traits?: any[];
+  traits?: TraitModel[];
   typesOfTraits?: TypeOfTraitModel[];
   activeCards?: any[];
   contextId?: number;
+  traitId?: number;
   productCounter?: ProductCounterModel;
-  colorOption?: ColorOptionModel[];
+  traitOptions?: TraitOptionModel[];
+  colorOptionsGridModel?: GridModel;
+  sizeOptionsGridModel?: GridModel;
+  gridRequestModel?: GridRequestModel;
 }

@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { Plus } from "lucide-react";
 import React from "react";
 
 import {
@@ -21,7 +22,8 @@ import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { ICreateProductTraitCard } from "@/const/interfaces/complex-components/custom-cards/ICreateProductTraitCard.ts";
-import { CreateProductTraitGridColumns } from "@/components/complex/grid/create-product-trait-grid/CreateProductTraitGridColumns.tsx";
+import { ColorOptionsGridColumns } from "@/components/complex/grid/color-options-grid/ColorOptionsGridColumns.tsx";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 
 export default function CreateProductTraitCard({
   data,
@@ -37,6 +39,10 @@ export default function CreateProductTraitCard({
     },
   });
 
+  console.log("DATA", data);
+
+  const columns = ColorOptionsGridColumns(onGridAction);
+
   function onSubmit(formData) {
     onAction("submit", formData);
   }
@@ -46,8 +52,8 @@ export default function CreateProductTraitCard({
     _rowId?: string,
     _setLoadingRow?: (rowId: string, loading: boolean) => void,
     row?: any,
-    newColor?: string,
-    newName?: string,
+    optionId?: number,
+    updatedModel?,
   ) {
     switch (actionType) {
       case "delete":
@@ -55,34 +61,22 @@ export default function CreateProductTraitCard({
           onAction("delete", row.original);
         }
         break;
-      case "changeColor":
-        if (newColor) {
-          console.log("Grid sending color update:", newColor);
-          onAction("changeColor", { color: newColor });
+      case "updateOption":
+        if (updatedModel) {
+          onAction("updateOption", { optionId, updatedModel });
         }
         break;
-      case "changeName":
-        if (newName) {
-          console.log("Grid sending name update:", newName);
-          onAction("changeName", { optionName: newName });
-        }
+      case "addOption":
+        onAction("addOption", null);
         break;
     }
   }
-
-  const columns = CreateProductTraitGridColumns(onGridAction);
 
   return (
     <SheProductCard
       title="Create product trait"
       view="card"
-      showPrimaryButton={true}
-      primaryButtonTitle="Create"
-      showSecondaryButton={true}
-      secondaryButtonTitle="Cancel"
       showCloseButton={true}
-      primaryButtonDisabled={!form.formState.isValid}
-      onPrimaryButtonClick={() => onSubmit(form.getValues())}
       className={cs.createProductTraitCard}
       width="400px"
       {...props}
@@ -110,6 +104,7 @@ export default function CreateProductTraitCard({
                 isValid={!form.formState.errors.traitName}
                 error={form.formState.errors.traitName?.message}
                 showError={true}
+                className={cs.formInput}
               />
             </SheForm.Field>
             <div className={cs.productConfigurationFormRow}>
@@ -146,22 +141,45 @@ export default function CreateProductTraitCard({
                 )}
               ></FormField>
             </div>
+            {!data && (
+              <div className={cs.buttonBlock}>
+                <SheButton variant="secondary">Cancel</SheButton>
+                <SheButton
+                  disabled={!form.formState.isValid}
+                  onClick={form.handleSubmit(onSubmit)}
+                >
+                  Create
+                </SheButton>
+              </div>
+            )}
           </SheForm>
         </div>
-        <Separator />
-        <div className={cs.createProductTraitGrid}>
-          <span className="she-title">Options</span>
-          <DndGridDataTable
-            enableDnd={true}
-            showHeader={false}
-            columns={columns}
-            data={data}
-            gridModel={data}
-            onNewItemPosition={(newIndex, activeItem) =>
-              onAction("dnd", { newIndex, activeItem })
-            }
-          />
-        </div>
+        {data?.items?.length > 0 && (
+          <>
+            <Separator />
+            <div className={cs.createProductTraitGrid}>
+              <span className="she-title">Options</span>
+              <DndGridDataTable
+                enableDnd={true}
+                showHeader={false}
+                showColumnsHeader={false}
+                columns={columns}
+                data={data.items}
+                gridModel={data}
+                onNewItemPosition={(newIndex, activeItem) =>
+                  onAction("dnd", { newIndex, activeItem })
+                }
+              />
+            </div>
+            <SheButton
+              icon={Plus}
+              variant="outline"
+              onClick={() => onGridAction("addOption")}
+            >
+              Add option
+            </SheButton>
+          </>
+        )}
       </div>
     </SheProductCard>
   );

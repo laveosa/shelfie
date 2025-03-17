@@ -12,6 +12,7 @@ import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
+import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
 
 const apiConfig = new ApiConfigurationService(ApiUrlEnum.PRODUCTS_BASE_URL);
 
@@ -292,6 +293,68 @@ export const ProductsApiService = createApi({
         {
           type: ApiServiceNameEnum.PRODUCTS,
           model,
+        },
+      ],
+    }),
+    getOptionsForTrait: apiConfig.createQuery<any, number>(builder, {
+      query: (id: number) => ({
+        url: `${ApiUrlEnum.TRAITS}/${id}${ApiUrlEnum.OPTIONS}`,
+      }),
+      providesTags: (result: TraitOptionModel[]) =>
+        apiConfig.providesTags(result, ApiServiceNameEnum.PRODUCTS),
+    }),
+    createNewOptionForTrait: apiConfig.createMutation<
+      any,
+      {
+        id?: number;
+        model?: TraitOptionModel;
+      }
+    >(builder, {
+      query: ({ id, model }) => ({
+        url: `${ApiUrlEnum.TRAITS}/${id}${ApiUrlEnum.OPTIONS}`,
+        method: "POST",
+        body: JSON.stringify(model),
+      }),
+      invalidatesTags: (_result, _error, result) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          result,
+        },
+      ],
+    }),
+    updateOptionOfTrait: apiConfig.createMutation<
+      any,
+      {
+        id?: number;
+        model?: TraitOptionModel;
+      }
+    >(builder, {
+      query: ({ id, model }) => ({
+        url: `${ApiUrlEnum.TRAIT_OPTIONS}/${id}`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+      invalidatesTags: (_result, _error, result) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          result,
+        },
+      ],
+    }),
+    deleteOptionOfTrait: apiConfig.createMutation<
+      any,
+      {
+        id?: number;
+      }
+    >(builder, {
+      query: (id) => ({
+        url: `${ApiUrlEnum.TRAIT_OPTIONS}/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (_result, _error, result) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          result,
         },
       ],
     }),

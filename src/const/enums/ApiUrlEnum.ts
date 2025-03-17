@@ -7,6 +7,8 @@ export enum ApiUrlEnum {
   PRODUCTS = "/products",
   VARIANTS = "/variants",
   TRAITS = "/traits",
+  OPTIONS = "/options",
+  TRAIT_OPTIONS = "/traitOptions",
   PRODUCT_BASIC_DATA = "/product-basic-data",
   PRODUCT_CATEGORIES = "/productCategories",
   BRANDS = "/brands",
