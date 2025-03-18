@@ -1,7 +1,9 @@
 import { TypeOfTraitModel } from "@/const/models/TypeOfTraitModel.ts";
+import { TraitModel } from "@/const/models/TraitModel.ts";
 
-export interface ICreateProductTraitCard {
+export interface IProductTraitConfigurationCard {
   data?: any;
+  selectedTrait: TraitModel;
   typesOfTraits?: TypeOfTraitModel[];
   onAction?: (identifier: string, payload: any) => void;
   onSecondaryButtonClick?: () => void;

@@ -15,7 +15,7 @@ import { IManageVariantsPageSlice } from "@/const/interfaces/store-slices/IManag
 import { ManageVariantsPageSliceActions as actions } from "@/state/slices/ManageVariantsPageSlice.ts";
 import ManageVariantsCard from "@/components/complex/custom-cards/manage-variants-card/ManageVariantsCard.tsx";
 import ChooseVariantTraitsCard from "@/components/complex/custom-cards/choose-variant-traits-card/ChooseVariantTraitsCard.tsx";
-import CreateProductTraitCard from "@/components/complex/custom-cards/create-product-trait-card/CreateProductTraitCard.tsx";
+import ProductTraitConfigurationCard from "@/components/complex/custom-cards/product-trait-configuration-card/ProductTraitConfigurationCard.tsx";
 
 export function ManageVariantsPage() {
   const dispatch = useAppDispatch();
@@ -49,10 +49,12 @@ export function ManageVariantsPage() {
       });
   }, [productId]);
 
-  function handleCardAction(identifier: string) {
-    const updatedCards = state.activeCards.includes(identifier)
-      ? state.activeCards.filter((card) => card !== identifier)
-      : [...state.activeCards, identifier];
+  function handleCardAction(identifier: string, forceOpen: boolean = false) {
+    const updatedCards = forceOpen
+      ? [...new Set([...state.activeCards, identifier])] // Ensure card is open
+      : state.activeCards.includes(identifier)
+        ? state.activeCards.filter((card) => card !== identifier)
+        : [...state.activeCards, identifier];
     dispatch(actions.refreshActiveCards(updatedCards));
   }
 
@@ -68,7 +70,7 @@ export function ManageVariantsPage() {
         service.createNewTraitHandler(payload).then((res) => {
           if (res) {
             const index = 0;
-            dispatch(actions.refreshTraitId(res.traitId));
+            dispatch(actions.refreshSelectedTrait(res));
             service
               .createNewOptionForTraitHandler(res.traitId, {
                 optionColor: "#fff",
@@ -76,10 +78,14 @@ export function ManageVariantsPage() {
               })
               .then((res) => {
                 if (res) {
+                  console.log("RES", res);
                   dispatch(
                     actions.refreshColorOptionsGridModel({
                       ...state.colorOptionsGridModel,
-                      items: [...state.colorOptionsGridModel.items, res],
+                      items: [
+                        ...(state.colorOptionsGridModel?.items || []),
+                        res,
+                      ],
                     }),
                   );
                 }
@@ -138,6 +144,21 @@ export function ManageVariantsPage() {
             }
           });
         break;
+      case "manageTrait":
+        Promise.all([
+          service.getTraitHandler(payload),
+          service.getOptionsForTraitHandler(payload),
+        ]).then(([traitRes, optionsRes]) => {
+          dispatch(actions.refreshSelectedTrait(traitRes));
+          dispatch(
+            actions.refreshColorOptionsGridModel({
+              ...state.colorOptionsGridModel,
+              items: optionsRes,
+            }),
+          );
+          handleCardAction("productTraitConfigurationCard", true);
+        });
+        break;
     }
   }
 
@@ -166,16 +187,20 @@ export function ManageVariantsPage() {
       {state.activeCards.includes("chooseVariantTraitsCard") && (
         <ChooseVariantTraitsCard
           items={state.traits}
-          onAddTrait={() => handleCardAction("createProductTraitCard")}
-          onSecondaryButtonClick={() => handleCardAction("createCategoryCard")}
+          onAddTrait={() => handleCardAction("productTraitConfigurationCard")}
+          onManageTrait={onAction}
+          onSecondaryButtonClick={() =>
+            handleCardAction("chooseVariantTraitsCard")
+          }
         />
       )}
-      {state.activeCards.includes("createProductTraitCard") && (
-        <CreateProductTraitCard
+      {state.activeCards.includes("productTraitConfigurationCard") && (
+        <ProductTraitConfigurationCard
           data={state.colorOptionsGridModel}
+          selectedTrait={state.selectedTrait}
           typesOfTraits={state.typesOfTraits}
           onSecondaryButtonClick={() =>
-            handleCardAction("createProductTraitCard")
+            handleCardAction("productTraitConfigurationCard")
           }
           onAction={onAction}
         />

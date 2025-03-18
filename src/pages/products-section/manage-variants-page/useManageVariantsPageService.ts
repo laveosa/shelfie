@@ -6,6 +6,7 @@ export default function useManageVariantsPageService() {
   const [getVariantsForGrid] = ProductsApiHooks.useGetVariantsForGridMutation();
   const [getListOfAllTraits] =
     ProductsApiHooks.useLazyGetListOfAllTraitsQuery();
+  const [getTrait] = ProductsApiHooks.useLazyGetTraitQuery();
   const [getCountersForProducts] =
     ProductsApiHooks.useLazyGetCountersForProductsQuery();
   const [getListOfTypesOfTraits] =
@@ -28,6 +29,12 @@ export default function useManageVariantsPageService() {
 
   function getListOfAllTraitsHandler() {
     return getListOfAllTraits().then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function getTraitHandler(id: number) {
+    return getTrait(id).then((res: any) => {
       return res.data;
     });
   }
@@ -77,6 +84,7 @@ export default function useManageVariantsPageService() {
   return {
     getVariantsForGridHandler,
     getListOfAllTraitsHandler,
+    getTraitHandler,
     getCountersForProductsHandler,
     getListOfTypesOfTraitsHandler,
     createNewTraitHandler,

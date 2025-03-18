@@ -11,12 +11,12 @@ import { TraitModel } from "@/const/models/TraitModel.ts";
 const initialState: IManageVariantsPageSlice = {
   loading: false,
   variants: [],
+  productCounter: null,
+  activeCards: [],
   traits: [],
   typesOfTraits: [],
-  activeCards: [],
   contextId: null,
-  traitId: null,
-  productCounter: null,
+  selectedTrait: null,
   colorOptionsGridModel: null,
   sizeOptionsGridModel: {
     pager: {},
@@ -78,11 +78,11 @@ function refreshContextId(
   state.contextId = action?.payload || state.contextId;
 }
 
-function refreshTraitId(
+function refreshSelectedTrait(
   state: IManageVariantsPageSlice,
-  action: PayloadAction<number>,
+  action: PayloadAction<TraitModel>,
 ) {
-  state.traitId = action?.payload || state.traitId;
+  state.selectedTrait = action?.payload || state.selectedTrait;
 }
 
 function refreshTraitOption(
@@ -124,7 +124,7 @@ const ManageVariantsPageSlice = createSlice({
     refreshProductCounter,
     refreshActiveCards,
     refreshContextId,
-    refreshTraitId,
+    refreshSelectedTrait,
     refreshTraitOption,
     refreshColorOptionsGridModel,
     refreshSizeOptionsGridModel,

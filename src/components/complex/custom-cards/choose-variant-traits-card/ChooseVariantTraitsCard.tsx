@@ -10,6 +10,7 @@ import { TraitModel } from "@/const/models/TraitModel.ts";
 export default function ChooseVariantTraitsCard({
   items,
   onAddTrait,
+  onManageTrait,
   ...props
 }) {
   return (
@@ -40,9 +41,12 @@ export default function ChooseVariantTraitsCard({
               <div key={item.traitId} className={cs.traitsItem}>
                 <div className={cs.traitsItemBlock}>
                   <Checkbox className={cs.traitCheckbox} />
-                  <span>{item.traitName}</span>
-                </div>
-                <div className={cs.traitsItemBlock}>
+                  <div
+                    className={cs.traitName}
+                    onClick={() => onManageTrait("manageTrait", item.traitId)}
+                  >
+                    <span className="she-text">{item.traitName}</span>
+                  </div>
                   <span>{item.traitTypeId}</span>
                 </div>
               </div>

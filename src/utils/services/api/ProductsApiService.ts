@@ -283,6 +283,17 @@ export const ProductsApiService = createApi({
       providesTags: (result: TraitModel[]) =>
         apiConfig.providesTags(result, ApiServiceNameEnum.PRODUCTS),
     }),
+    getTrait: apiConfig.createQuery<any, number>(builder, {
+      query: (id) => ({
+        url: `${ApiUrlEnum.TRAITS}/${id}`,
+      }),
+      providesTags: (_result, _error, result) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          result,
+        },
+      ],
+    }),
     createNewTrait: apiConfig.createMutation<any, TraitModel>(builder, {
       query: (model?: any) => ({
         url: `${ApiUrlEnum.TRAITS}`,
