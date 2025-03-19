@@ -66,6 +66,42 @@ export function ManageVariantsPage() {
 
   function onAction(actionType: string, payload: any) {
     switch (actionType) {
+      case "addTrait":
+        handleCardAction("productTraitConfigurationCard", true);
+        dispatch(actions.refreshSelectedTrait({}));
+        break;
+      case "manageTrait":
+        console.log("manageTrait", payload);
+        Promise.all([
+          service.getTraitHandler(payload),
+          service.getOptionsForTraitHandler(payload),
+        ]).then(([traitRes, optionsRes]) => {
+          dispatch(actions.refreshSelectedTrait(traitRes));
+          dispatch(
+            actions.refreshColorOptionsGridModel({
+              ...state.colorOptionsGridModel,
+              items: optionsRes,
+            }),
+          );
+          handleCardAction("productTraitConfigurationCard", true);
+        });
+        break;
+      case "deleteTrait":
+        console.log("deleteTrait", payload);
+        // Promise.all([
+        //   service.getTraitHandler(payload),
+        //   service.getOptionsForTraitHandler(payload),
+        // ]).then(([traitRes, optionsRes]) => {
+        //   dispatch(actions.refreshSelectedTrait(traitRes));
+        //   dispatch(
+        //     actions.refreshColorOptionsGridModel({
+        //       ...state.colorOptionsGridModel,
+        //       items: optionsRes,
+        //     }),
+        //   );
+        //   handleCardAction("productTraitConfigurationCard", true);
+        // });
+        break;
       case "submit":
         service.createNewTraitHandler(payload).then((res) => {
           if (res) {
@@ -144,21 +180,6 @@ export function ManageVariantsPage() {
             }
           });
         break;
-      case "manageTrait":
-        Promise.all([
-          service.getTraitHandler(payload),
-          service.getOptionsForTraitHandler(payload),
-        ]).then(([traitRes, optionsRes]) => {
-          dispatch(actions.refreshSelectedTrait(traitRes));
-          dispatch(
-            actions.refreshColorOptionsGridModel({
-              ...state.colorOptionsGridModel,
-              items: optionsRes,
-            }),
-          );
-          handleCardAction("productTraitConfigurationCard", true);
-        });
-        break;
     }
   }
 
@@ -187,8 +208,7 @@ export function ManageVariantsPage() {
       {state.activeCards.includes("chooseVariantTraitsCard") && (
         <ChooseVariantTraitsCard
           items={state.traits}
-          onAddTrait={() => handleCardAction("productTraitConfigurationCard")}
-          onManageTrait={onAction}
+          onAction={onAction}
           onSecondaryButtonClick={() =>
             handleCardAction("chooseVariantTraitsCard")
           }

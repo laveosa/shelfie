@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react";
+import { MoreHorizontal, Plus } from "lucide-react";
 import React from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
@@ -6,13 +6,20 @@ import cs from "./ChooseVariantTraitsCard.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { Checkbox } from "@/components/ui/checkbox.tsx";
 import { TraitModel } from "@/const/models/TraitModel.ts";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu.tsx";
+import { IChooseVariantTraitsCard } from "@/const/interfaces/complex-components/custom-cards/IChooseVariantTraitsCard.ts";
 
 export default function ChooseVariantTraitsCard({
   items,
-  onAddTrait,
-  onManageTrait,
+  onAction,
+  onSecondaryButtonClick,
   ...props
-}) {
+}: IChooseVariantTraitsCard) {
   return (
     <SheProductCard
       title="Choose variant traits for product"
@@ -32,7 +39,11 @@ export default function ChooseVariantTraitsCard({
           </span>
           <span className="she-text"> Missing a trait? Add it!</span>
         </div>
-        <SheButton icon={Plus} variant="outline" onClick={onAddTrait}>
+        <SheButton
+          icon={Plus}
+          variant="outline"
+          onClick={() => onAction("addTrait", null)}
+        >
           Add trait
         </SheButton>
         <div className={cs.traitsItems}>
@@ -43,11 +54,30 @@ export default function ChooseVariantTraitsCard({
                   <Checkbox className={cs.traitCheckbox} />
                   <div
                     className={cs.traitName}
-                    onClick={() => onManageTrait("manageTrait", item.traitId)}
+                    onClick={() => onAction("manageTrait", item.traitId)}
                   >
                     <span className="she-text">{item.traitName}</span>
+                    <span>{item.traitTypeId}</span>
                   </div>
-                  <span>{item.traitTypeId}</span>
+                  <div className={cs.traitDropdownMenu}>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <SheButton
+                          variant="ghost"
+                          className="flex h-8 w-4 p-0 data-[state=open]:bg-muted"
+                        >
+                          <MoreHorizontal />
+                        </SheButton>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="start" className="w-[160px]">
+                        <DropdownMenuItem
+                          onClick={() => onAction("deleteTrait", item.traitId)}
+                        >
+                          <span className="she-text">Delete</span>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
                 </div>
               </div>
             ))}

@@ -24,6 +24,7 @@ import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx
 import { IProductTraitConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IProductTraitConfigurationCard.ts";
 import { ColorOptionsGridColumns } from "@/components/complex/grid/color-options-grid/ColorOptionsGridColumns.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import { SizeOptionsGridColumns } from "@/components/complex/grid/size-options-grid/SizeOptionsGridColumns.tsx";
 
 export default function ProductTraitConfigurationCard({
   data,
@@ -49,7 +50,8 @@ export default function ProductTraitConfigurationCard({
     }
   }, [selectedTrait, form]);
 
-  const columns = ColorOptionsGridColumns(onGridAction);
+  const colorColumns = ColorOptionsGridColumns(onGridAction);
+  const sizeColumns = SizeOptionsGridColumns(onGridAction);
 
   function onSubmit(formData) {
     onAction("submit", formData);
@@ -163,31 +165,47 @@ export default function ProductTraitConfigurationCard({
             )}
           </SheForm>
         </div>
-        {/*{data?.items?.length > 0 && (*/}
-        <>
-          <Separator />
-          <div className={cs.createProductTraitGrid}>
-            <span className="she-title">Options</span>
-            <DndGridDataTable
-              enableDnd={true}
-              showHeader={false}
-              showColumnsHeader={false}
-              columns={columns}
-              data={data?.items}
-              gridModel={data}
-              onNewItemPosition={(newIndex, activeItem) =>
-                onAction("dnd", { newIndex, activeItem })
-              }
-            />
-          </div>
-          <SheButton
-            icon={Plus}
-            variant="outline"
-            onClick={() => onGridAction("addOption")}
-          >
-            Add option
-          </SheButton>
-        </>
+        {data?.items?.length > 0 && (
+          <>
+            <Separator />
+            <div className={cs.createProductTraitGrid}>
+              <span className="she-title">Options</span>
+              {selectedTrait.traitTypeId === 1 && (
+                <DndGridDataTable
+                  enableDnd={true}
+                  showHeader={false}
+                  showColumnsHeader={false}
+                  columns={colorColumns}
+                  data={data?.items}
+                  gridModel={data}
+                  onNewItemPosition={(newIndex, activeItem) =>
+                    onAction("dnd", { newIndex, activeItem })
+                  }
+                />
+              )}
+              {selectedTrait.traitTypeId === 2 && (
+                <DndGridDataTable
+                  enableDnd={true}
+                  showHeader={false}
+                  showColumnsHeader={false}
+                  columns={sizeColumns}
+                  data={data?.items}
+                  gridModel={data}
+                  onNewItemPosition={(newIndex, activeItem) =>
+                    onAction("dnd", { newIndex, activeItem })
+                  }
+                />
+              )}
+            </div>
+            <SheButton
+              icon={Plus}
+              variant="outline"
+              onClick={() => onGridAction("addOption")}
+            >
+              Add option
+            </SheButton>
+          </>
+        )}
       </div>
     </SheProductCard>
   );
