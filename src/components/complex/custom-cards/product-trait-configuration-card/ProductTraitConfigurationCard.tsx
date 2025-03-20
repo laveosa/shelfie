@@ -54,7 +54,7 @@ export default function ProductTraitConfigurationCard({
   const sizeColumns = SizeOptionsGridColumns(onGridAction);
 
   function onSubmit(formData) {
-    onAction("submit", formData);
+    onAction("createTrait", formData);
   }
 
   function onGridAction(
@@ -85,7 +85,7 @@ export default function ProductTraitConfigurationCard({
 
   return (
     <SheProductCard
-      title={selectedTrait ? "Manage" : "Create product trait"}
+      title={selectedTrait.traitName ? "Manage" : "Create product trait"}
       view="card"
       showCloseButton={true}
       className={cs.createProductTraitCard}
@@ -152,17 +152,17 @@ export default function ProductTraitConfigurationCard({
                 )}
               ></FormField>
             </div>
-            {!data && (
-              <div className={cs.buttonBlock}>
-                <SheButton variant="secondary">Cancel</SheButton>
-                <SheButton
-                  disabled={!form.formState.isValid}
-                  onClick={form.handleSubmit(onSubmit)}
-                >
-                  Create
-                </SheButton>
-              </div>
-            )}
+            {/*{!data && (*/}
+            <div className={cs.buttonBlock}>
+              <SheButton variant="secondary">Cancel</SheButton>
+              <SheButton
+                disabled={!form.formState.isValid}
+                onClick={form.handleSubmit(onSubmit)}
+              >
+                Create
+              </SheButton>
+            </div>
+            {/*// )}*/}
           </SheForm>
         </div>
         {data?.items?.length > 0 && (
@@ -175,7 +175,7 @@ export default function ProductTraitConfigurationCard({
                   enableDnd={true}
                   showHeader={false}
                   showColumnsHeader={false}
-                  columns={colorColumns}
+                  columns={sizeColumns}
                   data={data?.items}
                   gridModel={data}
                   onNewItemPosition={(newIndex, activeItem) =>
@@ -188,7 +188,7 @@ export default function ProductTraitConfigurationCard({
                   enableDnd={true}
                   showHeader={false}
                   showColumnsHeader={false}
-                  columns={sizeColumns}
+                  columns={colorColumns}
                   data={data?.items}
                   gridModel={data}
                   onNewItemPosition={(newIndex, activeItem) =>

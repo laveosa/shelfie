@@ -18,14 +18,14 @@ export const ColorOptionsGridColumns = (
     accessorKey: "color",
     header: "",
     cell: ({ row }) => {
-      const color: string = row.original.color || "#FFFFFF";
+      const optionColor: string = row.original.optionColor;
       const optionName: string = row.original.optionName;
       const optionId: number = row.original.optionId;
 
       return (
         <div className="relative w-12 h-12 cursor-pointer">
           <SheColorPicker
-            value={color}
+            value={optionColor}
             onChange={(newColor) => {
               const updatedModel = {
                 optionColor: newColor,
@@ -49,17 +49,17 @@ export const ColorOptionsGridColumns = (
     accessorKey: "optionName",
     header: "",
     cell: ({ row }) => {
-      const color: string = row.original.color || "#FFFFFF";
-      const value: string = row.original.optionName || "";
+      const optionColor: string = row.original.optionColor;
+      const optionName: string = row.original.optionName;
       const optionId: number = row.original.optionId;
 
       return (
         <SheInput
-          value={value}
+          value={optionName}
           placeholder={"Color name"}
           onDelay={(newName) => {
             const updatedModel = {
-              optionColor: color,
+              optionColor: optionColor,
               optionName: newName,
             };
             onAction(

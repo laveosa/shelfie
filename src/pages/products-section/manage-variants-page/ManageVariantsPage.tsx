@@ -38,16 +38,18 @@ export function ManageVariantsPage() {
       dispatch(actions.refreshTypesOfTraits(res));
     });
 
-    service.getListOfAllTraitsHandler().then((res) => {
-      dispatch(actions.refreshTraits(res));
-    });
-
     service
       .getCountersForProductsHandler(productId)
       .then((res: ProductCounterModel) => {
         dispatch(actions.refreshProductCounter(res));
       });
   }, [productId]);
+
+  useEffect(() => {
+    service.getListOfAllTraitsHandler().then((res) => {
+      dispatch(actions.refreshTraits(res));
+    });
+  }, [state.selectedTrait]);
 
   function handleCardAction(identifier: string, forceOpen: boolean = false) {
     const updatedCards = forceOpen
@@ -71,7 +73,6 @@ export function ManageVariantsPage() {
         dispatch(actions.refreshSelectedTrait({}));
         break;
       case "manageTrait":
-        console.log("manageTrait", payload);
         Promise.all([
           service.getTraitHandler(payload),
           service.getOptionsForTraitHandler(payload),
@@ -88,39 +89,26 @@ export function ManageVariantsPage() {
         break;
       case "deleteTrait":
         console.log("deleteTrait", payload);
-        // Promise.all([
-        //   service.getTraitHandler(payload),
-        //   service.getOptionsForTraitHandler(payload),
-        // ]).then(([traitRes, optionsRes]) => {
-        //   dispatch(actions.refreshSelectedTrait(traitRes));
-        //   dispatch(
-        //     actions.refreshColorOptionsGridModel({
-        //       ...state.colorOptionsGridModel,
-        //       items: optionsRes,
-        //     }),
-        //   );
-        //   handleCardAction("productTraitConfigurationCard", true);
-        // });
         break;
-      case "submit":
+      case "createTrait":
         service.createNewTraitHandler(payload).then((res) => {
           if (res) {
-            const index = 0;
             dispatch(actions.refreshSelectedTrait(res));
+            const index = 0;
+            const optionData = {
+              optionName: `Default option ${index + 1}`,
+              ...(res.traitTypeId !== 1 && { optionColor: "#fff" }),
+            };
             service
-              .createNewOptionForTraitHandler(res.traitId, {
-                optionColor: "#fff",
-                optionName: `Default option ${index + 1}`,
-              })
-              .then((res) => {
-                if (res) {
-                  console.log("RES", res);
+              .createNewOptionForTraitHandler(res.traitId, optionData)
+              .then((optionRes) => {
+                if (optionRes) {
                   dispatch(
                     actions.refreshColorOptionsGridModel({
                       ...state.colorOptionsGridModel,
                       items: [
-                        ...(state.colorOptionsGridModel?.items || []),
-                        res,
+                        ...(state.colorOptionsGridModel.items || []),
+                        optionRes,
                       ],
                     }),
                   );
@@ -135,14 +123,16 @@ export function ManageVariantsPage() {
       case "delete":
         service.deleteOptionsForTraitHandler(payload.optionId).then((res) => {
           if (res) {
-            service.getOptionsForTraitHandler(state.traitId).then((res) => {
-              dispatch(
-                actions.refreshColorOptionsGridModel({
-                  ...state.colorOptionsGridModel,
-                  items: [res],
-                }),
-              );
-            });
+            service
+              .getOptionsForTraitHandler(state.selectedTrait.traitId)
+              .then((res) => {
+                dispatch(
+                  actions.refreshColorOptionsGridModel({
+                    ...state.colorOptionsGridModel,
+                    items: [res],
+                  }),
+                );
+              });
           }
         });
         break;
@@ -152,20 +142,23 @@ export function ManageVariantsPage() {
           .updateOptionsForTraitHandler(payload.optionId, payload.updatedModel)
           .then((res) => {
             if (res) {
-              service.getOptionsForTraitHandler(state.traitId).then((res) => {
-                dispatch(
-                  actions.refreshColorOptionsGridModel({
-                    ...state.colorOptionsGridModel,
-                    items: [res],
-                  }),
-                );
-              });
+              service
+                .getOptionsForTraitHandler(state.selectedTrait.traitId)
+                .then((res) => {
+                  console.log("RES", res);
+                  dispatch(
+                    actions.refreshColorOptionsGridModel({
+                      ...state.colorOptionsGridModel,
+                      items: res,
+                    }),
+                  );
+                });
             }
           });
         break;
       case "addOption":
         service
-          .createNewOptionForTraitHandler(state.traitId, {
+          .createNewOptionForTraitHandler(state.selectedTrait.traitId, {
             optionColor: "#fff",
             optionName: "Default option",
           })
