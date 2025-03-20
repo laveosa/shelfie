@@ -62,8 +62,7 @@
   }
 
   .cardContent {
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: hidden;
     height: calc(100% - 100px);
     min-width: 290px;
   }

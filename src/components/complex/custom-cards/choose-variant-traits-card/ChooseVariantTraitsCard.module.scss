@@ -4,13 +4,15 @@
   .chooseVariantTraitsContent {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    gap: 20px;
+    height: calc(100vh - 92px);
     padding: 0 20px;
+    overflow: hidden;
 
     .textBlock {
       display: flex;
       flex-direction: column;
-      padding: 20px 0;
+      padding-top: 20px
     }
 
     button {
@@ -20,7 +22,9 @@
     .traitsItems {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 5px;
+      max-height: 590px;
+      overflow-y: auto;
 
       .traitsItem {
         display: flex;
@@ -28,9 +32,12 @@
         align-items: center;
         justify-content: space-between;
         padding: 10px;
-        border: 1px solid gray;
         border-radius: 10px;
-        background-color: #F8F3FF;
+
+
+        &:hover {
+          background-color: #F8F3FF;
+        }
 
         .traitsItemBlock {
           display: flex;
