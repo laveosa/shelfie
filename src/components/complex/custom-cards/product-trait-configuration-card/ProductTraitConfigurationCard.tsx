@@ -22,9 +22,9 @@ import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { IProductTraitConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IProductTraitConfigurationCard.ts";
-import { ColorOptionsGridColumns } from "@/components/complex/grid/color-options-grid/ColorOptionsGridColumns.tsx";
+import { ColorOptionsGridColumns } from "@/components/complex/grid/trait-options-grid/color-options-grid/ColorOptionsGridColumns.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { SizeOptionsGridColumns } from "@/components/complex/grid/size-options-grid/SizeOptionsGridColumns.tsx";
+import { SizeOptionsGridColumns } from "@/components/complex/grid/trait-options-grid/size-options-grid/SizeOptionsGridColumns.tsx";
 
 export default function ProductTraitConfigurationCard({
   data,
@@ -66,14 +66,13 @@ export default function ProductTraitConfigurationCard({
     updatedModel?,
   ) {
     switch (actionType) {
-      case "delete":
+      case "deleteOption":
         if (row) {
-          onAction("delete", row.original);
+          onAction("deleteOption", row.original);
         }
         break;
       case "updateOption":
         if (updatedModel) {
-          console.log("optionId", optionId);
           onAction("updateOption", { optionId, updatedModel });
         }
         break;
@@ -197,14 +196,16 @@ export default function ProductTraitConfigurationCard({
                 />
               )}
             </div>
-            <SheButton
-              icon={Plus}
-              variant="outline"
-              onClick={() => onGridAction("addOption")}
-            >
-              Add option
-            </SheButton>
           </>
+        )}
+        {selectedTrait && (
+          <SheButton
+            icon={Plus}
+            variant="outline"
+            onClick={() => onGridAction("addOption")}
+          >
+            Add option
+          </SheButton>
         )}
       </div>
     </SheProductCard>

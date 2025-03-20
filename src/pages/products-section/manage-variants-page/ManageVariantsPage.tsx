@@ -76,12 +76,12 @@ export function ManageVariantsPage() {
         Promise.all([
           service.getTraitHandler(payload),
           service.getOptionsForTraitHandler(payload),
-        ]).then(([traitRes, optionsRes]) => {
-          dispatch(actions.refreshSelectedTrait(traitRes));
+        ]).then(([trait, options]) => {
+          dispatch(actions.refreshSelectedTrait(trait));
           dispatch(
             actions.refreshColorOptionsGridModel({
               ...state.colorOptionsGridModel,
-              items: optionsRes,
+              items: options.filter((option) => !option.isDeleted),
             }),
           );
           handleCardAction("productTraitConfigurationCard", true);
@@ -172,6 +172,23 @@ export function ManageVariantsPage() {
               );
             }
           });
+        break;
+      case "deleteOption":
+        service.deleteOptionsForTraitHandler(payload.optionId).then(() => {
+          service
+            .getOptionsForTraitHandler(state.selectedTrait.traitId)
+            .then((options) => {
+              const updatedItems = (options || []).filter(
+                (option) => !option.isDeleted,
+              );
+              dispatch(
+                actions.refreshColorOptionsGridModel({
+                  ...state.colorOptionsGridModel,
+                  items: updatedItems,
+                }),
+              );
+            });
+        });
         break;
     }
   }

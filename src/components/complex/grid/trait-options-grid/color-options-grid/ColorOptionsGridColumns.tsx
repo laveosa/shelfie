@@ -1,8 +1,8 @@
 import { ColumnDef, Row } from "@tanstack/react-table";
 
-import ProductPhotosGridColumnActions from "@/components/complex/grid/product-photos-grid/ProductPhotosGridColumnActions.tsx";
 import SheColorPicker from "@/components/complex/she-colorpicker/SheColorpicker.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
+import TraitOptionsGridColumnActions from "@/components/complex/grid/trait-options-grid/TraitOptionsGridColumnActions.tsx";
 
 export const ColorOptionsGridColumns = (
   onAction: (
@@ -80,7 +80,7 @@ export const ColorOptionsGridColumns = (
     header: "",
     cell: ({ row, table }) => {
       return (
-        <ProductPhotosGridColumnActions
+        <TraitOptionsGridColumnActions
           row={row}
           onAction={onAction}
           table={table}

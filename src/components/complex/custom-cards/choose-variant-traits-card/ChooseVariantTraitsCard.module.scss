@@ -34,7 +34,6 @@
         padding: 10px;
         border-radius: 10px;
 
-
         &:hover {
           background-color: #F8F3FF;
         }
@@ -59,11 +58,15 @@
           }
 
           .traitDropdownMenu {
-            width: 40px;
+            width: 35px;
             justify-content: flex-end;
           }
         }
       }
+    }
+
+    .selected {
+      background-color: #F8F3FF;
     }
   }
 }

@@ -1,5 +1,5 @@
 import { MoreHorizontal, Plus } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ChooseVariantTraitsCard.module.scss";
@@ -20,6 +20,8 @@ export default function ChooseVariantTraitsCard({
   onSecondaryButtonClick,
   ...props
 }: IChooseVariantTraitsCard) {
+  const [selectedTraitId, setSelectedTraitId] = useState<number | null>(null);
+
   return (
     <SheProductCard
       title="Choose variant traits for product"
@@ -49,12 +51,18 @@ export default function ChooseVariantTraitsCard({
         <div className={cs.traitsItems}>
           {items.length > 0 &&
             items.map((item: TraitModel) => (
-              <div key={item.traitId} className={cs.traitsItem}>
+              <div
+                key={item.traitId}
+                className={`${cs.traitsItem} ${selectedTraitId === item.traitId ? cs.selected : ""}`}
+              >
                 <div className={cs.traitsItemBlock}>
                   <Checkbox className={cs.traitCheckbox} />
                   <div
                     className={cs.traitName}
-                    onClick={() => onAction("manageTrait", item.traitId)}
+                    onClick={() => {
+                      setSelectedTraitId(item.traitId);
+                      onAction?.("manageTrait", item.traitId);
+                    }}
                   >
                     <span className="she-text">{item.traitName}</span>
                     <span>{item.traitTypeId}</span>
@@ -63,8 +71,8 @@ export default function ChooseVariantTraitsCard({
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <SheButton
-                          variant="ghost"
-                          className="flex h-8 w-4 p-0 data-[state=open]:bg-muted"
+                          variant="secondary"
+                          className="flex h-8 p-0 data-[state=open]:bg-muted"
                         >
                           <MoreHorizontal />
                         </SheButton>

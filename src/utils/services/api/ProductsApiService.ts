@@ -307,6 +307,27 @@ export const ProductsApiService = createApi({
         },
       ],
     }),
+
+    updateTrait: apiConfig.createMutation<
+      any,
+      {
+        id?: number;
+        model?: TraitModel;
+      }
+    >(builder, {
+      query: ({ id, model }) => ({
+        url: `${ApiUrlEnum.TRAITS}/${id}`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+      invalidatesTags: (_result, _error, result) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          result,
+        },
+      ],
+    }),
+
     getOptionsForTrait: apiConfig.createQuery<any, number>(builder, {
       query: (id: number) => ({
         url: `${ApiUrlEnum.TRAITS}/${id}${ApiUrlEnum.OPTIONS}`,
