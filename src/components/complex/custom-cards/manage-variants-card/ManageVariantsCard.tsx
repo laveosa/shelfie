@@ -1,8 +1,9 @@
+import { LayoutList, MoreHorizontal, Plus } from "lucide-react";
+import React, { Fragment } from "react";
+
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ManageVariantsCard.module.scss";
-import React, { Fragment } from "react";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { LayoutList, MoreHorizontal, Plus } from "lucide-react";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import {
   DropdownMenu,
@@ -10,12 +11,22 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
+import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import { ManageVariantsGridColumns } from "@/components/complex/grid/manage-variants-grid/ManageVariantsGridColumns.tsx";
+import { IManageVariantsCard } from "@/const/interfaces/complex-components/custom-cards/IManageVariantsCard.ts";
 
 export default function ManageVariantsCard({
+  data,
   traits,
+  variants,
   onChooseVariantTraits,
+  onAction,
   ...props
-}) {
+}: IManageVariantsCard) {
+  const colorColumns = ManageVariantsGridColumns(onGridAction);
+
+  function onGridAction() {}
+
   return (
     <SheProductCard
       title="Manage Variants"
@@ -79,6 +90,21 @@ export default function ManageVariantsCard({
                 Generate Set
               </SheButton>
             </>
+          )}
+        </div>
+        <div>
+          {traits.length > 10 && (
+            <DndGridDataTable
+              enableDnd={true}
+              showHeader={false}
+              showColumnsHeader={false}
+              columns={colorColumns}
+              data={variants}
+              gridModel={data}
+              onNewItemPosition={(newIndex, activeItem) =>
+                onAction("dnd", { newIndex, activeItem })
+              }
+            />
           )}
         </div>
       </div>
