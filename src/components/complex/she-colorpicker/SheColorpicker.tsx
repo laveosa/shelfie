@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 
 import { cn } from "@/lib/utils";
+import cs from "./SheColorpicker.module.scss";
 import type { ButtonProps } from "@/components/ui/button";
 import { Button } from "@/components/ui/button";
 import {
@@ -71,28 +72,31 @@ export default function SheColorPicker({
   };
 
   return (
-    <Popover open={open} onOpenChange={handleOpenChange}>
-      <PopoverTrigger asChild disabled={disabled}>
-        <Button
-          {...props}
-          ref={buttonRef}
-          className={cn("block", className)}
-          name={name}
-          size="icon"
-          style={{ backgroundColor: parsedValue }}
-          variant="outline"
-        />
-      </PopoverTrigger>
-      <PopoverContent ref={popoverRef} className="w-full">
-        <div className="flex flex-col gap-2">
-          <HexColorPicker color={tempColor} onChange={setTempColor} />
-          <Input
-            maxLength={7}
-            value={tempColor}
-            onChange={(e) => setTempColor(e.target.value)}
+    <div className={cs.sheColorpicker}>
+      <Popover open={open} onOpenChange={handleOpenChange}>
+        <PopoverTrigger asChild disabled={disabled}>
+          <Button
+            {...props}
+            ref={buttonRef}
+            className={cn("block", className)}
+            name={name}
+            style={{
+              backgroundColor: parsedValue,
+            }}
+            variant="outline"
           />
-        </div>
-      </PopoverContent>
-    </Popover>
+        </PopoverTrigger>
+        <PopoverContent ref={popoverRef} className="w-full">
+          <div className="flex flex-col gap-2">
+            <HexColorPicker color={tempColor} onChange={setTempColor} />
+            <Input
+              maxLength={7}
+              value={tempColor}
+              onChange={(e) => setTempColor(e.target.value)}
+            />
+          </div>
+        </PopoverContent>
+      </Popover>
+    </div>
   );
 }

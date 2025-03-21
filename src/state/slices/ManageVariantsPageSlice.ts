@@ -11,11 +11,14 @@ import { TraitModel } from "@/const/models/TraitModel.ts";
 const initialState: IManageVariantsPageSlice = {
   loading: false,
   variants: [],
+  selectedVariant: null,
   productCounter: null,
   activeCards: [],
   traits: [],
   typesOfTraits: [],
+  listOfTraitsForProduct: [],
   contextId: null,
+  selectedTraitsIds: [],
   selectedTrait: null,
   colorOptionsGridModel: null,
   sizeOptionsGridModel: {
@@ -43,6 +46,13 @@ function refreshVariants(
   state.variants = action?.payload || state.variants;
 }
 
+function refreshSelectedVariant(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<VariantModel>,
+) {
+  state.selectedVariant = action?.payload || state.selectedVariant;
+}
+
 function refreshTraits(
   state: IManageVariantsPageSlice,
   action: PayloadAction<TraitModel[]>,
@@ -55,6 +65,14 @@ function refreshTypesOfTraits(
   action: PayloadAction<TypeOfTraitModel[]>,
 ) {
   state.typesOfTraits = action?.payload || state.typesOfTraits;
+}
+
+function refreshListOfTraitsForProduct(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<TraitModel[]>,
+) {
+  state.listOfTraitsForProduct =
+    action?.payload || state.listOfTraitsForProduct;
 }
 
 function refreshProductCounter(
@@ -76,6 +94,13 @@ function refreshContextId(
   action: PayloadAction<number>,
 ) {
   state.contextId = action?.payload || state.contextId;
+}
+
+function refreshSelectedTraitsIds(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<number[]>,
+) {
+  state.selectedTraitsIds = action?.payload || state.selectedTraitsIds;
 }
 
 function refreshSelectedTrait(
@@ -119,10 +144,13 @@ const ManageVariantsPageSlice = createSlice({
   reducers: {
     setLoading,
     refreshVariants,
+    refreshSelectedVariant,
     refreshTraits,
     refreshTypesOfTraits,
+    refreshListOfTraitsForProduct,
     refreshProductCounter,
     refreshActiveCards,
+    refreshSelectedTraitsIds,
     refreshContextId,
     refreshSelectedTrait,
     refreshTraitOption,

@@ -271,7 +271,7 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
                         }}
                       >
                         {row.getVisibleCells().map((cell) => (
-                          <TableCell key={cell.id}>
+                          <TableCell key={cell.id} className={cs.tableCell}>
                             {flexRender(
                               cell.column.columnDef.cell,
                               cell.getContext(),

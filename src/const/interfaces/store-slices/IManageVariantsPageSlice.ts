@@ -9,10 +9,13 @@ import { TraitModel } from "@/const/models/TraitModel.ts";
 export interface IManageVariantsPageSlice {
   loading?: boolean;
   variants: VariantModel[];
+  selectedVariant: VariantModel;
   traits?: TraitModel[];
   typesOfTraits?: TypeOfTraitModel[];
+  listOfTraitsForProduct?: TraitModel[];
   activeCards?: any[];
   contextId?: number;
+  selectedTraitsIds?: number[];
   selectedTrait?: TraitModel;
   productCounter?: ProductCounterModel;
   traitOptions?: TraitOptionModel[];

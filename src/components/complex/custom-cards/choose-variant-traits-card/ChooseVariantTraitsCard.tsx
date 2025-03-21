@@ -1,5 +1,5 @@
 import { MoreHorizontal, Plus } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ChooseVariantTraitsCard.module.scss";
@@ -21,12 +21,29 @@ export default function ChooseVariantTraitsCard({
   ...props
 }: IChooseVariantTraitsCard) {
   const [selectedTraitId, setSelectedTraitId] = useState<number | null>(null);
+  const [checkedTraitIds, setCheckedTraitIds] = useState<number[]>([]);
+
+  useEffect(() => {}, [checkedTraitIds]);
+
+  function handleCheckboxChange(traitId: number, checked: boolean) {
+    setCheckedTraitIds((prev) =>
+      checked ? [...prev, traitId] : prev.filter((id) => id !== traitId),
+    );
+  }
+
+  function handleSave() {
+    console.log("checkedTraitIds", checkedTraitIds);
+    onAction?.("setProductTraits", { traitIds: checkedTraitIds });
+  }
 
   return (
     <SheProductCard
       title="Choose variant traits for product"
       view="card"
+      showPrimaryButton={true}
       primaryButtonTitle="Save"
+      onPrimaryButtonClick={handleSave}
+      showSecondaryButton={true}
       secondaryButtonTitle="Cancel"
       showCloseButton={true}
       className={cs.chooseVariantTraitsCard}
@@ -56,7 +73,13 @@ export default function ChooseVariantTraitsCard({
                 className={`${cs.traitsItem} ${selectedTraitId === item.traitId ? cs.selected : ""}`}
               >
                 <div className={cs.traitsItemBlock}>
-                  <Checkbox className={cs.traitCheckbox} />
+                  <Checkbox
+                    className={cs.traitCheckbox}
+                    checked={checkedTraitIds.includes(item.traitId)}
+                    onCheckedChange={(checked) =>
+                      handleCheckboxChange(item.traitId, !!checked)
+                    }
+                  />
                   <div
                     className={cs.traitName}
                     onClick={() => {

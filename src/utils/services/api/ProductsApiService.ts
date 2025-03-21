@@ -276,11 +276,37 @@ export const ProductsApiService = createApi({
         ],
       },
     ),
+    createVariant: apiConfig.createMutation<
+      any,
+      {
+        id: number;
+        model: number[];
+      }
+    >(builder, {
+      query: ({ id, model }) => ({
+        url: `${ApiUrlEnum.PRODUCTS}/${id}${ApiUrlEnum.VARIANTS}`,
+        method: "POST",
+        body: JSON.stringify(model),
+      }),
+      invalidatesTags: (_result, _error, model) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          model,
+        },
+      ],
+    }),
     getListOfAllTraits: apiConfig.createQuery<any, void>(builder, {
       query: () => ({
         url: `${ApiUrlEnum.TRAITS}/all`,
       }),
       providesTags: (result: TraitModel[]) =>
+        apiConfig.providesTags(result, ApiServiceNameEnum.PRODUCTS),
+    }),
+    getListOfTraitsForProduct: apiConfig.createQuery<any, number>(builder, {
+      query: (id) => ({
+        url: `${ApiUrlEnum.PRODUCTS}/${id}${ApiUrlEnum.TRAITS}`,
+      }),
+      providesTags: (result) =>
         apiConfig.providesTags(result, ApiServiceNameEnum.PRODUCTS),
     }),
     getTrait: apiConfig.createQuery<any, number>(builder, {
@@ -307,7 +333,6 @@ export const ProductsApiService = createApi({
         },
       ],
     }),
-
     updateTrait: apiConfig.createMutation<
       any,
       {
@@ -327,7 +352,25 @@ export const ProductsApiService = createApi({
         },
       ],
     }),
-
+    setProductTraits: apiConfig.createMutation<
+      any,
+      {
+        id?: number;
+        model?: TraitModel;
+      }
+    >(builder, {
+      query: ({ id, model }) => ({
+        url: `${ApiUrlEnum.PRODUCTS}/${id}${ApiUrlEnum.TRAITS}`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+      invalidatesTags: (_result, _error, result) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          result,
+        },
+      ],
+    }),
     getOptionsForTrait: apiConfig.createQuery<any, number>(builder, {
       query: (id: number) => ({
         url: `${ApiUrlEnum.TRAITS}/${id}${ApiUrlEnum.OPTIONS}`,

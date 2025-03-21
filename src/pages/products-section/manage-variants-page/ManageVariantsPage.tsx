@@ -43,6 +43,9 @@ export function ManageVariantsPage() {
       .then((res: ProductCounterModel) => {
         dispatch(actions.refreshProductCounter(res));
       });
+    service.getListOfTraitsForProductHandler(productId).then((res) => {
+      dispatch(actions.refreshListOfTraitsForProduct(res));
+    });
   }, [productId]);
 
   useEffect(() => {
@@ -115,6 +118,15 @@ export function ManageVariantsPage() {
                 }
               });
           }
+        });
+        break;
+      case "setProductTraits":
+        dispatch(actions.refreshSelectedTraitsIds(payload));
+        service.setProductTraitsHandler(productId, payload).then((res) => {
+          console.log(res);
+          dispatch(actions.refreshSelectedVariant(res));
+          handleCardAction("productTraitConfigurationCard", false);
+          handleCardAction("chooseVariantTraitsCard", false);
         });
         break;
       case "dnd":
@@ -210,7 +222,7 @@ export function ManageVariantsPage() {
         activeCards={state.activeCards}
       />
       <ManageVariantsCard
-        traits={state.traits}
+        traits={state.listOfTraitsForProduct}
         onChooseVariantTraits={() =>
           handleCardAction("chooseVariantTraitsCard")
         }

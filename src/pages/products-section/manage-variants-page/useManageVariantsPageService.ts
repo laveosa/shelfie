@@ -11,7 +11,10 @@ export default function useManageVariantsPageService() {
     ProductsApiHooks.useLazyGetCountersForProductsQuery();
   const [getListOfTypesOfTraits] =
     DictionaryApiHooks.useLazyGetListOfTypesOfTraitsQuery();
+  const [getListOfTraitsForProduct] =
+    ProductsApiHooks.useLazyGetListOfTraitsForProductQuery();
   const [createNewTrait] = ProductsApiHooks.useCreateNewTraitMutation();
+  const [setProductTraits] = ProductsApiHooks.useSetProductTraitsMutation();
   const [getOptionsForTrait] =
     ProductsApiHooks.useLazyGetOptionsForTraitQuery();
   const [createNewOptionForTrait] =
@@ -21,6 +24,7 @@ export default function useManageVariantsPageService() {
   const [deleteOptionsForTrait] =
     ProductsApiHooks.useDeleteOptionOfTraitMutation();
   const [updateTrait] = ProductsApiHooks.useUpdateTraitMutation();
+  const [createVariant] = ProductsApiHooks.useCreateVariantMutation();
 
   function getVariantsForGridHandler(data?: GridRequestModel) {
     return getVariantsForGrid(data).then((res: any) => {
@@ -34,8 +38,20 @@ export default function useManageVariantsPageService() {
     });
   }
 
+  function createVariantHandler(id, model) {
+    return createVariant({ id, model }).then((res: any) => {
+      return res.data;
+    });
+  }
+
   function getListOfAllTraitsHandler() {
     return getListOfAllTraits().then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function getListOfTraitsForProductHandler(id) {
+    return getListOfTraitsForProduct(id).then((res: any) => {
       return res.data;
     });
   }
@@ -60,6 +76,12 @@ export default function useManageVariantsPageService() {
 
   function updateTraitHandler(id, model) {
     return updateTrait({ id, model }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function setProductTraitsHandler(id, model) {
+    return setProductTraits({ id, model }).then((res: any) => {
       return res.data;
     });
   }
@@ -91,11 +113,14 @@ export default function useManageVariantsPageService() {
   return {
     getVariantsForGridHandler,
     getCountersForProductsHandler,
+    createVariantHandler,
     getListOfAllTraitsHandler,
+    getListOfTraitsForProductHandler,
     getTraitHandler,
     getListOfTypesOfTraitsHandler,
     createNewTraitHandler,
     updateTraitHandler,
+    setProductTraitsHandler,
     getOptionsForTraitHandler,
     createNewOptionForTraitHandler,
     updateOptionsForTraitHandler,
