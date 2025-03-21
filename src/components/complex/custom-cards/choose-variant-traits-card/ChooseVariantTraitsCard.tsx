@@ -17,7 +17,6 @@ import { IChooseVariantTraitsCard } from "@/const/interfaces/complex-components/
 export default function ChooseVariantTraitsCard({
   items,
   onAction,
-  onSecondaryButtonClick,
   ...props
 }: IChooseVariantTraitsCard) {
   const [selectedTraitId, setSelectedTraitId] = useState<number | null>(null);

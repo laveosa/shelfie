@@ -202,6 +202,9 @@ export function ManageVariantsPage() {
             });
         });
         break;
+      case "closeProductTraitConfigurationCard":
+        handleCardAction("productTraitConfigurationCard");
+        break;
     }
   }
 

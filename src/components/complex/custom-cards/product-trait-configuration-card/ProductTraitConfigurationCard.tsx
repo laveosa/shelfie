@@ -153,7 +153,14 @@ export default function ProductTraitConfigurationCard({
             </div>
             {/*{!data && (*/}
             <div className={cs.buttonBlock}>
-              <SheButton variant="secondary">Cancel</SheButton>
+              <SheButton
+                variant="secondary"
+                onClick={() =>
+                  onAction("closeProductTraitConfigurationCard", null)
+                }
+              >
+                Cancel
+              </SheButton>
               <SheButton
                 disabled={!form.formState.isValid}
                 onClick={form.handleSubmit(onSubmit)}
