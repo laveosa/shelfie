@@ -7,6 +7,7 @@ import { TypeOfTraitModel } from "@/const/models/TypeOfTraitModel.ts";
 import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
+import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
 
 const initialState: IManageVariantsPageSlice = {
   loading: false,
@@ -17,6 +18,7 @@ const initialState: IManageVariantsPageSlice = {
   traits: [],
   typesOfTraits: [],
   listOfTraitsForProduct: [],
+  listOfTraitsWithOptionsForProduct: [],
   contextId: null,
   selectedTraitsIds: [],
   selectedTrait: null,
@@ -30,6 +32,8 @@ const initialState: IManageVariantsPageSlice = {
     pageSize: 10,
   },
   traitOptions: [],
+  sizes: [],
+  colors: [],
 };
 
 function setLoading(
@@ -73,6 +77,14 @@ function refreshListOfTraitsForProduct(
 ) {
   state.listOfTraitsForProduct =
     action?.payload || state.listOfTraitsForProduct;
+}
+
+function refreshListOfTraitsWithOptionsForProduct(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<TraitModel[]>,
+) {
+  state.listOfTraitsWithOptionsForProduct =
+    action?.payload || state.listOfTraitsWithOptionsForProduct;
 }
 
 function refreshProductCounter(
@@ -138,6 +150,20 @@ function refreshGridRequestModel(
   state.gridRequestModel = action?.payload || state.gridRequestModel;
 }
 
+function refreshSizes(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<TraitOptionModel[]>,
+) {
+  state.sizes = action?.payload || state.sizes;
+}
+
+function refreshColors(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<TraitOptionModel[]>,
+) {
+  state.colors = action?.payload || state.colors;
+}
+
 const ManageVariantsPageSlice = createSlice({
   name: StoreSliceEnum.MANAGE_VARIANTS,
   initialState,
@@ -148,6 +174,7 @@ const ManageVariantsPageSlice = createSlice({
     refreshTraits,
     refreshTypesOfTraits,
     refreshListOfTraitsForProduct,
+    refreshListOfTraitsWithOptionsForProduct,
     refreshProductCounter,
     refreshActiveCards,
     refreshSelectedTraitsIds,
@@ -157,6 +184,8 @@ const ManageVariantsPageSlice = createSlice({
     refreshColorOptionsGridModel,
     refreshSizeOptionsGridModel,
     refreshGridRequestModel,
+    refreshSizes,
+    refreshColors,
   },
 });
 

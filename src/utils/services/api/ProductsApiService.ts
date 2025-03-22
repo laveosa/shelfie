@@ -309,6 +309,16 @@ export const ProductsApiService = createApi({
       providesTags: (result) =>
         apiConfig.providesTags(result, ApiServiceNameEnum.PRODUCTS),
     }),
+    getListOfTraitsWithOptionsForProduct: apiConfig.createQuery<any, number>(
+      builder,
+      {
+        query: (id) => ({
+          url: `${ApiUrlEnum.PRODUCTS}/${id}/traits-with-options`,
+        }),
+        providesTags: (result) =>
+          apiConfig.providesTags(result, ApiServiceNameEnum.PRODUCTS),
+      },
+    ),
     getTrait: apiConfig.createQuery<any, number>(builder, {
       query: (id) => ({
         url: `${ApiUrlEnum.TRAITS}/${id}`,

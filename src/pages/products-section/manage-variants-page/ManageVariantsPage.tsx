@@ -16,6 +16,7 @@ import { ManageVariantsPageSliceActions as actions } from "@/state/slices/Manage
 import ManageVariantsCard from "@/components/complex/custom-cards/manage-variants-card/ManageVariantsCard.tsx";
 import ChooseVariantTraitsCard from "@/components/complex/custom-cards/choose-variant-traits-card/ChooseVariantTraitsCard.tsx";
 import ProductTraitConfigurationCard from "@/components/complex/custom-cards/product-trait-configuration-card/ProductTraitConfigurationCard.tsx";
+import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
 
 export function ManageVariantsPage() {
   const dispatch = useAppDispatch();
@@ -43,9 +44,23 @@ export function ManageVariantsPage() {
       .then((res: ProductCounterModel) => {
         dispatch(actions.refreshProductCounter(res));
       });
-    service.getListOfTraitsForProductHandler(productId).then((res) => {
-      dispatch(actions.refreshListOfTraitsForProduct(res));
-    });
+    service
+      .getListOfTraitsWithOptionsForProductHandler(productId)
+      .then((traits) => {
+        dispatch(actions.refreshListOfTraitsWithOptionsForProduct(traits));
+        let sizes: TraitOptionModel[] = [];
+        let colors: TraitOptionModel[] = [];
+
+        traits.forEach((trait) => {
+          if (trait.traitTypeId === 1) {
+            sizes = [...sizes, ...trait.traitOptions];
+            dispatch(actions.refreshSizes(sizes));
+          } else if (trait.traitTypeId === 2) {
+            colors = [...colors, ...trait.traitOptions];
+            dispatch(actions.refreshColors(colors));
+          }
+        });
+      });
   }, [productId]);
 
   useEffect(() => {
@@ -54,9 +69,13 @@ export function ManageVariantsPage() {
     });
   }, [state.selectedTrait]);
 
+  useEffect(() => {
+    console.log("COLOR SIZE", state.colors, state.sizes);
+  }, [state.colors]);
+
   function handleCardAction(identifier: string, forceOpen: boolean = false) {
     const updatedCards = forceOpen
-      ? [...new Set([...state.activeCards, identifier])] // Ensure card is open
+      ? [...new Set([...state.activeCards, identifier])]
       : state.activeCards.includes(identifier)
         ? state.activeCards.filter((card) => card !== identifier)
         : [...state.activeCards, identifier];
@@ -225,7 +244,7 @@ export function ManageVariantsPage() {
         activeCards={state.activeCards}
       />
       <ManageVariantsCard
-        traits={state.listOfTraitsForProduct}
+        traits={state.listOfTraitsWithOptionsForProduct}
         onChooseVariantTraits={() =>
           handleCardAction("chooseVariantTraitsCard")
         }

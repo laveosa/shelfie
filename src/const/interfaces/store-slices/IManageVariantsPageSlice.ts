@@ -13,6 +13,7 @@ export interface IManageVariantsPageSlice {
   traits?: TraitModel[];
   typesOfTraits?: TypeOfTraitModel[];
   listOfTraitsForProduct?: TraitModel[];
+  listOfTraitsWithOptionsForProduct?: TraitModel[];
   activeCards?: any[];
   contextId?: number;
   selectedTraitsIds?: number[];
@@ -22,4 +23,6 @@ export interface IManageVariantsPageSlice {
   colorOptionsGridModel?: GridModel;
   sizeOptionsGridModel?: GridModel;
   gridRequestModel?: GridRequestModel;
+  sizes?: TraitOptionModel[];
+  colors?: TraitOptionModel[];
 }

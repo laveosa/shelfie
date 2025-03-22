@@ -13,6 +13,8 @@ export default function useManageVariantsPageService() {
     DictionaryApiHooks.useLazyGetListOfTypesOfTraitsQuery();
   const [getListOfTraitsForProduct] =
     ProductsApiHooks.useLazyGetListOfTraitsForProductQuery();
+  const [getListOfTraitsWithOptionsForProduct] =
+    ProductsApiHooks.useLazyGetListOfTraitsWithOptionsForProductQuery();
   const [createNewTrait] = ProductsApiHooks.useCreateNewTraitMutation();
   const [setProductTraits] = ProductsApiHooks.useSetProductTraitsMutation();
   const [getOptionsForTrait] =
@@ -46,6 +48,12 @@ export default function useManageVariantsPageService() {
 
   function getListOfAllTraitsHandler() {
     return getListOfAllTraits().then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function getListOfTraitsWithOptionsForProductHandler(id) {
+    return getListOfTraitsWithOptionsForProduct(id).then((res: any) => {
       return res.data;
     });
   }
@@ -116,6 +124,7 @@ export default function useManageVariantsPageService() {
     createVariantHandler,
     getListOfAllTraitsHandler,
     getListOfTraitsForProductHandler,
+    getListOfTraitsWithOptionsForProductHandler,
     getTraitHandler,
     getListOfTypesOfTraitsHandler,
     createNewTraitHandler,
