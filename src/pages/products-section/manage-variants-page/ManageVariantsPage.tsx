@@ -17,6 +17,7 @@ import ManageVariantsCard from "@/components/complex/custom-cards/manage-variant
 import ChooseVariantTraitsCard from "@/components/complex/custom-cards/choose-variant-traits-card/ChooseVariantTraitsCard.tsx";
 import ProductTraitConfigurationCard from "@/components/complex/custom-cards/product-trait-configuration-card/ProductTraitConfigurationCard.tsx";
 import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
+import AddVariantCard from "@/components/complex/custom-cards/add-variant-card/AddVariantCard.tsx";
 
 export function ManageVariantsPage() {
   const dispatch = useAppDispatch();
@@ -248,6 +249,11 @@ export function ManageVariantsPage() {
         onChooseVariantTraits={() =>
           handleCardAction("chooseVariantTraitsCard")
         }
+      />
+      <AddVariantCard
+        onAddVariantHandle={onAction}
+        colors={state.colors}
+        sizes={state.sizes}
       />
       {state.activeCards.includes("chooseVariantTraitsCard") && (
         <ChooseVariantTraitsCard
