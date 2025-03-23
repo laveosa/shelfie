@@ -18,6 +18,14 @@ import {
   SelectValue,
 } from "@/components/ui/select.tsx";
 
+// interface AddVariantCardProps {
+//   sizes: TraitOptionModel[];
+//   colors: TraitOptionModel[];
+//   onAddVariantHandle: (action: string, data: { options: number[] }) => void;
+//
+//   [key: string]: any;
+// }
+
 export default function AddVariantCard({
   sizes,
   colors,
@@ -26,14 +34,41 @@ export default function AddVariantCard({
 }) {
   const form = useForm({
     defaultValues: {
-      colors: null,
-      sizes: null,
+      colors: "",
+      sizes: "",
     },
   });
 
-  function onSubmit() {}
+  const { colors: selectedColors, sizes: selectedSizes } = form.watch();
 
-  console.log("ADDVARIANT", colors, sizes);
+  const handlePrimaryButtonClick = () => {
+    form.handleSubmit(
+      (formData: { colors: string | null; sizes: string | null }) => {
+        const optionIds = [];
+
+        if (formData.colors) {
+          const selectedColor = colors.find(
+            (option) => option.optionName === formData.colors,
+          );
+          if (selectedColor?.optionId) optionIds.push(selectedColor.optionId);
+        }
+
+        if (formData.sizes) {
+          const selectedSize = sizes.find(
+            (option) => option.optionName === formData.sizes,
+          );
+          if (selectedSize?.optionId) optionIds.push(selectedSize.optionId);
+        }
+
+        const optionsData = { options: optionIds };
+
+        console.log("Options Data:", optionsData);
+        onAddVariantHandle("addVariant", optionsData);
+      },
+    )();
+  };
+
+  const isPrimaryButtonDisabled = !selectedColors && !selectedSizes;
 
   return (
     <div>
@@ -42,6 +77,8 @@ export default function AddVariantCard({
         view="card"
         showPrimaryButton={true}
         primaryButtonTitle="Add Variant"
+        onPrimaryButtonClick={handlePrimaryButtonClick}
+        primaryButtonDisabled={isPrimaryButtonDisabled}
         showSecondaryButton={true}
         secondaryButtonTitle="Cancel"
         className={cs.addVariantCard}
@@ -51,20 +88,25 @@ export default function AddVariantCard({
           <span className="she-text">
             Select the trait option that you want to add
           </span>
-          <SheForm form={form} onSubmit={onSubmit}>
+          <SheForm form={form} onSubmit={handlePrimaryButtonClick}>
             <FormField
               control={form.control}
               name="colors"
               render={({ field }) => (
                 <FormItem className={cs.select}>
                   <FormLabel>Colors</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    disabled={colors.length === 0}
+                  >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue />
+                        <SelectValue placeholder="Select color" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
+                      <SelectItem value="none">None</SelectItem>
                       {colors?.map((option) => (
                         <SelectItem
                           key={option.optionId}
@@ -84,10 +126,14 @@ export default function AddVariantCard({
               render={({ field }) => (
                 <FormItem className={cs.select}>
                   <FormLabel>Sizes</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    disabled={sizes.length === 0}
+                  >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue />
+                        <SelectValue placeholder="Select size" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>

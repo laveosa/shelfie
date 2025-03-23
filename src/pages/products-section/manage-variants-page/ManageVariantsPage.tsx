@@ -91,6 +91,10 @@ export function ManageVariantsPage() {
 
   function onAction(actionType: string, payload: any) {
     switch (actionType) {
+      case "addVariant":
+        handleCardAction("productTraitConfigurationCard", true);
+        dispatch(actions.refreshSelectedTrait({}));
+        break;
       case "addTrait":
         handleCardAction("productTraitConfigurationCard", true);
         dispatch(actions.refreshSelectedTrait({}));
@@ -250,11 +254,13 @@ export function ManageVariantsPage() {
           handleCardAction("chooseVariantTraitsCard")
         }
       />
+      {/*{state.activeCards.includes("addVariantCard") && (*/}
       <AddVariantCard
         onAddVariantHandle={onAction}
         colors={state.colors}
         sizes={state.sizes}
       />
+      {/*)}*/}
       {state.activeCards.includes("chooseVariantTraitsCard") && (
         <ChooseVariantTraitsCard
           items={state.traits}
