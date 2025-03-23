@@ -56,6 +56,12 @@ export default function SheInput({
   const isTouched = useRef(false);
 
   useEffect(() => {
+    setValue((prevState) => {
+      return prevState !== props.value ? props.value : prevState;
+    });
+  }, [props.value]);
+
+  useEffect(() => {
     if (isInitialized.current && onDelay) {
       onDelay(delaySearch);
     }

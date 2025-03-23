@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import {
   FieldErrors,
   SubmitErrorHandler,
@@ -36,30 +36,37 @@ import { ISheFormProps } from "@/const/interfaces/forms/ISheForm.ts";
 
 export default function SheForm<T>({
   className,
+  children,
   form,
+  title,
+  text,
+  description,
+  notDisabled,
+  headerPosition = "center",
   onSubmit,
+  onError,
   onCancel,
-}: ISheFormProps<T>) {
+}: ISheFormProps<T>): React.ReactNode {
   // ==================================================================== LOGIC
 
   const onSubmitHandler: SubmitHandler<UserModel> = (data: UserModel) => {
-    if (onSubmit) {
-      onSubmit(data);
-    }
+    if (onSubmit) onSubmit(data);
   };
 
   const onErrorHandler: SubmitErrorHandler<UserModel> = (
     data: FieldErrors<UserModel>,
   ) => {
+    if (onError) onError(data);
     console.error("Form error: ", data);
   };
 
   function onCancelHandler() {
     form.reset(
-      { ...UserModelDefault },
+      { ...form.control._defaultValues },
       { keepErrors: false, keepDirty: false },
     );
     setTimeout(() => form.clearErrors(), 0);
+    if (onCancel) onCancel(form.control._defaultValues);
   }
 
   // ==================================================================== PRIVATE
@@ -76,75 +83,7 @@ export default function SheForm<T>({
         className="space-y-6"
         onSubmit={form.handleSubmit(onSubmitHandler, onErrorHandler)}
       >
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) =>
-            (
-              <FormItem className="flex flex-col items-start">
-                {/*<FormLabel>Name</FormLabel>*/}
-                <FormControl>
-                  <SheInput
-                    {...field}
-                    label="Name"
-                    type="text"
-                    isSearch
-                    placeholder="enter name..."
-                  />
-                </FormControl>
-                <FormDescription>
-                  min: 4 value: {field?.value?.length || 0} max: 20
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            ) as ReactElement
-          }
-        />
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) =>
-            (
-              <FormItem className="flex flex-col items-start">
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <input {...field} type="email" placeholder="enter email..." />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            ) as any
-          }
-        />
-        <FormField
-          control={form.control}
-          name="gender"
-          render={({ field }) =>
-            (
-              <FormItem className="flex flex-col items-start">
-                {/*<FormLabel>Gender</FormLabel>*/}
-
-                <FormControl>
-                  {/*<SheSelect
-                    items={convertProductToSelectModels(products)}
-                    onSelect={onSelectHandler}
-                  />*/}
-                </FormControl>
-                <FormDescription>
-                  You can find all available gender here{" "}
-                  <a
-                    href="https://www.shutterstock.com/shutterstock/photos/2234473535/display_1500/stock-vector-all-gender-symbol-icon-vector-set-illustration-sexual-orientation-sex-symbol-icon-pride-flag-2234473535.jpg"
-                    target="_blank"
-                    className="text-blue-500"
-                  >
-                    "genders"
-                  </a>
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            ) as any
-          }
-        />
+        {children}
         <div className="flex gap-4 justify-end">
           <SheButton
             className="flex items-start w-[100px]"
@@ -157,7 +96,7 @@ export default function SheForm<T>({
           <SheButton
             className="flex items-start w-[100px] bg-blue-700"
             type="submit"
-            disabled={!form.formState.isValid}
+            disabled={!notDisabled && !form.formState.isValid}
           >
             Submit
           </SheButton>
