@@ -33,7 +33,6 @@ import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelect.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { ISheFormProps } from "@/const/interfaces/forms/ISheForm.ts";
-import { SheFormHeaderPositionEnum } from "@/const/enums/SheFormHeaderPositionEnum.ts";
 import SheFormHeader from "@/components/complex/she-form/components/she-form-header/SheFormHeader.tsx";
 import cs from "./SheForm.module.scss";
 
@@ -41,7 +40,10 @@ export default function SheForm<T>({
   className,
   children,
   form,
-  notDisabled,
+  notDisabledSubmit,
+  view,
+  disabled,
+  loading,
   onSubmit,
   onError,
   onCancel,
@@ -72,7 +74,9 @@ export default function SheForm<T>({
   // ==================================================================== PRIVATE
 
   return (
-    <div className={`${className || ""} ${cs.sheForm}`}>
+    <div
+      className={`${className || ""} ${cs.sheForm} ${cs[view]} ${disabled || loading ? "disabled" : ""}`}
+    >
       <Form {...form}>
         <SheFormHeader {...props} />
         <form onSubmit={form.handleSubmit(onSubmitHandler, onErrorHandler)}>
@@ -89,7 +93,7 @@ export default function SheForm<T>({
             <SheButton
               className="flex items-start w-[100px] bg-blue-700"
               type="submit"
-              disabled={!notDisabled && !form.formState.isValid}
+              disabled={!notDisabledSubmit && !form.formState.isValid}
             >
               Submit
             </SheButton>

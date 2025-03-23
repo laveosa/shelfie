@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/form.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { ReactElement } from "react";
-import { SheFormHeaderPositionEnum } from "@/const/enums/SheFormHeaderPositionEnum.ts";
+import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 
 export function DashboardPage() {
   const service = useDashboardPageService();
@@ -57,6 +57,7 @@ export function DashboardPage() {
             <span> area</span>
           </>
         }
+        view={ComponentViewEnum.CARD}
         onSubmit={onSubmitHandler}
         onError={onErrorHandler}
         onCancel={onCancelHandler}

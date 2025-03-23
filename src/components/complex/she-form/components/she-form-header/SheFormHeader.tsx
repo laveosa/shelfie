@@ -1,7 +1,7 @@
 import { Trans } from "react-i18next";
 import React from "react";
 
-import { SheFormHeaderPositionEnum } from "@/const/enums/SheFormHeaderPositionEnum.ts";
+import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 import { ISheFormHeader } from "@/const/interfaces/forms/ISheFormHeader.ts";
 import { FormLabel } from "@/components/ui/form.tsx";
 import cs from "./SheFormHeader.module.scss";
@@ -14,7 +14,7 @@ export default function SheFormHeader({
   textTransKey,
   description,
   descriptionTransKey,
-  headerPosition = SheFormHeaderPositionEnum.CENTER,
+  headerPosition = DirectionEnum.CENTER,
 }: ISheFormHeader): React.ReactNode {
   return (
     <>

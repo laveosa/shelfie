@@ -1,3 +1,14 @@
+@use "@/styles/variables" as vars;
+
 .sheForm {
-  border: 1px solid;
+}
+
+// ======================================================== POSITION
+
+.sheForm {
+  &.card {
+    border: 1px solid vars.$brdColor;
+    padding: 20px;
+    border-radius: vars.$brdR_075;
+  }
 }

@@ -1,6 +1,6 @@
 import { ComponentPropsWithRef } from "react";
 
-import { SheFormHeaderPositionEnum } from "@/const/enums/SheFormHeaderPositionEnum.ts";
+import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 
 export interface ISheFormHeader extends ComponentPropsWithRef<"label"> {
   title?: any;
@@ -9,5 +9,5 @@ export interface ISheFormHeader extends ComponentPropsWithRef<"label"> {
   textTransKey?: string;
   description?: any;
   descriptionTransKey?: string;
-  headerPosition?: SheFormHeaderPositionEnum;
+  headerPosition?: DirectionEnum;
 }

@@ -4,12 +4,16 @@ import { z } from "zod";
 
 import { IZodSchema } from "@/const/interfaces/IZodSchema.ts";
 import { ISheFormHeader } from "@/const/interfaces/forms/ISheFormHeader.ts";
+import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 
 export interface ISheFormProps<T extends FieldValues>
   extends ComponentPropsWithRef<any>,
     ISheFormHeader {
   form: UseFormReturn<z.output<z.ZodObject<IZodSchema<T>>>>;
-  notDisabled?: boolean;
+  notDisabledSubmit?: boolean;
+  view?: ComponentViewEnum;
+  disabled?: boolean;
+  loading?: boolean;
   onSubmit?: (data: T) => void;
   onError?: (data: T) => void;
   onCancel?: (data: T) => void;
