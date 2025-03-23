@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Search, X } from "lucide-react";
 import { isRegExp } from "lodash";
 import { Trans } from "react-i18next";
@@ -39,7 +39,7 @@ export default function SheInput({
   onBlur,
   onDelay,
   ...props
-}: ISheInput) {
+}: ISheInput): React.ReactNode {
   const { translate } = useAppTranslation();
   const [value, setValue] = useState(props.value || props.defaultValue || "");
   const [icon, setIcon] = useState(

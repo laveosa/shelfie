@@ -1,13 +1,10 @@
 import cs from "./DashboardPage.module.scss";
 import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageService.ts";
 import SheForm from "@/components/complex/she-form/SheForm.tsx";
-import { useForm, UseFormReturn } from "react-hook-form";
-import { z } from "zod";
 import UserFormScheme from "@/utils/validation/schemes/UserFormScheme.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserModel, UserModelDefault } from "@/const/models/UserModel.ts";
 import useAppForm from "@/utils/hooks/useAppForm.ts";
-import { IZodSchema } from "@/const/interfaces/IZodSchema.ts";
 import {
   FormControl,
   FormDescription,
@@ -18,6 +15,7 @@ import {
 } from "@/components/ui/form.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { ReactElement } from "react";
+import { SheFormHeaderPositionEnum } from "@/const/enums/SheFormHeaderPositionEnum.ts";
 
 export function DashboardPage() {
   const service = useDashboardPageService();
@@ -46,15 +44,19 @@ export function DashboardPage() {
         form={form}
         title="Auth Form Title"
         text={"some text for test"}
-        description={`description ${(
-          <a
-            href="https://www.shutterstock.com/shutterstock/photos/2234473535/display_1500/stock-vector-all-gender-symbol-icon-vector-set-illustration-sexual-orientation-sex-symbol-icon-pride-flag-2234473535.jpg"
-            target="_blank"
-            className="text-blue-500"
-          >
-            "genders"
-          </a>
-        )} area`}
+        description={
+          <>
+            <span>description </span>
+            <a
+              href="https://www.shutterstock.com/shutterstock/photos/2234473535/display_1500/stock-vector-all-gender-symbol-icon-vector-set-illustration-sexual-orientation-sex-symbol-icon-pride-flag-2234473535.jpg"
+              target="_blank"
+              className="text-blue-500"
+            >
+              "genders"
+            </a>
+            <span> area</span>
+          </>
+        }
         onSubmit={onSubmitHandler}
         onError={onErrorHandler}
         onCancel={onCancelHandler}

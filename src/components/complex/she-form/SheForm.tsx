@@ -33,19 +33,19 @@ import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelect.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { ISheFormProps } from "@/const/interfaces/forms/ISheForm.ts";
+import { SheFormHeaderPositionEnum } from "@/const/enums/SheFormHeaderPositionEnum.ts";
+import SheFormHeader from "@/components/complex/she-form/components/she-form-header/SheFormHeader.tsx";
+import cs from "./SheForm.module.scss";
 
 export default function SheForm<T>({
   className,
   children,
   form,
-  title,
-  text,
-  description,
   notDisabled,
-  headerPosition = "center",
   onSubmit,
   onError,
   onCancel,
+  ...props
 }: ISheFormProps<T>): React.ReactNode {
   // ==================================================================== LOGIC
 
@@ -72,36 +72,30 @@ export default function SheForm<T>({
   // ==================================================================== PRIVATE
 
   return (
-    <Form {...form}>
-      <FormLabel className="flex flex-col items-center gap-2 mb-[20px]">
-        <span className="text-2xl">Auth Form</span>
-        <span className="text-stone-400">
-          This form use "shadcn" web-kit components
-        </span>
-      </FormLabel>
-      <form
-        className="space-y-6"
-        onSubmit={form.handleSubmit(onSubmitHandler, onErrorHandler)}
-      >
-        {children}
-        <div className="flex gap-4 justify-end">
-          <SheButton
-            className="flex items-start w-[100px]"
-            variant="secondary"
-            type="button"
-            onClick={onCancelHandler}
-          >
-            Cancel
-          </SheButton>
-          <SheButton
-            className="flex items-start w-[100px] bg-blue-700"
-            type="submit"
-            disabled={!notDisabled && !form.formState.isValid}
-          >
-            Submit
-          </SheButton>
-        </div>
-      </form>
-    </Form>
+    <div className={`${className || ""} ${cs.sheForm}`}>
+      <Form {...form}>
+        <SheFormHeader {...props} />
+        <form onSubmit={form.handleSubmit(onSubmitHandler, onErrorHandler)}>
+          {children}
+          <div className="flex gap-4 justify-end">
+            <SheButton
+              className="flex items-start w-[100px]"
+              variant="secondary"
+              type="button"
+              onClick={onCancelHandler}
+            >
+              Cancel
+            </SheButton>
+            <SheButton
+              className="flex items-start w-[100px] bg-blue-700"
+              type="submit"
+              disabled={!notDisabled && !form.formState.isValid}
+            >
+              Submit
+            </SheButton>
+          </div>
+        </form>
+      </Form>
+    </div>
   );
 }
