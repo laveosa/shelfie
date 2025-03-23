@@ -57,7 +57,6 @@ export function DashboardPage() {
             <span> area</span>
           </>
         }
-        view={ComponentViewEnum.CARD}
         onSubmit={onSubmitHandler}
         onError={onErrorHandler}
         onCancel={onCancelHandler}

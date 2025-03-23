@@ -93,6 +93,7 @@ export default function SheForm<T>({
             <SheButton
               className="flex items-start w-[100px] bg-blue-700"
               type="submit"
+              loading={loading}
               disabled={!notDisabledSubmit && !form.formState.isValid}
             >
               Submit
