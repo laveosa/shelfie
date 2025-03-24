@@ -5,12 +5,13 @@ import { z } from "zod";
 import { IZodSchema } from "@/const/interfaces/IZodSchema.ts";
 import { ISheFormHeader } from "@/const/interfaces/forms/ISheFormHeader.ts";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
+import { ISheFormFooter } from "@/const/interfaces/forms/ISheFormFooter.ts";
 
 export interface ISheFormProps<T extends FieldValues>
   extends ComponentPropsWithRef<any>,
-    ISheFormHeader {
+    ISheFormHeader,
+    ISheFormFooter {
   form: UseFormReturn<z.output<z.ZodObject<IZodSchema<T>>>>;
-  notDisabledSubmit?: boolean;
   view?: ComponentViewEnum;
   disabled?: boolean;
   loading?: boolean;

@@ -1,0 +1,21 @@
+.sheFormFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+// ======================================================== POSITION
+
+.sheFormFooter {
+  &.left {
+    justify-content: start;
+  }
+
+  &.center {
+    justify-content: center;
+  }
+
+  &.right {
+    justify-content: end;
+  }
+}
