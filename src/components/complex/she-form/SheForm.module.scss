@@ -3,6 +3,14 @@
 .sheForm {
   .sheFormContent {
     margin: 20px 0;
+
+    > div {
+      margin-bottom: vars.$marginSmall;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
   }
 }
 
