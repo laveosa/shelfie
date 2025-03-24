@@ -14,8 +14,6 @@ export default function SheForm<T>({
   view,
   disabled,
   loading,
-  headerPosition,
-  footerPosition,
   onSubmit,
   onError,
   onCancel,
@@ -48,12 +46,11 @@ export default function SheForm<T>({
       className={`${className || ""} ${cs.sheForm} ${cs[view] || ""} ${disabled || loading ? "disabled" : ""}`}
     >
       <Form {...form}>
-        <SheFormHeader {...props} headerPosition={headerPosition} />
+        <SheFormHeader {...props} />
         <form onSubmit={form.handleSubmit(onSubmitHandler, onErrorHandler)}>
           <div className={cs.sheFormContent}>{children}</div>
           <SheFormFooter
             {...props}
-            footerPosition={footerPosition}
             isValid={form.formState.isValid}
             loading={loading}
             onSecondary={onCancelHandler}
