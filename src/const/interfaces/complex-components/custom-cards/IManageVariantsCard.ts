@@ -5,6 +5,5 @@ export interface IManageVariantsCard {
   data?: any;
   traits?: TraitModel[];
   variants?: VariantModel[];
-  onChooseVariantTraits?: () => void;
   onAction?: (identifier?: string, payload?: any) => void;
 }

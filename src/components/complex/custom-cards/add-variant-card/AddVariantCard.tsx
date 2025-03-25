@@ -17,21 +17,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select.tsx";
-
-// interface AddVariantCardProps {
-//   sizes: TraitOptionModel[];
-//   colors: TraitOptionModel[];
-//   onAddVariantHandle: (action: string, data: { options: number[] }) => void;
-//
-//   [key: string]: any;
-// }
+import { IAddVariantCard } from "@/const/interfaces/complex-components/custom-cards/IAddVariantCard.ts";
 
 export default function AddVariantCard({
   sizes,
   colors,
-  onAddVariantHandle,
+  onAction,
   ...props
-}) {
+}: IAddVariantCard) {
   const form = useForm({
     defaultValues: {
       colors: "",
@@ -62,8 +55,7 @@ export default function AddVariantCard({
 
         const optionsData = { options: optionIds };
 
-        console.log("Options Data:", optionsData);
-        onAddVariantHandle("addVariant", optionsData);
+        onAction("addVariant", optionsData);
       },
     )();
   };
@@ -81,6 +73,8 @@ export default function AddVariantCard({
         primaryButtonDisabled={isPrimaryButtonDisabled}
         showSecondaryButton={true}
         secondaryButtonTitle="Cancel"
+        onSecondaryButtonClick={() => onAction("closeAddVariantCard", null)}
+        showCloseButton={true}
         className={cs.addVariantCard}
         {...props}
       >

@@ -1,5 +1,5 @@
 import { MoreHorizontal, Plus } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ChooseVariantTraitsCard.module.scss";
@@ -16,13 +16,14 @@ import { IChooseVariantTraitsCard } from "@/const/interfaces/complex-components/
 
 export default function ChooseVariantTraitsCard({
   items,
+  selectedItems,
   onAction,
   ...props
 }: IChooseVariantTraitsCard) {
   const [selectedTraitId, setSelectedTraitId] = useState<number | null>(null);
-  const [checkedTraitIds, setCheckedTraitIds] = useState<number[]>([]);
-
-  useEffect(() => {}, [checkedTraitIds]);
+  const [checkedTraitIds, setCheckedTraitIds] = useState<number[]>(
+    selectedItems.map((item: TraitModel) => item.traitId),
+  );
 
   function handleCheckboxChange(traitId: number, checked: boolean) {
     setCheckedTraitIds((prev) =>
@@ -31,7 +32,6 @@ export default function ChooseVariantTraitsCard({
   }
 
   function handleSave() {
-    console.log("checkedTraitIds", checkedTraitIds);
     onAction?.("setProductTraits", { traitIds: checkedTraitIds });
   }
 

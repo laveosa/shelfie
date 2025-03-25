@@ -70,16 +70,17 @@ export function ManageVariantsPage() {
     });
   }, [state.selectedTrait]);
 
-  useEffect(() => {
-    console.log("COLOR SIZE", state.colors, state.sizes);
-  }, [state.colors]);
-
   function handleCardAction(identifier: string, forceOpen: boolean = false) {
-    const updatedCards = forceOpen
-      ? [...new Set([...state.activeCards, identifier])]
-      : state.activeCards.includes(identifier)
-        ? state.activeCards.filter((card) => card !== identifier)
+    let updatedCards: string[];
+
+    if (forceOpen) {
+      updatedCards = state.activeCards.includes(identifier)
+        ? state.activeCards
         : [...state.activeCards, identifier];
+    } else {
+      updatedCards = state.activeCards.filter((card) => card !== identifier);
+    }
+
     dispatch(actions.refreshActiveCards(updatedCards));
   }
 
@@ -91,6 +92,14 @@ export function ManageVariantsPage() {
 
   function onAction(actionType: string, payload: any) {
     switch (actionType) {
+      case "openAddVariantCard":
+        console.log(payload);
+        handleCardAction("addVariantCard", true);
+        break;
+      case "openChooseVariantTraitsCard":
+        console.log(payload);
+        handleCardAction("chooseVariantTraitsCard", true);
+        break;
       case "addVariant":
         handleCardAction("productTraitConfigurationCard", true);
         dispatch(actions.refreshSelectedTrait({}));
@@ -146,11 +155,27 @@ export function ManageVariantsPage() {
         break;
       case "setProductTraits":
         dispatch(actions.refreshSelectedTraitsIds(payload));
-        service.setProductTraitsHandler(productId, payload).then((res) => {
-          console.log(res);
-          dispatch(actions.refreshSelectedVariant(res));
+        service.setProductTraitsHandler(productId, payload).then(() => {
           handleCardAction("productTraitConfigurationCard", false);
-          handleCardAction("chooseVariantTraitsCard", false);
+          service
+            .getListOfTraitsWithOptionsForProductHandler(productId)
+            .then((traits) => {
+              dispatch(
+                actions.refreshListOfTraitsWithOptionsForProduct(traits),
+              );
+              let sizes: TraitOptionModel[] = [];
+              let colors: TraitOptionModel[] = [];
+
+              traits.forEach((trait) => {
+                if (trait.traitTypeId === 1) {
+                  sizes = [...sizes, ...trait.traitOptions];
+                  dispatch(actions.refreshSizes(sizes));
+                } else if (trait.traitTypeId === 2) {
+                  colors = [...colors, ...trait.traitOptions];
+                  dispatch(actions.refreshColors(colors));
+                }
+              });
+            });
         });
         break;
       case "dnd":
@@ -173,7 +198,6 @@ export function ManageVariantsPage() {
         });
         break;
       case "updateOption":
-        console.log("Update option:", payload);
         service
           .updateOptionsForTraitHandler(payload.optionId, payload.updatedModel)
           .then((res) => {
@@ -229,6 +253,9 @@ export function ManageVariantsPage() {
       case "closeProductTraitConfigurationCard":
         handleCardAction("productTraitConfigurationCard");
         break;
+      case "closeAddVariantCard":
+        handleCardAction("addVariantCard");
+        break;
     }
   }
 
@@ -250,20 +277,19 @@ export function ManageVariantsPage() {
       />
       <ManageVariantsCard
         traits={state.listOfTraitsWithOptionsForProduct}
-        onChooseVariantTraits={() =>
-          handleCardAction("chooseVariantTraitsCard")
-        }
+        onAction={onAction}
       />
-      {/*{state.activeCards.includes("addVariantCard") && (*/}
-      <AddVariantCard
-        onAddVariantHandle={onAction}
-        colors={state.colors}
-        sizes={state.sizes}
-      />
-      {/*)}*/}
+      {state.activeCards.includes("addVariantCard") && (
+        <AddVariantCard
+          onAction={onAction}
+          colors={state.colors}
+          sizes={state.sizes}
+        />
+      )}
       {state.activeCards.includes("chooseVariantTraitsCard") && (
         <ChooseVariantTraitsCard
           items={state.traits}
+          selectedItems={state.listOfTraitsWithOptionsForProduct}
           onAction={onAction}
           onSecondaryButtonClick={() =>
             handleCardAction("chooseVariantTraitsCard")

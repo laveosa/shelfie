@@ -19,7 +19,6 @@ export default function ManageVariantsCard({
   data,
   traits,
   variants,
-  onChooseVariantTraits,
   onAction,
   ...props
 }: IManageVariantsCard) {
@@ -67,8 +66,10 @@ export default function ManageVariantsCard({
                   </SheButton>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" className="w-[160px]">
-                  <DropdownMenuItem>
-                    <span className="she-text">Delete</span>
+                  <DropdownMenuItem
+                    onClick={() => onAction("openChooseVariantTraitsCard")}
+                  >
+                    <span className="she-text">Manage traits</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -79,9 +80,15 @@ export default function ManageVariantsCard({
           <SheButton
             icon={Plus}
             variant="outline"
-            onClick={onChooseVariantTraits}
+            onClick={() => {
+              onAction?.(
+                traits.length > 0
+                  ? "openAddVariantCard"
+                  : "openChooseVariantTraitsCard",
+              );
+            }}
           >
-            Create Variant
+            {traits.length > 0 ? "Create Variant" : "Select Traits"}
           </SheButton>
           {traits.length > 0 && (
             <>
