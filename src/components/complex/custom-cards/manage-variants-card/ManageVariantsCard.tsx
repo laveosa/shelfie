@@ -11,9 +11,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
-import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { ManageVariantsGridColumns } from "@/components/complex/grid/manage-variants-grid/ManageVariantsGridColumns.tsx";
 import { IManageVariantsCard } from "@/const/interfaces/complex-components/custom-cards/IManageVariantsCard.ts";
+import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 
 export default function ManageVariantsCard({
   data,
@@ -22,7 +22,7 @@ export default function ManageVariantsCard({
   onAction,
   ...props
 }: IManageVariantsCard) {
-  const colorColumns = ManageVariantsGridColumns(onGridAction);
+  const columns = ManageVariantsGridColumns(onGridAction);
 
   function onGridAction() {}
 
@@ -100,12 +100,11 @@ export default function ManageVariantsCard({
           )}
         </div>
         <div>
-          {traits.length > 10 && (
+          {variants.length > 0 && (
             <DndGridDataTable
               enableDnd={true}
               showHeader={false}
-              showColumnsHeader={false}
-              columns={colorColumns}
+              columns={columns}
               data={variants}
               gridModel={data}
               onNewItemPosition={(newIndex, activeItem) =>

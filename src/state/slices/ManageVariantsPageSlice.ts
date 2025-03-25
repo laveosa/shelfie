@@ -12,6 +12,7 @@ import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
 const initialState: IManageVariantsPageSlice = {
   loading: false,
   variants: [],
+  productVariants: [],
   selectedVariant: null,
   productCounter: null,
   activeCards: [],
@@ -48,6 +49,13 @@ function refreshVariants(
   action: PayloadAction<VariantModel[]>,
 ) {
   state.variants = action?.payload || state.variants;
+}
+
+function refreshProductVariants(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<any[]>,
+) {
+  state.productVariants = action?.payload || state.productVariants;
 }
 
 function refreshSelectedVariant(
@@ -170,6 +178,7 @@ const ManageVariantsPageSlice = createSlice({
   reducers: {
     setLoading,
     refreshVariants,
+    refreshProductVariants,
     refreshSelectedVariant,
     refreshTraits,
     refreshTypesOfTraits,

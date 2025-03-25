@@ -4,6 +4,8 @@ import { DictionaryApiHooks } from "@/utils/services/api/DictionaryApiService.ts
 
 export default function useManageVariantsPageService() {
   const [getVariantsForGrid] = ProductsApiHooks.useGetVariantsForGridMutation();
+  const [getProductVariants] =
+    ProductsApiHooks.useLazyGetProductVariantsQuery();
   const [getListOfAllTraits] =
     ProductsApiHooks.useLazyGetListOfAllTraitsQuery();
   const [getTrait] = ProductsApiHooks.useLazyGetTraitQuery();
@@ -30,6 +32,12 @@ export default function useManageVariantsPageService() {
 
   function getVariantsForGridHandler(data?: GridRequestModel) {
     return getVariantsForGrid(data).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function getProductVariantsHandler(id: any) {
+    return getProductVariants(id).then((res: any) => {
       return res.data;
     });
   }
@@ -120,6 +128,7 @@ export default function useManageVariantsPageService() {
 
   return {
     getVariantsForGridHandler,
+    getProductVariantsHandler,
     getCountersForProductsHandler,
     createVariantHandler,
     getListOfAllTraitsHandler,

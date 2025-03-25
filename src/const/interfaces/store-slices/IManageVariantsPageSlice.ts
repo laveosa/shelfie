@@ -9,6 +9,7 @@ import { TraitModel } from "@/const/models/TraitModel.ts";
 export interface IManageVariantsPageSlice {
   loading?: boolean;
   variants: VariantModel[];
+  productVariants: VariantModel[];
   selectedVariant: VariantModel;
   traits?: TraitModel[];
   typesOfTraits?: TypeOfTraitModel[];

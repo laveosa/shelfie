@@ -15,11 +15,36 @@ export const ManageVariantsGridColumns = (
     accessorKey: "traits",
     header: "Traits",
     cell: ({ row }) => {
+      const colorOption = row.original.traitOptions.find(
+        (option) => option.traitTypeId === 2,
+      );
+      const sizeOption = row.original.traitOptions.find(
+        (option) => option.traitTypeId === 1,
+      );
+
+      const color = colorOption ? colorOption.optionColor : null;
+      const size = sizeOption ? sizeOption.optionName : null;
+
       return (
-        <>
-          <span>{row.original}</span>
-          <span></span>
-        </>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+          }}
+        >
+          {color && (
+            <div
+              style={{
+                background: color,
+                width: "20px",
+                height: "20px",
+                borderRadius: "10%",
+              }}
+            />
+          )}
+          {size && <span>{size}</span>}
+        </div>
       );
     },
   },
@@ -27,19 +52,19 @@ export const ManageVariantsGridColumns = (
     accessorKey: "stock",
     header: "Stock",
     cell: ({ row }) => {
-      return <span>{row.original}</span>;
+      return <span>{row.original.stockAmount}</span>;
     },
   },
   {
     accessorKey: "isActive",
     header: "Active",
-    cell: ({ row }) => {
-      return <Switch value={row.original} />;
+    cell: ({}) => {
+      return <Switch />;
     },
   },
   {
     id: "rowActions",
-    header: "",
+    header: "Actions",
     cell: ({ row, table }) => {
       return (
         <ManageVariantsGridColumnActions

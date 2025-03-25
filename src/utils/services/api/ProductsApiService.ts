@@ -13,6 +13,7 @@ import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
+import { VariantModel } from "@/const/models/VariantModel.ts";
 
 const apiConfig = new ApiConfigurationService(ApiUrlEnum.PRODUCTS_BASE_URL);
 
@@ -276,6 +277,17 @@ export const ProductsApiService = createApi({
         ],
       },
     ),
+    getProductVariants: apiConfig.createQuery<VariantModel[], number>(builder, {
+      query: (id: number) => ({
+        url: `${ApiUrlEnum.PRODUCTS}/${id}${ApiUrlEnum.VARIANTS}`,
+      }),
+      providesTags: (_result, _error, result) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          result,
+        },
+      ],
+    }),
     createVariant: apiConfig.createMutation<
       any,
       {

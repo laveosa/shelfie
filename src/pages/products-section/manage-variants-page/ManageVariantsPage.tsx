@@ -36,6 +36,10 @@ export function ManageVariantsPage() {
         dispatch(actions.refreshVariants(res ? res.items : []));
       });
 
+    service.getProductVariantsHandler(productId).then((res) => {
+      dispatch(actions.refreshProductVariants(res));
+    });
+
     service.getListOfTypesOfTraitsHandler().then((res) => {
       dispatch(actions.refreshTypesOfTraits(res));
     });
@@ -101,8 +105,12 @@ export function ManageVariantsPage() {
         handleCardAction("chooseVariantTraitsCard", true);
         break;
       case "addVariant":
-        handleCardAction("productTraitConfigurationCard", true);
-        dispatch(actions.refreshSelectedTrait({}));
+        console.log(payload);
+        service.createVariantHandler(productId, payload).then((res) => {
+          console.log("RES", res);
+        });
+        // handleCardAction("productTraitConfigurationCard", true);
+        // dispatch(actions.refreshSelectedTrait({}));
         break;
       case "addTrait":
         handleCardAction("productTraitConfigurationCard", true);
@@ -263,6 +271,7 @@ export function ManageVariantsPage() {
     <div className={cs.createProductPage}>
       {state.variants?.length > 0 && (
         <ItemsCard
+          title="Variants"
           data={state.variants}
           selectedItem={productId}
           onAction={itemCardClickHandler}
@@ -276,6 +285,7 @@ export function ManageVariantsPage() {
         activeCards={state.activeCards}
       />
       <ManageVariantsCard
+        variants={state.productVariants}
         traits={state.listOfTraitsWithOptionsForProduct}
         onAction={onAction}
       />
