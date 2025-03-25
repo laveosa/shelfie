@@ -1,0 +1,23 @@
+@use "@/styles/variables" as vars;
+
+.variantConfigurationCard {
+  .VariantConfigurationCardContent {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 20px;
+
+    .inputBlock {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      .inputBlockRow {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 20px;
+      }
+    }
+  }
+}
