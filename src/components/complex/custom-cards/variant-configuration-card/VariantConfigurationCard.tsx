@@ -2,7 +2,6 @@ import React from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./VariantConfigurationCard.module.scss";
-import { ManageVariantsGridColumns } from "@/components/complex/grid/manage-variants-grid/ManageVariantsGridColumns.tsx";
 import { IVariantConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IVariantConfigurationCard.ts";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
@@ -15,15 +14,14 @@ import {
   WandSparklesIcon,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator.tsx";
+import { VariantConfigurationGridColumns } from "@/components/complex/grid/variant-configuration-grid/VariantConfigurationGridColumns.tsx";
+import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 
 export default function VariantConfigurationCard({
   variant,
+  data,
   ...props
 }: IVariantConfigurationCard) {
-  const columns = ManageVariantsGridColumns(onGridAction);
-
-  function onGridAction() {}
-
   console.log("VARIANT", variant);
 
   return (
@@ -79,10 +77,6 @@ export default function VariantConfigurationCard({
               <span></span>
               <span></span>
             </div>
-            <div className={cs.stockBlockRow}>
-              <span></span>
-              <span></span>
-            </div>
           </div>
         </div>
         <div className={cs.variantTraitsBlock}>
@@ -92,7 +86,14 @@ export default function VariantConfigurationCard({
               Manage
             </SheButton>
           </div>
-          <div className={cs.variantTraitsList}></div>
+          <div className={cs.variantTraitsList}>
+            <DndGridDataTable
+              showHeader={false}
+              columns={VariantConfigurationGridColumns}
+              data={variant.traitOptions}
+              gridModel={data}
+            />
+          </div>
         </div>
         <div className={cs.variantPhotosBlock}>
           <div className={cs.variantTraitsBlockHeader}>

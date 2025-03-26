@@ -23,6 +23,7 @@ export interface IManageVariantsPageSlice {
   traitOptions?: TraitOptionModel[];
   colorOptionsGridModel?: GridModel;
   sizeOptionsGridModel?: GridModel;
+  variantTraitsGridModel?: GridModel;
   gridRequestModel?: GridRequestModel;
   sizes?: TraitOptionModel[];
   colors?: TraitOptionModel[];

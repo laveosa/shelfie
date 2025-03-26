@@ -300,7 +300,10 @@ export function ManageVariantsPage() {
         onAction={onAction}
       />
       {state.activeCards.includes("variantConfigurationCard") && (
-        <VariantConfigurationCard variant={state.selectedVariant} />
+        <VariantConfigurationCard
+          variant={state.selectedVariant}
+          data={state.variantTraitsGridModel}
+        />
       )}
       {state.activeCards.includes("addVariantCard") && (
         <AddVariantCard

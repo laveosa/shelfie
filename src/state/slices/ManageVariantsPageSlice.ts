@@ -28,6 +28,10 @@ const initialState: IManageVariantsPageSlice = {
     pager: {},
     items: [],
   },
+  variantTraitsGridModel: {
+    pager: {},
+    items: [],
+  },
   gridRequestModel: {
     currentPage: 1,
     pageSize: 10,
