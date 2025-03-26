@@ -16,20 +16,33 @@ import {
 import { Separator } from "@/components/ui/separator.tsx";
 import { VariantConfigurationGridColumns } from "@/components/complex/grid/variant-configuration-grid/VariantConfigurationGridColumns.tsx";
 import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import { ProductPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/ProductPhotosGridColumns.tsx";
 
 export default function VariantConfigurationCard({
   variant,
   data,
+  onAction,
   ...props
 }: IVariantConfigurationCard) {
   console.log("VARIANT", variant);
+  const traitsColumns = VariantConfigurationGridColumns;
+  const photoColumns = ProductPhotosGridColumns(onGridAction);
+
+  function onGridAction(
+    _actionType: string,
+    _rowId?: string,
+    _setLoadingRow?: (rowId: string, loading: boolean) => void,
+    row?: any,
+  ) {
+    onAction("delete", row.original);
+  }
 
   return (
     <SheProductCard
       title="Manage Variant"
       view="card"
       showCloseButton
-      width="450px"
+      width="420px"
       className={cs.variantConfigurationCard}
       {...props}
     >
@@ -74,35 +87,56 @@ export default function VariantConfigurationCard({
           </div>
           <div className={cs.stockBlock}>
             <div className={cs.stockBlockRow}>
-              <span></span>
-              <span></span>
+              <span className="she-text">Currently in stock</span>
+              <span className={cs.stockBlockRowNumber}>
+                {variant.stockAmount}
+              </span>
+            </div>
+            <div className={cs.stockBlockRow}>
+              <span className="she-text">Units sold</span>
+              <span className={cs.stockBlockRowNumber}>
+                {variant.soldUnits}
+              </span>
             </div>
           </div>
         </div>
-        <div className={cs.variantTraitsBlock}>
-          <div className={cs.variantTraitsBlockHeader}>
+        <div className={cs.variantGridBlock}>
+          <div className={cs.variantGridBlockHeader}>
             <span className="she-title">Variant Traits</span>
             <SheButton icon={Blocks} variant="outline">
               Manage
             </SheButton>
           </div>
-          <div className={cs.variantTraitsList}>
+          <div>
             <DndGridDataTable
               showHeader={false}
-              columns={VariantConfigurationGridColumns}
+              columns={traitsColumns}
               data={variant.traitOptions}
               gridModel={data}
             />
           </div>
         </div>
-        <div className={cs.variantPhotosBlock}>
-          <div className={cs.variantTraitsBlockHeader}>
+        <div className={cs.variantGridBlock}>
+          <div className={cs.variantGridBlockHeader}>
             <span className="she-title">Variant Photos</span>
             <SheButton icon={ImagePlus} variant="outline">
               Manage
             </SheButton>
           </div>
-          <div className={cs.variantTraitsList}></div>
+          {variant.photos.length > 0 && (
+            <div className={cs.managePhotosGrid}>
+              <DndGridDataTable
+                enableDnd={true}
+                showHeader={false}
+                columns={photoColumns}
+                data={variant.photos}
+                gridModel={data}
+                onNewItemPosition={(newIndex, activeItem) =>
+                  onAction("dnd", { newIndex, activeItem })
+                }
+              />
+            </div>
+          )}
         </div>
       </div>
     </SheProductCard>

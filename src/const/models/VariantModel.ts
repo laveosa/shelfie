@@ -1,13 +1,14 @@
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
-import { ImageModel } from "@/const/models/ImageModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 
 export interface VariantModel {
   brand?: BrandModel;
-  image?: ImageModel;
+  image?: any[];
+  photos?: any[];
   productCategory?: CategoryModel;
   salePrice?: any;
+  soldUnits?: number;
   status?: string;
   stockAmount?: number;
   traitOptions?: TraitModel[];
