@@ -10,6 +10,10 @@ import { FormField } from "@/components/ui/form.tsx";
 import SheFormItem from "@/components/complex/she-form/components/she-form-item/SheFormItem.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
+import { User } from "lucide-react";
+
+import logo from "@/assets/icons/TNF_logo.svg";
+import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 
 export default function UserForm({
   data,
@@ -30,7 +34,10 @@ export default function UserForm({
     <div className="flex justify-center">
       <SheForm
         form={form}
+        image="https://img.freepik.com/free-vector/flat-design-atheism-logo-template_23-2149242249.jpg?t=st=1743008409~exp=1743012009~hmac=de721b3755982cb690d6dc5ece0ae4790654c0196151bfd40cc992ecaec2fcdb&w=740"
         title="User Form"
+        text="some text"
+        description="so sodisn einweo noin"
         view={ComponentViewEnum.CARD}
         onSubmit={onSubmit}
         onError={onErrorHandler}

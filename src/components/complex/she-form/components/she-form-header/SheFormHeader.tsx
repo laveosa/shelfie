@@ -8,6 +8,8 @@ import cs from "./SheFormHeader.module.scss";
 
 export default function SheFormHeader({
   className,
+  icon,
+  image,
   title,
   titleTransKey,
   text,
@@ -18,26 +20,36 @@ export default function SheFormHeader({
 }: ISheFormHeader): React.ReactNode {
   return (
     <>
-      {(title || text || description) && (
-        <FormLabel
+      {(icon || image || title || text || description) && (
+        <div
           className={`${className || ""} ${cs.sheFormHeader} ${cs[headerPosition]}`}
         >
-          {title && (
-            <span className="she-title">
-              <Trans i18nKey={titleTransKey}>{title}</Trans>
-            </span>
+          {image && (
+            <div className={cs.sheImage}>
+              <img src={image} alt="form image" />
+            </div>
           )}
-          {text && (
-            <span className="she-text">
-              <Trans i18nKey={textTransKey}>{text}</Trans>
-            </span>
+          {icon && <div className={cs.sheIcon}>{icon}</div>}
+          {(title || text || description) && (
+            <FormLabel>
+              {title && (
+                <span className="she-title">
+                  <Trans i18nKey={titleTransKey}>{title}</Trans>
+                </span>
+              )}
+              {text && (
+                <span className="she-text">
+                  <Trans i18nKey={textTransKey}>{text}</Trans>
+                </span>
+              )}
+              {description && (
+                <span className="she-subtext">
+                  <Trans i18nKey={descriptionTransKey}>{description}</Trans>
+                </span>
+              )}
+            </FormLabel>
           )}
-          {description && (
-            <span className="she-subtext">
-              <Trans i18nKey={descriptionTransKey}>{description}</Trans>
-            </span>
-          )}
-        </FormLabel>
+        </div>
       )}
     </>
   );

@@ -24,33 +24,37 @@ export default function SheFormFooter({
   ...props
 }: ISheFormFooter): React.ReactNode {
   return (
-    <div
-      {...props}
-      className={`${cs[className] || ""} ${cs.sheFormFooter} ${cs[footerPosition] || ""}`}
-    >
-      {!hideSecondary && (
-        <SheButton
-          {...secondaryProps}
-          variant="secondary"
-          type="button"
-          minWidth="100px"
-          onClick={onSecondary}
+    <>
+      {(!hidePrimary || !hideSecondary) && (
+        <div
+          {...props}
+          className={`${cs[className] || ""} ${cs.sheFormFooter} ${cs[footerPosition] || ""}`}
         >
-          <Trans i18nKey={secondaryTitleTransKey}>{secondaryTitle}</Trans>
-        </SheButton>
+          {!hideSecondary && (
+            <SheButton
+              {...secondaryProps}
+              variant="secondary"
+              type="button"
+              minWidth="100px"
+              onClick={onSecondary}
+            >
+              <Trans i18nKey={secondaryTitleTransKey}>{secondaryTitle}</Trans>
+            </SheButton>
+          )}
+          {!hidePrimary && (
+            <SheButton
+              {...primaryProps}
+              type="submit"
+              loading={loading}
+              disabled={!notDisabledSubmit && !isValid}
+              minWidth="100px"
+              onClick={onPrimary}
+            >
+              <Trans i18nKey={primaryTitleTransKey}>{primaryTitle}</Trans>
+            </SheButton>
+          )}
+        </div>
       )}
-      {!hidePrimary && (
-        <SheButton
-          {...primaryProps}
-          type="submit"
-          loading={loading}
-          disabled={!notDisabledSubmit && !isValid}
-          minWidth="100px"
-          onClick={onPrimary}
-        >
-          <Trans i18nKey={primaryTitleTransKey}>{primaryTitle}</Trans>
-        </SheButton>
-      )}
-    </div>
+    </>
   );
 }
