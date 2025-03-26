@@ -10,13 +10,12 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import React, { ReactElement } from "react";
-import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
+import React from "react";
 import SheFormItem from "@/components/complex/she-form/components/she-form-item/SheFormItem.tsx";
+import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 
 export function DashboardPage() {
   const service = useDashboardPageService();
@@ -44,21 +43,6 @@ export function DashboardPage() {
       <SheForm
         form={form}
         title="Auth Form Title"
-        text={"some text for test"}
-        description={
-          <>
-            <span>description </span>
-            <a
-              href="https://www.shutterstock.com/shutterstock/photos/2234473535/display_1500/stock-vector-all-gender-symbol-icon-vector-set-illustration-sexual-orientation-sex-symbol-icon-pride-flag-2234473535.jpg"
-              target="_blank"
-              className="text-blue-500"
-            >
-              "genders"
-            </a>
-            <span> area</span>
-          </>
-        }
-        notDisabledSubmit
         onSubmit={onSubmitHandler}
         onError={onErrorHandler}
         onCancel={onCancelHandler}

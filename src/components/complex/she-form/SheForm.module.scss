@@ -2,6 +2,8 @@
 
 .sheForm {
   .sheFormContent {
+    display: flex;
+    flex-direction: column;
     margin: 20px 0;
 
     > div {
@@ -14,12 +16,34 @@
   }
 }
 
-// ======================================================== POSITION
+// ======================================================== VIEW
 
 .sheForm {
   &.card {
     border: 1px solid vars.$brdColor;
     padding: 20px;
     border-radius: vars.$brdR_075;
+  }
+}
+
+// ======================================================== POSITION
+
+.sheForm {
+  &.left {
+    .sheFormContent {
+      align-items: start;
+    }
+  }
+
+  &.center {
+    .sheFormContent {
+      align-items: center;
+    }
+  }
+
+  &.right {
+    .sheFormContent {
+      align-items: end;
+    }
   }
 }

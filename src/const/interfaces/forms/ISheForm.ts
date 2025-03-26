@@ -6,8 +6,9 @@ import { IZodSchema } from "@/const/interfaces/IZodSchema.ts";
 import { ISheFormHeader } from "@/const/interfaces/forms/ISheFormHeader.ts";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import { ISheFormFooter } from "@/const/interfaces/forms/ISheFormFooter.ts";
+import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 
-export interface ISheFormProps<T extends FieldValues>
+export interface ISheForm<T extends FieldValues>
   extends ComponentPropsWithRef<any>,
     ISheFormHeader,
     ISheFormFooter {
@@ -15,6 +16,7 @@ export interface ISheFormProps<T extends FieldValues>
   view?: ComponentViewEnum;
   disabled?: boolean;
   loading?: boolean;
+  formPosition?: DirectionEnum;
   onSubmit?: (data: T) => void;
   onError?: (data: T) => void;
   onCancel?: (data: T) => void;

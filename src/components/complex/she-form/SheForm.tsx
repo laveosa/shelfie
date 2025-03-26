@@ -3,9 +3,10 @@ import { FieldErrors } from "react-hook-form";
 
 import cs from "./SheForm.module.scss";
 import { Form } from "@/components/ui/form.tsx";
-import { ISheFormProps } from "@/const/interfaces/forms/ISheForm.ts";
+import { ISheForm } from "@/const/interfaces/forms/ISheForm.ts";
 import SheFormHeader from "@/components/complex/she-form/components/she-form-header/SheFormHeader.tsx";
 import SheFormFooter from "@/components/complex/she-form/components/she-form-footer/SheFormFooter.tsx";
+import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 
 export default function SheForm<T>({
   className,
@@ -14,11 +15,12 @@ export default function SheForm<T>({
   view,
   disabled,
   loading,
+  formPosition = DirectionEnum.LEFT,
   onSubmit,
   onError,
   onCancel,
   ...props
-}: ISheFormProps<T>): React.ReactNode {
+}: ISheForm<T>): React.ReactNode {
   // ==================================================================== LOGIC
 
   function onSubmitHandler(data: T) {
@@ -43,7 +45,7 @@ export default function SheForm<T>({
 
   return (
     <div
-      className={`${className || ""} ${cs.sheForm} ${cs[view] || ""} ${disabled || loading ? "disabled" : ""}`}
+      className={`${className || ""} ${cs.sheForm} ${cs[view] || ""} ${disabled || loading ? "disabled" : ""} ${cs[formPosition] || ""}`}
     >
       <Form {...form}>
         <SheFormHeader {...props} />
