@@ -46,7 +46,7 @@ export default function ManageVariantsGridColumnActions<TData>({
             onAction("deleteOption", row.id, meta?.setLoadingRow, row)
           }
         >
-          Delete option
+          Manage Variant
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

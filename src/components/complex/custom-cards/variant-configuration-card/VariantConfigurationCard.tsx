@@ -24,28 +24,43 @@ export default function VariantConfigurationCard({
 
   function onGridAction() {}
 
+  console.log("VARIANT", variant);
+
   return (
     <SheProductCard
       title="Manage Variant"
       view="card"
+      showCloseButton
+      width="450px"
       className={cs.variantConfigurationCard}
       {...props}
     >
       <div className={cs.VariantConfigurationCardContent}>
         <div className={cs.inputBlock}>
-          <SheInput label="Optional Variant Name" />
+          <SheInput
+            label="Optional Variant Name"
+            value={variant?.variantName}
+          />
           <div className={cs.inputBlockRow}>
-            <SheInput fullWidth label="Optional Variant Name" />
+            <SheInput
+              fullWidth
+              label="Variant Code"
+              value={variant?.variantCode}
+            />
             <SheButton icon={WandSparklesIcon} variant="outline" />
           </div>
         </div>
         <div className={cs.salePriceBlock}>
-          <div className=""></div>
-          <SheInput label="Sale price" />
-          <SheInput label="VAT" />
-          <SheInput label="Sale price brutto" />
+          <div className={`${cs.salePriceBlockTitle} she-title`}>
+            Current Sale Price
+          </div>
+          <div className={cs.salePriceBlockInput}>
+            <SheInput label="Sale price" value={variant?.salePrice ?? "0"} />
+            <SheInput label="VAT" />
+            <SheInput label="Sale price brutto" />
+          </div>
         </div>
-        <Separator />
+        <Separator className={cs.separator} />
         <div className={cs.stockDetailsBlock}>
           <div className={cs.buttonBlock}>
             <span className="she-title">Stock Details</span>
@@ -69,24 +84,24 @@ export default function VariantConfigurationCard({
               <span></span>
             </div>
           </div>
-          <div className={cs.variantTraitsBlock}>
-            <div className={cs.variantTraitsBlockHeader}>
-              <span className="she-title">Variant Traits</span>
-              <SheButton icon={Blocks} variant="outline">
-                Manage
-              </SheButton>
-            </div>
-            <div className={cs.variantTraitsList}></div>
+        </div>
+        <div className={cs.variantTraitsBlock}>
+          <div className={cs.variantTraitsBlockHeader}>
+            <span className="she-title">Variant Traits</span>
+            <SheButton icon={Blocks} variant="outline">
+              Manage
+            </SheButton>
           </div>
-          <div className={cs.variantPhotosBlock}>
-            <div className={cs.variantTraitsBlockHeader}>
-              <span className="she-title">Variant Photos</span>
-              <SheButton icon={ImagePlus} variant="outline">
-                Manage
-              </SheButton>
-            </div>
-            <div className={cs.variantTraitsList}></div>
+          <div className={cs.variantTraitsList}></div>
+        </div>
+        <div className={cs.variantPhotosBlock}>
+          <div className={cs.variantTraitsBlockHeader}>
+            <span className="she-title">Variant Photos</span>
+            <SheButton icon={ImagePlus} variant="outline">
+              Manage
+            </SheButton>
           </div>
+          <div className={cs.variantTraitsList}></div>
         </div>
       </div>
     </SheProductCard>

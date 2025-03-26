@@ -8,6 +8,9 @@ export default function useManageVariantsPageService() {
     ProductsApiHooks.useLazyGetProductVariantsQuery();
   const [getListOfAllTraits] =
     ProductsApiHooks.useLazyGetListOfAllTraitsQuery();
+  const [getVariantDetails] = ProductsApiHooks.useLazyGetVariantDetailsQuery();
+  const [toggleVariantIsActive] =
+    ProductsApiHooks.useToggleVariantIsActiveMutation();
   const [getTrait] = ProductsApiHooks.useLazyGetTraitQuery();
   const [getCountersForProducts] =
     ProductsApiHooks.useLazyGetCountersForProductsQuery();
@@ -50,6 +53,18 @@ export default function useManageVariantsPageService() {
 
   function createVariantHandler(id, model) {
     return createVariant({ id, model }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function getVariantDetailsHandler(id) {
+    return getVariantDetails(id).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function toggleVariantIsActiveHandler(id) {
+    return toggleVariantIsActive(id).then((res: any) => {
       return res.data;
     });
   }
@@ -131,6 +146,8 @@ export default function useManageVariantsPageService() {
     getProductVariantsHandler,
     getCountersForProductsHandler,
     createVariantHandler,
+    getVariantDetailsHandler,
+    toggleVariantIsActiveHandler,
     getListOfAllTraitsHandler,
     getListOfTraitsForProductHandler,
     getListOfTraitsWithOptionsForProductHandler,

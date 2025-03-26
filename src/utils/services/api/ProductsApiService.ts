@@ -307,6 +307,29 @@ export const ProductsApiService = createApi({
         },
       ],
     }),
+    getVariantDetails: apiConfig.createQuery<VariantModel, number>(builder, {
+      query: (id: number) => ({
+        url: `${ApiUrlEnum.VARIANTS}/${id}`,
+      }),
+      providesTags: (_result, _error, result) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          result,
+        },
+      ],
+    }),
+    toggleVariantIsActive: apiConfig.createMutation<any, number>(builder, {
+      query: (id: number) => ({
+        url: `${ApiUrlEnum.VARIANTS}/${id}/toggle-active`,
+        method: "PATCH",
+      }),
+      invalidatesTags: (_result, _error, result) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          result,
+        },
+      ],
+    }),
     getListOfAllTraits: apiConfig.createQuery<any, void>(builder, {
       query: () => ({
         url: `${ApiUrlEnum.TRAITS}/all`,

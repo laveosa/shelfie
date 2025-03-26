@@ -24,7 +24,14 @@ export default function ManageVariantsCard({
 }: IManageVariantsCard) {
   const columns = ManageVariantsGridColumns(onGridAction);
 
-  function onGridAction() {}
+  function onGridAction(
+    _actionType: string,
+    _rowId?: string,
+    _setLoadingRow?: (rowId: string, loading: boolean) => void,
+    row?: any,
+  ) {
+    onAction("manageVariant", row.original);
+  }
 
   return (
     <SheProductCard
