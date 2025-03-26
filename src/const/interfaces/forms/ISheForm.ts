@@ -12,11 +12,15 @@ export interface ISheForm<T extends FieldValues>
   extends ComponentPropsWithRef<any>,
     ISheFormHeader,
     ISheFormFooter {
-  form: UseFormReturn<z.output<z.ZodObject<IZodSchema<T>>>>;
+  form?: UseFormReturn<z.output<z.ZodObject<IZodSchema<T>>>>;
+  data?: T;
   view?: ComponentViewEnum;
   disabled?: boolean;
   loading?: boolean;
   formPosition?: DirectionEnum;
+  minWidth?: string;
+  maxWidth?: string;
+  fullWidth?: boolean;
   onSubmit?: (data: T) => void;
   onError?: (data: T) => void;
   onCancel?: (data: T) => void;

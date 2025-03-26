@@ -16,6 +16,9 @@ export default function SheForm<T>({
   disabled,
   loading,
   formPosition = DirectionEnum.LEFT,
+  minWidth,
+  maxWidth,
+  fullWidth,
   onSubmit,
   onError,
   onCancel,
@@ -45,7 +48,11 @@ export default function SheForm<T>({
 
   return (
     <div
-      className={`${className || ""} ${cs.sheForm} ${cs[view] || ""} ${disabled || loading ? "disabled" : ""} ${cs[formPosition] || ""}`}
+      className={`${className || ""} ${cs.sheForm} ${cs[view] || ""} ${disabled || loading ? "disabled" : ""} ${cs[formPosition] || ""} ${fullWidth ? cs.fullWidth : ""}`}
+      style={{
+        minWidth,
+        maxWidth,
+      }}
     >
       <Form {...form}>
         <SheFormHeader {...props} />

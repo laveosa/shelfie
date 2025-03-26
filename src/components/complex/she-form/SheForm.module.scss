@@ -1,6 +1,8 @@
 @use "@/styles/variables" as vars;
 
 .sheForm {
+  width: vars.$maxWidth;
+
   .sheFormContent {
     display: flex;
     flex-direction: column;
@@ -13,6 +15,14 @@
         margin-bottom: 0;
       }
     }
+  }
+}
+
+// ======================================================== WIDTH
+
+.sheForm {
+  &.fullWidth {
+    width: 100%;
   }
 }
 
