@@ -24,7 +24,6 @@ export default function VariantConfigurationCard({
   onAction,
   ...props
 }: IVariantConfigurationCard) {
-  console.log("VARIANT", variant);
   const traitsColumns = VariantConfigurationGridColumns;
   const photoColumns = ProductPhotosGridColumns(onGridAction);
 
@@ -119,7 +118,11 @@ export default function VariantConfigurationCard({
         <div className={cs.variantGridBlock}>
           <div className={cs.variantGridBlockHeader}>
             <span className="she-title">Variant Photos</span>
-            <SheButton icon={ImagePlus} variant="outline">
+            <SheButton
+              icon={ImagePlus}
+              variant="outline"
+              onClick={() => onAction("openProductPhotosCard", null)}
+            >
               Manage
             </SheButton>
           </div>

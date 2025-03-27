@@ -32,6 +32,7 @@ export default function useManageVariantsPageService() {
     ProductsApiHooks.useDeleteOptionOfTraitMutation();
   const [updateTrait] = ProductsApiHooks.useUpdateTraitMutation();
   const [createVariant] = ProductsApiHooks.useCreateVariantMutation();
+  const [getProductPhotos] = ProductsApiHooks.useLazyGetProductPhotosQuery();
 
   function getVariantsForGridHandler(data?: GridRequestModel) {
     return getVariantsForGrid(data).then((res: any) => {
@@ -141,6 +142,12 @@ export default function useManageVariantsPageService() {
     });
   }
 
+  function getProductPhotosHandler(id: number) {
+    return getProductPhotos(id).then((res: any) => {
+      return res.data;
+    });
+  }
+
   return {
     getVariantsForGridHandler,
     getProductVariantsHandler,
@@ -160,5 +167,6 @@ export default function useManageVariantsPageService() {
     createNewOptionForTraitHandler,
     updateOptionsForTraitHandler,
     deleteOptionsForTraitHandler,
+    getProductPhotosHandler,
   };
 }

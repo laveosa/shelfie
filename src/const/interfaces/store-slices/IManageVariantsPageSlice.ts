@@ -5,6 +5,7 @@ import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
 import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
+import { ImageModel } from "@/const/models/ImageModel.ts";
 
 export interface IManageVariantsPageSlice {
   loading?: boolean;
@@ -24,7 +25,9 @@ export interface IManageVariantsPageSlice {
   colorOptionsGridModel?: GridModel;
   sizeOptionsGridModel?: GridModel;
   variantTraitsGridModel?: GridModel;
+  photosGridModel?: GridModel;
   gridRequestModel?: GridRequestModel;
   sizes?: TraitOptionModel[];
   colors?: TraitOptionModel[];
+  photos?: ImageModel[];
 }

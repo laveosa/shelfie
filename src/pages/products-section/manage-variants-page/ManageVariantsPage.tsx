@@ -19,6 +19,8 @@ import ProductTraitConfigurationCard from "@/components/complex/custom-cards/pro
 import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
 import AddVariantCard from "@/components/complex/custom-cards/add-variant-card/AddVariantCard.tsx";
 import VariantConfigurationCard from "@/components/complex/custom-cards/variant-configuration-card/VariantConfigurationCard.tsx";
+import ProductPhotosCard from "@/components/complex/custom-cards/product-photos-card/ProductPhotosCard.tsx";
+import AddStockCard from "@/components/complex/custom-cards/add-stock-card/AddStockCard.tsx";
 
 export function ManageVariantsPage() {
   const dispatch = useAppDispatch();
@@ -67,6 +69,9 @@ export function ManageVariantsPage() {
           }
         });
       });
+    service.getProductPhotosHandler(Number(productId)).then((res) => {
+      dispatch(actions.refreshProductPhotos(res));
+    });
   }, [productId]);
 
   useEffect(() => {
@@ -97,14 +102,6 @@ export function ManageVariantsPage() {
 
   function onAction(actionType: string, payload: any) {
     switch (actionType) {
-      case "openAddVariantCard":
-        console.log(payload);
-        handleCardAction("addVariantCard", true);
-        break;
-      case "openChooseVariantTraitsCard":
-        console.log(payload);
-        handleCardAction("chooseVariantTraitsCard", true);
-        break;
       case "addVariant":
         console.log(payload);
         service.createVariantHandler(productId, payload).then((res) => {
@@ -266,6 +263,15 @@ export function ManageVariantsPage() {
             });
         });
         break;
+      case "openAddVariantCard":
+        handleCardAction("addVariantCard", true);
+        break;
+      case "openChooseVariantTraitsCard":
+        handleCardAction("chooseVariantTraitsCard", true);
+        break;
+      case "openProductPhotosCard":
+        handleCardAction("productPhotosCard", true);
+        break;
       case "closeProductTraitConfigurationCard":
         handleCardAction("productTraitConfigurationCard");
         break;
@@ -274,8 +280,6 @@ export function ManageVariantsPage() {
         break;
     }
   }
-
-  console.log();
 
   return (
     <div className={cs.createProductPage}>
@@ -299,10 +303,12 @@ export function ManageVariantsPage() {
         traits={state.listOfTraitsWithOptionsForProduct}
         onAction={onAction}
       />
+      <AddStockCard variant={state.selectedVariant} />
       {state.activeCards.includes("variantConfigurationCard") && (
         <VariantConfigurationCard
           variant={state.selectedVariant}
           data={state.variantTraitsGridModel}
+          onAction={onAction}
         />
       )}
       {state.activeCards.includes("addVariantCard") && (
@@ -330,6 +336,14 @@ export function ManageVariantsPage() {
           onSecondaryButtonClick={() =>
             handleCardAction("productTraitConfigurationCard")
           }
+          onAction={onAction}
+        />
+      )}
+      {state.activeCards.includes("productPhotosCard") && (
+        <ProductPhotosCard
+          data={state.photos}
+          contextId={productId}
+          onSecondaryButtonClick={() => handleCardAction("productPhotosCard")}
           onAction={onAction}
         />
       )}

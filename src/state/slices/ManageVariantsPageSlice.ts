@@ -8,6 +8,8 @@ import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
+import { IProductGalleryPageSlice } from "@/const/interfaces/store-slices/IProductGalleryPageSlice.ts";
+import { ImageModel } from "@/const/models/ImageModel.ts";
 
 const initialState: IManageVariantsPageSlice = {
   loading: false,
@@ -32,6 +34,10 @@ const initialState: IManageVariantsPageSlice = {
     pager: {},
     items: [],
   },
+  photosGridModel: {
+    pager: {},
+    items: [],
+  },
   gridRequestModel: {
     currentPage: 1,
     pageSize: 10,
@@ -39,6 +45,7 @@ const initialState: IManageVariantsPageSlice = {
   traitOptions: [],
   sizes: [],
   colors: [],
+  photos: [],
 };
 
 function setLoading(
@@ -176,6 +183,13 @@ function refreshColors(
   state.colors = action?.payload || state.colors;
 }
 
+function refreshProductPhotos(
+  state: IProductGalleryPageSlice,
+  action: PayloadAction<ImageModel[]>,
+) {
+  state.photos = action?.payload || state.photos;
+}
+
 const ManageVariantsPageSlice = createSlice({
   name: StoreSliceEnum.MANAGE_VARIANTS,
   initialState,
@@ -199,6 +213,7 @@ const ManageVariantsPageSlice = createSlice({
     refreshGridRequestModel,
     refreshSizes,
     refreshColors,
+    refreshProductPhotos,
   },
 });
 
