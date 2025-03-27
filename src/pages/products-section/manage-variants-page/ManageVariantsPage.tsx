@@ -21,6 +21,8 @@ import AddVariantCard from "@/components/complex/custom-cards/add-variant-card/A
 import VariantConfigurationCard from "@/components/complex/custom-cards/variant-configuration-card/VariantConfigurationCard.tsx";
 import ProductPhotosCard from "@/components/complex/custom-cards/product-photos-card/ProductPhotosCard.tsx";
 import AddStockCard from "@/components/complex/custom-cards/add-stock-card/AddStockCard.tsx";
+import DisposeStockCard from "@/components/complex/custom-cards/dispose-stock-card/DisposeStockCard.tsx";
+import StockHistoryCard from "@/components/complex/custom-cards/stock-history-card/StockHistoryCard.tsx";
 
 export function ManageVariantsPage() {
   const dispatch = useAppDispatch();
@@ -275,6 +277,12 @@ export function ManageVariantsPage() {
       case "openAddStockCard":
         handleCardAction("addStockCard", true);
         break;
+      case "openDisposeStockCard":
+        handleCardAction("disposeStockCard", true);
+        break;
+      case "openVariantHistoryCard":
+        handleCardAction("variantHistoryCard", true);
+        break;
       case "closeProductTraitConfigurationCard":
         handleCardAction("productTraitConfigurationCard");
         break;
@@ -317,6 +325,18 @@ export function ManageVariantsPage() {
         <AddStockCard
           variant={state.selectedVariant}
           onSecondaryButtonClick={() => handleCardAction("addStockCard")}
+        />
+      )}
+      {state.activeCards.includes("disposeStockCard") && (
+        <DisposeStockCard
+          variant={state.selectedVariant}
+          onSecondaryButtonClick={() => handleCardAction("disposeStockCard")}
+        />
+      )}
+      {state.activeCards.includes("variantHistoryCard") && (
+        <StockHistoryCard
+          variant={state.selectedVariant}
+          onSecondaryButtonClick={() => handleCardAction("variantHistoryCard")}
         />
       )}
       {state.activeCards.includes("addVariantCard") && (

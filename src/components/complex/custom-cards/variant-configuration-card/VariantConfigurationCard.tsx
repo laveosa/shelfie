@@ -45,7 +45,7 @@ export default function VariantConfigurationCard({
       className={cs.variantConfigurationCard}
       {...props}
     >
-      <div className={cs.VariantConfigurationCardContent}>
+      <div className={cs.variantConfigurationCardContent}>
         <div className={cs.inputBlock}>
           <SheInput
             label="Optional Variant Name"
@@ -77,14 +77,22 @@ export default function VariantConfigurationCard({
             <SheButton
               icon={Plus}
               variant="outline"
-              onClick={() => onAction("openAddStockCard", null)}
+              onClick={() => onAction("openAddStockCard")}
             >
               Add
             </SheButton>
-            <SheButton icon={Minus} variant="outline">
+            <SheButton
+              icon={Minus}
+              variant="outline"
+              onClick={() => onAction("openDisposeStockCard")}
+            >
               Dispose
             </SheButton>
-            <SheButton icon={Clock} variant="outline">
+            <SheButton
+              icon={Clock}
+              variant="outline"
+              onClick={() => onAction("openVariantHistoryCard")}
+            >
               History
             </SheButton>
           </div>
