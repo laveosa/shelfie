@@ -74,7 +74,11 @@ export default function VariantConfigurationCard({
         <div className={cs.stockDetailsBlock}>
           <div className={cs.buttonBlock}>
             <span className="she-title">Stock Details</span>
-            <SheButton icon={Plus} variant="outline">
+            <SheButton
+              icon={Plus}
+              variant="outline"
+              onClick={() => onAction("openAddStockCard", null)}
+            >
               Add
             </SheButton>
             <SheButton icon={Minus} variant="outline">
@@ -121,7 +125,7 @@ export default function VariantConfigurationCard({
             <SheButton
               icon={ImagePlus}
               variant="outline"
-              onClick={() => onAction("openProductPhotosCard", null)}
+              onClick={() => onAction("openProductPhotosCard")}
             >
               Manage
             </SheButton>

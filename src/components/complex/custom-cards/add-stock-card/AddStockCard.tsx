@@ -2,9 +2,7 @@ import React from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./AddStockCard.module.scss";
-import { IVariantConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IVariantConfigurationCard.ts";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import { Separator } from "@/components/ui/separator.tsx";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,12 +13,14 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { MoreHorizontal } from "lucide-react";
 import { Switch } from "@/components/ui/switch.tsx";
 import image from "@/assets/images/AuthLogo.png";
+import { IAddStockCard } from "@/const/interfaces/complex-components/custom-cards/IAddStockCard.ts";
 
 export default function AddStockCard({
   variant,
   onAction,
+  onSecondaryButtonClick,
   ...props
-}: IVariantConfigurationCard) {
+}: IAddStockCard) {
   return (
     <SheProductCard
       title={`Add ${variant?.variantName} Stock`}
@@ -29,6 +29,7 @@ export default function AddStockCard({
       primaryButtonTitle="Add to Stock"
       showSecondaryButton={true}
       secondaryButtonTitle="Cancel"
+      onSecondaryButtonClick={onSecondaryButtonClick}
       showCloseButton
       width="370px"
       className={cs.addStockCard}
@@ -55,7 +56,6 @@ export default function AddStockCard({
           </div>
           <SheInput fullWidth label="Currency" />
         </div>
-        <Separator className={cs.separator} />
         <div className={cs.purchaseDetailsBlock}>
           <div className={cs.purchaseDetailsTitle}>
             <span className="she-title">Purchase Details</span>
@@ -67,14 +67,14 @@ export default function AddStockCard({
             <SheInput
               fullWidth
               label="Set date when purchase took place
-(for valid exchange rate)"
+                    (for valid exchange rate)"
             />
           </div>
           <div className={cs.supplierInformationBlock}>
             <SheInput
               fullWidth
               label="Set date when purchase took place
-(for valid exchange rate)"
+                    (for valid exchange rate)"
             />
             <div className={cs.supplierInformationBlock}>
               <span className="she-text">

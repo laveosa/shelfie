@@ -272,6 +272,9 @@ export function ManageVariantsPage() {
       case "openProductPhotosCard":
         handleCardAction("productPhotosCard", true);
         break;
+      case "openAddStockCard":
+        handleCardAction("addStockCard", true);
+        break;
       case "closeProductTraitConfigurationCard":
         handleCardAction("productTraitConfigurationCard");
         break;
@@ -303,12 +306,17 @@ export function ManageVariantsPage() {
         traits={state.listOfTraitsWithOptionsForProduct}
         onAction={onAction}
       />
-      <AddStockCard variant={state.selectedVariant} />
       {state.activeCards.includes("variantConfigurationCard") && (
         <VariantConfigurationCard
           variant={state.selectedVariant}
           data={state.variantTraitsGridModel}
           onAction={onAction}
+        />
+      )}
+      {state.activeCards.includes("addStockCard") && (
+        <AddStockCard
+          variant={state.selectedVariant}
+          onSecondaryButtonClick={() => handleCardAction("addStockCard")}
         />
       )}
       {state.activeCards.includes("addVariantCard") && (
