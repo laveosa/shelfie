@@ -41,9 +41,8 @@ export default function ManageVariantsCard({
       primaryButtonTitle="Save"
       showSecondaryButton={false}
       secondaryButtonTitle="Cancel"
-      showCloseButton={true}
       className={cs.manageVariantsCard}
-      width="350px"
+      width="370px"
       {...props}
     >
       <div className={cs.manageVariantsContent}>

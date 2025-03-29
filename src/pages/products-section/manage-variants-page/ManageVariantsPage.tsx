@@ -23,6 +23,7 @@ import ProductPhotosCard from "@/components/complex/custom-cards/product-photos-
 import AddStockCard from "@/components/complex/custom-cards/add-stock-card/AddStockCard.tsx";
 import DisposeStockCard from "@/components/complex/custom-cards/dispose-stock-card/DisposeStockCard.tsx";
 import StockHistoryCard from "@/components/complex/custom-cards/stock-history-card/StockHistoryCard.tsx";
+import ConnectImageCard from "@/components/complex/custom-cards/connect-image-card/ConnectImageCard.tsx";
 
 export function ManageVariantsPage() {
   const dispatch = useAppDispatch();
@@ -283,6 +284,9 @@ export function ManageVariantsPage() {
       case "openVariantHistoryCard":
         handleCardAction("variantHistoryCard", true);
         break;
+      case "openConnectImageCard":
+        handleCardAction("connectImageCard", true);
+        break;
       case "closeProductTraitConfigurationCard":
         handleCardAction("productTraitConfigurationCard");
         break;
@@ -319,6 +323,9 @@ export function ManageVariantsPage() {
           variant={state.selectedVariant}
           data={state.variantTraitsGridModel}
           onAction={onAction}
+          onSecondaryButtonClick={() =>
+            handleCardAction("variantConfigurationCard")
+          }
         />
       )}
       {state.activeCards.includes("addStockCard") && (
@@ -373,6 +380,13 @@ export function ManageVariantsPage() {
           contextId={productId}
           onSecondaryButtonClick={() => handleCardAction("productPhotosCard")}
           onAction={onAction}
+        />
+      )}
+      {state.activeCards.includes("connectImageCard") && (
+        <ConnectImageCard
+          data={state.productVariants}
+          onAction={onAction}
+          onSecondaryButtonClick={() => handleCardAction("connectImageCard")}
         />
       )}
     </div>

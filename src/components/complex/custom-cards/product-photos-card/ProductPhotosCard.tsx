@@ -7,7 +7,7 @@ import { SheImageUploader } from "@/components/complex/she-images-file-uploader/
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { ProductPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/ProductPhotosGridColumns.tsx";
 
-type ActionType = "upload" | "delete" | "dnd";
+type ActionType = "upload" | "delete" | "dnd" | "connect";
 
 export default function ProductPhotosCard({
   data,
@@ -25,6 +25,9 @@ export default function ProductPhotosCard({
       case "delete":
         onAction("delete", payload);
         break;
+      case "connect":
+        onAction("openConnectImageCard", payload);
+        break;
       case "dnd":
         const { newIndex, activeItem } = payload;
         onAction("dnd", { newIndex, activeItem });
@@ -39,6 +42,7 @@ export default function ProductPhotosCard({
     row?: any,
   ) {
     handleAction("delete", row.original);
+    handleAction("connect", row.original);
   }
 
   return (
@@ -69,6 +73,7 @@ export default function ProductPhotosCard({
               </div>
               <div className={cs.managePhotosGrid}>
                 <DndGridDataTable
+                  className={cs.photosGrid}
                   enableDnd={true}
                   showHeader={false}
                   columns={columns}

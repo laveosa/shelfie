@@ -1,8 +1,8 @@
-import { VariantModel } from "@/const/models/VariantModel.ts";
 import { GridModel } from "@/const/models/GridModel.ts";
+import { VariantModel } from "@/const/models/VariantModel.ts";
 
-export interface IVariantConfigurationCard {
-  variant?: VariantModel;
+export interface IConnectImageCard {
+  variants?: VariantModel[];
   data?: GridModel;
   onAction?: (identifier: string, payload?: any) => void;
   onSecondaryButtonClick?: () => void;

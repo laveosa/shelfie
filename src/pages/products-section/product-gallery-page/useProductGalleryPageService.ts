@@ -10,6 +10,8 @@ export default function useProductGalleryPageService() {
   const [putPhotoInNewPosition] =
     ProductsApiHooks.usePutPhotoInNewPositionMutation();
   const [deletePhoto] = AssetsApiHooks.useDeletePhotoMutation();
+  const [getProductVariants] =
+    ProductsApiHooks.useLazyGetProductVariantsQuery();
 
   function uploadPhotoHandler(model: UploadPhotoModel) {
     return uploadPhoto(model).then((res: any) => {
@@ -45,11 +47,18 @@ export default function useProductGalleryPageService() {
     });
   }
 
+  function getProductVariantsHandler(id: any) {
+    return getProductVariants(id).then((res: any) => {
+      return res.data;
+    });
+  }
+
   return {
     getProductPhotosHandler,
     getCountersForProductsHandler,
     uploadPhotoHandler,
     putPhotoInNewPositionHandler,
     deletePhotoHandler,
+    getProductVariantsHandler,
   };
 }

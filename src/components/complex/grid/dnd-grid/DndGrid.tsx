@@ -41,6 +41,7 @@ interface DataTableProps<TData extends DataWithId, TValue>
   extends IGridHeader<TData>,
     IGridContext,
     PropsWithChildren {
+  className?: string;
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   sortingItems?: GridSortingModel[];
@@ -102,6 +103,7 @@ const DraggableRow = ({ row, loadingRows, isDragDisabled = false }) => {
 };
 
 export function DndGridDataTable<TData extends DataWithId, TValue>({
+  className,
   columns,
   data,
   columnsPreferences,
@@ -215,7 +217,7 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
     >
       <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
         {showHeader && <GridHeader table={table}>{children}</GridHeader>}
-        <div className="rounded-md border">
+        <div className={`${className} rounded-md border`}>
           <Table style={{ overflow: "hidden" }}>
             {showColumnsHeader && (
               <TableHeader>

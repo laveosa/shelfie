@@ -16,6 +16,7 @@ import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.ts
 import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
 import ProductPhotosCard from "@/components/complex/custom-cards/product-photos-card/ProductPhotosCard.tsx";
 import { GridModel } from "@/const/models/GridModel.ts";
+import ConnectImageCard from "@/components/complex/custom-cards/connect-image-card/ConnectImageCard.tsx";
 
 export function ProductGalleryPage() {
   const dispatch = useAppDispatch();
@@ -47,12 +48,23 @@ export function ProductGalleryPage() {
     service.getProductPhotosHandler(Number(productId)).then((res) => {
       dispatch(actions.refreshProductPhotos(res));
     });
+
+    service.getProductVariantsHandler(productId).then((res) => {
+      dispatch(actions.refreshProductVariants(res));
+    });
   }, [productId]);
 
   function itemCardHandler(item) {
     navigate(
       `${ApiUrlEnum.PRODUCTS}${ApiUrlEnum.PRODUCT_BASIC_DATA}/${item.productId}`,
     );
+  }
+
+  function handleCardAction(identifier: string) {
+    const updatedCards = state.activeCards.includes(identifier)
+      ? state.activeCards.filter((card) => card !== identifier)
+      : [...state.activeCards, identifier];
+    dispatch(actions.refreshActiveCards(updatedCards));
   }
 
   function onAction(actionType: string, payload: any) {
@@ -118,6 +130,10 @@ export function ProductGalleryPage() {
             });
         });
         break;
+      case "openConnectImageCard":
+        console.log(payload);
+        handleCardAction("connectImageCard");
+        break;
     }
   }
 
@@ -142,6 +158,13 @@ export function ProductGalleryPage() {
         contextId={productId}
         onAction={onAction}
       />
+      {state.activeCards.includes("connectImageCard") && (
+        <ConnectImageCard
+          data={state.productVariants}
+          onAction={onAction}
+          onSecondaryButtonClick={() => handleCardAction("connectImageCard")}
+        />
+      )}
     </div>
   );
 }

@@ -22,6 +22,7 @@ export default function VariantConfigurationCard({
   variant,
   data,
   onAction,
+  onSecondaryButtonClick,
   ...props
 }: IVariantConfigurationCard) {
   const traitsColumns = VariantConfigurationGridColumns;
@@ -42,6 +43,7 @@ export default function VariantConfigurationCard({
       view="card"
       showCloseButton
       width="420px"
+      onSecondaryButtonClick={onSecondaryButtonClick}
       className={cs.variantConfigurationCard}
       {...props}
     >
@@ -114,7 +116,11 @@ export default function VariantConfigurationCard({
         <div className={cs.variantGridBlock}>
           <div className={cs.variantGridBlockHeader}>
             <span className="she-title">Variant Traits</span>
-            <SheButton icon={Blocks} variant="outline">
+            <SheButton
+              icon={Blocks}
+              variant="outline"
+              onClick={() => onAction("")}
+            >
               Manage
             </SheButton>
           </div>
