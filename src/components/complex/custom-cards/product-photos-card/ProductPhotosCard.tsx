@@ -3,41 +3,46 @@ import React from "react";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ProductPhotosCard.module.scss";
 import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import { useAppSelector } from "@/utils/hooks/redux.ts";
-import { IProductConfigurationPageSlice } from "@/const/interfaces/store-slices/IProductConfigurationPageSlice.ts";
-import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { SheImageUploader } from "@/components/complex/she-images-file-uploader/SheImageUploader.tsx";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { ProductPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/ProductPhotosGridColumns.tsx";
 
+type ActionType = "upload" | "delete" | "dnd" | "connect";
+
 export default function ProductPhotosCard({
   data,
   contextId,
-  onFileUpload,
-  onDeleteItem,
-  onDndItem,
+  onAction,
   ...props
 }) {
-  const state = useAppSelector<IProductConfigurationPageSlice>(
-    StoreSliceEnum.PRODUCT_CONFIGURATION,
-  );
-  const columns = ProductPhotosGridColumns(onAction);
+  const columns = ProductPhotosGridColumns(onGridAction);
 
-  function onUpload(uploadModel: UploadPhotoModel) {
-    onFileUpload(uploadModel);
+  function handleAction(actionType: ActionType, payload?: any) {
+    switch (actionType) {
+      case "upload":
+        onAction("upload", payload);
+        break;
+      case "delete":
+        onAction("delete", payload);
+        break;
+      case "connect":
+        onAction("openConnectImageCard", payload);
+        break;
+      case "dnd":
+        const { newIndex, activeItem } = payload;
+        onAction("dnd", { newIndex, activeItem });
+        break;
+    }
   }
 
-  function onChangeItemPosition(newIndex, activeItem) {
-    onDndItem(newIndex, activeItem);
-  }
-
-  function onAction(
+  function onGridAction(
     _actionType: string,
     _rowId?: string,
     _setLoadingRow?: (rowId: string, loading: boolean) => void,
     row?: any,
   ) {
-    onDeleteItem(row.original);
+    handleAction("delete", row.original);
+    handleAction("connect", row.original);
   }
 
   return (
@@ -57,21 +62,26 @@ export default function ProductPhotosCard({
           <SheImageUploader
             contextName={"product"}
             contextId={contextId}
-            onUpload={onUpload}
+            onUpload={(uploadModel: UploadPhotoModel) =>
+              handleAction("upload", uploadModel)
+            }
           />
-          {state.photos?.length > 0 && (
+          {data?.length > 0 && (
             <div className={cs.managePhotos}>
               <div className={`${cs.managePhotosTitle} she-title`}>
                 Manage Photos
               </div>
               <div className={cs.managePhotosGrid}>
                 <DndGridDataTable
+                  className={cs.photosGrid}
                   enableDnd={true}
                   showHeader={false}
                   columns={columns}
-                  data={state.photos}
+                  data={data}
                   gridModel={data}
-                  onNewItemPosition={onChangeItemPosition}
+                  onNewItemPosition={(newIndex, activeItem) =>
+                    handleAction("dnd", { newIndex, activeItem })
+                  }
                 />
               </div>
             </div>

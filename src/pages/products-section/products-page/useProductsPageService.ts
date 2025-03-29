@@ -13,6 +13,7 @@ export default function useProductsPageService() {
   const dispatch = useAppDispatch();
   const [getTheProductsForGrid] =
     ProductsApiHooks.useGetTheProductsForGridMutation();
+  const [getVariantsForGrid] = ProductsApiHooks.useGetVariantsForGridMutation();
   const [getBrandsForFilter] =
     ProductsApiHooks.useLazyGetBrandsForProductsFilterQuery();
   const [getCategoriesForFilter] =
@@ -29,6 +30,18 @@ export default function useProductsPageService() {
   function getTheProductsForGridHandler(data?: GridRequestModel) {
     dispatch(action.setLoading(true));
     return getTheProductsForGrid(data).then((res: any) => {
+      dispatch(action.setLoading(false));
+      if (res.error) {
+        return;
+      } else {
+        return res.data;
+      }
+    });
+  }
+
+  function getVariantsForGridHandler(data?: GridRequestModel) {
+    dispatch(action.setLoading(true));
+    return getVariantsForGrid(data).then((res: any) => {
       dispatch(action.setLoading(false));
       if (res.error) {
         return;
@@ -91,6 +104,7 @@ export default function useProductsPageService() {
 
   return {
     getTheProductsForGridHandler,
+    getVariantsForGridHandler,
     getBrandsForFilterHandler,
     getCategoriesForFilterHandler,
     getSortingOptionsForGridHandler,

@@ -1,0 +1,79 @@
+@use "@/styles/variables" as vars;
+
+.variantConfigurationCard {
+  overflow: auto;
+
+  .variantConfigurationCardContent {
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px;
+    gap: 20px;
+    overflow-y: auto;
+
+    .inputBlock {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-top: 20px;
+
+      .inputBlockRow {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 20px;
+      }
+    }
+
+    .salePriceBlock {
+      display: flex;
+      flex-direction: column;
+
+      .salePriceBlockTitle {
+        padding-bottom: 10px;
+      }
+
+      .salePriceBlockInput {
+        display: flex;
+        gap: 20px;
+
+        label {
+          font-size: 14px;
+        }
+      }
+    }
+
+    .stockDetailsBlock {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .buttonBlock {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .stockBlock {
+        .stockBlockRow {
+          display: flex;
+          justify-content: space-between;
+
+          .stockBlockRowNumber {
+            padding-right: 20px;
+          }
+        }
+      }
+    }
+
+    .variantGridBlock {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .variantGridBlockHeader {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+  }
+}

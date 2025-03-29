@@ -4,8 +4,15 @@ import SheProductCard from "@/components/complex/she-product-card/SheProductCard
 import cs from "./ItemsCard.module.scss";
 import { Separator } from "@/components/ui/separator.tsx";
 import placeholderImage from "@/assets/images/placeholder-image.png";
+import { IProductCard } from "@/const/interfaces/complex-components/custom-cards/IProductCard.ts";
 
-export default function ItemsCard({ data, onAction, selectedItem, ...props }) {
+export default function ItemsCard({
+  data,
+  title,
+  onAction,
+  selectedItem,
+  ...props
+}: IProductCard) {
   const [selectedId, setSelectedId] = useState(Number(selectedItem));
 
   const handleItemClick = (item) => {
@@ -16,7 +23,7 @@ export default function ItemsCard({ data, onAction, selectedItem, ...props }) {
   return (
     <div>
       <SheProductCard
-        title="Products"
+        title={title ? title : "Products"}
         showToggleButton={true}
         className={cs.productsCard}
         {...props}

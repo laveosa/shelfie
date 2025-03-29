@@ -15,7 +15,7 @@ export const AssetsApiService = createApi({
     uploadPhoto: apiConfig.createMutation<void, any>(builder, {
       query: (model: UploadPhotoModel) => {
         return {
-          url: `${ApiUrlEnum.ASSETS_BASE_URL}${ApiUrlEnum.ASSETS}/${model.contextName}/${model.contextId}/upload-photo`,
+          url: `${ApiUrlEnum.ASSETS_BASE_URL}${ApiUrlEnum.ASSET}/${model.contextName}/${model.contextId}/upload-photo`,
           method: "POST",
           body: model.file,
         };
@@ -29,7 +29,7 @@ export const AssetsApiService = createApi({
     }),
     deletePhoto: apiConfig.createMutation<void, number>(builder, {
       query: (id: number) => ({
-        url: `${ApiUrlEnum.ASSETS_BASE_URL}${ApiUrlEnum.ASSETS}/${id}`,
+        url: `${ApiUrlEnum.ASSETS_BASE_URL}${ApiUrlEnum.ASSET}/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: (_result, _error, id) => [

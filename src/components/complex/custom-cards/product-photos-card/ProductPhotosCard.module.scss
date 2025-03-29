@@ -13,8 +13,8 @@
         margin-bottom: 10px;
       }
 
-      .managePhotosGrid {
-
+      .photosGrid > div {
+        max-height: calc(100vh - 540px);
       }
     }
   }

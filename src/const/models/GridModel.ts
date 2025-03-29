@@ -1,5 +1,3 @@
-import { ProductModel } from "@/const/models/ProductModel.ts";
-
 export interface GridModel {
   pager?: {
     currentPage?: number;
@@ -9,7 +7,7 @@ export interface GridModel {
     startPage?: number;
     endPage?: number;
   };
-  items?: ProductModel[];
+  items?: any[];
   searchQuery?: string;
   sortOption?: string;
 }

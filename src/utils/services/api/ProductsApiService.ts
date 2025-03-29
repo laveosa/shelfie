@@ -11,6 +11,9 @@ import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
+import { TraitModel } from "@/const/models/TraitModel.ts";
+import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
+import { VariantModel } from "@/const/models/VariantModel.ts";
 
 const apiConfig = new ApiConfigurationService(ApiUrlEnum.PRODUCTS_BASE_URL);
 
@@ -250,6 +253,223 @@ export const ProductsApiService = createApi({
       query: ({ productId, photoId, index }) => ({
         url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/${productId}/photo/${photoId}/${index}`,
         method: "PATCH",
+      }),
+      invalidatesTags: (_result, _error, result) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          result,
+        },
+      ],
+    }),
+    getVariantsForGrid: apiConfig.createMutation<GridModel, GridRequestModel>(
+      builder,
+      {
+        query: (model?: GridRequestModel) => ({
+          url: `${ApiUrlEnum.VARIANTS}/list`,
+          method: "POST",
+          body: JSON.stringify(model),
+        }),
+        invalidatesTags: (_result, _error, model) => [
+          {
+            type: ApiServiceNameEnum.PRODUCTS,
+            model,
+          },
+        ],
+      },
+    ),
+    getProductVariants: apiConfig.createQuery<VariantModel[], number>(builder, {
+      query: (id: number) => ({
+        url: `${ApiUrlEnum.PRODUCTS}/${id}${ApiUrlEnum.VARIANTS}`,
+      }),
+      providesTags: (_result, _error, result) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          result,
+        },
+      ],
+    }),
+    createVariant: apiConfig.createMutation<
+      any,
+      {
+        id: number;
+        model: number[];
+      }
+    >(builder, {
+      query: ({ id, model }) => ({
+        url: `${ApiUrlEnum.PRODUCTS}/${id}${ApiUrlEnum.VARIANTS}`,
+        method: "POST",
+        body: JSON.stringify(model),
+      }),
+      invalidatesTags: (_result, _error, model) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          model,
+        },
+      ],
+    }),
+    getVariantDetails: apiConfig.createQuery<VariantModel, number>(builder, {
+      query: (id: number) => ({
+        url: `${ApiUrlEnum.VARIANTS}/${id}`,
+      }),
+      providesTags: (_result, _error, result) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          result,
+        },
+      ],
+    }),
+    toggleVariantIsActive: apiConfig.createMutation<any, number>(builder, {
+      query: (id: number) => ({
+        url: `${ApiUrlEnum.VARIANTS}/${id}/toggle-active`,
+        method: "PATCH",
+      }),
+      invalidatesTags: (_result, _error, result) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          result,
+        },
+      ],
+    }),
+    getListOfAllTraits: apiConfig.createQuery<any, void>(builder, {
+      query: () => ({
+        url: `${ApiUrlEnum.TRAITS}/all`,
+      }),
+      providesTags: (result: TraitModel[]) =>
+        apiConfig.providesTags(result, ApiServiceNameEnum.PRODUCTS),
+    }),
+    getListOfTraitsForProduct: apiConfig.createQuery<any, number>(builder, {
+      query: (id) => ({
+        url: `${ApiUrlEnum.PRODUCTS}/${id}${ApiUrlEnum.TRAITS}`,
+      }),
+      providesTags: (result) =>
+        apiConfig.providesTags(result, ApiServiceNameEnum.PRODUCTS),
+    }),
+    getListOfTraitsWithOptionsForProduct: apiConfig.createQuery<any, number>(
+      builder,
+      {
+        query: (id) => ({
+          url: `${ApiUrlEnum.PRODUCTS}/${id}/traits-with-options`,
+        }),
+        providesTags: (result) =>
+          apiConfig.providesTags(result, ApiServiceNameEnum.PRODUCTS),
+      },
+    ),
+    getTrait: apiConfig.createQuery<any, number>(builder, {
+      query: (id) => ({
+        url: `${ApiUrlEnum.TRAITS}/${id}`,
+      }),
+      providesTags: (_result, _error, result) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          result,
+        },
+      ],
+    }),
+    createNewTrait: apiConfig.createMutation<any, TraitModel>(builder, {
+      query: (model?: any) => ({
+        url: `${ApiUrlEnum.TRAITS}`,
+        method: "POST",
+        body: JSON.stringify(model),
+      }),
+      invalidatesTags: (_result, _error, model: TraitModel) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          model,
+        },
+      ],
+    }),
+    updateTrait: apiConfig.createMutation<
+      any,
+      {
+        id?: number;
+        model?: TraitModel;
+      }
+    >(builder, {
+      query: ({ id, model }) => ({
+        url: `${ApiUrlEnum.TRAITS}/${id}`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+      invalidatesTags: (_result, _error, result) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          result,
+        },
+      ],
+    }),
+    setProductTraits: apiConfig.createMutation<
+      any,
+      {
+        id?: number;
+        model?: TraitModel;
+      }
+    >(builder, {
+      query: ({ id, model }) => ({
+        url: `${ApiUrlEnum.PRODUCTS}/${id}${ApiUrlEnum.TRAITS}`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+      invalidatesTags: (_result, _error, result) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          result,
+        },
+      ],
+    }),
+    getOptionsForTrait: apiConfig.createQuery<any, number>(builder, {
+      query: (id: number) => ({
+        url: `${ApiUrlEnum.TRAITS}/${id}${ApiUrlEnum.OPTIONS}`,
+      }),
+      providesTags: (result: TraitOptionModel[]) =>
+        apiConfig.providesTags(result, ApiServiceNameEnum.PRODUCTS),
+    }),
+    createNewOptionForTrait: apiConfig.createMutation<
+      any,
+      {
+        id?: number;
+        model?: TraitOptionModel;
+      }
+    >(builder, {
+      query: ({ id, model }) => ({
+        url: `${ApiUrlEnum.TRAITS}/${id}${ApiUrlEnum.OPTIONS}`,
+        method: "POST",
+        body: JSON.stringify(model),
+      }),
+      invalidatesTags: (_result, _error, result) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          result,
+        },
+      ],
+    }),
+    updateOptionOfTrait: apiConfig.createMutation<
+      any,
+      {
+        id?: number;
+        model?: TraitOptionModel;
+      }
+    >(builder, {
+      query: ({ id, model }) => ({
+        url: `${ApiUrlEnum.TRAIT_OPTIONS}/${id}`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+      invalidatesTags: (_result, _error, result) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          result,
+        },
+      ],
+    }),
+    deleteOptionOfTrait: apiConfig.createMutation<
+      any,
+      {
+        id?: number;
+      }
+    >(builder, {
+      query: (id) => ({
+        url: `${ApiUrlEnum.TRAIT_OPTIONS}/${id}`,
+        method: "DELETE",
       }),
       invalidatesTags: (_result, _error, result) => [
         {

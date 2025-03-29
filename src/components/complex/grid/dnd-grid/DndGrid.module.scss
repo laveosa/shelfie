@@ -8,7 +8,11 @@
   transition: background-color 0.3s ease;
   cursor: default;
 
+  .tableCell {
+  }
+
   .dndIconCell {
+    padding-right: 0;
     text-align: center;
     touch-action: none;
 

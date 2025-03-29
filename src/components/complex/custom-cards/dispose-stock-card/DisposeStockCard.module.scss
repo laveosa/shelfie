@@ -1,0 +1,17 @@
+@use "@/styles/variables" as vars;
+
+.disposeStockCard {
+  .disposeStockCardContent {
+    padding: 0 20px;
+
+    .currentlyStockBlock {
+      padding-top: 20px;
+    }
+
+    .disposeFormBlock {
+      .select {
+        padding-top: 20px;
+      }
+    }
+  }
+}

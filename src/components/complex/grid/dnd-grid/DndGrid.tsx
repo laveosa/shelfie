@@ -41,15 +41,17 @@ interface DataTableProps<TData extends DataWithId, TValue>
   extends IGridHeader<TData>,
     IGridContext,
     PropsWithChildren {
+  className?: string;
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   sortingItems?: GridSortingModel[];
   onGridRequestChange?: (updates: GridRequestModel) => void;
   showHeader?: boolean;
+  showColumnsHeader?: boolean;
   enableDnd?: boolean;
   onApplyColumns?: (data) => void;
   onDefaultColumns?: () => void;
-  onNewItemPosition?: (newIndex, activeItem) => void;
+  onNewItemPosition?: (newIndex: number, activeItem: TData) => void;
 }
 
 const DraggableRow = ({ row, loadingRows, isDragDisabled = false }) => {
@@ -101,12 +103,14 @@ const DraggableRow = ({ row, loadingRows, isDragDisabled = false }) => {
 };
 
 export function DndGridDataTable<TData extends DataWithId, TValue>({
+  className,
   columns,
   data,
   columnsPreferences,
   gridModel,
   sortingItems,
   showHeader = true,
+  showColumnsHeader = true,
   showPagination = true,
   showSorting = true,
   showColumnsViewOptions = true,
@@ -131,11 +135,7 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
     }
 
     if (data && data.length > 0) {
-      const hasId = data.some((item) => item.hasOwnProperty("id"));
-
-      if (!hasId) {
-        setItems(prepareItemsForGrid(data));
-      }
+      setItems(prepareItemsForGrid(data));
     }
   }, [data]);
 
@@ -159,9 +159,10 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
     if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
       const updatedItems = arrayMove(items, oldIndex, newIndex);
       setItems(updatedItems);
+      if (onNewItemPosition) {
+        onNewItemPosition(newIndex, activeItem as TData);
+      }
     }
-
-    onNewItemPosition(newIndex, activeItem);
   }
 
   const table = useReactTable<TData>({
@@ -189,6 +190,11 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
         });
       },
       isRowLoading: (rowId: string) => loadingRows.has(rowId),
+      updateData: (rowId: string, value: TData) => {
+        setItems((old) =>
+          old.map((item) => (item.id === rowId ? value : item)),
+        );
+      },
     },
   });
 
@@ -201,6 +207,7 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
         showPagination,
         showSorting,
         showColumnsViewOptions,
+        showColumnsHeader,
         showSearch,
         gridModel,
         onGridRequestChange,
@@ -210,25 +217,27 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
     >
       <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
         {showHeader && <GridHeader table={table}>{children}</GridHeader>}
-        <div className="rounded-md border">
+        <div className={`${className} rounded-md border`}>
           <Table style={{ overflow: "hidden" }}>
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {enableDnd && <TableHead></TableHead>}
-                  {headerGroup.headers.map((header) => (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                    </TableHead>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHeader>
+            {showColumnsHeader && (
+              <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {enableDnd && <TableHead></TableHead>}
+                    {headerGroup.headers.map((header) => (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                      </TableHead>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableHeader>
+            )}
             <SortableContext
               items={items.map((item) => item.id)}
               strategy={verticalListSortingStrategy}
@@ -264,7 +273,7 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
                         }}
                       >
                         {row.getVisibleCells().map((cell) => (
-                          <TableCell key={cell.id}>
+                          <TableCell key={cell.id} className={cs.tableCell}>
                             {flexRender(
                               cell.column.columnDef.cell,
                               cell.getContext(),

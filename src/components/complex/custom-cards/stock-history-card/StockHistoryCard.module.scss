@@ -1,0 +1,11 @@
+@use "@/styles/variables" as vars;
+
+.stockHistoryCard {
+  .stockHistoryCardContent {
+    padding: 0 20px;
+
+    .stockHistoryGrid {
+      padding-top: 20px;
+    }
+  }
+}

@@ -28,6 +28,7 @@ import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPag
 import { ProductsPageSliceActions as actions } from "@/state/slices/ProductsPageSlice.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 
 export function ProductsPage() {
   const dispatch = useAppDispatch();
@@ -39,6 +40,11 @@ export function ProductsPage() {
   useEffect(() => {
     service
       .getTheProductsForGridHandler(state.gridRequestModel)
+      .then((res: GridModel) => {
+        dispatch(actions.refreshProductsGridModel(res));
+      });
+    service
+      .getVariantsForGridHandler(state.gridRequestModel)
       .then((res: GridModel) => {
         dispatch(actions.refreshProductsGridModel(res));
       });
@@ -62,7 +68,9 @@ export function ProductsPage() {
         console.log(`Image row ${rowId}`);
         break;
       case "manage":
-        navigate(`/products/product-configuration/${rowData?.productId}`);
+        navigate(
+          `${ApiUrlEnum.PRODUCTS}${ApiUrlEnum.PRODUCT_BASIC_DATA}/${rowData?.productId}`,
+        );
         break;
       case "active":
         console.log(`Active row ${rowId}`);
@@ -77,7 +85,7 @@ export function ProductsPage() {
   const ProductsGridColumns = createProductsGridColumns(onAction);
 
   function handleAddProduct() {
-    navigate("/products/product-configuration");
+    navigate(`${ApiUrlEnum.PRODUCTS}${ApiUrlEnum.PRODUCT_BASIC_DATA}`);
   }
 
   function handleImportProducts() {}

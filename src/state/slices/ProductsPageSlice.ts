@@ -20,6 +20,10 @@ const initialState: IProductsPageSlice = {
     pager: {},
     items: [],
   },
+  variantsGridModel: {
+    pager: {},
+    items: [],
+  },
   gridRequestModel: {
     currentPage: 1,
     pageSize: 10,
@@ -42,6 +46,13 @@ function refreshProductsGridModel(
   action: PayloadAction<GridModel>,
 ) {
   state.productsGridModel = action?.payload || state.productsGridModel;
+}
+
+function refreshVariantsGridModel(
+  state: IProductsPageSlice,
+  action: PayloadAction<GridModel>,
+) {
+  state.variantsGridModel = action?.payload || state.variantsGridModel;
 }
 
 function refreshGridRequestModel(
@@ -79,6 +90,7 @@ const ProductsPageSlice = createSlice({
     setLoading,
     refreshProducts,
     refreshProductsGridModel,
+    refreshVariantsGridModel,
     refreshGridRequestModel,
     refreshBrands,
     refreshCategories,

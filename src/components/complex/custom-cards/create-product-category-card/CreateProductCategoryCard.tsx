@@ -3,20 +3,20 @@ import React from "react";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./CreateProductCategoryCard.module.scss";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import useProductConfigurationPageService from "@/pages/products-section/product-configuration-page/useProductConfigurationPageService.ts";
+import useProductBasicDataPageService from "@/pages/products-section/product-basic-data-page/useProductBasicDataPageService.ts";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { SheImageUploader } from "@/components/complex/she-images-file-uploader/SheImageUploader.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { useToast } from "@/hooks/useToast.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
-import { ProductConfigurationPageSliceActions as actions } from "@/state/slices/ProductConfigurationPageSlice.ts";
-import { IProductConfigurationPageSlice } from "@/const/interfaces/store-slices/IProductConfigurationPageSlice.ts";
+import { ProductBasicDataPageSliceActions as actions } from "@/state/slices/ProductBasicDataPageSlice.ts";
+import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 
 export default function CreateProductCategoryCard({ ...props }) {
-  const service = useProductConfigurationPageService();
-  const state = useAppSelector<IProductConfigurationPageSlice>(
-    StoreSliceEnum.PRODUCT_CONFIGURATION,
+  const service = useProductBasicDataPageService();
+  const state = useAppSelector<IProductBasicDataPageSlice>(
+    StoreSliceEnum.PRODUCT_BASIC_DATA,
   );
   const dispatch = useAppDispatch();
   const { addToast } = useToast();
