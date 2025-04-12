@@ -29,7 +29,7 @@ export default function SheSelect({
   selected,
   items,
   showClearBtn,
-  showFirstOption = true,
+  hideFirstOption,
   tooltip,
   minWidth,
   maxWidth,
@@ -41,16 +41,18 @@ export default function SheSelect({
   ...props
 }: ISheSelect): React.ReactNode {
   const { translate } = useAppTranslation();
-  const [_selected, setSelected] = useState<ISheSelectItem>(selected || null);
+  const [_selected, setSelected] = useState<any>(selected || null);
   const [_items, setItems] = useState<ISheSelectItem[]>(_addItemsIds(items));
 
   useEffect(() => {
-    if (showFirstOption) {
-      items?.unshift({
-        value: null,
-        text: "not selected",
-        textTransKey: "not_selected",
-      });
+    if (!hideFirstOption && items) {
+      if (items.length === 0 || items[0].text !== "not selected") {
+        items.unshift({
+          value: null,
+          text: "not selected",
+          textTransKey: "not_selected",
+        });
+      }
     }
 
     setItems(_addItemsIds(items));
@@ -61,7 +63,7 @@ export default function SheSelect({
 
     if (selected && _items) {
       onChangeHandler(
-        _getSelectedItemByIdentifier(selected, "value", _items).id,
+        _getSelectedItemByIdentifier(selected, "value", _items)?.id,
       );
     }
   }, [selected]);
@@ -70,14 +72,20 @@ export default function SheSelect({
 
   function onChangeHandler(id: string | null) {
     let selected = id ? _getSelectedItemByIdentifier(id, "id", _items) : null;
-    selected = selected.value ? selected : null;
+    selected = selected?.value ? selected : null;
     setSelected(selected);
-    onSelect(selected ? selected.value : null);
+
+    if (onSelect) {
+      onSelect(selected ? selected.value : null);
+    }
   }
 
   function onClearHandler() {
     setSelected(null);
-    onSelect(null);
+
+    if (onSelect) {
+      onSelect(null);
+    }
   }
 
   // ==================================================================== PRIVATE
@@ -94,7 +102,7 @@ export default function SheSelect({
     identifier: string,
     items: ISheSelectItem[],
   ): ISheSelectItem {
-    return items?.find((item) => item[identifier] === data);
+    return items?.find((item) => item[identifier] == data);
   }
 
   return (

@@ -51,21 +51,21 @@ export default function SheInput({
   const [_error, setError] = useState(error);
   const [_errorTransKey, setErrorTransKey] = useState(errorTransKey);
 
-  const delaySearch = useDebounce(value);
+  const delayValue = useDebounce(value);
   const isInitialized = useRef(false);
   const isTouched = useRef(false);
 
   useEffect(() => {
     setValue((prevState) => {
-      return prevState !== props.value ? props.value : prevState;
+      return props?.value ? props.value : prevState;
     });
   }, [props.value]);
 
   useEffect(() => {
     if (isInitialized.current && onDelay) {
-      onDelay(delaySearch);
+      onDelay(delayValue);
     }
-  }, [delaySearch]);
+  }, [delayValue]);
 
   // ==================================================================== EVENT
 
@@ -201,7 +201,7 @@ export default function SheInput({
                 variant="ghost"
                 size="icon"
                 disabled={
-                  value.toString().length === 0 || disabled || isLoading
+                  value?.toString().length === 0 || disabled || isLoading
                 }
                 onClick={onClearHandler}
               >

@@ -21,7 +21,7 @@ export interface ISheSelect extends ComponentPropsWithRef<"div"> {
   selected?: any;
   items?: ISheSelectItem[];
   showClearBtn?: boolean;
-  showFirstOption?: boolean;
+  hideFirstOption?: boolean;
   tooltip?: ISheTooltip;
   minWidth?: number;
   maxWidth?: number;

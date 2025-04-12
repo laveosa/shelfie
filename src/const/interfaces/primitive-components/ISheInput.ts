@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import React, { JSX } from "react";
 
 import { IBaseComponent } from "@/const/interfaces/IBaseComponent.ts";
 import { InputProps } from "@/components/ui/input.tsx";
@@ -10,7 +10,7 @@ export interface ISheInput extends IBaseComponent, InputProps {
   label?: string;
   labelTransKey?: string;
   placeholderTransKey?: string;
-  icon?: ReactNode;
+  icon?: any;
   isSearch?: boolean;
   isValid?: boolean;
   showClearBtn?: boolean;
