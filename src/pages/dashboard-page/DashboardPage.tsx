@@ -100,8 +100,9 @@ export function DashboardPage() {
       <br />
 
       <SheInput
-        value={user?.name}
+        label="Label"
         showClearBtn
+        required
         onDelay={(event) => console.log("onDelay: ", event)}
         onChange={(event) => console.log("onChange: ", event)}
       />

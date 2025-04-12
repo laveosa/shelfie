@@ -68,11 +68,12 @@ $clearBtnSize: 30px;
 // ======================================================== REQUIRED
 
 .sheSelect.required {
-  label:before {
+  .sheSelectComponent:before {
     position: absolute;
-    left: -8px;
+    left: -10px;
+    top: -14px;
     color: vars.$colorRed;
-    content: " *";
+    content: "*";
     display: inline;
   }
 }

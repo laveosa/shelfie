@@ -72,11 +72,12 @@ $clearBtnSize: 30px;
 // ======================================================== REQUIRED
 
 .sheInput.required {
-  label:before {
+  .sheInputComponent:before {
     position: absolute;
-    left: -8px;
+    left: -10px;
+    top: -14px;
     color: vars.$colorRed;
-    content: " *";
+    content: "*";
     display: inline;
   }
 }
@@ -147,5 +148,12 @@ $clearBtnSize: 30px;
     span {
       position: absolute;
     }
+  }
+}
+
+// ======================================================== ERROR MESSAGE
+
+.sheInput {
+  .asterix {
   }
 }
