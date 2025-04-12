@@ -6,6 +6,7 @@ import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { SheTooltipEnum } from "@/const/enums/SheTooltipEnum.ts";
 import { Search, User2 } from "lucide-react";
+import UserForm from "@/components/forms/user-form/UserForm.tsx";
 
 const gendersList = ["male", "female", "unicorn", "banana"];
 const positionsList = [
@@ -74,37 +75,12 @@ export function DashboardPage() {
         onSubmit={onSubmitHandler}
         onCancel={onCancelHandler}
       />*/}
-      {/*<UserForm
+      <UserForm
         data={user}
         genders={genders}
         positions={positions}
         onSubmit={onSubmitHandler}
         onCancel={onCancelHandler}
-      />*/}
-
-      <SheSelect
-        required
-        tooltip={{
-          title: "Select Component Title",
-          text: "some message for Select Component",
-          description: "some description for Select Cccccccco",
-          align: "start",
-          side: "bottom",
-          view: SheTooltipEnum.PRIMARY,
-        }}
-      />
-
-      <br />
-      <br />
-      <br />
-      <br />
-
-      <SheInput
-        label="Label"
-        showClearBtn
-        required
-        onDelay={(event) => console.log("onDelay: ", event)}
-        onChange={(event) => console.log("onChange: ", event)}
       />
     </div>
   );

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Trans } from "react-i18next";
 import { X } from "lucide-react";
-import _ from "lodash";
 
 import {
   Select,
@@ -122,7 +121,7 @@ export default function SheSelect({
           )}
           <div className={cs.sheSelectControl}>
             <Select
-              {...props}
+              {...(props as any)}
               value={_selected?.id ?? ""}
               disabled={disabled || isLoading || !items || items.length === 0}
               onValueChange={(id) => onChangeHandler(id)}

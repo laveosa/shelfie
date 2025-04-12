@@ -2,14 +2,14 @@ import { ComponentPropsWithRef, ReactNode } from "react";
 
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 
-export interface ISheFormHeader extends ComponentPropsWithRef<"label"> {
+export interface ISheFormHeader extends ComponentPropsWithRef<any> {
   icon?: ReactNode;
-  image?: string | Object;
-  title?: string | ReactNode;
+  image?: any;
+  title?: string;
   titleTransKey?: string;
-  text?: string | ReactNode;
+  text?: string;
   textTransKey?: string;
-  description?: string | ReactNode;
+  description?: string;
   descriptionTransKey?: string;
   headerPosition?: DirectionEnum;
 }

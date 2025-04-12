@@ -1,8 +1,6 @@
-import { FieldValues, UseFormReturn } from "react-hook-form";
+import { FieldValues } from "react-hook-form";
 import React, { ComponentPropsWithRef } from "react";
-import { z } from "zod";
 
-import { IZodSchema } from "@/const/interfaces/IZodSchema.ts";
 import { ISheFormHeader } from "@/const/interfaces/forms/ISheFormHeader.ts";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import { ISheFormFooter } from "@/const/interfaces/forms/ISheFormFooter.ts";
@@ -12,7 +10,7 @@ export interface ISheForm<T extends FieldValues>
   extends ComponentPropsWithRef<any>,
     ISheFormHeader,
     ISheFormFooter {
-  form?: UseFormReturn<z.output<z.ZodObject<IZodSchema<T>>>>;
+  form?: any;
   data?: T;
   view?: ComponentViewEnum;
   disabled?: boolean;

@@ -1,5 +1,4 @@
 import React from "react";
-import { FieldErrors } from "react-hook-form";
 
 import cs from "./SheForm.module.scss";
 import { Form } from "@/components/ui/form.tsx";
@@ -30,7 +29,7 @@ export default function SheForm<T>({
     if (onSubmit) onSubmit(data);
   }
 
-  function onErrorHandler(data: FieldErrors<T>) {
+  function onErrorHandler(data: any) {
     if (onError) onError(data);
     console.error("Form error: ", data);
   }
