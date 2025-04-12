@@ -1,9 +1,20 @@
+import { ImageModel } from "@/const/models/ImageModel.ts";
+import { CategoryModel } from "@/const/models/CategoryModel.ts";
+import { BrandModel } from "@/const/models/BrandModel.ts";
+
 export interface ProductModel {
-  id?: number;
-  title?: string;
-  description?: string;
-  price?: number | string;
-  category?: string;
-  image?: string;
-  size?: string;
+  productId?: number;
+  productAppId?: string;
+  image?: ImageModel;
+  productCode?: string;
+  productName?: string;
+  category?: CategoryModel;
+  categoryId?: number;
+  brand?: BrandModel;
+  barcode?: number;
+  status?: string;
+  salePrice?: number;
+  variantsCount?: number;
+  stockAmount?: number;
+  isActive?: boolean;
 }

@@ -2,11 +2,11 @@ import { FieldValues } from "react-hook-form";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-  FormDescription,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import React from "react";
@@ -36,6 +36,7 @@ export function SheFormField({
   rules,
   children,
   description,
+  ...props
 }: ISheFormFieldProps) {
   return (
     <FormField
@@ -45,7 +46,10 @@ export function SheFormField({
         <FormItem>
           <FormLabel>{label}</FormLabel>
           <FormControl>
-            {React.cloneElement(children as any, { ...field })}
+            {React.cloneElement(children as any, {
+              ...field,
+              ...props,
+            })}
           </FormControl>
           {description && <FormDescription>{description}</FormDescription>}
           <FormMessage />

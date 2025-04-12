@@ -1,0 +1,59 @@
+@use "@/styles/variables" as vars;
+
+.addStockCard {
+  .addStockCardContent {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 20px;
+
+    .stockAmount {
+      padding-top: 20px;
+    }
+
+    .purchasePriceBlock {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .salePriceBlockInput {
+        display: flex;
+        align-items: flex-end;
+        gap: 10px;
+      }
+    }
+
+    .purchaseDetailsBlock {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .supplierInformationBlock {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      .supplierInformation {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+      }
+    }
+
+    .createPurchaseToggleBlock {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .createPurchaseToggle {
+        width: 150px;
+      }
+
+      .createPurchaseToggleDesc {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+  }
+}

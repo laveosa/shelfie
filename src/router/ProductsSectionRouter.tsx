@@ -1,15 +1,48 @@
 import { RouteObject } from "react-router-dom";
-import { JSX } from "react";
+import { ManageVariantsPage } from "@/pages/products-section/manage-variants-page/ManageVariantsPage.tsx";
 
 export const ProductsSectionRouter: RouteObject[] = [
   {
     index: true,
-    lazy: async (): Promise<{ element: JSX.Element }> => {
+    lazy: async () => {
       const { ProductsPage } = await import(
         "@/pages/products-section/products-page/ProductsPage.tsx"
       );
       return {
         element: <ProductsPage />,
+      };
+    },
+  },
+  {
+    path: "product-basic-data/:productId?",
+    lazy: async () => {
+      const { ProductBasicDataPage } = await import(
+        "@/pages/products-section/product-basic-data-page/ProductBasicDataPage.tsx"
+      );
+      return {
+        element: <ProductBasicDataPage />,
+      };
+    },
+  },
+  {
+    path: "product-gallery/:productId?",
+    lazy: async () => {
+      const { ProductGalleryPage } = await import(
+        "@/pages/products-section/product-gallery-page/ProductGalleryPage.tsx"
+      );
+      return {
+        element: <ProductGalleryPage />,
+      };
+    },
+  },
+  {
+    path: "manage-variants/:productId?",
+    lazy: async () => {
+      const { ManageVariantsPage } = await import(
+        "@/pages/products-section/manage-variants-page/ManageVariantsPage.tsx"
+      );
+      return {
+        element: <ManageVariantsPage />,
       };
     },
   },

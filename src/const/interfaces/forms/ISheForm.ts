@@ -25,10 +25,11 @@ export interface ISheForm<T extends FieldValues>
 }
 
 //TODO remove this interface when SheForm component will be completed
-export interface ISheFormFieldProps {
+export interface ISheFormFieldProps extends ComponentPropsWithRef<any> {
   name: string;
   label?: string;
   rules?: object;
   children: React.ReactNode;
   description?: string;
+  onDelay?: (event) => void;
 }

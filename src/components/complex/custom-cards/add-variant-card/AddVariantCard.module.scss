@@ -1,0 +1,23 @@
+@use "@/styles/variables" as vars;
+
+.addVariantCard {
+  .addVariantCardContent {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 10px;
+
+    .addVariantCardText {
+      padding-top: 20px;
+    }
+
+    .formInput {
+      width: 100%;
+      padding-bottom: 10px;
+    }
+
+    .select {
+      box-shadow: none;
+    }
+  }
+}

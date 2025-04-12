@@ -4,8 +4,8 @@ import { IApiQueryDefinition } from "@/const/interfaces/IApiQueryDefinition.ts";
 import { ApiServiceNameEnum } from "@/const/enums/ApiServiceNameEnum.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { StorageKeyEnum } from "@/const/enums/StorageKeyEnum.ts";
 import storageService from "@/utils/services/StorageService.ts";
+import { StorageKeyEnum } from "@/const/enums/StorageKeyEnum.ts";
 
 export class ApiConfigurationService {
   public baseUrl: string;
@@ -85,10 +85,21 @@ export class ApiConfigurationService {
   private customBaseQuery(baseUrl: ApiUrlEnum) {
     return fetchBaseQuery({
       baseUrl,
-      prepareHeaders: (headers) => {
+      prepareHeaders: (headers, { arg }) => {
         const token = storageService.getLocalStorage(StorageKeyEnum.TOKEN);
         headers.set("Authorization", `Bearer ${token}`);
-        headers.set("Content-Type", "application/json");
+
+        if (
+          !(
+            arg &&
+            typeof arg === "object" &&
+            "body" in arg &&
+            arg.body instanceof FormData
+          )
+        ) {
+          headers.set("Content-Type", "application/json");
+        }
+
         return headers;
       },
     });

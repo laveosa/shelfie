@@ -1,0 +1,21 @@
+@use "@/styles/variables" as vars;
+
+.productPhotosCard {
+  .productPhotosCardContent {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .managePhotos {
+      .managePhotosTitle {
+        text-align: center;
+        margin-bottom: 10px;
+      }
+
+      .photosGrid > div {
+        max-height: calc(100vh - 540px);
+      }
+    }
+  }
+}

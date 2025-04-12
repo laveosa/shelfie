@@ -1,0 +1,24 @@
+.dropdownMenuContent {
+  width: 100%;
+  padding: 10px;
+}
+
+.dropdownMenuTrigger {
+  box-shadow: none;
+  height: 30px;
+  padding: 8px;
+
+  &:focus-visible {
+    box-shadow: none;
+  }
+
+  .buttonInnerItems {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    svg {
+      padding-top: 4px;
+    }
+  }
+}

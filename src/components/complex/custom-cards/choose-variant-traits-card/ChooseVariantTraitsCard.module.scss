@@ -1,0 +1,72 @@
+@use "@/styles/variables" as vars;
+
+.chooseVariantTraitsCard {
+  .chooseVariantTraitsContent {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: calc(100vh - 92px);
+    padding: 0 20px;
+    overflow: hidden;
+
+    .textBlock {
+      display: flex;
+      flex-direction: column;
+      padding-top: 20px
+    }
+
+    button {
+      width: 100%;
+    }
+
+    .traitsItems {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      max-height: calc(100vh - 360px);
+      overflow-y: auto;
+
+      .traitsItem {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px;
+        border-radius: 10px;
+
+        &:hover {
+          background-color: #F8F3FF;
+        }
+
+        .traitsItemBlock {
+          display: flex;
+          width: 100%;
+          justify-content: space-between;
+          align-items: center;
+          gap: 20px;
+
+          .traitCheckbox {
+            width: 20px;
+            height: 20px;
+          }
+
+          .traitName {
+            display: flex;
+            justify-content: space-between;
+            cursor: pointer;
+            width: 200px;
+          }
+
+          .traitDropdownMenu {
+            width: 35px;
+            justify-content: flex-end;
+          }
+        }
+      }
+    }
+
+    .selected {
+      background-color: #F8F3FF;
+    }
+  }
+}

@@ -1,0 +1,45 @@
+@use "@/styles/variables" as vars;
+
+.productMenuCard {
+  .productMenuItems {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .productMenuItem {
+      display: flex;
+      gap: 20px;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+
+
+      &:hover {
+        background: vars.$colorMedium;
+        font-weight: 500;
+      }
+
+      .textContainer {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+
+        .itemBadge {
+          background-color: #F8F3FF;
+          color: #8439ED;
+        }
+      }
+    }
+  }
+
+  .disabled {
+    cursor: none;
+    pointer-events: none;
+    opacity: 0.8;
+  }
+
+  .selected {
+    background: vars.$colorMedium;
+  }
+}

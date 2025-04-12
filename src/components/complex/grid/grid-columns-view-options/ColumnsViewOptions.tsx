@@ -1,7 +1,8 @@
+import { useEffect, useState } from "react";
 import { ChevronDown, Settings2 } from "lucide-react";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
-
 import { Table } from "@tanstack/react-table";
+
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -11,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import cs from "./ColumnsViewOptions.module.scss";
+import { useGridContext } from "@/state/context/grid-context.ts";
 
 interface IColumnsViewOptions<TData> {
   table: Table<TData>;
@@ -19,21 +21,112 @@ interface IColumnsViewOptions<TData> {
 export function ColumnsViewOptions<TData>({
   table,
 }: IColumnsViewOptions<TData>) {
-  const handleCheckedChange = (value: boolean, column: any) => {
-    column.toggleVisibility(!!value);
-  };
+  const { columnsPreferences, onApplyColumns, onDefaultColumns } =
+    useGridContext();
+
+  const [selectedColumns, setSelectedColumns] = useState<string[]>([]);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [previousSelectedColumns, setPreviousSelectedColumns] = useState<
+    string[]
+  >([]);
+
+  useEffect(() => {
+    initializeColumns(
+      columnsPreferences.viewsReferences.productReferences.columns,
+    );
+  }, [columnsPreferences]);
+
+  // function initializeColumns(columns: any) {
+  //   if (!columns) return;
+  //   const newSelectedColumns: string[] = [];
+  //   table.getAllColumns().forEach((column) => {
+  //     const isVisibleInPreferences = columns[column.id];
+  //     column.toggleVisibility(!isVisibleInPreferences);
+  //     if (!isVisibleInPreferences) {
+  //       newSelectedColumns.push(column.id);
+  //     }
+  //   });
+  //   setSelectedColumns(newSelectedColumns);
+  // }
+
+  function initializeColumns(columns: any) {
+    if (!columns) return;
+    const newSelectedColumns: string[] = [];
+    table.getAllColumns().forEach((column) => {
+      const isVisibleInPreferences = columns[column.id];
+      if (isVisibleInPreferences === false) {
+        column.toggleVisibility(true);
+        newSelectedColumns.push(column.id);
+      } else if (isVisibleInPreferences === true) {
+        column.toggleVisibility(false);
+      } else {
+        column.toggleVisibility(true);
+        newSelectedColumns.push(column.id);
+      }
+    });
+    setSelectedColumns(newSelectedColumns);
+  }
+
+  function onCheckedHandler(value: boolean, column: any) {
+    setSelectedColumns((prev) =>
+      value ? [...prev, column.id] : prev.filter((id) => id !== column.id),
+    );
+  }
+
+  function onApplyHandler() {
+    table.getAllColumns().forEach((column) => {
+      const shouldShow = selectedColumns.includes(column.id);
+      column.toggleVisibility(shouldShow);
+    });
+
+    const model = {
+      globalPreferences: {},
+      viewsReferences: {
+        productReferences: {
+          columns: Object.fromEntries(
+            table
+              .getAllColumns()
+              .map((column) => [
+                column.id,
+                !selectedColumns.includes(column.id),
+              ]),
+          ),
+        },
+      },
+    };
+    onApplyColumns(model);
+    setDropdownOpen(false);
+  }
+
+  function onResetHandler() {
+    onDefaultColumns();
+    setDropdownOpen(false);
+  }
+
+  function onOpenChangeHandler(open: boolean) {
+    if (!open) {
+      setSelectedColumns(previousSelectedColumns);
+    } else {
+      setPreviousSelectedColumns(selectedColumns);
+    }
+    setDropdownOpen(open);
+  }
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger className={cs.columnsViewOptions} asChild>
-        <SheButton variant="outline" icon={Settings2}>
+    <DropdownMenu open={dropdownOpen} onOpenChange={onOpenChangeHandler}>
+      <DropdownMenuTrigger className={cs.dropdownMenuTrigger} asChild>
+        <SheButton
+          variant="outline"
+          icon={Settings2}
+          onClick={() => setDropdownOpen(true)}
+        >
           <div className={cs.buttonInnerItems}>
             Columns
             <ChevronDown />
           </div>
         </SheButton>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" className="w-[150px]">
+      <DropdownMenuContent align="start" className={cs.dropdownMenuContent}>
         <DropdownMenuLabel>Select Columns</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {table
@@ -42,21 +135,26 @@ export function ColumnsViewOptions<TData>({
             (column) =>
               typeof column.accessorFn !== "undefined" && column.getCanHide(),
           )
-          .map((column) => {
-            return (
-              <DropdownMenuCheckboxItem
-                key={column.id}
-                className="capitalize"
-                checked={column.getIsVisible()}
-                onCheckedChange={(value) => handleCheckedChange(value, column)}
-                onSelect={(event) => {
-                  event.preventDefault();
-                }}
-              >
-                {column.id}
-              </DropdownMenuCheckboxItem>
-            );
-          })}
+          .map((column) => (
+            <DropdownMenuCheckboxItem
+              key={column.id}
+              className="capitalize"
+              checked={selectedColumns.includes(column.id)}
+              onCheckedChange={(value) => onCheckedHandler(value, column)}
+              onSelect={(event) => {
+                event.preventDefault();
+              }}
+            >
+              {column.id}
+            </DropdownMenuCheckboxItem>
+          ))}
+        <DropdownMenuSeparator />
+        <div className={cs.buttonBlock}>
+          <SheButton onClick={onResetHandler} variant="outline">
+            Default
+          </SheButton>
+          <SheButton onClick={onApplyHandler}>Apply</SheButton>
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   );

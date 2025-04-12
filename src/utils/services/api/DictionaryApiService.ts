@@ -4,6 +4,7 @@ import { ApiConfigurationService } from "@/utils/services/api/ApiConfigurationSe
 import { ApiServiceNameEnum } from "@/const/enums/ApiServiceNameEnum.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
+import { TypeOfTraitModel } from "@/const/models/TypeOfTraitModel.ts";
 
 const apiConfig = new ApiConfigurationService(ApiUrlEnum.DICTIONARY_BASE_URL);
 
@@ -19,6 +20,23 @@ export const DictionaryApiService = createApi({
       providesTags: (result: CountryCodeModel[]) =>
         apiConfig.providesTags(result, ApiServiceNameEnum.DICTIONARY),
     }),
+    getSortingOptionsForGrid: apiConfig.createQuery<any, void>(builder, {
+      query: () => ({
+        url: "/sortingoptions/products",
+      }),
+      providesTags: (result: any) =>
+        apiConfig.providesTags(result, ApiServiceNameEnum.DICTIONARY),
+    }),
+    getListOfTypesOfTraits: apiConfig.createQuery<TypeOfTraitModel[], void>(
+      builder,
+      {
+        query: () => ({
+          url: "/TraitTypes/all",
+        }),
+        providesTags: (result: TypeOfTraitModel[]) =>
+          apiConfig.providesTags(result, ApiServiceNameEnum.DICTIONARY),
+      },
+    ),
   }),
 });
 

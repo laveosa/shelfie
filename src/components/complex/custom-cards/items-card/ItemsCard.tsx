@@ -1,0 +1,55 @@
+import React, { useEffect, useState } from "react";
+
+import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
+import cs from "./ItemsCard.module.scss";
+import { Separator } from "@/components/ui/separator.tsx";
+import placeholderImage from "@/assets/images/placeholder-image.png";
+import { IItemsCard } from "@/const/interfaces/complex-components/custom-cards/IItemsCard.ts";
+
+export default function ItemsCard({
+  data,
+  title,
+  onAction,
+  selectedItem,
+  ...props
+}: IItemsCard) {
+  const [selectedId, setSelectedId] = useState(Number(selectedItem));
+
+  const handleItemClick = (item) => {
+    setSelectedId(item.variantId ?? item.productId);
+    onAction(item);
+  };
+
+  useEffect(() => {
+    setSelectedId(Number(selectedItem));
+  }, [selectedItem]);
+
+  return (
+    <div>
+      <SheProductCard
+        title={title}
+        showToggleButton={true}
+        className={cs.productsCard}
+        {...props}
+      >
+        <div className={cs.productsList}>
+          {data.map((item, index) => (
+            <div key={item.id || index} onClick={() => handleItemClick(item)}>
+              <div
+                className={`${cs.productsListItem} ${selectedId === (item.variantId ?? item.productId) ? cs.selected : ""}`}
+              >
+                <img
+                  src={item.image?.thumbnailUrl || placeholderImage}
+                  alt={item.productName}
+                  className={cs.productItemImage}
+                />
+                <div className={cs.productItemName}>{item.productName}</div>
+              </div>
+              <Separator orientation="horizontal" />
+            </div>
+          ))}
+        </div>
+      </SheProductCard>
+    </div>
+  );
+}

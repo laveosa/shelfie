@@ -1,0 +1,12 @@
+@use "@/styles/variables" as vars;
+
+.createProductCategoryCard {
+  display: flex;
+
+  .cardContent {
+    display: flex;
+    flex-direction: column;
+    padding: vars.$paddingSmall;
+    gap: vars.$paddingStandard;
+  }
+}
