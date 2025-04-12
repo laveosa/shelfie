@@ -1,6 +1,6 @@
-export interface IProductCard {
+export interface IItemsCard {
   data?: any[];
-  title?: "Products" | string;
+  title?: string;
   onAction?: (item) => void;
   selectedItem?: any;
 }

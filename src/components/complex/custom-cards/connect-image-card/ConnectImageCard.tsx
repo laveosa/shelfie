@@ -3,16 +3,14 @@ import React from "react";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ConnectImageCard.module.scss";
 import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import { IConnectImageCard } from "@/const/interfaces/complex-components/custom-cards/IConnectImageCard.ts";
 import { ConnectImageGridColumns } from "@/components/complex/grid/connect-image-grid/ConnectImageGridColumns.tsx";
 
 export default function ConnectImageCard({
-  variants,
   data,
   onAction,
   onSecondaryButtonClick,
   ...props
-}: IConnectImageCard) {
+}) {
   const columns = ConnectImageGridColumns(onAction);
 
   return (
@@ -28,10 +26,9 @@ export default function ConnectImageCard({
       <div className={cs.connectImageCardContent}>
         <div className={cs.connectImageGrid}>
           <DndGridDataTable
-            enableDnd={true}
             showHeader={false}
             columns={columns}
-            data={variants}
+            data={data}
             gridModel={data}
           />
         </div>

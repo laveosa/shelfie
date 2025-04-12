@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
@@ -6,7 +6,6 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import { GridModel } from "@/const/models/GridModel.ts";
 import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
-import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import cs from "@/pages/products-section/product-basic-data-page/ProductBasicDataPage.module.scss";
 import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
 import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
@@ -16,14 +15,14 @@ import { ManageVariantsPageSliceActions as actions } from "@/state/slices/Manage
 import ManageVariantsCard from "@/components/complex/custom-cards/manage-variants-card/ManageVariantsCard.tsx";
 import ChooseVariantTraitsCard from "@/components/complex/custom-cards/choose-variant-traits-card/ChooseVariantTraitsCard.tsx";
 import ProductTraitConfigurationCard from "@/components/complex/custom-cards/product-trait-configuration-card/ProductTraitConfigurationCard.tsx";
-import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
-import AddVariantCard from "@/components/complex/custom-cards/add-variant-card/AddVariantCard.tsx";
 import VariantConfigurationCard from "@/components/complex/custom-cards/variant-configuration-card/VariantConfigurationCard.tsx";
 import ProductPhotosCard from "@/components/complex/custom-cards/product-photos-card/ProductPhotosCard.tsx";
 import AddStockCard from "@/components/complex/custom-cards/add-stock-card/AddStockCard.tsx";
 import DisposeStockCard from "@/components/complex/custom-cards/dispose-stock-card/DisposeStockCard.tsx";
 import StockHistoryCard from "@/components/complex/custom-cards/stock-history-card/StockHistoryCard.tsx";
 import ConnectImageCard from "@/components/complex/custom-cards/connect-image-card/ConnectImageCard.tsx";
+import ManageTraitsCard from "@/components/complex/custom-cards/manage-traits-card/ManageTraitsCard.tsx";
+import AddVariantCard from "@/components/complex/custom-cards/add-variant-card/AddVariantCard.tsx";
 
 export function ManageVariantsPage() {
   const dispatch = useAppDispatch();
@@ -31,7 +30,6 @@ export function ManageVariantsPage() {
   const state = useAppSelector<IManageVariantsPageSlice>(
     StoreSliceEnum.MANAGE_VARIANTS,
   );
-  const navigate = useNavigate();
   const { addToast } = useToast();
   const { productId } = useParams();
 
@@ -57,20 +55,8 @@ export function ManageVariantsPage() {
       });
     service
       .getListOfTraitsWithOptionsForProductHandler(productId)
-      .then((traits) => {
-        dispatch(actions.refreshListOfTraitsWithOptionsForProduct(traits));
-        let sizes: TraitOptionModel[] = [];
-        let colors: TraitOptionModel[] = [];
-
-        traits.forEach((trait) => {
-          if (trait.traitTypeId === 1) {
-            sizes = [...sizes, ...trait.traitOptions];
-            dispatch(actions.refreshSizes(sizes));
-          } else if (trait.traitTypeId === 2) {
-            colors = [...colors, ...trait.traitOptions];
-            dispatch(actions.refreshColors(colors));
-          }
-        });
+      .then((res) => {
+        dispatch(actions.refreshListOfTraitsWithOptionsForProduct(res));
       });
     service.getProductPhotosHandler(Number(productId)).then((res) => {
       dispatch(actions.refreshProductPhotos(res));
@@ -82,6 +68,12 @@ export function ManageVariantsPage() {
       dispatch(actions.refreshTraits(res));
     });
   }, [state.selectedTrait]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(actions.refreshActiveCards([]));
+    };
+  }, [dispatch]);
 
   function handleCardAction(identifier: string, forceOpen: boolean = false) {
     let updatedCards: string[];
@@ -98,9 +90,10 @@ export function ManageVariantsPage() {
   }
 
   function itemCardClickHandler(item) {
-    navigate(
-      `${ApiUrlEnum.PRODUCTS}${ApiUrlEnum.PRODUCT_BASIC_DATA}/${item.productId}`,
-    );
+    service.getVariantDetailsHandler(item.variantId).then((res) => {
+      dispatch(actions.refreshSelectedVariant(res));
+      handleCardAction("variantConfigurationCard", true);
+    });
   }
 
   function onAction(actionType: string, payload: any) {
@@ -169,28 +162,17 @@ export function ManageVariantsPage() {
           }
         });
         break;
+      case "updateTraits":
+        console.log("updateTrait", payload);
+        break;
       case "setProductTraits":
         dispatch(actions.refreshSelectedTraitsIds(payload));
         service.setProductTraitsHandler(productId, payload).then(() => {
           handleCardAction("productTraitConfigurationCard", false);
           service
             .getListOfTraitsWithOptionsForProductHandler(productId)
-            .then((traits) => {
-              dispatch(
-                actions.refreshListOfTraitsWithOptionsForProduct(traits),
-              );
-              let sizes: TraitOptionModel[] = [];
-              let colors: TraitOptionModel[] = [];
-
-              traits.forEach((trait) => {
-                if (trait.traitTypeId === 1) {
-                  sizes = [...sizes, ...trait.traitOptions];
-                  dispatch(actions.refreshSizes(sizes));
-                } else if (trait.traitTypeId === 2) {
-                  colors = [...colors, ...trait.traitOptions];
-                  dispatch(actions.refreshColors(colors));
-                }
-              });
+            .then((res) => {
+              dispatch(actions.refreshListOfTraitsWithOptionsForProduct(res));
             });
         });
         break;
@@ -287,6 +269,9 @@ export function ManageVariantsPage() {
       case "openConnectImageCard":
         handleCardAction("connectImageCard", true);
         break;
+      case "openManageTraitsCard":
+        handleCardAction("manageTraitsCard", true);
+        break;
       case "closeProductTraitConfigurationCard":
         handleCardAction("productTraitConfigurationCard");
         break;
@@ -298,11 +283,11 @@ export function ManageVariantsPage() {
 
   return (
     <div className={cs.createProductPage}>
-      {state.variants?.length > 0 && (
+      {state.productVariants?.length > 0 && (
         <ItemsCard
           title="Variants"
-          data={state.variants}
-          selectedItem={productId}
+          data={state.productVariants}
+          selectedItem={state.selectedVariant?.variantId}
           onAction={itemCardClickHandler}
         />
       )}
@@ -349,8 +334,14 @@ export function ManageVariantsPage() {
       {state.activeCards.includes("addVariantCard") && (
         <AddVariantCard
           onAction={onAction}
-          colors={state.colors}
-          sizes={state.sizes}
+          traits={state.listOfTraitsWithOptionsForProduct}
+        />
+      )}
+      {state.activeCards.includes("manageTraitsCard") && (
+        <ManageTraitsCard
+          traits={state.listOfTraitsWithOptionsForProduct}
+          onAction={onAction}
+          onSecondaryButtonClick={() => handleCardAction("manageTraitsCard")}
         />
       )}
       {state.activeCards.includes("chooseVariantTraitsCard") && (

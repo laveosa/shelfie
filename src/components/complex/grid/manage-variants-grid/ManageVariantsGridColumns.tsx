@@ -52,7 +52,11 @@ export const ManageVariantsGridColumns = (
     accessorKey: "stock",
     header: "Stock",
     cell: ({ row }) => {
-      return <span>{row.original.stockAmount}</span>;
+      return (
+        <span style={{ paddingLeft: "15px" }}>
+          {row.original.stockAmount ?? 0}
+        </span>
+      );
     },
   },
   {

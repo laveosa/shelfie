@@ -117,6 +117,7 @@ export function ProductBasicDataPage() {
     <div className={cs.createProductPage}>
       {state.products?.length > 0 && (
         <ItemsCard
+          title="Products"
           data={state.products}
           selectedItem={productId}
           onAction={itemCardClickHandler}

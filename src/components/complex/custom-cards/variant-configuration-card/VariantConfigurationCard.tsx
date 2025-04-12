@@ -119,7 +119,7 @@ export default function VariantConfigurationCard({
             <SheButton
               icon={Blocks}
               variant="outline"
-              onClick={() => onAction("")}
+              onClick={() => onAction("openManageTraitsCard")}
             >
               Manage
             </SheButton>
@@ -144,7 +144,7 @@ export default function VariantConfigurationCard({
               Manage
             </SheButton>
           </div>
-          {variant.photos.length > 0 && (
+          {variant.photos?.length > 0 && (
             <div className={cs.managePhotosGrid}>
               <DndGridDataTable
                 enableDnd={true}

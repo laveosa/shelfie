@@ -27,7 +27,5 @@ export interface IManageVariantsPageSlice {
   variantTraitsGridModel?: GridModel;
   photosGridModel?: GridModel;
   gridRequestModel?: GridRequestModel;
-  sizes?: TraitOptionModel[];
-  colors?: TraitOptionModel[];
   photos?: ImageModel[];
 }

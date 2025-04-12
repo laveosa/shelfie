@@ -96,7 +96,7 @@ export default function ManageVariantsCard({
           >
             {traits.length > 0 ? "Create Variant" : "Select Traits"}
           </SheButton>
-          {traits.length > 0 && (
+          {traits.length === 0 && (
             <>
               <span>or</span>
               <SheButton icon={LayoutList} variant="outline">
@@ -106,7 +106,7 @@ export default function ManageVariantsCard({
           )}
         </div>
         <div>
-          {variants.length > 0 && (
+          {variants?.length > 0 && (
             <DndGridDataTable
               enableDnd={true}
               showHeader={false}

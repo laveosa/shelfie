@@ -7,7 +7,6 @@ import { TypeOfTraitModel } from "@/const/models/TypeOfTraitModel.ts";
 import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
-import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
 import { IProductGalleryPageSlice } from "@/const/interfaces/store-slices/IProductGalleryPageSlice.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 
@@ -43,8 +42,6 @@ const initialState: IManageVariantsPageSlice = {
     pageSize: 10,
   },
   traitOptions: [],
-  sizes: [],
-  colors: [],
   photos: [],
 };
 
@@ -169,20 +166,6 @@ function refreshGridRequestModel(
   state.gridRequestModel = action?.payload || state.gridRequestModel;
 }
 
-function refreshSizes(
-  state: IManageVariantsPageSlice,
-  action: PayloadAction<TraitOptionModel[]>,
-) {
-  state.sizes = action?.payload || state.sizes;
-}
-
-function refreshColors(
-  state: IManageVariantsPageSlice,
-  action: PayloadAction<TraitOptionModel[]>,
-) {
-  state.colors = action?.payload || state.colors;
-}
-
 function refreshProductPhotos(
   state: IProductGalleryPageSlice,
   action: PayloadAction<ImageModel[]>,
@@ -205,14 +188,12 @@ const ManageVariantsPageSlice = createSlice({
     refreshProductCounter,
     refreshActiveCards,
     refreshSelectedTraitsIds,
-    refreshContextId,
     refreshSelectedTrait,
+    refreshContextId,
     refreshTraitOption,
     refreshColorOptionsGridModel,
     refreshSizeOptionsGridModel,
     refreshGridRequestModel,
-    refreshSizes,
-    refreshColors,
     refreshProductPhotos,
   },
 });

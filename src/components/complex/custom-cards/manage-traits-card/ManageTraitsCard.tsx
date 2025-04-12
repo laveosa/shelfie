@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import React from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
-import cs from "./AddVariantCard.module.scss";
+import cs from "./ManageTraitsCard.module.scss";
 import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
 import {
   FormControl,
@@ -17,17 +17,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select.tsx";
-import { IAddVariantCard } from "@/const/interfaces/complex-components/custom-cards/IAddVariantCard.ts";
+import { IManageTraitsCard } from "@/const/interfaces/complex-components/custom-cards/IManageTraitsCard.ts";
 
 interface TraitForm {
   [key: string]: string;
 }
 
-export default function AddVariantCard({
+export default function ManageTraitsCard({
   traits,
   onAction,
+  onSecondaryButtonClick,
   ...props
-}: IAddVariantCard) {
+}: IManageTraitsCard) {
   const defaultValues = traits.reduce(
     (acc, trait) => ({
       ...acc,
@@ -53,30 +54,25 @@ export default function AddVariantCard({
     onAction("updateTraits", submissionData);
   }
 
-  const isPrimaryButtonDisabled = Object.values(form.getValues()).every(
-    (value) => value === "",
-  );
-
   return (
-    <div>
-      <SheProductCard
-        title="Add Variant"
-        view="card"
-        showPrimaryButton={true}
-        primaryButtonTitle="Add Variant"
-        onPrimaryButtonClick={() => onSubmit}
-        primaryButtonDisabled={isPrimaryButtonDisabled}
-        showSecondaryButton={true}
-        secondaryButtonTitle="Cancel"
-        onSecondaryButtonClick={() => onAction("closeAddVariantCard", null)}
-        showCloseButton={true}
-        className={cs.addVariantCard}
-        {...props}
-      >
-        <div className={cs.addVariantCardContent}>
-          <span className={`${cs.addVariantCardText} she-text`}>
-            Select the trait option that you want to add
-          </span>
+    <SheProductCard
+      title="Manage Traits"
+      view="card"
+      showPrimaryButton={true}
+      primaryButtonTitle="Update Traits"
+      onPrimaryButtonClick={form.handleSubmit(onSubmit)}
+      showSecondaryButton={true}
+      secondaryButtonTitle="Cancel"
+      onSecondaryButtonClick={onSecondaryButtonClick}
+      showCloseButton
+      className={cs.manageTraitsCard}
+      {...props}
+    >
+      <div className={cs.manageTraitsCardContent}>
+        <div className={cs.manageTraitsCardTextBlock}>
+          <span className="she-text">Select the trait options for variant</span>
+        </div>
+        <div>
           <SheForm form={form} onSubmit={onSubmit}>
             {traits.map((trait) => (
               <FormField
@@ -138,7 +134,7 @@ export default function AddVariantCard({
             ))}
           </SheForm>
         </div>
-      </SheProductCard>
-    </div>
+      </div>
+    </SheProductCard>
   );
 }
