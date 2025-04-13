@@ -26,6 +26,7 @@ const userFormScheme: z.ZodObject<IZodSchema<UserModel>> = z.object({
         });
       }
     }),
+  position: z.number().optional(),
   comment: z.string().optional(),
 });
 
