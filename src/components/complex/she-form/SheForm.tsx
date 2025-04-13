@@ -12,7 +12,7 @@ export default function SheForm<T>({
   className,
   children,
   form,
-  defaultData,
+  defaultValues,
   view,
   secondaryBtnBehavior = FormSecondaryBtnBehaviorEnum.CLEAR,
   disabled,
@@ -41,7 +41,7 @@ export default function SheForm<T>({
     const model =
       secondaryBtnBehavior === FormSecondaryBtnBehaviorEnum.RESET
         ? form.control._defaultValues
-        : defaultData;
+        : defaultValues;
     form.reset({ ...model }, { keepErrors: false, keepDirty: false });
     setTimeout(() => form.clearErrors(), 0);
     if (onCancel) onCancel(form.control._defaultValues);

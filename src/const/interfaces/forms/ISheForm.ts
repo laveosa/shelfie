@@ -12,7 +12,7 @@ export interface ISheForm<T>
     ISheFormFooter {
   form: any;
   data?: T;
-  defaultData: any;
+  defaultValues?: any;
   view?: ComponentViewEnum;
   secondaryBtnBehavior?: FormSecondaryBtnBehaviorEnum;
   disabled?: boolean;

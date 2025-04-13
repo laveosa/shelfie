@@ -66,7 +66,7 @@ export default function UserForm<T>({
     <div className="flex justify-center">
       <SheForm<T>
         form={form}
-        defaultData={UserModelDefault}
+        defaultValues={UserModelDefault}
         image={logo}
         formPosition={DirectionEnum.CENTER}
         title="User Form"
