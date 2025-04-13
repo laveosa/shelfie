@@ -6,12 +6,15 @@ import { ISheForm } from "@/const/interfaces/forms/ISheForm.ts";
 import SheFormHeader from "@/components/complex/she-form/components/she-form-header/SheFormHeader.tsx";
 import SheFormFooter from "@/components/complex/she-form/components/she-form-footer/SheFormFooter.tsx";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
+import { FormSecondaryBtnBehaviorEnum } from "@/const/enums/FormSecondaryBtnBehaviorEnum.ts";
 
 export default function SheForm<T>({
   className,
   children,
   form,
+  defaultData,
   view,
+  secondaryBtnBehavior = FormSecondaryBtnBehaviorEnum.CLEAR,
   disabled,
   loading,
   formPosition = DirectionEnum.LEFT,
@@ -34,16 +37,19 @@ export default function SheForm<T>({
     console.error("Form error: ", data);
   }
 
-  function onCancelHandler() {
-    form.reset(
-      { ...form.control._defaultValues },
-      { keepErrors: false, keepDirty: false },
-    );
+  function onSecondaryHandler() {
+    const model =
+      secondaryBtnBehavior === FormSecondaryBtnBehaviorEnum.RESET
+        ? form.control._defaultValues
+        : defaultData;
+    form.reset({ ...model }, { keepErrors: false, keepDirty: false });
     setTimeout(() => form.clearErrors(), 0);
     if (onCancel) onCancel(form.control._defaultValues);
   }
 
   // ==================================================================== PRIVATE
+
+  // ==================================================================== RENDER
 
   return (
     <div
@@ -61,7 +67,7 @@ export default function SheForm<T>({
             {...props}
             isValid={form.formState.isValid}
             loading={loading}
-            onSecondary={onCancelHandler}
+            onSecondary={onSecondaryHandler}
           />
         </form>
       </Form>

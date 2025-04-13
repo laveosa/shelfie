@@ -56,9 +56,9 @@ export default function SheInput({
   const isTouched = useRef(false);
 
   useEffect(() => {
-    setValue((prevState) => {
-      return props?.value ? props.value : prevState;
-    });
+    if (props?.value !== value) {
+      setValue(props?.value);
+    }
   }, [props.value]);
 
   useEffect(() => {

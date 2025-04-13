@@ -1,18 +1,20 @@
-import { FieldValues } from "react-hook-form";
 import React, { ComponentPropsWithRef } from "react";
 
 import { ISheFormHeader } from "@/const/interfaces/forms/ISheFormHeader.ts";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import { ISheFormFooter } from "@/const/interfaces/forms/ISheFormFooter.ts";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
+import { FormSecondaryBtnBehaviorEnum } from "@/const/enums/FormSecondaryBtnBehaviorEnum.ts";
 
-export interface ISheForm<T extends FieldValues>
+export interface ISheForm<T>
   extends ComponentPropsWithRef<any>,
     ISheFormHeader,
     ISheFormFooter {
-  form?: any;
+  form: any;
   data?: T;
+  defaultData: any;
   view?: ComponentViewEnum;
+  secondaryBtnBehavior?: FormSecondaryBtnBehaviorEnum;
   disabled?: boolean;
   loading?: boolean;
   formPosition?: DirectionEnum;

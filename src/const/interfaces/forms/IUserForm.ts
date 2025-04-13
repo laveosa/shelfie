@@ -1,7 +1,7 @@
-import { ISheForm } from "@/const/interfaces/forms/ISheForm.ts";
-import { UserModel } from "@/const/models/UserModel.ts";
-
-export interface IUserForm extends ISheForm<UserModel> {
+export interface IUserForm<T> {
+  data?: T;
   genders?: string[];
   positions?: any[];
+  onSubmit?: (data: T) => void;
+  onCancel?: (data: T) => void;
 }

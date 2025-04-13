@@ -17,17 +17,17 @@ import { User } from "lucide-react";
 import logo from "@/assets/icons/TNF_logo.svg";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 
-export default function UserForm({
+export default function UserForm<T>({
   data,
   genders,
   positions,
   onSubmit,
   onCancel,
-}: IUserForm): React.ReactNode {
+}: IUserForm<T>): React.ReactNode {
   const form = useAppForm<UserModel>({
     mode: "onBlur",
     resolver: zodResolver(UserFormScheme),
-    defaultValues: data ?? UserModelDefault,
+    defaultValues: UserModelDefault,
   });
 
   useEffect(() => {
@@ -64,8 +64,9 @@ export default function UserForm({
 
   return (
     <div className="flex justify-center">
-      <SheForm
+      <SheForm<T>
         form={form}
+        defaultData={UserModelDefault}
         image={logo}
         formPosition={DirectionEnum.CENTER}
         title="User Form"

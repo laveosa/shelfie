@@ -59,23 +59,23 @@ export function DashboardPage() {
   }, []);
 
   function onSubmitHandler(model) {
-    console.log(model);
+    console.log("SUBMIT: ", model);
   }
 
   function onCancelHandler(model) {
-    console.log(model);
+    console.log("CANCEL: ", model);
   }
 
   return (
     <div id={cs["DashboardPage"]}>
-      {/*<UserForm
+      {/*<UserForm<UserModel>
         data={currentUser}
         genders={gendersList}
         positions={positionsList}
         onSubmit={onSubmitHandler}
         onCancel={onCancelHandler}
       />*/}
-      <UserForm
+      <UserForm<UserModel>
         data={user}
         genders={genders}
         positions={positions}
