@@ -42,7 +42,7 @@ export default function ManageVariantsCard({
       showSecondaryButton={false}
       secondaryButtonTitle="Cancel"
       className={cs.manageVariantsCard}
-      width="370px"
+      width="380px"
       {...props}
     >
       <div className={cs.manageVariantsContent}>
@@ -108,6 +108,7 @@ export default function ManageVariantsCard({
         <div>
           {variants?.length > 0 && (
             <DndGridDataTable
+              className={cs.manageVariantsCardGrid}
               enableDnd={true}
               showHeader={false}
               columns={columns}

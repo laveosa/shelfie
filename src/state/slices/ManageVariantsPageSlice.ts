@@ -7,7 +7,6 @@ import { TypeOfTraitModel } from "@/const/models/TypeOfTraitModel.ts";
 import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
-import { IProductGalleryPageSlice } from "@/const/interfaces/store-slices/IProductGalleryPageSlice.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 
 const initialState: IManageVariantsPageSlice = {
@@ -42,7 +41,8 @@ const initialState: IManageVariantsPageSlice = {
     pageSize: 10,
   },
   traitOptions: [],
-  photos: [],
+  productPhotos: [],
+  variantPhotos: [],
 };
 
 function setLoading(
@@ -167,10 +167,17 @@ function refreshGridRequestModel(
 }
 
 function refreshProductPhotos(
-  state: IProductGalleryPageSlice,
+  state: IManageVariantsPageSlice,
   action: PayloadAction<ImageModel[]>,
 ) {
-  state.photos = action?.payload || state.photos;
+  state.productPhotos = action?.payload || state.productPhotos;
+}
+
+function refreshVariantPhotos(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<ImageModel[]>,
+) {
+  state.variantPhotos = action?.payload || state.variantPhotos;
 }
 
 const ManageVariantsPageSlice = createSlice({
@@ -195,6 +202,7 @@ const ManageVariantsPageSlice = createSlice({
     refreshSizeOptionsGridModel,
     refreshGridRequestModel,
     refreshProductPhotos,
+    refreshVariantPhotos,
   },
 });
 

@@ -16,7 +16,7 @@ import {
 import { Separator } from "@/components/ui/separator.tsx";
 import { VariantConfigurationGridColumns } from "@/components/complex/grid/variant-configuration-grid/VariantConfigurationGridColumns.tsx";
 import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import { ProductPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/ProductPhotosGridColumns.tsx";
+import { VariantPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/VariantPhotosGridColumns.tsx";
 
 export default function VariantConfigurationCard({
   variant,
@@ -26,7 +26,7 @@ export default function VariantConfigurationCard({
   ...props
 }: IVariantConfigurationCard) {
   const traitsColumns = VariantConfigurationGridColumns;
-  const photoColumns = ProductPhotosGridColumns(onGridAction);
+  const photoColumns = VariantPhotosGridColumns(onGridAction);
 
   function onGridAction(
     _actionType: string,
@@ -139,7 +139,7 @@ export default function VariantConfigurationCard({
             <SheButton
               icon={ImagePlus}
               variant="outline"
-              onClick={() => onAction("openProductPhotosCard")}
+              onClick={() => onAction("openVariantPhotosCard")}
             >
               Manage
             </SheButton>

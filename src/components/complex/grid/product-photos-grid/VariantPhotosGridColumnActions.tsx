@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 
-interface TraitOptionsGridColumnActionsProps<TData> {
+interface ProductPhotoGridColumnActionsProps<TData> {
   row?: Row<TData>;
   table?: Table<TData>;
   onAction?: (
@@ -20,11 +20,11 @@ interface TraitOptionsGridColumnActionsProps<TData> {
   ) => void;
 }
 
-export default function ManageVariantsGridColumnActions<TData>({
+export default function VariantPhotosGridColumnActions<TData>({
   row,
   table,
   onAction,
-}: TraitOptionsGridColumnActionsProps<TData>) {
+}: ProductPhotoGridColumnActionsProps<TData>) {
   const meta = table.options.meta as {
     setLoadingRow: (rowId: string, loading: boolean) => void;
     isRowLoading: (rowId: string) => boolean;
@@ -43,10 +43,10 @@ export default function ManageVariantsGridColumnActions<TData>({
       <DropdownMenuContent align="start" className="w-[160px]">
         <DropdownMenuItem
           onClick={() =>
-            onAction("manageVariant", row.id, meta?.setLoadingRow, row)
+            onAction("disconnect", row.id, meta?.setLoadingRow, row)
           }
         >
-          Manage Variant
+          Disconnect from Variants
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

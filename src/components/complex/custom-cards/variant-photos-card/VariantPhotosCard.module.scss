@@ -1,0 +1,35 @@
+@use "@/styles/variables" as vars;
+
+.variantPhotosCard {
+  .variantPhotosCardContent {
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .managePhotos {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .managePhotosTitle {
+        text-align: center;
+      }
+
+      .managePhotosGrid {
+        .variantPhotosText {
+          width: 100%;
+          text-align: center;
+        }
+
+        .productPhotosGridLong > div {
+          max-height: calc(100vh - 585px);
+        }
+
+        .productPhotosGridShort > div {
+          max-height: calc(100vh - 707px);
+        }
+      }
+    }
+  }
+}

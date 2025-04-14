@@ -23,6 +23,7 @@ import StockHistoryCard from "@/components/complex/custom-cards/stock-history-ca
 import ConnectImageCard from "@/components/complex/custom-cards/connect-image-card/ConnectImageCard.tsx";
 import ManageTraitsCard from "@/components/complex/custom-cards/manage-traits-card/ManageTraitsCard.tsx";
 import AddVariantCard from "@/components/complex/custom-cards/add-variant-card/AddVariantCard.tsx";
+import VariantPhotosCard from "@/components/complex/custom-cards/variant-photos-card/VariantPhotosCard.tsx";
 
 export function ManageVariantsPage() {
   const dispatch = useAppDispatch();
@@ -39,10 +40,6 @@ export function ManageVariantsPage() {
       .then((res: GridModel) => {
         dispatch(actions.refreshVariants(res ? res.items : []));
       });
-
-    service.getProductVariantsHandler(productId).then((res) => {
-      dispatch(actions.refreshProductVariants(res));
-    });
 
     service.getListOfTypesOfTraitsHandler().then((res) => {
       dispatch(actions.refreshTypesOfTraits(res));
@@ -68,6 +65,15 @@ export function ManageVariantsPage() {
       dispatch(actions.refreshTraits(res));
     });
   }, [state.selectedTrait]);
+
+  useEffect(() => {
+    service.getCountersForProductsHandler(productId).then((res) => {
+      dispatch(actions.refreshProductCounter(res));
+    });
+    service.getProductVariantsHandler(productId).then((res) => {
+      dispatch(actions.refreshProductVariants(res));
+    });
+  }, [state.variants, productId]);
 
   useEffect(() => {
     return () => {
@@ -99,17 +105,16 @@ export function ManageVariantsPage() {
   function onAction(actionType: string, payload: any) {
     switch (actionType) {
       case "addVariant":
-        console.log(payload);
         service.createVariantHandler(productId, payload).then((res) => {
-          console.log("RES", res);
+          handleCardAction("addVariantCard");
+          dispatch(actions.refreshVariants(res));
         });
-        // handleCardAction("productTraitConfigurationCard", true);
-        // dispatch(actions.refreshSelectedTrait({}));
         break;
       case "manageVariant":
         service.getVariantDetailsHandler(payload.variantId).then((res) => {
           console.log("SELECTED VARIANT", res);
           dispatch(actions.refreshSelectedVariant(res));
+          dispatch(actions.refreshVariantPhotos(res?.photos));
           handleCardAction("variantConfigurationCard", true);
         });
         break;
@@ -272,11 +277,17 @@ export function ManageVariantsPage() {
       case "openManageTraitsCard":
         handleCardAction("manageTraitsCard", true);
         break;
+      case "openVariantPhotosCard":
+        handleCardAction("variantPhotosCard", true);
+        break;
       case "closeProductTraitConfigurationCard":
         handleCardAction("productTraitConfigurationCard");
         break;
       case "closeAddVariantCard":
         handleCardAction("addVariantCard");
+        break;
+      case "closeVariantPhotosCard":
+        handleCardAction("variantPhotosCard");
         break;
     }
   }
@@ -378,6 +389,14 @@ export function ManageVariantsPage() {
           data={state.productVariants}
           onAction={onAction}
           onSecondaryButtonClick={() => handleCardAction("connectImageCard")}
+        />
+      )}
+      {state.activeCards.includes("variantPhotosCard") && (
+        <VariantPhotosCard
+          variantPhotos={state.variantPhotos}
+          productPhotos={state.productPhotos}
+          contextId={state.selectedVariant?.variantId}
+          onAction={onAction}
         />
       )}
     </div>

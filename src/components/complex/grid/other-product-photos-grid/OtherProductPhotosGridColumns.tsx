@@ -1,8 +1,7 @@
-import { ColumnDef, Row } from "@tanstack/react-table";
-
-import { Switch } from "@/components/ui/switch.tsx";
+import { Row } from "@tanstack/react-table";
 import placeholderImage from "@/assets/images/placeholder-image.png";
-import ProductPhotosGridColumnActions from "@/components/complex/grid/product-photos-grid/ProductPhotosGridColumnActions.tsx";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import { Plus } from "lucide-react";
 
 interface IProductPhotoGridColumns {
   id: number | string;
@@ -51,14 +50,21 @@ interface IProductPhotoGridColumns {
 //   setLoadingRow(rowId, false);
 // }
 
-export const ProductPhotosGridColumns = (
+export const OtherProductPhotosGridColumns = (
   onAction: (
     actionType: string,
     rowId?: string,
     setLoadingRow?: (rowId: string, loading: boolean) => void,
     row?: Row<IProductPhotoGridColumns>,
   ) => void,
-): ColumnDef<IProductPhotoGridColumns>[] => [
+) => [
+  {
+    accessorKey: "isActive",
+    header: "",
+    cell: () => {
+      return <div></div>;
+    },
+  },
   {
     accessorKey: "thumbnailUrl",
     header: "Preview",
@@ -96,34 +102,14 @@ export const ProductPhotosGridColumns = (
     },
   },
   {
-    accessorKey: "isActive",
-    header: "Active",
-    cell: ({ row, table }) => {
-      const meta = table.options.meta as {
-        setLoadingRow: (rowId: string, loading: boolean) => void;
-        isRowLoading: (rowId: string) => boolean;
-      };
-
-      return (
-        <Switch
-          disabled={meta?.isRowLoading(row.id)}
-          checked={row.getValue("isActive")}
-          onCheckedChange={() =>
-            onAction("active", row.id, meta?.setLoadingRow)
-          }
-        />
-      );
-    },
-  },
-  {
     id: "rowActions",
-    header: "Actions",
-    cell: ({ row, table }) => {
+    header: "",
+    cell: ({ row }) => {
       return (
-        <ProductPhotosGridColumnActions
-          row={row}
-          onAction={onAction}
-          table={table}
+        <SheButton
+          icon={Plus}
+          variant="secondary"
+          onClick={() => onAction("addToVariant", row.original.id as any)}
         />
       );
     },
