@@ -1,0 +1,18 @@
+.sheIcon {
+  width: 24px;
+  height: 24px;
+  fill: currentColor; // for SVGs
+  color: #333;
+
+  // Add hover, variant styles, etc.
+  &.primary {
+    color: blue;
+  }
+
+  &.danger {
+    color: red;
+  }
+
+  // Images:
+  object-fit: contain;
+}

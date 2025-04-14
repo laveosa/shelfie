@@ -1,43 +1,26 @@
 import cs from "./DashboardPage.module.scss";
 import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageService.ts";
-import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
-import { Search } from "lucide-react";
-import TmpIcon from "@/assets/icons/TNF_logo.svg";
-import SheForm from "@/components/complex/she-form/SheForm.tsx";
-import UserForm from "@/components/forms/user-form/UserForm.tsx";
+import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+
+import { LucideProps, Search, User2 } from "lucide-react";
+import SvgLogo from "@/assets/icons/Shelfie_logo.svg";
+import ImageLogo from "@/assets/images/AuthLogo.png";
+import React from "react";
 
 export function DashboardPage() {
   const service = useDashboardPageService();
+
+  function Icon({ icon: Icon }: { icon: React.FC<LucideProps> }) {
+    return <Icon />;
+  }
 
   return (
     <div id={cs["DashboardPage"]}>
       <h1>Dashboard</h1>
 
-      <br />
-
-      <SheButton
-        id="TEST_id"
-        className="TEST-class"
-        // icon={Search}
-        onClick={(event) => {
-          console.log("TEST click: ", event.target);
-        }}
-      >
-        Test
-      </SheButton>
-      <br />
-      <SheButton
-        id="START_id"
-        className="START-class"
-        // icon={TmpIcon}
-        iconPosition={DirectionEnum.RIGHT}
-        value="Start"
-        valueTransKey="sfw390f23jf"
-        onClick={(event) => {
-          console.log("START click: ", event.target);
-        }}
-      />
+      <SheIcon icon={User2} />
+      <SheIcon icon={SvgLogo} />
+      <SheIcon icon={ImageLogo} />
     </div>
   );
 }
