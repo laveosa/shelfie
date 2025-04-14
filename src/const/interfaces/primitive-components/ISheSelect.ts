@@ -1,8 +1,9 @@
 import { ComponentPropsWithRef } from "react";
 
 import { ISheTooltip } from "@/const/interfaces/complex-components/ISheTooltip.ts";
+import { IBaseComponent } from "@/const/interfaces/IBaseComponent.ts";
 
-export interface ISheSelectItem extends ComponentPropsWithRef<"div"> {
+export interface ISheSelectItem extends IBaseComponent {
   id?: any;
   value: any;
   text: string;
@@ -12,7 +13,7 @@ export interface ISheSelectItem extends ComponentPropsWithRef<"div"> {
   disabled?: boolean;
 }
 
-export interface ISheSelect extends ComponentPropsWithRef<"div"> {
+export interface ISheSelect extends IBaseComponent {
   label?: string;
   labelTransKey?: string;
   placeholder?: string;
@@ -23,9 +24,6 @@ export interface ISheSelect extends ComponentPropsWithRef<"div"> {
   showClearBtn?: boolean;
   hideFirstOption?: boolean;
   tooltip?: ISheTooltip;
-  minWidth?: number;
-  maxWidth?: number;
-  fullWidth?: boolean;
   required?: boolean;
   disabled?: boolean;
   isLoading?: boolean;

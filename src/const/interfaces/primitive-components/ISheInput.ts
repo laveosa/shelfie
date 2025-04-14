@@ -1,5 +1,3 @@
-import React, { JSX } from "react";
-
 import { IBaseComponent } from "@/const/interfaces/IBaseComponent.ts";
 import { InputProps } from "@/components/ui/input.tsx";
 import { ISheTooltip } from "@/const/interfaces/complex-components/ISheTooltip.ts";
