@@ -1,0 +1,58 @@
+@use "@/styles/variables" as vars;
+
+.sheForm {
+  width: vars.$maxWidth;
+
+  .sheFormContent {
+    display: flex;
+    flex-direction: column;
+
+    > div {
+      margin-bottom: vars.$marginSmall;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+// ======================================================== WIDTH
+
+.sheForm {
+  &.fullWidth {
+    width: 100%;
+  }
+}
+
+// ======================================================== VIEW
+
+.sheForm {
+  &.card {
+    border: 1px solid vars.$brdColor;
+    padding: 20px;
+    border-radius: vars.$brdR_075;
+  }
+}
+
+// ======================================================== POSITION
+
+.sheForm {
+  &.left {
+    .sheFormContent {
+      align-items: start;
+    }
+  }
+
+  &.center {
+    .sheFormContent {
+      align-items: center;
+    }
+  }
+
+  &.right {
+    .sheFormContent {
+      align-items: end;
+    }
+  }
+}

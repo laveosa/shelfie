@@ -25,11 +25,10 @@
     /* Custom */
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     },
     "strictNullChecks": false,
+//    "suppressImplicitAnyIndexErrors": true,
     "noImplicitAny": false,
     "strictFunctionTypes": false,
     "strictPropertyInitialization": false,

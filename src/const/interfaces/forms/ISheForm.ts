@@ -1,13 +1,32 @@
-import { FieldValues, UseFormReturn } from "react-hook-form";
 import React, { ComponentPropsWithRef } from "react";
 
-export interface ISheFormProps<T extends FieldValues> {
-  form: UseFormReturn<T>;
-  onSubmit: (data: T) => void;
-  children: React.ReactNode;
-  className?: string;
+import { ISheFormHeader } from "@/const/interfaces/forms/ISheFormHeader.ts";
+import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
+import { ISheFormFooter } from "@/const/interfaces/forms/ISheFormFooter.ts";
+import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
+import { FormSecondaryBtnBehaviorEnum } from "@/const/enums/FormSecondaryBtnBehaviorEnum.ts";
+
+export interface ISheForm<T>
+  extends ComponentPropsWithRef<any>,
+    ISheFormHeader,
+    ISheFormFooter {
+  form: any;
+  data?: T;
+  defaultValues?: any;
+  view?: ComponentViewEnum;
+  secondaryBtnBehavior?: FormSecondaryBtnBehaviorEnum;
+  disabled?: boolean;
+  loading?: boolean;
+  formPosition?: DirectionEnum;
+  minWidth?: string;
+  maxWidth?: string;
+  fullWidth?: boolean;
+  onSubmit?: (data: T) => void;
+  onError?: (data: T) => void;
+  onCancel?: (data: T) => void;
 }
 
+//TODO remove this interface when SheForm component will be completed
 export interface ISheFormFieldProps extends ComponentPropsWithRef<any> {
   name: string;
   label?: string;

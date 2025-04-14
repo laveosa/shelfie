@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import React from "react";
 import {
   ISheFormFieldProps,
-  ISheFormProps,
+  ISheForm,
 } from "@/const/interfaces/forms/ISheForm.ts";
 
 export function SheForm<T extends FieldValues>({
@@ -20,7 +20,7 @@ export function SheForm<T extends FieldValues>({
   onSubmit,
   children,
   className,
-}: ISheFormProps<T>) {
+}: ISheForm<T>) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className={className}>
@@ -46,7 +46,7 @@ export function SheFormField({
         <FormItem>
           <FormLabel>{label}</FormLabel>
           <FormControl>
-            {React.cloneElement(children as React.ReactElement, {
+            {React.cloneElement(children as any, {
               ...field,
               ...props,
             })}

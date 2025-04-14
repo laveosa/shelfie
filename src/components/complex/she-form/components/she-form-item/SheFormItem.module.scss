@@ -1,0 +1,25 @@
+@use "@/styles/variables" as vars;
+
+.sheFormItem {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  min-height: 80px;
+  width: 100%;
+  flex-grow: 1;
+
+  > label {
+    color: vars.$titleColor;
+  }
+
+  > p {
+    margin: 0 !important;
+    line-height: 18px !important;
+  }
+}
+
+// ======================================================== DESCRIPTION AREA
+
+.sheFormItem.withDescription {
+  min-height: 98px;
+}

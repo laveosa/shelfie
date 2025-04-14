@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Search, X } from "lucide-react";
 import { isRegExp } from "lodash";
 import { Trans } from "react-i18next";
@@ -9,13 +9,14 @@ import { ISheInput } from "@/const/interfaces/primitive-components/ISheInput.ts"
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { useDebounce } from "@/utils/hooks/useDebounce.ts";
 import SheTooltip from "@/components/complex/she-tooltip/SheTooltip.tsx";
-import useAppTranslation from "@/hooks/useAppTranslation.ts";
+import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 
 export default function SheInput({
   className = "",
   styles,
   minWidth,
   maxWidth,
+  fullWidth,
   label,
   labelTransKey,
   placeholder = "enter text...",
@@ -24,7 +25,6 @@ export default function SheInput({
   isSearch,
   required,
   showClearBtn,
-  fullWidth,
   isValid = true,
   showError,
   error,
@@ -39,29 +39,33 @@ export default function SheInput({
   onBlur,
   onDelay,
   ...props
-}: ISheInput) {
+}: ISheInput): React.ReactNode {
   const { translate } = useAppTranslation();
   const [value, setValue] = useState(props.value || props.defaultValue || "");
-  const [icon] = useState(!props.icon && isSearch ? <Search /> : props.icon);
+  const [icon, setIcon] = useState(
+    !props.icon && isSearch ? <Search /> : props.icon,
+  );
   const [_isValid, setIsValid] = useState(isValid);
   const [_isLengthValid, setIsLengthValid] = useState(isValid);
   const [_showError, setShowError] = useState(showError);
   const [_error, setError] = useState(error);
   const [_errorTransKey, setErrorTransKey] = useState(errorTransKey);
 
-  const delaySearch = useDebounce(value);
+  const delayValue = useDebounce(value);
   const isInitialized = useRef(false);
   const isTouched = useRef(false);
 
   useEffect(() => {
-    if (isInitialized.current && onDelay) {
-      onDelay(delaySearch);
+    if (props?.value !== value) {
+      setValue(props?.value);
     }
-  }, [delaySearch]);
+  }, [props.value]);
 
   useEffect(() => {
-    setValue(props.value || "");
-  }, [props.value]);
+    if (isInitialized.current && onDelay) {
+      onDelay(delayValue);
+    }
+  }, [delayValue]);
 
   // ==================================================================== EVENT
 
@@ -197,7 +201,7 @@ export default function SheInput({
                 variant="ghost"
                 size="icon"
                 disabled={
-                  value.toString().length === 0 || disabled || isLoading
+                  value?.toString().length === 0 || disabled || isLoading
                 }
                 onClick={onClearHandler}
               >

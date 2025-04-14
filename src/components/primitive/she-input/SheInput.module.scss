@@ -5,18 +5,23 @@ $clearBtnSize: 30px;
 
 .sheInput {
   max-width: vars.$maxWidth;
+  width: 100%;
 
   .sheInputComponent {
     position: relative;
 
     > label {
+      font-weight: 500;
+      position: relative;
+      top: -6px;
+      font-size: 14px;
     }
 
     .sheInputControl {
       position: relative;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 4px;
 
       .iconBlock {
         position: absolute;
@@ -36,6 +41,10 @@ $clearBtnSize: 30px;
       > input {
         &:focus-visible {
           box-shadow: 0 0 0 1px lightgray inset;
+        }
+
+        &::placeholder {
+          color: vars.$placeholderColor;
         }
       }
 
@@ -63,11 +72,12 @@ $clearBtnSize: 30px;
 // ======================================================== REQUIRED
 
 .sheInput.required {
-  label:before {
+  .sheInputComponent:before {
     position: absolute;
-    left: -8px;
+    left: -10px;
+    top: -14px;
     color: vars.$colorRed;
-    content: " *";
+    content: "*";
     display: inline;
   }
 }
@@ -138,5 +148,12 @@ $clearBtnSize: 30px;
     span {
       position: absolute;
     }
+  }
+}
+
+// ======================================================== ERROR MESSAGE
+
+.sheInput {
+  .asterix {
   }
 }

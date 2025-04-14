@@ -1,15 +1,16 @@
 import { createBrowserRouter, Link, Navigate } from "react-router-dom";
+import { JSX } from "react";
 
 import App from "@/App.tsx";
 import ErrorPage from "@/pages/error-page/ErrorPage.tsx";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
-import { MessengerSectionRouter } from "@/pages/messenger-section/MessengerSectionRouter.tsx";
-import { OrdersSectionRouter } from "@/pages/orders-section/OrdersSectionRouter.tsx";
-import { SettingsSectionRouter } from "@/pages/settings-section/SettingsSectionRouting.tsx";
-import { SupportSectionRouter } from "@/pages/support-section/SupportSectionRouter.tsx";
-import { TransmissionsSectionRouter } from "@/pages/transmissions-section/TransmissionsSectionRouter.tsx";
-import { UsersSectionRouter } from "@/pages/users-section/UsersSectionRouter.tsx";
-import { ProductsSectionRouter } from "@/pages/products-section/ProductsSectionRouter.tsx";
+import { MessengerSectionRouter } from "@/router/MessengerSectionRouter.tsx";
+import { OrdersSectionRouter } from "@/router/OrdersSectionRouter.tsx";
+import { SettingsSectionRouter } from "@/router/SettingsSectionRouting.tsx";
+import { SupportSectionRouter } from "@/router/SupportSectionRouter.tsx";
+import { TransmissionsSectionRouter } from "@/router/TransmissionsSectionRouter.tsx";
+import { UsersSectionRouter } from "@/router/UsersSectionRouter.tsx";
+import { ProductsSectionRouter } from "@/router/ProductsSectionRouter.tsx";
 import RouterGuard from "@/utils/guards/RouterGuard.tsx";
 import AuthGuard from "@/utils/guards/AuthGuard.tsx";
 
@@ -29,7 +30,7 @@ const mainRouter = createBrowserRouter([
       },
       {
         path: NavUrlEnum.DASHBOARD,
-        lazy: async () => {
+        lazy: async (): Promise<{ element: JSX.Element }> => {
           const { DashboardPage } = await import(
             "@/pages/dashboard-page/DashboardPage.tsx"
           );
@@ -47,7 +48,7 @@ const mainRouter = createBrowserRouter([
       },
       {
         path: NavUrlEnum.MESSENGER,
-        lazy: async () => {
+        lazy: async (): Promise<{ element: JSX.Element }> => {
           const { MessengerSection } = await import(
             "@/pages/messenger-section/MessengerSection.tsx"
           );
@@ -66,7 +67,7 @@ const mainRouter = createBrowserRouter([
       },
       {
         path: NavUrlEnum.ORDERS,
-        lazy: async () => {
+        lazy: async (): Promise<{ element: JSX.Element }> => {
           const { OrdersSection } = await import(
             "@/pages/orders-section/OrdersSection.tsx"
           );
@@ -85,7 +86,7 @@ const mainRouter = createBrowserRouter([
       },
       {
         path: NavUrlEnum.PRODUCTS,
-        lazy: async () => {
+        lazy: async (): Promise<{ element: JSX.Element }> => {
           const { ProductsSection } = await import(
             "@/pages/products-section/ProductsSection.tsx"
           );
@@ -104,7 +105,7 @@ const mainRouter = createBrowserRouter([
       },
       {
         path: NavUrlEnum.PROFILE,
-        lazy: async () => {
+        lazy: async (): Promise<{ element: JSX.Element }> => {
           const { ProfilePage } = await import(
             "@/pages/profile-page/ProfilePage.tsx"
           );
@@ -122,7 +123,7 @@ const mainRouter = createBrowserRouter([
       },
       {
         path: NavUrlEnum.SETTINGS,
-        lazy: async () => {
+        lazy: async (): Promise<{ element: JSX.Element }> => {
           const { SettingsSection } = await import(
             "@/pages/settings-section/SettingsSection.tsx"
           );
@@ -141,7 +142,7 @@ const mainRouter = createBrowserRouter([
       },
       {
         path: NavUrlEnum.SUPPORT,
-        lazy: async () => {
+        lazy: async (): Promise<{ element: JSX.Element }> => {
           const { SupportSection } = await import(
             "@/pages/support-section/SupportSection.tsx"
           );
@@ -160,7 +161,7 @@ const mainRouter = createBrowserRouter([
       },
       {
         path: NavUrlEnum.TRANSMISSIONS,
-        lazy: async () => {
+        lazy: async (): Promise<{ element: JSX.Element }> => {
           const { TransmissionsSection } = await import(
             "@/pages/transmissions-section/TransmissionsSection.tsx"
           );
@@ -179,7 +180,7 @@ const mainRouter = createBrowserRouter([
       },
       {
         path: NavUrlEnum.USERS,
-        lazy: async () => {
+        lazy: async (): Promise<{ element: JSX.Element }> => {
           const { UsersSection } = await import(
             "@/pages/users-section/UsersSection.tsx"
           );
@@ -200,7 +201,7 @@ const mainRouter = createBrowserRouter([
   },
   {
     path: NavUrlEnum.AUTH,
-    lazy: async () => {
+    lazy: async (): Promise<{ element: JSX.Element }> => {
       const { AuthPage } = await import("@/pages/auth-page/AuthPage.tsx");
       return {
         element: (
