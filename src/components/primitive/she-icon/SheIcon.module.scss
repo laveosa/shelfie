@@ -1,4 +1,5 @@
-$iconSize: 40px;
+$iconSize: 20px;
+$iconSizeHover: 30px;
 
 .sheIcon {
   width: $iconSize;
@@ -10,6 +11,10 @@ $iconSize: 40px;
   justify-content: center;
   margin: 0;
   padding: 0;
+  position: relative;
+  overflow: hidden;
+  transition: all 160ms ease-in-out;
+  box-shadow: none;
 
   img {
     width: 100%;
@@ -27,4 +32,29 @@ $iconSize: 40px;
   max-width: none;
   min-width: 0;
   width: 100%;
+}
+
+// ======================================================== VIEW
+
+.sheIcon {
+  &.square {
+    border-radius: 0;
+  }
+
+  &.circle {
+    border-radius: 100%;
+  }
+}
+
+// ======================================================== VIEW
+
+.sheIcon.hoverEffect:hover {
+  transform: scale(120%);
+  box-shadow: 0 10px 10px 0 lightgrey;
+}
+
+// ======================================================== VIEW
+
+.sheIcon.onClickEffect {
+  cursor: pointer;
 }

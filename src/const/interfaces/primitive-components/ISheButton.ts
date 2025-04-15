@@ -1,13 +1,17 @@
-import { ButtonProps } from "@/components/ui/button.tsx";
-import { IBaseComponent } from "@/const/interfaces/IBaseComponent.ts";
-import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
+import { ComponentPropsWithRef } from "react";
 
-export interface ISheButton extends IBaseComponent, ButtonProps {
+import { ButtonProps } from "@/components/ui/button.tsx";
+import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
+import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
+
+export interface ISheButton extends ButtonProps, ComponentPropsWithRef<"div"> {
   value?: string;
   valueTransKey?: string;
-  loading?: boolean;
-  icon?: any;
+  isLoading?: boolean;
+  disabled?: boolean;
+  minWidth?: string;
+  maxWidth?: string;
+  fullWidth?: boolean;
+  icon?: ISheIcon;
   iconPosition?: DirectionEnum;
-  iconSize?: number;
-  iconClassName?: string;
 }
