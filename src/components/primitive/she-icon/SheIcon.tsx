@@ -20,6 +20,8 @@ export default function SheIcon({
   onClick,
   ...props
 }: ISheIcon): JSX.Element {
+  console.log(icon);
+
   function onClickHandler(event) {
     if (onClick) {
       onClick(event);

@@ -15,9 +15,9 @@ export default function SheButton({
   valueTransKey,
   isLoading,
   disabled,
+  fullWidth,
   minWidth,
   minHeight,
-  fullWidth,
   icon,
   iconPosition = DirectionEnum.LEFT,
   ...props

@@ -9,9 +9,9 @@ export interface ISheButton extends ButtonProps, ComponentPropsWithRef<"div"> {
   valueTransKey?: string;
   isLoading?: boolean;
   disabled?: boolean;
+  fullWidth?: boolean;
   minWidth?: string;
   maxWidth?: string;
-  fullWidth?: boolean;
   icon?: ISheIcon;
   iconPosition?: DirectionEnum;
 }
