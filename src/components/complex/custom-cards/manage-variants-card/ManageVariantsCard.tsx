@@ -31,6 +31,7 @@ export default function ManageVariantsCard({
     row?: any,
   ) {
     onAction("manageVariant", row.original);
+    onAction("activateVariant", row.original);
   }
 
   return (

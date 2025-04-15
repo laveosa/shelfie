@@ -118,6 +118,28 @@ export function ManageVariantsPage() {
           handleCardAction("variantConfigurationCard", true);
         });
         break;
+      case "updateVariantDetails":
+        console.log("VARIANT", payload);
+        service
+          .updateVariantDetailsHandler(
+            payload.variant.variantId,
+            payload.formattedData,
+          )
+          .then((res) => {
+            console.log("SELECTED VARIANT", res);
+          });
+        break;
+      case "activateVariant":
+        console.log("VARIANT", payload);
+        // service
+        //   .updateVariantDetailsHandler(
+        //     payload.variant.variantId,
+        //     payload.formattedData,
+        //   )
+        //   .then((res) => {
+        //     console.log("SELECTED VARIANT", res);
+        //   });
+        break;
       case "addTrait":
         handleCardAction("productTraitConfigurationCard", true);
         dispatch(actions.refreshSelectedTrait({}));
@@ -319,6 +341,7 @@ export function ManageVariantsPage() {
           variant={state.selectedVariant}
           data={state.variantTraitsGridModel}
           onAction={onAction}
+          onGenerateProductCode={service.generateProductCodeHandler}
           onSecondaryButtonClick={() =>
             handleCardAction("variantConfigurationCard")
           }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./VariantConfigurationCard.module.scss";
@@ -17,16 +17,70 @@ import { Separator } from "@/components/ui/separator.tsx";
 import { VariantConfigurationGridColumns } from "@/components/complex/grid/variant-configuration-grid/VariantConfigurationGridColumns.tsx";
 import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { VariantPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/VariantPhotosGridColumns.tsx";
+import { useForm } from "react-hook-form";
+import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
+import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
+import { VariantModel } from "@/const/models/VariantModel.ts";
 
 export default function VariantConfigurationCard({
   variant,
   data,
   onAction,
+  onGenerateProductCode,
   onSecondaryButtonClick,
   ...props
 }: IVariantConfigurationCard) {
+  const form = useForm({
+    defaultValues: {
+      variantName: variant?.variantName || "",
+      variantCode: variant?.variantCode || "",
+      salePrice: {
+        brutto: variant?.salePrice?.brutto,
+        netto: variant?.salePrice?.netto,
+        taxTypeId: variant?.salePrice?.taxTypeId,
+      },
+    },
+  });
+
+  useEffect(() => {
+    form.reset({
+      variantName: variant?.variantName || "",
+      variantCode: variant?.variantCode || "",
+      salePrice: {
+        brutto: variant?.salePrice?.brutto || 0,
+        netto: variant?.salePrice?.netto || 0,
+        taxTypeId: variant?.salePrice?.taxTypeId || 0,
+      },
+    });
+  }, [form, variant?.variantName, variant?.variantCode, variant?.salePrice]);
+
   const traitsColumns = VariantConfigurationGridColumns;
   const photoColumns = VariantPhotosGridColumns(onGridAction);
+
+  function onGenerateCode() {
+    onGenerateProductCode().then((res: ProductCodeModel) => {
+      form.setValue("variantCode", res.code, { shouldDirty: true }); // Update form state
+      console.log("New code:", res.code);
+    });
+  }
+
+  // function onSubmit(data: VariantModel) {
+  //   onAction("updateVariantDetails", { data, variant });
+  // }
+
+  function onSubmit(data: VariantModel) {
+    console.log("Data:", data);
+    const formattedData = {
+      ...data,
+      salePrice: {
+        brutto: Number(data.salePrice.brutto),
+        netto: Number(data.salePrice.netto),
+        taxTypeId: Number(data.salePrice.taxTypeId),
+      },
+    };
+    console.log("Submitted data:", variant);
+    onAction("updateVariantDetails", { formattedData, variant });
+  }
 
   function onGridAction(
     _actionType: string,
@@ -48,29 +102,64 @@ export default function VariantConfigurationCard({
       {...props}
     >
       <div className={cs.variantConfigurationCardContent}>
-        <div className={cs.inputBlock}>
-          <SheInput
-            label="Optional Variant Name"
-            value={variant?.variantName}
-          />
-          <div className={cs.inputBlockRow}>
-            <SheInput
-              fullWidth
-              label="Variant Code"
-              value={variant?.variantCode}
-            />
-            <SheButton icon={WandSparklesIcon} variant="outline" />
-          </div>
-        </div>
-        <div className={cs.salePriceBlock}>
-          <div className={`${cs.salePriceBlockTitle} she-title`}>
-            Current Sale Price
-          </div>
-          <div className={cs.salePriceBlockInput}>
-            <SheInput label="Sale price" value={variant?.salePrice ?? "0"} />
-            <SheInput label="VAT" />
-            <SheInput label="Sale price brutto" />
-          </div>
+        <div className={cs.variantConfigurationForm}>
+          <SheForm form={form} onSubmit={onSubmit}>
+            <SheForm.Field name="variantName">
+              <SheInput
+                label="Optional Variant Name"
+                onDelay={form.handleSubmit(onSubmit)}
+                fullWidth
+              />
+            </SheForm.Field>
+            <div className={cs.variantCodeFormRow}>
+              <SheForm.Field name="variantCode" label="Variant Code">
+                <div className={cs.inputBlockRow}>
+                  <SheInput
+                    {...form.register("variantCode")}
+                    fullWidth
+                    onDelay={form.handleSubmit(onSubmit)}
+                  />
+                </div>
+              </SheForm.Field>
+              <SheButton
+                icon={WandSparklesIcon}
+                type="button"
+                variant="outline"
+                onClick={onGenerateCode}
+              />
+            </div>
+            <div className={cs.priceFormRow}>
+              <SheForm.Field label="Sale price brutto" name="salePrice.brutto">
+                <SheInput
+                  type="number"
+                  step="any"
+                  {...form.register("salePrice.brutto", {
+                    valueAsNumber: true,
+                  })}
+                  onDelay={form.handleSubmit(onSubmit)}
+                />
+              </SheForm.Field>
+              <SheForm.Field label="VAT" name="salePrice.taxTypeId">
+                <SheInput
+                  type="number"
+                  {...form.register("salePrice.taxTypeId", {
+                    valueAsNumber: true,
+                  })}
+                  onDelay={form.handleSubmit(onSubmit)}
+                />
+              </SheForm.Field>
+              <SheForm.Field label="Sale price netto" name="salePrice.netto">
+                <SheInput
+                  type="number"
+                  step="any"
+                  {...form.register("salePrice.netto", {
+                    valueAsNumber: true,
+                  })}
+                  onDelay={form.handleSubmit(onSubmit)}
+                />
+              </SheForm.Field>
+            </div>
+          </SheForm>
         </div>
         <Separator className={cs.separator} />
         <div className={cs.stockDetailsBlock}>

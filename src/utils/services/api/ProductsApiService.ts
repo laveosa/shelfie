@@ -330,6 +330,25 @@ export const ProductsApiService = createApi({
         },
       ],
     }),
+    updateVariantDetails: apiConfig.createMutation<
+      any,
+      {
+        id?: number;
+        model?: any;
+      }
+    >(builder, {
+      query: ({ id, model }) => ({
+        url: `${ApiUrlEnum.VARIANTS}/${id}`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+      invalidatesTags: (_result, _error, result) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          result,
+        },
+      ],
+    }),
     getListOfAllTraits: apiConfig.createQuery<any, void>(builder, {
       query: () => ({
         url: `${ApiUrlEnum.TRAITS}/all`,

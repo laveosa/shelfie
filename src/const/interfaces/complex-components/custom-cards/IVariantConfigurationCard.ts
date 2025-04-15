@@ -5,5 +5,6 @@ export interface IVariantConfigurationCard {
   variant?: VariantModel;
   data?: GridModel;
   onAction?: (identifier: string, payload?: any) => void;
+  onGenerateProductCode?: () => Promise<any>;
   onSecondaryButtonClick?: () => void;
 }
