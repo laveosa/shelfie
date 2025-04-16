@@ -69,7 +69,13 @@ export default function SheButton({
         )}
         <>
           {icon && iconPosition === "left" && (
-            <SheIcon minWidth={iconSize} maxWidth={iconSize} {...icon} />
+            <SheIcon
+              minWidth={iconSize}
+              maxWidth={iconSize}
+              minHeight={iconSize}
+              maxHeight={iconSize}
+              {...icon}
+            />
           )}
           {value && (
             <span>
@@ -78,7 +84,13 @@ export default function SheButton({
           )}
           {children && <span>{children}</span>}
           {icon && iconPosition === DirectionEnum.RIGHT && (
-            <SheIcon minWidth={iconSize} maxWidth={iconSize} {...icon} />
+            <SheIcon
+              minWidth={iconSize}
+              maxWidth={iconSize}
+              minHeight={iconSize}
+              maxHeight={iconSize}
+              {...icon}
+            />
           )}
         </>
       </>

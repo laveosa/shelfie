@@ -10,6 +10,7 @@ import SheLogo from "@/assets/icons/Shelfie_logo.svg?react";
 import Logo from "@/assets/images/AuthLogo.png";
 import { Search } from "lucide-react";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 
 export function DashboardPage() {
   const service = useDashboardPageService();
@@ -54,6 +55,7 @@ export function DashboardPage() {
           icon={{
             icon: Search,
           }}
+          iconPosition={DirectionEnum.RIGHT}
           variant="secondary"
         />
         <SheButton
@@ -79,28 +81,47 @@ export function DashboardPage() {
 
       <br />
 
-      <SheButton value="First" />
+      <div className="flex gap-2 min-h-20 border-2">
+        <SheButton
+          isLoading
+          icon={{
+            icon: Logo,
+            iconView: IconViewEnum.SMOOTH,
+          }}
+        />
+        <SheButton
+          isLoading
+          variant="secondary"
+          icon={{
+            icon: HomeIcon,
+          }}
+        />
+        <SheButton
+          isLoading
+          variant="destructive"
+          icon={{
+            icon: HomeIcon,
+          }}
+        />
+        <SheButton
+          isLoading
+          variant="outline"
+          icon={{
+            icon: HomeIcon,
+          }}
+        />
+      </div>
 
       <br />
 
-      <SheButton
-        value="Start"
-        valueTransKey="we9w0jfw"
-        variant="secondary"
-        icon={{
-          icon: SheLogo,
-        }}
-      />
+      <div className="flex gap-2 min-h-20 border-2">
+        <SheButton isLoading value="Butoon" />
+        <SheButton isLoading variant="secondary" value="Butoon" />
+        <SheButton isLoading variant="destructive" value="Butoon" />
+        <SheButton isLoading variant="outline" value="Butoon" />
+      </div>
 
-      {/*<SheIcon icon={HomeIcon} color="red" />*/}
-      {/*<SheIcon icon={SheLogo} />*/}
-      {/*<SheIcon
-        icon={Logo}
-        iconView={IconViewEnum.CIRCLE}
-        hoverEffect
-        onClick={onAction}
-      />*/}
-      {/*<SheIcon icon={Search} color="#38C0FF" />*/}
+      <br />
     </div>
   );
 }
