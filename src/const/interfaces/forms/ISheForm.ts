@@ -16,7 +16,7 @@ export interface ISheForm<T>
   view?: ComponentViewEnum;
   secondaryBtnBehavior?: FormSecondaryBtnBehaviorEnum;
   disabled?: boolean;
-  loading?: boolean;
+  isLoading?: boolean;
   formPosition?: DirectionEnum;
   minWidth?: string;
   maxWidth?: string;

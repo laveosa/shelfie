@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/select.tsx";
 import cs from "./GridPagination.module.scss";
 import { useGridContext } from "@/state/context/grid-context.ts";
+import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 
 export function GridPagination() {
   const { gridModel, onGridRequestChange } = useGridContext();
@@ -102,7 +103,7 @@ export function GridPagination() {
           <SheButton
             variant="ghost"
             icon={ChevronRight}
-            iconPosition="right"
+            iconPosition={DirectionEnum.RIGHT}
             onClick={() => onNextPageHandler()}
             disabled={currentPage >= endPage}
           >

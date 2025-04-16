@@ -16,7 +16,7 @@ export default function SheFormFooter({
   secondaryProps,
   hideSecondary,
   notDisabledSubmit,
-  loading,
+  isLoading,
   isValid,
   footerPosition,
   onPrimary,
@@ -45,7 +45,7 @@ export default function SheFormFooter({
             <SheButton
               {...primaryProps}
               type="submit"
-              loading={loading}
+              isLoading={isLoading}
               disabled={!notDisabledSubmit && !isValid}
               minWidth="100px"
               onClick={onPrimary}

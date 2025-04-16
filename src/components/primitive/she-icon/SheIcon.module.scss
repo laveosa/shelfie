@@ -1,0 +1,80 @@
+@use "@/styles/variables" as vars;
+
+$iconSize: 40px;
+
+.sheIcon {
+  width: $iconSize;
+  height: fit-content;
+  min-height: $iconSize;
+  fill: currentColor;
+  object-fit: contain;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  transition: all 160ms ease-in-out;
+  box-shadow: none;
+  box-sizing: border-box;
+
+  img {
+    width: 100%;
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+    stroke: currentColor;
+  }
+}
+
+// ======================================================== FULL WIDTH
+
+.sheIcon.fullWidth {
+  max-width: none;
+  min-width: 0;
+  width: 100%;
+}
+
+// ======================================================== VIEW
+
+.sheIcon {
+  &.square {
+    border-radius: 0;
+  }
+
+  &.card {
+    border: vars.$brd;
+    border-radius: vars.$brdR_03;
+    box-sizing: border-box;
+    padding: 7px;
+  }
+
+  &.button {
+    border-radius: vars.$brdR_03;
+  }
+
+  &.smooth {
+    border-radius: vars.$brdR_075;
+  }
+
+  &.circle {
+    border-radius: 100%;
+  }
+}
+
+// ======================================================== VIEW
+
+.sheIcon.hoverEffect:hover {
+  transform: scale(120%);
+  box-shadow: 0 10px 10px 0 lightgrey;
+}
+
+// ======================================================== VIEW
+
+.sheIcon.onClickEffect {
+  cursor: pointer;
+}
