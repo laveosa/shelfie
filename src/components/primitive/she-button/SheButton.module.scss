@@ -1,3 +1,5 @@
+@use "@/styles/variables" as vars;
+
 .sheButton {
   position: relative;
   display: flex;
@@ -7,7 +9,7 @@
   height: auto;
   min-height: 34px;
   min-width: 36px;
-  padding: 8px 10px;
+  padding: 8px;
 
   span {
     line-height: 14px;

@@ -22,7 +22,7 @@ export function DashboardPage() {
     <div id={cs["DashboardPage"]}>
       <h1>Dashboard</h1>
 
-      {/*<br />
+      <br />
 
       <div className="flex gap-2">
         <SheButton
@@ -39,8 +39,21 @@ export function DashboardPage() {
         <SheButton
           icon={{
             icon: Logo,
+            iconView: IconViewEnum.CIRCLE,
           }}
-          variant="destructive"
+          variant="outline"
+        />
+        <SheIcon
+          icon={Logo}
+          iconView={IconViewEnum.SMOOTH}
+          hoverEffect
+          onClick={onAction}
+        />
+        <SheIcon icon={HomeIcon} color="red" iconView={IconViewEnum.CARD} />
+        <SheIcon
+          icon={SheLogo}
+          className={cs.testLogoClass}
+          iconView={IconViewEnum.BUTTON}
         />
       </div>
 
@@ -57,16 +70,16 @@ export function DashboardPage() {
         icon={{
           icon: SheLogo,
         }}
-      />*/}
+      />
 
       {/*<SheIcon icon={HomeIcon} color="red" />*/}
       {/*<SheIcon icon={SheLogo} />*/}
-      <SheIcon
+      {/*<SheIcon
         icon={Logo}
         iconView={IconViewEnum.CIRCLE}
         hoverEffect
         onClick={onAction}
-      />
+      />*/}
       {/*<SheIcon icon={Search} color="#38C0FF" />*/}
     </div>
   );

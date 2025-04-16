@@ -67,7 +67,9 @@ export default function SheButton({
           </div>
         )}
         <>
-          {icon && iconPosition === "left" && <SheIcon {...icon} />}
+          {icon && iconPosition === "left" && (
+            <SheIcon minWidth="20px" maxWidth="20px" {...icon} />
+          )}
           {value && (
             <span>
               <Trans i18nKey={valueTransKey}>{value}</Trans>
@@ -75,7 +77,7 @@ export default function SheButton({
           )}
           {children && <span>{children}</span>}
           {icon && iconPosition === DirectionEnum.RIGHT && (
-            <SheIcon {...icon} />
+            <SheIcon minWidth="20px" maxWidth="20px" {...icon} />
           )}
         </>
       </>

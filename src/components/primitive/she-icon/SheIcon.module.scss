@@ -1,5 +1,6 @@
-$iconSize: 20px;
-$iconSizeHover: 30px;
+@use "@/styles/variables" as vars;
+
+$iconSize: 37px;
 
 .sheIcon {
   width: $iconSize;
@@ -40,6 +41,21 @@ $iconSizeHover: 30px;
 .sheIcon {
   &.square {
     border-radius: 0;
+  }
+
+  &.card {
+    border: vars.$brd;
+    border-radius: vars.$brdR_03;
+    box-sizing: border-box;
+    padding: 7px;
+  }
+
+  &.button {
+    border-radius: vars.$brdR_03;
+  }
+
+  &.smooth {
+    border-radius: vars.$brdR_075;
   }
 
   &.circle {
