@@ -58,7 +58,7 @@ export default function SheButton({
   return (
     <Button
       {...props}
-      className={`${cs.sheButton} ${className || ""} ${fullWidth ? cs.fullWidth : ""} ${value ? cs.withText : ""} ${cs[`icon-${iconPosition}`] || ""}`}
+      className={`${cs.sheButton} ${className || ""} ${fullWidth ? cs.fullWidth : ""} ${value || children ? cs.withText : ""} ${cs[`icon-${iconPosition}`] || ""}`}
       style={{
         color,
         minWidth,
