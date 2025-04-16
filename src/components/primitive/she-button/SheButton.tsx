@@ -22,6 +22,7 @@ export default function SheButton({
   iconPosition = DirectionEnum.LEFT,
   ...props
 }: ISheButton): JSX.Element {
+  const iconSize: string = "20px";
   const loaderSize: string = "30px";
   const loaderColor: string = isLoaderDark();
 
@@ -46,7 +47,7 @@ export default function SheButton({
   return (
     <Button
       {...props}
-      className={`${cs.sheButton} ${className || ""} ${icon ? cs.withIcon : ""} ${cs[`icon-${iconPosition}`] || ""}`}
+      className={`${cs.sheButton} ${className || ""} ${value ? cs.withText : ""} ${cs[`icon-${iconPosition}`] || ""}`}
       style={{
         minWidth,
         minHeight,
@@ -68,7 +69,7 @@ export default function SheButton({
         )}
         <>
           {icon && iconPosition === "left" && (
-            <SheIcon minWidth="20px" maxWidth="20px" {...icon} />
+            <SheIcon minWidth={iconSize} maxWidth={iconSize} {...icon} />
           )}
           {value && (
             <span>
@@ -77,7 +78,7 @@ export default function SheButton({
           )}
           {children && <span>{children}</span>}
           {icon && iconPosition === DirectionEnum.RIGHT && (
-            <SheIcon minWidth="20px" maxWidth="20px" {...icon} />
+            <SheIcon minWidth={iconSize} maxWidth={iconSize} {...icon} />
           )}
         </>
       </>

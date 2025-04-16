@@ -1,9 +1,11 @@
 @use "@/styles/variables" as vars;
 
-$iconSize: 37px;
+$iconSize: 40px;
 
 .sheIcon {
   width: $iconSize;
+  height: fit-content;
+  min-height: $iconSize;
   fill: currentColor;
   object-fit: contain;
   display: flex;
@@ -16,6 +18,7 @@ $iconSize: 37px;
   overflow: hidden;
   transition: all 160ms ease-in-out;
   box-shadow: none;
+  box-sizing: border-box;
 
   img {
     width: 100%;

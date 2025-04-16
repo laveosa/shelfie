@@ -1,24 +1,28 @@
 @use "@/styles/variables" as vars;
 
+$buttonSize: 40px;
+
 .sheButton {
+  min-width: $buttonSize;
+  //height: fit-content;
+  min-height: $buttonSize;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  height: auto;
-  min-height: 34px;
-  min-width: 36px;
+  gap: 8px;
   padding: 8px;
+  box-sizing: border-box;
 
   span {
     line-height: 14px;
   }
 }
 
-// ======================================================== WITH ICON
+// ======================================================== WITH TEXT
 
-.sheButton.withIcon {
+.sheButton.withText {
+  padding: 8px 16px;
 }
 
 // ======================================================== LOADING

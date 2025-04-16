@@ -24,10 +24,30 @@ export function DashboardPage() {
 
       <br />
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 min-h-20 border-2">
+        <SheIcon
+          icon={Logo}
+          iconView={IconViewEnum.SMOOTH}
+          hoverEffect
+          onClick={onAction}
+        />
+        <SheIcon icon={HomeIcon} color="red" iconView={IconViewEnum.CARD} />
+        <SheIcon
+          icon={SheLogo}
+          className={cs.testLogoClass}
+          iconView={IconViewEnum.BUTTON}
+        />
+        <SheIcon icon={Search} color="indigo" />
+      </div>
+
+      <br />
+
+      <div className="flex gap-2 min-h-20 border-2">
         <SheButton
+          value="some text"
           icon={{
             icon: HomeIcon,
+            fullWidth: true,
           }}
         />
         <SheButton
