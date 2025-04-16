@@ -7,6 +7,7 @@ import { ISheButton } from "@/const/interfaces/primitive-components/ISheButton.t
 import { Button } from "@/components/ui/button.tsx";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 
 export default function SheButton({
   className,
@@ -17,9 +18,13 @@ export default function SheButton({
   disabled,
   fullWidth,
   minWidth,
+  maxWidth,
   minHeight,
+  maxHeight,
+  color,
   icon,
   iconPosition = DirectionEnum.LEFT,
+  style,
   ...props
 }: ISheButton): JSX.Element {
   const iconSize: string = "20px";
@@ -42,15 +47,25 @@ export default function SheButton({
 
   // ==================================================================== PRIVATE
 
+  function isSheIconConfig(
+    icon: unknown,
+  ): icon is Partial<ISheIcon> & { icon: any } {
+    return typeof icon === "object" && icon !== null && "icon" in icon;
+  }
+
   // ==================================================================== LAYOUT
 
   return (
     <Button
       {...props}
-      className={`${cs.sheButton} ${className || ""} ${value ? cs.withText : ""} ${cs[`icon-${iconPosition}`] || ""}`}
+      className={`${cs.sheButton} ${className || ""} ${fullWidth ? cs.fullWidth : ""} ${value ? cs.withText : ""} ${cs[`icon-${iconPosition}`] || ""}`}
       style={{
+        color,
         minWidth,
+        maxWidth,
         minHeight,
+        maxHeight,
+        ...style,
       }}
       disabled={isLoading || disabled}
     >
@@ -68,30 +83,50 @@ export default function SheButton({
           </div>
         )}
         <>
-          {icon && iconPosition === "left" && (
-            <SheIcon
-              minWidth={iconSize}
-              maxWidth={iconSize}
-              minHeight={iconSize}
-              maxHeight={iconSize}
-              {...icon}
-            />
-          )}
+          {icon &&
+            iconPosition === DirectionEnum.LEFT &&
+            (isSheIconConfig(icon) ? (
+              <SheIcon
+                {...icon}
+                minWidth={iconSize}
+                maxWidth={iconSize}
+                minHeight={iconSize}
+                maxHeight={iconSize}
+              />
+            ) : (
+              <SheIcon
+                icon={icon}
+                minWidth={iconSize}
+                maxWidth={iconSize}
+                minHeight={iconSize}
+                maxHeight={iconSize}
+              />
+            ))}
           {value && (
             <span>
               <Trans i18nKey={valueTransKey}>{value}</Trans>
             </span>
           )}
           {children && <span>{children}</span>}
-          {icon && iconPosition === DirectionEnum.RIGHT && (
-            <SheIcon
-              minWidth={iconSize}
-              maxWidth={iconSize}
-              minHeight={iconSize}
-              maxHeight={iconSize}
-              {...icon}
-            />
-          )}
+          {icon &&
+            iconPosition === DirectionEnum.RIGHT &&
+            (isSheIconConfig(icon) ? (
+              <SheIcon
+                {...icon}
+                minWidth={iconSize}
+                maxWidth={iconSize}
+                minHeight={iconSize}
+                maxHeight={iconSize}
+              />
+            ) : (
+              <SheIcon
+                icon={icon}
+                minWidth={iconSize}
+                maxWidth={iconSize}
+                minHeight={iconSize}
+                maxHeight={iconSize}
+              />
+            ))}
         </>
       </>
     </Button>

@@ -1,4 +1,4 @@
-import { ComponentPropsWithRef } from "react";
+import React, { ComponentPropsWithRef } from "react";
 
 import { ButtonProps } from "@/components/ui/button.tsx";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
@@ -12,6 +12,9 @@ export interface ISheButton extends ButtonProps, ComponentPropsWithRef<"div"> {
   fullWidth?: boolean;
   minWidth?: string;
   maxWidth?: string;
-  icon?: ISheIcon;
+  minHeight?: string;
+  maxHeight?: string;
+  color?: string;
+  icon?: Partial<ISheIcon> | string | React.FC<any>;
   iconPosition?: DirectionEnum;
 }

@@ -18,6 +18,14 @@ $buttonSize: 40px;
   }
 }
 
+// ======================================================== FULL WIDTH
+
+.sheButton.fullWidth {
+  max-width: none;
+  min-width: 0;
+  width: 100%;
+}
+
 // ======================================================== WITH TEXT
 
 .sheButton.withText {
