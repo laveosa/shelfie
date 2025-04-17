@@ -87,7 +87,7 @@ export default function ChooseVariantTraitsCard({
                     }}
                   >
                     <span className="she-text">{item.traitName}</span>
-                    <span>{item.traitTypeId}</span>
+                    <span>{item.optionsAmount}</span>
                   </div>
                   <div className={cs.traitDropdownMenu}>
                     <DropdownMenu>

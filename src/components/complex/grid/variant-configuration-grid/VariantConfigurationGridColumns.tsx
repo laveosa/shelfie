@@ -23,9 +23,9 @@ export const VariantConfigurationGridColumns: ColumnDef<any>[] = [
             row.original.optionColor
               ? {
                   background: row.original.optionColor,
-                  width: "30px",
-                  height: "30px",
-                  borderRadius: "5px",
+                  width: "20px",
+                  height: "20px",
+                  borderRadius: "10%",
                 }
               : {}
           }

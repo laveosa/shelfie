@@ -1,3 +1,5 @@
+import { MoreHorizontal } from "lucide-react";
+import { useForm } from "react-hook-form";
 import React from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
@@ -10,17 +12,67 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { MoreHorizontal } from "lucide-react";
 import { Switch } from "@/components/ui/switch.tsx";
 import image from "@/assets/images/AuthLogo.png";
 import { IAddStockCard } from "@/const/interfaces/complex-components/custom-cards/IAddStockCard.ts";
+import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form.tsx";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select.tsx";
+import { PriceTypeModel } from "@/const/models/PriceTypeModel.ts";
 
 export default function AddStockCard({
   variant,
   onAction,
+  taxType,
+  currencyType,
   onSecondaryButtonClick,
   ...props
 }: IAddStockCard) {
+  const purchasePriceType: PriceTypeModel[] = [
+    { priceTypeId: 1, priceTypeName: "Netto" },
+    { priceTypeId: 2, priceTypeName: "Brutto" },
+  ];
+
+  const form = useForm({
+    defaultValues: {
+      unitAmount: 0,
+      priceModel: {
+        price: 0,
+        taxTypeId: 0,
+        priceType: "",
+        currencyId: 0,
+      },
+      purchaseId: 0,
+    },
+  });
+
+  function onSubmit(data) {
+    console.log("Data:", data);
+    const formattedData = {
+      ...data,
+      unitAmount: Number(data.unitAmount) || 0,
+      priceModel: {
+        price: Number(data.priceModel.price) || 0,
+        taxTypeId: Number(data.priceModel.taxTypeId) || 0,
+        priceType: data.priceModel.priceType,
+        currencyId: Number(data.priceModel.currencyId) || 0,
+      },
+      purchaseId: Number(data.purchaseId) || 0,
+    };
+    onAction("increaseStockAmount", { formattedData, variant });
+  }
+
   return (
     <SheProductCard
       title={`Add ${variant?.variantName} Stock`}
@@ -36,26 +88,124 @@ export default function AddStockCard({
       {...props}
     >
       <div className={cs.addStockCardContent}>
-        <div className={cs.stockAmount}>
-          <SheInput
-            fullWidth
-            label="Units"
-            value={variant?.stockAmount ?? "0"}
-          />
-        </div>
-        <div className={cs.purchasePriceBlock}>
-          <span className="she-title">Purchase Price</span>
-          <div className={cs.salePriceBlockInput}>
-            <SheInput
-              fullWidth
-              label="Sale price"
-              value={variant?.salePrice ?? "0"}
-            />
-            <SheInput fullWidth label="VAT" />
-            <SheInput fullWidth label="Netto/Brutto" />
+        <SheForm form={form} onSubmit={onSubmit}>
+          <div className={cs.addStockConfigurationForm}>
+            <SheForm.Field name="unitAmount">
+              <SheInput
+                label="Units"
+                type="number"
+                step="any"
+                onDelay={form.handleSubmit(onSubmit)}
+              />
+            </SheForm.Field>
+            <div className={cs.purchasePriceTitle}>
+              <span className="she-title">Purchase Price</span>
+            </div>
+            <div className={cs.purchasePriceFormRow}>
+              <div className={cs.formRowItem}>
+                <SheForm.Field label="Purchase price" name="priceModel.price">
+                  <SheInput
+                    type="number"
+                    step="any"
+                    placeholder="Enter purchase prise"
+                    onDelay={form.handleSubmit(onSubmit)}
+                  />
+                </SheForm.Field>
+              </div>
+              <div className={cs.formRowItem}>
+                <FormField
+                  control={form.control}
+                  name="priceModel.taxTypeId"
+                  render={({ field }) => (
+                    <FormItem className={cs.select}>
+                      <FormLabel>VAT</FormLabel>
+                      <Select
+                        onValueChange={(value) => field.onChange(Number(value))}
+                        value={field.value ? field.value.toString() : ""}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select VAT" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {taxType?.map((option) => (
+                            <SelectItem
+                              key={option.taxTypeId}
+                              value={option.taxTypeId.toString()}
+                            >
+                              <div>{option.taxTypeName}</div>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                ></FormField>
+              </div>
+              <div className={cs.formRowItem}>
+                <FormField
+                  control={form.control}
+                  name="priceModel.priceType"
+                  render={({ field }) => (
+                    <FormItem className={cs.select}>
+                      <FormLabel>Netto/Brutto</FormLabel>
+                      <Select
+                        onValueChange={(value) => field.onChange(Number(value))}
+                        value={field.value ? field.value.toString() : ""}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select price type" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {purchasePriceType?.map((price) => (
+                            <SelectItem
+                              key={price.priceTypeId}
+                              value={price.priceTypeName}
+                            >
+                              <div>{price.priceTypeName}</div>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                ></FormField>
+              </div>
+            </div>
+            <FormField
+              control={form.control}
+              name="priceModel.currencyId"
+              render={({ field }) => (
+                <FormItem className={cs.select}>
+                  <FormLabel>Currency</FormLabel>
+                  <Select
+                    onValueChange={(value) => field.onChange(Number(value))}
+                    value={field.value ? field.value.toString() : ""}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select currency" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {currencyType?.map((option) => (
+                        <SelectItem
+                          key={option.currencyId}
+                          value={option.currencyId.toString()}
+                        >
+                          <div>{option.currencyName}</div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            ></FormField>
           </div>
-          <SheInput fullWidth label="Currency" />
-        </div>
+        </SheForm>
         <div className={cs.purchaseDetailsBlock}>
           <div className={cs.purchaseDetailsTitle}>
             <span className="she-title">Purchase Details</span>

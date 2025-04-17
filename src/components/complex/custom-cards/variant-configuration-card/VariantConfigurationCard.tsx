@@ -21,11 +21,25 @@ import { useForm } from "react-hook-form";
 import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
 import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
 import { VariantModel } from "@/const/models/VariantModel.ts";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form.tsx";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select.tsx";
 
 export default function VariantConfigurationCard({
   variant,
   data,
   onAction,
+  taxType,
   onGenerateProductCode,
   onSecondaryButtonClick,
   ...props
@@ -129,35 +143,64 @@ export default function VariantConfigurationCard({
               />
             </div>
             <div className={cs.priceFormRow}>
-              <SheForm.Field label="Sale price brutto" name="salePrice.brutto">
-                <SheInput
-                  type="number"
-                  step="any"
-                  {...form.register("salePrice.brutto", {
-                    valueAsNumber: true,
-                  })}
-                  onDelay={form.handleSubmit(onSubmit)}
+              <div className={cs.priceFormRowItem}>
+                <SheForm.Field
+                  label="Sale price brutto"
+                  name="salePrice.brutto"
+                >
+                  <SheInput
+                    type="number"
+                    step="any"
+                    {...form.register("salePrice.brutto", {
+                      valueAsNumber: true,
+                    })}
+                    onDelay={form.handleSubmit(onSubmit)}
+                  />
+                </SheForm.Field>
+              </div>
+              <div className={cs.priceFormRowItem}>
+                <FormField
+                  control={form.control}
+                  name="salePrice.taxTypeId"
+                  render={({ field }) => (
+                    <FormItem className={cs.select}>
+                      <FormLabel>VAT</FormLabel>
+                      <Select
+                        onValueChange={(value) => field.onChange(Number(value))}
+                        value={field.value ? field.value.toString() : ""}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select VAT" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {taxType?.map((option) => (
+                            <SelectItem
+                              key={option.taxTypeId}
+                              value={option.taxTypeId.toString()}
+                            >
+                              <div>{option.taxTypeName}</div>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
                 />
-              </SheForm.Field>
-              <SheForm.Field label="VAT" name="salePrice.taxTypeId">
-                <SheInput
-                  type="number"
-                  {...form.register("salePrice.taxTypeId", {
-                    valueAsNumber: true,
-                  })}
-                  onDelay={form.handleSubmit(onSubmit)}
-                />
-              </SheForm.Field>
-              <SheForm.Field label="Sale price netto" name="salePrice.netto">
-                <SheInput
-                  type="number"
-                  step="any"
-                  {...form.register("salePrice.netto", {
-                    valueAsNumber: true,
-                  })}
-                  onDelay={form.handleSubmit(onSubmit)}
-                />
-              </SheForm.Field>
+              </div>
+              <div className={cs.priceFormRowItem}>
+                <SheForm.Field label="Sale price netto" name="salePrice.netto">
+                  <SheInput
+                    type="number"
+                    step="any"
+                    {...form.register("salePrice.netto", {
+                      valueAsNumber: true,
+                    })}
+                    onDelay={form.handleSubmit(onSubmit)}
+                  />
+                </SheForm.Field>
+              </div>
             </div>
           </SheForm>
         </div>

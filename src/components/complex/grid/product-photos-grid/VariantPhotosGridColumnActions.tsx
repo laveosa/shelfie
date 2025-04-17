@@ -42,11 +42,9 @@ export default function VariantPhotosGridColumnActions<TData>({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-[160px]">
         <DropdownMenuItem
-          onClick={() =>
-            onAction("disconnect", row.id, meta?.setLoadingRow, row)
-          }
+          onClick={() => onAction("connect", row.id, meta?.setLoadingRow, row)}
         >
-          Disconnect from Variants
+          Connect image to product variants
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -349,6 +349,25 @@ export const ProductsApiService = createApi({
         },
       ],
     }),
+    increaseStockAmountForVariant: apiConfig.createMutation<
+      any,
+      {
+        id: number;
+        model: any;
+      }
+    >(builder, {
+      query: ({ id, model }) => ({
+        url: `${ApiUrlEnum.VARIANTS}/${id}/increase-stock`,
+        method: "POST",
+        body: JSON.stringify(model),
+      }),
+      invalidatesTags: (_result, _error, model) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          model,
+        },
+      ],
+    }),
     getListOfAllTraits: apiConfig.createQuery<any, void>(builder, {
       query: () => ({
         url: `${ApiUrlEnum.TRAITS}/all`,

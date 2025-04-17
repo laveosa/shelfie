@@ -16,7 +16,6 @@ import ManageVariantsCard from "@/components/complex/custom-cards/manage-variant
 import ChooseVariantTraitsCard from "@/components/complex/custom-cards/choose-variant-traits-card/ChooseVariantTraitsCard.tsx";
 import ProductTraitConfigurationCard from "@/components/complex/custom-cards/product-trait-configuration-card/ProductTraitConfigurationCard.tsx";
 import VariantConfigurationCard from "@/components/complex/custom-cards/variant-configuration-card/VariantConfigurationCard.tsx";
-import ProductPhotosCard from "@/components/complex/custom-cards/product-photos-card/ProductPhotosCard.tsx";
 import AddStockCard from "@/components/complex/custom-cards/add-stock-card/AddStockCard.tsx";
 import DisposeStockCard from "@/components/complex/custom-cards/dispose-stock-card/DisposeStockCard.tsx";
 import StockHistoryCard from "@/components/complex/custom-cards/stock-history-card/StockHistoryCard.tsx";
@@ -139,6 +138,17 @@ export function ManageVariantsPage() {
         //   .then((res) => {
         //     console.log("SELECTED VARIANT", res);
         //   });
+        break;
+      case "increaseStockAmount":
+        console.log("StockAmount", payload);
+        service
+          .increaseStockAmountForVariantHandler(
+            payload.variant.variantId,
+            payload.formattedData,
+          )
+          .then((res) => {
+            console.log("SELECTED VARIANT", res);
+          });
         break;
       case "addTrait":
         handleCardAction("productTraitConfigurationCard", true);
@@ -281,9 +291,6 @@ export function ManageVariantsPage() {
       case "openChooseVariantTraitsCard":
         handleCardAction("chooseVariantTraitsCard", true);
         break;
-      case "openProductPhotosCard":
-        handleCardAction("productPhotosCard", true);
-        break;
       case "openAddStockCard":
         handleCardAction("addStockCard", true);
         break;
@@ -349,6 +356,7 @@ export function ManageVariantsPage() {
       )}
       {state.activeCards.includes("addStockCard") && (
         <AddStockCard
+          onAction={onAction}
           variant={state.selectedVariant}
           onSecondaryButtonClick={() => handleCardAction("addStockCard")}
         />
@@ -396,14 +404,6 @@ export function ManageVariantsPage() {
           onSecondaryButtonClick={() =>
             handleCardAction("productTraitConfigurationCard")
           }
-          onAction={onAction}
-        />
-      )}
-      {state.activeCards.includes("productPhotosCard") && (
-        <ProductPhotosCard
-          data={state.photos}
-          contextId={productId}
-          onSecondaryButtonClick={() => handleCardAction("productPhotosCard")}
           onAction={onAction}
         />
       )}

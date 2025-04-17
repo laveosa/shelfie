@@ -1,7 +1,7 @@
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
-import { TraitModel } from "@/const/models/TraitModel.ts";
 import { PriceModel } from "@/const/models/PriceModel.ts";
+import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
 
 export interface VariantModel {
   brand?: BrandModel;
@@ -12,7 +12,7 @@ export interface VariantModel {
   soldUnits?: number;
   status?: string;
   stockAmount?: number;
-  traitOptions?: TraitModel[];
+  traitOptions?: TraitOptionModel[];
   variantAppId?: string;
   variantId?: number;
   variantCode?: string;
