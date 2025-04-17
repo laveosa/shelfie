@@ -1,6 +1,8 @@
 import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { DictionaryApiHooks } from "@/utils/services/api/DictionaryApiService.ts";
+import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";
+import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 
 export default function useManageVariantsPageService() {
   const [getVariantsForGrid] = ProductsApiHooks.useGetVariantsForGridMutation();
@@ -39,6 +41,7 @@ export default function useManageVariantsPageService() {
   const [updateTrait] = ProductsApiHooks.useUpdateTraitMutation();
   const [createVariant] = ProductsApiHooks.useCreateVariantMutation();
   const [getProductPhotos] = ProductsApiHooks.useLazyGetProductPhotosQuery();
+  const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
 
   function getVariantsForGridHandler(data?: GridRequestModel) {
     return getVariantsForGrid(data).then((res: any) => {
@@ -172,6 +175,12 @@ export default function useManageVariantsPageService() {
     });
   }
 
+  function uploadPhotoHandler(model: UploadPhotoModel) {
+    return uploadPhoto(model).then((res: any) => {
+      return res;
+    });
+  }
+
   return {
     getVariantsForGridHandler,
     getProductVariantsHandler,
@@ -195,5 +204,6 @@ export default function useManageVariantsPageService() {
     updateOptionsForTraitHandler,
     deleteOptionsForTraitHandler,
     getProductPhotosHandler,
+    uploadPhotoHandler,
   };
 }

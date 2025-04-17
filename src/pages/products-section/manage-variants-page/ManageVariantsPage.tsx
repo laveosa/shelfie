@@ -150,6 +150,23 @@ export function ManageVariantsPage() {
             console.log("SELECTED VARIANT", res);
           });
         break;
+      case "uploadPhotoToVariant":
+        console.log("PHOTO UPLOAD", payload);
+        service.uploadPhotoHandler(payload).then((res) => {
+          console.log("SELECTED VARIANT", res);
+        });
+        break;
+      case "addPhotoToVariant":
+        console.log("PHOTO", payload);
+        // service
+        //   .increaseStockAmountForVariantHandler(
+        //     payload.variant.variantId,
+        //     payload.formattedData,
+        //   )
+        //   .then((res) => {
+        //     console.log("SELECTED VARIANT", res);
+        //   });
+        break;
       case "addTrait":
         handleCardAction("productTraitConfigurationCard", true);
         dispatch(actions.refreshSelectedTrait({}));

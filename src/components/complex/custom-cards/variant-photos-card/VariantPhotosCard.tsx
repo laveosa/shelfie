@@ -8,8 +8,6 @@ import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { VariantPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/VariantPhotosGridColumns.tsx";
 import { OtherProductPhotosGridColumns } from "@/components/complex/grid/other-product-photos-grid/OtherProductPhotosGridColumns.tsx";
 
-type ActionType = "upload" | "delete" | "dnd" | "disconnect";
-
 export default function VariantPhotosCard({
   variantPhotos,
   productPhotos,
@@ -20,16 +18,22 @@ export default function VariantPhotosCard({
   const variantPhotosColumns = VariantPhotosGridColumns(onGridAction);
   const otherPhotosColumns = OtherProductPhotosGridColumns(onGridAction);
 
-  function handleAction(actionType: ActionType, payload?: any) {
+  function handleAction(actionType: any, payload?: any) {
     switch (actionType) {
+      case "image":
+        onAction("image", payload);
+        break;
       case "upload":
-        onAction("upload", payload);
+        onAction("uploadPhotoToVariant", payload);
         break;
       case "delete":
         onAction("delete", payload);
         break;
       case "disconnect":
         onAction("disconnectImage", payload);
+        break;
+      case "addToVariant":
+        onAction("addPhotoToVariant", payload);
         break;
       case "dnd":
         const { newIndex, activeItem } = payload;
@@ -44,7 +48,7 @@ export default function VariantPhotosCard({
     _setLoadingRow?: (rowId: string, loading: boolean) => void,
     row?: any,
   ) {
-    handleAction("disconnect", row.original);
+    handleAction("addToVariant", row.original);
   }
 
   return (
@@ -59,7 +63,7 @@ export default function VariantPhotosCard({
       >
         <div className={cs.variantPhotosCardContent}>
           <SheImageUploader
-            contextName={"product"}
+            contextName={"variant"}
             contextId={contextId}
             onUpload={(uploadModel: UploadPhotoModel) =>
               handleAction("upload", uploadModel)

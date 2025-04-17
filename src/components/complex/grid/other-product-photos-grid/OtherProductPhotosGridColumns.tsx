@@ -3,7 +3,7 @@ import placeholderImage from "@/assets/images/placeholder-image.png";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { Plus } from "lucide-react";
 
-interface IProductPhotoGridColumns {
+interface IOtherProductPhotoGridColumns {
   id: number | string;
   thumbnailUrl: string;
   height: number;
@@ -13,7 +13,7 @@ interface IProductPhotoGridColumns {
     actionType: string,
     rowId?: string,
     setLoadingRow?: (rowId: string, loading: boolean) => void,
-    row?: Row<IProductPhotoGridColumns>,
+    row?: Row<IOtherProductPhotoGridColumns>,
   ) => void;
 }
 
@@ -55,7 +55,7 @@ export const OtherProductPhotosGridColumns = (
     actionType: string,
     rowId?: string,
     setLoadingRow?: (rowId: string, loading: boolean) => void,
-    row?: Row<IProductPhotoGridColumns>,
+    row?: Row<IOtherProductPhotoGridColumns>,
   ) => void,
 ) => [
   {
@@ -109,7 +109,7 @@ export const OtherProductPhotosGridColumns = (
         <SheButton
           icon={Plus}
           variant="secondary"
-          onClick={() => onAction("addToVariant", row.original.id as any)}
+          onClick={() => onAction("addToVariant", row.id, undefined, row)}
         />
       );
     },
