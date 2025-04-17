@@ -68,18 +68,19 @@ export function DashboardPage() {
           icon={Users}
           hideFirstOption
           showClearBtn
+          isLoading={loading}
           isOpen
           onSelect={onAction}
         />
 
         <SheSelect
-          isLoading={loading}
           label="Select TWO"
           items={_items}
           selected={_items[2].value}
           icon={Users}
           hideFirstOption
           showClearBtn
+          isLoading={loading}
           isOpen
           onSelect={onAction}
         />

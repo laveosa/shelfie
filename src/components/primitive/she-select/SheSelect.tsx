@@ -47,6 +47,11 @@ export default function SheSelect({
   const [_selected, setSelected] = useState<ISheSelectItem>(null);
   const [_items, setItems] = useState<ISheSelectItem[]>(_addItemsIds(null));
   const [_open, setOpen] = useState<boolean>(null);
+  const [_loading, setLoading] = useState<boolean>(null);
+
+  useEffect(() => {
+    console.log("Select RENDER");
+  }, []);
 
   useEffect(() => {
     let updatedItems = [...(items || [])];
@@ -87,10 +92,16 @@ export default function SheSelect({
   }, [items, selected]);
 
   useEffect(() => {
-    if (typeof isOpen === "boolean") {
+    if (isLoading) {
+      setOpen(false);
+    } else if (typeof isOpen === "boolean") {
       setOpen(isOpen);
     }
-  }, [isOpen]);
+
+    if (typeof isLoading === "boolean" && isLoading !== _loading) {
+      setLoading(isLoading);
+    }
+  }, [isOpen, isLoading]);
 
   // ==================================================================== EVENT
 
@@ -161,9 +172,10 @@ export default function SheSelect({
             <Select
               {...props}
               value={_selected?.id ?? ""}
-              disabled={disabled || isLoading || !items || items.length === 0}
+              disabled={disabled || _loading || !items || items.length === 0}
               open={_open}
               onOpenChange={(val) => {
+                if (_loading) return;
                 setOpen(val);
                 if (onOpenChange) onOpenChange(val);
               }}
@@ -188,7 +200,7 @@ export default function SheSelect({
                 <SelectContent>
                   {_items?.map((item: ISheSelectItem) => (
                     <SelectItem
-                      className={`${cs.sheSelectItem} ${isLoading ? "disabled" : ""}`}
+                      className={`${cs.sheSelectItem} ${_loading ? "disabled" : ""}`}
                       key={item.id}
                       value={item.id}
                       disabled={item.disabled}
@@ -216,7 +228,7 @@ export default function SheSelect({
                 variant="ghost"
                 size="icon"
                 icon={X}
-                disabled={!_selected}
+                disabled={!_selected || isLoading}
                 onClick={onClearHandler}
               />
             )}
