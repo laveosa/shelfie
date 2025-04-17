@@ -72,6 +72,8 @@ $clearBtnSize: 30px;
 // ======================================================== REQUIRED
 
 .sheInput.required {
+  position: relative;
+
   .sheInputComponent:before {
     position: absolute;
     left: -10px;

@@ -1,18 +1,21 @@
 import React, { JSX, useEffect, useRef, useState } from "react";
-import { Search, X } from "lucide-react";
 import { isRegExp } from "lodash";
 import { Trans } from "react-i18next";
 
 import cs from "./SheInput.module.scss";
+import { Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input.tsx";
 import { ISheInput } from "@/const/interfaces/primitive-components/ISheInput.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { useDebounce } from "@/utils/hooks/useDebounce.ts";
 import SheTooltip from "@/components/complex/she-tooltip/SheTooltip.tsx";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
+import { isSheIconConfig } from "@/utils/helpers/quick-helper.ts";
+import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 
 export default function SheInput({
-  className = "",
+  className,
+  value,
   minWidth,
   maxWidth,
   fullWidth,
@@ -20,45 +23,45 @@ export default function SheInput({
   labelTransKey,
   placeholder = "enter text...",
   placeholderTransKey,
+  icon,
   isLoading,
   isSearch,
+  isValid = true,
+  ignoreValidation,
   required,
   showClearBtn,
-  isValid = true,
   showError,
   error,
   errorTransKey,
-  strict,
   pattern,
   tooltip,
   disabled,
   minLength,
   maxLength,
+  style,
   onChange,
   onBlur,
   onDelay,
   ...props
 }: ISheInput): JSX.Element {
   const { translate } = useAppTranslation();
-  const [value, setValue] = useState(props.value || props.defaultValue || "");
-  const [icon, setIcon] = useState(
-    !props.icon && isSearch ? <Search /> : props.icon,
-  );
+  const [_value, setValue] = useState<any>(null);
   const [_isValid, setIsValid] = useState(isValid);
   const [_isLengthValid, setIsLengthValid] = useState(isValid);
   const [_showError, setShowError] = useState(showError);
   const [_error, setError] = useState(error);
   const [_errorTransKey, setErrorTransKey] = useState(errorTransKey);
 
-  const delayValue = useDebounce(value);
+  const iconToRender = icon || (isSearch && Search);
+  const delayValue = useDebounce(_value);
   const isInitialized = useRef(false);
   const isTouched = useRef(false);
 
   useEffect(() => {
-    if (props?.value !== value) {
-      setValue(props?.value);
+    if (value !== _value) {
+      setValue(value);
     }
-  }, [props.value]);
+  }, [value]);
 
   useEffect(() => {
     if (isInitialized.current && onDelay) {
@@ -137,7 +140,13 @@ export default function SheInput({
         ? (inputValue as number)
         : inputValue.toString().length;
 
-    setIsLengthValid(valueLength >= minLength && valueLength <= maxLength);
+    const isMinOk =
+      typeof minLength === "number" ? valueLength >= minLength : true;
+    const isMaxOk =
+      typeof maxLength === "number" ? valueLength <= maxLength : true;
+    setIsLengthValid(isMinOk && isMaxOk);
+
+    // setIsLengthValid(valueLength >= minLength && valueLength <= maxLength);
   }
 
   function setShowErrorCondition(
@@ -161,21 +170,23 @@ export default function SheInput({
   function setErrorCondition(
     show: boolean = showError,
     text: string = error,
-    transKey: string = errorTransKey,
+    errTransKey: string = errorTransKey,
   ) {
     setShowError(show);
     setError(text);
-    setErrorTransKey(transKey);
+    setErrorTransKey(errTransKey);
   }
 
   // ==================================================================== LAYOUT
 
   return (
     <div
-      className={`${className || ""} ${cs.sheInput || ""} ${icon ? cs.withIcon : ""} ${fullWidth ? cs.fullWidth : ""} ${!_isValid ? cs.invalid : ""} ${!_isLengthValid ? cs.lengthInvalid : ""} ${required ? cs.required : ""}`}
+      id={`${props.id ? props.id + "_COVER" : ""}`}
+      className={`${className || ""} ${cs.sheInput || ""} ${iconToRender ? cs.withIcon : ""} ${fullWidth ? cs.fullWidth : ""} ${!_isValid ? cs.invalid : ""} ${!_isLengthValid ? cs.lengthInvalid : ""} ${required ? cs.required : ""}`}
       style={{
         minWidth,
         maxWidth,
+        ...style,
       }}
     >
       <SheTooltip {...tooltip}>
@@ -186,10 +197,15 @@ export default function SheInput({
             </label>
           )}
           <div className={cs.sheInputControl}>
-            {icon && <div className={cs.iconBlock}>{icon}</div>}
+            {iconToRender &&
+              (isSheIconConfig(iconToRender) ? (
+                <SheIcon {...iconToRender} className={cs.iconBlock} />
+              ) : (
+                <SheIcon icon={iconToRender} className={cs.iconBlock} />
+              ))}
             <Input
               {...props}
-              value={value}
+              value={_value || ""}
               placeholder={translate(placeholderTransKey, placeholder)}
               disabled={disabled || isLoading}
               onChange={(e) => onChangeHandler(e)}
@@ -199,13 +215,15 @@ export default function SheInput({
               <SheButton
                 variant="ghost"
                 size="icon"
+                icon={X}
                 disabled={
-                  value?.toString().length === 0 || disabled || isLoading
+                  !_value ||
+                  _value.toString().length === 0 ||
+                  disabled ||
+                  isLoading
                 }
                 onClick={onClearHandler}
-              >
-                <X />
-              </SheButton>
+              />
             )}
           </div>
           {(minLength || maxLength) && (
@@ -215,11 +233,11 @@ export default function SheInput({
                   <span className="she-subtext">min: {minLength}</span>
                 )}
                 {props.type === "number" && (
-                  <span className="she-subtext">value: {value as number}</span>
+                  <span className="she-subtext">value: {_value as number}</span>
                 )}
                 {props.type !== "number" && (
                   <span className="she-subtext">
-                    value: {value.toString().length}
+                    value: {_value?.toString().length}
                   </span>
                 )}
                 {maxLength && (
