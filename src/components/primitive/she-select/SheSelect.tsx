@@ -50,10 +50,6 @@ export default function SheSelect({
   const [_loading, setLoading] = useState<boolean>(null);
 
   useEffect(() => {
-    console.log("Select RENDER");
-  }, []);
-
-  useEffect(() => {
     let updatedItems = [...(items || [])];
 
     if (!hideFirstOption) {
@@ -209,14 +205,14 @@ export default function SheSelect({
                         <span className="she-text">
                           {translate(item.textTransKey, item.text)}
                         </span>
-                        {item.description && (
+                        {/*{item.description && (
                           <span className="she-subtext">
                             {translate(
                               item.descriptionTransKey,
                               item.description,
                             )}
                           </span>
-                        )}
+                        )}*/}
                       </div>
                     </SelectItem>
                   ))}
