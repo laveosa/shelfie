@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { JSX, useEffect, useState } from "react";
 import { Trans } from "react-i18next";
 import { X } from "lucide-react";
 
@@ -17,6 +17,8 @@ import cs from "./SheSelect.module.scss";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import SheTooltip from "@/components/complex/she-tooltip/SheTooltip.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import { isSheIconConfig } from "@/utils/helpers/quick-helper.ts";
+import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 
 export default function SheSelect({
   className,
@@ -36,17 +38,26 @@ export default function SheSelect({
   required,
   disabled,
   isLoading,
+  isOpen,
+  onOpenChange,
   onSelect,
   ...props
-}: ISheSelect): React.ReactNode {
+}: ISheSelect): JSX.Element {
   const { translate } = useAppTranslation();
-  const [_selected, setSelected] = useState<any>(selected || null);
-  const [_items, setItems] = useState<ISheSelectItem[]>(_addItemsIds(items));
+  const [_selected, setSelected] = useState<ISheSelectItem>(null);
+  const [_items, setItems] = useState<ISheSelectItem[]>(_addItemsIds(null));
+  const [_open, setOpen] = useState<boolean>(null);
+  const [_loading, setLoading] = useState<boolean>(null);
 
   useEffect(() => {
-    if (!hideFirstOption && items) {
-      if (items.length === 0 || items[0].text !== "not selected") {
-        items.unshift({
+    let updatedItems = [...(items || [])];
+
+    if (!hideFirstOption) {
+      const firstIsNotSelected =
+        updatedItems.length === 0 || updatedItems[0].text !== "not selected";
+
+      if (firstIsNotSelected) {
+        updatedItems.unshift({
           value: null,
           text: "not selected",
           textTransKey: "not_selected",
@@ -54,29 +65,52 @@ export default function SheSelect({
       }
     }
 
-    setItems(_addItemsIds(items));
-  }, [items]);
+    const itemsWithIds = _addItemsIds(updatedItems);
+    setItems(itemsWithIds);
+
+    const selectedItem = _getSelectedItemByIdentifier(
+      selected,
+      "value",
+      itemsWithIds,
+    );
+
+    const resolved = selectedItem?.id
+      ? _getSelectedItemById(selectedItem.id, itemsWithIds)
+      : null;
+
+    setSelected(resolved);
+
+    if (isOpen && updatedItems?.length > 0) {
+      requestAnimationFrame(() => {
+        setOpen(true);
+      });
+    }
+  }, [items, selected]);
 
   useEffect(() => {
-    setSelected(selected);
-
-    if (selected && _items) {
-      onChangeHandler(
-        _getSelectedItemByIdentifier(selected, "value", _items)?.id,
-      );
+    if (isLoading) {
+      setOpen(false);
+    } else if (typeof isOpen === "boolean") {
+      setOpen(isOpen);
     }
-  }, [selected]);
+
+    if (typeof isLoading === "boolean" && isLoading !== _loading) {
+      setLoading(isLoading);
+    }
+  }, [isOpen, isLoading]);
 
   // ==================================================================== EVENT
 
-  function onChangeHandler(id: string | null) {
-    let selected = id ? _getSelectedItemByIdentifier(id, "id", _items) : null;
-    selected = selected?.value ? selected : null;
-    setSelected(selected);
+  function onChangeHandler(id: string) {
+    setSelected(() => {
+      const selected = _getSelectedItemById(id);
 
-    if (onSelect) {
-      onSelect(selected ? selected.value : null);
-    }
+      if (onSelect) {
+        onSelect(selected ? selected.value : null);
+      }
+
+      return selected;
+    });
   }
 
   function onClearHandler() {
@@ -96,12 +130,23 @@ export default function SheSelect({
     }));
   }
 
+  function _getSelectedItemById(
+    id: string,
+    fromItems: ISheSelectItem[] = _items,
+  ): ISheSelectItem {
+    if (!id) return null;
+    const selected = _getSelectedItemByIdentifier(id, "id", fromItems);
+    return selected?.value ? selected : null;
+  }
+
   function _getSelectedItemByIdentifier(
     data: any,
     identifier: string,
     items: ISheSelectItem[],
   ): ISheSelectItem {
-    return items?.find((item) => item[identifier] == data);
+    if (!data || !identifier || !items || items.length === 0) return null;
+
+    return items.find((item) => item[identifier] == data);
   }
 
   return (
@@ -121,13 +166,24 @@ export default function SheSelect({
           )}
           <div className={cs.sheSelectControl}>
             <Select
-              {...(props as any)}
+              {...props}
               value={_selected?.id ?? ""}
-              disabled={disabled || isLoading || !items || items.length === 0}
+              disabled={disabled || _loading || !items || items.length === 0}
+              open={_open}
+              onOpenChange={(val) => {
+                if (_loading) return;
+                setOpen(val);
+                if (onOpenChange) onOpenChange(val);
+              }}
               onValueChange={(id) => onChangeHandler(id)}
             >
               <SelectTrigger>
-                {icon && <div className={cs.iconBlock}>{icon}</div>}
+                {icon &&
+                  (isSheIconConfig(icon) ? (
+                    <SheIcon {...icon} className={cs.iconBlock} />
+                  ) : (
+                    <SheIcon icon={icon} className={cs.iconBlock} />
+                  ))}
                 <SelectValue
                   placeholder={
                     placeholder
@@ -136,30 +192,41 @@ export default function SheSelect({
                   }
                 />
               </SelectTrigger>
-              <SelectContent>
-                {_items?.map((item: ISheSelectItem) => (
-                  <SelectItem
-                    className={cs.sheSelectItem}
-                    key={item.id}
-                    value={item.id}
-                    disabled={item.disabled}
-                  >
-                    <span className="she-text">
-                      {translate(item.textTransKey, item.text)}
-                    </span>
-                  </SelectItem>
-                ))}
-              </SelectContent>
+              {_items?.length > 0 && (
+                <SelectContent>
+                  {_items?.map((item: ISheSelectItem) => (
+                    <SelectItem
+                      className={`${cs.sheSelectItem} ${_loading ? "disabled" : ""}`}
+                      key={item.id}
+                      value={item.id}
+                      disabled={item.disabled}
+                    >
+                      <div>
+                        <span className="she-text">
+                          {translate(item.textTransKey, item.text)}
+                        </span>
+                        {/*{item.description && (
+                          <span className="she-subtext">
+                            {translate(
+                              item.descriptionTransKey,
+                              item.description,
+                            )}
+                          </span>
+                        )}*/}
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              )}
             </Select>
             {showClearBtn && (
               <SheButton
                 variant="ghost"
                 size="icon"
-                disabled={!_selected}
+                icon={X}
+                disabled={!_selected || isLoading}
                 onClick={onClearHandler}
-              >
-                <X />
-              </SheButton>
+              />
             )}
           </div>
         </div>

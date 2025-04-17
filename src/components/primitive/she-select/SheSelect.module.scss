@@ -45,6 +45,7 @@ $clearBtnSize: 30px;
       }
 
       .sheSelectItem {
+        // TODO this bock need to be styled and placed in global style file, the items of select option rendered outside main component, on tag body level, and need to be styled globally
       }
 
       [class*="sheButton"] {

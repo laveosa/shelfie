@@ -1,10 +1,10 @@
-import { ComponentPropsWithRef } from "react";
+import React, { ComponentPropsWithRef } from "react";
 
 import { ISheTooltip } from "@/const/interfaces/complex-components/ISheTooltip.ts";
-import { IBaseComponent } from "@/const/interfaces/IBaseComponent.ts";
+import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 
-export interface ISheSelectItem extends IBaseComponent {
-  id?: any;
+export interface ISheSelectItem extends ComponentPropsWithRef<any> {
+  id?: string;
   value: any;
   text: string;
   textTransKey?: string;
@@ -13,19 +13,24 @@ export interface ISheSelectItem extends IBaseComponent {
   disabled?: boolean;
 }
 
-export interface ISheSelect extends IBaseComponent {
+export interface ISheSelect extends ComponentPropsWithRef<any> {
   label?: string;
   labelTransKey?: string;
   placeholder?: string;
   placeholderTransKey?: string;
-  icon?: any;
+  icon?: Partial<ISheIcon> | string | React.FC<any>;
   selected?: any;
   items?: ISheSelectItem[];
   showClearBtn?: boolean;
   hideFirstOption?: boolean;
   tooltip?: ISheTooltip;
   required?: boolean;
-  disabled?: boolean;
+  minWidth?: string;
+  maxWidth?: string;
+  fullWidth?: boolean;
   isLoading?: boolean;
+  disabled?: boolean;
+  isOpen?: boolean;
+  onOpenChange?: (value: any) => void;
   onSelect?: (value: any) => void;
 }
