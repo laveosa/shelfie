@@ -1,3 +1,5 @@
+import React from "react";
+
 import cs from "./DashboardPage.module.scss";
 import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageService.ts";
 

@@ -13,7 +13,7 @@ export interface ISheFormFooter extends ComponentPropsWithRef<any> {
   secondaryProps?: ISheButton;
   hideSecondary?: boolean;
   notDisabledSubmit?: boolean;
-  loading?: boolean;
+  isLoading?: boolean;
   isValid?: boolean;
   footerPosition?: DirectionEnum;
   onPrimary?: () => void;

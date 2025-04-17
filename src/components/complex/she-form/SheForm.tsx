@@ -16,7 +16,7 @@ export default function SheForm<T>({
   view,
   secondaryBtnBehavior = FormSecondaryBtnBehaviorEnum.CLEAR,
   disabled,
-  loading,
+  isLoading,
   formPosition = DirectionEnum.LEFT,
   minWidth,
   maxWidth,
@@ -53,7 +53,7 @@ export default function SheForm<T>({
 
   return (
     <div
-      className={`${className || ""} ${cs.sheForm} ${cs[view] || ""} ${disabled || loading ? "disabled" : ""} ${cs[formPosition] || ""} ${fullWidth ? cs.fullWidth : ""}`}
+      className={`${className || ""} ${cs.sheForm} ${cs[view] || ""} ${disabled || isLoading ? "disabled" : ""} ${cs[formPosition] || ""} ${fullWidth ? cs.fullWidth : ""}`}
       style={{
         minWidth,
         maxWidth,
@@ -66,7 +66,7 @@ export default function SheForm<T>({
           <SheFormFooter
             {...props}
             isValid={form.formState.isValid}
-            loading={loading}
+            isLoading={isLoading}
             onSecondary={onSecondaryHandler}
           />
         </form>

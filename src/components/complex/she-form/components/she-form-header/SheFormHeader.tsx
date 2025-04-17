@@ -29,7 +29,7 @@ export default function SheFormHeader({
               <img src={image} alt="form image" />
             </div>
           )}
-          {icon && <div className={cs.sheIcon}>{icon}</div>}
+          {icon && <div className={cs.sheFormIcon}>{icon}</div>}
           {(title || text || description) && (
             <FormLabel>
               {title && (

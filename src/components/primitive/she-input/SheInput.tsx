@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { JSX, useEffect, useRef, useState } from "react";
 import { Search, X } from "lucide-react";
 import { isRegExp } from "lodash";
 import { Trans } from "react-i18next";
@@ -13,7 +13,6 @@ import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 
 export default function SheInput({
   className = "",
-  styles,
   minWidth,
   maxWidth,
   fullWidth,
@@ -39,7 +38,7 @@ export default function SheInput({
   onBlur,
   onDelay,
   ...props
-}: ISheInput): React.ReactNode {
+}: ISheInput): JSX.Element {
   const { translate } = useAppTranslation();
   const [value, setValue] = useState(props.value || props.defaultValue || "");
   const [icon, setIcon] = useState(
