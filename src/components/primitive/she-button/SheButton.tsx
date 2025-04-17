@@ -7,7 +7,7 @@ import { ISheButton } from "@/const/interfaces/primitive-components/ISheButton.t
 import { Button } from "@/components/ui/button.tsx";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
+import { isSheIconConfig } from "@/utils/helpers/quick-helper.ts";
 
 export default function SheButton({
   className,
@@ -46,12 +46,6 @@ export default function SheButton({
   // ==================================================================== EVENT
 
   // ==================================================================== PRIVATE
-
-  function isSheIconConfig(
-    icon: unknown,
-  ): icon is Partial<ISheIcon> & { icon: any } {
-    return typeof icon === "object" && icon !== null && "icon" in icon;
-  }
 
   // ==================================================================== LAYOUT
 

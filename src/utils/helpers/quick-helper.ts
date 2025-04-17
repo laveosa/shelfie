@@ -1,6 +1,7 @@
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { IUndefinedProperties } from "@/const/interfaces/IUndefinedProperties.ts";
 import { ComponentPropsWithRef } from "react";
+import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 
 export function getCurrentSectionUrl(url: string): NavUrlEnum {
   const chang = url.split("/")[1].toUpperCase();
@@ -36,3 +37,9 @@ export const filterCustomProps = <
 
   return defaultProps as TDefaultProps;
 };
+
+export function isSheIconConfig(
+  icon: unknown,
+): icon is Partial<ISheIcon> & { icon: any } {
+  return typeof icon === "object" && icon !== null && "icon" in icon;
+}
