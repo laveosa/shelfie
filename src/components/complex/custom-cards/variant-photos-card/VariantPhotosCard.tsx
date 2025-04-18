@@ -76,7 +76,11 @@ export default function VariantPhotosCard({
             <div className={cs.managePhotosGrid}>
               {variantPhotos.length > 0 ? (
                 <DndGridDataTable
-                  className={cs.photosGrid}
+                  className={
+                    variantPhotos.length > 0
+                      ? cs.productPhotosGridShort
+                      : cs.productPhotosGridLong
+                  }
                   enableDnd={true}
                   showHeader={false}
                   columns={variantPhotosColumns}

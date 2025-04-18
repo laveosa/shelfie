@@ -153,7 +153,12 @@ export function ManageVariantsPage() {
       case "uploadPhotoToVariant":
         console.log("PHOTO UPLOAD", payload);
         service.uploadPhotoHandler(payload).then((res) => {
-          console.log("SELECTED VARIANT", res);
+          if (res) {
+            service.getVariantDetailsHandler(payload.contextId).then((res) => {
+              dispatch(actions.refreshSelectedVariant(res));
+              dispatch(actions.refreshVariantPhotos(res?.photos));
+            });
+          }
         });
         break;
       case "addPhotoToVariant":

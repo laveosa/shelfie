@@ -40,7 +40,10 @@
         top: 7px;
         right: 6px;
         background: vars.$colorMuted;
-        height: 26px;
+        min-width: 30px;
+        min-height: 30px;
+        padding: 0;
+        max-height: 30px;
 
         &:hover {
           background: vars.$colorMuted;
