@@ -1,4 +1,4 @@
 export enum InputPatternEnum {
-  EMAIL = /(.+)@(.+){2,}\.(.+){2,}/,
-  PASSWORD = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+  EMAIL = /(.+)@(.+){2,}\.(.+){2,}/ as any,
+  PASSWORD = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/ as any,
 }
