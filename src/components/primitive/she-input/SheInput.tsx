@@ -10,7 +10,7 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { useDebounce } from "@/utils/hooks/useDebounce.ts";
 import SheTooltip from "@/components/complex/she-tooltip/SheTooltip.tsx";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
-import { isSheIconConfig } from "@/utils/helpers/quick-helper.ts";
+import { generateId, isSheIconConfig } from "@/utils/helpers/quick-helper.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 
 export default function SheInput({
@@ -30,9 +30,9 @@ export default function SheInput({
   ignoreValidation,
   required,
   showClearBtn,
-  showError,
-  error,
-  errorTransKey,
+  showError = true,
+  patternErrorMessage,
+  patternErrorMessageTransKey,
   pattern,
   tooltip,
   disabled,
@@ -42,6 +42,7 @@ export default function SheInput({
   onChange,
   onBlur,
   onDelay,
+  onIsValid,
   ...props
 }: ISheInput): JSX.Element {
   const { translate } = useAppTranslation();
@@ -49,9 +50,12 @@ export default function SheInput({
   const [_isValid, setIsValid] = useState(isValid);
   const [_isLengthValid, setIsLengthValid] = useState(isValid);
   const [_showError, setShowError] = useState(showError);
-  const [_error, setError] = useState(error);
-  const [_errorTransKey, setErrorTransKey] = useState(errorTransKey);
+  const [_error, setError] = useState<string>(null);
+  const [_errorTransKey, setErrorTransKey] = useState(
+    patternErrorMessageTransKey,
+  );
 
+  const ariaDescribedbyId = `${generateId()}_INPUT_ID`;
   const iconToRender = icon || (isSearch && Search);
   const delayValue = useDebounce(_value);
   const isInitialized = useRef(false);
@@ -68,6 +72,17 @@ export default function SheInput({
       onDelay(delayValue);
     }
   }, [delayValue]);
+
+  useEffect(() => {
+    setIsValid(isValid);
+
+    if (isValid) {
+      isInitialized.current = false;
+      isTouched.current = false;
+      setIsLengthValid(true);
+      setErrorCondition(false);
+    }
+  }, [isValid]);
 
   // ==================================================================== EVENT
 
@@ -89,9 +104,9 @@ export default function SheInput({
   function onClearHandler() {
     isInitialized.current = false;
     isTouched.current = false;
-    setIsValid(true);
+    updateIsValid(true);
     setIsLengthValid(true);
-    setErrorCondition();
+    setErrorCondition(false);
 
     const newValue = "";
     setValue(newValue);
@@ -105,13 +120,20 @@ export default function SheInput({
   // ==================================================================== PRIVATE
 
   function validateInput(inputValue) {
-    if (!isTouched.current) return true;
+    if (ignoreValidation || !isTouched.current) return true;
     let validation = true;
     validation = isRequiredValid(inputValue, validation);
+    validation = isLengthValid(inputValue, validation);
     validation = isPatternValid(inputValue, validation);
-    isLengthValid(inputValue);
-    setIsValid(validation);
+    updateIsValid(validation);
   }
+
+  function updateIsValid(value: boolean) {
+    if (onIsValid) onIsValid(value);
+    setIsValid(value);
+  }
+
+  // ----------------------------- VALIDATION PATTERNS CHECK
 
   function isRequiredValid(inputValue, validation) {
     if (!required || !validation) return validation;
@@ -121,58 +143,57 @@ export default function SheInput({
     return result;
   }
 
-  function isPatternValid(inputValue, validation) {
-    if (!pattern || pattern.length === 0 || !validation) return validation;
-    if (!isRegExp(pattern)) return false;
-    const result = pattern.test(inputValue);
-    setShowErrorCondition(result, "error pattern validation", "REPLACE.ME"); // TODO replace with valid translation key
-    return result;
-  }
-
-  function isLengthValid(inputValue) {
-    if (!minLength && !maxLength) {
+  function isLengthValid(inputValue, validation) {
+    if ((!minLength && !maxLength) || !validation) {
       setIsLengthValid(true);
-      return;
+      return validation;
     }
 
     const valueLength =
       props.type === "number"
         ? (inputValue as number)
         : inputValue.toString().length;
-
     const isMinOk =
       typeof minLength === "number" ? valueLength >= minLength : true;
     const isMaxOk =
       typeof maxLength === "number" ? valueLength <= maxLength : true;
-    setIsLengthValid(isMinOk && isMaxOk);
+    const result = isMinOk && isMaxOk;
 
-    // setIsLengthValid(valueLength >= minLength && valueLength <= maxLength);
+    setIsLengthValid(result);
+    setShowErrorCondition(result, "value length not valid", "REPLACE.ME"); // TODO replace with valid translation key
+    return result;
   }
+
+  function isPatternValid(inputValue, validation) {
+    if (!pattern || pattern.length === 0 || !validation) return validation;
+    if (!isRegExp(pattern)) return false;
+
+    const result = pattern.test(inputValue);
+    const message = patternErrorMessage || "error pattern validation";
+    const messageTransKey = patternErrorMessageTransKey || "REPLACE.ME"; // TODO replace with valid translation key
+    setShowErrorCondition(result, message, messageTransKey);
+    return result;
+  }
+
+  // ----------------------------- ERROR CONDITION
 
   function setShowErrorCondition(
     isValid: boolean,
-    message: string,
+    message?: string,
     messageTransKey?: string,
   ) {
-    if (!isValid) {
-      setShowError(true);
-
-      if (!error) {
-        setShowError(true);
-        setErrorCondition(true, message, messageTransKey);
-      }
-    } else {
-      setShowError(false);
-      setErrorCondition();
-    }
+    !isValid
+      ? setErrorCondition(true, message, messageTransKey)
+      : setErrorCondition(false);
   }
 
   function setErrorCondition(
-    show: boolean = showError,
-    text: string = error,
-    errTransKey: string = errorTransKey,
+    show: boolean,
+    text?: string,
+    errTransKey?: string,
   ) {
-    setShowError(show);
+    if (showError && show) setShowError(show);
+
     setError(text);
     setErrorTransKey(errTransKey);
   }
@@ -192,21 +213,31 @@ export default function SheInput({
       <SheTooltip {...tooltip}>
         <div className={cs.sheInputComponent}>
           {label && (
-            <label className="she-text">
+            <label className="she-text" aria-describedby={ariaDescribedbyId}>
               <Trans i18nKey={labelTransKey}>{label}</Trans>
             </label>
           )}
           <div className={cs.sheInputControl}>
             {iconToRender &&
               (isSheIconConfig(iconToRender) ? (
-                <SheIcon {...iconToRender} className={cs.iconBlock} />
+                <SheIcon
+                  {...iconToRender}
+                  className={cs.iconBlock}
+                  aria-describedby={ariaDescribedbyId}
+                />
               ) : (
-                <SheIcon icon={iconToRender} className={cs.iconBlock} />
+                <SheIcon
+                  icon={iconToRender}
+                  className={cs.iconBlock}
+                  aria-describedby={ariaDescribedbyId}
+                />
               ))}
             <Input
               {...props}
               value={_value || ""}
               placeholder={translate(placeholderTransKey, placeholder)}
+              aria-invalid={!isValid}
+              aria-describedby={ariaDescribedbyId}
               disabled={disabled || isLoading}
               onChange={(e) => onChangeHandler(e)}
               onBlur={(e) => onBlurHandler(e)}
@@ -216,6 +247,7 @@ export default function SheInput({
                 variant="ghost"
                 size="icon"
                 icon={X}
+                aria-describedby={ariaDescribedbyId}
                 disabled={
                   !_value ||
                   _value.toString().length === 0 ||
@@ -237,7 +269,7 @@ export default function SheInput({
                 )}
                 {props.type !== "number" && (
                   <span className="she-subtext">
-                    value: {_value?.toString().length}
+                    value: {_value ? _value.toString().length : 0}
                   </span>
                 )}
                 {maxLength && (

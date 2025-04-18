@@ -148,7 +148,9 @@ export function AuthPage() {
                         label="First Name"
                         placeholder="enter first name..."
                         isValid={!form.formState.errors.firstName}
-                        error={form.formState.errors.firstName?.message}
+                        patternErrorMessage={
+                          form.formState.errors.firstName?.message
+                        }
                         showError={true}
                       />
                     </SheForm.Field>

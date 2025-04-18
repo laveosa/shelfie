@@ -18,8 +18,8 @@ export interface ISheInput extends InputProps, ComponentPropsWithRef<any> {
   maxWidth?: string;
   fullWidth?: boolean;
   showError?: boolean;
-  error?: string;
-  errorTransKey?: string;
+  patternErrorMessage?: string;
+  patternErrorMessageTransKey?: string;
   pattern?: InputPatternEnum | any;
   tooltip?: ISheTooltip;
   isLoading?: boolean;
@@ -27,4 +27,5 @@ export interface ISheInput extends InputProps, ComponentPropsWithRef<any> {
   onChange?: (value: any) => void;
   onBlur?: (value: any) => void;
   onDelay?: (value: any) => void;
+  onIsValid?: (value: boolean) => void;
 }
