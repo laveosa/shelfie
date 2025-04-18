@@ -34,8 +34,8 @@ import { PriceTypeModel } from "@/const/models/PriceTypeModel.ts";
 export default function AddStockCard({
   variant,
   onAction,
-  taxType,
-  currencyType,
+  taxTypes,
+  currencyTypes,
   onSecondaryButtonClick,
   ...props
 }: IAddStockCard) {
@@ -46,19 +46,18 @@ export default function AddStockCard({
 
   const form = useForm({
     defaultValues: {
-      unitAmount: 0,
+      unitAmount: 1,
       priceModel: {
         price: 0,
-        taxTypeId: 0,
-        priceType: "",
-        currencyId: 0,
+        taxTypeId: taxTypes?.[4].id,
+        priceType: purchasePriceType?.[0].priceTypeName,
+        currencyId: currencyTypes?.[0].id,
       },
       purchaseId: 0,
     },
   });
 
   function onSubmit(data) {
-    console.log("Data:", data);
     const formattedData = {
       ...data,
       unitAmount: Number(data.unitAmount) || 0,
@@ -68,9 +67,9 @@ export default function AddStockCard({
         priceType: data.priceModel.priceType,
         currencyId: Number(data.priceModel.currencyId) || 0,
       },
-      purchaseId: Number(data.purchaseId) || 0,
+      purchaseId: Number(data.purchaseId) || 1,
     };
-    onAction("increaseStockAmount", { formattedData, variant });
+    onAction("increaseStockAmount", { variant, formattedData });
   }
 
   return (
@@ -81,6 +80,7 @@ export default function AddStockCard({
       primaryButtonTitle="Add to Stock"
       showSecondaryButton={true}
       secondaryButtonTitle="Cancel"
+      onPrimaryButtonClick={form.handleSubmit(onSubmit)}
       onSecondaryButtonClick={onSecondaryButtonClick}
       showCloseButton
       width="370px"
@@ -129,12 +129,12 @@ export default function AddStockCard({
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {taxType?.map((option) => (
+                          {taxTypes?.map((taxType) => (
                             <SelectItem
-                              key={option.taxTypeId}
-                              value={option.taxTypeId.toString()}
+                              key={taxType.id}
+                              value={taxType.id.toString()}
                             >
-                              <div>{option.taxTypeName}</div>
+                              <div>{taxType.name}</div>
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -151,7 +151,7 @@ export default function AddStockCard({
                     <FormItem className={cs.select}>
                       <FormLabel>Netto/Brutto</FormLabel>
                       <Select
-                        onValueChange={(value) => field.onChange(Number(value))}
+                        onValueChange={(value) => field.onChange(value)}
                         value={field.value ? field.value.toString() : ""}
                       >
                         <FormControl>
@@ -163,7 +163,7 @@ export default function AddStockCard({
                           {purchasePriceType?.map((price) => (
                             <SelectItem
                               key={price.priceTypeId}
-                              value={price.priceTypeName}
+                              value={price.priceTypeName.toString()}
                             >
                               <div>{price.priceTypeName}</div>
                             </SelectItem>
@@ -191,12 +191,12 @@ export default function AddStockCard({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {currencyType?.map((option) => (
+                      {currencyTypes?.map((currencyType) => (
                         <SelectItem
-                          key={option.currencyId}
-                          value={option.currencyId.toString()}
+                          key={currencyType.id}
+                          value={currencyType.id.toString()}
                         >
-                          <div>{option.currencyName}</div>
+                          <div>{currencyType.name}</div>
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -204,70 +204,66 @@ export default function AddStockCard({
                 </FormItem>
               )}
             ></FormField>
-          </div>
-        </SheForm>
-        <div className={cs.purchaseDetailsBlock}>
-          <div className={cs.purchaseDetailsTitle}>
-            <span className="she-title">Purchase Details</span>
-          </div>
-          <div className={cs.purchaseDetailsInputRow}>
-            <SheInput fullWidth label="Invoice number (optional)" />
-          </div>
-          <div className={cs.purchaseDetailsInputRow}>
-            <SheInput
-              fullWidth
-              label="Set date when purchase took place
-                    (for valid exchange rate)"
-            />
-          </div>
-          <div className={cs.supplierInformationBlock}>
-            <SheInput
-              fullWidth
-              label="Set date when purchase took place
-                    (for valid exchange rate)"
-            />
-            <div className={cs.supplierInformationBlock}>
-              <span className="she-text">
-                Select which supplier provided the products
-              </span>
-              <div className={cs.supplierInformation}>
-                <div>
-                  <img src={image} alt="" />
-                </div>
-                <span className="she-subtext">
-                  Babylon Srl VIA DEI NOTAI 135-137 BL, Centergross, 30, Italy
-                </span>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <SheButton
-                      variant="secondary"
-                      className="flex h-8 p-0 data-[state=open]:bg-muted"
-                    >
-                      <MoreHorizontal />
-                    </SheButton>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start" className="w-[160px]">
-                    <DropdownMenuItem onClick={() => onAction("deleteTrait")}>
-                      <span className="she-text">Delete</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+            <div className={cs.purchaseDetailsBlock}>
+              <div className={cs.purchaseDetailsTitle}>
+                <span className="she-title">Purchase Details</span>
               </div>
-              <div className={cs.createPurchaseToggleBlock}>
-                <div className={cs.createPurchaseToggle}>
-                  <Switch />
-                </div>
-                <div className={cs.createPurchaseToggleDesc}>
-                  <span className="she-subtext">Create Purchase</span>
-                  <span className="she-subtext">
-                    (Or connect to the existing purchase if invoice number is
-                    already in the system)
+              <div className={cs.purchaseDetailsInputRow}>
+                <SheInput fullWidth label="Invoice number (optional)" />
+              </div>
+              <div className={cs.supplierInformationBlock}>
+                <SheInput
+                  fullWidth
+                  label="Set date when purchase took place
+                    (for valid exchange rate)"
+                />
+                <div className={cs.supplierInformationBlock}>
+                  <span className="she-text">
+                    Select which supplier provided the products
                   </span>
+                  <div className={cs.supplierInformation}>
+                    <div>
+                      <img src={image} alt="" />
+                    </div>
+                    <span className="she-subtext">
+                      Babylon Srl VIA DEI NOTAI 135-137 BL, Centergross, 30,
+                      Italy
+                    </span>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <SheButton
+                          variant="secondary"
+                          className="flex h-8 p-0 data-[state=open]:bg-muted"
+                        >
+                          <MoreHorizontal />
+                        </SheButton>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="start" className="w-[160px]">
+                        <DropdownMenuItem
+                          onClick={() => onAction("deleteTrait")}
+                        >
+                          <span className="she-text">Delete</span>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                  <div className={cs.createPurchaseToggleBlock}>
+                    <div className={cs.createPurchaseToggle}>
+                      <Switch />
+                    </div>
+                    <div className={cs.createPurchaseToggleDesc}>
+                      <span className="she-subtext">Create Purchase</span>
+                      <span className="she-subtext">
+                        (Or connect to the existing purchase if invoice number
+                        is already in the system)
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </SheForm>
       </div>
     </SheProductCard>
   );

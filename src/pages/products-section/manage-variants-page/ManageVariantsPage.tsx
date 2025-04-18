@@ -7,7 +7,6 @@ import { useToast } from "@/hooks/useToast.ts";
 import { GridModel } from "@/const/models/GridModel.ts";
 import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 import cs from "@/pages/products-section/product-basic-data-page/ProductBasicDataPage.module.scss";
-import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
 import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
 import useManageVariantsPageService from "@/pages/products-section/manage-variants-page/useManageVariantsPageService.ts";
 import { IManageVariantsPageSlice } from "@/const/interfaces/store-slices/IManageVariantsPageSlice.ts";
@@ -19,7 +18,6 @@ import VariantConfigurationCard from "@/components/complex/custom-cards/variant-
 import AddStockCard from "@/components/complex/custom-cards/add-stock-card/AddStockCard.tsx";
 import DisposeStockCard from "@/components/complex/custom-cards/dispose-stock-card/DisposeStockCard.tsx";
 import StockHistoryCard from "@/components/complex/custom-cards/stock-history-card/StockHistoryCard.tsx";
-import ConnectImageCard from "@/components/complex/custom-cards/connect-image-card/ConnectImageCard.tsx";
 import ManageTraitsCard from "@/components/complex/custom-cards/manage-traits-card/ManageTraitsCard.tsx";
 import AddVariantCard from "@/components/complex/custom-cards/add-variant-card/AddVariantCard.tsx";
 import VariantPhotosCard from "@/components/complex/custom-cards/variant-photos-card/VariantPhotosCard.tsx";
@@ -57,6 +55,12 @@ export function ManageVariantsPage() {
     service.getProductPhotosHandler(Number(productId)).then((res) => {
       dispatch(actions.refreshProductPhotos(res));
     });
+    service.getTaxesListHandler().then((res) => {
+      dispatch(actions.refreshTaxesList(res));
+    });
+    service.getCurrenciesListHandler().then((res) => {
+      dispatch(actions.refreshCurrenciesList(res));
+    });
   }, [productId]);
 
   useEffect(() => {
@@ -92,13 +96,6 @@ export function ManageVariantsPage() {
     }
 
     dispatch(actions.refreshActiveCards(updatedCards));
-  }
-
-  function itemCardClickHandler(item) {
-    service.getVariantDetailsHandler(item.variantId).then((res) => {
-      dispatch(actions.refreshSelectedVariant(res));
-      handleCardAction("variantConfigurationCard", true);
-    });
   }
 
   function onAction(actionType: string, payload: any) {
@@ -143,6 +140,17 @@ export function ManageVariantsPage() {
         console.log("StockAmount", payload);
         service
           .increaseStockAmountForVariantHandler(
+            payload.variant.variantId,
+            payload.formattedData,
+          )
+          .then((res) => {
+            console.log("SELECTED VARIANT", res);
+          });
+        break;
+      case "disposeFromStock":
+        console.log("DisposeFromStock", payload);
+        service
+          .disposeVariantFromStockHandler(
             payload.variant.variantId,
             payload.formattedData,
           )
@@ -322,9 +330,6 @@ export function ManageVariantsPage() {
       case "openVariantHistoryCard":
         handleCardAction("variantHistoryCard", true);
         break;
-      case "openConnectImageCard":
-        handleCardAction("connectImageCard", true);
-        break;
       case "openManageTraitsCard":
         handleCardAction("manageTraitsCard", true);
         break;
@@ -345,14 +350,6 @@ export function ManageVariantsPage() {
 
   return (
     <div className={cs.createProductPage}>
-      {state.productVariants?.length > 0 && (
-        <ItemsCard
-          title="Variants"
-          data={state.productVariants}
-          selectedItem={state.selectedVariant?.variantId}
-          onAction={itemCardClickHandler}
-        />
-      )}
       <ProductMenuCard
         title={productId ? "Manage Variant" : "Create Variant"}
         productCounter={state.productCounter}
@@ -369,6 +366,7 @@ export function ManageVariantsPage() {
         <VariantConfigurationCard
           variant={state.selectedVariant}
           data={state.variantTraitsGridModel}
+          taxesList={state.taxesList}
           onAction={onAction}
           onGenerateProductCode={service.generateProductCodeHandler}
           onSecondaryButtonClick={() =>
@@ -379,6 +377,8 @@ export function ManageVariantsPage() {
       {state.activeCards.includes("addStockCard") && (
         <AddStockCard
           onAction={onAction}
+          taxTypes={state.taxesList}
+          currencyTypes={state.currenciesList}
           variant={state.selectedVariant}
           onSecondaryButtonClick={() => handleCardAction("addStockCard")}
         />
@@ -386,6 +386,7 @@ export function ManageVariantsPage() {
       {state.activeCards.includes("disposeStockCard") && (
         <DisposeStockCard
           variant={state.selectedVariant}
+          onAction={onAction}
           onSecondaryButtonClick={() => handleCardAction("disposeStockCard")}
         />
       )}
@@ -427,13 +428,6 @@ export function ManageVariantsPage() {
             handleCardAction("productTraitConfigurationCard")
           }
           onAction={onAction}
-        />
-      )}
-      {state.activeCards.includes("connectImageCard") && (
-        <ConnectImageCard
-          data={state.productVariants}
-          onAction={onAction}
-          onSecondaryButtonClick={() => handleCardAction("connectImageCard")}
         />
       )}
       {state.activeCards.includes("variantPhotosCard") && (

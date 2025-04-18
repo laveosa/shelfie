@@ -5,7 +5,7 @@ import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 export interface IVariantConfigurationCard {
   variant?: VariantModel;
   data?: GridModel;
-  taxType?: TaxTypeModel[];
+  taxesList?: TaxTypeModel[];
   onAction?: (identifier: string, payload?: any) => void;
   onGenerateProductCode?: () => Promise<any>;
   onSecondaryButtonClick?: () => void;

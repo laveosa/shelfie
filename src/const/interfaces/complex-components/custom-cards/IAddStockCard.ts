@@ -6,8 +6,8 @@ import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 export interface IAddStockCard {
   variant?: VariantModel;
   data?: GridModel;
-  taxType?: TaxTypeModel[];
-  currencyType?: CurrencyModel[];
+  taxTypes?: TaxTypeModel[];
+  currencyTypes?: CurrencyModel[];
   onAction?: (identifier: string, payload?: any) => void;
   onSecondaryButtonClick?: () => void;
 }

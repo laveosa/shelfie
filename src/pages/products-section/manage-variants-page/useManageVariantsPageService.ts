@@ -17,6 +17,8 @@ export default function useManageVariantsPageService() {
     ProductsApiHooks.useUpdateVariantDetailsMutation();
   const [increaseStockAmountForVariant] =
     ProductsApiHooks.useIncreaseStockAmountForVariantMutation();
+  const [disposeVariantFromStock] =
+    ProductsApiHooks.useDisposeVariantFromStockMutation();
   const [generateProductCode] =
     ProductsApiHooks.useLazyGenerateProductCodeQuery();
   const [getTrait] = ProductsApiHooks.useLazyGetTraitQuery();
@@ -42,6 +44,9 @@ export default function useManageVariantsPageService() {
   const [createVariant] = ProductsApiHooks.useCreateVariantMutation();
   const [getProductPhotos] = ProductsApiHooks.useLazyGetProductPhotosQuery();
   const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
+  const [getTaxesList] = DictionaryApiHooks.useLazyGetTaxesListQuery();
+  const [getCurrenciesList] =
+    DictionaryApiHooks.useLazyGetCurrenciesListQuery();
 
   function getVariantsForGridHandler(data?: GridRequestModel) {
     return getVariantsForGrid(data).then((res: any) => {
@@ -93,6 +98,12 @@ export default function useManageVariantsPageService() {
 
   function increaseStockAmountForVariantHandler(id, model) {
     return increaseStockAmountForVariant({ id, model }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function disposeVariantFromStockHandler(id, model) {
+    return disposeVariantFromStock({ id, model }).then((res: any) => {
       return res.data;
     });
   }
@@ -181,6 +192,18 @@ export default function useManageVariantsPageService() {
     });
   }
 
+  function getTaxesListHandler() {
+    return getTaxesList().then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function getCurrenciesListHandler() {
+    return getCurrenciesList().then((res: any) => {
+      return res.data;
+    });
+  }
+
   return {
     getVariantsForGridHandler,
     getProductVariantsHandler,
@@ -190,6 +213,7 @@ export default function useManageVariantsPageService() {
     toggleVariantIsActiveHandler,
     updateVariantDetailsHandler,
     increaseStockAmountForVariantHandler,
+    disposeVariantFromStockHandler,
     generateProductCodeHandler,
     getListOfAllTraitsHandler,
     getListOfTraitsForProductHandler,
@@ -205,5 +229,7 @@ export default function useManageVariantsPageService() {
     deleteOptionsForTraitHandler,
     getProductPhotosHandler,
     uploadPhotoHandler,
+    getTaxesListHandler,
+    getCurrenciesListHandler,
   };
 }

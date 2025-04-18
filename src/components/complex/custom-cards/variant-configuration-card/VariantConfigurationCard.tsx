@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./VariantConfigurationCard.module.scss";
@@ -39,7 +39,7 @@ export default function VariantConfigurationCard({
   variant,
   data,
   onAction,
-  taxType,
+  taxesList,
   onGenerateProductCode,
   onSecondaryButtonClick,
   ...props
@@ -51,10 +51,22 @@ export default function VariantConfigurationCard({
       salePrice: {
         brutto: variant?.salePrice?.brutto,
         netto: variant?.salePrice?.netto,
-        taxTypeId: variant?.salePrice?.taxTypeId,
+        taxTypeId: taxesList?.[0].id,
       },
     },
   });
+
+  const { watch, setValue } = form;
+
+  const netto = watch("salePrice.netto");
+  const brutto = watch("salePrice.brutto");
+  const taxTypeId = watch("salePrice.taxTypeId");
+  const selectedTax = taxesList?.find((tax) => tax.id === taxTypeId);
+  const taxRate = selectedTax?.value || 0;
+  const lastChanged = useRef<"netto" | "brutto" | null>(null);
+
+  const traitsColumns = VariantConfigurationGridColumns;
+  const photoColumns = VariantPhotosGridColumns(onGridAction);
 
   useEffect(() => {
     form.reset({
@@ -63,13 +75,28 @@ export default function VariantConfigurationCard({
       salePrice: {
         brutto: variant?.salePrice?.brutto || 0,
         netto: variant?.salePrice?.netto || 0,
-        taxTypeId: variant?.salePrice?.taxTypeId || 0,
+        taxTypeId: taxesList?.[0]?.id,
       },
     });
   }, [form, variant?.variantName, variant?.variantCode, variant?.salePrice]);
 
-  const traitsColumns = VariantConfigurationGridColumns;
-  const photoColumns = VariantPhotosGridColumns(onGridAction);
+  useEffect(() => {
+    if (lastChanged.current === "netto") {
+      const calculatedBrutto = +(netto * (1 + taxRate)).toFixed(2);
+      if (brutto !== calculatedBrutto) {
+        setValue("salePrice.brutto", calculatedBrutto);
+      }
+    }
+  }, [netto, taxRate]);
+
+  useEffect(() => {
+    if (lastChanged.current === "brutto") {
+      const calculatedNetto = +(brutto / (1 + taxRate)).toFixed(2);
+      if (netto !== calculatedNetto) {
+        setValue("salePrice.netto", calculatedNetto);
+      }
+    }
+  }, [brutto, taxRate]);
 
   function onGenerateCode() {
     onGenerateProductCode().then((res: ProductCodeModel) => {
@@ -77,10 +104,6 @@ export default function VariantConfigurationCard({
       console.log("New code:", res.code);
     });
   }
-
-  // function onSubmit(data: VariantModel) {
-  //   onAction("updateVariantDetails", { data, variant });
-  // }
 
   function onSubmit(data: VariantModel) {
     console.log("Data:", data);
@@ -153,6 +176,7 @@ export default function VariantConfigurationCard({
                     step="any"
                     {...form.register("salePrice.brutto", {
                       valueAsNumber: true,
+                      onChange: () => (lastChanged.current = "brutto"),
                     })}
                     onDelay={form.handleSubmit(onSubmit)}
                   />
@@ -175,12 +199,12 @@ export default function VariantConfigurationCard({
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {taxType?.map((option) => (
+                          {taxesList?.map((taxType) => (
                             <SelectItem
-                              key={option.taxTypeId}
-                              value={option.taxTypeId.toString()}
+                              key={taxType.id}
+                              value={taxType.id.toString()}
                             >
-                              <div>{option.taxTypeName}</div>
+                              <div>{taxType.name}</div>
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -196,6 +220,7 @@ export default function VariantConfigurationCard({
                     step="any"
                     {...form.register("salePrice.netto", {
                       valueAsNumber: true,
+                      onChange: () => (lastChanged.current = "netto"),
                     })}
                     onDelay={form.handleSubmit(onSubmit)}
                   />

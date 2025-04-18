@@ -8,6 +8,8 @@ import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
+import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
+import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 
 const initialState: IManageVariantsPageSlice = {
   loading: false,
@@ -43,6 +45,8 @@ const initialState: IManageVariantsPageSlice = {
   traitOptions: [],
   productPhotos: [],
   variantPhotos: [],
+  taxesList: [],
+  currenciesList: [],
 };
 
 function setLoading(
@@ -180,6 +184,20 @@ function refreshVariantPhotos(
   state.variantPhotos = action?.payload || state.variantPhotos;
 }
 
+function refreshTaxesList(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<TaxTypeModel[]>,
+) {
+  state.taxesList = action?.payload || state.taxesList;
+}
+
+function refreshCurrenciesList(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<CurrencyModel[]>,
+) {
+  state.currenciesList = action?.payload || state.currenciesList;
+}
+
 const ManageVariantsPageSlice = createSlice({
   name: StoreSliceEnum.MANAGE_VARIANTS,
   initialState,
@@ -203,6 +221,8 @@ const ManageVariantsPageSlice = createSlice({
     refreshGridRequestModel,
     refreshProductPhotos,
     refreshVariantPhotos,
+    refreshTaxesList,
+    refreshCurrenciesList,
   },
 });
 
