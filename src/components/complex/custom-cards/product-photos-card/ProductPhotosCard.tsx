@@ -5,7 +5,7 @@ import cs from "./ProductPhotosCard.module.scss";
 import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { SheImageUploader } from "@/components/complex/she-images-file-uploader/SheImageUploader.tsx";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
-import { VariantPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/VariantPhotosGridColumns.tsx";
+import { ProductPhotosGridColumns } from "@/components/complex/grid/variant-photos-grid/ProductPhotosGridColumns.tsx";
 
 type ActionType = "upload" | "delete" | "dnd" | "connect";
 
@@ -15,7 +15,7 @@ export default function ProductPhotosCard({
   onAction,
   ...props
 }) {
-  const columns = VariantPhotosGridColumns(onGridAction);
+  const columns = ProductPhotosGridColumns(onGridAction);
 
   function handleAction(actionType: ActionType, payload?: any) {
     switch (actionType) {

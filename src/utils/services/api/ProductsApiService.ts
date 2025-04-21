@@ -261,6 +261,24 @@ export const ProductsApiService = createApi({
         },
       ],
     }),
+    detachVariantPhoto: apiConfig.createMutation<
+      any,
+      {
+        id?: number;
+        photoId?: number;
+      }
+    >(builder, {
+      query: ({ id, photoId }) => ({
+        url: `${ApiUrlEnum.VARIANTS}/${id}/detach-photo/${photoId}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: (_result, _error, result) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          result,
+        },
+      ],
+    }),
     getVariantsForGrid: apiConfig.createMutation<GridModel, GridRequestModel>(
       builder,
       {
@@ -349,6 +367,25 @@ export const ProductsApiService = createApi({
         },
       ],
     }),
+    updateVariantTraitOptions: apiConfig.createMutation<
+      any,
+      {
+        id?: number;
+        model?: any;
+      }
+    >(builder, {
+      query: ({ id, model }) => ({
+        url: `${ApiUrlEnum.VARIANTS}/${id}/trait-options`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+      invalidatesTags: (_result, _error, result) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          result,
+        },
+      ],
+    }),
     increaseStockAmountForVariant: apiConfig.createMutation<
       any,
       {
@@ -384,6 +421,17 @@ export const ProductsApiService = createApi({
         {
           type: ApiServiceNameEnum.PRODUCTS,
           model,
+        },
+      ],
+    }),
+    getVariantStockHistory: apiConfig.createQuery<any, number>(builder, {
+      query: (id: number) => ({
+        url: `${ApiUrlEnum.VARIANTS}/${id}/stock-history`,
+      }),
+      providesTags: (_result, _error, result) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          result,
         },
       ],
     }),

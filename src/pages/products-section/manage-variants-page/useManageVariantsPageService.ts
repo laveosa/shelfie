@@ -15,10 +15,14 @@ export default function useManageVariantsPageService() {
     ProductsApiHooks.useToggleVariantIsActiveMutation();
   const [updateVariantDetails] =
     ProductsApiHooks.useUpdateVariantDetailsMutation();
+  const [updateVariantTraitOptions] =
+    ProductsApiHooks.useUpdateVariantTraitOptionsMutation();
   const [increaseStockAmountForVariant] =
     ProductsApiHooks.useIncreaseStockAmountForVariantMutation();
   const [disposeVariantFromStock] =
     ProductsApiHooks.useDisposeVariantFromStockMutation();
+  const [getVariantStockHistory] =
+    ProductsApiHooks.useLazyGetVariantStockHistoryQuery();
   const [generateProductCode] =
     ProductsApiHooks.useLazyGenerateProductCodeQuery();
   const [getTrait] = ProductsApiHooks.useLazyGetTraitQuery();
@@ -44,6 +48,7 @@ export default function useManageVariantsPageService() {
   const [createVariant] = ProductsApiHooks.useCreateVariantMutation();
   const [getProductPhotos] = ProductsApiHooks.useLazyGetProductPhotosQuery();
   const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
+  const [detachVariantPhoto] = ProductsApiHooks.useDetachVariantPhotoMutation();
   const [getTaxesList] = DictionaryApiHooks.useLazyGetTaxesListQuery();
   const [getCurrenciesList] =
     DictionaryApiHooks.useLazyGetCurrenciesListQuery();
@@ -96,6 +101,12 @@ export default function useManageVariantsPageService() {
     });
   }
 
+  function updateVariantTraitOptionsHandler(id, model) {
+    return updateVariantTraitOptions({ id, model }).then((res: any) => {
+      return res.data;
+    });
+  }
+
   function increaseStockAmountForVariantHandler(id, model) {
     return increaseStockAmountForVariant({ id, model }).then((res: any) => {
       return res.data;
@@ -104,6 +115,12 @@ export default function useManageVariantsPageService() {
 
   function disposeVariantFromStockHandler(id, model) {
     return disposeVariantFromStock({ id, model }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function getVariantStockHistoryHandler(id) {
+    return getVariantStockHistory(id).then((res: any) => {
       return res.data;
     });
   }
@@ -192,6 +209,12 @@ export default function useManageVariantsPageService() {
     });
   }
 
+  function detachVariantPhotoHandler({ id, photoId }) {
+    return detachVariantPhoto({ id, photoId }).then((res: any) => {
+      return res;
+    });
+  }
+
   function getTaxesListHandler() {
     return getTaxesList().then((res: any) => {
       return res.data;
@@ -212,8 +235,10 @@ export default function useManageVariantsPageService() {
     getVariantDetailsHandler,
     toggleVariantIsActiveHandler,
     updateVariantDetailsHandler,
+    updateVariantTraitOptionsHandler,
     increaseStockAmountForVariantHandler,
     disposeVariantFromStockHandler,
+    getVariantStockHistoryHandler,
     generateProductCodeHandler,
     getListOfAllTraitsHandler,
     getListOfTraitsForProductHandler,
@@ -229,6 +254,7 @@ export default function useManageVariantsPageService() {
     deleteOptionsForTraitHandler,
     getProductPhotosHandler,
     uploadPhotoHandler,
+    detachVariantPhotoHandler,
     getTaxesListHandler,
     getCurrenciesListHandler,
   };

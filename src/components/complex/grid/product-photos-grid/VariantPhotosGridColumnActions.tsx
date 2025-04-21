@@ -42,9 +42,18 @@ export default function VariantPhotosGridColumnActions<TData>({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-[160px]">
         <DropdownMenuItem
-          onClick={() => onAction("connect", row.id, meta?.setLoadingRow, row)}
+          onClick={() =>
+            onAction("detachPhotoFromVariant", row.id, meta?.setLoadingRow, row)
+          }
         >
-          Connect image to product variants
+          Detach image
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() =>
+            onAction("deletePhotoFromVariant", row.id, meta?.setLoadingRow, row)
+          }
+        >
+          Delete image
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

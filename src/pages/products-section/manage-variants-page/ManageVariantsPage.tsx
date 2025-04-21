@@ -108,7 +108,6 @@ export function ManageVariantsPage() {
         break;
       case "manageVariant":
         service.getVariantDetailsHandler(payload.variantId).then((res) => {
-          console.log("SELECTED VARIANT", res);
           dispatch(actions.refreshSelectedVariant(res));
           dispatch(actions.refreshVariantPhotos(res?.photos));
           handleCardAction("variantConfigurationCard", true);
@@ -123,6 +122,16 @@ export function ManageVariantsPage() {
           )
           .then((res) => {
             console.log("SELECTED VARIANT", res);
+          });
+        break;
+      case "updateVariantTraitOptions":
+        service
+          .updateVariantTraitOptionsHandler(
+            payload.variant.variantId,
+            payload.submissionData,
+          )
+          .then((res) => {
+            console.log("Updated trait options", res);
           });
         break;
       case "activateVariant":
@@ -228,9 +237,6 @@ export function ManageVariantsPage() {
               });
           }
         });
-        break;
-      case "updateTraits":
-        console.log("updateTrait", payload);
         break;
       case "setProductTraits":
         dispatch(actions.refreshSelectedTraitsIds(payload));
@@ -393,6 +399,7 @@ export function ManageVariantsPage() {
       {state.activeCards.includes("variantHistoryCard") && (
         <StockHistoryCard
           variant={state.selectedVariant}
+          getVariantHistory={service.getVariantStockHistoryHandler}
           onSecondaryButtonClick={() => handleCardAction("variantHistoryCard")}
         />
       )}
@@ -405,6 +412,7 @@ export function ManageVariantsPage() {
       {state.activeCards.includes("manageTraitsCard") && (
         <ManageTraitsCard
           traits={state.listOfTraitsWithOptionsForProduct}
+          variant={state.selectedVariant}
           onAction={onAction}
           onSecondaryButtonClick={() => handleCardAction("manageTraitsCard")}
         />

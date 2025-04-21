@@ -3,7 +3,7 @@ import { VariantModel } from "@/const/models/VariantModel.ts";
 
 export interface IManageTraitsCard {
   traits?: TraitModel[];
-  selectedVariant?: VariantModel;
+  variant?: VariantModel;
   onAction?: (identifier: string, payload?: any) => void;
   onSecondaryButtonClick?: () => void;
 }
