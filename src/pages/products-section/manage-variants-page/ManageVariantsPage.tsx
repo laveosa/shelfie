@@ -189,6 +189,22 @@ export function ManageVariantsPage() {
         //     console.log("SELECTED VARIANT", res);
         //   });
         break;
+      case "detachPhotoFromVariant":
+        service
+          .detachVariantPhotoHandler(
+            payload.variant.variantId,
+            payload.row.original.photoId.toString(),
+          )
+          .then((res) => {
+            if (res) {
+              service
+                .getVariantDetailsHandler(payload.variant.variantId)
+                .then((res) => {
+                  dispatch(actions.refreshSelectedVariant(res));
+                });
+            }
+          });
+        break;
       case "addTrait":
         handleCardAction("productTraitConfigurationCard", true);
         dispatch(actions.refreshSelectedTrait({}));

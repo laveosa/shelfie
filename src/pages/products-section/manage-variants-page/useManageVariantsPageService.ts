@@ -209,7 +209,7 @@ export default function useManageVariantsPageService() {
     });
   }
 
-  function detachVariantPhotoHandler({ id, photoId }) {
+  function detachVariantPhotoHandler(id, photoId) {
     return detachVariantPhoto({ id, photoId }).then((res: any) => {
       return res;
     });
