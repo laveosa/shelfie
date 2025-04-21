@@ -36,7 +36,7 @@ export default function SheToggle({
   const ariaDescribedbyId = `${generateId()}_CHECKBOX_ID`;
   const checkboxId = generateId(6);
 
-  const [_checked, setChecked] = useState<boolean>(null);
+  const [_checked, setChecked] = useState<boolean>(checked ?? false);
 
   useEffect(() => {
     if (typeof checked === "boolean" && checked !== _checked) {
@@ -47,8 +47,8 @@ export default function SheToggle({
   // ==================================================================== EVENT
 
   function onCheckedChangeHandler(value: boolean) {
-    if (onChecked) onChecked(value);
-    setChecked(!_checked);
+    onChecked?.(value);
+    setChecked(value);
   }
 
   // ==================================================================== PRIVATE
@@ -91,18 +91,20 @@ export default function SheToggle({
             {type === SheToggleTypeEnum.CHECKBOX && (
               <Checkbox
                 {...props}
-                checked={_checked}
                 id={checkboxId}
+                checked={_checked}
                 aria-describedby={ariaDescribedbyId}
+                disabled={disabled || isLoading}
                 onCheckedChange={onCheckedChangeHandler}
               />
             )}
             {type === SheToggleTypeEnum.SWITCH && (
               <Switch
                 {...props}
-                checked={_checked}
                 id={checkboxId}
+                checked={_checked}
                 aria-describedby={ariaDescribedbyId}
+                disabled={disabled || isLoading}
                 onCheckedChange={onCheckedChangeHandler}
               />
             )}
