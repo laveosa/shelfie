@@ -35,6 +35,8 @@ $clearBtnSize: 30px;
       }
 
       > textarea {
+        resize: none;
+
         &:focus-visible {
           box-shadow: 0 0 0 1px lightgray inset;
         }
@@ -97,7 +99,7 @@ $clearBtnSize: 30px;
   .sheTextAreaComponent {
     .sheTextAreaControl {
       > textarea {
-        resize: none;
+        resize: vertical;
       }
     }
   }

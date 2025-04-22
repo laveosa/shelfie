@@ -18,7 +18,7 @@ export interface ISheTextarea
   tooltip?: ISheTooltip;
   isLoading?: boolean;
   disabled?: boolean;
-  noResize?: boolean;
+  resize?: boolean;
   onChange?: (value: any) => void;
   onBlur?: (value: any) => void;
   onDelay?: (value: any) => void;

@@ -28,7 +28,7 @@ export default function SheTextArea({
   showClearBtn,
   tooltip,
   disabled,
-  noResize = true,
+  resize,
   style,
   onChange,
   onBlur,
@@ -89,7 +89,7 @@ export default function SheTextArea({
 
   return (
     <div
-      className={`${className || ""} ${cs.sheTextArea || ""} ${iconToRender ? cs.withIcon : ""} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""} ${noResize ? cs.resize : ""}`}
+      className={`${className || ""} ${cs.sheTextArea || ""} ${iconToRender ? cs.withIcon : ""} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""} ${resize ? cs.resize : ""}`}
       style={{
         minWidth,
         maxWidth,
