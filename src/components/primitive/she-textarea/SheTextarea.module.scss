@@ -2,6 +2,7 @@
 
 $iconSize: 20px;
 $clearBtnSize: 30px;
+$tooltipIconSize: 15px;
 
 .sheTextArea {
   max-width: vars.$maxWidth;
@@ -11,6 +12,8 @@ $clearBtnSize: 30px;
     position: relative;
 
     > label {
+      display: flex;
+      gap: 8px;
       font-weight: 500;
       position: relative;
       top: -6px;
@@ -36,6 +39,7 @@ $clearBtnSize: 30px;
 
       > textarea {
         resize: none;
+        min-height: 0;
 
         &:focus-visible {
           box-shadow: 0 0 0 1px lightgray inset;
@@ -100,6 +104,31 @@ $clearBtnSize: 30px;
     .sheTextAreaControl {
       > textarea {
         resize: vertical;
+      }
+    }
+  }
+}
+
+// ======================================================== WITH ICON
+
+.sheTextArea {
+  .sheTextAreaComponent {
+    label {
+      .tooltipIcon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4px;
+        box-sizing: border-box;
+        max-width: $tooltipIconSize;
+        min-width: $tooltipIconSize;
+        max-height: $tooltipIconSize;
+        min-height: $tooltipIconSize;
+        background-color: vars.$colorDark;
+        border-radius: 100%;
+        color: white;
+        font-weight: bold;
+        font-size: 12px;
       }
     }
   }

@@ -18,7 +18,7 @@ export function DashboardPage() {
 
   useEffect(() => {
     setTimeout(() => {
-      setText("some value for text area");
+      setText("SOME VALUE PASSED ASYNC FOR TEST");
     }, 4000);
   }, []);
 
@@ -35,7 +35,10 @@ export function DashboardPage() {
       <SheTextArea
         label="Textarea"
         placeholder="is loading test..."
+        value={["11111", "22222", "333333"]}
         isLoading={loading}
+        required
+        tooltip={{ text: "some tooltip text" }}
         onChange={(event) => console.log("onChange: ", event)}
       />
 
@@ -49,9 +52,9 @@ export function DashboardPage() {
         value={text}
         icon={Home}
         showClearBtn
-        onChange={(event) => console.log("onChange: ", event)}
+        rows={1}
+        delayTime={1800}
         onDelay={(event) => console.log("onDelay: ", event)}
-        onBlur={(event) => console.log("onBlur: ", event)}
       />
 
       <br />

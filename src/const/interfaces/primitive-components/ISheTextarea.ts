@@ -2,13 +2,12 @@ import React, { ComponentPropsWithRef } from "react";
 
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { ISheTooltip } from "@/const/interfaces/complex-components/ISheTooltip.ts";
-import { TextareaProps } from "@/components/ui/textarea.tsx";
 
-export interface ISheTextarea
-  extends TextareaProps,
-    ComponentPropsWithRef<any> {
+export interface ISheTextarea extends ComponentPropsWithRef<any> {
+  value?: string | number | readonly string[];
   label?: string;
   labelTransKey?: string;
+  placeholder?: string;
   placeholderTransKey?: string;
   icon?: Partial<ISheIcon> | string | React.FC<any>;
   showClearBtn?: boolean;
@@ -19,7 +18,11 @@ export interface ISheTextarea
   isLoading?: boolean;
   disabled?: boolean;
   resize?: boolean;
-  onChange?: (value: any) => void;
-  onBlur?: (value: any) => void;
-  onDelay?: (value: any) => void;
+  delayTime?: number;
+  rows?: number;
+  required?: boolean;
+  style?: any;
+  onChange?: (value: string | number | readonly string[]) => void;
+  onBlur?: (value: string | number | readonly string[]) => void;
+  onDelay?: (value: string | number | readonly string[]) => void;
 }

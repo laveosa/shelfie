@@ -29,6 +29,8 @@ export default function SheTextArea({
   tooltip,
   disabled,
   resize,
+  delayTime,
+  rows = 4,
   style,
   onChange,
   onBlur,
@@ -36,17 +38,19 @@ export default function SheTextArea({
   ...props
 }: ISheTextarea): JSX.Element {
   const { translate } = useAppTranslation();
-  const [_value, setValue] = useState<any>(null);
+  const [textValue, setTextValue] = useState<
+    string | number | readonly string[]
+  >("");
 
   const ariaDescribedbyId = `${generateId()}_INPUT_ID`;
-  const iconToRender = icon;
-  const delayValue = useDebounce(_value);
+  const delayValue = useDebounce(textValue, delayTime);
   const isInitialized = useRef(false);
   const isTouched = useRef(false);
 
   useEffect(() => {
-    if (value !== _value) {
-      setValue(value);
+    const converted = Array.isArray(value) ? value.join("\n") : value;
+    if (converted !== textValue) {
+      setTextValue(converted);
     }
   }, [value]);
 
@@ -61,7 +65,7 @@ export default function SheTextArea({
   function onChangeHandler(e) {
     isInitialized.current = true;
     const newValue = e.target.value;
-    setValue(newValue);
+    setTextValue(newValue);
     if (onChange) onChange(newValue);
   }
 
@@ -76,7 +80,7 @@ export default function SheTextArea({
     isTouched.current = false;
 
     const newValue = "";
-    setValue(newValue);
+    setTextValue(newValue);
 
     if (onChange) onChange(newValue);
     if (onBlur) onBlur(newValue);
@@ -89,62 +93,70 @@ export default function SheTextArea({
 
   return (
     <div
-      className={`${className || ""} ${cs.sheTextArea || ""} ${iconToRender ? cs.withIcon : ""} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""} ${resize ? cs.resize : ""}`}
+      className={`${className || ""} ${cs.sheTextArea || ""} ${icon ? cs.withIcon : ""} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""} ${resize ? cs.resize : ""}`}
       style={{
         minWidth,
         maxWidth,
         ...style,
       }}
     >
-      <SheTooltip {...tooltip}>
-        <div className={cs.sheTextAreaComponent}>
-          {label && (
-            <label className="she-text" aria-describedby={ariaDescribedbyId}>
-              <Trans i18nKey={labelTransKey}>{label}</Trans>
-            </label>
-          )}
-          <div className={cs.sheTextAreaControl}>
-            {iconToRender &&
-              (isSheIconConfig(iconToRender) ? (
-                <SheIcon
-                  {...iconToRender}
-                  className={cs.iconBlock}
-                  aria-describedby={ariaDescribedbyId}
-                />
-              ) : (
-                <SheIcon
-                  icon={iconToRender}
-                  className={cs.iconBlock}
-                  aria-describedby={ariaDescribedbyId}
-                />
-              ))}
-            <Textarea
-              {...props}
-              value={_value || ""}
-              placeholder={translate(placeholderTransKey, placeholder)}
-              aria-describedby={ariaDescribedbyId}
-              disabled={disabled || isLoading}
-              onChange={(e) => onChangeHandler(e)}
-              onBlur={(e) => onBlurHandler(e)}
-            />
-            {showClearBtn && (
-              <SheButton
-                variant="ghost"
-                size="icon"
-                icon={X}
-                aria-describedby={ariaDescribedbyId}
-                disabled={
-                  !_value ||
-                  _value.toString().length === 0 ||
-                  disabled ||
-                  isLoading
-                }
-                onClick={onClearHandler}
-              />
+      <div className={cs.sheTextAreaComponent}>
+        {label && (
+          <label
+            className="she-text"
+            htmlFor={ariaDescribedbyId}
+            aria-describedby={ariaDescribedbyId}
+          >
+            <Trans i18nKey={labelTransKey}>{label}</Trans>
+            {tooltip?.text?.length > 0 && (
+              <SheTooltip id={ariaDescribedbyId} {...tooltip}>
+                <div className={cs.tooltipIcon}>!</div>
+              </SheTooltip>
             )}
-          </div>
+          </label>
+        )}
+        <div className={cs.sheTextAreaControl}>
+          {icon &&
+            (isSheIconConfig(icon) ? (
+              <SheIcon
+                {...icon}
+                className={cs.iconBlock}
+                aria-describedby={ariaDescribedbyId}
+              />
+            ) : (
+              <SheIcon
+                icon={icon}
+                className={cs.iconBlock}
+                aria-describedby={ariaDescribedbyId}
+              />
+            ))}
+          <Textarea
+            {...props}
+            value={textValue ?? ""}
+            placeholder={translate(placeholderTransKey, placeholder)}
+            aria-describedby={ariaDescribedbyId}
+            disabled={disabled || isLoading}
+            rows={rows}
+            onChange={(e) => onChangeHandler(e)}
+            onBlur={(e) => onBlurHandler(e)}
+          />
+          {showClearBtn && (
+            <SheButton
+              variant="ghost"
+              size="icon"
+              icon={X}
+              aria-describedby={ariaDescribedbyId}
+              disabled={
+                !textValue ||
+                textValue.toString().length === 0 ||
+                disabled ||
+                isLoading
+              }
+              onClick={onClearHandler}
+            />
+          )}
         </div>
-      </SheTooltip>
+      </div>
     </div>
   );
 }
