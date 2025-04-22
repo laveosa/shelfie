@@ -37,7 +37,7 @@ export default function VariantPhotosCard({
         break;
       case "dnd":
         const { newIndex, activeItem } = payload;
-        onAction("dnd", { newIndex, activeItem });
+        onAction("dndVariantPhoto", { newIndex, activeItem });
         break;
     }
   }

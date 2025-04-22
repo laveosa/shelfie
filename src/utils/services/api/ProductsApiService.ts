@@ -435,6 +435,25 @@ export const ProductsApiService = createApi({
         },
       ],
     }),
+    changePhotoPositionForVariant: apiConfig.createMutation<
+      any,
+      {
+        id?: number;
+        photoId?: number;
+        index?: number;
+      }
+    >(builder, {
+      query: ({ id, photoId, index }) => ({
+        url: `${ApiUrlEnum.VARIANTS}/${id}/photo/${photoId}/${index}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: (_result, _error, result) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          result,
+        },
+      ],
+    }),
     getListOfAllTraits: apiConfig.createQuery<any, void>(builder, {
       query: () => ({
         url: `${ApiUrlEnum.TRAITS}/all`,
@@ -575,6 +594,25 @@ export const ProductsApiService = createApi({
       query: (id) => ({
         url: `${ApiUrlEnum.TRAIT_OPTIONS}/${id}`,
         method: "DELETE",
+      }),
+      invalidatesTags: (_result, _error, result) => [
+        {
+          type: ApiServiceNameEnum.PRODUCTS,
+          result,
+        },
+      ],
+    }),
+    changePositionOfTraitOption: apiConfig.createMutation<
+      any,
+      {
+        traitId?: number;
+        optionId?: number;
+        index?: number;
+      }
+    >(builder, {
+      query: ({ traitId, optionId, index }) => ({
+        url: `${ApiUrlEnum.TRAITS}/${traitId}/options/${optionId}/${index}`,
+        method: "PATCH",
       }),
       invalidatesTags: (_result, _error, result) => [
         {

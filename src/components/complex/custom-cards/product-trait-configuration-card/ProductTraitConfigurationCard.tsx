@@ -185,7 +185,11 @@ export default function ProductTraitConfigurationCard({
                   data={data?.items}
                   gridModel={data}
                   onNewItemPosition={(newIndex, activeItem) =>
-                    onAction("dnd", { newIndex, activeItem })
+                    onAction("dndTraitOption", {
+                      selectedTrait,
+                      newIndex,
+                      activeItem,
+                    })
                   }
                 />
               )}
@@ -198,7 +202,11 @@ export default function ProductTraitConfigurationCard({
                   data={data?.items}
                   gridModel={data}
                   onNewItemPosition={(newIndex, activeItem) =>
-                    onAction("dnd", { newIndex, activeItem })
+                    onAction("dndTraitOption", {
+                      selectedTrait,
+                      newIndex,
+                      activeItem,
+                    })
                   }
                 />
               )}

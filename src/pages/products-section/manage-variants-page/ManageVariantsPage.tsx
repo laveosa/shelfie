@@ -130,8 +130,15 @@ export function ManageVariantsPage() {
             payload.variant.variantId,
             payload.submissionData,
           )
-          .then((res) => {
-            console.log("Updated trait options", res);
+          .then(() => {
+            service.getProductVariantsHandler(productId).then((res) => {
+              dispatch(actions.refreshProductVariants(res));
+            });
+            service
+              .getVariantDetailsHandler(payload.variant.variantId)
+              .then((res) => {
+                dispatch(actions.refreshSelectedVariant(res));
+              });
           });
         break;
       case "activateVariant":
@@ -178,6 +185,17 @@ export function ManageVariantsPage() {
           }
         });
         break;
+      case "deletePhoto":
+        console.log("PHOTO DELETE", payload);
+        // service.deletePhotoHandler(payload).then((res) => {
+        //   if (res) {
+        //     service.getVariantDetailsHandler(payload.contextId).then((res) => {
+        //       dispatch(actions.refreshSelectedVariant(res));
+        //       dispatch(actions.refreshVariantPhotos(res?.photos));
+        //     });
+        //   }
+        // });
+        break;
       case "addPhotoToVariant":
         console.log("PHOTO", payload);
         // service
@@ -203,6 +221,24 @@ export function ManageVariantsPage() {
                   dispatch(actions.refreshSelectedVariant(res));
                 });
             }
+          });
+        break;
+      case "dndVariantPhoto":
+        console.log("DnD action:", payload);
+        service
+          .changePhotoPositionForVariantHandler(
+            state.selectedVariant.variantId,
+            payload.activeItem.photoId,
+            payload.newIndex,
+          )
+          .then((res) => {
+            console.log("RES", res);
+            service
+              .getVariantDetailsHandler(state.selectedVariant.variantId)
+              .then((res) => {
+                dispatch(actions.refreshSelectedVariant(res));
+                dispatch(actions.refreshVariantPhotos(res?.photos));
+              });
           });
         break;
       case "addTrait":
@@ -264,9 +300,6 @@ export function ManageVariantsPage() {
               dispatch(actions.refreshListOfTraitsWithOptionsForProduct(res));
             });
         });
-        break;
-      case "dnd":
-        console.log("DnD action:", payload);
         break;
       case "delete":
         service.deleteOptionsForTraitHandler(payload.optionId).then((res) => {
@@ -336,6 +369,18 @@ export function ManageVariantsPage() {
               );
             });
         });
+        break;
+      case "dndTraitOption":
+        console.log("DnD action:", payload);
+        service
+          .changePositionOfTraitOptionHandler(
+            payload.selectedTrait.traitId,
+            payload.activeItem.optionId,
+            payload.newIndex,
+          )
+          .then((res) => {
+            console.log("RES", res);
+          });
         break;
       case "openAddVariantCard":
         handleCardAction("addVariantCard", true);

@@ -46,9 +46,14 @@ export default function useManageVariantsPageService() {
     ProductsApiHooks.useDeleteOptionOfTraitMutation();
   const [updateTrait] = ProductsApiHooks.useUpdateTraitMutation();
   const [createVariant] = ProductsApiHooks.useCreateVariantMutation();
+  const [changePositionOfTraitOption] =
+    ProductsApiHooks.useChangePositionOfTraitOptionMutation();
   const [getProductPhotos] = ProductsApiHooks.useLazyGetProductPhotosQuery();
   const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
   const [detachVariantPhoto] = ProductsApiHooks.useDetachVariantPhotoMutation();
+  const [deletePhoto] = AssetsApiHooks.useDeletePhotoMutation();
+  const [changePhotoPositionForVariant] =
+    ProductsApiHooks.useChangePhotoPositionForVariantMutation();
   const [getTaxesList] = DictionaryApiHooks.useLazyGetTaxesListQuery();
   const [getCurrenciesList] =
     DictionaryApiHooks.useLazyGetCurrenciesListQuery();
@@ -197,6 +202,16 @@ export default function useManageVariantsPageService() {
     });
   }
 
+  function changePositionOfTraitOptionHandler(traitId, optionId, index) {
+    return changePositionOfTraitOption({
+      traitId,
+      optionId,
+      index,
+    }).then((res: any) => {
+      return res;
+    });
+  }
+
   function getProductPhotosHandler(id: number) {
     return getProductPhotos(id).then((res: any) => {
       return res.data;
@@ -212,6 +227,22 @@ export default function useManageVariantsPageService() {
   function detachVariantPhotoHandler(id, photoId) {
     return detachVariantPhoto({ id, photoId }).then((res: any) => {
       return res;
+    });
+  }
+
+  function deletePhotoHandler(photoId) {
+    return deletePhoto(photoId).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function changePhotoPositionForVariantHandler(id, photoId, index) {
+    return changePhotoPositionForVariant({
+      id,
+      photoId,
+      index,
+    }).then((res: any) => {
+      return res.data;
     });
   }
 
@@ -239,6 +270,7 @@ export default function useManageVariantsPageService() {
     increaseStockAmountForVariantHandler,
     disposeVariantFromStockHandler,
     getVariantStockHistoryHandler,
+    changePhotoPositionForVariantHandler,
     generateProductCodeHandler,
     getListOfAllTraitsHandler,
     getListOfTraitsForProductHandler,
@@ -252,9 +284,11 @@ export default function useManageVariantsPageService() {
     createNewOptionForTraitHandler,
     updateOptionsForTraitHandler,
     deleteOptionsForTraitHandler,
+    changePositionOfTraitOptionHandler,
     getProductPhotosHandler,
     uploadPhotoHandler,
     detachVariantPhotoHandler,
+    deletePhotoHandler,
     getTaxesListHandler,
     getCurrenciesListHandler,
   };

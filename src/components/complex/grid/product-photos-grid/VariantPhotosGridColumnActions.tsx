@@ -46,14 +46,14 @@ export default function VariantPhotosGridColumnActions<TData>({
             onAction("detachPhotoFromVariant", row.id, meta?.setLoadingRow, row)
           }
         >
-          Detach image
+          Detach photo
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() =>
-            onAction("deletePhotoFromVariant", row.id, meta?.setLoadingRow, row)
+            onAction("deletePhoto", row.id, meta?.setLoadingRow, row)
           }
         >
-          Delete image
+          Delete photo
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

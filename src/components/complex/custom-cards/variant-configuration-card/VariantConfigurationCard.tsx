@@ -126,7 +126,7 @@ export default function VariantConfigurationCard({
     row?: any,
   ) {
     onAction("detachPhotoFromVariant", { row, variant });
-    // onAction("delete", row.original);
+    onAction("deletePhoto", row.original);
   }
 
   return (
@@ -311,7 +311,7 @@ export default function VariantConfigurationCard({
                 data={variant.photos}
                 gridModel={data}
                 onNewItemPosition={(newIndex, activeItem) =>
-                  onAction("dnd", { newIndex, activeItem })
+                  onAction("dndVariantPhoto", { newIndex, activeItem })
                 }
               />
             </div>
