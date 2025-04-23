@@ -22,6 +22,7 @@ export default function SheForm<T>({
   maxWidth,
   fullWidth,
   onSubmit,
+  onEnter,
   onError,
   onCancel,
   ...props
@@ -58,6 +59,7 @@ export default function SheForm<T>({
         minWidth,
         maxWidth,
       }}
+      onKeyDown={(event) => console.log(event.keyCode)}
     >
       <Form {...form}>
         <SheFormHeader {...props} />

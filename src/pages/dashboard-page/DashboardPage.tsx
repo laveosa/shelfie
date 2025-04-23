@@ -9,6 +9,7 @@ import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { IconViewEnum } from "@/const/enums/IconViewEnum.ts";
 import { Home } from "lucide-react";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import UserForm from "@/components/forms/user-form/UserForm.tsx";
 
 export function DashboardPage() {
   const service = useDashboardPageService();

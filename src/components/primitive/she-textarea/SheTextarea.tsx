@@ -11,7 +11,6 @@ import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { useDebounce } from "@/utils/hooks/useDebounce.ts";
 import { X } from "lucide-react";
-import { Progress } from "@/components/ui/progress.tsx";
 
 export default function SheTextArea({
   className,
@@ -110,7 +109,12 @@ export default function SheTextArea({
           >
             <Trans i18nKey={labelTransKey}>{label}</Trans>
             {tooltip?.text?.length > 0 && (
-              <SheTooltip id={ariaDescribedbyId} {...tooltip}>
+              <SheTooltip
+                {...tooltip}
+                id={ariaDescribedbyId}
+                side={"right"}
+                align={"end"}
+              >
                 <div className={cs.tooltipIcon}>!</div>
               </SheTooltip>
             )}
