@@ -112,7 +112,7 @@ export default function ProductTraitConfigurationCard({
                 label="Trait Name"
                 placeholder="enter trait name..."
                 isValid={!form.formState.errors.traitName}
-                error={form.formState.errors.traitName?.message}
+                patternErrorMessage={form.formState.errors.traitName?.message}
                 showError={true}
                 className={cs.formInput}
               />

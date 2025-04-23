@@ -106,7 +106,7 @@ export default function ProductConfigurationCard({
                 label="Product Name"
                 placeholder="enter product name..."
                 isValid={!form.formState.errors.name}
-                error={form.formState.errors.name?.message}
+                patternErrorMessage={form.formState.errors.name?.message}
                 showError={true}
               />
             </SheForm.Field>
@@ -123,7 +123,9 @@ export default function ProductConfigurationCard({
                   label="Product Code"
                   placeholder="enter product code..."
                   isValid={!form.formState.errors.productCode}
-                  error={form.formState.errors.productCode?.message}
+                  patternErrorMessage={
+                    form.formState.errors.productCode?.message
+                  }
                   showError={true}
                 />
               </SheForm.Field>
@@ -141,7 +143,9 @@ export default function ProductConfigurationCard({
                   label="Product Barcode"
                   placeholder="enter product barcode..."
                   isValid={!form.formState.errors.productBarcode}
-                  error={form.formState.errors.productBarcode?.message}
+                  patternErrorMessage={
+                    form.formState.errors.productBarcode?.message
+                  }
                   showError={true}
                 />
               </SheForm.Field>

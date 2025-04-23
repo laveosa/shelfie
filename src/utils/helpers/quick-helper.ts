@@ -43,3 +43,16 @@ export function isSheIconConfig(
 ): icon is Partial<ISheIcon> & { icon: any } {
   return typeof icon === "object" && icon !== null && "icon" in icon;
 }
+
+export function generateId(length: number = 8) {
+  let result = "";
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const charactersLength = characters.length;
+  let counter = 0;
+  while (counter < length) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    counter += 1;
+  }
+  return result.toString();
+}
