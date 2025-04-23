@@ -10,10 +10,10 @@ export interface ImageModel {
   //   processingCompletePhotoState?: string;
   // }
   adaptedUrl?: string;
-  height: number;
-  isActive: boolean;
-  photoId: number;
-  sortOrder: number;
-  thumbnailUrl: string;
-  width: number;
+  height?: number;
+  isActive?: boolean;
+  photoId?: number;
+  sortOrder?: number;
+  thumbnailUrl?: string;
+  width?: number;
 }

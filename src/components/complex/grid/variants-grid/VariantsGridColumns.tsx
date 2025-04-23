@@ -12,10 +12,11 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
       header: "ID",
     },
     {
-      accessorKey: "image",
+      accessorKey: "photo",
       header: "Image",
       cell: ({ row, table }) => {
-        const image: ImageModel = row.getValue("image");
+        console.log(row.getValue("photo"));
+        const image: ImageModel = row.getValue("photo");
         const meta = table.options.meta as {
           setLoadingRow: (rowId: string, loading: boolean) => void;
           isRowLoading: (rowId: string) => boolean;
