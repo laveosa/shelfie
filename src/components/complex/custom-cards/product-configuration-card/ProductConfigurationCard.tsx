@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { Plus, WandSparkles } from "lucide-react";
-import { useForm } from "react-hook-form";
 
 import {
   FormControl,
@@ -23,6 +22,7 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
 import { Switch } from "@/components/ui/switch.tsx";
 import { IProductConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IProductConfigurationCard.ts";
+import { useForm } from "react-hook-form";
 
 export default function ProductConfigurationCard({
   product,

@@ -14,6 +14,7 @@ import {
 import {
   Select,
   SelectContent,
+  SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select.tsx";
@@ -25,15 +26,25 @@ export default function DisposeStockCard({
   onSecondaryButtonClick,
   ...props
 }: IDisposeStockCard) {
+  const reasons = [
+    { reasonId: 1, reasonName: "Damaged" },
+    { reasonId: 2, reasonName: "Lost" },
+    { reasonId: 3, reasonName: "Broken" },
+  ];
+
   const form = useForm({
     defaultValues: {
-      units: "",
-      reason: "",
+      unitAmount: 0,
+      reason: reasons?.[0].reasonName,
     },
   });
 
   function onSubmit(data) {
-    onAction(data);
+    const formattedData = {
+      ...data,
+      unitAmount: Number(data.unitAmount),
+    };
+    onAction("disposeFromStock", { variant, formattedData });
   }
 
   return (
@@ -44,6 +55,7 @@ export default function DisposeStockCard({
       primaryButtonTitle="Dispose"
       showSecondaryButton={true}
       secondaryButtonTitle="Cancel"
+      onPrimaryButtonClick={form.handleSubmit(onSubmit)}
       onSecondaryButtonClick={onSecondaryButtonClick}
       showCloseButton
       className={cs.disposeStockCard}
@@ -57,7 +69,7 @@ export default function DisposeStockCard({
         </div>
         <div className={cs.disposeFormBlock}>
           <SheForm form={form} onSubmit={onSubmit}>
-            <SheForm.Field name="units">
+            <SheForm.Field name="unitAmount">
               <SheInput
                 label="Units"
                 type="number"
@@ -73,9 +85,9 @@ export default function DisposeStockCard({
               }}
               render={({ field }) => (
                 <FormItem className={cs.select}>
-                  <FormLabel>Product Category</FormLabel>
+                  <FormLabel>Reason</FormLabel>
                   <Select
-                    onValueChange={(value) => field.onChange(Number(value))}
+                    onValueChange={(value) => field.onChange(value)}
                     value={field.value ? field.value.toString() : ""}
                   >
                     <FormControl>
@@ -84,14 +96,14 @@ export default function DisposeStockCard({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {/*{categoriesList.map((option) => (*/}
-                      {/*  <SelectItem*/}
-                      {/*    key={option.categoryId}*/}
-                      {/*    value={option.categoryId.toString()}*/}
-                      {/*  >*/}
-                      {/*    <div>{option.categoryName}</div>*/}
-                      {/*  </SelectItem>*/}
-                      {/*))}*/}
+                      {reasons.map((reason) => (
+                        <SelectItem
+                          key={reason.reasonId}
+                          value={reason.reasonName.toString()}
+                        >
+                          <div>{reason.reasonName}</div>
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </FormItem>

@@ -6,6 +6,8 @@ import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
+import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
+import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 
 export interface IManageVariantsPageSlice {
   loading?: boolean;
@@ -27,5 +29,8 @@ export interface IManageVariantsPageSlice {
   variantTraitsGridModel?: GridModel;
   photosGridModel?: GridModel;
   gridRequestModel?: GridRequestModel;
-  photos?: ImageModel[];
+  productPhotos?: ImageModel[];
+  variantPhotos?: ImageModel[];
+  taxesList?: TaxTypeModel[];
+  currenciesList?: CurrencyModel[];
 }

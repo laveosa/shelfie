@@ -6,4 +6,5 @@ export interface TraitModel {
   traitTypeName?: string;
   traitId?: number;
   traitOptions?: TraitOptionModel[];
+  optionsAmount?: number;
 }

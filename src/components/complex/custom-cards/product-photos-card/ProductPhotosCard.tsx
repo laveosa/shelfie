@@ -5,7 +5,7 @@ import cs from "./ProductPhotosCard.module.scss";
 import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { SheImageUploader } from "@/components/complex/she-images-file-uploader/SheImageUploader.tsx";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
-import { ProductPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/ProductPhotosGridColumns.tsx";
+import { ProductPhotosGridColumns } from "@/components/complex/grid/variant-photos-grid/ProductPhotosGridColumns.tsx";
 
 type ActionType = "upload" | "delete" | "dnd" | "connect";
 
@@ -51,10 +51,6 @@ export default function ProductPhotosCard({
         title="Product Photos"
         view="card"
         minWidth="450px"
-        showPrimaryButton={true}
-        primaryButtonTitle="Upload Photos"
-        showSecondaryButton={true}
-        secondaryButtonTitle="Cancel"
         className={cs.productPhotosCard}
         {...props}
       >

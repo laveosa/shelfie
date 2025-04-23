@@ -40,10 +40,12 @@ export default function ItemsCard({
               >
                 <img
                   src={item.image?.thumbnailUrl || placeholderImage}
-                  alt={item.productName}
+                  alt={item.productName ?? item.variantName}
                   className={cs.productItemImage}
                 />
-                <div className={cs.productItemName}>{item.productName}</div>
+                <div className={cs.productItemName}>
+                  {item.productName ?? item.variantName}
+                </div>
               </div>
               <Separator orientation="horizontal" />
             </div>

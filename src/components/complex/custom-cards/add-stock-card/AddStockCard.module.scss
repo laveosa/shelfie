@@ -6,33 +6,34 @@
     flex-direction: column;
     gap: 20px;
     padding: 0 20px;
+    overflow: auto;
+    height: calc(100vh - 220px);
 
-    .stockAmount {
-      padding-top: 20px;
-    }
-
-    .purchasePriceBlock {
+    .addStockConfigurationForm {
       display: flex;
       flex-direction: column;
       gap: 20px;
 
-      .salePriceBlockInput {
+      .purchasePriceFormRow {
         display: flex;
-        align-items: flex-end;
         gap: 10px;
+
+        .formRowItem {
+          width: 33%;
+        }
       }
     }
 
     .purchaseDetailsBlock {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 20px;
     }
 
     .supplierInformationBlock {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 20px;
 
       .supplierInformation {
         display: flex;

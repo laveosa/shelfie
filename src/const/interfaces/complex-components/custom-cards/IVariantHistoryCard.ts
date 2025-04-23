@@ -4,5 +4,6 @@ import { GridModel } from "@/const/models/GridModel.ts";
 export interface IVariantHistoryCard {
   variant?: VariantModel;
   data?: GridModel;
+  getVariantHistory?: (data: any) => Promise<any>;
   onSecondaryButtonClick?: () => void;
 }

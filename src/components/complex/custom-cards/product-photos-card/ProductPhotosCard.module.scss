@@ -2,7 +2,7 @@
 
 .productPhotosCard {
   .productPhotosCardContent {
-    padding: 10px;
+    padding: 0 20px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -14,7 +14,7 @@
       }
 
       .photosGrid > div {
-        max-height: calc(100vh - 540px);
+        max-height: calc(100vh - 483px);
       }
     }
   }

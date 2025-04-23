@@ -1,21 +1,39 @@
 import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { DictionaryApiHooks } from "@/utils/services/api/DictionaryApiService.ts";
+import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";
+import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 
 export default function useManageVariantsPageService() {
   const [getVariantsForGrid] = ProductsApiHooks.useGetVariantsForGridMutation();
   const [getProductVariants] =
     ProductsApiHooks.useLazyGetProductVariantsQuery();
-  const [getListOfAllTraits] =
-    ProductsApiHooks.useLazyGetListOfAllTraitsQuery();
+  const [createVariant] = ProductsApiHooks.useCreateVariantMutation();
   const [getVariantDetails] = ProductsApiHooks.useLazyGetVariantDetailsQuery();
   const [toggleVariantIsActive] =
     ProductsApiHooks.useToggleVariantIsActiveMutation();
+  const [updateVariantDetails] =
+    ProductsApiHooks.useUpdateVariantDetailsMutation();
+  const [updateVariantTraitOptions] =
+    ProductsApiHooks.useUpdateVariantTraitOptionsMutation();
+  const [increaseStockAmountForVariant] =
+    ProductsApiHooks.useIncreaseStockAmountForVariantMutation();
+  const [disposeVariantFromStock] =
+    ProductsApiHooks.useDisposeVariantFromStockMutation();
+  const [getVariantStockHistory] =
+    ProductsApiHooks.useLazyGetVariantStockHistoryQuery();
+  const [changeVariantPosition] =
+    ProductsApiHooks.useChangeVariantPositionMutation();
+  const [generateProductCode] =
+    ProductsApiHooks.useLazyGenerateProductCodeQuery();
   const [getTrait] = ProductsApiHooks.useLazyGetTraitQuery();
   const [getCountersForProducts] =
     ProductsApiHooks.useLazyGetCountersForProductsQuery();
   const [getListOfTypesOfTraits] =
     DictionaryApiHooks.useLazyGetListOfTypesOfTraitsQuery();
+  ProductsApiHooks.useLazyGetProductVariantsQuery();
+  const [getListOfAllTraits] =
+    ProductsApiHooks.useLazyGetListOfAllTraitsQuery();
   const [getListOfTraitsForProduct] =
     ProductsApiHooks.useLazyGetListOfTraitsForProductQuery();
   const [getListOfTraitsWithOptionsForProduct] =
@@ -31,8 +49,19 @@ export default function useManageVariantsPageService() {
   const [deleteOptionsForTrait] =
     ProductsApiHooks.useDeleteOptionOfTraitMutation();
   const [updateTrait] = ProductsApiHooks.useUpdateTraitMutation();
-  const [createVariant] = ProductsApiHooks.useCreateVariantMutation();
+  const [changePositionOfTraitOption] =
+    ProductsApiHooks.useChangePositionOfTraitOptionMutation();
   const [getProductPhotos] = ProductsApiHooks.useLazyGetProductPhotosQuery();
+  const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
+  const [detachVariantPhoto] = ProductsApiHooks.useDetachVariantPhotoMutation();
+  const [deletePhoto] = AssetsApiHooks.useDeletePhotoMutation();
+  const [changePhotoPositionForVariant] =
+    ProductsApiHooks.useChangePhotoPositionForVariantMutation();
+  const [attachProductPhotoToVariant] =
+    ProductsApiHooks.useAttachProductPhotoToVariantMutation();
+  const [getTaxesList] = DictionaryApiHooks.useLazyGetTaxesListQuery();
+  const [getCurrenciesList] =
+    DictionaryApiHooks.useLazyGetCurrenciesListQuery();
 
   function getVariantsForGridHandler(data?: GridRequestModel) {
     return getVariantsForGrid(data).then((res: any) => {
@@ -64,8 +93,54 @@ export default function useManageVariantsPageService() {
     });
   }
 
+  function generateProductCodeHandler() {
+    return generateProductCode(null).then((res: any) => {
+      return res.data;
+    });
+  }
+
   function toggleVariantIsActiveHandler(id) {
     return toggleVariantIsActive(id).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function updateVariantDetailsHandler(id, model) {
+    return updateVariantDetails({ id, model }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function updateVariantTraitOptionsHandler(id, model) {
+    return updateVariantTraitOptions({ id, model }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function increaseStockAmountForVariantHandler(id, model) {
+    return increaseStockAmountForVariant({ id, model }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function disposeVariantFromStockHandler(id, model) {
+    return disposeVariantFromStock({ id, model }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function getVariantStockHistoryHandler(id) {
+    return getVariantStockHistory(id).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function changeVariantPositionHandler(productId, variantId, index) {
+    return changeVariantPosition({
+      productId,
+      variantId,
+      index,
+    }).then((res: any) => {
       return res.data;
     });
   }
@@ -142,8 +217,67 @@ export default function useManageVariantsPageService() {
     });
   }
 
+  function changePositionOfTraitOptionHandler(traitId, optionId, index) {
+    return changePositionOfTraitOption({
+      traitId,
+      optionId,
+      index,
+    }).then((res: any) => {
+      return res;
+    });
+  }
+
   function getProductPhotosHandler(id: number) {
     return getProductPhotos(id).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function uploadPhotoHandler(model: UploadPhotoModel) {
+    return uploadPhoto(model).then((res: any) => {
+      return res;
+    });
+  }
+
+  function detachVariantPhotoHandler(id, photoId) {
+    return detachVariantPhoto({ id, photoId }).then((res: any) => {
+      return res;
+    });
+  }
+
+  function deletePhotoHandler(photoId) {
+    return deletePhoto(photoId).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function changePhotoPositionForVariantHandler(id, photoId, index) {
+    return changePhotoPositionForVariant({
+      id,
+      photoId,
+      index,
+    }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function attachProductPhotoToVariantHandler(variantId, photoId) {
+    return attachProductPhotoToVariant({
+      variantId,
+      photoId,
+    }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function getTaxesListHandler() {
+    return getTaxesList().then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function getCurrenciesListHandler() {
+    return getCurrenciesList().then((res: any) => {
       return res.data;
     });
   }
@@ -155,6 +289,13 @@ export default function useManageVariantsPageService() {
     createVariantHandler,
     getVariantDetailsHandler,
     toggleVariantIsActiveHandler,
+    updateVariantDetailsHandler,
+    updateVariantTraitOptionsHandler,
+    increaseStockAmountForVariantHandler,
+    disposeVariantFromStockHandler,
+    getVariantStockHistoryHandler,
+    changeVariantPositionHandler,
+    generateProductCodeHandler,
     getListOfAllTraitsHandler,
     getListOfTraitsForProductHandler,
     getListOfTraitsWithOptionsForProductHandler,
@@ -167,6 +308,14 @@ export default function useManageVariantsPageService() {
     createNewOptionForTraitHandler,
     updateOptionsForTraitHandler,
     deleteOptionsForTraitHandler,
+    changePositionOfTraitOptionHandler,
     getProductPhotosHandler,
+    uploadPhotoHandler,
+    detachVariantPhotoHandler,
+    deletePhotoHandler,
+    changePhotoPositionForVariantHandler,
+    attachProductPhotoToVariantHandler,
+    getTaxesListHandler,
+    getCurrenciesListHandler,
   };
 }

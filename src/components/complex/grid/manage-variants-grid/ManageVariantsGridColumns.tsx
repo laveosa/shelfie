@@ -62,8 +62,15 @@ export const ManageVariantsGridColumns = (
   {
     accessorKey: "isActive",
     header: "Active",
-    cell: ({}) => {
-      return <Switch />;
+    cell: ({ row }) => {
+      return (
+        <Switch
+          checked={row.original.isActive}
+          onCheckedChange={() => {
+            onAction("activateVariant", row.id, undefined, row.original);
+          }}
+        />
+      );
     },
   },
   {
