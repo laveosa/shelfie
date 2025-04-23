@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 
-interface TraitOptionsGridColumnActionsProps<TData> {
+interface VariantGridColumnActionsProps<TData> {
   row?: Row<TData>;
   table?: Table<TData>;
   onAction?: (
@@ -24,7 +24,7 @@ export default function ManageVariantsGridColumnActions<TData>({
   row,
   table,
   onAction,
-}: TraitOptionsGridColumnActionsProps<TData>) {
+}: VariantGridColumnActionsProps<TData>) {
   const meta = table.options.meta as {
     setLoadingRow: (rowId: string, loading: boolean) => void;
     isRowLoading: (rowId: string) => boolean;

@@ -435,6 +435,19 @@ export const ProductsApiService = createApi({
         },
       ],
     }),
+    changeVariantPosition: apiConfig.createMutation<
+      any,
+      {
+        productId?: number;
+        variantId?: number;
+        index?: number;
+      }
+    >(builder, {
+      query: ({ productId, variantId, index }) => ({
+        url: `${ApiUrlEnum.PRODUCTS}/${productId}/variant/${variantId}/${index}`,
+        method: "PATCH",
+      }),
+    }),
     changePhotoPositionForVariant: apiConfig.createMutation<
       any,
       {
@@ -453,6 +466,18 @@ export const ProductsApiService = createApi({
           result,
         },
       ],
+    }),
+    attachProductPhotoToVariant: apiConfig.createMutation<
+      any,
+      {
+        variantId?: number;
+        photoId?: number;
+      }
+    >(builder, {
+      query: ({ variantId, photoId }) => ({
+        url: `${ApiUrlEnum.VARIANTS}/${variantId}/attach-photo/${photoId}`,
+        method: "PATCH",
+      }),
     }),
     getListOfAllTraits: apiConfig.createQuery<any, void>(builder, {
       query: () => ({

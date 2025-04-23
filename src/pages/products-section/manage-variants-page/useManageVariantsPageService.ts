@@ -8,8 +8,7 @@ export default function useManageVariantsPageService() {
   const [getVariantsForGrid] = ProductsApiHooks.useGetVariantsForGridMutation();
   const [getProductVariants] =
     ProductsApiHooks.useLazyGetProductVariantsQuery();
-  const [getListOfAllTraits] =
-    ProductsApiHooks.useLazyGetListOfAllTraitsQuery();
+  const [createVariant] = ProductsApiHooks.useCreateVariantMutation();
   const [getVariantDetails] = ProductsApiHooks.useLazyGetVariantDetailsQuery();
   const [toggleVariantIsActive] =
     ProductsApiHooks.useToggleVariantIsActiveMutation();
@@ -23,6 +22,8 @@ export default function useManageVariantsPageService() {
     ProductsApiHooks.useDisposeVariantFromStockMutation();
   const [getVariantStockHistory] =
     ProductsApiHooks.useLazyGetVariantStockHistoryQuery();
+  const [changeVariantPosition] =
+    ProductsApiHooks.useChangeVariantPositionMutation();
   const [generateProductCode] =
     ProductsApiHooks.useLazyGenerateProductCodeQuery();
   const [getTrait] = ProductsApiHooks.useLazyGetTraitQuery();
@@ -30,6 +31,9 @@ export default function useManageVariantsPageService() {
     ProductsApiHooks.useLazyGetCountersForProductsQuery();
   const [getListOfTypesOfTraits] =
     DictionaryApiHooks.useLazyGetListOfTypesOfTraitsQuery();
+  ProductsApiHooks.useLazyGetProductVariantsQuery();
+  const [getListOfAllTraits] =
+    ProductsApiHooks.useLazyGetListOfAllTraitsQuery();
   const [getListOfTraitsForProduct] =
     ProductsApiHooks.useLazyGetListOfTraitsForProductQuery();
   const [getListOfTraitsWithOptionsForProduct] =
@@ -45,7 +49,6 @@ export default function useManageVariantsPageService() {
   const [deleteOptionsForTrait] =
     ProductsApiHooks.useDeleteOptionOfTraitMutation();
   const [updateTrait] = ProductsApiHooks.useUpdateTraitMutation();
-  const [createVariant] = ProductsApiHooks.useCreateVariantMutation();
   const [changePositionOfTraitOption] =
     ProductsApiHooks.useChangePositionOfTraitOptionMutation();
   const [getProductPhotos] = ProductsApiHooks.useLazyGetProductPhotosQuery();
@@ -54,6 +57,8 @@ export default function useManageVariantsPageService() {
   const [deletePhoto] = AssetsApiHooks.useDeletePhotoMutation();
   const [changePhotoPositionForVariant] =
     ProductsApiHooks.useChangePhotoPositionForVariantMutation();
+  const [attachProductPhotoToVariant] =
+    ProductsApiHooks.useAttachProductPhotoToVariantMutation();
   const [getTaxesList] = DictionaryApiHooks.useLazyGetTaxesListQuery();
   const [getCurrenciesList] =
     DictionaryApiHooks.useLazyGetCurrenciesListQuery();
@@ -126,6 +131,16 @@ export default function useManageVariantsPageService() {
 
   function getVariantStockHistoryHandler(id) {
     return getVariantStockHistory(id).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function changeVariantPositionHandler(productId, variantId, index) {
+    return changeVariantPosition({
+      productId,
+      variantId,
+      index,
+    }).then((res: any) => {
       return res.data;
     });
   }
@@ -246,6 +261,15 @@ export default function useManageVariantsPageService() {
     });
   }
 
+  function attachProductPhotoToVariantHandler(variantId, photoId) {
+    return attachProductPhotoToVariant({
+      variantId,
+      photoId,
+    }).then((res: any) => {
+      return res.data;
+    });
+  }
+
   function getTaxesListHandler() {
     return getTaxesList().then((res: any) => {
       return res.data;
@@ -270,7 +294,7 @@ export default function useManageVariantsPageService() {
     increaseStockAmountForVariantHandler,
     disposeVariantFromStockHandler,
     getVariantStockHistoryHandler,
-    changePhotoPositionForVariantHandler,
+    changeVariantPositionHandler,
     generateProductCodeHandler,
     getListOfAllTraitsHandler,
     getListOfTraitsForProductHandler,
@@ -289,6 +313,8 @@ export default function useManageVariantsPageService() {
     uploadPhotoHandler,
     detachVariantPhotoHandler,
     deletePhotoHandler,
+    changePhotoPositionForVariantHandler,
+    attachProductPhotoToVariantHandler,
     getTaxesListHandler,
     getCurrenciesListHandler,
   };

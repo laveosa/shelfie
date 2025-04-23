@@ -66,10 +66,8 @@ export const ManageVariantsGridColumns = (
       return (
         <Switch
           checked={row.original.isActive}
-          onChange={(event: React.FormEvent<HTMLButtonElement>) => {
-            const checked = (event.target as HTMLInputElement).checked;
-            console.log("activateVariant", row.original);
-            onAction("activateVariant", row.original, undefined, row);
+          onCheckedChange={() => {
+            onAction("activateVariant", row.id, undefined, row.original);
           }}
         />
       );

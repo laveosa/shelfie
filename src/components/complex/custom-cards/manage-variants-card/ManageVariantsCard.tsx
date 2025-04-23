@@ -1,4 +1,4 @@
-import { LayoutList, MoreHorizontal, Plus } from "lucide-react";
+import { MoreHorizontal, Plus } from "lucide-react";
 import React, { Fragment } from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
@@ -24,14 +24,34 @@ export default function ManageVariantsCard({
 }: IManageVariantsCard) {
   const columns = ManageVariantsGridColumns(onGridAction);
 
+  function handleAction(actionType: any, payload?: any) {
+    switch (actionType) {
+      case "manageVariant":
+        onAction("manageVariant", payload);
+        break;
+      case "activateVariant":
+        console.log("OnAction", payload);
+        onAction("activateVariant", payload);
+        break;
+      case "dnd":
+        const { newIndex, activeItem } = payload;
+        onAction("changeVariantPosition", { newIndex, activeItem });
+        break;
+    }
+  }
+
   function onGridAction(
     _actionType: string,
     _rowId?: string,
     _setLoadingRow?: (rowId: string, loading: boolean) => void,
     row?: any,
   ) {
-    onAction("manageVariant", row.original);
-    onAction("activateVariant", row.original);
+    handleAction("activateVariant", row);
+    handleAction("manageVariant", row.original);
+    handleAction("changeVariantPosition", {
+      newIndex: row.newIndex,
+      activeItem: row.original,
+    });
   }
 
   return (
@@ -97,14 +117,14 @@ export default function ManageVariantsCard({
           >
             {traits.length > 0 ? "Create Variant" : "Select Traits"}
           </SheButton>
-          {traits.length === 0 && (
-            <>
-              <span>or</span>
-              <SheButton icon={LayoutList} variant="outline">
-                Generate Set
-              </SheButton>
-            </>
-          )}
+          {/*{traits.length === 0 && (*/}
+          {/*  <>*/}
+          {/*    <span>or</span>*/}
+          {/*    <SheButton icon={LayoutList} variant="outline">*/}
+          {/*      Generate Set*/}
+          {/*    </SheButton>*/}
+          {/*  </>*/}
+          {/*)}*/}
         </div>
         <div>
           {variants?.length > 0 && (
@@ -116,7 +136,7 @@ export default function ManageVariantsCard({
               data={variants}
               gridModel={data}
               onNewItemPosition={(newIndex, activeItem) =>
-                onAction("dnd", { newIndex, activeItem })
+                handleAction("dnd", { newIndex, activeItem })
               }
             />
           )}

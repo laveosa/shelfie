@@ -4,7 +4,6 @@ import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { useToast } from "@/hooks/useToast.ts";
-import { GridModel } from "@/const/models/GridModel.ts";
 import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 import cs from "@/pages/products-section/product-basic-data-page/ProductBasicDataPage.module.scss";
 import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
@@ -32,12 +31,6 @@ export function ManageVariantsPage() {
   const { productId } = useParams();
 
   useEffect(() => {
-    service
-      .getVariantsForGridHandler(state.gridRequestModel)
-      .then((res: GridModel) => {
-        dispatch(actions.refreshVariants(res ? res.items : []));
-      });
-
     service.getListOfTypesOfTraitsHandler().then((res) => {
       dispatch(actions.refreshTypesOfTraits(res));
     });
@@ -142,15 +135,11 @@ export function ManageVariantsPage() {
           });
         break;
       case "activateVariant":
-        console.log("VARIANT", payload);
-        // service
-        //   .updateVariantDetailsHandler(
-        //     payload.variant.variantId,
-        //     payload.formattedData,
-        //   )
-        //   .then((res) => {
-        //     console.log("SELECTED VARIANT", res);
-        //   });
+        service.toggleVariantIsActiveHandler(payload.variantId).then(() => {
+          service.getProductVariantsHandler(productId).then((res) => {
+            dispatch(actions.refreshProductVariants(res));
+          });
+        });
         break;
       case "increaseStockAmount":
         console.log("StockAmount", payload);
@@ -173,6 +162,14 @@ export function ManageVariantsPage() {
           .then((res) => {
             console.log("SELECTED VARIANT", res);
           });
+        break;
+      case "changeVariantPosition":
+        console.log("DisposeFromStock", payload);
+        service.changeVariantPositionHandler(
+          productId,
+          payload.activeItem.variantId,
+          payload.newIndex,
+        );
         break;
       case "uploadPhotoToVariant":
         console.log("PHOTO UPLOAD", payload);
@@ -198,14 +195,20 @@ export function ManageVariantsPage() {
         break;
       case "addPhotoToVariant":
         console.log("PHOTO", payload);
-        // service
-        //   .increaseStockAmountForVariantHandler(
-        //     payload.variant.variantId,
-        //     payload.formattedData,
-        //   )
-        //   .then((res) => {
-        //     console.log("SELECTED VARIANT", res);
-        //   });
+        service
+          .attachProductPhotoToVariantHandler(
+            state.selectedVariant.variantId,
+            payload.photoId,
+          )
+          .then((res) => {
+            console.log("Attached PHOTO", res);
+            service
+              .getVariantDetailsHandler(state.selectedVariant.variantId)
+              .then((res) => {
+                dispatch(actions.refreshVariantPhotos(res?.photos));
+                dispatch(actions.refreshSelectedVariant(res));
+              });
+          });
         break;
       case "detachPhotoFromVariant":
         service
@@ -287,6 +290,18 @@ export function ManageVariantsPage() {
           }
         });
         break;
+      case "updateTrait":
+        console.log("PAYLOAD", payload);
+        service
+          .updateTraitHandler(state.selectedTrait.traitId, payload)
+          .then((res) => {
+            if (res) {
+              service.getListOfAllTraitsHandler().then((res) => {
+                dispatch(actions.refreshTraits(res));
+              });
+            }
+          });
+        break;
       case "setProductTraits":
         dispatch(actions.refreshSelectedTraitsIds(payload));
         service.setProductTraitsHandler(productId, payload).then(() => {
@@ -298,22 +313,6 @@ export function ManageVariantsPage() {
             });
         });
         break;
-      // case "delete":
-      //   service.deleteOptionsForTraitHandler(payload.optionId).then((res) => {
-      //     if (res) {
-      //       service
-      //         .getOptionsForTraitHandler(state.selectedTrait.traitId)
-      //         .then((res) => {
-      //           dispatch(
-      //             actions.refreshColorOptionsGridModel({
-      //               ...state.colorOptionsGridModel,
-      //               items: [res],
-      //             }),
-      //           );
-      //         });
-      //     }
-      //   });
-      //   break;
       case "updateOption":
         service
           .updateOptionsForTraitHandler(payload.optionId, payload.updatedModel)
