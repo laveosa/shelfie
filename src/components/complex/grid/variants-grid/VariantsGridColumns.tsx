@@ -56,10 +56,6 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
       },
     },
     {
-      accessorKey: "barcode",
-      header: "Details",
-    },
-    {
       accessorKey: "traitOptions",
       header: "Details",
       cell: ({ row }) => {
