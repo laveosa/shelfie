@@ -101,9 +101,9 @@ export default function ChooseVariantTraitsCard({
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="start" className="w-[160px]">
                         <DropdownMenuItem
-                          onClick={() => onAction("deleteTrait", item.traitId)}
+                          onClick={() => onAction("manageTrait", item.traitId)}
                         >
-                          <span className="she-text">Delete</span>
+                          <span className="she-text">Manage</span>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>

@@ -260,9 +260,6 @@ export function ManageVariantsPage() {
           handleCardAction("productTraitConfigurationCard", true);
         });
         break;
-      case "deleteTrait":
-        console.log("deleteTrait", payload);
-        break;
       case "createTrait":
         service.createNewTraitHandler(payload).then((res) => {
           if (res) {
@@ -301,22 +298,22 @@ export function ManageVariantsPage() {
             });
         });
         break;
-      case "delete":
-        service.deleteOptionsForTraitHandler(payload.optionId).then((res) => {
-          if (res) {
-            service
-              .getOptionsForTraitHandler(state.selectedTrait.traitId)
-              .then((res) => {
-                dispatch(
-                  actions.refreshColorOptionsGridModel({
-                    ...state.colorOptionsGridModel,
-                    items: [res],
-                  }),
-                );
-              });
-          }
-        });
-        break;
+      // case "delete":
+      //   service.deleteOptionsForTraitHandler(payload.optionId).then((res) => {
+      //     if (res) {
+      //       service
+      //         .getOptionsForTraitHandler(state.selectedTrait.traitId)
+      //         .then((res) => {
+      //           dispatch(
+      //             actions.refreshColorOptionsGridModel({
+      //               ...state.colorOptionsGridModel,
+      //               items: [res],
+      //             }),
+      //           );
+      //         });
+      //     }
+      //   });
+      //   break;
       case "updateOption":
         service
           .updateOptionsForTraitHandler(payload.optionId, payload.updatedModel)
