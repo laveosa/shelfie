@@ -15,6 +15,8 @@ import { X } from "lucide-react";
 export default function SheTextArea({
   className,
   value,
+  isValid = true,
+  ignoreValidation,
   minWidth,
   maxWidth,
   fullWidth,
@@ -28,29 +30,40 @@ export default function SheTextArea({
   showClearBtn,
   tooltip,
   disabled,
+  minLength,
+  maxLength,
   resize,
   delayTime,
+  showError = true,
   rows = 4,
   style,
   onChange,
   onBlur,
   onDelay,
+  onIsValid,
   ...props
 }: ISheTextarea): JSX.Element {
   const { translate } = useAppTranslation();
-  const [textValue, setTextValue] = useState<
+  const [_textValue, setTextValue] = useState<
     string | number | readonly string[]
-  >("");
+  >(null);
+  const [_isValid, setIsValid] = useState(isValid);
+  const [_isLengthValid, setIsLengthValid] = useState(isValid);
+  const [_showError, setShowError] = useState(showError);
+  const [_error, setError] = useState<string>(null);
+  const [_errorTransKey, setErrorTransKey] = useState<string>(null);
 
-  const ariaDescribedbyId = `${generateId()}_INPUT_ID`;
-  const delayValue = useDebounce(textValue, delayTime);
+  const ariaDescribedbyId = `${generateId()}TEXTAREA_ID`;
+  const delayValue = useDebounce(_textValue, delayTime);
   const isInitialized = useRef(false);
   const isTouched = useRef(false);
 
   useEffect(() => {
-    const converted = Array.isArray(value) ? value.join("\n") : value;
-    if (converted !== textValue) {
-      setTextValue(converted);
+    const convertedValue = Array.isArray(value) ? value.join("\n") : value;
+    if (convertedValue !== _textValue) {
+      isTouched.current = true;
+      setTextValue(convertedValue);
+      validateValue(convertedValue);
     }
   }, [value]);
 
@@ -60,27 +73,44 @@ export default function SheTextArea({
     }
   }, [delayValue]);
 
+  useEffect(() => {
+    setIsValid(isValid);
+
+    if (isValid) {
+      isInitialized.current = false;
+      isTouched.current = false;
+      setIsLengthValid(true);
+      setErrorCondition(false);
+    }
+  }, [isValid]);
+
   // ==================================================================== EVENT
 
   function onChangeHandler(e) {
     isInitialized.current = true;
     const newValue = e.target.value;
     setTextValue(newValue);
+    validateValue(newValue);
     if (onChange) onChange(newValue);
   }
 
   function onBlurHandler(e) {
     isTouched.current = true;
     const newValue = e.target.value;
+    validateValue(newValue);
     if (onBlur) onBlur(newValue);
   }
 
   function onClearHandler() {
     isInitialized.current = false;
     isTouched.current = false;
+    updateIsValid(true);
+    setIsLengthValid(true);
+    setErrorCondition(false);
 
     const newValue = "";
     setTextValue(newValue);
+    validateValue(newValue);
 
     if (onChange) onChange(newValue);
     if (onBlur) onBlur(newValue);
@@ -89,11 +119,80 @@ export default function SheTextArea({
 
   // ==================================================================== PRIVATE
 
-  // ==================================================================== RENDER
+  function validateValue(textValue) {
+    if (ignoreValidation || !isTouched.current) return true;
+
+    let validation = true;
+    validation = isRequiredValid(textValue, validation);
+    validation = isLengthValid(textValue, validation);
+    updateIsValid(validation);
+  }
+
+  function updateIsValid(value: boolean) {
+    if (onIsValid) onIsValid(value);
+
+    setIsValid(value);
+  }
+
+  // ----------------------------- VALIDATION PATTERNS CHECK
+
+  function isRequiredValid(textValue, validation) {
+    if (!required || !validation) return validation;
+
+    const result = textValue.length > 0;
+
+    if (!result) setIsLengthValid(false);
+
+    setShowErrorCondition(result, "context is required", "REPLACE.ME"); // TODO replace with valid translation key
+    return result;
+  }
+
+  function isLengthValid(textValue, validation) {
+    if ((!minLength && !maxLength) || !validation) {
+      setIsLengthValid(true);
+      return validation;
+    }
+
+    const valueLength = textValue.toString().length;
+    const isMinOk =
+      typeof minLength === "number" ? valueLength >= minLength : true;
+    const isMaxOk =
+      typeof maxLength === "number" ? valueLength <= maxLength : true;
+    const result = isMinOk && isMaxOk;
+
+    setIsLengthValid(result);
+    setShowErrorCondition(result, "value length not valid", "REPLACE.ME"); // TODO replace with valid translation key
+    return result;
+  }
+
+  // ----------------------------- ERROR CONDITION
+
+  function setShowErrorCondition(
+    isValid: boolean,
+    message?: string,
+    messageTransKey?: string,
+  ) {
+    !isValid
+      ? setErrorCondition(true, message, messageTransKey)
+      : setErrorCondition(false);
+  }
+
+  function setErrorCondition(
+    show: boolean,
+    text?: string,
+    errTransKey?: string,
+  ) {
+    if (showError && show) setShowError(show);
+
+    setError(text);
+    setErrorTransKey(errTransKey);
+  }
+
+  // ==================================================================== LAYOUT
 
   return (
     <div
-      className={`${className || ""} ${cs.sheTextArea || ""} ${icon ? cs.withIcon : ""} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""} ${resize ? cs.resize : ""}`}
+      className={`${className || ""} ${cs.sheTextArea || ""} ${icon ? cs.withIcon : ""} ${fullWidth ? cs.fullWidth : ""} ${!_isValid ? cs.invalid : ""} ${!_isLengthValid ? cs.lengthInvalid : ""} ${required ? cs.required : ""} ${resize ? cs.resize : ""}`}
       style={{
         minWidth,
         maxWidth,
@@ -137,7 +236,7 @@ export default function SheTextArea({
             ))}
           <Textarea
             {...props}
-            value={textValue ?? ""}
+            value={_textValue ?? ""}
             placeholder={translate(placeholderTransKey, placeholder)}
             aria-describedby={ariaDescribedbyId}
             disabled={disabled || isLoading}
@@ -152,8 +251,8 @@ export default function SheTextArea({
               icon={X}
               aria-describedby={ariaDescribedbyId}
               disabled={
-                !textValue ||
-                textValue.toString().length === 0 ||
+                !_textValue ||
+                _textValue.toString().length === 0 ||
                 disabled ||
                 isLoading
               }
@@ -161,6 +260,28 @@ export default function SheTextArea({
             />
           )}
         </div>
+        {(minLength || maxLength) && (
+          <div className={cs.contextLengthRestriction}>
+            <div className={cs.contextLengthBock}>
+              {minLength && (
+                <span className="she-subtext">min: {minLength}</span>
+              )}
+              <span className="she-subtext">
+                value: {_textValue ? _textValue.toString().length : 0}
+              </span>
+              {maxLength && (
+                <span className="she-subtext">max: {maxLength}</span>
+              )}
+            </div>
+          </div>
+        )}
+        {_showError && _error && (
+          <div className={cs.errorMessageBlock}>
+            <span className="she-text-error">
+              <Trans i18nKey={_errorTransKey}>{_error}</Trans>
+            </span>
+          </div>
+        )}
       </div>
     </div>
   );

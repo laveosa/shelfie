@@ -7,7 +7,7 @@ import SheTextArea from "@/components/primitive/she-textarea/SheTextarea.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { IconViewEnum } from "@/const/enums/IconViewEnum.ts";
-import { Home } from "lucide-react";
+import { Home, Users } from "lucide-react";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import UserForm from "@/components/forms/user-form/UserForm.tsx";
 
@@ -16,6 +16,7 @@ export function DashboardPage() {
 
   const [text, setText] = useState<string>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [isValid, setIsValid] = useState<boolean>(true);
 
   useEffect(() => {
     setTimeout(() => {
@@ -29,23 +30,51 @@ export function DashboardPage() {
 
       <br />
 
-      <SheButton value="Loading" onClick={() => setLoading(!loading)} />
+      <div className="flex gap-4">
+        <SheButton
+          value="Loading"
+          minWidth="100px"
+          onClick={() => setLoading(!loading)}
+        />
+        <SheButton
+          value="Valid"
+          minWidth="100px"
+          onClick={() => setIsValid(!isValid)}
+        />
+      </div>
 
       <br />
 
       <SheTextArea
         label="Textarea"
+        value={text}
         placeholder="is loading test..."
-        value={["11111", "22222", "333333"]}
         isLoading={loading}
         required
         tooltip={{ text: "some tooltip text" }}
+        minLength={3}
+        maxLength={10}
+        showError={false}
+        icon={Users}
         onChange={(event) => console.log("onChange: ", event)}
+        onDelay={(event) => console.log("onDelay: ", event)}
+        onBlur={(event) => console.log("onBlur: ", event)}
+        onIsValid={(event) => console.log("onIsValid: ", event)}
       />
 
       <br />
 
-      <SheTextArea
+      <SheInput
+        label="Input"
+        value={text}
+        required
+        minLength={4}
+        maxLength={7}
+      />
+
+      <br />
+
+      {/*<SheTextArea
         label="Textarea 1"
         labelTransKey="sdfewiniwceon"
         placeholder="some new placeholder for textarea..."
@@ -56,20 +85,20 @@ export function DashboardPage() {
         rows={1}
         delayTime={1800}
         onDelay={(event) => console.log("onDelay: ", event)}
-      />
+      />*/}
 
       <br />
 
-      <SheTextArea
+      {/*<SheTextArea
         label="Textarea"
         placeholder="disabled test..."
         disabled
         onChange={(event) => console.log("onChange: ", event)}
-      />
+      />*/}
 
       <br />
 
-      <SheTextArea
+      {/*<SheTextArea
         label="Textarea 1"
         labelTransKey="sdfewiniwceon"
         placeholder="some new placeholder for textarea..."
@@ -90,7 +119,7 @@ export function DashboardPage() {
         onChange={(event) => console.log("onChange: ", event)}
         onDelay={(event) => console.log("onDelay: ", event)}
         onBlur={(event) => console.log("onBlur: ", event)}
-      />
+      />*/}
 
       <br />
     </div>

@@ -133,3 +133,60 @@ $tooltipIconSize: 15px;
     }
   }
 }
+
+// ======================================================== INVALID
+
+.sheTextArea.invalid {
+  .sheTextAreaComponent {
+    .sheTextAreaControl {
+      > textarea {
+        border: 1px solid vars.$colorRed;
+      }
+    }
+  }
+}
+
+.sheTextArea.lengthInvalid {
+  .sheTextAreaComponent {
+    .sheTextAreaControl {
+      > textarea {
+        border: 1px solid vars.$colorRed;
+      }
+    }
+
+    .contextLengthRestriction {
+      .contextLengthBock {
+        span {
+          color: vars.$colorRed;
+        }
+      }
+    }
+  }
+}
+
+// ======================================================== MIN MAX LENGTH
+
+.sheTextArea {
+  .contextLengthRestriction {
+    .contextLengthBock {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+  }
+}
+
+// ======================================================== ERROR MESSAGE
+
+.sheTextArea {
+  .errorMessageBlock {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 0;
+
+    span {
+      position: absolute;
+    }
+  }
+}
