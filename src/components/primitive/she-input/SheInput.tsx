@@ -63,7 +63,9 @@ export default function SheInput({
 
   useEffect(() => {
     if (value !== _value) {
+      isTouched.current = true;
       setValue(value);
+      validateInput(value);
     }
   }, [value]);
 

@@ -1,2 +1,196 @@
-.SheTextArea {
+@use "@/styles/variables" as vars;
+
+$iconSize: 20px;
+$clearBtnSize: 30px;
+$tooltipIconSize: 15px;
+
+.sheTextArea {
+  max-width: vars.$maxWidth;
+  width: 100%;
+
+  .sheTextAreaComponent {
+    position: relative;
+
+    label {
+      display: flex;
+      gap: 8px;
+      font-weight: 500;
+      position: relative;
+      top: -6px;
+      font-size: 14px;
+    }
+
+    .sheTextAreaControl {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      .iconBlock {
+        position: absolute;
+        color: vars.$subtextColor;
+        left: 8px;
+        top: 8px;
+        max-width: $iconSize;
+        min-width: $iconSize;
+        max-height: $iconSize;
+        min-height: $iconSize;
+      }
+
+      textarea {
+        resize: none;
+        min-height: 0;
+
+        &:focus-visible {
+          box-shadow: 0 0 0 1px lightgray inset;
+        }
+
+        &::placeholder {
+          color: vars.$placeholderColor;
+        }
+      }
+    }
+  }
+}
+
+// ======================================================== CLEAR BUTTON
+
+.sheTextArea {
+  [class*="sheButton"] {
+    display: flex;
+    align-self: start;
+    border-radius: 100%;
+    max-width: $clearBtnSize;
+    min-width: $clearBtnSize;
+    max-height: $clearBtnSize;
+    min-height: $clearBtnSize;
+  }
+}
+
+// ======================================================== FULL WIDTH
+
+.sheTextArea.fullWidth {
+  max-width: none;
+  width: 100%;
+}
+
+// ======================================================== REQUIRED
+
+.sheTextArea.required {
+  position: relative;
+
+  .sheTextAreaComponent:before {
+    position: absolute;
+    left: -10px;
+    top: -14px;
+    color: vars.$colorRed;
+    content: "*";
+    display: inline;
+  }
+}
+
+// ======================================================== WITH ICON
+
+.sheTextArea.withIcon {
+  .sheTextAreaComponent {
+    .sheTextAreaControl {
+      textarea {
+        padding-left: 36px;
+      }
+    }
+  }
+}
+
+// ======================================================== RESIZE
+
+.sheTextArea.resize {
+  .sheTextAreaComponent {
+    .sheTextAreaControl {
+      textarea {
+        resize: vertical;
+      }
+    }
+  }
+}
+
+// ======================================================== TOOLTIP
+
+.sheTextArea {
+  .sheTextAreaComponent {
+    label {
+      .tooltipIcon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4px;
+        box-sizing: border-box;
+        max-width: $tooltipIconSize;
+        min-width: $tooltipIconSize;
+        max-height: $tooltipIconSize;
+        min-height: $tooltipIconSize;
+        background-color: vars.$colorDark;
+        border-radius: 100%;
+        color: white;
+        font-weight: bold;
+        font-size: 12px;
+      }
+    }
+  }
+}
+
+// ======================================================== INVALID
+
+.sheTextArea.invalid {
+  .sheTextAreaComponent {
+    .sheTextAreaControl {
+      textarea {
+        border: 1px solid vars.$colorRed;
+      }
+    }
+  }
+}
+
+.sheTextArea.lengthInvalid {
+  .sheTextAreaComponent {
+    .sheTextAreaControl {
+      textarea {
+        border: 1px solid vars.$colorRed;
+      }
+    }
+
+    .contextLengthRestriction {
+      .contextLengthBock {
+        span {
+          color: vars.$colorRed;
+        }
+      }
+    }
+  }
+}
+
+// ======================================================== MIN MAX LENGTH
+
+.sheTextArea {
+  .contextLengthRestriction {
+    .contextLengthBock {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+  }
+}
+
+// ======================================================== ERROR MESSAGE
+
+.sheTextArea {
+  .errorMessageBlock {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 0;
+
+    span {
+      position: absolute;
+    }
+  }
 }
