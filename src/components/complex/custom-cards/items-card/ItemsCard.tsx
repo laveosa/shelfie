@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ItemsCard.module.scss";
 import { Separator } from "@/components/ui/separator.tsx";
-import placeholderImage from "@/assets/images/placeholder-image.png";
 import { IItemsCard } from "@/const/interfaces/complex-components/custom-cards/IItemsCard.ts";
+import { Image } from "lucide-react";
 
 export default function ItemsCard({
   data,
@@ -38,11 +38,22 @@ export default function ItemsCard({
               <div
                 className={`${cs.productsListItem} ${selectedId === (item.variantId ?? item.productId) ? cs.selected : ""}`}
               >
-                <img
-                  src={item.image?.thumbnailUrl || placeholderImage}
-                  alt={item.productName ?? item.variantName}
-                  className={cs.productItemImage}
-                />
+                {item.image?.thumbnailUrl ? (
+                  <img
+                    src={item.image?.thumbnailUrl}
+                    alt={item.productName ?? item.variantName}
+                    className={cs.productItemImage}
+                  />
+                ) : (
+                  <div className={cs.productItemPlaceholderIcon}>
+                    <Image />
+                  </div>
+                )}
+                {/*<img*/}
+                {/*  src={item.image?.thumbnailUrl || placeholderImage}*/}
+                {/*  alt={item.productName ?? item.variantName}*/}
+                {/*  className={cs.productItemImage}*/}
+                {/*/>*/}
                 <div className={cs.productItemName}>
                   {item.productName ?? item.variantName}
                 </div>

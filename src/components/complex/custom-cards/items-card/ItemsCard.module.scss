@@ -15,6 +15,13 @@
       height: 100%;
       padding: vars.$paddingSmall;
 
+      .productItemPlaceholderIcon {
+        svg {
+          width: 20px;
+          height: 20px;
+        }
+      }
+
       &:hover {
         background: vars.$colorMedium;
         font-weight: 500;
