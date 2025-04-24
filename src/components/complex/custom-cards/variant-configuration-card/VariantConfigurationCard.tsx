@@ -100,8 +100,7 @@ export default function VariantConfigurationCard({
 
   function onGenerateCode() {
     onGenerateProductCode().then((res: ProductCodeModel) => {
-      form.setValue("variantCode", res.code, { shouldDirty: true }); // Update form state
-      console.log("New code:", res.code);
+      form.setValue("variantCode", res.code, { shouldDirty: true });
     });
   }
 
@@ -154,7 +153,6 @@ export default function VariantConfigurationCard({
                 <div className={cs.inputBlockRow}>
                   <SheInput
                     {...form.register("variantCode")}
-                    // fullWidth
                     onDelay={form.handleSubmit(onSubmit)}
                   />
                 </div>
@@ -286,7 +284,7 @@ export default function VariantConfigurationCard({
             <DndGridDataTable
               showHeader={false}
               columns={traitsColumns}
-              data={variant.traitOptions}
+              data={variant.traitOptions.filter((option) => option.isRemoved)}
               gridModel={data}
             />
           </div>

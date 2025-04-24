@@ -30,13 +30,20 @@ export default function ManageTraitsCard({
   onSecondaryButtonClick,
   ...props
 }: IManageTraitsCard) {
-  const defaultValues = traits.reduce(
-    (acc, trait) => ({
-      ...acc,
-      [trait.traitId]: "",
-    }),
-    {} as TraitForm,
+  const validVariantOptions = (variant?.traitOptions || []).filter(
+    (opt) => opt.isRemoved && opt.optionId !== null,
   );
+
+  const defaultValues = traits.reduce((acc, trait) => {
+    const matchedOption = validVariantOptions.find(
+      (vo) => vo.traitName === trait.traitName,
+    );
+
+    return {
+      ...acc,
+      [trait.traitId]: matchedOption?.optionId?.toString() || "",
+    };
+  }, {} as TraitForm);
 
   const form = useForm<TraitForm>({
     defaultValues,
@@ -74,64 +81,67 @@ export default function ManageTraitsCard({
         </div>
         <div>
           <SheForm form={form} onSubmit={onSubmit}>
-            {traits.map((trait) => (
-              <FormField
-                key={trait.traitId}
-                control={form.control}
-                name={trait.traitId.toString()}
-                render={({ field }) => {
-                  return (
-                    <FormItem className={cs.select}>
-                      <FormLabel>{trait.traitName}</FormLabel>
-                      <Select
-                        onValueChange={(value) => {
-                          field.onChange(value);
-                        }}
-                        value={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue
-                              placeholder={`Select ${trait.traitTypeName.toLowerCase()}`}
-                            />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {trait.traitOptions.map((option) => (
-                            <SelectItem
-                              key={option.optionId}
-                              value={option.optionId.toString()}
-                            >
-                              {trait.traitTypeId === 2 ? (
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                  }}
-                                >
+            <div className={cs.manageTraitsCardForm}>
+              {traits.map((trait) => (
+                <FormField
+                  key={trait.traitId}
+                  control={form.control}
+                  name={trait.traitId.toString()}
+                  render={({ field }) => {
+                    return (
+                      <FormItem className={cs.select}>
+                        <FormLabel>{trait.traitName}</FormLabel>
+                        <Select
+                          onValueChange={(value) => {
+                            field.onChange(value);
+                          }}
+                          value={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue
+                                placeholder={`Select ${trait.traitTypeName.toLowerCase()}`}
+                              />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {trait.traitOptions.map((option) => (
+                              <SelectItem
+                                key={option.optionId}
+                                value={option.optionId.toString()}
+                              >
+                                {trait.traitTypeId === 2 ? (
                                   <div
                                     style={{
-                                      width: "20px",
-                                      height: "20px",
-                                      background: option?.optionColor || "#ccc",
-                                      marginRight: "8px",
-                                      borderRadius: "2px",
+                                      display: "flex",
+                                      alignItems: "center",
                                     }}
-                                  ></div>
-                                  {option.optionName}
-                                </div>
-                              ) : (
-                                option.optionName
-                              )}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormItem>
-                  );
-                }}
-              />
-            ))}
+                                  >
+                                    <div
+                                      style={{
+                                        width: "20px",
+                                        height: "20px",
+                                        background:
+                                          option?.optionColor || "#ccc",
+                                        marginRight: "8px",
+                                        borderRadius: "2px",
+                                      }}
+                                    ></div>
+                                    {option.optionName}
+                                  </div>
+                                ) : (
+                                  option.optionName
+                                )}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormItem>
+                    );
+                  }}
+                />
+              ))}
+            </div>
           </SheForm>
         </div>
       </div>

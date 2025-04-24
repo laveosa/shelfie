@@ -320,7 +320,7 @@ export function ManageVariantsPage() {
       case "setProductTraits":
         dispatch(actions.refreshSelectedTraitsIds(payload));
         service.setProductTraitsHandler(productId, payload).then(() => {
-          handleCardAction("chooseVariantTraitsCard", false);
+          handleCardAction("chooseVariantTraitsCard");
           service
             .getListOfTraitsWithOptionsForProductHandler(productId)
             .then((res) => {
