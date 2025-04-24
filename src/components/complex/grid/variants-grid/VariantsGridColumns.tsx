@@ -15,7 +15,6 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
       accessorKey: "photo",
       header: "Image",
       cell: ({ row, table }) => {
-        console.log(row.getValue("photo"));
         const image: ImageModel = row.getValue("photo");
         const meta = table.options.meta as {
           setLoadingRow: (rowId: string, loading: boolean) => void;
@@ -59,15 +58,14 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
       accessorKey: "traitOptions",
       header: "Details",
       cell: ({ row }) => {
-        const colorOption = row.original.traitOptions.find(
-          (option) => option.traitTypeId === 2,
-        );
-        const sizeOption = row.original.traitOptions.find(
-          (option) => option.traitTypeId === 1,
-        );
+        const traitOptions = row.original.traitOptions || [];
 
-        const color = colorOption ? colorOption.optionColor : null;
-        const size = sizeOption ? sizeOption.optionName : null;
+        const colorOptions = traitOptions.filter(
+          (option) => option.traitTypeId === 2 && option.optionColor,
+        );
+        const sizeOptions = traitOptions.filter(
+          (option) => option.traitTypeId === 1 && option.optionName,
+        );
 
         return (
           <div
@@ -75,19 +73,28 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
               display: "flex",
               alignItems: "center",
               gap: "10px",
+              maxWidth: "50px",
+              overflow: "hidden",
+              // flexWrap: "wrap",
             }}
           >
-            {color && (
+            {colorOptions.map((colorOpt, index) => (
               <div
+                key={`color-${index}`}
                 style={{
-                  background: color,
-                  width: "20px",
-                  height: "20px",
+                  background: colorOpt.optionColor,
+                  minWidth: "20px",
+                  minHeight: "20px",
                   borderRadius: "50%",
+                  border: "1px solid #ccc",
                 }}
               />
-            )}
-            {size && <span>{size}</span>}
+            ))}
+            {sizeOptions.map((sizeOpt, index) => (
+              <span key={`size-${index}`} style={{ fontSize: "0.875rem" }}>
+                {sizeOpt.optionName}
+              </span>
+            ))}
           </div>
         );
       },
