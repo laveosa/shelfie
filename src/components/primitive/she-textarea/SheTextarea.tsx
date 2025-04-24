@@ -193,7 +193,7 @@ export default function SheTextArea({
 
   return (
     <div
-      className={`${className} ${cs.sheTextArea || ""} ${icon ? cs.withIcon : ""} ${fullWidth ? cs.fullWidth : ""} ${!_isValid ? cs.invalid : ""} ${!_isLengthValid ? cs.lengthInvalid : ""} ${required ? cs.required : ""} ${resize ? cs.resize : ""}`}
+      className={`${cs.sheTextArea} ${className} ${icon ? cs.withIcon : ""} ${fullWidth ? cs.fullWidth : ""}  ${required ? cs.required : ""} ${resize ? cs.resize : ""} ${!_isValid ? cs.invalid : ""} ${!_isLengthValid ? cs.lengthInvalid : ""}`}
       style={{
         minWidth,
         maxWidth,

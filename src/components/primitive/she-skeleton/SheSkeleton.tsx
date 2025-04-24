@@ -5,16 +5,17 @@ import { Skeleton } from "@/components/ui/skeleton.tsx";
 import { ISheSkeleton } from "@/const/interfaces/primitive-components/ISheSkeleton.ts";
 
 export default function SheSkeleton({
-  isLoading,
-  children,
   className = "",
   style,
   skeletonClassName = "",
   skeletonStyle,
+  color,
+  isLoading,
   animationDelay = 0,
   minWidth,
   maxWidth,
   fullWidth,
+  children,
 }: ISheSkeleton): JSX.Element {
   return (
     <div
@@ -31,6 +32,7 @@ export default function SheSkeleton({
           style={{
             ...skeletonStyle,
             animationDelay: `${animationDelay}ms`,
+            backgroundColor: `${color}`,
           }}
         >
           {children}
