@@ -4,19 +4,18 @@ import ProductsGridColumnActions from "@/components/complex/grid/products-grid/P
 import { ImageModel } from "@/const/models/ImageModel.ts";
 import placeholderImage from "@/assets/images/placeholder-image.png";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
-import { BrandModel } from "@/const/models/BrandModel.ts";
 
-export function productsGridColumns(onAction: any): ColumnDef<any>[] {
+export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
   return [
     {
-      accessorKey: "productId",
+      accessorKey: "variantId",
       header: "ID",
     },
     {
-      accessorKey: "image",
+      accessorKey: "photo",
       header: "Image",
       cell: ({ row, table }) => {
-        const image: ImageModel = row.getValue("image");
+        const image: ImageModel = row.getValue("photo");
         const meta = table.options.meta as {
           setLoadingRow: (rowId: string, loading: boolean) => void;
           isRowLoading: (rowId: string) => boolean;
@@ -29,7 +28,7 @@ export function productsGridColumns(onAction: any): ColumnDef<any>[] {
           >
             <img
               src={image?.thumbnailUrl || placeholderImage}
-              alt={row.getValue("productName")}
+              alt={row.getValue("variantName")}
               className="object-cover rounded-md w-full h-full"
               onError={(e) => {
                 e.currentTarget.src = placeholderImage;
@@ -40,12 +39,12 @@ export function productsGridColumns(onAction: any): ColumnDef<any>[] {
       },
     },
     {
-      accessorKey: "productCode",
+      accessorKey: "variantCode",
       header: "Code",
     },
     {
-      accessorKey: "productName",
-      header: "Product Name",
+      accessorKey: "variantName",
+      header: "Variant Name",
     },
     {
       accessorKey: "productCategory",
@@ -56,16 +55,49 @@ export function productsGridColumns(onAction: any): ColumnDef<any>[] {
       },
     },
     {
-      accessorKey: "brand",
-      header: "Brand",
+      accessorKey: "traitOptions",
+      header: "Details",
       cell: ({ row }) => {
-        const brand: BrandModel = row.getValue("brand");
-        return <span>{brand?.brandName || "N/A"}</span>;
+        const traitOptions = row.original.traitOptions || [];
+
+        const colorOptions = traitOptions.filter(
+          (option) => option.traitTypeId === 2 && option.optionColor,
+        );
+        const sizeOptions = traitOptions.filter(
+          (option) => option.traitTypeId === 1 && option.optionName,
+        );
+
+        return (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              maxWidth: "50px",
+              overflow: "hidden",
+              // flexWrap: "wrap",
+            }}
+          >
+            {colorOptions.map((colorOpt, index) => (
+              <div
+                key={`color-${index}`}
+                style={{
+                  background: colorOpt.optionColor,
+                  minWidth: "20px",
+                  minHeight: "20px",
+                  borderRadius: "50%",
+                  border: "1px solid #ccc",
+                }}
+              />
+            ))}
+            {sizeOptions.map((sizeOpt, index) => (
+              <span key={`size-${index}`} style={{ fontSize: "0.875rem" }}>
+                {sizeOpt.optionName}
+              </span>
+            ))}
+          </div>
+        );
       },
-    },
-    {
-      accessorKey: "barcode",
-      header: "Barcode",
     },
     {
       accessorKey: "status",
@@ -93,19 +125,15 @@ export function productsGridColumns(onAction: any): ColumnDef<any>[] {
     },
     {
       accessorKey: "salePrice",
-      header: "Sale Price",
+      header: "Price",
       cell: ({ row }) => {
         const price = row.getValue("salePrice");
         return <span>{price ? `${price}zł` : "N/A"}</span>;
       },
     },
     {
-      accessorKey: "variantCount",
-      header: "Variants",
-    },
-    {
       accessorKey: "stockAmount",
-      header: "Stock",
+      header: "In Stock",
       cell: ({ row }) => {
         return <span>{`${row.getValue("stockAmount")} units`}</span>;
       },
@@ -124,7 +152,7 @@ export function productsGridColumns(onAction: any): ColumnDef<any>[] {
     //         disabled={meta?.isRowLoading(row.id)}
     //         checked={row.getValue("active")}
     //         onCheckedChange={() =>
-    //           onAction("active", row.id, meta?.setLoadingRow)
+    //           onAction("activateVariant", row.id, undefined, row.original)
     //         }
     //       />
     //     );
@@ -142,7 +170,7 @@ export function productsGridColumns(onAction: any): ColumnDef<any>[] {
         const handleManageClick = (e) => {
           e.stopPropagation();
           e.preventDefault();
-          onAction("manage", row.id, meta?.setLoadingRow, row.original);
+          onAction("manageVariant", row.id, meta?.setLoadingRow, row.original);
         };
 
         return (

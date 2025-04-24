@@ -14,7 +14,7 @@ import useProductsPageService from "@/pages/products-section/products-page/usePr
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SheTabs from "@/components/complex/she-tabs/SheTabs.tsx";
-import { createProductsGridColumns } from "@/components/complex/grid/products-grid/ProductsGridColumns.tsx";
+import { productsGridColumns } from "@/components/complex/grid/products-grid/ProductsGridColumns.tsx";
 import { GridModel } from "@/const/models/GridModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
@@ -29,6 +29,8 @@ import { ProductsPageSliceActions as actions } from "@/state/slices/ProductsPage
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
+import { variantsGridColumns } from "@/components/complex/grid/variants-grid/VariantsGridColumns.tsx";
+import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 
 export function ProductsPage() {
   const dispatch = useAppDispatch();
@@ -46,7 +48,7 @@ export function ProductsPage() {
     service
       .getVariantsForGridHandler(state.gridRequestModel)
       .then((res: GridModel) => {
-        dispatch(actions.refreshProductsGridModel(res));
+        dispatch(actions.refreshVariantsGridModel(res));
       });
   }, [state.gridRequestModel]);
 
@@ -78,11 +80,20 @@ export function ProductsPage() {
       case "delete":
         console.log(`Deleting row ${rowId}`);
         break;
+      case "activateVariant":
+        console.log(`Deleting row ${rowId}`);
+        break;
+      case "manageVariant":
+        navigate(
+          `${NavUrlEnum.PRODUCTS}${NavUrlEnum.PRODUCT_VARIANTS}/${rowData?.productId}`,
+        );
+        break;
     }
     setLoadingRow(rowId, false);
   };
 
-  const ProductsGridColumns = createProductsGridColumns(onAction);
+  const productsColumns = productsGridColumns(onAction);
+  const variantsColumns = variantsGridColumns(onAction);
 
   function handleAddProduct() {
     navigate(`${ApiUrlEnum.PRODUCTS}${ApiUrlEnum.PRODUCT_BASIC_DATA}`);
@@ -171,7 +182,7 @@ export function ProductsPage() {
           </div>
           <TabsContent value="products">
             <DndGridDataTable
-              columns={ProductsGridColumns}
+              columns={productsColumns}
               data={state.productsGridModel.items}
               gridModel={state.productsGridModel}
               sortingItems={state.sortingOptions}
@@ -198,7 +209,32 @@ export function ProductsPage() {
             </DndGridDataTable>
           </TabsContent>
           <TabsContent value="variants">
-            {/*<GridDataTable columns={productsGridColumns} data={variantsData} />*/}
+            <DndGridDataTable
+              columns={variantsColumns}
+              data={state.variantsGridModel.items}
+              gridModel={state.variantsGridModel}
+              sortingItems={state.sortingOptions}
+              columnsPreferences={appState.preferences}
+              onApplyColumns={onApplyColumnsHandler}
+              onDefaultColumns={onResetColumnsHandler}
+              onGridRequestChange={handleGridRequestChange}
+            >
+              <GridItemsFilter
+                items={state.brands}
+                columnName={"Brands"}
+                onSelectionChange={onBrandSelectHandler}
+                getId={(item: BrandModel) => item.brandId}
+                getName={(item: BrandModel) => item.brandName}
+              />
+
+              <GridItemsFilter
+                items={state.categories}
+                columnName={"Categories"}
+                onSelectionChange={onCategorySelectHandler}
+                getId={(item: CategoryModel) => item.categoryId}
+                getName={(item: CategoryModel) => item.categoryName}
+              />
+            </DndGridDataTable>
           </TabsContent>
           <TabsContent value="purchases">
             {/*<GridDataTable columns={productsGridColumns} data={purchasesData} />*/}
