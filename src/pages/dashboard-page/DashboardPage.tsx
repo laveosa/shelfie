@@ -2,12 +2,10 @@ import React from "react";
 
 import cs from "./DashboardPage.module.scss";
 import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageService.ts";
-import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { Users } from "lucide-react";
 import SheTextArea from "@/components/primitive/she-textarea/SheTextarea.tsx";
-import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 
 import Logo from "@/assets/icons/TNF_logo.svg?react";
+import { Users } from "lucide-react";
 
 export function DashboardPage() {
   const service = useDashboardPageService();

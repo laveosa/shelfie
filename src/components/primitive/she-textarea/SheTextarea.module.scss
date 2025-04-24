@@ -99,28 +99,3 @@ $iconSize: 20px;
     }
   }
 }
-
-.sheTextArea.lengthInvalid {
-  .sheTextAreaComponent {
-    .sheTextAreaControl {
-      textarea {
-        border: 1px solid vars.$colorRed;
-      }
-    }
-  }
-}
-
-// ======================================================== ERROR MESSAGE
-
-/*.sheTextArea {
-  .errorMessageBlock {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 0;
-
-    span {
-      position: absolute;
-    }
-  }
-}*/
