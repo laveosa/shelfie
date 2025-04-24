@@ -107,12 +107,12 @@ export default function ProductTraitConfigurationCard({
       title={selectedTrait.traitName ? "Manage" : "Create product trait"}
       view="card"
       showCloseButton={true}
-      className={cs.createProductTraitCard}
+      className={cs.productTraitConfigurationCard}
       width="400px"
       {...props}
     >
-      <div className={cs.createProductTraitContent}>
-        <div className={cs.createProductTraitForm}>
+      <div className={cs.productTraitConfigurationContent}>
+        <div className={cs.productTraitConfigurationForm}>
           <SheForm form={form} onSubmit={onSubmit}>
             <SheForm.Field
               rules={{
@@ -171,7 +171,6 @@ export default function ProductTraitConfigurationCard({
                 )}
               ></FormField>
             </div>
-            {/*{!data && (*/}
             <div className={cs.buttonBlock}>
               <SheButton
                 variant="secondary"
@@ -188,16 +187,18 @@ export default function ProductTraitConfigurationCard({
                 {selectedTrait?.traitId ? "Update" : "Create"}
               </SheButton>
             </div>
-            {/*// )}*/}
           </SheForm>
         </div>
         {localItems?.length > 0 && (
           <>
             <Separator />
-            <div className={cs.createProductTraitGrid}>
+            <div
+              className={`${cs.productTraitConfigurationGridContainer} she-title`}
+            >
               <span className="she-title">Options</span>
               {selectedTrait.traitTypeId === 1 && (
                 <DndGridDataTable
+                  className={cs.productTraitConfigurationGrid}
                   enableDnd={true}
                   showHeader={false}
                   showColumnsHeader={false}
@@ -215,6 +216,7 @@ export default function ProductTraitConfigurationCard({
               )}
               {selectedTrait.traitTypeId === 2 && (
                 <DndGridDataTable
+                  className={cs.productTraitConfigurationGrid}
                   enableDnd={true}
                   showHeader={false}
                   showColumnsHeader={false}

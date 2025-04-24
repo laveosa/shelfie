@@ -1,16 +1,16 @@
 @use "@/styles/variables" as vars;
 
-.createProductTraitCard {
-  .createProductTraitContent {
+.productTraitConfigurationCard {
+  .productTraitConfigurationContent {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 20px;
     padding: 0 20px;
 
     form {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 20px;
 
       .formInput {
         max-width: 100%;
@@ -22,4 +22,21 @@
       justify-content: space-between;
     }
   }
+
+  .productTraitConfigurationGridContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .productTraitConfigurationGrid > div {
+      overflow: auto;
+      max-height: calc(100vh - 525px);
+
+      input {
+        font-weight: normal;
+      }
+    }
+  }
+
+
 }
