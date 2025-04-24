@@ -54,8 +54,8 @@ export function DashboardPage() {
         tooltip={{ text: "some tooltip text" }}
         minLength={3}
         maxLength={10}
-        showError={false}
         icon={Users}
+        showClearBtn
         onChange={(event) => console.log("onChange: ", event)}
         onDelay={(event) => console.log("onDelay: ", event)}
         onBlur={(event) => console.log("onBlur: ", event)}
@@ -70,6 +70,7 @@ export function DashboardPage() {
         required
         minLength={4}
         maxLength={7}
+        showClearBtn
       />
 
       <br />

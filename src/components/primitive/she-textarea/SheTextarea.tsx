@@ -10,33 +10,34 @@ import { generateId, isSheIconConfig } from "@/utils/helpers/quick-helper.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { useDebounce } from "@/utils/hooks/useDebounce.ts";
+import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
 import { X } from "lucide-react";
 
 export default function SheTextArea({
-  className,
+  className = "",
+  style,
+  label,
+  labelTransKey,
+  tooltip,
+  icon,
   value,
-  isValid = true,
-  ignoreValidation,
+  placeholder = "enter text...",
+  placeholderTransKey,
+  disabled,
+  isLoading,
+  showClearBtn,
   minWidth,
   maxWidth,
   fullWidth,
-  label,
-  labelTransKey,
-  placeholder = "enter text...",
-  placeholderTransKey,
-  icon,
-  isLoading,
   required,
-  showClearBtn,
-  tooltip,
-  disabled,
   minLength,
   maxLength,
-  resize,
-  delayTime,
+  isValid = true,
+  ignoreValidation,
   showError = true,
+  resize,
   rows = 4,
-  style,
+  delayTime,
   onChange,
   onBlur,
   onDelay,
@@ -53,7 +54,7 @@ export default function SheTextArea({
   const [_error, setError] = useState<string>(null);
   const [_errorTransKey, setErrorTransKey] = useState<string>(null);
 
-  const ariaDescribedbyId = `${generateId()}TEXTAREA_ID`;
+  const ariaDescribedbyId = `${generateId()}_TEXTAREA_ID`;
   const delayValue = useDebounce(_textValue, delayTime);
   const isInitialized = useRef(false);
   const isTouched = useRef(false);
@@ -139,7 +140,7 @@ export default function SheTextArea({
   function isRequiredValid(textValue, validation) {
     if (!required || !validation) return validation;
 
-    const result = textValue.length > 0;
+    const result = textValue?.length > 0;
 
     if (!result) setIsLengthValid(false);
 
@@ -192,7 +193,7 @@ export default function SheTextArea({
 
   return (
     <div
-      className={`${className || ""} ${cs.sheTextArea || ""} ${icon ? cs.withIcon : ""} ${fullWidth ? cs.fullWidth : ""} ${!_isValid ? cs.invalid : ""} ${!_isLengthValid ? cs.lengthInvalid : ""} ${required ? cs.required : ""} ${resize ? cs.resize : ""}`}
+      className={`${className} ${cs.sheTextArea || ""} ${icon ? cs.withIcon : ""} ${fullWidth ? cs.fullWidth : ""} ${!_isValid ? cs.invalid : ""} ${!_isLengthValid ? cs.lengthInvalid : ""} ${required ? cs.required : ""} ${resize ? cs.resize : ""}`}
       style={{
         minWidth,
         maxWidth,
@@ -220,44 +221,48 @@ export default function SheTextArea({
           </label>
         )}
         <div className={cs.sheTextAreaControl}>
-          {icon &&
-            (isSheIconConfig(icon) ? (
-              <SheIcon
-                {...icon}
-                className={cs.iconBlock}
-                aria-describedby={ariaDescribedbyId}
-              />
-            ) : (
-              <SheIcon
-                icon={icon}
-                className={cs.iconBlock}
-                aria-describedby={ariaDescribedbyId}
-              />
-            ))}
-          <Textarea
-            {...props}
-            value={_textValue ?? ""}
-            placeholder={translate(placeholderTransKey, placeholder)}
-            aria-describedby={ariaDescribedbyId}
-            disabled={disabled || isLoading}
-            rows={rows}
-            onChange={(e) => onChangeHandler(e)}
-            onBlur={(e) => onBlurHandler(e)}
-          />
-          {showClearBtn && (
-            <SheButton
-              variant="ghost"
-              size="icon"
-              icon={X}
+          <SheSkeleton isLoading={isLoading} fullWidth>
+            {icon &&
+              (isSheIconConfig(icon) ? (
+                <SheIcon
+                  {...icon}
+                  className={cs.iconBlock}
+                  aria-describedby={ariaDescribedbyId}
+                />
+              ) : (
+                <SheIcon
+                  icon={icon}
+                  className={cs.iconBlock}
+                  aria-describedby={ariaDescribedbyId}
+                />
+              ))}
+            <Textarea
+              {...props}
+              value={_textValue ?? ""}
+              placeholder={translate(placeholderTransKey, placeholder)}
               aria-describedby={ariaDescribedbyId}
-              disabled={
-                !_textValue ||
-                _textValue.toString().length === 0 ||
-                disabled ||
-                isLoading
-              }
-              onClick={onClearHandler}
+              disabled={disabled || isLoading}
+              rows={rows}
+              onChange={(e) => onChangeHandler(e)}
+              onBlur={(e) => onBlurHandler(e)}
             />
+          </SheSkeleton>
+          {showClearBtn && (
+            <SheSkeleton isLoading={isLoading} style={{ alignSelf: "stretch" }}>
+              <SheButton
+                variant="ghost"
+                size="icon"
+                icon={X}
+                aria-describedby={ariaDescribedbyId}
+                disabled={
+                  !_textValue ||
+                  _textValue.toString().length === 0 ||
+                  disabled ||
+                  isLoading
+                }
+                onClick={onClearHandler}
+              />
+            </SheSkeleton>
           )}
         </div>
         {(minLength || maxLength) && (

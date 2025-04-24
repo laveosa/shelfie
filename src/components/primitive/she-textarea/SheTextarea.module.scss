@@ -11,7 +11,7 @@ $tooltipIconSize: 15px;
   .sheTextAreaComponent {
     position: relative;
 
-    > label {
+    label {
       display: flex;
       gap: 8px;
       font-weight: 500;
@@ -37,7 +37,7 @@ $tooltipIconSize: 15px;
         min-height: $iconSize;
       }
 
-      > textarea {
+      textarea {
         resize: none;
         min-height: 0;
 
@@ -49,17 +49,21 @@ $tooltipIconSize: 15px;
           color: vars.$placeholderColor;
         }
       }
-
-      [class*="sheButton"] {
-        display: flex;
-        align-self: start;
-        border-radius: 100%;
-        max-width: $clearBtnSize;
-        min-width: $clearBtnSize;
-        max-height: $clearBtnSize;
-        min-height: $clearBtnSize;
-      }
     }
+  }
+}
+
+// ======================================================== CLEAR BUTTON
+
+.sheTextArea {
+  [class*="sheButton"] {
+    display: flex;
+    align-self: start;
+    border-radius: 100%;
+    max-width: $clearBtnSize;
+    min-width: $clearBtnSize;
+    max-height: $clearBtnSize;
+    min-height: $clearBtnSize;
   }
 }
 
@@ -90,7 +94,7 @@ $tooltipIconSize: 15px;
 .sheTextArea.withIcon {
   .sheTextAreaComponent {
     .sheTextAreaControl {
-      > textarea {
+      textarea {
         padding-left: 36px;
       }
     }
@@ -102,14 +106,14 @@ $tooltipIconSize: 15px;
 .sheTextArea.resize {
   .sheTextAreaComponent {
     .sheTextAreaControl {
-      > textarea {
+      textarea {
         resize: vertical;
       }
     }
   }
 }
 
-// ======================================================== WITH ICON
+// ======================================================== TOOLTIP
 
 .sheTextArea {
   .sheTextAreaComponent {
@@ -139,7 +143,7 @@ $tooltipIconSize: 15px;
 .sheTextArea.invalid {
   .sheTextAreaComponent {
     .sheTextAreaControl {
-      > textarea {
+      textarea {
         border: 1px solid vars.$colorRed;
       }
     }
@@ -149,7 +153,7 @@ $tooltipIconSize: 15px;
 .sheTextArea.lengthInvalid {
   .sheTextAreaComponent {
     .sheTextAreaControl {
-      > textarea {
+      textarea {
         border: 1px solid vars.$colorRed;
       }
     }
