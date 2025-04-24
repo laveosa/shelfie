@@ -1,7 +1,6 @@
 @use "@/styles/variables" as vars;
 
 $iconSize: 20px;
-$clearBtnSize: 30px;
 
 .sheTextArea {
   max-width: vars.$maxWidth;
@@ -40,20 +39,6 @@ $clearBtnSize: 30px;
         }
       }
     }
-  }
-}
-
-// ======================================================== CLEAR BUTTON
-
-.sheTextArea {
-  [class*="sheButton"] {
-    display: flex;
-    align-self: start;
-    border-radius: 100%;
-    max-width: $clearBtnSize;
-    min-width: $clearBtnSize;
-    max-height: $clearBtnSize;
-    min-height: $clearBtnSize;
   }
 }
 

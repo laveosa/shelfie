@@ -24,6 +24,7 @@ export function DashboardPage() {
         }}
         required
         showClearBtn
+        isLoading={true}
       />
 
       <br />

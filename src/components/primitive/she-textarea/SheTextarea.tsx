@@ -7,11 +7,10 @@ import { ISheTextarea } from "@/const/interfaces/primitive-components/ISheTextar
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { generateId, isSheIconConfig } from "@/utils/helpers/quick-helper.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { useDebounce } from "@/utils/hooks/useDebounce.ts";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
 import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
-import { X } from "lucide-react";
+import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
 
 export default function SheTextArea({
   className = "",
@@ -22,7 +21,6 @@ export default function SheTextArea({
   placeholderTransKey,
   disabled,
   isLoading,
-  showClearBtn,
   minWidth,
   maxWidth,
   fullWidth,
@@ -226,23 +224,14 @@ export default function SheTextArea({
               onBlur={(e) => onBlurHandler(e)}
             />
           </SheSkeleton>
-          {showClearBtn && (
-            <SheSkeleton isLoading={isLoading} style={{ alignSelf: "stretch" }}>
-              <SheButton
-                variant="ghost"
-                size="icon"
-                icon={X}
-                aria-describedby={ariaDescribedbyId}
-                disabled={
-                  !_textValue ||
-                  _textValue.toString().length === 0 ||
-                  disabled ||
-                  isLoading
-                }
-                onClick={onClearHandler}
-              />
-            </SheSkeleton>
-          )}
+          <SheClearButton
+            {...props}
+            value={_textValue}
+            isLoading={isLoading}
+            disabled={disabled}
+            ariaDescribedbyId={ariaDescribedbyId}
+            onClearHandler={onClearHandler}
+          />
         </div>
         {(minLength || maxLength) && (
           <div className={cs.contextLengthRestriction}>

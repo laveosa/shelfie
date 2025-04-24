@@ -1,0 +1,21 @@
+$clearBtnSize: 30px;
+
+.sheClearButtonWrapper {
+  align-self: stretch;
+  border-radius: 100%;
+  max-width: $clearBtnSize;
+  min-width: $clearBtnSize;
+  max-height: $clearBtnSize;
+  min-height: $clearBtnSize;
+  overflow: hidden;
+
+  .sheClearButton {
+    display: flex;
+    align-self: start;
+    border-radius: 100%;
+    max-width: $clearBtnSize;
+    min-width: $clearBtnSize;
+    max-height: $clearBtnSize;
+    min-height: $clearBtnSize;
+  }
+}
