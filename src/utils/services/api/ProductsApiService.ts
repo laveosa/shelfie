@@ -603,12 +603,6 @@ export const ProductsApiService = createApi({
         method: "PATCH",
         body: JSON.stringify(model),
       }),
-      invalidatesTags: (_result, _error, result) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          result,
-        },
-      ],
     }),
     deleteOptionOfTrait: apiConfig.createMutation<
       any,

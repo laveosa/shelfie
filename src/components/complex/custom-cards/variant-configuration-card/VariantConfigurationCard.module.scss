@@ -22,9 +22,8 @@
         align-items: end;
         padding: 20px 0;
 
-
-        .inputBlockRow {
-          width: 305px;
+        & > div {
+          width: 100%;
         }
       }
 

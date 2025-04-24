@@ -44,7 +44,7 @@ export default function SheProductCard({
       style={{
         width,
         minWidth,
-        maxWidth: isMinimized ? "50px" : maxWidth,
+        maxWidth: isMinimized ? "40px" : maxWidth,
       }}
     >
       <div className={cs.cardHeader}>

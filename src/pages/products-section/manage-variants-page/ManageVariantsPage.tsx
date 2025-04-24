@@ -335,12 +335,11 @@ export function ManageVariantsPage() {
             if (res) {
               service
                 .getOptionsForTraitHandler(state.selectedTrait.traitId)
-                .then((res) => {
-                  console.log("RES", res);
+                .then((options) => {
                   dispatch(
                     actions.refreshColorOptionsGridModel({
                       ...state.colorOptionsGridModel,
-                      items: res,
+                      items: options.filter((option) => !option.isDeleted),
                     }),
                   );
                 });
@@ -369,13 +368,10 @@ export function ManageVariantsPage() {
           service
             .getOptionsForTraitHandler(state.selectedTrait.traitId)
             .then((options) => {
-              const updatedItems = (options || []).filter(
-                (option) => !option.isDeleted,
-              );
               dispatch(
                 actions.refreshColorOptionsGridModel({
                   ...state.colorOptionsGridModel,
-                  items: updatedItems,
+                  items: options.filter((option) => !option.isDeleted),
                 }),
               );
             });

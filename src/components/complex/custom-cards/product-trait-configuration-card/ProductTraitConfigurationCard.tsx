@@ -34,12 +34,24 @@ export default function ProductTraitConfigurationCard({
   onPrimaryButtonClick,
   ...props
 }: IProductTraitConfigurationCard) {
+  const [localItems, setLocalItems] = React.useState(data?.items ?? []);
   const form = useForm({
     defaultValues: {
       traitName: selectedTrait ? selectedTrait.traitName : "",
       traitTypeId: selectedTrait ? selectedTrait.traitTypeId : "",
     },
   });
+
+  useEffect(() => {
+    if (selectedTrait) {
+      form.reset({
+        traitName: selectedTrait.traitName,
+        traitTypeId: selectedTrait.traitTypeId,
+      });
+    }
+
+    setLocalItems(data?.items ?? []);
+  }, [selectedTrait, form, data]);
 
   useEffect(() => {
     if (selectedTrait) {
@@ -74,7 +86,13 @@ export default function ProductTraitConfigurationCard({
         }
         break;
       case "updateOption":
-        if (updatedModel) {
+        if (updatedModel && optionId != null) {
+          setLocalItems((prev) =>
+            prev.map((item) =>
+              item.optionId === optionId ? { ...item, ...updatedModel } : item,
+            ),
+          );
+
           onAction("updateOption", { optionId, updatedModel });
         }
         break;
@@ -173,7 +191,7 @@ export default function ProductTraitConfigurationCard({
             {/*// )}*/}
           </SheForm>
         </div>
-        {data?.items?.length > 0 && (
+        {localItems?.length > 0 && (
           <>
             <Separator />
             <div className={cs.createProductTraitGrid}>
@@ -184,7 +202,7 @@ export default function ProductTraitConfigurationCard({
                   showHeader={false}
                   showColumnsHeader={false}
                   columns={sizeColumns}
-                  data={data?.items}
+                  data={localItems}
                   gridModel={data}
                   onNewItemPosition={(newIndex, activeItem) =>
                     onAction("dndTraitOption", {
@@ -201,7 +219,7 @@ export default function ProductTraitConfigurationCard({
                   showHeader={false}
                   showColumnsHeader={false}
                   columns={colorColumns}
-                  data={data?.items}
+                  data={localItems}
                   gridModel={data}
                   onNewItemPosition={(newIndex, activeItem) =>
                     onAction("dndTraitOption", {

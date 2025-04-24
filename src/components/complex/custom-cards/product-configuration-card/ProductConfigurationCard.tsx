@@ -127,6 +127,7 @@ export default function ProductConfigurationCard({
                     form.formState.errors.productCode?.message
                   }
                   showError={true}
+                  fullWidth={true}
                 />
               </SheForm.Field>
               <SheButton
@@ -147,6 +148,7 @@ export default function ProductConfigurationCard({
                     form.formState.errors.productBarcode?.message
                   }
                   showError={true}
+                  fullWidth={true}
                 />
               </SheForm.Field>
               <SheButton

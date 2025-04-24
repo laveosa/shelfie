@@ -154,7 +154,7 @@ export default function VariantConfigurationCard({
                 <div className={cs.inputBlockRow}>
                   <SheInput
                     {...form.register("variantCode")}
-                    fullWidth
+                    // fullWidth
                     onDelay={form.handleSubmit(onSubmit)}
                   />
                 </div>
