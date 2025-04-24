@@ -48,9 +48,7 @@ export default function AddVariantCard({
     const submissionData = {
       options: optionIds,
     };
-
-    console.log("OPTIONS", submissionData);
-    onAction("updateTraits", submissionData);
+    onAction("addVariant", submissionData);
   }
 
   const isPrimaryButtonDisabled = Object.values(form.getValues()).every(
@@ -64,18 +62,18 @@ export default function AddVariantCard({
         view="card"
         showPrimaryButton={true}
         primaryButtonTitle="Add Variant"
-        onPrimaryButtonClick={() => onSubmit}
+        onPrimaryButtonClick={form.handleSubmit(onSubmit)}
         primaryButtonDisabled={isPrimaryButtonDisabled}
         showSecondaryButton={true}
         secondaryButtonTitle="Cancel"
-        onSecondaryButtonClick={() => onAction("closeAddVariantCard", null)}
+        onSecondaryButtonClick={() => onAction("closeAddVariantCard")}
         showCloseButton={true}
         className={cs.addVariantCard}
         {...props}
       >
         <div className={cs.addVariantCardContent}>
           <span className={`${cs.addVariantCardText} she-text`}>
-            Select the trait option that you want to add
+            Select the trait options that you want to add
           </span>
           <SheForm form={form} onSubmit={onSubmit}>
             {traits.map((trait) => (

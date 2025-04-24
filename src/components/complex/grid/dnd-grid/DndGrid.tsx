@@ -41,7 +41,7 @@ interface DataTableProps<TData extends DataWithId, TValue>
   extends IGridHeader<TData>,
     IGridContext,
     PropsWithChildren {
-  className?: string;
+  className?: any;
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   sortingItems?: GridSortingModel[];
@@ -49,6 +49,7 @@ interface DataTableProps<TData extends DataWithId, TValue>
   showHeader?: boolean;
   showColumnsHeader?: boolean;
   enableDnd?: boolean;
+  onAction?: (data) => void;
   onApplyColumns?: (data) => void;
   onDefaultColumns?: () => void;
   onNewItemPosition?: (newIndex: number, activeItem: TData) => void;
@@ -218,7 +219,7 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
       <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
         {showHeader && <GridHeader table={table}>{children}</GridHeader>}
         <div className={`${className} rounded-md border`}>
-          <Table style={{ overflow: "hidden" }}>
+          <Table className={cs.table} style={{ overflow: "hidden" }}>
             {showColumnsHeader && (
               <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (
@@ -243,7 +244,9 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
               strategy={verticalListSortingStrategy}
             >
               <TableBody
-                style={{ background: enableDnd ? "#f4f4f5" : "white" }}
+                style={{
+                  background: enableDnd ? "#f4f4f5" : "white",
+                }}
               >
                 {table.getRowModel().rows?.length ? (
                   table.getRowModel().rows.map((row) =>

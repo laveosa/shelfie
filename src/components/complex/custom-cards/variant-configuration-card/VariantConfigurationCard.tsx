@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./VariantConfigurationCard.module.scss";
@@ -16,17 +16,108 @@ import {
 import { Separator } from "@/components/ui/separator.tsx";
 import { VariantConfigurationGridColumns } from "@/components/complex/grid/variant-configuration-grid/VariantConfigurationGridColumns.tsx";
 import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import { ProductPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/ProductPhotosGridColumns.tsx";
+import { VariantPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/VariantPhotosGridColumns.tsx";
+import { useForm } from "react-hook-form";
+import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
+import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
+import { VariantModel } from "@/const/models/VariantModel.ts";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form.tsx";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select.tsx";
 
 export default function VariantConfigurationCard({
   variant,
   data,
   onAction,
+  taxesList,
+  onGenerateProductCode,
   onSecondaryButtonClick,
   ...props
 }: IVariantConfigurationCard) {
+  const form = useForm({
+    defaultValues: {
+      variantName: variant?.variantName || "",
+      variantCode: variant?.variantCode || "",
+      salePrice: {
+        brutto: variant?.salePrice?.brutto,
+        netto: variant?.salePrice?.netto,
+        taxTypeId: taxesList?.[0].id,
+      },
+    },
+  });
+
+  const { watch, setValue } = form;
+
+  const netto = watch("salePrice.netto");
+  const brutto = watch("salePrice.brutto");
+  const taxTypeId = watch("salePrice.taxTypeId");
+  const selectedTax = taxesList?.find((tax) => tax.id === taxTypeId);
+  const taxRate = selectedTax?.value || 0;
+  const lastChanged = useRef<"netto" | "brutto" | null>(null);
+
   const traitsColumns = VariantConfigurationGridColumns;
-  const photoColumns = ProductPhotosGridColumns(onGridAction);
+  const photoColumns = VariantPhotosGridColumns(onGridAction);
+
+  useEffect(() => {
+    form.reset({
+      variantName: variant?.variantName || "",
+      variantCode: variant?.variantCode || "",
+      salePrice: {
+        brutto: variant?.salePrice?.brutto || 0,
+        netto: variant?.salePrice?.netto || 0,
+        taxTypeId: taxesList?.[0]?.id,
+      },
+    });
+  }, [form, variant?.variantName, variant?.variantCode, variant?.salePrice]);
+
+  useEffect(() => {
+    if (lastChanged.current === "netto") {
+      const calculatedBrutto = +(netto * (1 + taxRate)).toFixed(2);
+      if (brutto !== calculatedBrutto) {
+        setValue("salePrice.brutto", calculatedBrutto);
+      }
+    }
+  }, [netto, taxRate]);
+
+  useEffect(() => {
+    if (lastChanged.current === "brutto") {
+      const calculatedNetto = +(brutto / (1 + taxRate)).toFixed(2);
+      if (netto !== calculatedNetto) {
+        setValue("salePrice.netto", calculatedNetto);
+      }
+    }
+  }, [brutto, taxRate]);
+
+  function onGenerateCode() {
+    onGenerateProductCode().then((res: ProductCodeModel) => {
+      form.setValue("variantCode", res.code, { shouldDirty: true }); // Update form state
+      console.log("New code:", res.code);
+    });
+  }
+
+  function onSubmit(data: VariantModel) {
+    console.log("Data:", data);
+    const formattedData = {
+      ...data,
+      salePrice: {
+        brutto: Number(data.salePrice.brutto),
+        netto: Number(data.salePrice.netto),
+        taxTypeId: Number(data.salePrice.taxTypeId),
+      },
+    };
+    console.log("Submitted data:", variant);
+    onAction("updateVariantDetails", { formattedData, variant });
+  }
 
   function onGridAction(
     _actionType: string,
@@ -34,7 +125,8 @@ export default function VariantConfigurationCard({
     _setLoadingRow?: (rowId: string, loading: boolean) => void,
     row?: any,
   ) {
-    onAction("delete", row.original);
+    onAction("detachPhotoFromVariant", { row, variant });
+    onAction("deletePhoto", row.original);
   }
 
   return (
@@ -48,29 +140,95 @@ export default function VariantConfigurationCard({
       {...props}
     >
       <div className={cs.variantConfigurationCardContent}>
-        <div className={cs.inputBlock}>
-          <SheInput
-            label="Optional Variant Name"
-            value={variant?.variantName}
-          />
-          <div className={cs.inputBlockRow}>
-            <SheInput
-              fullWidth
-              label="Variant Code"
-              value={variant?.variantCode}
-            />
-            <SheButton icon={WandSparklesIcon} variant="outline" />
-          </div>
-        </div>
-        <div className={cs.salePriceBlock}>
-          <div className={`${cs.salePriceBlockTitle} she-title`}>
-            Current Sale Price
-          </div>
-          <div className={cs.salePriceBlockInput}>
-            <SheInput label="Sale price" value={variant?.salePrice ?? "0"} />
-            <SheInput label="VAT" />
-            <SheInput label="Sale price brutto" />
-          </div>
+        <div className={cs.variantConfigurationForm}>
+          <SheForm form={form} onSubmit={onSubmit}>
+            <SheForm.Field name="variantName">
+              <SheInput
+                label="Optional Variant Name"
+                onDelay={form.handleSubmit(onSubmit)}
+                fullWidth
+              />
+            </SheForm.Field>
+            <div className={cs.variantCodeFormRow}>
+              <SheForm.Field name="variantCode" label="Variant Code">
+                <div className={cs.inputBlockRow}>
+                  <SheInput
+                    {...form.register("variantCode")}
+                    fullWidth
+                    onDelay={form.handleSubmit(onSubmit)}
+                  />
+                </div>
+              </SheForm.Field>
+              <SheButton
+                icon={WandSparklesIcon}
+                type="button"
+                variant="outline"
+                onClick={onGenerateCode}
+              />
+            </div>
+            <div className={cs.priceFormRow}>
+              <div className={cs.priceFormRowItem}>
+                <SheForm.Field
+                  label="Sale price brutto"
+                  name="salePrice.brutto"
+                >
+                  <SheInput
+                    type="number"
+                    step="any"
+                    {...form.register("salePrice.brutto", {
+                      valueAsNumber: true,
+                      onChange: () => (lastChanged.current = "brutto"),
+                    })}
+                    onDelay={form.handleSubmit(onSubmit)}
+                  />
+                </SheForm.Field>
+              </div>
+              <div className={cs.priceFormRowItem}>
+                <FormField
+                  control={form.control}
+                  name="salePrice.taxTypeId"
+                  render={({ field }) => (
+                    <FormItem className={cs.select}>
+                      <FormLabel>VAT</FormLabel>
+                      <Select
+                        onValueChange={(value) => field.onChange(Number(value))}
+                        value={field.value ? field.value.toString() : ""}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select VAT" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {taxesList?.map((taxType) => (
+                            <SelectItem
+                              key={taxType.id}
+                              value={taxType.id.toString()}
+                            >
+                              <div>{taxType.name}</div>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className={cs.priceFormRowItem}>
+                <SheForm.Field label="Sale price netto" name="salePrice.netto">
+                  <SheInput
+                    type="number"
+                    step="any"
+                    {...form.register("salePrice.netto", {
+                      valueAsNumber: true,
+                      onChange: () => (lastChanged.current = "netto"),
+                    })}
+                    onDelay={form.handleSubmit(onSubmit)}
+                  />
+                </SheForm.Field>
+              </div>
+            </div>
+          </SheForm>
         </div>
         <Separator className={cs.separator} />
         <div className={cs.stockDetailsBlock}>
@@ -139,7 +297,7 @@ export default function VariantConfigurationCard({
             <SheButton
               icon={ImagePlus}
               variant="outline"
-              onClick={() => onAction("openProductPhotosCard")}
+              onClick={() => onAction("openVariantPhotosCard")}
             >
               Manage
             </SheButton>
@@ -153,7 +311,7 @@ export default function VariantConfigurationCard({
                 data={variant.photos}
                 gridModel={data}
                 onNewItemPosition={(newIndex, activeItem) =>
-                  onAction("dnd", { newIndex, activeItem })
+                  onAction("dndVariantPhoto", { newIndex, activeItem })
                 }
               />
             </div>

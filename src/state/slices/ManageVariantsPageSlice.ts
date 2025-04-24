@@ -7,8 +7,9 @@ import { TypeOfTraitModel } from "@/const/models/TypeOfTraitModel.ts";
 import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
-import { IProductGalleryPageSlice } from "@/const/interfaces/store-slices/IProductGalleryPageSlice.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
+import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
+import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 
 const initialState: IManageVariantsPageSlice = {
   loading: false,
@@ -42,7 +43,10 @@ const initialState: IManageVariantsPageSlice = {
     pageSize: 10,
   },
   traitOptions: [],
-  photos: [],
+  productPhotos: [],
+  variantPhotos: [],
+  taxesList: [],
+  currenciesList: [],
 };
 
 function setLoading(
@@ -167,10 +171,31 @@ function refreshGridRequestModel(
 }
 
 function refreshProductPhotos(
-  state: IProductGalleryPageSlice,
+  state: IManageVariantsPageSlice,
   action: PayloadAction<ImageModel[]>,
 ) {
-  state.photos = action?.payload || state.photos;
+  state.productPhotos = action?.payload || state.productPhotos;
+}
+
+function refreshVariantPhotos(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<ImageModel[]>,
+) {
+  state.variantPhotos = action?.payload || state.variantPhotos;
+}
+
+function refreshTaxesList(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<TaxTypeModel[]>,
+) {
+  state.taxesList = action?.payload || state.taxesList;
+}
+
+function refreshCurrenciesList(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<CurrencyModel[]>,
+) {
+  state.currenciesList = action?.payload || state.currenciesList;
 }
 
 const ManageVariantsPageSlice = createSlice({
@@ -195,6 +220,9 @@ const ManageVariantsPageSlice = createSlice({
     refreshSizeOptionsGridModel,
     refreshGridRequestModel,
     refreshProductPhotos,
+    refreshVariantPhotos,
+    refreshTaxesList,
+    refreshCurrenciesList,
   },
 });
 

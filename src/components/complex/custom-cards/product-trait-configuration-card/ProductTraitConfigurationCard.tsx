@@ -54,7 +54,9 @@ export default function ProductTraitConfigurationCard({
   const sizeColumns = SizeOptionsGridColumns(onGridAction);
 
   function onSubmit(formData) {
-    onAction("createTrait", formData);
+    selectedTrait?.traitId
+      ? onAction("updateTrait", formData)
+      : onAction("createTrait", formData);
   }
 
   function onGridAction(
@@ -165,7 +167,7 @@ export default function ProductTraitConfigurationCard({
                 disabled={!form.formState.isValid}
                 onClick={form.handleSubmit(onSubmit)}
               >
-                Create
+                {selectedTrait?.traitId ? "Update" : "Create"}
               </SheButton>
             </div>
             {/*// )}*/}
@@ -185,7 +187,11 @@ export default function ProductTraitConfigurationCard({
                   data={data?.items}
                   gridModel={data}
                   onNewItemPosition={(newIndex, activeItem) =>
-                    onAction("dnd", { newIndex, activeItem })
+                    onAction("dndTraitOption", {
+                      selectedTrait,
+                      newIndex,
+                      activeItem,
+                    })
                   }
                 />
               )}
@@ -198,7 +204,11 @@ export default function ProductTraitConfigurationCard({
                   data={data?.items}
                   gridModel={data}
                   onNewItemPosition={(newIndex, activeItem) =>
-                    onAction("dnd", { newIndex, activeItem })
+                    onAction("dndTraitOption", {
+                      selectedTrait,
+                      newIndex,
+                      activeItem,
+                    })
                   }
                 />
               )}

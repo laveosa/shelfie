@@ -113,7 +113,6 @@ export function ProductGalleryPage() {
           });
         break;
       case "delete":
-        console.log(payload);
         service.deletePhotoHandler(payload.photoId).then(() => {
           service.getProductPhotosHandler(Number(productId)).then((res) => {
             dispatch(actions.refreshProductPhotos(res));

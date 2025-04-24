@@ -5,6 +5,8 @@ import { ApiServiceNameEnum } from "@/const/enums/ApiServiceNameEnum.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 import { TypeOfTraitModel } from "@/const/models/TypeOfTraitModel.ts";
+import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
+import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 
 const apiConfig = new ApiConfigurationService(ApiUrlEnum.DICTIONARY_BASE_URL);
 
@@ -37,6 +39,20 @@ export const DictionaryApiService = createApi({
           apiConfig.providesTags(result, ApiServiceNameEnum.DICTIONARY),
       },
     ),
+    getTaxesList: apiConfig.createQuery<TaxTypeModel[], void>(builder, {
+      query: () => ({
+        url: "/taxes/list",
+      }),
+      providesTags: (result: TaxTypeModel[]) =>
+        apiConfig.providesTags(result, ApiServiceNameEnum.DICTIONARY),
+    }),
+    getCurrenciesList: apiConfig.createQuery<CurrencyModel[], void>(builder, {
+      query: () => ({
+        url: "/currencies/list",
+      }),
+      providesTags: (result: CurrencyModel[]) =>
+        apiConfig.providesTags(result, ApiServiceNameEnum.DICTIONARY),
+    }),
   }),
 });
 

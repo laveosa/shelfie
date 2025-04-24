@@ -25,6 +25,7 @@ interface TraitForm {
 
 export default function ManageTraitsCard({
   traits,
+  variant,
   onAction,
   onSecondaryButtonClick,
   ...props
@@ -50,8 +51,7 @@ export default function ManageTraitsCard({
       options: optionIds,
     };
 
-    console.log("OPTIONS", submissionData);
-    onAction("updateTraits", submissionData);
+    onAction("updateVariantTraitOptions", { variant, submissionData });
   }
 
   return (

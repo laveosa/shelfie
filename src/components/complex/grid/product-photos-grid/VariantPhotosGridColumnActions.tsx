@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 
-interface VariantGridColumnActionsProps<TData> {
+interface ProductPhotoGridColumnActionsProps<TData> {
   row?: Row<TData>;
   table?: Table<TData>;
   onAction?: (
@@ -20,11 +20,11 @@ interface VariantGridColumnActionsProps<TData> {
   ) => void;
 }
 
-export default function ManageVariantsGridColumnActions<TData>({
+export default function VariantPhotosGridColumnActions<TData>({
   row,
   table,
   onAction,
-}: VariantGridColumnActionsProps<TData>) {
+}: ProductPhotoGridColumnActionsProps<TData>) {
   const meta = table.options.meta as {
     setLoadingRow: (rowId: string, loading: boolean) => void;
     isRowLoading: (rowId: string) => boolean;
@@ -43,10 +43,17 @@ export default function ManageVariantsGridColumnActions<TData>({
       <DropdownMenuContent align="start" className="w-[160px]">
         <DropdownMenuItem
           onClick={() =>
-            onAction("manageVariant", row.id, meta?.setLoadingRow, row)
+            onAction("detachPhotoFromVariant", row.id, meta?.setLoadingRow, row)
           }
         >
-          Manage Variant
+          Detach photo
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() =>
+            onAction("deletePhoto", row.id, meta?.setLoadingRow, row)
+          }
+        >
+          Delete photo
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

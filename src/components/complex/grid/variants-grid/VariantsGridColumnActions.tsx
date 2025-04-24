@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 
-interface VariantGridColumnActionsProps<TData> {
+interface ProductsGridColumnActionsProps<TData> {
   row?: Row<TData>;
   table?: Table<TData>;
   onAction?: (
@@ -20,11 +20,11 @@ interface VariantGridColumnActionsProps<TData> {
   ) => void;
 }
 
-export default function ManageVariantsGridColumnActions<TData>({
+export default function VariantsGridColumnActions<TData>({
   row,
   table,
   onAction,
-}: VariantGridColumnActionsProps<TData>) {
+}: ProductsGridColumnActionsProps<TData>) {
   const meta = table.options.meta as {
     setLoadingRow: (rowId: string, loading: boolean) => void;
     isRowLoading: (rowId: string) => boolean;
@@ -42,11 +42,9 @@ export default function ManageVariantsGridColumnActions<TData>({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-[160px]">
         <DropdownMenuItem
-          onClick={() =>
-            onAction("manageVariant", row.id, meta?.setLoadingRow, row)
-          }
+          onClick={() => onAction("delete", row.id, meta?.setLoadingRow, row)}
         >
-          Manage Variant
+          Delete
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
