@@ -5,6 +5,8 @@ import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 
 export default function useManageVariantsPageService() {
+  const [getTheProductsForGrid] =
+    ProductsApiHooks.useGetTheProductsForGridMutation();
   const [getVariantsForGrid] = ProductsApiHooks.useGetVariantsForGridMutation();
   const [getProductVariants] =
     ProductsApiHooks.useLazyGetProductVariantsQuery();
@@ -62,6 +64,16 @@ export default function useManageVariantsPageService() {
   const [getTaxesList] = DictionaryApiHooks.useLazyGetTaxesListQuery();
   const [getCurrenciesList] =
     DictionaryApiHooks.useLazyGetCurrenciesListQuery();
+
+  function getTheProductsForGridHandler(data?: GridRequestModel) {
+    return getTheProductsForGrid(data).then((res: any) => {
+      if (res.error) {
+        return;
+      } else {
+        return res.data;
+      }
+    });
+  }
 
   function getVariantsForGridHandler(data?: GridRequestModel) {
     return getVariantsForGrid(data).then((res: any) => {
@@ -283,6 +295,7 @@ export default function useManageVariantsPageService() {
   }
 
   return {
+    getTheProductsForGridHandler,
     getVariantsForGridHandler,
     getProductVariantsHandler,
     getCountersForProductsHandler,

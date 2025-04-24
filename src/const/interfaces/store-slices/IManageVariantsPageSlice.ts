@@ -8,9 +8,11 @@ import { TraitModel } from "@/const/models/TraitModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
+import { ProductModel } from "@/const/models/ProductModel.ts";
 
 export interface IManageVariantsPageSlice {
   loading?: boolean;
+  products?: ProductModel[];
   variants: VariantModel[];
   productVariants: VariantModel[];
   selectedVariant: VariantModel;

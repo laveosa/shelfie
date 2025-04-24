@@ -140,6 +140,7 @@ export function ProductGalleryPage() {
     <div className={cs.createProductPage}>
       {state.products?.length > 0 && (
         <ItemsCard
+          title="Products"
           data={state.products}
           selectedItem={productId}
           onAction={itemCardHandler}

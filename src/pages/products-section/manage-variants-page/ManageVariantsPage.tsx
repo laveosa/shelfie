@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
@@ -20,6 +20,9 @@ import StockHistoryCard from "@/components/complex/custom-cards/stock-history-ca
 import ManageTraitsCard from "@/components/complex/custom-cards/manage-traits-card/ManageTraitsCard.tsx";
 import AddVariantCard from "@/components/complex/custom-cards/add-variant-card/AddVariantCard.tsx";
 import VariantPhotosCard from "@/components/complex/custom-cards/variant-photos-card/VariantPhotosCard.tsx";
+import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
+import { GridModel } from "@/const/models/GridModel.ts";
+import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 
 export function ManageVariantsPage() {
   const dispatch = useAppDispatch();
@@ -29,8 +32,15 @@ export function ManageVariantsPage() {
   );
   const { addToast } = useToast();
   const { productId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
+    service
+      .getTheProductsForGridHandler(state.gridRequestModel)
+      .then((res: GridModel) => {
+        dispatch(actions.refreshProducts(res.items));
+      });
+
     service.getListOfTypesOfTraitsHandler().then((res) => {
       dispatch(actions.refreshTypesOfTraits(res));
     });
@@ -91,8 +101,13 @@ export function ManageVariantsPage() {
     dispatch(actions.refreshActiveCards(updatedCards));
   }
 
-  function onAction(actionType: string, payload: any) {
+  function onAction(actionType: string, payload?: any) {
     switch (actionType) {
+      case "onProductItemClick":
+        navigate(
+          `${NavUrlEnum.PRODUCTS}${NavUrlEnum.PRODUCT_VARIANTS}/${payload.productId}`,
+        );
+        break;
       case "addVariant":
         service.createVariantHandler(productId, payload).then((res) => {
           handleCardAction("addVariantCard");
@@ -413,6 +428,12 @@ export function ManageVariantsPage() {
 
   return (
     <div className={cs.createProductPage}>
+      <ItemsCard
+        title="Products"
+        data={state.products}
+        selectedItem={productId}
+        onAction={(item) => onAction("onProductItemClick", item)}
+      />
       <ProductMenuCard
         title={productId ? "Manage Variant" : "Create Variant"}
         productCounter={state.productCounter}
