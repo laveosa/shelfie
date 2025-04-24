@@ -4,7 +4,7 @@ import cs from "./SheTextArea.module.scss";
 import { Textarea } from "@/components/ui/textarea.tsx";
 import { ISheTextarea } from "@/const/interfaces/primitive-components/ISheTextarea.ts";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
-import { generateId, isSheIconConfig } from "@/utils/helpers/quick-helper.ts";
+import { generateId } from "@/utils/helpers/quick-helper.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { useDebounce } from "@/utils/hooks/useDebounce.ts";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
@@ -200,20 +200,11 @@ export default function SheTextArea({
         <SheLabel {...props} ariaDescribedbyId={ariaDescribedbyId} />
         <div className={cs.sheTextAreaControl}>
           <SheSkeleton isLoading={isLoading} fullWidth>
-            {icon &&
-              (isSheIconConfig(icon) ? (
-                <SheIcon
-                  {...icon}
-                  className={cs.iconBlock}
-                  aria-describedby={ariaDescribedbyId}
-                />
-              ) : (
-                <SheIcon
-                  icon={icon}
-                  className={cs.iconBlock}
-                  aria-describedby={ariaDescribedbyId}
-                />
-              ))}
+            <SheIcon
+              icon={icon}
+              className={cs.iconBlock}
+              aria-describedby={ariaDescribedbyId}
+            />
             <Textarea
               {...props}
               value={_textValue ?? ""}

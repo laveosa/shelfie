@@ -7,6 +7,8 @@ import { Users } from "lucide-react";
 import SheTextArea from "@/components/primitive/she-textarea/SheTextarea.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 
+import Logo from "@/assets/icons/TNF_logo.svg?react";
+
 export function DashboardPage() {
   const service = useDashboardPageService();
 
@@ -26,7 +28,9 @@ export function DashboardPage() {
         showClearBtn
         minLength={4}
         maxLength={10}
-        showError={false}
+        icon={{
+          icon: Logo,
+        }}
       />
 
       <br />

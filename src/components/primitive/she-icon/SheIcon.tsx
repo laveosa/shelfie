@@ -4,8 +4,9 @@ import { isObject } from "lodash";
 import cs from "./SheIcon.module.scss";
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { IconViewEnum } from "@/const/enums/IconViewEnum.ts";
+import { isSheIconConfig } from "@/utils/helpers/quick-helper.ts";
 
-export default function SheIcon({
+function SheIconComponent({
   className,
   icon,
   iconView = IconViewEnum.SQUARE,
@@ -38,6 +39,19 @@ export default function SheIcon({
         <Icon icon={icon as React.FC<Object>} color={color} />
       )}
     </div>
+  );
+}
+
+export default function SheIcon({ icon, ...props }: ISheIcon): JSX.Element {
+  return (
+    <>
+      {icon &&
+        (isSheIconConfig(icon) ? (
+          <SheIconComponent {...icon} {...props} />
+        ) : (
+          <SheIconComponent icon={icon} {...props} />
+        ))}
+    </>
   );
 }
 

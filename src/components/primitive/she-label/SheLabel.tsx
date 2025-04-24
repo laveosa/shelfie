@@ -12,11 +12,13 @@ export function SheLabel({
   labelTransKey,
   tooltip,
   ariaDescribedbyId,
+  ...props
 }: ISheLabel): JSX.Element {
   return (
     <>
       {(label || tooltip) && (
         <label
+          {...props}
           className={`${cs.sheLabel} ${className} she-text`}
           style={style}
           htmlFor={ariaDescribedbyId}
