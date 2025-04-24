@@ -5,20 +5,17 @@ import cs from "./SheTextArea.module.scss";
 import { Textarea } from "@/components/ui/textarea.tsx";
 import { ISheTextarea } from "@/const/interfaces/primitive-components/ISheTextarea.ts";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
-import SheTooltip from "@/components/complex/she-tooltip/SheTooltip.tsx";
 import { generateId, isSheIconConfig } from "@/utils/helpers/quick-helper.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { useDebounce } from "@/utils/hooks/useDebounce.ts";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
+import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
 import { X } from "lucide-react";
 
 export default function SheTextArea({
   className = "",
   style,
-  label,
-  labelTransKey,
-  tooltip,
   icon,
   value,
   placeholder = "enter text...",
@@ -201,25 +198,7 @@ export default function SheTextArea({
       }}
     >
       <div className={cs.sheTextAreaComponent}>
-        {(label || tooltip) && (
-          <label
-            className="she-text"
-            htmlFor={ariaDescribedbyId}
-            aria-describedby={ariaDescribedbyId}
-          >
-            <Trans i18nKey={labelTransKey}>{label}</Trans>
-            {tooltip?.text?.length > 0 && (
-              <SheTooltip
-                {...tooltip}
-                id={ariaDescribedbyId}
-                side={"right"}
-                align={"end"}
-              >
-                <div className={cs.tooltipIcon}>!</div>
-              </SheTooltip>
-            )}
-          </label>
-        )}
+        <SheLabel {...props} ariaDescribedbyId={ariaDescribedbyId} />
         <div className={cs.sheTextAreaControl}>
           <SheSkeleton isLoading={isLoading} fullWidth>
             {icon &&

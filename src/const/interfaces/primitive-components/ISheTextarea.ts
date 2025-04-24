@@ -1,14 +1,11 @@
 import React from "react";
 
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
-import { ISheTooltip } from "@/const/interfaces/complex-components/ISheTooltip.ts";
+import { ISheLabel } from "@/const/interfaces/primitive-components/ISheLabel.ts";
 
-export interface ISheTextarea {
+export interface ISheTextarea extends ISheLabel {
   className?: string;
   style?: React.CSSProperties;
-  label?: string;
-  labelTransKey?: string;
-  tooltip?: ISheTooltip;
   icon?: Partial<ISheIcon> | string | React.FC<any>;
   value?: string | number | readonly string[];
   placeholder?: string;
