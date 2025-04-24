@@ -14,7 +14,7 @@ export function SheClearButton({
   disabled,
   isLoading,
   ariaDescribedbyId,
-  onClearHandler,
+  onClear,
 }: ISheClearButton): JSX.Element {
   return (
     <>
@@ -33,7 +33,7 @@ export function SheClearButton({
             disabled={
               !value || value.toString().length === 0 || disabled || isLoading
             }
-            onClick={onClearHandler}
+            onClick={onClear}
           />
         </SheSkeleton>
       )}

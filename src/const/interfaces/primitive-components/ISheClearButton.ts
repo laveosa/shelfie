@@ -8,5 +8,5 @@ export interface ISheClearButton {
   disabled?: boolean;
   isLoading?: boolean;
   ariaDescribedbyId?: string;
-  onClearHandler: () => void;
+  onClear?: () => void;
 }

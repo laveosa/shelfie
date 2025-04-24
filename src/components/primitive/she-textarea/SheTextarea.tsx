@@ -11,6 +11,7 @@ import { useDebounce } from "@/utils/hooks/useDebounce.ts";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
 import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
 import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
+import { SheContextLengthLimits } from "@/components/primitive/she-context-length-limits/SheContextLengthLimits.tsx";
 
 export default function SheTextArea({
   className = "",
@@ -230,24 +231,16 @@ export default function SheTextArea({
             isLoading={isLoading}
             disabled={disabled}
             ariaDescribedbyId={ariaDescribedbyId}
-            onClearHandler={onClearHandler}
+            onClear={onClearHandler}
           />
         </div>
-        {(minLength || maxLength) && (
-          <div className={cs.contextLengthRestriction}>
-            <div className={cs.contextLengthBock}>
-              {minLength && (
-                <span className="she-subtext">min: {minLength}</span>
-              )}
-              <span className="she-subtext">
-                value: {_textValue ? _textValue.toString().length : 0}
-              </span>
-              {maxLength && (
-                <span className="she-subtext">max: {maxLength}</span>
-              )}
-            </div>
-          </div>
-        )}
+        <SheContextLengthLimits
+          {...props}
+          value={_textValue}
+          minLength={minLength}
+          maxLength={maxLength}
+          lengthInvalid={_isLengthValid}
+        />
         {_showError && _error && (
           <div className={cs.errorMessageBlock}>
             <span className="she-text-error">

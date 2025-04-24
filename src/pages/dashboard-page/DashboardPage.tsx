@@ -24,7 +24,8 @@ export function DashboardPage() {
         }}
         required
         showClearBtn
-        isLoading={true}
+        minLength={4}
+        maxLength={10}
       />
 
       <br />

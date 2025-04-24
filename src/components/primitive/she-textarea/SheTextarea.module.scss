@@ -107,26 +107,6 @@ $iconSize: 20px;
         border: 1px solid vars.$colorRed;
       }
     }
-
-    .contextLengthRestriction {
-      .contextLengthBock {
-        span {
-          color: vars.$colorRed;
-        }
-      }
-    }
-  }
-}
-
-// ======================================================== MIN MAX LENGTH
-
-.sheTextArea {
-  .contextLengthRestriction {
-    .contextLengthBock {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
   }
 }
 
