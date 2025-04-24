@@ -1,5 +1,4 @@
 import React, { JSX, useEffect, useRef, useState } from "react";
-import { Trans } from "react-i18next";
 
 import cs from "./SheTextArea.module.scss";
 import { Textarea } from "@/components/ui/textarea.tsx";
@@ -12,6 +11,7 @@ import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
 import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
 import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
 import { SheContextLengthLimits } from "@/components/primitive/she-context-length-limits/SheContextLengthLimits.tsx";
+import { SheErrorMessageBlock } from "@/components/primitive/she-error-message-block/SheErrorMessageBlock.tsx";
 
 export default function SheTextArea({
   className = "",
@@ -241,13 +241,12 @@ export default function SheTextArea({
           maxLength={maxLength}
           lengthInvalid={_isLengthValid}
         />
-        {_showError && _error && (
-          <div className={cs.errorMessageBlock}>
-            <span className="she-text-error">
-              <Trans i18nKey={_errorTransKey}>{_error}</Trans>
-            </span>
-          </div>
-        )}
+        <SheErrorMessageBlock
+          {...props}
+          error={_error}
+          errorTransKey={_errorTransKey}
+          showError={_showError}
+        />
       </div>
     </div>
   );

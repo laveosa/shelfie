@@ -26,6 +26,7 @@ export function DashboardPage() {
         showClearBtn
         minLength={4}
         maxLength={10}
+        showError={false}
       />
 
       <br />
