@@ -6,7 +6,7 @@ import placeholderImage from "@/assets/images/placeholder-image.png";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 
-export function createProductsGridColumns(onAction: any): ColumnDef<any>[] {
+export function productsGridColumns(onAction: any): ColumnDef<any>[] {
   return [
     {
       accessorKey: "productId",

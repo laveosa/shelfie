@@ -14,7 +14,7 @@ import useProductsPageService from "@/pages/products-section/products-page/usePr
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SheTabs from "@/components/complex/she-tabs/SheTabs.tsx";
-import { createProductsGridColumns } from "@/components/complex/grid/products-grid/ProductsGridColumns.tsx";
+import { productsGridColumns } from "@/components/complex/grid/products-grid/ProductsGridColumns.tsx";
 import { GridModel } from "@/const/models/GridModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
@@ -92,7 +92,7 @@ export function ProductsPage() {
     setLoadingRow(rowId, false);
   };
 
-  const productsGridColumns = createProductsGridColumns(onAction);
+  const productsColumns = productsGridColumns(onAction);
   const variantsColumns = variantsGridColumns(onAction);
 
   function handleAddProduct() {
@@ -182,7 +182,7 @@ export function ProductsPage() {
           </div>
           <TabsContent value="products">
             <DndGridDataTable
-              columns={productsGridColumns}
+              columns={productsColumns}
               data={state.productsGridModel.items}
               gridModel={state.productsGridModel}
               sortingItems={state.sortingOptions}

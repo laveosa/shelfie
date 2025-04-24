@@ -45,7 +45,7 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
     },
     {
       accessorKey: "variantName",
-      header: "Product Name",
+      header: "Variant Name",
     },
     {
       accessorKey: "productCategory",
