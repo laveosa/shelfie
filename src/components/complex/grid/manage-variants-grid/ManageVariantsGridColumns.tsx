@@ -15,15 +15,14 @@ export const ManageVariantsGridColumns = (
     accessorKey: "traits",
     header: "Traits",
     cell: ({ row }) => {
-      const colorOption = row.original.traitOptions.find(
-        (option) => option.traitTypeId === 2,
-      );
-      const sizeOption = row.original.traitOptions.find(
-        (option) => option.traitTypeId === 1,
-      );
+      const traitOptions = row.original.traitOptions || [];
 
-      const color = colorOption ? colorOption.optionColor : null;
-      const size = sizeOption ? sizeOption.optionName : null;
+      const colorOptions = traitOptions.filter(
+        (option) => option.traitTypeId === 2 && option.optionColor,
+      );
+      const sizeOptions = traitOptions.filter(
+        (option) => option.traitTypeId === 1 && option.optionName,
+      );
 
       return (
         <div
@@ -31,19 +30,26 @@ export const ManageVariantsGridColumns = (
             display: "flex",
             alignItems: "center",
             gap: "10px",
+            maxWidth: "50px",
+            overflow: "hidden",
           }}
         >
-          {color && (
+          {colorOptions.map((colorOpt, index) => (
             <div
+              key={`color-${index}`}
               style={{
-                background: color,
-                width: "20px",
-                height: "20px",
+                background: colorOpt.optionColor,
+                minWidth: "20px",
+                minHeight: "20px",
                 borderRadius: "10%",
               }}
             />
-          )}
-          {size && <span>{size}</span>}
+          ))}
+          {sizeOptions.map((sizeOpt, index) => (
+            <span key={`size-${index}`} style={{ fontSize: "0.875rem" }}>
+              {sizeOpt.optionName}
+            </span>
+          ))}
         </div>
       );
     },

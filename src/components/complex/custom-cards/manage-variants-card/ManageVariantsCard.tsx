@@ -63,7 +63,7 @@ export default function ManageVariantsCard({
       showSecondaryButton={false}
       secondaryButtonTitle="Cancel"
       className={cs.manageVariantsCard}
-      width="380px"
+      width="385px"
       {...props}
     >
       <div className={cs.manageVariantsContent}>
