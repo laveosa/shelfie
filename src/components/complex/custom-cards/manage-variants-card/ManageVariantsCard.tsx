@@ -30,7 +30,6 @@ export default function ManageVariantsCard({
         onAction("manageVariant", payload);
         break;
       case "activateVariant":
-        console.log("OnAction", payload);
         onAction("activateVariant", payload);
         break;
       case "dnd":
@@ -41,17 +40,25 @@ export default function ManageVariantsCard({
   }
 
   function onGridAction(
-    _actionType: string,
+    actionType: string,
     _rowId?: string,
     _setLoadingRow?: (rowId: string, loading: boolean) => void,
     row?: any,
   ) {
-    handleAction("activateVariant", row);
-    handleAction("manageVariant", row.original);
-    handleAction("changeVariantPosition", {
-      newIndex: row.newIndex,
-      activeItem: row.original,
-    });
+    switch (actionType) {
+      case "activateVariant":
+        handleAction("activateVariant", row.original);
+        break;
+      case "manageVariant":
+        handleAction("manageVariant", row.original);
+        break;
+      case "changeVariantPosition":
+        handleAction("changeVariantPosition", {
+          newIndex: row.newIndex,
+          activeItem: row.original,
+        });
+        break;
+    }
   }
 
   return (

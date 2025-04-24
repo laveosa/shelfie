@@ -329,24 +329,24 @@ export const ProductsApiService = createApi({
       query: (id: number) => ({
         url: `${ApiUrlEnum.VARIANTS}/${id}`,
       }),
-      providesTags: (_result, _error, result) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          result,
-        },
-      ],
+      // providesTags: (_result, _error, result) => [
+      //   {
+      //     type: ApiServiceNameEnum.PRODUCTS,
+      //     result,
+      //   },
+      // ],
     }),
     toggleVariantIsActive: apiConfig.createMutation<any, number>(builder, {
       query: (id: number) => ({
         url: `${ApiUrlEnum.VARIANTS}/${id}/toggle-active`,
         method: "PATCH",
       }),
-      invalidatesTags: (_result, _error, result) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          result,
-        },
-      ],
+      // invalidatesTags: (_result, _error, result) => [
+      //   {
+      //     type: ApiServiceNameEnum.PRODUCTS,
+      //     result,
+      //   },
+      // ],
     }),
     updateVariantDetails: apiConfig.createMutation<
       any,

@@ -72,9 +72,9 @@ export const ManageVariantsGridColumns = (
       return (
         <Switch
           checked={row.original.isActive}
-          onCheckedChange={() => {
-            onAction("activateVariant", row.id, undefined, row.original);
-          }}
+          onCheckedChange={() =>
+            onAction("activateVariant", row.id, undefined, row)
+          }
         />
       );
     },

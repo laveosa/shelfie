@@ -129,8 +129,7 @@ export function ProductGalleryPage() {
             });
         });
         break;
-      case "openConnectImageCard":
-        console.log(payload);
+      case "connect":
         handleCardAction("connectImageCard");
         break;
     }
