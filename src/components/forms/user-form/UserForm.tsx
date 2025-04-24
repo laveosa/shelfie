@@ -14,7 +14,7 @@ import { IUserForm } from "@/const/interfaces/forms/IUserForm.ts";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelect.ts";
 
 import { User } from "lucide-react";
-import TNFLogoIcon from "@/assets/icons/TNF_logo.svg?react";
+import TNFLogoIcon from "@/assets/icons/TNF_logo.svg";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 
 export default function UserForm<T>({
