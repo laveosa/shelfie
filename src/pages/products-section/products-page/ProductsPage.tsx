@@ -75,6 +75,7 @@ export function ProductsPage() {
         );
         break;
       case "activateProduct":
+        console.log(`Image row ${rowId}`);
         service.toggleProductActivationHandler(rowData.productId).then(() => {
           service
             .getTheProductsForGridHandler(state.gridRequestModel)
