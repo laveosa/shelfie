@@ -83,53 +83,56 @@ export default function AddVariantCard({
                 name={trait.traitId.toString()}
                 render={({ field }) => {
                   return (
-                    <FormItem className={cs.select}>
-                      <FormLabel>{trait.traitName}</FormLabel>
-                      <Select
-                        onValueChange={(value) => {
-                          field.onChange(value);
-                        }}
-                        value={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue
-                              placeholder={`Select ${trait.traitTypeName.toLowerCase()}`}
-                            />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {trait.traitOptions.map((option) => (
-                            <SelectItem
-                              key={option.optionId}
-                              value={option.optionId.toString()}
-                            >
-                              {trait.traitTypeId === 2 ? (
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                  }}
-                                >
+                    <div className={cs.addVariantCardFormItem}>
+                      <FormItem className={cs.select}>
+                        <FormLabel>{trait.traitName}</FormLabel>
+                        <Select
+                          onValueChange={(value) => {
+                            field.onChange(value);
+                          }}
+                          value={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue
+                                placeholder={`Select ${trait.traitTypeName.toLowerCase()}`}
+                              />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {trait.traitOptions.map((option) => (
+                              <SelectItem
+                                key={option.optionId}
+                                value={option.optionId.toString()}
+                              >
+                                {trait.traitTypeId === 2 ? (
                                   <div
                                     style={{
-                                      width: "20px",
-                                      height: "20px",
-                                      background: option?.optionColor || "#ccc",
-                                      marginRight: "8px",
-                                      borderRadius: "2px",
+                                      display: "flex",
+                                      alignItems: "center",
                                     }}
-                                  ></div>
-                                  {option.optionName}
-                                </div>
-                              ) : (
-                                option.optionName
-                              )}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormItem>
+                                  >
+                                    <div
+                                      style={{
+                                        width: "20px",
+                                        height: "20px",
+                                        background:
+                                          option?.optionColor || "#ccc",
+                                        marginRight: "8px",
+                                        borderRadius: "2px",
+                                      }}
+                                    ></div>
+                                    {option.optionName}
+                                  </div>
+                                ) : (
+                                  option.optionName
+                                )}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormItem>
+                    </div>
                   );
                 }}
               />

@@ -4,13 +4,12 @@
   .manageVariantsContent {
     display: flex;
     flex-direction: column;
-    padding: 0 20px 20px;
 
     .textBlock {
       display: flex;
       align-items: center;
-      height: 100px;
       gap: 20px;
+      padding-bottom: 20px;
 
       .dropdownMenu {
         button {
@@ -30,7 +29,7 @@
     }
 
     .manageVariantsCardGrid > div {
-      max-height: calc(100vh - 315px);
+      max-height: calc(100vh - 295px);
     }
   }
 }

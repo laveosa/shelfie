@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
-import cs from "@/pages/products-section/product-basic-data-page/ProductBasicDataPage.module.scss";
+import cs from "@/pages/products-section/manage-variants-page/ManageVariantsPage.module.scss";
 import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
 import useManageVariantsPageService from "@/pages/products-section/manage-variants-page/useManageVariantsPageService.ts";
 import { IManageVariantsPageSlice } from "@/const/interfaces/store-slices/IManageVariantsPageSlice.ts";
@@ -423,20 +423,22 @@ export function ManageVariantsPage() {
   }
 
   return (
-    <div className={cs.createProductPage}>
-      <ItemsCard
-        title="Products"
-        data={state.products}
-        selectedItem={productId}
-        onAction={(item) => onAction("onProductItemClick", item)}
-      />
-      <ProductMenuCard
-        title={productId ? "Manage Variant" : "Create Variant"}
-        productCounter={state.productCounter}
-        onAction={handleCardAction}
-        productId={Number(productId)}
-        activeCards={state.activeCards}
-      />
+    <div className={cs.manageVariantsPage}>
+      <div className={cs.borderlessCards}>
+        <ItemsCard
+          title="Products"
+          data={state.products}
+          selectedItem={productId}
+          onAction={(item) => onAction("onProductItemClick", item)}
+        />
+        <ProductMenuCard
+          title={productId ? "Manage Variant" : "Create Variant"}
+          productCounter={state.productCounter}
+          onAction={handleCardAction}
+          productId={Number(productId)}
+          activeCards={state.activeCards}
+        />
+      </div>
       <ManageVariantsCard
         variants={state.productVariants}
         traits={state.listOfTraitsWithOptionsForProduct}

@@ -5,6 +5,7 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    padding-top: 3px;
 
     .productMenuItem {
       display: flex;
@@ -13,6 +14,8 @@
       cursor: pointer;
       border-radius: 5px;
       align-items: center;
+      min-height: 44px;
+      max-height: 44px;
 
       svg {
         width: 20px;
