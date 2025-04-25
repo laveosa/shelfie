@@ -2,19 +2,18 @@
 
 .productPhotosCard {
   .productPhotosCardContent {
-    padding: 0 20px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 20px;
 
     .managePhotos {
       .managePhotosTitle {
         text-align: center;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
       }
 
       .photosGrid > div {
-        max-height: calc(100vh - 483px);
+        max-height: calc(100vh - 513px);
       }
     }
   }

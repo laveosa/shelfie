@@ -6,7 +6,7 @@
   .cardContent {
     display: flex;
     flex-direction: column;
-    padding: vars.$paddingSmall;
     gap: vars.$paddingStandard;
+    padding-top: 10px;
   }
 }
