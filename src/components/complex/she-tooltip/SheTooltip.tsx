@@ -1,3 +1,4 @@
+import React from "react";
 import { Trans } from "react-i18next";
 
 import cs from "./SheTooltip.module.scss";
@@ -8,7 +9,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { ISheTooltip } from "@/const/interfaces/complex-components/ISheTooltip.ts";
-import React from "react";
 
 export default function SheTooltip({
   className,
@@ -25,6 +25,8 @@ export default function SheTooltip({
   onClick,
   ...props
 }: ISheTooltip): React.ReactNode {
+  // ==================================================================== EVENT
+
   function onClickHandler(e) {
     e.preventDefault();
     onClick({
@@ -36,6 +38,10 @@ export default function SheTooltip({
       ...props,
     });
   }
+
+  // ==================================================================== PRIVATE
+
+  // ==================================================================== LAYOUT
 
   return (
     <div className={`${className || ""} ${cs.sheTooltip || ""}`}>
