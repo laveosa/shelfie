@@ -74,8 +74,14 @@ export function ProductsPage() {
           `${ApiUrlEnum.PRODUCTS}${ApiUrlEnum.PRODUCT_BASIC_DATA}/${rowData?.productId}`,
         );
         break;
-      case "active":
-        console.log(`Active row ${rowId}`);
+      case "activateProduct":
+        service.toggleProductActivationHandler(rowData.productId).then(() => {
+          service
+            .getTheProductsForGridHandler(state.gridRequestModel)
+            .then((res: GridModel) => {
+              dispatch(actions.refreshProductsGridModel(res));
+            });
+        });
         break;
       case "delete":
         console.log(`Deleting row ${rowId}`);
