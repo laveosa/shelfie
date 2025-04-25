@@ -5,7 +5,8 @@ import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageServ
 import SheTextArea from "@/components/primitive/she-textarea/SheTextarea.tsx";
 
 import Logo from "@/assets/icons/TNF_logo.svg?react";
-import { Users } from "lucide-react";
+import { Users, X } from "lucide-react";
+import Tmp from "@/assets/images/AuthLogo.png";
 
 export function DashboardPage() {
   const service = useDashboardPageService();
@@ -27,7 +28,8 @@ export function DashboardPage() {
         minLength={4}
         maxLength={10}
         icon={{
-          icon: Logo,
+          icon: X,
+          color: "red",
         }}
         autoFocus={true}
       />

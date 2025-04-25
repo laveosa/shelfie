@@ -21,20 +21,37 @@ function SheIconComponent({
   onClick,
   ...props
 }: ISheIcon): JSX.Element {
+  // ==================================================================== EVENT
+
   function onClickHandler(event) {
     if (onClick) {
       onClick(event);
     }
   }
 
+  // ==================================================================== PRIVATE
+
+  // ==================================================================== LAYOUT
+
   return (
     <div
       {...props}
       className={`${cs.sheIcon} ${cs[iconView] || ""} ${className || ""} ${fullWidth ? cs.fullWidth : ""} ${hoverEffect ? cs.hoverEffect : ""} ${onClick ? cs.onClickEffect : ""}`}
-      style={{ color, minWidth, maxWidth, minHeight, maxHeight, ...style }}
+      style={{
+        minWidth,
+        maxWidth,
+        minHeight,
+        maxHeight,
+        color,
+        stroke: color,
+        fill: color,
+        ...style,
+      }}
       onClick={onClickHandler}
     >
-      {/\.(png|jpe?g|gif|webp)$/i.test(icon) && <img src={icon} alt="icon" />}
+      {typeof icon === "string" && /\.(png|jpe?g|gif|webp)$/i.test(icon) && (
+        <img src={icon} alt="icon" role="img" />
+      )}
       {icon && isObject(icon) && (
         <Icon icon={icon as React.FC<Object>} color={color} />
       )}
@@ -43,16 +60,11 @@ function SheIconComponent({
 }
 
 export default function SheIcon({ icon, ...props }: ISheIcon): JSX.Element {
-  return (
-    <>
-      {icon &&
-        (isSheIconConfig(icon) ? (
-          <SheIconComponent {...icon} {...props} />
-        ) : (
-          <SheIconComponent icon={icon} {...props} />
-        ))}
-    </>
-  );
+  if (!icon) return null;
+
+  if (isSheIconConfig(icon)) return <SheIconComponent {...icon} {...props} />;
+
+  return <SheIconComponent icon={icon} {...props} />;
 }
 
 function Icon({
