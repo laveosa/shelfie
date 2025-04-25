@@ -14,31 +14,34 @@ export function SheLabel({
   ariaDescribedbyId,
   ...props
 }: ISheLabel): JSX.Element {
+  // ==================================================================== EVENT
+
+  // ==================================================================== PRIVATE
+
+  // ==================================================================== LAYOUT
+  if (!label && !tooltip) return null;
+
   return (
-    <>
-      {(label || tooltip) && (
-        <label
-          {...props}
-          className={`${cs.sheLabel} ${className} she-text`}
-          style={style}
-          htmlFor={ariaDescribedbyId}
-          aria-describedby={ariaDescribedbyId}
+    <label
+      {...props}
+      className={`${cs.sheLabel} ${className} she-text`}
+      style={style}
+      htmlFor={ariaDescribedbyId}
+      aria-describedby={ariaDescribedbyId}
+    >
+      <Trans i18nKey={labelTransKey}>{label}</Trans>
+      {tooltip?.text?.length > 0 && (
+        <SheTooltip
+          {...tooltip}
+          id={ariaDescribedbyId}
+          side={tooltip?.side || "right"}
+          align={tooltip?.align || "end"}
         >
-          <Trans i18nKey={labelTransKey}>{label}</Trans>
-          {tooltip?.text?.length > 0 && (
-            <SheTooltip
-              {...tooltip}
-              id={ariaDescribedbyId}
-              side={tooltip?.side || "right"}
-              align={tooltip?.align || "end"}
-            >
-              <div className={cs.tooltipIcon}>
-                <span className="she-title">!</span>
-              </div>
-            </SheTooltip>
-          )}
-        </label>
+          <div className={cs.tooltipIcon}>
+            <span className="she-title">!</span>
+          </div>
+        </SheTooltip>
       )}
-    </>
+    </label>
   );
 }

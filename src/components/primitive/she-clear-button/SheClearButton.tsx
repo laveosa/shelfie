@@ -16,27 +16,36 @@ export function SheClearButton({
   ariaDescribedbyId,
   onClear,
 }: ISheClearButton): JSX.Element {
+  const isEmpty =
+    value === undefined ||
+    value === null ||
+    (typeof value === "string" && value.trim().length === 0) ||
+    (Array.isArray(value) && value.length === 0);
+
+  // ==================================================================== EVENT
+
+  // ==================================================================== PRIVATE
+
+  // ==================================================================== LAYOUT
+  if (!showClearBtn) return null;
+
   return (
-    <>
-      {showClearBtn && (
-        <SheSkeleton
-          className={`${cs.sheClearButtonWrapper} ${className}`}
-          style={style}
-          isLoading={isLoading}
-        >
-          <SheButton
-            className={cs.sheClearButton}
-            variant="ghost"
-            size="icon"
-            icon={X}
-            aria-describedby={ariaDescribedbyId}
-            disabled={
-              !value || value.toString().length === 0 || disabled || isLoading
-            }
-            onClick={onClear}
-          />
-        </SheSkeleton>
-      )}
-    </>
+    <SheSkeleton
+      className={`${cs.sheClearButtonWrapper} ${className}`}
+      style={style}
+      isLoading={isLoading}
+    >
+      <SheButton
+        className={cs.sheClearButton}
+        title="Clear"
+        aria-label="Clear"
+        variant="ghost"
+        size="icon"
+        icon={X}
+        aria-describedby={ariaDescribedbyId}
+        disabled={isEmpty || disabled || isLoading}
+        onClick={onClear}
+      />
+    </SheSkeleton>
   );
 }

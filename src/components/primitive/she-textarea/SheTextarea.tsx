@@ -57,6 +57,7 @@ export default function SheTextArea({
 
   useEffect(() => {
     const convertedValue = Array.isArray(value) ? value.join("\n") : value;
+
     if (convertedValue !== _textValue) {
       isTouched.current = true;
       setTextValue(convertedValue);
@@ -230,7 +231,7 @@ export default function SheTextArea({
           value={_textValue}
           minLength={minLength}
           maxLength={maxLength}
-          lengthInvalid={_isLengthValid}
+          isValid={_isLengthValid}
         />
         <SheErrorMessageBlock
           {...props}

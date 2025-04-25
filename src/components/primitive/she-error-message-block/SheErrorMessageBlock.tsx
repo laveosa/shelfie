@@ -11,18 +11,18 @@ export function SheErrorMessageBlock({
   errorTransKey,
   showError,
 }: ISheErrorMessageBlock): JSX.Element {
+  // ==================================================================== EVENT
+
+  // ==================================================================== PRIVATE
+
+  // ==================================================================== LAYOUT
+  if (!showError && !error) return null;
+
   return (
-    <>
-      {showError && error && (
-        <div
-          className={`${cs.sheErrorMessageBlock} ${className}`}
-          style={style}
-        >
-          <span className="she-text-error">
-            <Trans i18nKey={errorTransKey}>{error}</Trans>
-          </span>
-        </div>
-      )}
-    </>
+    <div className={`${cs.sheErrorMessageBlock} ${className}`} style={style}>
+      <span className="she-text-error" role="alert" aria-live="assertive">
+        <Trans i18nKey={errorTransKey}>{error}</Trans>
+      </span>
+    </div>
   );
 }

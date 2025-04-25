@@ -29,6 +29,7 @@ export function DashboardPage() {
         icon={{
           icon: Logo,
         }}
+        autoFocus={true}
       />
 
       <br />

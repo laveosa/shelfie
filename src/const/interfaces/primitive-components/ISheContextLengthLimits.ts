@@ -4,7 +4,7 @@ export interface ISheContextLengthLimits {
   className?: string;
   style?: React.CSSProperties;
   value?: any;
-  lengthInvalid?: boolean;
+  isValid?: boolean;
   minLength?: number;
   maxLength?: number;
 }

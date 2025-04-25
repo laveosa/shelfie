@@ -7,26 +7,30 @@ export function SheContextLengthLimits({
   className = "",
   style,
   value,
-  lengthInvalid,
+  isValid,
   minLength,
   maxLength,
 }: ISheContextLengthLimits): JSX.Element {
+  const valueLength = value != null ? String(value).length : 0;
+
+  // ==================================================================== EVENT
+
+  // ==================================================================== PRIVATE
+
+  // ==================================================================== LAYOUT
+  if (!minLength && !maxLength) return null;
+
   return (
-    <>
-      {(minLength || maxLength) && (
-        <div
-          className={`${cs.sheContextLengthLimits} ${className} ${!lengthInvalid ? cs.lengthInvalid : ""}`}
-          style={style}
-        >
-          <div className={cs.minMaxBlock}>
-            {minLength && <span className="she-subtext">min: {minLength}</span>}
-            <span className="she-subtext">
-              value: {value ? value.toString().length : 0}
-            </span>
-            {maxLength && <span className="she-subtext">max: {maxLength}</span>}
-          </div>
-        </div>
-      )}
-    </>
+    <div
+      className={`${cs.sheContextLengthLimits} ${className} ${!isValid ? cs.lengthInvalid : ""}`}
+      style={style}
+      aria-live="polite"
+    >
+      <div className={cs.minMaxBlock}>
+        {minLength && <span className="she-subtext">min: {minLength}</span>}
+        <span className="she-subtext">value: {valueLength}</span>
+        {maxLength && <span className="she-subtext">max: {maxLength}</span>}
+      </div>
+    </div>
   );
 }
