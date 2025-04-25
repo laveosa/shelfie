@@ -10,9 +10,11 @@ import { TraitModel } from "@/const/models/TraitModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
+import { ProductModel } from "@/const/models/ProductModel.ts";
 
 const initialState: IManageVariantsPageSlice = {
   loading: false,
+  products: [],
   variants: [],
   productVariants: [],
   selectedVariant: null,
@@ -54,6 +56,13 @@ function setLoading(
   action: PayloadAction<boolean>,
 ) {
   state.loading = action?.payload;
+}
+
+function refreshProducts(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<ProductModel[]>,
+) {
+  state.products = action?.payload || state.products;
 }
 
 function refreshVariants(
@@ -202,6 +211,7 @@ const ManageVariantsPageSlice = createSlice({
   name: StoreSliceEnum.MANAGE_VARIANTS,
   initialState,
   reducers: {
+    refreshProducts,
     setLoading,
     refreshVariants,
     refreshProductVariants,

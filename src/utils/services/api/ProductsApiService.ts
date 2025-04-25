@@ -57,6 +57,19 @@ export const ProductsApiService = createApi({
         },
       ],
     }),
+    updateProduct: apiConfig.createMutation<void, any>(builder, {
+      query: ({ productId, model }) => ({
+        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/${productId}`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+    }),
+    toggleProductActivation: apiConfig.createMutation<void, any>(builder, {
+      query: (productId) => ({
+        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/${productId}/active`,
+        method: "PATCH",
+      }),
+    }),
     deleteProduct: apiConfig.createMutation<void, number>(builder, {
       query: (id: number) => ({
         url: `${ApiUrlEnum.PRODUCTS}/${id}`,
@@ -329,24 +342,24 @@ export const ProductsApiService = createApi({
       query: (id: number) => ({
         url: `${ApiUrlEnum.VARIANTS}/${id}`,
       }),
-      providesTags: (_result, _error, result) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          result,
-        },
-      ],
+      // providesTags: (_result, _error, result) => [
+      //   {
+      //     type: ApiServiceNameEnum.PRODUCTS,
+      //     result,
+      //   },
+      // ],
     }),
     toggleVariantIsActive: apiConfig.createMutation<any, number>(builder, {
       query: (id: number) => ({
         url: `${ApiUrlEnum.VARIANTS}/${id}/toggle-active`,
         method: "PATCH",
       }),
-      invalidatesTags: (_result, _error, result) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          result,
-        },
-      ],
+      // invalidatesTags: (_result, _error, result) => [
+      //   {
+      //     type: ApiServiceNameEnum.PRODUCTS,
+      //     result,
+      //   },
+      // ],
     }),
     updateVariantDetails: apiConfig.createMutation<
       any,
@@ -379,12 +392,12 @@ export const ProductsApiService = createApi({
         method: "PATCH",
         body: JSON.stringify(model),
       }),
-      invalidatesTags: (_result, _error, result) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          result,
-        },
-      ],
+      // invalidatesTags: (_result, _error, result) => [
+      //   {
+      //     type: ApiServiceNameEnum.PRODUCTS,
+      //     result,
+      //   },
+      // ],
     }),
     increaseStockAmountForVariant: apiConfig.createMutation<
       any,
@@ -558,12 +571,6 @@ export const ProductsApiService = createApi({
         method: "PATCH",
         body: JSON.stringify(model),
       }),
-      invalidatesTags: (_result, _error, result) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          result,
-        },
-      ],
     }),
     getOptionsForTrait: apiConfig.createQuery<any, number>(builder, {
       query: (id: number) => ({
@@ -603,12 +610,6 @@ export const ProductsApiService = createApi({
         method: "PATCH",
         body: JSON.stringify(model),
       }),
-      invalidatesTags: (_result, _error, result) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          result,
-        },
-      ],
     }),
     deleteOptionOfTrait: apiConfig.createMutation<
       any,

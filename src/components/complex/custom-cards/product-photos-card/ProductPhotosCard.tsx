@@ -26,7 +26,7 @@ export default function ProductPhotosCard({
         onAction("delete", payload);
         break;
       case "connect":
-        onAction("openConnectImageCard", payload);
+        onAction("connect", payload);
         break;
       case "dnd":
         const { newIndex, activeItem } = payload;
@@ -36,13 +36,19 @@ export default function ProductPhotosCard({
   }
 
   function onGridAction(
-    _actionType: string,
+    actionType: string,
     _rowId?: string,
     _setLoadingRow?: (rowId: string, loading: boolean) => void,
     row?: any,
   ) {
-    handleAction("delete", row.original);
-    handleAction("connect", row.original);
+    switch (actionType) {
+      case "delete":
+        handleAction("delete", row.original);
+        break;
+      case "connect":
+        handleAction("connect", row.original);
+        break;
+    }
   }
 
   return (

@@ -57,7 +57,7 @@ export const ColorOptionsGridColumns = (
         <SheInput
           value={optionName}
           placeholder={"Color name"}
-          onDelay={(newName) => {
+          onBlur={(newName) => {
             const updatedModel = {
               optionColor: optionColor,
               optionName: newName,

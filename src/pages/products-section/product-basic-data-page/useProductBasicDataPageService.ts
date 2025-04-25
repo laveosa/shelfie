@@ -22,6 +22,9 @@ export default function useProductBasicDataPageService() {
   const [checkBrandName] = ProductsApiHooks.useCheckBrandNameMutation();
   const [checkCategoryName] = ProductsApiHooks.useCheckCategoryNameMutation();
   const [createNewProduct] = ProductsApiHooks.useCreateNewProductMutation();
+  const [updateProduct] = ProductsApiHooks.useUpdateProductMutation();
+  const [toggleProductActivation] =
+    ProductsApiHooks.useToggleProductActivationMutation();
   const [createNewCategory] = ProductsApiHooks.useCreateNewCategoryMutation();
   const [createBrand] = ProductsApiHooks.useCreateBrandMutation();
   const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
@@ -90,6 +93,18 @@ export default function useProductBasicDataPageService() {
     });
   }
 
+  function updateProductHandler(productId, model) {
+    return updateProduct({ productId, model }).then((res: any) => {
+      return res;
+    });
+  }
+
+  function toggleProductActivationHandler(productId) {
+    return toggleProductActivation(productId).then((res: any) => {
+      return res;
+    });
+  }
+
   function createNewCategoryHandler(model) {
     return createNewCategory(model).then((res: any) => {
       return res;
@@ -147,6 +162,8 @@ export default function useProductBasicDataPageService() {
     checkBrandNameHandler,
     checkCategoryNameHandler,
     createNewProductHandler,
+    updateProductHandler,
+    toggleProductActivationHandler,
     createNewCategoryHandler,
     createBrandHandler,
     uploadPhotoHandler,

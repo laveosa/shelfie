@@ -6,13 +6,11 @@
     flex-direction: column;
     gap: 20px;
     height: calc(100vh - 213px);
-    padding: 0 20px;
     overflow: hidden;
 
     .textBlock {
       display: flex;
       flex-direction: column;
-      padding-top: 20px
     }
 
     button {
@@ -23,7 +21,7 @@
       display: flex;
       flex-direction: column;
       gap: 5px;
-      max-height: calc(100vh - 360px);
+      max-height: calc(100vh - 370px);
       overflow-y: auto;
 
       .traitsItem {

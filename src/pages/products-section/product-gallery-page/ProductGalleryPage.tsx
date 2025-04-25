@@ -129,8 +129,7 @@ export function ProductGalleryPage() {
             });
         });
         break;
-      case "openConnectImageCard":
-        console.log(payload);
+      case "connect":
         handleCardAction("connectImageCard");
         break;
     }
@@ -140,6 +139,7 @@ export function ProductGalleryPage() {
     <div className={cs.createProductPage}>
       {state.products?.length > 0 && (
         <ItemsCard
+          title="Products"
           data={state.products}
           selectedItem={productId}
           onAction={itemCardHandler}

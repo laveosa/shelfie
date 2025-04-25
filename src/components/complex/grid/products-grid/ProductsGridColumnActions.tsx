@@ -42,6 +42,11 @@ export default function ProductsGridColumnActions<TData>({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-[160px]">
         <DropdownMenuItem
+          onClick={() => onAction("connect", row.id, meta?.setLoadingRow, row)}
+        >
+          Connect to Variants
+        </DropdownMenuItem>
+        <DropdownMenuItem
           onClick={() => onAction("delete", row.id, meta?.setLoadingRow, row)}
         >
           Delete

@@ -80,7 +80,7 @@ export default function ProductConfigurationCard({
         title={product.productId ? "Basic Product Data" : "Create Product"}
         showPrimaryButton={true}
         primaryButtonTitle={product?.productId ? "Save" : "Add Product"}
-        showSecondaryButton={true}
+        showSecondaryButton={!product?.productId}
         secondaryButtonTitle="Cancel"
         className={cs.productConfigurationFormCard}
         onPrimaryButtonClick={form.handleSubmit(onSubmit)}
@@ -127,6 +127,7 @@ export default function ProductConfigurationCard({
                     form.formState.errors.productCode?.message
                   }
                   showError={true}
+                  fullWidth={true}
                 />
               </SheForm.Field>
               <SheButton
@@ -147,6 +148,7 @@ export default function ProductConfigurationCard({
                     form.formState.errors.productBarcode?.message
                   }
                   showError={true}
+                  fullWidth={true}
                 />
               </SheForm.Field>
               <SheButton

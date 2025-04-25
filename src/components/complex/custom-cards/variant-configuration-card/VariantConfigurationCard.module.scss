@@ -6,7 +6,6 @@
   .variantConfigurationCardContent {
     display: flex;
     flex-direction: column;
-    padding: 0 20px 20px;
     gap: 20px;
     overflow-y: auto;
 
@@ -22,9 +21,8 @@
         align-items: end;
         padding: 20px 0;
 
-
-        .inputBlockRow {
-          width: 305px;
+        & > div {
+          width: 100%;
         }
       }
 

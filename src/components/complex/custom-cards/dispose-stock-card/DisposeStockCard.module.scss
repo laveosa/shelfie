@@ -2,10 +2,11 @@
 
 .disposeStockCard {
   .disposeStockCardContent {
-    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 
     .currentlyStockBlock {
-      padding-top: 20px;
     }
 
     .disposeFormBlock {

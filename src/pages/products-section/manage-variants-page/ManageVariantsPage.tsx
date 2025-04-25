@@ -1,11 +1,11 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
-import cs from "@/pages/products-section/product-basic-data-page/ProductBasicDataPage.module.scss";
+import cs from "@/pages/products-section/manage-variants-page/ManageVariantsPage.module.scss";
 import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
 import useManageVariantsPageService from "@/pages/products-section/manage-variants-page/useManageVariantsPageService.ts";
 import { IManageVariantsPageSlice } from "@/const/interfaces/store-slices/IManageVariantsPageSlice.ts";
@@ -20,6 +20,9 @@ import StockHistoryCard from "@/components/complex/custom-cards/stock-history-ca
 import ManageTraitsCard from "@/components/complex/custom-cards/manage-traits-card/ManageTraitsCard.tsx";
 import AddVariantCard from "@/components/complex/custom-cards/add-variant-card/AddVariantCard.tsx";
 import VariantPhotosCard from "@/components/complex/custom-cards/variant-photos-card/VariantPhotosCard.tsx";
+import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
+import { GridModel } from "@/const/models/GridModel.ts";
+import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 
 export function ManageVariantsPage() {
   const dispatch = useAppDispatch();
@@ -29,8 +32,15 @@ export function ManageVariantsPage() {
   );
   const { addToast } = useToast();
   const { productId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
+    service
+      .getTheProductsForGridHandler(state.gridRequestModel)
+      .then((res: GridModel) => {
+        dispatch(actions.refreshProducts(res.items));
+      });
+
     service.getListOfTypesOfTraitsHandler().then((res) => {
       dispatch(actions.refreshTypesOfTraits(res));
     });
@@ -91,8 +101,13 @@ export function ManageVariantsPage() {
     dispatch(actions.refreshActiveCards(updatedCards));
   }
 
-  function onAction(actionType: string, payload: any) {
+  function onAction(actionType: string, payload?: any) {
     switch (actionType) {
+      case "onProductItemClick":
+        navigate(
+          `${NavUrlEnum.PRODUCTS}${NavUrlEnum.PRODUCT_VARIANTS}/${payload.productId}`,
+        );
+        break;
       case "addVariant":
         service.createVariantHandler(productId, payload).then((res) => {
           handleCardAction("addVariantCard");
@@ -305,7 +320,7 @@ export function ManageVariantsPage() {
       case "setProductTraits":
         dispatch(actions.refreshSelectedTraitsIds(payload));
         service.setProductTraitsHandler(productId, payload).then(() => {
-          handleCardAction("productTraitConfigurationCard", false);
+          handleCardAction("chooseVariantTraitsCard");
           service
             .getListOfTraitsWithOptionsForProductHandler(productId)
             .then((res) => {
@@ -320,12 +335,11 @@ export function ManageVariantsPage() {
             if (res) {
               service
                 .getOptionsForTraitHandler(state.selectedTrait.traitId)
-                .then((res) => {
-                  console.log("RES", res);
+                .then((options) => {
                   dispatch(
                     actions.refreshColorOptionsGridModel({
                       ...state.colorOptionsGridModel,
-                      items: res,
+                      items: options.filter((option) => !option.isDeleted),
                     }),
                   );
                 });
@@ -354,13 +368,10 @@ export function ManageVariantsPage() {
           service
             .getOptionsForTraitHandler(state.selectedTrait.traitId)
             .then((options) => {
-              const updatedItems = (options || []).filter(
-                (option) => !option.isDeleted,
-              );
               dispatch(
                 actions.refreshColorOptionsGridModel({
                   ...state.colorOptionsGridModel,
-                  items: updatedItems,
+                  items: options.filter((option) => !option.isDeleted),
                 }),
               );
             });
@@ -412,14 +423,22 @@ export function ManageVariantsPage() {
   }
 
   return (
-    <div className={cs.createProductPage}>
-      <ProductMenuCard
-        title={productId ? "Manage Variant" : "Create Variant"}
-        productCounter={state.productCounter}
-        onAction={handleCardAction}
-        productId={Number(productId)}
-        activeCards={state.activeCards}
-      />
+    <div className={cs.manageVariantsPage}>
+      <div className={cs.borderlessCards}>
+        <ItemsCard
+          title="Products"
+          data={state.products}
+          selectedItem={productId}
+          onAction={(item) => onAction("onProductItemClick", item)}
+        />
+        <ProductMenuCard
+          title={productId ? "Manage Variant" : "Create Variant"}
+          productCounter={state.productCounter}
+          onAction={handleCardAction}
+          productId={Number(productId)}
+          activeCards={state.activeCards}
+        />
+      </div>
       <ManageVariantsCard
         variants={state.productVariants}
         traits={state.listOfTraitsWithOptionsForProduct}

@@ -44,25 +44,35 @@ export default function SheProductCard({
       style={{
         width,
         minWidth,
-        maxWidth: isMinimized ? "50px" : maxWidth,
+        maxWidth: isMinimized ? "70px" : maxWidth,
+        padding: isMinimized ? "10px 0 20px 20px" : "10px 20px 20px",
       }}
     >
       <div className={cs.cardHeader}>
         <div className={cs.titleBlock}>
-          {showToggleButton && (
-            <SheButton
-              className={isMinimized ? cs.titleBlock : cs.toggleButton}
-              icon={PanelLeft}
-              variant="ghost"
-              onClick={onMinimizeCardHandler}
-              disabled={loading}
-            />
-          )}
-          {!isMinimized && (
-            <div className={`${cs.cardTitle} she-title`}>
+          <div className={cs.cardTitleBlock}>
+            {showToggleButton && (
+              <SheButton
+                className={cs.toggleButton}
+                style={
+                  showToggleButton ? { display: "block" } : { display: "none" }
+                }
+                icon={PanelLeft}
+                variant="ghost"
+                onClick={onMinimizeCardHandler}
+                disabled={loading}
+              />
+            )}
+            <div
+              className={`${cs.cardTitle} she-title`}
+              style={{
+                ...(showToggleButton && { paddingLeft: "40px" }),
+                visibility: isMinimized ? "hidden" : "visible",
+              }}
+            >
               <Trans i18nKey={titleTransKey}>{title}</Trans>
             </div>
-          )}
+          </div>
           {!isMinimized && showCloseButton && (
             <SheButton
               className={cs.closeButton}
@@ -92,7 +102,12 @@ export default function SheProductCard({
         {children}
       </div>
       {!isMinimized && (showSecondaryButton || showPrimaryButton) && (
-        <div className={cs.cardFooter}>
+        <div
+          className={cs.cardFooter}
+          style={{
+            justifyContent: showSecondaryButton ? "space-between" : "flex-end",
+          }}
+        >
           {showSecondaryButton && (
             <SheButton
               variant="secondary"

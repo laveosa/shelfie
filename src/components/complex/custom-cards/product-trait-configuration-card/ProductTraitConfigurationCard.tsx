@@ -34,12 +34,24 @@ export default function ProductTraitConfigurationCard({
   onPrimaryButtonClick,
   ...props
 }: IProductTraitConfigurationCard) {
+  const [localItems, setLocalItems] = React.useState(data?.items ?? []);
   const form = useForm({
     defaultValues: {
       traitName: selectedTrait ? selectedTrait.traitName : "",
       traitTypeId: selectedTrait ? selectedTrait.traitTypeId : "",
     },
   });
+
+  useEffect(() => {
+    if (selectedTrait) {
+      form.reset({
+        traitName: selectedTrait.traitName,
+        traitTypeId: selectedTrait.traitTypeId,
+      });
+    }
+
+    setLocalItems(data?.items ?? []);
+  }, [selectedTrait, form, data]);
 
   useEffect(() => {
     if (selectedTrait) {
@@ -74,7 +86,13 @@ export default function ProductTraitConfigurationCard({
         }
         break;
       case "updateOption":
-        if (updatedModel) {
+        if (updatedModel && optionId != null) {
+          setLocalItems((prev) =>
+            prev.map((item) =>
+              item.optionId === optionId ? { ...item, ...updatedModel } : item,
+            ),
+          );
+
           onAction("updateOption", { optionId, updatedModel });
         }
         break;
@@ -89,12 +107,12 @@ export default function ProductTraitConfigurationCard({
       title={selectedTrait.traitName ? "Manage" : "Create product trait"}
       view="card"
       showCloseButton={true}
-      className={cs.createProductTraitCard}
+      className={cs.productTraitConfigurationCard}
       width="400px"
       {...props}
     >
-      <div className={cs.createProductTraitContent}>
-        <div className={cs.createProductTraitForm}>
+      <div className={cs.productTraitConfigurationContent}>
+        <div className={cs.productTraitConfigurationForm}>
           <SheForm form={form} onSubmit={onSubmit}>
             <SheForm.Field
               rules={{
@@ -153,7 +171,6 @@ export default function ProductTraitConfigurationCard({
                 )}
               ></FormField>
             </div>
-            {/*{!data && (*/}
             <div className={cs.buttonBlock}>
               <SheButton
                 variant="secondary"
@@ -170,21 +187,23 @@ export default function ProductTraitConfigurationCard({
                 {selectedTrait?.traitId ? "Update" : "Create"}
               </SheButton>
             </div>
-            {/*// )}*/}
           </SheForm>
         </div>
-        {data?.items?.length > 0 && (
+        {localItems?.length > 0 && (
           <>
             <Separator />
-            <div className={cs.createProductTraitGrid}>
+            <div
+              className={`${cs.productTraitConfigurationGridContainer} she-title`}
+            >
               <span className="she-title">Options</span>
               {selectedTrait.traitTypeId === 1 && (
                 <DndGridDataTable
+                  className={cs.productTraitConfigurationGrid}
                   enableDnd={true}
                   showHeader={false}
                   showColumnsHeader={false}
                   columns={sizeColumns}
-                  data={data?.items}
+                  data={localItems}
                   gridModel={data}
                   onNewItemPosition={(newIndex, activeItem) =>
                     onAction("dndTraitOption", {
@@ -197,11 +216,12 @@ export default function ProductTraitConfigurationCard({
               )}
               {selectedTrait.traitTypeId === 2 && (
                 <DndGridDataTable
+                  className={cs.productTraitConfigurationGrid}
                   enableDnd={true}
                   showHeader={false}
                   showColumnsHeader={false}
                   columns={colorColumns}
-                  data={data?.items}
+                  data={localItems}
                   gridModel={data}
                   onNewItemPosition={(newIndex, activeItem) =>
                     onAction("dndTraitOption", {
