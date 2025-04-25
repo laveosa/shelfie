@@ -89,28 +89,49 @@ export function ProductBasicDataPage() {
   }
 
   function onSubmitProductDataHandler(data: any) {
-    service.createNewProductHandler(data).then((res) => {
-      if (res.data) {
-        dispatch(actions.refreshProduct(res.data));
-        productsService
-          .getTheProductsForGridHandler(productsState.gridRequestModel)
-          .then((res: GridModel) => {
-            dispatch(productsActions.refreshProductsGridModel(res));
+    if (productId) {
+      service.updateProductHandler(productId, data).then((res) => {
+        if (res.data) {
+          productsService
+            .getTheProductsForGridHandler(productsState.gridRequestModel)
+            .then((res: GridModel) => {
+              dispatch(actions.refreshProducts(res.items));
+            });
+          addToast({
+            text: "Product updated successfully",
+            type: "success",
           });
-        navigate(
-          `${ApiUrlEnum.PRODUCTS}${ApiUrlEnum.PRODUCT_BASIC_DATA}/${res.data.productId}`,
-        );
-        addToast({
-          text: "Product created successfully",
-          type: "success",
-        });
-      } else {
-        addToast({
-          text: `${res.error.data.detail}`,
-          type: "error",
-        });
-      }
-    });
+        } else {
+          addToast({
+            text: `${res.error.data.detail}`,
+            type: "error",
+          });
+        }
+      });
+    } else {
+      service.createNewProductHandler(data).then((res) => {
+        if (res.data) {
+          dispatch(actions.refreshProduct(res.data));
+          productsService
+            .getTheProductsForGridHandler(productsState.gridRequestModel)
+            .then((res: GridModel) => {
+              dispatch(productsActions.refreshProductsGridModel(res));
+            });
+          navigate(
+            `${ApiUrlEnum.PRODUCTS}${ApiUrlEnum.PRODUCT_BASIC_DATA}/${res.data.productId}`,
+          );
+          addToast({
+            text: "Product created successfully",
+            type: "success",
+          });
+        } else {
+          addToast({
+            text: `${res.error.data.detail}`,
+            type: "error",
+          });
+        }
+      });
+    }
   }
 
   return (

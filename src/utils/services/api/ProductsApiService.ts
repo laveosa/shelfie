@@ -57,6 +57,19 @@ export const ProductsApiService = createApi({
         },
       ],
     }),
+    updateProduct: apiConfig.createMutation<void, any>(builder, {
+      query: ({ productId, model }) => ({
+        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/${productId}`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+    }),
+    toggleProductActivation: apiConfig.createMutation<void, any>(builder, {
+      query: (productId) => ({
+        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/${productId}/active`,
+        method: "PATCH",
+      }),
+    }),
     deleteProduct: apiConfig.createMutation<void, number>(builder, {
       query: (id: number) => ({
         url: `${ApiUrlEnum.PRODUCTS}/${id}`,

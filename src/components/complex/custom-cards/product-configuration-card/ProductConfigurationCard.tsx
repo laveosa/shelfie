@@ -80,7 +80,7 @@ export default function ProductConfigurationCard({
         title={product.productId ? "Basic Product Data" : "Create Product"}
         showPrimaryButton={true}
         primaryButtonTitle={product?.productId ? "Save" : "Add Product"}
-        showSecondaryButton={true}
+        showSecondaryButton={!product?.productId}
         secondaryButtonTitle="Cancel"
         className={cs.productConfigurationFormCard}
         onPrimaryButtonClick={form.handleSubmit(onSubmit)}

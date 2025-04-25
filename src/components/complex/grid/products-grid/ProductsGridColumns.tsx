@@ -122,7 +122,7 @@ export function productsGridColumns(onAction: any): ColumnDef<any>[] {
     //     return (
     //       <Switch
     //         disabled={meta?.isRowLoading(row.id)}
-    //         checked={row.getValue("active")}
+    //         checked={row.getValue("isActive")}
     //         onCheckedChange={() =>
     //           onAction("active", row.id, meta?.setLoadingRow)
     //         }

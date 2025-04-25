@@ -102,7 +102,12 @@ export default function SheProductCard({
         {children}
       </div>
       {!isMinimized && (showSecondaryButton || showPrimaryButton) && (
-        <div className={cs.cardFooter}>
+        <div
+          className={cs.cardFooter}
+          style={{
+            justifyContent: showSecondaryButton ? "space-between" : "flex-end",
+          }}
+        >
           {showSecondaryButton && (
             <SheButton
               variant="secondary"
