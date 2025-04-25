@@ -101,6 +101,27 @@ export function ManageVariantsPage() {
     dispatch(actions.refreshActiveCards(updatedCards));
   }
 
+  function handleMultipleCardActions(
+    cardIdentifiers: string[],
+    forceOpen = false,
+  ) {
+    let updatedCards = [...state.activeCards];
+
+    if (forceOpen) {
+      for (const card of cardIdentifiers) {
+        if (!updatedCards.includes(card)) {
+          updatedCards.push(card);
+        }
+      }
+    } else {
+      updatedCards = updatedCards.filter(
+        (card) => !cardIdentifiers.includes(card),
+      );
+    }
+
+    dispatch(actions.refreshActiveCards(updatedCards));
+  }
+
   function onAction(actionType: string, payload?: any) {
     switch (actionType) {
       case "onProductItemClick":
@@ -187,7 +208,6 @@ export function ManageVariantsPage() {
         );
         break;
       case "uploadPhotoToVariant":
-        console.log("PHOTO UPLOAD", payload);
         service.uploadPhotoHandler(payload).then((res) => {
           if (res) {
             service.getVariantDetailsHandler(payload.contextId).then((res) => {
@@ -209,7 +229,6 @@ export function ManageVariantsPage() {
         // });
         break;
       case "addPhotoToVariant":
-        console.log("PHOTO", payload);
         service
           .attachProductPhotoToVariantHandler(
             state.selectedVariant.variantId,
@@ -320,7 +339,16 @@ export function ManageVariantsPage() {
       case "setProductTraits":
         dispatch(actions.refreshSelectedTraitsIds(payload));
         service.setProductTraitsHandler(productId, payload).then(() => {
-          handleCardAction("chooseVariantTraitsCard");
+          handleMultipleCardActions([
+            "chooseVariantTraitsCard",
+            "productTraitConfigurationCard",
+          ]);
+
+          service
+            .getListOfTraitsWithOptionsForProductHandler(productId)
+            .then((res) => {
+              dispatch(actions.refreshListOfTraitsWithOptionsForProduct(res));
+            });
           service
             .getListOfTraitsWithOptionsForProductHandler(productId)
             .then((res) => {
@@ -360,6 +388,9 @@ export function ManageVariantsPage() {
                   items: [...state.colorOptionsGridModel.items, res],
                 }),
               );
+              service.getListOfAllTraitsHandler().then((res) => {
+                dispatch(actions.refreshTraits(res));
+              });
             }
           });
         break;
@@ -375,6 +406,9 @@ export function ManageVariantsPage() {
                 }),
               );
             });
+          service.getListOfAllTraitsHandler().then((res) => {
+            dispatch(actions.refreshTraits(res));
+          });
         });
         break;
       case "dndTraitOption":

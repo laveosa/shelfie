@@ -49,6 +49,8 @@ export default function ManageTraitsCard({
     defaultValues,
   });
 
+  const isFormIncomplete = Object.values(form.watch()).some((value) => !value);
+
   function onSubmit(data: TraitForm) {
     const optionIds = Object.values(data)
       .filter((value) => value !== "")
@@ -68,6 +70,7 @@ export default function ManageTraitsCard({
       showPrimaryButton={true}
       primaryButtonTitle="Update Traits"
       onPrimaryButtonClick={form.handleSubmit(onSubmit)}
+      primaryButtonDisabled={isFormIncomplete}
       showSecondaryButton={true}
       secondaryButtonTitle="Cancel"
       onSecondaryButtonClick={onSecondaryButtonClick}
