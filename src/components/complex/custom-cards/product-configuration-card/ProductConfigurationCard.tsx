@@ -151,11 +151,6 @@ export default function ProductConfigurationCard({
                   fullWidth={true}
                 />
               </SheForm.Field>
-              <SheButton
-                className={cs.formRowButton}
-                icon={WandSparkles}
-                variant="outline"
-              />
             </div>
             <div className={cs.productConfigurationFormRow}>
               <FormField

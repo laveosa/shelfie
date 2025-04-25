@@ -388,6 +388,9 @@ export function ManageVariantsPage() {
                   items: [...state.colorOptionsGridModel.items, res],
                 }),
               );
+              service.getListOfAllTraitsHandler().then((res) => {
+                dispatch(actions.refreshTraits(res));
+              });
             }
           });
         break;
@@ -403,6 +406,9 @@ export function ManageVariantsPage() {
                 }),
               );
             });
+          service.getListOfAllTraitsHandler().then((res) => {
+            dispatch(actions.refreshTraits(res));
+          });
         });
         break;
       case "dndTraitOption":

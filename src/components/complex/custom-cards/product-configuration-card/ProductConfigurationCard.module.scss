@@ -12,7 +12,11 @@
       gap: 20px;
       justify-content: space-between;
 
-      input, .select {
+      & > div {
+        width: 100%;
+      }
+
+      .select {
         width: 199px;
       }
     }
