@@ -1,0 +1,15 @@
+.sheSkeletonWrapper {
+  display: flex;
+
+  .sheSkeleton {
+    width: 100%;
+    height: fit-content;
+  }
+}
+
+// ======================================================== FULL WIDTH
+
+.sheSkeletonWrapper.fullWidth {
+  max-width: none;
+  width: 100%;
+}

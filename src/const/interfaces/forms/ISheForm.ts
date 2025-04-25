@@ -22,6 +22,7 @@ export interface ISheForm<T>
   maxWidth?: string;
   fullWidth?: boolean;
   onSubmit?: (data: T) => void;
+  onEnter?: (data: T) => void;
   onError?: (data: T) => void;
   onCancel?: (data: T) => void;
 }

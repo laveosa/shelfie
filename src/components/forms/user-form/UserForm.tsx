@@ -14,7 +14,7 @@ import { IUserForm } from "@/const/interfaces/forms/IUserForm.ts";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelect.ts";
 
 import { User } from "lucide-react";
-import logo from "@/assets/icons/TNF_logo.svg";
+import TNFLogoIcon from "@/assets/icons/TNF_logo.svg";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 
 export default function UserForm<T>({
@@ -67,7 +67,7 @@ export default function UserForm<T>({
       <SheForm<T>
         form={form}
         defaultValues={UserModelDefault}
-        image={logo}
+        image={TNFLogoIcon}
         formPosition={DirectionEnum.CENTER}
         title="User Form"
         view={ComponentViewEnum.CARD}
@@ -134,7 +134,7 @@ export default function UserForm<T>({
                 items={convertPositionsToSelectItems(positions)}
                 hideFirstOption
                 placeholder="select user position..."
-                icon={<User />}
+                icon={User}
                 onSelect={(value) => {
                   field.onChange(value);
                   void form.trigger("position");
