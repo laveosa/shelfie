@@ -265,6 +265,7 @@ export default function SheInput({
           isValid={_isLengthValid}
           minLength={minLength}
           maxLength={maxLength}
+          type={type}
         />
         <SheErrorMessageBlock
           error={_error}

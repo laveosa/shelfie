@@ -10,8 +10,13 @@ export function SheContextLengthLimits({
   isValid,
   minLength,
   maxLength,
+  type,
 }: ISheContextLengthLimits): JSX.Element {
-  const valueLength = value != null ? String(value).length : 0;
+  const valueLength = value
+    ? type === "number"
+      ? value
+      : String(value).length
+    : 0;
 
   // ==================================================================== EVENT
 

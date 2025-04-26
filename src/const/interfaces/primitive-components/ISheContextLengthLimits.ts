@@ -7,4 +7,5 @@ export interface ISheContextLengthLimits {
   isValid?: boolean;
   minLength?: number;
   maxLength?: number;
+  type?: string;
 }

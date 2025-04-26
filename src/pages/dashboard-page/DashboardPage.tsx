@@ -39,20 +39,13 @@ export function DashboardPage() {
 
       <SheInput
         label="Input 1"
-        labelTransKey="sdjifwoefijwoefijwoefijwe"
         value={value}
-        placeholder="placeholder for input 1..."
-        placeholderTransKey="0f9wejfweijfio"
         icon={Logo}
         isLoading={loading}
-        required
         autoFocus
         showClearBtn
         minLength={4}
         maxLength={10}
-        type="password"
-        pattern={ContextPatternEnum.PASSWORD}
-        tooltip={{ text: "some text for input tooltip" }}
         onChange={(value) => console.log("Input On Change: ", value)}
         onDelay={(value) => console.log("Input On Delay: ", value)}
         onBlur={(value) => console.log("Input On Blur: ", value)}
