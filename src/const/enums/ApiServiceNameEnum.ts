@@ -8,4 +8,5 @@ export enum ApiServiceNameEnum {
   BRANDS = "Brands",
   PRODUCT_CATEGORIES = "ProductCategories",
   ASSETS = "Assets",
+  MESSENGER = "Messenger",
 }

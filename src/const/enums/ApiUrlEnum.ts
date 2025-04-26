@@ -4,6 +4,7 @@ export enum ApiUrlEnum {
   USERS_BASE_URL = "https://userservice.redground-5e8b9eee.germanywestcentral.azurecontainerapps.io/api/v1",
   PRODUCTS_BASE_URL = "https://productservice.redground-5e8b9eee.germanywestcentral.azurecontainerapps.io/api/v1",
   ASSETS_BASE_URL = "https://photoservice.redground-5e8b9eee.germanywestcentral.azurecontainerapps.io/api/v1",
+  MESSENGER_BASE_URL = "https://messagingservice.redground-5e8b9eee.germanywestcentral.azurecontainerapps.io/api/v1",
   PRODUCTS = "/products",
   VARIANTS = "/variants",
   TRAITS = "/traits",
@@ -19,6 +20,8 @@ export enum ApiUrlEnum {
   DICTIONARY = "/dictionary",
   COUNTRIES = "/countries",
   PREFERENCES = "/preferences",
+  MESSENGER = "/messenger",
+  CONVERSATIONS = "/conversations",
   ASSET = "/asset",
   CODES = "/codes",
 }

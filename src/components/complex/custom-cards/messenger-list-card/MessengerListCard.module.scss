@@ -1,0 +1,101 @@
+.messengerCard {
+  .messengerCardContent {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .chatsList {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow: auto;
+      height: calc(100vh - 200px);
+      padding-right: 10px;
+
+      .chatItem {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        box-sizing: border-box;
+        padding: 10px;
+        border-radius: 10px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #F4F4F5;
+        }
+
+        .avatarNameBlock {
+          display: flex;
+          gap: 20px;
+
+          .chatAvatar {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border-radius: 50%;
+
+            .chatAvatarImage {
+              border-radius: 50%;
+            }
+
+            .facebookLogo {
+              position: absolute;
+              bottom: 0;
+              right: 0;
+              width: 16px;
+              height: 16px;
+              z-index: 1;
+            }
+
+            .avatarInitials {
+              width: 40px;
+              height: 40px;
+              background-color: #ececec;
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: #555;
+              font-weight: 600;
+              font-size: 16px;
+              user-select: none;
+            }
+
+            &:hover {
+              border-color: rgba(0, 0, 0, 0.15);
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+              transform: scale(1.02);
+            }
+          }
+
+          .nameConversationBlock {
+            .chatName {
+              font-weight: 400;
+            }
+
+            .chatLastMessage {
+              max-width: 200px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              color: #71717A;
+            }
+          }
+        }
+
+        .chatTime {
+          padding-top: 5px;
+          color: #71717A;
+          font-size: 12px;
+        }
+      }
+    }
+
+  }
+}
