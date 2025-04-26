@@ -10,6 +10,7 @@ import facebookLogo from "@/assets/images/facebook-messenger_logo.svg";
 
 export default function MessengerListCard({
   chats,
+  selectedChat,
   onAction,
 }: IMessengerListCard) {
   return (
@@ -25,11 +26,12 @@ export default function MessengerListCard({
         />
         <div className={cs.chatsList}>
           {chats.map((chat) => {
+            const isSelected = chat.userId === selectedChat;
             return (
               <div
                 key={chat.userId}
-                className={cs.chatItem}
-                onClick={() => onAction("onChatClick", chat.conversationId)}
+                className={`${cs.chatItem} ${isSelected ? cs.selectedChat : ""}`}
+                onClick={() => onAction("onChatClick", chat)}
               >
                 <div className={cs.avatarNameBlock}>
                   <div

@@ -1,7 +1,6 @@
 import { MessengerListItem } from "@/const/models/MessengerListItem.ts";
 
-export interface IMessengerListCard {
-  chats?: MessengerListItem[];
+export interface IMessengerConversationCard {
+  chat?: MessengerListItem;
   onAction?: (identifier: string, payload?: any) => void;
-  selectedChat?: number;
 }

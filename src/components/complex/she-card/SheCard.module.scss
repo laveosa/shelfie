@@ -3,6 +3,7 @@
 .sheCard {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   width: 300px;
   height: calc(100vh - 92px);
   overflow: hidden;
