@@ -33,11 +33,11 @@ export function DashboardPage() {
       </div>
       <br />
 
-      <br />
+      {/*<br />
       <h2>Input</h2>
-      <br />
+      <br />*/}
 
-      <SheInput
+      {/*<SheInput
         label="Input 1"
         value={value}
         icon={Logo}
@@ -60,7 +60,7 @@ export function DashboardPage() {
         onDelay={(value) => console.log("Input On Delay: ", value)}
         onBlur={(value) => console.log("Input On Blur: ", value)}
         onIsValid={(value) => console.log("Input On isValid: ", value)}
-      />
+      />*/}
 
       <br />
       <h2>Textarea</h2>

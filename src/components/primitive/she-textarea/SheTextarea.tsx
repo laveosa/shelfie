@@ -21,6 +21,7 @@ export default function SheTextArea({
   labelTransKey,
   icon,
   value,
+  type,
   placeholder = "enter text...",
   placeholderTransKey,
   showClearBtn,
@@ -243,6 +244,7 @@ export default function SheTextArea({
           isValid={_isLengthValid}
           minLength={minLength}
           maxLength={maxLength}
+          type={type}
         />
         <SheErrorMessageBlock
           error={_error}
