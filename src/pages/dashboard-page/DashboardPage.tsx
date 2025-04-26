@@ -33,83 +33,18 @@ export function DashboardPage() {
       </div>
       <br />
 
-      {/*<br />
-      <h2>Input</h2>
-      <br />*/}
-
-      {/*<SheInput
-        label="Input 1"
-        value={value}
-        icon={Logo}
+      <SheButton
+        id="ID_BTN"
+        className="BUTTON_MAIN_CLASS"
+        value="Button 1"
+        valueTransKey="sdfwijfijw"
         isLoading={loading}
-        autoFocus
-        showClearBtn
-        minLength={4}
-        maxLength={10}
-        onChange={(value) => console.log("Input On Change: ", value)}
-        onDelay={(value) => console.log("Input On Delay: ", value)}
-        onBlur={(value) => console.log("Input On Blur: ", value)}
-        onIsValid={(value) => console.log("Input On isValid: ", value)}
-      />
-
-      <br />
-
-      <SheInput
-        label="Input 2"
-        onChange={(value) => console.log("Input On Change: ", value)}
-        onDelay={(value) => console.log("Input On Delay: ", value)}
-        onBlur={(value) => console.log("Input On Blur: ", value)}
-        onIsValid={(value) => console.log("Input On isValid: ", value)}
-      />*/}
-
-      <br />
-      <h2>Textarea</h2>
-      <br />
-
-      <SheTextArea
-        id="ID_TEXTAREA"
-        className="SOME_CLASS"
-        label="Label"
-        labelTransKey="sdjfoiwejo"
-        tooltip={{
-          title: "Tooltip TITLE",
-          titleTransKey: "sdjfowfo23 iwef",
-          text: "TOOLTIP text for test",
-          textTransKey: "sji owejfsd",
-        }}
-        value={value}
-        placeholder="new placeholder for textarea"
-        placeholderTransKey="sfw09jwfeiwje"
         icon={Logo}
-        showClearBtn
-        isLoading={loading}
-        minLength={4}
-        maxLength={20}
-        required
-        onChange={(value) => console.log("Textarea On Change: ", value)}
-        onDelay={(value) => console.log("Textarea On Delay: ", value)}
-        onBlur={(value) => console.log("Textarea On Blur: ", value)}
-        onIsValid={(value) => console.log("Textarea On isValid: ", value)}
+        type="submit"
+        txtColor="#2DAA58"
+        bgColor="#1E9CEF"
+        onClick={(e) => console.log(e)}
       />
-
-      <br />
-
-      {/*<SheTextArea
-        label="Label"
-        labelTransKey="sdfiwef920329j0"
-        tooltip={{
-          text: "Some text for tooltip",
-        }}
-        required
-        showClearBtn
-        minLength={4}
-        maxLength={10}
-        icon={{
-          icon: X,
-          color: "red",
-        }}
-        autoFocus={true}
-      />*/}
 
       <br />
     </div>
