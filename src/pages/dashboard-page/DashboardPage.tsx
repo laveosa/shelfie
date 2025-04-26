@@ -7,9 +7,36 @@ import SheTextArea from "@/components/primitive/she-textarea/SheTextarea.tsx";
 import Logo from "@/assets/icons/TNF_logo.svg?react";
 import { Users, X } from "lucide-react";
 import Tmp from "@/assets/images/AuthLogo.png";
+
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { ContextPatternEnum } from "@/const/enums/ContextPatternEnum.ts";
+import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
+import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelect.ts";
+import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+
+const items: ISheSelectItem[] = [
+  {
+    text: "option 1",
+    value: 1,
+  },
+  {
+    text: "option 2",
+    value: "2",
+  },
+  {
+    text: "option 3",
+    value: {
+      name: "Dou Jon",
+      age: 23,
+      position: "worker",
+    },
+  },
+  {
+    text: "option 4",
+    value: [2, 3, 4, 2, 545],
+  },
+];
 
 export function DashboardPage() {
   const service = useDashboardPageService();
@@ -33,18 +60,27 @@ export function DashboardPage() {
       </div>
       <br />
 
-      <SheButton
-        id="ID_BTN"
-        className="BUTTON_MAIN_CLASS"
-        value="Button 1"
-        valueTransKey="sdfwijfijw"
-        isLoading={loading}
+      <SheSelect
+        id="SELECT_ID"
+        className="SELECT_CLASSNAME"
+        label="Select"
+        labelTransKey="wefoiwjoefi"
+        items={items}
+        selected={2}
         icon={Logo}
-        type="submit"
-        txtColor="#2DAA58"
-        bgColor="#1E9CEF"
-        onClick={(e) => console.log(e)}
+        showClearBtn
+        isLoading={loading}
+        onSelect={(value) => console.log("Selected: ", value)}
+        onOpenChange={(value) => console.log("On Open: ", value)}
       />
+
+      <br />
+
+      <SheInput label="Input" icon={Logo} showClearBtn isLoading={loading} />
+
+      <br />
+
+      <SheTextArea label="Input" icon={Logo} showClearBtn isLoading={loading} />
 
       <br />
     </div>

@@ -30,22 +30,24 @@ export function SheClearButton({
   if (!showClearBtn) return null;
 
   return (
-    <SheSkeleton
-      className={`${cs.sheClearButtonWrapper} ${className}`}
-      style={style}
-      isLoading={isLoading}
-    >
-      <SheButton
-        className={cs.sheClearButton}
-        title="Clear"
-        aria-label="Clear"
-        variant="ghost"
-        size="icon"
-        icon={X}
-        aria-describedby={ariaDescribedbyId}
-        disabled={isEmpty || disabled || isLoading}
-        onClick={onClear}
-      />
-    </SheSkeleton>
+    <div className={`${cs.sheClearButtonWrapper} ${className}`}>
+      <SheSkeleton
+        className={`${cs.sheClearButtonSkeleton}`}
+        style={style}
+        isLoading={isLoading}
+      >
+        <SheButton
+          className={cs.sheClearButton}
+          title="Clear"
+          aria-label="Clear"
+          variant="ghost"
+          size="icon"
+          icon={X}
+          aria-describedby={ariaDescribedbyId}
+          disabled={isEmpty || disabled || isLoading}
+          onClick={onClear}
+        />
+      </SheSkeleton>
+    </div>
   );
 }

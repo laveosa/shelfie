@@ -236,6 +236,7 @@ export default function SheTextArea({
             disabled={disabled}
             isLoading={isLoading}
             ariaDescribedbyId={ariaDescribedbyId}
+            style={{ alignSelf: "start" }}
             onClear={onClearHandler}
           />
         </div>

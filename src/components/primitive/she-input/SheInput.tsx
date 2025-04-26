@@ -256,7 +256,6 @@ export default function SheInput({
             disabled={disabled}
             isLoading={isLoading}
             ariaDescribedbyId={ariaDescribedbyId}
-            style={{ alignSelf: "center" }}
             onClear={onClearHandler}
           />
         </div>

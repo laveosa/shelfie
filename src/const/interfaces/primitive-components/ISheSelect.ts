@@ -1,10 +1,13 @@
 import React, { ComponentPropsWithRef } from "react";
 
-import { ISheTooltip } from "@/const/interfaces/complex-components/ISheTooltip.ts";
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
+import { ISheLabel } from "@/const/interfaces/primitive-components/ISheLabel.ts";
+import { ISheClearButton } from "@/const/interfaces/primitive-components/ISheClearButton.ts";
 
 export interface ISheSelectItem extends ComponentPropsWithRef<any> {
-  id?: string;
+  id?: string; // reserved PRIVATE property, don't use
+  className?: string;
+  style?: React.CSSProperties;
   value: any;
   text: string;
   textTransKey?: string;
@@ -13,23 +16,25 @@ export interface ISheSelectItem extends ComponentPropsWithRef<any> {
   disabled?: boolean;
 }
 
-export interface ISheSelect extends ComponentPropsWithRef<any> {
-  label?: string;
-  labelTransKey?: string;
+export interface ISheSelect
+  extends ISheLabel,
+    ISheClearButton,
+    ComponentPropsWithRef<any> {
+  id?: string;
+  className?: string;
+  style?: React.CSSProperties;
+  icon?: Partial<ISheIcon> | string | React.FC<any>;
+  items?: ISheSelectItem[];
+  selected?: any;
+  hideFirstOption?: boolean;
   placeholder?: string;
   placeholderTransKey?: string;
-  icon?: Partial<ISheIcon> | string | React.FC<any>;
-  selected?: any;
-  items?: ISheSelectItem[];
-  showClearBtn?: boolean;
-  hideFirstOption?: boolean;
-  tooltip?: ISheTooltip;
-  required?: boolean;
+  disabled?: boolean;
+  isLoading?: boolean;
   minWidth?: string;
   maxWidth?: string;
   fullWidth?: boolean;
-  isLoading?: boolean;
-  disabled?: boolean;
+  required?: boolean;
   isOpen?: boolean;
   onOpenChange?: (value: any) => void;
   onSelect?: (value: any) => void;
