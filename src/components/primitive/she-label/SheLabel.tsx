@@ -1,7 +1,7 @@
 import React, { JSX } from "react";
+import { Trans } from "react-i18next";
 
 import cs from "./SheLabel.module.scss";
-import { Trans } from "react-i18next";
 import SheTooltip from "@/components/complex/she-tooltip/SheTooltip.tsx";
 import { ISheLabel } from "@/const/interfaces/primitive-components/ISheLabel.ts";
 
@@ -12,7 +12,6 @@ export function SheLabel({
   labelTransKey,
   tooltip,
   ariaDescribedbyId,
-  ...props
 }: ISheLabel): JSX.Element {
   // ==================================================================== EVENT
 
@@ -23,19 +22,18 @@ export function SheLabel({
 
   return (
     <label
-      {...props}
       className={`${cs.sheLabel} ${className} she-text`}
       style={style}
       htmlFor={ariaDescribedbyId}
       aria-describedby={ariaDescribedbyId}
     >
-      <Trans i18nKey={labelTransKey}>{label}</Trans>
+      {label && <Trans i18nKey={labelTransKey}>{label}</Trans>}
       {tooltip?.text?.length > 0 && (
         <SheTooltip
           {...tooltip}
-          id={ariaDescribedbyId}
           side={tooltip?.side || "right"}
           align={tooltip?.align || "end"}
+          ariaDescribedbyId={ariaDescribedbyId}
         >
           <div className={cs.tooltipIcon}>
             <span className="she-title">!</span>

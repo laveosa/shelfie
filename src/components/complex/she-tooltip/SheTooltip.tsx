@@ -22,8 +22,9 @@ export default function SheTooltip({
   side,
   align,
   view,
+  delayDuration,
+  ariaDescribedbyId,
   onClick,
-  ...props
 }: ISheTooltip): React.ReactNode {
   // ==================================================================== EVENT
 
@@ -35,7 +36,6 @@ export default function SheTooltip({
       description,
       side,
       align,
-      ...props,
     });
   }
 
@@ -45,7 +45,7 @@ export default function SheTooltip({
 
   return (
     <div className={`${className || ""} ${cs.sheTooltip || ""}`}>
-      <TooltipProvider {...props}>
+      <TooltipProvider delayDuration={delayDuration}>
         <Tooltip>
           <TooltipTrigger asChild>{children}</TooltipTrigger>
           {(title || text || description) && (
@@ -53,6 +53,7 @@ export default function SheTooltip({
               className={`${cs.tooltipMessageBlock} ${cs[view]}`}
               side={side}
               align={align}
+              aria-describedby={ariaDescribedbyId}
               onClick={onClickHandler}
             >
               <div className={cs.tooltipMessageBlock}>

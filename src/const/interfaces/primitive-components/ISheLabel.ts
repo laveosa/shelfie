@@ -1,8 +1,8 @@
-import React, { ComponentPropsWithRef } from "react";
+import React from "react";
 
 import { ISheTooltip } from "@/const/interfaces/complex-components/ISheTooltip.ts";
 
-export interface ISheLabel extends ComponentPropsWithRef<"label"> {
+export interface ISheLabel {
   className?: string;
   style?: React.CSSProperties;
   label?: string;

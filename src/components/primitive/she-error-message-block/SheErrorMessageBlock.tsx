@@ -16,7 +16,7 @@ export function SheErrorMessageBlock({
   // ==================================================================== PRIVATE
 
   // ==================================================================== LAYOUT
-  if (!showError && !error) return null;
+  if (!showError || !error) return null;
 
   return (
     <div className={`${cs.sheErrorMessageBlock} ${className}`} style={style}>

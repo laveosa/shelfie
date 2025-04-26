@@ -14,12 +14,18 @@ import { SheContextLengthLimits } from "@/components/primitive/she-context-lengt
 import { SheErrorMessageBlock } from "@/components/primitive/she-error-message-block/SheErrorMessageBlock.tsx";
 
 export default function SheTextArea({
+  id,
   className = "",
   style,
+  label,
+  labelTransKey,
   icon,
   value,
   placeholder = "enter text...",
   placeholderTransKey,
+  autoFocus,
+  showClearBtn,
+  tooltip,
   disabled,
   isLoading,
   minWidth,
@@ -190,6 +196,7 @@ export default function SheTextArea({
 
   return (
     <div
+      id={id}
       className={`${cs.sheTextArea} ${className} ${icon ? cs.withIcon : ""} ${fullWidth ? cs.fullWidth : ""}  ${required ? cs.required : ""} ${resize ? cs.resize : ""} ${!_isValid ? cs.invalid : ""}`}
       style={{
         minWidth,
@@ -198,7 +205,12 @@ export default function SheTextArea({
       }}
     >
       <div className={cs.sheTextAreaComponent}>
-        <SheLabel {...props} ariaDescribedbyId={ariaDescribedbyId} />
+        <SheLabel
+          label={label}
+          labelTransKey={labelTransKey}
+          tooltip={tooltip}
+          ariaDescribedbyId={ariaDescribedbyId}
+        />
         <div className={cs.sheTextAreaControl}>
           <SheSkeleton isLoading={isLoading} fullWidth>
             <SheIcon
@@ -210,6 +222,7 @@ export default function SheTextArea({
               {...props}
               value={_textValue ?? ""}
               placeholder={translate(placeholderTransKey, placeholder)}
+              autoFocus={autoFocus}
               aria-describedby={ariaDescribedbyId}
               disabled={disabled || isLoading}
               rows={rows}
@@ -218,23 +231,21 @@ export default function SheTextArea({
             />
           </SheSkeleton>
           <SheClearButton
-            {...props}
             value={_textValue}
-            isLoading={isLoading}
+            showClearBtn={showClearBtn}
             disabled={disabled}
+            isLoading={isLoading}
             ariaDescribedbyId={ariaDescribedbyId}
             onClear={onClearHandler}
           />
         </div>
         <SheContextLengthLimits
-          {...props}
           value={_textValue}
+          isValid={_isLengthValid}
           minLength={minLength}
           maxLength={maxLength}
-          isValid={_isLengthValid}
         />
         <SheErrorMessageBlock
-          {...props}
           error={_error}
           errorTransKey={_errorTransKey}
           showError={_showError}
