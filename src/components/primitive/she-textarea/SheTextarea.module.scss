@@ -42,6 +42,18 @@ $iconSize: 20px;
   }
 }
 
+// ======================================================== RESIZE
+
+.sheTextArea.resize {
+  .sheTextAreaComponent {
+    .sheTextAreaControl {
+      textarea {
+        resize: vertical;
+      }
+    }
+  }
+}
+
 // ======================================================== FULL WIDTH
 
 .sheTextArea.fullWidth {
@@ -71,18 +83,6 @@ $iconSize: 20px;
     .sheTextAreaControl {
       textarea {
         padding-left: 36px;
-      }
-    }
-  }
-}
-
-// ======================================================== RESIZE
-
-.sheTextArea.resize {
-  .sheTextAreaComponent {
-    .sheTextAreaControl {
-      textarea {
-        resize: vertical;
       }
     }
   }

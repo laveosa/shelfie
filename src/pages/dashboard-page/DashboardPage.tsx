@@ -9,6 +9,7 @@ import { Users, X } from "lucide-react";
 import Tmp from "@/assets/images/AuthLogo.png";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
+import { ContextPatternEnum } from "@/const/enums/ContextPatternEnum.ts";
 
 export function DashboardPage() {
   const service = useDashboardPageService();
@@ -22,7 +23,6 @@ export function DashboardPage() {
       <h1>Dashboard</h1>
 
       <br />
-
       <div className="flex items-end gap-6">
         <SheInput
           label="Input"
@@ -31,7 +31,46 @@ export function DashboardPage() {
         />
         <SheButton value="Loading" onClick={() => setLoading(!loading)} />
       </div>
+      <br />
 
+      <br />
+      <h2>Input</h2>
+      <br />
+
+      <SheInput
+        label="Input 1"
+        labelTransKey="sdjifwoefijwoefijwoefijwe"
+        value={value}
+        placeholder="placeholder for input 1..."
+        placeholderTransKey="0f9wejfweijfio"
+        icon={Logo}
+        isLoading={loading}
+        required
+        autoFocus
+        showClearBtn
+        minLength={4}
+        maxLength={10}
+        type="password"
+        pattern={ContextPatternEnum.PASSWORD}
+        tooltip={{ text: "some text for input tooltip" }}
+        onChange={(value) => console.log("Input On Change: ", value)}
+        onDelay={(value) => console.log("Input On Delay: ", value)}
+        onBlur={(value) => console.log("Input On Blur: ", value)}
+        onIsValid={(value) => console.log("Input On isValid: ", value)}
+      />
+
+      <br />
+
+      <SheInput
+        label="Input 2"
+        onChange={(value) => console.log("Input On Change: ", value)}
+        onDelay={(value) => console.log("Input On Delay: ", value)}
+        onBlur={(value) => console.log("Input On Blur: ", value)}
+        onIsValid={(value) => console.log("Input On isValid: ", value)}
+      />
+
+      <br />
+      <h2>Textarea</h2>
       <br />
 
       <SheTextArea
@@ -49,16 +88,15 @@ export function DashboardPage() {
         placeholder="new placeholder for textarea"
         placeholderTransKey="sfw09jwfeiwje"
         icon={Logo}
-        autoFocus
         showClearBtn
         isLoading={loading}
         minLength={4}
         maxLength={20}
         required
-        onChange={(value) => console.log("On Change: ", value)}
-        onDelay={(value) => console.log("On Delay: ", value)}
-        onBlur={(value) => console.log("On Blur: ", value)}
-        onIsValid={(value) => console.log("On isValid: ", value)}
+        onChange={(value) => console.log("Textarea On Change: ", value)}
+        onDelay={(value) => console.log("Textarea On Delay: ", value)}
+        onBlur={(value) => console.log("Textarea On Blur: ", value)}
+        onIsValid={(value) => console.log("Textarea On isValid: ", value)}
       />
 
       <br />

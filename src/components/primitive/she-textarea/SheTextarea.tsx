@@ -23,7 +23,6 @@ export default function SheTextArea({
   value,
   placeholder = "enter text...",
   placeholderTransKey,
-  autoFocus,
   showClearBtn,
   tooltip,
   disabled,
@@ -222,12 +221,12 @@ export default function SheTextArea({
               {...props}
               value={_textValue ?? ""}
               placeholder={translate(placeholderTransKey, placeholder)}
-              autoFocus={autoFocus}
+              aria-invalid={!isValid}
               aria-describedby={ariaDescribedbyId}
               disabled={disabled || isLoading}
               rows={rows}
-              onChange={(e) => onChangeHandler(e)}
-              onBlur={(e) => onBlurHandler(e)}
+              onChange={onChangeHandler}
+              onBlur={onBlurHandler}
             />
           </SheSkeleton>
           <SheClearButton

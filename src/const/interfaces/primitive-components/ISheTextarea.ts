@@ -11,7 +11,7 @@ export interface ISheTextarea
     ISheClearButton,
     ISheContextLengthLimits,
     ISheErrorMessageBlock,
-    ComponentPropsWithRef<any> {
+    ComponentPropsWithRef<"textarea"> {
   id?: string;
   className?: string;
   style?: React.CSSProperties;
@@ -19,7 +19,6 @@ export interface ISheTextarea
   value?: string | number | readonly string[];
   placeholder?: string;
   placeholderTransKey?: string;
-  autoFocus?: boolean;
   disabled?: boolean;
   isLoading?: boolean;
   minWidth?: string;
