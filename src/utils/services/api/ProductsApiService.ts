@@ -373,12 +373,12 @@ export const ProductsApiService = createApi({
         method: "PATCH",
         body: JSON.stringify(model),
       }),
-      invalidatesTags: (_result, _error, result) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          result,
-        },
-      ],
+      // invalidatesTags: (_result, _error, result) => [
+      //   {
+      //     type: ApiServiceNameEnum.PRODUCTS,
+      //     result,
+      //   },
+      // ],
     }),
     updateVariantTraitOptions: apiConfig.createMutation<
       any,

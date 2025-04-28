@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./VariantConfigurationCard.module.scss";
@@ -14,9 +14,7 @@ import {
   WandSparklesIcon,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator.tsx";
-import { VariantConfigurationGridColumns } from "@/components/complex/grid/variant-configuration-grid/VariantConfigurationGridColumns.tsx";
 import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import { VariantPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/VariantPhotosGridColumns.tsx";
 import { useForm } from "react-hook-form";
 import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
 import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
@@ -34,6 +32,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select.tsx";
+import { VariantConfigurationGridColumns } from "@/components/complex/grid/variant-configuration-grid/VariantConfigurationGridColumns.tsx";
+import { VariantPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/VariantPhotosGridColumns.tsx";
 
 export default function VariantConfigurationCard({
   variant,
@@ -44,6 +44,8 @@ export default function VariantConfigurationCard({
   onSecondaryButtonClick,
   ...props
 }: IVariantConfigurationCard) {
+  const traitsColumns = VariantConfigurationGridColumns;
+  const photoColumns = VariantPhotosGridColumns(onGridAction);
   const form = useForm({
     defaultValues: {
       variantName: variant?.variantName || "",
@@ -55,7 +57,6 @@ export default function VariantConfigurationCard({
       },
     },
   });
-
   const { watch, setValue } = form;
 
   const netto = watch("salePrice.netto");
@@ -64,43 +65,69 @@ export default function VariantConfigurationCard({
   const selectedTax = taxesList?.find((tax) => tax.id === taxTypeId);
   const taxRate = selectedTax?.value || 0;
   const lastChanged = useRef<"netto" | "brutto" | null>(null);
+  const priceValues = useMemo(() => {
+    return {
+      netto,
+      brutto,
+      taxRate,
+    };
+  }, [netto, brutto, taxRate]);
 
-  const traitsColumns = VariantConfigurationGridColumns;
-  const photoColumns = VariantPhotosGridColumns(onGridAction);
+  function calculatePrices() {
+    if (!lastChanged.current) return null;
 
-  useEffect(() => {
-    form.reset({
-      variantName: variant?.variantName || "",
-      variantCode: variant?.variantCode || "",
-      salePrice: {
-        brutto: variant?.salePrice?.brutto || 0,
-        netto: variant?.salePrice?.netto || 0,
-        taxTypeId: taxesList?.[0]?.id,
-      },
-    });
-  }, [form, variant?.variantName, variant?.variantCode, variant?.salePrice]);
+    const currentValues = form.getValues();
+    let needRecalculate = false;
 
-  useEffect(() => {
     if (lastChanged.current === "netto") {
-      const calculatedBrutto = +(netto * (1 + taxRate)).toFixed(2);
-      if (brutto !== calculatedBrutto) {
+      const calculatedBrutto = +(
+        currentValues.salePrice.netto *
+        (1 + taxRate)
+      ).toFixed(2);
+      if (currentValues.salePrice.brutto !== calculatedBrutto) {
         setValue("salePrice.brutto", calculatedBrutto);
+        needRecalculate = true;
+      }
+    } else if (lastChanged.current === "brutto") {
+      const calculatedNetto = +(
+        currentValues.salePrice.brutto /
+        (1 + taxRate)
+      ).toFixed(2);
+      if (currentValues.salePrice.netto !== calculatedNetto) {
+        setValue("salePrice.netto", calculatedNetto);
+        needRecalculate = true;
       }
     }
-  }, [netto, taxRate]);
+
+    return {
+      values: currentValues,
+      needRecalculate,
+    };
+  }
 
   useEffect(() => {
-    if (lastChanged.current === "brutto") {
-      const calculatedNetto = +(brutto / (1 + taxRate)).toFixed(2);
-      if (netto !== calculatedNetto) {
-        setValue("salePrice.netto", calculatedNetto);
-      }
+    const result = calculatePrices();
+
+    if (result && !result.needRecalculate) {
+      onSubmit(result.values);
     }
-  }, [brutto, taxRate]);
+  }, [priceValues]);
 
   function onGenerateCode() {
     onGenerateProductCode().then((res: ProductCodeModel) => {
       form.setValue("variantCode", res.code, { shouldDirty: true });
+
+      const formData = form.getValues();
+      const formattedData = {
+        ...formData,
+        salePrice: {
+          brutto: Number(formData.salePrice.brutto),
+          netto: Number(formData.salePrice.netto),
+          taxTypeId: Number(formData.salePrice.taxTypeId),
+        },
+      };
+
+      onAction("updateVariantDetails", { formattedData, variant });
     });
   }
 
@@ -153,6 +180,7 @@ export default function VariantConfigurationCard({
                 <div className={cs.inputBlockRow}>
                   <SheInput
                     {...form.register("variantCode")}
+                    value={variant?.variantCode}
                     onDelay={form.handleSubmit(onSubmit)}
                   />
                 </div>

@@ -150,7 +150,9 @@ export function ManageVariantsPage() {
             payload.formattedData,
           )
           .then((res) => {
-            console.log("SELECTED VARIANT", res);
+            service.getVariantDetailsHandler(res.variantId).then((res) => {
+              dispatch(actions.refreshSelectedVariant(res));
+            });
           });
         break;
       case "updateVariantTraitOptions":
