@@ -21,6 +21,10 @@ $iconSize: 20px;
             color: vars.$placeholderColor;
           }
         }
+
+        .sheSelectItemDescription {
+          display: none;
+        }
       }
 
       .iconBlock {
@@ -33,9 +37,73 @@ $iconSize: 20px;
         max-height: $iconSize;
         min-height: $iconSize;
       }
+    }
+  }
+}
 
-      .sheSelectItem {
-        // TODO this bock need to be styled and placed in global style file, the items of select option rendered outside main component, on tag body level, and need to be styled globally
+// ======================================================== SELECT ITEM
+
+:global(div[data-radix-popper-content-wrapper]) {
+  > div[role="listbox"] {
+    > div[role="presentation"] {
+      div[role="option"]:global(.sheSelectItem) {
+        // ------  selected
+        &[data-state="checked"] {
+        }
+
+        > span {
+          // ------  select icon
+          &:nth-child(1) {
+          }
+
+          // ------  select context
+          &:nth-child(2) {
+            flex-grow: 1;
+
+            .sheSelectItemContextContainer {
+              border: 1px solid red;
+              display: flex;
+              gap: 8px;
+
+              > div {
+                border: 1px solid green;
+              }
+
+              .sheSelectItemIconContainer {
+              }
+
+              .sheSelectItemColorsContainer {
+              }
+
+              .sheSelectItemInfoContainer {
+                display: flex;
+                justify-content: space-between;
+                flex-grow: 1;
+                gap: 10px;
+
+                .sheSelectItemInfoBlock,
+                .sheSelectItemExtraInfoBlock {
+                  display: flex;
+                  flex-direction: column;
+
+                  :global(.she-subtext) {
+                    font-size: 8px;
+                  }
+                }
+
+                .sheSelectItemInfoBlock {
+                }
+
+                .sheSelectItemExtraInfoBlock {
+                  align-items: end;
+                }
+              }
+
+              .sheSelectItemTooltipContainer {
+              }
+            }
+          }
+        }
       }
     }
   }

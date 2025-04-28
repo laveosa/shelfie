@@ -18,6 +18,7 @@ import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
 import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
+import SheTooltip from "@/components/complex/she-tooltip/SheTooltip.tsx";
 
 export default function SheSelect({
   id,
@@ -40,6 +41,8 @@ export default function SheSelect({
   disabled,
   isLoading,
   isOpen,
+  showSelectIcon,
+  selectedColor,
   onOpenChange,
   onSelect,
   ...props
@@ -49,11 +52,15 @@ export default function SheSelect({
   const [_items, setItems] = useState<ISheSelectItem[]>(_addItemsIds(null));
   const [_open, setOpen] = useState<boolean>(null);
   const [_loading, setLoading] = useState<boolean>(null);
+  const [_isItemsWithIcons, setIsItemsWithIcons] = useState<boolean>(null);
+  const [_isItemsWithColors, setIsItemsWithColors] = useState<boolean>(null);
 
   const ariaDescribedbyId = `${generateId()}_SELECT_ID`;
 
   useEffect(() => {
     let updatedItems = [...(items || [])];
+    setIsItemsWithIcons(null);
+    setIsItemsWithColors(null);
 
     if (!hideFirstOption) {
       const firstIsNotSelected =
@@ -69,6 +76,7 @@ export default function SheSelect({
     }
 
     const itemsWithIds = _addItemsIds(updatedItems);
+
     setItems(itemsWithIds);
 
     const selectedItem = _getSelectedItemByIdentifier(
@@ -91,11 +99,11 @@ export default function SheSelect({
   }, [items, selected]);
 
   useEffect(() => {
-    if (isLoading) {
+    /*if (isLoading) {
       setOpen(false);
     } else if (typeof isOpen === "boolean") {
       setOpen(isOpen);
-    }
+    }*/
 
     if (typeof isLoading === "boolean" && isLoading !== _loading) {
       setLoading(isLoading);
@@ -127,10 +135,20 @@ export default function SheSelect({
   // ==================================================================== PRIVATE
 
   function _addItemsIds(items: ISheSelectItem[]) {
-    return items?.map((item, idx) => ({
-      ...item,
-      id: item.text.replace(/ /g, "_") + idx.toString(),
-    }));
+    return items?.map((item, idx) => {
+      if (item.icon) {
+        setIsItemsWithIcons(true);
+      }
+
+      if (item.colors) {
+        setIsItemsWithColors(true);
+      }
+
+      return {
+        ...item,
+        id: item.text.replace(/ /g, "_") + idx.toString(),
+      };
+    });
   }
 
   function _getSelectedItemById(
@@ -185,7 +203,7 @@ export default function SheSelect({
               open={_open}
               onOpenChange={(val) => {
                 if (_loading) return;
-                setOpen(val);
+                // setOpen(val);
                 if (onOpenChange) onOpenChange(val);
               }}
               onValueChange={(id) => onChangeHandler(id)}
@@ -209,22 +227,62 @@ export default function SheSelect({
                   {_items?.map((item: ISheSelectItem) => (
                     <SelectItem
                       key={item.id}
-                      className={`${cs.sheSelectItem} ${_loading ? "disabled" : ""}`}
+                      className={`sheSelectItem ${_loading ? "disabled" : ""}`}
                       value={item.id}
                       disabled={item.disabled}
                     >
-                      <div>
-                        <span className="she-text">
-                          {translate(item.textTransKey, item.text)}
-                        </span>
-                        {/*// TODO add logic that will display description only in select items*/}
-                        {item.description && (
-                          <span className="she-subtext">
-                            {translate(
-                              item.descriptionTransKey,
-                              item.description,
+                      <div className={cs.sheSelectItemContextContainer}>
+                        {_isItemsWithIcons && (
+                          <div className={cs.sheSelectItemIconContainer}>
+                            {icon && <SheIcon icon={icon} />}
+                          </div>
+                        )}
+                        {_isItemsWithColors && (
+                          <div className={cs.sheSelectItemColorsContainer}>
+                            <span>colors</span>
+                          </div>
+                        )}
+                        <div className={cs.sheSelectItemInfoContainer}>
+                          <div className={cs.sheSelectItemInfoBlock}>
+                            <span className="she-text">
+                              {translate(item.textTransKey, item.text)}
+                            </span>
+                            {item.description && (
+                              <span
+                                className={`${cs.sheSelectItemDescription} she-subtext`}
+                              >
+                                {translate(
+                                  item.descriptionTransKey,
+                                  item.description,
+                                )}
+                              </span>
                             )}
-                          </span>
+                          </div>
+                          {(item.sideText?.length > 0 ||
+                            item.sideDescription?.length > 0) && (
+                            <div className={cs.sheSelectItemExtraInfoBlock}>
+                              {item.sideText?.length > 0 && (
+                                <span className="she-text">
+                                  {translate(item.textTransKey, item.text)}
+                                </span>
+                              )}
+                              {item.sideDescription?.length > 0 && (
+                                <span
+                                  className={`${cs.sheSelectItemDescription} she-subtext`}
+                                >
+                                  {translate(
+                                    item.descriptionTransKey,
+                                    item.description,
+                                  )}
+                                </span>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                        {item.tooltip && (
+                          <div className={cs.sheSelectItemTooltipContainer}>
+                            {/*<SheTooltip/>*/}
+                          </div>
                         )}
                       </div>
                     </SelectItem>
