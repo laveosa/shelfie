@@ -1,0 +1,142 @@
+.messengerConversationCard {
+  .messengerConversationCardContent {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .messengerConversationCardHeader {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+
+      .avatarNameBlock {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+
+        .chatAvatar {
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 48px;
+          height: 48px;
+          border: 1px solid rgba(0, 0, 0, 0.05);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+          border-radius: 50%;
+
+          .chatAvatarImage {
+            border-radius: 50%;
+          }
+
+          .facebookLogo {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 16px;
+            height: 16px;
+            z-index: 1;
+          }
+
+          .avatarInitials {
+            width: 40px;
+            height: 40px;
+            background-color: #ececec;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #555;
+            font-weight: 600;
+            font-size: 16px;
+            user-select: none;
+          }
+
+          &:hover {
+            border-color: rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: scale(1.02);
+          }
+        }
+
+        .chatName {
+          font-weight: 400;
+        }
+      }
+
+      .headerButtonBlock {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+    }
+
+    .conversationItems {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow: auto;
+      height: calc(100vh - 360px);
+      padding-right: 10px;
+
+      .conversationItem {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+      }
+
+      .conversationItemFromMe {
+        margin-left: auto;
+        background-color: #0099FF;
+        padding: 8px 12px;
+        border-radius: 12px;
+        max-width: 70%;
+        word-break: break-word;
+      }
+
+      .conversationItemToMe {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        margin-right: auto;
+        background-color: #F4F4F5;
+        padding: 8px 12px;
+        border-radius: 12px;
+        max-width: 70%;
+        word-break: break-word;
+      }
+
+      .chatAvatar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 32px;
+        max-width: 32px;
+        max-height: 32px;
+        min-height: 32px;
+        border-radius: 50%;
+        margin-top: 4px;
+
+        .chatAvatarImage {
+          border-radius: 50%;
+        }
+
+        .avatarInitials {
+          min-width: 32px;
+          max-width: 32px;
+          max-height: 32px;
+          min-height: 32px;
+          background-color: #ececec;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #555;
+          font-weight: 600;
+          font-size: 16px;
+          user-select: none;
+        }
+      }
+    }
+  }
+}

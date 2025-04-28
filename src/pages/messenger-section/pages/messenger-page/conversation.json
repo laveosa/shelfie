@@ -1,0 +1,349 @@
+{
+  "data": [
+    {
+      "created_time": "2025-04-22T14:16:16+0000",
+      "from": {
+        "name": "To NIE Fabryka",
+        "email": "105909341991139@facebook.com",
+        "id": "105909341991139"
+      },
+      "id": "m_-onSNRqGySBRdmmsPWJjU5jzwHNJMvu3c8GsSt91wc877HLSUcS32Jc9oR9l9hxKFT-9-V_ZJE9njVVnZz40CA",
+      "message": "Witaj! Dziękujemy za nawiązanie kontaktu. Otrzymaliśmy Twoją wiadomość i jest nam niezmiernie miło.",
+      "tags": {
+        "data": [
+          {
+            "name": "inbox"
+          },
+          {
+            "name": "read"
+          },
+          {
+            "name": "sent"
+          },
+          {
+            "name": "source:web"
+          }
+        ]
+      },
+      "to": {
+        "data": [
+          {
+            "name": "Віктор Матвіїв",
+            "email": "9145683978892842@facebook.com",
+            "id": "9145683978892842"
+          }
+        ]
+      }
+    },
+    {
+      "created_time": "2025-04-22T14:16:15+0000",
+      "from": {
+        "name": "Віктор Матвіїв",
+        "email": "9145683978892842@facebook.com",
+        "id": "9145683978892842"
+      },
+      "id": "m_Bx_4qSjhzfytnTrGy6EIqpjzwHNJMvu3c8GsSt91wc-_Drhh99osoloWMgEMyIZOZkN-cfQ26_WeZCH9FmjE1Q",
+      "message": "Test Azure Message #6",
+      "tags": {
+        "data": [
+          {
+            "name": "inbox"
+          },
+          {
+            "name": "read"
+          },
+          {
+            "name": "source:web"
+          }
+        ]
+      },
+      "to": {
+        "data": [
+          {
+            "name": "To NIE Fabryka",
+            "email": "105909341991139@facebook.com",
+            "id": "105909341991139"
+          }
+        ]
+      }
+    },
+    {
+      "created_time": "2025-04-22T08:00:33+0000",
+      "from": {
+        "name": "Віктор Матвіїв",
+        "email": "9145683978892842@facebook.com",
+        "id": "9145683978892842"
+      },
+      "id": "m_0g9-_TQRARCPmpUmArcq4ZjzwHNJMvu3c8GsSt91wc-z_82hMK_N7GqYNbRi-NjEIGCwizqttXcZ1PddU-NOUA",
+      "message": "Test Azure Message #5",
+      "tags": {
+        "data": [
+          {
+            "name": "inbox"
+          },
+          {
+            "name": "read"
+          },
+          {
+            "name": "source:web"
+          }
+        ]
+      },
+      "to": {
+        "data": [
+          {
+            "name": "To NIE Fabryka",
+            "email": "105909341991139@facebook.com",
+            "id": "105909341991139"
+          }
+        ]
+      }
+    },
+    {
+      "created_time": "2025-04-22T07:33:16+0000",
+      "from": {
+        "name": "Віктор Матвіїв",
+        "email": "9145683978892842@facebook.com",
+        "id": "9145683978892842"
+      },
+      "id": "m_4UqACS3ZAjeRzeHa1hXeDpjzwHNJMvu3c8GsSt91wc_qFa_YeL-iofFFYaamhULvyBJBB0IRpBcUc742WunCig",
+      "message": "Test Azure Message #4",
+      "tags": {
+        "data": [
+          {
+            "name": "inbox"
+          },
+          {
+            "name": "read"
+          },
+          {
+            "name": "source:web"
+          }
+        ]
+      },
+      "to": {
+        "data": [
+          {
+            "name": "To NIE Fabryka",
+            "email": "105909341991139@facebook.com",
+            "id": "105909341991139"
+          }
+        ]
+      }
+    },
+    {
+      "created_time": "2025-04-21T11:05:09+0000",
+      "from": {
+        "name": "To NIE Fabryka",
+        "email": "105909341991139@facebook.com",
+        "id": "105909341991139"
+      },
+      "id": "m_o_vPSZwzX5IhPiLiuSL8X5jzwHNJMvu3c8GsSt91wc9YOIMip_E3MxljLdk3Ap39PpzyoEiB8GAf-xAyw3pNHQ",
+      "message": "Witaj! Dziękujemy za nawiązanie kontaktu. Otrzymaliśmy Twoją wiadomość i jest nam niezmiernie miło.",
+      "tags": {
+        "data": [
+          {
+            "name": "inbox"
+          },
+          {
+            "name": "read"
+          },
+          {
+            "name": "sent"
+          },
+          {
+            "name": "source:web"
+          }
+        ]
+      },
+      "to": {
+        "data": [
+          {
+            "name": "Віктор Матвіїв",
+            "email": "9145683978892842@facebook.com",
+            "id": "9145683978892842"
+          }
+        ]
+      }
+    },
+    {
+      "created_time": "2025-04-21T11:05:08+0000",
+      "from": {
+        "name": "Віктор Матвіїв",
+        "email": "9145683978892842@facebook.com",
+        "id": "9145683978892842"
+      },
+      "id": "m_BLLSylhs5ymatypYwCbq8JjzwHNJMvu3c8GsSt91wc-yBWdKPeJnxnckTaWuQkOsos1T6fLjurAa0FxgM_HSyg",
+      "message": "Test Azure Message #3",
+      "tags": {
+        "data": [
+          {
+            "name": "inbox"
+          },
+          {
+            "name": "read"
+          },
+          {
+            "name": "source:web"
+          }
+        ]
+      },
+      "to": {
+        "data": [
+          {
+            "name": "To NIE Fabryka",
+            "email": "105909341991139@facebook.com",
+            "id": "105909341991139"
+          }
+        ]
+      }
+    },
+    {
+      "created_time": "2025-04-18T11:06:14+0000",
+      "from": {
+        "name": "To NIE Fabryka",
+        "email": "105909341991139@facebook.com",
+        "id": "105909341991139"
+      },
+      "id": "m_N21M5b_QdcbKzbASGzY8CZjzwHNJMvu3c8GsSt91wc_W0AExbLJQmepfLyXYJhtXrWZlNIRcjWoOhGOuSKsS-g",
+      "message": "Test Azure Message #2",
+      "tags": {
+        "data": [
+          {
+            "name": "inbox"
+          },
+          {
+            "name": "read"
+          },
+          {
+            "name": "sent"
+          },
+          {
+            "name": "source:web"
+          }
+        ]
+      },
+      "to": {
+        "data": [
+          {
+            "name": "Віктор Матвіїв",
+            "email": "9145683978892842@facebook.com",
+            "id": "9145683978892842"
+          }
+        ]
+      }
+    },
+    {
+      "created_time": "2025-04-16T18:15:11+0000",
+      "from": {
+        "name": "To NIE Fabryka",
+        "email": "105909341991139@facebook.com",
+        "id": "105909341991139"
+      },
+      "id": "m_53dlLuJq8EeKDNVLsse5AJjzwHNJMvu3c8GsSt91wc8Kw4UaElU9Kjs355kMPRIwUmrQW1-ZZQFW9QlCZVXOVw",
+      "message": "Test Azure Message #1",
+      "tags": {
+        "data": [
+          {
+            "name": "inbox"
+          },
+          {
+            "name": "read"
+          },
+          {
+            "name": "sent"
+          },
+          {
+            "name": "source:web"
+          }
+        ]
+      },
+      "to": {
+        "data": [
+          {
+            "name": "Віктор Матвіїв",
+            "email": "9145683978892842@facebook.com",
+            "id": "9145683978892842"
+          }
+        ]
+      }
+    },
+    {
+      "created_time": "2025-04-16T18:08:58+0000",
+      "from": {
+        "name": "To NIE Fabryka",
+        "email": "105909341991139@facebook.com",
+        "id": "105909341991139"
+      },
+      "id": "m_-7NWsBuDS09TAt0dEOhzSZjzwHNJMvu3c8GsSt91wc8bE0exPLFyMXPYXKL_wrBWfohMLABfAjvgBNevX2CpGg",
+      "message": "Test Azure Message",
+      "tags": {
+        "data": [
+          {
+            "name": "inbox"
+          },
+          {
+            "name": "read"
+          },
+          {
+            "name": "sent"
+          },
+          {
+            "name": "source:web"
+          }
+        ]
+      },
+      "to": {
+        "data": [
+          {
+            "name": "Віктор Матвіїв",
+            "email": "9145683978892842@facebook.com",
+            "id": "9145683978892842"
+          }
+        ]
+      }
+    },
+    {
+      "created_time": "2025-04-14T10:18:45+0000",
+      "from": {
+        "name": "To NIE Fabryka",
+        "email": "105909341991139@facebook.com",
+        "id": "105909341991139"
+      },
+      "id": "m_61nQJu3ww560R3Lgf_PkQ5jzwHNJMvu3c8GsSt91wc-qksH6zcOGihQEftcxSNwu3yUbM9ZNIRtfekjzmTXg-w",
+      "message": "test api send message",
+      "tags": {
+        "data": [
+          {
+            "name": "inbox"
+          },
+          {
+            "name": "read"
+          },
+          {
+            "name": "sent"
+          },
+          {
+            "name": "source:web"
+          }
+        ]
+      },
+      "to": {
+        "data": [
+          {
+            "name": "Віктор Матвіїв",
+            "email": "9145683978892842@facebook.com",
+            "id": "9145683978892842"
+          }
+        ]
+      }
+    }
+  ],
+  "paging": {
+    "cursors": {
+      "before": "QVFIUkw0T2NKOU1iOXVrc29wTmdGaE8wWU9EUWtvTDhoSVJhcnNNUk40OURqTmlQdWpiUF92dnFwUUpaRHdXRkJBWFk5TFRwQVA5LWhTSkVzTXc1bFpsd25GRUs4NHdhNzlCV0xTYmFGQ2d6TmNmMWF2cTViRldHRGhZAN2pqTWlKWUt6",
+      "after": "QVFIUnVYY1YxcGlCTjFOd3owUUFUcHZApZAk5JempaVnlzd1NCQUh6YW9paWo0WnhESWQwUFhrU1ZATcW80UjE4MklqR0J5YUVmbVFuWGxLTElDTHdkYTdGTkVoWHdJMzREWUxtN1RHUUVNYTl0UWpjWXYxcDhkZATR4ekJyQnJXV1M2bnY4"
+    },
+    "next": "https://graph.facebook.com/v22.0/t_2971403519681936/messages?access_token=EAAYyMzeFIVgBO5zizSzZBcMODamVvCMb15ZASDlZBSYHkDE8xZAIexplA5L4vfETAlacxNQ9ZAoDlTKZBfv8Buug6StcnPYrW9O12nbIv60Auy034dt6OZBputbz67xmJqKpYGzfXbEJGtgtxn6P0ZBOca9CgWTJFkSlIlszyvLfWd1Fo0HIbcdsOteJsuLkliX92LP9GvaZAQ1JSUJZCh&fields=created_time%2Cfrom%2Cid%2Cmessage%2Csticker%2Ctags%2Cto%2Cattachments%2Cshares&limit=10&after=QVFIUnVYY1YxcGlCTjFOd3owUUFUcHZApZAk5JempaVnlzd1NCQUh6YW9paWo0WnhESWQwUFhrU1ZATcW80UjE4MklqR0J5YUVmbVFuWGxLTElDTHdkYTdGTkVoWHdJMzREWUxtN1RHUUVNYTl0UWpjWXYxcDhkZATR4ekJyQnJXV1M2bnY4"
+  }
+}
