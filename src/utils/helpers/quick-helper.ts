@@ -56,3 +56,31 @@ export function generateId(length: number = 8) {
   }
   return result.toString();
 }
+
+export function formatDate(
+  dateString: string,
+  format: "date" | "time" = "date",
+): string {
+  const date = new Date(dateString);
+
+  if (format === "date") {
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Month is 0-based
+    const year = date.getFullYear();
+    return `${day}.${month}.${year}`;
+  }
+
+  if (format === "time") {
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    return `${hours}:${minutes}`;
+  }
+
+  return "";
+}
+
+export function getInitials(name: string) {
+  const names = name.trim().split(" ");
+  const initials = names.map((n) => n.charAt(0).toUpperCase()).slice(0, 2);
+  return initials.join("");
+}
