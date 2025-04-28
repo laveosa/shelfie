@@ -74,7 +74,7 @@
     .conversationItems {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 10px;
       overflow: auto;
       height: calc(100vh - 360px);
       padding-right: 10px;
@@ -82,19 +82,60 @@
       .conversationItem {
         display: flex;
         gap: 10px;
-        border-radius: 16px;
-        padding: 7px;
-        max-width: 80%;
-        width: fit-content;
+        align-items: flex-start;
       }
 
       .conversationItemFromMe {
-        background: #0099FF;
-        align-self: end;
+        margin-left: auto;
+        background-color: #0099FF;
+        padding: 8px 12px;
+        border-radius: 12px;
+        max-width: 70%;
+        word-break: break-word;
       }
 
       .conversationItemToMe {
-        background: #F4F4F5;
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        margin-right: auto;
+        background-color: #F4F4F5;
+        padding: 8px 12px;
+        border-radius: 12px;
+        max-width: 70%;
+        word-break: break-word;
+      }
+
+      .chatAvatar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 32px;
+        max-width: 32px;
+        max-height: 32px;
+        min-height: 32px;
+        border-radius: 50%;
+        margin-top: 4px;
+
+        .chatAvatarImage {
+          border-radius: 50%;
+        }
+
+        .avatarInitials {
+          min-width: 32px;
+          max-width: 32px;
+          max-height: 32px;
+          min-height: 32px;
+          background-color: #ececec;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #555;
+          font-weight: 600;
+          font-size: 16px;
+          user-select: none;
+        }
       }
     }
   }
