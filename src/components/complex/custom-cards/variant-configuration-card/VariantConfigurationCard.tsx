@@ -194,16 +194,13 @@ export default function VariantConfigurationCard({
             </div>
             <div className={cs.priceFormRow}>
               <div className={cs.priceFormRowItem}>
-                <SheForm.Field
-                  label="Sale price brutto"
-                  name="salePrice.brutto"
-                >
+                <SheForm.Field label="Sale price netto" name="salePrice.netto">
                   <SheInput
                     type="number"
                     step="any"
-                    {...form.register("salePrice.brutto", {
+                    {...form.register("salePrice.netto", {
                       valueAsNumber: true,
-                      onChange: () => (lastChanged.current = "brutto"),
+                      onChange: () => (lastChanged.current = "netto"),
                     })}
                     onDelay={form.handleSubmit(onSubmit)}
                   />
@@ -241,13 +238,16 @@ export default function VariantConfigurationCard({
                 />
               </div>
               <div className={cs.priceFormRowItem}>
-                <SheForm.Field label="Sale price netto" name="salePrice.netto">
+                <SheForm.Field
+                  label="Sale price brutto"
+                  name="salePrice.brutto"
+                >
                   <SheInput
                     type="number"
                     step="any"
-                    {...form.register("salePrice.netto", {
+                    {...form.register("salePrice.brutto", {
                       valueAsNumber: true,
-                      onChange: () => (lastChanged.current = "netto"),
+                      onChange: () => (lastChanged.current = "brutto"),
                     })}
                     onDelay={form.handleSubmit(onSubmit)}
                   />
