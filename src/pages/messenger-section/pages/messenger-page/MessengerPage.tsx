@@ -87,6 +87,9 @@ export function MessengerPage() {
               key={card}
               chat={chat}
               onAction={onAction}
+              onReceiveConversation={
+                service.getMessagesFromCurrentConversationHandler
+              }
             />
           );
         })}

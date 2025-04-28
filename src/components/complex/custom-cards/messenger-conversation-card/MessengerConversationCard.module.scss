@@ -71,8 +71,31 @@
       }
     }
 
-    .messengerConversationCardChat {
-      height: calc(100vh - 400px);
+    .conversationItems {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      overflow: auto;
+      height: calc(100vh - 360px);
+      padding-right: 10px;
+
+      .conversationItem {
+        display: flex;
+        gap: 10px;
+        border-radius: 16px;
+        padding: 7px;
+        max-width: 80%;
+        width: fit-content;
+      }
+
+      .conversationItemFromMe {
+        background: #0099FF;
+        align-self: end;
+      }
+
+      .conversationItemToMe {
+        background: #F4F4F5;
+      }
     }
   }
 }
