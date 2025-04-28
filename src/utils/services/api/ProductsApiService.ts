@@ -91,12 +91,12 @@ export const ProductsApiService = createApi({
         method: "POST",
         body: JSON.stringify(model),
       }),
-      invalidatesTags: (_result, _error, model) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          model,
-        },
-      ],
+      // invalidatesTags: (_result, _error, model) => [
+      //   {
+      //     type: ApiServiceNameEnum.PRODUCTS,
+      //     model,
+      //   },
+      // ],
     }),
     getBrandsForProductsFilter: apiConfig.createQuery<BrandModel[], void>(
       builder,
@@ -104,8 +104,8 @@ export const ProductsApiService = createApi({
         query: () => ({
           url: `${ApiUrlEnum.BRANDS}/for-filter`,
         }),
-        providesTags: (result: BrandModel[]) =>
-          apiConfig.providesTags(result, ApiServiceNameEnum.PRODUCTS),
+        // providesTags: (result: BrandModel[]) =>
+        //   apiConfig.providesTags(result, ApiServiceNameEnum.PRODUCTS),
       },
     ),
     getCategoriesForProductsFilter: apiConfig.createQuery<
@@ -115,8 +115,8 @@ export const ProductsApiService = createApi({
       query: () => ({
         url: `${ApiUrlEnum.PRODUCT_CATEGORIES}/for-filter`,
       }),
-      providesTags: (result: CategoryModel[]) =>
-        apiConfig.providesTags(result, ApiServiceNameEnum.PRODUCTS),
+      // providesTags: (result: CategoryModel[]) =>
+      //   apiConfig.providesTags(result, ApiServiceNameEnum.PRODUCTS),
     }),
     generateProductCode: apiConfig.createQuery<any, void>(builder, {
       query: () => ({
