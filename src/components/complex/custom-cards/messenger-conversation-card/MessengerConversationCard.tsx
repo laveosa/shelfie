@@ -526,7 +526,7 @@ export default function MessengerConversationCard({
             </div>
           ))}
         </div>
-        <div className={cs.messengerConversationCardFooter}>
+        <div>
           <SheTextArea fullWidth rows={2} />
         </div>
       </div>

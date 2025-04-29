@@ -24,7 +24,7 @@ export const SizeOptionsGridColumns = (
         <SheInput
           value={value}
           placeholder={"Size value"}
-          onDelay={(newName) => {
+          onDelay={(newName: string) => {
             const updatedModel = {
               optionName: newName,
             };

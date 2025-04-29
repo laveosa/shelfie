@@ -9,48 +9,32 @@ $iconSize: 20px;
   .sheToggleComponent {
     position: relative;
 
-    > label {
-      min-height: vars.$maxWidth;
-      font-weight: 500;
-      position: relative;
-      top: -6px;
-      font-size: 14px;
-    }
-
     .sheToggleControl {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-
-      .iconBlock {
-        position: relative;
-        top: -2px;
+      > div {
         display: flex;
-        align-self: start;
-        color: vars.$subtextColor;
-        max-width: $iconSize;
-        min-width: $iconSize;
-        max-height: $iconSize;
-        min-height: $iconSize;
-      }
+        align-items: center;
+        gap: 8px;
 
-      > button {
-        position: relative;
-        display: flex;
-        align-self: start;
-      }
+        .iconBlock {
+          color: vars.$subtextColor;
+          max-width: $iconSize;
+          min-width: $iconSize;
+          max-height: $iconSize;
+          min-height: $iconSize;
+        }
 
-      .sheToggleContextBlock {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
+        .sheToggleContextBlock {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
 
-        span {
-          &:nth-child(1) {
-            line-height: 15px;
-          }
-          &:nth-child(2) {
-            line-height: 12px;
+          span {
+            &:nth-child(1) {
+              line-height: 14px;
+            }
+            &:nth-child(2) {
+              line-height: 12px;
+            }
           }
         }
       }
@@ -84,13 +68,6 @@ $iconSize: 20px;
 
 .sheToggle.withIcon {
   .sheToggleComponent {
-    > label {
-      //left: 51px;
-    }
-
-    &:before {
-      //left: 41px;
-    }
   }
 }
 

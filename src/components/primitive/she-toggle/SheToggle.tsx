@@ -3,12 +3,13 @@ import { Trans } from "react-i18next";
 
 import cs from "./SheToggle.module.scss";
 import { ISheToggle } from "@/const/interfaces/primitive-components/ISheToggle.ts";
-import { generateId, isSheIconConfig } from "@/utils/helpers/quick-helper.ts";
+import { generateId } from "@/utils/helpers/quick-helper.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-import SheTooltip from "@/components/complex/she-tooltip/SheTooltip.tsx";
 import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
 import { Checkbox } from "@/components/ui/checkbox.tsx";
 import { Switch } from "@/components/ui/switch.tsx";
+import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
+import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
 
 export default function SheToggle({
   className,
@@ -64,30 +65,22 @@ export default function SheToggle({
         ...style,
       }}
     >
-      <SheTooltip {...tooltip}>
-        <div className={cs.sheToggleComponent}>
-          {label && (
-            <label className="she-text" aria-describedby={ariaDescribedbyId}>
-              <Trans i18nKey={labelTransKey}>{label}</Trans>
-            </label>
-          )}
-          <div
-            className={`${cs.sheToggleControl} ${disabled || isLoading ? "disabled" : ""}`}
-          >
-            {icon &&
-              (isSheIconConfig(icon) ? (
-                <SheIcon
-                  {...icon}
-                  className={cs.iconBlock}
-                  aria-describedby={ariaDescribedbyId}
-                />
-              ) : (
-                <SheIcon
-                  icon={icon}
-                  className={cs.iconBlock}
-                  aria-describedby={ariaDescribedbyId}
-                />
-              ))}
+      <div className={cs.sheToggleComponent}>
+        <SheLabel
+          label={label}
+          labelTransKey={labelTransKey}
+          tooltip={tooltip}
+          ariaDescribedbyId={ariaDescribedbyId}
+        />
+        <div
+          className={`${cs.sheToggleControl} ${disabled || isLoading ? "disabled" : ""}`}
+        >
+          <SheSkeleton isLoading={isLoading} fullWidth>
+            <SheIcon
+              icon={icon}
+              className={cs.iconBlock}
+              aria-describedby={ariaDescribedbyId}
+            />
             {type === SheToggleTypeEnum.CHECKBOX && (
               <Checkbox
                 {...props}
@@ -124,9 +117,9 @@ export default function SheToggle({
                 </span>
               )}
             </label>
-          </div>
+          </SheSkeleton>
         </div>
-      </SheTooltip>
+      </div>
     </div>
   );
 }

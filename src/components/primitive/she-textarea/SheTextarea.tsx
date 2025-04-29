@@ -1,31 +1,33 @@
 import React, { JSX, useEffect, useRef, useState } from "react";
-import { Trans } from "react-i18next";
 
-import cs from "./SheTextArea.module.scss";
+import cs from "./SheTextarea.module.scss";
 import { Textarea } from "@/components/ui/textarea.tsx";
 import { ISheTextarea } from "@/const/interfaces/primitive-components/ISheTextarea.ts";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
-import SheTooltip from "@/components/complex/she-tooltip/SheTooltip.tsx";
-import { generateId, isSheIconConfig } from "@/utils/helpers/quick-helper.ts";
+import { generateId } from "@/utils/helpers/quick-helper.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { useDebounce } from "@/utils/hooks/useDebounce.ts";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
-import { X } from "lucide-react";
+import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
+import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
+import { SheContextLengthLimits } from "@/components/primitive/she-context-length-limits/SheContextLengthLimits.tsx";
+import { SheErrorMessageBlock } from "@/components/primitive/she-error-message-block/SheErrorMessageBlock.tsx";
 
 export default function SheTextArea({
+  id,
   className = "",
   style,
   label,
   labelTransKey,
-  tooltip,
   icon,
   value,
+  type,
   placeholder = "enter text...",
   placeholderTransKey,
+  showClearBtn,
+  tooltip,
   disabled,
   isLoading,
-  showClearBtn,
   minWidth,
   maxWidth,
   fullWidth,
@@ -61,6 +63,7 @@ export default function SheTextArea({
 
   useEffect(() => {
     const convertedValue = Array.isArray(value) ? value.join("\n") : value;
+
     if (convertedValue !== _textValue) {
       isTouched.current = true;
       setTextValue(convertedValue);
@@ -193,7 +196,8 @@ export default function SheTextArea({
 
   return (
     <div
-      className={`${cs.sheTextArea} ${className} ${icon ? cs.withIcon : ""} ${fullWidth ? cs.fullWidth : ""}  ${required ? cs.required : ""} ${resize ? cs.resize : ""} ${!_isValid ? cs.invalid : ""} ${!_isLengthValid ? cs.lengthInvalid : ""}`}
+      id={id}
+      className={`${cs.sheTextArea} ${className} ${icon ? cs.withIcon : ""} ${fullWidth ? cs.fullWidth : ""}  ${required ? cs.required : ""} ${resize ? cs.resize : ""} ${!_isValid ? cs.invalid : ""}`}
       style={{
         minWidth,
         maxWidth,
@@ -201,92 +205,53 @@ export default function SheTextArea({
       }}
     >
       <div className={cs.sheTextAreaComponent}>
-        {(label || tooltip) && (
-          <label
-            className="she-text"
-            htmlFor={ariaDescribedbyId}
-            aria-describedby={ariaDescribedbyId}
-          >
-            <Trans i18nKey={labelTransKey}>{label}</Trans>
-            {tooltip?.text?.length > 0 && (
-              <SheTooltip
-                {...tooltip}
-                id={ariaDescribedbyId}
-                side={"right"}
-                align={"end"}
-              >
-                <div className={cs.tooltipIcon}>!</div>
-              </SheTooltip>
-            )}
-          </label>
-        )}
+        <SheLabel
+          label={label}
+          labelTransKey={labelTransKey}
+          tooltip={tooltip}
+          ariaDescribedbyId={ariaDescribedbyId}
+        />
         <div className={cs.sheTextAreaControl}>
           <SheSkeleton isLoading={isLoading} fullWidth>
-            {icon &&
-              (isSheIconConfig(icon) ? (
-                <SheIcon
-                  {...icon}
-                  className={cs.iconBlock}
-                  aria-describedby={ariaDescribedbyId}
-                />
-              ) : (
-                <SheIcon
-                  icon={icon}
-                  className={cs.iconBlock}
-                  aria-describedby={ariaDescribedbyId}
-                />
-              ))}
+            <SheIcon
+              icon={icon}
+              className={cs.iconBlock}
+              aria-describedby={ariaDescribedbyId}
+            />
             <Textarea
               {...props}
               value={_textValue ?? ""}
               placeholder={translate(placeholderTransKey, placeholder)}
+              aria-invalid={!isValid}
               aria-describedby={ariaDescribedbyId}
               disabled={disabled || isLoading}
               rows={rows}
-              onChange={(e) => onChangeHandler(e)}
-              onBlur={(e) => onBlurHandler(e)}
+              onChange={onChangeHandler}
+              onBlur={onBlurHandler}
             />
           </SheSkeleton>
-          {showClearBtn && (
-            <SheSkeleton isLoading={isLoading} style={{ alignSelf: "stretch" }}>
-              <SheButton
-                variant="ghost"
-                size="icon"
-                icon={X}
-                aria-describedby={ariaDescribedbyId}
-                disabled={
-                  !_textValue ||
-                  _textValue.toString().length === 0 ||
-                  disabled ||
-                  isLoading
-                }
-                onClick={onClearHandler}
-              />
-            </SheSkeleton>
-          )}
+          <SheClearButton
+            value={_textValue}
+            showClearBtn={showClearBtn}
+            disabled={disabled}
+            isLoading={isLoading}
+            ariaDescribedbyId={ariaDescribedbyId}
+            style={{ alignSelf: "start" }}
+            onClear={onClearHandler}
+          />
         </div>
-        {(minLength || maxLength) && (
-          <div className={cs.contextLengthRestriction}>
-            <div className={cs.contextLengthBock}>
-              {minLength && (
-                <span className="she-subtext">min: {minLength}</span>
-              )}
-              <span className="she-subtext">
-                value: {_textValue ? _textValue.toString().length : 0}
-              </span>
-              {maxLength && (
-                <span className="she-subtext">max: {maxLength}</span>
-              )}
-            </div>
-          </div>
-        )}
-        {_showError && _error && (
-          <div className={cs.errorMessageBlock}>
-            <span className="she-text-error">
-              <Trans i18nKey={_errorTransKey}>{_error}</Trans>
-            </span>
-          </div>
-        )}
+        <SheContextLengthLimits
+          value={_textValue}
+          isValid={_isLengthValid}
+          minLength={minLength}
+          maxLength={maxLength}
+          contextType={type}
+        />
+        <SheErrorMessageBlock
+          error={_error}
+          errorTransKey={_errorTransKey}
+          showError={_showError}
+        />
       </div>
     </div>
   );

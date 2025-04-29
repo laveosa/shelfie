@@ -4,8 +4,9 @@ import { isObject } from "lodash";
 import cs from "./SheIcon.module.scss";
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { IconViewEnum } from "@/const/enums/IconViewEnum.ts";
+import { isSheIconConfig } from "@/utils/helpers/quick-helper.ts";
 
-export default function SheIcon({
+function SheIconComponent({
   className,
   icon,
   iconView = IconViewEnum.SQUARE,
@@ -20,25 +21,50 @@ export default function SheIcon({
   onClick,
   ...props
 }: ISheIcon): JSX.Element {
+  // ==================================================================== EVENT
+
   function onClickHandler(event) {
     if (onClick) {
       onClick(event);
     }
   }
 
+  // ==================================================================== PRIVATE
+
+  // ==================================================================== LAYOUT
+
   return (
     <div
       {...props}
       className={`${cs.sheIcon} ${cs[iconView] || ""} ${className || ""} ${fullWidth ? cs.fullWidth : ""} ${hoverEffect ? cs.hoverEffect : ""} ${onClick ? cs.onClickEffect : ""}`}
-      style={{ color, minWidth, maxWidth, minHeight, maxHeight, ...style }}
+      style={{
+        minWidth,
+        maxWidth,
+        minHeight,
+        maxHeight,
+        color,
+        stroke: color,
+        fill: color,
+        ...style,
+      }}
       onClick={onClickHandler}
     >
-      {/\.(png|jpe?g|gif|webp)$/i.test(icon) && <img src={icon} alt="icon" />}
+      {typeof icon === "string" && /\.(png|jpe?g|gif|webp)$/i.test(icon) && (
+        <img src={icon} alt="icon" role="img" />
+      )}
       {icon && isObject(icon) && (
         <Icon icon={icon as React.FC<Object>} color={color} />
       )}
     </div>
   );
+}
+
+export default function SheIcon({ icon, ...props }: ISheIcon): JSX.Element {
+  if (!icon) return null;
+
+  if (isSheIconConfig(icon)) return <SheIconComponent {...icon} {...props} />;
+
+  return <SheIconComponent icon={icon} {...props} />;
 }
 
 function Icon({

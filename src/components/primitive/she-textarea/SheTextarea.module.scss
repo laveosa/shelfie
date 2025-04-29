@@ -1,8 +1,6 @@
 @use "@/styles/variables" as vars;
 
 $iconSize: 20px;
-$clearBtnSize: 30px;
-$tooltipIconSize: 15px;
 
 .sheTextArea {
   max-width: vars.$maxWidth;
@@ -10,15 +8,6 @@ $tooltipIconSize: 15px;
 
   .sheTextAreaComponent {
     position: relative;
-
-    label {
-      display: flex;
-      gap: 8px;
-      font-weight: 500;
-      position: relative;
-      top: -6px;
-      font-size: 14px;
-    }
 
     .sheTextAreaControl {
       position: relative;
@@ -30,7 +19,7 @@ $tooltipIconSize: 15px;
         position: absolute;
         color: vars.$subtextColor;
         left: 8px;
-        top: 8px;
+        top: 10px;
         max-width: $iconSize;
         min-width: $iconSize;
         max-height: $iconSize;
@@ -53,17 +42,15 @@ $tooltipIconSize: 15px;
   }
 }
 
-// ======================================================== CLEAR BUTTON
+// ======================================================== RESIZE
 
-.sheTextArea {
-  [class*="sheButton"] {
-    display: flex;
-    align-self: start;
-    border-radius: 100%;
-    max-width: $clearBtnSize;
-    min-width: $clearBtnSize;
-    max-height: $clearBtnSize;
-    min-height: $clearBtnSize;
+.sheTextArea.resize {
+  .sheTextAreaComponent {
+    .sheTextAreaControl {
+      textarea {
+        resize: vertical;
+      }
+    }
   }
 }
 
@@ -101,43 +88,6 @@ $tooltipIconSize: 15px;
   }
 }
 
-// ======================================================== RESIZE
-
-.sheTextArea.resize {
-  .sheTextAreaComponent {
-    .sheTextAreaControl {
-      textarea {
-        resize: vertical;
-      }
-    }
-  }
-}
-
-// ======================================================== TOOLTIP
-
-.sheTextArea {
-  .sheTextAreaComponent {
-    label {
-      .tooltipIcon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 4px;
-        box-sizing: border-box;
-        max-width: $tooltipIconSize;
-        min-width: $tooltipIconSize;
-        max-height: $tooltipIconSize;
-        min-height: $tooltipIconSize;
-        background-color: vars.$colorDark;
-        border-radius: 100%;
-        color: white;
-        font-weight: bold;
-        font-size: 12px;
-      }
-    }
-  }
-}
-
 // ======================================================== INVALID
 
 .sheTextArea.invalid {
@@ -146,51 +96,6 @@ $tooltipIconSize: 15px;
       textarea {
         border: 1px solid vars.$colorRed;
       }
-    }
-  }
-}
-
-.sheTextArea.lengthInvalid {
-  .sheTextAreaComponent {
-    .sheTextAreaControl {
-      textarea {
-        border: 1px solid vars.$colorRed;
-      }
-    }
-
-    .contextLengthRestriction {
-      .contextLengthBock {
-        span {
-          color: vars.$colorRed;
-        }
-      }
-    }
-  }
-}
-
-// ======================================================== MIN MAX LENGTH
-
-.sheTextArea {
-  .contextLengthRestriction {
-    .contextLengthBock {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-  }
-}
-
-// ======================================================== ERROR MESSAGE
-
-.sheTextArea {
-  .errorMessageBlock {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 0;
-
-    span {
-      position: absolute;
     }
   }
 }

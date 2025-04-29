@@ -95,10 +95,12 @@ export default function AddStockCard({
                 label="Units"
                 type="number"
                 step="any"
-                onDelay={form.handleSubmit(onSubmit)}
+                onDelay={() => {
+                  form.handleSubmit(onSubmit);
+                }}
               />
             </SheForm.Field>
-            <div className={cs.purchasePriceTitle}>
+            <div>
               <span className="she-title">Purchase Price</span>
             </div>
             <div className={cs.purchasePriceFormRow}>
@@ -108,7 +110,7 @@ export default function AddStockCard({
                     type="number"
                     step="any"
                     placeholder="Enter purchase prise"
-                    onDelay={form.handleSubmit(onSubmit)}
+                    onDelay={() => form.handleSubmit(onSubmit)}
                   />
                 </SheForm.Field>
               </div>
@@ -117,7 +119,7 @@ export default function AddStockCard({
                   control={form.control}
                   name="priceModel.taxTypeId"
                   render={({ field }) => (
-                    <FormItem className={cs.select}>
+                    <FormItem>
                       <FormLabel>VAT</FormLabel>
                       <Select
                         onValueChange={(value) => field.onChange(Number(value))}
@@ -148,7 +150,7 @@ export default function AddStockCard({
                   control={form.control}
                   name="priceModel.priceType"
                   render={({ field }) => (
-                    <FormItem className={cs.select}>
+                    <FormItem>
                       <FormLabel>Netto/Brutto</FormLabel>
                       <Select
                         onValueChange={(value) => field.onChange(value)}
@@ -179,7 +181,7 @@ export default function AddStockCard({
               control={form.control}
               name="priceModel.currencyId"
               render={({ field }) => (
-                <FormItem className={cs.select}>
+                <FormItem>
                   <FormLabel>Currency</FormLabel>
                   <Select
                     onValueChange={(value) => field.onChange(Number(value))}
@@ -205,10 +207,10 @@ export default function AddStockCard({
               )}
             ></FormField>
             <div className={cs.purchaseDetailsBlock}>
-              <div className={cs.purchaseDetailsTitle}>
+              <div>
                 <span className="she-title">Purchase Details</span>
               </div>
-              <div className={cs.purchaseDetailsInputRow}>
+              <div>
                 <SheInput fullWidth label="Invoice number (optional)" />
               </div>
               <div className={cs.supplierInformationBlock}>
@@ -223,7 +225,7 @@ export default function AddStockCard({
                   </span>
                   <div className={cs.supplierInformation}>
                     <div>
-                      <img src={image} alt="" />
+                      <img src={image as any} alt="" />
                     </div>
                     <span className="she-subtext">
                       Babylon Srl VIA DEI NOTAI 135-137 BL, Centergross, 30,

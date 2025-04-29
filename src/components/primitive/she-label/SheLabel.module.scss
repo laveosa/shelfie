@@ -1,0 +1,12 @@
+@use "@/styles/variables" as vars;
+
+$tooltipIconSize: 15px;
+
+.sheLabel {
+  display: flex;
+  gap: 8px;
+  font-weight: 500;
+  position: relative;
+  top: -6px;
+  font-size: 14px;
+}
