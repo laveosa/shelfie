@@ -245,7 +245,7 @@ export default function SheTextArea({
           isValid={_isLengthValid}
           minLength={minLength}
           maxLength={maxLength}
-          type={type}
+          contextType={type}
         />
         <SheErrorMessageBlock
           error={_error}

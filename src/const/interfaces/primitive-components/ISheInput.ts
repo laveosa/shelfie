@@ -12,7 +12,7 @@ export interface ISheInput
     ISheClearButton,
     ISheContextLengthLimits,
     ISheErrorMessageBlock,
-    ComponentPropsWithRef<"input"> {
+    ComponentPropsWithRef<any> {
   id?: string;
   className?: string;
   style?: React.CSSProperties;
