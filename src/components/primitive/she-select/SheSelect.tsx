@@ -4,22 +4,18 @@ import cs from "./SheSelect.module.scss";
 import {
   Select,
   SelectContent,
-  SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select.tsx";
-import {
-  ISheSelect,
-  ISheSelectItem,
-} from "@/const/interfaces/primitive-components/ISheSelect.ts";
+import { ISheSelect } from "@/const/interfaces/primitive-components/ISheSelect.ts";
+import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { generateId } from "@/utils/helpers/quick-helper.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
 import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
-import SheTooltip from "@/components/complex/she-tooltip/SheTooltip.tsx";
-import { Image } from "lucide-react";
+import SheSelectItem from "@/components/primitive/she-select-item/SheSelectItem.tsx";
 
 export default function SheSelect({
   id,
@@ -206,8 +202,8 @@ export default function SheSelect({
             <Select
               {...props}
               value={_selected?.id ?? ""}
-              disabled={disabled || _loading || !items || items.length === 0}
               open={_open}
+              disabled={disabled || _loading || !items || items.length === 0}
               onOpenChange={onOpenChangeHandler}
               onValueChange={onValueChangeHandler}
             >
@@ -228,81 +224,15 @@ export default function SheSelect({
               {_items?.length > 0 && (
                 <SelectContent>
                   {_items?.map((item: ISheSelectItem) => (
-                    <SelectItem
-                      key={item.id}
-                      className={`${cs.sheSelectItem} ${item.className || ""} ${_loading ? "disabled" : ""} ${showSelectIcon ? cs.sheShowSelectIcon : ""}`}
-                      value={item.id}
-                      disabled={item.disabled}
-                      style={item.style}
-                    >
-                      <div className={cs.sheSelectItemContextContainer}>
-                        {_isItemsWithIcons && (
-                          <div className={cs.sheSelectItemIconContainer}>
-                            <SheIcon
-                              icon={item.icon ? item.icon : Image}
-                              className={`${cs.iconBlock} ${!item.icon ? cs.iconPlaceholder : ""}`}
-                              aria-describedby={ariaDescribedbyId}
-                            />
-                          </div>
-                        )}
-                        {_isItemsWithColors && (
-                          <div className={cs.sheSelectItemColorsContainer}>
-                            {item.colors?.map((color) => (
-                              <div style={{ backgroundColor: color }}></div>
-                            ))}
-                          </div>
-                        )}
-                        <div className={cs.sheSelectItemInfoContainer}>
-                          <div className={cs.sheSelectItemInfoBlock}>
-                            <span className="she-text">
-                              {translate(item.textTransKey, item.text)}
-                            </span>
-                            {item.description && (
-                              <span
-                                className={`${cs.sheSelectItemDescription} she-subtext`}
-                              >
-                                {translate(
-                                  item.descriptionTransKey,
-                                  item.description,
-                                )}
-                              </span>
-                            )}
-                          </div>
-                          {(item.sideText?.length > 0 ||
-                            item.sideDescription?.length > 0) && (
-                            <div className={cs.sheSelectItemExtraInfoBlock}>
-                              {item.sideText?.length > 0 && (
-                                <span className="she-text">
-                                  {translate(
-                                    item.sideTextTransKey,
-                                    item.sideText,
-                                  )}
-                                </span>
-                              )}
-                              {item.sideDescription?.length > 0 && (
-                                <span
-                                  className={`${cs.sheSelectItemDescription} she-subtext`}
-                                >
-                                  {translate(
-                                    item.sideDescriptionTransKey,
-                                    item.sideDescription,
-                                  )}
-                                </span>
-                              )}
-                            </div>
-                          )}
-                        </div>
-                        {item.tooltip && (
-                          <div className={cs.sheSelectItemTooltipContainer}>
-                            <SheTooltip
-                              {...item.tooltip}
-                              showDefaultIcon
-                              ariaDescribedbyId={ariaDescribedbyId}
-                            />
-                          </div>
-                        )}
-                      </div>
-                    </SelectItem>
+                    <SheSelectItem
+                      className={cs.sheSelectItemCover}
+                      isLoading={_loading}
+                      showSelectIcon={showSelectIcon}
+                      isItemsWithIcons={_isItemsWithIcons}
+                      isItemsWithColors={_isItemsWithColors}
+                      ariaDescribedbyId={ariaDescribedbyId}
+                      {...item}
+                    />
                   ))}
                 </SelectContent>
               )}

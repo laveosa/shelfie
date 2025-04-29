@@ -10,10 +10,8 @@ import Tmp from "@/assets/images/AuthLogo.png";
 
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import { ContextPatternEnum } from "@/const/enums/ContextPatternEnum.ts";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelect.ts";
-import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 
 const items: ISheSelectItem[] = [
   {
@@ -50,6 +48,7 @@ const items: ISheSelectItem[] = [
     sideDescription: "sssl ",
     value: [2, 3, 4, 2, 545],
     icon: Users,
+    colors: ["#1E9CEF", "#FFCC00", "#81C784"],
   },
 ];
 
@@ -105,13 +104,13 @@ export function DashboardPage() {
         // onOpenChange={(value) => console.log("On Open: ", value)}
       />
 
-      <br />
+      {/*<br />
 
       <SheInput label="Input" icon={Logo} showClearBtn isLoading={loading} />
 
       <br />
 
-      <SheTextArea label="Input" icon={Logo} showClearBtn isLoading={loading} />
+      <SheTextArea label="Input" icon={Logo} showClearBtn isLoading={loading} />*/}
 
       <br />
     </div>
