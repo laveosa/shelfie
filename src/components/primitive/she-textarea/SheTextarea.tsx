@@ -1,3 +1,4 @@
+/*
 import React, { JSX, useEffect, useRef, useState } from "react";
 
 import cs from "./SheTextArea.module.scss";
@@ -256,3 +257,4 @@ export default function SheTextArea({
     </div>
   );
 }
+*/
