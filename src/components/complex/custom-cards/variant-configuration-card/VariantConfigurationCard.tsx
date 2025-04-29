@@ -1,11 +1,6 @@
 import React, { useEffect, useMemo, useRef } from "react";
 import { useForm } from "react-hook-form";
 
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
-import cs from "./VariantConfigurationCard.module.scss";
-import { IVariantConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IVariantConfigurationCard.ts";
-import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import {
   Blocks,
   Clock,
@@ -14,11 +9,6 @@ import {
   Plus,
   WandSparklesIcon,
 } from "lucide-react";
-import { Separator } from "@/components/ui/separator.tsx";
-import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
-import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
-import { VariantModel } from "@/const/models/VariantModel.ts";
 import {
   FormControl,
   FormField,
@@ -32,6 +22,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select.tsx";
+import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
+import cs from "./VariantConfigurationCard.module.scss";
+import { IVariantConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IVariantConfigurationCard.ts";
+import SheInput from "@/components/primitive/she-input/SheInput.tsx";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import { Separator } from "@/components/ui/separator.tsx";
+import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
+import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
+import { VariantModel } from "@/const/models/VariantModel.ts";
 import { VariantConfigurationGridColumns } from "@/components/complex/grid/variant-configuration-grid/VariantConfigurationGridColumns.tsx";
 import { VariantPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/VariantPhotosGridColumns.tsx";
 
@@ -132,7 +132,6 @@ export default function VariantConfigurationCard({
   }
 
   function onSubmit(data: VariantModel) {
-    console.log("Data:", data);
     const formattedData = {
       ...data,
       salePrice: {
@@ -141,9 +140,12 @@ export default function VariantConfigurationCard({
         taxTypeId: Number(data.salePrice.taxTypeId),
       },
     };
-    console.log("Submitted data:", variant);
     onAction("updateVariantDetails", { formattedData, variant });
   }
+
+  const handleOnChangeDelay = (_value: string | number | readonly string[]) => {
+    form.handleSubmit(onSubmit)();
+  };
 
   function onGridAction(
     _actionType: string,
@@ -171,7 +173,7 @@ export default function VariantConfigurationCard({
             <SheForm.Field name="variantName">
               <SheInput
                 label="Optional Variant Name"
-                onDelay={() => form.handleSubmit(onSubmit)}
+                onDelay={handleOnChangeDelay}
                 fullWidth
               />
             </SheForm.Field>
@@ -179,9 +181,9 @@ export default function VariantConfigurationCard({
               <SheForm.Field name="variantCode" label="Variant Code">
                 <div>
                   <SheInput
-                    {...form.register("variantCode")}
+                    {...(form.register("variantCode") as any)}
                     value={variant?.variantCode}
-                    onDelay={() => form.handleSubmit(onSubmit)}
+                    onDelay={handleOnChangeDelay}
                   />
                 </div>
               </SheForm.Field>
@@ -198,11 +200,11 @@ export default function VariantConfigurationCard({
                   <SheInput
                     type="number"
                     step="any"
-                    {...form.register("salePrice.netto", {
+                    {...(form.register("salePrice.netto", {
                       valueAsNumber: true,
                       onChange: () => (lastChanged.current = "netto"),
-                    })}
-                    onDelay={() => form.handleSubmit(onSubmit)}
+                    }) as any)}
+                    onDelay={handleOnChangeDelay}
                   />
                 </SheForm.Field>
               </div>
@@ -245,11 +247,11 @@ export default function VariantConfigurationCard({
                   <SheInput
                     type="number"
                     step="any"
-                    {...form.register("salePrice.brutto", {
+                    {...(form.register("salePrice.brutto", {
                       valueAsNumber: true,
                       onChange: () => (lastChanged.current = "brutto"),
-                    })}
-                    onDelay={() => form.handleSubmit(onSubmit)}
+                    }) as any)}
+                    onDelay={handleOnChangeDelay}
                   />
                 </SheForm.Field>
               </div>
