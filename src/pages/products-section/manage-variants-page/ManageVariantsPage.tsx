@@ -33,6 +33,7 @@ export function ManageVariantsPage() {
   const { addToast } = useToast();
   const { productId } = useParams();
   const navigate = useNavigate();
+  const cardRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   useEffect(() => {
     service
@@ -99,6 +100,16 @@ export function ManageVariantsPage() {
     }
 
     dispatch(actions.refreshActiveCards(updatedCards));
+
+    // Scroll after a slight delay to ensure the card has been rendered
+    if (forceOpen) {
+      setTimeout(() => {
+        const cardElement = cardRefs.current[identifier];
+        if (cardElement) {
+          cardElement.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 100);
+    }
   }
 
   function handleMultipleCardActions(
@@ -551,12 +562,18 @@ export function ManageVariantsPage() {
         />
       )}
       {state.activeCards.includes("variantPhotosCard") && (
-        <VariantPhotosCard
-          variantPhotos={state.variantPhotos}
-          productPhotos={state.productPhotos}
-          contextId={state.selectedVariant?.variantId}
-          onAction={onAction}
-        />
+        <div
+          ref={(el) => {
+            cardRefs.current["variantPhotosCard"] = el;
+          }}
+        >
+          <VariantPhotosCard
+            variantPhotos={state.variantPhotos}
+            productPhotos={state.productPhotos}
+            contextId={state.selectedVariant?.variantId}
+            onAction={onAction}
+          />
+        </div>
       )}
     </div>
   );

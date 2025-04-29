@@ -49,11 +49,6 @@ export default function ItemsCard({
                     <Image />
                   </div>
                 )}
-                {/*<img*/}
-                {/*  src={item.image?.thumbnailUrl || placeholderImage}*/}
-                {/*  alt={item.productName ?? item.variantName}*/}
-                {/*  className={cs.productItemImage}*/}
-                {/*/>*/}
                 <div className={cs.productItemName}>
                   {item.productName ?? item.variantName}
                 </div>

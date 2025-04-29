@@ -102,8 +102,15 @@ export function productsGridColumns(onAction: any): ColumnDef<any>[] {
       },
     },
     {
-      accessorKey: "variantCount",
+      accessorKey: "variantsCount",
       header: "Variants",
+      cell: ({ row }) => {
+        return (
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <span>{row.getValue("variantsCount")}</span>
+          </div>
+        );
+      },
     },
     {
       accessorKey: "stockAmount",

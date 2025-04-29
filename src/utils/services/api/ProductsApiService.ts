@@ -27,22 +27,22 @@ export const ProductsApiService = createApi({
         url: ApiUrlEnum.PRODUCTS,
       }),
       transformResponse: (res: any) => res.products, //TODO delete this code after we will receive real data
-      providesTags: (result: ProductModel[]) =>
-        apiConfig.providesTags<ProductModel>(
-          result,
-          ApiServiceNameEnum.PRODUCTS,
-        ),
+      // providesTags: (result: ProductModel[]) =>
+      //   apiConfig.providesTags<ProductModel>(
+      //     result,
+      //     ApiServiceNameEnum.PRODUCTS,
+      //   ),
     }),
     getProductDetail: apiConfig.createQuery<ProductModel, number>(builder, {
       query: (id: number) => ({
         url: `${ApiUrlEnum.PRODUCTS}/${id}`,
       }),
-      providesTags: (_result, _error, id) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          id,
-        },
-      ],
+      // providesTags: (_result, _error, id) => [
+      //   {
+      //     type: ApiServiceNameEnum.PRODUCTS,
+      //     id,
+      //   },
+      // ],
     }),
     manageProduct: apiConfig.createMutation<void, ProductModel>(builder, {
       query: (model: ProductModel) => ({
@@ -50,12 +50,12 @@ export const ProductsApiService = createApi({
         method: "PUT",
         body: JSON.stringify(model),
       }),
-      invalidatesTags: (result) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          result,
-        },
-      ],
+      // invalidatesTags: (result) => [
+      //   {
+      //     type: ApiServiceNameEnum.PRODUCTS,
+      //     result,
+      //   },
+      // ],
     }),
     updateProduct: apiConfig.createMutation<void, any>(builder, {
       query: ({ productId, model }) => ({

@@ -22,6 +22,7 @@ import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
+import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 
 export function ProductBasicDataPage() {
   const dispatch = useAppDispatch();
@@ -78,10 +79,6 @@ export function ProductBasicDataPage() {
     dispatch(actions.refreshActiveCards(updatedCards));
   }
 
-  function closeProductConfigurationCardHandle() {
-    productId ? handleCardAction("basicData") : navigate(ApiUrlEnum.PRODUCTS);
-  }
-
   function itemCardClickHandler(item) {
     navigate(
       `${ApiUrlEnum.PRODUCTS}${ApiUrlEnum.PRODUCT_BASIC_DATA}/${item.productId}`,
@@ -101,6 +98,11 @@ export function ProductBasicDataPage() {
             text: "Product updated successfully",
             type: "success",
           });
+          service
+            .getProductDetailsHandler(productId)
+            .then((res: ProductModel) => {
+              dispatch(actions.refreshProduct(res));
+            });
         } else {
           addToast({
             text: `${res.error.data.detail}`,
@@ -161,7 +163,7 @@ export function ProductBasicDataPage() {
           handleCardAction("createCategoryCard")
         }
         onOpenCreateProductBrandCard={() => handleCardAction("createBrandCard")}
-        onSecondaryButtonClick={closeProductConfigurationCardHandle}
+        onSecondaryButtonClick={() => navigate(NavUrlEnum.PRODUCTS)}
         onPrimaryButtonClick={(data) => onSubmitProductDataHandler(data)}
       />
       {state.activeCards.includes("createCategoryCard") && (
