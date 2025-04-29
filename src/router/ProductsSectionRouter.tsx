@@ -50,11 +50,11 @@ export const ProductsSectionRouter: RouteObject[] = [
   {
     path: "attributes/:productId?",
     lazy: async () => {
-      const { AttributePage } = await import(
-        "@/pages/products-section/attributes-page/AttributePage.tsx"
+      const { AttributesPage } = await import(
+        "@/pages/products-section/attributes-page/AttributesPage.tsx"
       );
       return {
-        element: <AttributePage />,
+        element: <AttributesPage />,
       };
     },
   },
