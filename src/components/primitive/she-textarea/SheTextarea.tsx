@@ -1,7 +1,6 @@
-/*
 import React, { JSX, useEffect, useRef, useState } from "react";
 
-import cs from "./SheTextArea.module.scss";
+import cs from "./SheTextarea.module.scss";
 import { Textarea } from "@/components/ui/textarea.tsx";
 import { ISheTextarea } from "@/const/interfaces/primitive-components/ISheTextarea.ts";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
@@ -257,4 +256,3 @@ export default function SheTextArea({
     </div>
   );
 }
-*/

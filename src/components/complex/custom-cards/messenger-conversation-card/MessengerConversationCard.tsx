@@ -8,6 +8,7 @@ import { getInitials } from "@/utils/helpers/quick-helper.ts";
 import facebookLogo from "@/assets/images/facebook-messenger_logo.svg";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
+import SheTextArea from "@/components/primitive/she-textarea/SheTextarea.tsx";
 
 export default function MessengerConversationCard({
   chat,
@@ -525,7 +526,9 @@ export default function MessengerConversationCard({
             </div>
           ))}
         </div>
-        <div></div>
+        <div>
+          <SheTextArea fullWidth rows={2} />
+        </div>
       </div>
     </SheCard>
   );
