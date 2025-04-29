@@ -121,3 +121,19 @@ body {
     padding: 20px;
   }
 }
+
+/*// -------------------------------------------------------------------------- SELECT LIST*/
+
+div[data-radix-popper-content-wrapper] {
+  > div[role="listbox"] {
+    > div[role="presentation"] {
+      > div[role="option"] {
+        > span {
+          > div {
+            // place to add style for select items global
+          }
+        }
+      }
+    }
+  }
+}

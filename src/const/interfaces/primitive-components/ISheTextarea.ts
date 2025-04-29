@@ -1,21 +1,26 @@
-import React from "react";
+import React, { ComponentPropsWithRef } from "react";
 
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
-import { ISheTooltip } from "@/const/interfaces/complex-components/ISheTooltip.ts";
+import { ISheLabel } from "@/const/interfaces/primitive-components/ISheLabel.ts";
+import { ISheClearButton } from "@/const/interfaces/primitive-components/ISheClearButton.ts";
+import { ISheErrorMessageBlock } from "@/const/interfaces/primitive-components/ISheErrorMessageBlock.ts";
+import { ISheContextLengthLimits } from "@/const/interfaces/primitive-components/ISheContextLengthLimits.ts";
 
-export interface ISheTextarea {
+export interface ISheTextarea
+  extends ISheLabel,
+    ISheClearButton,
+    ISheContextLengthLimits,
+    ISheErrorMessageBlock,
+    ComponentPropsWithRef<"textarea"> {
+  id?: string;
   className?: string;
   style?: React.CSSProperties;
-  label?: string;
-  labelTransKey?: string;
-  tooltip?: ISheTooltip;
   icon?: Partial<ISheIcon> | string | React.FC<any>;
   value?: string | number | readonly string[];
   placeholder?: string;
   placeholderTransKey?: string;
   disabled?: boolean;
   isLoading?: boolean;
-  showClearBtn?: boolean;
   minWidth?: string;
   maxWidth?: string;
   fullWidth?: boolean;
@@ -24,7 +29,6 @@ export interface ISheTextarea {
   maxLength?: number;
   isValid?: boolean;
   ignoreValidation?: boolean;
-  showError?: boolean;
   resize?: boolean;
   rows?: number;
   delayTime?: number;

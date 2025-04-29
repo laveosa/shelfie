@@ -1,44 +1,49 @@
 import React, { JSX, useEffect, useRef, useState } from "react";
 import { isRegExp } from "lodash";
-import { Trans } from "react-i18next";
 
 import cs from "./SheInput.module.scss";
-import { Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input.tsx";
 import { ISheInput } from "@/const/interfaces/primitive-components/ISheInput.ts";
-import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { useDebounce } from "@/utils/hooks/useDebounce.ts";
-import SheTooltip from "@/components/complex/she-tooltip/SheTooltip.tsx";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
-import { generateId, isSheIconConfig } from "@/utils/helpers/quick-helper.ts";
+import { generateId } from "@/utils/helpers/quick-helper.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
+import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
+import { SheContextLengthLimits } from "@/components/primitive/she-context-length-limits/SheContextLengthLimits.tsx";
+import { SheErrorMessageBlock } from "@/components/primitive/she-error-message-block/SheErrorMessageBlock.tsx";
+import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
+import { Search } from "lucide-react";
 
 export default function SheInput({
-  className,
+  id,
+  className = "",
+  style,
+  label,
+  labelTransKey,
+  icon,
   value,
+  type,
+  placeholder = "enter text...",
+  placeholderTransKey,
+  isSearch,
+  showClearBtn,
+  tooltip,
+  disabled,
+  isLoading,
   minWidth,
   maxWidth,
   fullWidth,
-  label,
-  labelTransKey,
-  placeholder = "enter text...",
-  placeholderTransKey,
-  icon,
-  isLoading,
-  isSearch,
-  isValid = true,
-  ignoreValidation,
   required,
-  showClearBtn,
-  showError = true,
-  patternErrorMessage,
-  patternErrorMessageTransKey,
-  pattern,
-  tooltip,
-  disabled,
   minLength,
   maxLength,
-  style,
+  isValid = true,
+  ignoreValidation,
+  showError = true,
+  pattern,
+  patternErrorMessage,
+  patternErrorMessageTransKey,
+  delayTime,
   onChange,
   onBlur,
   onDelay,
@@ -46,7 +51,9 @@ export default function SheInput({
   ...props
 }: ISheInput): JSX.Element {
   const { translate } = useAppTranslation();
-  const [_value, setValue] = useState<any>(null);
+  const [_textValue, setTextValue] = useState<
+    string | number | readonly string[]
+  >(null);
   const [_isValid, setIsValid] = useState(isValid);
   const [_isLengthValid, setIsLengthValid] = useState(isValid);
   const [_showError, setShowError] = useState(showError);
@@ -57,15 +64,17 @@ export default function SheInput({
 
   const ariaDescribedbyId = `${generateId()}_INPUT_ID`;
   const iconToRender = icon || (isSearch && Search);
-  const delayValue = useDebounce(_value);
+  const delayValue = useDebounce(_textValue, delayTime);
   const isInitialized = useRef(false);
   const isTouched = useRef(false);
 
   useEffect(() => {
-    if (value !== _value) {
+    const convertedValue = Array.isArray(value) ? value.join("\n") : value;
+
+    if (convertedValue !== _textValue) {
       isTouched.current = true;
-      setValue(value);
-      validateInput(value);
+      setTextValue(convertedValue);
+      validateValue(convertedValue);
     }
   }, [value]);
 
@@ -91,15 +100,15 @@ export default function SheInput({
   function onChangeHandler(e) {
     isInitialized.current = true;
     const newValue = e.target.value;
-    setValue(newValue);
-    validateInput(newValue);
+    setTextValue(newValue);
+    validateValue(newValue);
     if (onChange) onChange(newValue);
   }
 
   function onBlurHandler(e) {
     isTouched.current = true;
     const newValue = e.target.value;
-    validateInput(newValue);
+    validateValue(newValue);
     if (onBlur) onBlur(newValue);
   }
 
@@ -111,8 +120,8 @@ export default function SheInput({
     setErrorCondition(false);
 
     const newValue = "";
-    setValue(newValue);
-    validateInput(newValue);
+    setTextValue(newValue);
+    validateValue(newValue);
 
     if (onChange) onChange(newValue);
     if (onBlur) onBlur(newValue);
@@ -121,8 +130,9 @@ export default function SheInput({
 
   // ==================================================================== PRIVATE
 
-  function validateInput(inputValue) {
+  function validateValue(inputValue) {
     if (ignoreValidation || !isTouched.current) return true;
+
     let validation = true;
     validation = isRequiredValid(inputValue, validation);
     validation = isLengthValid(inputValue, validation);
@@ -132,6 +142,7 @@ export default function SheInput({
 
   function updateIsValid(value: boolean) {
     if (onIsValid) onIsValid(value);
+
     setIsValid(value);
   }
 
@@ -139,9 +150,12 @@ export default function SheInput({
 
   function isRequiredValid(inputValue, validation) {
     if (!required || !validation) return validation;
+
     const result = inputValue.length > 0;
+
     if (!result) setIsLengthValid(false);
-    setShowErrorCondition(result, "input context is required", "REPLACE.ME"); // TODO replace with valid translation key
+
+    setShowErrorCondition(result, "context is required", "REPLACE.ME"); // TODO replace with valid translation key
     return result;
   }
 
@@ -152,9 +166,7 @@ export default function SheInput({
     }
 
     const valueLength =
-      props.type === "number"
-        ? (inputValue as number)
-        : inputValue.toString().length;
+      type === "number" ? (inputValue as number) : inputValue.toString().length;
     const isMinOk =
       typeof minLength === "number" ? valueLength >= minLength : true;
     const isMaxOk =
@@ -204,91 +216,62 @@ export default function SheInput({
 
   return (
     <div
-      id={`${props.id ? props.id + "_COVER" : ""}`}
-      className={`${className || ""} ${cs.sheInput || ""} ${iconToRender ? cs.withIcon : ""} ${fullWidth ? cs.fullWidth : ""} ${!_isValid ? cs.invalid : ""} ${!_isLengthValid ? cs.lengthInvalid : ""} ${required ? cs.required : ""}`}
+      id={id}
+      className={`${cs.sheInput} ${className}  ${iconToRender ? cs.withIcon : ""} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""} ${!_isValid ? cs.invalid : ""}`}
       style={{
         minWidth,
         maxWidth,
         ...style,
       }}
     >
-      <SheTooltip {...tooltip}>
-        <div className={cs.sheInputComponent}>
-          {label && (
-            <label className="she-text" aria-describedby={ariaDescribedbyId}>
-              <Trans i18nKey={labelTransKey}>{label}</Trans>
-            </label>
-          )}
-          <div className={cs.sheInputControl}>
-            {iconToRender &&
-              (isSheIconConfig(iconToRender) ? (
-                <SheIcon
-                  {...iconToRender}
-                  className={cs.iconBlock}
-                  aria-describedby={ariaDescribedbyId}
-                />
-              ) : (
-                <SheIcon
-                  icon={iconToRender}
-                  className={cs.iconBlock}
-                  aria-describedby={ariaDescribedbyId}
-                />
-              ))}
+      <div className={cs.sheInputComponent}>
+        <SheLabel
+          label={label}
+          labelTransKey={labelTransKey}
+          tooltip={tooltip}
+          ariaDescribedbyId={ariaDescribedbyId}
+        />
+        <div className={cs.sheInputControl}>
+          <SheSkeleton isLoading={isLoading} fullWidth>
+            <SheIcon
+              icon={iconToRender}
+              className={cs.iconBlock}
+              aria-describedby={ariaDescribedbyId}
+            />
             <Input
               {...props}
-              value={_value || ""}
+              value={_textValue ?? ""}
               placeholder={translate(placeholderTransKey, placeholder)}
+              type={type}
               aria-invalid={!isValid}
               aria-describedby={ariaDescribedbyId}
               disabled={disabled || isLoading}
-              onChange={(e) => onChangeHandler(e)}
-              onBlur={(e) => onBlurHandler(e)}
+              onChange={onChangeHandler}
+              onBlur={onBlurHandler}
             />
-            {(showClearBtn || isSearch) && (
-              <SheButton
-                variant="ghost"
-                size="icon"
-                icon={X}
-                aria-describedby={ariaDescribedbyId}
-                disabled={
-                  !_value ||
-                  _value.toString().length === 0 ||
-                  disabled ||
-                  isLoading
-                }
-                onClick={onClearHandler}
-              />
-            )}
-          </div>
-          {(minLength || maxLength) && (
-            <div className={cs.contextLengthRestriction}>
-              <div className={cs.contextLengthBock}>
-                {minLength && (
-                  <span className="she-subtext">min: {minLength}</span>
-                )}
-                {props.type === "number" && (
-                  <span className="she-subtext">value: {_value as number}</span>
-                )}
-                {props.type !== "number" && (
-                  <span className="she-subtext">
-                    value: {_value ? _value.toString().length : 0}
-                  </span>
-                )}
-                {maxLength && (
-                  <span className="she-subtext">max: {maxLength}</span>
-                )}
-              </div>
-            </div>
-          )}
-          {_showError && _error && (
-            <div className={cs.errorMessageBlock}>
-              <span className="she-text-error">
-                <Trans i18nKey={_errorTransKey}>{_error}</Trans>
-              </span>
-            </div>
-          )}
+          </SheSkeleton>
+          <SheClearButton
+            value={_textValue}
+            showClearBtn={showClearBtn || isSearch}
+            disabled={disabled}
+            isLoading={isLoading}
+            ariaDescribedbyId={ariaDescribedbyId}
+            onClear={onClearHandler}
+          />
         </div>
-      </SheTooltip>
+        <SheContextLengthLimits
+          value={_textValue}
+          isValid={_isLengthValid}
+          minLength={minLength}
+          maxLength={maxLength}
+          type={type}
+        />
+        <SheErrorMessageBlock
+          error={_error}
+          errorTransKey={_errorTransKey}
+          showError={_showError}
+        />
+      </div>
     </div>
   );
 }

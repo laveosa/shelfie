@@ -1,8 +1,8 @@
-import { IBaseComponent } from "@/const/interfaces/IBaseComponent.ts";
 import { ALIGN_OPTIONS, SIDE_OPTIONS } from "@radix-ui/react-popper";
+
 import { SheTooltipEnum } from "@/const/enums/SheTooltipEnum.ts";
 
-export interface ISheTooltip extends IBaseComponent {
+export interface ISheTooltip {
   title?: string;
   titleTransKey?: string;
   text?: string;
@@ -13,5 +13,7 @@ export interface ISheTooltip extends IBaseComponent {
   align?: (typeof ALIGN_OPTIONS)[number];
   view?: SheTooltipEnum;
   delayDuration?: any;
+  ariaDescribedbyId?: string;
+  showDefaultIcon?: boolean;
   onClick?: (value: any) => any;
 }

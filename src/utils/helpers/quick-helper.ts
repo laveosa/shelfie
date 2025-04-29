@@ -19,25 +19,6 @@ export const createEmptyProps = <
   return {} as IUndefinedProperties<T>;
 };
 
-export const filterCustomProps = <
-  TCustomProps extends object,
-  TDefaultProps extends ComponentPropsWithRef<"div">,
->(
-  props: TCustomProps & TDefaultProps,
-  customProps: Record<
-    keyof TCustomProps,
-    any
-  > = createEmptyProps<TCustomProps>(),
-) => {
-  const { ...defaultProps } = props;
-
-  (Object.keys(customProps) as Array<keyof TCustomProps>).forEach((key) => {
-    delete (defaultProps as any)[key];
-  });
-
-  return defaultProps as TDefaultProps;
-};
-
 export function isSheIconConfig(
   icon: unknown,
 ): icon is Partial<ISheIcon> & { icon: any } {
@@ -55,6 +36,40 @@ export function generateId(length: number = 8) {
     counter += 1;
   }
   return result.toString();
+}
+
+export const filterCustomProps = <
+  TCustomProps extends object,
+  TDefaultProps extends ComponentPropsWithRef<any>,
+>(
+  props: TCustomProps & TDefaultProps,
+  customProps: Record<
+    keyof TCustomProps,
+    any
+  > = createEmptyProps<TCustomProps>(),
+) => {
+  const { ...defaultProps } = props;
+
+  (Object.keys(customProps) as Array<keyof TCustomProps>).forEach((key) => {
+    delete (defaultProps as any)[key];
+  });
+
+  return defaultProps as TDefaultProps;
+};
+
+export function filterProps<T extends object>(
+  props: Record<string, unknown>,
+  validKeys: (keyof T)[],
+): Partial<T> {
+  const result: Partial<T> = {} as Partial<T>;
+
+  for (const key of validKeys) {
+    if (key in props) {
+      result[key] = props[key];
+    }
+  }
+
+  return result;
 }
 
 export function formatDate(

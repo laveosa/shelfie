@@ -1,0 +1,19 @@
+@use "@/styles/variables" as vars;
+
+.sheContextLengthLimits {
+  .minMaxBlock {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+}
+
+// ======================================================== INVALID
+
+.sheContextLengthLimits.lengthInvalid {
+  .minMaxBlock {
+    span {
+      color: vars.$colorRed;
+    }
+  }
+}

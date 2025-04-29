@@ -32,7 +32,7 @@ export default function SheSkeleton({
           style={{
             ...skeletonStyle,
             animationDelay: `${animationDelay}ms`,
-            backgroundColor: `${color}`,
+            backgroundColor: color,
           }}
         >
           {children}
