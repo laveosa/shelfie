@@ -58,10 +58,10 @@ export const filterCustomProps = <
 };
 
 export function filterProps<T extends object>(
-  props: Record<string, unknown>,
+  props: any,
   validKeys: (keyof T)[],
 ): Partial<T> {
-  const result: Partial<T> = {} as Partial<T>;
+  const result: Partial<T> = {} as any;
 
   for (const key of validKeys) {
     if (key in props) {

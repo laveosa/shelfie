@@ -5,7 +5,7 @@ import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { ISheLabel } from "@/const/interfaces/primitive-components/ISheLabel.ts";
 
-export interface ISheToggle extends ISheLabel, ComponentPropsWithRef<"div"> {
+export interface ISheToggle extends ISheLabel, ComponentPropsWithRef<any> {
   checked?: boolean;
   text?: string;
   textTransKey?: string;

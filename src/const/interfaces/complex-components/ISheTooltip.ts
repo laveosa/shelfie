@@ -1,8 +1,9 @@
 import { ALIGN_OPTIONS, SIDE_OPTIONS } from "@radix-ui/react-popper";
 
 import { SheTooltipEnum } from "@/const/enums/SheTooltipEnum.ts";
+import { ComponentPropsWithRef } from "react";
 
-export interface ISheTooltip {
+export interface ISheTooltip extends ComponentPropsWithRef<any> {
   title?: string;
   titleTransKey?: string;
   text?: string;

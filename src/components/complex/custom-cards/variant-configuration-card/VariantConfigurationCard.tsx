@@ -144,16 +144,16 @@ export default function VariantConfigurationCard({
             <SheForm.Field name="variantName">
               <SheInput
                 label="Optional Variant Name"
-                onDelay={form.handleSubmit(onSubmit)}
+                onDelay={() => form.handleSubmit(onSubmit)}
                 fullWidth
               />
             </SheForm.Field>
             <div className={cs.variantCodeFormRow}>
               <SheForm.Field name="variantCode" label="Variant Code">
-                <div className={cs.inputBlockRow}>
+                <div>
                   <SheInput
-                    {...form.register("variantCode")}
-                    onDelay={form.handleSubmit(onSubmit)}
+                    {...(form.register("variantCode") as any)}
+                    onDelay={() => form.handleSubmit(onSubmit)}
                   />
                 </div>
               </SheForm.Field>
@@ -172,12 +172,11 @@ export default function VariantConfigurationCard({
                 >
                   <SheInput
                     type="number"
-                    step="any"
-                    {...form.register("salePrice.brutto", {
+                    {...(form.register("salePrice.brutto", {
                       valueAsNumber: true,
                       onChange: () => (lastChanged.current = "brutto"),
-                    })}
-                    onDelay={form.handleSubmit(onSubmit)}
+                    }) as any)}
+                    onDelay={() => form.handleSubmit(onSubmit)}
                   />
                 </SheForm.Field>
               </div>
@@ -186,7 +185,7 @@ export default function VariantConfigurationCard({
                   control={form.control}
                   name="salePrice.taxTypeId"
                   render={({ field }) => (
-                    <FormItem className={cs.select}>
+                    <FormItem>
                       <FormLabel>VAT</FormLabel>
                       <Select
                         onValueChange={(value) => field.onChange(Number(value))}
@@ -216,19 +215,18 @@ export default function VariantConfigurationCard({
                 <SheForm.Field label="Sale price netto" name="salePrice.netto">
                   <SheInput
                     type="number"
-                    step="any"
-                    {...form.register("salePrice.netto", {
+                    {...(form.register("salePrice.netto", {
                       valueAsNumber: true,
                       onChange: () => (lastChanged.current = "netto"),
-                    })}
-                    onDelay={form.handleSubmit(onSubmit)}
+                    }) as any)}
+                    onDelay={() => form.handleSubmit(onSubmit)}
                   />
                 </SheForm.Field>
               </div>
             </div>
           </SheForm>
         </div>
-        <Separator className={cs.separator} />
+        <Separator />
         <div className={cs.stockDetailsBlock}>
           <div className={cs.buttonBlock}>
             <span className="she-title">Stock Details</span>
@@ -301,7 +299,7 @@ export default function VariantConfigurationCard({
             </SheButton>
           </div>
           {variant.photos?.length > 0 && (
-            <div className={cs.managePhotosGrid}>
+            <div>
               <DndGridDataTable
                 enableDnd={true}
                 showHeader={false}

@@ -119,7 +119,7 @@ export default function ProductConfigurationCard({
                 onDelay={onCheckCode}
               >
                 <SheInput
-                  {...form.register("productCode")}
+                  {...(form.register("productCode") as any)}
                   label="Product Code"
                   placeholder="enter product code..."
                   isValid={!form.formState.errors.productCode}
@@ -131,7 +131,6 @@ export default function ProductConfigurationCard({
                 />
               </SheForm.Field>
               <SheButton
-                className={cs.formRowButton}
                 icon={WandSparkles}
                 type="button"
                 variant="outline"
@@ -186,7 +185,6 @@ export default function ProductConfigurationCard({
                 )}
               ></FormField>
               <SheButton
-                className={cs.formRowButton}
                 icon={Plus}
                 variant="outline"
                 type="button"
@@ -227,7 +225,6 @@ export default function ProductConfigurationCard({
                 )}
               ></FormField>
               <SheButton
-                className={cs.formRowButton}
                 icon={Plus}
                 variant="outline"
                 type="button"
