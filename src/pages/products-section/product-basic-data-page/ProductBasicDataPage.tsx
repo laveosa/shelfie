@@ -37,6 +37,7 @@ export function ProductBasicDataPage() {
   const navigate = useNavigate();
   const { addToast } = useToast();
   const { productId } = useParams();
+  const cardRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   useEffect(() => {
     productsService
@@ -72,10 +73,20 @@ export function ProductBasicDataPage() {
     }
   }, [productId]);
 
+  function scrollToCard(cardId: string) {
+    setTimeout(() => {
+      const cardElement = cardRefs.current[cardId];
+      if (cardElement) {
+        cardElement.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 100);
+  }
+
   function handleCardAction(identifier: string) {
     const updatedCards = state.activeCards.includes(identifier)
       ? state.activeCards.filter((card) => card !== identifier)
       : [...state.activeCards, identifier];
+    scrollToCard(identifier);
     dispatch(actions.refreshActiveCards(updatedCards));
   }
 
@@ -167,14 +178,28 @@ export function ProductBasicDataPage() {
         onPrimaryButtonClick={(data) => onSubmitProductDataHandler(data)}
       />
       {state.activeCards.includes("createCategoryCard") && (
-        <CreateProductCategoryCard
-          onSecondaryButtonClick={() => handleCardAction("createCategoryCard")}
-        />
+        <div
+          ref={(el) => {
+            cardRefs.current["createCategoryCard"] = el;
+          }}
+        >
+          <CreateProductCategoryCard
+            onSecondaryButtonClick={() =>
+              handleCardAction("createCategoryCard")
+            }
+          />
+        </div>
       )}
       {state.activeCards.includes("createBrandCard") && (
-        <CreateProductBrandCard
-          onSecondaryButtonClick={() => handleCardAction("createBrandCard")}
-        />
+        <div
+          ref={(el) => {
+            cardRefs.current["createBrandCard"] = el;
+          }}
+        >
+          <CreateProductBrandCard
+            onSecondaryButtonClick={() => handleCardAction("createBrandCard")}
+          />
+        </div>
       )}
     </div>
   );

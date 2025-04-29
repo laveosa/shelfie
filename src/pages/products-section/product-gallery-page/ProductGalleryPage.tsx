@@ -31,6 +31,7 @@ export function ProductGalleryPage() {
   const { productId } = useParams();
   const { addToast } = useToast();
   const navigate = useNavigate();
+  const cardRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   useEffect(() => {
     productsService
@@ -56,10 +57,20 @@ export function ProductGalleryPage() {
     );
   }
 
+  function scrollToCard(cardId: string) {
+    setTimeout(() => {
+      const cardElement = cardRefs.current[cardId];
+      if (cardElement) {
+        cardElement.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 100);
+  }
+
   function handleCardAction(identifier: string) {
     const updatedCards = state.activeCards.includes(identifier)
       ? state.activeCards.filter((card) => card !== identifier)
       : [...state.activeCards, identifier];
+    scrollToCard(identifier);
     dispatch(actions.refreshActiveCards(updatedCards));
   }
 
@@ -178,12 +189,18 @@ export function ProductGalleryPage() {
         onAction={onAction}
       />
       {state.activeCards.includes("connectImageCard") && (
-        <ConnectImageCard
-          variants={state.productVariants}
-          selectedPhoto={state.selectedPhoto}
-          onAction={onAction}
-          onSecondaryButtonClick={() => handleCardAction("connectImageCard")}
-        />
+        <div
+          ref={(el) => {
+            cardRefs.current["connectImageCard"] = el;
+          }}
+        >
+          <ConnectImageCard
+            variants={state.productVariants}
+            selectedPhoto={state.selectedPhoto}
+            onAction={onAction}
+            onSecondaryButtonClick={() => handleCardAction("connectImageCard")}
+          />
+        </div>
       )}
     </div>
   );

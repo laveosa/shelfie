@@ -108,6 +108,7 @@ export default function ProductConfigurationCard({
                 isValid={!form.formState.errors.name}
                 patternErrorMessage={form.formState.errors.name?.message}
                 showError={true}
+                fullWidth={true}
               />
             </SheForm.Field>
             <div className={cs.productConfigurationFormRow}>
@@ -152,7 +153,7 @@ export default function ProductConfigurationCard({
                   required: true,
                 }}
                 render={({ field }) => (
-                  <FormItem className={cs.select}>
+                  <FormItem>
                     <FormLabel>Product Category</FormLabel>
                     <Select
                       key={form.watch("categoryId")}
@@ -198,7 +199,7 @@ export default function ProductConfigurationCard({
                   required: true,
                 }}
                 render={({ field }) => (
-                  <FormItem className={cs.select}>
+                  <FormItem>
                     <FormLabel>Product Brand</FormLabel>
                     <Select
                       key={form.watch("brandId")}
