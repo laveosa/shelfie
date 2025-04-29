@@ -56,7 +56,6 @@ export default function ProductPhotosCard({
       <SheProductCard
         title="Product Photos"
         view="card"
-        minWidth="450px"
         className={cs.productPhotosCard}
         {...props}
       >

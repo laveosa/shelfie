@@ -56,7 +56,6 @@ export default function VariantPhotosCard({
       <SheProductCard
         title="Manage Photos"
         view="card"
-        minWidth="450px"
         onSecondaryButtonClick={() => onAction("closeVariantPhotosCard")}
         showCloseButton={true}
         {...props}

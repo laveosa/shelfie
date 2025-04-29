@@ -28,6 +28,7 @@ export default function ItemsCard({
     <div>
       <SheProductCard
         title={title}
+        width="300px"
         showToggleButton={true}
         className={cs.productsCard}
         {...props}

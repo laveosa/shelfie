@@ -162,7 +162,6 @@ export default function VariantConfigurationCard({
       title="Manage Variant"
       view="card"
       showCloseButton
-      width="420px"
       onSecondaryButtonClick={onSecondaryButtonClick}
       className={cs.variantConfigurationCard}
       {...props}

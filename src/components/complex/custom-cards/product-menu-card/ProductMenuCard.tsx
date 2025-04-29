@@ -64,6 +64,7 @@ export default function ProductMenuCard({
     <div>
       <SheProductCard
         title={title}
+        width="300px"
         showToggleButton={true}
         className={cs.productMenuCard}
         {...props}

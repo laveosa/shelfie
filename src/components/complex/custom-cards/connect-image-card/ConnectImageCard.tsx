@@ -57,7 +57,6 @@ export default function ConnectImageCard({
       title="Connect image to product variants"
       view="card"
       showCloseButton
-      width="350px"
       className={cs.connectImageCard}
       onSecondaryButtonClick={onSecondaryButtonClick}
       {...props}

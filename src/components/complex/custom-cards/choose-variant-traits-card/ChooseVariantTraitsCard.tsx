@@ -46,7 +46,6 @@ export default function ChooseVariantTraitsCard({
       secondaryButtonTitle="Cancel"
       showCloseButton={true}
       className={cs.chooseVariantTraitsCard}
-      width="370px"
       {...props}
     >
       <div className={cs.chooseVariantTraitsContent}>
