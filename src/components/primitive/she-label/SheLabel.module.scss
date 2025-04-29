@@ -9,28 +9,4 @@ $tooltipIconSize: 15px;
   position: relative;
   top: -6px;
   font-size: 14px;
-
-  .tooltipIcon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1px;
-    box-sizing: border-box;
-    max-width: $tooltipIconSize;
-    min-width: $tooltipIconSize;
-    max-height: $tooltipIconSize;
-    min-height: $tooltipIconSize;
-    background-color: vars.$colorDark;
-    border-radius: 100%;
-
-    span {
-      color: white;
-      font-weight: bold;
-      font-size: 12px;
-      line-height: 0;
-      position: relative;
-      top: -1px;
-      left: 0.5px;
-    }
-  }
 }

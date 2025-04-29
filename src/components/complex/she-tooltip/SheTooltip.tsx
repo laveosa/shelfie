@@ -24,6 +24,7 @@ export default function SheTooltip({
   view,
   delayDuration,
   ariaDescribedbyId,
+  showDefaultIcon,
   onClick,
 }: ISheTooltip): React.ReactNode {
   // ==================================================================== EVENT
@@ -47,7 +48,15 @@ export default function SheTooltip({
     <div className={`${className || ""} ${cs.sheTooltip || ""}`}>
       <TooltipProvider delayDuration={delayDuration}>
         <Tooltip>
-          <TooltipTrigger asChild>{children}</TooltipTrigger>
+          <TooltipTrigger asChild>
+            {showDefaultIcon ? (
+              <div className={cs.tooltipIcon}>
+                <span className="she-title">!</span>
+              </div>
+            ) : (
+              children
+            )}
+          </TooltipTrigger>
           {(title || text || description) && (
             <TooltipContent
               className={`${cs.tooltipMessageBlock} ${cs[view]}`}

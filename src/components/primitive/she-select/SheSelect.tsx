@@ -19,6 +19,7 @@ import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
 import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
 import SheTooltip from "@/components/complex/she-tooltip/SheTooltip.tsx";
+import { Image } from "lucide-react";
 
 export default function SheSelect({
   id,
@@ -99,11 +100,11 @@ export default function SheSelect({
   }, [items, selected]);
 
   useEffect(() => {
-    /*if (isLoading) {
+    if (isLoading) {
       setOpen(false);
     } else if (typeof isOpen === "boolean") {
       setOpen(isOpen);
-    }*/
+    }
 
     if (typeof isLoading === "boolean" && isLoading !== _loading) {
       setLoading(isLoading);
@@ -112,7 +113,7 @@ export default function SheSelect({
 
   // ==================================================================== EVENT
 
-  function onChangeHandler(id: string) {
+  function onValueChangeHandler(id: string) {
     setSelected(() => {
       const selected = _getSelectedItemById(id);
 
@@ -122,6 +123,12 @@ export default function SheSelect({
 
       return selected;
     });
+  }
+
+  function onOpenChangeHandler(event) {
+    if (_loading) return;
+    setOpen(event);
+    if (onOpenChange) onOpenChange(event);
   }
 
   function onClearHandler() {
@@ -201,12 +208,8 @@ export default function SheSelect({
               value={_selected?.id ?? ""}
               disabled={disabled || _loading || !items || items.length === 0}
               open={_open}
-              onOpenChange={(val) => {
-                if (_loading) return;
-                // setOpen(val);
-                if (onOpenChange) onOpenChange(val);
-              }}
-              onValueChange={(id) => onChangeHandler(id)}
+              onOpenChange={onOpenChangeHandler}
+              onValueChange={onValueChangeHandler}
             >
               <SelectTrigger>
                 <SheIcon
@@ -227,19 +230,26 @@ export default function SheSelect({
                   {_items?.map((item: ISheSelectItem) => (
                     <SelectItem
                       key={item.id}
-                      className={`sheSelectItem ${_loading ? "disabled" : ""}`}
+                      className={`${cs.sheSelectItem} ${item.className || ""} ${_loading ? "disabled" : ""} ${showSelectIcon ? cs.sheShowSelectIcon : ""}`}
                       value={item.id}
                       disabled={item.disabled}
+                      style={item.style}
                     >
                       <div className={cs.sheSelectItemContextContainer}>
                         {_isItemsWithIcons && (
                           <div className={cs.sheSelectItemIconContainer}>
-                            {icon && <SheIcon icon={icon} />}
+                            <SheIcon
+                              icon={item.icon ? item.icon : Image}
+                              className={`${cs.iconBlock} ${!item.icon ? cs.iconPlaceholder : ""}`}
+                              aria-describedby={ariaDescribedbyId}
+                            />
                           </div>
                         )}
                         {_isItemsWithColors && (
                           <div className={cs.sheSelectItemColorsContainer}>
-                            <span>colors</span>
+                            {item.colors?.map((color) => (
+                              <div style={{ backgroundColor: color }}></div>
+                            ))}
                           </div>
                         )}
                         <div className={cs.sheSelectItemInfoContainer}>
@@ -263,7 +273,10 @@ export default function SheSelect({
                             <div className={cs.sheSelectItemExtraInfoBlock}>
                               {item.sideText?.length > 0 && (
                                 <span className="she-text">
-                                  {translate(item.textTransKey, item.text)}
+                                  {translate(
+                                    item.sideTextTransKey,
+                                    item.sideText,
+                                  )}
                                 </span>
                               )}
                               {item.sideDescription?.length > 0 && (
@@ -271,8 +284,8 @@ export default function SheSelect({
                                   className={`${cs.sheSelectItemDescription} she-subtext`}
                                 >
                                   {translate(
-                                    item.descriptionTransKey,
-                                    item.description,
+                                    item.sideDescriptionTransKey,
+                                    item.sideDescription,
                                   )}
                                 </span>
                               )}
@@ -281,7 +294,11 @@ export default function SheSelect({
                         </div>
                         {item.tooltip && (
                           <div className={cs.sheSelectItemTooltipContainer}>
-                            {/*<SheTooltip/>*/}
+                            <SheTooltip
+                              {...item.tooltip}
+                              showDefaultIcon
+                              ariaDescribedbyId={ariaDescribedbyId}
+                            />
                           </div>
                         )}
                       </div>

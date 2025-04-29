@@ -18,14 +18,19 @@ import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 const items: ISheSelectItem[] = [
   {
     text: "option 1",
-    description: "1111111111",
+    description: "sdcwecsd",
+    sideText: "Q22",
+    sideDescription: "sssl ",
     value: 1,
     icon: Logo,
-    colors: ["red", "green", "blue"],
+    colors: ["red", "green", "blue", "violet"],
+    tooltip: {
+      text: "Some text for tooltip",
+    },
   },
   {
     text: "option 2",
-    description: "22222222222",
+    // description: "22222222222",
     value: "2",
     colors: ["#234536"],
   },
@@ -41,7 +46,8 @@ const items: ISheSelectItem[] = [
   },
   {
     text: "option 4",
-    description: "44444444444",
+    sideText: "Q22",
+    sideDescription: "sssl ",
     value: [2, 3, 4, 2, 545],
     icon: Users,
   },
@@ -85,6 +91,8 @@ export function DashboardPage() {
       <SheSelect
         id="SELECT_ID"
         className="SELECT_CLASSNAME"
+        label="Select"
+        tooltip={{ text: "Select component tooltip text for test only!!!" }}
         icon={Logo}
         items={selectItems}
         selected={selectedItem}

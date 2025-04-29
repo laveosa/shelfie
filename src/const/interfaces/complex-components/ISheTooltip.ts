@@ -14,5 +14,6 @@ export interface ISheTooltip {
   view?: SheTooltipEnum;
   delayDuration?: any;
   ariaDescribedbyId?: string;
+  showDefaultIcon?: boolean;
   onClick?: (value: any) => any;
 }

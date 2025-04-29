@@ -33,12 +33,9 @@ export function SheLabel({
           {...tooltip}
           side={tooltip?.side || "right"}
           align={tooltip?.align || "end"}
+          showDefaultIcon
           ariaDescribedbyId={ariaDescribedbyId}
-        >
-          <div className={cs.tooltipIcon}>
-            <span className="she-title">!</span>
-          </div>
-        </SheTooltip>
+        />
       )}
     </label>
   );

@@ -15,15 +15,51 @@ $iconSize: 20px;
       align-items: center;
       gap: 8px;
 
-      .sheSelectSkeleton {
-        button[data-placeholder] {
-          span {
-            color: vars.$placeholderColor;
-          }
+      button[data-placeholder] {
+        span {
+          color: vars.$placeholderColor;
+          text-align: start;
         }
+      }
 
-        .sheSelectItemDescription {
-          display: none;
+      button[role="combobox"] {
+        > span {
+          width: 100%;
+
+          .sheSelectItemContextContainer {
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            gap: 8px;
+
+            // --------------------------------- ICON
+            .sheSelectItemIconContainer {
+              display: none;
+            }
+
+            // --------------------------------- COLOR
+            .sheSelectItemColorsContainer {
+              display: none;
+            }
+
+            // --------------------------------- INFO
+            .sheSelectItemInfoContainer {
+              display: flex;
+              flex-grow: 1;
+
+              .sheSelectItemDescription {
+                display: none;
+              }
+
+              .sheSelectItemExtraInfoBlock {
+                display: none;
+              }
+            }
+
+            .sheSelectItemTooltipContainer {
+              display: none;
+            }
+          }
         }
       }
 
@@ -45,15 +81,33 @@ $iconSize: 20px;
 
 :global(div[data-radix-popper-content-wrapper]) {
   > div[role="listbox"] {
+    overflow: visible;
+
     > div[role="presentation"] {
-      div[role="option"]:global(.sheSelectItem) {
+      div[role="option"].sheSelectItem {
+        max-width: 97vw;
+        min-height: 42px;
+        padding: 8px 6px;
+
+        &.sheShowSelectIcon {
+          padding-left: 32px;
+
+          > span {
+            &:nth-child(1) {
+              display: flex;
+            }
+          }
+        }
+
         // ------  selected
         &[data-state="checked"] {
+          background-color: #f5f5f5;
         }
 
         > span {
           // ------  select icon
           &:nth-child(1) {
+            display: none;
           }
 
           // ------  select context
@@ -61,33 +115,63 @@ $iconSize: 20px;
             flex-grow: 1;
 
             .sheSelectItemContextContainer {
-              border: 1px solid red;
               display: flex;
+              align-items: center;
               gap: 8px;
 
-              > div {
-                border: 1px solid green;
-              }
-
+              // --------------------------------- ICON
               .sheSelectItemIconContainer {
+                max-width: $iconSize;
+                min-width: $iconSize;
+
+                .iconBlock {
+                  color: vars.$subtextColor;
+                  max-width: $iconSize;
+                  min-width: $iconSize;
+                  max-height: $iconSize;
+                  min-height: $iconSize;
+                }
+
+                .iconPlaceholder {
+                  color: rgba(192, 206, 232, 0.61);
+                }
               }
 
+              // --------------------------------- COLOR
               .sheSelectItemColorsContainer {
+                display: flex;
+                flex-direction: column;
+                gap: 1px;
+                min-width: 6px;
+                max-width: 6px;
+
+                > div {
+                  padding: 3px;
+                  border-radius: 100%;
+                }
               }
 
+              // --------------------------------- INFO
               .sheSelectItemInfoContainer {
                 display: flex;
                 justify-content: space-between;
                 flex-grow: 1;
-                gap: 10px;
+                gap: 8px;
 
                 .sheSelectItemInfoBlock,
                 .sheSelectItemExtraInfoBlock {
                   display: flex;
                   flex-direction: column;
+                  justify-content: center;
+                  flex-grow: 1;
 
                   :global(.she-subtext) {
-                    font-size: 8px;
+                    font-size: 10px;
+                  }
+
+                  span {
+                    word-break: break-all;
+                    line-height: 12px;
                   }
                 }
 
@@ -95,11 +179,16 @@ $iconSize: 20px;
                 }
 
                 .sheSelectItemExtraInfoBlock {
-                  align-items: end;
+                  text-align: end;
+                  max-width: 30%;
+                  min-width: 20px;
                 }
               }
 
+              // --------------------------------- TOOLTIP
               .sheSelectItemTooltipContainer {
+                min-width: 17px;
+                max-width: 17px;
               }
             }
           }

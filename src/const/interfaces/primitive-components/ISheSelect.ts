@@ -20,7 +20,7 @@ export interface ISheSelectItem extends ComponentPropsWithRef<any> {
   sideDescription?: string;
   sideDescriptionTransKey?: string;
   disabled?: boolean;
-  colors?: string | string[];
+  colors?: string[];
   tooltip?: ISheTooltip;
 }
 
@@ -44,10 +44,8 @@ export interface ISheSelect
   fullWidth?: boolean;
   required?: boolean;
   isOpen?: boolean;
-
   showSelectIcon?: boolean;
   selectedColor?: string;
-
   onOpenChange?: (value: any) => void;
   onSelect?: (value: any) => void;
 }
