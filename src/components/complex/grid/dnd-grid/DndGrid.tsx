@@ -64,8 +64,6 @@ const DraggableRow = ({ row, loadingRows, isDragDisabled = false }) => {
 
   const isLoading = loadingRows.has(row.id);
 
-  const isAlert = row.original.showAlert;
-
   return (
     <TableRow
       className={isDragging ? cs.tableRowDragged : cs.tableRow}
@@ -76,7 +74,7 @@ const DraggableRow = ({ row, loadingRows, isDragDisabled = false }) => {
       style={{
         opacity: isLoading ? 0.7 : 1,
         transform: CSS.Transform.toString(transform),
-        background: isLoading ? "#EBF9EF" : isAlert ? "#F8F3FF" : "white",
+        background: isLoading ? "#EBF9EF" : "white",
         transition: "background-color 0.3s ease",
       }}
     >
@@ -84,7 +82,7 @@ const DraggableRow = ({ row, loadingRows, isDragDisabled = false }) => {
         className={isDragging ? cs.dndIconCellDragged : cs.dndIconCell}
         style={{
           cursor: isDragDisabled || isLoading ? "default" : "grab",
-          background: isDragging ? "#F8F3FF" : isAlert ? "#F8F3FF" : "white",
+          background: isDragging ? "#F8F3FF" : "white",
         }}
         {...listeners}
       >
@@ -99,7 +97,6 @@ const DraggableRow = ({ row, loadingRows, isDragDisabled = false }) => {
           onClick={(e) => e.stopPropagation()}
           style={{
             cursor: "default",
-            background: isAlert ? "#F8F3FF" : undefined,
           }}
         >
           {flexRender(cell.column.columnDef.cell, cell.getContext())}

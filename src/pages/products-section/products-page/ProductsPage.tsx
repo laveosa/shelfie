@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Columns3Icon,
   Download,
@@ -38,19 +38,31 @@ export function ProductsPage() {
   const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
   const service = useProductsPageService();
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("products");
 
   useEffect(() => {
-    service
-      .getTheProductsForGridHandler(state.gridRequestModel)
-      .then((res: GridModel) => {
-        dispatch(actions.refreshProductsGridModel(res));
-      });
-    service
-      .getVariantsForGridHandler(state.gridRequestModel)
-      .then((res: GridModel) => {
-        dispatch(actions.refreshVariantsGridModel(res));
-      });
-  }, [state.gridRequestModel]);
+    const fetchData = async () => {
+      try {
+        if (activeTab === "products") {
+          const res = await service.getTheProductsForGridHandler(
+            state.gridRequestModel,
+          );
+          console.log("Products fetched:", res);
+          dispatch(actions.refreshProductsGridModel(res));
+        } else if (activeTab === "variants") {
+          const res = await service.getVariantsForGridHandler(
+            state.gridRequestModel,
+          );
+          console.log("Variants fetched:", res);
+          dispatch(actions.refreshVariantsGridModel(res));
+        }
+      } catch (error) {
+        console.error(`Failed to fetch ${activeTab}:`, error);
+      }
+    };
+
+    fetchData();
+  }, [state.gridRequestModel, activeTab, dispatch]);
 
   useEffect(() => {
     service.getBrandsForFilterHandler();
@@ -64,7 +76,7 @@ export function ProductsPage() {
     setLoadingRow?: (rowId: string, loading: boolean) => void,
     rowData?: ProductModel,
   ) => {
-    setLoadingRow(rowId, true);
+    setLoadingRow?.(rowId, true);
     switch (actionType) {
       case "image":
         console.log(`Image row ${rowId}`);
@@ -95,7 +107,7 @@ export function ProductsPage() {
         );
         break;
     }
-    setLoadingRow(rowId, false);
+    setLoadingRow?.(rowId, false);
   };
 
   const productsColumns = productsGridColumns(onAction);
@@ -110,6 +122,7 @@ export function ProductsPage() {
   function handleConfigure() {}
 
   function handleGridRequestChange(updates: GridRequestModel) {
+    console.log("Updating gridRequestModel:", updates);
     dispatch(
       actions.refreshGridRequestModel({
         ...state.gridRequestModel,
@@ -132,6 +145,11 @@ export function ProductsPage() {
 
   function onResetColumnsHandler() {
     service.resetUserPreferencesHandler();
+  }
+
+  function handleTabChange(value: string) {
+    if (value === activeTab) return;
+    setActiveTab(value);
   }
 
   return (
@@ -166,7 +184,7 @@ export function ProductsPage() {
         </div>
       </div>
       <div className={cs.productsPageContent}>
-        <SheTabs defaultValue="products">
+        <SheTabs defaultValue="products" onValueChange={handleTabChange}>
           <div className={cs.tabItemsWrapper}>
             <TabsList className={cs.tabItems}>
               <TabsTrigger className={cs.tabItemTrigger} value="products">
@@ -204,7 +222,6 @@ export function ProductsPage() {
                 getId={(item: BrandModel) => item.brandId}
                 getName={(item: BrandModel) => item.brandName}
               />
-
               <GridItemsFilter
                 items={state.categories}
                 columnName={"Categories"}
@@ -232,7 +249,6 @@ export function ProductsPage() {
                 getId={(item: BrandModel) => item.brandId}
                 getName={(item: BrandModel) => item.brandName}
               />
-
               <GridItemsFilter
                 items={state.categories}
                 columnName={"Categories"}
