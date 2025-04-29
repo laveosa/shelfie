@@ -29,6 +29,7 @@ export default function ItemsCard({
       <SheProductCard
         title={title}
         width="300px"
+        minWidth="300px"
         showToggleButton={true}
         className={cs.productsCard}
         {...props}

@@ -88,27 +88,30 @@ export function ManageVariantsPage() {
     };
   }, [dispatch]);
 
+  function scrollToCard(cardId: string) {
+    setTimeout(() => {
+      const cardElement = cardRefs.current[cardId];
+      if (cardElement) {
+        cardElement.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 100);
+  }
+
   function handleCardAction(identifier: string, forceOpen: boolean = false) {
     let updatedCards: string[];
 
     if (forceOpen) {
-      updatedCards = state.activeCards.includes(identifier)
-        ? state.activeCards
-        : [...state.activeCards, identifier];
+      if (!state.activeCards.includes(identifier)) {
+        updatedCards = [...state.activeCards, identifier];
+        dispatch(actions.refreshActiveCards(updatedCards));
+        scrollToCard(identifier);
+      } else {
+        updatedCards = state.activeCards;
+        dispatch(actions.refreshActiveCards(updatedCards));
+      }
     } else {
       updatedCards = state.activeCards.filter((card) => card !== identifier);
-    }
-
-    dispatch(actions.refreshActiveCards(updatedCards));
-
-    // Scroll after a slight delay to ensure the card has been rendered
-    if (forceOpen) {
-      setTimeout(() => {
-        const cardElement = cardRefs.current[identifier];
-        if (cardElement) {
-          cardElement.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-      }, 100);
+      dispatch(actions.refreshActiveCards(updatedCards));
     }
   }
 
@@ -117,20 +120,27 @@ export function ManageVariantsPage() {
     forceOpen = false,
   ) {
     let updatedCards = [...state.activeCards];
+    let lastAddedCard = null;
 
     if (forceOpen) {
       for (const card of cardIdentifiers) {
         if (!updatedCards.includes(card)) {
           updatedCards.push(card);
+          lastAddedCard = card;
         }
+      }
+
+      dispatch(actions.refreshActiveCards(updatedCards));
+
+      if (lastAddedCard) {
+        scrollToCard(lastAddedCard);
       }
     } else {
       updatedCards = updatedCards.filter(
         (card) => !cardIdentifiers.includes(card),
       );
+      dispatch(actions.refreshActiveCards(updatedCards));
     }
-
-    dispatch(actions.refreshActiveCards(updatedCards));
   }
 
   function onAction(actionType: string, payload?: any) {
@@ -154,7 +164,6 @@ export function ManageVariantsPage() {
         });
         break;
       case "updateVariantDetails":
-        console.log("VARIANT", payload);
         service
           .updateVariantDetailsHandler(
             payload.variant.variantId,
@@ -191,29 +200,18 @@ export function ManageVariantsPage() {
         });
         break;
       case "increaseStockAmount":
-        console.log("StockAmount", payload);
-        service
-          .increaseStockAmountForVariantHandler(
-            payload.variant.variantId,
-            payload.formattedData,
-          )
-          .then((res) => {
-            console.log("SELECTED VARIANT", res);
-          });
+        service.increaseStockAmountForVariantHandler(
+          payload.variant.variantId,
+          payload.formattedData,
+        );
         break;
       case "disposeFromStock":
-        console.log("DisposeFromStock", payload);
-        service
-          .disposeVariantFromStockHandler(
-            payload.variant.variantId,
-            payload.formattedData,
-          )
-          .then((res) => {
-            console.log("SELECTED VARIANT", res);
-          });
+        service.disposeVariantFromStockHandler(
+          payload.variant.variantId,
+          payload.formattedData,
+        );
         break;
       case "changeVariantPosition":
-        console.log("DisposeFromStock", payload);
         service.changeVariantPositionHandler(
           productId,
           payload.activeItem.variantId,
@@ -247,8 +245,7 @@ export function ManageVariantsPage() {
             state.selectedVariant.variantId,
             payload.photoId,
           )
-          .then((res) => {
-            console.log("Attached PHOTO", res);
+          .then(() => {
             service
               .getVariantDetailsHandler(state.selectedVariant.variantId)
               .then((res) => {
@@ -274,15 +271,13 @@ export function ManageVariantsPage() {
           });
         break;
       case "dndVariantPhoto":
-        console.log("DnD action:", payload);
         service
           .changePhotoPositionForVariantHandler(
             state.selectedVariant.variantId,
             payload.activeItem.photoId,
             payload.newIndex,
           )
-          .then((res) => {
-            console.log("RES", res);
+          .then(() => {
             service
               .getVariantDetailsHandler(state.selectedVariant.variantId)
               .then((res) => {
@@ -338,7 +333,6 @@ export function ManageVariantsPage() {
         });
         break;
       case "updateTrait":
-        console.log("PAYLOAD", payload);
         service
           .updateTraitHandler(state.selectedTrait.traitId, payload)
           .then((res) => {
@@ -425,16 +419,11 @@ export function ManageVariantsPage() {
         });
         break;
       case "dndTraitOption":
-        console.log("DnD action:", payload);
-        service
-          .changePositionOfTraitOptionHandler(
-            payload.selectedTrait.traitId,
-            payload.activeItem.optionId,
-            payload.newIndex,
-          )
-          .then((res) => {
-            console.log("RES", res);
-          });
+        service.changePositionOfTraitOptionHandler(
+          payload.selectedTrait.traitId,
+          payload.activeItem.optionId,
+          payload.newIndex,
+        );
         break;
       case "openAddVariantCard":
         handleCardAction("addVariantCard", true);
@@ -492,74 +481,124 @@ export function ManageVariantsPage() {
         onAction={onAction}
       />
       {state.activeCards.includes("variantConfigurationCard") && (
-        <VariantConfigurationCard
-          variant={state.selectedVariant}
-          data={state.variantTraitsGridModel}
-          taxesList={state.taxesList}
-          onAction={onAction}
-          onGenerateProductCode={service.generateProductCodeHandler}
-          onSecondaryButtonClick={() =>
-            handleCardAction("variantConfigurationCard")
-          }
-        />
+        <div
+          ref={(el) => {
+            cardRefs.current["variantConfigurationCard"] = el;
+          }}
+        >
+          <VariantConfigurationCard
+            variant={state.selectedVariant}
+            data={state.variantTraitsGridModel}
+            taxesList={state.taxesList}
+            onAction={onAction}
+            onGenerateProductCode={service.generateProductCodeHandler}
+            onSecondaryButtonClick={() =>
+              handleCardAction("variantConfigurationCard")
+            }
+          />
+        </div>
       )}
       {state.activeCards.includes("addStockCard") && (
-        <AddStockCard
-          onAction={onAction}
-          taxTypes={state.taxesList}
-          currencyTypes={state.currenciesList}
-          variant={state.selectedVariant}
-          onSecondaryButtonClick={() => handleCardAction("addStockCard")}
-        />
+        <div
+          ref={(el) => {
+            cardRefs.current["addStockCard"] = el;
+          }}
+        >
+          <AddStockCard
+            onAction={onAction}
+            taxTypes={state.taxesList}
+            currencyTypes={state.currenciesList}
+            variant={state.selectedVariant}
+            onSecondaryButtonClick={() => handleCardAction("addStockCard")}
+          />
+        </div>
       )}
       {state.activeCards.includes("disposeStockCard") && (
-        <DisposeStockCard
-          variant={state.selectedVariant}
-          onAction={onAction}
-          onSecondaryButtonClick={() => handleCardAction("disposeStockCard")}
-        />
+        <div
+          ref={(el) => {
+            cardRefs.current["disposeStockCard"] = el;
+          }}
+        >
+          <DisposeStockCard
+            variant={state.selectedVariant}
+            onAction={onAction}
+            onSecondaryButtonClick={() => handleCardAction("disposeStockCard")}
+          />
+        </div>
       )}
       {state.activeCards.includes("variantHistoryCard") && (
-        <StockHistoryCard
-          variant={state.selectedVariant}
-          getVariantHistory={service.getVariantStockHistoryHandler}
-          onSecondaryButtonClick={() => handleCardAction("variantHistoryCard")}
-        />
+        <div
+          ref={(el) => {
+            cardRefs.current["variantHistoryCard"] = el;
+          }}
+        >
+          <StockHistoryCard
+            variant={state.selectedVariant}
+            getVariantHistory={service.getVariantStockHistoryHandler}
+            onSecondaryButtonClick={() =>
+              handleCardAction("variantHistoryCard")
+            }
+          />
+        </div>
       )}
       {state.activeCards.includes("addVariantCard") && (
-        <AddVariantCard
-          onAction={onAction}
-          traits={state.listOfTraitsWithOptionsForProduct}
-        />
+        <div
+          ref={(el) => {
+            cardRefs.current["addVariantCard"] = el;
+          }}
+        >
+          <AddVariantCard
+            onAction={onAction}
+            traits={state.listOfTraitsWithOptionsForProduct}
+          />
+        </div>
       )}
       {state.activeCards.includes("manageTraitsCard") && (
-        <ManageTraitsCard
-          traits={state.listOfTraitsWithOptionsForProduct}
-          variant={state.selectedVariant}
-          onAction={onAction}
-          onSecondaryButtonClick={() => handleCardAction("manageTraitsCard")}
-        />
+        <div
+          ref={(el) => {
+            cardRefs.current["manageTraitsCard"] = el;
+          }}
+        >
+          <ManageTraitsCard
+            traits={state.listOfTraitsWithOptionsForProduct}
+            variant={state.selectedVariant}
+            onAction={onAction}
+            onSecondaryButtonClick={() => handleCardAction("manageTraitsCard")}
+          />
+        </div>
       )}
       {state.activeCards.includes("chooseVariantTraitsCard") && (
-        <ChooseVariantTraitsCard
-          items={state.traits}
-          selectedItems={state.listOfTraitsWithOptionsForProduct}
-          onAction={onAction}
-          onSecondaryButtonClick={() =>
-            handleCardAction("chooseVariantTraitsCard")
-          }
-        />
+        <div
+          ref={(el) => {
+            cardRefs.current["chooseVariantTraitsCard"] = el;
+          }}
+        >
+          <ChooseVariantTraitsCard
+            items={state.traits}
+            selectedItems={state.listOfTraitsWithOptionsForProduct}
+            onAction={onAction}
+            onSecondaryButtonClick={() =>
+              handleCardAction("chooseVariantTraitsCard")
+            }
+          />
+        </div>
       )}
       {state.activeCards.includes("productTraitConfigurationCard") && (
-        <ProductTraitConfigurationCard
-          data={state.colorOptionsGridModel}
-          selectedTrait={state.selectedTrait}
-          typesOfTraits={state.typesOfTraits}
-          onSecondaryButtonClick={() =>
-            handleCardAction("productTraitConfigurationCard")
-          }
-          onAction={onAction}
-        />
+        <div
+          ref={(el) => {
+            cardRefs.current["productTraitConfigurationCard"] = el;
+          }}
+        >
+          <ProductTraitConfigurationCard
+            data={state.colorOptionsGridModel}
+            selectedTrait={state.selectedTrait}
+            typesOfTraits={state.typesOfTraits}
+            onSecondaryButtonClick={() =>
+              handleCardAction("productTraitConfigurationCard")
+            }
+            onAction={onAction}
+          />
+        </div>
       )}
       {state.activeCards.includes("variantPhotosCard") && (
         <div
