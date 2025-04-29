@@ -48,10 +48,6 @@ export function ProductGalleryPage() {
     service.getProductPhotosHandler(Number(productId)).then((res) => {
       dispatch(actions.refreshProductPhotos(res));
     });
-
-    service.getProductVariantsHandler(productId).then((res) => {
-      dispatch(actions.refreshProductVariants(res));
-    });
   }, [productId]);
 
   function itemCardHandler(item) {
@@ -130,6 +126,9 @@ export function ProductGalleryPage() {
         });
         break;
       case "openConnectImageCard":
+        service.getProductVariantsHandler(productId).then((res) => {
+          dispatch(actions.refreshProductVariants(res));
+        });
         dispatch(actions.refreshSelectedPhoto(payload));
         handleCardAction("connectImageCard");
         break;

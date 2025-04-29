@@ -42,22 +42,16 @@ export function ProductsPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        if (activeTab === "products") {
-          const res = await service.getTheProductsForGridHandler(
-            state.gridRequestModel,
-          );
-          console.log("Products fetched:", res);
-          dispatch(actions.refreshProductsGridModel(res));
-        } else if (activeTab === "variants") {
-          const res = await service.getVariantsForGridHandler(
-            state.gridRequestModel,
-          );
-          console.log("Variants fetched:", res);
-          dispatch(actions.refreshVariantsGridModel(res));
-        }
-      } catch (error) {
-        console.error(`Failed to fetch ${activeTab}:`, error);
+      if (activeTab === "products") {
+        const res = await service.getTheProductsForGridHandler(
+          state.gridRequestModel,
+        );
+        dispatch(actions.refreshProductsGridModel(res));
+      } else if (activeTab === "variants") {
+        const res = await service.getVariantsForGridHandler(
+          state.gridRequestModel,
+        );
+        dispatch(actions.refreshVariantsGridModel(res));
       }
     };
 
