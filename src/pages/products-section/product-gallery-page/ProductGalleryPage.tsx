@@ -129,8 +129,29 @@ export function ProductGalleryPage() {
             });
         });
         break;
-      case "connect":
+      case "openConnectImageCard":
+        dispatch(actions.refreshSelectedPhoto(payload));
         handleCardAction("connectImageCard");
+        break;
+      case "connectImageToVariant":
+        service
+          .attachProductPhotoToVariantHandler(
+            payload.variantId,
+            state.selectedPhoto.photoId,
+          )
+          .then(() => {
+            service.getProductVariantsHandler(productId).then((res) => {
+              dispatch(actions.refreshProductVariants(res));
+            });
+            service.getProductPhotosHandler(Number(productId)).then((res) => {
+              dispatch(actions.refreshProductPhotos(res));
+
+              const selectedPhoto = res.find(
+                (photo) => state.selectedPhoto.photoId === photo.photoId,
+              );
+              dispatch(actions.refreshSelectedPhoto(selectedPhoto));
+            });
+          });
         break;
     }
   }
@@ -159,7 +180,8 @@ export function ProductGalleryPage() {
       />
       {state.activeCards.includes("connectImageCard") && (
         <ConnectImageCard
-          data={state.productVariants}
+          variants={state.productVariants}
+          selectedPhoto={state.selectedPhoto}
           onAction={onAction}
           onSecondaryButtonClick={() => handleCardAction("connectImageCard")}
         />

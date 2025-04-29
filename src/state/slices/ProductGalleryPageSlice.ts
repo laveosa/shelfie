@@ -4,7 +4,6 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IProductGalleryPageSlice } from "@/const/interfaces/store-slices/IProductGalleryPageSlice.ts";
 import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
-import { IManageVariantsPageSlice } from "@/const/interfaces/store-slices/IManageVariantsPageSlice.ts";
 import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
 
 const initialState: IProductGalleryPageSlice = {
@@ -16,6 +15,7 @@ const initialState: IProductGalleryPageSlice = {
   productCounter: null,
   photos: [],
   productVariants: [],
+  selectedPhoto: null,
 };
 
 function setLoading(
@@ -61,10 +61,17 @@ function refreshProductPhotos(
 }
 
 function refreshProductVariants(
-  state: IManageVariantsPageSlice,
+  state: IProductGalleryPageSlice,
   action: PayloadAction<any[]>,
 ) {
   state.productVariants = action?.payload || state.productVariants;
+}
+
+function refreshSelectedPhoto(
+  state: IProductGalleryPageSlice,
+  action: PayloadAction<ImageModel>,
+) {
+  state.selectedPhoto = action?.payload || state.selectedPhoto;
 }
 
 const ProductGalleryPageSlice = createSlice({
@@ -78,6 +85,7 @@ const ProductGalleryPageSlice = createSlice({
     refreshProductCounter,
     refreshProductPhotos,
     refreshProductVariants,
+    refreshSelectedPhoto,
   },
 });
 

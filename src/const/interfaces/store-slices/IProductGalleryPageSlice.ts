@@ -12,4 +12,5 @@ export interface IProductGalleryPageSlice {
   productCounter?: ProductCounterModel;
   photos?: ImageModel[];
   productVariants?: VariantModel[];
+  selectedPhoto?: ImageModel;
 }

@@ -1,14 +1,6 @@
+import { VariantModel } from "@/const/models/VariantModel.ts";
+
 export interface ImageModel {
-  // {
-  //   pictureAppId?: string;
-  //   photoUrl?: string;
-  //   thumbnail?: string;
-  //   context?: string;
-  //   contextAppId?: string;
-  //   isDeleted?: boolean;
-  //   photoKind?: string;
-  //   processingCompletePhotoState?: string;
-  // }
   adaptedUrl?: string;
   height?: number;
   isActive?: boolean;
@@ -16,4 +8,5 @@ export interface ImageModel {
   sortOrder?: number;
   thumbnailUrl?: string;
   width?: number;
+  variants?: VariantModel[];
 }
