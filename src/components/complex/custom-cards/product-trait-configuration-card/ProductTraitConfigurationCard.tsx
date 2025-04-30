@@ -108,7 +108,6 @@ export default function ProductTraitConfigurationCard({
       view="card"
       showCloseButton={true}
       className={cs.productTraitConfigurationCard}
-      width="400px"
       {...props}
     >
       <div className={cs.productTraitConfigurationContent}>

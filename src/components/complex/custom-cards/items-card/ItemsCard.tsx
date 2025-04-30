@@ -28,6 +28,8 @@ export default function ItemsCard({
     <div>
       <SheProductCard
         title={title}
+        width="300px"
+        minWidth="300px"
         showToggleButton={true}
         className={cs.productsCard}
         {...props}
@@ -49,11 +51,6 @@ export default function ItemsCard({
                     <Image />
                   </div>
                 )}
-                {/*<img*/}
-                {/*  src={item.image?.thumbnailUrl || placeholderImage}*/}
-                {/*  alt={item.productName ?? item.variantName}*/}
-                {/*  className={cs.productItemImage}*/}
-                {/*/>*/}
                 <div className={cs.productItemName}>
                   {item.productName ?? item.variantName}
                 </div>

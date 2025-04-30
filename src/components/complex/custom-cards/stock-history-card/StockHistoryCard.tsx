@@ -32,7 +32,6 @@ export default function StockHistoryCard({
       title={`${variant?.variantName} Stock History`}
       view="card"
       showCloseButton
-      width="350px"
       className={cs.stockHistoryCard}
       onSecondaryButtonClick={onSecondaryButtonClick}
       {...props}

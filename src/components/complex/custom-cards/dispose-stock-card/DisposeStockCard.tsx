@@ -75,6 +75,7 @@ export default function DisposeStockCard({
                 type="number"
                 placeholder="enter amount of units..."
                 showError={true}
+                fullWidth
               />
             </SheForm.Field>
             <FormField

@@ -1,10 +1,6 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
+import { useForm } from "react-hook-form";
 
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
-import cs from "./VariantConfigurationCard.module.scss";
-import { IVariantConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IVariantConfigurationCard.ts";
-import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import {
   Blocks,
   Clock,
@@ -13,14 +9,6 @@ import {
   Plus,
   WandSparklesIcon,
 } from "lucide-react";
-import { Separator } from "@/components/ui/separator.tsx";
-import { VariantConfigurationGridColumns } from "@/components/complex/grid/variant-configuration-grid/VariantConfigurationGridColumns.tsx";
-import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import { VariantPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/VariantPhotosGridColumns.tsx";
-import { useForm } from "react-hook-form";
-import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
-import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
-import { VariantModel } from "@/const/models/VariantModel.ts";
 import {
   FormControl,
   FormField,
@@ -34,6 +22,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select.tsx";
+import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
+import cs from "./VariantConfigurationCard.module.scss";
+import { IVariantConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IVariantConfigurationCard.ts";
+import SheInput from "@/components/primitive/she-input/SheInput.tsx";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import { Separator } from "@/components/ui/separator.tsx";
+import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
+import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
+import { VariantModel } from "@/const/models/VariantModel.ts";
+import { VariantConfigurationGridColumns } from "@/components/complex/grid/variant-configuration-grid/VariantConfigurationGridColumns.tsx";
+import { VariantPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/VariantPhotosGridColumns.tsx";
 
 export default function VariantConfigurationCard({
   variant,
@@ -44,6 +44,8 @@ export default function VariantConfigurationCard({
   onSecondaryButtonClick,
   ...props
 }: IVariantConfigurationCard) {
+  const traitsColumns = VariantConfigurationGridColumns;
+  const photoColumns = VariantPhotosGridColumns(onGridAction);
   const form = useForm({
     defaultValues: {
       variantName: variant?.variantName || "",
@@ -55,7 +57,6 @@ export default function VariantConfigurationCard({
       },
     },
   });
-
   const { watch, setValue } = form;
 
   const netto = watch("salePrice.netto");
@@ -64,48 +65,73 @@ export default function VariantConfigurationCard({
   const selectedTax = taxesList?.find((tax) => tax.id === taxTypeId);
   const taxRate = selectedTax?.value || 0;
   const lastChanged = useRef<"netto" | "brutto" | null>(null);
+  const priceValues = useMemo(() => {
+    return {
+      netto,
+      brutto,
+      taxRate,
+    };
+  }, [netto, brutto, taxRate]);
 
-  const traitsColumns = VariantConfigurationGridColumns;
-  const photoColumns = VariantPhotosGridColumns(onGridAction);
+  function calculatePrices() {
+    if (!lastChanged.current) return null;
 
-  useEffect(() => {
-    form.reset({
-      variantName: variant?.variantName || "",
-      variantCode: variant?.variantCode || "",
-      salePrice: {
-        brutto: variant?.salePrice?.brutto || 0,
-        netto: variant?.salePrice?.netto || 0,
-        taxTypeId: taxesList?.[0]?.id,
-      },
-    });
-  }, [form, variant?.variantName, variant?.variantCode, variant?.salePrice]);
+    const currentValues = form.getValues();
+    let needRecalculate = false;
 
-  useEffect(() => {
     if (lastChanged.current === "netto") {
-      const calculatedBrutto = +(netto * (1 + taxRate)).toFixed(2);
-      if (brutto !== calculatedBrutto) {
+      const calculatedBrutto = +(
+        currentValues.salePrice.netto *
+        (1 + taxRate)
+      ).toFixed(2);
+      if (currentValues.salePrice.brutto !== calculatedBrutto) {
         setValue("salePrice.brutto", calculatedBrutto);
+        needRecalculate = true;
+      }
+    } else if (lastChanged.current === "brutto") {
+      const calculatedNetto = +(
+        currentValues.salePrice.brutto /
+        (1 + taxRate)
+      ).toFixed(2);
+      if (currentValues.salePrice.netto !== calculatedNetto) {
+        setValue("salePrice.netto", calculatedNetto);
+        needRecalculate = true;
       }
     }
-  }, [netto, taxRate]);
+
+    return {
+      values: currentValues,
+      needRecalculate,
+    };
+  }
 
   useEffect(() => {
-    if (lastChanged.current === "brutto") {
-      const calculatedNetto = +(brutto / (1 + taxRate)).toFixed(2);
-      if (netto !== calculatedNetto) {
-        setValue("salePrice.netto", calculatedNetto);
-      }
+    const result = calculatePrices();
+
+    if (result && !result.needRecalculate) {
+      onSubmit(result.values);
     }
-  }, [brutto, taxRate]);
+  }, [priceValues]);
 
   function onGenerateCode() {
     onGenerateProductCode().then((res: ProductCodeModel) => {
       form.setValue("variantCode", res.code, { shouldDirty: true });
+
+      const formData = form.getValues();
+      const formattedData = {
+        ...formData,
+        salePrice: {
+          brutto: Number(formData.salePrice.brutto),
+          netto: Number(formData.salePrice.netto),
+          taxTypeId: Number(formData.salePrice.taxTypeId),
+        },
+      };
+
+      onAction("updateVariantDetails", { formattedData, variant });
     });
   }
 
   function onSubmit(data: VariantModel) {
-    console.log("Data:", data);
     const formattedData = {
       ...data,
       salePrice: {
@@ -114,9 +140,12 @@ export default function VariantConfigurationCard({
         taxTypeId: Number(data.salePrice.taxTypeId),
       },
     };
-    console.log("Submitted data:", variant);
     onAction("updateVariantDetails", { formattedData, variant });
   }
+
+  const handleOnChangeDelay = (_value: string | number | readonly string[]) => {
+    form.handleSubmit(onSubmit)();
+  };
 
   function onGridAction(
     _actionType: string,
@@ -133,7 +162,6 @@ export default function VariantConfigurationCard({
       title="Manage Variant"
       view="card"
       showCloseButton
-      width="420px"
       onSecondaryButtonClick={onSecondaryButtonClick}
       className={cs.variantConfigurationCard}
       {...props}
@@ -144,7 +172,7 @@ export default function VariantConfigurationCard({
             <SheForm.Field name="variantName">
               <SheInput
                 label="Optional Variant Name"
-                onDelay={() => form.handleSubmit(onSubmit)}
+                onDelay={handleOnChangeDelay}
                 fullWidth
               />
             </SheForm.Field>
@@ -153,7 +181,8 @@ export default function VariantConfigurationCard({
                 <div>
                   <SheInput
                     {...(form.register("variantCode") as any)}
-                    onDelay={() => form.handleSubmit(onSubmit)}
+                    value={variant?.variantCode}
+                    onDelay={handleOnChangeDelay}
                   />
                 </div>
               </SheForm.Field>
@@ -166,17 +195,15 @@ export default function VariantConfigurationCard({
             </div>
             <div className={cs.priceFormRow}>
               <div className={cs.priceFormRowItem}>
-                <SheForm.Field
-                  label="Sale price brutto"
-                  name="salePrice.brutto"
-                >
+                <SheForm.Field label="Sale price netto" name="salePrice.netto">
                   <SheInput
                     type="number"
-                    {...(form.register("salePrice.brutto", {
+                    step="any"
+                    {...(form.register("salePrice.netto", {
                       valueAsNumber: true,
-                      onChange: () => (lastChanged.current = "brutto"),
+                      onChange: () => (lastChanged.current = "netto"),
                     }) as any)}
-                    onDelay={() => form.handleSubmit(onSubmit)}
+                    onDelay={handleOnChangeDelay}
                   />
                 </SheForm.Field>
               </div>
@@ -212,14 +239,18 @@ export default function VariantConfigurationCard({
                 />
               </div>
               <div className={cs.priceFormRowItem}>
-                <SheForm.Field label="Sale price netto" name="salePrice.netto">
+                <SheForm.Field
+                  label="Sale price brutto"
+                  name="salePrice.brutto"
+                >
                   <SheInput
                     type="number"
-                    {...(form.register("salePrice.netto", {
+                    step="any"
+                    {...(form.register("salePrice.brutto", {
                       valueAsNumber: true,
-                      onChange: () => (lastChanged.current = "netto"),
+                      onChange: () => (lastChanged.current = "brutto"),
                     }) as any)}
-                    onDelay={() => form.handleSubmit(onSubmit)}
+                    onDelay={handleOnChangeDelay}
                   />
                 </SheForm.Field>
               </div>
@@ -282,7 +313,9 @@ export default function VariantConfigurationCard({
             <DndGridDataTable
               showHeader={false}
               columns={traitsColumns}
-              data={variant.traitOptions.filter((option) => option.isRemoved)}
+              data={variant.traitOptions.filter(
+                (option) => option.isRemoved != true,
+              )}
               gridModel={data}
             />
           </div>

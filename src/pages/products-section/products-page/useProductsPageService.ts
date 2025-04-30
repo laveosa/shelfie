@@ -20,6 +20,8 @@ export default function useProductsPageService() {
     ProductsApiHooks.useLazyGetCategoriesForProductsFilterQuery();
   const [manageProduct] = ProductsApiHooks.useManageProductMutation();
   const [deleteProduct] = ProductsApiHooks.useDeleteProductMutation();
+  const [toggleProductActivation] =
+    ProductsApiHooks.useToggleProductActivationMutation();
   const [updateUserPreferences] =
     UsersApiHooks.useUpdateUserPreferencesMutation();
   const [resetUserPreferences] =
@@ -90,6 +92,12 @@ export default function useProductsPageService() {
     });
   }
 
+  function toggleProductActivationHandler(productId) {
+    return toggleProductActivation(productId).then((res: any) => {
+      return res;
+    });
+  }
+
   function updateUserPreferencesHandler(model: PreferencesModel) {
     return updateUserPreferences(model).then(() => {
       appService.getUserPreferencesHandler();
@@ -110,6 +118,7 @@ export default function useProductsPageService() {
     getSortingOptionsForGridHandler,
     manageProductHandler,
     deleteProductHandler,
+    toggleProductActivationHandler,
     updateUserPreferencesHandler,
     resetUserPreferencesHandler,
   };

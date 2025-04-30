@@ -27,22 +27,22 @@ export const ProductsApiService = createApi({
         url: ApiUrlEnum.PRODUCTS,
       }),
       transformResponse: (res: any) => res.products, //TODO delete this code after we will receive real data
-      providesTags: (result: ProductModel[]) =>
-        apiConfig.providesTags<ProductModel>(
-          result,
-          ApiServiceNameEnum.PRODUCTS,
-        ),
+      // providesTags: (result: ProductModel[]) =>
+      //   apiConfig.providesTags<ProductModel>(
+      //     result,
+      //     ApiServiceNameEnum.PRODUCTS,
+      //   ),
     }),
     getProductDetail: apiConfig.createQuery<ProductModel, number>(builder, {
       query: (id: number) => ({
         url: `${ApiUrlEnum.PRODUCTS}/${id}`,
       }),
-      providesTags: (_result, _error, id) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          id,
-        },
-      ],
+      // providesTags: (_result, _error, id) => [
+      //   {
+      //     type: ApiServiceNameEnum.PRODUCTS,
+      //     id,
+      //   },
+      // ],
     }),
     manageProduct: apiConfig.createMutation<void, ProductModel>(builder, {
       query: (model: ProductModel) => ({
@@ -50,12 +50,12 @@ export const ProductsApiService = createApi({
         method: "PUT",
         body: JSON.stringify(model),
       }),
-      invalidatesTags: (result) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          result,
-        },
-      ],
+      // invalidatesTags: (result) => [
+      //   {
+      //     type: ApiServiceNameEnum.PRODUCTS,
+      //     result,
+      //   },
+      // ],
     }),
     updateProduct: apiConfig.createMutation<void, any>(builder, {
       query: ({ productId, model }) => ({
@@ -91,12 +91,12 @@ export const ProductsApiService = createApi({
         method: "POST",
         body: JSON.stringify(model),
       }),
-      invalidatesTags: (_result, _error, model) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          model,
-        },
-      ],
+      // invalidatesTags: (_result, _error, model) => [
+      //   {
+      //     type: ApiServiceNameEnum.PRODUCTS,
+      //     model,
+      //   },
+      // ],
     }),
     getBrandsForProductsFilter: apiConfig.createQuery<BrandModel[], void>(
       builder,
@@ -104,8 +104,8 @@ export const ProductsApiService = createApi({
         query: () => ({
           url: `${ApiUrlEnum.BRANDS}/for-filter`,
         }),
-        providesTags: (result: BrandModel[]) =>
-          apiConfig.providesTags(result, ApiServiceNameEnum.PRODUCTS),
+        // providesTags: (result: BrandModel[]) =>
+        //   apiConfig.providesTags(result, ApiServiceNameEnum.PRODUCTS),
       },
     ),
     getCategoriesForProductsFilter: apiConfig.createQuery<
@@ -115,33 +115,33 @@ export const ProductsApiService = createApi({
       query: () => ({
         url: `${ApiUrlEnum.PRODUCT_CATEGORIES}/for-filter`,
       }),
-      providesTags: (result: CategoryModel[]) =>
-        apiConfig.providesTags(result, ApiServiceNameEnum.PRODUCTS),
+      // providesTags: (result: CategoryModel[]) =>
+      //   apiConfig.providesTags(result, ApiServiceNameEnum.PRODUCTS),
     }),
     generateProductCode: apiConfig.createQuery<any, void>(builder, {
       query: () => ({
         url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.CODES}/generate-code`,
       }),
-      providesTags: (_result, _error, code) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          code,
-        },
-      ],
+      // providesTags: (_result, _error, code) => [
+      //   {
+      //     type: ApiServiceNameEnum.PRODUCTS,
+      //     code,
+      //   },
+      // ],
     }),
     getSimpleListOfAllBrands: apiConfig.createQuery<any[], void>(builder, {
       query: () => ({
         url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.BRANDS}/all`,
       }),
-      providesTags: (result: any[]) =>
-        apiConfig.providesTags<any[]>(result, ApiServiceNameEnum.PRODUCTS),
+      // providesTags: (result: any[]) =>
+      //   apiConfig.providesTags<any[]>(result, ApiServiceNameEnum.PRODUCTS),
     }),
     getAllCategoriesByOrganization: apiConfig.createQuery<any, void>(builder, {
       query: () => ({
         url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCT_CATEGORIES}/all`,
       }),
-      providesTags: (result: any) =>
-        apiConfig.providesTags<any>(result, ApiServiceNameEnum.PRODUCTS),
+      // providesTags: (result: any) =>
+      //   apiConfig.providesTags<any>(result, ApiServiceNameEnum.PRODUCTS),
     }),
     checkProductCode: apiConfig.createMutation<void, ProductCodeModel>(
       builder,
@@ -159,12 +159,12 @@ export const ProductsApiService = createApi({
         method: "POST",
         body: JSON.stringify(brandName),
       }),
-      invalidatesTags: (_result, _error, brandName) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          brandName,
-        },
-      ],
+      // invalidatesTags: (_result, _error, brandName) => [
+      //   {
+      //     type: ApiServiceNameEnum.PRODUCTS,
+      //     brandName,
+      //   },
+      // ],
     }),
     checkCategoryName: apiConfig.createMutation<void, CategoryModel>(builder, {
       query: (categoryName: CategoryModel) => ({
@@ -172,12 +172,12 @@ export const ProductsApiService = createApi({
         method: "POST",
         body: JSON.stringify(categoryName),
       }),
-      invalidatesTags: (_result, _error, categoryName) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          categoryName,
-        },
-      ],
+      // invalidatesTags: (_result, _error, categoryName) => [
+      //   {
+      //     type: ApiServiceNameEnum.PRODUCTS,
+      //     categoryName,
+      //   },
+      // ],
     }),
     createNewProduct: apiConfig.createMutation<void, ProductModel>(builder, {
       query: (model: ProductModel) => ({
@@ -185,12 +185,12 @@ export const ProductsApiService = createApi({
         method: "POST",
         body: JSON.stringify(model),
       }),
-      invalidatesTags: (_result, _error, model) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          model,
-        },
-      ],
+      // invalidatesTags: (_result, _error, model) => [
+      //   {
+      //     type: ApiServiceNameEnum.PRODUCTS,
+      //     model,
+      //   },
+      // ],
     }),
     createNewCategory: apiConfig.createMutation<void, CategoryModel>(builder, {
       query: (model: CategoryModel) => ({
@@ -198,12 +198,12 @@ export const ProductsApiService = createApi({
         method: "POST",
         body: JSON.stringify(model),
       }),
-      invalidatesTags: (_result, _error, model) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          model,
-        },
-      ],
+      // invalidatesTags: (_result, _error, model) => [
+      //   {
+      //     type: ApiServiceNameEnum.PRODUCTS,
+      //     model,
+      //   },
+      // ],
     }),
     createBrand: apiConfig.createMutation<void, BrandModel>(builder, {
       query: (model: BrandModel) => ({
@@ -211,12 +211,12 @@ export const ProductsApiService = createApi({
         method: "POST",
         body: JSON.stringify(model),
       }),
-      invalidatesTags: (_result, _error, model) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          model,
-        },
-      ],
+      // invalidatesTags: (_result, _error, model) => [
+      //   {
+      //     type: ApiServiceNameEnum.PRODUCTS,
+      //     model,
+      //   },
+      // ],
     }),
     uploadPhoto: apiConfig.createMutation<void, any>(builder, {
       query: (model: UploadPhotoModel) => ({
@@ -240,12 +240,12 @@ export const ProductsApiService = createApi({
         query: (id: number) => ({
           url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/${id}/counters`,
         }),
-        providesTags: (_result, _error, result) => [
-          {
-            type: ApiServiceNameEnum.PRODUCTS,
-            result,
-          },
-        ],
+        // providesTags: (_result, _error, result) => [
+        //   {
+        //     type: ApiServiceNameEnum.PRODUCTS,
+        //     result,
+        //   },
+        // ],
       },
     ),
     getProductPhotos: apiConfig.createQuery<ProductCounterModel, number>(
@@ -267,12 +267,12 @@ export const ProductsApiService = createApi({
         url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/${productId}/photo/${photoId}/${index}`,
         method: "PATCH",
       }),
-      invalidatesTags: (_result, _error, result) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          result,
-        },
-      ],
+      // invalidatesTags: (_result, _error, result) => [
+      //   {
+      //     type: ApiServiceNameEnum.PRODUCTS,
+      //     result,
+      //   },
+      // ],
     }),
     detachVariantPhoto: apiConfig.createMutation<
       any,
@@ -285,12 +285,12 @@ export const ProductsApiService = createApi({
         url: `${ApiUrlEnum.VARIANTS}/${id}/detach-photo/${photoId}`,
         method: "PATCH",
       }),
-      invalidatesTags: (_result, _error, result) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          result,
-        },
-      ],
+      // invalidatesTags: (_result, _error, result) => [
+      //   {
+      //     type: ApiServiceNameEnum.PRODUCTS,
+      //     result,
+      //   },
+      // ],
     }),
     getVariantsForGrid: apiConfig.createMutation<GridModel, GridRequestModel>(
       builder,
@@ -300,12 +300,12 @@ export const ProductsApiService = createApi({
           method: "POST",
           body: JSON.stringify(model),
         }),
-        invalidatesTags: (_result, _error, model) => [
-          {
-            type: ApiServiceNameEnum.PRODUCTS,
-            model,
-          },
-        ],
+        // invalidatesTags: (_result, _error, model) => [
+        //   {
+        //     type: ApiServiceNameEnum.PRODUCTS,
+        //     model,
+        //   },
+        // ],
       },
     ),
     getProductVariants: apiConfig.createQuery<VariantModel[], number>(builder, {
@@ -331,12 +331,12 @@ export const ProductsApiService = createApi({
         method: "POST",
         body: JSON.stringify(model),
       }),
-      invalidatesTags: (_result, _error, model) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          model,
-        },
-      ],
+      // invalidatesTags: (_result, _error, model) => [
+      //   {
+      //     type: ApiServiceNameEnum.PRODUCTS,
+      //     model,
+      //   },
+      // ],
     }),
     getVariantDetails: apiConfig.createQuery<VariantModel, number>(builder, {
       query: (id: number) => ({
@@ -373,12 +373,12 @@ export const ProductsApiService = createApi({
         method: "PATCH",
         body: JSON.stringify(model),
       }),
-      invalidatesTags: (_result, _error, result) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          result,
-        },
-      ],
+      // invalidatesTags: (_result, _error, result) => [
+      //   {
+      //     type: ApiServiceNameEnum.PRODUCTS,
+      //     result,
+      //   },
+      // ],
     }),
     updateVariantTraitOptions: apiConfig.createMutation<
       any,
@@ -411,12 +411,12 @@ export const ProductsApiService = createApi({
         method: "POST",
         body: JSON.stringify(model),
       }),
-      invalidatesTags: (_result, _error, model) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          model,
-        },
-      ],
+      // invalidatesTags: (_result, _error, model) => [
+      //   {
+      //     type: ApiServiceNameEnum.PRODUCTS,
+      //     model,
+      //   },
+      // ],
     }),
     disposeVariantFromStock: apiConfig.createMutation<
       any,
@@ -430,23 +430,23 @@ export const ProductsApiService = createApi({
         method: "POST",
         body: JSON.stringify(model),
       }),
-      invalidatesTags: (_result, _error, model) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          model,
-        },
-      ],
+      // invalidatesTags: (_result, _error, model) => [
+      //   {
+      //     type: ApiServiceNameEnum.PRODUCTS,
+      //     model,
+      //   },
+      // ],
     }),
     getVariantStockHistory: apiConfig.createQuery<any, number>(builder, {
       query: (id: number) => ({
         url: `${ApiUrlEnum.VARIANTS}/${id}/stock-history`,
       }),
-      providesTags: (_result, _error, result) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          result,
-        },
-      ],
+      // providesTags: (_result, _error, result) => [
+      //   {
+      //     type: ApiServiceNameEnum.PRODUCTS,
+      //     result,
+      //   },
+      // ],
     }),
     changeVariantPosition: apiConfig.createMutation<
       any,
@@ -473,12 +473,12 @@ export const ProductsApiService = createApi({
         url: `${ApiUrlEnum.VARIANTS}/${id}/photo/${photoId}/${index}`,
         method: "PATCH",
       }),
-      invalidatesTags: (_result, _error, result) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          result,
-        },
-      ],
+      // invalidatesTags: (_result, _error, result) => [
+      //   {
+      //     type: ApiServiceNameEnum.PRODUCTS,
+      //     result,
+      //   },
+      // ],
     }),
     attachProductPhotoToVariant: apiConfig.createMutation<
       any,

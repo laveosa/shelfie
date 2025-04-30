@@ -26,7 +26,7 @@ export default function ProductPhotosCard({
         onAction("delete", payload);
         break;
       case "connect":
-        onAction("connect", payload);
+        onAction("openConnectImageCard", payload);
         break;
       case "dnd":
         const { newIndex, activeItem } = payload;
@@ -56,7 +56,6 @@ export default function ProductPhotosCard({
       <SheProductCard
         title="Product Photos"
         view="card"
-        minWidth="450px"
         className={cs.productPhotosCard}
         {...props}
       >

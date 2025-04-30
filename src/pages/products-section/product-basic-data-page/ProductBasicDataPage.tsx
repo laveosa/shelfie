@@ -22,6 +22,7 @@ import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
+import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 
 export function ProductBasicDataPage() {
   const dispatch = useAppDispatch();
@@ -36,6 +37,7 @@ export function ProductBasicDataPage() {
   const navigate = useNavigate();
   const { addToast } = useToast();
   const { productId } = useParams();
+  const cardRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   useEffect(() => {
     productsService
@@ -54,6 +56,9 @@ export function ProductBasicDataPage() {
         dispatch(actions.refreshCategoriesList(res ? res : []));
       });
 
+    dispatch(actions.refreshProduct({}));
+    dispatch(actions.refreshProductCounter({}));
+
     if (productId) {
       dispatch(actions.refreshActiveCards(["basicData"]));
       service.getProductDetailsHandler(productId).then((res: ProductModel) => {
@@ -65,21 +70,24 @@ export function ProductBasicDataPage() {
         .then((res: ProductCounterModel) => {
           dispatch(actions.refreshProductCounter(res));
         });
-    } else {
-      dispatch(actions.refreshProductCounter({}));
-      dispatch(actions.refreshProduct({}));
     }
   }, [productId]);
+
+  function scrollToCard(cardId: string) {
+    setTimeout(() => {
+      const cardElement = cardRefs.current[cardId];
+      if (cardElement) {
+        cardElement.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 100);
+  }
 
   function handleCardAction(identifier: string) {
     const updatedCards = state.activeCards.includes(identifier)
       ? state.activeCards.filter((card) => card !== identifier)
       : [...state.activeCards, identifier];
+    scrollToCard(identifier);
     dispatch(actions.refreshActiveCards(updatedCards));
-  }
-
-  function closeProductConfigurationCardHandle() {
-    productId ? handleCardAction("basicData") : navigate(ApiUrlEnum.PRODUCTS);
   }
 
   function itemCardClickHandler(item) {
@@ -101,6 +109,11 @@ export function ProductBasicDataPage() {
             text: "Product updated successfully",
             type: "success",
           });
+          service
+            .getProductDetailsHandler(productId)
+            .then((res: ProductModel) => {
+              dispatch(actions.refreshProduct(res));
+            });
         } else {
           addToast({
             text: `${res.error.data.detail}`,
@@ -161,18 +174,32 @@ export function ProductBasicDataPage() {
           handleCardAction("createCategoryCard")
         }
         onOpenCreateProductBrandCard={() => handleCardAction("createBrandCard")}
-        onSecondaryButtonClick={closeProductConfigurationCardHandle}
+        onSecondaryButtonClick={() => navigate(NavUrlEnum.PRODUCTS)}
         onPrimaryButtonClick={(data) => onSubmitProductDataHandler(data)}
       />
       {state.activeCards.includes("createCategoryCard") && (
-        <CreateProductCategoryCard
-          onSecondaryButtonClick={() => handleCardAction("createCategoryCard")}
-        />
+        <div
+          ref={(el) => {
+            cardRefs.current["createCategoryCard"] = el;
+          }}
+        >
+          <CreateProductCategoryCard
+            onSecondaryButtonClick={() =>
+              handleCardAction("createCategoryCard")
+            }
+          />
+        </div>
       )}
       {state.activeCards.includes("createBrandCard") && (
-        <CreateProductBrandCard
-          onSecondaryButtonClick={() => handleCardAction("createBrandCard")}
-        />
+        <div
+          ref={(el) => {
+            cardRefs.current["createBrandCard"] = el;
+          }}
+        >
+          <CreateProductBrandCard
+            onSecondaryButtonClick={() => handleCardAction("createBrandCard")}
+          />
+        </div>
       )}
     </div>
   );

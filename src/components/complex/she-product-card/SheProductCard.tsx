@@ -11,7 +11,7 @@ export default function SheProductCard({
   view = "",
   loading,
   width,
-  minWidth,
+  minWidth = "400px",
   maxWidth,
   title,
   titleTransKey,
@@ -43,7 +43,7 @@ export default function SheProductCard({
       className={`${className || ""} ${cs.sheProductCard || ""} ${view === "card" ? cs.card : ""}`}
       style={{
         width,
-        minWidth,
+        minWidth: isMinimized ? "70px" : minWidth,
         maxWidth: isMinimized ? "70px" : maxWidth,
         padding: isMinimized ? "10px 0 20px 20px" : "10px 20px 20px",
       }}

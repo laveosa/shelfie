@@ -22,6 +22,9 @@ import ProductGalleryPageSlice from "@/state/slices/ProductGalleryPageSlice.ts";
 import ManageVariantsPageSlice from "@/state/slices/ManageVariantsPageSlice.ts";
 import MessengerApiService from "@/utils/services/api/MessengerApiService.ts";
 import { FacebookApiService } from "@/utils/services/api/FacebookApiService.ts";
+import AttributesPageSlice from "@/state/slices/AttributesPageSlice.ts";
+import SizeChartPageSlice from "@/state/slices/SizeChartPageSlice.ts";
+import PurchasePageSlice from "@/state/slices/PurchsePageSlice.ts";
 
 export const store = configureStore({
   reducer: {
@@ -34,6 +37,9 @@ export const store = configureStore({
     [StoreSliceEnum.PRODUCT_BASIC_DATA]: ProductBasicDataPageSlice.reducer,
     [StoreSliceEnum.PRODUCT_GALLERY]: ProductGalleryPageSlice.reducer,
     [StoreSliceEnum.MANAGE_VARIANTS]: ManageVariantsPageSlice.reducer,
+    [StoreSliceEnum.ATTRIBUTES]: AttributesPageSlice.reducer,
+    [StoreSliceEnum.SIZE_CHART]: SizeChartPageSlice.reducer,
+    [StoreSliceEnum.PURCHASE]: PurchasePageSlice.reducer,
     [StoreSliceEnum.PROFILE]: ProfilePageSlice.reducer,
     [StoreSliceEnum.SETTINGS]: SettingsPageSlice.reducer,
     [StoreSliceEnum.SUPPORT]: SupportPageSlice.reducer,

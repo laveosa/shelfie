@@ -38,26 +38,41 @@ export default function ProductConfigurationCard({
   const form = useForm({
     defaultValues: {
       name: "",
-      productCode: "",
-      productBarcode: "",
+      productCode: null,
+      barcode: "",
       categoryId: null,
       brandId: null,
-      isActive: true,
+      isActive: false,
     },
   });
 
   useEffect(() => {
-    if (product) {
+    if (
+      product &&
+      product.productId &&
+      product.productName &&
+      product.category &&
+      product.brand
+    ) {
       form.reset({
-        name: product?.productName,
-        productCode: product?.productCode,
-        productBarcode: "",
-        categoryId: product?.category?.categoryId || null,
-        brandId: product?.brand?.brandId || null,
-        isActive: product?.isActive,
+        name: product.productName || "",
+        productCode: product.productCode || null,
+        barcode: product.barcode || "",
+        categoryId: product.category.categoryId || null,
+        brandId: product.brand.brandId || null,
+        isActive: product.isActive || false,
+      });
+    } else {
+      form.reset({
+        name: "",
+        productCode: null,
+        barcode: "",
+        categoryId: null,
+        brandId: null,
+        isActive: false,
       });
     }
-  }, [product, form]);
+  }, [product]);
 
   function onGenerateCode() {
     onGenerateProductCode().then((res: ProductCodeModel) => {
@@ -108,6 +123,7 @@ export default function ProductConfigurationCard({
                 isValid={!form.formState.errors.name}
                 patternErrorMessage={form.formState.errors.name?.message}
                 showError={true}
+                fullWidth={true}
               />
             </SheForm.Field>
             <div className={cs.productConfigurationFormRow}>
@@ -137,20 +153,13 @@ export default function ProductConfigurationCard({
                 onClick={onGenerateCode}
               />
             </div>
-            <div className={cs.productConfigurationFormRow}>
-              <SheForm.Field rules={{}} name="productBarcode">
-                <SheInput
-                  label="Product Barcode"
-                  placeholder="enter product barcode..."
-                  isValid={!form.formState.errors.productBarcode}
-                  patternErrorMessage={
-                    form.formState.errors.productBarcode?.message
-                  }
-                  showError={true}
-                  fullWidth={true}
-                />
-              </SheForm.Field>
-            </div>
+            <SheForm.Field name="barcode">
+              <SheInput
+                label="Product Barcode"
+                placeholder="enter product barcode..."
+                fullWidth={true}
+              />
+            </SheForm.Field>
             <div className={cs.productConfigurationFormRow}>
               <FormField
                 control={form.control}
@@ -159,15 +168,21 @@ export default function ProductConfigurationCard({
                   required: true,
                 }}
                 render={({ field }) => (
-                  <FormItem className={cs.select}>
+                  <FormItem>
                     <FormLabel>Product Category</FormLabel>
                     <Select
+                      key={form.watch("categoryId")}
                       onValueChange={(value) => field.onChange(Number(value))}
                       value={field.value ? field.value.toString() : ""}
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select category" />
+                          <SelectValue>
+                            {categoriesList.find(
+                              (item) =>
+                                item.categoryId === form.watch("categoryId"),
+                            )?.categoryName ?? "Select category"}
+                          </SelectValue>
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -176,7 +191,7 @@ export default function ProductConfigurationCard({
                             key={option.categoryId}
                             value={option.categoryId.toString()}
                           >
-                            <div>{option.categoryName}</div>
+                            {option.categoryName}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -199,9 +214,10 @@ export default function ProductConfigurationCard({
                   required: true,
                 }}
                 render={({ field }) => (
-                  <FormItem className={cs.select}>
+                  <FormItem>
                     <FormLabel>Product Brand</FormLabel>
                     <Select
+                      key={form.watch("brandId")}
                       onValueChange={(value) => field.onChange(Number(value))}
                       value={field.value ? field.value.toString() : ""}
                     >

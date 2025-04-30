@@ -83,7 +83,6 @@ export default function AddStockCard({
       onPrimaryButtonClick={form.handleSubmit(onSubmit)}
       onSecondaryButtonClick={onSecondaryButtonClick}
       showCloseButton
-      width="370px"
       className={cs.addStockCard}
       {...props}
     >
@@ -95,6 +94,7 @@ export default function AddStockCard({
                 label="Units"
                 type="number"
                 step="any"
+                fullWidth
                 onDelay={() => {
                   form.handleSubmit(onSubmit);
                 }}
