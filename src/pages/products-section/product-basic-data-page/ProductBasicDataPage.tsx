@@ -56,6 +56,9 @@ export function ProductBasicDataPage() {
         dispatch(actions.refreshCategoriesList(res ? res : []));
       });
 
+    dispatch(actions.refreshProduct({}));
+    dispatch(actions.refreshProductCounter({}));
+
     if (productId) {
       dispatch(actions.refreshActiveCards(["basicData"]));
       service.getProductDetailsHandler(productId).then((res: ProductModel) => {
@@ -67,9 +70,6 @@ export function ProductBasicDataPage() {
         .then((res: ProductCounterModel) => {
           dispatch(actions.refreshProductCounter(res));
         });
-    } else {
-      dispatch(actions.refreshProductCounter({}));
-      dispatch(actions.refreshProduct({}));
     }
   }, [productId]);
 

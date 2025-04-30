@@ -94,6 +94,7 @@ export default function AddStockCard({
                 label="Units"
                 type="number"
                 step="any"
+                fullWidth
                 onDelay={() => {
                   form.handleSubmit(onSubmit);
                 }}

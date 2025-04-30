@@ -4,7 +4,6 @@ import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { useToast } from "@/hooks/useToast.ts";
-import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 import cs from "@/pages/products-section/manage-variants-page/ManageVariantsPage.module.scss";
 import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
 import useManageVariantsPageService from "@/pages/products-section/manage-variants-page/useManageVariantsPageService.ts";
@@ -41,37 +40,12 @@ export function ManageVariantsPage() {
       .then((res: GridModel) => {
         dispatch(actions.refreshProducts(res.items));
       });
-
-    service.getListOfTypesOfTraitsHandler().then((res) => {
-      dispatch(actions.refreshTypesOfTraits(res));
-    });
-
-    service
-      .getCountersForProductsHandler(productId)
-      .then((res: ProductCounterModel) => {
-        dispatch(actions.refreshProductCounter(res));
-      });
     service
       .getListOfTraitsWithOptionsForProductHandler(productId)
       .then((res) => {
         dispatch(actions.refreshListOfTraitsWithOptionsForProduct(res));
       });
-    service.getProductPhotosHandler(Number(productId)).then((res) => {
-      dispatch(actions.refreshProductPhotos(res));
-    });
-    service.getTaxesListHandler().then((res) => {
-      dispatch(actions.refreshTaxesList(res));
-    });
-    service.getCurrenciesListHandler().then((res) => {
-      dispatch(actions.refreshCurrenciesList(res));
-    });
   }, [productId]);
-
-  useEffect(() => {
-    service.getListOfAllTraitsHandler().then((res) => {
-      dispatch(actions.refreshTraits(res));
-    });
-  }, [state.selectedTrait]);
 
   useEffect(() => {
     service.getCountersForProductsHandler(productId).then((res) => {
@@ -157,9 +131,13 @@ export function ManageVariantsPage() {
         });
         break;
       case "manageVariant":
-        service.getVariantDetailsHandler(payload.variantId).then((res) => {
-          dispatch(actions.refreshSelectedVariant(res));
-          dispatch(actions.refreshVariantPhotos(res?.photos));
+        Promise.all([
+          service.getVariantDetailsHandler(payload.variantId),
+          service.getTaxesListHandler(),
+        ]).then(([variant, taxes]) => {
+          dispatch(actions.refreshSelectedVariant(variant));
+          dispatch(actions.refreshVariantPhotos(variant?.photos));
+          dispatch(actions.refreshTaxesList(taxes));
           handleCardAction("variantConfigurationCard", true);
         });
         break;
@@ -287,14 +265,18 @@ export function ManageVariantsPage() {
           });
         break;
       case "addTrait":
-        handleCardAction("productTraitConfigurationCard", true);
-        dispatch(actions.refreshSelectedTrait({}));
+        service.getListOfTypesOfTraitsHandler().then((res) => {
+          dispatch(actions.refreshTypesOfTraits(res));
+          handleCardAction("productTraitConfigurationCard", true);
+          dispatch(actions.refreshSelectedTrait({}));
+        });
         break;
       case "manageTrait":
         Promise.all([
           service.getTraitHandler(payload),
           service.getOptionsForTraitHandler(payload),
-        ]).then(([trait, options]) => {
+          service.getListOfTypesOfTraitsHandler(),
+        ]).then(([trait, options, types]) => {
           dispatch(actions.refreshSelectedTrait(trait));
           dispatch(
             actions.refreshColorOptionsGridModel({
@@ -302,6 +284,7 @@ export function ManageVariantsPage() {
               items: options.filter((option) => !option.isDeleted),
             }),
           );
+          dispatch(actions.refreshTypesOfTraits(types));
           handleCardAction("productTraitConfigurationCard", true);
         });
         break;
@@ -329,6 +312,9 @@ export function ManageVariantsPage() {
                   );
                 }
               });
+            service.getListOfAllTraitsHandler().then((res) => {
+              dispatch(actions.refreshTraits(res));
+            });
           }
         });
         break;
@@ -429,9 +415,15 @@ export function ManageVariantsPage() {
         handleCardAction("addVariantCard", true);
         break;
       case "openChooseVariantTraitsCard":
+        service.getListOfAllTraitsHandler().then((res) => {
+          dispatch(actions.refreshTraits(res));
+        });
         handleCardAction("chooseVariantTraitsCard", true);
         break;
       case "openAddStockCard":
+        service.getCurrenciesListHandler().then((res) => {
+          dispatch(actions.refreshCurrenciesList(res));
+        });
         handleCardAction("addStockCard", true);
         break;
       case "openDisposeStockCard":
@@ -444,7 +436,11 @@ export function ManageVariantsPage() {
         handleCardAction("manageTraitsCard", true);
         break;
       case "openVariantPhotosCard":
-        handleCardAction("variantPhotosCard", true);
+        service.getProductPhotosHandler(Number(productId)).then((res) => {
+          dispatch(actions.refreshProductPhotos(res));
+          handleCardAction("variantPhotosCard", true);
+        });
+
         break;
       case "closeProductTraitConfigurationCard":
         handleCardAction("productTraitConfigurationCard");

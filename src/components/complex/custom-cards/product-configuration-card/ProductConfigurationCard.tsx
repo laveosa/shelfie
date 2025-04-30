@@ -37,24 +37,39 @@ export default function ProductConfigurationCard({
 }: IProductConfigurationCard) {
   const form = useForm({
     defaultValues: {
-      name: product?.productName,
-      productCode: product?.productCode,
-      barcode: product?.barcode,
-      categoryId: product?.category?.categoryId,
-      brandId: product?.brand?.brandId,
-      isActive: product?.isActive,
+      name: "",
+      productCode: null,
+      barcode: "",
+      categoryId: null,
+      brandId: null,
+      isActive: false,
     },
   });
 
   useEffect(() => {
-    if (product && product.productName && product.category && product.brand) {
+    if (
+      product &&
+      product.productId &&
+      product.productName &&
+      product.category &&
+      product.brand
+    ) {
       form.reset({
-        name: product.productName,
-        productCode: product.productCode,
-        barcode: product.barcode,
-        categoryId: product.category.categoryId,
-        brandId: product.brand.brandId,
-        isActive: product.isActive,
+        name: product.productName || "",
+        productCode: product.productCode || null,
+        barcode: product.barcode || "",
+        categoryId: product.category.categoryId || null,
+        brandId: product.brand.brandId || null,
+        isActive: product.isActive || false,
+      });
+    } else {
+      form.reset({
+        name: "",
+        productCode: null,
+        barcode: "",
+        categoryId: null,
+        brandId: null,
+        isActive: false,
       });
     }
   }, [product]);

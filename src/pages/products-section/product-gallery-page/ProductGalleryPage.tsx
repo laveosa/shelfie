@@ -49,7 +49,7 @@ export function ProductGalleryPage() {
     service.getProductPhotosHandler(Number(productId)).then((res) => {
       dispatch(actions.refreshProductPhotos(res));
     });
-  }, [productId]);
+  }, []);
 
   function itemCardHandler(item) {
     navigate(
