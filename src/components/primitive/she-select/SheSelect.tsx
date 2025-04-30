@@ -39,10 +39,8 @@ export default function SheSelect({
   isLoading,
   isOpen,
   showSelectIcon,
-  selectedColor,
   onOpenChange,
   onSelect,
-  ...props
 }: ISheSelect): JSX.Element {
   const { translate } = useAppTranslation();
   const [_selected, setSelected] = useState<ISheSelectItem>(null);
@@ -200,7 +198,6 @@ export default function SheSelect({
             fullWidth
           >
             <Select
-              {...props}
               value={_selected?.id ?? ""}
               open={_open}
               disabled={disabled || _loading || !items || items.length === 0}
@@ -225,13 +222,14 @@ export default function SheSelect({
                 <SelectContent>
                   {_items?.map((item: ISheSelectItem) => (
                     <SheSelectItem
+                      key={item.id}
+                      {...item}
                       className={cs.sheSelectItemCover}
                       isLoading={_loading}
                       showSelectIcon={showSelectIcon}
                       isItemsWithIcons={_isItemsWithIcons}
                       isItemsWithColors={_isItemsWithColors}
                       ariaDescribedbyId={ariaDescribedbyId}
-                      {...item}
                     />
                   ))}
                 </SelectContent>

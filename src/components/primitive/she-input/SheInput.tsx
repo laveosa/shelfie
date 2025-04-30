@@ -23,9 +23,11 @@ export default function SheInput({
   labelTransKey,
   icon,
   value,
-  type,
   placeholder = "enter text...",
   placeholderTransKey,
+  type,
+  step,
+  autoFocus,
   isSearch,
   showClearBtn,
   tooltip,
@@ -44,11 +46,11 @@ export default function SheInput({
   patternErrorMessage,
   patternErrorMessageTransKey,
   delayTime,
+  children,
   onChange,
   onBlur,
   onDelay,
   onIsValid,
-  ...props
 }: ISheInput): JSX.Element {
   const { translate } = useAppTranslation();
   const [_textValue, setTextValue] = useState<
@@ -239,16 +241,18 @@ export default function SheInput({
               aria-describedby={ariaDescribedbyId}
             />
             <Input
-              {...props}
               value={_textValue ?? ""}
               placeholder={translate(placeholderTransKey, placeholder)}
               type={type}
+              step={step}
+              autoFocus={autoFocus}
               aria-invalid={!isValid}
               aria-describedby={ariaDescribedbyId}
               disabled={disabled || isLoading}
               onChange={onChangeHandler}
               onBlur={onBlurHandler}
             />
+            {children && <div>{children}</div>}
           </SheSkeleton>
           <SheClearButton
             value={_textValue}

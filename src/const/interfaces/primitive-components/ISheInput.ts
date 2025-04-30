@@ -1,4 +1,4 @@
-import React, { ComponentPropsWithRef } from "react";
+import React, { PropsWithChildren } from "react";
 
 import { ContextPatternEnum } from "@/const/enums/ContextPatternEnum.ts";
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
@@ -12,7 +12,7 @@ export interface ISheInput
     ISheClearButton,
     ISheContextLengthLimits,
     ISheErrorMessageBlock,
-    ComponentPropsWithRef<any> {
+    PropsWithChildren {
   id?: string;
   className?: string;
   style?: React.CSSProperties;
@@ -20,6 +20,31 @@ export interface ISheInput
   value?: string | number | readonly string[];
   placeholder?: string;
   placeholderTransKey?: string;
+  type?:
+    | "text"
+    | "password"
+    | "email"
+    | "tel"
+    | "url"
+    | "search"
+    | "number"
+    | "range"
+    | "date"
+    | "datetime-local"
+    | "month"
+    | "week"
+    | "time"
+    | "checkbox"
+    | "radio"
+    | "button"
+    | "submit"
+    | "reset"
+    | "file"
+    | "image"
+    | "hidden"
+    | "color";
+  step?: number;
+  autoFocus?: boolean;
   isSearch?: boolean;
   disabled?: boolean;
   isLoading?: boolean;

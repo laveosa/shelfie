@@ -1,14 +1,11 @@
-import React, { ComponentPropsWithRef } from "react";
+import React from "react";
 
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { ISheLabel } from "@/const/interfaces/primitive-components/ISheLabel.ts";
 import { ISheClearButton } from "@/const/interfaces/primitive-components/ISheClearButton.ts";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 
-export interface ISheSelect
-  extends ISheLabel,
-    ISheClearButton,
-    ComponentPropsWithRef<any> {
+export interface ISheSelect extends ISheLabel, ISheClearButton {
   id?: string;
   className?: string;
   style?: React.CSSProperties;
@@ -26,7 +23,6 @@ export interface ISheSelect
   required?: boolean;
   isOpen?: boolean;
   showSelectIcon?: boolean;
-  selectedColor?: string;
   onOpenChange?: (value: any) => void;
   onSelect?: (value: any) => void;
 }

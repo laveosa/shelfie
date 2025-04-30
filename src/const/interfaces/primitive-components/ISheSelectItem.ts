@@ -1,10 +1,11 @@
-import React, { ComponentPropsWithRef } from "react";
+import React from "react";
 
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { ISheTooltip } from "@/const/interfaces/complex-components/ISheTooltip.ts";
 
-export interface ISheSelectItem extends ComponentPropsWithRef<any> {
+export interface ISheSelectItem {
   id?: string; // reserved PRIVATE property, "DON'T USE" this property
+  key?: any; //
   className?: string;
   style?: React.CSSProperties;
   icon?: Partial<ISheIcon> | string | React.FC<any>;

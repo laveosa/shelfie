@@ -34,7 +34,6 @@ export default function SheSelectItem({
 
   return (
     <SelectItem
-      key={id}
       className={`${cs.sheSelectItem} ${isLoading ? "disabled" : ""} ${showSelectIcon ? cs.sheShowSelectIcon : ""}`}
       value={id}
       disabled={disabled}
@@ -56,8 +55,11 @@ export default function SheSelectItem({
           <div
             className={`${cs.sheSelectItemColorsContainer} sheSelectItemColorsContainer`}
           >
-            {colors?.map((color) => (
-              <div style={{ backgroundColor: color }}></div>
+            {colors?.map((color: string, idx: number) => (
+              <div
+                key={color + idx + 1}
+                style={{ backgroundColor: color }}
+              ></div>
             ))}
           </div>
         )}
