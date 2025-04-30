@@ -40,6 +40,7 @@ export default function SheTextArea({
   showError = true,
   resize,
   rows = 4,
+  rowToExtend,
   delayTime,
   onChange,
   onBlur,
@@ -60,6 +61,7 @@ export default function SheTextArea({
   const delayValue = useDebounce(_textValue, delayTime);
   const isInitialized = useRef(false);
   const isTouched = useRef(false);
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     const convertedValue = Array.isArray(value) ? value.join("\n") : value;
@@ -95,6 +97,8 @@ export default function SheTextArea({
     const newValue = e.target.value;
     setTextValue(newValue);
     validateValue(newValue);
+    calculateRowToExtend();
+
     if (onChange) onChange(newValue);
   }
 
@@ -102,6 +106,7 @@ export default function SheTextArea({
     isTouched.current = true;
     const newValue = e.target.value;
     validateValue(newValue);
+
     if (onBlur) onBlur(newValue);
   }
 
@@ -115,6 +120,8 @@ export default function SheTextArea({
     const newValue = "";
     setTextValue(newValue);
     validateValue(newValue);
+    const textarea = textAreaRef.current;
+    textarea.rows = rows;
 
     if (onChange) onChange(newValue);
     if (onBlur) onBlur(newValue);
@@ -122,6 +129,15 @@ export default function SheTextArea({
   }
 
   // ==================================================================== PRIVATE
+
+  function calculateRowToExtend() {
+    if (!rowToExtend || !textAreaRef.current) return;
+
+    const textarea = textAreaRef.current;
+    textarea.rows = rows;
+    const currentRows = Math.floor(textarea.scrollHeight / 22);
+    textarea.rows = Math.min(currentRows, rowToExtend);
+  }
 
   function validateValue(textValue) {
     if (ignoreValidation || !isTouched.current) return true;
@@ -219,6 +235,7 @@ export default function SheTextArea({
               aria-describedby={ariaDescribedbyId}
             />
             <Textarea
+              ref={textAreaRef}
               value={_textValue ?? ""}
               placeholder={translate(placeholderTransKey, placeholder)}
               aria-invalid={!isValid}

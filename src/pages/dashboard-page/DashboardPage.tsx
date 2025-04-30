@@ -108,11 +108,13 @@ export function DashboardPage() {
         minLength={4}
         maxLength={15}
         required
-        ignoreValidation
-        onChange={(eve) => console.log("onChange: ", eve)}
+        rows={1}
+        rowToExtend={4}
+        maxWidth="200px"
+        /*onChange={(eve) => console.log("onChange: ", eve)}
         onDelay={(eve) => console.log("onDelay: ", eve)}
         onBlur={(eve) => console.log("onBlur: ", eve)}
-        onIsValid={(eve) => console.log("onIsValid: ", eve)}
+        onIsValid={(eve) => console.log("onIsValid: ", eve)}*/
       />
 
       <br />
@@ -123,7 +125,6 @@ export function DashboardPage() {
         items={selectItems}
         selected={selected}
         hideFirstOption
-        isOpen
         required
         onSelect={(eve) => console.log("onSelect: ", eve)}
       />

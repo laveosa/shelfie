@@ -54,6 +54,7 @@ export interface ISheTextarea
   ignoreValidation?: boolean;
   resize?: boolean;
   rows?: number;
+  rowToExtend?: number;
   delayTime?: number;
   onChange?: (value: string | number | readonly string[]) => void;
   onBlur?: (value: string | number | readonly string[]) => void;
