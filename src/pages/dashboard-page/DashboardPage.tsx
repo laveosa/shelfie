@@ -14,6 +14,7 @@ import Logo from "@/assets/icons/TNF_logo.svg?react";
 import Tmp from "@/assets/images/AuthLogo.png";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
+import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 
 const items: ISheSelectItem[] = [
   {
@@ -71,6 +72,20 @@ export function DashboardPage() {
 
       <br />
 
+      <SheTextArea tooltip={"some message for tooltip"} />
+
+      <br />
+
+      <SheTextArea
+        tooltip={{
+          text: "some message for tooltip",
+          side: "top",
+          align: "center",
+        }}
+      />
+
+      <br />
+
       <SheInput
         id="INPUT_ID"
         className="EXTRA_input_class-name"
@@ -88,6 +103,7 @@ export function DashboardPage() {
         required
         pattern={ContextPatternEnum.PASSWORD}
         patternErrorMessage="PATTERN error message"
+        tooltip="Some TOOLTIP message for input..."
         onChange={(eve) => console.log("onChange: ", eve)}
         onDelay={(eve) => console.log("onDelay: ", eve)}
         onBlur={(eve) => console.log("onBlur: ", eve)}
@@ -110,7 +126,6 @@ export function DashboardPage() {
         required
         rows={1}
         rowToExtend={4}
-        maxWidth="200px"
         /*onChange={(eve) => console.log("onChange: ", eve)}
         onDelay={(eve) => console.log("onDelay: ", eve)}
         onBlur={(eve) => console.log("onBlur: ", eve)}
@@ -126,6 +141,7 @@ export function DashboardPage() {
         selected={selected}
         hideFirstOption
         required
+        tooltip="SELECT component tooltip message!!!"
         onSelect={(eve) => console.log("onSelect: ", eve)}
       />
 
@@ -134,7 +150,7 @@ export function DashboardPage() {
       <SheToggle
         label="Toggle"
         text="Checked"
-        tooltip={{ text: "some sdkflskdfjslk" }}
+        tooltip="SELECT component tooltip message!!!"
         description="some description for Checkbox"
         required
         icon={Logo}

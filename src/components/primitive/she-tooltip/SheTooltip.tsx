@@ -7,7 +7,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from "@/components/ui/tooltip.tsx";
 import { ISheTooltip } from "@/const/interfaces/complex-components/ISheTooltip.ts";
 
 export default function SheTooltip({

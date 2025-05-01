@@ -7,6 +7,6 @@ export interface ISheLabel {
   style?: React.CSSProperties;
   label?: string;
   labelTransKey?: string;
-  tooltip?: ISheTooltip;
+  tooltip?: ISheTooltip | string;
   ariaDescribedbyId?: string;
 }

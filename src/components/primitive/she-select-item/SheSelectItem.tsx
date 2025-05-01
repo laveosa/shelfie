@@ -3,7 +3,7 @@ import React, { JSX } from "react";
 import cs from "./SheSelectItem.module.scss";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-import SheTooltip from "@/components/complex/she-tooltip/SheTooltip.tsx";
+import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import { SelectItem } from "@/components/ui/select.tsx";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { Image } from "lucide-react";
