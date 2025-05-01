@@ -8,5 +8,6 @@ export interface ISheLabel {
   label?: string;
   labelTransKey?: string;
   tooltip?: ISheTooltip | string;
+  tooltipTransKey?: string;
   ariaDescribedbyId?: string;
 }

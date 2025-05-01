@@ -12,6 +12,7 @@ export function SheLabel({
   label,
   labelTransKey,
   tooltip,
+  tooltipTransKey,
   ariaDescribedbyId,
 }: ISheLabel): JSX.Element {
   // ==================================================================== EVENT
@@ -25,6 +26,7 @@ export function SheLabel({
     typeof tooltip === "string"
       ? {
           text: tooltip,
+          textTransKey: tooltipTransKey,
           side: "right",
           align: "end",
         }
