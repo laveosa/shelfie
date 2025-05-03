@@ -1,2 +1,69 @@
-.SheDatePicker {
+@use "@/styles/variables" as vars;
+
+$iconSize: 20px;
+
+.sheDatePicker {
+  max-width: vars.$maxWidth + px;
+  width: 100%;
+
+  .sheDatePickerComponent {
+    position: relative;
+
+    .sheDatePickerControl {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      button[data-placeholder] {
+        span {
+          color: vars.$placeholderColor;
+          text-align: start;
+        }
+      }
+
+      .iconBlock {
+        position: absolute;
+        color: vars.$subtextColor;
+        left: 8px;
+        top: 10px;
+        max-width: $iconSize;
+        min-width: $iconSize;
+        max-height: $iconSize;
+        min-height: $iconSize;
+      }
+    }
+  }
+}
+
+// ======================================================== CALENDAR
+
+.sheDatePickerCalendar {
+  width: 318px;
+  display: flex;
+  justify-content: center;
+
+  &.withClearBtn {
+    width: 280px;
+  }
+}
+
+// ======================================================== FULL WIDTH
+
+.sheDatePicker.fullWidth {
+  max-width: none;
+  width: 100%;
+}
+
+// ======================================================== REQUIRED
+
+.sheDatePicker.required {
+  .sheDatePickerComponent:before {
+    position: absolute;
+    left: -10px;
+    top: -14px;
+    color: vars.$colorRed;
+    content: "*";
+    display: inline;
+  }
 }

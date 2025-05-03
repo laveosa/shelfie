@@ -40,6 +40,11 @@ body {
   letter-spacing: normal;
 }
 
+.she-placeholder {
+  @extend .she-text;
+  color: vars.$placeholderColor;
+}
+
 .she-title {
   @extend .she-text;
   color: vars.$titleColor;

@@ -1,7 +1,7 @@
 import React from "react";
 
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
-import { ISheTooltip } from "@/const/interfaces/complex-components/ISheTooltip.ts";
+import { ISheTooltip } from "@/const/interfaces/primitive-components/ISheTooltip.ts";
 
 export interface ISheSelectItem {
   id?: string; // reserved PRIVATE property, "DON'T USE" this property

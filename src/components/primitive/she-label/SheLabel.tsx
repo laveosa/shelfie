@@ -4,7 +4,7 @@ import { Trans } from "react-i18next";
 import cs from "./SheLabel.module.scss";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import { ISheLabel } from "@/const/interfaces/primitive-components/ISheLabel.ts";
-import { ISheTooltip } from "@/const/interfaces/complex-components/ISheTooltip.ts";
+import { ISheTooltip } from "@/const/interfaces/primitive-components/ISheTooltip.ts";
 
 export function SheLabel({
   className = "",

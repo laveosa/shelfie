@@ -1,18 +1,22 @@
 import React from "react";
 
-import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { ISheLabel } from "@/const/interfaces/primitive-components/ISheLabel.ts";
 import { ISheClearButton } from "@/const/interfaces/primitive-components/ISheClearButton.ts";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
+import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
+import { DayPickerProps } from "react-day-picker";
 
-export interface ISheSelect extends ISheLabel, ISheClearButton {
+export interface ISheDatePicker
+  extends ISheLabel,
+    ISheClearButton,
+    DayPickerProps {
   id?: string;
   className?: string;
   style?: React.CSSProperties;
+  calendarClassName?: string;
+  calendarStyle?: React.CSSProperties;
   icon?: Partial<ISheIcon> | string | React.FC<any>;
-  items?: ISheSelectItem[];
-  selected?: any;
-  hideFirstOption?: boolean;
+  date?: string | Date;
+  formatPattern?: string;
   placeholder?: string;
   placeholderTransKey?: string;
   minWidth?: string;
@@ -22,7 +26,6 @@ export interface ISheSelect extends ISheLabel, ISheClearButton {
   isLoading?: boolean;
   isOpen?: boolean;
   required?: boolean;
-  showSelectIcon?: boolean;
   onOpenChange?: (value: any) => void;
-  onSelect?: (value: any) => void;
+  onSelectDate?: (value: any) => void;
 }

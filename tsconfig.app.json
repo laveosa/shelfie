@@ -34,7 +34,8 @@
     "strictPropertyInitialization": false,
     "noImplicitThis": false,
     "allowSyntheticDefaultImports": true,
-    "noUnusedLocals": false
+    "noUnusedLocals": false,
+    "esModuleInterop": true
   },
   "include": [
     "src"

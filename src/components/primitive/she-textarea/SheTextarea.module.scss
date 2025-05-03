@@ -3,7 +3,7 @@
 $iconSize: 20px;
 
 .sheTextArea {
-  max-width: vars.$maxWidth;
+  max-width: vars.$maxWidth + px;
   width: 100%;
 
   .sheTextAreaComponent {

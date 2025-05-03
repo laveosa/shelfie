@@ -3,7 +3,7 @@
 $iconSize: 20px;
 
 .sheInput {
-  max-width: vars.$maxWidth;
+  max-width: vars.$maxWidth + px;
   width: 100%;
 
   .sheInputComponent {
@@ -27,6 +27,8 @@ $iconSize: 20px;
       }
 
       input {
+        transition: all 160ms ease-in-out;
+
         &:focus-visible {
           box-shadow: 0 0 0 1px lightgray inset;
         }
