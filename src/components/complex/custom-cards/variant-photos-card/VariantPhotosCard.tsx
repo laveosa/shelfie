@@ -29,8 +29,8 @@ export default function VariantPhotosCard({
       case "delete":
         onAction("delete", payload);
         break;
-      case "disconnect":
-        onAction("disconnectImage", payload);
+      case "detachFromVariant":
+        onAction("detachPhotoFromVariant", payload);
         break;
       case "addToVariant":
         onAction("addPhotoToVariant", payload);
@@ -43,12 +43,19 @@ export default function VariantPhotosCard({
   }
 
   function onGridAction(
-    _actionType: string,
+    actionType: string,
     _rowId?: string,
     _setLoadingRow?: (rowId: string, loading: boolean) => void,
     row?: any,
   ) {
-    handleAction("addToVariant", row.original);
+    switch (actionType) {
+      case "detachFromVariant":
+        handleAction("detachFromVariant", row.original);
+        break;
+      case "addToVariant":
+        handleAction("addToVariant", row.original);
+        break;
+    }
   }
 
   return (

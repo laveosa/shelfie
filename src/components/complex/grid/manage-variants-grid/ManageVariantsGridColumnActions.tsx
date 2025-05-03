@@ -31,7 +31,7 @@ export default function ManageVariantsGridColumnActions<TData>({
   };
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger asChild style={{ boxShadow: "none" }}>
         <SheButton
           variant="ghost"
           className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"

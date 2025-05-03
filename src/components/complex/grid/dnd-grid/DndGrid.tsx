@@ -36,6 +36,8 @@ import { Skeleton } from "@/components/ui/skeleton.tsx";
 
 interface DataWithId {
   id: number | string;
+  color?: string;
+  isGridItemSelected?: boolean;
 }
 
 interface DataTableProps<TData extends DataWithId, TValue>
@@ -66,10 +68,11 @@ const DraggableRow = ({ row, loadingRows, isDragDisabled = false }) => {
     });
 
   const isLoading = loadingRows.has(row.id);
+  const isSelected = row.original.isGridItemSelected;
 
   return (
     <TableRow
-      className={isDragging ? cs.tableRowDragged : cs.tableRow}
+      className={`${isDragging ? cs.tableRowDragged : cs.tableRow} ${isSelected ? cs.isSelected : ""}`}
       ref={setNodeRef}
       {...attributes}
       key={row.id}
@@ -77,15 +80,16 @@ const DraggableRow = ({ row, loadingRows, isDragDisabled = false }) => {
       style={{
         opacity: isLoading ? 0.7 : 1,
         transform: CSS.Transform.toString(transform),
-        background: isLoading ? "#EBF9EF" : "white",
-        transition: "background-color 0.3s ease",
+        background: isSelected
+          ? "#F8F3FF"
+          : row.original.gridRowColor || "white",
       }}
     >
       <TableCell
-        className={isDragging ? cs.dndIconCellDragged : cs.dndIconCell}
+        className={`${isDragging ? cs.dndIconCellDragged : cs.dndIconCell} ${isSelected ? cs.isSelected : ""}`}
         style={{
           cursor: isDragDisabled || isLoading ? "default" : "grab",
-          background: isDragging ? "#F8F3FF" : "white",
+          background: isSelected ? "#F8F3FF" : "inherit",
         }}
         {...listeners}
       >
@@ -95,11 +99,12 @@ const DraggableRow = ({ row, loadingRows, isDragDisabled = false }) => {
       </TableCell>
       {row.getVisibleCells().map((cell) => (
         <TableCell
-          className={isDragging ? cs.tableCellDragged : cs.tableCell}
+          className={`${isDragging ? cs.tableCellDragged : cs.tableCell} ${isSelected ? cs.isSelected : ""}`}
           key={cell.id}
           onClick={(e) => e.stopPropagation()}
           style={{
             cursor: "default",
+            background: isSelected ? "#F8F3FF" : "inherit",
           }}
         >
           {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -236,17 +241,17 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
               <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow
-                    className={isLoading ? `${cs.tableRowLoading}` : `''`}
+                    className={isLoading ? `${cs.tableRowLoading}` : ""}
                     key={headerGroup.id}
                   >
                     {enableDnd && (
                       <TableHead
-                        className={isLoading ? `${cs.tableHeadLoading}` : `''`}
+                        className={isLoading ? `${cs.tableHeadLoading}` : ""}
                       ></TableHead>
                     )}
                     {headerGroup.headers.map((header) => (
                       <TableHead
-                        className={isLoading ? `${cs.tableHeadLoading}` : `''`}
+                        className={isLoading ? `${cs.tableHeadLoading}` : ""}
                         key={header.id}
                       >
                         {header.isPlaceholder
@@ -272,7 +277,7 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
                     )}
                     <TableCell>
                       <div className="space-y-2">
-                        <Skeleton className="h-4 w-[250px]" />
+                        <Skeleton className="h-4 w-[260px]" />
                         <Skeleton className="h-4 w-[200px]" />
                       </div>
                     </TableCell>
@@ -285,6 +290,7 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
                 strategy={verticalListSortingStrategy}
               >
                 <TableBody
+                  className={cs.tableBody}
                   style={{
                     background: enableDnd ? "#f4f4f5" : "white",
                   }}
@@ -301,23 +307,30 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
                       ) : (
                         <TableRow
                           key={row.id}
-                          className={
+                          className={`${
                             loadingRows.has(row.id)
                               ? "bg-green-50 opacity-70"
                               : ""
-                          }
+                          } ${row.original.isGridItemSelected ? cs.isSelected : ""}`}
                           style={{
                             pointerEvents: loadingRows.has(row.id)
                               ? "none"
                               : "auto",
-                            background: loadingRows.has(row.id)
-                              ? "#EBF9EF"
-                              : "white",
-                            transition: "background-color 0.3s ease",
+                            background: row.original.isGridItemSelected
+                              ? "#F8F3FF"
+                              : row.original.color,
                           }}
                         >
                           {row.getVisibleCells().map((cell) => (
-                            <TableCell key={cell.id} className={cs.tableCell}>
+                            <TableCell
+                              key={cell.id}
+                              className={`${cs.tableCell} ${row.original.isGridItemSelected ? cs.isSelected : ""}`}
+                              style={{
+                                background: row.original.isGridItemSelected
+                                  ? "#F8F3FF"
+                                  : "inherit",
+                              }}
+                            >
                               {flexRender(
                                 cell.column.columnDef.cell,
                                 cell.getContext(),

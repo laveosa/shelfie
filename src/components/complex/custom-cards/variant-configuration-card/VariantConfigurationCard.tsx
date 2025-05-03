@@ -313,9 +313,7 @@ export default function VariantConfigurationCard({
             <DndGridDataTable
               showHeader={false}
               columns={traitsColumns}
-              data={variant.traitOptions.filter(
-                (option) => option.isRemoved != true,
-              )}
+              data={variant.traitOptions}
               gridModel={data}
             />
           </div>

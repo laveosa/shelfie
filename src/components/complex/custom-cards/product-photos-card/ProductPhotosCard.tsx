@@ -7,8 +7,6 @@ import { SheImageUploader } from "@/components/complex/she-images-file-uploader/
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { ProductPhotosGridColumns } from "@/components/complex/grid/variant-photos-grid/ProductPhotosGridColumns.tsx";
 
-type ActionType = "upload" | "delete" | "dnd" | "connect";
-
 export default function ProductPhotosCard({
   isLoading,
   data,
@@ -18,7 +16,7 @@ export default function ProductPhotosCard({
 }) {
   const columns = ProductPhotosGridColumns(onGridAction);
 
-  function handleAction(actionType: ActionType, payload?: any) {
+  function handleAction(actionType: string, payload?: any) {
     switch (actionType) {
       case "upload":
         onAction("upload", payload);

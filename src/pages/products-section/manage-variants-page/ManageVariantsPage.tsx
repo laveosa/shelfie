@@ -131,6 +131,7 @@ export function ManageVariantsPage() {
         });
         break;
       case "manageVariant":
+        console.log(payload);
         Promise.all([
           service.getVariantDetailsHandler(payload.variantId),
           service.getTaxesListHandler(),
@@ -140,6 +141,14 @@ export function ManageVariantsPage() {
           dispatch(actions.refreshTaxesList(taxes));
           handleCardAction("variantConfigurationCard", true);
         });
+        dispatch(
+          actions.refreshProductVariants(
+            service.setSelectedGridItem(
+              payload.variantId,
+              state.productVariants,
+            ),
+          ),
+        );
         break;
       case "updateVariantDetails":
         service
@@ -235,15 +244,15 @@ export function ManageVariantsPage() {
       case "detachPhotoFromVariant":
         service
           .detachVariantPhotoHandler(
-            payload.variant.variantId,
-            payload.row.original.photoId.toString(),
+            state.selectedVariant.variantId,
+            payload.photoId.toString(),
           )
           .then((res) => {
             if (res) {
               service
-                .getVariantDetailsHandler(payload.variant.variantId)
+                .getVariantDetailsHandler(state.selectedVariant.variantId)
                 .then((res) => {
-                  dispatch(actions.refreshSelectedVariant(res));
+                  dispatch(actions.refreshVariantPhotos(res?.photos));
                 });
             }
           });
