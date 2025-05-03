@@ -1,16 +1,11 @@
 import React, { useState } from "react";
-import { Box, Image, Loader, Trash2, Users } from "lucide-react";
+import { User, Users } from "lucide-react";
 
 import cs from "./DashboardPage.module.scss";
 import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageService.ts";
-import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
-import SheTextArea from "@/components/primitive/she-textarea/SheTextarea.tsx";
-import SheToggle from "@/components/primitive/she-toggle/SheToggle.tsx";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
-import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
+import SheCalendar from "@/components/primitive/she-calendar/SheCalendar.tsx";
 
 export function DashboardPage() {
   const service = useDashboardPageService();
@@ -35,7 +30,18 @@ export function DashboardPage() {
 
       <br />
 
-      <div className="flex gap-2 items-end border-b-2 border-solid pb-6">
+      <SheCalendar
+        label="Calendar"
+        labelTransKey="sdoiwfejfowidj"
+        required
+        date={date}
+        // showClearBtn
+        // view={ComponentViewEnum.CARD}
+        // minWidth="320px"
+        onSelectDate={onAction}
+      />
+
+      {/*<div className="flex gap-2 items-end border-b-2 border-solid pb-6">
         <SheInput
           label="Min width"
           type="number"
@@ -55,7 +61,7 @@ export function DashboardPage() {
         <SheButton icon={Loader} onClick={() => setIsLoading(!isLoading)} />
         <SheButton icon={Box} onClick={() => setFullWidth(!fullWidth)} />
         <SheButton icon={Image} onClick={() => setIcon(!icon ? Users : null)} />
-      </div>
+      </div>*/}
 
       <br />
 
@@ -66,11 +72,11 @@ export function DashboardPage() {
         minWidth={minWidth}
         maxWidth={maxWidth}
         fullWidth={fullWidth}
-        showClearBtn={showClearBtn}
+        showClearBtn={true}
         isLoading={isLoading}
       />
 
-      <br />
+      {/*<br />
 
       <SheDatePicker
         label="DatePicker"
@@ -124,7 +130,7 @@ export function DashboardPage() {
         maxWidth={maxWidth}
         fullWidth={fullWidth}
         isLoading={isLoading}
-      />
+      />*/}
 
       <br />
     </div>

@@ -1,2 +1,58 @@
-.SheCalendar {
+@use "@/styles/variables" as vars;
+
+.sheCalendar {
+  width: fit-content;
+  min-width: 252px;
+
+  .sheCalendarComponent {
+    position: relative;
+
+    .sheCalendarControl {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      .sheCalendarElement {
+        display: flex;
+        justify-content: center;
+        padding: 0;
+        width: 100%;
+      }
+    }
+  }
+}
+
+// ======================================================== FULL WIDTH
+
+.sheCalendar.fullWidth {
+  max-width: none;
+  width: 100%;
+}
+
+// ======================================================== REQUIRED
+
+.sheCalendar.required {
+  .sheCalendarComponent:before {
+    position: absolute;
+    left: -10px;
+    top: -14px;
+    color: vars.$colorRed;
+    content: "*";
+    display: inline;
+  }
+}
+
+// ======================================================== VIEW
+
+.sheCalendar.card {
+  .sheCalendarComponent {
+    .sheCalendarControl {
+      .sheCalendarElement {
+        border: 1px solid vars.$brdColor;
+        padding: vars.$paddingSmall;
+        border-radius: vars.$brdR_03;
+      }
+    }
+  }
 }
