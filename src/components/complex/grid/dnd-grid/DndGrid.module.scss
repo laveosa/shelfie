@@ -15,6 +15,7 @@
     padding-right: 0;
     text-align: center;
     touch-action: none;
+    cursor: grab;
 
     .dndIcon {
       display: flex;
@@ -28,13 +29,58 @@
   }
 }
 
+//-------------------------------------------------------isDragged
 
-.tableCellDragged {
+.tableRowDragged {
   background: #F8F3FF;
 
-  .dndIconDragged {
-    svg {
-      opacity: 0.7;
+  .dndIconCellDragged {
+    cursor: grab;
+    background: #F8F3FF;
+  }
+
+
+  .tableCellDragged {
+    background: #F8F3FF;
+
+    .dndIconDragged {
+
+      svg {
+        opacity: 0.7;
+      }
     }
   }
+}
+
+
+//-------------------------------------------------------isLoading
+
+.tableLoading {
+  display: flex;
+  flex-direction: column;
+  transition: 1s;
+
+  .tableRowLoading {
+    display: flex;
+    flex-direction: row;
+
+    .tableHeadLoading {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .tableSkeleton {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 20px;
+
+  }
+}
+
+//-------------------------------------------------------isSelected
+
+.isSelected {
+  background: #F8F3FF;
 }

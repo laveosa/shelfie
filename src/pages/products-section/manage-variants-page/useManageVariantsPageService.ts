@@ -101,7 +101,16 @@ export default function useManageVariantsPageService() {
 
   function getVariantDetailsHandler(id) {
     return getVariantDetails(id).then((res: any) => {
-      return res.data;
+      const modifiedRes = {
+        ...res.data,
+        traitOptions: res.data.traitOptions.map((trait) => ({
+          ...trait,
+          color:
+            (trait.isRemoved === true || trait.isMissing === true) && "#FEE2E2",
+        })),
+      };
+
+      return modifiedRes;
     });
   }
 
@@ -294,6 +303,17 @@ export default function useManageVariantsPageService() {
     });
   }
 
+  function setSelectedGridItem(itemId: string, itemsList: any[]) {
+    console.log("itemId", itemId);
+    console.log("itemsList", itemsList);
+    const modifiedItemsList = itemsList.map((item) => ({
+      ...item,
+      isGridItemSelected: item.variantId === itemId,
+    }));
+    console.log("LIST", modifiedItemsList);
+    return modifiedItemsList;
+  }
+
   return {
     getTheProductsForGridHandler,
     getVariantsForGridHandler,
@@ -330,5 +350,6 @@ export default function useManageVariantsPageService() {
     attachProductPhotoToVariantHandler,
     getTaxesListHandler,
     getCurrenciesListHandler,
+    setSelectedGridItem,
   };
 }
