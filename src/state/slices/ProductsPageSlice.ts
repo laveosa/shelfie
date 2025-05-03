@@ -31,7 +31,7 @@ const initialState: IProductsPageSlice = {
 };
 
 function setLoading(state: IProductsPageSlice, action: PayloadAction<boolean>) {
-  state.loading = action?.payload || state.loading;
+  state.loading = action?.payload;
 }
 
 function refreshProducts(

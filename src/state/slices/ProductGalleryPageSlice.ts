@@ -4,10 +4,9 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IProductGalleryPageSlice } from "@/const/interfaces/store-slices/IProductGalleryPageSlice.ts";
 import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
-import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
 
 const initialState: IProductGalleryPageSlice = {
-  loading: false,
+  isLoading: false,
   products: [],
   product: {},
   activeCards: [],
@@ -16,13 +15,17 @@ const initialState: IProductGalleryPageSlice = {
   photos: [],
   productVariants: [],
   selectedPhoto: null,
+  gridRequestModel: {
+    currentPage: 1,
+    pageSize: 10,
+  },
 };
 
-function setLoading(
+function setIsLoading(
   state: IProductGalleryPageSlice,
   action: PayloadAction<boolean>,
 ) {
-  state.loading = action?.payload;
+  state.isLoading = action?.payload;
 }
 
 function refreshProducts(
@@ -40,7 +43,7 @@ function refreshProduct(
 }
 
 function refreshActiveCards(
-  state: IProductBasicDataPageSlice,
+  state: IProductGalleryPageSlice,
   action: PayloadAction<any[]>,
 ) {
   state.activeCards = action?.payload || state.activeCards;
@@ -78,7 +81,7 @@ const ProductGalleryPageSlice = createSlice({
   name: StoreSliceEnum.PRODUCT_GALLERY,
   initialState,
   reducers: {
-    setLoading,
+    setIsLoading,
     refreshProducts,
     refreshProduct,
     refreshActiveCards,

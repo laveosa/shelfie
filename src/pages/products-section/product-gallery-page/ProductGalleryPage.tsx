@@ -6,9 +6,7 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IProductGalleryPageSlice } from "@/const/interfaces/store-slices/IProductGalleryPageSlice.ts";
 import { ProductGalleryPageSliceActions as actions } from "@/state/slices/ProductGalleryPageSlice.ts";
 import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
-import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import useProductGalleryPageService from "@/pages/products-section/product-gallery-page/useProductGalleryPageService.ts";
-import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import cs from "@/pages/products-section/product-basic-data-page/ProductBasicDataPage.module.scss";
@@ -23,19 +21,15 @@ export function ProductGalleryPage() {
   const state = useAppSelector<IProductGalleryPageSlice>(
     StoreSliceEnum.PRODUCT_GALLERY,
   );
-  const productsState = useAppSelector<IProductsPageSlice>(
-    StoreSliceEnum.PRODUCTS,
-  );
   const service = useProductGalleryPageService();
-  const productsService = useProductsPageService();
   const { productId } = useParams();
   const { addToast } = useToast();
   const navigate = useNavigate();
   const cardRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   useEffect(() => {
-    productsService
-      .getTheProductsForGridHandler(productsState.gridRequestModel)
+    service
+      .getTheProductsForGridHandler(state.gridRequestModel)
       .then((res: GridModel) => {
         dispatch(actions.refreshProducts(res.items));
       });
@@ -112,8 +106,8 @@ export function ProductGalleryPage() {
             payload.newIndex,
           )
           .then(() => {
-            productsService
-              .getTheProductsForGridHandler(productsState.gridRequestModel)
+            service
+              .getTheProductsForGridHandler(state.gridRequestModel)
               .then((res: GridModel) => {
                 dispatch(actions.refreshProducts(res.items));
               });
@@ -129,8 +123,8 @@ export function ProductGalleryPage() {
             .then((res: ProductCounterModel) => {
               dispatch(actions.refreshProductCounter(res));
             });
-          productsService
-            .getTheProductsForGridHandler(productsState.gridRequestModel)
+          service
+            .getTheProductsForGridHandler(state.gridRequestModel)
             .then((res: GridModel) => {
               dispatch(actions.refreshProducts(res.items));
             });
@@ -183,6 +177,7 @@ export function ProductGalleryPage() {
         activeCards={state.activeCards}
       />
       <ProductPhotosCard
+        isLoading={state.isLoading}
         width={"400px"}
         data={state.photos}
         contextId={productId}

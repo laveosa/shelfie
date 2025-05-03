@@ -10,6 +10,7 @@ import { ProductPhotosGridColumns } from "@/components/complex/grid/variant-phot
 type ActionType = "upload" | "delete" | "dnd" | "connect";
 
 export default function ProductPhotosCard({
+  isLoading,
   data,
   contextId,
   onAction,
@@ -67,26 +68,27 @@ export default function ProductPhotosCard({
               handleAction("upload", uploadModel)
             }
           />
-          {data?.length > 0 && (
-            <div className={cs.managePhotos}>
-              <div className={`${cs.managePhotosTitle} she-title`}>
-                Manage Photos
-              </div>
-              <div className={cs.managePhotosGrid}>
-                <DndGridDataTable
-                  className={cs.photosGrid}
-                  enableDnd={true}
-                  showHeader={false}
-                  columns={columns}
-                  data={data}
-                  gridModel={data}
-                  onNewItemPosition={(newIndex, activeItem) =>
-                    handleAction("dnd", { newIndex, activeItem })
-                  }
-                />
-              </div>
+          <div className={cs.managePhotos}>
+            <div className={`${cs.managePhotosTitle} she-title`}>
+              Manage Photos
             </div>
-          )}
+            <div className={cs.managePhotosGrid}>
+              <DndGridDataTable
+                isLoading={isLoading}
+                className={cs.photosGrid}
+                enableDnd={true}
+                showHeader={false}
+                columns={columns}
+                data={data}
+                gridModel={data}
+                customMessage="PRODUCT HAS NO PHOTO"
+                onNewItemPosition={(newIndex, activeItem) =>
+                  handleAction("dnd", { newIndex, activeItem })
+                }
+              />
+            </div>
+          </div>
+          {/*)}*/}
         </div>
       </SheProductCard>
     </div>

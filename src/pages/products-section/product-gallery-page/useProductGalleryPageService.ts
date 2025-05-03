@@ -1,8 +1,15 @@
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";
 import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { useAppDispatch } from "@/utils/hooks/redux.ts";
+import { ProductGalleryPageSliceActions as action } from "@/state/slices/ProductGalleryPageSlice.ts";
 
 export default function useProductGalleryPageService() {
+  const dispatch = useAppDispatch();
+
+  const [getTheProductsForGrid] =
+    ProductsApiHooks.useGetTheProductsForGridMutation();
   const [getProductPhotos] = ProductsApiHooks.useLazyGetProductPhotosQuery();
   const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
   const [getCountersForProducts] =
@@ -14,6 +21,18 @@ export default function useProductGalleryPageService() {
     ProductsApiHooks.useLazyGetProductVariantsQuery();
   const [attachProductPhotoToVariant] =
     ProductsApiHooks.useAttachProductPhotoToVariantMutation();
+
+  function getTheProductsForGridHandler(data?: GridRequestModel) {
+    dispatch(action.setIsLoading(true));
+    return getTheProductsForGrid(data).then((res: any) => {
+      dispatch(action.setIsLoading(false));
+      if (res.error) {
+        return;
+      } else {
+        return res.data;
+      }
+    });
+  }
 
   function uploadPhotoHandler(model: UploadPhotoModel) {
     return uploadPhoto(model).then((res: any) => {
@@ -65,6 +84,7 @@ export default function useProductGalleryPageService() {
   }
 
   return {
+    getTheProductsForGridHandler,
     getProductPhotosHandler,
     getCountersForProductsHandler,
     uploadPhotoHandler,

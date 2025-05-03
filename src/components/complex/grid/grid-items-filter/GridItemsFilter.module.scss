@@ -1,9 +1,33 @@
+.dropdownMenuTrigger {
+  min-width: fit-content;
+  box-shadow: none;
+  height: 30px;
+  padding: 8px !important;
+
+  .buttonInnerItems {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    svg {
+      padding-top: 4px;
+    }
+  }
+
+  &:focus-visible {
+    box-shadow: none;
+  }
+
+
+}
+
 .dropdownMenuContent {
   width: 100%;
   padding: 10px;
   max-height: 500px;
   display: flex;
   flex-direction: column;
+
 
   .itemsContainer {
     overflow-y: auto;
@@ -19,22 +43,3 @@
   }
 }
 
-.dropdownMenuTrigger {
-  box-shadow: none;
-  height: 30px;
-  padding: 8px;
-
-  &:focus-visible {
-    box-shadow: none;
-  }
-
-  .buttonInnerItems {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    svg {
-      padding-top: 4px;
-    }
-  }
-}
