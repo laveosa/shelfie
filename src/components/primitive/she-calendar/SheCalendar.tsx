@@ -100,7 +100,7 @@ export default function SheCalendar({
 
   function onSelectDateHandler(selectedDate: any) {
     setDate(selectedDate);
-    if (onSelectDate) onSelectDate(eventModelConfig(selectedDate));
+    if (onSelectDate) onSelectDate(formatSelectedDateModel(selectedDate));
   }
 
   function onClearHandler() {
@@ -112,7 +112,7 @@ export default function SheCalendar({
 
   // ==================================================================== PRIVATE
 
-  function eventModelConfig(selectedDate: any): any {
+  function formatSelectedDateModel(selectedDate: any): any {
     let eventModel;
 
     if (Array.isArray(selectedDate)) {
@@ -124,8 +124,12 @@ export default function SheCalendar({
       console.log("Model 'Multiple': ", selectedDate);
       eventModel = dateFormat
         ? {
-            from: moment(selectedDate.from).format(dateFormat),
-            to: moment(selectedDate.to).format(dateFormat),
+            from: selectedDate.from
+              ? moment(selectedDate.from).format(dateFormat)
+              : null,
+            to: selectedDate.to
+              ? moment(selectedDate.to).format(dateFormat)
+              : null,
           }
         : selectedDate;
     } else if (typeof selectedDate === "object" && !selectedDate.from) {
@@ -134,24 +138,6 @@ export default function SheCalendar({
         ? moment(selectedDate).format(dateFormat)
         : selectedDate;
     }
-
-    /*switch (selectedDate) {
-      case Array.isArray(selectedDate): {
-        console.log("Model 'Multiple': ", selectedDate);
-        return selectedDate.map((item) => moment(item).format(dateFormat));
-      }
-      case isDateRangeObject(selectedDate): {
-        console.log("Model 'Multiple': ", selectedDate);
-        return {
-          from: moment(selectedDate.from).format(dateFormat),
-          to: moment(selectedDate.to).format(dateFormat),
-        };
-      }
-      case typeof selectedDate === "object" && !selectedDate.from: {
-        console.log("Model 'Single': ", selectedDate);
-        return moment(selectedDate).format(dateFormat);
-      }
-    }*/
 
     return eventModel;
   }
