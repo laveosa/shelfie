@@ -1,4 +1,4 @@
-import React, { JSX, useEffect } from "react";
+import React, { JSX, useEffect, useState } from "react";
 
 import cs from "./SheCalendar.module.scss";
 import { Calendar } from "@/components/ui/calendar.tsx";
@@ -6,7 +6,31 @@ import { ISheCalendar } from "@/const/interfaces/primitive-components/ISheCalend
 import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
 import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
-import { generateId } from "@/utils/helpers/quick-helper.ts";
+import { generateId, parseValidDate } from "@/utils/helpers/quick-helper.ts";
+import { getMonth, getYear, setMonth, setYear } from "date-fns";
+import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
+import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
+
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+const startYear = getYear(new Date()) - 100;
+const endYear = getYear(new Date()) + 100;
+const years = Array.from(
+  { length: endYear - startYear + 1 },
+  (_, i) => startYear + i,
+);
 
 export default function SheCalendar({
   id,
@@ -31,25 +55,51 @@ export default function SheCalendar({
   onSelectDate,
   ...props
 }: ISheCalendar): JSX.Element {
-  const [_date, setDate] = React.useState<string | Date>(null);
+  const [_date, setDate] = React.useState<string | Date>(date);
+  const [_selectedMonth, setSelectedMonth] = useState<string>(
+    months[new Date().getMonth()],
+  );
+  const [_selectedYear, setSelectedYear] = useState<number>(
+    new Date().getFullYear(),
+  );
 
   const ariaDescribedbyId = `${generateId()}_CALENDAR_ID`;
 
   useEffect(() => {
-    console.log("Date: ", date);
+    const parsed = parseValidDate(date);
+
+    console.log("DATE: ", parsed);
+
+    if (parsed && parsed.toString() !== _date?.toString()) {
+      setDate(parsed);
+      setSelectedMonth(months[getMonth(parsed)]);
+      setSelectedYear(getYear(parsed));
+    }
   }, [date]);
 
   // ==================================================================== EVENT
 
-  function onSelectDateHandler(selectedDate: any) {
-    console.log("Selected Date: ", selectedDate);
+  function onMonthSelectHandler(month: string) {
+    setTimeout(() => {
+      setSelectedMonth(month);
+    });
+  }
 
+  function onYearSelectHandler(year: number) {
+    setTimeout(() => {
+      setSelectedYear(year);
+    });
+  }
+
+  function onSelectDateHandler(selectedDate: any) {
     setDate(selectedDate);
     if (onSelectDate) onSelectDate(selectedDate);
   }
 
   function onClearHandler() {
     setDate(null);
+    setSelectedMonth(months[new Date().getMonth()]);
+    setSelectedYear(new Date().getFullYear());
     if (onSelectDate) onSelectDate(null);
   }
 
@@ -75,16 +125,48 @@ export default function SheCalendar({
           ariaDescribedbyId={ariaDescribedbyId}
         />
         <div className={cs.sheCalendarControl}>
-          <SheSkeleton isLoading={isLoading} fullWidth>
-            <Calendar
-              className={`${cs.sheCalendarElement} ${calendarClassName} ${disabled || isLoading ? "disabled" : ""}`}
-              style={calendarStyle}
-              mode={mode}
-              selected={_date}
-              onSelect={onSelectDateHandler}
-              {...props}
-            />
-          </SheSkeleton>
+          <div className={cs.sheCalendarContextBlock}>
+            <div className={cs.sheCalendarFilterContainer}>
+              <SheSelect
+                items={months.map(
+                  (item): ISheSelectItem => ({
+                    text: item.toString(),
+                    value: item,
+                  }),
+                )}
+                placeholder="Month"
+                selected={_selectedMonth}
+                hideFirstOption
+                onSelect={onMonthSelectHandler}
+              />
+              <SheSelect
+                items={years.map(
+                  (item): ISheSelectItem => ({
+                    text: item.toString(),
+                    value: item,
+                  }),
+                )}
+                placeholder="Year"
+                selected={_selectedYear}
+                hideFirstOption
+                onSelect={onYearSelectHandler}
+              />
+            </div>
+            <SheSkeleton isLoading={isLoading} fullWidth>
+              <Calendar
+                className={`${cs.sheCalendarElement} ${calendarClassName} ${disabled || isLoading ? "disabled" : ""}`}
+                style={calendarStyle}
+                mode={mode}
+                selected={_date || undefined}
+                month={setMonth(
+                  setYear(new Date(), _selectedYear),
+                  months.indexOf(_selectedMonth),
+                )}
+                onSelect={onSelectDateHandler}
+                {...props}
+              />
+            </SheSkeleton>
+          </div>
           <SheClearButton
             value={_date}
             showClearBtn={showClearBtn}

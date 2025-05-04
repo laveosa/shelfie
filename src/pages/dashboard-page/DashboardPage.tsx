@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { User, Users } from "lucide-react";
 
 import cs from "./DashboardPage.module.scss";
@@ -10,7 +10,7 @@ import SheCalendar from "@/components/primitive/she-calendar/SheCalendar.tsx";
 export function DashboardPage() {
   const service = useDashboardPageService();
 
-  const [date, setDate] = useState<Date>(new Date());
+  const [date, setDate] = useState<Date | string>(null);
 
   const [icon, setIcon] = useState<any>(Users);
   const [isLoading, setIsLoading] = useState<boolean>(null);
@@ -18,6 +18,34 @@ export function DashboardPage() {
   const [fullWidth, setFullWidth] = useState<boolean>(null);
   const [minWidth, setMinWidth] = useState<string>(null);
   const [maxWidth, setMaxWidth] = useState<string>(null);
+
+  // =========================================================================== SIDE-EFFECTS
+
+  useEffect(() => {
+    /*setTimeout(() => {
+      setDate("05.05.2025");
+    }, 3000);
+    setTimeout(() => {
+      setDate("04-04-2024");
+    }, 6000);
+    setTimeout(() => {
+      setDate("03/03/2023");
+    }, 9000);*/
+    // =========================================
+    /*setTimeout(() => {
+      setDate(new Date("05.05.2025"));
+    }, 3000);
+    setTimeout(() => {
+      setDate(new Date("04-04-2024"));
+    }, 6000);
+    setTimeout(() => {
+      setDate(new Date("03/03/2023"));
+    }, 9000);*/
+  }, []);
+
+  // =========================================================================== EVENTS
+
+  // =========================================================================== LAYOUT
 
   function onAction(date) {
     console.log("Date: ", date);
@@ -33,11 +61,11 @@ export function DashboardPage() {
       <SheCalendar
         label="Calendar"
         labelTransKey="sdoiwfejfowidj"
-        required
         date={date}
-        // showClearBtn
-        // view={ComponentViewEnum.CARD}
-        // minWidth="320px"
+        showClearBtn
+        view={ComponentViewEnum.CARD}
+        required
+        tooltip="some text for tooltip"
         onSelectDate={onAction}
       />
 

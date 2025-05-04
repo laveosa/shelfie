@@ -10,14 +10,29 @@
     .sheCalendarControl {
       position: relative;
       display: flex;
-      align-items: center;
       gap: 4px;
 
-      .sheCalendarElement {
+      .sheCalendarContextBlock {
         display: flex;
-        justify-content: center;
-        padding: 0;
-        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+
+        .sheCalendarFilterContainer {
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          gap: 10px;
+          justify-content: space-between;
+          padding-bottom: 6px;
+        }
+
+        .sheCalendarElement {
+          display: flex;
+          justify-content: center;
+          padding: 0;
+          width: 100%;
+        }
       }
     }
   }
