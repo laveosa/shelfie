@@ -85,7 +85,18 @@ export default function useManageVariantsPageService() {
 
   function getProductVariantsHandler(id: any) {
     return getProductVariants(id).then((res: any) => {
-      return res.data;
+      const modifiedRes = {
+        ...res,
+        data: addGridRowColor(res.data, "color", [
+          {
+            field: "showAlert",
+            value: true,
+            color: GridRowsColorsEnum.ERROR,
+          },
+        ]),
+      };
+
+      return modifiedRes.data;
     });
   }
 

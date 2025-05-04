@@ -132,7 +132,6 @@ export function ManageVariantsPage() {
         });
         break;
       case "manageVariant":
-        console.log(payload);
         Promise.all([
           service.getVariantDetailsHandler(payload.variantId),
           service.getTaxesListHandler(),
