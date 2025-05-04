@@ -1,4 +1,6 @@
 import React, { JSX, useEffect, useState } from "react";
+import { getMonth, getYear, setMonth, setYear } from "date-fns";
+import moment from "moment";
 
 import cs from "./SheCalendar.module.scss";
 import { Calendar } from "@/components/ui/calendar.tsx";
@@ -7,11 +9,8 @@ import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
 import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
 import { generateId, parseValidDate } from "@/utils/helpers/quick-helper.ts";
-import { getMonth, getYear, setMonth, setYear } from "date-fns";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import moment from "moment";
-import { DateFormatEnum } from "@/const/enums/DateFormatEnum.ts";
 
 const months = [
   "January",
@@ -44,7 +43,7 @@ export default function SheCalendar({
   labelTransKey,
   tooltip,
   date,
-  dateFormat = DateFormatEnum.MM_DD_YYYY,
+  dateFormat,
   markedDates,
   mode = "single",
   showClearBtn,
@@ -55,6 +54,7 @@ export default function SheCalendar({
   isLoading,
   required,
   view,
+  hideFilters,
   onSelectDate,
   ...props
 }: ISheCalendar): JSX.Element {
@@ -74,7 +74,8 @@ export default function SheCalendar({
   useEffect(() => {
     const parsed = parseValidDate(date);
 
-    console.log("DATE: ", date);
+    /*console.log("DATE: ", date);
+    console.log("PARSED: ", parsed);*/
 
     if (parsed && parsed.toString() !== _date?.toString()) {
       setDate(parsed);
@@ -99,7 +100,7 @@ export default function SheCalendar({
 
   function onSelectDateHandler(selectedDate: any) {
     setDate(selectedDate);
-    if (onSelectDate) onSelectDate(moment(selectedDate).format(dateFormat));
+    if (onSelectDate) onSelectDate(eventModelConfig(selectedDate));
   }
 
   function onClearHandler() {
@@ -111,12 +112,71 @@ export default function SheCalendar({
 
   // ==================================================================== PRIVATE
 
+  function eventModelConfig(selectedDate: any): any {
+    let eventModel;
+
+    if (Array.isArray(selectedDate)) {
+      console.log("Model 'Multiple': ", selectedDate);
+      eventModel = dateFormat
+        ? selectedDate.map((item) => moment(item).format(dateFormat))
+        : selectedDate;
+    } else if (isDateRangeObject(selectedDate)) {
+      console.log("Model 'Multiple': ", selectedDate);
+      eventModel = dateFormat
+        ? {
+            from: moment(selectedDate.from).format(dateFormat),
+            to: moment(selectedDate.to).format(dateFormat),
+          }
+        : selectedDate;
+    } else if (typeof selectedDate === "object" && !selectedDate.from) {
+      console.log("Model 'Single': ", selectedDate);
+      eventModel = dateFormat
+        ? moment(selectedDate).format(dateFormat)
+        : selectedDate;
+    }
+
+    /*switch (selectedDate) {
+      case Array.isArray(selectedDate): {
+        console.log("Model 'Multiple': ", selectedDate);
+        return selectedDate.map((item) => moment(item).format(dateFormat));
+      }
+      case isDateRangeObject(selectedDate): {
+        console.log("Model 'Multiple': ", selectedDate);
+        return {
+          from: moment(selectedDate.from).format(dateFormat),
+          to: moment(selectedDate.to).format(dateFormat),
+        };
+      }
+      case typeof selectedDate === "object" && !selectedDate.from: {
+        console.log("Model 'Single': ", selectedDate);
+        return moment(selectedDate).format(dateFormat);
+      }
+    }*/
+
+    return eventModel;
+  }
+
+  function isDateRangeObject(
+    value: unknown,
+  ): value is { from: Date | string; to: Date | string } {
+    return (
+      value &&
+      typeof value === "object" &&
+      "from" in value &&
+      "to" in value &&
+      (typeof (value as any).from === "string" ||
+        (value as any).from instanceof Date) &&
+      (typeof (value as any).to === "string" ||
+        (value as any).to instanceof Date)
+    );
+  }
+
   // ==================================================================== LAYOUT
 
   return (
     <div
       id={id}
-      className={`${cs.sheCalendar} ${className} ${cs[view] || ""} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""}`}
+      className={`${cs.sheCalendar} ${className} ${cs[view] || ""} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""} ${hideFilters ? cs.noFiltersBlock : ""}`}
       style={{
         minWidth,
         maxWidth,
@@ -143,6 +203,8 @@ export default function SheCalendar({
                 placeholder="Month"
                 selected={_selectedMonth}
                 hideFirstOption
+                maxWidth="138px"
+                minWidth="122px"
                 onSelect={onMonthSelectHandler}
               />
               <SheSelect
@@ -155,6 +217,8 @@ export default function SheCalendar({
                 placeholder="Year"
                 selected={_selectedYear}
                 hideFirstOption
+                maxWidth="138px"
+                minWidth="122px"
                 onSelect={onYearSelectHandler}
               />
             </div>
