@@ -7,10 +7,27 @@ import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import SheCalendar from "@/components/primitive/she-calendar/SheCalendar.tsx";
 
+const markDays1 = [
+  "05.02.2025",
+  "05.04.2025",
+  "05.06.2025",
+  "05.08.2025",
+  "05.10.2025",
+];
+
+const markDays2 = [
+  "05.01.2025",
+  "05.03.2025",
+  "05.05.2025",
+  "05.07.2025",
+  "05.09.2025",
+];
+
 export function DashboardPage() {
   const service = useDashboardPageService();
 
   const [date, setDate] = useState<Date | string>(null);
+  const [markedDays, setMarkedDays] = useState<Date[] | string[]>(null);
 
   const [icon, setIcon] = useState<any>(Users);
   const [isLoading, setIsLoading] = useState<boolean>(null);
@@ -22,6 +39,25 @@ export function DashboardPage() {
   // =========================================================================== SIDE-EFFECTS
 
   useEffect(() => {
+    setTimeout(() => {
+      setMarkedDays(markDays1);
+    }, 2000);
+    setTimeout(() => {
+      setMarkedDays(markDays2);
+    }, 4000);
+    setTimeout(() => {
+      setMarkedDays(markDays1);
+    }, 6000);
+    setTimeout(() => {
+      setMarkedDays(markDays2);
+    }, 8000);
+    setTimeout(() => {
+      setMarkedDays(markDays1);
+    }, 10000);
+    setTimeout(() => {
+      setMarkedDays(markDays2);
+    }, 12000);
+
     /*setTimeout(() => {
       setDate("05.05.2025");
     }, 3000);
@@ -62,6 +98,7 @@ export function DashboardPage() {
         label="Calendar"
         labelTransKey="sdoiwfejfowidj"
         date={date}
+        markedDates={markedDays}
         showClearBtn
         view={ComponentViewEnum.CARD}
         required

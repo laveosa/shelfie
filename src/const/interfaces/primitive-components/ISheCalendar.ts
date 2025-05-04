@@ -4,6 +4,7 @@ import { DayPickerProps } from "react-day-picker";
 import { ISheLabel } from "@/const/interfaces/primitive-components/ISheLabel.ts";
 import { ISheClearButton } from "@/const/interfaces/primitive-components/ISheClearButton.ts";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
+import { DateFormatEnum } from "@/const/enums/DateFormatEnum.ts";
 
 export interface ISheCalendar
   extends ISheLabel,
@@ -15,7 +16,8 @@ export interface ISheCalendar
   calendarClassName?: string;
   calendarStyle?: React.CSSProperties;
   date?: string | Date;
-  dateFormat?: string;
+  dateFormat?: DateFormatEnum;
+  markedDates?: (string | Date)[];
   minWidth?: string;
   maxWidth?: string;
   fullWidth?: boolean;

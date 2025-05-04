@@ -58,6 +58,21 @@
   }
 }
 
+// ======================================================== MARKED DAYS
+
+.sheCalendar {
+  [aria-selected="true"] {
+    background-color: #171717 !important;
+  }
+  .markedDay {
+    position: relative;
+    box-sizing: border-box;
+    border: 0.5px solid vars.$colorBlue;
+    color: vars.$colorBlue;
+    background-color: rgba(49, 130, 246, 10%);
+  }
+}
+
 // ======================================================== VIEW
 
 .sheCalendar.card {

@@ -10,6 +10,8 @@ import { generateId, parseValidDate } from "@/utils/helpers/quick-helper.ts";
 import { getMonth, getYear, setMonth, setYear } from "date-fns";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
+import moment from "moment";
+import { DateFormatEnum } from "@/const/enums/DateFormatEnum.ts";
 
 const months = [
   "January",
@@ -42,7 +44,8 @@ export default function SheCalendar({
   labelTransKey,
   tooltip,
   date,
-  dateFormat,
+  dateFormat = DateFormatEnum.MM_DD_YYYY,
+  markedDates,
   mode = "single",
   showClearBtn,
   minWidth,
@@ -64,11 +67,14 @@ export default function SheCalendar({
   );
 
   const ariaDescribedbyId = `${generateId()}_CALENDAR_ID`;
+  const markedParsedDates = React.useMemo(() => {
+    return (markedDates || []).map(parseValidDate).filter(Boolean) as Date[];
+  }, [markedDates]);
 
   useEffect(() => {
     const parsed = parseValidDate(date);
 
-    console.log("DATE: ", parsed);
+    console.log("DATE: ", date);
 
     if (parsed && parsed.toString() !== _date?.toString()) {
       setDate(parsed);
@@ -93,7 +99,7 @@ export default function SheCalendar({
 
   function onSelectDateHandler(selectedDate: any) {
     setDate(selectedDate);
-    if (onSelectDate) onSelectDate(selectedDate);
+    if (onSelectDate) onSelectDate(moment(selectedDate).format(dateFormat));
   }
 
   function onClearHandler() {
@@ -157,11 +163,17 @@ export default function SheCalendar({
                 className={`${cs.sheCalendarElement} ${calendarClassName} ${disabled || isLoading ? "disabled" : ""}`}
                 style={calendarStyle}
                 mode={mode}
-                selected={_date || undefined}
+                selected={_date}
                 month={setMonth(
                   setYear(new Date(), _selectedYear),
                   months.indexOf(_selectedMonth),
                 )}
+                modifiers={{
+                  marked: markedParsedDates,
+                }}
+                modifiersClassNames={{
+                  marked: cs.markedDay,
+                }}
                 onSelect={onSelectDateHandler}
                 {...props}
               />
