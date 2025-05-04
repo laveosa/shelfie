@@ -22,6 +22,7 @@ import VariantPhotosCard from "@/components/complex/custom-cards/variant-photos-
 import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
 import { GridModel } from "@/const/models/GridModel.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
+import { setSelectedGridItem } from "@/utils/helpers/quick-helper.ts";
 
 export function ManageVariantsPage() {
   const dispatch = useAppDispatch();
@@ -143,10 +144,7 @@ export function ManageVariantsPage() {
         });
         dispatch(
           actions.refreshProductVariants(
-            service.setSelectedGridItem(
-              payload.variantId,
-              state.productVariants,
-            ),
+            setSelectedGridItem(payload.variantId, state.productVariants),
           ),
         );
         break;
