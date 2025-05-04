@@ -4,9 +4,8 @@
 }
 
 .dropdownMenuTrigger {
-  box-shadow: none;
-  height: 30px;
-  padding: 8px;
+  min-width: fit-content;
+  padding: 8px !important;
 
   &:focus-visible {
     box-shadow: none;

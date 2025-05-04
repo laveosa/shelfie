@@ -12,13 +12,8 @@
 }
 
 .dropdownMenuTrigger {
-  box-shadow: none;
-  height: 30px;
-  padding: 8px;
-
-  &:focus-visible {
-    box-shadow: none;
-  }
+  padding: 8px !important;
+  min-width: fit-content;
 
   .buttonInnerItems {
     display: flex;

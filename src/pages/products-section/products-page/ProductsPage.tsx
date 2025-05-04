@@ -73,7 +73,6 @@ export function ProductsPage() {
     setLoadingRow?.(rowId, true);
     switch (actionType) {
       case "image":
-        console.log(`Image row ${rowId}`);
         break;
       case "manage":
         navigate(
@@ -116,13 +115,22 @@ export function ProductsPage() {
   function handleConfigure() {}
 
   function handleGridRequestChange(updates: GridRequestModel) {
-    console.log("Updating gridRequestModel:", updates);
-    dispatch(
-      actions.refreshGridRequestModel({
-        ...state.gridRequestModel,
-        ...updates,
-      }),
-    );
+    if (updates.brands || updates.categories) {
+      dispatch(
+        actions.refreshGridRequestModel({
+          ...state.gridRequestModel,
+          currentPage: 1,
+          ...updates,
+        }),
+      );
+    } else {
+      dispatch(
+        actions.refreshGridRequestModel({
+          ...state.gridRequestModel,
+          ...updates,
+        }),
+      );
+    }
   }
 
   function onBrandSelectHandler(selectedIds: number[]) {

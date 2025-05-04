@@ -9,7 +9,20 @@
     align-items: center;
     gap: 10px;
 
-    svg {
+    span {
+      width: 20px;
+      height: 20px;
+      padding-top: 3px;
+    }
+
+    .settingsIcon {
+      width: 20px;
+      height: 20px;
+    }
+
+    .chevronIcon {
+      width: 16px;
+      height: 16px;
       padding-top: 4px;
     }
   }
