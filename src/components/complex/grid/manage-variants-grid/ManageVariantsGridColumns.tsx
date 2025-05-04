@@ -30,7 +30,7 @@ export const ManageVariantsGridColumns = (
             display: "flex",
             alignItems: "center",
             gap: "10px",
-            maxWidth: "50px",
+            maxWidth: "60px",
           }}
         >
           {colorOptions.map((colorOpt, index) => (

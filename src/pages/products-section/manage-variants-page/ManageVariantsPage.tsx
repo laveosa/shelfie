@@ -46,6 +46,9 @@ export function ManageVariantsPage() {
       .then((res) => {
         dispatch(actions.refreshListOfTraitsWithOptionsForProduct(res));
       });
+    service
+      .getTaxesListHandler()
+      .then((res) => dispatch(actions.refreshTaxesList(res)));
   }, [productId]);
 
   useEffect(() => {
@@ -132,13 +135,9 @@ export function ManageVariantsPage() {
         });
         break;
       case "manageVariant":
-        Promise.all([
-          service.getVariantDetailsHandler(payload.variantId),
-          service.getTaxesListHandler(),
-        ]).then(([variant, taxes]) => {
-          dispatch(actions.refreshSelectedVariant(variant));
-          dispatch(actions.refreshVariantPhotos(variant?.photos));
-          dispatch(actions.refreshTaxesList(taxes));
+        service.getVariantDetailsHandler(payload.variantId).then((res) => {
+          dispatch(actions.refreshSelectedVariant(res));
+          dispatch(actions.refreshVariantPhotos(res?.photos));
           handleCardAction("variantConfigurationCard", true);
         });
         dispatch(
@@ -208,6 +207,12 @@ export function ManageVariantsPage() {
             service.getVariantDetailsHandler(payload.contextId).then((res) => {
               dispatch(actions.refreshSelectedVariant(res));
               dispatch(actions.refreshVariantPhotos(res?.photos));
+            });
+            service.getProductPhotosHandler(Number(productId)).then((res) => {
+              dispatch(actions.refreshProductPhotos(res));
+            });
+            service.getCountersForProductsHandler(productId).then((res) => {
+              dispatch(actions.refreshProductCounter(res));
             });
           }
         });
@@ -446,7 +451,6 @@ export function ManageVariantsPage() {
           dispatch(actions.refreshProductPhotos(res));
           handleCardAction("variantPhotosCard", true);
         });
-
         break;
       case "closeProductTraitConfigurationCard":
         handleCardAction("productTraitConfigurationCard");
