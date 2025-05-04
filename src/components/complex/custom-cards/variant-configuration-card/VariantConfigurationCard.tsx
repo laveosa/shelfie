@@ -287,13 +287,13 @@ export default function VariantConfigurationCard({
             <div className={cs.stockBlockRow}>
               <span className="she-text">Currently in stock</span>
               <span className={cs.stockBlockRowNumber}>
-                {variant.stockAmount}
+                {variant?.stockAmount}
               </span>
             </div>
             <div className={cs.stockBlockRow}>
               <span className="she-text">Units sold</span>
               <span className={cs.stockBlockRowNumber}>
-                {variant.soldUnits}
+                {variant?.soldUnits}
               </span>
             </div>
           </div>
@@ -313,7 +313,7 @@ export default function VariantConfigurationCard({
             <DndGridDataTable
               showHeader={false}
               columns={traitsColumns}
-              data={variant.traitOptions}
+              data={variant?.traitOptions}
               gridModel={data}
             />
           </div>
@@ -329,13 +329,13 @@ export default function VariantConfigurationCard({
               Manage
             </SheButton>
           </div>
-          {variant.photos?.length > 0 && (
+          {variant?.photos?.length > 0 && (
             <div>
               <DndGridDataTable
                 enableDnd={true}
                 showHeader={false}
                 columns={photoColumns}
-                data={variant.photos}
+                data={variant?.photos}
                 gridModel={data}
                 onNewItemPosition={(newIndex, activeItem) =>
                   onAction("dndVariantPhoto", { newIndex, activeItem })
