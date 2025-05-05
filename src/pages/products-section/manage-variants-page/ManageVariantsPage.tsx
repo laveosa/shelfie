@@ -135,16 +135,16 @@ export function ManageVariantsPage() {
         });
         break;
       case "manageVariant":
-        handleCardAction("variantConfigurationCard", true);
-        service.getVariantDetailsHandler(payload.variantId).then((res) => {
-          dispatch(actions.refreshSelectedVariant(res));
-          dispatch(actions.refreshVariantPhotos(res?.photos));
-        });
         dispatch(
           actions.refreshProductVariants(
             setSelectedGridItem(payload.variantId, state.productVariants),
           ),
         );
+        service.getVariantDetailsHandler(payload.variantId).then((res) => {
+          dispatch(actions.refreshSelectedVariant(res));
+          dispatch(actions.refreshVariantPhotos(res?.photos));
+        });
+        handleCardAction("variantConfigurationCard", true);
         break;
       case "updateVariantDetails":
         service
