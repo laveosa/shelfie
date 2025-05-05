@@ -172,6 +172,7 @@ export default function VariantConfigurationCard({
             <SheForm.Field name="variantName">
               <SheInput
                 label="Optional Variant Name"
+                value={variant?.variantName}
                 onDelay={handleOnChangeDelay}
                 fullWidth
               />
