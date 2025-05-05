@@ -34,6 +34,7 @@ export default function GridHeader<TData>({ table }: IGridHeader<TData>) {
             value={searchValue}
             onDelay={handleInputChange}
             placeholder={"Search"}
+            minWidth="130px"
             icon={Search}
             showClearBtn
           />

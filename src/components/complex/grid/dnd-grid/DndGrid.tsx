@@ -80,9 +80,7 @@ const DraggableRow = ({ row, loadingRows, isDragDisabled = false }) => {
       style={{
         opacity: isLoading ? 0.7 : 1,
         transform: CSS.Transform.toString(transform),
-        background: isSelected
-          ? "#F8F3FF"
-          : row.original.gridRowColor || "white",
+        background: isSelected ? "#F8F3FF" : row.original.color || "white",
       }}
     >
       <TableCell

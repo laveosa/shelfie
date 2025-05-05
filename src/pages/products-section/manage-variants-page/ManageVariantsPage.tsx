@@ -22,6 +22,7 @@ import VariantPhotosCard from "@/components/complex/custom-cards/variant-photos-
 import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
 import { GridModel } from "@/const/models/GridModel.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
+import { setSelectedGridItem } from "@/utils/helpers/quick-helper.ts";
 
 export function ManageVariantsPage() {
   const dispatch = useAppDispatch();
@@ -45,6 +46,9 @@ export function ManageVariantsPage() {
       .then((res) => {
         dispatch(actions.refreshListOfTraitsWithOptionsForProduct(res));
       });
+    service
+      .getTaxesListHandler()
+      .then((res) => dispatch(actions.refreshTaxesList(res)));
   }, [productId]);
 
   useEffect(() => {
@@ -131,22 +135,14 @@ export function ManageVariantsPage() {
         });
         break;
       case "manageVariant":
-        console.log(payload);
-        Promise.all([
-          service.getVariantDetailsHandler(payload.variantId),
-          service.getTaxesListHandler(),
-        ]).then(([variant, taxes]) => {
-          dispatch(actions.refreshSelectedVariant(variant));
-          dispatch(actions.refreshVariantPhotos(variant?.photos));
-          dispatch(actions.refreshTaxesList(taxes));
-          handleCardAction("variantConfigurationCard", true);
+        handleCardAction("variantConfigurationCard", true);
+        service.getVariantDetailsHandler(payload.variantId).then((res) => {
+          dispatch(actions.refreshSelectedVariant(res));
+          dispatch(actions.refreshVariantPhotos(res?.photos));
         });
         dispatch(
           actions.refreshProductVariants(
-            service.setSelectedGridItem(
-              payload.variantId,
-              state.productVariants,
-            ),
+            setSelectedGridItem(payload.variantId, state.productVariants),
           ),
         );
         break;
@@ -211,6 +207,12 @@ export function ManageVariantsPage() {
             service.getVariantDetailsHandler(payload.contextId).then((res) => {
               dispatch(actions.refreshSelectedVariant(res));
               dispatch(actions.refreshVariantPhotos(res?.photos));
+            });
+            service.getProductPhotosHandler(Number(productId)).then((res) => {
+              dispatch(actions.refreshProductPhotos(res));
+            });
+            service.getCountersForProductsHandler(productId).then((res) => {
+              dispatch(actions.refreshProductCounter(res));
             });
           }
         });
@@ -449,7 +451,6 @@ export function ManageVariantsPage() {
           dispatch(actions.refreshProductPhotos(res));
           handleCardAction("variantPhotosCard", true);
         });
-
         break;
       case "closeProductTraitConfigurationCard":
         handleCardAction("productTraitConfigurationCard");

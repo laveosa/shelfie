@@ -3,6 +3,8 @@ import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { DictionaryApiHooks } from "@/utils/services/api/DictionaryApiService.ts";
 import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
+import { addGridRowColor } from "@/utils/helpers/quick-helper.ts";
+import { GridRowsColorsEnum } from "@/const/enums/GridRowsColorsEnum.ts";
 
 export default function useManageVariantsPageService() {
   const [getTheProductsForGrid] =
@@ -83,7 +85,18 @@ export default function useManageVariantsPageService() {
 
   function getProductVariantsHandler(id: any) {
     return getProductVariants(id).then((res: any) => {
-      return res.data;
+      const modifiedRes = {
+        ...res,
+        data: addGridRowColor(res.data, "color", [
+          {
+            field: "showAlert",
+            value: true,
+            color: GridRowsColorsEnum.ERROR,
+          },
+        ]),
+      };
+
+      return modifiedRes.data;
     });
   }
 
@@ -103,11 +116,18 @@ export default function useManageVariantsPageService() {
     return getVariantDetails(id).then((res: any) => {
       const modifiedRes = {
         ...res.data,
-        traitOptions: res.data.traitOptions.map((trait) => ({
-          ...trait,
-          color:
-            (trait.isRemoved === true || trait.isMissing === true) && "#FEE2E2",
-        })),
+        traitOptions: addGridRowColor(res.data.traitOptions, "color", [
+          {
+            field: "isRemoved",
+            value: true,
+            color: GridRowsColorsEnum.ERROR,
+          },
+          {
+            field: "isMissing",
+            value: true,
+            color: GridRowsColorsEnum.ERROR,
+          },
+        ]),
       };
 
       return modifiedRes;
@@ -303,17 +323,6 @@ export default function useManageVariantsPageService() {
     });
   }
 
-  function setSelectedGridItem(itemId: string, itemsList: any[]) {
-    console.log("itemId", itemId);
-    console.log("itemsList", itemsList);
-    const modifiedItemsList = itemsList.map((item) => ({
-      ...item,
-      isGridItemSelected: item.variantId === itemId,
-    }));
-    console.log("LIST", modifiedItemsList);
-    return modifiedItemsList;
-  }
-
   return {
     getTheProductsForGridHandler,
     getVariantsForGridHandler,
@@ -350,6 +359,5 @@ export default function useManageVariantsPageService() {
     attachProductPhotoToVariantHandler,
     getTaxesListHandler,
     getCurrenciesListHandler,
-    setSelectedGridItem,
   };
 }
