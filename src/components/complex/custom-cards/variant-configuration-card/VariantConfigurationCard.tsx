@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
+
 import {
   Blocks,
   Clock,
@@ -143,6 +144,7 @@ export default function VariantConfigurationCard({
             <SheForm.Field name="variantName">
               <SheInput
                 label="Optional Variant Name"
+                value={variant?.variantName}
                 onDelay={debouncedSubmit}
                 fullWidth
               />
