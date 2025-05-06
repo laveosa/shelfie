@@ -135,6 +135,7 @@ export function ManageVariantsPage() {
         });
         break;
       case "manageVariant":
+        handleCardAction("variantConfigurationCard", true);
         dispatch(
           actions.refreshProductVariants(
             setSelectedGridItem(payload.variantId, state.productVariants),
@@ -144,7 +145,6 @@ export function ManageVariantsPage() {
           dispatch(actions.refreshSelectedVariant(res));
           dispatch(actions.refreshVariantPhotos(res?.photos));
         });
-        handleCardAction("variantConfigurationCard", true);
         break;
       case "updateVariantDetails":
         service
@@ -474,7 +474,7 @@ export function ManageVariantsPage() {
           onAction={(item) => onAction("onProductItemClick", item)}
         />
         <ProductMenuCard
-          title={productId ? "Manage Variant" : "Create Variant"}
+          title="Manage Product"
           productCounter={state.productCounter}
           onAction={handleCardAction}
           productId={Number(productId)}

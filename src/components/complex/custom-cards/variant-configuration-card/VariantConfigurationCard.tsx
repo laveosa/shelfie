@@ -1,6 +1,5 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-
 import {
   Blocks,
   Clock,
@@ -54,43 +53,76 @@ export default function VariantConfigurationCard({
 }: IVariantConfigurationCard) {
   const traitsColumns = VariantConfigurationGridColumns;
   const photoColumns = VariantPhotosGridColumns(onGridAction);
-  const form = useForm({
-    defaultValues: {
-      variantName: variant?.variantName || "",
-      variantCode: variant?.variantCode || "",
-      salePrice: {
-        brutto: variant?.salePrice?.brutto,
-        netto: variant?.salePrice?.netto,
-        taxTypeId: variant?.salePrice?.taxTypeId || taxesList?.[0]?.id,
-      },
+
+  const currentVariantIdRef = useRef<string | number | null>(
+    variant?.variantId || null,
+  );
+
+  const [initialFormValues, setInitialFormValues] = useState({
+    variantName: variant?.variantName || "",
+    variantCode: variant?.variantCode || "",
+    salePrice: {
+      brutto: variant?.salePrice?.brutto,
+      netto: variant?.salePrice?.netto,
+      taxTypeId: variant?.salePrice?.taxTypeId || taxesList?.[0]?.id,
     },
   });
 
-  useEffect(() => {
-    form.reset({
-      variantName: variant?.variantName || "",
-      variantCode: variant?.variantCode || "",
-      salePrice: {
-        brutto: variant?.salePrice?.brutto,
-        netto: variant?.salePrice?.netto,
-        taxTypeId: variant?.salePrice?.taxTypeId || taxesList?.[0]?.id,
-      },
-    });
-  }, [variant, taxesList]);
+  const userModifiedForm = useRef(false);
+  const debouncedFnRef = useRef<any>(null);
 
-  const { setValue, register } = form;
+  const form = useForm({
+    defaultValues: initialFormValues,
+  });
+
+  useEffect(() => {
+    if (debouncedFnRef.current && debouncedFnRef.current.cancel) {
+      debouncedFnRef.current.cancel();
+    }
+    return () => {
+      if (debouncedFnRef.current && debouncedFnRef.current.cancel) {
+        debouncedFnRef.current.cancel();
+      }
+    };
+  }, [variant?.variantId]);
+
+  useEffect(() => {
+    if (currentVariantIdRef.current !== variant?.variantId) {
+      currentVariantIdRef.current = variant?.variantId || null;
+
+      const newValues = {
+        variantName: variant?.variantName || "",
+        variantCode: variant?.variantCode || "",
+        salePrice: {
+          brutto: variant?.salePrice?.brutto,
+          netto: variant?.salePrice?.netto,
+          taxTypeId: variant?.salePrice?.taxTypeId || taxesList?.[0]?.id,
+        },
+      };
+
+      setInitialFormValues(newValues);
+      form.reset(newValues);
+      userModifiedForm.current = false;
+    }
+  }, [variant?.variantId, variant, taxesList, form]);
+
+  const { setValue, register, getValues } = form;
   const lastChanged = useRef<"netto" | "brutto" | null>(null);
 
-  const debouncedSubmit = useRef(
-    debounce(() => form.handleSubmit(onSubmit)(), 500),
-  ).current;
+  const createDebouncedSubmit = () => {
+    const fn = debounce(() => {
+      const currentValues = getValues();
+      if (userModifiedForm.current) {
+        form.handleSubmit(onSubmit)();
+      }
+    }, 500);
+
+    debouncedFnRef.current = fn;
+    return fn;
+  };
 
   function onSubmit(data: VariantModel) {
-    console.log("VariantConfigurationCard", variant);
-    if (!variant?.variantId) {
-      console.warn("Submit skipped: variant is not defined");
-      return;
-    }
+    if (!userModifiedForm.current) return;
 
     let { netto, brutto, taxTypeId } = data.salePrice;
     const taxRate = taxesList.find((t) => t.id === taxTypeId)?.value ?? 0;
@@ -109,12 +141,40 @@ export default function VariantConfigurationCard({
       salePrice: { netto, brutto, taxTypeId },
     };
 
-    onAction("updateVariantDetails", { formattedData, variant });
+    if (variant) {
+      onAction("updateVariantDetails", { formattedData, variant });
+    }
+
+    setInitialFormValues({
+      variantName: data.variantName || "",
+      variantCode: data.variantCode || "",
+      salePrice: { netto, brutto, taxTypeId },
+    });
+
+    userModifiedForm.current = false;
   }
+
+  const handleFieldChange = () => {
+    const currentValues = getValues();
+    const initialValues = initialFormValues;
+
+    const hasChanged =
+      currentValues.variantName !== initialValues.variantName ||
+      currentValues.variantCode !== initialValues.variantCode ||
+      currentValues.salePrice.netto !== initialValues.salePrice.netto ||
+      currentValues.salePrice.brutto !== initialValues.salePrice.brutto ||
+      currentValues.salePrice.taxTypeId !== initialValues.salePrice.taxTypeId;
+
+    if (hasChanged) {
+      userModifiedForm.current = true;
+      createDebouncedSubmit()();
+    }
+  };
 
   function onGenerateCode() {
     onGenerateProductCode().then((res: ProductCodeModel) => {
       form.setValue("variantCode", res.code, { shouldDirty: true });
+      userModifiedForm.current = true;
       form.handleSubmit(onSubmit)();
     });
   }
@@ -144,8 +204,7 @@ export default function VariantConfigurationCard({
             <SheForm.Field name="variantName">
               <SheInput
                 label="Optional Variant Name"
-                value={variant?.variantName}
-                onDelay={debouncedSubmit}
+                onDelay={handleFieldChange}
                 fullWidth
               />
             </SheForm.Field>
@@ -154,8 +213,7 @@ export default function VariantConfigurationCard({
                 <div>
                   <SheInput
                     {...(register("variantCode") as any)}
-                    // value={variant?.variantCode}
-                    onDelay={debouncedSubmit}
+                    onDelay={handleFieldChange}
                   />
                 </div>
               </SheForm.Field>
@@ -176,7 +234,7 @@ export default function VariantConfigurationCard({
                       valueAsNumber: true,
                       onChange: () => {
                         lastChanged.current = "netto";
-                        debouncedSubmit();
+                        handleFieldChange();
                       },
                     }) as any)}
                   />
@@ -192,7 +250,7 @@ export default function VariantConfigurationCard({
                       <Select
                         onValueChange={(value) => {
                           field.onChange(Number(value));
-                          debouncedSubmit();
+                          handleFieldChange();
                         }}
                         value={field.value ? field.value.toString() : ""}
                       >
@@ -228,7 +286,7 @@ export default function VariantConfigurationCard({
                       valueAsNumber: true,
                       onChange: () => {
                         lastChanged.current = "brutto";
-                        debouncedSubmit();
+                        handleFieldChange();
                       },
                     }) as any)}
                   />
