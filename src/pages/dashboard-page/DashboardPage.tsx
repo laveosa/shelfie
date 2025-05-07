@@ -54,7 +54,7 @@ const rangeDaysDateModel = {
 };
 
 const rangeDaysMixModel = {
-  from: "04-10-2025",
+  from: "05-10-2025",
   to: new Date("05/20/2025"),
 };
 

@@ -153,23 +153,35 @@ export default function SheCalendar({
   // ==================================================================== PRIVATE
 
   function formatSelectedDateModel(selectedDate: any): any {
-    if (!dateFormat) return selectedDate;
-
     if (isCalendarMultipleDateValue(selectedDate)) {
-      return selectedDate.map((item) => moment(item).format(dateFormat));
+      return selectedDate.map((item) =>
+        dateFormat ? moment(item).format(dateFormat) : selectedDate,
+      );
     }
 
     if (isCalendarRangeDateValue(selectedDate)) {
-      return {
+      const dateRangeModel = {
         from: selectedDate.from
-          ? moment(selectedDate.from).format(dateFormat)
+          ? dateFormat
+            ? moment(selectedDate.from).format(dateFormat)
+            : selectedDate.from
           : null,
-        to: selectedDate.to ? moment(selectedDate.to).format(dateFormat) : null,
+        to: selectedDate.to
+          ? dateFormat
+            ? moment(selectedDate.to).format(dateFormat)
+            : selectedDate
+          : null,
       };
+
+      if (dateRangeModel?.from && dateRangeModel?.to) {
+        return dateRangeModel;
+      }
     }
 
     if (isCalendarSingleDateValue(selectedDate)) {
-      return moment(selectedDate).format(dateFormat);
+      return dateFormat
+        ? moment(selectedDate).format(dateFormat)
+        : selectedDate;
     }
   }
 
@@ -251,6 +263,9 @@ export default function SheCalendar({
                 modifiersClassNames={{
                   marked: cs.markedDay,
                 }}
+                onMonthChange={(value) =>
+                  setSelectedMonth(months[getMonth(value)])
+                }
                 onSelect={onSelectDateHandler}
                 {...props}
               />
