@@ -85,6 +85,7 @@ export default function SheCalendar({
 
   const ariaDescribedbyId = `${generateId()}_CALENDAR_ID`;
   const markedParsedDates = React.useMemo(() => {
+    if (!Array.isArray(markedDates)) return null;
     return (markedDates || [])
       .map(parseCalendarSingleDate)
       .filter(Boolean) as Date[];
@@ -262,6 +263,7 @@ export default function SheCalendar({
                 }}
                 modifiersClassNames={{
                   marked: cs.markedDay,
+                  today: cs.today,
                 }}
                 onMonthChange={(value) =>
                   setSelectedMonth(months[getMonth(value)])

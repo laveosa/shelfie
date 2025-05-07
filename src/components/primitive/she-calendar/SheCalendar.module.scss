@@ -63,15 +63,24 @@
 
 .sheCalendar {
   [aria-selected="true"] {
-    //background-color: #171717 !important;
+    box-shadow: 0 0 0 0.4px lightgray inset;
+  }
+
+  .today:before {
+    position: absolute;
+    left: 2px;
+    top: -19px;
+    color: vars.$colorGreen;
+    content: ".";
+    font-size: 46px;
+    display: inline;
   }
 
   .markedDay {
     position: relative;
     box-sizing: border-box;
-    border: 0.5px solid vars.$colorBlue;
     color: vars.$colorBlue;
-    //background-color: rgba(49, 130, 246, 10%);
+    box-shadow: 0 0 0 0.4px vars.$colorBlue inset;
   }
 }
 

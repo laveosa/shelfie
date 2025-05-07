@@ -21,6 +21,7 @@ const selectedDaysRowModel = [
   "05.02.2025",
   "05.04.2025",
   "05.06.2025",
+  "05.07.2025",
   "05.08.2025",
   "05.10.2025",
 ];
@@ -62,7 +63,7 @@ export function DashboardPage() {
   const service = useDashboardPageService();
 
   const [date, setDate] = useState<Date | string>(null);
-  const [markedDays, setMarkedDays] = useState<Date[] | string[]>(null);
+  const [markedDays, setMarkedDays] = useState<any>(null);
 
   const [icon, setIcon] = useState<any>(Users);
   const [isLoading, setIsLoading] = useState<boolean>(null);
@@ -134,7 +135,7 @@ export function DashboardPage() {
 
   useEffect(() => {
     setTimeout(() => {
-      setMarkedDays(selectedDaysRowModel);
+      setMarkedDays(selectedDaysDateModel);
     }, 2000);
 
     /*setTimeout(() => {
@@ -203,9 +204,8 @@ export function DashboardPage() {
         // -------------------------------- SINGLE
         // date={"05.10.2025"}
         // date={new Date("05.10.2025")}
-        // dateFormat={DateFormatEnum.MM_DD_YYYY}
-        // markedDates={markedDays}
-
+        dateFormat={DateFormatEnum.MM_DD_YYYY}
+        markedDates={markedDays}
         view={ComponentViewEnum.CARD}
         showClearBtn
         onSelectDate={onAction}
