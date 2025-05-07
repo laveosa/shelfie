@@ -68,7 +68,7 @@ export default function SheCalendar({
     | { from: Date; to: Date }
     | { from: string; to: string }
     | { from: Date | string; to: Date | string }
-  >(date);
+  >(null);
   const [_selectedMonth, setSelectedMonth] = useState<string>(
     months[new Date().getMonth()],
   );
@@ -88,7 +88,7 @@ export default function SheCalendar({
     const parsed: Date | Date[] | { from: Date; to: Date } =
       parseValidDate(date);
 
-    if (parsed && parsed !== _date) {
+    if (parsed && !_.isEqual(parsed, _date)) {
       const convertedDate = getParsedModel(parsed);
       setDate(parsed);
       setSelectedMonth(months[getMonth(convertedDate)]);
@@ -304,7 +304,7 @@ export default function SheCalendar({
   }
 
   function parseCalendarSingleDate(value: string | Date): Date | null {
-    if (!value) return null; // this func can be use outside of this helper scope, so we need this check here!
+    if (!value) return null;
 
     if (value instanceof Date && !isNaN(value.getTime())) return value;
 
