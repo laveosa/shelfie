@@ -9,6 +9,7 @@ import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card
 import useManageVariantsPageService from "@/pages/products-section/manage-variants-page/useManageVariantsPageService.ts";
 import { IManageVariantsPageSlice } from "@/const/interfaces/store-slices/IManageVariantsPageSlice.ts";
 import { ManageVariantsPageSliceActions as actions } from "@/state/slices/ManageVariantsPageSlice.ts";
+import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice";
 import ManageVariantsCard from "@/components/complex/custom-cards/manage-variants-card/ManageVariantsCard.tsx";
 import ChooseVariantTraitsCard from "@/components/complex/custom-cards/choose-variant-traits-card/ChooseVariantTraitsCard.tsx";
 import ProductTraitConfigurationCard from "@/components/complex/custom-cards/product-trait-configuration-card/ProductTraitConfigurationCard.tsx";
@@ -19,16 +20,22 @@ import StockHistoryCard from "@/components/complex/custom-cards/stock-history-ca
 import ManageTraitsCard from "@/components/complex/custom-cards/manage-traits-card/ManageTraitsCard.tsx";
 import AddVariantCard from "@/components/complex/custom-cards/add-variant-card/AddVariantCard.tsx";
 import VariantPhotosCard from "@/components/complex/custom-cards/variant-photos-card/VariantPhotosCard.tsx";
-import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
-import { GridModel } from "@/const/models/GridModel.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { setSelectedGridItem } from "@/utils/helpers/quick-helper.ts";
+import { GridModel } from "@/const/models/GridModel.ts";
+import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
+import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
 
 export function ManageVariantsPage() {
   const dispatch = useAppDispatch();
   const service = useManageVariantsPageService();
+  const productsService = useProductsPageService();
   const state = useAppSelector<IManageVariantsPageSlice>(
     StoreSliceEnum.MANAGE_VARIANTS,
+  );
+  const productsState = useAppSelector<IProductsPageSlice>(
+    StoreSliceEnum.PRODUCTS,
   );
   const { addToast } = useToast();
   const { productId } = useParams();
@@ -36,28 +43,42 @@ export function ManageVariantsPage() {
   const cardRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   useEffect(() => {
-    service
-      .getTheProductsForGridHandler(state.gridRequestModel)
-      .then((res: GridModel) => {
-        dispatch(actions.refreshProducts(res.items));
-      });
-    service
-      .getListOfTraitsWithOptionsForProductHandler(productId)
-      .then((res) => {
-        dispatch(actions.refreshListOfTraitsWithOptionsForProduct(res));
-      });
-    service
-      .getTaxesListHandler()
-      .then((res) => dispatch(actions.refreshTaxesList(res)));
+    console.log("PRODUCTS", state.products);
+  }, []);
+
+  useEffect(() => {
+    if (productsState.products === null) {
+      productsService
+        .getTheProductsForGridHandler(productsState.gridRequestModel)
+        .then((res: GridModel) => {
+          dispatch(productsActions.refreshProducts(res.items));
+        });
+    }
+    if (state.listOfTraitsWithOptionsForProduct.length === 0) {
+      service
+        .getListOfTraitsWithOptionsForProductHandler(productId)
+        .then((res) => {
+          dispatch(actions.refreshListOfTraitsWithOptionsForProduct(res));
+        });
+    }
+    if (state.taxesList === null) {
+      productsService
+        .getTaxesListHandler()
+        .then((res) => dispatch(productsActions.refreshTaxesList(res)));
+    }
   }, [productId]);
 
   useEffect(() => {
-    service.getCountersForProductsHandler(productId).then((res) => {
-      dispatch(actions.refreshProductCounter(res));
-    });
-    service.getProductVariantsHandler(productId).then((res) => {
-      dispatch(actions.refreshProductVariants(res));
-    });
+    if (!state.productCounter) {
+      productsService.getCountersForProductsHandler(productId).then((res) => {
+        dispatch(productsActions.refreshProductCounter(res));
+      });
+    }
+    if (state.productVariants.length === 0) {
+      service.getProductVariantsHandler(productId).then((res) => {
+        dispatch(actions.refreshProductVariants(res));
+      });
+    }
   }, [state.variants, productId]);
 
   useEffect(() => {
@@ -208,12 +229,16 @@ export function ManageVariantsPage() {
               dispatch(actions.refreshSelectedVariant(res));
               dispatch(actions.refreshVariantPhotos(res?.photos));
             });
-            service.getProductPhotosHandler(Number(productId)).then((res) => {
-              dispatch(actions.refreshProductPhotos(res));
-            });
-            service.getCountersForProductsHandler(productId).then((res) => {
-              dispatch(actions.refreshProductCounter(res));
-            });
+            productsService
+              .getProductPhotosHandler(Number(productId))
+              .then((res) => {
+                dispatch(productsActions.refreshProductPhotos(res));
+              });
+            productsService
+              .getCountersForProductsHandler(productId)
+              .then((res) => {
+                dispatch(productsActions.refreshProductCounter(res));
+              });
           }
         });
         break;
@@ -432,8 +457,8 @@ export function ManageVariantsPage() {
         handleCardAction("chooseVariantTraitsCard", true);
         break;
       case "openAddStockCard":
-        service.getCurrenciesListHandler().then((res) => {
-          dispatch(actions.refreshCurrenciesList(res));
+        productsService.getCurrenciesListHandler().then((res) => {
+          dispatch(productsActions.refreshCurrenciesList(res));
         });
         handleCardAction("addStockCard", true);
         break;
@@ -447,10 +472,12 @@ export function ManageVariantsPage() {
         handleCardAction("manageTraitsCard", true);
         break;
       case "openVariantPhotosCard":
-        service.getProductPhotosHandler(Number(productId)).then((res) => {
-          dispatch(actions.refreshProductPhotos(res));
-          handleCardAction("variantPhotosCard", true);
-        });
+        productsService
+          .getProductPhotosHandler(Number(productId))
+          .then((res) => {
+            dispatch(productsActions.refreshProductPhotos(res));
+            handleCardAction("variantPhotosCard", true);
+          });
         break;
       case "closeProductTraitConfigurationCard":
         handleCardAction("productTraitConfigurationCard");
@@ -469,13 +496,13 @@ export function ManageVariantsPage() {
       <div className={cs.borderlessCards}>
         <ItemsCard
           title="Products"
-          data={state.products}
+          data={productsState.products}
           selectedItem={productId}
           onAction={(item) => onAction("onProductItemClick", item)}
         />
         <ProductMenuCard
           title="Manage Product"
-          productCounter={state.productCounter}
+          productCounter={productsState.productCounter}
           onAction={handleCardAction}
           productId={Number(productId)}
           activeCards={state.activeCards}
@@ -495,7 +522,7 @@ export function ManageVariantsPage() {
           <VariantConfigurationCard
             variant={state.selectedVariant}
             data={state.variantTraitsGridModel}
-            taxesList={state.taxesList}
+            taxesList={productsState.taxesList}
             onAction={onAction}
             onGenerateProductCode={service.generateProductCodeHandler}
             onSecondaryButtonClick={() =>
@@ -512,8 +539,8 @@ export function ManageVariantsPage() {
         >
           <AddStockCard
             onAction={onAction}
-            taxTypes={state.taxesList}
-            currencyTypes={state.currenciesList}
+            taxTypes={productsState.taxesList}
+            currencyTypes={productsState.currenciesList}
             variant={state.selectedVariant}
             onSecondaryButtonClick={() => handleCardAction("addStockCard")}
           />
@@ -614,7 +641,7 @@ export function ManageVariantsPage() {
         >
           <VariantPhotosCard
             variantPhotos={state.variantPhotos}
-            productPhotos={state.productPhotos}
+            productPhotos={productsState.productPhotos}
             contextId={state.selectedVariant?.variantId}
             onAction={onAction}
           />

@@ -2,23 +2,19 @@ import { IManageVariantsPageSlice } from "@/const/interfaces/store-slices/IManag
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { VariantModel } from "@/const/models/VariantModel.ts";
-import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 import { TypeOfTraitModel } from "@/const/models/TypeOfTraitModel.ts";
 import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
-import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
-import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
-import { ProductModel } from "@/const/models/ProductModel.ts";
 
 const initialState: IManageVariantsPageSlice = {
   loading: false,
-  products: [],
+  // products: [],
   variants: [],
   productVariants: [],
   selectedVariant: null,
-  productCounter: null,
+  // productCounter: null,
   activeCards: [],
   traits: [],
   typesOfTraits: [],
@@ -45,10 +41,10 @@ const initialState: IManageVariantsPageSlice = {
     pageSize: 10,
   },
   traitOptions: [],
-  productPhotos: [],
+  // productPhotos: [],
   variantPhotos: [],
-  taxesList: [],
-  currenciesList: [],
+  // taxesList: [],
+  // currenciesList: [],
 };
 
 function setLoading(
@@ -58,12 +54,12 @@ function setLoading(
   state.loading = action?.payload;
 }
 
-function refreshProducts(
-  state: IManageVariantsPageSlice,
-  action: PayloadAction<ProductModel[]>,
-) {
-  state.products = action?.payload || state.products;
-}
+// function refreshProducts(
+//   state: IManageVariantsPageSlice,
+//   action: PayloadAction<ProductModel[]>,
+// ) {
+//   state.products = action?.payload || state.products;
+// }
 
 function refreshVariants(
   state: IManageVariantsPageSlice,
@@ -116,12 +112,12 @@ function refreshListOfTraitsWithOptionsForProduct(
     action?.payload || state.listOfTraitsWithOptionsForProduct;
 }
 
-function refreshProductCounter(
-  state: IManageVariantsPageSlice,
-  action: PayloadAction<ProductCounterModel>,
-) {
-  state.productCounter = action?.payload || state.productCounter;
-}
+// function refreshProductCounter(
+//   state: IManageVariantsPageSlice,
+//   action: PayloadAction<ProductCounterModel>,
+// ) {
+//   state.productCounter = action?.payload || state.productCounter;
+// }
 
 function refreshActiveCards(
   state: IManageVariantsPageSlice,
@@ -179,12 +175,12 @@ function refreshGridRequestModel(
   state.gridRequestModel = action?.payload || state.gridRequestModel;
 }
 
-function refreshProductPhotos(
-  state: IManageVariantsPageSlice,
-  action: PayloadAction<ImageModel[]>,
-) {
-  state.productPhotos = action?.payload || state.productPhotos;
-}
+// function refreshProductPhotos(
+//   state: IManageVariantsPageSlice,
+//   action: PayloadAction<ImageModel[]>,
+// ) {
+//   state.productPhotos = action?.payload || state.productPhotos;
+// }
 
 function refreshVariantPhotos(
   state: IManageVariantsPageSlice,
@@ -193,25 +189,25 @@ function refreshVariantPhotos(
   state.variantPhotos = action?.payload || state.variantPhotos;
 }
 
-function refreshTaxesList(
-  state: IManageVariantsPageSlice,
-  action: PayloadAction<TaxTypeModel[]>,
-) {
-  state.taxesList = action?.payload || state.taxesList;
-}
-
-function refreshCurrenciesList(
-  state: IManageVariantsPageSlice,
-  action: PayloadAction<CurrencyModel[]>,
-) {
-  state.currenciesList = action?.payload || state.currenciesList;
-}
+// function refreshTaxesList(
+//   state: IManageVariantsPageSlice,
+//   action: PayloadAction<TaxTypeModel[]>,
+// ) {
+//   state.taxesList = action?.payload || state.taxesList;
+// }
+//
+// function refreshCurrenciesList(
+//   state: IManageVariantsPageSlice,
+//   action: PayloadAction<CurrencyModel[]>,
+// ) {
+//   state.currenciesList = action?.payload || state.currenciesList;
+// }
 
 const ManageVariantsPageSlice = createSlice({
   name: StoreSliceEnum.MANAGE_VARIANTS,
   initialState,
   reducers: {
-    refreshProducts,
+    // refreshProducts,
     setLoading,
     refreshVariants,
     refreshProductVariants,
@@ -220,7 +216,7 @@ const ManageVariantsPageSlice = createSlice({
     refreshTypesOfTraits,
     refreshListOfTraitsForProduct,
     refreshListOfTraitsWithOptionsForProduct,
-    refreshProductCounter,
+    // refreshProductCounter,
     refreshActiveCards,
     refreshSelectedTraitsIds,
     refreshSelectedTrait,
@@ -229,10 +225,10 @@ const ManageVariantsPageSlice = createSlice({
     refreshColorOptionsGridModel,
     refreshSizeOptionsGridModel,
     refreshGridRequestModel,
-    refreshProductPhotos,
+    // refreshProductPhotos,
     refreshVariantPhotos,
-    refreshTaxesList,
-    refreshCurrenciesList,
+    // refreshTaxesList,
+    // refreshCurrenciesList,
   },
 });
 

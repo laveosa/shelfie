@@ -16,7 +16,7 @@ export default function ItemsCard({
   const [selectedId, setSelectedId] = useState(Number(selectedItem));
 
   const handleItemClick = (item) => {
-    setSelectedId(item.variantId ?? item.productId);
+    setSelectedId(item.productId);
     onAction(item);
   };
 
@@ -35,15 +35,15 @@ export default function ItemsCard({
         {...props}
       >
         <div className={cs.productsList}>
-          {data.map((item, index) => (
+          {data?.map((item, index) => (
             <div key={item.id || index} onClick={() => handleItemClick(item)}>
               <div
-                className={`${cs.productsListItem} ${selectedId === (item.variantId ?? item.productId) ? cs.selected : ""}`}
+                className={`${cs.productsListItem} ${selectedId === item.productId ? cs.selected : ""}`}
               >
                 {item.image?.thumbnailUrl ? (
                   <img
                     src={item.image?.thumbnailUrl}
-                    alt={item.productName ?? item.variantName}
+                    alt={item.productName}
                     className={cs.productItemImage}
                   />
                 ) : (
@@ -51,9 +51,7 @@ export default function ItemsCard({
                     <Image />
                   </div>
                 )}
-                <div className={cs.productItemName}>
-                  {item.productName ?? item.variantName}
-                </div>
+                <div className={cs.productItemName}>{item.productName}</div>
               </div>
               <Separator orientation="horizontal" />
             </div>

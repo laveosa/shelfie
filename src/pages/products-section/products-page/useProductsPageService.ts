@@ -28,6 +28,12 @@ export default function useProductsPageService() {
     UsersApiHooks.useResetUserPreferencesMutation();
   const [getSortingOptionsForGrid] =
     DictionaryApiHooks.useLazyGetSortingOptionsForGridQuery();
+  const [getCountersForProducts] =
+    ProductsApiHooks.useLazyGetCountersForProductsQuery();
+  const [getProductPhotos] = ProductsApiHooks.useLazyGetProductPhotosQuery();
+  const [getTaxesList] = DictionaryApiHooks.useLazyGetTaxesListQuery();
+  const [getCurrenciesList] =
+    DictionaryApiHooks.useLazyGetCurrenciesListQuery();
 
   function getTheProductsForGridHandler(data?: GridRequestModel) {
     dispatch(action.setLoading(true));
@@ -110,6 +116,30 @@ export default function useProductsPageService() {
     });
   }
 
+  function getCountersForProductsHandler(id: any) {
+    return getCountersForProducts(id).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function getProductPhotosHandler(id: number) {
+    return getProductPhotos(id).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function getTaxesListHandler() {
+    return getTaxesList().then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function getCurrenciesListHandler() {
+    return getCurrenciesList().then((res: any) => {
+      return res.data;
+    });
+  }
+
   return {
     getTheProductsForGridHandler,
     getVariantsForGridHandler,
@@ -121,5 +151,9 @@ export default function useProductsPageService() {
     toggleProductActivationHandler,
     updateUserPreferencesHandler,
     resetUserPreferencesHandler,
+    getCountersForProductsHandler,
+    getProductPhotosHandler,
+    getTaxesListHandler,
+    getCurrenciesListHandler,
   };
 }
