@@ -7,8 +7,17 @@ import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import SheCalendar from "@/components/primitive/she-calendar/SheCalendar.tsx";
 import { DateFormatEnum } from "@/const/enums/DateFormatEnum.ts";
+import {
+  inferCalendarMode,
+  isCalendarMultipleDateValue,
+  isCalendarRangeDateValue,
+  isCalendarSingleDateValue,
+  parseCalendarMultipleDate,
+  parseCalendarRangeDate,
+  parseValidDate,
+} from "@/utils/helpers/date-helper.ts";
 
-const markDays1 = [
+const selectedDaysRowModel = [
   "05.02.2025",
   "05.04.2025",
   "05.06.2025",
@@ -16,13 +25,38 @@ const markDays1 = [
   "05.10.2025",
 ];
 
-const markDays2 = [
-  "05.01.2025",
-  "05.03.2025",
-  "05.05.2025",
-  "05.07.2025",
-  "05.09.2025",
+const selectedDaysDateModel = [
+  new Date("05.02.2025"),
+  new Date("05.04.2025"),
+  new Date("05.06.2025"),
+  new Date("05.08.2025"),
+  new Date("05.10.2025"),
 ];
+
+const selectedDaysMixModel = [
+  "03.02.2025",
+  new Date("01.11.2025"),
+  "04.06.2025",
+  new Date("05.08.2025"),
+  "02.10.2025",
+  new Date("06.26.2025"),
+  "01.01.2024",
+];
+
+const rangeDaysRowModel = {
+  from: "05.01.2025",
+  to: "05.10.2025",
+};
+
+const rangeDaysDateModel = {
+  from: new Date("05.01.2025"),
+  to: new Date("05.10.2025"),
+};
+
+const rangeDaysMixModel = {
+  from: "04-10-2025",
+  to: new Date("05/20/2025"),
+};
 
 export function DashboardPage() {
   const service = useDashboardPageService();
@@ -40,8 +74,67 @@ export function DashboardPage() {
   // =========================================================================== SIDE-EFFECTS
 
   useEffect(() => {
+    // --------------------------------------------------
+    /*console.log("Multiple Date Row: ", parseValidDate(selectedDaysRowModel));
+    console.log("Multiple Date Arr: ", parseValidDate(selectedDaysDateModel));
+    console.log("Multiple Date Mix: ", parseValidDate(selectedDaysMixModel));
+
+    console.log("Range Date Row: ", parseValidDate(rangeDaysRowModel));
+    console.log("Range Date Obj: ", parseValidDate(rangeDaysDateModel));
+    console.log("Range Date Mix: ", parseValidDate(rangeDaysMixModel));
+
+    console.log("Single Date Row: ", parseValidDate("05.10.2025"));
+    console.log("Single Date Obj: ", parseValidDate(new Date("05.10.2025")));*/
+    // --------------------------------------------------
+    // console.log(parseCalendarMultipleDate(selectedDaysRowModel));
+    // console.log(parseCalendarMultipleDate(selectedDaysDateModel));
+    // console.log(parseCalendarMultipleDate(selectedDaysMixModel));
+    // --------------------------------------------------
+    // console.log(parseCalendarRangeDate(rangeDaysRowModel));
+    // console.log(parseCalendarRangeDate(rangeDaysDateModel));
+    // console.log(parseCalendarRangeDate(rangeDaysMixModel));
+    // --------------------------------------------------
+    /*console.log(inferCalendarMode("05.10.2025"));
+    console.log(inferCalendarMode(new Date("05.10.2025")));
+    console.log(inferCalendarMode(selectedDaysRowModel));
+    console.log(inferCalendarMode(selectedDaysDateModel));
+    console.log(inferCalendarMode(rangeDaysRowModel));
+    console.log(inferCalendarMode(rangeDaysDateModel));*/
+    // --------------------------------------------------
+    /*console.log(
+      "isValueSingle: ",
+      isCalendarDateMultipleValue("wefwe05.12.2025fwef we"),
+    );
+    console.log(
+      "isValueSingle: ",
+      isCalendarDateMultipleValue(new Date("wefwe05.12.2025wefwe")),
+    );*/
+    // --------------------------------------------------
+    /*console.log("isValueSingle: ", isCalendarDateRangeValue("05.12.2025"));
+    console.log(
+      "isValueSingle: ",
+      isCalendarDateRangeValue(new Date("05.12.2025")),
+    );*/
+    // --------------------------------------------------
+    /* console.log(
+      "isValueSingle: ",
+      isCalendarDateRangeValue(selectedDaysRowModel),
+    );
+    console.log(
+      "isValueSingle: ",
+      isCalendarDateRangeValue(selectedDaysDateModel),
+    );*/
+    // --------------------------------------------------
+    /*console.log("isValueSingle: ", isCalendarDateRangeValue(rangeDaysRowModel));
+    console.log(
+      "isValueSingle: ",
+      isCalendarDateRangeValue(rangeDaysDateModel),
+    );*/
+  }, []);
+
+  useEffect(() => {
     setTimeout(() => {
-      setMarkedDays(markDays1);
+      setMarkedDays(selectedDaysRowModel);
     }, 2000);
 
     /*setTimeout(() => {
@@ -99,15 +192,24 @@ export function DashboardPage() {
       <SheCalendar
         label="Calendar"
         labelTransKey="sdoiwfejfowidj"
-        date="02.04.2025"
-        dateFormat={DateFormatEnum.MM_DD_YYYY}
-        mode="single"
-        markedDates={markedDays}
+        // -------------------------------- MULTIPLE
+        // date={selectedDaysRowModel}
+        // date={selectedDaysDateModel}
+        date={rangeDaysMixModel}
+        // -------------------------------- RANGE
+        // date={rangeDaysRowModel}
+        // date={rangeDaysDateModel}
+        // date={rangeDaysMixModel}
+        // -------------------------------- SINGLE
+        // date={"05.10.2025"}
+        // date={new Date("05.10.2025")}
+        // dateFormat={DateFormatEnum.MM_DD_YYYY}
+        // markedDates={markedDays}
+
         view={ComponentViewEnum.CARD}
         showClearBtn
         onSelectDate={onAction}
       />
-
       {/*<br />
 
       <SheCalendar
@@ -124,7 +226,6 @@ export function DashboardPage() {
         tooltip="some text for tooltip"
         onSelectDate={onAction}
       />*/}
-
       {/*<div className="flex gap-2 items-end border-b-2 border-solid pb-6">
         <SheInput
           label="Min width"
@@ -146,9 +247,7 @@ export function DashboardPage() {
         <SheButton icon={Box} onClick={() => setFullWidth(!fullWidth)} />
         <SheButton icon={Image} onClick={() => setIcon(!icon ? Users : null)} />
       </div>*/}
-
       <br />
-
       <SheInput
         label="Input"
         labelTransKey="sdifwoisdijoij"
@@ -159,7 +258,6 @@ export function DashboardPage() {
         showClearBtn={true}
         isLoading={isLoading}
       />
-
       {/*<br />
 
       <SheDatePicker
@@ -215,7 +313,6 @@ export function DashboardPage() {
         fullWidth={fullWidth}
         isLoading={isLoading}
       />*/}
-
       <br />
     </div>
   );

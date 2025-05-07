@@ -1,6 +1,7 @@
+import { ComponentPropsWithRef } from "react";
+
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { IUndefinedProperties } from "@/const/interfaces/IUndefinedProperties.ts";
-import { ComponentPropsWithRef } from "react";
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 
 export function getCurrentSectionUrl(url: string): NavUrlEnum {
@@ -98,23 +99,4 @@ export function getInitials(name: string) {
   const names = name.trim().split(" ");
   const initials = names.map((n) => n.charAt(0).toUpperCase()).slice(0, 2);
   return initials.join("");
-}
-
-export function parseValidDate(value: string | Date): Date | null {
-  if (value instanceof Date && !isNaN(value.getTime())) return value;
-
-  if (typeof value === "string") {
-    const patterns = [
-      /\b(\d{2})[./-](\d{2})[./-](\d{4})\b/, // MM.DD.YYYY / MM-DD-YYYY / MM/DD/YYYY
-    ];
-    for (const pattern of patterns) {
-      const match = value.match(pattern);
-      if (match) {
-        const [_, mm, dd, yyyy] = match;
-        const date = new Date(+yyyy, +mm - 1, +dd);
-        if (!isNaN(date.getTime())) return date;
-      }
-    }
-  }
-  return null;
 }

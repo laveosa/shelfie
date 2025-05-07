@@ -8,9 +8,17 @@ import { ISheCalendar } from "@/const/interfaces/primitive-components/ISheCalend
 import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
 import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
-import { generateId, parseValidDate } from "@/utils/helpers/quick-helper.ts";
+import { generateId } from "@/utils/helpers/quick-helper.ts";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
+import {
+  inferCalendarMode,
+  isCalendarMultipleDateValue,
+  isCalendarRangeDateValue,
+  isCalendarSingleDateValue,
+  parseCalendarSingleDate,
+  parseValidDate,
+} from "@/utils/helpers/date-helper.ts";
 
 const months = [
   "January",
@@ -58,7 +66,16 @@ export default function SheCalendar({
   onSelectDate,
   ...props
 }: ISheCalendar): JSX.Element {
-  const [_date, setDate] = React.useState<string | Date>(date);
+  const [_date, setDate] = React.useState<
+    | string
+    | string[]
+    | Date
+    | Date[]
+    | (Date | string)[]
+    | { from: Date; to: Date }
+    | { from: string; to: string }
+    | { from: Date | string; to: Date | string }
+  >(date);
   const [_selectedMonth, setSelectedMonth] = useState<string>(
     months[new Date().getMonth()],
   );
@@ -68,20 +85,43 @@ export default function SheCalendar({
 
   const ariaDescribedbyId = `${generateId()}_CALENDAR_ID`;
   const markedParsedDates = React.useMemo(() => {
-    return (markedDates || []).map(parseValidDate).filter(Boolean) as Date[];
+    return (markedDates || [])
+      .map(parseCalendarSingleDate)
+      .filter(Boolean) as Date[];
   }, [markedDates]);
 
   useEffect(() => {
-    const parsed = parseValidDate(date);
+    const parsed: Date | Date[] | { from: Date; to: Date } =
+      parseValidDate(date);
 
-    /*console.log("DATE: ", date);
-    console.log("PARSED: ", parsed);*/
-
-    if (parsed && parsed.toString() !== _date?.toString()) {
+    if (parsed && parsed !== _date) {
+      const convertedDate = getParsedModel(parsed);
       setDate(parsed);
-      setSelectedMonth(months[getMonth(parsed)]);
-      setSelectedYear(getYear(parsed));
+      setSelectedMonth(months[getMonth(convertedDate)]);
+      setSelectedYear(getYear(convertedDate));
     }
+
+    /*if (parsed) {
+      switch (inferCalendarMode(parsed)) {
+        case "multiple": {
+          const parsedDate: Date = parsed[parsed.length - 1];
+          setSelectedMonth(months[getMonth(parsedDate)]);
+          setSelectedYear(getYear(parsedDate));
+          break;
+        }
+        case "range": {
+          const parsedDate: { from: Date; to: Date } = parsed;
+          setSelectedMonth(months[getMonth(parsedDate.to)]);
+          setSelectedYear(getYear(parsedDate.to));
+          break;
+        }
+        case "single": {
+          setSelectedMonth(months[getMonth(parsed as Date)]);
+          setSelectedYear(getYear(parsed as Date));
+          break;
+        }
+      }
+    }*/
   }, [date]);
 
   // ==================================================================== EVENT
@@ -113,48 +153,35 @@ export default function SheCalendar({
   // ==================================================================== PRIVATE
 
   function formatSelectedDateModel(selectedDate: any): any {
-    let eventModel;
+    if (!dateFormat) return selectedDate;
 
-    if (Array.isArray(selectedDate)) {
-      console.log("Model 'Multiple': ", selectedDate);
-      eventModel = dateFormat
-        ? selectedDate.map((item) => moment(item).format(dateFormat))
-        : selectedDate;
-    } else if (isDateRangeObject(selectedDate)) {
-      console.log("Model 'Multiple': ", selectedDate);
-      eventModel = dateFormat
-        ? {
-            from: selectedDate.from
-              ? moment(selectedDate.from).format(dateFormat)
-              : null,
-            to: selectedDate.to
-              ? moment(selectedDate.to).format(dateFormat)
-              : null,
-          }
-        : selectedDate;
-    } else if (typeof selectedDate === "object" && !selectedDate.from) {
-      console.log("Model 'Single': ", selectedDate);
-      eventModel = dateFormat
-        ? moment(selectedDate).format(dateFormat)
-        : selectedDate;
+    if (isCalendarMultipleDateValue(selectedDate)) {
+      return selectedDate.map((item) => moment(item).format(dateFormat));
     }
 
-    return eventModel;
+    if (isCalendarRangeDateValue(selectedDate)) {
+      return {
+        from: selectedDate.from
+          ? moment(selectedDate.from).format(dateFormat)
+          : null,
+        to: selectedDate.to ? moment(selectedDate.to).format(dateFormat) : null,
+      };
+    }
+
+    if (isCalendarSingleDateValue(selectedDate)) {
+      return moment(selectedDate).format(dateFormat);
+    }
   }
 
-  function isDateRangeObject(
-    value: unknown,
-  ): value is { from: Date | string; to: Date | string } {
-    return (
-      value &&
-      typeof value === "object" &&
-      "from" in value &&
-      "to" in value &&
-      (typeof (value as any).from === "string" ||
-        (value as any).from instanceof Date) &&
-      (typeof (value as any).to === "string" ||
-        (value as any).to instanceof Date)
-    );
+  function getParsedModel(parsed: unknown): Date {
+    switch (inferCalendarMode(parsed)) {
+      case "multiple":
+        return parsed[parsed.length - 1];
+      case "range":
+        return parsed.to;
+      case "single":
+        return parsed as Date;
+    }
   }
 
   // ==================================================================== LAYOUT
@@ -212,7 +239,7 @@ export default function SheCalendar({
               <Calendar
                 className={`${cs.sheCalendarElement} ${calendarClassName} ${disabled || isLoading ? "disabled" : ""}`}
                 style={calendarStyle}
-                mode={mode}
+                mode={date ? inferCalendarMode(date) : mode}
                 selected={_date}
                 month={setMonth(
                   setYear(new Date(), _selectedYear),

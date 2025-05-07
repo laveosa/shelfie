@@ -15,7 +15,15 @@ export interface ISheCalendar
   style?: React.CSSProperties;
   calendarClassName?: string;
   calendarStyle?: React.CSSProperties;
-  date?: string | Date;
+  date?:
+    | string
+    | string[]
+    | Date
+    | Date[]
+    | (Date | string)[]
+    | { from: Date; to: Date }
+    | { from: string; to: string }
+    | { from: Date | string; to: Date | string };
   dateFormat?: DateFormatEnum;
   markedDates?: (string | Date)[];
   minWidth?: string;
