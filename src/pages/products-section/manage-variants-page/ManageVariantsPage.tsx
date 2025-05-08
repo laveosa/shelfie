@@ -55,7 +55,7 @@ export function ManageVariantsPage() {
           dispatch(actions.refreshListOfTraitsWithOptionsForProduct(res));
         });
     }
-    if (state.taxesList === null) {
+    if (productsState.taxesList.length === 0) {
       productsService
         .getTaxesListHandler()
         .then((res) => dispatch(productsActions.refreshTaxesList(res)));
