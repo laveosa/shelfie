@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
@@ -20,7 +20,6 @@ import StockHistoryCard from "@/components/complex/custom-cards/stock-history-ca
 import ManageTraitsCard from "@/components/complex/custom-cards/manage-traits-card/ManageTraitsCard.tsx";
 import AddVariantCard from "@/components/complex/custom-cards/add-variant-card/AddVariantCard.tsx";
 import VariantPhotosCard from "@/components/complex/custom-cards/variant-photos-card/VariantPhotosCard.tsx";
-import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { setSelectedGridItem } from "@/utils/helpers/quick-helper.ts";
 import { GridModel } from "@/const/models/GridModel.ts";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
@@ -39,12 +38,7 @@ export function ManageVariantsPage() {
   );
   const { addToast } = useToast();
   const { productId } = useParams();
-  const navigate = useNavigate();
   const cardRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
-
-  useEffect(() => {
-    console.log("PRODUCTS", state.products);
-  }, []);
 
   useEffect(() => {
     if (productsState.products === null) {
@@ -69,14 +63,16 @@ export function ManageVariantsPage() {
   }, [productId]);
 
   useEffect(() => {
-    if (!state.productCounter) {
-      productsService.getCountersForProductsHandler(productId).then((res) => {
-        dispatch(productsActions.refreshProductCounter(res));
-      });
+    if (!productsState.productCounter) {
+      productsService
+        .getCountersForProductsHandler(Number(productId))
+        .then((res) => {
+          dispatch(productsActions.refreshProductCounter(res));
+        });
     }
-    if (state.productVariants.length === 0) {
-      service.getProductVariantsHandler(productId).then((res) => {
-        dispatch(actions.refreshProductVariants(res));
+    if (productsState.productVariants.length === 0) {
+      productsService.getProductVariantsHandler(productId).then((res) => {
+        dispatch(productsActions.refreshProductVariants(res));
       });
     }
   }, [state.variants, productId]);
@@ -145,9 +141,7 @@ export function ManageVariantsPage() {
   function onAction(actionType: string, payload?: any) {
     switch (actionType) {
       case "onProductItemClick":
-        navigate(
-          `${NavUrlEnum.PRODUCTS}${NavUrlEnum.PRODUCT_VARIANTS}/${payload.productId}`,
-        );
+        productsService.itemCardHandler(payload);
         break;
       case "addVariant":
         service.createVariantHandler(productId, payload).then((res) => {
@@ -158,8 +152,11 @@ export function ManageVariantsPage() {
       case "manageVariant":
         handleCardAction("variantConfigurationCard", true);
         dispatch(
-          actions.refreshProductVariants(
-            setSelectedGridItem(payload.variantId, state.productVariants),
+          productsActions.refreshProductVariants(
+            setSelectedGridItem(
+              payload.variantId,
+              productsState.productVariants,
+            ),
           ),
         );
         service.getVariantDetailsHandler(payload.variantId).then((res) => {
@@ -186,8 +183,8 @@ export function ManageVariantsPage() {
             payload.submissionData,
           )
           .then(() => {
-            service.getProductVariantsHandler(productId).then((res) => {
-              dispatch(actions.refreshProductVariants(res));
+            productsService.getProductVariantsHandler(productId).then((res) => {
+              dispatch(productsActions.refreshProductVariants(res));
             });
             service
               .getVariantDetailsHandler(payload.variant.variantId)
@@ -198,8 +195,8 @@ export function ManageVariantsPage() {
         break;
       case "activateVariant":
         service.toggleVariantIsActiveHandler(payload.variantId).then(() => {
-          service.getProductVariantsHandler(productId).then((res) => {
-            dispatch(actions.refreshProductVariants(res));
+          productsService.getProductVariantsHandler(productId).then((res) => {
+            dispatch(productsActions.refreshProductVariants(res));
           });
         });
         break;
@@ -235,7 +232,7 @@ export function ManageVariantsPage() {
                 dispatch(productsActions.refreshProductPhotos(res));
               });
             productsService
-              .getCountersForProductsHandler(productId)
+              .getCountersForProductsHandler(Number(productId))
               .then((res) => {
                 dispatch(productsActions.refreshProductCounter(res));
               });
@@ -495,6 +492,7 @@ export function ManageVariantsPage() {
     <div className={cs.manageVariantsPage}>
       <div className={cs.borderlessCards}>
         <ItemsCard
+          isLoading={productsState.isProductsLoading}
           title="Products"
           data={productsState.products}
           selectedItem={productId}
@@ -509,7 +507,8 @@ export function ManageVariantsPage() {
         />
       </div>
       <ManageVariantsCard
-        variants={state.productVariants}
+        isLoading={productsState.isProductVariantsLoading}
+        variants={productsState.productVariants}
         traits={state.listOfTraitsWithOptionsForProduct}
         onAction={onAction}
       />

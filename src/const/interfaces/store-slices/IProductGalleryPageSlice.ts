@@ -6,6 +6,7 @@ import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 
 export interface IProductGalleryPageSlice {
   isLoading?: boolean;
+  isProductPhotosLoading?: boolean;
   product?: ProductModel;
   contextId?: number;
   products?: ProductModel[];

@@ -3,7 +3,8 @@
 .createProductPage {
   display: flex;
   gap: 20px;
+
+  .borderlessCards {
+    display: flex;
+  }
 }
-
-// ---------------------------------------------------------------- Create Product Category Card
-

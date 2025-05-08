@@ -12,10 +12,17 @@ import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 
 export interface IProductsPageSlice {
-  loading?: boolean;
+  isLoading?: boolean;
+  isProductsLoading?: boolean;
+  isProductPhotosLoading?: boolean;
+  isProductVariantsLoading?: boolean;
   products?: ProductModel[];
+  product?: ProductModel;
+  contextId?: number;
+  activeCards?: any[];
+  selectedProduct?: ProductModel;
   productCounter?: ProductCounterModel;
-  variants?: VariantModel[];
+  productVariants: VariantModel[];
   columnsPreferences?: PreferencesModel;
   brands?: BrandModel[];
   categories?: CategoryModel[];

@@ -14,8 +14,13 @@ import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 
 const initialState: IProductsPageSlice = {
-  loading: false,
+  isLoading: false,
+  isProductsLoading: false,
+  isProductPhotosLoading: false,
+  isProductVariantsLoading: false,
   products: null,
+  product: null,
+  selectedProduct: null,
   productCounter: null,
   columnsPreferences: null,
   brands: [],
@@ -34,12 +39,37 @@ const initialState: IProductsPageSlice = {
     pageSize: 10,
   },
   productPhotos: [],
+  productVariants: [],
   taxesList: [],
   currenciesList: [],
 };
 
-function setLoading(state: IProductsPageSlice, action: PayloadAction<boolean>) {
-  state.loading = action?.payload;
+function setIsLoading(
+  state: IProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isLoading = action?.payload;
+}
+
+function setIsProductsLoading(
+  state: IProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isProductsLoading = action?.payload;
+}
+
+function setIsProductPhotosLoading(
+  state: IProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isProductPhotosLoading = action?.payload;
+}
+
+function setIsProductVariantsLoading(
+  state: IProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isProductVariantsLoading = action?.payload;
 }
 
 function refreshProducts(
@@ -49,11 +79,33 @@ function refreshProducts(
   state.products = action?.payload || state.products;
 }
 
+function refreshProduct(
+  state: IProductsPageSlice,
+  action: PayloadAction<ProductModel>,
+) {
+  state.product = action?.payload || state.product;
+}
+
+function resetProduct(state: IProductsPageSlice) {
+  state.product = null;
+}
+
+function refreshSelectedProduct(
+  state: IProductsPageSlice,
+  action: PayloadAction<ProductModel>,
+) {
+  state.selectedProduct = action?.payload || state.selectedProduct;
+}
+
 function refreshProductCounter(
   state: IProductsPageSlice,
   action: PayloadAction<ProductCounterModel>,
 ) {
   state.productCounter = action?.payload || state.productCounter;
+}
+
+function resetProductCounter(state: IProductsPageSlice) {
+  state.productCounter = null;
 }
 
 function refreshProductsGridModel(
@@ -105,6 +157,13 @@ function refreshProductPhotos(
   state.productPhotos = action?.payload || state.productPhotos;
 }
 
+function refreshProductVariants(
+  state: IProductsPageSlice,
+  action: PayloadAction<any[]>,
+) {
+  state.productVariants = action?.payload || state.productVariants;
+}
+
 function refreshTaxesList(
   state: IProductsPageSlice,
   action: PayloadAction<TaxTypeModel[]>,
@@ -123,9 +182,16 @@ const ProductsPageSlice = createSlice({
   name: StoreSliceEnum.PRODUCTS,
   initialState,
   reducers: {
-    setLoading,
+    setIsLoading,
+    setIsProductsLoading,
+    setIsProductPhotosLoading,
+    setIsProductVariantsLoading,
     refreshProducts,
+    refreshProduct,
+    resetProduct,
+    refreshSelectedProduct,
     refreshProductCounter,
+    resetProductCounter,
     refreshProductsGridModel,
     refreshVariantsGridModel,
     refreshGridRequestModel,
@@ -133,6 +199,7 @@ const ProductsPageSlice = createSlice({
     refreshCategories,
     refreshSortingOptions,
     refreshProductPhotos,
+    refreshProductVariants,
     refreshTaxesList,
     refreshCurrenciesList,
   },

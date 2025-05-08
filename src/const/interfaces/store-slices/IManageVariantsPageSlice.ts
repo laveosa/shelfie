@@ -6,12 +6,14 @@ import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
+import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 
 export interface IManageVariantsPageSlice {
-  loading?: boolean;
+  isLoading?: boolean;
+  isProductsLoading?: boolean;
   products?: ProductModel[];
   variants: VariantModel[];
-  productVariants: VariantModel[];
+  // productVariants: VariantModel[];
   selectedVariant: VariantModel;
   traits?: TraitModel[];
   typesOfTraits?: TypeOfTraitModel[];
@@ -21,7 +23,7 @@ export interface IManageVariantsPageSlice {
   contextId?: number;
   selectedTraitsIds?: number[];
   selectedTrait?: TraitModel;
-  // productCounter?: ProductCounterModel;
+  productCounter?: ProductCounterModel;
   traitOptions?: TraitOptionModel[];
   colorOptionsGridModel?: GridModel;
   sizeOptionsGridModel?: GridModel;

@@ -9,7 +9,8 @@ import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 
 const initialState: IProductBasicDataPageSlice = {
-  loading: false,
+  isLoading: false,
+  isProductsLoading: false,
   products: [],
   product: {},
   activeCards: [],
@@ -26,7 +27,14 @@ function setLoading(
   state: IProductBasicDataPageSlice,
   action: PayloadAction<boolean>,
 ) {
-  state.loading = action?.payload;
+  state.isLoading = action?.payload;
+}
+
+function setProductsLoading(
+  state: IProductBasicDataPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isProductsLoading = action?.payload;
 }
 
 function refreshProducts(
@@ -104,6 +112,7 @@ const ProductBasicDataPageSlice = createSlice({
   initialState,
   reducers: {
     setLoading,
+    setProductsLoading,
     refreshProducts,
     refreshProduct,
     refreshActiveCards,

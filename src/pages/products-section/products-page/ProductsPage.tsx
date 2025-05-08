@@ -45,6 +45,7 @@ export function ProductsPage() {
       if (activeTab === "products") {
         const res = await service.getTheProductsForGridHandler(
           state.gridRequestModel,
+          true,
         );
         dispatch(actions.refreshProductsGridModel(res));
       } else if (activeTab === "variants") {

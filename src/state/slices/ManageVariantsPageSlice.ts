@@ -7,14 +7,16 @@ import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
+import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 
 const initialState: IManageVariantsPageSlice = {
-  loading: false,
+  isLoading: false,
+  isProductsLoading: false,
   // products: [],
   variants: [],
-  productVariants: [],
+  // productVariants: [],
   selectedVariant: null,
-  // productCounter: null,
+  productCounter: null,
   activeCards: [],
   traits: [],
   typesOfTraits: [],
@@ -47,11 +49,18 @@ const initialState: IManageVariantsPageSlice = {
   // currenciesList: [],
 };
 
-function setLoading(
+function setIsLoading(
   state: IManageVariantsPageSlice,
   action: PayloadAction<boolean>,
 ) {
-  state.loading = action?.payload;
+  state.isLoading = action?.payload;
+}
+
+function setIsProductsLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isProductsLoading = action?.payload;
 }
 
 // function refreshProducts(
@@ -68,12 +77,12 @@ function refreshVariants(
   state.variants = action?.payload || state.variants;
 }
 
-function refreshProductVariants(
-  state: IManageVariantsPageSlice,
-  action: PayloadAction<any[]>,
-) {
-  state.productVariants = action?.payload || state.productVariants;
-}
+// function refreshProductVariants(
+//   state: IManageVariantsPageSlice,
+//   action: PayloadAction<any[]>,
+// ) {
+//   state.productVariants = action?.payload || state.productVariants;
+// }
 
 function refreshSelectedVariant(
   state: IManageVariantsPageSlice,
@@ -112,12 +121,12 @@ function refreshListOfTraitsWithOptionsForProduct(
     action?.payload || state.listOfTraitsWithOptionsForProduct;
 }
 
-// function refreshProductCounter(
-//   state: IManageVariantsPageSlice,
-//   action: PayloadAction<ProductCounterModel>,
-// ) {
-//   state.productCounter = action?.payload || state.productCounter;
-// }
+function refreshProductCounter(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<ProductCounterModel>,
+) {
+  state.productCounter = action?.payload || state.productCounter;
+}
 
 function refreshActiveCards(
   state: IManageVariantsPageSlice,
@@ -208,15 +217,16 @@ const ManageVariantsPageSlice = createSlice({
   initialState,
   reducers: {
     // refreshProducts,
-    setLoading,
+    setIsLoading,
+    setIsProductsLoading,
     refreshVariants,
-    refreshProductVariants,
+    // refreshProductVariants,
     refreshSelectedVariant,
     refreshTraits,
     refreshTypesOfTraits,
     refreshListOfTraitsForProduct,
     refreshListOfTraitsWithOptionsForProduct,
-    // refreshProductCounter,
+    refreshProductCounter,
     refreshActiveCards,
     refreshSelectedTraitsIds,
     refreshSelectedTrait,
