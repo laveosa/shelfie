@@ -145,8 +145,12 @@ export function ManageVariantsPage() {
         break;
       case "addVariant":
         service.createVariantHandler(productId, payload).then((res) => {
-          handleCardAction("addVariantCard");
-          dispatch(actions.refreshVariants(res));
+          if (res) {
+            handleCardAction("addVariantCard");
+            productsService.getProductVariantsHandler(productId).then((res) => {
+              dispatch(productsActions.refreshProductVariants(res));
+            });
+          }
         });
         break;
       case "manageVariant":
@@ -159,7 +163,11 @@ export function ManageVariantsPage() {
             ),
           ),
         );
+        dispatch(actions.setIsVariantOptionsGridLoading(true));
+        dispatch(actions.setIsVariantPhotoGridLoading(true));
         service.getVariantDetailsHandler(payload.variantId).then((res) => {
+          dispatch(actions.setIsVariantOptionsGridLoading(false));
+          dispatch(actions.setIsVariantPhotoGridLoading(false));
           dispatch(actions.refreshSelectedVariant(res));
           dispatch(actions.refreshVariantPhotos(res?.photos));
         });
@@ -222,13 +230,17 @@ export function ManageVariantsPage() {
       case "uploadPhotoToVariant":
         service.uploadPhotoHandler(payload).then((res) => {
           if (res) {
+            dispatch(actions.setIsVariantPhotoGridLoading(true));
+            dispatch(actions.setIsProductPhotoGridLoading(true));
             service.getVariantDetailsHandler(payload.contextId).then((res) => {
+              dispatch(actions.setIsVariantPhotoGridLoading(false));
               dispatch(actions.refreshSelectedVariant(res));
               dispatch(actions.refreshVariantPhotos(res?.photos));
             });
             productsService
               .getProductPhotosHandler(Number(productId))
               .then((res) => {
+                dispatch(actions.setIsProductPhotoGridLoading(false));
                 dispatch(productsActions.refreshProductPhotos(res));
               });
             productsService
@@ -257,9 +269,11 @@ export function ManageVariantsPage() {
             payload.photoId,
           )
           .then(() => {
+            dispatch(actions.setIsVariantPhotoGridLoading(true));
             service
               .getVariantDetailsHandler(state.selectedVariant.variantId)
               .then((res) => {
+                dispatch(actions.setIsVariantPhotoGridLoading(false));
                 dispatch(actions.refreshVariantPhotos(res?.photos));
                 dispatch(actions.refreshSelectedVariant(res));
               });
@@ -273,9 +287,11 @@ export function ManageVariantsPage() {
           )
           .then((res) => {
             if (res) {
+              dispatch(actions.setIsVariantPhotoGridLoading(true));
               service
                 .getVariantDetailsHandler(state.selectedVariant.variantId)
                 .then((res) => {
+                  dispatch(actions.setIsVariantPhotoGridLoading(false));
                   dispatch(actions.refreshVariantPhotos(res?.photos));
                 });
             }
@@ -289,15 +305,18 @@ export function ManageVariantsPage() {
             payload.newIndex,
           )
           .then(() => {
+            dispatch(actions.setIsVariantPhotoGridLoading(true));
             service
               .getVariantDetailsHandler(state.selectedVariant.variantId)
               .then((res) => {
+                dispatch(actions.setIsVariantPhotoGridLoading(false));
                 dispatch(actions.refreshSelectedVariant(res));
                 dispatch(actions.refreshVariantPhotos(res?.photos));
               });
           });
         break;
       case "addTrait":
+        dispatch(actions.resetSelectedTrait());
         service.getListOfTypesOfTraitsHandler().then((res) => {
           dispatch(actions.refreshTypesOfTraits(res));
           handleCardAction("productTraitConfigurationCard", true);
@@ -330,9 +349,11 @@ export function ManageVariantsPage() {
               optionName: `Default option ${index + 1}`,
               ...(res.traitTypeId !== 1 && { optionColor: "#fff" }),
             };
+            dispatch(actions.setIsTraitOptionsGridLoading(true));
             service
               .createNewOptionForTraitHandler(res.traitId, optionData)
               .then((optionRes) => {
+                dispatch(actions.setIsTraitOptionsGridLoading(false));
                 if (optionRes) {
                   dispatch(
                     actions.refreshColorOptionsGridModel({
@@ -375,17 +396,14 @@ export function ManageVariantsPage() {
             .then((res) => {
               dispatch(actions.refreshListOfTraitsWithOptionsForProduct(res));
             });
-          service
-            .getListOfTraitsWithOptionsForProductHandler(productId)
-            .then((res) => {
-              dispatch(actions.refreshListOfTraitsWithOptionsForProduct(res));
-            });
         });
         break;
       case "updateOption":
+        dispatch(actions.setIsTraitOptionsGridLoading(true));
         service
           .updateOptionsForTraitHandler(payload.optionId, payload.updatedModel)
           .then((res) => {
+            dispatch(actions.setIsTraitOptionsGridLoading(false));
             if (res) {
               service
                 .getOptionsForTraitHandler(state.selectedTrait.traitId)
@@ -401,12 +419,14 @@ export function ManageVariantsPage() {
           });
         break;
       case "addOption":
+        dispatch(actions.setIsTraitOptionsGridLoading(true));
         service
           .createNewOptionForTraitHandler(state.selectedTrait.traitId, {
             optionColor: "#fff",
             optionName: "Default option",
           })
           .then((res) => {
+            dispatch(actions.setIsTraitOptionsGridLoading(false));
             if (res) {
               dispatch(
                 actions.refreshColorOptionsGridModel({
@@ -421,7 +441,9 @@ export function ManageVariantsPage() {
           });
         break;
       case "deleteOption":
+        dispatch(actions.setIsTraitOptionsGridLoading(true));
         service.deleteOptionsForTraitHandler(payload.optionId).then(() => {
+          dispatch(actions.setIsTraitOptionsGridLoading(false));
           service
             .getOptionsForTraitHandler(state.selectedTrait.traitId)
             .then((options) => {
@@ -455,6 +477,7 @@ export function ManageVariantsPage() {
         break;
       case "openAddStockCard":
         productsService.getCurrenciesListHandler().then((res) => {
+          console.log(res);
           dispatch(productsActions.refreshCurrenciesList(res));
         });
         handleCardAction("addStockCard", true);
@@ -469,9 +492,11 @@ export function ManageVariantsPage() {
         handleCardAction("manageTraitsCard", true);
         break;
       case "openVariantPhotosCard":
+        dispatch(actions.setIsProductPhotoGridLoading(true));
         productsService
           .getProductPhotosHandler(Number(productId))
           .then((res) => {
+            dispatch(actions.setIsProductPhotoGridLoading(false));
             dispatch(productsActions.refreshProductPhotos(res));
             handleCardAction("variantPhotosCard", true);
           });
@@ -519,6 +544,8 @@ export function ManageVariantsPage() {
           }}
         >
           <VariantConfigurationCard
+            isVariantOptionsGridLoading={state.isVariantOptionsGridLoading}
+            isVariantPhotoGridLoading={state.isVariantPhotoGridLoading}
             variant={state.selectedVariant}
             data={state.variantTraitsGridModel}
             taxesList={productsState.taxesList}
@@ -622,6 +649,7 @@ export function ManageVariantsPage() {
           }}
         >
           <ProductTraitConfigurationCard
+            isGridLoading={state.isTraitOptionsGridLoading}
             data={state.colorOptionsGridModel}
             selectedTrait={state.selectedTrait}
             typesOfTraits={state.typesOfTraits}
@@ -639,6 +667,8 @@ export function ManageVariantsPage() {
           }}
         >
           <VariantPhotosCard
+            isVariantPhotoGridLoading={state.isVariantPhotoGridLoading}
+            isProductPhotoGridLoading={state.isProductPhotoGridLoading}
             variantPhotos={state.variantPhotos}
             productPhotos={productsState.productPhotos}
             contextId={state.selectedVariant?.variantId}

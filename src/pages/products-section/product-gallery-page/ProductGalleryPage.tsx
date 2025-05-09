@@ -81,37 +81,30 @@ export function ProductGalleryPage() {
     switch (actionType) {
       case "upload":
         service.uploadPhotoHandler(payload).then((res) => {
-          if (!payload.contextId) {
+          if (res.data.photoId) {
+            productsService
+              .getProductPhotosHandler(Number(productId))
+              .then((res) => {
+                dispatch(productsActions.refreshProductPhotos(res));
+              });
+            productsService
+              .getCountersForProductsHandler(productId)
+              .then((res) => {
+                dispatch(productsActions.refreshProductCounter(res));
+              });
             addToast({
-              text: "Create category first",
-              type: "error",
+              text: "Photos added successfully",
+              type: "success",
             });
           } else {
-            if (res.data.photoId) {
-              productsService
-                .getProductPhotosHandler(Number(productId))
-                .then((res) => {
-                  dispatch(productsActions.refreshProductPhotos(res));
-                });
-              productsService
-                .getCountersForProductsHandler(productId)
-                .then((res) => {
-                  dispatch(productsActions.refreshProductCounter(res));
-                });
-              addToast({
-                text: "Photos added successfully",
-                type: "success",
-              });
-            } else {
-              addToast({
-                text: `${res.error.data.detail}`,
-                type: "error",
-              });
-            }
+            addToast({
+              text: `${res.error.data.detail}`,
+              type: "error",
+            });
           }
         });
         break;
-      case "dnd":
+      case "changePhotoPosition":
         service
           .putPhotoInNewPositionHandler(
             productId,
@@ -119,11 +112,16 @@ export function ProductGalleryPage() {
             payload.newIndex,
           )
           .then(() => {
-            productsService
-              .getTheProductsForGridHandler(productsState.gridRequestModel)
-              .then((res: GridModel) => {
-                dispatch(productsActions.refreshProducts(res.items));
-              });
+            if (payload.newIndex === 0) {
+              productsService
+                .getTheProductsForGridHandler(
+                  productsState.gridRequestModel,
+                  true,
+                )
+                .then((res: GridModel) => {
+                  dispatch(productsActions.refreshProducts(res.items));
+                });
+            }
           });
         break;
       case "delete":
@@ -146,7 +144,9 @@ export function ProductGalleryPage() {
         });
         break;
       case "openConnectImageCard":
+        dispatch(actions.setIsVariantsGridLoading(true));
         service.getProductVariantsHandler(productId).then((res) => {
+          dispatch(actions.setIsVariantsGridLoading(false));
           dispatch(actions.refreshProductVariants(res));
         });
         dispatch(actions.refreshSelectedPhoto(payload));
@@ -208,6 +208,7 @@ export function ProductGalleryPage() {
           }}
         >
           <ConnectImageCard
+            isGridLoading={state.isVariantsGridLoading}
             variants={state.productVariants}
             selectedPhoto={state.selectedPhoto}
             onAction={onAction}

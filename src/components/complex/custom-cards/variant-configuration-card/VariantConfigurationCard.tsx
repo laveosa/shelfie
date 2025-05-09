@@ -44,6 +44,8 @@ const debounce = (fn: (...args: any[]) => void, delay: number) => {
 };
 
 export default function VariantConfigurationCard({
+  isVariantOptionsGridLoading,
+  isVariantPhotoGridLoading,
   variant,
   data,
   onAction,
@@ -350,6 +352,7 @@ export default function VariantConfigurationCard({
           </div>
           <div>
             <DndGridDataTable
+              isLoading={isVariantOptionsGridLoading}
               showHeader={false}
               columns={traitsColumns}
               data={variant?.traitOptions}
@@ -371,6 +374,7 @@ export default function VariantConfigurationCard({
           {variant?.photos?.length > 0 && (
             <div>
               <DndGridDataTable
+                isLoading={isVariantPhotoGridLoading}
                 enableDnd={true}
                 showHeader={false}
                 columns={photoColumns}

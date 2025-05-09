@@ -12,9 +12,11 @@ import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 const initialState: IManageVariantsPageSlice = {
   isLoading: false,
   isProductsLoading: false,
-  // products: [],
+  isTraitOptionsGridLoading: false,
+  isVariantOptionsGridLoading: false,
+  isVariantPhotoGridLoading: false,
+  isProductPhotoGridLoading: false,
   variants: [],
-  // productVariants: [],
   selectedVariant: null,
   productCounter: null,
   activeCards: [],
@@ -43,11 +45,10 @@ const initialState: IManageVariantsPageSlice = {
     pageSize: 10,
   },
   traitOptions: [],
-  // productPhotos: [],
   variantPhotos: [],
-  // taxesList: [],
-  // currenciesList: [],
 };
+
+//----------------------------------------------------- LOADERS
 
 function setIsLoading(
   state: IManageVariantsPageSlice,
@@ -63,12 +64,35 @@ function setIsProductsLoading(
   state.isProductsLoading = action?.payload;
 }
 
-// function refreshProducts(
-//   state: IManageVariantsPageSlice,
-//   action: PayloadAction<ProductModel[]>,
-// ) {
-//   state.products = action?.payload || state.products;
-// }
+function setIsTraitOptionsGridLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isTraitOptionsGridLoading = action?.payload;
+}
+
+function setIsVariantOptionsGridLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isVariantOptionsGridLoading = action?.payload;
+}
+
+function setIsVariantPhotoGridLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isVariantPhotoGridLoading = action?.payload;
+}
+
+function setIsProductPhotoGridLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isProductPhotoGridLoading = action?.payload;
+}
+
+//----------------------------------------------------- APIS
 
 function refreshVariants(
   state: IManageVariantsPageSlice,
@@ -76,13 +100,6 @@ function refreshVariants(
 ) {
   state.variants = action?.payload || state.variants;
 }
-
-// function refreshProductVariants(
-//   state: IManageVariantsPageSlice,
-//   action: PayloadAction<any[]>,
-// ) {
-//   state.productVariants = action?.payload || state.productVariants;
-// }
 
 function refreshSelectedVariant(
   state: IManageVariantsPageSlice,
@@ -156,6 +173,10 @@ function refreshSelectedTrait(
   state.selectedTrait = action?.payload || state.selectedTrait;
 }
 
+function resetSelectedTrait(state: IManageVariantsPageSlice) {
+  state.selectedTrait = null;
+}
+
 function refreshTraitOption(
   state: IManageVariantsPageSlice,
   action: PayloadAction<any>,
@@ -184,13 +205,6 @@ function refreshGridRequestModel(
   state.gridRequestModel = action?.payload || state.gridRequestModel;
 }
 
-// function refreshProductPhotos(
-//   state: IManageVariantsPageSlice,
-//   action: PayloadAction<ImageModel[]>,
-// ) {
-//   state.productPhotos = action?.payload || state.productPhotos;
-// }
-
 function refreshVariantPhotos(
   state: IManageVariantsPageSlice,
   action: PayloadAction<ImageModel[]>,
@@ -198,27 +212,16 @@ function refreshVariantPhotos(
   state.variantPhotos = action?.payload || state.variantPhotos;
 }
 
-// function refreshTaxesList(
-//   state: IManageVariantsPageSlice,
-//   action: PayloadAction<TaxTypeModel[]>,
-// ) {
-//   state.taxesList = action?.payload || state.taxesList;
-// }
-//
-// function refreshCurrenciesList(
-//   state: IManageVariantsPageSlice,
-//   action: PayloadAction<CurrencyModel[]>,
-// ) {
-//   state.currenciesList = action?.payload || state.currenciesList;
-// }
-
 const ManageVariantsPageSlice = createSlice({
   name: StoreSliceEnum.MANAGE_VARIANTS,
   initialState,
   reducers: {
-    // refreshProducts,
     setIsLoading,
     setIsProductsLoading,
+    setIsTraitOptionsGridLoading,
+    setIsVariantOptionsGridLoading,
+    setIsVariantPhotoGridLoading,
+    setIsProductPhotoGridLoading,
     refreshVariants,
     // refreshProductVariants,
     refreshSelectedVariant,
@@ -230,15 +233,13 @@ const ManageVariantsPageSlice = createSlice({
     refreshActiveCards,
     refreshSelectedTraitsIds,
     refreshSelectedTrait,
+    resetSelectedTrait,
     refreshContextId,
     refreshTraitOption,
     refreshColorOptionsGridModel,
     refreshSizeOptionsGridModel,
     refreshGridRequestModel,
-    // refreshProductPhotos,
     refreshVariantPhotos,
-    // refreshTaxesList,
-    // refreshCurrenciesList,
   },
 });
 

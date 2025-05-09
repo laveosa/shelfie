@@ -27,6 +27,7 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { SizeOptionsGridColumns } from "@/components/complex/grid/trait-options-grid/size-options-grid/SizeOptionsGridColumns.tsx";
 
 export default function ProductTraitConfigurationCard({
+  isGridLoading,
   data,
   typesOfTraits,
   selectedTrait,
@@ -104,7 +105,7 @@ export default function ProductTraitConfigurationCard({
 
   return (
     <SheProductCard
-      title={selectedTrait.traitName ? "Manage" : "Create product trait"}
+      title={selectedTrait?.traitName ? "Manage" : "Create product trait"}
       view="card"
       showCloseButton={true}
       className={cs.productTraitConfigurationCard}
@@ -195,8 +196,9 @@ export default function ProductTraitConfigurationCard({
               className={`${cs.productTraitConfigurationGridContainer} she-title`}
             >
               <span className="she-title">Options</span>
-              {selectedTrait.traitTypeId === 1 && (
+              {selectedTrait?.traitTypeId === 1 && (
                 <DndGridDataTable
+                  isLoading={isGridLoading}
                   className={cs.productTraitConfigurationGrid}
                   enableDnd={true}
                   showHeader={false}
@@ -213,8 +215,9 @@ export default function ProductTraitConfigurationCard({
                   }
                 />
               )}
-              {selectedTrait.traitTypeId === 2 && (
+              {selectedTrait?.traitTypeId === 2 && (
                 <DndGridDataTable
+                  isLoading={isGridLoading}
                   className={cs.productTraitConfigurationGrid}
                   enableDnd={true}
                   showHeader={false}

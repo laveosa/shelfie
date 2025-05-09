@@ -29,7 +29,7 @@ export default function ProductPhotosCard({
         break;
       case "dnd":
         const { newIndex, activeItem } = payload;
-        onAction("dnd", { newIndex, activeItem });
+        onAction("changePhotoPosition", { newIndex, activeItem });
         break;
     }
   }

@@ -11,9 +11,12 @@ import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 export interface IManageVariantsPageSlice {
   isLoading?: boolean;
   isProductsLoading?: boolean;
+  isTraitOptionsGridLoading?: boolean;
+  isVariantOptionsGridLoading?: boolean;
+  isVariantPhotoGridLoading?: boolean;
+  isProductPhotoGridLoading?: boolean;
   products?: ProductModel[];
   variants: VariantModel[];
-  // productVariants: VariantModel[];
   selectedVariant: VariantModel;
   traits?: TraitModel[];
   typesOfTraits?: TypeOfTraitModel[];
@@ -30,8 +33,5 @@ export interface IManageVariantsPageSlice {
   variantTraitsGridModel?: GridModel;
   photosGridModel?: GridModel;
   gridRequestModel?: GridRequestModel;
-  // productPhotos?: ImageModel[];
   variantPhotos?: ImageModel[];
-  // taxesList?: TaxTypeModel[];
-  // currenciesList?: CurrencyModel[];
 }

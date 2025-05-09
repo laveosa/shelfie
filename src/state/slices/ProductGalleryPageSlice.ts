@@ -8,6 +8,7 @@ import { ImageModel } from "@/const/models/ImageModel.ts";
 const initialState: IProductGalleryPageSlice = {
   isLoading: false,
   // isProductPhotosLoading: false,
+  isVariantsGridLoading: false,
   products: [],
   product: {},
   activeCards: [],
@@ -35,6 +36,13 @@ function setIsLoading(
 // ) {
 //   state.isProductPhotosLoading = action?.payload;
 // }
+
+function setIsVariantsGridLoading(
+  state: IProductGalleryPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isVariantsGridLoading = action?.payload;
+}
 
 function refreshProducts(
   state: IProductGalleryPageSlice,
@@ -91,6 +99,7 @@ const ProductGalleryPageSlice = createSlice({
   reducers: {
     setIsLoading,
     // setIsProductPhotosLoading,
+    setIsVariantsGridLoading,
     refreshProducts,
     refreshProduct,
     refreshActiveCards,
