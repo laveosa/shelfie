@@ -173,16 +173,10 @@ export function ManageVariantsPage() {
         });
         break;
       case "updateVariantDetails":
-        service
-          .updateVariantDetailsHandler(
-            payload.variant.variantId,
-            payload.formattedData,
-          )
-          .then((res) => {
-            service.getVariantDetailsHandler(res.variantId).then((res) => {
-              dispatch(actions.refreshSelectedVariant(res));
-            });
-          });
+        service.updateVariantDetailsHandler(
+          payload.variant.variantId,
+          payload.formattedData,
+        );
         break;
       case "updateVariantTraitOptions":
         service
@@ -324,11 +318,14 @@ export function ManageVariantsPage() {
         });
         break;
       case "manageTrait":
+        handleCardAction("productTraitConfigurationCard", true);
+        dispatch(actions.setIsTraitOptionsGridLoading(true));
         Promise.all([
           service.getTraitHandler(payload),
           service.getOptionsForTraitHandler(payload),
           service.getListOfTypesOfTraitsHandler(),
         ]).then(([trait, options, types]) => {
+          dispatch(actions.setIsTraitOptionsGridLoading(false));
           dispatch(actions.refreshSelectedTrait(trait));
           dispatch(
             actions.refreshColorOptionsGridModel({
@@ -337,7 +334,6 @@ export function ManageVariantsPage() {
             }),
           );
           dispatch(actions.refreshTypesOfTraits(types));
-          handleCardAction("productTraitConfigurationCard", true);
         });
         break;
       case "createTrait":

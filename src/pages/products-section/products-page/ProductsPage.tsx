@@ -48,6 +48,7 @@ export function ProductsPage() {
           true,
         );
         dispatch(actions.refreshProductsGridModel(res));
+        dispatch(actions.refreshProducts(res.items));
       } else if (activeTab === "variants") {
         const res = await service.getVariantsForGridHandler(
           state.gridRequestModel,
