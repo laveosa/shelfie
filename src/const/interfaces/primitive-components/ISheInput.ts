@@ -12,7 +12,7 @@ export interface ISheInput
     ISheClearButton,
     ISheContextLengthLimits,
     ISheErrorMessageBlock,
-    ComponentPropsWithRef<any> {
+    ComponentPropsWithRef<"input"> {
   id?: string;
   className?: string;
   style?: React.CSSProperties;
@@ -35,8 +35,8 @@ export interface ISheInput
   patternErrorMessage?: string;
   patternErrorMessageTransKey?: string;
   delayTime?: number;
-  onChange?: (value: string | number | readonly string[]) => void;
-  onBlur?: (value: string | number | readonly string[]) => void;
+  // onChange?: (value: string | number | readonly string[]) => void;
+  // onBlur?: (value: string | number | readonly string[]) => void;
   onDelay?: (value: string | number | readonly string[]) => void;
   onIsValid?: (value: boolean) => void;
 }

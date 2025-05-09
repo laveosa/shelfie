@@ -1,0 +1,104 @@
+@use "@/styles/variables" as vars;
+
+$iconSize: 20px;
+
+.sheTimePicker {
+  width: fit-content;
+
+  .sheTimePickerComponent {
+    position: relative;
+
+    .sheTimePickerControl {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      .iconBlock {
+        color: vars.$subtextColor;
+        max-width: $iconSize;
+        min-width: $iconSize;
+        max-height: $iconSize;
+        min-height: $iconSize;
+      }
+
+      .sheTimePickerElementWrapper {
+        display: flex;
+        align-items: flex-end;
+        gap: 8px;
+
+        .sheTimePickerElementInputCell {
+          display: grid;
+          gap: 4px;
+          text-align: center;
+        }
+      }
+
+      .sheTimePickerLabel {
+        label {
+          top: -2px;
+          font-size: 11px;
+        }
+      }
+    }
+  }
+}
+
+// ======================================================== FULL WIDTH
+
+.sheTimePicker.fullWidth {
+  max-width: none;
+  width: 100%;
+}
+
+// ======================================================== REQUIRED
+
+.sheTimePicker.required {
+  position: relative;
+
+  .sheTimePickerComponent:before {
+    position: absolute;
+    left: -10px;
+    top: -14px;
+    color: vars.$colorRed;
+    content: "*";
+    display: inline;
+  }
+}
+
+// ======================================================== VIEW
+
+.sheTimePicker.card {
+  .sheTimePickerComponent {
+    > label {
+      left: 0;
+    }
+
+    &:before {
+      left: -10px;
+    }
+
+    .sheTimePickerControl {
+      border: 1px solid vars.$brdColor;
+      padding: vars.$paddingSmall;
+      border-radius: vars.$brdR_03;
+    }
+  }
+}
+
+// ======================================================== SIZE
+
+.sheTimePicker.small {
+  .sheTimePickerElementWrapper {
+    gap: 4px !important;
+
+    input {
+      padding: 4px;
+      height: 30px;
+      width: 30px;
+      min-width: 30px;
+      max-width: 30px;
+      text-align: center;
+    }
+  }
+}
