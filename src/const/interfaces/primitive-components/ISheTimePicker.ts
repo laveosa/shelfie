@@ -23,7 +23,7 @@ export interface ISheTimePicker
   mmLabelTransKey?: string;
   ssLabel?: string;
   ssLabelTransKey?: string;
-  date: Date | undefined;
+  date?: Date | undefined;
   disabled?: boolean;
   isLoading?: boolean;
   minWidth?: string;
@@ -35,6 +35,6 @@ export interface ISheTimePicker
   hoursRef?: React.RefObject<HTMLInputElement>;
   minutesRef?: React.RefObject<HTMLInputElement>;
   secondsRef?: React.RefObject<HTMLInputElement>;
-  onSetDate: (value: any) => void;
+  onSetDate?: (value: any) => void;
   onDelay?: (value: any) => void;
 }

@@ -45,10 +45,10 @@ export default function SheTimePicker({
   onIsValid,
   ...props
 }: ISheTimePicker): JSX.Element {
-  const [_date, setDate] = useState<Date>(null);
+  const [_date, setDate] = useState<Date>(date ?? new Date());
 
   const ariaDescribedbyId = `${generateId()}_TIME_PICKER_ID`;
-  const delayValue = useDebounce(date, delayTime);
+  const delayValue = useDebounce(_date, delayTime);
   const isInitialized = useRef(false);
 
   // TODO combine related inner props with this logic, if there is hoursRef === null then crete local useRef etc.
@@ -62,11 +62,11 @@ export default function SheTimePicker({
     }
   }, [date]);
 
-  /*useEffect(() => {
+  useEffect(() => {
     if (isInitialized.current && onDelay) {
       onDelay(delayValue);
     }
-  }, [delayValue]);*/
+  }, [delayValue]);
 
   // ==================================================================== EVENT
 
@@ -79,7 +79,7 @@ export default function SheTimePicker({
 
   function onClearHandler() {
     isInitialized.current = false;
-    const newValue = new Date();
+    const newValue = date ?? new Date();
     setDate(newValue);
 
     if (onSetDate) onSetDate(newValue);
@@ -123,7 +123,7 @@ export default function SheTimePicker({
                 style={inputStyle}
                 label={!hideInputLabels && hhLabel}
                 labelTransKey={hhLabelTransKey}
-                date={date}
+                date={_date}
                 picker="hours"
                 disabled={disabled}
                 isLoading={isLoading}
@@ -138,7 +138,7 @@ export default function SheTimePicker({
                 style={inputStyle}
                 label={!hideInputLabels && mmLabel}
                 labelTransKey={mmLabelTransKey}
-                date={date}
+                date={_date}
                 picker="minutes"
                 disabled={disabled}
                 isLoading={isLoading}
@@ -154,7 +154,7 @@ export default function SheTimePicker({
                 style={inputStyle}
                 label={!hideInputLabels && ssLabel}
                 labelTransKey={ssLabelTransKey}
-                date={date}
+                date={_date}
                 picker="seconds"
                 disabled={disabled}
                 isLoading={isLoading}
@@ -164,7 +164,7 @@ export default function SheTimePicker({
             </div>
           </div>
           <SheClearButton
-            value={date}
+            value={_date}
             showClearBtn={showClearBtn}
             disabled={disabled}
             isLoading={isLoading}

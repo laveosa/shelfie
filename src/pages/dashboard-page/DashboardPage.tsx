@@ -28,12 +28,12 @@ export function DashboardPage() {
         }}
         required
         icon={TimerIcon}
-        date={time}
+        // date={time}
         // size={"small"}
         showClearBtn
         hideInputLabels
         // view={ComponentViewEnum.CARD}
-        onSetDate={onAction}
+        onDelay={onAction}
       />
 
       <br />
