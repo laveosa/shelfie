@@ -82,9 +82,11 @@ export function ProductGalleryPage() {
       case "upload":
         service.uploadPhotoHandler(payload).then((res) => {
           if (res.data.photoId) {
+            dispatch(productsActions.setIsProductPhotosLoading(true));
             productsService
               .getProductPhotosHandler(Number(productId))
               .then((res) => {
+                dispatch(productsActions.setIsProductPhotosLoading(false));
                 dispatch(productsActions.refreshProductPhotos(res));
               });
             productsService
@@ -125,10 +127,12 @@ export function ProductGalleryPage() {
           });
         break;
       case "delete":
+        dispatch(productsActions.setIsProductPhotosLoading(true));
         service.deletePhotoHandler(payload.photoId).then(() => {
           productsService
             .getProductPhotosHandler(Number(productId))
             .then((res) => {
+              dispatch(productsActions.setIsProductPhotosLoading(false));
               dispatch(productsActions.refreshProductPhotos(res));
             });
           productsService
