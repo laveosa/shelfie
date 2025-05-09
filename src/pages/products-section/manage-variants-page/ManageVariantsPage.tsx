@@ -20,7 +20,10 @@ import StockHistoryCard from "@/components/complex/custom-cards/stock-history-ca
 import ManageTraitsCard from "@/components/complex/custom-cards/manage-traits-card/ManageTraitsCard.tsx";
 import AddVariantCard from "@/components/complex/custom-cards/add-variant-card/AddVariantCard.tsx";
 import VariantPhotosCard from "@/components/complex/custom-cards/variant-photos-card/VariantPhotosCard.tsx";
-import { setSelectedGridItem } from "@/utils/helpers/quick-helper.ts";
+import {
+  clearSelectedGridItems,
+  setSelectedGridItem,
+} from "@/utils/helpers/quick-helper.ts";
 import { GridModel } from "@/const/models/GridModel.ts";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
@@ -506,6 +509,14 @@ export function ManageVariantsPage() {
       case "closeVariantPhotosCard":
         handleCardAction("variantPhotosCard");
         break;
+      case "closeVariantConfigurationCard":
+        dispatch(
+          productsActions.refreshProductVariants(
+            clearSelectedGridItems(productsState.productVariants),
+          ),
+        );
+        handleCardAction("variantConfigurationCard");
+        break;
     }
   }
 
@@ -548,7 +559,7 @@ export function ManageVariantsPage() {
             onAction={onAction}
             onGenerateProductCode={service.generateProductCodeHandler}
             onSecondaryButtonClick={() =>
-              handleCardAction("variantConfigurationCard")
+              onAction("closeVariantConfigurationCard")
             }
           />
         </div>

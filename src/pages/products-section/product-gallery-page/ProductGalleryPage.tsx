@@ -80,13 +80,13 @@ export function ProductGalleryPage() {
   function onAction(actionType: string, payload: any) {
     switch (actionType) {
       case "upload":
+        dispatch(productsActions.setIsProductPhotosLoading(true));
         service.uploadPhotoHandler(payload).then((res) => {
+          dispatch(productsActions.setIsProductPhotosLoading(false));
           if (res.data.photoId) {
-            dispatch(productsActions.setIsProductPhotosLoading(true));
             productsService
               .getProductPhotosHandler(Number(productId))
               .then((res) => {
-                dispatch(productsActions.setIsProductPhotosLoading(false));
                 dispatch(productsActions.refreshProductPhotos(res));
               });
             productsService

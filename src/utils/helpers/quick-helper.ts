@@ -122,3 +122,10 @@ export function setSelectedGridItem(itemId: string, itemsList: any[]) {
   }));
   return modifiedItemsList;
 }
+
+export function clearSelectedGridItems(itemsList: any[]) {
+  return itemsList.map((item) => ({
+    ...item,
+    isGridItemSelected: false,
+  }));
+}
