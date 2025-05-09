@@ -8,7 +8,10 @@ import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { Switch } from "@/components/ui/switch.tsx";
 
-export function productsGridColumns(onAction: any): ColumnDef<any>[] {
+export function productsGridColumns(
+  onAction: any,
+  activeStates?: Record<string, boolean>,
+): ColumnDef<any>[] {
   return [
     {
       accessorKey: "productId",
@@ -128,14 +131,18 @@ export function productsGridColumns(onAction: any): ColumnDef<any>[] {
           isRowLoading: (rowId: string) => boolean;
         };
 
+        const rowId = row.id;
+        const isChecked =
+          rowId in activeStates ? activeStates[rowId] : row.original.isActive;
+
         return (
           <Switch
-            disabled={meta?.isRowLoading(row.id)}
-            checked={row.original.isActive}
+            disabled={meta?.isRowLoading(rowId)}
+            checked={isChecked}
             onCheckedChange={() =>
               onAction(
                 "activateProduct",
-                row.id,
+                rowId,
                 meta?.setLoadingRow,
                 row.original,
               )
