@@ -134,6 +134,9 @@ export default function ProductTraitConfigurationCard({
                 isValid={!form.formState.errors.traitName}
                 patternErrorMessage={form.formState.errors.traitName?.message}
                 showError={true}
+                onDelay={
+                  selectedTrait?.traitId && (() => onSubmit(form.getValues()))
+                }
                 className={cs.formInput}
               />
             </SheForm.Field>
@@ -148,7 +151,10 @@ export default function ProductTraitConfigurationCard({
                   <FormItem className={cs.select}>
                     <FormLabel>Trait type</FormLabel>
                     <Select
-                      onValueChange={(value) => field.onChange(Number(value))}
+                      onValueChange={(value) => {
+                        field.onChange(Number(value));
+                        selectedTrait?.traitId && onSubmit(form.getValues());
+                      }}
                       value={field.value ? field.value.toString() : ""}
                     >
                       <FormControl>
@@ -171,22 +177,24 @@ export default function ProductTraitConfigurationCard({
                 )}
               ></FormField>
             </div>
-            <div className={cs.buttonBlock}>
-              <SheButton
-                variant="secondary"
-                onClick={() =>
-                  onAction("closeProductTraitConfigurationCard", null)
-                }
-              >
-                Cancel
-              </SheButton>
-              <SheButton
-                disabled={!form.formState.isValid}
-                onClick={form.handleSubmit(onSubmit)}
-              >
-                {selectedTrait?.traitId ? "Update" : "Create"}
-              </SheButton>
-            </div>
+            {!selectedTrait?.traitId && (
+              <div className={cs.buttonBlock}>
+                <SheButton
+                  variant="secondary"
+                  onClick={() =>
+                    onAction("closeProductTraitConfigurationCard", null)
+                  }
+                >
+                  Cancel
+                </SheButton>
+                <SheButton
+                  disabled={!form.formState.isValid}
+                  onClick={form.handleSubmit(onSubmit)}
+                >
+                  Create
+                </SheButton>
+              </div>
+            )}
           </SheForm>
         </div>
         {localItems?.length > 0 && (
