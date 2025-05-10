@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import React from "react";
+import React, { useEffect } from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ManageTraitsCard.module.scss";
@@ -23,20 +23,52 @@ interface TraitForm {
   [key: string]: string;
 }
 
+interface TraitOption {
+  optionId: number;
+  optionName: string;
+  optionColor?: string | null;
+  isRaw?: boolean;
+}
+
+interface Trait {
+  traitId: number;
+  traitName: string;
+  traitTypeId: number;
+  traitTypeName: string;
+  optionsAmount: number;
+  traitOptions: TraitOption[];
+}
+
+interface VariantTraitOption {
+  optionId: number | null;
+  optionName: string | null;
+  optionColor: string | null;
+  traitId: number;
+  traitName: string;
+  isMissing?: boolean;
+  isRemoved?: boolean;
+  color?: string;
+}
+
 export default function ManageTraitsCard({
   traits,
   variant,
   onAction,
   onSecondaryButtonClick,
   ...props
-}: IManageTraitsCard) {
-  const validVariantOptions = (variant?.traitOptions || []).filter(
-    (opt) => opt.isRemoved && opt.optionId !== null,
-  );
-
+}: IManageTraitsCard & {
+  traits: Trait[];
+  variant: {
+    variantId: number;
+    variantName: string;
+    traitOptions: VariantTraitOption[];
+    [key: string]: any;
+  };
+}) {
+  const variantTraitOptions = variant?.traitOptions || [];
   const defaultValues = traits.reduce((acc, trait) => {
-    const matchedOption = validVariantOptions.find(
-      (vo) => vo.traitName === trait.traitName,
+    const matchedOption = variantTraitOptions.find(
+      (vo) => vo.traitName === trait.traitName && vo.optionId !== null,
     );
 
     return {
@@ -48,6 +80,25 @@ export default function ManageTraitsCard({
   const form = useForm<TraitForm>({
     defaultValues,
   });
+
+  useEffect(() => {
+    if (variant?.traitOptions) {
+      const newValues = traits.reduce((acc, trait) => {
+        const matchedOption = variantTraitOptions.find(
+          (vo) => vo.traitName === trait.traitName && vo.optionId !== null,
+        );
+
+        return {
+          ...acc,
+          [trait.traitId]: matchedOption?.optionId?.toString() || "",
+        };
+      }, {} as TraitForm);
+
+      Object.entries(newValues).forEach(([fieldName, value]) => {
+        form.setValue(fieldName, value);
+      });
+    }
+  }, [variant, traits, variantTraitOptions]);
 
   const isFormIncomplete = Object.values(form.watch()).some((value) => !value);
 
@@ -95,10 +146,8 @@ export default function ManageTraitsCard({
                       <FormItem className={cs.select}>
                         <FormLabel>{trait.traitName}</FormLabel>
                         <Select
-                          onValueChange={(value) => {
-                            field.onChange(value);
-                          }}
-                          value={field.value}
+                          onValueChange={field.onChange}
+                          value={field.value || ""}
                         >
                           <FormControl>
                             <SelectTrigger>

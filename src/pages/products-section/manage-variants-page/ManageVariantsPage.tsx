@@ -299,22 +299,21 @@ export function ManageVariantsPage() {
           });
         break;
       case "dndVariantPhoto":
-        service
-          .changePhotoPositionForVariantHandler(
-            state.selectedVariant.variantId,
-            payload.activeItem.photoId,
-            payload.newIndex,
-          )
-          .then(() => {
-            dispatch(actions.setIsVariantPhotoGridLoading(true));
-            service
-              .getVariantDetailsHandler(state.selectedVariant.variantId)
-              .then((res) => {
-                dispatch(actions.setIsVariantPhotoGridLoading(false));
-                dispatch(actions.refreshSelectedVariant(res));
-                dispatch(actions.refreshVariantPhotos(res?.photos));
-              });
-          });
+        service.changePhotoPositionForVariantHandler(
+          state.selectedVariant.variantId,
+          payload.activeItem.photoId,
+          payload.newIndex,
+        );
+        // .then(() => {
+        //   dispatch(actions.setIsVariantPhotoGridLoading(true));
+        //   service
+        //     .getVariantDetailsHandler(state.selectedVariant.variantId)
+        //     .then((res) => {
+        //       dispatch(actions.setIsVariantPhotoGridLoading(false));
+        //       dispatch(actions.refreshSelectedVariant(res));
+        //       dispatch(actions.refreshVariantPhotos(res?.photos));
+        //     });
+        // });
         break;
       case "addTrait":
         dispatch(actions.resetSelectedTrait());
@@ -347,28 +346,14 @@ export function ManageVariantsPage() {
         service.createNewTraitHandler(payload).then((res) => {
           if (res) {
             dispatch(actions.refreshSelectedTrait(res));
-            const index = 0;
-            const optionData = {
-              optionName: `Default option ${index + 1}`,
-              ...(res.traitTypeId !== 1 && { optionColor: "#fff" }),
-            };
-            dispatch(actions.setIsTraitOptionsGridLoading(true));
-            service
-              .createNewOptionForTraitHandler(res.traitId, optionData)
-              .then((optionRes) => {
-                dispatch(actions.setIsTraitOptionsGridLoading(false));
-                if (optionRes) {
-                  dispatch(
-                    actions.refreshColorOptionsGridModel({
-                      ...state.colorOptionsGridModel,
-                      items: [
-                        ...(state.colorOptionsGridModel.items || []),
-                        optionRes,
-                      ],
-                    }),
-                  );
-                }
-              });
+            service.getOptionsForTraitHandler(res.traitId).then((res) => {
+              dispatch(
+                actions.refreshColorOptionsGridModel({
+                  ...state.colorOptionsGridModel,
+                  items: res.filter((option) => !option.isDeleted),
+                }),
+              );
+            });
             service.getListOfAllTraitsHandler().then((res) => {
               dispatch(actions.refreshTraits(res));
             });
