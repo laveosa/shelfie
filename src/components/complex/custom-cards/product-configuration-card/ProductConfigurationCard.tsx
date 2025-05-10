@@ -92,7 +92,7 @@ export default function ProductConfigurationCard({
     <div>
       <SheProductCard
         view="card"
-        title={product.productId ? "Basic Product Data" : "Create Product"}
+        title={product?.productId ? "Basic Product Data" : "Create Product"}
         showPrimaryButton={true}
         primaryButtonTitle={product?.productId ? "Save" : "Add Product"}
         showSecondaryButton={!product?.productId}
@@ -177,7 +177,7 @@ export default function ProductConfigurationCard({
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue>
+                          <SelectValue placeholder="Select category">
                             {categoriesList.find(
                               (item) =>
                                 item.categoryId === form.watch("categoryId"),

@@ -28,28 +28,28 @@ export default function useProductBasicDataPageService() {
   const [createNewCategory] = ProductsApiHooks.useCreateNewCategoryMutation();
   const [createBrand] = ProductsApiHooks.useCreateBrandMutation();
   const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
-  const [getProductDetails] = ProductsApiHooks.useLazyGetProductDetailQuery();
-  const [getCountersForProducts] =
-    ProductsApiHooks.useLazyGetCountersForProductsQuery();
-  const [getProductPhotos] = ProductsApiHooks.useLazyGetProductPhotosQuery();
+  // const [getProductDetails] = ProductsApiHooks.useLazyGetProductDetailQuery();
+  // const [getCountersForProducts] =
+  //   ProductsApiHooks.useLazyGetCountersForProductsQuery();
+  // const [getProductPhotos] = ProductsApiHooks.useLazyGetProductPhotosQuery();
   const [putPhotoInNewPosition] =
     ProductsApiHooks.usePutPhotoInNewPositionMutation();
   const [deletePhoto] = AssetsApiHooks.useDeletePhotoMutation();
 
   function getAllProductsHandler() {
-    dispatch(productsAction.setLoading(true));
+    dispatch(productsAction.setIsLoading(true));
     return getAllProducts(null).then((res: any) => {
-      dispatch(productsAction.setLoading(false));
+      dispatch(productsAction.setIsLoading(false));
       dispatch(productsAction.refreshProducts(res.data));
       return res.data;
     });
   }
 
-  function getProductDetailsHandler(id) {
-    return getProductDetails(id).then((res: any) => {
-      return res.data;
-    });
-  }
+  // function getProductDetailsHandler(id) {
+  //   return getProductDetails(id).then((res: any) => {
+  //     return res.data;
+  //   });
+  // }
 
   function generateProductCodeHandler() {
     return generateProductCode(null).then((res: any) => {
@@ -123,17 +123,17 @@ export default function useProductBasicDataPageService() {
     });
   }
 
-  function getCountersForProductsHandler(id: number) {
-    return getCountersForProducts(id).then((res: any) => {
-      return res.data;
-    });
-  }
+  // function getCountersForProductsHandler(id: number) {
+  //   return getCountersForProducts(id).then((res: any) => {
+  //     return res.data;
+  //   });
+  // }
 
-  function getProductPhotosHandler(id: number) {
-    return getProductPhotos(id).then((res: any) => {
-      return res.data;
-    });
-  }
+  // function getProductPhotosHandler(id: number) {
+  //   return getProductPhotos(id).then((res: any) => {
+  //     return res.data;
+  //   });
+  // }
 
   function putPhotoInNewPositionHandler(productId, photoId, index) {
     return putPhotoInNewPosition({
@@ -154,7 +154,7 @@ export default function useProductBasicDataPageService() {
   return {
     ...productsState,
     getAllProductsHandler,
-    getProductDetailsHandler,
+    // getProductDetailsHandler,
     generateProductCodeHandler,
     getSimpleListOfAllBrandsHandler,
     getAllCategoriesByOrganizationHandler,
@@ -167,8 +167,8 @@ export default function useProductBasicDataPageService() {
     createNewCategoryHandler,
     createBrandHandler,
     uploadPhotoHandler,
-    getCountersForProductsHandler,
-    getProductPhotosHandler,
+    // getCountersForProductsHandler,
+    // getProductPhotosHandler,
     putPhotoInNewPositionHandler,
     deletePhotoHandler,
   };

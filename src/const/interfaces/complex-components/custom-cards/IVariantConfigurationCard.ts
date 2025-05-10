@@ -3,6 +3,9 @@ import { GridModel } from "@/const/models/GridModel.ts";
 import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 
 export interface IVariantConfigurationCard {
+  isLoading?: boolean;
+  isVariantOptionsGridLoading?: boolean;
+  isVariantPhotoGridLoading?: boolean;
   variant?: VariantModel;
   data?: GridModel;
   taxesList?: TaxTypeModel[];

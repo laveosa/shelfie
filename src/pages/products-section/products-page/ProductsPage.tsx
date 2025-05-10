@@ -15,7 +15,6 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SheTabs from "@/components/complex/she-tabs/SheTabs.tsx";
 import { productsGridColumns } from "@/components/complex/grid/products-grid/ProductsGridColumns.tsx";
-import { GridModel } from "@/const/models/GridModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
@@ -39,14 +38,17 @@ export function ProductsPage() {
   const service = useProductsPageService();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("products");
+  const [activeStates, setActiveStates] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     const fetchData = async () => {
       if (activeTab === "products") {
         const res = await service.getTheProductsForGridHandler(
           state.gridRequestModel,
+          true,
         );
         dispatch(actions.refreshProductsGridModel(res));
+        dispatch(actions.refreshProducts(res.items));
       } else if (activeTab === "variants") {
         const res = await service.getVariantsForGridHandler(
           state.gridRequestModel,
@@ -69,6 +71,7 @@ export function ProductsPage() {
     rowId?: string,
     setLoadingRow?: (rowId: string, loading: boolean) => void,
     rowData?: ProductModel,
+    rowOriginal?: any,
   ) => {
     setLoadingRow?.(rowId, true);
     switch (actionType) {
@@ -80,13 +83,19 @@ export function ProductsPage() {
         );
         break;
       case "activateProduct":
-        service.toggleProductActivationHandler(rowData.productId).then(() => {
-          service
-            .getTheProductsForGridHandler(state.gridRequestModel)
-            .then((res: GridModel) => {
-              dispatch(actions.refreshProductsGridModel(res));
-            });
-        });
+        {
+          const currentActive =
+            rowId in activeStates ? activeStates[rowId] : rowOriginal?.isActive;
+
+          const newState = !currentActive;
+
+          setActiveStates((prev) => ({
+            ...prev,
+            [rowId]: newState,
+          }));
+
+          service.toggleProductActivationHandler(rowData.productId);
+        }
         break;
       case "delete":
         console.log(`Deleting row ${rowId}`);
@@ -103,7 +112,7 @@ export function ProductsPage() {
     setLoadingRow?.(rowId, false);
   };
 
-  const productsColumns = productsGridColumns(onAction);
+  const productsColumns = productsGridColumns(onAction, activeStates);
   const variantsColumns = variantsGridColumns(onAction);
 
   function handleAddProduct() {

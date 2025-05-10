@@ -16,6 +16,7 @@ import { IManageVariantsCard } from "@/const/interfaces/complex-components/custo
 import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 
 export default function ManageVariantsCard({
+  isLoading,
   data,
   traits,
   variants,
@@ -133,19 +134,19 @@ export default function ManageVariantsCard({
           {/*)}*/}
         </div>
         <div>
-          {variants?.length > 0 && (
-            <DndGridDataTable
-              className={cs.manageVariantsCardGrid}
-              enableDnd={true}
-              showHeader={false}
-              columns={columns}
-              data={variants}
-              gridModel={data}
-              onNewItemPosition={(newIndex, activeItem) =>
-                handleAction("dnd", { newIndex, activeItem })
-              }
-            />
-          )}
+          <DndGridDataTable
+            isLoading={isLoading}
+            className={cs.manageVariantsCardGrid}
+            enableDnd={true}
+            showHeader={false}
+            columns={columns}
+            data={variants}
+            gridModel={data}
+            customMessage="PRODUCT HAS NO VARIANTS"
+            onNewItemPosition={(newIndex, activeItem) =>
+              handleAction("dnd", { newIndex, activeItem })
+            }
+          />
         </div>
       </div>
     </SheProductCard>

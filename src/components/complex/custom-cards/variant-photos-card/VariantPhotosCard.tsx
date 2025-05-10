@@ -9,6 +9,8 @@ import { VariantPhotosGridColumns } from "@/components/complex/grid/product-phot
 import { OtherProductPhotosGridColumns } from "@/components/complex/grid/other-product-photos-grid/OtherProductPhotosGridColumns.tsx";
 
 export default function VariantPhotosCard({
+  isVariantPhotoGridLoading,
+  isProductPhotoGridLoading,
   variantPhotos,
   productPhotos,
   contextId,
@@ -82,6 +84,7 @@ export default function VariantPhotosCard({
             <div className={cs.managePhotosGrid}>
               {variantPhotos.length > 0 ? (
                 <DndGridDataTable
+                  isLoading={isVariantPhotoGridLoading}
                   className={
                     variantPhotos.length > 0
                       ? cs.productPhotosGridShort
@@ -112,6 +115,7 @@ export default function VariantPhotosCard({
             <div className={cs.managePhotosGrid}>
               {productPhotos.length > 0 ? (
                 <DndGridDataTable
+                  isLoading={isProductPhotoGridLoading}
                   className={
                     variantPhotos.length > 0
                       ? cs.productPhotosGridShort

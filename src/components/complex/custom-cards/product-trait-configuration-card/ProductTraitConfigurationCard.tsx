@@ -27,6 +27,7 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { SizeOptionsGridColumns } from "@/components/complex/grid/trait-options-grid/size-options-grid/SizeOptionsGridColumns.tsx";
 
 export default function ProductTraitConfigurationCard({
+  isGridLoading,
   data,
   typesOfTraits,
   selectedTrait,
@@ -104,7 +105,7 @@ export default function ProductTraitConfigurationCard({
 
   return (
     <SheProductCard
-      title={selectedTrait.traitName ? "Manage" : "Create product trait"}
+      title={selectedTrait?.traitName ? "Manage" : "Create product trait"}
       view="card"
       showCloseButton={true}
       className={cs.productTraitConfigurationCard}
@@ -133,6 +134,9 @@ export default function ProductTraitConfigurationCard({
                 isValid={!form.formState.errors.traitName}
                 patternErrorMessage={form.formState.errors.traitName?.message}
                 showError={true}
+                onDelay={
+                  selectedTrait?.traitId && (() => onSubmit(form.getValues()))
+                }
                 className={cs.formInput}
               />
             </SheForm.Field>
@@ -147,7 +151,10 @@ export default function ProductTraitConfigurationCard({
                   <FormItem className={cs.select}>
                     <FormLabel>Trait type</FormLabel>
                     <Select
-                      onValueChange={(value) => field.onChange(Number(value))}
+                      onValueChange={(value) => {
+                        field.onChange(Number(value));
+                        selectedTrait?.traitId && onSubmit(form.getValues());
+                      }}
                       value={field.value ? field.value.toString() : ""}
                     >
                       <FormControl>
@@ -170,22 +177,24 @@ export default function ProductTraitConfigurationCard({
                 )}
               ></FormField>
             </div>
-            <div className={cs.buttonBlock}>
-              <SheButton
-                variant="secondary"
-                onClick={() =>
-                  onAction("closeProductTraitConfigurationCard", null)
-                }
-              >
-                Cancel
-              </SheButton>
-              <SheButton
-                disabled={!form.formState.isValid}
-                onClick={form.handleSubmit(onSubmit)}
-              >
-                {selectedTrait?.traitId ? "Update" : "Create"}
-              </SheButton>
-            </div>
+            {!selectedTrait?.traitId && (
+              <div className={cs.buttonBlock}>
+                <SheButton
+                  variant="secondary"
+                  onClick={() =>
+                    onAction("closeProductTraitConfigurationCard", null)
+                  }
+                >
+                  Cancel
+                </SheButton>
+                <SheButton
+                  disabled={!form.formState.isValid}
+                  onClick={form.handleSubmit(onSubmit)}
+                >
+                  Create
+                </SheButton>
+              </div>
+            )}
           </SheForm>
         </div>
         {localItems?.length > 0 && (
@@ -195,8 +204,9 @@ export default function ProductTraitConfigurationCard({
               className={`${cs.productTraitConfigurationGridContainer} she-title`}
             >
               <span className="she-title">Options</span>
-              {selectedTrait.traitTypeId === 1 && (
+              {selectedTrait?.traitTypeId === 1 && (
                 <DndGridDataTable
+                  isLoading={isGridLoading}
                   className={cs.productTraitConfigurationGrid}
                   enableDnd={true}
                   showHeader={false}
@@ -213,8 +223,9 @@ export default function ProductTraitConfigurationCard({
                   }
                 />
               )}
-              {selectedTrait.traitTypeId === 2 && (
+              {selectedTrait?.traitTypeId === 2 && (
                 <DndGridDataTable
+                  isLoading={isGridLoading}
                   className={cs.productTraitConfigurationGrid}
                   enableDnd={true}
                   showHeader={false}

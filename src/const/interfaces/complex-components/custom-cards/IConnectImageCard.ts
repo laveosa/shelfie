@@ -3,6 +3,8 @@ import { VariantModel } from "@/const/models/VariantModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 
 export interface IConnectImageCard {
+  isLoading?: boolean;
+  isGridLoading?: boolean;
   variants?: VariantModel[];
   data?: GridModel;
   selectedPhoto?: ImageModel;

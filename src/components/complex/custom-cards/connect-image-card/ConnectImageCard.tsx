@@ -7,6 +7,7 @@ import { ConnectImageGridColumns } from "@/components/complex/grid/connect-image
 import { IConnectImageCard } from "@/const/interfaces/complex-components/custom-cards/IConnectImageCard.ts";
 
 export default function ConnectImageCard({
+  isGridLoading,
   variants,
   selectedPhoto,
   onAction,
@@ -15,6 +16,10 @@ export default function ConnectImageCard({
 }: IConnectImageCard) {
   const columns = ConnectImageGridColumns(onGridAction);
   const [updatedVariants, setUpdatedVariants] = useState([]);
+
+  useEffect(() => {
+    console.log(isGridLoading);
+  }, []);
 
   useEffect(() => {
     if (!selectedPhoto?.variants || !variants) return;
@@ -64,6 +69,7 @@ export default function ConnectImageCard({
       <div className={cs.connectImageCardContent}>
         <div className={cs.connectImageGrid}>
           <DndGridDataTable
+            isLoading={isGridLoading}
             showHeader={false}
             columns={columns}
             data={updatedVariants}

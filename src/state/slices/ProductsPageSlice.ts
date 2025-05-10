@@ -8,10 +8,20 @@ import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
 import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
+import { ImageModel } from "@/const/models/ImageModel.ts";
+import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
+import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 
 const initialState: IProductsPageSlice = {
-  loading: false,
+  isLoading: false,
+  isProductsLoading: false,
+  isProductPhotosLoading: false,
+  isProductVariantsLoading: false,
   products: null,
+  product: null,
+  selectedProduct: null,
+  productCounter: null,
   columnsPreferences: null,
   brands: [],
   categories: [],
@@ -28,10 +38,38 @@ const initialState: IProductsPageSlice = {
     currentPage: 1,
     pageSize: 10,
   },
+  productPhotos: [],
+  productVariants: [],
+  taxesList: [],
+  currenciesList: [],
 };
 
-function setLoading(state: IProductsPageSlice, action: PayloadAction<boolean>) {
-  state.loading = action?.payload;
+function setIsLoading(
+  state: IProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isLoading = action?.payload;
+}
+
+function setIsProductsLoading(
+  state: IProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isProductsLoading = action?.payload;
+}
+
+function setIsProductPhotosLoading(
+  state: IProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isProductPhotosLoading = action?.payload;
+}
+
+function setIsProductVariantsLoading(
+  state: IProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isProductVariantsLoading = action?.payload;
 }
 
 function refreshProducts(
@@ -39,6 +77,35 @@ function refreshProducts(
   action: PayloadAction<ProductModel[]>,
 ) {
   state.products = action?.payload || state.products;
+}
+
+function refreshProduct(
+  state: IProductsPageSlice,
+  action: PayloadAction<ProductModel>,
+) {
+  state.product = action?.payload || state.product;
+}
+
+function resetProduct(state: IProductsPageSlice) {
+  state.product = null;
+}
+
+function refreshSelectedProduct(
+  state: IProductsPageSlice,
+  action: PayloadAction<ProductModel>,
+) {
+  state.selectedProduct = action?.payload || state.selectedProduct;
+}
+
+function refreshProductCounter(
+  state: IProductsPageSlice,
+  action: PayloadAction<ProductCounterModel>,
+) {
+  state.productCounter = action?.payload || state.productCounter;
+}
+
+function resetProductCounter(state: IProductsPageSlice) {
+  state.productCounter = null;
 }
 
 function refreshProductsGridModel(
@@ -83,18 +150,58 @@ function refreshSortingOptions(
   state.sortingOptions = action?.payload || state.sortingOptions;
 }
 
+function refreshProductPhotos(
+  state: IProductsPageSlice,
+  action: PayloadAction<ImageModel[]>,
+) {
+  state.productPhotos = action?.payload || state.productPhotos;
+}
+
+function refreshProductVariants(
+  state: IProductsPageSlice,
+  action: PayloadAction<any[]>,
+) {
+  state.productVariants = action?.payload || state.productVariants;
+}
+
+function refreshTaxesList(
+  state: IProductsPageSlice,
+  action: PayloadAction<TaxTypeModel[]>,
+) {
+  state.taxesList = action?.payload || state.taxesList;
+}
+
+function refreshCurrenciesList(
+  state: IProductsPageSlice,
+  action: PayloadAction<CurrencyModel[]>,
+) {
+  state.currenciesList = action?.payload || state.currenciesList;
+}
+
 const ProductsPageSlice = createSlice({
   name: StoreSliceEnum.PRODUCTS,
   initialState,
   reducers: {
-    setLoading,
+    setIsLoading,
+    setIsProductsLoading,
+    setIsProductPhotosLoading,
+    setIsProductVariantsLoading,
     refreshProducts,
+    refreshProduct,
+    resetProduct,
+    refreshSelectedProduct,
+    refreshProductCounter,
+    resetProductCounter,
     refreshProductsGridModel,
     refreshVariantsGridModel,
     refreshGridRequestModel,
     refreshBrands,
     refreshCategories,
     refreshSortingOptions,
+    refreshProductPhotos,
+    refreshProductVariants,
+    refreshTaxesList,
+    refreshCurrenciesList,
   },
 });
 

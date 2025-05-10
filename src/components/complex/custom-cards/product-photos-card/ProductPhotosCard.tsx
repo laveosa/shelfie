@@ -28,8 +28,8 @@ export default function ProductPhotosCard({
         onAction("openConnectImageCard", payload);
         break;
       case "dnd":
-        const { newIndex, activeItem } = payload;
-        onAction("dnd", { newIndex, activeItem });
+        const { newIndex, activeItem, oldIndex } = payload;
+        onAction("changePhotoPosition", { newIndex, activeItem, oldIndex });
         break;
     }
   }
@@ -80,8 +80,8 @@ export default function ProductPhotosCard({
                 data={data}
                 gridModel={data}
                 customMessage="PRODUCT HAS NO PHOTO"
-                onNewItemPosition={(newIndex, activeItem) =>
-                  handleAction("dnd", { newIndex, activeItem })
+                onNewItemPosition={(newIndex, activeItem, oldIndex) =>
+                  handleAction("dnd", { newIndex, activeItem, oldIndex })
                 }
               />
             </div>

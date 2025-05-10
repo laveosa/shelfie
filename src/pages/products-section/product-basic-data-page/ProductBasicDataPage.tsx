@@ -14,12 +14,9 @@ import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPag
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
 import { ProductBasicDataPageSliceActions as actions } from "@/state/slices/ProductBasicDataPageSlice.ts";
-import useProductBasicDataPageService from "@/pages/products-section/product-basic-data-page/useProductBasicDataPageService.ts";
 import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
+import useProductBasicDataPageService from "@/pages/products-section/product-basic-data-page/useProductBasicDataPageService.ts";
 import { useToast } from "@/hooks/useToast.ts";
-import { BrandModel } from "@/const/models/BrandModel.ts";
-import { CategoryModel } from "@/const/models/CategoryModel.ts";
-import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
@@ -40,36 +37,40 @@ export function ProductBasicDataPage() {
   const cardRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   useEffect(() => {
-    productsService
-      .getTheProductsForGridHandler(productsState.gridRequestModel)
-      .then((res: GridModel) => {
-        dispatch(actions.refreshProducts(res.items));
-      });
-
-    service.getSimpleListOfAllBrandsHandler().then((res: BrandModel[]) => {
-      dispatch(actions.refreshBrandsList(res ? res : []));
-    });
-
-    service
-      .getAllCategoriesByOrganizationHandler()
-      .then((res: CategoryModel[]) => {
-        dispatch(actions.refreshCategoriesList(res ? res : []));
-      });
-
-    dispatch(actions.refreshProduct({}));
-    dispatch(actions.refreshProductCounter({}));
-
-    if (productId) {
-      dispatch(actions.refreshActiveCards(["basicData"]));
-      service.getProductDetailsHandler(productId).then((res: ProductModel) => {
-        dispatch(actions.refreshProduct(res));
-      });
-
-      service
-        .getCountersForProductsHandler(productId)
-        .then((res: ProductCounterModel) => {
-          dispatch(actions.refreshProductCounter(res));
+    if (!productsState.products) {
+      productsService
+        .getTheProductsForGridHandler(productsState.gridRequestModel)
+        .then((res) => {
+          dispatch(productsActions.refreshProducts(res.items));
         });
+    }
+    if (!state.brandsList.length) {
+      service.getSimpleListOfAllBrandsHandler().then((res) => {
+        dispatch(actions.refreshBrandsList(res));
+      });
+    }
+    if (!state.categoriesList.length) {
+      service.getAllCategoriesByOrganizationHandler().then((res) => {
+        dispatch(actions.refreshCategoriesList(res));
+      });
+    }
+    if (productId) {
+      if (!productsState.productCounter) {
+        productsService.getCountersForProductsHandler(productId).then((res) => {
+          dispatch(productsActions.refreshProductCounter(res));
+        });
+      }
+      if (!productsState.product) {
+        productsService
+          .getProductDetailsHandler(productId)
+          .then((res: ProductModel) => {
+            dispatch(actions.refreshActiveCards(["basicData"]));
+            dispatch(productsActions.refreshProduct(res));
+          });
+      }
+    } else {
+      dispatch(productsActions.refreshProduct({}));
+      dispatch(productsActions.refreshProductCounter({}));
     }
   }, [productId]);
 
@@ -91,81 +92,90 @@ export function ProductBasicDataPage() {
   }
 
   function itemCardClickHandler(item) {
-    navigate(
-      `${ApiUrlEnum.PRODUCTS}${ApiUrlEnum.PRODUCT_BASIC_DATA}/${item.productId}`,
-    );
+    productsService.itemCardHandler(item);
+  }
+
+  function updateProductsList() {
+    productsService
+      .getTheProductsForGridHandler(productsState.gridRequestModel, true)
+      .then((res: GridModel) => {
+        dispatch(productsActions.refreshProducts(res.items));
+      });
+  }
+
+  function updateProductDetails(data) {
+    service.updateProductHandler(productId, data).then((res) => {
+      if (res.data) {
+        productsService
+          .getProductDetailsHandler(productId)
+          .then((res: ProductModel) => {
+            dispatch(productsActions.refreshProduct(res));
+          });
+
+        if (productsState.product.productName !== data.name) {
+          updateProductsList();
+        }
+        addToast({
+          text: "Product updated successfully",
+          type: "success",
+        });
+      }
+    });
+  }
+
+  function createNewProduct(data) {
+    service.createNewProductHandler(data).then((res) => {
+      if (res.data) {
+        dispatch(productsActions.refreshSelectedProduct(res.data));
+        productsService
+          .getTheProductsForGridHandler(productsState.gridRequestModel)
+          .then((res: GridModel) => {
+            dispatch(productsActions.refreshProducts(res.items));
+          });
+        navigate(
+          `${ApiUrlEnum.PRODUCTS}${ApiUrlEnum.PRODUCT_BASIC_DATA}/${res.data.productId}`,
+        );
+        addToast({
+          text: "Product created successfully",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: `${res.error.data.detail}`,
+          type: "error",
+        });
+      }
+    });
   }
 
   function onSubmitProductDataHandler(data: any) {
     if (productId) {
-      service.updateProductHandler(productId, data).then((res) => {
-        if (res.data) {
-          productsService
-            .getTheProductsForGridHandler(productsState.gridRequestModel)
-            .then((res: GridModel) => {
-              dispatch(actions.refreshProducts(res.items));
-            });
-          addToast({
-            text: "Product updated successfully",
-            type: "success",
-          });
-          service
-            .getProductDetailsHandler(productId)
-            .then((res: ProductModel) => {
-              dispatch(actions.refreshProduct(res));
-            });
-        } else {
-          addToast({
-            text: `${res.error.data.detail}`,
-            type: "error",
-          });
-        }
-      });
+      updateProductDetails(data);
     } else {
-      service.createNewProductHandler(data).then((res) => {
-        if (res.data) {
-          dispatch(actions.refreshProduct(res.data));
-          productsService
-            .getTheProductsForGridHandler(productsState.gridRequestModel)
-            .then((res: GridModel) => {
-              dispatch(productsActions.refreshProductsGridModel(res));
-            });
-          navigate(
-            `${ApiUrlEnum.PRODUCTS}${ApiUrlEnum.PRODUCT_BASIC_DATA}/${res.data.productId}`,
-          );
-          addToast({
-            text: "Product created successfully",
-            type: "success",
-          });
-        } else {
-          addToast({
-            text: `${res.error.data.detail}`,
-            type: "error",
-          });
-        }
-      });
+      createNewProduct(data);
     }
   }
 
   return (
     <div className={cs.createProductPage}>
-      {state.products?.length > 0 && (
+      <div className={cs.borderlessCards}>
         <ItemsCard
+          isLoading={productsState.isProductsLoading}
           title="Products"
-          data={state.products}
+          data={productsState.products}
           selectedItem={productId}
           onAction={itemCardClickHandler}
         />
-      )}
-      <ProductMenuCard
-        title={productId ? "Manage Product" : "Create Product"}
-        productCounter={state.productCounter}
-        onAction={handleCardAction}
-        productId={Number(productId)}
-        activeCards={state.activeCards}
-      />
+        <ProductMenuCard
+          title={productId ? "Manage Product" : "Create Product"}
+          productCounter={productsState.productCounter}
+          onAction={handleCardAction}
+          productId={Number(productId)}
+          activeCards={state.activeCards}
+        />
+      </div>
       <ProductConfigurationCard
-        product={state.product}
+        product={productsState.product}
         brandsList={state.brandsList}
         categoriesList={state.categoriesList}
         onGenerateProductCode={service.generateProductCodeHandler}
