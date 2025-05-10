@@ -114,7 +114,7 @@ export function ProductGalleryPage() {
             payload.newIndex,
           )
           .then(() => {
-            if (payload.newIndex === 0) {
+            if (payload.newIndex === 0 || payload.oldIndex === 0) {
               productsService
                 .getTheProductsForGridHandler(
                   productsState.gridRequestModel,

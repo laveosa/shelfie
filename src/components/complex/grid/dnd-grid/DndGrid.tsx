@@ -57,7 +57,11 @@ interface DataTableProps<TData extends DataWithId, TValue>
   onAction?: (data) => void;
   onApplyColumns?: (data) => void;
   onDefaultColumns?: () => void;
-  onNewItemPosition?: (newIndex: number, activeItem: TData) => void;
+  onNewItemPosition?: (
+    newIndex: number,
+    activeItem: TData,
+    oldIndex?: number,
+  ) => void;
 }
 
 const DraggableRow = ({ row, loadingRows, isDragDisabled = false }) => {
@@ -172,7 +176,7 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
       const updatedItems = arrayMove(items, oldIndex, newIndex);
       setItems(updatedItems);
       if (onNewItemPosition) {
-        onNewItemPosition(newIndex, activeItem as TData);
+        onNewItemPosition(newIndex, activeItem as TData, oldIndex);
       }
     }
   }
