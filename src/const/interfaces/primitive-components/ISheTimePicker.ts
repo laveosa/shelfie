@@ -4,6 +4,8 @@ import { ISheLabel } from "@/const/interfaces/primitive-components/ISheLabel.ts"
 import { ISheClearButton } from "@/const/interfaces/primitive-components/ISheClearButton.ts";
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
+import { TimeFormatEnum } from "@/const/enums/TimeFormatEnum.ts";
+import { Period } from "@/utils/helpers/time-picker-helper.ts";
 
 export interface ISheTimePicker
   extends ISheLabel,
@@ -24,6 +26,9 @@ export interface ISheTimePicker
   ssLabel?: string;
   ssLabelTransKey?: string;
   date?: Date | undefined;
+  dateFormat?: TimeFormatEnum;
+  timePeriod?: Period;
+  timeFormat?: "12" | "24";
   disabled?: boolean;
   isLoading?: boolean;
   minWidth?: string;
@@ -32,9 +37,11 @@ export interface ISheTimePicker
   required?: boolean;
   delayTime?: number;
   hideInputLabels?: boolean;
+  hideSeconds?: boolean;
   hoursRef?: React.RefObject<HTMLInputElement>;
   minutesRef?: React.RefObject<HTMLInputElement>;
   secondsRef?: React.RefObject<HTMLInputElement>;
+  periodRef?: React.RefObject<HTMLButtonElement>;
   onSetDate?: (value: any) => void;
   onDelay?: (value: any) => void;
 }

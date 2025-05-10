@@ -4,6 +4,7 @@ import cs from "./DashboardPage.module.scss";
 import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageService.ts";
 import SheTimePicker from "@/components/primitive/she-time-picker/SheTimePicker.tsx";
 import { TimerIcon } from "lucide-react";
+import { TimeFormatEnum } from "@/const/enums/TimeFormatEnum.ts";
 
 export function DashboardPage() {
   const service = useDashboardPageService();
@@ -12,7 +13,7 @@ export function DashboardPage() {
 
   function onAction(value) {
     console.log("onAction: ", value);
-    setTime(value);
+    // setTime(value);
   }
 
   return (
@@ -23,17 +24,16 @@ export function DashboardPage() {
 
       <SheTimePicker
         label="TimePicker"
-        tooltip={{
-          text: "some text for toolrip",
-        }}
-        required
         icon={TimerIcon}
         // date={time}
-        // size={"small"}
+        dateFormat={TimeFormatEnum.HH_MM_XM}
         showClearBtn
-        hideInputLabels
+        // hideInputLabels
+        // hideSeconds
+        // size={"small"}
         // view={ComponentViewEnum.CARD}
         onDelay={onAction}
+        // onSetDate={onAction}
       />
 
       <br />
