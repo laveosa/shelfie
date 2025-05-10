@@ -16,6 +16,8 @@ export interface ISheTimePicker
   style?: React.CSSProperties;
   inputClassName?: string;
   inputStyle?: React.CSSProperties;
+  selectClassName?: string;
+  selectStyle?: React.CSSProperties;
   icon?: Partial<ISheIcon> | string | React.FC<any>;
   size?: "normal" | "small";
   view?: ComponentViewEnum;

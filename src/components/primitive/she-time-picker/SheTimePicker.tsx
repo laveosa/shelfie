@@ -8,16 +8,19 @@ import { useDebounce } from "@/utils/hooks/useDebounce.ts";
 import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
-import SheTimePickerInput from "@/components/primitive/she-time-picker/components/SheTimePickerInput.tsx";
+import SheTimePickerInput from "@/components/primitive/she-time-picker/components/she-time-picker-input/SheTimePickerInput.tsx";
 import { Period } from "@/utils/helpers/time-picker-helper.ts";
 import { TimeFormatEnum } from "@/const/enums/TimeFormatEnum.ts";
+import SheTimePickerSelect from "@/components/primitive/she-time-picker/components/she-time-picker-select/SheTimePickerSelect.tsx";
 
 export default function SheTimePicker({
   id,
   className = "",
   style,
-  inputClassName,
+  inputClassName = "",
   inputStyle,
+  selectClassName = "",
+  selectStyle,
   label,
   labelTransKey,
   icon,
@@ -29,6 +32,8 @@ export default function SheTimePicker({
   mmLabelTransKey,
   ssLabel = size === "small" ? "ss" : "Seconds",
   ssLabelTransKey,
+  periodLabel = size === "small" ? "am/pm" : "Period",
+  periodLabelTransKey,
   date,
   dateFormat,
   timePeriod = "PM",
@@ -152,7 +157,8 @@ export default function SheTimePicker({
                 label={!hideInputLabels && hhLabel}
                 labelTransKey={hhLabelTransKey}
                 date={_date}
-                picker="hours"
+                picker={timeFormat === "12" ? "12hours" : "hours"}
+                period={_period}
                 disabled={disabled}
                 isLoading={isLoading}
                 setDate={onSetDateHandler}
@@ -161,6 +167,7 @@ export default function SheTimePicker({
             </div>
             <div className={cs.sheTimePickerElementInputCell}>
               <SheTimePickerInput
+                id={timeFormat === "12" ? "minutes12" : ""}
                 ref={minuteRef}
                 className={`${inputClassName} ${cs.sheTimePickerLabel}`}
                 style={inputStyle}
@@ -178,6 +185,7 @@ export default function SheTimePicker({
             {!hideSeconds && (
               <div className={cs.sheTimePickerElementInputCell}>
                 <SheTimePickerInput
+                  id={timeFormat === "12" ? "seconds12" : ""}
                   ref={secondRef}
                   className={`${inputClassName} ${cs.sheTimePickerLabel}`}
                   style={inputStyle}
@@ -185,10 +193,28 @@ export default function SheTimePicker({
                   labelTransKey={ssLabelTransKey}
                   date={_date}
                   picker="seconds"
+                  period={_period}
                   disabled={disabled}
                   isLoading={isLoading}
                   setDate={onSetDateHandler}
                   onLeftFocus={() => minuteRef.current?.focus()}
+                  onRightFocus={() => periodRef.current?.focus()}
+                />
+              </div>
+            )}
+            {timeFormat === "12" && (
+              <div className={cs.sheTimePickerElementInputCell}>
+                <SheTimePickerSelect
+                  ref={periodRef}
+                  className={`${selectClassName} ${cs.sheTimePickerLabel}`}
+                  style={selectStyle}
+                  label={!hideInputLabels && periodLabel}
+                  labelTransKey={periodLabelTransKey}
+                  date={_date}
+                  period={_period}
+                  setDate={setDate}
+                  setPeriod={setPeriod}
+                  onLeftFocus={() => secondRef.current?.focus()}
                 />
               </div>
             )}

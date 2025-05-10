@@ -9,7 +9,7 @@ import { TimeFormatEnum } from "@/const/enums/TimeFormatEnum.ts";
 export function DashboardPage() {
   const service = useDashboardPageService();
 
-  const [time, setTime] = useState(new Date());
+  const [time, setTime] = useState<Date>(new Date());
 
   function onAction(value) {
     console.log("onAction: ", value);
@@ -28,12 +28,13 @@ export function DashboardPage() {
         // date={time}
         dateFormat={TimeFormatEnum.HH_MM_XM}
         showClearBtn
+        timeFormat={"12"}
         // hideInputLabels
         // hideSeconds
         // size={"small"}
         // view={ComponentViewEnum.CARD}
-        onDelay={onAction}
-        // onSetDate={onAction}
+        // onDelay={onAction}
+        onSetDate={onAction}
       />
 
       <br />

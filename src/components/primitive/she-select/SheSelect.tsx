@@ -21,6 +21,7 @@ export default function SheSelect({
   id,
   className = "",
   style,
+  triggerRef,
   label,
   labelTransKey,
   placeholder,
@@ -40,6 +41,7 @@ export default function SheSelect({
   isOpen,
   showSelectIcon,
   selectedColor,
+  onTriggerKeyDown,
   onOpenChange,
   onSelect,
   ...props
@@ -200,14 +202,14 @@ export default function SheSelect({
             fullWidth
           >
             <Select
-              {...props}
               value={_selected?.id ?? ""}
               open={_open}
               disabled={disabled || _loading || !items || items.length === 0}
               onOpenChange={onOpenChangeHandler}
               onValueChange={onValueChangeHandler}
+              {...props}
             >
-              <SelectTrigger>
+              <SelectTrigger ref={triggerRef} onKeyDown={onTriggerKeyDown}>
                 <SheIcon
                   icon={icon}
                   className={cs.iconBlock}
@@ -225,6 +227,7 @@ export default function SheSelect({
                 <SelectContent>
                   {_items?.map((item: ISheSelectItem) => (
                     <SheSelectItem
+                      key={item.id}
                       className={cs.sheSelectItemCover}
                       isLoading={_loading}
                       showSelectIcon={showSelectIcon}

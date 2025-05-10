@@ -1,5 +1,5 @@
 import React, { JSX } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils.ts";
 
 import {
   getArrowByType,
