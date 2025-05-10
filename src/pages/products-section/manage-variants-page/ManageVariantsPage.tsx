@@ -95,20 +95,24 @@ export function ManageVariantsPage() {
     }, 100);
   }
 
-  function handleCardAction(identifier: string, forceOpen: boolean = false) {
+  function handleCardAction(
+    identifier: string,
+    forceOpen: boolean = false,
+    overrideActiveCards?: string[],
+  ) {
+    const activeCards = overrideActiveCards ?? state.activeCards;
     let updatedCards: string[];
 
     if (forceOpen) {
-      if (!state.activeCards.includes(identifier)) {
-        updatedCards = [...state.activeCards, identifier];
+      if (!activeCards.includes(identifier)) {
+        updatedCards = [...activeCards, identifier];
         dispatch(actions.refreshActiveCards(updatedCards));
         scrollToCard(identifier);
       } else {
-        updatedCards = state.activeCards;
-        dispatch(actions.refreshActiveCards(updatedCards));
+        dispatch(actions.refreshActiveCards(activeCards));
       }
     } else {
-      updatedCards = state.activeCards.filter((card) => card !== identifier);
+      updatedCards = activeCards.filter((card) => card !== identifier);
       dispatch(actions.refreshActiveCards(updatedCards));
     }
   }
@@ -466,7 +470,8 @@ export function ManageVariantsPage() {
         );
         break;
       case "openAddVariantCard":
-        handleCardAction("addVariantCard", true);
+        dispatch(actions.refreshActiveCards([]));
+        handleCardAction("addVariantCard", true, []);
         break;
       case "openChooseVariantTraitsCard":
         service.getListOfAllTraitsHandler().then((res) => {
@@ -476,10 +481,9 @@ export function ManageVariantsPage() {
         break;
       case "openAddStockCard":
         productsService.getCurrenciesListHandler().then((res) => {
-          console.log(res);
           dispatch(productsActions.refreshCurrenciesList(res));
+          handleCardAction("addStockCard", true);
         });
-        handleCardAction("addStockCard", true);
         break;
       case "openDisposeStockCard":
         handleCardAction("disposeStockCard", true);
