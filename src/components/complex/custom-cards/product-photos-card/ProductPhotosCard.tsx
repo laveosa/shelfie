@@ -11,6 +11,7 @@ export default function ProductPhotosCard({
   isLoading,
   data,
   contextId,
+  productCounter,
   onAction,
   ...props
 }) {
@@ -79,6 +80,7 @@ export default function ProductPhotosCard({
                 columns={columns}
                 data={data}
                 gridModel={data}
+                skeletonQuantity={productCounter?.gallery}
                 customMessage="PRODUCT HAS NO PHOTO"
                 onNewItemPosition={(newIndex, activeItem, oldIndex) =>
                   handleAction("dnd", { newIndex, activeItem, oldIndex })

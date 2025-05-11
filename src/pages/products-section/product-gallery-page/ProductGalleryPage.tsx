@@ -189,6 +189,7 @@ export function ProductGalleryPage() {
           title="Products"
           data={productsState.products}
           selectedItem={productId}
+          skeletonQuantity={productsState.products?.length}
           onAction={itemCardHandler}
         />
         <ProductMenuCard
@@ -200,8 +201,8 @@ export function ProductGalleryPage() {
       </div>
       <ProductPhotosCard
         isLoading={productsState.isProductPhotosLoading}
-        width={"400px"}
         data={productsState.productPhotos}
+        productCounter={productsState.productCounter}
         contextId={productId}
         onAction={onAction}
       />
@@ -215,6 +216,7 @@ export function ProductGalleryPage() {
             isGridLoading={state.isVariantsGridLoading}
             variants={state.productVariants}
             selectedPhoto={state.selectedPhoto}
+            productCounter={productsState.productCounter}
             onAction={onAction}
             onSecondaryButtonClick={() => handleCardAction("connectImageCard")}
           />

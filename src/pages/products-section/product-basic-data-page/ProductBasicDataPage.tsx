@@ -164,6 +164,7 @@ export function ProductBasicDataPage() {
           title="Products"
           data={productsState.products}
           selectedItem={productId}
+          skeletonQuantity={productsState.products?.length}
           onAction={itemCardClickHandler}
         />
         <ProductMenuCard
