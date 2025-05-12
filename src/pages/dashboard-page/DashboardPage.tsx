@@ -43,8 +43,8 @@ export function DashboardPage() {
         ssLabelTransKey="fwofijds"
         periodLabel="PP Label"
         icon={Clock}
-        timeFormat={"12"}
-        timePeriod={"AM"}
+        // timeFormat={"12"}
+        // timePeriod={"AM"}
         dateFormat={TimeFormatEnum.HH_MM_SS_XM}
         size={"small"}
         view={ComponentViewEnum.CARD}
@@ -52,9 +52,8 @@ export function DashboardPage() {
         required
         showClearBtn
         hideInputLabels
-        hideSeconds
+        // hideSeconds
         date={time}
-        delayTime={2000}
         onSetDate={onSetDateHandler}
         onDelay={onDelayHandler}
         onBlur={onBlurHandler}

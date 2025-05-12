@@ -36,7 +36,7 @@ export default function SheTimePicker({
   periodLabelTransKey,
   date,
   dateFormat,
-  timePeriod = "AM",
+  timePeriod,
   timeFormat = "24",
   showClearBtn,
   tooltip,
@@ -143,7 +143,7 @@ export default function SheTimePicker({
   }
 
   function configurePeriod(value: Date) {
-    setPeriod(value?.getHours() > 12 ? "PM" : "AM");
+    setPeriod(timePeriod ? timePeriod : value?.getHours() > 12 ? "PM" : "AM");
   }
 
   // ==================================================================== LAYOUT
@@ -207,7 +207,11 @@ export default function SheTimePicker({
                 setDate={onSetDateHandler}
                 onBlurHandler={onBlurHandler}
                 onLeftFocus={() => hourRef.current?.focus()}
-                onRightFocus={() => secondRef.current?.focus()}
+                onRightFocus={() =>
+                  hideSeconds
+                    ? periodRef.current?.focus()
+                    : secondRef.current?.focus()
+                }
               />
             </div>
             {!hideSeconds && (
@@ -241,9 +245,15 @@ export default function SheTimePicker({
                   labelTransKey={periodLabelTransKey}
                   date={_date}
                   period={_period}
+                  disabled={disabled}
+                  isLoading={isLoading}
                   setDate={onSetDateHandler}
                   setPeriod={onSetPeriodHandler}
-                  onLeftFocus={() => secondRef.current?.focus()}
+                  onLeftFocus={() =>
+                    hideSeconds
+                      ? minuteRef.current?.focus()
+                      : secondRef.current?.focus()
+                  }
                 />
               </div>
             )}
