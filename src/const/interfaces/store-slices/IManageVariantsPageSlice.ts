@@ -34,4 +34,5 @@ export interface IManageVariantsPageSlice {
   photosGridModel?: GridModel;
   gridRequestModel?: GridRequestModel;
   variantPhotos?: ImageModel[];
+  productPhotosForVariant?: ImageModel[];
 }
