@@ -235,7 +235,7 @@ export default function SheTimePicker({
               <div className={cs.sheTimePickerElementInputCell}>
                 <SheTimePickerSelect
                   ref={periodRef}
-                  className={`${selectClassName} ${cs.sheTimePickerLabel}`}
+                  className={`${selectClassName} ${cs.sheTimePickerLabel} ${cs.sheTimePickerSelect}`}
                   style={selectStyle}
                   label={!hideInputLabels && periodLabel}
                   labelTransKey={periodLabelTransKey}

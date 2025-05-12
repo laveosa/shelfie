@@ -92,13 +92,32 @@ $iconSize: 20px;
   .sheTimePickerElementWrapper {
     gap: 4px !important;
 
-    input {
+    input,
+    button {
       padding: 4px;
       height: 30px;
+      width: 50px;
+      min-width: 50px;
+      max-width: 50px;
+      text-align: center;
+      font-size: 12px;
+    }
+
+    input {
       width: 30px;
       min-width: 30px;
       max-width: 30px;
-      text-align: center;
+    }
+  }
+
+  .sheTimePickerSelect {
+    min-width: 50px !important;
+    max-width: 50px !important;
+
+    button {
+      * {
+        font-size: 12px;
+      }
     }
   }
 }

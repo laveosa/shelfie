@@ -27,6 +27,8 @@ export interface ISheTimePicker
   mmLabelTransKey?: string;
   ssLabel?: string;
   ssLabelTransKey?: string;
+  periodLabel?: string;
+  periodLabelTransKey?: string;
   date?: Date | undefined;
   dateFormat?: TimeFormatEnum;
   timePeriod?: Period;
