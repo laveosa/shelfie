@@ -133,7 +133,9 @@ export function productsGridColumns(
 
         const rowId = row.id;
         const isChecked =
-          rowId in activeStates ? activeStates[rowId] : row.original.isActive;
+          activeStates && rowId in activeStates
+            ? activeStates[rowId]
+            : row.original.isActive;
 
         return (
           <Switch
@@ -144,6 +146,7 @@ export function productsGridColumns(
                 "activateProduct",
                 rowId,
                 meta?.setLoadingRow,
+                row.original,
                 row.original,
               )
             }

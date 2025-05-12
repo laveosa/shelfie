@@ -61,19 +61,37 @@ export function ProductsPage() {
   }, [state.gridRequestModel, activeTab, dispatch]);
 
   useEffect(() => {
+    if (state.productsGridModel?.items?.length > 0) {
+      const initialActiveStates = state.productsGridModel.items.reduce(
+        (acc, product) => {
+          const rowId = product.productId.toString();
+          acc[rowId] = product.isActive;
+          return acc;
+        },
+        {},
+      );
+
+      setActiveStates(initialActiveStates);
+    }
+  }, [state.productsGridModel.items]);
+
+  useEffect(() => {
     service.getBrandsForFilterHandler();
     service.getCategoriesForFilterHandler();
     service.getSortingOptionsForGridHandler();
   }, []);
+
+  // In your ProductsPage.tsx file, update the onAction function:
 
   const onAction = (
     actionType: string,
     rowId?: string,
     setLoadingRow?: (rowId: string, loading: boolean) => void,
     rowData?: ProductModel,
-    rowOriginal?: any,
+    _rowOriginal?: any,
   ) => {
-    setLoadingRow?.(rowId, true);
+    setLoadingRow(rowId, true);
+
     switch (actionType) {
       case "image":
         break;
@@ -85,23 +103,37 @@ export function ProductsPage() {
       case "activateProduct":
         {
           const currentActive =
-            rowId in activeStates ? activeStates[rowId] : rowOriginal?.isActive;
+            rowId && rowId in activeStates
+              ? activeStates[rowId]
+              : rowData?.isActive;
 
           const newState = !currentActive;
 
-          setActiveStates((prev) => ({
-            ...prev,
-            [rowId]: newState,
-          }));
+          if (rowId) {
+            setActiveStates((prev) => ({
+              ...prev,
+              [rowId]: newState,
+            }));
+          }
 
-          service.toggleProductActivationHandler(rowData.productId);
+          service
+            .toggleProductActivationHandler(rowData.productId)
+            .catch((error) => {
+              console.error("Failed to toggle product activation:", error);
+              if (rowId) {
+                setActiveStates((prev) => ({
+                  ...prev,
+                  [rowId]: currentActive,
+                }));
+              }
+            });
         }
         break;
       case "delete":
         console.log(`Deleting row ${rowId}`);
         break;
       case "activateVariant":
-        console.log(`Deleting row ${rowId}`);
+        console.log(`Activating variant ${rowId}`);
         break;
       case "manageVariant":
         navigate(
@@ -109,7 +141,8 @@ export function ProductsPage() {
         );
         break;
     }
-    setLoadingRow?.(rowId, false);
+
+    setLoadingRow(rowId, false);
   };
 
   const productsColumns = productsGridColumns(onAction, activeStates);
