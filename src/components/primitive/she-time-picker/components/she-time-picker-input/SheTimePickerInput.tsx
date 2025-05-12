@@ -24,6 +24,7 @@ export default function SheTimePickerInput({
   onLeftFocus,
   onRightFocus,
   onChange,
+  onBlurHandler,
   ref,
   ...props
 }: ISheTimePickerInput): JSX.Element {
@@ -45,27 +46,29 @@ export default function SheTimePickerInput({
 
   // ==================================================================== EVENT
 
-  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === "Tab") return;
+  function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (event.key === "Tab") return;
 
-    e.preventDefault();
+    event.preventDefault();
 
-    if (e.key === "ArrowRight") onRightFocus?.();
+    if (event.key === "ArrowRight") onRightFocus?.();
 
-    if (e.key === "ArrowLeft") onLeftFocus?.();
+    if (event.key === "ArrowLeft") onLeftFocus?.();
 
-    if (["ArrowUp", "ArrowDown"].includes(e.key)) {
-      const step = e.key === "ArrowUp" ? 1 : -1;
+    if (["ArrowUp", "ArrowDown"].includes(event.key)) {
+      const step = event.key === "ArrowUp" ? 1 : -1;
       const newValue = getArrowByType(calculatedValue, step, picker);
+
       if (flag) setFlag(false);
+
       const tempDate = new Date(date);
       setDate(setDateByType(tempDate, newValue, picker, period));
     }
 
-    if (e.key >= "0" && e.key <= "9") {
-      if (picker === "12hours") setPrevIntKey(e.key);
+    if (event.key >= "0" && event.key <= "9") {
+      if (picker === "12hours") setPrevIntKey(event.key);
 
-      const newValue = calculateNewValue(e.key);
+      const newValue = calculateNewValue(event.key);
 
       if (flag) onRightFocus?.();
 
@@ -107,6 +110,10 @@ export default function SheTimePickerInput({
       onChange={(event: any) => {
         event.preventDefault();
         onChange?.(event);
+      }}
+      onBlur={(event: any) => {
+        const tempDate = new Date(date);
+        onBlurHandler(setDateByType(tempDate, event, picker, period));
       }}
       {...props}
     />

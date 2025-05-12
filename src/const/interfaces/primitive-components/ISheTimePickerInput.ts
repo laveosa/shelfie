@@ -10,6 +10,7 @@ export interface ISheTimePickerInput
   date: Date | undefined;
   period?: Period;
   setDate: (date: Date | undefined) => void;
+  onBlurHandler: (date: Date | undefined) => void;
   onRightFocus?: () => void;
   onLeftFocus?: () => void;
 }

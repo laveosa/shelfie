@@ -116,7 +116,9 @@ export default function SheSelect({
       const selected = _getSelectedItemById(id);
 
       if (onSelect) {
-        onSelect(selected ? selected.value : null);
+        setTimeout(() => {
+          onSelect(selected ? selected.value : null);
+        });
       }
 
       return selected;

@@ -1,12 +1,13 @@
 import React, { JSX } from "react";
 
-import { ISheTimePickerSelect } from "@/const/interfaces/primitive-components/ISheTimePickerSelect.ts";
-import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import {
   display12HourValue,
   Period,
   setDateByType,
 } from "@/utils/helpers/time-picker-helper.ts";
+import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
+import { ISheTimePickerSelect } from "@/const/interfaces/primitive-components/ISheTimePickerSelect.ts";
+import cs from "./SheTimePickerSelect.module.scss";
 
 export default function SheTimePickerSelect({
   ref,
@@ -18,15 +19,18 @@ export default function SheTimePickerSelect({
   onRightFocus,
   ...props
 }: ISheTimePickerSelect): JSX.Element {
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+  // ==================================================================== EVENT
+  function onKeyDown(e: React.KeyboardEvent<HTMLButtonElement>) {
     if (e.key === "ArrowRight") onRightFocus?.();
     if (e.key === "ArrowLeft") onLeftFocus?.();
-  };
+  }
 
-  const handleValueChange = (value: Period) => {
-    setPeriod(value);
+  function onValueChange(value: Period) {
+    if (setPeriod) {
+      setPeriod(value);
+    }
 
-    if (date) {
+    if (date && setDate) {
       const tempDate = new Date(date);
       const hours = display12HourValue(date.getHours());
       setDate(
@@ -38,10 +42,15 @@ export default function SheTimePickerSelect({
         ),
       );
     }
-  };
+  }
+
+  // ==================================================================== PRIVATE
+
+  // ==================================================================== LAYOUT
 
   return (
     <SheSelect
+      className={cs.sheTimePickerSelect}
       triggerRef={ref}
       items={[
         { text: "AM", value: "AM" },
@@ -51,8 +60,8 @@ export default function SheTimePickerSelect({
       hideFirstOption
       minWidth="65px"
       maxWidth="65px"
-      onTriggerKeyDown={handleKeyDown}
-      onSelect={handleValueChange}
+      onTriggerKeyDown={onKeyDown}
+      onSelect={onValueChange}
       {...props}
     />
   );

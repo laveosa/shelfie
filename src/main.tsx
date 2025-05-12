@@ -15,3 +15,9 @@ createRoot(document.getElementById("root")!).render(
     </Provider>
   </StrictMode>,
 );
+
+/*createRoot(document.getElementById("root")!).render(
+  <Provider store={store}>
+    <RouterProvider router={mainRouter} />
+  </Provider>,
+);*/

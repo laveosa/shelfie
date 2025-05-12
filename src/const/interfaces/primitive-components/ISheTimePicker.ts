@@ -43,7 +43,9 @@ export interface ISheTimePicker
   hoursRef?: React.RefObject<HTMLInputElement>;
   minutesRef?: React.RefObject<HTMLInputElement>;
   secondsRef?: React.RefObject<HTMLInputElement>;
-  periodRef?: React.RefObject<HTMLButtonElement>;
+  periodsRef?: React.RefObject<HTMLButtonElement>;
+  autoFocus?: boolean;
   onSetDate?: (value: any) => void;
   onDelay?: (value: any) => void;
+  onBlur?: (value: any) => void;
 }

@@ -36,7 +36,7 @@ export default function SheTimePicker({
   periodLabelTransKey,
   date,
   dateFormat,
-  timePeriod = "PM",
+  timePeriod = "AM",
   timeFormat = "24",
   showClearBtn,
   tooltip,
@@ -52,9 +52,11 @@ export default function SheTimePicker({
   hoursRef,
   minutesRef,
   secondsRef,
+  periodsRef,
+  autoFocus,
   onSetDate,
   onDelay,
-  onIsValid,
+  onBlur,
   ...props
 }: ISheTimePicker): JSX.Element {
   const [_date, setDate] = useState<Date>(date ?? new Date());
@@ -65,18 +67,23 @@ export default function SheTimePicker({
   const delayValue = useDebounce(_date, delayTime);
   const isInitialized = useRef(false);
 
-  // TODO combine related inner props with this logic, if there is hoursRef === null then crete local useRef etc.
-  const hourRef = React.useRef<HTMLInputElement>(null);
-  const minuteRef = React.useRef<HTMLInputElement>(null);
-  const secondRef = React.useRef<HTMLInputElement>(null);
-  const periodRef = React.useRef<HTMLButtonElement>(null);
+  const internalHourRef = React.useRef<HTMLInputElement>(null);
+  const internalMinuteRef = React.useRef<HTMLInputElement>(null);
+  const internalSecondRef = React.useRef<HTMLInputElement>(null);
+  const internalPeriodRef = React.useRef<HTMLButtonElement>(null);
+
+  const hourRef = hoursRef ?? internalHourRef;
+  const minuteRef = minutesRef ?? internalMinuteRef;
+  const secondRef = secondsRef ?? internalSecondRef;
+  const periodRef = periodsRef ?? internalPeriodRef;
 
   useEffect(() => {
     if (date !== _date) {
-      setDate(date);
+      setDate(setDefaultDate(date));
     }
 
     checkDateValidation(date);
+    configurePeriod(date);
   }, [date]);
 
   useEffect(() => {
@@ -91,7 +98,7 @@ export default function SheTimePicker({
 
   // ==================================================================== EVENT
 
-  function onSetDateHandler(value) {
+  function onSetDateHandler(value: Date) {
     isInitialized.current = true;
     checkDateValidation(value);
     setDate(value);
@@ -100,10 +107,18 @@ export default function SheTimePicker({
       onSetDate(dateFormat && value ? moment(value).format(dateFormat) : value);
   }
 
+  function onSetPeriodHandler(period: Period) {
+    setPeriod(period);
+  }
+
+  function onBlurHandler(value: Date) {
+    if (onBlur)
+      onBlur(dateFormat && value ? moment(value).format(dateFormat) : value);
+  }
+
   function onClearHandler() {
     isInitialized.current = false;
-    let newValue = new Date();
-    newValue.setHours(0, 0, 0, 0);
+    let newValue = setDefaultDate();
     checkDateValidation(newValue);
     setDate(newValue);
 
@@ -115,10 +130,20 @@ export default function SheTimePicker({
 
   // ==================================================================== PRIVATE
 
+  function setDefaultDate(value?: Date) {
+    let defaultDate = new Date();
+    defaultDate.setHours(0, 0, 0, 0);
+    return value ? value : defaultDate;
+  }
+
   function checkDateValidation(value: Date) {
     setIsDateValid(
       value && moment(value).format(TimeFormatEnum.HH_MM_SS) !== "00:00:00",
     );
+  }
+
+  function configurePeriod(value: Date) {
+    setPeriod(value?.getHours() > 12 ? "PM" : "AM");
   }
 
   // ==================================================================== LAYOUT
@@ -161,7 +186,9 @@ export default function SheTimePicker({
                 period={_period}
                 disabled={disabled}
                 isLoading={isLoading}
+                autoFocus={autoFocus}
                 setDate={onSetDateHandler}
+                onBlurHandler={onBlurHandler}
                 onRightFocus={() => minuteRef.current?.focus()}
               />
             </div>
@@ -178,6 +205,7 @@ export default function SheTimePicker({
                 disabled={disabled}
                 isLoading={isLoading}
                 setDate={onSetDateHandler}
+                onBlurHandler={onBlurHandler}
                 onLeftFocus={() => hourRef.current?.focus()}
                 onRightFocus={() => secondRef.current?.focus()}
               />
@@ -197,6 +225,7 @@ export default function SheTimePicker({
                   disabled={disabled}
                   isLoading={isLoading}
                   setDate={onSetDateHandler}
+                  onBlurHandler={onBlurHandler}
                   onLeftFocus={() => minuteRef.current?.focus()}
                   onRightFocus={() => periodRef.current?.focus()}
                 />
@@ -212,8 +241,8 @@ export default function SheTimePicker({
                   labelTransKey={periodLabelTransKey}
                   date={_date}
                   period={_period}
-                  setDate={setDate}
-                  setPeriod={setPeriod}
+                  setDate={onSetDateHandler}
+                  setPeriod={onSetPeriodHandler}
                   onLeftFocus={() => secondRef.current?.focus()}
                 />
               </div>
