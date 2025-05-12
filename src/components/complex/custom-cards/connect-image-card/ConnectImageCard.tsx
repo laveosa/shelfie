@@ -10,16 +10,13 @@ export default function ConnectImageCard({
   isGridLoading,
   variants,
   selectedPhoto,
+  productCounter,
   onAction,
   onSecondaryButtonClick,
   ...props
 }: IConnectImageCard) {
   const columns = ConnectImageGridColumns(onGridAction);
   const [updatedVariants, setUpdatedVariants] = useState([]);
-
-  useEffect(() => {
-    console.log(isGridLoading);
-  }, []);
 
   useEffect(() => {
     if (!selectedPhoto?.variants || !variants) return;
@@ -73,6 +70,7 @@ export default function ConnectImageCard({
             showHeader={false}
             columns={columns}
             data={updatedVariants}
+            skeletonQuantity={productCounter?.variants}
             gridModel={variants as any}
           />
         </div>

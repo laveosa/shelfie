@@ -54,6 +54,7 @@ interface DataTableProps<TData extends DataWithId, TValue>
   showColumnsHeader?: boolean;
   enableDnd?: boolean;
   customMessage?: string;
+  skeletonQuantity?: number;
   onAction?: (data) => void;
   onApplyColumns?: (data) => void;
   onDefaultColumns?: () => void;
@@ -132,6 +133,7 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
   showSearch = true,
   children,
   customMessage,
+  skeletonQuantity,
   onGridRequestChange,
   onApplyColumns,
   onDefaultColumns,
@@ -141,6 +143,10 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
   const [items, setItems] = useState<TData[]>([]);
   const [loadingRows, setLoadingRows] = useState<Set<string>>(new Set());
   const [isDragging, setIsDragging] = useState(false);
+
+  function createSkeletonArray(quantity: number): object[] {
+    return Array.from({ length: quantity }, () => ({}));
+  }
 
   useEffect(() => {
     function prepareItemsForGrid(data: any): TData[] {
@@ -270,7 +276,7 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
             )}
             {isLoading ? (
               <TableBody>
-                {[{}, {}, {}, {}, {}].map((_, index) => (
+                {createSkeletonArray(skeletonQuantity ?? 5).map((_, index) => (
                   <TableRow key={index}>
                     <TableCell>
                       <Skeleton className="h-12 w-12 rounded-full" />

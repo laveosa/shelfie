@@ -14,6 +14,7 @@ export default function VariantPhotosCard({
   variantPhotos,
   productPhotos,
   contextId,
+  productCounter,
   onAction,
   ...props
 }) {
@@ -95,6 +96,7 @@ export default function VariantPhotosCard({
                   columns={variantPhotosColumns}
                   data={variantPhotos}
                   gridModel={variantPhotos}
+                  customMessage="VARIANT HAS NO PHOTO"
                   onNewItemPosition={(newIndex, activeItem) =>
                     handleAction("dnd", { newIndex, activeItem })
                   }
@@ -125,6 +127,8 @@ export default function VariantPhotosCard({
                   showColumnsHeader={false}
                   columns={otherPhotosColumns}
                   data={productPhotos}
+                  skeletonQuantity={productCounter?.gallery}
+                  customMessage="PRODUCT HAS NO PHOTO"
                   gridModel={productPhotos}
                 />
               ) : (

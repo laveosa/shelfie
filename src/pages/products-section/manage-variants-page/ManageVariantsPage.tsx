@@ -517,6 +517,7 @@ export function ManageVariantsPage() {
           title="Products"
           data={productsState.products}
           selectedItem={productId}
+          skeletonQuantity={productsState.products?.length}
           onAction={(item) => onAction("onProductItemClick", item)}
         />
         <ProductMenuCard
@@ -531,6 +532,7 @@ export function ManageVariantsPage() {
         isLoading={productsState.isProductVariantsLoading}
         variants={productsState.productVariants}
         traits={state.listOfTraitsWithOptionsForProduct}
+        productCounter={productsState.productCounter}
         onAction={onAction}
       />
       {state.activeCards.includes("variantConfigurationCard") && (
@@ -545,6 +547,7 @@ export function ManageVariantsPage() {
             variant={state.selectedVariant}
             data={state.variantTraitsGridModel}
             taxesList={productsState.taxesList}
+            productCounter={productsState.productCounter}
             onAction={onAction}
             onGenerateProductCode={service.generateProductCodeHandler}
             onSecondaryButtonClick={() =>
@@ -668,6 +671,7 @@ export function ManageVariantsPage() {
             variantPhotos={state.variantPhotos}
             productPhotos={productsState.productPhotos}
             contextId={state.selectedVariant?.variantId}
+            productCounter={productsState.productCounter}
             onAction={onAction}
           />
         </div>

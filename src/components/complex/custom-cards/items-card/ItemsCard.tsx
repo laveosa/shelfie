@@ -11,11 +11,16 @@ export default function ItemsCard({
   isLoading,
   data,
   title,
+  skeletonQuantity,
   onAction,
   selectedItem,
   ...props
 }: IItemsCard) {
   const [selectedId, setSelectedId] = useState(Number(selectedItem));
+
+  function createSkeletonArray(quantity: number): object[] {
+    return Array.from({ length: quantity }, () => ({}));
+  }
 
   const handleItemClick = (item) => {
     setSelectedId(item.productId);
@@ -39,7 +44,7 @@ export default function ItemsCard({
         <div className={cs.productsList}>
           {isLoading ? (
             <div>
-              {[{}, {}, {}, {}, {}, {}, {}, {}, {}, {}].map((_, index) => (
+              {createSkeletonArray(skeletonQuantity ?? 10).map((_, index) => (
                 <div key={index} className={cs.skeletonItems}>
                   <Skeleton className="h-12 w-12 rounded-full" />
                   <div className="space-y-2">

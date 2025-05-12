@@ -20,6 +20,7 @@ export default function ManageVariantsCard({
   data,
   traits,
   variants,
+  productCounter,
   onAction,
   ...props
 }: IManageVariantsCard) {
@@ -142,7 +143,7 @@ export default function ManageVariantsCard({
             columns={columns}
             data={variants}
             gridModel={data}
-            customMessage="PRODUCT HAS NO VARIANTS"
+            customMessage="VARIANT HAS NO PHOTO"
             onNewItemPosition={(newIndex, activeItem) =>
               handleAction("dnd", { newIndex, activeItem })
             }
