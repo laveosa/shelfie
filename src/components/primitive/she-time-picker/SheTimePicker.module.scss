@@ -69,6 +69,14 @@ $iconSize: 20px;
 // ======================================================== VIEW
 
 .sheTimePicker.card {
+  &.small {
+    .sheTimePickerComponent {
+      .sheTimePickerControl {
+        padding: 4px 8px;
+      }
+    }
+  }
+
   .sheTimePickerComponent {
     > label {
       left: 0;
@@ -83,6 +91,136 @@ $iconSize: 20px;
       padding: vars.$paddingSmall;
       border-radius: vars.$brdR_03;
     }
+  }
+}
+
+// ======================================================== TYPE
+
+.sheTimePicker {
+  &.time_picker {
+  }
+
+  &.clock {
+    .sheTimePickerComponent {
+      .sheTimePickerControl {
+        .sheTimePickerElementWrapper {
+          gap: 1px;
+          align-items: center;
+
+          .sheTimePickerElementInputCell {
+            &.sheTimePickerClockViewCell {
+              &:after {
+                position: absolute;
+                margin-left: 22px;
+                content: ":";
+                display: inline;
+              }
+            }
+
+            input,
+            button {
+              pointer-events: none;
+              padding: 0;
+              border: 0;
+              box-shadow: none;
+              height: 24px;
+              width: 24px;
+              min-width: 24px;
+              max-width: 24px;
+            }
+
+            input {
+            }
+
+            .sheTimePickerSelect {
+              min-width: 26px !important;
+              max-width: 26px !important;
+
+              button {
+                position: relative;
+                top: 1px;
+
+                span {
+                  font-size: 14px;
+                  line-height: 14px;
+                }
+
+                svg {
+                  display: none;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    &.small {
+      .sheTimePickerComponent {
+        .sheTimePickerControl {
+          .iconBlock {
+            $smallIconSize: 14px;
+            max-width: $smallIconSize;
+            min-width: $smallIconSize;
+            max-height: $smallIconSize;
+            min-height: $smallIconSize;
+          }
+
+          .sheTimePickerElementWrapper {
+            .sheTimePickerElementInputCell {
+              &.sheTimePickerClockViewCell {
+                &:after {
+                  margin-left: 20px;
+                  font-size: 12px;
+                }
+              }
+
+              input,
+              button {
+                pointer-events: none;
+                padding: 0;
+                border: 0;
+                box-shadow: none;
+              }
+
+              input {
+                height: 20px;
+                width: 20px;
+                min-width: 20px;
+                max-width: 20px;
+              }
+
+              .sheTimePickerSelect {
+                $selectWith: 14px;
+                position: relative;
+                left: -4px;
+                min-width: $selectWith;
+                max-width: $selectWith;
+
+                button {
+                  position: relative;
+                  top: 0;
+                  min-width: $selectWith;
+                  max-width: $selectWith;
+
+                  span {
+                    font-size: 10px;
+                    line-height: 10px;
+                  }
+
+                  svg {
+                    display: none;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &.timer {
   }
 }
 

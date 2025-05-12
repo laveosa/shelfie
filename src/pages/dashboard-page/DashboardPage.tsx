@@ -6,6 +6,7 @@ import SheTimePicker from "@/components/primitive/she-time-picker/SheTimePicker.
 import { TimeFormatEnum } from "@/const/enums/TimeFormatEnum.ts";
 import { Clock } from "lucide-react";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
+import { SheTimePickerTypeEnum } from "@/const/enums/SheTimePickerTypeEnum.ts";
 
 export function DashboardPage() {
   const service = useDashboardPageService();
@@ -43,16 +44,17 @@ export function DashboardPage() {
         ssLabelTransKey="fwofijds"
         periodLabel="PP Label"
         icon={Clock}
-        // timeFormat={"12"}
+        clockWorksheets={"12"}
         // timePeriod={"AM"}
-        dateFormat={TimeFormatEnum.HH_MM_SS_XM}
-        size={"small"}
+        timeFormat={TimeFormatEnum.HH_MM_SS_XM}
+        // size={"small"}
         view={ComponentViewEnum.CARD}
         autoFocus
-        required
+        // required
         showClearBtn
         hideInputLabels
         // hideSeconds
+        type={SheTimePickerTypeEnum.CLOCK}
         date={time}
         onSetDate={onSetDateHandler}
         onDelay={onDelayHandler}

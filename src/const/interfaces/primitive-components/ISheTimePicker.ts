@@ -6,6 +6,7 @@ import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import { TimeFormatEnum } from "@/const/enums/TimeFormatEnum.ts";
 import { Period } from "@/utils/helpers/time-picker-helper.ts";
+import { SheTimePickerTypeEnum } from "@/const/enums/SheTimePickerTypeEnum.ts";
 
 export interface ISheTimePicker
   extends ISheLabel,
@@ -21,6 +22,7 @@ export interface ISheTimePicker
   icon?: Partial<ISheIcon> | string | React.FC<any>;
   size?: "normal" | "small";
   view?: ComponentViewEnum;
+  type?: SheTimePickerTypeEnum;
   hhLabel?: string;
   hhLabelTransKey?: string;
   mmLabel?: string;
@@ -30,9 +32,9 @@ export interface ISheTimePicker
   periodLabel?: string;
   periodLabelTransKey?: string;
   date?: Date | undefined;
-  dateFormat?: TimeFormatEnum;
+  timeFormat?: TimeFormatEnum;
   timePeriod?: Period;
-  timeFormat?: "12" | "24";
+  clockWorksheets?: "12" | "24";
   disabled?: boolean;
   isLoading?: boolean;
   minWidth?: string;
