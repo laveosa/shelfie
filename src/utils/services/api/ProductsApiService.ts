@@ -163,14 +163,16 @@ export const ProductsApiService = createApi({
         }),
       },
     ),
-    getProductPhotos: apiConfig.createQuery<ProductCounterModel, number>(
-      builder,
-      {
-        query: (id: number) => ({
-          url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/${id}/photos`,
-        }),
-      },
-    ),
+    getProductPhotos: apiConfig.createQuery<any, number>(builder, {
+      query: (id: number) => ({
+        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/${id}/photos`,
+      }),
+    }),
+    getProductPhotosForVariant: apiConfig.createQuery<any, any>(builder, {
+      query: ({ productId, variantId }) => ({
+        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/${productId}/photos/exclud-variant/${variantId}`,
+      }),
+    }),
     putPhotoInNewPosition: apiConfig.createMutation<void, any>(builder, {
       query: ({ productId, photoId, index }) => ({
         url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/${productId}/photo/${photoId}/${index}`,

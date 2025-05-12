@@ -8,10 +8,6 @@ import { GridRowsColorsEnum } from "@/const/enums/GridRowsColorsEnum.ts";
 
 export default function useManageVariantsPageService() {
   const [getVariantsForGrid] = ProductsApiHooks.useGetVariantsForGridMutation();
-  // const [getCountersForProducts] =
-  //   ProductsApiHooks.useLazyGetCountersForProductsQuery();
-  // const [getProductVariants] =
-  //   ProductsApiHooks.useLazyGetProductVariantsQuery();
   const [createVariant] = ProductsApiHooks.useCreateVariantMutation();
   const [getVariantDetails] = ProductsApiHooks.useLazyGetVariantDetailsQuery();
   const [toggleVariantIsActive] =
@@ -53,6 +49,8 @@ export default function useManageVariantsPageService() {
   const [updateTrait] = ProductsApiHooks.useUpdateTraitMutation();
   const [changePositionOfTraitOption] =
     ProductsApiHooks.useChangePositionOfTraitOptionMutation();
+  const [getProductPhotosForVariant] =
+    ProductsApiHooks.useLazyGetProductPhotosForVariantQuery();
   const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
   const [detachVariantPhoto] = ProductsApiHooks.useDetachVariantPhotoMutation();
   const [deletePhoto] = AssetsApiHooks.useDeletePhotoMutation();
@@ -66,29 +64,6 @@ export default function useManageVariantsPageService() {
       return res.data;
     });
   }
-
-  // function getCountersForProductsHandler(id: number) {
-  //   return getCountersForProducts(id).then((res: any) => {
-  //     return res.data;
-  //   });
-  // }
-
-  // function getProductVariantsHandler(id: any) {
-  //   return getProductVariants(id).then((res: any) => {
-  //     const modifiedRes = {
-  //       ...res,
-  //       data: addGridRowColor(res.data, "color", [
-  //         {
-  //           field: "showAlert",
-  //           value: true,
-  //           color: GridRowsColorsEnum.ERROR,
-  //         },
-  //       ]),
-  //     };
-  //
-  //     return modifiedRes.data;
-  //   });
-  // }
 
   function createVariantHandler(id, model) {
     return createVariant({ id, model }).then((res: any) => {
@@ -252,6 +227,15 @@ export default function useManageVariantsPageService() {
     });
   }
 
+  function getProductPhotosForVariantHandler(productId, variantId) {
+    return getProductPhotosForVariant({
+      productId,
+      variantId,
+    }).then((res: any) => {
+      return res.data;
+    });
+  }
+
   function uploadPhotoHandler(model: UploadPhotoModel) {
     return uploadPhoto(model).then((res: any) => {
       return res;
@@ -291,8 +275,6 @@ export default function useManageVariantsPageService() {
 
   return {
     getVariantsForGridHandler,
-    // getCountersForProductsHandler,
-    // getProductVariantsHandler,
     createVariantHandler,
     getVariantDetailsHandler,
     toggleVariantIsActiveHandler,
@@ -315,6 +297,7 @@ export default function useManageVariantsPageService() {
     updateOptionsForTraitHandler,
     deleteOptionsForTraitHandler,
     changePositionOfTraitOptionHandler,
+    getProductPhotosForVariantHandler,
     uploadPhotoHandler,
     detachVariantPhotoHandler,
     deletePhotoHandler,

@@ -178,6 +178,13 @@ export function ManageVariantsPage() {
           dispatch(actions.refreshSelectedVariant(res));
           dispatch(actions.refreshVariantPhotos(res?.photos));
         });
+        dispatch(actions.setIsProductPhotoGridLoading(true));
+        service
+          .getProductPhotosForVariantHandler(productId, payload.variantId)
+          .then((res) => {
+            dispatch(actions.setIsProductPhotoGridLoading(false));
+            dispatch(actions.refreshProductPhotosForVariant(res));
+          });
         break;
       case "updateVariantDetails":
         service.updateVariantDetailsHandler(
@@ -480,14 +487,7 @@ export function ManageVariantsPage() {
         handleCardAction("manageTraitsCard", true);
         break;
       case "openVariantPhotosCard":
-        dispatch(actions.setIsProductPhotoGridLoading(true));
-        productsService
-          .getProductPhotosHandler(Number(productId))
-          .then((res) => {
-            dispatch(actions.setIsProductPhotoGridLoading(false));
-            dispatch(productsActions.refreshProductPhotos(res));
-            handleCardAction("variantPhotosCard", true);
-          });
+        handleCardAction("variantPhotosCard", true);
         break;
       case "closeProductTraitConfigurationCard":
         handleCardAction("productTraitConfigurationCard");
@@ -669,9 +669,8 @@ export function ManageVariantsPage() {
             isVariantPhotoGridLoading={state.isVariantPhotoGridLoading}
             isProductPhotoGridLoading={state.isProductPhotoGridLoading}
             variantPhotos={state.variantPhotos}
-            productPhotos={productsState.productPhotos}
+            productPhotos={state.productPhotosForVariant}
             contextId={state.selectedVariant?.variantId}
-            productCounter={productsState.productCounter}
             onAction={onAction}
           />
         </div>

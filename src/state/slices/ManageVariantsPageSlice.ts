@@ -46,6 +46,7 @@ const initialState: IManageVariantsPageSlice = {
   },
   traitOptions: [],
   variantPhotos: [],
+  productPhotosForVariant: [],
 };
 
 //----------------------------------------------------- LOADERS
@@ -212,6 +213,14 @@ function refreshVariantPhotos(
   state.variantPhotos = action?.payload || state.variantPhotos;
 }
 
+function refreshProductPhotosForVariant(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<ImageModel[]>,
+) {
+  state.productPhotosForVariant =
+    action?.payload || state.productPhotosForVariant;
+}
+
 const ManageVariantsPageSlice = createSlice({
   name: StoreSliceEnum.MANAGE_VARIANTS,
   initialState,
@@ -240,6 +249,7 @@ const ManageVariantsPageSlice = createSlice({
     refreshSizeOptionsGridModel,
     refreshGridRequestModel,
     refreshVariantPhotos,
+    refreshProductPhotosForVariant,
   },
 });
 
