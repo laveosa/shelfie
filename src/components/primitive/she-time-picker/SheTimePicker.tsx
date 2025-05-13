@@ -98,6 +98,46 @@ export default function SheTimePicker({
     }
   }, [delayValue]);
 
+  useEffect(() => {
+    if (!_date || isNaN(_date.getTime())) return;
+
+    if (
+      type === SheTimePickerTypeEnum.CLOCK ||
+      type === SheTimePickerTypeEnum.TIMER
+    ) {
+      const interval = setInterval(() => {
+        const now = new Date();
+
+        if (type === SheTimePickerTypeEnum.CLOCK) {
+          setDate(now);
+          checkDateValidation(now);
+          configurePeriod(now);
+        }
+
+        if (type === SheTimePickerTypeEnum.TIMER) {
+          const now = new Date();
+          const msDiff = now.getTime() - (date?.getTime() || 0);
+
+          const hours = Math.floor(msDiff / (1000 * 60 * 60));
+          const minutes = Math.floor((msDiff % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((msDiff % (1000 * 60)) / 1000);
+
+          const newDate = new Date();
+          newDate.setHours(hours);
+          newDate.setMinutes(minutes);
+          newDate.setSeconds(seconds);
+          newDate.setMilliseconds(0);
+
+          setDate(newDate);
+          checkDateValidation(newDate);
+          configurePeriod(newDate);
+        }
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [type, _date]);
+
   // ==================================================================== EVENT
 
   function onSetDateHandler(value: Date) {
@@ -128,14 +168,16 @@ export default function SheTimePicker({
       onSetDate(timeFormat ? moment(newValue).format(timeFormat) : newValue);
     if (onDelay)
       onDelay(timeFormat ? moment(newValue).format(timeFormat) : newValue);
+    if (onBlur)
+      onBlur(
+        timeFormat && newValue ? moment(newValue).format(timeFormat) : newValue,
+      );
   }
 
   // ==================================================================== PRIVATE
 
   function setDefaultDate(value?: Date) {
-    let defaultDate = new Date();
-    defaultDate.setHours(0, 0, 0, 0);
-    return value ? value : defaultDate;
+    return value ?? new Date(new Date().setHours(0, 0, 0, 0));
   }
 
   function checkDateValidation(value: Date) {
@@ -145,7 +187,8 @@ export default function SheTimePicker({
   }
 
   function configurePeriod(value: Date) {
-    setPeriod(timePeriod ? timePeriod : value?.getHours() > 12 ? "PM" : "AM");
+    if (timePeriod) return setPeriod(timePeriod);
+    setPeriod(value?.getHours() >= 12 ? "PM" : "AM");
   }
 
   // ==================================================================== LAYOUT
@@ -186,7 +229,12 @@ export default function SheTimePicker({
                 label={!hideInputLabels && hhLabel}
                 labelTransKey={hhLabelTransKey}
                 date={_date}
-                picker={clockWorksheets === "12" ? "12hours" : "hours"}
+                picker={
+                  clockWorksheets === "12" &&
+                  type !== SheTimePickerTypeEnum.TIMER
+                    ? "12hours"
+                    : "hours"
+                }
                 period={_period}
                 disabled={disabled}
                 isLoading={isLoading}

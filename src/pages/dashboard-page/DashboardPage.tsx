@@ -45,7 +45,7 @@ export function DashboardPage() {
         periodLabel="PP Label"
         icon={Clock}
         clockWorksheets={"12"}
-        // timePeriod={"AM"}
+        // timePeriod={"PM"}
         timeFormat={TimeFormatEnum.HH_MM_SS_XM}
         // size={"small"}
         view={ComponentViewEnum.CARD}
@@ -54,8 +54,9 @@ export function DashboardPage() {
         showClearBtn
         hideInputLabels
         // hideSeconds
-        type={SheTimePickerTypeEnum.CLOCK}
-        date={time}
+        // type={SheTimePickerTypeEnum.CLOCK}
+        type={SheTimePickerTypeEnum.TIMER}
+        // date={time}
         onSetDate={onSetDateHandler}
         onDelay={onDelayHandler}
         onBlur={onBlurHandler}
