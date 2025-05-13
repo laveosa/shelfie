@@ -32,6 +32,7 @@ export interface ISheTimePicker
   periodLabel?: string;
   periodLabelTransKey?: string;
   date?: Date | undefined;
+  startDate?: Date | undefined;
   timeFormat?: TimeFormatEnum;
   timePeriod?: Period;
   clockWorksheets?: "12" | "24";

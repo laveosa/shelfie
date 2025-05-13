@@ -37,6 +37,7 @@ export default function SheTimePicker({
   periodLabel = size === "small" ? "am/pm" : "Period",
   periodLabelTransKey,
   date,
+  startDate,
   timeFormat,
   timePeriod,
   clockWorksheets = "24",
@@ -62,6 +63,7 @@ export default function SheTimePicker({
   ...props
 }: ISheTimePicker): JSX.Element {
   const [_date, setDate] = useState<Date>(date ?? new Date());
+  const [_startDate, setStartDate] = useState<Date>(startDate ?? null);
   const [_period, setPeriod] = useState<Period>(timePeriod);
   const [_isDateValid, setIsDateValid] = useState<boolean>(null);
 
@@ -99,44 +101,52 @@ export default function SheTimePicker({
   }, [delayValue]);
 
   useEffect(() => {
-    if (!_date || isNaN(_date.getTime())) return;
-
-    if (
-      type === SheTimePickerTypeEnum.CLOCK ||
-      type === SheTimePickerTypeEnum.TIMER
-    ) {
-      const interval = setInterval(() => {
-        const now = new Date();
-
-        if (type === SheTimePickerTypeEnum.CLOCK) {
-          setDate(now);
-          checkDateValidation(now);
-          configurePeriod(now);
-        }
-
-        if (type === SheTimePickerTypeEnum.TIMER) {
-          const now = new Date();
-          const msDiff = now.getTime() - (date?.getTime() || 0);
-
-          const hours = Math.floor(msDiff / (1000 * 60 * 60));
-          const minutes = Math.floor((msDiff % (1000 * 60 * 60)) / (1000 * 60));
-          const seconds = Math.floor((msDiff % (1000 * 60)) / 1000);
-
-          const newDate = new Date();
-          newDate.setHours(hours);
-          newDate.setMinutes(minutes);
-          newDate.setSeconds(seconds);
-          newDate.setMilliseconds(0);
-
-          setDate(newDate);
-          checkDateValidation(newDate);
-          configurePeriod(newDate);
-        }
-      }, 1000);
-
-      return () => clearInterval(interval);
+    if (type === SheTimePickerTypeEnum.TIMER) {
+      if (!_startDate) {
+        setStartDate(new Date());
+      }
+    } else {
+      setStartDate(null);
     }
-  }, [type, _date]);
+  }, [type]);
+
+  useEffect(() => {
+    if (type !== SheTimePickerTypeEnum.CLOCK) return;
+
+    const interval = setInterval(() => {
+      const now = new Date();
+      setDate(now);
+      checkDateValidation(now);
+      configurePeriod(now);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [type]);
+
+  useEffect(() => {
+    if (type !== SheTimePickerTypeEnum.TIMER || !_startDate) return;
+
+    const interval = setInterval(() => {
+      const now = new Date();
+      const msDiff = now.getTime() - _startDate.getTime();
+
+      const hours = Math.floor(msDiff / (1000 * 60 * 60));
+      const minutes = Math.floor((msDiff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((msDiff % (1000 * 60)) / 1000);
+
+      const newDate = new Date();
+      newDate.setHours(hours);
+      newDate.setMinutes(minutes);
+      newDate.setSeconds(seconds);
+      newDate.setMilliseconds(0);
+
+      setDate(newDate);
+      checkDateValidation(newDate);
+      configurePeriod(newDate);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [type, _startDate]);
 
   // ==================================================================== EVENT
 
@@ -177,7 +187,9 @@ export default function SheTimePicker({
   // ==================================================================== PRIVATE
 
   function setDefaultDate(value?: Date) {
-    return value ?? new Date(new Date().setHours(0, 0, 0, 0));
+    return (value ?? type === SheTimePickerTypeEnum.CLOCK)
+      ? new Date()
+      : new Date(new Date().setHours(0, 0, 0, 0));
   }
 
   function checkDateValidation(value: Date) {

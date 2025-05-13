@@ -36,27 +36,29 @@ export function DashboardPage() {
       <SheTimePicker
         label="Time Picker"
         labelTransKey="wf0239jf09wj"
-        hhLabel="HH Label"
-        hhLabelTransKey="wef9jdsf"
-        mmLabel="MM Label"
-        mmLabelTransKey="we0f9jdf"
-        ssLabel="SS Label"
-        ssLabelTransKey="fwofijds"
-        periodLabel="PP Label"
+        // hhLabel="HH Label"
+        // hhLabelTransKey="wef9jdsf"
+        // mmLabel="MM Label"
+        // mmLabelTransKey="we0f9jdf"
+        // ssLabel="SS Label"
+        // ssLabelTransKey="fwofijds"
+        // periodLabel="PP Label"
         icon={Clock}
         clockWorksheets={"12"}
-        // timePeriod={"PM"}
+        // timePeriod={"AM"}
         timeFormat={TimeFormatEnum.HH_MM_SS_XM}
-        // size={"small"}
-        view={ComponentViewEnum.CARD}
+        size={"small"}
+        // view={ComponentViewEnum.CARD}
         autoFocus
         // required
         showClearBtn
-        hideInputLabels
-        // hideSeconds
+        // hideInputLabels
+        hideSeconds
         // type={SheTimePickerTypeEnum.CLOCK}
-        type={SheTimePickerTypeEnum.TIMER}
+        // type={SheTimePickerTypeEnum.TIMER}
         // date={time}
+        startDate={time}
+        // isLoading
         onSetDate={onSetDateHandler}
         onDelay={onDelayHandler}
         onBlur={onBlurHandler}
