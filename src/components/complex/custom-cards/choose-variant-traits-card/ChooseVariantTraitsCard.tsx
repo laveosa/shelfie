@@ -15,6 +15,7 @@ import {
 import { IChooseVariantTraitsCard } from "@/const/interfaces/complex-components/custom-cards/IChooseVariantTraitsCard.ts";
 
 export default function ChooseVariantTraitsCard({
+  isLoading,
   items,
   selectedItems,
   onAction,
@@ -37,6 +38,7 @@ export default function ChooseVariantTraitsCard({
 
   return (
     <SheProductCard
+      loading={isLoading}
       title="Choose variant traits for product"
       view="card"
       showPrimaryButton={true}

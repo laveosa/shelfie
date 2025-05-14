@@ -113,7 +113,7 @@ export default function useManageVariantsPageService() {
 
   function updateVariantTraitOptionsHandler(id, model) {
     return updateVariantTraitOptions({ id, model }).then((res: any) => {
-      return res.data;
+      return res;
     });
   }
 
@@ -189,7 +189,7 @@ export default function useManageVariantsPageService() {
 
   function setProductTraitsHandler(id, model) {
     return setProductTraits({ id, model }).then((res: any) => {
-      return res.data;
+      return res;
     });
   }
 
@@ -213,7 +213,7 @@ export default function useManageVariantsPageService() {
 
   function deleteOptionsForTraitHandler(id) {
     return deleteOptionsForTrait(id).then((res: any) => {
-      return res.data;
+      return res;
     });
   }
 

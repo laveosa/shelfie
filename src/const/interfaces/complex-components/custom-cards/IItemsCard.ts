@@ -1,5 +1,6 @@
 export interface IItemsCard {
   isLoading?: boolean;
+  isItemsLoading?: boolean;
   data?: any[];
   title?: string;
   skeletonQuantity?: number;

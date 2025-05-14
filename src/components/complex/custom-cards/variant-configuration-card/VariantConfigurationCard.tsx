@@ -44,6 +44,7 @@ const debounce = (fn: (...args: any[]) => void, delay: number) => {
 };
 
 export default function VariantConfigurationCard({
+  isLoading,
   isVariantOptionsGridLoading,
   isVariantPhotoGridLoading,
   variant,
@@ -195,6 +196,7 @@ export default function VariantConfigurationCard({
 
   return (
     <SheProductCard
+      loading={isLoading}
       title="Manage Variant"
       view="card"
       showCloseButton
@@ -202,7 +204,10 @@ export default function VariantConfigurationCard({
       className={cs.variantConfigurationCard}
       {...props}
     >
-      <div className={cs.variantConfigurationCardContent}>
+      <div
+        className={cs.variantConfigurationCardContent}
+        // style={isLoading ? { pointerEvents: "none", opacity: 0.5 } : {}}
+      >
         <div className={cs.variantConfigurationForm}>
           <SheForm form={form} onSubmit={onSubmit}>
             <SheForm.Field name="variantName">

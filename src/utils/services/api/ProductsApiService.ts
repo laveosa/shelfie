@@ -170,7 +170,7 @@ export const ProductsApiService = createApi({
     }),
     getProductPhotosForVariant: apiConfig.createQuery<any, any>(builder, {
       query: ({ productId, variantId }) => ({
-        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/${productId}/photos/exclud-variant/${variantId}`,
+        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/${productId}/photos/exclude-variant/${variantId}`,
       }),
     }),
     putPhotoInNewPosition: apiConfig.createMutation<void, any>(builder, {

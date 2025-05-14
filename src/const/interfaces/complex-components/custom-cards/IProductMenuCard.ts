@@ -1,6 +1,7 @@
 import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 
 export interface IProductMenuCard {
+  isLoading?: boolean;
   title?: string;
   productId?: number;
   productCounter?: ProductCounterModel;

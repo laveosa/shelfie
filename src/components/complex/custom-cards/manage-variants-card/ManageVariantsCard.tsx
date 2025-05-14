@@ -17,6 +17,7 @@ import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx
 
 export default function ManageVariantsCard({
   isLoading,
+  isVariantsLoading,
   data,
   traits,
   variants,
@@ -65,6 +66,7 @@ export default function ManageVariantsCard({
 
   return (
     <SheProductCard
+      loading={isLoading}
       title="Manage Variants"
       view="card"
       showPrimaryButton={false}
@@ -136,7 +138,7 @@ export default function ManageVariantsCard({
         </div>
         <div>
           <DndGridDataTable
-            isLoading={isLoading}
+            isLoading={isVariantsLoading}
             className={cs.manageVariantsCardGrid}
             enableDnd={true}
             showHeader={false}

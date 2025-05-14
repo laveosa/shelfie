@@ -9,6 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton.tsx";
 
 export default function ItemsCard({
   isLoading,
+  isItemsLoading,
   data,
   title,
   skeletonQuantity,
@@ -34,6 +35,7 @@ export default function ItemsCard({
   return (
     <div>
       <SheProductCard
+        loading={isLoading}
         title={title}
         width="300px"
         minWidth="300px"
@@ -42,7 +44,7 @@ export default function ItemsCard({
         {...props}
       >
         <div className={cs.productsList}>
-          {isLoading ? (
+          {isItemsLoading ? (
             <div>
               {createSkeletonArray(skeletonQuantity ?? 10).map((_, index) => (
                 <div key={index} className={cs.skeletonItems}>

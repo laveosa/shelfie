@@ -25,6 +25,7 @@ const menuItems = [
 ];
 
 export default function ProductMenuCard({
+  isLoading,
   title,
   productId,
   productCounter,
@@ -63,6 +64,7 @@ export default function ProductMenuCard({
   return (
     <div>
       <SheProductCard
+        loading={isLoading}
         title={title}
         width="300px"
         minWidth="300px"

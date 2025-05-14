@@ -51,6 +51,7 @@ interface VariantTraitOption {
 }
 
 export default function ManageTraitsCard({
+  isLoading,
   traits,
   variant,
   onAction,
@@ -116,6 +117,7 @@ export default function ManageTraitsCard({
 
   return (
     <SheProductCard
+      loading={isLoading}
       title="Manage Traits"
       view="card"
       showPrimaryButton={true}

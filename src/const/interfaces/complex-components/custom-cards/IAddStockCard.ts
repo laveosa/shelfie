@@ -4,6 +4,7 @@ import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 
 export interface IAddStockCard {
+  isLoading?: boolean;
   variant?: VariantModel;
   data?: GridModel;
   taxTypes?: TaxTypeModel[];

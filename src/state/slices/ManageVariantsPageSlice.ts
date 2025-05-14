@@ -11,6 +11,18 @@ import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 
 const initialState: IManageVariantsPageSlice = {
   isLoading: false,
+  isItemsCardLoading: false,
+  isProductMenuCardLoading: false,
+  isManageVariantsCardLoading: false,
+  isVariantConfigurationCardLoading: false,
+  isAddStockCardLoading: false,
+  isDisposeStockCardLoading: false,
+  isStockHistoryCardLoading: false,
+  isAddVariantCardLoading: false,
+  isManageTraitsCardLoading: false,
+  isChooseVariantTraitsCardLoading: false,
+  isProductTraitConfigurationCardLoading: false,
+  isVariantPhotosCardLoading: false,
   isProductsLoading: false,
   isTraitOptionsGridLoading: false,
   isVariantOptionsGridLoading: false,
@@ -56,6 +68,90 @@ function setIsLoading(
   action: PayloadAction<boolean>,
 ) {
   state.isLoading = action?.payload;
+}
+
+function setIsItemsCardLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isItemsCardLoading = action?.payload;
+}
+
+function setIsProductMenuCardLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isProductMenuCardLoading = action?.payload;
+}
+
+function setIsManageVariantsCardLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isManageVariantsCardLoading = action?.payload;
+}
+
+function setIsVariantConfigurationCardLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isVariantConfigurationCardLoading = action?.payload;
+}
+
+function setIsAddStockCardLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isAddStockCardLoading = action?.payload;
+}
+
+function setIsDisposeStockCardLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isDisposeStockCardLoading = action?.payload;
+}
+
+function setIsStockHistoryCardLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isStockHistoryCardLoading = action?.payload;
+}
+
+function setIsAddVariantCardLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isAddVariantCardLoading = action?.payload;
+}
+
+function setIsManageTraitsCardLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isManageTraitsCardLoading = action?.payload;
+}
+
+function setIsChooseVariantTraitsCardLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isChooseVariantTraitsCardLoading = action?.payload;
+}
+
+function setIsProductTraitConfigurationCardLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isProductTraitConfigurationCardLoading = action?.payload;
+}
+
+function setIsVariantPhotosCardLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isVariantPhotosCardLoading = action?.payload;
 }
 
 function setIsProductsLoading(
@@ -226,13 +322,24 @@ const ManageVariantsPageSlice = createSlice({
   initialState,
   reducers: {
     setIsLoading,
+    setIsItemsCardLoading,
+    setIsProductMenuCardLoading,
+    setIsManageVariantsCardLoading,
+    setIsVariantConfigurationCardLoading,
+    setIsAddStockCardLoading,
+    setIsDisposeStockCardLoading,
+    setIsStockHistoryCardLoading,
+    setIsAddVariantCardLoading,
+    setIsManageTraitsCardLoading,
+    setIsChooseVariantTraitsCardLoading,
+    setIsProductTraitConfigurationCardLoading,
+    setIsVariantPhotosCardLoading,
     setIsProductsLoading,
     setIsTraitOptionsGridLoading,
     setIsVariantOptionsGridLoading,
     setIsVariantPhotoGridLoading,
     setIsProductPhotoGridLoading,
     refreshVariants,
-    // refreshProductVariants,
     refreshSelectedVariant,
     refreshTraits,
     refreshTypesOfTraits,

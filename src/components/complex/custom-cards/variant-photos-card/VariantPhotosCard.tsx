@@ -9,6 +9,7 @@ import { VariantPhotosGridColumns } from "@/components/complex/grid/product-phot
 import { OtherProductPhotosGridColumns } from "@/components/complex/grid/other-product-photos-grid/OtherProductPhotosGridColumns.tsx";
 
 export default function VariantPhotosCard({
+  isLoading,
   isVariantPhotoGridLoading,
   isProductPhotoGridLoading,
   variantPhotos,
@@ -63,6 +64,7 @@ export default function VariantPhotosCard({
   return (
     <div className={cs.variantPhotosCard}>
       <SheProductCard
+        loading={isLoading}
         title="Manage Photos"
         view="card"
         onSecondaryButtonClick={() => onAction("closeVariantPhotosCard")}
