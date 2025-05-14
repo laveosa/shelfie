@@ -85,6 +85,13 @@
   .cardContent {
     overflow-y: auto;
     overflow-x: hidden;
+    position: relative;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+      height: 10px;
+      background: white;
+    }
   }
 
   .cardFooter {

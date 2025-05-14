@@ -60,7 +60,6 @@ export default function SheProductCard({
                 icon={PanelLeft}
                 variant="ghost"
                 onClick={onMinimizeCardHandler}
-                disabled={loading}
               />
             )}
             <div
