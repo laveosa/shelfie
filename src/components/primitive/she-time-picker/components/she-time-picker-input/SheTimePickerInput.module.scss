@@ -1,0 +1,12 @@
+$inputCellSize: 43px;
+
+.sheTimePickerInput {
+  width: fit-content;
+
+  input {
+    width: $inputCellSize;
+    min-width: $inputCellSize;
+    max-width: $inputCellSize;
+    text-align: center;
+  }
+}

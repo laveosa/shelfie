@@ -123,8 +123,8 @@ export default function SheInput({
     setTextValue(newValue);
     validateValue(newValue);
 
-    if (onChange) onChange(newValue);
-    if (onBlur) onBlur(newValue);
+    if (onChange) onChange(newValue as any);
+    if (onBlur) onBlur(newValue as any);
     if (onDelay) onDelay(newValue);
   }
 
@@ -239,7 +239,6 @@ export default function SheInput({
               aria-describedby={ariaDescribedbyId}
             />
             <Input
-              {...props}
               value={_textValue ?? ""}
               placeholder={translate(placeholderTransKey, placeholder)}
               type={type}
@@ -248,6 +247,7 @@ export default function SheInput({
               disabled={disabled || isLoading}
               onChange={onChangeHandler}
               onBlur={onBlurHandler}
+              {...props}
             />
           </SheSkeleton>
           <SheClearButton
