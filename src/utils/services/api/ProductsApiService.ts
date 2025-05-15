@@ -381,6 +381,12 @@ export const ProductsApiService = createApi({
         body: JSON.stringify(model),
       }),
     }),
+    deleteTrait: apiConfig.createMutation<void, number>(builder, {
+      query: (id: number) => ({
+        url: `${ApiUrlEnum.TRAITS}/${id}`,
+        method: "DELETE",
+      }),
+    }),
     getOptionsForTrait: apiConfig.createQuery<any, number>(builder, {
       query: (id: number) => ({
         url: `${ApiUrlEnum.TRAITS}/${id}${ApiUrlEnum.OPTIONS}`,

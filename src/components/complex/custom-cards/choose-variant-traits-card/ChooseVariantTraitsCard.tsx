@@ -109,6 +109,13 @@ export default function ChooseVariantTraitsCard({
                         >
                           <span className="she-text">Manage</span>
                         </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => {
+                            onAction?.("deleteTrait", item.traitId);
+                          }}
+                        >
+                          <span className="she-text">Delete</span>
+                        </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </div>
