@@ -13,7 +13,7 @@ import { ProductBasicDataPageSliceActions as actions } from "@/state/slices/Prod
 import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 
-export default function CreateProductBrandCard({ ...props }) {
+export default function CreateProductBrandCard({ isLoading, ...props }) {
   const service = useProductBasicDataPageService();
   const state = useAppSelector<IProductBasicDataPageSlice>(
     StoreSliceEnum.PRODUCT_BASIC_DATA,
@@ -81,10 +81,10 @@ export default function CreateProductBrandCard({ ...props }) {
   return (
     <div>
       <SheProductCard
+        loading={isLoading}
         title="Create Product Brand"
         view="card"
-        showSecondaryButton={true}
-        secondaryButtonTitle="Close"
+        showCloseButton
         className={cs.createProductBrandCard}
         {...props}
       >

@@ -1,3 +1,4 @@
+import React from "react";
 import { ColumnDef, Row } from "@tanstack/react-table";
 
 import { Switch } from "@/components/ui/switch.tsx";
@@ -17,39 +18,6 @@ interface IProductPhotoGridColumns {
     row?: Row<IProductPhotoGridColumns>,
   ) => void;
 }
-
-// function onAction(
-//   actionType: string,
-//   rowId?: string,
-//   setLoadingRow?: (rowId: string, loading: boolean) => void,
-//   row?: any,
-// ) {
-//   setLoadingRow(rowId, true);
-//   switch (actionType) {
-//     case "image":
-//       console.log(`Image row ${rowId}`);
-//       break;
-//     case "manage":
-//       console.log(`Managing row ${rowId}`);
-//       break;
-//     case "active":
-//       console.log(`Active row ${rowId}`);
-//       break;
-//     case "edit":
-//       console.log(`Editing row ${rowId}`);
-//       break;
-//     case "copy":
-//       console.log(`Copying row ${rowId}`);
-//       break;
-//     case "favorite":
-//       console.log(`Favoriting row ${rowId}`);
-//       break;
-//     case "delete":
-//       console.log(`Deleting:`, row.original);
-//       break;
-//   }
-//   setLoadingRow(rowId, false);
-// }
 
 export const ProductPhotosGridColumns = (
   onAction: (

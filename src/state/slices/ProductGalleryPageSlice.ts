@@ -4,11 +4,12 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IProductGalleryPageSlice } from "@/const/interfaces/store-slices/IProductGalleryPageSlice.ts";
 import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
-import { IManageVariantsPageSlice } from "@/const/interfaces/store-slices/IManageVariantsPageSlice.ts";
-import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
 
 const initialState: IProductGalleryPageSlice = {
-  loading: false,
+  isLoading: false,
+  isProductPhotosCardLoading: false,
+  isConnectImageCardLoading: false,
+  isVariantsGridLoading: false,
   products: [],
   product: {},
   activeCards: [],
@@ -16,14 +17,44 @@ const initialState: IProductGalleryPageSlice = {
   productCounter: null,
   photos: [],
   productVariants: [],
+  selectedPhoto: null,
+  gridRequestModel: {
+    currentPage: 1,
+    pageSize: 10,
+  },
 };
 
-function setLoading(
+//------------------------------------- LOADERS/
+
+function setIsLoading(
   state: IProductGalleryPageSlice,
   action: PayloadAction<boolean>,
 ) {
-  state.loading = action?.payload;
+  state.isLoading = action?.payload;
 }
+
+function setIsProductPhotosCardLoading(
+  state: IProductGalleryPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isProductPhotosCardLoading = action?.payload;
+}
+
+function setIsConnectImageCardLoading(
+  state: IProductGalleryPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isConnectImageCardLoading = action?.payload;
+}
+
+function setIsVariantsGridLoading(
+  state: IProductGalleryPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isVariantsGridLoading = action?.payload;
+}
+
+//------------------------------------- API/
 
 function refreshProducts(
   state: IProductGalleryPageSlice,
@@ -40,7 +71,7 @@ function refreshProduct(
 }
 
 function refreshActiveCards(
-  state: IProductBasicDataPageSlice,
+  state: IProductGalleryPageSlice,
   action: PayloadAction<any[]>,
 ) {
   state.activeCards = action?.payload || state.activeCards;
@@ -61,23 +92,34 @@ function refreshProductPhotos(
 }
 
 function refreshProductVariants(
-  state: IManageVariantsPageSlice,
+  state: IProductGalleryPageSlice,
   action: PayloadAction<any[]>,
 ) {
   state.productVariants = action?.payload || state.productVariants;
+}
+
+function refreshSelectedPhoto(
+  state: IProductGalleryPageSlice,
+  action: PayloadAction<ImageModel>,
+) {
+  state.selectedPhoto = action?.payload || state.selectedPhoto;
 }
 
 const ProductGalleryPageSlice = createSlice({
   name: StoreSliceEnum.PRODUCT_GALLERY,
   initialState,
   reducers: {
-    setLoading,
+    setIsLoading,
+    setIsProductPhotosCardLoading,
+    setIsConnectImageCardLoading,
+    setIsVariantsGridLoading,
     refreshProducts,
     refreshProduct,
     refreshActiveCards,
     refreshProductCounter,
     refreshProductPhotos,
     refreshProductVariants,
+    refreshSelectedPhoto,
   },
 });
 

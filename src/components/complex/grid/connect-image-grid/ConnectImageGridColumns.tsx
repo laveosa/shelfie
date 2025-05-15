@@ -11,7 +11,7 @@ export const ConnectImageGridColumns = (
   ) => void,
 ): ColumnDef<any>[] => [
   {
-    accessorKey: "isActive",
+    accessorKey: "isConnected",
     header: "Active",
     cell: ({ row, table }) => {
       const meta = table.options.meta as {
@@ -22,9 +22,9 @@ export const ConnectImageGridColumns = (
       return (
         <Switch
           disabled={meta?.isRowLoading(row.id)}
-          checked={row.getValue("isActive")}
+          checked={row.getValue("isConnected")}
           onCheckedChange={() =>
-            onAction("toggleActive", row.id, meta?.setLoadingRow)
+            onAction("switchAction", row.id, meta?.setLoadingRow, row)
           }
         />
       );

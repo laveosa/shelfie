@@ -3,6 +3,8 @@ import { ComponentPropsWithRef } from "react";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { IUndefinedProperties } from "@/const/interfaces/IUndefinedProperties.ts";
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
+import { GridRowsColorsEnum } from "@/const/enums/GridRowsColorsEnum.ts";
+import { GridRowColorCondition } from "@/const/interfaces/GridRowColorCondition.ts";
 
 export function getCurrentSectionUrl(url: string): NavUrlEnum {
   const chang = url.split("/")[1].toUpperCase();
@@ -99,4 +101,35 @@ export function getInitials(name: string) {
   const names = name.trim().split(" ");
   const initials = names.map((n) => n.charAt(0).toUpperCase()).slice(0, 2);
   return initials.join("");
+}
+
+export function addGridRowColor(
+  items: any[],
+  identifier: string,
+  conditions: GridRowColorCondition[],
+) {
+  return items.map((item) => ({
+    ...item,
+    [identifier]:
+      conditions.find((condition) => item[condition.field] === condition.value)
+        ?.color || GridRowsColorsEnum.DEFAULT,
+  }));
+}
+
+export function setSelectedGridItem<T extends Record<string, any>>(
+  itemId: string,
+  itemsList: T[],
+  idKey: keyof T,
+): T[] {
+  return itemsList.map((item) => ({
+    ...item,
+    isGridItemSelected: item[idKey] === itemId,
+  }));
+}
+
+export function clearSelectedGridItems(itemsList: any[]) {
+  return itemsList.map((item) => ({
+    ...item,
+    isGridItemSelected: false,
+  }));
 }

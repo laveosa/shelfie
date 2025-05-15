@@ -11,7 +11,7 @@ export interface ProductModel {
   category?: CategoryModel;
   categoryId?: number;
   brand?: BrandModel;
-  barcode?: number;
+  barcode?: any;
   status?: string;
   salePrice?: number;
   variantsCount?: number;

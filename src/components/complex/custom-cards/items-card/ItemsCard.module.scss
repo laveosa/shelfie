@@ -33,7 +33,7 @@
       background: vars.$colorMedium;
     }
 
-    .chatAvatarImage {
+    .productItemImage {
       width: 30px;
       height: 30px;
       border-radius: vars.$brdR_03;
@@ -45,5 +45,15 @@
       text-overflow: ellipsis;
       max-width: 100%;
     }
+  }
+}
+
+//------------------------------------------------------LOADING
+
+.productsCard {
+  .skeletonItems {
+    display: flex;
+    gap: 20px;
+    padding-top: 10px;
   }
 }

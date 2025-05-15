@@ -1,5 +1,6 @@
 import { RouteObject } from "react-router-dom";
 import { ManageVariantsPage } from "@/pages/products-section/manage-variants-page/ManageVariantsPage.tsx";
+import { SizeChartPage } from "@/pages/products-section/size-chart-page/SizeChartPage.tsx";
 
 export const ProductsSectionRouter: RouteObject[] = [
   {
@@ -43,6 +44,39 @@ export const ProductsSectionRouter: RouteObject[] = [
       );
       return {
         element: <ManageVariantsPage />,
+      };
+    },
+  },
+  {
+    path: "attributes/:productId?",
+    lazy: async () => {
+      const { AttributesPage } = await import(
+        "@/pages/products-section/attributes-page/AttributesPage.tsx"
+      );
+      return {
+        element: <AttributesPage />,
+      };
+    },
+  },
+  {
+    path: "size-chart/:productId?",
+    lazy: async () => {
+      const { SizeChartPage } = await import(
+        "@/pages/products-section/size-chart-page/SizeChartPage.tsx"
+      );
+      return {
+        element: <SizeChartPage />,
+      };
+    },
+  },
+  {
+    path: "purchase/:productId?",
+    lazy: async () => {
+      const { PurchasePage } = await import(
+        "@/pages/products-section/purchase-page/PurchasePage.tsx"
+      );
+      return {
+        element: <PurchasePage />,
       };
     },
   },

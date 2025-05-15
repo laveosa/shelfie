@@ -32,9 +32,12 @@ import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
 import { IGridContext } from "@/const/interfaces/context/IGridContext.ts";
 import { GridContext } from "@/state/context/grid-context";
 import cs from "./DndGrid.module.scss";
+import { Skeleton } from "@/components/ui/skeleton.tsx";
 
 interface DataWithId {
   id: number | string;
+  color?: string;
+  isGridItemSelected?: boolean;
 }
 
 interface DataTableProps<TData extends DataWithId, TValue>
@@ -42,6 +45,7 @@ interface DataTableProps<TData extends DataWithId, TValue>
     IGridContext,
     PropsWithChildren {
   className?: any;
+  isLoading?: boolean;
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   sortingItems?: GridSortingModel[];
@@ -49,10 +53,16 @@ interface DataTableProps<TData extends DataWithId, TValue>
   showHeader?: boolean;
   showColumnsHeader?: boolean;
   enableDnd?: boolean;
+  customMessage?: string;
+  skeletonQuantity?: number;
   onAction?: (data) => void;
   onApplyColumns?: (data) => void;
   onDefaultColumns?: () => void;
-  onNewItemPosition?: (newIndex: number, activeItem: TData) => void;
+  onNewItemPosition?: (
+    newIndex: number,
+    activeItem: TData,
+    oldIndex?: number,
+  ) => void;
 }
 
 const DraggableRow = ({ row, loadingRows, isDragDisabled = false }) => {
@@ -63,12 +73,11 @@ const DraggableRow = ({ row, loadingRows, isDragDisabled = false }) => {
     });
 
   const isLoading = loadingRows.has(row.id);
-
-  const isAlert = row.original.showAlert;
+  const isSelected = row.original.isGridItemSelected;
 
   return (
     <TableRow
-      className={isDragging ? cs.tableRowDragged : cs.tableRow}
+      className={`${isDragging ? cs.tableRowDragged : cs.tableRow} ${isSelected ? cs.isSelected : ""}`}
       ref={setNodeRef}
       {...attributes}
       key={row.id}
@@ -76,15 +85,14 @@ const DraggableRow = ({ row, loadingRows, isDragDisabled = false }) => {
       style={{
         opacity: isLoading ? 0.7 : 1,
         transform: CSS.Transform.toString(transform),
-        background: isLoading ? "#EBF9EF" : isAlert ? "#F8F3FF" : "white",
-        transition: "background-color 0.3s ease",
+        background: isSelected ? "#F8F3FF" : row.original.color || "white",
       }}
     >
       <TableCell
-        className={isDragging ? cs.dndIconCellDragged : cs.dndIconCell}
+        className={`${isDragging ? cs.dndIconCellDragged : cs.dndIconCell} ${isSelected ? cs.isSelected : ""}`}
         style={{
           cursor: isDragDisabled || isLoading ? "default" : "grab",
-          background: isDragging ? "#F8F3FF" : isAlert ? "#F8F3FF" : "white",
+          background: isSelected ? "#F8F3FF" : "inherit",
         }}
         {...listeners}
       >
@@ -94,12 +102,12 @@ const DraggableRow = ({ row, loadingRows, isDragDisabled = false }) => {
       </TableCell>
       {row.getVisibleCells().map((cell) => (
         <TableCell
-          className={isDragging ? cs.tableCellDragged : cs.tableCell}
+          className={`${isDragging ? cs.tableCellDragged : cs.tableCell} ${isSelected ? cs.isSelected : ""}`}
           key={cell.id}
           onClick={(e) => e.stopPropagation()}
           style={{
             cursor: "default",
-            background: isAlert ? "#F8F3FF" : undefined,
+            background: isSelected ? "#F8F3FF" : "inherit",
           }}
         >
           {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -116,6 +124,7 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
   columnsPreferences,
   gridModel,
   sortingItems,
+  isLoading,
   showHeader = true,
   showColumnsHeader = true,
   showPagination = true,
@@ -123,6 +132,8 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
   showColumnsViewOptions = true,
   showSearch = true,
   children,
+  customMessage,
+  skeletonQuantity,
   onGridRequestChange,
   onApplyColumns,
   onDefaultColumns,
@@ -132,6 +143,10 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
   const [items, setItems] = useState<TData[]>([]);
   const [loadingRows, setLoadingRows] = useState<Set<string>>(new Set());
   const [isDragging, setIsDragging] = useState(false);
+
+  function createSkeletonArray(quantity: number): object[] {
+    return Array.from({ length: quantity }, () => ({}));
+  }
 
   useEffect(() => {
     function prepareItemsForGrid(data: any): TData[] {
@@ -167,7 +182,7 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
       const updatedItems = arrayMove(items, oldIndex, newIndex);
       setItems(updatedItems);
       if (onNewItemPosition) {
-        onNewItemPosition(newIndex, activeItem as TData);
+        onNewItemPosition(newIndex, activeItem as TData, oldIndex);
       }
     }
   }
@@ -225,14 +240,28 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
       <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
         {showHeader && <GridHeader table={table}>{children}</GridHeader>}
         <div className={`${className} rounded-md border`}>
-          <Table className={cs.table} style={{ overflow: "hidden" }}>
+          <Table
+            className={
+              isLoading ? `${cs.table} ${cs.tableLoading}` : `${cs.table}`
+            }
+          >
             {showColumnsHeader && (
               <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id}>
-                    {enableDnd && <TableHead></TableHead>}
+                  <TableRow
+                    className={isLoading ? `${cs.tableRowLoading}` : ""}
+                    key={headerGroup.id}
+                  >
+                    {enableDnd && (
+                      <TableHead
+                        className={isLoading ? `${cs.tableHeadLoading}` : ""}
+                      ></TableHead>
+                    )}
                     {headerGroup.headers.map((header) => (
-                      <TableHead key={header.id}>
+                      <TableHead
+                        className={isLoading ? `${cs.tableHeadLoading}` : ""}
+                        key={header.id}
+                      >
                         {header.isPlaceholder
                           ? null
                           : flexRender(
@@ -245,65 +274,91 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
                 ))}
               </TableHeader>
             )}
-            <SortableContext
-              items={items.map((item) => item.id)}
-              strategy={verticalListSortingStrategy}
-            >
-              <TableBody
-                style={{
-                  background: enableDnd ? "#f4f4f5" : "white",
-                }}
-              >
-                {table.getRowModel().rows?.length ? (
-                  table.getRowModel().rows.map((row) =>
-                    enableDnd ? (
-                      <DraggableRow
-                        key={row.id}
-                        row={row}
-                        loadingRows={loadingRows}
-                        isDragDisabled={loadingRows.has(row.id) || isDragging}
-                      />
-                    ) : (
-                      <TableRow
-                        key={row.id}
-                        className={
-                          loadingRows.has(row.id)
-                            ? "bg-green-50 opacity-70"
-                            : ""
-                        }
-                        style={{
-                          pointerEvents: loadingRows.has(row.id)
-                            ? "none"
-                            : "auto",
-                          background: loadingRows.has(row.id)
-                            ? "#EBF9EF"
-                            : "white",
-                          transition: "background-color 0.3s ease",
-                        }}
-                      >
-                        {row.getVisibleCells().map((cell) => (
-                          <TableCell key={cell.id} className={cs.tableCell}>
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext(),
-                            )}
-                          </TableCell>
-                        ))}
-                      </TableRow>
-                    ),
-                  )
-                ) : (
-                  <TableRow>
-                    <TableCell
-                      colSpan={columns.length + (enableDnd ? 1 : 0)}
-                      className="h-24 text-center"
-                    >
-                      NO DATA TO DISPLAY
+            {isLoading ? (
+              <TableBody>
+                {createSkeletonArray(skeletonQuantity ?? 5).map((_, index) => (
+                  <TableRow key={index}>
+                    <TableCell>
+                      <Skeleton className="h-12 w-12 rounded-full" />
+                    </TableCell>
+                    <TableCell>
+                      <div className="space-y-2">
+                        <Skeleton className="h-4 w-[250px]" />
+                        <Skeleton className="h-4 w-[200px]" />
+                      </div>
                     </TableCell>
                   </TableRow>
-                )}
+                ))}
               </TableBody>
-            </SortableContext>
+            ) : (
+              <SortableContext
+                items={items.map((item) => item.id)}
+                strategy={verticalListSortingStrategy}
+              >
+                <TableBody
+                  className={cs.tableBody}
+                  style={{
+                    background: enableDnd ? "#f4f4f5" : "white",
+                  }}
+                >
+                  {table.getRowModel().rows?.length ? (
+                    table.getRowModel().rows.map((row) =>
+                      enableDnd ? (
+                        <DraggableRow
+                          key={row.id}
+                          row={row}
+                          loadingRows={loadingRows}
+                          isDragDisabled={loadingRows.has(row.id) || isDragging}
+                        />
+                      ) : (
+                        <TableRow
+                          key={row.id}
+                          className={`${
+                            loadingRows.has(row.id)
+                              ? "bg-green-50 opacity-70"
+                              : ""
+                          } ${row.original.isGridItemSelected ? cs.isSelected : ""}`}
+                          style={{
+                            pointerEvents: loadingRows.has(row.id)
+                              ? "none"
+                              : "auto",
+                            background: row.original.isGridItemSelected
+                              ? "#F8F3FF"
+                              : row.original.color,
+                          }}
+                        >
+                          {row.getVisibleCells().map((cell) => (
+                            <TableCell
+                              key={cell.id}
+                              className={`${cs.tableCell} ${row.original.isGridItemSelected ? cs.isSelected : ""}`}
+                              style={{
+                                background: row.original.isGridItemSelected
+                                  ? "#F8F3FF"
+                                  : "inherit",
+                              }}
+                            >
+                              {flexRender(
+                                cell.column.columnDef.cell,
+                                cell.getContext(),
+                              )}
+                            </TableCell>
+                          ))}
+                        </TableRow>
+                      ),
+                    )
+                  ) : (
+                    <TableRow>
+                      <TableCell
+                        colSpan={columns.length + (enableDnd ? 1 : 0)}
+                        className="h-24 text-center"
+                      >
+                        {customMessage || "NO DATA TO DISPLAY"}
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </SortableContext>
+            )}
           </Table>
         </div>
       </DndContext>

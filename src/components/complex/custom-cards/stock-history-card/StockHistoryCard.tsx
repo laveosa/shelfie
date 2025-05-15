@@ -8,6 +8,7 @@ import { IVariantHistoryCard } from "@/const/interfaces/complex-components/custo
 import { GridModel } from "@/const/models/GridModel.ts";
 
 export default function StockHistoryCard({
+  isLoading,
   variant,
   data,
   getVariantHistory,
@@ -29,10 +30,10 @@ export default function StockHistoryCard({
 
   return (
     <SheProductCard
+      loading={isLoading}
       title={`${variant?.variantName} Stock History`}
       view="card"
       showCloseButton
-      width="350px"
       className={cs.stockHistoryCard}
       onSecondaryButtonClick={onSecondaryButtonClick}
       {...props}

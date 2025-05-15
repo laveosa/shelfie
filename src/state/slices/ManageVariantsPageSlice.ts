@@ -2,21 +2,33 @@ import { IManageVariantsPageSlice } from "@/const/interfaces/store-slices/IManag
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { VariantModel } from "@/const/models/VariantModel.ts";
-import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 import { TypeOfTraitModel } from "@/const/models/TypeOfTraitModel.ts";
 import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
-import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
-import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
-import { ProductModel } from "@/const/models/ProductModel.ts";
+import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 
 const initialState: IManageVariantsPageSlice = {
-  loading: false,
-  products: [],
+  isLoading: false,
+  // isItemsCardLoading: false,
+  // isProductMenuCardLoading: false,
+  isManageVariantsCardLoading: false,
+  isVariantConfigurationCardLoading: false,
+  isAddStockCardLoading: false,
+  isDisposeStockCardLoading: false,
+  isStockHistoryCardLoading: false,
+  isAddVariantCardLoading: false,
+  isManageTraitsCardLoading: false,
+  isChooseVariantTraitsCardLoading: false,
+  isProductTraitConfigurationCardLoading: false,
+  isVariantPhotosCardLoading: false,
+  isProductsLoading: false,
+  isTraitOptionsGridLoading: false,
+  isVariantOptionsGridLoading: false,
+  isVariantPhotoGridLoading: false,
+  isProductPhotoGridLoading: false,
   variants: [],
-  productVariants: [],
   selectedVariant: null,
   productCounter: null,
   activeCards: [],
@@ -45,38 +57,145 @@ const initialState: IManageVariantsPageSlice = {
     pageSize: 10,
   },
   traitOptions: [],
-  productPhotos: [],
   variantPhotos: [],
-  taxesList: [],
-  currenciesList: [],
+  productPhotosForVariant: [],
 };
 
-function setLoading(
+//----------------------------------------------------- LOADERS
+
+function setIsLoading(
   state: IManageVariantsPageSlice,
   action: PayloadAction<boolean>,
 ) {
-  state.loading = action?.payload;
+  state.isLoading = action?.payload;
 }
 
-function refreshProducts(
+// function setIsItemsCardLoading(
+//   state: IManageVariantsPageSlice,
+//   action: PayloadAction<boolean>,
+// ) {
+//   state.isItemsCardLoading = action?.payload;
+// }
+
+// function setIsProductMenuCardLoading(
+//   state: IManageVariantsPageSlice,
+//   action: PayloadAction<boolean>,
+// ) {
+//   state.isProductMenuCardLoading = action?.payload;
+// }
+//
+function setIsManageVariantsCardLoading(
   state: IManageVariantsPageSlice,
-  action: PayloadAction<ProductModel[]>,
+  action: PayloadAction<boolean>,
 ) {
-  state.products = action?.payload || state.products;
+  state.isManageVariantsCardLoading = action?.payload;
 }
+
+function setIsVariantConfigurationCardLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isVariantConfigurationCardLoading = action?.payload;
+}
+
+function setIsAddStockCardLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isAddStockCardLoading = action?.payload;
+}
+
+function setIsDisposeStockCardLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isDisposeStockCardLoading = action?.payload;
+}
+
+function setIsStockHistoryCardLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isStockHistoryCardLoading = action?.payload;
+}
+
+function setIsAddVariantCardLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isAddVariantCardLoading = action?.payload;
+}
+
+function setIsManageTraitsCardLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isManageTraitsCardLoading = action?.payload;
+}
+
+function setIsChooseVariantTraitsCardLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isChooseVariantTraitsCardLoading = action?.payload;
+}
+
+function setIsProductTraitConfigurationCardLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isProductTraitConfigurationCardLoading = action?.payload;
+}
+
+function setIsVariantPhotosCardLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isVariantPhotosCardLoading = action?.payload;
+}
+
+function setIsProductsLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isProductsLoading = action?.payload;
+}
+
+function setIsTraitOptionsGridLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isTraitOptionsGridLoading = action?.payload;
+}
+
+function setIsVariantOptionsGridLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isVariantOptionsGridLoading = action?.payload;
+}
+
+function setIsVariantPhotoGridLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isVariantPhotoGridLoading = action?.payload;
+}
+
+function setIsProductPhotoGridLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isProductPhotoGridLoading = action?.payload;
+}
+
+//----------------------------------------------------- API
 
 function refreshVariants(
   state: IManageVariantsPageSlice,
   action: PayloadAction<VariantModel[]>,
 ) {
   state.variants = action?.payload || state.variants;
-}
-
-function refreshProductVariants(
-  state: IManageVariantsPageSlice,
-  action: PayloadAction<any[]>,
-) {
-  state.productVariants = action?.payload || state.productVariants;
 }
 
 function refreshSelectedVariant(
@@ -151,6 +270,10 @@ function refreshSelectedTrait(
   state.selectedTrait = action?.payload || state.selectedTrait;
 }
 
+function resetSelectedTrait(state: IManageVariantsPageSlice) {
+  state.selectedTrait = null;
+}
+
 function refreshTraitOption(
   state: IManageVariantsPageSlice,
   action: PayloadAction<any>,
@@ -179,13 +302,6 @@ function refreshGridRequestModel(
   state.gridRequestModel = action?.payload || state.gridRequestModel;
 }
 
-function refreshProductPhotos(
-  state: IManageVariantsPageSlice,
-  action: PayloadAction<ImageModel[]>,
-) {
-  state.productPhotos = action?.payload || state.productPhotos;
-}
-
 function refreshVariantPhotos(
   state: IManageVariantsPageSlice,
   action: PayloadAction<ImageModel[]>,
@@ -193,28 +309,37 @@ function refreshVariantPhotos(
   state.variantPhotos = action?.payload || state.variantPhotos;
 }
 
-function refreshTaxesList(
+function refreshProductPhotosForVariant(
   state: IManageVariantsPageSlice,
-  action: PayloadAction<TaxTypeModel[]>,
+  action: PayloadAction<ImageModel[]>,
 ) {
-  state.taxesList = action?.payload || state.taxesList;
-}
-
-function refreshCurrenciesList(
-  state: IManageVariantsPageSlice,
-  action: PayloadAction<CurrencyModel[]>,
-) {
-  state.currenciesList = action?.payload || state.currenciesList;
+  state.productPhotosForVariant =
+    action?.payload || state.productPhotosForVariant;
 }
 
 const ManageVariantsPageSlice = createSlice({
   name: StoreSliceEnum.MANAGE_VARIANTS,
   initialState,
   reducers: {
-    refreshProducts,
-    setLoading,
+    setIsLoading,
+    // setIsItemsCardLoading,
+    // setIsProductMenuCardLoading,
+    setIsManageVariantsCardLoading,
+    setIsVariantConfigurationCardLoading,
+    setIsAddStockCardLoading,
+    setIsDisposeStockCardLoading,
+    setIsStockHistoryCardLoading,
+    setIsAddVariantCardLoading,
+    setIsManageTraitsCardLoading,
+    setIsChooseVariantTraitsCardLoading,
+    setIsProductTraitConfigurationCardLoading,
+    setIsVariantPhotosCardLoading,
+    setIsProductsLoading,
+    setIsTraitOptionsGridLoading,
+    setIsVariantOptionsGridLoading,
+    setIsVariantPhotoGridLoading,
+    setIsProductPhotoGridLoading,
     refreshVariants,
-    refreshProductVariants,
     refreshSelectedVariant,
     refreshTraits,
     refreshTypesOfTraits,
@@ -224,15 +349,14 @@ const ManageVariantsPageSlice = createSlice({
     refreshActiveCards,
     refreshSelectedTraitsIds,
     refreshSelectedTrait,
+    resetSelectedTrait,
     refreshContextId,
     refreshTraitOption,
     refreshColorOptionsGridModel,
     refreshSizeOptionsGridModel,
     refreshGridRequestModel,
-    refreshProductPhotos,
     refreshVariantPhotos,
-    refreshTaxesList,
-    refreshCurrenciesList,
+    refreshProductPhotosForVariant,
   },
 });
 

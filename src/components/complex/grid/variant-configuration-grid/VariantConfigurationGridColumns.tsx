@@ -42,4 +42,16 @@ export const VariantConfigurationGridColumns: ColumnDef<any>[] = [
       return <div className="she-text">{row.original.traitName}</div>;
     },
   },
+  {
+    id: "isRemoved",
+    header: "",
+    cell: ({ row }) => {
+      return (
+        <div className="she-subtext" style={{ textAlign: "center" }}>
+          {row.original.isRemoved === true ? "Trait removed" : ""}
+          {row.original.isMissing === true ? "Missing" : ""}
+        </div>
+      );
+    },
+  },
 ];

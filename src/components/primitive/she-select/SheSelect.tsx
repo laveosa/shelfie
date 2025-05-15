@@ -21,6 +21,7 @@ export default function SheSelect({
   id,
   className = "",
   style,
+  triggerRef,
   label,
   labelTransKey,
   placeholder,
@@ -39,8 +40,11 @@ export default function SheSelect({
   isLoading,
   isOpen,
   showSelectIcon,
+  selectedColor,
+  onTriggerKeyDown,
   onOpenChange,
   onSelect,
+  ...props
 }: ISheSelect): JSX.Element {
   const { translate } = useAppTranslation();
   const [_selected, setSelected] = useState<ISheSelectItem>(null);
@@ -112,7 +116,9 @@ export default function SheSelect({
       const selected = _getSelectedItemById(id);
 
       if (onSelect) {
-        onSelect(selected ? selected.value : null);
+        setTimeout(() => {
+          onSelect(selected ? selected.value : null);
+        });
       }
 
       return selected;
@@ -203,8 +209,9 @@ export default function SheSelect({
               disabled={disabled || _loading || !items || items.length === 0}
               onOpenChange={onOpenChangeHandler}
               onValueChange={onValueChangeHandler}
+              {...props}
             >
-              <SelectTrigger>
+              <SelectTrigger ref={triggerRef} onKeyDown={onTriggerKeyDown}>
                 <SheIcon
                   icon={icon}
                   className={cs.iconBlock}
@@ -223,13 +230,13 @@ export default function SheSelect({
                   {_items?.map((item: ISheSelectItem) => (
                     <SheSelectItem
                       key={item.id}
-                      {...item}
                       className={cs.sheSelectItemCover}
                       isLoading={_loading}
                       showSelectIcon={showSelectIcon}
                       isItemsWithIcons={_isItemsWithIcons}
                       isItemsWithColors={_isItemsWithColors}
                       ariaDescribedbyId={ariaDescribedbyId}
+                      {...item}
                     />
                   ))}
                 </SelectContent>

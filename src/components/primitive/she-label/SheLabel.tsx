@@ -14,6 +14,7 @@ export function SheLabel({
   tooltip,
   tooltipTransKey,
   ariaDescribedbyId,
+  ...props
 }: ISheLabel): JSX.Element {
   // ==================================================================== EVENT
 
@@ -42,8 +43,9 @@ export function SheLabel({
     <label
       className={`${cs.sheLabel} ${className} she-text`}
       style={style}
-      htmlFor={ariaDescribedbyId}
+      htmlFor={ariaDescribedbyId || props.htmlFor}
       aria-describedby={ariaDescribedbyId}
+      {...props}
     >
       {label && <Trans i18nKey={labelTransKey}>{label}</Trans>}
       {normalizedTooltip && (

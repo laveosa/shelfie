@@ -9,6 +9,9 @@ import { VariantPhotosGridColumns } from "@/components/complex/grid/product-phot
 import { OtherProductPhotosGridColumns } from "@/components/complex/grid/other-product-photos-grid/OtherProductPhotosGridColumns.tsx";
 
 export default function VariantPhotosCard({
+  isLoading,
+  isVariantPhotoGridLoading,
+  isProductPhotoGridLoading,
   variantPhotos,
   productPhotos,
   contextId,
@@ -29,8 +32,8 @@ export default function VariantPhotosCard({
       case "delete":
         onAction("delete", payload);
         break;
-      case "disconnect":
-        onAction("disconnectImage", payload);
+      case "detachFromVariant":
+        onAction("detachPhotoFromVariant", payload);
         break;
       case "addToVariant":
         onAction("addPhotoToVariant", payload);
@@ -43,20 +46,27 @@ export default function VariantPhotosCard({
   }
 
   function onGridAction(
-    _actionType: string,
+    actionType: string,
     _rowId?: string,
     _setLoadingRow?: (rowId: string, loading: boolean) => void,
     row?: any,
   ) {
-    handleAction("addToVariant", row.original);
+    switch (actionType) {
+      case "detachFromVariant":
+        handleAction("detachFromVariant", row.original);
+        break;
+      case "addToVariant":
+        handleAction("addToVariant", row.original);
+        break;
+    }
   }
 
   return (
     <div className={cs.variantPhotosCard}>
       <SheProductCard
+        loading={isLoading}
         title="Manage Photos"
         view="card"
-        minWidth="450px"
         onSecondaryButtonClick={() => onAction("closeVariantPhotosCard")}
         showCloseButton={true}
         {...props}
@@ -76,6 +86,7 @@ export default function VariantPhotosCard({
             <div className={cs.managePhotosGrid}>
               {variantPhotos.length > 0 ? (
                 <DndGridDataTable
+                  isLoading={isVariantPhotoGridLoading}
                   className={
                     variantPhotos.length > 0
                       ? cs.productPhotosGridShort
@@ -86,6 +97,7 @@ export default function VariantPhotosCard({
                   columns={variantPhotosColumns}
                   data={variantPhotos}
                   gridModel={variantPhotos}
+                  customMessage="VARIANT HAS NO PHOTO"
                   onNewItemPosition={(newIndex, activeItem) =>
                     handleAction("dnd", { newIndex, activeItem })
                   }
@@ -106,6 +118,7 @@ export default function VariantPhotosCard({
             <div className={cs.managePhotosGrid}>
               {productPhotos.length > 0 ? (
                 <DndGridDataTable
+                  isLoading={isProductPhotoGridLoading}
                   className={
                     variantPhotos.length > 0
                       ? cs.productPhotosGridShort
@@ -115,6 +128,7 @@ export default function VariantPhotosCard({
                   showColumnsHeader={false}
                   columns={otherPhotosColumns}
                   data={productPhotos}
+                  customMessage="PRODUCT HAS NO PHOTO"
                   gridModel={productPhotos}
                 />
               ) : (

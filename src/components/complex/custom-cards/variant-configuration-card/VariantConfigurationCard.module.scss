@@ -1,13 +1,14 @@
 @use "@/styles/variables" as vars;
 
 .variantConfigurationCard {
-  overflow: auto;
+  //overflow: auto;
 
   .variantConfigurationCardContent {
     display: flex;
     flex-direction: column;
     gap: 20px;
     overflow-y: auto;
+    padding-bottom: 20px;
 
     .variantConfigurationForm {
       display: flex;

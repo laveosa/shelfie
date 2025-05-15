@@ -125,8 +125,8 @@ export default function SheInput({
     setTextValue(newValue);
     validateValue(newValue);
 
-    if (onChange) onChange(newValue);
-    if (onBlur) onBlur(newValue);
+    if (onChange) onChange(newValue as any);
+    if (onBlur) onBlur(newValue as any);
     if (onDelay) onDelay(newValue);
   }
 
@@ -251,6 +251,7 @@ export default function SheInput({
               disabled={disabled || isLoading}
               onChange={onChangeHandler}
               onBlur={onBlurHandler}
+              {...props}
             />
             {children && <div>{children}</div>}
           </SheSkeleton>

@@ -4,7 +4,7 @@ $iconSize: 20px;
 
 .sheToggle {
   max-width: vars.$maxWidth + px;
-  width: 100%;
+  width: fit-content;
 
   .sheToggleComponent {
     position: relative;

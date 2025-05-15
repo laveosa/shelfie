@@ -11,7 +11,7 @@ export default function SheProductCard({
   view = "",
   loading,
   width,
-  minWidth,
+  minWidth = "400px",
   maxWidth,
   title,
   titleTransKey,
@@ -43,9 +43,9 @@ export default function SheProductCard({
       className={`${className || ""} ${cs.sheProductCard || ""} ${view === "card" ? cs.card : ""}`}
       style={{
         width,
-        minWidth,
+        minWidth: isMinimized ? "70px" : minWidth,
         maxWidth: isMinimized ? "70px" : maxWidth,
-        padding: isMinimized ? "10px 0 20px 20px" : "10px 20px 20px",
+        padding: isMinimized ? "10px 0 20px 20px" : "",
       }}
     >
       <div className={cs.cardHeader}>
@@ -60,7 +60,6 @@ export default function SheProductCard({
                 icon={PanelLeft}
                 variant="ghost"
                 onClick={onMinimizeCardHandler}
-                disabled={loading}
               />
             )}
             <div
@@ -79,7 +78,6 @@ export default function SheProductCard({
               icon={X}
               variant="ghost"
               onClick={onSecondaryButtonClick}
-              disabled={loading}
             />
           )}
         </div>
@@ -94,10 +92,23 @@ export default function SheProductCard({
           </>
         )}
       </div>
-      {loading && <div className={cs.loaderContainer}></div>}
+      {loading && (
+        <div className={cs.loaderContainer}>
+          <div className={cs.loadingBar}>
+            <div className={cs.shimmer}></div>
+          </div>
+        </div>
+      )}
       <div
         className={cs.cardContent}
-        style={isMinimized ? { paddingLeft: 0 } : {}}
+        style={
+          loading
+            ? {
+                pointerEvents: "none",
+                opacity: 0.5,
+              }
+            : {}
+        }
       >
         {children}
       </div>

@@ -15,6 +15,7 @@ import {
 import { IChooseVariantTraitsCard } from "@/const/interfaces/complex-components/custom-cards/IChooseVariantTraitsCard.ts";
 
 export default function ChooseVariantTraitsCard({
+  isLoading,
   items,
   selectedItems,
   onAction,
@@ -37,6 +38,7 @@ export default function ChooseVariantTraitsCard({
 
   return (
     <SheProductCard
+      loading={isLoading}
       title="Choose variant traits for product"
       view="card"
       showPrimaryButton={true}
@@ -46,7 +48,6 @@ export default function ChooseVariantTraitsCard({
       secondaryButtonTitle="Cancel"
       showCloseButton={true}
       className={cs.chooseVariantTraitsCard}
-      width="370px"
       {...props}
     >
       <div className={cs.chooseVariantTraitsContent}>
@@ -101,7 +102,10 @@ export default function ChooseVariantTraitsCard({
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="start" className="w-[160px]">
                         <DropdownMenuItem
-                          onClick={() => onAction("manageTrait", item.traitId)}
+                          onClick={() => {
+                            setSelectedTraitId(item.traitId);
+                            onAction?.("manageTrait", item.traitId);
+                          }}
                         >
                           <span className="she-text">Manage</span>
                         </DropdownMenuItem>

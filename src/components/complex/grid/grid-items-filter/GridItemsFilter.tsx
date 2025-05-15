@@ -57,13 +57,19 @@ export default function GridItemsFilter<T>({
     <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
       <DropdownMenuTrigger className={cs.dropdownMenuTrigger} asChild>
         <SheButton
+          className={cs.dropdownMenuTriggerButton}
           variant="outline"
-          icon={Settings2}
+          disabled={!items || items.length === 0}
           onClick={() => setDropdownOpen(true)}
         >
           <div className={cs.buttonInnerItems}>
+            {selectedIds?.length > 0 ? (
+              <span>{selectedIds.length}</span>
+            ) : (
+              <Settings2 className={cs.settingsIcon} />
+            )}
             {columnName}
-            <ChevronDown />
+            <ChevronDown className={cs.chevronIcon} />
           </div>
         </SheButton>
       </DropdownMenuTrigger>

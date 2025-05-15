@@ -1,12 +1,17 @@
 import { ColumnDef } from "@tanstack/react-table";
+
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import ProductsGridColumnActions from "@/components/complex/grid/products-grid/ProductsGridColumnActions.tsx";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 import placeholderImage from "@/assets/images/placeholder-image.png";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
+import { Switch } from "@/components/ui/switch.tsx";
 
-export function productsGridColumns(onAction: any): ColumnDef<any>[] {
+export function productsGridColumns(
+  onAction: any,
+  activeStates?: Record<string, boolean>,
+): ColumnDef<any>[] {
   return [
     {
       accessorKey: "productId",
@@ -100,8 +105,15 @@ export function productsGridColumns(onAction: any): ColumnDef<any>[] {
       },
     },
     {
-      accessorKey: "variantCount",
+      accessorKey: "variantsCount",
       header: "Variants",
+      cell: ({ row }) => {
+        return (
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <span>{row.getValue("variantsCount")}</span>
+          </div>
+        );
+      },
     },
     {
       accessorKey: "stockAmount",
@@ -110,26 +122,38 @@ export function productsGridColumns(onAction: any): ColumnDef<any>[] {
         return <span>{`${row.getValue("stockAmount")} units`}</span>;
       },
     },
-    // {
-    //   accessorKey: "isActive",
-    //   header: "Active",
-    //   cell: ({ row, table }) => {
-    //     const meta = table.options.meta as {
-    //       setLoadingRow: (rowId: string, loading: boolean) => void;
-    //       isRowLoading: (rowId: string) => boolean;
-    //     };
-    //
-    //     return (
-    //       <Switch
-    //         disabled={meta?.isRowLoading(row.id)}
-    //         checked={row.getValue("isActive")}
-    //         onCheckedChange={() =>
-    //           onAction("active", row.id, meta?.setLoadingRow)
-    //         }
-    //       />
-    //     );
-    //   },
-    // },
+    {
+      accessorKey: "isActive",
+      header: "Active",
+      cell: ({ row, table }) => {
+        const meta = table.options.meta as {
+          setLoadingRow: (rowId: string, loading: boolean) => void;
+          isRowLoading: (rowId: string) => boolean;
+        };
+
+        const rowId = row.id;
+        const isChecked =
+          activeStates && rowId in activeStates
+            ? activeStates[rowId]
+            : row.original.isActive;
+
+        return (
+          <Switch
+            disabled={meta?.isRowLoading(rowId)}
+            checked={isChecked}
+            onCheckedChange={() =>
+              onAction(
+                "activateProduct",
+                rowId,
+                meta?.setLoadingRow,
+                row.original,
+                row.original,
+              )
+            }
+          />
+        );
+      },
+    },
     {
       id: "manage",
       header: "",

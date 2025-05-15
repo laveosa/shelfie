@@ -30,8 +30,7 @@ export const ManageVariantsGridColumns = (
             display: "flex",
             alignItems: "center",
             gap: "10px",
-            maxWidth: "50px",
-            overflow: "hidden",
+            maxWidth: "60px",
           }}
         >
           {colorOptions.map((colorOpt, index) => (
@@ -46,7 +45,16 @@ export const ManageVariantsGridColumns = (
             />
           ))}
           {sizeOptions.map((sizeOpt, index) => (
-            <span key={`size-${index}`} style={{ fontSize: "0.875rem" }}>
+            <span
+              key={`size-${index}`}
+              style={{
+                fontSize: "0.875rem",
+                maxWidth: "20px",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+            >
               {sizeOpt.optionName}
             </span>
           ))}

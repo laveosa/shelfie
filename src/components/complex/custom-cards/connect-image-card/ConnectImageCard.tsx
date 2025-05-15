@@ -1,24 +1,71 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ConnectImageCard.module.scss";
 import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { ConnectImageGridColumns } from "@/components/complex/grid/connect-image-grid/ConnectImageGridColumns.tsx";
+import { IConnectImageCard } from "@/const/interfaces/complex-components/custom-cards/IConnectImageCard.ts";
 
 export default function ConnectImageCard({
-  data,
+  isLoading,
+  isGridLoading,
+  variants,
+  selectedPhoto,
+  productCounter,
   onAction,
   onSecondaryButtonClick,
   ...props
-}) {
-  const columns = ConnectImageGridColumns(onAction);
+}: IConnectImageCard) {
+  const columns = ConnectImageGridColumns(onGridAction);
+  const [updatedVariants, setUpdatedVariants] = useState([]);
+
+  useEffect(() => {
+    if (!selectedPhoto?.variants || !variants) return;
+
+    const connectedIds = new Set(
+      selectedPhoto.variants.map((v) => v.variantId),
+    );
+
+    const enrichedVariants = variants.map((variant) => ({
+      ...variant,
+      isConnected: connectedIds.has(variant.variantId),
+    }));
+
+    setUpdatedVariants(enrichedVariants);
+  }, [selectedPhoto, variants]);
+
+  function handleAction(actionType: string, payload?: any) {
+    switch (actionType) {
+      case "switchAction":
+        if (!payload.isConnected) {
+          onAction("connectImageToVariant", payload);
+        } else {
+          onAction("detachImageFromVariant", payload);
+        }
+
+        break;
+    }
+  }
+
+  function onGridAction(
+    actionType: string,
+    _rowId?: string,
+    _setLoadingRow?: (rowId: string, loading: boolean) => void,
+    row?: any,
+  ) {
+    switch (actionType) {
+      case "switchAction":
+        handleAction("switchAction", row.original);
+        break;
+    }
+  }
 
   return (
     <SheProductCard
+      loading={isLoading}
       title="Connect image to product variants"
       view="card"
       showCloseButton
-      width="350px"
       className={cs.connectImageCard}
       onSecondaryButtonClick={onSecondaryButtonClick}
       {...props}
@@ -26,10 +73,12 @@ export default function ConnectImageCard({
       <div className={cs.connectImageCardContent}>
         <div className={cs.connectImageGrid}>
           <DndGridDataTable
+            isLoading={isGridLoading}
             showHeader={false}
             columns={columns}
-            data={data}
-            gridModel={data}
+            data={updatedVariants}
+            skeletonQuantity={productCounter?.variants}
+            gridModel={variants as any}
           />
         </div>
       </div>

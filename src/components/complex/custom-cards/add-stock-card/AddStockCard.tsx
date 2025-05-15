@@ -32,6 +32,7 @@ import {
 import { PriceTypeModel } from "@/const/models/PriceTypeModel.ts";
 
 export default function AddStockCard({
+  isLoading,
   variant,
   onAction,
   taxTypes,
@@ -51,7 +52,7 @@ export default function AddStockCard({
         price: 0,
         taxTypeId: taxTypes?.[4].id,
         priceType: purchasePriceType?.[0].priceTypeName,
-        currencyId: currencyTypes?.[0].id,
+        currencyId: currencyTypes?.[0]?.id,
       },
       purchaseId: 0,
     },
@@ -74,6 +75,7 @@ export default function AddStockCard({
 
   return (
     <SheProductCard
+      loading={isLoading}
       title={`Add ${variant?.variantName} Stock`}
       view="card"
       showPrimaryButton={true}
@@ -83,7 +85,6 @@ export default function AddStockCard({
       onPrimaryButtonClick={form.handleSubmit(onSubmit)}
       onSecondaryButtonClick={onSecondaryButtonClick}
       showCloseButton
-      width="370px"
       className={cs.addStockCard}
       {...props}
     >
@@ -95,6 +96,7 @@ export default function AddStockCard({
                 label="Units"
                 type="number"
                 step="any"
+                fullWidth
                 onDelay={() => {
                   form.handleSubmit(onSubmit);
                 }}

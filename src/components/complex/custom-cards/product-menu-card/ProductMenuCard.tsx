@@ -20,11 +20,12 @@ const menuItems = [
   { id: "gallery", icon: <ImagesIcon />, label: "Gallery" },
   { id: "variants", icon: <Layers2 />, label: "Variants" },
   { id: "attributes", icon: <SlidersHorizontal />, label: "Attributes" },
-  { id: "sizeChart", icon: <Ruler />, label: "Size Chart" },
+  { id: "size_chart", icon: <Ruler />, label: "Size Chart" },
   { id: "purchase", icon: <ReceiptEuroIcon />, label: "Purchase" },
 ];
 
 export default function ProductMenuCard({
+  isLoading,
   title,
   productId,
   productCounter,
@@ -63,7 +64,10 @@ export default function ProductMenuCard({
   return (
     <div>
       <SheProductCard
+        loading={isLoading}
         title={title}
+        width="300px"
+        minWidth="300px"
         showToggleButton={true}
         className={cs.productMenuCard}
         {...props}

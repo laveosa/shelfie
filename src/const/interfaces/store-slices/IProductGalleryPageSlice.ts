@@ -2,9 +2,14 @@ import { ProductModel } from "@/const/models/ProductModel.ts";
 import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 import { VariantModel } from "@/const/models/VariantModel.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 
 export interface IProductGalleryPageSlice {
-  loading?: boolean;
+  isLoading?: boolean;
+  isProductPhotosCardLoading?: boolean;
+  isConnectImageCardLoading?: boolean;
+  isProductPhotosLoading?: boolean;
+  isVariantsGridLoading?: boolean;
   product?: ProductModel;
   contextId?: number;
   products?: ProductModel[];
@@ -12,4 +17,6 @@ export interface IProductGalleryPageSlice {
   productCounter?: ProductCounterModel;
   photos?: ImageModel[];
   productVariants?: VariantModel[];
+  selectedPhoto?: ImageModel;
+  gridRequestModel?: GridRequestModel;
 }

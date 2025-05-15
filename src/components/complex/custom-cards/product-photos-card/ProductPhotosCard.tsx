@@ -7,17 +7,18 @@ import { SheImageUploader } from "@/components/complex/she-images-file-uploader/
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { ProductPhotosGridColumns } from "@/components/complex/grid/variant-photos-grid/ProductPhotosGridColumns.tsx";
 
-type ActionType = "upload" | "delete" | "dnd" | "connect";
-
 export default function ProductPhotosCard({
+  isLoading,
+  isGridLoading,
   data,
   contextId,
+  productCounter,
   onAction,
   ...props
 }) {
   const columns = ProductPhotosGridColumns(onGridAction);
 
-  function handleAction(actionType: ActionType, payload?: any) {
+  function handleAction(actionType: string, payload?: any) {
     switch (actionType) {
       case "upload":
         onAction("upload", payload);
@@ -26,11 +27,11 @@ export default function ProductPhotosCard({
         onAction("delete", payload);
         break;
       case "connect":
-        onAction("connect", payload);
+        onAction("openConnectImageCard", payload);
         break;
       case "dnd":
-        const { newIndex, activeItem } = payload;
-        onAction("dnd", { newIndex, activeItem });
+        const { newIndex, activeItem, oldIndex } = payload;
+        onAction("changePhotoPosition", { newIndex, activeItem, oldIndex });
         break;
     }
   }
@@ -54,9 +55,9 @@ export default function ProductPhotosCard({
   return (
     <div className={cs.productPhotosCard}>
       <SheProductCard
+        loading={isLoading}
         title="Product Photos"
         view="card"
-        minWidth="450px"
         className={cs.productPhotosCard}
         {...props}
       >
@@ -68,26 +69,28 @@ export default function ProductPhotosCard({
               handleAction("upload", uploadModel)
             }
           />
-          {data?.length > 0 && (
-            <div className={cs.managePhotos}>
-              <div className={`${cs.managePhotosTitle} she-title`}>
-                Manage Photos
-              </div>
-              <div className={cs.managePhotosGrid}>
-                <DndGridDataTable
-                  className={cs.photosGrid}
-                  enableDnd={true}
-                  showHeader={false}
-                  columns={columns}
-                  data={data}
-                  gridModel={data}
-                  onNewItemPosition={(newIndex, activeItem) =>
-                    handleAction("dnd", { newIndex, activeItem })
-                  }
-                />
-              </div>
+          <div className={cs.managePhotos}>
+            <div className={`${cs.managePhotosTitle} she-title`}>
+              Manage Photos
             </div>
-          )}
+            <div className={cs.managePhotosGrid}>
+              <DndGridDataTable
+                isLoading={isGridLoading}
+                className={cs.photosGrid}
+                enableDnd={true}
+                showHeader={false}
+                columns={columns}
+                data={data}
+                gridModel={data}
+                skeletonQuantity={productCounter?.gallery}
+                customMessage="PRODUCT HAS NO PHOTO"
+                onNewItemPosition={(newIndex, activeItem, oldIndex) =>
+                  handleAction("dnd", { newIndex, activeItem, oldIndex })
+                }
+              />
+            </div>
+          </div>
+          {/*)}*/}
         </div>
       </SheProductCard>
     </div>
