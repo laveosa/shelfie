@@ -11,8 +11,6 @@ import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 
 const initialState: IManageVariantsPageSlice = {
   isLoading: false,
-  // isItemsCardLoading: false,
-  // isProductMenuCardLoading: false,
   isManageVariantsCardLoading: false,
   isVariantConfigurationCardLoading: false,
   isAddStockCardLoading: false,
@@ -30,6 +28,7 @@ const initialState: IManageVariantsPageSlice = {
   isProductPhotoGridLoading: false,
   variants: [],
   selectedVariant: null,
+  isDuplicateVariant: false,
   productCounter: null,
   activeCards: [],
   traits: [],
@@ -70,20 +69,6 @@ function setIsLoading(
   state.isLoading = action?.payload;
 }
 
-// function setIsItemsCardLoading(
-//   state: IManageVariantsPageSlice,
-//   action: PayloadAction<boolean>,
-// ) {
-//   state.isItemsCardLoading = action?.payload;
-// }
-
-// function setIsProductMenuCardLoading(
-//   state: IManageVariantsPageSlice,
-//   action: PayloadAction<boolean>,
-// ) {
-//   state.isProductMenuCardLoading = action?.payload;
-// }
-//
 function setIsManageVariantsCardLoading(
   state: IManageVariantsPageSlice,
   action: PayloadAction<boolean>,
@@ -205,6 +190,13 @@ function refreshSelectedVariant(
   state.selectedVariant = action?.payload || state.selectedVariant;
 }
 
+function refreshIsDuplicateVariant(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isDuplicateVariant = action?.payload;
+}
+
 function refreshTraits(
   state: IManageVariantsPageSlice,
   action: PayloadAction<TraitModel[]>,
@@ -322,8 +314,6 @@ const ManageVariantsPageSlice = createSlice({
   initialState,
   reducers: {
     setIsLoading,
-    // setIsItemsCardLoading,
-    // setIsProductMenuCardLoading,
     setIsManageVariantsCardLoading,
     setIsVariantConfigurationCardLoading,
     setIsAddStockCardLoading,
@@ -341,6 +331,7 @@ const ManageVariantsPageSlice = createSlice({
     setIsProductPhotoGridLoading,
     refreshVariants,
     refreshSelectedVariant,
+    refreshIsDuplicateVariant,
     refreshTraits,
     refreshTypesOfTraits,
     refreshListOfTraitsForProduct,
