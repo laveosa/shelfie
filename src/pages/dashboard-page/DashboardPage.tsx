@@ -1,97 +1,14 @@
-import React, { useRef, useState } from "react";
+import React from "react";
 
 import cs from "./DashboardPage.module.scss";
 import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageService.ts";
-import SheTimePicker from "@/components/primitive/she-time-picker/SheTimePicker.tsx";
-import { TimeFormatEnum } from "@/const/enums/TimeFormatEnum.ts";
-import { Clock } from "lucide-react";
-import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
-import { SheTimePickerTypeEnum } from "@/const/enums/SheTimePickerTypeEnum.ts";
 
 export function DashboardPage() {
   const service = useDashboardPageService();
 
-  const [time, setTime] = useState<Date>(new Date("05.15.2025 16:00:00"));
-  const hhRef = useRef<HTMLInputElement>(null);
-
-  function onSetDateHandler(value) {
-    console.log("onSetDate: ", value);
-    // setTime(value);
-  }
-
-  function onTickHandler(value) {
-    // console.log("onTick: ", value);
-    // setTime(value);
-  }
-
-  function onDelayHandler(value) {
-    console.log("onDelay: ", value);
-  }
-
-  function onBlurHandler(value) {
-    console.log("onBlur: ", value);
-  }
-
   return (
     <div id={cs["DashboardPage"]}>
       <h1>Dashboard</h1>
-
-      <br />
-
-      <SheTimePicker
-        label="Time Picker"
-        labelTransKey="wf0239jf09wj"
-        // hhLabel="HH Label"
-        // hhLabelTransKey="wef9jdsf"
-        // mmLabel="MM Label"
-        // mmLabelTransKey="we0f9jdf"
-        // ssLabel="SS Label"
-        // ssLabelTransKey="fwofijds"
-        // periodLabel="PP Label"
-        icon={Clock}
-        // clockWorksheets={"12"}
-        // timePeriod={"PM"}
-        timeFormat={TimeFormatEnum.HH_MM_SS_XM}
-        size={"small"}
-        view={ComponentViewEnum.CARD}
-        autoFocus
-        required
-        showClearBtn
-        hideInputLabels
-        // hideSeconds
-        // type={SheTimePickerTypeEnum.CLOCK}
-        type={SheTimePickerTypeEnum.TIMER}
-        // date={time}
-        startDate={time}
-        endDate={new Date("05.15.2025 18:26:00")}
-        // isLoading
-        // description="somde description dfd erio er ier oieri ejroi eroing rineroignoi"
-        // descriptionTransKey="02f3f0239fj09j3f"
-        // showDescription={false}
-        onSetDate={onSetDateHandler}
-        onDelay={onDelayHandler}
-        onBlur={onBlurHandler}
-        onTick={onTickHandler}
-      />
-
-      <br />
-
-      <br />
-
-      {/*<SheTimePicker
-        label="TimePicker"
-        icon={TimerIcon}
-        date={time}
-        dateFormat={TimeFormatEnum.HH_MM_SS_XM}
-        showClearBtn
-        timeFormat={"12"}
-        autoFocus
-        hoursRef={hhRef}
-        onSetDate={onAction}
-        onBlur={onBlurHandler}
-      />*/}
-
-      <br />
     </div>
   );
 }
