@@ -34,7 +34,6 @@ export default function SheSelectItem({
 
   return (
     <SelectItem
-      key={id}
       className={`${cs.sheSelectItem} ${isLoading ? "disabled" : ""} ${showSelectIcon ? cs.sheShowSelectIcon : ""}`}
       value={id}
       disabled={disabled}

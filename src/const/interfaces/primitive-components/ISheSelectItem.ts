@@ -5,6 +5,7 @@ import { ISheTooltip } from "@/const/interfaces/complex-components/ISheTooltip.t
 
 export interface ISheSelectItem extends ComponentPropsWithRef<any> {
   id?: string; // reserved PRIVATE property, "DON'T USE" this property
+  key?: any;
   className?: string;
   style?: React.CSSProperties;
   icon?: Partial<ISheIcon> | string | React.FC<any>;

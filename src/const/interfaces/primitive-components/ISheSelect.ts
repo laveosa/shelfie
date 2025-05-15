@@ -12,6 +12,7 @@ export interface ISheSelect
   id?: string;
   className?: string;
   style?: React.CSSProperties;
+  triggerRef?: React.RefObject<any>;
   icon?: Partial<ISheIcon> | string | React.FC<any>;
   items?: ISheSelectItem[];
   selected?: any;
@@ -27,6 +28,7 @@ export interface ISheSelect
   isOpen?: boolean;
   showSelectIcon?: boolean;
   selectedColor?: string;
+  onTriggerKeyDown?: (value: any) => void;
   onOpenChange?: (value: any) => void;
   onSelect?: (value: any) => void;
 }
