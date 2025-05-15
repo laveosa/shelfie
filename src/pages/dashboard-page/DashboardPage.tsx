@@ -11,7 +11,7 @@ import { SheTimePickerTypeEnum } from "@/const/enums/SheTimePickerTypeEnum.ts";
 export function DashboardPage() {
   const service = useDashboardPageService();
 
-  const [time, setTime] = useState<Date>(new Date());
+  const [time, setTime] = useState<Date>(new Date("05.15.2025 16:00:00"));
   const hhRef = useRef<HTMLInputElement>(null);
 
   function onSetDateHandler(value) {
@@ -20,7 +20,7 @@ export function DashboardPage() {
   }
 
   function onTickHandler(value) {
-    console.log("onTick: ", value);
+    // console.log("onTick: ", value);
     // setTime(value);
   }
 
@@ -62,7 +62,8 @@ export function DashboardPage() {
         // type={SheTimePickerTypeEnum.CLOCK}
         type={SheTimePickerTypeEnum.TIMER}
         // date={time}
-        // startDate={time}
+        startDate={time}
+        endDate={new Date("05.15.2025 16:45:00")}
         // isLoading
         onSetDate={onSetDateHandler}
         onDelay={onDelayHandler}

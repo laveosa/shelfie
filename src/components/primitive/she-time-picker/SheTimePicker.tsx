@@ -13,6 +13,8 @@ import { TimeFormatEnum } from "@/const/enums/TimeFormatEnum.ts";
 import SheTimePickerSelect from "@/components/primitive/she-time-picker/components/she-time-picker-select/SheTimePickerSelect.tsx";
 import { SheTimePickerTypeEnum } from "@/const/enums/SheTimePickerTypeEnum.ts";
 import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
+import { SheErrorMessageBlock } from "@/components/primitive/she-error-message-block/SheErrorMessageBlock.tsx";
+import _ from "lodash";
 
 export default function SheTimePicker({
   id,
@@ -38,6 +40,7 @@ export default function SheTimePicker({
   periodLabelTransKey,
   date,
   startDate,
+  endDate,
   timeFormat,
   timePeriod,
   clockWorksheets = "24",
@@ -57,6 +60,9 @@ export default function SheTimePicker({
   secondsRef,
   periodsRef,
   autoFocus,
+  showError,
+  error,
+  errorTransKey,
   onSetDate,
   onDelay,
   onBlur,
@@ -67,6 +73,9 @@ export default function SheTimePicker({
   const [_startDate, setStartDate] = useState<Date>(startDate ?? null);
   const [_period, setPeriod] = useState<Period>(timePeriod);
   const [_isDateValid, setIsDateValid] = useState<boolean>(null);
+  const [_showError, setShowError] = useState(showError);
+  const [_error, setError] = useState<string>(error ?? null);
+  const [_errorTransKey, setErrorTransKey] = useState(errorTransKey);
 
   const ariaDescribedbyId = `${generateId()}_TIME_PICKER_ID`;
   const delayValue = useDebounce(_date, delayTime);
@@ -127,6 +136,7 @@ export default function SheTimePicker({
         setDate(newDate);
         checkDateValidation(newDate);
         configurePeriod(newDate);
+        validateTimerValue(newDate);
 
         if (onTick) {
           const start = _startDate ?? _date ?? new Date();
@@ -213,6 +223,23 @@ export default function SheTimePicker({
   function configurePeriod(value: Date) {
     if (timePeriod) return setPeriod(timePeriod);
     setPeriod(value?.getHours() >= 12 ? "PM" : "AM");
+  }
+
+  function validateTimerValue(value: Date) {
+    if (
+      !value ||
+      type !== SheTimePickerTypeEnum.TIMER ||
+      (!startDate && !endDate)
+    )
+      return;
+
+    if (moment(new Date()).isAfter(endDate)) {
+      setError("expire time error");
+      setErrorTransKey(
+        "PLACE HERE VALID DEFAULT ERROR MESSAGE TRANS-KEY WHEN IT WILL BE AVAILABLE",
+      );
+      setShowError(!_.isNil(showError) ? showError : true);
+    }
   }
 
   // ==================================================================== LAYOUT
@@ -352,6 +379,11 @@ export default function SheTimePicker({
             />
           )}
         </div>
+        <SheErrorMessageBlock
+          error={_error}
+          errorTransKey={_errorTransKey}
+          showError={_showError}
+        />
       </div>
     </div>
   );

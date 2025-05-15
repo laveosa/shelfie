@@ -7,10 +7,12 @@ import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import { TimeFormatEnum } from "@/const/enums/TimeFormatEnum.ts";
 import { Period } from "@/utils/helpers/time-picker-helper.ts";
 import { SheTimePickerTypeEnum } from "@/const/enums/SheTimePickerTypeEnum.ts";
+import { ISheErrorMessageBlock } from "@/const/interfaces/primitive-components/ISheErrorMessageBlock.ts";
 
 export interface ISheTimePicker
   extends ISheLabel,
     ISheClearButton,
+    ISheErrorMessageBlock,
     ComponentPropsWithRef<"div"> {
   id?: string;
   className?: string;
@@ -33,6 +35,7 @@ export interface ISheTimePicker
   periodLabelTransKey?: string;
   date?: Date | undefined;
   startDate?: Date | undefined;
+  endDate?: Date | undefined;
   timeFormat?: TimeFormatEnum;
   timePeriod?: Period;
   clockWorksheets?: "12" | "24";
