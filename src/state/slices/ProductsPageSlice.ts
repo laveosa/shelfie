@@ -15,6 +15,8 @@ import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 
 const initialState: IProductsPageSlice = {
   isLoading: false,
+  isItemsCardLoading: false,
+  isProductMenuCardLoading: false,
   isProductsLoading: false,
   isProductPhotosLoading: false,
   isProductVariantsLoading: false,
@@ -44,11 +46,27 @@ const initialState: IProductsPageSlice = {
   currenciesList: [],
 };
 
+//----------------------------------------------------- LOADERS
+
 function setIsLoading(
   state: IProductsPageSlice,
   action: PayloadAction<boolean>,
 ) {
   state.isLoading = action?.payload;
+}
+
+function setIsItemsCardLoading(
+  state: IProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isItemsCardLoading = action?.payload;
+}
+
+function setIsProductMenuCardLoading(
+  state: IProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isProductMenuCardLoading = action?.payload;
 }
 
 function setIsProductsLoading(
@@ -71,6 +89,8 @@ function setIsProductVariantsLoading(
 ) {
   state.isProductVariantsLoading = action?.payload;
 }
+
+//----------------------------------------------------- API
 
 function refreshProducts(
   state: IProductsPageSlice,
@@ -183,6 +203,8 @@ const ProductsPageSlice = createSlice({
   initialState,
   reducers: {
     setIsLoading,
+    setIsItemsCardLoading,
+    setIsProductMenuCardLoading,
     setIsProductsLoading,
     setIsProductPhotosLoading,
     setIsProductVariantsLoading,

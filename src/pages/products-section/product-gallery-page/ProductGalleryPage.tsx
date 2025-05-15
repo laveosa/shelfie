@@ -17,6 +17,7 @@ import { GridModel } from "@/const/models/GridModel.ts";
 import ConnectImageCard from "@/components/complex/custom-cards/connect-image-card/ConnectImageCard.tsx";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
+import { setSelectedGridItem } from "@/utils/helpers/quick-helper.ts";
 
 export function ProductGalleryPage() {
   const dispatch = useAppDispatch();
@@ -34,23 +35,29 @@ export function ProductGalleryPage() {
 
   useEffect(() => {
     if (productsState.products === null) {
+      dispatch(productsActions.setIsItemsCardLoading(true));
       productsService
         .getTheProductsForGridHandler(productsState.gridRequestModel)
         .then((res) => {
+          dispatch(productsActions.setIsItemsCardLoading(false));
           if (res) {
             dispatch(productsActions.refreshProducts(res.items));
           }
         });
     }
     if (!productsState.productCounter) {
+      dispatch(productsActions.setIsProductMenuCardLoading(true));
       productsService.getCountersForProductsHandler(productId).then((res) => {
+        dispatch(productsActions.setIsProductMenuCardLoading(false));
         if (res) {
           dispatch(productsActions.refreshProductCounter(res));
         }
       });
     }
     if (productsState.productPhotos.length === 0) {
+      dispatch(actions.setIsProductPhotosCardLoading(true));
       productsService.getProductPhotosHandler(Number(productId)).then((res) => {
+        dispatch(actions.setIsProductPhotosCardLoading(false));
         dispatch(productsActions.refreshProductPhotos(res));
       });
     }
@@ -69,19 +76,35 @@ export function ProductGalleryPage() {
     }, 100);
   }
 
-  function handleCardAction(identifier: string) {
-    const updatedCards = state.activeCards.includes(identifier)
-      ? state.activeCards.filter((card) => card !== identifier)
-      : [...state.activeCards, identifier];
-    scrollToCard(identifier);
-    dispatch(actions.refreshActiveCards(updatedCards));
+  function handleCardAction(
+    identifier: string,
+    forceOpen: boolean = false,
+    overrideActiveCards?: string[],
+  ) {
+    const activeCards = overrideActiveCards ?? state.activeCards;
+    let updatedCards: string[];
+
+    if (forceOpen) {
+      if (!activeCards.includes(identifier)) {
+        updatedCards = [...activeCards, identifier];
+        dispatch(actions.refreshActiveCards(updatedCards));
+        scrollToCard(identifier);
+      } else {
+        dispatch(actions.refreshActiveCards(activeCards));
+      }
+    } else {
+      updatedCards = activeCards.filter((card) => card !== identifier);
+      dispatch(actions.refreshActiveCards(updatedCards));
+    }
   }
 
   function onAction(actionType: string, payload: any) {
     switch (actionType) {
       case "upload":
+        dispatch(actions.setIsProductPhotosCardLoading(true));
         dispatch(productsActions.setIsProductPhotosLoading(true));
         service.uploadPhotoHandler(payload).then((res) => {
+          dispatch(actions.setIsProductPhotosCardLoading(false));
           dispatch(productsActions.setIsProductPhotosLoading(false));
           if (res.data.photoId) {
             productsService
@@ -127,34 +150,59 @@ export function ProductGalleryPage() {
           });
         break;
       case "delete":
+        dispatch(actions.setIsProductPhotosCardLoading(true));
         dispatch(productsActions.setIsProductPhotosLoading(true));
-        service.deletePhotoHandler(payload.photoId).then(() => {
-          productsService
-            .getProductPhotosHandler(Number(productId))
-            .then((res) => {
-              dispatch(productsActions.setIsProductPhotosLoading(false));
-              dispatch(productsActions.refreshProductPhotos(res));
+        service.deletePhotoHandler(payload.photoId).then((res) => {
+          dispatch(actions.setIsProductPhotosCardLoading(false));
+          if (res) {
+            productsService
+              .getProductPhotosHandler(Number(productId))
+              .then((res) => {
+                dispatch(productsActions.setIsProductPhotosLoading(false));
+                dispatch(productsActions.refreshProductPhotos(res));
+              });
+            productsService
+              .getCountersForProductsHandler(productId)
+              .then((res: ProductCounterModel) => {
+                dispatch(productsActions.refreshProductCounter(res));
+              });
+            productsService
+              .getTheProductsForGridHandler(productsState.gridRequestModel)
+              .then((res: GridModel) => {
+                dispatch(productsActions.refreshProducts(res.items));
+              });
+            addToast({
+              text: "Photo deleted successfully",
+              type: "success",
             });
-          productsService
-            .getCountersForProductsHandler(productId)
-            .then((res: ProductCounterModel) => {
-              dispatch(productsActions.refreshProductCounter(res));
+          } else {
+            addToast({
+              text: "Photo not deleted",
+              description: res.error.message,
+              type: "error",
             });
-          productsService
-            .getTheProductsForGridHandler(productsState.gridRequestModel)
-            .then((res: GridModel) => {
-              dispatch(productsActions.refreshProducts(res.items));
-            });
+          }
         });
         break;
       case "openConnectImageCard":
+        dispatch(actions.setIsConnectImageCardLoading(true));
         dispatch(actions.setIsVariantsGridLoading(true));
         service.getProductVariantsHandler(productId).then((res) => {
+          dispatch(actions.setIsConnectImageCardLoading(false));
           dispatch(actions.setIsVariantsGridLoading(false));
           dispatch(actions.refreshProductVariants(res));
         });
+        dispatch(
+          productsActions.refreshProductPhotos(
+            setSelectedGridItem(
+              payload.photoId,
+              productsState.productPhotos,
+              "photoId",
+            ),
+          ),
+        );
         dispatch(actions.refreshSelectedPhoto(payload));
-        handleCardAction("connectImageCard");
+        handleCardAction("connectImageCard", true);
         break;
       case "connectImageToVariant":
         service
@@ -163,9 +211,6 @@ export function ProductGalleryPage() {
             state.selectedPhoto.photoId,
           )
           .then(() => {
-            service.getProductVariantsHandler(productId).then((res) => {
-              dispatch(actions.refreshProductVariants(res));
-            });
             productsService
               .getProductPhotosHandler(Number(productId))
               .then((res) => {
@@ -173,6 +218,43 @@ export function ProductGalleryPage() {
 
                 const selectedPhoto = res.find(
                   (photo) => state.selectedPhoto.photoId === photo.photoId,
+                );
+                dispatch(
+                  productsActions.refreshProductPhotos(
+                    setSelectedGridItem(
+                      state.selectedPhoto.photoId,
+                      productsState.productPhotos,
+                      "photoId",
+                    ),
+                  ),
+                );
+                dispatch(actions.refreshSelectedPhoto(selectedPhoto));
+              });
+          });
+        break;
+      case "detachImageFromVariant":
+        service
+          .detachVariantPhotoHandler(
+            payload.variantId,
+            state.selectedPhoto.photoId,
+          )
+          .then(() => {
+            productsService
+              .getProductPhotosHandler(Number(productId))
+              .then((res) => {
+                dispatch(productsActions.refreshProductPhotos(res));
+
+                const selectedPhoto = res.find(
+                  (photo) => state.selectedPhoto.photoId === photo.photoId,
+                );
+                dispatch(
+                  productsActions.refreshProductPhotos(
+                    setSelectedGridItem(
+                      state.selectedPhoto.photoId,
+                      productsState.productPhotos,
+                      "photoId",
+                    ),
+                  ),
                 );
                 dispatch(actions.refreshSelectedPhoto(selectedPhoto));
               });
@@ -193,6 +275,7 @@ export function ProductGalleryPage() {
           onAction={itemCardHandler}
         />
         <ProductMenuCard
+          isLoading={productsState.isProductMenuCardLoading}
           title={productId ? "Manage Product" : "Create Product"}
           productCounter={productsState.productCounter}
           productId={Number(productId)}
@@ -200,7 +283,8 @@ export function ProductGalleryPage() {
         />
       </div>
       <ProductPhotosCard
-        isLoading={productsState.isProductPhotosLoading}
+        isLoading={state.isProductPhotosCardLoading}
+        isGridLoading={productsState.isProductPhotosLoading}
         data={productsState.productPhotos}
         productCounter={productsState.productCounter}
         contextId={productId}
@@ -213,6 +297,7 @@ export function ProductGalleryPage() {
           }}
         >
           <ConnectImageCard
+            isLoading={state.isConnectImageCardLoading}
             isGridLoading={state.isVariantsGridLoading}
             variants={state.productVariants}
             selectedPhoto={state.selectedPhoto}

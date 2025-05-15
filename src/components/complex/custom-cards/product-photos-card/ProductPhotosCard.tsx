@@ -9,6 +9,7 @@ import { ProductPhotosGridColumns } from "@/components/complex/grid/variant-phot
 
 export default function ProductPhotosCard({
   isLoading,
+  isGridLoading,
   data,
   contextId,
   productCounter,
@@ -54,6 +55,7 @@ export default function ProductPhotosCard({
   return (
     <div className={cs.productPhotosCard}>
       <SheProductCard
+        loading={isLoading}
         title="Product Photos"
         view="card"
         className={cs.productPhotosCard}
@@ -73,7 +75,7 @@ export default function ProductPhotosCard({
             </div>
             <div className={cs.managePhotosGrid}>
               <DndGridDataTable
-                isLoading={isLoading}
+                isLoading={isGridLoading}
                 className={cs.photosGrid}
                 enableDnd={true}
                 showHeader={false}

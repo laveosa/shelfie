@@ -13,6 +13,8 @@ import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 
 export interface IProductsPageSlice {
   isLoading?: boolean;
+  isItemsCardLoading?: boolean;
+  isProductMenuCardLoading?: boolean;
   isProductsLoading?: boolean;
   isProductPhotosLoading?: boolean;
   isProductVariantsLoading?: boolean;

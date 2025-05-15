@@ -38,9 +38,11 @@ export function ProductBasicDataPage() {
 
   useEffect(() => {
     if (!productsState.products) {
+      dispatch(productsActions.setIsItemsCardLoading(true));
       productsService
         .getTheProductsForGridHandler(productsState.gridRequestModel)
         .then((res) => {
+          dispatch(productsActions.setIsItemsCardLoading(false));
           dispatch(productsActions.refreshProducts(res.items));
         });
     }
@@ -56,7 +58,9 @@ export function ProductBasicDataPage() {
     }
     if (productId) {
       if (!productsState.productCounter) {
+        dispatch(productsActions.setIsProductMenuCardLoading(true));
         productsService.getCountersForProductsHandler(productId).then((res) => {
+          dispatch(productsActions.setIsProductMenuCardLoading(false));
           dispatch(productsActions.refreshProductCounter(res));
         });
       }
@@ -104,7 +108,9 @@ export function ProductBasicDataPage() {
   }
 
   function updateProductDetails(data) {
+    dispatch(actions.setIsProductConfigurationCardLoading(true));
     service.updateProductHandler(productId, data).then((res) => {
+      dispatch(actions.setIsProductConfigurationCardLoading(false));
       if (res.data) {
         productsService
           .getProductDetailsHandler(productId)
@@ -119,12 +125,20 @@ export function ProductBasicDataPage() {
           text: "Product updated successfully",
           type: "success",
         });
+      } else {
+        addToast({
+          text: "Product not updated",
+          description: res.error.message,
+          type: "error",
+        });
       }
     });
   }
 
   function createNewProduct(data) {
+    dispatch(actions.setIsProductConfigurationCardLoading(true));
     service.createNewProductHandler(data).then((res) => {
+      dispatch(actions.setIsProductConfigurationCardLoading(false));
       if (res.data) {
         dispatch(productsActions.refreshSelectedProduct(res.data));
         productsService
@@ -168,6 +182,7 @@ export function ProductBasicDataPage() {
           onAction={itemCardClickHandler}
         />
         <ProductMenuCard
+          isLoading={productsState.isProductMenuCardLoading}
           title={productId ? "Manage Product" : "Create Product"}
           productCounter={productsState.productCounter}
           onAction={handleCardAction}
@@ -176,6 +191,7 @@ export function ProductBasicDataPage() {
         />
       </div>
       <ProductConfigurationCard
+        isLoading={state.isProductConfigurationCardLoading}
         product={productsState.product}
         brandsList={state.brandsList}
         categoriesList={state.categoriesList}
@@ -195,6 +211,7 @@ export function ProductBasicDataPage() {
           }}
         >
           <CreateProductCategoryCard
+            isLoading={state.isCreateCategoryCardLoading}
             onSecondaryButtonClick={() =>
               handleCardAction("createCategoryCard")
             }
@@ -208,6 +225,7 @@ export function ProductBasicDataPage() {
           }}
         >
           <CreateProductBrandCard
+            isLoading={state.isCreateBrandCardLoading}
             onSecondaryButtonClick={() => handleCardAction("createBrandCard")}
           />
         </div>

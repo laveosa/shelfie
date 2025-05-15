@@ -7,6 +7,7 @@ import { ConnectImageGridColumns } from "@/components/complex/grid/connect-image
 import { IConnectImageCard } from "@/const/interfaces/complex-components/custom-cards/IConnectImageCard.ts";
 
 export default function ConnectImageCard({
+  isLoading,
   isGridLoading,
   variants,
   selectedPhoto,
@@ -35,8 +36,13 @@ export default function ConnectImageCard({
 
   function handleAction(actionType: string, payload?: any) {
     switch (actionType) {
-      case "connect":
-        onAction("connectImageToVariant", payload);
+      case "switchAction":
+        if (!payload.isConnected) {
+          onAction("connectImageToVariant", payload);
+        } else {
+          onAction("detachImageFromVariant", payload);
+        }
+
         break;
     }
   }
@@ -48,14 +54,15 @@ export default function ConnectImageCard({
     row?: any,
   ) {
     switch (actionType) {
-      case "connect":
-        handleAction("connect", row.original);
+      case "switchAction":
+        handleAction("switchAction", row.original);
         break;
     }
   }
 
   return (
     <SheProductCard
+      loading={isLoading}
       title="Connect image to product variants"
       view="card"
       showCloseButton

@@ -24,6 +24,7 @@ interface TraitForm {
 }
 
 export default function AddVariantCard({
+  isLoading,
   traits,
   onAction,
   ...props
@@ -58,6 +59,7 @@ export default function AddVariantCard({
   return (
     <div>
       <SheProductCard
+        loading={isLoading}
         title="Add Variant"
         view="card"
         showPrimaryButton={true}
