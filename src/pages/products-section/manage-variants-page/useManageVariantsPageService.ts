@@ -38,6 +38,7 @@ export default function useManageVariantsPageService() {
     ProductsApiHooks.useLazyGetListOfTraitsWithOptionsForProductQuery();
   const [createNewTrait] = ProductsApiHooks.useCreateNewTraitMutation();
   const [setProductTraits] = ProductsApiHooks.useSetProductTraitsMutation();
+  const [deleteTrait] = ProductsApiHooks.useDeleteTraitMutation();
   const [getOptionsForTrait] =
     ProductsApiHooks.useLazyGetOptionsForTraitQuery();
   const [createNewOptionForTrait] =
@@ -193,6 +194,12 @@ export default function useManageVariantsPageService() {
     });
   }
 
+  function deleteTraitHandler(id) {
+    return deleteTrait(id).then((res: any) => {
+      return res;
+    });
+  }
+
   function getOptionsForTraitHandler(id) {
     return getOptionsForTrait(id).then((res: any) => {
       return res.data;
@@ -292,6 +299,7 @@ export default function useManageVariantsPageService() {
     createNewTraitHandler,
     updateTraitHandler,
     setProductTraitsHandler,
+    deleteTraitHandler,
     getOptionsForTraitHandler,
     createNewOptionForTraitHandler,
     updateOptionsForTraitHandler,

@@ -571,6 +571,31 @@ export function ManageVariantsPage() {
           }
         });
         break;
+      case "deleteTrait":
+        dispatch(actions.setIsChooseVariantTraitsCardLoading(true));
+        service.deleteTraitHandler(payload).then((res) => {
+          dispatch(actions.setIsChooseVariantTraitsCardLoading(false));
+          if (res) {
+            service
+              .getListOfTraitsWithOptionsForProductHandler(productId)
+              .then((res) => {
+                dispatch(actions.refreshListOfTraitsWithOptionsForProduct(res));
+              });
+            service.getListOfAllTraitsHandler().then((res) => {
+              dispatch(actions.refreshTraits(res));
+            });
+            addToast({
+              text: "Trait deleted successfully",
+              type: "success",
+            });
+          } else {
+            addToast({
+              text: res.error.message,
+              type: "error",
+            });
+          }
+        });
+        break;
       case "updateOption":
         dispatch(actions.setIsTraitOptionsGridLoading(true));
         service
@@ -676,7 +701,9 @@ export function ManageVariantsPage() {
         handleCardAction("addVariantCard", true, []);
         break;
       case "openChooseVariantTraitsCard":
+        dispatch(actions.setIsChooseVariantTraitsCardLoading(true));
         service.getListOfAllTraitsHandler().then((res) => {
+          dispatch(actions.setIsChooseVariantTraitsCardLoading(false));
           dispatch(actions.refreshTraits(res));
         });
         handleCardAction("chooseVariantTraitsCard", true);
