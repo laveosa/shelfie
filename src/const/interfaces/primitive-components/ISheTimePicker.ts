@@ -39,6 +39,7 @@ export interface ISheTimePicker
   timeFormat?: TimeFormatEnum;
   timePeriod?: Period;
   clockWorksheets?: "12" | "24";
+  isValid?: boolean;
   disabled?: boolean;
   isLoading?: boolean;
   minWidth?: string;
@@ -57,4 +58,5 @@ export interface ISheTimePicker
   onDelay?: (value: any) => void;
   onBlur?: (value: any) => void;
   onTick?: (value: any) => void;
+  onIsValid?: (value: boolean) => void;
 }

@@ -262,3 +262,30 @@ $iconSize: 20px;
     }
   }
 }
+
+// ======================================================== INVALID
+
+.sheTimePicker.invalid {
+  .sheTimePickerComponent {
+    .sheTimePickerControl {
+      input,
+      button {
+        color: vars.$colorRed;
+
+        * {
+          color: vars.$colorRed;
+        }
+      }
+
+      .sheTimePickerElementWrapper {
+        .sheTimePickerElementInputCell {
+          &.sheTimePickerClockViewCell {
+            &:after {
+              color: vars.$colorRed;
+            }
+          }
+        }
+      }
+    }
+  }
+}

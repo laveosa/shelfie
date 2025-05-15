@@ -1,5 +1,6 @@
 import React, { JSX, useEffect, useRef, useState } from "react";
 import moment from "moment";
+import _ from "lodash";
 
 import cs from "./SheTimePicker.module.scss";
 import { ISheTimePicker } from "@/const/interfaces/primitive-components/ISheTimePicker.ts";
@@ -14,7 +15,6 @@ import SheTimePickerSelect from "@/components/primitive/she-time-picker/componen
 import { SheTimePickerTypeEnum } from "@/const/enums/SheTimePickerTypeEnum.ts";
 import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
 import { SheErrorMessageBlock } from "@/components/primitive/she-error-message-block/SheErrorMessageBlock.tsx";
-import _ from "lodash";
 
 export default function SheTimePicker({
   id,
@@ -44,6 +44,7 @@ export default function SheTimePicker({
   timeFormat,
   timePeriod,
   clockWorksheets = "24",
+  isValid = true,
   showClearBtn,
   tooltip,
   disabled,
@@ -67,15 +68,17 @@ export default function SheTimePicker({
   onDelay,
   onBlur,
   onTick,
+  onIsValid,
   ...props
 }: ISheTimePicker): JSX.Element {
   const [_date, setDate] = useState<Date>(date ?? new Date());
   const [_startDate, setStartDate] = useState<Date>(startDate ?? null);
   const [_period, setPeriod] = useState<Period>(timePeriod);
+  const [_isValid, setIsValid] = useState(isValid);
   const [_isDateValid, setIsDateValid] = useState<boolean>(null);
   const [_showError, setShowError] = useState(showError);
   const [_error, setError] = useState<string>(error ?? null);
-  const [_errorTransKey, setErrorTransKey] = useState(errorTransKey);
+  const [_errorTransKey, setErrorTransKey] = useState(errorTransKey ?? null);
 
   const ariaDescribedbyId = `${generateId()}_TIME_PICKER_ID`;
   const delayValue = useDebounce(_date, delayTime);
@@ -239,7 +242,16 @@ export default function SheTimePicker({
         "PLACE HERE VALID DEFAULT ERROR MESSAGE TRANS-KEY WHEN IT WILL BE AVAILABLE",
       );
       setShowError(!_.isNil(showError) ? showError : true);
+      updateIsValid(false);
+    } else {
+      updateIsValid(true);
     }
+  }
+
+  function updateIsValid(value: boolean) {
+    if (onIsValid) onIsValid(value);
+
+    setIsValid(value);
   }
 
   // ==================================================================== LAYOUT
@@ -247,7 +259,7 @@ export default function SheTimePicker({
   return (
     <div
       id={id}
-      className={`${cs.sheTimePicker} ${className} ${cs[view] || ""} ${cs[type] || ""} ${cs[size] || ""} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""}`}
+      className={`${cs.sheTimePicker} ${className} ${cs[view] || ""} ${cs[type] || ""} ${cs[size] || ""} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""} ${!_isValid ? cs.invalid : ""}`}
       style={{
         minWidth,
         maxWidth,

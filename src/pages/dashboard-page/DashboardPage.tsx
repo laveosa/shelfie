@@ -52,7 +52,7 @@ export function DashboardPage() {
         clockWorksheets={"12"}
         timePeriod={"PM"}
         timeFormat={TimeFormatEnum.HH_MM_SS_XM}
-        // size={"small"}
+        size={"small"}
         // view={ComponentViewEnum.CARD}
         autoFocus
         required
@@ -63,12 +63,13 @@ export function DashboardPage() {
         type={SheTimePickerTypeEnum.TIMER}
         // date={time}
         startDate={time}
-        endDate={new Date("05.15.2025 16:45:00")}
+        endDate={new Date("05.15.2025 17:15:00")}
         // isLoading
         onSetDate={onSetDateHandler}
         onDelay={onDelayHandler}
         onBlur={onBlurHandler}
         onTick={onTickHandler}
+        onIsValid={(event) => console.log("is valid: ", event)}
       />
 
       <br />
