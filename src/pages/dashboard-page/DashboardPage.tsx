@@ -43,21 +43,21 @@ export function DashboardPage() {
         // ssLabel="SS Label"
         // ssLabelTransKey="fwofijds"
         // periodLabel="PP Label"
-        icon={Clock}
-        clockWorksheets={"12"}
+        // icon={Clock}
+        // clockWorksheets={"12"}
         // timePeriod={"AM"}
-        timeFormat={TimeFormatEnum.HH_MM_SS_XM}
-        size={"small"}
+        // timeFormat={TimeFormatEnum.HH_MM_SS_XM}
+        // size={"small"}
         // view={ComponentViewEnum.CARD}
         autoFocus
         // required
         showClearBtn
-        // hideInputLabels
-        hideSeconds
+        hideInputLabels
+        // hideSeconds
         // type={SheTimePickerTypeEnum.CLOCK}
         // type={SheTimePickerTypeEnum.TIMER}
         // date={time}
-        startDate={time}
+        // startDate={time}
         // isLoading
         onSetDate={onSetDateHandler}
         onDelay={onDelayHandler}

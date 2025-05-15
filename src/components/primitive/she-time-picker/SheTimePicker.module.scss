@@ -138,9 +138,6 @@ $iconSize: 20px;
               max-width: 26px !important;
 
               button {
-                position: relative;
-                top: 1px;
-
                 span {
                   font-size: 14px;
                   line-height: 14px;
@@ -185,14 +182,15 @@ $iconSize: 20px;
               }
 
               input {
-                height: 20px;
-                width: 20px;
-                min-width: 20px;
-                max-width: 20px;
+                $inputSize: 20px;
+                height: $inputSize;
+                width: $inputSize;
+                min-width: $inputSize;
+                max-width: $inputSize;
               }
 
               .sheTimePickerSelect {
-                $selectWith: 14px;
+                $selectWith: 16px;
                 position: relative;
                 left: -4px;
                 min-width: $selectWith;
@@ -203,6 +201,7 @@ $iconSize: 20px;
                   top: 0;
                   min-width: $selectWith;
                   max-width: $selectWith;
+                  height: auto;
 
                   span {
                     font-size: 10px;

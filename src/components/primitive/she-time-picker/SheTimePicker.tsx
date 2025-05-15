@@ -98,54 +98,53 @@ export default function SheTimePicker({
           : delayValue,
       );
     }
-  }, [delayValue]);
+  }, [delayValue, timeFormat, onDelay]);
 
   useEffect(() => {
+    let interval = null;
+
     if (type === SheTimePickerTypeEnum.TIMER) {
       if (!_startDate) {
         setStartDate(new Date());
+        return;
       }
-    } else {
+
+      interval = setInterval(() => {
+        const now = new Date();
+        const msDiff = now.getTime() - _startDate.getTime();
+
+        const hours = Math.floor(msDiff / (1000 * 60 * 60));
+        const minutes = Math.floor((msDiff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((msDiff % (1000 * 60)) / 1000);
+
+        const newDate = new Date();
+        newDate.setHours(hours);
+        newDate.setMinutes(minutes);
+        newDate.setSeconds(seconds);
+        newDate.setMilliseconds(0);
+
+        setDate(newDate);
+        checkDateValidation(newDate);
+        configurePeriod(newDate);
+      }, 1000);
+    }
+
+    if (type === SheTimePickerTypeEnum.CLOCK) {
+      interval = setInterval(() => {
+        const now = new Date();
+        setDate(now);
+        checkDateValidation(now);
+        configurePeriod(now);
+      }, 1000);
+    }
+
+    if (type !== SheTimePickerTypeEnum.TIMER) {
       setStartDate(null);
     }
-  }, [type]);
 
-  useEffect(() => {
-    if (type !== SheTimePickerTypeEnum.CLOCK) return;
-
-    const interval = setInterval(() => {
-      const now = new Date();
-      setDate(now);
-      checkDateValidation(now);
-      configurePeriod(now);
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [type]);
-
-  useEffect(() => {
-    if (type !== SheTimePickerTypeEnum.TIMER || !_startDate) return;
-
-    const interval = setInterval(() => {
-      const now = new Date();
-      const msDiff = now.getTime() - _startDate.getTime();
-
-      const hours = Math.floor(msDiff / (1000 * 60 * 60));
-      const minutes = Math.floor((msDiff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((msDiff % (1000 * 60)) / 1000);
-
-      const newDate = new Date();
-      newDate.setHours(hours);
-      newDate.setMinutes(minutes);
-      newDate.setSeconds(seconds);
-      newDate.setMilliseconds(0);
-
-      setDate(newDate);
-      checkDateValidation(newDate);
-      configurePeriod(newDate);
-    }, 1000);
-
-    return () => clearInterval(interval);
+    return () => {
+      if (interval) clearInterval(interval);
+    };
   }, [type, _startDate]);
 
   // ==================================================================== EVENT
