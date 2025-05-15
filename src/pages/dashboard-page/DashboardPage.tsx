@@ -19,6 +19,11 @@ export function DashboardPage() {
     // setTime(value);
   }
 
+  function onTickHandler(value) {
+    console.log("onTick: ", value);
+    // setTime(value);
+  }
+
   function onDelayHandler(value) {
     console.log("onDelay: ", value);
   }
@@ -43,25 +48,26 @@ export function DashboardPage() {
         // ssLabel="SS Label"
         // ssLabelTransKey="fwofijds"
         // periodLabel="PP Label"
-        // icon={Clock}
-        // clockWorksheets={"12"}
-        // timePeriod={"AM"}
-        // timeFormat={TimeFormatEnum.HH_MM_SS_XM}
+        icon={Clock}
+        clockWorksheets={"12"}
+        timePeriod={"PM"}
+        timeFormat={TimeFormatEnum.HH_MM_SS_XM}
         // size={"small"}
         // view={ComponentViewEnum.CARD}
         autoFocus
-        // required
+        required
         showClearBtn
         hideInputLabels
         // hideSeconds
         // type={SheTimePickerTypeEnum.CLOCK}
-        // type={SheTimePickerTypeEnum.TIMER}
+        type={SheTimePickerTypeEnum.TIMER}
         // date={time}
         // startDate={time}
         // isLoading
         onSetDate={onSetDateHandler}
         onDelay={onDelayHandler}
         onBlur={onBlurHandler}
+        onTick={onTickHandler}
       />
 
       <br />

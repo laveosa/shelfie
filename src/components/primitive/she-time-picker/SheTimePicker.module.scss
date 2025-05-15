@@ -138,6 +138,9 @@ $iconSize: 20px;
               max-width: 26px !important;
 
               button {
+                position: relative;
+                top: 1px;
+
                 span {
                   font-size: 14px;
                   line-height: 14px;

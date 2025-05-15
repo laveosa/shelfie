@@ -53,4 +53,5 @@ export interface ISheTimePicker
   onSetDate?: (value: any) => void;
   onDelay?: (value: any) => void;
   onBlur?: (value: any) => void;
+  onTick?: (value: any) => void;
 }

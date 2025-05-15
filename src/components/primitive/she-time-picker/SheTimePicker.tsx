@@ -60,6 +60,7 @@ export default function SheTimePicker({
   onSetDate,
   onDelay,
   onBlur,
+  onTick,
   ...props
 }: ISheTimePicker): JSX.Element {
   const [_date, setDate] = useState<Date>(date ?? new Date());
@@ -126,7 +127,23 @@ export default function SheTimePicker({
         setDate(newDate);
         checkDateValidation(newDate);
         configurePeriod(newDate);
+
+        if (onTick) {
+          const start = _startDate ?? _date ?? new Date();
+          onTick({
+            startTime:
+              timeFormat && start ? moment(start).format(timeFormat) : start,
+            currentTime:
+              timeFormat && newDate
+                ? moment(newDate).format(timeFormat)
+                : newDate,
+          });
+        }
       }, 1000);
+    }
+
+    if (type !== SheTimePickerTypeEnum.TIMER) {
+      setStartDate(null);
     }
 
     if (type === SheTimePickerTypeEnum.CLOCK) {
@@ -136,10 +153,6 @@ export default function SheTimePicker({
         checkDateValidation(now);
         configurePeriod(now);
       }, 1000);
-    }
-
-    if (type !== SheTimePickerTypeEnum.TIMER) {
-      setStartDate(null);
     }
 
     return () => {
