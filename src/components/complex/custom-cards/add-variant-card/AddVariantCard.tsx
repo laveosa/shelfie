@@ -26,6 +26,7 @@ interface TraitForm {
 export default function AddVariantCard({
   isLoading,
   traits,
+  isDuplicateVariant,
   onAction,
   ...props
 }: IAddVariantCard) {
@@ -49,7 +50,11 @@ export default function AddVariantCard({
     const submissionData = {
       options: optionIds,
     };
-    onAction("addVariant", submissionData);
+    if (!isDuplicateVariant) {
+      onAction("addVariant", submissionData);
+    } else {
+      onAction("addDuplicatedVariant", submissionData);
+    }
   }
 
   const isPrimaryButtonDisabled = Object.values(form.getValues()).every(
@@ -85,8 +90,21 @@ export default function AddVariantCard({
                 name={trait.traitId.toString()}
                 render={({ field }) => {
                   return (
-                    <div className={cs.addVariantCardFormItem}>
-                      <FormItem className={cs.select}>
+                    <div
+                      className={cs.addVariantCardFormItem}
+                      style={
+                        isDuplicateVariant
+                          ? { paddingBottom: "10px" }
+                          : { paddingBottom: "20px" }
+                      }
+                    >
+                      <FormItem
+                        className={
+                          !isDuplicateVariant
+                            ? cs.select
+                            : cs.warningColorSelect
+                        }
+                      >
                         <FormLabel>{trait.traitName}</FormLabel>
                         <Select
                           onValueChange={(value) => {
@@ -140,6 +158,14 @@ export default function AddVariantCard({
               />
             ))}
           </SheForm>
+          {isDuplicateVariant && (
+            <span className={cs.warningText}>
+              The variant with this trait combination already exist for this
+              product. While not prohibited, it is not recommended to create
+              multiple copies of the same variant, since this will create
+              challenge with stock management
+            </span>
+          )}
         </div>
       </SheProductCard>
     </div>

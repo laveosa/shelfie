@@ -158,6 +158,39 @@ export function ManageVariantsPage() {
         break;
       case "addVariant":
         dispatch(actions.setIsAddVariantCardLoading(true));
+        service
+          .checkVariantCombinationHandler(productId, payload)
+          .then((res) => {
+            if (res) {
+              service.createVariantHandler(productId, payload).then((res) => {
+                dispatch(actions.setIsAddVariantCardLoading(false));
+                if (res) {
+                  handleCardAction("addVariantCard");
+                  productsService
+                    .getProductVariantsHandler(productId)
+                    .then((res) => {
+                      dispatch(productsActions.refreshProductVariants(res));
+                    });
+                  addToast({
+                    text: "Variant added successfully",
+                    type: "success",
+                  });
+                } else {
+                  addToast({
+                    text: "Variant not added",
+                    description: res.error.message,
+                    type: "error",
+                  });
+                }
+              });
+            } else {
+              dispatch(actions.setIsAddVariantCardLoading(false));
+              dispatch(actions.refreshIsDuplicateVariant(true));
+            }
+          });
+        break;
+      case "addDuplicatedVariant":
+        dispatch(actions.setIsAddVariantCardLoading(true));
         service.createVariantHandler(productId, payload).then((res) => {
           dispatch(actions.setIsAddVariantCardLoading(false));
           if (res) {
@@ -177,6 +210,7 @@ export function ManageVariantsPage() {
             });
           }
         });
+        dispatch(actions.refreshIsDuplicateVariant(false));
         break;
       case "manageVariant":
         handleCardAction("variantConfigurationCard", true);
@@ -732,6 +766,7 @@ export function ManageVariantsPage() {
         handleCardAction("productTraitConfigurationCard");
         break;
       case "closeAddVariantCard":
+        dispatch(actions.refreshIsDuplicateVariant(false));
         handleCardAction("addVariantCard");
         break;
       case "closeVariantPhotosCard":
@@ -853,8 +888,9 @@ export function ManageVariantsPage() {
         >
           <AddVariantCard
             isLoading={state.isAddVariantCardLoading}
-            onAction={onAction}
             traits={state.listOfTraitsWithOptionsForProduct}
+            isDuplicateVariant={state.isDuplicateVariant}
+            onAction={onAction}
           />
         </div>
       )}

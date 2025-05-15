@@ -30,6 +30,7 @@ export interface IManageVariantsPageSlice {
   products?: ProductModel[];
   variants: VariantModel[];
   selectedVariant: VariantModel;
+  isDuplicateVariant: boolean;
   traits?: TraitModel[];
   typesOfTraits?: TypeOfTraitModel[];
   listOfTraitsForProduct?: TraitModel[];
