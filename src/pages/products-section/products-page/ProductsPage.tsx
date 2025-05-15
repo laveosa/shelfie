@@ -15,7 +15,6 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SheTabs from "@/components/complex/she-tabs/SheTabs.tsx";
 import { productsGridColumns } from "@/components/complex/grid/products-grid/ProductsGridColumns.tsx";
-import { GridModel } from "@/const/models/GridModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
@@ -39,14 +38,17 @@ export function ProductsPage() {
   const service = useProductsPageService();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("products");
+  const [activeStates, setActiveStates] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     const fetchData = async () => {
       if (activeTab === "products") {
         const res = await service.getTheProductsForGridHandler(
           state.gridRequestModel,
+          true,
         );
         dispatch(actions.refreshProductsGridModel(res));
+        dispatch(actions.refreshProducts(res.items));
       } else if (activeTab === "variants") {
         const res = await service.getVariantsForGridHandler(
           state.gridRequestModel,
@@ -59,18 +61,37 @@ export function ProductsPage() {
   }, [state.gridRequestModel, activeTab, dispatch]);
 
   useEffect(() => {
+    if (state.productsGridModel?.items?.length > 0) {
+      const initialActiveStates = state.productsGridModel.items.reduce(
+        (acc, product) => {
+          const rowId = product.productId.toString();
+          acc[rowId] = product.isActive;
+          return acc;
+        },
+        {},
+      );
+
+      setActiveStates(initialActiveStates);
+    }
+  }, [state.productsGridModel.items]);
+
+  useEffect(() => {
     service.getBrandsForFilterHandler();
     service.getCategoriesForFilterHandler();
     service.getSortingOptionsForGridHandler();
   }, []);
+
+  // In your ProductsPage.tsx file, update the onAction function:
 
   const onAction = (
     actionType: string,
     rowId?: string,
     setLoadingRow?: (rowId: string, loading: boolean) => void,
     rowData?: ProductModel,
+    _rowOriginal?: any,
   ) => {
-    setLoadingRow?.(rowId, true);
+    setLoadingRow(rowId, true);
+
     switch (actionType) {
       case "image":
         break;
@@ -80,19 +101,39 @@ export function ProductsPage() {
         );
         break;
       case "activateProduct":
-        service.toggleProductActivationHandler(rowData.productId).then(() => {
+        {
+          const currentActive =
+            rowId && rowId in activeStates
+              ? activeStates[rowId]
+              : rowData?.isActive;
+
+          const newState = !currentActive;
+
+          if (rowId) {
+            setActiveStates((prev) => ({
+              ...prev,
+              [rowId]: newState,
+            }));
+          }
+
           service
-            .getTheProductsForGridHandler(state.gridRequestModel)
-            .then((res: GridModel) => {
-              dispatch(actions.refreshProductsGridModel(res));
+            .toggleProductActivationHandler(rowData.productId)
+            .catch((error) => {
+              console.error("Failed to toggle product activation:", error);
+              if (rowId) {
+                setActiveStates((prev) => ({
+                  ...prev,
+                  [rowId]: currentActive,
+                }));
+              }
             });
-        });
+        }
         break;
       case "delete":
         console.log(`Deleting row ${rowId}`);
         break;
       case "activateVariant":
-        console.log(`Deleting row ${rowId}`);
+        console.log(`Activating variant ${rowId}`);
         break;
       case "manageVariant":
         navigate(
@@ -100,10 +141,11 @@ export function ProductsPage() {
         );
         break;
     }
-    setLoadingRow?.(rowId, false);
+
+    setLoadingRow(rowId, false);
   };
 
-  const productsColumns = productsGridColumns(onAction);
+  const productsColumns = productsGridColumns(onAction, activeStates);
   const variantsColumns = variantsGridColumns(onAction);
 
   function handleAddProduct() {

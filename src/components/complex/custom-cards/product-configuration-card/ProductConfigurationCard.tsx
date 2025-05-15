@@ -25,6 +25,7 @@ import { IProductConfigurationCard } from "@/const/interfaces/complex-components
 import { useForm } from "react-hook-form";
 
 export default function ProductConfigurationCard({
+  isLoading,
   product,
   brandsList,
   categoriesList,
@@ -91,8 +92,9 @@ export default function ProductConfigurationCard({
   return (
     <div>
       <SheProductCard
+        loading={isLoading}
         view="card"
-        title={product.productId ? "Basic Product Data" : "Create Product"}
+        title={product?.productId ? "Basic Product Data" : "Create Product"}
         showPrimaryButton={true}
         primaryButtonTitle={product?.productId ? "Save" : "Add Product"}
         showSecondaryButton={!product?.productId}
@@ -177,7 +179,7 @@ export default function ProductConfigurationCard({
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue>
+                          <SelectValue placeholder="Select category">
                             {categoriesList.find(
                               (item) =>
                                 item.categoryId === form.watch("categoryId"),

@@ -5,18 +5,26 @@ import cs from "./ItemsCard.module.scss";
 import { Separator } from "@/components/ui/separator.tsx";
 import { IItemsCard } from "@/const/interfaces/complex-components/custom-cards/IItemsCard.ts";
 import { Image } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton.tsx";
 
 export default function ItemsCard({
+  isLoading,
+  isItemsLoading,
   data,
   title,
+  skeletonQuantity,
   onAction,
   selectedItem,
   ...props
 }: IItemsCard) {
   const [selectedId, setSelectedId] = useState(Number(selectedItem));
 
+  function createSkeletonArray(quantity: number): object[] {
+    return Array.from({ length: quantity }, () => ({}));
+  }
+
   const handleItemClick = (item) => {
-    setSelectedId(item.variantId ?? item.productId);
+    setSelectedId(item.productId);
     onAction(item);
   };
 
@@ -27,6 +35,7 @@ export default function ItemsCard({
   return (
     <div>
       <SheProductCard
+        loading={isLoading}
         title={title}
         width="300px"
         minWidth="300px"
@@ -35,29 +44,46 @@ export default function ItemsCard({
         {...props}
       >
         <div className={cs.productsList}>
-          {data.map((item, index) => (
-            <div key={item.id || index} onClick={() => handleItemClick(item)}>
-              <div
-                className={`${cs.productsListItem} ${selectedId === (item.variantId ?? item.productId) ? cs.selected : ""}`}
-              >
-                {item.image?.thumbnailUrl ? (
-                  <img
-                    src={item.image?.thumbnailUrl}
-                    alt={item.productName ?? item.variantName}
-                    className={cs.productItemImage}
-                  />
-                ) : (
-                  <div className={cs.productItemPlaceholderIcon}>
-                    <Image />
+          {isItemsLoading ? (
+            <div>
+              {createSkeletonArray(skeletonQuantity ?? 10).map((_, index) => (
+                <div key={index} className={cs.skeletonItems}>
+                  <Skeleton className="h-12 w-12 rounded-full" />
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-[180px]" />
+                    <Skeleton className="h-4 w-[140px]" />
                   </div>
-                )}
-                <div className={cs.productItemName}>
-                  {item.productName ?? item.variantName}
                 </div>
-              </div>
-              <Separator orientation="horizontal" />
+              ))}
             </div>
-          ))}
+          ) : (
+            <div>
+              {data?.map((item, index) => (
+                <div
+                  key={item.id || index}
+                  onClick={() => handleItemClick(item)}
+                >
+                  <div
+                    className={`${cs.productsListItem} ${selectedId === item.productId ? cs.selected : ""}`}
+                  >
+                    {item.image?.thumbnailUrl ? (
+                      <img
+                        src={item.image?.thumbnailUrl}
+                        alt={item.productName}
+                        className={cs.productItemImage}
+                      />
+                    ) : (
+                      <div className={cs.productItemPlaceholderIcon}>
+                        <Image />
+                      </div>
+                    )}
+                    <div className={cs.productItemName}>{item.productName}</div>
+                  </div>
+                  <Separator orientation="horizontal" />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </SheProductCard>
     </div>

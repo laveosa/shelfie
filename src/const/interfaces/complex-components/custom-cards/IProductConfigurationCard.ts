@@ -3,6 +3,7 @@ import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 
 export interface IProductConfigurationCard {
+  isLoading?: boolean;
   product: ProductModel;
   brandsList?: BrandModel[];
   categoriesList?: CategoryModel[];

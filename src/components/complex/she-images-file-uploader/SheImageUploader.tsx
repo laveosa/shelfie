@@ -91,7 +91,7 @@ export function SheImageUploader({
     <div className={`${cs.sheImageUploader} not-prose flex flex-col gap-4`}>
       <Dropzone {...dropzone}>
         <DropZoneArea>
-          <DropzoneTrigger className="flex flex-col items-center gap-4 bg-transparent p-10 text-center text-sm">
+          <DropzoneTrigger className="flex flex-col items-center gap-4 bg-transparent text-center text-sm">
             <CloudUploadIcon className="size-8" />
             <div>
               <p className="font-semibold">Upload images</p>

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import {
@@ -35,117 +35,154 @@ import { VariantModel } from "@/const/models/VariantModel.ts";
 import { VariantConfigurationGridColumns } from "@/components/complex/grid/variant-configuration-grid/VariantConfigurationGridColumns.tsx";
 import { VariantPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/VariantPhotosGridColumns.tsx";
 
+const debounce = (fn: (...args: any[]) => void, delay: number) => {
+  let timer: ReturnType<typeof setTimeout>;
+  return (...args: any[]) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), delay);
+  };
+};
+
 export default function VariantConfigurationCard({
+  isLoading,
+  isVariantOptionsGridLoading,
+  isVariantPhotoGridLoading,
   variant,
   data,
   onAction,
   taxesList,
+  productCounter,
   onGenerateProductCode,
   onSecondaryButtonClick,
   ...props
 }: IVariantConfigurationCard) {
   const traitsColumns = VariantConfigurationGridColumns;
   const photoColumns = VariantPhotosGridColumns(onGridAction);
-  const form = useForm({
-    defaultValues: {
-      variantName: variant?.variantName || "",
-      variantCode: variant?.variantCode || "",
-      salePrice: {
-        brutto: variant?.salePrice?.brutto,
-        netto: variant?.salePrice?.netto,
-        taxTypeId: taxesList?.[0].id,
-      },
+
+  const currentVariantIdRef = useRef<string | number | null>(
+    variant?.variantId || null,
+  );
+
+  const [initialFormValues, setInitialFormValues] = useState({
+    variantName: variant?.variantName || "",
+    variantCode: variant?.variantCode || "",
+    salePrice: {
+      brutto: variant?.salePrice?.brutto,
+      netto: variant?.salePrice?.netto,
+      taxTypeId: variant?.salePrice?.taxTypeId || taxesList?.[0]?.id,
     },
   });
-  const { watch, setValue } = form;
 
-  const netto = watch("salePrice.netto");
-  const brutto = watch("salePrice.brutto");
-  const taxTypeId = watch("salePrice.taxTypeId");
-  const selectedTax = taxesList?.find((tax) => tax.id === taxTypeId);
-  const taxRate = selectedTax?.value || 0;
-  const lastChanged = useRef<"netto" | "brutto" | null>(null);
-  const priceValues = useMemo(() => {
-    return {
-      netto,
-      brutto,
-      taxRate,
-    };
-  }, [netto, brutto, taxRate]);
+  const userModifiedForm = useRef(false);
+  const debouncedFnRef = useRef<any>(null);
 
-  function calculatePrices() {
-    if (!lastChanged.current) return null;
-
-    const currentValues = form.getValues();
-    let needRecalculate = false;
-
-    if (lastChanged.current === "netto") {
-      const calculatedBrutto = +(
-        currentValues.salePrice.netto *
-        (1 + taxRate)
-      ).toFixed(2);
-      if (currentValues.salePrice.brutto !== calculatedBrutto) {
-        setValue("salePrice.brutto", calculatedBrutto);
-        needRecalculate = true;
-      }
-    } else if (lastChanged.current === "brutto") {
-      const calculatedNetto = +(
-        currentValues.salePrice.brutto /
-        (1 + taxRate)
-      ).toFixed(2);
-      if (currentValues.salePrice.netto !== calculatedNetto) {
-        setValue("salePrice.netto", calculatedNetto);
-        needRecalculate = true;
-      }
-    }
-
-    return {
-      values: currentValues,
-      needRecalculate,
-    };
-  }
+  const form = useForm({
+    defaultValues: initialFormValues,
+  });
 
   useEffect(() => {
-    const result = calculatePrices();
-
-    if (result && !result.needRecalculate) {
-      onSubmit(result.values);
+    if (debouncedFnRef.current && debouncedFnRef.current.cancel) {
+      debouncedFnRef.current.cancel();
     }
-  }, [priceValues]);
+    return () => {
+      if (debouncedFnRef.current && debouncedFnRef.current.cancel) {
+        debouncedFnRef.current.cancel();
+      }
+    };
+  }, [variant?.variantId]);
+
+  useEffect(() => {
+    if (currentVariantIdRef.current !== variant?.variantId) {
+      currentVariantIdRef.current = variant?.variantId || null;
+
+      const newValues = {
+        variantName: variant?.variantName || "",
+        variantCode: variant?.variantCode || "",
+        salePrice: {
+          brutto: variant?.salePrice?.brutto,
+          netto: variant?.salePrice?.netto,
+          taxTypeId: variant?.salePrice?.taxTypeId || taxesList?.[0]?.id,
+        },
+      };
+
+      setInitialFormValues(newValues);
+      form.reset(newValues);
+      userModifiedForm.current = false;
+    }
+  }, [variant?.variantId, variant, taxesList, form]);
+
+  const { setValue, register, getValues } = form;
+  const lastChanged = useRef<"netto" | "brutto" | null>(null);
+
+  const createDebouncedSubmit = () => {
+    const fn = debounce(() => {
+      const currentValues = getValues();
+      if (userModifiedForm.current) {
+        form.handleSubmit(onSubmit)();
+      }
+    }, 500);
+
+    debouncedFnRef.current = fn;
+    return fn;
+  };
+
+  function onSubmit(data: VariantModel) {
+    if (!userModifiedForm.current) return;
+
+    let { netto, brutto, taxTypeId } = data.salePrice;
+    const taxRate = taxesList.find((t) => t.id === taxTypeId)?.value ?? 0;
+
+    if (lastChanged.current === "netto") {
+      brutto = +(netto * (1 + taxRate)).toFixed(2);
+    } else if (lastChanged.current === "brutto") {
+      netto = +(brutto / (1 + taxRate)).toFixed(2);
+    }
+
+    setValue("salePrice.netto", netto);
+    setValue("salePrice.brutto", brutto);
+
+    const formattedData = {
+      ...data,
+      salePrice: { netto, brutto, taxTypeId },
+    };
+
+    if (variant) {
+      onAction("updateVariantDetails", { formattedData, variant });
+    }
+
+    setInitialFormValues({
+      variantName: data.variantName || "",
+      variantCode: data.variantCode || "",
+      salePrice: { netto, brutto, taxTypeId },
+    });
+
+    userModifiedForm.current = false;
+  }
+
+  const handleFieldChange = () => {
+    const currentValues = getValues();
+    const initialValues = initialFormValues;
+
+    const hasChanged =
+      currentValues.variantName !== initialValues.variantName ||
+      currentValues.variantCode !== initialValues.variantCode ||
+      currentValues.salePrice.netto !== initialValues.salePrice.netto ||
+      currentValues.salePrice.brutto !== initialValues.salePrice.brutto ||
+      currentValues.salePrice.taxTypeId !== initialValues.salePrice.taxTypeId;
+
+    if (hasChanged) {
+      userModifiedForm.current = true;
+      createDebouncedSubmit()();
+    }
+  };
 
   function onGenerateCode() {
     onGenerateProductCode().then((res: ProductCodeModel) => {
       form.setValue("variantCode", res.code, { shouldDirty: true });
-
-      const formData = form.getValues();
-      const formattedData = {
-        ...formData,
-        salePrice: {
-          brutto: Number(formData.salePrice.brutto),
-          netto: Number(formData.salePrice.netto),
-          taxTypeId: Number(formData.salePrice.taxTypeId),
-        },
-      };
-
-      onAction("updateVariantDetails", { formattedData, variant });
+      userModifiedForm.current = true;
+      form.handleSubmit(onSubmit)();
     });
   }
-
-  function onSubmit(data: VariantModel) {
-    const formattedData = {
-      ...data,
-      salePrice: {
-        brutto: Number(data.salePrice.brutto),
-        netto: Number(data.salePrice.netto),
-        taxTypeId: Number(data.salePrice.taxTypeId),
-      },
-    };
-    onAction("updateVariantDetails", { formattedData, variant });
-  }
-
-  const handleOnChangeDelay = (_value: string | number | readonly string[]) => {
-    form.handleSubmit(onSubmit)();
-  };
 
   function onGridAction(
     _actionType: string,
@@ -159,6 +196,7 @@ export default function VariantConfigurationCard({
 
   return (
     <SheProductCard
+      loading={isLoading}
       title="Manage Variant"
       view="card"
       showCloseButton
@@ -166,14 +204,16 @@ export default function VariantConfigurationCard({
       className={cs.variantConfigurationCard}
       {...props}
     >
-      <div className={cs.variantConfigurationCardContent}>
+      <div
+        className={cs.variantConfigurationCardContent}
+        // style={isLoading ? { pointerEvents: "none", opacity: 0.5 } : {}}
+      >
         <div className={cs.variantConfigurationForm}>
           <SheForm form={form} onSubmit={onSubmit}>
             <SheForm.Field name="variantName">
               <SheInput
                 label="Optional Variant Name"
-                value={variant?.variantName}
-                onDelay={handleOnChangeDelay}
+                onDelay={handleFieldChange}
                 fullWidth
               />
             </SheForm.Field>
@@ -181,9 +221,8 @@ export default function VariantConfigurationCard({
               <SheForm.Field name="variantCode" label="Variant Code">
                 <div>
                   <SheInput
-                    {...(form.register("variantCode") as any)}
-                    value={variant?.variantCode}
-                    onDelay={handleOnChangeDelay}
+                    {...(register("variantCode") as any)}
+                    onDelay={handleFieldChange}
                   />
                 </div>
               </SheForm.Field>
@@ -200,11 +239,13 @@ export default function VariantConfigurationCard({
                   <SheInput
                     type="number"
                     step="any"
-                    {...(form.register("salePrice.netto", {
+                    {...(register("salePrice.netto", {
                       valueAsNumber: true,
-                      onChange: () => (lastChanged.current = "netto"),
+                      onChange: () => {
+                        lastChanged.current = "netto";
+                        handleFieldChange();
+                      },
                     }) as any)}
-                    onDelay={handleOnChangeDelay}
                   />
                 </SheForm.Field>
               </div>
@@ -216,7 +257,10 @@ export default function VariantConfigurationCard({
                     <FormItem>
                       <FormLabel>VAT</FormLabel>
                       <Select
-                        onValueChange={(value) => field.onChange(Number(value))}
+                        onValueChange={(value) => {
+                          field.onChange(Number(value));
+                          handleFieldChange();
+                        }}
                         value={field.value ? field.value.toString() : ""}
                       >
                         <FormControl>
@@ -247,11 +291,13 @@ export default function VariantConfigurationCard({
                   <SheInput
                     type="number"
                     step="any"
-                    {...(form.register("salePrice.brutto", {
+                    {...(register("salePrice.brutto", {
                       valueAsNumber: true,
-                      onChange: () => (lastChanged.current = "brutto"),
+                      onChange: () => {
+                        lastChanged.current = "brutto";
+                        handleFieldChange();
+                      },
                     }) as any)}
-                    onDelay={handleOnChangeDelay}
                   />
                 </SheForm.Field>
               </div>
@@ -312,6 +358,7 @@ export default function VariantConfigurationCard({
           </div>
           <div>
             <DndGridDataTable
+              isLoading={isVariantOptionsGridLoading}
               showHeader={false}
               columns={traitsColumns}
               data={variant?.traitOptions}
@@ -333,11 +380,13 @@ export default function VariantConfigurationCard({
           {variant?.photos?.length > 0 && (
             <div>
               <DndGridDataTable
+                isLoading={isVariantPhotoGridLoading}
                 enableDnd={true}
                 showHeader={false}
                 columns={photoColumns}
                 data={variant?.photos}
                 gridModel={data}
+                skeletonQuantity={productCounter.gallery}
                 onNewItemPosition={(newIndex, activeItem) =>
                   onAction("dndVariantPhoto", { newIndex, activeItem })
                 }

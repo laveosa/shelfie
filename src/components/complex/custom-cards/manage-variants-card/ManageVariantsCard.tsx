@@ -16,9 +16,12 @@ import { IManageVariantsCard } from "@/const/interfaces/complex-components/custo
 import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 
 export default function ManageVariantsCard({
+  isLoading,
+  isVariantsLoading,
   data,
   traits,
   variants,
+  productCounter,
   onAction,
   ...props
 }: IManageVariantsCard) {
@@ -63,6 +66,7 @@ export default function ManageVariantsCard({
 
   return (
     <SheProductCard
+      loading={isLoading}
       title="Manage Variants"
       view="card"
       showPrimaryButton={false}
@@ -133,19 +137,19 @@ export default function ManageVariantsCard({
           {/*)}*/}
         </div>
         <div>
-          {variants?.length > 0 && (
-            <DndGridDataTable
-              className={cs.manageVariantsCardGrid}
-              enableDnd={true}
-              showHeader={false}
-              columns={columns}
-              data={variants}
-              gridModel={data}
-              onNewItemPosition={(newIndex, activeItem) =>
-                handleAction("dnd", { newIndex, activeItem })
-              }
-            />
-          )}
+          <DndGridDataTable
+            isLoading={isVariantsLoading}
+            className={cs.manageVariantsCardGrid}
+            enableDnd={true}
+            showHeader={false}
+            columns={columns}
+            data={variants}
+            gridModel={data}
+            customMessage="VARIANT HAS NO PHOTO"
+            onNewItemPosition={(newIndex, activeItem) =>
+              handleAction("dnd", { newIndex, activeItem })
+            }
+          />
         </div>
       </div>
     </SheProductCard>

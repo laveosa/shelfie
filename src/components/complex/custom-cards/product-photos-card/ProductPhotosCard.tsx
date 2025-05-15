@@ -9,8 +9,10 @@ import { ProductPhotosGridColumns } from "@/components/complex/grid/variant-phot
 
 export default function ProductPhotosCard({
   isLoading,
+  isGridLoading,
   data,
   contextId,
+  productCounter,
   onAction,
   ...props
 }) {
@@ -28,8 +30,8 @@ export default function ProductPhotosCard({
         onAction("openConnectImageCard", payload);
         break;
       case "dnd":
-        const { newIndex, activeItem } = payload;
-        onAction("dnd", { newIndex, activeItem });
+        const { newIndex, activeItem, oldIndex } = payload;
+        onAction("changePhotoPosition", { newIndex, activeItem, oldIndex });
         break;
     }
   }
@@ -53,6 +55,7 @@ export default function ProductPhotosCard({
   return (
     <div className={cs.productPhotosCard}>
       <SheProductCard
+        loading={isLoading}
         title="Product Photos"
         view="card"
         className={cs.productPhotosCard}
@@ -72,16 +75,17 @@ export default function ProductPhotosCard({
             </div>
             <div className={cs.managePhotosGrid}>
               <DndGridDataTable
-                isLoading={isLoading}
+                isLoading={isGridLoading}
                 className={cs.photosGrid}
                 enableDnd={true}
                 showHeader={false}
                 columns={columns}
                 data={data}
                 gridModel={data}
+                skeletonQuantity={productCounter?.gallery}
                 customMessage="PRODUCT HAS NO PHOTO"
-                onNewItemPosition={(newIndex, activeItem) =>
-                  handleAction("dnd", { newIndex, activeItem })
+                onNewItemPosition={(newIndex, activeItem, oldIndex) =>
+                  handleAction("dnd", { newIndex, activeItem, oldIndex })
                 }
               />
             </div>

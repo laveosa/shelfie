@@ -58,12 +58,6 @@ export const ProductsApiService = createApi({
         url: `${ApiUrlEnum.PRODUCTS}/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: (_result, _error, id) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          id,
-        },
-      ],
     }),
     getTheProductsForGrid: apiConfig.createMutation<
       GridModel,
@@ -143,12 +137,6 @@ export const ProductsApiService = createApi({
         method: "POST",
         body: JSON.stringify(model),
       }),
-      // invalidatesTags: (_result, _error, model) => [
-      //   {
-      //     type: ApiServiceNameEnum.PRODUCTS,
-      //     model,
-      //   },
-      // ],
     }),
     createBrand: apiConfig.createMutation<void, BrandModel>(builder, {
       query: (model: BrandModel) => ({
@@ -156,12 +144,6 @@ export const ProductsApiService = createApi({
         method: "POST",
         body: JSON.stringify(model),
       }),
-      // invalidatesTags: (_result, _error, model) => [
-      //   {
-      //     type: ApiServiceNameEnum.PRODUCTS,
-      //     model,
-      //   },
-      // ],
     }),
     uploadPhoto: apiConfig.createMutation<void, any>(builder, {
       query: (model: UploadPhotoModel) => ({
@@ -172,12 +154,6 @@ export const ProductsApiService = createApi({
           "Content-Type": model.file.type,
         },
       }),
-      invalidatesTags: (_result, _error, file) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          file,
-        },
-      ],
     }),
     getCountersForProducts: apiConfig.createQuery<ProductCounterModel, number>(
       builder,
@@ -185,39 +161,23 @@ export const ProductsApiService = createApi({
         query: (id: number) => ({
           url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/${id}/counters`,
         }),
-        // providesTags: (_result, _error, result) => [
-        //   {
-        //     type: ApiServiceNameEnum.PRODUCTS,
-        //     result,
-        //   },
-        // ],
       },
     ),
-    getProductPhotos: apiConfig.createQuery<ProductCounterModel, number>(
-      builder,
-      {
-        query: (id: number) => ({
-          url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/${id}/photos`,
-        }),
-        providesTags: (_result, _error, result) => [
-          {
-            type: ApiServiceNameEnum.PRODUCTS,
-            result,
-          },
-        ],
-      },
-    ),
+    getProductPhotos: apiConfig.createQuery<any, number>(builder, {
+      query: (id: number) => ({
+        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/${id}/photos`,
+      }),
+    }),
+    getProductPhotosForVariant: apiConfig.createQuery<any, any>(builder, {
+      query: ({ productId, variantId }) => ({
+        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/${productId}/photos/exclude-variant/${variantId}`,
+      }),
+    }),
     putPhotoInNewPosition: apiConfig.createMutation<void, any>(builder, {
       query: ({ productId, photoId, index }) => ({
         url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/${productId}/photo/${photoId}/${index}`,
         method: "PATCH",
       }),
-      // invalidatesTags: (_result, _error, result) => [
-      //   {
-      //     type: ApiServiceNameEnum.PRODUCTS,
-      //     result,
-      //   },
-      // ],
     }),
     detachVariantPhoto: apiConfig.createMutation<
       any,
@@ -230,12 +190,6 @@ export const ProductsApiService = createApi({
         url: `${ApiUrlEnum.VARIANTS}/${id}/detach-photo/${photoId}`,
         method: "PATCH",
       }),
-      // invalidatesTags: (_result, _error, result) => [
-      //   {
-      //     type: ApiServiceNameEnum.PRODUCTS,
-      //     result,
-      //   },
-      // ],
     }),
     getVariantsForGrid: apiConfig.createMutation<GridModel, GridRequestModel>(
       builder,
@@ -245,24 +199,12 @@ export const ProductsApiService = createApi({
           method: "POST",
           body: JSON.stringify(model),
         }),
-        // invalidatesTags: (_result, _error, model) => [
-        //   {
-        //     type: ApiServiceNameEnum.PRODUCTS,
-        //     model,
-        //   },
-        // ],
       },
     ),
     getProductVariants: apiConfig.createQuery<VariantModel[], number>(builder, {
       query: (id: number) => ({
         url: `${ApiUrlEnum.PRODUCTS}/${id}${ApiUrlEnum.VARIANTS}`,
       }),
-      providesTags: (_result, _error, result) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          result,
-        },
-      ],
     }),
     createVariant: apiConfig.createMutation<
       any,
@@ -276,35 +218,17 @@ export const ProductsApiService = createApi({
         method: "POST",
         body: JSON.stringify(model),
       }),
-      // invalidatesTags: (_result, _error, model) => [
-      //   {
-      //     type: ApiServiceNameEnum.PRODUCTS,
-      //     model,
-      //   },
-      // ],
     }),
     getVariantDetails: apiConfig.createQuery<VariantModel, number>(builder, {
       query: (id: number) => ({
         url: `${ApiUrlEnum.VARIANTS}/${id}`,
       }),
-      // providesTags: (_result, _error, result) => [
-      //   {
-      //     type: ApiServiceNameEnum.PRODUCTS,
-      //     result,
-      //   },
-      // ],
     }),
     toggleVariantIsActive: apiConfig.createMutation<any, number>(builder, {
       query: (id: number) => ({
         url: `${ApiUrlEnum.VARIANTS}/${id}/toggle-active`,
         method: "PATCH",
       }),
-      // invalidatesTags: (_result, _error, result) => [
-      //   {
-      //     type: ApiServiceNameEnum.PRODUCTS,
-      //     result,
-      //   },
-      // ],
     }),
     updateVariantDetails: apiConfig.createMutation<
       any,
@@ -318,12 +242,6 @@ export const ProductsApiService = createApi({
         method: "PATCH",
         body: JSON.stringify(model),
       }),
-      // invalidatesTags: (_result, _error, result) => [
-      //   {
-      //     type: ApiServiceNameEnum.PRODUCTS,
-      //     result,
-      //   },
-      // ],
     }),
     updateVariantTraitOptions: apiConfig.createMutation<
       any,
@@ -337,12 +255,6 @@ export const ProductsApiService = createApi({
         method: "PATCH",
         body: JSON.stringify(model),
       }),
-      // invalidatesTags: (_result, _error, result) => [
-      //   {
-      //     type: ApiServiceNameEnum.PRODUCTS,
-      //     result,
-      //   },
-      // ],
     }),
     increaseStockAmountForVariant: apiConfig.createMutation<
       any,
@@ -356,12 +268,6 @@ export const ProductsApiService = createApi({
         method: "POST",
         body: JSON.stringify(model),
       }),
-      // invalidatesTags: (_result, _error, model) => [
-      //   {
-      //     type: ApiServiceNameEnum.PRODUCTS,
-      //     model,
-      //   },
-      // ],
     }),
     disposeVariantFromStock: apiConfig.createMutation<
       any,
@@ -375,23 +281,11 @@ export const ProductsApiService = createApi({
         method: "POST",
         body: JSON.stringify(model),
       }),
-      // invalidatesTags: (_result, _error, model) => [
-      //   {
-      //     type: ApiServiceNameEnum.PRODUCTS,
-      //     model,
-      //   },
-      // ],
     }),
     getVariantStockHistory: apiConfig.createQuery<any, number>(builder, {
       query: (id: number) => ({
         url: `${ApiUrlEnum.VARIANTS}/${id}/stock-history`,
       }),
-      // providesTags: (_result, _error, result) => [
-      //   {
-      //     type: ApiServiceNameEnum.PRODUCTS,
-      //     result,
-      //   },
-      // ],
     }),
     changeVariantPosition: apiConfig.createMutation<
       any,
@@ -418,12 +312,6 @@ export const ProductsApiService = createApi({
         url: `${ApiUrlEnum.VARIANTS}/${id}/photo/${photoId}/${index}`,
         method: "PATCH",
       }),
-      // invalidatesTags: (_result, _error, result) => [
-      //   {
-      //     type: ApiServiceNameEnum.PRODUCTS,
-      //     result,
-      //   },
-      // ],
     }),
     attachProductPhotoToVariant: apiConfig.createMutation<
       any,
@@ -446,8 +334,6 @@ export const ProductsApiService = createApi({
       query: (id) => ({
         url: `${ApiUrlEnum.PRODUCTS}/${id}${ApiUrlEnum.TRAITS}`,
       }),
-      providesTags: (result) =>
-        apiConfig.providesTags(result, ApiServiceNameEnum.PRODUCTS),
     }),
     getListOfTraitsWithOptionsForProduct: apiConfig.createQuery<any, number>(
       builder,
@@ -455,20 +341,12 @@ export const ProductsApiService = createApi({
         query: (id) => ({
           url: `${ApiUrlEnum.PRODUCTS}/${id}/traits-with-options`,
         }),
-        providesTags: (result) =>
-          apiConfig.providesTags(result, ApiServiceNameEnum.PRODUCTS),
       },
     ),
     getTrait: apiConfig.createQuery<any, number>(builder, {
       query: (id) => ({
         url: `${ApiUrlEnum.TRAITS}/${id}`,
       }),
-      providesTags: (_result, _error, result) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          result,
-        },
-      ],
     }),
     createNewTrait: apiConfig.createMutation<any, TraitModel>(builder, {
       query: (model?: any) => ({
@@ -476,12 +354,6 @@ export const ProductsApiService = createApi({
         method: "POST",
         body: JSON.stringify(model),
       }),
-      invalidatesTags: (_result, _error, model: TraitModel) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          model,
-        },
-      ],
     }),
     updateTrait: apiConfig.createMutation<
       any,
@@ -550,12 +422,6 @@ export const ProductsApiService = createApi({
         url: `${ApiUrlEnum.TRAIT_OPTIONS}/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: (_result, _error, result) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          result,
-        },
-      ],
     }),
     changePositionOfTraitOption: apiConfig.createMutation<
       any,
@@ -569,12 +435,6 @@ export const ProductsApiService = createApi({
         url: `${ApiUrlEnum.TRAITS}/${traitId}/options/${optionId}/${index}`,
         method: "PATCH",
       }),
-      invalidatesTags: (_result, _error, result) => [
-        {
-          type: ApiServiceNameEnum.PRODUCTS,
-          result,
-        },
-      ],
     }),
   }),
 });

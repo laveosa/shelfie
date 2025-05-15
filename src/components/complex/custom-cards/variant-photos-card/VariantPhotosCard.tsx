@@ -9,6 +9,9 @@ import { VariantPhotosGridColumns } from "@/components/complex/grid/product-phot
 import { OtherProductPhotosGridColumns } from "@/components/complex/grid/other-product-photos-grid/OtherProductPhotosGridColumns.tsx";
 
 export default function VariantPhotosCard({
+  isLoading,
+  isVariantPhotoGridLoading,
+  isProductPhotoGridLoading,
   variantPhotos,
   productPhotos,
   contextId,
@@ -61,6 +64,7 @@ export default function VariantPhotosCard({
   return (
     <div className={cs.variantPhotosCard}>
       <SheProductCard
+        loading={isLoading}
         title="Manage Photos"
         view="card"
         onSecondaryButtonClick={() => onAction("closeVariantPhotosCard")}
@@ -82,6 +86,7 @@ export default function VariantPhotosCard({
             <div className={cs.managePhotosGrid}>
               {variantPhotos.length > 0 ? (
                 <DndGridDataTable
+                  isLoading={isVariantPhotoGridLoading}
                   className={
                     variantPhotos.length > 0
                       ? cs.productPhotosGridShort
@@ -92,6 +97,7 @@ export default function VariantPhotosCard({
                   columns={variantPhotosColumns}
                   data={variantPhotos}
                   gridModel={variantPhotos}
+                  customMessage="VARIANT HAS NO PHOTO"
                   onNewItemPosition={(newIndex, activeItem) =>
                     handleAction("dnd", { newIndex, activeItem })
                   }
@@ -112,6 +118,7 @@ export default function VariantPhotosCard({
             <div className={cs.managePhotosGrid}>
               {productPhotos.length > 0 ? (
                 <DndGridDataTable
+                  isLoading={isProductPhotoGridLoading}
                   className={
                     variantPhotos.length > 0
                       ? cs.productPhotosGridShort
@@ -121,6 +128,7 @@ export default function VariantPhotosCard({
                   showColumnsHeader={false}
                   columns={otherPhotosColumns}
                   data={productPhotos}
+                  customMessage="PRODUCT HAS NO PHOTO"
                   gridModel={productPhotos}
                 />
               ) : (

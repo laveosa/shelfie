@@ -21,6 +21,7 @@ import {
 import { IDisposeStockCard } from "@/const/interfaces/complex-components/custom-cards/IDisposeStockCard.ts";
 
 export default function DisposeStockCard({
+  isLoading,
   variant,
   onAction,
   onSecondaryButtonClick,
@@ -49,6 +50,7 @@ export default function DisposeStockCard({
 
   return (
     <SheProductCard
+      loading={isLoading}
       title={`Dispose ${variant?.variantName} Stock`}
       view="card"
       showPrimaryButton={true}

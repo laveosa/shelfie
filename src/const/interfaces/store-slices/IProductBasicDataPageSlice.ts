@@ -5,7 +5,11 @@ import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 
 export interface IProductBasicDataPageSlice {
-  loading?: boolean;
+  isLoading?: boolean;
+  isProductConfigurationCardLoading?: boolean;
+  isCreateProductCategoryCardLoading?: boolean;
+  isCreateProductBrandCardLoading?: boolean;
+  isProductsLoading?: boolean;
   product?: ProductModel;
   brandsList?: BrandModel[];
   categoriesList?: CategoryModel[];

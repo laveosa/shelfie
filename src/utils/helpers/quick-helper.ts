@@ -115,10 +115,20 @@ export function addGridRowColor(
   }));
 }
 
-export function setSelectedGridItem(itemId: string, itemsList: any[]) {
-  const modifiedItemsList = itemsList.map((item) => ({
+export function setSelectedGridItem<T extends Record<string, any>>(
+  itemId: string,
+  itemsList: T[],
+  idKey: keyof T,
+): T[] {
+  return itemsList.map((item) => ({
     ...item,
-    isGridItemSelected: item.variantId === itemId,
+    isGridItemSelected: item[idKey] === itemId,
   }));
-  return modifiedItemsList;
+}
+
+export function clearSelectedGridItems(itemsList: any[]) {
+  return itemsList.map((item) => ({
+    ...item,
+    isGridItemSelected: false,
+  }));
 }
