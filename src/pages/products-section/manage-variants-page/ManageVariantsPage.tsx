@@ -185,6 +185,7 @@ export function ManageVariantsPage() {
             setSelectedGridItem(
               payload.variantId,
               productsState.productVariants,
+              "variantId",
             ),
           ),
         );

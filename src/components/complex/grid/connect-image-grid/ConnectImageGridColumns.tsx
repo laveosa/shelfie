@@ -24,7 +24,7 @@ export const ConnectImageGridColumns = (
           disabled={meta?.isRowLoading(row.id)}
           checked={row.getValue("isConnected")}
           onCheckedChange={() =>
-            onAction("connect", row.id, meta?.setLoadingRow, row)
+            onAction("switchAction", row.id, meta?.setLoadingRow, row)
           }
         />
       );

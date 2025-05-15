@@ -17,6 +17,7 @@ import { GridModel } from "@/const/models/GridModel.ts";
 import ConnectImageCard from "@/components/complex/custom-cards/connect-image-card/ConnectImageCard.tsx";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
+import { setSelectedGridItem } from "@/utils/helpers/quick-helper.ts";
 
 export function ProductGalleryPage() {
   const dispatch = useAppDispatch();
@@ -75,12 +76,26 @@ export function ProductGalleryPage() {
     }, 100);
   }
 
-  function handleCardAction(identifier: string) {
-    const updatedCards = state.activeCards.includes(identifier)
-      ? state.activeCards.filter((card) => card !== identifier)
-      : [...state.activeCards, identifier];
-    scrollToCard(identifier);
-    dispatch(actions.refreshActiveCards(updatedCards));
+  function handleCardAction(
+    identifier: string,
+    forceOpen: boolean = false,
+    overrideActiveCards?: string[],
+  ) {
+    const activeCards = overrideActiveCards ?? state.activeCards;
+    let updatedCards: string[];
+
+    if (forceOpen) {
+      if (!activeCards.includes(identifier)) {
+        updatedCards = [...activeCards, identifier];
+        dispatch(actions.refreshActiveCards(updatedCards));
+        scrollToCard(identifier);
+      } else {
+        dispatch(actions.refreshActiveCards(activeCards));
+      }
+    } else {
+      updatedCards = activeCards.filter((card) => card !== identifier);
+      dispatch(actions.refreshActiveCards(updatedCards));
+    }
   }
 
   function onAction(actionType: string, payload: any) {
@@ -177,8 +192,17 @@ export function ProductGalleryPage() {
           dispatch(actions.setIsVariantsGridLoading(false));
           dispatch(actions.refreshProductVariants(res));
         });
+        dispatch(
+          productsActions.refreshProductPhotos(
+            setSelectedGridItem(
+              payload.photoId,
+              productsState.productPhotos,
+              "photoId",
+            ),
+          ),
+        );
         dispatch(actions.refreshSelectedPhoto(payload));
-        handleCardAction("connectImageCard");
+        handleCardAction("connectImageCard", true);
         break;
       case "connectImageToVariant":
         service
@@ -187,9 +211,6 @@ export function ProductGalleryPage() {
             state.selectedPhoto.photoId,
           )
           .then(() => {
-            service.getProductVariantsHandler(productId).then((res) => {
-              dispatch(actions.refreshProductVariants(res));
-            });
             productsService
               .getProductPhotosHandler(Number(productId))
               .then((res) => {
@@ -197,6 +218,43 @@ export function ProductGalleryPage() {
 
                 const selectedPhoto = res.find(
                   (photo) => state.selectedPhoto.photoId === photo.photoId,
+                );
+                dispatch(
+                  productsActions.refreshProductPhotos(
+                    setSelectedGridItem(
+                      state.selectedPhoto.photoId,
+                      productsState.productPhotos,
+                      "photoId",
+                    ),
+                  ),
+                );
+                dispatch(actions.refreshSelectedPhoto(selectedPhoto));
+              });
+          });
+        break;
+      case "detachImageFromVariant":
+        service
+          .detachVariantPhotoHandler(
+            payload.variantId,
+            state.selectedPhoto.photoId,
+          )
+          .then(() => {
+            productsService
+              .getProductPhotosHandler(Number(productId))
+              .then((res) => {
+                dispatch(productsActions.refreshProductPhotos(res));
+
+                const selectedPhoto = res.find(
+                  (photo) => state.selectedPhoto.photoId === photo.photoId,
+                );
+                dispatch(
+                  productsActions.refreshProductPhotos(
+                    setSelectedGridItem(
+                      state.selectedPhoto.photoId,
+                      productsState.productPhotos,
+                      "photoId",
+                    ),
+                  ),
                 );
                 dispatch(actions.refreshSelectedPhoto(selectedPhoto));
               });

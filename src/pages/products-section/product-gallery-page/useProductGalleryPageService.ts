@@ -11,10 +11,7 @@ export default function useProductGalleryPageService() {
 
   const [getTheProductsForGrid] =
     ProductsApiHooks.useGetTheProductsForGridMutation();
-  // const [getProductPhotos] = ProductsApiHooks.useLazyGetProductPhotosQuery();
   const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
-  // const [getCountersForProducts] =
-  //   ProductsApiHooks.useLazyGetCountersForProductsQuery();
   const [putPhotoInNewPosition] =
     ProductsApiHooks.usePutPhotoInNewPositionMutation();
   const [deletePhoto] = AssetsApiHooks.useDeletePhotoMutation();
@@ -22,6 +19,7 @@ export default function useProductGalleryPageService() {
     ProductsApiHooks.useLazyGetProductVariantsQuery();
   const [attachProductPhotoToVariant] =
     ProductsApiHooks.useAttachProductPhotoToVariantMutation();
+  const [detachVariantPhoto] = ProductsApiHooks.useDetachVariantPhotoMutation();
 
   function getTheProductsForGridHandler(data?: GridRequestModel) {
     dispatch(action.setIsLoading(true));
@@ -40,20 +38,6 @@ export default function useProductGalleryPageService() {
       return res;
     });
   }
-
-  // function getCountersForProductsHandler(id: any) {
-  //   return getCountersForProducts(id).then((res: any) => {
-  //     return res.data;
-  //   });
-  // }
-
-  // function getProductPhotosHandler(id: number) {
-  //   dispatch(action.setIsProductPhotosLoading(true));
-  //   return getProductPhotos(id).then((res: any) => {
-  //     dispatch(action.setIsProductPhotosLoading(false));
-  //     return res.data;
-  //   });
-  // }
 
   function putPhotoInNewPositionHandler(productId, photoId, index) {
     return putPhotoInNewPosition({
@@ -86,14 +70,19 @@ export default function useProductGalleryPageService() {
     });
   }
 
+  function detachVariantPhotoHandler(id, photoId) {
+    return detachVariantPhoto({ id, photoId }).then((res: any) => {
+      return res;
+    });
+  }
+
   return {
     getTheProductsForGridHandler,
-    // getProductPhotosHandler,
-    // getCountersForProductsHandler,
     uploadPhotoHandler,
     putPhotoInNewPositionHandler,
     deletePhotoHandler,
     getProductVariantsHandler,
     attachProductPhotoToVariantHandler,
+    detachVariantPhotoHandler,
   };
 }
