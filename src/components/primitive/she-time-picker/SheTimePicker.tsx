@@ -15,6 +15,7 @@ import SheTimePickerSelect from "@/components/primitive/she-time-picker/componen
 import { SheTimePickerTypeEnum } from "@/const/enums/SheTimePickerTypeEnum.ts";
 import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
 import { SheErrorMessageBlock } from "@/components/primitive/she-error-message-block/SheErrorMessageBlock.tsx";
+import SheDescriptionBlock from "@/components/primitive/she-description-block/SheDescriptionBlock.tsx";
 
 export default function SheTimePicker({
   id,
@@ -61,6 +62,11 @@ export default function SheTimePicker({
   secondsRef,
   periodsRef,
   autoFocus,
+  descriptionClassName,
+  descriptionStyle,
+  description,
+  descriptionTransKey,
+  showDescription,
   showError,
   error,
   errorTransKey,
@@ -79,6 +85,10 @@ export default function SheTimePicker({
   const [_showError, setShowError] = useState(showError);
   const [_error, setError] = useState<string>(error ?? null);
   const [_errorTransKey, setErrorTransKey] = useState(errorTransKey ?? null);
+  const [_description, setDescription] = useState<string>(description ?? null);
+  const [_descriptionTransKey, setDescriptionTransKey] = useState(
+    descriptionTransKey ?? null,
+  );
 
   const ariaDescribedbyId = `${generateId()}_TIME_PICKER_ID`;
   const delayValue = useDebounce(_date, delayTime);
@@ -112,6 +122,21 @@ export default function SheTimePicker({
       );
     }
   }, [delayValue, timeFormat, onDelay]);
+
+  useEffect(() => {
+    if (description !== _description) setDescription(description);
+    if (descriptionTransKey !== _descriptionTransKey)
+      setDescriptionTransKey(descriptionTransKey);
+
+    if (_startDate && endDate && !_description) {
+      setDescription(
+        `from: ${moment(startDate).format(TimeFormatEnum.HH_MM_SS)} to: ${moment(endDate).format(TimeFormatEnum.HH_MM_SS)}`,
+      );
+      setDescriptionTransKey(
+        "DESCRIPTION DEFAULT TEXT TRANS KET - add here when it will be created...",
+      );
+    }
+  }, [description, descriptionTransKey]);
 
   useEffect(() => {
     let interval = null;
@@ -391,6 +416,13 @@ export default function SheTimePicker({
             />
           )}
         </div>
+        <SheDescriptionBlock
+          className={descriptionClassName}
+          style={descriptionStyle}
+          description={_description}
+          descriptionTransKey={_descriptionTransKey}
+          showDescription={showDescription}
+        />
         <SheErrorMessageBlock
           error={_error}
           errorTransKey={_errorTransKey}

@@ -49,11 +49,11 @@ export function DashboardPage() {
         // ssLabelTransKey="fwofijds"
         // periodLabel="PP Label"
         icon={Clock}
-        clockWorksheets={"12"}
-        timePeriod={"PM"}
+        // clockWorksheets={"12"}
+        // timePeriod={"PM"}
         timeFormat={TimeFormatEnum.HH_MM_SS_XM}
         size={"small"}
-        // view={ComponentViewEnum.CARD}
+        view={ComponentViewEnum.CARD}
         autoFocus
         required
         showClearBtn
@@ -63,13 +63,15 @@ export function DashboardPage() {
         type={SheTimePickerTypeEnum.TIMER}
         // date={time}
         startDate={time}
-        endDate={new Date("05.15.2025 17:15:00")}
+        endDate={new Date("05.15.2025 18:26:00")}
         // isLoading
+        // description="somde description dfd erio er ier oieri ejroi eroing rineroignoi"
+        // descriptionTransKey="02f3f0239fj09j3f"
+        // showDescription={false}
         onSetDate={onSetDateHandler}
         onDelay={onDelayHandler}
         onBlur={onBlurHandler}
         onTick={onTickHandler}
-        onIsValid={(event) => console.log("is valid: ", event)}
       />
 
       <br />

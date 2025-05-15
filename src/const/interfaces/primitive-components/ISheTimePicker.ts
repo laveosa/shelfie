@@ -8,10 +8,12 @@ import { TimeFormatEnum } from "@/const/enums/TimeFormatEnum.ts";
 import { Period } from "@/utils/helpers/time-picker-helper.ts";
 import { SheTimePickerTypeEnum } from "@/const/enums/SheTimePickerTypeEnum.ts";
 import { ISheErrorMessageBlock } from "@/const/interfaces/primitive-components/ISheErrorMessageBlock.ts";
+import { ISheDescriptionBlock } from "@/const/interfaces/primitive-components/ISheDescriptionBlock.ts";
 
 export interface ISheTimePicker
   extends ISheLabel,
     ISheClearButton,
+    ISheDescriptionBlock,
     ISheErrorMessageBlock,
     ComponentPropsWithRef<"div"> {
   id?: string;
@@ -54,6 +56,8 @@ export interface ISheTimePicker
   secondsRef?: React.RefObject<HTMLInputElement>;
   periodsRef?: React.RefObject<HTMLButtonElement>;
   autoFocus?: boolean;
+  descriptionClassName?: string;
+  descriptionStyle?: React.CSSProperties;
   onSetDate?: (value: any) => void;
   onDelay?: (value: any) => void;
   onBlur?: (value: any) => void;
