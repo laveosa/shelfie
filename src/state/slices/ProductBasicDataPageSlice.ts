@@ -10,6 +10,9 @@ import { ImageModel } from "@/const/models/ImageModel.ts";
 
 const initialState: IProductBasicDataPageSlice = {
   isLoading: false,
+  isProductConfigurationCardLoading: false,
+  isCreateProductCategoryCardLoading: false,
+  isCreateProductBrandCardLoading: false,
   isProductsLoading: false,
   products: [],
   product: {},
@@ -23,11 +26,34 @@ const initialState: IProductBasicDataPageSlice = {
   photos: [],
 };
 
+//------------------------------------- LOADERS/
+
 function setLoading(
   state: IProductBasicDataPageSlice,
   action: PayloadAction<boolean>,
 ) {
   state.isLoading = action?.payload;
+}
+
+function setIsProductConfigurationCardLoading(
+  state: IProductBasicDataPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isProductConfigurationCardLoading = action?.payload;
+}
+
+function setIsCreateProductCategoryCardLoading(
+  state: IProductBasicDataPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isCreateProductCategoryCardLoading = action?.payload;
+}
+
+function setIsCreateProductBrandCardLoading(
+  state: IProductBasicDataPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isCreateProductBrandCardLoading = action?.payload;
 }
 
 function setProductsLoading(
@@ -36,6 +62,8 @@ function setProductsLoading(
 ) {
   state.isProductsLoading = action?.payload;
 }
+
+//------------------------------------- API/
 
 function refreshProducts(
   state: IProductBasicDataPageSlice,
@@ -112,6 +140,9 @@ const ProductBasicDataPageSlice = createSlice({
   initialState,
   reducers: {
     setLoading,
+    setIsProductConfigurationCardLoading,
+    setIsCreateProductCategoryCardLoading,
+    setIsCreateProductBrandCardLoading,
     setProductsLoading,
     refreshProducts,
     refreshProduct,

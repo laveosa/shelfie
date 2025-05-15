@@ -25,6 +25,7 @@ import { IProductConfigurationCard } from "@/const/interfaces/complex-components
 import { useForm } from "react-hook-form";
 
 export default function ProductConfigurationCard({
+  isLoading,
   product,
   brandsList,
   categoriesList,
@@ -91,6 +92,7 @@ export default function ProductConfigurationCard({
   return (
     <div>
       <SheProductCard
+        loading={isLoading}
         view="card"
         title={product?.productId ? "Basic Product Data" : "Create Product"}
         showPrimaryButton={true}

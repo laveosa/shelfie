@@ -45,11 +45,11 @@ export function ManageVariantsPage() {
 
   useEffect(() => {
     if (productsState.products === null) {
-      dispatch(actions.setIsItemsCardLoading(true));
+      dispatch(productsActions.setIsItemsCardLoading(true));
       productsService
         .getTheProductsForGridHandler(productsState.gridRequestModel)
         .then((res: GridModel) => {
-          dispatch(actions.setIsItemsCardLoading(false));
+          dispatch(productsActions.setIsItemsCardLoading(false));
           dispatch(productsActions.refreshProducts(res.items));
         });
     }
@@ -69,11 +69,11 @@ export function ManageVariantsPage() {
 
   useEffect(() => {
     if (!productsState.productCounter) {
-      dispatch(actions.setIsProductMenuCardLoading(true));
+      dispatch(productsActions.setIsProductMenuCardLoading(true));
       productsService
         .getCountersForProductsHandler(Number(productId))
         .then((res) => {
-          dispatch(actions.setIsProductMenuCardLoading(false));
+          dispatch(productsActions.setIsProductMenuCardLoading(false));
           dispatch(productsActions.refreshProductCounter(res));
         });
     }
@@ -724,7 +724,7 @@ export function ManageVariantsPage() {
     <div className={cs.manageVariantsPage}>
       <div className={cs.borderlessCards}>
         <ItemsCard
-          isLoading={state.isItemsCardLoading}
+          isLoading={productsState.isItemsCardLoading}
           isItemsLoading={productsState.isProductsLoading}
           title="Products"
           data={productsState.products}
@@ -733,7 +733,7 @@ export function ManageVariantsPage() {
           onAction={(item) => onAction("onProductItemClick", item)}
         />
         <ProductMenuCard
-          isLoading={state.isProductMenuCardLoading}
+          isLoading={productsState.isProductMenuCardLoading}
           title="Manage Product"
           productCounter={productsState.productCounter}
           onAction={handleCardAction}

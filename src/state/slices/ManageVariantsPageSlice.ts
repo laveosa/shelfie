@@ -11,8 +11,8 @@ import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 
 const initialState: IManageVariantsPageSlice = {
   isLoading: false,
-  isItemsCardLoading: false,
-  isProductMenuCardLoading: false,
+  // isItemsCardLoading: false,
+  // isProductMenuCardLoading: false,
   isManageVariantsCardLoading: false,
   isVariantConfigurationCardLoading: false,
   isAddStockCardLoading: false,
@@ -70,20 +70,20 @@ function setIsLoading(
   state.isLoading = action?.payload;
 }
 
-function setIsItemsCardLoading(
-  state: IManageVariantsPageSlice,
-  action: PayloadAction<boolean>,
-) {
-  state.isItemsCardLoading = action?.payload;
-}
+// function setIsItemsCardLoading(
+//   state: IManageVariantsPageSlice,
+//   action: PayloadAction<boolean>,
+// ) {
+//   state.isItemsCardLoading = action?.payload;
+// }
 
-function setIsProductMenuCardLoading(
-  state: IManageVariantsPageSlice,
-  action: PayloadAction<boolean>,
-) {
-  state.isProductMenuCardLoading = action?.payload;
-}
-
+// function setIsProductMenuCardLoading(
+//   state: IManageVariantsPageSlice,
+//   action: PayloadAction<boolean>,
+// ) {
+//   state.isProductMenuCardLoading = action?.payload;
+// }
+//
 function setIsManageVariantsCardLoading(
   state: IManageVariantsPageSlice,
   action: PayloadAction<boolean>,
@@ -189,7 +189,7 @@ function setIsProductPhotoGridLoading(
   state.isProductPhotoGridLoading = action?.payload;
 }
 
-//----------------------------------------------------- APIS
+//----------------------------------------------------- API
 
 function refreshVariants(
   state: IManageVariantsPageSlice,
@@ -322,8 +322,8 @@ const ManageVariantsPageSlice = createSlice({
   initialState,
   reducers: {
     setIsLoading,
-    setIsItemsCardLoading,
-    setIsProductMenuCardLoading,
+    // setIsItemsCardLoading,
+    // setIsProductMenuCardLoading,
     setIsManageVariantsCardLoading,
     setIsVariantConfigurationCardLoading,
     setIsAddStockCardLoading,

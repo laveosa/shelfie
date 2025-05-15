@@ -7,6 +7,7 @@ import { ConnectImageGridColumns } from "@/components/complex/grid/connect-image
 import { IConnectImageCard } from "@/const/interfaces/complex-components/custom-cards/IConnectImageCard.ts";
 
 export default function ConnectImageCard({
+  isLoading,
   isGridLoading,
   variants,
   selectedPhoto,
@@ -56,6 +57,7 @@ export default function ConnectImageCard({
 
   return (
     <SheProductCard
+      loading={isLoading}
       title="Connect image to product variants"
       view="card"
       showCloseButton

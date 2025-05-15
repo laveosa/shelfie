@@ -6,6 +6,9 @@ import { ImageModel } from "@/const/models/ImageModel.ts";
 
 export interface IProductBasicDataPageSlice {
   isLoading?: boolean;
+  isProductConfigurationCardLoading?: boolean;
+  isCreateProductCategoryCardLoading?: boolean;
+  isCreateProductBrandCardLoading?: boolean;
   isProductsLoading?: boolean;
   product?: ProductModel;
   brandsList?: BrandModel[];
