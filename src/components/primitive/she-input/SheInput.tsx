@@ -51,6 +51,7 @@ export default function SheInput({
   onBlur,
   onDelay,
   onIsValid,
+  ...props
 }: ISheInput): JSX.Element {
   const { translate } = useAppTranslation();
   const [_textValue, setTextValue] = useState<

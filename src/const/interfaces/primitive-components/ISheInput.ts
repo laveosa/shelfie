@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from "react";
+import React, { ComponentPropsWithRef } from "react";
 
 import { ContextPatternEnum } from "@/const/enums/ContextPatternEnum.ts";
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
@@ -12,7 +12,7 @@ export interface ISheInput
     ISheClearButton,
     ISheContextLengthLimits,
     ISheErrorMessageBlock,
-    PropsWithChildren {
+    ComponentPropsWithRef<any> {
   id?: string;
   className?: string;
   style?: React.CSSProperties;
