@@ -95,7 +95,6 @@ export default function AddStockCard({
               <SheInput
                 label="Units"
                 type="number"
-                step="any"
                 fullWidth
                 onDelay={() => {
                   form.handleSubmit(onSubmit);
@@ -110,7 +109,6 @@ export default function AddStockCard({
                 <SheForm.Field label="Purchase price" name="priceModel.price">
                   <SheInput
                     type="number"
-                    step="any"
                     placeholder="Enter purchase prise"
                     onDelay={() => form.handleSubmit(onSubmit)}
                   />

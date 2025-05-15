@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ComponentPropsWithRef } from "react";
 import { DayPickerProps } from "react-day-picker";
 
 import { ISheLabel } from "@/const/interfaces/primitive-components/ISheLabel.ts";
@@ -9,7 +9,8 @@ import { DateFormatEnum } from "@/const/enums/DateFormatEnum.ts";
 export interface ISheCalendar
   extends ISheLabel,
     ISheClearButton,
-    DayPickerProps {
+    DayPickerProps,
+    ComponentPropsWithRef<any> {
   id?: string;
   className?: string;
   style?: React.CSSProperties;

@@ -124,7 +124,7 @@ export default function SheCalendar({
 
   // ==================================================================== PRIVATE
 
-  function getParsedModel(parsed: unknown): Date {
+  function getParsedModel(parsed: any): Date {
     switch (inferCalendarMode(parsed)) {
       case "multiple":
         return parsed[parsed.length - 1];
@@ -211,7 +211,7 @@ export default function SheCalendar({
   }
 
   function isCalendarRangeDateValue(
-    value: unknown,
+    value: any,
   ): value is { from: Date | string; to: Date | string } {
     return (
       value &&
@@ -381,7 +381,7 @@ export default function SheCalendar({
                 className={`${cs.sheCalendarElement} ${calendarClassName} ${disabled || isLoading ? "disabled" : ""}`}
                 style={calendarStyle}
                 mode={date ? inferCalendarMode(date) : mode}
-                selected={_date}
+                selected={_date as any}
                 month={setMonth(
                   setYear(new Date(), _selectedYear),
                   months.indexOf(_selectedMonth),
