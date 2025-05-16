@@ -179,7 +179,7 @@ export default function SheCalendar({
 
   function sortDateListByDate(list: Date[]): Date[] {
     if (!list || list.length === 0) return null;
-    return list.sort((a, b) => new Date(b) - new Date(a)).reverse();
+    return list.sort((a, b) => b.getTime() - a.getTime()).reverse();
   }
 
   // -------------------------------------------------------------- CALENDAR MODE DETECTION

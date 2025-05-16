@@ -34,9 +34,10 @@ export default function SheSelectItem({
 
   return (
     <SelectItem
-      className={`${cs.sheSelectItem} ${isLoading ? "disabled" : ""} ${showSelectIcon ? cs.sheShowSelectIcon : ""}`}
+      id={id}
+      className={`${cs.sheSelectItem} ${isLoading || disabled ? "disabled" : ""} ${showSelectIcon ? cs.sheShowSelectIcon : ""}`}
       value={id}
-      disabled={disabled}
+      defaultValue={id}
       style={style}
     >
       <div className={`${cs.sheSelectItemContextContainer} ${className}`}>

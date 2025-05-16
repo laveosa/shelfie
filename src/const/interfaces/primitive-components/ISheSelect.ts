@@ -12,6 +12,8 @@ export interface ISheSelect
   id?: string;
   className?: string;
   style?: React.CSSProperties;
+  elemClassName?: string;
+  elemStyle?: React.CSSProperties;
   triggerRef?: React.RefObject<any>;
   icon?: Partial<ISheIcon> | string | React.FC<any>;
   items?: ISheSelectItem[];

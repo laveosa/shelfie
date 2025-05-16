@@ -21,6 +21,8 @@ export default function SheSelect({
   id,
   className = "",
   style,
+  elemClassName = "",
+  elemStyle,
   triggerRef,
   label,
   labelTransKey,
@@ -128,6 +130,17 @@ export default function SheSelect({
   function onOpenChangeHandler(event) {
     if (_loading) return;
     setOpen(event);
+
+    if (event && _selected) {
+      requestAnimationFrame(() => {
+        const selectedElement = document.getElementById(_selected.id);
+
+        if (selectedElement) {
+          selectedElement.scrollIntoView({ block: "start" });
+        }
+      });
+    }
+
     if (onOpenChange) onOpenChange(event);
   }
 
@@ -230,6 +243,7 @@ export default function SheSelect({
                   {_items?.map((item: ISheSelectItem) => (
                     <SheSelectItem
                       key={item.id}
+                      id={item.id}
                       className={cs.sheSelectItemCover}
                       isLoading={_loading}
                       showSelectIcon={showSelectIcon}

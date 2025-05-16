@@ -6,11 +6,7 @@ import { ISheClearButton } from "@/const/interfaces/primitive-components/ISheCle
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import { DateFormatEnum } from "@/const/enums/DateFormatEnum.ts";
 
-export interface ISheCalendar
-  extends ISheLabel,
-    ISheClearButton,
-    DayPickerProps,
-    ComponentPropsWithRef<any> {
+export type ISheCalendar = {
   id?: string;
   className?: string;
   style?: React.CSSProperties;
@@ -36,4 +32,7 @@ export interface ISheCalendar
   view?: ComponentViewEnum;
   hideFilters?: boolean;
   onSelectDate?: (value: any) => void;
-}
+} & ISheLabel &
+  ISheClearButton &
+  DayPickerProps &
+  ComponentPropsWithRef<any>;

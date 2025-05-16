@@ -131,6 +131,10 @@ body {
 
 div[data-radix-popper-content-wrapper] {
   > div[role="listbox"] {
+    .scroll-options-button {
+      display: none;
+    }
+
     > div[role="presentation"] {
       > div[role="option"] {
         > span {
