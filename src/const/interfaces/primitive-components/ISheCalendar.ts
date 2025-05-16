@@ -1,12 +1,14 @@
 import React, { ComponentPropsWithRef } from "react";
-import { DayPickerProps } from "react-day-picker";
 
 import { ISheLabel } from "@/const/interfaces/primitive-components/ISheLabel.ts";
 import { ISheClearButton } from "@/const/interfaces/primitive-components/ISheClearButton.ts";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import { DateFormatEnum } from "@/const/enums/DateFormatEnum.ts";
 
-export type ISheCalendar = {
+export interface ISheCalendar
+  extends ISheLabel,
+    ISheClearButton,
+    ComponentPropsWithRef<any> {
   id?: string;
   className?: string;
   style?: React.CSSProperties;
@@ -23,6 +25,9 @@ export type ISheCalendar = {
     | { from: Date | string; to: Date | string };
   dateFormat?: DateFormatEnum;
   markedDates?: (string | Date)[];
+  mode?: "default" | "range" | "single" | "multiple";
+  minAmountOfDates?: number;
+  maxAmountOfDates?: number;
   minWidth?: string;
   maxWidth?: string;
   fullWidth?: boolean;
@@ -32,7 +37,4 @@ export type ISheCalendar = {
   view?: ComponentViewEnum;
   hideFilters?: boolean;
   onSelectDate?: (value: any) => void;
-} & ISheLabel &
-  ISheClearButton &
-  DayPickerProps &
-  ComponentPropsWithRef<any>;
+}

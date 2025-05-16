@@ -47,6 +47,8 @@ export default function SheCalendar({
   dateFormat,
   markedDates,
   mode = "single",
+  minAmountOfDates,
+  maxAmountOfDates,
   showClearBtn,
   minWidth,
   maxWidth,
@@ -147,7 +149,7 @@ export default function SheCalendar({
   function formatSelectedDateModel(selectedDate: any): any {
     if (isCalendarMultipleDateValue(selectedDate)) {
       return selectedDate.map((item) =>
-        dateFormat ? moment(item).format(dateFormat) : selectedDate,
+        dateFormat ? moment(item).format(dateFormat) : item,
       );
     }
 
@@ -161,7 +163,7 @@ export default function SheCalendar({
         to: selectedDate.to
           ? dateFormat
             ? moment(selectedDate.to).format(dateFormat)
-            : selectedDate
+            : selectedDate.to
           : null,
       };
 
@@ -180,6 +182,20 @@ export default function SheCalendar({
   function sortDateListByDate(list: Date[]): Date[] {
     if (!list || list.length === 0) return null;
     return list.sort((a, b) => b.getTime() - a.getTime()).reverse();
+  }
+
+  function normalizeDateFormat(input: string | Date): string {
+    const date = typeof input === "string" ? new Date(input) : input;
+
+    if (isNaN(date.getTime())) {
+      throw new Error("Invalid date");
+    }
+
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // getMonth() is 0-indexed
+    const day = String(date.getDate()).padStart(2, "0");
+    const year = date.getFullYear();
+
+    return `${month}/${day}/${year}`;
   }
 
   // -------------------------------------------------------------- CALENDAR MODE DETECTION
@@ -265,9 +281,12 @@ export default function SheCalendar({
   ): Date[] | null {
     if (!isCalendarMultipleDateValue(value)) return null;
 
-    const dateList: Date[] = value.map((item) =>
-      item instanceof Date && !isNaN(item.getTime()) ? item : new Date(item),
-    );
+    const dateList: Date[] = value.map((item) => {
+      item = normalizeDateFormat(item);
+      return item instanceof Date && !isNaN(item.getTime())
+        ? item
+        : new Date(item);
+    });
 
     return sortDateListByDate(dateList);
   }
@@ -279,6 +298,9 @@ export default function SheCalendar({
       | { from: string | Date; to: string | Date },
   ): { from: Date; to: Date } {
     if (!isCalendarRangeDateValue(value)) return null;
+
+    value.from = normalizeDateFormat(value.from);
+    value.to = normalizeDateFormat(value.to);
 
     const from: Date =
       value.from instanceof Date && !isNaN(value.from.getTime())
@@ -312,6 +334,8 @@ export default function SheCalendar({
       const patterns = [
         /\b(\d{2})[./-](\d{2})[./-](\d{4})\b/, // MM.DD.YYYY / MM-DD-YYYY / MM/DD/YYYY
       ];
+      value = normalizeDateFormat(value);
+
       for (const pattern of patterns) {
         const match = value.match(pattern);
         if (match) {
@@ -359,6 +383,7 @@ export default function SheCalendar({
                 hideFirstOption
                 maxWidth="138px"
                 minWidth="122px"
+                isLoading={isLoading}
                 onSelect={onMonthSelectHandler}
               />
               <SheSelect
@@ -373,6 +398,7 @@ export default function SheCalendar({
                 hideFirstOption
                 maxWidth="138px"
                 minWidth="122px"
+                isLoading={isLoading}
                 onSelect={onYearSelectHandler}
               />
             </div>
@@ -393,6 +419,8 @@ export default function SheCalendar({
                   marked: cs.markedDay,
                   today: cs.today,
                 }}
+                min={minAmountOfDates}
+                max={maxAmountOfDates}
                 onMonthChange={(value) =>
                   setSelectedMonth(months[getMonth(value)])
                 }
