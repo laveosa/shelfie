@@ -122,6 +122,7 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
   columns,
   data,
   columnsPreferences,
+  preferenceContext,
   gridModel,
   sortingItems,
   isLoading,
@@ -224,6 +225,7 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
     <GridContext.Provider
       value={{
         columnsPreferences,
+        preferenceContext,
         onApplyColumns,
         onDefaultColumns,
         showPagination,
