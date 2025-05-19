@@ -219,6 +219,19 @@ export const ProductsApiService = createApi({
         body: JSON.stringify(model),
       }),
     }),
+    checkVariantCombination: apiConfig.createMutation<
+      any,
+      {
+        id: number;
+        model: number[];
+      }
+    >(builder, {
+      query: ({ id, model }) => ({
+        url: `${ApiUrlEnum.PRODUCTS}/${id}/check-variant-combination`,
+        method: "POST",
+        body: JSON.stringify(model),
+      }),
+    }),
     getVariantDetails: apiConfig.createQuery<VariantModel, number>(builder, {
       query: (id: number) => ({
         url: `${ApiUrlEnum.VARIANTS}/${id}`,
@@ -379,6 +392,12 @@ export const ProductsApiService = createApi({
         url: `${ApiUrlEnum.PRODUCTS}/${id}${ApiUrlEnum.TRAITS}`,
         method: "PATCH",
         body: JSON.stringify(model),
+      }),
+    }),
+    deleteTrait: apiConfig.createMutation<void, number>(builder, {
+      query: (id: number) => ({
+        url: `${ApiUrlEnum.TRAITS}/${id}`,
+        method: "DELETE",
       }),
     }),
     getOptionsForTrait: apiConfig.createQuery<any, number>(builder, {

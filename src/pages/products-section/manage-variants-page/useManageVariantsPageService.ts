@@ -9,6 +9,8 @@ import { GridRowsColorsEnum } from "@/const/enums/GridRowsColorsEnum.ts";
 export default function useManageVariantsPageService() {
   const [getVariantsForGrid] = ProductsApiHooks.useGetVariantsForGridMutation();
   const [createVariant] = ProductsApiHooks.useCreateVariantMutation();
+  const [checkVariantCombination] =
+    ProductsApiHooks.useCheckVariantCombinationMutation();
   const [getVariantDetails] = ProductsApiHooks.useLazyGetVariantDetailsQuery();
   const [toggleVariantIsActive] =
     ProductsApiHooks.useToggleVariantIsActiveMutation();
@@ -38,6 +40,7 @@ export default function useManageVariantsPageService() {
     ProductsApiHooks.useLazyGetListOfTraitsWithOptionsForProductQuery();
   const [createNewTrait] = ProductsApiHooks.useCreateNewTraitMutation();
   const [setProductTraits] = ProductsApiHooks.useSetProductTraitsMutation();
+  const [deleteTrait] = ProductsApiHooks.useDeleteTraitMutation();
   const [getOptionsForTrait] =
     ProductsApiHooks.useLazyGetOptionsForTraitQuery();
   const [createNewOptionForTrait] =
@@ -67,6 +70,12 @@ export default function useManageVariantsPageService() {
 
   function createVariantHandler(id, model) {
     return createVariant({ id, model }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function checkVariantCombinationHandler(id, model) {
+    return checkVariantCombination({ id, model }).then((res: any) => {
       return res.data;
     });
   }
@@ -193,6 +202,12 @@ export default function useManageVariantsPageService() {
     });
   }
 
+  function deleteTraitHandler(id) {
+    return deleteTrait(id).then((res: any) => {
+      return res;
+    });
+  }
+
   function getOptionsForTraitHandler(id) {
     return getOptionsForTrait(id).then((res: any) => {
       return res.data;
@@ -276,6 +291,7 @@ export default function useManageVariantsPageService() {
   return {
     getVariantsForGridHandler,
     createVariantHandler,
+    checkVariantCombinationHandler,
     getVariantDetailsHandler,
     toggleVariantIsActiveHandler,
     updateVariantDetailsHandler,
@@ -292,6 +308,7 @@ export default function useManageVariantsPageService() {
     createNewTraitHandler,
     updateTraitHandler,
     setProductTraitsHandler,
+    deleteTraitHandler,
     getOptionsForTraitHandler,
     createNewOptionForTraitHandler,
     updateOptionsForTraitHandler,
