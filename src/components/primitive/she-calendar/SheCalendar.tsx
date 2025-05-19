@@ -117,13 +117,14 @@ export default function SheCalendar({
   }
 
   function onSelectDateHandler(selectedDate: any) {
-    selectedDate =
+    const normalizedDate =
       inferCalendarMode(selectedDate) === "multiple"
         ? sortDateListByDate(selectedDate)
         : selectedDate;
 
-    if (selectedDate !== _date) setDate(selectedDate);
-    if (onSelectDate) onSelectDate(formatSelectedDateModel(selectedDate));
+    if (normalizedDate !== _date) setDate(normalizedDate);
+
+    if (onSelectDate) onSelectDate(formatSelectedDateModel(normalizedDate));
   }
 
   function onClearHandler() {
