@@ -55,9 +55,11 @@ export default function useProductsPageService() {
     isForceRefresh?: boolean,
   ) {
     if (isForceRefresh) {
+      dispatch(action.setIsLoading(true));
       dispatch(action.setIsProductsLoading(true));
       return getTheProductsForGrid(data).then((res: any) => {
         dispatch(action.setIsProductsLoading(false));
+        dispatch(action.setIsLoading(false));
         if (res.error) {
           return;
         } else {
@@ -66,8 +68,10 @@ export default function useProductsPageService() {
       });
     } else {
       if (state.products === null) {
+        dispatch(action.setIsLoading(true));
         dispatch(action.setIsProductsLoading(true));
         return getTheProductsForGrid(data).then((res: any) => {
+          dispatch(action.setIsLoading(false));
           dispatch(action.setIsProductsLoading(false));
           if (res.error) {
             return;

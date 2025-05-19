@@ -277,16 +277,22 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
               </TableHeader>
             )}
             {isLoading ? (
-              <TableBody>
+              <TableBody className={cs.tableSkeleton}>
                 {createSkeletonArray(skeletonQuantity ?? 5).map((_, index) => (
                   <TableRow key={index}>
                     <TableCell>
-                      <Skeleton className="h-12 w-12 rounded-full" />
+                      <Skeleton className={cs.skeletonRound} />
                     </TableCell>
-                    <TableCell>
+                    <TableCell className={cs.skeletonBarsContainer}>
                       <div className="space-y-2">
-                        <Skeleton className="h-4 w-[250px]" />
-                        <Skeleton className="h-4 w-[200px]" />
+                        <Skeleton
+                          className={cs.skeletonLongBar}
+                          style={{ width: "100%" }}
+                        />
+                        <Skeleton
+                          className={cs.skeletonShortBar}
+                          style={{ width: "70%" }}
+                        />
                       </div>
                     </TableCell>
                   </TableRow>

@@ -252,14 +252,14 @@ export function ProductsPage() {
           </div>
           <TabsContent value="products">
             <DndGridDataTable
+              isLoading={state.isLoading}
               columns={productsColumns}
               data={state.productsGridModel.items}
               gridModel={state.productsGridModel}
               sortingItems={state.sortingOptions}
-              columnsPreferences={
-                appState.preferences.viewsReferences.productReferences
-              }
+              columnsPreferences={appState.preferences}
               preferenceContext={"productReferences"}
+              skeletonQuantity={state.gridRequestModel.pageSize}
               onApplyColumns={onApplyColumnsHandler}
               onDefaultColumns={onResetColumnsHandler}
               onGridRequestChange={handleGridRequestChange}
@@ -282,14 +282,14 @@ export function ProductsPage() {
           </TabsContent>
           <TabsContent value="variants">
             <DndGridDataTable
+              isLoading={state.isLoading}
               columns={variantsColumns}
               data={state.variantsGridModel.items}
               gridModel={state.variantsGridModel}
               sortingItems={state.sortingOptions}
-              columnsPreferences={
-                appState.preferences.viewsReferences.variantReferences
-              }
+              columnsPreferences={appState.preferences}
               preferenceContext={"variantReferences"}
+              skeletonQuantity={state.gridRequestModel.pageSize}
               onApplyColumns={onApplyColumnsHandler}
               onDefaultColumns={onResetColumnsHandler}
               onGridRequestChange={handleGridRequestChange}

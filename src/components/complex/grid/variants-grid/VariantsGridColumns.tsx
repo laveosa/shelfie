@@ -127,8 +127,8 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
       accessorKey: "salePrice",
       header: "Price",
       cell: ({ row }) => {
-        const price = row.getValue("salePrice");
-        return <span>{price ? `${price}zł` : "N/A"}</span>;
+        const price: string = row.getValue("salePrice");
+        return <span>{price ? price : "N/A"}</span>;
       },
     },
     {

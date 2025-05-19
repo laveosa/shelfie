@@ -174,7 +174,8 @@ export function ProductBasicDataPage() {
     <div className={cs.createProductPage}>
       <div className={cs.borderlessCards}>
         <ItemsCard
-          isLoading={productsState.isProductsLoading}
+          isLoading={productsState.isItemsCardLoading}
+          isItemsLoading={productsState.isProductsLoading}
           title="Products"
           data={productsState.products}
           selectedItem={productId}

@@ -35,7 +35,9 @@ export function ColumnsViewOptions<TData>({
   >([]);
 
   useEffect(() => {
-    initializeColumns(columnsPreferences?.columns);
+    initializeColumns(
+      columnsPreferences?.viewsReferences[preferenceContext]?.columns,
+    );
   }, [columnsPreferences]);
 
   function initializeColumns(columns: any) {
@@ -69,7 +71,6 @@ export function ColumnsViewOptions<TData>({
     });
 
     const model = {
-      globalPreferences: {},
       viewsReferences: {
         [preferenceContext]: {
           columns: Object.fromEntries(
