@@ -12,6 +12,7 @@ import { SheClearButton } from "@/components/primitive/she-clear-button/SheClear
 import { generateId } from "@/utils/helpers/quick-helper.ts";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
+import SheTimePicker from "@/components/primitive/she-time-picker/SheTimePicker.tsx";
 
 const months = [
   "January",
@@ -44,6 +45,8 @@ export default function SheCalendar({
   labelTransKey,
   tooltip,
   date,
+  time,
+  timePicker,
   dateFormat,
   markedDates,
   mode = "single",
@@ -77,6 +80,7 @@ export default function SheCalendar({
   const [_selectedYear, setSelectedYear] = useState<number>(
     new Date().getFullYear(),
   );
+  const [_selectedTime, setSelectedTime] = useState<Date>(time ?? new Date());
 
   const ariaDescribedbyId = `${generateId()}_CALENDAR_ID`;
   const markedParsedDates = React.useMemo(() => {
@@ -113,15 +117,26 @@ export default function SheCalendar({
   }
 
   function onSelectDateHandler(selectedDate: any) {
-    setDate(selectedDate);
+    if (selectedDate !== _date) setDate(selectedDate);
     if (onSelectDate) onSelectDate(formatSelectedDateModel(selectedDate));
   }
 
   function onClearHandler() {
     setDate(null);
+    setSelectedTime(null);
     setSelectedMonth(months[new Date().getMonth()]);
     setSelectedYear(new Date().getFullYear());
     if (onSelectDate) onSelectDate(null);
+  }
+
+  function onTimeChangeHandler(value: Date) {
+    setSelectedTime(value);
+  }
+
+  function onTimeDelayHandler(value: Date) {
+    setSelectedTime(value);
+    const dateWithTime = formatSelectedDateModel(_date, value);
+    if (onSelectDate) onSelectDate(dateWithTime);
   }
 
   // ==================================================================== PRIVATE
@@ -146,14 +161,23 @@ export default function SheCalendar({
 
   // -------------------------------------------------------------- DATE FORMAT AND SORT
 
-  function formatSelectedDateModel(selectedDate: any): any {
+  function formatSelectedDateModel(
+    selectedDate: any,
+    timeOverride?: Date,
+  ): any {
+    const timeToUse = timeOverride ?? _selectedTime;
+
     if (isCalendarMultipleDateValue(selectedDate)) {
-      return selectedDate.map((item) =>
-        dateFormat ? moment(item).format(dateFormat) : item,
-      );
+      return selectedDate.map((item) => {
+        item = combineDateAndTime(item, timeToUse);
+        return dateFormat ? moment(item).format(dateFormat) : item;
+      });
     }
 
     if (isCalendarRangeDateValue(selectedDate)) {
+      selectedDate.from = combineDateAndTime(selectedDate.from, timeToUse);
+      selectedDate.to = combineDateAndTime(selectedDate.to, timeToUse);
+
       const dateRangeModel = {
         from: selectedDate.from
           ? dateFormat
@@ -173,6 +197,7 @@ export default function SheCalendar({
     }
 
     if (isCalendarSingleDateValue(selectedDate)) {
+      selectedDate = combineDateAndTime(selectedDate, timeToUse);
       return dateFormat
         ? moment(selectedDate).format(dateFormat)
         : selectedDate;
@@ -196,6 +221,23 @@ export default function SheCalendar({
     const year = date.getFullYear();
 
     return `${month}/${day}/${year}`;
+  }
+
+  function combineDateAndTime(datePart: Date, timePart: Date): Date {
+    if (!datePart || !timePart) return datePart;
+
+    console.log("DATE: ", datePart);
+    console.log("TIME: ", timePart);
+
+    const combined = new Date(datePart);
+    combined.setHours(timePart.getHours());
+    combined.setMinutes(timePart.getMinutes());
+    combined.setSeconds(timePart.getSeconds());
+    combined.setMilliseconds(timePart.getMilliseconds());
+
+    console.log("RESULT: ", combined);
+
+    return combined;
   }
 
   // -------------------------------------------------------------- CALENDAR MODE DETECTION
@@ -403,30 +445,45 @@ export default function SheCalendar({
               />
             </div>
             <SheSkeleton isLoading={isLoading} fullWidth>
-              <Calendar
-                className={`${cs.sheCalendarElement} ${calendarClassName} ${disabled || isLoading ? "disabled" : ""}`}
-                style={calendarStyle}
-                mode={date ? inferCalendarMode(date) : mode}
-                selected={_date as any}
-                month={setMonth(
-                  setYear(new Date(), _selectedYear),
-                  months.indexOf(_selectedMonth),
-                )}
-                modifiers={{
-                  marked: markedParsedDates,
-                }}
-                modifiersClassNames={{
-                  marked: cs.markedDay,
-                  today: cs.today,
-                }}
-                min={minAmountOfDates}
-                max={maxAmountOfDates}
-                onMonthChange={(value) =>
-                  setSelectedMonth(months[getMonth(value)])
-                }
-                onSelect={onSelectDateHandler}
-                {...props}
-              />
+              <div className={cs.sheCalendarElementContainer}>
+                <Calendar
+                  className={`${cs.sheCalendarElement} ${calendarClassName} ${disabled || isLoading ? "disabled" : ""}`}
+                  style={calendarStyle}
+                  mode={date ? inferCalendarMode(date) : mode}
+                  selected={_date as any}
+                  month={setMonth(
+                    setYear(new Date(), _selectedYear),
+                    months.indexOf(_selectedMonth),
+                  )}
+                  modifiers={{
+                    marked: markedParsedDates,
+                  }}
+                  modifiersClassNames={{
+                    marked: cs.markedDay,
+                    today: cs.today,
+                  }}
+                  min={minAmountOfDates}
+                  max={maxAmountOfDates}
+                  onMonthChange={(value) =>
+                    setSelectedMonth(months[getMonth(value)])
+                  }
+                  onSelect={onSelectDateHandler}
+                  {...props}
+                />
+                <div className="divider"></div>
+                <SheTimePicker
+                  className={cs.sheCalendarTimePicker}
+                  date={_selectedTime}
+                  showClearBtn
+                  isLoading={isLoading}
+                  disabled={!_date}
+                  delayTime={1600}
+                  fullWidth
+                  onSetDate={onTimeChangeHandler}
+                  onDelay={onTimeDelayHandler}
+                  {...timePicker}
+                />
+              </div>
             </SheSkeleton>
           </div>
           <SheClearButton

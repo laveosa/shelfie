@@ -121,7 +121,7 @@ export default function SheTimePicker({
           : delayValue,
       );
     }
-  }, [delayValue, timeFormat, onDelay]);
+  }, [delayValue, timeFormat]);
 
   useEffect(() => {
     if (description !== _description) setDescription(description);

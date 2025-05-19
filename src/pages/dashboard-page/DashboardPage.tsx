@@ -5,6 +5,7 @@ import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageServ
 import SheCalendar from "@/components/primitive/she-calendar/SheCalendar.tsx";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import { DateFormatEnum } from "@/const/enums/DateFormatEnum.ts";
+import SheTimePicker from "@/components/primitive/she-time-picker/SheTimePicker.tsx";
 
 const singleDates: any[] = [
   "05/21/1982",
@@ -55,18 +56,43 @@ export function DashboardPage() {
     setTimeout(() => setDateCollection2(multipleDates2), 2000);
   }, []);
 
+  // ================================================================== EVENT
+
+  function onChange(event) {
+    console.log("onChange: ", event);
+    console.log(
+      ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",
+    );
+  }
+
+  function onDelay(event) {
+    console.log("onDelay: ", event);
+  }
+
+  // ================================================================== LAYOUT
+
   return (
     <div id={cs["DashboardPage"]}>
       <h1>Dashboard</h1>
 
       <br />
 
+      {/*<SheTimePicker
+        label="Label"
+        showClearBtn
+        onSetDate={onChange}
+        onDelay={onDelay}
+      />*/}
+
+      <br />
+
       <SheCalendar
         label="Select"
-        date={multipleDates2}
+        // date={multipleDates2}
         view={ComponentViewEnum.CARD}
-        dateFormat={DateFormatEnum.MM_DD_YYYY}
-        onSelectDate={(event) => console.log(event)}
+        // dateFormat={DateFormatEnum.MM_DD_YYYY}
+        showClearBtn
+        onSelectDate={onChange}
       />
 
       <br />

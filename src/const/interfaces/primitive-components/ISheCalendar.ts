@@ -4,6 +4,7 @@ import { ISheLabel } from "@/const/interfaces/primitive-components/ISheLabel.ts"
 import { ISheClearButton } from "@/const/interfaces/primitive-components/ISheClearButton.ts";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import { DateFormatEnum } from "@/const/enums/DateFormatEnum.ts";
+import { ISheTimePicker } from "@/const/interfaces/primitive-components/ISheTimePicker.ts";
 
 export interface ISheCalendar
   extends ISheLabel,
@@ -23,6 +24,8 @@ export interface ISheCalendar
     | { from: Date; to: Date }
     | { from: string; to: string }
     | { from: Date | string; to: Date | string };
+  time?: Date;
+  timePicker?: ISheTimePicker;
   dateFormat?: DateFormatEnum;
   markedDates?: (string | Date)[];
   mode?: "default" | "range" | "single" | "multiple";
