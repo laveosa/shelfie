@@ -117,6 +117,11 @@ export default function SheCalendar({
   }
 
   function onSelectDateHandler(selectedDate: any) {
+    selectedDate =
+      inferCalendarMode(selectedDate) === "multiple"
+        ? sortDateListByDate(selectedDate)
+        : selectedDate;
+
     if (selectedDate !== _date) setDate(selectedDate);
     if (onSelectDate) onSelectDate(formatSelectedDateModel(selectedDate));
   }
@@ -165,18 +170,21 @@ export default function SheCalendar({
     selectedDate: any,
     timeOverride?: Date,
   ): any {
-    const timeToUse = timeOverride ?? _selectedTime;
+    const timeToUse: Date = timeOverride ?? _selectedTime;
 
     if (isCalendarMultipleDateValue(selectedDate)) {
       return selectedDate.map((item) => {
-        item = combineDateAndTime(item, timeToUse);
+        item = combineDateAndTime(item as Date, timeToUse);
         return dateFormat ? moment(item).format(dateFormat) : item;
       });
     }
 
     if (isCalendarRangeDateValue(selectedDate)) {
-      selectedDate.from = combineDateAndTime(selectedDate.from, timeToUse);
-      selectedDate.to = combineDateAndTime(selectedDate.to, timeToUse);
+      selectedDate.from = combineDateAndTime(
+        selectedDate.from as Date,
+        timeToUse,
+      );
+      selectedDate.to = combineDateAndTime(selectedDate.to as Date, timeToUse);
 
       const dateRangeModel = {
         from: selectedDate.from
@@ -197,7 +205,7 @@ export default function SheCalendar({
     }
 
     if (isCalendarSingleDateValue(selectedDate)) {
-      selectedDate = combineDateAndTime(selectedDate, timeToUse);
+      selectedDate = combineDateAndTime(selectedDate as Date, timeToUse);
       return dateFormat
         ? moment(selectedDate).format(dateFormat)
         : selectedDate;
@@ -226,16 +234,11 @@ export default function SheCalendar({
   function combineDateAndTime(datePart: Date, timePart: Date): Date {
     if (!datePart || !timePart) return datePart;
 
-    console.log("DATE: ", datePart);
-    console.log("TIME: ", timePart);
-
     const combined = new Date(datePart);
     combined.setHours(timePart.getHours());
     combined.setMinutes(timePart.getMinutes());
     combined.setSeconds(timePart.getSeconds());
     combined.setMilliseconds(timePart.getMilliseconds());
-
-    console.log("RESULT: ", combined);
 
     return combined;
   }
@@ -323,12 +326,16 @@ export default function SheCalendar({
   ): Date[] | null {
     if (!isCalendarMultipleDateValue(value)) return null;
 
-    const dateList: Date[] = value.map((item) => {
-      item = normalizeDateFormat(item);
-      return item instanceof Date && !isNaN(item.getTime())
-        ? item
-        : new Date(item);
-    });
+    const dateList = value
+      .map((item) => {
+        const date = new Date(normalizeDateFormat(item));
+        if (isNaN(date.getTime())) {
+          console.warn("Invalid date:", item);
+          return null;
+        }
+        return date;
+      })
+      .filter(Boolean) as Date[];
 
     return sortDateListByDate(dateList);
   }
@@ -338,33 +345,24 @@ export default function SheCalendar({
       | { from: string; to: string }
       | { from: Date; to: Date }
       | { from: string | Date; to: string | Date },
-  ): { from: Date; to: Date } {
+  ): { from: Date; to: Date } | null {
     if (!isCalendarRangeDateValue(value)) return null;
 
-    value.from = normalizeDateFormat(value.from);
-    value.to = normalizeDateFormat(value.to);
+    const from = new Date(normalizeDateFormat(value.from));
+    let to = new Date(normalizeDateFormat(value.to));
 
-    const from: Date =
-      value.from instanceof Date && !isNaN(value.from.getTime())
-        ? value.from
-        : new Date(value.from);
-    let to: Date =
-      value.to instanceof Date && !isNaN(value.to.getTime())
-        ? value.to
-        : new Date(value.to);
+    if (isNaN(from.getTime()) || isNaN(to.getTime())) {
+      console.error("Invalid date input.");
+      return null;
+    }
 
     if (moment(from).isSameOrAfter(to)) {
-      console.error(
-        `FROM: "${from}" date, can't be more the TO: "${to}" date!`,
-      );
+      console.error(`FROM: "${from}" date can't be after TO: "${to}" date!`);
       const fromDateCopy = _.clone(from);
       to = new Date(fromDateCopy.setDate(fromDateCopy.getDate() + 1));
     }
 
-    return {
-      from,
-      to,
-    };
+    return { from, to };
   }
 
   function parseCalendarSingleDate(value: string | Date): Date | null {

@@ -15,9 +15,9 @@ const singleDates: any[] = [
 ];
 
 const multipleDates1: any[] = [
-  "05/05/2025",
-  "05/06/2025",
-  "05/04/2025",
+  "05/5/2025",
+  "5/6/2025",
+  "5/04/2025",
   "05/20/2025",
 ];
 
@@ -88,7 +88,10 @@ export function DashboardPage() {
 
       <SheCalendar
         label="Select"
-        // date={multipleDates2}
+        date={singleDates[2]}
+        // date={range1}
+        // date={multipleDates3}
+        // date={multipleDates1}
         view={ComponentViewEnum.CARD}
         // dateFormat={DateFormatEnum.MM_DD_YYYY}
         showClearBtn

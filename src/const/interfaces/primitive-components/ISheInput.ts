@@ -1,4 +1,4 @@
-import React, { ComponentPropsWithRef } from "react";
+import React, { InputHTMLAttributes, Ref } from "react";
 
 import { ContextPatternEnum } from "@/const/enums/ContextPatternEnum.ts";
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
@@ -7,12 +7,18 @@ import { ISheClearButton } from "@/const/interfaces/primitive-components/ISheCle
 import { ISheContextLengthLimits } from "@/const/interfaces/primitive-components/ISheContextLengthLimits.ts";
 import { ISheErrorMessageBlock } from "@/const/interfaces/primitive-components/ISheErrorMessageBlock.ts";
 
+type NativeInputProps = Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  "onChange" | "onBlur"
+>;
+
 export interface ISheInput
   extends ISheLabel,
     ISheClearButton,
     ISheContextLengthLimits,
     ISheErrorMessageBlock,
-    ComponentPropsWithRef<any> {
+    NativeInputProps {
+  ref?: Ref<HTMLInputElement>;
   id?: string;
   className?: string;
   style?: React.CSSProperties;
