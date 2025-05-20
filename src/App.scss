@@ -40,6 +40,11 @@ body {
   letter-spacing: normal;
 }
 
+.she-placeholder {
+  @extend .she-text;
+  color: vars.$placeholderColor;
+}
+
 .she-title {
   @extend .she-text;
   color: vars.$titleColor;
@@ -87,6 +92,24 @@ body {
   pointer-events: none !important;
 }
 
+.divider {
+  position: relative;
+  width: 100%;
+  height: 0;
+  display: flex;
+  flex-grow: 1;
+  border: 1px solid vars.$colorMedium;
+  border-radius: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.cut-text {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 /*// -------------------------------------------------------------------------- SCROLL*/
 
 ::-webkit-scrollbar {
@@ -126,6 +149,10 @@ body {
 
 div[data-radix-popper-content-wrapper] {
   > div[role="listbox"] {
+    .scroll-options-button {
+      display: none;
+    }
+
     > div[role="presentation"] {
       > div[role="option"] {
         > span {

@@ -23,9 +23,11 @@ export default function SheInput({
   labelTransKey,
   icon,
   value,
-  type,
   placeholder = "enter text...",
   placeholderTransKey,
+  type,
+  step,
+  autoFocus,
   isSearch,
   showClearBtn,
   tooltip,
@@ -44,6 +46,7 @@ export default function SheInput({
   patternErrorMessage,
   patternErrorMessageTransKey,
   delayTime,
+  children,
   onChange,
   onBlur,
   onDelay,
@@ -242,6 +245,8 @@ export default function SheInput({
               value={_textValue ?? ""}
               placeholder={translate(placeholderTransKey, placeholder)}
               type={type}
+              step={step}
+              autoFocus={autoFocus}
               aria-invalid={!isValid}
               aria-describedby={ariaDescribedbyId}
               disabled={disabled || isLoading}
@@ -249,6 +254,7 @@ export default function SheInput({
               onBlur={onBlurHandler}
               {...props}
             />
+            {children && <div>{children}</div>}
           </SheSkeleton>
           <SheClearButton
             value={_textValue}

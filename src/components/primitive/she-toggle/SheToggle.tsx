@@ -32,7 +32,6 @@ export default function SheToggle({
   required,
   style,
   onChecked,
-  ...props
 }: ISheToggle): JSX.Element {
   const ariaDescribedbyId = `${generateId()}_CHECKBOX_ID`;
   const checkboxId = generateId(6);
@@ -83,7 +82,6 @@ export default function SheToggle({
             />
             {type === SheToggleTypeEnum.CHECKBOX && (
               <Checkbox
-                {...props}
                 id={checkboxId}
                 checked={_checked}
                 aria-describedby={ariaDescribedbyId}
@@ -93,7 +91,6 @@ export default function SheToggle({
             )}
             {type === SheToggleTypeEnum.SWITCH && (
               <Switch
-                {...props}
                 id={checkboxId}
                 checked={_checked}
                 aria-describedby={ariaDescribedbyId}

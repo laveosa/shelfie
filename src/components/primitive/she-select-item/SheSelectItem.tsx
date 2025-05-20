@@ -3,7 +3,7 @@ import React, { JSX } from "react";
 import cs from "./SheSelectItem.module.scss";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-import SheTooltip from "@/components/complex/she-tooltip/SheTooltip.tsx";
+import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import { SelectItem } from "@/components/ui/select.tsx";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { Image } from "lucide-react";
@@ -34,9 +34,10 @@ export default function SheSelectItem({
 
   return (
     <SelectItem
-      className={`${cs.sheSelectItem} ${isLoading ? "disabled" : ""} ${showSelectIcon ? cs.sheShowSelectIcon : ""}`}
+      id={id}
+      className={`${cs.sheSelectItem} ${isLoading || disabled ? "disabled" : ""} ${showSelectIcon ? cs.sheShowSelectIcon : ""}`}
       value={id}
-      disabled={disabled}
+      defaultValue={id}
       style={style}
     >
       <div className={`${cs.sheSelectItemContextContainer} ${className}`}>
@@ -55,8 +56,11 @@ export default function SheSelectItem({
           <div
             className={`${cs.sheSelectItemColorsContainer} sheSelectItemColorsContainer`}
           >
-            {colors?.map((color) => (
-              <div style={{ backgroundColor: color }}></div>
+            {colors?.map((color: string, idx: number) => (
+              <div
+                key={color + idx + 1}
+                style={{ backgroundColor: color }}
+              ></div>
             ))}
           </div>
         )}

@@ -6,6 +6,10 @@ import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageServ
 export function DashboardPage() {
   const service = useDashboardPageService();
 
+  // ================================================================== EVENT
+
+  // ================================================================== LAYOUT
+
   return (
     <div id={cs["DashboardPage"]}>
       <h1>Dashboard</h1>

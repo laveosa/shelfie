@@ -3,12 +3,15 @@
 $iconSize: 20px;
 
 .sheToggle {
+  max-width: vars.$maxWidth + px;
   width: fit-content;
 
   .sheToggleComponent {
     position: relative;
 
     .sheToggleControl {
+      transition: all 160ms ease-in-out;
+
       > div {
         display: flex;
         align-items: center;

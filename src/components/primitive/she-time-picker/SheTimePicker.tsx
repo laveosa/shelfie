@@ -121,7 +121,7 @@ export default function SheTimePicker({
           : delayValue,
       );
     }
-  }, [delayValue, timeFormat, onDelay]);
+  }, [delayValue, timeFormat]);
 
   useEffect(() => {
     if (description !== _description) setDescription(description);
@@ -336,8 +336,8 @@ export default function SheTimePicker({
               className={`${cs.sheTimePickerElementInputCell} ${!hideSeconds ? cs.sheTimePickerClockViewCell : ""}`}
             >
               <SheTimePickerInput
-                id={clockWorksheets === "12" ? "minutes12" : ""}
                 ref={minuteRef}
+                id={clockWorksheets === "12" ? "minutes12" : ""}
                 className={`${inputClassName} ${cs.sheTimePickerLabel}`}
                 style={inputStyle}
                 label={!hideInputLabels && mmLabel}
@@ -359,8 +359,8 @@ export default function SheTimePicker({
             {!hideSeconds && (
               <div className={cs.sheTimePickerElementInputCell}>
                 <SheTimePickerInput
-                  id={clockWorksheets === "12" ? "seconds12" : ""}
                   ref={secondRef}
+                  id={clockWorksheets === "12" ? "seconds12" : ""}
                   className={`${inputClassName} ${cs.sheTimePickerLabel}`}
                   style={inputStyle}
                   label={!hideInputLabels && ssLabel}

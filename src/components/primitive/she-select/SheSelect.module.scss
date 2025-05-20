@@ -3,7 +3,7 @@
 $iconSize: 20px;
 
 .sheSelect {
-  max-width: vars.$maxWidth;
+  max-width: vars.$maxWidth + px;
   width: 100%;
 
   .sheSelectComponent {
@@ -13,7 +13,8 @@ $iconSize: 20px;
       position: relative;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 4px;
+      transition: all 160ms ease-in-out;
 
       button[data-placeholder] {
         span {
@@ -23,6 +24,8 @@ $iconSize: 20px;
       }
 
       button[role="combobox"] {
+        transition: all 160ms ease-in-out;
+
         &:focus-visible {
           box-shadow: 0 0 0 1px lightgray inset;
         }
@@ -34,7 +37,7 @@ $iconSize: 20px;
             display: flex;
             align-items: center;
             justify-content: start;
-            gap: 8px;
+            gap: 4px;
 
             // --------------------------------- ICON
             :global(.sheSelectItemIconContainer) {

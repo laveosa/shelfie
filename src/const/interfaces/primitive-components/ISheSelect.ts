@@ -12,6 +12,8 @@ export interface ISheSelect
   id?: string;
   className?: string;
   style?: React.CSSProperties;
+  elemClassName?: string;
+  elemStyle?: React.CSSProperties;
   triggerRef?: React.RefObject<any>;
   icon?: Partial<ISheIcon> | string | React.FC<any>;
   items?: ISheSelectItem[];
@@ -19,13 +21,13 @@ export interface ISheSelect
   hideFirstOption?: boolean;
   placeholder?: string;
   placeholderTransKey?: string;
-  disabled?: boolean;
-  isLoading?: boolean;
   minWidth?: string;
   maxWidth?: string;
   fullWidth?: boolean;
-  required?: boolean;
+  disabled?: boolean;
+  isLoading?: boolean;
   isOpen?: boolean;
+  required?: boolean;
   showSelectIcon?: boolean;
   selectedColor?: string;
   onTriggerKeyDown?: (value: any) => void;

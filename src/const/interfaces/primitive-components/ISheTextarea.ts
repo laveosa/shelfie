@@ -1,4 +1,4 @@
-import React, { ComponentPropsWithRef } from "react";
+import React from "react";
 
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { ISheLabel } from "@/const/interfaces/primitive-components/ISheLabel.ts";
@@ -10,8 +10,7 @@ export interface ISheTextarea
   extends ISheLabel,
     ISheClearButton,
     ISheContextLengthLimits,
-    ISheErrorMessageBlock,
-    ComponentPropsWithRef<any> {
+    ISheErrorMessageBlock {
   id?: string;
   className?: string;
   style?: React.CSSProperties;
@@ -19,6 +18,30 @@ export interface ISheTextarea
   value?: string | number | readonly string[];
   placeholder?: string;
   placeholderTransKey?: string;
+  type?:
+    | "text"
+    | "password"
+    | "email"
+    | "tel"
+    | "url"
+    | "search"
+    | "number"
+    | "range"
+    | "date"
+    | "datetime-local"
+    | "month"
+    | "week"
+    | "time"
+    | "checkbox"
+    | "radio"
+    | "button"
+    | "submit"
+    | "reset"
+    | "file"
+    | "image"
+    | "hidden"
+    | "color";
+  autoFocus?: boolean;
   disabled?: boolean;
   isLoading?: boolean;
   minWidth?: string;
@@ -31,6 +54,7 @@ export interface ISheTextarea
   ignoreValidation?: boolean;
   resize?: boolean;
   rows?: number;
+  rowToExtend?: number;
   delayTime?: number;
   onChange?: (value: string | number | readonly string[]) => void;
   onBlur?: (value: string | number | readonly string[]) => void;

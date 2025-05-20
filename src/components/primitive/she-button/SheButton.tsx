@@ -92,7 +92,7 @@ export default function SheButton({
               <Trans i18nKey={valueTransKey}>{value}</Trans>
             </span>
           )}
-          {children && <span>{children}</span>}
+          {children && <div>{children}</div>}
           {icon && iconPosition === DirectionEnum.RIGHT && (
             <SheIcon
               icon={icon}

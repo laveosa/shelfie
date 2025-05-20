@@ -25,7 +25,6 @@ export default function SheTimePickerInput({
   onRightFocus,
   onChange,
   onBlurHandler,
-  ref,
   ...props
 }: ISheTimePickerInput): JSX.Element {
   const [flag, setFlag] = React.useState<boolean>(false);
@@ -93,7 +92,6 @@ export default function SheTimePickerInput({
 
   return (
     <SheInput
-      ref={ref}
       id={id || picker}
       className={`${cs.sheTimePickerInput} ${cn(
         "tabular-nums caret-transparent focus:bg-accent focus:text-accent-foreground [&::-webkit-inner-spin-button]:appearance-none",

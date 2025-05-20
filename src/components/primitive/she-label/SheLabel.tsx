@@ -2,8 +2,9 @@ import React, { JSX } from "react";
 import { Trans } from "react-i18next";
 
 import cs from "./SheLabel.module.scss";
-import SheTooltip from "@/components/complex/she-tooltip/SheTooltip.tsx";
+import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import { ISheLabel } from "@/const/interfaces/primitive-components/ISheLabel.ts";
+import { ISheTooltip } from "@/const/interfaces/primitive-components/ISheTooltip.ts";
 
 export function SheLabel({
   className = "",
@@ -11,6 +12,7 @@ export function SheLabel({
   label,
   labelTransKey,
   tooltip,
+  tooltipTransKey,
   ariaDescribedbyId,
   ...props
 }: ISheLabel): JSX.Element {
@@ -21,6 +23,22 @@ export function SheLabel({
   // ==================================================================== LAYOUT
   if (!label && !tooltip) return null;
 
+  const normalizedTooltip: ISheTooltip | null =
+    typeof tooltip === "string"
+      ? {
+          text: tooltip,
+          textTransKey: tooltipTransKey,
+          side: "right",
+          align: "end",
+        }
+      : tooltip?.text
+        ? {
+            ...tooltip,
+            side: tooltip.side || "right",
+            align: tooltip.align || "end",
+          }
+        : null;
+
   return (
     <label
       className={`${cs.sheLabel} ${className} she-text`}
@@ -30,11 +48,9 @@ export function SheLabel({
       {...props}
     >
       {label && <Trans i18nKey={labelTransKey}>{label}</Trans>}
-      {tooltip?.text?.length > 0 && (
+      {normalizedTooltip && (
         <SheTooltip
-          {...tooltip}
-          side={tooltip?.side || "right"}
-          align={tooltip?.align || "end"}
+          {...normalizedTooltip}
           showDefaultIcon
           ariaDescribedbyId={ariaDescribedbyId}
         />
