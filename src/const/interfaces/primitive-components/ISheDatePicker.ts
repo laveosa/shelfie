@@ -23,6 +23,7 @@ export interface ISheDatePicker
   disabled?: boolean;
   isLoading?: boolean;
   isOpen?: boolean;
+  closeOnDateSelect?: boolean;
   required?: boolean;
   onOpenChange?: (value: any) => void;
 }

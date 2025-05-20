@@ -61,6 +61,7 @@ export default function SheCalendar({
   required,
   view,
   hideFilters,
+  hideTimePicker,
   onSelectDate,
   ...props
 }: ISheCalendar): JSX.Element {
@@ -395,7 +396,7 @@ export default function SheCalendar({
   return (
     <div
       id={id}
-      className={`${cs.sheCalendar} ${className} ${cs[view] || ""} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""} ${hideFilters ? cs.noFiltersBlock : ""}`}
+      className={`${cs.sheCalendar} ${className} ${cs[view] || ""} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""} ${hideFilters ? cs.noFiltersBlock : ""} ${disabled ? "disabled" : ""}`}
       style={{
         minWidth,
         maxWidth,
@@ -469,19 +470,23 @@ export default function SheCalendar({
                   onSelect={onSelectDateHandler}
                   {...props}
                 />
-                <div className="divider"></div>
-                <SheTimePicker
-                  className={cs.sheCalendarTimePicker}
-                  date={_selectedTime}
-                  showClearBtn
-                  isLoading={isLoading}
-                  disabled={!_date}
-                  delayTime={1600}
-                  fullWidth
-                  onSetDate={onTimeChangeHandler}
-                  onDelay={onTimeDelayHandler}
-                  {...timePicker}
-                />
+                {!hideTimePicker && (
+                  <>
+                    <div className="divider"></div>
+                    <SheTimePicker
+                      className={cs.sheCalendarTimePicker}
+                      date={_selectedTime}
+                      showClearBtn
+                      isLoading={isLoading}
+                      disabled={!_date}
+                      delayTime={1600}
+                      fullWidth
+                      onSetDate={onTimeChangeHandler}
+                      onDelay={onTimeDelayHandler}
+                      {...timePicker}
+                    />
+                  </>
+                )}
               </div>
             </SheSkeleton>
           </div>

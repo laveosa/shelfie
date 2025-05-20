@@ -15,10 +15,29 @@ $iconSize: 20px;
       align-items: center;
       gap: 4px;
 
-      button[data-placeholder] {
-        span {
-          color: vars.$placeholderColor;
-          text-align: start;
+      .sheDatePickerSkeletonContainer {
+        .sheDatePickerPopoverTriggerContainer {
+          display: flex;
+          justify-content: start;
+
+          .sheDatePickerPopoverTriggerButton {
+            display: flex;
+            justify-content: flex-start;
+            text-align: left;
+            font-weight: 400;
+
+            .sheDatePickerControlTextContainer {
+              display: flex;
+              flex-grow: 1;
+              width: 100%;
+              max-width: calc(100% - 20px);
+            }
+          }
+        }
+
+        .sheDatePickerPopOverContentContainer {
+          width: auto;
+          padding: 0;
         }
       }
 
@@ -38,15 +57,34 @@ $iconSize: 20px;
 
 // ======================================================== CALENDAR
 
-/*.sheDatePickerCalendar {
-  width: 318px;
-  display: flex;
-  justify-content: center;
+:global([data-radix-popper-content-wrapper]) {
+  > [role="dialog"] {
+    padding: 10px;
+    box-sizing: border-box;
 
-  &.withClearBtn {
-    width: 280px;
+    .sheDatePickerCalendar {
+      width: (vars.$maxWidth - 20) + px;
+      display: flex;
+      justify-content: center;
+
+      &.withClearBtn {
+        width: 264px;
+      }
+    }
   }
-}*/
+}
+
+// ======================================================== WITH CLEAR BUTTON
+
+.sheDatePicker.withClearBtn {
+  .sheDatePickerComponent {
+    .sheDatePickerControl {
+      .sheDatePickerControlTextContainer {
+        max-width: (vars.$maxWidth - 96) + px;
+      }
+    }
+  }
+}
 
 // ======================================================== FULL WIDTH
 

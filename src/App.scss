@@ -104,6 +104,12 @@ body {
   margin-bottom: 10px;
 }
 
+.cut-text {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 /*// -------------------------------------------------------------------------- SCROLL*/
 
 ::-webkit-scrollbar {

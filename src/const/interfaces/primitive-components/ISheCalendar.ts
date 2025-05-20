@@ -39,5 +39,6 @@ export interface ISheCalendar
   required?: boolean;
   view?: ComponentViewEnum;
   hideFilters?: boolean;
+  hideTimePicker?: boolean;
   onSelectDate?: (value: any) => void;
 }

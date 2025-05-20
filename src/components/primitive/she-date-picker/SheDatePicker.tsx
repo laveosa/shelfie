@@ -1,23 +1,22 @@
 import React, { JSX, useEffect, useState } from "react";
 import { format } from "date-fns";
-import { cn } from "@/lib/utils";
 
 import { CalendarIcon } from "lucide-react";
 
 import cs from "./SheDatePicker.module.scss";
-import { ISheDatePicker } from "@/const/interfaces/primitive-components/ISheDatePicker.ts";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
+import { ISheDatePicker } from "@/const/interfaces/primitive-components/ISheDatePicker.ts";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
 import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
 import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { generateId } from "@/utils/helpers/quick-helper.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import SheCalendar from "@/components/primitive/she-calendar/SheCalendar.tsx";
 
 export default function SheDatePicker({
   id,
@@ -30,7 +29,6 @@ export default function SheDatePicker({
   tooltip,
   icon = CalendarIcon,
   date,
-  formatPattern,
   mode = "single",
   placeholder,
   placeholderTransKey,
@@ -41,24 +39,54 @@ export default function SheDatePicker({
   disabled,
   isLoading,
   isOpen,
+  closeOnDateSelect = true,
   showClearBtn,
+  hideTimePicker = true,
   onOpenChange,
   onSelectDate,
   ...props
 }: ISheDatePicker): JSX.Element {
   const { translate } = useAppTranslation();
   const [_date, setDate] = React.useState<any>(date);
+  const [_open, setOpen] = useState<boolean>(isOpen ?? null);
 
   const ariaDescribedbyId = `${generateId()}_DATE_PICKER_ID`;
 
+  useEffect(() => {
+    setDate(date);
+  }, [date]);
+
+  useEffect(() => {
+    if (typeof isOpen === "boolean") setOpen(isOpen);
+  }, [isOpen]);
+
   // ==================================================================== EVENT
 
-  function onSelectHandler(value: any) {
-    console.log("Selected Date: ", value);
+  function onSelectHandler(value: Date | Date[] | { from: Date; to: Date }) {
+    if (!value) return;
+
     setDate(value);
+
+    if (closeOnDateSelect && (mode === "single" || mode === "range")) {
+      setOpen(false);
+    }
+
+    if (onSelectDate) onSelectDate(value);
   }
 
-  function onClearHandler() {}
+  function onOpenChangeHandler(value: boolean) {
+    if (isLoading || disabled) return;
+
+    setOpen(value);
+
+    if (onOpenChange) onOpenChange(value);
+  }
+
+  function onClearHandler() {
+    setDate(null);
+
+    if (onSelectDate) onSelectDate(null);
+  }
 
   // ==================================================================== PRIVET
   // ==================================================================== LAYOUT
@@ -66,7 +94,7 @@ export default function SheDatePicker({
   return (
     <div
       id={id}
-      className={`${cs.sheDatePicker} ${className} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""}`}
+      className={`${cs.sheDatePicker} ${className} ${showClearBtn ? cs.withClearBtn : ""} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""} ${disabled ? "disabled" : ""}`}
       style={{
         minWidth,
         maxWidth,
@@ -81,29 +109,75 @@ export default function SheDatePicker({
           ariaDescribedbyId={ariaDescribedbyId}
         />
         <div className={cs.sheDatePickerControl}>
-          <SheSkeleton isLoading={isLoading} fullWidth>
-            <Popover>
-              <PopoverTrigger asChild>
+          <SheSkeleton
+            className={cs.sheDatePickerSkeletonContainer}
+            isLoading={isLoading}
+            fullWidth
+          >
+            <Popover open={_open} onOpenChange={onOpenChangeHandler}>
+              <PopoverTrigger
+                className={cs.sheDatePickerPopoverTriggerContainer}
+                asChild
+              >
                 <SheButton
-                  className="flex justify-start text-left font-normal"
+                  className={cs.sheDatePickerPopoverTriggerButton}
                   variant="outline"
                   icon={icon}
                   fullWidth
                 >
                   {_date ? (
-                    format(_date, "PPP")
+                    <div className={cs.sheDatePickerControlTextContainer}>
+                      {mode === "single" && (
+                        <div className="cut-text">
+                          <span className="she-text">
+                            {format(_date, "PPP")}
+                          </span>
+                        </div>
+                      )}
+                      {mode === "range" && _date?.from && _date?.to && (
+                        <div className="cut-text">
+                          <span className="she-text">
+                            {format(_date.from, "PPP")} -{" "}
+                            {format(_date.to, "PPP")}
+                          </span>
+                        </div>
+                      )}
+                      {mode === "multiple" && (
+                        <div className="cut-text">
+                          <span className="she-subtext">[{_date.length}] </span>
+                          {_date.map((item, idx) => (
+                            <span
+                              key={item?.toISOString?.() ?? idx}
+                              className="she-text"
+                            >
+                              {format(item, "PPP")},{" "}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   ) : (
-                    <span className="she-placeholder">pick a date...</span>
+                    <span className="she-placeholder">
+                      {placeholderTransKey
+                        ? translate(placeholderTransKey)
+                        : (placeholder ?? "pick a date...")}
+                    </span>
                   )}
                 </SheButton>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
+              <PopoverContent
+                className={cs.sheDatePickerPopOverContentContainer}
+                align="start"
+              >
+                <SheCalendar
                   className={`${cs.sheDatePickerCalendar} ${calendarClassName} ${showClearBtn ? cs.withClearBtn : ""}`}
                   style={calendarStyle}
-                  selected={_date}
+                  date={_date}
                   mode={mode}
-                  onSelect={onSelectHandler}
+                  isLoading={isLoading}
+                  disabled={disabled}
+                  hideTimePicker={hideTimePicker}
+                  onSelectDate={onSelectHandler}
                   {...props}
                 />
               </PopoverContent>
