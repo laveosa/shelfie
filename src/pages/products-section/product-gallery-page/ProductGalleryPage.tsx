@@ -150,15 +150,14 @@ export function ProductGalleryPage() {
           });
         break;
       case "delete":
-        dispatch(actions.setIsProductPhotosCardLoading(true));
         dispatch(productsActions.setIsProductPhotosLoading(true));
         service.deletePhotoHandler(payload.photoId).then((res) => {
-          dispatch(actions.setIsProductPhotosCardLoading(false));
+          dispatch(productsActions.setIsProductPhotosLoading(false));
           if (res) {
             productsService
               .getProductPhotosHandler(Number(productId))
               .then((res) => {
-                dispatch(productsActions.setIsProductPhotosLoading(false));
+                // dispatch(productsActions.setIsProductPhotosLoading(false));
                 dispatch(productsActions.refreshProductPhotos(res));
               });
             productsService
@@ -267,7 +266,8 @@ export function ProductGalleryPage() {
     <div className={cs.createProductPage}>
       <div className={cs.borderlessCards}>
         <ItemsCard
-          isLoading={productsState.isProductsLoading}
+          isLoading={productsState.isItemsCardLoading}
+          isItemsLoading={productsState.isProductsLoading}
           title="Products"
           data={productsState.products}
           selectedItem={productId}

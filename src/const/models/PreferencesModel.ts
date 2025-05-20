@@ -1,6 +1,6 @@
 export interface ProductReferencesModel {
   columns?: {
-    id?: boolean;
+    productId?: boolean;
     image?: boolean;
     code?: boolean;
     productName?: boolean;
@@ -17,7 +17,8 @@ export interface ProductReferencesModel {
 export interface PreferencesModel {
   globalPreferences?: any;
   viewsReferences?: {
-    productReferences?: ProductReferencesModel;
+    productReferences?: any;
+    variantReferences?: any;
   };
 }
 
@@ -28,7 +29,22 @@ export const PreferencesModelDefault: PreferencesModel = {
   viewsReferences: {
     productReferences: {
       columns: {
-        id: false,
+        productId: false,
+        image: false,
+        code: false,
+        productName: false,
+        category: false,
+        brand: false,
+        barcode: false,
+        status: false,
+        salePrice: false,
+        variantCount: false,
+        stock: false,
+      },
+    },
+    variantReferences: {
+      columns: {
+        productId: false,
         image: false,
         code: false,
         productName: false,

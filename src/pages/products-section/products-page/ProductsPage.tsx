@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { merge } from "lodash";
 import {
   Columns3Icon,
   Download,
@@ -25,6 +26,7 @@ import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { ProductsPageSliceActions as actions } from "@/state/slices/ProductsPageSlice.ts";
+import { AppSliceActions as appActions } from "@/state/slices/AppSlice.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
@@ -41,24 +43,30 @@ export function ProductsPage() {
   const [activeStates, setActiveStates] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (activeTab === "products") {
-        const res = await service.getTheProductsForGridHandler(
-          state.gridRequestModel,
-          true,
-        );
-        dispatch(actions.refreshProductsGridModel(res));
-        dispatch(actions.refreshProducts(res.items));
-      } else if (activeTab === "variants") {
-        const res = await service.getVariantsForGridHandler(
-          state.gridRequestModel,
-        );
-        dispatch(actions.refreshVariantsGridModel(res));
-      }
-    };
-
-    fetchData();
-  }, [state.gridRequestModel, activeTab, dispatch]);
+    if (activeTab === "products") {
+      dispatch(actions.setIsLoading(true));
+      service
+        .getTheProductsForGridHandler(state.productsGridRequestModel, true)
+        .then((res) => {
+          dispatch(actions.setIsLoading(false));
+          dispatch(actions.refreshProductsGridModel(res));
+          dispatch(actions.refreshProducts(res.items));
+        });
+    } else if (activeTab === "variants") {
+      dispatch(actions.setIsLoading(true));
+      service
+        .getVariantsForGridHandler(state.variantsGridRequestModel)
+        .then((res) => {
+          dispatch(actions.setIsLoading(false));
+          dispatch(actions.refreshVariantsGridModel(res));
+        });
+    }
+  }, [
+    state.productsGridRequestModel,
+    state.variantsGridRequestModel,
+    activeTab,
+    dispatch,
+  ]);
 
   useEffect(() => {
     if (state.productsGridModel?.items?.length > 0) {
@@ -76,12 +84,22 @@ export function ProductsPage() {
   }, [state.productsGridModel.items]);
 
   useEffect(() => {
-    service.getBrandsForFilterHandler();
-    service.getCategoriesForFilterHandler();
-    service.getSortingOptionsForGridHandler();
+    if (state.brands.length === 0) {
+      service.getBrandsForFilterHandler().then((res) => {
+        dispatch(actions.refreshBrands(res));
+      });
+    }
+    if (state.categories.length === 0) {
+      service.getCategoriesForFilterHandler().then((res) => {
+        dispatch(actions.refreshCategories(res));
+      });
+    }
+    if (state.sortingOptions.length === 0) {
+      service.getSortingOptionsForGridHandler().then((res) => {
+        dispatch(actions.refreshSortingOptions(res));
+      });
+    }
   }, []);
-
-  // In your ProductsPage.tsx file, update the onAction function:
 
   const onAction = (
     actionType: string,
@@ -158,20 +176,39 @@ export function ProductsPage() {
 
   function handleGridRequestChange(updates: GridRequestModel) {
     if (updates.brands || updates.categories) {
-      dispatch(
-        actions.refreshGridRequestModel({
-          ...state.gridRequestModel,
-          currentPage: 1,
-          ...updates,
-        }),
-      );
+      if (activeTab === "products") {
+        dispatch(
+          actions.refreshProductsGridRequestModel({
+            ...state.productsGridRequestModel,
+            currentPage: 1,
+            ...updates,
+          }),
+        );
+      } else if (activeTab === "variants") {
+        dispatch(
+          actions.refreshVariantsGridRequestModel({
+            ...state.variantsGridRequestModel,
+            currentPage: 1,
+            ...updates,
+          }),
+        );
+      }
     } else {
-      dispatch(
-        actions.refreshGridRequestModel({
-          ...state.gridRequestModel,
-          ...updates,
-        }),
-      );
+      if (activeTab === "products") {
+        dispatch(
+          actions.refreshProductsGridRequestModel({
+            ...state.productsGridRequestModel,
+            ...updates,
+          }),
+        );
+      } else if (activeTab === "variants") {
+        dispatch(
+          actions.refreshVariantsGridRequestModel({
+            ...state.variantsGridRequestModel,
+            ...updates,
+          }),
+        );
+      }
     }
   }
 
@@ -184,7 +221,9 @@ export function ProductsPage() {
   }
 
   function onApplyColumnsHandler(model: PreferencesModel) {
-    service.updateUserPreferencesHandler(model);
+    const modifiedModel = merge({}, appState.preferences, model);
+    dispatch(appActions.refreshPreferences(modifiedModel));
+    service.updateUserPreferencesHandler(modifiedModel);
   }
 
   function onResetColumnsHandler() {
@@ -250,11 +289,14 @@ export function ProductsPage() {
           </div>
           <TabsContent value="products">
             <DndGridDataTable
+              isLoading={state.isLoading}
               columns={productsColumns}
               data={state.productsGridModel.items}
               gridModel={state.productsGridModel}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
+              preferenceContext={"productReferences"}
+              skeletonQuantity={state.productsGridRequestModel.pageSize}
               onApplyColumns={onApplyColumnsHandler}
               onDefaultColumns={onResetColumnsHandler}
               onGridRequestChange={handleGridRequestChange}
@@ -277,11 +319,14 @@ export function ProductsPage() {
           </TabsContent>
           <TabsContent value="variants">
             <DndGridDataTable
+              isLoading={state.isLoading}
               columns={variantsColumns}
               data={state.variantsGridModel.items}
               gridModel={state.variantsGridModel}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
+              preferenceContext={"variantReferences"}
+              skeletonQuantity={state.variantsGridRequestModel.pageSize}
               onApplyColumns={onApplyColumnsHandler}
               onDefaultColumns={onResetColumnsHandler}
               onGridRequestChange={handleGridRequestChange}

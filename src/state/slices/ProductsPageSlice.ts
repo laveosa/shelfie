@@ -40,6 +40,14 @@ const initialState: IProductsPageSlice = {
     currentPage: 1,
     pageSize: 10,
   },
+  productsGridRequestModel: {
+    currentPage: 1,
+    pageSize: 10,
+  },
+  variantsGridRequestModel: {
+    currentPage: 1,
+    pageSize: 10,
+  },
   productPhotos: [],
   productVariants: [],
   taxesList: [],
@@ -149,6 +157,22 @@ function refreshGridRequestModel(
   state.gridRequestModel = action?.payload || state.gridRequestModel;
 }
 
+function refreshProductsGridRequestModel(
+  state: IProductsPageSlice,
+  action: PayloadAction<GridRequestModel>,
+) {
+  state.productsGridRequestModel =
+    action?.payload || state.productsGridRequestModel;
+}
+
+function refreshVariantsGridRequestModel(
+  state: IProductsPageSlice,
+  action: PayloadAction<GridRequestModel>,
+) {
+  state.variantsGridRequestModel =
+    action?.payload || state.variantsGridRequestModel;
+}
+
 function refreshBrands(
   state: IProductsPageSlice,
   action: PayloadAction<BrandModel[]>,
@@ -217,6 +241,8 @@ const ProductsPageSlice = createSlice({
     refreshProductsGridModel,
     refreshVariantsGridModel,
     refreshGridRequestModel,
+    refreshProductsGridRequestModel,
+    refreshVariantsGridRequestModel,
     refreshBrands,
     refreshCategories,
     refreshSortingOptions,

@@ -31,9 +31,9 @@ import { Separator } from "@/components/ui/separator.tsx";
 import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
 import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
-import { VariantModel } from "@/const/models/VariantModel.ts";
 import { VariantConfigurationGridColumns } from "@/components/complex/grid/variant-configuration-grid/VariantConfigurationGridColumns.tsx";
 import { VariantPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/VariantPhotosGridColumns.tsx";
+import { VariantModel } from "@/const/models/VariantModel.ts";
 
 const debounce = (fn: (...args: any[]) => void, delay: number) => {
   let timer: ReturnType<typeof setTimeout>;
@@ -120,16 +120,26 @@ export default function VariantConfigurationCard({
       if (userModifiedForm.current) {
         form.handleSubmit(onSubmit)();
       }
-    }, 500);
+    }, 1500);
 
     debouncedFnRef.current = fn;
     return fn;
   };
 
-  function onSubmit(data: VariantModel) {
+  function onSubmit(formData: VariantModel) {
     if (!userModifiedForm.current) return;
 
-    let { netto, brutto, taxTypeId } = data.salePrice;
+    let netto =
+      typeof formData.salePrice.netto === "string"
+        ? Number(formData.salePrice.netto)
+        : formData.salePrice.netto || 0;
+
+    let brutto =
+      typeof formData.salePrice.brutto === "string"
+        ? Number(formData.salePrice.brutto)
+        : formData.salePrice.brutto || 0;
+
+    const taxTypeId = formData.salePrice.taxTypeId;
     const taxRate = taxesList.find((t) => t.id === taxTypeId)?.value ?? 0;
 
     if (lastChanged.current === "netto") {
@@ -138,12 +148,16 @@ export default function VariantConfigurationCard({
       netto = +(brutto / (1 + taxRate)).toFixed(2);
     }
 
-    setValue("salePrice.netto", netto);
-    setValue("salePrice.brutto", brutto);
+    setValue("salePrice.netto", netto, { shouldDirty: false });
+    setValue("salePrice.brutto", brutto, { shouldDirty: false });
 
     const formattedData = {
-      ...data,
-      salePrice: { netto, brutto, taxTypeId },
+      ...formData,
+      salePrice: {
+        netto,
+        brutto,
+        taxTypeId,
+      },
     };
 
     if (variant) {
@@ -151,8 +165,8 @@ export default function VariantConfigurationCard({
     }
 
     setInitialFormValues({
-      variantName: data.variantName || "",
-      variantCode: data.variantCode || "",
+      variantName: formData.variantName || "",
+      variantCode: formData.variantCode || "",
       salePrice: { netto, brutto, taxTypeId },
     });
 
@@ -204,10 +218,7 @@ export default function VariantConfigurationCard({
       className={cs.variantConfigurationCard}
       {...props}
     >
-      <div
-        className={cs.variantConfigurationCardContent}
-        // style={isLoading ? { pointerEvents: "none", opacity: 0.5 } : {}}
-      >
+      <div className={cs.variantConfigurationCardContent}>
         <div className={cs.variantConfigurationForm}>
           <SheForm form={form} onSubmit={onSubmit}>
             <SheForm.Field name="variantName">
@@ -221,7 +232,8 @@ export default function VariantConfigurationCard({
               <SheForm.Field name="variantCode" label="Variant Code">
                 <div>
                   <SheInput
-                    {...(register("variantCode") as any)}
+                    value={variant?.variantCode}
+                    {...(register("variantCode", {}) as any)}
                     onDelay={handleFieldChange}
                   />
                 </div>
@@ -240,7 +252,6 @@ export default function VariantConfigurationCard({
                     type="number"
                     step="any"
                     {...(register("salePrice.netto", {
-                      valueAsNumber: true,
                       onChange: () => {
                         lastChanged.current = "netto";
                         handleFieldChange();
@@ -292,7 +303,6 @@ export default function VariantConfigurationCard({
                     type="number"
                     step="any"
                     {...(register("salePrice.brutto", {
-                      valueAsNumber: true,
                       onChange: () => {
                         lastChanged.current = "brutto";
                         handleFieldChange();

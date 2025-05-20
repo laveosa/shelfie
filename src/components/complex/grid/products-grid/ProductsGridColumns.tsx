@@ -100,8 +100,8 @@ export function productsGridColumns(
       accessorKey: "salePrice",
       header: "Sale Price",
       cell: ({ row }) => {
-        const price = row.getValue("salePrice");
-        return <span>{price ? `${price}zł` : "N/A"}</span>;
+        const price: string = row.getValue("salePrice");
+        return <span>{price ? price : "N/A"}</span>;
       },
     },
     {

@@ -48,19 +48,13 @@ export default function ProductConfigurationCard({
   });
 
   useEffect(() => {
-    if (
-      product &&
-      product.productId &&
-      product.productName &&
-      product.category &&
-      product.brand
-    ) {
+    if (product && product.productId && product.productName) {
       form.reset({
         name: product.productName || "",
         productCode: product.productCode || null,
         barcode: product.barcode || "",
-        categoryId: product.category.categoryId || null,
-        brandId: product.brand.brandId || null,
+        categoryId: product.category?.categoryId || null,
+        brandId: product.brand?.brandId || null,
         isActive: product.isActive || false,
       });
     } else {

@@ -21,8 +21,12 @@ interface IColumnsViewOptions<TData> {
 export function ColumnsViewOptions<TData>({
   table,
 }: IColumnsViewOptions<TData>) {
-  const { columnsPreferences, onApplyColumns, onDefaultColumns } =
-    useGridContext();
+  const {
+    columnsPreferences,
+    preferenceContext,
+    onApplyColumns,
+    onDefaultColumns,
+  } = useGridContext();
 
   const [selectedColumns, setSelectedColumns] = useState<string[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -32,32 +36,19 @@ export function ColumnsViewOptions<TData>({
 
   useEffect(() => {
     initializeColumns(
-      columnsPreferences.viewsReferences.productReferences.columns,
+      columnsPreferences?.viewsReferences[preferenceContext]?.columns,
     );
   }, [columnsPreferences]);
-
-  // function initializeColumns(columns: any) {
-  //   if (!columns) return;
-  //   const newSelectedColumns: string[] = [];
-  //   table.getAllColumns().forEach((column) => {
-  //     const isVisibleInPreferences = columns[column.id];
-  //     column.toggleVisibility(!isVisibleInPreferences);
-  //     if (!isVisibleInPreferences) {
-  //       newSelectedColumns.push(column.id);
-  //     }
-  //   });
-  //   setSelectedColumns(newSelectedColumns);
-  // }
 
   function initializeColumns(columns: any) {
     if (!columns) return;
     const newSelectedColumns: string[] = [];
     table.getAllColumns().forEach((column) => {
-      const isVisibleInPreferences = columns[column.id];
-      if (isVisibleInPreferences === false) {
+      const isVisible = columns[column.id];
+      if (isVisible === true) {
         column.toggleVisibility(true);
         newSelectedColumns.push(column.id);
-      } else if (isVisibleInPreferences === true) {
+      } else if (isVisible === false) {
         column.toggleVisibility(false);
       } else {
         column.toggleVisibility(true);
@@ -80,15 +71,14 @@ export function ColumnsViewOptions<TData>({
     });
 
     const model = {
-      globalPreferences: {},
       viewsReferences: {
-        productReferences: {
+        [preferenceContext]: {
           columns: Object.fromEntries(
             table
               .getAllColumns()
               .map((column) => [
                 column.id,
-                !selectedColumns.includes(column.id),
+                selectedColumns.includes(column.id),
               ]),
           ),
         },
@@ -145,7 +135,7 @@ export function ColumnsViewOptions<TData>({
                 event.preventDefault();
               }}
             >
-              {column.id}
+              {column.columnDef.header as string}
             </DropdownMenuCheckboxItem>
           ))}
         <DropdownMenuSeparator />
