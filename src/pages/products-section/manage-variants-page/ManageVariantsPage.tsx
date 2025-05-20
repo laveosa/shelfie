@@ -731,6 +731,11 @@ export function ManageVariantsPage() {
       case "openAddVariantCard":
         dispatch(actions.refreshActiveCards([]));
         handleCardAction("addVariantCard", true, []);
+        dispatch(
+          productsActions.refreshProductVariants(
+            clearSelectedGridItems(productsState.productVariants),
+          ),
+        );
         break;
       case "openChooseVariantTraitsCard":
         dispatch(actions.setIsChooseVariantTraitsCardLoading(true));
