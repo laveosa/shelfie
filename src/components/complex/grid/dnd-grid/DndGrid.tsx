@@ -33,6 +33,7 @@ import { IGridContext } from "@/const/interfaces/context/IGridContext.ts";
 import { GridContext } from "@/state/context/grid-context";
 import cs from "./DndGrid.module.scss";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
+import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
 
 interface DataWithId {
   id: number | string;
@@ -122,6 +123,7 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
   columns,
   data,
   columnsPreferences,
+  preferenceContext,
   gridModel,
   sortingItems,
   isLoading,
@@ -224,6 +226,7 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
     <GridContext.Provider
       value={{
         columnsPreferences,
+        preferenceContext,
         onApplyColumns,
         onDefaultColumns,
         showPagination,
@@ -239,7 +242,13 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
     >
       <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
         {showHeader && <GridHeader table={table}>{children}</GridHeader>}
-        <div className={`${className} rounded-md border`}>
+        <div
+          className={`${className} rounded-md border`}
+          style={{ position: "relative" }}
+        >
+          {isLoading && (
+            <SheLoading style={showColumnsHeader ? {} : { top: "0px" }} />
+          )}
           <Table
             className={
               isLoading ? `${cs.table} ${cs.tableLoading}` : `${cs.table}`
@@ -275,16 +284,22 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
               </TableHeader>
             )}
             {isLoading ? (
-              <TableBody>
+              <TableBody className={cs.tableSkeleton}>
                 {createSkeletonArray(skeletonQuantity ?? 5).map((_, index) => (
                   <TableRow key={index}>
                     <TableCell>
-                      <Skeleton className="h-12 w-12 rounded-full" />
+                      <Skeleton className={cs.skeletonRound} />
                     </TableCell>
-                    <TableCell>
+                    <TableCell className={cs.skeletonBarsContainer}>
                       <div className="space-y-2">
-                        <Skeleton className="h-4 w-[250px]" />
-                        <Skeleton className="h-4 w-[200px]" />
+                        <Skeleton
+                          className={cs.skeletonLongBar}
+                          style={{ width: "100%" }}
+                        />
+                        <Skeleton
+                          className={cs.skeletonShortBar}
+                          style={{ width: "70%" }}
+                        />
                       </div>
                     </TableCell>
                   </TableRow>

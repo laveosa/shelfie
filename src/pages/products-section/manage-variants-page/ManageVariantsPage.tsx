@@ -259,6 +259,7 @@ export function ManageVariantsPage() {
           .then((res) => {
             dispatch(actions.setIsVariantConfigurationCardLoading(false));
             if (res) {
+              dispatch(actions.refreshSelectedVariant(res));
               addToast({
                 text: "Variant updated successfully",
                 type: "success",
@@ -270,9 +271,6 @@ export function ManageVariantsPage() {
                 type: "error",
               });
             }
-            productsService.getProductVariantsHandler(productId).then((res) => {
-              dispatch(productsActions.refreshProductVariants(res));
-            });
           });
         break;
       case "updateVariantTraitOptions":

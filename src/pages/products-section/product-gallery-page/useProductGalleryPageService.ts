@@ -51,7 +51,7 @@ export default function useProductGalleryPageService() {
 
   function deletePhotoHandler(photoId) {
     return deletePhoto(photoId).then((res: any) => {
-      return res.data;
+      return res;
     });
   }
 
