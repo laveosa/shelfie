@@ -150,15 +150,14 @@ export function ProductGalleryPage() {
           });
         break;
       case "delete":
-        dispatch(actions.setIsProductPhotosCardLoading(true));
         dispatch(productsActions.setIsProductPhotosLoading(true));
         service.deletePhotoHandler(payload.photoId).then((res) => {
-          dispatch(actions.setIsProductPhotosCardLoading(false));
+          dispatch(productsActions.setIsProductPhotosLoading(false));
           if (res) {
             productsService
               .getProductPhotosHandler(Number(productId))
               .then((res) => {
-                dispatch(productsActions.setIsProductPhotosLoading(false));
+                // dispatch(productsActions.setIsProductPhotosLoading(false));
                 dispatch(productsActions.refreshProductPhotos(res));
               });
             productsService

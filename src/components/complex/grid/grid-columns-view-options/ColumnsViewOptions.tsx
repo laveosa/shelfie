@@ -135,7 +135,7 @@ export function ColumnsViewOptions<TData>({
                 event.preventDefault();
               }}
             >
-              {column.id}
+              {column.columnDef.header as string}
             </DropdownMenuCheckboxItem>
           ))}
         <DropdownMenuSeparator />

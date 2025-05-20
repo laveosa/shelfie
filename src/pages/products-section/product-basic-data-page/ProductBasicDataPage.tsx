@@ -64,10 +64,15 @@ export function ProductBasicDataPage() {
           dispatch(productsActions.refreshProductCounter(res));
         });
       }
-      if (!productsState.product) {
+      if (
+        !productsState.product ||
+        productsState.product.productId !== productId
+      ) {
+        dispatch(actions.setIsProductConfigurationCardLoading(true));
         productsService
           .getProductDetailsHandler(productId)
           .then((res: ProductModel) => {
+            dispatch(actions.setIsProductConfigurationCardLoading(false));
             dispatch(actions.refreshActiveCards(["basicData"]));
             dispatch(productsActions.refreshProduct(res));
           });

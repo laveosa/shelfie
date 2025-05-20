@@ -5,6 +5,7 @@ import { useState } from "react";
 import cs from "./SheProductCard.module.scss";
 import { ISheProductCard } from "@/const/interfaces/complex-components/ISheProductCard.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
 
 export default function SheProductCard({
   className = "",
@@ -92,13 +93,7 @@ export default function SheProductCard({
           </>
         )}
       </div>
-      {loading && (
-        <div className={cs.loaderContainer}>
-          <div className={cs.loadingBar}>
-            <div className={cs.shimmer}></div>
-          </div>
-        </div>
-      )}
+      {loading && <SheLoading />}
       <div
         className={cs.cardContent}
         style={

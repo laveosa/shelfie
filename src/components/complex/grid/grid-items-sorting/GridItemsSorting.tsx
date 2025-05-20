@@ -29,6 +29,7 @@ export default function GridItemsSorting() {
         <SheButton
           variant="outline"
           icon={ArrowUpAZ}
+          disabled={sortingItems.length === 0}
           onClick={() => setDropdownOpen(true)}
         >
           <div className={cs.buttonInnerItems}>

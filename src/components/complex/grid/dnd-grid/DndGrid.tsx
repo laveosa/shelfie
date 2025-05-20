@@ -33,6 +33,7 @@ import { IGridContext } from "@/const/interfaces/context/IGridContext.ts";
 import { GridContext } from "@/state/context/grid-context";
 import cs from "./DndGrid.module.scss";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
+import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
 
 interface DataWithId {
   id: number | string;
@@ -241,7 +242,13 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
     >
       <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
         {showHeader && <GridHeader table={table}>{children}</GridHeader>}
-        <div className={`${className} rounded-md border`}>
+        <div
+          className={`${className} rounded-md border`}
+          style={{ position: "relative" }}
+        >
+          {isLoading && (
+            <SheLoading style={showColumnsHeader ? {} : { top: "0px" }} />
+          )}
           <Table
             className={
               isLoading ? `${cs.table} ${cs.tableLoading}` : `${cs.table}`

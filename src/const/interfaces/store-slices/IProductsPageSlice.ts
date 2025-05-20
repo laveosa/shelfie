@@ -32,6 +32,8 @@ export interface IProductsPageSlice {
   productsGridModel?: GridModel;
   variantsGridModel?: GridModel;
   gridRequestModel?: GridRequestModel;
+  productsGridRequestModel?: GridRequestModel;
+  variantsGridRequestModel?: GridRequestModel;
   productPhotos?: ImageModel[];
   taxesList?: TaxTypeModel[];
   currenciesList?: CurrencyModel[];
