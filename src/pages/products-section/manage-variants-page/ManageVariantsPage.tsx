@@ -449,7 +449,6 @@ export function ManageVariantsPage() {
         // });
         break;
       case "addPhotoToVariant":
-        dispatch(actions.setIsVariantPhotosCardLoading(true));
         service
           .attachProductPhotoToVariantHandler(
             productsState.selectedVariant.variantId,

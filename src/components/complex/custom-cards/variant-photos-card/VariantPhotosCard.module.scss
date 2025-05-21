@@ -2,7 +2,6 @@
 
 .variantPhotosCard {
   .variantPhotosCardContent {
-    padding-top: 20px;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -31,7 +30,7 @@
         }
 
         .productPhotosGridShort > div {
-          max-height: calc(100vh - 717px);
+          max-height: calc(100vh - 733px);
         }
       }
     }

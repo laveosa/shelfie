@@ -259,7 +259,7 @@ export default function useManageVariantsPageService() {
       variantId,
       photoId,
     }).then((res: any) => {
-      return res.data;
+      return res;
     });
   }
 
