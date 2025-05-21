@@ -136,14 +136,12 @@ export default function useProductsPageService() {
   }
 
   function manageProductHandler(model: ProductModel) {
-    return manageProduct(model).then((res: any) => {
-      console.log(res);
-    });
+    return manageProduct(model);
   }
 
   function deleteProductHandler(id: number) {
     return deleteProduct(id).then((res: any) => {
-      console.log(res);
+      return res;
     });
   }
 
