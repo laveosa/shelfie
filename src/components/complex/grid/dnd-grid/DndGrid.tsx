@@ -310,14 +310,14 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
                 items={items.map((item) => item.id)}
                 strategy={verticalListSortingStrategy}
               >
-                <TableBody
-                  className={cs.tableBody}
-                  style={{
-                    background: enableDnd ? "#f4f4f5" : "white",
-                  }}
-                >
-                  {table.getRowModel().rows?.length ? (
-                    table.getRowModel().rows.map((row) =>
+                {items.length > 0 ? (
+                  <TableBody
+                    className={cs.tableBody}
+                    style={{
+                      background: enableDnd ? "#f4f4f5" : "white",
+                    }}
+                  >
+                    {table.getRowModel().rows.map((row) =>
                       enableDnd ? (
                         <DraggableRow
                           key={row.id}
@@ -360,8 +360,15 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
                           ))}
                         </TableRow>
                       ),
-                    )
-                  ) : (
+                    )}
+                  </TableBody>
+                ) : (
+                  <TableBody
+                    className={cs.tableBody}
+                    style={{
+                      background: enableDnd ? "#f4f4f5" : "white",
+                    }}
+                  >
                     <TableRow>
                       <TableCell
                         colSpan={columns.length + (enableDnd ? 1 : 0)}
@@ -370,8 +377,8 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
                         {customMessage || "NO DATA TO DISPLAY"}
                       </TableCell>
                     </TableRow>
-                  )}
-                </TableBody>
+                  </TableBody>
+                )}
               </SortableContext>
             )}
           </Table>

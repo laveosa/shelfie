@@ -45,20 +45,16 @@ export function ProductsPage() {
 
   useEffect(() => {
     if (activeTab === "products") {
-      dispatch(actions.setIsLoading(true));
       service
         .getTheProductsForGridHandler(state.productsGridRequestModel, true)
         .then((res) => {
-          dispatch(actions.setIsLoading(false));
           dispatch(actions.refreshProductsGridModel(res));
           dispatch(actions.refreshProducts(res.items));
         });
     } else if (activeTab === "variants") {
-      dispatch(actions.setIsLoading(true));
       service
         .getVariantsForGridHandler(state.variantsGridRequestModel)
         .then((res) => {
-          dispatch(actions.setIsLoading(false));
           dispatch(actions.refreshVariantsGridModel(res));
         });
     }
