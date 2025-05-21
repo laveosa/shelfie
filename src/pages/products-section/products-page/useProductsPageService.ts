@@ -97,27 +97,21 @@ export default function useProductsPageService() {
   }
 
   function getBrandsForFilterHandler() {
-    dispatch(action.setIsLoading(true));
     return getBrandsForFilter(null).then((res: any) => {
-      dispatch(action.setIsLoading(false));
       dispatch(action.refreshBrands(res.data));
       return res.data;
     });
   }
 
   function getCategoriesForFilterHandler() {
-    dispatch(action.setIsLoading(true));
     return getCategoriesForFilter(null).then((res: any) => {
-      dispatch(action.setIsLoading(false));
       dispatch(action.refreshCategories(res.data));
       return res.data;
     });
   }
 
   function getSortingOptionsForGridHandler() {
-    dispatch(action.setIsLoading(true));
     return getSortingOptionsForGrid(null).then((res: any) => {
-      dispatch(action.setIsLoading(false));
       dispatch(action.refreshSortingOptions(res.data));
       return res.data;
     });
