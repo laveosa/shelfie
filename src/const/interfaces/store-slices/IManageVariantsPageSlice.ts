@@ -10,8 +10,6 @@ import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 
 export interface IManageVariantsPageSlice {
   isLoading?: boolean;
-  // isItemsCardLoading?: boolean;
-  // isProductMenuCardLoading?: boolean;
   isManageVariantsCardLoading?: boolean;
   isVariantConfigurationCardLoading?: boolean;
   isAddStockCardLoading?: boolean;
@@ -28,7 +26,6 @@ export interface IManageVariantsPageSlice {
   isVariantPhotoGridLoading?: boolean;
   isProductPhotoGridLoading?: boolean;
   products?: ProductModel[];
-  variants: VariantModel[];
   selectedVariant: VariantModel;
   isDuplicateVariant: boolean;
   traits?: TraitModel[];

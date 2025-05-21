@@ -27,7 +27,6 @@ import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { ProductsPageSliceActions as actions } from "@/state/slices/ProductsPageSlice.ts";
 import { AppSliceActions as appActions } from "@/state/slices/AppSlice.ts";
-import { ProductModel } from "@/const/models/ProductModel.ts";
 import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { variantsGridColumns } from "@/components/complex/grid/variants-grid/VariantsGridColumns.tsx";
@@ -61,6 +60,7 @@ export function ProductsPage() {
           dispatch(actions.refreshVariantsGridModel(res));
         });
     }
+    dispatch(actions.resetSelectedVariant());
   }, [
     state.productsGridRequestModel,
     state.variantsGridRequestModel,
@@ -105,7 +105,7 @@ export function ProductsPage() {
     actionType: string,
     rowId?: string,
     setLoadingRow?: (rowId: string, loading: boolean) => void,
-    rowData?: ProductModel,
+    rowData?: any,
     _rowOriginal?: any,
   ) => {
     setLoadingRow(rowId, true);
@@ -154,9 +154,12 @@ export function ProductsPage() {
         console.log(`Activating variant ${rowId}`);
         break;
       case "manageVariant":
-        navigate(
-          `${NavUrlEnum.PRODUCTS}${NavUrlEnum.PRODUCT_VARIANTS}/${rowData?.productId}`,
-        );
+        service.getVariantDetailsHandler(rowData.variantId).then((res) => {
+          dispatch(actions.refreshSelectedVariant(res));
+          navigate(
+            `${NavUrlEnum.PRODUCTS}${NavUrlEnum.PRODUCT_VARIANTS}/${rowData?.productId}`,
+          );
+        });
         break;
     }
 

@@ -47,6 +47,7 @@ export default function useProductsPageService() {
   const [getTaxesList] = DictionaryApiHooks.useLazyGetTaxesListQuery();
   const [getCurrenciesList] =
     DictionaryApiHooks.useLazyGetCurrenciesListQuery();
+  const [getVariantDetails] = ProductsApiHooks.useLazyGetVariantDetailsQuery();
 
   //-------------------------------------------------API
 
@@ -203,6 +204,28 @@ export default function useProductsPageService() {
     });
   }
 
+  function getVariantDetailsHandler(id) {
+    return getVariantDetails(id).then((res: any) => {
+      const modifiedRes = {
+        ...res.data,
+        traitOptions: addGridRowColor(res.data.traitOptions, "color", [
+          {
+            field: "isRemoved",
+            value: true,
+            color: GridRowsColorsEnum.ERROR,
+          },
+          {
+            field: "isMissing",
+            value: true,
+            color: GridRowsColorsEnum.ERROR,
+          },
+        ]),
+      };
+
+      return modifiedRes;
+    });
+  }
+
   //----------------------------------------------------LOGIC
 
   function itemCardHandler(item) {
@@ -210,6 +233,7 @@ export default function useProductsPageService() {
     dispatch(action.refreshProductPhotos([]));
     dispatch(action.resetProduct());
     dispatch(action.refreshProductVariants([]));
+    dispatch(action.resetSelectedVariant());
     navigate(
       `${ApiUrlEnum.PRODUCTS}${ApiUrlEnum.PRODUCT_BASIC_DATA}/${item.productId}`,
     );
@@ -232,6 +256,7 @@ export default function useProductsPageService() {
     getProductVariantsHandler,
     getTaxesListHandler,
     getCurrenciesListHandler,
+    getVariantDetailsHandler,
     itemCardHandler,
   };
 }

@@ -3,15 +3,12 @@ import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { DictionaryApiHooks } from "@/utils/services/api/DictionaryApiService.ts";
 import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
-import { addGridRowColor } from "@/utils/helpers/quick-helper.ts";
-import { GridRowsColorsEnum } from "@/const/enums/GridRowsColorsEnum.ts";
 
 export default function useManageVariantsPageService() {
   const [getVariantsForGrid] = ProductsApiHooks.useGetVariantsForGridMutation();
   const [createVariant] = ProductsApiHooks.useCreateVariantMutation();
   const [checkVariantCombination] =
     ProductsApiHooks.useCheckVariantCombinationMutation();
-  const [getVariantDetails] = ProductsApiHooks.useLazyGetVariantDetailsQuery();
   const [toggleVariantIsActive] =
     ProductsApiHooks.useToggleVariantIsActiveMutation();
   const [updateVariantDetails] =
@@ -77,28 +74,6 @@ export default function useManageVariantsPageService() {
   function checkVariantCombinationHandler(id, model) {
     return checkVariantCombination({ id, model }).then((res: any) => {
       return res.data;
-    });
-  }
-
-  function getVariantDetailsHandler(id) {
-    return getVariantDetails(id).then((res: any) => {
-      const modifiedRes = {
-        ...res.data,
-        traitOptions: addGridRowColor(res.data.traitOptions, "color", [
-          {
-            field: "isRemoved",
-            value: true,
-            color: GridRowsColorsEnum.ERROR,
-          },
-          {
-            field: "isMissing",
-            value: true,
-            color: GridRowsColorsEnum.ERROR,
-          },
-        ]),
-      };
-
-      return modifiedRes;
     });
   }
 
@@ -292,7 +267,6 @@ export default function useManageVariantsPageService() {
     getVariantsForGridHandler,
     createVariantHandler,
     checkVariantCombinationHandler,
-    getVariantDetailsHandler,
     toggleVariantIsActiveHandler,
     updateVariantDetailsHandler,
     updateVariantTraitOptionsHandler,
