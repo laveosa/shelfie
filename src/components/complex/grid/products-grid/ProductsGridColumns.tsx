@@ -7,6 +7,7 @@ import placeholderImage from "@/assets/images/placeholder-image.png";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { Switch } from "@/components/ui/switch.tsx";
+import cs from "./ProductsGridColumns.module.scss";
 
 export function productsGridColumns(
   onAction: any,
@@ -76,22 +77,21 @@ export function productsGridColumns(
       accessorKey: "status",
       header: "Status",
       cell: ({ row }) => {
+        const status: string = row.getValue("status");
+
+        const statusClass = (status: string) => {
+          if (status === "Available") {
+            return cs.productStatusAvailable;
+          } else if (status === "Not Available") {
+            return cs.productStatusNotAvailable;
+          } else {
+            return "";
+          }
+        };
+
         return (
-          <div
-            style={{
-              border: "1px solid #38BF5E",
-              borderRadius: "8px",
-              background: "#EBF9EF",
-              textAlign: "center",
-            }}
-          >
-            <span
-              style={{
-                color: "#38BF5E",
-              }}
-            >
-              {row.getValue("status")}
-            </span>
+          <div className={`${cs.productStatus} ${statusClass(status)}`}>
+            <span>{status}</span>
           </div>
         );
       },
