@@ -13,6 +13,16 @@ export function productsGridColumns(
   onAction: any,
   activeStates?: Record<string, boolean>,
 ): ColumnDef<any>[] {
+  const statusClass = (status: string) => {
+    if (status === "Available") {
+      return cs.productStatusAvailable;
+    } else if (status === "Not Available") {
+      return cs.productStatusNotAvailable;
+    } else {
+      return "";
+    }
+  };
+
   return [
     {
       accessorKey: "productId",
@@ -78,17 +88,6 @@ export function productsGridColumns(
       header: "Status",
       cell: ({ row }) => {
         const status: string = row.getValue("status");
-
-        const statusClass = (status: string) => {
-          if (status === "Available") {
-            return cs.productStatusAvailable;
-          } else if (status === "Not Available") {
-            return cs.productStatusNotAvailable;
-          } else {
-            return "";
-          }
-        };
-
         return (
           <div className={`${cs.productStatus} ${statusClass(status)}`}>
             <span>{status}</span>
