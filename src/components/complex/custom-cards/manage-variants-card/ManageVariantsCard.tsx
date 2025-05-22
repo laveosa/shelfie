@@ -145,7 +145,7 @@ export default function ManageVariantsCard({
             columns={columns}
             data={variants}
             gridModel={data}
-            customMessage="VARIANT HAS NO PHOTO"
+            customMessage="PRODUCT HAS NO VARIANTS"
             onNewItemPosition={(newIndex, activeItem) =>
               handleAction("dnd", { newIndex, activeItem })
             }

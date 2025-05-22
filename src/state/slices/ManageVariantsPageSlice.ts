@@ -1,7 +1,6 @@
 import { IManageVariantsPageSlice } from "@/const/interfaces/store-slices/IManageVariantsPageSlice.ts";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { VariantModel } from "@/const/models/VariantModel.ts";
 import { TypeOfTraitModel } from "@/const/models/TypeOfTraitModel.ts";
 import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
@@ -26,7 +25,6 @@ const initialState: IManageVariantsPageSlice = {
   isVariantOptionsGridLoading: false,
   isVariantPhotoGridLoading: false,
   isProductPhotoGridLoading: false,
-  variants: [],
   selectedVariant: null,
   isDuplicateVariant: false,
   productCounter: null,
@@ -176,20 +174,6 @@ function setIsProductPhotoGridLoading(
 
 //----------------------------------------------------- API
 
-function refreshVariants(
-  state: IManageVariantsPageSlice,
-  action: PayloadAction<VariantModel[]>,
-) {
-  state.variants = action?.payload || state.variants;
-}
-
-function refreshSelectedVariant(
-  state: IManageVariantsPageSlice,
-  action: PayloadAction<VariantModel>,
-) {
-  state.selectedVariant = action?.payload || state.selectedVariant;
-}
-
 function refreshIsDuplicateVariant(
   state: IManageVariantsPageSlice,
   action: PayloadAction<boolean>,
@@ -329,8 +313,6 @@ const ManageVariantsPageSlice = createSlice({
     setIsVariantOptionsGridLoading,
     setIsVariantPhotoGridLoading,
     setIsProductPhotoGridLoading,
-    refreshVariants,
-    refreshSelectedVariant,
     refreshIsDuplicateVariant,
     refreshTraits,
     refreshTypesOfTraits,

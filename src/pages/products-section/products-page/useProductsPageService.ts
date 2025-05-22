@@ -47,6 +47,7 @@ export default function useProductsPageService() {
   const [getTaxesList] = DictionaryApiHooks.useLazyGetTaxesListQuery();
   const [getCurrenciesList] =
     DictionaryApiHooks.useLazyGetCurrenciesListQuery();
+  const [getVariantDetails] = ProductsApiHooks.useLazyGetVariantDetailsQuery();
 
   //-------------------------------------------------API
 
@@ -96,27 +97,21 @@ export default function useProductsPageService() {
   }
 
   function getBrandsForFilterHandler() {
-    dispatch(action.setIsLoading(true));
     return getBrandsForFilter(null).then((res: any) => {
-      dispatch(action.setIsLoading(false));
       dispatch(action.refreshBrands(res.data));
       return res.data;
     });
   }
 
   function getCategoriesForFilterHandler() {
-    dispatch(action.setIsLoading(true));
     return getCategoriesForFilter(null).then((res: any) => {
-      dispatch(action.setIsLoading(false));
       dispatch(action.refreshCategories(res.data));
       return res.data;
     });
   }
 
   function getSortingOptionsForGridHandler() {
-    dispatch(action.setIsLoading(true));
     return getSortingOptionsForGrid(null).then((res: any) => {
-      dispatch(action.setIsLoading(false));
       dispatch(action.refreshSortingOptions(res.data));
       return res.data;
     });
@@ -135,14 +130,12 @@ export default function useProductsPageService() {
   }
 
   function manageProductHandler(model: ProductModel) {
-    return manageProduct(model).then((res: any) => {
-      console.log(res);
-    });
+    return manageProduct(model);
   }
 
   function deleteProductHandler(id: number) {
     return deleteProduct(id).then((res: any) => {
-      console.log(res);
+      return res;
     });
   }
 
@@ -203,6 +196,28 @@ export default function useProductsPageService() {
     });
   }
 
+  function getVariantDetailsHandler(id) {
+    return getVariantDetails(id).then((res: any) => {
+      const modifiedRes = {
+        ...res.data,
+        traitOptions: addGridRowColor(res.data.traitOptions, "color", [
+          {
+            field: "isRemoved",
+            value: true,
+            color: GridRowsColorsEnum.ERROR,
+          },
+          {
+            field: "isMissing",
+            value: true,
+            color: GridRowsColorsEnum.ERROR,
+          },
+        ]),
+      };
+
+      return modifiedRes;
+    });
+  }
+
   //----------------------------------------------------LOGIC
 
   function itemCardHandler(item) {
@@ -210,6 +225,7 @@ export default function useProductsPageService() {
     dispatch(action.refreshProductPhotos([]));
     dispatch(action.resetProduct());
     dispatch(action.refreshProductVariants([]));
+    dispatch(action.resetSelectedVariant());
     navigate(
       `${ApiUrlEnum.PRODUCTS}${ApiUrlEnum.PRODUCT_BASIC_DATA}/${item.productId}`,
     );
@@ -232,6 +248,7 @@ export default function useProductsPageService() {
     getProductVariantsHandler,
     getTaxesListHandler,
     getCurrenciesListHandler,
+    getVariantDetailsHandler,
     itemCardHandler,
   };
 }
