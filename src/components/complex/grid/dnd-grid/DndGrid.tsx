@@ -283,7 +283,7 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
                 ))}
               </TableHeader>
             )}
-            {isLoading ? (
+            {isLoading && items.length === 0 ? (
               <TableBody className={cs.tableSkeleton}>
                 {createSkeletonArray(skeletonQuantity ?? 5).map((_, index) => (
                   <TableRow key={index}>
