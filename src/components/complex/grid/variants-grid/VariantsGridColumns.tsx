@@ -4,8 +4,21 @@ import ProductsGridColumnActions from "@/components/complex/grid/products-grid/P
 import { ImageModel } from "@/const/models/ImageModel.ts";
 import placeholderImage from "@/assets/images/placeholder-image.png";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
+import cs from "./VariantGridColumns.module.scss";
+import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
+import { BrandModel } from "@/const/models/BrandModel.ts";
 
 export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
+  const statusClass = (status: string) => {
+    if (status === "Available") {
+      return cs.productStatusAvailable;
+    } else if (status === "Not Available") {
+      return cs.productStatusNotAvailable;
+    } else {
+      return "";
+    }
+  };
+
   return [
     {
       accessorKey: "variantId",
@@ -41,17 +54,71 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "variantCode",
       header: "Code",
+      cell: ({ row }) => {
+        return (
+          <SheTooltip delayDuration={200} text={row.getValue("variantCode")}>
+            <span className={cs.variantCode}>
+              {row.getValue("variantCode")}
+            </span>
+          </SheTooltip>
+        );
+      },
     },
     {
       accessorKey: "variantName",
       header: "Variant Name",
+      cell: ({ row }) => {
+        return (
+          <SheTooltip delayDuration={200} text={row.getValue("variantName")}>
+            <span className={cs.variantName}>
+              {row.getValue("variantName")}
+            </span>
+          </SheTooltip>
+        );
+      },
     },
     {
       accessorKey: "productCategory",
       header: "Category",
       cell: ({ row }) => {
         const category: CategoryModel = row.getValue("productCategory");
-        return <span>{category?.categoryName || "N/A"}</span>;
+        return (
+          <SheTooltip
+            delayDuration={200}
+            text={category?.categoryName || "N/A"}
+          >
+            <div className={cs.productCategory}>
+              {row.original.productCategory?.thumbnail && (
+                <img
+                  src={row.original.productCategory?.thumbnail}
+                  alt={row.original.productCategory.categoryName}
+                />
+              )}
+              <span>{category?.categoryName || "N/A"}</span>
+            </div>
+          </SheTooltip>
+        );
+      },
+    },
+    {
+      accessorKey: "brand",
+      header: "Brand",
+      maxSize: 20,
+      cell: ({ row }) => {
+        const brand: BrandModel = row.getValue("brand");
+        return (
+          <SheTooltip delayDuration={200} text={brand?.brandName || "N/A"}>
+            <div className={cs.productCategory}>
+              {row.original.brand?.thumbnail && (
+                <img
+                  src={row.original.brand?.thumbnail}
+                  alt={row.original.brand.brandName}
+                />
+              )}
+              <span>{brand?.brandName || "N/A"}</span>
+            </div>
+          </SheTooltip>
+        );
       },
     },
     {
@@ -75,7 +142,9 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
               gap: "10px",
               maxWidth: "50px",
               overflow: "hidden",
-              // flexWrap: "wrap",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              verticalAlign: "middle",
             }}
           >
             {colorOptions.map((colorOpt, index) => (
@@ -103,22 +172,10 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
       accessorKey: "status",
       header: "Status",
       cell: ({ row }) => {
+        const status: string = row.getValue("status");
         return (
-          <div
-            style={{
-              border: "1px solid #38BF5E",
-              borderRadius: "8px",
-              background: "#EBF9EF",
-              textAlign: "center",
-            }}
-          >
-            <span
-              style={{
-                color: "#38BF5E",
-              }}
-            >
-              {row.getValue("status")}
-            </span>
+          <div className={`${cs.productStatus} ${statusClass(status)}`}>
+            <span>{status}</span>
           </div>
         );
       },
