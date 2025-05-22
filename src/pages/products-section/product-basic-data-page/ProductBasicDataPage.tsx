@@ -120,12 +120,7 @@ export function ProductBasicDataPage() {
     service.updateProductHandler(productId, data).then((res) => {
       dispatch(actions.setIsProductConfigurationCardLoading(false));
       if (res.data) {
-        productsService
-          .getProductDetailsHandler(productId)
-          .then((res: ProductModel) => {
-            dispatch(productsActions.refreshProduct(res));
-          });
-
+        dispatch(productsActions.refreshProduct(res.data));
         if (productsState.product.productName !== data.name) {
           updateProductsList();
         }
