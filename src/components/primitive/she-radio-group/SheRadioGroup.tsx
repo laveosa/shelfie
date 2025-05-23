@@ -102,7 +102,7 @@ export default function SheRadioGroup({
         <div className={cs.sheRadioGroupControl}>
           {_items && _items.length > 0 && (
             <RadioGroup
-              className={`${elemClassName} ${cs.sheRadioGroup}`}
+              className={`${elemClassName} ${cs.sheRadioGroupElement}`}
               style={elemStyle}
               name={name}
               value={_value}

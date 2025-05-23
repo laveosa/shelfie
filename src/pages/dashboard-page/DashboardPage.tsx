@@ -71,9 +71,11 @@ export function DashboardPage() {
         items={_radioItems}
         value={_radioItems ? _radioItems[1].value : null}
         // view={ComponentViewEnum.CARD}
-        itemsView={ComponentViewEnum.CARD}
+        // itemsView={ComponentViewEnum.CARD}
         skeletonQuantity={3}
         isLoading={_isLoading}
+        required
+        fullWidth
         onValueChange={onAction}
       />
 

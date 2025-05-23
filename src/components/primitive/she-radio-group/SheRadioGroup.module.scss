@@ -3,8 +3,10 @@
 $iconSize: 20px;
 
 .sheRadioGroup {
-  max-width: vars.$maxWidth + px;
-  width: 100%;
+  //max-width: vars.$maxWidth + px;
+  //width: 100%;
+
+  width: fit-content;
 
   .sheRadioGroupComponent {
     position: relative;
@@ -15,6 +17,10 @@ $iconSize: 20px;
       align-items: center;
       gap: 4px;
       transition: all 160ms ease-in-out;
+
+      .sheRadioGroupElement {
+        flex-grow: 1;
+      }
 
       .iconBlock {
         position: absolute;
