@@ -3,10 +3,8 @@
 $iconSize: 20px;
 
 .sheRadioGroup {
-  //max-width: vars.$maxWidth + px;
-  //width: 100%;
-
   width: fit-content;
+  min-width: 200px;
 
   .sheRadioGroupComponent {
     position: relative;
@@ -19,7 +17,9 @@ $iconSize: 20px;
       transition: all 160ms ease-in-out;
 
       .sheRadioGroupElement {
+        display: flex;
         flex-grow: 1;
+        width: 100%;
       }
 
       .iconBlock {
@@ -73,10 +73,11 @@ $iconSize: 20px;
   border-radius: vars.$brdR_075;
 }
 
-// ======================================================== NO ITEM MESSAGE BLOCK
+// ======================================================== NO DATA MESSAGE BLOCK
 
 .sheRadioGroup {
-  .sheRadioGroupNoItemsMessageBlock {
+  .noDataMessageBlock {
+    //min-width: 200px;
   }
 }
 
@@ -84,6 +85,8 @@ $iconSize: 20px;
 
 .sheRadioGroup {
   .sheRadioGroupRadioItemsSkeletons {
+    display: flex;
+    flex-direction: column;
     width: 100%;
 
     .radioItemSkeletonBlock {
@@ -110,6 +113,7 @@ $iconSize: 20px;
 
       .radioItemContextSkeleton {
         width: 100%;
+        min-width: 120px;
         height: 15px;
         display: flex;
         border-radius: vars.$brdR_075;

@@ -17,6 +17,8 @@ export interface ISheRadioGroup
   style?: React.CSSProperties;
   elemClassName?: string;
   elemStyle?: React.CSSProperties;
+  direction?: "row" | "column";
+  gap?: string;
   icon?: Partial<ISheIcon> | string | React.FC<any>;
   items?: ISheRadioItem[];
   itemsView?: ComponentViewEnum;
@@ -28,4 +30,6 @@ export interface ISheRadioGroup
   isLoading?: boolean;
   skeletonQuantity?: number;
   required?: boolean;
+  noDataMessage?: string;
+  noDataMessageTransKey?: string;
 }

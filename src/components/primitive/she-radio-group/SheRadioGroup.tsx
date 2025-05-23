@@ -1,4 +1,5 @@
 import React, { JSX, useEffect, useState } from "react";
+import _ from "lodash";
 
 import cs from "./SheRadioGroup.module.scss";
 import { RadioGroup } from "@/components/ui/radio-group";
@@ -9,7 +10,6 @@ import { SheClearButton } from "@/components/primitive/she-clear-button/SheClear
 import { ISheRadioItem } from "@/const/interfaces/primitive-components/ISheRadioItem.ts";
 import SheRadioItem from "@/components/primitive/she-radio-item/SheRadioItem.tsx";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
-import _ from "lodash";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
 
 export default function SheRadioGroup({
@@ -18,6 +18,8 @@ export default function SheRadioGroup({
   style,
   elemClassName = "",
   elemStyle,
+  direction = "column",
+  gap,
   label,
   labelTransKey,
   tooltip,
@@ -33,10 +35,12 @@ export default function SheRadioGroup({
   minWidth,
   maxWidth,
   fullWidth,
-  required,
   disabled,
   isLoading,
   skeletonQuantity = 3,
+  required,
+  noDataMessage = "no data to show...",
+  noDataMessageTransKey = "PLACE_VALID_TRANS_KEY",
   onValueChange,
   ...props
 }: ISheRadioGroup): JSX.Element {
@@ -47,8 +51,11 @@ export default function SheRadioGroup({
   const ariaDescribedbyId = `${generateId()}_RADIO_GROUP_ID`;
 
   useEffect(() => {
-    if (value && value !== _value) setValue(value);
-    if (defaultValue && defaultValue !== _value) setValue(defaultValue);
+    if (!_.isNil(value) && !_.isEqual(value, _value)) {
+      setValue(value);
+    } else if (!_.isNil(defaultValue) && !_.isEqual(defaultValue, _value)) {
+      setValue(defaultValue);
+    }
   }, [value, defaultValue]);
 
   useEffect(() => {
@@ -65,8 +72,10 @@ export default function SheRadioGroup({
   }
 
   function onClearHandler() {
-    setValue(null);
-    if (onValueChange) onValueChange(null);
+    if (_value !== null) {
+      setValue(null);
+      onValueChange?.(null);
+    }
   }
 
   // ==================================================================== PRIVATE
@@ -103,7 +112,11 @@ export default function SheRadioGroup({
           {_items && _items.length > 0 && (
             <RadioGroup
               className={`${elemClassName} ${cs.sheRadioGroupElement}`}
-              style={elemStyle}
+              style={{
+                flexDirection: direction,
+                gap: gap,
+                ...elemStyle,
+              }}
               name={name}
               value={_value}
               onValueChange={onValueChangeHandler}
@@ -113,6 +126,7 @@ export default function SheRadioGroup({
                 <SheRadioItem
                   key={item.id}
                   ariaDescribedbyId={`${item.id}_${idx + 1}`}
+                  icon={!_.isNil(item.icon) ? item.icon : icon}
                   isLoading={
                     !_.isNil(item.isLoading) ? item.isLoading : isLoading
                   }
@@ -124,17 +138,20 @@ export default function SheRadioGroup({
             </RadioGroup>
           )}
           {(!_items || _items.length === 0) && !isLoading && (
-            <div className={cs.sheRadioGroupNoItemsMessageBlock}>
+            <div className={cs.noDataMessageBlock}>
               <span className="she-placeholder">
-                {translate(
-                  "PLACEHOLDER_TRANS_KEY",
-                  "no radio options to show!",
-                )}
+                {translate(noDataMessageTransKey, noDataMessage)}
               </span>
             </div>
           )}
-          {!_items && isLoading && (
-            <div className={cs.sheRadioGroupRadioItemsSkeletons}>
+          {(!_items || _items.length === 0) && isLoading && (
+            <div
+              className={cs.sheRadioGroupRadioItemsSkeletons}
+              style={{
+                flexDirection: direction,
+                gap: gap,
+              }}
+            >
               {[...Array(skeletonQuantity)].map((item, idx) => (
                 <div key={idx + 1} className={cs.radioItemSkeletonBlock}>
                   <SheSkeleton
@@ -149,14 +166,16 @@ export default function SheRadioGroup({
               ))}
             </div>
           )}
-          <SheClearButton
-            value={value}
-            showClearBtn={showClearBtn}
-            disabled={disabled}
-            isLoading={isLoading}
-            ariaDescribedbyId={ariaDescribedbyId}
-            onClear={onClearHandler}
-          />
+          {_items && _items.length > 0 && (
+            <SheClearButton
+              value={value}
+              showClearBtn={showClearBtn}
+              disabled={disabled}
+              isLoading={isLoading}
+              ariaDescribedbyId={ariaDescribedbyId}
+              onClear={onClearHandler}
+            />
+          )}
         </div>
       </div>
     </div>
