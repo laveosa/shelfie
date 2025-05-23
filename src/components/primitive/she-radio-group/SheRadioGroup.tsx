@@ -152,7 +152,7 @@ export default function SheRadioGroup({
                 gap: gap,
               }}
             >
-              {[...Array(skeletonQuantity)].map((item, idx) => (
+              {[...Array(skeletonQuantity)].map((_, idx) => (
                 <div key={idx + 1} className={cs.radioItemSkeletonBlock}>
                   <SheSkeleton
                     className={cs.radioItemTriggerSkeleton}
