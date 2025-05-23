@@ -18,6 +18,8 @@ export interface ISheRadioGroup
   direction?: "row" | "column";
   gap?: string;
   icon?: Partial<ISheIcon> | string | React.FC<any>;
+  name?: string;
+  selected?: any;
   items?: ISheRadioItem[];
   itemsView?: ComponentViewEnum;
   view?: ComponentViewEnum;
@@ -30,4 +32,5 @@ export interface ISheRadioGroup
   required?: boolean;
   noDataMessage?: string;
   noDataMessageTransKey?: string;
+  onValueChange?: (value: any) => void;
 }

@@ -8,10 +8,6 @@ export function DashboardPage() {
 
   // ================================================================== EVENT
 
-  function onAction(value) {
-    console.log("radio value: ", value);
-  }
-
   // ================================================================== LAYOUT
 
   return (

@@ -25,8 +25,7 @@ export default function SheRadioGroup({
   tooltip,
   icon,
   name = "radioGroupNameDefault",
-  value,
-  defaultValue,
+  selected,
   items,
   itemsView,
   view,
@@ -45,18 +44,16 @@ export default function SheRadioGroup({
   ...props
 }: ISheRadioGroup): JSX.Element {
   const { translate } = useAppTranslation();
-  const [_value, setValue] = useState<any>(null);
+  const [_selected, setSelected] = useState<any>(null);
   const [_items, setItems] = useState<ISheRadioItem[]>(null);
 
   const ariaDescribedbyId = `${generateId()}_RADIO_GROUP_ID`;
 
   useEffect(() => {
-    if (!_.isNil(value) && !_.isEqual(value, _value)) {
-      setValue(value);
-    } else if (!_.isNil(defaultValue) && !_.isEqual(defaultValue, _value)) {
-      setValue(defaultValue);
+    if (!_.isNil(selected) && !_.isEqual(selected, _selected)) {
+      setSelected(selected);
     }
-  }, [value, defaultValue]);
+  }, [selected]);
 
   useEffect(() => {
     if (items !== _items) setItems(_addItemsIds(items));
@@ -65,15 +62,15 @@ export default function SheRadioGroup({
   // ==================================================================== EVENT
 
   function onValueChangeHandler(value) {
-    if (value === _value) return;
+    if (value === _selected) return;
 
-    setValue(value);
+    setSelected(value);
     if (onValueChange) onValueChange(value);
   }
 
   function onClearHandler() {
-    if (_value !== null) {
-      setValue(null);
+    if (_selected !== null) {
+      setSelected(null);
       onValueChange?.(null);
     }
   }
@@ -118,7 +115,7 @@ export default function SheRadioGroup({
                 ...elemStyle,
               }}
               name={name}
-              value={_value}
+              value={_selected}
               onValueChange={onValueChangeHandler}
               {...props}
             >
@@ -168,7 +165,7 @@ export default function SheRadioGroup({
           )}
           {_items && _items.length > 0 && (
             <SheClearButton
-              value={value}
+              value={selected}
               showClearBtn={showClearBtn}
               disabled={disabled}
               isLoading={isLoading}
