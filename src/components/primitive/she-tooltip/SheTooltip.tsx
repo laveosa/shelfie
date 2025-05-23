@@ -12,6 +12,7 @@ import { ISheTooltip } from "@/const/interfaces/primitive-components/ISheTooltip
 
 export default function SheTooltip({
   className,
+  style,
   children,
   title,
   titleTransKey,
@@ -60,6 +61,7 @@ export default function SheTooltip({
           {(title || text || description) && (
             <TooltipContent
               className={`${cs.tooltipMessageBlock} ${cs[view]}`}
+              style={style}
               side={side}
               align={align}
               aria-describedby={ariaDescribedbyId}

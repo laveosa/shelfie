@@ -1,2 +1,118 @@
-.SheRadioGroup {
+@use "@/styles/variables" as vars;
+
+$iconSize: 20px;
+
+.sheRadioGroup {
+  max-width: vars.$maxWidth + px;
+  width: 100%;
+
+  .sheRadioGroupComponent {
+    position: relative;
+
+    .sheRadioGroupControl {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 160ms ease-in-out;
+
+      .iconBlock {
+        position: absolute;
+        color: vars.$subtextColor;
+        left: 8px;
+        top: 10px;
+        max-width: $iconSize;
+        min-width: $iconSize;
+        max-height: $iconSize;
+        min-height: $iconSize;
+      }
+    }
+  }
+}
+
+// ======================================================== FULL WIDTH
+
+.sheRadioGroup.fullWidth {
+  max-width: none;
+  width: 100%;
+}
+
+// ======================================================== REQUIRED
+
+.sheRadioGroup.required {
+  .sheRadioGroupComponent:before {
+    position: absolute;
+    left: -10px;
+    top: -14px;
+    color: vars.$colorRed;
+    content: "*";
+    display: inline;
+  }
+}
+
+// ======================================================== WITH ICON
+
+.sheRadioGroup.withIcon {
+  .sheRadioGroupComponent {
+    .sheRadioGroupControl {
+    }
+  }
+}
+
+// ======================================================== VIEW
+
+.sheRadioGroup.card {
+  border: 1px solid vars.$brdColor;
+  padding: vars.$paddingStandard;
+  border-radius: vars.$brdR_075;
+}
+
+// ======================================================== NO ITEM MESSAGE BLOCK
+
+.sheRadioGroup {
+  .sheRadioGroupNoItemsMessageBlock {
+  }
+}
+
+// ======================================================== RADIO ITEMS SKELETONS
+
+.sheRadioGroup {
+  .sheRadioGroupRadioItemsSkeletons {
+    width: 100%;
+
+    .radioItemSkeletonBlock {
+      width: 100%;
+      display: flex;
+      gap: 8px;
+      margin-bottom: 4px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .radioItemTriggerSkeleton {
+        width: 15px;
+        height: 15px;
+        display: flex;
+        border-radius: 100%;
+
+        > div {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      .radioItemContextSkeleton {
+        width: 100%;
+        height: 15px;
+        display: flex;
+        border-radius: vars.$brdR_075;
+
+        > div {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
 }
