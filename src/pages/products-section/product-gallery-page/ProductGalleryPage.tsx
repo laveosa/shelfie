@@ -101,11 +101,9 @@ export function ProductGalleryPage() {
   function onAction(actionType: string, payload: any) {
     switch (actionType) {
       case "upload":
-        dispatch(actions.setIsProductPhotosCardLoading(true));
-        dispatch(productsActions.setIsProductPhotosLoading(true));
+        dispatch(actions.setIsImageUploaderLoading(true));
         service.uploadPhotoHandler(payload).then((res) => {
-          dispatch(actions.setIsProductPhotosCardLoading(false));
-          dispatch(productsActions.setIsProductPhotosLoading(false));
+          dispatch(actions.setIsImageUploaderLoading(false));
           if (res.data.photoId) {
             productsService
               .getProductPhotosHandler(Number(productId))
@@ -165,11 +163,13 @@ export function ProductGalleryPage() {
               .then((res: ProductCounterModel) => {
                 dispatch(productsActions.refreshProductCounter(res));
               });
-            productsService
-              .getTheProductsForGridHandler(productsState.gridRequestModel)
-              .then((res: GridModel) => {
-                dispatch(productsActions.refreshProducts(res.items));
-              });
+            if (payload.sortOrder === 0) {
+              productsService
+                .getTheProductsForGridHandler(productsState.gridRequestModel)
+                .then((res: GridModel) => {
+                  dispatch(productsActions.refreshProducts(res.items));
+                });
+            }
             addToast({
               text: "Photo deleted successfully",
               type: "success",
@@ -284,6 +284,7 @@ export function ProductGalleryPage() {
       </div>
       <ProductPhotosCard
         isLoading={state.isProductPhotosCardLoading}
+        isImageUploaderLoading={state.isImageUploaderLoading}
         isGridLoading={productsState.isProductPhotosLoading}
         data={productsState.productPhotos}
         productCounter={productsState.productCounter}

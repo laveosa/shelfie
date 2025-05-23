@@ -9,6 +9,7 @@ import { ProductPhotosGridColumns } from "@/components/complex/grid/variant-phot
 
 export default function ProductPhotosCard({
   isLoading,
+  isImageUploaderLoading,
   isGridLoading,
   data,
   contextId,
@@ -18,7 +19,7 @@ export default function ProductPhotosCard({
 }) {
   const columns = ProductPhotosGridColumns(onGridAction);
 
-  function handleAction(actionType: string, payload?: any) {
+  function handleAction(actionType: string, payload?: any): any {
     switch (actionType) {
       case "upload":
         onAction("upload", payload);
@@ -63,6 +64,7 @@ export default function ProductPhotosCard({
       >
         <div className={cs.productPhotosCardContent}>
           <SheImageUploader
+            isLoading={isImageUploaderLoading}
             contextName={"product"}
             contextId={contextId}
             onUpload={(uploadModel: UploadPhotoModel) =>
