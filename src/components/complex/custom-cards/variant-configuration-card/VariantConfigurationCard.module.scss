@@ -64,6 +64,10 @@
         display: flex;
         align-items: center;
         gap: 10px;
+
+        button {
+          padding: 8px 8px;
+        }
       }
 
       .stockBlock {

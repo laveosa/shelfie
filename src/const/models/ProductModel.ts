@@ -8,7 +8,7 @@ export interface ProductModel {
   image?: ImageModel;
   productCode?: string;
   productName?: string;
-  category?: CategoryModel;
+  productCategory?: CategoryModel;
   categoryId?: number;
   brand?: BrandModel;
   barcode?: any;

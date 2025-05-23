@@ -27,11 +27,11 @@ import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { ProductsPageSliceActions as actions } from "@/state/slices/ProductsPageSlice.ts";
 import { AppSliceActions as appActions } from "@/state/slices/AppSlice.ts";
-import { ProductModel } from "@/const/models/ProductModel.ts";
 import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { variantsGridColumns } from "@/components/complex/grid/variants-grid/VariantsGridColumns.tsx";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
+import { useToast } from "@/hooks/useToast.ts";
 
 export function ProductsPage() {
   const dispatch = useAppDispatch();
@@ -39,28 +39,26 @@ export function ProductsPage() {
   const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
   const service = useProductsPageService();
   const navigate = useNavigate();
+  const { addToast } = useToast();
   const [activeTab, setActiveTab] = useState("products");
   const [activeStates, setActiveStates] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     if (activeTab === "products") {
-      dispatch(actions.setIsLoading(true));
       service
         .getTheProductsForGridHandler(state.productsGridRequestModel, true)
         .then((res) => {
-          dispatch(actions.setIsLoading(false));
           dispatch(actions.refreshProductsGridModel(res));
           dispatch(actions.refreshProducts(res.items));
         });
     } else if (activeTab === "variants") {
-      dispatch(actions.setIsLoading(true));
       service
         .getVariantsForGridHandler(state.variantsGridRequestModel)
         .then((res) => {
-          dispatch(actions.setIsLoading(false));
           dispatch(actions.refreshVariantsGridModel(res));
         });
     }
+    dispatch(actions.resetSelectedVariant());
   }, [
     state.productsGridRequestModel,
     state.variantsGridRequestModel,
@@ -105,7 +103,7 @@ export function ProductsPage() {
     actionType: string,
     rowId?: string,
     setLoadingRow?: (rowId: string, loading: boolean) => void,
-    rowData?: ProductModel,
+    rowData?: any,
     _rowOriginal?: any,
   ) => {
     setLoadingRow(rowId, true);
@@ -148,15 +146,41 @@ export function ProductsPage() {
         }
         break;
       case "delete":
-        console.log(`Deleting row ${rowId}`);
+        service.deleteProductHandler(rowData.original.productId).then((res) => {
+          if (res) {
+            dispatch(actions.setIsLoading(true));
+            service
+              .getTheProductsForGridHandler(
+                state.productsGridRequestModel,
+                true,
+              )
+              .then((res) => {
+                dispatch(actions.setIsLoading(false));
+                dispatch(actions.refreshProductsGridModel(res));
+                dispatch(actions.refreshProducts(res.items));
+              });
+            addToast({
+              text: "Product deleted successfully",
+              type: "success",
+            });
+          } else {
+            addToast({
+              text: res.error.message,
+              type: "error",
+            });
+          }
+        });
         break;
       case "activateVariant":
         console.log(`Activating variant ${rowId}`);
         break;
       case "manageVariant":
-        navigate(
-          `${NavUrlEnum.PRODUCTS}${NavUrlEnum.PRODUCT_VARIANTS}/${rowData?.productId}`,
-        );
+        service.getVariantDetailsHandler(rowData.variantId).then((res) => {
+          dispatch(actions.refreshSelectedVariant(res));
+          navigate(
+            `${NavUrlEnum.PRODUCTS}${NavUrlEnum.PRODUCT_VARIANTS}/${rowData?.productId}`,
+          );
+        });
         break;
     }
 

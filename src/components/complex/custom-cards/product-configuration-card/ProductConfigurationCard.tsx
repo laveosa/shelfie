@@ -53,7 +53,7 @@ export default function ProductConfigurationCard({
         name: product.productName || "",
         productCode: product.productCode || null,
         barcode: product.barcode || "",
-        categoryId: product.category?.categoryId || null,
+        categoryId: product.productCategory?.categoryId || null,
         brandId: product.brand?.brandId || null,
         isActive: product.isActive || false,
       });

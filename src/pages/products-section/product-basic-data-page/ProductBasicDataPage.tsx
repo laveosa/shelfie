@@ -57,7 +57,10 @@ export function ProductBasicDataPage() {
       });
     }
     if (productId) {
-      if (!productsState.productCounter) {
+      if (
+        !productsState.productCounter ||
+        productsState.product?.productId !== productId
+      ) {
         dispatch(productsActions.setIsProductMenuCardLoading(true));
         productsService.getCountersForProductsHandler(productId).then((res) => {
           dispatch(productsActions.setIsProductMenuCardLoading(false));
@@ -66,7 +69,7 @@ export function ProductBasicDataPage() {
       }
       if (
         !productsState.product ||
-        productsState.product.productId !== productId
+        productsState.product?.productId !== productId
       ) {
         dispatch(actions.setIsProductConfigurationCardLoading(true));
         productsService
@@ -117,12 +120,7 @@ export function ProductBasicDataPage() {
     service.updateProductHandler(productId, data).then((res) => {
       dispatch(actions.setIsProductConfigurationCardLoading(false));
       if (res.data) {
-        productsService
-          .getProductDetailsHandler(productId)
-          .then((res: ProductModel) => {
-            dispatch(productsActions.refreshProduct(res));
-          });
-
+        dispatch(productsActions.refreshProduct(res.data));
         if (productsState.product.productName !== data.name) {
           updateProductsList();
         }

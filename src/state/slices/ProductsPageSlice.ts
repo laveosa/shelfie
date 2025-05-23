@@ -12,6 +12,7 @@ import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
+import { VariantModel } from "@/const/models/VariantModel.ts";
 
 const initialState: IProductsPageSlice = {
   isLoading: false,
@@ -50,6 +51,7 @@ const initialState: IProductsPageSlice = {
   },
   productPhotos: [],
   productVariants: [],
+  selectedVariant: null,
   taxesList: [],
   currenciesList: [],
 };
@@ -208,6 +210,17 @@ function refreshProductVariants(
   state.productVariants = action?.payload || state.productVariants;
 }
 
+function refreshSelectedVariant(
+  state: IProductsPageSlice,
+  action: PayloadAction<VariantModel>,
+) {
+  state.selectedVariant = action?.payload || state.selectedVariant;
+}
+
+function resetSelectedVariant(state: IProductsPageSlice) {
+  state.selectedVariant = null;
+}
+
 function refreshTaxesList(
   state: IProductsPageSlice,
   action: PayloadAction<TaxTypeModel[]>,
@@ -248,6 +261,8 @@ const ProductsPageSlice = createSlice({
     refreshSortingOptions,
     refreshProductPhotos,
     refreshProductVariants,
+    refreshSelectedVariant,
+    resetSelectedVariant,
     refreshTaxesList,
     refreshCurrenciesList,
   },

@@ -7,11 +7,23 @@ import placeholderImage from "@/assets/images/placeholder-image.png";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { Switch } from "@/components/ui/switch.tsx";
+import cs from "./ProductsGridColumns.module.scss";
+import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 
 export function productsGridColumns(
   onAction: any,
   activeStates?: Record<string, boolean>,
 ): ColumnDef<any>[] {
+  const statusClass = (status: string) => {
+    if (status === "Available") {
+      return cs.productStatusAvailable;
+    } else if (status === "Not Available") {
+      return cs.productStatusNotAvailable;
+    } else {
+      return "";
+    }
+  };
+
   return [
     {
       accessorKey: "productId",
@@ -47,25 +59,71 @@ export function productsGridColumns(
     {
       accessorKey: "productCode",
       header: "Code",
+      cell: ({ row }) => {
+        return (
+          <SheTooltip delayDuration={200} text={row.getValue("productCode")}>
+            <span className={cs.productCode}>
+              {row.getValue("productCode")}
+            </span>
+          </SheTooltip>
+        );
+      },
     },
     {
       accessorKey: "productName",
       header: "Product Name",
+      cell: ({ row }) => {
+        return (
+          <SheTooltip delayDuration={200} text={row.getValue("productName")}>
+            <span className={cs.productName}>
+              {row.getValue("productName")}
+            </span>
+          </SheTooltip>
+        );
+      },
     },
     {
       accessorKey: "productCategory",
       header: "Category",
       cell: ({ row }) => {
         const category: CategoryModel = row.getValue("productCategory");
-        return <span>{category?.categoryName || "N/A"}</span>;
+        return (
+          <SheTooltip
+            delayDuration={200}
+            text={category?.categoryName || "N/A"}
+          >
+            <div className={cs.productCategory}>
+              {row.original.productCategory?.thumbnail && (
+                <img
+                  src={row.original.productCategory?.thumbnail}
+                  alt={row.original.productCategory.categoryName}
+                />
+              )}
+              <span>{category?.categoryName || "N/A"}</span>
+            </div>
+          </SheTooltip>
+        );
       },
     },
     {
       accessorKey: "brand",
       header: "Brand",
+      maxSize: 20,
       cell: ({ row }) => {
         const brand: BrandModel = row.getValue("brand");
-        return <span>{brand?.brandName || "N/A"}</span>;
+        return (
+          <SheTooltip delayDuration={200} text={brand?.brandName || "N/A"}>
+            <div className={cs.productCategory}>
+              {row.original.brand?.thumbnail && (
+                <img
+                  src={row.original.brand?.thumbnail}
+                  alt={row.original.brand.brandName}
+                />
+              )}
+              <span>{brand?.brandName || "N/A"}</span>
+            </div>
+          </SheTooltip>
+        );
       },
     },
     {
@@ -75,23 +133,12 @@ export function productsGridColumns(
     {
       accessorKey: "status",
       header: "Status",
+      maxSize: 20,
       cell: ({ row }) => {
+        const status: string = row.getValue("status");
         return (
-          <div
-            style={{
-              border: "1px solid #38BF5E",
-              borderRadius: "8px",
-              background: "#EBF9EF",
-              textAlign: "center",
-            }}
-          >
-            <span
-              style={{
-                color: "#38BF5E",
-              }}
-            >
-              {row.getValue("status")}
-            </span>
+          <div className={`${cs.productStatus} ${statusClass(status)}`}>
+            <span>{status}</span>
           </div>
         );
       },
