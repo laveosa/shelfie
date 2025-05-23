@@ -4,13 +4,11 @@ import { ISheLabel } from "@/const/interfaces/primitive-components/ISheLabel.ts"
 import { ISheClearButton } from "@/const/interfaces/primitive-components/ISheClearButton.ts";
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { ISheRadioItem } from "@/const/interfaces/primitive-components/ISheRadioItem.ts";
-import { RadioGroupProps } from "@radix-ui/react-radio-group";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 
 export interface ISheRadioGroup
   extends ISheLabel,
     ISheClearButton,
-    RadioGroupProps,
     ComponentPropsWithRef<any> {
   id?: string;
   className?: string;
