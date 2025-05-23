@@ -1,5 +1,5 @@
 import { CloudUploadIcon, Trash2Icon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   Dropzone,
@@ -38,6 +38,7 @@ export function SheImageUploader({
   // Debug logs (remove these later)
   console.log("Current uploadingFiles:", uploadingFiles);
   console.log("uploadingFiles.length > 0:", uploadingFiles.length > 0);
+  console.log("isLoading from parent:", isLoading);
 
   const dropzone = useDropzone({
     onDropFile: (file: File) => {
@@ -67,6 +68,14 @@ export function SheImageUploader({
 
   console.log("Current dropzone.fileStatuses:", dropzone.fileStatuses);
 
+  // When isLoading changes from true to false, remove completed uploads
+  useEffect(() => {
+    if (!isLoading && uploadingFiles.length > 0) {
+      console.log("Upload completed, clearing uploading files");
+      setUploadingFiles([]);
+    }
+  }, [isLoading, uploadingFiles.length]);
+
   function handleUpload() {
     console.log("handleUpload called");
     console.log("dropzone.fileStatuses before:", dropzone.fileStatuses);
@@ -85,18 +94,18 @@ export function SheImageUploader({
 
     console.log("Files to upload:", filesToUpload);
 
-    // Set uploading files first
-    setUploadingFiles(filesToUpload);
+    // Add new files to uploading state (prepend to show new files first)
+    setUploadingFiles((prevFiles) => [...filesToUpload, ...prevFiles]);
     console.log("setUploadingFiles called with:", filesToUpload);
 
-    // Clear the dropzone immediately
+    // Clear the dropzone selection
     setSelectedFiles([]);
     dropzone.fileStatuses.forEach((file) => {
       dropzone.onRemoveFile(file.id);
     });
 
-    // Upload files one by one
-    filesToUpload.forEach((uploadingFile, index) => {
+    // Upload files one by one as in the original code
+    filesToUpload.forEach((uploadingFile, _index) => {
       const formData = new FormData();
       formData.append("file", uploadingFile.file);
 
@@ -108,35 +117,8 @@ export function SheImageUploader({
 
       console.log(`Starting upload for: ${uploadingFile.fileName}`);
 
-      // Simulate upload delay and then call onUpload
-      setTimeout(() => {
-        try {
-          onUpload(uploadModel);
-          console.log(`Upload completed for: ${uploadingFile.fileName}`);
-
-          // Remove successfully uploaded file from uploading array after a delay
-          setTimeout(() => {
-            setUploadingFiles((prevFiles) => {
-              const newFiles = prevFiles.filter(
-                (file) => file.id !== uploadingFile.id,
-              );
-              console.log(
-                `Removed ${uploadingFile.fileName}, remaining: ${newFiles.length}`,
-              );
-              return newFiles;
-            });
-          }, 5000000); // 500ms delay to see the file before it's removed
-        } catch (error) {
-          console.error("Upload failed:", error);
-
-          // For failed uploads, still remove from uploading array
-          setTimeout(() => {
-            setUploadingFiles((prevFiles) =>
-              prevFiles.filter((file) => file.id !== uploadingFile.id),
-            );
-          }, 500);
-        }
-      }, index * 800); // Stagger uploads by 800ms each
+      // Call parent's upload handler for each file - parent will manage isLoading state
+      onUpload(uploadModel);
     });
   }
 
@@ -215,10 +197,10 @@ export function SheImageUploader({
       </Dropzone>
 
       <SheButton
-        className={uploadingFiles.length > 0 ? cs.loadingButtonState : ""}
+        className={isLoading ? cs.loadingButtonState : ""}
         variant="secondary"
         onClick={handleUpload}
-        disabled={selectedFiles.length === 0 || uploadingFiles.length > 0}
+        disabled={selectedFiles.length === 0}
       >
         Upload photo
       </SheButton>
