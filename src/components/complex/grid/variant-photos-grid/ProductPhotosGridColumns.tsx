@@ -30,6 +30,7 @@ export const ProductPhotosGridColumns = (
   {
     accessorKey: "thumbnailUrl",
     header: "Preview",
+    size: 70,
     cell: ({ row, table }) => {
       const photoUrl: string = row.getValue("thumbnailUrl");
       const meta = table.options.meta as {

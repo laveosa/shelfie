@@ -35,13 +35,8 @@ export function SheImageUploader({
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [uploadingFiles, setUploadingFiles] = useState<UploadingFile[]>([]);
 
-  // Debug logs (remove these later)
-  console.log("Current uploadingFiles:", uploadingFiles);
-  console.log("uploadingFiles.length > 0:", uploadingFiles.length > 0);
-  console.log("isLoading from parent:", isLoading);
-
   const dropzone = useDropzone({
-    onDropFile: (file: File) => {
+    onDropFile: (file) => {
       const newFile = {
         id: crypto.randomUUID(),
         file,
@@ -66,21 +61,13 @@ export function SheImageUploader({
     },
   });
 
-  console.log("Current dropzone.fileStatuses:", dropzone.fileStatuses);
-
-  // When isLoading changes from true to false, remove completed uploads
   useEffect(() => {
     if (!isLoading && uploadingFiles.length > 0) {
-      console.log("Upload completed, clearing uploading files");
       setUploadingFiles([]);
     }
   }, [isLoading, uploadingFiles.length]);
 
   function handleUpload() {
-    console.log("handleUpload called");
-    console.log("dropzone.fileStatuses before:", dropzone.fileStatuses);
-
-    // Move selected files to uploading state
     const filesToUpload: UploadingFile[] = dropzone.fileStatuses.map(
       (fileStatus) => ({
         id: fileStatus.id,
@@ -92,19 +79,13 @@ export function SheImageUploader({
       }),
     );
 
-    console.log("Files to upload:", filesToUpload);
-
-    // Add new files to uploading state (prepend to show new files first)
     setUploadingFiles((prevFiles) => [...filesToUpload, ...prevFiles]);
-    console.log("setUploadingFiles called with:", filesToUpload);
 
-    // Clear the dropzone selection
     setSelectedFiles([]);
     dropzone.fileStatuses.forEach((file) => {
       dropzone.onRemoveFile(file.id);
     });
 
-    // Upload files one by one as in the original code
     filesToUpload.forEach((uploadingFile, _index) => {
       const formData = new FormData();
       formData.append("file", uploadingFile.file);
@@ -115,9 +96,6 @@ export function SheImageUploader({
         file: formData,
       };
 
-      console.log(`Starting upload for: ${uploadingFile.fileName}`);
-
-      // Call parent's upload handler for each file - parent will manage isLoading state
       onUpload(uploadModel);
     });
   }
@@ -204,7 +182,6 @@ export function SheImageUploader({
       >
         Upload photo
       </SheButton>
-
       {uploadingFiles.length > 0 && (
         <>
           <div className="flex items-center gap-2">

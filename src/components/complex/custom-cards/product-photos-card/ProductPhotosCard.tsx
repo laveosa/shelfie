@@ -59,6 +59,7 @@ export default function ProductPhotosCard({
         loading={isLoading}
         title="Product Photos"
         view="card"
+        minWidth="405px"
         className={cs.productPhotosCard}
         {...props}
       >

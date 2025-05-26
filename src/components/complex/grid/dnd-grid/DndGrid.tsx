@@ -94,6 +94,9 @@ const DraggableRow = ({ row, loadingRows, isDragDisabled = false }) => {
         style={{
           cursor: isDragDisabled || isLoading ? "default" : "grab",
           background: isSelected ? "#F8F3FF" : "inherit",
+          width: "40px",
+          minWidth: "40px",
+          maxWidth: "40px",
         }}
         {...listeners}
       >
@@ -109,6 +112,8 @@ const DraggableRow = ({ row, loadingRows, isDragDisabled = false }) => {
           style={{
             cursor: "default",
             background: isSelected ? "#F8F3FF" : "inherit",
+            minWidth: cell.column.columnDef.minSize || 50,
+            maxWidth: cell.column.columnDef.maxSize,
           }}
         >
           {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -195,6 +200,8 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    enableColumnResizing: true,
+    columnResizeMode: "onChange",
     initialState: {
       pagination: {
         pageSize: gridModel?.pager?.pageSize || 10,
@@ -253,6 +260,11 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
             className={
               isLoading ? `${cs.table} ${cs.tableLoading}` : `${cs.table}`
             }
+            style={{
+              width: "100%",
+              tableLayout: "auto",
+              borderCollapse: "collapse",
+            }}
           >
             {showColumnsHeader && (
               <TableHeader>
@@ -264,12 +276,24 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
                     {enableDnd && (
                       <TableHead
                         className={isLoading ? `${cs.tableHeadLoading}` : ""}
+                        style={{
+                          width: "40px",
+                          minWidth: "40px",
+                          maxWidth: "40px",
+                        }}
                       ></TableHead>
                     )}
                     {headerGroup.headers.map((header) => (
                       <TableHead
                         className={isLoading ? `${cs.tableHeadLoading}` : ""}
                         key={header.id}
+                        style={{
+                          ...(header.column.columnDef.size && {
+                            width: `${header.column.columnDef.size}px`,
+                          }),
+                          minWidth: header.column.columnDef.minSize || 50,
+                          maxWidth: header.column.columnDef.maxSize,
+                        }}
                       >
                         {header.isPlaceholder
                           ? null
@@ -350,6 +374,11 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
                                 background: row.original.isGridItemSelected
                                   ? "#F8F3FF"
                                   : "inherit",
+                                ...(cell.column.columnDef.size && {
+                                  width: `${cell.column.columnDef.size}px`,
+                                }),
+                                minWidth: cell.column.columnDef.minSize || 50,
+                                maxWidth: cell.column.columnDef.maxSize,
                               }}
                             >
                               {flexRender(
@@ -373,6 +402,9 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
                       <TableCell
                         colSpan={columns.length + (enableDnd ? 1 : 0)}
                         className="h-24 text-center"
+                        style={{
+                          width: "100%",
+                        }}
                       >
                         {customMessage || "NO DATA TO DISPLAY"}
                       </TableCell>

@@ -28,10 +28,12 @@ export function productsGridColumns(
     {
       accessorKey: "productId",
       header: "ID",
+      minSize: 60,
     },
     {
       accessorKey: "image",
       header: "Image",
+      minSize: 60,
       cell: ({ row, table }) => {
         const image: ImageModel = row.getValue("image");
         const meta = table.options.meta as {
@@ -72,6 +74,7 @@ export function productsGridColumns(
     {
       accessorKey: "productName",
       header: "Product Name",
+      minSize: 150,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("productName")}>
@@ -85,6 +88,7 @@ export function productsGridColumns(
     {
       accessorKey: "productCategory",
       header: "Category",
+      minSize: 150,
       cell: ({ row }) => {
         const category: CategoryModel = row.getValue("productCategory");
         return (
@@ -108,7 +112,7 @@ export function productsGridColumns(
     {
       accessorKey: "brand",
       header: "Brand",
-      maxSize: 20,
+      minSize: 150,
       cell: ({ row }) => {
         const brand: BrandModel = row.getValue("brand");
         return (
@@ -133,7 +137,6 @@ export function productsGridColumns(
     {
       accessorKey: "status",
       header: "Status",
-      maxSize: 20,
       cell: ({ row }) => {
         const status: string = row.getValue("status");
         return (
@@ -146,6 +149,7 @@ export function productsGridColumns(
     {
       accessorKey: "salePrice",
       header: "Sale Price",
+      minSize: 100,
       cell: ({ row }) => {
         const price: string = row.getValue("salePrice");
         return <span>{price ? price : "N/A"}</span>;
@@ -156,7 +160,7 @@ export function productsGridColumns(
       header: "Variants",
       cell: ({ row }) => {
         return (
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          <div>
             <span>{row.getValue("variantsCount")}</span>
           </div>
         );
@@ -204,6 +208,8 @@ export function productsGridColumns(
     {
       id: "manage",
       header: "",
+      minSize: 100,
+      maxSize: 100,
       cell: ({ row, table }) => {
         const meta = table.options.meta as {
           setLoadingRow: (rowId: string, loading: boolean) => void;
@@ -231,13 +237,17 @@ export function productsGridColumns(
     {
       id: "rowActions",
       header: "",
+      minSize: 70,
+      maxSize: 70,
       cell: ({ row, table }) => {
         return (
-          <ProductsGridColumnActions
-            row={row}
-            onAction={onAction}
-            table={table}
-          />
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <ProductsGridColumnActions
+              row={row}
+              onAction={onAction}
+              table={table}
+            />
+          </div>
         );
       },
     },
