@@ -56,6 +56,7 @@ export function ProductsPage() {
         .getVariantsForGridHandler(state.variantsGridRequestModel)
         .then((res) => {
           dispatch(actions.refreshVariantsGridModel(res));
+          dispatch(actions.refreshVariants(res.items));
         });
     }
     dispatch(actions.resetSelectedVariant());

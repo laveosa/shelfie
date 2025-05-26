@@ -2,7 +2,15 @@ import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { useNavigate } from "react-router-dom";
 
-import { ProductsPageSliceActions as action } from "@/state/slices/ProductsPageSlice.ts";
+import {
+  ProductsPageSliceActions as productsActions,
+  ProductsPageSliceActions as actions,
+  ProductsPageSliceActions as action,
+} from "@/state/slices/ProductsPageSlice.ts";
+import {
+  addGridRowColor,
+  setSelectedGridItem,
+} from "@/utils/helpers/quick-helper.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import UsersApiHooks from "@/utils/services/api/UsersApiService.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
@@ -12,8 +20,8 @@ import useAppService from "@/useAppService.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
-import { addGridRowColor } from "@/utils/helpers/quick-helper.ts";
 import { GridRowsColorsEnum } from "@/const/enums/GridRowsColorsEnum.ts";
+import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 
 export default function useProductsPageService() {
   const appService = useAppService();
@@ -220,15 +228,64 @@ export default function useProductsPageService() {
 
   //----------------------------------------------------LOGIC
 
-  function itemCardHandler(item) {
-    dispatch(action.resetProductCounter());
-    dispatch(action.refreshProductPhotos([]));
-    dispatch(action.resetProduct());
-    dispatch(action.refreshProductVariants([]));
-    dispatch(action.resetSelectedVariant());
-    navigate(
-      `${ApiUrlEnum.PRODUCTS}${ApiUrlEnum.PRODUCT_BASIC_DATA}/${item.productId}`,
-    );
+  function itemsCardItemsConvertor(
+    items: any[],
+    options: {
+      idKey: string;
+      nameKey: string;
+      imageKeyPath?: string;
+      type?: string;
+    },
+  ): any[] {
+    const { idKey, nameKey, imageKeyPath, type } = options;
+
+    return items?.map((item) => {
+      const id = item[idKey];
+      const name = item[nameKey];
+      const imageUrl = imageKeyPath
+        ? imageKeyPath.split(".").reduce((acc, key) => acc?.[key], item)
+        : undefined;
+
+      return {
+        id,
+        name,
+        imageUrl,
+        originalItem: item,
+        type,
+      };
+    });
+  }
+
+  function itemCardHandler({ item, type }) {
+    switch (type) {
+      case "product":
+        dispatch(action.resetProductCounter());
+        dispatch(action.refreshProductPhotos([]));
+        dispatch(action.resetProduct());
+        dispatch(action.refreshProductVariants([]));
+        dispatch(action.resetSelectedVariant());
+        navigate(
+          `${ApiUrlEnum.PRODUCTS}${ApiUrlEnum.PRODUCT_BASIC_DATA}/${item.productId}`,
+        );
+        break;
+      case "variant":
+        getVariantDetailsHandler(item.variantId).then((res) => {
+          dispatch(actions.refreshSelectedVariant(res));
+          navigate(
+            `${NavUrlEnum.PRODUCTS}${NavUrlEnum.PRODUCT_VARIANTS}/${item?.productId}`,
+          );
+          dispatch(
+            productsActions.refreshProductVariants(
+              setSelectedGridItem(
+                item.variantId,
+                state.productVariants,
+                "variantId",
+              ),
+            ),
+          );
+        });
+        break;
+    }
   }
 
   return {
@@ -249,6 +306,7 @@ export default function useProductsPageService() {
     getTaxesListHandler,
     getCurrenciesListHandler,
     getVariantDetailsHandler,
+    itemsCardItemsConvertor,
     itemCardHandler,
   };
 }

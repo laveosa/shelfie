@@ -35,6 +35,15 @@ export function ProductBasicDataPage() {
   const { addToast } = useToast();
   const { productId } = useParams();
   const cardRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const productsForItemsCard = productsService.itemsCardItemsConvertor(
+    productsState.products,
+    {
+      idKey: "productId",
+      nameKey: "productName",
+      imageKeyPath: "image.thumbnailUrl",
+      type: "product",
+    },
+  );
 
   useEffect(() => {
     if (!productsState.products) {
@@ -180,7 +189,7 @@ export function ProductBasicDataPage() {
           isLoading={productsState.isItemsCardLoading}
           isItemsLoading={productsState.isProductsLoading}
           title="Products"
-          data={productsState.products}
+          data={productsForItemsCard}
           selectedItem={productId}
           skeletonQuantity={productsState.products?.length}
           onAction={itemCardClickHandler}

@@ -24,6 +24,7 @@ const initialState: IProductsPageSlice = {
   products: null,
   product: null,
   selectedProduct: null,
+  variants: [],
   productCounter: null,
   columnsPreferences: null,
   brands: [],
@@ -125,6 +126,13 @@ function refreshSelectedProduct(
   action: PayloadAction<ProductModel>,
 ) {
   state.selectedProduct = action?.payload || state.selectedProduct;
+}
+
+function refreshVariants(
+  state: IProductsPageSlice,
+  action: PayloadAction<VariantModel[]>,
+) {
+  state.variants = action?.payload || state.variants;
 }
 
 function refreshProductCounter(
@@ -249,6 +257,7 @@ const ProductsPageSlice = createSlice({
     refreshProduct,
     resetProduct,
     refreshSelectedProduct,
+    refreshVariants,
     refreshProductCounter,
     resetProductCounter,
     refreshProductsGridModel,
