@@ -42,15 +42,24 @@ export function ManageVariantsPage() {
   const { addToast } = useToast();
   const { productId } = useParams();
   const cardRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const variantsForItemsCard = productsService.itemsCardItemsConvertor(
+    productsState.variants,
+    {
+      idKey: "variantId",
+      nameKey: "variantName",
+      imageKeyPath: "image.thumbnailUrl",
+      type: "variant",
+    },
+  );
 
   useEffect(() => {
-    if (productsState.products === null) {
+    if (productsState.variants.length === 0) {
       dispatch(productsActions.setIsItemsCardLoading(true));
       productsService
-        .getTheProductsForGridHandler(productsState.gridRequestModel)
+        .getVariantsForGridHandler(productsState.variantsGridRequestModel)
         .then((res: GridModel) => {
           dispatch(productsActions.setIsItemsCardLoading(false));
-          dispatch(productsActions.refreshProducts(res.items));
+          dispatch(productsActions.refreshVariants(res.items));
         });
     }
     if (state.listOfTraitsWithOptionsForProduct.length === 0) {
@@ -818,12 +827,11 @@ export function ManageVariantsPage() {
       <div className={cs.borderlessCards}>
         <ItemsCard
           isLoading={productsState.isItemsCardLoading}
-          isItemsLoading={productsState.isProductsLoading}
-          title="Products"
-          data={productsState.products}
-          selectedItem={productId}
-          skeletonQuantity={productsState.products?.length}
-          onAction={(item) => onAction("onProductItemClick", item)}
+          isItemsLoading={productsState.isVariantsLoading}
+          title="Variants"
+          data={variantsForItemsCard}
+          skeletonQuantity={productsState.variants?.length}
+          onAction={(data) => onAction("onProductItemClick", data)}
         />
         <ProductMenuCard
           isLoading={productsState.isProductMenuCardLoading}

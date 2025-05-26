@@ -32,6 +32,15 @@ export function ProductGalleryPage() {
   const { productId } = useParams();
   const { addToast } = useToast();
   const cardRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const productsForItemsCard = productsService.itemsCardItemsConvertor(
+    productsState.products,
+    {
+      idKey: "productId",
+      nameKey: "productName",
+      imageKeyPath: "image.thumbnailUrl",
+      type: "product",
+    },
+  );
 
   useEffect(() => {
     if (productsState.products === null) {
@@ -269,7 +278,7 @@ export function ProductGalleryPage() {
           isLoading={productsState.isItemsCardLoading}
           isItemsLoading={productsState.isProductsLoading}
           title="Products"
-          data={productsState.products}
+          data={productsForItemsCard}
           selectedItem={productId}
           skeletonQuantity={productsState.products?.length}
           onAction={itemCardHandler}

@@ -20,6 +20,7 @@ export interface IProductsPageSlice {
   isProductVariantsLoading?: boolean;
   products?: ProductModel[];
   product?: ProductModel;
+  variants?: VariantModel[];
   contextId?: number;
   activeCards?: any[];
   selectedProduct?: ProductModel;
