@@ -3,6 +3,7 @@ import React, { ComponentPropsWithRef } from "react";
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 
 export interface ISheBadge extends ComponentPropsWithRef<any> {
+  key?: any;
   id?: string;
   className?: string;
   style?: React.CSSProperties;

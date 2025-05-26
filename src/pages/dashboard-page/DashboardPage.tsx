@@ -32,28 +32,14 @@ export function DashboardPage() {
 
       <br />
 
-      <SheBadge
-        disabled
-        text="test"
-        textTransKey="09wjef9wje0"
-        onClick={(event) => console.log("onClick: ", event)}
-        onClose={() => console.log("onClose: ===")}
-      />
-      <br />
-      <SheBadge text="Test" textTransKey="09wjef9wje0" hideCloseBtn />
-      <br />
-      <SheBadge text="TEST" textTransKey="09wjef9wje0" hideCloseBtn />
-
-      <br />
-
-      {/*<div className="p-4 max-w-xl">
+      <div className="p-4 max-w-xl">
         <SheMultiSelect
           options={frameworksList}
           onValueChange={setSelectedFrameworks}
           placeholder="Select frameworks"
           maxCount={3}
         />
-      </div>*/}
+      </div>
 
       <br />
     </div>

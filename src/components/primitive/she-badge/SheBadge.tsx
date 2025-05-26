@@ -5,7 +5,8 @@ import { Badge } from "@/components/ui/badge.tsx";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
-import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
+import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import { XCircle } from "lucide-react";
 
 export default function SheBadge({
   id,
@@ -40,7 +41,7 @@ export default function SheBadge({
 
   function onCloseHandler(event) {
     event.stopPropagation();
-    if (onClose) onClose();
+    if (onClose) onClose(event);
   }
 
   // ==================================================================== PRIVATE
@@ -73,16 +74,13 @@ export default function SheBadge({
               onClick={onClickHandler}
               {...props}
             >
+              {icon && <SheIcon className={cs.sheBadgeIcon} icon={icon} />}
               <span className="she-text" style={{ color: textColor }}>
                 {translate(textTransKey, text)}
               </span>
-              <SheClearButton
-                value={true}
-                color={iconColor}
-                className={cs.sheBadgeCloseBtn}
-                showClearBtn={!hideCloseBtn}
-                onClear={onCloseHandler}
-              />
+              <div className={cs.sheBadgeCloseBtn} onClick={onCloseHandler}>
+                <XCircle className={cs.sheBadgeCloseBtnIcon} />
+              </div>
             </Badge>
           </SheSkeleton>
         </div>

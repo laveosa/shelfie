@@ -13,7 +13,8 @@
           display: flex;
           align-items: center;
           gap: 4px;
-          padding: 4px 10px;
+          padding: 2px 10px;
+          min-height: 24px;
 
           span {
             flex-grow: 1;
@@ -30,38 +31,21 @@
 
 // ======================================================== CLOSE BTN
 
-$clearBtnSize: 12px;
-$clearBtnIconSize: 12px;
-
 .sheBadge {
   .sheBadgeCloseBtn {
     position: relative;
     left: +3px;
-  }
 
-  .sheBadgeCloseBtn > div,
-  button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    max-width: $clearBtnSize !important;
-    min-width: $clearBtnSize !important;
-    max-height: $clearBtnSize !important;
-    min-height: $clearBtnSize !important;
-    padding: 0;
-    box-shadow: 0 0 0 0 transparent;
-    transition: all ease-in-out 130ms;
+    .sheBadgeCloseBtnIcon {
+      circle {
+        display: none;
+      }
 
-    &:hover {
-      background-color: transparent;
-      color: white;
-      box-shadow: 0 0 0 1px white;
-    }
-
-    svg {
-      width: $clearBtnIconSize;
-      min-width: $clearBtnIconSize;
-      max-width: $clearBtnIconSize;
+      &:hover {
+        circle {
+          display: block;
+        }
+      }
     }
   }
 }
@@ -87,6 +71,13 @@ $clearBtnIconSize: 12px;
   .sheBadgeComponent {
     .sheBadgeControl {
       .sheBadgeSkeleton {
+        .sheBadgeIcon {
+          $iconSize: 18px;
+          max-width: $iconSize;
+          min-width: $iconSize;
+          max-height: $iconSize;
+          min-height: $iconSize;
+        }
       }
     }
   }

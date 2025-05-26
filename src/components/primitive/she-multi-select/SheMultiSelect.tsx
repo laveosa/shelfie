@@ -1,17 +1,9 @@
 import * as React from "react";
-import { cva, type VariantProps } from "class-variance-authority";
-import {
-  CheckIcon,
-  XCircle,
-  ChevronDown,
-  XIcon,
-  WandSparkles,
-} from "lucide-react";
+import { CheckIcon, ChevronDown } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import {
   Popover,
   PopoverContent,
@@ -31,6 +23,7 @@ import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { ISheMultiSelect } from "@/const/interfaces/primitive-components/ISheMultiSelect.ts";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import _ from "lodash";
+import SheBadge from "@/components/primitive/she-badge/SheBadge.tsx";
 
 export default function SheMultiSelect({
   ref,
@@ -123,58 +116,28 @@ export default function SheMultiSelect({
           {selectedValues?.length > 0 ? (
             <div className="flex justify-between items-center w-full">
               <div className="flex flex-wrap items-center">
-                {selectedValues.slice(0, maxCount).map((value) => {
+                {selectedValues.slice(0, maxCount).map((value, idx) => {
                   const option = _options.find((o) => o.value === value);
-                  const IconComponent = option?.icon;
                   return (
-                    <Badge
-                      key={value}
-                      className="m-1 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
-                    >
-                      {IconComponent && (
-                        <SheIcon
-                          className="h-4 w-4 mr-2"
-                          icon={IconComponent}
-                        />
-                      )}
-                      {option?.label}
-                      <XCircle
-                        className="ml-2 h-4 w-4 cursor-pointer"
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          toggleOption(value);
-                        }}
-                      />
-                    </Badge>
+                    <SheBadge
+                      key={idx + 1}
+                      text={option?.label}
+                      icon={option?.icon}
+                      onClose={() => {
+                        toggleOption(value);
+                      }}
+                    />
                   );
                 })}
                 {selectedValues?.length > maxCount && (
-                  <Badge className="">
-                    {`+ ${selectedValues.length - maxCount} more`}
-                    <XCircle
-                      className="ml-2 h-4 w-4 cursor-pointer"
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        clearExtraOptions();
-                      }}
-                    />
-                  </Badge>
+                  <SheBadge
+                    text={`+ ${selectedValues.length - maxCount} more`}
+                    onClose={() => {
+                      clearExtraOptions();
+                    }}
+                  />
                 )}
               </div>
-              {/*<div className="flex items-center justify-between">
-                <XIcon
-                  className="h-4 mx-2 cursor-pointer text-muted-foreground"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    handleClear();
-                  }}
-                />
-                <Separator
-                  orientation="vertical"
-                  className="flex min-h-6 h-full"
-                />
-                <ChevronDown className="h-4 mx-2 cursor-pointer text-muted-foreground" />
-              </div>*/}
             </div>
           ) : (
             <div className="flex items-center justify-between w-full mx-auto">
