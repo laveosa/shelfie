@@ -42,7 +42,6 @@
           width: 100%;
           justify-content: space-between;
           align-items: center;
-          gap: 20px;
 
           .traitCheckbox {
             width: 20px;
@@ -53,7 +52,12 @@
             display: flex;
             justify-content: space-between;
             cursor: pointer;
-            width: 200px;
+            width: 100%;
+            padding: 0 20px;
+          }
+
+          .traitButton {
+            margin-right: 20px;
           }
 
           .traitDropdownMenu {

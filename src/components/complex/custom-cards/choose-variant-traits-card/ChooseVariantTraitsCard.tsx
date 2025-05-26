@@ -90,6 +90,17 @@ export default function ChooseVariantTraitsCard({
                     <span className="she-text">{item.traitName}</span>
                     <span>{item.optionsAmount}</span>
                   </div>
+                  <SheButton
+                    className={cs.traitButton}
+                    variant="default"
+                    value="Manage"
+                    minWidth="65px"
+                    maxWidth="65px"
+                    onClick={() => {
+                      setSelectedTraitId(item.traitId);
+                      onAction?.("manageTrait", item.traitId);
+                    }}
+                  />
                   <div className={cs.traitDropdownMenu}>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
@@ -103,18 +114,10 @@ export default function ChooseVariantTraitsCard({
                       <DropdownMenuContent align="start" className="w-[160px]">
                         <DropdownMenuItem
                           onClick={() => {
-                            setSelectedTraitId(item.traitId);
-                            onAction?.("manageTrait", item.traitId);
-                          }}
-                        >
-                          <span className="she-text">Manage</span>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={() => {
                             onAction?.("deleteTrait", item.traitId);
                           }}
                         >
-                          <span className="she-text">Delete</span>
+                          <span className="she-text">Remove trait</span>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
