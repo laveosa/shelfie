@@ -1,5 +1,6 @@
 export interface ISheImageUploader {
+  isLoading?: boolean;
   contextName: string;
   contextId: number;
-  onUpload?: (data) => void;
+  onUpload?: (data: any) => void;
 }

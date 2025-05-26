@@ -84,31 +84,23 @@ export default function VariantPhotosCard({
               <span className="she-title">Variant Photos</span>
             </div>
             <div className={cs.managePhotosGrid}>
-              {variantPhotos.length > 0 ? (
-                <DndGridDataTable
-                  isLoading={isVariantPhotoGridLoading}
-                  className={
-                    variantPhotos.length > 0
-                      ? cs.productPhotosGridShort
-                      : cs.productPhotosGridLong
-                  }
-                  enableDnd={true}
-                  showHeader={false}
-                  columns={variantPhotosColumns}
-                  data={variantPhotos}
-                  gridModel={variantPhotos}
-                  customMessage="VARIANT HAS NO PHOTO"
-                  onNewItemPosition={(newIndex, activeItem) =>
-                    handleAction("dnd", { newIndex, activeItem })
-                  }
-                />
-              ) : (
-                <div className={cs.variantPhotosText}>
-                  <span className={"she-text"}>
-                    Variant doesn`t have photos
-                  </span>
-                </div>
-              )}
+              <DndGridDataTable
+                isLoading={isVariantPhotoGridLoading}
+                className={
+                  variantPhotos.length > 0
+                    ? cs.productPhotosGridShort
+                    : cs.productPhotosGridLong
+                }
+                enableDnd={true}
+                showHeader={false}
+                columns={variantPhotosColumns}
+                data={variantPhotos}
+                gridModel={variantPhotos}
+                customMessage="VARIANT HAS NO PHOTO"
+                onNewItemPosition={(newIndex, activeItem) =>
+                  handleAction("dnd", { newIndex, activeItem })
+                }
+              />
             </div>
           </div>
           <div className={cs.managePhotos}>
@@ -116,28 +108,21 @@ export default function VariantPhotosCard({
               <span className="she-title">Other Product Photos</span>
             </div>
             <div className={cs.managePhotosGrid}>
-              {productPhotos.length > 0 ? (
-                <DndGridDataTable
-                  isLoading={isProductPhotoGridLoading}
-                  className={
-                    variantPhotos.length > 0
-                      ? cs.productPhotosGridShort
-                      : cs.productPhotosGridLong
-                  }
-                  showHeader={false}
-                  showColumnsHeader={false}
-                  columns={otherPhotosColumns}
-                  data={productPhotos}
-                  customMessage="PRODUCT HAS NO PHOTO"
-                  gridModel={productPhotos}
-                />
-              ) : (
-                <div className={cs.variantPhotosText}>
-                  <span className={"she-text"}>
-                    Product doesn`t have photos
-                  </span>
-                </div>
-              )}
+              <DndGridDataTable
+                isLoading={isProductPhotoGridLoading}
+                enableDnd={false}
+                className={
+                  variantPhotos.length > 0
+                    ? cs.productPhotosGridShort
+                    : cs.productPhotosGridLong
+                }
+                showHeader={false}
+                showColumnsHeader={false}
+                columns={otherPhotosColumns}
+                data={productPhotos}
+                customMessage="PRODUCT HAS NO PHOTO"
+                gridModel={productPhotos}
+              />
             </div>
           </div>
         </div>

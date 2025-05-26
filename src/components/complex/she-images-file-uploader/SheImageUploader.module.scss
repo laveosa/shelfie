@@ -5,38 +5,92 @@
   flex-direction: column;
   gap: 0;
 
+  & > div {
+    padding: 0;
+  }
+
+  .dropzoneTrigger {
+    width: 100%;
+  }
+
   ol {
     display: flex;
+    position: relative;
+    padding-bottom: 10px;
 
     li {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
 
-      img {
-        padding-left: 10px;
-        object-fit: contain;
-        max-width: 50px;
-      }
 
       div {
         width: 100%;
 
-        p {
-          max-width: 155px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
+        img {
+          object-fit: contain;
+          max-width: 50px;
         }
+
+        .textBlock {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          p {
+            max-width: 155px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+
+        .textblockWide {
+          padding-right: 30px;
+        }
+
+        .removeFileButton {
+          height: 100%;
+          margin: 0;
+
+          &:hover {
+            opacity: 0.8;
+            transform: scale(1.1);
+          }
+        }
+
+
       }
     }
   }
 
-  p {
-    text-align: center;
+  .loadingButtonState {
+    margin-bottom: 20px;
   }
 
-  button {
-    margin-top: 10px;
+  .uploadingBlockContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .uploadingItem {
+      .uploadingItemImage {
+        width: 30px;
+        height: 30px;
+      }
+
+      .uploadingItemTextBlock {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        padding-right: 30px;
+      }
+
+      .loadingBlock {
+        position: absolute;
+        top: 48px;
+      }
+    }
   }
 }

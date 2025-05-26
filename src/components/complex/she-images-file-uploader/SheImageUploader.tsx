@@ -1,10 +1,9 @@
 import { CloudUploadIcon, Trash2Icon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   Dropzone,
   DropZoneArea,
-  DropzoneDescription,
   DropzoneFileList,
   DropzoneFileListItem,
   DropzoneMessage,
@@ -16,16 +15,28 @@ import { ISheImageUploader } from "@/const/interfaces/complex-components/ISheIma
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import cs from "./SheImageUploader.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
+
+interface UploadingFile {
+  id: string;
+  file: File;
+  fileName: string;
+  result: string;
+  status: "success";
+  tries: number;
+}
 
 export function SheImageUploader({
+  isLoading = false,
   contextName,
   contextId,
   onUpload,
 }: ISheImageUploader) {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [uploadingFiles, setUploadingFiles] = useState<UploadingFile[]>([]);
 
   const dropzone = useDropzone({
-    onDropFile: (file: File) => {
+    onDropFile: (file) => {
       const newFile = {
         id: crypto.randomUUID(),
         file,
@@ -46,14 +57,38 @@ export function SheImageUploader({
         "image/*": [".png", ".jpg", ".jpeg"],
       },
       maxSize: 10 * 1024 * 1024,
-      maxFiles: 10,
+      maxFiles: 50,
     },
   });
 
-  async function handleUpload() {
-    for (const file of selectedFiles) {
+  useEffect(() => {
+    if (!isLoading && uploadingFiles.length > 0) {
+      setUploadingFiles([]);
+    }
+  }, [isLoading, uploadingFiles.length]);
+
+  function handleUpload() {
+    const filesToUpload: UploadingFile[] = dropzone.fileStatuses.map(
+      (fileStatus) => ({
+        id: fileStatus.id,
+        file: fileStatus.file,
+        fileName: fileStatus.fileName,
+        result: fileStatus.result,
+        status: "success" as const,
+        tries: fileStatus.tries || 0,
+      }),
+    );
+
+    setUploadingFiles((prevFiles) => [...filesToUpload, ...prevFiles]);
+
+    setSelectedFiles([]);
+    dropzone.fileStatuses.forEach((file) => {
+      dropzone.onRemoveFile(file.id);
+    });
+
+    filesToUpload.forEach((uploadingFile, _index) => {
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file", uploadingFile.file);
 
       const uploadModel: UploadPhotoModel = {
         contextName,
@@ -61,16 +96,8 @@ export function SheImageUploader({
         file: formData,
       };
 
-      try {
-        await onUpload(uploadModel);
-        setSelectedFiles([]);
-        dropzone.fileStatuses.forEach((file) => {
-          dropzone.onRemoveFile(file.id);
-        });
-      } catch (error) {
-        console.error("Upload failed:", error);
-      }
-    }
+      onUpload(uploadModel);
+    });
   }
 
   function handleRemoveFile(fileId: string) {
@@ -88,10 +115,18 @@ export function SheImageUploader({
   }
 
   return (
-    <div className={`${cs.sheImageUploader} not-prose flex flex-col gap-4`}>
+    <div
+      className={`${cs.sheImageUploader} not-prose flex flex-col gap-4`}
+      style={{
+        boxSizing: "border-box",
+        padding: "0",
+      }}
+    >
       <Dropzone {...dropzone}>
         <DropZoneArea>
-          <DropzoneTrigger className="flex flex-col items-center gap-4 bg-transparent text-center text-sm">
+          <DropzoneTrigger
+            className={`${cs.dropzoneTrigger} flex flex-col items-center gap-4 bg-transparent text-center text-sm`}
+          >
             <CloudUploadIcon className="size-8" />
             <div>
               <p className="font-semibold">Upload images</p>
@@ -101,7 +136,6 @@ export function SheImageUploader({
             </div>
           </DropzoneTrigger>
         </DropZoneArea>
-        <DropzoneDescription>Please select up to 10 images</DropzoneDescription>
         <DropzoneMessage />
         <DropzoneFileList className="grid gap-3 p-0 md:grid-cols-2 lg:grid-cols-3">
           {dropzone.fileStatuses.map((file) => (
@@ -110,18 +144,18 @@ export function SheImageUploader({
               key={file.id}
               file={file}
             >
-              {file.status === "pending" && (
-                <div className="aspect-video animate-pulse bg-black/20" />
-              )}
-              {file.status === "success" && (
-                <img
-                  src={file.result}
-                  alt={`uploaded-${file.fileName}`}
-                  className="aspect-video object-cover"
-                />
-              )}
-              <div className="flex items-center justify-between p-2 pl-4">
-                <div className="min-w-0">
+              <div className="flex relative items-center justify-between p-2 pl-4">
+                {file.status === "pending" && (
+                  <div className="aspect-video animate-pulse bg-black/20" />
+                )}
+                {file.status === "success" && (
+                  <img
+                    src={file.result}
+                    alt={`uploaded-${file.fileName}`}
+                    className="aspect-video object-cover"
+                  />
+                )}
+                <div className={cs.textBlock}>
                   <p className="truncate text-sm">{file.fileName}</p>
                   <p className="text-xs text-muted-foreground">
                     {(file.file.size / (1024 * 1024)).toFixed(2)} MB
@@ -129,7 +163,7 @@ export function SheImageUploader({
                 </div>
                 <DropzoneRemoveFile
                   variant="ghost"
-                  className="shrink-0 hover:outline"
+                  className={cs.removeFileButton}
                   onClick={() => handleRemoveFile(file.id)}
                 >
                   <Trash2Icon className="size-4" />
@@ -139,13 +173,49 @@ export function SheImageUploader({
           ))}
         </DropzoneFileList>
       </Dropzone>
+
       <SheButton
+        className={isLoading ? cs.loadingButtonState : ""}
         variant="secondary"
         onClick={handleUpload}
         disabled={selectedFiles.length === 0}
       >
         Upload photo
       </SheButton>
+      {uploadingFiles.length > 0 && (
+        <>
+          <div className="flex items-center gap-2">
+            <span className="font-medium">
+              Uploading {uploadingFiles.length} file(s)...
+            </span>
+          </div>
+          <div className={cs.uploadingBlockContainer}>
+            {uploadingFiles.map((file) => (
+              <div
+                className="overflow-hidden rounded-md bg-secondary p-0 shadow-sm"
+                key={file.id}
+              >
+                <div
+                  className={`${cs.uploadingItem} flex relative items-center justify-between p-2 pl-4`}
+                >
+                  <img
+                    src={file.result}
+                    alt={`uploading-${file.fileName}`}
+                    className={cs.uploadingItemImage}
+                  />
+                  <div className={cs.uploadingItemTextBlock}>
+                    <p className="truncate text-sm">{file.fileName}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {(file.file.size / (1024 * 1024)).toFixed(2)} MB
+                    </p>
+                  </div>
+                  <SheLoading className={cs.loadingBlock} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }

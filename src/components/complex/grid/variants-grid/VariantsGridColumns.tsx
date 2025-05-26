@@ -23,10 +23,14 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "variantId",
       header: "ID",
+      minSize: 50,
+      maxSize: 50,
     },
     {
       accessorKey: "photo",
       header: "Image",
+      minSize: 70,
+      maxSize: 70,
       cell: ({ row, table }) => {
         const image: ImageModel = row.getValue("photo");
         const meta = table.options.meta as {
@@ -54,6 +58,7 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "variantCode",
       header: "Code",
+      maxSize: 100,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("variantCode")}>
@@ -103,7 +108,6 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "brand",
       header: "Brand",
-      maxSize: 20,
       cell: ({ row }) => {
         const brand: BrandModel = row.getValue("brand");
         return (
@@ -191,6 +195,7 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "stockAmount",
       header: "In Stock",
+      minSize: 90,
       cell: ({ row }) => {
         return <span>{`${row.getValue("stockAmount")} units`}</span>;
       },
@@ -218,6 +223,8 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       id: "manage",
       header: "",
+      minSize: 100,
+      maxSize: 100,
       cell: ({ row, table }) => {
         const meta = table.options.meta as {
           setLoadingRow: (rowId: string, loading: boolean) => void;
@@ -245,13 +252,17 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       id: "rowActions",
       header: "",
+      minSize: 70,
+      maxSize: 70,
       cell: ({ row, table }) => {
         return (
-          <ProductsGridColumnActions
-            row={row}
-            onAction={onAction}
-            table={table}
-          />
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <ProductsGridColumnActions
+              row={row}
+              onAction={onAction}
+              table={table}
+            />
+          </div>
         );
       },
     },
