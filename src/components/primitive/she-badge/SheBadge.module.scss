@@ -1,2 +1,93 @@
-.SheBadge {
+@use "@/styles/variables" as vars;
+
+.sheBadge {
+  width: fit-content;
+
+  .sheBadgeComponent {
+    width: 100%;
+
+    .sheBadgeControl {
+      .sheBadgeSkeleton {
+        .sheBadgeElement {
+          flex-grow: 1;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          padding: 4px 10px;
+
+          span {
+            flex-grow: 1;
+            color: vars.$colorLight;
+            line-height: 12px;
+            pointer-events: none;
+            word-break: break-all;
+          }
+        }
+      }
+    }
+  }
+}
+
+// ======================================================== CLOSE BTN
+
+$clearBtnSize: 12px;
+$clearBtnIconSize: 12px;
+
+.sheBadge {
+  .sheBadgeCloseBtn {
+    position: relative;
+    left: +3px;
+  }
+
+  .sheBadgeCloseBtn > div,
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: $clearBtnSize !important;
+    min-width: $clearBtnSize !important;
+    max-height: $clearBtnSize !important;
+    min-height: $clearBtnSize !important;
+    padding: 0;
+    box-shadow: 0 0 0 0 transparent;
+    transition: all ease-in-out 130ms;
+
+    &:hover {
+      background-color: transparent;
+      color: white;
+      box-shadow: 0 0 0 1px white;
+    }
+
+    svg {
+      width: $clearBtnIconSize;
+      min-width: $clearBtnIconSize;
+      max-width: $clearBtnIconSize;
+    }
+  }
+}
+
+// ======================================================== IS CLICKABLE
+
+.sheBadge.isClickable {
+  .sheBadgeElement {
+    cursor: pointer !important;
+  }
+}
+
+// ======================================================== FULL WIDTH
+
+.sheBadge.fullWidth {
+  max-width: none;
+  width: 100%;
+}
+
+// ======================================================== WITH ICON
+
+.sheBadge.withIcon {
+  .sheBadgeComponent {
+    .sheBadgeControl {
+      .sheBadgeSkeleton {
+      }
+    }
+  }
 }
