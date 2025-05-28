@@ -128,9 +128,9 @@ export default function SheMultiSelectTrigger({
                     <span className="text-sm text-muted-foreground mx-3">
                       {translate(placeholderTransKey, placeholder)}
                     </span>
-                    <ChevronDown className="h-4 cursor-pointer text-muted-foreground mx-2" />
                   </div>
                 )}
+                <ChevronDown className="h-4 cursor-pointer text-muted-foreground mx-2" />
               </Button>
             </SheSkeleton>
             <SheClearButton

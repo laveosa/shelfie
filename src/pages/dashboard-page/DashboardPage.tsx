@@ -36,15 +36,15 @@ export function DashboardPage() {
 
       <br />
 
-      <div className="p-4 max-w-xl">
-        <SheMultiSelect
-          options={frameworksList}
-          placeholder="Select frameworks"
-          onValueChange={onAction}
-          onIsOpen={(event) => console.log("onIsOpen: ", event)}
-          onClear={(event) => console.log("onClear: ", event)}
-        />
-      </div>
+      <br />
+
+      {/*<SheMultiSelect
+        options={frameworksList}
+        placeholder="Select frameworks"
+        onValueChange={onAction}
+        onIsOpen={(event) => console.log("onIsOpen: ", event)}
+        onClear={(event) => console.log("onClear: ", event)}
+      />*/}
 
       <br />
     </div>
