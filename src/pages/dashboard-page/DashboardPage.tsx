@@ -7,10 +7,10 @@ import SheMultiSelect from "@/components/primitive/she-multi-select/SheMultiSele
 import SheBadge from "@/components/primitive/she-badge/SheBadge.tsx";
 
 const frameworksList = [
-  { value: "react", label: "React", icon: Turtle },
-  { value: "angular", label: "Angular", icon: Cat },
-  { value: "vue", label: "Vue", icon: Dog },
-  { value: "svelte", label: "Svelte", icon: Rabbit },
+  { value: "1", label: "React", icon: Turtle },
+  { value: 1, label: "Angular", icon: Cat },
+  { value: true, label: "Vue", icon: Dog },
+  { value: { title: "svelte" }, label: "Svelte", icon: Rabbit },
   { value: "ember", label: "Ember", icon: Fish },
 ];
 
@@ -24,6 +24,10 @@ export function DashboardPage() {
 
   // ================================================================== EVENT
 
+  function onAction(value) {
+    console.log(value);
+  }
+
   // ================================================================== LAYOUT
 
   return (
@@ -35,9 +39,10 @@ export function DashboardPage() {
       <div className="p-4 max-w-xl">
         <SheMultiSelect
           options={frameworksList}
-          onValueChange={setSelectedFrameworks}
           placeholder="Select frameworks"
-          maxCount={3}
+          onValueChange={onAction}
+          onIsOpen={(event) => console.log("onIsOpen: ", event)}
+          onClear={(event) => console.log("onClear: ", event)}
         />
       </div>
 
