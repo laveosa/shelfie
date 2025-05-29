@@ -1,4 +1,4 @@
-import React, { JSX, useEffect, useState } from "react";
+import React, { JSX, useEffect, useRef, useState } from "react";
 import _ from "lodash";
 
 import cs from "./SheBadgeList.module.scss";
@@ -10,6 +10,7 @@ import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts"
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import SheBadge from "@/components/primitive/she-badge/SheBadge.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 
 export default function SheBadgeList({
   className = "",
@@ -36,11 +37,12 @@ export default function SheBadgeList({
   elementFullWidth,
   direction = "row",
   textWrap,
+  itemsWrap = "wrap",
   disabled,
   isLoading,
   required,
-  hideCloseBtn,
-  componentView,
+  showCloseBtn,
+  componentView = ComponentViewEnum.STANDARD,
   onClick,
   onClose,
   onClear,
@@ -48,8 +50,16 @@ export default function SheBadgeList({
 }: ISheBadgeList): JSX.Element {
   const { translate } = useAppTranslation();
   const [_items, setItems] = useState<ISheBadge[]>(null);
+  const [_scrollInfo, setScrollInfo] = useState(null);
 
+  const refBadgeListContext = useRef(null);
   const uniqueComponentId = `${generateId(4)}_BADGE_LIST_ID`;
+
+  useEffect(() => {
+    setTimeout(() => {
+      setScrollInfo(_hasVisibleScroll(refBadgeListContext.current));
+    });
+  }, []);
 
   useEffect(() => {
     if (items?.length > 0 && !_.isEqual(items, _items))
@@ -65,12 +75,25 @@ export default function SheBadgeList({
   function onCloseHandler(item: ISheBadge) {
     const tmpList: ISheBadge[] = _removeItemFromList(_items, item);
     setItems(tmpList);
+
     if (onClose) onClose(item);
   }
 
   function onClearHandler() {
     setItems(null);
+
     if (onClear) onClear(null);
+  }
+
+  function onScrollHandler(event) {
+    if (event.deltaY == 0) return;
+
+    const elem = refBadgeListContext.current;
+
+    elem.scrollTo({
+      left: elem.scrollLeft + event.deltaY,
+      behavior: "smooth",
+    });
   }
 
   // ==================================================================== PRIVATE
@@ -92,11 +115,28 @@ export default function SheBadgeList({
     return list.filter((elem) => elem.id !== item.id);
   }
 
+  function _hasVisibleScroll(element) {
+    if (!element) {
+      return { hasVerticalScroll: false, hasHorizontalScroll: false };
+    }
+
+    const hasVerticalScroll =
+      element.offsetHeight < element.children[0].offsetHeight;
+    const hasHorizontalScroll =
+      element.offsetWidth < element.children[0].offsetWidth;
+
+    return {
+      hasVerticalScroll,
+      hasHorizontalScroll,
+      hasAnyScroll: hasVerticalScroll || hasHorizontalScroll,
+    };
+  }
+
   // ==================================================================== LAYOUT
 
   return (
     <div
-      className={`${cs.sheBadgeList} ${className} ${icon ? cs.withIcon : ""} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""} ${componentView ? cs[componentView] : ""}`}
+      className={`${cs.sheBadgeList} ${className} ${icon ? cs.withIcon : ""} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""} ${cs[componentView]} ${cs[itemsWrap]}`}
       style={{
         minWidth,
         maxWidth,
@@ -117,7 +157,14 @@ export default function SheBadgeList({
             className={cs.iconBlock}
             aria-describedby={uniqueComponentId}
           />
-          <div className={cs.sheBadgeListContext}>
+          <div
+            ref={refBadgeListContext}
+            className={cs.sheBadgeListContext}
+            style={{
+              paddingBottom: _scrollInfo?.hasHorizontalScroll ? "4px" : "0",
+            }}
+            onWheel={onScrollHandler}
+          >
             {_items?.length > 0 ? (
               <div
                 className={cs.sheBadgeListItemsContainer}
@@ -151,7 +198,7 @@ export default function SheBadgeList({
                       showCloseBtn={
                         !_.isNil(item.showCloseBtn)
                           ? item.showCloseBtn
-                          : hideCloseBtn
+                          : showCloseBtn
                       }
                       onClick={() => onClickHandler(item)}
                       onClose={() => onCloseHandler(item)}

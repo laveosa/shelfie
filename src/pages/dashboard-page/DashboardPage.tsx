@@ -43,6 +43,32 @@ const badges: ISheBadge[] = [
   {
     text: "Orange",
   },
+  {
+    text: "Apple 1111111",
+  },
+  {
+    text: "Banana",
+    icon: Box,
+  },
+  {
+    text: "Peach2222222222222",
+  },
+  {
+    text: "Orange",
+  },
+  {
+    text: "Apple 1111111",
+  },
+  {
+    text: "Banana",
+    icon: Box,
+  },
+  {
+    text: "Peach2222222222222",
+  },
+  {
+    text: "Orange",
+  },
 ];
 
 export function DashboardPage() {
@@ -65,78 +91,21 @@ export function DashboardPage() {
     <div id={cs["DashboardPage"]}>
       <h1>Dashboard</h1>
 
-      <div className="flex gap-2 items-center">
-        <SheBadge
-          text="No Variant"
-          icon={Apple}
-          iconColor="red"
-          isLoading
-          onClick={(value) => console.log("onClick: ", value)}
-        />
-        <SheBadge
-          text="Default"
-          icon={Banana}
-          variant="destructive"
-          textColor="yellow"
-          isLoading
-          onClick={(value) => console.log("onClick: ", value)}
-        />
-        <SheBadge
-          text="Outline"
-          icon={LetterText}
-          variant="outline"
-          color="blue"
-          isLoading
-          onClick={(value) => console.log("onClick: ", value)}
-        />
-        <SheBadge
-          text="Secondary"
-          icon={Box}
-          variant="secondary"
-          isLoading
-          showCloseBtn
-        />
-        <SheBadge
-          text="Destructive"
-          icon={Lock}
-          variant="destructive"
-          isLoading
-          showCloseBtn
-        />
-        <SheBadge
-          icon={Home}
-          isLoading
-          onClick={(value) => console.log("onClick: ", value)}
-        />
-        <SheBadge
-          icon={Home}
-          showCloseBtn
-          isLoading
-          onClick={(value) => console.log("onClick: ", value)}
-        />
-        <SheBadge text={44} variant="secondary" isLoading />
-        <SheBadge
-          text={4}
-          showCloseBtn
-          isLoading
-          onClick={(value) => console.log("onClick: ", value)}
-        />
-      </div>
-
       <br />
 
-      {/*<SheBadgeList
+      <SheBadgeList
         label="Badges:"
         tooltip="some text for tooltip KKKK"
         items={badges}
-        showClearBtn
-        required
         componentView="card"
-        elementMaxWidth="100px"
+        maxWidth="400px"
+        itemsWrap="nowrap"
+        showCloseBtn
+        showClearBtn
         onClick={(value) => console.log("onClick: ", value)}
         onClose={(value) => console.log("onClose: ", value)}
         onClear={(value) => console.log("onClear: ", value)}
-      />*/}
+      />
 
       <br />
 

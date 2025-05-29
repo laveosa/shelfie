@@ -31,10 +31,11 @@ export interface ISheBadgeList
   elementFullWidth?: boolean;
   direction?: "row" | "column";
   textWrap?: "wrap" | "nowrap" | "dots";
+  itemsWrap?: "wrap" | "nowrap";
   disabled?: boolean;
   isLoading?: boolean;
   required?: boolean;
-  hideCloseBtn?: boolean;
+  showCloseBtn?: boolean;
   componentView?: ComponentViewEnum;
   onClick?: (value: ISheBadge) => void;
   onClose?: (value: ISheBadge) => void;

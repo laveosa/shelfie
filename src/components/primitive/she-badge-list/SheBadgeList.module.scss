@@ -17,6 +17,7 @@ $iconSize: 20px;
 
       .sheBadgeListContext {
         width: 100%;
+        overflow: auto;
 
         .sheBadgeListItemsContainer {
           display: flex;
@@ -88,4 +89,34 @@ $iconSize: 20px;
   border: 1px solid vars.$brdColor;
   padding: vars.$paddingStandard;
   border-radius: vars.$brdR_075;
+}
+
+// ======================================================== WRAP BADGES
+
+.sheBadgeList {
+  &.wrap {
+  }
+
+  &.nowrap {
+    .sheBadgeListComponent {
+      .sheBadgeListControl {
+        .sheBadgeListContext {
+          .sheBadgeListItemsContainer {
+            width: max-content;
+            scroll-padding-top: 10px;
+            scroll-margin-top: 10px;
+          }
+        }
+      }
+    }
+  }
+}
+
+::-webkit-scrollbar:horizontal {
+  height: 6px;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+  background-color: #c9c9c9;
 }
