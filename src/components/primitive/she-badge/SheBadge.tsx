@@ -1,4 +1,5 @@
 import React, { JSX } from "react";
+import _ from "lodash";
 
 import cs from "./SheBadge.module.scss";
 import { Badge } from "@/components/ui/badge.tsx";
@@ -20,17 +21,22 @@ export default function SheBadge({
   icon,
   text,
   textTransKey,
+  textWrap = "wrap",
   minWidth,
   maxWidth,
   fullWidth,
   disabled,
   isLoading,
-  hideCloseBtn,
+  isCircle,
+  showCloseBtn,
   onClick,
   onClose,
   ...props
 }: ISheBadge): JSX.Element {
   const { translate } = useAppTranslation();
+
+  const contextColor = _getContextColor();
+  const circleView = _isCircle();
 
   // ==================================================================== EVENT
 
@@ -46,12 +52,36 @@ export default function SheBadge({
 
   // ==================================================================== PRIVATE
 
+  function _getContextColor(): string {
+    switch (props.variant) {
+      case "outline":
+      case "secondary":
+        return "black";
+      default:
+        return "white";
+    }
+  }
+
+  function _isCircle(): boolean {
+    return (
+      isCircle ||
+      (icon && !text && !showCloseBtn) ||
+      (!icon && !_.isNil(text) && typeof text === "number" && !showCloseBtn) ||
+      (!icon &&
+        !_.isNil(text) &&
+        typeof text === "string" &&
+        text.length > 0 &&
+        text.length <= 2 &&
+        !showCloseBtn)
+    );
+  }
+
   // ==================================================================== LAYOUT
 
   return (
     <div
       id={id}
-      className={`${cs.sheBadge} ${className} ${icon ? cs.withIcon : ""} ${fullWidth ? cs.fullWidth : ""} ${disabled || isLoading ? "disabled" : ""} ${onClick ? cs["isClickable"] : ""}`}
+      className={`${cs.sheBadge} ${className} ${icon ? cs.withIcon : ""} ${fullWidth ? cs.fullWidth : ""} ${disabled || isLoading ? "disabled" : ""} ${onClick ? cs["isClickable"] : ""} ${textWrap ? cs[textWrap] : ""} ${circleView ? cs["circle"] : ""}`}
       style={{
         minWidth,
         maxWidth,
@@ -74,13 +104,31 @@ export default function SheBadge({
               onClick={onClickHandler}
               {...props}
             >
-              {icon && <SheIcon className={cs.sheBadgeIcon} icon={icon} />}
-              <span className="she-text" style={{ color: textColor }}>
-                {translate(textTransKey, text)}
-              </span>
-              <div className={cs.sheBadgeCloseBtn} onClick={onCloseHandler}>
-                <XCircle className={cs.sheBadgeCloseBtnIcon} />
-              </div>
+              {icon && (
+                <SheIcon
+                  className={cs.sheBadgeIcon}
+                  icon={icon}
+                  color={iconColor || contextColor}
+                />
+              )}
+              {text && (
+                <span
+                  className="she-text"
+                  style={{ color: textColor || contextColor }}
+                >
+                  {translate(textTransKey, text?.toString())}
+                </span>
+              )}
+              {showCloseBtn && (
+                <div className={cs.sheBadgeCloseBtn} onClick={onCloseHandler}>
+                  <XCircle
+                    className={cs.sheBadgeCloseBtnIcon}
+                    style={{
+                      color: iconColor || contextColor,
+                    }}
+                  />
+                </div>
+              )}
             </Badge>
           </SheSkeleton>
         </div>

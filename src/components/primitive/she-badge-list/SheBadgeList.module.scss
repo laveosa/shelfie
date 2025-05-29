@@ -1,0 +1,91 @@
+@use "@/styles/variables" as vars;
+
+$iconSize: 20px;
+
+.sheBadgeList {
+  width: fit-content;
+
+  .sheBadgeListComponent {
+    position: relative;
+
+    .sheBadgeListControl {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 160ms ease-in-out;
+
+      .sheBadgeListContext {
+        width: 100%;
+
+        .sheBadgeListItemsContainer {
+          display: flex;
+          gap: 4px;
+          flex-wrap: wrap;
+
+          .sheBadgeListListItem {
+            display: flex;
+            width: fit-content;
+          }
+        }
+      }
+
+      .iconBlock {
+        position: absolute;
+        color: vars.$subtextColor;
+        left: 8px;
+        top: 10px;
+        max-width: $iconSize;
+        min-width: $iconSize;
+        max-height: $iconSize;
+        min-height: $iconSize;
+      }
+    }
+  }
+}
+
+// ======================================================== FULL WIDTH
+
+.sheBadgeList.fullWidth {
+  max-width: none;
+  width: 100%;
+}
+
+// ======================================================== REQUIRED
+
+.sheBadgeList.required {
+  .sheBadgeListComponent:before {
+    position: absolute;
+    left: -10px;
+    top: -14px;
+    color: vars.$colorRed;
+    content: "*";
+    display: inline;
+  }
+}
+
+// ======================================================== WITH ICON
+
+.sheBadgeList.withIcon {
+  .sheBadgeListComponent {
+    .sheBadgeListControl {
+    }
+  }
+}
+
+// ======================================================== NO DATA MESSAGE
+
+.sheBadgeList {
+  .noDataMessage {
+    span {
+    }
+  }
+}
+
+// ======================================================== VIEW
+
+.sheBadgeList.card {
+  border: 1px solid vars.$brdColor;
+  padding: vars.$paddingStandard;
+  border-radius: vars.$brdR_075;
+}
