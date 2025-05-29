@@ -1,5 +1,6 @@
 export enum StoreSliceEnum {
   APP = "appSlice",
+  DIALOG = "dialogSlice",
   AUTH = "authSlice",
   DASHBOARD = "dashboardSlice",
   PRODUCTS = "productsSlice",

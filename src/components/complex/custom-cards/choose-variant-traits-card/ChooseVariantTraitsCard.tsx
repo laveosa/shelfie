@@ -101,6 +101,12 @@ export default function ChooseVariantTraitsCard({
                       onAction?.("manageTrait", item.traitId);
                     }}
                   />
+                  <SheButton
+                    value="delete"
+                    onClick={() => {
+                      onAction?.("deleteTrait", item.traitId);
+                    }}
+                  />
                   <div className={cs.traitDropdownMenu}>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>

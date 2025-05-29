@@ -28,6 +28,7 @@ import { GridModel } from "@/const/models/GridModel.ts";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
+import useDialogService from "@/utils/services/DialogService.tsx";
 
 export function ManageVariantsPage() {
   const dispatch = useAppDispatch();
@@ -42,6 +43,7 @@ export function ManageVariantsPage() {
   const { addToast } = useToast();
   const { productId } = useParams();
   const cardRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const { openConfirmationDialog } = useDialogService();
   const variantsForItemsCard = productsService.itemsCardItemsConvertor(
     productsState.variants,
     {
@@ -179,7 +181,7 @@ export function ManageVariantsPage() {
     }
   }
 
-  function onAction(actionType: string, payload?: any) {
+  async function onAction(actionType: string, payload?: any) {
     switch (actionType) {
       case "onProductItemClick":
         productsService.itemCardHandler(payload);
@@ -640,29 +642,51 @@ export function ManageVariantsPage() {
         });
         break;
       case "deleteTrait":
-        dispatch(actions.setIsChooseVariantTraitsCardLoading(true));
-        service.deleteTraitHandler(payload).then((res) => {
-          dispatch(actions.setIsChooseVariantTraitsCardLoading(false));
-          if (res) {
-            service
-              .getListOfTraitsWithOptionsForProductHandler(productId)
-              .then((res) => {
-                dispatch(actions.refreshListOfTraitsWithOptionsForProduct(res));
-              });
-            service.getListOfAllTraitsHandler().then((res) => {
-              dispatch(actions.refreshTraits(res));
-            });
+        try {
+          const confirmed = await openConfirmationDialog({
+            title: "Please confirm",
+            text: "You are about to remove the trait. All products connected to it will loose the configuration and will require your attention to map it to the new trait.",
+            primaryButtonValue: "Delete",
+            secondaryButtonValue: "Cancel",
+          });
+
+          if (!confirmed) return;
+
+          dispatch(actions.setIsChooseVariantTraitsCardLoading(true));
+
+          try {
+            await service.deleteTraitHandler(payload);
+
+            const [traitsWithOptions, allTraits] = await Promise.all([
+              service.getListOfTraitsWithOptionsForProductHandler(productId),
+              service.getListOfAllTraitsHandler(),
+            ]);
+
+            dispatch(
+              actions.refreshListOfTraitsWithOptionsForProduct(
+                traitsWithOptions,
+              ),
+            );
+            dispatch(actions.refreshTraits(allTraits));
+
             addToast({
               text: "Trait deleted successfully",
               type: "success",
             });
-          } else {
+          } catch (error: any) {
             addToast({
-              text: res.error.message,
+              text: error.message || "Failed to delete trait",
               type: "error",
             });
+          } finally {
+            dispatch(actions.setIsChooseVariantTraitsCardLoading(false));
           }
-        });
+        } catch (error) {
+          addToast({
+            text: "An unexpected error occurred",
+            type: "error",
+          });
+        }
         break;
       case "updateOption":
         dispatch(actions.setIsTraitOptionsGridLoading(true));

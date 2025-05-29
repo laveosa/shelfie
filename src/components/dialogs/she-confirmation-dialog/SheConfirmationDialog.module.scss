@@ -1,0 +1,8 @@
+.confirmationDialogContent {
+  display: flex;
+  flex-direction: column;
+
+  .confirmationDialogTitle, .confirmationDialogText, .confirmationDialogDescription {
+    padding-bottom: 20px;
+  }
+}
