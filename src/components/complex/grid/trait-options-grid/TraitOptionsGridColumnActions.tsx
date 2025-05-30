@@ -42,9 +42,11 @@ export default function TraitOptionsGridColumnActions<TData>({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-[160px]">
         <DropdownMenuItem
-          onClick={() =>
-            onAction("deleteOption", row.id, meta?.setLoadingRow, row)
-          }
+          onClick={() => {
+            queueMicrotask(() => {
+              onAction("deleteOption", row.id, meta?.setLoadingRow, row);
+            });
+          }}
         >
           Delete option
         </DropdownMenuItem>

@@ -25,10 +25,12 @@ import { FacebookApiService } from "@/utils/services/api/FacebookApiService.ts";
 import AttributesPageSlice from "@/state/slices/AttributesPageSlice.ts";
 import SizeChartPageSlice from "@/state/slices/SizeChartPageSlice.ts";
 import PurchasePageSlice from "@/state/slices/PurchsePageSlice.ts";
+import DialogSlice from "@/state/slices/DialogSlice.ts";
 
 export const store = configureStore({
   reducer: {
     [StoreSliceEnum.APP]: AppSlice.reducer,
+    [StoreSliceEnum.DIALOG]: DialogSlice.reducer,
     [StoreSliceEnum.AUTH]: AuthPageSlice.reducer,
     [StoreSliceEnum.DASHBOARD]: DashboardPageSlice.reducer,
     [StoreSliceEnum.MESSENGER]: MessengerPageSlice.reducer,

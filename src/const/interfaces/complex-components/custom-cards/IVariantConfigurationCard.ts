@@ -8,6 +8,7 @@ export interface IVariantConfigurationCard {
   isVariantOptionsGridLoading?: boolean;
   isVariantPhotoGridLoading?: boolean;
   variant?: VariantModel;
+  variantPhotos?: any[];
   data?: GridModel;
   taxesList?: TaxTypeModel[];
   productCounter?: ProductCounterModel;

@@ -6,13 +6,13 @@ import cs from "./ChooseVariantTraitsCard.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { Checkbox } from "@/components/ui/checkbox.tsx";
 import { TraitModel } from "@/const/models/TraitModel.ts";
+import { IChooseVariantTraitsCard } from "@/const/interfaces/complex-components/custom-cards/IChooseVariantTraitsCard.ts";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
-import { IChooseVariantTraitsCard } from "@/const/interfaces/complex-components/custom-cards/IChooseVariantTraitsCard.ts";
 
 export default function ChooseVariantTraitsCard({
   isLoading,
@@ -114,7 +114,9 @@ export default function ChooseVariantTraitsCard({
                       <DropdownMenuContent align="start" className="w-[160px]">
                         <DropdownMenuItem
                           onClick={() => {
-                            onAction?.("deleteTrait", item.traitId);
+                            queueMicrotask(() => {
+                              onAction?.("deleteTrait", item);
+                            });
                           }}
                         >
                           <span className="she-text">Remove trait</span>

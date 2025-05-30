@@ -8,6 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import React from "react";
 
 interface ProductPhotoGridColumnActionsProps<TData> {
   row?: Row<TData>;
@@ -43,15 +44,19 @@ export default function VariantPhotosGridColumnActions<TData>({
       <DropdownMenuContent align="start" className="w-[160px]">
         <DropdownMenuItem
           onClick={() => {
-            onAction("detachFromVariant", row.id, meta?.setLoadingRow, row);
+            queueMicrotask(() => {
+              onAction("detachFromVariant", row.id, meta?.setLoadingRow, row);
+            });
           }}
         >
           Detach photo
         </DropdownMenuItem>
         <DropdownMenuItem
-          onClick={() =>
-            onAction("deletePhoto", row.id, meta?.setLoadingRow, row)
-          }
+          onClick={() => {
+            queueMicrotask(() => {
+              onAction("deletePhoto", row.id, meta?.setLoadingRow, row);
+            });
+          }}
         >
           Delete photo
         </DropdownMenuItem>
