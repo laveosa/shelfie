@@ -44,7 +44,9 @@ export default function VariantPhotosGridColumnActions<TData>({
       <DropdownMenuContent align="start" className="w-[160px]">
         <DropdownMenuItem
           onClick={() => {
-            onAction("detachFromVariant", row.id, meta?.setLoadingRow, row);
+            queueMicrotask(() => {
+              onAction("detachFromVariant", row.id, meta?.setLoadingRow, row);
+            });
           }}
         >
           Detach photo

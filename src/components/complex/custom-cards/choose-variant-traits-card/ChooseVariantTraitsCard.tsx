@@ -115,7 +115,7 @@ export default function ChooseVariantTraitsCard({
                         <DropdownMenuItem
                           onClick={() => {
                             queueMicrotask(() => {
-                              onAction?.("deleteTrait", item.traitId);
+                              onAction?.("deleteTrait", item);
                             });
                           }}
                         >
