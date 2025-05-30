@@ -14,7 +14,7 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { ISheBaseDialog } from "@/const/interfaces/dialogs/ISheBaseDialog.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
-import useDialogService from "@/utils/services/DialogService.tsx";
+import useDialogService from "@/utils/services/dialog/DialogService.ts";
 
 export default function SheDialog({
   isLoading = false,

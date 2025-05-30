@@ -7,7 +7,7 @@ import SheSidebar from "@/components/complex/she-sidebar/SheSidebar.tsx";
 import SheHeader from "@/components/complex/she-header/SheHeader.tsx";
 import useAppService from "@/useAppService.ts";
 import { ToastProvider } from "@/utils/services/ToastService.tsx";
-import { DialogProvider } from "@/utils/services/DialogProvider.tsx";
+import { DialogProvider } from "@/utils/services/dialog/DialogProvider.tsx";
 
 function App() {
   const service = useAppService();
@@ -18,7 +18,6 @@ function App() {
 
   return (
     <div id="ApplicationNameWrapper">
-      {/*<Provider store={store}>*/}
       <ToastProvider>
         <DialogProvider>
           <SidebarProvider>
@@ -32,7 +31,6 @@ function App() {
           </SidebarProvider>
         </DialogProvider>
       </ToastProvider>
-      {/*</Provider>*/}
     </div>
   );
 }

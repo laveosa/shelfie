@@ -93,6 +93,7 @@ export default function CreateProductCategoryCard({ isLoading, ...props }) {
             className={cs.productCategoryInput}
             label="Category Name"
             placeholder="enter category name..."
+            fullWidth
             value={state.category.categoryName || ""}
             onDelay={handleInputChange}
           />

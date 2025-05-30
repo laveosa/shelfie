@@ -1,6 +1,7 @@
-import { DialogConfig } from "@/utils/services/DialogService.tsx";
+import { ISheBaseDialog } from "@/const/interfaces/dialogs/ISheBaseDialog.ts";
+import { IDialogComponent } from "@/const/interfaces/dialogs/IDialogComponent.ts";
 
 export interface IDialogSlice {
   isOpen: boolean;
-  config: DialogConfig | null;
+  config: ISheBaseDialog | IDialogComponent | null;
 }

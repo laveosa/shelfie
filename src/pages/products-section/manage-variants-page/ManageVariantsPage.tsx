@@ -28,7 +28,7 @@ import { GridModel } from "@/const/models/GridModel.ts";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
-import useDialogService from "@/utils/services/DialogService.tsx";
+import useDialogService from "@/utils/services/dialog/DialogService.ts";
 
 export function ManageVariantsPage() {
   const dispatch = useAppDispatch();

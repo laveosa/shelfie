@@ -1,5 +1,6 @@
 import { Trans } from "react-i18next";
 import React from "react";
+
 import cs from "./SheConfirmationDialog.module.scss";
 import { ISheConfirmationDialog } from "@/const/interfaces/dialogs/ISheConfirmationDialog.ts";
 import SheDialog from "@/components/dialogs/she-dialog/SheDialog.tsx";
@@ -11,21 +12,11 @@ export default function SheConfirmationDialog({
   textTransKey,
   description,
   descriptionTransKey,
-  onPrimaryButtonClick,
-  onSecondaryButtonClick,
-  primaryButtonValue,
-  secondaryButtonValue,
-  primaryButtonModel,
+  ...sheDialogProps
 }: ISheConfirmationDialog) {
   return (
     <div className={cs.sheConfirmationDialog}>
-      <SheDialog
-        primaryButtonValue={primaryButtonValue}
-        secondaryButtonValue={secondaryButtonValue}
-        onPrimaryButtonClick={onPrimaryButtonClick}
-        primaryButtonModel={primaryButtonModel}
-        onSecondaryButtonClick={onSecondaryButtonClick}
-      >
+      <SheDialog {...sheDialogProps}>
         <div className={cs.confirmationDialogContent}>
           {title && (
             <div className={cs.confirmationDialogTitle}>

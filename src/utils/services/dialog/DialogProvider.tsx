@@ -1,9 +1,9 @@
 import React from "react";
 import { useAppSelector } from "@/utils/hooks/redux.ts";
-import useDialogService from "@/utils/services/DialogService.tsx";
+import useDialogService from "@/utils/services/dialog/DialogService.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IDialogSlice } from "@/const/interfaces/store-slices/IDialogSlice.ts";
-import { getDialogComponent } from "@/utils/services/DialogRegistry.tsx";
+import { getDialogComponent } from "@/utils/services/dialog/DialogRegistry.ts";
 
 export function DialogProvider({ children }: { children: React.ReactNode }) {
   const { isOpen, config } = useAppSelector<IDialogSlice>(
