@@ -97,7 +97,7 @@ export function DashboardPage() {
         label="Badges:"
         tooltip="some text for tooltip KKKK"
         items={badges}
-        componentView="card"
+        // componentView="card"
         maxWidth="400px"
         itemsWrap="nowrap"
         showCloseBtn

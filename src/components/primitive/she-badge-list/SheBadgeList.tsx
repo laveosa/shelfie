@@ -85,15 +85,16 @@ export default function SheBadgeList({
     if (onClear) onClear(null);
   }
 
-  function onScrollHandler(event) {
-    if (event.deltaY == 0) return;
+  function onScrollHandler(event: React.WheelEvent<HTMLDivElement>) {
+    if (event.deltaY === 0 || !refBadgeListContext?.current) return;
 
     const elem = refBadgeListContext.current;
 
-    elem.scrollTo({
-      left: elem.scrollLeft + event.deltaY,
-      behavior: "smooth",
-    });
+    if (_scrollInfo?.hasHorizontalScroll) {
+      elem.scrollBy({
+        left: event.deltaY * 0.8,
+      });
+    }
   }
 
   // ==================================================================== PRIVATE
@@ -111,7 +112,7 @@ export default function SheBadgeList({
     list: ISheBadge[],
     item: ISheBadge,
   ): ISheBadge[] {
-    if (list?.length === 0 || !item) return;
+    if (list?.length === 0 || !item) return list;
     return list.filter((elem) => elem.id !== item.id);
   }
 
@@ -120,10 +121,8 @@ export default function SheBadgeList({
       return { hasVerticalScroll: false, hasHorizontalScroll: false };
     }
 
-    const hasVerticalScroll =
-      element.offsetHeight < element.children[0].offsetHeight;
-    const hasHorizontalScroll =
-      element.offsetWidth < element.children[0].offsetWidth;
+    const hasVerticalScroll = element.scrollHeight > element.clientHeight;
+    const hasHorizontalScroll = element.scrollWidth > element.clientWidth;
 
     return {
       hasVerticalScroll,
@@ -136,7 +135,7 @@ export default function SheBadgeList({
 
   return (
     <div
-      className={`${cs.sheBadgeList} ${className} ${icon ? cs.withIcon : ""} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""} ${cs[componentView]} ${cs[itemsWrap]}`}
+      className={`${cs.sheBadgeList} ${className} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""} ${cs[componentView]} ${cs[itemsWrap]}`}
       style={{
         minWidth,
         maxWidth,
@@ -208,7 +207,7 @@ export default function SheBadgeList({
                 ))}
               </div>
             ) : (
-              <div className={cs.noDataMessage}>
+              <div>
                 <span className="she-placeholder">
                   {translate(placeholderTransKey, placeholder)}
                 </span>

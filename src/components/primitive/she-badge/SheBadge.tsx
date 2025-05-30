@@ -40,12 +40,12 @@ export default function SheBadge({
 
   // ==================================================================== EVENT
 
-  function onClickHandler(event) {
+  function onClickHandler(event: React.MouseEvent<HTMLElement>) {
     event.stopPropagation();
     if (onClick) onClick(event);
   }
 
-  function onCloseHandler(event) {
+  function onCloseHandler(event: React.MouseEvent<HTMLElement>) {
     event.stopPropagation();
     if (onClose) onClose(event);
   }

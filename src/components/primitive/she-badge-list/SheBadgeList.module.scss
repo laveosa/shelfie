@@ -18,6 +18,8 @@ $iconSize: 20px;
       .sheBadgeListContext {
         width: 100%;
         overflow: auto;
+        //scroll-behavior: smooth;
+        transition: scroll-behavior 130ms ease-in-out;
 
         .sheBadgeListItemsContainer {
           display: flex;
@@ -65,24 +67,6 @@ $iconSize: 20px;
   }
 }
 
-// ======================================================== WITH ICON
-
-.sheBadgeList.withIcon {
-  .sheBadgeListComponent {
-    .sheBadgeListControl {
-    }
-  }
-}
-
-// ======================================================== NO DATA MESSAGE
-
-.sheBadgeList {
-  .noDataMessage {
-    span {
-    }
-  }
-}
-
 // ======================================================== VIEW
 
 .sheBadgeList.card {
@@ -94,20 +78,9 @@ $iconSize: 20px;
 // ======================================================== WRAP BADGES
 
 .sheBadgeList {
-  &.wrap {
-  }
-
   &.nowrap {
-    .sheBadgeListComponent {
-      .sheBadgeListControl {
-        .sheBadgeListContext {
-          .sheBadgeListItemsContainer {
-            width: max-content;
-            scroll-padding-top: 10px;
-            scroll-margin-top: 10px;
-          }
-        }
-      }
+    .sheBadgeListItemsContainer {
+      width: max-content;
     }
   }
 }
