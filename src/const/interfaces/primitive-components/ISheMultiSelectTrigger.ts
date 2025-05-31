@@ -1,9 +1,9 @@
 import React, { ComponentPropsWithRef } from "react";
 
-import { ISheMultiSelectItem } from "@/const/interfaces/primitive-components/ISheMultiSelectItem.ts";
 import { ISheLabel } from "@/const/interfaces/primitive-components/ISheLabel.ts";
 import { ISheClearButton } from "@/const/interfaces/primitive-components/ISheClearButton.ts";
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
+import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
 
 export interface ISheMultiSelectTrigger
   extends ISheLabel,
@@ -15,11 +15,11 @@ export interface ISheMultiSelectTrigger
   elementClassName?: string;
   elementStyle?: React.CSSProperties;
   icon?: Partial<ISheIcon> | string | React.FC<any>;
+  items?: ISheBadge[];
   placeholder?: string;
   placeholderTransKey?: string;
-  options?: ISheMultiSelectItem[];
-  selectedValues?: string[];
   maxCount?: number;
+  autoFocus?: boolean;
   asChild?: boolean;
   ariaDescribedbyId?: string;
   required?: boolean;

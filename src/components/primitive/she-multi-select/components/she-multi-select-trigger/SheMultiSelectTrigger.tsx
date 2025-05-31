@@ -21,6 +21,7 @@ import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import SheSelectItem from "@/components/primitive/she-select-item/SheSelectItem.tsx";
 import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
+import SheBadgeList from "@/components/primitive/she-badge-list/SheBadgeList.tsx";
 
 export default function SheMultiSelectTrigger({
   id,
@@ -33,9 +34,9 @@ export default function SheMultiSelectTrigger({
   labelTransKey,
   placeholder = "select items...",
   placeholderTransKey = "REPLACE_WIDTH_VALID_TRANS_KEY_FOR_DEFAULT_PLACEHOLDER",
-  options,
-  selectedValues,
+  items,
   maxCount,
+  autoFocus,
   asChild,
   showClearBtn,
   tooltip,
@@ -87,6 +88,7 @@ export default function SheMultiSelectTrigger({
               <Button
                 className={`${elementClassName} ${cs.sheMultiSelectTriggerElement}`}
                 style={elementStyle}
+                autoFocus={autoFocus}
                 onClick={onTogglePopover}
                 {...props}
               >
@@ -95,7 +97,17 @@ export default function SheMultiSelectTrigger({
                   className={cs.iconBlock}
                   aria-describedby={ariaDescribedbyId}
                 />
-                {selectedValues?.length > 0 ? (
+                <SheBadgeList
+                  items={items}
+                  maxBadgeAmount={maxCount}
+                  showCloseBtn
+                  onClick={onTogglePopover}
+                  onClose={(item) => onToggleOption(item.value)}
+                  onCloseAllExtra={onClearExtraOptions}
+                />
+                <SheIcon icon={ChevronDown} className={cs.iconBlock} />
+
+                {/*{selectedValues?.length > 0 ? (
                   <div className="flex justify-between items-center w-full">
                     <div className="flex flex-wrap items-center">
                       {selectedValues.slice(0, maxCount).map((value, idx) => {
@@ -129,12 +141,12 @@ export default function SheMultiSelectTrigger({
                       {translate(placeholderTransKey, placeholder)}
                     </span>
                   </div>
-                )}
-                <ChevronDown className="h-4 cursor-pointer text-muted-foreground mx-2" />
+                )}*/}
+                {/*<ChevronDown className="h-4 cursor-pointer text-muted-foreground mx-2" />*/}
               </Button>
             </SheSkeleton>
             <SheClearButton
-              value={selectedValues?.length > 0}
+              value={items?.length > 0}
               showClearBtn={showClearBtn}
               disabled={disabled}
               isLoading={isLoading}

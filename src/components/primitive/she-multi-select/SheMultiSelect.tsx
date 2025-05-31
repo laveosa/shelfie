@@ -27,6 +27,7 @@ import SheBadge from "@/components/primitive/she-badge/SheBadge.tsx";
 import SheMultiSelectTrigger from "@/components/primitive/she-multi-select/components/she-multi-select-trigger/SheMultiSelectTrigger.tsx";
 import { generateId } from "@/utils/helpers/quick-helper.ts";
 import { ISheMultiSelectItem } from "@/const/interfaces/primitive-components/ISheMultiSelectItem.ts";
+import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
 
 export default function SheMultiSelect({
   options,
@@ -41,12 +42,14 @@ export default function SheMultiSelect({
 }: ISheMultiSelect): JSX.Element {
   const [_options, setOptions] = useState<ISheMultiSelectItem[]>(null);
   const [_selectedValues, setSelectedValues] = useState<string[]>([]);
+  const [_badges, setBadges] = useState<ISheBadge[]>(null);
   const [_isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   const ariaDescribedbyId = `${generateId()}_MULTI_SELECT_ID`;
 
   useEffect(() => {
     if (!_.isEqual(options, _options)) setOptions(options);
+    _getSelectedBudges(_selectedValues);
   }, options);
 
   useEffect(() => {
@@ -55,6 +58,7 @@ export default function SheMultiSelect({
       !_.isEqual(selectedValues, _selectedValues)
     ) {
       setSelectedValues(selectedValues);
+      _getSelectedBudges(selectedValues);
     }
   }, selectedValues);
 
@@ -73,47 +77,70 @@ export default function SheMultiSelect({
   }
 
   function onToggleOptionHandler(option: string) {
+    console.log(option);
+
     const newSelectedValues = _selectedValues.includes(option)
       ? _selectedValues.filter((value) => value !== option)
       : [..._selectedValues, option];
-    setSelectedValues(newSelectedValues);
-    onValueChange(newSelectedValues);
+
+    // console.log(newSelectedValues);
+
+    _updateSelectedValues(newSelectedValues);
+  }
+
+  function onToggleAllHandler() {
+    if (_selectedValues.length === _options.length) {
+      onClearButtonHandler();
+    } else {
+      _updateSelectedValues(_options.map((option) => option.value));
+    }
   }
 
   function onClearExtraOptionsHandler() {
-    const newSelectedValues = _selectedValues.slice(0, maxCount);
-    setSelectedValues(newSelectedValues);
-    onValueChange(newSelectedValues);
+    _updateSelectedValues(_selectedValues.slice(0, maxCount));
+  }
+
+  function onClearButtonHandler() {
+    _updateSelectedValues([]);
+    if (onClear) onClear([]);
+  }
+
+  function onCloseButtonHandler() {
+    setIsPopoverOpen(false);
   }
 
   // ==================================================================== PRIVATE
 
-  const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-      setIsPopoverOpen(true);
-    } else if (event.key === "Backspace" && !event.currentTarget.value) {
-      const newSelectedValues = [..._selectedValues];
-      newSelectedValues.pop();
-      setSelectedValues(newSelectedValues);
-      onValueChange(newSelectedValues);
-    }
-  };
+  function _getSelectedBudges(values: string[]): ISheBadge[] {
+    if (!_options || _options.length === 0 || !values || values.length === 0)
+      return;
 
-  const handleClear = () => {
-    setSelectedValues([]);
-    onValueChange([]);
-    if (onClear) onClear([]);
-  };
+    const filteredOptions = values.map((value: string) =>
+      options.find((option: ISheMultiSelectItem) =>
+        _.isEqual(option.value, value),
+      ),
+    );
 
-  const toggleAll = () => {
-    if (_selectedValues.length === _options.length) {
-      handleClear();
-    } else {
-      const allValues = _options.map((option) => option.value);
-      setSelectedValues(allValues);
-      onValueChange(allValues);
-    }
-  };
+    // console.log("options: ", filteredOptions);
+
+    const badgeList = filteredOptions.map(
+      (item: ISheMultiSelectItem): ISheBadge => ({
+        text: item.text,
+        icon: item.icon,
+        value: item.value,
+      }),
+    );
+
+    // console.log("badges: ", badgeList);
+
+    return badgeList;
+  }
+
+  function _updateSelectedValues(values: string[]) {
+    setSelectedValues(values);
+    setBadges(_getSelectedBudges(values));
+    onValueChange(values);
+  }
 
   // ==================================================================== RENDER
 
@@ -124,8 +151,7 @@ export default function SheMultiSelect({
       onOpenChange={setIsPopoverOpen}
     >
       <SheMultiSelectTrigger
-        options={_options}
-        selectedValues={_selectedValues}
+        items={_badges}
         maxCount={maxCount}
         ariaDescribedbyId={ariaDescribedbyId}
         onTogglePopover={onTogglePopoverHandler}
@@ -133,22 +159,15 @@ export default function SheMultiSelect({
         onClearExtraOptions={onClearExtraOptionsHandler}
         {...props}
       />
-      <PopoverContent
-        className="w-auto p-0"
-        align="start"
-        onEscapeKeyDown={() => setIsPopoverOpen(false)}
-      >
+      <PopoverContent className="w-auto p-0" align="start">
         <Command>
-          <CommandInput
-            placeholder="Search..."
-            onKeyDown={handleInputKeyDown}
-          />
+          <CommandInput placeholder="Search..." />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
               <CommandItem
                 key="all"
-                onSelect={toggleAll}
+                onSelect={onToggleAllHandler}
                 className="cursor-pointer"
               >
                 <div
@@ -184,7 +203,7 @@ export default function SheMultiSelect({
                     {option.icon && (
                       <option.icon className="mr-2 h-4 w-4 text-muted-foreground" />
                     )}
-                    <span>{option.label}</span>
+                    <span className="she-text">{option.text}</span>
                   </CommandItem>
                 );
               })}
@@ -195,7 +214,7 @@ export default function SheMultiSelect({
                 {_selectedValues?.length > 0 && (
                   <>
                     <CommandItem
-                      onSelect={handleClear}
+                      onSelect={onClearButtonHandler}
                       className="flex-1 justify-center cursor-pointer"
                     >
                       Clear
@@ -207,7 +226,7 @@ export default function SheMultiSelect({
                   </>
                 )}
                 <CommandItem
-                  onSelect={() => setIsPopoverOpen(false)}
+                  onSelect={onCloseButtonHandler}
                   className="flex-1 justify-center cursor-pointer max-w-full"
                 >
                   Close

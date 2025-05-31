@@ -22,61 +22,6 @@ $iconSize: 20px;
         border: vars.$brd;
       }
 
-      /*button[data-placeholder] {
-        span {
-          color: vars.$placeholderColor;
-          text-align: start;
-        }
-      }*/
-
-      /*button[role="combobox"] {
-        transition: all 160ms ease-in-out;
-
-        &:focus-visible {
-          box-shadow: 0 0 0 1px lightgray inset;
-        }
-
-        > span {
-          width: 100%;
-
-          .sheSelectItemCover {
-            display: flex;
-            align-items: center;
-            justify-content: start;
-            gap: 4px;
-
-            // --------------------------------- ICON
-            :global(.sheSelectItemIconContainer) {
-              display: none;
-            }
-
-            // --------------------------------- COLOR
-            :global(.sheSelectItemColorsContainer) {
-              display: none;
-            }
-
-            // --------------------------------- INFO
-            :global(.sheSelectItemInfoContainer) {
-              display: flex;
-              flex-grow: 1;
-
-              :global(.sheSelectItemDescription) {
-                display: none;
-              }
-
-              :global(.sheSelectItemExtraInfoBlock) {
-                display: none;
-              }
-            }
-
-            // --------------------------------- TOOLTIP
-            :global(.sheSelectItemTooltipContainer) {
-              display: none;
-            }
-          }
-        }
-      }*/
-
       .iconBlock {
         position: absolute;
         color: vars.$subtextColor;

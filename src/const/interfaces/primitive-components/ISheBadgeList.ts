@@ -17,6 +17,7 @@ export interface ISheBadgeList
   elementStyle?: React.CSSProperties;
   items?: ISheBadge[];
   maxBadgeAmount?: number;
+  variant?: "default" | "secondary" | "destructive" | "outline";
   color?: string;
   textColor?: string;
   iconColor?: string;
@@ -39,5 +40,6 @@ export interface ISheBadgeList
   componentView?: ComponentViewEnum;
   onClick?: (value: ISheBadge) => void;
   onClose?: (value: ISheBadge) => void;
+  onCloseAllExtra?: (value: ISheBadge[]) => void;
   onClear?: (value: null) => void;
 }

@@ -21,6 +21,7 @@ export default function SheBadgeList({
   labelTransKey,
   tooltip,
   items,
+  variant = "secondary",
   maxBadgeAmount,
   color,
   textColor,
@@ -45,6 +46,7 @@ export default function SheBadgeList({
   componentView = ComponentViewEnum.STANDARD,
   onClick,
   onClose,
+  onCloseAllExtra,
   onClear,
   ...props
 }: ISheBadgeList): JSX.Element {
@@ -62,8 +64,7 @@ export default function SheBadgeList({
   }, []);
 
   useEffect(() => {
-    if (items?.length > 0 && !_.isEqual(items, _items))
-      setItems(_addItemsIds(items));
+    if (!_.isEqual(items, _items)) setItems(_addItemsIds(items));
   }, [items]);
 
   // ==================================================================== EVENT
@@ -188,6 +189,7 @@ export default function SheBadgeList({
                       minWidth={item.minWidth || elementMinWidth}
                       maxWidth={item.maxWidth || elementMaxWidth}
                       fullWidth={item.fullWidth || elementFullWidth}
+                      variant={item.variant || variant}
                       disabled={
                         !_.isNil(item.disabled) ? item.disabled : disabled
                       }

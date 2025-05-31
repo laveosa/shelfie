@@ -20,16 +20,18 @@ import SheMultiSelect from "@/components/primitive/she-multi-select/SheMultiSele
 import SheBadge from "@/components/primitive/she-badge/SheBadge.tsx";
 import SheBadgeList from "@/components/primitive/she-badge-list/SheBadgeList.tsx";
 import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
+import { ISheMultiSelectItem } from "@/const/interfaces/primitive-components/ISheMultiSelectItem.ts";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 
-const frameworksList = [
-  { value: "1", label: "React", icon: Turtle },
-  { value: 1, label: "Angular", icon: Cat },
-  { value: true, label: "Vue", icon: Dog },
-  { value: { title: "svelte" }, label: "Svelte", icon: Rabbit },
-  { value: "ember", label: "Ember", icon: Fish },
+const frameworksList: ISheMultiSelectItem[] = [
+  { value: "1", text: "React", icon: Turtle },
+  { value: 1, text: "Angular", icon: Cat },
+  { value: true, text: "Vue", icon: Dog },
+  { value: { title: "svelte" }, text: "Svelte", icon: Rabbit },
+  { value: "ember", text: "Ember", icon: Fish },
 ];
 
-const badges: ISheBadge[] = [
+/*const badges: ISheBadge[] = [
   {
     text: "Apple 1111111",
   },
@@ -69,7 +71,7 @@ const badges: ISheBadge[] = [
   {
     text: "Orange",
   },
-];
+];*/
 
 export function DashboardPage() {
   const service = useDashboardPageService();
@@ -82,7 +84,7 @@ export function DashboardPage() {
   // ================================================================== EVENT
 
   function onAction(value) {
-    console.log(value);
+    // console.log(value);
   }
 
   // ================================================================== LAYOUT
@@ -93,7 +95,7 @@ export function DashboardPage() {
 
       <br />
 
-      <SheBadgeList
+      {/*<SheBadgeList
         label="Badges:"
         tooltip="some text for tooltip KKKK"
         items={badges}
@@ -105,17 +107,18 @@ export function DashboardPage() {
         onClick={(value) => console.log("onClick: ", value)}
         onClose={(value) => console.log("onClose: ", value)}
         onClear={(value) => console.log("onClear: ", value)}
-      />
+      />*/}
 
       <br />
 
-      {/*<SheMultiSelect
+      <SheMultiSelect
         options={frameworksList}
         placeholder="Select frameworks"
         onValueChange={onAction}
+        autoFocus
         onIsOpen={(event) => console.log("onIsOpen: ", event)}
         onClear={(event) => console.log("onClear: ", event)}
-      />*/}
+      />
 
       <br />
     </div>
