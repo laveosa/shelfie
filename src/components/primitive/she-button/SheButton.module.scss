@@ -1,10 +1,12 @@
 @use "@/styles/variables" as vars;
 
 $buttonSize: 40px;
+$minButtonSize: 20px;
 
 .sheButton {
   min-width: $buttonSize;
   min-height: $buttonSize;
+  height: auto;
   position: relative;
   display: flex;
   align-items: center;
@@ -15,6 +17,17 @@ $buttonSize: 40px;
 
   span {
     line-height: 14px;
+    flex-grow: 1;
+    width: 100%;
+    word-break: break-all;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .iconElement {
+    position: relative;
+    transition: all 130ms ease-in-out;
   }
 }
 
@@ -33,6 +46,26 @@ $buttonSize: 40px;
   padding: 8px 16px;
 }
 
+// ======================================================== WITH ICON
+
+.sheButton.withText {
+  &.leftIcon {
+    padding-left: 8px;
+  }
+
+  &.rightIcon {
+    padding-right: 8px;
+  }
+
+  &.small.leftIcon {
+    padding-left: 4px;
+  }
+
+  &.small.rightIcon {
+    padding-right: 4px;
+  }
+}
+
 // ======================================================== LOADING
 
 .sheButton {
@@ -47,5 +80,49 @@ $buttonSize: 40px;
     justify-content: center;
     z-index: 1;
     background-color: rgba(139, 139, 139, 0.4);
+  }
+}
+
+// ======================================================== SIZE
+
+.sheButton {
+  &.small {
+    min-width: $minButtonSize;
+    min-height: $minButtonSize;
+    padding: 4px;
+    gap: 2px;
+
+    span {
+      position: relative;
+      top: -0.5px;
+      font-size: 12px;
+      line-height: 15px;
+    }
+
+    .iconElement {
+    }
+  }
+
+  &.withText.small {
+    padding: 4px 8px;
+  }
+}
+
+// ======================================================== TWIST ICON
+
+.sheButton.twistIcon {
+  .iconElement {
+    transform: rotate(180deg);
+  }
+}
+
+// ======================================================== VALUE WRAP
+
+.sheButton.valueWrap {
+  span {
+    text-wrap: initial;
+    overflow: visible;
+    white-space: normal;
+    text-overflow: initial;
   }
 }

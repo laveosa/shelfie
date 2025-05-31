@@ -1,25 +1,14 @@
 import React, { JSX } from "react";
 
 import cs from "./SheMultiSelectTrigger.module.scss";
-import { cn } from "@/lib/utils.ts";
 import { ISheMultiSelectTrigger } from "@/const/interfaces/primitive-components/ISheMultiSelectTrigger.ts";
 import { Button } from "@/components/ui/button.tsx";
-import SheBadge from "@/components/primitive/she-badge/SheBadge.tsx";
 import { PopoverTrigger } from "@/components/ui/popover.tsx";
-import { ISheMultiSelectItem } from "@/const/interfaces/primitive-components/ISheMultiSelectItem.ts";
 import { ChevronDown } from "lucide-react";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
-import {
-  Select,
-  SelectContent,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import SheSelectItem from "@/components/primitive/she-select-item/SheSelectItem.tsx";
 import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
 import SheBadgeList from "@/components/primitive/she-badge-list/SheBadgeList.tsx";
 
@@ -92,11 +81,7 @@ export default function SheMultiSelectTrigger({
                 onClick={onTogglePopover}
                 {...props}
               >
-                <SheIcon
-                  icon={icon}
-                  className={cs.iconBlock}
-                  aria-describedby={ariaDescribedbyId}
-                />
+                <SheIcon icon={icon} aria-describedby={ariaDescribedbyId} />
                 <SheBadgeList
                   items={items}
                   maxBadgeAmount={maxCount}
@@ -105,7 +90,10 @@ export default function SheMultiSelectTrigger({
                   onClose={(item) => onToggleOption(item.value)}
                   onCloseAllExtra={onClearExtraOptions}
                 />
-                <SheIcon icon={ChevronDown} className={cs.iconBlock} />
+                <SheIcon
+                  icon={ChevronDown}
+                  aria-describedby={ariaDescribedbyId}
+                />
 
                 {/*{selectedValues?.length > 0 ? (
                   <div className="flex justify-between items-center w-full">

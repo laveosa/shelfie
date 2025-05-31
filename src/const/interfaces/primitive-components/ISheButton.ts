@@ -10,8 +10,11 @@ export interface ISheButton extends ComponentPropsWithRef<any>, ButtonProps {
   style?: React.CSSProperties;
   icon?: Partial<ISheIcon> | string | React.FC<any>;
   iconPosition?: DirectionEnum;
+  twistIcon?: boolean;
   value?: string | number;
   valueTransKey?: string;
+  valueWrap?: boolean;
+  size?: "normal" | "small";
   disabled?: boolean;
   isLoading?: boolean;
   minWidth?: string;

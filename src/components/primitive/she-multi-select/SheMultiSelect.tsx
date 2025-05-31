@@ -77,14 +77,9 @@ export default function SheMultiSelect({
   }
 
   function onToggleOptionHandler(option: string) {
-    console.log(option);
-
     const newSelectedValues = _selectedValues.includes(option)
       ? _selectedValues.filter((value) => value !== option)
       : [..._selectedValues, option];
-
-    // console.log(newSelectedValues);
-
     _updateSelectedValues(newSelectedValues);
   }
 
@@ -115,25 +110,19 @@ export default function SheMultiSelect({
     if (!_options || _options.length === 0 || !values || values.length === 0)
       return;
 
-    const filteredOptions = values.map((value: string) =>
-      options.find((option: ISheMultiSelectItem) =>
-        _.isEqual(option.value, value),
-      ),
-    );
-
-    // console.log("options: ", filteredOptions);
-
-    const badgeList = filteredOptions.map(
-      (item: ISheMultiSelectItem): ISheBadge => ({
-        text: item.text,
-        icon: item.icon,
-        value: item.value,
-      }),
-    );
-
-    // console.log("badges: ", badgeList);
-
-    return badgeList;
+    return values
+      .map((value: string) =>
+        options.find((option: ISheMultiSelectItem) =>
+          _.isEqual(option.value, value),
+        ),
+      )
+      .map(
+        (item: ISheMultiSelectItem): ISheBadge => ({
+          text: item.text,
+          icon: item.icon,
+          value: item.value,
+        }),
+      );
   }
 
   function _updateSelectedValues(values: string[]) {
