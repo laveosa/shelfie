@@ -56,7 +56,6 @@ export function SheImageUploader({
       accept: {
         "image/*": [".png", ".jpg", ".jpeg"],
       },
-      maxSize: 10 * 1024 * 1024,
       maxFiles: 50,
     },
   });
@@ -149,11 +148,9 @@ export function SheImageUploader({
                   <div className="aspect-video animate-pulse bg-black/20" />
                 )}
                 {file.status === "success" && (
-                  <img
-                    src={file.result}
-                    alt={`uploaded-${file.fileName}`}
-                    className="aspect-video object-cover"
-                  />
+                  <div className={cs.imageContainer}>
+                    <img src={file.result} alt={`uploaded-${file.fileName}`} />
+                  </div>
                 )}
                 <div className={cs.textBlock}>
                   <p className="truncate text-sm">{file.fileName}</p>
@@ -198,11 +195,13 @@ export function SheImageUploader({
                 <div
                   className={`${cs.uploadingItem} flex relative items-center justify-between p-2 pl-4`}
                 >
-                  <img
-                    src={file.result}
-                    alt={`uploading-${file.fileName}`}
-                    className={cs.uploadingItemImage}
-                  />
+                  <div className={cs.uploadingImageContainer}>
+                    <img
+                      src={file.result}
+                      alt={`uploading-${file.fileName}`}
+                      className={cs.uploadingItemImage}
+                    />
+                  </div>
                   <div className={cs.uploadingItemTextBlock}>
                     <p className="truncate text-sm">{file.fileName}</p>
                     <p className="text-xs text-muted-foreground">
