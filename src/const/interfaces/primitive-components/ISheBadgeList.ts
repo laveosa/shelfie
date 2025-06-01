@@ -16,12 +16,15 @@ export interface ISheBadgeList
   elementClassName?: string;
   elementStyle?: React.CSSProperties;
   items?: ISheBadge[];
+  extraBudge?: ISheBadge;
   maxBadgeAmount?: number;
+  autoBadgeAmount?: boolean;
   variant?: "default" | "secondary" | "destructive" | "outline";
   color?: string;
   textColor?: string;
   iconColor?: string;
   icon?: Partial<ISheIcon> | string | React.FC<any>;
+  elementIcon?: Partial<ISheIcon> | string | React.FC<any>;
   placeholder?: string;
   placeholderTransKey?: string;
   minWidth?: string;

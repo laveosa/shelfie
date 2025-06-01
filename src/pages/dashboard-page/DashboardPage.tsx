@@ -2,7 +2,17 @@ import React, { useState } from "react";
 
 import cs from "./DashboardPage.module.scss";
 import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageService.ts";
-import { Box, Cat, ChevronDown, Dog, Fish, Rabbit, Turtle } from "lucide-react";
+import {
+  Box,
+  Cat,
+  ChevronDown,
+  Cigarette,
+  Dog,
+  Fish,
+  Rabbit,
+  Turtle,
+  User,
+} from "lucide-react";
 import { ISheMultiSelectItem } from "@/const/interfaces/primitive-components/ISheMultiSelectItem.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
@@ -36,6 +46,7 @@ const badges: ISheBadge[] = [
   },
   {
     text: "Orange",
+    icon: User,
     value: { one: 1, two: "2", three: [1, "2", 3, "4"] },
   },
 ];
@@ -70,13 +81,17 @@ export function DashboardPage() {
         label="Badges:"
         tooltip="some text for tooltip KKKK"
         items={badges}
+        // icon={Cigarette}
+        // elementIcon={Cat}
         // componentView="card"
+        maxBadgeAmount={2}
         // maxWidth="400px"
         // itemsWrap="nowrap"
         showCloseBtn
         showClearBtn
         onClick={(value) => console.log("onClick: ", value)}
         onClose={(value) => console.log("onClose: ", value)}
+        onCloseAllExtra={(value) => console.log("onCloseAllExtra: ", value)}
         onClear={(value) => console.log("onClear: ", value)}
       />
 

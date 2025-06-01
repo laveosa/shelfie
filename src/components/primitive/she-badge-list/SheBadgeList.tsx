@@ -21,12 +21,15 @@ export default function SheBadgeList({
   labelTransKey,
   tooltip,
   items,
-  variant = "secondary",
+  extraBudge,
   maxBadgeAmount,
+  autoBadgeAmount,
+  variant = "secondary",
   color,
   textColor,
   iconColor,
   icon,
+  elementIcon,
   placeholder = "no data to display...",
   placeholderTransKey = "PLACE_FOR_TRANS_KEY",
   showClearBtn,
@@ -78,6 +81,12 @@ export default function SheBadgeList({
     setItems(tmpList);
 
     if (onClose) onClose(item);
+  }
+  function onCloseAllExtraHandler() {
+    const tmpList: ISheBadge[] = _items.slice(maxBadgeAmount, _items.length);
+    setItems(_items.slice(0, maxBadgeAmount));
+
+    if (onCloseAllExtra) onCloseAllExtra(tmpList);
   }
 
   function onClearHandler() {
@@ -170,7 +179,7 @@ export default function SheBadgeList({
                 className={cs.sheBadgeListItemsContainer}
                 style={{ flexDirection: direction }}
               >
-                {_items.map((item) => (
+                {_items.slice(0, maxBadgeAmount).map((item) => (
                   <div
                     key={item.id}
                     className={cs.sheBadgeListListItem}
@@ -186,6 +195,7 @@ export default function SheBadgeList({
                       color={item.color || color}
                       textColor={item.textColor || textColor}
                       iconColor={item.iconColor || iconColor}
+                      icon={item.icon || elementIcon}
                       minWidth={item.minWidth || elementMinWidth}
                       maxWidth={item.maxWidth || elementMaxWidth}
                       fullWidth={item.fullWidth || elementFullWidth}
@@ -207,6 +217,48 @@ export default function SheBadgeList({
                     />
                   </div>
                 ))}
+
+                {_items?.length > maxBadgeAmount && (
+                  <div className={cs.sheBadgeListListItem}>
+                    <SheBadge
+                      className={extraBudge?.className || elementClassName}
+                      style={extraBudge?.style || elementStyle}
+                      text={
+                        extraBudge?.text ||
+                        `+ ${_items.length - maxBadgeAmount} more`
+                      }
+                      textTransKey={
+                        extraBudge?.textTransKey || "PLACE_VALID_TRANS_KET"
+                      }
+                      textWrap={extraBudge?.textWrap || textWrap}
+                      color={extraBudge?.color || color}
+                      textColor={extraBudge?.textColor || textColor}
+                      iconColor={extraBudge?.iconColor || iconColor}
+                      minWidth={extraBudge?.minWidth || elementMinWidth}
+                      maxWidth={extraBudge?.maxWidth || elementMaxWidth}
+                      fullWidth={extraBudge?.fullWidth || elementFullWidth}
+                      variant={extraBudge?.variant || variant}
+                      disabled={
+                        !_.isNil(extraBudge?.disabled)
+                          ? extraBudge?.disabled
+                          : disabled
+                      }
+                      isLoading={
+                        !_.isNil(extraBudge?.isLoading)
+                          ? extraBudge?.isLoading
+                          : isLoading
+                      }
+                      showCloseBtn={
+                        !_.isNil(extraBudge?.showCloseBtn)
+                          ? extraBudge?.showCloseBtn
+                          : showCloseBtn
+                      }
+                      onClick={() => onClickHandler(extraBudge)}
+                      onClose={() => onCloseAllExtraHandler()}
+                      {...extraBudge}
+                    />
+                  </div>
+                )}
               </div>
             ) : (
               <div>
