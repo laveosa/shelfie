@@ -3,7 +3,7 @@ import React from "react";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ProductPhotosCard.module.scss";
 import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import { SheImageUploader } from "@/components/complex/she-images-file-uploader/SheImageUploader.tsx";
+import { SheImageUploader } from "@/components/complex/she-images-uploader/SheImageUploader.tsx";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { ProductPhotosGridColumns } from "@/components/complex/grid/variant-photos-grid/ProductPhotosGridColumns.tsx";
 
@@ -93,7 +93,6 @@ export default function ProductPhotosCard({
               />
             </div>
           </div>
-          {/*)}*/}
         </div>
       </SheProductCard>
     </div>
