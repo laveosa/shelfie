@@ -17,6 +17,7 @@ export default function SheButton({
   value,
   valueTransKey,
   valueWrap,
+  variant = "default",
   size,
   disabled,
   isLoading,
@@ -39,7 +40,7 @@ export default function SheButton({
   // ==================================================================== PRIVATE
 
   function _isLoaderDark(): string {
-    switch (props.variant) {
+    switch (variant) {
       case "ghost":
       case "link":
       case "outline":
@@ -54,7 +55,7 @@ export default function SheButton({
 
   return (
     <Button
-      className={`${cs.sheButton} ${className} ${cs[`icon-${iconPosition}`] || ""} ${value || children ? cs.withText : ""} ${fullWidth ? cs.fullWidth : ""} ${size ? cs[size] : ""} ${twistIcon ? cs.twistIcon : ""} ${valueWrap ? cs.valueWrap : ""} ${icon ? cs[iconPosition + "Icon"] : ""}`}
+      className={`${cs.sheButton} ${className} ${cs[variant]} ${cs[`icon-${iconPosition}`] || ""} ${value || children ? cs.withText : ""} ${fullWidth ? cs.fullWidth : ""} ${size ? cs[size] : ""} ${twistIcon ? cs.twistIcon : ""} ${valueWrap ? cs.valueWrap : ""} ${icon ? cs[iconPosition + "Icon"] : ""}`}
       style={{
         color: txtColor,
         backgroundColor: bgColor,
@@ -64,6 +65,7 @@ export default function SheButton({
         maxHeight,
         ...style,
       }}
+      variant={variant}
       disabled={isLoading || disabled}
       {...props}
     >

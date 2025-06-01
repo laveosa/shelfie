@@ -217,7 +217,7 @@ export default function SheBadgeList({
             )}
           </div>
           <SheClearButton
-            value={_items?.length > 0}
+            value={_items && _items.length > 0}
             showClearBtn={showClearBtn}
             disabled={disabled}
             isLoading={isLoading}

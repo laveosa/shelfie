@@ -15,6 +15,10 @@ $minButtonSize: 20px;
   padding: 8px;
   box-sizing: border-box;
 
+  &:focus-visible {
+    box-shadow: 0 0 0 1px lightgray inset;
+  }
+
   span {
     line-height: 14px;
     flex-grow: 1;
@@ -28,6 +32,28 @@ $minButtonSize: 20px;
   .iconElement {
     position: relative;
     transition: all 130ms ease-in-out;
+  }
+}
+
+// ======================================================== VARIANT
+
+.sheButton {
+  &.default {
+  }
+
+  &.link {
+  }
+
+  &.outline {
+  }
+
+  &.ghost {
+  }
+
+  &.destructive {
+  }
+
+  &.secondary {
   }
 }
 
