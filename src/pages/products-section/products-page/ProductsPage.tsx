@@ -32,6 +32,7 @@ import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { variantsGridColumns } from "@/components/complex/grid/variants-grid/VariantsGridColumns.tsx";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { useToast } from "@/hooks/useToast.ts";
+import { purchasesGridColumns } from "@/components/complex/grid/purchases-grid/PurchasesGridColumns.tsx";
 
 export function ProductsPage() {
   const dispatch = useAppDispatch();
@@ -58,11 +59,19 @@ export function ProductsPage() {
           dispatch(actions.refreshVariantsGridModel(res));
           dispatch(actions.refreshVariants(res.items));
         });
+    } else if (activeTab === "purchases") {
+      service
+        .getListOfPurchasesForGridHandler(state.purchasesGridRequestModel)
+        .then((res) => {
+          dispatch(actions.refreshPurchasesGridModel(res));
+          dispatch(actions.refreshPurchases(res.items));
+        });
     }
     dispatch(actions.resetSelectedVariant());
   }, [
     state.productsGridRequestModel,
     state.variantsGridRequestModel,
+    state.purchasesGridRequestModel,
     activeTab,
     dispatch,
   ]);
@@ -183,6 +192,12 @@ export function ProductsPage() {
           );
         });
         break;
+      case "deleteVariant":
+        console.log(`Delete variant ${rowId}`);
+        break;
+      case "deletePurchase":
+        console.log(`Delete purchase ${rowId}`);
+        break;
     }
 
     setLoadingRow(rowId, false);
@@ -190,6 +205,7 @@ export function ProductsPage() {
 
   const productsColumns = productsGridColumns(onAction, activeStates);
   const variantsColumns = variantsGridColumns(onAction);
+  const purchasesColumns = purchasesGridColumns(onAction);
 
   function handleAddProduct() {
     navigate(`${ApiUrlEnum.PRODUCTS}${ApiUrlEnum.PRODUCT_BASIC_DATA}`);
@@ -198,6 +214,8 @@ export function ProductsPage() {
   function handleImportProducts() {}
 
   function handleConfigure() {}
+
+  function handleReportPurchase() {}
 
   function handleGridRequestChange(updates: GridRequestModel) {
     if (updates.brands || updates.categories) {
@@ -233,6 +251,13 @@ export function ProductsPage() {
             ...updates,
           }),
         );
+      } else if (activeTab === "purchases") {
+        dispatch(
+          actions.refreshPurchasesGridRequestModel({
+            ...state.purchasesGridRequestModel,
+            ...updates,
+          }),
+        );
       }
     }
   }
@@ -264,32 +289,41 @@ export function ProductsPage() {
     <div id={cs.ProductsPage}>
       <div className={cs.productsPageHeader}>
         <div className="she-title">Products</div>
-        <div className={cs.headerButtonBlock}>
-          <SheButton
-            icon={Plus}
-            variant="outline"
-            size="sm"
-            onClick={handleAddProduct}
-          >
-            Add Product
-          </SheButton>
-          <SheButton
-            icon={Download}
-            variant="outline"
-            size="sm"
-            onClick={handleImportProducts}
-          >
-            Import Products
-          </SheButton>
-          <SheButton
-            icon={Columns3Icon}
-            variant="outline"
-            size="sm"
-            onClick={handleConfigure}
-          >
-            Configure
-          </SheButton>
-        </div>
+        {activeTab === "purchases" ? (
+          <div className={cs.headerButtonBlock}>
+            <SheButton
+              icon={Plus}
+              variant="outline"
+              size="sm"
+              onClick={handleReportPurchase}
+              value="Report Purchase"
+            />
+          </div>
+        ) : (
+          <div className={cs.headerButtonBlock}>
+            <SheButton
+              icon={Plus}
+              variant="outline"
+              size="sm"
+              onClick={handleAddProduct}
+              value="Add Product"
+            />
+            <SheButton
+              icon={Download}
+              variant="outline"
+              size="sm"
+              onClick={handleImportProducts}
+              value="Import Products"
+            />
+            <SheButton
+              icon={Columns3Icon}
+              variant="outline"
+              size="sm"
+              onClick={handleConfigure}
+              value="Configure"
+            />
+          </div>
+        )}
       </div>
       <div className={cs.productsPageContent}>
         <SheTabs defaultValue="products" onValueChange={handleTabChange}>
@@ -373,7 +407,34 @@ export function ProductsPage() {
             </DndGridDataTable>
           </TabsContent>
           <TabsContent value="purchases">
-            {/*<GridDataTable columns={productsGridColumns} data={purchasesData} />*/}
+            <DndGridDataTable
+              isLoading={state.isLoading}
+              columns={purchasesColumns}
+              data={state.purchasesGridModel.items}
+              gridModel={state.purchasesGridModel}
+              sortingItems={state.sortingOptions}
+              columnsPreferences={appState.preferences}
+              preferenceContext={"productReferences"}
+              skeletonQuantity={state.purchasesGridRequestModel.pageSize}
+              onApplyColumns={onApplyColumnsHandler}
+              onDefaultColumns={onResetColumnsHandler}
+              onGridRequestChange={handleGridRequestChange}
+            >
+              <GridItemsFilter
+                items={state.brands}
+                columnName={"Brands"}
+                onSelectionChange={onBrandSelectHandler}
+                getId={(item: BrandModel) => item.brandId}
+                getName={(item: BrandModel) => item.brandName}
+              />
+              <GridItemsFilter
+                items={state.categories}
+                columnName={"Categories"}
+                onSelectionChange={onCategorySelectHandler}
+                getId={(item: CategoryModel) => item.categoryId}
+                getName={(item: CategoryModel) => item.categoryName}
+              />
+            </DndGridDataTable>
           </TabsContent>
         </SheTabs>
       </div>

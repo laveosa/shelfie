@@ -13,6 +13,7 @@ import { ImageModel } from "@/const/models/ImageModel.ts";
 import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 import { VariantModel } from "@/const/models/VariantModel.ts";
+import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 
 const initialState: IProductsPageSlice = {
   isLoading: false,
@@ -25,6 +26,7 @@ const initialState: IProductsPageSlice = {
   product: null,
   selectedProduct: null,
   variants: [],
+  purchases: [],
   productCounter: null,
   columnsPreferences: null,
   brands: [],
@@ -38,6 +40,10 @@ const initialState: IProductsPageSlice = {
     pager: {},
     items: [],
   },
+  purchasesGridModel: {
+    pager: {},
+    items: [],
+  },
   gridRequestModel: {
     currentPage: 1,
     pageSize: 10,
@@ -47,6 +53,10 @@ const initialState: IProductsPageSlice = {
     pageSize: 10,
   },
   variantsGridRequestModel: {
+    currentPage: 1,
+    pageSize: 10,
+  },
+  purchasesGridRequestModel: {
     currentPage: 1,
     pageSize: 10,
   },
@@ -135,6 +145,13 @@ function refreshVariants(
   state.variants = action?.payload || state.variants;
 }
 
+function refreshPurchases(
+  state: IProductsPageSlice,
+  action: PayloadAction<PurchaseModel[]>,
+) {
+  state.purchases = action?.payload || state.purchases;
+}
+
 function refreshProductCounter(
   state: IProductsPageSlice,
   action: PayloadAction<ProductCounterModel>,
@@ -160,6 +177,13 @@ function refreshVariantsGridModel(
   state.variantsGridModel = action?.payload || state.variantsGridModel;
 }
 
+function refreshPurchasesGridModel(
+  state: IProductsPageSlice,
+  action: PayloadAction<GridModel>,
+) {
+  state.purchasesGridModel = action?.payload || state.purchasesGridModel;
+}
+
 function refreshGridRequestModel(
   state: IProductsPageSlice,
   action: PayloadAction<GridRequestModel>,
@@ -181,6 +205,14 @@ function refreshVariantsGridRequestModel(
 ) {
   state.variantsGridRequestModel =
     action?.payload || state.variantsGridRequestModel;
+}
+
+function refreshPurchasesGridRequestModel(
+  state: IProductsPageSlice,
+  action: PayloadAction<GridRequestModel>,
+) {
+  state.purchasesGridRequestModel =
+    action?.payload || state.purchasesGridRequestModel;
 }
 
 function refreshBrands(
@@ -258,13 +290,16 @@ const ProductsPageSlice = createSlice({
     resetProduct,
     refreshSelectedProduct,
     refreshVariants,
+    refreshPurchases,
     refreshProductCounter,
     resetProductCounter,
     refreshProductsGridModel,
     refreshVariantsGridModel,
     refreshGridRequestModel,
+    refreshPurchasesGridModel,
     refreshProductsGridRequestModel,
     refreshVariantsGridRequestModel,
+    refreshPurchasesGridRequestModel,
     refreshBrands,
     refreshCategories,
     refreshSortingOptions,

@@ -24,8 +24,9 @@ import MessengerApiService from "@/utils/services/api/MessengerApiService.ts";
 import { FacebookApiService } from "@/utils/services/api/FacebookApiService.ts";
 import AttributesPageSlice from "@/state/slices/AttributesPageSlice.ts";
 import SizeChartPageSlice from "@/state/slices/SizeChartPageSlice.ts";
-import PurchasePageSlice from "@/state/slices/PurchsePageSlice.ts";
+import PurchasesPageSlice from "@/state/slices/PurchasesPageSlice.ts";
 import DialogSlice from "@/state/slices/DialogSlice.ts";
+import { PurchasesApiService } from "@/utils/services/api/PurchasesApiService.ts";
 
 export const store = configureStore({
   reducer: {
@@ -41,7 +42,7 @@ export const store = configureStore({
     [StoreSliceEnum.MANAGE_VARIANTS]: ManageVariantsPageSlice.reducer,
     [StoreSliceEnum.ATTRIBUTES]: AttributesPageSlice.reducer,
     [StoreSliceEnum.SIZE_CHART]: SizeChartPageSlice.reducer,
-    [StoreSliceEnum.PURCHASE]: PurchasePageSlice.reducer,
+    [StoreSliceEnum.PURCHASES]: PurchasesPageSlice.reducer,
     [StoreSliceEnum.PROFILE]: ProfilePageSlice.reducer,
     [StoreSliceEnum.SETTINGS]: SettingsPageSlice.reducer,
     [StoreSliceEnum.SUPPORT]: SupportPageSlice.reducer,
@@ -49,6 +50,7 @@ export const store = configureStore({
     [StoreSliceEnum.USERS]: UsersPageSlice.reducer,
     [AuthApiService.reducerPath]: AuthApiService.reducer,
     [ProductsApiService.reducerPath]: ProductsApiService.reducer,
+    [PurchasesApiService.reducerPath]: PurchasesApiService.reducer,
     [DictionaryApiService.reducerPath]: DictionaryApiService.reducer,
     [UsersApiService.reducerPath]: UsersApiService.reducer,
     [AssetsApiService.reducerPath]: AssetsApiService.reducer,
@@ -59,6 +61,7 @@ export const store = configureStore({
     getDefaultMiddleware()
       .concat(AuthApiService.middleware)
       .concat(ProductsApiService.middleware)
+      .concat(PurchasesApiService.middleware)
       .concat(DictionaryApiService.middleware)
       .concat(UsersApiService.middleware)
       .concat(AssetsApiService.middleware)
