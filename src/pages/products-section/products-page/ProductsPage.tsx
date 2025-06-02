@@ -60,12 +60,16 @@ export function ProductsPage() {
           dispatch(actions.refreshVariants(res.items));
         });
     } else if (activeTab === "purchases") {
-      service
-        .getListOfPurchasesForGridHandler(state.purchasesGridRequestModel)
-        .then((res) => {
-          dispatch(actions.refreshPurchasesGridModel(res));
-          dispatch(actions.refreshPurchases(res.items));
-        });
+      Promise.all([
+        service.getListOfPurchasesForGridHandler(
+          state.purchasesGridRequestModel,
+        ),
+        service.getListOfAllSuppliersHandler(),
+      ]).then(([model, suppliers]) => {
+        dispatch(actions.refreshPurchasesGridModel(model));
+        dispatch(actions.refreshPurchases(model.items));
+        dispatch(actions.refreshSuppliers(suppliers));
+      });
     }
     dispatch(actions.resetSelectedVariant());
   }, [

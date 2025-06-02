@@ -1,14 +1,31 @@
 @use "@/styles/variables" as vars;
 
-.gridHeader {
+.gridHeaderWrapper {
   display: flex;
-  width: 100%;
-  justify-content: space-between;
-  margin: 5px 0;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 10px;
 
-  .headerGroup {
+  .gridHeader {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin: 5px 0;
+
+    .headerGroup {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+
+      .filterButton {
+        background-color: vars.$colorGreen;
+        color: vars.$colorLight;
+      }
+    }
+  }
+
+  .filtersContainer {
     display: flex;
     gap: 10px;
-    align-items: center;
   }
 }

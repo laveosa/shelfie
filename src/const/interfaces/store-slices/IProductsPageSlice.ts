@@ -11,6 +11,7 @@ import { ImageModel } from "@/const/models/ImageModel.ts";
 import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
+import { SupplierModel } from "@/const/models/SupplierModel.ts";
 
 export interface IProductsPageSlice {
   isLoading?: boolean;
@@ -32,6 +33,7 @@ export interface IProductsPageSlice {
   columnsPreferences?: PreferencesModel;
   brands?: BrandModel[];
   categories?: CategoryModel[];
+  suppliers?: SupplierModel[];
   sortingOptions?: GridSortingModel[];
   productsGridModel?: GridModel;
   variantsGridModel?: GridModel;

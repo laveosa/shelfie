@@ -14,6 +14,7 @@ import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 import { VariantModel } from "@/const/models/VariantModel.ts";
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
+import { SupplierModel } from "@/const/models/SupplierModel.ts";
 
 const initialState: IProductsPageSlice = {
   isLoading: false,
@@ -31,6 +32,7 @@ const initialState: IProductsPageSlice = {
   columnsPreferences: null,
   brands: [],
   categories: [],
+  suppliers: [],
   sortingOptions: [],
   productsGridModel: {
     pager: {},
@@ -229,6 +231,13 @@ function refreshCategories(
   state.categories = action?.payload || state.categories;
 }
 
+function refreshSuppliers(
+  state: IProductsPageSlice,
+  action: PayloadAction<SupplierModel[]>,
+) {
+  state.suppliers = action?.payload || state.suppliers;
+}
+
 function refreshSortingOptions(
   state: IProductsPageSlice,
   action: PayloadAction<GridSortingModel[]>,
@@ -302,6 +311,7 @@ const ProductsPageSlice = createSlice({
     refreshPurchasesGridRequestModel,
     refreshBrands,
     refreshCategories,
+    refreshSuppliers,
     refreshSortingOptions,
     refreshProductPhotos,
     refreshProductVariants,

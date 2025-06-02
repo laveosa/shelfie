@@ -27,6 +27,7 @@ import SizeChartPageSlice from "@/state/slices/SizeChartPageSlice.ts";
 import PurchasesPageSlice from "@/state/slices/PurchasesPageSlice.ts";
 import DialogSlice from "@/state/slices/DialogSlice.ts";
 import { PurchasesApiService } from "@/utils/services/api/PurchasesApiService.ts";
+import { SuppliersApiService } from "@/utils/services/api/SuppliersApiService.ts";
 
 export const store = configureStore({
   reducer: {
@@ -51,6 +52,7 @@ export const store = configureStore({
     [AuthApiService.reducerPath]: AuthApiService.reducer,
     [ProductsApiService.reducerPath]: ProductsApiService.reducer,
     [PurchasesApiService.reducerPath]: PurchasesApiService.reducer,
+    [SuppliersApiService.reducerPath]: SuppliersApiService.reducer,
     [DictionaryApiService.reducerPath]: DictionaryApiService.reducer,
     [UsersApiService.reducerPath]: UsersApiService.reducer,
     [AssetsApiService.reducerPath]: AssetsApiService.reducer,
@@ -62,6 +64,7 @@ export const store = configureStore({
       .concat(AuthApiService.middleware)
       .concat(ProductsApiService.middleware)
       .concat(PurchasesApiService.middleware)
+      .concat(SuppliersApiService.middleware)
       .concat(DictionaryApiService.middleware)
       .concat(UsersApiService.middleware)
       .concat(AssetsApiService.middleware)
