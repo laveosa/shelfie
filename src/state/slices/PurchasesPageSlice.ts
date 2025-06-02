@@ -2,29 +2,29 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
-import { IPurchasePageSlice } from "@/const/interfaces/store-slices/IPurchasePageSlice.ts";
+import { IPurchasesPageSlice } from "@/const/interfaces/store-slices/IPurchasesPageSlice.ts";
 
-const initialState: IPurchasePageSlice = {
+const initialState: IPurchasesPageSlice = {
   activeCards: [],
   productCounter: null,
 };
 
 function refreshActiveCards(
-  state: IPurchasePageSlice,
+  state: IPurchasesPageSlice,
   action: PayloadAction<any[]>,
 ) {
   state.activeCards = action?.payload || state.activeCards;
 }
 
 function refreshProductCounter(
-  state: IPurchasePageSlice,
+  state: IPurchasesPageSlice,
   action: PayloadAction<ProductCounterModel>,
 ) {
   state.productCounter = action?.payload || state.productCounter;
 }
 
-const PurchasePageSlice = createSlice({
-  name: StoreSliceEnum.PURCHASE,
+const PurchasesPageSlice = createSlice({
+  name: StoreSliceEnum.PURCHASES,
   initialState,
   reducers: {
     refreshActiveCards,
@@ -32,5 +32,5 @@ const PurchasePageSlice = createSlice({
   },
 });
 
-export const PurchasePageSliceActions = PurchasePageSlice.actions;
-export default PurchasePageSlice;
+export const PurchasesPageSliceActions = PurchasesPageSlice.actions;
+export default PurchasesPageSlice;

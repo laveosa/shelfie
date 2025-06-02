@@ -1,12 +1,12 @@
 import { ColumnDef } from "@tanstack/react-table";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import ProductsGridColumnActions from "@/components/complex/grid/products-grid/ProductsGridColumnActions.tsx";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 import placeholderImage from "@/assets/images/placeholder-image.png";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import cs from "./VariantGridColumns.module.scss";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import { BrandModel } from "@/const/models/BrandModel.ts";
+import VariantsGridColumnActions from "@/components/complex/grid/variants-grid/VariantsGridColumnActions.tsx";
 
 export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
   const statusClass = (status: string) => {
@@ -257,7 +257,7 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
       cell: ({ row, table }) => {
         return (
           <div style={{ display: "flex", justifyContent: "center" }}>
-            <ProductsGridColumnActions
+            <VariantsGridColumnActions
               row={row}
               onAction={onAction}
               table={table}

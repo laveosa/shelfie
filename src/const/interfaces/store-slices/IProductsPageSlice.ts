@@ -10,6 +10,7 @@ import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
+import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 
 export interface IProductsPageSlice {
   isLoading?: boolean;
@@ -21,6 +22,7 @@ export interface IProductsPageSlice {
   products?: ProductModel[];
   product?: ProductModel;
   variants?: VariantModel[];
+  purchases?: PurchaseModel[];
   contextId?: number;
   activeCards?: any[];
   selectedProduct?: ProductModel;
@@ -33,9 +35,11 @@ export interface IProductsPageSlice {
   sortingOptions?: GridSortingModel[];
   productsGridModel?: GridModel;
   variantsGridModel?: GridModel;
+  purchasesGridModel?: GridModel;
   gridRequestModel?: GridRequestModel;
   productsGridRequestModel?: GridRequestModel;
   variantsGridRequestModel?: GridRequestModel;
+  purchasesGridRequestModel?: GridRequestModel;
   productPhotos?: ImageModel[];
   taxesList?: TaxTypeModel[];
   currenciesList?: CurrencyModel[];

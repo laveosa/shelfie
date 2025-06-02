@@ -20,7 +20,7 @@ interface ProductsGridColumnActionsProps<TData> {
   ) => void;
 }
 
-export default function VariantsGridColumnActions<TData>({
+export default function PurchasesGridColumnActions<TData>({
   row,
   table,
   onAction,
@@ -43,10 +43,10 @@ export default function VariantsGridColumnActions<TData>({
       <DropdownMenuContent align="start" className="w-[160px]">
         <DropdownMenuItem
           onClick={() =>
-            onAction("deleteVariant", row.id, meta?.setLoadingRow, row)
+            onAction("deletePurchase", row.id, meta?.setLoadingRow, row)
           }
         >
-          Delete
+          Delete purchase
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
