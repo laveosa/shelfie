@@ -56,19 +56,29 @@ export default function SheBadgeList({
   const { translate } = useAppTranslation();
   const [_items, setItems] = useState<ISheBadge[]>(null);
   const [_scrollInfo, setScrollInfo] = useState(null);
+  const [_maxBadgeAmount, setMaxBadgeAmount] = useState<number>(null);
 
   const refBadgeListContext = useRef(null);
   const uniqueComponentId = `${generateId(4)}_BADGE_LIST_ID`;
+  const plusMoreBtnWidth = 108;
 
   useEffect(() => {
     setTimeout(() => {
       setScrollInfo(_hasVisibleScroll(refBadgeListContext.current));
     });
+
+    addEventListener("resize", _calculateMaxBadgeAmount);
   }, []);
 
   useEffect(() => {
     if (!_.isEqual(items, _items)) setItems(_addItemsIds(items));
+    _calculateMaxBadgeAmount();
   }, [items]);
+
+  useEffect(() => {
+    setMaxBadgeAmount(maxBadgeAmount);
+    _calculateMaxBadgeAmount();
+  }, [maxBadgeAmount, autoBadgeAmount]);
 
   // ==================================================================== EVENT
 
@@ -78,19 +88,23 @@ export default function SheBadgeList({
 
   function onCloseHandler(item: ISheBadge) {
     const tmpList: ISheBadge[] = _removeItemFromList(_items, item);
-    setItems(tmpList);
+    setItems(_addItemsIds(tmpList));
+    _calculateMaxBadgeAmount();
 
     if (onClose) onClose(item);
   }
+
   function onCloseAllExtraHandler() {
-    const tmpList: ISheBadge[] = _items.slice(maxBadgeAmount, _items.length);
-    setItems(_items.slice(0, maxBadgeAmount));
+    const tmpList: ISheBadge[] = _items.slice(_maxBadgeAmount, _items.length);
+    setItems(_addItemsIds(_items.slice(0, _maxBadgeAmount)));
+    setMaxBadgeAmount(null);
 
     if (onCloseAllExtra) onCloseAllExtra(tmpList);
   }
 
   function onClearHandler() {
     setItems(null);
+    setMaxBadgeAmount(null);
 
     if (onClear) onClear(null);
   }
@@ -141,6 +155,39 @@ export default function SheBadgeList({
     };
   }
 
+  function _calculateMaxBadgeAmount() {
+    if (
+      (!_.isNil(maxBadgeAmount) && maxBadgeAmount >= 0) ||
+      !autoBadgeAmount ||
+      !refBadgeListContext?.current
+    )
+      return;
+
+    setMaxBadgeAmount(0);
+    setTimeout(() => {
+      const elem = refBadgeListContext.current;
+      const badgeItems = elem.getElementsByClassName("badge-list-item-cover");
+      const gapSpace = parseInt(
+        window.getComputedStyle(elem.children[0]).gap.replace("px", ""),
+      );
+
+      let calculateWidth = plusMoreBtnWidth;
+      let tmpMaxAmount = 0;
+
+      for (let i = 0; i < badgeItems.length; i++) {
+        calculateWidth +=
+          badgeItems[i].clientWidth +
+          (i < badgeItems.length - 1 ? gapSpace : 0);
+
+        if (calculateWidth < elem.clientWidth) {
+          tmpMaxAmount++;
+        }
+      }
+
+      setMaxBadgeAmount(tmpMaxAmount);
+    });
+  }
+
   // ==================================================================== LAYOUT
 
   return (
@@ -179,86 +226,83 @@ export default function SheBadgeList({
                 className={cs.sheBadgeListItemsContainer}
                 style={{ flexDirection: direction }}
               >
-                {_items.slice(0, maxBadgeAmount).map((item) => (
-                  <div
-                    key={item.id}
-                    className={cs.sheBadgeListListItem}
-                    style={{
-                      width:
-                        item.fullWidth || elementFullWidth ? "100%" : "auto",
-                    }}
-                  >
-                    <SheBadge
-                      className={item.className || elementClassName}
-                      style={item.style || elementStyle}
-                      textWrap={item.textWrap || textWrap}
-                      color={item.color || color}
-                      textColor={item.textColor || textColor}
-                      iconColor={item.iconColor || iconColor}
-                      icon={item.icon || elementIcon}
-                      minWidth={item.minWidth || elementMinWidth}
-                      maxWidth={item.maxWidth || elementMaxWidth}
-                      fullWidth={item.fullWidth || elementFullWidth}
-                      variant={item.variant || variant}
-                      disabled={
-                        !_.isNil(item.disabled) ? item.disabled : disabled
-                      }
-                      isLoading={
-                        !_.isNil(item.isLoading) ? item.isLoading : isLoading
-                      }
-                      showCloseBtn={
-                        !_.isNil(item.showCloseBtn)
-                          ? item.showCloseBtn
-                          : showCloseBtn
-                      }
-                      onClick={() => onClickHandler(item)}
-                      onClose={() => onCloseHandler(item)}
-                      {...item}
-                    />
-                  </div>
-                ))}
+                {_items
+                  .slice(0, _maxBadgeAmount || _items.length)
+                  .map((item) => (
+                    <div
+                      key={item.id}
+                      className={`${cs.sheBadgeListItem} badge-list-item-cover`}
+                      style={{
+                        width:
+                          item.fullWidth || elementFullWidth ? "100%" : "auto",
+                      }}
+                    >
+                      <SheBadge
+                        className={item.className || elementClassName}
+                        style={item.style || elementStyle}
+                        textWrap={item.textWrap || textWrap}
+                        color={item.color || color}
+                        textColor={item.textColor || textColor}
+                        iconColor={item.iconColor || iconColor}
+                        icon={item.icon || elementIcon}
+                        minWidth={item.minWidth || elementMinWidth}
+                        maxWidth={item.maxWidth || elementMaxWidth}
+                        fullWidth={item.fullWidth || elementFullWidth}
+                        variant={item.variant || variant}
+                        disabled={
+                          !_.isNil(item.disabled) ? item.disabled : disabled
+                        }
+                        isLoading={
+                          !_.isNil(item.isLoading) ? item.isLoading : isLoading
+                        }
+                        showCloseBtn={
+                          !_.isNil(item.showCloseBtn)
+                            ? item.showCloseBtn
+                            : showCloseBtn
+                        }
+                        onClick={() => onClickHandler(item)}
+                        onClose={() => onCloseHandler(item)}
+                        {...item}
+                      />
+                    </div>
+                  ))}
 
-                {_items?.length > maxBadgeAmount && (
-                  <div className={cs.sheBadgeListListItem}>
-                    <SheBadge
-                      className={extraBudge?.className || elementClassName}
-                      style={extraBudge?.style || elementStyle}
-                      text={
-                        extraBudge?.text ||
-                        `+ ${_items.length - maxBadgeAmount} more`
-                      }
-                      textTransKey={
-                        extraBudge?.textTransKey || "PLACE_VALID_TRANS_KET"
-                      }
-                      textWrap={extraBudge?.textWrap || textWrap}
-                      color={extraBudge?.color || color}
-                      textColor={extraBudge?.textColor || textColor}
-                      iconColor={extraBudge?.iconColor || iconColor}
-                      minWidth={extraBudge?.minWidth || elementMinWidth}
-                      maxWidth={extraBudge?.maxWidth || elementMaxWidth}
-                      fullWidth={extraBudge?.fullWidth || elementFullWidth}
-                      variant={extraBudge?.variant || variant}
-                      disabled={
-                        !_.isNil(extraBudge?.disabled)
-                          ? extraBudge?.disabled
-                          : disabled
-                      }
-                      isLoading={
-                        !_.isNil(extraBudge?.isLoading)
-                          ? extraBudge?.isLoading
-                          : isLoading
-                      }
-                      showCloseBtn={
-                        !_.isNil(extraBudge?.showCloseBtn)
-                          ? extraBudge?.showCloseBtn
-                          : showCloseBtn
-                      }
-                      onClick={() => onClickHandler(extraBudge)}
-                      onClose={() => onCloseAllExtraHandler()}
-                      {...extraBudge}
-                    />
-                  </div>
-                )}
+                {!_.isNil(_maxBadgeAmount) &&
+                  _items?.length > _maxBadgeAmount && (
+                    <div className={cs.sheBadgeListItem}>
+                      <SheBadge
+                        className={extraBudge?.className || elementClassName}
+                        style={extraBudge?.style || elementStyle}
+                        text={`+ ${_items.length - _maxBadgeAmount} ${translate("PLACE_VALID_TRANS_KET", "more")}`}
+                        textWrap={extraBudge?.textWrap || textWrap}
+                        color={extraBudge?.color || color}
+                        textColor={extraBudge?.textColor || textColor}
+                        iconColor={extraBudge?.iconColor || iconColor}
+                        minWidth={plusMoreBtnWidth + "px"}
+                        maxWidth={plusMoreBtnWidth + "px"}
+                        fullWidth={extraBudge?.fullWidth || elementFullWidth}
+                        variant={extraBudge?.variant || variant}
+                        disabled={
+                          !_.isNil(extraBudge?.disabled)
+                            ? extraBudge?.disabled
+                            : disabled
+                        }
+                        isLoading={
+                          !_.isNil(extraBudge?.isLoading)
+                            ? extraBudge?.isLoading
+                            : isLoading
+                        }
+                        showCloseBtn={
+                          !_.isNil(extraBudge?.showCloseBtn)
+                            ? extraBudge?.showCloseBtn
+                            : showCloseBtn
+                        }
+                        onClick={() => onClickHandler(extraBudge)}
+                        onClose={() => onCloseAllExtraHandler()}
+                        {...extraBudge}
+                      />
+                    </div>
+                  )}
               </div>
             ) : (
               <div>

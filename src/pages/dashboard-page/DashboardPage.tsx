@@ -49,6 +49,67 @@ const badges: ISheBadge[] = [
     icon: User,
     value: { one: 1, two: "2", three: [1, "2", 3, "4"] },
   },
+  {
+    text: "1",
+    value: 1,
+    color: "#8C85E4",
+    iconColor: "white",
+    textColor: "white",
+  },
+  {
+    text: "2",
+    value: "2",
+  },
+  {
+    text: "Peach2222222222222",
+    value: [1, "2", 3, "4"],
+  },
+  {
+    text: "3",
+    icon: User,
+    value: { one: 1, two: "2", three: [1, "2", 3, "4"] },
+  },
+  {
+    text: "Apple 1111111",
+    value: 1,
+    icon: Box,
+    color: "#8C85E4",
+    iconColor: "white",
+    textColor: "white",
+  },
+  {
+    text: "Banana",
+    value: "2",
+  },
+  {
+    text: "Peach2222222222222",
+    value: [1, "2", 3, "4"],
+  },
+  {
+    text: "Orange",
+    icon: User,
+    value: { one: 1, two: "2", three: [1, "2", 3, "4"] },
+  },
+  {
+    text: "1",
+    value: 1,
+    color: "#8C85E4",
+    iconColor: "white",
+    textColor: "white",
+  },
+  {
+    text: "2",
+    value: "2",
+  },
+  {
+    text: "Peach2222222222222",
+    value: [1, "2", 3, "4"],
+  },
+  {
+    text: "3",
+    icon: User,
+    value: { one: 1, two: "2", three: [1, "2", 3, "4"] },
+  },
 ];
 
 export function DashboardPage() {
@@ -84,8 +145,11 @@ export function DashboardPage() {
         // icon={Cigarette}
         // elementIcon={Cat}
         // componentView="card"
-        maxBadgeAmount={2}
+        // maxBadgeAmount={3}
+        autoBadgeAmount
         // maxWidth="400px"
+        // minWidth="400px"
+        // fullWidth
         // itemsWrap="nowrap"
         showCloseBtn
         showClearBtn
