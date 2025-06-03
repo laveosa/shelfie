@@ -879,6 +879,7 @@ export function ManageVariantsPage() {
         <ProductMenuCard
           isLoading={productsState.isProductMenuCardLoading}
           title="Manage Product"
+          itemsCollection="products"
           productCounter={productsState.productCounter}
           onAction={handleCardAction}
           productId={Number(productId)}

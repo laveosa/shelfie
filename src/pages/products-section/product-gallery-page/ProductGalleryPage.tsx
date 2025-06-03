@@ -300,6 +300,7 @@ export function ProductGalleryPage() {
         <ProductMenuCard
           isLoading={productsState.isProductMenuCardLoading}
           title={productId ? "Manage Product" : "Create Product"}
+          itemsCollection="products"
           productCounter={productsState.productCounter}
           productId={Number(productId)}
           activeCards={state.activeCards}

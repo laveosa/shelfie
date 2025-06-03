@@ -5,6 +5,7 @@ import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { ApiConfigurationService } from "@/utils/services/api/ApiConfigurationService.ts";
 import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 
 const apiConfig = new ApiConfigurationService(ApiUrlEnum.PURCHASES_BASE_URL);
 
@@ -21,6 +22,11 @@ export const PurchasesApiService = createApi({
         url: `${ApiUrlEnum.PURCHASES}/list`,
         method: "POST",
         body: JSON.stringify(model),
+      }),
+    }),
+    getPurchaseDetails: apiConfig.createQuery<PurchaseModel, number>(builder, {
+      query: (id: number) => ({
+        url: `${ApiUrlEnum.PURCHASES}/list-item/${id}`,
       }),
     }),
   }),

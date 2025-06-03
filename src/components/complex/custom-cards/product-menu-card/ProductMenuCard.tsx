@@ -1,11 +1,15 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
+  Boxes,
+  FileSpreadsheet,
   FileText,
   ImagesIcon,
   Layers2,
+  ReceiptEuro,
   ReceiptEuroIcon,
   Ruler,
+  Shirt,
   SlidersHorizontal,
 } from "lucide-react";
 
@@ -15,7 +19,7 @@ import SheProductCard from "@/components/complex/she-product-card/SheProductCard
 import { IProductMenuCard } from "@/const/interfaces/complex-components/custom-cards/IProductMenuCard.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 
-const menuItems = [
+const productMenuItems = [
   {
     id: "basic_data",
     icon: <FileText />,
@@ -54,10 +58,38 @@ const menuItems = [
   },
 ];
 
+const purchaseMenuItems = [
+  {
+    id: "supplier",
+    icon: <Boxes />,
+    label: "Supplier",
+    path: NavUrlEnum.SUPPLIER,
+  },
+  {
+    id: "purchase_products",
+    icon: <Shirt />,
+    label: "Purchase Products",
+    path: NavUrlEnum.PURCHASE_PRODUCTS,
+  },
+  {
+    id: "margins",
+    icon: <ReceiptEuro />,
+    label: "Margins",
+    path: NavUrlEnum.MARGINS,
+  },
+  {
+    id: "invoices",
+    icon: <FileSpreadsheet />,
+    label: "Invoices",
+    path: NavUrlEnum.INVOICES,
+  },
+];
+
 export default function ProductMenuCard({
   isLoading,
   title,
   productId,
+  itemsCollection,
   productCounter,
   ...props
 }: IProductMenuCard) {
@@ -69,7 +101,7 @@ export default function ProductMenuCard({
   }
 
   const renderMenuItem = ({ id, icon, label, path }) => {
-    const pathBase = `${NavUrlEnum.PRODUCTS}${NavUrlEnum[`PRODUCT_${id.toUpperCase()}`]}/`;
+    const pathBase = `${NavUrlEnum.PRODUCTS}${path}/`;
     const isSelected = location.pathname.startsWith(pathBase);
     const isDisabled = isSelected || (!productId && id !== "basicData");
 
@@ -102,7 +134,9 @@ export default function ProductMenuCard({
         {...props}
       >
         <div className={cs.productMenuItems}>
-          {menuItems.map(renderMenuItem)}
+          {itemsCollection === "products"
+            ? productMenuItems.map(renderMenuItem)
+            : purchaseMenuItems.map(renderMenuItem)}
         </div>
       </SheProductCard>
     </div>
