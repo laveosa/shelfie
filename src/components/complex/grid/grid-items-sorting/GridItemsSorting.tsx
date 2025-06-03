@@ -1,4 +1,9 @@
-import { ArrowUpAZ, ChevronDown } from "lucide-react";
+import {
+  ArrowDownNarrowWide,
+  ArrowDownUp,
+  ArrowUpNarrowWide,
+  ChevronDown,
+} from "lucide-react";
 import React, { useState } from "react";
 
 import {
@@ -28,14 +33,19 @@ export default function GridItemsSorting() {
       <DropdownMenuTrigger className={cs.dropdownMenuTrigger} asChild>
         <SheButton
           variant="outline"
-          icon={ArrowUpAZ}
+          icon={
+            selectedValue
+              ? selectedValue === "Latest"
+                ? ArrowDownNarrowWide
+                : ArrowUpNarrowWide
+              : ArrowDownUp
+          }
           disabled={sortingItems.length === 0}
+          minWidth="120px"
+          value={selectedValue ? selectedValue : "Sort"}
           onClick={() => setDropdownOpen(true)}
         >
-          <div className={cs.buttonInnerItems}>
-            Sort
-            <ChevronDown />
-          </div>
+          <ChevronDown />
         </SheButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className={cs.dropdownMenuContent}>

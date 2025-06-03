@@ -19,6 +19,7 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { GridRowsColorsEnum } from "@/const/enums/GridRowsColorsEnum.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
+import SuppliersApiHooks from "@/utils/services/api/SuppliersApiService.ts";
 
 export default function useProductsPageService() {
   const appService = useAppService();
@@ -35,6 +36,8 @@ export default function useProductsPageService() {
     ProductsApiHooks.useLazyGetBrandsForProductsFilterQuery();
   const [getCategoriesForFilter] =
     ProductsApiHooks.useLazyGetCategoriesForProductsFilterQuery();
+  const [getListOfAllSuppliers] =
+    SuppliersApiHooks.useLazyGetListOfAllSuppliersQuery();
   const [getCountersForProducts] =
     ProductsApiHooks.useLazyGetCountersForProductsQuery();
   const [getProductDetails] = ProductsApiHooks.useLazyGetProductDetailQuery();
@@ -124,6 +127,13 @@ export default function useProductsPageService() {
 
   function getCategoriesForFilterHandler() {
     return getCategoriesForFilter(null).then((res: any) => {
+      dispatch(actions.refreshCategories(res.data));
+      return res.data;
+    });
+  }
+
+  function getListOfAllSuppliersHandler() {
+    return getListOfAllSuppliers(null).then((res: any) => {
       dispatch(actions.refreshCategories(res.data));
       return res.data;
     });
@@ -305,6 +315,7 @@ export default function useProductsPageService() {
     getListOfPurchasesForGridHandler,
     getBrandsForFilterHandler,
     getCategoriesForFilterHandler,
+    getListOfAllSuppliersHandler,
     getSortingOptionsForGridHandler,
     getCountersForProductsHandler,
     getProductDetailsHandler,
