@@ -2,11 +2,14 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { merge } from "lodash";
 import {
+  BadgeCheck,
+  CalendarRange,
   Columns3Icon,
   Download,
   Layers2,
   Plus,
   Receipt,
+  ReceiptEuro,
   Shirt,
 } from "lucide-react";
 
@@ -33,6 +36,9 @@ import { variantsGridColumns } from "@/components/complex/grid/variants-grid/Var
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import { purchasesGridColumns } from "@/components/complex/grid/purchases-grid/PurchasesGridColumns.tsx";
+import { SupplierModel } from "@/const/models/SupplierModel.ts";
+import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
+import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 
 export function ProductsPage() {
   const dispatch = useAppDispatch();
@@ -274,6 +280,10 @@ export function ProductsPage() {
     handleGridRequestChange({ categories: selectedIds });
   }
 
+  function onSupplierSelectHandler(selectedIds: number[]) {
+    handleGridRequestChange({ categories: selectedIds });
+  }
+
   function onApplyColumnsHandler(model: PreferencesModel) {
     const modifiedModel = merge({}, appState.preferences, model);
     dispatch(appActions.refreshPreferences(modifiedModel));
@@ -425,18 +435,36 @@ export function ProductsPage() {
               onGridRequestChange={handleGridRequestChange}
             >
               <GridItemsFilter
+                items={state.suppliers}
+                columnName={"Suppliers"}
+                icon={BadgeCheck}
+                onSelectionChange={onSupplierSelectHandler}
+                getId={(item: SupplierModel) => item.id}
+                getName={(item: SupplierModel) => item.name}
+              />
+              <SheDatePicker
+                mode="range"
+                icon={CalendarRange}
+                placeholder="Pick range"
+                maxWidth="200px"
+              />
+              <GridItemsFilter
                 items={state.brands}
                 columnName={"Brands"}
+                icon={BadgeCheck}
                 onSelectionChange={onBrandSelectHandler}
                 getId={(item: BrandModel) => item.brandId}
                 getName={(item: BrandModel) => item.brandName}
               />
-              <GridItemsFilter
-                items={state.categories}
-                columnName={"Categories"}
-                onSelectionChange={onCategorySelectHandler}
-                getId={(item: CategoryModel) => item.categoryId}
-                getName={(item: CategoryModel) => item.categoryName}
+              <SheInput
+                icon={ReceiptEuro}
+                placeholder="Value from"
+                maxWidth="200px"
+              />
+              <SheInput
+                icon={ReceiptEuro}
+                placeholder="Value to"
+                maxWidth="200px"
               />
             </DndGridDataTable>
           </TabsContent>

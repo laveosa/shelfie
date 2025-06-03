@@ -11,6 +11,8 @@ import {
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { ChevronDown, Settings2 } from "lucide-react";
 import cs from "./GridItemsFilter.module.scss";
+import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
+import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 
 interface GridFilterProps<T> {
   items: T[];
@@ -18,6 +20,7 @@ interface GridFilterProps<T> {
   onSelectionChange: (selectedIds: number[]) => void;
   getId: (item: T) => number;
   getName: (item: T) => string;
+  icon?: Partial<ISheIcon> | string | React.FC<any>;
 }
 
 export default function GridItemsFilter<T>({
@@ -26,6 +29,7 @@ export default function GridItemsFilter<T>({
   onSelectionChange,
   getId,
   getName,
+  icon,
 }: GridFilterProps<T>) {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -65,6 +69,8 @@ export default function GridItemsFilter<T>({
           <div className={cs.buttonInnerItems}>
             {selectedIds?.length > 0 ? (
               <span>{selectedIds.length}</span>
+            ) : icon ? (
+              <SheIcon icon={icon} className={cs.settingsIcon} />
             ) : (
               <Settings2 className={cs.settingsIcon} />
             )}
