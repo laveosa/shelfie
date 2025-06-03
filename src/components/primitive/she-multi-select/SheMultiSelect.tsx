@@ -32,7 +32,7 @@ import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts"
 export default function SheMultiSelect({
   options,
   selectedValues,
-  maxCount = 3,
+  maxCount,
   isModalPopover,
   isOpen,
   onIsOpen,

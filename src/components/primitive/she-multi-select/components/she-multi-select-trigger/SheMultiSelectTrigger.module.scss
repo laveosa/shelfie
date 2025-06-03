@@ -1,10 +1,11 @@
 @use "@/styles/variables" as vars;
 
 $iconSize: 20px;
+$chevronIconSize: 16px;
 
 .sheMultiSelectTrigger {
-  //max-width: vars.$maxWidth + px;
-  //width: 100%;
+  max-width: vars.$maxWidth + px;
+  width: 100%;
 
   .sheMultiSelectTriggerComponent {
     position: relative;
@@ -16,19 +17,37 @@ $iconSize: 20px;
       gap: 4px;
       transition: all 160ms ease-in-out;
 
-      .sheMultiSelectTriggerElement {
-        background-color: vars.$colorLight;
-        display: flex;
-        border: vars.$brd;
+      .sheMultiSelectTriggerSkeleton {
+        .sheMultiSelectTriggerElement {
+          background-color: vars.$colorLight;
+          display: flex;
+          flex-grow: 1;
+          width: 100%;
+          border: vars.$brd;
+          transition: all 160ms ease-in-out;
+          padding: 8px;
+
+          &:focus-visible {
+            box-shadow: 0 0 0 1px lightgray inset;
+          }
+        }
       }
 
-      /*.iconBlock {
+      .iconBlock {
         color: vars.$subtextColor;
         max-width: $iconSize;
         min-width: $iconSize;
         max-height: $iconSize;
         min-height: $iconSize;
-      }*/
+      }
+
+      .chevronIconBlock {
+        color: vars.$subtextColor;
+        max-width: $chevronIconSize;
+        min-width: $chevronIconSize;
+        max-height: $chevronIconSize;
+        min-height: $chevronIconSize;
+      }
     }
   }
 }

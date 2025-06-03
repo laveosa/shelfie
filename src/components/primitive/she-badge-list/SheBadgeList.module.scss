@@ -72,6 +72,24 @@ $iconSize: 20px;
   border-radius: vars.$brdR_075;
 }
 
+// ======================================================== NO DATA BLOCK
+
+.sheBadgeList {
+  .noDataBlock {
+    display: flex;
+    align-items: center;
+  }
+}
+
+// ======================================================== PLUS MORE BTN
+
+.sheBadgeList {
+  .plusMoreBtn {
+    padding-left: 4px !important;
+    gap: 0;
+  }
+}
+
 // ======================================================== WRAP BADGES
 
 .sheBadgeList {

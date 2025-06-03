@@ -4,13 +4,13 @@ import cs from "./SheMultiSelectTrigger.module.scss";
 import { ISheMultiSelectTrigger } from "@/const/interfaces/primitive-components/ISheMultiSelectTrigger.ts";
 import { Button } from "@/components/ui/button.tsx";
 import { PopoverTrigger } from "@/components/ui/popover.tsx";
-import { ChevronDown } from "lucide-react";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
 import SheBadgeList from "@/components/primitive/she-badge-list/SheBadgeList.tsx";
+import { ChevronDown } from "lucide-react";
 
 export default function SheMultiSelectTrigger({
   id,
@@ -81,17 +81,24 @@ export default function SheMultiSelectTrigger({
                 onClick={onTogglePopover}
                 {...props}
               >
-                <SheIcon icon={icon} aria-describedby={ariaDescribedbyId} />
+                <SheIcon
+                  icon={icon}
+                  className={cs.iconBlock}
+                  aria-describedby={ariaDescribedbyId}
+                />
                 <SheBadgeList
                   items={items}
-                  maxBadgeAmount={maxCount}
                   showCloseBtn
+                  fullWidth
+                  maxBadgeAmount={3}
+                  // autoBadgeAmount
                   onClick={onTogglePopover}
                   onClose={(item) => onToggleOption(item.value)}
                   onCloseAllExtra={onClearExtraOptions}
                 />
                 <SheIcon
                   icon={ChevronDown}
+                  className={cs.chevronIconBlock}
                   aria-describedby={ariaDescribedbyId}
                 />
               </Button>

@@ -60,7 +60,7 @@ export default function SheBadgeList({
 
   const refBadgeListContext = useRef(null);
   const uniqueComponentId = `${generateId(4)}_BADGE_LIST_ID`;
-  const plusMoreBtnWidth = 108;
+  const plusMoreBtnWidth = 100;
 
   useEffect(() => {
     setTimeout(() => {
@@ -163,7 +163,8 @@ export default function SheBadgeList({
     )
       return;
 
-    setMaxBadgeAmount(0);
+    setMaxBadgeAmount(null);
+
     setTimeout(() => {
       const elem = refBadgeListContext.current;
       const badgeItems = elem.getElementsByClassName("badge-list-item-cover");
@@ -267,45 +268,44 @@ export default function SheBadgeList({
                     </div>
                   ))}
 
-                {!_.isNil(_maxBadgeAmount) &&
-                  _items?.length > _maxBadgeAmount && (
-                    <div className={cs.sheBadgeListItem}>
-                      <SheBadge
-                        className={extraBudge?.className || elementClassName}
-                        style={extraBudge?.style || elementStyle}
-                        text={`+ ${_items.length - _maxBadgeAmount} ${translate("PLACE_VALID_TRANS_KET", "more")}`}
-                        textWrap={extraBudge?.textWrap || textWrap}
-                        color={extraBudge?.color || color}
-                        textColor={extraBudge?.textColor || textColor}
-                        iconColor={extraBudge?.iconColor || iconColor}
-                        minWidth={plusMoreBtnWidth + "px"}
-                        maxWidth={plusMoreBtnWidth + "px"}
-                        fullWidth={extraBudge?.fullWidth || elementFullWidth}
-                        variant={extraBudge?.variant || variant}
-                        disabled={
-                          !_.isNil(extraBudge?.disabled)
-                            ? extraBudge?.disabled
-                            : disabled
-                        }
-                        isLoading={
-                          !_.isNil(extraBudge?.isLoading)
-                            ? extraBudge?.isLoading
-                            : isLoading
-                        }
-                        showCloseBtn={
-                          !_.isNil(extraBudge?.showCloseBtn)
-                            ? extraBudge?.showCloseBtn
-                            : showCloseBtn
-                        }
-                        onClick={() => onClickHandler(extraBudge)}
-                        onClose={() => onCloseAllExtraHandler()}
-                        {...extraBudge}
-                      />
-                    </div>
-                  )}
+                {_maxBadgeAmount && _items?.length > _maxBadgeAmount && (
+                  <div className={cs.sheBadgeListItem}>
+                    <SheBadge
+                      className={extraBudge?.className || elementClassName}
+                      elementClassName={cs.plusMoreBtn}
+                      style={extraBudge?.style || elementStyle}
+                      text={`+ ${_items.length - _maxBadgeAmount} ${translate("PLACE_VALID_TRANS_KET", "more")}`}
+                      textWrap={extraBudge?.textWrap || textWrap}
+                      color={extraBudge?.color || color}
+                      textColor={extraBudge?.textColor || textColor}
+                      iconColor={extraBudge?.iconColor || iconColor}
+                      maxWidth={plusMoreBtnWidth + "px"}
+                      fullWidth={extraBudge?.fullWidth || elementFullWidth}
+                      variant={extraBudge?.variant || variant}
+                      disabled={
+                        !_.isNil(extraBudge?.disabled)
+                          ? extraBudge?.disabled
+                          : disabled
+                      }
+                      isLoading={
+                        !_.isNil(extraBudge?.isLoading)
+                          ? extraBudge?.isLoading
+                          : isLoading
+                      }
+                      showCloseBtn={
+                        !_.isNil(extraBudge?.showCloseBtn)
+                          ? extraBudge?.showCloseBtn
+                          : showCloseBtn
+                      }
+                      onClick={() => onClickHandler(extraBudge)}
+                      onClose={() => onCloseAllExtraHandler()}
+                      {...extraBudge}
+                    />
+                  </div>
+                )}
               </div>
             ) : (
-              <div>
+              <div className={cs.noDataBlock}>
                 <span className="she-placeholder">
                   {translate(placeholderTransKey, placeholder)}
                 </span>
