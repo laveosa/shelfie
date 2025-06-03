@@ -18,6 +18,9 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 import SheBadgeList from "@/components/primitive/she-badge-list/SheBadgeList.tsx";
 import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
+import SheMultiSelect from "@/components/primitive/she-multi-select/SheMultiSelect.tsx";
+import SheCalendar from "@/components/primitive/she-calendar/SheCalendar.tsx";
+import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
 
 const frameworksList: ISheMultiSelectItem[] = [
   { value: "1", text: "React", icon: Turtle },
@@ -136,6 +139,12 @@ export function DashboardPage() {
 
       <br />
 
+      <SheDatePicker />
+
+      <br />
+
+      <SheCalendar />
+
       <br />
 
       <SheBadgeList
@@ -152,7 +161,7 @@ export function DashboardPage() {
         // fullWidth
         // itemsWrap="nowrap"
         showCloseBtn
-        showClearBtn
+        // showClearBtn
         onClick={(value) => console.log("onClick: ", value)}
         onClose={(value) => console.log("onClose: ", value)}
         onCloseAllExtra={(value) => console.log("onCloseAllExtra: ", value)}
@@ -161,14 +170,14 @@ export function DashboardPage() {
 
       <br />
 
-      {/*<SheMultiSelect
+      <SheMultiSelect
         options={frameworksList}
-        placeholder="Select frameworks"
-        onValueChange={onAction}
+        placeholder="select frameworks..."
         autoFocus
+        onValueChange={onAction}
         onIsOpen={(event) => console.log("onIsOpen: ", event)}
         onClear={(event) => console.log("onClear: ", event)}
-      />*/}
+      />
 
       <br />
     </div>

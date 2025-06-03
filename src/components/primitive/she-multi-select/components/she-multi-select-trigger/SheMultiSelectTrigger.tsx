@@ -94,43 +94,6 @@ export default function SheMultiSelectTrigger({
                   icon={ChevronDown}
                   aria-describedby={ariaDescribedbyId}
                 />
-
-                {/*{selectedValues?.length > 0 ? (
-                  <div className="flex justify-between items-center w-full">
-                    <div className="flex flex-wrap items-center">
-                      {selectedValues.slice(0, maxCount).map((value, idx) => {
-                        const option = options.find(
-                          (item: ISheMultiSelectItem) => item.value === value,
-                        );
-                        return (
-                          <SheBadge
-                            key={`${ariaDescribedbyId}_BADGE_${idx + 1}`}
-                            text={option?.label}
-                            icon={option?.icon}
-                            onClose={() => {
-                              onToggleOption(value);
-                            }}
-                          />
-                        );
-                      })}
-                      {selectedValues?.length > maxCount && (
-                        <SheBadge
-                          text={`+ ${selectedValues.length - maxCount} more`}
-                          onClose={() => {
-                            onClearExtraOptions();
-                          }}
-                        />
-                      )}
-                    </div>
-                  </div>
-                ) : (
-                  <div className="flex items-center justify-between w-full mx-auto">
-                    <span className="text-sm text-muted-foreground mx-3">
-                      {translate(placeholderTransKey, placeholder)}
-                    </span>
-                  </div>
-                )}*/}
-                {/*<ChevronDown className="h-4 cursor-pointer text-muted-foreground mx-2" />*/}
               </Button>
             </SheSkeleton>
             <SheClearButton

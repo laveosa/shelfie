@@ -63,9 +63,9 @@ $iconSize: 20px;
     box-sizing: border-box;
 
     .sheDatePickerCalendar {
-      width: (vars.$maxWidth - 20) + px;
       display: flex;
       justify-content: center;
+      margin: auto;
 
       &.withClearBtn {
         width: 264px;
