@@ -1,19 +1,21 @@
 import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
-import cs from "./PurchasePage.module.scss";
+import cs from "./PurchaseProductsPage.module.scss";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 import { PurchasesPageSliceActions as actions } from "@/state/slices/PurchasesPageSlice.ts";
 import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
 import { IPurchasesPageSlice } from "@/const/interfaces/store-slices/IPurchasesPageSlice.ts";
-import usePurchasePageService from "@/pages/products-section/purchase-page/usePurchasePageService.ts";
+import usePurchaseProductsPageService from "@/pages/products-section/purchase-products-page/usePurchaseProductsPageService.ts";
 
-export function PurchasePage() {
+export function PurchaseProductsPage() {
   const dispatch = useAppDispatch();
-  const service = usePurchasePageService();
-  const state = useAppSelector<IPurchasesPageSlice>(StoreSliceEnum.PURCHASES);
+  const service = usePurchaseProductsPageService();
+  const state = useAppSelector<IPurchasesPageSlice>(
+    StoreSliceEnum.PURCHASE_PRODUCTS,
+  );
   const { productId } = useParams();
 
   useEffect(() => {
@@ -32,7 +34,7 @@ export function PurchasePage() {
   }
 
   return (
-    <div className={cs.attributePage}>
+    <div className={cs.purchaseProductsPage}>
       <ProductMenuCard
         title={"Manage Purchases"}
         productCounter={state.productCounter}

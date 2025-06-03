@@ -24,10 +24,12 @@ import MessengerApiService from "@/utils/services/api/MessengerApiService.ts";
 import { FacebookApiService } from "@/utils/services/api/FacebookApiService.ts";
 import AttributesPageSlice from "@/state/slices/AttributesPageSlice.ts";
 import SizeChartPageSlice from "@/state/slices/SizeChartPageSlice.ts";
-import PurchasesPageSlice from "@/state/slices/PurchasesPageSlice.ts";
 import DialogSlice from "@/state/slices/DialogSlice.ts";
 import { PurchasesApiService } from "@/utils/services/api/PurchasesApiService.ts";
 import { SuppliersApiService } from "@/utils/services/api/SuppliersApiService.ts";
+import PurchaseProductsPageSlice from "@/state/slices/PurchaseProductsPageSlice.ts";
+import MarginsPageSlice from "@/state/slices/MarginsPageSlice.ts";
+import InvoicesPageSlice from "@/state/slices/InvoicesPageSlice.ts";
 
 export const store = configureStore({
   reducer: {
@@ -43,7 +45,10 @@ export const store = configureStore({
     [StoreSliceEnum.MANAGE_VARIANTS]: ManageVariantsPageSlice.reducer,
     [StoreSliceEnum.ATTRIBUTES]: AttributesPageSlice.reducer,
     [StoreSliceEnum.SIZE_CHART]: SizeChartPageSlice.reducer,
-    [StoreSliceEnum.PURCHASES]: PurchasesPageSlice.reducer,
+    [StoreSliceEnum.SUPPLIER]: SupportPageSlice.reducer,
+    [StoreSliceEnum.PURCHASE_PRODUCTS]: PurchaseProductsPageSlice.reducer,
+    [StoreSliceEnum.MARGINS]: MarginsPageSlice.reducer,
+    [StoreSliceEnum.INVOICES]: InvoicesPageSlice.reducer,
     [StoreSliceEnum.PROFILE]: ProfilePageSlice.reducer,
     [StoreSliceEnum.SETTINGS]: SettingsPageSlice.reducer,
     [StoreSliceEnum.SUPPORT]: SupportPageSlice.reducer,
