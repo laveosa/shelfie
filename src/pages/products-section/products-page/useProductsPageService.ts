@@ -293,7 +293,7 @@ export default function useProductsPageService() {
         getVariantDetailsHandler(item.variantId).then((res) => {
           dispatch(actions.refreshSelectedVariant(res));
           navigate(
-            `${NavUrlEnum.PRODUCTS}${NavUrlEnum.PRODUCT_VARIANTS}/${item?.productId}`,
+            `${NavUrlEnum.PRODUCTS}${NavUrlEnum.MANAGE_VARIANTS}/${item?.productId}`,
           );
           dispatch(
             actions.refreshProductVariants(

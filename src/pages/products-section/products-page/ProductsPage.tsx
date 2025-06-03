@@ -133,7 +133,7 @@ export function ProductsPage() {
         break;
       case "manage":
         navigate(
-          `${ApiUrlEnum.PRODUCTS}${ApiUrlEnum.PRODUCT_BASIC_DATA}/${rowData?.productId}`,
+          `${NavUrlEnum.PRODUCTS}${NavUrlEnum.PRODUCT_BASIC_DATA}/${rowData?.productId}`,
         );
         break;
       case "activateProduct":
@@ -198,12 +198,17 @@ export function ProductsPage() {
         service.getVariantDetailsHandler(rowData.variantId).then((res) => {
           dispatch(actions.refreshSelectedVariant(res));
           navigate(
-            `${NavUrlEnum.PRODUCTS}${NavUrlEnum.PRODUCT_VARIANTS}/${rowData?.productId}`,
+            `${NavUrlEnum.PRODUCTS}${NavUrlEnum.MANAGE_VARIANTS}/${rowData?.productId}`,
           );
         });
         break;
       case "deleteVariant":
         console.log(`Delete variant ${rowId}`);
+        break;
+      case "managePurchase":
+        navigate(
+          `${NavUrlEnum.PRODUCTS}${NavUrlEnum.SUPPLIER}/${rowData?.purchaseId}`,
+        );
         break;
       case "deletePurchase":
         console.log(`Delete purchase ${rowId}`);

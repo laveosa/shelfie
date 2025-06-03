@@ -16,12 +16,42 @@ import { IProductMenuCard } from "@/const/interfaces/complex-components/custom-c
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 
 const menuItems = [
-  { id: "basic_data", icon: <FileText />, label: "Basic Data" },
-  { id: "gallery", icon: <ImagesIcon />, label: "Gallery" },
-  { id: "variants", icon: <Layers2 />, label: "Variants" },
-  { id: "attributes", icon: <SlidersHorizontal />, label: "Attributes" },
-  { id: "size_chart", icon: <Ruler />, label: "Size Chart" },
-  { id: "purchase", icon: <ReceiptEuroIcon />, label: "Purchase" },
+  {
+    id: "basic_data",
+    icon: <FileText />,
+    label: "Basic Data",
+    path: NavUrlEnum.PRODUCT_BASIC_DATA,
+  },
+  {
+    id: "gallery",
+    icon: <ImagesIcon />,
+    label: "Gallery",
+    path: NavUrlEnum.PRODUCT_GALLERY,
+  },
+  {
+    id: "variants",
+    icon: <Layers2 />,
+    label: "Variants",
+    path: NavUrlEnum.MANAGE_VARIANTS,
+  },
+  {
+    id: "attributes",
+    icon: <SlidersHorizontal />,
+    label: "Attributes",
+    path: NavUrlEnum.ATTRIBUTES,
+  },
+  {
+    id: "size_chart",
+    icon: <Ruler />,
+    label: "Size Chart",
+    path: NavUrlEnum.SIZE_CHART,
+  },
+  {
+    id: "purchase",
+    icon: <ReceiptEuroIcon />,
+    label: "Purchase",
+    path: NavUrlEnum.SUPPLIER,
+  },
 ];
 
 export default function ProductMenuCard({
@@ -34,12 +64,11 @@ export default function ProductMenuCard({
   const navigate = useNavigate();
   const location = useLocation();
 
-  function handleMenuItemClick(itemId: string) {
-    const path = `${NavUrlEnum.PRODUCTS}${NavUrlEnum[`PRODUCT_${itemId.toUpperCase()}`]}/${productId}`;
-    navigate(path);
+  function handleMenuItemClick(path: string) {
+    navigate(`${NavUrlEnum.PRODUCTS}${path}/${productId}`);
   }
 
-  const renderMenuItem = ({ id, icon, label }) => {
+  const renderMenuItem = ({ id, icon, label, path }) => {
     const pathBase = `${NavUrlEnum.PRODUCTS}${NavUrlEnum[`PRODUCT_${id.toUpperCase()}`]}/`;
     const isSelected = location.pathname.startsWith(pathBase);
     const isDisabled = isSelected || (!productId && id !== "basicData");
@@ -47,7 +76,7 @@ export default function ProductMenuCard({
     return (
       <div
         className={`${cs.productMenuItem} ${isSelected ? cs.selected : ""} ${isDisabled ? cs.disabled : ""}`}
-        onClick={() => !isDisabled && handleMenuItemClick(id)}
+        onClick={() => !isDisabled && handleMenuItemClick(path)}
         key={id}
       >
         <div className={cs.iconContainer}>{icon}</div>

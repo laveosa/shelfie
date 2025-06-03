@@ -6,7 +6,6 @@ import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 import { PurchasesPageSliceActions as actions } from "@/state/slices/PurchasesPageSlice.ts";
-import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
 import { IPurchasesPageSlice } from "@/const/interfaces/store-slices/IPurchasesPageSlice.ts";
 import usePurchaseProductsPageService from "@/pages/products-section/purchase-products-page/usePurchaseProductsPageService.ts";
 
@@ -35,13 +34,14 @@ export function PurchaseProductsPage() {
 
   return (
     <div className={cs.purchaseProductsPage}>
-      <ProductMenuCard
-        title={"Manage Purchases"}
-        productCounter={state.productCounter}
-        onAction={handleCardAction}
-        productId={Number(productId)}
-        activeCards={state.activeCards}
-      />
+      HELLO!!!
+      {/*<ProductMenuCard*/}
+      {/*  title={"Manage Purchases"}*/}
+      {/*  productCounter={state.productCounter}*/}
+      {/*  onAction={handleCardAction}*/}
+      {/*  productId={Number(productId)}*/}
+      {/*  activeCards={state.activeCards}*/}
+      {/*/>*/}
     </div>
   );
 }
