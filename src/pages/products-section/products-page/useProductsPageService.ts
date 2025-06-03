@@ -58,6 +58,8 @@ export default function useProductsPageService() {
   const [getCurrenciesList] =
     DictionaryApiHooks.useLazyGetCurrenciesListQuery();
   const [getVariantDetails] = ProductsApiHooks.useLazyGetVariantDetailsQuery();
+  const [getPurchaseDetails] =
+    PurchasesApiHooks.useLazyGetPurchaseDetailsQuery();
 
   //-------------------------------------------------API
 
@@ -247,6 +249,13 @@ export default function useProductsPageService() {
     });
   }
 
+  function getPurchaseDetailsHandler(id) {
+    return getPurchaseDetails(id).then((res: any) => {
+      // dispatch(actions.refreshPurchase(res.data));
+      return res.data;
+    });
+  }
+
   //----------------------------------------------------LOGIC
 
   function itemsCardItemsConvertor(
@@ -329,6 +338,7 @@ export default function useProductsPageService() {
     getTaxesListHandler,
     getCurrenciesListHandler,
     getVariantDetailsHandler,
+    getPurchaseDetailsHandler,
     itemsCardItemsConvertor,
     itemCardHandler,
   };

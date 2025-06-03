@@ -1,0 +1,22 @@
+.supplierCard {
+  .supplierCardContent {
+    height: calc(100vh - 219px);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-bottom: 20px;
+
+    .noSelectedSupplier {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .selectedSupplier {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+  }
+}

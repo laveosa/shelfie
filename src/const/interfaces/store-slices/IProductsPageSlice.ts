@@ -30,6 +30,7 @@ export interface IProductsPageSlice {
   productCounter?: ProductCounterModel;
   productVariants: VariantModel[];
   selectedVariant?: VariantModel;
+  selectedSupplier?: SupplierModel;
   columnsPreferences?: PreferencesModel;
   brands?: BrandModel[];
   categories?: CategoryModel[];

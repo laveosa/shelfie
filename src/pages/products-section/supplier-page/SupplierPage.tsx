@@ -1,3 +1,5 @@
+import React, { useEffect } from "react";
+
 import cs from "./SupplierPage.module.scss";
 import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
@@ -8,7 +10,7 @@ import { useParams } from "react-router-dom";
 import useSupplierPageService from "@/pages/products-section/supplier-page/useSupplierPageService.ts";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import { ManageVariantsPageSliceActions as actions } from "@/state/slices/ManageVariantsPageSlice.ts";
-import React, { useEffect } from "react";
+import SupplierCard from "@/components/complex/custom-cards/supplier-card/SupplierCard.tsx";
 
 export function SupplierPage() {
   const dispatch = useAppDispatch();
@@ -64,9 +66,11 @@ export function SupplierPage() {
         isLoading={productsState.isProductMenuCardLoading}
         title="Report Purchase"
         itemsCollection="purchases"
+        productId={productsState.selectedSupplier?.supplierId}
         productCounter={productsState.productCounter}
         onAction={handleCardAction}
       />
+      <SupplierCard selectedSupplier={productsState.selectedSupplier} />
     </div>
   );
 }

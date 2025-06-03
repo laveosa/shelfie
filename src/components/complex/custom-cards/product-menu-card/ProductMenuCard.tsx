@@ -103,7 +103,10 @@ export default function ProductMenuCard({
   const renderMenuItem = ({ id, icon, label, path }) => {
     const pathBase = `${NavUrlEnum.PRODUCTS}${path}/`;
     const isSelected = location.pathname.startsWith(pathBase);
-    const isDisabled = isSelected || (!productId && id !== "basicData");
+    const isDisabled =
+      itemsCollection === "products"
+        ? isSelected || (!productId && id !== "basicData")
+        : isSelected || (!productId && id !== "supplier");
 
     return (
       <div
