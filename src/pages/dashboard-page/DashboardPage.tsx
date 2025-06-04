@@ -181,7 +181,7 @@ export function DashboardPage() {
         autoBadgeAmount
         // maxWidth="400px"
         // minWidth="400px"
-        // fullWidth
+        fullWidth
         // itemsWrap="nowrap"
         showCloseBtn
         // showClearBtn

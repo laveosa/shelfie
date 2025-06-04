@@ -1,5 +1,5 @@
 import React, { JSX, useEffect, useRef, useState } from "react";
-import _, { debounce } from "lodash";
+import _ from "lodash";
 
 import cs from "./SheBadgeList.module.scss";
 import { ISheBadgeList } from "@/const/interfaces/primitive-components/ISheBadgeList.ts";
@@ -35,7 +35,7 @@ export default function SheBadgeList({
   showClearBtn,
   minWidth,
   maxWidth,
-  fullWidth = true,
+  fullWidth,
   elementMinWidth,
   elementMaxWidth,
   elementFullWidth,
@@ -66,13 +66,6 @@ export default function SheBadgeList({
     setTimeout(() => {
       setScrollInfo(_hasVisibleScroll(refBadgeListContext.current));
     });
-
-    /*const handler = debounce(() => {
-      _calculateMaxBadgeAmount(_items);
-    }, 100);
-
-    window.addEventListener("resize", handler);
-    return () => window.removeEventListener("resize", handler);*/
   }, []);
 
   useEffect(() => {
@@ -161,14 +154,6 @@ export default function SheBadgeList({
   }
 
   function _calculateMaxBadgeAmount(items: ISheBadge[]) {
-    // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-    // console.log("items: ", items);
-    // console.log("items length: ", items?.length);
-    console.log(
-      "------------------------------------------ client width: ",
-      refBadgeListContext?.current.clientWidth,
-    );
-
     if (
       (!_.isNil(maxBadgeAmount) && maxBadgeAmount >= 0) ||
       !autoBadgeAmount ||
@@ -178,8 +163,6 @@ export default function SheBadgeList({
       !refBadgeListContext.current
     )
       return;
-
-    // setMaxBadgeAmount(null);
 
     const elem = refBadgeListContext.current;
     const gapW = 4;
@@ -200,11 +183,6 @@ export default function SheBadgeList({
         badgeW += iconW + gapW;
       }
 
-      // console.log(
-      //   "budge  text width: ",
-      //   Math.ceil(textLength * averageCharWidth),
-      // );
-
       calculateWidth += badgeW;
 
       if (i < items.length - 1) {
@@ -213,18 +191,8 @@ export default function SheBadgeList({
 
       if (calculateWidth < elem.clientWidth) {
         tmpMaxAmount++;
-
-        console.log("budge width: ", badgeW);
-        console.log("calculated width: ", calculateWidth);
-        console.log("---------------------- >>>");
       }
     }
-
-    console.log(
-      "------------------------------------------ max amount: ",
-      tmpMaxAmount,
-    );
-    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
     setMaxBadgeAmount(tmpMaxAmount);
   }
