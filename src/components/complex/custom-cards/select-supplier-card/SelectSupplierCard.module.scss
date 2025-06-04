@@ -4,18 +4,17 @@
   .selectSupplierCardContent {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: vars.$paddingStandard;
 
     .createSupplierBlock {
       display: flex;
-      gap: 20px;
+      gap: vars.$paddingStandard;
     }
 
     .supplierListBlock {
       display: flex;
       flex-direction: column;
-      gap: 20px;
-      padding-bottom: 20px;
+      gap: vars.$paddingStandard;
     }
   }
 }

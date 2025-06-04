@@ -30,6 +30,7 @@ export function SheImageUploader({
   isLoading = false,
   contextName,
   contextId,
+  fullWidth,
   onUpload,
 }: ISheImageUploader) {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -115,7 +116,7 @@ export function SheImageUploader({
 
   return (
     <div
-      className={`${cs.sheImageUploader} not-prose flex flex-col gap-4`}
+      className={`${cs.sheImageUploader} ${fullWidth ? cs.sheImageUploaderFullWidth : ""} `}
       style={{
         boxSizing: "border-box",
         padding: "0",

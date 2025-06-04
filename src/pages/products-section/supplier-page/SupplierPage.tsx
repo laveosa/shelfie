@@ -12,6 +12,7 @@ import useProductsPageService from "@/pages/products-section/products-page/usePr
 import { ManageVariantsPageSliceActions as actions } from "@/state/slices/ManageVariantsPageSlice.ts";
 import SupplierCard from "@/components/complex/custom-cards/supplier-card/SupplierCard.tsx";
 import SelectSupplierCard from "@/components/complex/custom-cards/select-supplier-card/SelectSupplierCard.tsx";
+import CreateSupplierCard from "@/components/complex/custom-cards/create-supplier-card/CreateSupplierCard.tsx";
 
 export function SupplierPage() {
   const dispatch = useAppDispatch();
@@ -87,6 +88,7 @@ export function SupplierPage() {
         onAction={onAction}
       />
       <SelectSupplierCard />
+      <CreateSupplierCard />
     </div>
   );
 }

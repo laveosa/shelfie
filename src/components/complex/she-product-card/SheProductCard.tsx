@@ -95,15 +95,11 @@ export default function SheProductCard({
       </div>
       {loading && <SheLoading />}
       <div
-        className={cs.cardContent}
-        style={
-          loading
-            ? {
-                pointerEvents: "none",
-                opacity: 0.5,
-              }
-            : {}
-        }
+        className={`${cs.cardContent} ${loading ? cs.cardContentLoading : ""} ${
+          showPrimaryButton || showSecondaryButton
+            ? cs.cardContentWithFooter
+            : ""
+        }`}
       >
         {children}
       </div>
