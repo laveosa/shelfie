@@ -10,6 +10,8 @@ export default function useSupplierPageService() {
 
   const [getPurchaseDetails] =
     PurchasesApiHooks.useLazyGetPurchaseDetailsQuery();
+  const [createPurchaseForSupplier] =
+    PurchasesApiHooks.useCreatePurchaseForSupplierMutation();
 
   function getPurchaseDetailsHandler(id) {
     return getPurchaseDetails(id).then((res: any) => {
@@ -18,7 +20,15 @@ export default function useSupplierPageService() {
     });
   }
 
+  function createPurchaseForSupplierHandler(model) {
+    return createPurchaseForSupplier(model).then((res: any) => {
+      dispatch(actions.refreshPurchase(res.data));
+      return res.data;
+    });
+  }
+
   return {
     getPurchaseDetailsHandler,
+    createPurchaseForSupplierHandler,
   };
 }

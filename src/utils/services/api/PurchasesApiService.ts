@@ -29,6 +29,13 @@ export const PurchasesApiService = createApi({
         url: `${ApiUrlEnum.PURCHASES}/list-item/${id}`,
       }),
     }),
+    createPurchaseForSupplier: apiConfig.createMutation<any, any>(builder, {
+      query: (model?: any) => ({
+        url: `${ApiUrlEnum.PURCHASES}`,
+        method: "POST",
+        body: JSON.stringify(model),
+      }),
+    }),
   }),
 });
 

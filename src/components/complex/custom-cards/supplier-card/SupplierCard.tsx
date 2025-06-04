@@ -12,8 +12,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import { useState } from "react";
 
-export default function SupplierCard({ selectedSupplier }: ISupplierCard) {
+export default function SupplierCard({
+  selectedSupplier,
+  onAction,
+}: ISupplierCard) {
+  const [selectedDate, setSelectedDate] = useState<Date>(null);
+
   return (
     <SheProductCard
       className={cs.supplierCard}
@@ -21,8 +27,12 @@ export default function SupplierCard({ selectedSupplier }: ISupplierCard) {
       view="card"
       showPrimaryButton
       primaryButtonTitle="Create Purcase"
+      primaryButtonDisabled={!selectedDate || !selectedSupplier}
       showSecondaryButton
       secondaryButtonTitle="Cancel"
+      onPrimaryButtonClick={() =>
+        onAction("createPurchase", { selectedDate, selectedSupplier })
+      }
     >
       <div className={cs.supplierCardContent}>
         {!selectedSupplier ? (
@@ -79,7 +89,11 @@ export default function SupplierCard({ selectedSupplier }: ISupplierCard) {
         )}
 
         <span className="she-title">Purchase date</span>
-        <SheDatePicker fullWidth label="Set date when purchase took place" />
+        <SheDatePicker
+          fullWidth
+          label="Set date when purchase took place"
+          onSelectDate={(date) => setSelectedDate(date)}
+        />
       </div>
     </SheProductCard>
   );

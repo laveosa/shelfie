@@ -60,6 +60,17 @@ export function SupplierPage() {
     }
   }
 
+  function onAction(actionType: string, payload) {
+    switch (actionType) {
+      case "createPurchase":
+        console.log("Payload", payload);
+        // service.createPurchaseForSupplierHandler(payload).then((res) => {
+        //   console.log("RES", res);
+        // });
+        break;
+    }
+  }
+
   return (
     <div className={cs.supplierPage}>
       <ProductMenuCard
@@ -70,7 +81,10 @@ export function SupplierPage() {
         productCounter={productsState.productCounter}
         onAction={handleCardAction}
       />
-      <SupplierCard selectedSupplier={productsState.selectedSupplier} />
+      <SupplierCard
+        selectedSupplier={productsState.selectedSupplier}
+        onAction={onAction}
+      />
     </div>
   );
 }

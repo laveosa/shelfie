@@ -119,13 +119,13 @@ export function ProductsPage() {
     }
   }, []);
 
-  const onAction = (
+  function onAction(
     actionType: string,
     rowId?: string,
     setLoadingRow?: (rowId: string, loading: boolean) => void,
     rowData?: any,
     _rowOriginal?: any,
-  ) => {
+  ) {
     setLoadingRow(rowId, true);
 
     switch (actionType) {
@@ -217,7 +217,7 @@ export function ProductsPage() {
     }
 
     setLoadingRow(rowId, false);
-  };
+  }
 
   const productsColumns = productsGridColumns(onAction, activeStates);
   const variantsColumns = variantsGridColumns(onAction);

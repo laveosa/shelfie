@@ -16,6 +16,13 @@ export const SuppliersApiService = createApi({
         url: `${ApiUrlEnum.SUPPLIERS}/list`,
       }),
     }),
+    createSupplier: apiConfig.createMutation<any, any>(builder, {
+      query: (model?: any) => ({
+        url: `${ApiUrlEnum.SUPPLIERS}`,
+        method: "POST",
+        body: JSON.stringify(model),
+      }),
+    }),
   }),
 });
 
