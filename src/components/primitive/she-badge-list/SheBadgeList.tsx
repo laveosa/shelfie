@@ -35,7 +35,7 @@ export default function SheBadgeList({
   showClearBtn,
   minWidth,
   maxWidth,
-  fullWidth,
+  fullWidth = autoBadgeAmount,
   elementMinWidth,
   elementMaxWidth,
   elementFullWidth,
