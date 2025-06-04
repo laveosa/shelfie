@@ -11,6 +11,7 @@ import useSupplierPageService from "@/pages/products-section/supplier-page/useSu
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import { ManageVariantsPageSliceActions as actions } from "@/state/slices/ManageVariantsPageSlice.ts";
 import SupplierCard from "@/components/complex/custom-cards/supplier-card/SupplierCard.tsx";
+import SelectSupplierCard from "@/components/complex/custom-cards/select-supplier-card/SelectSupplierCard.tsx";
 
 export function SupplierPage() {
   const dispatch = useAppDispatch();
@@ -85,6 +86,7 @@ export function SupplierPage() {
         selectedSupplier={productsState.selectedSupplier}
         onAction={onAction}
       />
+      <SelectSupplierCard />
     </div>
   );
 }
