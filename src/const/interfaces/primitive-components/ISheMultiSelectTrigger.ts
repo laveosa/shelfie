@@ -16,6 +16,7 @@ export interface ISheMultiSelectTrigger
   elementStyle?: React.CSSProperties;
   icon?: Partial<ISheIcon> | string | React.FC<any>;
   items?: ISheBadge[];
+  contextType?: "badges" | "string";
   placeholder?: string;
   placeholderTransKey?: string;
   maxCount?: number;
@@ -28,8 +29,9 @@ export interface ISheMultiSelectTrigger
   fullWidth?: boolean;
   disabled?: boolean;
   isLoading?: boolean;
-  onTogglePopover?: (value: any) => void;
-  onToggleOption?: (value: any) => void;
-  onClearExtraOptions?: () => void;
+  isOpen?: boolean;
+  onTogglePopover?: (value?: any) => void;
+  onToggleOption?: (value: string) => void;
+  onClearExtraOptions?: (value: ISheBadge[]) => void;
   onClearAll?: () => void;
 }

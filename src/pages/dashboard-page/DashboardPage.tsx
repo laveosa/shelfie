@@ -10,6 +10,7 @@ import {
   Dog,
   Fish,
   Rabbit,
+  Search,
   Turtle,
   User,
 } from "lucide-react";
@@ -23,12 +24,36 @@ import SheCalendar from "@/components/primitive/she-calendar/SheCalendar.tsx";
 import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 
-const frameworksList: ISheMultiSelectItem[] = [
-  { value: 1, text: "React", icon: Turtle },
-  { value: 2, text: "Angular", icon: Cat },
-  { value: 3, text: "Vue", icon: Dog },
-  { value: 4, text: "Svelte", icon: Rabbit },
-  { value: 5, text: "Ember", icon: Fish },
+const optionsNumber: ISheMultiSelectItem[] = [
+  { value: 1, text: "1", icon: Turtle },
+  { value: 2, text: "2", icon: Cat },
+  { value: 3, text: "3", icon: Dog },
+  { value: 4, text: "4", icon: Rabbit },
+  { value: 5, text: "5", icon: Fish },
+];
+
+const optionsString: ISheMultiSelectItem[] = [
+  { value: "One", text: "One" },
+  { value: "Two", text: "Two" },
+  { value: "Three", text: "Three" },
+  { value: "Fore", text: "Fore" },
+  { value: "Five", text: "Five" },
+];
+
+const optionsArr: ISheMultiSelectItem[] = [
+  { value: [1, "One"], text: "Arr 1" },
+  { value: [2, "Two"], text: "Arr 2" },
+  { value: [3, "Three"], text: "Arr 3" },
+  { value: [4, "Fore"], text: "Arr 4" },
+  { value: [5, "Five"], text: "Arr 5" },
+];
+
+const optionsObj: ISheMultiSelectItem[] = [
+  { value: { option: 1 }, text: "Obj 1" },
+  { value: { option: "2" }, text: "Obj 2" },
+  { value: { option: 3 }, text: "Obj 3" },
+  { value: { option: "4" }, text: "Obj 4" },
+  { value: { option: 5 }, text: "Obj 5" },
 ];
 
 const badges: ISheBadge[] = [
@@ -133,12 +158,12 @@ export function DashboardPage() {
     <div id={cs["DashboardPage"]}>
       <h1>Dashboard</h1>
 
-      <br />
+      {/*<br />
 
       <SheButton
         value="Badges"
         onClick={() => setBadgeItems(!badgeItems ? badges : null)}
-      />
+      />*/}
 
       <br />
 
@@ -146,30 +171,34 @@ export function DashboardPage() {
 
       <br />
 
-      {/*<SheSelect
+      <SheSelect
         label="Select"
         items={[
           { text: "option 1", value: 1 },
           { text: "option 2", value: 2 },
         ]}
-      />*/}
-
-      {/*<br />*/}
-
-      {/*<SheMultiSelect
-        options={frameworksList}
-        placeholder="select frameworks..."
-        autoFocus
-        onValueChange={onAction}
-        // fullWidth
-        // minWidth="400px"
-        onIsOpen={(event) => console.log("onIsOpen: ", event)}
-        onClear={(event) => console.log("onClear: ", event)}
-      />*/}
+      />
 
       <br />
 
-      <SheBadgeList
+      <SheMultiSelect
+        label="Multi Select"
+        options={optionsObj}
+        selectedValues={[optionsObj[1].value, optionsObj[3].value]}
+        placeholder="select options..."
+        placeholderTransKey="023jf09jwe"
+        icon={Search}
+        // fullWidth
+        // minWidth="400px"
+        // maxWidth="200px"
+        onValueChange={onAction}
+        onIsOpen={(event) => console.log("onIsOpen: ", event)}
+        onClear={(event) => console.log("onClear: ", event)}
+      />
+
+      <br />
+
+      {/*<SheBadgeList
         label="Badges:"
         tooltip="some text for tooltip KKKK"
         items={badgeItems}
@@ -181,7 +210,7 @@ export function DashboardPage() {
         autoBadgeAmount
         // maxWidth="400px"
         // minWidth="400px"
-        fullWidth
+        // fullWidth
         // itemsWrap="nowrap"
         showCloseBtn
         // showClearBtn
@@ -189,7 +218,7 @@ export function DashboardPage() {
         onClose={(value) => console.log("onClose: ", value)}
         onCloseAllExtra={(value) => console.log("onCloseAllExtra: ", value)}
         onClear={(value) => console.log("onClear: ", value)}
-      />
+      />*/}
 
       <br />
     </div>

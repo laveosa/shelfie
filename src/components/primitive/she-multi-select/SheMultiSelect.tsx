@@ -32,7 +32,6 @@ import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts"
 export default function SheMultiSelect({
   options,
   selectedValues,
-  maxCount,
   isModalPopover,
   isOpen,
   onIsOpen,
@@ -41,15 +40,17 @@ export default function SheMultiSelect({
   ...props
 }: ISheMultiSelect): JSX.Element {
   const [_options, setOptions] = useState<ISheMultiSelectItem[]>(null);
-  const [_selectedValues, setSelectedValues] = useState<string[]>([]);
+  const [_selectedValues, setSelectedValues] = useState<any[]>([]);
   const [_badges, setBadges] = useState<ISheBadge[]>(null);
   const [_isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   const ariaDescribedbyId = `${generateId()}_MULTI_SELECT_ID`;
 
   useEffect(() => {
-    if (!_.isEqual(options, _options)) setOptions(options);
-    _getSelectedBudges(_selectedValues);
+    if (!_.isEqual(options, _options)) {
+      setOptions(options);
+      setBadges(_getSelectedBudges(options, _selectedValues));
+    }
   }, options);
 
   useEffect(() => {
@@ -58,7 +59,7 @@ export default function SheMultiSelect({
       !_.isEqual(selectedValues, _selectedValues)
     ) {
       setSelectedValues(selectedValues);
-      _getSelectedBudges(selectedValues);
+      setBadges(_getSelectedBudges(options, selectedValues));
     }
   }, selectedValues);
 
@@ -91,8 +92,8 @@ export default function SheMultiSelect({
     }
   }
 
-  function onClearExtraOptionsHandler() {
-    _updateSelectedValues(_selectedValues.slice(0, maxCount));
+  function onClearExtraOptionsHandler(badges: ISheBadge[]) {
+    _updateSelectedValues(_selectedValues.slice(0, -badges.length));
   }
 
   function onClearButtonHandler() {
@@ -106,9 +107,11 @@ export default function SheMultiSelect({
 
   // ==================================================================== PRIVATE
 
-  function _getSelectedBudges(values: string[]): ISheBadge[] {
-    if (!_options || _options.length === 0 || !values || values.length === 0)
-      return;
+  function _getSelectedBudges(
+    items: ISheMultiSelectItem[],
+    values: any[],
+  ): ISheBadge[] {
+    if (!items || items.length === 0 || !values || values.length === 0) return;
 
     return values
       .map((value: string) =>
@@ -118,16 +121,16 @@ export default function SheMultiSelect({
       )
       .map(
         (item: ISheMultiSelectItem): ISheBadge => ({
-          text: item.text,
-          icon: item.icon,
+          text: item?.text,
+          icon: item?.icon,
           value: item.value,
         }),
       );
   }
 
-  function _updateSelectedValues(values: string[]) {
+  function _updateSelectedValues(values: any[]) {
     setSelectedValues(values);
-    setBadges(_getSelectedBudges(values));
+    setBadges(_getSelectedBudges(_options, values));
     onValueChange(values);
   }
 
@@ -141,7 +144,7 @@ export default function SheMultiSelect({
     >
       <SheMultiSelectTrigger
         items={_badges}
-        maxCount={maxCount}
+        isOpen={_isPopoverOpen}
         ariaDescribedbyId={ariaDescribedbyId}
         onTogglePopover={onTogglePopoverHandler}
         onToggleOption={onToggleOptionHandler}

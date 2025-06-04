@@ -3,7 +3,7 @@ import { ISheMultiSelectItem } from "@/const/interfaces/primitive-components/ISh
 
 export interface ISheMultiSelect extends ISheMultiSelectTrigger {
   options?: ISheMultiSelectItem[];
-  selectedValues?: string[];
+  selectedValues?: any[];
   isModalPopover?: boolean;
   isOpen?: boolean;
   onIsOpen?: (value: any) => void;

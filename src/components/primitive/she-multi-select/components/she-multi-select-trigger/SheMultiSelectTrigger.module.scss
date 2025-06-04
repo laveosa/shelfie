@@ -30,6 +30,26 @@ $chevronIconSize: 16px;
           &:focus-visible {
             box-shadow: 0 0 0 1px lightgray inset;
           }
+
+          .sheMultiSelectTriggerContextString {
+            width: 100%;
+            flex-grow: 1;
+            overflow: hidden;
+
+            .contextStringWrapper {
+              display: flex;
+              align-items: center;
+              justify-content: flex-start;
+              flex-grow: 1;
+              width: 100%;
+
+              > span {
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+              }
+            }
+          }
         }
       }
 
@@ -47,6 +67,11 @@ $chevronIconSize: 16px;
         min-width: $chevronIconSize;
         max-height: $chevronIconSize;
         min-height: $chevronIconSize;
+        transition: all 130ms ease-in-out;
+
+        &.rotateChevronIcon {
+          transform: rotate(-180deg);
+        }
       }
     }
   }
