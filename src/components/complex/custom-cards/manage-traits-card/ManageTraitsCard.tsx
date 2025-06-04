@@ -119,7 +119,6 @@ export default function ManageTraitsCard({
     <SheProductCard
       loading={isLoading}
       title="Manage Traits"
-      view="card"
       showPrimaryButton={true}
       primaryButtonTitle="Update Traits"
       onPrimaryButtonClick={form.handleSubmit(onSubmit)}

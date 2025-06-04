@@ -32,7 +32,6 @@ export default function StockHistoryCard({
     <SheProductCard
       loading={isLoading}
       title={`${variant?.variantName} Stock History`}
-      view="card"
       showCloseButton
       className={cs.stockHistoryCard}
       onSecondaryButtonClick={onSecondaryButtonClick}

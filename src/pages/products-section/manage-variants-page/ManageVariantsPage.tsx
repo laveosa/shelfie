@@ -867,25 +867,23 @@ export function ManageVariantsPage() {
 
   return (
     <div className={cs.manageVariantsPage}>
-      <div className={cs.borderlessCards}>
-        <ItemsCard
-          isLoading={productsState.isItemsCardLoading}
-          isItemsLoading={productsState.isVariantsLoading}
-          title="Variants"
-          data={variantsForItemsCard}
-          skeletonQuantity={productsState.variants?.length}
-          onAction={(data) => onAction("onProductItemClick", data)}
-        />
-        <ProductMenuCard
-          isLoading={productsState.isProductMenuCardLoading}
-          title="Manage Product"
-          itemsCollection="products"
-          productCounter={productsState.productCounter}
-          onAction={handleCardAction}
-          productId={Number(productId)}
-          activeCards={state.activeCards}
-        />
-      </div>
+      <ItemsCard
+        isLoading={productsState.isItemsCardLoading}
+        isItemsLoading={productsState.isVariantsLoading}
+        title="Variants"
+        data={variantsForItemsCard}
+        skeletonQuantity={productsState.variants?.length}
+        onAction={(data) => onAction("onProductItemClick", data)}
+      />
+      <ProductMenuCard
+        isLoading={productsState.isProductMenuCardLoading}
+        title="Manage Product"
+        itemsCollection="products"
+        productCounter={productsState.productCounter}
+        onAction={handleCardAction}
+        productId={Number(productId)}
+        activeCards={state.activeCards}
+      />
       <ManageVariantsCard
         isLoading={state.isManageVariantsCardLoading}
         isVariantsLoading={productsState.isProductVariantsLoading}

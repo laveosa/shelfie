@@ -6,13 +6,11 @@ export default function CreateSupplierCard() {
   return (
     <SheProductCard
       title="Create Supplier"
-      view="card"
       className={cs.createSupplierCard}
       showCloseButton
       showPrimaryButton
       primaryButtonTitle="Create Supplier"
       showSecondaryButton
-      secondaryButtonTitle="Cancel"
     >
       <div className={cs.createSupplierCardContent}>
         <CreateSupplierForm />

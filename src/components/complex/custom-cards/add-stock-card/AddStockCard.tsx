@@ -77,11 +77,9 @@ export default function AddStockCard({
     <SheProductCard
       loading={isLoading}
       title={`Add ${variant?.variantName} Stock`}
-      view="card"
       showPrimaryButton={true}
       primaryButtonTitle="Add to Stock"
       showSecondaryButton={true}
-      secondaryButtonTitle="Cancel"
       onPrimaryButtonClick={form.handleSubmit(onSubmit)}
       onSecondaryButtonClick={onSecondaryButtonClick}
       showCloseButton

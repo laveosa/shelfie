@@ -26,7 +26,7 @@ export const PurchasesApiService = createApi({
     }),
     getPurchaseDetails: apiConfig.createQuery<PurchaseModel, number>(builder, {
       query: (id: number) => ({
-        url: `${ApiUrlEnum.PURCHASES}/list-item/${id}`,
+        url: `${ApiUrlEnum.PURCHASES}/${id}`,
       }),
     }),
     createPurchaseForSupplier: apiConfig.createMutation<any, any>(builder, {

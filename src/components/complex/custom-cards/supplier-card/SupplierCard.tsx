@@ -24,12 +24,10 @@ export default function SupplierCard({
     <SheProductCard
       className={cs.supplierCard}
       title="Supplier"
-      view="card"
       showPrimaryButton
       primaryButtonTitle="Create Purcase"
       primaryButtonDisabled={!selectedDate || !selectedSupplier}
       showSecondaryButton
-      secondaryButtonTitle="Cancel"
       onPrimaryButtonClick={() =>
         onAction("createPurchase", { selectedDate, selectedSupplier })
       }

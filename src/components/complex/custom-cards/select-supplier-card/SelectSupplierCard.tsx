@@ -23,8 +23,6 @@ export default function SelectSupplierCard({
       showPrimaryButton
       primaryButtonTitle="Select Supplier"
       showSecondaryButton
-      secondaryButtonTitle="Cancel"
-      view="card"
     >
       <div className={cs.selectSupplierCardContent}>
         <div className={cs.createSupplierBlock}>
