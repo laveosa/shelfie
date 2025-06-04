@@ -176,7 +176,8 @@ export function DashboardPage() {
         // icon={Cigarette}
         // elementIcon={Cat}
         // componentView="card"
-        // maxBadgeAmount={3}
+        // maxBadgeAmount={6}
+        // direction="column"
         autoBadgeAmount
         // maxWidth="400px"
         // minWidth="400px"

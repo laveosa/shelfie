@@ -1,5 +1,5 @@
 import React, { JSX, useEffect, useRef, useState } from "react";
-import _ from "lodash";
+import _, { debounce } from "lodash";
 
 import cs from "./SheBadgeList.module.scss";
 import { ISheBadgeList } from "@/const/interfaces/primitive-components/ISheBadgeList.ts";
@@ -35,7 +35,7 @@ export default function SheBadgeList({
   showClearBtn,
   minWidth,
   maxWidth,
-  fullWidth,
+  fullWidth = true,
   elementMinWidth,
   elementMaxWidth,
   elementFullWidth,
@@ -67,17 +67,22 @@ export default function SheBadgeList({
       setScrollInfo(_hasVisibleScroll(refBadgeListContext.current));
     });
 
-    addEventListener("resize", _calculateMaxBadgeAmount);
+    /*const handler = debounce(() => {
+      _calculateMaxBadgeAmount(_items);
+    }, 100);
+
+    window.addEventListener("resize", handler);
+    return () => window.removeEventListener("resize", handler);*/
   }, []);
 
   useEffect(() => {
     if (!_.isEqual(items, _items)) setItems(_addItemsIds(items));
-    _calculateMaxBadgeAmount();
+    _calculateMaxBadgeAmount(items);
   }, [items]);
 
   useEffect(() => {
     setMaxBadgeAmount(maxBadgeAmount);
-    _calculateMaxBadgeAmount();
+    _calculateMaxBadgeAmount(_items);
   }, [maxBadgeAmount, autoBadgeAmount]);
 
   // ==================================================================== EVENT
@@ -89,7 +94,7 @@ export default function SheBadgeList({
   function onCloseHandler(item: ISheBadge) {
     const tmpList: ISheBadge[] = _removeItemFromList(_items, item);
     setItems(_addItemsIds(tmpList));
-    _calculateMaxBadgeAmount();
+    _calculateMaxBadgeAmount(tmpList);
 
     if (onClose) onClose(item);
   }
@@ -155,38 +160,73 @@ export default function SheBadgeList({
     };
   }
 
-  function _calculateMaxBadgeAmount() {
+  function _calculateMaxBadgeAmount(items: ISheBadge[]) {
+    // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    // console.log("items: ", items);
+    // console.log("items length: ", items?.length);
+    console.log(
+      "------------------------------------------ client width: ",
+      refBadgeListContext?.current.clientWidth,
+    );
+
     if (
       (!_.isNil(maxBadgeAmount) && maxBadgeAmount >= 0) ||
       !autoBadgeAmount ||
-      !refBadgeListContext?.current
+      !items ||
+      items.length === 0 ||
+      !refBadgeListContext ||
+      !refBadgeListContext.current
     )
       return;
 
-    setMaxBadgeAmount(null);
+    // setMaxBadgeAmount(null);
 
-    setTimeout(() => {
-      const elem = refBadgeListContext.current;
-      const badgeItems = elem.getElementsByClassName("badge-list-item-cover");
-      const gapSpace = parseInt(
-        window.getComputedStyle(elem.children[0]).gap.replace("px", ""),
-      );
+    const elem = refBadgeListContext.current;
+    const gapW = 4;
+    const paddingW = 16;
+    const iconW = 16;
+    const closeIconW = 16;
+    const averageCharWidth = 8;
 
-      let calculateWidth = plusMoreBtnWidth;
-      let tmpMaxAmount = 0;
+    let calculateWidth = plusMoreBtnWidth;
+    let tmpMaxAmount = 0;
 
-      for (let i = 0; i < badgeItems.length; i++) {
-        calculateWidth +=
-          badgeItems[i].clientWidth +
-          (i < badgeItems.length - 1 ? gapSpace : 0);
+    for (let i = 0; i < items.length; i++) {
+      const textLength = items[i].text?.toString().length ?? 0;
+      let badgeW =
+        Math.ceil(textLength * averageCharWidth) + paddingW + closeIconW + gapW;
 
-        if (calculateWidth < elem.clientWidth) {
-          tmpMaxAmount++;
-        }
+      if (items[i].icon) {
+        badgeW += iconW + gapW;
       }
 
-      setMaxBadgeAmount(tmpMaxAmount);
-    });
+      // console.log(
+      //   "budge  text width: ",
+      //   Math.ceil(textLength * averageCharWidth),
+      // );
+
+      calculateWidth += badgeW;
+
+      if (i < items.length - 1) {
+        calculateWidth += gapW;
+      }
+
+      if (calculateWidth < elem.clientWidth) {
+        tmpMaxAmount++;
+
+        console.log("budge width: ", badgeW);
+        console.log("calculated width: ", calculateWidth);
+        console.log("---------------------- >>>");
+      }
+    }
+
+    console.log(
+      "------------------------------------------ max amount: ",
+      tmpMaxAmount,
+    );
+    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+    setMaxBadgeAmount(tmpMaxAmount);
   }
 
   // ==================================================================== LAYOUT
@@ -224,7 +264,7 @@ export default function SheBadgeList({
           >
             {_items?.length > 0 ? (
               <div
-                className={cs.sheBadgeListItemsContainer}
+                className={`${cs.sheBadgeListItemsContainer} ${cs.fadeInAnimation}`}
                 style={{ flexDirection: direction }}
               >
                 {_items

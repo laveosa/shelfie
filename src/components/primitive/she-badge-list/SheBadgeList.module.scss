@@ -17,7 +17,8 @@ $iconSize: 20px;
 
       .sheBadgeListContext {
         width: 100%;
-        overflow: auto;
+        overflow-x: auto;
+        overflow-y: hidden;
         //scroll-behavior: smooth;
         transition: scroll-behavior 130ms ease-in-out;
 
@@ -25,6 +26,7 @@ $iconSize: 20px;
           display: flex;
           gap: 4px;
           flex-wrap: wrap;
+          overflow-y: hidden;
 
           .sheBadgeListItem {
             display: flex;
@@ -107,4 +109,19 @@ $iconSize: 20px;
 
 ::-webkit-scrollbar-thumb:horizontal {
   background-color: #c9c9c9;
+}
+
+// ======================================================== ANIMATION
+
+.fadeInAnimation {
+  opacity: 0;
+  transform: translateY(2px);
+  animation: fadeIn 200ms ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
