@@ -22,17 +22,22 @@ export default function SelectSupplierCard({
       showCloseButton
       showPrimaryButton
       primaryButtonTitle="Select Supplier"
+      onPrimaryButtonClick={() => onAction("selectSupplier")}
       showSecondaryButton
     >
       <div className={cs.selectSupplierCardContent}>
         <div className={cs.createSupplierBlock}>
           <span className="she-text">Missing a Supplier? Create one!</span>
-          <SheButton icon={Plus} value="Create Supllier" variant="outline" />
+          <SheButton
+            icon={Plus}
+            value="Create Supllier"
+            variant="outline"
+            onClick={() => onAction("openCreateSupplierCard")}
+          />
         </div>
         <div className={cs.supplierListBlock}>
           <SheInput isSearch fullWidth placeholder="Search Supplier..." />
           <DndGridDataTable
-            enableDnd={true}
             showHeader={false}
             columns={columns}
             data={suppliers}

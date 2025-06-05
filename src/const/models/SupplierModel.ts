@@ -5,12 +5,12 @@ export interface SupplierModel {
   id: number;
   appId: string;
   name: string;
-  address1: string;
-  address2: string;
+  addressLine1: string;
+  addressLine2: string;
   city: string;
-  province: string;
-  postalCode: number;
-  country: string;
+  state: string;
+  postCode: number;
+  countryId: string;
 }
 
 export const SupplierModelDefault: SupplierModel = {
@@ -20,10 +20,10 @@ export const SupplierModelDefault: SupplierModel = {
   id: null,
   appId: "",
   name: "",
-  address1: "",
-  address2: "",
+  addressLine1: "",
+  addressLine2: "",
   city: "",
-  province: "",
-  postalCode: null,
-  country: "",
+  state: "",
+  postCode: null,
+  countryId: "",
 };

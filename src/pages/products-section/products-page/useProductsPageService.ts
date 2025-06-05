@@ -60,6 +60,7 @@ export default function useProductsPageService() {
   const [getVariantDetails] = ProductsApiHooks.useLazyGetVariantDetailsQuery();
   const [getPurchaseDetails] =
     PurchasesApiHooks.useLazyGetPurchaseDetailsQuery();
+  const [getCountryCode] = DictionaryApiHooks.useLazyGetCountryCodeQuery();
 
   //-------------------------------------------------API
 
@@ -256,6 +257,15 @@ export default function useProductsPageService() {
     });
   }
 
+  function getCountryCodeHandler() {
+    return getCountryCode(null).then((res: any) => {
+      if (res.data) {
+        dispatch(actions.refreshCountryCodeList(res.data));
+      }
+      return res;
+    });
+  }
+
   //----------------------------------------------------LOGIC
 
   function itemsCardItemsConvertor(
@@ -341,5 +351,6 @@ export default function useProductsPageService() {
     getPurchaseDetailsHandler,
     itemsCardItemsConvertor,
     itemCardHandler,
+    getCountryCodeHandler,
   };
 }

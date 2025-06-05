@@ -5,18 +5,18 @@ import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { ISupplierPage } from "@/const/interfaces/store-slices/ISupplierPage.ts";
+import { ISupplierPageSlice } from "@/const/interfaces/store-slices/ISupplierPageSlice.ts";
 import { useParams } from "react-router-dom";
 import useSupplierPageService from "@/pages/products-section/supplier-page/useSupplierPageService.ts";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
-import { ManageVariantsPageSliceActions as actions } from "@/state/slices/ManageVariantsPageSlice.ts";
+import { SupplierPageSliceActions as actions } from "@/state/slices/SupplierPageSlice.ts";
 import SupplierCard from "@/components/complex/custom-cards/supplier-card/SupplierCard.tsx";
 import SelectSupplierCard from "@/components/complex/custom-cards/select-supplier-card/SelectSupplierCard.tsx";
 import CreateSupplierCard from "@/components/complex/custom-cards/create-supplier-card/CreateSupplierCard.tsx";
 
 export function SupplierPage() {
   const dispatch = useAppDispatch();
-  const state = useAppSelector<ISupplierPage>(StoreSliceEnum.SUPPLIER);
+  const state = useAppSelector<ISupplierPageSlice>(StoreSliceEnum.SUPPLIER);
   const productsState = useAppSelector<IProductsPageSlice>(
     StoreSliceEnum.PRODUCTS,
   );
@@ -31,21 +31,35 @@ export function SupplierPage() {
     }
   }, [purchaseId]);
 
+  useEffect(() => {
+    return () => {
+      dispatch(actions.refreshActiveCards([]));
+    };
+  }, [dispatch]);
+
+  useEffect(() => {
+    console.log("CARDS", state.activeCards);
+  }, [state.activeCards]);
+
+  function scrollToCard(cardId: string) {
+    setTimeout(() => {
+      const cardElement = cardRefs.current[cardId];
+      if (cardElement) {
+        cardElement.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 100);
+  }
+
   function handleCardAction(
     identifier: string,
     forceOpen: boolean = false,
     overrideActiveCards?: string[],
   ) {
-    function scrollToCard(cardId: string) {
-      setTimeout(() => {
-        const cardElement = cardRefs.current[cardId];
-        if (cardElement) {
-          cardElement.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-      }, 100);
-    }
-
-    const activeCards = overrideActiveCards ?? state.activeCards;
+    const activeCards: string[] = Array.isArray(overrideActiveCards)
+      ? overrideActiveCards
+      : Array.isArray(state.activeCards)
+        ? state.activeCards
+        : [];
     let updatedCards: string[];
 
     if (forceOpen) {
@@ -66,9 +80,32 @@ export function SupplierPage() {
     switch (actionType) {
       case "createPurchase":
         console.log("Payload", payload);
-        // service.createPurchaseForSupplierHandler(payload).then((res) => {
-        //   console.log("RES", res);
-        // });
+        service.createPurchaseForSupplierHandler(payload).then((res) => {
+          console.log("RES", res);
+        });
+        break;
+      case "openSelectSupplierCard":
+        handleCardAction("selectSupplierCard", true);
+        service.getListOfAllSuppliersHandler();
+        console.log("Payload", payload);
+        break;
+      case "openCreateSupplierCard":
+        handleCardAction("createSupplierCard", true);
+        console.log("Payload selectSupplierCard", payload);
+        if (!productsState.countryCodeList) {
+          productsService.getCountryCodeHandler();
+        }
+        break;
+      case "createSupplier":
+        handleCardAction("createSupplierCard");
+        console.log("Payload", payload);
+        break;
+      case "uploadSupplierPhoto":
+        console.log("Payload", payload);
+        break;
+      case "selectSupplier":
+        handleCardAction("selectSupplierCard");
+        console.log("Payload", payload);
         break;
     }
   }
@@ -87,8 +124,27 @@ export function SupplierPage() {
         selectedSupplier={productsState.selectedSupplier}
         onAction={onAction}
       />
-      <SelectSupplierCard />
-      <CreateSupplierCard />
+      {state.activeCards?.includes("selectSupplierCard") && (
+        <div
+          ref={(el) => {
+            cardRefs.current["selectSupplierCard"] = el;
+          }}
+        >
+          <SelectSupplierCard onAction={onAction} suppliers={state.suppliers} />
+        </div>
+      )}
+      {state.activeCards?.includes("createSupplierCard") && (
+        <div
+          ref={(el) => {
+            cardRefs.current["createSupplierCard"] = el;
+          }}
+        >
+          <CreateSupplierCard
+            countryList={productsState.countryCodeList}
+            onAction={onAction}
+          />
+        </div>
+      )}
     </div>
   );
 }

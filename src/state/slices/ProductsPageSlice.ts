@@ -15,6 +15,7 @@ import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 import { VariantModel } from "@/const/models/VariantModel.ts";
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 import { SupplierModel } from "@/const/models/SupplierModel.ts";
+import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 
 const initialState: IProductsPageSlice = {
   isLoading: false,
@@ -68,6 +69,7 @@ const initialState: IProductsPageSlice = {
   selectedSupplier: null,
   taxesList: [],
   currenciesList: [],
+  countryCodeList: null,
 };
 
 //----------------------------------------------------- LOADERS
@@ -292,6 +294,13 @@ function refreshCurrenciesList(
   state.currenciesList = action?.payload || state.currenciesList;
 }
 
+function refreshCountryCodeList(
+  state: IProductsPageSlice,
+  action: PayloadAction<CountryCodeModel[]>,
+) {
+  state.countryCodeList = action?.payload || state.countryCodeList;
+}
+
 const ProductsPageSlice = createSlice({
   name: StoreSliceEnum.PRODUCTS,
   initialState,
@@ -328,6 +337,7 @@ const ProductsPageSlice = createSlice({
     refreshSelectedSupplier,
     refreshTaxesList,
     refreshCurrenciesList,
+    refreshCountryCodeList,
   },
 });
 

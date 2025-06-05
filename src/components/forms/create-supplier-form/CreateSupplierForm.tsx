@@ -20,7 +20,7 @@ import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSele
 
 export default function CreateSupplierForm<T>({
   data,
-  countries,
+  countryList,
   onSubmit,
   onImageUpload,
   onCancel,
@@ -30,10 +30,6 @@ export default function CreateSupplierForm<T>({
     resolver: zodResolver(CreateSupplierFormScheme),
     defaultValues: SupplierModelDefault,
   });
-
-  function onImageUploadHandler(data) {
-    onImageUpload(data);
-  }
 
   function convertCountriesToSelectItems(data: any[]): ISheSelectItem[] {
     return data?.map(
@@ -79,11 +75,11 @@ export default function CreateSupplierForm<T>({
           contextName={"supplier"}
           contextId={data?.id}
           fullWidth
-          onUpload={onImageUploadHandler}
+          onUpload={onImageUpload}
         />
         <FormField
           control={form.control}
-          name="address1"
+          name="addressLine1"
           render={({ field }): React.ReactElement => (
             <SheFormItem label="Address line 1">
               <SheInput
@@ -96,7 +92,7 @@ export default function CreateSupplierForm<T>({
         />
         <FormField
           control={form.control}
-          name="address2"
+          name="addressLine2"
           render={({ field }): React.ReactElement => (
             <SheFormItem label="Address line 2">
               <SheInput
@@ -118,7 +114,7 @@ export default function CreateSupplierForm<T>({
         />
         <FormField
           control={form.control}
-          name="province"
+          name="state"
           render={({ field }): React.ReactElement => (
             <SheFormItem label="State/Province/Region">
               <SheInput {...field} placeholder="enter province..." fullWidth />
@@ -127,7 +123,7 @@ export default function CreateSupplierForm<T>({
         />
         <FormField
           control={form.control}
-          name="postalCode"
+          name="postCode"
           render={({ field }): React.ReactElement => (
             <SheFormItem label="Zip/Postal Code">
               <SheInput
@@ -140,18 +136,18 @@ export default function CreateSupplierForm<T>({
         />
         <FormField
           control={form.control}
-          name="country"
+          name="countryId"
           render={({ field }) => (
             <SheFormItem label="Country">
               <SheSelect
                 selected={field.value}
-                items={convertCountriesToSelectItems(countries)}
+                items={convertCountriesToSelectItems(countryList)}
                 hideFirstOption
                 placeholder="choose country..."
                 fullWidth
                 onSelect={(value) => {
                   field.onChange(value);
-                  void form.trigger("country");
+                  void form.trigger("countryId");
                 }}
               />
             </SheFormItem>

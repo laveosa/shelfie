@@ -10,26 +10,29 @@ export function SupplierListGridColumns(onAction: any): ColumnDef<any>[] {
   return [
     {
       id: "checkbox",
+      size: 20,
+      minSize: 20,
+      maxSize: 20,
       cell: ({}) => {
         return <SheToggle />;
       },
     },
     {
       id: "supplierName",
-      accessorFn: (row) => row.supplier?.supplierName,
       header: "Supplier",
       size: 200,
       minSize: 200,
       maxSize: 200,
       cell: ({ row }) => {
-        const imageUrl: string = row.original.supplier?.photo;
+        const imageUrl: string = row.original.photo;
+        const name: string = row.original.supplierName;
         return (
           <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
             <div>
               {imageUrl ? (
                 <img
                   src={imageUrl || placeholderImage}
-                  alt={row.original.supplier?.supplierName || "Supplier"}
+                  alt={name || "Supplier"}
                   className="object-cover rounded-md w-full h-full"
                 />
               ) : (
@@ -39,10 +42,10 @@ export function SupplierListGridColumns(onAction: any): ColumnDef<any>[] {
             <div>
               <SheTooltip
                 delayDuration={200}
-                text={row.getValue("supplierName")}
+                text={name}
                 className="max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap"
               >
-                <span>{row.getValue("supplierName")}</span>
+                <span>{name}</span>
               </SheTooltip>
             </div>
           </div>

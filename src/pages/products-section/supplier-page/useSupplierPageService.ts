@@ -2,16 +2,19 @@ import PurchasesApiHooks from "@/utils/services/api/PurchasesApiService.ts";
 import { SupplierPageSliceActions as actions } from "@/state/slices/SupplierPageSlice.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { ISupplierPage } from "@/const/interfaces/store-slices/ISupplierPage.ts";
+import { ISupplierPageSlice } from "@/const/interfaces/store-slices/ISupplierPageSlice.ts";
+import SuppliersApiHooks from "@/utils/services/api/SuppliersApiService.ts";
 
 export default function useSupplierPageService() {
-  const state = useAppSelector<ISupplierPage>(StoreSliceEnum.SUPPLIER);
+  const state = useAppSelector<ISupplierPageSlice>(StoreSliceEnum.SUPPLIER);
   const dispatch = useAppDispatch();
 
   const [getPurchaseDetails] =
     PurchasesApiHooks.useLazyGetPurchaseDetailsQuery();
   const [createPurchaseForSupplier] =
     PurchasesApiHooks.useCreatePurchaseForSupplierMutation();
+  const [getListOfAllSuppliers] =
+    SuppliersApiHooks.useLazyGetListOfAllSuppliersQuery();
 
   function getPurchaseDetailsHandler(id) {
     return getPurchaseDetails(id).then((res: any) => {
@@ -27,8 +30,16 @@ export default function useSupplierPageService() {
     });
   }
 
+  function getListOfAllSuppliersHandler() {
+    return getListOfAllSuppliers().then((res: any) => {
+      dispatch(actions.refreshSuppliers(res.data));
+      return res.data;
+    });
+  }
+
   return {
     getPurchaseDetailsHandler,
     createPurchaseForSupplierHandler,
+    getListOfAllSuppliersHandler,
   };
 }

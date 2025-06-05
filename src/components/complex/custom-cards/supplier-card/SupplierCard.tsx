@@ -25,7 +25,7 @@ export default function SupplierCard({
       className={cs.supplierCard}
       title="Supplier"
       showPrimaryButton
-      primaryButtonTitle="Create Purcase"
+      primaryButtonTitle="Create Purchase"
       primaryButtonDisabled={!selectedDate || !selectedSupplier}
       showSecondaryButton
       onPrimaryButtonClick={() =>
@@ -44,6 +44,7 @@ export default function SupplierCard({
               variant="outline"
               maxWidth="150px"
               minWidth="150px"
+              onClick={() => onAction("openSelectSupplierCard")}
             />
           </div>
         ) : (

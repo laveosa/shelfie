@@ -30,6 +30,7 @@ import { SuppliersApiService } from "@/utils/services/api/SuppliersApiService.ts
 import PurchaseProductsPageSlice from "@/state/slices/PurchaseProductsPageSlice.ts";
 import MarginsPageSlice from "@/state/slices/MarginsPageSlice.ts";
 import InvoicesPageSlice from "@/state/slices/InvoicesPageSlice.ts";
+import SupplierPageSlice from "@/state/slices/SupplierPageSlice.ts";
 
 export const store = configureStore({
   reducer: {
@@ -45,7 +46,7 @@ export const store = configureStore({
     [StoreSliceEnum.MANAGE_VARIANTS]: ManageVariantsPageSlice.reducer,
     [StoreSliceEnum.ATTRIBUTES]: AttributesPageSlice.reducer,
     [StoreSliceEnum.SIZE_CHART]: SizeChartPageSlice.reducer,
-    [StoreSliceEnum.SUPPLIER]: SupportPageSlice.reducer,
+    [StoreSliceEnum.SUPPLIER]: SupplierPageSlice.reducer,
     [StoreSliceEnum.PURCHASE_PRODUCTS]: PurchaseProductsPageSlice.reducer,
     [StoreSliceEnum.MARGINS]: MarginsPageSlice.reducer,
     [StoreSliceEnum.INVOICES]: InvoicesPageSlice.reducer,

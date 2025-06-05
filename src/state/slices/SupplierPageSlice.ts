@@ -1,26 +1,43 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { ISupplierPage } from "@/const/interfaces/store-slices/ISupplierPage.ts";
+import { ISupplierPageSlice } from "@/const/interfaces/store-slices/ISupplierPageSlice.ts";
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
+import { SupplierModel } from "@/const/models/SupplierModel.ts";
 
-const initialState: ISupplierPage = {
+const initialState: ISupplierPageSlice = {
   activeCards: [],
   purchase: null,
+  suppliers: null,
+  selectedSupplier: null,
 };
 
 function refreshActiveCards(
-  state: ISupplierPage,
+  state: ISupplierPageSlice,
   action: PayloadAction<any[]>,
 ) {
   state.activeCards = action?.payload || state.activeCards;
 }
 
 function refreshPurchase(
-  state: ISupplierPage,
+  state: ISupplierPageSlice,
   action: PayloadAction<PurchaseModel>,
 ) {
   state.purchase = action?.payload || state.purchase;
+}
+
+function refreshSuppliers(
+  state: ISupplierPageSlice,
+  action: PayloadAction<SupplierModel[]>,
+) {
+  state.suppliers = action?.payload || state.suppliers;
+}
+
+function refreshSelectedSupplier(
+  state: ISupplierPageSlice,
+  action: PayloadAction<SupplierModel>,
+) {
+  state.selectedSupplier = action?.payload || state.selectedSupplier;
 }
 
 const SupplierPageSlice = createSlice({
@@ -29,6 +46,8 @@ const SupplierPageSlice = createSlice({
   reducers: {
     refreshActiveCards,
     refreshPurchase,
+    refreshSuppliers,
+    refreshSelectedSupplier,
   },
 });
 
