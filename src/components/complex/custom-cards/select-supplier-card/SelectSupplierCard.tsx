@@ -1,5 +1,5 @@
 import { Plus } from "lucide-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import cs from "./SelectSupplierCard.module.scss";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
@@ -14,7 +14,17 @@ export default function SelectSupplierCard({
   suppliers,
   onAction,
 }: ISelectSupplierCard) {
-  const columns = SupplierListGridColumns(onAction);
+  const [selectedSupplier, setSelectedSupplier] = useState<any | null>(null);
+
+  useEffect(() => {
+    console.log(selectedSupplier);
+  }, [selectedSupplier]);
+
+  const columns = SupplierListGridColumns({
+    onAction,
+    selectedSupplier,
+    setSelectedSupplier,
+  });
 
   return (
     <SheProductCard
@@ -24,7 +34,11 @@ export default function SelectSupplierCard({
       showCloseButton
       showPrimaryButton
       primaryButtonTitle="Select Supplier"
-      onPrimaryButtonClick={() => onAction("selectSupplier")}
+      onPrimaryButtonClick={() => {
+        if (selectedSupplier) {
+          onAction("selectSupplier", selectedSupplier);
+        }
+      }}
       showSecondaryButton
       onSecondaryButtonClick={() => onAction("closeSelectSupplierCard")}
     >

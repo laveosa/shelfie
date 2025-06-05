@@ -1,20 +1,41 @@
 import { ColumnDef } from "@tanstack/react-table";
-import SheToggle from "@/components/primitive/she-toggle/SheToggle.tsx";
+// Removed SheToggle import - using radio button instead
 import placeholderImage from "@/assets/images/placeholder-image.png";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { ImageIcon } from "lucide-react";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import PurchasesGridColumnActions from "@/components/complex/grid/purchases-grid/PurchasesGridColumnsActions.tsx";
+import { Input } from "@/components/ui/input.tsx";
 
-export function SupplierListGridColumns(onAction: any): ColumnDef<any>[] {
+export function SupplierListGridColumns({
+  onAction,
+  selectedSupplier,
+  setSelectedSupplier,
+}: {
+  onAction: any;
+  selectedSupplier: any | null;
+  setSelectedSupplier: (supplier: any | null) => void;
+}): ColumnDef<any>[] {
+  console.log(selectedSupplier);
   return [
     {
       id: "checkbox",
       size: 20,
-      minSize: 20,
-      maxSize: 20,
-      cell: ({}) => {
-        return <SheToggle />;
+      cell: ({ row }) => {
+        const isChecked =
+          selectedSupplier?.supplierId === row.original.supplierId;
+        return (
+          <Input
+            type="radio"
+            name="supplierSelection"
+            checked={isChecked}
+            onChange={() => {
+              setSelectedSupplier(row.original);
+            }}
+            style={{ filter: "grayscale(1)" }}
+            className="w-4 h-4 cursor-pointer"
+          />
+        );
       },
     },
     {

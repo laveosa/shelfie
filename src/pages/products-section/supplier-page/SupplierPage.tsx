@@ -76,23 +76,27 @@ export function SupplierPage() {
   function onAction(actionType: string, payload) {
     switch (actionType) {
       case "createPurchase":
-        console.log("createPurchase", payload);
         dispatch(actions.setIsSupplierCardLoading(true));
-        service.createPurchaseForSupplierHandler(payload).then((res) => {
-          dispatch(actions.setIsSupplierCardLoading(false));
-          console.log("RES", res);
-          if (res) {
-            addToast({
-              text: "Purchase created successfully",
-              type: "success",
-            });
-          } else {
-            addToast({
-              text: res.error.message,
-              type: "error",
-            });
-          }
-        });
+        service
+          .createPurchaseForSupplierHandler({
+            date: payload.selectedDate,
+            supplierId: payload.selectedSupplier.supplierId,
+          })
+          .then((res) => {
+            dispatch(actions.setIsSupplierCardLoading(false));
+            console.log("RES", res);
+            if (res) {
+              addToast({
+                text: "Purchase created successfully",
+                type: "success",
+              });
+            } else {
+              addToast({
+                text: res.error.message,
+                type: "error",
+              });
+            }
+          });
         break;
       case "deletePurchase":
         console.log("deletePurchase", payload);
@@ -142,6 +146,7 @@ export function SupplierPage() {
         break;
       case "selectSupplier":
         handleCardAction("selectSupplierCard");
+        dispatch(actions.refreshSelectedSupplier(payload));
         console.log("Payload", payload);
         break;
       case "closeSupplierCard":
@@ -158,6 +163,10 @@ export function SupplierPage() {
     }
   }
 
+  useEffect(() => {
+    console.log("SUPPLIER", state.selectedSupplier);
+  }, [state.selectedSupplier]);
+
   return (
     <div className={cs.supplierPage}>
       <ProductMenuCard
@@ -171,6 +180,9 @@ export function SupplierPage() {
       <SupplierCard
         isLoading={state.isSupplierCardLoading}
         selectedPurchase={productsState.selectedPurchase}
+        selectedSupplier={
+          state.selectedSupplier ?? productsState.selectedPurchase?.supplier
+        }
         onAction={onAction}
       />
       {state.activeCards?.includes("selectSupplierCard") && (

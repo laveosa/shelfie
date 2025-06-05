@@ -17,9 +17,12 @@ import { useState } from "react";
 export default function SupplierCard({
   isLoading,
   selectedPurchase,
+  selectedSupplier,
   onAction,
 }: ISupplierCard) {
   const [selectedDate, setSelectedDate] = useState<Date>(null);
+
+  console.log("selected", selectedSupplier);
 
   return (
     <SheProductCard
@@ -28,15 +31,15 @@ export default function SupplierCard({
       title="Supplier"
       showPrimaryButton
       primaryButtonTitle="Create Purchase"
-      primaryButtonDisabled={!selectedDate || !selectedPurchase}
+      primaryButtonDisabled={!selectedDate || !selectedSupplier}
       showSecondaryButton
       onPrimaryButtonClick={() =>
-        onAction("createPurchase", { selectedDate, selectedPurchase })
+        onAction("createPurchase", { selectedDate, selectedSupplier })
       }
       onSecondaryButtonClick={() => onAction("closeSupplierCard")}
     >
       <div className={cs.supplierCardContent}>
-        {!selectedPurchase ? (
+        {!selectedSupplier ? (
           <div className={cs.noSelectedSupplier}>
             <span className="she-text">
               Select which supplier provided the products
@@ -53,10 +56,10 @@ export default function SupplierCard({
         ) : (
           <div className={cs.selectedSupplier}>
             <div className={cs.supplierPhoto}>
-              {selectedPurchase.supplier.photo ? (
+              {selectedSupplier.photo ? (
                 <img
-                  src={selectedPurchase.supplier?.photo}
-                  alt={selectedPurchase.supplier?.name}
+                  src={selectedSupplier?.photo}
+                  alt={selectedSupplier?.name}
                 />
               ) : (
                 <SheIcon icon={ImageIcon} />
@@ -64,7 +67,7 @@ export default function SupplierCard({
             </div>
             <div className={cs.supplierDesc}>
               <span className="she-subtext" style={{ minWidth: "100%" }}>
-                {selectedPurchase.supplier?.supplierName}
+                {selectedSupplier?.supplierName}
               </span>
             </div>
             <DropdownMenu>
