@@ -6,12 +6,47 @@ import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 import { SupplierModel } from "@/const/models/SupplierModel.ts";
 
 const initialState: ISupplierPageSlice = {
+  isLoading: false,
+  isSupplierCardLoading: false,
+  isSelectSupplierCard: false,
+  isCreateSupplierCard: false,
   activeCards: [],
   purchase: null,
   suppliers: null,
   selectedSupplier: null,
 };
 
+//----------------------------------------------------- LOADERS
+
+function setIsLoading(
+  state: ISupplierPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isLoading = action?.payload;
+}
+
+function setIsSupplierCardLoading(
+  state: ISupplierPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isSupplierCardLoading = action?.payload;
+}
+
+function setIsSelectSupplierCard(
+  state: ISupplierPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isSelectSupplierCard = action?.payload;
+}
+
+function setIsCreateSupplierCard(
+  state: ISupplierPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isCreateSupplierCard = action?.payload;
+}
+
+//----------------------------------------------------- API
 function refreshActiveCards(
   state: ISupplierPageSlice,
   action: PayloadAction<any[]>,
@@ -44,6 +79,10 @@ const SupplierPageSlice = createSlice({
   name: StoreSliceEnum.SUPPLIER,
   initialState,
   reducers: {
+    setIsLoading,
+    setIsSupplierCardLoading,
+    setIsSelectSupplierCard,
+    setIsCreateSupplierCard,
     refreshActiveCards,
     refreshPurchase,
     refreshSuppliers,

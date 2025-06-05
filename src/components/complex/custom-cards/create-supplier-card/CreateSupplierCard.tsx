@@ -4,11 +4,13 @@ import CreateSupplierForm from "@/components/forms/create-supplier-form/CreateSu
 import { ICreateSupplierCard } from "@/const/interfaces/complex-components/custom-cards/ICreateSupplierCard.ts";
 
 export default function CreateSupplierCard({
+  isLoading,
   countryList,
   onAction,
 }: ICreateSupplierCard) {
   return (
     <SheProductCard
+      loading={isLoading}
       title="Create Supplier"
       className={cs.createSupplierCard}
       showCloseButton

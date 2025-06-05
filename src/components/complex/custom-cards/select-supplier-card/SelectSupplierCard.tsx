@@ -10,6 +10,7 @@ import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx
 import { SupplierListGridColumns } from "@/components/complex/grid/supplier-list-grid/SupplierListGridColumns.tsx";
 
 export default function SelectSupplierCard({
+  isLoading,
   suppliers,
   onAction,
 }: ISelectSupplierCard) {
@@ -17,6 +18,7 @@ export default function SelectSupplierCard({
 
   return (
     <SheProductCard
+      loading={isLoading}
       className={cs.selectSupplierCad}
       title="Select Supplier"
       showCloseButton

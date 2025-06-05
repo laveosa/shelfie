@@ -15,6 +15,7 @@ import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { useState } from "react";
 
 export default function SupplierCard({
+  isLoading,
   selectedPurchase,
   onAction,
 }: ISupplierCard) {
@@ -22,6 +23,7 @@ export default function SupplierCard({
 
   return (
     <SheProductCard
+      loading={isLoading}
       className={cs.supplierCard}
       title="Supplier"
       showPrimaryButton
