@@ -4,6 +4,7 @@ import { ISheLabel } from "@/const/interfaces/primitive-components/ISheLabel.ts"
 import { ISheClearButton } from "@/const/interfaces/primitive-components/ISheClearButton.ts";
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
+import { ISheBadgeList } from "@/const/interfaces/primitive-components/ISheBadgeList.ts";
 
 export interface ISheMultiSelectTrigger
   extends ISheLabel,
@@ -16,6 +17,7 @@ export interface ISheMultiSelectTrigger
   elementStyle?: React.CSSProperties;
   icon?: Partial<ISheIcon> | string | React.FC<any>;
   items?: ISheBadge[];
+  badgeListProps?: ISheBadgeList;
   contextType?: "badges" | "string";
   placeholder?: string;
   placeholderTransKey?: string;

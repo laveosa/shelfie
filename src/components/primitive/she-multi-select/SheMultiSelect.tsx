@@ -34,6 +34,8 @@ export default function SheMultiSelect({
   selectedValues,
   isModalPopover,
   isOpen,
+  isLoading,
+  disabled,
   onIsOpen,
   onValueChange,
   onClear,
@@ -51,7 +53,7 @@ export default function SheMultiSelect({
       setOptions(options);
       setBadges(_getSelectedBudges(options, _selectedValues));
     }
-  }, options);
+  }, [options]);
 
   useEffect(() => {
     if (
@@ -61,7 +63,7 @@ export default function SheMultiSelect({
       setSelectedValues(selectedValues);
       setBadges(_getSelectedBudges(options, selectedValues));
     }
-  }, selectedValues);
+  }, [selectedValues]);
 
   useEffect(() => {
     if (onIsOpen) onIsOpen(_isPopoverOpen);
@@ -146,9 +148,12 @@ export default function SheMultiSelect({
         items={_badges}
         isOpen={_isPopoverOpen}
         ariaDescribedbyId={ariaDescribedbyId}
+        disabled={disabled || !_options || _options.length === 0}
+        isLoading={isLoading}
         onTogglePopover={onTogglePopoverHandler}
         onToggleOption={onToggleOptionHandler}
         onClearExtraOptions={onClearExtraOptionsHandler}
+        onClearAll={onClearButtonHandler}
         {...props}
       />
       <PopoverContent className="w-auto p-0" align="start">
@@ -159,8 +164,8 @@ export default function SheMultiSelect({
             <CommandGroup>
               <CommandItem
                 key="all"
-                onSelect={onToggleAllHandler}
                 className="cursor-pointer"
+                onSelect={onToggleAllHandler}
               >
                 <div
                   className={cn(

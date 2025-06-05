@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import cs from "./DashboardPage.module.scss";
 import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageService.ts";
@@ -13,6 +13,7 @@ import {
   Search,
   Turtle,
   User,
+  Users,
 } from "lucide-react";
 import { ISheMultiSelectItem } from "@/const/interfaces/primitive-components/ISheMultiSelectItem.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
@@ -54,6 +55,14 @@ const optionsObj: ISheMultiSelectItem[] = [
   { value: { option: 3 }, text: "Obj 3" },
   { value: { option: "4" }, text: "Obj 4" },
   { value: { option: 5 }, text: "Obj 5" },
+];
+
+const optionsMix: ISheMultiSelectItem[] = [
+  { value: 1, text: "Option 1" },
+  { value: "2", text: "Option 2" },
+  { value: { option: 3 }, text: "Option 3" },
+  { value: [1, "2", true, { option: null }], text: "Option 4" },
+  { value: { option: 5 }, text: "Option 5" },
 ];
 
 const badges: ISheBadge[] = [
@@ -144,12 +153,23 @@ const badges: ISheBadge[] = [
 export function DashboardPage() {
   const service = useDashboardPageService();
 
-  const [badgeItems, setBadgeItems] = useState<ISheBadge[]>(null);
+  const [selectItems, setSelectItems] = useState<ISheMultiSelectItem[]>(null);
+  const [selected, setSelected] = useState<any[]>(null);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setSelectItems(optionsMix);
+    }, 1000);
+
+    setTimeout(() => {
+      setSelected([optionsMix[0].value, optionsMix[3].value]);
+    }, 1000);
+  }, []);
 
   // ================================================================== EVENT
 
   function onAction(value) {
-    // console.log(value);
+    console.log(value);
   }
 
   // ================================================================== LAYOUT
@@ -177,20 +197,21 @@ export function DashboardPage() {
           { text: "option 1", value: 1 },
           { text: "option 2", value: 2 },
         ]}
+        fullWidth
+        showClearBtn
       />
 
       <br />
 
       <SheMultiSelect
         label="Multi Select"
-        options={optionsObj}
-        selectedValues={[optionsObj[1].value, optionsObj[3].value]}
+        options={selectItems}
+        selectedValues={selected}
+        icon={Users}
         placeholder="select options..."
         placeholderTransKey="023jf09jwe"
-        icon={Search}
-        // fullWidth
-        // minWidth="400px"
-        // maxWidth="200px"
+        contextType="badges"
+        showClearBtn
         onValueChange={onAction}
         onIsOpen={(event) => console.log("onIsOpen: ", event)}
         onClear={(event) => console.log("onClear: ", event)}
