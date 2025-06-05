@@ -67,6 +67,7 @@ const initialState: IProductsPageSlice = {
   productVariants: [],
   selectedVariant: null,
   selectedSupplier: null,
+  selectedPurchase: null,
   taxesList: [],
   currenciesList: [],
   countryCodeList: null,
@@ -276,6 +277,13 @@ function refreshSelectedSupplier(
   state.selectedSupplier = action?.payload || state.selectedSupplier;
 }
 
+function refreshSelectedPurchase(
+  state: IProductsPageSlice,
+  action: PayloadAction<PurchaseModel>,
+) {
+  state.selectedPurchase = action?.payload || state.selectedPurchase;
+}
+
 function resetSelectedVariant(state: IProductsPageSlice) {
   state.selectedVariant = null;
 }
@@ -335,6 +343,7 @@ const ProductsPageSlice = createSlice({
     refreshSelectedVariant,
     resetSelectedVariant,
     refreshSelectedSupplier,
+    refreshSelectedPurchase,
     refreshTaxesList,
     refreshCurrenciesList,
     refreshCountryCodeList,

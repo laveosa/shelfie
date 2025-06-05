@@ -1,6 +1,6 @@
-import { SupplierModel } from "@/const/models/SupplierModel.ts";
+import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 
 export interface ISupplierCard {
-  selectedSupplier?: SupplierModel;
+  selectedPurchase?: PurchaseModel;
   onAction?: (identifier: string, payload?: any) => void;
 }

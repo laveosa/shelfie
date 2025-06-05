@@ -17,6 +17,7 @@ import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { SheImageUploader } from "@/components/complex/she-images-uploader/SheImageUploader.tsx";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 
 export default function CreateSupplierForm<T>({
   data,
@@ -45,7 +46,7 @@ export default function CreateSupplierForm<T>({
   }, [data]);
 
   return (
-    <div className="flex justify-center">
+    <div className="flex flex-col justify-center">
       <SheForm<T>
         form={form}
         defaultValues={UserModelDefault}
@@ -154,6 +155,17 @@ export default function CreateSupplierForm<T>({
           )}
         />
       </SheForm>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <SheButton
+          value="Cancel"
+          variant="secondary"
+          onClick={() => onCancel()}
+        />
+        <SheButton
+          value="Create Supplier"
+          onClick={form.handleSubmit(onSubmit)}
+        />
+      </div>
     </div>
   );
 }

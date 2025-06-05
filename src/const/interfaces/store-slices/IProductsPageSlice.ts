@@ -29,9 +29,10 @@ export interface IProductsPageSlice {
   activeCards?: any[];
   selectedProduct?: ProductModel;
   productCounter?: ProductCounterModel;
-  productVariants: VariantModel[];
+  productVariants?: VariantModel[];
   selectedVariant?: VariantModel;
   selectedSupplier?: SupplierModel;
+  selectedPurchase?: PurchaseModel;
   columnsPreferences?: PreferencesModel;
   brands?: BrandModel[];
   categories?: CategoryModel[];

@@ -6,13 +6,14 @@ import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { ISupplierPageSlice } from "@/const/interfaces/store-slices/ISupplierPageSlice.ts";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useSupplierPageService from "@/pages/products-section/supplier-page/useSupplierPageService.ts";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import { SupplierPageSliceActions as actions } from "@/state/slices/SupplierPageSlice.ts";
 import SupplierCard from "@/components/complex/custom-cards/supplier-card/SupplierCard.tsx";
 import SelectSupplierCard from "@/components/complex/custom-cards/select-supplier-card/SelectSupplierCard.tsx";
 import CreateSupplierCard from "@/components/complex/custom-cards/create-supplier-card/CreateSupplierCard.tsx";
+import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 
 export function SupplierPage() {
   const dispatch = useAppDispatch();
@@ -22,24 +23,15 @@ export function SupplierPage() {
   );
   const service = useSupplierPageService();
   const productsService = useProductsPageService();
+  const navigate = useNavigate();
   const { purchaseId } = useParams();
   const cardRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   useEffect(() => {
-    if (!state.purchase) {
+    if (state.purchase) {
       service.getPurchaseDetailsHandler(purchaseId);
     }
   }, [purchaseId]);
-
-  useEffect(() => {
-    return () => {
-      dispatch(actions.refreshActiveCards([]));
-    };
-  }, [dispatch]);
-
-  useEffect(() => {
-    console.log("CARDS", state.activeCards);
-  }, [state.activeCards]);
 
   function scrollToCard(cardId: string) {
     setTimeout(() => {
@@ -79,10 +71,13 @@ export function SupplierPage() {
   function onAction(actionType: string, payload) {
     switch (actionType) {
       case "createPurchase":
-        console.log("Payload", payload);
+        console.log("createPurchase", payload);
         service.createPurchaseForSupplierHandler(payload).then((res) => {
           console.log("RES", res);
         });
+        break;
+      case "deletePurchase":
+        console.log("deletePurchase", payload);
         break;
       case "openSelectSupplierCard":
         handleCardAction("selectSupplierCard", true);
@@ -97,8 +92,8 @@ export function SupplierPage() {
         }
         break;
       case "createSupplier":
-        handleCardAction("createSupplierCard");
         console.log("Payload", payload);
+        handleCardAction("createSupplierCard");
         break;
       case "uploadSupplierPhoto":
         console.log("Payload", payload);
@@ -106,6 +101,17 @@ export function SupplierPage() {
       case "selectSupplier":
         handleCardAction("selectSupplierCard");
         console.log("Payload", payload);
+        break;
+      case "closeSupplierCard":
+        navigate(NavUrlEnum.PRODUCTS);
+        dispatch(actions.refreshActiveCards([]));
+        break;
+      case "closeSelectSupplierCard":
+        handleCardAction("selectSupplierCard");
+        break;
+      case "closeCreateSupplierCard":
+        console.log("CLICK");
+        handleCardAction("createSupplierCard");
         break;
     }
   }
@@ -116,12 +122,12 @@ export function SupplierPage() {
         isLoading={productsState.isProductMenuCardLoading}
         title="Report Purchase"
         itemsCollection="purchases"
-        productId={productsState.selectedSupplier?.supplierId}
+        productId={productsState.selectedPurchase?.supplier.supplierId}
         productCounter={productsState.productCounter}
         onAction={handleCardAction}
       />
       <SupplierCard
-        selectedSupplier={productsState.selectedSupplier}
+        selectedPurchase={productsState.selectedPurchase}
         onAction={onAction}
       />
       {state.activeCards?.includes("selectSupplierCard") && (

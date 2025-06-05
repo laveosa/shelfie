@@ -12,15 +12,14 @@ export default function CreateSupplierCard({
       title="Create Supplier"
       className={cs.createSupplierCard}
       showCloseButton
-      showPrimaryButton
-      primaryButtonTitle="Create Supplier"
-      showSecondaryButton
+      onSecondaryButtonClick={() => onAction("closeCreateSupplierCard")}
     >
       <div className={cs.createSupplierCardContent}>
         <CreateSupplierForm
           countryList={countryList}
           onSubmit={(data) => onAction("createSupplier", data)}
           onImageUpload={(data) => onAction("uploadSupplierPhoto", data)}
+          onCancel={() => onAction("closeCreateSupplierCard")}
         />
       </div>
     </SheProductCard>

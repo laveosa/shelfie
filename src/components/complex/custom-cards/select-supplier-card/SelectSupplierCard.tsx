@@ -24,6 +24,7 @@ export default function SelectSupplierCard({
       primaryButtonTitle="Select Supplier"
       onPrimaryButtonClick={() => onAction("selectSupplier")}
       showSecondaryButton
+      onSecondaryButtonClick={() => onAction("closeSelectSupplierCard")}
     >
       <div className={cs.selectSupplierCardContent}>
         <div className={cs.createSupplierBlock}>

@@ -15,7 +15,7 @@ import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { useState } from "react";
 
 export default function SupplierCard({
-  selectedSupplier,
+  selectedPurchase,
   onAction,
 }: ISupplierCard) {
   const [selectedDate, setSelectedDate] = useState<Date>(null);
@@ -26,14 +26,15 @@ export default function SupplierCard({
       title="Supplier"
       showPrimaryButton
       primaryButtonTitle="Create Purchase"
-      primaryButtonDisabled={!selectedDate || !selectedSupplier}
+      primaryButtonDisabled={!selectedDate || !selectedPurchase}
       showSecondaryButton
       onPrimaryButtonClick={() =>
-        onAction("createPurchase", { selectedDate, selectedSupplier })
+        onAction("createPurchase", { selectedDate, selectedPurchase })
       }
+      onSecondaryButtonClick={() => onAction("closeSupplierCard")}
     >
       <div className={cs.supplierCardContent}>
-        {!selectedSupplier ? (
+        {!selectedPurchase ? (
           <div className={cs.noSelectedSupplier}>
             <span className="she-text">
               Select which supplier provided the products
@@ -50,10 +51,10 @@ export default function SupplierCard({
         ) : (
           <div className={cs.selectedSupplier}>
             <div className={cs.supplierPhoto}>
-              {selectedSupplier.photo ? (
+              {selectedPurchase.supplier.photo ? (
                 <img
-                  src={selectedSupplier?.photo}
-                  alt={selectedSupplier?.name}
+                  src={selectedPurchase.supplier?.photo}
+                  alt={selectedPurchase.supplier?.name}
                 />
               ) : (
                 <SheIcon icon={ImageIcon} />
@@ -61,7 +62,7 @@ export default function SupplierCard({
             </div>
             <div className={cs.supplierDesc}>
               <span className="she-subtext" style={{ minWidth: "100%" }}>
-                {selectedSupplier?.supplierName}
+                {selectedPurchase.supplier?.supplierName}
               </span>
             </div>
             <DropdownMenu>
@@ -76,9 +77,7 @@ export default function SupplierCard({
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="w-[160px]">
                 <DropdownMenuItem
-                // onClick={() =>
-                //   onAction("deleteVariant", row.id, meta?.setLoadingRow, row)
-                // }
+                  onClick={(data) => onAction("deletePurchase", data)}
                 >
                   Delete
                 </DropdownMenuItem>
@@ -91,6 +90,7 @@ export default function SupplierCard({
         <SheDatePicker
           fullWidth
           label="Set date when purchase took place"
+          date={selectedPurchase?.date}
           onSelectDate={(date) => setSelectedDate(date)}
         />
       </div>

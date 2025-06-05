@@ -6,5 +6,5 @@ export interface ICreateSupplierForm<T> {
   countryList?: CountryCodeModel[];
   onSubmit?: (data: T) => void;
   onImageUpload?: (data: T) => void;
-  onCancel?: (data: T) => void;
+  onCancel?: () => void;
 }

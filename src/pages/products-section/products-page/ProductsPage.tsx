@@ -206,7 +206,7 @@ export function ProductsPage() {
         console.log(`Delete variant ${rowId}`);
         break;
       case "managePurchase":
-        dispatch(actions.refreshSelectedSupplier(rowData.supplier));
+        dispatch(actions.refreshSelectedPurchase(rowData));
         navigate(
           `${NavUrlEnum.PRODUCTS}${NavUrlEnum.SUPPLIER}/${rowData?.purchaseId}`,
         );
