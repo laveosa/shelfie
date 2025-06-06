@@ -9,7 +9,7 @@ import { ISheBadgeList } from "@/const/interfaces/primitive-components/ISheBadge
 export interface ISheMultiSelectTrigger
   extends ISheLabel,
     ISheClearButton,
-    ComponentPropsWithRef<any> {
+    ComponentPropsWithRef<"button"> {
   id?: string;
   className?: string;
   style?: React.CSSProperties;

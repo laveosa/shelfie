@@ -205,13 +205,9 @@ export function DashboardPage() {
 
       <SheMultiSelect
         label="Multi Select"
-        options={selectItems}
-        selectedValues={selected}
-        icon={Users}
+        options={optionsNumber}
         placeholder="select options..."
-        placeholderTransKey="023jf09jwe"
         contextType="badges"
-        showClearBtn
         onValueChange={onAction}
         onIsOpen={(event) => console.log("onIsOpen: ", event)}
         onClear={(event) => console.log("onClear: ", event)}

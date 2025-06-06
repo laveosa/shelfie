@@ -1,17 +1,13 @@
-import { JSX, useEffect, useState } from "react";
+import { JSX, useEffect, useRef, useState } from "react";
 import * as React from "react";
 import _ from "lodash";
-
-import { CheckIcon, ChevronDown } from "lucide-react";
-
 import { cn } from "@/lib/utils";
+
+import { CheckIcon } from "lucide-react";
+
+import cs from "./SheMultiSelect.module.scss";
 import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent } from "@/components/ui/popover";
 import {
   Command,
   CommandEmpty,
@@ -22,30 +18,38 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import { ISheMultiSelect } from "@/const/interfaces/primitive-components/ISheMultiSelect.ts";
-import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
-import SheBadge from "@/components/primitive/she-badge/SheBadge.tsx";
 import SheMultiSelectTrigger from "@/components/primitive/she-multi-select/components/she-multi-select-trigger/SheMultiSelectTrigger.tsx";
 import { generateId } from "@/utils/helpers/quick-helper.ts";
 import { ISheMultiSelectItem } from "@/const/interfaces/primitive-components/ISheMultiSelectItem.ts";
 import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
+import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 
 export default function SheMultiSelect({
+  popoverClassName = "",
+  popoverStyles,
+  icon,
   options,
   selectedValues,
-  isModalPopover,
   isOpen,
   isLoading,
   disabled,
+  searchPlaceholder = "search...",
+  searchPlaceholderTransKey,
+  emptySearchPlaceholder = "no data to display",
+  emptySearchPlaceholderTransKey,
   onIsOpen,
   onValueChange,
   onClear,
   ...props
 }: ISheMultiSelect): JSX.Element {
+  const { translate } = useAppTranslation();
   const [_options, setOptions] = useState<ISheMultiSelectItem[]>(null);
   const [_selectedValues, setSelectedValues] = useState<any[]>([]);
   const [_badges, setBadges] = useState<ISheBadge[]>(null);
   const [_isPopoverOpen, setIsPopoverOpen] = useState(false);
 
+  const popoverRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const ariaDescribedbyId = `${generateId()}_MULTI_SELECT_ID`;
 
   useEffect(() => {
@@ -77,6 +81,7 @@ export default function SheMultiSelect({
 
   function onTogglePopoverHandler() {
     setIsPopoverOpen((prev) => !prev);
+    _calculatePopoverWidth();
   }
 
   function onToggleOptionHandler(option: string) {
@@ -109,6 +114,14 @@ export default function SheMultiSelect({
 
   // ==================================================================== PRIVATE
 
+  function _calculatePopoverWidth() {
+    setTimeout(() => {
+      const popover = popoverRef?.current;
+      const trigger = triggerRef?.current;
+      popover.style.width = `${trigger.clientWidth}px`;
+    });
+  }
+
   function _getSelectedBudges(
     items: ISheMultiSelectItem[],
     values: any[],
@@ -139,13 +152,11 @@ export default function SheMultiSelect({
   // ==================================================================== RENDER
 
   return (
-    <Popover
-      open={_isPopoverOpen}
-      modal={isModalPopover}
-      onOpenChange={setIsPopoverOpen}
-    >
+    <Popover open={_isPopoverOpen} onOpenChange={setIsPopoverOpen}>
       <SheMultiSelectTrigger
+        ref={triggerRef}
         items={_badges}
+        icon={icon}
         isOpen={_isPopoverOpen}
         ariaDescribedbyId={ariaDescribedbyId}
         disabled={disabled || !_options || _options.length === 0}
@@ -156,12 +167,32 @@ export default function SheMultiSelect({
         onClearAll={onClearButtonHandler}
         {...props}
       />
-      <PopoverContent className="w-auto p-0" align="start">
+      <PopoverContent
+        ref={popoverRef}
+        className={`${popoverClassName} ${cs.sheMultiSelectPopoverContainer}`}
+        style={{
+          ...popoverStyles,
+        }}
+        align="start"
+      >
         <Command>
-          <CommandInput placeholder="Search..." />
+          <CommandInput
+            className={cs.sheMultiSelectPopoverSearchBlock}
+            placeholder={translate(
+              searchPlaceholderTransKey,
+              searchPlaceholder,
+            )}
+          />
           <CommandList>
-            <CommandEmpty>No results found.</CommandEmpty>
-            <CommandGroup>
+            <CommandEmpty
+              className={cs.sheMultiSelectPopoverNoDataMessageBlock}
+            >
+              {translate(
+                emptySearchPlaceholderTransKey,
+                emptySearchPlaceholder,
+              )}
+            </CommandEmpty>
+            <CommandGroup className={cs.sheMultiSelectPopoverGroupContainer}>
               <CommandItem
                 key="all"
                 className="cursor-pointer"

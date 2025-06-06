@@ -1,0 +1,34 @@
+@use "@/styles/variables" as vars;
+
+$iconSize: 20px;
+
+.sheMultiSelectPopoverContainer {
+  //width: vars.$maxWidth + px;
+
+  .sheMultiSelectPopoverGroupContainer {
+  }
+}
+
+// ========================================================= SEARCH BLOCK
+
+.sheMultiSelectPopoverContainer {
+  .sheMultiSelectPopoverSearchBlock {
+  }
+}
+
+// ========================================================= NO DATA BLOCK
+
+.sheMultiSelectPopoverContainer {
+  .sheMultiSelectPopoverNoDataMessageBlock {
+  }
+}
+
+// ========================================================= WITH ICON
+
+.sheMultiSelectPopoverContainer.withIcon {
+}
+
+// ========================================================= FULL WIDTH
+
+.sheMultiSelectPopoverContainer.fullWidth {
+}
