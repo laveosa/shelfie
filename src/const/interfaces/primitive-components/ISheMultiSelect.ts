@@ -10,11 +10,16 @@ export interface ISheMultiSelect extends ISheMultiSelectTrigger {
   icon?: Partial<ISheIcon> | string | React.FC<any>;
   options?: ISheMultiSelectItem[];
   selectedValues?: any[];
-  isOpen?: boolean;
   searchPlaceholder?: string;
   searchPlaceholderTransKey?: string;
   emptySearchPlaceholder?: string;
   emptySearchPlaceholderTransKey?: string;
+  selectAllPlaceholder?: string;
+  selectAllPlaceholderTransKey?: string;
+  isOpen?: boolean;
+  showSearch?: boolean;
+  showFooter?: boolean;
+  hideSelectAll?: boolean;
   onIsOpen?: (value: any) => void;
   onClear?: (value: any) => void;
   onValueChange?: (values: any[]) => void;

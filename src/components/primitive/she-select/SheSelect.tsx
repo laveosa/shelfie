@@ -156,17 +156,16 @@ export default function SheSelect({
 
   function _addItemsIds(items: ISheSelectItem[]) {
     return items?.map((item, idx) => {
-      if (item.icon) {
-        setIsItemsWithIcons(true);
-      }
-
-      if (item.colors) {
-        setIsItemsWithColors(true);
-      }
+      if (item.icon) setIsItemsWithIcons(true);
+      if (item.colors) setIsItemsWithColors(true);
 
       return {
         ...item,
-        id: item.text.replace(/ /g, "_") + idx.toString(),
+        id: `${
+          item.text && item.text.length > 0
+            ? item.text.replace(/ /g, "_")
+            : "selectOption_"
+        }_${(idx + 1).toString()}`,
       };
     });
   }

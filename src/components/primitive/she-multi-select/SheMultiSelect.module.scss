@@ -3,8 +3,6 @@
 $iconSize: 20px;
 
 .sheMultiSelectPopoverContainer {
-  //width: vars.$maxWidth + px;
-
   .sheMultiSelectPopoverGroupContainer {
   }
 }
@@ -31,4 +29,20 @@ $iconSize: 20px;
 // ========================================================= FULL WIDTH
 
 .sheMultiSelectPopoverContainer.fullWidth {
+}
+
+// ========================================================= MULTI SELECT ITEM WRAPPER
+
+.sheMultiSelectItemParentWrapper {
+  margin-bottom: 2px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &.sheMultiSelectItemParentWrapperSelectAll {
+    span {
+      color: vars.$placeholderColor;
+    }
+  }
 }

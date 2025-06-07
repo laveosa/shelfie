@@ -7,8 +7,10 @@ import {
   Cat,
   ChevronDown,
   Cigarette,
+  Clock,
   Dog,
   Fish,
+  Lock,
   Rabbit,
   Search,
   Turtle,
@@ -58,11 +60,44 @@ const optionsObj: ISheMultiSelectItem[] = [
 ];
 
 const optionsMix: ISheMultiSelectItem[] = [
-  { value: 1, text: "Option 1" },
-  { value: "2", text: "Option 2" },
-  { value: { option: 3 }, text: "Option 3" },
-  { value: [1, "2", true, { option: null }], text: "Option 4" },
-  { value: { option: 5 }, text: "Option 5" },
+  {
+    value: 1,
+    text: "1 number",
+    textTransKey: "0293jsiodfjwioej",
+    description: "some description for test",
+    descriptionTransKey: "f32098f902f3jsdfwe",
+    sideText: "OB4",
+    sideTextTransKey: "32230f9j0wef",
+    sideDescription: "some dess ksjdk",
+    sideDescriptionTransKey: "f2903jf09wjefw",
+    icon: Turtle,
+    iconProps: { color: "red" },
+    tooltip: { text: "some text for tooltip element" },
+  },
+  {
+    value: "2",
+    text: "2 string",
+    textTransKey: "0293jsiodfjwioej",
+    colors: ["red", "blue", "orange"],
+  },
+  {
+    value: { option: 3 },
+    text: "3 obj",
+    textTransKey: "0293jsiodfjwioej",
+    icon: Clock,
+  },
+  {
+    value: [1, "2", true, { option: null }],
+    text: "4 arr",
+    textTransKey: "0293jsiodfjwioej",
+    colors: ["#7BCBD5", "#7F434A", "#94A659", "#9A3859", "#F8E71C"],
+  },
+  {
+    value: { option: 5 },
+    text: "5 boolean",
+    textTransKey: "0293jsiodfjwioej",
+    tooltip: { text: "some text for tooltip element" },
+  },
 ];
 
 const badges: ISheBadge[] = [
@@ -163,7 +198,7 @@ export function DashboardPage() {
 
     setTimeout(() => {
       setSelected([optionsMix[0].value, optionsMix[3].value]);
-    }, 1000);
+    }, 2000);
   }, []);
 
   // ================================================================== EVENT
@@ -197,7 +232,6 @@ export function DashboardPage() {
           { text: "option 1", value: 1 },
           { text: "option 2", value: 2 },
         ]}
-        fullWidth
         showClearBtn
       />
 
@@ -205,9 +239,10 @@ export function DashboardPage() {
 
       <SheMultiSelect
         label="Multi Select"
-        options={optionsNumber}
+        options={selectItems}
+        selectedValues={selected}
         placeholder="select options..."
-        contextType="badges"
+        showClearBtn
         onValueChange={onAction}
         onIsOpen={(event) => console.log("onIsOpen: ", event)}
         onClear={(event) => console.log("onClear: ", event)}

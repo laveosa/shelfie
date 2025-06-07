@@ -1,13 +1,9 @@
 import { JSX, useEffect, useRef, useState } from "react";
+import { Trans } from "react-i18next";
 import * as React from "react";
 import _ from "lodash";
-import { cn } from "@/lib/utils";
-
-import { CheckIcon } from "lucide-react";
 
 import cs from "./SheMultiSelect.module.scss";
-import { Separator } from "@/components/ui/separator";
-import { Popover, PopoverContent } from "@/components/ui/popover";
 import {
   Command,
   CommandEmpty,
@@ -17,12 +13,15 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
+import { Separator } from "@/components/ui/separator";
+import { Popover, PopoverContent } from "@/components/ui/popover";
 import { ISheMultiSelect } from "@/const/interfaces/primitive-components/ISheMultiSelect.ts";
 import SheMultiSelectTrigger from "@/components/primitive/she-multi-select/components/she-multi-select-trigger/SheMultiSelectTrigger.tsx";
 import { generateId } from "@/utils/helpers/quick-helper.ts";
 import { ISheMultiSelectItem } from "@/const/interfaces/primitive-components/ISheMultiSelectItem.ts";
 import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
+import SheMultiSelectItem from "@/components/primitive/she-multi-select/components/she-multi-select-item/SheMultiSelectItem.tsx";
 
 export default function SheMultiSelect({
   popoverClassName = "",
@@ -37,7 +36,12 @@ export default function SheMultiSelect({
   searchPlaceholderTransKey,
   emptySearchPlaceholder = "no data to display",
   emptySearchPlaceholderTransKey,
+  selectAllPlaceholder = "[ select all ]",
+  selectAllPlaceholderTransKey,
   onIsOpen,
+  showSearch,
+  showFooter,
+  hideSelectAll,
   onValueChange,
   onClear,
   ...props
@@ -47,14 +51,19 @@ export default function SheMultiSelect({
   const [_selectedValues, setSelectedValues] = useState<any[]>([]);
   const [_badges, setBadges] = useState<ISheBadge[]>(null);
   const [_isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const [_isItemsWithIcons, setIsItemsWithIcons] = useState<boolean>(null);
+  const [_isItemsWithColors, setIsItemsWithColors] = useState<boolean>(null);
 
   const popoverRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const ariaDescribedbyId = `${generateId()}_MULTI_SELECT_ID`;
 
   useEffect(() => {
+    setIsItemsWithIcons(null);
+    setIsItemsWithColors(null);
+
     if (!_.isEqual(options, _options)) {
-      setOptions(options);
+      setOptions(_addItemsIds(options));
       setBadges(_getSelectedBudges(options, _selectedValues));
     }
   }, [options]);
@@ -113,6 +122,22 @@ export default function SheMultiSelect({
   }
 
   // ==================================================================== PRIVATE
+
+  function _addItemsIds(items: ISheMultiSelectItem[]) {
+    return items?.map((item, idx) => {
+      if (item.icon) setIsItemsWithIcons(true);
+      if (item.colors) setIsItemsWithColors(true);
+
+      return {
+        ...item,
+        id: `${
+          item.text && item.text.length > 0
+            ? item.text.replace(/ /g, "_")
+            : "multiSelectOption_"
+        }_${(idx + 1).toString()}`,
+      };
+    });
+  }
 
   function _calculatePopoverWidth() {
     setTimeout(() => {
@@ -176,63 +201,46 @@ export default function SheMultiSelect({
         align="start"
       >
         <Command>
-          <CommandInput
-            className={cs.sheMultiSelectPopoverSearchBlock}
-            placeholder={translate(
-              searchPlaceholderTransKey,
-              searchPlaceholder,
-            )}
-          />
+          {showSearch && (
+            <CommandInput
+              className={cs.sheMultiSelectPopoverSearchBlock}
+              placeholder={translate(
+                searchPlaceholderTransKey,
+                searchPlaceholder,
+              )}
+            />
+          )}
           <CommandList>
             <CommandEmpty
               className={cs.sheMultiSelectPopoverNoDataMessageBlock}
             >
-              {translate(
-                emptySearchPlaceholderTransKey,
-                emptySearchPlaceholder,
-              )}
+              <Trans i18nKey={emptySearchPlaceholderTransKey}>
+                {emptySearchPlaceholder}
+              </Trans>
             </CommandEmpty>
             <CommandGroup className={cs.sheMultiSelectPopoverGroupContainer}>
-              <CommandItem
+              <SheMultiSelectItem
                 key="all"
-                className="cursor-pointer"
-                onSelect={onToggleAllHandler}
-              >
-                <div
-                  className={cn(
-                    "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
-                    _selectedValues?.length === _options?.length
-                      ? "bg-primary text-primary-foreground"
-                      : "opacity-50 [&_svg]:invisible",
-                  )}
-                >
-                  <CheckIcon className="h-4 w-4" />
-                </div>
-                <span>(Select All)</span>
-              </CommandItem>
-              {_options?.map((option, idx) => {
+                className={`${cs.sheMultiSelectItemParentWrapper} ${cs.sheMultiSelectItemParentWrapperSelectAll}`}
+                text={selectAllPlaceholder}
+                textTransKey={selectAllPlaceholderTransKey}
+                isSelected={_selectedValues?.length === _options?.length}
+                isLoading={isLoading}
+                onClick={onToggleAllHandler}
+              />
+              {_options?.map((option) => {
                 const isSelected = _selectedValues?.includes(option.value);
                 return (
-                  <CommandItem
-                    key={idx + 1}
-                    onSelect={() => onToggleOptionHandler(option.value)}
-                    className="cursor-pointer"
-                  >
-                    <div
-                      className={cn(
-                        "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
-                        isSelected
-                          ? "bg-primary text-primary-foreground"
-                          : "opacity-50 [&_svg]:invisible",
-                      )}
-                    >
-                      <CheckIcon className="h-4 w-4" />
-                    </div>
-                    {option.icon && (
-                      <option.icon className="mr-2 h-4 w-4 text-muted-foreground" />
-                    )}
-                    <span className="she-text">{option.text}</span>
-                  </CommandItem>
+                  <SheMultiSelectItem
+                    key={option.id}
+                    className={cs.sheMultiSelectItemParentWrapper}
+                    isSelected={isSelected}
+                    isItemsWithIcons={_isItemsWithIcons}
+                    isItemsWithColors={_isItemsWithColors}
+                    isLoading={isLoading}
+                    onClick={onToggleOptionHandler}
+                    {...option}
+                  />
                 );
               })}
             </CommandGroup>

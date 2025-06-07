@@ -10,6 +10,7 @@ export interface ISheMultiSelectTrigger
   extends ISheLabel,
     ISheClearButton,
     ComponentPropsWithRef<"button"> {
+  ref?: React.Ref<HTMLButtonElement>;
   id?: string;
   className?: string;
   style?: React.CSSProperties;
