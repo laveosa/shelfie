@@ -9,11 +9,8 @@ import {
   CommandEmpty,
   CommandGroup,
   CommandInput,
-  CommandItem,
   CommandList,
-  CommandSeparator,
 } from "@/components/ui/command";
-import { Separator } from "@/components/ui/separator";
 import { Popover, PopoverContent } from "@/components/ui/popover";
 import { ISheMultiSelect } from "@/const/interfaces/primitive-components/ISheMultiSelect.ts";
 import SheMultiSelectTrigger from "@/components/primitive/she-multi-select/components/she-multi-select-trigger/SheMultiSelectTrigger.tsx";
@@ -22,6 +19,7 @@ import { ISheMultiSelectItem } from "@/const/interfaces/primitive-components/ISh
 import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import SheMultiSelectItem from "@/components/primitive/she-multi-select/components/she-multi-select-item/SheMultiSelectItem.tsx";
+import SheMultiSelectFooter from "@/components/primitive/she-multi-select/components/she-multi-select-footer/SheMultiSelectFooter.tsx";
 
 export default function SheMultiSelect({
   popoverClassName = "",
@@ -42,6 +40,14 @@ export default function SheMultiSelect({
   showSearch,
   showFooter,
   hideSelectAll,
+  footerClassName,
+  footerStyle,
+  hideSecondaryBtn,
+  secondaryBtnValue,
+  secondaryBtnValueTransKey,
+  hidePrimaryBtn,
+  primaryBtnValue,
+  primaryBtnValueTransKey,
   onValueChange,
   onClear,
   ...props
@@ -214,9 +220,11 @@ export default function SheMultiSelect({
             <CommandEmpty
               className={cs.sheMultiSelectPopoverNoDataMessageBlock}
             >
-              <Trans i18nKey={emptySearchPlaceholderTransKey}>
-                {emptySearchPlaceholder}
-              </Trans>
+              <span className="she-placeholder">
+                <Trans i18nKey={emptySearchPlaceholderTransKey}>
+                  {emptySearchPlaceholder}
+                </Trans>
+              </span>
             </CommandEmpty>
             <CommandGroup className={cs.sheMultiSelectPopoverGroupContainer}>
               <SheMultiSelectItem
@@ -244,31 +252,21 @@ export default function SheMultiSelect({
                 );
               })}
             </CommandGroup>
-            <CommandSeparator />
-            <CommandGroup>
-              <div className="flex items-center justify-between">
-                {_selectedValues?.length > 0 && (
-                  <>
-                    <CommandItem
-                      onSelect={onClearButtonHandler}
-                      className="flex-1 justify-center cursor-pointer"
-                    >
-                      Clear
-                    </CommandItem>
-                    <Separator
-                      orientation="vertical"
-                      className="flex min-h-6 h-full"
-                    />
-                  </>
-                )}
-                <CommandItem
-                  onSelect={onCloseButtonHandler}
-                  className="flex-1 justify-center cursor-pointer max-w-full"
-                >
-                  Close
-                </CommandItem>
-              </div>
-            </CommandGroup>
+            {showFooter && (
+              <SheMultiSelectFooter
+                className={footerClassName}
+                styles={footerStyle}
+                selectedValues={_selectedValues}
+                hideSecondaryBtn={hideSecondaryBtn}
+                secondaryBtnValue={secondaryBtnValue}
+                secondaryBtnValueTransKey={secondaryBtnValueTransKey}
+                hidePrimaryBtn={hidePrimaryBtn}
+                primaryBtnValue={primaryBtnValue}
+                primaryBtnValueTransKey={primaryBtnValueTransKey}
+                onSecondaryBtnClick={onClearButtonHandler}
+                onPrimaryBtnClick={onCloseButtonHandler}
+              />
+            )}
           </CommandList>
         </Command>
       </PopoverContent>

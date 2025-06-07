@@ -71,7 +71,6 @@ const optionsMix: ISheMultiSelectItem[] = [
     sideDescription: "some dess ksjdk",
     sideDescriptionTransKey: "f2903jf09wjefw",
     icon: Turtle,
-    iconProps: { color: "red" },
     tooltip: { text: "some text for tooltip element" },
   },
   {
@@ -97,6 +96,58 @@ const optionsMix: ISheMultiSelectItem[] = [
     text: "5 boolean",
     textTransKey: "0293jsiodfjwioej",
     tooltip: { text: "some text for tooltip element" },
+  },
+];
+
+const optionsMix2: ISheMultiSelectItem[] = [
+  {
+    value: 1,
+    text: "1 number",
+    sideText: "OB4",
+    icon: Turtle,
+    tooltip: { text: "some text for tooltip element" },
+  },
+  {
+    value: "2",
+    text: "2 string",
+    colors: ["red", "blue", "orange"],
+  },
+  {
+    value: { option: 3 },
+    text: "3 obj",
+    icon: Clock,
+  },
+  {
+    value: [1, "2", true, { option: null }],
+    text: "4 arr",
+    colors: ["#7BCBD5", "#7F434A", "#94A659", "#9A3859", "#F8E71C"],
+  },
+  {
+    value: { option: 232323 },
+    text: "test opium",
+    textTransKey: "0293jsiodfjwioej",
+    tooltip: { text: "some text for tooltip element" },
+  },
+  {
+    value: { option: "232f3wefwe" },
+    text: "carter",
+    description: "sdkfjiow wien owien iwnfo wine",
+  },
+  {
+    value: 33333,
+    text: "lavanda",
+  },
+  {
+    value: "samanta",
+    text: "BB-44",
+    icon: Clock,
+  },
+  {
+    value: [1, 2, 3, 4, 5],
+    text: "Folder 32",
+    sideText: "B24",
+    icon: Clock,
+    colors: ["#7BCBD5"],
   },
 ];
 
@@ -239,10 +290,13 @@ export function DashboardPage() {
 
       <SheMultiSelect
         label="Multi Select"
-        options={selectItems}
-        selectedValues={selected}
+        options={optionsMix2}
         placeholder="select options..."
+        contextType="badges"
+        showSearch
+        showFooter
         showClearBtn
+        autoFocus
         onValueChange={onAction}
         onIsOpen={(event) => console.log("onIsOpen: ", event)}
         onClear={(event) => console.log("onClear: ", event)}

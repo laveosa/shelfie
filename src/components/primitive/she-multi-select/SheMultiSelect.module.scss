@@ -4,6 +4,8 @@ $iconSize: 20px;
 
 .sheMultiSelectPopoverContainer {
   .sheMultiSelectPopoverGroupContainer {
+    max-height: 240px;
+    overflow-y: auto;
   }
 }
 
@@ -18,6 +20,19 @@ $iconSize: 20px;
 
 .sheMultiSelectPopoverContainer {
   .sheMultiSelectPopoverNoDataMessageBlock {
+    padding: 10px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50px;
+
+    span {
+      font-size: 20px;
+      line-height: 24px;
+      font-weight: bold;
+      opacity: 0.4;
+      color: vars.$placeholderColor;
+    }
   }
 }
 

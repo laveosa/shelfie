@@ -8,7 +8,7 @@ import { generateId } from "@/utils/helpers/quick-helper.ts";
 import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
 import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
 import { ISheRadioItem } from "@/const/interfaces/primitive-components/ISheRadioItem.ts";
-import SheRadioItem from "@/components/primitive/she-radio-item/SheRadioItem.tsx";
+import SheRadioItem from "@/components/primitive/she-radio-group/components/she-radio-item/SheRadioItem.tsx";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
 

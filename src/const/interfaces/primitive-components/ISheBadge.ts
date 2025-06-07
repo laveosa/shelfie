@@ -17,7 +17,7 @@ export interface ISheBadge extends BadgeProps, ComponentPropsWithRef<any> {
   text?: string | number;
   textTransKey?: string;
   textWrap?: "wrap" | "nowrap" | "dots";
-  value: any;
+  value?: any;
   minWidth?: string;
   maxWidth?: string;
   fullWidth?: boolean;

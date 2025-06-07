@@ -15,7 +15,7 @@ import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
 import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
-import SheSelectItem from "@/components/primitive/she-select-item/SheSelectItem.tsx";
+import SheSelectItem from "@/components/primitive/she-select/components/she-select-item/SheSelectItem.tsx";
 
 export default function SheSelect({
   id,
