@@ -117,7 +117,10 @@ export default function SheMultiSelectTrigger({
                           </span>
                           ]{" "}
                           {items.map((item, idx) => (
-                            <span key={item.text + idx} className="she-text">
+                            <span
+                              key={`${item.text}_${idx + 1}`}
+                              className="she-text"
+                            >
                               {item.text} {idx !== items.length - 1 ? "| " : ""}
                             </span>
                           ))}

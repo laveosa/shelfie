@@ -282,14 +282,7 @@ export default function SheBadgeList({
                       className={extraBudge?.className || elementClassName}
                       elementClassName={cs.plusMoreBtn}
                       style={extraBudge?.style || elementStyle}
-                      text={`+ ${_items.length - _maxBadgeAmount} ${
-                        extraBudge?.text
-                          ? translate(
-                              extraBudge.textTransKey,
-                              extraBudge.text.toString(),
-                            )
-                          : translate("PLACE_VALID_TRANS_KET", "more")
-                      }`}
+                      text={`+ ${_items.length - _maxBadgeAmount} ${translate("PLACE_VALID_TRANS_KEY", "more")}`}
                       textWrap={extraBudge?.textWrap || textWrap}
                       color={extraBudge?.color || color}
                       textColor={extraBudge?.textColor || textColor}

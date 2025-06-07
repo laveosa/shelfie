@@ -146,10 +146,11 @@ export default function SheMultiSelect({
   }
 
   function _calculatePopoverWidth() {
-    setTimeout(() => {
-      const popover = popoverRef?.current;
-      const trigger = triggerRef?.current;
-      popover.style.width = `${trigger.clientWidth}px`;
+    requestAnimationFrame(() => {
+      const popover = popoverRef.current;
+      const trigger = triggerRef.current;
+      if (!popover || !trigger || !trigger.offsetParent) return;
+      popover.style.width = `${trigger.getBoundingClientRect().width}px`;
     });
   }
 
@@ -227,15 +228,17 @@ export default function SheMultiSelect({
               </span>
             </CommandEmpty>
             <CommandGroup className={cs.sheMultiSelectPopoverGroupContainer}>
-              <SheMultiSelectItem
-                key="all"
-                className={`${cs.sheMultiSelectItemParentWrapper} ${cs.sheMultiSelectItemParentWrapperSelectAll}`}
-                text={selectAllPlaceholder}
-                textTransKey={selectAllPlaceholderTransKey}
-                isSelected={_selectedValues?.length === _options?.length}
-                isLoading={isLoading}
-                onClick={onToggleAllHandler}
-              />
+              {!hideSelectAll && (
+                <SheMultiSelectItem
+                  key="all"
+                  className={`${cs.sheMultiSelectItemParentWrapper} ${cs.sheMultiSelectItemParentWrapperSelectAll}`}
+                  text={selectAllPlaceholder}
+                  textTransKey={selectAllPlaceholderTransKey}
+                  isSelected={_selectedValues?.length === _options?.length}
+                  isLoading={isLoading}
+                  onClick={onToggleAllHandler}
+                />
+              )}
               {_options?.map((option) => {
                 const isSelected = _selectedValues?.includes(option.value);
                 return (
@@ -255,7 +258,7 @@ export default function SheMultiSelect({
             {showFooter && (
               <SheMultiSelectFooter
                 className={footerClassName}
-                styles={footerStyle}
+                style={footerStyle}
                 selectedValues={_selectedValues}
                 hideSecondaryBtn={hideSecondaryBtn}
                 secondaryBtnValue={secondaryBtnValue}

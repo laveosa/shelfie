@@ -264,18 +264,12 @@ export function ProductsPage() {
       <div className={cs.productsPageHeader}>
         <div className="she-title">Products</div>
         <div className={cs.headerButtonBlock}>
-          <SheButton
-            icon={Plus}
-            variant="outline"
-            size="sm"
-            onClick={handleAddProduct}
-          >
+          <SheButton icon={Plus} variant="outline" onClick={handleAddProduct}>
             Add Product
           </SheButton>
           <SheButton
             icon={Download}
             variant="outline"
-            size="sm"
             onClick={handleImportProducts}
           >
             Import Products
@@ -283,7 +277,6 @@ export function ProductsPage() {
           <SheButton
             icon={Columns3Icon}
             variant="outline"
-            size="sm"
             onClick={handleConfigure}
           >
             Configure

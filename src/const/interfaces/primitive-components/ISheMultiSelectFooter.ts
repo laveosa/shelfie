@@ -2,7 +2,7 @@ import React, { ComponentPropsWithRef } from "react";
 
 export interface ISheMultiSelectFooter extends ComponentPropsWithRef<any> {
   className?: string;
-  styles?: React.CSSProperties;
+  style?: React.CSSProperties;
   selectedValues?: any[];
   hideSecondaryBtn?: boolean;
   secondaryBtnValue?: string;

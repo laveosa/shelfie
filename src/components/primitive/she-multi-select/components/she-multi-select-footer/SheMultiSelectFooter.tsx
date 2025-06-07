@@ -12,7 +12,7 @@ import { Separator } from "@/components/ui/separator.tsx";
 
 export default function SheMultiSelectFooter({
   className = "",
-  styles,
+  style,
   selectedValues,
   hideSecondaryBtn,
   secondaryBtnValue = "Clear",
@@ -29,12 +29,12 @@ export default function SheMultiSelectFooter({
 
   // ==================================================================== RENDER
 
-  if (hideSecondaryBtn && hideSecondaryBtn) {
-    return;
+  if (hideSecondaryBtn && hidePrimaryBtn) {
+    return null;
   }
 
   return (
-    <div className={`${cs.sheMultiSelectFooter} ${className}`} style={styles}>
+    <div className={`${cs.sheMultiSelectFooter} ${className}`} style={style}>
       <CommandSeparator />
       <CommandGroup>
         <div className={cs.sheMultiSelectFooterGroup}>

@@ -297,6 +297,8 @@ export function DashboardPage() {
         showFooter
         showClearBtn
         autoFocus
+        // fullWidth
+        // minWidth="600px"
         onValueChange={onAction}
         onIsOpen={(event) => console.log("onIsOpen: ", event)}
         onClear={(event) => console.log("onClear: ", event)}
