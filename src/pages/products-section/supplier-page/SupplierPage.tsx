@@ -119,25 +119,41 @@ export function SupplierPage() {
         break;
       case "createSupplier":
         console.log("FORM DATA", payload);
-        // dispatch(actions.setIsCreateSupplierCard(true));
-        // service.createSupplierHandler(payload).then((res) => {
-        //   dispatch(actions.setIsCreateSupplierCard(false));
-        //   if (res) {
-        //     service.getListOfAllSuppliersHandler().then((res) => {
-        //       dispatch(actions.refreshSuppliers(res));
-        //     });
-        //     addToast({
-        //       text: "Supplier created successfully",
-        //       type: "success",
-        //     });
-        //   } else {
-        //     addToast({
-        //       text: res.error.message,
-        //       type: "error",
-        //     });
-        //   }
-        // });
-        // handleCardAction("createSupplierCard");
+        dispatch(actions.setIsCreateSupplierCard(true));
+        service.createSupplierHandler(payload).then((res) => {
+          dispatch(actions.setIsCreateSupplierCard(false));
+          if (res) {
+            handleCardAction("createSupplierCard");
+            payload.uploadModels.map((model) => {
+              model.contextId = res.supplierId;
+              productsService.uploadPhotoHandler(model).then((res) => {
+                if (res) {
+                  addToast({
+                    text: "Image successfully added",
+                    type: "success",
+                  });
+                } else {
+                  addToast({
+                    text: res.error.message,
+                    type: "error",
+                  });
+                }
+              });
+            });
+            service.getListOfAllSuppliersHandler().then((res) => {
+              dispatch(actions.refreshSuppliers(res));
+            });
+            addToast({
+              text: "Supplier created successfully",
+              type: "success",
+            });
+          } else {
+            addToast({
+              text: res.error.message,
+              type: "error",
+            });
+          }
+        });
         break;
       case "uploadSupplierPhoto":
         console.log("Payload", payload);

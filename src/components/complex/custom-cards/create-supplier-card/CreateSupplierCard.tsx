@@ -18,6 +18,7 @@ export default function CreateSupplierCard({
     >
       <div className={cs.createSupplierCardContent}>
         <CreateSupplierForm
+          isLoading={isLoading}
           countryList={countryList}
           onSubmit={(data) => {
             console.log("CARD", data);

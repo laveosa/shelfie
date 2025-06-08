@@ -20,6 +20,8 @@ import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { GridRowsColorsEnum } from "@/const/enums/GridRowsColorsEnum.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import SuppliersApiHooks from "@/utils/services/api/SuppliersApiService.ts";
+import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";
+import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 
 export default function useProductsPageService() {
   const appService = useAppService();
@@ -61,6 +63,7 @@ export default function useProductsPageService() {
   const [getPurchaseDetails] =
     PurchasesApiHooks.useLazyGetPurchaseDetailsQuery();
   const [getCountryCode] = DictionaryApiHooks.useLazyGetCountryCodeQuery();
+  const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
 
   //-------------------------------------------------API
 
@@ -266,6 +269,12 @@ export default function useProductsPageService() {
     });
   }
 
+  function uploadPhotoHandler(model: UploadPhotoModel) {
+    return uploadPhoto(model).then((res: any) => {
+      return res;
+    });
+  }
+
   //----------------------------------------------------LOGIC
 
   function itemsCardItemsConvertor(
@@ -349,8 +358,9 @@ export default function useProductsPageService() {
     getCurrenciesListHandler,
     getVariantDetailsHandler,
     getPurchaseDetailsHandler,
+    getCountryCodeHandler,
+    uploadPhotoHandler,
     itemsCardItemsConvertor,
     itemCardHandler,
-    getCountryCodeHandler,
   };
 }
