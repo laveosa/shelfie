@@ -7,6 +7,7 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import usePurchaseProductsPageService from "@/pages/products-section/purchase-products-page/usePurchaseProductsPageService.ts";
 import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
 import { IPurchaseProductsPageSlice } from "@/const/interfaces/store-slices/IPurchaseProductsPageSlice.ts";
+import PurchaseProductsCard from "@/components/complex/custom-cards/purchase-products-card/PurchaseProductsCard.tsx";
 
 export function PurchaseProductsPage() {
   const dispatch = useAppDispatch();
@@ -32,6 +33,7 @@ export function PurchaseProductsPage() {
         onAction={handleCardAction}
         activeCards={state.activeCards}
       />
+      <PurchaseProductsCard />
     </div>
   );
 }

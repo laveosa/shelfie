@@ -9,6 +9,7 @@ export interface ISheProductCard extends IBaseComponent {
   textTransKey?: string;
   description?: string;
   descriptionTransKey?: string;
+  showHeader?: boolean;
   showToggleButton?: boolean;
   showCloseButton?: boolean;
   width?: string;
