@@ -66,9 +66,11 @@ export default function SheMultiSelect({
   const [_isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [_isItemsWithIcons, setIsItemsWithIcons] = useState<boolean>(null);
   const [_isItemsWithColors, setIsItemsWithColors] = useState<boolean>(null);
+  const [_searchValue, setSearchValue] = useState<string>(null);
 
   const popoverRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
   const ariaDescribedbyId = `${generateId()}_MULTI_SELECT_ID`;
 
   useEffect(() => {
@@ -98,6 +100,10 @@ export default function SheMultiSelect({
   useEffect(() => {
     if (!_.isNil(isOpen) && isOpen !== _isPopoverOpen) setIsPopoverOpen(isOpen);
   }, [isOpen]);
+
+  useEffect(() => {
+    if (searchValue !== _searchValue) setSearchValue(searchValue);
+  }, [searchValue]);
 
   useEffect(() => {
     if (autoFocus && triggerRef.current) {
@@ -133,6 +139,8 @@ export default function SheMultiSelect({
 
   function onClearButtonHandler() {
     _updateSelectedValues([]);
+    setSearchValue("");
+    setTimeout(() => searchRef.current.focus());
     if (onClear) onClear([]);
   }
 
@@ -223,9 +231,10 @@ export default function SheMultiSelect({
       >
         <Command>
           <SheMultiSelectSearch
+            searchRef={searchRef}
             searchClassName={searchClassName}
             searchStyle={searchStyle}
-            searchValue={searchValue}
+            searchValue={_searchValue}
             searchPlaceholder={searchPlaceholder}
             searchPlaceholderTransKey={searchPlaceholderTransKey}
             hideSearchClearBtn={hideSearchClearBtn}

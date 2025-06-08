@@ -21,7 +21,7 @@ export default function SheMultiSelectSearch({
   onSearch,
 }: ISheMultiSelectSearch): JSX.Element {
   const { translate } = useAppTranslation();
-  const [_searchValue, setSearchValue] = useState<string>(null);
+  const [_searchValue, setSearchValue] = useState<string>("");
 
   useEffect(() => {
     if (searchValue !== _searchValue) {
@@ -37,8 +37,8 @@ export default function SheMultiSelectSearch({
   }
 
   function onClearSearchHandler() {
-    setSearchValue(null);
-    if (onSearch) onSearch(null);
+    setSearchValue("");
+    if (onSearch) onSearch("");
   }
 
   // ==================================================================== PRIVATE

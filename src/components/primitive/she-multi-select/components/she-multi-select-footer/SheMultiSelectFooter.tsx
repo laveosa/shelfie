@@ -1,14 +1,9 @@
 import { JSX } from "react";
-import { Trans } from "react-i18next";
 
 import cs from "./SheMultiSelectFooter.module.scss";
-import {
-  CommandGroup,
-  CommandItem,
-  CommandSeparator,
-} from "@/components/ui/command.tsx";
 import { ISheMultiSelectFooter } from "@/const/interfaces/primitive-components/ISheMultiSelectFooter.ts";
 import { Separator } from "@/components/ui/separator.tsx";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 
 export default function SheMultiSelectFooter({
   footerClassName: className = "",
@@ -36,41 +31,35 @@ export default function SheMultiSelectFooter({
 
   return (
     <div className={`${cs.sheMultiSelectFooter} ${className}`} style={style}>
-      <CommandSeparator />
-      <CommandGroup>
-        <div className={cs.sheMultiSelectFooterGroup}>
-          {!hideSecondaryBtn && selectedValues?.length > 0 && (
-            <>
-              <CommandItem
-                className={cs.sheMultiSelectFooterItem}
-                onSelect={onSecondaryBtnClick}
-              >
-                <span className="she-text">
-                  <Trans i18nKey={secondaryBtnValueTransKey}>
-                    {secondaryBtnValue}
-                  </Trans>
-                </span>
-              </CommandItem>
-              <Separator
-                className={cs.sheMultiSelectFooterItemsSeparator}
-                orientation="vertical"
-              />
-            </>
-          )}
-          {!hidePrimaryBtn && (
-            <CommandItem
+      <div className={cs.sheMultiSelectFooterGroup}>
+        {!hideSecondaryBtn && selectedValues?.length > 0 && (
+          <>
+            <SheButton
               className={cs.sheMultiSelectFooterItem}
-              onSelect={onPrimaryBtnClick}
-            >
-              <span className="she-text">
-                <Trans i18nKey={primaryBtnValueTransKey}>
-                  {primaryBtnValue}
-                </Trans>
-              </span>
-            </CommandItem>
-          )}
-        </div>
-      </CommandGroup>
+              value={secondaryBtnValue}
+              valueTransKey={secondaryBtnValueTransKey}
+              variant="ghost"
+              size="small"
+              onClick={onSecondaryBtnClick}
+            />
+            <Separator
+              className={cs.sheMultiSelectFooterItemsSeparator}
+              orientation="vertical"
+            />
+          </>
+        )}
+        {!hidePrimaryBtn && (
+          <SheButton
+            className={cs.sheMultiSelectFooterItem}
+            value={primaryBtnValue}
+            valueTransKey={primaryBtnValueTransKey}
+            variant="ghost"
+            size="small"
+            role="presentation"
+            onClick={onPrimaryBtnClick}
+          />
+        )}
+      </div>
     </div>
   );
 }

@@ -296,6 +296,7 @@ export function DashboardPage() {
         showSearch
         showFooter
         showClearBtn
+        autoFocus
         // fullWidth
         // minWidth="600px"
         onValueChange={onAction}
