@@ -19,7 +19,10 @@ export default function CreateSupplierCard({
       <div className={cs.createSupplierCardContent}>
         <CreateSupplierForm
           countryList={countryList}
-          onSubmit={(data) => onAction("createSupplier", data)}
+          onSubmit={(data) => {
+            console.log("CARD", data);
+            onAction("createSupplier", data);
+          }}
           onImageUpload={(data) => onAction("uploadSupplierPhoto", data)}
           onCancel={() => onAction("closeCreateSupplierCard")}
         />

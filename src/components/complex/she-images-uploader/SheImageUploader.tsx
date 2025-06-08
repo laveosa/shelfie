@@ -31,6 +31,7 @@ export function SheImageUploader({
   contextName,
   contextId,
   fullWidth,
+  hideUploadButton = false,
   onUpload,
 }: ISheImageUploader) {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -171,15 +172,16 @@ export function SheImageUploader({
           ))}
         </DropzoneFileList>
       </Dropzone>
-
-      <SheButton
-        className={isLoading ? cs.loadingButtonState : ""}
-        variant="secondary"
-        onClick={handleUpload}
-        disabled={selectedFiles.length === 0}
-      >
-        Upload photo
-      </SheButton>
+      {!hideUploadButton && (
+        <SheButton
+          className={isLoading ? cs.loadingButtonState : ""}
+          variant="secondary"
+          onClick={handleUpload}
+          disabled={selectedFiles.length === 0}
+        >
+          Upload photo
+        </SheButton>
+      )}
       {uploadingFiles.length > 0 && (
         <>
           <div className="flex items-center gap-2">

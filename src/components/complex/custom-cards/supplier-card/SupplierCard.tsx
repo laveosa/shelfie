@@ -22,8 +22,6 @@ export default function SupplierCard({
 }: ISupplierCard) {
   const [selectedDate, setSelectedDate] = useState<Date>(null);
 
-  console.log("selected", selectedSupplier);
-
   return (
     <SheProductCard
       loading={isLoading}

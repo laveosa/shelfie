@@ -11,6 +11,7 @@ export interface SupplierModel {
   state: string;
   postCode: number;
   countryId: string;
+  images: any[];
 }
 
 export const SupplierModelDefault: SupplierModel = {
@@ -26,4 +27,5 @@ export const SupplierModelDefault: SupplierModel = {
   state: "",
   postCode: null,
   countryId: "",
+  images: [],
 };

@@ -1,5 +1,5 @@
 import { Plus } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import cs from "./SelectSupplierCard.module.scss";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
@@ -15,10 +15,6 @@ export default function SelectSupplierCard({
   onAction,
 }: ISelectSupplierCard) {
   const [selectedSupplier, setSelectedSupplier] = useState<any | null>(null);
-
-  useEffect(() => {
-    console.log(selectedSupplier);
-  }, [selectedSupplier]);
 
   const columns = SupplierListGridColumns({
     onAction,

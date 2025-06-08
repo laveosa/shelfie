@@ -16,7 +16,6 @@ export function SupplierListGridColumns({
   selectedSupplier: any | null;
   setSelectedSupplier: (supplier: any | null) => void;
 }): ColumnDef<any>[] {
-  console.log(selectedSupplier);
   return [
     {
       id: "checkbox",

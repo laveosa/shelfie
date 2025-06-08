@@ -107,11 +107,9 @@ export function SupplierPage() {
         service.getListOfAllSuppliersHandler().then(() => {
           dispatch(actions.setIsSelectSupplierCard(false));
         });
-        console.log("Payload", payload);
         break;
       case "openCreateSupplierCard":
         handleCardAction("createSupplierCard", true);
-        console.log("Payload selectSupplierCard", payload);
         if (!productsState.countryCodeList) {
           dispatch(actions.setIsCreateSupplierCard(true));
           productsService.getCountryCodeHandler().then(() => {
@@ -121,25 +119,25 @@ export function SupplierPage() {
         break;
       case "createSupplier":
         console.log("FORM DATA", payload);
-        dispatch(actions.setIsCreateSupplierCard(true));
-        service.createSupplierHandler(payload).then((res) => {
-          dispatch(actions.setIsCreateSupplierCard(false));
-          if (res) {
-            service.getListOfAllSuppliersHandler().then((res) => {
-              dispatch(actions.refreshSuppliers(res));
-            });
-            addToast({
-              text: "Supplier created successfully",
-              type: "success",
-            });
-          } else {
-            addToast({
-              text: res.error.message,
-              type: "error",
-            });
-          }
-        });
-        handleCardAction("createSupplierCard");
+        // dispatch(actions.setIsCreateSupplierCard(true));
+        // service.createSupplierHandler(payload).then((res) => {
+        //   dispatch(actions.setIsCreateSupplierCard(false));
+        //   if (res) {
+        //     service.getListOfAllSuppliersHandler().then((res) => {
+        //       dispatch(actions.refreshSuppliers(res));
+        //     });
+        //     addToast({
+        //       text: "Supplier created successfully",
+        //       type: "success",
+        //     });
+        //   } else {
+        //     addToast({
+        //       text: res.error.message,
+        //       type: "error",
+        //     });
+        //   }
+        // });
+        // handleCardAction("createSupplierCard");
         break;
       case "uploadSupplierPhoto":
         console.log("Payload", payload);
@@ -162,10 +160,6 @@ export function SupplierPage() {
         break;
     }
   }
-
-  useEffect(() => {
-    console.log("SUPPLIER", state.selectedSupplier);
-  }, [state.selectedSupplier]);
 
   return (
     <div className={cs.supplierPage}>
