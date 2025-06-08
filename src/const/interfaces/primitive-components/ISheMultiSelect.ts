@@ -13,6 +13,7 @@ export interface ISheMultiSelect
   popoverClassName?: string;
   popoverStyles?: React.CSSProperties;
   icon?: Partial<ISheIcon> | string | React.FC<any>;
+  hideSelectAll?: boolean;
   options?: ISheMultiSelectItem[];
   selectedValues?: any[];
   emptySearchPlaceholder?: string;
@@ -20,10 +21,6 @@ export interface ISheMultiSelect
   selectAllPlaceholder?: string;
   selectAllPlaceholderTransKey?: string;
   isOpen?: boolean;
-  showFooter?: boolean;
-  hideSelectAll?: boolean;
-  footerClassName?: string;
-  footerStyle?: React.CSSProperties;
   onIsOpen?: (value: any) => void;
   onClear?: (value: any) => void;
   onValueChange?: (values: any[]) => void;

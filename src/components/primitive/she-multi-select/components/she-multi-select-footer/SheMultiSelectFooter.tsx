@@ -11,8 +11,8 @@ import { ISheMultiSelectFooter } from "@/const/interfaces/primitive-components/I
 import { Separator } from "@/components/ui/separator.tsx";
 
 export default function SheMultiSelectFooter({
-  className = "",
-  style,
+  footerClassName: className = "",
+  footerStyle: style,
   selectedValues,
   hideSecondaryBtn,
   secondaryBtnValue = "Clear",
@@ -20,6 +20,7 @@ export default function SheMultiSelectFooter({
   hidePrimaryBtn,
   primaryBtnValue = "Close",
   primaryBtnValueTransKey = "PLACE_VALID_TRANS_KEY",
+  showFooter,
   onSecondaryBtnClick,
   onPrimaryBtnClick,
 }: ISheMultiSelectFooter): JSX.Element {
@@ -29,7 +30,7 @@ export default function SheMultiSelectFooter({
 
   // ==================================================================== RENDER
 
-  if (hideSecondaryBtn && hidePrimaryBtn) {
+  if (!showFooter || (hideSecondaryBtn && hidePrimaryBtn)) {
     return null;
   }
 

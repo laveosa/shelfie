@@ -25,29 +25,27 @@ export default function SheMultiSelect({
   popoverStyles,
   icon,
   options,
+  hideSelectAll,
   selectedValues,
+  emptySearchPlaceholder = "no data to display",
+  emptySearchPlaceholderTransKey,
+  selectAllPlaceholder = "[ select all ]",
+  selectAllPlaceholderTransKey,
   isOpen,
   isLoading,
   disabled,
   autoFocus,
 
+  showSearch,
   searchClassName,
   searchStyle,
   searchValue,
   searchPlaceholder,
   searchPlaceholderTransKey,
   hideSearchClearBtn,
-  showSearchBlock,
   onSearch,
 
-  emptySearchPlaceholder = "no data to display",
-  emptySearchPlaceholderTransKey,
-  selectAllPlaceholder = "[ select all ]",
-  selectAllPlaceholderTransKey,
-  onIsOpen,
-  showSearch,
   showFooter,
-  hideSelectAll,
   footerClassName,
   footerStyle,
   hideSecondaryBtn,
@@ -56,6 +54,8 @@ export default function SheMultiSelect({
   hidePrimaryBtn,
   primaryBtnValue,
   primaryBtnValueTransKey,
+
+  onIsOpen,
   onValueChange,
   onClear,
   ...props
@@ -268,21 +268,20 @@ export default function SheMultiSelect({
               ))}
             </CommandGroup>
           </CommandList>
-          {showFooter && (
-            <SheMultiSelectFooter
-              className={footerClassName}
-              style={footerStyle}
-              selectedValues={_selectedValues}
-              hideSecondaryBtn={hideSecondaryBtn}
-              secondaryBtnValue={secondaryBtnValue}
-              secondaryBtnValueTransKey={secondaryBtnValueTransKey}
-              hidePrimaryBtn={hidePrimaryBtn}
-              primaryBtnValue={primaryBtnValue}
-              primaryBtnValueTransKey={primaryBtnValueTransKey}
-              onSecondaryBtnClick={onClearButtonHandler}
-              onPrimaryBtnClick={onCloseButtonHandler}
-            />
-          )}
+          <SheMultiSelectFooter
+            footerClassName={footerClassName}
+            footerStyle={footerStyle}
+            selectedValues={_selectedValues}
+            hideSecondaryBtn={hideSecondaryBtn}
+            secondaryBtnValue={secondaryBtnValue}
+            secondaryBtnValueTransKey={secondaryBtnValueTransKey}
+            hidePrimaryBtn={hidePrimaryBtn}
+            primaryBtnValue={primaryBtnValue}
+            primaryBtnValueTransKey={primaryBtnValueTransKey}
+            showFooter={showFooter}
+            onSecondaryBtnClick={onClearButtonHandler}
+            onPrimaryBtnClick={onCloseButtonHandler}
+          />
         </Command>
       </PopoverContent>
     </Popover>
