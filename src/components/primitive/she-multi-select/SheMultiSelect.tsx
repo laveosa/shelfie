@@ -8,7 +8,6 @@ import {
   Command,
   CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandList,
 } from "@/components/ui/command";
 import { Popover, PopoverContent } from "@/components/ui/popover";
@@ -17,9 +16,9 @@ import SheMultiSelectTrigger from "@/components/primitive/she-multi-select/compo
 import { generateId } from "@/utils/helpers/quick-helper.ts";
 import { ISheMultiSelectItem } from "@/const/interfaces/primitive-components/ISheMultiSelectItem.ts";
 import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
-import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import SheMultiSelectItem from "@/components/primitive/she-multi-select/components/she-multi-select-item/SheMultiSelectItem.tsx";
 import SheMultiSelectFooter from "@/components/primitive/she-multi-select/components/she-multi-select-footer/SheMultiSelectFooter.tsx";
+import SheMultiSelectSearch from "@/components/primitive/she-multi-select/components/she-multi-select-search/SheMultiSelectSearch.tsx";
 
 export default function SheMultiSelect({
   popoverClassName = "",
@@ -30,8 +29,17 @@ export default function SheMultiSelect({
   isOpen,
   isLoading,
   disabled,
-  searchPlaceholder = "search...",
+  autoFocus,
+
+  searchClassName,
+  searchStyle,
+  searchValue,
+  searchPlaceholder,
   searchPlaceholderTransKey,
+  hideSearchClearBtn,
+  showSearchBlock,
+  onSearch,
+
   emptySearchPlaceholder = "no data to display",
   emptySearchPlaceholderTransKey,
   selectAllPlaceholder = "[ select all ]",
@@ -52,7 +60,6 @@ export default function SheMultiSelect({
   onClear,
   ...props
 }: ISheMultiSelect): JSX.Element {
-  const { translate } = useAppTranslation();
   const [_options, setOptions] = useState<ISheMultiSelectItem[]>(null);
   const [_selectedValues, setSelectedValues] = useState<any[]>([]);
   const [_badges, setBadges] = useState<ISheBadge[]>(null);
@@ -91,6 +98,12 @@ export default function SheMultiSelect({
   useEffect(() => {
     if (!_.isNil(isOpen) && isOpen !== _isPopoverOpen) setIsPopoverOpen(isOpen);
   }, [isOpen]);
+
+  useEffect(() => {
+    if (autoFocus && triggerRef.current) {
+      setTimeout(() => triggerRef.current.focus());
+    }
+  }, [autoFocus]);
 
   // ==================================================================== EVENT
 
@@ -193,6 +206,7 @@ export default function SheMultiSelect({
         ariaDescribedbyId={ariaDescribedbyId}
         disabled={disabled || !_options || _options.length === 0}
         isLoading={isLoading}
+        autoFocus={autoFocus}
         onTogglePopover={onTogglePopoverHandler}
         onToggleOption={onToggleOptionHandler}
         onClearExtraOptions={onClearExtraOptionsHandler}
@@ -208,15 +222,16 @@ export default function SheMultiSelect({
         align="start"
       >
         <Command>
-          {showSearch && (
-            <CommandInput
-              className={cs.sheMultiSelectPopoverSearchBlock}
-              placeholder={translate(
-                searchPlaceholderTransKey,
-                searchPlaceholder,
-              )}
-            />
-          )}
+          <SheMultiSelectSearch
+            searchClassName={searchClassName}
+            searchStyle={searchStyle}
+            searchValue={searchValue}
+            searchPlaceholder={searchPlaceholder}
+            searchPlaceholderTransKey={searchPlaceholderTransKey}
+            hideSearchClearBtn={hideSearchClearBtn}
+            showSearch={showSearch}
+            onSearch={onSearch}
+          />
           <CommandList>
             <CommandEmpty
               className={cs.sheMultiSelectPopoverNoDataMessageBlock}
@@ -239,38 +254,35 @@ export default function SheMultiSelect({
                   onClick={onToggleAllHandler}
                 />
               )}
-              {_options?.map((option) => {
-                const isSelected = _selectedValues?.includes(option.value);
-                return (
-                  <SheMultiSelectItem
-                    key={option.id}
-                    className={cs.sheMultiSelectItemParentWrapper}
-                    isSelected={isSelected}
-                    isItemsWithIcons={_isItemsWithIcons}
-                    isItemsWithColors={_isItemsWithColors}
-                    isLoading={isLoading}
-                    onClick={onToggleOptionHandler}
-                    {...option}
-                  />
-                );
-              })}
+              {_options?.map((option) => (
+                <SheMultiSelectItem
+                  key={option.id}
+                  className={cs.sheMultiSelectItemParentWrapper}
+                  isSelected={_selectedValues?.includes(option.value)}
+                  isItemsWithIcons={_isItemsWithIcons}
+                  isItemsWithColors={_isItemsWithColors}
+                  isLoading={isLoading}
+                  onClick={onToggleOptionHandler}
+                  {...option}
+                />
+              ))}
             </CommandGroup>
-            {showFooter && (
-              <SheMultiSelectFooter
-                className={footerClassName}
-                style={footerStyle}
-                selectedValues={_selectedValues}
-                hideSecondaryBtn={hideSecondaryBtn}
-                secondaryBtnValue={secondaryBtnValue}
-                secondaryBtnValueTransKey={secondaryBtnValueTransKey}
-                hidePrimaryBtn={hidePrimaryBtn}
-                primaryBtnValue={primaryBtnValue}
-                primaryBtnValueTransKey={primaryBtnValueTransKey}
-                onSecondaryBtnClick={onClearButtonHandler}
-                onPrimaryBtnClick={onCloseButtonHandler}
-              />
-            )}
           </CommandList>
+          {showFooter && (
+            <SheMultiSelectFooter
+              className={footerClassName}
+              style={footerStyle}
+              selectedValues={_selectedValues}
+              hideSecondaryBtn={hideSecondaryBtn}
+              secondaryBtnValue={secondaryBtnValue}
+              secondaryBtnValueTransKey={secondaryBtnValueTransKey}
+              hidePrimaryBtn={hidePrimaryBtn}
+              primaryBtnValue={primaryBtnValue}
+              primaryBtnValueTransKey={primaryBtnValueTransKey}
+              onSecondaryBtnClick={onClearButtonHandler}
+              onPrimaryBtnClick={onCloseButtonHandler}
+            />
+          )}
         </Command>
       </PopoverContent>
     </Popover>

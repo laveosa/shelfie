@@ -42,7 +42,6 @@ export function SheClearButton({
           title="Clear"
           aria-label="Clear"
           variant="ghost"
-          size="icon"
           icon={X}
           txtColor={color}
           aria-describedby={ariaDescribedbyId}

@@ -1,4 +1,5 @@
 import React, { JSX } from "react";
+import { Trans } from "react-i18next";
 
 import cs from "./SheMultiSelectTrigger.module.scss";
 import { ISheMultiSelectTrigger } from "@/const/interfaces/primitive-components/ISheMultiSelectTrigger.ts";
@@ -46,6 +47,7 @@ export default function SheMultiSelectTrigger({
   ...props
 }: ISheMultiSelectTrigger): JSX.Element {
   const { translate } = useAppTranslation();
+
   // ==================================================================== EVENT
 
   // ==================================================================== PRIVATE
@@ -80,7 +82,6 @@ export default function SheMultiSelectTrigger({
                 className={`${elementClassName} ${cs.sheMultiSelectTriggerElement}`}
                 style={elementStyle}
                 disabled={disabled || isLoading}
-                autoFocus={autoFocus}
                 onClick={onTogglePopover}
                 {...props}
               >
@@ -121,7 +122,11 @@ export default function SheMultiSelectTrigger({
                               key={`${item.text}_${idx + 1}`}
                               className="she-text"
                             >
-                              {item.text} {idx !== items.length - 1 ? "| " : ""}
+                              {translate(
+                                item.textTransKey,
+                                item.text.toString(),
+                              )}{" "}
+                              {idx !== items.length - 1 ? "| " : ""}
                             </span>
                           ))}
                         </span>
@@ -129,7 +134,9 @@ export default function SheMultiSelectTrigger({
                     ) : (
                       <div className={cs.contextStringWrapper}>
                         <span className="she-placeholder">
-                          {translate(placeholderTransKey, placeholder)}
+                          <Trans i18nKey={placeholderTransKey}>
+                            {placeholder}
+                          </Trans>
                         </span>
                       </div>
                     )}

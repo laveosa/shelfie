@@ -1,10 +1,14 @@
 import React, { ComponentPropsWithRef } from "react";
 
-import { ButtonProps } from "@/components/ui/button.tsx";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
+import { ButtonProps } from "@/components/ui/button.tsx";
 
-export interface ISheButton extends ComponentPropsWithRef<any>, ButtonProps {
+type NativeButtonProps = Omit<ButtonProps, "size">;
+
+export interface ISheButton
+  extends ComponentPropsWithRef<any>,
+    NativeButtonProps {
   id?: string;
   className?: string;
   style?: React.CSSProperties;

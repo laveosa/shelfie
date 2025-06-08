@@ -9,13 +9,6 @@ $iconSize: 20px;
   }
 }
 
-// ========================================================= SEARCH BLOCK
-
-.sheMultiSelectPopoverContainer {
-  .sheMultiSelectPopoverSearchBlock {
-  }
-}
-
 // ========================================================= NO DATA BLOCK
 
 .sheMultiSelectPopoverContainer {
@@ -34,16 +27,6 @@ $iconSize: 20px;
       color: vars.$placeholderColor;
     }
   }
-}
-
-// ========================================================= WITH ICON
-
-.sheMultiSelectPopoverContainer.withIcon {
-}
-
-// ========================================================= FULL WIDTH
-
-.sheMultiSelectPopoverContainer.fullWidth {
 }
 
 // ========================================================= MULTI SELECT ITEM WRAPPER
