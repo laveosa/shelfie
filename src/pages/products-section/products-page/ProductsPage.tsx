@@ -66,16 +66,12 @@ export function ProductsPage() {
           dispatch(actions.refreshVariants(res.items));
         });
     } else if (activeTab === "purchases") {
-      Promise.all([
-        service.getListOfPurchasesForGridHandler(
-          state.purchasesGridRequestModel,
-        ),
-        service.getListOfAllSuppliersHandler(),
-      ]).then(([model, suppliers]) => {
-        dispatch(actions.refreshPurchasesGridModel(model));
-        dispatch(actions.refreshPurchases(model.items));
-        dispatch(actions.refreshSuppliers(suppliers));
-      });
+      service
+        .getListOfPurchasesForGridHandler(state.purchasesGridRequestModel)
+        .then((res) => {
+          dispatch(actions.refreshPurchasesGridModel(res));
+          dispatch(actions.refreshPurchases(res.items));
+        });
     }
     dispatch(actions.resetSelectedVariant());
   }, [
@@ -117,15 +113,20 @@ export function ProductsPage() {
         dispatch(actions.refreshSortingOptions(res));
       });
     }
+    if (state.suppliers.length === 0) {
+      service.getListOfSuppliersHandler().then((res) => {
+        dispatch(actions.refreshSuppliers(res));
+      });
+    }
   }, []);
 
-  const onAction = (
+  function onAction(
     actionType: string,
     rowId?: string,
     setLoadingRow?: (rowId: string, loading: boolean) => void,
     rowData?: any,
     _rowOriginal?: any,
-  ) => {
+  ) {
     setLoadingRow(rowId, true);
 
     switch (actionType) {
@@ -133,7 +134,7 @@ export function ProductsPage() {
         break;
       case "manage":
         navigate(
-          `${ApiUrlEnum.PRODUCTS}${ApiUrlEnum.PRODUCT_BASIC_DATA}/${rowData?.productId}`,
+          `${NavUrlEnum.PRODUCTS}${NavUrlEnum.PRODUCT_BASIC_DATA}/${rowData?.productId}`,
         );
         break;
       case "activateProduct":
@@ -198,12 +199,18 @@ export function ProductsPage() {
         service.getVariantDetailsHandler(rowData.variantId).then((res) => {
           dispatch(actions.refreshSelectedVariant(res));
           navigate(
-            `${NavUrlEnum.PRODUCTS}${NavUrlEnum.PRODUCT_VARIANTS}/${rowData?.productId}`,
+            `${NavUrlEnum.PRODUCTS}${NavUrlEnum.MANAGE_VARIANTS}/${rowData?.productId}`,
           );
         });
         break;
       case "deleteVariant":
         console.log(`Delete variant ${rowId}`);
+        break;
+      case "managePurchase":
+        dispatch(actions.refreshSelectedPurchase(rowData));
+        navigate(
+          `${NavUrlEnum.PRODUCTS}${NavUrlEnum.SUPPLIER}/${rowData?.purchaseId}`,
+        );
         break;
       case "deletePurchase":
         console.log(`Delete purchase ${rowId}`);
@@ -211,7 +218,7 @@ export function ProductsPage() {
     }
 
     setLoadingRow(rowId, false);
-  };
+  }
 
   const productsColumns = productsGridColumns(onAction, activeStates);
   const variantsColumns = variantsGridColumns(onAction);
@@ -228,7 +235,7 @@ export function ProductsPage() {
   function handleReportPurchase() {}
 
   function handleGridRequestChange(updates: GridRequestModel) {
-    if (updates.brands || updates.categories) {
+    if (updates.brands || updates.categories || updates.filter) {
       if (activeTab === "products") {
         dispatch(
           actions.refreshProductsGridRequestModel({
@@ -241,6 +248,14 @@ export function ProductsPage() {
         dispatch(
           actions.refreshVariantsGridRequestModel({
             ...state.variantsGridRequestModel,
+            currentPage: 1,
+            ...updates,
+          }),
+        );
+      } else if (activeTab === "purchases") {
+        dispatch(
+          actions.refreshPurchasesGridRequestModel({
+            ...state.purchasesGridRequestModel,
             currentPage: 1,
             ...updates,
           }),
@@ -281,7 +296,28 @@ export function ProductsPage() {
   }
 
   function onSupplierSelectHandler(selectedIds: number[]) {
-    handleGridRequestChange({ categories: selectedIds });
+    handleGridRequestChange({ filter: { suppliers: selectedIds } });
+  }
+
+  function onPurchaseBrandsSelectHandler(selectedIds: number[]) {
+    handleGridRequestChange({ filter: { brands: selectedIds } });
+  }
+
+  function onPurchaseValueToHandler(value: number) {
+    handleGridRequestChange({ filter: { valueTo: value } });
+  }
+
+  function onPurchaseValueFromHandler(value: number) {
+    handleGridRequestChange({ filter: { valueFrom: value } });
+  }
+
+  function onPurchaseDateRangeHandler(value: any) {
+    handleGridRequestChange({
+      filter: {
+        dateTo: value.to,
+        dateFrom: value.from,
+      },
+    });
   }
 
   function onApplyColumnsHandler(model: PreferencesModel) {
@@ -394,7 +430,7 @@ export function ProductsPage() {
             <DndGridDataTable
               isLoading={state.isLoading}
               columns={variantsColumns}
-              data={state.variantsGridModel.items}
+              data={state.variants}
               gridModel={state.variantsGridModel}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
@@ -424,7 +460,7 @@ export function ProductsPage() {
             <DndGridDataTable
               isLoading={state.isLoading}
               columns={purchasesColumns}
-              data={state.purchasesGridModel.items}
+              data={state.purchases}
               gridModel={state.purchasesGridModel}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
@@ -439,20 +475,23 @@ export function ProductsPage() {
                 columnName={"Suppliers"}
                 icon={BadgeCheck}
                 onSelectionChange={onSupplierSelectHandler}
-                getId={(item: SupplierModel) => item.id}
-                getName={(item: SupplierModel) => item.name}
+                getId={(item: SupplierModel) => item.supplierId}
+                getName={(item: SupplierModel) => item.supplierName}
               />
               <SheDatePicker
                 mode="range"
                 icon={CalendarRange}
                 placeholder="Pick range"
                 maxWidth="200px"
+                onSelectDate={(data) => {
+                  onPurchaseDateRangeHandler(data);
+                }}
               />
               <GridItemsFilter
                 items={state.brands}
                 columnName={"Brands"}
                 icon={BadgeCheck}
-                onSelectionChange={onBrandSelectHandler}
+                onSelectionChange={onPurchaseBrandsSelectHandler}
                 getId={(item: BrandModel) => item.brandId}
                 getName={(item: BrandModel) => item.brandName}
               />
@@ -460,11 +499,15 @@ export function ProductsPage() {
                 icon={ReceiptEuro}
                 placeholder="Value from"
                 maxWidth="200px"
+                onDelay={(data: number) => onPurchaseValueFromHandler(data)}
               />
               <SheInput
                 icon={ReceiptEuro}
                 placeholder="Value to"
                 maxWidth="200px"
+                onDelay={(data: number) => {
+                  onPurchaseValueToHandler(data);
+                }}
               />
             </DndGridDataTable>
           </TabsContent>

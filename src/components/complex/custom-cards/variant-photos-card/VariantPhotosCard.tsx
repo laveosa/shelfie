@@ -66,7 +66,6 @@ export default function VariantPhotosCard({
       <SheProductCard
         loading={isLoading}
         title="Manage Photos"
-        view="card"
         onSecondaryButtonClick={() => onAction("closeVariantPhotosCard")}
         showCloseButton={true}
         {...props}

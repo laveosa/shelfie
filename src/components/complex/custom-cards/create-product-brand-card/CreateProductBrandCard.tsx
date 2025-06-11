@@ -83,7 +83,6 @@ export default function CreateProductBrandCard({ isLoading, ...props }) {
       <SheProductCard
         loading={isLoading}
         title="Create Product Brand"
-        view="card"
         showCloseButton
         className={cs.createProductBrandCard}
         {...props}

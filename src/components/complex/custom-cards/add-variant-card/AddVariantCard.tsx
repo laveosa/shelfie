@@ -66,13 +66,11 @@ export default function AddVariantCard({
       <SheProductCard
         loading={isLoading}
         title="Add Variant"
-        view="card"
         showPrimaryButton={true}
         primaryButtonTitle="Add Variant"
         onPrimaryButtonClick={form.handleSubmit(onSubmit)}
         primaryButtonDisabled={isPrimaryButtonDisabled}
         showSecondaryButton={true}
-        secondaryButtonTitle="Cancel"
         onSecondaryButtonClick={() => onAction("closeAddVariantCard")}
         showCloseButton={true}
         className={cs.addVariantCard}

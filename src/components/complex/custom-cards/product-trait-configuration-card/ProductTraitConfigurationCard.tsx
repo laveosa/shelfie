@@ -108,7 +108,6 @@ export default function ProductTraitConfigurationCard({
     <SheProductCard
       loading={isLoading}
       title={selectedTrait?.traitName ? "Manage" : "Create product trait"}
-      view="card"
       showCloseButton={true}
       className={cs.productTraitConfigurationCard}
       {...props}

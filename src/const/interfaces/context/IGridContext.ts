@@ -14,7 +14,7 @@ export interface IGridContext extends PropsWithChildren {
   showSorting?: boolean;
   showColumnsViewOptions?: boolean;
   showSearch?: boolean;
-  gridModel: GridModel;
+  gridModel?: GridModel;
   onGridRequestChange?: (updates: GridRequestModel) => void;
   sortingItems?: GridSortingModel[];
 }

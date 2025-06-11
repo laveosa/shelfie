@@ -1,3 +1,5 @@
+import { GridFiltersModel } from "@/const/models/GridFiltersModel.ts";
+
 export interface GridRequestModel {
   currentPage?: number;
   pageSize?: number;
@@ -5,4 +7,5 @@ export interface GridRequestModel {
   sortOption?: string;
   brands?: number[];
   categories?: number[];
+  filter?: GridFiltersModel;
 }

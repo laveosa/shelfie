@@ -58,7 +58,6 @@ export default function ProductPhotosCard({
       <SheProductCard
         loading={isLoading}
         title="Product Photos"
-        view="card"
         minWidth="405px"
         className={cs.productPhotosCard}
         {...props}

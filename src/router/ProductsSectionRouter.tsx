@@ -1,6 +1,4 @@
 import { RouteObject } from "react-router-dom";
-import { ManageVariantsPage } from "@/pages/products-section/manage-variants-page/ManageVariantsPage.tsx";
-import { SizeChartPage } from "@/pages/products-section/size-chart-page/SizeChartPage.tsx";
 
 export const ProductsSectionRouter: RouteObject[] = [
   {
@@ -70,13 +68,46 @@ export const ProductsSectionRouter: RouteObject[] = [
     },
   },
   {
-    path: "purchase/:productId?",
+    path: "supplier/:purchaseId?",
     lazy: async () => {
-      const { PurchasePage } = await import(
-        "@/pages/products-section/purchase-page/PurchasePage.tsx"
+      const { SupplierPage } = await import(
+        "@/pages/products-section/supplier-page/SupplierPage.tsx"
       );
       return {
-        element: <PurchasePage />,
+        element: <SupplierPage />,
+      };
+    },
+  },
+  {
+    path: "purchase-products/:purchaseId?",
+    lazy: async () => {
+      const { PurchaseProductsPage } = await import(
+        "@/pages/products-section/purchase-products-page/PurchaseProductsPage.tsx"
+      );
+      return {
+        element: <PurchaseProductsPage />,
+      };
+    },
+  },
+  {
+    path: "margins/:purchaseId?",
+    lazy: async () => {
+      const { MarginsPage } = await import(
+        "@/pages/products-section/margins-page/MarginsPage.tsx"
+      );
+      return {
+        element: <MarginsPage />,
+      };
+    },
+  },
+  {
+    path: "invoices/:purchaseId?",
+    lazy: async () => {
+      const { InvoicesPage } = await import(
+        "@/pages/products-section/invoices-page/InvoicesPage.tsx"
+      );
+      return {
+        element: <InvoicesPage />,
       };
     },
   },

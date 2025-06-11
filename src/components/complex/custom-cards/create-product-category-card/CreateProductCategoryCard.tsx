@@ -82,7 +82,6 @@ export default function CreateProductCategoryCard({ isLoading, ...props }) {
       <SheProductCard
         loading={isLoading}
         title="Create Product Category"
-        view="card"
         showCloseButton
         primaryButtonTitle="Add Category"
         className={cs.createProductCategoryCard}

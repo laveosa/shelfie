@@ -36,6 +36,7 @@ export function SizeChartPage() {
       <ProductMenuCard
         title={"Manage Size Charts"}
         productCounter={state.productCounter}
+        itemsCollection="products"
         onAction={handleCardAction}
         productId={Number(productId)}
         activeCards={state.activeCards}

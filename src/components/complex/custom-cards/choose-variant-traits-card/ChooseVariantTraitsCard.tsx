@@ -40,12 +40,10 @@ export default function ChooseVariantTraitsCard({
     <SheProductCard
       loading={isLoading}
       title="Choose variant traits for product"
-      view="card"
       showPrimaryButton={true}
       primaryButtonTitle="Save"
       onPrimaryButtonClick={handleSave}
       showSecondaryButton={true}
-      secondaryButtonTitle="Cancel"
       showCloseButton={true}
       className={cs.chooseVariantTraitsCard}
       {...props}

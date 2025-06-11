@@ -213,7 +213,6 @@ export default function VariantConfigurationCard({
     <SheProductCard
       loading={isLoading}
       title="Manage Variant"
-      view="card"
       showCloseButton
       onSecondaryButtonClick={onSecondaryButtonClick}
       className={cs.variantConfigurationCard}

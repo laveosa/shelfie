@@ -33,8 +33,8 @@ export default function PurchasesGridColumnActions<TData>({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <SheButton
-          variant="ghost"
-          className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+          variant="secondary"
+          className="flex h-10 w-10 p-0 data-[state=open]:bg-muted"
         >
           <MoreHorizontal />
           <span className="sr-only">Open menu</span>

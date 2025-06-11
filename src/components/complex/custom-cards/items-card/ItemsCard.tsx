@@ -37,6 +37,7 @@ export default function ItemsCard({
       <SheProductCard
         loading={isLoading}
         title={title}
+        view="borderless"
         width="300px"
         minWidth="300px"
         showToggleButton

@@ -15,6 +15,7 @@ import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 import { VariantModel } from "@/const/models/VariantModel.ts";
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 import { SupplierModel } from "@/const/models/SupplierModel.ts";
+import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 
 const initialState: IProductsPageSlice = {
   isLoading: false,
@@ -65,8 +66,11 @@ const initialState: IProductsPageSlice = {
   productPhotos: [],
   productVariants: [],
   selectedVariant: null,
+  selectedSupplier: null,
+  selectedPurchase: null,
   taxesList: [],
   currenciesList: [],
+  countryCodeList: null,
 };
 
 //----------------------------------------------------- LOADERS
@@ -266,6 +270,20 @@ function refreshSelectedVariant(
   state.selectedVariant = action?.payload || state.selectedVariant;
 }
 
+function refreshSelectedSupplier(
+  state: IProductsPageSlice,
+  action: PayloadAction<SupplierModel>,
+) {
+  state.selectedSupplier = action?.payload || state.selectedSupplier;
+}
+
+function refreshSelectedPurchase(
+  state: IProductsPageSlice,
+  action: PayloadAction<PurchaseModel>,
+) {
+  state.selectedPurchase = action?.payload || state.selectedPurchase;
+}
+
 function resetSelectedVariant(state: IProductsPageSlice) {
   state.selectedVariant = null;
 }
@@ -282,6 +300,13 @@ function refreshCurrenciesList(
   action: PayloadAction<CurrencyModel[]>,
 ) {
   state.currenciesList = action?.payload || state.currenciesList;
+}
+
+function refreshCountryCodeList(
+  state: IProductsPageSlice,
+  action: PayloadAction<CountryCodeModel[]>,
+) {
+  state.countryCodeList = action?.payload || state.countryCodeList;
 }
 
 const ProductsPageSlice = createSlice({
@@ -317,8 +342,11 @@ const ProductsPageSlice = createSlice({
     refreshProductVariants,
     refreshSelectedVariant,
     resetSelectedVariant,
+    refreshSelectedSupplier,
+    refreshSelectedPurchase,
     refreshTaxesList,
     refreshCurrenciesList,
+    refreshCountryCodeList,
   },
 });
 

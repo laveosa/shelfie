@@ -287,24 +287,23 @@ export function ProductGalleryPage() {
 
   return (
     <div className={cs.createProductPage}>
-      <div className={cs.borderlessCards}>
-        <ItemsCard
-          isLoading={productsState.isItemsCardLoading}
-          isItemsLoading={productsState.isProductsLoading}
-          title="Products"
-          data={productsForItemsCard}
-          selectedItem={productId}
-          skeletonQuantity={productsState.products?.length}
-          onAction={itemCardHandler}
-        />
-        <ProductMenuCard
-          isLoading={productsState.isProductMenuCardLoading}
-          title={productId ? "Manage Product" : "Create Product"}
-          productCounter={productsState.productCounter}
-          productId={Number(productId)}
-          activeCards={state.activeCards}
-        />
-      </div>
+      <ItemsCard
+        isLoading={productsState.isItemsCardLoading}
+        isItemsLoading={productsState.isProductsLoading}
+        title="Products"
+        data={productsForItemsCard}
+        selectedItem={productId}
+        skeletonQuantity={productsState.products?.length}
+        onAction={itemCardHandler}
+      />
+      <ProductMenuCard
+        isLoading={productsState.isProductMenuCardLoading}
+        title={productId ? "Manage Product" : "Create Product"}
+        itemsCollection="products"
+        productCounter={productsState.productCounter}
+        productId={Number(productId)}
+        activeCards={state.activeCards}
+      />
       <ProductPhotosCard
         isLoading={state.isProductPhotosCardLoading}
         isImageUploaderLoading={state.isImageUploaderLoading}

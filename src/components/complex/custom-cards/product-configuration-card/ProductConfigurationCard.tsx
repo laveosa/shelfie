@@ -87,7 +87,6 @@ export default function ProductConfigurationCard({
     <div>
       <SheProductCard
         loading={isLoading}
-        view="card"
         title={product?.productId ? "Basic Product Data" : "Create Product"}
         showPrimaryButton={true}
         primaryButtonTitle={product?.productId ? "Save" : "Add Product"}

@@ -1,6 +1,6 @@
 import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
 
-export default function usePurchasePageService() {
+export default function usePurchaseProductsPageService() {
   const [getCountersForProducts] =
     ProductsApiHooks.useLazyGetCountersForProductsQuery();
 
