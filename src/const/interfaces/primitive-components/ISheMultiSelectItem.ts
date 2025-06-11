@@ -31,3 +31,31 @@ export interface ISheMultiSelectItem extends ComponentPropsWithRef<any> {
   toggleProps?: ISheToggle;
   onClick?: (value: any) => void;
 }
+
+export const SheMultiSelectItemDefaultModel: ISheMultiSelectItem = {
+  id: undefined,
+  key: undefined,
+  className: undefined,
+  style: undefined,
+  colors: undefined,
+  value: undefined,
+  text: undefined,
+  textTransKey: undefined,
+  description: undefined,
+  descriptionTransKey: undefined,
+  sideText: undefined,
+  sideTextTransKey: undefined,
+  sideDescription: undefined,
+  sideDescriptionTransKey: undefined,
+  icon: undefined,
+  iconProps: undefined,
+  isSelected: undefined,
+  disabled: undefined,
+  isLoading: undefined,
+  isItemsWithIcons: undefined,
+  isItemsWithColors: undefined,
+  ariaDescribedbyId: undefined,
+  tooltip: undefined,
+  toggleProps: undefined,
+  onClick: undefined,
+};

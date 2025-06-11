@@ -19,11 +19,22 @@ import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts"
 import SheMultiSelectItem from "@/components/primitive/she-multi-select/components/she-multi-select-item/SheMultiSelectItem.tsx";
 import SheMultiSelectFooter from "@/components/primitive/she-multi-select/components/she-multi-select-footer/SheMultiSelectFooter.tsx";
 import SheMultiSelectSearch from "@/components/primitive/she-multi-select/components/she-multi-select-search/SheMultiSelectSearch.tsx";
+import {
+  getCustomProps,
+  removeCustomProps,
+} from "@/utils/helpers/props-helper.ts";
+import {
+  ISheMultiSelectSearch,
+  SheMultiSelectSearchDefaultModel,
+} from "@/const/interfaces/primitive-components/ISheMultiSelectSearch.ts";
+import {
+  ISheMultiSelectFooter,
+  SheMultiSelectFooterDefaultModel,
+} from "@/const/interfaces/primitive-components/ISheMultiSelectFooter.ts";
 
 export default function SheMultiSelect({
   popoverClassName = "",
   popoverStyles,
-  icon,
   options,
   hideSelectAll,
   selectedValues,
@@ -35,26 +46,7 @@ export default function SheMultiSelect({
   isLoading,
   disabled,
   autoFocus,
-
-  showSearch,
-  searchClassName,
-  searchStyle,
   searchValue,
-  searchPlaceholder,
-  searchPlaceholderTransKey,
-  hideSearchClearBtn,
-  onSearch,
-
-  showFooter,
-  footerClassName,
-  footerStyle,
-  hideSecondaryBtn,
-  secondaryBtnValue,
-  secondaryBtnValueTransKey,
-  hidePrimaryBtn,
-  primaryBtnValue,
-  primaryBtnValueTransKey,
-
   onIsOpen,
   onValueChange,
   onClear,
@@ -73,6 +65,19 @@ export default function SheMultiSelect({
   const searchRef = useRef<HTMLInputElement>(null);
   const ariaDescribedbyId = `${generateId()}_MULTI_SELECT_ID`;
 
+  const sheMultiSelectSearchProps = getCustomProps<
+    ISheMultiSelect,
+    ISheMultiSelectSearch
+  >(props, SheMultiSelectSearchDefaultModel);
+  const sheMultiSelectFooterProps = getCustomProps<
+    ISheMultiSelect,
+    ISheMultiSelectFooter
+  >(props, SheMultiSelectFooterDefaultModel);
+  const restProps = removeCustomProps<ISheMultiSelect, ISheMultiSelectSearch>(
+    props,
+    [SheMultiSelectSearchDefaultModel, SheMultiSelectFooterDefaultModel],
+  );
+
   useEffect(() => {
     setIsItemsWithIcons(null);
     setIsItemsWithColors(null);
@@ -80,6 +85,7 @@ export default function SheMultiSelect({
     if (!_.isEqual(options, _options)) {
       setOptions(_addItemsIds(options));
       setBadges(_getSelectedBudges(options, _selectedValues));
+      _setAutoFocus();
     }
   }, [options]);
 
@@ -90,6 +96,7 @@ export default function SheMultiSelect({
     ) {
       setSelectedValues(selectedValues);
       setBadges(_getSelectedBudges(options, selectedValues));
+      _setAutoFocus();
     }
   }, [selectedValues]);
 
@@ -99,6 +106,7 @@ export default function SheMultiSelect({
 
   useEffect(() => {
     if (!_.isNil(isOpen) && isOpen !== _isPopoverOpen) setIsPopoverOpen(isOpen);
+    _calculatePopoverWidth();
   }, [isOpen]);
 
   useEffect(() => {
@@ -106,9 +114,7 @@ export default function SheMultiSelect({
   }, [searchValue]);
 
   useEffect(() => {
-    if (autoFocus && triggerRef.current) {
-      setTimeout(() => triggerRef.current.focus());
-    }
+    _setAutoFocus();
   }, [autoFocus]);
 
   // ==================================================================== EVENT
@@ -140,7 +146,7 @@ export default function SheMultiSelect({
   function onClearButtonHandler() {
     _updateSelectedValues([]);
     setSearchValue("");
-    setTimeout(() => searchRef.current.focus());
+    setTimeout(() => searchRef?.current?.focus());
     if (onClear) onClear([]);
   }
 
@@ -149,6 +155,12 @@ export default function SheMultiSelect({
   }
 
   // ==================================================================== PRIVATE
+
+  function _setAutoFocus() {
+    if (autoFocus && triggerRef.current) {
+      setTimeout(() => triggerRef.current.focus());
+    }
+  }
 
   function _addItemsIds(items: ISheMultiSelectItem[]) {
     return items?.map((item, idx) => {
@@ -209,7 +221,6 @@ export default function SheMultiSelect({
       <SheMultiSelectTrigger
         ref={triggerRef}
         items={_badges}
-        icon={icon}
         isOpen={_isPopoverOpen}
         ariaDescribedbyId={ariaDescribedbyId}
         disabled={disabled || !_options || _options.length === 0}
@@ -219,11 +230,11 @@ export default function SheMultiSelect({
         onToggleOption={onToggleOptionHandler}
         onClearExtraOptions={onClearExtraOptionsHandler}
         onClearAll={onClearButtonHandler}
-        {...props}
+        {...restProps}
       />
       <PopoverContent
         ref={popoverRef}
-        className={`${popoverClassName} ${cs.sheMultiSelectPopoverContainer}`}
+        className={`${popoverClassName} ${cs.sheMultiSelectPopoverContainer} ${disabled || isLoading ? "disabled" : ""}`}
         style={{
           ...popoverStyles,
         }}
@@ -232,14 +243,8 @@ export default function SheMultiSelect({
         <Command>
           <SheMultiSelectSearch
             searchRef={searchRef}
-            searchClassName={searchClassName}
-            searchStyle={searchStyle}
             searchValue={_searchValue}
-            searchPlaceholder={searchPlaceholder}
-            searchPlaceholderTransKey={searchPlaceholderTransKey}
-            hideSearchClearBtn={hideSearchClearBtn}
-            showSearch={showSearch}
-            onSearch={onSearch}
+            {...sheMultiSelectSearchProps}
           />
           <CommandList>
             <CommandEmpty
@@ -278,18 +283,10 @@ export default function SheMultiSelect({
             </CommandGroup>
           </CommandList>
           <SheMultiSelectFooter
-            footerClassName={footerClassName}
-            footerStyle={footerStyle}
             selectedValues={_selectedValues}
-            hideSecondaryBtn={hideSecondaryBtn}
-            secondaryBtnValue={secondaryBtnValue}
-            secondaryBtnValueTransKey={secondaryBtnValueTransKey}
-            hidePrimaryBtn={hidePrimaryBtn}
-            primaryBtnValue={primaryBtnValue}
-            primaryBtnValueTransKey={primaryBtnValueTransKey}
-            showFooter={showFooter}
             onSecondaryBtnClick={onClearButtonHandler}
             onPrimaryBtnClick={onCloseButtonHandler}
+            {...sheMultiSelectFooterProps}
           />
         </Command>
       </PopoverContent>

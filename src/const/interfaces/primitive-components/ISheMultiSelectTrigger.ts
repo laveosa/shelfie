@@ -38,3 +38,33 @@ export interface ISheMultiSelectTrigger
   onClearExtraOptions?: (value: ISheBadge[]) => void;
   onClearAll?: () => void;
 }
+
+export const SheMultiSelectTriggerDefaultModel: ISheMultiSelectTrigger = {
+  ref: undefined,
+  id: undefined,
+  className: undefined,
+  style: undefined,
+  elementClassName: undefined,
+  elementStyle: undefined,
+  icon: undefined,
+  items: undefined,
+  badgeListProps: undefined,
+  contextType: undefined,
+  placeholder: undefined,
+  placeholderTransKey: undefined,
+  maxCount: undefined,
+  autoFocus: undefined,
+  asChild: undefined,
+  ariaDescribedbyId: undefined,
+  required: undefined,
+  minWidth: undefined,
+  maxWidth: undefined,
+  fullWidth: undefined,
+  disabled: undefined,
+  isLoading: undefined,
+  isOpen: undefined,
+  onTogglePopover: undefined,
+  onToggleOption: undefined,
+  onClearExtraOptions: undefined,
+  onClearAll: undefined,
+};

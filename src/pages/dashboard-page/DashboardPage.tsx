@@ -100,6 +100,20 @@ const optionsMix: ISheMultiSelectItem[] = [
 ];
 
 const optionsMix2: ISheMultiSelectItem[] = [
+  /*{
+    value: 2323434,
+    text: "weed23d23d23d23ddwed number",
+    textTransKey: "0293jsiodfjwioej",
+    description: "some description for test",
+    descriptionTransKey: "f32098f902f3jsdfwe",
+    sideText: "OB4",
+    sideTextTransKey: "32230f9j0wef",
+    sideDescription: "some dess ksjdk",
+    sideDescriptionTransKey: "f2903jf09wjefw",
+    icon: Turtle,
+    colors: ["red", "blue", "orange"],
+    tooltip: { text: "some text for tooltip element" },
+  },*/
   {
     value: 1,
     text: "1 number",
@@ -244,11 +258,11 @@ export function DashboardPage() {
 
   useEffect(() => {
     setTimeout(() => {
-      setSelectItems(optionsMix);
+      setSelectItems(optionsMix2);
     }, 1000);
 
     setTimeout(() => {
-      setSelected([optionsMix[0].value, optionsMix[3].value]);
+      setSelected([optionsMix2[0].value, optionsMix2[3].value]);
     }, 2000);
   }, []);
 
@@ -290,19 +304,59 @@ export function DashboardPage() {
 
       <SheMultiSelect
         label="Multi Select"
-        options={optionsMix2}
-        placeholder="select options..."
+        labelTransKey="2f090fwe9jj0"
+        tooltip="some tooltip text for multi-select component!!!"
+        placeholder="multi-select placeholder..."
+        placeholderTransKey="0f23-0fkwe"
+        // icon={Box}
+        options={selectItems}
+        selectedValues={selected}
         contextType="badges"
+        required
+        showClearBtn
         showSearch
         showFooter
-        showClearBtn
         autoFocus
-        // fullWidth
+        // isLoading
+        // isOpen
+        // maxWidth="200px"
         // minWidth="600px"
-        onValueChange={onAction}
+        // fullWidth
+        onValueChange={(event) => console.log("onValueChange: ", event)}
         onIsOpen={(event) => console.log("onIsOpen: ", event)}
         onClear={(event) => console.log("onClear: ", event)}
       />
+
+      <br />
+
+      {/*<SheMultiSelect
+        label="Multi Select"
+        options={optionsMix}
+        placeholder="select options..."
+        contextType="badges"
+        showClearBtn
+        autoFocus
+        // fullWidth
+
+        showSearch
+        searchClassName="some_search_class_name"
+        searchPlaceholder="some placeholder text for test only"
+        searchPlaceholderTransKey="9f2j0f9wjef09wjef"
+        searchValue="bla bla search text"
+        // minWidth="600px"
+
+        showFooter
+        footerClassName="FOOTER_CLASS_NAME"
+        footerStyle={{ border: "1px solid blue" }}
+        secondaryBtnValue="SECONDRY"
+        secondaryBtnValueTransKey="0293j9jwe09fjwe"
+        primaryBtnValue="PRIMARY"
+        primaryBtnValueTransKey="092j09wje0f9jwef"
+        // maxWidth="600px"
+        onValueChange={onAction}
+        onIsOpen={(event) => console.log("onIsOpen: ", event)}
+        onClear={(event) => console.log("onClear: ", event)}
+      />*/}
 
       <br />
 

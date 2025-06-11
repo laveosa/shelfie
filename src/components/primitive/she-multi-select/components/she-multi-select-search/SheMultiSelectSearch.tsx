@@ -38,6 +38,7 @@ export default function SheMultiSelectSearch({
 
   function onClearSearchHandler() {
     setSearchValue("");
+    setTimeout(() => searchRef?.current?.focus());
     if (onSearch) onSearch("");
   }
 

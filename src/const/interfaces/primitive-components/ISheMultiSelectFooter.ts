@@ -1,6 +1,6 @@
-import React, { ComponentPropsWithRef } from "react";
+import React from "react";
 
-export interface ISheMultiSelectFooter extends ComponentPropsWithRef<any> {
+export interface ISheMultiSelectFooter {
   footerClassName?: string;
   footerStyle?: React.CSSProperties;
   selectedValues?: any[];
@@ -14,3 +14,18 @@ export interface ISheMultiSelectFooter extends ComponentPropsWithRef<any> {
   onSecondaryBtnClick?: () => void;
   onPrimaryBtnClick?: () => void;
 }
+
+export const SheMultiSelectFooterDefaultModel: ISheMultiSelectFooter = {
+  footerClassName: undefined,
+  footerStyle: undefined,
+  selectedValues: undefined,
+  hideSecondaryBtn: undefined,
+  secondaryBtnValue: undefined,
+  secondaryBtnValueTransKey: undefined,
+  hidePrimaryBtn: undefined,
+  primaryBtnValue: undefined,
+  primaryBtnValueTransKey: undefined,
+  showFooter: undefined,
+  onSecondaryBtnClick: undefined,
+  onPrimaryBtnClick: undefined,
+};
