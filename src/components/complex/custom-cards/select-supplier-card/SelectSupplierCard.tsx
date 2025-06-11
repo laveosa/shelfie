@@ -7,7 +7,7 @@ import { ISelectSupplierCard } from "@/const/interfaces/complex-components/custo
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import { SupplierListGridColumns } from "@/components/complex/grid/supplier-list-grid/SupplierListGridColumns.tsx";
+import { SuppliersListGridColumns } from "@/components/complex/grid/supplier-list-grid/SuppliersListGridColumns.tsx";
 
 export default function SelectSupplierCard({
   isLoading,
@@ -16,11 +16,32 @@ export default function SelectSupplierCard({
 }: ISelectSupplierCard) {
   const [selectedSupplier, setSelectedSupplier] = useState<any | null>(null);
 
-  const columns = SupplierListGridColumns({
-    onAction,
+  const columns = SuppliersListGridColumns({
+    onGridAction,
     selectedSupplier,
     setSelectedSupplier,
   });
+
+  function onGridAction(
+    actionType: string,
+    _rowId?: string,
+    _setLoadingRow?: (rowId: string, loading: boolean) => void,
+    row?: any,
+  ) {
+    switch (actionType) {
+      case "manageSupplier":
+        handleAction("manageSupplier", row.original);
+        break;
+    }
+  }
+
+  function handleAction(actionType: any, payload?: any) {
+    switch (actionType) {
+      case "manageSupplier":
+        onAction("manageSupplier", payload);
+        break;
+    }
+  }
 
   return (
     <SheProductCard
@@ -45,11 +66,16 @@ export default function SelectSupplierCard({
             icon={Plus}
             value="Create Supllier"
             variant="outline"
-            onClick={() => onAction("openCreateSupplierCard")}
+            onClick={() => onAction("openSupplierConfigurationCard")}
           />
         </div>
         <div className={cs.supplierListBlock}>
-          <SheInput isSearch fullWidth placeholder="Search Supplier..." />
+          <SheInput
+            isSearch
+            fullWidth
+            placeholder="Search Supplier..."
+            onDelay={(data: string) => onAction("searchSupplier", data)}
+          />
           <DndGridDataTable
             showHeader={false}
             columns={columns}

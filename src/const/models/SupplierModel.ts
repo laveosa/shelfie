@@ -1,5 +1,5 @@
 export interface SupplierModel {
-  photo?: string;
+  photo?: any;
   supplierId?: number;
   supplierName?: string;
   id?: number;

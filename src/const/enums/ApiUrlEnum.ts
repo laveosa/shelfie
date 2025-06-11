@@ -12,6 +12,7 @@ export enum ApiUrlEnum {
   VARIANTS = "/variants",
   PURCHASES = "/purchases",
   SUPPLIERS = "/suppliers",
+  LOCATIONS = "/locations",
   TRAITS = "/traits",
   OPTIONS = "/options",
   TRAIT_OPTIONS = "/traitOptions",

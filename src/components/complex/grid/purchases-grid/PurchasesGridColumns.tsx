@@ -23,7 +23,7 @@ export function purchasesGridColumns(onAction: any): ColumnDef<any>[] {
       minSize: 200,
       maxSize: 200,
       cell: ({ row }) => {
-        const imageUrl: string = row.original.supplier?.photo;
+        const imageUrl: string = row.original.supplier?.photo?.thumbnailUrl;
         return (
           <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
             <div>
@@ -32,6 +32,7 @@ export function purchasesGridColumns(onAction: any): ColumnDef<any>[] {
                   src={imageUrl || placeholderImage}
                   alt={row.original.supplier?.supplierName || "Supplier"}
                   className="object-cover rounded-md w-full h-full"
+                  style={{ width: "30px", height: "30px" }}
                 />
               ) : (
                 <SheIcon icon={ImageIcon} maxWidth="30px" />

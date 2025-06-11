@@ -20,6 +20,24 @@ export const SuppliersApiService = createApi({
         }),
       },
     ),
+    getListOfSuppliersWithLocations: apiConfig.createMutation<any, any>(
+      builder,
+      {
+        query: (model?: any) => ({
+          url: `${ApiUrlEnum.LOCATIONS}/list`,
+          method: "POST",
+          body: JSON.stringify(model),
+        }),
+      },
+    ),
+    // getListOfSuppliersWithLocations: apiConfig.createQuery<
+    //   SupplierModel[],
+    //   void
+    // >(builder, {
+    //   query: () => ({
+    //     url: `${ApiUrlEnum.LOCATIONS}/list`,
+    //   }),
+    // }),
     createSupplier: apiConfig.createMutation<any, any>(builder, {
       query: (model?: any) => ({
         url: `${ApiUrlEnum.SUPPLIERS}`,

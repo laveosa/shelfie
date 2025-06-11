@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { useState } from "react";
+import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 
 export default function SupplierCard({
   isLoading,
@@ -56,7 +57,7 @@ export default function SupplierCard({
             <div className={cs.supplierPhoto}>
               {selectedSupplier.photo ? (
                 <img
-                  src={selectedSupplier?.photo}
+                  src={selectedSupplier?.photo?.thumbnailUrl}
                   alt={selectedSupplier?.name}
                 />
               ) : (
@@ -64,14 +65,43 @@ export default function SupplierCard({
               )}
             </div>
             <div className={cs.supplierDesc}>
-              <span className="she-subtext" style={{ minWidth: "100%" }}>
-                {selectedSupplier?.supplierName}
-              </span>
+              <SheTooltip
+                delayDuration={200}
+                text={selectedSupplier?.supplierName}
+                className="max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap"
+              >
+                <span className="she-text">
+                  {selectedSupplier?.supplierName}
+                </span>
+              </SheTooltip>
+              {selectedSupplier?.addressLine1 && (
+                <SheTooltip
+                  delayDuration={200}
+                  text={selectedSupplier?.addressLine1}
+                  className="max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap"
+                >
+                  <span className="she-subtext">
+                    {selectedSupplier?.addressLine1}
+                  </span>
+                </SheTooltip>
+              )}
+              {selectedSupplier?.addressLine2 && (
+                <SheTooltip
+                  delayDuration={200}
+                  text={selectedSupplier?.addressLine2}
+                  className="max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap"
+                >
+                  <span className="she-subtext">
+                    {selectedSupplier?.addressLine2}
+                  </span>
+                </SheTooltip>
+              )}
             </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SheButton
-                  variant="ghost"
+                  variant="secondary"
+                  minWidth="40px"
                   className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
                 >
                   <MoreHorizontal />
@@ -79,10 +109,8 @@ export default function SupplierCard({
                 </SheButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="w-[160px]">
-                <DropdownMenuItem
-                  onClick={(data) => onAction("deletePurchase", data)}
-                >
-                  Delete
+                <DropdownMenuItem onClick={() => onAction("detachSupplier")}>
+                  Detach Supplier
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

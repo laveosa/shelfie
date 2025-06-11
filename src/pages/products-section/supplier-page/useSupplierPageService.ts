@@ -15,6 +15,8 @@ export default function useSupplierPageService() {
     PurchasesApiHooks.useCreatePurchaseForSupplierMutation();
   const [getListOfAllSuppliers] =
     SuppliersApiHooks.useLazyGetListOfAllSuppliersQuery();
+  const [getListOfSuppliersWithLocations] =
+    SuppliersApiHooks.useGetListOfSuppliersWithLocationsMutation();
   const [createSupplier] = SuppliersApiHooks.useCreateSupplierMutation();
 
   function getPurchaseDetailsHandler(id) {
@@ -38,6 +40,13 @@ export default function useSupplierPageService() {
     });
   }
 
+  function getListOfSuppliersWithLocationsHandler(model) {
+    return getListOfSuppliersWithLocations(model).then((res: any) => {
+      dispatch(actions.refreshSuppliersWithLocations(res.data.items));
+      return res.data;
+    });
+  }
+
   function createSupplierHandler(model) {
     return createSupplier(model).then((res: any) => {
       return res.data;
@@ -48,6 +57,7 @@ export default function useSupplierPageService() {
     getPurchaseDetailsHandler,
     createPurchaseForSupplierHandler,
     getListOfAllSuppliersHandler,
+    getListOfSuppliersWithLocationsHandler,
     createSupplierHandler,
   };
 }

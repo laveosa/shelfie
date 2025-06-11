@@ -39,7 +39,7 @@ export default function CreateSupplierForm<T>({
   const form = useAppForm<SupplierModel>({
     mode: "onSubmit",
     resolver: zodResolver(CreateSupplierFormScheme),
-    defaultValues: SupplierModelDefault,
+    defaultValues: data || SupplierModelDefault,
   });
   const imageUploaderRef = useRef<SheImageUploaderRef>(null);
   const [submissionData, setSubmissionData] = useState<SupplierFormData | null>(
@@ -244,7 +244,7 @@ export default function CreateSupplierForm<T>({
           onClick={() => onCancel()}
         />
         <SheButton
-          value="Create Supplier"
+          value={data ? "Update supplier" : "Create Supplier"}
           onClick={form.handleSubmit(handleFormSubmit)}
         />
       </div>

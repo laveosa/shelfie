@@ -4,10 +4,12 @@ import { SupplierModel } from "@/const/models/SupplierModel.ts";
 export interface ISupplierPageSlice {
   isLoading?: boolean;
   isSupplierCardLoading?: boolean;
-  isSelectSupplierCard?: boolean;
-  isCreateSupplierCard?: boolean;
+  isSelectSupplierCardLoading?: boolean;
+  isSupplierConfigurationCardLoading?: boolean;
   activeCards?: any[];
   purchase?: PurchaseModel;
   suppliers?: SupplierModel[];
+  suppliersWithLocations?: SupplierModel[];
   selectedSupplier?: SupplierModel;
+  managedSupplier?: SupplierModel;
 }
