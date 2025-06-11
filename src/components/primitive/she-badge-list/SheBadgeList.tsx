@@ -69,13 +69,13 @@ export default function SheBadgeList({
   }, []);
 
   useEffect(() => {
-    if (!_.isEqual(items, _items)) setItems(_addItemsIds(items));
-    _calculateMaxBadgeAmount(items);
+    if (!_.isEqual(items, _items))
+      setItems(_addItemsIds(_calculateMaxBadgeAmount(items)));
   }, [items]);
 
   useEffect(() => {
     setMaxBadgeAmount(maxBadgeAmount);
-    _calculateMaxBadgeAmount(_items);
+    _calculateMaxBadgeAmount(items);
   }, [maxBadgeAmount, autoBadgeAmount]);
 
   // ==================================================================== EVENT
@@ -153,7 +153,56 @@ export default function SheBadgeList({
     };
   }
 
-  function _calculateMaxBadgeAmount(items: ISheBadge[]) {
+  function _calculateMaxBadgeAmount(items: ISheBadge[]): ISheBadge[] {
+    if (
+      (!_.isNil(maxBadgeAmount) && maxBadgeAmount >= 0) ||
+      !autoBadgeAmount ||
+      !items ||
+      items.length === 0 ||
+      !refBadgeListContext ||
+      !refBadgeListContext.current
+    )
+      return items;
+
+    const elem = refBadgeListContext.current;
+    const gapW = 4;
+    const paddingW = 16;
+    const iconW = 16;
+    const closeIconW = 16;
+    const averageCharWidth = 8;
+
+    let calculateWidth = plusMoreBtnWidth;
+    let tmpMaxAmount = 0;
+
+    for (let i = 0; i < items.length; i++) {
+      const textLength = items[i].text?.toString().length ?? 0;
+      let badgeW =
+        Math.ceil(textLength * averageCharWidth) + paddingW + closeIconW + gapW;
+
+      if (items[i].icon) {
+        badgeW += iconW + gapW;
+      }
+
+      calculateWidth += badgeW;
+
+      if (i < items.length - 1) {
+        calculateWidth += gapW;
+      }
+
+      if (calculateWidth < elem.clientWidth) {
+        tmpMaxAmount++;
+      } else if (calculateWidth > elem.clientWidth && tmpMaxAmount === 0) {
+        tmpMaxAmount++;
+        items[i].textWrap = "dots";
+        items[i].maxWidth = items[i + 1] ? "50%" : "100%";
+      }
+    }
+
+    setMaxBadgeAmount(tmpMaxAmount);
+    return items;
+  }
+
+  /*function _calculateMaxBadgeAmount(items: ISheBadge[]) {
     if (
       (!_.isNil(maxBadgeAmount) && maxBadgeAmount >= 0) ||
       !autoBadgeAmount ||
@@ -195,7 +244,7 @@ export default function SheBadgeList({
     }
 
     setMaxBadgeAmount(tmpMaxAmount);
-  }
+  }*/
 
   // ==================================================================== LAYOUT
 
@@ -243,7 +292,11 @@ export default function SheBadgeList({
                       className={`${cs.sheBadgeListItem} badge-list-item-cover`}
                       style={{
                         width:
-                          item.fullWidth || elementFullWidth ? "100%" : "auto",
+                          item.fullWidth || elementFullWidth
+                            ? "100%"
+                            : "fit-content",
+                        minWidth: item.minWidth || elementMinWidth,
+                        maxWidth: item.maxWidth || elementMaxWidth,
                       }}
                     >
                       <SheBadge
@@ -254,8 +307,7 @@ export default function SheBadgeList({
                         textColor={item.textColor || textColor}
                         iconColor={item.iconColor || iconColor}
                         icon={item.icon || elementIcon}
-                        minWidth={item.minWidth || elementMinWidth}
-                        maxWidth={item.maxWidth || elementMaxWidth}
+                        minWidth="100%"
                         fullWidth={item.fullWidth || elementFullWidth}
                         variant={item.variant || variant}
                         disabled={

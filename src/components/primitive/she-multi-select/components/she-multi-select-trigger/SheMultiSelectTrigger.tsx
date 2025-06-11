@@ -92,6 +92,7 @@ export default function SheMultiSelectTrigger({
                 />
                 {contextType === "badges" && (
                   <SheBadgeList
+                    className={cs.sheMultiSelectTriggerBadgeList}
                     items={items}
                     placeholder={placeholder}
                     placeholderTransKey={placeholderTransKey}

@@ -23,6 +23,7 @@ $iconSize: 20px;
         transition: scroll-behavior 130ms ease-in-out;
 
         .sheBadgeListItemsContainer {
+          position: relative;
           display: flex;
           gap: 4px;
           flex-wrap: wrap;

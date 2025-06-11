@@ -38,6 +38,11 @@ export default function SheBadge({
   const contextColor = _getContextColor();
   const circleView = _isCircle();
 
+  console.log("--------------------------------------");
+  console.log("badge text: ", text);
+  console.log("badge text wrap: ", textWrap);
+  console.log("badge max width: ", maxWidth);
+
   // ==================================================================== EVENT
 
   function onClickHandler(event: React.MouseEvent<HTMLElement>) {

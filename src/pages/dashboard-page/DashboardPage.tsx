@@ -4,6 +4,7 @@ import cs from "./DashboardPage.module.scss";
 import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageService.ts";
 import {
   Box,
+  Car,
   Cat,
   ChevronDown,
   Cigarette,
@@ -13,6 +14,7 @@ import {
   Lock,
   Rabbit,
   Search,
+  Truck,
   Turtle,
   User,
   Users,
@@ -100,7 +102,7 @@ const optionsMix: ISheMultiSelectItem[] = [
 ];
 
 const optionsMix2: ISheMultiSelectItem[] = [
-  /*{
+  {
     value: 2323434,
     text: "weed23d23d23d23ddwed number",
     textTransKey: "0293jsiodfjwioej",
@@ -113,7 +115,7 @@ const optionsMix2: ISheMultiSelectItem[] = [
     icon: Turtle,
     colors: ["red", "blue", "orange"],
     tooltip: { text: "some text for tooltip element" },
-  },*/
+  },
   {
     value: 1,
     text: "1 number",
@@ -208,43 +210,46 @@ const badges: ISheBadge[] = [
     value: { one: 1, two: "2", three: [1, "2", 3, "4"] },
   },
   {
-    text: "Apple 1111111",
-    value: 3453212323,
-    icon: Box,
-    color: "#8C85E4",
-    iconColor: "white",
-    textColor: "white",
+    text: "stradevary",
+    value: "wewewe99999",
   },
   {
-    text: "Banana",
-    value: 5334211212,
+    text: "fluent",
+    value: 3333333333333,
   },
   {
-    text: "Peach2222222222222",
+    text: "Car",
     value: 32314334321,
+    icon: Car,
+    color: "#9de485",
+    iconColor: "violet",
+    textColor: "violet",
   },
   {
-    text: "Orange",
-    icon: User,
-    value: { one: 1, two: "2", three: [1, "2", 3, "4"] },
+    text: "Truck",
+    icon: Truck,
+    color: "#b2960c",
+    iconColor: "black",
+    textColor: "black",
+    value: { one: "1", position: "center" },
   },
   {
-    text: "1",
+    text: "Lazer",
     value: 333,
     color: "#8C85E4",
     iconColor: "white",
     textColor: "white",
   },
   {
-    text: "2",
+    text: "Margo",
     value: 23232323,
   },
   {
-    text: "Peach2222222222222",
+    text: "Erth",
     value: 24312112121212,
   },
   {
-    text: "3",
+    text: "Glips",
     icon: User,
     value: 12222222222111,
   },
@@ -321,7 +326,7 @@ export function DashboardPage() {
         // isOpen
         // maxWidth="200px"
         // minWidth="600px"
-        // fullWidth
+        fullWidth
         onValueChange={(event) => console.log("onValueChange: ", event)}
         onIsOpen={(event) => console.log("onIsOpen: ", event)}
         onClear={(event) => console.log("onClear: ", event)}
@@ -360,10 +365,10 @@ export function DashboardPage() {
 
       <br />
 
-      {/*<SheBadgeList
+      <SheBadgeList
         label="Badges:"
         tooltip="some text for tooltip KKKK"
-        items={badgeItems}
+        items={badges}
         // icon={Cigarette}
         // elementIcon={Cat}
         // componentView="card"
@@ -380,7 +385,7 @@ export function DashboardPage() {
         onClose={(value) => console.log("onClose: ", value)}
         onCloseAllExtra={(value) => console.log("onCloseAllExtra: ", value)}
         onClear={(value) => console.log("onClear: ", value)}
-      />*/}
+      />
 
       <br />
     </div>
