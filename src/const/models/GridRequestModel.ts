@@ -7,5 +7,5 @@ export interface GridRequestModel {
   sortOption?: string;
   brands?: number[];
   categories?: number[];
-  filters?: GridFiltersModel;
+  filter?: GridFiltersModel;
 }

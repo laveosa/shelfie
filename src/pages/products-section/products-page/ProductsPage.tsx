@@ -39,7 +39,6 @@ import { purchasesGridColumns } from "@/components/complex/grid/purchases-grid/P
 import { SupplierModel } from "@/const/models/SupplierModel.ts";
 import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import { DateFormatEnum } from "@/const/enums/DateFormatEnum.ts";
 
 export function ProductsPage() {
   const dispatch = useAppDispatch();
@@ -236,8 +235,7 @@ export function ProductsPage() {
   function handleReportPurchase() {}
 
   function handleGridRequestChange(updates: GridRequestModel) {
-    console.log("STATE", state.purchasesGridModel);
-    if (updates.brands || updates.categories || updates.filters) {
+    if (updates.brands || updates.categories || updates.filter) {
       if (activeTab === "products") {
         dispatch(
           actions.refreshProductsGridRequestModel({
@@ -256,7 +254,7 @@ export function ProductsPage() {
         );
       } else if (activeTab === "purchases") {
         dispatch(
-          actions.refreshPurchasesGridModel({
+          actions.refreshPurchasesGridRequestModel({
             ...state.purchasesGridRequestModel,
             currentPage: 1,
             ...updates,
@@ -298,26 +296,26 @@ export function ProductsPage() {
   }
 
   function onSupplierSelectHandler(selectedIds: number[]) {
-    handleGridRequestChange({ filters: { suppliers: selectedIds } });
+    handleGridRequestChange({ filter: { suppliers: selectedIds } });
   }
 
   function onPurchaseBrandsSelectHandler(selectedIds: number[]) {
-    handleGridRequestChange({ filters: { brands: selectedIds } });
+    handleGridRequestChange({ filter: { brands: selectedIds } });
   }
 
   function onPurchaseValueToHandler(value: number) {
-    handleGridRequestChange({ filters: { valueTo: value } });
+    handleGridRequestChange({ filter: { valueTo: value } });
   }
 
   function onPurchaseValueFromHandler(value: number) {
-    handleGridRequestChange({ filters: { valueFrom: value } });
+    handleGridRequestChange({ filter: { valueFrom: value } });
   }
 
   function onPurchaseDateRangeHandler(value: any) {
     handleGridRequestChange({
-      filters: {
-        valueTo: value.to,
-        valueFrom: value.from,
+      filter: {
+        dateTo: value.to,
+        dateFrom: value.from,
       },
     });
   }
@@ -462,7 +460,7 @@ export function ProductsPage() {
             <DndGridDataTable
               isLoading={state.isLoading}
               columns={purchasesColumns}
-              data={state.purchasesGridModel.items}
+              data={state.purchases}
               gridModel={state.purchasesGridModel}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
@@ -485,11 +483,9 @@ export function ProductsPage() {
                 icon={CalendarRange}
                 placeholder="Pick range"
                 maxWidth="200px"
-                dateFormat={DateFormatEnum.DD_MMM_YY}
-                // onSelectDate={(data) => {
-                //   onPurchaseDateRangeHandler(data);
-                // }}
-                onSelectDate={(data) => console.log(data)}
+                onSelectDate={(data) => {
+                  onPurchaseDateRangeHandler(data);
+                }}
               />
               <GridItemsFilter
                 items={state.brands}
@@ -510,7 +506,7 @@ export function ProductsPage() {
                 placeholder="Value to"
                 maxWidth="200px"
                 onDelay={(data: number) => {
-                  console.log(data);
+                  onPurchaseValueToHandler(data);
                 }}
               />
             </DndGridDataTable>
