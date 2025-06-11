@@ -12,36 +12,34 @@ export const SuppliersApiService = createApi({
   baseQuery: apiConfig.baseQueryWithInterceptors,
   tagTypes: [ApiServiceNameEnum.SUPPLIERS],
   endpoints: (builder) => ({
-    getListOfAllSuppliers: apiConfig.createQuery<SupplierModel[], void>(
-      builder,
-      {
-        query: () => ({
-          url: `${ApiUrlEnum.SUPPLIERS}/list`,
-        }),
-      },
-    ),
-    getListOfSuppliersWithLocations: apiConfig.createMutation<any, any>(
-      builder,
-      {
-        query: (model?: any) => ({
-          url: `${ApiUrlEnum.LOCATIONS}/list`,
-          method: "POST",
-          body: JSON.stringify(model),
-        }),
-      },
-    ),
-    // getListOfSuppliersWithLocations: apiConfig.createQuery<
-    //   SupplierModel[],
-    //   void
-    // >(builder, {
-    //   query: () => ({
-    //     url: `${ApiUrlEnum.LOCATIONS}/list`,
-    //   }),
-    // }),
+    getListOfSuppliers: apiConfig.createQuery<SupplierModel[], void>(builder, {
+      query: () => ({
+        url: `${ApiUrlEnum.SUPPLIERS}/all`,
+      }),
+    }),
+    getListOfSuppliersForGrid: apiConfig.createMutation<any, any>(builder, {
+      query: (model?: any) => ({
+        url: `${ApiUrlEnum.SUPPLIERS}/list`,
+        method: "POST",
+        body: JSON.stringify(model),
+      }),
+    }),
     createSupplier: apiConfig.createMutation<any, any>(builder, {
       query: (model?: any) => ({
         url: `${ApiUrlEnum.SUPPLIERS}`,
         method: "POST",
+        body: JSON.stringify(model),
+      }),
+    }),
+    getSupplierDetails: apiConfig.createQuery<SupplierModel, any>(builder, {
+      query: ({ supplierId, locationId }) => ({
+        url: `${ApiUrlEnum.SUPPLIERS}/${supplierId}${ApiUrlEnum.LOCATIONS}/${locationId}`,
+      }),
+    }),
+    updateSupplier: apiConfig.createMutation<void, any>(builder, {
+      query: ({ model, supplierId, locationId }) => ({
+        url: `${ApiUrlEnum.SUPPLIERS}/${supplierId}${ApiUrlEnum.LOCATIONS}/${locationId}`,
+        method: "PATCH",
         body: JSON.stringify(model),
       }),
     }),

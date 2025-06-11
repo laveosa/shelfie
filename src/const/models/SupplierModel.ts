@@ -4,14 +4,16 @@ export interface SupplierModel {
   supplierName?: string;
   id?: number;
   appId?: string;
-  name?: string;
   addressLine1?: string;
   addressLine2?: string;
   city?: string;
   state?: string;
   postCode?: number;
   countryId?: string;
+  countryName?: string;
   images?: any[];
+  lat?: number;
+  long?: number;
 }
 
 export const SupplierModelDefault: SupplierModel = {
@@ -20,12 +22,12 @@ export const SupplierModelDefault: SupplierModel = {
   supplierName: "",
   id: null,
   appId: "",
-  name: "",
   addressLine1: "",
   addressLine2: "",
   city: "",
   state: "",
   postCode: null,
   countryId: "",
+  countryName: "",
   images: [],
 };

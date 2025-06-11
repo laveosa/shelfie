@@ -38,8 +38,8 @@ export default function useProductsPageService() {
     ProductsApiHooks.useLazyGetBrandsForProductsFilterQuery();
   const [getCategoriesForFilter] =
     ProductsApiHooks.useLazyGetCategoriesForProductsFilterQuery();
-  const [getListOfAllSuppliers] =
-    SuppliersApiHooks.useLazyGetListOfAllSuppliersQuery();
+  const [getListOfSuppliers] =
+    SuppliersApiHooks.useLazyGetListOfSuppliersQuery();
   const [getCountersForProducts] =
     ProductsApiHooks.useLazyGetCountersForProductsQuery();
   const [getProductDetails] = ProductsApiHooks.useLazyGetProductDetailQuery();
@@ -138,8 +138,8 @@ export default function useProductsPageService() {
     });
   }
 
-  function getListOfAllSuppliersHandler() {
-    return getListOfAllSuppliers(null).then((res: any) => {
+  function getListOfSuppliersHandler() {
+    return getListOfSuppliers(null).then((res: any) => {
       dispatch(actions.refreshCategories(res.data));
       return res.data;
     });
@@ -255,7 +255,7 @@ export default function useProductsPageService() {
 
   function getPurchaseDetailsHandler(id) {
     return getPurchaseDetails(id).then((res: any) => {
-      // dispatch(actions.refreshPurchase(res.data));
+      dispatch(actions.refreshSelectedPurchase(res.data));
       return res.data;
     });
   }
@@ -343,7 +343,7 @@ export default function useProductsPageService() {
     getListOfPurchasesForGridHandler,
     getBrandsForFilterHandler,
     getCategoriesForFilterHandler,
-    getListOfAllSuppliersHandler,
+    getListOfSuppliersHandler,
     getSortingOptionsForGridHandler,
     getCountersForProductsHandler,
     getProductDetailsHandler,

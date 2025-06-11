@@ -114,7 +114,7 @@ export function ProductsPage() {
       });
     }
     if (state.suppliers.length === 0) {
-      service.getListOfAllSuppliersHandler().then((res) => {
+      service.getListOfSuppliersHandler().then((res) => {
         dispatch(actions.refreshSuppliers(res));
       });
     }

@@ -4,7 +4,7 @@ import { IZodSchema } from "@/const/interfaces/IZodSchema.ts";
 const nonemptyMessage = "field is required";
 
 const CreateSupplierFormScheme: z.ZodObject<IZodSchema<any>> = z.object({
-  name: z
+  supplierName: z
     .string()
     .nonempty(nonemptyMessage)
     .min(2, "min value length 2")

@@ -49,7 +49,7 @@ export function SuppliersListGridColumns({
       minSize: 200,
       maxSize: 200,
       cell: ({ row }) => {
-        const imageUrl: string = row.original.photo?.thumbnailUrl;
+        const imageUrl: string = row.original.thumbnailUrl;
         const name: string = row.original.supplierName;
         const address1: string = row.original.addressLine1;
         const address2: string = row.original.addressLine2;

@@ -23,6 +23,9 @@ export default function SupplierCard({
 }: ISupplierCard) {
   const [selectedDate, setSelectedDate] = useState<Date>(null);
 
+  const isDateSelected = Boolean(selectedDate || selectedPurchase?.date);
+  const isButtonDisabled = !isDateSelected || !selectedSupplier;
+
   return (
     <SheProductCard
       loading={isLoading}
@@ -30,7 +33,7 @@ export default function SupplierCard({
       title="Supplier"
       showPrimaryButton
       primaryButtonTitle="Create Purchase"
-      primaryButtonDisabled={!selectedDate || !selectedSupplier}
+      primaryButtonDisabled={isButtonDisabled}
       showSecondaryButton
       onPrimaryButtonClick={() =>
         onAction("createPurchase", { selectedDate, selectedSupplier })
@@ -58,7 +61,7 @@ export default function SupplierCard({
               {selectedSupplier.photo ? (
                 <img
                   src={selectedSupplier?.photo?.thumbnailUrl}
-                  alt={selectedSupplier?.name}
+                  alt={selectedSupplier?.supplierName}
                 />
               ) : (
                 <SheIcon icon={ImageIcon} />

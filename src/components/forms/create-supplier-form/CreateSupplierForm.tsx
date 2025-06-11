@@ -65,7 +65,6 @@ export default function CreateSupplierForm<T>({
     };
 
     setSubmissionData(completeData);
-
     onSubmit(completeData as T);
   }
 
@@ -95,7 +94,7 @@ export default function CreateSupplierForm<T>({
       >
         <FormField
           control={form.control}
-          name="name"
+          name="supplierName"
           render={({ field }): React.ReactElement => (
             <SheFormItem label="Name">
               <SheInput
@@ -244,7 +243,7 @@ export default function CreateSupplierForm<T>({
           onClick={() => onCancel()}
         />
         <SheButton
-          value={data ? "Update supplier" : "Create Supplier"}
+          value={data ? "Update Supplier" : "Create Supplier"}
           onClick={form.handleSubmit(handleFormSubmit)}
         />
       </div>

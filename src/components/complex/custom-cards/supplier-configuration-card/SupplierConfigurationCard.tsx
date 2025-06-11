@@ -23,7 +23,9 @@ export default function SupplierConfigurationCard({
           countryList={countryList}
           data={managedSupplier}
           onSubmit={(data) => {
-            onAction("createSupplier", data);
+            managedSupplier
+              ? onAction("updateSupplier", data)
+              : onAction("createSupplier", data);
           }}
           onImageUpload={(data) => onAction("uploadSupplierPhoto", data)}
           onCancel={() => onAction("closeSupplierConfigurationCard")}
