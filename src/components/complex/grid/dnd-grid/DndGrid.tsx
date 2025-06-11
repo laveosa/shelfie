@@ -334,7 +334,7 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
                 items={items.map((item) => item.id)}
                 strategy={verticalListSortingStrategy}
               >
-                {items.length > 0 ? (
+                {data.length > 0 ? (
                   <TableBody
                     className={cs.tableBody}
                     style={{

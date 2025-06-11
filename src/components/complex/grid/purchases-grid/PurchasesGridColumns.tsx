@@ -31,8 +31,7 @@ export function purchasesGridColumns(onAction: any): ColumnDef<any>[] {
                 <img
                   src={imageUrl || placeholderImage}
                   alt={row.original.supplier?.supplierName || "Supplier"}
-                  className="object-cover rounded-md w-full h-full"
-                  style={{ width: "30px", height: "30px" }}
+                  className="object-cover rounded-md w-12 h-12"
                 />
               ) : (
                 <SheIcon icon={ImageIcon} maxWidth="30px" />

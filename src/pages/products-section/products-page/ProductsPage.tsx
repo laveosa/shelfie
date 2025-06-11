@@ -432,7 +432,7 @@ export function ProductsPage() {
             <DndGridDataTable
               isLoading={state.isLoading}
               columns={variantsColumns}
-              data={state.variantsGridModel.items}
+              data={state.variants}
               gridModel={state.variantsGridModel}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
