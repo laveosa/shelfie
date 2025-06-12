@@ -7,7 +7,11 @@ import { IconViewEnum } from "@/const/enums/IconViewEnum.ts";
 import { isSheIconConfig } from "@/utils/helpers/quick-helper.ts";
 
 function SheIconComponent({
-  className,
+  id,
+  className = "",
+  style,
+  elementClassName = "",
+  elementStyle,
   icon,
   iconView = IconViewEnum.SQUARE,
   color,
@@ -17,7 +21,6 @@ function SheIconComponent({
   minHeight,
   maxHeight,
   hoverEffect,
-  style,
   onClick,
   ...props
 }: ISheIcon): JSX.Element {
@@ -35,7 +38,6 @@ function SheIconComponent({
 
   return (
     <div
-      {...props}
       className={`${cs.sheIcon} ${cs[iconView] || ""} ${className || ""} ${fullWidth ? cs.fullWidth : ""} ${hoverEffect ? cs.hoverEffect : ""} ${onClick ? cs.onClickEffect : ""}`}
       style={{
         minWidth,
@@ -48,12 +50,24 @@ function SheIconComponent({
         ...style,
       }}
       onClick={onClickHandler}
+      {...props}
     >
       {typeof icon === "string" && /\.(png|jpe?g|gif|webp)$/i.test(icon) && (
-        <img src={icon} alt="icon" role="img" />
+        <img
+          src={icon}
+          className={elementClassName}
+          style={{ ...elementStyle }}
+          alt="icon"
+          role="img"
+        />
       )}
       {icon && isObject(icon) && (
-        <Icon icon={icon as React.FC<Object>} color={color} />
+        <Icon
+          icon={icon as React.FC<Object>}
+          className={elementClassName}
+          style={{ ...elementStyle }}
+          color={color}
+        />
       )}
     </div>
   );
@@ -68,11 +82,15 @@ export default function SheIcon({ icon, ...props }: ISheIcon): JSX.Element {
 }
 
 function Icon({
+  className = "",
+  style,
   icon: IconComponent,
   color,
 }: {
+  className?: string;
+  style?: React.CSSProperties;
   icon: React.FC<SVGProps<SVGSVGElement>>;
   color?: string;
 }) {
-  return <IconComponent color={color} />;
+  return <IconComponent className={className} style={style} color={color} />;
 }

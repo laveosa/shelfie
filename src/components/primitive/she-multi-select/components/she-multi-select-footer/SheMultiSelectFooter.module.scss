@@ -1,0 +1,25 @@
+@use "@/styles/variables" as vars;
+
+.sheMultiSelectFooter {
+  .sheMultiSelectFooterGroup {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 31px;
+    padding: 4px;
+    border-top: 1px solid vars.$brdColor;
+
+    .sheMultiSelectFooterItem {
+      flex: 1 1 0;
+      justify-content: center;
+      cursor: pointer;
+      min-height: 31px;
+    }
+
+    .sheMultiSelectFooterItemsSeparator {
+      display: flex;
+      min-height: 24px;
+      height: 100%;
+    }
+  }
+}

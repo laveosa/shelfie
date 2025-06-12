@@ -57,20 +57,14 @@ $iconSize: 20px;
 
 // ======================================================== CALENDAR
 
-:global([data-radix-popper-content-wrapper]) {
-  > [role="dialog"] {
-    padding: 10px;
-    box-sizing: border-box;
+.sheDatePickerCalendar {
+  padding: vars.$paddingSmall;
+  display: flex;
+  justify-content: center;
+  margin: auto;
 
-    .sheDatePickerCalendar {
-      width: (vars.$maxWidth - 20) + px;
-      display: flex;
-      justify-content: center;
-
-      &.withClearBtn {
-        width: 264px;
-      }
-    }
+  &.withClearBtn {
+    width: 264px;
   }
 }
 

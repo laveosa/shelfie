@@ -1,0 +1,46 @@
+@use "@/styles/variables" as vars;
+
+$iconSize: 20px;
+
+.sheMultiSelectPopoverContainer {
+  .sheMultiSelectPopoverGroupContainer {
+    max-height: 240px;
+    overflow-y: auto;
+  }
+}
+
+// ========================================================= NO DATA BLOCK
+
+.sheMultiSelectPopoverContainer {
+  .sheMultiSelectPopoverNoDataMessageBlock {
+    padding: 10px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50px;
+
+    span {
+      font-size: 20px;
+      line-height: 24px;
+      font-weight: bold;
+      opacity: 0.4;
+      color: vars.$placeholderColor;
+    }
+  }
+}
+
+// ========================================================= MULTI SELECT ITEM WRAPPER
+
+.sheMultiSelectItemParentWrapper {
+  margin-bottom: 2px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &.sheMultiSelectItemParentWrapperSelectAll {
+    span {
+      color: vars.$placeholderColor;
+    }
+  }
+}
