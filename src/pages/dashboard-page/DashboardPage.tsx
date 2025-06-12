@@ -302,6 +302,7 @@ export function DashboardPage() {
           { text: "option 1", value: 1 },
           { text: "option 2", value: 2 },
         ]}
+        selected={2}
         showClearBtn
       />
 
@@ -313,7 +314,7 @@ export function DashboardPage() {
         tooltip="some tooltip text for multi-select component!!!"
         placeholder="multi-select placeholder..."
         placeholderTransKey="0f23-0fkwe"
-        // icon={Box}
+        icon={Box}
         options={selectItems}
         selectedValues={selected}
         contextType="badges"
@@ -326,7 +327,7 @@ export function DashboardPage() {
         // isOpen
         // maxWidth="200px"
         // minWidth="600px"
-        fullWidth
+        // fullWidth
         onValueChange={(event) => console.log("onValueChange: ", event)}
         onIsOpen={(event) => console.log("onIsOpen: ", event)}
         onClear={(event) => console.log("onClear: ", event)}

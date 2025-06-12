@@ -169,7 +169,7 @@ export default function SheBadgeList({
     const paddingW = 16;
     const iconW = 16;
     const closeIconW = 16;
-    const averageCharWidth = 8;
+    const averageCharWidth = 7.2;
 
     let calculateWidth = plusMoreBtnWidth;
     let tmpMaxAmount = 0;
@@ -194,57 +194,13 @@ export default function SheBadgeList({
       } else if (calculateWidth > elem.clientWidth && tmpMaxAmount === 0) {
         tmpMaxAmount++;
         items[i].textWrap = "dots";
-        items[i].maxWidth = items[i + 1] ? "50%" : "100%";
+        items[i].maxWidth = items[i + 1] ? "52%" : "100%";
       }
     }
 
     setMaxBadgeAmount(tmpMaxAmount);
     return items;
   }
-
-  /*function _calculateMaxBadgeAmount(items: ISheBadge[]) {
-    if (
-      (!_.isNil(maxBadgeAmount) && maxBadgeAmount >= 0) ||
-      !autoBadgeAmount ||
-      !items ||
-      items.length === 0 ||
-      !refBadgeListContext ||
-      !refBadgeListContext.current
-    )
-      return;
-
-    const elem = refBadgeListContext.current;
-    const gapW = 4;
-    const paddingW = 16;
-    const iconW = 16;
-    const closeIconW = 16;
-    const averageCharWidth = 8;
-
-    let calculateWidth = plusMoreBtnWidth;
-    let tmpMaxAmount = 0;
-
-    for (let i = 0; i < items.length; i++) {
-      const textLength = items[i].text?.toString().length ?? 0;
-      let badgeW =
-        Math.ceil(textLength * averageCharWidth) + paddingW + closeIconW + gapW;
-
-      if (items[i].icon) {
-        badgeW += iconW + gapW;
-      }
-
-      calculateWidth += badgeW;
-
-      if (i < items.length - 1) {
-        calculateWidth += gapW;
-      }
-
-      if (calculateWidth < elem.clientWidth) {
-        tmpMaxAmount++;
-      }
-    }
-
-    setMaxBadgeAmount(tmpMaxAmount);
-  }*/
 
   // ==================================================================== LAYOUT
 
