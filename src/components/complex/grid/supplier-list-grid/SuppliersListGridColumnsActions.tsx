@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 
-interface ProductsGridColumnActionsProps<TData> {
+interface SuppliersListColumnActionsProps<TData> {
   row?: Row<TData>;
   table?: Table<TData>;
   onAction?: (
@@ -20,11 +20,11 @@ interface ProductsGridColumnActionsProps<TData> {
   ) => void;
 }
 
-export default function PurchasesGridColumnActions<TData>({
+export default function SuppliersListGridColumnActions<TData>({
   row,
   table,
   onAction,
-}: ProductsGridColumnActionsProps<TData>) {
+}: SuppliersListColumnActionsProps<TData>) {
   const meta = table.options.meta as {
     setLoadingRow: (rowId: string, loading: boolean) => void;
     isRowLoading: (rowId: string) => boolean;
@@ -43,10 +43,10 @@ export default function PurchasesGridColumnActions<TData>({
       <DropdownMenuContent align="start" className="w-[160px]">
         <DropdownMenuItem
           onClick={() =>
-            onAction("deletePurchase", row.id, meta?.setLoadingRow, row)
+            onAction("manageSupplier", row.id, meta?.setLoadingRow, row)
           }
         >
-          Delete purchase
+          Manage Supplier
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

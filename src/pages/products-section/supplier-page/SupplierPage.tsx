@@ -10,11 +10,17 @@ import { useNavigate, useParams } from "react-router-dom";
 import useSupplierPageService from "@/pages/products-section/supplier-page/useSupplierPageService.ts";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import { SupplierPageSliceActions as actions } from "@/state/slices/SupplierPageSlice.ts";
+import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
 import SupplierCard from "@/components/complex/custom-cards/supplier-card/SupplierCard.tsx";
 import SelectSupplierCard from "@/components/complex/custom-cards/select-supplier-card/SelectSupplierCard.tsx";
-import CreateSupplierCard from "@/components/complex/custom-cards/create-supplier-card/CreateSupplierCard.tsx";
+import SupplierConfigurationCard from "@/components/complex/custom-cards/supplier-configuration-card/SupplierConfigurationCard.tsx";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { useToast } from "@/hooks/useToast.ts";
+import {
+  clearSelectedGridItems,
+  setSelectedGridItem,
+} from "@/utils/helpers/quick-helper.ts";
+import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 
 export function SupplierPage() {
   const dispatch = useAppDispatch();
@@ -30,11 +36,15 @@ export function SupplierPage() {
   const cardRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   useEffect(() => {
-    if (state.purchase) {
+    if (!productsState.selectedPurchase) {
       dispatch(actions.setIsSupplierCardLoading(true));
-      service.getPurchaseDetailsHandler(purchaseId).then(() => {
-        dispatch(actions.setIsSupplierCardLoading(false));
-      });
+      service
+        .getPurchaseDetailsHandler(purchaseId)
+        .then((res: PurchaseModel) => {
+          dispatch(actions.setIsSupplierCardLoading(false));
+          dispatch(productsActions.refreshSelectedPurchase(res));
+          dispatch(actions.refreshSelectedSupplier(res.supplier));
+        });
     }
   }, [purchaseId]);
 
@@ -84,7 +94,6 @@ export function SupplierPage() {
           })
           .then((res) => {
             dispatch(actions.setIsSupplierCardLoading(false));
-            console.log("RES", res);
             if (res) {
               addToast({
                 text: "Purchase created successfully",
@@ -98,34 +107,46 @@ export function SupplierPage() {
             }
           });
         break;
-      case "deletePurchase":
-        console.log("deletePurchase", payload);
+      case "detachSupplier":
+        dispatch(actions.resetSelectedSupplier());
         break;
       case "openSelectSupplierCard":
         handleCardAction("selectSupplierCard", true);
-        dispatch(actions.setIsSelectSupplierCard(true));
-        service.getListOfAllSuppliersHandler().then(() => {
-          dispatch(actions.setIsSelectSupplierCard(false));
-        });
-        console.log("Payload", payload);
-        break;
-      case "openCreateSupplierCard":
-        handleCardAction("createSupplierCard", true);
-        console.log("Payload selectSupplierCard", payload);
         if (!productsState.countryCodeList) {
-          dispatch(actions.setIsCreateSupplierCard(true));
-          productsService.getCountryCodeHandler().then(() => {
-            dispatch(actions.setIsCreateSupplierCard(false));
-          });
+          productsService.getCountryCodeHandler().then(() => {});
         }
+        dispatch(actions.setIsSelectSupplierCardLoading(true));
+        service.getListOfSuppliersForGridHandler({}).then(() => {
+          dispatch(actions.setIsSelectSupplierCardLoading(false));
+        });
+        break;
+      case "openSupplierConfigurationCard":
+        dispatch(actions.refreshManagedSupplier(null));
+        handleCardAction("supplierConfigurationCard", true);
         break;
       case "createSupplier":
-        console.log("FORM DATA", payload);
-        dispatch(actions.setIsCreateSupplierCard(true));
+        dispatch(actions.setIsSupplierConfigurationCardLoading(true));
         service.createSupplierHandler(payload).then((res) => {
-          dispatch(actions.setIsCreateSupplierCard(false));
+          dispatch(actions.setIsSupplierConfigurationCardLoading(false));
           if (res) {
-            service.getListOfAllSuppliersHandler().then((res) => {
+            handleCardAction("supplierConfigurationCard");
+            payload.uploadModels.map((model) => {
+              model.contextId = res.supplierId;
+              productsService.uploadPhotoHandler(model).then((res) => {
+                if (res) {
+                  addToast({
+                    text: "Image successfully added",
+                    type: "success",
+                  });
+                } else {
+                  addToast({
+                    text: res.error.message,
+                    type: "error",
+                  });
+                }
+              });
+            });
+            service.getListOfSuppliersHandler().then((res) => {
               dispatch(actions.refreshSuppliers(res));
             });
             addToast({
@@ -139,15 +160,69 @@ export function SupplierPage() {
             });
           }
         });
-        handleCardAction("createSupplierCard");
         break;
-      case "uploadSupplierPhoto":
-        console.log("Payload", payload);
+      case "searchSupplier":
+        handleCardAction("searchSupplier");
+        dispatch(actions.setIsSelectSupplierCardLoading(true));
+        service
+          .getListOfSuppliersForGridHandler({ searchQuery: payload })
+          .then(() => {
+            dispatch(actions.setIsSelectSupplierCardLoading(false));
+          });
         break;
       case "selectSupplier":
         handleCardAction("selectSupplierCard");
         dispatch(actions.refreshSelectedSupplier(payload));
-        console.log("Payload", payload);
+        break;
+      case "manageSupplier":
+        handleCardAction("supplierConfigurationCard", true);
+        dispatch(actions.setIsSupplierConfigurationCardLoading(true));
+        service
+          .getSupplierDetailsHandler(payload.supplierId, payload.locationId)
+          .then((res) => {
+            dispatch(actions.setIsSupplierConfigurationCardLoading(false));
+            dispatch(actions.refreshManagedSupplier(res));
+          });
+        dispatch(
+          actions.refreshSuppliersWithLocations(
+            setSelectedGridItem(
+              payload.supplierId,
+              state.suppliersWithLocations,
+              "supplierId",
+            ),
+          ),
+        );
+        break;
+      case "updateSupplier":
+        dispatch(actions.setIsSupplierConfigurationCardLoading(true));
+        service
+          .updateSupplierHandler(
+            payload,
+            state.managedSupplier.supplierId,
+            state.managedSupplier.locationId,
+          )
+          .then((res) => {
+            dispatch(actions.setIsSupplierConfigurationCardLoading(false));
+            if (res) {
+              handleCardAction("supplierConfigurationCard");
+              service.getListOfSuppliersForGridHandler({});
+              dispatch(actions.refreshManagedSupplier(null));
+              dispatch(
+                actions.refreshSuppliersWithLocations(
+                  clearSelectedGridItems(state.suppliersWithLocations),
+                ),
+              );
+              addToast({
+                text: "Supplier updated successfully",
+                type: "success",
+              });
+            } else {
+              addToast({
+                text: res.error.message,
+                type: "error",
+              });
+            }
+          });
         break;
       case "closeSupplierCard":
         navigate(NavUrlEnum.PRODUCTS);
@@ -156,16 +231,17 @@ export function SupplierPage() {
       case "closeSelectSupplierCard":
         handleCardAction("selectSupplierCard");
         break;
-      case "closeCreateSupplierCard":
-        console.log("CLICK");
-        handleCardAction("createSupplierCard");
+      case "closeSupplierConfigurationCard":
+        handleCardAction("supplierConfigurationCard");
+        dispatch(actions.resetManagedSupplier());
+        dispatch(
+          actions.refreshSuppliersWithLocations(
+            clearSelectedGridItems(state.suppliersWithLocations),
+          ),
+        );
         break;
     }
   }
-
-  useEffect(() => {
-    console.log("SUPPLIER", state.selectedSupplier);
-  }, [state.selectedSupplier]);
 
   return (
     <div className={cs.supplierPage}>
@@ -180,9 +256,7 @@ export function SupplierPage() {
       <SupplierCard
         isLoading={state.isSupplierCardLoading}
         selectedPurchase={productsState.selectedPurchase}
-        selectedSupplier={
-          state.selectedSupplier ?? productsState.selectedPurchase?.supplier
-        }
+        selectedSupplier={state.selectedSupplier}
         onAction={onAction}
       />
       {state.activeCards?.includes("selectSupplierCard") && (
@@ -192,21 +266,22 @@ export function SupplierPage() {
           }}
         >
           <SelectSupplierCard
-            isLoading={state.isSelectSupplierCard}
+            isLoading={state.isSelectSupplierCardLoading}
             onAction={onAction}
-            suppliers={state.suppliers}
+            suppliers={state.suppliersWithLocations}
           />
         </div>
       )}
-      {state.activeCards?.includes("createSupplierCard") && (
+      {state.activeCards?.includes("supplierConfigurationCard") && (
         <div
           ref={(el) => {
-            cardRefs.current["createSupplierCard"] = el;
+            cardRefs.current["supplierConfigurationCard"] = el;
           }}
         >
-          <CreateSupplierCard
-            isLoading={state.isCreateSupplierCard}
+          <SupplierConfigurationCard
+            isLoading={state.isSupplierConfigurationCardLoading}
             countryList={productsState.countryCodeList}
+            managedSupplier={state.managedSupplier}
             onAction={onAction}
           />
         </div>

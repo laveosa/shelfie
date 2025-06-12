@@ -8,12 +8,14 @@ import { SupplierModel } from "@/const/models/SupplierModel.ts";
 const initialState: ISupplierPageSlice = {
   isLoading: false,
   isSupplierCardLoading: false,
-  isSelectSupplierCard: false,
-  isCreateSupplierCard: false,
+  isSelectSupplierCardLoading: false,
+  isSupplierConfigurationCardLoading: false,
   activeCards: [],
   purchase: null,
   suppliers: null,
+  suppliersWithLocations: null,
   selectedSupplier: null,
+  managedSupplier: null,
 };
 
 //----------------------------------------------------- LOADERS
@@ -32,18 +34,18 @@ function setIsSupplierCardLoading(
   state.isSupplierCardLoading = action?.payload;
 }
 
-function setIsSelectSupplierCard(
+function setIsSelectSupplierCardLoading(
   state: ISupplierPageSlice,
   action: PayloadAction<boolean>,
 ) {
-  state.isSelectSupplierCard = action?.payload;
+  state.isSelectSupplierCardLoading = action?.payload;
 }
 
-function setIsCreateSupplierCard(
+function setIsSupplierConfigurationCardLoading(
   state: ISupplierPageSlice,
   action: PayloadAction<boolean>,
 ) {
-  state.isCreateSupplierCard = action?.payload;
+  state.isSupplierConfigurationCardLoading = action?.payload;
 }
 
 //----------------------------------------------------- API
@@ -68,11 +70,34 @@ function refreshSuppliers(
   state.suppliers = action?.payload || state.suppliers;
 }
 
+function refreshSuppliersWithLocations(
+  state: ISupplierPageSlice,
+  action: PayloadAction<SupplierModel[]>,
+) {
+  state.suppliersWithLocations =
+    action?.payload || state.suppliersWithLocations;
+}
+
 function refreshSelectedSupplier(
   state: ISupplierPageSlice,
   action: PayloadAction<SupplierModel>,
 ) {
   state.selectedSupplier = action?.payload || state.selectedSupplier;
+}
+
+function resetSelectedSupplier(state: ISupplierPageSlice) {
+  state.selectedSupplier = null;
+}
+
+function refreshManagedSupplier(
+  state: ISupplierPageSlice,
+  action: PayloadAction<SupplierModel>,
+) {
+  state.managedSupplier = action?.payload || state.managedSupplier;
+}
+
+function resetManagedSupplier(state: ISupplierPageSlice) {
+  state.managedSupplier = null;
 }
 
 const SupplierPageSlice = createSlice({
@@ -81,12 +106,16 @@ const SupplierPageSlice = createSlice({
   reducers: {
     setIsLoading,
     setIsSupplierCardLoading,
-    setIsSelectSupplierCard,
-    setIsCreateSupplierCard,
+    setIsSelectSupplierCardLoading,
+    setIsSupplierConfigurationCardLoading,
     refreshActiveCards,
     refreshPurchase,
     refreshSuppliers,
+    refreshSuppliersWithLocations,
     refreshSelectedSupplier,
+    resetSelectedSupplier,
+    refreshManagedSupplier,
+    resetManagedSupplier,
   },
 });
 

@@ -20,6 +20,8 @@ import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { GridRowsColorsEnum } from "@/const/enums/GridRowsColorsEnum.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import SuppliersApiHooks from "@/utils/services/api/SuppliersApiService.ts";
+import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";
+import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 
 export default function useProductsPageService() {
   const appService = useAppService();
@@ -36,8 +38,8 @@ export default function useProductsPageService() {
     ProductsApiHooks.useLazyGetBrandsForProductsFilterQuery();
   const [getCategoriesForFilter] =
     ProductsApiHooks.useLazyGetCategoriesForProductsFilterQuery();
-  const [getListOfAllSuppliers] =
-    SuppliersApiHooks.useLazyGetListOfAllSuppliersQuery();
+  const [getListOfSuppliers] =
+    SuppliersApiHooks.useLazyGetListOfSuppliersQuery();
   const [getCountersForProducts] =
     ProductsApiHooks.useLazyGetCountersForProductsQuery();
   const [getProductDetails] = ProductsApiHooks.useLazyGetProductDetailQuery();
@@ -61,6 +63,7 @@ export default function useProductsPageService() {
   const [getPurchaseDetails] =
     PurchasesApiHooks.useLazyGetPurchaseDetailsQuery();
   const [getCountryCode] = DictionaryApiHooks.useLazyGetCountryCodeQuery();
+  const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
 
   //-------------------------------------------------API
 
@@ -135,8 +138,8 @@ export default function useProductsPageService() {
     });
   }
 
-  function getListOfAllSuppliersHandler() {
-    return getListOfAllSuppliers(null).then((res: any) => {
+  function getListOfSuppliersHandler() {
+    return getListOfSuppliers(null).then((res: any) => {
       dispatch(actions.refreshCategories(res.data));
       return res.data;
     });
@@ -252,7 +255,7 @@ export default function useProductsPageService() {
 
   function getPurchaseDetailsHandler(id) {
     return getPurchaseDetails(id).then((res: any) => {
-      // dispatch(actions.refreshPurchase(res.data));
+      dispatch(actions.refreshSelectedPurchase(res.data));
       return res.data;
     });
   }
@@ -262,6 +265,12 @@ export default function useProductsPageService() {
       if (res.data) {
         dispatch(actions.refreshCountryCodeList(res.data));
       }
+      return res;
+    });
+  }
+
+  function uploadPhotoHandler(model: UploadPhotoModel) {
+    return uploadPhoto(model).then((res: any) => {
       return res;
     });
   }
@@ -334,7 +343,7 @@ export default function useProductsPageService() {
     getListOfPurchasesForGridHandler,
     getBrandsForFilterHandler,
     getCategoriesForFilterHandler,
-    getListOfAllSuppliersHandler,
+    getListOfSuppliersHandler,
     getSortingOptionsForGridHandler,
     getCountersForProductsHandler,
     getProductDetailsHandler,
@@ -349,8 +358,9 @@ export default function useProductsPageService() {
     getCurrenciesListHandler,
     getVariantDetailsHandler,
     getPurchaseDetailsHandler,
+    getCountryCodeHandler,
+    uploadPhotoHandler,
     itemsCardItemsConvertor,
     itemCardHandler,
-    getCountryCodeHandler,
   };
 }

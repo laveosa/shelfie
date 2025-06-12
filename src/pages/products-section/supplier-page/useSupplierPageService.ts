@@ -13,9 +13,14 @@ export default function useSupplierPageService() {
     PurchasesApiHooks.useLazyGetPurchaseDetailsQuery();
   const [createPurchaseForSupplier] =
     PurchasesApiHooks.useCreatePurchaseForSupplierMutation();
-  const [getListOfAllSuppliers] =
-    SuppliersApiHooks.useLazyGetListOfAllSuppliersQuery();
+  const [getListOfSuppliers] =
+    SuppliersApiHooks.useLazyGetListOfSuppliersQuery();
+  const [getListOfSuppliersForGrid] =
+    SuppliersApiHooks.useGetListOfSuppliersForGridMutation();
+  const [getSupplierDetails] =
+    SuppliersApiHooks.useLazyGetSupplierDetailsQuery();
   const [createSupplier] = SuppliersApiHooks.useCreateSupplierMutation();
+  const [updateSupplier] = SuppliersApiHooks.useUpdateSupplierMutation();
 
   function getPurchaseDetailsHandler(id) {
     return getPurchaseDetails(id).then((res: any) => {
@@ -31,9 +36,22 @@ export default function useSupplierPageService() {
     });
   }
 
-  function getListOfAllSuppliersHandler() {
-    return getListOfAllSuppliers().then((res: any) => {
+  function getListOfSuppliersHandler() {
+    return getListOfSuppliers().then((res: any) => {
       dispatch(actions.refreshSuppliers(res.data));
+      return res.data;
+    });
+  }
+
+  function getListOfSuppliersForGridHandler(model) {
+    return getListOfSuppliersForGrid(model).then((res: any) => {
+      dispatch(actions.refreshSuppliersWithLocations(res.data.items));
+      return res.data;
+    });
+  }
+
+  function getSupplierDetailsHandler(supplierId, locationId) {
+    return getSupplierDetails({ supplierId, locationId }).then((res: any) => {
       return res.data;
     });
   }
@@ -44,10 +62,23 @@ export default function useSupplierPageService() {
     });
   }
 
+  function updateSupplierHandler(model, supplierId, locationId) {
+    return updateSupplier({
+      model,
+      supplierId,
+      locationId,
+    }).then((res: any) => {
+      return res.data;
+    });
+  }
+
   return {
     getPurchaseDetailsHandler,
     createPurchaseForSupplierHandler,
-    getListOfAllSuppliersHandler,
+    getListOfSuppliersHandler,
+    getListOfSuppliersForGridHandler,
+    getSupplierDetailsHandler,
     createSupplierHandler,
+    updateSupplierHandler,
   };
 }
