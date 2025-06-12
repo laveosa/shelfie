@@ -1,4 +1,4 @@
-import React, { ComponentPropsWithRef } from "react";
+import React, { ComponentPropsWithRef, RefObject } from "react";
 
 import { ISheLabel } from "@/const/interfaces/primitive-components/ISheLabel.ts";
 import { ISheClearButton } from "@/const/interfaces/primitive-components/ISheClearButton.ts";
@@ -10,7 +10,7 @@ export interface ISheMultiSelectTrigger
   extends ISheLabel,
     ISheClearButton,
     ComponentPropsWithRef<any> {
-  ref?: React.Ref<HTMLButtonElement>;
+  ref?: RefObject<HTMLButtonElement>;
   id?: string;
   className?: string;
   style?: React.CSSProperties;

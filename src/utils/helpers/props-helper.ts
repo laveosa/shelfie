@@ -1,20 +1,20 @@
 import { ComponentPropsWithRef } from "react";
 import { createEmptyProps } from "@/utils/helpers/quick-helper.ts";
 
-export const getCustomProps = <T, C>(
+export const getCustomProps = <T extends object, C>(
   props: T,
   model: C,
   noEmpty: boolean = true,
 ) => {
   if (!props || !model) return undefined;
   const keys = Object.keys(model) as (keyof T)[];
-  return _pick<T, (typeof keys)[number]>(props, keys, noEmpty);
+  return _pick<T, keyof T>(props, keys, noEmpty);
 };
 
-export function removeCustomProps<T>(
+export function removeCustomProps<T extends object>(
   props: T,
   models: object | object[],
-): Partial<T> {
+) {
   if (!props || !models) return undefined;
 
   const modelArr = Array.isArray(models) ? models : [models];
@@ -24,7 +24,7 @@ export function removeCustomProps<T>(
     (Object.keys(model) as (keyof T)[]).forEach((k) => keySet.add(k)),
   );
 
-  return _omit<T, (typeof keySet)[number]>(props, Array.from(keySet));
+  return _omit<T, keyof T>(props, Array.from(keySet));
 }
 
 export const filterCustomProps = <

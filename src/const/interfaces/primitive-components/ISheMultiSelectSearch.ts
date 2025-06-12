@@ -1,7 +1,7 @@
-import React from "react";
+import React, { RefObject } from "react";
 
 export interface ISheMultiSelectSearch {
-  searchRef?: React.Ref<HTMLInputElement>;
+  searchRef?: RefObject<HTMLInputElement>;
   searchClassName?: string;
   searchStyle?: React.CSSProperties;
   searchElementClassName?: string;

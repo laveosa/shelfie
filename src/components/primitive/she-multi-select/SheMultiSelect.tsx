@@ -73,10 +73,10 @@ export default function SheMultiSelect({
     ISheMultiSelect,
     ISheMultiSelectFooter
   >(props, SheMultiSelectFooterDefaultModel);
-  const restProps = removeCustomProps<ISheMultiSelect, ISheMultiSelectSearch>(
-    props,
-    [SheMultiSelectSearchDefaultModel, SheMultiSelectFooterDefaultModel],
-  );
+  const restProps = removeCustomProps<ISheMultiSelect>(props, [
+    SheMultiSelectSearchDefaultModel,
+    SheMultiSelectFooterDefaultModel,
+  ]);
 
   useEffect(() => {
     setIsItemsWithIcons(null);
