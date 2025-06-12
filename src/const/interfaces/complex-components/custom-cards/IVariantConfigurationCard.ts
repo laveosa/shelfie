@@ -1,7 +1,7 @@
 import { VariantModel } from "@/const/models/VariantModel.ts";
 import { GridModel } from "@/const/models/GridModel.ts";
 import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
-import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
+import { ProductCountersModel } from "@/const/models/CounterModel.ts";
 
 export interface IVariantConfigurationCard {
   isLoading?: boolean;
@@ -11,7 +11,7 @@ export interface IVariantConfigurationCard {
   variantPhotos?: any[];
   data?: GridModel;
   taxesList?: TaxTypeModel[];
-  productCounter?: ProductCounterModel;
+  productCounter?: ProductCountersModel;
   onAction?: (identifier: string, payload?: any) => void;
   onGenerateProductCode?: () => Promise<any>;
   onSecondaryButtonClick?: () => void;

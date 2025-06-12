@@ -64,6 +64,8 @@ export default function useProductsPageService() {
     PurchasesApiHooks.useLazyGetPurchaseDetailsQuery();
   const [getCountryCode] = DictionaryApiHooks.useLazyGetCountryCodeQuery();
   const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
+  const [getPurchaseCounters] =
+    PurchasesApiHooks.useLazyGetPurchaseCountersQuery();
 
   //-------------------------------------------------API
 
@@ -275,6 +277,13 @@ export default function useProductsPageService() {
     });
   }
 
+  function getPurchaseCountersHandler(purchaseId: number) {
+    return getPurchaseCounters(purchaseId).then((res: any) => {
+      dispatch(actions.refreshPurchaseCounters(res.data));
+      return res.data;
+    });
+  }
+
   //----------------------------------------------------LOGIC
 
   function itemsCardItemsConvertor(
@@ -360,6 +369,7 @@ export default function useProductsPageService() {
     getPurchaseDetailsHandler,
     getCountryCodeHandler,
     uploadPhotoHandler,
+    getPurchaseCountersHandler,
     itemsCardItemsConvertor,
     itemCardHandler,
   };

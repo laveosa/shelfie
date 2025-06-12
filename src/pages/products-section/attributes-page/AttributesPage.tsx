@@ -5,7 +5,7 @@ import cs from "./AttributesPage.module.scss";
 import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
+import { ProductCountersModel } from "@/const/models/CounterModel.ts";
 import { IAttributesPageSlice } from "@/const/interfaces/store-slices/IAttributesPageSlice.ts";
 import { AttributesPageSliceActions as actions } from "@/state/slices/AttributesPageSlice";
 import useAttributesPageService from "@/pages/products-section/attributes-page/useAttributesPageService.ts";
@@ -19,7 +19,7 @@ export function AttributesPage() {
   useEffect(() => {
     service
       .getCountersForProductsHandler(productId)
-      .then((res: ProductCounterModel) => {
+      .then((res: ProductCountersModel) => {
         dispatch(actions.refreshProductCounter(res));
       });
   }, [productId]);
@@ -36,7 +36,7 @@ export function AttributesPage() {
       <ProductMenuCard
         title={"Manage Attributes"}
         itemsCollection="products"
-        productCounter={state.productCounter}
+        counter={state.productCounter}
         onAction={handleCardAction}
         productId={Number(productId)}
         activeCards={state.activeCards}

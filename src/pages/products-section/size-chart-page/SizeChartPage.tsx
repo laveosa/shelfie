@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import cs from "./SizeChartPage.module.scss";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
+import { ProductCountersModel } from "@/const/models/CounterModel.ts";
 import { SizeChartPageSliceActions as actions } from "@/state/slices/SizeChartPageSlice.ts";
 import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
 import useSizeChartPageService from "@/pages/products-section/size-chart-page/useSizeChartPageService.ts";
@@ -19,7 +19,7 @@ export function SizeChartPage() {
   useEffect(() => {
     service
       .getCountersForProductsHandler(productId)
-      .then((res: ProductCounterModel) => {
+      .then((res: ProductCountersModel) => {
         dispatch(actions.refreshProductCounter(res));
       });
   }, [productId]);
@@ -35,7 +35,7 @@ export function SizeChartPage() {
     <div className={cs.attributePage}>
       <ProductMenuCard
         title={"Manage Size Charts"}
-        productCounter={state.productCounter}
+        counter={state.productCounter}
         itemsCollection="products"
         onAction={handleCardAction}
         productId={Number(productId)}

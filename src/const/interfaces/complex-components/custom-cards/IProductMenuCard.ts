@@ -1,11 +1,11 @@
-import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
+import { CounterModel } from "@/const/models/CounterModel.ts";
 
 export interface IProductMenuCard {
   isLoading?: boolean;
   title?: string;
   productId?: number;
   itemsCollection?: "products" | "purchases";
-  productCounter?: ProductCounterModel;
+  counter?: CounterModel;
   activeCards?: any;
   onAction?: (identifier: string) => void;
 }

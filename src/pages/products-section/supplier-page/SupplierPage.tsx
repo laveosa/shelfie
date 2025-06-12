@@ -36,16 +36,13 @@ export function SupplierPage() {
   const cardRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   useEffect(() => {
-    if (!productsState.selectedPurchase) {
-      dispatch(actions.setIsSupplierCardLoading(true));
-      service
-        .getPurchaseDetailsHandler(purchaseId)
-        .then((res: PurchaseModel) => {
-          dispatch(actions.setIsSupplierCardLoading(false));
-          dispatch(productsActions.refreshSelectedPurchase(res));
-          dispatch(actions.refreshSelectedSupplier(res.supplier));
-        });
-    }
+    dispatch(actions.setIsSupplierCardLoading(true));
+    service.getPurchaseDetailsHandler(purchaseId).then((res: PurchaseModel) => {
+      dispatch(actions.setIsSupplierCardLoading(false));
+      dispatch(productsActions.refreshSelectedPurchase(res));
+      dispatch(actions.refreshSelectedSupplier(res.supplier));
+    });
+    productsService.getPurchaseCountersHandler(Number(purchaseId));
   }, [purchaseId]);
 
   function scrollToCard(cardId: string) {
@@ -249,8 +246,8 @@ export function SupplierPage() {
         isLoading={productsState.isProductMenuCardLoading}
         title="Report Purchase"
         itemsCollection="purchases"
-        productId={productsState.selectedPurchase?.supplier.supplierId}
-        productCounter={productsState.productCounter}
+        productId={Number(purchaseId)}
+        counter={productsState.purchaseCounters}
         onAction={handleCardAction}
       />
       <SupplierCard

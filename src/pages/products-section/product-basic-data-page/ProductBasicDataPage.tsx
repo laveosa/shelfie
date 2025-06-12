@@ -197,7 +197,7 @@ export function ProductBasicDataPage() {
         isLoading={productsState.isProductMenuCardLoading}
         title={productId ? "Manage Product" : "Create Product"}
         itemsCollection="products"
-        productCounter={productsState.productCounter}
+        counter={productsState.productCounter}
         onAction={handleCardAction}
         productId={Number(productId)}
         activeCards={state.activeCards}

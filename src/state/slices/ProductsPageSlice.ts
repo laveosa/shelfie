@@ -8,7 +8,10 @@ import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
 import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
-import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
+import {
+  ProductCountersModel,
+  PurchaseCountersModel,
+} from "@/const/models/CounterModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
@@ -71,6 +74,7 @@ const initialState: IProductsPageSlice = {
   taxesList: [],
   currenciesList: [],
   countryCodeList: null,
+  purchaseCounters: null,
 };
 
 //----------------------------------------------------- LOADERS
@@ -160,7 +164,7 @@ function refreshPurchases(
 
 function refreshProductCounter(
   state: IProductsPageSlice,
-  action: PayloadAction<ProductCounterModel>,
+  action: PayloadAction<ProductCountersModel>,
 ) {
   state.productCounter = action?.payload || state.productCounter;
 }
@@ -258,7 +262,7 @@ function refreshProductPhotos(
 
 function refreshProductVariants(
   state: IProductsPageSlice,
-  action: PayloadAction<any[]>,
+  action: PayloadAction<VariantModel[]>,
 ) {
   state.productVariants = action?.payload || state.productVariants;
 }
@@ -309,6 +313,13 @@ function refreshCountryCodeList(
   state.countryCodeList = action?.payload || state.countryCodeList;
 }
 
+function refreshPurchaseCounters(
+  state: IProductsPageSlice,
+  action: PayloadAction<PurchaseCountersModel>,
+) {
+  state.purchaseCounters = action?.payload || state.purchaseCounters;
+}
+
 const ProductsPageSlice = createSlice({
   name: StoreSliceEnum.PRODUCTS,
   initialState,
@@ -347,6 +358,7 @@ const ProductsPageSlice = createSlice({
     refreshTaxesList,
     refreshCurrenciesList,
     refreshCountryCodeList,
+    refreshPurchaseCounters,
   },
 });
 

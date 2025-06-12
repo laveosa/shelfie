@@ -1,7 +1,7 @@
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
-import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
+import { ProductCountersModel } from "@/const/models/CounterModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 
 export interface IProductBasicDataPageSlice {
@@ -18,6 +18,6 @@ export interface IProductBasicDataPageSlice {
   contextId?: number;
   products?: ProductModel[];
   activeCards?: any[];
-  productCounter?: ProductCounterModel;
+  productCounter?: ProductCountersModel;
   photos?: ImageModel[];
 }
