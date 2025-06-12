@@ -68,7 +68,6 @@ export default function ManageVariantsCard({
     <SheProductCard
       loading={isLoading}
       title="Manage Variants"
-      view="card"
       showPrimaryButton={false}
       primaryButtonTitle="Save"
       showSecondaryButton={false}

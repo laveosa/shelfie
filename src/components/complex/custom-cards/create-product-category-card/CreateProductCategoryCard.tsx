@@ -5,7 +5,7 @@ import cs from "./CreateProductCategoryCard.module.scss";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import useProductBasicDataPageService from "@/pages/products-section/product-basic-data-page/useProductBasicDataPageService.ts";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
-import { SheImageUploader } from "@/components/complex/she-images-file-uploader/SheImageUploader.tsx";
+import { SheImageUploader } from "@/components/complex/she-images-uploader/SheImageUploader.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { useToast } from "@/hooks/useToast.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
@@ -82,7 +82,6 @@ export default function CreateProductCategoryCard({ isLoading, ...props }) {
       <SheProductCard
         loading={isLoading}
         title="Create Product Category"
-        view="card"
         showCloseButton
         primaryButtonTitle="Add Category"
         className={cs.createProductCategoryCard}
@@ -93,6 +92,7 @@ export default function CreateProductCategoryCard({ isLoading, ...props }) {
             className={cs.productCategoryInput}
             label="Category Name"
             placeholder="enter category name..."
+            fullWidth
             value={state.category.categoryName || ""}
             onDelay={handleInputChange}
           />

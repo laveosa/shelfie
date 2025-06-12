@@ -9,7 +9,7 @@ import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
 
 export default function SheProductCard({
   className = "",
-  view = "",
+  view = "card",
   loading,
   width,
   minWidth = "400px",
@@ -28,7 +28,7 @@ export default function SheProductCard({
   primaryButtonTitleTransKey,
   primaryButtonDisabled,
   showSecondaryButton = false,
-  secondaryButtonTitle,
+  secondaryButtonTitle = "Cancel",
   secondaryButtonTitleTransKey,
   onPrimaryButtonClick,
   onSecondaryButtonClick,
@@ -44,9 +44,9 @@ export default function SheProductCard({
       className={`${className || ""} ${cs.sheProductCard || ""} ${view === "card" ? cs.card : ""}`}
       style={{
         width,
-        minWidth: isMinimized ? "70px" : minWidth,
-        maxWidth: isMinimized ? "70px" : maxWidth,
-        padding: isMinimized ? "10px 0 20px 20px" : "",
+        minWidth: isMinimized ? "50px" : minWidth,
+        maxWidth: isMinimized ? "50px" : maxWidth,
+        padding: view === "borderless" ? "10px 0 20px 0" : "",
       }}
     >
       <div className={cs.cardHeader}>
@@ -95,15 +95,11 @@ export default function SheProductCard({
       </div>
       {loading && <SheLoading />}
       <div
-        className={cs.cardContent}
-        style={
-          loading
-            ? {
-                pointerEvents: "none",
-                opacity: 0.5,
-              }
-            : {}
-        }
+        className={`${cs.cardContent} ${loading ? cs.cardContentLoading : ""} ${
+          showPrimaryButton || showSecondaryButton
+            ? cs.cardContentWithFooter
+            : ""
+        }`}
       >
         {children}
       </div>

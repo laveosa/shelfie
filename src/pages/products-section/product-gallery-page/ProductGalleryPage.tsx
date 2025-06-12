@@ -6,7 +6,6 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IProductGalleryPageSlice } from "@/const/interfaces/store-slices/IProductGalleryPageSlice.ts";
 import { ProductGalleryPageSliceActions as actions } from "@/state/slices/ProductGalleryPageSlice.ts";
 import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice";
-import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
 import useProductGalleryPageService from "@/pages/products-section/product-gallery-page/useProductGalleryPageService.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import cs from "@/pages/products-section/product-basic-data-page/ProductBasicDataPage.module.scss";
@@ -18,6 +17,7 @@ import ConnectImageCard from "@/components/complex/custom-cards/connect-image-ca
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import { setSelectedGridItem } from "@/utils/helpers/quick-helper.ts";
+import useDialogService from "@/utils/services/dialog/DialogService.ts";
 
 export function ProductGalleryPage() {
   const dispatch = useAppDispatch();
@@ -31,7 +31,17 @@ export function ProductGalleryPage() {
   const productsService = useProductsPageService();
   const { productId } = useParams();
   const { addToast } = useToast();
+  const { openConfirmationDialog } = useDialogService();
   const cardRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const productsForItemsCard = productsService.itemsCardItemsConvertor(
+    productsState.products,
+    {
+      idKey: "productId",
+      nameKey: "productName",
+      imageKeyPath: "image.thumbnailUrl",
+      type: "product",
+    },
+  );
 
   useEffect(() => {
     if (productsState.products === null) {
@@ -98,14 +108,12 @@ export function ProductGalleryPage() {
     }
   }
 
-  function onAction(actionType: string, payload: any) {
+  async function onAction(actionType: string, payload: any) {
     switch (actionType) {
       case "upload":
-        dispatch(actions.setIsProductPhotosCardLoading(true));
-        dispatch(productsActions.setIsProductPhotosLoading(true));
+        dispatch(actions.setIsImageUploaderLoading(true));
         service.uploadPhotoHandler(payload).then((res) => {
-          dispatch(actions.setIsProductPhotosCardLoading(false));
-          dispatch(productsActions.setIsProductPhotosLoading(false));
+          dispatch(actions.setIsImageUploaderLoading(false));
           if (res.data.photoId) {
             productsService
               .getProductPhotosHandler(Number(productId))
@@ -150,38 +158,53 @@ export function ProductGalleryPage() {
           });
         break;
       case "delete":
-        dispatch(productsActions.setIsProductPhotosLoading(true));
-        service.deletePhotoHandler(payload.photoId).then((res) => {
-          dispatch(productsActions.setIsProductPhotosLoading(false));
-          if (res) {
-            productsService
-              .getProductPhotosHandler(Number(productId))
-              .then((res) => {
-                // dispatch(productsActions.setIsProductPhotosLoading(false));
-                dispatch(productsActions.refreshProductPhotos(res));
-              });
-            productsService
-              .getCountersForProductsHandler(productId)
-              .then((res: ProductCounterModel) => {
-                dispatch(productsActions.refreshProductCounter(res));
-              });
-            productsService
-              .getTheProductsForGridHandler(productsState.gridRequestModel)
-              .then((res: GridModel) => {
-                dispatch(productsActions.refreshProducts(res.items));
-              });
-            addToast({
-              text: "Photo deleted successfully",
-              type: "success",
-            });
-          } else {
-            addToast({
-              text: "Photo not deleted",
-              description: res.error.message,
-              type: "error",
-            });
-          }
+        const confirmed = await openConfirmationDialog({
+          title: "Deleting product photo",
+          text: "You are about to delete product photo.",
+          primaryButtonValue: "Delete",
+          secondaryButtonValue: "Cancel",
         });
+
+        if (!confirmed) return;
+
+        dispatch(productsActions.setIsProductPhotosLoading(true));
+
+        try {
+          await service.deletePhotoHandler(payload.photoId);
+
+          const [productPhotos, counters, photos] = await Promise.all([
+            productsService.getProductPhotosHandler(Number(productId)),
+            productsService.getCountersForProductsHandler(productId),
+            payload.id === 1
+              ? productsService.getTheProductsForGridHandler(
+                  productsState.gridRequestModel,
+                  true,
+                )
+              : Promise.resolve({ items: [] }),
+          ]);
+
+          queueMicrotask(() => {
+            dispatch(productsActions.refreshProductPhotos(productPhotos));
+            dispatch(productsActions.refreshProductCounter(counters));
+
+            if (payload.id === 1) {
+              dispatch(productsActions.refreshProducts(photos.items));
+            }
+          });
+
+          addToast({
+            text: "Photo deleted successfully",
+            type: "success",
+          });
+        } catch (error: any) {
+          addToast({
+            text: "Photo not deleted",
+            description: error.message,
+            type: "error",
+          });
+        } finally {
+          dispatch(productsActions.setIsProductPhotosLoading(false));
+        }
         break;
       case "openConnectImageCard":
         dispatch(actions.setIsConnectImageCardLoading(true));
@@ -264,26 +287,26 @@ export function ProductGalleryPage() {
 
   return (
     <div className={cs.createProductPage}>
-      <div className={cs.borderlessCards}>
-        <ItemsCard
-          isLoading={productsState.isItemsCardLoading}
-          isItemsLoading={productsState.isProductsLoading}
-          title="Products"
-          data={productsState.products}
-          selectedItem={productId}
-          skeletonQuantity={productsState.products?.length}
-          onAction={itemCardHandler}
-        />
-        <ProductMenuCard
-          isLoading={productsState.isProductMenuCardLoading}
-          title={productId ? "Manage Product" : "Create Product"}
-          productCounter={productsState.productCounter}
-          productId={Number(productId)}
-          activeCards={state.activeCards}
-        />
-      </div>
+      <ItemsCard
+        isLoading={productsState.isItemsCardLoading}
+        isItemsLoading={productsState.isProductsLoading}
+        title="Products"
+        data={productsForItemsCard}
+        selectedItem={productId}
+        skeletonQuantity={productsState.products?.length}
+        onAction={itemCardHandler}
+      />
+      <ProductMenuCard
+        isLoading={productsState.isProductMenuCardLoading}
+        title={productId ? "Manage Product" : "Create Product"}
+        itemsCollection="products"
+        productCounter={productsState.productCounter}
+        productId={Number(productId)}
+        activeCards={state.activeCards}
+      />
       <ProductPhotosCard
         isLoading={state.isProductPhotosCardLoading}
+        isImageUploaderLoading={state.isImageUploaderLoading}
         isGridLoading={productsState.isProductPhotosLoading}
         data={productsState.productPhotos}
         productCounter={productsState.productCounter}

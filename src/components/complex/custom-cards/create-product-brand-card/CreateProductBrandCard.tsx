@@ -5,7 +5,7 @@ import cs from "./CreateProductBrandCard.module.scss";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import useProductBasicDataPageService from "@/pages/products-section/product-basic-data-page/useProductBasicDataPageService.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { SheImageUploader } from "@/components/complex/she-images-file-uploader/SheImageUploader.tsx";
+import { SheImageUploader } from "@/components/complex/she-images-uploader/SheImageUploader.tsx";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
@@ -83,7 +83,6 @@ export default function CreateProductBrandCard({ isLoading, ...props }) {
       <SheProductCard
         loading={isLoading}
         title="Create Product Brand"
-        view="card"
         showCloseButton
         className={cs.createProductBrandCard}
         {...props}
@@ -93,6 +92,7 @@ export default function CreateProductBrandCard({ isLoading, ...props }) {
             className={cs.productCategoryInput}
             label="Brand Name"
             placeholder="enter brand name..."
+            fullWidth
             value={state.brand.brandName || ""}
             onDelay={handleInputChange}
           />

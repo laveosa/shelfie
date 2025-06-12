@@ -13,6 +13,9 @@ import { ImageModel } from "@/const/models/ImageModel.ts";
 import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 import { VariantModel } from "@/const/models/VariantModel.ts";
+import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
+import { SupplierModel } from "@/const/models/SupplierModel.ts";
+import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 
 const initialState: IProductsPageSlice = {
   isLoading: false,
@@ -24,16 +27,23 @@ const initialState: IProductsPageSlice = {
   products: null,
   product: null,
   selectedProduct: null,
+  variants: [],
+  purchases: [],
   productCounter: null,
   columnsPreferences: null,
   brands: [],
   categories: [],
+  suppliers: [],
   sortingOptions: [],
   productsGridModel: {
     pager: {},
     items: [],
   },
   variantsGridModel: {
+    pager: {},
+    items: [],
+  },
+  purchasesGridModel: {
     pager: {},
     items: [],
   },
@@ -49,11 +59,18 @@ const initialState: IProductsPageSlice = {
     currentPage: 1,
     pageSize: 10,
   },
+  purchasesGridRequestModel: {
+    currentPage: 1,
+    pageSize: 10,
+  },
   productPhotos: [],
   productVariants: [],
   selectedVariant: null,
+  selectedSupplier: null,
+  selectedPurchase: null,
   taxesList: [],
   currenciesList: [],
+  countryCodeList: null,
 };
 
 //----------------------------------------------------- LOADERS
@@ -127,6 +144,20 @@ function refreshSelectedProduct(
   state.selectedProduct = action?.payload || state.selectedProduct;
 }
 
+function refreshVariants(
+  state: IProductsPageSlice,
+  action: PayloadAction<VariantModel[]>,
+) {
+  state.variants = action?.payload || state.variants;
+}
+
+function refreshPurchases(
+  state: IProductsPageSlice,
+  action: PayloadAction<PurchaseModel[]>,
+) {
+  state.purchases = action?.payload || state.purchases;
+}
+
 function refreshProductCounter(
   state: IProductsPageSlice,
   action: PayloadAction<ProductCounterModel>,
@@ -152,6 +183,13 @@ function refreshVariantsGridModel(
   state.variantsGridModel = action?.payload || state.variantsGridModel;
 }
 
+function refreshPurchasesGridModel(
+  state: IProductsPageSlice,
+  action: PayloadAction<GridModel>,
+) {
+  state.purchasesGridModel = action?.payload || state.purchasesGridModel;
+}
+
 function refreshGridRequestModel(
   state: IProductsPageSlice,
   action: PayloadAction<GridRequestModel>,
@@ -175,6 +213,14 @@ function refreshVariantsGridRequestModel(
     action?.payload || state.variantsGridRequestModel;
 }
 
+function refreshPurchasesGridRequestModel(
+  state: IProductsPageSlice,
+  action: PayloadAction<GridRequestModel>,
+) {
+  state.purchasesGridRequestModel =
+    action?.payload || state.purchasesGridRequestModel;
+}
+
 function refreshBrands(
   state: IProductsPageSlice,
   action: PayloadAction<BrandModel[]>,
@@ -187,6 +233,13 @@ function refreshCategories(
   action: PayloadAction<CategoryModel[]>,
 ) {
   state.categories = action?.payload || state.categories;
+}
+
+function refreshSuppliers(
+  state: IProductsPageSlice,
+  action: PayloadAction<SupplierModel[]>,
+) {
+  state.suppliers = action?.payload || state.suppliers;
 }
 
 function refreshSortingOptions(
@@ -217,6 +270,20 @@ function refreshSelectedVariant(
   state.selectedVariant = action?.payload || state.selectedVariant;
 }
 
+function refreshSelectedSupplier(
+  state: IProductsPageSlice,
+  action: PayloadAction<SupplierModel>,
+) {
+  state.selectedSupplier = action?.payload || state.selectedSupplier;
+}
+
+function refreshSelectedPurchase(
+  state: IProductsPageSlice,
+  action: PayloadAction<PurchaseModel>,
+) {
+  state.selectedPurchase = action?.payload || state.selectedPurchase;
+}
+
 function resetSelectedVariant(state: IProductsPageSlice) {
   state.selectedVariant = null;
 }
@@ -235,6 +302,13 @@ function refreshCurrenciesList(
   state.currenciesList = action?.payload || state.currenciesList;
 }
 
+function refreshCountryCodeList(
+  state: IProductsPageSlice,
+  action: PayloadAction<CountryCodeModel[]>,
+) {
+  state.countryCodeList = action?.payload || state.countryCodeList;
+}
+
 const ProductsPageSlice = createSlice({
   name: StoreSliceEnum.PRODUCTS,
   initialState,
@@ -249,22 +323,30 @@ const ProductsPageSlice = createSlice({
     refreshProduct,
     resetProduct,
     refreshSelectedProduct,
+    refreshVariants,
+    refreshPurchases,
     refreshProductCounter,
     resetProductCounter,
     refreshProductsGridModel,
     refreshVariantsGridModel,
     refreshGridRequestModel,
+    refreshPurchasesGridModel,
     refreshProductsGridRequestModel,
     refreshVariantsGridRequestModel,
+    refreshPurchasesGridRequestModel,
     refreshBrands,
     refreshCategories,
+    refreshSuppliers,
     refreshSortingOptions,
     refreshProductPhotos,
     refreshProductVariants,
     refreshSelectedVariant,
     resetSelectedVariant,
+    refreshSelectedSupplier,
+    refreshSelectedPurchase,
     refreshTaxesList,
     refreshCurrenciesList,
+    refreshCountryCodeList,
   },
 });
 

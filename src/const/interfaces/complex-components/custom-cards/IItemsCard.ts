@@ -4,6 +4,6 @@ export interface IItemsCard {
   data?: any[];
   title?: string;
   skeletonQuantity?: number;
-  onAction?: (item) => void;
+  onAction?: (data: any) => void;
   selectedItem?: any;
 }

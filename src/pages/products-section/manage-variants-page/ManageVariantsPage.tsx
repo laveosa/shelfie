@@ -28,6 +28,7 @@ import { GridModel } from "@/const/models/GridModel.ts";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
+import useDialogService from "@/utils/services/dialog/DialogService.ts";
 
 export function ManageVariantsPage() {
   const dispatch = useAppDispatch();
@@ -42,15 +43,25 @@ export function ManageVariantsPage() {
   const { addToast } = useToast();
   const { productId } = useParams();
   const cardRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const { openConfirmationDialog } = useDialogService();
+  const variantsForItemsCard = productsService.itemsCardItemsConvertor(
+    productsState.variants,
+    {
+      idKey: "variantId",
+      nameKey: "variantName",
+      imageKeyPath: "image.thumbnailUrl",
+      type: "variant",
+    },
+  );
 
   useEffect(() => {
-    if (productsState.products === null) {
+    if (productsState.variants.length === 0) {
       dispatch(productsActions.setIsItemsCardLoading(true));
       productsService
-        .getTheProductsForGridHandler(productsState.gridRequestModel)
+        .getVariantsForGridHandler(productsState.variantsGridRequestModel)
         .then((res: GridModel) => {
           dispatch(productsActions.setIsItemsCardLoading(false));
-          dispatch(productsActions.refreshProducts(res.items));
+          dispatch(productsActions.refreshVariants(res.items));
         });
     }
     if (state.listOfTraitsWithOptionsForProduct.length === 0) {
@@ -170,7 +181,7 @@ export function ManageVariantsPage() {
     }
   }
 
-  function onAction(actionType: string, payload?: any) {
+  async function onAction(actionType: string, payload?: any) {
     switch (actionType) {
       case "onProductItemClick":
         productsService.itemCardHandler(payload);
@@ -481,24 +492,41 @@ export function ManageVariantsPage() {
           });
         break;
       case "detachPhotoFromVariant":
-        service
-          .detachVariantPhotoHandler(
+        const confirmedDetachPhoto = await openConfirmationDialog({
+          title: "Detach photo from variant",
+          text: `You are about to detach photo from variant  "${productsState.selectedVariant.variantName}".`,
+          primaryButtonValue: "Detach",
+          secondaryButtonValue: "Cancel",
+        });
+
+        if (!confirmedDetachPhoto) return;
+
+        try {
+          await service.detachVariantPhotoHandler(
             productsState.selectedVariant.variantId,
             payload.photoId.toString(),
-          )
-          .then((res) => {
-            if (res) {
-              dispatch(actions.setIsVariantPhotoGridLoading(true));
-              productsService
-                .getVariantDetailsHandler(
-                  productsState.selectedVariant.variantId,
-                )
-                .then((res) => {
-                  dispatch(actions.setIsVariantPhotoGridLoading(false));
-                  dispatch(actions.refreshVariantPhotos(res?.photos));
-                });
-            }
+          );
+
+          dispatch(actions.setIsVariantPhotoGridLoading(true));
+
+          const variantDetails = await productsService.getVariantDetailsHandler(
+            productsState.selectedVariant.variantId,
+          );
+
+          dispatch(actions.refreshVariantPhotos(variantDetails?.photos));
+
+          addToast({
+            text: "Photo was detached successfully",
+            type: "success",
           });
+        } catch (error: any) {
+          addToast({
+            text: error.message || "Failed to detach photo",
+            type: "error",
+          });
+        } finally {
+          dispatch(actions.setIsVariantPhotoGridLoading(false));
+        }
         break;
       case "dndVariantPhoto":
         service
@@ -631,29 +659,42 @@ export function ManageVariantsPage() {
         });
         break;
       case "deleteTrait":
-        dispatch(actions.setIsChooseVariantTraitsCardLoading(true));
-        service.deleteTraitHandler(payload).then((res) => {
-          dispatch(actions.setIsChooseVariantTraitsCardLoading(false));
-          if (res) {
-            service
-              .getListOfTraitsWithOptionsForProductHandler(productId)
-              .then((res) => {
-                dispatch(actions.refreshListOfTraitsWithOptionsForProduct(res));
-              });
-            service.getListOfAllTraitsHandler().then((res) => {
-              dispatch(actions.refreshTraits(res));
-            });
-            addToast({
-              text: "Trait deleted successfully",
-              type: "success",
-            });
-          } else {
-            addToast({
-              text: res.error.message,
-              type: "error",
-            });
-          }
+        const confirmedTraitDeleting = await openConfirmationDialog({
+          title: "Deleting trait",
+          text: `You are about to remove the trait ${payload.traitName}. All products connected to it will loose the configuration and will require your attention to map it to the new trait.`,
+          primaryButtonValue: "Delete",
+          secondaryButtonValue: "Cancel",
         });
+
+        if (!confirmedTraitDeleting) return;
+
+        dispatch(actions.setIsChooseVariantTraitsCardLoading(true));
+
+        try {
+          await service.deleteTraitHandler(payload.traitId);
+
+          const [traitsWithOptions, allTraits] = await Promise.all([
+            service.getListOfTraitsWithOptionsForProductHandler(productId),
+            service.getListOfAllTraitsHandler(),
+          ]);
+
+          dispatch(
+            actions.refreshListOfTraitsWithOptionsForProduct(traitsWithOptions),
+          );
+          dispatch(actions.refreshTraits(allTraits));
+
+          addToast({
+            text: "Trait deleted successfully",
+            type: "success",
+          });
+        } catch (error: any) {
+          addToast({
+            text: error.message || "Failed to delete trait",
+            type: "error",
+          });
+        } finally {
+          dispatch(actions.setIsChooseVariantTraitsCardLoading(false));
+        }
         break;
       case "updateOption":
         dispatch(actions.setIsTraitOptionsGridLoading(true));
@@ -718,35 +759,46 @@ export function ManageVariantsPage() {
           });
         break;
       case "deleteOption":
-        dispatch(actions.setIsTraitOptionsGridLoading(true));
-        service.deleteOptionsForTraitHandler(payload.optionId).then((res) => {
-          dispatch(actions.setIsTraitOptionsGridLoading(false));
-          if (res) {
-            service
-              .getOptionsForTraitHandler(state.selectedTrait.traitId)
-              .then((options) => {
-                dispatch(
-                  actions.refreshColorOptionsGridModel({
-                    ...state.colorOptionsGridModel,
-                    items: options.filter((option) => !option.isDeleted),
-                  }),
-                );
-              });
-            service.getListOfAllTraitsHandler().then((res) => {
-              dispatch(actions.refreshTraits(res));
-            });
-            addToast({
-              text: "Option deleted successfully",
-              type: "success",
-            });
-          } else {
-            addToast({
-              text: "Option not deleted",
-              description: res.error.message,
-              type: "error",
-            });
-          }
+        const confirmedOptionDeleting = await openConfirmationDialog({
+          title: "Deleting option",
+          text: `You are about to remove the option ${payload.optionName}.`,
+          primaryButtonValue: "Delete",
+          secondaryButtonValue: "Cancel",
         });
+
+        if (!confirmedOptionDeleting) return;
+
+        dispatch(actions.setIsTraitOptionsGridLoading(true));
+
+        try {
+          await service.deleteOptionsForTraitHandler(payload.optionId);
+
+          const [options, allTraits] = await Promise.all([
+            service.getOptionsForTraitHandler(state.selectedTrait.traitId),
+            service.getListOfAllTraitsHandler(),
+          ]);
+
+          dispatch(
+            actions.refreshColorOptionsGridModel({
+              ...state.colorOptionsGridModel,
+              items: options.filter((option) => !option.isDeleted),
+            }),
+          );
+          dispatch(actions.refreshTraits(allTraits));
+
+          addToast({
+            text: "Option deleted successfully",
+            type: "success",
+          });
+        } catch (error: any) {
+          addToast({
+            text: error.message || "Failed to delete option",
+            type: "error",
+          });
+        } finally {
+          dispatch(actions.setIsTraitOptionsGridLoading(false));
+        }
+
         break;
       case "dndTraitOption":
         service.changePositionOfTraitOptionHandler(
@@ -815,25 +867,23 @@ export function ManageVariantsPage() {
 
   return (
     <div className={cs.manageVariantsPage}>
-      <div className={cs.borderlessCards}>
-        <ItemsCard
-          isLoading={productsState.isItemsCardLoading}
-          isItemsLoading={productsState.isProductsLoading}
-          title="Products"
-          data={productsState.products}
-          selectedItem={productId}
-          skeletonQuantity={productsState.products?.length}
-          onAction={(item) => onAction("onProductItemClick", item)}
-        />
-        <ProductMenuCard
-          isLoading={productsState.isProductMenuCardLoading}
-          title="Manage Product"
-          productCounter={productsState.productCounter}
-          onAction={handleCardAction}
-          productId={Number(productId)}
-          activeCards={state.activeCards}
-        />
-      </div>
+      <ItemsCard
+        isLoading={productsState.isItemsCardLoading}
+        isItemsLoading={productsState.isVariantsLoading}
+        title="Variants"
+        data={variantsForItemsCard}
+        skeletonQuantity={productsState.variants?.length}
+        onAction={(data) => onAction("onProductItemClick", data)}
+      />
+      <ProductMenuCard
+        isLoading={productsState.isProductMenuCardLoading}
+        title="Manage Product"
+        itemsCollection="products"
+        productCounter={productsState.productCounter}
+        onAction={handleCardAction}
+        productId={Number(productId)}
+        activeCards={state.activeCards}
+      />
       <ManageVariantsCard
         isLoading={state.isManageVariantsCardLoading}
         isVariantsLoading={productsState.isProductVariantsLoading}
@@ -853,6 +903,7 @@ export function ManageVariantsPage() {
             isVariantOptionsGridLoading={state.isVariantOptionsGridLoading}
             isVariantPhotoGridLoading={state.isVariantPhotoGridLoading}
             variant={productsState.selectedVariant}
+            variantPhotos={state.variantPhotos}
             data={state.variantTraitsGridModel}
             taxesList={productsState.taxesList}
             productCounter={productsState.productCounter}

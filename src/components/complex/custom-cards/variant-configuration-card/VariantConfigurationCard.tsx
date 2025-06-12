@@ -48,6 +48,7 @@ export default function VariantConfigurationCard({
   isVariantOptionsGridLoading,
   isVariantPhotoGridLoading,
   variant,
+  variantPhotos,
   data,
   onAction,
   taxesList,
@@ -212,7 +213,6 @@ export default function VariantConfigurationCard({
     <SheProductCard
       loading={isLoading}
       title="Manage Variant"
-      view="card"
       showCloseButton
       onSecondaryButtonClick={onSecondaryButtonClick}
       className={cs.variantConfigurationCard}
@@ -394,7 +394,7 @@ export default function VariantConfigurationCard({
                 enableDnd={true}
                 showHeader={false}
                 columns={photoColumns}
-                data={variant?.photos}
+                data={variantPhotos}
                 gridModel={data}
                 skeletonQuantity={productCounter.gallery}
                 onNewItemPosition={(newIndex, activeItem) =>

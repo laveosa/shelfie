@@ -6,13 +6,13 @@ import cs from "./ChooseVariantTraitsCard.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { Checkbox } from "@/components/ui/checkbox.tsx";
 import { TraitModel } from "@/const/models/TraitModel.ts";
+import { IChooseVariantTraitsCard } from "@/const/interfaces/complex-components/custom-cards/IChooseVariantTraitsCard.ts";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
-import { IChooseVariantTraitsCard } from "@/const/interfaces/complex-components/custom-cards/IChooseVariantTraitsCard.ts";
 
 export default function ChooseVariantTraitsCard({
   isLoading,
@@ -40,12 +40,10 @@ export default function ChooseVariantTraitsCard({
     <SheProductCard
       loading={isLoading}
       title="Choose variant traits for product"
-      view="card"
       showPrimaryButton={true}
       primaryButtonTitle="Save"
       onPrimaryButtonClick={handleSave}
       showSecondaryButton={true}
-      secondaryButtonTitle="Cancel"
       showCloseButton={true}
       className={cs.chooseVariantTraitsCard}
       {...props}
@@ -90,6 +88,17 @@ export default function ChooseVariantTraitsCard({
                     <span className="she-text">{item.traitName}</span>
                     <span>{item.optionsAmount}</span>
                   </div>
+                  <SheButton
+                    className={cs.traitButton}
+                    variant="default"
+                    value="Manage"
+                    minWidth="65px"
+                    maxWidth="65px"
+                    onClick={() => {
+                      setSelectedTraitId(item.traitId);
+                      onAction?.("manageTrait", item.traitId);
+                    }}
+                  />
                   <div className={cs.traitDropdownMenu}>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
@@ -103,18 +112,12 @@ export default function ChooseVariantTraitsCard({
                       <DropdownMenuContent align="start" className="w-[160px]">
                         <DropdownMenuItem
                           onClick={() => {
-                            setSelectedTraitId(item.traitId);
-                            onAction?.("manageTrait", item.traitId);
+                            queueMicrotask(() => {
+                              onAction?.("deleteTrait", item);
+                            });
                           }}
                         >
-                          <span className="she-text">Manage</span>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={() => {
-                            onAction?.("deleteTrait", item.traitId);
-                          }}
-                        >
-                          <span className="she-text">Delete</span>
+                          <span className="she-text">Remove trait</span>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>

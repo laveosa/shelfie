@@ -1,19 +1,27 @@
-import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { useNavigate } from "react-router-dom";
 
-import { ProductsPageSliceActions as action } from "@/state/slices/ProductsPageSlice.ts";
-import { ProductModel } from "@/const/models/ProductModel.ts";
+import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
+import { ProductsPageSliceActions as actions } from "@/state/slices/ProductsPageSlice.ts";
 import UsersApiHooks from "@/utils/services/api/UsersApiService.ts";
+import PurchasesApiHooks from "@/utils/services/api/PurchasesApiService.ts";
+import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
+import {
+  addGridRowColor,
+  setSelectedGridItem,
+} from "@/utils/helpers/quick-helper.ts";
+import useAppService from "@/useAppService.ts";
+import { ProductModel } from "@/const/models/ProductModel.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
-import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
-import useAppService from "@/useAppService.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
-import { addGridRowColor } from "@/utils/helpers/quick-helper.ts";
 import { GridRowsColorsEnum } from "@/const/enums/GridRowsColorsEnum.ts";
+import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
+import SuppliersApiHooks from "@/utils/services/api/SuppliersApiService.ts";
+import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";
+import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 
 export default function useProductsPageService() {
   const appService = useAppService();
@@ -24,10 +32,14 @@ export default function useProductsPageService() {
   const [getTheProductsForGrid] =
     ProductsApiHooks.useGetTheProductsForGridMutation();
   const [getVariantsForGrid] = ProductsApiHooks.useGetVariantsForGridMutation();
+  const [getListOfPurchasesForGrid] =
+    PurchasesApiHooks.useGetListOfPurchasesForGridMutation();
   const [getBrandsForFilter] =
     ProductsApiHooks.useLazyGetBrandsForProductsFilterQuery();
   const [getCategoriesForFilter] =
     ProductsApiHooks.useLazyGetCategoriesForProductsFilterQuery();
+  const [getListOfSuppliers] =
+    SuppliersApiHooks.useLazyGetListOfSuppliersQuery();
   const [getCountersForProducts] =
     ProductsApiHooks.useLazyGetCountersForProductsQuery();
   const [getProductDetails] = ProductsApiHooks.useLazyGetProductDetailQuery();
@@ -48,6 +60,10 @@ export default function useProductsPageService() {
   const [getCurrenciesList] =
     DictionaryApiHooks.useLazyGetCurrenciesListQuery();
   const [getVariantDetails] = ProductsApiHooks.useLazyGetVariantDetailsQuery();
+  const [getPurchaseDetails] =
+    PurchasesApiHooks.useLazyGetPurchaseDetailsQuery();
+  const [getCountryCode] = DictionaryApiHooks.useLazyGetCountryCodeQuery();
+  const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
 
   //-------------------------------------------------API
 
@@ -56,11 +72,11 @@ export default function useProductsPageService() {
     isForceRefresh?: boolean,
   ) {
     if (isForceRefresh) {
-      dispatch(action.setIsLoading(true));
-      dispatch(action.setIsProductsLoading(true));
+      dispatch(actions.setIsLoading(true));
+      dispatch(actions.setIsProductsLoading(true));
       return getTheProductsForGrid(data).then((res: any) => {
-        dispatch(action.setIsProductsLoading(false));
-        dispatch(action.setIsLoading(false));
+        dispatch(actions.setIsProductsLoading(false));
+        dispatch(actions.setIsLoading(false));
         if (res.error) {
           return;
         } else {
@@ -69,11 +85,11 @@ export default function useProductsPageService() {
       });
     } else {
       if (state.products === null) {
-        dispatch(action.setIsLoading(true));
-        dispatch(action.setIsProductsLoading(true));
+        dispatch(actions.setIsLoading(true));
+        dispatch(actions.setIsProductsLoading(true));
         return getTheProductsForGrid(data).then((res: any) => {
-          dispatch(action.setIsLoading(false));
-          dispatch(action.setIsProductsLoading(false));
+          dispatch(actions.setIsLoading(false));
+          dispatch(actions.setIsProductsLoading(false));
           if (res.error) {
             return;
           } else {
@@ -84,10 +100,10 @@ export default function useProductsPageService() {
     }
   }
 
-  function getVariantsForGridHandler(data?: GridRequestModel) {
-    dispatch(action.setIsLoading(true));
-    return getVariantsForGrid(data).then((res: any) => {
-      dispatch(action.setIsLoading(false));
+  function getListOfPurchasesForGridHandler(data?: GridRequestModel) {
+    dispatch(actions.setIsLoading(true));
+    return getListOfPurchasesForGrid(data).then((res: any) => {
+      dispatch(actions.setIsLoading(false));
       if (res.error) {
         return;
       } else {
@@ -98,21 +114,40 @@ export default function useProductsPageService() {
 
   function getBrandsForFilterHandler() {
     return getBrandsForFilter(null).then((res: any) => {
-      dispatch(action.refreshBrands(res.data));
+      dispatch(actions.refreshBrands(res.data));
       return res.data;
+    });
+  }
+
+  function getVariantsForGridHandler(data?: GridRequestModel) {
+    dispatch(actions.setIsLoading(true));
+    return getVariantsForGrid(data).then((res: any) => {
+      dispatch(actions.setIsLoading(false));
+      if (res.error) {
+        return;
+      } else {
+        return res.data;
+      }
     });
   }
 
   function getCategoriesForFilterHandler() {
     return getCategoriesForFilter(null).then((res: any) => {
-      dispatch(action.refreshCategories(res.data));
+      dispatch(actions.refreshCategories(res.data));
+      return res.data;
+    });
+  }
+
+  function getListOfSuppliersHandler() {
+    return getListOfSuppliers(null).then((res: any) => {
+      dispatch(actions.refreshCategories(res.data));
       return res.data;
     });
   }
 
   function getSortingOptionsForGridHandler() {
     return getSortingOptionsForGrid(null).then((res: any) => {
-      dispatch(action.refreshSortingOptions(res.data));
+      dispatch(actions.refreshSortingOptions(res.data));
       return res.data;
     });
   }
@@ -158,17 +193,17 @@ export default function useProductsPageService() {
   }
 
   function getProductPhotosHandler(id: number) {
-    dispatch(action.setIsProductPhotosLoading(true));
+    dispatch(actions.setIsProductPhotosLoading(true));
     return getProductPhotos(id).then((res: any) => {
-      dispatch(action.setIsProductPhotosLoading(false));
+      dispatch(actions.setIsProductPhotosLoading(false));
       return res.data;
     });
   }
 
   function getProductVariantsHandler(id: any) {
-    dispatch(action.setIsProductVariantsLoading(true));
+    dispatch(actions.setIsProductVariantsLoading(true));
     return getProductVariants(id).then((res: any) => {
-      dispatch(action.setIsProductVariantsLoading(false));
+      dispatch(actions.setIsProductVariantsLoading(false));
       const modifiedRes = {
         ...res,
         data: addGridRowColor(res.data, "color", [
@@ -218,24 +253,97 @@ export default function useProductsPageService() {
     });
   }
 
+  function getPurchaseDetailsHandler(id) {
+    return getPurchaseDetails(id).then((res: any) => {
+      dispatch(actions.refreshSelectedPurchase(res.data));
+      return res.data;
+    });
+  }
+
+  function getCountryCodeHandler() {
+    return getCountryCode(null).then((res: any) => {
+      if (res.data) {
+        dispatch(actions.refreshCountryCodeList(res.data));
+      }
+      return res;
+    });
+  }
+
+  function uploadPhotoHandler(model: UploadPhotoModel) {
+    return uploadPhoto(model).then((res: any) => {
+      return res;
+    });
+  }
+
   //----------------------------------------------------LOGIC
 
-  function itemCardHandler(item) {
-    dispatch(action.resetProductCounter());
-    dispatch(action.refreshProductPhotos([]));
-    dispatch(action.resetProduct());
-    dispatch(action.refreshProductVariants([]));
-    dispatch(action.resetSelectedVariant());
-    navigate(
-      `${ApiUrlEnum.PRODUCTS}${ApiUrlEnum.PRODUCT_BASIC_DATA}/${item.productId}`,
-    );
+  function itemsCardItemsConvertor(
+    items: any[],
+    options: {
+      idKey: string;
+      nameKey: string;
+      imageKeyPath?: string;
+      type?: string;
+    },
+  ): any[] {
+    const { idKey, nameKey, imageKeyPath, type } = options;
+
+    return items?.map((item) => {
+      const id = item[idKey];
+      const name = item[nameKey];
+      const imageUrl = imageKeyPath
+        ? imageKeyPath.split(".").reduce((acc, key) => acc?.[key], item)
+        : undefined;
+
+      return {
+        id,
+        name,
+        imageUrl,
+        originalItem: item,
+        type,
+      };
+    });
+  }
+
+  function itemCardHandler({ item, type }) {
+    switch (type) {
+      case "product":
+        dispatch(actions.resetProductCounter());
+        dispatch(actions.refreshProductPhotos([]));
+        dispatch(actions.resetProduct());
+        dispatch(actions.refreshProductVariants([]));
+        dispatch(actions.resetSelectedVariant());
+        navigate(
+          `${ApiUrlEnum.PRODUCTS}${ApiUrlEnum.PRODUCT_BASIC_DATA}/${item.productId}`,
+        );
+        break;
+      case "variant":
+        getVariantDetailsHandler(item.variantId).then((res) => {
+          dispatch(actions.refreshSelectedVariant(res));
+          navigate(
+            `${NavUrlEnum.PRODUCTS}${NavUrlEnum.MANAGE_VARIANTS}/${item?.productId}`,
+          );
+          dispatch(
+            actions.refreshProductVariants(
+              setSelectedGridItem(
+                item.variantId,
+                state.productVariants,
+                "variantId",
+              ),
+            ),
+          );
+        });
+        break;
+    }
   }
 
   return {
     getTheProductsForGridHandler,
     getVariantsForGridHandler,
+    getListOfPurchasesForGridHandler,
     getBrandsForFilterHandler,
     getCategoriesForFilterHandler,
+    getListOfSuppliersHandler,
     getSortingOptionsForGridHandler,
     getCountersForProductsHandler,
     getProductDetailsHandler,
@@ -249,6 +357,10 @@ export default function useProductsPageService() {
     getTaxesListHandler,
     getCurrenciesListHandler,
     getVariantDetailsHandler,
+    getPurchaseDetailsHandler,
+    getCountryCodeHandler,
+    uploadPhotoHandler,
+    itemsCardItemsConvertor,
     itemCardHandler,
   };
 }

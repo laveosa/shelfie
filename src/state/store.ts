@@ -24,11 +24,18 @@ import MessengerApiService from "@/utils/services/api/MessengerApiService.ts";
 import { FacebookApiService } from "@/utils/services/api/FacebookApiService.ts";
 import AttributesPageSlice from "@/state/slices/AttributesPageSlice.ts";
 import SizeChartPageSlice from "@/state/slices/SizeChartPageSlice.ts";
-import PurchasePageSlice from "@/state/slices/PurchsePageSlice.ts";
+import DialogSlice from "@/state/slices/DialogSlice.ts";
+import { PurchasesApiService } from "@/utils/services/api/PurchasesApiService.ts";
+import { SuppliersApiService } from "@/utils/services/api/SuppliersApiService.ts";
+import PurchaseProductsPageSlice from "@/state/slices/PurchaseProductsPageSlice.ts";
+import MarginsPageSlice from "@/state/slices/MarginsPageSlice.ts";
+import InvoicesPageSlice from "@/state/slices/InvoicesPageSlice.ts";
+import SupplierPageSlice from "@/state/slices/SupplierPageSlice.ts";
 
 export const store = configureStore({
   reducer: {
     [StoreSliceEnum.APP]: AppSlice.reducer,
+    [StoreSliceEnum.DIALOG]: DialogSlice.reducer,
     [StoreSliceEnum.AUTH]: AuthPageSlice.reducer,
     [StoreSliceEnum.DASHBOARD]: DashboardPageSlice.reducer,
     [StoreSliceEnum.MESSENGER]: MessengerPageSlice.reducer,
@@ -39,7 +46,10 @@ export const store = configureStore({
     [StoreSliceEnum.MANAGE_VARIANTS]: ManageVariantsPageSlice.reducer,
     [StoreSliceEnum.ATTRIBUTES]: AttributesPageSlice.reducer,
     [StoreSliceEnum.SIZE_CHART]: SizeChartPageSlice.reducer,
-    [StoreSliceEnum.PURCHASE]: PurchasePageSlice.reducer,
+    [StoreSliceEnum.SUPPLIER]: SupplierPageSlice.reducer,
+    [StoreSliceEnum.PURCHASE_PRODUCTS]: PurchaseProductsPageSlice.reducer,
+    [StoreSliceEnum.MARGINS]: MarginsPageSlice.reducer,
+    [StoreSliceEnum.INVOICES]: InvoicesPageSlice.reducer,
     [StoreSliceEnum.PROFILE]: ProfilePageSlice.reducer,
     [StoreSliceEnum.SETTINGS]: SettingsPageSlice.reducer,
     [StoreSliceEnum.SUPPORT]: SupportPageSlice.reducer,
@@ -47,6 +57,8 @@ export const store = configureStore({
     [StoreSliceEnum.USERS]: UsersPageSlice.reducer,
     [AuthApiService.reducerPath]: AuthApiService.reducer,
     [ProductsApiService.reducerPath]: ProductsApiService.reducer,
+    [PurchasesApiService.reducerPath]: PurchasesApiService.reducer,
+    [SuppliersApiService.reducerPath]: SuppliersApiService.reducer,
     [DictionaryApiService.reducerPath]: DictionaryApiService.reducer,
     [UsersApiService.reducerPath]: UsersApiService.reducer,
     [AssetsApiService.reducerPath]: AssetsApiService.reducer,
@@ -57,6 +69,8 @@ export const store = configureStore({
     getDefaultMiddleware()
       .concat(AuthApiService.middleware)
       .concat(ProductsApiService.middleware)
+      .concat(PurchasesApiService.middleware)
+      .concat(SuppliersApiService.middleware)
       .concat(DictionaryApiService.middleware)
       .concat(UsersApiService.middleware)
       .concat(AssetsApiService.middleware)

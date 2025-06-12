@@ -1,0 +1,20 @@
+@use "@/styles/variables" as vars;
+
+.selectSupplierCad {
+  .selectSupplierCardContent {
+    display: flex;
+    flex-direction: column;
+    gap: vars.$paddingStandard;
+
+    .createSupplierBlock {
+      display: flex;
+      gap: vars.$paddingStandard;
+    }
+
+    .supplierListBlock {
+      display: flex;
+      flex-direction: column;
+      gap: vars.$paddingStandard;
+    }
+  }
+}

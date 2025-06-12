@@ -2,11 +2,14 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { merge } from "lodash";
 import {
+  BadgeCheck,
+  CalendarRange,
   Columns3Icon,
   Download,
   Layers2,
   Plus,
   Receipt,
+  ReceiptEuro,
   Shirt,
 } from "lucide-react";
 
@@ -32,6 +35,10 @@ import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { variantsGridColumns } from "@/components/complex/grid/variants-grid/VariantsGridColumns.tsx";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { useToast } from "@/hooks/useToast.ts";
+import { purchasesGridColumns } from "@/components/complex/grid/purchases-grid/PurchasesGridColumns.tsx";
+import { SupplierModel } from "@/const/models/SupplierModel.ts";
+import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
+import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 
 export function ProductsPage() {
   const dispatch = useAppDispatch();
@@ -56,12 +63,21 @@ export function ProductsPage() {
         .getVariantsForGridHandler(state.variantsGridRequestModel)
         .then((res) => {
           dispatch(actions.refreshVariantsGridModel(res));
+          dispatch(actions.refreshVariants(res.items));
+        });
+    } else if (activeTab === "purchases") {
+      service
+        .getListOfPurchasesForGridHandler(state.purchasesGridRequestModel)
+        .then((res) => {
+          dispatch(actions.refreshPurchasesGridModel(res));
+          dispatch(actions.refreshPurchases(res.items));
         });
     }
     dispatch(actions.resetSelectedVariant());
   }, [
     state.productsGridRequestModel,
     state.variantsGridRequestModel,
+    state.purchasesGridRequestModel,
     activeTab,
     dispatch,
   ]);
@@ -97,15 +113,20 @@ export function ProductsPage() {
         dispatch(actions.refreshSortingOptions(res));
       });
     }
+    if (state.suppliers.length === 0) {
+      service.getListOfSuppliersHandler().then((res) => {
+        dispatch(actions.refreshSuppliers(res));
+      });
+    }
   }, []);
 
-  const onAction = (
+  function onAction(
     actionType: string,
     rowId?: string,
     setLoadingRow?: (rowId: string, loading: boolean) => void,
     rowData?: any,
     _rowOriginal?: any,
-  ) => {
+  ) {
     setLoadingRow(rowId, true);
 
     switch (actionType) {
@@ -113,7 +134,7 @@ export function ProductsPage() {
         break;
       case "manage":
         navigate(
-          `${ApiUrlEnum.PRODUCTS}${ApiUrlEnum.PRODUCT_BASIC_DATA}/${rowData?.productId}`,
+          `${NavUrlEnum.PRODUCTS}${NavUrlEnum.PRODUCT_BASIC_DATA}/${rowData?.productId}`,
         );
         break;
       case "activateProduct":
@@ -178,17 +199,30 @@ export function ProductsPage() {
         service.getVariantDetailsHandler(rowData.variantId).then((res) => {
           dispatch(actions.refreshSelectedVariant(res));
           navigate(
-            `${NavUrlEnum.PRODUCTS}${NavUrlEnum.PRODUCT_VARIANTS}/${rowData?.productId}`,
+            `${NavUrlEnum.PRODUCTS}${NavUrlEnum.MANAGE_VARIANTS}/${rowData?.productId}`,
           );
         });
+        break;
+      case "deleteVariant":
+        console.log(`Delete variant ${rowId}`);
+        break;
+      case "managePurchase":
+        dispatch(actions.refreshSelectedPurchase(rowData));
+        navigate(
+          `${NavUrlEnum.PRODUCTS}${NavUrlEnum.SUPPLIER}/${rowData?.purchaseId}`,
+        );
+        break;
+      case "deletePurchase":
+        console.log(`Delete purchase ${rowId}`);
         break;
     }
 
     setLoadingRow(rowId, false);
-  };
+  }
 
   const productsColumns = productsGridColumns(onAction, activeStates);
   const variantsColumns = variantsGridColumns(onAction);
+  const purchasesColumns = purchasesGridColumns(onAction);
 
   function handleAddProduct() {
     navigate(`${ApiUrlEnum.PRODUCTS}${ApiUrlEnum.PRODUCT_BASIC_DATA}`);
@@ -198,8 +232,10 @@ export function ProductsPage() {
 
   function handleConfigure() {}
 
+  function handleReportPurchase() {}
+
   function handleGridRequestChange(updates: GridRequestModel) {
-    if (updates.brands || updates.categories) {
+    if (updates.brands || updates.categories || updates.filter) {
       if (activeTab === "products") {
         dispatch(
           actions.refreshProductsGridRequestModel({
@@ -212,6 +248,14 @@ export function ProductsPage() {
         dispatch(
           actions.refreshVariantsGridRequestModel({
             ...state.variantsGridRequestModel,
+            currentPage: 1,
+            ...updates,
+          }),
+        );
+      } else if (activeTab === "purchases") {
+        dispatch(
+          actions.refreshPurchasesGridRequestModel({
+            ...state.purchasesGridRequestModel,
             currentPage: 1,
             ...updates,
           }),
@@ -232,6 +276,13 @@ export function ProductsPage() {
             ...updates,
           }),
         );
+      } else if (activeTab === "purchases") {
+        dispatch(
+          actions.refreshPurchasesGridRequestModel({
+            ...state.purchasesGridRequestModel,
+            ...updates,
+          }),
+        );
       }
     }
   }
@@ -242,6 +293,31 @@ export function ProductsPage() {
 
   function onCategorySelectHandler(selectedIds: number[]) {
     handleGridRequestChange({ categories: selectedIds });
+  }
+
+  function onSupplierSelectHandler(selectedIds: number[]) {
+    handleGridRequestChange({ filter: { suppliers: selectedIds } });
+  }
+
+  function onPurchaseBrandsSelectHandler(selectedIds: number[]) {
+    handleGridRequestChange({ filter: { brands: selectedIds } });
+  }
+
+  function onPurchaseValueToHandler(value: number) {
+    handleGridRequestChange({ filter: { valueTo: value } });
+  }
+
+  function onPurchaseValueFromHandler(value: number) {
+    handleGridRequestChange({ filter: { valueFrom: value } });
+  }
+
+  function onPurchaseDateRangeHandler(value: any) {
+    handleGridRequestChange({
+      filter: {
+        dateTo: value.to,
+        dateFrom: value.from,
+      },
+    });
   }
 
   function onApplyColumnsHandler(model: PreferencesModel) {
@@ -263,25 +339,41 @@ export function ProductsPage() {
     <div id={cs.ProductsPage}>
       <div className={cs.productsPageHeader}>
         <div className="she-title">Products</div>
-        <div className={cs.headerButtonBlock}>
-          <SheButton icon={Plus} variant="outline" onClick={handleAddProduct}>
-            Add Product
-          </SheButton>
-          <SheButton
-            icon={Download}
-            variant="outline"
-            onClick={handleImportProducts}
-          >
-            Import Products
-          </SheButton>
-          <SheButton
-            icon={Columns3Icon}
-            variant="outline"
-            onClick={handleConfigure}
-          >
-            Configure
-          </SheButton>
-        </div>
+        {activeTab === "purchases" ? (
+          <div className={cs.headerButtonBlock}>
+            <SheButton
+              icon={Plus}
+              variant="outline"
+              size="sm"
+              onClick={handleReportPurchase}
+              value="Report Purchase"
+            />
+          </div>
+        ) : (
+          <div className={cs.headerButtonBlock}>
+            <SheButton
+              icon={Plus}
+              variant="outline"
+              size="sm"
+              onClick={handleAddProduct}
+              value="Add Product"
+            />
+            <SheButton
+              icon={Download}
+              variant="outline"
+              size="sm"
+              onClick={handleImportProducts}
+              value="Import Products"
+            />
+            <SheButton
+              icon={Columns3Icon}
+              variant="outline"
+              size="sm"
+              onClick={handleConfigure}
+              value="Configure"
+            />
+          </div>
+        )}
       </div>
       <div className={cs.productsPageContent}>
         <SheTabs defaultValue="products" onValueChange={handleTabChange}>
@@ -338,7 +430,7 @@ export function ProductsPage() {
             <DndGridDataTable
               isLoading={state.isLoading}
               columns={variantsColumns}
-              data={state.variantsGridModel.items}
+              data={state.variants}
               gridModel={state.variantsGridModel}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
@@ -365,7 +457,59 @@ export function ProductsPage() {
             </DndGridDataTable>
           </TabsContent>
           <TabsContent value="purchases">
-            {/*<GridDataTable columns={productsGridColumns} data={purchasesData} />*/}
+            <DndGridDataTable
+              isLoading={state.isLoading}
+              columns={purchasesColumns}
+              data={state.purchases}
+              gridModel={state.purchasesGridModel}
+              sortingItems={state.sortingOptions}
+              columnsPreferences={appState.preferences}
+              preferenceContext={"productReferences"}
+              skeletonQuantity={state.purchasesGridRequestModel.pageSize}
+              onApplyColumns={onApplyColumnsHandler}
+              onDefaultColumns={onResetColumnsHandler}
+              onGridRequestChange={handleGridRequestChange}
+            >
+              <GridItemsFilter
+                items={state.suppliers}
+                columnName={"Suppliers"}
+                icon={BadgeCheck}
+                onSelectionChange={onSupplierSelectHandler}
+                getId={(item: SupplierModel) => item.supplierId}
+                getName={(item: SupplierModel) => item.supplierName}
+              />
+              <SheDatePicker
+                mode="range"
+                icon={CalendarRange}
+                placeholder="Pick range"
+                maxWidth="200px"
+                onSelectDate={(data) => {
+                  onPurchaseDateRangeHandler(data);
+                }}
+              />
+              <GridItemsFilter
+                items={state.brands}
+                columnName={"Brands"}
+                icon={BadgeCheck}
+                onSelectionChange={onPurchaseBrandsSelectHandler}
+                getId={(item: BrandModel) => item.brandId}
+                getName={(item: BrandModel) => item.brandName}
+              />
+              <SheInput
+                icon={ReceiptEuro}
+                placeholder="Value from"
+                maxWidth="200px"
+                onDelay={(data: number) => onPurchaseValueFromHandler(data)}
+              />
+              <SheInput
+                icon={ReceiptEuro}
+                placeholder="Value to"
+                maxWidth="200px"
+                onDelay={(data: number) => {
+                  onPurchaseValueToHandler(data);
+                }}
+              />
+            </DndGridDataTable>
           </TabsContent>
         </SheTabs>
       </div>

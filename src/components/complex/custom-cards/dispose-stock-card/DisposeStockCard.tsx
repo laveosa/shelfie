@@ -52,11 +52,9 @@ export default function DisposeStockCard({
     <SheProductCard
       loading={isLoading}
       title={`Dispose ${variant?.variantName} Stock`}
-      view="card"
       showPrimaryButton={true}
       primaryButtonTitle="Dispose"
       showSecondaryButton={true}
-      secondaryButtonTitle="Cancel"
       onPrimaryButtonClick={form.handleSubmit(onSubmit)}
       onSecondaryButtonClick={onSecondaryButtonClick}
       showCloseButton

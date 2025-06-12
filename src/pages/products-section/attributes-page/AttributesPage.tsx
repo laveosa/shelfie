@@ -35,6 +35,7 @@ export function AttributesPage() {
     <div className={cs.attributePage}>
       <ProductMenuCard
         title={"Manage Attributes"}
+        itemsCollection="products"
         productCounter={state.productCounter}
         onAction={handleCardAction}
         productId={Number(productId)}

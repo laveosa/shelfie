@@ -59,13 +59,6 @@ export const OtherProductPhotosGridColumns = (
   ) => void,
 ) => [
   {
-    accessorKey: "isActive",
-    header: "",
-    cell: () => {
-      return <div></div>;
-    },
-  },
-  {
     accessorKey: "thumbnailUrl",
     header: "Preview",
     cell: ({ row, table }) => {

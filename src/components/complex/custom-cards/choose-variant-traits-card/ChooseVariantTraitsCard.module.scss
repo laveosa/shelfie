@@ -5,7 +5,7 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    height: calc(100vh - 220px);
+    height: calc(100vh - 240px);
     padding-bottom: 20px;
     overflow: hidden;
 
@@ -42,7 +42,6 @@
           width: 100%;
           justify-content: space-between;
           align-items: center;
-          gap: 20px;
 
           .traitCheckbox {
             width: 20px;
@@ -53,10 +52,15 @@
             display: flex;
             justify-content: space-between;
             cursor: pointer;
-            width: 200px;
+            width: 100%;
+            padding: 0 20px;
           }
 
-          .traitDropdownMenu {
+          .traitButton {
+            margin-right: 20px;
+          }
+
+          .dropdownMenu {
             width: 35px;
             justify-content: flex-end;
           }

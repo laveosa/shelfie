@@ -3,7 +3,7 @@ import React from "react";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./VariantPhotosCard.module.scss";
 import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import { SheImageUploader } from "@/components/complex/she-images-file-uploader/SheImageUploader.tsx";
+import { SheImageUploader } from "@/components/complex/she-images-uploader/SheImageUploader.tsx";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { VariantPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/VariantPhotosGridColumns.tsx";
 import { OtherProductPhotosGridColumns } from "@/components/complex/grid/other-product-photos-grid/OtherProductPhotosGridColumns.tsx";
@@ -66,7 +66,6 @@ export default function VariantPhotosCard({
       <SheProductCard
         loading={isLoading}
         title="Manage Photos"
-        view="card"
         onSecondaryButtonClick={() => onAction("closeVariantPhotosCard")}
         showCloseButton={true}
         {...props}
@@ -84,31 +83,23 @@ export default function VariantPhotosCard({
               <span className="she-title">Variant Photos</span>
             </div>
             <div className={cs.managePhotosGrid}>
-              {variantPhotos.length > 0 ? (
-                <DndGridDataTable
-                  isLoading={isVariantPhotoGridLoading}
-                  className={
-                    variantPhotos.length > 0
-                      ? cs.productPhotosGridShort
-                      : cs.productPhotosGridLong
-                  }
-                  enableDnd={true}
-                  showHeader={false}
-                  columns={variantPhotosColumns}
-                  data={variantPhotos}
-                  gridModel={variantPhotos}
-                  customMessage="VARIANT HAS NO PHOTO"
-                  onNewItemPosition={(newIndex, activeItem) =>
-                    handleAction("dnd", { newIndex, activeItem })
-                  }
-                />
-              ) : (
-                <div className={cs.variantPhotosText}>
-                  <span className={"she-text"}>
-                    Variant doesn`t have photos
-                  </span>
-                </div>
-              )}
+              <DndGridDataTable
+                isLoading={isVariantPhotoGridLoading}
+                className={
+                  variantPhotos.length > 0
+                    ? cs.productPhotosGridShort
+                    : cs.productPhotosGridLong
+                }
+                enableDnd={true}
+                showHeader={false}
+                columns={variantPhotosColumns}
+                data={variantPhotos}
+                gridModel={variantPhotos}
+                customMessage="VARIANT HAS NO PHOTO"
+                onNewItemPosition={(newIndex, activeItem) =>
+                  handleAction("dnd", { newIndex, activeItem })
+                }
+              />
             </div>
           </div>
           <div className={cs.managePhotos}>
@@ -116,28 +107,21 @@ export default function VariantPhotosCard({
               <span className="she-title">Other Product Photos</span>
             </div>
             <div className={cs.managePhotosGrid}>
-              {productPhotos.length > 0 ? (
-                <DndGridDataTable
-                  isLoading={isProductPhotoGridLoading}
-                  className={
-                    variantPhotos.length > 0
-                      ? cs.productPhotosGridShort
-                      : cs.productPhotosGridLong
-                  }
-                  showHeader={false}
-                  showColumnsHeader={false}
-                  columns={otherPhotosColumns}
-                  data={productPhotos}
-                  customMessage="PRODUCT HAS NO PHOTO"
-                  gridModel={productPhotos}
-                />
-              ) : (
-                <div className={cs.variantPhotosText}>
-                  <span className={"she-text"}>
-                    Product doesn`t have photos
-                  </span>
-                </div>
-              )}
+              <DndGridDataTable
+                isLoading={isProductPhotoGridLoading}
+                enableDnd={false}
+                className={
+                  variantPhotos.length > 0
+                    ? cs.productPhotosGridShort
+                    : cs.productPhotosGridLong
+                }
+                showHeader={false}
+                showColumnsHeader={false}
+                columns={otherPhotosColumns}
+                data={productPhotos}
+                customMessage="PRODUCT HAS NO PHOTO"
+                gridModel={productPhotos}
+              />
             </div>
           </div>
         </div>

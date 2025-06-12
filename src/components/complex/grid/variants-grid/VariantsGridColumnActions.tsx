@@ -42,7 +42,9 @@ export default function VariantsGridColumnActions<TData>({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-[160px]">
         <DropdownMenuItem
-          onClick={() => onAction("delete", row.id, meta?.setLoadingRow, row)}
+          onClick={() =>
+            onAction("deleteVariant", row.id, meta?.setLoadingRow, row)
+          }
         >
           Delete
         </DropdownMenuItem>

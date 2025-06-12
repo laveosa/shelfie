@@ -2,7 +2,7 @@ import { IBaseComponent } from "@/const/interfaces/IBaseComponent.ts";
 
 export interface ISheProductCard extends IBaseComponent {
   loading?: boolean;
-  view?: "" | "card";
+  view?: "borderless" | "card";
   title?: string;
   titleTransKey?: string;
   text?: string;

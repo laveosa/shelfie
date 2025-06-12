@@ -64,7 +64,6 @@ export default function ConnectImageCard({
     <SheProductCard
       loading={isLoading}
       title="Connect image to product variants"
-      view="card"
       showCloseButton
       className={cs.connectImageCard}
       onSecondaryButtonClick={onSecondaryButtonClick}

@@ -24,8 +24,8 @@ export default function ItemsCard({
   }
 
   const handleItemClick = (item) => {
-    setSelectedId(item.productId);
-    onAction(item);
+    setSelectedId(item.id);
+    onAction({ item: item.originalItem, type: item.type });
   };
 
   useEffect(() => {
@@ -37,9 +37,10 @@ export default function ItemsCard({
       <SheProductCard
         loading={isLoading}
         title={title}
+        view="borderless"
         width="300px"
         minWidth="300px"
-        showToggleButton={true}
+        showToggleButton
         className={cs.productsCard}
         {...props}
       >
@@ -58,18 +59,17 @@ export default function ItemsCard({
             </div>
           ) : (
             <div>
-              {data?.map((item, index) => (
-                <div
-                  key={item.id || index}
-                  onClick={() => handleItemClick(item)}
-                >
+              {data?.map((item) => (
+                <div key={item.id} onClick={() => handleItemClick(item)}>
                   <div
-                    className={`${cs.productsListItem} ${selectedId === item.productId ? cs.selected : ""}`}
+                    className={`${cs.productsListItem} ${
+                      selectedId === item.id ? cs.selected : ""
+                    }`}
                   >
-                    {item.image?.thumbnailUrl ? (
+                    {item.imageUrl ? (
                       <img
-                        src={item.image?.thumbnailUrl}
-                        alt={item.productName}
+                        src={item.imageUrl}
+                        alt={item.name}
                         className={cs.productItemImage}
                       />
                     ) : (
@@ -77,7 +77,7 @@ export default function ItemsCard({
                         <Image />
                       </div>
                     )}
-                    <div className={cs.productItemName}>{item.productName}</div>
+                    <div className={cs.productItemName}>{item.name}</div>
                   </div>
                   <Separator orientation="horizontal" />
                 </div>

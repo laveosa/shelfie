@@ -1,11 +1,15 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
+  Boxes,
+  FileSpreadsheet,
   FileText,
   ImagesIcon,
   Layers2,
+  ReceiptEuro,
   ReceiptEuroIcon,
   Ruler,
+  Shirt,
   SlidersHorizontal,
 } from "lucide-react";
 
@@ -15,39 +19,99 @@ import SheProductCard from "@/components/complex/she-product-card/SheProductCard
 import { IProductMenuCard } from "@/const/interfaces/complex-components/custom-cards/IProductMenuCard.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 
-const menuItems = [
-  { id: "basic_data", icon: <FileText />, label: "Basic Data" },
-  { id: "gallery", icon: <ImagesIcon />, label: "Gallery" },
-  { id: "variants", icon: <Layers2 />, label: "Variants" },
-  { id: "attributes", icon: <SlidersHorizontal />, label: "Attributes" },
-  { id: "size_chart", icon: <Ruler />, label: "Size Chart" },
-  { id: "purchase", icon: <ReceiptEuroIcon />, label: "Purchase" },
+const productMenuItems = [
+  {
+    id: "basic_data",
+    icon: <FileText />,
+    label: "Basic Data",
+    path: NavUrlEnum.PRODUCT_BASIC_DATA,
+  },
+  {
+    id: "gallery",
+    icon: <ImagesIcon />,
+    label: "Gallery",
+    path: NavUrlEnum.PRODUCT_GALLERY,
+  },
+  {
+    id: "variants",
+    icon: <Layers2 />,
+    label: "Variants",
+    path: NavUrlEnum.MANAGE_VARIANTS,
+  },
+  {
+    id: "attributes",
+    icon: <SlidersHorizontal />,
+    label: "Attributes",
+    path: NavUrlEnum.ATTRIBUTES,
+  },
+  {
+    id: "size_chart",
+    icon: <Ruler />,
+    label: "Size Chart",
+    path: NavUrlEnum.SIZE_CHART,
+  },
+  {
+    id: "purchase",
+    icon: <ReceiptEuroIcon />,
+    label: "Purchase",
+    path: NavUrlEnum.SUPPLIER,
+  },
+];
+
+const purchaseMenuItems = [
+  {
+    id: "supplier",
+    icon: <Boxes />,
+    label: "Supplier",
+    path: NavUrlEnum.SUPPLIER,
+  },
+  {
+    id: "purchase_products",
+    icon: <Shirt />,
+    label: "Purchase Products",
+    path: NavUrlEnum.PURCHASE_PRODUCTS,
+  },
+  {
+    id: "margins",
+    icon: <ReceiptEuro />,
+    label: "Margins",
+    path: NavUrlEnum.MARGINS,
+  },
+  {
+    id: "invoices",
+    icon: <FileSpreadsheet />,
+    label: "Invoices",
+    path: NavUrlEnum.INVOICES,
+  },
 ];
 
 export default function ProductMenuCard({
   isLoading,
   title,
   productId,
+  itemsCollection,
   productCounter,
   ...props
 }: IProductMenuCard) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  function handleMenuItemClick(itemId: string) {
-    const path = `${NavUrlEnum.PRODUCTS}${NavUrlEnum[`PRODUCT_${itemId.toUpperCase()}`]}/${productId}`;
-    navigate(path);
+  function handleMenuItemClick(path: string) {
+    navigate(`${NavUrlEnum.PRODUCTS}${path}/${productId}`);
   }
 
-  const renderMenuItem = ({ id, icon, label }) => {
-    const pathBase = `${NavUrlEnum.PRODUCTS}${NavUrlEnum[`PRODUCT_${id.toUpperCase()}`]}/`;
+  const renderMenuItem = ({ id, icon, label, path }) => {
+    const pathBase = `${NavUrlEnum.PRODUCTS}${path}/`;
     const isSelected = location.pathname.startsWith(pathBase);
-    const isDisabled = isSelected || (!productId && id !== "basicData");
+    const isDisabled =
+      itemsCollection === "products"
+        ? isSelected || (!productId && id !== "basicData")
+        : isSelected || (!productId && id !== "supplier");
 
     return (
       <div
         className={`${cs.productMenuItem} ${isSelected ? cs.selected : ""} ${isDisabled ? cs.disabled : ""}`}
-        onClick={() => !isDisabled && handleMenuItemClick(id)}
+        onClick={() => !isDisabled && handleMenuItemClick(path)}
         key={id}
       >
         <div className={cs.iconContainer}>{icon}</div>
@@ -66,6 +130,7 @@ export default function ProductMenuCard({
       <SheProductCard
         loading={isLoading}
         title={title}
+        view="borderless"
         width="300px"
         minWidth="300px"
         showToggleButton={true}
@@ -73,7 +138,9 @@ export default function ProductMenuCard({
         {...props}
       >
         <div className={cs.productMenuItems}>
-          {menuItems.map(renderMenuItem)}
+          {itemsCollection === "products"
+            ? productMenuItems.map(renderMenuItem)
+            : purchaseMenuItems.map(renderMenuItem)}
         </div>
       </SheProductCard>
     </div>
