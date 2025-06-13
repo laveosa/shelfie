@@ -7,6 +7,7 @@ import { SupplierModel } from "@/const/models/SupplierModel.ts";
 
 const initialState: ISupplierPageSlice = {
   isLoading: false,
+  isProductMenuCardLoading: false,
   isSupplierCardLoading: false,
   isSelectSupplierCardLoading: false,
   isSupplierConfigurationCardLoading: false,
@@ -25,6 +26,13 @@ function setIsLoading(
   action: PayloadAction<boolean>,
 ) {
   state.isLoading = action?.payload;
+}
+
+function setIsProductMenuCardLoading(
+  state: ISupplierPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isProductMenuCardLoading = action?.payload;
 }
 
 function setIsSupplierCardLoading(
@@ -105,6 +113,7 @@ const SupplierPageSlice = createSlice({
   initialState,
   reducers: {
     setIsLoading,
+    setIsProductMenuCardLoading,
     setIsSupplierCardLoading,
     setIsSelectSupplierCardLoading,
     setIsSupplierConfigurationCardLoading,

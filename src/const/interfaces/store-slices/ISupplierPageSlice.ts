@@ -3,6 +3,7 @@ import { SupplierModel } from "@/const/models/SupplierModel.ts";
 
 export interface ISupplierPageSlice {
   isLoading?: boolean;
+  isProductMenuCardLoading?: boolean;
   isSupplierCardLoading?: boolean;
   isSelectSupplierCardLoading?: boolean;
   isSupplierConfigurationCardLoading?: boolean;

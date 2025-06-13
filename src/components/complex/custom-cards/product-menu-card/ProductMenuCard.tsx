@@ -102,8 +102,6 @@ export default function ProductMenuCard({
   const navigate = useNavigate();
   const location = useLocation();
 
-  console.log("counter", counter);
-
   function handleMenuItemClick(path: string) {
     navigate(`${NavUrlEnum.PRODUCTS}${path}/${productId ? productId : ""}`);
   }

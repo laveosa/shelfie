@@ -24,6 +24,16 @@ export const PurchasesApiService = createApi({
         body: JSON.stringify(model),
       }),
     }),
+    getListOfPurchaseProductsForGrid: apiConfig.createMutation<
+      GridModel,
+      { id: number; model: GridRequestModel }
+    >(builder, {
+      query: ({ id, model }) => ({
+        url: `${ApiUrlEnum.PURCHASES}/${id}/stock-actions`,
+        method: "POST",
+        body: model,
+      }),
+    }),
     getPurchaseDetails: apiConfig.createQuery<PurchaseModel, number>(builder, {
       query: (id: number) => ({
         url: `${ApiUrlEnum.PURCHASES}/${id}`,

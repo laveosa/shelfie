@@ -37,12 +37,15 @@ export function SupplierPage() {
 
   useEffect(() => {
     dispatch(actions.setIsSupplierCardLoading(true));
+    dispatch(actions.setIsProductMenuCardLoading(true));
     service.getPurchaseDetailsHandler(purchaseId).then((res: PurchaseModel) => {
       dispatch(actions.setIsSupplierCardLoading(false));
       dispatch(productsActions.refreshSelectedPurchase(res));
       dispatch(actions.refreshSelectedSupplier(res.supplier));
     });
-    productsService.getPurchaseCountersHandler(Number(purchaseId));
+    productsService
+      .getPurchaseCountersHandler(Number(purchaseId))
+      .then(() => dispatch(actions.setIsProductMenuCardLoading(false)));
   }, [purchaseId]);
 
   function scrollToCard(cardId: string) {
@@ -243,7 +246,7 @@ export function SupplierPage() {
   return (
     <div className={cs.supplierPage}>
       <ProductMenuCard
-        isLoading={productsState.isProductMenuCardLoading}
+        isLoading={state.isProductMenuCardLoading}
         title="Report Purchase"
         itemsCollection="purchases"
         productId={Number(purchaseId)}
