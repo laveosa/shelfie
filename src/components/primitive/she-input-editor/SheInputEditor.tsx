@@ -31,6 +31,7 @@ export default function SheInputEditor({
   required,
   isManage,
   size = "sizeNormal",
+  saveOnBlur,
   inputProps,
   manageBtnProps,
   saveBtnProps,
@@ -41,8 +42,8 @@ export default function SheInputEditor({
   onCancel,
   ...props
 }: ISheInputEditor): JSX.Element {
-  const [_textValue, setTextValue] = useState<string | number>(null);
-  const [_sourceValue, setSourceValue] = useState<string | number>(null);
+  const [_textValue, setTextValue] = useState<string | number>("");
+  const [_sourceValue, setSourceValue] = useState<string | number>("");
   const [_isManage, setIsManage] = useState<boolean>(isManage ?? false);
 
   const ariaDescribedbyId = `${generateId()}_INPUT_EDITOR_ID`;
@@ -66,6 +67,18 @@ export default function SheInputEditor({
     const tmpValue = typeof data === "string" ? data.trim() : data;
     setTextValue(tmpValue);
     if (onChange) onChange(tmpValue);
+  }
+
+  function onBlurHandler() {
+    if (saveOnBlur) onSaveHandler();
+  }
+
+  function onInputKeyDownHandler(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (event.code === "Enter") {
+      if (!required || (required && String(_textValue).length > 0)) {
+        onSaveHandler();
+      }
+    }
   }
 
   function onToggleManageHandler(isManage: boolean) {
@@ -135,12 +148,15 @@ export default function SheInputEditor({
                 disabled={disabled}
                 isLoading={isLoading}
                 onClick={() => onToggleManageHandler(true)}
+                {...manageBtnProps}
               />
             </div>
           )}
           {_isManage && (
             <div className={cs.sheInputEditorInputContainer}>
               <SheInput
+                {...props}
+                {...inputProps}
                 icon={icon}
                 value={_textValue}
                 size={size}
@@ -148,17 +164,23 @@ export default function SheInputEditor({
                 isLoading={isLoading}
                 fullWidth
                 autoFocus
+                onKeyDown={onInputKeyDownHandler}
                 onChange={onChangeHandler}
-                {...{ ...props, ...inputProps }}
+                onBlur={onBlurHandler}
               />
               <SheButton
                 icon={Check}
                 variant="ghost"
                 view="viewCircle"
                 size={size}
-                disabled={disabled || _sourceValue === _textValue}
+                disabled={
+                  disabled ||
+                  String(_sourceValue) === String(_textValue) ||
+                  (required && String(_textValue).length == 0)
+                }
                 isLoading={isLoading}
                 onClick={onSaveHandler}
+                {...saveBtnProps}
               />
               <SheButton
                 icon={X}
@@ -168,6 +190,7 @@ export default function SheInputEditor({
                 disabled={disabled}
                 isLoading={isLoading}
                 onClick={onCancelHandler}
+                {...cancelBtnProps}
               />
             </div>
           )}

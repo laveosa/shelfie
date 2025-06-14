@@ -28,7 +28,10 @@ export function DashboardPage() {
 
       <SheInputEditor
         label="Input Editor"
+        value={_textValue}
         icon={Box}
+        required
+        saveOnBlur
         onChange={(event) => console.log("onChange: ", event)}
         onToggleManage={(event) => console.log("onManage: ", event)}
         onSave={(event) => console.log("onSave: ", event)}
