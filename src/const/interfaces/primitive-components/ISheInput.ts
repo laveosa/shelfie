@@ -1,4 +1,8 @@
-import React, { InputHTMLAttributes, RefObject } from "react";
+import React, {
+  ComponentPropsWithRef,
+  InputHTMLAttributes,
+  RefObject,
+} from "react";
 
 import { ContextPatternEnum } from "@/const/enums/ContextPatternEnum.ts";
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
@@ -17,8 +21,8 @@ export interface ISheInput
     ISheClearButton,
     ISheContextLengthLimits,
     ISheErrorMessageBlock,
-    NativeInputProps {
-  ref?: RefObject<HTMLInputElement>;
+    NativeInputProps,
+    ComponentPropsWithRef<any> {
   id?: string;
   className?: string;
   style?: React.CSSProperties;
