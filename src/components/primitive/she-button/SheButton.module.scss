@@ -72,7 +72,7 @@ $minButtonSize: 20px;
   padding: 8px 16px;
 }
 
-// ======================================================== WITH ICON
+// ======================================================== ICON WITH TEXT
 
 .sheButton.withText {
   &.leftIcon {
@@ -83,11 +83,11 @@ $minButtonSize: 20px;
     padding-right: 8px;
   }
 
-  &.small.leftIcon {
+  &.sizeSmall.leftIcon {
     padding-left: 4px;
   }
 
-  &.small.rightIcon {
+  &.sizeSmall.rightIcon {
     padding-right: 4px;
   }
 }
@@ -105,6 +105,7 @@ $minButtonSize: 20px;
     align-items: center;
     justify-content: center;
     z-index: 1;
+    border-radius: 6px;
     background-color: rgba(139, 139, 139, 0.4);
   }
 }
@@ -112,7 +113,7 @@ $minButtonSize: 20px;
 // ======================================================== SIZE
 
 .sheButton {
-  &.small {
+  &.sizeSmall {
     min-width: $minButtonSize;
     min-height: $minButtonSize;
     padding: 4px;
@@ -129,8 +130,20 @@ $minButtonSize: 20px;
     }
   }
 
-  &.withText.small {
+  &.withText.sizeSmall {
     padding: 4px 8px;
+  }
+}
+
+// ======================================================== VIEW
+
+.sheButton {
+  &.viewCircle {
+    border-radius: 100%;
+
+    .loaderContainer {
+      border-radius: 100%;
+    }
   }
 }
 

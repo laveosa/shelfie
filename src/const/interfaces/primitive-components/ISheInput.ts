@@ -1,4 +1,4 @@
-import React, { InputHTMLAttributes, Ref } from "react";
+import React, { InputHTMLAttributes, RefObject } from "react";
 
 import { ContextPatternEnum } from "@/const/enums/ContextPatternEnum.ts";
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
@@ -9,7 +9,7 @@ import { ISheErrorMessageBlock } from "@/const/interfaces/primitive-components/I
 
 type NativeInputProps = Omit<
   InputHTMLAttributes<HTMLInputElement>,
-  "onChange" | "onBlur"
+  "onChange" | "onBlur" | "size"
 >;
 
 export interface ISheInput
@@ -18,7 +18,7 @@ export interface ISheInput
     ISheContextLengthLimits,
     ISheErrorMessageBlock,
     NativeInputProps {
-  ref?: Ref<HTMLInputElement>;
+  ref?: RefObject<HTMLInputElement>;
   id?: string;
   className?: string;
   style?: React.CSSProperties;
@@ -50,6 +50,7 @@ export interface ISheInput
     | "hidden"
     | "color";
   step?: number;
+  size?: "sizeNormal" | "sizeSmall";
   autoFocus?: boolean;
   isSearch?: boolean;
   disabled?: boolean;

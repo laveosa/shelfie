@@ -27,6 +27,7 @@ export default function SheInput({
   placeholderTransKey,
   type,
   step,
+  size,
   autoFocus,
   isSearch,
   showClearBtn,

@@ -18,7 +18,8 @@ export default function SheButton({
   valueTransKey,
   valueWrap,
   variant = "default",
-  size,
+  size = "sizeNormal",
+  view = "viewNormal",
   disabled,
   isLoading,
   minWidth,
@@ -31,8 +32,8 @@ export default function SheButton({
   children,
   ...props
 }: ISheButton): JSX.Element {
-  const iconSize: string = size === "small" ? "14px" : "20px";
-  const loaderSize: string = size === "small" ? "24px" : "30px";
+  const iconSize: string = size === "sizeSmall" ? "14px" : "20px";
+  const loaderSize: string = size === "sizeSmall" ? "24px" : "30px";
   const loaderColor: string = _isLoaderDark();
 
   // ==================================================================== EVENT
@@ -55,7 +56,7 @@ export default function SheButton({
 
   return (
     <Button
-      className={`${cs.sheButton} ${className} ${cs[variant]} ${cs[`icon-${iconPosition}`] || ""} ${value || children ? cs.withText : ""} ${fullWidth ? cs.fullWidth : ""} ${size ? cs[size] : ""} ${twistIcon ? cs.twistIcon : ""} ${valueWrap ? cs.valueWrap : ""} ${icon ? cs[iconPosition + "Icon"] : ""}`}
+      className={`${cs.sheButton} ${className} ${cs[variant]} ${cs[`icon-${iconPosition}`] || ""} ${value || children ? cs.withText : ""} ${fullWidth ? cs.fullWidth : ""} ${cs[size]} ${cs[view]} ${twistIcon ? cs.twistIcon : ""} ${valueWrap ? cs.valueWrap : ""} ${icon ? cs[iconPosition + "Icon"] : ""}`}
       style={{
         color: txtColor,
         backgroundColor: bgColor,
