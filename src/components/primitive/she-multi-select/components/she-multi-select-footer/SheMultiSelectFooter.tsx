@@ -39,7 +39,7 @@ export default function SheMultiSelectFooter({
               value={secondaryBtnValue}
               valueTransKey={secondaryBtnValueTransKey}
               variant="ghost"
-              size="small"
+              size="sizeSmall"
               onClick={onSecondaryBtnClick}
             />
             <Separator
@@ -54,7 +54,7 @@ export default function SheMultiSelectFooter({
             value={primaryBtnValue}
             valueTransKey={primaryBtnValueTransKey}
             variant="ghost"
-            size="small"
+            size="sizeSmall"
             role="presentation"
             onClick={onPrimaryBtnClick}
           />
