@@ -63,7 +63,7 @@ export default function SheMultiSelectSearch({
       {!hideSearchClearBtn && (
         <SheButton
           icon={X}
-          size="small"
+          size="sizeSmall"
           variant="ghost"
           onClick={onClearSearchHandler}
         />
