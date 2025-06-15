@@ -1,8 +1,4 @@
-import React, {
-  ComponentPropsWithRef,
-  InputHTMLAttributes,
-  RefObject,
-} from "react";
+import React, { ComponentPropsWithRef, InputHTMLAttributes } from "react";
 
 import { ContextPatternEnum } from "@/const/enums/ContextPatternEnum.ts";
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
