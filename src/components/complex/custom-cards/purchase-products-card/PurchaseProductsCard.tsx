@@ -11,6 +11,7 @@ import { IPurchaseProductsPageSlice } from "@/const/interfaces/store-slices/IPur
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { PurchaseProductsPageSliceActions as actions } from "@/state/slices/PurchaseProductsPageSlice.ts";
+import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
 import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { purchaseProductsGridColumns } from "@/components/complex/grid/purchase-products-grid/PurchaseProductsGridColumns.tsx";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
@@ -22,8 +23,12 @@ import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import GridItemsFilter from "@/components/complex/grid/grid-items-filter/GridItemsFilter.tsx";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 
 export default function PurchaseProductsCard({
+  isLoading,
+  isPurchaseProductsGridLoading,
+  isProductsGridLoading,
   products,
   purchaseProducts,
   purchaseProductsGridModel,
@@ -34,13 +39,9 @@ export default function PurchaseProductsCard({
   categories,
   purchaseProductsSkeletonQuantity,
   productsSkeletonQuantity,
+  currencies,
+  taxes,
 }: IPurchaseProductsCard) {
-  console.log("PROD", purchaseProducts);
-  console.log("GRID MODEL", purchaseProductsGridModel);
-  console.log();
-  console.log();
-  console.log();
-
   const [activeTab, setActiveTab] = useState("purchaseProducts");
   const productsService = useProductsPageService();
   const dispatch = useAppDispatch();
@@ -48,9 +49,18 @@ export default function PurchaseProductsCard({
   const state = useAppSelector<IPurchaseProductsPageSlice>(
     StoreSliceEnum.PURCHASE_PRODUCTS,
   );
+  const productsState = useAppSelector<IProductsPageSlice>(
+    StoreSliceEnum.PRODUCTS,
+  );
 
-  const purchaseProductsColumns = purchaseProductsGridColumns(onAction);
-  const productsColumns = purchaseProductsGridColumns(onAction);
+  const purchaseProductsColumns = purchaseProductsGridColumns(
+    currencies,
+    taxes,
+    activeTab,
+    onAction,
+  );
+
+  // const productsColumns = purchaseProductsGridColumns(onAction);
 
   function handleTabChange(value: string) {
     if (value === activeTab) return;
@@ -66,6 +76,8 @@ export default function PurchaseProductsCard({
   }
 
   function handleGridRequestChange(updates: GridRequestModel) {
+    console.log("UPDATES", updates);
+    console.log("ACTIVE TAB", activeTab);
     if (updates.brands || updates.categories || updates.filter) {
       if (activeTab === "purchaseProducts") {
         dispatch(
@@ -76,13 +88,13 @@ export default function PurchaseProductsCard({
           }),
         );
       } else if (activeTab === "connectProducts") {
-        // dispatch(
-        //   actions.refreshVariantsGridRequestModel({
-        //     ...state.variantsGridRequestModel,
-        //     currentPage: 1,
-        //     ...updates,
-        //   }),
-        // );
+        dispatch(
+          productsActions.refreshProductsGridRequestModel({
+            ...productsState.productsGridRequestModel,
+            currentPage: 1,
+            ...updates,
+          }),
+        );
       }
     } else {
       if (activeTab === "purchaseProducts") {
@@ -93,12 +105,12 @@ export default function PurchaseProductsCard({
           }),
         );
       } else if (activeTab === "connectProducts") {
-        // dispatch(
-        //   actions.refreshVariantsGridRequestModel({
-        //     ...state.variantsGridRequestModel,
-        //     ...updates,
-        //   }),
-        // );
+        dispatch(
+          productsActions.refreshProductsGridRequestModel({
+            ...productsState.productsGridRequestModel,
+            ...updates,
+          }),
+        );
       }
     }
   }
@@ -121,12 +133,16 @@ export default function PurchaseProductsCard({
     productsService.resetUserPreferencesHandler();
   }
 
+  // console.log("CurrencyModel", currencies);
+  // console.log("TaxTypeModel", taxes);
+
   return (
     <SheProductCard
+      loading={isLoading}
       className={cs.purchaseProductsCard}
       showHeader={false}
       title={"Manage Purchases"}
-      width="1200px"
+      minWidth="1150px"
     >
       <div className={cs.productsPageContent}>
         <SheTabs
@@ -165,6 +181,7 @@ export default function PurchaseProductsCard({
           </div>
           <TabsContent value="purchaseProducts">
             <DndGridDataTable
+              isLoading={isPurchaseProductsGridLoading}
               columns={purchaseProductsColumns}
               data={purchaseProducts}
               gridModel={purchaseProductsGridModel}
@@ -194,7 +211,8 @@ export default function PurchaseProductsCard({
           </TabsContent>
           <TabsContent value="connectProducts">
             <DndGridDataTable
-              columns={productsColumns}
+              isLoading={isProductsGridLoading}
+              columns={purchaseProductsColumns}
               data={products}
               gridModel={productsGridModel}
               sortingItems={sortingOptions}

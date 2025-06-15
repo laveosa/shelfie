@@ -1,21 +1,28 @@
 import { ColumnDef } from "@tanstack/react-table";
-
-import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import ProductsGridColumnActions from "@/components/complex/grid/products-grid/ProductsGridColumnActions.tsx";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 import placeholderImage from "@/assets/images/placeholder-image.png";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
-import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
+import cs from "./PurchasePrductsGridColumns.module.scss";
+import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
+import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
+import PurchaseProductsForm from "@/components/forms/purchase-products-form/PurchaseProductsForm.tsx";
 
-export function purchaseProductsGridColumns(onAction: any): ColumnDef<any>[] {
+export function purchaseProductsGridColumns(
+  currencies: CurrencyModel[],
+  taxes: TaxTypeModel[],
+  activeTab: string,
+  onAction: any,
+): ColumnDef<any>[] {
   return [
     {
       accessorKey: "image",
       header: "Image",
-      minSize: 60,
+      size: 40,
+      minSize: 40,
+      maxSize: 40,
       cell: ({ row, table }) => {
         const image: ImageModel = row.getValue("image");
         const meta = table.options.meta as {
@@ -43,10 +50,15 @@ export function purchaseProductsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "productCode",
       header: "Code",
+      size: 40,
+      minSize: 40,
+      maxSize: 40,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("productCode")}>
-            <span>{row.getValue("productCode")}</span>
+            <span className={cs.productCode}>
+              {row.getValue("productCode")}
+            </span>
           </SheTooltip>
         );
       },
@@ -54,11 +66,15 @@ export function purchaseProductsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "productName",
       header: "Product Name",
-      minSize: 150,
+      size: 70,
+      minSize: 70,
+      maxSize: 70,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("productName")}>
-            <span>{row.getValue("productName")}</span>
+            <span className={cs.productName}>
+              {row.getValue("productName")}
+            </span>
           </SheTooltip>
         );
       },
@@ -66,7 +82,9 @@ export function purchaseProductsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "productCategory",
       header: "Category",
-      minSize: 150,
+      size: 50,
+      minSize: 50,
+      maxSize: 50,
       cell: ({ row }) => {
         const category: CategoryModel = row.getValue("productCategory");
         return (
@@ -74,7 +92,7 @@ export function purchaseProductsGridColumns(onAction: any): ColumnDef<any>[] {
             delayDuration={200}
             text={category?.categoryName || "N/A"}
           >
-            <div>
+            <div className={cs.productCategory}>
               {row.original.productCategory?.thumbnail && (
                 <img
                   src={row.original.productCategory?.thumbnail}
@@ -90,12 +108,14 @@ export function purchaseProductsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "brand",
       header: "Brand",
-      minSize: 150,
+      size: 50,
+      minSize: 50,
+      maxSize: 50,
       cell: ({ row }) => {
         const brand: BrandModel = row.getValue("brand");
         return (
           <SheTooltip delayDuration={200} text={brand?.brandName || "N/A"}>
-            <div>
+            <div className={cs.productBrand}>
               {row.original.brand?.thumbnail && (
                 <img
                   src={row.original.brand?.thumbnail}
@@ -111,59 +131,72 @@ export function purchaseProductsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "",
       header: "Details",
-      minSize: 100,
+      size: 50,
+      minSize: 50,
+      maxSize: 50,
       cell: ({}) => {
         return <span>{""}</span>;
       },
     },
     {
       accessorKey: "",
-      header: "Quantity to add",
+      size: 200,
+      minSize: 200,
+      maxSize: 200,
+      header:
+        activeTab === "connectProducts"
+          ? "Quantity to add"
+          : "Quantity in purchase",
       cell: ({}) => {
         return (
-          <div style={{ display: "flex", gap: 10 }}>
-            <SheInput />
-            <SheSelect />
-            <SheSelect />
-            <span>X</span>
-            <SheInput />
-          </div>
+          <PurchaseProductsForm
+            activeTab={activeTab}
+            taxes={taxes}
+            currencies={currencies}
+            onSubmit={(data) => {
+              console.log("DATA", data);
+              onAction("addProductToPurchase", data);
+            }}
+          />
         );
       },
     },
-    {
-      id: "manage",
-      header: "",
-      minSize: 100,
-      maxSize: 100,
-      cell: ({ row, table }) => {
-        const meta = table.options.meta as {
-          setLoadingRow: (rowId: string, loading: boolean) => void;
-          isRowLoading: (rowId: string) => boolean;
-        };
-
-        const handleManageClick = (e) => {
-          e.stopPropagation();
-          e.preventDefault();
-          onAction("manage", row.id, meta?.setLoadingRow, row.original);
-        };
-
-        return (
-          <div onClick={(e) => e.stopPropagation()}>
-            <SheButton
-              onClick={handleManageClick}
-              disabled={meta?.isRowLoading(row.id)}
-              value={"Add"}
-            />
-          </div>
-        );
-      },
-    },
+    // {
+    //   id: "manage",
+    //   header: "",
+    //   minSize: 100,
+    //   maxSize: 100,
+    //   cell: ({ row, table }) => {
+    //     const meta = table.options.meta as {
+    //       setLoadingRow: (rowId: string, loading: boolean) => void;
+    //       isRowLoading: (rowId: string) => boolean;
+    //     };
+    //
+    //     const handleManageClick = (e) => {
+    //       e.stopPropagation();
+    //       e.preventDefault();
+    //       activeTab === "connectProducts"
+    //         ? onAction("add", row.id, meta?.setLoadingRow, row.original)
+    //         : onAction("update", row.id, meta?.setLoadingRow, row.original);
+    //     };
+    //
+    //     return (
+    //       <div onClick={(e) => e.stopPropagation()}>
+    //         <SheButton
+    //           onClick={handleManageClick}
+    //           disabled={meta?.isRowLoading(row.id)}
+    //           value={activeTab === "connectProducts" ? "Add" : "Update"}
+    //         />
+    //       </div>
+    //     );
+    //   },
+    // },
     {
       id: "rowActions",
       header: "",
-      minSize: 70,
-      maxSize: 70,
+      size: 20,
+      minSize: 20,
+      maxSize: 20,
       cell: ({ row, table }) => {
         return (
           <div style={{ display: "flex", justifyContent: "center" }}>

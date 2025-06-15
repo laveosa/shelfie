@@ -103,16 +103,38 @@ export default function ProductMenuCard({
   const location = useLocation();
 
   function handleMenuItemClick(path: string) {
-    navigate(`${NavUrlEnum.PRODUCTS}${path}/${productId ? productId : ""}`);
+    if (path === NavUrlEnum.SUPPLIER) {
+      navigate(`${NavUrlEnum.PRODUCTS}${path}`);
+    } else {
+      navigate(`${NavUrlEnum.PRODUCTS}${path}/${productId ? productId : ""}`);
+    }
   }
+
+  // const renderMenuItem = ({ id, counterId, icon, label, path }) => {
+  //   const pathBase = `${NavUrlEnum.PRODUCTS}${path}/`;
+  //   const isSelected = location.pathname.startsWith(pathBase);
+  //   console.log("isSelected", pathBase);
+  //   const isDisabled =
+  //     itemsCollection === "products"
+  //       ? isSelected || (!productId && id !== "basicData")
+  //       : isSelected || (!productId && id !== "supplier");
 
   const renderMenuItem = ({ id, counterId, icon, label, path }) => {
     const pathBase = `${NavUrlEnum.PRODUCTS}${path}/`;
     const isSelected = location.pathname.startsWith(pathBase);
-    const isDisabled =
-      itemsCollection === "products"
-        ? isSelected || (!productId && id !== "basicData")
-        : isSelected || (!productId && id !== "supplier");
+    const hasDynamicId = /\d+/.test(location.pathname);
+
+    let isDisabled = false;
+
+    if (hasDynamicId) {
+      isDisabled = isSelected;
+    } else {
+      if (itemsCollection === "products") {
+        isDisabled = id !== "basic_data";
+      } else {
+        isDisabled = id !== "supplier";
+      }
+    }
 
     return (
       <div

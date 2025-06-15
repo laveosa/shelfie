@@ -4,6 +4,10 @@ import { ProductModel } from "@/const/models/ProductModel.ts";
 
 export interface IPurchaseProductsPageSlice {
   isLoading?: boolean;
+  isProductMenuCardLoading?: boolean;
+  isPurchaseProductsCardLoading?: boolean;
+  isPurchasesProductsGridLoading?: boolean;
+  isProductsGridLoading?: boolean;
   activeCards?: any[];
   activeTab?: string;
   purchasesProductsGridModel?: GridModel;

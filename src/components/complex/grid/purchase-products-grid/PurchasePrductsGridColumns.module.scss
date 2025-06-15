@@ -1,0 +1,30 @@
+.productName {
+  max-width: 100px;
+}
+
+.productCode {
+  max-width: 70px;
+}
+
+.productCategory, .productBrand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  img {
+    width: 30px;
+    height: 30px;
+  }
+
+  span {
+    max-width: 70px;
+  }
+}
+
+span {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+}

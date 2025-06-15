@@ -56,67 +56,50 @@ export function purchasesGridColumns(onAction: any): ColumnDef<any>[] {
       maxSize: 100,
       cell: ({ row }) => {
         const formattedDate = formatDate(row.getValue("date"), "date");
-        return (
-          <SheTooltip delayDuration={200} text={formattedDate}>
-            <span>{formattedDate}</span>
-          </SheTooltip>
-        );
+        return <span>{formattedDate}</span>;
       },
     },
     {
-      // accessorKey: "date",
+      accessorKey: "unitsAmount",
       header: "Units",
-      maxSize: 100,
-      cell: ({}) => {
-        return (
-          <SheTooltip delayDuration={200} text={""}>
-            <span></span>
-          </SheTooltip>
-        );
+      maxSize: 70,
+      cell: ({ row }) => {
+        return <span>{`${row.getValue("unitsAmount")} units`}</span>;
       },
     },
     {
-      // accessorKey: "date",
+      accessorKey: "expense",
       header: "Expense",
-      maxSize: 100,
-      cell: ({}) => {
-        return (
-          <SheTooltip delayDuration={200} text={""}>
-            <span></span>
-          </SheTooltip>
-        );
+      maxSize: 70,
+      cell: ({ row }) => {
+        const currency: string = row.original.currencyBrief;
+        return <span>{`${row.getValue("expense")} ${currency}`}</span>;
       },
     },
     {
-      // accessorKey: "date",
+      accessorKey: "soldAmount",
       header: "Sold",
-      maxSize: 100,
-      cell: ({}) => {
-        return (
-          <SheTooltip delayDuration={200} text={""}>
-            <span></span>
-          </SheTooltip>
-        );
+      maxSize: 70,
+      cell: ({ row }) => {
+        const currency: string = row.original.currencyBrief;
+        return <span>{`${row.getValue("soldAmount")} ${currency}`}</span>;
       },
     },
     {
-      // accessorKey: "date",
+      accessorKey: "valueAmount",
       header: "Order Value",
-      maxSize: 100,
-      cell: ({}) => {
-        return (
-          <SheTooltip delayDuration={200} text={""}>
-            <span></span>
-          </SheTooltip>
-        );
+      maxSize: 80,
+      cell: ({ row }) => {
+        const currency: string = row.original.currencyBrief;
+        return <span>{`${row.getValue("valueAmount")} ${currency}`}</span>;
       },
     },
     {
       id: "manage",
       header: "",
-      size: 100,
-      minSize: 100,
-      maxSize: 100,
+      size: 70,
+      minSize: 70,
+      maxSize: 70,
       cell: ({ row, table }) => {
         const meta = table.options.meta as {
           setLoadingRow: (rowId: string, loading: boolean) => void;
@@ -144,9 +127,9 @@ export function purchasesGridColumns(onAction: any): ColumnDef<any>[] {
     {
       id: "rowActions",
       header: "",
-      size: 70,
-      minSize: 70,
-      maxSize: 70,
+      size: 50,
+      minSize: 50,
+      maxSize: 50,
       cell: ({ row, table }) => {
         return (
           <div style={{ display: "flex", justifyContent: "center" }}>

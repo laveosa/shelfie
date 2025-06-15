@@ -36,16 +36,20 @@ export function SupplierPage() {
   const cardRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   useEffect(() => {
-    dispatch(actions.setIsSupplierCardLoading(true));
-    dispatch(actions.setIsProductMenuCardLoading(true));
-    service.getPurchaseDetailsHandler(purchaseId).then((res: PurchaseModel) => {
-      dispatch(actions.setIsSupplierCardLoading(false));
-      dispatch(productsActions.refreshSelectedPurchase(res));
-      dispatch(actions.refreshSelectedSupplier(res.supplier));
-    });
-    productsService
-      .getPurchaseCountersHandler(Number(purchaseId))
-      .then(() => dispatch(actions.setIsProductMenuCardLoading(false)));
+    if (purchaseId) {
+      dispatch(actions.setIsSupplierCardLoading(true));
+      dispatch(actions.setIsProductMenuCardLoading(true));
+      service
+        .getPurchaseDetailsHandler(purchaseId)
+        .then((res: PurchaseModel) => {
+          dispatch(actions.setIsSupplierCardLoading(false));
+          dispatch(productsActions.refreshSelectedPurchase(res));
+          dispatch(actions.refreshSelectedSupplier(res.supplier));
+        });
+      productsService
+        .getPurchaseCountersHandler(Number(purchaseId))
+        .then(() => dispatch(actions.setIsProductMenuCardLoading(false)));
+    }
   }, [purchaseId]);
 
   function scrollToCard(cardId: string) {

@@ -30,26 +30,49 @@ export function PurchaseProductsPage() {
 
   useEffect(() => {
     if (!productsState.purchaseCounters) {
-      productsService.getPurchaseCountersHandler(Number(purchaseId));
+      dispatch(actions.setIsProductMenuCardLoading(true));
+      productsService
+        .getPurchaseCountersHandler(Number(purchaseId))
+        .then(() => dispatch(actions.setIsProductMenuCardLoading(false)));
     }
-    if (!state.purchaseProducts) {
-      service
-        .getListOfPurchaseProductsForGridHandler(
-          purchaseId,
-          state.purchasesProductsGridRequestModel,
-        )
-        .then(() => actions);
+    if (productsState.currenciesList.length === 0) {
+      productsService.getCurrenciesListHandler();
     }
+    if (productsState.taxesList.length === 0) {
+      productsService.getTaxesListHandler();
+    }
+  }, [purchaseId]);
+
+  useEffect(() => {
+    dispatch(actions.setIsPurchaseProductsCardLoading(true));
+    dispatch(actions.setIsPurchasesProductsGridLoading(true));
+    service
+      .getListOfPurchaseProductsForGridHandler(
+        purchaseId,
+        state.purchasesProductsGridRequestModel,
+      )
+      .then(() => {
+        dispatch(actions.setIsPurchaseProductsCardLoading(false));
+        dispatch(actions.setIsPurchasesProductsGridLoading(false));
+      });
+
+    dispatch(actions.setIsPurchaseProductsCardLoading(true));
+    dispatch(actions.setIsProductsGridLoading(true));
     productsService
       .getTheProductsForGridHandler(
         productsState.productsGridRequestModel,
         true,
       )
       .then((res) => {
+        dispatch(actions.setIsPurchaseProductsCardLoading(false));
+        dispatch(actions.setIsProductsGridLoading(false));
         dispatch(productsActions.refreshProductsGridModel(res));
         dispatch(productsActions.refreshProducts(res.items));
       });
-  }, [purchaseId]);
+  }, [
+    state.purchasesProductsGridRequestModel,
+    productsState.productsGridRequestModel,
+  ]);
 
   useEffect(() => {
     if (productsState.brands.length === 0) {
@@ -112,7 +135,7 @@ export function PurchaseProductsPage() {
   return (
     <div className={cs.purchaseProductsPage}>
       <ProductMenuCard
-        isLoading={productsState.isProductMenuCardLoading}
+        isLoading={state.isProductMenuCardLoading}
         title="Report Purchase"
         itemsCollection="purchases"
         productId={Number(purchaseId)}
@@ -120,9 +143,12 @@ export function PurchaseProductsPage() {
         onAction={handleCardAction}
       />
       <PurchaseProductsCard
+        isLoading={state.isPurchaseProductsCardLoading}
+        isPurchaseProductsGridLoading={state.isPurchaseProductsGridLoading}
+        isProductsGridLoading={state.isProductsGriLoading}
         products={productsState.products}
         purchaseProducts={state.purchaseProducts}
-        productsGridModel={state.purchasesProductsGridModel}
+        productsGridModel={productsState.productsGridModel}
         purchaseProductsGridModel={state.purchasesProductsGridModel}
         sortingOptions={productsState.sortingOptions}
         preferences={appState.preferences}
@@ -134,6 +160,8 @@ export function PurchaseProductsPage() {
         productsSkeletonQuantity={
           productsState.productsGridRequestModel.pageSize
         }
+        currencies={productsState.currenciesList}
+        taxes={productsState.taxesList}
       />
     </div>
   );

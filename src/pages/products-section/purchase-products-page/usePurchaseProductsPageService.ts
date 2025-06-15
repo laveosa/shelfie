@@ -15,6 +15,7 @@ export default function usePurchaseProductsPageService() {
 
   function getListOfPurchaseProductsForGridHandler(id: any, model) {
     return getListOfPurchaseProductsForGrid({ id, model }).then((res: any) => {
+      dispatch(actions.refreshPurchasesProductsGridModel(res.data));
       dispatch(actions.refreshPurchaseProducts(res.data.items));
       return res.data;
     });

@@ -223,12 +223,14 @@ export default function useProductsPageService() {
 
   function getTaxesListHandler() {
     return getTaxesList().then((res: any) => {
+      dispatch(actions.refreshTaxesList(res.data));
       return res.data;
     });
   }
 
   function getCurrenciesListHandler() {
     return getCurrenciesList().then((res: any) => {
+      dispatch(actions.refreshCurrenciesList(res.data));
       return res.data;
     });
   }

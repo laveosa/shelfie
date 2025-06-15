@@ -7,6 +7,10 @@ import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 
 const initialState: IPurchaseProductsPageSlice = {
   isLoading: false,
+  isProductMenuCardLoading: false,
+  isPurchaseProductsCardLoading: false,
+  isPurchasesProductsGridLoading: false,
+  isProductsGridLoading: false,
   activeCards: [],
   activeTab: "purchaseProducts",
   purchaseProducts: [],
@@ -25,6 +29,34 @@ function setIsLoading(
   action: PayloadAction<boolean>,
 ) {
   state.isLoading = action?.payload;
+}
+
+function setIsProductMenuCardLoading(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isProductMenuCardLoading = action?.payload;
+}
+
+function setIsPurchaseProductsCardLoading(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isPurchaseProductsCardLoading = action?.payload;
+}
+
+function setIsPurchasesProductsGridLoading(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isPurchasesProductsGridLoading = action?.payload;
+}
+
+function setIsProductsGridLoading(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isProductsGridLoading = action?.payload;
 }
 
 function refreshActiveCards(
@@ -69,6 +101,10 @@ const PurchaseProductsPageSlice = createSlice({
   initialState,
   reducers: {
     setIsLoading,
+    setIsProductMenuCardLoading,
+    setIsPurchaseProductsCardLoading,
+    setIsPurchasesProductsGridLoading,
+    setIsProductsGridLoading,
     refreshActiveCards,
     refreshActiveTab,
     refreshPurchaseProducts,

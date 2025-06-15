@@ -117,7 +117,7 @@ export function productsGridColumns(
         const brand: BrandModel = row.getValue("brand");
         return (
           <SheTooltip delayDuration={200} text={brand?.brandName || "N/A"}>
-            <div className={cs.productCategory}>
+            <div className={cs.productBrand}>
               {row.original.brand?.thumbnail && (
                 <img
                   src={row.original.brand?.thumbnail}
