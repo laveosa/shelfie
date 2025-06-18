@@ -67,9 +67,9 @@ export default function SheAutocomplete({
   const filteredItems: ISheAutocompleteItem[] = useMemo(() => {
     if (!_items || _items.length === 0) return [];
 
-    return _items.filter((option) =>
+    return _items.filter((item) =>
       _searchValue && _searchValue.length > 0
-        ? option.text.includes(_searchValue)
+        ? item.text.toLowerCase().includes(_searchValue.toLowerCase())
         : true,
     );
   }, [_items, _searchValue]);
@@ -208,20 +208,15 @@ export default function SheAutocomplete({
                 <div>
                   {filteredItems && filteredItems.length > 0 ? (
                     filteredItems.map((item) => (
-                      <div
+                      <CommandItem
                         key={item.id}
                         className={cs.sheAutocompleteItemParentWrapper}
-                        onKeyDown={() => console.log("fix this logic")}
-                        onClick={() => onSelectHandler(item.text)}
+                        onSelect={() => onSelectHandler(item.text)}
                       >
-                        <CommandItem>
-                          <span className="she-text">
-                            <Trans i18nKey={item.textTransKey}>
-                              {item.text}
-                            </Trans>
-                          </span>
-                        </CommandItem>
-                      </div>
+                        <span className="she-text">
+                          <Trans i18nKey={item.textTransKey}>{item.text}</Trans>
+                        </span>
+                      </CommandItem>
                     ))
                   ) : (
                     <div className={cs.sheAutocompletePopoverPlaceholder}>
