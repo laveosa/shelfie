@@ -6,7 +6,7 @@ $minButtonSize: 20px;
 .sheButton {
   min-width: $buttonSize;
   min-height: $buttonSize;
-  height: auto;
+  height: fit-content;
   position: relative;
   display: flex;
   align-items: center;

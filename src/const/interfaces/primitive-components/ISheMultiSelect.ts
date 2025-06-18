@@ -10,7 +10,7 @@ export interface ISheMultiSelect
     ISheMultiSelectSearch,
     ISheMultiSelectFooter {
   popoverClassName?: string;
-  popoverStyles?: React.CSSProperties;
+  popoverStyle?: React.CSSProperties;
   hideSelectAll?: boolean;
   options?: ISheMultiSelectItem[];
   selectedValues?: any[];
@@ -26,7 +26,7 @@ export interface ISheMultiSelect
 
 export const SheMultiSelectDefaultModel: ISheMultiSelect = {
   popoverClassName: undefined,
-  popoverStyles: undefined,
+  popoverStyle: undefined,
   hideSelectAll: undefined,
   options: undefined,
   selectedValues: undefined,

@@ -6,26 +6,21 @@ $iconSize: 20px;
   max-width: vars.$maxWidth + px;
   width: 100%;
 
-  .sheAutocompleteComponent {
-    position: relative;
+  .sheAutocompleteTriggerContainer {
+    width: 100%;
+    display: flex;
+    align-items: end;
+    gap: 8px;
 
-    .sheAutocompleteControl {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-
-      .iconBlock {
-        position: absolute;
-        color: vars.$subtextColor;
-        left: 8px;
-        top: 10px;
-        max-width: $iconSize;
-        min-width: $iconSize;
-        max-height: $iconSize;
-        min-height: $iconSize;
-      }
+    .sheAutocompleteTriggerAnchor {
+      width: 100%;
     }
   }
+}
+
+// ======================================================== POPOVER
+
+.sheAutocompletePopoverContainer {
 }
 
 // ======================================================== FULL WIDTH
@@ -35,17 +30,37 @@ $iconSize: 20px;
   width: 100%;
 }
 
-// ======================================================== REQUIRED
+// ========================================================= NO DATA BLOCK
 
-.sheAutocomplete.required {
-  position: relative;
+.sheAutocompletePopoverContainer {
+  .sheAutocompletePopoverPlaceholder {
+    padding: 10px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50px;
 
-  .sheAutocompleteComponent:before {
-    position: absolute;
-    left: -10px;
-    top: -14px;
-    color: vars.$colorRed;
-    content: "*";
-    display: inline;
+    span {
+      font-size: 20px;
+      line-height: 24px;
+      font-weight: bold;
+      opacity: 0.4;
+      color: vars.$placeholderColor;
+      text-align: center;
+    }
+  }
+}
+
+// ========================================================= ITEMS WRAPPER
+
+.sheAutocompleteItemParentWrapper {
+  margin-bottom: 2px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  > div[role="option"] {
+    cursor: pointer;
   }
 }
