@@ -116,7 +116,7 @@ export default function SheAutocomplete({
     if (onSearch) onSearch(_searchValue);
   }
 
-  function onSelectHandler(data: string) {
+  function onSelectHandler(data: string, force?: boolean) {
     setIsPopoverOpen(false);
     setSelected(data);
 
@@ -124,6 +124,8 @@ export default function SheAutocomplete({
       setSearchValue(data);
       if (onSelect) onSelect(data);
     }
+
+    if (force) if (onSelect) onSelect(data);
   }
 
   // ==================================================================== PRIVATE
@@ -187,7 +189,7 @@ export default function SheAutocomplete({
                   _searchValue.length === 0 ||
                   _selected === _searchValue
                 }
-                onClick={() => onSelectHandler(_searchValue)}
+                onClick={() => onSelectHandler(_searchValue, true)}
                 {...selectBtnProps}
               />
             )}
