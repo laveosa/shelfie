@@ -16,6 +16,7 @@ import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 import { SupplierModel } from "@/const/models/SupplierModel.ts";
 import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
+import { TraitModel } from "@/const/models/TraitModel.ts";
 
 export interface IProductsPageSlice {
   isLoading?: boolean;
@@ -53,4 +54,5 @@ export interface IProductsPageSlice {
   currenciesList?: CurrencyModel[];
   countryCodeList?: CountryCodeModel[];
   purchaseCounters?: PurchaseCountersModel;
+  listOfTraits?: TraitModel[];
 }

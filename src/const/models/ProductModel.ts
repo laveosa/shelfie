@@ -9,7 +9,7 @@ export interface ProductModel {
   productCode?: string;
   productName?: string;
   productCategory?: CategoryModel;
-  categoryId?: number;
+  productCategoryId?: number;
   brand?: BrandModel;
   barcode?: any;
   status?: string;

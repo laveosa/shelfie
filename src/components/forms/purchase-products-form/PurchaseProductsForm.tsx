@@ -20,10 +20,10 @@ import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { X } from "lucide-react";
 
 export const DefaultPurchaseProductsForm = {
-  price: "",
-  currencies: 1,
-  taxes: 5,
-  quantity: "",
+  nettoPrice: null,
+  currencyId: 1,
+  taxTypeId: 5,
+  unitsAmount: null,
 };
 
 export default function PurchaseProductsForm<T>({
@@ -66,10 +66,10 @@ export default function PurchaseProductsForm<T>({
 
   const isFormValid =
     form.formState.isValid &&
-    form.getValues("price") &&
-    form.getValues("currencies") &&
-    form.getValues("taxes") &&
-    form.getValues("quantity");
+    form.getValues("nettoPrice") &&
+    form.getValues("currencyId") &&
+    form.getValues("taxTypeId") &&
+    form.getValues("unitsAmount");
 
   return (
     <div className={cs.purchaseProducts}>
@@ -87,13 +87,19 @@ export default function PurchaseProductsForm<T>({
       >
         <FormField
           control={form.control}
-          name="price"
+          name="nettoPrice"
           render={({ field }): React.ReactElement => (
             <SheFormItem className={cs.purchaseProductsFormItem}>
               <SheInput
                 {...field}
-                type="number"
-                className={field.value ? cs.formItemsValid : ""}
+                // type="number"
+                className={
+                  activeTab === "connectProducts"
+                    ? field.value
+                      ? cs.formItemsValid
+                      : ""
+                    : ""
+                }
                 minWidth="70px"
                 maxWidth="70px"
                 placeholder=""
@@ -103,12 +109,18 @@ export default function PurchaseProductsForm<T>({
         />
         <FormField
           control={form.control}
-          name="currencies"
+          name="currencyId"
           render={({ field }) => (
             <SheFormItem className={cs.purchaseProductsFormItem}>
               <SheSelect
-                selected={field.value}
-                className={field.value ? cs.formItemsValid : ""}
+                selected={field.value || data?.currencyId}
+                className={
+                  activeTab === "connectProducts"
+                    ? field.value
+                      ? cs.formItemsValid
+                      : ""
+                    : ""
+                }
                 placeholder=" "
                 items={convertCurrenciesToSelectItems(currencies)}
                 hideFirstOption
@@ -124,13 +136,19 @@ export default function PurchaseProductsForm<T>({
         />
         <FormField
           control={form.control}
-          name="taxes"
+          name="taxTypeId"
           render={({ field }) => (
             <SheFormItem className={cs.purchaseProductsFormItem}>
               <SheSelect
                 placeholder=" "
-                className={field.value ? cs.formItemsValid : ""}
-                selected={field.value}
+                className={
+                  activeTab === "connectProducts"
+                    ? field.value
+                      ? cs.formItemsValid
+                      : ""
+                    : ""
+                }
+                selected={field.value || data?.taxTypeId}
                 items={convertTaxesToSelectItems(taxes)}
                 hideFirstOption
                 minWidth="70px"
@@ -146,13 +164,19 @@ export default function PurchaseProductsForm<T>({
         <SheIcon className={cs.purchaseProductsFormIcon} icon={X} />
         <FormField
           control={form.control}
-          name="quantity"
+          name="unitsAmount"
           render={({ field }): React.ReactElement => (
             <SheFormItem className={cs.purchaseProductsFormItem}>
               <SheInput
                 {...field}
-                type="number"
-                className={field.value ? cs.formItemsValid : ""}
+                // type="number"
+                className={
+                  activeTab === "connectProducts"
+                    ? field.value
+                      ? cs.formItemsValid
+                      : ""
+                    : ""
+                }
                 minWidth="50px"
                 maxWidth="50px"
                 placeholder=""
@@ -161,10 +185,17 @@ export default function PurchaseProductsForm<T>({
           )}
         />
         <SheButton
-          className={isFormValid ? cs.buttonValid : ""}
+          className={
+            activeTab === "connectProducts"
+              ? isFormValid
+                ? cs.buttonValid
+                : ""
+              : ""
+          }
           value={activeTab === "connectProducts" ? "Add" : "Update"}
+          variant="secondary"
           type="submit"
-          disabled={!isFormValid}
+          disabled={activeTab === "connectProducts" ? !isFormValid : false}
         />
       </SheForm>
     </div>

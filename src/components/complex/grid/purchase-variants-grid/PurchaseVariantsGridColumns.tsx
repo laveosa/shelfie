@@ -5,14 +5,14 @@ import placeholderImage from "@/assets/images/placeholder-image.png";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
-import cs from "./PurchaseProductsGridColumns.module.scss";
+import cs from "./PurchaseVariantsGridColumns.module.scss";
 import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import PurchaseProductsForm from "@/components/forms/purchase-products-form/PurchaseProductsForm.tsx";
 import { ImageIcon } from "lucide-react";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 
-export function purchaseProductsGridColumns(
+export function purchaseVariantsGridColumns(
   currencies: CurrencyModel[],
   taxes: TaxTypeModel[],
   activeTab: string,
@@ -190,26 +190,19 @@ export function purchaseProductsGridColumns(
       size: 200,
       minSize: 200,
       maxSize: 200,
-      header:
-        activeTab === "connectProducts"
-          ? "Quantity to add"
-          : "Quantity in purchase",
+      header: "Quantity to add",
       cell: ({ row }) => {
-        const stockActionId = row.original.stockActionId;
-        const data = {
-          unitsAmount: row.original.unitsAmount,
-          currencyId: Number(row.original.stockDocumentPrice.currencyId),
-          taxTypeId: Number(row.original.stockDocumentPrice.taxTypeId),
-          nettoPrice: row.original.stockDocumentPrice.netto,
-        };
+        const variantId = row.original.variantId;
         return (
           <PurchaseProductsForm
             activeTab={activeTab}
             taxes={taxes}
             currencies={currencies}
-            data={data}
             onSubmit={(data) => {
-              onAction("updatePurchaseProduct", { data, stockActionId });
+              onAction("addProductToPurchase", {
+                data,
+                variantId,
+              });
             }}
           />
         );

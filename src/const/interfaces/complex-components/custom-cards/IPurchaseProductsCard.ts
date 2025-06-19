@@ -9,16 +9,17 @@ export interface IPurchaseProductsCard {
   isLoading?: boolean;
   isPurchaseProductsGridLoading?: boolean;
   isProductsGridLoading?: boolean;
-  products?: ProductModel[];
+  variants?: any[];
   purchaseProducts?: ProductModel[];
-  productsGridModel?: GridModel;
+  variantsGridModel?: GridModel;
   purchaseProductsGridModel?: GridModel;
   sortingOptions?: any;
   preferences?: any;
   brands?: BrandModel[];
   categories?: CategoryModel[];
   purchaseProductsSkeletonQuantity?: number;
-  productsSkeletonQuantity?: number;
+  variantsSkeletonQuantity?: number;
   currencies?: CurrencyModel[];
   taxes?: TaxTypeModel[];
+  onAction?: (identifier: string, payload?: any) => void;
 }

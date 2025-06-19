@@ -455,6 +455,11 @@ export const ProductsApiService = createApi({
         method: "PATCH",
       }),
     }),
+    getTraitsForFilter: apiConfig.createQuery<any, any>(builder, {
+      query: (id) => ({
+        url: `${ApiUrlEnum.TRAITS}/for-filter/${id ? id : ""}`,
+      }),
+    }),
   }),
 });
 

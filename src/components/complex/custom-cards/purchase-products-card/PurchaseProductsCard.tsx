@@ -24,23 +24,25 @@ import { BrandModel } from "@/const/models/BrandModel.ts";
 import GridItemsFilter from "@/components/complex/grid/grid-items-filter/GridItemsFilter.tsx";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import { purchaseVariantsGridColumns } from "@/components/complex/grid/purchase-variants-grid/PurchaseVariantsGridColumns.tsx";
 
 export default function PurchaseProductsCard({
   isLoading,
   isPurchaseProductsGridLoading,
   isProductsGridLoading,
-  products,
+  variants,
   purchaseProducts,
   purchaseProductsGridModel,
-  productsGridModel,
+  variantsGridModel,
   preferences,
   sortingOptions,
   brands,
   categories,
   purchaseProductsSkeletonQuantity,
-  productsSkeletonQuantity,
+  variantsSkeletonQuantity,
   currencies,
   taxes,
+  onAction,
 }: IPurchaseProductsCard) {
   const [activeTab, setActiveTab] = useState("purchaseProducts");
   const productsService = useProductsPageService();
@@ -53,31 +55,29 @@ export default function PurchaseProductsCard({
     StoreSliceEnum.PRODUCTS,
   );
 
-  const purchaseProductsColumns = purchaseProductsGridColumns(
-    currencies,
-    taxes,
-    activeTab,
-    onAction,
-  );
-
-  // const productsColumns = purchaseProductsGridColumns(onAction);
-
   function handleTabChange(value: string) {
     if (value === activeTab) return;
     setActiveTab(value);
     dispatch(actions.refreshActiveTab(value));
   }
 
-  function onAction(actionType: string, _payload?: any) {
+  function handleAction(actionType: string, payload?: any) {
     switch (actionType) {
-      case "CreateProduct":
+      case "createProduct":
+        onAction("openCreateProductCard");
+        break;
+      case "addProductToPurchase":
+        console.log("addProductToPurchase", payload);
+        onAction("addProductToPurchase", payload);
+        break;
+      case "updatePurchaseProduct":
+        console.log("updatePurchaseProduct", payload);
+        onAction("updatePurchaseProduct", payload);
         break;
     }
   }
 
   function handleGridRequestChange(updates: GridRequestModel) {
-    console.log("UPDATES", updates);
-    console.log("ACTIVE TAB", activeTab);
     if (updates.brands || updates.categories || updates.filter) {
       if (activeTab === "purchaseProducts") {
         dispatch(
@@ -89,8 +89,8 @@ export default function PurchaseProductsCard({
         );
       } else if (activeTab === "connectProducts") {
         dispatch(
-          productsActions.refreshProductsGridRequestModel({
-            ...productsState.productsGridRequestModel,
+          productsActions.refreshVariantsGridRequestModel({
+            ...productsState.variantsGridRequestModel,
             currentPage: 1,
             ...updates,
           }),
@@ -106,8 +106,8 @@ export default function PurchaseProductsCard({
         );
       } else if (activeTab === "connectProducts") {
         dispatch(
-          productsActions.refreshProductsGridRequestModel({
-            ...productsState.productsGridRequestModel,
+          productsActions.refreshVariantsGridRequestModel({
+            ...productsState.variantsGridRequestModel,
             ...updates,
           }),
         );
@@ -132,9 +132,6 @@ export default function PurchaseProductsCard({
   function onResetColumnsHandler() {
     productsService.resetUserPreferencesHandler();
   }
-
-  // console.log("CurrencyModel", currencies);
-  // console.log("TaxTypeModel", taxes);
 
   return (
     <SheProductCard
@@ -164,7 +161,6 @@ export default function PurchaseProductsCard({
                   className={cs.tabItemTrigger}
                   value="connectProducts"
                 >
-                  {/*<SheButton/>*/}
                   <div className={cs.tabBlock}>
                     <Layers2 size="16" />
                     Connect Products
@@ -174,7 +170,7 @@ export default function PurchaseProductsCard({
               <SheButton
                 icon={Plus}
                 variant="ghost"
-                onClick={() => onAction("CreateProduct")}
+                onClick={() => handleAction("createProduct")}
                 value="Create Product"
               />
             </TabsList>
@@ -182,7 +178,12 @@ export default function PurchaseProductsCard({
           <TabsContent value="purchaseProducts">
             <DndGridDataTable
               isLoading={isPurchaseProductsGridLoading}
-              columns={purchaseProductsColumns}
+              columns={purchaseProductsGridColumns(
+                currencies,
+                taxes,
+                activeTab,
+                handleAction,
+              )}
               data={purchaseProducts}
               gridModel={purchaseProductsGridModel}
               sortingItems={sortingOptions}
@@ -212,13 +213,18 @@ export default function PurchaseProductsCard({
           <TabsContent value="connectProducts">
             <DndGridDataTable
               isLoading={isProductsGridLoading}
-              columns={purchaseProductsColumns}
-              data={products}
-              gridModel={productsGridModel}
+              columns={purchaseVariantsGridColumns(
+                currencies,
+                taxes,
+                activeTab,
+                handleAction,
+              )}
+              data={variants}
+              gridModel={variantsGridModel}
               sortingItems={sortingOptions}
               columnsPreferences={preferences}
               preferenceContext={"productReferences"}
-              skeletonQuantity={productsSkeletonQuantity}
+              skeletonQuantity={variantsSkeletonQuantity}
               onApplyColumns={onApplyColumnsHandler}
               onDefaultColumns={onResetColumnsHandler}
               onGridRequestChange={handleGridRequestChange}

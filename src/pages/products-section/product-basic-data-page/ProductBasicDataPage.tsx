@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import React, { useEffect } from "react";
 
 import cs from "./ProductBasicDataPage.module.scss";
 import ProductConfigurationCard from "@/components/complex/custom-cards/product-configuration-card/ProductConfigurationCard.tsx";
@@ -56,12 +56,12 @@ export function ProductBasicDataPage() {
         });
     }
     if (!state.brandsList.length) {
-      service.getSimpleListOfAllBrandsHandler().then((res) => {
+      productsService.getSimpleListOfAllBrandsHandler().then((res) => {
         dispatch(actions.refreshBrandsList(res));
       });
     }
     if (!state.categoriesList.length) {
-      service.getAllCategoriesByOrganizationHandler().then((res) => {
+      productsService.getAllCategoriesByOrganizationHandler().then((res) => {
         dispatch(actions.refreshCategoriesList(res));
       });
     }
@@ -126,7 +126,7 @@ export function ProductBasicDataPage() {
 
   function updateProductDetails(data) {
     dispatch(actions.setIsProductConfigurationCardLoading(true));
-    service.updateProductHandler(productId, data).then((res) => {
+    productsService.updateProductHandler(productId, data).then((res) => {
       dispatch(actions.setIsProductConfigurationCardLoading(false));
       if (res.data) {
         dispatch(productsActions.refreshProduct(res.data));
@@ -149,7 +149,7 @@ export function ProductBasicDataPage() {
 
   function createNewProduct(data) {
     dispatch(actions.setIsProductConfigurationCardLoading(true));
-    service.createNewProductHandler(data).then((res) => {
+    productsService.createNewProductHandler(data).then((res) => {
       dispatch(actions.setIsProductConfigurationCardLoading(false));
       if (res.data) {
         dispatch(productsActions.refreshSelectedProduct(res.data));
@@ -207,8 +207,8 @@ export function ProductBasicDataPage() {
         product={productsState.product}
         brandsList={state.brandsList}
         categoriesList={state.categoriesList}
-        onGenerateProductCode={service.generateProductCodeHandler}
-        onProductCodeChange={service.checkProductCodeHandler}
+        onGenerateProductCode={productsService.generateProductCodeHandler}
+        onProductCodeChange={productsService.checkProductCodeHandler}
         onOpenCreateProductCategoryCard={() =>
           handleCardAction("createCategoryCard")
         }

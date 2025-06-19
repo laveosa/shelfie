@@ -38,10 +38,10 @@ export default function ProductConfigurationCard({
 }: IProductConfigurationCard) {
   const form = useForm({
     defaultValues: {
-      name: "",
+      productName: "",
       productCode: null,
       barcode: "",
-      categoryId: null,
+      productCategoryId: null,
       brandId: null,
       isActive: false,
     },
@@ -50,19 +50,19 @@ export default function ProductConfigurationCard({
   useEffect(() => {
     if (product && product.productId && product.productName) {
       form.reset({
-        name: product.productName || "",
+        productName: product.productName || "",
         productCode: product.productCode || null,
         barcode: product.barcode || "",
-        categoryId: product.productCategory?.categoryId || null,
+        productCategoryId: product.productCategory?.categoryId || null,
         brandId: product.brand?.brandId || null,
         isActive: product.isActive || false,
       });
     } else {
       form.reset({
-        name: "",
+        productName: "",
         productCode: null,
         barcode: "",
-        categoryId: null,
+        productCategoryId: null,
         brandId: null,
         isActive: false,
       });
@@ -110,25 +110,19 @@ export default function ProductConfigurationCard({
                   message: "Product name cannot exceed 50 characters",
                 },
               }}
-              name="name"
+              name="productName"
             >
               <SheInput
                 label="Product Name"
                 placeholder="enter product name..."
-                isValid={!form.formState.errors.name}
-                patternErrorMessage={form.formState.errors.name?.message}
+                isValid={!form.formState.errors.productName}
+                patternErrorMessage={form.formState.errors.productName?.message}
                 showError={true}
                 fullWidth={true}
               />
             </SheForm.Field>
             <div className={cs.productConfigurationFormRow}>
-              <SheForm.Field
-                name="productCode"
-                rules={{
-                  required: true,
-                }}
-                onDelay={onCheckCode}
-              >
+              <SheForm.Field name="productCode" onDelay={onCheckCode}>
                 <SheInput
                   {...(form.register("productCode") as any)}
                   label="Product Code"
@@ -158,7 +152,7 @@ export default function ProductConfigurationCard({
             <div className={cs.productConfigurationFormRow}>
               <FormField
                 control={form.control}
-                name="categoryId"
+                name="productCategoryId"
                 rules={{
                   required: true,
                 }}
@@ -166,7 +160,7 @@ export default function ProductConfigurationCard({
                   <FormItem>
                     <FormLabel>Product Category</FormLabel>
                     <Select
-                      key={form.watch("categoryId")}
+                      key={form.watch("productCategoryId")}
                       onValueChange={(value) => field.onChange(Number(value))}
                       value={field.value ? field.value.toString() : ""}
                     >
@@ -175,7 +169,8 @@ export default function ProductConfigurationCard({
                           <SelectValue placeholder="Select category">
                             {categoriesList.find(
                               (item) =>
-                                item.categoryId === form.watch("categoryId"),
+                                item.categoryId ===
+                                form.watch("productCategoryId"),
                             )?.categoryName ?? "Select category"}
                           </SelectValue>
                         </SelectTrigger>

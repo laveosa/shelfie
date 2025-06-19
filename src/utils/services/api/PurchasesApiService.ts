@@ -51,6 +51,32 @@ export const PurchasesApiService = createApi({
         url: `${ApiUrlEnum.PURCHASES}/${purchaseId}/report`,
       }),
     }),
+    addVariantToPurchaseProducts: apiConfig.createMutation<
+      any,
+      {
+        id: number;
+        model: any;
+      }
+    >(builder, {
+      query: ({ id, model }) => ({
+        url: `${ApiUrlEnum.PURCHASES}/${id}${ApiUrlEnum.VARIANTS}`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+    }),
+    updatePurchaseProduct: apiConfig.createMutation<
+      any,
+      {
+        id: number;
+        model: any;
+      }
+    >(builder, {
+      query: ({ id, model }) => ({
+        url: `${ApiUrlEnum.PURCHASES}/stock-actions/${id}`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+    }),
   }),
 });
 

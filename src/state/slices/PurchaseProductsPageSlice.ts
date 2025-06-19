@@ -1,9 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IPurchaseProductsPageSlice } from "@/const/interfaces/store-slices/IPurchaseProductsPageSlice.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { BrandModel } from "@/const/models/BrandModel.ts";
+import { CategoryModel } from "@/const/models/CategoryModel.ts";
 
 const initialState: IPurchaseProductsPageSlice = {
   isLoading: false,
@@ -11,8 +14,11 @@ const initialState: IPurchaseProductsPageSlice = {
   isPurchaseProductsCardLoading: false,
   isPurchasesProductsGridLoading: false,
   isProductsGridLoading: false,
+  isProductConfigurationCardLoading: false,
+  isManageProductCardLoading: false,
   activeCards: [],
   activeTab: "purchaseProducts",
+  selectedProduct: null,
   purchaseProducts: [],
   purchasesProductsGridModel: {
     pager: {},
@@ -22,6 +28,8 @@ const initialState: IPurchaseProductsPageSlice = {
     currentPage: 1,
     pageSize: 10,
   },
+  brands: [],
+  categories: [],
 };
 
 function setIsLoading(
@@ -59,6 +67,20 @@ function setIsProductsGridLoading(
   state.isProductsGridLoading = action?.payload;
 }
 
+function setIsProductConfigurationCardLoading(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isProductConfigurationCardLoading = action?.payload;
+}
+
+function setIsManageProductCardLoading(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isManageProductCardLoading = action?.payload;
+}
+
 function refreshActiveCards(
   state: IPurchaseProductsPageSlice,
   action: PayloadAction<any[]>,
@@ -71,6 +93,13 @@ function refreshActiveTab(
   action: PayloadAction<string>,
 ) {
   state.activeTab = action?.payload || state.activeTab;
+}
+
+function refreshSelectedProduct(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<ProductModel>,
+) {
+  state.selectedProduct = action?.payload || state.selectedProduct;
 }
 
 function refreshPurchaseProducts(
@@ -96,6 +125,20 @@ function refreshPurchasesProductsGridRequestModel(
     action?.payload || state.purchasesProductsGridRequestModel;
 }
 
+function refreshBrands(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<BrandModel[]>,
+) {
+  state.brands = action?.payload || state.brands;
+}
+
+function refreshCategories(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<CategoryModel[]>,
+) {
+  state.categories = action?.payload || state.categories;
+}
+
 const PurchaseProductsPageSlice = createSlice({
   name: StoreSliceEnum.PURCHASE_PRODUCTS,
   initialState,
@@ -105,11 +148,16 @@ const PurchaseProductsPageSlice = createSlice({
     setIsPurchaseProductsCardLoading,
     setIsPurchasesProductsGridLoading,
     setIsProductsGridLoading,
+    setIsProductConfigurationCardLoading,
+    setIsManageProductCardLoading,
     refreshActiveCards,
     refreshActiveTab,
+    refreshSelectedProduct,
     refreshPurchaseProducts,
     refreshPurchasesProductsGridModel,
     refreshPurchasesProductsGridRequestModel,
+    refreshBrands,
+    refreshCategories,
   },
 });
 

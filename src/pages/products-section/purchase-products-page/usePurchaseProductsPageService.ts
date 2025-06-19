@@ -12,6 +12,10 @@ export default function usePurchaseProductsPageService() {
 
   const [getListOfPurchaseProductsForGrid] =
     PurchasesApiHooks.useGetListOfPurchaseProductsForGridMutation();
+  const [addVariantToPurchaseProducts] =
+    PurchasesApiHooks.useAddVariantToPurchaseProductsMutation();
+  const [updatePurchaseProduct] =
+    PurchasesApiHooks.useUpdatePurchaseProductMutation();
 
   function getListOfPurchaseProductsForGridHandler(id: any, model) {
     return getListOfPurchaseProductsForGrid({ id, model }).then((res: any) => {
@@ -21,7 +25,21 @@ export default function usePurchaseProductsPageService() {
     });
   }
 
+  function addVariantToPurchaseProductsHandler(id: any, model) {
+    return addVariantToPurchaseProducts({ id, model }).then((res: any) => {
+      return res;
+    });
+  }
+
+  function updatePurchaseProductHandler(id: any, model) {
+    return updatePurchaseProduct({ id, model }).then((res: any) => {
+      return res;
+    });
+  }
+
   return {
     getListOfPurchaseProductsForGridHandler,
+    addVariantToPurchaseProductsHandler,
+    updatePurchaseProductHandler,
   };
 }

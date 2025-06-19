@@ -66,6 +66,26 @@ export default function useProductsPageService() {
   const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
   const [getPurchaseCounters] =
     PurchasesApiHooks.useLazyGetPurchaseCountersQuery();
+  const [getTraitsForFilter] =
+    ProductsApiHooks.useLazyGetTraitsForFilterQuery();
+  const [generateProductCode] =
+    ProductsApiHooks.useLazyGenerateProductCodeQuery();
+  const [getSimpleListOfAllBrands] =
+    ProductsApiHooks.useLazyGetSimpleListOfAllBrandsQuery();
+  const [getAllCategoriesByOrganization] =
+    ProductsApiHooks.useLazyGetAllCategoriesByOrganizationQuery();
+  const [checkProductCode] = ProductsApiHooks.useCheckProductCodeMutation();
+  const [checkBrandName] = ProductsApiHooks.useCheckBrandNameMutation();
+  const [checkCategoryName] = ProductsApiHooks.useCheckCategoryNameMutation();
+  const [createNewProduct] = ProductsApiHooks.useCreateNewProductMutation();
+  const [updateProduct] = ProductsApiHooks.useUpdateProductMutation();
+  const [createNewCategory] = ProductsApiHooks.useCreateNewCategoryMutation();
+  const [createBrand] = ProductsApiHooks.useCreateBrandMutation();
+  const [putPhotoInNewPosition] =
+    ProductsApiHooks.usePutPhotoInNewPositionMutation();
+  const [deletePhoto] = AssetsApiHooks.useDeletePhotoMutation();
+  const [getListOfAllTraits] =
+    ProductsApiHooks.useLazyGetListOfAllTraitsQuery();
 
   //-------------------------------------------------API
 
@@ -286,6 +306,95 @@ export default function useProductsPageService() {
     });
   }
 
+  function getTraitsForFilterHandler(id = null) {
+    return getTraitsForFilter(id).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function generateProductCodeHandler() {
+    return generateProductCode(null).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function getSimpleListOfAllBrandsHandler() {
+    return getSimpleListOfAllBrands(null).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function getAllCategoriesByOrganizationHandler() {
+    return getAllCategoriesByOrganization(null).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function checkProductCodeHandler(code) {
+    return checkProductCode(code).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function checkBrandNameHandler(brandName) {
+    return checkBrandName(brandName).then((res: any) => {
+      return res;
+    });
+  }
+
+  function checkCategoryNameHandler(categoryName) {
+    return checkCategoryName(categoryName).then((res: any) => {
+      return res;
+    });
+  }
+
+  function createNewProductHandler(model) {
+    return createNewProduct(model).then((res: any) => {
+      return res;
+    });
+  }
+
+  function updateProductHandler(productId, model) {
+    return updateProduct({ productId, model }).then((res: any) => {
+      return res;
+    });
+  }
+
+  function createNewCategoryHandler(model) {
+    return createNewCategory(model).then((res: any) => {
+      return res;
+    });
+  }
+
+  function createBrandHandler(model) {
+    return createBrand(model).then((res: any) => {
+      return res;
+    });
+  }
+
+  function putPhotoInNewPositionHandler(productId, photoId, index) {
+    return putPhotoInNewPosition({
+      productId,
+      photoId,
+      index,
+    }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function deletePhotoHandler(photoId) {
+    return deletePhoto(photoId).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function getListOfAllTraitsHandler() {
+    return getListOfAllTraits().then((res: any) => {
+      dispatch(actions.refreshListOfTraits(res.data));
+      return res.data;
+    });
+  }
+
   //----------------------------------------------------LOGIC
 
   function itemsCardItemsConvertor(
@@ -372,7 +481,21 @@ export default function useProductsPageService() {
     getCountryCodeHandler,
     uploadPhotoHandler,
     getPurchaseCountersHandler,
+    getTraitsForFilterHandler,
     itemsCardItemsConvertor,
     itemCardHandler,
+    generateProductCodeHandler,
+    getSimpleListOfAllBrandsHandler,
+    getAllCategoriesByOrganizationHandler,
+    checkProductCodeHandler,
+    checkBrandNameHandler,
+    checkCategoryNameHandler,
+    createNewProductHandler,
+    updateProductHandler,
+    createNewCategoryHandler,
+    createBrandHandler,
+    putPhotoInNewPositionHandler,
+    deletePhotoHandler,
+    getListOfAllTraitsHandler,
   };
 }

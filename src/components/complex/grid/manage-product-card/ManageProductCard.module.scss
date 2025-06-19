@@ -1,0 +1,38 @@
+.manageProductCard {
+  .manageProductCardContent {
+    .productDataBlock {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 20px 0;
+
+      .productDataRow {
+        display: flex;
+        align-items: center;
+        width: 100%;
+
+        .productDataCell {
+          display: flex;
+          gap: 10px;
+          align-items: center;
+          width: 50%;
+          white-space: normal;
+          word-wrap: break-word;
+          overflow-wrap: break-word;
+          max-width: 100%;
+          font-size: 14px;
+
+          img {
+            width: 30px;
+            border-radius: 6px;
+          }
+        }
+
+        .traitsDataCell {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+    }
+  }
+}

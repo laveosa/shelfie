@@ -19,6 +19,7 @@ import { VariantModel } from "@/const/models/VariantModel.ts";
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 import { SupplierModel } from "@/const/models/SupplierModel.ts";
 import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
+import { TraitModel } from "@/const/models/TraitModel.ts";
 
 const initialState: IProductsPageSlice = {
   isLoading: false,
@@ -75,6 +76,7 @@ const initialState: IProductsPageSlice = {
   currenciesList: [],
   countryCodeList: null,
   purchaseCounters: null,
+  listOfTraits: null,
 };
 
 //----------------------------------------------------- LOADERS
@@ -320,6 +322,13 @@ function refreshPurchaseCounters(
   state.purchaseCounters = action?.payload || state.purchaseCounters;
 }
 
+function refreshListOfTraits(
+  state: IProductsPageSlice,
+  action: PayloadAction<TraitModel[]>,
+) {
+  state.listOfTraits = action?.payload || state.listOfTraits;
+}
+
 const ProductsPageSlice = createSlice({
   name: StoreSliceEnum.PRODUCTS,
   initialState,
@@ -359,6 +368,7 @@ const ProductsPageSlice = createSlice({
     refreshCurrenciesList,
     refreshCountryCodeList,
     refreshPurchaseCounters,
+    refreshListOfTraits,
   },
 });
 
