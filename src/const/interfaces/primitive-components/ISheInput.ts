@@ -1,8 +1,4 @@
-import React, {
-  ComponentPropsWithRef,
-  InputHTMLAttributes,
-  RefObject,
-} from "react";
+import React, { ComponentPropsWithRef, InputHTMLAttributes } from "react";
 
 import { ContextPatternEnum } from "@/const/enums/ContextPatternEnum.ts";
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
@@ -23,6 +19,7 @@ export interface ISheInput
     ISheErrorMessageBlock,
     NativeInputProps,
     ComponentPropsWithRef<any> {
+  ref?: any;
   id?: string;
   className?: string;
   style?: React.CSSProperties;
@@ -54,7 +51,7 @@ export interface ISheInput
     | "hidden"
     | "color";
   step?: number;
-  size?: "sizeNormal" | "sizeSmall";
+  size?: "normal" | "small";
   autoFocus?: boolean;
   isSearch?: boolean;
   disabled?: boolean;
@@ -71,8 +68,50 @@ export interface ISheInput
   patternErrorMessage?: string;
   patternErrorMessageTransKey?: string;
   delayTime?: number;
+  onIsValid?: (value: boolean) => void;
   onChange?: (value: string | number | readonly string[]) => void;
   onBlur?: (value: string | number | readonly string[]) => void;
   onDelay?: (value: string | number | readonly string[]) => void;
-  onIsValid?: (value: boolean) => void;
+  onClear?: (value: null) => void;
 }
+
+export const SheInputDefaultModel: ISheInput = {
+  ref: undefined,
+  id: undefined,
+  className: undefined,
+  style: undefined,
+  label: undefined,
+  labelTransKey: undefined,
+  icon: undefined,
+  value: undefined,
+  placeholder: undefined,
+  placeholderTransKey: undefined,
+  type: undefined,
+  step: undefined,
+  size: undefined,
+  autoFocus: undefined,
+  isSearch: undefined,
+  showClearBtn: undefined,
+  tooltip: undefined,
+  disabled: undefined,
+  isLoading: undefined,
+  minWidth: undefined,
+  maxWidth: undefined,
+  fullWidth: undefined,
+  required: undefined,
+  minLength: undefined,
+  maxLength: undefined,
+  isValid: undefined,
+  ignoreValidation: undefined,
+  showError: undefined,
+  pattern: undefined,
+  patternErrorMessage: undefined,
+  patternErrorMessageTransKey: undefined,
+  delayTime: undefined,
+  children: undefined,
+  onIsValid: undefined,
+  onChange: undefined,
+  onBlur: undefined,
+  onDelay: undefined,
+  onClear: undefined,
+};

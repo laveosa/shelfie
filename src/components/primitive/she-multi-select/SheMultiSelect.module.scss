@@ -25,11 +25,12 @@ $iconSize: 20px;
       font-weight: bold;
       opacity: 0.4;
       color: vars.$placeholderColor;
+      text-align: center;
     }
   }
 }
 
-// ========================================================= MULTI SELECT ITEM WRAPPER
+// ========================================================= ITEMS WRAPPER
 
 .sheMultiSelectItemParentWrapper {
   margin-bottom: 2px;

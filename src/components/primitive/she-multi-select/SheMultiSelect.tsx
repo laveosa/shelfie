@@ -13,7 +13,7 @@ import {
 import { Popover, PopoverContent } from "@/components/ui/popover";
 import { ISheMultiSelect } from "@/const/interfaces/primitive-components/ISheMultiSelect.ts";
 import SheMultiSelectTrigger from "@/components/primitive/she-multi-select/components/she-multi-select-trigger/SheMultiSelectTrigger.tsx";
-import { generateId } from "@/utils/helpers/quick-helper.ts";
+import { addItemsId, generateId } from "@/utils/helpers/quick-helper.ts";
 import { ISheMultiSelectItem } from "@/const/interfaces/primitive-components/ISheMultiSelectItem.ts";
 import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
 import SheMultiSelectItem from "@/components/primitive/she-multi-select/components/she-multi-select-item/SheMultiSelectItem.tsx";
@@ -34,7 +34,7 @@ import {
 
 export default function SheMultiSelect({
   popoverClassName = "",
-  popoverStyles,
+  popoverStyle,
   options,
   hideSelectAll,
   selectedValues,
@@ -83,7 +83,7 @@ export default function SheMultiSelect({
     setIsItemsWithColors(null);
 
     if (!_.isEqual(options, _options)) {
-      setOptions(_addItemsIds(options));
+      setOptions(addItemsId<ISheMultiSelectItem>(options));
       setBadges(_getSelectedBudges(options, _selectedValues));
       _setAutoFocus();
     }
@@ -162,22 +162,6 @@ export default function SheMultiSelect({
     }
   }
 
-  function _addItemsIds(items: ISheMultiSelectItem[]) {
-    return items?.map((item, idx) => {
-      if (item.icon) setIsItemsWithIcons(true);
-      if (item.colors) setIsItemsWithColors(true);
-
-      return {
-        ...item,
-        id: `${
-          item.text && item.text.length > 0
-            ? item.text.replace(/ /g, "_")
-            : "multiSelectOption_"
-        }_${(idx + 1).toString()}`,
-      };
-    });
-  }
-
   function _calculatePopoverWidth() {
     requestAnimationFrame(() => {
       const popover = popoverRef.current;
@@ -236,7 +220,7 @@ export default function SheMultiSelect({
         ref={popoverRef}
         className={`${popoverClassName} ${cs.sheMultiSelectPopoverContainer} ${disabled || isLoading ? "disabled" : ""}`}
         style={{
-          ...popoverStyles,
+          ...popoverStyle,
         }}
         align="start"
       >
