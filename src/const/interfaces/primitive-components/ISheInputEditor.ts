@@ -27,7 +27,7 @@ export interface ISheInputEditor extends ISheLabel, ComponentPropsWithRef<any> {
   required?: boolean;
   showClearBtn?: boolean;
   isManage?: boolean;
-  size?: "sizeNormal" | "sizeSmall";
+  size?: "normal" | "small";
   saveOnBlur?: boolean;
   inputProps?: ISheInput;
   manageBtnProps?: ISheButton;

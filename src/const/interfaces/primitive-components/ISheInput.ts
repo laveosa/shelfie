@@ -19,7 +19,7 @@ export interface ISheInput
     ISheErrorMessageBlock,
     NativeInputProps,
     ComponentPropsWithRef<any> {
-  ref?: React.RefObject<HTMLInputElement>;
+  ref?: any;
   id?: string;
   className?: string;
   style?: React.CSSProperties;

@@ -18,7 +18,7 @@ export interface ISheButton
   value?: string | number;
   valueTransKey?: string;
   valueWrap?: boolean;
-  size?: "sizeNormal" | "sizeSmall";
+  size?: "normal" | "small";
   view?: "viewNormal" | "viewCircle";
   disabled?: boolean;
   isLoading?: boolean;

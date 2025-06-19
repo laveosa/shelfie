@@ -83,11 +83,11 @@ $minButtonSize: 20px;
     padding-right: 8px;
   }
 
-  &.sizeSmall.leftIcon {
+  &.small.leftIcon {
     padding-left: 4px;
   }
 
-  &.sizeSmall.rightIcon {
+  &.small.rightIcon {
     padding-right: 4px;
   }
 }
@@ -113,7 +113,7 @@ $minButtonSize: 20px;
 // ======================================================== SIZE
 
 .sheButton {
-  &.sizeSmall {
+  &.small {
     min-width: $minButtonSize;
     min-height: $minButtonSize;
     padding: 4px;
@@ -130,7 +130,7 @@ $minButtonSize: 20px;
     }
   }
 
-  &.withText.sizeSmall {
+  &.withText.small {
     padding: 4px 8px;
   }
 }

@@ -14,7 +14,7 @@ function SheIconComponent({
   elementStyle,
   icon,
   iconView = IconViewEnum.SQUARE,
-  size = "sizeNormal",
+  size = "normal",
   color,
   fullWidth,
   minWidth,

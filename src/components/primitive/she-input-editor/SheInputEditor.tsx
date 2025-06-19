@@ -30,7 +30,7 @@ export default function SheInputEditor({
   fullWidth,
   required,
   isManage,
-  size = "sizeNormal",
+  size = "normal",
   saveOnBlur,
   inputProps,
   manageBtnProps,

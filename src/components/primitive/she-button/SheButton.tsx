@@ -18,7 +18,7 @@ export default function SheButton({
   valueTransKey,
   valueWrap,
   variant = "default",
-  size = "sizeNormal",
+  size = "normal",
   view = "viewNormal",
   disabled,
   isLoading,
@@ -32,8 +32,8 @@ export default function SheButton({
   children,
   ...props
 }: ISheButton): JSX.Element {
-  const iconSize: string = size === "sizeSmall" ? "14px" : "20px";
-  const loaderSize: string = size === "sizeSmall" ? "24px" : "30px";
+  const iconSize: string = size === "small" ? "14px" : "20px";
+  const loaderSize: string = size === "small" ? "24px" : "30px";
   const loaderColor: string = _isLoaderDark();
 
   // ==================================================================== EVENT
