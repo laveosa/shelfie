@@ -110,7 +110,7 @@ export function ProductGalleryPage() {
 
   async function onAction(actionType: string, payload: any) {
     switch (actionType) {
-      case "upload":
+      case "uploadPhoto":
         dispatch(actions.setIsImageUploaderLoading(true));
         service.uploadPhotoHandler(payload).then((res) => {
           dispatch(actions.setIsImageUploaderLoading(false));
@@ -157,7 +157,7 @@ export function ProductGalleryPage() {
             }
           });
         break;
-      case "delete":
+      case "deletePhoto":
         const confirmed = await openConfirmationDialog({
           title: "Deleting product photo",
           text: "You are about to delete product photo.",
@@ -227,7 +227,7 @@ export function ProductGalleryPage() {
         handleCardAction("connectImageCard", true);
         break;
       case "connectImageToVariant":
-        service
+        productsService
           .attachProductPhotoToVariantHandler(
             payload.variantId,
             state.selectedPhoto.photoId,
@@ -255,7 +255,7 @@ export function ProductGalleryPage() {
           });
         break;
       case "detachImageFromVariant":
-        service
+        productsService
           .detachVariantPhotoHandler(
             payload.variantId,
             state.selectedPhoto.photoId,

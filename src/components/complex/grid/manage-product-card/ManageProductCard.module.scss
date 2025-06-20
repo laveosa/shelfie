@@ -26,11 +26,16 @@
             width: 30px;
             border-radius: 6px;
           }
+
         }
 
         .traitsDataCell {
           display: flex;
           flex-direction: column;
+
+          span {
+            text-wrap: auto;
+          }
         }
       }
     }

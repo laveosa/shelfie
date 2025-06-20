@@ -67,12 +67,25 @@ export default function PurchaseProductsCard({
         onAction("openCreateProductCard");
         break;
       case "addProductToPurchase":
-        console.log("addProductToPurchase", payload);
         onAction("addProductToPurchase", payload);
         break;
       case "updatePurchaseProduct":
-        console.log("updatePurchaseProduct", payload);
         onAction("updatePurchaseProduct", payload);
+        break;
+      case "addVariant":
+        onAction("openAddVariantCard", payload.original);
+        break;
+      case "manageVariant":
+        console.log("manageVariant");
+        break;
+      case "transferToPurchase":
+        console.log("transferToPurchase");
+        break;
+      case "removeFromStock":
+        console.log("removeFromStock");
+        break;
+      case "stockChangeHistory":
+        console.log("stockChangeHistory");
         break;
     }
   }

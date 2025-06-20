@@ -20,6 +20,7 @@ import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 import { SupplierModel } from "@/const/models/SupplierModel.ts";
 import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
+import { TypeOfTraitModel } from "@/const/models/TypeOfTraitModel.ts";
 
 const initialState: IProductsPageSlice = {
   isLoading: false,
@@ -76,7 +77,11 @@ const initialState: IProductsPageSlice = {
   currenciesList: [],
   countryCodeList: null,
   purchaseCounters: null,
-  listOfTraits: null,
+  typesOfTraits: [],
+  traits: null,
+  listOfTraitsWithOptionsForProduct: null,
+  brand: null,
+  category: null,
 };
 
 //----------------------------------------------------- LOADERS
@@ -322,11 +327,40 @@ function refreshPurchaseCounters(
   state.purchaseCounters = action?.payload || state.purchaseCounters;
 }
 
-function refreshListOfTraits(
+function refreshTypesOfTraits(
+  state: IProductsPageSlice,
+  action: PayloadAction<TypeOfTraitModel[]>,
+) {
+  state.typesOfTraits = action?.payload || state.typesOfTraits;
+}
+
+function refreshTraits(
   state: IProductsPageSlice,
   action: PayloadAction<TraitModel[]>,
 ) {
-  state.listOfTraits = action?.payload || state.listOfTraits;
+  state.traits = action?.payload || state.traits;
+}
+
+function refreshListOfTraitsWithOptionsForProduct(
+  state: IProductsPageSlice,
+  action: PayloadAction<TraitModel[]>,
+) {
+  state.listOfTraitsWithOptionsForProduct =
+    action?.payload || state.listOfTraitsWithOptionsForProduct;
+}
+
+function refreshBrand(
+  state: IProductsPageSlice,
+  action: PayloadAction<BrandModel>,
+) {
+  state.brand = action?.payload || state.brand;
+}
+
+function refreshCategory(
+  state: IProductsPageSlice,
+  action: PayloadAction<CategoryModel>,
+) {
+  state.category = action?.payload || state.category;
 }
 
 const ProductsPageSlice = createSlice({
@@ -368,7 +402,11 @@ const ProductsPageSlice = createSlice({
     refreshCurrenciesList,
     refreshCountryCodeList,
     refreshPurchaseCounters,
-    refreshListOfTraits,
+    refreshTypesOfTraits,
+    refreshTraits,
+    refreshListOfTraitsWithOptionsForProduct,
+    refreshBrand,
+    refreshCategory,
   },
 });
 

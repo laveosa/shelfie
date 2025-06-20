@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { Plus, WandSparkles } from "lucide-react";
 
 import {
@@ -22,14 +23,14 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
 import { Switch } from "@/components/ui/switch.tsx";
 import { IProductConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IProductConfigurationCard.ts";
-import { useForm } from "react-hook-form";
 
 export default function ProductConfigurationCard({
   isLoading,
   product,
   brandsList,
   categoriesList,
-  onProductCodeChange,
+  showSecondaryButton,
+  onProductCodeCheck,
   onGenerateProductCode,
   onOpenCreateProductCategoryCard,
   onOpenCreateProductBrandCard,
@@ -76,7 +77,7 @@ export default function ProductConfigurationCard({
   }
 
   function onCheckCode(value: string) {
-    onProductCodeChange({ code: value }).then(() => {});
+    onProductCodeCheck({ code: value }).then(() => {});
   }
 
   function onSubmit(data) {
@@ -90,7 +91,7 @@ export default function ProductConfigurationCard({
         title={product?.productId ? "Basic Product Data" : "Create Product"}
         showPrimaryButton={true}
         primaryButtonTitle={product?.productId ? "Save" : "Add Product"}
-        showSecondaryButton={!product?.productId}
+        showSecondaryButton={!product?.productId || showSecondaryButton}
         secondaryButtonTitle="Cancel"
         className={cs.productConfigurationFormCard}
         onPrimaryButtonClick={form.handleSubmit(onSubmit)}
@@ -179,7 +180,7 @@ export default function ProductConfigurationCard({
                         {categoriesList.map((option) => (
                           <SelectItem
                             key={option.categoryId}
-                            value={option.categoryId.toString()}
+                            value={option?.categoryId?.toString()}
                           >
                             {option.categoryName}
                           </SelectItem>

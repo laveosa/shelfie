@@ -6,6 +6,7 @@ import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx
 import { SheImageUploader } from "@/components/complex/she-images-uploader/SheImageUploader.tsx";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { ProductPhotosGridColumns } from "@/components/complex/grid/variant-photos-grid/ProductPhotosGridColumns.tsx";
+import { IProductPhotosCard } from "@/const/interfaces/complex-components/custom-cards/IProductPhotosCard.ts";
 
 export default function ProductPhotosCard({
   isLoading,
@@ -14,18 +15,18 @@ export default function ProductPhotosCard({
   data,
   contextId,
   productCounter,
+  showCloseButton,
   onAction,
-  ...props
-}) {
+}: IProductPhotosCard) {
   const columns = ProductPhotosGridColumns(onGridAction);
 
   function handleAction(actionType: string, payload?: any): any {
     switch (actionType) {
       case "upload":
-        onAction("upload", payload);
+        onAction("uploadPhoto", payload);
         break;
       case "delete":
-        onAction("delete", payload);
+        onAction("deletePhoto", payload);
         break;
       case "connect":
         onAction("openConnectImageCard", payload);
@@ -59,8 +60,9 @@ export default function ProductPhotosCard({
         loading={isLoading}
         title="Product Photos"
         minWidth="405px"
+        showCloseButton={showCloseButton}
+        onSecondaryButtonClick={() => onAction("closeProductPhotsCard")}
         className={cs.productPhotosCard}
-        {...props}
       >
         <div className={cs.productPhotosCardContent}>
           <SheImageUploader

@@ -23,7 +23,7 @@ export default function ChooseVariantTraitsCard({
 }: IChooseVariantTraitsCard) {
   const [selectedTraitId, setSelectedTraitId] = useState<number | null>(null);
   const [checkedTraitIds, setCheckedTraitIds] = useState<number[]>(
-    selectedItems.map((item: TraitModel) => item.traitId),
+    selectedItems?.map((item: TraitModel) => item.traitId),
   );
 
   function handleCheckboxChange(traitId: number, checked: boolean) {

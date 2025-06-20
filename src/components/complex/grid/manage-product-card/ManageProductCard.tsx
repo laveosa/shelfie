@@ -6,12 +6,14 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import cs from "./ManageProductCard.module.scss";
 import { formatDate } from "@/utils/helpers/quick-helper.ts";
+import React, { Fragment } from "react";
+import { TraitModel } from "@/const/models/TraitModel.ts";
 
 export default function ManageProductCard({
   isLoading,
   purchase,
   product,
-  traits,
+  productTraits,
   onAction,
 }: IManageProductCard) {
   return (
@@ -32,6 +34,7 @@ export default function ManageProductCard({
               icon={Cog}
               value={"Manage Product"}
               variant="secondary"
+              fullWidth
               onClick={() => onAction("manageProductData")}
             />
           </div>
@@ -52,10 +55,12 @@ export default function ManageProductCard({
           <div className={cs.productDataRow}>
             <span className={`${cs.productDataCell} she-text`}>Category</span>
             <div className={cs.productDataCell}>
-              <img
-                src={product?.productCategory?.thumbnail}
-                alt={product?.productCategory?.categoryName}
-              />
+              {product?.productCategory?.thumbnail && (
+                <img
+                  src={product?.productCategory?.thumbnail}
+                  alt={product?.productCategory?.categoryName}
+                />
+              )}
               <span className="she-text">
                 {product?.productCategory?.categoryName}
               </span>
@@ -85,6 +90,7 @@ export default function ManageProductCard({
               icon={GalleryThumbnails}
               value={"Manage Photos"}
               variant="secondary"
+              fullWidth
               onClick={() => onAction("manageProductPhotos")}
             />
           </div>
@@ -93,28 +99,33 @@ export default function ManageProductCard({
         <div className={cs.productDataBlock}>
           <div className={cs.productDataRow}>
             <span className={`${cs.productDataCell} she-title`}>
-              {traits?.length > 0
+              {productTraits?.length > 0
                 ? "Product Traits"
                 : "Configure traits to create variant"}
             </span>
             <div className={`${cs.productDataCell} ${cs.traitsDataCell}`}>
-              {traits?.length > 0 && (
-                <span className="she-text">{`The product is described by following traits: ${traits?.map(
-                  (trait) => (
-                    <span className="she-text">{trait?.traitName}</span>
-                  ),
-                )}`}</span>
+              {productTraits?.length > 0 && (
+                <span className="she-text">
+                  The product is described by following traits:{" "}
+                  {productTraits.map((trait: TraitModel, index: number) => (
+                    <Fragment key={trait.traitId}>
+                      <b>{trait.traitName}</b>
+                      {index < productTraits.length - 1 ? ", " : ""}
+                    </Fragment>
+                  ))}
+                </span>
               )}
               <SheButton
                 icon={TableProperties}
                 value={"Manage Traits"}
                 variant="secondary"
+                fullWidth
                 onClick={() => onAction("manageProductTraits")}
               />
             </div>
           </div>
         </div>
-        {traits?.length > 0 && (
+        {productTraits?.length > 0 && (
           <>
             <Separator />
             <div className={cs.productDataBlock}>
@@ -127,6 +138,7 @@ export default function ManageProductCard({
                     icon={Plus}
                     value={"Create Variant"}
                     variant="secondary"
+                    fullWidth
                     onClick={() => onAction("createProductVariants")}
                   />
                 </div>

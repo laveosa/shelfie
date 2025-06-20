@@ -86,6 +86,34 @@ export default function useProductsPageService() {
   const [deletePhoto] = AssetsApiHooks.useDeletePhotoMutation();
   const [getListOfAllTraits] =
     ProductsApiHooks.useLazyGetListOfAllTraitsQuery();
+  const [attachProductPhotoToVariant] =
+    ProductsApiHooks.useAttachProductPhotoToVariantMutation();
+  const [detachVariantPhoto] = ProductsApiHooks.useDetachVariantPhotoMutation();
+  const [getTrait] = ProductsApiHooks.useLazyGetTraitQuery();
+  const [getListOfTypesOfTraits] =
+    DictionaryApiHooks.useLazyGetListOfTypesOfTraitsQuery();
+  ProductsApiHooks.useLazyGetProductVariantsQuery();
+  const [getListOfTraitsWithOptionsForProduct] =
+    ProductsApiHooks.useLazyGetListOfTraitsWithOptionsForProductQuery();
+  const [setProductTraits] = ProductsApiHooks.useSetProductTraitsMutation();
+  const [deleteTrait] = ProductsApiHooks.useDeleteTraitMutation();
+  const [getListOfTraitsForProduct] =
+    ProductsApiHooks.useLazyGetListOfTraitsForProductQuery();
+  const [createNewTrait] = ProductsApiHooks.useCreateNewTraitMutation();
+  const [getOptionsForTrait] =
+    ProductsApiHooks.useLazyGetOptionsForTraitQuery();
+  const [createNewOptionForTrait] =
+    ProductsApiHooks.useCreateNewOptionForTraitMutation();
+  const [updateOptionsForTrait] =
+    ProductsApiHooks.useUpdateOptionOfTraitMutation();
+  const [deleteOptionsForTrait] =
+    ProductsApiHooks.useDeleteOptionOfTraitMutation();
+  const [updateTrait] = ProductsApiHooks.useUpdateTraitMutation();
+  const [changePositionOfTraitOption] =
+    ProductsApiHooks.useChangePositionOfTraitOptionMutation();
+  const [createVariant] = ProductsApiHooks.useCreateVariantMutation();
+  const [checkVariantCombination] =
+    ProductsApiHooks.useCheckVariantCombinationMutation();
 
   //-------------------------------------------------API
 
@@ -390,7 +418,116 @@ export default function useProductsPageService() {
 
   function getListOfAllTraitsHandler() {
     return getListOfAllTraits().then((res: any) => {
-      dispatch(actions.refreshListOfTraits(res.data));
+      dispatch(actions.refreshTraits(res.data));
+      return res.data;
+    });
+  }
+
+  function attachProductPhotoToVariantHandler(variantId, photoId) {
+    return attachProductPhotoToVariant({
+      variantId,
+      photoId,
+    }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function detachVariantPhotoHandler(id, photoId) {
+    return detachVariantPhoto({ id, photoId }).then((res: any) => {
+      return res;
+    });
+  }
+
+  function getTraitHandler(id: number) {
+    return getTrait(id).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function getListOfTypesOfTraitsHandler() {
+    return getListOfTypesOfTraits().then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function getListOfTraitsWithOptionsForProductHandler(id) {
+    return getListOfTraitsWithOptionsForProduct(id).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function setProductTraitsHandler(id, model) {
+    return setProductTraits({ id, model }).then((res: any) => {
+      return res;
+    });
+  }
+
+  function deleteTraitHandler(id) {
+    return deleteTrait(id).then((res: any) => {
+      return res;
+    });
+  }
+
+  function getListOfTraitsForProductHandler(id) {
+    return getListOfTraitsForProduct(id).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function createNewTraitHandler(model) {
+    return createNewTrait(model).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function updateTraitHandler(id, model) {
+    return updateTrait({ id, model }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function getOptionsForTraitHandler(id) {
+    return getOptionsForTrait(id).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function createNewOptionForTraitHandler(id, model) {
+    return createNewOptionForTrait({ id, model }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function updateOptionsForTraitHandler(id, model) {
+    return updateOptionsForTrait({ id, model }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function deleteOptionsForTraitHandler(id) {
+    return deleteOptionsForTrait(id).then((res: any) => {
+      return res;
+    });
+  }
+
+  function changePositionOfTraitOptionHandler(traitId, optionId, index) {
+    return changePositionOfTraitOption({
+      traitId,
+      optionId,
+      index,
+    }).then((res: any) => {
+      return res;
+    });
+  }
+
+  function createVariantHandler(id, model) {
+    return createVariant({ id, model }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function checkVariantCombinationHandler(id, model) {
+    return checkVariantCombination({ id, model }).then((res: any) => {
       return res.data;
     });
   }
@@ -497,5 +634,22 @@ export default function useProductsPageService() {
     putPhotoInNewPositionHandler,
     deletePhotoHandler,
     getListOfAllTraitsHandler,
+    attachProductPhotoToVariantHandler,
+    detachVariantPhotoHandler,
+    getTraitHandler,
+    getListOfTypesOfTraitsHandler,
+    getListOfTraitsWithOptionsForProductHandler,
+    setProductTraitsHandler,
+    deleteTraitHandler,
+    getListOfTraitsForProductHandler,
+    createNewTraitHandler,
+    updateTraitHandler,
+    getOptionsForTraitHandler,
+    createNewOptionForTraitHandler,
+    updateOptionsForTraitHandler,
+    deleteOptionsForTraitHandler,
+    changePositionOfTraitOptionHandler,
+    createVariantHandler,
+    checkVariantCombinationHandler,
   };
 }

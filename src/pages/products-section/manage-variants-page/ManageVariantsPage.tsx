@@ -65,7 +65,7 @@ export function ManageVariantsPage() {
         });
     }
     if (state.listOfTraitsWithOptionsForProduct.length === 0) {
-      service
+      productsService
         .getListOfTraitsWithOptionsForProductHandler(productId)
         .then((res) => {
           dispatch(actions.refreshListOfTraitsWithOptionsForProduct(res));
@@ -188,31 +188,33 @@ export function ManageVariantsPage() {
         break;
       case "addVariant":
         dispatch(actions.setIsAddVariantCardLoading(true));
-        service
+        productsService
           .checkVariantCombinationHandler(productId, payload)
           .then((res) => {
             if (res) {
-              service.createVariantHandler(productId, payload).then((res) => {
-                dispatch(actions.setIsAddVariantCardLoading(false));
-                if (res) {
-                  handleCardAction("addVariantCard");
-                  productsService
-                    .getProductVariantsHandler(productId)
-                    .then((res) => {
-                      dispatch(productsActions.refreshProductVariants(res));
+              productsService
+                .createVariantHandler(productId, payload)
+                .then((res) => {
+                  dispatch(actions.setIsAddVariantCardLoading(false));
+                  if (res) {
+                    handleCardAction("addVariantCard");
+                    productsService
+                      .getProductVariantsHandler(productId)
+                      .then((res) => {
+                        dispatch(productsActions.refreshProductVariants(res));
+                      });
+                    addToast({
+                      text: "Variant added successfully",
+                      type: "success",
                     });
-                  addToast({
-                    text: "Variant added successfully",
-                    type: "success",
-                  });
-                } else {
-                  addToast({
-                    text: "Variant not added",
-                    description: res.error.message,
-                    type: "error",
-                  });
-                }
-              });
+                  } else {
+                    addToast({
+                      text: "Variant not added",
+                      description: res.error.message,
+                      type: "error",
+                    });
+                  }
+                });
             } else {
               dispatch(actions.setIsAddVariantCardLoading(false));
               dispatch(actions.refreshIsDuplicateVariant(true));
@@ -221,7 +223,7 @@ export function ManageVariantsPage() {
         break;
       case "addDuplicatedVariant":
         dispatch(actions.setIsAddVariantCardLoading(true));
-        service.createVariantHandler(productId, payload).then((res) => {
+        productsService.createVariantHandler(productId, payload).then((res) => {
           dispatch(actions.setIsAddVariantCardLoading(false));
           if (res) {
             handleCardAction("addVariantCard");
@@ -549,7 +551,7 @@ export function ManageVariantsPage() {
       case "addTrait":
         dispatch(actions.setIsProductTraitConfigurationCardLoading(true));
         dispatch(actions.resetSelectedTrait());
-        service.getListOfTypesOfTraitsHandler().then((res) => {
+        productsService.getListOfTypesOfTraitsHandler().then((res) => {
           dispatch(actions.setIsProductTraitConfigurationCardLoading(false));
           dispatch(actions.refreshTypesOfTraits(res));
           handleCardAction("productTraitConfigurationCard", true);
@@ -561,9 +563,9 @@ export function ManageVariantsPage() {
         dispatch(actions.setIsProductTraitConfigurationCardLoading(true));
         dispatch(actions.setIsTraitOptionsGridLoading(true));
         Promise.all([
-          service.getTraitHandler(payload),
-          service.getOptionsForTraitHandler(payload),
-          service.getListOfTypesOfTraitsHandler(),
+          productsService.getTraitHandler(payload),
+          productsService.getOptionsForTraitHandler(payload),
+          productsService.getListOfTypesOfTraitsHandler(),
         ]).then(([trait, options, types]) => {
           dispatch(actions.setIsProductTraitConfigurationCardLoading(false));
           dispatch(actions.setIsTraitOptionsGridLoading(false));
@@ -579,19 +581,21 @@ export function ManageVariantsPage() {
         break;
       case "createTrait":
         dispatch(actions.setIsProductTraitConfigurationCardLoading(true));
-        service.createNewTraitHandler(payload).then((res) => {
+        productsService.createNewTraitHandler(payload).then((res) => {
           dispatch(actions.setIsProductTraitConfigurationCardLoading(false));
           if (res) {
             dispatch(actions.refreshSelectedTrait(res));
-            service.getOptionsForTraitHandler(res.traitId).then((res) => {
-              dispatch(
-                actions.refreshColorOptionsGridModel({
-                  ...state.colorOptionsGridModel,
-                  items: res.filter((option) => !option.isDeleted),
-                }),
-              );
-            });
-            service.getListOfAllTraitsHandler().then((res) => {
+            productsService
+              .getOptionsForTraitHandler(res.traitId)
+              .then((res) => {
+                dispatch(
+                  actions.refreshColorOptionsGridModel({
+                    ...state.colorOptionsGridModel,
+                    items: res.filter((option) => !option.isDeleted),
+                  }),
+                );
+              });
+            productsService.getListOfAllTraitsHandler().then((res) => {
               dispatch(actions.refreshTraits(res));
             });
             addToast({
@@ -609,12 +613,12 @@ export function ManageVariantsPage() {
         break;
       case "updateTrait":
         dispatch(actions.setIsProductTraitConfigurationCardLoading(true));
-        service
+        productsService
           .updateTraitHandler(state.selectedTrait.traitId, payload)
           .then((res) => {
             dispatch(actions.setIsProductTraitConfigurationCardLoading(false));
             if (res) {
-              service.getListOfAllTraitsHandler().then((res) => {
+              productsService.getListOfAllTraitsHandler().then((res) => {
                 dispatch(actions.refreshTraits(res));
               });
               addToast({
@@ -633,30 +637,34 @@ export function ManageVariantsPage() {
       case "setProductTraits":
         dispatch(actions.refreshSelectedTraitsIds(payload));
         dispatch(actions.setIsChooseVariantTraitsCardLoading(true));
-        service.setProductTraitsHandler(productId, payload).then((res) => {
-          dispatch(actions.setIsChooseVariantTraitsCardLoading(false));
-          if (res) {
-            handleMultipleCardActions([
-              "chooseVariantTraitsCard",
-              "productTraitConfigurationCard",
-            ]);
-            service
-              .getListOfTraitsWithOptionsForProductHandler(productId)
-              .then((res) => {
-                dispatch(actions.refreshListOfTraitsWithOptionsForProduct(res));
+        productsService
+          .setProductTraitsHandler(productId, payload)
+          .then((res) => {
+            dispatch(actions.setIsChooseVariantTraitsCardLoading(false));
+            if (res) {
+              handleMultipleCardActions([
+                "chooseVariantTraitsCard",
+                "productTraitConfigurationCard",
+              ]);
+              productsService
+                .getListOfTraitsWithOptionsForProductHandler(productId)
+                .then((res) => {
+                  dispatch(
+                    actions.refreshListOfTraitsWithOptionsForProduct(res),
+                  );
+                });
+              addToast({
+                text: "Traits set successfully",
+                type: "success",
               });
-            addToast({
-              text: "Traits set successfully",
-              type: "success",
-            });
-          } else {
-            addToast({
-              text: "Traits not set",
-              description: res.error.message,
-              type: "error",
-            });
-          }
-        });
+            } else {
+              addToast({
+                text: "Traits not set",
+                description: res.error.message,
+                type: "error",
+              });
+            }
+          });
         break;
       case "deleteTrait":
         const confirmedTraitDeleting = await openConfirmationDialog({
@@ -671,11 +679,13 @@ export function ManageVariantsPage() {
         dispatch(actions.setIsChooseVariantTraitsCardLoading(true));
 
         try {
-          await service.deleteTraitHandler(payload.traitId);
+          await productsService.deleteTraitHandler(payload.traitId);
 
           const [traitsWithOptions, allTraits] = await Promise.all([
-            service.getListOfTraitsWithOptionsForProductHandler(productId),
-            service.getListOfAllTraitsHandler(),
+            productsService.getListOfTraitsWithOptionsForProductHandler(
+              productId,
+            ),
+            productsService.getListOfAllTraitsHandler(),
           ]);
 
           dispatch(
@@ -698,12 +708,12 @@ export function ManageVariantsPage() {
         break;
       case "updateOption":
         dispatch(actions.setIsTraitOptionsGridLoading(true));
-        service
+        productsService
           .updateOptionsForTraitHandler(payload.optionId, payload.updatedModel)
           .then((res) => {
             dispatch(actions.setIsTraitOptionsGridLoading(false));
             if (res) {
-              service
+              productsService
                 .getOptionsForTraitHandler(state.selectedTrait.traitId)
                 .then((options) => {
                   dispatch(
@@ -728,7 +738,7 @@ export function ManageVariantsPage() {
         break;
       case "addOption":
         dispatch(actions.setIsTraitOptionsGridLoading(true));
-        service
+        productsService
           .createNewOptionForTraitHandler(state.selectedTrait.traitId, {
             optionColor: "#fff",
             optionName: "Default option",
@@ -742,7 +752,7 @@ export function ManageVariantsPage() {
                   items: [...state.colorOptionsGridModel.items, res],
                 }),
               );
-              service.getListOfAllTraitsHandler().then((res) => {
+              productsService.getListOfAllTraitsHandler().then((res) => {
                 dispatch(actions.refreshTraits(res));
               });
               addToast({
@@ -771,11 +781,13 @@ export function ManageVariantsPage() {
         dispatch(actions.setIsTraitOptionsGridLoading(true));
 
         try {
-          await service.deleteOptionsForTraitHandler(payload.optionId);
+          await productsService.deleteOptionsForTraitHandler(payload.optionId);
 
           const [options, allTraits] = await Promise.all([
-            service.getOptionsForTraitHandler(state.selectedTrait.traitId),
-            service.getListOfAllTraitsHandler(),
+            productsService.getOptionsForTraitHandler(
+              state.selectedTrait.traitId,
+            ),
+            productsService.getListOfAllTraitsHandler(),
           ]);
 
           dispatch(
@@ -801,7 +813,7 @@ export function ManageVariantsPage() {
 
         break;
       case "dndTraitOption":
-        service.changePositionOfTraitOptionHandler(
+        productsService.changePositionOfTraitOptionHandler(
           payload.selectedTrait.traitId,
           payload.activeItem.optionId,
           payload.newIndex,
@@ -818,7 +830,7 @@ export function ManageVariantsPage() {
         break;
       case "openChooseVariantTraitsCard":
         dispatch(actions.setIsChooseVariantTraitsCardLoading(true));
-        service.getListOfAllTraitsHandler().then((res) => {
+        productsService.getListOfAllTraitsHandler().then((res) => {
           dispatch(actions.setIsChooseVariantTraitsCardLoading(false));
           dispatch(actions.refreshTraits(res));
         });

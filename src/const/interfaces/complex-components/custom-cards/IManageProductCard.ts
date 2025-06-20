@@ -6,6 +6,6 @@ export interface IManageProductCard {
   isLoading?: boolean;
   purchase?: PurchaseModel;
   product?: ProductModel;
-  traits?: TraitModel[];
+  productTraits?: TraitModel[];
   onAction?: (identifier: string, payload?: any) => void;
 }

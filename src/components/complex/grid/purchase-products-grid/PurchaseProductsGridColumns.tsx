@@ -1,5 +1,4 @@
 import { ColumnDef } from "@tanstack/react-table";
-import ProductsGridColumnActions from "@/components/complex/grid/products-grid/ProductsGridColumnActions.tsx";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 import placeholderImage from "@/assets/images/placeholder-image.png";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
@@ -11,6 +10,7 @@ import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import PurchaseProductsForm from "@/components/forms/purchase-products-form/PurchaseProductsForm.tsx";
 import { ImageIcon } from "lucide-react";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import PurchaseProductsGridColumnActions from "@/components/complex/grid/purchase-products-grid/PurchaseProductsGridColumnActions.tsx";
 
 export function purchaseProductsGridColumns(
   currencies: CurrencyModel[],
@@ -224,7 +224,7 @@ export function purchaseProductsGridColumns(
       cell: ({ row, table }) => {
         return (
           <div style={{ display: "flex", justifyContent: "center" }}>
-            <ProductsGridColumnActions
+            <PurchaseProductsGridColumnActions
               row={row}
               onAction={onAction}
               table={table}

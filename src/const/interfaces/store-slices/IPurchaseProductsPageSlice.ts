@@ -3,6 +3,8 @@ import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
+import { ImageModel } from "@/const/models/ImageModel.ts";
+import { TraitModel } from "@/const/models/TraitModel.ts";
 
 export interface IPurchaseProductsPageSlice {
   isLoading?: boolean;
@@ -11,13 +13,29 @@ export interface IPurchaseProductsPageSlice {
   isPurchasesProductsGridLoading?: boolean;
   isProductsGridLoading?: boolean;
   isProductConfigurationCardLoading?: boolean;
+  isCreateCategoryCardLoading?: boolean;
+  isCreateBrandCardLoading?: boolean;
   isManageProductCardLoading?: boolean;
+  isProductPhotosCardLoading?: boolean;
+  isConnectImageCardLoading?: boolean;
+  isChooseVariantTraitsCardLoading?: boolean;
+  isProductTraitConfigurationCardLoading?: boolean;
+  isAddVariantCardLoading?: boolean;
+  isImageUploaderLoading?: boolean;
+  isProductPhotosLoading?: boolean;
+  isVariantsGridLoading?: boolean;
+  isTraitOptionsGridLoading?: boolean;
   activeCards?: any[];
   activeTab?: string;
   selectedProduct?: ProductModel;
   purchasesProductsGridModel?: GridModel;
   purchasesProductsGridRequestModel?: GridRequestModel;
+  colorOptionsGridModel?: GridModel;
   purchaseProducts?: ProductModel[];
   brands?: BrandModel[];
   categories?: CategoryModel[];
+  selectedPhoto?: ImageModel;
+  selectedTraitsIds?: number[];
+  selectedTrait?: TraitModel;
+  isDuplicateVariant: boolean;
 }
