@@ -114,6 +114,8 @@ export default function useProductsPageService() {
   const [createVariant] = ProductsApiHooks.useCreateVariantMutation();
   const [checkVariantCombination] =
     ProductsApiHooks.useCheckVariantCombinationMutation();
+  const [getPurchaseProductVariants] =
+    PurchasesApiHooks.useLazyGetPurchaseProductVariantsQuery();
 
   //-------------------------------------------------API
 
@@ -190,7 +192,7 @@ export default function useProductsPageService() {
 
   function getListOfSuppliersHandler() {
     return getListOfSuppliers(null).then((res: any) => {
-      dispatch(actions.refreshCategories(res.data));
+      dispatch(actions.refreshSuppliers(res.data));
       return res.data;
     });
   }
@@ -532,6 +534,15 @@ export default function useProductsPageService() {
     });
   }
 
+  function getPurchaseProductVariantsHandler(purchaseId, productId) {
+    return getPurchaseProductVariants({
+      purchaseId,
+      productId,
+    }).then((res: any) => {
+      return res.data;
+    });
+  }
+
   //----------------------------------------------------LOGIC
 
   function itemsCardItemsConvertor(
@@ -651,5 +662,6 @@ export default function useProductsPageService() {
     changePositionOfTraitOptionHandler,
     createVariantHandler,
     checkVariantCombinationHandler,
+    getPurchaseProductVariantsHandler,
   };
 }

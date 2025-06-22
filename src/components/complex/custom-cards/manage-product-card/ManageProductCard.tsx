@@ -8,14 +8,21 @@ import cs from "./ManageProductCard.module.scss";
 import { formatDate } from "@/utils/helpers/quick-helper.ts";
 import React, { Fragment } from "react";
 import { TraitModel } from "@/const/models/TraitModel.ts";
+import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import { PurchaseProductVariantsGridColumns } from "@/components/complex/grid/purchase-product-variants-grid/PurchaseProductVariantsGridColumns.tsx";
 
 export default function ManageProductCard({
   isLoading,
   purchase,
   product,
+  variants,
+  variantsGridModel,
+  isVariantGridLoading,
   productTraits,
   onAction,
 }: IManageProductCard) {
+  function handleAction() {}
+
   return (
     <SheProductCard
       loading={isLoading}
@@ -139,10 +146,19 @@ export default function ManageProductCard({
                     value={"Create Variant"}
                     variant="secondary"
                     fullWidth
-                    onClick={() => onAction("createProductVariants")}
+                    onClick={() => onAction("openAddVariantCard", product)}
                   />
                 </div>
               </div>
+            </div>
+            <div>
+              <DndGridDataTable
+                isLoading={isVariantGridLoading}
+                columns={PurchaseProductVariantsGridColumns(handleAction)}
+                data={variants}
+                gridModel={variantsGridModel}
+                showHeader={false}
+              />
             </div>
           </>
         )}

@@ -39,7 +39,7 @@ export function SupplierPage() {
     if (purchaseId) {
       dispatch(actions.setIsSupplierCardLoading(true));
       dispatch(actions.setIsProductMenuCardLoading(true));
-      service
+      productsService
         .getPurchaseDetailsHandler(purchaseId)
         .then((res: PurchaseModel) => {
           dispatch(actions.setIsSupplierCardLoading(false));

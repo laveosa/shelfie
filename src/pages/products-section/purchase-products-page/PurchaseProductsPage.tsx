@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
 import cs from "./PurchaseProductsPage.module.scss";
@@ -17,7 +17,7 @@ import ProductConfigurationCard from "@/components/complex/custom-cards/product-
 import CreateProductCategoryCard from "@/components/complex/custom-cards/create-product-category-card/CreateProductCategoryCard.tsx";
 import CreateProductBrandCard from "@/components/complex/custom-cards/create-product-brand-card/CreateProductBrandCard.tsx";
 import { useToast } from "@/hooks/useToast.ts";
-import ManageProductCard from "@/components/complex/grid/manage-product-card/ManageProductCard.tsx";
+import ManageProductCard from "@/components/complex/custom-cards/manage-product-card/ManageProductCard.tsx";
 import ProductPhotosCard from "@/components/complex/custom-cards/product-photos-card/ProductPhotosCard.tsx";
 import { GridModel } from "@/const/models/GridModel.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
@@ -26,10 +26,10 @@ import { setSelectedGridItem } from "@/utils/helpers/quick-helper.ts";
 import ChooseVariantTraitsCard from "@/components/complex/custom-cards/choose-variant-traits-card/ChooseVariantTraitsCard.tsx";
 import ProductTraitConfigurationCard from "@/components/complex/custom-cards/product-trait-configuration-card/ProductTraitConfigurationCard.tsx";
 import AddVariantCard from "@/components/complex/custom-cards/add-variant-card/AddVariantCard.tsx";
+import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 
 export function PurchaseProductsPage() {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const { addToast } = useToast();
   const { openConfirmationDialog } = useDialogService();
   const service = usePurchaseProductsPageService();
@@ -45,6 +45,13 @@ export function PurchaseProductsPage() {
   const cardRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   useEffect(() => {
+    if (!productsState.selectedPurchase) {
+      productsService
+        .getPurchaseDetailsHandler(purchaseId)
+        .then((res: PurchaseModel) => {
+          dispatch(productsActions.refreshSelectedPurchase(res));
+        });
+    }
     if (!productsState.purchaseCounters) {
       dispatch(actions.setIsProductMenuCardLoading(true));
       productsService
@@ -58,6 +65,7 @@ export function PurchaseProductsPage() {
       productsService.getTaxesListHandler();
     }
     productsService.getTraitsForFilterHandler();
+    dispatch(actions.refreshActiveCards([]));
   }, [purchaseId]);
 
   useEffect(() => {
@@ -412,18 +420,24 @@ export function PurchaseProductsPage() {
       case "openManageProductCard":
         handleCardAction("manageProductCard");
         dispatch(actions.setIsManageProductCardLoading(true));
-        productsService
-          .getListOfTraitsWithOptionsForProductHandler(
+        Promise.all([
+          productsService.getListOfTraitsWithOptionsForProductHandler(
             productsState.selectedProduct.productId,
-          )
-          .then((res) => {
-            dispatch(actions.setIsManageProductCardLoading(false));
-            dispatch(
-              productsActions.refreshListOfTraitsWithOptionsForProduct(
-                res.data,
-              ),
-            );
-          });
+          ),
+          productsService.getPurchaseProductVariantsHandler(
+            state.selectedPurchase.purchaseId,
+            productsState.selectedProduct.productId,
+          ),
+        ]).then(([traits, variants]) => {
+          dispatch(actions.setIsManageProductCardLoading(false));
+          dispatch(
+            productsActions.refreshListOfTraitsWithOptionsForProduct(
+              traits.data,
+            ),
+          );
+          dispatch(actions.refreshPurchaseProductVariantsGridModel(variants));
+          dispatch(actions.refreshPurchaseProductVariants(variants.items));
+        });
         break;
       case "manageProductData":
         handleCardAction("productConfigurationCard", true);
@@ -923,19 +937,24 @@ export function PurchaseProductsPage() {
         handleCardAction("productTraitConfigurationCard");
         break;
       case "openAddVariantCard":
+        console.log("PRODUCT", payload);
         handleMultipleCardActions({
           purchaseProductsCard: false,
           manageProductCard: true,
           addVariantCard: true,
         });
-        dispatch(actions.setIsManageProductCardLoading(true));
+        dispatch(actions.setIsAddVariantCardLoading(true));
         Promise.all([
           productsService.getProductDetailsHandler(payload.productId),
           productsService.getListOfTraitsWithOptionsForProductHandler(
             payload.productId,
           ),
-        ]).then(([productDetails, productTraits]) => {
-          dispatch(actions.setIsManageProductCardLoading(false));
+          // productsService.getPurchaseProductVariantsHandler(
+          //   productsState.selectedPurchase.purchaseId,
+          //   payload.productId,
+          // ),
+        ]).then(([productDetails, productTraits, variants]) => {
+          dispatch(actions.setIsAddVariantCardLoading(false));
           if (productDetails) {
             dispatch(actions.refreshSelectedProduct(productDetails));
           } else {
@@ -953,6 +972,8 @@ export function PurchaseProductsPage() {
               productTraits,
             ),
           );
+          // dispatch(actions.refreshPurchaseProductVariantsGridModel(variants));
+          // dispatch(actions.refreshPurchaseProductVariants(variants.items));
         });
         break;
       case "addVariant":
@@ -1079,6 +1100,11 @@ export function PurchaseProductsPage() {
             isLoading={state.isManageProductCardLoading}
             purchase={productsState.selectedPurchase}
             product={state.selectedProduct}
+            // variants={state.purchaseProductVariants}
+            variants={productsState.variants}
+            // variantsGridModel={state.purchaseProductVariantsGridModel}
+            variantsGridModel={productsState.variantsGridModel}
+            isVariantGridLoading={state.isVariantGridLoading}
             productTraits={productsState.listOfTraitsWithOptionsForProduct}
             onAction={onAction}
           />
@@ -1093,8 +1119,8 @@ export function PurchaseProductsPage() {
           <ProductConfigurationCard
             isLoading={state.isProductConfigurationCardLoading}
             product={state.selectedProduct}
-            brandsList={state.brands}
-            categoriesList={state.categories}
+            brandsList={productsState.brands}
+            categoriesList={productsState.categories}
             showSecondaryButton={true}
             onGenerateProductCode={productsService.generateProductCodeHandler}
             onProductCodeCheck={productsService.checkProductCodeHandler}

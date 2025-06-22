@@ -4,6 +4,7 @@ import { PriceModel } from "@/const/models/PriceModel.ts";
 import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
 
 export interface VariantModel {
+  id: number;
   brand?: BrandModel;
   image?: any[];
   photos?: any[];

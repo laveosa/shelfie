@@ -9,6 +9,7 @@ import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
+import { VariantModel } from "@/const/models/VariantModel.ts";
 
 const initialState: IPurchaseProductsPageSlice = {
   isLoading: false,
@@ -29,10 +30,12 @@ const initialState: IPurchaseProductsPageSlice = {
   isProductPhotosLoading: false,
   isVariantsGridLoading: false,
   isTraitOptionsGridLoading: false,
+  isVariantGridLoading: false,
   activeCards: [],
   activeTab: "purchaseProducts",
   selectedProduct: null,
   colorOptionsGridModel: null,
+  purchaseProductVariantsGridModel: null,
   purchaseProducts: [],
   purchasesProductsGridModel: {
     pager: {},
@@ -48,6 +51,7 @@ const initialState: IPurchaseProductsPageSlice = {
   selectedTraitsIds: [],
   selectedTrait: null,
   isDuplicateVariant: false,
+  purchaseProductVariants: [],
 };
 
 //----------------------------------------------------- LOADERS
@@ -178,6 +182,13 @@ function setIsTraitOptionsGridLoading(
   state.isTraitOptionsGridLoading = action?.payload;
 }
 
+function setIsVariantGridLoading(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isVariantGridLoading = action?.payload;
+}
+
 //----------------------------------------------------- API
 
 function refreshActiveCards(
@@ -221,6 +232,14 @@ function refreshPurchasesProductsGridModel(
 ) {
   state.purchasesProductsGridModel =
     action?.payload || state.purchasesProductsGridModel;
+}
+
+function refreshPurchaseProductVariantsGridModel(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<GridModel>,
+) {
+  state.purchaseProductVariantsGridModel =
+    action?.payload || state.purchaseProductVariantsGridModel;
 }
 
 function refreshPurchasesProductsGridRequestModel(
@@ -277,6 +296,13 @@ function refreshIsDuplicateVariant(
   state.isDuplicateVariant = action?.payload;
 }
 
+function refreshPurchaseProductVariants(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<VariantModel[]>,
+) {
+  state.purchaseProductVariants = action?.payload;
+}
+
 const PurchaseProductsPageSlice = createSlice({
   name: StoreSliceEnum.PURCHASE_PRODUCTS,
   initialState,
@@ -299,12 +325,14 @@ const PurchaseProductsPageSlice = createSlice({
     setIsProductsGridLoading,
     setIsVariantsGridLoading,
     setIsTraitOptionsGridLoading,
+    setIsVariantGridLoading,
     refreshActiveCards,
     refreshActiveTab,
     refreshSelectedProduct,
     refreshColorOptionsGridModel,
     refreshPurchaseProducts,
     refreshPurchasesProductsGridModel,
+    refreshPurchaseProductVariantsGridModel,
     refreshPurchasesProductsGridRequestModel,
     refreshBrands,
     refreshCategories,
@@ -313,6 +341,7 @@ const PurchaseProductsPageSlice = createSlice({
     refreshSelectedTrait,
     resetSelectedTrait,
     refreshIsDuplicateVariant,
+    refreshPurchaseProductVariants,
   },
 });
 

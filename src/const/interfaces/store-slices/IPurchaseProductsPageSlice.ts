@@ -5,6 +5,7 @@ import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
+import { VariantModel } from "@/const/models/VariantModel.ts";
 
 export interface IPurchaseProductsPageSlice {
   isLoading?: boolean;
@@ -25,12 +26,14 @@ export interface IPurchaseProductsPageSlice {
   isProductPhotosLoading?: boolean;
   isVariantsGridLoading?: boolean;
   isTraitOptionsGridLoading?: boolean;
+  isVariantGridLoading?: boolean;
   activeCards?: any[];
   activeTab?: string;
   selectedProduct?: ProductModel;
   purchasesProductsGridModel?: GridModel;
   purchasesProductsGridRequestModel?: GridRequestModel;
   colorOptionsGridModel?: GridModel;
+  purchaseProductVariantsGridModel?: GridModel;
   purchaseProducts?: ProductModel[];
   brands?: BrandModel[];
   categories?: CategoryModel[];
@@ -38,4 +41,5 @@ export interface IPurchaseProductsPageSlice {
   selectedTraitsIds?: number[];
   selectedTrait?: TraitModel;
   isDuplicateVariant: boolean;
+  purchaseProductVariants?: VariantModel[];
 }

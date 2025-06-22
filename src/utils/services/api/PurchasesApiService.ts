@@ -77,6 +77,17 @@ export const PurchasesApiService = createApi({
         body: JSON.stringify(model),
       }),
     }),
+    getPurchaseProductVariants: apiConfig.createQuery<
+      any,
+      {
+        purchaseId: number;
+        productId: number;
+      }
+    >(builder, {
+      query: ({ purchaseId, productId }) => ({
+        url: `${ApiUrlEnum.PURCHASES}/${purchaseId}${ApiUrlEnum.PRODUCTS}/${productId}`,
+      }),
+    }),
   }),
 });
 
