@@ -26,7 +26,11 @@ export function isSheIconConfig(
   return typeof icon === "object" && icon !== null && "icon" in icon;
 }
 
-export function addItemsId<T>(items: T[], identifier: string = "text"): T[] {
+export function addItemsId<T>(
+  items: T[],
+  identifier: string = "text",
+  generateLength?: number,
+): T[] {
   if (!items || items.length === 0) return null;
 
   return items.map((item: T, idx) => ({
@@ -34,7 +38,7 @@ export function addItemsId<T>(items: T[], identifier: string = "text"): T[] {
     id: `${
       item[identifier] && item[identifier].length > 0
         ? item[identifier].replace(/ /g, "_")
-        : generateId()
+        : generateId(generateLength)
     }_${(idx + 1).toString()}`,
   }));
 }

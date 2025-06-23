@@ -135,7 +135,7 @@ export default function SheRadioGroup({
             </RadioGroup>
           )}
           {(!_items || _items.length === 0) && !isLoading && (
-            <div className={cs.noDataMessageBlock}>
+            <div>
               <span className="she-placeholder">
                 {translate(noDataMessageTransKey, noDataMessage)}
               </span>

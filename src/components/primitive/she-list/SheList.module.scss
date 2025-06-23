@@ -1,0 +1,48 @@
+@use "@/styles/variables" as vars;
+
+.sheList {
+  max-width: vars.$maxWidth + px;
+  width: 100%;
+
+  .sheListGroup {
+    .sheListItemContainer {
+      margin-bottom: 2px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      &.sheListItemSelectAllContainer {
+        span {
+          color: vars.$placeholderColor;
+        }
+      }
+    }
+  }
+}
+
+// ======================================================== FULL WIDTH
+
+.sheList.fullWidth {
+  max-width: none;
+  width: 100%;
+}
+
+// ========================================================= NO DATA BLOCK
+
+.noDataMessageBlock {
+  padding: 10px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+
+  span {
+    font-size: 20px;
+    line-height: 24px;
+    font-weight: bold;
+    opacity: 0.4;
+    color: vars.$placeholderColor;
+    text-align: center;
+  }
+}

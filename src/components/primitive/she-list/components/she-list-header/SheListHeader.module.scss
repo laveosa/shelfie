@@ -1,0 +1,23 @@
+@use "@/styles/variables" as vars;
+
+.sheListHeader {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding-right: 5px;
+  padding-left: 10px;
+  border-bottom: 1px solid vars.$brdColor;
+
+  > div {
+    flex-grow: 1;
+    padding: 0;
+    border-bottom: 0;
+
+    input::placeholder {
+      color: vars.$placeholderColor;
+    }
+  }
+
+  .sheListHeaderInput {
+  }
+}
