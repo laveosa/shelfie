@@ -69,9 +69,6 @@ export default function SheList<T>({
     SheListFooterDefaultModel,
   );
 
-  console.log("header: ", headerProps);
-  console.log("footer: ", footerProps);
-
   useEffect(() => {
     setIsItemsWithIcons(null);
     setIsItemsWithColors(null);
@@ -128,7 +125,7 @@ export default function SheList<T>({
       }}
     >
       <Command>
-        <SheListHeader {...headerProps} />
+        <SheListHeader view={view} {...headerProps} />
         <CommandList>
           <CommandEmpty className={cs.noDataMessageBlock}>
             <span className="she-placeholder">
@@ -164,6 +161,7 @@ export default function SheList<T>({
           </CommandGroup>
         </CommandList>
         <SheListFooter
+          view={view}
           onSecondaryBtnClick={onSecondaryBtnClickHandler}
           onPrimaryBtnClick={onPrimaryBtnClickHandler}
           {...footerProps}

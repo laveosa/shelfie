@@ -14,6 +14,7 @@ export interface ISheListHeader {
   hideSearchClearBtn?: boolean;
   clearBtnIcon?: Partial<ISheIcon> | string | React.FC<any>;
   showHeader?: boolean;
+  view?: "normal" | "card";
   onSearch?: (data: string) => void;
 }
 
@@ -29,5 +30,6 @@ export const SheListHeaderDefaultModel: ISheListHeader = {
   hideSearchClearBtn: undefined,
   clearBtnIcon: undefined,
   showHeader: undefined,
+  view: undefined,
   onSearch: undefined,
 };

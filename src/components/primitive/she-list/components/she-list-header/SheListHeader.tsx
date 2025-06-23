@@ -5,6 +5,7 @@ import { ISheListHeader } from "@/const/interfaces/primitive-components/ISheList
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { CommandInput } from "@/components/ui/command.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import useDefaultRef from "@/utils/hooks/useDefaultRef.ts";
 import { X } from "lucide-react";
 
 export default function SheListHeader({
@@ -19,15 +20,15 @@ export default function SheListHeader({
   searchPlaceholderTransKey = "PLACE_VALID_TRANS_KEY",
   hideSearchClearBtn,
   showHeader,
+  view,
   onSearch,
 }: ISheListHeader): JSX.Element {
   const { translate } = useAppTranslation();
   const [_searchValue, setSearchValue] = useState<string>("");
+  const _searchRef = useDefaultRef<HTMLInputElement>(searchRef);
 
   useEffect(() => {
-    if (searchValue !== _searchValue) {
-      setSearchValue(searchValue);
-    }
+    if (searchValue !== _searchValue) setSearchValue(searchValue);
   }, [searchValue]);
 
   // ==================================================================== EVENT
@@ -39,7 +40,7 @@ export default function SheListHeader({
 
   function onClearSearchHandler() {
     setSearchValue("");
-    setTimeout(() => searchRef?.current?.focus());
+    setTimeout(() => _searchRef.current?.focus());
     if (onSearch) onSearch("");
   }
 
@@ -52,9 +53,12 @@ export default function SheListHeader({
   }
 
   return (
-    <div className={`${cs.sheListHeader} ${className}`} style={style}>
+    <div
+      className={`${cs.sheListHeader} ${className} ${cs[view]}`}
+      style={style}
+    >
       <CommandInput
-        ref={searchRef}
+        ref={_searchRef}
         className={`${cs.sheListHeaderInput} ${elementClassName}`}
         style={elementStyle}
         value={_searchValue}

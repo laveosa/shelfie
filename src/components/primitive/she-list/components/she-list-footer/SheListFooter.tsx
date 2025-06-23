@@ -17,6 +17,7 @@ export default function SheListFooter({
   primaryBtnValueTransKey = "PLACE_VALID_TRANS_KEY",
   primaryBtnProps,
   showFooter,
+  view,
   onSecondaryBtnClick,
   onPrimaryBtnClick,
 }: ISheListFooter): JSX.Element {
@@ -30,15 +31,17 @@ export default function SheListFooter({
   }
 
   return (
-    <div className={`${cs.sheListFooter} ${className}`} style={style}>
+    <div
+      className={`${cs.sheListFooter} ${className} ${cs[view]}`}
+      style={style}
+    >
       <div className={cs.sheListFooterGroup}>
         {!hideSecondaryBtn && (
           <SheButton
             className={cs.sheListFooterItem}
             value={secondaryBtnValue}
             valueTransKey={secondaryBtnValueTransKey}
-            variant="ghost"
-            size="small"
+            variant={secondaryBtnProps?.variant || "ghost"}
             onClick={onSecondaryBtnClick}
             {...secondaryBtnProps}
           />
@@ -54,8 +57,7 @@ export default function SheListFooter({
             className={cs.sheListFooterItem}
             value={primaryBtnValue}
             valueTransKey={primaryBtnValueTransKey}
-            variant="ghost"
-            size="small"
+            variant={primaryBtnProps?.variant || "ghost"}
             role="presentation"
             onClick={onPrimaryBtnClick}
             {...primaryBtnProps}

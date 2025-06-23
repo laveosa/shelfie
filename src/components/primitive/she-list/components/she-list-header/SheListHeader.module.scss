@@ -4,9 +4,6 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  padding-right: 5px;
-  padding-left: 10px;
-  border-bottom: 1px solid vars.$brdColor;
 
   > div {
     flex-grow: 1;
@@ -19,5 +16,20 @@
   }
 
   .sheListHeaderInput {
+  }
+}
+
+// ========================================================= VIEW
+
+.sheListHeader {
+  &.normal {
+    padding: 0;
+    border: 0;
+  }
+
+  &.card {
+    padding-right: 5px;
+    padding-left: 10px;
+    border-bottom: 1px solid vars.$brdColor;
   }
 }

@@ -18,9 +18,9 @@ export function DashboardPage() {
       searchRef.current.value = "some value";
     }, 2000);
 
-    setTimeout(() => {
+    /*setTimeout(() => {
       setSearchValue("bla bla some text in search state change!!!");
-    }, 3000);
+    }, 3000);*/
   }, []);
 
   // ================================================================== EVENT
@@ -33,45 +33,7 @@ export function DashboardPage() {
 
       <br />
 
-      <SheList
-        showHeader
-        headerClassName="SOME-HEADER-CLASS-NAME"
-        headerStyle={{
-          border: "1px solid red",
-        }}
-        searchClassName="SEARCH-CLASS-NAME"
-        searchStyle={{
-          backgroundColor: "lightgray",
-        }}
-        searchRef={searchRef}
-        searchValue={searchValue}
-        searchPlaceholder="some text to type..."
-        searchPlaceholderTransKey="sf909fj0je"
-        clearBtnIcon={Box}
-        hideSearchClearBtn
-        onSearch={(event) => console.log("onSearch: ", event)}
-        showFooter
-        footerClassName="FOOTER-CLASS-NAME"
-        footerStyle={{
-          border: "1px solid green",
-        }}
-        // hideSecondaryBtn
-        // hidePrimaryBtn
-        secondaryBtnValue="secondary"
-        secondaryBtnValueTransKey="93i29ie932i9e02"
-        secondaryBtnProps={{
-          variant: "default",
-        }}
-        primaryBtnValue="primary"
-        primaryBtnValueTransKey="ewoijsijfwij"
-        primaryBtnProps={{
-          variant: "secondary",
-        }}
-        onSecondaryBtnClick={(event) =>
-          console.log("secondary btn click: ", event)
-        }
-        onPrimaryBtnClick={(event) => console.log("primary btn click: ", event)}
-      />
+      <SheList searchRef={searchRef} showHeader showFooter />
 
       <br />
     </div>

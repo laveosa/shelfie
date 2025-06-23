@@ -14,6 +14,7 @@ export interface ISheListFooter {
   primaryBtnValueTransKey?: string;
   primaryBtnProps?: ISheButton;
   showFooter?: boolean;
+  view?: "normal" | "card";
   onSecondaryBtnClick?: (event?: any) => void;
   onPrimaryBtnClick?: (event?: any) => void;
 }
@@ -30,6 +31,7 @@ export const SheListFooterDefaultModel = {
   primaryBtnValueTransKey: undefined,
   primaryBtnProps: undefined,
   showFooter: undefined,
+  view: undefined,
   onSecondaryBtnClick: undefined,
   onPrimaryBtnClick: undefined,
 };
