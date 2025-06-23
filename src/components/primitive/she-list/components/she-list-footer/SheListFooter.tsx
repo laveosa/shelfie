@@ -11,9 +11,11 @@ export default function SheListFooter({
   hideSecondaryBtn,
   secondaryBtnValue = "Clear",
   secondaryBtnValueTransKey = "PLACE_VALID_TRANS_KEY",
+  secondaryBtnProps,
   hidePrimaryBtn,
   primaryBtnValue = "Close",
   primaryBtnValueTransKey = "PLACE_VALID_TRANS_KEY",
+  primaryBtnProps,
   showFooter,
   onSecondaryBtnClick,
   onPrimaryBtnClick,
@@ -31,20 +33,21 @@ export default function SheListFooter({
     <div className={`${cs.sheListFooter} ${className}`} style={style}>
       <div className={cs.sheListFooterGroup}>
         {!hideSecondaryBtn && (
-          <>
-            <SheButton
-              className={cs.sheListFooterItem}
-              value={secondaryBtnValue}
-              valueTransKey={secondaryBtnValueTransKey}
-              variant="ghost"
-              size="small"
-              onClick={onSecondaryBtnClick}
-            />
-            <Separator
-              className={cs.sheListFooterItemsSeparator}
-              orientation="vertical"
-            />
-          </>
+          <SheButton
+            className={cs.sheListFooterItem}
+            value={secondaryBtnValue}
+            valueTransKey={secondaryBtnValueTransKey}
+            variant="ghost"
+            size="small"
+            onClick={onSecondaryBtnClick}
+            {...secondaryBtnProps}
+          />
+        )}
+        {!hideSecondaryBtn && !hidePrimaryBtn && (
+          <Separator
+            className={cs.sheListFooterItemsSeparator}
+            orientation="vertical"
+          />
         )}
         {!hidePrimaryBtn && (
           <SheButton
@@ -55,6 +58,7 @@ export default function SheListFooter({
             size="small"
             role="presentation"
             onClick={onPrimaryBtnClick}
+            {...primaryBtnProps}
           />
         )}
       </div>

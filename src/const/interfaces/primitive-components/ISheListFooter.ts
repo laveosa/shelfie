@@ -14,8 +14,8 @@ export interface ISheListFooter {
   primaryBtnValueTransKey?: string;
   primaryBtnProps?: ISheButton;
   showFooter?: boolean;
-  onSecondaryBtnClick?: () => void;
-  onPrimaryBtnClick?: () => void;
+  onSecondaryBtnClick?: (event?: any) => void;
+  onPrimaryBtnClick?: (event?: any) => void;
 }
 
 export const SheListFooterDefaultModel = {

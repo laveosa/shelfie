@@ -34,6 +34,7 @@ export function DashboardPage() {
       <br />
 
       <SheList
+        showHeader
         headerClassName="SOME-HEADER-CLASS-NAME"
         headerStyle={{
           border: "1px solid red",
@@ -48,9 +49,28 @@ export function DashboardPage() {
         searchPlaceholderTransKey="sf909fj0je"
         clearBtnIcon={Box}
         hideSearchClearBtn
-        showHeader
-        showFooter
         onSearch={(event) => console.log("onSearch: ", event)}
+        showFooter
+        footerClassName="FOOTER-CLASS-NAME"
+        footerStyle={{
+          border: "1px solid green",
+        }}
+        // hideSecondaryBtn
+        // hidePrimaryBtn
+        secondaryBtnValue="secondary"
+        secondaryBtnValueTransKey="93i29ie932i9e02"
+        secondaryBtnProps={{
+          variant: "default",
+        }}
+        primaryBtnValue="primary"
+        primaryBtnValueTransKey="ewoijsijfwij"
+        primaryBtnProps={{
+          variant: "secondary",
+        }}
+        onSecondaryBtnClick={(event) =>
+          console.log("secondary btn click: ", event)
+        }
+        onPrimaryBtnClick={(event) => console.log("primary btn click: ", event)}
       />
 
       <br />

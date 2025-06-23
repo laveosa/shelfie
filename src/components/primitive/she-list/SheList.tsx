@@ -1,4 +1,4 @@
-import { JSX, useEffect, useRef, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 import { Trans } from "react-i18next";
 import _ from "lodash";
 
@@ -50,6 +50,8 @@ export default function SheList<T>({
   disabled,
   isLoading,
   isDnd,
+  onSecondaryBtnClick,
+  onPrimaryBtnClick,
   ...props
 }: ISheList<T>): JSX.Element {
   const [_items, setItems] = useState<ISheListItem[]>(null);
@@ -103,9 +105,15 @@ export default function SheList<T>({
 
   // ==================================================================== PRIVATE
 
-  function onSecondaryBtnClickHandler() {}
+  function onSecondaryBtnClickHandler(event) {
+    console.log(event);
+    if (onSecondaryBtnClick) onSecondaryBtnClick(event);
+  }
 
-  function onPrimaryBtnClickHandler() {}
+  function onPrimaryBtnClickHandler(event) {
+    console.log(event);
+    if (onPrimaryBtnClick) onPrimaryBtnClick(event);
+  }
 
   // ==================================================================== LAYOUT
 
