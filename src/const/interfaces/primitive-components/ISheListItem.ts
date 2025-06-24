@@ -4,13 +4,15 @@ import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { ISheTooltip } from "@/const/interfaces/primitive-components/ISheTooltip.ts";
 import { ISheToggle } from "@/const/interfaces/primitive-components/ISheToggle.ts";
 
-export interface ISheListItem extends ComponentPropsWithRef<any> {
+export interface ISheListItem<T> extends ComponentPropsWithRef<any> {
   id?: string;
   key?: string;
   className?: string;
   style?: React.CSSProperties;
+  icon?: Partial<ISheIcon> | string | React.FC<any>;
+  iconProps?: ISheIcon;
   colors?: string[];
-  value?: any;
+  value?: T;
   text?: string;
   textTransKey?: string;
   description?: string;
@@ -19,8 +21,6 @@ export interface ISheListItem extends ComponentPropsWithRef<any> {
   sideTextTransKey?: string;
   sideDescription?: string;
   sideDescriptionTransKey?: string;
-  icon?: Partial<ISheIcon> | string | React.FC<any>;
-  iconProps?: ISheIcon;
   isSelected?: boolean;
   isDnd?: boolean;
   disabled?: boolean;
@@ -29,5 +29,41 @@ export interface ISheListItem extends ComponentPropsWithRef<any> {
   isItemsWithColors?: boolean;
   tooltip?: ISheTooltip;
   toggleProps?: ISheToggle;
-  onClick?: (value: any) => void;
+  ariaDescribedbyId?: string;
+  mode?: "single" | "multi" | "default";
+  view?: "normal" | "card";
+  onClick?: (data: T) => void;
+  onSelect?: (data: T) => void;
 }
+
+export const SheListItemDefaultModel: ISheListItem<any> = {
+  id: undefined,
+  key: undefined,
+  className: undefined,
+  style: undefined,
+  colors: undefined,
+  value: undefined,
+  text: undefined,
+  textTransKey: undefined,
+  description: undefined,
+  descriptionTransKey: undefined,
+  sideText: undefined,
+  sideTextTransKey: undefined,
+  sideDescription: undefined,
+  sideDescriptionTransKey: undefined,
+  icon: undefined,
+  iconProps: undefined,
+  isSelected: undefined,
+  isDnd: undefined,
+  disabled: undefined,
+  isLoading: undefined,
+  isItemsWithIcons: undefined,
+  isItemsWithColors: undefined,
+  tooltip: undefined,
+  toggleProps: undefined,
+  ariaDescribedbyId: undefined,
+  mode: undefined,
+  view: undefined,
+  onClick: undefined,
+  onSelect: undefined,
+};

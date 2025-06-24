@@ -10,11 +10,11 @@ import {
   CommandList,
 } from "@/components/ui/command.tsx";
 import { ISheList } from "@/const/interfaces/primitive-components/ISheList.ts";
+import { ISheListItem } from "@/const/interfaces/primitive-components/ISheListItem.ts";
 import SheListHeader from "@/components/primitive/she-list/components/she-list-header/SheListHeader.tsx";
 import SheListFooter from "@/components/primitive/she-list/components/she-list-footer/SheListFooter.tsx";
-import SheMultiSelectItem from "@/components/primitive/she-multi-select/components/she-multi-select-item/SheMultiSelectItem.tsx";
-import { ISheListItem } from "@/const/interfaces/primitive-components/ISheListItem.ts";
-import { addItemsId } from "@/utils/helpers/quick-helper.ts";
+import SheListItem from "@/components/primitive/she-list/components/she-list-item/SheListItem.tsx";
+import { addItemsId, generateId } from "@/utils/helpers/quick-helper.ts";
 import { getCustomProps } from "@/utils/helpers/props-helper.ts";
 import {
   ISheListHeader,
@@ -32,14 +32,14 @@ export default function SheList<T>({
   items,
   selected,
   selectedValues,
-  emptySearchPlaceholder,
-  emptySearchPlaceholderTransKey,
-  selectAllItemPlaceholder,
-  selectAllItemPlaceholderTransKey,
-  selectNoneItemPlaceholder,
-  selectNoneItemPlaceholderTransKey,
-  noItemsPlaceholder,
-  noItemsPlaceholderTransKey,
+  emptySearchPlaceholder = "no data found...",
+  emptySearchPlaceholderTransKey = "PLACE_VALID_TRANS_KEY",
+  selectAllItemPlaceholder = "select all",
+  selectAllItemPlaceholderTransKey = "PLACE_VALID_TRANS_KEY",
+  selectNoneItemPlaceholder = "none",
+  selectNoneItemPlaceholderTransKey = "PLACE_VALID_TRANS_KEY",
+  noItemsPlaceholder = "no items to display...",
+  noItemsPlaceholderTransKey = "PLACE_VALID_TRANS_KEY",
   mode = "single",
   view = "normal",
   showSelectAll,
@@ -54,12 +54,13 @@ export default function SheList<T>({
   onPrimaryBtnClick,
   ...props
 }: ISheList<T>): JSX.Element {
-  const [_items, setItems] = useState<ISheListItem[]>(null);
+  const [_items, setItems] = useState<ISheListItem<T>[]>(null);
   const [_selected, setSelected] = useState<T>(null);
   const [_selectedValues, setSelectedValues] = useState<T[]>([]);
   const [_isItemsWithIcons, setIsItemsWithIcons] = useState<boolean>(null);
   const [_isItemsWithColors, setIsItemsWithColors] = useState<boolean>(null);
 
+  const ariaDescribedbyId = `${generateId()}_LIST_ID`;
   const headerProps = getCustomProps<ISheList<T>, ISheListHeader>(
     props,
     SheListHeaderDefaultModel,
@@ -70,10 +71,18 @@ export default function SheList<T>({
   );
 
   useEffect(() => {
+    if (_.isEqual(items, _items)) return;
+
     setIsItemsWithIcons(null);
     setIsItemsWithColors(null);
 
-    if (!_.isEqual(items, _items)) setItems(addItemsId<ISheListItem>(items));
+    setItems(() => {
+      return addItemsId<ISheListItem<T>>(items).map((item) => {
+        if (!_isItemsWithIcons && item.icon) setIsItemsWithIcons(true);
+        if (!_isItemsWithColors && item.colors) setIsItemsWithColors(true);
+        return item;
+      });
+    });
   }, [items]);
 
   useEffect(() => {
@@ -85,12 +94,18 @@ export default function SheList<T>({
 
   // ==================================================================== EVENT
 
-  function onSelectHandler(option: string) {
-    const newSelectedValues = _selectedValues.includes(option)
+  function onClickHandler(data: T) {
+    console.log(data);
+  }
+
+  function onSelectHandler(data: T) {
+    /*const newSelectedValues = _selectedValues.includes(option)
       ? _selectedValues.filter((value) => value !== option)
       : [..._selectedValues, option];
-    setSelectedValues(newSelectedValues);
+    setSelectedValues(newSelectedValues);*/
   }
+
+  function onClickNoneHandler() {}
 
   function onSelectAllHandler() {
     /*if (_selectedValues.length === _items.length) {
@@ -117,7 +132,7 @@ export default function SheList<T>({
   return (
     <div
       id={id}
-      className={`${cs.sheList} ${className}  ${fullWidth ? cs.fullWidth : ""}`}
+      className={`${cs.sheList} ${className} ${fullWidth ? cs.fullWidth : ""} ${cs[view]}`}
       style={{
         minWidth,
         maxWidth,
@@ -128,37 +143,63 @@ export default function SheList<T>({
         <SheListHeader view={view} {...headerProps} />
         <CommandList>
           <CommandEmpty className={cs.noDataMessageBlock}>
-            <span className="she-placeholder">
-              <Trans i18nKey={emptySearchPlaceholderTransKey}>
-                {emptySearchPlaceholder}
-              </Trans>
-            </span>
-          </CommandEmpty>
-          <CommandGroup className={cs.sheListGroup}>
-            {showSelectAll && (
-              <SheMultiSelectItem
-                key="all"
-                className={`${cs.sheListItemContainer} ${cs.sheListItemSelectAllContainer}`}
-                text={selectAllItemPlaceholder}
-                textTransKey={selectAllItemPlaceholderTransKey}
-                isSelected={_selectedValues?.length === items?.length}
-                isLoading={isLoading}
-                onClick={onSelectAllHandler}
-              />
+            {(!_items || _items.length === 0) && (
+              <span className="she-placeholder">
+                <Trans i18nKey={noItemsPlaceholderTransKey}>
+                  {noItemsPlaceholder}
+                </Trans>
+              </span>
             )}
-            {items?.map((item: ISheListItem) => (
-              <SheMultiSelectItem
-                key={item.id}
-                className={cs.sheListItemContainer}
-                isSelected={_selectedValues?.includes(item.value)}
-                isItemsWithIcons={_isItemsWithIcons}
-                isItemsWithColors={_isItemsWithColors}
-                isLoading={isLoading}
-                onClick={onSelectHandler}
-                {...item}
-              />
-            ))}
-          </CommandGroup>
+            {_items && _items.length > 0 && (
+              <span className="she-placeholder">
+                <Trans i18nKey={emptySearchPlaceholderTransKey}>
+                  {emptySearchPlaceholder}
+                </Trans>
+              </span>
+            )}
+          </CommandEmpty>
+          {_items && _items.length > 0 && (
+            <CommandGroup className={cs.sheListGroup}>
+              {showSelectNone && mode === "single" && (
+                <SheListItem
+                  className={`${cs.sheListItemContainer} ${cs.sheListItemSpecial}`}
+                  text={selectNoneItemPlaceholder}
+                  textTransKey={selectNoneItemPlaceholderTransKey}
+                  isLoading={isLoading}
+                  ariaDescribedbyId={ariaDescribedbyId}
+                  view={view}
+                  onClick={onClickNoneHandler}
+                />
+              )}
+              {showSelectAll && mode === "multi" && (
+                <SheListItem
+                  className={`${cs.sheListItemContainer} ${cs.sheListItemSpecial}`}
+                  text={selectAllItemPlaceholder}
+                  textTransKey={selectAllItemPlaceholderTransKey}
+                  isSelected={_selectedValues?.length === items?.length}
+                  isLoading={isLoading}
+                  ariaDescribedbyId={ariaDescribedbyId}
+                  view={view}
+                  onClick={onSelectAllHandler}
+                />
+              )}
+              {_items.map((item) => (
+                <SheListItem
+                  key={item.id}
+                  className={cs.sheListItemContainer}
+                  isItemsWithIcons={_isItemsWithIcons}
+                  isItemsWithColors={_isItemsWithColors}
+                  isLoading={isLoading}
+                  ariaDescribedbyId={ariaDescribedbyId}
+                  mode={mode}
+                  view={view}
+                  onClick={onClickHandler}
+                  onSelect={onSelectHandler}
+                  {...item}
+                />
+              ))}
+            </CommandGroup>
+          )}
         </CommandList>
         <SheListFooter
           view={view}

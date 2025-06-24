@@ -1,6 +1,8 @@
 @use "@/styles/variables" as vars;
 
 .sheListFooter {
+  margin-top: 8px;
+
   .sheListFooterGroup {
     display: flex;
     align-items: center;

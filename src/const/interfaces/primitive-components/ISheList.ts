@@ -11,7 +11,7 @@ export interface ISheList<T>
   id?: string;
   className?: string;
   style?: React.CSSProperties;
-  items?: ISheListItem[];
+  items?: ISheListItem<T>[];
   selected?: T;
   selectedValues?: T[];
   emptySearchPlaceholder?: string;
@@ -22,7 +22,7 @@ export interface ISheList<T>
   selectNoneItemPlaceholderTransKey?: string;
   noItemsPlaceholder?: string;
   noItemsPlaceholderTransKey?: string;
-  mode?: "single" | "multi";
+  mode?: "single" | "multi" | "default";
   view?: "normal" | "card";
   showSelectAll?: boolean;
   showSelectNone?: boolean;

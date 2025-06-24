@@ -5,6 +5,8 @@
   width: 100%;
 
   .sheListGroup {
+    padding: 0;
+
     .sheListItemContainer {
       margin-bottom: 2px;
 
@@ -12,7 +14,7 @@
         margin-bottom: 0;
       }
 
-      &.sheListItemSelectAllContainer {
+      &.sheListItemSpecial {
         span {
           color: vars.$placeholderColor;
         }
@@ -44,5 +46,15 @@
     opacity: 0.4;
     color: vars.$placeholderColor;
     text-align: center;
+  }
+}
+
+// =================================================== VIEW
+
+.sheList {
+  &.normal {
+  }
+
+  &.card {
   }
 }
