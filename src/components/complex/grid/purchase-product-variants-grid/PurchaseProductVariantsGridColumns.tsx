@@ -85,7 +85,7 @@ export function PurchaseProductVariantsGridColumns(
         const handleManageClick = (e) => {
           e.stopPropagation();
           e.preventDefault();
-          onAction("manageVariant", row.id, meta?.setLoadingRow, row.original);
+          onAction("addRow", row.original);
         };
 
         return (

@@ -937,7 +937,6 @@ export function PurchaseProductsPage() {
         handleCardAction("productTraitConfigurationCard");
         break;
       case "openAddVariantCard":
-        console.log("PRODUCT", payload);
         handleMultipleCardActions({
           purchaseProductsCard: false,
           manageProductCard: true,
@@ -949,10 +948,10 @@ export function PurchaseProductsPage() {
           productsService.getListOfTraitsWithOptionsForProductHandler(
             payload.productId,
           ),
-          // productsService.getPurchaseProductVariantsHandler(
-          //   productsState.selectedPurchase.purchaseId,
-          //   payload.productId,
-          // ),
+          productsService.getPurchaseProductVariantsHandler(
+            productsState.selectedPurchase.purchaseId,
+            payload.productId,
+          ),
         ]).then(([productDetails, productTraits, variants]) => {
           dispatch(actions.setIsAddVariantCardLoading(false));
           if (productDetails) {
@@ -972,8 +971,7 @@ export function PurchaseProductsPage() {
               productTraits,
             ),
           );
-          // dispatch(actions.refreshPurchaseProductVariantsGridModel(variants));
-          // dispatch(actions.refreshPurchaseProductVariants(variants.items));
+          dispatch(actions.refreshPurchaseProductVariants(variants));
         });
         break;
       case "addVariant":
@@ -1100,10 +1098,9 @@ export function PurchaseProductsPage() {
             isLoading={state.isManageProductCardLoading}
             purchase={productsState.selectedPurchase}
             product={state.selectedProduct}
-            // variants={state.purchaseProductVariants}
-            variants={productsState.variants}
-            // variantsGridModel={state.purchaseProductVariantsGridModel}
-            variantsGridModel={productsState.variantsGridModel}
+            variants={state.purchaseProductVariants}
+            currencies={productsState.currenciesList}
+            taxes={productsState.taxesList}
             isVariantGridLoading={state.isVariantGridLoading}
             productTraits={productsState.listOfTraitsWithOptionsForProduct}
             onAction={onAction}

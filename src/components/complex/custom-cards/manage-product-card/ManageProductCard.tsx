@@ -1,3 +1,4 @@
+import React, { Fragment, useState } from "react";
 import { Cog, GalleryThumbnails, Plus, TableProperties } from "lucide-react";
 
 import { IManageProductCard } from "@/const/interfaces/complex-components/custom-cards/IManageProductCard.ts";
@@ -6,25 +7,103 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import cs from "./ManageProductCard.module.scss";
 import { formatDate } from "@/utils/helpers/quick-helper.ts";
-import React, { Fragment } from "react";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { PurchaseProductVariantsGridColumns } from "@/components/complex/grid/purchase-product-variants-grid/PurchaseProductVariantsGridColumns.tsx";
+import PurchaseProductsForm from "@/components/forms/purchase-products-form/PurchaseProductsForm.tsx";
 
 export default function ManageProductCard({
   isLoading,
   purchase,
   product,
   variants,
-  variantsGridModel,
+  currencies,
+  taxes,
   isVariantGridLoading,
   productTraits,
   onAction,
 }: IManageProductCard) {
-  function handleAction() {}
+  const createEmptyStockAction = () => ({
+    // stockActionId: 0,
+    // currencyId: 1,
+    // nettoPrice: 0,
+    // taxTypeId: 1,
+    // unitsAmount: 0,
+  });
+
+  const [variantsData, setVariantsData] = useState(() =>
+    variants.map((variant) => ({
+      ...variant,
+      id: variant.variantId,
+      expandableRows:
+        variant.variantStockActions?.length > 0
+          ? variant.variantStockActions
+          : [createEmptyStockAction()],
+    })),
+  );
+
+  const handleAddStockAction = (variantId: string | number) => {
+    const newStockAction = createEmptyStockAction();
+    setVariantsData((prev) => {
+      const updated = prev.map((variant) =>
+        variant.id === variantId
+          ? {
+              ...variant,
+              expandableRows: [
+                ...(variant.expandableRows || []),
+                newStockAction,
+              ],
+            }
+          : variant,
+      );
+      return updated;
+    });
+  };
+
+  const renderExpandedContent = (_row, stockAction, _stockActionIndex) => {
+    return (
+      <div>
+        <PurchaseProductsForm
+          data={stockAction}
+          taxes={taxes}
+          currencies={currencies}
+          isVariantGrid={true}
+          onSubmit={() => handleAction("addVariant", stockAction)}
+        />
+      </div>
+    );
+  };
+
+  const handleAction = (action: string, rowData?: any) => {
+    console.log("Action:", action, "Row Data:", rowData);
+
+    switch (action) {
+      case "addRow":
+        handleAddStockAction(rowData.variantId);
+        break;
+
+      case "addVariant":
+        onAction("addVariant", rowData);
+        break;
+
+      // case "delete":
+      //   // Handle delete action
+      //   console.log("Delete row:", rowId);
+      //   break;
+      //
+      // case "edit":
+      //   // Handle edit action
+      //   console.log("Edit row:", rowId);
+      //   break;
+      //
+      // default:
+      //   console.log("Unknown action:", action);
+    }
+  };
 
   return (
     <SheProductCard
+      width="550px"
       loading={isLoading}
       className={cs.manageProductCard}
       title={`Manage Product for Purchase ${formatDate(purchase?.date, "date")}`}
@@ -153,11 +232,15 @@ export default function ManageProductCard({
             </div>
             <div>
               <DndGridDataTable
+                key={variantsData.length}
                 isLoading={isVariantGridLoading}
+                data={variantsData}
                 columns={PurchaseProductVariantsGridColumns(handleAction)}
-                data={variants}
-                gridModel={variantsGridModel}
+                enableExpansion={true}
+                renderExpandedContent={renderExpandedContent}
+                createEmptyExpandableRow={createEmptyStockAction}
                 showHeader={false}
+                onAction={handleAction}
               />
             </div>
           </>

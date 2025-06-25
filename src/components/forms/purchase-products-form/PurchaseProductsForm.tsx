@@ -1,10 +1,12 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import React, { useEffect } from "react";
+import { Check, TrashIcon, X } from "lucide-react";
+
 import { IPurchaseProductsForm } from "@/const/interfaces/forms/IPurchaseProductsForm.ts";
 import useAppForm from "@/utils/hooks/useAppForm.ts";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
-import React, { useEffect } from "react";
 import cs from "@/components/forms/purchase-products-form/PurchaseProductsForm.module.scss";
 import SheForm from "@/components/complex/she-form/SheForm.tsx";
 import { UserModelDefault } from "@/const/models/UserModel.ts";
@@ -17,7 +19,6 @@ import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import PurchaseProductsFormScheme from "@/utils/validation/schemes/PurchaseProductsFormScheme.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-import { X } from "lucide-react";
 
 export const DefaultPurchaseProductsForm = {
   nettoPrice: null,
@@ -31,6 +32,7 @@ export default function PurchaseProductsForm<T>({
   currencies,
   taxes,
   activeTab,
+  isVariantGrid = false,
   onSubmit,
   onCancel,
 }: IPurchaseProductsForm<T>) {
@@ -184,19 +186,26 @@ export default function PurchaseProductsForm<T>({
             </SheFormItem>
           )}
         />
-        <SheButton
-          className={
-            activeTab === "connectProducts"
-              ? isFormValid
-                ? cs.buttonValid
+        {!isVariantGrid ? (
+          <SheButton
+            className={
+              activeTab === "connectProducts"
+                ? isFormValid
+                  ? cs.buttonValid
+                  : ""
                 : ""
-              : ""
-          }
-          value={activeTab === "connectProducts" ? "Add" : "Update"}
-          variant="secondary"
-          type="submit"
-          disabled={activeTab === "connectProducts" ? !isFormValid : false}
-        />
+            }
+            value={activeTab === "connectProducts" ? "Add" : "Update"}
+            variant="secondary"
+            type="submit"
+            disabled={activeTab === "connectProducts" ? !isFormValid : false}
+          />
+        ) : (
+          <div className={cs.variantGridButtonBlock}>
+            <SheButton icon={Check} />
+            <SheButton icon={TrashIcon} variant="secondary" />
+          </div>
+        )}
       </SheForm>
     </div>
   );

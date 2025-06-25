@@ -6,6 +6,7 @@ export interface IPurchaseProductsForm<T> {
   currencies?: CurrencyModel[];
   taxes?: TaxTypeModel[];
   activeTab?: string;
+  isVariantGrid?: boolean;
   onSubmit?: (data: T) => void;
   onCancel?: () => void;
 }
