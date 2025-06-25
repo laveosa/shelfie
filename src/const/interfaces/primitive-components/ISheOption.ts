@@ -31,6 +31,6 @@ export interface ISheOption<T> extends ComponentPropsWithRef<"div"> {
   showColorsColumn?: boolean;
   tooltip?: ISheTooltip;
   toggleProps?: ISheToggle;
-  onCheck?(data: T, event?: React.MouseEvent): void;
-  onClick?(data: T, event?: React.MouseEvent): void;
+  onCheck?(value: T, event?: React.MouseEvent): void;
+  onClick?(value: T, event?: React.MouseEvent): void;
 }

@@ -43,8 +43,8 @@ export default function SheOption<T>({
     if (onClick) onClick(value, event);
   }
 
-  function onCheckHandler(event: React.MouseEvent) {
-    if (onCheck) onCheck(value, event);
+  function onCheckHandler(value: boolean) {
+    // if (onCheck) onCheck(value);
   }
 
   // ==================================================================== PRIVATE

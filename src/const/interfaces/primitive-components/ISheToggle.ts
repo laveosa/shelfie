@@ -20,5 +20,5 @@ export interface ISheToggle extends ISheLabel {
   isLoading?: boolean;
   disabled?: boolean;
   required?: boolean;
-  onChecked?: (value: boolean) => void;
+  onChecked?(value: boolean, event?: React.MouseEvent): void;
 }
