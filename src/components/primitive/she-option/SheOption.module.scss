@@ -1,0 +1,126 @@
+@use "@/styles/variables" as vars;
+
+$iconSize: 20px;
+
+.sheOption {
+  width: 100%;
+  min-height: 42px;
+  padding: 8px 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  gap: 8px;
+
+  // --------------------------------- TOGGLE
+  .sheOptionToggleContainer {
+    max-width: $iconSize;
+    min-width: $iconSize;
+  }
+
+  // --------------------------------- ICON
+  .sheOptionIconContainer {
+    max-width: $iconSize;
+    min-width: $iconSize;
+
+    .iconBlock {
+      color: vars.$subtextColor;
+      max-width: $iconSize;
+      min-width: $iconSize;
+      max-height: $iconSize;
+      min-height: $iconSize;
+    }
+
+    .iconPlaceholder {
+      color: rgba(192, 206, 232, 0.61);
+    }
+  }
+
+  // --------------------------------- COLOR
+  .sheOptionColorsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 6px;
+    max-width: 6px;
+
+    > div {
+      padding: 3px;
+      border-radius: 100%;
+    }
+  }
+
+  // --------------------------------- INFO
+  .sheOptionInfoContainer {
+    display: flex;
+    justify-content: space-between;
+    flex-grow: 1;
+    gap: 8px;
+
+    .sheOptionInfoBlock,
+    .sheOptionExtraInfoBlock {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex-grow: 1;
+
+      :global(.she-subtext) {
+        font-size: 10px;
+      }
+
+      span {
+        word-break: break-all;
+        line-height: 12px;
+      }
+
+      .sheOptionDescription {
+        padding-top: 2px;
+      }
+    }
+
+    .sheOptionInfoBlock {
+    }
+
+    .sheOptionExtraInfoBlock {
+      text-align: end;
+      max-width: 30%;
+      min-width: 20px;
+    }
+  }
+
+  // --------------------------------- TOOLTIP
+  .sheOptionTooltipContainer {
+    min-width: 17px;
+    max-width: 17px;
+  }
+}
+
+// =========================================================================== SELECTED
+
+.sheOption {
+  &.optionSelected {
+  }
+}
+
+// =========================================================================== VIEW
+
+.sheOption {
+  &.normal {
+  }
+
+  &.card {
+  }
+}
+
+// =========================================================================== MODE
+
+.sheOption {
+  &.plain {
+  }
+
+  &.single {
+  }
+
+  &.multiple {
+  }
+}
