@@ -76,10 +76,10 @@ export default function SheToggle({
           tooltip={tooltip}
           ariaDescribedbyId={ariaDescribedbyId}
         />
-        <div
-          className={`${cs.sheToggleControl} ${disabled || isLoading ? "disabled" : ""}`}
-        >
-          <SheSkeleton isLoading={isLoading} fullWidth>
+        <SheSkeleton isLoading={isLoading} fullWidth>
+          <div
+            className={`${cs.sheToggleControl} ${disabled || isLoading ? "disabled" : ""}`}
+          >
             <SheIcon
               icon={icon}
               className={cs.iconBlock}
@@ -105,24 +105,27 @@ export default function SheToggle({
                 onCheckedChange={valueHandler}
               />
             )}
-            <label
-              htmlFor={checkboxId}
-              className={cs.sheToggleContextBlock}
-              aria-describedby={ariaDescribedbyId}
-            >
-              {text && (
-                <span className="she-text">
-                  <Trans i18nKey={textTransKey}>{text}</Trans>
-                </span>
-              )}
-              {description && (
-                <span className="she-subtext">
-                  <Trans i18nKey={descriptionTransKey}>{description}</Trans>
-                </span>
-              )}
-            </label>
-          </SheSkeleton>
-        </div>
+            {((text && text.length > 0) ||
+              (description && description.length > 0)) && (
+              <label
+                htmlFor={checkboxId}
+                className={cs.sheToggleContextBlock}
+                aria-describedby={ariaDescribedbyId}
+              >
+                {text && (
+                  <span className="she-text">
+                    <Trans i18nKey={textTransKey}>{text}</Trans>
+                  </span>
+                )}
+                {description && (
+                  <span className="she-subtext">
+                    <Trans i18nKey={descriptionTransKey}>{description}</Trans>
+                  </span>
+                )}
+              </label>
+            )}
+          </div>
+        </SheSkeleton>
       </div>
     </div>
   );

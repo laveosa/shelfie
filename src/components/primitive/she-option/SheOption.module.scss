@@ -3,19 +3,25 @@
 $iconSize: 20px;
 
 .sheOption {
-  width: 100%;
-  min-height: 42px;
-  padding: 8px 6px;
-  cursor: pointer;
   display: flex;
   align-items: center;
   flex-grow: 1;
   gap: 8px;
+  width: 100%;
+  min-height: 16px;
+  cursor: pointer;
+  background-color: vars.$colorLight;
+  transition: all ease-in-out 130ms;
+  border-radius: vars.$brdR_05;
+
+  &:hover {
+    background-color: vars.$colorMuted;
+  }
 
   // --------------------------------- TOGGLE
   .sheOptionToggleContainer {
-    max-width: $iconSize;
-    min-width: $iconSize;
+    max-width: 16px;
+    min-width: 16px;
   }
 
   // --------------------------------- ICON
@@ -95,10 +101,18 @@ $iconSize: 20px;
   }
 }
 
+// ======================================================== FULL WIDTH
+
+.sheOption.fullWidth {
+  max-width: none;
+  width: 100%;
+}
+
 // =========================================================================== SELECTED
 
 .sheOption {
   &.optionSelected {
+    background-color: vars.$colorMuted;
   }
 }
 
@@ -106,9 +120,13 @@ $iconSize: 20px;
 
 .sheOption {
   &.normal {
+    border: 0;
+    padding: 0;
   }
 
   &.card {
+    border: vars.$brd;
+    padding: 8px 6px;
   }
 }
 

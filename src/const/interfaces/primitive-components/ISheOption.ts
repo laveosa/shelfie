@@ -9,14 +9,19 @@ export interface ISheOption<T> extends ComponentPropsWithRef<"div"> {
   key?: string;
   className?: string;
   style?: React.CSSProperties;
+  minWidth?: string;
+  maxWidth?: string;
+  fullWidth?: boolean;
   disabled?: boolean;
   isLoading?: boolean;
   ariaDescribedbyId?: string;
   mode?: "single" | "multiple" | "plain";
   view?: "normal" | "card";
   value?: T;
+  showIconsColumn?: boolean;
   icon?: Partial<ISheIcon> | string | React.FC<any>;
   iconProps?: ISheIcon;
+  showColorsColumn?: boolean;
   colors?: string[];
   text?: string;
   textTransKey?: string;
@@ -27,10 +32,9 @@ export interface ISheOption<T> extends ComponentPropsWithRef<"div"> {
   sideDescription?: string;
   sideDescriptionTransKey?: string;
   isSelected?: boolean;
-  showIconsColumn?: boolean;
-  showColorsColumn?: boolean;
   tooltip?: ISheTooltip;
   toggleProps?: ISheToggle;
+  checkOnClick?: boolean;
   onCheck?(value: T, event?: React.MouseEvent): void;
   onClick?(value: T, event?: React.MouseEvent): void;
 }
