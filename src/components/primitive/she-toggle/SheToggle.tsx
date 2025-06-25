@@ -10,6 +10,7 @@ import { Checkbox } from "@/components/ui/checkbox.tsx";
 import { Switch } from "@/components/ui/switch.tsx";
 import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
+import useValueWithEvent from "@/utils/hooks/useValueWithEvent.ts";
 
 export default function SheToggle({
   className,
@@ -33,10 +34,14 @@ export default function SheToggle({
   style,
   onChecked,
 }: ISheToggle): JSX.Element {
+  const [_checked, setChecked] = useState<boolean>(checked ?? false);
+
   const ariaDescribedbyId = `${generateId()}_CHECKBOX_ID`;
   const checkboxId = generateId(6);
-
-  const [_checked, setChecked] = useState<boolean>(checked ?? false);
+  const { eventHandler, valueHandler } = useValueWithEvent<
+    React.MouseEvent,
+    boolean
+  >(onCheckedChangeHandler);
 
   useEffect(() => {
     if (typeof checked === "boolean" && checked !== _checked) {
@@ -46,8 +51,8 @@ export default function SheToggle({
 
   // ==================================================================== EVENT
 
-  function onCheckedChangeHandler(value: boolean) {
-    onChecked?.(value);
+  function onCheckedChangeHandler(value: boolean, event?: React.MouseEvent) {
+    onChecked?.(value, event);
     setChecked(value);
   }
 
@@ -86,7 +91,8 @@ export default function SheToggle({
                 checked={_checked}
                 aria-describedby={ariaDescribedbyId}
                 disabled={disabled || isLoading}
-                onCheckedChange={onCheckedChangeHandler}
+                onClick={eventHandler}
+                onCheckedChange={valueHandler}
               />
             )}
             {type === SheToggleTypeEnum.SWITCH && (
@@ -95,7 +101,8 @@ export default function SheToggle({
                 checked={_checked}
                 aria-describedby={ariaDescribedbyId}
                 disabled={disabled || isLoading}
-                onCheckedChange={onCheckedChangeHandler}
+                onClick={eventHandler}
+                onCheckedChange={valueHandler}
               />
             )}
             <label
