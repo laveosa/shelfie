@@ -29,7 +29,7 @@ export const PurchasesApiService = createApi({
       { id: number; model: GridRequestModel }
     >(builder, {
       query: ({ id, model }) => ({
-        url: `${ApiUrlEnum.PURCHASES}/${id}/stock-actions`,
+        url: `${ApiUrlEnum.PURCHASES}/${id}${ApiUrlEnum.STOCK_ACTIONS}`,
         method: "POST",
         body: model,
       }),
@@ -72,7 +72,7 @@ export const PurchasesApiService = createApi({
       }
     >(builder, {
       query: ({ id, model }) => ({
-        url: `${ApiUrlEnum.PURCHASES}/stock-actions/${id}`,
+        url: `${ApiUrlEnum.PURCHASES}${ApiUrlEnum.STOCK_ACTIONS}/${id}`,
         method: "PATCH",
         body: JSON.stringify(model),
       }),
@@ -86,6 +86,12 @@ export const PurchasesApiService = createApi({
     >(builder, {
       query: ({ purchaseId, productId }) => ({
         url: `${ApiUrlEnum.PURCHASES}/${purchaseId}${ApiUrlEnum.PRODUCTS}/${productId}`,
+      }),
+    }),
+    deleteStockAction: apiConfig.createMutation<void, number>(builder, {
+      query: (stockActionId: number) => ({
+        url: `${ApiUrlEnum.PURCHASES}${ApiUrlEnum.STOCK_ACTIONS}/${stockActionId}`,
+        method: "DELETE",
       }),
     }),
   }),

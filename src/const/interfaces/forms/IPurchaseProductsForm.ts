@@ -8,5 +8,6 @@ export interface IPurchaseProductsForm<T> {
   activeTab?: string;
   isVariantGrid?: boolean;
   onSubmit?: (data: T) => void;
+  onDelete?: () => void;
   onCancel?: () => void;
 }

@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Cog, GalleryThumbnails, Plus, TableProperties } from "lucide-react";
 
 import { IManageProductCard } from "@/const/interfaces/complex-components/custom-cards/IManageProductCard.ts";
@@ -24,23 +24,28 @@ export default function ManageProductCard({
   onAction,
 }: IManageProductCard) {
   const createEmptyStockAction = () => ({
-    // stockActionId: 0,
-    // currencyId: 1,
-    // nettoPrice: 0,
-    // taxTypeId: 1,
-    // unitsAmount: 0,
+    currencyId: null,
+    nettoPrice: null,
+    taxTypeId: null,
+    unitsAmount: null,
   });
 
-  const [variantsData, setVariantsData] = useState(() =>
-    variants.map((variant) => ({
-      ...variant,
-      id: variant.variantId,
-      expandableRows:
-        variant.variantStockActions?.length > 0
-          ? variant.variantStockActions
-          : [createEmptyStockAction()],
-    })),
-  );
+  const [variantsData, setVariantsData] = useState([]);
+
+  useEffect(() => {
+    if (!variants || variants.length === 0) return;
+
+    setVariantsData(
+      variants.map((variant) => ({
+        ...variant,
+        id: variant.variantId,
+        expandableRows:
+          variant.variantStockActions?.length > 0
+            ? variant.variantStockActions
+            : [createEmptyStockAction()],
+      })),
+    );
+  }, [variants]);
 
   const handleAddStockAction = (variantId: string | number) => {
     const newStockAction = createEmptyStockAction();
@@ -60,7 +65,7 @@ export default function ManageProductCard({
     });
   };
 
-  const renderExpandedContent = (_row, stockAction, _stockActionIndex) => {
+  const renderExpandedContent = (row, stockAction, _stockActionIndex) => {
     return (
       <div>
         <PurchaseProductsForm
@@ -68,36 +73,30 @@ export default function ManageProductCard({
           taxes={taxes}
           currencies={currencies}
           isVariantGrid={true}
-          onSubmit={() => handleAction("addVariant", stockAction)}
+          onSubmit={(formData) => {
+            handleAction("addStockAction", {
+              purchase,
+              row,
+              formData,
+              stockAction,
+            });
+          }}
+          onDelete={() => onAction("deleteStockAction", stockAction)}
         />
       </div>
     );
   };
 
   const handleAction = (action: string, rowData?: any) => {
-    console.log("Action:", action, "Row Data:", rowData);
-
     switch (action) {
       case "addRow":
         handleAddStockAction(rowData.variantId);
         break;
-
-      case "addVariant":
-        onAction("addVariant", rowData);
+      case "addStockAction":
+        rowData.stockAction.stockActionId
+          ? onAction("updateStockAction", rowData)
+          : onAction("addStockAction", rowData);
         break;
-
-      // case "delete":
-      //   // Handle delete action
-      //   console.log("Delete row:", rowId);
-      //   break;
-      //
-      // case "edit":
-      //   // Handle edit action
-      //   console.log("Edit row:", rowId);
-      //   break;
-      //
-      // default:
-      //   console.log("Unknown action:", action);
     }
   };
 

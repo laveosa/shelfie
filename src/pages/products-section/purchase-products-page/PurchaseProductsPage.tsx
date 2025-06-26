@@ -943,6 +943,7 @@ export function PurchaseProductsPage() {
           addVariantCard: true,
         });
         dispatch(actions.setIsAddVariantCardLoading(true));
+        dispatch(actions.setIsVariantGridLoading(true));
         Promise.all([
           productsService.getProductDetailsHandler(payload.productId),
           productsService.getListOfTraitsWithOptionsForProductHandler(
@@ -954,6 +955,7 @@ export function PurchaseProductsPage() {
           ),
         ]).then(([productDetails, productTraits, variants]) => {
           dispatch(actions.setIsAddVariantCardLoading(false));
+          dispatch(actions.setIsVariantGridLoading(false));
           if (productDetails) {
             dispatch(actions.refreshSelectedProduct(productDetails));
           } else {
@@ -1045,6 +1047,93 @@ export function PurchaseProductsPage() {
         dispatch(actions.refreshIsDuplicateVariant(false));
         handleCardAction("addVariantCard");
         break;
+      case "addStockAction":
+        dispatch(actions.setIsVariantGridLoading(true));
+        service
+          .addVariantToPurchaseProductsHandler(payload.purchase.purchaseId, {
+            ...payload.formData,
+            variantId: payload.row.original.variantId,
+          })
+          .then((res) => {
+            if (res) {
+              productsService
+                .getPurchaseProductVariantsHandler(
+                  productsState.selectedPurchase.purchaseId,
+                  state.selectedProduct.productId,
+                )
+                .then((res) => {
+                  dispatch(actions.setIsVariantGridLoading(false));
+                  dispatch(actions.refreshPurchaseProductVariants(res));
+                });
+              addToast({
+                text: "Stock action added successfully",
+                type: "success",
+              });
+            } else {
+              addToast({
+                text: res.error.message,
+                type: "error",
+              });
+            }
+          });
+        break;
+      case "updateStockAction":
+        dispatch(actions.setIsVariantGridLoading(true));
+        service
+          .updatePurchaseProductHandler(
+            payload.stockAction.stockActionId,
+            payload.formData,
+          )
+          .then((res) => {
+            if (res) {
+              productsService
+                .getPurchaseProductVariantsHandler(
+                  productsState.selectedPurchase.purchaseId,
+                  state.selectedProduct.productId,
+                )
+                .then((res) => {
+                  dispatch(actions.setIsVariantGridLoading(false));
+                  dispatch(actions.refreshPurchaseProductVariants(res));
+                });
+              addToast({
+                text: "Stock action updated successfully",
+                type: "success",
+              });
+            } else {
+              addToast({
+                text: res.error.message,
+                type: "error",
+              });
+            }
+          });
+        break;
+      case "deleteStockAction":
+        dispatch(actions.setIsVariantGridLoading(true));
+        service.deleteStockActionHandler(payload.stockActionId).then((res) => {
+          dispatch(actions.setIsVariantsGridLoading(false));
+          console.log("DELETE", res);
+          if (res) {
+            productsService
+              .getPurchaseProductVariantsHandler(
+                productsState.selectedPurchase.purchaseId,
+                state.selectedProduct.productId,
+              )
+              .then((res) => {
+                dispatch(actions.setIsVariantGridLoading(false));
+                dispatch(actions.refreshPurchaseProductVariants(res));
+              });
+            addToast({
+              text: "Stock action deleted successfully",
+              type: "success",
+            });
+          } else {
+            addToast({
+              text: res.error.message,
+              type: "error",
+            });
+          }
+        });
+        break;
     }
   }
 
@@ -1066,8 +1155,8 @@ export function PurchaseProductsPage() {
         >
           <PurchaseProductsCard
             isLoading={state.isPurchaseProductsCardLoading}
-            isPurchaseProductsGridLoading={state.isPurchaseProductsGridLoading}
-            isProductsGridLoading={state.isProductsGriLoading}
+            isPurchaseProductsGridLoading={state.isPurchasesProductsGridLoading}
+            isProductsGridLoading={state.isProductsGridLoading}
             variants={productsState.variants}
             purchaseProducts={state.purchaseProducts}
             variantsGridModel={productsState.variantsGridModel}

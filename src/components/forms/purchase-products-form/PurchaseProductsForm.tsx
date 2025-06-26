@@ -22,8 +22,8 @@ import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 
 export const DefaultPurchaseProductsForm = {
   nettoPrice: null,
-  currencyId: 1,
-  taxTypeId: 5,
+  currencyId: null,
+  taxTypeId: null,
   unitsAmount: null,
 };
 
@@ -34,6 +34,7 @@ export default function PurchaseProductsForm<T>({
   activeTab,
   isVariantGrid = false,
   onSubmit,
+  onDelete,
   onCancel,
 }: IPurchaseProductsForm<T>) {
   const form = useAppForm<any>({
@@ -94,7 +95,6 @@ export default function PurchaseProductsForm<T>({
             <SheFormItem className={cs.purchaseProductsFormItem}>
               <SheInput
                 {...field}
-                // type="number"
                 className={
                   activeTab === "connectProducts"
                     ? field.value
@@ -130,7 +130,7 @@ export default function PurchaseProductsForm<T>({
                 maxWidth="70px"
                 onSelect={(value) => {
                   field.onChange(value);
-                  void form.trigger("currencies");
+                  void form.trigger("currencyId");
                 }}
               />
             </SheFormItem>
@@ -157,7 +157,7 @@ export default function PurchaseProductsForm<T>({
                 maxWidth="70px"
                 onSelect={(value) => {
                   field.onChange(value);
-                  void form.trigger("taxes");
+                  void form.trigger("taxTypeId");
                 }}
               />
             </SheFormItem>
@@ -171,7 +171,6 @@ export default function PurchaseProductsForm<T>({
             <SheFormItem className={cs.purchaseProductsFormItem}>
               <SheInput
                 {...field}
-                // type="number"
                 className={
                   activeTab === "connectProducts"
                     ? field.value
@@ -179,6 +178,7 @@ export default function PurchaseProductsForm<T>({
                       : ""
                     : ""
                 }
+                width="50px"
                 minWidth="50px"
                 maxWidth="50px"
                 placeholder=""
@@ -203,7 +203,13 @@ export default function PurchaseProductsForm<T>({
         ) : (
           <div className={cs.variantGridButtonBlock}>
             <SheButton icon={Check} />
-            <SheButton icon={TrashIcon} variant="secondary" />
+            <SheButton
+              icon={TrashIcon}
+              type="button"
+              variant="secondary"
+              disabled={!data.stockActionId}
+              onClick={onDelete}
+            />
           </div>
         )}
       </SheForm>
