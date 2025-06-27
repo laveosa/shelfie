@@ -4,6 +4,7 @@ import { SheTooltipEnum } from "@/const/enums/SheTooltipEnum.ts";
 import React, { ComponentPropsWithRef } from "react";
 
 export interface ISheTooltip extends ComponentPropsWithRef<any> {
+  className?: string;
   style?: React.CSSProperties;
   title?: string;
   titleTransKey?: string;

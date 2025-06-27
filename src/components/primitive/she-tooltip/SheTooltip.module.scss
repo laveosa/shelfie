@@ -22,6 +22,7 @@ $tooltipIconSize: 15px;
   .tooltipMessageBlock {
     display: flex;
     flex-direction: column;
+    background: vars.$colorLight;
 
     &.dark {
       background-color: #18181b;

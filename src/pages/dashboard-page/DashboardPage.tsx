@@ -64,6 +64,21 @@ export function DashboardPage() {
 
       <br />
 
+      {/*<div className="flex flex-col">
+        {options.map((item) => (
+          <SheOption
+            className="mb-2"
+            view="card"
+            mode="multiple"
+            showColorsColumn
+            showIconsColumn
+            {...item}
+          />
+        ))}
+      </div>*/}
+
+      <br />
+
       <SheSelect<any>
         label="Select"
         items={options}

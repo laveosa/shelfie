@@ -38,35 +38,50 @@ $iconSize: 20px;
             align-items: center;
             justify-content: start;
             gap: 4px;
+          }
 
-            // --------------------------------- ICON
-            :global(.sheSelectItemIconContainer) {
-              display: none;
+          // --------------------------------- ICON
+          .sheSelectItemIconContainer {
+            //display: none;
+          }
+
+          // --------------------------------- COLOR
+          .sheSelectItemColorsContainer {
+            display: none;
+          }
+
+          // --------------------------------- INFO
+          .sheSelectItemInfoContainer {
+            display: flex;
+            flex-grow: 1;
+
+            span {
+              text-overflow: ellipsis;
+              overflow: hidden;
+              white-space: nowrap;
             }
 
-            // --------------------------------- COLOR
-            :global(.sheSelectItemColorsContainer) {
-              display: none;
-            }
+            > div {
+              &:nth-child(1) {
+                text-align: start;
+                display: flex;
+                flex-grow: 1;
+                width: 10px;
 
-            // --------------------------------- INFO
-            :global(.sheSelectItemInfoContainer) {
-              display: flex;
-              flex-grow: 1;
-
-              :global(.sheSelectItemDescription) {
-                display: none;
+                :global(.she-subtext) {
+                  display: none;
+                }
               }
 
-              :global(.sheSelectItemExtraInfoBlock) {
+              &:nth-child(2) {
                 display: none;
               }
             }
+          }
 
-            // --------------------------------- TOOLTIP
-            :global(.sheSelectItemTooltipContainer) {
-              display: none;
-            }
+          // --------------------------------- TOOLTIP
+          .sheSelectItemTooltipContainer {
+            display: none;
           }
         }
       }

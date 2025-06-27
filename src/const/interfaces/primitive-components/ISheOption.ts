@@ -9,6 +9,16 @@ export interface ISheOption<T> extends ComponentPropsWithRef<"div"> {
   id?: string;
   className?: string;
   style?: React.CSSProperties;
+  toggleClassName?: string;
+  toggleStyle?: React.CSSProperties;
+  iconClassName?: string;
+  iconStyle?: React.CSSProperties;
+  colorsClassName?: string;
+  colorsStyle?: React.CSSProperties;
+  infoClassName?: string;
+  infoStyle?: React.CSSProperties;
+  tooltipClassName?: string;
+  tooltipStyle?: React.CSSProperties;
   minWidth?: string;
   maxWidth?: string;
   fullWidth?: boolean;

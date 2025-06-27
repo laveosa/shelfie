@@ -13,6 +13,16 @@ import { Image } from "lucide-react";
 export default function SheOption<T>({
   className = "",
   style,
+  toggleClassName = "",
+  toggleStyle,
+  iconClassName = "",
+  iconStyle,
+  colorsClassName = "",
+  colorsStyle,
+  infoClassName = "",
+  infoStyle,
+  tooltipClassName = "",
+  tooltipStyle,
   minWidth,
   maxWidth,
   fullWidth,
@@ -77,7 +87,7 @@ export default function SheOption<T>({
   return (
     <SheSkeleton isLoading={isLoading}>
       <div
-        className={`${cs.sheOption} ${className} ${fullWidth ? cs.fullWidth : ""} ${cs[mode]} ${cs[view]} ${mode !== "plain" && isSelected ? cs.optionSelected : ""} ${disabled || isLoading ? "disabled" : ""}`}
+        className={`${cs.sheOption} ${className} ${fullWidth ? cs.fullWidth : ""} ${cs[mode]} ${cs[view]} ${mode !== "plain" && isSelected ? cs.optionSelected : ""} ${mode !== "plain" ? cs.hoverEffect : ""} ${disabled || isLoading ? "disabled" : ""}`}
         style={{
           minWidth,
           maxWidth,
@@ -87,26 +97,28 @@ export default function SheOption<T>({
         {...props}
       >
         {mode === "multiple" && (
-          <div className={cs.sheOptionToggleContainer}>
-            <SheToggle
-              checked={_isSelected}
-              onChecked={onCheckHandler}
-              {...toggleProps}
-            />
-          </div>
+          <SheToggle
+            className={`${cs.sheOptionToggleContainer} ${toggleClassName}`}
+            style={toggleStyle}
+            checked={_isSelected}
+            onChecked={onCheckHandler}
+            {...toggleProps}
+          />
         )}
         {(icon || showIconsColumn) && (
-          <div className={cs.sheOptionIconContainer}>
-            <SheIcon
-              icon={icon ? icon : Image}
-              className={`${cs.iconBlock} ${!icon ? cs.iconPlaceholder : ""}`}
-              aria-describedby={ariaDescribedbyId}
-              {...iconProps}
-            />
-          </div>
+          <SheIcon
+            className={`${cs.sheOptionIconContainer} ${iconClassName} ${!icon ? cs.iconPlaceholder : ""}`}
+            style={iconStyle}
+            icon={icon ? icon : Image}
+            aria-describedby={ariaDescribedbyId}
+            {...iconProps}
+          />
         )}
         {((colors && colors.length > 0) || showColorsColumn) && (
-          <div className={cs.sheOptionColorsContainer}>
+          <div
+            className={`${cs.sheOptionColorsContainer} ${colorsClassName}`}
+            style={colorsStyle}
+          >
             {colors?.map((color: string, idx: number) => (
               <div
                 key={color + idx + 1}
@@ -115,7 +127,10 @@ export default function SheOption<T>({
             ))}
           </div>
         )}
-        <div className={cs.sheOptionInfoContainer}>
+        <div
+          className={`${cs.sheOptionInfoContainer} ${infoClassName}`}
+          style={infoStyle}
+        >
           <div className={cs.sheOptionInfoBlock}>
             {text && (
               <span className="she-text" aria-describedby={ariaDescribedbyId}>
@@ -152,13 +167,13 @@ export default function SheOption<T>({
           )}
         </div>
         {tooltip && (
-          <div className={`${cs.sheOptionTooltipContainer}`}>
-            <SheTooltip
-              showDefaultIcon
-              ariaDescribedbyId={ariaDescribedbyId}
-              {...tooltip}
-            />
-          </div>
+          <SheTooltip
+            className={`${cs.sheOptionTooltipContainer} ${tooltipClassName}`}
+            style={tooltipStyle}
+            showDefaultIcon
+            ariaDescribedbyId={ariaDescribedbyId}
+            {...tooltip}
+          />
         )}
       </div>
     </SheSkeleton>

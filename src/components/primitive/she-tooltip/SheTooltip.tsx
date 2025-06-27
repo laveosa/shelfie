@@ -11,7 +11,7 @@ import {
 import { ISheTooltip } from "@/const/interfaces/primitive-components/ISheTooltip.ts";
 
 export default function SheTooltip({
-  className,
+  className = "",
   style,
   children,
   title,
@@ -46,7 +46,7 @@ export default function SheTooltip({
   // ==================================================================== LAYOUT
 
   return (
-    <div className={`${className || ""} ${cs.sheTooltip || ""}`}>
+    <div className={`${className} ${cs.sheTooltip || ""}`}>
       <TooltipProvider delayDuration={delayDuration}>
         <Tooltip>
           <TooltipTrigger asChild>

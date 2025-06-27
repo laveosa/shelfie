@@ -244,10 +244,14 @@ export default function SheSelect({
                       key={item.id}
                       id={item.id}
                       className={cs.sheSelectItemCover}
+                      iconClassName={cs.sheSelectItemIconContainer}
+                      colorsClassName={cs.sheSelectItemColorsContainer}
+                      infoClassName={cs.sheSelectItemInfoContainer}
+                      tooltipClassName={cs.sheSelectItemTooltipContainer}
                       isLoading={_loading}
                       showSelectIcon={showSelectIcon}
-                      isItemsWithIcons={_isItemsWithIcons}
-                      isItemsWithColors={_isItemsWithColors}
+                      showIconsColumn={_isItemsWithIcons}
+                      showColorsColumn={_isItemsWithColors}
                       ariaDescribedbyId={ariaDescribedbyId}
                       {...item}
                     />

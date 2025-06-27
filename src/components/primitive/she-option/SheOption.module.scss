@@ -14,8 +14,14 @@ $iconSize: 20px;
   transition: all ease-in-out 130ms;
   border-radius: vars.$brdR_05;
 
-  &:hover {
-    background-color: vars.$colorMuted;
+  * {
+    background-color: transparent;
+  }
+
+  &.hoverEffect {
+    &:hover {
+      background-color: vars.$colorMuted;
+    }
   }
 
   // --------------------------------- TOGGLE
@@ -28,16 +34,11 @@ $iconSize: 20px;
   .sheOptionIconContainer {
     max-width: $iconSize;
     min-width: $iconSize;
+    color: vars.$subtextColor;
+    max-height: $iconSize;
+    min-height: $iconSize;
 
-    .iconBlock {
-      color: vars.$subtextColor;
-      max-width: $iconSize;
-      min-width: $iconSize;
-      max-height: $iconSize;
-      min-height: $iconSize;
-    }
-
-    .iconPlaceholder {
+    &.iconPlaceholder {
       color: rgba(192, 206, 232, 0.61);
     }
   }
@@ -76,11 +77,12 @@ $iconSize: 20px;
 
       span {
         word-break: break-all;
-        line-height: 12px;
+        line-height: 16px;
       }
 
       .sheOptionDescription {
         padding-top: 2px;
+        line-height: 12px;
       }
     }
 
