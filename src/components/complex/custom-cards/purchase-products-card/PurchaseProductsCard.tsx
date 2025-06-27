@@ -83,7 +83,7 @@ export default function PurchaseProductsCard({
         console.log("transferToPurchase");
         break;
       case "removeFromStock":
-        console.log("removeFromStock");
+        onAction("deleteStockActionInGrid", payload.original);
         break;
       case "stockChangeHistory":
         console.log("stockChangeHistory");

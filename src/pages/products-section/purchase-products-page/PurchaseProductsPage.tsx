@@ -1171,6 +1171,33 @@ export function PurchaseProductsPage() {
           }
         });
         break;
+      case "deleteStockActionInGrid":
+        service.deleteStockActionHandler(payload.stockActionId).then((res) => {
+          if (res) {
+            dispatch(actions.setIsPurchasesProductsGridLoading(true));
+            productsService;
+            service
+              .getListOfPurchaseProductsForGridHandler(
+                purchaseId,
+                state.purchasesProductsGridRequestModel,
+              )
+              .then((res) => {
+                dispatch(actions.setIsPurchasesProductsGridLoading(false));
+                dispatch(actions.refreshPurchasesProductsGridModel(res));
+                dispatch(actions.refreshPurchaseProducts(res.items));
+              });
+            addToast({
+              text: "Stock action deleted successfully",
+              type: "success",
+            });
+          } else {
+            addToast({
+              text: res.error.message,
+              type: "error",
+            });
+          }
+        });
+        break;
       case "manageVariant":
         keepOnlyCards(["manageProductCard", "variantConfigurationCard"]);
         dispatch(actions.setIsVariantConfigurationCardLoading(true));
