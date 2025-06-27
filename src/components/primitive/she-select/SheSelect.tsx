@@ -17,7 +17,7 @@ import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
 import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
 import SheSelectItem from "@/components/primitive/she-select/components/she-select-item/SheSelectItem.tsx";
 
-export default function SheSelect({
+export default function SheSelect<T>({
   id,
   className = "",
   style,
@@ -47,10 +47,10 @@ export default function SheSelect({
   onOpenChange,
   onSelect,
   ...props
-}: ISheSelect): JSX.Element {
+}: ISheSelect<T>): JSX.Element {
   const { translate } = useAppTranslation();
-  const [_selected, setSelected] = useState<ISheSelectItem>(null);
-  const [_items, setItems] = useState<ISheSelectItem[]>(_addItemsIds(null));
+  const [_selected, setSelected] = useState<ISheSelectItem<T>>(null);
+  const [_items, setItems] = useState<ISheSelectItem<T>[]>(_addItemsIds(null));
   const [_open, setOpen] = useState<boolean>(null);
   const [_loading, setLoading] = useState<boolean>(null);
   const [_isItemsWithIcons, setIsItemsWithIcons] = useState<boolean>(null);
@@ -155,7 +155,7 @@ export default function SheSelect({
 
   // ==================================================================== PRIVATE
 
-  function _addItemsIds(items: ISheSelectItem[]) {
+  function _addItemsIds(items: ISheSelectItem<T>[]) {
     return items?.map((item, idx) => {
       if (item.icon) setIsItemsWithIcons(true);
       if (item.colors) setIsItemsWithColors(true);
@@ -173,8 +173,8 @@ export default function SheSelect({
 
   function _getSelectedItemById(
     id: string,
-    fromItems: ISheSelectItem[] = _items,
-  ): ISheSelectItem {
+    fromItems: ISheSelectItem<T>[] = _items,
+  ): ISheSelectItem<T> {
     if (!id) return null;
 
     const selected = _getSelectedItemByIdentifier(id, "id", fromItems);
@@ -184,8 +184,8 @@ export default function SheSelect({
   function _getSelectedItemByIdentifier(
     data: any,
     identifier: string,
-    items: ISheSelectItem[],
-  ): ISheSelectItem {
+    items: ISheSelectItem<T>[],
+  ): ISheSelectItem<T> {
     if (!data || !identifier || !items || items.length === 0) return null;
 
     return items.find((item) => item[identifier] == data);
@@ -241,8 +241,8 @@ export default function SheSelect({
               {_items?.length > 0 && (
                 <SelectContent>
                   <div className={cs.sheSelectItemsContainer}>
-                    {_items?.map((item: ISheSelectItem) => (
-                      <SheSelectItem
+                    {_items?.map((item) => (
+                      <SheSelectItem<T>
                         key={item.id}
                         id={item.id}
                         className={cs.sheSelectItemCover}

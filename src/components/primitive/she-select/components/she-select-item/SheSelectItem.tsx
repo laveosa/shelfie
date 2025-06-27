@@ -5,7 +5,7 @@ import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSele
 import { SelectItem } from "@/components/ui/select.tsx";
 import SheOption from "@/components/primitive/she-option/SheOption.tsx";
 
-export default function SheSelectItem({
+export default function SheSelectItem<T>({
   id,
   className = "",
   style,
@@ -13,7 +13,7 @@ export default function SheSelectItem({
   elementStyle,
   showSelectIcon,
   ...props
-}: ISheSelectItem): JSX.Element {
+}: ISheSelectItem<T>): JSX.Element {
   // ==================================================================== EVENT
 
   // ==================================================================== PRIVATE
@@ -28,7 +28,7 @@ export default function SheSelectItem({
       defaultValue={id}
       style={style}
     >
-      <SheOption
+      <SheOption<T>
         className={`${cs.sheSelectItemOption} ${elementClassName}`}
         mode="plain"
         style={elementStyle}

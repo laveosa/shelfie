@@ -173,7 +173,7 @@ export function DashboardPage() {
 
       <br />
 
-      <SheSelect<any>
+      <SheSelect<string>
         label="Select"
         // items={options}
         items={optionsSimple}
