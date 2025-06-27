@@ -74,10 +74,10 @@ export default function PurchaseProductsCard({
         onAction("updatePurchaseProduct", payload);
         break;
       case "addVariant":
-        onAction("openAddVariantCard", payload.original);
+        onAction("addVariantGridAction", payload.original);
         break;
       case "manageVariant":
-        console.log("manageVariant");
+        onAction("manageVariant", payload.original);
         break;
       case "transferToPurchase":
         console.log("transferToPurchase");

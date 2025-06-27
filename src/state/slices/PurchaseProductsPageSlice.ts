@@ -27,11 +27,20 @@ const initialState: IPurchaseProductsPageSlice = {
   isChooseVariantTraitsCardLoading: false,
   isProductTraitConfigurationCardLoading: false,
   isAddVariantCardLoading: false,
+  isVariantConfigurationCardLoading: false,
+  isAddStockCardLoading: false,
+  isDisposeStockCardLoading: false,
+  isVariantHistoryCardLoading: false,
+  isVariantPhotosCardLoading: false,
+  isManageTraitsCardLoading: false,
   isImageUploaderLoading: false,
   isProductPhotosLoading: false,
   isVariantsGridLoading: false,
   isTraitOptionsGridLoading: false,
   isVariantGridLoading: false,
+  isVariantOptionsGridLoading: false,
+  isVariantPhotoGridLoading: false,
+  isProductPhotoGridLoading: false,
   activeCards: [],
   activeTab: "purchaseProducts",
   selectedProduct: null,
@@ -54,6 +63,8 @@ const initialState: IPurchaseProductsPageSlice = {
   isDuplicateVariant: false,
   purchaseProductVariants: [],
   purchaseSummary: null,
+  variantPhotos: [],
+  productPhotosForVariant: [],
 };
 
 //----------------------------------------------------- LOADERS
@@ -156,6 +167,48 @@ function setIsAddVariantCardLoading(
   state.isAddVariantCardLoading = action?.payload;
 }
 
+function setIsVariantConfigurationCardLoading(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isVariantConfigurationCardLoading = action?.payload;
+}
+
+function setIsAddStockCardLoading(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isAddStockCardLoading = action?.payload;
+}
+
+function setIsDisposeStockCardLoading(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isDisposeStockCardLoading = action?.payload;
+}
+
+function setIsVariantHistoryCardLoading(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isVariantHistoryCardLoading = action?.payload;
+}
+
+function setIsVariantPhotosCardLoading(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isVariantPhotosCardLoading = action?.payload;
+}
+
+function setIsManageTraitsCardLoading(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isManageTraitsCardLoading = action?.payload;
+}
+
 function setIsImageUploaderLoading(
   state: IPurchaseProductsPageSlice,
   action: PayloadAction<boolean>,
@@ -189,6 +242,27 @@ function setIsVariantGridLoading(
   action: PayloadAction<boolean>,
 ) {
   state.isVariantGridLoading = action?.payload;
+}
+
+function setIsVariantOptionsGridLoading(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isVariantOptionsGridLoading = action?.payload;
+}
+
+function setIsVariantPhotoGridLoading(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isVariantPhotoGridLoading = action?.payload;
+}
+
+function setIsProductPhotoGridLoading(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isProductPhotoGridLoading = action?.payload;
 }
 
 //----------------------------------------------------- API
@@ -312,6 +386,21 @@ function refreshPurchaseSummary(
   state.purchaseSummary = action?.payload || state.purchaseSummary;
 }
 
+function refreshVariantPhotos(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<ImageModel[]>,
+) {
+  state.variantPhotos = action?.payload || state.variantPhotos;
+}
+
+function refreshProductPhotosForVariant(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<ImageModel[]>,
+) {
+  state.productPhotosForVariant =
+    action?.payload || state.productPhotosForVariant;
+}
+
 const PurchaseProductsPageSlice = createSlice({
   name: StoreSliceEnum.PURCHASE_PRODUCTS,
   initialState,
@@ -329,12 +418,21 @@ const PurchaseProductsPageSlice = createSlice({
     setIsProductPhotosCardLoading,
     setIsConnectImageCardLoading,
     setIsAddVariantCardLoading,
+    setIsVariantConfigurationCardLoading,
+    setIsAddStockCardLoading,
+    setIsDisposeStockCardLoading,
+    setIsVariantHistoryCardLoading,
+    setIsVariantPhotosCardLoading,
+    setIsManageTraitsCardLoading,
     setIsImageUploaderLoading,
     setIsProductPhotosLoading,
     setIsProductsGridLoading,
     setIsVariantsGridLoading,
     setIsTraitOptionsGridLoading,
     setIsVariantGridLoading,
+    setIsVariantOptionsGridLoading,
+    setIsVariantPhotoGridLoading,
+    setIsProductPhotoGridLoading,
     refreshActiveCards,
     refreshActiveTab,
     refreshSelectedProduct,
@@ -352,6 +450,8 @@ const PurchaseProductsPageSlice = createSlice({
     refreshIsDuplicateVariant,
     refreshPurchaseProductVariants,
     refreshPurchaseSummary,
+    refreshVariantPhotos,
+    refreshProductPhotosForVariant,
   },
 });
 

@@ -116,6 +116,20 @@ export default function useProductsPageService() {
     ProductsApiHooks.useCheckVariantCombinationMutation();
   const [getPurchaseProductVariants] =
     PurchasesApiHooks.useLazyGetPurchaseProductVariantsQuery();
+  const [getVariantStockHistory] =
+    ProductsApiHooks.useLazyGetVariantStockHistoryQuery();
+  const [getProductPhotosForVariant] =
+    ProductsApiHooks.useLazyGetProductPhotosForVariantQuery();
+  const [updateVariantDetails] =
+    ProductsApiHooks.useUpdateVariantDetailsMutation();
+  const [updateVariantTraitOptions] =
+    ProductsApiHooks.useUpdateVariantTraitOptionsMutation();
+  const [increaseStockAmountForVariant] =
+    ProductsApiHooks.useIncreaseStockAmountForVariantMutation();
+  const [disposeVariantFromStock] =
+    ProductsApiHooks.useDisposeVariantFromStockMutation();
+  const [changePhotoPositionForVariant] =
+    ProductsApiHooks.useChangePhotoPositionForVariantMutation();
 
   //-------------------------------------------------API
 
@@ -430,7 +444,7 @@ export default function useProductsPageService() {
       variantId,
       photoId,
     }).then((res: any) => {
-      return res.data;
+      return res;
     });
   }
 
@@ -538,6 +552,55 @@ export default function useProductsPageService() {
     return getPurchaseProductVariants({
       purchaseId,
       productId,
+    }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function getVariantStockHistoryHandler(id) {
+    return getVariantStockHistory(id).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function getProductPhotosForVariantHandler(productId, variantId) {
+    return getProductPhotosForVariant({
+      productId,
+      variantId,
+    }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function updateVariantDetailsHandler(id, model) {
+    return updateVariantDetails({ id, model }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function updateVariantTraitOptionsHandler(id, model) {
+    return updateVariantTraitOptions({ id, model }).then((res: any) => {
+      return res;
+    });
+  }
+
+  function increaseStockAmountForVariantHandler(id, model) {
+    return increaseStockAmountForVariant({ id, model }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function disposeVariantFromStockHandler(id, model) {
+    return disposeVariantFromStock({ id, model }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function changePhotoPositionForVariantHandler(id, photoId, index) {
+    return changePhotoPositionForVariant({
+      id,
+      photoId,
+      index,
     }).then((res: any) => {
       return res.data;
     });
@@ -663,5 +726,12 @@ export default function useProductsPageService() {
     createVariantHandler,
     checkVariantCombinationHandler,
     getPurchaseProductVariantsHandler,
+    getVariantStockHistoryHandler,
+    getProductPhotosForVariantHandler,
+    updateVariantDetailsHandler,
+    updateVariantTraitOptionsHandler,
+    increaseStockAmountForVariantHandler,
+    disposeVariantFromStockHandler,
+    changePhotoPositionForVariantHandler,
   };
 }

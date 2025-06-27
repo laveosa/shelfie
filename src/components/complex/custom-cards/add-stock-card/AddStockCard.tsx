@@ -54,7 +54,7 @@ export default function AddStockCard({
         priceType: purchasePriceType?.[0].priceTypeName,
         currencyId: currencyTypes?.[0]?.id,
       },
-      purchaseId: 0,
+      purchaseId: null,
     },
   });
 

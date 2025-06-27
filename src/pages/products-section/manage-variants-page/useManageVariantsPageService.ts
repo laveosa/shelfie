@@ -1,7 +1,6 @@
 import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";
-import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 
 export default function useManageVariantsPageService() {
   const [getVariantsForGrid] = ProductsApiHooks.useGetVariantsForGridMutation();
@@ -10,16 +9,16 @@ export default function useManageVariantsPageService() {
   //   ProductsApiHooks.useCheckVariantCombinationMutation();
   const [toggleVariantIsActive] =
     ProductsApiHooks.useToggleVariantIsActiveMutation();
-  const [updateVariantDetails] =
-    ProductsApiHooks.useUpdateVariantDetailsMutation();
-  const [updateVariantTraitOptions] =
-    ProductsApiHooks.useUpdateVariantTraitOptionsMutation();
-  const [increaseStockAmountForVariant] =
-    ProductsApiHooks.useIncreaseStockAmountForVariantMutation();
-  const [disposeVariantFromStock] =
-    ProductsApiHooks.useDisposeVariantFromStockMutation();
-  const [getVariantStockHistory] =
-    ProductsApiHooks.useLazyGetVariantStockHistoryQuery();
+  // const [updateVariantDetails] =
+  //   ProductsApiHooks.useUpdateVariantDetailsMutation();
+  // const [updateVariantTraitOptions] =
+  //   ProductsApiHooks.useUpdateVariantTraitOptionsMutation();
+  // const [increaseStockAmountForVariant] =
+  //   ProductsApiHooks.useIncreaseStockAmountForVariantMutation();
+  // const [disposeVariantFromStock] =
+  //   ProductsApiHooks.useDisposeVariantFromStockMutation();
+  // const [getVariantStockHistory] =
+  //   ProductsApiHooks.useLazyGetVariantStockHistoryQuery();
   const [changeVariantPosition] =
     ProductsApiHooks.useChangeVariantPositionMutation();
   const [generateProductCode] =
@@ -48,15 +47,15 @@ export default function useManageVariantsPageService() {
   // const [updateTrait] = ProductsApiHooks.useUpdateTraitMutation();
   // const [changePositionOfTraitOption] =
   //   ProductsApiHooks.useChangePositionOfTraitOptionMutation();
-  const [getProductPhotosForVariant] =
-    ProductsApiHooks.useLazyGetProductPhotosForVariantQuery();
-  const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
-  const [detachVariantPhoto] = ProductsApiHooks.useDetachVariantPhotoMutation();
+  // const [getProductPhotosForVariant] =
+  //   ProductsApiHooks.useLazyGetProductPhotosForVariantQuery();
+  // const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
+  // const [detachVariantPhoto] = ProductsApiHooks.useDetachVariantPhotoMutation();
   const [deletePhoto] = AssetsApiHooks.useDeletePhotoMutation();
-  const [changePhotoPositionForVariant] =
-    ProductsApiHooks.useChangePhotoPositionForVariantMutation();
-  const [attachProductPhotoToVariant] =
-    ProductsApiHooks.useAttachProductPhotoToVariantMutation();
+  // const [changePhotoPositionForVariant] =
+  //   ProductsApiHooks.useChangePhotoPositionForVariantMutation();
+  // const [attachProductPhotoToVariant] =
+  //   ProductsApiHooks.useAttachProductPhotoToVariantMutation();
 
   function getVariantsForGridHandler(data?: GridRequestModel) {
     return getVariantsForGrid(data).then((res: any) => {
@@ -88,35 +87,35 @@ export default function useManageVariantsPageService() {
     });
   }
 
-  function updateVariantDetailsHandler(id, model) {
-    return updateVariantDetails({ id, model }).then((res: any) => {
-      return res.data;
-    });
-  }
+  // function updateVariantDetailsHandler(id, model) {
+  //   return updateVariantDetails({ id, model }).then((res: any) => {
+  //     return res.data;
+  //   });
+  // }
 
-  function updateVariantTraitOptionsHandler(id, model) {
-    return updateVariantTraitOptions({ id, model }).then((res: any) => {
-      return res;
-    });
-  }
+  // function updateVariantTraitOptionsHandler(id, model) {
+  //   return updateVariantTraitOptions({ id, model }).then((res: any) => {
+  //     return res;
+  //   });
+  // }
 
-  function increaseStockAmountForVariantHandler(id, model) {
-    return increaseStockAmountForVariant({ id, model }).then((res: any) => {
-      return res.data;
-    });
-  }
+  // function increaseStockAmountForVariantHandler(id, model) {
+  //   return increaseStockAmountForVariant({ id, model }).then((res: any) => {
+  //     return res.data;
+  //   });
+  // }
+  //
+  // function disposeVariantFromStockHandler(id, model) {
+  //   return disposeVariantFromStock({ id, model }).then((res: any) => {
+  //     return res.data;
+  //   });
+  // }
 
-  function disposeVariantFromStockHandler(id, model) {
-    return disposeVariantFromStock({ id, model }).then((res: any) => {
-      return res.data;
-    });
-  }
-
-  function getVariantStockHistoryHandler(id) {
-    return getVariantStockHistory(id).then((res: any) => {
-      return res.data;
-    });
-  }
+  // function getVariantStockHistoryHandler(id) {
+  //   return getVariantStockHistory(id).then((res: any) => {
+  //     return res.data;
+  //   });
+  // }
 
   function changeVariantPositionHandler(productId, variantId, index) {
     return changeVariantPosition({
@@ -216,26 +215,26 @@ export default function useManageVariantsPageService() {
   //   });
   // }
 
-  function getProductPhotosForVariantHandler(productId, variantId) {
-    return getProductPhotosForVariant({
-      productId,
-      variantId,
-    }).then((res: any) => {
-      return res.data;
-    });
-  }
+  // function getProductPhotosForVariantHandler(productId, variantId) {
+  //   return getProductPhotosForVariant({
+  //     productId,
+  //     variantId,
+  //   }).then((res: any) => {
+  //     return res.data;
+  //   });
+  // }
 
-  function uploadPhotoHandler(model: UploadPhotoModel) {
-    return uploadPhoto(model).then((res: any) => {
-      return res;
-    });
-  }
-
-  function detachVariantPhotoHandler(id, photoId) {
-    return detachVariantPhoto({ id, photoId }).then((res: any) => {
-      return res;
-    });
-  }
+  // function uploadPhotoHandler(model: UploadPhotoModel) {
+  //   return uploadPhoto(model).then((res: any) => {
+  //     return res;
+  //   });
+  // }
+  //
+  // function detachVariantPhotoHandler(id, photoId) {
+  //   return detachVariantPhoto({ id, photoId }).then((res: any) => {
+  //     return res;
+  //   });
+  // }
 
   function deletePhotoHandler(photoId) {
     return deletePhoto(photoId).then((res: any) => {
@@ -243,35 +242,35 @@ export default function useManageVariantsPageService() {
     });
   }
 
-  function changePhotoPositionForVariantHandler(id, photoId, index) {
-    return changePhotoPositionForVariant({
-      id,
-      photoId,
-      index,
-    }).then((res: any) => {
-      return res.data;
-    });
-  }
+  // function changePhotoPositionForVariantHandler(id, photoId, index) {
+  //   return changePhotoPositionForVariant({
+  //     id,
+  //     photoId,
+  //     index,
+  //   }).then((res: any) => {
+  //     return res.data;
+  //   });
+  // }
 
-  function attachProductPhotoToVariantHandler(variantId, photoId) {
-    return attachProductPhotoToVariant({
-      variantId,
-      photoId,
-    }).then((res: any) => {
-      return res;
-    });
-  }
+  // function attachProductPhotoToVariantHandler(variantId, photoId) {
+  //   return attachProductPhotoToVariant({
+  //     variantId,
+  //     photoId,
+  //   }).then((res: any) => {
+  //     return res;
+  //   });
+  // }
 
   return {
     getVariantsForGridHandler,
     // createVariantHandler,
     // checkVariantCombinationHandler,
     toggleVariantIsActiveHandler,
-    updateVariantDetailsHandler,
-    updateVariantTraitOptionsHandler,
-    increaseStockAmountForVariantHandler,
-    disposeVariantFromStockHandler,
-    getVariantStockHistoryHandler,
+    // updateVariantDetailsHandler,
+    // updateVariantTraitOptionsHandler,
+    // increaseStockAmountForVariantHandler,
+    // disposeVariantFromStockHandler,
+    // getVariantStockHistoryHandler,
     changeVariantPositionHandler,
     generateProductCodeHandler,
     // getListOfAllTraitsHandler,
@@ -287,11 +286,11 @@ export default function useManageVariantsPageService() {
     // updateOptionsForTraitHandler,
     // deleteOptionsForTraitHandler,
     // changePositionOfTraitOptionHandler,
-    getProductPhotosForVariantHandler,
-    uploadPhotoHandler,
-    detachVariantPhotoHandler,
+    // getProductPhotosForVariantHandler,
+    // uploadPhotoHandler,
+    // detachVariantPhotoHandler,
     deletePhotoHandler,
-    changePhotoPositionForVariantHandler,
-    attachProductPhotoToVariantHandler,
+    // changePhotoPositionForVariantHandler,
+    // attachProductPhotoToVariantHandler,
   };
 }

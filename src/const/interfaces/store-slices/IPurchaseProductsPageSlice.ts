@@ -23,11 +23,20 @@ export interface IPurchaseProductsPageSlice {
   isChooseVariantTraitsCardLoading?: boolean;
   isProductTraitConfigurationCardLoading?: boolean;
   isAddVariantCardLoading?: boolean;
+  isVariantConfigurationCardLoading?: boolean;
+  isAddStockCardLoading?: boolean;
+  isDisposeStockCardLoading?: boolean;
+  isVariantHistoryCardLoading?: boolean;
+  isVariantPhotosCardLoading?: boolean;
+  isManageTraitsCardLoading?: boolean;
   isImageUploaderLoading?: boolean;
   isProductPhotosLoading?: boolean;
   isVariantsGridLoading?: boolean;
   isTraitOptionsGridLoading?: boolean;
   isVariantGridLoading?: boolean;
+  isVariantOptionsGridLoading?: boolean;
+  isVariantPhotoGridLoading?: boolean;
+  isProductPhotoGridLoading?: boolean;
   activeCards?: any[];
   activeTab?: string;
   selectedProduct?: ProductModel;
@@ -44,4 +53,6 @@ export interface IPurchaseProductsPageSlice {
   isDuplicateVariant?: boolean;
   purchaseProductVariants?: VariantModel[];
   purchaseSummary?: IPurchaseSummaryModel;
+  variantPhotos?: ImageModel[];
+  productPhotosForVariant?: ImageModel[];
 }

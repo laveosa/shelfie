@@ -268,7 +268,7 @@ export function ManageVariantsPage() {
               dispatch(productsActions.refreshSelectedVariant(res));
               dispatch(actions.refreshVariantPhotos(res?.photos));
               dispatch(actions.setIsProductPhotoGridLoading(true));
-              service
+              productsService
                 .getProductPhotosForVariantHandler(productId, payload.variantId)
                 .then((res) => {
                   dispatch(actions.setIsProductPhotoGridLoading(false));
@@ -285,7 +285,7 @@ export function ManageVariantsPage() {
         break;
       case "updateVariantDetails":
         dispatch(actions.setIsVariantConfigurationCardLoading(true));
-        service
+        productsService
           .updateVariantDetailsHandler(
             payload.variant.variantId,
             payload.formattedData,
@@ -309,7 +309,7 @@ export function ManageVariantsPage() {
         break;
       case "updateVariantTraitOptions":
         dispatch(actions.setIsManageTraitsCardLoading(true));
-        service
+        productsService
           .updateVariantTraitOptionsHandler(
             payload.variant.variantId,
             payload.submissionData,
@@ -361,7 +361,7 @@ export function ManageVariantsPage() {
         break;
       case "increaseStockAmount":
         dispatch(actions.setIsAddStockCardLoading(true));
-        service
+        productsService
           .increaseStockAmountForVariantHandler(
             payload.variant.variantId,
             payload.formattedData,
@@ -384,7 +384,7 @@ export function ManageVariantsPage() {
         break;
       case "disposeFromStock":
         dispatch(actions.setIsDisposeStockCardLoading(true));
-        service
+        productsService
           .disposeVariantFromStockHandler(
             payload.variant.variantId,
             payload.formattedData,
@@ -414,7 +414,7 @@ export function ManageVariantsPage() {
         break;
       case "uploadPhotoToVariant":
         dispatch(actions.setIsVariantPhotosCardLoading(true));
-        service.uploadPhotoHandler(payload).then((res) => {
+        productsService.uploadPhotoHandler(payload).then((res) => {
           dispatch(actions.setIsVariantPhotosCardLoading(false));
           if (res) {
             dispatch(actions.setIsVariantPhotoGridLoading(true));
@@ -462,7 +462,7 @@ export function ManageVariantsPage() {
         // });
         break;
       case "addPhotoToVariant":
-        service
+        productsService
           .attachProductPhotoToVariantHandler(
             productsState.selectedVariant.variantId,
             payload.photoId,
@@ -504,7 +504,7 @@ export function ManageVariantsPage() {
         if (!confirmedDetachPhoto) return;
 
         try {
-          await service.detachVariantPhotoHandler(
+          await productsService.detachVariantPhotoHandler(
             productsState.selectedVariant.variantId,
             payload.photoId.toString(),
           );
@@ -531,7 +531,7 @@ export function ManageVariantsPage() {
         }
         break;
       case "dndVariantPhoto":
-        service
+        productsService
           .changePhotoPositionForVariantHandler(
             productsState.selectedVariant.variantId,
             payload.activeItem.photoId,
@@ -966,7 +966,7 @@ export function ManageVariantsPage() {
           <StockHistoryCard
             isLoading={state.isVariantHistoryCardLoading}
             variant={productsState.selectedVariant}
-            getVariantHistory={service.getVariantStockHistoryHandler}
+            getVariantHistory={productsService.getVariantStockHistoryHandler}
             onSecondaryButtonClick={() =>
               handleCardAction("variantHistoryCard")
             }
