@@ -5,7 +5,7 @@ import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
-import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
+import { ProductCountersModel } from "@/const/models/CounterModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 
 const initialState: IProductBasicDataPageSlice = {
@@ -123,7 +123,7 @@ function refreshContextId(
 
 function refreshProductCounter(
   state: IProductBasicDataPageSlice,
-  action: PayloadAction<ProductCounterModel>,
+  action: PayloadAction<ProductCountersModel>,
 ) {
   state.productCounter = action?.payload || state.productCounter;
 }

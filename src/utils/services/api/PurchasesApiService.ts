@@ -24,6 +24,16 @@ export const PurchasesApiService = createApi({
         body: JSON.stringify(model),
       }),
     }),
+    getListOfPurchaseProductsForGrid: apiConfig.createMutation<
+      GridModel,
+      { id: number; model: GridRequestModel }
+    >(builder, {
+      query: ({ id, model }) => ({
+        url: `${ApiUrlEnum.PURCHASES}/${id}${ApiUrlEnum.STOCK_ACTIONS}`,
+        method: "POST",
+        body: model,
+      }),
+    }),
     getPurchaseDetails: apiConfig.createQuery<PurchaseModel, number>(builder, {
       query: (id: number) => ({
         url: `${ApiUrlEnum.PURCHASES}/${id}`,
@@ -34,6 +44,59 @@ export const PurchasesApiService = createApi({
         url: `${ApiUrlEnum.PURCHASES}`,
         method: "POST",
         body: JSON.stringify(model),
+      }),
+    }),
+    getPurchaseCounters: apiConfig.createQuery<any, number>(builder, {
+      query: (purchaseId: number) => ({
+        url: `${ApiUrlEnum.PURCHASES}/${purchaseId}/report`,
+      }),
+    }),
+    addVariantToPurchaseProducts: apiConfig.createMutation<
+      any,
+      {
+        id: number;
+        model: any;
+      }
+    >(builder, {
+      query: ({ id, model }) => ({
+        url: `${ApiUrlEnum.PURCHASES}/${id}${ApiUrlEnum.VARIANTS}`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+    }),
+    updatePurchaseProduct: apiConfig.createMutation<
+      any,
+      {
+        id: number;
+        model: any;
+      }
+    >(builder, {
+      query: ({ id, model }) => ({
+        url: `${ApiUrlEnum.PURCHASES}${ApiUrlEnum.STOCK_ACTIONS}/${id}`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+    }),
+    getPurchaseProductVariants: apiConfig.createQuery<
+      any,
+      {
+        purchaseId: number;
+        productId: number;
+      }
+    >(builder, {
+      query: ({ purchaseId, productId }) => ({
+        url: `${ApiUrlEnum.PURCHASES}/${purchaseId}${ApiUrlEnum.PRODUCTS}/${productId}`,
+      }),
+    }),
+    deleteStockAction: apiConfig.createMutation<void, number>(builder, {
+      query: (stockActionId: number) => ({
+        url: `${ApiUrlEnum.PURCHASES}${ApiUrlEnum.STOCK_ACTIONS}/${stockActionId}`,
+        method: "DELETE",
+      }),
+    }),
+    getPurchaseSummary: apiConfig.createQuery<any, number>(builder, {
+      query: (purchaseId) => ({
+        url: `${ApiUrlEnum.PURCHASES}/${purchaseId}/fiscal-summary`,
       }),
     }),
   }),

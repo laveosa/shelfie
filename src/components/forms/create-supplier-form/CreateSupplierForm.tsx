@@ -6,7 +6,7 @@ import {
   SupplierModel,
   SupplierModelDefault,
 } from "@/const/models/SupplierModel.ts";
-import CreateSupplierFormScheme from "@/utils/validation/schemes/CreateSupplierFomresolver.ts";
+import CreateSupplierFormScheme from "@/utils/validation/schemes/CreateSupplierFormScheme.ts";
 import SheForm from "@/components/complex/she-form/SheForm.tsx";
 import { UserModelDefault } from "@/const/models/UserModel.ts";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";

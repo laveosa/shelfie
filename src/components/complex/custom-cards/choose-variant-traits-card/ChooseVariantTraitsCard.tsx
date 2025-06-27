@@ -23,7 +23,7 @@ export default function ChooseVariantTraitsCard({
 }: IChooseVariantTraitsCard) {
   const [selectedTraitId, setSelectedTraitId] = useState<number | null>(null);
   const [checkedTraitIds, setCheckedTraitIds] = useState<number[]>(
-    selectedItems.map((item: TraitModel) => item.traitId),
+    selectedItems?.map((item: TraitModel) => item.traitId),
   );
 
   function handleCheckboxChange(traitId: number, checked: boolean) {
@@ -64,8 +64,8 @@ export default function ChooseVariantTraitsCard({
           Add trait
         </SheButton>
         <div className={cs.traitsItems}>
-          {items.length > 0 &&
-            items.map((item: TraitModel) => (
+          {items?.length > 0 &&
+            items?.map((item: TraitModel) => (
               <div
                 key={item.traitId}
                 className={`${cs.traitsItem} ${selectedTraitId === item.traitId ? cs.selected : ""}`}

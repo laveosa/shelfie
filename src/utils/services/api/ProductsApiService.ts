@@ -10,7 +10,7 @@ import { BrandModel } from "@/const/models/BrandModel.ts";
 import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
-import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
+import { ProductCountersModel } from "@/const/models/CounterModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
 import { VariantModel } from "@/const/models/VariantModel.ts";
@@ -155,7 +155,7 @@ export const ProductsApiService = createApi({
         },
       }),
     }),
-    getCountersForProducts: apiConfig.createQuery<ProductCounterModel, number>(
+    getCountersForProducts: apiConfig.createQuery<ProductCountersModel, number>(
       builder,
       {
         query: (id: number) => ({
@@ -453,6 +453,11 @@ export const ProductsApiService = createApi({
       query: ({ traitId, optionId, index }) => ({
         url: `${ApiUrlEnum.TRAITS}/${traitId}/options/${optionId}/${index}`,
         method: "PATCH",
+      }),
+    }),
+    getTraitsForFilter: apiConfig.createQuery<any, any>(builder, {
+      query: (id) => ({
+        url: `${ApiUrlEnum.TRAITS}/for-filter/${id ? id : ""}`,
       }),
     }),
   }),

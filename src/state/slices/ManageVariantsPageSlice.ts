@@ -6,7 +6,7 @@ import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
-import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
+import { ProductCountersModel } from "@/const/models/CounterModel.ts";
 
 const initialState: IManageVariantsPageSlice = {
   isLoading: false,
@@ -213,7 +213,7 @@ function refreshListOfTraitsWithOptionsForProduct(
 
 function refreshProductCounter(
   state: IManageVariantsPageSlice,
-  action: PayloadAction<ProductCounterModel>,
+  action: PayloadAction<ProductCountersModel>,
 ) {
   state.productCounter = action?.payload || state.productCounter;
 }

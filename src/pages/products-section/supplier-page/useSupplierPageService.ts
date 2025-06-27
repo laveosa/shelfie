@@ -9,8 +9,6 @@ export default function useSupplierPageService() {
   const state = useAppSelector<ISupplierPageSlice>(StoreSliceEnum.SUPPLIER);
   const dispatch = useAppDispatch();
 
-  const [getPurchaseDetails] =
-    PurchasesApiHooks.useLazyGetPurchaseDetailsQuery();
   const [createPurchaseForSupplier] =
     PurchasesApiHooks.useCreatePurchaseForSupplierMutation();
   const [getListOfSuppliers] =
@@ -21,13 +19,6 @@ export default function useSupplierPageService() {
     SuppliersApiHooks.useLazyGetSupplierDetailsQuery();
   const [createSupplier] = SuppliersApiHooks.useCreateSupplierMutation();
   const [updateSupplier] = SuppliersApiHooks.useUpdateSupplierMutation();
-
-  function getPurchaseDetailsHandler(id) {
-    return getPurchaseDetails(id).then((res: any) => {
-      dispatch(actions.refreshPurchase(res.data));
-      return res.data;
-    });
-  }
 
   function createPurchaseForSupplierHandler(model) {
     return createPurchaseForSupplier(model).then((res: any) => {
@@ -73,7 +64,6 @@ export default function useSupplierPageService() {
   }
 
   return {
-    getPurchaseDetailsHandler,
     createPurchaseForSupplierHandler,
     getListOfSuppliersHandler,
     getListOfSuppliersForGridHandler,

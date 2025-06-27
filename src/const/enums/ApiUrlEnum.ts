@@ -30,4 +30,5 @@ export enum ApiUrlEnum {
   CONVERSATIONS = "/conversations",
   ASSET = "/asset",
   CODES = "/codes",
+  STOCK_ACTIONS = "/stock-actions",
 }

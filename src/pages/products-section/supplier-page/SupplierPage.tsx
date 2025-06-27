@@ -36,15 +36,19 @@ export function SupplierPage() {
   const cardRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   useEffect(() => {
-    if (!productsState.selectedPurchase) {
+    if (purchaseId) {
       dispatch(actions.setIsSupplierCardLoading(true));
-      service
+      dispatch(actions.setIsProductMenuCardLoading(true));
+      productsService
         .getPurchaseDetailsHandler(purchaseId)
         .then((res: PurchaseModel) => {
           dispatch(actions.setIsSupplierCardLoading(false));
           dispatch(productsActions.refreshSelectedPurchase(res));
-          dispatch(actions.refreshSelectedSupplier(res.supplier));
+          dispatch(productsActions.refreshSelectedSupplier(res.supplier));
         });
+      productsService
+        .getPurchaseCountersHandler(Number(purchaseId))
+        .then(() => dispatch(actions.setIsProductMenuCardLoading(false)));
     }
   }, [purchaseId]);
 
@@ -108,7 +112,7 @@ export function SupplierPage() {
           });
         break;
       case "detachSupplier":
-        dispatch(actions.resetSelectedSupplier());
+        dispatch(productsActions.resetSelectedSupplier());
         break;
       case "openSelectSupplierCard":
         handleCardAction("selectSupplierCard", true);
@@ -172,7 +176,7 @@ export function SupplierPage() {
         break;
       case "selectSupplier":
         handleCardAction("selectSupplierCard");
-        dispatch(actions.refreshSelectedSupplier(payload));
+        dispatch(productsActions.refreshSelectedSupplier(payload));
         break;
       case "manageSupplier":
         handleCardAction("supplierConfigurationCard", true);
@@ -246,17 +250,16 @@ export function SupplierPage() {
   return (
     <div className={cs.supplierPage}>
       <ProductMenuCard
-        isLoading={productsState.isProductMenuCardLoading}
+        isLoading={state.isProductMenuCardLoading}
         title="Report Purchase"
         itemsCollection="purchases"
-        productId={productsState.selectedPurchase?.supplier.supplierId}
-        productCounter={productsState.productCounter}
-        onAction={handleCardAction}
+        productId={Number(purchaseId)}
+        counter={productsState.purchaseCounters}
       />
       <SupplierCard
         isLoading={state.isSupplierCardLoading}
         selectedPurchase={productsState.selectedPurchase}
-        selectedSupplier={state.selectedSupplier}
+        selectedSupplier={productsState.selectedSupplier}
         onAction={onAction}
       />
       {state.activeCards?.includes("selectSupplierCard") && (

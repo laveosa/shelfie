@@ -1,12 +1,13 @@
 @use "@/styles/variables" as vars;
 
-.dndGrid {
 
+.dndGrid {
 }
 
 .tableRow {
   transition: background-color 0.3s ease;
   cursor: default;
+
 
   .tableCell {
   }
@@ -144,3 +145,17 @@
 .isSelected {
   background: #F8F3FF;
 }
+
+//-------------------------------------------------------expandableRows
+
+.expandedContent {
+  padding-top: 0;
+
+  & > div {
+    display: flex;
+    justify-content: flex-end;
+    background: none;
+    padding: 0;
+  }
+}
+

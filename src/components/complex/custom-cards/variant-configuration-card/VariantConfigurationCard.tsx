@@ -396,7 +396,7 @@ export default function VariantConfigurationCard({
                 columns={photoColumns}
                 data={variantPhotos}
                 gridModel={data}
-                skeletonQuantity={productCounter.gallery}
+                skeletonQuantity={productCounter?.gallery}
                 onNewItemPosition={(newIndex, activeItem) =>
                   onAction("dndVariantPhoto", { newIndex, activeItem })
                 }

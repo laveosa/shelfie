@@ -30,7 +30,7 @@ export default function AddVariantCard({
   onAction,
   ...props
 }: IAddVariantCard) {
-  const defaultValues = traits.reduce(
+  const defaultValues = traits?.reduce(
     (acc, trait) => ({
       ...acc,
       [trait.traitId]: "",
@@ -81,7 +81,7 @@ export default function AddVariantCard({
             Select the trait options that you want to add
           </span>
           <SheForm form={form} onSubmit={onSubmit}>
-            {traits.map((trait) => (
+            {traits?.map((trait) => (
               <FormField
                 key={trait.traitId}
                 control={form.control}
