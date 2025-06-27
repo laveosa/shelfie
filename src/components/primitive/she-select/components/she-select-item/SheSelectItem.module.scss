@@ -1,7 +1,3 @@
-@use "@/styles/variables" as vars;
-
-$iconSize: 20px;
-
 :global(div[data-radix-popper-content-wrapper]) {
   > div[role="listbox"] {
     overflow: visible;

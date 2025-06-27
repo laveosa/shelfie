@@ -100,6 +100,29 @@ $iconSize: 20px;
   }
 }
 
+// ======================================================== NOT SELECT ITEM
+
+.sheSelectItemNotSelected {
+  span {
+    color: vars.$subtextColor;
+    font-weight: bold;
+    opacity: 0.8;
+  }
+
+  .sheSelectItemIconContainer {
+    > * {
+      display: none;
+    }
+  }
+}
+
+// ======================================================== SELECT ITEMS CONTAINER
+
+.sheSelectItemsContainer {
+  max-height: 34vh;
+  overflow-y: auto;
+}
+
 // ======================================================== FULL WIDTH
 
 .sheSelect.fullWidth {

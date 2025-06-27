@@ -69,9 +69,10 @@ export default function SheSelect({
 
       if (firstIsNotSelected) {
         updatedItems.unshift({
-          value: null,
+          className: cs.sheSelectItemNotSelected,
           text: "not selected",
           textTransKey: "not_selected",
+          value: null,
         });
       }
     }
@@ -239,23 +240,25 @@ export default function SheSelect({
               </SelectTrigger>
               {_items?.length > 0 && (
                 <SelectContent>
-                  {_items?.map((item: ISheSelectItem) => (
-                    <SheSelectItem
-                      key={item.id}
-                      id={item.id}
-                      className={cs.sheSelectItemCover}
-                      iconClassName={cs.sheSelectItemIconContainer}
-                      colorsClassName={cs.sheSelectItemColorsContainer}
-                      infoClassName={cs.sheSelectItemInfoContainer}
-                      tooltipClassName={cs.sheSelectItemTooltipContainer}
-                      isLoading={_loading}
-                      showSelectIcon={showSelectIcon}
-                      showIconsColumn={_isItemsWithIcons}
-                      showColorsColumn={_isItemsWithColors}
-                      ariaDescribedbyId={ariaDescribedbyId}
-                      {...item}
-                    />
-                  ))}
+                  <div className={cs.sheSelectItemsContainer}>
+                    {_items?.map((item: ISheSelectItem) => (
+                      <SheSelectItem
+                        key={item.id}
+                        id={item.id}
+                        className={cs.sheSelectItemCover}
+                        iconClassName={cs.sheSelectItemIconContainer}
+                        colorsClassName={cs.sheSelectItemColorsContainer}
+                        infoClassName={cs.sheSelectItemInfoContainer}
+                        tooltipClassName={cs.sheSelectItemTooltipContainer}
+                        isLoading={_loading}
+                        showSelectIcon={showSelectIcon}
+                        showIconsColumn={_isItemsWithIcons}
+                        showColorsColumn={_isItemsWithColors}
+                        ariaDescribedbyId={ariaDescribedbyId}
+                        {...item}
+                      />
+                    ))}
+                  </div>
                 </SelectContent>
               )}
             </Select>
