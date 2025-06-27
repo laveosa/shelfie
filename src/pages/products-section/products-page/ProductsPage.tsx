@@ -31,7 +31,6 @@ import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPag
 import { ProductsPageSliceActions as actions } from "@/state/slices/ProductsPageSlice.ts";
 import { AppSliceActions as appActions } from "@/state/slices/AppSlice.ts";
 import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { variantsGridColumns } from "@/components/complex/grid/variants-grid/VariantsGridColumns.tsx";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { useToast } from "@/hooks/useToast.ts";
@@ -224,14 +223,18 @@ export function ProductsPage() {
   const purchasesColumns = purchasesGridColumns(onAction);
 
   function handleAddProduct() {
-    navigate(`${ApiUrlEnum.PRODUCTS}${ApiUrlEnum.PRODUCT_BASIC_DATA}`);
+    navigate(`${NavUrlEnum.PRODUCTS}${NavUrlEnum.PRODUCT_BASIC_DATA}`);
   }
 
   function handleImportProducts() {}
 
   function handleConfigure() {}
 
-  function handleReportPurchase() {}
+  function handleReportPurchase() {
+    dispatch(actions.resetSelectedPurchase());
+    dispatch(actions.resetSelectedSupplier());
+    navigate(`${NavUrlEnum.PRODUCTS}${NavUrlEnum.SUPPLIER}/`);
+  }
 
   function handleGridRequestChange(updates: GridRequestModel) {
     if (updates.brands || updates.categories || updates.filter) {

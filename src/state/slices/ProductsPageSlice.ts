@@ -288,11 +288,19 @@ function refreshSelectedSupplier(
   state.selectedSupplier = action?.payload || state.selectedSupplier;
 }
 
+function resetSelectedSupplier(state: IProductsPageSlice) {
+  state.selectedSupplier = null;
+}
+
 function refreshSelectedPurchase(
   state: IProductsPageSlice,
   action: PayloadAction<PurchaseModel>,
 ) {
   state.selectedPurchase = action?.payload || state.selectedPurchase;
+}
+
+function resetSelectedPurchase(state: IProductsPageSlice) {
+  state.selectedPurchase = null;
 }
 
 function resetSelectedVariant(state: IProductsPageSlice) {
@@ -397,7 +405,9 @@ const ProductsPageSlice = createSlice({
     refreshSelectedVariant,
     resetSelectedVariant,
     refreshSelectedSupplier,
+    resetSelectedSupplier,
     refreshSelectedPurchase,
+    resetSelectedPurchase,
     refreshTaxesList,
     refreshCurrenciesList,
     refreshCountryCodeList,

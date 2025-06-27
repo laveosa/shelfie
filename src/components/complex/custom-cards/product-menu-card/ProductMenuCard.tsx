@@ -58,7 +58,7 @@ const productMenuItems = [
     id: "purchase",
     icon: <ReceiptEuroIcon />,
     label: "Purchase",
-    path: NavUrlEnum.SUPPLIER,
+    path: NavUrlEnum.SIZE_CHART,
   },
 ];
 
@@ -103,21 +103,17 @@ export default function ProductMenuCard({
   const location = useLocation();
 
   function handleMenuItemClick(path: string) {
-    if (path === NavUrlEnum.SUPPLIER) {
-      navigate(`${NavUrlEnum.PRODUCTS}${path}`);
-    } else {
-      navigate(`${NavUrlEnum.PRODUCTS}${path}/${productId ? productId : ""}`);
-    }
+    navigate(`${NavUrlEnum.PRODUCTS}${path}/${productId ? productId : ""}`);
   }
 
   // const renderMenuItem = ({ id, counterId, icon, label, path }) => {
   //   const pathBase = `${NavUrlEnum.PRODUCTS}${path}/`;
   //   const isSelected = location.pathname.startsWith(pathBase);
   //   console.log("isSelected", pathBase);
-  //   const isDisabled =
-  //     itemsCollection === "products"
-  //       ? isSelected || (!productId && id !== "basicData")
-  //       : isSelected || (!productId && id !== "supplier");
+  // const isDisabled =
+  //   itemsCollection === "products"
+  //     ? isSelected || (!productId && id !== "basicData")
+  //     : isSelected || (!productId && id !== "supplier");
 
   const renderMenuItem = ({ id, counterId, icon, label, path }) => {
     const pathBase = `${NavUrlEnum.PRODUCTS}${path}/`;

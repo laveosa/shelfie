@@ -44,7 +44,7 @@ export function SupplierPage() {
         .then((res: PurchaseModel) => {
           dispatch(actions.setIsSupplierCardLoading(false));
           dispatch(productsActions.refreshSelectedPurchase(res));
-          dispatch(actions.refreshSelectedSupplier(res.supplier));
+          dispatch(productsActions.refreshSelectedSupplier(res.supplier));
         });
       productsService
         .getPurchaseCountersHandler(Number(purchaseId))
@@ -112,7 +112,7 @@ export function SupplierPage() {
           });
         break;
       case "detachSupplier":
-        dispatch(actions.resetSelectedSupplier());
+        dispatch(productsActions.resetSelectedSupplier());
         break;
       case "openSelectSupplierCard":
         handleCardAction("selectSupplierCard", true);
@@ -176,7 +176,7 @@ export function SupplierPage() {
         break;
       case "selectSupplier":
         handleCardAction("selectSupplierCard");
-        dispatch(actions.refreshSelectedSupplier(payload));
+        dispatch(productsActions.refreshSelectedSupplier(payload));
         break;
       case "manageSupplier":
         handleCardAction("supplierConfigurationCard", true);
@@ -255,12 +255,11 @@ export function SupplierPage() {
         itemsCollection="purchases"
         productId={Number(purchaseId)}
         counter={productsState.purchaseCounters}
-        onAction={handleCardAction}
       />
       <SupplierCard
         isLoading={state.isSupplierCardLoading}
         selectedPurchase={productsState.selectedPurchase}
-        selectedSupplier={state.selectedSupplier}
+        selectedSupplier={productsState.selectedSupplier}
         onAction={onAction}
       />
       {state.activeCards?.includes("selectSupplierCard") && (

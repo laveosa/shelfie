@@ -1145,7 +1145,6 @@ export function PurchaseProductsPage() {
         itemsCollection="purchases"
         productId={Number(purchaseId)}
         counter={productsState.purchaseCounters}
-        onAction={handleCardAction}
       />
       {state.activeCards?.includes("purchaseProductsCard") && (
         <div
