@@ -5,8 +5,8 @@ import { ISheTooltip } from "@/const/interfaces/primitive-components/ISheTooltip
 import { ISheToggle } from "@/const/interfaces/primitive-components/ISheToggle.ts";
 
 export interface ISheOption<T> extends ComponentPropsWithRef<"div"> {
-  id?: string;
   key?: string;
+  id?: string;
   className?: string;
   style?: React.CSSProperties;
   minWidth?: string;

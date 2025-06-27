@@ -6,8 +6,10 @@ import SheOption from "@/components/primitive/she-option/SheOption.tsx";
 import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
 import { Box } from "lucide-react";
 import SheToggle from "@/components/primitive/she-toggle/SheToggle.tsx";
+import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
+import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 
-const options: ISheOption<any>[] = [
+const options: ISheSelectItem[] = [
   {
     id: "OPTION_1",
     text: "option 1",
@@ -62,26 +64,12 @@ export function DashboardPage() {
 
       <br />
 
-      <SheToggle text="some text" isLoading />
-
-      <br />
-
-      <div className="flex flex-col gap-2">
-        {options.map((option) => (
-          <SheOption
-            key={option.text}
-            className="SOME_CUSTOM_CLASS_NAME_FOR_PTION_COMPONENT"
-            mode="multiple"
-            view="card"
-            showIconsColumn
-            showColorsColumn
-            checkOnClick
-            onCheck={(data, event) => console.log("onCheck: ", data, event)}
-            onClick={(data, event) => console.log("onClick: ", data, event)}
-            {...option}
-          />
-        ))}
-      </div>
+      <SheSelect<any>
+        label="Select"
+        items={options}
+        showSelectIcon
+        onSelect={(value) => console.log(value)}
+      />
 
       <br />
     </div>

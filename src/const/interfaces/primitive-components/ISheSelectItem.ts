@@ -21,6 +21,7 @@ export interface ISheSelectItem {
   colors?: string[];
   disabled?: boolean;
   isLoading?: boolean;
+  isSelected?: boolean;
   showSelectIcon?: boolean;
   isItemsWithIcons?: boolean;
   isItemsWithColors?: boolean;
