@@ -1,0 +1,144 @@
+@use "@/styles/variables" as vars;
+
+$iconSize: 16px;
+$minHeight: 24px;
+
+.sheBadge {
+  width: fit-content;
+
+  .sheBadgeComponent {
+    width: 100%;
+
+    .sheBadgeControl {
+      .sheBadgeSkeleton {
+        .sheBadgeElement {
+          flex-grow: 1;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          padding: 2px 8px;
+          min-height: $minHeight;
+          width: 100%;
+
+          span {
+            flex-grow: 1;
+            line-height: 12px;
+            pointer-events: none;
+            word-break: break-all;
+          }
+        }
+      }
+    }
+  }
+}
+
+// ======================================================== CLOSE BTN
+
+.sheBadge {
+  .sheBadgeCloseBtn {
+    cursor: pointer;
+    position: relative;
+    left: +4px;
+    max-width: $iconSize;
+    min-width: $iconSize;
+    max-height: $iconSize;
+    min-height: $iconSize;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .sheBadgeCloseBtnIcon {
+      circle {
+        display: none;
+      }
+
+      &:hover {
+        circle {
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+// ======================================================== IS CLICKABLE
+
+.sheBadge.isClickable {
+  .sheBadgeElement {
+    cursor: pointer !important;
+  }
+}
+
+// ======================================================== FULL WIDTH
+
+.sheBadge.fullWidth {
+  max-width: none;
+  width: 100%;
+}
+
+// ======================================================== WITH ICON
+
+.sheBadge.withIcon {
+  .sheBadgeComponent {
+    .sheBadgeControl {
+      .sheBadgeSkeleton {
+        .sheBadgeIcon {
+          max-width: $iconSize;
+          min-width: $iconSize;
+          max-height: $iconSize;
+          min-height: $iconSize;
+        }
+      }
+    }
+  }
+}
+
+// ======================================================== TEXT WRAP
+
+.sheBadge {
+  &.wrap {
+    span {
+      white-space: normal;
+    }
+  }
+
+  &.nowrap {
+    span {
+      white-space: nowrap;
+    }
+  }
+
+  &.dots {
+    span {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+// ======================================================== CIRCLE
+
+.sheBadge.circle {
+  .sheBadgeComponent {
+    .sheBadgeControl {
+      .sheBadgeSkeleton {
+        .sheBadgeElement {
+          padding: 2px;
+          gap: 0;
+          min-width: $minHeight;
+          max-width: $minHeight;
+          min-height: $minHeight;
+          max-height: $minHeight;
+          justify-content: center;
+
+          span {
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+}

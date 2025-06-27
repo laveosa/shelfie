@@ -15,7 +15,7 @@ import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
 import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
-import SheSelectItem from "@/components/primitive/she-select-item/SheSelectItem.tsx";
+import SheSelectItem from "@/components/primitive/she-select/components/she-select-item/SheSelectItem.tsx";
 
 export default function SheSelect({
   id,
@@ -156,17 +156,16 @@ export default function SheSelect({
 
   function _addItemsIds(items: ISheSelectItem[]) {
     return items?.map((item, idx) => {
-      if (item.icon) {
-        setIsItemsWithIcons(true);
-      }
-
-      if (item.colors) {
-        setIsItemsWithColors(true);
-      }
+      if (item.icon) setIsItemsWithIcons(true);
+      if (item.colors) setIsItemsWithColors(true);
 
       return {
         ...item,
-        id: item.text.replace(/ /g, "_") + idx.toString(),
+        id: `${
+          item.text && item.text.length > 0
+            ? item.text.replace(/ /g, "_")
+            : "selectOption_"
+        }_${(idx + 1).toString()}`,
       };
     });
   }

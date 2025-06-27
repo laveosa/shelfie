@@ -1,5 +1,3 @@
-import { ComponentPropsWithRef } from "react";
-
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { IUndefinedProperties } from "@/const/interfaces/IUndefinedProperties.ts";
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
@@ -28,6 +26,19 @@ export function isSheIconConfig(
   return typeof icon === "object" && icon !== null && "icon" in icon;
 }
 
+export function addItemsId<T>(items: T[], identifier: string = "text"): T[] {
+  if (!items || items.length === 0) return null;
+
+  return items.map((item: T, idx) => ({
+    ...item,
+    id: `${
+      item[identifier] && item[identifier].length > 0
+        ? item[identifier].replace(/ /g, "_")
+        : generateId()
+    }_${(idx + 1).toString()}`,
+  }));
+}
+
 export function generateId(length: number = 8) {
   let result = "";
   const characters =
@@ -39,40 +50,6 @@ export function generateId(length: number = 8) {
     counter += 1;
   }
   return result.toString();
-}
-
-export const filterCustomProps = <
-  TCustomProps extends object,
-  TDefaultProps extends ComponentPropsWithRef<any>,
->(
-  props: TCustomProps & TDefaultProps,
-  customProps: Record<
-    keyof TCustomProps,
-    any
-  > = createEmptyProps<TCustomProps>(),
-) => {
-  const { ...defaultProps } = props;
-
-  (Object.keys(customProps) as Array<keyof TCustomProps>).forEach((key) => {
-    delete (defaultProps as any)[key];
-  });
-
-  return defaultProps as TDefaultProps;
-};
-
-export function filterProps<T extends object>(
-  props: any,
-  validKeys: (keyof T)[],
-): Partial<T> {
-  const result: Partial<T> = {} as any;
-
-  for (const key of validKeys) {
-    if (key in props) {
-      result[key] = props[key];
-    }
-  }
-
-  return result;
 }
 
 export function formatDate(

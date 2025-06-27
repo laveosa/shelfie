@@ -346,7 +346,6 @@ export function ProductsPage() {
             <SheButton
               icon={Plus}
               variant="outline"
-              size="sm"
               onClick={handleReportPurchase}
               value="Report Purchase"
             />
@@ -356,21 +355,18 @@ export function ProductsPage() {
             <SheButton
               icon={Plus}
               variant="outline"
-              size="sm"
               onClick={handleAddProduct}
               value="Add Product"
             />
             <SheButton
               icon={Download}
               variant="outline"
-              size="sm"
               onClick={handleImportProducts}
               value="Import Products"
             />
             <SheButton
               icon={Columns3Icon}
               variant="outline"
-              size="sm"
               onClick={handleConfigure}
               value="Configure"
             />

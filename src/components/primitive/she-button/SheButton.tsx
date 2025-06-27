@@ -1,20 +1,25 @@
 import React, { JSX } from "react";
 import { Trans } from "react-i18next";
-import { Loader2 } from "lucide-react";
 
 import cs from "./SheButton.module.scss";
 import { ISheButton } from "@/const/interfaces/primitive-components/ISheButton.ts";
 import { Button } from "@/components/ui/button.tsx";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import { Loader2 } from "lucide-react";
 
 export default function SheButton({
   className = "",
   style,
   icon,
   iconPosition = DirectionEnum.LEFT,
+  twistIcon,
   value,
   valueTransKey,
+  valueWrap,
+  variant = "default",
+  size = "normal",
+  view = "viewNormal",
   disabled,
   isLoading,
   minWidth,
@@ -27,12 +32,16 @@ export default function SheButton({
   children,
   ...props
 }: ISheButton): JSX.Element {
-  const iconSize: string = "20px";
-  const loaderSize: string = "30px";
-  const loaderColor: string = isLoaderDark();
+  const iconSize: string = size === "small" ? "14px" : "20px";
+  const loaderSize: string = size === "small" ? "24px" : "30px";
+  const loaderColor: string = _isLoaderDark();
 
-  function isLoaderDark(): string {
-    switch (props.variant) {
+  // ==================================================================== EVENT
+
+  // ==================================================================== PRIVATE
+
+  function _isLoaderDark(): string {
+    switch (variant) {
       case "ghost":
       case "link":
       case "outline":
@@ -43,16 +52,11 @@ export default function SheButton({
     }
   }
 
-  // ==================================================================== EVENT
-
-  // ==================================================================== PRIVATE
-
   // ==================================================================== LAYOUT
 
   return (
     <Button
-      {...props}
-      className={`${cs.sheButton} ${className} ${cs[`icon-${iconPosition}`] || ""} ${value || children ? cs.withText : ""} ${fullWidth ? cs.fullWidth : ""}`}
+      className={`${cs.sheButton} ${className} ${cs[variant]} ${cs[`icon-${iconPosition}`] || ""} ${value || children ? cs.withText : ""} ${fullWidth ? cs.fullWidth : ""} ${cs[size]} ${cs[view]} ${twistIcon ? cs.twistIcon : ""} ${valueWrap ? cs.valueWrap : ""} ${icon ? cs[iconPosition + "Icon"] : ""}`}
       style={{
         color: txtColor,
         backgroundColor: bgColor,
@@ -62,7 +66,9 @@ export default function SheButton({
         maxHeight,
         ...style,
       }}
+      variant={variant}
       disabled={isLoading || disabled}
+      {...props}
     >
       <>
         {isLoading && (
@@ -80,6 +86,7 @@ export default function SheButton({
         <>
           {iconPosition === DirectionEnum.LEFT && (
             <SheIcon
+              className={cs.iconElement}
               icon={icon}
               minWidth={iconSize}
               maxWidth={iconSize}
@@ -95,6 +102,7 @@ export default function SheButton({
           {children && <div>{children}</div>}
           {icon && iconPosition === DirectionEnum.RIGHT && (
             <SheIcon
+              className={cs.iconElement}
               icon={icon}
               minWidth={iconSize}
               maxWidth={iconSize}

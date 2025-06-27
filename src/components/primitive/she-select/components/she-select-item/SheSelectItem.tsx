@@ -32,6 +32,12 @@ export default function SheSelectItem({
 }: ISheSelectItem): JSX.Element {
   const { translate } = useAppTranslation();
 
+  // ==================================================================== EVENT
+
+  // ==================================================================== PRIVATE
+
+  // ==================================================================== RENDER
+
   return (
     <SelectItem
       id={id}

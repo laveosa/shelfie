@@ -10,6 +10,7 @@ export function SheClearButton({
   className = "",
   style,
   value,
+  color,
   showClearBtn,
   disabled,
   isLoading,
@@ -41,8 +42,8 @@ export function SheClearButton({
           title="Clear"
           aria-label="Clear"
           variant="ghost"
-          size="icon"
           icon={X}
+          txtColor={color}
           aria-describedby={ariaDescribedbyId}
           disabled={isEmpty || disabled || isLoading}
           onClick={onClear}

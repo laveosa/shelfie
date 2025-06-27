@@ -1,0 +1,114 @@
+@use "@/styles/variables" as vars;
+
+$iconSize: 20px;
+$chevronIconSize: 16px;
+
+.sheMultiSelectTrigger {
+  max-width: vars.$maxWidth + px;
+  width: 100%;
+
+  .sheMultiSelectTriggerComponent {
+    position: relative;
+
+    .sheMultiSelectTriggerControl {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 160ms ease-in-out;
+
+      .sheMultiSelectTriggerSkeleton {
+        .sheMultiSelectTriggerElement {
+          background-color: vars.$colorLight;
+          display: flex;
+          flex-grow: 1;
+          width: 100%;
+          height: auto;
+          min-height: vars.$minHeight + px;
+          border: vars.$brd;
+          transition: all 160ms ease-in-out;
+          padding: 8px;
+
+          &:focus-visible {
+            box-shadow: 0 0 0 1px lightgray inset;
+          }
+
+          .sheMultiSelectTriggerContextString {
+            width: 10px;
+            flex-grow: 1;
+            overflow: hidden;
+
+            .contextStringWrapper {
+              display: flex;
+              align-items: center;
+              justify-content: flex-start;
+
+              > span {
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+              }
+            }
+          }
+
+          .sheMultiSelectTriggerBadgeList {
+            width: 100px;
+            flex-grow: 1;
+          }
+        }
+      }
+
+      .iconBlock {
+        color: vars.$subtextColor;
+        max-width: $iconSize;
+        min-width: $iconSize;
+        max-height: $iconSize;
+        min-height: $iconSize;
+      }
+
+      .chevronIconBlock {
+        color: vars.$subtextColor;
+        max-width: $chevronIconSize;
+        min-width: $chevronIconSize;
+        max-height: $chevronIconSize;
+        min-height: $chevronIconSize;
+        transition: all 130ms ease-in-out;
+
+        &.rotateChevronIcon {
+          transform: rotate(-180deg);
+        }
+      }
+    }
+  }
+}
+
+// ======================================================== FULL WIDTH
+
+.sheMultiSelectTrigger.fullWidth {
+  max-width: none;
+  width: 100%;
+}
+
+// ======================================================== REQUIRED
+
+.sheMultiSelectTrigger.required {
+  .sheMultiSelectTriggerComponent:before {
+    position: absolute;
+    left: -10px;
+    top: -14px;
+    color: vars.$colorRed;
+    content: "*";
+    display: inline;
+  }
+}
+
+// ======================================================== WITH ICON
+
+.sheMultiSelectTrigger.withIcon {
+  .sheMultiSelectTriggerComponent {
+    .sheMultiSelectTriggerControl {
+      .sheMultiSelectTriggerSkeleton {
+      }
+    }
+  }
+}

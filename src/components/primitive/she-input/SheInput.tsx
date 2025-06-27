@@ -16,6 +16,7 @@ import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
 import { Search } from "lucide-react";
 
 export default function SheInput({
+  ref,
   id,
   className = "",
   style,
@@ -27,6 +28,7 @@ export default function SheInput({
   placeholderTransKey,
   type,
   step,
+  size,
   autoFocus,
   isSearch,
   showClearBtn,
@@ -47,10 +49,11 @@ export default function SheInput({
   patternErrorMessageTransKey,
   delayTime,
   children,
+  onIsValid,
   onChange,
   onBlur,
   onDelay,
-  onIsValid,
+  onClear,
   ...props
 }: ISheInput): JSX.Element {
   const { translate } = useAppTranslation();
@@ -126,9 +129,10 @@ export default function SheInput({
     setTextValue(newValue);
     validateValue(newValue);
 
-    if (onChange) onChange(newValue as any);
-    if (onBlur) onBlur(newValue as any);
+    if (onChange) onChange(newValue);
+    if (onBlur) onBlur(newValue);
     if (onDelay) onDelay(newValue);
+    if (onClear) onClear(null);
   }
 
   // ==================================================================== PRIVATE
@@ -242,6 +246,7 @@ export default function SheInput({
               aria-describedby={ariaDescribedbyId}
             />
             <Input
+              ref={ref}
               value={_textValue ?? ""}
               placeholder={translate(placeholderTransKey, placeholder)}
               type={type}
