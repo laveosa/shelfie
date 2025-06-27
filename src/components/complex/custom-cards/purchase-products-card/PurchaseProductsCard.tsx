@@ -42,6 +42,7 @@ export default function PurchaseProductsCard({
   variantsSkeletonQuantity,
   currencies,
   taxes,
+  purchaseSummary,
   onAction,
 }: IPurchaseProductsCard) {
   const [activeTab, setActiveTab] = useState("purchaseProducts");
@@ -154,7 +155,7 @@ export default function PurchaseProductsCard({
       title={"Manage Purchases"}
       minWidth="1150px"
     >
-      <div className={cs.productsPageContent}>
+      <div className={cs.purchaseProductsPageContent}>
         <SheTabs
           defaultValue="purchaseProducts"
           onValueChange={handleTabChange}
@@ -222,6 +223,31 @@ export default function PurchaseProductsCard({
                 getName={(item: CategoryModel) => item.categoryName}
               />
             </DndGridDataTable>
+            <div className={cs.purchaseSummary}>
+              <span className={cs.purchaseSummaryTitle}>Products Summary</span>
+              <div className={cs.purchaseSummaryItems}>
+                <div>
+                  <span className={cs.purchaseSummaryTitle}>Units</span>
+                  <span className={cs.purchaseSummaryItem}>
+                    {`: ${purchaseSummary?.unitsAmount}`}
+                  </span>
+                </div>
+                <div>
+                  <span className={cs.purchaseSummaryTitle}>Expense</span>
+                  <span className={cs.purchaseSummaryItem}>
+                    {`: ${purchaseSummary?.expense} ${purchaseSummary?.currencyBrief}`}
+                  </span>
+                </div>
+                <div>
+                  <span className={cs.purchaseSummaryTitle}>
+                    Projected value
+                  </span>
+                  <span className={cs.purchaseSummaryItem}>
+                    {`: ${purchaseSummary?.valueAmount} ${purchaseSummary?.currencyBrief}`}
+                  </span>
+                </div>
+              </div>
+            </div>
           </TabsContent>
           <TabsContent value="connectProducts">
             <DndGridDataTable

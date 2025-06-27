@@ -17,6 +17,8 @@ export default function usePurchaseProductsPageService() {
   const [updatePurchaseProduct] =
     PurchasesApiHooks.useUpdatePurchaseProductMutation();
   const [deleteStockAction] = PurchasesApiHooks.useDeleteStockActionMutation();
+  const [getPurchaseSummary] =
+    PurchasesApiHooks.useLazyGetPurchaseSummaryQuery();
 
   function getListOfPurchaseProductsForGridHandler(id: any, model) {
     return getListOfPurchaseProductsForGrid({ id, model }).then((res: any) => {
@@ -44,10 +46,17 @@ export default function usePurchaseProductsPageService() {
     });
   }
 
+  function getPurchaseSummaryHandler(purchaseId: any) {
+    return getPurchaseSummary(purchaseId).then((res: any) => {
+      return res.data;
+    });
+  }
+
   return {
     getListOfPurchaseProductsForGridHandler,
     addVariantToPurchaseProductsHandler,
     updatePurchaseProductHandler,
     deleteStockActionHandler,
+    getPurchaseSummaryHandler,
   };
 }

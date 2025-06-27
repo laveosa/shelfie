@@ -6,6 +6,7 @@ import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import { VariantModel } from "@/const/models/VariantModel.ts";
+import { IPurchaseSummaryModel } from "@/const/models/PurchaseSummaryModel.ts";
 
 export interface IPurchaseProductsPageSlice {
   isLoading?: boolean;
@@ -40,6 +41,7 @@ export interface IPurchaseProductsPageSlice {
   selectedPhoto?: ImageModel;
   selectedTraitsIds?: number[];
   selectedTrait?: TraitModel;
-  isDuplicateVariant: boolean;
+  isDuplicateVariant?: boolean;
   purchaseProductVariants?: VariantModel[];
+  purchaseSummary?: IPurchaseSummaryModel;
 }

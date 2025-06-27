@@ -94,6 +94,11 @@ export const PurchasesApiService = createApi({
         method: "DELETE",
       }),
     }),
+    getPurchaseSummary: apiConfig.createQuery<any, number>(builder, {
+      query: (purchaseId) => ({
+        url: `${ApiUrlEnum.PURCHASES}/${purchaseId}/fiscal-summary`,
+      }),
+    }),
   }),
 });
 

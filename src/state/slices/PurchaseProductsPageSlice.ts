@@ -10,6 +10,7 @@ import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import { VariantModel } from "@/const/models/VariantModel.ts";
+import { IPurchaseSummaryModel } from "@/const/models/PurchaseSummaryModel.ts";
 
 const initialState: IPurchaseProductsPageSlice = {
   isLoading: false,
@@ -52,6 +53,7 @@ const initialState: IPurchaseProductsPageSlice = {
   selectedTrait: null,
   isDuplicateVariant: false,
   purchaseProductVariants: [],
+  purchaseSummary: null,
 };
 
 //----------------------------------------------------- LOADERS
@@ -303,6 +305,13 @@ function refreshPurchaseProductVariants(
   state.purchaseProductVariants = action?.payload;
 }
 
+function refreshPurchaseSummary(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<IPurchaseSummaryModel>,
+) {
+  state.purchaseSummary = action?.payload || state.purchaseSummary;
+}
+
 const PurchaseProductsPageSlice = createSlice({
   name: StoreSliceEnum.PURCHASE_PRODUCTS,
   initialState,
@@ -342,6 +351,7 @@ const PurchaseProductsPageSlice = createSlice({
     resetSelectedTrait,
     refreshIsDuplicateVariant,
     refreshPurchaseProductVariants,
+    refreshPurchaseSummary,
   },
 });
 

@@ -71,15 +71,19 @@ export function PurchaseProductsPage() {
   useEffect(() => {
     dispatch(actions.setIsPurchaseProductsCardLoading(true));
     dispatch(actions.setIsPurchasesProductsGridLoading(true));
-    service
-      .getListOfPurchaseProductsForGridHandler(
+    Promise.all([
+      service.getListOfPurchaseProductsForGridHandler(
         purchaseId,
         state.purchasesProductsGridRequestModel,
-      )
-      .then(() => {
-        dispatch(actions.setIsPurchaseProductsCardLoading(false));
-        dispatch(actions.setIsPurchasesProductsGridLoading(false));
-      });
+      ),
+      service.getPurchaseSummaryHandler(purchaseId),
+    ]).then(([gridModel, purchaseSummary]) => {
+      dispatch(actions.setIsPurchaseProductsCardLoading(false));
+      dispatch(actions.setIsPurchasesProductsGridLoading(false));
+      dispatch(actions.refreshPurchasesProductsGridModel(gridModel));
+      dispatch(actions.refreshPurchaseProducts(gridModel.items));
+      dispatch(actions.refreshPurchaseSummary(purchaseSummary));
+    });
   }, [state.purchasesProductsGridRequestModel]);
 
   useEffect(() => {
@@ -184,7 +188,6 @@ export function PurchaseProductsPage() {
   async function onAction(actionType: string, payload?: any) {
     switch (actionType) {
       case "addProductToPurchase":
-        console.log(payload);
         service
           .addVariantToPurchaseProductsHandler(purchaseId, {
             variantId: payload.variantId,
@@ -193,14 +196,18 @@ export function PurchaseProductsPage() {
           .then((res) => {
             if (res) {
               dispatch(actions.setIsPurchasesProductsGridLoading(true));
-              service
-                .getListOfPurchaseProductsForGridHandler(
+              Promise.all([
+                service.getListOfPurchaseProductsForGridHandler(
                   purchaseId,
                   state.purchasesProductsGridRequestModel,
-                )
-                .then(() => {
-                  dispatch(actions.setIsPurchasesProductsGridLoading(false));
-                });
+                ),
+                service.getPurchaseSummaryHandler(purchaseId),
+              ]).then(([gridModel, purchaseSummary]) => {
+                dispatch(actions.setIsPurchasesProductsGridLoading(false));
+                dispatch(actions.refreshPurchasesProductsGridModel(gridModel));
+                dispatch(actions.refreshPurchaseProducts(gridModel.items));
+                dispatch(actions.refreshPurchaseSummary(purchaseSummary));
+              });
               addToast({
                 text: "Variant added successfully",
                 type: "success",
@@ -1172,6 +1179,7 @@ export function PurchaseProductsPage() {
             }
             currencies={productsState.currenciesList}
             taxes={productsState.taxesList}
+            purchaseSummary={state.purchaseSummary}
             onAction={onAction}
           />
         </div>

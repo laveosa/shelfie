@@ -1,7 +1,7 @@
 @use "@/styles/variables" as vars;
 
 .purchaseProductsCard {
-  .productsPageContent {
+  .purchaseProductsPageContent {
     .tabItemsWrapper {
       margin: 0 -20px;
       border-bottom: 1px solid vars.$colorMedium;
@@ -28,6 +28,30 @@
             justify-content: center;
             gap: 5px;
           }
+        }
+      }
+    }
+
+    .purchaseSummary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 5px 20px;
+      background: vars.$colorMuted;
+      border-color: vars.$colorMedium;
+      border-radius: vars.$brdR_03;
+
+
+      .purchaseSummaryTitle {
+        font-weight: bold;
+      }
+
+      .purchaseSummaryItems {
+        display: flex;
+        gap: 20px;
+
+        .purchaseSummaryItem {
+
         }
       }
     }

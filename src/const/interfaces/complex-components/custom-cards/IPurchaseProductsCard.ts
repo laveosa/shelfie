@@ -4,6 +4,7 @@ import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
+import { IPurchaseSummaryModel } from "@/const/models/PurchaseSummaryModel.ts";
 
 export interface IPurchaseProductsCard {
   isLoading?: boolean;
@@ -20,6 +21,7 @@ export interface IPurchaseProductsCard {
   purchaseProductsSkeletonQuantity?: number;
   variantsSkeletonQuantity?: number;
   currencies?: CurrencyModel[];
+  purchaseSummary?: IPurchaseSummaryModel;
   taxes?: TaxTypeModel[];
   onAction?: (identifier: string, payload?: any) => void;
 }
