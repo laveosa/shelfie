@@ -11,6 +11,7 @@ import { ImageModel } from "@/const/models/ImageModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import { VariantModel } from "@/const/models/VariantModel.ts";
 import { IPurchaseSummaryModel } from "@/const/models/PurchaseSummaryModel.ts";
+import { VariantHistoryModel } from "@/const/models/VariantHistoryModel.ts";
 
 const initialState: IPurchaseProductsPageSlice = {
   isLoading: false,
@@ -41,6 +42,7 @@ const initialState: IPurchaseProductsPageSlice = {
   isVariantOptionsGridLoading: false,
   isVariantPhotoGridLoading: false,
   isProductPhotoGridLoading: false,
+  isVariantHistoryGridLoading: false,
   activeCards: [],
   activeTab: "purchaseProducts",
   selectedProduct: null,
@@ -65,6 +67,7 @@ const initialState: IPurchaseProductsPageSlice = {
   purchaseSummary: null,
   variantPhotos: [],
   productPhotosForVariant: [],
+  variantHistory: [],
 };
 
 //----------------------------------------------------- LOADERS
@@ -265,6 +268,13 @@ function setIsProductPhotoGridLoading(
   state.isProductPhotoGridLoading = action?.payload;
 }
 
+function setIsVariantHistoryGridLoading(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isVariantHistoryGridLoading = action?.payload;
+}
+
 //----------------------------------------------------- API
 
 function refreshActiveCards(
@@ -401,6 +411,13 @@ function refreshProductPhotosForVariant(
     action?.payload || state.productPhotosForVariant;
 }
 
+function refreshVariantHistory(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<VariantHistoryModel[]>,
+) {
+  state.variantHistory = action?.payload || state.variantHistory;
+}
+
 const PurchaseProductsPageSlice = createSlice({
   name: StoreSliceEnum.PURCHASE_PRODUCTS,
   initialState,
@@ -433,6 +450,7 @@ const PurchaseProductsPageSlice = createSlice({
     setIsVariantOptionsGridLoading,
     setIsVariantPhotoGridLoading,
     setIsProductPhotoGridLoading,
+    setIsVariantsHistoryGridLoading: setIsVariantHistoryGridLoading,
     refreshActiveCards,
     refreshActiveTab,
     refreshSelectedProduct,
@@ -452,6 +470,7 @@ const PurchaseProductsPageSlice = createSlice({
     refreshPurchaseSummary,
     refreshVariantPhotos,
     refreshProductPhotosForVariant,
+    refreshVariantsHistory: refreshVariantHistory,
   },
 });
 

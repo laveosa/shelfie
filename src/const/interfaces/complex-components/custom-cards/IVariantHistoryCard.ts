@@ -1,10 +1,10 @@
 import { VariantModel } from "@/const/models/VariantModel.ts";
-import { GridModel } from "@/const/models/GridModel.ts";
+import { VariantHistoryModel } from "@/const/models/VariantHistoryModel.ts";
 
 export interface IVariantHistoryCard {
   isLoading?: boolean;
-  variant?: VariantModel;
-  data?: GridModel;
-  getVariantHistory?: (data: any) => Promise<any>;
+  isGridLoading?: boolean;
+  variant: VariantModel;
+  data?: VariantHistoryModel[];
   onSecondaryButtonClick?: () => void;
 }

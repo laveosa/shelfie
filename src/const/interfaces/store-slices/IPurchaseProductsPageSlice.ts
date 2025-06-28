@@ -7,6 +7,7 @@ import { ImageModel } from "@/const/models/ImageModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import { VariantModel } from "@/const/models/VariantModel.ts";
 import { IPurchaseSummaryModel } from "@/const/models/PurchaseSummaryModel.ts";
+import { VariantHistoryModel } from "@/const/models/VariantHistoryModel.ts";
 
 export interface IPurchaseProductsPageSlice {
   isLoading?: boolean;
@@ -37,6 +38,7 @@ export interface IPurchaseProductsPageSlice {
   isVariantOptionsGridLoading?: boolean;
   isVariantPhotoGridLoading?: boolean;
   isProductPhotoGridLoading?: boolean;
+  isVariantHistoryGridLoading?: boolean;
   activeCards?: any[];
   activeTab?: string;
   selectedProduct?: ProductModel;
@@ -55,4 +57,5 @@ export interface IPurchaseProductsPageSlice {
   purchaseSummary?: IPurchaseSummaryModel;
   variantPhotos?: ImageModel[];
   productPhotosForVariant?: ImageModel[];
+  variantHistory?: VariantHistoryModel[];
 }

@@ -2,31 +2,31 @@ import { ColumnDef } from "@tanstack/react-table";
 
 export const StockHistoryGridColumns: ColumnDef<any>[] = [
   {
-    accessorKey: "units",
+    accessorKey: "amountUnit",
     header: "Units",
     cell: ({ row }) => {
-      return <span className="she-text">{row.original}</span>;
+      return <span className="she-text">{row.original.amountUnit}</span>;
     },
   },
   {
-    accessorKey: "action",
+    accessorKey: "actionType",
     header: "Action",
     cell: ({ row }) => {
-      return <span className="she-text">{row.original}</span>;
+      return <span className="she-text">{row.original.actionType}</span>;
     },
   },
   {
-    id: "date",
+    id: "createdDate",
     header: "Date",
     cell: ({ row }) => {
-      return <span className="she-text">{row.original}</span>;
+      return <span className="she-text">{row.original.createdDate}</span>;
     },
   },
   {
     id: "status",
     header: "Status",
     cell: ({ row }) => {
-      return <span className="she-text">{row.original}</span>;
+      return <span className="she-text">{row.original.status}</span>;
     },
   },
 ];

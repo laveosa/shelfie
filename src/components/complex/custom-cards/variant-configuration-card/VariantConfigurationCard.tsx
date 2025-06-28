@@ -317,7 +317,9 @@ export default function VariantConfigurationCard({
         <Separator />
         <div className={cs.stockDetailsBlock}>
           <div className={cs.buttonBlock}>
-            <span className="she-title">Stock Details</span>
+            <span className={`${cs.stockDetailsTitle} she-title`}>
+              Stock Details
+            </span>
             <SheButton
               icon={Plus}
               variant="outline"
@@ -335,7 +337,9 @@ export default function VariantConfigurationCard({
             <SheButton
               icon={Clock}
               variant="outline"
-              onClick={() => onAction("openVariantHistoryCard")}
+              onClick={() =>
+                onAction("openVariantHistoryCard", variant.variantId)
+              }
             >
               History
             </SheButton>

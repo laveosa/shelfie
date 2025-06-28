@@ -22,7 +22,10 @@ import ProductPhotosCard from "@/components/complex/custom-cards/product-photos-
 import { GridModel } from "@/const/models/GridModel.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
 import ConnectImageCard from "@/components/complex/custom-cards/connect-image-card/ConnectImageCard.tsx";
-import { setSelectedGridItem } from "@/utils/helpers/quick-helper.ts";
+import {
+  formatDate,
+  setSelectedGridItem,
+} from "@/utils/helpers/quick-helper.ts";
 import ChooseVariantTraitsCard from "@/components/complex/custom-cards/choose-variant-traits-card/ChooseVariantTraitsCard.tsx";
 import ProductTraitConfigurationCard from "@/components/complex/custom-cards/product-trait-configuration-card/ProductTraitConfigurationCard.tsx";
 import AddVariantCard from "@/components/complex/custom-cards/add-variant-card/AddVariantCard.tsx";
@@ -1498,7 +1501,19 @@ export function PurchaseProductsPage() {
         handleCardAction("disposeStockCard", true);
         break;
       case "openVariantHistoryCard":
+        console.log("payload", payload);
         handleCardAction("variantHistoryCard", true);
+        dispatch(actions.setIsVariantHistoryCardLoading(true));
+        dispatch(actions.setIsVariantsHistoryGridLoading(true));
+        productsService.getVariantStockHistoryHandler(payload).then((items) => {
+          const data = items.map((item) => ({
+            ...item,
+            createdDate: formatDate(item.createdDate, "date"),
+          }));
+          dispatch(actions.setIsVariantHistoryCardLoading(false));
+          dispatch(actions.setIsVariantsHistoryGridLoading(false));
+          dispatch(actions.refreshVariantsHistory(data));
+        });
         break;
       case "openManageTraitsCard":
         handleCardAction("manageTraitsCard", true);
@@ -1508,6 +1523,9 @@ export function PurchaseProductsPage() {
         break;
       case "closeVariantPhotosCard":
         handleCardAction("variantPhotosCard");
+        break;
+      case "closeVariantConfigurationCard":
+        handleCardAction("variantConfigurationCard");
         break;
     }
   }
@@ -1774,8 +1792,9 @@ export function PurchaseProductsPage() {
         >
           <StockHistoryCard
             isLoading={state.isVariantHistoryCardLoading}
+            isGridLoading={state.isVariantHistoryGridLoading}
             variant={productsState.selectedVariant}
-            getVariantHistory={productsService.getVariantStockHistoryHandler}
+            data={state.variantHistory}
             onSecondaryButtonClick={() =>
               handleCardAction("variantHistoryCard")
             }
