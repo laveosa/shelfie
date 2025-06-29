@@ -6,7 +6,6 @@ import { ISheToggle } from "@/const/interfaces/primitive-components/ISheToggle.t
 import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 
 export interface ISheOption<T> extends ComponentPropsWithRef<"div"> {
-  key?: string;
   id?: string;
   className?: string;
   style?: React.CSSProperties;
@@ -46,13 +45,11 @@ export interface ISheOption<T> extends ComponentPropsWithRef<"div"> {
   tooltip?: ISheTooltip;
   toggleProps?: ISheToggle;
   checkOnClick?: boolean;
-  noEffects?: boolean;
   onCheck?(data: IOutputEventModel<T, ISheOption<T>, React.MouseEvent>): void;
   onClick?(data: IOutputEventModel<T, ISheOption<T>, React.MouseEvent>): void;
 }
 
 export const SheOptionDefaultModel: ISheOption<any> = {
-  key: undefined,
   id: undefined,
   className: undefined,
   style: undefined,
@@ -92,7 +89,6 @@ export const SheOptionDefaultModel: ISheOption<any> = {
   tooltip: undefined,
   toggleProps: undefined,
   checkOnClick: undefined,
-  noEffects: undefined,
   onCheck: undefined,
   onClick: undefined,
 };

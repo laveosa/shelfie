@@ -3,12 +3,16 @@ import { Trans } from "react-i18next";
 import _ from "lodash";
 
 import cs from "./SheOption.module.scss";
+import {
+  ISheOption,
+  SheOptionDefaultModel,
+} from "@/const/interfaces/primitive-components/ISheOption.ts";
+import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 import SheToggle from "@/components/primitive/she-toggle/SheToggle.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
-import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
-import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
+import { getCustomProps } from "@/utils/helpers/props-helper.ts";
 import { Image } from "lucide-react";
 
 export default function SheOption<T>(props: ISheOption<T>): JSX.Element {
@@ -51,7 +55,6 @@ export default function SheOption<T>(props: ISheOption<T>): JSX.Element {
     tooltip,
     toggleProps,
     checkOnClick,
-    noEffects,
     onCheck,
     onClick,
     ...restProps
@@ -69,30 +72,39 @@ export default function SheOption<T>(props: ISheOption<T>): JSX.Element {
     if (checkOnClick) {
       setIsSelected((prevState) => {
         const tmpIsSelected = !prevState;
-        if (onClick) onClick(_getOutputEventModel(value, event));
-        if (onCheck) onCheck(_getOutputEventModel(tmpIsSelected, event));
+        if (onClick) onClick(_getOutputEventModel<T>(value, event));
+        if (onCheck)
+          onCheck(_getOutputEventModel<boolean>(value, event, tmpIsSelected));
         return tmpIsSelected;
       });
     } else {
-      if (onClick) onClick(_getOutputEventModel(value, event));
+      if (onClick) onClick(_getOutputEventModel<T>(value, event));
     }
   }
 
   function onCheckHandler(value: boolean, event: React.MouseEvent) {
     event.stopPropagation();
-    setIsSelected(value);
-    if (onCheck) onCheck(_getOutputEventModel(value, event));
+    setIsSelected((prevState) => {
+      const tmpIsSelected = !prevState;
+      if (onCheck)
+        onCheck(_getOutputEventModel<boolean>(value, event, tmpIsSelected));
+      return tmpIsSelected;
+    });
   }
 
   // ==================================================================== PRIVATE
 
-  function _getOutputEventModel(
-    value: T,
+  function _getOutputEventModel<V>(
+    value: V,
     event: React.MouseEvent,
+    selected: boolean = _isSelected,
   ): IOutputEventModel<T, ISheOption<T>, React.MouseEvent> {
     return {
       value,
-      model: props,
+      model: {
+        ...getCustomProps<ISheOption<T>>(props, SheOptionDefaultModel),
+        isSelected: selected,
+      },
       event,
     };
   }
@@ -102,7 +114,7 @@ export default function SheOption<T>(props: ISheOption<T>): JSX.Element {
   return (
     <SheSkeleton isLoading={isLoading}>
       <div
-        className={`${cs.sheOption} ${className} ${fullWidth ? cs.fullWidth : ""} ${cs[view]} ${mode !== "plain" && isSelected ? cs.optionSelected : ""} ${mode !== "plain" ? cs.hoverEffect : ""} ${disabled || isLoading ? "disabled" : ""} ${noEffects ? cs.noEffects : ""}`}
+        className={`${cs.sheOption} ${className} ${fullWidth ? cs.fullWidth : ""} ${cs[view]} ${mode === "single" && isSelected ? cs.optionSelected : ""} ${disabled || isLoading ? "disabled" : ""}`}
         style={{
           minWidth,
           maxWidth,

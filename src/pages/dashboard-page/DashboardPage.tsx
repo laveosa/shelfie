@@ -151,21 +151,18 @@ export function DashboardPage() {
   const [selected, setSelected] = useState<boolean>();
 
   useEffect(() => {
-    setTimeout(() => {
+    /*setTimeout(() => {
       setSelected(true);
-    }, 1000);
-
-    setTimeout(() => {
+    }, 1000);*/
+    /*setTimeout(() => {
       setSelected(false);
-    }, 2000);
-
-    setTimeout(() => {
+    }, 2000);*/
+    /*setTimeout(() => {
       setSelected(true);
-    }, 3000);
-
-    setTimeout(() => {
+    }, 3000);*/
+    /*setTimeout(() => {
       setSelected(false);
-    }, 4000);
+    }, 4000);*/
   }, []);
 
   // ================================================================== EVENT
@@ -178,7 +175,7 @@ export function DashboardPage() {
 
       <br />
 
-      <div className="flex flex-col">
+      {/*<div className="flex flex-col">
         {options.map((item) => (
           <SheOption
             {...item}
@@ -189,12 +186,12 @@ export function DashboardPage() {
             showColorsColumn
             showIconsColumn
             aria-describedby="sss"
-            noEffects
+            checkOnClick
             onCheck={(data) => console.log("onCheck: ", data)}
             onClick={(data) => console.log("onClick: ", data)}
           />
         ))}
-      </div>
+      </div>*/}
 
       <br />
 

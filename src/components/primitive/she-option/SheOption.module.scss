@@ -20,10 +20,8 @@ $iconSize: 20px;
     background-color: transparent;
   }
 
-  &.hoverEffect {
-    &:hover {
-      background-color: vars.$colorMuted;
-    }
+  &:hover {
+    background-color: vars.$colorMuted;
   }
 
   // --------------------------------- TOGGLE
@@ -132,10 +130,4 @@ $iconSize: 20px;
   &.card {
     border: vars.$brd;
   }
-}
-
-// =========================================================================== NO EFFECTS
-
-.sheOption.noEffects {
-  background: transparent !important;
 }
