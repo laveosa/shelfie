@@ -133,3 +133,9 @@ $iconSize: 20px;
     border: vars.$brd;
   }
 }
+
+// =========================================================================== NO EFFECTS
+
+.sheOption.noEffects {
+  background: transparent !important;
+}

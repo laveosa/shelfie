@@ -51,6 +51,7 @@ export default function SheOption<T>(props: ISheOption<T>): JSX.Element {
     tooltip,
     toggleProps,
     checkOnClick,
+    noEffects,
     onCheck,
     onClick,
     ...restProps
@@ -101,7 +102,7 @@ export default function SheOption<T>(props: ISheOption<T>): JSX.Element {
   return (
     <SheSkeleton isLoading={isLoading}>
       <div
-        className={`${cs.sheOption} ${className} ${fullWidth ? cs.fullWidth : ""} ${cs[view]} ${mode !== "plain" && isSelected ? cs.optionSelected : ""} ${mode !== "plain" ? cs.hoverEffect : ""} ${disabled || isLoading ? "disabled" : ""}`}
+        className={`${cs.sheOption} ${className} ${fullWidth ? cs.fullWidth : ""} ${cs[view]} ${mode !== "plain" && isSelected ? cs.optionSelected : ""} ${mode !== "plain" ? cs.hoverEffect : ""} ${disabled || isLoading ? "disabled" : ""} ${noEffects ? cs.noEffects : ""}`}
         style={{
           minWidth,
           maxWidth,

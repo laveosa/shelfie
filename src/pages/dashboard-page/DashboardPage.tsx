@@ -188,6 +188,8 @@ export function DashboardPage() {
             isSelected={selected}
             showColorsColumn
             showIconsColumn
+            aria-describedby="sss"
+            noEffects
             onCheck={(data) => console.log("onCheck: ", data)}
             onClick={(data) => console.log("onClick: ", data)}
           />

@@ -46,6 +46,53 @@ export interface ISheOption<T> extends ComponentPropsWithRef<"div"> {
   tooltip?: ISheTooltip;
   toggleProps?: ISheToggle;
   checkOnClick?: boolean;
+  noEffects?: boolean;
   onCheck?(data: IOutputEventModel<T, ISheOption<T>, React.MouseEvent>): void;
   onClick?(data: IOutputEventModel<T, ISheOption<T>, React.MouseEvent>): void;
 }
+
+export const SheOptionDefaultModel: ISheOption<any> = {
+  key: undefined,
+  id: undefined,
+  className: undefined,
+  style: undefined,
+  toggleClassName: undefined,
+  toggleStyle: undefined,
+  iconClassName: undefined,
+  iconStyle: undefined,
+  colorsClassName: undefined,
+  colorsStyle: undefined,
+  infoClassName: undefined,
+  infoStyle: undefined,
+  tooltipClassName: undefined,
+  tooltipStyle: undefined,
+  minWidth: undefined,
+  maxWidth: undefined,
+  fullWidth: undefined,
+  disabled: undefined,
+  isLoading: undefined,
+  ariaDescribedbyId: undefined,
+  mode: undefined,
+  view: undefined,
+  value: undefined,
+  showIconsColumn: undefined,
+  icon: undefined,
+  iconProps: undefined,
+  showColorsColumn: undefined,
+  colors: undefined,
+  text: undefined,
+  textTransKey: undefined,
+  description: undefined,
+  descriptionTransKey: undefined,
+  sideText: undefined,
+  sideTextTransKey: undefined,
+  sideDescription: undefined,
+  sideDescriptionTransKey: undefined,
+  isSelected: undefined,
+  tooltip: undefined,
+  toggleProps: undefined,
+  checkOnClick: undefined,
+  noEffects: undefined,
+  onCheck: undefined,
+  onClick: undefined,
+};
