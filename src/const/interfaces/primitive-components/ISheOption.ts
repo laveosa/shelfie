@@ -3,6 +3,7 @@ import React, { ComponentPropsWithRef } from "react";
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { ISheTooltip } from "@/const/interfaces/primitive-components/ISheTooltip.ts";
 import { ISheToggle } from "@/const/interfaces/primitive-components/ISheToggle.ts";
+import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 
 export interface ISheOption<T> extends ComponentPropsWithRef<"div"> {
   key?: string;
@@ -45,6 +46,6 @@ export interface ISheOption<T> extends ComponentPropsWithRef<"div"> {
   tooltip?: ISheTooltip;
   toggleProps?: ISheToggle;
   checkOnClick?: boolean;
-  onCheck?(value: T, event?: React.MouseEvent): void;
-  onClick?(value: T, event?: React.MouseEvent): void;
+  onCheck?(data: IOutputEventModel<T, ISheOption<T>, React.MouseEvent>): void;
+  onClick?(data: IOutputEventModel<T, ISheOption<T>, React.MouseEvent>): void;
 }

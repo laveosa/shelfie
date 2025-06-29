@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import cs from "./DashboardPage.module.scss";
 import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageService.ts";
@@ -148,6 +148,26 @@ const optionsSimple: ISheSelectItem[] = [
 export function DashboardPage() {
   const service = useDashboardPageService();
 
+  const [selected, setSelected] = useState<boolean>();
+
+  useEffect(() => {
+    setTimeout(() => {
+      setSelected(true);
+    }, 1000);
+
+    setTimeout(() => {
+      setSelected(false);
+    }, 2000);
+
+    setTimeout(() => {
+      setSelected(true);
+    }, 3000);
+
+    setTimeout(() => {
+      setSelected(false);
+    }, 4000);
+  }, []);
+
   // ================================================================== EVENT
 
   // ================================================================== LAYOUT
@@ -158,27 +178,30 @@ export function DashboardPage() {
 
       <br />
 
-      {/*<div className="flex flex-col">
+      <div className="flex flex-col">
         {options.map((item) => (
           <SheOption
+            {...item}
+            key={item.text}
             className="mb-2"
-            view="card"
             mode="multiple"
+            isSelected={selected}
             showColorsColumn
             showIconsColumn
-            {...item}
+            onCheck={(data) => console.log("onCheck: ", data)}
+            onClick={(data) => console.log("onClick: ", data)}
           />
         ))}
-      </div>*/}
+      </div>
 
       <br />
 
-      <SheSelect<string>
+      {/*<SheSelect<string>
         label="Select"
         // items={options}
         items={optionsSimple}
         onSelect={(value) => console.log(value)}
-      />
+      />*/}
 
       <br />
     </div>

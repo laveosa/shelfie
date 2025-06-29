@@ -8,51 +8,54 @@ import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
+import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 import { Image } from "lucide-react";
 
-export default function SheOption<T>({
-  className = "",
-  style,
-  toggleClassName = "",
-  toggleStyle,
-  iconClassName = "",
-  iconStyle,
-  colorsClassName = "",
-  colorsStyle,
-  infoClassName = "",
-  infoStyle,
-  tooltipClassName = "",
-  tooltipStyle,
-  minWidth,
-  maxWidth,
-  fullWidth,
-  disabled,
-  isLoading,
-  ariaDescribedbyId,
-  mode = "single",
-  view = "normal",
-  value,
-  showIconsColumn,
-  icon,
-  iconProps,
-  showColorsColumn,
-  colors,
-  text,
-  textTransKey,
-  description,
-  descriptionTransKey,
-  sideText,
-  sideTextTransKey,
-  sideDescription,
-  sideDescriptionTransKey,
-  isSelected,
-  tooltip,
-  toggleProps,
-  checkOnClick,
-  onCheck,
-  onClick,
-  ...props
-}: ISheOption<T>): JSX.Element {
+export default function SheOption<T>(props: ISheOption<T>): JSX.Element {
+  const {
+    className = "",
+    style,
+    toggleClassName = "",
+    toggleStyle,
+    iconClassName = "",
+    iconStyle,
+    colorsClassName = "",
+    colorsStyle,
+    infoClassName = "",
+    infoStyle,
+    tooltipClassName = "",
+    tooltipStyle,
+    minWidth,
+    maxWidth,
+    fullWidth,
+    disabled,
+    isLoading,
+    ariaDescribedbyId,
+    mode = "single",
+    view = "normal",
+    value,
+    showIconsColumn,
+    icon,
+    iconProps,
+    showColorsColumn,
+    colors,
+    text,
+    textTransKey,
+    description,
+    descriptionTransKey,
+    sideText,
+    sideTextTransKey,
+    sideDescription,
+    sideDescriptionTransKey,
+    isSelected,
+    tooltip,
+    toggleProps,
+    checkOnClick,
+    onCheck,
+    onClick,
+    ...restProps
+  } = props;
+
   const [_isSelected, setIsSelected] = useState<boolean>(null);
 
   useEffect(() => {
@@ -65,36 +68,47 @@ export default function SheOption<T>({
     if (checkOnClick) {
       setIsSelected((prevState) => {
         const tmpIsSelected = !prevState;
-        if (onClick) onClick(value, event);
-        if (onCheck) onCheck(tmpIsSelected, event);
+        if (onClick) onClick(_getOutputEventModel(value, event));
+        if (onCheck) onCheck(_getOutputEventModel(tmpIsSelected, event));
         return tmpIsSelected;
       });
     } else {
-      if (onClick) onClick(value, event);
+      if (onClick) onClick(_getOutputEventModel(value, event));
     }
   }
 
   function onCheckHandler(value: boolean, event: React.MouseEvent) {
     event.stopPropagation();
     setIsSelected(value);
-    if (onCheck) onCheck(value, event);
+    if (onCheck) onCheck(_getOutputEventModel(value, event));
   }
 
   // ==================================================================== PRIVATE
+
+  function _getOutputEventModel(
+    value: T,
+    event: React.MouseEvent,
+  ): IOutputEventModel<T, ISheOption<T>, React.MouseEvent> {
+    return {
+      value,
+      model: props,
+      event,
+    };
+  }
 
   // ==================================================================== RENDER
 
   return (
     <SheSkeleton isLoading={isLoading}>
       <div
-        className={`${cs.sheOption} ${className} ${fullWidth ? cs.fullWidth : ""} ${cs[mode]} ${cs[view]} ${mode !== "plain" && isSelected ? cs.optionSelected : ""} ${mode !== "plain" ? cs.hoverEffect : ""} ${disabled || isLoading ? "disabled" : ""}`}
+        className={`${cs.sheOption} ${className} ${fullWidth ? cs.fullWidth : ""} ${cs[view]} ${mode !== "plain" && isSelected ? cs.optionSelected : ""} ${mode !== "plain" ? cs.hoverEffect : ""} ${disabled || isLoading ? "disabled" : ""}`}
         style={{
           minWidth,
           maxWidth,
           ...style,
         }}
         onClick={onClickHandler}
-        {...props}
+        {...restProps}
       >
         {mode === "multiple" && (
           <SheToggle
