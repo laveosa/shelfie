@@ -1,4 +1,5 @@
 import React, { JSX, useEffect, useState } from "react";
+import _ from "lodash";
 
 import cs from "./SheSelect.module.scss";
 import {
@@ -43,7 +44,6 @@ export default function SheSelect<T>({
   isOpen,
   showSelectIcon,
   selectedColor,
-  onTriggerKeyDown,
   onOpenChange,
   onSelect,
   ...props
@@ -86,10 +86,9 @@ export default function SheSelect<T>({
       "value",
       itemsWithIds,
     );
-
     const resolved = selectedItem?.id
       ? _getSelectedItemById(selectedItem.id, itemsWithIds)
-      : null;
+      : _getSelectedItemFromCollection(itemsWithIds);
 
     setSelected(resolved);
 
@@ -118,21 +117,26 @@ export default function SheSelect<T>({
     setSelected(() => {
       const selected = _getSelectedItemById(id);
 
-      if (onSelect) {
-        setTimeout(() => {
-          onSelect(selected ? selected.value : null);
+      if (selected) {
+        selected.isSelected = true;
+        setSelectedItemInCollection(selected.value);
+        onSelect?.({
+          value: selected?.value,
+          model: selected,
         });
+      } else {
+        onSelect?.(null);
       }
 
       return selected;
     });
   }
 
-  function onOpenChangeHandler(event) {
+  function onOpenChangeHandler(value: boolean) {
     if (_loading) return;
-    setOpen(event);
+    setOpen(value);
 
-    if (event && _selected) {
+    if (value && _selected) {
       requestAnimationFrame(() => {
         const selectedElement = document.getElementById(_selected.id);
 
@@ -142,15 +146,12 @@ export default function SheSelect<T>({
       });
     }
 
-    if (onOpenChange) onOpenChange(event);
+    onOpenChange?.(value);
   }
 
   function onClearHandler() {
     setSelected(null);
-
-    if (onSelect) {
-      onSelect(null);
-    }
+    onSelect?.(null);
   }
 
   // ==================================================================== PRIVATE
@@ -171,6 +172,16 @@ export default function SheSelect<T>({
     });
   }
 
+  function setSelectedItemInCollection(value: T) {
+    if (!_items || _items.length === 0 || _.isNull(value)) return;
+    setItems(
+      _items.map((item) => {
+        item.isSelected = item.value === value;
+        return item;
+      }),
+    );
+  }
+
   function _getSelectedItemById(
     id: string,
     fromItems: ISheSelectItem<T>[] = _items,
@@ -178,17 +189,51 @@ export default function SheSelect<T>({
     if (!id) return null;
 
     const selected = _getSelectedItemByIdentifier(id, "id", fromItems);
-    return selected?.value ? selected : null;
+
+    if (selected && selected.value) {
+      setItems(
+        fromItems.map((item) => {
+          item.isSelected = item.value === selected.value;
+          return item;
+        }),
+      );
+      return selected;
+    } else {
+      return null;
+    }
   }
 
   function _getSelectedItemByIdentifier(
     data: any,
     identifier: string,
-    items: ISheSelectItem<T>[],
+    fromItems: ISheSelectItem<T>[],
   ): ISheSelectItem<T> {
-    if (!data || !identifier || !items || items.length === 0) return null;
+    if (!data || !identifier || !fromItems || fromItems.length === 0)
+      return null;
 
-    return items.find((item) => item[identifier] == data);
+    return fromItems.find((item) => item[identifier] == data);
+  }
+
+  function _getSelectedItemFromCollection(
+    fromItems: ISheSelectItem<T>[],
+  ): ISheSelectItem<T> {
+    if (!fromItems || fromItems.length === 0) return null;
+
+    let selectedItem: ISheSelectItem<T> = null;
+
+    setItems(
+      fromItems.map((item) => {
+        if (!selectedItem && item.isSelected) {
+          selectedItem = item;
+        } else if (selectedItem && item.isSelected) {
+          item.isSelected = false;
+        }
+
+        return item;
+      }),
+    );
+
+    return selectedItem;
   }
 
   // ==================================================================== LAYOUT
@@ -224,7 +269,7 @@ export default function SheSelect<T>({
               onValueChange={onValueChangeHandler}
               {...props}
             >
-              <SelectTrigger ref={triggerRef} onKeyDown={onTriggerKeyDown}>
+              <SelectTrigger ref={triggerRef}>
                 <SheIcon
                   icon={icon}
                   className={cs.iconBlock}

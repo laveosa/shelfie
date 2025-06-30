@@ -4,11 +4,13 @@ import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { ISheLabel } from "@/const/interfaces/primitive-components/ISheLabel.ts";
 import { ISheClearButton } from "@/const/interfaces/primitive-components/ISheClearButton.ts";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
+import { Select } from "@/components/ui/select.tsx";
+import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 
 export interface ISheSelect<T>
   extends ISheLabel,
     ISheClearButton,
-    ComponentPropsWithRef<any> {
+    ComponentPropsWithRef<typeof Select> {
   id?: string;
   className?: string;
   style?: React.CSSProperties;
@@ -30,7 +32,8 @@ export interface ISheSelect<T>
   required?: boolean;
   showSelectIcon?: boolean;
   selectedColor?: string;
-  onTriggerKeyDown?(value: any): void;
-  onOpenChange?(value: any): void;
-  onSelect?(value: any): void;
+  onOpenChange?(value: boolean): void;
+  onSelect?(
+    data: IOutputEventModel<T, ISheSelectItem<T>, React.MouseEvent>,
+  ): void;
 }

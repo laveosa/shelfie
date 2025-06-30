@@ -12,6 +12,7 @@ export default function SheSelectItem<T>({
   elementClassName = "",
   elementStyle,
   showSelectIcon,
+  onCheck,
   ...props
 }: ISheSelectItem<T>): JSX.Element {
   // ==================================================================== EVENT

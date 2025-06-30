@@ -48,79 +48,22 @@ const options: ISheSelectItem[] = [
       "d0d2 k2-30kd 203kd -032kd-03kd0 k2-d0k 23-d0k23d0k -3kd -203kd-2 03kd-203k d-20k3 d-20k3 d d0d2 k2-30kd 203kd -032kd-03kd0 k2-d0k 23-d0k23d0k -3kd -203kd-2 03kd-203k d-20k3 d-20k3 d d0d2 k2-30kd 203kd -032kd-03kd0 k2-d0k 23-d0k23d0k -3kd -203kd-2 03kd-203k d-20k3 d-20k3 d d0d2 k2-30kd 203kd -032kd-03kd0 k2-d0k 23-d0k23d0k -3kd -203kd-2 03kd-203k d-20k3 d-20k3 d ",
     sideDescriptionTransKey: "f9ewf09jwe0f9jw09efj9wjefwe",
     value: [1, "2", 3, "4"],
+    isSelected: true,
     icon: Box,
   },
 ];
 
-const optionsSimple: ISheSelectItem[] = [
+const optionsSimple: ISheSelectItem<string>[] = [
   {
     text: "React",
     value: "REACT",
+    isSelected: true,
     icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1150px-React-icon.svg.png",
   },
   {
     text: "Angular",
     value: "ANGULAR",
-    icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/1200px-Angular_full_color_logo.svg.png",
-  },
-  {
-    text: "Vue",
-    value: "VUE",
-    icon: "https://www.w3schools.com/whatis/img_vue.jpg",
-  },
-  {
-    text: "Svelte",
-    value: "SVELTE",
-    icon: "https://logosandtypes.com/wp-content/uploads/2020/11/Svelte.png",
-  },
-  {
-    text: "Flutter",
-    value: "FLUTTER",
-    icon: "https://images.icon-icons.com/2108/PNG/512/flutter_icon_130936.png",
-  },
-  {
-    text: "Knockout",
-    value: "KNOCKOUT",
-    icon: "https://quintagroup.com/cms/js/js-image/knockout-js-logo.png/@@images/f4756dda-f9a9-4c04-9223-9f5724569747.png",
-  },
-  {
-    text: "React",
-    value: "REACT",
-    icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1150px-React-icon.svg.png",
-  },
-  {
-    text: "Angular",
-    value: "ANGULAR",
-    icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/1200px-Angular_full_color_logo.svg.png",
-  },
-  {
-    text: "Vue",
-    value: "VUE",
-    icon: "https://www.w3schools.com/whatis/img_vue.jpg",
-  },
-  {
-    text: "Svelte",
-    value: "SVELTE",
-    icon: "https://logosandtypes.com/wp-content/uploads/2020/11/Svelte.png",
-  },
-  {
-    text: "Flutter",
-    value: "FLUTTER",
-    icon: "https://images.icon-icons.com/2108/PNG/512/flutter_icon_130936.png",
-  },
-  {
-    text: "Knockout",
-    value: "KNOCKOUT",
-    icon: "https://quintagroup.com/cms/js/js-image/knockout-js-logo.png/@@images/f4756dda-f9a9-4c04-9223-9f5724569747.png",
-  },
-  {
-    text: "React",
-    value: "REACT",
-    icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1150px-React-icon.svg.png",
-  },
-  {
-    text: "Angular",
-    value: "ANGULAR",
+    isSelected: true,
     icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/1200px-Angular_full_color_logo.svg.png",
   },
   {
@@ -195,12 +138,13 @@ export function DashboardPage() {
 
       <br />
 
-      {/*<SheSelect<string>
+      <SheSelect<string>
         label="Select"
         // items={options}
         items={optionsSimple}
-        onSelect={(value) => console.log(value)}
-      />*/}
+        showClearBtn
+        onSelect={(value) => console.log("select: ", value)}
+      />
 
       <br />
     </div>
