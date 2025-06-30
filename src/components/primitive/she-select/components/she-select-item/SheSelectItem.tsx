@@ -25,9 +25,9 @@ export default function SheSelectItem<T>({
     <SelectItem
       id={id}
       className={`${cs.sheSelectItem} ${className} ${showSelectIcon ? cs.sheShowSelectIcon : ""}`}
+      style={style}
       value={id}
       defaultValue={id}
-      style={style}
     >
       <SheOption<T>
         {...props}

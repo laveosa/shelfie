@@ -5,26 +5,26 @@ import { ISheMultiSelectItem } from "@/const/interfaces/primitive-components/ISh
 import { ISheMultiSelectFooter } from "@/const/interfaces/primitive-components/ISheMultiSelectFooter.ts";
 import { ISheMultiSelectSearch } from "@/const/interfaces/primitive-components/ISheMultiSelectSearch.ts";
 
-export interface ISheMultiSelect
+export interface ISheMultiSelect<T>
   extends ISheMultiSelectTrigger,
     ISheMultiSelectSearch,
     ISheMultiSelectFooter {
   popoverClassName?: string;
   popoverStyle?: React.CSSProperties;
   hideSelectAll?: boolean;
-  options?: ISheMultiSelectItem[];
-  selectedValues?: any[];
+  options?: ISheMultiSelectItem<T>[];
+  selectedValues?: T[];
   emptySearchPlaceholder?: string;
   emptySearchPlaceholderTransKey?: string;
   selectAllPlaceholder?: string;
   selectAllPlaceholderTransKey?: string;
   isOpen?: boolean;
-  onIsOpen?: (value: any) => void;
-  onClear?: (value: any) => void;
-  onValueChange?: (values: any[]) => void;
+  onIsOpen?: (value: boolean) => void;
+  onClear?: (value: null) => void;
+  onValueChange?: (values: T[]) => void;
 }
 
-export const SheMultiSelectDefaultModel: ISheMultiSelect = {
+export const SheMultiSelectDefaultModel: ISheMultiSelect<any> = {
   popoverClassName: undefined,
   popoverStyle: undefined,
   hideSelectAll: undefined,

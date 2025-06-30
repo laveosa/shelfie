@@ -3,9 +3,19 @@
 $iconSize: 20px;
 
 .sheMultiSelectPopoverContainer {
+  div[role="listbox"] {
+    overflow-y: unset;
+    max-height: none;
+  }
+
   .sheMultiSelectPopoverGroupContainer {
-    max-height: 240px;
-    overflow-y: auto;
+    > div[role="group"] {
+      max-height: 35vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
   }
 }
 
@@ -33,7 +43,8 @@ $iconSize: 20px;
 // ========================================================= ITEMS WRAPPER
 
 .sheMultiSelectItemParentWrapper {
-  margin-bottom: 2px;
+  //margin-bottom: 2px;
+  padding: 0;
 
   &:last-child {
     margin-bottom: 0;

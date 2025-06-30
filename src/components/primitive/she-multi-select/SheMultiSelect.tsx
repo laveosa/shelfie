@@ -32,7 +32,7 @@ import {
   SheMultiSelectFooterDefaultModel,
 } from "@/const/interfaces/primitive-components/ISheMultiSelectFooter.ts";
 
-export default function SheMultiSelect({
+export default function SheMultiSelect<T>({
   popoverClassName = "",
   popoverStyle,
   options,
@@ -51,9 +51,9 @@ export default function SheMultiSelect({
   onValueChange,
   onClear,
   ...props
-}: ISheMultiSelect): JSX.Element {
-  const [_options, setOptions] = useState<ISheMultiSelectItem[]>(null);
-  const [_selectedValues, setSelectedValues] = useState<any[]>([]);
+}: ISheMultiSelect<T>): JSX.Element {
+  const [_options, setOptions] = useState<ISheMultiSelectItem<T>[]>(null);
+  const [_selectedValues, setSelectedValues] = useState<T[]>([]);
   const [_badges, setBadges] = useState<ISheBadge[]>(null);
   const [_isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [_isItemsWithIcons, setIsItemsWithIcons] = useState<boolean>(null);
@@ -66,14 +66,14 @@ export default function SheMultiSelect({
   const ariaDescribedbyId = `${generateId()}_MULTI_SELECT_ID`;
 
   const sheMultiSelectSearchProps = getCustomProps<
-    ISheMultiSelect,
+    ISheMultiSelect<T>,
     ISheMultiSelectSearch
   >(props, SheMultiSelectSearchDefaultModel);
   const sheMultiSelectFooterProps = getCustomProps<
-    ISheMultiSelect,
+    ISheMultiSelect<T>,
     ISheMultiSelectFooter
   >(props, SheMultiSelectFooterDefaultModel);
-  const restProps = removeCustomProps<ISheMultiSelect>(props, [
+  const restProps = removeCustomProps<ISheMultiSelect<T>>(props, [
     SheMultiSelectSearchDefaultModel,
     SheMultiSelectFooterDefaultModel,
   ]);
@@ -83,7 +83,7 @@ export default function SheMultiSelect({
     setIsItemsWithColors(null);
 
     if (!_.isEqual(options, _options)) {
-      setOptions(addItemsId<ISheMultiSelectItem>(options));
+      setOptions(addItemsId<ISheMultiSelectItem<T>>(options));
       setBadges(_getSelectedBudges(options, _selectedValues));
       _setAutoFocus();
     }
@@ -101,7 +101,7 @@ export default function SheMultiSelect({
   }, [selectedValues]);
 
   useEffect(() => {
-    if (onIsOpen) onIsOpen(_isPopoverOpen);
+    onIsOpen?.(_isPopoverOpen);
   }, [_isPopoverOpen]);
 
   useEffect(() => {
@@ -124,10 +124,12 @@ export default function SheMultiSelect({
     _calculatePopoverWidth();
   }
 
-  function onToggleOptionHandler(option: string) {
-    const newSelectedValues = _selectedValues.includes(option)
-      ? _selectedValues.filter((value) => value !== option)
-      : [..._selectedValues, option];
+  function onToggleOptionHandler(data: any) {
+    console.log("VALUE: ", data);
+
+    const newSelectedValues = _selectedValues.includes(data)
+      ? _selectedValues.filter((value) => value !== data)
+      : [..._selectedValues, data];
     _updateSelectedValues(newSelectedValues);
   }
 
@@ -147,7 +149,7 @@ export default function SheMultiSelect({
     _updateSelectedValues([]);
     setSearchValue("");
     setTimeout(() => searchRef?.current?.focus());
-    if (onClear) onClear([]);
+    onClear?.(null);
   }
 
   function onCloseButtonHandler() {
@@ -172,19 +174,19 @@ export default function SheMultiSelect({
   }
 
   function _getSelectedBudges(
-    items: ISheMultiSelectItem[],
-    values: any[],
+    items: ISheMultiSelectItem<T>[],
+    values: T[],
   ): ISheBadge[] {
     if (!items || items.length === 0 || !values || values.length === 0) return;
 
     return values
       .map((value: string) =>
-        options.find((option: ISheMultiSelectItem) =>
+        options.find((option: ISheMultiSelectItem<T>) =>
           _.isEqual(option.value, value),
         ),
       )
       .map(
-        (item: ISheMultiSelectItem): ISheBadge => ({
+        (item: ISheMultiSelectItem<T>): ISheBadge => ({
           text: item?.text,
           icon: item?.icon,
           value: item.value,
@@ -192,10 +194,10 @@ export default function SheMultiSelect({
       );
   }
 
-  function _updateSelectedValues(values: any[]) {
+  function _updateSelectedValues(values: T[]) {
     setSelectedValues(values);
     setBadges(_getSelectedBudges(_options, values));
-    onValueChange(values);
+    onValueChange?.(values);
   }
 
   // ==================================================================== RENDER
@@ -242,8 +244,7 @@ export default function SheMultiSelect({
             </CommandEmpty>
             <CommandGroup className={cs.sheMultiSelectPopoverGroupContainer}>
               {!hideSelectAll && (
-                <SheMultiSelectItem
-                  key="all"
+                <SheMultiSelectItem<T>
                   className={`${cs.sheMultiSelectItemParentWrapper} ${cs.sheMultiSelectItemParentWrapperSelectAll}`}
                   text={selectAllPlaceholder}
                   textTransKey={selectAllPlaceholderTransKey}
@@ -253,12 +254,12 @@ export default function SheMultiSelect({
                 />
               )}
               {_options?.map((option) => (
-                <SheMultiSelectItem
+                <SheMultiSelectItem<T>
                   key={option.id}
                   className={cs.sheMultiSelectItemParentWrapper}
                   isSelected={_selectedValues?.includes(option.value)}
-                  isItemsWithIcons={_isItemsWithIcons}
-                  isItemsWithColors={_isItemsWithColors}
+                  showIconsColumn={_isItemsWithIcons}
+                  showColorsColumn={_isItemsWithColors}
                   isLoading={isLoading}
                   onClick={onToggleOptionHandler}
                   {...option}

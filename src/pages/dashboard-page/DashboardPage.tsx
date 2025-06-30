@@ -6,6 +6,7 @@ import { Box } from "lucide-react";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import { SheTooltipEnum } from "@/const/enums/SheTooltipEnum.ts";
+import SheMultiSelect from "@/components/primitive/she-multi-select/SheMultiSelect.tsx";
 
 const options: ISheSelectItem<any>[] = [
   {
@@ -68,37 +69,36 @@ const optionsSimple: ISheSelectItem<string>[] = [
     text: "React",
     value: "REACT",
     icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1150px-React-icon.svg.png",
-    isSelected: true,
-    mode: "multiple",
-    toggleClassName: "INNER-CELL-CLASS-NAME",
-    toggleStyle: { border: "1px solid red" },
-    iconClassName: "INNER-CELL-CLASS-NAME",
-    iconStyle: { border: "1px solid red" },
-    colorsClassName: "INNER-CELL-CLASS-NAME",
-    colorsStyle: { border: "1px solid red" },
-    infoClassName: "INNER-CELL-CLASS-NAME",
-    infoStyle: { border: "1px solid red" },
-    tooltipClassName: "INNER-CELL-CLASS-NAME",
-    tooltipStyle: { border: "1px solid red" },
   },
   {
     text: "Angular",
     value: "ANGULAR",
     icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/1200px-Angular_full_color_logo.svg.png",
-    isSelected: true,
-    mode: "multiple",
   },
   {
     text: "Vue",
     value: "VUE",
     icon: "https://www.w3schools.com/whatis/img_vue.jpg",
-    mode: "plain",
   },
   {
     text: "Svelte",
     value: "SVELTE",
     icon: "https://logosandtypes.com/wp-content/uploads/2020/11/Svelte.png",
-    mode: "single",
+  },
+  {
+    text: "Flutter",
+    value: "FLUTTER",
+    icon: "https://images.icon-icons.com/2108/PNG/512/flutter_icon_130936.png",
+  },
+  {
+    text: "Knockout",
+    value: "KNOCKOUT",
+    icon: "https://quintagroup.com/cms/js/js-image/knockout-js-logo.png/@@images/f4756dda-f9a9-4c04-9223-9f5724569747.png",
+  },
+  {
+    text: "Svelte",
+    value: "SVELTE",
+    icon: "https://logosandtypes.com/wp-content/uploads/2020/11/Svelte.png",
   },
   {
     text: "Flutter",
@@ -147,14 +147,31 @@ export function DashboardPage() {
 
       <br />
 
-      <SheSelect<string>
+      {/*<SheSelect<string>
         items={options}
         // items={optionsSimple}
         showClearBtn
         isOpen
         onSelect={(value) => console.log("select: ", value)}
         onSelectModel={(value) => console.log("select model: ", value)}
-      />
+      />*/}
+
+      <br />
+
+      <div className="flex gap-2 items-center justify-between">
+        <div className="w-full flex">
+          <SheMultiSelect<string> options={optionsSimple} fullWidth isOpen />
+        </div>
+        <div className="w-full flex">
+          <SheSelect<string>
+            // items={options}
+            items={optionsSimple}
+            fullWidth
+            onSelect={(value) => console.log("select: ", value)}
+            onSelectModel={(value) => console.log("select model: ", value)}
+          />
+        </div>
+      </div>
 
       <br />
     </div>

@@ -25,6 +25,7 @@ $iconSize: 20px;
 
       button[role="combobox"] {
         transition: all 160ms ease-in-out;
+        min-height: vars.$minHeight + px;
 
         &:focus-visible {
           box-shadow: 0 0 0 1px lightgray inset;

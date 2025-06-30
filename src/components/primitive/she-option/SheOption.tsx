@@ -112,7 +112,7 @@ export default function SheOption<T>(props: ISheOption<T>): JSX.Element {
   // ==================================================================== RENDER
 
   return (
-    <SheSkeleton isLoading={isLoading}>
+    <SheSkeleton isLoading={isLoading} fullWidth>
       <div
         className={`${cs.sheOption} ${className} ${fullWidth ? cs.fullWidth : ""} ${cs[view]} ${mode === "single" && isSelected ? cs.optionSelected : ""} ${disabled || isLoading ? "disabled" : ""}`}
         style={{
