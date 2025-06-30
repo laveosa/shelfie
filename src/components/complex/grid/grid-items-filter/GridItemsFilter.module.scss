@@ -1,58 +1,72 @@
-.dropdownMenuTrigger {
-  min-width: fit-content;
-  box-shadow: none;
-  height: 30px;
-  padding: 8px !important;
-
-  .buttonInnerItems {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    span {
-      width: 20px;
-      height: 20px;
-      padding-top: 3px;
-    }
-
-    .settingsIcon {
-      width: 20px;
-      height: 20px;
-    }
-
-    .chevronIcon {
-      width: 16px;
-      height: 16px;
-      padding-top: 4px;
-    }
-  }
-
-  &:focus-visible {
-    box-shadow: none;
-  }
-
-
-}
-
-.dropdownMenuContent {
-  width: 100%;
-  padding: 10px;
-  max-height: 500px;
+.gridItemsFilterWrapper {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+
+  .dropdownMenuTrigger {
+    min-width: fit-content;
+    box-shadow: none;
+    height: 30px;
+    padding: 8px !important;
+
+    .buttonInnerItems {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      span {
+        width: 20px;
+        height: 20px;
+        padding-top: 3px;
+      }
+
+      .settingsIcon {
+        width: 20px;
+        height: 20px;
+      }
+
+      .chevronIcon {
+        width: 16px;
+        height: 16px;
+        padding-top: 4px;
+      }
+    }
+
+    &:focus-visible {
+      box-shadow: none;
+    }
 
 
-  .itemsContainer {
-    overflow-y: auto;
-    max-height: 378px;
   }
 
-  .buttonBlock {
+  .dropdownMenuContent {
+    width: 100%;
+    padding: 10px;
+    max-height: 500px;
     display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    margin-top: 10px;
-    min-height: 40px;
+    flex-direction: column;
+
+
+    .itemsContainer {
+      overflow-y: auto;
+      max-height: 378px;
+    }
+
+    .buttonBlock {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      margin-top: 10px;
+      min-height: 40px;
+    }
+  }
+
+  .clearButton {
+    svg {
+      width: 15px;
+    }
   }
 }
+
+
 
