@@ -59,7 +59,18 @@ export default function GridItemsFilter<T>({
 
   return (
     <div className={cs.gridItemsFilterWrapper}>
-      <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
+      <DropdownMenu
+        open={dropdownOpen}
+        onOpenChange={(open) => {
+          if (!open && selectedIds.length > 0) {
+            onApplyHandle();
+          }
+          if (!open && selectedIds.length === 0) {
+            onResetHandle();
+          }
+          setDropdownOpen(open);
+        }}
+      >
         <DropdownMenuTrigger className={cs.dropdownMenuTrigger} asChild>
           <SheButton
             className={cs.dropdownMenuTriggerButton}
