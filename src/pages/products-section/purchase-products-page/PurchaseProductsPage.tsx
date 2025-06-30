@@ -1501,7 +1501,6 @@ export function PurchaseProductsPage() {
         handleCardAction("disposeStockCard", true);
         break;
       case "openVariantHistoryCard":
-        console.log("payload", payload);
         handleCardAction("variantHistoryCard", true);
         dispatch(actions.setIsVariantHistoryCardLoading(true));
         dispatch(actions.setIsVariantsHistoryGridLoading(true));
@@ -1512,7 +1511,7 @@ export function PurchaseProductsPage() {
           }));
           dispatch(actions.setIsVariantHistoryCardLoading(false));
           dispatch(actions.setIsVariantsHistoryGridLoading(false));
-          dispatch(actions.refreshVariantsHistory(data));
+          dispatch(actions.refreshVariantHistory(data));
         });
         break;
       case "openManageTraitsCard":
@@ -1526,6 +1525,9 @@ export function PurchaseProductsPage() {
         break;
       case "closeVariantConfigurationCard":
         handleCardAction("variantConfigurationCard");
+        break;
+      case "closeVariantHistoryCard":
+        handleCardAction("variantHistoryCard");
         break;
     }
   }
@@ -1795,9 +1797,6 @@ export function PurchaseProductsPage() {
             isGridLoading={state.isVariantHistoryGridLoading}
             variant={productsState.selectedVariant}
             data={state.variantHistory}
-            onSecondaryButtonClick={() =>
-              handleCardAction("variantHistoryCard")
-            }
           />
         </div>
       )}

@@ -6,5 +6,5 @@ export interface IVariantHistoryCard {
   isGridLoading?: boolean;
   variant: VariantModel;
   data?: VariantHistoryModel[];
-  onSecondaryButtonClick?: () => void;
+  onAction?: (identifier: string, payload?: any) => void;
 }

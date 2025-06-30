@@ -470,7 +470,7 @@ const PurchaseProductsPageSlice = createSlice({
     refreshPurchaseSummary,
     refreshVariantPhotos,
     refreshProductPhotosForVariant,
-    refreshVariantsHistory: refreshVariantHistory,
+    refreshVariantHistory,
   },
 });
 

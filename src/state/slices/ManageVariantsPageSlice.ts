@@ -7,6 +7,7 @@ import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 import { ProductCountersModel } from "@/const/models/CounterModel.ts";
+import { VariantHistoryModel } from "@/const/models/VariantHistoryModel.ts";
 
 const initialState: IManageVariantsPageSlice = {
   isLoading: false,
@@ -20,11 +21,13 @@ const initialState: IManageVariantsPageSlice = {
   isChooseVariantTraitsCardLoading: false,
   isProductTraitConfigurationCardLoading: false,
   isVariantPhotosCardLoading: false,
+  isVariantHistoryCardLoading: false,
   isProductsLoading: false,
   isTraitOptionsGridLoading: false,
   isVariantOptionsGridLoading: false,
   isVariantPhotoGridLoading: false,
   isProductPhotoGridLoading: false,
+  isVariantsHistoryGridLoading: false,
   selectedVariant: null,
   isDuplicateVariant: false,
   productCounter: null,
@@ -56,6 +59,7 @@ const initialState: IManageVariantsPageSlice = {
   traitOptions: [],
   variantPhotos: [],
   productPhotosForVariant: [],
+  variantHistory: [],
 };
 
 //----------------------------------------------------- LOADERS
@@ -137,6 +141,13 @@ function setIsVariantPhotosCardLoading(
   state.isVariantPhotosCardLoading = action?.payload;
 }
 
+function setIsVariantHistoryCardLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isVariantHistoryCardLoading = action?.payload;
+}
+
 function setIsProductsLoading(
   state: IManageVariantsPageSlice,
   action: PayloadAction<boolean>,
@@ -170,6 +181,13 @@ function setIsProductPhotoGridLoading(
   action: PayloadAction<boolean>,
 ) {
   state.isProductPhotoGridLoading = action?.payload;
+}
+
+function setIsVariantsHistoryGridLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isVariantsHistoryGridLoading = action?.payload;
 }
 
 //----------------------------------------------------- API
@@ -293,6 +311,13 @@ function refreshProductPhotosForVariant(
     action?.payload || state.productPhotosForVariant;
 }
 
+function refreshVariantHistory(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<VariantHistoryModel[]>,
+) {
+  state.variantHistory = action?.payload || state.variantHistory;
+}
+
 const ManageVariantsPageSlice = createSlice({
   name: StoreSliceEnum.MANAGE_VARIANTS,
   initialState,
@@ -308,11 +333,13 @@ const ManageVariantsPageSlice = createSlice({
     setIsChooseVariantTraitsCardLoading,
     setIsProductTraitConfigurationCardLoading,
     setIsVariantPhotosCardLoading,
+    setIsVariantHistoryCardLoading,
     setIsProductsLoading,
     setIsTraitOptionsGridLoading,
     setIsVariantOptionsGridLoading,
     setIsVariantPhotoGridLoading,
     setIsProductPhotoGridLoading,
+    setIsVariantsHistoryGridLoading,
     refreshIsDuplicateVariant,
     refreshTraits,
     refreshTypesOfTraits,
@@ -330,6 +357,7 @@ const ManageVariantsPageSlice = createSlice({
     refreshGridRequestModel,
     refreshVariantPhotos,
     refreshProductPhotosForVariant,
+    refreshVariantHistory,
   },
 });
 

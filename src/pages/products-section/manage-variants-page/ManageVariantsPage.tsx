@@ -22,6 +22,7 @@ import AddVariantCard from "@/components/complex/custom-cards/add-variant-card/A
 import VariantPhotosCard from "@/components/complex/custom-cards/variant-photos-card/VariantPhotosCard.tsx";
 import {
   clearSelectedGridItems,
+  formatDate,
   setSelectedGridItem,
 } from "@/utils/helpers/quick-helper.ts";
 import { GridModel } from "@/const/models/GridModel.ts";
@@ -849,6 +850,17 @@ export function ManageVariantsPage() {
         break;
       case "openVariantHistoryCard":
         handleCardAction("variantHistoryCard", true);
+        dispatch(actions.setIsVariantHistoryCardLoading(true));
+        dispatch(actions.setIsVariantsHistoryGridLoading(true));
+        productsService.getVariantStockHistoryHandler(payload).then((items) => {
+          const data = items.map((item) => ({
+            ...item,
+            createdDate: formatDate(item.createdDate, "date"),
+          }));
+          dispatch(actions.setIsVariantHistoryCardLoading(false));
+          dispatch(actions.setIsVariantsHistoryGridLoading(false));
+          dispatch(actions.refreshVariantHistory(data));
+        });
         break;
       case "openManageTraitsCard":
         handleCardAction("manageTraitsCard", true);
@@ -873,6 +885,9 @@ export function ManageVariantsPage() {
           ),
         );
         handleCardAction("variantConfigurationCard");
+        break;
+      case "closeVariantHistoryCard":
+        handleCardAction("variantHistoryCard");
         break;
     }
   }
@@ -965,11 +980,9 @@ export function ManageVariantsPage() {
         >
           <StockHistoryCard
             isLoading={state.isVariantHistoryCardLoading}
+            isGridLoading={state.isVariantHistoryGridLoading}
             variant={productsState.selectedVariant}
-            getVariantHistory={productsService.getVariantStockHistoryHandler}
-            onSecondaryButtonClick={() =>
-              handleCardAction("variantHistoryCard")
-            }
+            data={state.variantHistory}
           />
         </div>
       )}

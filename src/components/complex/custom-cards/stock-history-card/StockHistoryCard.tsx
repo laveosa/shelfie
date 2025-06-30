@@ -11,7 +11,7 @@ export default function StockHistoryCard({
   isGridLoading,
   variant,
   data,
-  onSecondaryButtonClick,
+  onAction,
   ...props
 }: IVariantHistoryCard) {
   return (
@@ -20,7 +20,7 @@ export default function StockHistoryCard({
       title={`${variant?.variantName} Stock History`}
       showCloseButton
       className={cs.stockHistoryCard}
-      onSecondaryButtonClick={onSecondaryButtonClick}
+      onSecondaryButtonClick={() => onAction("closeVariantHistoryCard")}
       {...props}
     >
       <div className={cs.stockHistoryCardContent}>
