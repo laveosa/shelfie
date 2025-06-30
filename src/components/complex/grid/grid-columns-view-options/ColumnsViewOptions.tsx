@@ -116,7 +116,7 @@ export function ColumnsViewOptions<TData>({
           </div>
         </SheButton>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" className={cs.dropdownMenuContent}>
+      <DropdownMenuContent align="end" className={cs.dropdownMenuContent}>
         <DropdownMenuLabel>Select Columns</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {table
