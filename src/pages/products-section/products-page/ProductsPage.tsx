@@ -4,8 +4,6 @@ import { merge } from "lodash";
 import {
   BadgeCheck,
   CalendarRange,
-  Columns3Icon,
-  Download,
   Layers2,
   Plus,
   Receipt,
@@ -132,6 +130,7 @@ export function ProductsPage() {
       case "image":
         break;
       case "manage":
+        dispatch(actions.resetProduct());
         navigate(
           `${NavUrlEnum.PRODUCTS}${NavUrlEnum.PRODUCT_BASIC_DATA}/${rowData?.productId}`,
         );
@@ -226,9 +225,11 @@ export function ProductsPage() {
     navigate(`${NavUrlEnum.PRODUCTS}${NavUrlEnum.PRODUCT_BASIC_DATA}`);
   }
 
-  function handleImportProducts() {}
+  //Commented until future notices
 
-  function handleConfigure() {}
+  // function handleImportProducts() {}
+  //
+  // function handleConfigure() {}
 
   function handleReportPurchase() {
     dispatch(actions.resetSelectedPurchase());
@@ -358,18 +359,19 @@ export function ProductsPage() {
               onClick={handleAddProduct}
               value="Add Product"
             />
-            <SheButton
-              icon={Download}
-              variant="outline"
-              onClick={handleImportProducts}
-              value="Import Products"
-            />
-            <SheButton
-              icon={Columns3Icon}
-              variant="outline"
-              onClick={handleConfigure}
-              value="Configure"
-            />
+            {/*Commented until future notices*/}
+            {/*<SheButton*/}
+            {/*  icon={Download}*/}
+            {/*  variant="outline"*/}
+            {/*  onClick={handleImportProducts}*/}
+            {/*  value="Import Products"*/}
+            {/*/>*/}
+            {/*<SheButton*/}
+            {/*  icon={Columns3Icon}*/}
+            {/*  variant="outline"*/}
+            {/*  onClick={handleConfigure}*/}
+            {/*  value="Configure"*/}
+            {/*/>*/}
           </div>
         )}
       </div>
