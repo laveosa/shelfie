@@ -46,6 +46,7 @@ export default function SheSelect<T>({
   selectedColor,
   onOpenChange,
   onSelect,
+  onSelectModel,
   ...props
 }: ISheSelect<T>): JSX.Element {
   const { translate } = useAppTranslation();
@@ -78,7 +79,6 @@ export default function SheSelect<T>({
     }
 
     const itemsWithIds = _addItemsIds(updatedItems);
-
     setItems(itemsWithIds);
 
     const selectedItem = _getSelectedItemByIdentifier(
@@ -89,7 +89,6 @@ export default function SheSelect<T>({
     const resolved = selectedItem?.id
       ? _getSelectedItemById(selectedItem.id, itemsWithIds)
       : _getSelectedItemFromCollection(itemsWithIds);
-
     setSelected(resolved);
 
     if (isOpen && updatedItems?.length > 0) {
@@ -113,19 +112,22 @@ export default function SheSelect<T>({
 
   // ==================================================================== EVENT
 
-  function onValueChangeHandler(id: string) {
+  function onValueChangeHandler(id: string, _event?: React.MouseEvent) {
     setSelected(() => {
       const selected = _getSelectedItemById(id);
 
       if (selected) {
         selected.isSelected = true;
         setSelectedItemInCollection(selected.value);
-        onSelect?.({
+        onSelect?.(selected?.value);
+        onSelectModel?.({
           value: selected?.value,
           model: selected,
+          event: _event,
         });
       } else {
         onSelect?.(null);
+        onSelectModel?.(null);
       }
 
       return selected;
@@ -152,6 +154,7 @@ export default function SheSelect<T>({
   function onClearHandler() {
     setSelected(null);
     onSelect?.(null);
+    onSelectModel?.(null);
   }
 
   // ==================================================================== PRIVATE

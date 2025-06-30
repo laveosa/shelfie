@@ -144,6 +144,7 @@ export function DashboardPage() {
         items={optionsSimple}
         showClearBtn
         onSelect={(value) => console.log("select: ", value)}
+        onSelectModel={(value) => console.log("select model: ", value)}
       />
 
       <br />
