@@ -14,8 +14,8 @@ export interface ISheSelect<T>
   id?: string;
   className?: string;
   style?: React.CSSProperties;
-  elemClassName?: string;
-  elemStyle?: React.CSSProperties;
+  elementClassName?: string;
+  elementStyle?: React.CSSProperties;
   triggerRef?: React.RefObject<any>;
   icon?: Partial<ISheIcon> | string | React.FC<any>;
   items?: ISheSelectItem<T>[];
@@ -31,7 +31,6 @@ export interface ISheSelect<T>
   isOpen?: boolean;
   required?: boolean;
   showSelectIcon?: boolean;
-  selectedColor?: string;
   onOpenChange?(value: boolean): void;
   onSelect?(value: T): void;
   onSelectModel?(

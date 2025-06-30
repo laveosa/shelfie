@@ -69,7 +69,7 @@ export default function SheOption<T>(props: ISheOption<T>): JSX.Element {
   // ==================================================================== EVENT
 
   function onClickHandler(event: React.MouseEvent) {
-    if (checkOnClick) {
+    if (checkOnClick && mode === "multiple") {
       setIsSelected((prevState) => {
         const tmpIsSelected = !prevState;
         if (onClick) onClick(_getOutputEventModel<T>(value, event));

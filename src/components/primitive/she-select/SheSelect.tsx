@@ -22,8 +22,8 @@ export default function SheSelect<T>({
   id,
   className = "",
   style,
-  elemClassName = "",
-  elemStyle,
+  elementClassName = "",
+  elementStyle,
   triggerRef,
   label,
   labelTransKey,
@@ -43,7 +43,6 @@ export default function SheSelect<T>({
   isLoading,
   isOpen,
   showSelectIcon,
-  selectedColor,
   onOpenChange,
   onSelect,
   onSelectModel,
@@ -272,7 +271,11 @@ export default function SheSelect<T>({
               onValueChange={onValueChangeHandler}
               {...props}
             >
-              <SelectTrigger ref={triggerRef}>
+              <SelectTrigger
+                ref={triggerRef}
+                className={elementClassName}
+                style={elementStyle}
+              >
                 <SheIcon
                   icon={icon}
                   className={cs.iconBlock}
@@ -291,19 +294,21 @@ export default function SheSelect<T>({
                   <div className={cs.sheSelectItemsContainer}>
                     {_items?.map((item) => (
                       <SheSelectItem<T>
+                        {...item}
                         key={item.id}
                         id={item.id}
-                        className={cs.sheSelectItemCover}
-                        iconClassName={cs.sheSelectItemIconContainer}
-                        colorsClassName={cs.sheSelectItemColorsContainer}
-                        infoClassName={cs.sheSelectItemInfoContainer}
-                        tooltipClassName={cs.sheSelectItemTooltipContainer}
-                        isLoading={_loading}
+                        className={`${cs.sheSelectItemCover} ${item.className || ""}`}
+                        iconClassName={`${cs.sheSelectItemIconContainer} ${item.iconClassName || ""}`}
+                        colorsClassName={`${cs.sheSelectItemColorsContainer} ${item.colorsClassName || ""}`}
+                        infoClassName={`${cs.sheSelectItemInfoContainer} ${item.infoClassName || ""}`}
+                        tooltipClassName={`${cs.sheSelectItemTooltipContainer} ${item.tooltipClassName || ""}`}
                         showSelectIcon={showSelectIcon}
                         showIconsColumn={_isItemsWithIcons}
                         showColorsColumn={_isItemsWithColors}
                         ariaDescribedbyId={ariaDescribedbyId}
-                        {...item}
+                        isLoading={
+                          !_.isNil(item.isLoading) ? item.isLoading : _loading
+                        }
                       />
                     ))}
                   </div>

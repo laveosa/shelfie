@@ -30,10 +30,11 @@ export default function SheSelectItem<T>({
       style={style}
     >
       <SheOption<T>
+        {...props}
         className={`${cs.sheSelectItemOption} ${elementClassName}`}
         mode="plain"
+        view="normal"
         style={elementStyle}
-        {...props}
       />
     </SelectItem>
   );

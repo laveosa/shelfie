@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import cs from "./DashboardPage.module.scss";
 import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageService.ts";
-import SheOption from "@/components/primitive/she-option/SheOption.tsx";
-import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
 import { Box } from "lucide-react";
-import SheToggle from "@/components/primitive/she-toggle/SheToggle.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import { SheTooltipEnum } from "@/const/enums/SheTooltipEnum.ts";
 
-const options: ISheSelectItem[] = [
+const options: ISheSelectItem<any>[] = [
   {
     id: "OPTION_1",
     text: "option 1",
@@ -23,6 +20,18 @@ const options: ISheSelectItem[] = [
     tooltip: {
       text: "some text for tooltip",
     },
+    toggleClassName: "INNER-CELL-CLASS-NAME",
+    toggleStyle: { border: "1px solid red" },
+    iconClassName: "INNER-CELL-CLASS-NAME",
+    iconStyle: { border: "1px solid red" },
+    colorsClassName: "INNER-CELL-CLASS-NAME",
+    colorsStyle: { border: "1px solid red" },
+    infoClassName: "INNER-CELL-CLASS-NAME",
+    infoStyle: { border: "1px solid red" },
+    tooltipClassName: "INNER-CELL-CLASS-NAME",
+    tooltipStyle: { border: "1px solid red" },
+    view: "card",
+    checkOnClick: true,
   },
   {
     id: "OPTION_2",
@@ -33,6 +42,7 @@ const options: ISheSelectItem[] = [
     sideText: "BG-40",
     sideDescription: "some small side description",
     colors: ["red", "blue"],
+    checkOnClick: true,
   },
   {
     id: "OPTION_3",
@@ -57,24 +67,38 @@ const optionsSimple: ISheSelectItem<string>[] = [
   {
     text: "React",
     value: "REACT",
-    isSelected: true,
     icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1150px-React-icon.svg.png",
+    isSelected: true,
+    mode: "multiple",
+    toggleClassName: "INNER-CELL-CLASS-NAME",
+    toggleStyle: { border: "1px solid red" },
+    iconClassName: "INNER-CELL-CLASS-NAME",
+    iconStyle: { border: "1px solid red" },
+    colorsClassName: "INNER-CELL-CLASS-NAME",
+    colorsStyle: { border: "1px solid red" },
+    infoClassName: "INNER-CELL-CLASS-NAME",
+    infoStyle: { border: "1px solid red" },
+    tooltipClassName: "INNER-CELL-CLASS-NAME",
+    tooltipStyle: { border: "1px solid red" },
   },
   {
     text: "Angular",
     value: "ANGULAR",
-    isSelected: true,
     icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/1200px-Angular_full_color_logo.svg.png",
+    isSelected: true,
+    mode: "multiple",
   },
   {
     text: "Vue",
     value: "VUE",
     icon: "https://www.w3schools.com/whatis/img_vue.jpg",
+    mode: "plain",
   },
   {
     text: "Svelte",
     value: "SVELTE",
     icon: "https://logosandtypes.com/wp-content/uploads/2020/11/Svelte.png",
+    mode: "single",
   },
   {
     text: "Flutter",
@@ -92,21 +116,6 @@ export function DashboardPage() {
   const service = useDashboardPageService();
 
   const [selected, setSelected] = useState<boolean>();
-
-  useEffect(() => {
-    /*setTimeout(() => {
-      setSelected(true);
-    }, 1000);*/
-    /*setTimeout(() => {
-      setSelected(false);
-    }, 2000);*/
-    /*setTimeout(() => {
-      setSelected(true);
-    }, 3000);*/
-    /*setTimeout(() => {
-      setSelected(false);
-    }, 4000);*/
-  }, []);
 
   // ================================================================== EVENT
 
@@ -139,10 +148,10 @@ export function DashboardPage() {
       <br />
 
       <SheSelect<string>
-        label="Select"
-        // items={options}
-        items={optionsSimple}
+        items={options}
+        // items={optionsSimple}
         showClearBtn
+        isOpen
         onSelect={(value) => console.log("select: ", value)}
         onSelectModel={(value) => console.log("select model: ", value)}
       />
