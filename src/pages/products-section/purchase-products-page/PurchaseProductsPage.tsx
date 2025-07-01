@@ -1504,14 +1504,18 @@ export function PurchaseProductsPage() {
         handleCardAction("variantHistoryCard", true);
         dispatch(actions.setIsVariantHistoryCardLoading(true));
         dispatch(actions.setIsVariantsHistoryGridLoading(true));
-        productsService.getVariantStockHistoryHandler(payload).then((items) => {
-          const data = items.map((item) => ({
+        Promise.all([
+          productsService.getVariantStockHistoryHandler(payload),
+          productsService.getVariantDetailsHandler(payload),
+        ]).then(([historyItems, variant]) => {
+          const historyData = historyItems.map((item) => ({
             ...item,
             createdDate: formatDate(item.createdDate, "date"),
           }));
           dispatch(actions.setIsVariantHistoryCardLoading(false));
           dispatch(actions.setIsVariantsHistoryGridLoading(false));
-          dispatch(actions.refreshVariantHistory(data));
+          dispatch(actions.refreshVariantHistory(historyData));
+          dispatch(productsActions.refreshSelectedVariant(variant));
         });
         break;
       case "openManageTraitsCard":
@@ -1527,6 +1531,7 @@ export function PurchaseProductsPage() {
         handleCardAction("variantConfigurationCard");
         break;
       case "closeVariantHistoryCard":
+        console.log("CLICK");
         handleCardAction("variantHistoryCard");
         break;
     }
@@ -1797,6 +1802,7 @@ export function PurchaseProductsPage() {
             isGridLoading={state.isVariantHistoryGridLoading}
             variant={productsState.selectedVariant}
             data={state.variantHistory}
+            onAction={onAction}
           />
         </div>
       )}

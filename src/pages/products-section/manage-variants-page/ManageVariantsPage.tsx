@@ -983,6 +983,7 @@ export function ManageVariantsPage() {
             isGridLoading={state.isVariantHistoryGridLoading}
             variant={productsState.selectedVariant}
             data={state.variantHistory}
+            onAction={onAction}
           />
         </div>
       )}

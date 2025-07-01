@@ -90,7 +90,7 @@ export default function PurchaseProductsCard({
         onAction("deleteStockActionInGrid", payload.original);
         break;
       case "stockChangeHistory":
-        console.log("stockChangeHistory");
+        onAction("openVariantHistoryCard", payload.original.variantId);
         break;
     }
   }
@@ -148,7 +148,7 @@ export default function PurchaseProductsCard({
   }
 
   function onResetColumnsHandler() {
-    productsService.resetUserPreferencesHandler();
+    productsService.resetUserPreferencesHandler("products");
   }
 
   return (

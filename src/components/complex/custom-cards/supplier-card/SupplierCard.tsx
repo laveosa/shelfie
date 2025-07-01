@@ -24,7 +24,7 @@ export default function SupplierCard({
 }: ISupplierCard) {
   const { purchaseId } = useParams();
   const [selectedDate, setSelectedDate] = useState<string>(
-    purchaseId ? selectedPurchase.date : null,
+    purchaseId ? selectedPurchase?.date : null,
   );
   const isDateSelected = Boolean(selectedDate || selectedPurchase?.date);
   const isButtonDisabled = !isDateSelected || !selectedSupplier;
