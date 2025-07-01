@@ -41,6 +41,7 @@ import { purchasesGridColumns } from "@/components/complex/grid/purchases-grid/P
 import { SupplierModel } from "@/const/models/SupplierModel.ts";
 import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
+import useDialogService from "@/utils/services/dialog/DialogService.ts";
 
 export function ProductsPage() {
   const dispatch = useAppDispatch();
@@ -52,6 +53,7 @@ export function ProductsPage() {
   const [activeTab, setActiveTab] = useState("products");
   const [activeStates, setActiveStates] = useState<Record<string, boolean>>({});
   const gridRef = useRef<DndGridRef>(null);
+  const { openConfirmationDialog } = useDialogService();
 
   useEffect(() => {
     if (activeTab === "products") {
@@ -123,44 +125,66 @@ export function ProductsPage() {
     }
   }, []);
 
-  function onDelete(data) {
+  async function onDelete(data) {
     data.table.options.meta?.hideRow(data.row.original.id);
     switch (activeTab) {
       case "products":
-        service
-          .deleteProductHandler(data.row.original.productId)
-          .then((res) => {
-            if (!res.error) {
-              addToast({
-                text: "Product deleted successfully",
-                type: "success",
-              });
-            } else {
-              data.table.options.meta?.unhideRow(data.row.original.id);
-              addToast({
-                text: res.error.data.detail,
-                type: "error",
-              });
-            }
-          });
+        const confirmedDeleteProduct = await openConfirmationDialog({
+          title: "Delete Product",
+          text: `You are about to delete product "${data.row.original.productName}".`,
+          primaryButtonValue: "Delete",
+          secondaryButtonValue: "Cancel",
+        });
+
+        if (!confirmedDeleteProduct) {
+          data.table.options.meta?.unhideRow(data.row.original.id);
+        } else {
+          await service
+            .deleteProductHandler(data.row.original.productId)
+            .then((res) => {
+              if (!res.error) {
+                addToast({
+                  text: "Product deleted successfully",
+                  type: "success",
+                });
+              } else {
+                data.table.options.meta?.unhideRow(data.row.original.id);
+                addToast({
+                  text: res.error.data.detail,
+                  type: "error",
+                });
+              }
+            });
+        }
         break;
       case "variants":
-        service
-          .deleteVariantHandler(data.row.original.variantId)
-          .then((res) => {
-            if (!res.error) {
-              addToast({
-                text: "Variant deleted successfully",
-                type: "success",
-              });
-            } else {
-              data.table.options.meta?.unhideRow(data.row.original.id);
-              addToast({
-                text: res.error.data.detail,
-                type: "error",
-              });
-            }
-          });
+        const confirmedDeleteVariant = await openConfirmationDialog({
+          title: "Delete Variant",
+          text: `You are about to delete variant "${data.row.original.variantName}".`,
+          primaryButtonValue: "Delete",
+          secondaryButtonValue: "Cancel",
+        });
+
+        if (!confirmedDeleteVariant) {
+          data.table.options.meta?.unhideRow(data.row.original.id);
+        } else {
+          await service
+            .deleteVariantHandler(data.row.original.variantId)
+            .then((res) => {
+              if (!res.error) {
+                addToast({
+                  text: "Variant deleted successfully",
+                  type: "success",
+                });
+              } else {
+                data.table.options.meta?.unhideRow(data.row.original.id);
+                addToast({
+                  text: res.error.data.detail,
+                  type: "error",
+                });
+              }
+            });
+        }
         break;
       case "purchases":
         console.log("DELETE", data);
