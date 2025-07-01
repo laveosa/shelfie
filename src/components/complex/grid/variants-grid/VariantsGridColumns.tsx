@@ -6,9 +6,12 @@ import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import cs from "./VariantGridColumns.module.scss";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import { BrandModel } from "@/const/models/BrandModel.ts";
-import VariantsGridColumnActions from "@/components/complex/grid/variants-grid/VariantsGridColumnActions.tsx";
+import { TrashIcon } from "lucide-react";
 
-export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
+export function variantsGridColumns(
+  onAction: any,
+  onDelete: (data) => void,
+): ColumnDef<any>[] {
   const statusClass = (status: string) => {
     if (status === "Available") {
       return cs.productStatusAvailable;
@@ -255,16 +258,45 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
       minSize: 70,
       maxSize: 70,
       cell: ({ row, table }) => {
+        const meta = table.options.meta as {
+          setLoadingRow: (rowId: string, loading: boolean) => void;
+          isRowLoading: (rowId: string) => boolean;
+        };
+        const rowId = row.original.id;
+        const handleDeleteClick = (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          onDelete({ table, rowId, row });
+        };
+
         return (
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <VariantsGridColumnActions
-              row={row}
-              onAction={onAction}
-              table={table}
+          <div onClick={(e) => e.stopPropagation()}>
+            <SheButton
+              icon={TrashIcon}
+              variant="secondary"
+              onClick={handleDeleteClick}
+              disabled={meta?.isRowLoading(row.id)}
             />
           </div>
         );
       },
     },
+    // {
+    //   id: "rowActions",
+    //   header: "",
+    //   minSize: 70,
+    //   maxSize: 70,
+    //   cell: ({ row, table }) => {
+    //     return (
+    //       <div style={{ display: "flex", justifyContent: "center" }}>
+    //         <VariantsGridColumnActions
+    //           row={row}
+    //           onAction={onAction}
+    //           table={table}
+    //         />
+    //       </div>
+    //     );
+    //   },
+    // },
   ];
 }

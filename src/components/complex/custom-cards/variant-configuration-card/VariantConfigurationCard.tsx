@@ -28,12 +28,16 @@ import { IVariantConfigurationCard } from "@/const/interfaces/complex-components
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
-import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import {
+  DataWithId,
+  DndGridDataTable,
+} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
 import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
 import { VariantConfigurationGridColumns } from "@/components/complex/grid/variant-configuration-grid/VariantConfigurationGridColumns.tsx";
 import { VariantPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/VariantPhotosGridColumns.tsx";
 import { VariantModel } from "@/const/models/VariantModel.ts";
+import { ColumnDef } from "@tanstack/react-table";
 
 const debounce = (fn: (...args: any[]) => void, delay: number) => {
   let timer: ReturnType<typeof setTimeout>;
@@ -57,8 +61,11 @@ export default function VariantConfigurationCard({
   onSecondaryButtonClick,
   ...props
 }: IVariantConfigurationCard) {
-  const traitsColumns = VariantConfigurationGridColumns;
-  const photoColumns = VariantPhotosGridColumns(onGridAction);
+  const traitsColumns =
+    VariantConfigurationGridColumns as ColumnDef<DataWithId>[];
+  const photoColumns = VariantPhotosGridColumns(
+    onGridAction,
+  ) as ColumnDef<DataWithId>[];
 
   const currentVariantIdRef = useRef<string | number | null>(
     variant?.variantId || null,

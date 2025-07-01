@@ -2,9 +2,13 @@ import React from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./StockHistoryCard.module.scss";
-import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import {
+  DataWithId,
+  DndGridDataTable,
+} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { StockHistoryGridColumns } from "@/components/complex/grid/stock-history-grid/StockHistoryGridColumns.tsx";
 import { IVariantHistoryCard } from "@/const/interfaces/complex-components/custom-cards/IVariantHistoryCard.ts";
+import { ColumnDef } from "@tanstack/react-table";
 
 export default function StockHistoryCard({
   isLoading,
@@ -28,7 +32,7 @@ export default function StockHistoryCard({
           <DndGridDataTable
             isLoading={isGridLoading}
             showHeader={false}
-            columns={StockHistoryGridColumns}
+            columns={StockHistoryGridColumns as ColumnDef<DataWithId>[]}
             skeletonQuantity={data.length}
             data={data}
           />

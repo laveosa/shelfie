@@ -2,11 +2,15 @@ import React from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ProductPhotosCard.module.scss";
-import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import {
+  DataWithId,
+  DndGridDataTable,
+} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { SheImageUploader } from "@/components/complex/she-images-uploader/SheImageUploader.tsx";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { ProductPhotosGridColumns } from "@/components/complex/grid/variant-photos-grid/ProductPhotosGridColumns.tsx";
 import { IProductPhotosCard } from "@/const/interfaces/complex-components/custom-cards/IProductPhotosCard.ts";
+import { ColumnDef } from "@tanstack/react-table";
 
 export default function ProductPhotosCard({
   isLoading,
@@ -18,7 +22,9 @@ export default function ProductPhotosCard({
   showCloseButton,
   onAction,
 }: IProductPhotosCard) {
-  const columns = ProductPhotosGridColumns(onGridAction);
+  const columns = ProductPhotosGridColumns(
+    onGridAction,
+  ) as ColumnDef<DataWithId>[];
 
   function handleAction(actionType: string, payload?: any): any {
     switch (actionType) {

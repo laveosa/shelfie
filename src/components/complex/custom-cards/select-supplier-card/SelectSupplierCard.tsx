@@ -6,8 +6,12 @@ import SheProductCard from "@/components/complex/she-product-card/SheProductCard
 import { ISelectSupplierCard } from "@/const/interfaces/complex-components/custom-cards/ISelectSupplierCard.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import {
+  DataWithId,
+  DndGridDataTable,
+} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { SuppliersListGridColumns } from "@/components/complex/grid/supplier-list-grid/SuppliersListGridColumns.tsx";
+import { ColumnDef } from "@tanstack/react-table";
 
 export default function SelectSupplierCard({
   isLoading,
@@ -20,7 +24,7 @@ export default function SelectSupplierCard({
     onGridAction,
     selectedSupplier,
     setSelectedSupplier,
-  });
+  }) as ColumnDef<DataWithId>[];
 
   function onGridAction(
     actionType: string,

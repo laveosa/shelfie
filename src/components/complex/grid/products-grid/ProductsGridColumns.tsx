@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
+import { TrashIcon } from "lucide-react";
 
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import ProductsGridColumnActions from "@/components/complex/grid/products-grid/ProductsGridColumnActions.tsx";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 import placeholderImage from "@/assets/images/placeholder-image.png";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
@@ -12,6 +12,7 @@ import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 
 export function productsGridColumns(
   onAction: any,
+  onDelete: (data) => void,
   activeStates?: Record<string, boolean>,
 ): ColumnDef<any>[] {
   const statusClass = (status: string) => {
@@ -219,7 +220,7 @@ export function productsGridColumns(
         const handleManageClick = (e) => {
           e.stopPropagation();
           e.preventDefault();
-          onAction("manage", row.id, meta?.setLoadingRow, row.original);
+          onAction("manageProduct", row.id, meta?.setLoadingRow, row.original);
         };
 
         return (
@@ -240,16 +241,45 @@ export function productsGridColumns(
       minSize: 70,
       maxSize: 70,
       cell: ({ row, table }) => {
+        const meta = table.options.meta as {
+          setLoadingRow: (rowId: string, loading: boolean) => void;
+          isRowLoading: (rowId: string) => boolean;
+        };
+        const rowId = row.original.id;
+        const handleDeleteClick = (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          onDelete({ table, rowId, row });
+        };
+
         return (
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <ProductsGridColumnActions
-              row={row}
-              onAction={onAction}
-              table={table}
+          <div onClick={(e) => e.stopPropagation()}>
+            <SheButton
+              icon={TrashIcon}
+              variant="secondary"
+              onClick={handleDeleteClick}
+              disabled={meta?.isRowLoading(row.id)}
             />
           </div>
         );
       },
     },
+    // {
+    //   id: "rowActions",
+    //   header: "",
+    //   minSize: 70,
+    //   maxSize: 70,
+    //   cell: ({ row, table }) => {
+    //     return (
+    //       <div style={{ display: "flex", justifyContent: "center" }}>
+    //         <ProductsGridColumnActions
+    //           row={row}
+    //           onAction={onAction}
+    //           table={table}
+    //         />
+    //       </div>
+    //     );
+    //   },
+    // },
   ];
 }

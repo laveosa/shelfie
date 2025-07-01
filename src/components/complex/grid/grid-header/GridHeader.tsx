@@ -62,6 +62,17 @@ export default function GridHeader<TData>({ table }: IGridHeader<TData>) {
           {showColumnsViewOptions && <ColumnsViewOptions table={table} />}
         </div>
       )}
+      {showColumnsViewOptions && (
+        <div
+          style={{
+            display: filtersOpen ? "block" : "none",
+            position: "absolute",
+            visibility: "hidden",
+          }}
+        >
+          <ColumnsViewOptions table={table} />
+        </div>
+      )}
     </div>
   );
 }

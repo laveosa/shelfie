@@ -460,6 +460,12 @@ export const ProductsApiService = createApi({
         url: `${ApiUrlEnum.TRAITS}/for-filter/${id ? id : ""}`,
       }),
     }),
+    deleteVariant: apiConfig.createMutation<void, number>(builder, {
+      query: (variantId: number) => ({
+        url: `${ApiUrlEnum.VARIANTS}/${variantId}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 

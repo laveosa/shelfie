@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { merge } from "lodash";
 import {
   BadgeCheck,
@@ -28,7 +28,11 @@ import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { ProductsPageSliceActions as actions } from "@/state/slices/ProductsPageSlice.ts";
 import { AppSliceActions as appActions } from "@/state/slices/AppSlice.ts";
-import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import {
+  DataWithId,
+  DndGridDataTable,
+  DndGridRef,
+} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { variantsGridColumns } from "@/components/complex/grid/variants-grid/VariantsGridColumns.tsx";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { useToast } from "@/hooks/useToast.ts";
@@ -36,6 +40,7 @@ import { purchasesGridColumns } from "@/components/complex/grid/purchases-grid/P
 import { SupplierModel } from "@/const/models/SupplierModel.ts";
 import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
+import { ColumnDef } from "@tanstack/react-table";
 
 export function ProductsPage() {
   const dispatch = useAppDispatch();
@@ -46,6 +51,7 @@ export function ProductsPage() {
   const { addToast } = useToast();
   const [activeTab, setActiveTab] = useState("products");
   const [activeStates, setActiveStates] = useState<Record<string, boolean>>({});
+  const gridRef = useRef<DndGridRef>(null);
 
   useEffect(() => {
     if (activeTab === "products") {
@@ -117,19 +123,63 @@ export function ProductsPage() {
     }
   }, []);
 
+  function onDelete(data) {
+    data.table.options.meta?.hideRow(data.rowId);
+    switch (activeTab) {
+      case "products":
+        console.log("DATA", activeTab);
+        service
+          .deleteProductHandler(data.row.original.productId)
+          .then((res) => {
+            if (!res.error) {
+              addToast({
+                text: "Product deleted successfully",
+                type: "success",
+              });
+            } else {
+              data.table.options.meta?.unhideRow(data.rowId);
+              addToast({
+                text: res.error.data.detail,
+                type: "error",
+              });
+            }
+          });
+        break;
+      case "variants":
+        service
+          .deleteVariantHandler(data.row.original.variantId)
+          .then((res) => {
+            if (!res.error) {
+              addToast({
+                text: "Variant deleted successfully",
+                type: "success",
+              });
+            } else {
+              data.table.options.meta?.unhideRow(data.rowId);
+              addToast({
+                text: res.error.data.detail,
+                type: "error",
+              });
+            }
+          });
+        break;
+      case "purchases":
+        break;
+    }
+  }
+
   function onAction(
     actionType: string,
     rowId?: string,
     setLoadingRow?: (rowId: string, loading: boolean) => void,
     rowData?: any,
-    _rowOriginal?: any,
   ) {
     setLoadingRow(rowId, true);
 
     switch (actionType) {
       case "image":
         break;
-      case "manage":
+      case "manageProduct":
         dispatch(actions.resetProduct());
         navigate(
           `${NavUrlEnum.PRODUCTS}${NavUrlEnum.PRODUCT_BASIC_DATA}/${rowData?.productId}`,
@@ -164,32 +214,6 @@ export function ProductsPage() {
             });
         }
         break;
-      case "delete":
-        service.deleteProductHandler(rowData.original.productId).then((res) => {
-          if (res) {
-            dispatch(actions.setIsLoading(true));
-            service
-              .getTheProductsForGridHandler(
-                state.productsGridRequestModel,
-                true,
-              )
-              .then((res) => {
-                dispatch(actions.setIsLoading(false));
-                dispatch(actions.refreshProductsGridModel(res));
-                dispatch(actions.refreshProducts(res.items));
-              });
-            addToast({
-              text: "Product deleted successfully",
-              type: "success",
-            });
-          } else {
-            addToast({
-              text: res.error.message,
-              type: "error",
-            });
-          }
-        });
-        break;
       case "activateVariant":
         console.log(`Activating variant ${rowId}`);
         break;
@@ -217,9 +241,18 @@ export function ProductsPage() {
     setLoadingRow(rowId, false);
   }
 
-  const productsColumns = productsGridColumns(onAction, activeStates);
-  const variantsColumns = variantsGridColumns(onAction);
-  const purchasesColumns = purchasesGridColumns(onAction);
+  const productsColumns = productsGridColumns(
+    onAction,
+    onDelete,
+    activeStates,
+  ) as ColumnDef<DataWithId>[];
+  const variantsColumns = variantsGridColumns(
+    onAction,
+    onDelete,
+  ) as ColumnDef<DataWithId>[];
+  const purchasesColumns = purchasesGridColumns(
+    onAction,
+  ) as ColumnDef<DataWithId>[];
 
   function handleAddProduct() {
     navigate(`${NavUrlEnum.PRODUCTS}${NavUrlEnum.PRODUCT_BASIC_DATA}`);
@@ -330,7 +363,7 @@ export function ProductsPage() {
   }
 
   function onResetColumnsHandler() {
-    service.resetUserPreferencesHandler();
+    service.resetUserPreferencesHandler(activeTab);
   }
 
   function handleTabChange(value: string) {
@@ -399,6 +432,7 @@ export function ProductsPage() {
           <TabsContent value="products">
             <DndGridDataTable
               isLoading={state.isLoading}
+              ref={gridRef}
               columns={productsColumns}
               data={state.productsGridModel.items}
               gridModel={state.productsGridModel}
@@ -429,6 +463,7 @@ export function ProductsPage() {
           <TabsContent value="variants">
             <DndGridDataTable
               isLoading={state.isLoading}
+              ref={gridRef}
               columns={variantsColumns}
               data={state.variants}
               gridModel={state.variantsGridModel}
@@ -459,12 +494,13 @@ export function ProductsPage() {
           <TabsContent value="purchases">
             <DndGridDataTable
               isLoading={state.isLoading}
+              ref={gridRef}
               columns={purchasesColumns}
               data={state.purchases}
               gridModel={state.purchasesGridModel}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
-              preferenceContext={"productReferences"}
+              preferenceContext={"purchaseReferences"}
               skeletonQuantity={state.purchasesGridRequestModel.pageSize}
               onApplyColumns={onApplyColumnsHandler}
               onDefaultColumns={onResetColumnsHandler}

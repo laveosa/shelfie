@@ -12,7 +12,10 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { PurchaseProductsPageSliceActions as actions } from "@/state/slices/PurchaseProductsPageSlice.ts";
 import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
-import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import {
+  DataWithId,
+  DndGridDataTable,
+} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { purchaseProductsGridColumns } from "@/components/complex/grid/purchase-products-grid/PurchaseProductsGridColumns.tsx";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
@@ -25,6 +28,7 @@ import GridItemsFilter from "@/components/complex/grid/grid-items-filter/GridIte
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { purchaseVariantsGridColumns } from "@/components/complex/grid/purchase-variants-grid/PurchaseVariantsGridColumns.tsx";
+import { ColumnDef } from "@tanstack/react-table";
 
 export default function PurchaseProductsCard({
   isLoading,
@@ -192,12 +196,14 @@ export default function PurchaseProductsCard({
           <TabsContent value="purchaseProducts">
             <DndGridDataTable
               isLoading={isPurchaseProductsGridLoading}
-              columns={purchaseProductsGridColumns(
-                currencies,
-                taxes,
-                activeTab,
-                handleAction,
-              )}
+              columns={
+                purchaseProductsGridColumns(
+                  currencies,
+                  taxes,
+                  activeTab,
+                  handleAction,
+                ) as ColumnDef<DataWithId>[]
+              }
               data={purchaseProducts}
               gridModel={purchaseProductsGridModel}
               sortingItems={sortingOptions}
@@ -252,12 +258,14 @@ export default function PurchaseProductsCard({
           <TabsContent value="connectProducts">
             <DndGridDataTable
               isLoading={isProductsGridLoading}
-              columns={purchaseVariantsGridColumns(
-                currencies,
-                taxes,
-                activeTab,
-                handleAction,
-              )}
+              columns={
+                purchaseVariantsGridColumns(
+                  currencies,
+                  taxes,
+                  activeTab,
+                  handleAction,
+                ) as ColumnDef<DataWithId>[]
+              }
               data={variants}
               gridModel={variantsGridModel}
               sortingItems={sortingOptions}

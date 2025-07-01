@@ -1,7 +1,5 @@
-import { SupplierModel } from "@/const/models/SupplierModel.ts";
-
 export interface ISelectSupplierCard {
   isLoading?: boolean;
-  suppliers?: SupplierModel[];
+  suppliers?: any[];
   onAction?: (identifier?: string, payload?: any) => void;
 }

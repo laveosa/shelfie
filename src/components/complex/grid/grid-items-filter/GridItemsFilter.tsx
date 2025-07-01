@@ -120,18 +120,17 @@ export default function GridItemsFilter<T>({
           </div>
         </DropdownMenuContent>
       </DropdownMenu>
-      {selectedIds.length > 0 && (
-        <SheButton
-          className={cs.clearButton}
-          icon={X}
-          variant="secondary"
-          onClick={() => onResetHandle()}
-          minWidth="20px"
-          maxWidth="20px"
-          maxHeight="20px"
-          minHeight="20px"
-        />
-      )}
+      <SheButton
+        className={cs.clearButton}
+        icon={X}
+        variant="secondary"
+        onClick={() => onResetHandle()}
+        minWidth="20px"
+        maxWidth="20px"
+        maxHeight="20px"
+        minHeight="20px"
+        disabled={!selectedIds.length}
+      />
     </div>
   );
 }
