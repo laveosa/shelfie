@@ -14,6 +14,7 @@ export interface SupplierModel {
   images?: any[];
   lat?: number;
   long?: number;
+  thumbnailUrl?: string;
 }
 
 export const SupplierModelDefault: SupplierModel = {

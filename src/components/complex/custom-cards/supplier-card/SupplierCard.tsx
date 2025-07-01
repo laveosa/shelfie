@@ -1,19 +1,20 @@
 import { ImageIcon, MoreHorizontal, Plus } from "lucide-react";
+import { useParams } from "react-router-dom";
+import { useState } from "react";
 
 import cs from "./SupplierCard.module.scss";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
 import { ISupplierCard } from "@/const/interfaces/complex-components/custom-cards/ISupplierCard.ts";
+import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
+import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
-import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-import { useState } from "react";
-import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 
 export default function SupplierCard({
   isLoading,
@@ -21,8 +22,10 @@ export default function SupplierCard({
   selectedSupplier,
   onAction,
 }: ISupplierCard) {
-  const [selectedDate, setSelectedDate] = useState<Date>(null);
-
+  const { purchaseId } = useParams();
+  const [selectedDate, setSelectedDate] = useState<string>(
+    purchaseId ? selectedPurchase.date : null,
+  );
   const isDateSelected = Boolean(selectedDate || selectedPurchase?.date);
   const isButtonDisabled = !isDateSelected || !selectedSupplier;
 
@@ -32,11 +35,17 @@ export default function SupplierCard({
       className={cs.supplierCard}
       title="Supplier"
       showPrimaryButton
-      primaryButtonTitle="Create Purchase"
+      primaryButtonTitle={purchaseId ? "Update Purchase" : "Create Purchase"}
       primaryButtonDisabled={isButtonDisabled}
       showSecondaryButton
       onPrimaryButtonClick={() =>
-        onAction("createPurchase", { selectedDate, selectedSupplier })
+        purchaseId
+          ? onAction("updatePurchase", {
+              purchaseId,
+              selectedDate,
+              selectedSupplier,
+            })
+          : onAction("createPurchase", { selectedDate, selectedSupplier })
       }
       onSecondaryButtonClick={() => onAction("closeSupplierCard")}
     >
@@ -58,9 +67,9 @@ export default function SupplierCard({
         ) : (
           <div className={cs.selectedSupplier}>
             <div className={cs.supplierPhoto}>
-              {selectedSupplier.photo ? (
+              {selectedSupplier.thumbnailUrl ? (
                 <img
-                  src={selectedSupplier?.photo?.thumbnailUrl}
+                  src={selectedSupplier?.thumbnailUrl}
                   alt={selectedSupplier?.supplierName}
                 />
               ) : (
