@@ -74,11 +74,13 @@ const optionsSimple: ISheSelectItem<string>[] = [
     text: "Angular",
     value: "ANGULAR",
     icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/1200px-Angular_full_color_logo.svg.png",
+    isSelected: true,
   },
   {
     text: "Vue",
     value: "VUE",
     icon: "https://www.w3schools.com/whatis/img_vue.jpg",
+    isSelected: true,
   },
   {
     text: "Svelte",
@@ -94,21 +96,22 @@ const optionsSimple: ISheSelectItem<string>[] = [
     text: "Knockout",
     value: "KNOCKOUT",
     icon: "https://quintagroup.com/cms/js/js-image/knockout-js-logo.png/@@images/f4756dda-f9a9-4c04-9223-9f5724569747.png",
+    isSelected: true,
   },
   {
-    text: "Svelte",
-    value: "SVELTE",
-    icon: "https://logosandtypes.com/wp-content/uploads/2020/11/Svelte.png",
+    text: "JavaScript",
+    value: "JS",
+    icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/512px-Unofficial_JavaScript_logo_2.svg.png",
   },
   {
-    text: "Flutter",
-    value: "FLUTTER",
-    icon: "https://images.icon-icons.com/2108/PNG/512/flutter_icon_130936.png",
+    text: "HTML",
+    value: "HTML",
+    icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/512px-HTML5_logo_and_wordmark.svg.png",
   },
   {
-    text: "Knockout",
-    value: "KNOCKOUT",
-    icon: "https://quintagroup.com/cms/js/js-image/knockout-js-logo.png/@@images/f4756dda-f9a9-4c04-9223-9f5724569747.png",
+    text: "CSS",
+    value: "CSS",
+    icon: "https://images.seeklogo.com/logo-png/18/1/css3-logo-png_seeklogo-186678.png",
   },
 ];
 
@@ -160,13 +163,19 @@ export function DashboardPage() {
 
       <div className="flex gap-2 items-center justify-between">
         <div className="w-full flex">
-          <SheMultiSelect<string> options={optionsSimple} fullWidth isOpen />
+          <SheMultiSelect<string>
+            items={optionsSimple}
+            contextType="badges"
+            fullWidth
+            showClearBtn
+          />
         </div>
         <div className="w-full flex">
           <SheSelect<string>
             // items={options}
             items={optionsSimple}
             fullWidth
+            showClearBtn
             onSelect={(value) => console.log("select: ", value)}
             onSelectModel={(value) => console.log("select model: ", value)}
           />

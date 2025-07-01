@@ -49,8 +49,8 @@ export default function SheSelect<T>({
   ...props
 }: ISheSelect<T>): JSX.Element {
   const { translate } = useAppTranslation();
-  const [_selected, setSelected] = useState<ISheSelectItem<T>>(null);
   const [_items, setItems] = useState<ISheSelectItem<T>[]>(_addItemsIds(null));
+  const [_selected, setSelected] = useState<ISheSelectItem<T>>(null);
   const [_open, setOpen] = useState<boolean>(null);
   const [_loading, setLoading] = useState<boolean>(null);
   const [_isItemsWithIcons, setIsItemsWithIcons] = useState<boolean>(null);
@@ -158,8 +158,8 @@ export default function SheSelect<T>({
 
   // ==================================================================== PRIVATE
 
-  function _addItemsIds(items: ISheSelectItem<T>[]) {
-    return items?.map((item, idx) => {
+  function _addItemsIds(fromItems: ISheSelectItem<T>[]) {
+    return fromItems?.map((item, idx) => {
       if (item.icon) setIsItemsWithIcons(true);
       if (item.colors) setIsItemsWithColors(true);
 

@@ -43,7 +43,6 @@ $iconSize: 20px;
 // ========================================================= ITEMS WRAPPER
 
 .sheMultiSelectItemParentWrapper {
-  //margin-bottom: 2px;
   padding: 0;
 
   &:last-child {
@@ -51,8 +50,10 @@ $iconSize: 20px;
   }
 
   &.sheMultiSelectItemParentWrapperSelectAll {
-    span {
-      color: vars.$placeholderColor;
+    div > div > div > div > span {
+      color: vars.$subtextColor;
+      font-weight: bold;
+      opacity: 0.8;
     }
   }
 }
