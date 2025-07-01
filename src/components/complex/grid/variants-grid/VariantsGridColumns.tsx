@@ -262,11 +262,10 @@ export function variantsGridColumns(
           setLoadingRow: (rowId: string, loading: boolean) => void;
           isRowLoading: (rowId: string) => boolean;
         };
-        const rowId = row.original.id;
         const handleDeleteClick = (e) => {
           e.stopPropagation();
           e.preventDefault();
-          onDelete({ table, rowId, row });
+          onDelete({ table, row });
         };
 
         return (
@@ -281,22 +280,5 @@ export function variantsGridColumns(
         );
       },
     },
-    // {
-    //   id: "rowActions",
-    //   header: "",
-    //   minSize: 70,
-    //   maxSize: 70,
-    //   cell: ({ row, table }) => {
-    //     return (
-    //       <div style={{ display: "flex", justifyContent: "center" }}>
-    //         <VariantsGridColumnActions
-    //           row={row}
-    //           onAction={onAction}
-    //           table={table}
-    //         />
-    //       </div>
-    //     );
-    //   },
-    // },
   ];
 }

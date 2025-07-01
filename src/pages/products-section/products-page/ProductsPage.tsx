@@ -1,5 +1,6 @@
-import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
+import { ColumnDef } from "@tanstack/react-table";
+import { useNavigate } from "react-router-dom";
 import { merge } from "lodash";
 import {
   BadgeCheck,
@@ -40,7 +41,6 @@ import { purchasesGridColumns } from "@/components/complex/grid/purchases-grid/P
 import { SupplierModel } from "@/const/models/SupplierModel.ts";
 import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import { ColumnDef } from "@tanstack/react-table";
 
 export function ProductsPage() {
   const dispatch = useAppDispatch();
@@ -124,10 +124,9 @@ export function ProductsPage() {
   }, []);
 
   function onDelete(data) {
-    data.table.options.meta?.hideRow(data.rowId);
+    data.table.options.meta?.hideRow(data.row.original.id);
     switch (activeTab) {
       case "products":
-        console.log("DATA", activeTab);
         service
           .deleteProductHandler(data.row.original.productId)
           .then((res) => {
@@ -137,7 +136,7 @@ export function ProductsPage() {
                 type: "success",
               });
             } else {
-              data.table.options.meta?.unhideRow(data.rowId);
+              data.table.options.meta?.unhideRow(data.row.original.id);
               addToast({
                 text: res.error.data.detail,
                 type: "error",
@@ -155,7 +154,7 @@ export function ProductsPage() {
                 type: "success",
               });
             } else {
-              data.table.options.meta?.unhideRow(data.rowId);
+              data.table.options.meta?.unhideRow(data.row.original.id);
               addToast({
                 text: res.error.data.detail,
                 type: "error",
@@ -164,6 +163,7 @@ export function ProductsPage() {
           });
         break;
       case "purchases":
+        console.log("DELETE", data);
         break;
     }
   }
@@ -175,7 +175,6 @@ export function ProductsPage() {
     rowData?: any,
   ) {
     setLoadingRow(rowId, true);
-
     switch (actionType) {
       case "image":
         break;
@@ -252,6 +251,7 @@ export function ProductsPage() {
   ) as ColumnDef<DataWithId>[];
   const purchasesColumns = purchasesGridColumns(
     onAction,
+    onDelete,
   ) as ColumnDef<DataWithId>[];
 
   function handleAddProduct() {
@@ -324,19 +324,15 @@ export function ProductsPage() {
   }
 
   function onBrandSelectHandler(selectedIds: number[]) {
-    handleGridRequestChange({ brands: selectedIds });
+    handleGridRequestChange({ filter: { brands: selectedIds } });
   }
 
   function onCategorySelectHandler(selectedIds: number[]) {
-    handleGridRequestChange({ categories: selectedIds });
+    handleGridRequestChange({ filter: { categories: selectedIds } });
   }
 
   function onSupplierSelectHandler(selectedIds: number[]) {
     handleGridRequestChange({ filter: { suppliers: selectedIds } });
-  }
-
-  function onPurchaseBrandsSelectHandler(selectedIds: number[]) {
-    handleGridRequestChange({ filter: { brands: selectedIds } });
   }
 
   function onPurchaseValueToHandler(value: number) {
@@ -527,7 +523,7 @@ export function ProductsPage() {
                 items={state.brands}
                 columnName={"Brands"}
                 icon={BadgeCheck}
-                onSelectionChange={onPurchaseBrandsSelectHandler}
+                onSelectionChange={onBrandSelectHandler}
                 getId={(item: BrandModel) => item.brandId}
                 getName={(item: BrandModel) => item.brandName}
               />

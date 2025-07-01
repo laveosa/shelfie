@@ -245,11 +245,10 @@ export function productsGridColumns(
           setLoadingRow: (rowId: string, loading: boolean) => void;
           isRowLoading: (rowId: string) => boolean;
         };
-        const rowId = row.original.id;
         const handleDeleteClick = (e) => {
           e.stopPropagation();
           e.preventDefault();
-          onDelete({ table, rowId, row });
+          onDelete({ table, row });
         };
 
         return (
@@ -264,22 +263,5 @@ export function productsGridColumns(
         );
       },
     },
-    // {
-    //   id: "rowActions",
-    //   header: "",
-    //   minSize: 70,
-    //   maxSize: 70,
-    //   cell: ({ row, table }) => {
-    //     return (
-    //       <div style={{ display: "flex", justifyContent: "center" }}>
-    //         <ProductsGridColumnActions
-    //           row={row}
-    //           onAction={onAction}
-    //           table={table}
-    //         />
-    //       </div>
-    //     );
-    //   },
-    // },
   ];
 }

@@ -2,12 +2,14 @@ import { ColumnDef } from "@tanstack/react-table";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import placeholderImage from "@/assets/images/placeholder-image.png";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
-import PurchasesGridColumnActions from "@/components/complex/grid/purchases-grid/PurchasesGridColumnsActions.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-import { ImageIcon } from "lucide-react";
+import { ImageIcon, TrashIcon } from "lucide-react";
 import { formatDate } from "@/utils/helpers/quick-helper.ts";
 
-export function purchasesGridColumns(onAction: any): ColumnDef<any>[] {
+export function purchasesGridColumns(
+  onAction: any,
+  onDelete: (data) => void,
+): ColumnDef<any>[] {
   return [
     {
       accessorKey: "purchaseId",
@@ -127,16 +129,26 @@ export function purchasesGridColumns(onAction: any): ColumnDef<any>[] {
     {
       id: "rowActions",
       header: "",
-      size: 50,
-      minSize: 50,
-      maxSize: 50,
+      minSize: 70,
+      maxSize: 70,
       cell: ({ row, table }) => {
+        const meta = table.options.meta as {
+          setLoadingRow: (rowId: string, loading: boolean) => void;
+          isRowLoading: (rowId: string) => boolean;
+        };
+        const handleDeleteClick = (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          onDelete({ table, row });
+        };
+
         return (
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <PurchasesGridColumnActions
-              row={row}
-              onAction={onAction}
-              table={table}
+          <div onClick={(e) => e.stopPropagation()}>
+            <SheButton
+              icon={TrashIcon}
+              variant="secondary"
+              onClick={handleDeleteClick}
+              disabled={meta?.isRowLoading(row.id)}
             />
           </div>
         );
