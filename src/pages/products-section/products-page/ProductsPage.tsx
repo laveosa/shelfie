@@ -42,6 +42,7 @@ import { SupplierModel } from "@/const/models/SupplierModel.ts";
 import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
+import GridShowDeletedFilter from "@/components/complex/grid/grid-show-deleted-filter/GridShowDeletedFilter.tsx";
 
 export function ProductsPage() {
   const dispatch = useAppDispatch();
@@ -478,6 +479,7 @@ export function ProductsPage() {
                 getId={(item: CategoryModel) => item.categoryId}
                 getName={(item: CategoryModel) => item.categoryName}
               />
+              <GridShowDeletedFilter />
             </DndGridDataTable>
           </TabsContent>
           <TabsContent value="variants">
@@ -509,6 +511,7 @@ export function ProductsPage() {
                 getId={(item: CategoryModel) => item.categoryId}
                 getName={(item: CategoryModel) => item.categoryName}
               />
+              <GridShowDeletedFilter />
             </DndGridDataTable>
           </TabsContent>
           <TabsContent value="purchases">
