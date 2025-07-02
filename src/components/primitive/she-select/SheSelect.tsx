@@ -199,7 +199,7 @@ export default function SheSelect<T>({
         id: `${
           item.text && item.text.length > 0
             ? item.text.replace(/ /g, "_")
-            : "selectOption_"
+            : "option_"
         }_${(idx + 1).toString()}`,
       };
     });

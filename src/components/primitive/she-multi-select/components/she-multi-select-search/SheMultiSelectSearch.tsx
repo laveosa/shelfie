@@ -33,13 +33,13 @@ export default function SheMultiSelectSearch({
 
   function onSearchChangeHandler(value) {
     setSearchValue(value);
-    if (onSearch) onSearch(value);
+    onSearch?.(value);
   }
 
   function onClearSearchHandler() {
     setSearchValue("");
     setTimeout(() => searchRef?.current?.focus());
-    if (onSearch) onSearch("");
+    onSearch?.("");
   }
 
   // ==================================================================== PRIVATE

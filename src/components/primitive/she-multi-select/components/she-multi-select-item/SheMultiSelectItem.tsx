@@ -30,6 +30,7 @@ export default function SheMultiSelectItem<T>({
       id={id}
       className={`${cs.sheMultiSelectItem} ${className}`}
       style={style}
+      onSelect={() => onSelectHandler(value)}
     >
       <SheOption<T>
         {...props}

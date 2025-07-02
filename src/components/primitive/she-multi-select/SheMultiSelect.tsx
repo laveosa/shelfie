@@ -276,6 +276,8 @@ export default function SheMultiSelect<T>(
       return fromItems;
 
     return fromItems.map((item) => {
+      if (item.icon) setIsItemsWithIcons(true);
+      if (item.colors) setIsItemsWithColors(true);
       item.isSelected = fromSelectedValues.includes(item.value);
       return item;
     });
@@ -309,9 +311,10 @@ export default function SheMultiSelect<T>(
       >
         <Command>
           <SheMultiSelectSearch
+            {...sheMultiSelectSearchProps}
             searchRef={searchRef}
             searchValue={_searchValue}
-            {...sheMultiSelectSearchProps}
+            onSearch={setSearchValue}
           />
           <CommandList>
             <CommandEmpty

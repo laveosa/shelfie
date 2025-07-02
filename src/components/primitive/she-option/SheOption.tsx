@@ -72,13 +72,12 @@ export default function SheOption<T>(props: ISheOption<T>): JSX.Element {
     if (checkOnClick && mode === "multiple") {
       setIsSelected((prevState) => {
         const tmpIsSelected = !prevState;
-        if (onClick) onClick(_getOutputEventModel<T>(value, event));
-        if (onCheck)
-          onCheck(_getOutputEventModel<boolean>(value, event, tmpIsSelected));
+        onClick?.(_getOutputEventModel<T>(value, event));
+        onCheck?.(_getOutputEventModel<boolean>(value, event, tmpIsSelected));
         return tmpIsSelected;
       });
     } else {
-      if (onClick) onClick(_getOutputEventModel<T>(value, event));
+      onClick?.(_getOutputEventModel<T>(value, event));
     }
   }
 
@@ -86,8 +85,7 @@ export default function SheOption<T>(props: ISheOption<T>): JSX.Element {
     event.stopPropagation();
     setIsSelected((prevState) => {
       const tmpIsSelected = !prevState;
-      if (onCheck)
-        onCheck(_getOutputEventModel<boolean>(value, event, tmpIsSelected));
+      onCheck?.(_getOutputEventModel<boolean>(value, event, tmpIsSelected));
       return tmpIsSelected;
     });
   }
