@@ -1,4 +1,4 @@
-import { ImageIcon, MoreHorizontal, Plus } from "lucide-react";
+import { ImageIcon, Plus, RefreshCcwDotIcon } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 
@@ -9,12 +9,8 @@ import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.
 import { ISupplierCard } from "@/const/interfaces/complex-components/custom-cards/ISupplierCard.ts";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu.tsx";
+import { Separator } from "@/components/ui/separator.tsx";
+import SheTextArea from "@/components/primitive/she-textarea/SheTextarea.tsx";
 
 export default function SupplierCard({
   isLoading,
@@ -26,6 +22,7 @@ export default function SupplierCard({
   const [selectedDate, setSelectedDate] = useState<string>(
     purchaseId ? selectedPurchase?.date : null,
   );
+  const [purchaseNotes, setPurchaseNotes] = useState<string>(null);
   const isDateSelected = Boolean(selectedDate || selectedPurchase?.date);
   const isButtonDisabled = !isDateSelected || !selectedSupplier;
 
@@ -44,15 +41,20 @@ export default function SupplierCard({
               purchaseId,
               selectedDate,
               selectedSupplier,
+              purchaseNotes,
             })
-          : onAction("createPurchase", { selectedDate, selectedSupplier })
+          : onAction("createPurchase", {
+              selectedDate,
+              selectedSupplier,
+              purchaseNotes,
+            })
       }
       onSecondaryButtonClick={() => onAction("closeSupplierCard")}
     >
       <div className={cs.supplierCardContent}>
         {!selectedSupplier ? (
           <div className={cs.noSelectedSupplier}>
-            <span className="she-text">
+            <span className={`${cs.noSelectedSupplierText} she-text`}>
               Select which supplier provided the products
             </span>
             <SheButton
@@ -109,32 +111,28 @@ export default function SupplierCard({
                 </SheTooltip>
               )}
             </div>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SheButton
-                  variant="secondary"
-                  minWidth="40px"
-                  className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
-                >
-                  <MoreHorizontal />
-                  <span className="sr-only">Open menu</span>
-                </SheButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="w-[160px]">
-                <DropdownMenuItem onClick={() => onAction("detachSupplier")}>
-                  Detach Supplier
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <SheButton
+              icon={RefreshCcwDotIcon}
+              value="Replace Supplier"
+              variant="secondary"
+              onClick={() => onAction("detachSupplier")}
+            />
           </div>
         )}
-
+        <Separator />
         <span className="she-title">Purchase date</span>
         <SheDatePicker
           fullWidth
           label="Set date when purchase took place"
           date={selectedPurchase?.date}
           onSelectDate={(date) => setSelectedDate(date)}
+        />
+        <SheTextArea
+          fullWidth
+          label="Purchase notes"
+          placeholder="Type your notes here..."
+          value={selectedPurchase?.documentNotes || null}
+          onDelay={(value: string) => setPurchaseNotes(value)}
         />
       </div>
     </SheProductCard>

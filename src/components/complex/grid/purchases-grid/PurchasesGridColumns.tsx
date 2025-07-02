@@ -25,7 +25,7 @@ export function purchasesGridColumns(
       minSize: 200,
       maxSize: 200,
       cell: ({ row }) => {
-        const imageUrl: string = row.original.supplier?.photo?.thumbnailUrl;
+        const imageUrl: string = row.original.supplier?.thumbnailUrl;
         return (
           <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
             <div>

@@ -1,5 +1,6 @@
+import { ColumnDef } from "@tanstack/react-table";
+import React from "react";
 import { Plus } from "lucide-react";
-import React, { useState } from "react";
 
 import cs from "./SelectSupplierCard.module.scss";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
@@ -11,21 +12,12 @@ import {
   DndGridDataTable,
 } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { SuppliersListGridColumns } from "@/components/complex/grid/supplier-list-grid/SuppliersListGridColumns.tsx";
-import { ColumnDef } from "@tanstack/react-table";
 
 export default function SelectSupplierCard({
   isLoading,
   suppliers,
   onAction,
 }: ISelectSupplierCard) {
-  const [selectedSupplier, setSelectedSupplier] = useState<any | null>(null);
-
-  const columns = SuppliersListGridColumns({
-    onGridAction,
-    selectedSupplier,
-    setSelectedSupplier,
-  }) as ColumnDef<DataWithId>[];
-
   function onGridAction(
     actionType: string,
     _rowId?: string,
@@ -34,15 +26,10 @@ export default function SelectSupplierCard({
   ) {
     switch (actionType) {
       case "manageSupplier":
-        handleAction("manageSupplier", row.original);
+        onAction("manageSupplier", row);
         break;
-    }
-  }
-
-  function handleAction(actionType: any, payload?: any) {
-    switch (actionType) {
-      case "manageSupplier":
-        onAction("manageSupplier", payload);
+      case "selectSupplier":
+        onAction("selectSupplier", row);
         break;
     }
   }
@@ -53,19 +40,13 @@ export default function SelectSupplierCard({
       className={cs.selectSupplierCad}
       title="Select Supplier"
       showCloseButton
-      showPrimaryButton
-      primaryButtonTitle="Select Supplier"
-      onPrimaryButtonClick={() => {
-        if (selectedSupplier) {
-          onAction("selectSupplier", selectedSupplier);
-        }
-      }}
-      showSecondaryButton
       onSecondaryButtonClick={() => onAction("closeSelectSupplierCard")}
     >
       <div className={cs.selectSupplierCardContent}>
         <div className={cs.createSupplierBlock}>
-          <span className="she-text">Missing a Supplier? Create one!</span>
+          <span className={`${cs.createSupplierBlockText} she-text`}>
+            Missing a Supplier? Create one!
+          </span>
           <SheButton
             icon={Plus}
             value="Create Supllier"
@@ -82,10 +63,13 @@ export default function SelectSupplierCard({
           />
           <DndGridDataTable
             showHeader={false}
-            columns={columns}
+            columns={
+              SuppliersListGridColumns({
+                onGridAction,
+              }) as ColumnDef<DataWithId>[]
+            }
             data={suppliers}
             customMessage="There are no suppliers created yet"
-            // gridModel={suppliers}
           />
         </div>
       </div>

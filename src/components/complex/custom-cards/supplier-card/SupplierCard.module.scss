@@ -9,8 +9,10 @@
 
     .noSelectedSupplier {
       display: flex;
-      flex-direction: column;
-      gap: vars.$paddingStandard;
+
+      .noSelectedSupplierText {
+        text-wrap: auto;
+      }
     }
 
     .selectedSupplier {

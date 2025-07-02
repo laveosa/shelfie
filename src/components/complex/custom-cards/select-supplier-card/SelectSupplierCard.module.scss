@@ -9,6 +9,10 @@
     .createSupplierBlock {
       display: flex;
       gap: vars.$paddingStandard;
+
+      .createSupplierBlockText {
+        text-wrap: auto;
+      }
     }
 
     .supplierListBlock {

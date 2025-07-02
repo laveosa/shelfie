@@ -1,16 +1,14 @@
 import { ColumnDef, Row } from "@tanstack/react-table";
-import { ImageIcon } from "lucide-react";
+import { Circle, CircleCheckBig, CogIcon, ImageIcon } from "lucide-react";
 
 import placeholderImage from "@/assets/images/placeholder-image.png";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
-import { Input } from "@/components/ui/input.tsx";
-import SuppliersListGridColumnActions from "@/components/complex/grid/supplier-list-grid/SuppliersListGridColumnsActions.tsx";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import cs from "./SuppliersListGridColumns.module.scss";
 
 export function SuppliersListGridColumns({
   onGridAction,
-  selectedSupplier,
-  setSelectedSupplier,
 }: {
   onGridAction: (
     actionType: string,
@@ -18,36 +16,50 @@ export function SuppliersListGridColumns({
     setLoadingRow?: (rowId: string, loading: boolean) => void,
     row?: Row<any>,
   ) => void;
-  selectedSupplier: any | null;
-  setSelectedSupplier: (supplier: any | null) => void;
 }): ColumnDef<any>[] {
   return [
     {
-      id: "checkbox",
-      size: 20,
-      cell: ({ row }) => {
-        const isChecked =
-          selectedSupplier?.supplierId === row.original.supplierId;
+      id: "select",
+      header: "Select",
+      size: 50,
+      minSize: 50,
+      maxSize: 50,
+      cell: ({ row, table }) => {
+        const meta = table.options.meta as {
+          setLoadingRow: (rowId: string, loading: boolean) => void;
+          isRowLoading: (rowId: string) => boolean;
+        };
+
+        const handleSelectClick = (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          onGridAction(
+            "selectSupplier",
+            row.id,
+            meta?.setLoadingRow,
+            row.original,
+          );
+        };
+
         return (
-          <Input
-            type="radio"
-            name="supplierSelection"
-            checked={isChecked}
-            onChange={() => {
-              setSelectedSupplier(row.original);
-            }}
-            style={{ filter: "grayscale(1)" }}
-            className="w-4 h-4 cursor-pointer"
-          />
+          <div onClick={(e) => e.stopPropagation()}>
+            <SheButton
+              className={row.original.isSelected === true ? cs.iconCheck : ""}
+              icon={row.original.isSelected === true ? CircleCheckBig : Circle}
+              variant="ghost"
+              onClick={handleSelectClick}
+              disabled={meta?.isRowLoading(row.id)}
+            />
+          </div>
         );
       },
     },
     {
       id: "supplierName",
       header: "Supplier",
-      size: 200,
-      minSize: 200,
-      maxSize: 200,
+      size: 150,
+      minSize: 150,
+      maxSize: 150,
       cell: ({ row }) => {
         const imageUrl: string = row.original.thumbnailUrl;
         const name: string = row.original.supplierName;
@@ -88,7 +100,7 @@ export function SuppliersListGridColumns({
               <SheTooltip
                 delayDuration={200}
                 text={name}
-                className="max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap"
+                className="max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap"
               >
                 <span className="she-text">{name}</span>
               </SheTooltip>
@@ -96,7 +108,7 @@ export function SuppliersListGridColumns({
                 <SheTooltip
                   delayDuration={200}
                   text={address1}
-                  className="max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap"
+                  className="max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap"
                 >
                   <span className="she-subtext">{address1}</span>
                 </SheTooltip>
@@ -105,7 +117,7 @@ export function SuppliersListGridColumns({
                 <SheTooltip
                   delayDuration={200}
                   text={address2}
-                  className="max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap"
+                  className="max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap"
                 >
                   <span className="she-subtext">{address2}</span>
                 </SheTooltip>
@@ -116,18 +128,35 @@ export function SuppliersListGridColumns({
       },
     },
     {
-      id: "rowActions",
-      header: "",
-      size: 70,
-      minSize: 70,
-      maxSize: 70,
+      id: "manage",
+      header: "Actions",
+      minSize: 100,
+      maxSize: 100,
       cell: ({ row, table }) => {
+        const meta = table.options.meta as {
+          setLoadingRow: (rowId: string, loading: boolean) => void;
+          isRowLoading: (rowId: string) => boolean;
+        };
+
+        const handleManageClick = (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          onGridAction(
+            "manageSupplier",
+            row.id,
+            meta?.setLoadingRow,
+            row.original,
+          );
+        };
+
         return (
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <SuppliersListGridColumnActions
-              row={row}
-              onAction={onGridAction}
-              table={table}
+          <div onClick={(e) => e.stopPropagation()}>
+            <SheButton
+              icon={CogIcon}
+              value="Manage"
+              variant="secondary"
+              onClick={handleManageClick}
+              disabled={meta?.isRowLoading(row.id)}
             />
           </div>
         );

@@ -50,6 +50,7 @@ export function SupplierPage() {
         .getPurchaseCountersHandler(Number(purchaseId))
         .then(() => dispatch(actions.setIsProductMenuCardLoading(false)));
     }
+    dispatch(actions.refreshActiveCards([]));
   }, [purchaseId]);
 
   dispatch(actions.refreshSelectedSupplier(null));
@@ -97,6 +98,7 @@ export function SupplierPage() {
           .createPurchaseForSupplierHandler({
             date: payload.selectedDate,
             supplierId: payload.selectedSupplier.supplierId,
+            documentNotes: payload.purchaseNotes,
           })
           .then((res) => {
             dispatch(actions.setIsSupplierCardLoading(false));
@@ -119,6 +121,7 @@ export function SupplierPage() {
           .updatePurchaseForSupplierHandler(payload.purchaseId, {
             date: payload.selectedDate,
             supplierId: payload.selectedSupplier.supplierId,
+            documentNotes: payload.purchaseNotes,
           })
           .then((res) => {
             dispatch(actions.setIsSupplierCardLoading(false));
@@ -136,7 +139,18 @@ export function SupplierPage() {
           });
         break;
       case "detachSupplier":
-        dispatch(productsActions.resetSelectedSupplier());
+        handleCardAction("selectSupplierCard", true);
+        dispatch(actions.setIsSelectSupplierCardLoading(true));
+        service.getListOfSuppliersForGridHandler({}).then((res) => {
+          dispatch(actions.setIsSelectSupplierCardLoading(false));
+          const updatedSuppliers = res.items.map((supplier) =>
+            supplier.supplierId === productsState.selectedSupplier.supplierId
+              ? { ...supplier, isSelected: true }
+              : { ...supplier, isSelected: false },
+          );
+          dispatch(actions.refreshSuppliersWithLocations(updatedSuppliers));
+          dispatch(productsActions.resetSelectedSupplier());
+        });
         break;
       case "openSelectSupplierCard":
         handleCardAction("selectSupplierCard", true);
