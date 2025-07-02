@@ -305,7 +305,7 @@ export const DndGridDataTable = React.forwardRef<
       return data.map((item, index) => ({
         ...item,
         id: item.id || index + 1,
-        isHidden: item.isHidden || false, // Initialize hidden state
+        isHidden: item.isHidden || false,
         expandableRows: Array.isArray(item.expandableRows)
           ? item.expandableRows
           : [],
@@ -384,7 +384,6 @@ export const DndGridDataTable = React.forwardRef<
     }
   }
 
-  // Handle adding new expandable row
   const handleAddExpandableRow = (parentRowId: string | number) => {
     if (createEmptyExpandableRow) {
       const newExpandableRow = createEmptyExpandableRow();
@@ -403,7 +402,6 @@ export const DndGridDataTable = React.forwardRef<
         ),
       );
 
-      // Also call the external callback if provided
       if (onAddExpandableRow) {
         onAddExpandableRow(parentRowId);
       }
