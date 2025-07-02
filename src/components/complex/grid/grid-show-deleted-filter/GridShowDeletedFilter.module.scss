@@ -1,0 +1,19 @@
+.dropdownMenuContent {
+  width: 100%;
+  padding: 10px;
+}
+
+.dropdownMenuTrigger {
+  min-width: fit-content;
+  padding: 8px !important;
+  display: flex;
+  justify-content: space-between;
+
+  &:focus-visible {
+    box-shadow: none;
+  }
+
+  svg {
+    padding-top: 4px;
+  }
+}

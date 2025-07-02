@@ -20,11 +20,15 @@ import cs from "./ProductTraitConfigurationCard.module.scss";
 import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
-import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import {
+  DataWithId,
+  DndGridDataTable,
+} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { IProductTraitConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IProductTraitConfigurationCard.ts";
 import { ColorOptionsGridColumns } from "@/components/complex/grid/trait-options-grid/color-options-grid/ColorOptionsGridColumns.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { SizeOptionsGridColumns } from "@/components/complex/grid/trait-options-grid/size-options-grid/SizeOptionsGridColumns.tsx";
+import { ColumnDef } from "@tanstack/react-table";
 
 export default function ProductTraitConfigurationCard({
   isLoading,
@@ -64,9 +68,12 @@ export default function ProductTraitConfigurationCard({
     }
   }, [selectedTrait, form]);
 
-  const colorColumns = ColorOptionsGridColumns(onGridAction);
-  const sizeColumns = SizeOptionsGridColumns(onGridAction);
-
+  const colorColumns = ColorOptionsGridColumns(
+    onGridAction,
+  ) as ColumnDef<DataWithId>[];
+  const sizeColumns = SizeOptionsGridColumns(
+    onGridAction,
+  ) as ColumnDef<DataWithId>[];
   function onSubmit(formData) {
     selectedTrait?.traitId
       ? onAction("updateTrait", formData)

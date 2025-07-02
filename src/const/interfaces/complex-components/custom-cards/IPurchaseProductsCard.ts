@@ -1,4 +1,3 @@
-import { ProductModel } from "@/const/models/ProductModel.ts";
 import { GridModel } from "@/const/models/GridModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
@@ -11,7 +10,7 @@ export interface IPurchaseProductsCard {
   isPurchaseProductsGridLoading?: boolean;
   isProductsGridLoading?: boolean;
   variants?: any[];
-  purchaseProducts?: ProductModel[];
+  purchaseProducts?: any[];
   variantsGridModel?: GridModel;
   purchaseProductsGridModel?: GridModel;
   sortingOptions?: any;

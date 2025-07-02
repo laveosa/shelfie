@@ -130,6 +130,7 @@ export default function useProductsPageService() {
     ProductsApiHooks.useDisposeVariantFromStockMutation();
   const [changePhotoPositionForVariant] =
     ProductsApiHooks.useChangePhotoPositionForVariantMutation();
+  const [deleteVariant] = ProductsApiHooks.useDeleteVariantMutation();
 
   //-------------------------------------------------API
 
@@ -252,8 +253,8 @@ export default function useProductsPageService() {
     });
   }
 
-  function resetUserPreferencesHandler() {
-    return resetUserPreferences().then(() => {
+  function resetUserPreferencesHandler(grid) {
+    return resetUserPreferences(grid).then(() => {
       appService.getUserPreferencesHandler();
     });
   }
@@ -350,8 +351,8 @@ export default function useProductsPageService() {
     });
   }
 
-  function getTraitsForFilterHandler(id = null) {
-    return getTraitsForFilter(id).then((res: any) => {
+  function getTraitsForFilterHandler() {
+    return getTraitsForFilter().then((res: any) => {
       return res.data;
     });
   }
@@ -606,6 +607,12 @@ export default function useProductsPageService() {
     });
   }
 
+  function deleteVariantHandler(variantId) {
+    return deleteVariant(variantId).then((res: any) => {
+      return res;
+    });
+  }
+
   //----------------------------------------------------LOGIC
 
   function itemsCardItemsConvertor(
@@ -733,5 +740,6 @@ export default function useProductsPageService() {
     increaseStockAmountForVariantHandler,
     disposeVariantFromStockHandler,
     changePhotoPositionForVariantHandler,
+    deleteVariantHandler,
   };
 }

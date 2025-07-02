@@ -1,0 +1,32 @@
+
+.dropdownMenuContent {
+  width: 100%;
+  padding: 10px;
+
+  .dropdownMenuItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .dropdownMenuItemColor {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+  }
+}
+
+.dropdownMenuTrigger {
+  min-width: fit-content;
+  padding: 8px !important;
+  display: flex;
+  justify-content: space-between;
+
+  &:focus-visible {
+    box-shadow: none;
+  }
+
+  svg {
+    padding-top: 4px;
+  }
+}

@@ -1,3 +1,4 @@
+import { useNavigate, useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
 import cs from "./SupplierPage.module.scss";
@@ -6,7 +7,6 @@ import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { ISupplierPageSlice } from "@/const/interfaces/store-slices/ISupplierPageSlice.ts";
-import { useNavigate, useParams } from "react-router-dom";
 import useSupplierPageService from "@/pages/products-section/supplier-page/useSupplierPageService.ts";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import { SupplierPageSliceActions as actions } from "@/state/slices/SupplierPageSlice.ts";
@@ -51,6 +51,8 @@ export function SupplierPage() {
         .then(() => dispatch(actions.setIsProductMenuCardLoading(false)));
     }
   }, [purchaseId]);
+
+  dispatch(actions.refreshSelectedSupplier(null));
 
   function scrollToCard(cardId: string) {
     setTimeout(() => {
@@ -106,6 +108,28 @@ export function SupplierPage() {
             } else {
               addToast({
                 text: res.error.message,
+                type: "error",
+              });
+            }
+          });
+        break;
+      case "updatePurchase":
+        dispatch(actions.setIsSupplierCardLoading(true));
+        service
+          .updatePurchaseForSupplierHandler(payload.purchaseId, {
+            date: payload.selectedDate,
+            supplierId: payload.selectedSupplier.supplierId,
+          })
+          .then((res) => {
+            dispatch(actions.setIsSupplierCardLoading(false));
+            if (res) {
+              addToast({
+                text: "Purchase updated successfully",
+                type: "success",
+              });
+            } else {
+              addToast({
+                text: res.error.detail.message,
                 type: "error",
               });
             }

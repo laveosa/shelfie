@@ -46,6 +46,19 @@ export const PurchasesApiService = createApi({
         body: JSON.stringify(model),
       }),
     }),
+    updatePurchaseForSupplier: apiConfig.createMutation<
+      any,
+      {
+        purchaseId: number;
+        model: any;
+      }
+    >(builder, {
+      query: ({ purchaseId, model }) => ({
+        url: `${ApiUrlEnum.PURCHASES}/${purchaseId}`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+    }),
     getPurchaseCounters: apiConfig.createQuery<any, number>(builder, {
       query: (purchaseId: number) => ({
         url: `${ApiUrlEnum.PURCHASES}/${purchaseId}/report`,

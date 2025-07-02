@@ -7,6 +7,7 @@ import { TraitModel } from "@/const/models/TraitModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { ProductCountersModel } from "@/const/models/CounterModel.ts";
+import { VariantHistoryModel } from "@/const/models/VariantHistoryModel.ts";
 
 export interface IManageVariantsPageSlice {
   isLoading?: boolean;
@@ -20,11 +21,13 @@ export interface IManageVariantsPageSlice {
   isChooseVariantTraitsCardLoading?: boolean;
   isProductTraitConfigurationCardLoading?: boolean;
   isVariantPhotosCardLoading?: boolean;
+  isVariantHistoryCardLoading?: boolean;
   isProductsLoading?: boolean;
   isTraitOptionsGridLoading?: boolean;
   isVariantOptionsGridLoading?: boolean;
   isVariantPhotoGridLoading?: boolean;
   isProductPhotoGridLoading?: boolean;
+  isVariantsHistoryGridLoading?: boolean;
   products?: ProductModel[];
   selectedVariant: VariantModel;
   isDuplicateVariant: boolean;
@@ -45,4 +48,5 @@ export interface IManageVariantsPageSlice {
   gridRequestModel?: GridRequestModel;
   variantPhotos?: ImageModel[];
   productPhotosForVariant?: ImageModel[];
+  variantHistory?: VariantHistoryModel[];
 }

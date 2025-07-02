@@ -72,7 +72,7 @@ export default function AddVariantCard({
         primaryButtonDisabled={isPrimaryButtonDisabled}
         showSecondaryButton={true}
         onSecondaryButtonClick={() => onAction("closeAddVariantCard")}
-        showCloseButton={true}
+        showCloseButton
         className={cs.addVariantCard}
         {...props}
       >

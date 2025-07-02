@@ -13,7 +13,11 @@ import {
 } from "@/components/ui/dropdown-menu.tsx";
 import { ManageVariantsGridColumns } from "@/components/complex/grid/manage-variants-grid/ManageVariantsGridColumns.tsx";
 import { IManageVariantsCard } from "@/const/interfaces/complex-components/custom-cards/IManageVariantsCard.ts";
-import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import {
+  DataWithId,
+  DndGridDataTable,
+} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import { ColumnDef } from "@tanstack/react-table";
 
 export default function ManageVariantsCard({
   isLoading,
@@ -25,7 +29,9 @@ export default function ManageVariantsCard({
   onAction,
   ...props
 }: IManageVariantsCard) {
-  const columns = ManageVariantsGridColumns(onGridAction);
+  const columns = ManageVariantsGridColumns(
+    onGridAction,
+  ) as ColumnDef<DataWithId>[];
 
   function handleAction(actionType: any, payload?: any) {
     switch (actionType) {

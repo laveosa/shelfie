@@ -42,7 +42,6 @@ export default function GridHeader<TData>({ table }: IGridHeader<TData>) {
               showClearBtn
             />
           )}
-          {showColumnsViewOptions && <ColumnsViewOptions table={table} />}
           {showSorting && <GridItemsSorting />}
           <SheButton
             className={cs.filterButton}
@@ -57,7 +56,23 @@ export default function GridHeader<TData>({ table }: IGridHeader<TData>) {
           {showPagination && <GridPagination />}
         </div>
       </div>
-      {filtersOpen && <div className={cs.filtersContainer}>{children}</div>}
+      {filtersOpen && (
+        <div className={cs.filtersContainer}>
+          <div className={cs.customFilters}>{children}</div>
+          {showColumnsViewOptions && <ColumnsViewOptions table={table} />}
+        </div>
+      )}
+      {showColumnsViewOptions && (
+        <div
+          style={{
+            display: filtersOpen ? "block" : "none",
+            position: "absolute",
+            visibility: "hidden",
+          }}
+        >
+          <ColumnsViewOptions table={table} />
+        </div>
+      )}
     </div>
   );
 }

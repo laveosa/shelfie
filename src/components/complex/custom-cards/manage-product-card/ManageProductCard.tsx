@@ -8,9 +8,13 @@ import { Separator } from "@/components/ui/separator.tsx";
 import cs from "./ManageProductCard.module.scss";
 import { formatDate } from "@/utils/helpers/quick-helper.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
-import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import {
+  DataWithId,
+  DndGridDataTable,
+} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { PurchaseProductVariantsGridColumns } from "@/components/complex/grid/purchase-product-variants-grid/PurchaseProductVariantsGridColumns.tsx";
 import PurchaseProductsForm from "@/components/forms/purchase-products-form/PurchaseProductsForm.tsx";
+import { ColumnDef } from "@tanstack/react-table";
 
 export default function ManageProductCard({
   isLoading,
@@ -234,7 +238,11 @@ export default function ManageProductCard({
                 key={variantsData.length}
                 isLoading={isVariantGridLoading}
                 data={variantsData}
-                columns={PurchaseProductVariantsGridColumns(handleAction)}
+                columns={
+                  PurchaseProductVariantsGridColumns(
+                    handleAction,
+                  ) as ColumnDef<DataWithId>[]
+                }
                 enableExpansion={true}
                 renderExpandedContent={renderExpandedContent}
                 createEmptyExpandableRow={createEmptyStockAction}

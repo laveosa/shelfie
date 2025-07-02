@@ -11,6 +11,8 @@ export default function useSupplierPageService() {
 
   const [createPurchaseForSupplier] =
     PurchasesApiHooks.useCreatePurchaseForSupplierMutation();
+  const [updatePurchaseForSupplier] =
+    PurchasesApiHooks.useUpdatePurchaseForSupplierMutation();
   const [getListOfSuppliers] =
     SuppliersApiHooks.useLazyGetListOfSuppliersQuery();
   const [getListOfSuppliersForGrid] =
@@ -22,6 +24,13 @@ export default function useSupplierPageService() {
 
   function createPurchaseForSupplierHandler(model) {
     return createPurchaseForSupplier(model).then((res: any) => {
+      dispatch(actions.refreshPurchase(res.data));
+      return res.data;
+    });
+  }
+
+  function updatePurchaseForSupplierHandler(purchaseId, model) {
+    return updatePurchaseForSupplier({ purchaseId, model }).then((res: any) => {
       dispatch(actions.refreshPurchase(res.data));
       return res.data;
     });
@@ -65,6 +74,7 @@ export default function useSupplierPageService() {
 
   return {
     createPurchaseForSupplierHandler,
+    updatePurchaseForSupplierHandler,
     getListOfSuppliersHandler,
     getListOfSuppliersForGridHandler,
     getSupplierDetailsHandler,

@@ -35,11 +35,12 @@ import cs from "./DndGrid.module.scss";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
 
-interface DataWithId {
+export interface DataWithId {
   id: number | string;
   color?: string;
   isGridItemSelected?: boolean;
-  expandableRows?: any[]; // Array of expandable row data
+  isHidden?: boolean;
+  expandableRows?: any[];
 }
 
 interface DataTableProps<TData extends DataWithId, TValue>
@@ -75,6 +76,14 @@ interface DataTableProps<TData extends DataWithId, TValue>
   createEmptyExpandableRow?: () => any; // Function to create empty expandable row model
 }
 
+export interface DndGridRef {
+  hideRow: (rowId: string | number) => void;
+  unhideRow: (rowId: string | number) => void;
+  toggleRowVisibility: (rowId: string | number) => void;
+  isRowHidden: (rowId: string | number) => boolean;
+  getHiddenRows: () => (string | number)[];
+}
+
 const DraggableRow = ({
   row,
   loadingRows,
@@ -91,7 +100,12 @@ const DraggableRow = ({
 
   const isLoading = loadingRows.has(row.id);
   const isSelected = row.original.isGridItemSelected;
+  const isHidden = row.original.isHidden;
   const expandableRows = row.original.expandableRows || [];
+
+  if (isHidden) {
+    return null;
+  }
 
   return (
     <>
@@ -178,7 +192,12 @@ const RegularRow = ({
 }) => {
   const isLoading = loadingRows.has(row.id);
   const isSelected = row.original.isGridItemSelected;
+  const isHidden = row.original.isHidden;
   const expandableRows = row.original.expandableRows || [];
+
+  if (isHidden) {
+    return null;
+  }
 
   return (
     <>
@@ -239,34 +258,40 @@ const RegularRow = ({
   );
 };
 
-export function DndGridDataTable<TData extends DataWithId, TValue>({
-  className,
-  columns,
-  data,
-  columnsPreferences,
-  preferenceContext,
-  gridModel,
-  sortingItems,
-  isLoading,
-  showHeader = true,
-  showColumnsHeader = true,
-  showPagination = true,
-  showSorting = true,
-  showColumnsViewOptions = true,
-  showSearch = true,
-  enableExpansion = false,
-  children,
-  customMessage,
-  skeletonQuantity,
-  onGridRequestChange,
-  onApplyColumns,
-  onDefaultColumns,
-  onNewItemPosition,
-  enableDnd,
-  renderExpandedContent,
-  onAddExpandableRow,
-  createEmptyExpandableRow,
-}: DataTableProps<TData, TValue>) {
+export const DndGridDataTable = React.forwardRef<
+  DndGridRef,
+  DataTableProps<DataWithId, any>
+>(function DndGridDataTable<TData extends DataWithId, TValue>(
+  {
+    className,
+    columns,
+    data,
+    columnsPreferences,
+    preferenceContext,
+    gridModel,
+    sortingItems,
+    isLoading,
+    showHeader = true,
+    showColumnsHeader = true,
+    showPagination = true,
+    showSorting = true,
+    showColumnsViewOptions = true,
+    showSearch = true,
+    enableExpansion = false,
+    children,
+    customMessage,
+    skeletonQuantity,
+    onGridRequestChange,
+    onApplyColumns,
+    onDefaultColumns,
+    onNewItemPosition,
+    enableDnd,
+    renderExpandedContent,
+    onAddExpandableRow,
+    createEmptyExpandableRow,
+  }: DataTableProps<TData, TValue>,
+  ref,
+) {
   const [items, setItems] = useState<TData[]>([]);
   const [loadingRows, setLoadingRows] = useState<Set<string>>(new Set());
   const [isDragging, setIsDragging] = useState(false);
@@ -280,7 +305,7 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
       return data.map((item, index) => ({
         ...item,
         id: item.id || index + 1,
-        // Ensure expandableRows is always an array
+        isHidden: item.isHidden || false,
         expandableRows: Array.isArray(item.expandableRows)
           ? item.expandableRows
           : [],
@@ -291,6 +316,47 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
       setItems(prepareItemsForGrid(data));
     }
   }, [data]);
+
+  const hideRow = (rowId: string | number) => {
+    setItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === rowId ? { ...item, isHidden: true } : item,
+      ),
+    );
+  };
+
+  const unhideRow = (rowId: string | number) => {
+    setItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === rowId ? { ...item, isHidden: false } : item,
+      ),
+    );
+  };
+
+  const toggleRowVisibility = (rowId: string | number) => {
+    setItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === rowId ? { ...item, isHidden: !item.isHidden } : item,
+      ),
+    );
+  };
+
+  const isRowHidden = (rowId: string | number): boolean => {
+    const item = items.find((item) => item.id === rowId);
+    return item?.isHidden || false;
+  };
+
+  const getHiddenRows = (): (string | number)[] => {
+    return items.filter((item) => item.isHidden).map((item) => item.id);
+  };
+
+  React.useImperativeHandle(ref, () => ({
+    hideRow,
+    unhideRow,
+    toggleRowVisibility,
+    isRowHidden,
+    getHiddenRows,
+  }));
 
   function handleDragStart() {
     setIsDragging(true);
@@ -318,7 +384,6 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
     }
   }
 
-  // Handle adding new expandable row
   const handleAddExpandableRow = (parentRowId: string | number) => {
     if (createEmptyExpandableRow) {
       const newExpandableRow = createEmptyExpandableRow();
@@ -337,7 +402,6 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
         ),
       );
 
-      // Also call the external callback if provided
       if (onAddExpandableRow) {
         onAddExpandableRow(parentRowId);
       }
@@ -378,8 +442,10 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
           old.map((item) => (item.id === rowId ? value : item)),
         );
       },
-      // Expose the handleAddExpandableRow function through table meta
-      // so it can be accessed in renderExpandedContent
+      hideRow,
+      unhideRow,
+      toggleRowVisibility,
+      isRowHidden,
       addExpandableRow: handleAddExpandableRow,
     },
   });
@@ -486,7 +552,9 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
               </TableBody>
             ) : (
               <SortableContext
-                items={items.map((item) => item.id)}
+                items={items
+                  .filter((item) => !item.isHidden)
+                  .map((item) => item.id)}
                 strategy={verticalListSortingStrategy}
               >
                 {data?.length > 0 ? (
@@ -550,4 +618,4 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
       </DndContext>
     </GridContext.Provider>
   );
-}
+});

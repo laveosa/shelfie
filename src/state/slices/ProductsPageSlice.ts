@@ -21,6 +21,7 @@ import { SupplierModel } from "@/const/models/SupplierModel.ts";
 import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import { TypeOfTraitModel } from "@/const/models/TypeOfTraitModel.ts";
+import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
 
 const initialState: IProductsPageSlice = {
   isLoading: false,
@@ -82,9 +83,27 @@ const initialState: IProductsPageSlice = {
   listOfTraitsWithOptionsForProduct: null,
   brand: null,
   category: null,
+  traitsForFilters: { color: [], size: [] },
+  traitsForFilter: [],
+  colorsForFilter: [],
+  sizesForFilter: [],
 };
 
 //----------------------------------------------------- LOADERS
+
+function refreshColorsForFilter(
+  state: IProductsPageSlice,
+  action: PayloadAction<TraitOptionModel[]>,
+) {
+  state.colorsForFilter = action?.payload || state.colorsForFilter;
+}
+
+function refreshSizesForFilter(
+  state: IProductsPageSlice,
+  action: PayloadAction<TraitOptionModel[]>,
+) {
+  state.sizesForFilter = action?.payload || state.sizesForFilter;
+}
 
 function setIsLoading(
   state: IProductsPageSlice,
@@ -417,6 +436,8 @@ const ProductsPageSlice = createSlice({
     refreshListOfTraitsWithOptionsForProduct,
     refreshBrand,
     refreshCategory,
+    refreshColorsForFilter,
+    refreshSizesForFilter,
   },
 });
 

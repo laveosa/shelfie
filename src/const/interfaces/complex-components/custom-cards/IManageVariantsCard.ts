@@ -1,5 +1,4 @@
 import { TraitModel } from "@/const/models/TraitModel.ts";
-import { VariantModel } from "@/const/models/VariantModel.ts";
 import { ProductCountersModel } from "@/const/models/CounterModel.ts";
 
 export interface IManageVariantsCard {
@@ -7,7 +6,7 @@ export interface IManageVariantsCard {
   isVariantsLoading?: boolean;
   data?: any;
   traits?: TraitModel[];
-  variants?: VariantModel[];
+  variants?: any[];
   productCounter?: ProductCountersModel;
   onAction?: (identifier?: string, payload?: any) => void;
 }
