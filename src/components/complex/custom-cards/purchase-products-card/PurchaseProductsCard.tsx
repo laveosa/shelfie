@@ -187,7 +187,7 @@ export default function PurchaseProductsCard({
               </div>
               <SheButton
                 icon={Plus}
-                variant="ghost"
+                variant="default"
                 onClick={() => handleAction("createProduct")}
                 value="Create Product"
               />

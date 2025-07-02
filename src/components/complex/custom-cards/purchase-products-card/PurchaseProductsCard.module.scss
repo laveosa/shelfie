@@ -17,6 +17,8 @@
         .tabItemTrigger {
           box-shadow: none;
           border-radius: 0;
+          padding-bottom: 17px;
+          padding-top: 20px;
 
           &[data-state="active"] {
             border-bottom: 1px solid #38bf5e;
