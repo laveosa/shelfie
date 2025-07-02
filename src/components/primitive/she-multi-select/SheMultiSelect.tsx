@@ -212,7 +212,14 @@ export default function SheMultiSelect<T>(
     fromItems: ISheMultiSelectItem<T>[],
     values: T[],
   ): ISheBadge[] {
-    if (!fromItems || fromItems.length === 0 || !values || values.length === 0)
+    if (
+      !fromItems ||
+      !Array.isArray(values) ||
+      fromItems.length === 0 ||
+      !values ||
+      !Array.isArray(values) ||
+      values.length === 0
+    )
       return;
 
     let selectedItems: ISheMultiSelectItem<T>[] = [];

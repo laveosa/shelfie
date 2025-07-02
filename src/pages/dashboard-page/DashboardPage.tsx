@@ -162,10 +162,12 @@ export function DashboardPage() {
       <br />
 
       <SheMultiSelect<string>
-        items={options}
+        items={optionsSimple}
         contextType="badges"
         fullWidth
         showClearBtn
+        showSearch
+        searchValue="react"
         onSelect={(value) => console.log("select: ", value)}
         onSelectModel={(value) => console.log("select model: ", value)}
       />
