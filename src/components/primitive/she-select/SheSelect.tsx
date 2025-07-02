@@ -1,4 +1,4 @@
-import React, { JSX, useEffect, useState } from "react";
+import React, { JSX, useEffect, useRef, useState } from "react";
 import _ from "lodash";
 
 import cs from "./SheSelect.module.scss";
@@ -17,6 +17,7 @@ import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
 import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
 import SheSelectItem from "@/components/primitive/she-select/components/she-select-item/SheSelectItem.tsx";
+import useDefaultRef from "@/utils/hooks/useDefaultRef.ts";
 
 export default function SheSelect<T>({
   id,
@@ -43,6 +44,7 @@ export default function SheSelect<T>({
   isLoading,
   isOpen,
   showSelectIcon,
+  autoFocus,
   onOpenChange,
   onSelect,
   onSelectModel,
@@ -56,6 +58,8 @@ export default function SheSelect<T>({
   const [_isItemsWithIcons, setIsItemsWithIcons] = useState<boolean>(null);
   const [_isItemsWithColors, setIsItemsWithColors] = useState<boolean>(null);
 
+  const _triggerRef = useDefaultRef<HTMLInputElement>(triggerRef);
+  const popoverRef = useRef<HTMLDivElement>(null);
   const ariaDescribedbyId = `${generateId()}_SELECT_ID`;
 
   useEffect(() => {
@@ -95,6 +99,8 @@ export default function SheSelect<T>({
         setOpen(true);
       });
     }
+
+    _setAutoFocus();
   }, [items, selected]);
 
   useEffect(() => {
@@ -107,7 +113,13 @@ export default function SheSelect<T>({
     if (typeof isLoading === "boolean" && isLoading !== _loading) {
       setLoading(isLoading);
     }
+
+    _calculatePopoverWidth();
   }, [isOpen, isLoading]);
+
+  useEffect(() => {
+    _setAutoFocus();
+  }, [autoFocus]);
 
   // ==================================================================== EVENT
 
@@ -135,6 +147,7 @@ export default function SheSelect<T>({
 
   function onOpenChangeHandler(value: boolean) {
     if (_loading) return;
+
     setOpen(value);
 
     if (value && _selected) {
@@ -148,6 +161,7 @@ export default function SheSelect<T>({
     }
 
     onOpenChange?.(value);
+    _calculatePopoverWidth();
   }
 
   function onClearHandler() {
@@ -157,6 +171,23 @@ export default function SheSelect<T>({
   }
 
   // ==================================================================== PRIVATE
+
+  function _setAutoFocus() {
+    if (autoFocus && _triggerRef.current) {
+      setTimeout(() => _triggerRef.current.focus());
+    }
+  }
+
+  function _calculatePopoverWidth() {
+    requestAnimationFrame(() => {
+      const popover = popoverRef.current;
+      const trigger = _triggerRef.current;
+      if (!popover || !trigger || !trigger.offsetParent) return;
+      popover.style.width = `${trigger.getBoundingClientRect().width}px`;
+
+      console.log(popover);
+    });
+  }
 
   function _addItemsIds(fromItems: ISheSelectItem<T>[]) {
     return fromItems?.map((item, idx) => {
@@ -272,7 +303,7 @@ export default function SheSelect<T>({
               {...props}
             >
               <SelectTrigger
-                ref={triggerRef}
+                ref={_triggerRef}
                 className={elementClassName}
                 style={elementStyle}
               >
@@ -290,7 +321,7 @@ export default function SheSelect<T>({
                 />
               </SelectTrigger>
               {_items?.length > 0 && (
-                <SelectContent>
+                <SelectContent ref={popoverRef}>
                   <div className={cs.sheSelectItemsContainer}>
                     {_items?.map((item) => (
                       <SheSelectItem<T>

@@ -31,6 +31,7 @@ export interface ISheSelect<T>
   isOpen?: boolean;
   required?: boolean;
   showSelectIcon?: boolean;
+  autoFocus?: boolean;
   onOpenChange?(value: boolean): void;
   onSelect?(value: T): void;
   onSelectModel?(

@@ -175,7 +175,6 @@ export function DashboardPage() {
       <SheSelect<string>
         items={options}
         // items={optionsSimple}
-        fullWidth
         showClearBtn
         onSelect={(value) => console.log("select: ", value)}
         onSelectModel={(value) => console.log("select model: ", value)}
