@@ -4,7 +4,6 @@ import cs from "./SheMultiSelectItem.module.scss";
 import { ISheMultiSelectItem } from "@/const/interfaces/primitive-components/ISheMultiSelectItem.ts";
 import { CommandItem } from "@/components/ui/command.tsx";
 import SheOption from "@/components/primitive/she-option/SheOption.tsx";
-import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 
 export default function SheMultiSelectItem<T>({
   id,
@@ -18,8 +17,8 @@ export default function SheMultiSelectItem<T>({
 }: ISheMultiSelectItem<T>): JSX.Element {
   // ==================================================================== EVENT
 
-  function onSelectHandler(value: T) {
-    setTimeout(() => onClick(value));
+  function onSelectHandler(value: T, event?: React.MouseEvent) {
+    setTimeout(() => onClick(value, event));
   }
 
   // ==================================================================== PRIVATE
@@ -31,7 +30,6 @@ export default function SheMultiSelectItem<T>({
       id={id}
       className={`${cs.sheMultiSelectItem} ${className}`}
       style={style}
-      onSelect={() => onSelectHandler(value)}
     >
       <SheOption<T>
         {...props}
@@ -41,10 +39,7 @@ export default function SheMultiSelectItem<T>({
         mode="multiple"
         view="normal"
         checkOnClick
-        onCheck={(data) => {
-          data.event.stopPropagation();
-          onSelectHandler(data.model.value);
-        }}
+        onCheck={(data) => onSelectHandler(value, data.event)}
       />
     </CommandItem>
   );

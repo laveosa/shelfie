@@ -1,7 +1,5 @@
 @use "@/styles/variables" as vars;
 
-$iconSize: 20px;
-
 .sheMultiSelectPopoverContainer {
   div[role="listbox"] {
     overflow-y: unset;

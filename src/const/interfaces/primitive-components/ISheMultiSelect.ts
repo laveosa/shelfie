@@ -4,6 +4,7 @@ import { ISheMultiSelectTrigger } from "@/const/interfaces/primitive-components/
 import { ISheMultiSelectItem } from "@/const/interfaces/primitive-components/ISheMultiSelectItem.ts";
 import { ISheMultiSelectFooter } from "@/const/interfaces/primitive-components/ISheMultiSelectFooter.ts";
 import { ISheMultiSelectSearch } from "@/const/interfaces/primitive-components/ISheMultiSelectSearch.ts";
+import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 
 export interface ISheMultiSelect<T>
   extends Omit<ISheMultiSelectTrigger, "items">,
@@ -20,8 +21,11 @@ export interface ISheMultiSelect<T>
   selectAllPlaceholderTransKey?: string;
   isOpen?: boolean;
   onOpenChange?: (value: boolean) => void;
-  onClear?: (value: null) => void;
-  onValueChange?: (values: T[]) => void;
+  onClear?(value: null): void;
+  onSelect?(values: T[]): void;
+  onSelectModel?(
+    data: IOutputEventModel<T[], ISheMultiSelect<T>, React.MouseEvent>,
+  ): void;
 }
 
 export const SheMultiSelectDefaultModel: ISheMultiSelect<any> = {
@@ -37,5 +41,6 @@ export const SheMultiSelectDefaultModel: ISheMultiSelect<any> = {
   isOpen: undefined,
   onOpenChange: undefined,
   onClear: undefined,
-  onValueChange: undefined,
+  onSelect: undefined,
+  onSelectModel: undefined,
 };

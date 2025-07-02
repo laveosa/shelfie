@@ -33,10 +33,10 @@ export interface ISheMultiSelectTrigger
   disabled?: boolean;
   isLoading?: boolean;
   isOpen?: boolean;
-  onTogglePopover?: (value?: any) => void;
-  onToggleOption?: (value: string) => void;
-  onClearExtraOptions?: (value: ISheBadge[]) => void;
-  onClearAll?: () => void;
+  onTogglePopover?(value?: any): void;
+  onToggleOption?(value: string): void;
+  onClearExtraOptions?(value: ISheBadge[]): void;
+  onClearAll?(event: React.MouseEvent): void;
 }
 
 export const SheMultiSelectTriggerDefaultModel: ISheMultiSelectTrigger = {

@@ -161,13 +161,35 @@ export function DashboardPage() {
 
       <br />
 
-      <div className="flex gap-2 items-center justify-between">
+      <SheMultiSelect<string>
+        items={options}
+        contextType="badges"
+        fullWidth
+        showClearBtn
+        onSelect={(value) => console.log("select: ", value)}
+        onSelectModel={(value) => console.log("select model: ", value)}
+      />
+
+      <br />
+
+      <SheSelect<string>
+        items={options}
+        // items={optionsSimple}
+        fullWidth
+        showClearBtn
+        onSelect={(value) => console.log("select: ", value)}
+        onSelectModel={(value) => console.log("select model: ", value)}
+      />
+
+      {/*<div className="flex gap-2 items-center justify-between">
         <div className="w-full flex">
           <SheMultiSelect<string>
-            items={optionsSimple}
+            items={options}
             contextType="badges"
             fullWidth
             showClearBtn
+            onSelect={(value) => console.log("select: ", value)}
+            onSelectModel={(value) => console.log("select model: ", value)}
           />
         </div>
         <div className="w-full flex">
@@ -180,7 +202,7 @@ export function DashboardPage() {
             onSelectModel={(value) => console.log("select model: ", value)}
           />
         </div>
-      </div>
+      </div>*/}
 
       <br />
     </div>

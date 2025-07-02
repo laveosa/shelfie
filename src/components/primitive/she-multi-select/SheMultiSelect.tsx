@@ -15,7 +15,10 @@ import {
   removeCustomProps,
 } from "@/utils/helpers/props-helper.ts";
 import { Popover, PopoverContent } from "@/components/ui/popover";
-import { ISheMultiSelect } from "@/const/interfaces/primitive-components/ISheMultiSelect.ts";
+import {
+  ISheMultiSelect,
+  SheMultiSelectDefaultModel,
+} from "@/const/interfaces/primitive-components/ISheMultiSelect.ts";
 import SheMultiSelectTrigger from "@/components/primitive/she-multi-select/components/she-multi-select-trigger/SheMultiSelectTrigger.tsx";
 import { addItemsId, generateId } from "@/utils/helpers/quick-helper.ts";
 import { ISheMultiSelectItem } from "@/const/interfaces/primitive-components/ISheMultiSelectItem.ts";
@@ -32,26 +35,30 @@ import {
   SheMultiSelectFooterDefaultModel,
 } from "@/const/interfaces/primitive-components/ISheMultiSelectFooter.ts";
 
-export default function SheMultiSelect<T>({
-  popoverClassName = "",
-  popoverStyle,
-  items,
-  hideSelectAll,
-  selectedValues,
-  emptySearchPlaceholder = "no data to display",
-  emptySearchPlaceholderTransKey,
-  selectAllPlaceholder = "select all",
-  selectAllPlaceholderTransKey,
-  isOpen,
-  isLoading,
-  disabled,
-  autoFocus,
-  searchValue,
-  onOpenChange,
-  onValueChange,
-  onClear,
-  ...props
-}: ISheMultiSelect<T>): JSX.Element {
+export default function SheMultiSelect<T>(
+  props: ISheMultiSelect<T>,
+): JSX.Element {
+  const {
+    popoverClassName = "",
+    popoverStyle,
+    items,
+    hideSelectAll,
+    selectedValues,
+    emptySearchPlaceholder = "no data to display",
+    emptySearchPlaceholderTransKey,
+    selectAllPlaceholder = "select all",
+    selectAllPlaceholderTransKey,
+    isOpen,
+    isLoading,
+    disabled,
+    autoFocus,
+    searchValue,
+    onOpenChange,
+    onClear,
+    onSelect,
+    onSelectModel,
+  } = props;
+
   const [_items, setItems] = useState<ISheMultiSelectItem<T>[]>(null);
   const [_selectedValues, setSelectedValues] = useState<T[]>([]);
   const [_badges, setBadges] = useState<ISheBadge[]>(null);
@@ -66,6 +73,10 @@ export default function SheMultiSelect<T>({
   const searchRef = useRef<HTMLInputElement>(null);
   const ariaDescribedbyId = `${generateId()}_MULTI_SELECT_ID`;
 
+  const sheMultiSelectProps = getCustomProps<
+    ISheMultiSelect<T>,
+    ISheMultiSelect<T>
+  >(props, SheMultiSelectDefaultModel);
   const sheMultiSelectSearchProps = getCustomProps<
     ISheMultiSelect<T>,
     ISheMultiSelectSearch
@@ -75,6 +86,7 @@ export default function SheMultiSelect<T>({
     ISheMultiSelectFooter
   >(props, SheMultiSelectFooterDefaultModel);
   const restProps = removeCustomProps<ISheMultiSelect<T>>(props, [
+    SheMultiSelectDefaultModel,
     SheMultiSelectSearchDefaultModel,
     SheMultiSelectFooterDefaultModel,
   ]);
@@ -146,18 +158,21 @@ export default function SheMultiSelect<T>({
     _calculatePopoverWidth();
   }
 
-  function onToggleOptionHandler(data: any) {
-    const newSelectedValues = _selectedValues.includes(data)
-      ? _selectedValues.filter((value) => value !== data)
-      : [..._selectedValues, data];
-    _updateSelectedValues(newSelectedValues);
+  function onToggleOptionHandler(_value: T, event?: React.MouseEvent) {
+    const newSelectedValues = _selectedValues.includes(_value)
+      ? _selectedValues.filter((value) => value !== _value)
+      : [..._selectedValues, _value];
+    _updateSelectedValues(newSelectedValues, event);
   }
 
-  function onToggleAllHandler() {
+  function onToggleAllHandler(_value: T, event?: React.MouseEvent) {
     if (_selectedValues.length === _items.length) {
-      onClearButtonHandler();
+      onClearButtonHandler(event);
     } else {
-      _updateSelectedValues(_items.map((item) => item.value));
+      _updateSelectedValues(
+        _items.map((item) => item.value),
+        event,
+      );
     }
   }
 
@@ -165,8 +180,8 @@ export default function SheMultiSelect<T>({
     _updateSelectedValues(_selectedValues.slice(0, -badges.length));
   }
 
-  function onClearButtonHandler() {
-    _updateSelectedValues([]);
+  function onClearButtonHandler(event: React.MouseEvent) {
+    _updateSelectedValues([], event);
     setSearchValue("");
     setTimeout(() => searchRef?.current?.focus());
     onClear?.(null);
@@ -219,7 +234,7 @@ export default function SheMultiSelect<T>({
     );
   }
 
-  function _updateSelectedValues(values: T[]) {
+  function _updateSelectedValues(values: T[], event?: React.MouseEvent) {
     setItems((prevState) => {
       return prevState.map((item) => {
         item.isSelected = values.includes(item.value);
@@ -228,7 +243,17 @@ export default function SheMultiSelect<T>({
     });
     setSelectedValues(values);
     setBadges(_getSelectedBudges(_items, values));
-    onValueChange?.(values);
+    onSelect?.(values);
+    onSelectModel?.({
+      value: values,
+      model: {
+        ...sheMultiSelectProps,
+        items: _items,
+        selectedValues: values,
+        searchValue: _searchValue,
+      },
+      event,
+    });
   }
 
   function _updateItemsIsSelectedCondition(

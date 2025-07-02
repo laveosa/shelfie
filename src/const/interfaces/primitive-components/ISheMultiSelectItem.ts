@@ -5,4 +5,5 @@ import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.t
 export interface ISheMultiSelectItem<T> extends ISheOption<T> {
   elementClassName?: string;
   elementStyle?: React.CSSProperties;
+  onClick?(value: T, event?: React.MouseEvent): void;
 }
