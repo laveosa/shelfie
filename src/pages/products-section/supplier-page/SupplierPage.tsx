@@ -282,6 +282,8 @@ export function SupplierPage() {
           ),
         );
         break;
+      case "openManageSupplierCard":
+        break;
     }
   }
 

@@ -1,4 +1,4 @@
-import { ImageIcon, Plus, RefreshCcwDotIcon } from "lucide-react";
+import { CogIcon, ImageIcon, Plus, RefreshCcwDotIcon } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 
@@ -52,21 +52,24 @@ export default function SupplierCard({
       onSecondaryButtonClick={() => onAction("closeSupplierCard")}
     >
       <div className={cs.supplierCardContent}>
-        {!selectedSupplier ? (
-          <div className={cs.noSelectedSupplier}>
-            <span className={`${cs.noSelectedSupplierText} she-text`}>
-              Select which supplier provided the products
-            </span>
-            <SheButton
-              icon={Plus}
-              value="Select Supplier"
-              variant="outline"
-              maxWidth="150px"
-              minWidth="150px"
-              onClick={() => onAction("openSelectSupplierCard")}
-            />
-          </div>
-        ) : (
+        <div className={cs.noSelectedSupplier}>
+          <span className={`${cs.noSelectedSupplierText} she-text`}>
+            Select which supplier provided the products
+          </span>
+          <SheButton
+            icon={selectedSupplier ? RefreshCcwDotIcon : Plus}
+            value={selectedSupplier ? "Replace Supplier" : "Select Supplier"}
+            variant="outline"
+            maxWidth="160px"
+            minWidth="160px"
+            onClick={() => {
+              selectedSupplier
+                ? onAction("detachSupplier")
+                : onAction("openSelectSupplierCard");
+            }}
+          />
+        </div>
+        {selectedSupplier && (
           <div className={cs.selectedSupplier}>
             <div className={cs.supplierPhoto}>
               {selectedSupplier.thumbnailUrl ? (
@@ -112,10 +115,10 @@ export default function SupplierCard({
               )}
             </div>
             <SheButton
-              icon={RefreshCcwDotIcon}
-              value="Replace Supplier"
+              icon={CogIcon}
+              value="Manage"
               variant="secondary"
-              onClick={() => onAction("detachSupplier")}
+              onClick={() => onAction("openManageSupplierCard")}
             />
           </div>
         )}
