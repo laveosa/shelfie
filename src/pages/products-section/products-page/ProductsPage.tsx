@@ -43,6 +43,7 @@ import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
 import GridShowDeletedFilter from "@/components/complex/grid/grid-show-deleted-filter/GridShowDeletedFilter.tsx";
+import GridTraitsFilter from "@/components/complex/grid/grid-traits-filter/GridTraitsFilter.tsx";
 
 export function ProductsPage() {
   const dispatch = useAppDispatch();
@@ -124,6 +125,23 @@ export function ProductsPage() {
         dispatch(actions.refreshSuppliers(res));
       });
     }
+    if (state.sizesForFilter.length === 0 || state.colorsForFilter.length === 0)
+      service.getTraitsForFilterHandler().then((res) => {
+        dispatch(
+          actions.refreshSizesForFilter(
+            res
+              .filter((trait) => trait.traitTypeId === 1)
+              .flatMap((trait) => trait.traitOptions),
+          ),
+        );
+        dispatch(
+          actions.refreshColorsForFilter(
+            res
+              .filter((trait) => trait.traitTypeId === 2)
+              .flatMap((trait) => trait.traitOptions),
+          ),
+        );
+      });
   }, []);
 
   async function onDelete(data) {
@@ -510,6 +528,16 @@ export function ProductsPage() {
                 onSelectionChange={onCategorySelectHandler}
                 getId={(item: CategoryModel) => item.categoryId}
                 getName={(item: CategoryModel) => item.categoryName}
+              />
+              <GridTraitsFilter
+                traitOptions={state.colorsForFilter}
+                traitType="color"
+                gridRequestModel={state.variantsGridRequestModel}
+              />
+              <GridTraitsFilter
+                traitOptions={state.sizesForFilter}
+                traitType="size"
+                gridRequestModel={state.variantsGridRequestModel}
               />
               <GridShowDeletedFilter />
             </DndGridDataTable>

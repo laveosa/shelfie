@@ -351,8 +351,8 @@ export default function useProductsPageService() {
     });
   }
 
-  function getTraitsForFilterHandler(id = null) {
-    return getTraitsForFilter(id).then((res: any) => {
+  function getTraitsForFilterHandler() {
+    return getTraitsForFilter().then((res: any) => {
       return res.data;
     });
   }

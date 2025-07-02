@@ -18,6 +18,7 @@ import { SupplierModel } from "@/const/models/SupplierModel.ts";
 import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import { TypeOfTraitModel } from "@/const/models/TypeOfTraitModel.ts";
+import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
 
 export interface IProductsPageSlice {
   isLoading?: boolean;
@@ -60,4 +61,8 @@ export interface IProductsPageSlice {
   listOfTraitsWithOptionsForProduct?: TraitModel[];
   brand?: BrandModel;
   category?: CategoryModel;
+  traitsForFilters?: { color?: TraitOptionModel[]; size?: TraitOptionModel[] };
+  traitsForFilter?: TraitModel[];
+  colorsForFilter?: TraitOptionModel[];
+  sizesForFilter?: TraitOptionModel[];
 }

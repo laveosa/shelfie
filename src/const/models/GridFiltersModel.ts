@@ -7,4 +7,5 @@ export interface GridFiltersModel {
   valueFrom?: number;
   valueTo?: number;
   showDeleted?: string;
+  traitOptions?: number[];
 }
