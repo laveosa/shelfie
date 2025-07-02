@@ -162,10 +162,10 @@ export function DashboardPage() {
       <br />
 
       <SheMultiSelect<string>
+        style={{ border: "1px solid red" }}
+        popoverStyle={{ border: "1px solid blue" }}
         items={options}
         contextType="badges"
-        fullWidth
-        showClearBtn
         showSearch
         showFooter
         onSelect={(value) => console.log("select: ", value)}

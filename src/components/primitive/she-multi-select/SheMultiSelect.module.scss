@@ -1,6 +1,8 @@
 @use "@/styles/variables" as vars;
 
 .sheMultiSelectPopoverContainer {
+  background: vars.$colorLight;
+
   div[role="listbox"] {
     overflow-y: unset;
     max-height: none;

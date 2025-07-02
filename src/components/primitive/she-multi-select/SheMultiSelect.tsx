@@ -126,7 +126,7 @@ export default function SheMultiSelect<T>(
   }, [_open]);
 
   useEffect(() => {
-    if (isLoading) {
+    if (isLoading || disabled) {
       setOpen(false);
     } else if (
       !_.isNil(isOpen) &&
@@ -141,7 +141,7 @@ export default function SheMultiSelect<T>(
     }
 
     _calculatePopoverWidth();
-  }, [isOpen, isLoading]);
+  }, [isOpen, isLoading, disabled]);
 
   useEffect(() => {
     if (!_.isEqual(searchValue, _searchValue)) setSearchValue(searchValue);
@@ -303,13 +303,13 @@ export default function SheMultiSelect<T>(
       />
       <PopoverContent
         ref={popoverRef}
-        className={`${popoverClassName} ${cs.sheMultiSelectPopoverContainer} ${disabled || isLoading ? "disabled" : ""}`}
+        className={`${popoverClassName} ${cs.sheMultiSelectPopoverContainer}`}
         style={{
           ...popoverStyle,
         }}
         align="start"
       >
-        <Command>
+        <Command className={`${disabled || isLoading ? "disabled" : ""}`}>
           <SheMultiSelectSearch
             {...sheMultiSelectSearchProps}
             searchRef={searchRef}
