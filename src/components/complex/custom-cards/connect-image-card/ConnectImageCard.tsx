@@ -2,9 +2,13 @@ import React, { useEffect, useState } from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ConnectImageCard.module.scss";
-import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import {
+  DataWithId,
+  DndGridDataTable,
+} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { ConnectImageGridColumns } from "@/components/complex/grid/connect-image-grid/ConnectImageGridColumns.tsx";
 import { IConnectImageCard } from "@/const/interfaces/complex-components/custom-cards/IConnectImageCard.ts";
+import { ColumnDef } from "@tanstack/react-table";
 
 export default function ConnectImageCard({
   isLoading,
@@ -16,7 +20,9 @@ export default function ConnectImageCard({
   onSecondaryButtonClick,
   ...props
 }: IConnectImageCard) {
-  const columns = ConnectImageGridColumns(onGridAction);
+  const columns = ConnectImageGridColumns(
+    onGridAction,
+  ) as ColumnDef<DataWithId>[];
   const [updatedVariants, setUpdatedVariants] = useState([]);
 
   useEffect(() => {
