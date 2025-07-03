@@ -1,10 +1,11 @@
 import React from "react";
 
-import { ISheAutocompleteItem } from "@/const/interfaces/primitive-components/ISheAutocompleteItem.ts";
 import { ISheInput } from "@/const/interfaces/primitive-components/ISheInput.ts";
 import { ISheButton } from "@/const/interfaces/primitive-components/ISheButton.ts";
+import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
+import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 
-type NativeInputProps = Omit<ISheInput, "onSelect">;
+type NativeInputProps = Omit<ISheInput, "onSelect" | "id" | "size">;
 
 export interface ISheAutocomplete extends NativeInputProps {
   id?: string;
@@ -21,15 +22,51 @@ export interface ISheAutocomplete extends NativeInputProps {
   noDataPlaceholderTransKey?: string;
   noSearchPlaceholder?: string;
   noSearchPlaceholderTransKey?: string;
-  items?: ISheAutocompleteItem[];
-  size?: "normal" | "small";
+  items?: ISheOption<string>[];
   disabled?: boolean;
   isLoading?: boolean;
   isOpen?: boolean;
   minWidth?: string;
   maxWidth?: string;
   fullWidth?: boolean;
-  onSearch?: (value: string) => void;
-  onSelect?: (value: string) => void;
-  onIsOpen?: (value: boolean) => void;
+  minAmount?: number;
+  onSearch?(value: string): void;
+  onSelect?(value: string): void;
+  onSelectModel?(
+    data: IOutputEventModel<
+      string,
+      ISheAutocomplete,
+      React.MouseEvent | React.KeyboardEvent
+    >,
+  ): void;
+  onIsOpen?(value: boolean): void;
 }
+
+export const SheAutocompleteDefaultModel: ISheAutocomplete = {
+  id: undefined,
+  className: undefined,
+  style: undefined,
+  elementClassName: undefined,
+  elementStyle: undefined,
+  popoverClassName: undefined,
+  popoverStyle: undefined,
+  searchValue: undefined,
+  selectBtnProps: undefined,
+  showSelectBtn: undefined,
+  noDataPlaceholder: undefined,
+  noDataPlaceholderTransKey: undefined,
+  noSearchPlaceholder: undefined,
+  noSearchPlaceholderTransKey: undefined,
+  items: undefined,
+  disabled: undefined,
+  isLoading: undefined,
+  isOpen: undefined,
+  minWidth: undefined,
+  maxWidth: undefined,
+  fullWidth: undefined,
+  minAmount: undefined,
+  onSearch: undefined,
+  onSelect: undefined,
+  onSelectModel: undefined,
+  onIsOpen: undefined,
+};

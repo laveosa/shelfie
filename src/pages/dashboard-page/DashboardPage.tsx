@@ -7,6 +7,7 @@ import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import { SheTooltipEnum } from "@/const/enums/SheTooltipEnum.ts";
 import SheMultiSelect from "@/components/primitive/she-multi-select/SheMultiSelect.tsx";
+import SheAutocomplete from "@/components/primitive/she-autocomplete/SheAutocomplete.tsx";
 
 const options: ISheSelectItem<any>[] = [
   {
@@ -150,37 +151,38 @@ export function DashboardPage() {
 
       <br />
 
-      {/*<SheSelect<string>
+      <SheAutocomplete
+        label="Autocomplete"
+        tooltip="some text for tooltip"
         items={options}
         // items={optionsSimple}
-        showClearBtn
-        isOpen
-        onSelect={(value) => console.log("select: ", value)}
-        onSelectModel={(value) => console.log("select model: ", value)}
-      />*/}
+        onSelectModel={(event) => console.log("onSelectModel: ", event)}
+      />
 
       <br />
 
-      <SheMultiSelect<string>
-        style={{ border: "1px solid red" }}
-        popoverStyle={{ border: "1px solid blue" }}
+      {/*<SheMultiSelect<string>
         items={options}
         contextType="badges"
         showSearch
         showFooter
-        onSelect={(value) => console.log("select: ", value)}
-        onSelectModel={(value) => console.log("select model: ", value)}
-      />
+        onSelect={(value) => {
+          // console.log("select: ", value);
+        }}
+        onSelectModel={(value) => {
+          console.log("select model: ", value);
+        }}
+      />*/}
 
       <br />
 
-      <SheSelect<string>
+      {/*<SheSelect<string>
         items={options}
         // items={optionsSimple}
         showClearBtn
         onSelect={(value) => console.log("select: ", value)}
         onSelectModel={(value) => console.log("select model: ", value)}
-      />
+      />*/}
 
       {/*<div className="flex gap-2 items-center justify-between">
         <div className="w-full flex">

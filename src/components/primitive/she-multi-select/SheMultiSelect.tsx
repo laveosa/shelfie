@@ -131,7 +131,7 @@ export default function SheMultiSelect<T>(
     } else if (
       !_.isNil(isOpen) &&
       typeof isOpen === "boolean" &&
-      isOpen !== _open
+      !_.isEqual(isOpen, _open)
     ) {
       setOpen(isOpen);
     }

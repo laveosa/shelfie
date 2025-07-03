@@ -156,9 +156,9 @@ export default function SheInput({
   // ----------------------------- VALIDATION PATTERNS CHECK
 
   function isRequiredValid(inputValue, validation) {
-    if (!required || !validation) return validation;
+    if (!required || !validation || !isTouched.current) return validation;
 
-    const result = inputValue.length > 0;
+    const result = inputValue?.length > 0;
 
     if (!result) setIsLengthValid(false);
 

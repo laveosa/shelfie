@@ -30,6 +30,7 @@ export default function SheButton({
   txtColor,
   bgColor,
   children,
+  onClick,
   ...props
 }: ISheButton): JSX.Element {
   const iconSize: string = size === "small" ? "14px" : "20px";
@@ -37,6 +38,10 @@ export default function SheButton({
   const loaderColor: string = _isLoaderDark();
 
   // ==================================================================== EVENT
+
+  function onClickHandler(event) {
+    onClick?.(event);
+  }
 
   // ==================================================================== PRIVATE
 
@@ -68,6 +73,8 @@ export default function SheButton({
       }}
       variant={variant}
       disabled={isLoading || disabled}
+      onKeyDown={(event) => event.key === "Enter" && onClickHandler(event)}
+      onClick={onClickHandler}
       {...props}
     >
       <>

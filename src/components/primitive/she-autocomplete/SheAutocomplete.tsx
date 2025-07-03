@@ -13,58 +13,72 @@ import {
   ISheInput,
   SheInputDefaultModel,
 } from "@/const/interfaces/primitive-components/ISheInput.ts";
-import { ISheAutocomplete } from "@/const/interfaces/primitive-components/ISheAutocomplete.ts";
+import {
+  ISheAutocomplete,
+  SheAutocompleteDefaultModel,
+} from "@/const/interfaces/primitive-components/ISheAutocomplete.ts";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { Popover, PopoverContent } from "@/components/ui/popover.tsx";
 import { PopoverAnchor } from "@radix-ui/react-popover";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { ISheAutocompleteItem } from "@/const/interfaces/primitive-components/ISheAutocompleteItem.ts";
 import { getCustomProps } from "@/utils/helpers/props-helper.ts";
 import { addItemsId } from "@/utils/helpers/quick-helper.ts";
+import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
+import SheOption from "@/components/primitive/she-option/SheOption.tsx";
 import { Check } from "lucide-react";
 
-export default function SheAutocomplete({
-  id,
-  className = "",
-  style,
-  elementClassName = "",
-  elementStyle,
-  popoverClassName = "",
-  popoverStyle,
-  searchValue,
-  selectBtnProps,
-  showSelectBtn,
-  noDataPlaceholder = "no data to display...",
-  noDataPlaceholderTransKey = "PLACE_VALID_TRANS_KEY",
-  noSearchPlaceholder = "no options was found...",
-  noSearchPlaceholderTransKey = "PLACE_VALID_TRANS_KEY",
-  items,
-  autoFocus,
-  disabled,
-  isLoading,
-  isOpen,
-  minWidth,
-  maxWidth,
-  fullWidth,
-  onChange,
-  onBlur,
-  onSearch,
-  onSelect,
-  onIsOpen,
-  ...props
-}: ISheAutocomplete): JSX.Element {
-  const [_items, setItems] = useState<ISheAutocompleteItem[]>(null);
-  const [_searchValue, setSearchValue] = useState<string>(null);
+export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
+  const {
+    id,
+    className = "",
+    style,
+    elementClassName = "",
+    elementStyle,
+    popoverClassName = "",
+    popoverStyle,
+    searchValue,
+    selectBtnProps,
+    showSelectBtn,
+    noDataPlaceholder = "no data to display...",
+    noDataPlaceholderTransKey = "PLACE_VALID_TRANS_KEY",
+    noSearchPlaceholder = "no options was found...",
+    noSearchPlaceholderTransKey = "PLACE_VALID_TRANS_KEY",
+    items,
+    autoFocus,
+    disabled,
+    isLoading,
+    isOpen,
+    minWidth,
+    maxWidth,
+    fullWidth,
+    minAmount = 0,
+    onChange,
+    onBlur,
+    onSearch,
+    onSelect,
+    onSelectModel,
+    onIsOpen,
+  } = props;
+
+  const [_items, setItems] = useState<ISheOption<string>[]>(null);
   const [_selected, setSelected] = useState<string>(null);
-  const [_isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const [_open, setOpen] = useState<boolean>(null);
+  const [_loading, setLoading] = useState<boolean>(null);
+  const [_searchValue, setSearchValue] = useState<string>(null);
+  const [_isItemsWithIcons, setIsItemsWithIcons] = useState<boolean>(null);
+  const [_isItemsWithColors, setIsItemsWithColors] = useState<boolean>(null);
 
   const popoverRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLInputElement>(null);
+  const sheAutocompleteProps = getCustomProps<
+    ISheAutocomplete,
+    ISheAutocomplete
+  >(props, SheAutocompleteDefaultModel);
   const sheInputProps = getCustomProps<ISheAutocomplete, ISheInput>(
     props,
     SheInputDefaultModel,
   );
-  const filteredItems: ISheAutocompleteItem[] = useMemo(() => {
+  const filteredItems: ISheOption<string>[] = useMemo(() => {
     if (!_items || _items.length === 0) return [];
 
     return _items.filter((item) =>
@@ -75,24 +89,46 @@ export default function SheAutocomplete({
   }, [_items, _searchValue]);
 
   useEffect(() => {
-    if (!_.isEqual(items, _items))
-      setItems(addItemsId<ISheAutocompleteItem>(items));
+    _updateComponentStyles();
+  }, []);
+
+  useEffect(() => {
+    setIsItemsWithIcons(null);
+    setIsItemsWithColors(null);
+
+    if (!_.isEqual(items, _items)) {
+      setItems(addItemsId<ISheOption<string>>(items));
+      _updateIconAndColorColumnCondition(items);
+    }
+
     if (searchValue !== _searchValue) {
       setSearchValue(searchValue);
       setSelected(searchValue);
     }
+
     _setAutoFocus();
   }, [items, searchValue]);
 
   useEffect(() => {
-    if (onIsOpen) onIsOpen(_isPopoverOpen);
-    if (_isPopoverOpen) _calculatePopoverWidth();
-  }, [_isPopoverOpen]);
+    if (_open) _calculatePopoverWidth();
+    onIsOpen?.(_open);
+  }, [_open]);
 
   useEffect(() => {
-    if (!_.isNil(isOpen) && isOpen !== _isPopoverOpen) setIsPopoverOpen(isOpen);
+    if (typeof isLoading === "boolean" && isLoading !== _loading) {
+      setLoading(isLoading);
+    }
+
+    if (
+      !_.isNil(isOpen) &&
+      typeof isOpen === "boolean" &&
+      !_.isEqual(isOpen, _open)
+    ) {
+      _updateIsOpenCondition(isOpen, searchValue);
+    }
+
     _calculatePopoverWidth();
-  }, [isOpen]);
+  }, [isOpen, isLoading, disabled]);
 
   useEffect(() => {
     _setAutoFocus();
@@ -100,15 +136,15 @@ export default function SheAutocomplete({
 
   // ==================================================================== EVENT
 
-  function onChangeHandler(data: string) {
-    const tmpSearchValue = data.trim();
-    setIsPopoverOpen(true);
+  function onChangeHandler(value: string) {
+    const tmpSearchValue = value.trim();
+    _updateIsOpenCondition(true, tmpSearchValue);
     setSearchValue(tmpSearchValue);
     if (onChange) onChange(tmpSearchValue);
   }
 
   function onBlurHandler() {
-    setIsPopoverOpen(false);
+    _updateIsOpenCondition(false, _searchValue);
     if (onBlur) onBlur(_searchValue);
   }
 
@@ -116,16 +152,44 @@ export default function SheAutocomplete({
     if (onSearch) onSearch(_searchValue);
   }
 
-  function onSelectHandler(data: string, force?: boolean) {
-    setIsPopoverOpen(false);
-    setSelected(data);
+  function onSelectHandler(
+    value: string,
+    event?: React.MouseEvent | React.KeyboardEvent,
+  ) {
+    _updateIsOpenCondition(false, value);
+    if (value !== _searchValue) setSearchValue(value);
+    setSelected(value);
+    onSelect?.(value);
+    onSelectModel?.({
+      value,
+      model: { ...sheAutocompleteProps, searchValue: value },
+      event,
+    });
+    event?.stopPropagation();
+  }
 
-    if (data !== _searchValue) {
-      setSearchValue(data);
-      if (onSelect) onSelect(data);
-    }
+  function onForceSelectHandler(
+    value: string,
+    event?: React.MouseEvent | React.KeyboardEvent,
+  ) {
+    _updateIsOpenCondition(false, value);
+    setSelected(value);
+    onSelect?.(value);
+    onSelectModel?.({
+      value,
+      model: { ...sheAutocompleteProps, searchValue: value },
+      event,
+    });
+    setTimeout(() => triggerRef.current.focus());
+    event?.stopPropagation();
+  }
 
-    if (force) if (onSelect) onSelect(data);
+  function onFocusHandler() {
+    setTimeout(() => _updateIsOpenCondition(true, _searchValue));
+  }
+
+  function onEnterHandler(event: React.KeyboardEvent) {
+    if (event.code === "Enter") onSelectHandler(_searchValue, event);
   }
 
   // ==================================================================== PRIVATE
@@ -145,10 +209,39 @@ export default function SheAutocomplete({
     });
   }
 
+  function _updateIsOpenCondition(
+    _isOpen: boolean,
+    value: string = _searchValue,
+  ) {
+    if (isLoading || disabled) {
+      setOpen(false);
+      return null;
+    }
+
+    if (minAmount && minAmount > 0) {
+      setOpen(value?.length + 1 > minAmount);
+    } else {
+      setOpen(_isOpen);
+    }
+  }
+
+  function _updateIconAndColorColumnCondition(fromItems: ISheOption<string>[]) {
+    if (!fromItems || fromItems.length === 0) return null;
+    fromItems.forEach((item) => {
+      if (item.icon) setIsItemsWithIcons(true);
+      if (item.colors) setIsItemsWithColors(true);
+    });
+  }
+
+  function _updateComponentStyles() {
+    const element = document.getElementsByClassName(cs.sheAutocomplete);
+    if (element) element[0].parentElement.style.overflow = "visible";
+  }
+
   // ==================================================================== LAYOUT
 
   return (
-    <Popover open={_isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+    <Popover open={_open} onOpenChange={_updateIsOpenCondition}>
       <Command>
         <div
           id={id}
@@ -162,34 +255,39 @@ export default function SheAutocomplete({
           <div className={cs.sheAutocompleteTriggerContainer}>
             <PopoverAnchor className={cs.sheAutocompleteTriggerAnchor}>
               <SheInput
+                {...sheInputProps}
                 ref={triggerRef}
                 className={elementClassName}
                 style={elementStyle}
                 value={_searchValue}
                 disabled={disabled}
                 autoFocus={autoFocus}
+                isLoading={_loading}
                 fullWidth
-                onFocus={() => setTimeout(() => setIsPopoverOpen(true))}
-                onKeyDown={(event) =>
-                  event.code === "Enter" && onSelectHandler(_searchValue)
-                }
+                ignoreValidation
+                onFocus={onFocusHandler}
+                onKeyDown={onEnterHandler}
                 onChange={onChangeHandler}
                 onBlur={onBlurHandler}
                 onDelay={onSearchHandler}
-                onClear={() => onSelectHandler(null)}
-                {...sheInputProps}
+                onClear={onForceSelectHandler}
               />
             </PopoverAnchor>
             {showSelectBtn && (
               <SheButton
                 icon={Check}
                 variant="secondary"
+                isLoading={_loading}
                 disabled={
                   !_searchValue ||
                   _searchValue.length === 0 ||
                   _selected === _searchValue
                 }
-                onClick={() => onSelectHandler(_searchValue, true)}
+                onKeyDown={(event) =>
+                  event.code === "Enter" &&
+                  onForceSelectHandler(_searchValue, event)
+                }
+                onClick={(event) => onForceSelectHandler(_searchValue, event)}
                 {...selectBtnProps}
               />
             )}
@@ -202,10 +300,10 @@ export default function SheAutocomplete({
             ...popoverStyle,
           }}
           align="start"
-          onOpenAutoFocus={(e) => e.preventDefault()}
+          onOpenAutoFocus={(event) => event.preventDefault()}
         >
           <CommandList>
-            <CommandGroup>
+            <CommandGroup className={cs.sheAutocompleteGroupContainer}>
               {_items && _items.length > 0 ? (
                 <div>
                   {filteredItems && filteredItems.length > 0 ? (
@@ -213,11 +311,18 @@ export default function SheAutocomplete({
                       <CommandItem
                         key={item.id}
                         className={cs.sheAutocompleteItemParentWrapper}
-                        onSelect={() => onSelectHandler(item.text)}
                       >
-                        <span className="she-text">
-                          <Trans i18nKey={item.textTransKey}>{item.text}</Trans>
-                        </span>
+                        <SheOption<string>
+                          {...item}
+                          className={`${cs.sheSelectItemOption}`}
+                          mode="plain"
+                          view="normal"
+                          showIconsColumn={_isItemsWithIcons}
+                          showColorsColumn={_isItemsWithColors}
+                          onClick={(data) =>
+                            onSelectHandler(item.text, data.event)
+                          }
+                        />
                       </CommandItem>
                     ))
                   ) : (

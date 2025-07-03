@@ -21,6 +21,22 @@ $iconSize: 20px;
 // ======================================================== POPOVER
 
 .sheAutocompletePopoverContainer {
+  background: vars.$colorLight;
+
+  div[role="listbox"] {
+    overflow-y: unset;
+    max-height: none;
+  }
+
+  .sheAutocompleteGroupContainer {
+    > div[role="group"] {
+      max-height: 35vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+  }
 }
 
 // ======================================================== FULL WIDTH
@@ -54,10 +70,12 @@ $iconSize: 20px;
 // ========================================================= ITEMS WRAPPER
 
 .sheAutocompleteItemParentWrapper {
-  margin-bottom: 2px;
+  padding: 0;
 
-  &:last-child {
-    margin-bottom: 0;
+  .sheSelectItemOption {
+    background: transparent;
+    min-height: 42px;
+    padding: 8px 6px;
   }
 
   > div[role="option"] {
