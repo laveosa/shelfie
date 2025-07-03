@@ -168,7 +168,7 @@ export function SupplierPage() {
         });
         break;
       case "openSupplierConfigurationCard":
-        dispatch(actions.refreshManagedSupplier(null));
+        dispatch(actions.resetManagedSupplier(null));
         handleCardAction("supplierConfigurationCard", true);
         break;
       case "createSupplier":

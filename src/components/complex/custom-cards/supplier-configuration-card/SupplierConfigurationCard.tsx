@@ -33,44 +33,49 @@ export default function SupplierConfigurationCard({
           onImageUpload={(data) => onAction("uploadSupplierPhoto", data)}
           onCancel={() => onAction("closeSupplierConfigurationCard")}
         />
-        {!managedSupplier?.isDeleted ? (
-          <div className={cs.deleteSupplierBlock}>
-            <div className={cs.deleteSupplierTextBlock}>
-              <span className={`${cs.deleteSupplierTitle} she-text`}>
-                Delete Supplier
-              </span>
-              <span className="she-subtext">
-                The supplier will remain connected to the purchases, but will
-                not be manageable or available for connection to additional
-                purchases
-              </span>
-            </div>
-            <SheButton
-              className={cs.deleteSupplierButton}
-              icon={Trash2}
-              variant={"outline"}
-              value="Delete"
-              onClick={() => onAction("deleteSupplier", managedSupplier)}
-            />
-          </div>
-        ) : (
-          <div className={cs.restoreSupplierBlock}>
-            <div className={cs.restoreSupplierTextBlock}>
-              <span className={`${cs.restoreSupplierTitle} she-text`}>
-                Restore Supplier
-              </span>
-              <span className="she-subtext">
-                The supplier was deleted and is not available for management. if
-                that was a mistake, you can restore the supplier
-              </span>
-            </div>
-            <SheButton
-              className={cs.restoreSupplierButton}
-              icon={Plus}
-              variant={"outline"}
-              value="Restore"
-              onClick={() => onAction("restoreSupplier", managedSupplier)}
-            />
+        {managedSupplier && (
+          <div>
+            {!managedSupplier?.isDeleted ? (
+              <div className={cs.deleteSupplierBlock}>
+                <div className={cs.deleteSupplierTextBlock}>
+                  <span className={`${cs.deleteSupplierTitle} she-text`}>
+                    Delete Supplier
+                  </span>
+                  <span className="she-subtext">
+                    The supplier will remain connected to the purchases, but
+                    will not be manageable or available for connection to
+                    additional purchases
+                  </span>
+                </div>
+                <SheButton
+                  className={cs.deleteSupplierButton}
+                  icon={Trash2}
+                  variant={"outline"}
+                  value="Delete"
+                  onClick={() => onAction("deleteSupplier", managedSupplier)}
+                />
+              </div>
+            ) : (
+              <div className={cs.restoreSupplierBlock}>
+                <div className={cs.restoreSupplierTextBlock}>
+                  <span className={`${cs.restoreSupplierTitle} she-text`}>
+                    Restore Supplier
+                  </span>
+                  <span className="she-subtext">
+                    The supplier was deleted and is not available for
+                    management. if that was a mistake, you can restore the
+                    supplier
+                  </span>
+                </div>
+                <SheButton
+                  className={cs.restoreSupplierButton}
+                  icon={Plus}
+                  variant={"outline"}
+                  value="Restore"
+                  onClick={() => onAction("restoreSupplier", managedSupplier)}
+                />
+              </div>
+            )}
           </div>
         )}
       </div>

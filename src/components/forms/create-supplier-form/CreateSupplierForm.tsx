@@ -69,7 +69,7 @@ export default function CreateSupplierForm<T>({
   }
 
   useEffect(() => {
-    form.reset(data);
+    form.reset(data || SupplierModelDefault);
   }, [data]);
 
   const getCurrentImages = () => {
