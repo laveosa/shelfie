@@ -49,13 +49,16 @@ export function SupplierPage() {
           dispatch(
             productsActions.refreshSelectedSupplier({
               ...res.supplier,
-              locationId: res.location.locationId,
+              locationId: res.location?.locationId,
             }),
           );
         });
       productsService
         .getPurchaseCountersHandler(Number(purchaseId))
         .then(() => dispatch(actions.setIsProductMenuCardLoading(false)));
+      if (!productsState.countryCodeList) {
+        productsService.getCountryCodeHandler();
+      }
     }
     dispatch(actions.refreshActiveCards([]));
   }, [purchaseId]);
@@ -251,14 +254,53 @@ export function SupplierPage() {
           .then((res) => {
             dispatch(actions.setIsSupplierConfigurationCardLoading(false));
             if (res) {
-              handleCardAction("supplierConfigurationCard");
-              service.getListOfSuppliersForGridHandler({});
-              dispatch(actions.refreshManagedSupplier(null));
-              dispatch(
-                actions.refreshSuppliersWithLocations(
-                  clearSelectedGridItems(state.suppliersWithLocations),
-                ),
-              );
+              payload.uploadModels.map((model) => {
+                model.contextId = res.supplierId;
+                productsService.uploadPhotoHandler(model).then((res) => {
+                  if (res) {
+                    service
+                      .getSupplierDetailsHandler(
+                        state.managedSupplier.supplierId,
+                        state.managedSupplier.locationId,
+                      )
+                      .then((res) => {
+                        dispatch(actions.refreshManagedSupplier(res));
+                      });
+                    service.getListOfSuppliersForGridHandler({}).then((res) => {
+                      dispatch(
+                        actions.refreshSuppliersWithLocations(res.items),
+                      );
+                    });
+                    if (
+                      productsState.selectedSupplier.supplierId ===
+                      state.managedSupplier.supplierId
+                    ) {
+                      productsService
+                        .getPurchaseDetailsHandler(purchaseId)
+                        .then((res: PurchaseModel) => {
+                          dispatch(
+                            productsActions.refreshSelectedPurchase(res),
+                          );
+                          dispatch(
+                            productsActions.refreshSelectedSupplier({
+                              ...res.supplier,
+                              locationId: res.location.locationId,
+                            }),
+                          );
+                        });
+                    }
+                    addToast({
+                      text: "Image successfully added",
+                      type: "success",
+                    });
+                  } else {
+                    addToast({
+                      text: res.error.message,
+                      type: "error",
+                    });
+                  }
+                });
+              });
               addToast({
                 text: "Supplier updated successfully",
                 type: "success",
@@ -337,6 +379,11 @@ export function SupplierPage() {
                 .then((res) => {
                   dispatch(actions.refreshManagedSupplier(res));
                 });
+              console.log(
+                "SUPPLIER",
+                productsState.selectedSupplier.supplierId,
+                payload.supplierId.supplierId,
+              );
               if (
                 productsState.selectedSupplier.supplierId === payload.supplierId
               ) {
@@ -363,6 +410,57 @@ export function SupplierPage() {
               });
             }
           });
+        break;
+      case "deleteSupplierPhoto":
+        const confirmed = await openConfirmationDialog({
+          title: "Deleting supplier photo",
+          text: "You are about to delete supplier photo.",
+          primaryButtonValue: "Delete",
+          secondaryButtonValue: "Cancel",
+        });
+
+        if (!confirmed) return;
+
+        dispatch(actions.setIsSupplierPhotosGridLoading(true));
+        productsService
+          .deletePhotoHandler(payload.original.photoId)
+          .then(() => {
+            dispatch(actions.setIsSupplierPhotosGridLoading(false));
+            if (
+              productsState.selectedSupplier.supplierId ===
+              state.managedSupplier.supplierId
+            ) {
+              productsService
+                .getPurchaseDetailsHandler(purchaseId)
+                .then((res: PurchaseModel) => {
+                  dispatch(productsActions.refreshSelectedPurchase(res));
+                  dispatch(
+                    productsActions.refreshSelectedSupplier({
+                      ...res.supplier,
+                      locationId: res.location.locationId,
+                    }),
+                  );
+                });
+            }
+            service
+              .getSupplierDetailsHandler(
+                state.managedSupplier.supplierId,
+                state.managedSupplier.locationId,
+              )
+              .then((res) => {
+                dispatch(actions.refreshManagedSupplier(res));
+              });
+            service.getListOfSuppliersForGridHandler({}).then((res) => {
+              dispatch(actions.refreshSuppliersWithLocations(res.items));
+            });
+            addToast({
+              text: "Photo deleted successfully",
+              type: "success",
+            });
+          });
+        break;
+      case "dndSupplierPhoto":
+        console.log("DND PHOTO", payload);
         break;
       case "closeSupplierCard":
         navigate(NavUrlEnum.PRODUCTS);
@@ -421,6 +519,7 @@ export function SupplierPage() {
         >
           <SupplierConfigurationCard
             isLoading={state.isSupplierConfigurationCardLoading}
+            isSupplierPhotosGridLoading={state.isSupplierPhotosGridLoading}
             countryList={productsState.countryCodeList}
             managedSupplier={state.managedSupplier}
             onAction={onAction}

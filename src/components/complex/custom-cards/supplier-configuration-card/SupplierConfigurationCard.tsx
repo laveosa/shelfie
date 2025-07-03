@@ -1,4 +1,5 @@
 import { Plus, Trash2 } from "lucide-react";
+import React from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./SupplierConfigurationCard.module.scss";
@@ -8,10 +9,24 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 
 export default function SupplierConfigurationCard({
   isLoading,
+  isSupplierPhotosGridLoading,
   countryList,
   managedSupplier,
   onAction,
 }: ICreateSupplierCard) {
+  function onDeletePhoto(
+    _actionType,
+    _row,
+    _setLoadingRow?: (rowId: string, loading: boolean) => void,
+    row?,
+  ) {
+    onAction("deleteSupplierPhoto", row);
+  }
+
+  function onDndPhoto(data) {
+    onAction("dndSupplierPhoto", data);
+  }
+
   return (
     <SheProductCard
       loading={isLoading}
@@ -23,8 +38,12 @@ export default function SupplierConfigurationCard({
       <div className={cs.supplierConfigurationCardContent}>
         <CreateSupplierForm
           isLoading={isLoading}
+          isGridLoading={isSupplierPhotosGridLoading}
           countryList={countryList}
           data={managedSupplier}
+          photos={managedSupplier?.photos}
+          onDndPhoto={onDndPhoto}
+          onDeletePhoto={onDeletePhoto}
           onSubmit={(data) => {
             managedSupplier
               ? onAction("updateSupplier", data)
