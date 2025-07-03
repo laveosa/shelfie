@@ -1,6 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
-import React from "react";
 import { Plus } from "lucide-react";
+import React from "react";
 
 import cs from "./SelectSupplierCard.module.scss";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";

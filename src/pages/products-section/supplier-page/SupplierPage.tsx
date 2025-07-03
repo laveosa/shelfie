@@ -21,6 +21,7 @@ import {
   setSelectedGridItem,
 } from "@/utils/helpers/quick-helper.ts";
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
+import useDialogService from "@/utils/services/dialog/DialogService.ts";
 
 export function SupplierPage() {
   const dispatch = useAppDispatch();
@@ -34,6 +35,7 @@ export function SupplierPage() {
   const { purchaseId } = useParams();
   const { addToast } = useToast();
   const cardRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const { openConfirmationDialog } = useDialogService();
 
   useEffect(() => {
     if (purchaseId) {
@@ -44,7 +46,12 @@ export function SupplierPage() {
         .then((res: PurchaseModel) => {
           dispatch(actions.setIsSupplierCardLoading(false));
           dispatch(productsActions.refreshSelectedPurchase(res));
-          dispatch(productsActions.refreshSelectedSupplier(res.supplier));
+          dispatch(
+            productsActions.refreshSelectedSupplier({
+              ...res.supplier,
+              locationId: res.location.locationId,
+            }),
+          );
         });
       productsService
         .getPurchaseCountersHandler(Number(purchaseId))
@@ -52,8 +59,6 @@ export function SupplierPage() {
     }
     dispatch(actions.refreshActiveCards([]));
   }, [purchaseId]);
-
-  dispatch(actions.refreshSelectedSupplier(null));
 
   function scrollToCard(cardId: string) {
     setTimeout(() => {
@@ -90,7 +95,7 @@ export function SupplierPage() {
     }
   }
 
-  function onAction(actionType: string, payload) {
+  async function onAction(actionType: string, payload) {
     switch (actionType) {
       case "createPurchase":
         dispatch(actions.setIsSupplierCardLoading(true));
@@ -256,6 +261,99 @@ export function SupplierPage() {
               );
               addToast({
                 text: "Supplier updated successfully",
+                type: "success",
+              });
+            } else {
+              addToast({
+                text: res.error.message,
+                type: "error",
+              });
+            }
+          });
+        break;
+      case "deleteSupplier":
+        const confirmedSupplierDeleting = await openConfirmationDialog({
+          title: "Deleting supplier",
+          text: `You are about to delete supplier ${payload.traitName}.`,
+          primaryButtonValue: "Delete",
+          secondaryButtonValue: "Cancel",
+        });
+
+        if (!confirmedSupplierDeleting) return;
+
+        dispatch(actions.setIsSupplierCardLoading(true));
+        productsService
+          .deleteSupplierHandler(payload.supplierId)
+          .then((res) => {
+            dispatch(actions.setIsSupplierCardLoading(false));
+            if (!res.error) {
+              service
+                .getSupplierDetailsHandler(
+                  payload.supplierId,
+                  payload.locationId,
+                )
+                .then((res) => {
+                  dispatch(actions.refreshManagedSupplier(res));
+                });
+              if (
+                productsState.selectedSupplier.supplierId === payload.supplierId
+              ) {
+                productsService
+                  .getPurchaseDetailsHandler(purchaseId)
+                  .then((res: PurchaseModel) => {
+                    dispatch(productsActions.refreshSelectedPurchase(res));
+                    dispatch(
+                      productsActions.refreshSelectedSupplier({
+                        ...res.supplier,
+                        locationId: res.location.locationId,
+                      }),
+                    );
+                  });
+              }
+              addToast({
+                text: "Supplier deleted successfully",
+                type: "success",
+              });
+            } else {
+              addToast({
+                text: res.error.message,
+                type: "error",
+              });
+            }
+          });
+        break;
+      case "restoreSupplier":
+        dispatch(actions.setIsSupplierCardLoading(true));
+        productsService
+          .restoreSupplierHandler(payload.supplierId)
+          .then((res) => {
+            dispatch(actions.setIsSupplierCardLoading(false));
+            if (!res.error) {
+              service
+                .getSupplierDetailsHandler(
+                  payload.supplierId,
+                  payload.locationId,
+                )
+                .then((res) => {
+                  dispatch(actions.refreshManagedSupplier(res));
+                });
+              if (
+                productsState.selectedSupplier.supplierId === payload.supplierId
+              ) {
+                productsService
+                  .getPurchaseDetailsHandler(purchaseId)
+                  .then((res: PurchaseModel) => {
+                    dispatch(productsActions.refreshSelectedPurchase(res));
+                    dispatch(
+                      productsActions.refreshSelectedSupplier({
+                        ...res.supplier,
+                        locationId: res.location.locationId,
+                      }),
+                    );
+                  });
+              }
+              addToast({
+                text: "Supplier restored successfully",
                 type: "success",
               });
             } else {

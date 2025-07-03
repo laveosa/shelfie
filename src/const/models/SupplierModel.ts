@@ -15,6 +15,8 @@ export interface SupplierModel {
   lat?: number;
   long?: number;
   thumbnailUrl?: string;
+  locationId?: number;
+  isDeleted: boolean;
 }
 
 export const SupplierModelDefault: SupplierModel = {
@@ -31,4 +33,6 @@ export const SupplierModelDefault: SupplierModel = {
   countryId: "",
   countryName: "",
   images: [],
+  locationId: null,
+  isDeleted: false,
 };

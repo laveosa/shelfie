@@ -1,4 +1,5 @@
 import { SupplierModel } from "@/const/models/SupplierModel.ts";
+import { LocationModel } from "@/const/models/LocationModel.ts";
 
 export interface PurchaseModel {
   currencyBrief?: string;
@@ -8,4 +9,5 @@ export interface PurchaseModel {
   subTotal?: number;
   supplier?: SupplierModel;
   documentNotes?: string;
+  location?: LocationModel;
 }
