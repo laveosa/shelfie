@@ -8,4 +8,8 @@ export interface ICreateSupplierForm<T> {
   onSubmit?: (data: T) => void;
   onImageUpload?: (data: T) => void;
   onCancel?: () => void;
+  photos?: any[];
+  isGridLoading?: boolean;
+  onDeletePhoto?: (identifier: string, payload?: any) => void;
+  onDndPhoto?: (data: any) => void;
 }

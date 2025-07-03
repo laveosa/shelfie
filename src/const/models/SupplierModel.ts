@@ -1,3 +1,5 @@
+import { ImageModel } from "@/const/models/ImageModel.ts";
+
 export interface SupplierModel {
   photo?: any;
   supplierId?: number;
@@ -15,6 +17,9 @@ export interface SupplierModel {
   lat?: number;
   long?: number;
   thumbnailUrl?: string;
+  locationId?: number;
+  isDeleted?: boolean;
+  photos?: ImageModel[];
 }
 
 export const SupplierModelDefault: SupplierModel = {
@@ -31,4 +36,6 @@ export const SupplierModelDefault: SupplierModel = {
   countryId: "",
   countryName: "",
   images: [],
+  locationId: null,
+  isDeleted: false,
 };

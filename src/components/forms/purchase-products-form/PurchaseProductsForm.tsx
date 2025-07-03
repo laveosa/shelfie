@@ -102,9 +102,9 @@ export default function PurchaseProductsForm<T>({
                       : ""
                     : ""
                 }
-                minWidth="70px"
-                maxWidth="70px"
-                placeholder=""
+                minWidth="100px"
+                maxWidth="100px"
+                placeholder="Netto price"
               />
             </SheFormItem>
           )}
@@ -178,10 +178,10 @@ export default function PurchaseProductsForm<T>({
                       : ""
                     : ""
                 }
-                width="50px"
-                minWidth="50px"
-                maxWidth="50px"
-                placeholder=""
+                width="80px"
+                minWidth="80px"
+                maxWidth="80px"
+                placeholder="Quantity"
               />
             </SheFormItem>
           )}

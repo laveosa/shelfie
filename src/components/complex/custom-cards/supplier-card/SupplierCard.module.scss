@@ -2,40 +2,101 @@
 
 .supplierCard {
   .supplierCardContent {
-    height: calc(100vh - 240px);
+    height: calc(100vh - 180px);
     display: flex;
     flex-direction: column;
-    gap: vars.$paddingStandard;
+    justify-content: space-between;
 
-    .noSelectedSupplier {
+    .purchaseBlock {
       display: flex;
       flex-direction: column;
       gap: vars.$paddingStandard;
-    }
 
-    .selectedSupplier {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: vars.$paddingStandard;
+      .noSelectedSupplier {
+        display: flex;
+        gap: 10px;
 
-      .supplierPhoto {
-        width: 72px;
-        height: 52px;
-
-        img {
-          width: 48px;
-          height: 48px;
-          border-radius: 5px;
+        .noSelectedSupplierText {
+          text-wrap: auto;
         }
-
       }
 
-      .supplierDesc {
-        width: 100%;
-        height: 100%;
+
+      .selectedSupplier {
         display: flex;
         flex-direction: column;
+        gap: 10px;
+
+        .selectedSupplierDetails {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: vars.$paddingStandard;
+
+          .supplierPhoto {
+            width: 100px;
+            height: 52px;
+
+            img {
+              width: 48px;
+              height: 48px;
+              border-radius: 5px;
+            }
+          }
+
+          .supplierDesc {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+
+            .deletedSupplier {
+              opacity: 0.5;
+            }
+          }
+        }
+
+        .deletedSupplierBlock {
+          border: 1px solid #FF7061;
+          border-radius: 5px;
+          background: #FFE9E6;
+          padding: 5px;
+
+          .deletedSupplierText {
+            color: #EF4343;
+          }
+        }
+      }
+
+      .purchaseButtonBlock {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+
+    .deletePurchaseBlock {
+      display: flex;
+      align-items: center;
+      border: 1px solid #E4E4E7;
+      border-radius: 5px;
+      background: #FAFAFA;
+      padding: 10px;
+
+      .deletePurchaseTextBlock {
+        display: flex;
+        flex-direction: column;
+
+        .deletePurchaseTitle {
+          font-weight: 600;
+        }
+      }
+
+      .deletePurchaseButton {
+        color: #EF4343;
+
+        svg {
+          color: #EF4343
+        }
       }
     }
   }

@@ -23,6 +23,12 @@ import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSele
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
 import cs from "./CreateSupplierForm.module.scss";
+import { SupplierPhotosGridColumns } from "@/components/complex/grid/supplier-photos-grid/SupplierPhotosGridColumns.tsx";
+import { ColumnDef } from "@tanstack/react-table";
+import {
+  DataWithId,
+  DndGridDataTable,
+} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 
 interface SupplierFormData extends SupplierModel {
   images?: File[];
@@ -35,6 +41,10 @@ export default function CreateSupplierForm<T>({
   countryList,
   onSubmit,
   onCancel,
+  photos,
+  isGridLoading,
+  onDeletePhoto,
+  onDndPhoto,
 }: ICreateSupplierForm<T>) {
   const form = useAppForm<SupplierModel>({
     mode: "onSubmit",
@@ -69,7 +79,7 @@ export default function CreateSupplierForm<T>({
   }
 
   useEffect(() => {
-    form.reset(data);
+    form.reset(data || SupplierModelDefault);
   }, [data]);
 
   const getCurrentImages = () => {
@@ -157,7 +167,19 @@ export default function CreateSupplierForm<T>({
             hideUploadButton={true}
           />
         )}
-
+        <DndGridDataTable
+          isLoading={isGridLoading}
+          enableDnd={true}
+          showHeader={false}
+          columns={
+            SupplierPhotosGridColumns(onDeletePhoto) as ColumnDef<DataWithId>[]
+          }
+          data={photos}
+          skeletonQuantity={photos?.length}
+          onNewItemPosition={(newIndex, activeItem) => {
+            onDndPhoto({ newIndex, activeItem });
+          }}
+        />
         <FormField
           control={form.control}
           name="addressLine1"
@@ -243,7 +265,7 @@ export default function CreateSupplierForm<T>({
           onClick={() => onCancel()}
         />
         <SheButton
-          value={data ? "Update Supplier" : "Create Supplier"}
+          value={data ? "Save Changes" : "Create Supplier"}
           onClick={form.handleSubmit(handleFormSubmit)}
         />
       </div>

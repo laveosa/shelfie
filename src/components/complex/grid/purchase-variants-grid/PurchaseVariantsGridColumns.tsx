@@ -73,9 +73,9 @@ export function purchaseVariantsGridColumns(
     {
       accessorKey: "variantName",
       header: "Product Name",
-      size: 70,
-      minSize: 70,
-      maxSize: 70,
+      size: 50,
+      minSize: 50,
+      maxSize: 50,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("variantName")}>
@@ -115,9 +115,9 @@ export function purchaseVariantsGridColumns(
     {
       accessorKey: "brand",
       header: "Brand",
-      size: 50,
-      minSize: 50,
-      maxSize: 50,
+      size: 40,
+      minSize: 40,
+      maxSize: 40,
       cell: ({ row }) => {
         const brand: BrandModel = row.getValue("brand");
         return (
@@ -138,9 +138,9 @@ export function purchaseVariantsGridColumns(
     {
       accessorKey: "traitOptions",
       header: "Details",
-      size: 50,
-      minSize: 50,
-      maxSize: 50,
+      size: 40,
+      minSize: 40,
+      maxSize: 40,
       cell: ({ row }) => {
         const traitOptions = row.original.traitOptions || [];
 
@@ -186,11 +186,19 @@ export function purchaseVariantsGridColumns(
       },
     },
     {
+      id: "nettoPriceGroup",
       accessorKey: "",
       size: 200,
       minSize: 200,
       maxSize: 200,
-      header: "Quantity to add",
+      header: () => (
+        <div className="flex items-center">
+          <span style={{ marginRight: "40px" }}>Netto Price</span>
+          <span style={{ marginRight: "22px" }}>Currency</span>
+          <span style={{ marginRight: "85px" }}>Tax</span>
+          <span>Quantity</span>
+        </div>
+      ),
       cell: ({ row }) => {
         const variantId = row.original.variantId;
         return (

@@ -131,6 +131,8 @@ export default function useProductsPageService() {
   const [changePhotoPositionForVariant] =
     ProductsApiHooks.useChangePhotoPositionForVariantMutation();
   const [deleteVariant] = ProductsApiHooks.useDeleteVariantMutation();
+  const [deleteSupplier] = SuppliersApiHooks.useDeleteSupplierMutation();
+  const [restoreSupplier] = SuppliersApiHooks.useRestoreSupplierMutation();
 
   //-------------------------------------------------API
 
@@ -613,6 +615,18 @@ export default function useProductsPageService() {
     });
   }
 
+  function deleteSupplierHandler(supplierId) {
+    return deleteSupplier(supplierId).then((res: any) => {
+      return res;
+    });
+  }
+
+  function restoreSupplierHandler(supplierId) {
+    return restoreSupplier(supplierId).then((res: any) => {
+      return res;
+    });
+  }
+
   //----------------------------------------------------LOGIC
 
   function itemsCardItemsConvertor(
@@ -741,5 +755,7 @@ export default function useProductsPageService() {
     disposeVariantFromStockHandler,
     changePhotoPositionForVariantHandler,
     deleteVariantHandler,
+    deleteSupplierHandler,
+    restoreSupplierHandler,
   };
 }

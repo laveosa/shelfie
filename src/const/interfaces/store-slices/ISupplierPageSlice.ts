@@ -7,6 +7,7 @@ export interface ISupplierPageSlice {
   isSupplierCardLoading?: boolean;
   isSelectSupplierCardLoading?: boolean;
   isSupplierConfigurationCardLoading?: boolean;
+  isSupplierPhotosGridLoading?: boolean;
   activeCards?: any[];
   purchase?: PurchaseModel;
   suppliers?: SupplierModel[];
