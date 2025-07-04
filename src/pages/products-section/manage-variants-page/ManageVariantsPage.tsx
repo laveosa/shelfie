@@ -360,6 +360,34 @@ export function ManageVariantsPage() {
           }
         });
         break;
+      case "deleteVariant":
+        const confirmedDeleteVariant = await openConfirmationDialog({
+          title: "Delete Variant",
+          text: `You are about to delete variant "${payload.variantName}".`,
+          primaryButtonValue: "Delete",
+          secondaryButtonValue: "Cancel",
+        });
+
+        if (!confirmedDeleteVariant) {
+          return;
+        } else {
+          await productsService
+            .deleteVariantHandler(payload.variantId)
+            .then((res) => {
+              if (!res.error) {
+                addToast({
+                  text: "Variant deleted successfully",
+                  type: "success",
+                });
+              } else {
+                addToast({
+                  text: res.error.data.detail,
+                  type: "error",
+                });
+              }
+            });
+        }
+        break;
       case "increaseStockAmount":
         dispatch(actions.setIsAddStockCardLoading(true));
         productsService

@@ -29,10 +29,6 @@ export default function ManageVariantsCard({
   onAction,
   ...props
 }: IManageVariantsCard) {
-  const columns = ManageVariantsGridColumns(
-    onGridAction,
-  ) as ColumnDef<DataWithId>[];
-
   function handleAction(actionType: any, payload?: any) {
     switch (actionType) {
       case "manageVariant":
@@ -44,6 +40,9 @@ export default function ManageVariantsCard({
       case "dnd":
         const { newIndex, activeItem } = payload;
         onAction("changeVariantPosition", { newIndex, activeItem });
+        break;
+      case "deleteVariant":
+        onAction("deleteVariant", payload);
         break;
     }
   }
@@ -59,13 +58,16 @@ export default function ManageVariantsCard({
         handleAction("activateVariant", row.original);
         break;
       case "manageVariant":
-        handleAction("manageVariant", row.original);
+        handleAction("manageVariant", row);
         break;
       case "changeVariantPosition":
         handleAction("changeVariantPosition", {
           newIndex: row.newIndex,
           activeItem: row.original,
         });
+        break;
+      case "deleteVariant":
+        handleAction("deleteVariant", row);
         break;
     }
   }
@@ -79,6 +81,7 @@ export default function ManageVariantsCard({
       showSecondaryButton={false}
       secondaryButtonTitle="Cancel"
       className={cs.manageVariantsCard}
+      minWidth={"461px"}
       {...props}
     >
       <div className={cs.manageVariantsContent}>
@@ -147,7 +150,9 @@ export default function ManageVariantsCard({
             className={cs.manageVariantsCardGrid}
             enableDnd={true}
             showHeader={false}
-            columns={columns}
+            columns={
+              ManageVariantsGridColumns(onGridAction) as ColumnDef<DataWithId>[]
+            }
             data={variants}
             gridModel={data}
             customMessage="PRODUCT HAS NO VARIANTS"
