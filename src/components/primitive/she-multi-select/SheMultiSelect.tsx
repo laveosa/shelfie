@@ -20,7 +20,7 @@ import {
   SheMultiSelectDefaultModel,
 } from "@/const/interfaces/primitive-components/ISheMultiSelect.ts";
 import SheMultiSelectTrigger from "@/components/primitive/she-multi-select/components/she-multi-select-trigger/SheMultiSelectTrigger.tsx";
-import { addItemsId, generateId } from "@/utils/helpers/quick-helper.ts";
+import { generateId } from "@/utils/helpers/quick-helper.ts";
 import { ISheMultiSelectItem } from "@/const/interfaces/primitive-components/ISheMultiSelectItem.ts";
 import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
 import SheMultiSelectItem from "@/components/primitive/she-multi-select/components/she-multi-select-item/SheMultiSelectItem.tsx";
@@ -34,6 +34,7 @@ import {
   ISheMultiSelectFooter,
   SheMultiSelectFooterDefaultModel,
 } from "@/const/interfaces/primitive-components/ISheMultiSelectFooter.ts";
+import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
 
 export default function SheMultiSelect<T>(
   props: ISheMultiSelect<T>,
@@ -67,7 +68,10 @@ export default function SheMultiSelect<T>(
   const [_searchValue, setSearchValue] = useState<string>(null);
   const [_isItemsWithIcons, setIsItemsWithIcons] = useState<boolean>(null);
   const [_isItemsWithColors, setIsItemsWithColors] = useState<boolean>(null);
+  const { setAutoFocus, addItemsId, calculatePopoverWidth } =
+    useComponentUtilities();
 
+  // TODO ---------------------------------------------- all ref-s need to be in props and use "useDefaultRef" logic
   const popoverRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
@@ -118,9 +122,10 @@ export default function SheMultiSelect<T>(
     setItems(tmpItems);
     setSelectedValues(tmpSelectedValues);
     setBadges(_getSelectedBadges(items, tmpSelectedValues));
-    _setAutoFocus();
+    setAutoFocus<HTMLButtonElement>(autoFocus, triggerRef);
   }, [items, selectedValues]);
 
+  // TODO replace this logic to one place function like _updateIsOpenCondition and remove this useEffect, the same approach like in Autocomplete
   useEffect(() => {
     onOpenChange?.(_open);
   }, [_open]);
@@ -140,7 +145,7 @@ export default function SheMultiSelect<T>(
       setLoading(isLoading);
     }
 
-    _calculatePopoverWidth();
+    calculatePopoverWidth<HTMLButtonElement>(popoverRef, triggerRef);
   }, [isOpen, isLoading, disabled]);
 
   useEffect(() => {
@@ -148,14 +153,14 @@ export default function SheMultiSelect<T>(
   }, [searchValue]);
 
   useEffect(() => {
-    _setAutoFocus();
+    setAutoFocus<HTMLButtonElement>(autoFocus, triggerRef);
   }, [autoFocus]);
 
   // ==================================================================== EVENT
 
   function onTogglePopoverHandler() {
     setOpen((prev) => !prev);
-    _calculatePopoverWidth();
+    calculatePopoverWidth<HTMLButtonElement>(popoverRef, triggerRef);
   }
 
   function onToggleOptionHandler(_value: T, event?: React.MouseEvent) {
@@ -192,21 +197,6 @@ export default function SheMultiSelect<T>(
   }
 
   // ==================================================================== PRIVATE
-
-  function _setAutoFocus() {
-    if (autoFocus && triggerRef.current) {
-      setTimeout(() => triggerRef.current.focus());
-    }
-  }
-
-  function _calculatePopoverWidth() {
-    requestAnimationFrame(() => {
-      const popover = popoverRef.current;
-      const trigger = triggerRef.current;
-      if (!popover || !trigger || !trigger.offsetParent) return;
-      popover.style.width = `${trigger.getBoundingClientRect().width}px`;
-    });
-  }
 
   function _getSelectedBadges(
     fromItems: ISheMultiSelectItem<T>[],

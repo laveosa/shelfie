@@ -26,20 +26,23 @@ export function isSheIconConfig(
   return typeof icon === "object" && icon !== null && "icon" in icon;
 }
 
+// TODO ------------------------------------------------------- this logic was transferred to useComponentUtilities hook, redundant
 export function addItemsId<T>(
   items: T[],
-  identifier: string = "text",
+  identifier: string = "item",
   generateLength?: number,
 ): T[] {
   if (!items || items.length === 0) return null;
 
   return items.map((item: T, idx) => ({
     ...item,
-    id: `${
-      item[identifier] && item[identifier].length > 0
-        ? item[identifier].replace(/ /g, "_")
-        : generateId(generateLength)
-    }_${(idx + 1).toString()}`,
+    id:
+      item.id ??
+      `${
+        item[identifier] && item[identifier].length > 0
+          ? item[identifier].replace(/ /g, "_")
+          : generateId(generateLength)
+      }_${(idx + 1).toString()}`,
   }));
 }
 

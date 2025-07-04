@@ -35,6 +35,33 @@ export interface ISheSelect<T>
   onOpenChange?(value: boolean): void;
   onSelect?(value: T): void;
   onSelectModel?(
-    data: IOutputEventModel<T, ISheSelectItem<T>, React.MouseEvent>,
+    data: IOutputEventModel<T, ISheSelect<T>, React.MouseEvent>,
   ): void;
 }
+
+export const SheSelectDefaultModel: ISheSelect<any> = {
+  id: undefined,
+  className: undefined,
+  style: undefined,
+  elementClassName: undefined,
+  elementStyle: undefined,
+  triggerRef: undefined,
+  icon: undefined,
+  items: undefined,
+  selected: undefined,
+  hideFirstOption: undefined,
+  placeholder: undefined,
+  placeholderTransKey: undefined,
+  minWidth: undefined,
+  maxWidth: undefined,
+  fullWidth: undefined,
+  disabled: undefined,
+  isLoading: undefined,
+  isOpen: undefined,
+  required: undefined,
+  showSelectIcon: undefined,
+  autoFocus: undefined,
+  onOpenChange: undefined,
+  onSelect: undefined,
+  onSelectModel: undefined,
+};

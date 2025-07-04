@@ -184,38 +184,42 @@ export function DashboardPage() {
         onSelectModel={(value) => console.log("select model: ", value)}
       />*/}
 
-      <div className="flex gap-2 items-center justify-between">
+      <div className="flex gap-5 flex-col">
         <div className="w-full flex">
           <SheMultiSelect<string>
+            label="MultiSelect"
+            required
             // items={options}
             items={optionsSimple}
             contextType="badges"
-            fullWidth
             showClearBtn
-            isOpen
-            onSelect={(value) => console.log("select: ", value)}
-            onSelectModel={(value) => console.log("select model: ", value)}
+            onSelect={(value) => console.log("MultiSelect value: ", value)}
+            onSelectModel={(value) => console.log("MultiSelect model: ", value)}
           />
         </div>
         <div className="w-full flex">
           <SheSelect<string>
+            label="Select"
+            required
             // items={options}
             items={optionsSimple}
-            fullWidth
             showClearBtn
             isOpen
-            onSelect={(value) => console.log("select: ", value)}
-            onSelectModel={(value) => console.log("select model: ", value)}
+            onSelect={(value) => console.log("Select value: ", value)}
+            onSelectModel={(value) => console.log("Select model: ", value)}
           />
         </div>
         <div className="w-full flex">
           <SheAutocomplete
+            label="Autocomplete"
+            required
             // items={options}
             items={optionsSimple}
             showClearBtn
-            fullWidth
-            isOpen
-            onSelectModel={(event) => console.log("onSelectModel: ", event)}
+            onSelect={(event) => console.log("Autocomplete value: ", event)}
+            onSelectModel={(event) =>
+              console.log("Autocomplete model: ", event)
+            }
           />
         </div>
       </div>

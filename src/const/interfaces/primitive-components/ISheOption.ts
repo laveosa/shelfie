@@ -4,8 +4,11 @@ import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { ISheTooltip } from "@/const/interfaces/primitive-components/ISheTooltip.ts";
 import { ISheToggle } from "@/const/interfaces/primitive-components/ISheToggle.ts";
 import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
+import { ISelectable } from "@/const/interfaces/primitive-components/ISelecteble.ts";
 
-export interface ISheOption<T> extends ComponentPropsWithRef<"div"> {
+export interface ISheOption<T>
+  extends ISelectable<T>,
+    ComponentPropsWithRef<"div"> {
   id?: string;
   className?: string;
   style?: React.CSSProperties;
@@ -27,7 +30,6 @@ export interface ISheOption<T> extends ComponentPropsWithRef<"div"> {
   ariaDescribedbyId?: string;
   mode?: "single" | "multiple" | "plain";
   view?: "normal" | "card";
-  value?: T;
   showIconsColumn?: boolean;
   icon?: Partial<ISheIcon> | string | React.FC<any>;
   iconProps?: ISheIcon;
@@ -41,7 +43,6 @@ export interface ISheOption<T> extends ComponentPropsWithRef<"div"> {
   sideTextTransKey?: string;
   sideDescription?: string;
   sideDescriptionTransKey?: string;
-  isSelected?: boolean;
   tooltip?: ISheTooltip;
   toggleProps?: ISheToggle;
   checkOnClick?: boolean;

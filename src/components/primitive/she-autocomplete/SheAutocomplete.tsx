@@ -22,9 +22,9 @@ import { Popover, PopoverContent } from "@/components/ui/popover.tsx";
 import { PopoverAnchor } from "@radix-ui/react-popover";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { getCustomProps } from "@/utils/helpers/props-helper.ts";
-import { addItemsId } from "@/utils/helpers/quick-helper.ts";
 import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
 import SheOption from "@/components/primitive/she-option/SheOption.tsx";
+import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
 import { Check } from "lucide-react";
 
 export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
@@ -67,7 +67,10 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
   const [_searchValue, setSearchValue] = useState<string>(null);
   const [_isItemsWithIcons, setIsItemsWithIcons] = useState<boolean>(null);
   const [_isItemsWithColors, setIsItemsWithColors] = useState<boolean>(null);
+  const { setAutoFocus, addItemsId, calculatePopoverWidth } =
+    useComponentUtilities();
 
+  // TODO ---------------------------------------------- all ref-s need to be in props and use "useDefaultRef" logic
   const popoverRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLInputElement>(null);
   const sheAutocompleteProps = getCustomProps<
@@ -106,13 +109,8 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
       setSelected(searchValue);
     }
 
-    _setAutoFocus();
+    setAutoFocus<HTMLInputElement>(autoFocus, triggerRef);
   }, [items, searchValue]);
-
-  useEffect(() => {
-    if (_open) _calculatePopoverWidth();
-    onIsOpen?.(_open);
-  }, [_open]);
 
   useEffect(() => {
     if (typeof isLoading === "boolean" && isLoading !== _loading) {
@@ -127,11 +125,11 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
       _updateIsOpenCondition(isOpen, searchValue);
     }
 
-    _calculatePopoverWidth();
+    calculatePopoverWidth<HTMLInputElement>(popoverRef, triggerRef);
   }, [isOpen, isLoading, disabled]);
 
   useEffect(() => {
-    _setAutoFocus();
+    setAutoFocus<HTMLInputElement>(autoFocus, triggerRef);
   }, [autoFocus]);
 
   // ==================================================================== EVENT
@@ -194,27 +192,10 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
 
   // ==================================================================== PRIVATE
 
-  function _setAutoFocus() {
-    if (autoFocus && triggerRef.current) {
-      setTimeout(() => triggerRef.current.focus());
-    }
-  }
-
-  function _calculatePopoverWidth() {
-    requestAnimationFrame(() => {
-      const popover = popoverRef.current;
-      const trigger = triggerRef.current;
-      if (!popover || !trigger || !trigger.offsetParent) return;
-      popover.style.width = `${trigger.getBoundingClientRect().width}px`;
-    });
-  }
-
   function _updateIsOpenCondition(
     _isOpen: boolean,
     value: string = _searchValue,
   ) {
-    // console.log(_isOpen);
-
     if (isLoading || disabled) {
       setOpen(false);
       return null;
@@ -225,6 +206,9 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     } else {
       setOpen(_isOpen);
     }
+
+    calculatePopoverWidth<HTMLInputElement>(popoverRef, triggerRef);
+    onIsOpen?.(_open);
   }
 
   function _updateIconAndColorColumnCondition(fromItems: ISheOption<string>[]) {
