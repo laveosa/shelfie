@@ -981,8 +981,8 @@ export function PurchaseProductsPage() {
           });
         break;
       case "addVariantGridAction":
-        keepOnlyCards(["manageProductCard", "addVariantCard"]);
-        dispatch(actions.setIsAddVariantCardLoading(true));
+        keepOnlyCards(["manageProductCard"]);
+        dispatch(actions.setIsProductConfigurationCardLoading(true));
         dispatch(actions.setIsVariantGridLoading(true));
         Promise.all([
           productsService.getProductDetailsHandler(payload.productId),
@@ -994,7 +994,7 @@ export function PurchaseProductsPage() {
             payload.productId,
           ),
         ]).then(([productDetails, productTraits, variants]) => {
-          dispatch(actions.setIsAddVariantCardLoading(false));
+          dispatch(actions.setIsProductConfigurationCardLoading(false));
           dispatch(actions.setIsVariantGridLoading(false));
           if (productDetails) {
             dispatch(actions.refreshSelectedProduct(productDetails));
@@ -1531,7 +1531,6 @@ export function PurchaseProductsPage() {
         handleCardAction("variantConfigurationCard");
         break;
       case "closeVariantHistoryCard":
-        console.log("CLICK");
         handleCardAction("variantHistoryCard");
         break;
     }

@@ -68,9 +68,6 @@ export default function PurchaseProductsCard({
 
   function handleAction(actionType: string, payload?: any) {
     switch (actionType) {
-      case "createProduct":
-        onAction("openCreateProductCard");
-        break;
       case "addProductToPurchase":
         onAction("addProductToPurchase", payload);
         break;
@@ -159,7 +156,7 @@ export default function PurchaseProductsCard({
       title={"Manage Purchases"}
       minWidth="1150px"
     >
-      <div className={cs.purchaseProductsPageContent}>
+      <div className={cs.purchaseProductsCardContent}>
         <SheTabs
           defaultValue="purchaseProducts"
           onValueChange={handleTabChange}
@@ -188,7 +185,7 @@ export default function PurchaseProductsCard({
               <SheButton
                 icon={Plus}
                 variant="default"
-                onClick={() => handleAction("createProduct")}
+                onClick={() => onAction("openCreateProductCard")}
                 value="Create Product"
               />
             </TabsList>
