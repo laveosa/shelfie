@@ -112,6 +112,16 @@ export const PurchasesApiService = createApi({
         url: `${ApiUrlEnum.PURCHASES}/${purchaseId}/fiscal-summary`,
       }),
     }),
+    getAllMargins: apiConfig.createQuery<any, void>(builder, {
+      query: () => ({
+        url: `${ApiUrlEnum.MARGIN}/all`,
+      }),
+    }),
+    getMarginForPurchase: apiConfig.createQuery<any, number>(builder, {
+      query: (purchaseId) => ({
+        url: `${ApiUrlEnum.PURCHASES}/${purchaseId}/margin-rules`,
+      }),
+    }),
   }),
 });
 

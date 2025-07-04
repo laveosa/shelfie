@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
-import { PurchaseProductsPageSliceActions as actions } from "@/state/slices/PurchaseProductsPageSlice.ts";
+import { MarginsPageSliceActions as actions } from "@/state/slices/MarginsPageSlice";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
@@ -15,6 +15,8 @@ import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 import useMarginsPageService from "@/pages/products-section/margins-page/useMarginsPageService.ts";
 import cs from "./MarginsPage.module.scss";
 import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
+import MarginForPurchaseCard from "@/components/complex/custom-cards/margin-for-purchase-card/MarginForPurchaseCard.tsx";
+import SelectMarginCard from "@/components/complex/custom-cards/select-margin-card/SelectMarginCard.tsx";
 
 export function MarginsPage() {
   const dispatch = useAppDispatch();
@@ -40,6 +42,10 @@ export function MarginsPage() {
           dispatch(productsActions.refreshSelectedPurchase(res));
         });
     }
+    service.getMarginForPurchaseHandler(purchaseId).then((res) => {
+      dispatch(actions.refreshSelectedMargin(res));
+      console.log("MARGIN", res);
+    });
     if (!productsState.purchaseCounters) {
       dispatch(actions.setIsProductMenuCardLoading(true));
       productsService
@@ -64,6 +70,13 @@ export function MarginsPage() {
       }
     }, 100);
   }
+
+  useEffect(() => {
+    service.getAllMarginsHandler().then((res) => {
+      dispatch(actions.refreshMarginsList(res));
+      console.log("RES", res);
+    });
+  }, []);
 
   function handleCardAction(
     identifier: string,
@@ -143,13 +156,23 @@ export function MarginsPage() {
   }
 
   return (
-    <div className={cs.margingPage}>
+    <div className={cs.marginPage}>
       <ProductMenuCard
         isLoading={state.isProductMenuCardLoading}
         title="Report Purchase"
         itemsCollection="purchases"
         productId={Number(purchaseId)}
         counter={productsState.purchaseCounters}
+      />
+      <MarginForPurchaseCard
+        isLoading={state.isMarginForPurchaseCardLoading}
+        margin={state.selectedMargin}
+        onAction={onAction}
+      />
+      <SelectMarginCard
+        isLoading={state.isSelectMarginCardLoading}
+        margins={state.marginsList}
+        onAction={onAction}
       />
     </div>
   );
