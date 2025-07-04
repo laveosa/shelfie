@@ -213,6 +213,8 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     _isOpen: boolean,
     value: string = _searchValue,
   ) {
+    // console.log(_isOpen);
+
     if (isLoading || disabled) {
       setOpen(false);
       return null;

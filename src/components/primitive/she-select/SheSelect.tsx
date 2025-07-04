@@ -184,8 +184,6 @@ export default function SheSelect<T>({
       const trigger = _triggerRef.current;
       if (!popover || !trigger || !trigger.offsetParent) return;
       popover.style.width = `${trigger.getBoundingClientRect().width}px`;
-
-      console.log(popover);
     });
   }
 
@@ -196,11 +194,13 @@ export default function SheSelect<T>({
 
       return {
         ...item,
-        id: `${
-          item.text && item.text.length > 0
-            ? item.text.replace(/ /g, "_")
-            : "option_"
-        }_${(idx + 1).toString()}`,
+        id:
+          item.id ??
+          `${
+            item.text && item.text.length > 0
+              ? item.text.replace(/ /g, "_")
+              : "option_"
+          }_${(idx + 1).toString()}`,
       };
     });
   }

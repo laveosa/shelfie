@@ -117,7 +117,7 @@ export default function SheMultiSelect<T>(
 
     setItems(tmpItems);
     setSelectedValues(tmpSelectedValues);
-    setBadges(_getSelectedBudges(items, tmpSelectedValues));
+    setBadges(_getSelectedBadges(items, tmpSelectedValues));
     _setAutoFocus();
   }, [items, selectedValues]);
 
@@ -208,7 +208,7 @@ export default function SheMultiSelect<T>(
     });
   }
 
-  function _getSelectedBudges(
+  function _getSelectedBadges(
     fromItems: ISheMultiSelectItem<T>[],
     values: T[],
   ): ISheBadge[] {
@@ -249,7 +249,7 @@ export default function SheMultiSelect<T>(
       });
     });
     setSelectedValues(values);
-    setBadges(_getSelectedBudges(_items, values));
+    setBadges(_getSelectedBadges(_items, values));
     onSelect?.(values);
     onSelectModel?.({
       value: values,

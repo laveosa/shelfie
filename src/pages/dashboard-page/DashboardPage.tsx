@@ -151,13 +151,13 @@ export function DashboardPage() {
 
       <br />
 
-      <SheAutocomplete
+      {/*<SheAutocomplete
         label="Autocomplete"
         tooltip="some text for tooltip"
         items={options}
         // items={optionsSimple}
         onSelectModel={(event) => console.log("onSelectModel: ", event)}
-      />
+      />*/}
 
       <br />
 
@@ -184,13 +184,15 @@ export function DashboardPage() {
         onSelectModel={(value) => console.log("select model: ", value)}
       />*/}
 
-      {/*<div className="flex gap-2 items-center justify-between">
+      <div className="flex gap-2 items-center justify-between">
         <div className="w-full flex">
           <SheMultiSelect<string>
-            items={options}
+            // items={options}
+            items={optionsSimple}
             contextType="badges"
             fullWidth
             showClearBtn
+            isOpen
             onSelect={(value) => console.log("select: ", value)}
             onSelectModel={(value) => console.log("select model: ", value)}
           />
@@ -201,11 +203,22 @@ export function DashboardPage() {
             items={optionsSimple}
             fullWidth
             showClearBtn
+            isOpen
             onSelect={(value) => console.log("select: ", value)}
             onSelectModel={(value) => console.log("select model: ", value)}
           />
         </div>
-      </div>*/}
+        <div className="w-full flex">
+          <SheAutocomplete
+            // items={options}
+            items={optionsSimple}
+            showClearBtn
+            fullWidth
+            isOpen
+            onSelectModel={(event) => console.log("onSelectModel: ", event)}
+          />
+        </div>
+      </div>
 
       <br />
     </div>
