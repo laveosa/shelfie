@@ -188,9 +188,9 @@ export function purchaseVariantsGridColumns(
     {
       id: "nettoPriceGroup",
       accessorKey: "",
-      size: 200,
-      minSize: 200,
-      maxSize: 200,
+      size: 220,
+      minSize: 220,
+      maxSize: 220,
       header: () => (
         <div className="flex items-center">
           <span style={{ marginRight: "40px" }}>Netto Price</span>

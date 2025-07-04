@@ -1,5 +1,7 @@
 import { Layers2, Plus, Shirt } from "lucide-react";
+import { ColumnDef } from "@tanstack/react-table";
 import { useState } from "react";
+import { merge } from "lodash";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import { IPurchaseProductsCard } from "@/const/interfaces/complex-components/custom-cards/IPurchaseProductsCard.ts";
@@ -19,7 +21,6 @@ import {
 import { purchaseProductsGridColumns } from "@/components/complex/grid/purchase-products-grid/PurchaseProductsGridColumns.tsx";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
-import { merge } from "lodash";
 import { AppSliceActions as appActions } from "@/state/slices/AppSlice.ts";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
@@ -28,7 +29,7 @@ import GridItemsFilter from "@/components/complex/grid/grid-items-filter/GridIte
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { purchaseVariantsGridColumns } from "@/components/complex/grid/purchase-variants-grid/PurchaseVariantsGridColumns.tsx";
-import { ColumnDef } from "@tanstack/react-table";
+import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
 
 export default function PurchaseProductsCard({
   isLoading,
@@ -68,9 +69,6 @@ export default function PurchaseProductsCard({
 
   function handleAction(actionType: string, payload?: any) {
     switch (actionType) {
-      case "createProduct":
-        onAction("openCreateProductCard");
-        break;
       case "addProductToPurchase":
         onAction("addProductToPurchase", payload);
         break;
@@ -152,148 +150,154 @@ export default function PurchaseProductsCard({
   }
 
   return (
-    <SheProductCard
-      loading={isLoading}
-      className={cs.purchaseProductsCard}
-      showHeader={false}
-      title={"Manage Purchases"}
-      minWidth="1150px"
+    <div
+      className={`${cs.purchaseProductsCardWrapper} ${isLoading ? cs.cardContentLoading : ""}`}
     >
-      <div className={cs.purchaseProductsPageContent}>
-        <SheTabs
-          defaultValue="purchaseProducts"
-          onValueChange={handleTabChange}
-        >
-          <div className={cs.tabItemsWrapper}>
-            <TabsList className={cs.tabItems}>
-              <div>
-                <TabsTrigger
-                  className={cs.tabItemTrigger}
-                  value="purchaseProducts"
-                >
-                  <div className={cs.tabBlock}>
-                    <Shirt size="16" /> Purchase Products
-                  </div>
-                </TabsTrigger>
-                <TabsTrigger
-                  className={cs.tabItemTrigger}
-                  value="connectProducts"
-                >
-                  <div className={cs.tabBlock}>
-                    <Layers2 size="16" />
-                    Connect Products
-                  </div>
-                </TabsTrigger>
-              </div>
-              <SheButton
-                icon={Plus}
-                variant="default"
-                onClick={() => handleAction("createProduct")}
-                value="Create Product"
-              />
-            </TabsList>
-          </div>
-          <TabsContent value="purchaseProducts">
-            <DndGridDataTable
-              isLoading={isPurchaseProductsGridLoading}
-              columns={
-                purchaseProductsGridColumns(
-                  currencies,
-                  taxes,
-                  activeTab,
-                  handleAction,
-                ) as ColumnDef<DataWithId>[]
-              }
-              data={purchaseProducts}
-              gridModel={purchaseProductsGridModel}
-              sortingItems={sortingOptions}
-              columnsPreferences={preferences}
-              preferenceContext={"productReferences"}
-              skeletonQuantity={purchaseProductsSkeletonQuantity}
-              onApplyColumns={onApplyColumnsHandler}
-              onDefaultColumns={onResetColumnsHandler}
-              onGridRequestChange={handleGridRequestChange}
-            >
-              <GridItemsFilter
-                items={brands}
-                columnName={"Brands"}
-                onSelectionChange={onBrandSelectHandler}
-                getId={(item: BrandModel) => item.brandId}
-                getName={(item: BrandModel) => item.brandName}
-              />
-              <GridItemsFilter
-                items={categories}
-                columnName={"Categories"}
-                onSelectionChange={onCategorySelectHandler}
-                getId={(item: CategoryModel) => item.categoryId}
-                getName={(item: CategoryModel) => item.categoryName}
-              />
-            </DndGridDataTable>
-            <div className={cs.purchaseSummary}>
-              <span className={cs.purchaseSummaryTitle}>Products Summary</span>
-              <div className={cs.purchaseSummaryItems}>
+      {isLoading && <SheLoading className={cs.purchaseProductsCardLoader} />}
+      <SheProductCard
+        className={cs.purchaseProductsCard}
+        showHeader={false}
+        title={"Manage Purchases"}
+        minWidth="1150px"
+      >
+        <div className={cs.purchaseProductsCardContent}>
+          <SheTabs
+            defaultValue="purchaseProducts"
+            onValueChange={handleTabChange}
+          >
+            <div className={cs.tabItemsWrapper}>
+              <TabsList className={cs.tabItems}>
                 <div>
-                  <span className={cs.purchaseSummaryTitle}>Units</span>
-                  <span className={cs.purchaseSummaryItem}>
-                    {`: ${purchaseSummary?.unitsAmount}`}
-                  </span>
+                  <TabsTrigger
+                    className={cs.tabItemTrigger}
+                    value="purchaseProducts"
+                  >
+                    <div className={cs.tabBlock}>
+                      <Shirt size="16" /> Purchase Products
+                    </div>
+                  </TabsTrigger>
+                  <TabsTrigger
+                    className={cs.tabItemTrigger}
+                    value="connectProducts"
+                  >
+                    <div className={cs.tabBlock}>
+                      <Layers2 size="16" />
+                      Connect Products
+                    </div>
+                  </TabsTrigger>
                 </div>
-                <div>
-                  <span className={cs.purchaseSummaryTitle}>Expense</span>
-                  <span className={cs.purchaseSummaryItem}>
-                    {`: ${purchaseSummary?.expense} ${purchaseSummary?.currencyBrief}`}
-                  </span>
-                </div>
-                <div>
-                  <span className={cs.purchaseSummaryTitle}>
-                    Projected value
-                  </span>
-                  <span className={cs.purchaseSummaryItem}>
-                    {`: ${purchaseSummary?.valueAmount} ${purchaseSummary?.currencyBrief}`}
-                  </span>
-                </div>
-              </div>
+                <SheButton
+                  icon={Plus}
+                  variant="default"
+                  onClick={() => onAction("openCreateProductCard")}
+                  value="Create Product"
+                />
+              </TabsList>
             </div>
-          </TabsContent>
-          <TabsContent value="connectProducts">
-            <DndGridDataTable
-              isLoading={isProductsGridLoading}
-              columns={
-                purchaseVariantsGridColumns(
-                  currencies,
-                  taxes,
-                  activeTab,
-                  handleAction,
-                ) as ColumnDef<DataWithId>[]
-              }
-              data={variants}
-              gridModel={variantsGridModel}
-              sortingItems={sortingOptions}
-              columnsPreferences={preferences}
-              preferenceContext={"productReferences"}
-              skeletonQuantity={variantsSkeletonQuantity}
-              onApplyColumns={onApplyColumnsHandler}
-              onDefaultColumns={onResetColumnsHandler}
-              onGridRequestChange={handleGridRequestChange}
-            >
-              <GridItemsFilter
-                items={brands}
-                columnName={"Brands"}
-                onSelectionChange={onBrandSelectHandler}
-                getId={(item: BrandModel) => item.brandId}
-                getName={(item: BrandModel) => item.brandName}
-              />
-              <GridItemsFilter
-                items={categories}
-                columnName={"Categories"}
-                onSelectionChange={onCategorySelectHandler}
-                getId={(item: CategoryModel) => item.categoryId}
-                getName={(item: CategoryModel) => item.categoryName}
-              />
-            </DndGridDataTable>
-          </TabsContent>
-        </SheTabs>
-      </div>
-    </SheProductCard>
+            <TabsContent value="purchaseProducts">
+              <DndGridDataTable
+                isLoading={isPurchaseProductsGridLoading}
+                columns={
+                  purchaseProductsGridColumns(
+                    currencies,
+                    taxes,
+                    activeTab,
+                    handleAction,
+                  ) as ColumnDef<DataWithId>[]
+                }
+                data={purchaseProducts}
+                gridModel={purchaseProductsGridModel}
+                sortingItems={sortingOptions}
+                columnsPreferences={preferences}
+                preferenceContext={"productReferences"}
+                skeletonQuantity={purchaseProductsSkeletonQuantity}
+                onApplyColumns={onApplyColumnsHandler}
+                onDefaultColumns={onResetColumnsHandler}
+                onGridRequestChange={handleGridRequestChange}
+              >
+                <GridItemsFilter
+                  items={brands}
+                  columnName={"Brands"}
+                  onSelectionChange={onBrandSelectHandler}
+                  getId={(item: BrandModel) => item.brandId}
+                  getName={(item: BrandModel) => item.brandName}
+                />
+                <GridItemsFilter
+                  items={categories}
+                  columnName={"Categories"}
+                  onSelectionChange={onCategorySelectHandler}
+                  getId={(item: CategoryModel) => item.categoryId}
+                  getName={(item: CategoryModel) => item.categoryName}
+                />
+              </DndGridDataTable>
+              <div className={cs.purchaseSummary}>
+                <span className={cs.purchaseSummaryTitle}>
+                  Products Summary
+                </span>
+                <div className={cs.purchaseSummaryItems}>
+                  <div>
+                    <span className={cs.purchaseSummaryTitle}>Units</span>
+                    <span className={cs.purchaseSummaryItem}>
+                      {`: ${purchaseSummary?.unitsAmount}`}
+                    </span>
+                  </div>
+                  <div>
+                    <span className={cs.purchaseSummaryTitle}>Expense</span>
+                    <span className={cs.purchaseSummaryItem}>
+                      {`: ${purchaseSummary?.expense} ${purchaseSummary?.currencyBrief}`}
+                    </span>
+                  </div>
+                  <div>
+                    <span className={cs.purchaseSummaryTitle}>
+                      Projected value
+                    </span>
+                    <span className={cs.purchaseSummaryItem}>
+                      {`: ${purchaseSummary?.valueAmount} ${purchaseSummary?.currencyBrief}`}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </TabsContent>
+            <TabsContent value="connectProducts">
+              <DndGridDataTable
+                isLoading={isProductsGridLoading}
+                columns={
+                  purchaseVariantsGridColumns(
+                    currencies,
+                    taxes,
+                    activeTab,
+                    handleAction,
+                  ) as ColumnDef<DataWithId>[]
+                }
+                data={variants}
+                gridModel={variantsGridModel}
+                sortingItems={sortingOptions}
+                columnsPreferences={preferences}
+                preferenceContext={"productReferences"}
+                skeletonQuantity={variantsSkeletonQuantity}
+                onApplyColumns={onApplyColumnsHandler}
+                onDefaultColumns={onResetColumnsHandler}
+                onGridRequestChange={handleGridRequestChange}
+              >
+                <GridItemsFilter
+                  items={brands}
+                  columnName={"Brands"}
+                  onSelectionChange={onBrandSelectHandler}
+                  getId={(item: BrandModel) => item.brandId}
+                  getName={(item: BrandModel) => item.brandName}
+                />
+                <GridItemsFilter
+                  items={categories}
+                  columnName={"Categories"}
+                  onSelectionChange={onCategorySelectHandler}
+                  getId={(item: CategoryModel) => item.categoryId}
+                  getName={(item: CategoryModel) => item.categoryName}
+                />
+              </DndGridDataTable>
+            </TabsContent>
+          </SheTabs>
+        </div>
+      </SheProductCard>
+    </div>
   );
 }

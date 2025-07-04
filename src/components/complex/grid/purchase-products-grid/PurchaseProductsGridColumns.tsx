@@ -73,9 +73,9 @@ export function purchaseProductsGridColumns(
     {
       accessorKey: "variantName",
       header: "Product Name",
-      size: 70,
-      minSize: 70,
-      maxSize: 70,
+      size: 50,
+      minSize: 50,
+      maxSize: 50,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("variantName")}>
@@ -115,9 +115,9 @@ export function purchaseProductsGridColumns(
     {
       accessorKey: "brand",
       header: "Brand",
-      size: 50,
-      minSize: 50,
-      maxSize: 50,
+      size: 40,
+      minSize: 40,
+      maxSize: 40,
       cell: ({ row }) => {
         const brand: BrandModel = row.getValue("brand");
         return (
@@ -138,9 +138,9 @@ export function purchaseProductsGridColumns(
     {
       accessorKey: "traitOptions",
       header: "Details",
-      size: 50,
-      minSize: 50,
-      maxSize: 50,
+      size: 40,
+      minSize: 40,
+      maxSize: 40,
       cell: ({ row }) => {
         const traitOptions = row.original.traitOptions || [];
 
@@ -187,9 +187,9 @@ export function purchaseProductsGridColumns(
     },
     {
       accessorKey: "",
-      size: 200,
-      minSize: 200,
-      maxSize: 200,
+      size: 220,
+      minSize: 220,
+      maxSize: 220,
       header:
         activeTab === "connectProducts"
           ? "Quantity to add"
