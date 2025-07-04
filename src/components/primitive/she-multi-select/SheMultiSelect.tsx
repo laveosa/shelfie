@@ -39,16 +39,17 @@ import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
 export default function SheMultiSelect<T>(
   props: ISheMultiSelect<T>,
 ): JSX.Element {
+  // ==================================================================== PROPS
   const {
     popoverClassName = "",
     popoverStyle,
     items,
     hideSelectAll,
     selectedValues,
-    emptySearchPlaceholder = "no data to display",
-    emptySearchPlaceholderTransKey,
+    emptySearchPlaceholder = "no data to display...",
+    emptySearchPlaceholderTransKey = "PLACE_VALID_TRANS_KEY",
     selectAllPlaceholder = "select all",
-    selectAllPlaceholderTransKey,
+    selectAllPlaceholderTransKey = "PLACE_VALID_TRANS_KEY",
     isOpen,
     isLoading,
     disabled,
@@ -59,24 +60,6 @@ export default function SheMultiSelect<T>(
     onSelect,
     onSelectModel,
   } = props;
-
-  const [_items, setItems] = useState<ISheMultiSelectItem<T>[]>(null);
-  const [_selectedValues, setSelectedValues] = useState<T[]>([]);
-  const [_badges, setBadges] = useState<ISheBadge[]>(null);
-  const [_open, setOpen] = useState<boolean>(null);
-  const [_loading, setLoading] = useState<boolean>(null);
-  const [_searchValue, setSearchValue] = useState<string>(null);
-  const [_isItemsWithIcons, setIsItemsWithIcons] = useState<boolean>(null);
-  const [_isItemsWithColors, setIsItemsWithColors] = useState<boolean>(null);
-  const { setAutoFocus, addItemsId, calculatePopoverWidth } =
-    useComponentUtilities();
-
-  // TODO ---------------------------------------------- all ref-s need to be in props and use "useDefaultRef" logic
-  const popoverRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLButtonElement>(null);
-  const searchRef = useRef<HTMLInputElement>(null);
-  const ariaDescribedbyId = `${generateId()}_MULTI_SELECT_ID`;
-
   const sheMultiSelectProps = getCustomProps<
     ISheMultiSelect<T>,
     ISheMultiSelect<T>
@@ -95,6 +78,30 @@ export default function SheMultiSelect<T>(
     SheMultiSelectFooterDefaultModel,
   ]);
 
+  // ==================================================================== STATE MANAGEMENT
+  const [_items, setItems] = useState<ISheMultiSelectItem<T>[]>(null);
+  const [_selectedValues, setSelectedValues] = useState<T[]>([]);
+  const [_badges, setBadges] = useState<ISheBadge[]>(null);
+  const [_open, setOpen] = useState<boolean>(null);
+  const [_loading, setLoading] = useState<boolean>(null);
+  const [_searchValue, setSearchValue] = useState<string>(null);
+
+  // TODO ---------------------------------------- transfer this props and logic to get values for them in to "useComponentUtilities" hook
+  const [_isItemsWithIcons, setIsItemsWithIcons] = useState<boolean>(null);
+  const [_isItemsWithColors, setIsItemsWithColors] = useState<boolean>(null);
+
+  // ==================================================================== REFS
+  // TODO ---------------------------------------------- all ref-s need to be in props and use "useDefaultRef" logic
+  const popoverRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
+
+  // ==================================================================== UTILITIES FUNCTIONS
+  const { setAutoFocus, addItemsId, calculatePopoverWidth } =
+    useComponentUtilities();
+  const ariaDescribedbyId = `${generateId()}_MULTI_SELECT_ID`;
+
+  // ==================================================================== DEPENDENCIES
   useEffect(() => {
     let tmpItems: ISheMultiSelectItem<T>[] = _items;
     let tmpSelectedValues: T[] = _selectedValues;

@@ -34,8 +34,8 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
     triggerRef,
     label,
     labelTransKey,
-    placeholder,
-    placeholderTransKey,
+    placeholder = "select item...",
+    placeholderTransKey = "PLACE_VALID_TRANS_KEY",
     icon,
     selected,
     items,
@@ -74,8 +74,8 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
   // TODO ---------------------------------------------- all ref-s need to be in props and use "useDefaultRef" logic
   const _triggerRef = useDefaultRef<HTMLInputElement>(triggerRef);
   const popoverRef = useRef<HTMLDivElement>(null);
-  const ariaDescribedbyId = `${generateId()}_SELECT_ID`;
-  // ----------------------------------------------- UTILITIES FUNCTIONS
+
+  // ==================================================================== UTILITIES FUNCTIONS
   const {
     translate,
     updateSelectedItems,
@@ -83,6 +83,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
     addItemsId,
     calculatePopoverWidth,
   } = useComponentUtilities();
+  const ariaDescribedbyId = `${generateId()}_SELECT_ID`;
 
   // ==================================================================== DEPENDENCIES
   useEffect(() => {
@@ -300,11 +301,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
                   aria-describedby={ariaDescribedbyId}
                 />
                 <SelectValue
-                  placeholder={
-                    placeholder
-                      ? translate(placeholderTransKey, placeholder)
-                      : "select item..."
-                  }
+                  placeholder={translate(placeholderTransKey, placeholder)}
                 />
               </SelectTrigger>
               {_items?.length > 0 && (

@@ -26,7 +26,7 @@ export default function SheMultiSelectTrigger({
   badgeListProps,
   contextType = "string",
   placeholder = "select items...",
-  placeholderTransKey = "REPLACE_WIDTH_VALID_TRANS_KEY_FOR_DEFAULT_PLACEHOLDER",
+  placeholderTransKey = "PLACE_VALID_TRANS_KEY",
   maxCount,
   autoFocus,
   asChild,

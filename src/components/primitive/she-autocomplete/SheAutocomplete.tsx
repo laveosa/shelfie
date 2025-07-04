@@ -28,6 +28,7 @@ import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
 import { Check } from "lucide-react";
 
 export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
+  // ==================================================================== PROPS
   const {
     id,
     className = "",
@@ -59,20 +60,6 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     onSelectModel,
     onIsOpen,
   } = props;
-
-  const [_items, setItems] = useState<ISheOption<string>[]>(null);
-  const [_selected, setSelected] = useState<string>(null);
-  const [_open, setOpen] = useState<boolean>(null);
-  const [_loading, setLoading] = useState<boolean>(null);
-  const [_searchValue, setSearchValue] = useState<string>(null);
-  const [_isItemsWithIcons, setIsItemsWithIcons] = useState<boolean>(null);
-  const [_isItemsWithColors, setIsItemsWithColors] = useState<boolean>(null);
-  const { setAutoFocus, addItemsId, calculatePopoverWidth } =
-    useComponentUtilities();
-
-  // TODO ---------------------------------------------- all ref-s need to be in props and use "useDefaultRef" logic
-  const popoverRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLInputElement>(null);
   const sheAutocompleteProps = getCustomProps<
     ISheAutocomplete,
     ISheAutocomplete
@@ -81,6 +68,27 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     props,
     SheInputDefaultModel,
   );
+
+  // ==================================================================== STATE MANAGEMENT
+  const [_items, setItems] = useState<ISheOption<string>[]>(null);
+  const [_selected, setSelected] = useState<string>(null);
+  const [_open, setOpen] = useState<boolean>(null);
+  const [_loading, setLoading] = useState<boolean>(null);
+  const [_searchValue, setSearchValue] = useState<string>(null);
+
+  // TODO ---------------------------------------- transfer this props and logic to get values for them in to "useComponentUtilities" hook
+  const [_isItemsWithIcons, setIsItemsWithIcons] = useState<boolean>(null);
+  const [_isItemsWithColors, setIsItemsWithColors] = useState<boolean>(null);
+
+  // ==================================================================== REFS
+  // TODO ---------------------------------------------- all ref-s need to be in props and use "useDefaultRef" logic
+  const popoverRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLInputElement>(null);
+
+  // ==================================================================== UTILITIES FUNCTIONS
+  const { setAutoFocus, addItemsId, calculatePopoverWidth } =
+    useComponentUtilities();
+
   const filteredItems: ISheOption<string>[] = useMemo(() => {
     if (!_items || _items.length === 0) return [];
 
@@ -91,6 +99,7 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     );
   }, [_items, _searchValue]);
 
+  // ==================================================================== DEPENDENCIES
   useEffect(() => {
     _updateComponentStyles();
   }, []);
