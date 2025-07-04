@@ -12,11 +12,12 @@ import { IPurchaseProductsPageSlice } from "@/const/interfaces/store-slices/IPur
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
-import useMarginsPageService from "@/pages/products-section/margins-page/useMarginsPageService.ts";
+import { useMarginsPageService } from "@/pages/products-section/margins-page/useMarginsPageService.ts";
 import cs from "./MarginsPage.module.scss";
 import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
 import MarginForPurchaseCard from "@/components/complex/custom-cards/margin-for-purchase-card/MarginForPurchaseCard.tsx";
 import SelectMarginCard from "@/components/complex/custom-cards/select-margin-card/SelectMarginCard.tsx";
+import MarginConfigurationCard from "@/components/complex/custom-cards/margin-configuration-card/MarginConfigurationCard.tsx";
 
 export function MarginsPage() {
   const dispatch = useAppDispatch();
@@ -164,16 +165,43 @@ export function MarginsPage() {
         productId={Number(purchaseId)}
         counter={productsState.purchaseCounters}
       />
-      <MarginForPurchaseCard
-        isLoading={state.isMarginForPurchaseCardLoading}
-        margin={state.selectedMargin}
-        onAction={onAction}
-      />
-      <SelectMarginCard
-        isLoading={state.isSelectMarginCardLoading}
-        margins={state.marginsList}
-        onAction={onAction}
-      />
+
+      {state.activeCards?.includes("marginForPurchaseCard") && (
+        <div
+          ref={(el) => {
+            cardRefs.current["marginForPurchaseCard"] = el;
+          }}
+        >
+          <MarginForPurchaseCard
+            isLoading={state.isMarginForPurchaseCardLoading}
+            margin={state.selectedMargin}
+            onAction={onAction}
+          />
+        </div>
+      )}
+
+      {state.activeCards?.includes("selectMarginCard") && (
+        <div
+          ref={(el) => {
+            cardRefs.current["selectMarginCard"] = el;
+          }}
+        >
+          <SelectMarginCard
+            isLoading={state.isSelectMarginCardLoading}
+            margins={state.marginsList}
+            onAction={onAction}
+          />
+        </div>
+      )}
+      {state.activeCards?.includes("marginConfigurationCard") && (
+        <div
+          ref={(el) => {
+            cardRefs.current["marginConfigurationCard"] = el;
+          }}
+        >
+          <MarginConfigurationCard />
+        </div>
+      )}
     </div>
   );
 }

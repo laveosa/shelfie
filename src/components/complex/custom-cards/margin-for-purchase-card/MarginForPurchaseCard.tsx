@@ -26,11 +26,7 @@ export default function MarginForPurchaseCard({
       <SheProductCard
         loading={isLoading}
         title="Margin For Purchase"
-        // showPrimaryButton={true}
         primaryButtonTitle="Add Variant"
-        // onPrimaryButtonClick={}
-        // showSecondaryButton={true}
-        onSecondaryButtonClick={() => onAction("closeAddVariantCard")}
         className={cs.marginForPurchaseCard}
         {...props}
       >
