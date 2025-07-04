@@ -165,21 +165,11 @@ export function MarginsPage() {
         productId={Number(purchaseId)}
         counter={productsState.purchaseCounters}
       />
-
-      {state.activeCards?.includes("marginForPurchaseCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["marginForPurchaseCard"] = el;
-          }}
-        >
-          <MarginForPurchaseCard
-            isLoading={state.isMarginForPurchaseCardLoading}
-            margin={state.selectedMargin}
-            onAction={onAction}
-          />
-        </div>
-      )}
-
+      <MarginForPurchaseCard
+        isLoading={state.isMarginForPurchaseCardLoading}
+        margin={state.selectedMargin}
+        onAction={onAction}
+      />
       {state.activeCards?.includes("selectMarginCard") && (
         <div
           ref={(el) => {
