@@ -1,7 +1,8 @@
 import { ColumnDef, Row } from "@tanstack/react-table";
+import { Trash2 } from "lucide-react";
 
 import { Switch } from "@/components/ui/switch.tsx";
-import ManageVariantsGridColumnActions from "@/components/complex/grid/manage-variants-grid/ManageVariantsGridColumnActions.tsx";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 
 export const ManageVariantsGridColumns = (
   onAction: (
@@ -88,15 +89,59 @@ export const ManageVariantsGridColumns = (
     },
   },
   {
-    id: "rowActions",
+    id: "manage",
     header: "Actions",
+    minSize: 100,
+    maxSize: 100,
     cell: ({ row, table }) => {
+      const meta = table.options.meta as {
+        setLoadingRow: (rowId: string, loading: boolean) => void;
+        isRowLoading: (rowId: string) => boolean;
+      };
       return (
-        <ManageVariantsGridColumnActions
-          row={row}
-          onAction={onAction}
-          table={table}
-        />
+        <div onClick={(e) => e.stopPropagation()}>
+          <SheButton
+            value="Manage"
+            onClick={() =>
+              onAction(
+                "manageVariant",
+                row.id,
+                meta?.setLoadingRow,
+                row.original,
+              )
+            }
+            disabled={meta?.isRowLoading(row.id)}
+          />
+        </div>
+      );
+    },
+  },
+  {
+    id: "delete",
+    header: "",
+    minSize: 60,
+    maxSize: 60,
+    cell: ({ row, table }) => {
+      const meta = table.options.meta as {
+        setLoadingRow: (rowId: string, loading: boolean) => void;
+        isRowLoading: (rowId: string) => boolean;
+      };
+      return (
+        <div onClick={(e) => e.stopPropagation()}>
+          <SheButton
+            icon={Trash2}
+            variant="secondary"
+            onClick={() =>
+              onAction(
+                "deleteVariant",
+                row.id,
+                meta?.setLoadingRow,
+                row.original,
+              )
+            }
+            disabled={meta?.isRowLoading(row.id)}
+          />
+        </div>
       );
     },
   },
