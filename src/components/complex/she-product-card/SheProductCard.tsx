@@ -1,6 +1,6 @@
+import { useEffect, useRef, useState } from "react";
 import { PanelLeft, X } from "lucide-react";
 import { Trans } from "react-i18next";
-import { useState } from "react";
 
 import cs from "./SheProductCard.module.scss";
 import { ISheProductCard } from "@/const/interfaces/complex-components/ISheProductCard.ts";
@@ -35,6 +35,19 @@ export default function SheProductCard({
   onSecondaryButtonClick,
 }: ISheProductCard) {
   const [isMinimized, setIsMinimized] = useState(false);
+  const cardContentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const element = cardContentRef.current;
+    if (element) {
+      const hasScrollbar = element.scrollHeight > element.clientHeight;
+      if (hasScrollbar) {
+        element.classList.add(cs.hasScrollbar);
+      } else {
+        element.classList.remove(cs.hasScrollbar);
+      }
+    }
+  }, [children]);
 
   function onMinimizeCardHandler() {
     setIsMinimized((prev) => !prev);
@@ -100,6 +113,7 @@ export default function SheProductCard({
       )}
       {loading && <SheLoading />}
       <div
+        ref={cardContentRef}
         className={`${cs.cardContent} ${loading ? cs.cardContentLoading : ""} ${
           showPrimaryButton || showSecondaryButton
             ? cs.cardContentWithFooter

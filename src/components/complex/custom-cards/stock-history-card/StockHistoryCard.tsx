@@ -1,14 +1,14 @@
+import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
 
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./StockHistoryCard.module.scss";
 import {
   DataWithId,
   DndGridDataTable,
 } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import { StockHistoryGridColumns } from "@/components/complex/grid/stock-history-grid/StockHistoryGridColumns.tsx";
+import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import { IVariantHistoryCard } from "@/const/interfaces/complex-components/custom-cards/IVariantHistoryCard.ts";
-import { ColumnDef } from "@tanstack/react-table";
+import { StockHistoryGridColumns } from "@/components/complex/grid/stock-history-grid/StockHistoryGridColumns.tsx";
 
 export default function StockHistoryCard({
   isLoading,
