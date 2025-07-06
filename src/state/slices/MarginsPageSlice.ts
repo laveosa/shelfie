@@ -13,6 +13,7 @@ const initialState: IMarginsPageSlice = {
   activeCards: [],
   marginsList: [],
   selectedMargin: null,
+  managedMargin: null,
 };
 
 //----------------------------------------------------- LOADERS
@@ -82,6 +83,13 @@ function refreshSelectedMargin(
   state.selectedMargin = action?.payload || state.selectedMargin;
 }
 
+function refreshManagedMargin(
+  state: IMarginsPageSlice,
+  action: PayloadAction<MarginModel>,
+) {
+  state.managedMargin = action?.payload || state.selectedMargin;
+}
+
 const MarginsPageSlice = createSlice({
   name: StoreSliceEnum.MARGINS,
   initialState,
@@ -95,6 +103,7 @@ const MarginsPageSlice = createSlice({
     refreshActiveCards,
     refreshMarginsList,
     refreshSelectedMargin,
+    refreshManagedMargin,
   },
 });
 

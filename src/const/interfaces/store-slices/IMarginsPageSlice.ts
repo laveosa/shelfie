@@ -10,4 +10,5 @@ export interface IMarginsPageSlice {
   activeCards?: any[];
   marginsList?: MarginModel[];
   selectedMargin?: MarginModel;
+  managedMargin?: MarginModel;
 }

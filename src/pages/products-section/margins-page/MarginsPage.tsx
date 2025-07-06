@@ -46,7 +46,6 @@ export function MarginsPage() {
     }
     service.getMarginForPurchaseHandler(purchaseId).then((res) => {
       dispatch(actions.refreshSelectedMargin(res));
-      console.log("MARGIN", res);
     });
     if (!productsState.purchaseCounters) {
       dispatch(actions.setIsProductMenuCardLoading(true));
@@ -54,14 +53,11 @@ export function MarginsPage() {
         .getPurchaseCountersHandler(Number(purchaseId))
         .then(() => dispatch(actions.setIsProductMenuCardLoading(false)));
     }
-    if (productsState.currenciesList.length === 0) {
-      productsService.getCurrenciesListHandler();
+    if (state.marginsList.length === 0) {
+      service.getAllMarginsHandler().then((res) => {
+        dispatch(actions.refreshMarginsList(res));
+      });
     }
-    if (productsState.taxesList.length === 0) {
-      productsService.getTaxesListHandler();
-    }
-    productsService.getTraitsForFilterHandler();
-    dispatch(actions.refreshActiveCards([]));
   }, [purchaseId]);
 
   function scrollToCard(cardId: string) {
@@ -72,13 +68,6 @@ export function MarginsPage() {
       }
     }, 100);
   }
-
-  useEffect(() => {
-    service.getAllMarginsHandler().then((res) => {
-      dispatch(actions.refreshMarginsList(res));
-      console.log("RES", res);
-    });
-  }, []);
 
   function handleCardAction(
     identifier: string,
@@ -170,6 +159,45 @@ export function MarginsPage() {
             dispatch(actions.refreshMarginsList(res.items));
           });
         break;
+      case "selectMargin":
+        dispatch(actions.setIsMarginForPurchaseCardLoading(true));
+        service
+          .connectMarginToPurchaseHandler(purchaseId, payload.marginId)
+          .then((res) => {
+            dispatch(actions.setIsMarginForPurchaseCardLoading(false));
+            handleCardAction("selectMarginCard");
+            if (res) {
+              dispatch(actions.refreshSelectedMargin(res));
+              addToast({
+                text: "Margin added successfully",
+                type: "success",
+              });
+            } else {
+              addToast({
+                text: `${res.error.data.detail}`,
+                type: "error",
+              });
+            }
+          });
+        break;
+      case "detachMargin":
+        dispatch(actions.setIsMarginForPurchaseCardLoading(true));
+        service.detachMarginHandler(purchaseId).then((res) => {
+          dispatch(actions.setIsMarginForPurchaseCardLoading(false));
+          if (!res.error) {
+            dispatch(actions.refreshSelectedMargin(null));
+            addToast({
+              text: "Margin detached successfully",
+              type: "success",
+            });
+          } else {
+            addToast({
+              text: `${res.error.data.detail}`,
+              type: "error",
+            });
+          }
+        });
+        break;
       case "openCreateMarginCard":
         handleCardAction("marginConfigurationCard", true);
         break;
@@ -182,7 +210,7 @@ export function MarginsPage() {
       case "createMargin":
         dispatch(actions.setIsMarginConfigurationCardLoading(true));
         service.createMarginHandler(payload).then((res) => {
-          dispatch(actions.refreshSelectedMargin(res));
+          dispatch(actions.refreshManagedMargin(res));
           if (res) {
             service.updateMarginHandler(res.marginId, payload);
           }
@@ -198,7 +226,7 @@ export function MarginsPage() {
         service.getMarginDetailsHandler(payload.marginId).then((res) => {
           dispatch(actions.setIsMarginConfigurationCardLoading(false));
           if (res) {
-            dispatch(actions.refreshSelectedMargin(res));
+            dispatch(actions.refreshManagedMargin(res));
             dispatch(
               actions.refreshMarginsList(
                 setSelectedGridItem(
@@ -252,7 +280,7 @@ export function MarginsPage() {
         >
           <MarginConfigurationCard
             isLoading={state.isProductConfigurationCardLoading}
-            margin={state.selectedMargin}
+            margin={state.managedMargin}
             onAction={onAction}
           />
         </div>

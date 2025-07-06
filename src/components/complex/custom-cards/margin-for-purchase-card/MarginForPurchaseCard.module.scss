@@ -7,4 +7,35 @@
       gap: 20px;
     }
   }
+
+  .marginDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .marginActions {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .marginDetailsConfiguration {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .marginDetailsItems {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        .marginDetailsItem {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+        }
+      }
+    }
+  }
 }

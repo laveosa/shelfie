@@ -184,6 +184,24 @@ export const PurchasesApiService = createApi({
         method: "PATCH",
       }),
     }),
+    connectMarginToPurchase: apiConfig.createMutation<
+      any,
+      {
+        purchaseId: number;
+        marginId: number;
+      }
+    >(builder, {
+      query: ({ purchaseId, marginId }) => ({
+        url: `${ApiUrlEnum.PURCHASES}/${purchaseId}/margin-rules/${marginId}`,
+        method: "PATCH",
+      }),
+    }),
+    detachMargin: apiConfig.createMutation<void, number>(builder, {
+      query: (purchaseId: number) => ({
+        url: `${ApiUrlEnum.PURCHASES}/${purchaseId}/margin-rules`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 

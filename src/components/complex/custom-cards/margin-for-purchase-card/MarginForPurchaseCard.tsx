@@ -14,6 +14,7 @@ import {
 import { Separator } from "@/components/ui/separator.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheToggle from "@/components/primitive/she-toggle/SheToggle.tsx";
+import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
 
 export default function MarginForPurchaseCard({
   isLoading,
@@ -47,11 +48,12 @@ export default function MarginForPurchaseCard({
           {margin && (
             <div className={cs.marginDetails}>
               <div className={cs.marginActions}>
-                <span className="she-text">{margin.marginName}</span>
+                <span className="she-title">{margin.marginName}</span>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <SheButton
-                      variant="ghost"
+                      variant="secondary"
+                      minWidth="40px"
                       className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
                     >
                       <MoreHorizontal />
@@ -76,7 +78,11 @@ export default function MarginForPurchaseCard({
                 <span className="she-title">Configure Margin Details</span>
                 <div className={cs.marginDetailsItems}>
                   <div className={cs.marginDetailsItem}>
-                    <SheInput label="Desired profit (in %)" />
+                    <SheInput
+                      value={margin.marginRule.desiredProfit}
+                      label="Desired profit (in %)"
+                      disabled={true}
+                    />
                     <span className="she-subtext">
                       The profit is calculated based on the purchase price,
                       other percentages do not intersect with it, but they
@@ -84,7 +90,11 @@ export default function MarginForPurchaseCard({
                     </span>
                   </div>
                   <div className={cs.marginDetailsItem}>
-                    <SheInput label="Planned discount (in %)" />
+                    <SheInput
+                      value={margin.marginRule.plannedDiscount}
+                      label="Planned discount (in %)"
+                      disabled={true}
+                    />
                     <span className="she-subtext">
                       Planned discount is the part of the price you are planning
                       to eventually reduce. For example, you can add 20 pln to
@@ -94,7 +104,11 @@ export default function MarginForPurchaseCard({
                     </span>
                   </div>
                   <div className={cs.marginDetailsItem}>
-                    <SheInput label="Fixed costs (in PLN)" />
+                    <SheInput
+                      value={margin.marginRule.fixedCosts}
+                      label="Fixed costs (in PLN)"
+                      disabled={true}
+                    />
                     <span className="she-subtext">
                       If you have fixed costs associated with every single
                       purchase, this is a place to add them in. The fixed costs
@@ -105,13 +119,19 @@ export default function MarginForPurchaseCard({
                   </div>
                   <div>
                     <SheToggle
-                      label="Round Brutto price to full number"
+                      type={SheToggleTypeEnum.SWITCH}
+                      checked={margin.marginRule.roundTo}
+                      disabled={true}
+                      text="Round Brutto price to full number"
                       description="(This configuration rounds up all cents to full number)"
                     />
                   </div>
                   <div>
                     <SheToggle
-                      label="Jump the price to nearest 9"
+                      type={SheToggleTypeEnum.SWITCH}
+                      checked={margin.marginRule.nearest9}
+                      disabled={true}
+                      text="Jump the price to nearest 9"
                       description="(This configuration changes the last digit of the price to nearest 9. For example 61 will become 59, but 39 will become 39)"
                     />
                   </div>
