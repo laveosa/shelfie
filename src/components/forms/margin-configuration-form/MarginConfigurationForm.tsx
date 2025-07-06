@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect } from "react";
+import _ from "lodash";
 
 import { IPurchaseProductsForm } from "@/const/interfaces/forms/IPurchaseProductsForm.ts";
 import useAppForm from "@/utils/hooks/useAppForm.ts";
@@ -73,7 +74,7 @@ export default function MarginConfigurationForm<T>({
             </SheFormItem>
           )}
         />
-        <span className={`${cs.marginConfigurationText} she-title`}>
+        <span className={`${cs.marginConfigurationTitle} she-title`}>
           Configure Margin Details
         </span>
         <FormField
@@ -156,7 +157,11 @@ export default function MarginConfigurationForm<T>({
                 {...field}
                 placeholder="Netto price"
                 text="Round Brutto price to full number"
-                checked={data?.marginRule.roundTo || false}
+                checked={
+                  _.isNil(data?.marginRule.roundTo)
+                    ? false
+                    : data?.marginRule.roundTo
+                }
                 description="(This configuration rounds up all cents to full number)"
                 type={SheToggleTypeEnum.SWITCH}
                 onChecked={(value) => {
@@ -176,7 +181,11 @@ export default function MarginConfigurationForm<T>({
                 {...field}
                 placeholder="Netto price"
                 text="Jump the price to nearest 9"
-                checked={data?.marginRule.nearest9 || false}
+                checked={
+                  _.isNil(data?.marginRule.nearest9)
+                    ? false
+                    : data?.marginRule.nearest9
+                }
                 description="(This configuration changes the last digit of the price to nearest 9. For example 61 will become 59, but 39 will become 39)"
                 type={SheToggleTypeEnum.SWITCH}
                 onChecked={(value) => {
@@ -187,12 +196,14 @@ export default function MarginConfigurationForm<T>({
             </SheFormItem>
           )}
         />
-        <SheButton value="Cancel" variant="secondary" onClick={onCancel} />
-        <SheButton
-          value={data ? "Update Margin" : "Create Margin"}
-          type="submit"
-          disabled={!isFormValid}
-        />
+        <div className={cs.buttonBlock}>
+          <SheButton value="Cancel" variant="secondary" onClick={onCancel} />
+          <SheButton
+            value={data ? "Update Margin" : "Create Margin"}
+            type="submit"
+            disabled={!isFormValid}
+          />
+        </div>
       </SheForm>
     </div>
   );

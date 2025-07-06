@@ -1,8 +1,6 @@
+import { Circle, CircleCheckBig, CogIcon } from "lucide-react";
 import { ColumnDef, Row } from "@tanstack/react-table";
-import { Circle, CircleCheckBig, CogIcon, ImageIcon } from "lucide-react";
 
-import placeholderImage from "@/assets/images/placeholder-image.png";
-import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import cs from "./MarginsListGridColumns.module.scss";
@@ -55,75 +53,20 @@ export function MarginsListGridColumns({
       },
     },
     {
-      id: "supplierName",
+      id: "marginName",
       header: "Margin name",
       size: 150,
       minSize: 150,
       maxSize: 150,
       cell: ({ row }) => {
-        const imageUrl: string = row.original.thumbnailUrl;
-        const name: string = row.original.supplierName;
-        const address1: string = row.original.addressLine1;
-        const address2: string = row.original.addressLine2;
         return (
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "20px",
-              marginLeft: "-8px",
-            }}
+          <SheTooltip
+            delayDuration={200}
+            text={row.original.marginName}
+            className="max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap"
           >
-            <div>
-              {imageUrl ? (
-                <img
-                  src={imageUrl || placeholderImage}
-                  alt={name || "Supplier"}
-                  className="object-cover rounded-md w-full h-full"
-                  style={{ width: "48px", height: "48px" }}
-                />
-              ) : (
-                <div
-                  style={{
-                    width: "48px",
-                    height: "48px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <SheIcon icon={ImageIcon} maxWidth="30px" />
-                </div>
-              )}
-            </div>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <SheTooltip
-                delayDuration={200}
-                text={name}
-                className="max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap"
-              >
-                <span className="she-text">{name}</span>
-              </SheTooltip>
-              {address1 && (
-                <SheTooltip
-                  delayDuration={200}
-                  text={address1}
-                  className="max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap"
-                >
-                  <span className="she-subtext">{address1}</span>
-                </SheTooltip>
-              )}
-              {address2 && (
-                <SheTooltip
-                  delayDuration={200}
-                  text={address2}
-                  className="max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap"
-                >
-                  <span className="she-subtext">{address2}</span>
-                </SheTooltip>
-              )}
-            </div>
-          </div>
+            <span className="she-text">{row.original.marginName}</span>
+          </SheTooltip>
         );
       },
     },
@@ -138,24 +81,20 @@ export function MarginsListGridColumns({
           isRowLoading: (rowId: string) => boolean;
         };
 
-        const handleManageClick = (e) => {
-          e.stopPropagation();
-          e.preventDefault();
-          onGridAction(
-            "manageMargin",
-            row.id,
-            meta?.setLoadingRow,
-            row.original,
-          );
-        };
-
         return (
           <div onClick={(e) => e.stopPropagation()}>
             <SheButton
               icon={CogIcon}
               value="Manage"
               variant="secondary"
-              onClick={handleManageClick}
+              onClick={() =>
+                onGridAction(
+                  "manageMargin",
+                  row.id,
+                  meta?.setLoadingRow,
+                  row.original,
+                )
+              }
               disabled={meta?.isRowLoading(row.id)}
             />
           </div>

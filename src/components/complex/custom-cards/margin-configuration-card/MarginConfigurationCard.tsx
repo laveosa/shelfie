@@ -22,6 +22,7 @@ export default function MarginConfigurationCard({
         <MarginConfigurationForm
           data={margin}
           onSubmit={(formData) => onAction("createMargin", formData)}
+          onCancel={() => onAction("closeMarginConfigurationCard")}
         />
       </div>
     </SheProductCard>
