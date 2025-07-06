@@ -1,4 +1,7 @@
-import { MarginRuleModel } from "@/const/models/MarginRuleModel.ts";
+import {
+  MarginRuleModel,
+  MarginRuleModelDefault,
+} from "@/const/models/MarginRuleModel.ts";
 
 export interface MarginModel {
   marginId?: number;
@@ -6,3 +9,8 @@ export interface MarginModel {
   isDeleted?: boolean;
   marginRule?: MarginRuleModel;
 }
+
+export const MarginModelDefault: MarginModel = {
+  marginName: null,
+  marginRule: MarginRuleModelDefault,
+};

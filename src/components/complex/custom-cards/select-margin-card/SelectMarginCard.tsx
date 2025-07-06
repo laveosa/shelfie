@@ -15,6 +15,7 @@ import { ISelectMarginCard } from "@/const/interfaces/complex-components/custom-
 
 export default function SelectMarginCard({
   isLoading,
+  isMarginListGridLoading,
   margins,
   onAction,
 }: ISelectMarginCard) {
@@ -40,7 +41,7 @@ export default function SelectMarginCard({
       className={cs.selectMarginCard}
       title="Select Margin"
       showCloseButton
-      onSecondaryButtonClick={() => onAction("closeSelectSupplierCard")}
+      onSecondaryButtonClick={() => onAction("closeSelectMarginCard")}
     >
       <div className={cs.selectMarginCardContent}>
         <div className={cs.createMarginBlock}>
@@ -51,7 +52,7 @@ export default function SelectMarginCard({
             icon={Plus}
             value="Create Margin"
             variant="outline"
-            onClick={() => onAction("openSupplierConfigurationCard")}
+            onClick={() => onAction("openCreateMarginCard")}
           />
         </div>
         <div className={cs.marginListBlock}>
@@ -59,9 +60,10 @@ export default function SelectMarginCard({
             isSearch
             fullWidth
             placeholder="Search Margin..."
-            onDelay={(data: string) => onAction("searchSupplier", data)}
+            onDelay={(data: string) => onAction("searchMargin", data)}
           />
           <DndGridDataTable
+            isLoading={isMarginListGridLoading}
             showHeader={false}
             columns={
               MarginsListGridColumns({

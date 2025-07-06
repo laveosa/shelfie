@@ -1,0 +1,10 @@
+.marginConfiguration {
+  .marginConfigurationForm {
+    display: flex;
+    flex-direction: column;
+
+    .marginConfigurationText {
+      padding-bottom: 20px;
+    }
+  }
+}

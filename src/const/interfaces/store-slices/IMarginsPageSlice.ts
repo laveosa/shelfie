@@ -5,6 +5,7 @@ export interface IMarginsPageSlice {
   isProductMenuCardLoading?: boolean;
   isMarginForPurchaseCardLoading?: boolean;
   isSelectMarginCardLoading?: boolean;
+  isMarginListGridLoading?: boolean;
   activeCards?: any[];
   marginsList?: MarginModel[];
   selectedMargin?: MarginModel;

@@ -149,9 +149,38 @@ export function MarginsPage() {
     handleMultipleCardActions(cardActions);
   }
 
-  async function onAction(actionType: string, _payload?: any) {
+  async function onAction(actionType: string, payload?: any) {
     switch (actionType) {
-      case "addProductToPurchase":
+      case "openSelectMarginCard":
+        handleCardAction("selectMarginCard", true);
+        dispatch(actions.setIsSelectMarginCardLoading(true));
+        service.getAllMarginsHandler().then((res) => {
+          dispatch(actions.setIsSelectMarginCardLoading(false));
+          dispatch(actions.refreshMarginsList(res.data));
+        });
+        break;
+      case "searchMargin":
+        dispatch(actions.setIsMarginListGridLoading(true));
+        service
+          .getMarginsListForGridHandler({ searchQuery: payload })
+          .then((res) => {
+            dispatch(actions.setIsMarginListGridLoading(false));
+            console.log(res);
+            dispatch(actions.refreshMarginsList(res.items));
+          });
+        break;
+      case "openCreateMarginCard":
+        handleCardAction("marginConfigurationCard", true);
+        break;
+      case "closeSelectMarginCard":
+        handleCardAction("selectMarginCard");
+        break;
+      case "closeMarginConfigurationCard":
+        handleCardAction("marginConfigurationCard");
+        break;
+      case "createMargin":
+        console.log("PAYLOAD", payload);
+
         break;
     }
   }
@@ -178,6 +207,7 @@ export function MarginsPage() {
         >
           <SelectMarginCard
             isLoading={state.isSelectMarginCardLoading}
+            isMarginListGridLoading={state.isMarginListGridLoading}
             margins={state.marginsList}
             onAction={onAction}
           />
@@ -189,7 +219,7 @@ export function MarginsPage() {
             cardRefs.current["marginConfigurationCard"] = el;
           }}
         >
-          <MarginConfigurationCard />
+          <MarginConfigurationCard onAction={onAction} />
         </div>
       )}
     </div>

@@ -40,6 +40,7 @@ export default function MarginForPurchaseCard({
                 icon={ReceiptEuro}
                 variant="secondary"
                 value="Select Margin"
+                onClick={() => onAction("openSelectMarginCard")}
               />
             </div>
           )}

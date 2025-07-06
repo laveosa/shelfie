@@ -5,7 +5,7 @@ export function useMarginsPageService() {
   const dispatch = useAppDispatch();
 
   const [getMarginsListForGrid] =
-    PurchasesApiHooks.useGetListOfPurchaseProductsForGridMutation();
+    PurchasesApiHooks.useGetMarginsListForGridMutation();
   const [getAllMargins] = PurchasesApiHooks.useLazyGetAllMarginsQuery();
   const [getMarginForPurchase] =
     PurchasesApiHooks.useLazyGetMarginForPurchaseQuery();
