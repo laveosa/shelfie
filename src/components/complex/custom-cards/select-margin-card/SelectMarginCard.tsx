@@ -26,11 +26,11 @@ export default function SelectMarginCard({
     row?: any,
   ) {
     switch (actionType) {
-      case "manageSupplier":
-        onAction("manageSupplier", row);
+      case "manageMargin":
+        onAction("manageMargin", row);
         break;
-      case "selectSupplier":
-        onAction("selectSupplier", row);
+      case "selectMargin":
+        onAction("selectMargin", row);
         break;
     }
   }

@@ -18,6 +18,7 @@ import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card
 import MarginForPurchaseCard from "@/components/complex/custom-cards/margin-for-purchase-card/MarginForPurchaseCard.tsx";
 import SelectMarginCard from "@/components/complex/custom-cards/select-margin-card/SelectMarginCard.tsx";
 import MarginConfigurationCard from "@/components/complex/custom-cards/margin-configuration-card/MarginConfigurationCard.tsx";
+import { setSelectedGridItem } from "@/utils/helpers/quick-helper.ts";
 
 export function MarginsPage() {
   const dispatch = useAppDispatch();
@@ -179,8 +180,38 @@ export function MarginsPage() {
         handleCardAction("marginConfigurationCard");
         break;
       case "createMargin":
+        dispatch(actions.setIsMarginConfigurationCardLoading(true));
+        service.createMarginHandler(payload).then((res) => {
+          dispatch(actions.refreshSelectedMargin(res));
+          if (res) {
+            service.updateMarginHandler(res.marginId, payload);
+          }
+          console.log("RES", res);
+        });
+        break;
+      case "updateMargin":
         console.log("PAYLOAD", payload);
-
+        break;
+      case "manageMargin":
+        handleCardAction("marginConfigurationCard", true);
+        dispatch(actions.setIsMarginConfigurationCardLoading(true));
+        service.getMarginDetailsHandler(payload.marginId).then((res) => {
+          dispatch(actions.setIsMarginConfigurationCardLoading(false));
+          if (res) {
+            dispatch(actions.refreshSelectedMargin(res));
+            dispatch(
+              actions.refreshMarginsList(
+                setSelectedGridItem(
+                  payload.marginId,
+                  state.marginsList,
+                  "marginId",
+                ),
+              ),
+            );
+          } else {
+            handleCardAction("marginConfigurationCard");
+          }
+        });
         break;
     }
   }
@@ -219,7 +250,11 @@ export function MarginsPage() {
             cardRefs.current["marginConfigurationCard"] = el;
           }}
         >
-          <MarginConfigurationCard onAction={onAction} />
+          <MarginConfigurationCard
+            isLoading={state.isProductConfigurationCardLoading}
+            margin={state.selectedMargin}
+            onAction={onAction}
+          />
         </div>
       )}
     </div>

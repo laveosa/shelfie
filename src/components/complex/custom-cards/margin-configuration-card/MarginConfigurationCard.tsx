@@ -10,17 +10,6 @@ export default function MarginConfigurationCard({
   margin,
   onAction,
 }: IMarginConfigurationCard) {
-  // const testMargin = {
-  //   marginName: "Test",
-  //   marginRule: {
-  //     desiredProfit: 10,
-  //     plannedDiscount: 20,
-  //     fixedCosts: 30,
-  //     roundTo: true,
-  //     nearest9: true,
-  //   },
-  // };
-
   return (
     <SheProductCard
       loading={isLoading}

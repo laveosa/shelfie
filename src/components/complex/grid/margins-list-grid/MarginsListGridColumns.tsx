@@ -34,7 +34,7 @@ export function MarginsListGridColumns({
           e.stopPropagation();
           e.preventDefault();
           onGridAction(
-            "selectSupplier",
+            "selectMargin",
             row.id,
             meta?.setLoadingRow,
             row.original,
@@ -142,7 +142,7 @@ export function MarginsListGridColumns({
           e.stopPropagation();
           e.preventDefault();
           onGridAction(
-            "manageSupplier",
+            "manageMargin",
             row.id,
             meta?.setLoadingRow,
             row.original,

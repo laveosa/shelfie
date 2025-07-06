@@ -38,13 +38,6 @@ export default function MarginConfigurationForm<T>({
     form.getValues("plannedDiscount") &&
     form.getValues("fixedCosts");
 
-  console.log("Valid", {
-    name1: form.getValues("marginName"),
-    name3: form.getValues("desiredProfit"),
-    name4: form.getValues("plannedDiscount"),
-    name5: form.getValues("fixedCosts"),
-  });
-
   return (
     <div className={cs.marginConfiguration}>
       <SheForm<T>
@@ -157,7 +150,6 @@ export default function MarginConfigurationForm<T>({
         <FormField
           control={form.control}
           name="roundTo"
-          // defaultValue={data.marginRule.roundTo}
           render={({ field }): React.ReactElement => (
             <SheFormItem className={cs.purchaseProductsFormItem}>
               <SheToggle
@@ -167,6 +159,10 @@ export default function MarginConfigurationForm<T>({
                 checked={data?.marginRule.roundTo || false}
                 description="(This configuration rounds up all cents to full number)"
                 type={SheToggleTypeEnum.SWITCH}
+                onChecked={(value) => {
+                  field.onChange(value || false);
+                  void form.trigger("roundTo");
+                }}
               />
             </SheFormItem>
           )}
@@ -174,7 +170,6 @@ export default function MarginConfigurationForm<T>({
         <FormField
           control={form.control}
           name="nearest9"
-          // defaultValue={data.marginRule.nearest9}
           render={({ field }): React.ReactElement => (
             <SheFormItem className={cs.purchaseProductsFormItem}>
               <SheToggle
@@ -184,32 +179,14 @@ export default function MarginConfigurationForm<T>({
                 checked={data?.marginRule.nearest9 || false}
                 description="(This configuration changes the last digit of the price to nearest 9. For example 61 will become 59, but 39 will become 39)"
                 type={SheToggleTypeEnum.SWITCH}
+                onChecked={(value) => {
+                  field.onChange(value || false);
+                  void form.trigger("nearest9");
+                }}
               />
             </SheFormItem>
           )}
         />
-        {/*<FormField*/}
-        {/*  control={form.control}*/}
-        {/*  name="unitsAmount"*/}
-        {/*  render={({ field }): React.ReactElement => (*/}
-        {/*    <SheFormItem className={cs.purchaseProductsFormItem}>*/}
-        {/*      <SheInput*/}
-        {/*        {...field}*/}
-        {/*        className={*/}
-        {/*          activeTab === "connectProducts"*/}
-        {/*            ? field.value*/}
-        {/*              ? cs.formItemsValid*/}
-        {/*              : ""*/}
-        {/*            : ""*/}
-        {/*        }*/}
-        {/*        width="80px"*/}
-        {/*        minWidth="80px"*/}
-        {/*        maxWidth="80px"*/}
-        {/*        placeholder="Quantity"*/}
-        {/*      />*/}
-        {/*    </SheFormItem>*/}
-        {/*  )}*/}
-        {/*/>*/}
         <SheButton value="Cancel" variant="secondary" onClick={onCancel} />
         <SheButton
           value={data ? "Update Margin" : "Create Margin"}

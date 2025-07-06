@@ -8,6 +8,7 @@ const initialState: IMarginsPageSlice = {
   isProductMenuCardLoading: false,
   isMarginForPurchaseCardLoading: false,
   isSelectMarginCardLoading: false,
+  isMarginConfigurationCardLoading: false,
   isMarginListGridLoading: false,
   activeCards: [],
   marginsList: [],
@@ -42,6 +43,13 @@ function setIsSelectMarginCardLoading(
   action: PayloadAction<boolean>,
 ) {
   state.isSelectMarginCardLoading = action?.payload;
+}
+
+function setIsMarginConfigurationCardLoading(
+  state: IMarginsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isMarginConfigurationCardLoading = action?.payload;
 }
 
 function setIsMarginListGridLoading(
@@ -82,6 +90,7 @@ const MarginsPageSlice = createSlice({
     setIsProductMenuCardLoading,
     setIsMarginForPurchaseCardLoading,
     setIsSelectMarginCardLoading,
+    setIsMarginConfigurationCardLoading,
     setIsMarginListGridLoading,
     refreshActiveCards,
     refreshMarginsList,
