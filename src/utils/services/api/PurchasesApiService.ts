@@ -119,7 +119,7 @@ export const PurchasesApiService = createApi({
       }
     >(builder, {
       query: (model) => ({
-        url: `${ApiUrlEnum.MARGIN}`,
+        url: `${ApiUrlEnum.MARGIN}/list`,
         method: "POST",
         body: JSON.stringify(model),
       }),

@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IMarginsPageSlice } from "@/const/interfaces/store-slices/IMarginsPageSlice.ts";
 import { MarginModel } from "@/const/models/MarginModel.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 
 const initialState: IMarginsPageSlice = {
   isLoading: false,
@@ -14,6 +15,10 @@ const initialState: IMarginsPageSlice = {
   marginsList: [],
   selectedMargin: null,
   managedMargin: null,
+  gridRequestModel: {
+    currentPage: 1,
+    pageSize: 10,
+  },
 };
 
 //----------------------------------------------------- LOADERS
@@ -83,11 +88,26 @@ function refreshSelectedMargin(
   state.selectedMargin = action?.payload || state.selectedMargin;
 }
 
+function resetSelectedMargin(state: IMarginsPageSlice) {
+  state.selectedMargin = null;
+}
+
 function refreshManagedMargin(
   state: IMarginsPageSlice,
   action: PayloadAction<MarginModel>,
 ) {
   state.managedMargin = action?.payload || state.selectedMargin;
+}
+
+function resetManagedMargin(state: IMarginsPageSlice) {
+  state.managedMargin = null;
+}
+
+function refreshGridRequestModel(
+  state: IMarginsPageSlice,
+  action: PayloadAction<GridRequestModel>,
+) {
+  state.gridRequestModel = action?.payload || state.gridRequestModel;
 }
 
 const MarginsPageSlice = createSlice({
@@ -103,7 +123,10 @@ const MarginsPageSlice = createSlice({
     refreshActiveCards,
     refreshMarginsList,
     refreshSelectedMargin,
+    resetSelectedMargin,
     refreshManagedMargin,
+    resetManagedMargin,
+    refreshGridRequestModel,
   },
 });
 

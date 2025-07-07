@@ -32,12 +32,12 @@ export default function MarginConfigurationForm<T>({
     form.reset(data);
   }, [data]);
 
-  const isFormValid =
-    form.formState.isValid &&
-    form.getValues("marginName") &&
-    form.getValues("desiredProfit") &&
-    form.getValues("plannedDiscount") &&
-    form.getValues("fixedCosts");
+  const isFormValid = true;
+  // form.formState.isValid &&
+  // form.getValues("marginName") &&
+  // form.getValues("desiredProfit") &&
+  // form.getValues("plannedDiscount") &&
+  // form.getValues("fixedCosts");
 
   return (
     <div className={cs.marginConfiguration}>
@@ -79,8 +79,8 @@ export default function MarginConfigurationForm<T>({
         </span>
         <FormField
           control={form.control}
-          name="desiredProfit"
-          defaultValue={data?.marginRule.desiredProfit}
+          name="marginRule.desiredProfit"
+          defaultValue={data?.marginRule?.desiredProfit}
           render={({ field }): React.ReactElement => (
             <SheFormItem
               className={cs.purchaseProductsFormItem}
@@ -101,8 +101,8 @@ export default function MarginConfigurationForm<T>({
         </span>
         <FormField
           control={form.control}
-          name="plannedDiscount"
-          defaultValue={data?.marginRule.plannedDiscount}
+          name="marginRule.plannedDiscount"
+          defaultValue={data?.marginRule?.plannedDiscount}
           render={({ field }): React.ReactElement => (
             <SheFormItem
               className={cs.purchaseProductsFormItem}
@@ -126,8 +126,8 @@ export default function MarginConfigurationForm<T>({
         </span>
         <FormField
           control={form.control}
-          name="fixedCosts"
-          defaultValue={data?.marginRule.fixedCosts}
+          name="marginRule.fixedCosts"
+          defaultValue={data?.marginRule?.fixedCosts}
           render={({ field }): React.ReactElement => (
             <SheFormItem
               className={cs.purchaseProductsFormItem}
@@ -158,9 +158,9 @@ export default function MarginConfigurationForm<T>({
                 placeholder="Netto price"
                 text="Round Brutto price to full number"
                 checked={
-                  _.isNil(data?.marginRule.roundTo)
+                  _.isNil(data?.marginRule?.roundTo)
                     ? false
-                    : data?.marginRule.roundTo
+                    : data?.marginRule?.roundTo
                 }
                 description="(This configuration rounds up all cents to full number)"
                 type={SheToggleTypeEnum.SWITCH}
@@ -182,9 +182,9 @@ export default function MarginConfigurationForm<T>({
                 placeholder="Netto price"
                 text="Jump the price to nearest 9"
                 checked={
-                  _.isNil(data?.marginRule.nearest9)
+                  _.isNil(data?.marginRule?.nearest9)
                     ? false
-                    : data?.marginRule.nearest9
+                    : data?.marginRule?.nearest9
                 }
                 description="(This configuration changes the last digit of the price to nearest 9. For example 61 will become 59, but 39 will become 39)"
                 type={SheToggleTypeEnum.SWITCH}

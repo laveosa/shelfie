@@ -1,4 +1,5 @@
 import { MarginModel } from "@/const/models/MarginModel.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 
 export interface IMarginsPageSlice {
   isLoading?: boolean;
@@ -11,4 +12,5 @@ export interface IMarginsPageSlice {
   marginsList?: MarginModel[];
   selectedMargin?: MarginModel;
   managedMargin?: MarginModel;
+  gridRequestModel?: GridRequestModel;
 }

@@ -61,7 +61,9 @@ export default function MarginForPurchaseCard({
                     </SheButton>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="start" className="w-[160px]">
-                    <DropdownMenuItem onClick={() => onAction("manageMargin")}>
+                    <DropdownMenuItem
+                      onClick={() => onAction("manageMargin", margin)}
+                    >
                       Manage margin
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => onAction("replaceMargin")}>
