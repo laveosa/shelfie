@@ -574,6 +574,7 @@ export function ProductsPage() {
                 icon={CalendarRange}
                 placeholder="Pick range"
                 maxWidth="200px"
+                showClearBtn
                 onSelectDate={(data) => {
                   onPurchaseDateRangeHandler(data);
                 }}
@@ -590,12 +591,14 @@ export function ProductsPage() {
                 icon={ReceiptEuro}
                 placeholder="Value from"
                 maxWidth="200px"
+                showClearBtn
                 onDelay={(data: number) => onPurchaseValueFromHandler(data)}
               />
               <SheInput
                 icon={ReceiptEuro}
                 placeholder="Value to"
                 maxWidth="200px"
+                showClearBtn
                 onDelay={(data: number) => {
                   onPurchaseValueToHandler(data);
                 }}
