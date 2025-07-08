@@ -65,6 +65,7 @@ export default function SheMultiSelectSearch({
           icon={X}
           size="small"
           variant="ghost"
+          disabled={!_searchValue || _searchValue.length === 0}
           onClick={onClearSearchHandler}
         />
       )}

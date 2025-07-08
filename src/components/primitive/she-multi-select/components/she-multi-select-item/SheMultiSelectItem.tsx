@@ -18,6 +18,7 @@ export default function SheMultiSelectItem<T>({
   // ==================================================================== EVENT
 
   function onSelectHandler(value: T, event?: React.MouseEvent) {
+    event?.stopPropagation();
     setTimeout(() => onClick(value, event));
   }
 
@@ -27,13 +28,13 @@ export default function SheMultiSelectItem<T>({
 
   return (
     <CommandItem
-      id={id}
       className={`${cs.sheMultiSelectItem} ${className}`}
       style={style}
       onSelect={() => onSelectHandler(value)}
     >
       <SheOption<T>
         {...props}
+        id={id}
         className={`${cs.sheSelectItemOption} ${elementClassName}`}
         style={elementStyle}
         value={value}

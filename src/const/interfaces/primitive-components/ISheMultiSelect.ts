@@ -19,6 +19,7 @@ export interface ISheMultiSelect<T>
   emptySearchPlaceholderTransKey?: string;
   selectAllPlaceholder?: string;
   selectAllPlaceholderTransKey?: string;
+  openOnFocus?: boolean;
   isOpen?: boolean;
   onOpen?: (value: boolean) => void;
   onClear?(value: null): void;
@@ -38,6 +39,7 @@ export const SheMultiSelectDefaultModel: ISheMultiSelect<any> = {
   emptySearchPlaceholderTransKey: undefined,
   selectAllPlaceholder: undefined,
   selectAllPlaceholderTransKey: undefined,
+  openOnFocus: undefined,
   isOpen: undefined,
   onOpen: undefined,
   onClear: undefined,

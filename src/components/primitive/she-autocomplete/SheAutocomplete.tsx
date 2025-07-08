@@ -76,21 +76,16 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
   const [_loading, setLoading] = useState<boolean>(null);
   const [_searchValue, setSearchValue] = useState<string>(null);
 
-  // TODO ---------------------------------------- transfer this props and logic to get values for them in to "useComponentUtilities" hook
-  const [_isItemsWithIcons, setIsItemsWithIcons] = useState<boolean>(null);
-  const [_isItemsWithColors, setIsItemsWithColors] = useState<boolean>(null);
-
   // ==================================================================== REFS
   // TODO ---------------------------------------------- all ref-s need to be in props and use "useDefaultRef" logic
   const popoverRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLInputElement>(null);
 
   // ==================================================================== UTILITIES FUNCTIONS
-  const { setFocus, addItemsId, calculatePopoverWidth } = useComponentUtilities(
-    {
-      items: _items,
-    },
-  );
+  const { setFocus, initializeItemsList, calculatePopoverWidth } =
+    useComponentUtilities({
+      identifier: "SheAutocomplete",
+    });
 
   const filteredItems: ISheOption<string>[] = useMemo(() => {
     if (!_items || _items.length === 0) return [];
@@ -108,12 +103,8 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
   }, []);
 
   useEffect(() => {
-    setIsItemsWithIcons(null);
-    setIsItemsWithColors(null);
-
     if (!_.isEqual(items, _items)) {
-      setItems(addItemsId<ISheOption<string>>(items));
-      _updateIconAndColorColumnCondition(items);
+      setItems(initializeItemsList<ISheOption<string>>(items));
     }
 
     if (searchValue !== _searchValue) {
@@ -223,14 +214,6 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     onOpen?.(_open);
   }
 
-  function _updateIconAndColorColumnCondition(fromItems: ISheOption<string>[]) {
-    if (!fromItems || fromItems.length === 0) return null;
-    fromItems.forEach((item) => {
-      if (item.icon) setIsItemsWithIcons(true);
-      if (item.colors) setIsItemsWithColors(true);
-    });
-  }
-
   function _updateComponentStyles() {
     const element = document.getElementsByClassName(cs.sheAutocomplete);
     if (element) element[0].parentElement.style.overflow = "visible";
@@ -315,8 +298,6 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
                           className={`${cs.sheSelectItemOption}`}
                           mode="plain"
                           view="normal"
-                          showIconsColumn={_isItemsWithIcons}
-                          showColorsColumn={_isItemsWithColors}
                           onClick={(data) =>
                             onSelectHandler(item.text, data.event)
                           }

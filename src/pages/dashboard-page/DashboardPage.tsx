@@ -77,6 +77,16 @@ const optionsSimple: ISheSelectItem<string>[] = [
     value: "ANGULAR",
     icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/1200px-Angular_full_color_logo.svg.png",
     isSelected: true,
+    colors: [
+      "#968AD5",
+      "#126762",
+      "#968AD5",
+      "#126762",
+      "#968AD5",
+      "#126762",
+      "#968AD5",
+      "#126762",
+    ],
   },
   {
     text: "Vue",
@@ -104,6 +114,7 @@ const optionsSimple: ISheSelectItem<string>[] = [
     text: "JavaScript",
     value: "JS",
     icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/512px-Unofficial_JavaScript_logo_2.svg.png",
+    colors: ["red", "blue"],
   },
   {
     text: "HTML",
@@ -113,7 +124,7 @@ const optionsSimple: ISheSelectItem<string>[] = [
   {
     text: "CSS",
     value: "CSS",
-    icon: "https://images.seeklogo.com/logo-png/18/1/css3-logo-png_seeklogo-186678.png",
+    colors: ["#968AD5", "#126762"],
   },
 ];
 
@@ -130,7 +141,7 @@ export function DashboardPage() {
     }, 1000);
 
     setTimeout(() => {
-      // setSelected([optionsSimple[2].value]);
+      setSelected([optionsSimple[2].value, optionsSimple[4].value]);
       // setSelected([options[2].value]);
     }, 2000);
   }, []);
@@ -213,7 +224,6 @@ export function DashboardPage() {
             showSearch
             showFooter
             autoFocus
-            // fullWidth
             onSelect={(value) => console.log("MultiSelect value: ", value)}
             onSelectModel={(value) => console.log("MultiSelect model: ", value)}
           />

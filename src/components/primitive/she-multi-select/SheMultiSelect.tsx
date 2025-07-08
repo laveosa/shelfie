@@ -22,7 +22,6 @@ import SheMultiSelectSearch from "@/components/primitive/she-multi-select/compon
 import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
 import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
 import { ISheMultiSelectItem } from "@/const/interfaces/primitive-components/ISheMultiSelectItem.ts";
-import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
 import {
   ISheMultiSelect,
   SheMultiSelectDefaultModel,
@@ -50,11 +49,12 @@ export default function SheMultiSelect<T>(
     emptySearchPlaceholderTransKey = "PLACE_VALID_TRANS_KEY",
     selectAllPlaceholder = "select all",
     selectAllPlaceholderTransKey = "PLACE_VALID_TRANS_KEY",
-    isOpen,
     isLoading,
     disabled,
     autoFocus,
     searchValue,
+    openOnFocus,
+    isOpen,
     onOpen,
     onClear,
     onSelect,
@@ -95,43 +95,31 @@ export default function SheMultiSelect<T>(
   // ==================================================================== UTILITIES FUNCTIONS
   const {
     ariaDescribedbyId,
-    isItemsWithIcons,
-    isItemsWithColors,
     setFocus,
-    addItemsId,
+    initializeItemsList,
+    updateSelectedItems,
     calculatePopoverWidth,
-  } = useComponentUtilities<T, ISheOption<T>>({
+  } = useComponentUtilities<T>({
     identifier: "SheMultiSelect",
-    items: _items,
   });
 
   // ==================================================================== DEPENDENCIES
   useEffect(() => {
-    let tmpItems: ISheMultiSelectItem<T>[] = _items;
-    let tmpSelectedValues: T[] = _selectedValues;
+    const tmpSelectedValues: T[] =
+      (!_.isEqual(selectedValues, _selectedValues)
+        ? selectedValues
+        : _selectedValues) ??
+      items?.filter((item) => item.isSelected).map((item) => item.value);
 
-    // TODO refactor this logic   1 (make as one expression)
-    if (!_.isEqual(items, _items)) {
-      tmpItems = _updateItemsIsSelectedCondition(
-        addItemsId<ISheMultiSelectItem<T>>(items),
-        selectedValues || _selectedValues,
-      );
-      tmpSelectedValues = selectedValues
-        ? selectedValues
-        : tmpItems?.filter((item) => item.isSelected).map((item) => item.value);
-    }
-    // TODO refactor this logic   2 (make as one expression)
-    if (!_.isEqual(selectedValues, _selectedValues)) {
-      tmpSelectedValues = selectedValues
-        ? selectedValues
-        : tmpItems?.filter((item) => item.isSelected).map((item) => item.value);
-      tmpItems = _updateItemsIsSelectedCondition(tmpItems, tmpSelectedValues);
-    }
+    const tmpItems: ISheMultiSelectItem<T>[] = !_.isEqual(items, _items)
+      ? initializeItemsList<ISheMultiSelectItem<T>>(items, tmpSelectedValues)
+      : updateSelectedItems(_items, tmpSelectedValues);
 
     setItems(tmpItems);
     setSelectedValues(tmpSelectedValues);
     setBadges(_getSelectedBadges(items, tmpSelectedValues));
     setFocus<HTMLButtonElement>(autoFocus, triggerRef);
+    if (openOnFocus) _setIsOpen(autoFocus);
   }, [items, selectedValues]);
 
   useEffect(() => {
@@ -149,13 +137,12 @@ export default function SheMultiSelect<T>(
       typeof isLoading === "boolean" &&
       !_.isEqual(isLoading, _loading)
     )
-      _setIsLoading(isLoading);
+      setLoading(isLoading);
   }, [searchValue, isOpen, isLoading]);
 
   useEffect(() => {
-    // TODO create new prop "openOnFocus" and related logic for it
-    // _setIsOpen(autoFocus);
     setFocus<HTMLButtonElement>(autoFocus, triggerRef);
+    if (openOnFocus) _setIsOpen(autoFocus);
   }, [autoFocus]);
 
   // ==================================================================== EVENT
@@ -183,6 +170,7 @@ export default function SheMultiSelect<T>(
   }
 
   function onClearExtraOptionsHandler(badges: ISheBadge[]) {
+    // TODO event needed as extra param
     _updateSelectedValues(_selectedValues.slice(0, -badges.length));
   }
 
@@ -206,27 +194,17 @@ export default function SheMultiSelect<T>(
     fromItems: ISheMultiSelectItem<T>[],
     values: T[],
   ): ISheBadge[] {
-    if (
-      !fromItems ||
-      !Array.isArray(values) ||
-      fromItems.length === 0 ||
-      !values ||
-      !Array.isArray(values) ||
-      values.length === 0
-    )
-      return;
-
     let selectedItems: ISheMultiSelectItem<T>[] = [];
 
-    values.forEach((value: T) => {
-      fromItems.forEach((item: ISheMultiSelectItem<T>) => {
+    values?.forEach((value: T) => {
+      fromItems?.forEach((item: ISheMultiSelectItem<T>) => {
         if (_.isEqual(value, item.value)) {
           selectedItems.push(item);
         }
       });
     });
 
-    return selectedItems.map(
+    return selectedItems?.map(
       (item: ISheMultiSelectItem<T>): ISheBadge => ({
         text: item?.text,
         icon: item?.icon,
@@ -236,12 +214,12 @@ export default function SheMultiSelect<T>(
   }
 
   function _updateSelectedValues(values: T[], event?: React.MouseEvent) {
-    setItems((prevState) => {
-      return prevState.map((item) => {
-        item.isSelected = values.includes(item.value);
-        return item;
-      });
-    });
+    const tmpItems: ISheMultiSelectItem<T>[] = updateSelectedItems(
+      _items,
+      values,
+    );
+
+    setItems(tmpItems);
     setSelectedValues(values);
     setBadges(_getSelectedBadges(_items, values));
     onSelect?.(values);
@@ -249,30 +227,11 @@ export default function SheMultiSelect<T>(
       value: values,
       model: {
         ...sheMultiSelectProps,
-        items: _items,
+        items: tmpItems,
         selectedValues: values,
         searchValue: _searchValue,
       },
       event,
-    });
-  }
-
-  // TODO replace with "updateSelectedItems" func in "useComponentUtilities" hook
-  function _updateItemsIsSelectedCondition(
-    fromItems: ISheMultiSelectItem<T>[],
-    fromSelectedValues: T[],
-  ): ISheMultiSelectItem<T>[] {
-    if (
-      !fromItems ||
-      fromItems.length === 0 ||
-      !fromSelectedValues ||
-      fromSelectedValues.length === 0
-    )
-      return fromItems;
-
-    return fromItems.map((item) => {
-      item.isSelected = fromSelectedValues.includes(item.value);
-      return item;
     });
   }
 
@@ -290,10 +249,6 @@ export default function SheMultiSelect<T>(
         setFocus<HTMLButtonElement>(autoFocus, triggerRef);
       }
     }
-  }
-
-  function _setIsLoading(_isLoading: boolean) {
-    if (!_.isEqual(_isLoading, _loading)) setLoading(_isLoading);
   }
 
   // ==================================================================== RENDER
@@ -358,8 +313,6 @@ export default function SheMultiSelect<T>(
                   {...item}
                   key={item.id}
                   className={cs.sheMultiSelectItemParentWrapper}
-                  showIconsColumn={isItemsWithIcons}
-                  showColorsColumn={isItemsWithColors}
                   isLoading={
                     !_.isNil(item.isLoading) ? item.isLoading : _loading
                   }

@@ -73,17 +73,14 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
 
   // ==================================================================== UTILITIES FUNCTIONS
   const {
-    ariaDescribedbyId,
-    isItemsWithIcons,
-    isItemsWithColors,
     translate,
-    updateSelectedItems,
+    ariaDescribedbyId,
     setFocus,
-    addItemsId,
+    initializeItemsList,
+    updateSelectedItems,
     calculatePopoverWidth,
   } = useComponentUtilities<T, ISheOption<T>>({
     identifier: "SheSelect",
-    items: _items,
   });
 
   // ==================================================================== DEPENDENCIES
@@ -104,7 +101,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
       }
     }
 
-    const itemsWithIds = addItemsId<ISheSelectItem<T>>(updatedItems);
+    const itemsWithIds = initializeItemsList<ISheSelectItem<T>>(updatedItems);
 
     setItems(itemsWithIds);
 
@@ -312,8 +309,6 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
                         infoClassName={`${cs.sheSelectItemInfoContainer} ${item.infoClassName || ""}`}
                         tooltipClassName={`${cs.sheSelectItemTooltipContainer} ${item.tooltipClassName || ""}`}
                         showSelectIcon={showSelectIcon}
-                        showIconsColumn={isItemsWithIcons}
-                        showColorsColumn={isItemsWithColors}
                         ariaDescribedbyId={ariaDescribedbyId}
                         isLoading={
                           !_.isNil(item.isLoading) ? item.isLoading : _loading
