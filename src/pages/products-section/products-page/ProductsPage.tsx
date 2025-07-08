@@ -488,6 +488,7 @@ export function ProductsPage() {
                 onSelectionChange={onBrandSelectHandler}
                 getId={(item: BrandModel) => item.brandId}
                 getName={(item: BrandModel) => item.brandName}
+                selected={state.productsGridModel.filter?.brands}
               />
               <GridItemsFilter
                 items={state.categories}
@@ -495,6 +496,7 @@ export function ProductsPage() {
                 onSelectionChange={onCategorySelectHandler}
                 getId={(item: CategoryModel) => item.categoryId}
                 getName={(item: CategoryModel) => item.categoryName}
+                selected={state.productsGridModel.filter?.categories}
               />
               <GridShowDeletedFilter />
             </DndGridDataTable>
@@ -520,6 +522,7 @@ export function ProductsPage() {
                 onSelectionChange={onBrandSelectHandler}
                 getId={(item: BrandModel) => item.brandId}
                 getName={(item: BrandModel) => item.brandName}
+                selected={state.variantsGridModel.filter?.brands}
               />
               <GridItemsFilter
                 items={state.categories}
@@ -527,6 +530,7 @@ export function ProductsPage() {
                 onSelectionChange={onCategorySelectHandler}
                 getId={(item: CategoryModel) => item.categoryId}
                 getName={(item: CategoryModel) => item.categoryName}
+                selected={state.variantsGridModel.filter?.categories}
               />
               <GridTraitsFilter
                 traitOptions={state.colorsForFilter}
@@ -563,6 +567,7 @@ export function ProductsPage() {
                 onSelectionChange={onSupplierSelectHandler}
                 getId={(item: SupplierModel) => item.supplierId}
                 getName={(item: SupplierModel) => item.supplierName}
+                selected={state.purchasesGridModel.filter?.suppliers}
               />
               <SheDatePicker
                 mode="range"
