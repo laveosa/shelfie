@@ -34,12 +34,16 @@ import {
   ISheMultiSelectFooter,
   SheMultiSelectFooterDefaultModel,
 } from "@/const/interfaces/primitive-components/ISheMultiSelectFooter.ts";
+import useDefaultRef from "@/utils/hooks/useDefaultRef.ts";
 
 export default function SheMultiSelect<T>(
   props: ISheMultiSelect<T>,
 ): JSX.Element {
   // ==================================================================== PROPS
   const {
+    ref: triggerRef,
+    searchRef,
+    popoverRef,
     popoverClassName = "",
     popoverStyle,
     items,
@@ -87,10 +91,9 @@ export default function SheMultiSelect<T>(
   const [_searchValue, setSearchValue] = useState<string>(null);
 
   // ==================================================================== REFS
-  // TODO ---------------------------------------------- all ref-s need to be in props and use "useDefaultRef" logic
-  const popoverRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLButtonElement>(null);
-  const searchRef = useRef<HTMLInputElement>(null);
+  const _triggerRef = useDefaultRef<HTMLButtonElement>(triggerRef);
+  const _searchRef = useDefaultRef<HTMLInputElement>(searchRef);
+  const _popoverRef = useDefaultRef<HTMLDivElement>(popoverRef);
 
   // ==================================================================== UTILITIES FUNCTIONS
   const {
@@ -118,7 +121,7 @@ export default function SheMultiSelect<T>(
     setItems(tmpItems);
     setSelectedValues(tmpSelectedValues);
     setBadges(_getSelectedBadges(items, tmpSelectedValues));
-    setFocus<HTMLButtonElement>(autoFocus, triggerRef);
+    setFocus<HTMLButtonElement>(autoFocus, _triggerRef);
     if (openOnFocus) _setIsOpen(autoFocus);
   }, [items, selectedValues]);
 
@@ -141,7 +144,7 @@ export default function SheMultiSelect<T>(
   }, [searchValue, isOpen, isLoading]);
 
   useEffect(() => {
-    setFocus<HTMLButtonElement>(autoFocus, triggerRef);
+    setFocus<HTMLButtonElement>(autoFocus, _triggerRef);
     if (openOnFocus) _setIsOpen(autoFocus);
   }, [autoFocus]);
 
@@ -160,7 +163,7 @@ export default function SheMultiSelect<T>(
 
   function onToggleAllHandler(_value: T, event?: React.MouseEvent) {
     if (_selectedValues.length === _items.length) {
-      onClearButtonHandler<HTMLInputElement>(event, searchRef);
+      onClearButtonHandler<HTMLInputElement>(event, _searchRef);
     } else {
       _updateSelectedValues(
         _items.map((item) => item.value),
@@ -244,9 +247,9 @@ export default function SheMultiSelect<T>(
       onOpen?.(_isOpen);
 
       if (_isOpen) {
-        calculatePopoverWidth<HTMLButtonElement>(popoverRef, triggerRef);
+        calculatePopoverWidth<HTMLButtonElement>(_popoverRef, _triggerRef);
       } else {
-        setFocus<HTMLButtonElement>(autoFocus, triggerRef);
+        setFocus<HTMLButtonElement>(autoFocus, _triggerRef);
       }
     }
   }
@@ -256,7 +259,7 @@ export default function SheMultiSelect<T>(
   return (
     <Popover open={_open} onOpenChange={_setIsOpen}>
       <SheMultiSelectTrigger
-        ref={triggerRef}
+        ref={_triggerRef}
         items={_badges}
         isOpen={_open}
         ariaDescribedbyId={ariaDescribedbyId}
@@ -267,12 +270,12 @@ export default function SheMultiSelect<T>(
         onToggleOption={onToggleOptionHandler}
         onClearExtraOptions={onClearExtraOptionsHandler}
         onClearAll={(event) =>
-          onClearButtonHandler<HTMLButtonElement>(event, triggerRef)
+          onClearButtonHandler<HTMLButtonElement>(event, _triggerRef)
         }
         {...restProps}
       />
       <PopoverContent
-        ref={popoverRef}
+        ref={_popoverRef}
         className={`${popoverClassName} ${cs.sheMultiSelectPopoverContainer}`}
         style={{
           ...popoverStyle,
@@ -282,7 +285,7 @@ export default function SheMultiSelect<T>(
         <Command className={`${disabled || isLoading ? "disabled" : ""}`}>
           <SheMultiSelectSearch
             {...sheMultiSelectSearchProps}
-            searchRef={searchRef}
+            searchRef={_searchRef}
             searchValue={_searchValue}
             onSearch={setSearchValue}
           />
@@ -324,7 +327,7 @@ export default function SheMultiSelect<T>(
           <SheMultiSelectFooter
             selectedValues={_selectedValues}
             onSecondaryBtnClick={(event) =>
-              onClearButtonHandler<HTMLInputElement>(event, searchRef)
+              onClearButtonHandler<HTMLInputElement>(event, _searchRef)
             }
             onPrimaryBtnClick={onCloseButtonHandler}
             {...sheMultiSelectFooterProps}

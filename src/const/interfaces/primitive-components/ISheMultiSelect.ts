@@ -1,4 +1,4 @@
-import React from "react";
+import React, { RefObject } from "react";
 
 import { ISheMultiSelectTrigger } from "@/const/interfaces/primitive-components/ISheMultiSelectTrigger.ts";
 import { ISheMultiSelectItem } from "@/const/interfaces/primitive-components/ISheMultiSelectItem.ts";
@@ -10,6 +10,7 @@ export interface ISheMultiSelect<T>
   extends Omit<ISheMultiSelectTrigger, "items">,
     ISheMultiSelectSearch,
     ISheMultiSelectFooter {
+  popoverRef?: RefObject<HTMLDivElement>;
   popoverClassName?: string;
   popoverStyle?: React.CSSProperties;
   hideSelectAll?: boolean;
