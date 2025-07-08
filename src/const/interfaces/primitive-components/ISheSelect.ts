@@ -1,4 +1,4 @@
-import React, { ComponentPropsWithRef } from "react";
+import React, { ComponentPropsWithRef, RefObject } from "react";
 
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { ISheLabel } from "@/const/interfaces/primitive-components/ISheLabel.ts";
@@ -11,6 +11,7 @@ export interface ISheSelect<T>
   extends ISheLabel,
     ISheClearButton,
     ComponentPropsWithRef<typeof Select> {
+  popoverRef?: RefObject<HTMLDivElement>;
   id?: string;
   className?: string;
   style?: React.CSSProperties;
@@ -40,6 +41,7 @@ export interface ISheSelect<T>
 }
 
 export const SheSelectDefaultModel: ISheSelect<any> = {
+  popoverRef: undefined,
   id: undefined,
   className: undefined,
   style: undefined,

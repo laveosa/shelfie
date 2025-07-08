@@ -1,4 +1,4 @@
-import React, { JSX, useEffect, useRef, useState } from "react";
+import React, { JSX, useEffect, useState } from "react";
 import _ from "lodash";
 
 import cs from "./SheSelect.module.scss";
@@ -21,17 +21,17 @@ import SheSelectItem from "@/components/primitive/she-select/components/she-sele
 import useDefaultRef from "@/utils/hooks/useDefaultRef.ts";
 import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
 import { getCustomProps } from "@/utils/helpers/props-helper.ts";
-import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
 
 export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
   // ==================================================================== PROPS
   const {
+    triggerRef,
+    popoverRef,
     id,
     className = "",
     style,
     elementClassName = "",
     elementStyle,
-    triggerRef,
     label,
     labelTransKey,
     placeholder = "select item...",
@@ -67,9 +67,8 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
   const [_loading, setLoading] = useState<boolean>(null);
 
   // ==================================================================== REFS
-  // TODO ---------------------------------------------- all ref-s need to be in props and use "useDefaultRef" logic
   const _triggerRef = useDefaultRef<HTMLInputElement>(triggerRef);
-  const popoverRef = useRef<HTMLDivElement>(null);
+  const _popoverRef = useDefaultRef<HTMLDivElement>(popoverRef);
 
   // ==================================================================== UTILITIES FUNCTIONS
   const {
@@ -79,7 +78,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
     initializeItemsList,
     updateSelectedItems,
     calculatePopoverWidth,
-  } = useComponentUtilities<T, ISheOption<T>>({
+  } = useComponentUtilities({
     identifier: "SheSelect",
   });
 
@@ -123,27 +122,45 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
     }
 
     setFocus<HTMLInputElement>(autoFocus, _triggerRef);
+
+    // TODO add "openOnFocus" logic
+    // if (openOnFocus) _setIsOpen(autoFocus);
   }, [items, selected]);
 
   useEffect(() => {
-    if (isLoading) {
-      setOpen(false);
-    } else if (typeof isOpen === "boolean") {
-      setOpen(isOpen);
+    if (
+      !_.isNil(isOpen) &&
+      typeof isOpen === "boolean" &&
+      !_.isEqual(isOpen, _open)
+    ) {
+      console.log("open: ", isOpen);
+      _setIsOpen(isOpen);
     }
 
-    if (typeof isLoading === "boolean" && isLoading !== _loading) {
+    if (
+      !_.isNil(isLoading) &&
+      typeof isLoading === "boolean" &&
+      !_.isEqual(isLoading, _loading)
+    ) {
+      console.log("loading: ", isLoading);
       setLoading(isLoading);
+      _setIsOpen(isOpen);
     }
-
-    calculatePopoverWidth<HTMLInputElement>(popoverRef, _triggerRef);
   }, [isOpen, isLoading]);
 
   useEffect(() => {
     setFocus<HTMLInputElement>(autoFocus, _triggerRef);
+
+    // TODO add "openOnFocus" logic
+    // if (openOnFocus) _setIsOpen(autoFocus);
   }, [autoFocus]);
 
+  useEffect(() => {
+    console.log(_open);
+  }, [_open]);
+
   // ==================================================================== EVENT
+
   function onValueChangeHandler(id: string, event?: React.MouseEvent) {
     const selected: ISheSelectItem<T> = _getSelectedItemById(id);
 
@@ -184,7 +201,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
     }
 
     onOpen?.(value);
-    calculatePopoverWidth<HTMLInputElement>(popoverRef, _triggerRef);
+    calculatePopoverWidth<HTMLInputElement>(_popoverRef, _triggerRef);
   }
 
   function onClearHandler() {
@@ -195,6 +212,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
   }
 
   // ==================================================================== PRIVATE
+
   function _getSelectedItemById(
     id: string,
     fromItems: ISheSelectItem<T>[] = _items,
@@ -249,7 +267,24 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
     return selectedItem;
   }
 
+  function _setIsOpen(_isOpen: boolean) {
+    if (isLoading || disabled) {
+      setOpen(false);
+      onOpen?.(false);
+    } else if (!_.isEqual(_isOpen, _open)) {
+      setOpen(_isOpen);
+      onOpen?.(_isOpen);
+
+      if (_isOpen) {
+        calculatePopoverWidth<HTMLInputElement>(_popoverRef, _triggerRef);
+      } else {
+        setFocus<HTMLInputElement>(autoFocus, _triggerRef);
+      }
+    }
+  }
+
   // ==================================================================== LAYOUT
+
   return (
     <div
       id={id}
@@ -282,7 +317,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
               {...sheSelectProps}
             >
               <SelectTrigger
-                ref={_triggerRef}
+                ref={_triggerRef as any}
                 className={elementClassName}
                 style={elementStyle}
               >
@@ -296,12 +331,12 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
                 />
               </SelectTrigger>
               {_items?.length > 0 && (
-                <SelectContent ref={popoverRef}>
+                <SelectContent ref={_popoverRef}>
                   <div className={cs.sheSelectItemsContainer}>
                     {_items?.map((item) => (
                       <SheSelectItem<T>
-                        {...item}
                         key={item.id}
+                        {...item}
                         id={item.id}
                         className={`${cs.sheSelectItemCover} ${item.className || ""}`}
                         iconClassName={`${cs.sheSelectItemIconContainer} ${item.iconClassName || ""}`}

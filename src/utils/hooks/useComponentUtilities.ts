@@ -10,7 +10,7 @@ export interface IComponentUtilities {
   identifier?: string;
 }
 
-export default function useComponentUtilities<V>({
+export default function useComponentUtilities({
   identifier,
 }?: IComponentUtilities) {
   const { translate } = useAppTranslation();
@@ -41,7 +41,7 @@ export default function useComponentUtilities<V>({
     }));
   }
 
-  function initializeItemsList<T extends ISheOption<V>>(
+  function initializeItemsList<V, T extends ISheOption<V>>(
     items: T[],
     selectedValues?: V | V[],
   ): T[] {

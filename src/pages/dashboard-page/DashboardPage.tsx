@@ -132,18 +132,26 @@ export function DashboardPage() {
   const service = useDashboardPageService();
 
   const [_items, setItems] = useState<ISheMultiSelectItem<any>[]>(null);
-  const [selected, setSelected] = useState<any>();
+  const [selected, setSelected] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(null);
 
   useEffect(() => {
+    setIsLoading(true);
+
     setTimeout(() => {
       setItems(optionsSimple);
       // setItems(options);
     }, 1000);
 
     setTimeout(() => {
-      setSelected([optionsSimple[2].value, optionsSimple[4].value]);
+      // setSelected([optionsSimple[2].value, optionsSimple[4].value]);
       // setSelected([options[2].value]);
+      setSelected(optionsSimple[2].value);
     }, 2000);
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
   }, []);
 
   // ================================================================== EVENT
@@ -220,26 +228,33 @@ export function DashboardPage() {
             selectedValues={selected}
             contextType="badges"
             showClearBtn
-            // isOpen
+            isOpen
+            isLoading={isLoading}
             showSearch
             showFooter
             autoFocus
+            openOnFocus
             onSelect={(value) => console.log("MultiSelect value: ", value)}
             onSelectModel={(value) => console.log("MultiSelect model: ", value)}
           />
         </div>
+
         {/*<div className="w-full flex">
           <SheSelect<string>
             label="Select"
             required
             // items={options}
-            items={optionsSimple}
+            // items={optionsSimple}
+            items={_items}
+            selected={selected}
             showClearBtn
-            // isOpen
+            isOpen
+            isLoading
             onSelect={(value) => console.log("Select value: ", value)}
             onSelectModel={(value) => console.log("Select model: ", value)}
           />
         </div>*/}
+
         {/*<div className="w-full flex">
           <SheAutocomplete
             label="Autocomplete"

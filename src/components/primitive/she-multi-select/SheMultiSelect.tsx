@@ -1,4 +1,4 @@
-import { JSX, RefObject, useEffect, useRef, useState } from "react";
+import { JSX, RefObject, useEffect, useState } from "react";
 import { Trans } from "react-i18next";
 import * as React from "react";
 import _ from "lodash";
@@ -102,27 +102,31 @@ export default function SheMultiSelect<T>(
     initializeItemsList,
     updateSelectedItems,
     calculatePopoverWidth,
-  } = useComponentUtilities<T>({
+  } = useComponentUtilities({
     identifier: "SheMultiSelect",
   });
 
   // ==================================================================== DEPENDENCIES
   useEffect(() => {
+    const arrSelectedValues: T[] =
+      selectedValues && !Array.isArray(selectedValues)
+        ? [selectedValues]
+        : selectedValues;
+
     const tmpSelectedValues: T[] =
-      (!_.isEqual(selectedValues, _selectedValues)
-        ? selectedValues
+      (!_.isEqual(arrSelectedValues, _selectedValues)
+        ? arrSelectedValues
         : _selectedValues) ??
       items?.filter((item) => item.isSelected).map((item) => item.value);
 
     const tmpItems: ISheMultiSelectItem<T>[] = !_.isEqual(items, _items)
-      ? initializeItemsList<ISheMultiSelectItem<T>>(items, tmpSelectedValues)
+      ? initializeItemsList<T, ISheMultiSelectItem<T>>(items, tmpSelectedValues)
       : updateSelectedItems(_items, tmpSelectedValues);
 
     setItems(tmpItems);
     setSelectedValues(tmpSelectedValues);
     setBadges(_getSelectedBadges(items, tmpSelectedValues));
-    setFocus<HTMLButtonElement>(autoFocus, _triggerRef);
-    if (openOnFocus) _setIsOpen(autoFocus);
+    _updateFocusRelatedLogic();
   }, [items, selectedValues]);
 
   useEffect(() => {
@@ -132,20 +136,22 @@ export default function SheMultiSelect<T>(
       !_.isNil(isOpen) &&
       typeof isOpen === "boolean" &&
       !_.isEqual(isOpen, _open)
-    )
+    ) {
       _setIsOpen(isOpen);
+    }
 
     if (
       !_.isNil(isLoading) &&
       typeof isLoading === "boolean" &&
       !_.isEqual(isLoading, _loading)
-    )
+    ) {
       setLoading(isLoading);
+      _setIsOpen(isOpen);
+    }
   }, [searchValue, isOpen, isLoading]);
 
   useEffect(() => {
-    setFocus<HTMLButtonElement>(autoFocus, _triggerRef);
-    if (openOnFocus) _setIsOpen(autoFocus);
+    _updateFocusRelatedLogic();
   }, [autoFocus]);
 
   // ==================================================================== EVENT
@@ -251,6 +257,15 @@ export default function SheMultiSelect<T>(
       } else {
         setFocus<HTMLButtonElement>(autoFocus, _triggerRef);
       }
+    }
+  }
+
+  function _updateFocusRelatedLogic() {
+    if (openOnFocus) {
+      _setIsOpen(autoFocus);
+      setFocus<HTMLInputElement>(autoFocus, _searchRef);
+    } else {
+      setFocus<HTMLButtonElement>(autoFocus, _triggerRef);
     }
   }
 
