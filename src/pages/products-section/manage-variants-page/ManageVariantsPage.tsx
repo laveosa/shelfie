@@ -77,6 +77,7 @@ export function ManageVariantsPage() {
         .getTaxesListHandler()
         .then((res) => dispatch(productsActions.refreshTaxesList(res)));
     }
+    dispatch(productsActions.refreshActiveTab("variants"));
   }, [productId]);
 
   useEffect(() => {
@@ -928,7 +929,7 @@ export function ManageVariantsPage() {
         title="Variants"
         data={variantsForItemsCard}
         skeletonQuantity={productsState.variants?.length}
-        selectedItem={productsState.selectedVariant.variantId}
+        selectedItem={productsState.selectedVariant?.variantId}
         onAction={(data) => onAction("onProductItemClick", data)}
       />
       <ProductMenuCard

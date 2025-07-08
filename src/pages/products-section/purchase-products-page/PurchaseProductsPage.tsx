@@ -75,6 +75,7 @@ export function PurchaseProductsPage() {
     }
     productsService.getTraitsForFilterHandler();
     dispatch(actions.refreshActiveCards([]));
+    dispatch(productsActions.refreshActiveTab("purchases"));
   }, [purchaseId]);
 
   useEffect(() => {

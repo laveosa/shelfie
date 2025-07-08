@@ -61,6 +61,7 @@ export function SupplierPage() {
       }
     }
     dispatch(actions.refreshActiveCards([]));
+    dispatch(productsActions.refreshActiveTab("purchases"));
   }, [purchaseId]);
 
   function scrollToCard(cardId: string) {
