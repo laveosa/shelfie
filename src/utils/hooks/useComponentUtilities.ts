@@ -1,13 +1,46 @@
-import { RefObject } from "react";
+import React, {
+  Dispatch,
+  RefObject,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 
 import { generateId } from "@/utils/helpers/quick-helper.ts";
 import { ISelectable } from "@/const/interfaces/primitive-components/ISelecteble.ts";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
+import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 
-export default function useComponentUtilities() {
+export interface IComponentUtilities<V, T extends ISelectable<V>> {
+  identifier?: string;
+  items?: T[];
+}
+
+export default function useComponentUtilities<V, T>({
+  identifier,
+  items,
+}?: IComponentUtilities<V, T>) {
   const { translate } = useAppTranslation();
+  const [ariaDescribedbyId, setAriaDescribedbyId] = useState<string>(null);
+  const [isItemsWithIcons, setIsItemsWithIcons] = useState<boolean>(null);
+  const [isItemsWithColors, setIsItemsWithColors] = useState<boolean>(null);
 
-  function updateSelectedItems<T extends ISelectable<T>, V>(
+  useEffect(() => {
+    _analyzeElementsForSpecificData(
+      items,
+      isItemsWithIcons,
+      isItemsWithColors,
+      setIsItemsWithIcons,
+      setIsItemsWithColors,
+    );
+  }, [items]);
+
+  useEffect(() => {
+    if (identifier !== ariaDescribedbyId)
+      setAriaDescribedbyId(`${generateId()}_${identifier ?? "component"}_ID`);
+  }, [identifier]);
+
+  function updateSelectedItems<T extends ISelectable<V>, V>(
     items: T[],
     selectedValues: V | V[],
   ): T[] {
@@ -21,8 +54,8 @@ export default function useComponentUtilities() {
     return items;
   }
 
-  function setAutoFocus<T>(autoFocus: boolean, triggerRef: RefObject<T>) {
-    if (autoFocus && triggerRef && triggerRef.current) {
+  function setFocus<T>(focus: boolean, triggerRef: RefObject<T>) {
+    if (focus && triggerRef && triggerRef.current) {
       setTimeout(() => triggerRef.current.focus());
     }
   }
@@ -61,10 +94,51 @@ export default function useComponentUtilities() {
   }
 
   return {
+    ariaDescribedbyId,
     translate,
+    isItemsWithIcons,
+    isItemsWithColors,
     updateSelectedItems,
-    setAutoFocus,
+    setFocus,
     addItemsId,
     calculatePopoverWidth,
   };
+}
+
+// ============================================================== PRIVATE FUNC-S
+function _analyzeElementsForSpecificData<
+  T extends {
+    icon: Partial<ISheIcon> | string | React.FC<any>;
+    colors: string[];
+  },
+>(
+  items: T[],
+  isItemsWithIcons: boolean,
+  isItemsWithColors: boolean,
+  setIsItemsWithIcons: Dispatch<SetStateAction<boolean>>,
+  setIsItemsWithColors: Dispatch<SetStateAction<boolean>>,
+): Promise<T[]> {
+  setIsItemsWithIcons(null);
+  setIsItemsWithColors(null);
+
+  return new Promise<T[]>((resolve, reject) => {
+    if (!items || items.length === 0) return reject(null);
+
+    let withIcons = isItemsWithIcons;
+    let withColors = isItemsWithColors;
+
+    items.forEach((item) => {
+      if (!withIcons && item.icon) {
+        withIcons = true;
+        setIsItemsWithIcons(withIcons);
+      }
+
+      if (!withColors && item.colors) {
+        withColors = true;
+        setIsItemsWithColors(withColors);
+      }
+    });
+
+    resolve(items);
+  });
 }

@@ -118,6 +118,7 @@ export default function SheOption<T>(props: ISheOption<T>): JSX.Element {
           maxWidth,
           ...style,
         }}
+        role="option"
         onClick={onClickHandler}
         {...restProps}
       >

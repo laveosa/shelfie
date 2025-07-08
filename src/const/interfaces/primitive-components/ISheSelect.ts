@@ -32,7 +32,7 @@ export interface ISheSelect<T>
   required?: boolean;
   showSelectIcon?: boolean;
   autoFocus?: boolean;
-  onOpenChange?(value: boolean): void;
+  onOpen?(value: boolean): void;
   onSelect?(value: T): void;
   onSelectModel?(
     data: IOutputEventModel<T, ISheSelect<T>, React.MouseEvent>,
@@ -61,7 +61,7 @@ export const SheSelectDefaultModel: ISheSelect<any> = {
   required: undefined,
   showSelectIcon: undefined,
   autoFocus: undefined,
-  onOpenChange: undefined,
+  onOpen: undefined,
   onSelect: undefined,
   onSelectModel: undefined,
 };

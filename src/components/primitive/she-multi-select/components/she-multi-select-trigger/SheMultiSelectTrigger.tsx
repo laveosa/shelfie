@@ -50,6 +50,13 @@ export default function SheMultiSelectTrigger({
 
   // ==================================================================== EVENT
 
+  function onKeyDownHandler(event) {
+    if ((event.code === "ArrowDown" || event.key === "ArrowDown") && !isOpen) {
+      onTogglePopover?.();
+      event.preventDefault();
+    }
+  }
+
   // ==================================================================== PRIVATE
 
   // ==================================================================== LAYOUT
@@ -82,6 +89,7 @@ export default function SheMultiSelectTrigger({
                 className={`${elementClassName} ${cs.sheMultiSelectTriggerElement}`}
                 style={elementStyle}
                 disabled={disabled || isLoading}
+                onKeyDown={onKeyDownHandler}
                 onClick={onTogglePopover}
                 {...props}
               >

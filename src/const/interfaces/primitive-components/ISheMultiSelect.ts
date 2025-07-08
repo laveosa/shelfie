@@ -20,7 +20,7 @@ export interface ISheMultiSelect<T>
   selectAllPlaceholder?: string;
   selectAllPlaceholderTransKey?: string;
   isOpen?: boolean;
-  onOpenChange?: (value: boolean) => void;
+  onOpen?: (value: boolean) => void;
   onClear?(value: null): void;
   onSelect?(values: T[]): void;
   onSelectModel?(
@@ -39,7 +39,7 @@ export const SheMultiSelectDefaultModel: ISheMultiSelect<any> = {
   selectAllPlaceholder: undefined,
   selectAllPlaceholderTransKey: undefined,
   isOpen: undefined,
-  onOpenChange: undefined,
+  onOpen: undefined,
   onClear: undefined,
   onSelect: undefined,
   onSelectModel: undefined,

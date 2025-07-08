@@ -30,6 +30,7 @@ export interface ISheAutocomplete extends NativeInputProps {
   maxWidth?: string;
   fullWidth?: boolean;
   minAmount?: number;
+  onOpen?(value: boolean): void;
   onSearch?(value: string): void;
   onSelect?(value: string): void;
   onSelectModel?(
@@ -39,7 +40,6 @@ export interface ISheAutocomplete extends NativeInputProps {
       React.MouseEvent | React.KeyboardEvent
     >,
   ): void;
-  onIsOpen?(value: boolean): void;
 }
 
 export const SheAutocompleteDefaultModel: ISheAutocomplete = {
@@ -65,8 +65,8 @@ export const SheAutocompleteDefaultModel: ISheAutocomplete = {
   maxWidth: undefined,
   fullWidth: undefined,
   minAmount: undefined,
+  onOpen: undefined,
   onSearch: undefined,
   onSelect: undefined,
   onSelectModel: undefined,
-  onIsOpen: undefined,
 };

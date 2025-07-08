@@ -13,7 +13,6 @@ import {
   SheSelectDefaultModel,
 } from "@/const/interfaces/primitive-components/ISheSelect.ts";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import { generateId } from "@/utils/helpers/quick-helper.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
@@ -22,6 +21,7 @@ import SheSelectItem from "@/components/primitive/she-select/components/she-sele
 import useDefaultRef from "@/utils/hooks/useDefaultRef.ts";
 import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
 import { getCustomProps } from "@/utils/helpers/props-helper.ts";
+import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
 
 export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
   // ==================================================================== PROPS
@@ -51,7 +51,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
     isOpen,
     showSelectIcon,
     autoFocus,
-    onOpenChange,
+    onOpen,
     onSelect,
     onSelectModel,
   } = props;
@@ -66,10 +66,6 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
   const [_open, setOpen] = useState<boolean>(null);
   const [_loading, setLoading] = useState<boolean>(null);
 
-  // TODO ---------------------------------------- transfer this props and logic to get values for them in to "useComponentUtilities" hook
-  const [_isItemsWithIcons, setIsItemsWithIcons] = useState<boolean>(null);
-  const [_isItemsWithColors, setIsItemsWithColors] = useState<boolean>(null);
-
   // ==================================================================== REFS
   // TODO ---------------------------------------------- all ref-s need to be in props and use "useDefaultRef" logic
   const _triggerRef = useDefaultRef<HTMLInputElement>(triggerRef);
@@ -77,19 +73,22 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
 
   // ==================================================================== UTILITIES FUNCTIONS
   const {
+    ariaDescribedbyId,
+    isItemsWithIcons,
+    isItemsWithColors,
     translate,
     updateSelectedItems,
-    setAutoFocus,
+    setFocus,
     addItemsId,
     calculatePopoverWidth,
-  } = useComponentUtilities();
-  const ariaDescribedbyId = `${generateId()}_SELECT_ID`;
+  } = useComponentUtilities<T, ISheOption<T>>({
+    identifier: "SheSelect",
+    items: _items,
+  });
 
   // ==================================================================== DEPENDENCIES
   useEffect(() => {
     let updatedItems = [...(items || [])];
-    setIsItemsWithIcons(null);
-    setIsItemsWithColors(null);
 
     if (!hideFirstOption) {
       const firstIsNotSelected =
@@ -109,11 +108,6 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
 
     setItems(itemsWithIds);
 
-    itemsWithIds?.forEach((item) => {
-      if (item.icon) setIsItemsWithIcons(true);
-      if (item.colors) setIsItemsWithColors(true);
-    });
-
     const selectedItem = _getSelectedItemByIdentifier(
       selected,
       "value",
@@ -131,7 +125,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
       });
     }
 
-    setAutoFocus<HTMLInputElement>(autoFocus, _triggerRef);
+    setFocus<HTMLInputElement>(autoFocus, _triggerRef);
   }, [items, selected]);
 
   useEffect(() => {
@@ -149,7 +143,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
   }, [isOpen, isLoading]);
 
   useEffect(() => {
-    setAutoFocus<HTMLInputElement>(autoFocus, _triggerRef);
+    setFocus<HTMLInputElement>(autoFocus, _triggerRef);
   }, [autoFocus]);
 
   // ==================================================================== EVENT
@@ -192,7 +186,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
       });
     }
 
-    onOpenChange?.(value);
+    onOpen?.(value);
     calculatePopoverWidth<HTMLInputElement>(popoverRef, _triggerRef);
   }
 
@@ -200,7 +194,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
     setSelected(null);
     onSelect?.(null);
     onSelectModel?.(null);
-    setAutoFocus<HTMLInputElement>(true, _triggerRef);
+    setFocus<HTMLInputElement>(true, _triggerRef);
   }
 
   // ==================================================================== PRIVATE
@@ -318,8 +312,8 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
                         infoClassName={`${cs.sheSelectItemInfoContainer} ${item.infoClassName || ""}`}
                         tooltipClassName={`${cs.sheSelectItemTooltipContainer} ${item.tooltipClassName || ""}`}
                         showSelectIcon={showSelectIcon}
-                        showIconsColumn={_isItemsWithIcons}
-                        showColorsColumn={_isItemsWithColors}
+                        showIconsColumn={isItemsWithIcons}
+                        showColorsColumn={isItemsWithColors}
                         ariaDescribedbyId={ariaDescribedbyId}
                         isLoading={
                           !_.isNil(item.isLoading) ? item.isLoading : _loading

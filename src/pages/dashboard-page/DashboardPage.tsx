@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import cs from "./DashboardPage.module.scss";
 import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageService.ts";
@@ -8,6 +8,7 @@ import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSele
 import { SheTooltipEnum } from "@/const/enums/SheTooltipEnum.ts";
 import SheMultiSelect from "@/components/primitive/she-multi-select/SheMultiSelect.tsx";
 import SheAutocomplete from "@/components/primitive/she-autocomplete/SheAutocomplete.tsx";
+import { ISheMultiSelectItem } from "@/const/interfaces/primitive-components/ISheMultiSelectItem.ts";
 
 const options: ISheSelectItem<any>[] = [
   {
@@ -119,7 +120,20 @@ const optionsSimple: ISheSelectItem<string>[] = [
 export function DashboardPage() {
   const service = useDashboardPageService();
 
-  const [selected, setSelected] = useState<boolean>();
+  const [_items, setItems] = useState<ISheMultiSelectItem<any>[]>(null);
+  const [selected, setSelected] = useState<any>();
+
+  useEffect(() => {
+    setTimeout(() => {
+      setItems(optionsSimple);
+      // setItems(options);
+    }, 1000);
+
+    setTimeout(() => {
+      // setSelected([optionsSimple[2].value]);
+      // setSelected([options[2].value]);
+    }, 2000);
+  }, []);
 
   // ================================================================== EVENT
 
@@ -190,37 +204,46 @@ export function DashboardPage() {
             label="MultiSelect"
             required
             // items={options}
-            items={optionsSimple}
+            // items={optionsSimple}
+            items={_items}
+            selectedValues={selected}
             contextType="badges"
             showClearBtn
+            // isOpen
+            showSearch
+            showFooter
+            autoFocus
+            // fullWidth
             onSelect={(value) => console.log("MultiSelect value: ", value)}
             onSelectModel={(value) => console.log("MultiSelect model: ", value)}
           />
         </div>
-        <div className="w-full flex">
+        {/*<div className="w-full flex">
           <SheSelect<string>
             label="Select"
             required
             // items={options}
             items={optionsSimple}
             showClearBtn
+            // isOpen
             onSelect={(value) => console.log("Select value: ", value)}
             onSelectModel={(value) => console.log("Select model: ", value)}
           />
-        </div>
-        <div className="w-full flex">
+        </div>*/}
+        {/*<div className="w-full flex">
           <SheAutocomplete
             label="Autocomplete"
             required
             // items={options}
             items={optionsSimple}
             showClearBtn
+            // isOpen
             onSelect={(event) => console.log("Autocomplete value: ", event)}
             onSelectModel={(event) =>
               console.log("Autocomplete model: ", event)
             }
           />
-        </div>
+        </div>*/}
       </div>
 
       <br />

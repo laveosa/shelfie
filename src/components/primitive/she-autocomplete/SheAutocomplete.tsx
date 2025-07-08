@@ -53,12 +53,12 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     maxWidth,
     fullWidth,
     minAmount = 0,
+    onOpen,
     onChange,
     onBlur,
     onSearch,
     onSelect,
     onSelectModel,
-    onIsOpen,
   } = props;
   const sheAutocompleteProps = getCustomProps<
     ISheAutocomplete,
@@ -86,8 +86,11 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
   const triggerRef = useRef<HTMLInputElement>(null);
 
   // ==================================================================== UTILITIES FUNCTIONS
-  const { setAutoFocus, addItemsId, calculatePopoverWidth } =
-    useComponentUtilities();
+  const { setFocus, addItemsId, calculatePopoverWidth } = useComponentUtilities(
+    {
+      items: _items,
+    },
+  );
 
   const filteredItems: ISheOption<string>[] = useMemo(() => {
     if (!_items || _items.length === 0) return [];
@@ -118,7 +121,7 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
       setSelected(searchValue);
     }
 
-    setAutoFocus<HTMLInputElement>(autoFocus, triggerRef);
+    setFocus<HTMLInputElement>(autoFocus, triggerRef);
   }, [items, searchValue]);
 
   useEffect(() => {
@@ -138,7 +141,7 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
   }, [isOpen, isLoading, disabled]);
 
   useEffect(() => {
-    setAutoFocus<HTMLInputElement>(autoFocus, triggerRef);
+    setFocus<HTMLInputElement>(autoFocus, triggerRef);
   }, [autoFocus]);
 
   // ==================================================================== EVENT
@@ -217,7 +220,7 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     }
 
     calculatePopoverWidth<HTMLInputElement>(popoverRef, triggerRef);
-    onIsOpen?.(_open);
+    onOpen?.(_open);
   }
 
   function _updateIconAndColorColumnCondition(fromItems: ISheOption<string>[]) {
@@ -236,7 +239,7 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
   // ==================================================================== LAYOUT
 
   return (
-    <Popover open={_open} onOpenChange={_updateIsOpenCondition}>
+    <Popover open={_open} onOpenChange={setOpen}>
       <Command>
         <div
           id={id}
