@@ -50,7 +50,7 @@ export function ManageVariantsPage() {
     {
       idKey: "variantId",
       nameKey: "variantName",
-      imageKeyPath: "image.thumbnailUrl",
+      imageKeyPath: "photo.thumbnailUrl",
       type: "variant",
     },
   );
@@ -928,6 +928,7 @@ export function ManageVariantsPage() {
         title="Variants"
         data={variantsForItemsCard}
         skeletonQuantity={productsState.variants?.length}
+        selectedItem={productsState.selectedVariant.variantId}
         onAction={(data) => onAction("onProductItemClick", data)}
       />
       <ProductMenuCard
