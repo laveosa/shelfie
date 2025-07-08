@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
+import { ColumnDef } from "@tanstack/react-table";
 import { useForm } from "react-hook-form";
-
 import {
   Blocks,
   Clock,
@@ -9,6 +9,7 @@ import {
   Plus,
   WandSparklesIcon,
 } from "lucide-react";
+
 import {
   FormControl,
   FormField,
@@ -37,7 +38,6 @@ import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
 import { VariantConfigurationGridColumns } from "@/components/complex/grid/variant-configuration-grid/VariantConfigurationGridColumns.tsx";
 import { VariantPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/VariantPhotosGridColumns.tsx";
 import { VariantModel } from "@/const/models/VariantModel.ts";
-import { ColumnDef } from "@tanstack/react-table";
 
 const debounce = (fn: (...args: any[]) => void, delay: number) => {
   let timer: ReturnType<typeof setTimeout>;
@@ -344,6 +344,7 @@ export default function VariantConfigurationCard({
             <SheButton
               icon={Clock}
               variant="outline"
+              maxWidth="89px"
               onClick={() =>
                 onAction("openVariantHistoryCard", variant.variantId)
               }

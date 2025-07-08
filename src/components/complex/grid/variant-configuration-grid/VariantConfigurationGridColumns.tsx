@@ -25,9 +25,10 @@ export const VariantConfigurationGridColumns: ColumnDef<any>[] = [
                   background: row.original.optionColor,
                   width: "20px",
                   height: "20px",
-                  borderRadius: "10%",
+                  borderRadius: "50%",
+                  alignSelf: "center",
                 }
-              : {}
+              : { alignSelf: "center" }
           }
         >
           {row.original.optionColor === null ? row.original.optionName : ""}

@@ -118,14 +118,14 @@ const DraggableRow = ({
         style={{
           opacity: isLoading ? 0.7 : 1,
           transform: CSS.Transform.toString(transform),
-          background: isSelected ? "#F8F3FF" : row.original.color || "white",
+          background: isSelected ? "#F4F4F5" : row.original.color || "white",
         }}
       >
         <TableCell
           className={`${isDragging ? cs.dndIconCellDragged : cs.dndIconCell} ${isSelected ? cs.isSelected : ""}`}
           style={{
             cursor: isDragDisabled || isLoading ? "default" : "grab",
-            background: isSelected ? "#F8F3FF" : "inherit",
+            background: isSelected ? "#F4F4F5" : "inherit",
             width: "40px",
             minWidth: "40px",
             maxWidth: "40px",
@@ -144,7 +144,7 @@ const DraggableRow = ({
             onClick={(e) => e.stopPropagation()}
             style={{
               cursor: "default",
-              background: isSelected ? "#F8F3FF" : "inherit",
+              background: isSelected ? "#F4F4F5" : "inherit",
               minWidth: cell.column.columnDef.minSize || 50,
               maxWidth: cell.column.columnDef.maxSize,
             }}
@@ -168,7 +168,7 @@ const DraggableRow = ({
                   colSpan={totalColumns}
                   className={cs.expandedContent}
                   style={{
-                    background: isSelected ? "#F8F3FF" : "#fafafa",
+                    background: isSelected ? "#F4F4F5" : "#fafafa",
                     borderTop: "1px solid #e5e7eb",
                     padding: "16px",
                   }}
@@ -208,7 +208,7 @@ const RegularRow = ({
         } ${isSelected ? cs.isSelected : ""}`}
         style={{
           pointerEvents: isLoading ? "none" : "auto",
-          background: isSelected ? "#F8F3FF" : row.original.color,
+          background: isSelected ? "#F4F4F5" : row.original.color,
           borderBottom: expandableRows.length > 0 ? "none" : "",
         }}
       >
@@ -217,7 +217,7 @@ const RegularRow = ({
             key={cell.id}
             className={`${cs.tableCell} ${isSelected ? cs.isSelected : ""}`}
             style={{
-              background: isSelected ? "#F8F3FF" : "inherit",
+              background: isSelected ? "#F4F4F5" : "inherit",
               ...(cell.column.columnDef.size && {
                 width: `${cell.column.columnDef.size}px`,
               }),
