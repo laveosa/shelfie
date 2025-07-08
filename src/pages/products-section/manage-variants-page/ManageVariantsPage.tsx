@@ -270,12 +270,6 @@ export function ManageVariantsPage() {
               dispatch(productsActions.refreshSelectedVariant(res));
               dispatch(actions.refreshVariantPhotos(res?.photos));
               dispatch(actions.setIsProductPhotoGridLoading(true));
-              productsService
-                .getProductPhotosForVariantHandler(productId, payload.variantId)
-                .then((res) => {
-                  dispatch(actions.setIsProductPhotoGridLoading(false));
-                  dispatch(actions.refreshProductPhotosForVariant(res));
-                });
             } else {
               addToast({
                 text: "Variant not found",
@@ -896,6 +890,13 @@ export function ManageVariantsPage() {
         break;
       case "openVariantPhotosCard":
         handleCardAction("variantPhotosCard", true);
+        dispatch(actions.setIsProductPhotoGridLoading(true));
+        productsService
+          .getProductPhotosForVariantHandler(productId, payload)
+          .then((res) => {
+            dispatch(actions.setIsProductPhotoGridLoading(false));
+            dispatch(actions.refreshProductPhotosForVariant(res));
+          });
         break;
       case "closeProductTraitConfigurationCard":
         handleCardAction("productTraitConfigurationCard");

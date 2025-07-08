@@ -393,7 +393,9 @@ export default function VariantConfigurationCard({
             <SheButton
               icon={ImagePlus}
               variant="outline"
-              onClick={() => onAction("openVariantPhotosCard")}
+              onClick={() =>
+                onAction("openVariantPhotosCard", variant.variantId)
+              }
             >
               Manage
             </SheButton>
