@@ -1,8 +1,6 @@
 @use "@/styles/variables" as vars;
 
 .variantConfigurationCard {
-  //overflow: auto;
-
   .variantConfigurationCardContent {
     display: flex;
     flex-direction: column;
@@ -104,6 +102,28 @@
         justify-content: space-between;
         align-items: center;
       }
+    }
+  }
+}
+
+//-------------------------------------------------------Expandable Row
+
+.variantConfigurationCard {
+  .expandableRow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+
+    .expandableRowIcon {
+      svg {
+        stroke: none;
+      }
+    }
+
+    .expandableRowText {
+      color: #EF4343;
+      font-weight: 500;
     }
   }
 }

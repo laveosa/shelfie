@@ -21,6 +21,7 @@ import ManageTraitsCard from "@/components/complex/custom-cards/manage-traits-ca
 import AddVariantCard from "@/components/complex/custom-cards/add-variant-card/AddVariantCard.tsx";
 import VariantPhotosCard from "@/components/complex/custom-cards/variant-photos-card/VariantPhotosCard.tsx";
 import {
+  addGridRowColor,
   clearSelectedGridItems,
   formatDate,
   setSelectedGridItem,
@@ -30,6 +31,7 @@ import useProductsPageService from "@/pages/products-section/products-page/usePr
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
+import { GridRowsColorsEnum } from "@/const/enums/GridRowsColorsEnum.ts";
 
 export function ManageVariantsPage() {
   const dispatch = useAppDispatch();
@@ -289,7 +291,22 @@ export function ManageVariantsPage() {
           .then((res) => {
             dispatch(actions.setIsVariantConfigurationCardLoading(false));
             if (res) {
-              dispatch(productsActions.refreshSelectedVariant(res));
+              const modifiedRes = {
+                ...res.data,
+                traitOptions: addGridRowColor(res.data.traitOptions, "color", [
+                  {
+                    field: "isRemoved",
+                    value: true,
+                    color: GridRowsColorsEnum.ERROR,
+                  },
+                  {
+                    field: "isMissing",
+                    value: true,
+                    color: GridRowsColorsEnum.ERROR,
+                  },
+                ]),
+              };
+              dispatch(productsActions.refreshSelectedVariant(modifiedRes));
               addToast({
                 text: "Variant updated successfully",
                 type: "success",

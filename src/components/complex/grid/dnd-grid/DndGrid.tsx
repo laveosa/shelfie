@@ -168,7 +168,9 @@ const DraggableRow = ({
                   colSpan={totalColumns}
                   className={cs.expandedContent}
                   style={{
-                    background: isSelected ? "#F4F4F5" : "#fafafa",
+                    background: isSelected
+                      ? "#F4F4F5"
+                      : row.original.color || "white", // Use parent row color
                     borderTop: "1px solid #e5e7eb",
                     padding: "16px",
                   }}
@@ -244,6 +246,9 @@ const RegularRow = ({
                   colSpan={totalColumns}
                   className={cs.expandedContent}
                   style={{
+                    background: isSelected
+                      ? "#F4F4F5"
+                      : row.original.color || "white",
                     borderTop:
                       expandableRows.length > 1 ? "1px solid white" : "",
                   }}
