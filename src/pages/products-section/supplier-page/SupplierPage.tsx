@@ -111,6 +111,9 @@ export function SupplierPage() {
           })
           .then((res) => {
             dispatch(actions.setIsSupplierCardLoading(false));
+            navigate(
+              `${NavUrlEnum.PRODUCTS}${NavUrlEnum.PURCHASE_PRODUCTS}/${res.purchaseId}`,
+            );
             if (res) {
               addToast({
                 text: "Purchase created successfully",
@@ -380,11 +383,6 @@ export function SupplierPage() {
                 .then((res) => {
                   dispatch(actions.refreshManagedSupplier(res));
                 });
-              console.log(
-                "SUPPLIER",
-                productsState.selectedSupplier.supplierId,
-                payload.supplierId.supplierId,
-              );
               if (
                 productsState.selectedSupplier.supplierId === payload.supplierId
               ) {

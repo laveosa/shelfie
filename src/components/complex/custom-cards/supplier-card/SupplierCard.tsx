@@ -17,6 +17,7 @@ import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import SheTextArea from "@/components/primitive/she-textarea/SheTextarea.tsx";
+import SheCardNotification from "@/components/complex/she-card-notification/SheCardNotification.tsx";
 
 export default function SupplierCard({
   isLoading,
@@ -179,23 +180,17 @@ export default function SupplierCard({
             ></SheButton>
           </div>
         </div>
-        <div className={cs.deletePurchaseBlock}>
-          <div className={cs.deletePurchaseTextBlock}>
-            <span className={`${cs.deletePurchaseTitle} she-text`}>
-              Delete Purchase
-            </span>
-            <span className="she-subtext">
-              The purchase will be deleted, but the changes in stock will remain
-              intact.
-            </span>
-          </div>
-          <SheButton
-            className={cs.deletePurchaseButton}
-            icon={Trash2}
-            variant={"outline"}
-            value="Delete"
+        {purchaseId && (
+          <SheCardNotification
+            title="Delete Purchase"
+            text=" The purchase will be deleted, but the changes in stock will remain
+              intact."
+            buttonIcon={Trash2}
+            buttonText="Delete"
+            buttonVariant="outline"
+            buttonColor="#EF4343"
           />
-        </div>
+        )}
       </div>
     </SheProductCard>
   );

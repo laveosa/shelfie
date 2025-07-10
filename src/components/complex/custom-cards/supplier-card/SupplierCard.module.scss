@@ -73,31 +73,5 @@
         justify-content: space-between;
       }
     }
-
-    .deletePurchaseBlock {
-      display: flex;
-      align-items: center;
-      border: 1px solid #E4E4E7;
-      border-radius: 5px;
-      background: #FAFAFA;
-      padding: 10px;
-
-      .deletePurchaseTextBlock {
-        display: flex;
-        flex-direction: column;
-
-        .deletePurchaseTitle {
-          font-weight: 600;
-        }
-      }
-
-      .deletePurchaseButton {
-        color: #EF4343;
-
-        svg {
-          color: #EF4343
-        }
-      }
-    }
   }
 }
