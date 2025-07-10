@@ -1,4 +1,4 @@
-import React from "react";
+import React, { RefObject } from "react";
 
 import { ISheInput } from "@/const/interfaces/primitive-components/ISheInput.ts";
 import { ISheButton } from "@/const/interfaces/primitive-components/ISheButton.ts";
@@ -8,6 +8,7 @@ import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 type NativeInputProps = Omit<ISheInput, "onSelect" | "id" | "size">;
 
 export interface ISheAutocomplete extends NativeInputProps {
+  popoverRef?: RefObject<HTMLDivElement>;
   id?: string;
   className?: string;
   style?: React.CSSProperties;
@@ -44,6 +45,7 @@ export interface ISheAutocomplete extends NativeInputProps {
 }
 
 export const SheAutocompleteDefaultModel: ISheAutocomplete = {
+  popoverRef: undefined,
   id: undefined,
   className: undefined,
   style: undefined,

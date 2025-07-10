@@ -26,10 +26,13 @@ import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.t
 import SheOption from "@/components/primitive/she-option/SheOption.tsx";
 import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
 import { Check } from "lucide-react";
+import useDefaultRef from "@/utils/hooks/useDefaultRef.ts";
 
 export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
   // ==================================================================== PROPS
   const {
+    ref: triggerRef,
+    popoverRef,
     id,
     className = "",
     style,
@@ -78,25 +81,14 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
   const [_searchValue, setSearchValue] = useState<string>(null);
 
   // ==================================================================== REFS
-  // TODO ---------------------------------------------- all ref-s need to be in props and use "useDefaultRef" logic
-  const popoverRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLInputElement>(null);
+  const _triggerRef = useDefaultRef<HTMLInputElement>(triggerRef);
+  const _popoverRef = useDefaultRef<HTMLDivElement>(popoverRef);
 
   // ==================================================================== UTILITIES
   const { setFocus, initializeItemsList, calculatePopoverWidth } =
     useComponentUtilities({
       identifier: "SheAutocomplete",
     });
-
-  const filteredItems: ISheOption<string>[] = useMemo(() => {
-    if (!_items || _items.length === 0) return [];
-
-    return _items.filter((item) =>
-      _searchValue && _searchValue.length > 0
-        ? item.text.toLowerCase().includes(_searchValue.toLowerCase())
-        : true,
-    );
-  }, [_items, _searchValue]);
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
@@ -113,7 +105,7 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
       setSelected(searchValue);
     }
 
-    setFocus<HTMLInputElement>(autoFocus, triggerRef);
+    setFocus<HTMLInputElement>(autoFocus, _triggerRef);
   }, [items, searchValue]);
 
   useEffect(() => {
@@ -129,12 +121,22 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
       _updateIsOpenCondition(isOpen, searchValue);
     }
 
-    calculatePopoverWidth<HTMLInputElement>(popoverRef, triggerRef);
+    calculatePopoverWidth<HTMLInputElement>(_popoverRef, _triggerRef);
   }, [isOpen, isLoading, disabled]);
 
   useEffect(() => {
-    setFocus<HTMLInputElement>(autoFocus, triggerRef);
+    setFocus<HTMLInputElement>(autoFocus, _triggerRef);
   }, [autoFocus]);
+
+  const filteredItems: ISheOption<string>[] = useMemo(() => {
+    if (!_items || _items.length === 0) return [];
+
+    return _items.filter((item) =>
+      _searchValue && _searchValue.length > 0
+        ? item.text.toLowerCase().includes(_searchValue.toLowerCase())
+        : true,
+    );
+  }, [_items, _searchValue]);
 
   // ==================================================================== EVENT HANDLERS
   function onChangeHandler(value: string) {
@@ -181,7 +183,7 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
       model: { ...sheAutocompleteProps, searchValue: value },
       event,
     });
-    setTimeout(() => triggerRef.current.focus());
+    setFocus<HTMLInputElement>(autoFocus, _triggerRef);
     event?.stopPropagation();
   }
 
@@ -209,7 +211,7 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
       setOpen(_isOpen);
     }
 
-    calculatePopoverWidth<HTMLInputElement>(popoverRef, triggerRef);
+    calculatePopoverWidth<HTMLInputElement>(_popoverRef, _triggerRef);
     onOpen?.(_open);
   }
 
@@ -235,7 +237,7 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
             <PopoverAnchor className={cs.sheAutocompleteTriggerAnchor}>
               <SheInput
                 {...sheInputProps}
-                ref={triggerRef}
+                ref={_triggerRef}
                 className={elementClassName}
                 style={elementStyle}
                 value={_searchValue}
@@ -273,7 +275,7 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
           </div>
         </div>
         <PopoverContent
-          ref={popoverRef}
+          ref={_popoverRef}
           className={`${popoverClassName} ${cs.sheAutocompletePopoverContainer} ${disabled || isLoading ? "disabled" : ""}`}
           style={{
             ...popoverStyle,
@@ -286,9 +288,9 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
               {_items && _items.length > 0 ? (
                 <div>
                   {filteredItems && filteredItems.length > 0 ? (
-                    filteredItems.map((item) => (
+                    filteredItems.map((item, idx) => (
                       <CommandItem
-                        key={item.id}
+                        key={`${item.id}_${idx}`}
                         className={cs.sheAutocompleteItemParentWrapper}
                       >
                         <SheOption<string>
