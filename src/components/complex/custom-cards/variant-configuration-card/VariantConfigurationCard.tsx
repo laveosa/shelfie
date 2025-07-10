@@ -90,7 +90,7 @@ export default function VariantConfigurationCard({
   const { setValue, register, getValues } = form;
   const lastChanged = useRef<"netto" | "brutto" | null>(null);
   const preparedTraitOptions = prepareTraitOptionsData(variant?.traitOptions);
-  console.log("preparedTraitOptions", preparedTraitOptions);
+ 
   useEffect(() => {
     if (debouncedFnRef.current && debouncedFnRef.current.cancel) {
       debouncedFnRef.current.cancel();
