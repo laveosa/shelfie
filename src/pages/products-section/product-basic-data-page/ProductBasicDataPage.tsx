@@ -310,7 +310,6 @@ export function ProductBasicDataPage() {
         title={productId ? "Manage Product" : "Create Product"}
         itemsCollection="products"
         counter={productsState.productCounter}
-        onAction={handleCardAction}
         productId={Number(productId)}
         activeCards={state.activeCards}
       />

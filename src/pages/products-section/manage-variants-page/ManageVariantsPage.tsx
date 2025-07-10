@@ -695,6 +695,13 @@ export function ManageVariantsPage() {
                     actions.refreshListOfTraitsWithOptionsForProduct(res),
                   );
                 });
+              dispatch(actions.setIsManageVariantsCardLoading(true));
+              productsService
+                .getProductVariantsHandler(productId)
+                .then((res) => {
+                  dispatch(actions.setIsManageVariantsCardLoading(false));
+                  dispatch(productsActions.refreshProductVariants(res));
+                });
               addToast({
                 text: "Traits set successfully",
                 type: "success",
@@ -933,6 +940,7 @@ export function ManageVariantsPage() {
             clearSelectedGridItems(productsState.productVariants),
           ),
         );
+        dispatch(productsActions.resetSelectedVariant());
         handleCardAction("variantConfigurationCard");
         break;
       case "closeVariantHistoryCard":
@@ -986,9 +994,6 @@ export function ManageVariantsPage() {
             productCounter={productsState.productCounter}
             onAction={onAction}
             onGenerateProductCode={service.generateProductCodeHandler}
-            onSecondaryButtonClick={() =>
-              onAction("closeVariantConfigurationCard")
-            }
           />
         </div>
       )}

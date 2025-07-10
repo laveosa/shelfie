@@ -1,3 +1,5 @@
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import {
   CogIcon,
   ImageIcon,
@@ -5,8 +7,6 @@ import {
   RefreshCcwDotIcon,
   Trash2,
 } from "lucide-react";
-import { useParams } from "react-router-dom";
-import { useState } from "react";
 
 import cs from "./SupplierCard.module.scss";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
@@ -31,6 +31,12 @@ export default function SupplierCard({
   const [purchaseNotes, setPurchaseNotes] = useState<string>(null);
   const isDateSelected = Boolean(selectedDate || selectedPurchase?.date);
   const isButtonDisabled = !isDateSelected || !selectedSupplier;
+
+  useEffect(() => {
+    if (selectedPurchase?.date) {
+      setSelectedDate(selectedPurchase.date);
+    }
+  }, [selectedPurchase?.date]);
 
   return (
     <SheProductCard

@@ -62,7 +62,6 @@ export default function VariantConfigurationCard({
   taxesList,
   productCounter,
   onGenerateProductCode,
-  onSecondaryButtonClick,
   ...props
 }: IVariantConfigurationCard) {
   const traitsColumns =
@@ -270,7 +269,7 @@ export default function VariantConfigurationCard({
       loading={isLoading}
       title="Manage Variant"
       showCloseButton
-      onSecondaryButtonClick={onSecondaryButtonClick}
+      onSecondaryButtonClick={() => onAction("closeVariantConfigurationCard")}
       className={cs.variantConfigurationCard}
       {...props}
     >
