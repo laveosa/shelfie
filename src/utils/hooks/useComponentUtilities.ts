@@ -21,7 +21,7 @@ export default function useComponentUtilities({
       setAriaDescribedbyId(`${generateId()}_${identifier ?? "component"}_ID`);
   }, [identifier]);
 
-  // ================================================================== LOGIC
+  // ================================================================== COMMON
   function addItemsId<T extends { id: string }>(
     items: T[],
     identifier: string = "item",
@@ -113,7 +113,6 @@ export default function useComponentUtilities({
   }
 
   // ================================================================== OUTPUT
-
   return {
     ariaDescribedbyId,
     translate,
@@ -124,7 +123,6 @@ export default function useComponentUtilities({
   };
 }
 
-// ============================================================== PRIVATE FUNC-S
 function _analyzeElementsForSpecificData<
   T extends {
     icon: Partial<ISheIcon> | string | React.FC<any>;

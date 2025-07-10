@@ -164,6 +164,8 @@ export function DashboardPage() {
 
       <br />
 
+      <br />
+
       {/*<div className="flex flex-col">
         {options.map((item) => (
           <SheOption
@@ -218,42 +220,41 @@ export function DashboardPage() {
       />*/}
 
       <div className="flex gap-5 flex-col">
-        <div className="w-full flex">
+        {/*<div className="w-full flex">
           <SheMultiSelect<string>
             label="MultiSelect"
             required
             // items={options}
-            // items={optionsSimple}
-            items={_items}
-            selectedValues={selected}
+            items={optionsSimple}
+            // items={_items}
+            // selectedValues={selected}
             contextType="badges"
             showClearBtn
-            isOpen
-            isLoading={isLoading}
             showSearch
             showFooter
             autoFocus
-            openOnFocus
             onSelect={(value) => console.log("MultiSelect value: ", value)}
             onSelectModel={(value) => console.log("MultiSelect model: ", value)}
           />
-        </div>
+        </div>*/}
 
-        {/*<div className="w-full flex">
+        <div className="w-full flex">
           <SheSelect<string>
             label="Select"
             required
             // items={options}
-            // items={optionsSimple}
-            items={_items}
-            selected={selected}
+            items={optionsSimple}
+            // items={_items}
+            // selected={selected}
+            autoFocus
+            openOnFocus
+            // isLoading
+            // isOpen
             showClearBtn
-            isOpen
-            isLoading
             onSelect={(value) => console.log("Select value: ", value)}
             onSelectModel={(value) => console.log("Select model: ", value)}
           />
-        </div>*/}
+        </div>
 
         {/*<div className="w-full flex">
           <SheAutocomplete

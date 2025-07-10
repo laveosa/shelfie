@@ -25,6 +25,7 @@ export interface ISheAutocomplete extends NativeInputProps {
   items?: ISheOption<string>[];
   disabled?: boolean;
   isLoading?: boolean;
+  openOnFocus?: boolean;
   isOpen?: boolean;
   minWidth?: string;
   maxWidth?: string;
@@ -60,6 +61,7 @@ export const SheAutocompleteDefaultModel: ISheAutocomplete = {
   items: undefined,
   disabled: undefined,
   isLoading: undefined,
+  openOnFocus: undefined,
   isOpen: undefined,
   minWidth: undefined,
   maxWidth: undefined,

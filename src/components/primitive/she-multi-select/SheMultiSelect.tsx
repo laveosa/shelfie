@@ -92,10 +92,10 @@ export default function SheMultiSelect<T>(
 
   // ==================================================================== REFS
   const _triggerRef = useDefaultRef<HTMLButtonElement>(triggerRef);
-  const _searchRef = useDefaultRef<HTMLInputElement>(searchRef);
   const _popoverRef = useDefaultRef<HTMLDivElement>(popoverRef);
+  const _searchRef = useDefaultRef<HTMLInputElement>(searchRef);
 
-  // ==================================================================== UTILITIES FUNCTIONS
+  // ==================================================================== UTILITIES
   const {
     ariaDescribedbyId,
     setFocus,
@@ -106,7 +106,7 @@ export default function SheMultiSelect<T>(
     identifier: "SheMultiSelect",
   });
 
-  // ==================================================================== DEPENDENCIES
+  // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     const arrSelectedValues: T[] =
       selectedValues && !Array.isArray(selectedValues)
@@ -154,13 +154,13 @@ export default function SheMultiSelect<T>(
     _updateFocusRelatedLogic();
   }, [autoFocus]);
 
-  // ==================================================================== EVENT
-
+  // ==================================================================== EVENT HANDLERS
   function onTogglePopoverHandler() {
     _setIsOpen(!_open);
   }
 
   function onToggleOptionHandler(_value: T, event?: React.MouseEvent) {
+    // TODO event needed as extra param (key - Enter and close Badge include)
     const newSelectedValues = _selectedValues.includes(_value)
       ? _selectedValues.filter((value) => value !== _value)
       : [..._selectedValues, _value];
@@ -168,6 +168,7 @@ export default function SheMultiSelect<T>(
   }
 
   function onToggleAllHandler(_value: T, event?: React.MouseEvent) {
+    // TODO event needed as extra param (key - Enter include)
     if (_selectedValues.length === _items.length) {
       onClearButtonHandler<HTMLInputElement>(event, _searchRef);
     } else {
@@ -198,7 +199,6 @@ export default function SheMultiSelect<T>(
   }
 
   // ==================================================================== PRIVATE
-
   function _getSelectedBadges(
     fromItems: ISheMultiSelectItem<T>[],
     values: T[],
@@ -269,8 +269,7 @@ export default function SheMultiSelect<T>(
     }
   }
 
-  // ==================================================================== RENDER
-
+  // ==================================================================== LAYOUT
   return (
     <Popover open={_open} onOpenChange={_setIsOpen}>
       <SheMultiSelectTrigger
@@ -326,10 +325,10 @@ export default function SheMultiSelect<T>(
                   onClick={onToggleAllHandler}
                 />
               )}
-              {_items?.map((item) => (
+              {_items?.map((item, idx) => (
                 <SheMultiSelectItem<T>
+                  key={`${item.id}_${idx}`}
                   {...item}
-                  key={item.id}
                   className={cs.sheMultiSelectItemParentWrapper}
                   isLoading={
                     !_.isNil(item.isLoading) ? item.isLoading : _loading

@@ -1,6 +1,7 @@
 @use "@/styles/variables" as vars;
 
 $iconSize: 20px;
+$chevronIconSize: 16px;
 
 .sheSelect {
   max-width: vars.$maxWidth + px;
@@ -29,6 +30,15 @@ $iconSize: 20px;
 
         &:focus-visible {
           box-shadow: 0 0 0 1px lightgray inset;
+        }
+
+        > svg {
+          color: vars.$subtextColor;
+          max-width: $chevronIconSize;
+          min-width: $chevronIconSize;
+          max-height: $chevronIconSize;
+          min-height: $chevronIconSize;
+          transition: all 130ms ease-in-out;
         }
 
         > span {
@@ -101,6 +111,16 @@ $iconSize: 20px;
         max-height: $iconSize;
         min-height: $iconSize;
       }
+    }
+  }
+}
+
+// ======================================================== IS OPEN
+
+.sheSelect {
+  .sheSelectOpen {
+    > svg {
+      transform: rotate(-180deg);
     }
   }
 }

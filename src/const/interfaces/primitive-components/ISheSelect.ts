@@ -29,6 +29,7 @@ export interface ISheSelect<T>
   fullWidth?: boolean;
   disabled?: boolean;
   isLoading?: boolean;
+  openOnFocus?: boolean;
   isOpen?: boolean;
   required?: boolean;
   showSelectIcon?: boolean;
@@ -59,6 +60,7 @@ export const SheSelectDefaultModel: ISheSelect<any> = {
   fullWidth: undefined,
   disabled: undefined,
   isLoading: undefined,
+  openOnFocus: undefined,
   isOpen: undefined,
   required: undefined,
   showSelectIcon: undefined,

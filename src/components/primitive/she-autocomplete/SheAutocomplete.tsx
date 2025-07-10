@@ -49,6 +49,7 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     disabled,
     isLoading,
     isOpen,
+    openOnFocus,
     minWidth,
     maxWidth,
     fullWidth,
@@ -81,7 +82,7 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
   const popoverRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLInputElement>(null);
 
-  // ==================================================================== UTILITIES FUNCTIONS
+  // ==================================================================== UTILITIES
   const { setFocus, initializeItemsList, calculatePopoverWidth } =
     useComponentUtilities({
       identifier: "SheAutocomplete",
@@ -97,7 +98,7 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     );
   }, [_items, _searchValue]);
 
-  // ==================================================================== DEPENDENCIES
+  // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     _updateComponentStyles();
   }, []);
@@ -135,8 +136,7 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     setFocus<HTMLInputElement>(autoFocus, triggerRef);
   }, [autoFocus]);
 
-  // ==================================================================== EVENT
-
+  // ==================================================================== EVENT HANDLERS
   function onChangeHandler(value: string) {
     const tmpSearchValue = value.trim();
     _updateIsOpenCondition(true, tmpSearchValue);
@@ -194,7 +194,6 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
   }
 
   // ==================================================================== PRIVATE
-
   function _updateIsOpenCondition(
     _isOpen: boolean,
     value: string = _searchValue,
@@ -220,7 +219,6 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
   }
 
   // ==================================================================== LAYOUT
-
   return (
     <Popover open={_open} onOpenChange={setOpen}>
       <Command>

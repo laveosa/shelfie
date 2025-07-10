@@ -48,6 +48,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
     required,
     disabled,
     isLoading,
+    openOnFocus,
     isOpen,
     showSelectIcon,
     autoFocus,
@@ -70,7 +71,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
   const _triggerRef = useDefaultRef<HTMLInputElement>(triggerRef);
   const _popoverRef = useDefaultRef<HTMLDivElement>(popoverRef);
 
-  // ==================================================================== UTILITIES FUNCTIONS
+  // ==================================================================== UTILITIES
   const {
     translate,
     ariaDescribedbyId,
@@ -82,7 +83,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
     identifier: "SheSelect",
   });
 
-  // ==================================================================== DEPENDENCIES
+  // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     let updatedItems = [...(items || [])];
 
@@ -121,10 +122,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
       });
     }
 
-    setFocus<HTMLInputElement>(autoFocus, _triggerRef);
-
-    // TODO add "openOnFocus" logic
-    // if (openOnFocus) _setIsOpen(autoFocus);
+    _updateFocusRelatedLogic();
   }, [items, selected]);
 
   useEffect(() => {
@@ -133,7 +131,6 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
       typeof isOpen === "boolean" &&
       !_.isEqual(isOpen, _open)
     ) {
-      console.log("open: ", isOpen);
       _setIsOpen(isOpen);
     }
 
@@ -142,25 +139,16 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
       typeof isLoading === "boolean" &&
       !_.isEqual(isLoading, _loading)
     ) {
-      console.log("loading: ", isLoading);
       setLoading(isLoading);
       _setIsOpen(isOpen);
     }
   }, [isOpen, isLoading]);
 
   useEffect(() => {
-    setFocus<HTMLInputElement>(autoFocus, _triggerRef);
-
-    // TODO add "openOnFocus" logic
-    // if (openOnFocus) _setIsOpen(autoFocus);
+    _updateFocusRelatedLogic();
   }, [autoFocus]);
 
-  useEffect(() => {
-    console.log(_open);
-  }, [_open]);
-
-  // ==================================================================== EVENT
-
+  // ==================================================================== EVENT HANDLERS
   function onValueChangeHandler(id: string, event?: React.MouseEvent) {
     const selected: ISheSelectItem<T> = _getSelectedItemById(id);
 
@@ -186,11 +174,8 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
   }
 
   function onOpenChangeHandler(value: boolean) {
-    if (_loading) return;
-
-    setOpen(value);
-
-    if (value && _selected) {
+    _setIsOpen(value);
+    if (!_loading && value && _selected) {
       requestAnimationFrame(() => {
         const selectedElement = document.getElementById(_selected.id);
 
@@ -199,9 +184,6 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
         }
       });
     }
-
-    onOpen?.(value);
-    calculatePopoverWidth<HTMLInputElement>(_popoverRef, _triggerRef);
   }
 
   function onClearHandler() {
@@ -212,7 +194,6 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
   }
 
   // ==================================================================== PRIVATE
-
   function _getSelectedItemById(
     id: string,
     fromItems: ISheSelectItem<T>[] = _items,
@@ -283,8 +264,16 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
     }
   }
 
-  // ==================================================================== LAYOUT
+  function _updateFocusRelatedLogic() {
+    if (openOnFocus) {
+      _setIsOpen(autoFocus);
+      setFocus<HTMLDivElement>(autoFocus, _popoverRef);
+    } else {
+      setFocus<HTMLInputElement>(autoFocus, _triggerRef);
+    }
+  }
 
+  // ==================================================================== LAYOUT
   return (
     <div
       id={id}
@@ -318,7 +307,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
             >
               <SelectTrigger
                 ref={_triggerRef as any}
-                className={elementClassName}
+                className={`${elementClassName} ${_open ? cs.sheSelectOpen : ""}`}
                 style={elementStyle}
               >
                 <SheIcon
@@ -333,9 +322,9 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
               {_items?.length > 0 && (
                 <SelectContent ref={_popoverRef}>
                   <div className={cs.sheSelectItemsContainer}>
-                    {_items?.map((item) => (
+                    {_items?.map((item, idx) => (
                       <SheSelectItem<T>
-                        key={item.id}
+                        key={`${item.id}_${idx}`}
                         {...item}
                         id={item.id}
                         className={`${cs.sheSelectItemCover} ${item.className || ""}`}
