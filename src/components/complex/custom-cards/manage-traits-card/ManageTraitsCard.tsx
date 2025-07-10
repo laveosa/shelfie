@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import React, { useEffect } from "react";
+import { Check } from "lucide-react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ManageTraitsCard.module.scss";
@@ -120,11 +121,16 @@ export default function ManageTraitsCard({
       loading={isLoading}
       title="Manage Traits"
       showPrimaryButton={true}
-      primaryButtonTitle="Update Traits"
+      primaryButtonTitle="Save Changes"
       onPrimaryButtonClick={form.handleSubmit(onSubmit)}
       primaryButtonDisabled={isFormIncomplete}
+      primaryButtonModel={{
+        icon: Check,
+        bgColor: "#007AFF",
+      }}
       showSecondaryButton={true}
       secondaryButtonTitle="Cancel"
+      secondaryButtonModel={{ bgColor: "#71717A", txtColor: "#FAFAFA" }}
       onSecondaryButtonClick={onSecondaryButtonClick}
       showCloseButton
       className={cs.manageTraitsCard}

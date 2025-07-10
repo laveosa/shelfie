@@ -387,6 +387,7 @@ export function ManageVariantsPage() {
             .deleteVariantHandler(payload.variantId)
             .then((res) => {
               if (!res.error) {
+                handleCardAction("variantConfigurationCard");
                 addToast({
                   text: "Variant deleted successfully",
                   type: "success",
@@ -745,6 +746,7 @@ export function ManageVariantsPage() {
           });
         } finally {
           dispatch(actions.setIsChooseVariantTraitsCardLoading(false));
+          handleCardAction("productTraitConfigurationCard");
         }
         break;
       case "updateOption":

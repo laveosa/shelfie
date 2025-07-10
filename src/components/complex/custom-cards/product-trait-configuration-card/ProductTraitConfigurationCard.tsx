@@ -1,5 +1,6 @@
+import { ColumnDef } from "@tanstack/react-table";
+import { Plus, Trash2 } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { Plus } from "lucide-react";
 import React, { useEffect } from "react";
 
 import {
@@ -28,7 +29,7 @@ import { IProductTraitConfigurationCard } from "@/const/interfaces/complex-compo
 import { ColorOptionsGridColumns } from "@/components/complex/grid/trait-options-grid/color-options-grid/ColorOptionsGridColumns.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { SizeOptionsGridColumns } from "@/components/complex/grid/trait-options-grid/size-options-grid/SizeOptionsGridColumns.tsx";
-import { ColumnDef } from "@tanstack/react-table";
+import SheCardNotification from "@/components/complex/she-card-notification/SheCardNotification.tsx";
 
 export default function ProductTraitConfigurationCard({
   isLoading,
@@ -74,6 +75,7 @@ export default function ProductTraitConfigurationCard({
   const sizeColumns = SizeOptionsGridColumns(
     onGridAction,
   ) as ColumnDef<DataWithId>[];
+
   function onSubmit(formData) {
     selectedTrait?.traitId
       ? onAction("updateTrait", formData)
@@ -101,7 +103,6 @@ export default function ProductTraitConfigurationCard({
               item.optionId === optionId ? { ...item, ...updatedModel } : item,
             ),
           );
-
           onAction("updateOption", { optionId, updatedModel });
         }
         break;
@@ -114,153 +115,174 @@ export default function ProductTraitConfigurationCard({
   return (
     <SheProductCard
       loading={isLoading}
-      title={selectedTrait?.traitName ? "Manage" : "Create product trait"}
+      title={`${selectedTrait?.traitId ? `Manage: ${selectedTrait.traitName}` : "Create product trait"}`}
+      primaryButtonModel={{
+        icon: Plus,
+        bgColor: "#007AFF",
+      }}
+      secondaryButtonModel={{ bgColor: "#71717A", txtColor: "#FAFAFA" }}
       showCloseButton={true}
       className={cs.productTraitConfigurationCard}
       {...props}
     >
-      <div className={cs.productTraitConfigurationContent}>
-        <div className={cs.productTraitConfigurationForm}>
-          <SheForm form={form} onSubmit={onSubmit}>
-            <SheForm.Field
-              rules={{
-                required: true,
-                minLength: {
-                  value: 3,
-                  message: "Product name must be at least 3 characters",
-                },
-                maxLength: {
-                  value: 50,
-                  message: "Product name cannot exceed 50 characters",
-                },
-              }}
-              name="traitName"
-            >
-              <SheInput
-                label="Trait Name"
-                placeholder="enter trait name..."
-                isValid={!form.formState.errors.traitName}
-                patternErrorMessage={form.formState.errors.traitName?.message}
-                showError={true}
-                onDelay={
-                  selectedTrait?.traitId && (() => onSubmit(form.getValues()))
-                }
-                className={cs.formInput}
-              />
-            </SheForm.Field>
-            <div className={cs.productConfigurationFormRow}>
-              <FormField
-                control={form.control}
-                name="traitTypeId"
+      <div className={cs.productTraitConfigurationContentWrapper}>
+        <div className={cs.productTraitConfigurationContent}>
+          <div className={cs.productTraitConfigurationForm}>
+            <SheForm form={form} onSubmit={onSubmit}>
+              <SheForm.Field
                 rules={{
                   required: true,
+                  minLength: {
+                    value: 3,
+                    message: "Product name must be at least 3 characters",
+                  },
+                  maxLength: {
+                    value: 50,
+                    message: "Product name cannot exceed 50 characters",
+                  },
                 }}
-                render={({ field }) => (
-                  <FormItem className={cs.select}>
-                    <FormLabel>Trait type</FormLabel>
-                    <Select
-                      onValueChange={(value) => {
-                        field.onChange(Number(value));
-                        selectedTrait?.traitId && onSubmit(form.getValues());
-                      }}
-                      value={field.value ? field.value.toString() : ""}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select category" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {typesOfTraits.map((option) => (
-                          <SelectItem
-                            key={option.traitTypeId}
-                            value={option.traitTypeId.toString()}
-                          >
-                            <div>{option.traitTypeName}</div>
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
-                )}
-              ></FormField>
-            </div>
-            {!selectedTrait?.traitId && (
-              <div className={cs.buttonBlock}>
-                <SheButton
-                  variant="secondary"
-                  onClick={() =>
-                    onAction("closeProductTraitConfigurationCard", null)
+                name="traitName"
+              >
+                <SheInput
+                  label="Trait Name"
+                  placeholder="enter trait name..."
+                  isValid={!form.formState.errors.traitName}
+                  patternErrorMessage={form.formState.errors.traitName?.message}
+                  showError={true}
+                  onDelay={
+                    selectedTrait?.traitId && (() => onSubmit(form.getValues()))
                   }
-                >
-                  Cancel
-                </SheButton>
-                <SheButton
-                  disabled={!form.formState.isValid}
-                  onClick={form.handleSubmit(onSubmit)}
-                >
-                  Create
-                </SheButton>
+                  className={cs.formInput}
+                />
+              </SheForm.Field>
+              <div className={cs.productConfigurationFormRow}>
+                <FormField
+                  control={form.control}
+                  name="traitTypeId"
+                  rules={{
+                    required: true,
+                  }}
+                  render={({ field }) => (
+                    <FormItem className={cs.select}>
+                      <FormLabel>Trait type</FormLabel>
+                      <Select
+                        onValueChange={(value) => {
+                          field.onChange(Number(value));
+                          selectedTrait?.traitId && onSubmit(form.getValues());
+                        }}
+                        value={field.value ? field.value.toString() : ""}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select category" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {typesOfTraits.map((option) => (
+                            <SelectItem
+                              key={option.traitTypeId}
+                              value={option.traitTypeId.toString()}
+                            >
+                              <div>{option.traitTypeName}</div>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                ></FormField>
               </div>
-            )}
-          </SheForm>
-        </div>
-        {localItems?.length > 0 && (
-          <>
-            <Separator />
-            <div
-              className={`${cs.productTraitConfigurationGridContainer} she-title`}
+              {!selectedTrait?.traitId && (
+                <div className={cs.buttonBlock}>
+                  <SheButton
+                    variant="secondary"
+                    bgColor="#71717A"
+                    txtColor="#FAFAFA"
+                    value="Cancel"
+                    onClick={() =>
+                      onAction("closeProductTraitConfigurationCard", null)
+                    }
+                  />
+                  <SheButton
+                    disabled={!form.formState.isValid}
+                    icon={Plus}
+                    bgColor="#007AFF"
+                    value={"Create Trait"}
+                    onClick={form.handleSubmit(onSubmit)}
+                  />
+                </div>
+              )}
+            </SheForm>
+          </div>
+          {/*{localItems?.length > 0 && (*/}
+          {selectedTrait?.traitId && (
+            <>
+              <Separator />
+              <div
+                className={`${cs.productTraitConfigurationGridContainer} she-title`}
+              >
+                <span className="she-title">Options</span>
+                {selectedTrait?.traitTypeId === 1 && (
+                  <DndGridDataTable
+                    isLoading={isGridLoading}
+                    className={cs.productTraitConfigurationGrid}
+                    enableDnd={true}
+                    showHeader={false}
+                    showColumnsHeader={false}
+                    columns={sizeColumns}
+                    data={localItems}
+                    gridModel={data}
+                    onNewItemPosition={(newIndex, activeItem) =>
+                      onAction("dndTraitOption", {
+                        selectedTrait,
+                        newIndex,
+                        activeItem,
+                      })
+                    }
+                  />
+                )}
+                {selectedTrait?.traitTypeId === 2 && (
+                  <DndGridDataTable
+                    isLoading={isGridLoading}
+                    className={cs.productTraitConfigurationGrid}
+                    enableDnd={true}
+                    showHeader={false}
+                    showColumnsHeader={false}
+                    columns={colorColumns}
+                    data={localItems}
+                    gridModel={data}
+                    onNewItemPosition={(newIndex, activeItem) =>
+                      onAction("dndTraitOption", {
+                        selectedTrait,
+                        newIndex,
+                        activeItem,
+                      })
+                    }
+                  />
+                )}
+              </div>
+            </>
+          )}
+          {selectedTrait?.traitId && (
+            <SheButton
+              icon={Plus}
+              variant="outline"
+              onClick={() => onGridAction("addOption")}
             >
-              <span className="she-title">Options</span>
-              {selectedTrait?.traitTypeId === 1 && (
-                <DndGridDataTable
-                  isLoading={isGridLoading}
-                  className={cs.productTraitConfigurationGrid}
-                  enableDnd={true}
-                  showHeader={false}
-                  showColumnsHeader={false}
-                  columns={sizeColumns}
-                  data={localItems}
-                  gridModel={data}
-                  onNewItemPosition={(newIndex, activeItem) =>
-                    onAction("dndTraitOption", {
-                      selectedTrait,
-                      newIndex,
-                      activeItem,
-                    })
-                  }
-                />
-              )}
-              {selectedTrait?.traitTypeId === 2 && (
-                <DndGridDataTable
-                  isLoading={isGridLoading}
-                  className={cs.productTraitConfigurationGrid}
-                  enableDnd={true}
-                  showHeader={false}
-                  showColumnsHeader={false}
-                  columns={colorColumns}
-                  data={localItems}
-                  gridModel={data}
-                  onNewItemPosition={(newIndex, activeItem) =>
-                    onAction("dndTraitOption", {
-                      selectedTrait,
-                      newIndex,
-                      activeItem,
-                    })
-                  }
-                />
-              )}
-            </div>
-          </>
-        )}
-        {selectedTrait && (
-          <SheButton
-            icon={Plus}
-            variant="outline"
-            onClick={() => onGridAction("addOption")}
-          >
-            Add option
-          </SheButton>
+              Add option
+            </SheButton>
+          )}
+        </div>
+        {selectedTrait?.traitId && (
+          <SheCardNotification
+            title="Delete Trait"
+            text="This trait will be deleted, it will no longer be available for selection but you will still see it in products where it was used, until you change the trait"
+            buttonColor="#EF4343"
+            buttonVariant="outline"
+            buttonText="Delete"
+            buttonIcon={Trash2}
+            onClick={() => onAction("deleteTrait", selectedTrait)}
+          />
         )}
       </div>
     </SheProductCard>

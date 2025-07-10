@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { Plus } from "lucide-react";
 import React from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
@@ -70,7 +71,12 @@ export default function AddVariantCard({
         primaryButtonTitle="Add Variant"
         onPrimaryButtonClick={form.handleSubmit(onSubmit)}
         primaryButtonDisabled={isPrimaryButtonDisabled}
+        primaryButtonModel={{
+          icon: Plus,
+          bgColor: "#007AFF",
+        }}
         showSecondaryButton={true}
+        secondaryButtonModel={{ bgColor: "#71717A", txtColor: "#FAFAFA" }}
         onSecondaryButtonClick={() => onAction("closeAddVariantCard")}
         showCloseButton
         className={cs.addVariantCard}

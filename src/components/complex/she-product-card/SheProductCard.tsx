@@ -28,9 +28,11 @@ export default function SheProductCard({
   primaryButtonTitle,
   primaryButtonTitleTransKey,
   primaryButtonDisabled,
+  primaryButtonModel,
   showSecondaryButton = false,
   secondaryButtonTitle = "Cancel",
   secondaryButtonTitleTransKey,
+  secondaryButtonModel,
   onPrimaryButtonClick,
   onSecondaryButtonClick,
 }: ISheProductCard) {
@@ -131,6 +133,7 @@ export default function SheProductCard({
         >
           {showSecondaryButton && (
             <SheButton
+              {...secondaryButtonModel}
               variant="secondary"
               onClick={onSecondaryButtonClick}
               disabled={loading}
@@ -142,6 +145,7 @@ export default function SheProductCard({
           )}
           {showPrimaryButton && (
             <SheButton
+              {...primaryButtonModel}
               onClick={onPrimaryButtonClick}
               disabled={loading || primaryButtonDisabled}
             >

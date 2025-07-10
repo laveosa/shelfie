@@ -7,6 +7,7 @@ import {
   ImagePlus,
   Minus,
   Plus,
+  Trash2,
   WandSparklesIcon,
 } from "lucide-react";
 
@@ -40,6 +41,7 @@ import { VariantPhotosGridColumns } from "@/components/complex/grid/product-phot
 import { VariantModel } from "@/const/models/VariantModel.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon";
 import InfoIcon from "@/assets/icons/Info-icon.svg?react";
+import SheCardNotification from "@/components/complex/she-card-notification/SheCardNotification.tsx";
 
 const debounce = (fn: (...args: any[]) => void, delay: number) => {
   let timer: ReturnType<typeof setTimeout>;
@@ -90,7 +92,7 @@ export default function VariantConfigurationCard({
   const { setValue, register, getValues } = form;
   const lastChanged = useRef<"netto" | "brutto" | null>(null);
   const preparedTraitOptions = prepareTraitOptionsData(variant?.traitOptions);
- 
+
   useEffect(() => {
     if (debouncedFnRef.current && debouncedFnRef.current.cancel) {
       debouncedFnRef.current.cancel();
@@ -468,6 +470,15 @@ export default function VariantConfigurationCard({
           )}
         </div>
       </div>
+      <SheCardNotification
+        title="Delete Variant"
+        text="This variant will be deleted, it will no longer be available for sale but you will still see it in the orders where it sold"
+        buttonColor="#EF4343"
+        buttonVariant="outline"
+        buttonText="Delete"
+        buttonIcon={Trash2}
+        onClick={() => onAction("deleteVariant", variant)}
+      />
     </SheProductCard>
   );
 }
