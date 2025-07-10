@@ -25,9 +25,10 @@ export const VariantConfigurationGridColumns: ColumnDef<any>[] = [
                   background: row.original.optionColor,
                   width: "20px",
                   height: "20px",
-                  borderRadius: "10%",
+                  borderRadius: "50%",
+                  alignSelf: "center",
                 }
-              : {}
+              : { alignSelf: "center" }
           }
         >
           {row.original.optionColor === null ? row.original.optionName : ""}
@@ -40,18 +41,6 @@ export const VariantConfigurationGridColumns: ColumnDef<any>[] = [
     header: "Name",
     cell: ({ row }) => {
       return <div className="she-text">{row.original.traitName}</div>;
-    },
-  },
-  {
-    id: "isRemoved",
-    header: "",
-    cell: ({ row }) => {
-      return (
-        <div className="she-subtext" style={{ textAlign: "center" }}>
-          {row.original.isRemoved === true ? "Trait removed" : ""}
-          {row.original.isMissing === true ? "Missing" : ""}
-        </div>
-      );
     },
   },
 ];

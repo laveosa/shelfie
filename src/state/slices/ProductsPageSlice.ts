@@ -87,6 +87,7 @@ const initialState: IProductsPageSlice = {
   traitsForFilter: [],
   colorsForFilter: [],
   sizesForFilter: [],
+  activeTab: "products",
 };
 
 //----------------------------------------------------- LOADERS
@@ -390,6 +391,13 @@ function refreshCategory(
   state.category = action?.payload || state.category;
 }
 
+function refreshActiveTab(
+  state: IProductsPageSlice,
+  action: PayloadAction<string>,
+) {
+  state.activeTab = action?.payload || state.activeTab;
+}
+
 const ProductsPageSlice = createSlice({
   name: StoreSliceEnum.PRODUCTS,
   initialState,
@@ -438,6 +446,7 @@ const ProductsPageSlice = createSlice({
     refreshCategory,
     refreshColorsForFilter,
     refreshSizesForFilter,
+    refreshActiveTab,
   },
 });
 

@@ -1,5 +1,5 @@
 import { ColumnDef, Row } from "@tanstack/react-table";
-import { Trash2 } from "lucide-react";
+import { CogIcon } from "lucide-react";
 
 import { Switch } from "@/components/ui/switch.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
@@ -15,6 +15,8 @@ export const ManageVariantsGridColumns = (
   {
     accessorKey: "traits",
     header: "Traits",
+    minSize: 50,
+    maxSize: 50,
     cell: ({ row }) => {
       const traitOptions = row.original.traitOptions || [];
 
@@ -41,7 +43,7 @@ export const ManageVariantsGridColumns = (
                 background: colorOpt.optionColor,
                 minWidth: "20px",
                 minHeight: "20px",
-                borderRadius: "10%",
+                borderRadius: "50%",
               }}
             />
           ))}
@@ -66,6 +68,8 @@ export const ManageVariantsGridColumns = (
   {
     accessorKey: "stock",
     header: "Stock",
+    minSize: 50,
+    maxSize: 50,
     cell: ({ row }) => {
       return (
         <span style={{ paddingLeft: "15px" }}>
@@ -77,6 +81,8 @@ export const ManageVariantsGridColumns = (
   {
     accessorKey: "isActive",
     header: "Active",
+    minSize: 50,
+    maxSize: 50,
     cell: ({ row }) => {
       return (
         <Switch
@@ -101,7 +107,9 @@ export const ManageVariantsGridColumns = (
       return (
         <div onClick={(e) => e.stopPropagation()}>
           <SheButton
+            icon={CogIcon}
             value="Manage"
+            variant="secondary"
             onClick={() =>
               onAction(
                 "manageVariant",
@@ -116,33 +124,33 @@ export const ManageVariantsGridColumns = (
       );
     },
   },
-  {
-    id: "delete",
-    header: "",
-    minSize: 60,
-    maxSize: 60,
-    cell: ({ row, table }) => {
-      const meta = table.options.meta as {
-        setLoadingRow: (rowId: string, loading: boolean) => void;
-        isRowLoading: (rowId: string) => boolean;
-      };
-      return (
-        <div onClick={(e) => e.stopPropagation()}>
-          <SheButton
-            icon={Trash2}
-            variant="secondary"
-            onClick={() =>
-              onAction(
-                "deleteVariant",
-                row.id,
-                meta?.setLoadingRow,
-                row.original,
-              )
-            }
-            disabled={meta?.isRowLoading(row.id)}
-          />
-        </div>
-      );
-    },
-  },
+  // {
+  //   id: "delete",
+  //   header: "",
+  //   minSize: 60,
+  //   maxSize: 60,
+  //   cell: ({ row, table }) => {
+  //     const meta = table.options.meta as {
+  //       setLoadingRow: (rowId: string, loading: boolean) => void;
+  //       isRowLoading: (rowId: string) => boolean;
+  //     };
+  //     return (
+  //       <div onClick={(e) => e.stopPropagation()}>
+  //         <SheButton
+  //           icon={Trash2}
+  //           variant="secondary"
+  //           onClick={() =>
+  //             onAction(
+  //               "deleteVariant",
+  //               row.id,
+  //               meta?.setLoadingRow,
+  //               row.original,
+  //             )
+  //           }
+  //           disabled={meta?.isRowLoading(row.id)}
+  //         />
+  //       </div>
+  //     );
+  //   },
+  // },
 ];

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { ChevronDown, Settings2, X } from "lucide-react";
+import React, { useEffect, useState } from "react";
 
 import {
   DropdownMenu,
@@ -9,7 +10,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { ChevronDown, Settings2, X } from "lucide-react";
 import cs from "./GridItemsFilter.module.scss";
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
@@ -17,22 +17,30 @@ import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 interface GridFilterProps<T> {
   items: T[];
   columnName: string;
-  onSelectionChange: (selectedIds: number[]) => void;
+  selected?: number[];
   getId: (item: T) => number;
   getName: (item: T) => string;
   icon?: Partial<ISheIcon> | string | React.FC<any>;
+  onSelectionChange: (selectedIds: number[]) => void;
 }
 
 export default function GridItemsFilter<T>({
   items,
   columnName,
-  onSelectionChange,
+  selected,
   getId,
   getName,
   icon,
+  onSelectionChange,
 }: GridFilterProps<T>) {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    if (!dropdownOpen && selected?.length > 0) {
+      setSelectedIds(selected);
+    }
+  }, [selected, dropdownOpen]);
 
   function handleSelect(id: number) {
     setSelectedIds((prev) => {

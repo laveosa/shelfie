@@ -25,17 +25,23 @@
     /* Custom */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     },
     "strictNullChecks": false,
-//    "suppressImplicitAnyIndexErrors": true,
+    //    "suppressImplicitAnyIndexErrors": true,
     "noImplicitAny": false,
     "strictFunctionTypes": false,
     "strictPropertyInitialization": false,
     "noImplicitThis": false,
     "allowSyntheticDefaultImports": true,
     "noUnusedLocals": false,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/types"
+    ]
   },
   "include": [
     "src"

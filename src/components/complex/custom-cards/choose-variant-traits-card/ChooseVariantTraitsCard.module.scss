@@ -18,58 +18,88 @@
       width: 100%;
     }
 
-    .traitsItems {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      max-height: calc(100vh - 400px);
-      overflow-y: auto;
-
-      .traitsItem {
+    .traitsItemsWrapper {
+      .traitsItemsHeader {
         display: flex;
-        width: 100%;
-        align-items: center;
-        justify-content: space-between;
         padding: 10px;
-        border-radius: 10px;
+        border: 1px solid #E4E4E7;
+        border-bottom: none;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
 
-        &:hover {
-          background-color: #F8F3FF;
+
+        .headerItemTrait {
+          padding-right: 82px;
         }
 
-        .traitsItemBlock {
+        .headerItemOptions {
+          padding-right: 62px;
+        }
+
+      }
+
+      .traitsItems {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        max-height: calc(100vh - 400px);
+        overflow-y: auto;
+
+
+        .traitsItem {
           display: flex;
           width: 100%;
-          justify-content: space-between;
           align-items: center;
+          justify-content: space-between;
+          padding: 10px;
+          border: 1px solid #E4E4E7;
 
-          .traitCheckbox {
-            width: 20px;
-            height: 20px;
+          &:not(:last-child) {
+            border-bottom: none;
           }
 
-          .traitName {
+          &:last-child {
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+          }
+
+          &:hover {
+            background-color: #F4F4F5;
+          }
+
+          .traitsItemBlock {
             display: flex;
-            justify-content: space-between;
-            cursor: pointer;
             width: 100%;
-            padding: 0 20px;
-          }
+            justify-content: space-between;
+            align-items: center;
 
-          .traitButton {
-            margin-right: 20px;
-          }
+            .traitCheckbox {
+              width: 20px;
+              height: 20px;
+            }
 
-          .dropdownMenu {
-            width: 35px;
-            justify-content: flex-end;
+            .traitNameBlock {
+              display: flex;
+              align-items: center;
+              cursor: pointer;
+              width: 100%;
+              padding: 0 20px;
+
+              .traitName {
+                width: 200px;
+              }
+
+              .traitNameAmount {
+                padding-left: 20px;
+              }
+            }
           }
         }
       }
     }
 
     .selected {
-      background-color: #F8F3FF;
+      background-color: #F4F4F5;
     }
   }
 }

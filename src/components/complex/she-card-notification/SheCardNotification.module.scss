@@ -1,0 +1,41 @@
+.sheCardNotification {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #E4E4E7;
+  border-radius: 6px;
+  background: #FAFAFA;
+
+  .sheCardNotificationCloseButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border-radius: 6px;
+
+    svg {
+      width: 70%;
+    }
+  }
+
+  .sheCardNotificationTextBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    .sheCardNotificationTitle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .sheCardNotificationText {
+      font-size: 11px;
+    }
+  }
+}

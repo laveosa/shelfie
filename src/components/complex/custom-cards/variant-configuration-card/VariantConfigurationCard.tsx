@@ -1,14 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
+import { ColumnDef } from "@tanstack/react-table";
 import { useForm } from "react-hook-form";
-
 import {
   Blocks,
   Clock,
   ImagePlus,
   Minus,
   Plus,
+  Trash2,
   WandSparklesIcon,
 } from "lucide-react";
+
 import {
   FormControl,
   FormField,
@@ -37,7 +39,9 @@ import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
 import { VariantConfigurationGridColumns } from "@/components/complex/grid/variant-configuration-grid/VariantConfigurationGridColumns.tsx";
 import { VariantPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/VariantPhotosGridColumns.tsx";
 import { VariantModel } from "@/const/models/VariantModel.ts";
-import { ColumnDef } from "@tanstack/react-table";
+import SheIcon from "@/components/primitive/she-icon/SheIcon";
+import InfoIcon from "@/assets/icons/Info-icon.svg?react";
+import SheCardNotification from "@/components/complex/she-card-notification/SheCardNotification.tsx";
 
 const debounce = (fn: (...args: any[]) => void, delay: number) => {
   let timer: ReturnType<typeof setTimeout>;
@@ -58,7 +62,6 @@ export default function VariantConfigurationCard({
   taxesList,
   productCounter,
   onGenerateProductCode,
-  onSecondaryButtonClick,
   ...props
 }: IVariantConfigurationCard) {
   const traitsColumns =
@@ -66,10 +69,6 @@ export default function VariantConfigurationCard({
   const photoColumns = VariantPhotosGridColumns(
     onGridAction,
   ) as ColumnDef<DataWithId>[];
-
-  const currentVariantIdRef = useRef<string | number | null>(
-    variant?.variantId || null,
-  );
 
   const [initialFormValues, setInitialFormValues] = useState({
     variantName: variant?.variantName || "",
@@ -80,13 +79,18 @@ export default function VariantConfigurationCard({
       taxTypeId: variant?.salePrice?.taxTypeId || taxesList?.[0]?.id,
     },
   });
-
-  const userModifiedForm = useRef(false);
-  const debouncedFnRef = useRef<any>(null);
-
   const form = useForm({
     defaultValues: initialFormValues,
   });
+  const currentVariantIdRef = useRef<string | number | null>(
+    variant?.variantId || null,
+  );
+  const userModifiedForm = useRef(false);
+  const debouncedFnRef = useRef<any>(null);
+
+  const { setValue, register, getValues } = form;
+  const lastChanged = useRef<"netto" | "brutto" | null>(null);
+  const preparedTraitOptions = prepareTraitOptionsData(variant?.traitOptions);
 
   useEffect(() => {
     if (debouncedFnRef.current && debouncedFnRef.current.cancel) {
@@ -119,10 +123,79 @@ export default function VariantConfigurationCard({
     }
   }, [variant?.variantId, variant, taxesList, form]);
 
-  const { setValue, register, getValues } = form;
-  const lastChanged = useRef<"netto" | "brutto" | null>(null);
+  function prepareTraitOptionsData(traitOptions) {
+    return (
+      traitOptions?.map((trait) => {
+        const expandableRows = [];
 
-  const createDebouncedSubmit = () => {
+        if (trait.isRemoved) {
+          expandableRows.push({
+            id: `${trait.id}-removed`,
+            type: "removed",
+            message: "Trait option is removed",
+          });
+        }
+
+        if (trait.isMissing) {
+          expandableRows.push({
+            id: `${trait.id}-missing`,
+            type: "missing",
+            message: "Trait option is missing configuration",
+          });
+        }
+
+        return {
+          ...trait,
+          expandableRows: expandableRows,
+        };
+      }) || []
+    );
+  }
+
+  function renderExpandedContent(expandableItem) {
+    return (
+      <div>
+        {expandableItem.original.expandableRows.map((item) => (
+          <div className={cs.expandableRow}>
+            <SheIcon
+              maxWidth="20px"
+              minWidth="20px"
+              className={cs.expandableRowIcon}
+              icon={InfoIcon}
+            />
+            <span className={cs.expandableRowText}>{item.message}</span>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  function onGenerateCode() {
+    onGenerateProductCode().then((res: ProductCodeModel) => {
+      form.setValue("variantCode", res.code, { shouldDirty: true });
+      userModifiedForm.current = true;
+      form.handleSubmit(onSubmit)();
+    });
+  }
+
+  function handleFieldChange() {
+    const currentValues = getValues();
+    const initialValues = initialFormValues;
+
+    const hasChanged =
+      currentValues.variantName !== initialValues.variantName ||
+      currentValues.variantCode !== initialValues.variantCode ||
+      currentValues.salePrice.netto !== initialValues.salePrice.netto ||
+      currentValues.salePrice.brutto !== initialValues.salePrice.brutto ||
+      currentValues.salePrice.taxTypeId !== initialValues.salePrice.taxTypeId;
+
+    if (hasChanged) {
+      userModifiedForm.current = true;
+      createDebouncedSubmit()();
+    }
+  }
+
+  function createDebouncedSubmit() {
     const fn = debounce(() => {
       const currentValues = getValues();
       if (userModifiedForm.current) {
@@ -132,7 +205,7 @@ export default function VariantConfigurationCard({
 
     debouncedFnRef.current = fn;
     return fn;
-  };
+  }
 
   function onSubmit(formData: VariantModel) {
     if (!userModifiedForm.current) return;
@@ -181,31 +254,6 @@ export default function VariantConfigurationCard({
     userModifiedForm.current = false;
   }
 
-  const handleFieldChange = () => {
-    const currentValues = getValues();
-    const initialValues = initialFormValues;
-
-    const hasChanged =
-      currentValues.variantName !== initialValues.variantName ||
-      currentValues.variantCode !== initialValues.variantCode ||
-      currentValues.salePrice.netto !== initialValues.salePrice.netto ||
-      currentValues.salePrice.brutto !== initialValues.salePrice.brutto ||
-      currentValues.salePrice.taxTypeId !== initialValues.salePrice.taxTypeId;
-
-    if (hasChanged) {
-      userModifiedForm.current = true;
-      createDebouncedSubmit()();
-    }
-  };
-
-  function onGenerateCode() {
-    onGenerateProductCode().then((res: ProductCodeModel) => {
-      form.setValue("variantCode", res.code, { shouldDirty: true });
-      userModifiedForm.current = true;
-      form.handleSubmit(onSubmit)();
-    });
-  }
-
   function onGridAction(
     _actionType: string,
     _rowId?: string,
@@ -221,7 +269,7 @@ export default function VariantConfigurationCard({
       loading={isLoading}
       title="Manage Variant"
       showCloseButton
-      onSecondaryButtonClick={onSecondaryButtonClick}
+      onSecondaryButtonClick={() => onAction("closeVariantConfigurationCard")}
       className={cs.variantConfigurationCard}
       {...props}
     >
@@ -344,6 +392,7 @@ export default function VariantConfigurationCard({
             <SheButton
               icon={Clock}
               variant="outline"
+              maxWidth="89px"
               onClick={() =>
                 onAction("openVariantHistoryCard", variant.variantId)
               }
@@ -382,8 +431,10 @@ export default function VariantConfigurationCard({
               isLoading={isVariantOptionsGridLoading}
               showHeader={false}
               columns={traitsColumns}
-              data={variant?.traitOptions}
+              data={preparedTraitOptions}
               gridModel={data}
+              enableExpansion={true}
+              renderExpandedContent={renderExpandedContent}
             />
           </div>
         </div>
@@ -393,7 +444,9 @@ export default function VariantConfigurationCard({
             <SheButton
               icon={ImagePlus}
               variant="outline"
-              onClick={() => onAction("openVariantPhotosCard")}
+              onClick={() =>
+                onAction("openVariantPhotosCard", variant.variantId)
+              }
             >
               Manage
             </SheButton>
@@ -416,6 +469,15 @@ export default function VariantConfigurationCard({
           )}
         </div>
       </div>
+      <SheCardNotification
+        title="Delete Variant"
+        text="This variant will be deleted, it will no longer be available for sale but you will still see it in the orders where it sold"
+        buttonColor="#EF4343"
+        buttonVariant="outline"
+        buttonText="Delete"
+        buttonIcon={Trash2}
+        onClick={() => onAction("deleteVariant", variant)}
+      />
     </SheProductCard>
   );
 }
