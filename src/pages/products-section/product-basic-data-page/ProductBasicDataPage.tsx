@@ -128,7 +128,7 @@ export function ProductBasicDataPage() {
       dispatch(actions.setIsProductConfigurationCardLoading(false));
       if (res.data) {
         dispatch(productsActions.refreshProduct(res.data));
-        if (productsState.product.productName !== data.name) {
+        if (productsState.product.productName !== data.productName) {
           updateProductsList();
         }
         addToast({
