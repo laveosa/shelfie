@@ -79,6 +79,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
     initializeItemsList,
     getSelectedItems,
     updateSelectedItems,
+    getItemFromListByIdentifier,
     calculatePopoverWidth,
   } = useComponentUtilities({
     identifier: "SheSelect",
@@ -141,7 +142,10 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
 
   // ==================================================================== EVENT HANDLERS
   function onValueChangeHandler(id: string, event?: React.MouseEvent) {
-    const selected: ISheSelectItem<T> = _getSelectedItemById(id);
+    const selected: ISheSelectItem<T> = getItemFromListByIdentifier<
+      ISheSelectItem<T>,
+      T
+    >(items, "id", id);
 
     if (selected) {
       selected.isSelected = true;
@@ -185,37 +189,6 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
   }
 
   // ==================================================================== PRIVATE
-  function _getSelectedItemById(
-    id: string,
-    fromItems: ISheSelectItem<T>[] = _items,
-  ): ISheSelectItem<T> {
-    if (!id) return null;
-
-    const selected = _getSelectedItemByIdentifier(id, "id", fromItems);
-
-    if (selected && selected.value) {
-      setItems(
-        fromItems.map((item) => {
-          item.isSelected = item.value === selected.value;
-          return item;
-        }),
-      );
-      return selected;
-    } else {
-      return null;
-    }
-  }
-
-  function _getSelectedItemByIdentifier(
-    data: any,
-    identifier: string,
-    fromItems: ISheSelectItem<T>[],
-  ): ISheSelectItem<T> {
-    if (!data || !identifier || !fromItems || fromItems.length === 0)
-      return null;
-
-    return fromItems.find((item) => item[identifier] == data);
-  }
 
   function _setIsOpen(_isOpen: boolean) {
     if (isLoading || disabled) {

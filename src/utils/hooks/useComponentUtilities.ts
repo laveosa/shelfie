@@ -22,24 +22,6 @@ export default function useComponentUtilities({
   }, [identifier]);
 
   // ================================================================== COMMON
-  function addItemsId<T extends { id: string }>(
-    items: T[],
-    identifier: string = "item",
-    generateLength?: number,
-  ): T[] {
-    if (!items || items.length === 0) return items;
-
-    return items.map((item: T, idx) => ({
-      ...item,
-      id:
-        item.id ??
-        `${
-          item[identifier] && item[identifier].length > 0
-            ? item[identifier].replace(/ /g, "_")
-            : generateId(generateLength)
-        }_${(idx + 1).toString()}`,
-    }));
-  }
 
   function initializeItemsList<V, T extends ISheOption<V>>(
     items: T[],
@@ -76,6 +58,17 @@ export default function useComponentUtilities({
     });
 
     return items;
+  }
+
+  function getItemFromListByIdentifier<T, V>(
+    items: T[],
+    identifier: string,
+    value: V,
+  ): T {
+    if (!items || items.length === 0 || !identifier || identifier.length === 0)
+      return null;
+
+    return items.find((item) => item[identifier] === value);
   }
 
   function getSelectedItems<T extends ISelectable<V>, V>(items: T[]): T[] {
@@ -125,6 +118,7 @@ export default function useComponentUtilities({
     setFocus,
     getSelectedItems,
     updateSelectedItems,
+    getItemFromListByIdentifier,
     initializeItemsList,
     calculatePopoverWidth,
   };

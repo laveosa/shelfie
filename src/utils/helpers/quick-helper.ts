@@ -26,7 +26,6 @@ export function isSheIconConfig(
   return typeof icon === "object" && icon !== null && "icon" in icon;
 }
 
-// TODO ------------------------------------------------------- this logic was transferred to useComponentUtilities hook, redundant
 export function addItemsId<T>(
   items: T[],
   identifier: string = "item",
