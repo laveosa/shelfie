@@ -78,6 +78,12 @@ export default function useComponentUtilities({
     return items;
   }
 
+  function getSelectedItems<T extends ISelectable<V>, V>(items: T[]): T[] {
+    if (!items || items.length === 0) return items;
+
+    return items.filter((item) => item.isSelected);
+  }
+
   function updateSelectedItems<T extends ISelectable<V>, V>(
     items: T[],
     selectedValues: V | V[],
@@ -117,6 +123,7 @@ export default function useComponentUtilities({
     ariaDescribedbyId,
     translate,
     setFocus,
+    getSelectedItems,
     updateSelectedItems,
     initializeItemsList,
     calculatePopoverWidth,

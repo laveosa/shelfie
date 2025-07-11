@@ -246,8 +246,8 @@ export function DashboardPage() {
             items={optionsSimple}
             // items={_items}
             // selected={selected}
-            autoFocus
-            openOnFocus
+            /*autoFocus
+            openOnFocus*/
             // isLoading
             // isOpen
             showClearBtn
@@ -263,7 +263,10 @@ export function DashboardPage() {
             // items={options}
             items={optionsSimple}
             showClearBtn
-            // isOpen
+            // autoFocus
+            // openOnFocus
+            // minAmount={3}
+            isOpen
             onSelect={(event) => console.log("Autocomplete value: ", event)}
             onSelectModel={(event) =>
               console.log("Autocomplete model: ", event)

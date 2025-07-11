@@ -1,4 +1,4 @@
-import React, { JSX, useEffect, useMemo, useRef, useState } from "react";
+import React, { JSX, useEffect, useMemo, useState } from "react";
 import { Trans } from "react-i18next";
 import _ from "lodash";
 
@@ -17,16 +17,16 @@ import {
   ISheAutocomplete,
   SheAutocompleteDefaultModel,
 } from "@/const/interfaces/primitive-components/ISheAutocomplete.ts";
+import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { Popover, PopoverContent } from "@/components/ui/popover.tsx";
-import { PopoverAnchor } from "@radix-ui/react-popover";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { getCustomProps } from "@/utils/helpers/props-helper.ts";
-import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
 import SheOption from "@/components/primitive/she-option/SheOption.tsx";
 import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
-import { Check } from "lucide-react";
 import useDefaultRef from "@/utils/hooks/useDefaultRef.ts";
+import { PopoverAnchor } from "@radix-ui/react-popover";
+import { Check } from "lucide-react";
 
 export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
   // ==================================================================== PROPS
@@ -105,27 +105,42 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
       setSelected(searchValue);
     }
 
-    setFocus<HTMLInputElement>(autoFocus, _triggerRef);
+    const tmpSearchValue = searchValue?.trim();
+    const tmpOpen =
+      !_.isNil(minAmount) && minAmount > 0
+        ? tmpSearchValue && tmpSearchValue.length + 1 > minAmount
+        : autoFocus;
+
+    _updateFocusRelatedLogic(tmpOpen, openOnFocus);
   }, [items, searchValue]);
 
   useEffect(() => {
-    if (typeof isLoading === "boolean" && isLoading !== _loading) {
-      setLoading(isLoading);
-    }
-
     if (
       !_.isNil(isOpen) &&
       typeof isOpen === "boolean" &&
       !_.isEqual(isOpen, _open)
     ) {
-      _updateIsOpenCondition(isOpen, searchValue);
+      _setIsOpen(isOpen);
     }
 
-    calculatePopoverWidth<HTMLInputElement>(_popoverRef, _triggerRef);
+    if (
+      !_.isNil(isLoading) &&
+      typeof isLoading === "boolean" &&
+      !_.isEqual(isLoading, _loading)
+    ) {
+      setLoading(isLoading);
+      _setIsOpen(isOpen);
+    }
   }, [isOpen, isLoading, disabled]);
 
   useEffect(() => {
-    setFocus<HTMLInputElement>(autoFocus, _triggerRef);
+    const tmpSearchValue = _searchValue?.trim();
+    const tmpOpen =
+      !_.isNil(minAmount) && minAmount > 0
+        ? tmpSearchValue && tmpSearchValue.length + 1 > minAmount
+        : autoFocus;
+
+    _updateFocusRelatedLogic(tmpOpen, openOnFocus);
   }, [autoFocus]);
 
   const filteredItems: ISheOption<string>[] = useMemo(() => {
@@ -141,25 +156,30 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
   // ==================================================================== EVENT HANDLERS
   function onChangeHandler(value: string) {
     const tmpSearchValue = value.trim();
-    _updateIsOpenCondition(true, tmpSearchValue);
+    const tmpOpen =
+      !_.isNil(minAmount) && minAmount > 0
+        ? tmpSearchValue && tmpSearchValue.length + 1 > minAmount
+        : true;
+
+    _setIsOpen(tmpOpen);
     setSearchValue(tmpSearchValue);
     if (onChange) onChange(tmpSearchValue);
   }
 
   function onBlurHandler() {
-    _updateIsOpenCondition(false, _searchValue);
+    _setIsOpen(false);
     if (onBlur) onBlur(_searchValue);
   }
 
   function onSearchHandler() {
-    if (onSearch) onSearch(_searchValue);
+    onSearch?.(_searchValue);
   }
 
   function onSelectHandler(
     value: string,
     event?: React.MouseEvent | React.KeyboardEvent,
   ) {
-    _updateIsOpenCondition(false, value);
+    _setIsOpen(false);
     if (value !== _searchValue) setSearchValue(value);
     setSelected(value);
     onSelect?.(value);
@@ -175,7 +195,7 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     value: string,
     event?: React.MouseEvent | React.KeyboardEvent,
   ) {
-    _updateIsOpenCondition(false, value);
+    _setIsOpen(false);
     setSelected(value);
     onSelect?.(value);
     onSelectModel?.({
@@ -183,12 +203,19 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
       model: { ...sheAutocompleteProps, searchValue: value },
       event,
     });
-    setFocus<HTMLInputElement>(autoFocus, _triggerRef);
+    // TODO fix this bug,when this focus is active popover close immediately become focus set on input
+    // setFocus<HTMLInputElement>(true, _triggerRef);
     event?.stopPropagation();
   }
 
   function onFocusHandler() {
-    setTimeout(() => _updateIsOpenCondition(true, _searchValue));
+    const tmpSearchValue = _searchValue?.trim();
+    const tmpOpen =
+      !_.isNil(minAmount) && minAmount > 0
+        ? tmpSearchValue && tmpSearchValue.length + 1 > minAmount
+        : true;
+
+    setTimeout(() => _setIsOpen(tmpOpen));
   }
 
   function onEnterHandler(event: React.KeyboardEvent) {
@@ -196,23 +223,30 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
   }
 
   // ==================================================================== PRIVATE
-  function _updateIsOpenCondition(
-    _isOpen: boolean,
-    value: string = _searchValue,
-  ) {
+
+  function _setIsOpen(_isOpen: boolean) {
     if (isLoading || disabled) {
       setOpen(false);
-      return null;
-    }
-
-    if (minAmount && minAmount > 0) {
-      setOpen(value?.length + 1 > minAmount);
-    } else {
+      onOpen?.(false);
+    } else if (!_.isEqual(_isOpen, _open)) {
       setOpen(_isOpen);
-    }
+      onOpen?.(_isOpen);
 
-    calculatePopoverWidth<HTMLInputElement>(_popoverRef, _triggerRef);
-    onOpen?.(_open);
+      if (_isOpen) {
+        calculatePopoverWidth<HTMLInputElement>(_popoverRef, _triggerRef);
+      } else {
+        setFocus<HTMLInputElement>(autoFocus, _triggerRef);
+      }
+    }
+  }
+
+  function _updateFocusRelatedLogic(_autoFocus, _openOnFocus) {
+    if (_openOnFocus) {
+      _setIsOpen(_autoFocus);
+      setFocus<HTMLDivElement>(_autoFocus, _popoverRef);
+    } else {
+      setFocus<HTMLInputElement>(_autoFocus, _triggerRef);
+    }
   }
 
   function _updateComponentStyles() {

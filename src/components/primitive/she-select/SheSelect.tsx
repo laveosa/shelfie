@@ -77,6 +77,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
     ariaDescribedbyId,
     setFocus,
     initializeItemsList,
+    getSelectedItems,
     updateSelectedItems,
     calculatePopoverWidth,
   } = useComponentUtilities({
@@ -101,24 +102,14 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
       }
     }
 
-    const itemsWithIds = initializeItemsList<ISheSelectItem<T>>(updatedItems);
-
-    setItems(itemsWithIds);
-
-    const selectedItem = _getSelectedItemByIdentifier(
-      selected,
-      "value",
-      itemsWithIds,
-    );
-    const resolved = selectedItem?.id
-      ? _getSelectedItemById(selectedItem.id, itemsWithIds)
-      : _getSelectedItemFromCollection(itemsWithIds);
-
-    setSelected(resolved);
+    const initializedItems =
+      initializeItemsList<ISheSelectItem<T>>(updatedItems);
+    setItems(initializedItems);
+    setSelected(getSelectedItems(initializedItems)[0]);
 
     if (isOpen && updatedItems?.length > 0) {
       requestAnimationFrame(() => {
-        setOpen(true);
+        _setIsOpen(true);
       });
     }
 
@@ -224,28 +215,6 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
       return null;
 
     return fromItems.find((item) => item[identifier] == data);
-  }
-
-  function _getSelectedItemFromCollection(
-    fromItems: ISheSelectItem<T>[],
-  ): ISheSelectItem<T> {
-    if (!fromItems || fromItems.length === 0) return null;
-
-    let selectedItem: ISheSelectItem<T> = null;
-
-    setItems(
-      fromItems.map((item) => {
-        if (!selectedItem && item.isSelected) {
-          selectedItem = item;
-        } else if (selectedItem && item.isSelected) {
-          item.isSelected = false;
-        }
-
-        return item;
-      }),
-    );
-
-    return selectedItem;
   }
 
   function _setIsOpen(_isOpen: boolean) {
