@@ -165,8 +165,10 @@ export function SupplierPage() {
 
         if (state.suppliersWithLocations === null) {
           dispatch(actions.setIsSelectSupplierCardLoading(true));
+          dispatch(actions.setIsSuppliersGridLoading(true));
           service.getListOfSuppliersForGridHandler({}).then((res) => {
             dispatch(actions.setIsSelectSupplierCardLoading(false));
+            dispatch(actions.setIsSuppliersGridLoading(false));
             markSelectedSupplier(res.items);
           });
         } else {
@@ -180,8 +182,10 @@ export function SupplierPage() {
         }
         if (state.suppliersWithLocations === null) {
           dispatch(actions.setIsSelectSupplierCardLoading(true));
+          dispatch(actions.setIsSuppliersGridLoading(true));
           service.getListOfSuppliersForGridHandler({}).then(() => {
             dispatch(actions.setIsSelectSupplierCardLoading(false));
+            dispatch(actions.setIsSuppliersGridLoading(false));
           });
         }
         break;
@@ -516,6 +520,7 @@ export function SupplierPage() {
         >
           <SelectSupplierCard
             isLoading={state.isSelectSupplierCardLoading}
+            isGridLoading={state.isSuppliersGridLoading}
             onAction={onAction}
             suppliers={state.suppliersWithLocations}
           />
