@@ -91,7 +91,7 @@ export default function SupplierCard({
                     </span>
                   </SheTooltip>
                   {(selectedSupplier?.address ||
-                    selectedPurchase?.location.address) && (
+                    selectedPurchase?.location?.address) && (
                     <SheTooltip
                       delayDuration={200}
                       text={selectedSupplier?.address}
