@@ -22,6 +22,7 @@ import {
 } from "@/utils/helpers/quick-helper.ts";
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
+import { SupplierModel } from "@/const/models/SupplierModel.ts";
 
 export function SupplierPage() {
   const dispatch = useAppDispatch();
@@ -152,26 +153,37 @@ export function SupplierPage() {
         break;
       case "detachSupplier":
         handleCardAction("selectSupplierCard", true);
-        dispatch(actions.setIsSelectSupplierCardLoading(true));
-        service.getListOfSuppliersForGridHandler({}).then((res) => {
-          dispatch(actions.setIsSelectSupplierCardLoading(false));
-          const updatedSuppliers = res.items.map((supplier) =>
+
+        function markSelectedSupplier(suppliers: SupplierModel[]) {
+          const updatedSuppliers = suppliers.map((supplier) =>
             supplier.supplierId === productsState.selectedSupplier.supplierId
               ? { ...supplier, isSelected: true }
               : { ...supplier, isSelected: false },
           );
           dispatch(actions.refreshSuppliersWithLocations(updatedSuppliers));
-        });
+        }
+
+        if (state.suppliersWithLocations === null) {
+          dispatch(actions.setIsSelectSupplierCardLoading(true));
+          service.getListOfSuppliersForGridHandler({}).then((res) => {
+            dispatch(actions.setIsSelectSupplierCardLoading(false));
+            markSelectedSupplier(res.items);
+          });
+        } else {
+          markSelectedSupplier(state.suppliersWithLocations);
+        }
         break;
       case "openSelectSupplierCard":
         handleCardAction("selectSupplierCard", true);
         if (!productsState.countryCodeList) {
           productsService.getCountryCodeHandler().then(() => {});
         }
-        dispatch(actions.setIsSelectSupplierCardLoading(true));
-        service.getListOfSuppliersForGridHandler({}).then(() => {
-          dispatch(actions.setIsSelectSupplierCardLoading(false));
-        });
+        if (state.suppliersWithLocations === null) {
+          dispatch(actions.setIsSelectSupplierCardLoading(true));
+          service.getListOfSuppliersForGridHandler({}).then(() => {
+            dispatch(actions.setIsSelectSupplierCardLoading(false));
+          });
+        }
         break;
       case "openSupplierConfigurationCard":
         dispatch(actions.resetManagedSupplier(null));
