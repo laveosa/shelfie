@@ -50,8 +50,22 @@
             display: flex;
             flex-direction: column;
 
+            .supplierName {
+              font-weight: 500;
+            }
+
             .deletedSupplier {
               opacity: 0.5;
+            }
+
+            .twoLineEllipsis {
+              display: -webkit-box;
+              -webkit-line-clamp: 2;
+              -webkit-box-orient: vertical;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              max-width: 150px;
+              white-space: normal;
             }
           }
         }

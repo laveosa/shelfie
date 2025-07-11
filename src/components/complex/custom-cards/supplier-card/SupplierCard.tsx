@@ -85,37 +85,53 @@ export default function SupplierCard({
                     className="max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap"
                   >
                     <span
-                      className={`${selectedSupplier.isDeleted === true ? cs.deletedSupplier : ""} she-text`}
+                      className={`${selectedSupplier.isDeleted === true ? cs.deletedSupplier : ""} ${cs.supplierName} she-text`}
                     >
                       {selectedSupplier?.supplierName}
                     </span>
                   </SheTooltip>
-                  {selectedSupplier?.addressLine1 && (
+                  {(selectedSupplier?.address ||
+                    selectedPurchase?.location.address) && (
                     <SheTooltip
                       delayDuration={200}
-                      text={selectedSupplier?.addressLine1}
-                      className="max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap"
+                      text={selectedSupplier?.address}
+                      className="max-w-[150px]"
                     >
                       <span
-                        className={`${selectedSupplier.isDeleted === true ? cs.deletedSupplier : ""} she-text`}
+                        className={`
+                        ${selectedSupplier.isDeleted === true ? cs.deletedSupplier : ""}
+                        ${cs.twoLineEllipsis} she-text`}
                       >
-                        {selectedSupplier?.addressLine1}
+                        {selectedSupplier?.address}
                       </span>
                     </SheTooltip>
                   )}
-                  {selectedSupplier?.addressLine2 && (
-                    <SheTooltip
-                      delayDuration={200}
-                      text={selectedSupplier?.addressLine2}
-                      className="max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap"
-                    >
-                      <span
-                        className={`${selectedSupplier.isDeleted === true ? cs.deletedSupplier : ""} she-text`}
-                      >
-                        {selectedSupplier?.addressLine2}
-                      </span>
-                    </SheTooltip>
-                  )}
+                  {/*{selectedSupplier?.addressLine1 && (*/}
+                  {/*  <SheTooltip*/}
+                  {/*    delayDuration={200}*/}
+                  {/*    text={selectedSupplier?.addressLine1}*/}
+                  {/*    className="max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap"*/}
+                  {/*  >*/}
+                  {/*    <span*/}
+                  {/*      className={`${selectedSupplier.isDeleted === true ? cs.deletedSupplier : ""} she-text`}*/}
+                  {/*    >*/}
+                  {/*      {selectedSupplier?.addressLine1}*/}
+                  {/*    </span>*/}
+                  {/*  </SheTooltip>*/}
+                  {/*)}*/}
+                  {/*{selectedSupplier?.addressLine2 && (*/}
+                  {/*  <SheTooltip*/}
+                  {/*    delayDuration={200}*/}
+                  {/*    text={selectedSupplier?.addressLine2}*/}
+                  {/*    className="max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap"*/}
+                  {/*  >*/}
+                  {/*    <span*/}
+                  {/*      className={`${selectedSupplier.isDeleted === true ? cs.deletedSupplier : ""} she-text`}*/}
+                  {/*    >*/}
+                  {/*      {selectedSupplier?.addressLine2}*/}
+                  {/*    </span>*/}
+                  {/*  </SheTooltip>*/}
+                  {/*)}*/}
                 </div>
                 <SheButton
                   icon={selectedSupplier.isDeleted === true ? Plus : CogIcon}

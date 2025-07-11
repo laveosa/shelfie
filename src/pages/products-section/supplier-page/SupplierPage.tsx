@@ -161,7 +161,6 @@ export function SupplierPage() {
               : { ...supplier, isSelected: false },
           );
           dispatch(actions.refreshSuppliersWithLocations(updatedSuppliers));
-          dispatch(productsActions.resetSelectedSupplier());
         });
         break;
       case "openSelectSupplierCard":
