@@ -43,7 +43,7 @@ export function AuthPage() {
       lastName: "",
       phoneNumber: "",
       verifyPhoneNumber: null,
-      code: null,
+      code: state.countryCode[0],
       phoneCodeModel: null,
     },
   });
@@ -67,6 +67,12 @@ export function AuthPage() {
       form.reset();
     }
   }, [service.authFormView]);
+
+  useEffect(() => {
+    if (state.countryCode.length) {
+      form.setValue("phoneCodeModel", state.countryCode[0]);
+    }
+  }, [state.countryCode, form]);
 
   function onFooterLink() {
     switch (service.authFormView) {
