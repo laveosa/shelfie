@@ -12,6 +12,8 @@ import { TraitModel } from "@/const/models/TraitModel.ts";
 import { VariantModel } from "@/const/models/VariantModel.ts";
 import { IPurchaseSummaryModel } from "@/const/models/PurchaseSummaryModel.ts";
 import { VariantHistoryModel } from "@/const/models/VariantHistoryModel.ts";
+import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
 
 const initialState: IPurchaseProductsPageSlice = {
   isLoading: false,
@@ -43,8 +45,10 @@ const initialState: IPurchaseProductsPageSlice = {
   isVariantPhotoGridLoading: false,
   isProductPhotoGridLoading: false,
   isVariantHistoryGridLoading: false,
+  isVariantsForPurchaseGridLoading: false,
   activeCards: [],
   activeTab: "purchaseProducts",
+  variants: [],
   selectedProduct: null,
   colorOptionsGridModel: null,
   purchaseProductVariantsGridModel: null,
@@ -54,6 +58,14 @@ const initialState: IPurchaseProductsPageSlice = {
     items: [],
   },
   purchasesProductsGridRequestModel: {
+    currentPage: 1,
+    pageSize: 10,
+  },
+  variantsForPurchaseGridModel: {
+    pager: {},
+    items: [],
+  },
+  variantsForPurchaseGridRequestModel: {
     currentPage: 1,
     pageSize: 10,
   },
@@ -68,6 +80,10 @@ const initialState: IPurchaseProductsPageSlice = {
   variantPhotos: [],
   productPhotosForVariant: [],
   variantHistory: [],
+  traitsForFilters: { color: [], size: [] },
+  traitsForFilter: [],
+  colorsForFilter: [],
+  sizesForFilter: [],
 };
 
 //----------------------------------------------------- LOADERS
@@ -275,6 +291,13 @@ function setIsVariantHistoryGridLoading(
   state.isVariantHistoryGridLoading = action?.payload;
 }
 
+function setIsVariantsForPurchaseGridLoading(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isVariantsForPurchaseGridLoading = action?.payload;
+}
+
 //----------------------------------------------------- API
 
 function refreshActiveCards(
@@ -289,6 +312,13 @@ function refreshActiveTab(
   action: PayloadAction<string>,
 ) {
   state.activeTab = action?.payload || state.activeTab;
+}
+
+function refreshVariants(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<VariantModel[]>,
+) {
+  state.variants = action?.payload || state.variants;
 }
 
 function refreshSelectedProduct(
@@ -334,6 +364,22 @@ function refreshPurchasesProductsGridRequestModel(
 ) {
   state.purchasesProductsGridRequestModel =
     action?.payload || state.purchasesProductsGridRequestModel;
+}
+
+function refreshVariantsForPurchaseGridModel(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<GridModel>,
+) {
+  state.variantsForPurchaseGridModel =
+    action?.payload || state.variantsForPurchaseGridModel;
+}
+
+function refreshVariantsForPurchaseGridRequestModel(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<GridRequestModel>,
+) {
+  state.variantsForPurchaseGridRequestModel =
+    action?.payload || state.variantsForPurchaseGridRequestModel;
 }
 
 function refreshBrands(
@@ -418,6 +464,20 @@ function refreshVariantHistory(
   state.variantHistory = action?.payload || state.variantHistory;
 }
 
+function refreshColorsForFilter(
+  state: IProductsPageSlice,
+  action: PayloadAction<TraitOptionModel[]>,
+) {
+  state.colorsForFilter = action?.payload || state.colorsForFilter;
+}
+
+function refreshSizesForFilter(
+  state: IProductsPageSlice,
+  action: PayloadAction<TraitOptionModel[]>,
+) {
+  state.sizesForFilter = action?.payload || state.sizesForFilter;
+}
+
 const PurchaseProductsPageSlice = createSlice({
   name: StoreSliceEnum.PURCHASE_PRODUCTS,
   initialState,
@@ -450,15 +510,19 @@ const PurchaseProductsPageSlice = createSlice({
     setIsVariantOptionsGridLoading,
     setIsVariantPhotoGridLoading,
     setIsProductPhotoGridLoading,
-    setIsVariantsHistoryGridLoading: setIsVariantHistoryGridLoading,
+    setIsVariantHistoryGridLoading,
+    setIsVariantsForPurchaseGridLoading,
     refreshActiveCards,
     refreshActiveTab,
+    refreshVariants,
     refreshSelectedProduct,
     refreshColorOptionsGridModel,
     refreshPurchaseProducts,
     refreshPurchasesProductsGridModel,
     refreshPurchaseProductVariantsGridModel,
     refreshPurchasesProductsGridRequestModel,
+    refreshVariantsForPurchaseGridModel,
+    refreshVariantsForPurchaseGridRequestModel,
     refreshBrands,
     refreshCategories,
     refreshSelectedPhoto,
@@ -471,6 +535,8 @@ const PurchaseProductsPageSlice = createSlice({
     refreshVariantPhotos,
     refreshProductPhotosForVariant,
     refreshVariantHistory,
+    refreshColorsForFilter,
+    refreshSizesForFilter,
   },
 });
 

@@ -13,7 +13,6 @@ import { IPurchaseProductsPageSlice } from "@/const/interfaces/store-slices/IPur
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { PurchaseProductsPageSliceActions as actions } from "@/state/slices/PurchaseProductsPageSlice.ts";
-import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
 import {
   DataWithId,
   DndGridDataTable,
@@ -30,6 +29,8 @@ import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { purchaseVariantsGridColumns } from "@/components/complex/grid/purchase-variants-grid/PurchaseVariantsGridColumns.tsx";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
+import GridTraitsFilter from "@/components/complex/grid/grid-traits-filter/GridTraitsFilter.tsx";
+import GridShowDeletedFilter from "@/components/complex/grid/grid-show-deleted-filter/GridShowDeletedFilter.tsx";
 
 export default function PurchaseProductsCard({
   isLoading,
@@ -105,8 +106,8 @@ export default function PurchaseProductsCard({
         );
       } else if (activeTab === "connectProducts") {
         dispatch(
-          productsActions.refreshVariantsGridRequestModel({
-            ...productsState.variantsGridRequestModel,
+          actions.refreshVariantsForPurchaseGridRequestModel({
+            ...state.variantsForPurchaseGridRequestModel,
             currentPage: 1,
             ...updates,
           }),
@@ -122,8 +123,8 @@ export default function PurchaseProductsCard({
         );
       } else if (activeTab === "connectProducts") {
         dispatch(
-          productsActions.refreshVariantsGridRequestModel({
-            ...productsState.variantsGridRequestModel,
+          actions.refreshVariantsForPurchaseGridRequestModel({
+            ...state.variantsForPurchaseGridRequestModel,
             ...updates,
           }),
         );
@@ -299,6 +300,17 @@ export default function PurchaseProductsCard({
                   getId={(item: CategoryModel) => item.categoryId}
                   getName={(item: CategoryModel) => item.categoryName}
                 />
+                <GridTraitsFilter
+                  traitOptions={state.colorsForFilter}
+                  traitType="color"
+                  gridRequestModel={state.variantsForPurchaseGridRequestModel}
+                />
+                <GridTraitsFilter
+                  traitOptions={state.sizesForFilter}
+                  traitType="size"
+                  gridRequestModel={state.variantsForPurchaseGridRequestModel}
+                />
+                <GridShowDeletedFilter />
               </DndGridDataTable>
             </TabsContent>
           </SheTabs>

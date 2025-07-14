@@ -29,12 +29,16 @@ export function productsGridColumns(
     {
       accessorKey: "productId",
       header: "ID",
+      size: 60,
       minSize: 60,
+      maxSize: 60,
     },
     {
       accessorKey: "image",
       header: "Image",
+      size: 60,
       minSize: 60,
+      maxSize: 60,
       cell: ({ row, table }) => {
         const image: ImageModel = row.getValue("image");
         const meta = table.options.meta as {
@@ -62,6 +66,9 @@ export function productsGridColumns(
     {
       accessorKey: "productCode",
       header: "Code",
+      size: 60,
+      minSize: 60,
+      maxSize: 60,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("productCode")}>
@@ -75,7 +82,9 @@ export function productsGridColumns(
     {
       accessorKey: "productName",
       header: "Product Name",
+      size: 150,
       minSize: 150,
+      maxSize: 150,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("productName")}>
@@ -89,7 +98,9 @@ export function productsGridColumns(
     {
       accessorKey: "productCategory",
       header: "Category",
-      minSize: 150,
+      size: 100,
+      minSize: 100,
+      maxSize: 100,
       cell: ({ row }) => {
         const category: CategoryModel = row.getValue("productCategory");
         return (
@@ -113,7 +124,9 @@ export function productsGridColumns(
     {
       accessorKey: "brand",
       header: "Brand",
-      minSize: 150,
+      size: 100,
+      minSize: 100,
+      maxSize: 100,
       cell: ({ row }) => {
         const brand: BrandModel = row.getValue("brand");
         return (
@@ -134,10 +147,16 @@ export function productsGridColumns(
     {
       accessorKey: "barcode",
       header: "Barcode",
+      size: 80,
+      minSize: 80,
+      maxSize: 80,
     },
     {
       accessorKey: "status",
       header: "Status",
+      size: 120,
+      minSize: 120,
+      maxSize: 120,
       cell: ({ row }) => {
         const status: string = row.getValue("status");
         return (
@@ -150,7 +169,9 @@ export function productsGridColumns(
     {
       accessorKey: "salePrice",
       header: "Sale Price",
+      size: 100,
       minSize: 100,
+      maxSize: 100,
       cell: ({ row }) => {
         const price: string = row.getValue("salePrice");
         return <span>{price ? price : "N/A"}</span>;
@@ -159,6 +180,9 @@ export function productsGridColumns(
     {
       accessorKey: "variantsCount",
       header: "Variants",
+      size: 80,
+      minSize: 80,
+      maxSize: 80,
       cell: ({ row }) => {
         return (
           <div>
@@ -170,6 +194,9 @@ export function productsGridColumns(
     {
       accessorKey: "stockAmount",
       header: "Stock",
+      size: 60,
+      minSize: 60,
+      maxSize: 60,
       cell: ({ row }) => {
         return <span>{`${row.getValue("stockAmount")} units`}</span>;
       },
@@ -177,6 +204,9 @@ export function productsGridColumns(
     {
       accessorKey: "isActive",
       header: "Active",
+      size: 60,
+      minSize: 60,
+      maxSize: 60,
       cell: ({ row, table }) => {
         const meta = table.options.meta as {
           setLoadingRow: (rowId: string, loading: boolean) => void;
@@ -209,6 +239,7 @@ export function productsGridColumns(
     {
       id: "manage",
       header: "",
+      size: 100,
       minSize: 100,
       maxSize: 100,
       cell: ({ row, table }) => {
@@ -238,6 +269,7 @@ export function productsGridColumns(
     {
       id: "rowActions",
       header: "",
+      size: 70,
       minSize: 70,
       maxSize: 70,
       cell: ({ row, table }) => {
