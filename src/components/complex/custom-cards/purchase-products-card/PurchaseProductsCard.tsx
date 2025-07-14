@@ -91,6 +91,9 @@ export default function PurchaseProductsCard({
       case "stockChangeHistory":
         onAction("openVariantHistoryCard", payload.original.variantId);
         break;
+      case "navigateToManageVariant":
+        onAction("navigateToManageVariant", payload);
+        break;
     }
   }
 

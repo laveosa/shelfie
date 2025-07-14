@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
 import cs from "./PurchaseProductsPage.module.scss";
@@ -36,9 +36,11 @@ import DisposeStockCard from "@/components/complex/custom-cards/dispose-stock-ca
 import StockHistoryCard from "@/components/complex/custom-cards/stock-history-card/StockHistoryCard.tsx";
 import VariantPhotosCard from "@/components/complex/custom-cards/variant-photos-card/VariantPhotosCard.tsx";
 import ManageTraitsCard from "@/components/complex/custom-cards/manage-traits-card/ManageTraitsCard.tsx";
+import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 
 export function PurchaseProductsPage() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { addToast } = useToast();
   const { openConfirmationDialog } = useDialogService();
   const service = usePurchaseProductsPageService();
@@ -1550,6 +1552,17 @@ export function PurchaseProductsPage() {
         break;
       case "closeVariantHistoryCard":
         handleCardAction("variantHistoryCard");
+        break;
+      case "navigateToManageVariant":
+        productsService
+          .getVariantDetailsHandler(payload.variantId)
+          .then((res) => {
+            dispatch(productsActions.refreshSelectedVariant(res));
+            dispatch(productsActions.refreshVariantPhotos(res.photos));
+            navigate(
+              `${NavUrlEnum.PRODUCTS}${NavUrlEnum.MANAGE_VARIANTS}/${payload?.productId}`,
+            );
+          });
         break;
     }
   }
