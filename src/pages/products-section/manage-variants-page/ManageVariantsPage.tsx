@@ -47,6 +47,16 @@ export function ManageVariantsPage() {
   const { productId } = useParams();
   const cardRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
   const { openConfirmationDialog } = useDialogService();
+  const productsForItemsCard = productsService.itemsCardItemsConvertor(
+    productsState.products,
+    {
+      idKey: "productId",
+      nameKey: "productName",
+      imageKeyPath: "image.thumbnailUrl",
+      type: "product",
+    },
+  );
+
   const variantsForItemsCard = productsService.itemsCardItemsConvertor(
     productsState.variants,
     {
@@ -79,7 +89,6 @@ export function ManageVariantsPage() {
         .getTaxesListHandler()
         .then((res) => dispatch(productsActions.refreshTaxesList(res)));
     }
-    dispatch(productsActions.refreshActiveTab("variants"));
   }, [productId]);
 
   useEffect(() => {
@@ -962,11 +971,27 @@ export function ManageVariantsPage() {
     <div className={cs.manageVariantsPage}>
       <ItemsCard
         isLoading={productsState.isItemsCardLoading}
-        isItemsLoading={productsState.isVariantsLoading}
-        title="Variants"
-        data={variantsForItemsCard}
-        skeletonQuantity={productsState.variants?.length}
-        selectedItem={productsState.selectedVariant?.variantId}
+        isItemsLoading={
+          productsState.activeTab === "products"
+            ? productsState.isProductsLoading
+            : productsState.isVariantsLoading
+        }
+        title={productsState.activeTab === "products" ? "Products" : "Variants"}
+        data={
+          productsState.activeTab === "products"
+            ? productsForItemsCard
+            : variantsForItemsCard
+        }
+        selectedItem={
+          productsState.activeTab === "products"
+            ? productId
+            : productsState.selectedVariant?.variantId
+        }
+        skeletonQuantity={
+          productsState.activeTab === "products"
+            ? productsState.products?.length
+            : productsState.variants?.length
+        }
         onAction={(data) => onAction("onProductItemClick", data)}
       />
       <ProductMenuCard
