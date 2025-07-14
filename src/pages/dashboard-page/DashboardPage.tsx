@@ -145,7 +145,15 @@ export function DashboardPage() {
     setTimeout(() => {
       setItems(optionsSimple);
       // setItems(options);
-      // triggerRef.current.click();
+    }, 1000);
+
+    const timer = setTimeout(() => {
+      /*const el = triggerRef.current;
+      if (el) {
+        el.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+        el.dispatchEvent(new MouseEvent("mouseup", { bubbles: true }));
+        el.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+      }*/
     }, 1000);
 
     setTimeout(() => {
@@ -156,10 +164,15 @@ export function DashboardPage() {
 
     setTimeout(() => {
       setIsLoading(false);
-      // searchRef.current.value = "TEST";
+
+      /*if (searchRef.current) {
+        searchRef.current.value = "TEST";
+      }*/
 
       // console.log(popoverRef.current.style);
     }, 3000);
+
+    return () => clearTimeout(timer);
   }, []);
 
   // ================================================================== EVENT
@@ -228,17 +241,17 @@ export function DashboardPage() {
       />*/}
 
       <div className="flex gap-5 flex-col">
-        {/*<div className="w-full flex">
+        <div className="w-full flex">
           <SheMultiSelect<string>
-            // searchRef={searchRef}
-            // ref={triggerRef}
-            // popoverRef={popoverRef}
+            searchRef={searchRef}
+            ref={triggerRef}
+            popoverRef={popoverRef}
             label="MultiSelect"
             required
             // items={options}
-            // items={optionsSimple}
-            items={_items}
-            selectedValues={selected}
+            items={optionsSimple}
+            // items={_items}
+            // selectedValues={selected}
             contextType="badges"
             showClearBtn
             showSearch
@@ -250,12 +263,18 @@ export function DashboardPage() {
             // minWidth="600px"
             // maxWidth="200px"
             // hideSelectAll
-            onOpen={(value) => console.log("onOpen: ", value)}
+            onOpen={(value) => {
+              console.log("onOpen: ", value);
+              // setTimeout(() => (searchRef.current.value = "TEST"));
+              /* setTimeout(() => {
+                popoverRef.current.style.border = "1px solid red";
+              });*/
+            }}
             onClear={(value) => console.log("onClear: ", value)}
             onSelect={(value) => console.log("onSelect: ", value)}
             onSelectModel={(value) => console.log("onSelectModel: ", value)}
           />
-        </div>*/}
+        </div>
 
         {/*<div className="w-full flex">
           <SheSelect<string>
@@ -264,8 +283,8 @@ export function DashboardPage() {
             // label="Select"
             required
             // items={options}
-            items={optionsSimple}
-            // items={_items}
+            // items={optionsSimple}
+            items={_items}
             selected={selected}
             autoFocus
             // openOnFocus
@@ -283,7 +302,7 @@ export function DashboardPage() {
           />
         </div>*/}
 
-        <div className="w-full flex">
+        {/*<div className="w-full flex">
           <SheAutocomplete
             label="Autocomplete"
             required
@@ -291,9 +310,10 @@ export function DashboardPage() {
             items={optionsSimple}
             // items={_items}
             showClearBtn
-            showSelectBtn
+            // showSelectBtn
+            // isOpen
             autoFocus
-            openOnFocus
+            // openOnFocus
             // minAmount={3}
             // isOpen
             onSelect={(event) => console.log("Autocomplete value: ", event)}
@@ -301,7 +321,7 @@ export function DashboardPage() {
               console.log("Autocomplete model: ", event)
             }
           />
-        </div>
+        </div>*/}
       </div>
 
       <br />

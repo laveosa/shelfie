@@ -35,6 +35,7 @@ import {
   SheMultiSelectFooterDefaultModel,
 } from "@/const/interfaces/primitive-components/ISheMultiSelectFooter.ts";
 import useDefaultRef from "@/utils/hooks/useDefaultRef.ts";
+import useValueWithEvent from "@/utils/hooks/useValueWithEvent.ts";
 
 export default function SheMultiSelect<T>(
   props: ISheMultiSelect<T>,
@@ -80,6 +81,7 @@ export default function SheMultiSelect<T>(
     SheMultiSelectDefaultModel,
     SheMultiSelectSearchDefaultModel,
     SheMultiSelectFooterDefaultModel,
+    { popoverRef: undefined, triggerRef: undefined, searchRef: undefined },
   ]);
 
   // ==================================================================== STATE MANAGEMENT
@@ -105,6 +107,20 @@ export default function SheMultiSelect<T>(
   } = useComponentUtilities({
     identifier: "SheMultiSelect",
   });
+
+  const {
+    eventHandler: eventToggleOptionHandler,
+    valueHandler: valueToggleOptionHandler,
+  } = useValueWithEvent<React.MouseEvent | React.KeyboardEvent, T>(
+    onToggleOptionHandler,
+  );
+
+  const {
+    eventHandler: eventToggleAllHandler,
+    valueHandler: valueToggleAllHandler,
+  } = useValueWithEvent<React.MouseEvent | React.KeyboardEvent, T>(
+    onToggleAllHandler,
+  );
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
@@ -165,15 +181,36 @@ export default function SheMultiSelect<T>(
     _setIsOpen(!_open);
   }
 
-  function onToggleOptionHandler(_value: T, event?: React.MouseEvent) {
-    // TODO event needed as extra param (key - Enter and close Badge include)
+  function onSelectHandler(
+    value: T,
+    event: React.MouseEvent | React.KeyboardEvent,
+  ) {
+    event
+      ? onToggleOptionHandler(value, event)
+      : valueToggleOptionHandler(value);
+  }
+
+  function onSelectAllHandler(
+    value: T,
+    event: React.MouseEvent | React.KeyboardEvent,
+  ) {
+    event ? onToggleAllHandler(value, event) : valueToggleAllHandler(value);
+  }
+
+  function onToggleOptionHandler(
+    _value: T,
+    event?: React.MouseEvent | React.KeyboardEvent,
+  ) {
     const newSelectedValues = _selectedValues.includes(_value)
       ? _selectedValues.filter((value) => value !== _value)
       : [..._selectedValues, _value];
     _updateSelectedValues(newSelectedValues, event);
   }
 
-  function onToggleAllHandler(_value: T, event?: React.MouseEvent) {
+  function onToggleAllHandler(
+    _value: T,
+    event?: React.MouseEvent | React.KeyboardEvent,
+  ) {
     // TODO event needed as extra param (key - Enter include)
     const isAllSelected = _items.every((item) =>
       _selectedValues.includes(item.value),
@@ -195,7 +232,7 @@ export default function SheMultiSelect<T>(
   }
 
   function onClearButtonHandler<T>(
-    event: React.MouseEvent,
+    event: React.MouseEvent | React.KeyboardEvent,
     refElement: RefObject<T>,
   ) {
     _updateSelectedValues([], event);
@@ -232,7 +269,10 @@ export default function SheMultiSelect<T>(
     );
   }
 
-  function _updateSelectedValues(values: T[], event?: React.MouseEvent) {
+  function _updateSelectedValues(
+    values: T[],
+    event?: React.MouseEvent | React.KeyboardEvent,
+  ) {
     const tmpItems: ISheMultiSelectItem<T>[] = updateSelectedItems(
       _items,
       values,
@@ -311,6 +351,14 @@ export default function SheMultiSelect<T>(
           ...popoverStyle,
         }}
         align="start"
+        onKeyDown={(event) => {
+          if (event.key === "Enter") {
+            eventToggleOptionHandler(event);
+            eventToggleAllHandler(event);
+            event.stopPropagation();
+            event.preventDefault();
+          }
+        }}
       >
         <Command className={`${disabled || isLoading ? "disabled" : ""}`}>
           <SheMultiSelectSearch
@@ -338,7 +386,7 @@ export default function SheMultiSelect<T>(
                   isSelected={_selectedValues?.length === _items?.length}
                   isLoading={isLoading}
                   tabIndex={_open ? 0 : -1}
-                  onClick={onToggleAllHandler}
+                  onClick={onSelectAllHandler}
                 />
               )}
               {_items?.map((item) => (
@@ -349,7 +397,7 @@ export default function SheMultiSelect<T>(
                   isLoading={
                     !_.isNil(item.isLoading) ? item.isLoading : _loading
                   }
-                  onClick={onToggleOptionHandler}
+                  onClick={onSelectHandler}
                 />
               ))}
             </CommandGroup>

@@ -182,14 +182,18 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     event?: React.MouseEvent | React.KeyboardEvent,
   ) {
     _setIsOpen(false);
+
     if (value !== _searchValue) setSearchValue(value);
-    setSelected(value);
-    onSelect?.(value);
-    onSelectModel?.({
-      value,
-      model: { ...sheAutocompleteProps, searchValue: value },
-      event,
-    });
+    if (value !== _selected) {
+      setSelected(value);
+      onSelect?.(value);
+      onSelectModel?.({
+        value,
+        model: { ...sheAutocompleteProps, searchValue: value },
+        event,
+      });
+    }
+
     event?.stopPropagation();
   }
 
@@ -235,8 +239,6 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
 
       if (_isOpen) {
         calculatePopoverWidth<HTMLInputElement>(_popoverRef, _triggerRef);
-      } else {
-        // setFocus<HTMLInputElement>(autoFocus, _triggerRef);
       }
     }
   }
@@ -246,13 +248,7 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
 
     if (_openOnFocus || isOpen) {
       _setIsOpen(isOpen ?? _autoFocus);
-      // setFocus<HTMLDivElement>(_autoFocus, _popoverRef);
-    } else {
-      // setTimeout(() => {
-      //   _open
-      //     ? setFocus<HTMLDivElement>(_autoFocus, _popoverRef)
-      //     : setFocus<HTMLInputElement>(_autoFocus, _triggerRef);
-      // });
+      setFocus<HTMLDivElement>(_autoFocus, _popoverRef);
     }
   }
 
