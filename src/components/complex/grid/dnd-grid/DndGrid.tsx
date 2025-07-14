@@ -488,7 +488,7 @@ export const DndGridDataTable = React.forwardRef<
             }
             style={{
               width: "100%",
-              tableLayout: "auto",
+              tableLayout: "fixed",
               borderCollapse: "collapse",
             }}
           >

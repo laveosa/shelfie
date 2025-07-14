@@ -261,6 +261,7 @@ export function ProductsPage() {
       case "manageVariant":
         service.getVariantDetailsHandler(rowData.variantId).then((res) => {
           dispatch(actions.refreshSelectedVariant(res));
+          dispatch(actions.refreshVariantPhotos(res.photos));
           navigate(
             `${NavUrlEnum.PRODUCTS}${NavUrlEnum.MANAGE_VARIANTS}/${rowData?.productId}`,
           );

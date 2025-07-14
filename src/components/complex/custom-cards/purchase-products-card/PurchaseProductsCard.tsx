@@ -1,7 +1,7 @@
 import { Layers2, Plus, Shirt } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useState } from "react";
-import { merge } from "lodash";
+import _, { merge } from "lodash";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import { IPurchaseProductsCard } from "@/const/interfaces/complex-components/custom-cards/IPurchaseProductsCard.ts";
@@ -237,23 +237,29 @@ export default function PurchaseProductsCard({
                 <div className={cs.purchaseSummaryItems}>
                   <div>
                     <span className={cs.purchaseSummaryTitle}>Units</span>
-                    <span className={cs.purchaseSummaryItem}>
-                      {`: ${purchaseSummary?.unitsAmount}`}
-                    </span>
+                    {!_.isNil(purchaseSummary?.unitsAmount) && (
+                      <span className={cs.purchaseSummaryItem}>
+                        {`: ${purchaseSummary?.unitsAmount}`}
+                      </span>
+                    )}
                   </div>
                   <div>
                     <span className={cs.purchaseSummaryTitle}>Expense</span>
-                    <span className={cs.purchaseSummaryItem}>
-                      {`: ${purchaseSummary?.expense} ${purchaseSummary?.currencyBrief}`}
-                    </span>
+                    {!_.isNil(purchaseSummary?.expense) && (
+                      <span className={cs.purchaseSummaryItem}>
+                        {`: ${purchaseSummary?.expense} ${purchaseSummary?.currencyBrief}`}
+                      </span>
+                    )}
                   </div>
                   <div>
                     <span className={cs.purchaseSummaryTitle}>
                       Projected value
                     </span>
-                    <span className={cs.purchaseSummaryItem}>
-                      {`: ${purchaseSummary?.valueAmount} ${purchaseSummary?.currencyBrief}`}
-                    </span>
+                    {!_.isNil(purchaseSummary?.valueAmount) && (
+                      <span className={cs.purchaseSummaryItem}>
+                        {`: ${purchaseSummary?.valueAmount} ${purchaseSummary?.currencyBrief}`}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>

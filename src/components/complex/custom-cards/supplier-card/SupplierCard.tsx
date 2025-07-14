@@ -94,7 +94,10 @@ export default function SupplierCard({
                     selectedPurchase?.location?.address) && (
                     <SheTooltip
                       delayDuration={200}
-                      text={selectedSupplier?.address}
+                      text={
+                        selectedSupplier?.address ||
+                        selectedPurchase?.location?.address
+                      }
                       className="max-w-[150px]"
                     >
                       <span
@@ -102,7 +105,8 @@ export default function SupplierCard({
                         ${selectedSupplier.isDeleted === true ? cs.deletedSupplier : ""}
                         ${cs.twoLineEllipsis} she-text`}
                       >
-                        {selectedSupplier?.address}
+                        {selectedSupplier?.address ||
+                          selectedPurchase?.location?.address}
                       </span>
                     </SheTooltip>
                   )}

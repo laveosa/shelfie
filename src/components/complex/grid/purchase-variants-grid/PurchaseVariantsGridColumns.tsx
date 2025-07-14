@@ -24,7 +24,6 @@ export function purchaseVariantsGridColumns(
       header: "Image",
       size: 40,
       minSize: 40,
-      maxSize: 40,
       cell: ({ row, table }) => {
         const image: ImageModel = row.getValue("photo");
         const meta = table.options.meta as {
@@ -59,7 +58,6 @@ export function purchaseVariantsGridColumns(
       header: "Code",
       size: 40,
       minSize: 40,
-      maxSize: 40,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("variantCode")}>
@@ -75,7 +73,6 @@ export function purchaseVariantsGridColumns(
       header: "Product Name",
       size: 50,
       minSize: 50,
-      maxSize: 50,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("variantName")}>
@@ -91,7 +88,6 @@ export function purchaseVariantsGridColumns(
       header: "Category",
       size: 50,
       minSize: 50,
-      maxSize: 50,
       cell: ({ row }) => {
         const category: CategoryModel = row.getValue("productCategory");
         return (
@@ -117,7 +113,6 @@ export function purchaseVariantsGridColumns(
       header: "Brand",
       size: 40,
       minSize: 40,
-      maxSize: 40,
       cell: ({ row }) => {
         const brand: BrandModel = row.getValue("brand");
         return (
@@ -140,7 +135,6 @@ export function purchaseVariantsGridColumns(
       header: "Details",
       size: 40,
       minSize: 40,
-      maxSize: 40,
       cell: ({ row }) => {
         const traitOptions = row.original.traitOptions || [];
 
@@ -190,7 +184,6 @@ export function purchaseVariantsGridColumns(
       accessorKey: "",
       size: 220,
       minSize: 220,
-      maxSize: 220,
       header: () => (
         <div className="flex items-center">
           <span style={{ marginRight: "40px" }}>Netto Price</span>
@@ -221,7 +214,6 @@ export function purchaseVariantsGridColumns(
       header: "",
       size: 20,
       minSize: 20,
-      maxSize: 20,
       cell: ({ row, table }) => {
         return (
           <div style={{ display: "flex", justifyContent: "center" }}>
