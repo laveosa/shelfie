@@ -59,6 +59,7 @@ interface DataTableProps<TData extends DataWithId, TValue>
   enableExpansion?: boolean;
   customMessage?: string;
   skeletonQuantity?: number;
+  cellPadding?: string;
   onAction?: (data) => void;
   onApplyColumns?: (data) => void;
   onDefaultColumns?: () => void;
@@ -91,6 +92,7 @@ const DraggableRow = ({
   enableExpansion = false,
   renderExpandedContent,
   totalColumns,
+  cellPadding = "8px 12px",
 }) => {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useSortable({
@@ -126,9 +128,10 @@ const DraggableRow = ({
           style={{
             cursor: isDragDisabled || isLoading ? "default" : "grab",
             background: isSelected ? "#F4F4F5" : "inherit",
-            width: "40px",
-            minWidth: "40px",
-            maxWidth: "40px",
+            width: "30px",
+            minWidth: "30px",
+            maxWidth: "30px",
+            padding: cellPadding,
           }}
           {...listeners}
         >
@@ -147,6 +150,7 @@ const DraggableRow = ({
               background: isSelected ? "#F4F4F5" : "inherit",
               minWidth: cell.column.columnDef.minSize || 50,
               maxWidth: cell.column.columnDef.maxSize,
+              padding: cellPadding,
             }}
           >
             {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -172,7 +176,8 @@ const DraggableRow = ({
                       ? "#F4F4F5"
                       : row.original.color || "white", // Use parent row color
                     borderTop: "1px solid #e5e7eb",
-                    padding: "16px",
+                    // padding: "16px",
+                    padding: cellPadding,
                   }}
                 >
                   {renderExpandedContent(row, expandableItem, index)}
@@ -191,6 +196,7 @@ const RegularRow = ({
   enableExpansion = false,
   renderExpandedContent,
   totalColumns,
+  cellPadding = "8px 12px",
 }) => {
   const isLoading = loadingRows.has(row.id);
   const isSelected = row.original.isGridItemSelected;
@@ -225,6 +231,7 @@ const RegularRow = ({
               }),
               minWidth: cell.column.columnDef.minSize || 50,
               maxWidth: cell.column.columnDef.maxSize,
+              padding: cellPadding,
             }}
           >
             {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -251,6 +258,7 @@ const RegularRow = ({
                       : row.original.color || "white",
                     borderTop:
                       expandableRows.length > 1 ? "1px solid white" : "",
+                    padding: cellPadding,
                   }}
                 >
                   {renderExpandedContent(row, expandableItem, index)}
@@ -286,6 +294,7 @@ export const DndGridDataTable = React.forwardRef<
     children,
     customMessage,
     skeletonQuantity,
+    cellPadding = "8px 12px",
     onGridRequestChange,
     onApplyColumns,
     onDefaultColumns,
@@ -503,9 +512,10 @@ export const DndGridDataTable = React.forwardRef<
                       <TableHead
                         className={isLoading ? `${cs.tableHeadLoading}` : ""}
                         style={{
-                          width: "40px",
-                          minWidth: "40px",
-                          maxWidth: "40px",
+                          width: "30px",
+                          minWidth: "30px",
+                          maxWidth: "30px",
+                          padding: cellPadding,
                         }}
                       ></TableHead>
                     )}
@@ -519,6 +529,7 @@ export const DndGridDataTable = React.forwardRef<
                           }),
                           minWidth: header.column.columnDef.minSize || 50,
                           maxWidth: header.column.columnDef.maxSize,
+                          padding: cellPadding,
                         }}
                       >
                         {header.isPlaceholder
@@ -583,6 +594,7 @@ export const DndGridDataTable = React.forwardRef<
                             enableExpansion={enableExpansion}
                             renderExpandedContent={renderExpandedContent}
                             totalColumns={totalColumns}
+                            cellPadding={cellPadding}
                           />
                         ) : (
                           <RegularRow
@@ -592,6 +604,7 @@ export const DndGridDataTable = React.forwardRef<
                             enableExpansion={enableExpansion}
                             renderExpandedContent={renderExpandedContent}
                             totalColumns={totalColumns}
+                            cellPadding={cellPadding}
                           />
                         ),
                       )}
@@ -609,6 +622,7 @@ export const DndGridDataTable = React.forwardRef<
                         className="h-24 text-center"
                         style={{
                           width: "100%",
+                          padding: cellPadding,
                         }}
                       >
                         {customMessage || "NO DATA TO DISPLAY"}

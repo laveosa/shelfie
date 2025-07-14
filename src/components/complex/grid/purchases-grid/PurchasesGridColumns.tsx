@@ -14,16 +14,17 @@ export function purchasesGridColumns(
     {
       accessorKey: "purchaseId",
       header: "ID",
-      minSize: 50,
-      maxSize: 50,
+      size: 20,
+      minSize: 20,
+      maxSize: 20,
     },
     {
       id: "supplierName",
       accessorFn: (row) => row.supplier?.supplierName,
       header: "Supplier",
-      size: 200,
-      minSize: 200,
-      maxSize: 200,
+      size: 150,
+      minSize: 150,
+      maxSize: 150,
       cell: ({ row }) => {
         const imageUrl: string = row.original.supplier?.thumbnailUrl;
         return (
@@ -43,7 +44,7 @@ export function purchasesGridColumns(
               <SheTooltip
                 delayDuration={200}
                 text={row.getValue("supplierName")}
-                className="max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap"
+                className="max-w-[130px] overflow-hidden text-ellipsis whitespace-nowrap"
               >
                 <span>{row.getValue("supplierName")}</span>
               </SheTooltip>
@@ -53,8 +54,46 @@ export function purchasesGridColumns(
       },
     },
     {
+      accessorKey: "location",
+      header: "Location",
+      size: 100,
+      minSize: 100,
+      maxSize: 200,
+      cell: ({ row }) => {
+        return (
+          <SheTooltip
+            delayDuration={200}
+            text={row.original.location?.address}
+            className="max-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap"
+          >
+            <span>{row.original.location?.address}</span>
+          </SheTooltip>
+        );
+      },
+    },
+    {
+      accessorKey: "documentNotes",
+      header: "Notes",
+      size: 100,
+      minSize: 100,
+      maxSize: 200,
+      cell: ({ row }) => {
+        return (
+          <SheTooltip
+            delayDuration={200}
+            text={row.getValue("documentNotes")}
+            className="max-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap"
+          >
+            <span>{row.getValue("documentNotes")}</span>
+          </SheTooltip>
+        );
+      },
+    },
+    {
       accessorKey: "date",
       header: "Date",
+      size: 100,
+      minSize: 100,
       maxSize: 100,
       cell: ({ row }) => {
         const formattedDate = formatDate(row.getValue("date"), "date");
@@ -64,6 +103,8 @@ export function purchasesGridColumns(
     {
       accessorKey: "unitsAmount",
       header: "Units",
+      size: 70,
+      minSize: 70,
       maxSize: 70,
       cell: ({ row }) => {
         return <span>{`${row.getValue("unitsAmount")} units`}</span>;
@@ -72,6 +113,8 @@ export function purchasesGridColumns(
     {
       accessorKey: "expense",
       header: "Expense",
+      size: 70,
+      minSize: 70,
       maxSize: 70,
       cell: ({ row }) => {
         const currency: string = row.original.currencyBrief;
@@ -81,6 +124,8 @@ export function purchasesGridColumns(
     {
       accessorKey: "soldAmount",
       header: "Sold",
+      size: 70,
+      minSize: 70,
       maxSize: 70,
       cell: ({ row }) => {
         const currency: string = row.original.currencyBrief;
@@ -90,6 +135,8 @@ export function purchasesGridColumns(
     {
       accessorKey: "valueAmount",
       header: "Order Value",
+      size: 80,
+      minSize: 80,
       maxSize: 80,
       cell: ({ row }) => {
         const currency: string = row.original.currencyBrief;
@@ -99,9 +146,9 @@ export function purchasesGridColumns(
     {
       id: "manage",
       header: "",
-      size: 70,
-      minSize: 70,
-      maxSize: 70,
+      size: 100,
+      minSize: 100,
+      maxSize: 100,
       cell: ({ row, table }) => {
         const meta = table.options.meta as {
           setLoadingRow: (rowId: string, loading: boolean) => void;
@@ -129,6 +176,7 @@ export function purchasesGridColumns(
     {
       id: "rowActions",
       header: "",
+      size: 70,
       minSize: 70,
       maxSize: 70,
       cell: ({ row, table }) => {

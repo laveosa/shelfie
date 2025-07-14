@@ -357,6 +357,10 @@ function refreshPurchaseCounters(
   state.purchaseCounters = action?.payload || state.purchaseCounters;
 }
 
+function resetPurchaseCounters(state: IProductsPageSlice) {
+  state.purchaseCounters = null;
+}
+
 function refreshTypesOfTraits(
   state: IProductsPageSlice,
   action: PayloadAction<TypeOfTraitModel[]>,
@@ -448,6 +452,7 @@ const ProductsPageSlice = createSlice({
     refreshCurrenciesList,
     refreshCountryCodeList,
     refreshPurchaseCounters,
+    resetPurchaseCounters,
     refreshTypesOfTraits,
     refreshTraits,
     refreshListOfTraitsWithOptionsForProduct,

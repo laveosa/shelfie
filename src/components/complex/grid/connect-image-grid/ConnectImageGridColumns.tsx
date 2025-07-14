@@ -1,6 +1,7 @@
 import { ColumnDef, Row } from "@tanstack/react-table";
 
 import { Switch } from "@/components/ui/switch.tsx";
+import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 
 export const ConnectImageGridColumns = (
   onAction: (
@@ -13,6 +14,8 @@ export const ConnectImageGridColumns = (
   {
     accessorKey: "isConnected",
     header: "Active",
+    size: 60,
+    maxSize: 60,
     cell: ({ row, table }) => {
       const meta = table.options.meta as {
         setLoadingRow: (rowId: string, loading: boolean) => void;
@@ -34,7 +37,15 @@ export const ConnectImageGridColumns = (
     accessorKey: "variantName",
     header: "Variant",
     cell: ({ row }) => {
-      return <span className="she-text">{row.original.variantName}</span>;
+      return (
+        <SheTooltip
+          delayDuration={200}
+          text={row.original.variantName}
+          className="max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap"
+        >
+          <span className="she-text">{row.original.variantName}</span>
+        </SheTooltip>
+      );
     },
   },
   {
@@ -71,11 +82,22 @@ export const ConnectImageGridColumns = (
               }}
             ></div>
           ))}
-          {sizes.map((size, index) => (
-            <span key={index} style={{ marginRight: "5px" }}>
-              {size}
-            </span>
-          ))}
+          <div style={{ display: "flex", gap: "5px" }}>
+            {sizes.map((size, index) => (
+              <SheTooltip
+                delayDuration={200}
+                text={size}
+                className="max-w-[50px] overflow-hidden text-ellipsis whitespace-nowrap"
+              >
+                <span key={index} className="she-text">
+                  {size}
+                </span>
+              </SheTooltip>
+              // <span key={index} style={{ marginRight: "5px" }}>
+              //   {size}
+              // </span>
+            ))}
+          </div>
         </div>
       );
     },

@@ -8,6 +8,7 @@ import { TraitModel } from "@/const/models/TraitModel.ts";
 import { VariantModel } from "@/const/models/VariantModel.ts";
 import { IPurchaseSummaryModel } from "@/const/models/PurchaseSummaryModel.ts";
 import { VariantHistoryModel } from "@/const/models/VariantHistoryModel.ts";
+import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
 
 export interface IPurchaseProductsPageSlice {
   isLoading?: boolean;
@@ -39,11 +40,15 @@ export interface IPurchaseProductsPageSlice {
   isVariantPhotoGridLoading?: boolean;
   isProductPhotoGridLoading?: boolean;
   isVariantHistoryGridLoading?: boolean;
+  isVariantsForPurchaseGridLoading?: boolean;
   activeCards?: any[];
   activeTab?: string;
+  variants?: VariantModel[];
   selectedProduct?: ProductModel;
   purchasesProductsGridModel?: GridModel;
   purchasesProductsGridRequestModel?: GridRequestModel;
+  variantsForPurchaseGridModel?: GridModel;
+  variantsForPurchaseGridRequestModel?: GridRequestModel;
   colorOptionsGridModel?: GridModel;
   purchaseProductVariantsGridModel?: GridModel;
   purchaseProducts?: ProductModel[];
@@ -58,4 +63,8 @@ export interface IPurchaseProductsPageSlice {
   variantPhotos?: ImageModel[];
   productPhotosForVariant?: ImageModel[];
   variantHistory?: VariantHistoryModel[];
+  traitsForFilters?: { color?: TraitOptionModel[]; size?: TraitOptionModel[] };
+  traitsForFilter?: TraitModel[];
+  colorsForFilter?: TraitOptionModel[];
+  sizesForFilter?: TraitOptionModel[];
 }

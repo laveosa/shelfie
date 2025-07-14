@@ -61,6 +61,7 @@ export function SupplierPage() {
         productsService.getCountryCodeHandler();
       }
     }
+    dispatch(productsActions.resetPurchaseCounters());
     dispatch(actions.refreshActiveCards([]));
     dispatch(productsActions.refreshActiveTab("purchases"));
   }, [purchaseId]);
@@ -112,6 +113,7 @@ export function SupplierPage() {
           })
           .then((res) => {
             dispatch(actions.setIsSupplierCardLoading(false));
+            productsService.getPurchaseCountersHandler(res.purchaseId);
             navigate(
               `${NavUrlEnum.PRODUCTS}${NavUrlEnum.PURCHASE_PRODUCTS}/${res.purchaseId}`,
             );

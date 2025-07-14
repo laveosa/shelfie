@@ -672,6 +672,7 @@ export default function useProductsPageService() {
       case "variant":
         getVariantDetailsHandler(item.variantId).then((res) => {
           dispatch(actions.refreshSelectedVariant(res));
+          dispatch(actions.refreshVariantPhotos(res.photos));
           navigate(
             `${NavUrlEnum.PRODUCTS}${NavUrlEnum.MANAGE_VARIANTS}/${item?.productId}`,
           );

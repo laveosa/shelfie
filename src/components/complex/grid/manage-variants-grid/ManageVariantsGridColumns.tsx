@@ -1,8 +1,11 @@
 import { ColumnDef, Row } from "@tanstack/react-table";
 import { CogIcon } from "lucide-react";
+import React from "react";
 
 import { Switch } from "@/components/ui/switch.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import cs from "@/components/complex/custom-cards/choose-variant-traits-card/ChooseVariantTraitsCard.module.scss";
+import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 
 export const ManageVariantsGridColumns = (
   onAction: (
@@ -26,7 +29,6 @@ export const ManageVariantsGridColumns = (
       const sizeOptions = traitOptions.filter(
         (option) => option.traitTypeId === 1 && option.optionName,
       );
-
       return (
         <div
           style={{
@@ -47,20 +49,17 @@ export const ManageVariantsGridColumns = (
               }}
             />
           ))}
-          {sizeOptions.map((sizeOpt, index) => (
-            <span
-              key={`size-${index}`}
-              style={{
-                fontSize: "0.875rem",
-                maxWidth: "20px",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-              }}
+          {sizeOptions.length > 0 && (
+            <SheTooltip
+              delayDuration={200}
+              text={sizeOptions[0].optionName}
+              className="max-w-[30px] min-w-[30px] overflow-hidden text-ellipsis whitespace-nowrap"
             >
-              {sizeOpt.optionName}
-            </span>
-          ))}
+              <span className={`${cs.traitName} she-text`}>
+                {sizeOptions[0].optionName}
+              </span>
+            </SheTooltip>
+          )}
         </div>
       );
     },
