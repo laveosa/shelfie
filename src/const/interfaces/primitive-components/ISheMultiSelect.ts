@@ -26,7 +26,11 @@ export interface ISheMultiSelect<T>
   onClear?(value: null): void;
   onSelect?(values: T[]): void;
   onSelectModel?(
-    data: IOutputEventModel<T[], ISheMultiSelect<T>, React.MouseEvent>,
+    data: IOutputEventModel<
+      T[],
+      ISheMultiSelect<T>,
+      React.MouseEvent | React.KeyboardEvent
+    >,
   ): void;
 }
 

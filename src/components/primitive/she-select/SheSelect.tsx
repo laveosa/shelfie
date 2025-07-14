@@ -103,17 +103,16 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
       }
     }
 
-    const initializedItems =
-      initializeItemsList<ISheSelectItem<T>>(updatedItems);
+    const initializedItems = initializeItemsList<ISheSelectItem<T>>(
+      updatedItems,
+      selected,
+    );
+    const tmpSelected = initializedItems
+      ? getSelectedItems(initializedItems)[0]
+      : null;
+
     setItems(initializedItems);
-    setSelected(getSelectedItems(initializedItems)[0]);
-
-    if (isOpen && updatedItems?.length > 0) {
-      requestAnimationFrame(() => {
-        _setIsOpen(true);
-      });
-    }
-
+    setSelected(tmpSelected);
     _updateFocusRelatedLogic();
   }, [items, selected]);
 
@@ -191,7 +190,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
   // ==================================================================== PRIVATE
 
   function _setIsOpen(_isOpen: boolean) {
-    if (isLoading || disabled) {
+    if (isLoading || disabled || !items || items.length === 0) {
       setOpen(false);
       onOpen?.(false);
     } else if (!_.isEqual(_isOpen, _open)) {
@@ -207,8 +206,8 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
   }
 
   function _updateFocusRelatedLogic() {
-    if (openOnFocus) {
-      _setIsOpen(autoFocus);
+    if (openOnFocus || isOpen) {
+      _setIsOpen(isOpen ?? autoFocus);
       setFocus<HTMLDivElement>(autoFocus, _popoverRef);
     } else {
       setFocus<HTMLInputElement>(autoFocus, _triggerRef);

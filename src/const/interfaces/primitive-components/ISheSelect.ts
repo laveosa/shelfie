@@ -37,7 +37,11 @@ export interface ISheSelect<T>
   onOpen?(value: boolean): void;
   onSelect?(value: T): void;
   onSelectModel?(
-    data: IOutputEventModel<T, ISheSelect<T>, React.MouseEvent>,
+    data: IOutputEventModel<
+      T,
+      ISheSelect<T>,
+      React.MouseEvent | React.KeyboardEvent
+    >,
   ): void;
 }
 

@@ -203,7 +203,6 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
       model: { ...sheAutocompleteProps, searchValue: value },
       event,
     });
-    // TODO fix this bug,when this focus is active popover close immediately become focus set on input
     // setFocus<HTMLInputElement>(true, _triggerRef);
     event?.stopPropagation();
   }
@@ -225,7 +224,7 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
   // ==================================================================== PRIVATE
 
   function _setIsOpen(_isOpen: boolean) {
-    if (isLoading || disabled) {
+    if (isLoading || disabled || !items || items.length === 0) {
       setOpen(false);
       onOpen?.(false);
     } else if (!_.isEqual(_isOpen, _open)) {
@@ -241,11 +240,15 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
   }
 
   function _updateFocusRelatedLogic(_autoFocus, _openOnFocus) {
-    if (_openOnFocus) {
-      _setIsOpen(_autoFocus);
+    if (_openOnFocus || isOpen) {
+      _setIsOpen(isOpen ?? _autoFocus);
       setFocus<HTMLDivElement>(_autoFocus, _popoverRef);
     } else {
-      setFocus<HTMLInputElement>(_autoFocus, _triggerRef);
+      setTimeout(() => {
+        _open
+          ? setFocus<HTMLDivElement>(_autoFocus, _popoverRef)
+          : setFocus<HTMLInputElement>(_autoFocus, _triggerRef);
+      });
     }
   }
 

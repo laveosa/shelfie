@@ -245,7 +245,7 @@ export default function SheMultiSelect<T>(
   }
 
   function _setIsOpen(_isOpen: boolean) {
-    if (isLoading || disabled) {
+    if (isLoading || disabled || !items || items.length === 0) {
       setOpen(false);
       onOpen?.(false);
     } else if (!_.isEqual(_isOpen, _open)) {
@@ -261,11 +261,15 @@ export default function SheMultiSelect<T>(
   }
 
   function _updateFocusRelatedLogic() {
-    if (openOnFocus) {
-      _setIsOpen(autoFocus);
+    if (openOnFocus || isOpen) {
+      _setIsOpen(isOpen ?? autoFocus);
       setFocus<HTMLInputElement>(autoFocus, _searchRef);
     } else {
-      setFocus<HTMLButtonElement>(autoFocus, _triggerRef);
+      setTimeout(() => {
+        _open
+          ? setFocus<HTMLInputElement>(autoFocus, _searchRef)
+          : setFocus<HTMLButtonElement>(autoFocus, _triggerRef);
+      });
     }
   }
 

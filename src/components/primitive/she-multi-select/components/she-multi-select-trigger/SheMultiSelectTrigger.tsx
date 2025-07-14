@@ -162,7 +162,7 @@ export default function SheMultiSelectTrigger({
           <SheClearButton
             value={items && items.length > 0}
             showClearBtn={showClearBtn}
-            disabled={disabled}
+            disabled={disabled || !items || items.length === 0}
             isLoading={isLoading}
             ariaDescribedbyId={ariaDescribedbyId}
             onClear={onClearAll}

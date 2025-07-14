@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import cs from "./DashboardPage.module.scss";
 import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageService.ts";
-import { Box } from "lucide-react";
+import { Box, Home } from "lucide-react";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import { SheTooltipEnum } from "@/const/enums/SheTooltipEnum.ts";
@@ -135,12 +135,17 @@ export function DashboardPage() {
   const [selected, setSelected] = useState<any>(null);
   const [isLoading, setIsLoading] = useState<boolean>(null);
 
+  const searchRef = useRef<HTMLInputElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const popoverRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     setIsLoading(true);
 
     setTimeout(() => {
       setItems(optionsSimple);
       // setItems(options);
+      // triggerRef.current.click();
     }, 1000);
 
     setTimeout(() => {
@@ -151,6 +156,9 @@ export function DashboardPage() {
 
     setTimeout(() => {
       setIsLoading(false);
+      // searchRef.current.value = "TEST";
+
+      // console.log(popoverRef.current.style);
     }, 3000);
   }, []);
 
@@ -220,41 +228,59 @@ export function DashboardPage() {
       />*/}
 
       <div className="flex gap-5 flex-col">
-        {/*<div className="w-full flex">
+        <div className="w-full flex">
           <SheMultiSelect<string>
+            // searchRef={searchRef}
+            // ref={triggerRef}
+            // popoverRef={popoverRef}
             label="MultiSelect"
             required
             // items={options}
-            items={optionsSimple}
-            // items={_items}
-            // selectedValues={selected}
+            // items={optionsSimple}
+            items={_items}
+            selectedValues={selected}
             contextType="badges"
             showClearBtn
             showSearch
             showFooter
+            // isOpen
             autoFocus
-            onSelect={(value) => console.log("MultiSelect value: ", value)}
-            onSelectModel={(value) => console.log("MultiSelect model: ", value)}
+            openOnFocus
+            // fullWidth
+            // minWidth="600px"
+            // maxWidth="200px"
+            // hideSelectAll
+            onOpen={(value) => console.log("onOpen: ", value)}
+            onClear={(value) => console.log("onClear: ", value)}
+            onSelect={(value) => console.log("onSelect: ", value)}
+            onSelectModel={(value) => console.log("onSelectModel: ", value)}
           />
-        </div>*/}
+        </div>
 
-        <div className="w-full flex">
+        {/*<div className="w-full flex">
           <SheSelect<string>
-            label="Select"
+            // triggerRef={triggerRef}
+            // popoverRef={popoverRef}
+            // label="Select"
             required
             // items={options}
             items={optionsSimple}
             // items={_items}
             // selected={selected}
-            /*autoFocus
-            openOnFocus*/
+            autoFocus
+            // openOnFocus
             // isLoading
             // isOpen
+            // disabled
             showClearBtn
-            onSelect={(value) => console.log("Select value: ", value)}
-            onSelectModel={(value) => console.log("Select model: ", value)}
+            // hideFirstOption
+            // showSelectIcon
+            // icon={Home}
+            onOpen={(value) => console.log("onOpen: ", value)}
+            onSelect={(value) => console.log("onSelect: ", value)}
+            onSelectModel={(value) => console.log("onMultiSelect: ", value)}
           />
-        </div>
+        </div>*/}
 
         {/*<div className="w-full flex">
           <SheAutocomplete
@@ -262,11 +288,12 @@ export function DashboardPage() {
             required
             // items={options}
             items={optionsSimple}
+            // items={_items}
             showClearBtn
-            // autoFocus
-            // openOnFocus
+            autoFocus
+            openOnFocus
             // minAmount={3}
-            isOpen
+            // isOpen
             onSelect={(event) => console.log("Autocomplete value: ", event)}
             onSelectModel={(event) =>
               console.log("Autocomplete model: ", event)
