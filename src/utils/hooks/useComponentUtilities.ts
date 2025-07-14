@@ -23,41 +23,34 @@ export default function useComponentUtilities({
 
   // ================================================================== COMMON
 
-  function initializeItemsList<V, T extends ISheOption<V>>(
+  async function initializeItemsList<V, T extends ISheOption<V>>(
     items: T[],
     selectedValues?: V | V[],
-  ): T[] {
-    if (!items || items.length === 0) return null;
+  ): Promise<T[]> {
+    if (!items || items.length === 0) return [];
 
-    const values: V[] = selectedValues
-      ? !Array.isArray(selectedValues)
+    const values: V[] = Array.isArray(selectedValues)
+      ? selectedValues
+      : selectedValues
         ? [selectedValues]
-        : selectedValues
-      : null;
+        : [];
 
-    _analyzeElementsForSpecificData(items).then(({ withIcons, withColors }) => {
-      items = items.map((item: T, idx) => {
-        // ----------------------------------- INITIALIZE ID
-        item.id =
-          item.id ??
-          `${
-            item[identifier] && item[identifier].length > 0
-              ? item[identifier].replace(/ /g, "_")
-              : generateId()
-          }_${(idx + 1).toString()}`;
-        // ----------------------------------- INITIALIZE COLUMNS
-        item.showIconsColumn = withIcons;
-        item.showColorsColumn = withColors;
-        // ----------------------------------- INITIALIZE SELECTED
-        if (values && values.length > 0) {
-          item.isSelected = values.includes(item.value);
-        }
+    const { withIcons, withColors } =
+      await _analyzeElementsForSpecificData(items);
 
-        return item;
-      });
+    return items.map((item: T, idx) => {
+      item.id =
+        item.id ??
+        `${
+          item[identifier] && item[identifier].length > 0
+            ? item[identifier].replace(/ /g, "_")
+            : generateId()
+        }_${(idx + 1).toString()}`;
+      item.showIconsColumn = withIcons;
+      item.showColorsColumn = withColors;
+      item.isSelected = values.includes(item.value);
+      return item;
     });
-
-    return items;
   }
 
   function getItemFromListByIdentifier<T, V>(

@@ -228,7 +228,7 @@ export function DashboardPage() {
       />*/}
 
       <div className="flex gap-5 flex-col">
-        <div className="w-full flex">
+        {/*<div className="w-full flex">
           <SheMultiSelect<string>
             // searchRef={searchRef}
             // ref={triggerRef}
@@ -244,8 +244,8 @@ export function DashboardPage() {
             showSearch
             showFooter
             // isOpen
-            autoFocus
-            openOnFocus
+            // autoFocus
+            // openOnFocus
             // fullWidth
             // minWidth="600px"
             // maxWidth="200px"
@@ -255,7 +255,7 @@ export function DashboardPage() {
             onSelect={(value) => console.log("onSelect: ", value)}
             onSelectModel={(value) => console.log("onSelectModel: ", value)}
           />
-        </div>
+        </div>*/}
 
         {/*<div className="w-full flex">
           <SheSelect<string>
@@ -263,10 +263,10 @@ export function DashboardPage() {
             // popoverRef={popoverRef}
             // label="Select"
             required
-            // items={options}
-            items={optionsSimple}
+            items={options}
+            // items={optionsSimple}
             // items={_items}
-            // selected={selected}
+            selected={selected}
             autoFocus
             // openOnFocus
             // isLoading
@@ -275,14 +275,15 @@ export function DashboardPage() {
             showClearBtn
             // hideFirstOption
             // showSelectIcon
-            // icon={Home}
+            icon={Home}
+            fullWidth
             onOpen={(value) => console.log("onOpen: ", value)}
             onSelect={(value) => console.log("onSelect: ", value)}
-            onSelectModel={(value) => console.log("onMultiSelect: ", value)}
+            onSelectModel={(value) => console.log("onSelectModel: ", value)}
           />
         </div>*/}
 
-        {/*<div className="w-full flex">
+        <div className="w-full flex">
           <SheAutocomplete
             label="Autocomplete"
             required
@@ -290,6 +291,7 @@ export function DashboardPage() {
             items={optionsSimple}
             // items={_items}
             showClearBtn
+            showSelectBtn
             autoFocus
             openOnFocus
             // minAmount={3}
@@ -299,7 +301,7 @@ export function DashboardPage() {
               console.log("Autocomplete model: ", event)
             }
           />
-        </div>*/}
+        </div>
       </div>
 
       <br />

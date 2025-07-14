@@ -97,7 +97,7 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
 
   useEffect(() => {
     if (!_.isEqual(items, _items)) {
-      setItems(initializeItemsList<ISheOption<string>>(items));
+      initializeItemsList<ISheOption<string>>(items).then(setItems);
     }
 
     if (searchValue !== _searchValue) {

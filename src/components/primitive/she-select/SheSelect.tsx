@@ -77,7 +77,6 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
     ariaDescribedbyId,
     setFocus,
     initializeItemsList,
-    getSelectedItems,
     updateSelectedItems,
     getItemFromListByIdentifier,
     calculatePopoverWidth,
@@ -103,15 +102,31 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
       }
     }
 
-    const initializedItems = initializeItemsList<ISheSelectItem<T>>(
-      updatedItems,
-      selected,
+    const listSelected: ISheSelectItem<T>[] = items?.filter(
+      (item) => item.isSelected,
     );
-    const tmpSelected = initializedItems
-      ? getSelectedItems(initializedItems)[0]
-      : null;
 
-    setItems(initializedItems);
+    let tmpSelected: ISheSelectItem<T>;
+
+    if (!_selected || !_.isEqual(selected, _selected.value)) {
+      tmpSelected = getItemFromListByIdentifier(items, "value", selected);
+      tmpSelected = tmpSelected
+        ? tmpSelected
+        : listSelected && listSelected.length > 0
+          ? listSelected[0]
+          : null;
+    }
+
+    if (!_.isEqual(updatedItems, _items)) {
+      initializeItemsList<ISheSelectItem<T>>(updatedItems, tmpSelected).then(
+        (res) => {
+          setItems(res);
+        },
+      );
+    } else {
+      setItems(updateSelectedItems(_items, tmpSelected));
+    }
+
     setSelected(tmpSelected);
     _updateFocusRelatedLogic();
   }, [items, selected]);

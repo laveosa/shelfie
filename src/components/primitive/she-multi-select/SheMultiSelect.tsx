@@ -119,11 +119,17 @@ export default function SheMultiSelect<T>(
         : _selectedValues) ??
       items?.filter((item) => item.isSelected).map((item) => item.value);
 
-    const tmpItems: ISheMultiSelectItem<T>[] = !_.isEqual(items, _items)
-      ? initializeItemsList<T, ISheMultiSelectItem<T>>(items, tmpSelectedValues)
-      : updateSelectedItems(_items, tmpSelectedValues);
+    if (!_.isEqual(items, _items)) {
+      initializeItemsList<T, ISheMultiSelectItem<T>>(
+        items,
+        tmpSelectedValues,
+      ).then((res) => {
+        setItems(res);
+      });
+    } else {
+      setItems(updateSelectedItems(_items, tmpSelectedValues));
+    }
 
-    setItems(tmpItems);
     setSelectedValues(tmpSelectedValues);
     setBadges(_getSelectedBadges(items, tmpSelectedValues));
     _updateFocusRelatedLogic();
