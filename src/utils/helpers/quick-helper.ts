@@ -45,6 +45,17 @@ export function addItemsId<T>(
   }));
 }
 
+export function generateSafeItemId(base: string, idx: number): string {
+  const safeBase =
+    typeof base === "string" && base.length > 0
+      ? base
+          .trim()
+          .toLowerCase()
+          .replace(/[^a-z0-9_-]/gi, "_")
+      : generateId();
+  return `${safeBase}_${(idx + 1).toString()}`;
+}
+
 export function generateId(length: number = 8) {
   let result = "";
   const characters =

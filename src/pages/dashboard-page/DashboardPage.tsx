@@ -244,7 +244,7 @@ export function DashboardPage() {
             showSearch
             showFooter
             // isOpen
-            // autoFocus
+            autoFocus
             // openOnFocus
             // fullWidth
             // minWidth="600px"
@@ -263,8 +263,8 @@ export function DashboardPage() {
             // popoverRef={popoverRef}
             // label="Select"
             required
-            items={options}
-            // items={optionsSimple}
+            // items={options}
+            items={optionsSimple}
             // items={_items}
             selected={selected}
             autoFocus
@@ -276,7 +276,7 @@ export function DashboardPage() {
             // hideFirstOption
             // showSelectIcon
             icon={Home}
-            fullWidth
+            // fullWidth
             onOpen={(value) => console.log("onOpen: ", value)}
             onSelect={(value) => console.log("onSelect: ", value)}
             onSelectModel={(value) => console.log("onSelectModel: ", value)}

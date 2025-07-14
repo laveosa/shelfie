@@ -21,6 +21,7 @@ import SheSelectItem from "@/components/primitive/she-select/components/she-sele
 import useDefaultRef from "@/utils/hooks/useDefaultRef.ts";
 import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
 import { getCustomProps } from "@/utils/helpers/props-helper.ts";
+import { generateSafeItemId } from "@/utils/helpers/quick-helper.ts";
 
 export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
   // ==================================================================== PROPS
@@ -86,14 +87,34 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
-    let updatedItems = [...(items || [])];
+    const newItems = initializeItemsList<T, ISheSelectItem<T>>([
+      ...(items || []),
+    ]);
 
+    console.log("ITEMS: ", newItems);
+
+    // ----------------------------------- GET ALL SELECTED ITEMS FROM THE LIST
+    const listSelected: ISheSelectItem<T>[] = newItems?.filter(
+      (item) => item.isSelected,
+    );
+    // ----------------------------------- SET SELECTED ITEM
+    let tmpSelected: ISheSelectItem<T>;
+    if (!_selected || !_.isEqual(selected, _selected.value)) {
+      tmpSelected = getItemFromListByIdentifier(newItems, "value", selected);
+      tmpSelected = tmpSelected
+        ? tmpSelected
+        : listSelected && listSelected.length > 0
+          ? listSelected[0]
+          : null;
+    }
+    // ----------------------------------- ADD NOT SELECTED ITEM
     if (!hideFirstOption) {
       const firstIsNotSelected =
-        updatedItems.length === 0 || updatedItems[0].text !== "not selected";
+        newItems.length === 0 || newItems[0].text !== "not selected";
 
       if (firstIsNotSelected) {
-        updatedItems.unshift({
+        newItems.unshift({
+          id: generateSafeItemId("not selected", 0),
           className: cs.sheSelectItemNotSelected,
           text: "not selected",
           textTransKey: "not_selected",
@@ -101,33 +122,15 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
         });
       }
     }
-
-    const listSelected: ISheSelectItem<T>[] = items?.filter(
-      (item) => item.isSelected,
-    );
-
-    let tmpSelected: ISheSelectItem<T>;
-
-    if (!_selected || !_.isEqual(selected, _selected.value)) {
-      tmpSelected = getItemFromListByIdentifier(items, "value", selected);
-      tmpSelected = tmpSelected
-        ? tmpSelected
-        : listSelected && listSelected.length > 0
-          ? listSelected[0]
-          : null;
-    }
-
-    if (!_.isEqual(updatedItems, _items)) {
-      initializeItemsList<ISheSelectItem<T>>(updatedItems, tmpSelected).then(
-        (res) => {
-          setItems(res);
-        },
-      );
+    // ----------------------------------- SET UPDATED ITEMS
+    if (!_.isEqual(newItems, _items)) {
+      setItems(newItems);
     } else {
       setItems(updateSelectedItems(_items, tmpSelected));
     }
-
+    // ----------------------------------- SET SELECTED
     setSelected(tmpSelected);
+    // ----------------------------------- UPDATE FOCUS CONDITION
     _updateFocusRelatedLogic();
   }, [items, selected]);
 
@@ -156,10 +159,9 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
 
   // ==================================================================== EVENT HANDLERS
   function onValueChangeHandler(id: string, event?: React.MouseEvent) {
-    const selected: ISheSelectItem<T> = getItemFromListByIdentifier<
-      ISheSelectItem<T>,
-      T
-    >(items, "id", id);
+    const selected: ISheSelectItem<T> = _.cloneDeep(
+      getItemFromListByIdentifier<ISheSelectItem<T>, T>(items, "id", id),
+    );
 
     if (selected) {
       selected.isSelected = true;
@@ -198,7 +200,11 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
   function onClearHandler() {
     setSelected(null);
     onSelect?.(null);
-    onSelectModel?.(null);
+    onSelectModel?.({
+      value: null,
+      model: { ...sheSelectProps, items: _items, selected: null },
+      event: undefined,
+    });
     setFocus<HTMLInputElement>(true, _triggerRef);
   }
 
@@ -221,6 +227,8 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
   }
 
   function _updateFocusRelatedLogic() {
+    if (!items || items.length === 0) return;
+
     if (openOnFocus || isOpen) {
       _setIsOpen(isOpen ?? autoFocus);
       setFocus<HTMLDivElement>(autoFocus, _popoverRef);
@@ -278,9 +286,9 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
               {_items?.length > 0 && (
                 <SelectContent ref={_popoverRef}>
                   <div className={cs.sheSelectItemsContainer}>
-                    {_items?.map((item, idx) => (
+                    {_items?.map((item) => (
                       <SheSelectItem<T>
-                        key={`${item.id}_${idx}`}
+                        key={item.id}
                         {...item}
                         id={item.id}
                         className={`${cs.sheSelectItemCover} ${item.className || ""}`}

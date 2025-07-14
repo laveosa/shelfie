@@ -96,8 +96,10 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
   }, []);
 
   useEffect(() => {
-    if (!_.isEqual(items, _items)) {
-      initializeItemsList<ISheOption<string>>(items).then(setItems);
+    const newItems = initializeItemsList<string, ISheOption<string>>(items);
+
+    if (!_.isEqual(newItems, _items)) {
+      setItems(newItems);
     }
 
     if (searchValue !== _searchValue) {
@@ -234,21 +236,23 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
       if (_isOpen) {
         calculatePopoverWidth<HTMLInputElement>(_popoverRef, _triggerRef);
       } else {
-        setFocus<HTMLInputElement>(autoFocus, _triggerRef);
+        // setFocus<HTMLInputElement>(autoFocus, _triggerRef);
       }
     }
   }
 
   function _updateFocusRelatedLogic(_autoFocus, _openOnFocus) {
+    if (!items || items.length === 0) return;
+
     if (_openOnFocus || isOpen) {
       _setIsOpen(isOpen ?? _autoFocus);
-      setFocus<HTMLDivElement>(_autoFocus, _popoverRef);
+      // setFocus<HTMLDivElement>(_autoFocus, _popoverRef);
     } else {
-      setTimeout(() => {
-        _open
-          ? setFocus<HTMLDivElement>(_autoFocus, _popoverRef)
-          : setFocus<HTMLInputElement>(_autoFocus, _triggerRef);
-      });
+      // setTimeout(() => {
+      //   _open
+      //     ? setFocus<HTMLDivElement>(_autoFocus, _popoverRef)
+      //     : setFocus<HTMLInputElement>(_autoFocus, _triggerRef);
+      // });
     }
   }
 
@@ -325,9 +329,9 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
               {_items && _items.length > 0 ? (
                 <div>
                   {filteredItems && filteredItems.length > 0 ? (
-                    filteredItems.map((item, idx) => (
+                    filteredItems.map((item) => (
                       <CommandItem
-                        key={`${item.id}_${idx}`}
+                        key={item.id}
                         className={cs.sheAutocompleteItemParentWrapper}
                       >
                         <SheOption<string>

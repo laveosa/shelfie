@@ -119,19 +119,19 @@ export default function SheMultiSelect<T>(
         : _selectedValues) ??
       items?.filter((item) => item.isSelected).map((item) => item.value);
 
-    if (!_.isEqual(items, _items)) {
-      initializeItemsList<T, ISheMultiSelectItem<T>>(
-        items,
-        tmpSelectedValues,
-      ).then((res) => {
-        setItems(res);
-      });
+    const newItems = initializeItemsList<T, ISheMultiSelectItem<T>>(
+      items,
+      tmpSelectedValues,
+    );
+
+    if (!_.isEqual(newItems, _items)) {
+      setItems(newItems);
     } else {
       setItems(updateSelectedItems(_items, tmpSelectedValues));
     }
 
     setSelectedValues(tmpSelectedValues);
-    setBadges(_getSelectedBadges(items, tmpSelectedValues));
+    setBadges(_generateBadgesFromSelectedItems(items, tmpSelectedValues));
     _updateFocusRelatedLogic();
   }, [items, selectedValues]);
 
@@ -175,7 +175,11 @@ export default function SheMultiSelect<T>(
 
   function onToggleAllHandler(_value: T, event?: React.MouseEvent) {
     // TODO event needed as extra param (key - Enter include)
-    if (_selectedValues.length === _items.length) {
+    const isAllSelected = _items.every((item) =>
+      _selectedValues.includes(item.value),
+    );
+
+    if (isAllSelected) {
       onClearButtonHandler<HTMLInputElement>(event, _searchRef);
     } else {
       _updateSelectedValues(
@@ -205,7 +209,7 @@ export default function SheMultiSelect<T>(
   }
 
   // ==================================================================== PRIVATE
-  function _getSelectedBadges(
+  function _generateBadgesFromSelectedItems(
     fromItems: ISheMultiSelectItem<T>[],
     values: T[],
   ): ISheBadge[] {
@@ -236,7 +240,7 @@ export default function SheMultiSelect<T>(
 
     setItems(tmpItems);
     setSelectedValues(values);
-    setBadges(_getSelectedBadges(_items, values));
+    setBadges(_generateBadgesFromSelectedItems(_items, values));
     onSelect?.(values);
     onSelectModel?.({
       value: values,
@@ -267,6 +271,8 @@ export default function SheMultiSelect<T>(
   }
 
   function _updateFocusRelatedLogic() {
+    if (!items || items.length === 0) return;
+
     if (openOnFocus || isOpen) {
       _setIsOpen(isOpen ?? autoFocus);
       setFocus<HTMLInputElement>(autoFocus, _searchRef);
@@ -331,13 +337,13 @@ export default function SheMultiSelect<T>(
                   textTransKey={selectAllPlaceholderTransKey}
                   isSelected={_selectedValues?.length === _items?.length}
                   isLoading={isLoading}
-                  tabIndex={0}
+                  tabIndex={_open ? 0 : -1}
                   onClick={onToggleAllHandler}
                 />
               )}
-              {_items?.map((item, idx) => (
+              {_items?.map((item) => (
                 <SheMultiSelectItem<T>
-                  key={`${item.id}_${idx}`}
+                  key={item.id}
                   {...item}
                   className={cs.sheMultiSelectItemParentWrapper}
                   isLoading={

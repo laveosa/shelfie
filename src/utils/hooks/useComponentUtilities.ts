@@ -1,6 +1,9 @@
 import React, { RefObject, useEffect, useState } from "react";
 
-import { generateId } from "@/utils/helpers/quick-helper.ts";
+import {
+  generateId,
+  generateSafeItemId,
+} from "@/utils/helpers/quick-helper.ts";
 import { ISelectable } from "@/const/interfaces/primitive-components/ISelecteble.ts";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
@@ -12,7 +15,7 @@ export interface IComponentUtilities {
 
 export default function useComponentUtilities({
   identifier,
-}?: IComponentUtilities) {
+}?: IComponentUtilities): ReturnType<typeof useComponentUtilities> {
   const { translate } = useAppTranslation();
   const [ariaDescribedbyId, setAriaDescribedbyId] = useState<string>(null);
 
@@ -23,10 +26,10 @@ export default function useComponentUtilities({
 
   // ================================================================== COMMON
 
-  async function initializeItemsList<V, T extends ISheOption<V>>(
+  function initializeItemsList<V, T extends ISheOption<V>>(
     items: T[],
     selectedValues?: V | V[],
-  ): Promise<T[]> {
+  ): T[] {
     if (!items || items.length === 0) return [];
 
     const values: V[] = Array.isArray(selectedValues)
@@ -35,20 +38,19 @@ export default function useComponentUtilities({
         ? [selectedValues]
         : [];
 
-    const { withIcons, withColors } =
-      await _analyzeElementsForSpecificData(items);
+    const { withIcons, withColors } = _analyzeElementsForSpecificData(items);
 
     return items.map((item: T, idx) => {
-      item.id =
-        item.id ??
-        `${
-          item[identifier] && item[identifier].length > 0
-            ? item[identifier].replace(/ /g, "_")
-            : generateId()
-        }_${(idx + 1).toString()}`;
+      // ----------------------------------- INITIALIZE ID
+      item.id = generateSafeItemId(item.text, idx);
+      // ----------------------------------- INITIALIZE COLUMNS
       item.showIconsColumn = withIcons;
       item.showColorsColumn = withColors;
-      item.isSelected = values.includes(item.value);
+      // ----------------------------------- INITIALIZE SELECTED
+      if (values && values.length > 0) {
+        item.isSelected = values.includes(item.value);
+      }
+
       return item;
     });
   }
@@ -119,31 +121,23 @@ export default function useComponentUtilities({
 
 function _analyzeElementsForSpecificData<
   T extends {
-    icon: Partial<ISheIcon> | string | React.FC<any>;
-    colors: string[];
+    icon?: Partial<ISheIcon> | string | React.FC<any>;
+    colors?: string[];
   },
 >(
   items: T[],
-): Promise<{
+): {
   withIcons: boolean;
   withColors: boolean;
-}> {
-  return new Promise((resolve, reject) => {
-    if (!items || items.length === 0) return reject(null);
+} {
+  let withIcons = false;
+  let withColors = false;
 
-    let withIcons;
-    let withColors;
+  for (const item of items) {
+    if (!withIcons && item.icon) withIcons = true;
+    if (!withColors && item.colors) withColors = true;
+    if (withIcons && withColors) break;
+  }
 
-    items.forEach((item) => {
-      if (!withIcons && item.icon) {
-        withIcons = true;
-      }
-
-      if (!withColors && item.colors) {
-        withColors = true;
-      }
-    });
-
-    resolve({ withIcons, withColors });
-  });
+  return { withIcons, withColors };
 }
