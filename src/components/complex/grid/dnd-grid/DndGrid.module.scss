@@ -56,6 +56,17 @@
 
 //-------------------------------------------------------isLoading
 
+.tableLoading th {
+  width: var(--column-width) !important;
+  min-width: var(--column-min-width) !important;
+  max-width: var(--column-max-width) !important;
+  flex: none !important;
+}
+
+.tableLoading {
+  table-layout: fixed !important;
+}
+
 .tableLoading {
   display: flex;
   flex-direction: column;

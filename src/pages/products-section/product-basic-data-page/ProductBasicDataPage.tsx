@@ -43,6 +43,16 @@ export function ProductBasicDataPage() {
     },
   );
 
+  const variantsForItemsCard = productsService.itemsCardItemsConvertor(
+    productsState.variants,
+    {
+      idKey: "variantId",
+      nameKey: "variantName",
+      imageKeyPath: "photo.thumbnailUrl",
+      type: "variant",
+    },
+  );
+
   useEffect(() => {
     if (!productsState.products) {
       dispatch(productsActions.setIsItemsCardLoading(true));
@@ -298,11 +308,27 @@ export function ProductBasicDataPage() {
     <div className={cs.createProductPage}>
       <ItemsCard
         isLoading={productsState.isItemsCardLoading}
-        isItemsLoading={productsState.isProductsLoading}
-        title="Products"
-        data={productsForItemsCard}
-        selectedItem={productId}
-        skeletonQuantity={productsState.products?.length}
+        isItemsLoading={
+          productsState.activeTab === "products"
+            ? productsState.isProductsLoading
+            : productsState.isVariantsLoading
+        }
+        title={productsState.activeTab === "products" ? "Products" : "Variants"}
+        data={
+          productsState.activeTab === "products"
+            ? productsForItemsCard
+            : variantsForItemsCard
+        }
+        selectedItem={
+          productsState.activeTab === "products"
+            ? productId
+            : productsState.selectedVariant?.variantId
+        }
+        skeletonQuantity={
+          productsState.activeTab === "products"
+            ? productsState.products?.length
+            : productsState.variants?.length
+        }
         onAction={itemCardClickHandler}
       />
       <ProductMenuCard
