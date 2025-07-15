@@ -20,18 +20,21 @@ export default function SheMultiSelectSearch({
   showSearch,
   onSearch,
 }: ISheMultiSelectSearch): JSX.Element {
-  const { translate } = useAppTranslation();
+  // ==================================================================== STATE MANAGEMENT
   const [_searchValue, setSearchValue] = useState<string>("");
 
+  // ==================================================================== UTILITIES
+  const { translate } = useAppTranslation();
+
+  // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     if (searchValue !== _searchValue) {
       setSearchValue(searchValue);
     }
   }, [searchValue]);
 
-  // ==================================================================== EVENT
-
-  function onSearchChangeHandler(value) {
+  // ==================================================================== EVENT HANDLERS
+  function onSearchChangeHandler(value: string) {
     setSearchValue(value);
     onSearch?.(value);
   }
@@ -42,10 +45,7 @@ export default function SheMultiSelectSearch({
     onSearch?.("");
   }
 
-  // ==================================================================== PRIVATE
-
   // ==================================================================== LAYOUT
-
   if (!showSearch) {
     return null;
   }

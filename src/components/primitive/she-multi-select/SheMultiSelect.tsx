@@ -201,6 +201,7 @@ export default function SheMultiSelect<T>(
     value: T,
     event?: React.MouseEvent | React.KeyboardEvent,
   ) {
+    // TODO event needed as extra param (on badge close event)
     const newSelectedValues = _selectedValues.includes(value)
       ? _selectedValues.filter((item) => item !== value)
       : [..._selectedValues, value];
@@ -211,7 +212,6 @@ export default function SheMultiSelect<T>(
     value: T,
     event?: React.MouseEvent | React.KeyboardEvent,
   ) {
-    // TODO event needed as extra param (key - Enter include)
     const isAllSelected = _items.every((item) =>
       _selectedValues.includes(item.value),
     );
@@ -227,7 +227,7 @@ export default function SheMultiSelect<T>(
   }
 
   function onClearExtraOptionsHandler(badges: ISheBadge[]) {
-    // TODO event needed as extra param
+    // TODO event needed as extra param (on badge close event)
     _updateSelectedValues(_selectedValues.slice(0, -badges.length));
   }
 

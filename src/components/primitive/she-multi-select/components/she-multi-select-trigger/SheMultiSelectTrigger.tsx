@@ -46,10 +46,10 @@ export default function SheMultiSelectTrigger({
   onClearAll,
   ...props
 }: ISheMultiSelectTrigger): JSX.Element {
+  // ==================================================================== UTILITIES
   const { translate } = useAppTranslation();
 
-  // ==================================================================== EVENT
-
+  // ==================================================================== EVENT HANDLERS
   function onKeyDownHandler(event) {
     if ((event.code === "ArrowDown" || event.key === "ArrowDown") && !isOpen) {
       onTogglePopover?.();
@@ -57,10 +57,7 @@ export default function SheMultiSelectTrigger({
     }
   }
 
-  // ==================================================================== PRIVATE
-
   // ==================================================================== LAYOUT
-
   return (
     <div
       id={id}

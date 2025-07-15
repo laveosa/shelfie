@@ -19,12 +19,7 @@ export default function SheMultiSelectFooter({
   onSecondaryBtnClick,
   onPrimaryBtnClick,
 }: ISheMultiSelectFooter): JSX.Element {
-  // ==================================================================== EVENT
-
-  // ==================================================================== PRIVATE
-
-  // ==================================================================== RENDER
-
+  // ==================================================================== LAYOUT
   if (!showFooter || (hideSecondaryBtn && hidePrimaryBtn)) {
     return null;
   }

@@ -15,22 +15,18 @@ export default function SheMultiSelectItem<T>({
   onClick,
   ...props
 }: ISheMultiSelectItem<T>): JSX.Element {
-  // ==================================================================== EVENT
-
+  // ==================================================================== EVENT HANDLERS
   function onSelectHandler(
     value: T,
     event?: React.MouseEvent | React.KeyboardEvent,
   ) {
     event?.stopPropagation();
     setTimeout(() => {
-      onClick(value, event);
+      onClick?.(value, event);
     });
   }
 
-  // ==================================================================== PRIVATE
-
-  // ==================================================================== RENDER
-
+  // ==================================================================== LAYOUT
   return (
     <CommandItem
       className={`${cs.sheMultiSelectItem} ${className}`}
