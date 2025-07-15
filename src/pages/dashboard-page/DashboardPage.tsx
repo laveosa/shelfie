@@ -10,6 +10,8 @@ import SheMultiSelect from "@/components/primitive/she-multi-select/SheMultiSele
 import SheAutocomplete from "@/components/primitive/she-autocomplete/SheAutocomplete.tsx";
 import { ISheMultiSelectItem } from "@/const/interfaces/primitive-components/ISheMultiSelectItem.ts";
 import SheBadge from "@/components/primitive/she-badge/SheBadge.tsx";
+import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
+import SheBadgeList from "@/components/primitive/she-badge-list/SheBadgeList.tsx";
 
 const options: ISheSelectItem<any>[] = [
   {
@@ -129,6 +131,53 @@ const optionsSimple: ISheSelectItem<string>[] = [
   },
 ];
 
+const badges: ISheBadge<string>[] = [
+  {
+    text: "React",
+    value: "REACT",
+    icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1150px-React-icon.svg.png",
+  },
+  {
+    text: "Angular",
+    value: "ANGULAR",
+    icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/1200px-Angular_full_color_logo.svg.png",
+  },
+  {
+    text: "Vue",
+    value: "VUE",
+    icon: "https://www.w3schools.com/whatis/img_vue.jpg",
+  },
+  {
+    text: "Svelte",
+    value: "SVELTE",
+    icon: "https://logosandtypes.com/wp-content/uploads/2020/11/Svelte.png",
+  },
+  {
+    text: "Flutter",
+    value: "FLUTTER",
+    icon: "https://images.icon-icons.com/2108/PNG/512/flutter_icon_130936.png",
+  },
+  {
+    text: "Knockout",
+    value: "KNOCKOUT",
+    icon: "https://quintagroup.com/cms/js/js-image/knockout-js-logo.png/@@images/f4756dda-f9a9-4c04-9223-9f5724569747.png",
+  },
+  {
+    text: "JavaScript",
+    value: "JS",
+    icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/512px-Unofficial_JavaScript_logo_2.svg.png",
+  },
+  {
+    text: "HTML",
+    value: "HTML",
+    icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/512px-HTML5_logo_and_wordmark.svg.png",
+  },
+  {
+    text: "CSS",
+    value: "CSS",
+  },
+];
+
 export function DashboardPage() {
   const service = useDashboardPageService();
 
@@ -186,7 +235,24 @@ export function DashboardPage() {
 
       <br />
 
-      <div className="flex gap-2">
+      <SheBadgeList<any>
+        label="Badges"
+        items={badges}
+        showClearBtn
+        showCloseBtn
+        autoBadgeAmount
+        maxWidth="400px"
+        onClick={(value, model) => console.log("onClick: ", value, model)}
+        onClose={(value, model) => console.log("onClose: ", value, model)}
+        onCloseAllExtra={(value, model) =>
+          console.log("onCloseAllExtra: ", value, model)
+        }
+        onClear={(value, model) => console.log("onClear: ", value, model)}
+      />
+
+      <br />
+
+      {/*<div className="flex gap-2">
         <SheBadge<{ name: string; age: number }>
           text="Option weijo wie  iweoi weoi woeijf woiejf owien fowien wienf owien owienf owien"
           showCloseBtn
@@ -216,7 +282,7 @@ export function DashboardPage() {
           onClick={(event, model) => console.log("onClick: ", event, model)}
           onClose={(event, model) => console.log("onClose: ", event, model)}
         />
-      </div>
+      </div>*/}
 
       <br />
 

@@ -19,7 +19,7 @@ export interface ISheBadge<T>
   text?: string | number;
   textTransKey?: string;
   textWrap?: "wrap" | "nowrap" | "dots";
-  value?: T;
+  value?: T | string;
   minWidth?: string;
   maxWidth?: string;
   fullWidth?: boolean;
@@ -28,11 +28,11 @@ export interface ISheBadge<T>
   isCircle?: boolean;
   showCloseBtn?: boolean;
   onClick?(
-    value: string,
+    value: T | string,
     model?: IOutputEventModel<T | string, ISheBadge<T>, React.MouseEvent>,
   ): void;
   onClose?(
-    value: string,
+    value: T | string,
     model?: IOutputEventModel<T | string, ISheBadge<T>, React.MouseEvent>,
   ): void;
 }

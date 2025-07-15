@@ -20,6 +20,8 @@ import SheMultiSelectItem from "@/components/primitive/she-multi-select/componen
 import SheMultiSelectFooter from "@/components/primitive/she-multi-select/components/she-multi-select-footer/SheMultiSelectFooter.tsx";
 import SheMultiSelectSearch from "@/components/primitive/she-multi-select/components/she-multi-select-search/SheMultiSelectSearch.tsx";
 import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
+import useDefaultRef from "@/utils/hooks/useDefaultRef.ts";
+import useValueWithEvent from "@/utils/hooks/useValueWithEvent.ts";
 import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
 import { ISheMultiSelectItem } from "@/const/interfaces/primitive-components/ISheMultiSelectItem.ts";
 import {
@@ -34,8 +36,6 @@ import {
   ISheMultiSelectFooter,
   SheMultiSelectFooterDefaultModel,
 } from "@/const/interfaces/primitive-components/ISheMultiSelectFooter.ts";
-import useDefaultRef from "@/utils/hooks/useDefaultRef.ts";
-import useValueWithEvent from "@/utils/hooks/useValueWithEvent.ts";
 
 export default function SheMultiSelect<T>(
   props: ISheMultiSelect<T>,

@@ -27,6 +27,25 @@ export default function useComponentUtilities({
   }, [identifier]);
 
   // ================================================================== LOGIC
+  function addItemsId<T>(
+    items: T[],
+    identifier: string = "item",
+    generateLength?: number,
+  ): T[] {
+    if (!items || items.length === 0) return null;
+
+    return items.map((item: T, idx) => ({
+      ...item,
+      id:
+        item.id ??
+        `${
+          item[identifier] && item[identifier].length > 0
+            ? item[identifier].replace(/ /g, "_")
+            : generateId(generateLength)
+        }_${(idx + 1).toString()}`,
+    }));
+  }
+
   function initializeItemsList<V, T extends ISheOption<V>>(
     items: T[],
     selectedValues?: V | V[],
@@ -87,6 +106,17 @@ export default function useComponentUtilities({
     return items;
   }
 
+  function removeItemFromListByIdentifier<T, V>(
+    items: T[],
+    identifier: string,
+    value: V,
+  ): T[] {
+    if (!items || items.length === 0 || !identifier || identifier.length === 0)
+      return null;
+
+    return items?.filter((elem) => elem[identifier] !== value);
+  }
+
   function setFocus<T>(focus: boolean, triggerRef: RefObject<T>) {
     if (focus && triggerRef && triggerRef.current) {
       setTimeout(() => triggerRef.current.focus());
@@ -123,10 +153,12 @@ export default function useComponentUtilities({
   return {
     ariaDescribedbyId,
     translate,
+    addItemsId,
     setFocus,
     getSelectedItems,
     updateSelectedItems,
     getItemFromListByIdentifier,
+    removeItemFromListByIdentifier,
     initializeItemsList,
     calculatePopoverWidth,
     getContextColorBasedOnVariant,

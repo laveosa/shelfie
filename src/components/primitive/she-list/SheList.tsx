@@ -14,7 +14,7 @@ import { ISheListItem } from "@/const/interfaces/primitive-components/ISheListIt
 import SheListHeader from "@/components/primitive/she-list/components/she-list-header/SheListHeader.tsx";
 import SheListFooter from "@/components/primitive/she-list/components/she-list-footer/SheListFooter.tsx";
 import SheListItem from "@/components/primitive/she-list/components/she-list-item/SheListItem.tsx";
-import { addItemsId, generateId } from "@/utils/helpers/quick-helper.ts";
+import { generateId } from "@/utils/helpers/quick-helper.ts";
 import { getCustomProps } from "@/utils/helpers/props-helper.ts";
 import {
   ISheListHeader,
@@ -76,13 +76,13 @@ export default function SheList<T>({
     setIsItemsWithIcons(null);
     setIsItemsWithColors(null);
 
-    setItems(() => {
+    /*setItems(() => {
       return addItemsId<ISheListItem<T>>(items).map((item) => {
         if (!_isItemsWithIcons && item.icon) setIsItemsWithIcons(true);
         if (!_isItemsWithColors && item.colors) setIsItemsWithColors(true);
         return item;
       });
-    });
+    });*/
   }, [items]);
 
   useEffect(() => {

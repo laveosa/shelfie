@@ -5,10 +5,11 @@ import { ISheClearButton } from "@/const/interfaces/primitive-components/ISheCle
 import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
+import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 
 export interface ISheBadgeList<T>
   extends ISheLabel,
-    ISheClearButton,
+    Omit<ISheClearButton, "onClear">,
     ComponentPropsWithRef<"div"> {
   id?: string;
   className?: string;
@@ -41,8 +42,58 @@ export interface ISheBadgeList<T>
   required?: boolean;
   showCloseBtn?: boolean;
   componentView?: ComponentViewEnum;
-  onClick?(value: ISheBadge<T>): void;
-  onClose?(value: ISheBadge<T>): void;
-  onCloseAllExtra?(value: ISheBadge<T>[]): void;
-  onClear?(value: null): void;
+  onClick?(
+    value: ISheBadge<T>,
+    model?: IOutputEventModel<T | string, ISheBadge<T>, React.MouseEvent>,
+  ): void;
+  onClose?(
+    value: ISheBadge<T>,
+    model?: IOutputEventModel<T | string, ISheBadge<T>, React.MouseEvent>,
+  ): void;
+  onCloseAllExtra?(
+    value: ISheBadge<T>[],
+    model?: IOutputEventModel<T[] | string[], ISheBadge<T>[], React.MouseEvent>,
+  ): void;
+  onClear?(
+    value: null,
+    model?: IOutputEventModel<null, ISheBadgeList<T>, React.MouseEvent>,
+  ): void;
 }
+
+export const SheBadgeListDefaultModel: ISheBadgeList<any> = {
+  id: undefined,
+  className: undefined,
+  style: undefined,
+  elementClassName: undefined,
+  elementStyle: undefined,
+  items: undefined,
+  extraBudge: undefined,
+  maxBadgeAmount: undefined,
+  autoBadgeAmount: undefined,
+  variant: undefined,
+  color: undefined,
+  textColor: undefined,
+  iconColor: undefined,
+  icon: undefined,
+  elementIcon: undefined,
+  placeholder: undefined,
+  placeholderTransKey: undefined,
+  minWidth: undefined,
+  maxWidth: undefined,
+  fullWidth: undefined,
+  elementMinWidth: undefined,
+  elementMaxWidth: undefined,
+  elementFullWidth: undefined,
+  direction: undefined,
+  textWrap: undefined,
+  itemsWrap: undefined,
+  disabled: undefined,
+  isLoading: undefined,
+  required: undefined,
+  showCloseBtn: undefined,
+  componentView: undefined,
+  onClick: undefined,
+  onClose: undefined,
+  onCloseAllExtra: undefined,
+  onClear: undefined,
+};

@@ -1,81 +1,105 @@
 import React, { JSX, useEffect, useRef, useState } from "react";
+import { Trans } from "react-i18next";
 import _ from "lodash";
 
 import cs from "./SheBadgeList.module.scss";
-import { ISheBadgeList } from "@/const/interfaces/primitive-components/ISheBadgeList.ts";
-import { generateId } from "@/utils/helpers/quick-helper.ts";
+import {
+  getCustomProps,
+  removeCustomProps,
+} from "@/utils/helpers/props-helper.ts";
 import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
 import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
-import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
+import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import SheBadge from "@/components/primitive/she-badge/SheBadge.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
+import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
+import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
+import { SheClearButtonDefaultModel } from "@/const/interfaces/primitive-components/ISheClearButton.ts";
+import {
+  ISheBadgeList,
+  SheBadgeListDefaultModel,
+} from "@/const/interfaces/primitive-components/ISheBadgeList.ts";
 
-export default function SheBadgeList<T>({
-  className = "",
-  style,
-  elementClassName = "",
-  elementStyle,
-  label,
-  labelTransKey,
-  tooltip,
-  items,
-  extraBudge,
-  maxBadgeAmount,
-  autoBadgeAmount,
-  variant = "secondary",
-  color,
-  textColor,
-  iconColor,
-  icon,
-  elementIcon,
-  placeholder = "no data to display...",
-  placeholderTransKey = "PLACE_FOR_TRANS_KEY",
-  showClearBtn,
-  minWidth,
-  maxWidth,
-  fullWidth = autoBadgeAmount,
-  elementMinWidth,
-  elementMaxWidth,
-  elementFullWidth,
-  direction = "row",
-  textWrap,
-  itemsWrap = "wrap",
-  disabled,
-  isLoading,
-  required,
-  showCloseBtn,
-  componentView = ComponentViewEnum.STANDARD,
-  onClick,
-  onClose,
-  onCloseAllExtra,
-  onClear,
-  ...props
-}: ISheBadgeList<T>): JSX.Element {
+export default function SheBadgeList<T>(props: ISheBadgeList<T>): JSX.Element {
+  // ==================================================================== PROPS
+  const {
+    className = "",
+    style,
+    elementClassName = "",
+    elementStyle,
+    label,
+    labelTransKey,
+    tooltip,
+    items,
+    extraBudge,
+    maxBadgeAmount,
+    autoBadgeAmount,
+    variant = "secondary",
+    color,
+    textColor,
+    iconColor,
+    icon,
+    elementIcon,
+    placeholder = "no data to display...",
+    placeholderTransKey = "PLACE_FOR_TRANS_KEY",
+    showClearBtn,
+    minWidth,
+    maxWidth,
+    fullWidth = autoBadgeAmount,
+    elementMinWidth,
+    elementMaxWidth,
+    elementFullWidth,
+    direction = "row",
+    textWrap,
+    itemsWrap = "wrap",
+    disabled,
+    isLoading,
+    required,
+    showCloseBtn,
+    componentView = ComponentViewEnum.STANDARD,
+    onClick,
+    onClose,
+    onCloseAllExtra,
+    onClear,
+  } = props;
+  const sheBadgeListProps: ISheBadgeList<T> = getCustomProps<
+    ISheBadgeList<T>,
+    ISheBadgeList<T>
+  >(props, SheBadgeListDefaultModel);
+  const restProps = removeCustomProps<ISheBadgeList<T>>(props, [
+    SheBadgeListDefaultModel,
+    SheClearButtonDefaultModel,
+  ]);
+
   // ==================================================================== STATE MANAGEMENT
   const [_items, setItems] = useState<ISheBadge<T>[]>(null);
   const [_scrollInfo, setScrollInfo] = useState(null);
   const [_maxBadgeAmount, setMaxBadgeAmount] = useState<number>(null);
 
   // ==================================================================== REFS
-  const refBadgeListContext = useRef(null);
+  const badgeListContextRef = useRef(null);
 
   // ==================================================================== UTILITIES
+  const { ariaDescribedbyId, addItemsId, removeItemFromListByIdentifier } =
+    useComponentUtilities({
+      identifier: "SheBadgeList",
+    });
+
   const { translate } = useAppTranslation();
-  const uniqueComponentId = `${generateId(4)}_BADGE_LIST_ID`;
   const plusMoreBtnWidth = 100;
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     setTimeout(() => {
-      setScrollInfo(_hasVisibleScroll(refBadgeListContext.current));
+      setScrollInfo(_hasVisibleScroll(badgeListContextRef.current));
     });
   }, []);
 
   useEffect(() => {
     if (!_.isEqual(items, _items))
-      setItems(_addItemsIds(_calculateMaxBadgeAmount(items)));
+      setItems(addItemsId(_calculateMaxBadgeAmount(items)));
   }, [items]);
 
   useEffect(() => {
@@ -84,37 +108,46 @@ export default function SheBadgeList<T>({
   }, [maxBadgeAmount, autoBadgeAmount]);
 
   // ==================================================================== EVENT HANDLERS
-  function onClickHandler(item: ISheBadge<T>) {
-    onClick?.(item);
+  function onClickHandler(
+    item: ISheBadge<T>,
+    model: IOutputEventModel<T | string, ISheBadge<T>, React.MouseEvent>,
+  ) {
+    onClick?.(item, model);
   }
 
-  function onCloseHandler(item: ISheBadge<T>) {
-    const tmpList: ISheBadge<T>[] = _removeItemFromList(_items, item);
-    setItems(_addItemsIds(tmpList));
-    _calculateMaxBadgeAmount(tmpList);
-    onClose?.(item);
-  }
-
-  function onCloseAllExtraHandler() {
-    const tmpList: ISheBadge<T>[] = _items.slice(
-      _maxBadgeAmount,
-      _items.length,
+  function onCloseHandler(
+    item: ISheBadge<T>,
+    model: IOutputEventModel<T | string, ISheBadge<T>, React.MouseEvent>,
+  ) {
+    const tmpList: ISheBadge<T>[] = removeItemFromListByIdentifier(
+      _items,
+      "id",
+      item.id,
     );
-    setItems(_addItemsIds(_items.slice(0, _maxBadgeAmount)));
-    setMaxBadgeAmount(null);
-    onCloseAllExtra?.(tmpList);
+    setItems(tmpList);
+    _calculateMaxBadgeAmount(tmpList);
+    onClose?.(item, model);
   }
 
-  function onClearHandler() {
+  function onCloseAllExtraHandler(
+    value: ISheBadge<T>[],
+    model: IOutputEventModel<T | string, ISheBadge<T>, React.MouseEvent>,
+  ) {
+    setItems(_items.slice(0, _maxBadgeAmount));
+    setMaxBadgeAmount(null);
+    onCloseAllExtra?.(value, model as any);
+  }
+
+  function onClearHandler(event) {
     setItems(null);
     setMaxBadgeAmount(null);
-    onClear?.(null);
+    onClear?.(null, { event, value: null, model: sheBadgeListProps });
   }
 
   function onScrollHandler(event: React.WheelEvent<HTMLDivElement>) {
-    if (event.deltaY === 0 || !refBadgeListContext?.current) return;
+    if (event.deltaY === 0 || !badgeListContextRef?.current) return;
 
-    const elem = refBadgeListContext.current;
+    const elem = badgeListContextRef.current;
 
     if (_scrollInfo?.hasHorizontalScroll) {
       elem.scrollBy({
@@ -124,25 +157,6 @@ export default function SheBadgeList<T>({
   }
 
   // ==================================================================== PRIVATE
-  // TODO use this logic from useComponentUtilities
-  function _addItemsIds(items: ISheBadge<T>[]) {
-    return items?.map((item, idx) => {
-      return {
-        ...item,
-        id: `${uniqueComponentId.toString()}_${(idx + 1).toString()}`,
-      };
-    });
-  }
-
-  // TODO transfer this logic in to useComponentUtilities
-  function _removeItemFromList(
-    list: ISheBadge<T>[],
-    item: ISheBadge<T>,
-  ): ISheBadge<T>[] {
-    if (list?.length === 0 || !item) return list;
-    return list.filter((elem) => elem.id !== item.id);
-  }
-
   function _hasVisibleScroll(element) {
     if (!element) {
       return { hasVerticalScroll: false, hasHorizontalScroll: false };
@@ -164,12 +178,12 @@ export default function SheBadgeList<T>({
       !autoBadgeAmount ||
       !items ||
       items.length === 0 ||
-      !refBadgeListContext ||
-      !refBadgeListContext.current
+      !badgeListContextRef ||
+      !badgeListContextRef.current
     )
       return items;
 
-    const elem = refBadgeListContext.current;
+    const elem = badgeListContextRef.current;
     const gapW = 4;
     const paddingW = 16;
     const iconW = 16;
@@ -216,23 +230,23 @@ export default function SheBadgeList<T>({
         maxWidth,
         ...style,
       }}
-      {...props}
+      {...restProps}
     >
       <div className={cs.sheBadgeListComponent}>
         <SheLabel
           label={label}
           labelTransKey={labelTransKey}
           tooltip={tooltip}
-          ariaDescribedbyId={uniqueComponentId}
+          ariaDescribedbyId={ariaDescribedbyId}
         />
         <div className={cs.sheBadgeListControl}>
           <SheIcon
             icon={icon}
             className={cs.iconBlock}
-            aria-describedby={uniqueComponentId}
+            aria-describedby={ariaDescribedbyId}
           />
           <div
-            ref={refBadgeListContext}
+            ref={badgeListContextRef}
             className={cs.sheBadgeListContext}
             style={{
               paddingBottom: _scrollInfo?.hasHorizontalScroll ? "4px" : "0",
@@ -242,7 +256,7 @@ export default function SheBadgeList<T>({
             {_items?.length > 0 ? (
               <div
                 className={`${cs.sheBadgeListItemsContainer} ${cs.fadeInAnimation}`}
-                style={{ flexDirection: direction }}
+                style={{ flexDirection: direction as any }}
               >
                 {_items
                   .slice(0, _maxBadgeAmount || _items.length)
@@ -259,7 +273,8 @@ export default function SheBadgeList<T>({
                         maxWidth: item.maxWidth || elementMaxWidth,
                       }}
                     >
-                      <SheBadge
+                      <SheBadge<T>
+                        {...item}
                         className={item.className || elementClassName}
                         style={item.style || elementStyle}
                         textWrap={item.textWrap || textWrap}
@@ -269,7 +284,7 @@ export default function SheBadgeList<T>({
                         icon={item.icon || elementIcon}
                         minWidth="100%"
                         fullWidth={item.fullWidth || elementFullWidth}
-                        variant={item.variant || variant}
+                        variant={(item.variant || variant) as any}
                         disabled={
                           !_.isNil(item.disabled) ? item.disabled : disabled
                         }
@@ -281,16 +296,16 @@ export default function SheBadgeList<T>({
                             ? item.showCloseBtn
                             : showCloseBtn
                         }
-                        onClick={() => onClickHandler(item)}
-                        onClose={() => onCloseHandler(item)}
-                        {...item}
+                        onClick={(value, model) => onClickHandler(item, model)}
+                        onClose={(value, model) => onCloseHandler(item, model)}
                       />
                     </div>
                   ))}
 
                 {_maxBadgeAmount && _items?.length > _maxBadgeAmount && (
                   <div className={cs.sheBadgeListItem}>
-                    <SheBadge
+                    <SheBadge<T>
+                      {...extraBudge}
                       className={extraBudge?.className || elementClassName}
                       elementClassName={cs.plusMoreBtn}
                       style={extraBudge?.style || elementStyle}
@@ -301,7 +316,10 @@ export default function SheBadgeList<T>({
                       iconColor={extraBudge?.iconColor || iconColor}
                       maxWidth={plusMoreBtnWidth + "px"}
                       fullWidth={extraBudge?.fullWidth || elementFullWidth}
-                      variant={extraBudge?.variant || variant}
+                      variant={(extraBudge?.variant || variant) as any}
+                      value={
+                        _items.slice(_maxBadgeAmount, _items.length) as any
+                      }
                       disabled={
                         !_.isNil(extraBudge?.disabled)
                           ? extraBudge?.disabled
@@ -317,9 +335,12 @@ export default function SheBadgeList<T>({
                           ? extraBudge?.showCloseBtn
                           : showCloseBtn
                       }
-                      onClick={() => onClickHandler(extraBudge)}
-                      onClose={() => onCloseAllExtraHandler()}
-                      {...extraBudge}
+                      onClick={(value: any, model) =>
+                        onClickHandler(value, model)
+                      }
+                      onClose={(value: any, model) =>
+                        onCloseAllExtraHandler(value, model)
+                      }
                     />
                   </div>
                 )}
@@ -327,7 +348,7 @@ export default function SheBadgeList<T>({
             ) : (
               <div className={cs.noDataBlock}>
                 <span className="she-placeholder">
-                  {translate(placeholderTransKey, placeholder)}
+                  <Trans i18nKey={placeholderTransKey}>{placeholder}</Trans>
                 </span>
               </div>
             )}
@@ -337,7 +358,7 @@ export default function SheBadgeList<T>({
             showClearBtn={showClearBtn}
             disabled={disabled}
             isLoading={isLoading}
-            ariaDescribedbyId={uniqueComponentId}
+            ariaDescribedbyId={ariaDescribedbyId}
             onClear={onClearHandler}
           />
         </div>
