@@ -198,17 +198,17 @@ export default function SheMultiSelect<T>(
   }
 
   function onToggleOptionHandler(
-    _value: T,
+    value: T,
     event?: React.MouseEvent | React.KeyboardEvent,
   ) {
-    const newSelectedValues = _selectedValues.includes(_value)
-      ? _selectedValues.filter((value) => value !== _value)
-      : [..._selectedValues, _value];
+    const newSelectedValues = _selectedValues.includes(value)
+      ? _selectedValues.filter((item) => item !== value)
+      : [..._selectedValues, value];
     _updateSelectedValues(newSelectedValues, event);
   }
 
   function onToggleAllHandler(
-    _value: T,
+    value: T,
     event?: React.MouseEvent | React.KeyboardEvent,
   ) {
     // TODO event needed as extra param (key - Enter include)
