@@ -92,7 +92,7 @@ const DraggableRow = ({
   enableExpansion = false,
   renderExpandedContent,
   totalColumns,
-  cellPadding = "8px 12px",
+  cellPadding,
 }) => {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useSortable({
@@ -128,9 +128,9 @@ const DraggableRow = ({
           style={{
             cursor: isDragDisabled || isLoading ? "default" : "grab",
             background: isSelected ? "#F4F4F5" : "inherit",
-            width: "30px",
-            minWidth: "30px",
-            maxWidth: "30px",
+            width: "20px",
+            minWidth: "10px",
+            maxWidth: "40px",
             padding: cellPadding,
           }}
           {...listeners}
@@ -294,7 +294,7 @@ export const DndGridDataTable = React.forwardRef<
     children,
     customMessage,
     skeletonQuantity,
-    cellPadding = "8px 12px",
+    cellPadding,
     onGridRequestChange,
     onApplyColumns,
     onDefaultColumns,
@@ -512,9 +512,9 @@ export const DndGridDataTable = React.forwardRef<
                       <TableHead
                         className={isLoading ? `${cs.tableHeadLoading}` : ""}
                         style={{
-                          width: "30px",
-                          minWidth: "30px",
-                          maxWidth: "30px",
+                          width: "20px",
+                          minWidth: "10px",
+                          maxWidth: "40px",
                           padding: cellPadding,
                         }}
                       ></TableHead>
@@ -544,7 +544,8 @@ export const DndGridDataTable = React.forwardRef<
                 ))}
               </TableHeader>
             )}
-            {isLoading && items.length === 0 ? (
+            {/*{isLoading && items.length === 0 ? (*/}
+            {isLoading ? (
               <TableBody className={cs.tableSkeleton}>
                 {createSkeletonArray(skeletonQuantity ?? 5).map((_, index) => (
                   <TableRow key={index}>

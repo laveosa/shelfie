@@ -13,6 +13,7 @@ const initialState: ISupplierPageSlice = {
   isSupplierConfigurationCardLoading: false,
   isSupplierPhotosGridLoading: false,
   isSuppliersGridLoading: false,
+  isPhotoUploaderLoading: false,
   activeCards: [],
   purchase: null,
   suppliers: null,
@@ -70,6 +71,13 @@ function setIsSuppliersGridLoading(
   action: PayloadAction<boolean>,
 ) {
   state.isSuppliersGridLoading = action?.payload;
+}
+
+function setIsPhotoUploaderLoading(
+  state: ISupplierPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isPhotoUploaderLoading = action?.payload;
 }
 
 //----------------------------------------------------- API
@@ -135,6 +143,7 @@ const SupplierPageSlice = createSlice({
     setIsSupplierConfigurationCardLoading,
     setIsSupplierPhotosGridLoading,
     setIsSuppliersGridLoading,
+    setIsPhotoUploaderLoading,
     refreshActiveCards,
     refreshPurchase,
     refreshSuppliers,

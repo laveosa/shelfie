@@ -4,6 +4,9 @@ export const VariantConfigurationGridColumns: ColumnDef<any>[] = [
   {
     accessorKey: "optionColor",
     header: "Type",
+    size: 100,
+    maxSize: 100,
+    minSize: 100,
     cell: ({ row }) => {
       return (
         <span className="she-text">
@@ -15,6 +18,9 @@ export const VariantConfigurationGridColumns: ColumnDef<any>[] = [
   {
     accessorKey: "optionName",
     header: "Value",
+    size: 100,
+    maxSize: 100,
+    minSize: 100,
     cell: ({ row }) => {
       return (
         <div
@@ -39,6 +45,9 @@ export const VariantConfigurationGridColumns: ColumnDef<any>[] = [
   {
     id: "traitName",
     header: "Name",
+    size: 100,
+    maxSize: 100,
+    minSize: 100,
     cell: ({ row }) => {
       return <div className="she-text">{row.original.traitName}</div>;
     },

@@ -10,6 +10,7 @@ import SheCardNotification from "@/components/complex/she-card-notification/SheC
 export default function SupplierConfigurationCard({
   isLoading,
   isSupplierPhotosGridLoading,
+  isPhotoUploaderLoading,
   countryList,
   managedSupplier,
   onAction,
@@ -39,6 +40,7 @@ export default function SupplierConfigurationCard({
         <CreateSupplierForm
           isLoading={isLoading}
           isGridLoading={isSupplierPhotosGridLoading}
+          isPhotoUploaderLoading={isPhotoUploaderLoading}
           countryList={countryList}
           data={managedSupplier}
           photos={managedSupplier?.photos}

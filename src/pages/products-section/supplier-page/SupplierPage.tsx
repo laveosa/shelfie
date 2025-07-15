@@ -178,18 +178,17 @@ export function SupplierPage() {
         }
         break;
       case "openSelectSupplierCard":
+        dispatch(productsActions.resetSelectedSupplier());
         handleCardAction("selectSupplierCard", true);
         if (!productsState.countryCodeList) {
           productsService.getCountryCodeHandler().then(() => {});
         }
-        if (state.suppliersWithLocations === null) {
-          dispatch(actions.setIsSelectSupplierCardLoading(true));
-          dispatch(actions.setIsSuppliersGridLoading(true));
-          service.getListOfSuppliersForGridHandler({}).then(() => {
-            dispatch(actions.setIsSelectSupplierCardLoading(false));
-            dispatch(actions.setIsSuppliersGridLoading(false));
-          });
-        }
+        dispatch(actions.setIsSelectSupplierCardLoading(true));
+        dispatch(actions.setIsSuppliersGridLoading(true));
+        service.getListOfSuppliersForGridHandler({}).then(() => {
+          dispatch(actions.setIsSelectSupplierCardLoading(false));
+          dispatch(actions.setIsSuppliersGridLoading(false));
+        });
         break;
       case "openSupplierConfigurationCard":
         dispatch(actions.resetManagedSupplier(null));
@@ -203,7 +202,9 @@ export function SupplierPage() {
             handleCardAction("supplierConfigurationCard");
             payload.uploadModels.map((model) => {
               model.contextId = res.supplierId;
+              dispatch(actions.setIsPhotoUploaderLoading(true));
               productsService.uploadPhotoHandler(model).then((res) => {
+                dispatch(actions.setIsPhotoUploaderLoading(false));
                 if (res) {
                   addToast({
                     text: "Image successfully added",
@@ -277,7 +278,9 @@ export function SupplierPage() {
             if (res) {
               payload.uploadModels.map((model) => {
                 model.contextId = res.supplierId;
+                dispatch(actions.setIsPhotoUploaderLoading(true));
                 productsService.uploadPhotoHandler(model).then((res) => {
+                  dispatch(actions.setIsPhotoUploaderLoading(false));
                   if (res) {
                     service
                       .getSupplierDetailsHandler(
@@ -322,6 +325,14 @@ export function SupplierPage() {
                   }
                 });
               });
+              productsService
+                .getPurchaseDetailsHandler(purchaseId)
+                .then((res: PurchaseModel) => {
+                  dispatch(productsActions.refreshSelectedPurchase(res));
+                  dispatch(
+                    productsActions.refreshSelectedSupplier(res.supplier),
+                  );
+                });
               addToast({
                 text: "Supplier updated successfully",
                 type: "success",
@@ -476,7 +487,21 @@ export function SupplierPage() {
           });
         break;
       case "dndSupplierPhoto":
-        console.log("DND PHOTO", payload);
+        service
+          .changePositionOfSupplierPhotoHandler(
+            state.managedSupplier.supplierId,
+            payload.activeItem.photoId,
+            payload.newIndex,
+          )
+          .then((res) => {
+            if (!res.error) {
+              productsService
+                .getPurchaseDetailsHandler(purchaseId)
+                .then((res: PurchaseModel) => {
+                  dispatch(productsActions.refreshSelectedPurchase(res));
+                });
+            }
+          });
         break;
       case "closeSupplierCard":
         navigate(NavUrlEnum.PRODUCTS);
@@ -537,6 +562,7 @@ export function SupplierPage() {
           <SupplierConfigurationCard
             isLoading={state.isSupplierConfigurationCardLoading}
             isSupplierPhotosGridLoading={state.isSupplierPhotosGridLoading}
+            isPhotoUploaderLoading={state.isPhotoUploaderLoading}
             countryList={productsState.countryCodeList}
             managedSupplier={state.managedSupplier}
             onAction={onAction}

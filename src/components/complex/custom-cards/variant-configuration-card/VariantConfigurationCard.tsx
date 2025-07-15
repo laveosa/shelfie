@@ -377,21 +377,21 @@ export default function VariantConfigurationCard({
             </span>
             <SheButton
               icon={Plus}
-              variant="outline"
+              variant="secondary"
               onClick={() => onAction("openAddStockCard")}
             >
               Add
             </SheButton>
             <SheButton
               icon={Minus}
-              variant="outline"
+              variant="secondary"
               onClick={() => onAction("openDisposeStockCard")}
             >
               Dispose
             </SheButton>
             <SheButton
               icon={Clock}
-              variant="outline"
+              variant="secondary"
               maxWidth="89px"
               onClick={() =>
                 onAction("openVariantHistoryCard", variant.variantId)
@@ -420,7 +420,7 @@ export default function VariantConfigurationCard({
             <span className="she-title">Variant Traits</span>
             <SheButton
               icon={Blocks}
-              variant="outline"
+              variant="secondary"
               onClick={() => onAction("openManageTraitsCard")}
             >
               Manage
@@ -443,7 +443,7 @@ export default function VariantConfigurationCard({
             <span className="she-title">Variant Photos</span>
             <SheButton
               icon={ImagePlus}
-              variant="outline"
+              variant="secondary"
               onClick={() =>
                 onAction("openVariantPhotosCard", variant.variantId)
               }

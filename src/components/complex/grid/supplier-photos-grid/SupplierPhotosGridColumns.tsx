@@ -28,6 +28,9 @@ export const SupplierPhotosGridColumns = (
   {
     accessorKey: "thumbnailUrl",
     header: "Preview",
+    size: 50,
+    minSize: 50,
+    maxSize: 50,
     cell: ({ row, table }) => {
       const photoUrl: string = row.getValue("thumbnailUrl");
       const meta = table.options.meta as {
@@ -55,6 +58,9 @@ export const SupplierPhotosGridColumns = (
   {
     accessorKey: "format",
     header: "Format",
+    size: 50,
+    minSize: 50,
+    maxSize: 50,
     cell: ({ row }) => {
       return (
         <span className="she-subtext">{`${row.original.height}px x ${row.original.width}px`}</span>
@@ -64,8 +70,9 @@ export const SupplierPhotosGridColumns = (
   {
     id: "manage",
     header: "Actions",
-    minSize: 100,
-    maxSize: 100,
+    size: 50,
+    minSize: 50,
+    maxSize: 50,
     cell: ({ row, table }) => {
       const meta = table.options.meta as {
         setLoadingRow: (rowId: string, loading: boolean) => void;
