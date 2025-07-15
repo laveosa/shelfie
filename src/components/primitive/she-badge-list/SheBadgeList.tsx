@@ -53,15 +53,20 @@ export default function SheBadgeList({
   onClear,
   ...props
 }: ISheBadgeList): JSX.Element {
-  const { translate } = useAppTranslation();
+  // ==================================================================== STATE MANAGEMENT
   const [_items, setItems] = useState<ISheBadge[]>(null);
   const [_scrollInfo, setScrollInfo] = useState(null);
   const [_maxBadgeAmount, setMaxBadgeAmount] = useState<number>(null);
 
+  // ==================================================================== REFS
   const refBadgeListContext = useRef(null);
+
+  // ==================================================================== UTILITIES
+  const { translate } = useAppTranslation();
   const uniqueComponentId = `${generateId(4)}_BADGE_LIST_ID`;
   const plusMoreBtnWidth = 100;
 
+  // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     setTimeout(() => {
       setScrollInfo(_hasVisibleScroll(refBadgeListContext.current));
@@ -78,33 +83,29 @@ export default function SheBadgeList({
     _calculateMaxBadgeAmount(items);
   }, [maxBadgeAmount, autoBadgeAmount]);
 
-  // ==================================================================== EVENT
-
+  // ==================================================================== EVENT HANDLERS
   function onClickHandler(item: ISheBadge) {
-    if (onClick) onClick(item);
+    onClick?.(item);
   }
 
   function onCloseHandler(item: ISheBadge) {
     const tmpList: ISheBadge[] = _removeItemFromList(_items, item);
     setItems(_addItemsIds(tmpList));
     _calculateMaxBadgeAmount(tmpList);
-
-    if (onClose) onClose(item);
+    onClose?.(item);
   }
 
   function onCloseAllExtraHandler() {
     const tmpList: ISheBadge[] = _items.slice(_maxBadgeAmount, _items.length);
     setItems(_addItemsIds(_items.slice(0, _maxBadgeAmount)));
     setMaxBadgeAmount(null);
-
-    if (onCloseAllExtra) onCloseAllExtra(tmpList);
+    onCloseAllExtra?.(tmpList);
   }
 
   function onClearHandler() {
     setItems(null);
     setMaxBadgeAmount(null);
-
-    if (onClear) onClear(null);
+    onClear?.(null);
   }
 
   function onScrollHandler(event: React.WheelEvent<HTMLDivElement>) {
@@ -120,7 +121,7 @@ export default function SheBadgeList({
   }
 
   // ==================================================================== PRIVATE
-
+  // TODO use this logic from useComponentUtilities
   function _addItemsIds(items: ISheBadge[]) {
     return items?.map((item, idx) => {
       return {
@@ -130,6 +131,7 @@ export default function SheBadgeList({
     });
   }
 
+  // TODO transfer this logic in to useComponentUtilities
   function _removeItemFromList(
     list: ISheBadge[],
     item: ISheBadge,
@@ -203,7 +205,6 @@ export default function SheBadgeList({
   }
 
   // ==================================================================== LAYOUT
-
   return (
     <div
       className={`${cs.sheBadgeList} ${className} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""} ${cs[componentView]} ${cs[itemsWrap]}`}

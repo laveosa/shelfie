@@ -33,25 +33,23 @@ export default function SheBadge({
   onClose,
   ...props
 }: ISheBadge): JSX.Element {
+  // ==================================================================== UTILITIES
   const { translate } = useAppTranslation();
-
   const contextColor = _getContextColor();
   const circleView = _isCircle();
 
-  // ==================================================================== EVENT
-
+  // ==================================================================== EVENT HANDLERS
   function onClickHandler(event: React.MouseEvent<HTMLElement>) {
     event.stopPropagation();
-    if (onClick) onClick(event);
+    onClick?.(event);
   }
 
   function onCloseHandler(event: React.MouseEvent<HTMLElement>) {
     event.stopPropagation();
-    if (onClose) onClose(event);
+    onClose?.(event);
   }
 
   // ==================================================================== PRIVATE
-
   function _getContextColor(): string {
     switch (props.variant) {
       case "outline":
@@ -77,7 +75,6 @@ export default function SheBadge({
   }
 
   // ==================================================================== LAYOUT
-
   return (
     <div
       id={id}

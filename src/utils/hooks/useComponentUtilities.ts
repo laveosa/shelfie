@@ -24,7 +24,7 @@ export default function useComponentUtilities({
       setAriaDescribedbyId(`${generateId()}_${identifier ?? "component"}_ID`);
   }, [identifier]);
 
-  // ================================================================== COMMON
+  // ================================================================== LOGIC
 
   function initializeItemsList<V, T extends ISheOption<V>>(
     items: T[],
@@ -119,6 +119,7 @@ export default function useComponentUtilities({
   };
 }
 
+// ================================================================== PRIVATE
 function _analyzeElementsForSpecificData<
   T extends {
     icon?: Partial<ISheIcon> | string | React.FC<any>;
