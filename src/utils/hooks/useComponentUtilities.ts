@@ -106,14 +106,11 @@ export default function useComponentUtilities({
     return items;
   }
 
-  function removeItemFromListByIdentifier<T, V>(
+  function removeItemFromListByIdentifier<T, K extends keyof T>(
     items: T[],
-    identifier: string,
-    value: V,
+    identifier: K,
+    value: T[K],
   ): T[] {
-    if (!items || items.length === 0 || !identifier || identifier.length === 0)
-      return null;
-
     return items?.filter((elem) => elem[identifier] !== value);
   }
 

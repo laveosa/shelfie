@@ -251,6 +251,8 @@ export default function SheBadgeList<T>(props: ISheBadgeList<T>): JSX.Element {
             style={{
               paddingBottom: _scrollInfo?.hasHorizontalScroll ? "4px" : "0",
             }}
+            role="list"
+            tabIndex={0}
             onWheel={onScrollHandler}
           >
             {_items?.length > 0 ? (

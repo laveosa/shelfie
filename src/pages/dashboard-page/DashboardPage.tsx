@@ -235,12 +235,12 @@ export function DashboardPage() {
 
       <br />
 
-      <SheBadgeList<any>
+      {/*<SheBadgeList<any>
         label="Badges"
         items={badges}
         showClearBtn
         showCloseBtn
-        autoBadgeAmount
+        itemsWrap="nowrap"
         maxWidth="400px"
         onClick={(value, model) => console.log("onClick: ", value, model)}
         onClose={(value, model) => console.log("onClose: ", value, model)}
@@ -249,8 +249,7 @@ export function DashboardPage() {
         }
         onClear={(value, model) => console.log("onClear: ", value, model)}
       />
-
-      <br />
+      <br />*/}
 
       {/*<div className="flex gap-2">
         <SheBadge<{ name: string; age: number }>
