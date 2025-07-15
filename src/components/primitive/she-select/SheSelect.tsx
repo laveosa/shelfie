@@ -22,6 +22,7 @@ import useDefaultRef from "@/utils/hooks/useDefaultRef.ts";
 import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
 import { getCustomProps } from "@/utils/helpers/props-helper.ts";
 import { generateSafeItemId } from "@/utils/helpers/quick-helper.ts";
+import useValueWithEvent from "@/utils/hooks/useValueWithEvent.ts";
 
 export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
   // ==================================================================== PROPS
@@ -55,7 +56,6 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
     autoFocus,
     onOpen,
     onSelect,
-    onSelectModel,
   } = props;
   const sheSelectProps = getCustomProps<ISheSelect<T>, ISheSelect<T>>(
     props,
@@ -85,14 +85,16 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
     identifier: "SheSelect",
   });
 
+  const { eventHandler, valueHandler } = useValueWithEvent<
+    React.MouseEvent | React.KeyboardEvent,
+    string
+  >(onValueChangeHandler);
+
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     const newItems = initializeItemsList<T, ISheSelectItem<T>>([
       ...(items || []),
     ]);
-
-    console.log("ITEMS: ", newItems);
-
     // ----------------------------------- GET ALL SELECTED ITEMS FROM THE LIST
     const listSelected: ISheSelectItem<T>[] = newItems?.filter(
       (item) => item.isSelected,
@@ -158,7 +160,10 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
   }, [autoFocus]);
 
   // ==================================================================== EVENT HANDLERS
-  function onValueChangeHandler(id: string, event?: React.MouseEvent) {
+  function onValueChangeHandler(
+    id: string,
+    event?: React.MouseEvent | React.KeyboardEvent,
+  ) {
     const selected: ISheSelectItem<T> = _.cloneDeep(
       getItemFromListByIdentifier<ISheSelectItem<T>, T>(items, "id", id),
     );
@@ -170,22 +175,23 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
         selected.value,
       );
       setItems(tmpItems);
-      onSelect?.(selected.value);
-      onSelectModel?.({
+      onSelect?.(selected.value, {
         value: selected.value,
         model: { ...sheSelectProps, items: tmpItems, selected: selected.value },
         event,
       });
     } else {
-      onSelect?.(null);
-      onSelectModel?.(null);
+      onSelect?.(null, {
+        value: null,
+        model: { ...sheSelectProps, items: _items, selected: null },
+        event,
+      });
     }
 
     setSelected(selected);
   }
 
   function onOpenChangeHandler(value: boolean) {
-    _setIsOpen(value);
     if (!_loading && value && _selected) {
       requestAnimationFrame(() => {
         const selectedElement = document.getElementById(_selected.id);
@@ -195,15 +201,18 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
         }
       });
     }
+
+    setTimeout(() => _setIsOpen(value));
   }
 
-  function onClearHandler() {
+  function onClearHandler(event: React.MouseEvent | React.KeyboardEvent) {
+    const tmpItems = updateSelectedItems<ISheSelectItem<T>, T>(_items);
+    setItems(tmpItems);
     setSelected(null);
-    onSelect?.(null);
-    onSelectModel?.({
+    onSelect?.(null, {
       value: null,
-      model: { ...sheSelectProps, items: _items, selected: null },
-      event: undefined,
+      model: { ...sheSelectProps, items: tmpItems, selected: null },
+      event,
     });
     setFocus<HTMLInputElement>(true, _triggerRef);
   }
@@ -266,7 +275,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
               open={_open}
               disabled={disabled || _loading || !items || items.length === 0}
               onOpenChange={onOpenChangeHandler}
-              onValueChange={onValueChangeHandler}
+              onValueChange={(value) => setTimeout(() => valueHandler(value))}
               {...sheSelectProps}
             >
               <SelectTrigger
@@ -301,6 +310,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
                         isLoading={
                           !_.isNil(item.isLoading) ? item.isLoading : _loading
                         }
+                        onCheck={(event) => eventHandler(event.event)}
                       />
                     ))}
                   </div>

@@ -28,6 +28,12 @@ export default function SheSelectItem<T>({
       style={style}
       value={id}
       defaultValue={id}
+      onKeyDown={(event) => {
+        if (event.key === "Enter") {
+          onCheck({ event });
+        }
+      }}
+      onClick={(event) => onCheck({ event })}
     >
       <SheOption<T>
         {...props}

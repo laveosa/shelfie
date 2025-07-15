@@ -46,8 +46,20 @@ export interface ISheOption<T>
   tooltip?: ISheTooltip;
   toggleProps?: ISheToggle;
   checkOnClick?: boolean;
-  onCheck?(data: IOutputEventModel<T, ISheOption<T>, React.MouseEvent>): void;
-  onClick?(data: IOutputEventModel<T, ISheOption<T>, React.MouseEvent>): void;
+  onCheck?(
+    data: IOutputEventModel<
+      T,
+      ISheOption<T>,
+      React.MouseEvent | React.KeyboardEvent
+    >,
+  ): void;
+  onClick?(
+    data: IOutputEventModel<
+      T,
+      ISheOption<T>,
+      React.MouseEvent | React.KeyboardEvent
+    >,
+  ): void;
 }
 
 export const SheOptionDefaultModel: ISheOption<any> = {

@@ -94,15 +94,15 @@ export default function useComponentUtilities({
 
   function updateSelectedItems<T extends ISelectable<V>, V>(
     items: T[],
-    selectedValues: V | V[],
+    selectedValues?: V | V[],
   ): T[] {
-    if (!items || items.length === 0 || !selectedValues) return items;
-
     const values: V[] = !Array.isArray(selectedValues)
       ? [selectedValues]
       : selectedValues;
 
-    items.forEach((item: T) => (item.isSelected = values.includes(item.value)));
+    items?.forEach(
+      (item: T) => (item.isSelected = values?.includes(item.value)),
+    );
     return items;
   }
 

@@ -377,7 +377,7 @@ export function DashboardPage() {
           <SheSelect<string>
             // triggerRef={triggerRef}
             // popoverRef={popoverRef}
-            // label="Select"
+            label="Select"
             required
             // items={options}
             // items={optionsSimple}
@@ -391,11 +391,10 @@ export function DashboardPage() {
             showClearBtn
             // hideFirstOption
             // showSelectIcon
-            icon={Home}
+            // icon={Home}
             // fullWidth
             onOpen={(value) => console.log("onOpen: ", value)}
-            onSelect={(value) => console.log("onSelect: ", value)}
-            onSelectModel={(value) => console.log("onSelectModel: ", value)}
+            onSelect={(value, model) => console.log("onSelect: ", value, model)}
           />
         </div>
 
