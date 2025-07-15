@@ -178,18 +178,17 @@ export function SupplierPage() {
         }
         break;
       case "openSelectSupplierCard":
+        dispatch(productsActions.resetSelectedSupplier());
         handleCardAction("selectSupplierCard", true);
         if (!productsState.countryCodeList) {
           productsService.getCountryCodeHandler().then(() => {});
         }
-        if (state.suppliersWithLocations === null) {
-          dispatch(actions.setIsSelectSupplierCardLoading(true));
-          dispatch(actions.setIsSuppliersGridLoading(true));
-          service.getListOfSuppliersForGridHandler({}).then(() => {
-            dispatch(actions.setIsSelectSupplierCardLoading(false));
-            dispatch(actions.setIsSuppliersGridLoading(false));
-          });
-        }
+        dispatch(actions.setIsSelectSupplierCardLoading(true));
+        dispatch(actions.setIsSuppliersGridLoading(true));
+        service.getListOfSuppliersForGridHandler({}).then(() => {
+          dispatch(actions.setIsSelectSupplierCardLoading(false));
+          dispatch(actions.setIsSuppliersGridLoading(false));
+        });
         break;
       case "openSupplierConfigurationCard":
         dispatch(actions.resetManagedSupplier(null));

@@ -544,7 +544,8 @@ export const DndGridDataTable = React.forwardRef<
                 ))}
               </TableHeader>
             )}
-            {isLoading && items.length === 0 ? (
+            {/*{isLoading && items.length === 0 ? (*/}
+            {isLoading ? (
               <TableBody className={cs.tableSkeleton}>
                 {createSkeletonArray(skeletonQuantity ?? 5).map((_, index) => (
                   <TableRow key={index}>
