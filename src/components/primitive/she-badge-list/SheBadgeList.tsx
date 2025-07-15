@@ -12,7 +12,7 @@ import SheBadge from "@/components/primitive/she-badge/SheBadge.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 
-export default function SheBadgeList({
+export default function SheBadgeList<T>({
   className = "",
   style,
   elementClassName = "",
@@ -52,9 +52,9 @@ export default function SheBadgeList({
   onCloseAllExtra,
   onClear,
   ...props
-}: ISheBadgeList): JSX.Element {
+}: ISheBadgeList<T>): JSX.Element {
   // ==================================================================== STATE MANAGEMENT
-  const [_items, setItems] = useState<ISheBadge[]>(null);
+  const [_items, setItems] = useState<ISheBadge<T>[]>(null);
   const [_scrollInfo, setScrollInfo] = useState(null);
   const [_maxBadgeAmount, setMaxBadgeAmount] = useState<number>(null);
 
@@ -84,19 +84,22 @@ export default function SheBadgeList({
   }, [maxBadgeAmount, autoBadgeAmount]);
 
   // ==================================================================== EVENT HANDLERS
-  function onClickHandler(item: ISheBadge) {
+  function onClickHandler(item: ISheBadge<T>) {
     onClick?.(item);
   }
 
-  function onCloseHandler(item: ISheBadge) {
-    const tmpList: ISheBadge[] = _removeItemFromList(_items, item);
+  function onCloseHandler(item: ISheBadge<T>) {
+    const tmpList: ISheBadge<T>[] = _removeItemFromList(_items, item);
     setItems(_addItemsIds(tmpList));
     _calculateMaxBadgeAmount(tmpList);
     onClose?.(item);
   }
 
   function onCloseAllExtraHandler() {
-    const tmpList: ISheBadge[] = _items.slice(_maxBadgeAmount, _items.length);
+    const tmpList: ISheBadge<T>[] = _items.slice(
+      _maxBadgeAmount,
+      _items.length,
+    );
     setItems(_addItemsIds(_items.slice(0, _maxBadgeAmount)));
     setMaxBadgeAmount(null);
     onCloseAllExtra?.(tmpList);
@@ -122,7 +125,7 @@ export default function SheBadgeList({
 
   // ==================================================================== PRIVATE
   // TODO use this logic from useComponentUtilities
-  function _addItemsIds(items: ISheBadge[]) {
+  function _addItemsIds(items: ISheBadge<T>[]) {
     return items?.map((item, idx) => {
       return {
         ...item,
@@ -133,9 +136,9 @@ export default function SheBadgeList({
 
   // TODO transfer this logic in to useComponentUtilities
   function _removeItemFromList(
-    list: ISheBadge[],
-    item: ISheBadge,
-  ): ISheBadge[] {
+    list: ISheBadge<T>[],
+    item: ISheBadge<T>,
+  ): ISheBadge<T>[] {
     if (list?.length === 0 || !item) return list;
     return list.filter((elem) => elem.id !== item.id);
   }
@@ -155,7 +158,7 @@ export default function SheBadgeList({
     };
   }
 
-  function _calculateMaxBadgeAmount(items: ISheBadge[]): ISheBadge[] {
+  function _calculateMaxBadgeAmount(items: ISheBadge<T>[]): ISheBadge<T>[] {
     if (
       (!_.isNil(maxBadgeAmount) && maxBadgeAmount >= 0) ||
       !autoBadgeAmount ||

@@ -6,7 +6,7 @@ import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts"
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 
-export interface ISheBadgeList
+export interface ISheBadgeList<T>
   extends ISheLabel,
     ISheClearButton,
     ComponentPropsWithRef<"div"> {
@@ -15,8 +15,8 @@ export interface ISheBadgeList
   style?: React.CSSProperties;
   elementClassName?: string;
   elementStyle?: React.CSSProperties;
-  items?: ISheBadge[];
-  extraBudge?: ISheBadge;
+  items?: ISheBadge<T>[];
+  extraBudge?: ISheBadge<T>;
   maxBadgeAmount?: number;
   autoBadgeAmount?: boolean;
   variant?: "default" | "secondary" | "destructive" | "outline";
@@ -41,8 +41,8 @@ export interface ISheBadgeList
   required?: boolean;
   showCloseBtn?: boolean;
   componentView?: ComponentViewEnum;
-  onClick?: (value: ISheBadge) => void;
-  onClose?: (value: ISheBadge) => void;
-  onCloseAllExtra?: (value: ISheBadge[]) => void;
-  onClear?: (value: null) => void;
+  onClick?(value: ISheBadge<T>): void;
+  onClose?(value: ISheBadge<T>): void;
+  onCloseAllExtra?(value: ISheBadge<T>[]): void;
+  onClear?(value: null): void;
 }

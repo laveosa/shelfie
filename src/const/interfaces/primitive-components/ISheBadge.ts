@@ -27,14 +27,14 @@ export interface ISheBadge<T>
   isLoading?: boolean;
   isCircle?: boolean;
   showCloseBtn?: boolean;
-  onClick?: (
+  onClick?(
     value: string,
-    model?: IOutputEventModel<string, ISheBadge<T>, React.MouseEvent>,
-  ) => void;
-  onClose?: (
+    model?: IOutputEventModel<T | string, ISheBadge<T>, React.MouseEvent>,
+  ): void;
+  onClose?(
     value: string,
-    model?: IOutputEventModel<string, ISheBadge<T>, React.MouseEvent>,
-  ) => void;
+    model?: IOutputEventModel<T | string, ISheBadge<T>, React.MouseEvent>,
+  ): void;
 }
 
 export const SheBadgeDefaultModel: ISheBadge<any> = {

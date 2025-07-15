@@ -87,7 +87,7 @@ export default function SheMultiSelect<T>(
   // ==================================================================== STATE MANAGEMENT
   const [_items, setItems] = useState<ISheMultiSelectItem<T>[]>(null);
   const [_selectedValues, setSelectedValues] = useState<T[]>([]);
-  const [_badges, setBadges] = useState<ISheBadge[]>(null);
+  const [_badges, setBadges] = useState<ISheBadge<T>[]>(null);
   const [_open, setOpen] = useState<boolean>(null);
   const [_loading, setLoading] = useState<boolean>(null);
   const [_searchValue, setSearchValue] = useState<string>(null);
@@ -226,7 +226,7 @@ export default function SheMultiSelect<T>(
     }
   }
 
-  function onClearExtraOptionsHandler(badges: ISheBadge[]) {
+  function onClearExtraOptionsHandler(badges: ISheBadge<T>[]) {
     // TODO event needed as extra param (on badge close event)
     _updateSelectedValues(_selectedValues.slice(0, -badges.length));
   }
@@ -249,7 +249,7 @@ export default function SheMultiSelect<T>(
   function _generateBadgesFromSelectedItems(
     fromItems: ISheMultiSelectItem<T>[],
     values: T[],
-  ): ISheBadge[] {
+  ): ISheBadge<T>[] {
     let selectedItems: ISheMultiSelectItem<T>[] = [];
 
     values?.forEach((value: T) => {
@@ -261,7 +261,7 @@ export default function SheMultiSelect<T>(
     });
 
     return selectedItems?.map(
-      (item: ISheMultiSelectItem<T>): ISheBadge => ({
+      (item: ISheMultiSelectItem<T>): ISheBadge<T> => ({
         text: item?.text,
         icon: item?.icon,
         value: item.value,
