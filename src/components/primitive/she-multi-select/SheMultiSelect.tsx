@@ -36,6 +36,7 @@ import {
   ISheMultiSelectFooter,
   SheMultiSelectFooterDefaultModel,
 } from "@/const/interfaces/primitive-components/ISheMultiSelectFooter.ts";
+import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 
 export default function SheMultiSelect<T>(
   props: ISheMultiSelect<T>,
@@ -63,7 +64,6 @@ export default function SheMultiSelect<T>(
     onOpen,
     onClear,
     onSelect,
-    onSelectModel,
   } = props;
   const sheMultiSelectProps = getCustomProps<
     ISheMultiSelect<T>,
@@ -201,7 +201,6 @@ export default function SheMultiSelect<T>(
     value: T,
     event?: React.MouseEvent | React.KeyboardEvent,
   ) {
-    // TODO event needed as extra param (on badge close event)
     const newSelectedValues = _selectedValues.includes(value)
       ? _selectedValues.filter((item) => item !== value)
       : [..._selectedValues, value];
@@ -226,9 +225,14 @@ export default function SheMultiSelect<T>(
     }
   }
 
-  function onClearExtraOptionsHandler(badges: ISheBadge<T>[]) {
-    // TODO event needed as extra param (on badge close event)
-    _updateSelectedValues(_selectedValues.slice(0, -badges.length));
+  function onClearExtraOptionsHandler(
+    badges: ISheBadge<T>[],
+    model: IOutputEventModel<T[] | string[], ISheBadge<T>[], React.MouseEvent>,
+  ) {
+    _updateSelectedValues(
+      _selectedValues.slice(0, -badges.length),
+      model.event,
+    );
   }
 
   function onClearButtonHandler<T>(
@@ -281,8 +285,7 @@ export default function SheMultiSelect<T>(
     setItems(tmpItems);
     setSelectedValues(values);
     setBadges(_generateBadgesFromSelectedItems(_items, values));
-    onSelect?.(values);
-    onSelectModel?.({
+    onSelect?.(values, {
       value: values,
       model: {
         ...sheMultiSelectProps,
@@ -328,7 +331,7 @@ export default function SheMultiSelect<T>(
   // ==================================================================== LAYOUT
   return (
     <Popover open={_open} onOpenChange={_setIsOpen}>
-      <SheMultiSelectTrigger
+      <SheMultiSelectTrigger<T>
         ref={_triggerRef}
         items={_badges}
         isOpen={_open}

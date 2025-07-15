@@ -13,7 +13,7 @@ import SheBadgeList from "@/components/primitive/she-badge-list/SheBadgeList.tsx
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { ChevronDown } from "lucide-react";
 
-export default function SheMultiSelectTrigger({
+export default function SheMultiSelectTrigger<T>({
   id,
   className = "",
   style,
@@ -45,7 +45,7 @@ export default function SheMultiSelectTrigger({
   onClearExtraOptions,
   onClearAll,
   ...props
-}: ISheMultiSelectTrigger): JSX.Element {
+}: ISheMultiSelectTrigger<T>): JSX.Element {
   // ==================================================================== UTILITIES
   const { translate } = useAppTranslation();
 
@@ -105,7 +105,9 @@ export default function SheMultiSelectTrigger({
                     autoBadgeAmount
                     showCloseBtn
                     onClick={onTogglePopover}
-                    onClose={(item) => onToggleOption(item.value)}
+                    onClose={(item, model) =>
+                      onToggleOption(item.value, model.event)
+                    }
                     onCloseAllExtra={onClearExtraOptions}
                     {...badgeListProps}
                   />

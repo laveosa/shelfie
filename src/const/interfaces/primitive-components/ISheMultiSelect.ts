@@ -7,7 +7,7 @@ import { ISheMultiSelectSearch } from "@/const/interfaces/primitive-components/I
 import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 
 export interface ISheMultiSelect<T>
-  extends Omit<ISheMultiSelectTrigger, "items">,
+  extends Omit<ISheMultiSelectTrigger<T>, "items">,
     ISheMultiSelectSearch,
     ISheMultiSelectFooter {
   popoverRef?: RefObject<HTMLDivElement>;
@@ -24,9 +24,9 @@ export interface ISheMultiSelect<T>
   isOpen?: boolean;
   onOpen?: (value: boolean) => void;
   onClear?(value: null): void;
-  onSelect?(values: T[]): void;
-  onSelectModel?(
-    data: IOutputEventModel<
+  onSelect?(
+    values: T[],
+    model?: IOutputEventModel<
       T[],
       ISheMultiSelect<T>,
       React.MouseEvent | React.KeyboardEvent
@@ -49,5 +49,4 @@ export const SheMultiSelectDefaultModel: ISheMultiSelect<any> = {
   onOpen: undefined,
   onClear: undefined,
   onSelect: undefined,
-  onSelectModel: undefined,
 };

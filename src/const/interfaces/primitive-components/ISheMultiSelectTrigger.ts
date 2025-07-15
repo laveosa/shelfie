@@ -5,8 +5,9 @@ import { ISheClearButton } from "@/const/interfaces/primitive-components/ISheCle
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
 import { ISheBadgeList } from "@/const/interfaces/primitive-components/ISheBadgeList.ts";
+import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 
-export interface ISheMultiSelectTrigger
+export interface ISheMultiSelectTrigger<T>
   extends ISheLabel,
     ISheClearButton,
     ComponentPropsWithRef<any> {
@@ -17,8 +18,8 @@ export interface ISheMultiSelectTrigger
   elementClassName?: string;
   elementStyle?: React.CSSProperties;
   icon?: Partial<ISheIcon> | string | React.FC<any>;
-  items?: ISheBadge[];
-  badgeListProps?: ISheBadgeList;
+  items?: ISheBadge<T>[];
+  badgeListProps?: ISheBadgeList<T>;
   contextType?: "badges" | "string";
   placeholder?: string;
   placeholderTransKey?: string;
@@ -33,13 +34,16 @@ export interface ISheMultiSelectTrigger
   disabled?: boolean;
   isLoading?: boolean;
   isOpen?: boolean;
-  onTogglePopover?(value?: any): void;
-  onToggleOption?(value: string): void;
-  onClearExtraOptions?(value: ISheBadge[]): void;
+  onTogglePopover?(): void;
+  onToggleOption?(value: T, event?: React.MouseEvent): void;
+  onClearExtraOptions?(
+    value: ISheBadge<T>[],
+    model?: IOutputEventModel<T[] | string[], ISheBadge<T>[], React.MouseEvent>,
+  ): void;
   onClearAll?(event: React.MouseEvent): void;
 }
 
-export const SheMultiSelectTriggerDefaultModel: ISheMultiSelectTrigger = {
+export const SheMultiSelectTriggerDefaultModel: ISheMultiSelectTrigger<any> = {
   ref: undefined,
   id: undefined,
   className: undefined,

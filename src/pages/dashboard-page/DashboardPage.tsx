@@ -339,7 +339,7 @@ export function DashboardPage() {
       />*/}
 
       <div className="flex gap-5 flex-col">
-        <div className="w-full flex">
+        {/*<div className="w-full flex">
           <SheMultiSelect<string>
             searchRef={searchRef}
             ref={triggerRef}
@@ -347,9 +347,9 @@ export function DashboardPage() {
             label="MultiSelect"
             required
             // items={options}
-            items={optionsSimple}
-            // items={_items}
-            // selectedValues={selected}
+            // items={optionsSimple}
+            items={_items}
+            selectedValues={selected}
             contextType="badges"
             showClearBtn
             showSearch
@@ -364,17 +364,16 @@ export function DashboardPage() {
             onOpen={(value) => {
               console.log("onOpen: ", value);
               // setTimeout(() => (searchRef.current.value = "TEST"));
-              /* setTimeout(() => {
-                popoverRef.current.style.border = "1px solid red";
-              });*/
+              //  setTimeout(() => {
+              //   popoverRef.current.style.border = "1px solid red";
+              // });
             }}
             onClear={(value) => console.log("onClear: ", value)}
-            onSelect={(value) => console.log("onSelect: ", value)}
-            onSelectModel={(value) => console.log("onSelectModel: ", value)}
+            onSelect={(value, model) => console.log("onSelect: ", value, model)}
           />
-        </div>
+        </div>*/}
 
-        {/*<div className="w-full flex">
+        <div className="w-full flex">
           <SheSelect<string>
             // triggerRef={triggerRef}
             // popoverRef={popoverRef}
@@ -385,7 +384,7 @@ export function DashboardPage() {
             items={_items}
             selected={selected}
             autoFocus
-            // openOnFocus
+            openOnFocus
             // isLoading
             // isOpen
             // disabled
@@ -398,7 +397,7 @@ export function DashboardPage() {
             onSelect={(value) => console.log("onSelect: ", value)}
             onSelectModel={(value) => console.log("onSelectModel: ", value)}
           />
-        </div>*/}
+        </div>
 
         {/*<div className="w-full flex">
           <SheAutocomplete
