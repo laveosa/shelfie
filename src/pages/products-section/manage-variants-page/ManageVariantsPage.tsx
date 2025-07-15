@@ -197,6 +197,7 @@ export function ManageVariantsPage() {
   async function onAction(actionType: string, payload?: any) {
     switch (actionType) {
       case "onProductItemClick":
+        handleCardAction("variantPhotosCard");
         productsService.itemCardHandler(payload);
         break;
       case "addVariant":
@@ -268,6 +269,7 @@ export function ManageVariantsPage() {
             ),
           ),
         );
+        handleCardAction("variantPhotosCard");
         dispatch(actions.setIsVariantConfigurationCardLoading(true));
         dispatch(actions.setIsVariantOptionsGridLoading(true));
         dispatch(actions.setIsVariantPhotoGridLoading(true));
@@ -280,7 +282,6 @@ export function ManageVariantsPage() {
             if (res) {
               dispatch(productsActions.refreshSelectedVariant(res));
               dispatch(productsActions.refreshVariantPhotos(res?.photos));
-              dispatch(actions.setIsProductPhotoGridLoading(true));
             } else {
               addToast({
                 text: "Variant not found",
