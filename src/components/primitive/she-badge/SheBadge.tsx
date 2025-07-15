@@ -17,7 +17,7 @@ import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { XCircle } from "lucide-react";
 import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
 
-export default function SheBadge(props: ISheBadge): JSX.Element {
+export default function SheBadge<T>(props: ISheBadge<T>): JSX.Element {
   // ==================================================================== PROPS
   const {
     id,
@@ -33,6 +33,7 @@ export default function SheBadge(props: ISheBadge): JSX.Element {
     textTransKey,
     textWrap = "wrap",
     variant,
+    value,
     minWidth,
     maxWidth,
     fullWidth,
@@ -43,11 +44,13 @@ export default function SheBadge(props: ISheBadge): JSX.Element {
     onClick,
     onClose,
   } = props;
-  const sheBadgeProps: ISheBadge = getCustomProps<ISheBadge, ISheBadge>(
-    props,
+  const sheBadgeProps: ISheBadge<T> = getCustomProps<
+    ISheBadge<T>,
+    ISheBadge<T>
+  >(props, SheBadgeDefaultModel);
+  const restProps = removeCustomProps<ISheBadge<T>>(props, [
     SheBadgeDefaultModel,
-  );
-  const restProps = removeCustomProps<ISheBadge>(props, [SheBadgeDefaultModel]);
+  ]);
 
   // ==================================================================== UTILITIES
   const { getContextColorBasedOnVariant } = useComponentUtilities({
@@ -61,19 +64,21 @@ export default function SheBadge(props: ISheBadge): JSX.Element {
   // ==================================================================== EVENT HANDLERS
   function onClickHandler(event: React.MouseEvent<HTMLElement>) {
     event.stopPropagation();
-    onClick?.(text.toString(), {
+    const tmpValue: T | string = value ?? text?.toString();
+    onClick?.(tmpValue, {
       event,
       model: sheBadgeProps,
-      value: text.toString(),
+      value: tmpValue,
     });
   }
 
   function onCloseHandler(event: React.MouseEvent<HTMLElement>) {
     event.stopPropagation();
-    onClose?.(text.toString(), {
+    const tmpValue: T | string = value ?? text?.toString();
+    onClose?.(tmpValue, {
       event,
       model: sheBadgeProps,
-      value: text.toString(),
+      value: tmpValue,
     });
   }
 

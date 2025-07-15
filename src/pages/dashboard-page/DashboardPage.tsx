@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 import cs from "./DashboardPage.module.scss";
 import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageService.ts";
-import { Box, Home } from "lucide-react";
+import { Box, Home, ShoppingBasket } from "lucide-react";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import { SheTooltipEnum } from "@/const/enums/SheTooltipEnum.ts";
@@ -187,17 +187,32 @@ export function DashboardPage() {
       <br />
 
       <div className="flex gap-2">
-        <SheBadge
-          text="Option"
-          variant="destructive"
+        <SheBadge<{ name: string; age: number }>
+          text="Option weijo wie  iweoi weoi woeijf woiejf owien fowien wienf owien owienf owien"
           showCloseBtn
+          color="#4FA6BF"
+          textWrap="dots"
+          maxWidth="100px"
+          value={{ name: "Cenya", age: 32 }}
           onClick={(event, model) => console.log("onClick: ", event, model)}
           onClose={(event, model) => console.log("onClose: ", event, model)}
         />
         <SheBadge
-          text={3}
+          text={33333333333333333333333333333333333333333333333333333333333333}
           variant="secondary"
           showCloseBtn
+          textColor="violet"
+          maxWidth="200px"
+          disabled
+          onClick={(event, model) => console.log("onClick: ", event, model)}
+          onClose={(event, model) => console.log("onClose: ", event, model)}
+        />
+        <SheBadge
+          variant="destructive"
+          icon={ShoppingBasket}
+          iconColor="lime"
+          value="icon"
+          isLoading
           onClick={(event, model) => console.log("onClick: ", event, model)}
           onClose={(event, model) => console.log("onClose: ", event, model)}
         />

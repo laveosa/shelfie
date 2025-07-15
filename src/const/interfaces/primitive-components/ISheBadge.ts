@@ -4,10 +4,9 @@ import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { BadgeProps } from "@/components/ui/badge.tsx";
 import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 
-export interface ISheBadge
+export interface ISheBadge<T>
   extends Omit<BadgeProps, "onClick">,
     ComponentPropsWithRef<any> {
-  key?: any;
   id?: string;
   className?: string;
   style?: React.CSSProperties;
@@ -20,7 +19,7 @@ export interface ISheBadge
   text?: string | number;
   textTransKey?: string;
   textWrap?: "wrap" | "nowrap" | "dots";
-  value?: any;
+  value?: T;
   minWidth?: string;
   maxWidth?: string;
   fullWidth?: boolean;
@@ -30,15 +29,15 @@ export interface ISheBadge
   showCloseBtn?: boolean;
   onClick?: (
     value: string,
-    model?: IOutputEventModel<string, ISheBadge, React.MouseEvent>,
+    model?: IOutputEventModel<string, ISheBadge<T>, React.MouseEvent>,
   ) => void;
   onClose?: (
     value: string,
-    model?: IOutputEventModel<string, ISheBadge, React.MouseEvent>,
+    model?: IOutputEventModel<string, ISheBadge<T>, React.MouseEvent>,
   ) => void;
 }
 
-export const SheBadgeDefaultModel: ISheBadge = {
+export const SheBadgeDefaultModel: ISheBadge<any> = {
   id: undefined,
   className: undefined,
   style: undefined,

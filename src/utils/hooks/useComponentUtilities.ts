@@ -16,16 +16,17 @@ export interface IComponentUtilities {
 export default function useComponentUtilities({
   identifier,
 }?: IComponentUtilities) {
+  // ==================================================================== UTILITIES
   const { translate } = useAppTranslation();
   const [ariaDescribedbyId, setAriaDescribedbyId] = useState<string>(null);
 
+  // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     if (identifier !== ariaDescribedbyId)
       setAriaDescribedbyId(`${generateId()}_${identifier ?? "component"}_ID`);
   }, [identifier]);
 
   // ================================================================== LOGIC
-
   function initializeItemsList<V, T extends ISheOption<V>>(
     items: T[],
     selectedValues?: V | V[],
