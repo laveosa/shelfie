@@ -1,5 +1,5 @@
 export interface IOutputEventModel<V, M, E> {
-  value: V;
+  value?: V;
   model?: M;
   event?: E;
 }

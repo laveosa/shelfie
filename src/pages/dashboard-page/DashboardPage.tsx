@@ -9,6 +9,7 @@ import { SheTooltipEnum } from "@/const/enums/SheTooltipEnum.ts";
 import SheMultiSelect from "@/components/primitive/she-multi-select/SheMultiSelect.tsx";
 import SheAutocomplete from "@/components/primitive/she-autocomplete/SheAutocomplete.tsx";
 import { ISheMultiSelectItem } from "@/const/interfaces/primitive-components/ISheMultiSelectItem.ts";
+import SheBadge from "@/components/primitive/she-badge/SheBadge.tsx";
 
 const options: ISheSelectItem<any>[] = [
   {
@@ -184,6 +185,23 @@ export function DashboardPage() {
       <h1>Dashboard</h1>
 
       <br />
+
+      <div className="flex gap-2">
+        <SheBadge
+          text="Option"
+          variant="destructive"
+          showCloseBtn
+          onClick={(event, model) => console.log("onClick: ", event, model)}
+          onClose={(event, model) => console.log("onClose: ", event, model)}
+        />
+        <SheBadge
+          text={3}
+          variant="secondary"
+          showCloseBtn
+          onClick={(event, model) => console.log("onClick: ", event, model)}
+          onClose={(event, model) => console.log("onClose: ", event, model)}
+        />
+      </div>
 
       <br />
 

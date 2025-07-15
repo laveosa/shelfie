@@ -2,8 +2,11 @@ import React, { ComponentPropsWithRef } from "react";
 
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { BadgeProps } from "@/components/ui/badge.tsx";
+import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 
-export interface ISheBadge extends BadgeProps, ComponentPropsWithRef<any> {
+export interface ISheBadge
+  extends Omit<BadgeProps, "onClick">,
+    ComponentPropsWithRef<any> {
   key?: any;
   id?: string;
   className?: string;
@@ -25,6 +28,37 @@ export interface ISheBadge extends BadgeProps, ComponentPropsWithRef<any> {
   isLoading?: boolean;
   isCircle?: boolean;
   showCloseBtn?: boolean;
-  onClick?: (value: any) => void;
-  onClose?: (value?: any) => void;
+  onClick?: (
+    value: string,
+    model?: IOutputEventModel<string, ISheBadge, React.MouseEvent>,
+  ) => void;
+  onClose?: (
+    value: string,
+    model?: IOutputEventModel<string, ISheBadge, React.MouseEvent>,
+  ) => void;
 }
+
+export const SheBadgeDefaultModel: ISheBadge = {
+  id: undefined,
+  className: undefined,
+  style: undefined,
+  elementClassName: undefined,
+  elementStyle: undefined,
+  color: undefined,
+  textColor: undefined,
+  iconColor: undefined,
+  icon: undefined,
+  text: undefined,
+  textTransKey: undefined,
+  textWrap: undefined,
+  value: undefined,
+  minWidth: undefined,
+  maxWidth: undefined,
+  fullWidth: undefined,
+  disabled: undefined,
+  isLoading: undefined,
+  isCircle: undefined,
+  showCloseBtn: undefined,
+  onClick: undefined,
+  onClose: undefined,
+};

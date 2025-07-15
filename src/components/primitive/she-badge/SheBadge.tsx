@@ -2,64 +2,82 @@ import React, { JSX } from "react";
 import _ from "lodash";
 
 import cs from "./SheBadge.module.scss";
+import {
+  getCustomProps,
+  removeCustomProps,
+} from "@/utils/helpers/props-helper.ts";
+import {
+  ISheBadge,
+  SheBadgeDefaultModel,
+} from "@/const/interfaces/primitive-components/ISheBadge.ts";
 import { Badge } from "@/components/ui/badge.tsx";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
-import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { XCircle } from "lucide-react";
+import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
 
-export default function SheBadge({
-  id,
-  className = "",
-  style,
-  elementClassName = "",
-  elementStyle,
-  color,
-  textColor,
-  iconColor,
-  icon,
-  text,
-  textTransKey,
-  textWrap = "wrap",
-  minWidth,
-  maxWidth,
-  fullWidth,
-  disabled,
-  isLoading,
-  isCircle,
-  showCloseBtn,
-  onClick,
-  onClose,
-  ...props
-}: ISheBadge): JSX.Element {
+export default function SheBadge(props: ISheBadge): JSX.Element {
+  // ==================================================================== PROPS
+  const {
+    id,
+    className = "",
+    style,
+    elementClassName = "",
+    elementStyle,
+    color,
+    textColor,
+    iconColor,
+    icon,
+    text,
+    textTransKey,
+    textWrap = "wrap",
+    variant,
+    minWidth,
+    maxWidth,
+    fullWidth,
+    disabled,
+    isLoading,
+    isCircle,
+    showCloseBtn,
+    onClick,
+    onClose,
+  } = props;
+  const sheBadgeProps: ISheBadge = getCustomProps<ISheBadge, ISheBadge>(
+    props,
+    SheBadgeDefaultModel,
+  );
+  const restProps = removeCustomProps<ISheBadge>(props, [SheBadgeDefaultModel]);
+
   // ==================================================================== UTILITIES
+  const { getContextColorBasedOnVariant } = useComponentUtilities({
+    identifier: "SheBadge",
+  });
+
   const { translate } = useAppTranslation();
-  const contextColor = _getContextColor();
+  const contextColor = getContextColorBasedOnVariant(variant);
   const circleView = _isCircle();
 
   // ==================================================================== EVENT HANDLERS
   function onClickHandler(event: React.MouseEvent<HTMLElement>) {
     event.stopPropagation();
-    onClick?.(event);
+    onClick?.(text.toString(), {
+      event,
+      model: sheBadgeProps,
+      value: text.toString(),
+    });
   }
 
   function onCloseHandler(event: React.MouseEvent<HTMLElement>) {
     event.stopPropagation();
-    onClose?.(event);
+    onClose?.(text.toString(), {
+      event,
+      model: sheBadgeProps,
+      value: text.toString(),
+    });
   }
 
   // ==================================================================== PRIVATE
-  function _getContextColor(): string {
-    switch (props.variant) {
-      case "outline":
-      case "secondary":
-        return "black";
-      default:
-        return "white";
-    }
-  }
-
   function _isCircle(): boolean {
     return (
       isCircle ||
@@ -99,7 +117,7 @@ export default function SheBadge({
                 ...elementStyle,
               }}
               onClick={onClickHandler}
-              {...props}
+              {...restProps}
             >
               {icon && (
                 <SheIcon

@@ -44,7 +44,7 @@ export default function SheButton({
   }
 
   // ==================================================================== PRIVATE
-
+  // TODO use this logic from useComponentUtilities for getContextColorBasedOnVariant func
   function _isLoaderDark(): string {
     switch (variant) {
       case "ghost":

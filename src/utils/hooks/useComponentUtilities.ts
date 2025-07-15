@@ -106,6 +106,18 @@ export default function useComponentUtilities({
     });
   }
 
+  function getContextColorBasedOnVariant(variant: string): string {
+    switch (variant) {
+      case "ghost":
+      case "link":
+      case "outline":
+      case "secondary":
+        return "black";
+      default:
+        return "white";
+    }
+  }
+
   // ================================================================== OUTPUT
   return {
     ariaDescribedbyId,
@@ -116,6 +128,7 @@ export default function useComponentUtilities({
     getItemFromListByIdentifier,
     initializeItemsList,
     calculatePopoverWidth,
+    getContextColorBasedOnVariant,
   };
 }
 
