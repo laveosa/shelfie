@@ -70,35 +70,59 @@ export default function GridItemsFilter<T>({
       <DropdownMenu
         open={dropdownOpen}
         onOpenChange={(open) => {
-          if (!open && selectedIds.length > 0) {
-            onApplyHandle();
-          }
-          if (!open && selectedIds.length === 0) {
-            onResetHandle();
-          }
+          if (!open && selectedIds.length > 0) onApplyHandle();
+          if (!open && selectedIds.length === 0) onResetHandle();
           setDropdownOpen(open);
         }}
       >
-        <DropdownMenuTrigger className={cs.dropdownMenuTrigger} asChild>
-          <SheButton
-            className={cs.dropdownMenuTriggerButton}
-            variant="outline"
-            disabled={!items || items.length === 0}
-            onClick={() => setDropdownOpen(true)}
-          >
-            <div className={cs.buttonInnerItems}>
-              {selectedIds?.length > 0 ? (
-                <span>{selectedIds.length}</span>
-              ) : icon ? (
-                <SheIcon icon={icon} className={cs.settingsIcon} />
-              ) : (
-                <Settings2 className={cs.settingsIcon} />
-              )}
-              {columnName}
-              <ChevronDown className={cs.chevronIcon} />
+        <div className={cs.triggerContainer}>
+          <DropdownMenuTrigger asChild>
+            <SheButton
+              className={cs.dropdownMenuTriggerButton}
+              variant="outline"
+              disabled={!items || items.length === 0}
+              onClick={() => setDropdownOpen(true)}
+            >
+              <div className={cs.buttonInnerItems}>
+                {selectedIds?.length > 0 ? (
+                  <span>{selectedIds.length}</span>
+                ) : icon ? (
+                  <SheIcon icon={icon} className={cs.settingsIcon} />
+                ) : (
+                  <Settings2 className={cs.settingsIcon} />
+                )}
+                <span
+                  className={
+                    selectedIds?.length > 0
+                      ? cs.columnNameWithIds
+                      : cs.columnName
+                  }
+                >
+                  {columnName}
+                </span>
+                <ChevronDown
+                  className={
+                    selectedIds.length === 0
+                      ? cs.chevronIcon
+                      : `${cs.chevronIcon} ${cs.chevronIconWithSelectedIds}`
+                  }
+                />
+              </div>
+            </SheButton>
+          </DropdownMenuTrigger>
+
+          {selectedIds.length > 0 && (
+            <div
+              className={cs.clearButton}
+              onClick={(e) => {
+                e.stopPropagation();
+                onResetHandle();
+              }}
+            >
+              <SheIcon icon={X} />
             </div>
-          </SheButton>
-        </DropdownMenuTrigger>
+          )}
+        </div>
         <DropdownMenuContent align="start" className={cs.dropdownMenuContent}>
           <div className={cs.itemsList}>
             <DropdownMenuLabel>{columnName}</DropdownMenuLabel>
@@ -128,17 +152,6 @@ export default function GridItemsFilter<T>({
           </div>
         </DropdownMenuContent>
       </DropdownMenu>
-      <SheButton
-        className={cs.clearButton}
-        icon={X}
-        variant="secondary"
-        onClick={() => onResetHandle()}
-        minWidth="20px"
-        maxWidth="20px"
-        maxHeight="20px"
-        minHeight="20px"
-        disabled={!selectedIds.length}
-      />
     </div>
   );
 }

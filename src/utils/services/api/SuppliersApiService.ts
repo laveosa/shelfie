@@ -55,6 +55,19 @@ export const SuppliersApiService = createApi({
         method: "PATCH",
       }),
     }),
+    changePositionOfSupplierPhoto: apiConfig.createMutation<
+      any,
+      {
+        supplierId?: number;
+        photoId?: number;
+        index?: number;
+      }
+    >(builder, {
+      query: ({ supplierId, photoId, index }) => ({
+        url: `${ApiUrlEnum.SUPPLIERS}/${supplierId}/photo/${photoId}/${index}`,
+        method: "PATCH",
+      }),
+    }),
   }),
 });
 

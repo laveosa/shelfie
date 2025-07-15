@@ -1,6 +1,6 @@
+import React from "react";
 import { ColumnDef, Row } from "@tanstack/react-table";
 import { ListTree, Trash2 } from "lucide-react";
-import React from "react";
 
 import { Switch } from "@/components/ui/switch.tsx";
 import placeholderImage from "@/assets/images/placeholder-image.png";

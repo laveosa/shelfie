@@ -3,6 +3,7 @@ import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 
 export interface ICreateSupplierForm<T> {
   isLoading?: boolean;
+  isPhotoUploaderLoading?: boolean;
   data?: SupplierModel;
   countryList?: CountryCodeModel[];
   onSubmit?: (data: T) => void;

@@ -269,10 +269,18 @@ export function ManageVariantsPage() {
             ),
           ),
         );
-        handleCardAction("variantPhotosCard");
         dispatch(actions.setIsVariantConfigurationCardLoading(true));
         dispatch(actions.setIsVariantOptionsGridLoading(true));
         dispatch(actions.setIsVariantPhotoGridLoading(true));
+        if (state.activeCards.includes("variantPhotosCard")) {
+          dispatch(actions.setIsProductPhotoGridLoading(true));
+          productsService
+            .getProductPhotosForVariantHandler(productId, payload.variantId)
+            .then((res) => {
+              dispatch(actions.setIsProductPhotoGridLoading(false));
+              dispatch(actions.refreshProductPhotosForVariant(res));
+            });
+        }
         productsService
           .getVariantDetailsHandler(payload.variantId)
           .then((res) => {

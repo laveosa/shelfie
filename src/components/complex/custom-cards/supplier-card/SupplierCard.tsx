@@ -55,7 +55,7 @@ export default function SupplierCard({
             <SheButton
               icon={selectedSupplier ? RefreshCcwDotIcon : Plus}
               value={selectedSupplier ? "Replace Supplier" : "Select Supplier"}
-              variant="outline"
+              variant="secondary"
               maxWidth="160px"
               minWidth="160px"
               onClick={() => {

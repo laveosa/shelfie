@@ -93,7 +93,7 @@ export default function ProductPhotosCard({
                 data={data}
                 gridModel={data}
                 skeletonQuantity={productCounter?.gallery}
-                cellPadding="5px"
+                cellPadding="5px 10px"
                 customMessage="PRODUCT HAS NO PHOTO"
                 onNewItemPosition={(newIndex, activeItem, oldIndex) =>
                   handleAction("dnd", { newIndex, activeItem, oldIndex })
