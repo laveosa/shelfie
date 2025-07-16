@@ -28,6 +28,10 @@ export default function GridShowDeletedFilter() {
     setDropdownOpen(false);
   }
 
+  const selectedOption = gridShowDeletedFilterItems.find(
+    (item) => item.value === selectedValue,
+  );
+
   return (
     <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
       <DropdownMenuTrigger className={cs.dropdownMenuTrigger} asChild>
@@ -35,7 +39,7 @@ export default function GridShowDeletedFilter() {
           variant="outline"
           icon={Trash}
           minWidth="120px"
-          value={"Show Deleted"}
+          value={selectedOption.text}
           onClick={() => setDropdownOpen(true)}
         >
           <ChevronDown />

@@ -300,18 +300,16 @@ export function ManageVariantsPage() {
           });
         break;
       case "updateVariantDetails":
-        dispatch(actions.setIsVariantConfigurationCardLoading(true));
         productsService
           .updateVariantDetailsHandler(
             payload.variant.variantId,
             payload.formattedData,
           )
           .then((res) => {
-            dispatch(actions.setIsVariantConfigurationCardLoading(false));
             if (res) {
               const modifiedRes = {
-                ...res.data,
-                traitOptions: addGridRowColor(res.data.traitOptions, "color", [
+                ...res,
+                traitOptions: addGridRowColor(res.traitOptions, "color", [
                   {
                     field: "isRemoved",
                     value: true,
