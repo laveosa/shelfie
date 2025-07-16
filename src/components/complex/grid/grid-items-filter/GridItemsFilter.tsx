@@ -110,7 +110,6 @@ export default function GridItemsFilter<T>({
               </div>
             </SheButton>
           </DropdownMenuTrigger>
-
           {selectedIds.length > 0 && (
             <div
               className={cs.clearButton}
