@@ -64,7 +64,7 @@ export default function useAuthPageService() {
     return userSignIn(model).then((res: any) => {
       dispatch(action.setLoading(false));
       if (res.error) {
-        return;
+        return res;
       } else {
         refreshToken(res.data.token);
         verifySignInNumberHandler();
@@ -76,6 +76,9 @@ export default function useAuthPageService() {
     dispatch(action.setLoading(true));
     return confirmSignInNumber(model).then((res: any) => {
       dispatch(action.setLoading(false));
+      if (res.error) {
+        return res;
+      }
       refreshToken(res.data.token);
       navigate(NavUrlEnum.DASHBOARD);
     });
@@ -87,6 +90,7 @@ export default function useAuthPageService() {
       dispatch(action.setLoading(false));
       if (res.error) {
         authFormViewChangeHandler(AuthFormViewEnum.VERIFY_PHONE_NUMBER);
+        return res;
       } else {
         authFormViewChangeHandler(AuthFormViewEnum.VERIFY_CODE);
         dispatch(action.setHiddenPhoneNumber(res.data.hiddenPhoneNumber));
@@ -99,7 +103,7 @@ export default function useAuthPageService() {
     return userSignUp(model).then((res: any) => {
       dispatch(action.setLoading(false));
       if (res.error) {
-        return;
+        return res;
       } else {
         refreshToken(res.data.token);
         authFormViewChangeHandler(AuthFormViewEnum.VERIFY_PHONE_NUMBER);
@@ -112,7 +116,7 @@ export default function useAuthPageService() {
     return verifySignupNumber(model).then((res: any) => {
       dispatch(action.setLoading(false));
       if (res.error) {
-        return;
+        return res;
       } else {
         authFormViewChangeHandler(AuthFormViewEnum.VERIFY_CODE);
       }
@@ -124,8 +128,9 @@ export default function useAuthPageService() {
     return confirmSignUpPhoneNumber(model).then((res: any) => {
       dispatch(action.setLoading(false));
       if (res.error) {
-        refreshToken(res.data.token);
+        refreshToken(res?.data?.token);
         authFormViewChangeHandler(AuthFormViewEnum.SIGN_UP);
+        return res;
       } else {
         navigate(NavUrlEnum.DASHBOARD);
       }
@@ -137,9 +142,10 @@ export default function useAuthPageService() {
     return forgotPassword(model).then((res: any) => {
       dispatch(action.setLoading(false));
       if (res.error) {
-        return;
+        return res;
       } else {
         authFormViewChangeHandler(AuthFormViewEnum.SIGN_IN);
+        return res;
       }
     });
   }
