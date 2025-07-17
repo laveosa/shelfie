@@ -1,47 +1,79 @@
 .gridItemsFilterWrapper {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  .triggerContainer {
+    position: relative;
+    display: inline-block;
 
-  .dropdownMenuTrigger {
-    min-width: fit-content;
-    box-shadow: none;
-    height: 30px;
-    padding: 8px !important;
-
-    .buttonInnerItems {
+    .clearButton {
+      position: absolute;
+      top: 50%;
+      right: 8px;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      background: #f4f4f5;
+      border-radius: 5px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 2;
 
-      span {
-        width: 20px;
-        height: 20px;
-        padding-top: 3px;
-      }
-
-      .settingsIcon {
-        width: 20px;
-        height: 20px;
-      }
-
-      .chevronIcon {
-        width: 16px;
-        height: 16px;
-        padding-top: 4px;
+      svg {
+        width: 15px;
+        height: 15px;
       }
     }
 
-    &:focus-visible {
+    .dropdownMenuTriggerButton {
+      min-width: fit-content;
       box-shadow: none;
-    }
+      height: 30px;
+      padding: 8px !important;
 
+      .buttonInnerItems {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 10px;
 
-  }
+        .columnName {
+          width: 100%;
+          margin-right: 20px;
+        }
 
-  .clearButton {
-    svg {
-      width: 15px;
+        .columnNameWithIds {
+          width: 100%;
+          margin-right: 46px;
+        }
+
+        span {
+          width: 20px;
+          height: 20px;
+          padding-top: 3px;
+        }
+
+        .settingsIcon {
+          width: 20px;
+          height: 20px;
+        }
+
+        .chevronIcon {
+          width: 16px;
+          height: 16px;
+          padding-top: 4px;
+        }
+
+        .chevronIconWithSelectedIds {
+          position: absolute;
+          top: 0;
+          right: 30px;
+          transition: right 0.9s ease;
+        }
+      }
+
+      &:focus-visible {
+        box-shadow: none;
+      }
     }
   }
 }
@@ -53,7 +85,6 @@
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-
 
   .itemsContainer {
     overflow-y: auto;

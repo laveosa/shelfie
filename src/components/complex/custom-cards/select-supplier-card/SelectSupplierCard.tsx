@@ -15,6 +15,7 @@ import { SuppliersListGridColumns } from "@/components/complex/grid/supplier-lis
 
 export default function SelectSupplierCard({
   isLoading,
+  isGridLoading,
   suppliers,
   onAction,
 }: ISelectSupplierCard) {
@@ -62,6 +63,7 @@ export default function SelectSupplierCard({
             onDelay={(data: string) => onAction("searchSupplier", data)}
           />
           <DndGridDataTable
+            isLoading={isGridLoading}
             showHeader={false}
             columns={
               SuppliersListGridColumns({
@@ -69,6 +71,7 @@ export default function SelectSupplierCard({
               }) as ColumnDef<DataWithId>[]
             }
             data={suppliers}
+            skeletonQuantity={10}
             customMessage="There are no suppliers created yet"
           />
         </div>

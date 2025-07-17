@@ -155,43 +155,47 @@ export default function ProductTraitConfigurationCard({
                   className={cs.formInput}
                 />
               </SheForm.Field>
-              <div className={cs.productConfigurationFormRow}>
-                <FormField
-                  control={form.control}
-                  name="traitTypeId"
-                  rules={{
-                    required: true,
-                  }}
-                  render={({ field }) => (
-                    <FormItem className={cs.select}>
-                      <FormLabel>Trait type</FormLabel>
-                      <Select
-                        onValueChange={(value) => {
-                          field.onChange(Number(value));
-                          selectedTrait?.traitId && onSubmit(form.getValues());
-                        }}
-                        value={field.value ? field.value.toString() : ""}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select category" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {typesOfTraits.map((option) => (
-                            <SelectItem
-                              key={option.traitTypeId}
-                              value={option.traitTypeId.toString()}
-                            >
-                              <div>{option.traitTypeName}</div>
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormItem>
-                  )}
-                ></FormField>
-              </div>
+              {!selectedTrait?.traitId && (
+                <div className={cs.productConfigurationFormRow}>
+                  <FormField
+                    control={form.control}
+                    name="traitTypeId"
+                    rules={{
+                      required: true,
+                    }}
+                    render={({ field }) => (
+                      <FormItem className={cs.select}>
+                        <FormLabel>Trait type</FormLabel>
+                        <Select
+                          onValueChange={(value) => {
+                            field.onChange(Number(value));
+                            selectedTrait?.traitId &&
+                              onSubmit(form.getValues());
+                          }}
+                          value={field.value ? field.value.toString() : ""}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select category" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {typesOfTraits.map((option) => (
+                              <SelectItem
+                                key={option.traitTypeId}
+                                value={option.traitTypeId.toString()}
+                              >
+                                <div>{option.traitTypeName}</div>
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormItem>
+                    )}
+                  ></FormField>
+                </div>
+              )}
+
               {!selectedTrait?.traitId && (
                 <div className={cs.buttonBlock}>
                   <SheButton

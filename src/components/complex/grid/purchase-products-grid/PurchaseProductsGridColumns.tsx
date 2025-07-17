@@ -24,7 +24,6 @@ export function purchaseProductsGridColumns(
       header: "Image",
       size: 40,
       minSize: 40,
-      maxSize: 40,
       cell: ({ row, table }) => {
         const image: ImageModel = row.getValue("photo");
         const meta = table.options.meta as {
@@ -59,7 +58,6 @@ export function purchaseProductsGridColumns(
       header: "Code",
       size: 40,
       minSize: 40,
-      maxSize: 40,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("variantCode")}>
@@ -75,7 +73,6 @@ export function purchaseProductsGridColumns(
       header: "Product Name",
       size: 50,
       minSize: 50,
-      maxSize: 50,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("variantName")}>
@@ -91,7 +88,6 @@ export function purchaseProductsGridColumns(
       header: "Category",
       size: 50,
       minSize: 50,
-      maxSize: 50,
       cell: ({ row }) => {
         const category: CategoryModel = row.getValue("productCategory");
         return (
@@ -117,7 +113,6 @@ export function purchaseProductsGridColumns(
       header: "Brand",
       size: 40,
       minSize: 40,
-      maxSize: 40,
       cell: ({ row }) => {
         const brand: BrandModel = row.getValue("brand");
         return (
@@ -140,7 +135,6 @@ export function purchaseProductsGridColumns(
       header: "Details",
       size: 40,
       minSize: 40,
-      maxSize: 40,
       cell: ({ row }) => {
         const traitOptions = row.original.traitOptions || [];
 
@@ -189,7 +183,6 @@ export function purchaseProductsGridColumns(
       accessorKey: "",
       size: 220,
       minSize: 220,
-      maxSize: 220,
       header:
         activeTab === "connectProducts"
           ? "Quantity to add"
@@ -220,7 +213,6 @@ export function purchaseProductsGridColumns(
       header: "",
       size: 20,
       minSize: 20,
-      maxSize: 20,
       cell: ({ row, table }) => {
         return (
           <div style={{ display: "flex", justifyContent: "center" }}>

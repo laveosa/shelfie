@@ -86,21 +86,27 @@ export default function VariantConfigurationCard({
     variant?.variantId || null,
   );
   const userModifiedForm = useRef(false);
-  const debouncedFnRef = useRef<any>(null);
+
+  const debouncedSubmit = useRef(
+    debounce(() => {
+      if (userModifiedForm.current) {
+        form.handleSubmit(onSubmit)();
+      }
+    }, 1500),
+  );
 
   const { setValue, register, getValues } = form;
   const lastChanged = useRef<"netto" | "brutto" | null>(null);
   const preparedTraitOptions = prepareTraitOptionsData(variant?.traitOptions);
 
   useEffect(() => {
-    if (debouncedFnRef.current && debouncedFnRef.current.cancel) {
-      debouncedFnRef.current.cancel();
+    if (debouncedSubmit.current) {
+      debouncedSubmit.current = debounce(() => {
+        if (userModifiedForm.current) {
+          form.handleSubmit(onSubmit)();
+        }
+      }, 1500);
     }
-    return () => {
-      if (debouncedFnRef.current && debouncedFnRef.current.cancel) {
-        debouncedFnRef.current.cancel();
-      }
-    };
   }, [variant?.variantId]);
 
   useEffect(() => {
@@ -156,7 +162,7 @@ export default function VariantConfigurationCard({
     return (
       <div>
         {expandableItem.original.expandableRows.map((item) => (
-          <div className={cs.expandableRow}>
+          <div className={cs.expandableRow} key={item.id}>
             <SheIcon
               maxWidth="20px"
               minWidth="20px"
@@ -191,20 +197,8 @@ export default function VariantConfigurationCard({
 
     if (hasChanged) {
       userModifiedForm.current = true;
-      createDebouncedSubmit()();
+      debouncedSubmit.current();
     }
-  }
-
-  function createDebouncedSubmit() {
-    const fn = debounce(() => {
-      const currentValues = getValues();
-      if (userModifiedForm.current) {
-        form.handleSubmit(onSubmit)();
-      }
-    }, 1500);
-
-    debouncedFnRef.current = fn;
-    return fn;
   }
 
   function onSubmit(formData: VariantModel) {
@@ -377,21 +371,21 @@ export default function VariantConfigurationCard({
             </span>
             <SheButton
               icon={Plus}
-              variant="outline"
+              variant="secondary"
               onClick={() => onAction("openAddStockCard")}
             >
               Add
             </SheButton>
             <SheButton
               icon={Minus}
-              variant="outline"
+              variant="secondary"
               onClick={() => onAction("openDisposeStockCard")}
             >
               Dispose
             </SheButton>
             <SheButton
               icon={Clock}
-              variant="outline"
+              variant="secondary"
               maxWidth="89px"
               onClick={() =>
                 onAction("openVariantHistoryCard", variant.variantId)
@@ -420,7 +414,7 @@ export default function VariantConfigurationCard({
             <span className="she-title">Variant Traits</span>
             <SheButton
               icon={Blocks}
-              variant="outline"
+              variant="secondary"
               onClick={() => onAction("openManageTraitsCard")}
             >
               Manage
@@ -443,7 +437,7 @@ export default function VariantConfigurationCard({
             <span className="she-title">Variant Photos</span>
             <SheButton
               icon={ImagePlus}
-              variant="outline"
+              variant="secondary"
               onClick={() =>
                 onAction("openVariantPhotosCard", variant.variantId)
               }
