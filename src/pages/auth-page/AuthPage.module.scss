@@ -19,6 +19,12 @@
     padding: 20px;
     border: vars.$brdLight;
     border-radius: vars.$brdR_075;
+    position: relative;
+
+    .authPageLoadingBlock {
+      position: absolute;
+      top: 125px;
+    }
 
     .authHeader {
       @include flex-settings;
@@ -39,27 +45,46 @@
       .authInputBlock {
         position: relative;
 
+
         .phoneInput {
           display: flex;
-          align-items: center;
+          flex-direction: column;
           justify-content: center;
           gap: 10px;
 
-          button {
-            box-shadow: none;
+          .phoneNumberTitle {
+            //padding-left: 35px;
+          }
 
-            span {
-              padding-right: 5px;
+          .phoneInputItems {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 10px;
+
+            .countryCodeInput {
+              //padding-top: 30px;
+              padding-top: 8px;
+            }
+
+            button {
+              box-shadow: none;
+
+              span {
+                padding-right: 5px;
+              }
+            }
+
+            input {
+              //margin-top: 32px;
+
+              &[aria-invalid="true"] {
+                //margin-top: 60px;
+              }
             }
           }
 
-          input {
-            margin-top: 32px;
 
-            &[aria-invalid="true"] {
-              margin-top: 60px;
-            }
-          }
         }
 
         .passwordInput {
@@ -80,7 +105,7 @@
 
         .changePhoneNumber {
           position: absolute;
-          top: 38px;
+          top: 50px;
           left: 78%;
 
           span {
@@ -165,4 +190,11 @@
       color: vars.$textColor;
     }
   }
+}
+
+// -------------------------------------------------------------------- LOADING
+
+.authPageLoading {
+  pointer-events: none;
+  opacity: 0.5;
 }

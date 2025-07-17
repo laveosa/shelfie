@@ -8,19 +8,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select.tsx";
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/components/ui/form.tsx";
+import { FormControl, FormField, FormItem } from "@/components/ui/form.tsx";
 import cs from "./AuthPage.module.scss";
 import useAuthPageService from "@/pages/auth-page/useAuthPageService.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { AuthFormViewEnum } from "@/const/enums/AuthFormViewEnum.ts";
-import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { RequestAuthModel } from "@/const/models/RequestAuthModel.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { IAuthPageSlice } from "@/const/interfaces/store-slices/IAuthPageSlice.ts";
@@ -29,11 +23,14 @@ import { AuthPageSliceActions as action } from "@/state/slices/AuthPageSlice";
 import storageService from "@/utils/services/StorageService.ts";
 import { StorageKeyEnum } from "@/const/enums/StorageKeyEnum.ts";
 import logo from "@/assets/images/AuthLogo.png";
+import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
+import { useToast } from "@/hooks/useToast.ts";
 
-export function AuthPage() {
+export default function AuthPage() {
   const service = useAuthPageService();
   const dispatch = useAppDispatch();
   const state = useAppSelector<IAuthPageSlice>(StoreSliceEnum.AUTH);
+  const { addToast } = useToast();
   const form = useForm({
     defaultValues: {
       email: "",
@@ -68,11 +65,24 @@ export function AuthPage() {
     }
   }, [service.authFormView]);
 
+  // useEffect(() => {
+  //   if (state.countryCode.length) {
+  //     form.setValue("phoneCodeModel", state.countryCode[0]);
+  //   }
+  // }, [state.countryCode, form]);
+
   useEffect(() => {
-    if (state.countryCode.length) {
-      form.setValue("phoneCodeModel", state.countryCode[0]);
-    }
-  }, [state.countryCode, form]);
+    const fetchCountryCodes = async () => {
+      const codes = await service.getCountryCodeHandler();
+      dispatch(action.setCountryCode(codes.data));
+      form.reset({
+        ...form.getValues(),
+        phoneCodeModel: codes.data[0],
+      });
+    };
+
+    fetchCountryCodes();
+  }, []);
 
   function onFooterLink() {
     switch (service.authFormView) {
@@ -100,31 +110,86 @@ export function AuthPage() {
   function onSubmit(data: RequestAuthModel) {
     switch (service.authFormView) {
       case AuthFormViewEnum.SIGN_IN:
-        service.userSignInHandler(data);
+        service.userSignInHandler(data).then((res) => {
+          if (res) {
+            addToast({
+              text: res.error.data.title,
+              type: "error",
+            });
+          }
+        });
         break;
       case AuthFormViewEnum.SIGN_UP:
-        service.userSignUpHandler(data);
+        service.userSignUpHandler(data).then((res) => {
+          if (res.error) {
+            addToast({
+              text: res.error.data.detail,
+              type: "error",
+            });
+          }
+        });
         break;
       case AuthFormViewEnum.FORGOT_PASSWORD:
-        service.forgotPasswordHandler(data);
+        service.forgotPasswordHandler(data).then((res) => {
+          if (res.error) {
+            addToast({
+              text: res.error.data.detail,
+              type: "error",
+            });
+          } else {
+            addToast({
+              text: res.data.message,
+              type: "success",
+            });
+          }
+        });
         break;
       case AuthFormViewEnum.CHANGE_PASSWORD:
         service.resetPasswordHandler(data);
         break;
       case AuthFormViewEnum.VERIFY_PHONE_NUMBER:
-        service.verifySignupNumberHandler(data);
+        service.verifySignupNumberHandler(data).then((res) => {
+          if (res.error) {
+            addToast({
+              text: res.error.data.detail,
+              type: "error",
+            });
+          }
+        });
         break;
       case AuthFormViewEnum.VERIFY_CODE:
         state.hiddenPhoneNumber
-          ? service.confirmSignInNumberHandler(data)
-          : service.confirmSignUpPhoneNumberHandler(data);
+          ? service.confirmSignInNumberHandler(data).then((res) => {
+              if (res.error) {
+                addToast({
+                  text: res.error.data.detail,
+                  type: "error",
+                });
+              }
+            })
+          : service.confirmSignUpPhoneNumberHandler(data).then((res) => {
+              if (res.error) {
+                addToast({
+                  text: res.error.data.detail,
+                  type: "error",
+                });
+              }
+            });
         break;
     }
   }
 
+  // useEffect(() => {
+  //   console.log("LOADING", state.isLoading);
+  //   dispatch(action.setLoading(true));
+  // }, [state.isLoading]);
+
   return (
     <div id={cs["AuthPage"]}>
-      <div className={cs.authPageWrapper}>
+      <div
+        className={`${cs.authPageWrapper} ${state.isLoading ? cs.authPageLoading : ""}`}
+      >
+        {state.isLoading && <SheLoading className={cs.authPageLoadingBlock} />}
         <div className={cs.authHeader}>
           <img className={cs.authHeaderLogo} src={logo} alt="shelfie-logo" />
           <span className="she-title">{service.formStaticText.title}</span>
@@ -140,8 +205,8 @@ export function AuthPage() {
                       rules={{
                         required: "First name is required",
                         minLength: {
-                          value: 5,
-                          message: "First name must be at least 5 characters",
+                          value: 3,
+                          message: "First name must be at least 3 characters",
                         },
                         maxLength: {
                           value: 50,
@@ -149,16 +214,9 @@ export function AuthPage() {
                         },
                       }}
                       name="firstName"
+                      label="First Name"
                     >
-                      <SheInput
-                        label="First Name"
-                        placeholder="enter first name..."
-                        isValid={!form.formState.errors.firstName}
-                        patternErrorMessage={
-                          form.formState.errors.firstName?.message
-                        }
-                        showError={true}
-                      />
+                      <Input placeholder="enter first name..." />
                     </SheForm.Field>
                   </div>
                   <div className={cs.formItem}>
@@ -166,8 +224,8 @@ export function AuthPage() {
                       rules={{
                         required: "Last name is required",
                         minLength: {
-                          value: 5,
-                          message: "Last name must be at least 5 characters",
+                          value: 3,
+                          message: "Last name must be at least 3 characters",
                         },
                         maxLength: {
                           value: 50,
@@ -269,130 +327,141 @@ export function AuthPage() {
               {(service.authFormView === AuthFormViewEnum.VERIFY_PHONE_NUMBER ||
                 service.authFormView === AuthFormViewEnum.VERIFY_CODE) && (
                 <div className={cs.phoneInput}>
-                  {!state.hiddenPhoneNumber && (
-                    <div className={cs.formItem}>
-                      <FormField
-                        control={form.control}
-                        name="phoneCodeModel"
-                        rules={{
-                          required: "Country code is required",
-                        }}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Phone number</FormLabel>
-                            <Select
-                              disabled={
-                                service.authFormView ===
-                                AuthFormViewEnum.VERIFY_CODE
-                              }
-                              onValueChange={(value) => {
-                                const selectedCountry = state.countryCode.find(
-                                  (country) => country.phoneCode === value,
-                                );
-                                field.onChange(selectedCountry);
-                              }}
-                              value={
-                                service.authFormView ===
-                                AuthFormViewEnum.VERIFY_CODE
-                                  ? phoneCode
-                                  : field.value?.phoneCode || ""
-                              }
-                            >
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {state.countryCode.map((option) => (
-                                  <SelectItem
-                                    key={option.countryId}
-                                    value={option.phoneCode}
-                                  >
-                                    <div className="flex items-center gap-2">
-                                      <div
-                                        dangerouslySetInnerHTML={{
-                                          __html: option.flagIcon,
-                                        }}
-                                      />
-                                      {option.phoneCode}
-                                    </div>
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                  )}
-                  <div
-                    className={cs.formItem}
-                    style={
-                      state.hiddenPhoneNumber
-                        ? {
-                            width: "100%",
-                          }
-                        : null
-                    }
-                  >
-                    <SheForm.Field
-                      rules={
-                        !state.hiddenPhoneNumber
+                  <span className={`${cs.phoneNumberTitle} she-title`}>
+                    Phone number
+                  </span>
+                  <div className={cs.phoneInputItems}>
+                    {!state.hiddenPhoneNumber && (
+                      <div className={cs.formItem}>
+                        <FormField
+                          control={form.control}
+                          name="phoneCodeModel"
+                          rules={{
+                            required: "Country code is required",
+                          }}
+                          render={({ field }) => (
+                            <FormItem className={cs.countryCodeInput}>
+                              <Select
+                                disabled={
+                                  service.authFormView ===
+                                  AuthFormViewEnum.VERIFY_CODE
+                                }
+                                onValueChange={(value) => {
+                                  const selectedCountry =
+                                    state.countryCode.find(
+                                      (country) => country.phoneCode === value,
+                                    );
+                                  field.onChange(selectedCountry);
+                                }}
+                                value={
+                                  service.authFormView ===
+                                  AuthFormViewEnum.VERIFY_CODE
+                                    ? phoneCode
+                                    : field.value?.phoneCode || ""
+                                }
+                              >
+                                <FormControl>
+                                  <SelectTrigger>
+                                    <SelectValue
+                                      defaultValue={
+                                        state.countryCode[0]?.phoneCode
+                                      }
+                                    />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {state.countryCode.map((option) => (
+                                    <SelectItem
+                                      key={option.countryId}
+                                      value={option.phoneCode}
+                                    >
+                                      <div className="flex items-center gap-2">
+                                        <div
+                                          dangerouslySetInnerHTML={{
+                                            __html: option.flagIcon,
+                                          }}
+                                        />
+                                        {option.phoneCode}
+                                      </div>
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    )}
+                    <div
+                      className={cs.formItem}
+                      style={
+                        state.hiddenPhoneNumber
                           ? {
-                              required: "Phone number is required",
-                              minLength: {
-                                value: 8,
-                                message:
-                                  "Phone number must be at least 8 characters",
-                              },
-                              maxLength: {
-                                value: 9,
-                                message:
-                                  "Phone number cannot exceed 9 characters",
-                              },
+                              width: "100%",
                             }
                           : null
                       }
-                      name="phoneNumber"
-                      label={state.hiddenPhoneNumber ? "Phone number" : null}
                     >
-                      <Input
-                        disabled={
-                          service.authFormView === AuthFormViewEnum.VERIFY_CODE
-                        }
-                        type="number"
-                        placeholder={
-                          service.authFormView === AuthFormViewEnum.VERIFY_CODE
-                            ? state.hiddenPhoneNumber
-                              ? `Phone ending in ${state.hiddenPhoneNumber}`
-                              : phoneNumber
-                            : "phone number..."
-                        }
-                        style={
-                          state.hiddenPhoneNumber
+                      <SheForm.Field
+                        rules={
+                          !state.hiddenPhoneNumber
                             ? {
-                                marginTop: "10px",
+                                required: "Phone number is required",
+                                minLength: {
+                                  value: 8,
+                                  message:
+                                    "Phone number must be at least 8 characters",
+                                },
+                                maxLength: {
+                                  value: 9,
+                                  message:
+                                    "Phone number cannot exceed 9 characters",
+                                },
                               }
                             : null
                         }
-                      />
-                    </SheForm.Field>
-                  </div>
-                  {!state.hiddenPhoneNumber && (
-                    <div className={cs.changePhoneNumber}>
-                      <span
-                        className="she-text-link"
-                        onClick={() =>
-                          service.authFormViewChangeHandler(
-                            AuthFormViewEnum.VERIFY_PHONE_NUMBER,
-                          )
-                        }
+                        name="phoneNumber"
+                        label={state.hiddenPhoneNumber ? "Phone number" : null}
                       >
-                        {service.formStaticText.changePhoneNumberLink}
-                      </span>
+                        <Input
+                          disabled={
+                            service.authFormView ===
+                            AuthFormViewEnum.VERIFY_CODE
+                          }
+                          // type="number"
+                          placeholder={
+                            service.authFormView ===
+                            AuthFormViewEnum.VERIFY_CODE
+                              ? state.hiddenPhoneNumber
+                                ? `Phone ending in ${state.hiddenPhoneNumber}`
+                                : phoneNumber
+                              : "phone number..."
+                          }
+                          style={
+                            state.hiddenPhoneNumber
+                              ? {
+                                  marginTop: "10px",
+                                }
+                              : null
+                          }
+                        />
+                      </SheForm.Field>
                     </div>
-                  )}
+                    {!state.hiddenPhoneNumber && (
+                      <div className={cs.changePhoneNumber}>
+                        <span
+                          className="she-text-link"
+                          onClick={() =>
+                            service.authFormViewChangeHandler(
+                              AuthFormViewEnum.VERIFY_PHONE_NUMBER,
+                            )
+                          }
+                        >
+                          {service.formStaticText.changePhoneNumberLink}
+                        </span>
+                      </div>
+                    )}
+                  </div>
                 </div>
               )}
               {service.authFormView === AuthFormViewEnum.VERIFY_CODE && (
@@ -434,7 +503,9 @@ export function AuthPage() {
           )}
         </div>
       </div>
-      <div className={cs.footerText}>
+      <div
+        className={`${cs.footerText} ${state.isLoading ? cs.authPageLoading : ""}`}
+      >
         {(service.authFormView === AuthFormViewEnum.SIGN_IN ||
           service.authFormView === AuthFormViewEnum.SIGN_UP ||
           service.authFormView === AuthFormViewEnum.VERIFY_CODE ||
@@ -492,3 +563,5 @@ export function AuthPage() {
     </div>
   );
 }
+
+// export default AuthPage;

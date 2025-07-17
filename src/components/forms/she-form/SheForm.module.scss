@@ -1,0 +1,25 @@
+.customErrorMessage {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 0 !important;
+
+  .customErrorMessageIcon {
+    max-width: 20px;
+    min-width: 20px;
+
+    svg {
+      stroke: none;
+    }
+  }
+
+  .customErrorMessageText {
+    color: #EF4343;
+    font-weight: 500;
+  }
+}
+
+.formItemError {
+  background-color: #F1E9E5;
+}
