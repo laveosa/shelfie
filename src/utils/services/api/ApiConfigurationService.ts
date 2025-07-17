@@ -76,6 +76,8 @@ export class ApiConfigurationService {
 
       if (status === 401) {
         console.error("Unauthorized! Redirecting to login...");
+        window.location.href =
+          "https://green-glacier-0d48d5603.4.azurestaticapps.net/auth";
       } else {
         console.error(`Error ${status}: ${message}`);
       }
