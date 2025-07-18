@@ -202,6 +202,19 @@ export const PurchasesApiService = createApi({
         method: "DELETE",
       }),
     }),
+    getMarginProductsListForGrid: apiConfig.createMutation<
+      any,
+      {
+        purchaseId: number;
+        model: GridRequestModel;
+      }
+    >(builder, {
+      query: ({ purchaseId, model }) => ({
+        url: `${ApiUrlEnum.PURCHASES}/${purchaseId}/margin-items/list`,
+        method: "POST",
+        body: JSON.stringify(model),
+      }),
+    }),
   }),
 });
 

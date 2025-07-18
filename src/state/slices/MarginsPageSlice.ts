@@ -3,6 +3,7 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IMarginsPageSlice } from "@/const/interfaces/store-slices/IMarginsPageSlice.ts";
 import { MarginModel } from "@/const/models/MarginModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { GridModel } from "@/const/models/GridModel.ts";
 
 const initialState: IMarginsPageSlice = {
   isLoading: false,
@@ -15,6 +16,14 @@ const initialState: IMarginsPageSlice = {
   marginsList: [],
   selectedMargin: null,
   managedMargin: null,
+  marginProductsGridModel: {
+    pager: {},
+    items: [],
+  },
+  marginProductsGriRequestModel: {
+    currentPage: 1,
+    pageSize: 10,
+  },
   gridRequestModel: {
     currentPage: 1,
     pageSize: 10,
@@ -56,6 +65,20 @@ function setIsMarginConfigurationCardLoading(
   action: PayloadAction<boolean>,
 ) {
   state.isMarginConfigurationCardLoading = action?.payload;
+}
+
+function setIsSalePriceManagementCardLoading(
+  state: IMarginsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isSalePriceManagementCardLoading = action?.payload;
+}
+
+function setIsMarginProductsGridLoading(
+  state: IMarginsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isMarginProductsGridLoading = action?.payload;
 }
 
 function setIsMarginListGridLoading(
@@ -103,6 +126,22 @@ function resetManagedMargin(state: IMarginsPageSlice) {
   state.managedMargin = null;
 }
 
+function refreshMarginProductsGridModel(
+  state: IMarginsPageSlice,
+  action: PayloadAction<GridModel>,
+) {
+  state.marginProductsGridModel =
+    action?.payload || state.marginProductsGridModel;
+}
+
+function refreshMarginProductsGriRequestModel(
+  state: IMarginsPageSlice,
+  action: PayloadAction<GridRequestModel>,
+) {
+  state.marginProductsGriRequestModel =
+    action?.payload || state.marginProductsGriRequestModel;
+}
+
 function refreshGridRequestModel(
   state: IMarginsPageSlice,
   action: PayloadAction<GridRequestModel>,
@@ -119,6 +158,8 @@ const MarginsPageSlice = createSlice({
     setIsMarginForPurchaseCardLoading,
     setIsSelectMarginCardLoading,
     setIsMarginConfigurationCardLoading,
+    setIsSalePriceManagementCardLoading,
+    setIsMarginProductsGridLoading,
     setIsMarginListGridLoading,
     refreshActiveCards,
     refreshMarginsList,
@@ -126,6 +167,8 @@ const MarginsPageSlice = createSlice({
     resetSelectedMargin,
     refreshManagedMargin,
     resetManagedMargin,
+    refreshMarginProductsGridModel,
+    refreshMarginProductsGriRequestModel,
     refreshGridRequestModel,
   },
 });

@@ -17,6 +17,7 @@ import MarginForPurchaseCard from "@/components/complex/custom-cards/margin-for-
 import SelectMarginCard from "@/components/complex/custom-cards/select-margin-card/SelectMarginCard.tsx";
 import MarginConfigurationCard from "@/components/complex/custom-cards/margin-configuration-card/MarginConfigurationCard.tsx";
 import { setSelectedGridItem } from "@/utils/helpers/quick-helper.ts";
+import SalePriseManagementCard from "@/components/complex/custom-cards/sale-price-management-card/SalePriceManagementCard.tsx";
 
 export function MarginsPage() {
   const dispatch = useAppDispatch();
@@ -50,6 +51,16 @@ export function MarginsPage() {
       service.getAllMarginsHandler().then((res) => {
         dispatch(actions.refreshMarginsList(res));
       });
+    }
+    if (state.marginProductsGridModel.items.length === 0) {
+      service
+        .getMarginProductsListForGridHandler(
+          purchaseId,
+          state.marginProductsGriRequestModel,
+        )
+        .then((res) => {
+          dispatch(actions.refreshMarginProductsGridModel(res));
+        });
     }
   }, [purchaseId]);
 
@@ -341,6 +352,21 @@ export function MarginsPage() {
         margin={state.selectedMargin}
         onAction={onAction}
       />
+      {state.activeCards?.includes("salePriceManagementCard") && (
+        <div
+          ref={(el) => {
+            cardRefs.current["salePriceManagementCard"] = el;
+          }}
+        >
+          <SalePriseManagementCard
+            isLoading={state.isSalePriceManagementCardLoading}
+            isGridLoading={state.isMarginProductsGridLoading}
+            gridModel={state.marginProductsGridModel}
+            gridRequestModel={state.marginProductsGriRequestModel}
+            onAction={onAction}
+          />
+        </div>
+      )}
       {state.activeCards?.includes("selectMarginCard") && (
         <div
           ref={(el) => {

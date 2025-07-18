@@ -6,6 +6,8 @@ export function useMarginsPageService() {
 
   const [getMarginsListForGrid] =
     PurchasesApiHooks.useGetMarginsListForGridMutation();
+  const [getMarginProductsListForGrid] =
+    PurchasesApiHooks.useGetMarginProductsListForGridMutation();
   const [getAllMargins] = PurchasesApiHooks.useLazyGetAllMarginsQuery();
   const [getMarginForPurchase] =
     PurchasesApiHooks.useLazyGetMarginForPurchaseQuery();
@@ -21,6 +23,15 @@ export function useMarginsPageService() {
 
   function getMarginsListForGridHandler(model) {
     return getMarginsListForGrid(model).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function getMarginProductsListForGridHandler(purchaseId, model) {
+    return getMarginProductsListForGrid({
+      purchaseId,
+      model,
+    }).then((res: any) => {
       return res.data;
     });
   }
@@ -90,6 +101,7 @@ export function useMarginsPageService() {
 
   return {
     getMarginsListForGridHandler,
+    getMarginProductsListForGridHandler,
     getAllMarginsHandler,
     getMarginForPurchaseHandler,
     createMarginHandler,
