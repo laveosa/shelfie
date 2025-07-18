@@ -1,7 +1,10 @@
 .createSupplierForm {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+
+  .formGrid {
+    width: 100%;
+  }
 
   .uploadingBlockContainer {
     display: flex;

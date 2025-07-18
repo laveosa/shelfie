@@ -1,4 +1,4 @@
-import { ColumnDef, Row } from "@tanstack/react-table";
+import { ColumnDef } from "@tanstack/react-table";
 import placeholderImage from "@/assets/images/placeholder-image.png";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { Trash2 } from "lucide-react";
@@ -9,40 +9,22 @@ interface IProductPhotoGridColumns {
   height: number;
   width: number;
   isActive: boolean;
-  onGridAction: (
-    actionType: string,
-    rowId?: string,
-    setLoadingRow?: (rowId: string, loading: boolean) => void,
-    row?: Row<any>,
-  ) => void;
+  onGridAction: (identifier: string, payload: any) => void;
 }
 
 export const SupplierPhotosGridColumns = (
-  onGridAction: (
-    actionType: string,
-    rowId?: string,
-    setLoadingRow?: (rowId: string, loading: boolean) => void,
-    row?: Row<IProductPhotoGridColumns>,
-  ) => void,
+  onGridAction: (identifier, data) => void,
 ): ColumnDef<IProductPhotoGridColumns>[] => [
   {
     accessorKey: "thumbnailUrl",
     header: "Preview",
     size: 50,
     minSize: 50,
-    maxSize: 50,
-    cell: ({ row, table }) => {
+    cell: ({ row }) => {
       const photoUrl: string = row.getValue("thumbnailUrl");
-      const meta = table.options.meta as {
-        setLoadingRow: (rowId: string, loading: boolean) => void;
-        isRowLoading: (rowId: string) => boolean;
-      };
 
       return (
-        <div
-          className="relative w-12 h-12 cursor-pointer"
-          onClick={() => onGridAction("image", row.id, meta?.setLoadingRow)}
-        >
+        <div className="relative w-12 h-12 cursor-pointer">
           <img
             src={photoUrl}
             alt="photo"
@@ -60,7 +42,6 @@ export const SupplierPhotosGridColumns = (
     header: "Format",
     size: 50,
     minSize: 50,
-    maxSize: 50,
     cell: ({ row }) => {
       return (
         <span className="she-subtext">{`${row.original.height}px x ${row.original.width}px`}</span>
@@ -72,7 +53,6 @@ export const SupplierPhotosGridColumns = (
     header: "Actions",
     size: 50,
     minSize: 50,
-    maxSize: 50,
     cell: ({ row, table }) => {
       const meta = table.options.meta as {
         setLoadingRow: (rowId: string, loading: boolean) => void;
@@ -86,12 +66,7 @@ export const SupplierPhotosGridColumns = (
             onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();
-              onGridAction(
-                "deleteSupplierPhoto",
-                row.id,
-                meta?.setLoadingRow,
-                row,
-              );
+              onGridAction("deleteSupplierPhoto", { table, row });
             }}
             disabled={meta?.isRowLoading(row.id)}
             style={{ marginLeft: "10px" }}

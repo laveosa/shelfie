@@ -275,13 +275,17 @@ export function SupplierPage() {
           )
           .then((res) => {
             dispatch(actions.setIsSupplierConfigurationCardLoading(false));
-            if (res) {
-              payload.uploadModels.map((model) => {
+            if (!res.error) {
+              dispatch(actions.setIsPhotoUploaderLoading(true));
+
+              const uploadPromises = payload.uploadModels.map((model) => {
                 model.contextId = res.supplierId;
-                dispatch(actions.setIsPhotoUploaderLoading(true));
-                productsService.uploadPhotoHandler(model).then((res) => {
-                  dispatch(actions.setIsPhotoUploaderLoading(false));
-                  if (res) {
+                return productsService.uploadPhotoHandler(model);
+              });
+
+              Promise.all(uploadPromises).then((results) => {
+                results.forEach((res) => {
+                  if (res && !res.error) {
                     service
                       .getSupplierDetailsHandler(
                         state.managedSupplier.supplierId,
@@ -313,26 +317,19 @@ export function SupplierPage() {
                           );
                         });
                     }
+                    dispatch(actions.setIsPhotoUploaderLoading(false));
                     addToast({
                       text: "Image successfully added",
                       type: "success",
                     });
                   } else {
                     addToast({
-                      text: res.error.message,
+                      text: res?.error?.message,
                       type: "error",
                     });
                   }
                 });
               });
-              productsService
-                .getPurchaseDetailsHandler(purchaseId)
-                .then((res: PurchaseModel) => {
-                  dispatch(productsActions.refreshSelectedPurchase(res));
-                  dispatch(
-                    productsActions.refreshSelectedSupplier(res.supplier),
-                  );
-                });
               addToast({
                 text: "Supplier updated successfully",
                 type: "success",
@@ -439,6 +436,7 @@ export function SupplierPage() {
           });
         break;
       case "deleteSupplierPhoto":
+        payload.table.options.meta?.hideRow(payload.row.original.id);
         const confirmed = await openConfirmationDialog({
           title: "Deleting supplier photo",
           text: "You are about to delete supplier photo.",
@@ -446,45 +444,38 @@ export function SupplierPage() {
           secondaryButtonValue: "Cancel",
         });
 
-        if (!confirmed) return;
-
-        dispatch(actions.setIsSupplierPhotosGridLoading(true));
-        productsService
-          .deletePhotoHandler(payload.original.photoId)
-          .then(() => {
-            dispatch(actions.setIsSupplierPhotosGridLoading(false));
-            if (
-              productsState.selectedSupplier.supplierId ===
-              state.managedSupplier.supplierId
-            ) {
-              productsService
-                .getPurchaseDetailsHandler(purchaseId)
-                .then((res: PurchaseModel) => {
-                  dispatch(productsActions.refreshSelectedPurchase(res));
-                  dispatch(
-                    productsActions.refreshSelectedSupplier({
-                      ...res.supplier,
-                      locationId: res.location.locationId,
-                    }),
-                  );
-                });
-            }
-            service
-              .getSupplierDetailsHandler(
-                state.managedSupplier.supplierId,
-                state.managedSupplier.locationId,
-              )
-              .then((res) => {
-                dispatch(actions.refreshManagedSupplier(res));
+        if (!confirmed) {
+          payload.table.options.meta?.unhideRow(payload.row.original.id);
+        } else {
+          await productsService
+            .deletePhotoHandler(payload.row.original.photoId)
+            .then(() => {
+              dispatch(actions.setIsSupplierPhotosGridLoading(false));
+              if (
+                productsState.selectedSupplier.supplierId ===
+                state.managedSupplier.supplierId
+              ) {
+                productsService
+                  .getPurchaseDetailsHandler(purchaseId)
+                  .then((res: PurchaseModel) => {
+                    dispatch(productsActions.refreshSelectedPurchase(res));
+                    dispatch(
+                      productsActions.refreshSelectedSupplier({
+                        ...res.supplier,
+                        locationId: res.location.locationId,
+                      }),
+                    );
+                  });
+              }
+              service.getListOfSuppliersForGridHandler({}).then((res) => {
+                dispatch(actions.refreshSuppliersWithLocations(res.items));
               });
-            service.getListOfSuppliersForGridHandler({}).then((res) => {
-              dispatch(actions.refreshSuppliersWithLocations(res.items));
+              addToast({
+                text: "Photo deleted successfully",
+                type: "success",
+              });
             });
-            addToast({
-              text: "Photo deleted successfully",
-              type: "success",
-            });
-          });
+        }
         break;
       case "dndSupplierPhoto":
         service
