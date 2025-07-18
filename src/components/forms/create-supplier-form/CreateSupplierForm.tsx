@@ -173,6 +173,7 @@ export default function CreateSupplierForm<T>({
         )}
         <DndGridDataTable
           isLoading={isGridLoading}
+          className={cs.formGrid}
           enableDnd={true}
           showHeader={false}
           cellPadding="10px"

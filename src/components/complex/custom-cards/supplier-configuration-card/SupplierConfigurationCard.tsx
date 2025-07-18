@@ -15,13 +15,8 @@ export default function SupplierConfigurationCard({
   managedSupplier,
   onAction,
 }: ICreateSupplierCard) {
-  function onDeletePhoto(
-    _actionType,
-    _row,
-    _setLoadingRow?: (rowId: string, loading: boolean) => void,
-    row?,
-  ) {
-    onAction("deleteSupplierPhoto", row);
+  function onDeletePhoto(_actionType, table) {
+    onAction("deleteSupplierPhoto", table);
   }
 
   function onDndPhoto(data) {
