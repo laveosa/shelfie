@@ -41,6 +41,7 @@ export default function SupplierConfigurationCard({
           isLoading={isLoading}
           isGridLoading={isSupplierPhotosGridLoading}
           isPhotoUploaderLoading={isPhotoUploaderLoading}
+          className={cs.supplierConfigurationCardForm}
           countryList={countryList}
           data={managedSupplier}
           photos={managedSupplier?.photos}
