@@ -22,6 +22,7 @@ import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import { TypeOfTraitModel } from "@/const/models/TypeOfTraitModel.ts";
 import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
+import { IManageVariantsPageSlice } from "@/const/interfaces/store-slices/IManageVariantsPageSlice.ts";
 
 const initialState: IProductsPageSlice = {
   isLoading: false,
@@ -87,6 +88,8 @@ const initialState: IProductsPageSlice = {
   traitsForFilter: [],
   colorsForFilter: [],
   sizesForFilter: [],
+  activeTab: "products",
+  variantPhotos: [],
 };
 
 //----------------------------------------------------- LOADERS
@@ -354,6 +357,10 @@ function refreshPurchaseCounters(
   state.purchaseCounters = action?.payload || state.purchaseCounters;
 }
 
+function resetPurchaseCounters(state: IProductsPageSlice) {
+  state.purchaseCounters = null;
+}
+
 function refreshTypesOfTraits(
   state: IProductsPageSlice,
   action: PayloadAction<TypeOfTraitModel[]>,
@@ -388,6 +395,20 @@ function refreshCategory(
   action: PayloadAction<CategoryModel>,
 ) {
   state.category = action?.payload || state.category;
+}
+
+function refreshActiveTab(
+  state: IProductsPageSlice,
+  action: PayloadAction<string>,
+) {
+  state.activeTab = action?.payload || state.activeTab;
+}
+
+function refreshVariantPhotos(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<ImageModel[]>,
+) {
+  state.variantPhotos = action?.payload || state.variantPhotos;
 }
 
 const ProductsPageSlice = createSlice({
@@ -431,6 +452,7 @@ const ProductsPageSlice = createSlice({
     refreshCurrenciesList,
     refreshCountryCodeList,
     refreshPurchaseCounters,
+    resetPurchaseCounters,
     refreshTypesOfTraits,
     refreshTraits,
     refreshListOfTraitsWithOptionsForProduct,
@@ -438,6 +460,8 @@ const ProductsPageSlice = createSlice({
     refreshCategory,
     refreshColorsForFilter,
     refreshSizesForFilter,
+    refreshActiveTab,
+    refreshVariantPhotos,
   },
 });
 

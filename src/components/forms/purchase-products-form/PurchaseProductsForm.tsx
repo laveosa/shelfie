@@ -195,7 +195,7 @@ export default function PurchaseProductsForm<T>({
                 : ""
             }
             value={activeTab === "connectProducts" ? "Add" : "Update"}
-            variant="secondary"
+            variant="ghost"
             type="submit"
             disabled={activeTab === "connectProducts" ? !isFormValid : false}
           />

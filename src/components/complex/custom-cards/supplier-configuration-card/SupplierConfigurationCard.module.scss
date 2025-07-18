@@ -4,57 +4,18 @@
   .supplierConfigurationCardContent {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+    max-height: calc(100vh - 166px);
     gap: 20px;
 
-    .deleteSupplierBlock {
-      display: flex;
-      align-items: center;
-      border: 1px solid #E4E4E7;
-      border-radius: 5px;
-      background: #FAFAFA;
-      padding: 10px;
+    .supplierConfigurationCardForm {
+      overflow: auto;
 
-      .deleteSupplierTextBlock {
-        display: flex;
-        flex-direction: column;
-
-        .deleteSupplierTitle {
-          font-weight: 600;
-        }
-      }
-
-      .deleteSupplierButton {
-        color: #EF4343;
-
-        svg {
-          color: #EF4343
-        }
-      }
-    }
-
-    .restoreSupplierBlock {
-      display: flex;
-      align-items: center;
-      border: 1px solid #E4E4E7;
-      border-radius: 5px;
-      background: #FAFAFA;
-      padding: 10px;
-
-      .restoreSupplierTextBlock {
-        display: flex;
-        flex-direction: column;
-
-        .restoreSupplierTitle {
-          font-weight: 600;
-        }
-      }
-
-      .restoreSupplierButton {
-        color: #38BF5E;
-
-        svg {
-          color: #38BF5E
-        }
+      &::-webkit-scrollbar {
+        width: 6px;
+        height: 10px;
+        background: white;
       }
     }
   }

@@ -21,6 +21,8 @@ export default function useSupplierPageService() {
     SuppliersApiHooks.useLazyGetSupplierDetailsQuery();
   const [createSupplier] = SuppliersApiHooks.useCreateSupplierMutation();
   const [updateSupplier] = SuppliersApiHooks.useUpdateSupplierMutation();
+  const [changePositionOfSupplierPhoto] =
+    SuppliersApiHooks.useChangePositionOfSupplierPhotoMutation();
 
   function createPurchaseForSupplierHandler(model) {
     return createPurchaseForSupplier(model).then((res: any) => {
@@ -72,6 +74,16 @@ export default function useSupplierPageService() {
     });
   }
 
+  function changePositionOfSupplierPhotoHandler(supplierId, photoId, index) {
+    return changePositionOfSupplierPhoto({
+      supplierId,
+      photoId,
+      index,
+    }).then((res: any) => {
+      return res;
+    });
+  }
+
   return {
     createPurchaseForSupplierHandler,
     updatePurchaseForSupplierHandler,
@@ -80,5 +92,6 @@ export default function useSupplierPageService() {
     getSupplierDetailsHandler,
     createSupplierHandler,
     updateSupplierHandler,
+    changePositionOfSupplierPhotoHandler,
   };
 }

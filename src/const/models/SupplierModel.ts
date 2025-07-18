@@ -1,4 +1,5 @@
 import { ImageModel } from "@/const/models/ImageModel.ts";
+import { LocationModel } from "@/const/models/LocationModel.ts";
 
 export interface SupplierModel {
   photo?: any;
@@ -20,6 +21,8 @@ export interface SupplierModel {
   locationId?: number;
   isDeleted?: boolean;
   photos?: ImageModel[];
+  address?: string;
+  location?: LocationModel;
 }
 
 export const SupplierModelDefault: SupplierModel = {

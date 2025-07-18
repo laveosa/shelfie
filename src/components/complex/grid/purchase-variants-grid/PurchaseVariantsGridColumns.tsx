@@ -1,5 +1,6 @@
+import { CogIcon, ImageIcon } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
-import ProductsGridColumnActions from "@/components/complex/grid/products-grid/ProductsGridColumnActions.tsx";
+
 import { ImageModel } from "@/const/models/ImageModel.ts";
 import placeholderImage from "@/assets/images/placeholder-image.png";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
@@ -9,8 +10,8 @@ import cs from "./PurchaseVariantsGridColumns.module.scss";
 import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import PurchaseProductsForm from "@/components/forms/purchase-products-form/PurchaseProductsForm.tsx";
-import { ImageIcon } from "lucide-react";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 
 export function purchaseVariantsGridColumns(
   currencies: CurrencyModel[],
@@ -24,7 +25,6 @@ export function purchaseVariantsGridColumns(
       header: "Image",
       size: 40,
       minSize: 40,
-      maxSize: 40,
       cell: ({ row, table }) => {
         const image: ImageModel = row.getValue("photo");
         const meta = table.options.meta as {
@@ -59,7 +59,6 @@ export function purchaseVariantsGridColumns(
       header: "Code",
       size: 40,
       minSize: 40,
-      maxSize: 40,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("variantCode")}>
@@ -75,7 +74,6 @@ export function purchaseVariantsGridColumns(
       header: "Product Name",
       size: 50,
       minSize: 50,
-      maxSize: 50,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("variantName")}>
@@ -91,7 +89,6 @@ export function purchaseVariantsGridColumns(
       header: "Category",
       size: 50,
       minSize: 50,
-      maxSize: 50,
       cell: ({ row }) => {
         const category: CategoryModel = row.getValue("productCategory");
         return (
@@ -117,7 +114,6 @@ export function purchaseVariantsGridColumns(
       header: "Brand",
       size: 40,
       minSize: 40,
-      maxSize: 40,
       cell: ({ row }) => {
         const brand: BrandModel = row.getValue("brand");
         return (
@@ -140,7 +136,6 @@ export function purchaseVariantsGridColumns(
       header: "Details",
       size: 40,
       minSize: 40,
-      maxSize: 40,
       cell: ({ row }) => {
         const traitOptions = row.original.traitOptions || [];
 
@@ -188,9 +183,8 @@ export function purchaseVariantsGridColumns(
     {
       id: "nettoPriceGroup",
       accessorKey: "",
-      size: 220,
-      minSize: 220,
-      maxSize: 220,
+      size: 250,
+      minSize: 250,
       header: () => (
         <div className="flex items-center">
           <span style={{ marginRight: "40px" }}>Netto Price</span>
@@ -217,18 +211,18 @@ export function purchaseVariantsGridColumns(
       },
     },
     {
-      id: "rowActions",
-      header: "",
-      size: 20,
-      minSize: 20,
-      maxSize: 20,
-      cell: ({ row, table }) => {
+      id: "manage",
+      size: 70,
+      minSize: 70,
+      maxSize: 70,
+      cell: ({ row }) => {
         return (
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <ProductsGridColumnActions
-              row={row}
-              onAction={onAction}
-              table={table}
+          <div onClick={(e) => e.stopPropagation()}>
+            <SheButton
+              icon={CogIcon}
+              value="Manage"
+              variant="secondary"
+              onClick={() => onAction("navigateToManageVariant", row.original)}
             />
           </div>
         );

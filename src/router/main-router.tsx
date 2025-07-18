@@ -12,7 +12,6 @@ import { TransmissionsSectionRouter } from "@/router/TransmissionsSectionRouter.
 import { UsersSectionRouter } from "@/router/UsersSectionRouter.tsx";
 import { ProductsSectionRouter } from "@/router/ProductsSectionRouter.tsx";
 import RouterGuard from "@/utils/guards/RouterGuard.tsx";
-import AuthGuard from "@/utils/guards/AuthGuard.tsx";
 
 const mainRouter = createBrowserRouter([
   {
@@ -202,13 +201,9 @@ const mainRouter = createBrowserRouter([
   {
     path: NavUrlEnum.AUTH,
     lazy: async (): Promise<{ element: JSX.Element }> => {
-      const { AuthPage } = await import("@/pages/auth-page/AuthPage.tsx");
+      const { AuthWrapper } = await import("@/pages/auth-page/AuthWrapper.tsx");
       return {
-        element: (
-          <AuthGuard>
-            <AuthPage />
-          </AuthGuard>
-        ),
+        element: <AuthWrapper />,
       };
     },
   },

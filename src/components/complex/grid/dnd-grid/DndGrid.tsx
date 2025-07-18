@@ -59,6 +59,7 @@ interface DataTableProps<TData extends DataWithId, TValue>
   enableExpansion?: boolean;
   customMessage?: string;
   skeletonQuantity?: number;
+  cellPadding?: string;
   onAction?: (data) => void;
   onApplyColumns?: (data) => void;
   onDefaultColumns?: () => void;
@@ -91,6 +92,7 @@ const DraggableRow = ({
   enableExpansion = false,
   renderExpandedContent,
   totalColumns,
+  cellPadding,
 }) => {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useSortable({
@@ -118,17 +120,18 @@ const DraggableRow = ({
         style={{
           opacity: isLoading ? 0.7 : 1,
           transform: CSS.Transform.toString(transform),
-          background: isSelected ? "#F8F3FF" : row.original.color || "white",
+          background: isSelected ? "#F4F4F5" : row.original.color || "white",
         }}
       >
         <TableCell
           className={`${isDragging ? cs.dndIconCellDragged : cs.dndIconCell} ${isSelected ? cs.isSelected : ""}`}
           style={{
             cursor: isDragDisabled || isLoading ? "default" : "grab",
-            background: isSelected ? "#F8F3FF" : "inherit",
-            width: "40px",
-            minWidth: "40px",
+            background: isSelected ? "#F4F4F5" : "inherit",
+            width: "20px",
+            minWidth: "10px",
             maxWidth: "40px",
+            padding: cellPadding,
           }}
           {...listeners}
         >
@@ -144,9 +147,10 @@ const DraggableRow = ({
             onClick={(e) => e.stopPropagation()}
             style={{
               cursor: "default",
-              background: isSelected ? "#F8F3FF" : "inherit",
+              background: isSelected ? "#F4F4F5" : "inherit",
               minWidth: cell.column.columnDef.minSize || 50,
               maxWidth: cell.column.columnDef.maxSize,
+              padding: cellPadding,
             }}
           >
             {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -168,9 +172,12 @@ const DraggableRow = ({
                   colSpan={totalColumns}
                   className={cs.expandedContent}
                   style={{
-                    background: isSelected ? "#F8F3FF" : "#fafafa",
+                    background: isSelected
+                      ? "#F4F4F5"
+                      : row.original.color || "white", // Use parent row color
                     borderTop: "1px solid #e5e7eb",
-                    padding: "16px",
+                    // padding: "16px",
+                    padding: cellPadding,
                   }}
                 >
                   {renderExpandedContent(row, expandableItem, index)}
@@ -189,6 +196,7 @@ const RegularRow = ({
   enableExpansion = false,
   renderExpandedContent,
   totalColumns,
+  cellPadding = "8px 12px",
 }) => {
   const isLoading = loadingRows.has(row.id);
   const isSelected = row.original.isGridItemSelected;
@@ -208,7 +216,7 @@ const RegularRow = ({
         } ${isSelected ? cs.isSelected : ""}`}
         style={{
           pointerEvents: isLoading ? "none" : "auto",
-          background: isSelected ? "#F8F3FF" : row.original.color,
+          background: isSelected ? "#F4F4F5" : row.original.color,
           borderBottom: expandableRows.length > 0 ? "none" : "",
         }}
       >
@@ -217,12 +225,13 @@ const RegularRow = ({
             key={cell.id}
             className={`${cs.tableCell} ${isSelected ? cs.isSelected : ""}`}
             style={{
-              background: isSelected ? "#F8F3FF" : "inherit",
+              background: isSelected ? "#F4F4F5" : "inherit",
               ...(cell.column.columnDef.size && {
                 width: `${cell.column.columnDef.size}px`,
               }),
               minWidth: cell.column.columnDef.minSize || 50,
               maxWidth: cell.column.columnDef.maxSize,
+              padding: cellPadding,
             }}
           >
             {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -244,8 +253,12 @@ const RegularRow = ({
                   colSpan={totalColumns}
                   className={cs.expandedContent}
                   style={{
+                    background: isSelected
+                      ? "#F4F4F5"
+                      : row.original.color || "white",
                     borderTop:
                       expandableRows.length > 1 ? "1px solid white" : "",
+                    padding: cellPadding,
                   }}
                 >
                   {renderExpandedContent(row, expandableItem, index)}
@@ -281,6 +294,7 @@ export const DndGridDataTable = React.forwardRef<
     children,
     customMessage,
     skeletonQuantity,
+    cellPadding,
     onGridRequestChange,
     onApplyColumns,
     onDefaultColumns,
@@ -483,7 +497,7 @@ export const DndGridDataTable = React.forwardRef<
             }
             style={{
               width: "100%",
-              tableLayout: "auto",
+              tableLayout: "fixed",
               borderCollapse: "collapse",
             }}
           >
@@ -498,9 +512,10 @@ export const DndGridDataTable = React.forwardRef<
                       <TableHead
                         className={isLoading ? `${cs.tableHeadLoading}` : ""}
                         style={{
-                          width: "40px",
-                          minWidth: "40px",
+                          width: "20px",
+                          minWidth: "10px",
                           maxWidth: "40px",
+                          padding: cellPadding,
                         }}
                       ></TableHead>
                     )}
@@ -514,6 +529,7 @@ export const DndGridDataTable = React.forwardRef<
                           }),
                           minWidth: header.column.columnDef.minSize || 50,
                           maxWidth: header.column.columnDef.maxSize,
+                          padding: cellPadding,
                         }}
                       >
                         {header.isPlaceholder
@@ -528,7 +544,8 @@ export const DndGridDataTable = React.forwardRef<
                 ))}
               </TableHeader>
             )}
-            {isLoading && items.length === 0 ? (
+            {/*{isLoading && items.length === 0 ? (*/}
+            {isLoading ? (
               <TableBody className={cs.tableSkeleton}>
                 {createSkeletonArray(skeletonQuantity ?? 5).map((_, index) => (
                   <TableRow key={index}>
@@ -578,6 +595,7 @@ export const DndGridDataTable = React.forwardRef<
                             enableExpansion={enableExpansion}
                             renderExpandedContent={renderExpandedContent}
                             totalColumns={totalColumns}
+                            cellPadding={cellPadding}
                           />
                         ) : (
                           <RegularRow
@@ -587,6 +605,7 @@ export const DndGridDataTable = React.forwardRef<
                             enableExpansion={enableExpansion}
                             renderExpandedContent={renderExpandedContent}
                             totalColumns={totalColumns}
+                            cellPadding={cellPadding}
                           />
                         ),
                       )}
@@ -604,6 +623,7 @@ export const DndGridDataTable = React.forwardRef<
                         className="h-24 text-center"
                         style={{
                           width: "100%",
+                          padding: cellPadding,
                         }}
                       >
                         {customMessage || "NO DATA TO DISPLAY"}

@@ -2,7 +2,7 @@
 
 .supplierCard {
   .supplierCardContent {
-    height: calc(100vh - 180px);
+    height: calc(100vh - 166px);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -50,8 +50,22 @@
             display: flex;
             flex-direction: column;
 
+            .supplierName {
+              font-weight: 500;
+            }
+
             .deletedSupplier {
               opacity: 0.5;
+            }
+
+            .twoLineEllipsis {
+              display: -webkit-box;
+              -webkit-line-clamp: 2;
+              -webkit-box-orient: vertical;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              max-width: 150px;
+              white-space: normal;
             }
           }
         }
@@ -71,32 +85,6 @@
       .purchaseButtonBlock {
         display: flex;
         justify-content: space-between;
-      }
-    }
-
-    .deletePurchaseBlock {
-      display: flex;
-      align-items: center;
-      border: 1px solid #E4E4E7;
-      border-radius: 5px;
-      background: #FAFAFA;
-      padding: 10px;
-
-      .deletePurchaseTextBlock {
-        display: flex;
-        flex-direction: column;
-
-        .deletePurchaseTitle {
-          font-weight: 600;
-        }
-      }
-
-      .deletePurchaseButton {
-        color: #EF4343;
-
-        svg {
-          color: #EF4343
-        }
       }
     }
   }

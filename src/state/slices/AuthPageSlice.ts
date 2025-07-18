@@ -9,6 +9,7 @@ const initialState: IAuthPageSlice = {
   authFormView: AuthFormViewEnum.SIGN_IN,
   countryCode: [],
   hiddenPhoneNumber: null,
+  isLoading: false,
 };
 
 const AuthPageSlice = createSlice({

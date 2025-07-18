@@ -1,16 +1,10 @@
-import { MoreHorizontal, Plus } from "lucide-react";
+import { Plus, SlidersVertical } from "lucide-react";
 import React, { Fragment } from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ManageVariantsCard.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { TraitModel } from "@/const/models/TraitModel.ts";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu.tsx";
 import { ManageVariantsGridColumns } from "@/components/complex/grid/manage-variants-grid/ManageVariantsGridColumns.tsx";
 import { IManageVariantsCard } from "@/const/interfaces/complex-components/custom-cards/IManageVariantsCard.ts";
 import {
@@ -18,6 +12,7 @@ import {
   DndGridDataTable,
 } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { ColumnDef } from "@tanstack/react-table";
+import { Separator } from "@/components/ui/separator.tsx";
 
 export default function ManageVariantsCard({
   isLoading,
@@ -81,7 +76,7 @@ export default function ManageVariantsCard({
       showSecondaryButton={false}
       secondaryButtonTitle="Cancel"
       className={cs.manageVariantsCard}
-      minWidth={"461px"}
+      minWidth={"420px"}
       {...props}
     >
       <div className={cs.manageVariantsContent}>
@@ -103,25 +98,17 @@ export default function ManageVariantsCard({
             </span>
           )}
           {traits.length > 0 && (
-            <div className={cs.dropdownMenu}>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <SheButton variant="secondary">
-                    <MoreHorizontal />
-                  </SheButton>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-[160px]">
-                  <DropdownMenuItem
-                    onClick={() => onAction("openChooseVariantTraitsCard")}
-                  >
-                    <span className="she-text">Manage traits</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
+            <SheButton
+              icon={SlidersVertical}
+              variant="secondary"
+              value="Manage Traits"
+              onClick={() => onAction("openChooseVariantTraitsCard")}
+            />
           )}
         </div>
+        <Separator />
         <div className={cs.buttonBlock}>
+          <span className="she-title">Variants</span>
           <SheButton
             icon={Plus}
             variant="outline"

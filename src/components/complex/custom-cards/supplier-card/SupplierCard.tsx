@@ -1,3 +1,5 @@
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import {
   CogIcon,
   ImageIcon,
@@ -5,8 +7,6 @@ import {
   RefreshCcwDotIcon,
   Trash2,
 } from "lucide-react";
-import { useParams } from "react-router-dom";
-import { useState } from "react";
 
 import cs from "./SupplierCard.module.scss";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
@@ -17,6 +17,7 @@ import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import SheTextArea from "@/components/primitive/she-textarea/SheTextarea.tsx";
+import SheCardNotification from "@/components/complex/she-card-notification/SheCardNotification.tsx";
 
 export default function SupplierCard({
   isLoading,
@@ -31,6 +32,12 @@ export default function SupplierCard({
   const [purchaseNotes, setPurchaseNotes] = useState<string>(null);
   const isDateSelected = Boolean(selectedDate || selectedPurchase?.date);
   const isButtonDisabled = !isDateSelected || !selectedSupplier;
+
+  useEffect(() => {
+    if (selectedPurchase?.date) {
+      setSelectedDate(selectedPurchase.date);
+    }
+  }, [selectedPurchase?.date]);
 
   return (
     <SheProductCard
@@ -48,7 +55,7 @@ export default function SupplierCard({
             <SheButton
               icon={selectedSupplier ? RefreshCcwDotIcon : Plus}
               value={selectedSupplier ? "Replace Supplier" : "Select Supplier"}
-              variant="outline"
+              variant="secondary"
               maxWidth="160px"
               minWidth="160px"
               onClick={() => {
@@ -78,37 +85,57 @@ export default function SupplierCard({
                     className="max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap"
                   >
                     <span
-                      className={`${selectedSupplier.isDeleted === true ? cs.deletedSupplier : ""} she-text`}
+                      className={`${selectedSupplier.isDeleted === true ? cs.deletedSupplier : ""} ${cs.supplierName} she-text`}
                     >
                       {selectedSupplier?.supplierName}
                     </span>
                   </SheTooltip>
-                  {selectedSupplier?.addressLine1 && (
+                  {(selectedSupplier?.address ||
+                    selectedPurchase?.location?.address) && (
                     <SheTooltip
                       delayDuration={200}
-                      text={selectedSupplier?.addressLine1}
-                      className="max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap"
+                      text={
+                        selectedSupplier?.address ||
+                        selectedPurchase?.location?.address
+                      }
+                      className="max-w-[150px]"
                     >
                       <span
-                        className={`${selectedSupplier.isDeleted === true ? cs.deletedSupplier : ""} she-text`}
+                        className={`
+                        ${selectedSupplier.isDeleted === true ? cs.deletedSupplier : ""}
+                        ${cs.twoLineEllipsis} she-text`}
                       >
-                        {selectedSupplier?.addressLine1}
+                        {selectedSupplier?.address ||
+                          selectedPurchase?.location?.address}
                       </span>
                     </SheTooltip>
                   )}
-                  {selectedSupplier?.addressLine2 && (
-                    <SheTooltip
-                      delayDuration={200}
-                      text={selectedSupplier?.addressLine2}
-                      className="max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap"
-                    >
-                      <span
-                        className={`${selectedSupplier.isDeleted === true ? cs.deletedSupplier : ""} she-text`}
-                      >
-                        {selectedSupplier?.addressLine2}
-                      </span>
-                    </SheTooltip>
-                  )}
+                  {/*{selectedSupplier?.addressLine1 && (*/}
+                  {/*  <SheTooltip*/}
+                  {/*    delayDuration={200}*/}
+                  {/*    text={selectedSupplier?.addressLine1}*/}
+                  {/*    className="max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap"*/}
+                  {/*  >*/}
+                  {/*    <span*/}
+                  {/*      className={`${selectedSupplier.isDeleted === true ? cs.deletedSupplier : ""} she-text`}*/}
+                  {/*    >*/}
+                  {/*      {selectedSupplier?.addressLine1}*/}
+                  {/*    </span>*/}
+                  {/*  </SheTooltip>*/}
+                  {/*)}*/}
+                  {/*{selectedSupplier?.addressLine2 && (*/}
+                  {/*  <SheTooltip*/}
+                  {/*    delayDuration={200}*/}
+                  {/*    text={selectedSupplier?.addressLine2}*/}
+                  {/*    className="max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap"*/}
+                  {/*  >*/}
+                  {/*    <span*/}
+                  {/*      className={`${selectedSupplier.isDeleted === true ? cs.deletedSupplier : ""} she-text`}*/}
+                  {/*    >*/}
+                  {/*      {selectedSupplier?.addressLine2}*/}
+                  {/*    </span>*/}
+                  {/*  </SheTooltip>*/}
+                  {/*)}*/}
                 </div>
                 <SheButton
                   icon={selectedSupplier.isDeleted === true ? Plus : CogIcon}
@@ -173,23 +200,17 @@ export default function SupplierCard({
             ></SheButton>
           </div>
         </div>
-        <div className={cs.deletePurchaseBlock}>
-          <div className={cs.deletePurchaseTextBlock}>
-            <span className={`${cs.deletePurchaseTitle} she-text`}>
-              Delete Purchase
-            </span>
-            <span className="she-subtext">
-              The purchase will be deleted, but the changes in stock will remain
-              intact.
-            </span>
-          </div>
-          <SheButton
-            className={cs.deletePurchaseButton}
-            icon={Trash2}
-            variant={"outline"}
-            value="Delete"
+        {purchaseId && (
+          <SheCardNotification
+            title="Delete Purchase"
+            text=" The purchase will be deleted, but the changes in stock will remain
+              intact."
+            buttonIcon={Trash2}
+            buttonText="Delete"
+            buttonVariant="outline"
+            buttonColor="#EF4343"
           />
-        </div>
+        )}
       </div>
     </SheProductCard>
   );

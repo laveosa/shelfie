@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
 import cs from "./PurchaseProductsPage.module.scss";
@@ -36,9 +36,11 @@ import DisposeStockCard from "@/components/complex/custom-cards/dispose-stock-ca
 import StockHistoryCard from "@/components/complex/custom-cards/stock-history-card/StockHistoryCard.tsx";
 import VariantPhotosCard from "@/components/complex/custom-cards/variant-photos-card/VariantPhotosCard.tsx";
 import ManageTraitsCard from "@/components/complex/custom-cards/manage-traits-card/ManageTraitsCard.tsx";
+import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 
 export function PurchaseProductsPage() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { addToast } = useToast();
   const { openConfirmationDialog } = useDialogService();
   const service = usePurchaseProductsPageService();
@@ -75,6 +77,7 @@ export function PurchaseProductsPage() {
     }
     productsService.getTraitsForFilterHandler();
     dispatch(actions.refreshActiveCards([]));
+    dispatch(productsActions.refreshActiveTab("purchases"));
   }, [purchaseId]);
 
   useEffect(() => {
@@ -97,16 +100,16 @@ export function PurchaseProductsPage() {
 
   useEffect(() => {
     dispatch(actions.setIsPurchaseProductsCardLoading(true));
-    dispatch(actions.setIsProductsGridLoading(true));
+    dispatch(actions.setIsVariantsForPurchaseGridLoading(true));
     productsService
-      .getVariantsForGridHandler(productsState.variantsGridRequestModel)
+      .getVariantsForGridHandler(state.variantsForPurchaseGridRequestModel)
       .then((res) => {
         dispatch(actions.setIsPurchaseProductsCardLoading(false));
-        dispatch(actions.setIsProductsGridLoading(false));
-        dispatch(productsActions.refreshVariantsGridModel(res));
-        dispatch(productsActions.refreshVariants(res.items));
+        dispatch(actions.setIsVariantsForPurchaseGridLoading(false));
+        dispatch(actions.refreshVariantsForPurchaseGridModel(res));
+        dispatch(actions.refreshVariants(res.items));
       });
-  }, [productsState.variantsGridRequestModel]);
+  }, [state.variantsForPurchaseGridRequestModel]);
 
   useEffect(() => {
     if (productsState.brands.length === 0) {
@@ -129,6 +132,23 @@ export function PurchaseProductsPage() {
         dispatch(productsActions.refreshSuppliers(res));
       });
     }
+    if (state.sizesForFilter.length === 0 || state.colorsForFilter.length === 0)
+      productsService.getTraitsForFilterHandler().then((res) => {
+        dispatch(
+          actions.refreshSizesForFilter(
+            res
+              .filter((trait) => trait.traitTypeId === 1)
+              .flatMap((trait) => trait.traitOptions),
+          ),
+        );
+        dispatch(
+          actions.refreshColorsForFilter(
+            res
+              .filter((trait) => trait.traitTypeId === 2)
+              .flatMap((trait) => trait.traitOptions),
+          ),
+        );
+      });
     dispatch(actions.refreshActiveCards(null));
   }, []);
 
@@ -1503,7 +1523,7 @@ export function PurchaseProductsPage() {
       case "openVariantHistoryCard":
         handleCardAction("variantHistoryCard", true);
         dispatch(actions.setIsVariantHistoryCardLoading(true));
-        dispatch(actions.setIsVariantsHistoryGridLoading(true));
+        dispatch(actions.setIsVariantHistoryGridLoading(true));
         Promise.all([
           productsService.getVariantStockHistoryHandler(payload),
           productsService.getVariantDetailsHandler(payload),
@@ -1513,7 +1533,7 @@ export function PurchaseProductsPage() {
             createdDate: formatDate(item.createdDate, "date"),
           }));
           dispatch(actions.setIsVariantHistoryCardLoading(false));
-          dispatch(actions.setIsVariantsHistoryGridLoading(false));
+          dispatch(actions.setIsVariantHistoryGridLoading(false));
           dispatch(actions.refreshVariantHistory(historyData));
           dispatch(productsActions.refreshSelectedVariant(variant));
         });
@@ -1532,6 +1552,17 @@ export function PurchaseProductsPage() {
         break;
       case "closeVariantHistoryCard":
         handleCardAction("variantHistoryCard");
+        break;
+      case "navigateToManageVariant":
+        productsService
+          .getVariantDetailsHandler(payload.variantId)
+          .then((res) => {
+            dispatch(productsActions.refreshSelectedVariant(res));
+            dispatch(productsActions.refreshVariantPhotos(res.photos));
+            navigate(
+              `${NavUrlEnum.PRODUCTS}${NavUrlEnum.MANAGE_VARIANTS}/${payload?.productId}`,
+            );
+          });
         break;
     }
   }
@@ -1554,10 +1585,10 @@ export function PurchaseProductsPage() {
           <PurchaseProductsCard
             isLoading={state.isPurchaseProductsCardLoading}
             isPurchaseProductsGridLoading={state.isPurchasesProductsGridLoading}
-            isProductsGridLoading={state.isProductsGridLoading}
-            variants={productsState.variants}
+            isProductsGridLoading={state.isVariantsForPurchaseGridLoading}
+            variants={state.variants}
             purchaseProducts={state.purchaseProducts}
-            variantsGridModel={productsState.variantsGridModel}
+            variantsGridModel={state.variantsForPurchaseGridModel}
             purchaseProductsGridModel={state.purchasesProductsGridModel}
             sortingOptions={productsState.sortingOptions}
             preferences={appState.preferences}
@@ -1567,7 +1598,7 @@ export function PurchaseProductsPage() {
               state.purchasesProductsGridRequestModel.pageSize
             }
             variantsSkeletonQuantity={
-              productsState.variantsGridRequestModel.pageSize
+              state.variantsForPurchaseGridRequestModel.pageSize
             }
             currencies={productsState.currenciesList}
             taxes={productsState.taxesList}

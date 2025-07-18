@@ -1,8 +1,11 @@
 import { ColumnDef, Row } from "@tanstack/react-table";
-import { Trash2 } from "lucide-react";
+import { CogIcon } from "lucide-react";
+import React from "react";
 
 import { Switch } from "@/components/ui/switch.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import cs from "@/components/complex/custom-cards/choose-variant-traits-card/ChooseVariantTraitsCard.module.scss";
+import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 
 export const ManageVariantsGridColumns = (
   onAction: (
@@ -15,6 +18,8 @@ export const ManageVariantsGridColumns = (
   {
     accessorKey: "traits",
     header: "Traits",
+    minSize: 50,
+    maxSize: 50,
     cell: ({ row }) => {
       const traitOptions = row.original.traitOptions || [];
 
@@ -24,7 +29,6 @@ export const ManageVariantsGridColumns = (
       const sizeOptions = traitOptions.filter(
         (option) => option.traitTypeId === 1 && option.optionName,
       );
-
       return (
         <div
           style={{
@@ -41,24 +45,21 @@ export const ManageVariantsGridColumns = (
                 background: colorOpt.optionColor,
                 minWidth: "20px",
                 minHeight: "20px",
-                borderRadius: "10%",
+                borderRadius: "50%",
               }}
             />
           ))}
-          {sizeOptions.map((sizeOpt, index) => (
-            <span
-              key={`size-${index}`}
-              style={{
-                fontSize: "0.875rem",
-                maxWidth: "20px",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-              }}
+          {sizeOptions.length > 0 && (
+            <SheTooltip
+              delayDuration={200}
+              text={sizeOptions[0].optionName}
+              className="max-w-[30px] min-w-[30px] overflow-hidden text-ellipsis whitespace-nowrap"
             >
-              {sizeOpt.optionName}
-            </span>
-          ))}
+              <span className={`${cs.traitName} she-text`}>
+                {sizeOptions[0].optionName}
+              </span>
+            </SheTooltip>
+          )}
         </div>
       );
     },
@@ -66,6 +67,8 @@ export const ManageVariantsGridColumns = (
   {
     accessorKey: "stock",
     header: "Stock",
+    minSize: 50,
+    maxSize: 50,
     cell: ({ row }) => {
       return (
         <span style={{ paddingLeft: "15px" }}>
@@ -77,6 +80,8 @@ export const ManageVariantsGridColumns = (
   {
     accessorKey: "isActive",
     header: "Active",
+    minSize: 50,
+    maxSize: 50,
     cell: ({ row }) => {
       return (
         <Switch
@@ -101,7 +106,9 @@ export const ManageVariantsGridColumns = (
       return (
         <div onClick={(e) => e.stopPropagation()}>
           <SheButton
+            icon={CogIcon}
             value="Manage"
+            variant="secondary"
             onClick={() =>
               onAction(
                 "manageVariant",
@@ -116,33 +123,33 @@ export const ManageVariantsGridColumns = (
       );
     },
   },
-  {
-    id: "delete",
-    header: "",
-    minSize: 60,
-    maxSize: 60,
-    cell: ({ row, table }) => {
-      const meta = table.options.meta as {
-        setLoadingRow: (rowId: string, loading: boolean) => void;
-        isRowLoading: (rowId: string) => boolean;
-      };
-      return (
-        <div onClick={(e) => e.stopPropagation()}>
-          <SheButton
-            icon={Trash2}
-            variant="secondary"
-            onClick={() =>
-              onAction(
-                "deleteVariant",
-                row.id,
-                meta?.setLoadingRow,
-                row.original,
-              )
-            }
-            disabled={meta?.isRowLoading(row.id)}
-          />
-        </div>
-      );
-    },
-  },
+  // {
+  //   id: "delete",
+  //   header: "",
+  //   minSize: 60,
+  //   maxSize: 60,
+  //   cell: ({ row, table }) => {
+  //     const meta = table.options.meta as {
+  //       setLoadingRow: (rowId: string, loading: boolean) => void;
+  //       isRowLoading: (rowId: string) => boolean;
+  //     };
+  //     return (
+  //       <div onClick={(e) => e.stopPropagation()}>
+  //         <SheButton
+  //           icon={Trash2}
+  //           variant="secondary"
+  //           onClick={() =>
+  //             onAction(
+  //               "deleteVariant",
+  //               row.id,
+  //               meta?.setLoadingRow,
+  //               row.original,
+  //             )
+  //           }
+  //           disabled={meta?.isRowLoading(row.id)}
+  //         />
+  //       </div>
+  //     );
+  //   },
+  // },
 ];

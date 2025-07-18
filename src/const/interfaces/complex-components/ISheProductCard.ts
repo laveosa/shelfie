@@ -1,4 +1,5 @@
 import { IBaseComponent } from "@/const/interfaces/IBaseComponent.ts";
+import { ISheButton } from "@/const/interfaces/primitive-components/ISheButton.ts";
 
 export interface ISheProductCard extends IBaseComponent {
   loading?: boolean;
@@ -18,9 +19,11 @@ export interface ISheProductCard extends IBaseComponent {
   primaryButtonTitle?: string;
   primaryButtonTitleTransKey?: string;
   primaryButtonDisabled?: any;
+  primaryButtonModel?: ISheButton;
   showSecondaryButton?: boolean;
   secondaryButtonTitle?: string;
   secondaryButtonTitleTransKey?: string;
+  secondaryButtonModel?: ISheButton;
   onPrimaryButtonClick?: () => void;
   onSecondaryButtonClick?: () => void;
 }

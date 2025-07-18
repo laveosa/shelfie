@@ -5,22 +5,18 @@ import SheProductCard from "@/components/complex/she-product-card/SheProductCard
 import cs from "./SupplierConfigurationCard.module.scss";
 import CreateSupplierForm from "@/components/forms/create-supplier-form/CreateSupplierForm.tsx";
 import { ICreateSupplierCard } from "@/const/interfaces/complex-components/custom-cards/ICreateSupplierCard.ts";
-import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import SheCardNotification from "@/components/complex/she-card-notification/SheCardNotification.tsx";
 
 export default function SupplierConfigurationCard({
   isLoading,
   isSupplierPhotosGridLoading,
+  isPhotoUploaderLoading,
   countryList,
   managedSupplier,
   onAction,
 }: ICreateSupplierCard) {
-  function onDeletePhoto(
-    _actionType,
-    _row,
-    _setLoadingRow?: (rowId: string, loading: boolean) => void,
-    row?,
-  ) {
-    onAction("deleteSupplierPhoto", row);
+  function onDeletePhoto(_actionType, table) {
+    onAction("deleteSupplierPhoto", table);
   }
 
   function onDndPhoto(data) {
@@ -39,6 +35,8 @@ export default function SupplierConfigurationCard({
         <CreateSupplierForm
           isLoading={isLoading}
           isGridLoading={isSupplierPhotosGridLoading}
+          isPhotoUploaderLoading={isPhotoUploaderLoading}
+          className={cs.supplierConfigurationCardForm}
           countryList={countryList}
           data={managedSupplier}
           photos={managedSupplier?.photos}
@@ -55,45 +53,25 @@ export default function SupplierConfigurationCard({
         {managedSupplier && (
           <div>
             {!managedSupplier?.isDeleted ? (
-              <div className={cs.deleteSupplierBlock}>
-                <div className={cs.deleteSupplierTextBlock}>
-                  <span className={`${cs.deleteSupplierTitle} she-text`}>
-                    Delete Supplier
-                  </span>
-                  <span className="she-subtext">
-                    The supplier will remain connected to the purchases, but
-                    will not be manageable or available for connection to
-                    additional purchases
-                  </span>
-                </div>
-                <SheButton
-                  className={cs.deleteSupplierButton}
-                  icon={Trash2}
-                  variant={"outline"}
-                  value="Delete"
-                  onClick={() => onAction("deleteSupplier", managedSupplier)}
-                />
-              </div>
+              <SheCardNotification
+                title="Delete Supplier"
+                text="The supplier will remain connected to the purchases, but will not be manageable or available for connection to additional purchases"
+                buttonIcon={Trash2}
+                buttonVariant="outline"
+                buttonText="Delete"
+                buttonColor="#EF4343"
+                onClick={() => onAction("deleteSupplier", managedSupplier)}
+              />
             ) : (
-              <div className={cs.restoreSupplierBlock}>
-                <div className={cs.restoreSupplierTextBlock}>
-                  <span className={`${cs.restoreSupplierTitle} she-text`}>
-                    Restore Supplier
-                  </span>
-                  <span className="she-subtext">
-                    The supplier was deleted and is not available for
-                    management. if that was a mistake, you can restore the
-                    supplier
-                  </span>
-                </div>
-                <SheButton
-                  className={cs.restoreSupplierButton}
-                  icon={Plus}
-                  variant={"outline"}
-                  value="Restore"
-                  onClick={() => onAction("restoreSupplier", managedSupplier)}
-                />
-              </div>
+              <SheCardNotification
+                title="Restore Supplier"
+                text="The supplier was deleted and is not available for management. if that was a mistake, you can restore the supplier"
+                buttonIcon={Plus}
+                buttonVariant="outline"
+                buttonText="Restore"
+                buttonColor="#38BF5E"
+                onClick={() => onAction("restoreSupplier", managedSupplier)}
+              />
             )}
           </div>
         )}

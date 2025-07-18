@@ -52,27 +52,26 @@ export function ProductsPage() {
   const service = useProductsPageService();
   const navigate = useNavigate();
   const { addToast } = useToast();
-  const [activeTab, setActiveTab] = useState("products");
   const [activeStates, setActiveStates] = useState<Record<string, boolean>>({});
   const gridRef = useRef<DndGridRef>(null);
   const { openConfirmationDialog } = useDialogService();
 
   useEffect(() => {
-    if (activeTab === "products") {
+    if (state.activeTab === "products") {
       service
         .getTheProductsForGridHandler(state.productsGridRequestModel, true)
         .then((res) => {
           dispatch(actions.refreshProductsGridModel(res));
           dispatch(actions.refreshProducts(res.items));
         });
-    } else if (activeTab === "variants") {
+    } else if (state.activeTab === "variants") {
       service
         .getVariantsForGridHandler(state.variantsGridRequestModel)
         .then((res) => {
           dispatch(actions.refreshVariantsGridModel(res));
           dispatch(actions.refreshVariants(res.items));
         });
-    } else if (activeTab === "purchases") {
+    } else if (state.activeTab === "purchases") {
       service
         .getListOfPurchasesForGridHandler(state.purchasesGridRequestModel)
         .then((res) => {
@@ -85,7 +84,7 @@ export function ProductsPage() {
     state.productsGridRequestModel,
     state.variantsGridRequestModel,
     state.purchasesGridRequestModel,
-    activeTab,
+    state.activeTab,
     dispatch,
   ]);
 
@@ -146,7 +145,7 @@ export function ProductsPage() {
 
   async function onDelete(data) {
     data.table.options.meta?.hideRow(data.row.original.id);
-    switch (activeTab) {
+    switch (state.activeTab) {
       case "products":
         const confirmedDeleteProduct = await openConfirmationDialog({
           title: "Delete Product",
@@ -262,6 +261,7 @@ export function ProductsPage() {
       case "manageVariant":
         service.getVariantDetailsHandler(rowData.variantId).then((res) => {
           dispatch(actions.refreshSelectedVariant(res));
+          dispatch(actions.refreshVariantPhotos(res.photos));
           navigate(
             `${NavUrlEnum.PRODUCTS}${NavUrlEnum.MANAGE_VARIANTS}/${rowData?.productId}`,
           );
@@ -315,7 +315,7 @@ export function ProductsPage() {
 
   function handleGridRequestChange(updates: GridRequestModel) {
     if (updates.brands || updates.categories || updates.filter) {
-      if (activeTab === "products") {
+      if (state.activeTab === "products") {
         dispatch(
           actions.refreshProductsGridRequestModel({
             ...state.productsGridRequestModel,
@@ -323,7 +323,7 @@ export function ProductsPage() {
             ...updates,
           }),
         );
-      } else if (activeTab === "variants") {
+      } else if (state.activeTab === "variants") {
         dispatch(
           actions.refreshVariantsGridRequestModel({
             ...state.variantsGridRequestModel,
@@ -331,7 +331,7 @@ export function ProductsPage() {
             ...updates,
           }),
         );
-      } else if (activeTab === "purchases") {
+      } else if (state.activeTab === "purchases") {
         dispatch(
           actions.refreshPurchasesGridRequestModel({
             ...state.purchasesGridRequestModel,
@@ -341,21 +341,21 @@ export function ProductsPage() {
         );
       }
     } else {
-      if (activeTab === "products") {
+      if (state.activeTab === "products") {
         dispatch(
           actions.refreshProductsGridRequestModel({
             ...state.productsGridRequestModel,
             ...updates,
           }),
         );
-      } else if (activeTab === "variants") {
+      } else if (state.activeTab === "variants") {
         dispatch(
           actions.refreshVariantsGridRequestModel({
             ...state.variantsGridRequestModel,
             ...updates,
           }),
         );
-      } else if (activeTab === "purchases") {
+      } else if (state.activeTab === "purchases") {
         dispatch(
           actions.refreshPurchasesGridRequestModel({
             ...state.purchasesGridRequestModel,
@@ -402,19 +402,19 @@ export function ProductsPage() {
   }
 
   function onResetColumnsHandler() {
-    service.resetUserPreferencesHandler(activeTab);
+    service.resetUserPreferencesHandler(state.activeTab);
   }
 
   function handleTabChange(value: string) {
-    if (value === activeTab) return;
-    setActiveTab(value);
+    if (value === state.activeTab) return;
+    dispatch(actions.refreshActiveTab(value));
   }
 
   return (
     <div id={cs.ProductsPage}>
       <div className={cs.productsPageHeader}>
         <div className="she-title">Products</div>
-        {activeTab === "purchases" ? (
+        {state.activeTab === "purchases" ? (
           <div className={cs.headerButtonBlock}>
             <SheButton
               icon={Plus}
@@ -448,7 +448,7 @@ export function ProductsPage() {
         )}
       </div>
       <div className={cs.productsPageContent}>
-        <SheTabs defaultValue="products" onValueChange={handleTabChange}>
+        <SheTabs defaultValue={state.activeTab} onValueChange={handleTabChange}>
           <div className={cs.tabItemsWrapper}>
             <TabsList className={cs.tabItems}>
               <TabsTrigger className={cs.tabItemTrigger} value="products">
@@ -489,6 +489,7 @@ export function ProductsPage() {
                 onSelectionChange={onBrandSelectHandler}
                 getId={(item: BrandModel) => item.brandId}
                 getName={(item: BrandModel) => item.brandName}
+                selected={state.productsGridModel.filter?.brands}
               />
               <GridItemsFilter
                 items={state.categories}
@@ -496,6 +497,7 @@ export function ProductsPage() {
                 onSelectionChange={onCategorySelectHandler}
                 getId={(item: CategoryModel) => item.categoryId}
                 getName={(item: CategoryModel) => item.categoryName}
+                selected={state.productsGridModel.filter?.categories}
               />
               <GridShowDeletedFilter />
             </DndGridDataTable>
@@ -521,6 +523,7 @@ export function ProductsPage() {
                 onSelectionChange={onBrandSelectHandler}
                 getId={(item: BrandModel) => item.brandId}
                 getName={(item: BrandModel) => item.brandName}
+                selected={state.variantsGridModel.filter?.brands}
               />
               <GridItemsFilter
                 items={state.categories}
@@ -528,6 +531,7 @@ export function ProductsPage() {
                 onSelectionChange={onCategorySelectHandler}
                 getId={(item: CategoryModel) => item.categoryId}
                 getName={(item: CategoryModel) => item.categoryName}
+                selected={state.variantsGridModel.filter?.categories}
               />
               <GridTraitsFilter
                 traitOptions={state.colorsForFilter}
@@ -564,12 +568,14 @@ export function ProductsPage() {
                 onSelectionChange={onSupplierSelectHandler}
                 getId={(item: SupplierModel) => item.supplierId}
                 getName={(item: SupplierModel) => item.supplierName}
+                selected={state.purchasesGridModel.filter?.suppliers}
               />
               <SheDatePicker
                 mode="range"
                 icon={CalendarRange}
                 placeholder="Pick range"
                 maxWidth="200px"
+                showClearBtn
                 onSelectDate={(data) => {
                   onPurchaseDateRangeHandler(data);
                 }}
@@ -586,12 +592,14 @@ export function ProductsPage() {
                 icon={ReceiptEuro}
                 placeholder="Value from"
                 maxWidth="200px"
+                showClearBtn
                 onDelay={(data: number) => onPurchaseValueFromHandler(data)}
               />
               <SheInput
                 icon={ReceiptEuro}
                 placeholder="Value to"
                 maxWidth="200px"
+                showClearBtn
                 onDelay={(data: number) => {
                   onPurchaseValueToHandler(data);
                 }}
