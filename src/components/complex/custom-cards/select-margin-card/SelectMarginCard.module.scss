@@ -1,0 +1,24 @@
+@use "@/styles/variables" as vars;
+
+.selectMarginCard {
+  .selectMarginCardContent {
+    display: flex;
+    flex-direction: column;
+    gap: vars.$paddingStandard;
+
+    .createMarginBlock {
+      display: flex;
+      gap: vars.$paddingStandard;
+
+      .createMarginBlockText {
+        text-wrap: auto;
+      }
+    }
+
+    .marginListBlock {
+      display: flex;
+      flex-direction: column;
+      gap: vars.$paddingStandard;
+    }
+  }
+}

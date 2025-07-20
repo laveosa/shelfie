@@ -234,7 +234,6 @@ export function SupplierPage() {
         });
         break;
       case "searchSupplier":
-        handleCardAction("searchSupplier");
         dispatch(actions.setIsSelectSupplierCardLoading(true));
         service
           .getListOfSuppliersForGridHandler({ searchQuery: payload })

@@ -1,0 +1,105 @@
+import { Circle, CircleCheckBig, CogIcon } from "lucide-react";
+import { ColumnDef, Row } from "@tanstack/react-table";
+
+import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import cs from "./MarginsListGridColumns.module.scss";
+
+export function MarginsListGridColumns({
+  onGridAction,
+}: {
+  onGridAction: (
+    actionType: string,
+    rowId?: string,
+    setLoadingRow?: (rowId: string, loading: boolean) => void,
+    row?: Row<any>,
+  ) => void;
+}): ColumnDef<any>[] {
+  return [
+    {
+      id: "select",
+      header: "Select",
+      size: 50,
+      minSize: 50,
+      maxSize: 50,
+      cell: ({ row, table }) => {
+        const meta = table.options.meta as {
+          setLoadingRow: (rowId: string, loading: boolean) => void;
+          isRowLoading: (rowId: string) => boolean;
+        };
+
+        const handleSelectClick = (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          onGridAction(
+            "selectMargin",
+            row.id,
+            meta?.setLoadingRow,
+            row.original,
+          );
+        };
+
+        return (
+          <div onClick={(e) => e.stopPropagation()}>
+            <SheButton
+              className={row.original.isSelected === true ? cs.iconCheck : ""}
+              icon={row.original.isSelected === true ? CircleCheckBig : Circle}
+              variant="ghost"
+              onClick={handleSelectClick}
+              disabled={meta?.isRowLoading(row.id)}
+            />
+          </div>
+        );
+      },
+    },
+    {
+      id: "marginName",
+      header: "Margin name",
+      size: 150,
+      minSize: 150,
+      maxSize: 150,
+      cell: ({ row }) => {
+        return (
+          <SheTooltip
+            delayDuration={200}
+            text={row.original.marginName}
+            className="max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap"
+          >
+            <span className="she-text">{row.original.marginName}</span>
+          </SheTooltip>
+        );
+      },
+    },
+    {
+      id: "manage",
+      header: "Actions",
+      minSize: 100,
+      maxSize: 100,
+      cell: ({ row, table }) => {
+        const meta = table.options.meta as {
+          setLoadingRow: (rowId: string, loading: boolean) => void;
+          isRowLoading: (rowId: string) => boolean;
+        };
+
+        return (
+          <div onClick={(e) => e.stopPropagation()}>
+            <SheButton
+              icon={CogIcon}
+              value="Manage"
+              variant="secondary"
+              onClick={() =>
+                onGridAction(
+                  "manageMargin",
+                  row.id,
+                  meta?.setLoadingRow,
+                  row.original,
+                )
+              }
+              disabled={meta?.isRowLoading(row.id)}
+            />
+          </div>
+        );
+      },
+    },
+  ];
+}

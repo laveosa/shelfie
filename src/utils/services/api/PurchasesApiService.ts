@@ -112,6 +112,109 @@ export const PurchasesApiService = createApi({
         url: `${ApiUrlEnum.PURCHASES}/${purchaseId}/fiscal-summary`,
       }),
     }),
+    getMarginsListForGrid: apiConfig.createMutation<
+      any,
+      {
+        model: GridRequestModel;
+      }
+    >(builder, {
+      query: (model) => ({
+        url: `${ApiUrlEnum.MARGIN}/list`,
+        method: "POST",
+        body: JSON.stringify(model),
+      }),
+    }),
+    getAllMargins: apiConfig.createQuery<any, void>(builder, {
+      query: () => ({
+        url: `${ApiUrlEnum.MARGIN}/all`,
+      }),
+    }),
+    getMarginForPurchase: apiConfig.createQuery<any, number>(builder, {
+      query: (purchaseId) => ({
+        url: `${ApiUrlEnum.PURCHASES}/${purchaseId}/margin-rules`,
+      }),
+    }),
+    getMarginDetails: apiConfig.createQuery<any, number>(builder, {
+      query: (marginId) => ({
+        url: `${ApiUrlEnum.MARGIN}/${marginId}`,
+      }),
+    }),
+    createMargin: apiConfig.createMutation<any, { model: any }>(builder, {
+      query: (model) => ({
+        url: `${ApiUrlEnum.MARGIN}`,
+        method: "POST",
+        body: JSON.stringify(model),
+      }),
+    }),
+    updateMargin: apiConfig.createMutation<
+      any,
+      {
+        marginId: number;
+        model: any;
+      }
+    >(builder, {
+      query: ({ marginId, model }) => ({
+        url: `${ApiUrlEnum.MARGIN}/${marginId}`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+    }),
+    createMarginRules: apiConfig.createMutation<
+      any,
+      {
+        marginId: number;
+        model: any;
+      }
+    >(builder, {
+      query: ({ marginId, model }) => ({
+        url: `${ApiUrlEnum.MARGIN}/${marginId}/rules`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+    }),
+    deleteMargin: apiConfig.createMutation<void, number>(builder, {
+      query: (marginId: number) => ({
+        url: `${ApiUrlEnum.MARGIN}/${marginId}`,
+        method: "DELETE",
+      }),
+    }),
+    restoreMargin: apiConfig.createMutation<any, number>(builder, {
+      query: (marginId) => ({
+        url: `${ApiUrlEnum.MARGIN}/${marginId}/undelete`,
+        method: "PATCH",
+      }),
+    }),
+    connectMarginToPurchase: apiConfig.createMutation<
+      any,
+      {
+        purchaseId: number;
+        marginId: number;
+      }
+    >(builder, {
+      query: ({ purchaseId, marginId }) => ({
+        url: `${ApiUrlEnum.PURCHASES}/${purchaseId}/margin-rules/${marginId}`,
+        method: "PATCH",
+      }),
+    }),
+    detachMargin: apiConfig.createMutation<void, number>(builder, {
+      query: (purchaseId: number) => ({
+        url: `${ApiUrlEnum.PURCHASES}/${purchaseId}/margin-rules`,
+        method: "DELETE",
+      }),
+    }),
+    getMarginProductsListForGrid: apiConfig.createMutation<
+      any,
+      {
+        purchaseId: number;
+        model: GridRequestModel;
+      }
+    >(builder, {
+      query: ({ purchaseId, model }) => ({
+        url: `${ApiUrlEnum.PURCHASES}/${purchaseId}/margin-items/list`,
+        method: "POST",
+        body: JSON.stringify(model),
+      }),
+    }),
   }),
 });
 
