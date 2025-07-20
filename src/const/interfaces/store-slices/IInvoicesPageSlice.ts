@@ -1,1 +1,4 @@
-export interface IInvoicesPageSlice {}
+export interface IInvoicesPageSlice {
+  isLoading?: boolean;
+  is;
+}
