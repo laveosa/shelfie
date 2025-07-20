@@ -7,10 +7,10 @@ import {
   DataWithId,
   DndGridDataTable,
 } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import { SheFileUploader } from "@/components/complex/she-images-uploader/SheImageUploader.tsx";
+import { SheFileUploader } from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
-import { ProductPhotosGridColumns } from "@/components/complex/grid/variant-photos-grid/ProductPhotosGridColumns.tsx";
-import { IProductPhotosCard } from "@/const/interfaces/complex-components/custom-cards/IProductPhotosCard.ts";
+import { IInvoiceCard } from "@/const/interfaces/complex-components/custom-cards/IInvoicesCard.ts";
+import { InvoicesGridColumns } from "@/components/complex/grid/invoices-grid/InvoicesGridColumns.tsx";
 
 export default function InvoicesCard({
   isLoading,
@@ -18,13 +18,8 @@ export default function InvoicesCard({
   isGridLoading,
   data,
   contextId,
-  productCounter,
   onAction,
-}: IProductPhotosCard) {
-  const columns = ProductPhotosGridColumns(
-    onGridAction,
-  ) as ColumnDef<DataWithId>[];
-
+}: IInvoiceCard) {
   function handleAction(actionType: string, payload?: any): any {
     switch (actionType) {
       case "upload":
@@ -72,7 +67,11 @@ export default function InvoicesCard({
           <SheFileUploader
             isLoading={isImageUploaderLoading}
             contextName={"product"}
+            viewMode="file"
             contextId={contextId}
+            acceptedFileTypes={{
+              "application/pdf": [".pdf"],
+            }}
             onUpload={(uploadModel: UploadPhotoModel) =>
               handleAction("upload", uploadModel)
             }
@@ -84,18 +83,14 @@ export default function InvoicesCard({
             <div className={cs.managePhotosGrid}>
               <DndGridDataTable
                 isLoading={isGridLoading}
-                className={cs.photosGrid}
-                enableDnd={true}
+                className={cs.invoicesGrid}
                 showHeader={false}
-                columns={columns}
-                data={data}
-                gridModel={data}
-                skeletonQuantity={productCounter?.gallery}
-                cellPadding="5px 10px"
-                customMessage="PRODUCT HAS NO PHOTO"
-                onNewItemPosition={(newIndex, activeItem, oldIndex) =>
-                  handleAction("dnd", { newIndex, activeItem, oldIndex })
+                columns={
+                  InvoicesGridColumns(onGridAction) as ColumnDef<DataWithId>[]
                 }
+                data={data}
+                skeletonQuantity={10}
+                customMessage="There are no files uploaded yet"
               />
             </div>
           </div>

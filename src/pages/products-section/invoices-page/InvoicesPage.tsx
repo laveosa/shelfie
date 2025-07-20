@@ -6,16 +6,16 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IProductGalleryPageSlice } from "@/const/interfaces/store-slices/IProductGalleryPageSlice.ts";
 import { InvoicesPageSliceActions as actions } from "@/state/slices/InvoicesPageSlice.ts";
 import { useToast } from "@/hooks/useToast.ts";
-import cs from "@/pages/products-section/product-basic-data-page/ProductBasicDataPage.module.scss";
+import cs from "@/pages/products-section/invoices-page/InvoicesPage.module.scss";
 import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
-import ProductPhotosCard from "@/components/complex/custom-cards/product-photos-card/ProductPhotosCard.tsx";
 import ConnectImageCard from "@/components/complex/custom-cards/connect-image-card/ConnectImageCard.tsx";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
 import useInvoicesPageService from "@/pages/products-section/invoices-page/useInvoicesPageService.ts";
+import InvoicesCard from "@/components/complex/custom-cards/invoices-card/InvoicesCard.tsx";
 
-export function InvoicePage() {
+export function InvoicesPage() {
   const dispatch = useAppDispatch();
   const state = useAppSelector<IProductGalleryPageSlice>(
     StoreSliceEnum.INVOICES,
@@ -114,13 +114,11 @@ export function InvoicePage() {
         productId={Number(purchaseId)}
         counter={productsState.purchaseCounters}
       />
-      <ProductPhotosCard
-        isLoading={state.isProductPhotosCardLoading}
-        isImageUploaderLoading={state.isImageUploaderLoading}
-        isGridLoading={productsState.isProductPhotosLoading}
-        data={productsState.productPhotos}
-        productCounter={productsState.productCounter}
-        // contextId={productId}
+      <InvoicesCard
+        isLoading={state.isInvoicesCardLoading}
+        isGridLoading={state.isInvoiceCardGridLoading}
+        data={state.invoices}
+        contextId={Number(purchaseId)}
         onAction={onAction}
       />
       {state.activeCards.includes("connectImageCard") && (

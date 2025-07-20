@@ -4,7 +4,7 @@ import SheProductCard from "@/components/complex/she-product-card/SheProductCard
 import cs from "./CreateProductBrandCard.module.scss";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { SheImageUploader } from "@/components/complex/she-images-uploader/SheImageUploader.tsx";
+import { SheFileUploader } from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
 import { ICreateProductBrandCard } from "@/const/interfaces/complex-components/custom-cards/ICreateProductBrandCard.ts";
 
 export default function CreateProductBrandCard({
@@ -34,9 +34,9 @@ export default function CreateProductBrandCard({
             value="Add Brand"
           />
           <div>
-            <SheImageUploader
+            <SheFileUploader
               contextName={"brand"}
-              contextId={brand.brandId}
+              contextId={brand?.brandId}
               onUpload={(model) =>
                 onAction("uploadCategoryOrBrandPhoto", model)
               }

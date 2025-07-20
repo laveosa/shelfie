@@ -8,7 +8,9 @@ const initialState: IInvoicesPageSlice = {
   isProductMenuCardLoading: false,
   isInvoicesCardLoading: false,
   isInvoicePreviewCardLoading: false,
+  isInvoiceCardGridLoading: false,
   activeCards: [],
+  invoices: [],
 };
 
 //----------------------------------------------------- LOADERS
@@ -41,6 +43,13 @@ function setIsInvoicePreviewCardLoading(
   state.isInvoicePreviewCardLoading = action?.payload;
 }
 
+function setIsInvoiceCardGridLoading(
+  state: IInvoicesPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isInvoiceCardGridLoading = action?.payload;
+}
+
 //----------------------------------------------------- API
 
 function refreshActiveCards(
@@ -48,6 +57,13 @@ function refreshActiveCards(
   action: PayloadAction<any[]>,
 ) {
   state.activeCards = action?.payload || state.activeCards;
+}
+
+function refreshInvoices(
+  state: IInvoicesPageSlice,
+  action: PayloadAction<any[]>,
+) {
+  state.invoices = action?.payload || state.invoices;
 }
 
 const InvoicesPageSlice = createSlice({
@@ -58,7 +74,9 @@ const InvoicesPageSlice = createSlice({
     setIsProductMenuCardLoading,
     setIsInvoicesCardLoading,
     setIsInvoicePreviewCardLoading,
+    setIsInvoiceCardGridLoading,
     refreshActiveCards,
+    refreshInvoices,
   },
 });
 

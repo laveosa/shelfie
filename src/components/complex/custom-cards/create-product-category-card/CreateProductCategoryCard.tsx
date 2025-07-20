@@ -3,7 +3,7 @@ import React from "react";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./CreateProductCategoryCard.module.scss";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import { SheImageUploader } from "@/components/complex/she-images-uploader/SheImageUploader.tsx";
+import { SheFileUploader } from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { ICreateProductCategoryCard } from "@/const/interfaces/complex-components/custom-cards/ICreateProductCategoryCard.ts";
 
@@ -39,9 +39,9 @@ export default function CreateProductCategoryCard({
             value="Add Category"
           />
           <div>
-            <SheImageUploader
+            <SheFileUploader
               contextName={"category"}
-              contextId={category.categoryId}
+              contextId={category?.categoryId}
               onUpload={(model) =>
                 onAction("uploadCategoryOrBrandPhoto", model)
               }

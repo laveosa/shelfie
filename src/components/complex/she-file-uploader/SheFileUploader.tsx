@@ -1,4 +1,4 @@
-import { CloudUploadIcon, FileIcon, ImageIcon, Trash2Icon } from "lucide-react";
+import { CloudUploadIcon, FileIcon, Trash2Icon } from "lucide-react";
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 
 import {
@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dropzone.tsx";
 import { ISheFileUploader } from "@/const/interfaces/complex-components/ISheFileUploader.ts";
 import { UploadFileModel } from "@/const/models/UploadFileModel.ts";
-import cs from "./SheImageUploader.module.scss";
+import cs from "./SheFileUploader.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
 
@@ -178,11 +178,11 @@ export const SheFileUploader = forwardRef<SheFileUploaderRef, ISheFileUploader>(
       }
     }
 
-    function handleViewModeToggle() {
-      const newMode = currentViewMode === "image" ? "file" : "image";
-      setCurrentViewMode(newMode);
-      onViewModeChange?.(newMode);
-    }
+    // function handleViewModeToggle() {
+    //   const newMode = currentViewMode === "image" ? "file" : "image";
+    //   setCurrentViewMode(newMode);
+    //   onViewModeChange?.(newMode);
+    // }
 
     const renderFilePreview = (file: any) => {
       if (
@@ -201,16 +201,9 @@ export const SheFileUploader = forwardRef<SheFileUploaderRef, ISheFileUploader>(
         );
       }
 
-      // File mode or non-image files
       return (
         <div className={cs.fileContainer}>
           <FileIcon className="size-8 text-muted-foreground" />
-          <div className={cs.fileInfo}>
-            <p className="truncate text-sm font-medium">{file.fileName}</p>
-            <p className="text-xs text-muted-foreground">
-              {file.file.type || "Unknown type"}
-            </p>
-          </div>
         </div>
       );
     };
@@ -259,28 +252,28 @@ export const SheFileUploader = forwardRef<SheFileUploaderRef, ISheFileUploader>(
         }}
       >
         {/* View Mode Toggle */}
-        <div className={cs.viewModeToggle}>
-          <SheButton
-            variant={currentViewMode === "file" ? "default" : "outline"}
-            // size="sm"
-            onClick={() => currentViewMode !== "file" && handleViewModeToggle()}
-            className={cs.toggleButton}
-          >
-            <FileIcon className="size-4 mr-2" />
-            File View
-          </SheButton>
-          <SheButton
-            variant={currentViewMode === "image" ? "default" : "outline"}
-            // size="sm"
-            onClick={() =>
-              currentViewMode !== "image" && handleViewModeToggle()
-            }
-            className={cs.toggleButton}
-          >
-            <ImageIcon className="size-4 mr-2" />
-            Image View
-          </SheButton>
-        </div>
+        {/*<div className={cs.viewModeToggle}>*/}
+        {/*  <SheButton*/}
+        {/*    variant={currentViewMode === "file" ? "default" : "outline"}*/}
+        {/*    // size="sm"*/}
+        {/*    onClick={() => currentViewMode !== "file" && handleViewModeToggle()}*/}
+        {/*    className={cs.toggleButton}*/}
+        {/*  >*/}
+        {/*    <FileIcon className="size-4 mr-2" />*/}
+        {/*    File View*/}
+        {/*  </SheButton>*/}
+        {/*  <SheButton*/}
+        {/*    variant={currentViewMode === "image" ? "default" : "outline"}*/}
+        {/*    // size="sm"*/}
+        {/*    onClick={() =>*/}
+        {/*      currentViewMode !== "image" && handleViewModeToggle()*/}
+        {/*    }*/}
+        {/*    className={cs.toggleButton}*/}
+        {/*  >*/}
+        {/*    <ImageIcon className="size-4 mr-2" />*/}
+        {/*    Image View*/}
+        {/*  </SheButton>*/}
+        {/*</div>*/}
 
         <Dropzone {...dropzone}>
           <DropZoneArea>
