@@ -4,8 +4,7 @@ import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IProductGalleryPageSlice } from "@/const/interfaces/store-slices/IProductGalleryPageSlice.ts";
-import { ProductGalleryPageSliceActions as actions } from "@/state/slices/ProductGalleryPageSlice.ts";
-import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice";
+import { InvoicesPageSliceActions as actions } from "@/state/slices/InvoicesPageSlice.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import cs from "@/pages/products-section/product-basic-data-page/ProductBasicDataPage.module.scss";
 import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
@@ -19,47 +18,26 @@ import useInvoicesPageService from "@/pages/products-section/invoices-page/useIn
 export function InvoicePage() {
   const dispatch = useAppDispatch();
   const state = useAppSelector<IProductGalleryPageSlice>(
-    StoreSliceEnum.PRODUCT_GALLERY,
+    StoreSliceEnum.INVOICES,
   );
   const productsState = useAppSelector<IProductsPageSlice>(
     StoreSliceEnum.PRODUCTS,
   );
   const service = useInvoicesPageService();
   const productsService = useProductsPageService();
-  const { productId } = useParams();
+  const { purchaseId } = useParams();
   const { addToast } = useToast();
   const { openConfirmationDialog } = useDialogService();
   const cardRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   useEffect(() => {
-    if (productsState.products === null) {
-      dispatch(productsActions.setIsItemsCardLoading(true));
+    if (!productsState.purchaseCounters) {
+      dispatch(actions.setIsProductMenuCardLoading(true));
       productsService
-        .getTheProductsForGridHandler(productsState.gridRequestModel)
-        .then((res) => {
-          dispatch(productsActions.setIsItemsCardLoading(false));
-          if (res) {
-            dispatch(productsActions.refreshProducts(res.items));
-          }
-        });
+        .getPurchaseCountersHandler(Number(purchaseId))
+        .then(() => dispatch(actions.setIsProductMenuCardLoading(false)));
     }
-    if (!productsState.productCounter) {
-      dispatch(productsActions.setIsProductMenuCardLoading(true));
-      productsService.getCountersForProductsHandler(productId).then((res) => {
-        dispatch(productsActions.setIsProductMenuCardLoading(false));
-        if (res) {
-          dispatch(productsActions.refreshProductCounter(res));
-        }
-      });
-    }
-    if (productsState.productPhotos.length === 0) {
-      dispatch(actions.setIsProductPhotosCardLoading(true));
-      productsService.getProductPhotosHandler(Number(productId)).then((res) => {
-        dispatch(actions.setIsProductPhotosCardLoading(false));
-        dispatch(productsActions.refreshProductPhotos(res));
-      });
-    }
-  }, [productId]);
+  }, [purchaseId]);
 
   function scrollToCard(cardId: string) {
     setTimeout(() => {
@@ -92,7 +70,7 @@ export function InvoicePage() {
     }
   }
 
-  async function onAction(actionType: string, payload: any) {
+  async function onAction(actionType: string, _payload: any) {
     switch (actionType) {
       case "uploadPhoto":
         // dispatch(actions.setIsImageUploaderLoading(true));
@@ -121,18 +99,20 @@ export function InvoicePage() {
         //   }
         // });
         break;
+      case "closeInvoicesCard":
+        handleCardAction("invoicesCard");
+        break;
     }
   }
 
   return (
-    <div className={cs.createProductPage}>
+    <div className={cs.invoicesPage}>
       <ProductMenuCard
-        isLoading={productsState.isProductMenuCardLoading}
-        title={productId ? "Manage Product" : "Create Product"}
-        itemsCollection="products"
-        counter={productsState.productCounter}
-        productId={Number(productId)}
-        activeCards={state.activeCards}
+        isLoading={state.isProductMenuCardLoading}
+        title="Report Purchase"
+        itemsCollection="purchases"
+        productId={Number(purchaseId)}
+        counter={productsState.purchaseCounters}
       />
       <ProductPhotosCard
         isLoading={state.isProductPhotosCardLoading}
@@ -140,7 +120,7 @@ export function InvoicePage() {
         isGridLoading={productsState.isProductPhotosLoading}
         data={productsState.productPhotos}
         productCounter={productsState.productCounter}
-        contextId={productId}
+        // contextId={productId}
         onAction={onAction}
       />
       {state.activeCards.includes("connectImageCard") && (

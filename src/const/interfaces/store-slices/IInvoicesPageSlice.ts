@@ -1,4 +1,7 @@
 export interface IInvoicesPageSlice {
   isLoading?: boolean;
-  is;
+  isProductMenuCardLoading?: boolean;
+  isInvoicesCardLoading?: boolean;
+  isInvoicePreviewCardLoading?: boolean;
+  activeCards?: any[];
 }
