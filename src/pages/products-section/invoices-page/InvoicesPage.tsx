@@ -8,12 +8,12 @@ import { InvoicesPageSliceActions as actions } from "@/state/slices/InvoicesPage
 import { useToast } from "@/hooks/useToast.ts";
 import cs from "@/pages/products-section/invoices-page/InvoicesPage.module.scss";
 import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
-import ConnectImageCard from "@/components/complex/custom-cards/connect-image-card/ConnectImageCard.tsx";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
 import useInvoicesPageService from "@/pages/products-section/invoices-page/useInvoicesPageService.ts";
 import InvoicesCard from "@/components/complex/custom-cards/invoices-card/InvoicesCard.tsx";
+import InvoicePreviewCard from "@/components/complex/custom-cards/invoice-preview-card/InvoicePreviewCard.tsx";
 
 export function InvoicesPage() {
   const dispatch = useAppDispatch();
@@ -29,6 +29,10 @@ export function InvoicesPage() {
   const { addToast } = useToast();
   const { openConfirmationDialog } = useDialogService();
   const cardRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
+
+  useEffect(() => {
+    handleCardAction("invoicePreviewCard", true);
+  }, []);
 
   useEffect(() => {
     if (!productsState.purchaseCounters) {
@@ -99,8 +103,8 @@ export function InvoicesPage() {
         //   }
         // });
         break;
-      case "closeInvoicesCard":
-        handleCardAction("invoicesCard");
+      case "closeInvoicePreviewCard":
+        handleCardAction("invoicePreviewCard");
         break;
     }
   }
@@ -121,21 +125,14 @@ export function InvoicesPage() {
         contextId={Number(purchaseId)}
         onAction={onAction}
       />
-      {state.activeCards.includes("connectImageCard") && (
+
+      {state.activeCards.includes("invoicePreviewCard") && (
         <div
           ref={(el) => {
-            cardRefs.current["connectImageCard"] = el;
+            cardRefs.current["invoicePreviewCard"] = el;
           }}
         >
-          <ConnectImageCard
-            isLoading={state.isConnectImageCardLoading}
-            isGridLoading={state.isVariantsGridLoading}
-            variants={state.productVariants}
-            selectedPhoto={state.selectedPhoto}
-            productCounter={productsState.productCounter}
-            onAction={onAction}
-            onSecondaryButtonClick={() => handleCardAction("connectImageCard")}
-          />
+          <InvoicePreviewCard onAction={onAction} />
         </div>
       )}
     </div>

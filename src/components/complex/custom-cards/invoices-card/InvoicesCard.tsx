@@ -59,8 +59,6 @@ export default function InvoicesCard({
       <SheProductCard
         loading={isLoading}
         title="Invoices"
-        showCloseButton={true}
-        onSecondaryButtonClick={() => onAction("closeInvoicesCard")}
         className={cs.productPhotosCard}
       >
         <div className={cs.invoicesCardContent}>
@@ -76,11 +74,11 @@ export default function InvoicesCard({
               handleAction("upload", uploadModel)
             }
           />
-          <div className={cs.managePhotos}>
-            <div className={`${cs.managePhotosTitle} she-title`}>
-              Manage Photos
+          <div className={cs.manageInvoices}>
+            <div className={`${cs.manageInvoicesTitle} she-title`}>
+              Manage Invoices
             </div>
-            <div className={cs.managePhotosGrid}>
+            <div className={cs.manageInvoicesGrid}>
               <DndGridDataTable
                 isLoading={isGridLoading}
                 className={cs.invoicesGrid}
