@@ -1,0 +1,21 @@
+.marginConfiguration {
+  .marginConfigurationForm {
+    display: flex;
+    flex-direction: column;
+
+    .marginConfigurationTitle {
+      padding-bottom: 20px;
+      align-self: start;
+    }
+
+    .marginConfigurationText {
+      padding-bottom: 20px;
+    }
+
+    .buttonBlock {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}

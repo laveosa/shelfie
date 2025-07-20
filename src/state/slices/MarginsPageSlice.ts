@@ -1,13 +1,176 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IMarginsPageSlice } from "@/const/interfaces/store-slices/IMarginsPageSlice.ts";
+import { MarginModel } from "@/const/models/MarginModel.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { GridModel } from "@/const/models/GridModel.ts";
 
-const initialState: IMarginsPageSlice = {};
+const initialState: IMarginsPageSlice = {
+  isLoading: false,
+  isProductMenuCardLoading: false,
+  isMarginForPurchaseCardLoading: false,
+  isSelectMarginCardLoading: false,
+  isMarginConfigurationCardLoading: false,
+  isMarginListGridLoading: false,
+  activeCards: [],
+  marginsList: [],
+  selectedMargin: null,
+  managedMargin: null,
+  marginProductsGridModel: {
+    pager: {},
+    items: [],
+  },
+  marginProductsGriRequestModel: {
+    currentPage: 1,
+    pageSize: 10,
+  },
+  gridRequestModel: {
+    currentPage: 1,
+    pageSize: 10,
+  },
+};
+
+//----------------------------------------------------- LOADERS
+
+function setIsLoading(
+  state: IMarginsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isLoading = action?.payload;
+}
+
+function setIsProductMenuCardLoading(
+  state: IMarginsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isProductMenuCardLoading = action?.payload;
+}
+
+function setIsMarginForPurchaseCardLoading(
+  state: IMarginsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isMarginForPurchaseCardLoading = action?.payload;
+}
+
+function setIsSelectMarginCardLoading(
+  state: IMarginsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isSelectMarginCardLoading = action?.payload;
+}
+
+function setIsMarginConfigurationCardLoading(
+  state: IMarginsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isMarginConfigurationCardLoading = action?.payload;
+}
+
+function setIsSalePriceManagementCardLoading(
+  state: IMarginsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isSalePriceManagementCardLoading = action?.payload;
+}
+
+function setIsMarginProductsGridLoading(
+  state: IMarginsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isMarginProductsGridLoading = action?.payload;
+}
+
+function setIsMarginListGridLoading(
+  state: IMarginsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isMarginListGridLoading = action?.payload;
+}
+
+//----------------------------------------------------- API
+
+function refreshActiveCards(
+  state: IMarginsPageSlice,
+  action: PayloadAction<any[]>,
+) {
+  state.activeCards = action?.payload || state.activeCards;
+}
+
+function refreshMarginsList(
+  state: IMarginsPageSlice,
+  action: PayloadAction<MarginModel[]>,
+) {
+  state.marginsList = action?.payload || state.marginsList;
+}
+
+function refreshSelectedMargin(
+  state: IMarginsPageSlice,
+  action: PayloadAction<MarginModel>,
+) {
+  state.selectedMargin = action?.payload || state.selectedMargin;
+}
+
+function resetSelectedMargin(state: IMarginsPageSlice) {
+  state.selectedMargin = null;
+}
+
+function refreshManagedMargin(
+  state: IMarginsPageSlice,
+  action: PayloadAction<MarginModel>,
+) {
+  state.managedMargin = action?.payload || state.selectedMargin;
+}
+
+function resetManagedMargin(state: IMarginsPageSlice) {
+  state.managedMargin = null;
+}
+
+function refreshMarginProductsGridModel(
+  state: IMarginsPageSlice,
+  action: PayloadAction<GridModel>,
+) {
+  state.marginProductsGridModel =
+    action?.payload || state.marginProductsGridModel;
+}
+
+function refreshMarginProductsGriRequestModel(
+  state: IMarginsPageSlice,
+  action: PayloadAction<GridRequestModel>,
+) {
+  state.marginProductsGriRequestModel =
+    action?.payload || state.marginProductsGriRequestModel;
+}
+
+function refreshGridRequestModel(
+  state: IMarginsPageSlice,
+  action: PayloadAction<GridRequestModel>,
+) {
+  state.gridRequestModel = action?.payload || state.gridRequestModel;
+}
 
 const MarginsPageSlice = createSlice({
   name: StoreSliceEnum.MARGINS,
   initialState,
-  reducers: {},
+  reducers: {
+    setIsLoading,
+    setIsProductMenuCardLoading,
+    setIsMarginForPurchaseCardLoading,
+    setIsSelectMarginCardLoading,
+    setIsMarginConfigurationCardLoading,
+    setIsSalePriceManagementCardLoading,
+    setIsMarginProductsGridLoading,
+    setIsMarginListGridLoading,
+    refreshActiveCards,
+    refreshMarginsList,
+    refreshSelectedMargin,
+    resetSelectedMargin,
+    refreshManagedMargin,
+    resetManagedMargin,
+    refreshMarginProductsGridModel,
+    refreshMarginProductsGriRequestModel,
+    refreshGridRequestModel,
+  },
 });
 
 export const MarginsPageSliceActions = MarginsPageSlice.actions;

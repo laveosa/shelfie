@@ -9,7 +9,6 @@ import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import cs from "@/components/forms/purchase-products-form/PurchaseProductsForm.module.scss";
 import SheForm from "@/components/complex/she-form/SheForm.tsx";
-import { UserModelDefault } from "@/const/models/UserModel.ts";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import { FormField } from "@/components/ui/form.tsx";
@@ -79,7 +78,7 @@ export default function PurchaseProductsForm<T>({
       <SheForm<T>
         className={cs.purchaseProductsForm}
         form={form}
-        defaultValues={UserModelDefault}
+        defaultValues={DefaultPurchaseProductsForm}
         formPosition={DirectionEnum.CENTER}
         view={ComponentViewEnum.STANDARD}
         fullWidth
