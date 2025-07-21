@@ -16,7 +16,10 @@ import { GridModel } from "@/const/models/GridModel.ts";
 import ConnectImageCard from "@/components/complex/custom-cards/connect-image-card/ConnectImageCard.tsx";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
-import { setSelectedGridItem } from "@/utils/helpers/quick-helper.ts";
+import {
+  scrollToRefElement,
+  setSelectedGridItem,
+} from "@/utils/helpers/quick-helper.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
 
 export function ProductGalleryPage() {
@@ -87,14 +90,14 @@ export function ProductGalleryPage() {
     productsService.itemCardHandler(item);
   }
 
-  function scrollToCard(cardId: string) {
-    setTimeout(() => {
-      const cardElement = cardRefs.current[cardId];
-      if (cardElement) {
-        cardElement.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }, 100);
-  }
+  // function scrollToCard(cardId: string) {
+  //   setTimeout(() => {
+  //     const cardElement = cardRefs.current[cardId];
+  //     if (cardElement) {
+  //       cardElement.scrollIntoView({ behavior: "smooth", block: "start" });
+  //     }
+  //   }, 100);
+  // }
 
   function handleCardAction(
     identifier: string,
@@ -108,7 +111,7 @@ export function ProductGalleryPage() {
       if (!activeCards.includes(identifier)) {
         updatedCards = [...activeCards, identifier];
         dispatch(actions.refreshActiveCards(updatedCards));
-        scrollToCard(identifier);
+        scrollToRefElement(cardRefs.current, identifier);
       } else {
         dispatch(actions.refreshActiveCards(activeCards));
       }

@@ -26,14 +26,16 @@ export function variantsGridColumns(
     {
       accessorKey: "variantId",
       header: "ID",
-      minSize: 50,
-      maxSize: 50,
+      size: 60,
+      minSize: 60,
+      maxSize: 60,
     },
     {
       accessorKey: "photo",
       header: "Image",
-      minSize: 70,
-      maxSize: 70,
+      size: 60,
+      minSize: 60,
+      maxSize: 60,
       cell: ({ row, table }) => {
         const image: ImageModel = row.getValue("photo");
         const meta = table.options.meta as {
@@ -61,7 +63,9 @@ export function variantsGridColumns(
     {
       accessorKey: "variantCode",
       header: "Code",
-      maxSize: 100,
+      size: 60,
+      minSize: 60,
+      maxSize: 60,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("variantCode")}>
@@ -75,6 +79,9 @@ export function variantsGridColumns(
     {
       accessorKey: "variantName",
       header: "Variant Name",
+      size: 150,
+      minSize: 150,
+      maxSize: 150,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("variantName")}>
@@ -88,6 +95,9 @@ export function variantsGridColumns(
     {
       accessorKey: "productCategory",
       header: "Category",
+      size: 100,
+      minSize: 100,
+      maxSize: 100,
       cell: ({ row }) => {
         const category: CategoryModel = row.getValue("productCategory");
         return (
@@ -111,6 +121,9 @@ export function variantsGridColumns(
     {
       accessorKey: "brand",
       header: "Brand",
+      size: 100,
+      minSize: 100,
+      maxSize: 100,
       cell: ({ row }) => {
         const brand: BrandModel = row.getValue("brand");
         return (
@@ -131,6 +144,9 @@ export function variantsGridColumns(
     {
       accessorKey: "traitOptions",
       header: "Details",
+      size: 80,
+      minSize: 80,
+      maxSize: 80,
       cell: ({ row }) => {
         const traitOptions = row.original.traitOptions || [];
 
@@ -190,6 +206,9 @@ export function variantsGridColumns(
     {
       accessorKey: "salePrice",
       header: "Price",
+      size: 100,
+      minSize: 100,
+      maxSize: 100,
       cell: ({ row }) => {
         const price: string = row.getValue("salePrice");
         return <span>{price ? price : "N/A"}</span>;
@@ -198,7 +217,9 @@ export function variantsGridColumns(
     {
       accessorKey: "stockAmount",
       header: "In Stock",
-      minSize: 90,
+      size: 60,
+      minSize: 60,
+      maxSize: 60,
       cell: ({ row }) => {
         return <span>{`${row.getValue("stockAmount")} units`}</span>;
       },

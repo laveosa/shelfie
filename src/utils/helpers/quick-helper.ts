@@ -110,3 +110,83 @@ export function clearSelectedGridItems(itemsList: any[]) {
     isGridItemSelected: false,
   }));
 }
+
+export function scrollToRefElement(
+  refs: { [key: string]: HTMLElement | null },
+  id: string,
+  offsetX: number = 20,
+  offsetY: number = 20,
+  delay: number = 300,
+): void {
+  setTimeout(() => {
+    const element = refs[id];
+    if (!element) return;
+
+    element.offsetHeight;
+
+    let scrollParent: HTMLElement | Document | null = element;
+    let isWindowScroll = true;
+    while (scrollParent && !(scrollParent instanceof Document)) {
+      const { overflowY, overflowX } = window.getComputedStyle(
+        scrollParent as HTMLElement,
+      );
+      if (
+        overflowY === "auto" ||
+        overflowY === "scroll" ||
+        overflowX === "auto" ||
+        overflowX === "scroll"
+      ) {
+        isWindowScroll = false;
+        break;
+      }
+      scrollParent = (scrollParent as HTMLElement).parentElement;
+    }
+
+    const containerStyles = isWindowScroll
+      ? {
+          paddingLeft: "0px",
+          paddingTop: "0px",
+        }
+      : window.getComputedStyle(scrollParent as HTMLElement);
+    const containerPaddingLeft = parseFloat(containerStyles.paddingLeft) || 0;
+    const containerPaddingTop = parseFloat(containerStyles.paddingTop) || 0;
+
+    element.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+      inline: "start",
+    });
+
+    setTimeout(() => {
+      const rect = element.getBoundingClientRect();
+      const parentRect = isWindowScroll
+        ? {
+            top: 0,
+            left: 0,
+          }
+        : (scrollParent as HTMLElement).getBoundingClientRect();
+      const scrollTop = isWindowScroll
+        ? window.pageYOffset || document.documentElement.scrollTop
+        : (scrollParent as HTMLElement).scrollTop;
+      const scrollLeft = isWindowScroll
+        ? window.pageXOffset || document.documentElement.scrollLeft
+        : (scrollParent as HTMLElement).scrollLeft;
+
+      const targetY =
+        rect.top + scrollTop - parentRect.top - offsetY - containerPaddingTop;
+      const targetX =
+        rect.left +
+        scrollLeft -
+        parentRect.left -
+        offsetX -
+        containerPaddingLeft;
+
+      const scrollTarget = isWindowScroll ? window : scrollParent;
+      scrollTarget.scrollTo({
+        top: Math.max(0, targetY),
+        left: Math.max(0, targetX),
+        behavior: "smooth",
+      });
+    }, 500);
+  }, delay);
+}

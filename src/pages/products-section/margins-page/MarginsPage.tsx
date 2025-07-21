@@ -16,7 +16,10 @@ import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card
 import MarginForPurchaseCard from "@/components/complex/custom-cards/margin-for-purchase-card/MarginForPurchaseCard.tsx";
 import SelectMarginCard from "@/components/complex/custom-cards/select-margin-card/SelectMarginCard.tsx";
 import MarginConfigurationCard from "@/components/complex/custom-cards/margin-configuration-card/MarginConfigurationCard.tsx";
-import { setSelectedGridItem } from "@/utils/helpers/quick-helper.ts";
+import {
+  scrollToRefElement,
+  setSelectedGridItem,
+} from "@/utils/helpers/quick-helper.ts";
 
 export function MarginsPage() {
   const dispatch = useAppDispatch();
@@ -63,15 +66,6 @@ export function MarginsPage() {
     }
   }, [purchaseId]);
 
-  function scrollToCard(cardId: string) {
-    setTimeout(() => {
-      const cardElement = cardRefs.current[cardId];
-      if (cardElement) {
-        cardElement.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }, 100);
-  }
-
   function handleCardAction(
     identifier: string,
     forceOpen: boolean = false,
@@ -88,7 +82,7 @@ export function MarginsPage() {
       if (!activeCards.includes(identifier)) {
         updatedCards = [...activeCards, identifier];
         dispatch(actions.refreshActiveCards(updatedCards));
-        scrollToCard(identifier);
+        scrollToRefElement(cardRefs.current, identifier);
       } else {
         dispatch(actions.refreshActiveCards(activeCards));
       }
@@ -117,7 +111,7 @@ export function MarginsPage() {
     dispatch(actions.refreshActiveCards(updatedCardsArray));
 
     if (lastAddedCard) {
-      scrollToCard(lastAddedCard);
+      scrollToRefElement(cardRefs.current, lastAddedCard);
     }
   }
 

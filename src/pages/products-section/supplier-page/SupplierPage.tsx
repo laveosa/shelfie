@@ -18,6 +18,7 @@ import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import {
   clearSelectedGridItems,
+  scrollToRefElement,
   setSelectedGridItem,
 } from "@/utils/helpers/quick-helper.ts";
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
@@ -66,15 +67,6 @@ export function SupplierPage() {
     dispatch(productsActions.refreshActiveTab("purchases"));
   }, [purchaseId]);
 
-  function scrollToCard(cardId: string) {
-    setTimeout(() => {
-      const cardElement = cardRefs.current[cardId];
-      if (cardElement) {
-        cardElement.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }, 100);
-  }
-
   function handleCardAction(
     identifier: string,
     forceOpen: boolean = false,
@@ -91,7 +83,7 @@ export function SupplierPage() {
       if (!activeCards.includes(identifier)) {
         updatedCards = [...activeCards, identifier];
         dispatch(actions.refreshActiveCards(updatedCards));
-        scrollToCard(identifier);
+        scrollToRefElement(cardRefs.current, identifier);
       } else {
         dispatch(actions.refreshActiveCards(activeCards));
       }

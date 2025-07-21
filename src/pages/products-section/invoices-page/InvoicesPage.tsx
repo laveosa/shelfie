@@ -14,6 +14,7 @@ import useDialogService from "@/utils/services/dialog/DialogService.ts";
 import useInvoicesPageService from "@/pages/products-section/invoices-page/useInvoicesPageService.ts";
 import InvoicesCard from "@/components/complex/custom-cards/invoices-card/InvoicesCard.tsx";
 import InvoicePreviewCard from "@/components/complex/custom-cards/invoice-preview-card/InvoicePreviewCard.tsx";
+import { scrollToRefElement } from "@/utils/helpers/quick-helper.ts";
 
 export function InvoicesPage() {
   const dispatch = useAppDispatch();
@@ -43,15 +44,6 @@ export function InvoicesPage() {
     }
   }, [purchaseId]);
 
-  function scrollToCard(cardId: string) {
-    setTimeout(() => {
-      const cardElement = cardRefs.current[cardId];
-      if (cardElement) {
-        cardElement.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }, 100);
-  }
-
   function handleCardAction(
     identifier: string,
     forceOpen: boolean = false,
@@ -64,7 +56,7 @@ export function InvoicesPage() {
       if (!activeCards.includes(identifier)) {
         updatedCards = [...activeCards, identifier];
         dispatch(actions.refreshActiveCards(updatedCards));
-        scrollToCard(identifier);
+        scrollToRefElement(cardRefs.current, identifier);
       } else {
         dispatch(actions.refreshActiveCards(activeCards));
       }

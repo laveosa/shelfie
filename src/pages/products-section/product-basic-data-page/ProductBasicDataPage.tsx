@@ -19,6 +19,7 @@ import { useToast } from "@/hooks/useToast.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
+import { scrollToRefElement } from "@/utils/helpers/quick-helper.ts";
 
 export function ProductBasicDataPage() {
   const dispatch = useAppDispatch();
@@ -103,20 +104,11 @@ export function ProductBasicDataPage() {
     }
   }, [productId]);
 
-  function scrollToCard(cardId: string) {
-    setTimeout(() => {
-      const cardElement = cardRefs.current[cardId];
-      if (cardElement) {
-        cardElement.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }, 100);
-  }
-
   function handleCardAction(identifier: string) {
     const updatedCards = state.activeCards.includes(identifier)
       ? state.activeCards.filter((card) => card !== identifier)
       : [...state.activeCards, identifier];
-    scrollToCard(identifier);
+    scrollToRefElement(cardRefs.current, identifier);
     dispatch(actions.refreshActiveCards(updatedCards));
   }
 

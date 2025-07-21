@@ -17,6 +17,9 @@ export const ColorOptionsGridColumns = (
   {
     accessorKey: "color",
     header: "",
+    size: 200,
+    // minSize: 200,
+    // maxSize: 200,
     cell: ({ row }) => {
       const optionColor: string = row.original.optionColor;
       const optionName: string = row.original.optionName;
@@ -48,6 +51,9 @@ export const ColorOptionsGridColumns = (
   {
     accessorKey: "optionName",
     header: "",
+    size: 50,
+    // minSize: 50,
+    // maxSize: 50,
     cell: ({ row }) => {
       const optionColor: string = row.original.optionColor;
       const optionName: string = row.original.optionName;
@@ -78,6 +84,9 @@ export const ColorOptionsGridColumns = (
   {
     id: "rowActions",
     header: "",
+    size: 50,
+    // minSize: 50,
+    // maxSize: 50,
     cell: ({ row, table }) => {
       return (
         <TraitOptionsGridColumnActions

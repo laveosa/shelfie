@@ -24,6 +24,7 @@ import {
   addGridRowColor,
   clearSelectedGridItems,
   formatDate,
+  scrollToRefElement,
   setSelectedGridItem,
 } from "@/utils/helpers/quick-helper.ts";
 import { GridModel } from "@/const/models/GridModel.ts";
@@ -135,15 +136,6 @@ export function ManageVariantsPage() {
     };
   }, [dispatch]);
 
-  function scrollToCard(cardId: string) {
-    setTimeout(() => {
-      const cardElement = cardRefs.current[cardId];
-      if (cardElement) {
-        cardElement.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }, 100);
-  }
-
   function handleCardAction(
     identifier: string,
     forceOpen: boolean = false,
@@ -156,7 +148,7 @@ export function ManageVariantsPage() {
       if (!activeCards.includes(identifier)) {
         updatedCards = [...activeCards, identifier];
         dispatch(actions.refreshActiveCards(updatedCards));
-        scrollToCard(identifier);
+        scrollToRefElement(cardRefs.current, identifier);
       } else {
         dispatch(actions.refreshActiveCards(activeCards));
       }
@@ -171,7 +163,7 @@ export function ManageVariantsPage() {
     forceOpen = false,
   ) {
     let updatedCards = [...state.activeCards];
-    let lastAddedCard = null;
+    let lastAddedCard: string | null = null;
 
     if (forceOpen) {
       for (const card of cardIdentifiers) {
@@ -180,11 +172,9 @@ export function ManageVariantsPage() {
           lastAddedCard = card;
         }
       }
-
       dispatch(actions.refreshActiveCards(updatedCards));
-
       if (lastAddedCard) {
-        scrollToCard(lastAddedCard);
+        scrollToRefElement(cardRefs.current, lastAddedCard);
       }
     } else {
       updatedCards = updatedCards.filter(
