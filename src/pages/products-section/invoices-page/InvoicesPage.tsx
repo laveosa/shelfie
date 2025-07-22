@@ -32,15 +32,18 @@ export function InvoicesPage() {
   const cardRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   useEffect(() => {
-    handleCardAction("invoicePreviewCard", true);
-  }, []);
-
-  useEffect(() => {
     if (!productsState.purchaseCounters) {
       dispatch(actions.setIsProductMenuCardLoading(true));
       productsService
         .getPurchaseCountersHandler(Number(purchaseId))
         .then(() => dispatch(actions.setIsProductMenuCardLoading(false)));
+    }
+    if (state.invoicesGridModel.items.length === 0) {
+      dispatch(actions.setIsInvoiceCardGridLoading(true));
+      service.getInvoicesForGridHandler(Number(purchaseId)).then((res) => {
+        dispatch(actions.setIsInvoiceCardGridLoading(false));
+        dispatch(actions.refreshInvoicesGridModel(res));
+      });
     }
   }, [purchaseId]);
 
@@ -66,37 +69,96 @@ export function InvoicesPage() {
     }
   }
 
-  async function onAction(actionType: string, _payload: any) {
+  async function onAction(actionType: string, payload: any) {
     switch (actionType) {
-      case "uploadPhoto":
-        // dispatch(actions.setIsImageUploaderLoading(true));
-        // service.uploadPhotoHandler(payload).then((res) => {
-        //   dispatch(actions.setIsImageUploaderLoading(false));
-        //   if (res.data.photoId) {
-        //     productsService
-        //       .getProductPhotosHandler(Number(productId))
-        //       .then((res) => {
-        //         dispatch(productsActions.refreshProductPhotos(res));
-        //       });
-        //     productsService
-        //       .getCountersForProductsHandler(productId)
-        //       .then((res) => {
-        //         dispatch(productsActions.refreshProductCounter(res));
-        //       });
-        //     addToast({
-        //       text: "Photos added successfully",
-        //       type: "success",
-        //     });
-        //   } else {
-        //     addToast({
-        //       text: `${res.error.data.detail}`,
-        //       type: "error",
-        //     });
-        //   }
-        // });
+      case "uploadInvoice":
+        dispatch(actions.setIsFileUploaderLoading(true));
+        productsService.uploadPhotoHandler(payload).then((res) => {
+          dispatch(actions.setIsFileUploaderLoading(false));
+          if (res.data.assetId) {
+            dispatch(actions.setIsProductMenuCardLoading(true));
+            dispatch(actions.setIsInvoiceCardGridLoading(true));
+            Promise.all([
+              productsService.getPurchaseCountersHandler(Number(purchaseId)),
+              service.getInvoicesForGridHandler(Number(purchaseId)),
+            ]).then(([_counters, gridModel]) => {
+              dispatch(actions.setIsProductMenuCardLoading(false));
+              dispatch(actions.setIsInvoiceCardGridLoading(false));
+              dispatch(actions.refreshInvoicesGridModel(gridModel));
+            });
+            addToast({
+              text: "Invoice added successfully",
+              type: "success",
+            });
+          } else {
+            addToast({
+              text: `${res.error.data.detail}`,
+              type: "error",
+            });
+          }
+        });
+        break;
+      case "previewInvoice":
+        handleCardAction("invoicePreviewCard", true);
+        dispatch(actions.refreshPreviewUrl(payload.url));
+        break;
+      case "deleteInvoice":
+        payload.table.options.meta?.hideRow(payload.row.original.id);
+        const confirmedDeleteInvoice = await openConfirmationDialog({
+          title: "Delete Invoice",
+          text: `You are about to delete invoice "${payload.row.original.originalName}".`,
+          primaryButtonValue: "Delete",
+          secondaryButtonValue: "Cancel",
+        });
+        if (!confirmedDeleteInvoice) {
+          payload.table.options.meta?.unhideRow(payload.row.original.id);
+        } else {
+          await productsService
+            .deletePhotoHandler(payload.row.original.assetId)
+            .then((res) => {
+              if (!res) {
+                addToast({
+                  text: "Invoice deleted successfully",
+                  type: "success",
+                });
+              } else {
+                payload.table.options.meta?.unhideRow(payload.row.original.id);
+                addToast({
+                  text: res.error.data.detail,
+                  type: "error",
+                });
+              }
+            });
+        }
+        break;
+      case "downloadInvoice":
+        service.downloadAssetHandler(payload.assetId).then((res) => {
+          if (res?.data instanceof Blob) {
+            const url = window.URL.createObjectURL(res.data);
+
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "invoice.pdf";
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+
+            addToast({
+              text: "Invoice is downloading",
+              type: "success",
+            });
+          } else {
+            addToast({
+              text: res.error.data.detail,
+              type: "error",
+            });
+          }
+        });
         break;
       case "closeInvoicePreviewCard":
         handleCardAction("invoicePreviewCard");
+        dispatch(actions.refreshPreviewUrl(null));
         break;
     }
   }
@@ -113,7 +175,8 @@ export function InvoicesPage() {
       <InvoicesCard
         isLoading={state.isInvoicesCardLoading}
         isGridLoading={state.isInvoiceCardGridLoading}
-        data={state.invoices}
+        isImageUploaderLoading={state.isFileUploaderLoading}
+        data={state.invoicesGridModel.items}
         contextId={Number(purchaseId)}
         onAction={onAction}
       />
@@ -124,7 +187,10 @@ export function InvoicesPage() {
             cardRefs.current["invoicePreviewCard"] = el;
           }}
         >
-          <InvoicePreviewCard onAction={onAction} />
+          <InvoicePreviewCard
+            previewUrl={state.previewUrl}
+            onAction={onAction}
+          />
         </div>
       )}
     </div>

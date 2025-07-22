@@ -116,11 +116,6 @@ export default function ProductTraitConfigurationCard({
     <SheProductCard
       loading={isLoading}
       title={`${selectedTrait?.traitId ? `Manage: ${selectedTrait.traitName}` : "Create product trait"}`}
-      primaryButtonModel={{
-        icon: Plus,
-        bgColor: "#007AFF",
-      }}
-      secondaryButtonModel={{ bgColor: "#71717A", txtColor: "#FAFAFA" }}
       showCloseButton={true}
       className={cs.productTraitConfigurationCard}
       {...props}
@@ -200,8 +195,6 @@ export default function ProductTraitConfigurationCard({
                 <div className={cs.buttonBlock}>
                   <SheButton
                     variant="secondary"
-                    bgColor="#71717A"
-                    txtColor="#FAFAFA"
                     value="Cancel"
                     onClick={() =>
                       onAction("closeProductTraitConfigurationCard", null)
@@ -236,6 +229,7 @@ export default function ProductTraitConfigurationCard({
                     columns={sizeColumns}
                     data={localItems}
                     gridModel={data}
+                    // cellPadding="10px 10px"
                     onNewItemPosition={(newIndex, activeItem) =>
                       onAction("dndTraitOption", {
                         selectedTrait,
@@ -255,6 +249,7 @@ export default function ProductTraitConfigurationCard({
                     columns={colorColumns}
                     data={localItems}
                     gridModel={data}
+                    // cellPadding="10px 10px"
                     onNewItemPosition={(newIndex, activeItem) =>
                       onAction("dndTraitOption", {
                         selectedTrait,

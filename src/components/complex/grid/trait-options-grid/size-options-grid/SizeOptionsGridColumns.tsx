@@ -17,7 +17,8 @@ export const SizeOptionsGridColumns = (
     accessorKey: "optionName",
     header: "",
     size: 50,
-    // minSize: 50,
+    minSize: 50,
+    maxSize: 50,
     cell: ({ row }) => {
       const value: string = row.original.optionName || "";
       const optionId: number = row.original.optionId;
@@ -47,7 +48,8 @@ export const SizeOptionsGridColumns = (
     id: "rowActions",
     header: "",
     size: 50,
-    // minSize: 50,
+    minSize: 50,
+    maxSize: 50,
     cell: ({ row, table }) => {
       return (
         <TraitOptionsGridColumnActions

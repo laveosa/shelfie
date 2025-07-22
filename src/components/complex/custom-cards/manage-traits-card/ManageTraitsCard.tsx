@@ -130,7 +130,6 @@ export default function ManageTraitsCard({
       }}
       showSecondaryButton={true}
       secondaryButtonTitle="Cancel"
-      secondaryButtonModel={{ bgColor: "#71717A", txtColor: "#FAFAFA" }}
       onSecondaryButtonClick={onSecondaryButtonClick}
       showCloseButton
       className={cs.manageTraitsCard}

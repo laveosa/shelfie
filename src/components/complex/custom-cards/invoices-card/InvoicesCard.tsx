@@ -20,24 +20,6 @@ export default function InvoicesCard({
   contextId,
   onAction,
 }: IInvoiceCard) {
-  function handleAction(actionType: string, payload?: any): any {
-    switch (actionType) {
-      case "upload":
-        onAction("uploadPhoto", payload);
-        break;
-      case "delete":
-        onAction("deletePhoto", payload);
-        break;
-      case "connect":
-        onAction("openConnectImageCard", payload);
-        break;
-      case "dnd":
-        const { newIndex, activeItem, oldIndex } = payload;
-        onAction("changePhotoPosition", { newIndex, activeItem, oldIndex });
-        break;
-    }
-  }
-
   function onGridAction(
     actionType: string,
     _rowId?: string,
@@ -45,13 +27,17 @@ export default function InvoicesCard({
     row?: any,
   ) {
     switch (actionType) {
-      case "delete":
-        handleAction("delete", row.original);
+      case "preview":
+        onAction("previewInvoice", row.original);
         break;
-      case "connect":
-        handleAction("connect", row.original);
+      case "download":
+        onAction("downloadInvoice", row.original);
         break;
     }
+  }
+
+  function onDelete(data) {
+    onAction("deleteInvoice", data);
   }
 
   return (
@@ -64,14 +50,22 @@ export default function InvoicesCard({
         <div className={cs.invoicesCardContent}>
           <SheFileUploader
             isLoading={isImageUploaderLoading}
-            contextName={"product"}
+            contextName={"invoiceDocument"}
             viewMode="file"
             contextId={contextId}
             acceptedFileTypes={{
               "application/pdf": [".pdf"],
+              "application/msword": [".doc"],
+              "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+                [".docx"],
+              "application/vnd.ms-excel": [".xls"],
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+                [".xlsx"],
+              "image/jpeg": [".jpg", ".jpeg"],
+              "image/png": [".png"],
             }}
             onUpload={(uploadModel: UploadPhotoModel) =>
-              handleAction("upload", uploadModel)
+              onAction("uploadInvoice", uploadModel)
             }
           />
           <div className={cs.manageInvoices}>
@@ -84,7 +78,10 @@ export default function InvoicesCard({
                 className={cs.invoicesGrid}
                 showHeader={false}
                 columns={
-                  InvoicesGridColumns(onGridAction) as ColumnDef<DataWithId>[]
+                  InvoicesGridColumns(
+                    onGridAction,
+                    onDelete,
+                  ) as ColumnDef<DataWithId>[]
                 }
                 data={data}
                 skeletonQuantity={10}

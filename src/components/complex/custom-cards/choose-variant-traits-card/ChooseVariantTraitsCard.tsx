@@ -41,7 +41,6 @@ export default function ChooseVariantTraitsCard({
         icon: Check,
         bgColor: "#007AFF",
       }}
-      secondaryButtonModel={{ bgColor: "#71717A", txtColor: "#FAFAFA" }}
       onPrimaryButtonClick={handleSave}
       showSecondaryButton={true}
       showCloseButton={true}
