@@ -6,7 +6,7 @@ import {
   DataWithId,
   DndGridDataTable,
 } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import { SheImageUploader } from "@/components/complex/she-images-uploader/SheImageUploader.tsx";
+import { SheFileUploader } from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { ProductPhotosGridColumns } from "@/components/complex/grid/variant-photos-grid/ProductPhotosGridColumns.tsx";
 import { IProductPhotosCard } from "@/const/interfaces/complex-components/custom-cards/IProductPhotosCard.ts";
@@ -71,7 +71,7 @@ export default function ProductPhotosCard({
         className={cs.productPhotosCard}
       >
         <div className={cs.productPhotosCardContent}>
-          <SheImageUploader
+          <SheFileUploader
             isLoading={isImageUploaderLoading}
             contextName={"product"}
             contextId={contextId}

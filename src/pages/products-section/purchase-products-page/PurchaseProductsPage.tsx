@@ -24,6 +24,7 @@ import useDialogService from "@/utils/services/dialog/DialogService.ts";
 import ConnectImageCard from "@/components/complex/custom-cards/connect-image-card/ConnectImageCard.tsx";
 import {
   formatDate,
+  scrollToRefElement,
   setSelectedGridItem,
 } from "@/utils/helpers/quick-helper.ts";
 import ChooseVariantTraitsCard from "@/components/complex/custom-cards/choose-variant-traits-card/ChooseVariantTraitsCard.tsx";
@@ -152,15 +153,6 @@ export function PurchaseProductsPage() {
     dispatch(actions.refreshActiveCards(null));
   }, []);
 
-  function scrollToCard(cardId: string) {
-    setTimeout(() => {
-      const cardElement = cardRefs.current[cardId];
-      if (cardElement) {
-        cardElement.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }, 100);
-  }
-
   function handleCardAction(
     identifier: string,
     forceOpen: boolean = false,
@@ -177,7 +169,7 @@ export function PurchaseProductsPage() {
       if (!activeCards.includes(identifier)) {
         updatedCards = [...activeCards, identifier];
         dispatch(actions.refreshActiveCards(updatedCards));
-        scrollToCard(identifier);
+        scrollToRefElement(cardRefs.current, identifier);
       } else {
         dispatch(actions.refreshActiveCards(activeCards));
       }
@@ -206,7 +198,7 @@ export function PurchaseProductsPage() {
     dispatch(actions.refreshActiveCards(updatedCardsArray));
 
     if (lastAddedCard) {
-      scrollToCard(lastAddedCard);
+      scrollToRefElement(cardRefs.current, lastAddedCard);
     }
   }
 

@@ -7,9 +7,9 @@ import {
   SupplierModelDefault,
 } from "@/const/models/SupplierModel.ts";
 import {
-  SheImageUploader,
-  SheImageUploaderRef,
-} from "@/components/complex/she-images-uploader/SheImageUploader.tsx";
+  SheFileUploader,
+  SheFileUploaderRef,
+} from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
 import {
   DataWithId,
   DndGridDataTable,
@@ -54,7 +54,7 @@ export default function CreateSupplierForm<T>({
     resolver: zodResolver(CreateSupplierFormScheme),
     defaultValues: data || SupplierModelDefault,
   });
-  const imageUploaderRef = useRef<SheImageUploaderRef>(null);
+  const imageUploaderRef = useRef<SheFileUploaderRef>(null);
   const [submissionData, setSubmissionData] = useState<SupplierFormData | null>(
     null,
   );
@@ -162,7 +162,7 @@ export default function CreateSupplierForm<T>({
             })}
           </div>
         ) : (
-          <SheImageUploader
+          <SheFileUploader
             isLoading={isPhotoUploaderLoading}
             ref={imageUploaderRef}
             contextName="supplier"

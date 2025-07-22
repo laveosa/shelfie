@@ -1,4 +1,4 @@
-import { CloudUploadIcon, Trash2Icon } from "lucide-react";
+import { CloudUploadIcon, FileIcon, Trash2Icon } from "lucide-react";
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 
 import {
@@ -11,9 +11,9 @@ import {
   DropzoneTrigger,
   useDropzone,
 } from "@/components/ui/dropzone.tsx";
-import { ISheImageUploader } from "@/const/interfaces/complex-components/ISheImageUploader.ts";
-import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
-import cs from "./SheImageUploader.module.scss";
+import { ISheFileUploader } from "@/const/interfaces/complex-components/ISheFileUploader.ts";
+import { UploadFileModel } from "@/const/models/UploadFileModel.ts";
+import cs from "./SheFileUploader.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
 
@@ -24,17 +24,18 @@ interface UploadingFile {
   result: string;
   status: "success";
   tries: number;
+  isImage: boolean;
 }
 
-export interface SheImageUploaderRef {
+export type UploaderViewMode = "image" | "file";
+
+export interface SheFileUploaderRef {
   getSelectedFiles: () => File[];
-  getUploadModels: () => UploadPhotoModel[];
+  getUploadModels: () => UploadFileModel[];
+  setViewMode: (mode: UploaderViewMode) => void;
 }
 
-export const SheImageUploader = forwardRef<
-  SheImageUploaderRef,
-  ISheImageUploader
->(
+export const SheFileUploader = forwardRef<SheFileUploaderRef, ISheFileUploader>(
   (
     {
       isLoading = false,
@@ -42,12 +43,38 @@ export const SheImageUploader = forwardRef<
       contextId,
       fullWidth,
       hideUploadButton = false,
+      viewMode = "image", // default to file mode
+      acceptedFileTypes = {}, // empty object means all files
+      maxFiles = 50,
       onUpload,
+      onViewModeChange,
     },
     ref,
   ) => {
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
     const [uploadingFiles, setUploadingFiles] = useState<UploadingFile[]>([]);
+    const [currentViewMode, setCurrentViewMode] =
+      useState<UploaderViewMode>(viewMode);
+
+    // Determine accepted types based on view mode and props
+    const getAcceptedTypes = () => {
+      if (Object.keys(acceptedFileTypes).length > 0) {
+        return acceptedFileTypes;
+      }
+
+      if (currentViewMode === "image") {
+        return {
+          "image/*": [".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg"],
+        };
+      }
+
+      // File mode accepts all types by default
+      return {};
+    };
+
+    const isImageFile = (file: File) => {
+      return file.type.startsWith("image/");
+    };
 
     const dropzone = useDropzone({
       onDropFile: (file) => {
@@ -56,7 +83,8 @@ export const SheImageUploader = forwardRef<
           file,
           fileName: file.name,
           status: "pending",
-          result: URL.createObjectURL(file),
+          result: isImageFile(file) ? URL.createObjectURL(file) : "",
+          isImage: isImageFile(file),
         };
 
         setSelectedFiles((prevFiles) => [...prevFiles, file]);
@@ -67,10 +95,8 @@ export const SheImageUploader = forwardRef<
         });
       },
       validation: {
-        accept: {
-          "image/*": [".png", ".jpg", ".jpeg"],
-        },
-        maxFiles: 50,
+        accept: getAcceptedTypes(),
+        maxFiles,
       },
     });
 
@@ -88,6 +114,10 @@ export const SheImageUploader = forwardRef<
           };
         });
       },
+      setViewMode: (mode: UploaderViewMode) => {
+        setCurrentViewMode(mode);
+        onViewModeChange?.(mode);
+      },
     }));
 
     useEffect(() => {
@@ -95,6 +125,10 @@ export const SheImageUploader = forwardRef<
         setUploadingFiles([]);
       }
     }, [isLoading, uploadingFiles.length]);
+
+    useEffect(() => {
+      setCurrentViewMode(viewMode);
+    }, [viewMode]);
 
     function handleUpload() {
       const filesToUpload: UploadingFile[] = dropzone.fileStatuses.map(
@@ -105,6 +139,7 @@ export const SheImageUploader = forwardRef<
           result: fileStatus.result,
           status: "success" as const,
           tries: fileStatus.tries || 0,
+          isImage: isImageFile(fileStatus.file),
         }),
       );
 
@@ -119,7 +154,7 @@ export const SheImageUploader = forwardRef<
         const formData = new FormData();
         formData.append("file", uploadingFile.file);
 
-        const uploadModel: UploadPhotoModel = {
+        const uploadModel: UploadFileModel = {
           contextName,
           contextId,
           file: formData,
@@ -143,14 +178,103 @@ export const SheImageUploader = forwardRef<
       }
     }
 
+    // function handleViewModeToggle() {
+    //   const newMode = currentViewMode === "image" ? "file" : "image";
+    //   setCurrentViewMode(newMode);
+    //   onViewModeChange?.(newMode);
+    // }
+
+    const renderFilePreview = (file: any) => {
+      if (
+        currentViewMode === "image" &&
+        file.status === "success" &&
+        isImageFile(file.file)
+      ) {
+        return (
+          <div className={cs.imageContainer}>
+            <img
+              src={file.result}
+              alt={`uploaded-${file.fileName}`}
+              className={cs.previewImage}
+            />
+          </div>
+        );
+      }
+
+      return (
+        <div className={cs.fileContainer}>
+          <FileIcon className="size-8 text-muted-foreground" />
+        </div>
+      );
+    };
+
+    const renderUploadingPreview = (file: UploadingFile) => {
+      if (currentViewMode === "image" && file.isImage) {
+        return (
+          <div className={cs.uploadingImageContainer}>
+            <img
+              src={file.result}
+              alt={`uploading-${file.fileName}`}
+              className={cs.uploadingItemImage}
+            />
+          </div>
+        );
+      }
+
+      return (
+        <div className={cs.uploadingFileContainer}>
+          <FileIcon className="size-6 text-muted-foreground" />
+        </div>
+      );
+    };
+
+    const getUploadText = () => {
+      if (currentViewMode === "image") {
+        return {
+          main: "Upload images",
+          sub: "Click here or drag and drop images to upload",
+        };
+      }
+      return {
+        main: "Upload files",
+        sub: "Click here or drag and drop files to upload",
+      };
+    };
+
+    const uploadText = getUploadText();
+
     return (
       <div
-        className={`${cs.sheImageUploader} ${fullWidth ? cs.sheImageUploaderFullWidth : ""} `}
+        className={`${cs.sheFileUploader} ${fullWidth ? cs.sheFileUploaderFullWidth : ""} `}
         style={{
           boxSizing: "border-box",
           padding: "0",
         }}
       >
+        {/* View Mode Toggle */}
+        {/*<div className={cs.viewModeToggle}>*/}
+        {/*  <SheButton*/}
+        {/*    variant={currentViewMode === "file" ? "default" : "outline"}*/}
+        {/*    // size="sm"*/}
+        {/*    onClick={() => currentViewMode !== "file" && handleViewModeToggle()}*/}
+        {/*    className={cs.toggleButton}*/}
+        {/*  >*/}
+        {/*    <FileIcon className="size-4 mr-2" />*/}
+        {/*    File View*/}
+        {/*  </SheButton>*/}
+        {/*  <SheButton*/}
+        {/*    variant={currentViewMode === "image" ? "default" : "outline"}*/}
+        {/*    // size="sm"*/}
+        {/*    onClick={() =>*/}
+        {/*      currentViewMode !== "image" && handleViewModeToggle()*/}
+        {/*    }*/}
+        {/*    className={cs.toggleButton}*/}
+        {/*  >*/}
+        {/*    <ImageIcon className="size-4 mr-2" />*/}
+        {/*    Image View*/}
+        {/*  </SheButton>*/}
+        {/*</div>*/}
+
         <Dropzone {...dropzone}>
           <DropZoneArea>
             <DropzoneTrigger
@@ -158,39 +282,52 @@ export const SheImageUploader = forwardRef<
             >
               <CloudUploadIcon className="size-8" />
               <div>
-                <p className="font-semibold">Upload images</p>
+                <p className="font-semibold">{uploadText.main}</p>
                 <p className="text-sm text-muted-foreground">
-                  Click here or drag and drop to upload
+                  {uploadText.sub}
                 </p>
               </div>
             </DropzoneTrigger>
           </DropZoneArea>
           <DropzoneMessage />
-          <DropzoneFileList className="grid gap-3 p-0 md:grid-cols-2 lg:grid-cols-3">
+          <DropzoneFileList
+            className={`grid gap-3 p-0 ${
+              currentViewMode === "image"
+                ? "md:grid-cols-2 lg:grid-cols-3"
+                : "grid-cols-1"
+            }`}
+          >
             {dropzone.fileStatuses.map((file) => (
               <DropzoneFileListItem
-                className="overflow-hidden rounded-md bg-secondary p-0 shadow-sm"
+                className={`overflow-hidden rounded-md bg-secondary p-0 shadow-sm ${
+                  currentViewMode === "file" ? cs.fileListItem : ""
+                }`}
                 key={file.id}
                 file={file}
               >
-                <div className="flex relative items-center justify-between p-2 pl-4">
+                <div
+                  className={`flex relative items-center justify-between p-2 pl-4 ${
+                    currentViewMode === "file" ? cs.fileItemLayout : ""
+                  }`}
+                >
                   {file.status === "pending" && (
-                    <div className="aspect-video animate-pulse bg-black/20" />
+                    <div
+                      className={`animate-pulse bg-black/20 ${
+                        currentViewMode === "image"
+                          ? "aspect-video"
+                          : "w-12 h-12 rounded"
+                      }`}
+                    />
                   )}
-                  {file.status === "success" && (
-                    <div className={cs.imageContainer}>
-                      <img
-                        src={file.result}
-                        alt={`uploaded-${file.fileName}`}
-                      />
-                    </div>
-                  )}
+                  {file.status === "success" && renderFilePreview(file)}
+
                   <div className={cs.textBlock}>
                     <p className="truncate text-sm">{file.fileName}</p>
                     <p className="text-xs text-muted-foreground">
                       {(file.file.size / (1024 * 1024)).toFixed(2)} MB
                     </p>
                   </div>
+
                   <DropzoneRemoveFile
                     variant="ghost"
                     className={cs.removeFileButton}
@@ -203,6 +340,7 @@ export const SheImageUploader = forwardRef<
             ))}
           </DropzoneFileList>
         </Dropzone>
+
         {!hideUploadButton && (
           <SheButton
             className={isLoading ? cs.loadingButtonState : ""}
@@ -210,9 +348,10 @@ export const SheImageUploader = forwardRef<
             onClick={handleUpload}
             disabled={selectedFiles.length === 0}
           >
-            Upload photo
+            Upload {currentViewMode === "image" ? "images" : "files"}
           </SheButton>
         )}
+
         {uploadingFiles.length > 0 && (
           <>
             <div className="flex items-center gap-2">
@@ -229,13 +368,8 @@ export const SheImageUploader = forwardRef<
                   <div
                     className={`${cs.uploadingItem} flex relative items-center justify-between p-2 pl-4`}
                   >
-                    <div className={cs.uploadingImageContainer}>
-                      <img
-                        src={file.result}
-                        alt={`uploading-${file.fileName}`}
-                        className={cs.uploadingItemImage}
-                      />
-                    </div>
+                    {renderUploadingPreview(file)}
+
                     <div className={cs.uploadingItemTextBlock}>
                       <p className="truncate text-sm">{file.fileName}</p>
                       <p className="text-xs text-muted-foreground">

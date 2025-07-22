@@ -76,7 +76,6 @@ export default function AddVariantCard({
           bgColor: "#007AFF",
         }}
         showSecondaryButton={true}
-        secondaryButtonModel={{ bgColor: "#71717A", txtColor: "#FAFAFA" }}
         onSecondaryButtonClick={() => onAction("closeAddVariantCard")}
         showCloseButton
         className={cs.addVariantCard}

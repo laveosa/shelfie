@@ -215,6 +215,13 @@ export const PurchasesApiService = createApi({
         body: JSON.stringify(model),
       }),
     }),
+    getInvoicesForGrid: apiConfig.createMutation<any, number>(builder, {
+      query: (purchaseId) => ({
+        url: `${ApiUrlEnum.PURCHASES}/${purchaseId}/invoices`,
+        method: "POST",
+        body: {},
+      }),
+    }),
   }),
 });
 
