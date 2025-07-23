@@ -15,7 +15,7 @@ export interface IMarginsPageSlice {
   marginsList?: MarginModel[];
   selectedMargin?: MarginModel;
   managedMargin?: MarginModel;
-  marginProductsGridModel?: GridModel;
-  marginProductsGriRequestModel?: GridRequestModel;
+  marginItemsGridModel?: GridModel;
+  marginItemsGriRequestModel?: GridRequestModel;
   gridRequestModel?: GridRequestModel;
 }

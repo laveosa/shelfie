@@ -19,6 +19,7 @@ export default function SalePriseManagementCard({
   isLoading,
   isGridLoading,
   preferences,
+  taxes,
   gridModel,
   gridRequestModel,
   onAction,
@@ -53,7 +54,9 @@ export default function SalePriseManagementCard({
       </div>
       <DndGridDataTable
         isLoading={isGridLoading}
-        columns={marginProductsGridColumns(onAction) as ColumnDef<DataWithId>[]}
+        columns={
+          marginProductsGridColumns(taxes, onAction) as ColumnDef<DataWithId>[]
+        }
         data={gridModel.items}
         gridModel={gridModel}
         // sortingItems={sortingOptions}

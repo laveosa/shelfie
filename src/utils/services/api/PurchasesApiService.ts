@@ -202,7 +202,7 @@ export const PurchasesApiService = createApi({
         method: "DELETE",
       }),
     }),
-    getMarginProductsListForGrid: apiConfig.createMutation<
+    getMarginItemsListForGrid: apiConfig.createMutation<
       any,
       {
         purchaseId: number;

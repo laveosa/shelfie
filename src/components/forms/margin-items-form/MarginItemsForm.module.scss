@@ -1,0 +1,17 @@
+.marginItemsFormWrapper {
+  .marginItemsForm {
+    form > div {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      gap: 10px;
+      padding-top: 0;
+
+      .marginItemsFormItem {
+        margin-bottom: 0;
+        min-height: 100%;
+        width: fit-content;
+      }
+    }
+  }
+}

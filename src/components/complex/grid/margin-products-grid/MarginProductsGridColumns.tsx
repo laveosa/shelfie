@@ -1,22 +1,24 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { ImageIcon } from "lucide-react";
+
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import placeholderImage from "@/assets/images/placeholder-image.png";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-import cs from "./PurchaseProductsGridColumns.module.scss";
+import cs from "./MarginProductsGridColumns.module.scss";
+import MarginItemsForm from "@/components/forms/margin-items-form/MarginItemsForm.tsx";
+import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 
 export function marginProductsGridColumns(
-  // currencies: CurrencyModel[],
-  // taxes: TaxTypeModel[],
-  // activeTab: string,
+  taxes: TaxTypeModel[],
   onAction: any,
 ): ColumnDef<any>[] {
   return [
     {
       accessorKey: "thumbnailUrl",
       header: "",
-      size: 40,
-      minSize: 40,
+      size: 30,
+      minSize: 30,
+      maxSize: 30,
       cell: ({ row, table }) => {
         const image: string = row.getValue("thumbnailUrl");
         const meta = table.options.meta as {
@@ -51,6 +53,7 @@ export function marginProductsGridColumns(
       header: "Code",
       size: 40,
       minSize: 40,
+      maxSize: 40,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("variantCode")}>
@@ -66,6 +69,7 @@ export function marginProductsGridColumns(
       header: "Product Name",
       size: 50,
       minSize: 50,
+      maxSize: 50,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("variantName")}>
@@ -81,6 +85,7 @@ export function marginProductsGridColumns(
       header: "Details",
       size: 40,
       minSize: 40,
+      maxSize: 40,
       cell: ({ row }) => {
         const traitOptions = row.original.traitOptions || [];
 
@@ -130,6 +135,7 @@ export function marginProductsGridColumns(
       header: "Purchase Price",
       size: 40,
       minSize: 40,
+      maxSize: 40,
       cell: ({ row }) => {
         return <span>{row.getValue("purchasePrice")}</span>;
       },
@@ -139,35 +145,34 @@ export function marginProductsGridColumns(
       header: "Current Price",
       size: 40,
       minSize: 40,
+      maxSize: 40,
       cell: ({ row }) => {
         return <span>{row.getValue("currentPrice")}</span>;
       },
     },
-    // {
-    //   accessorKey: "",
-    //   size: 220,
-    //   minSize: 220,
-    //   header: "",
-    //   cell: ({ row }) => {
-    //     const stockActionId = row.original.stockActionId;
-    //     const data = {
-    //       unitsAmount: row.original.unitsAmount,
-    //       currencyId: Number(row.original.stockDocumentPrice.currencyId),
-    //       taxTypeId: Number(row.original.stockDocumentPrice.taxTypeId),
-    //       nettoPrice: row.original.stockDocumentPrice.netto,
-    //     };
-    //     return (
-    //       <PurchaseProductsForm
-    //         activeTab={activeTab}
-    //         taxes={taxes}
-    //         currencies={currencies}
-    //         data={data}
-    //         onSubmit={(data) => {
-    //           onAction("updatePurchaseProduct", { data, stockActionId });
-    //         }}
-    //       />
-    //     );
-    //   },
-    // },
+    {
+      id: "form",
+      accessorKey: "",
+      size: 220,
+      minSize: 220,
+      header: "",
+      cell: ({ row }) => {
+        const stockActionId = row.original.stockActionId;
+        const data = {
+          marginPrice: row.original.marginPrice,
+          taxTypeId: Number(row.original.taxTypeId),
+          quantity: row.original.unitsAmount,
+        };
+        return (
+          <MarginItemsForm
+            taxes={taxes}
+            data={data}
+            onSubmit={(data) => {
+              onAction("updatePurchaseProduct", { data, stockActionId });
+            }}
+          />
+        );
+      },
+    },
   ];
 }

@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
 import { MarginsPageSliceActions as actions } from "@/state/slices/MarginsPageSlice";
+
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
@@ -20,6 +21,7 @@ import {
   scrollToRefElement,
   setSelectedGridItem,
 } from "@/utils/helpers/quick-helper.ts";
+import SalePriseManagementCard from "@/components/complex/custom-cards/sale-price-management-card/SalePriceManagementCard.tsx";
 
 export function MarginsPage() {
   const dispatch = useAppDispatch();
@@ -39,7 +41,9 @@ export function MarginsPage() {
 
   useEffect(() => {
     if (!state.selectedMargin) {
+      dispatch(actions.setIsMarginForPurchaseCardLoading(true));
       service.getMarginForPurchaseHandler(purchaseId).then((res) => {
+        dispatch(actions.setIsMarginForPurchaseCardLoading(false));
         dispatch(actions.refreshSelectedMargin(res));
       });
     }
@@ -54,16 +58,31 @@ export function MarginsPage() {
         dispatch(actions.refreshMarginsList(res));
       });
     }
-    if (state.marginProductsGridModel.items.length === 0) {
+    if (state.marginItemsGridModel.items.length === 0) {
       service
-        .getMarginProductsListForGridHandler(
+        .getMarginItemsListForGridHandler(
           purchaseId,
-          state.marginProductsGriRequestModel,
+          state.marginItemsGriRequestModel,
         )
         .then((res) => {
-          dispatch(actions.refreshMarginProductsGridModel(res));
+          dispatch(actions.refreshMarginItemsGridModel(res));
         });
     }
+    if (productsState.currenciesList.length === 0) {
+      productsService.getCurrenciesListHandler();
+    }
+    if (productsState.taxesList.length === 0) {
+      productsService.getTaxesListHandler();
+    }
+    // productsService
+    //   .getListOfPurchaseProductsForGridHandler(
+    //     purchaseId,
+    //     productsState.purchasesProductsGridRequestModel,
+    //   )
+    //   .then((res) => {
+    //     dispatch(productsActions.refreshPurchaseProducts(res.items));
+    //   });
+    handleCardAction("salePriceManagementCard", true);
   }, [purchaseId]);
 
   function handleCardAction(
@@ -345,21 +364,22 @@ export function MarginsPage() {
         margin={state.selectedMargin}
         onAction={onAction}
       />
-      {/*{state.activeCards?.includes("salePriceManagementCard") && (*/}
-      {/*  <div*/}
-      {/*    ref={(el) => {*/}
-      {/*      cardRefs.current["salePriceManagementCard"] = el;*/}
-      {/*    }}*/}
-      {/*  >*/}
-      {/*    <SalePriseManagementCard*/}
-      {/*      isLoading={state.isSalePriceManagementCardLoading}*/}
-      {/*      isGridLoading={state.isMarginProductsGridLoading}*/}
-      {/*      gridModel={state.marginProductsGridModel}*/}
-      {/*      gridRequestModel={state.marginProductsGriRequestModel}*/}
-      {/*      onAction={onAction}*/}
-      {/*    />*/}
-      {/*  </div>*/}
-      {/*)}*/}
+      {state.activeCards?.includes("salePriceManagementCard") && (
+        <div
+          ref={(el) => {
+            cardRefs.current["salePriceManagementCard"] = el;
+          }}
+        >
+          <SalePriseManagementCard
+            isLoading={state.isSalePriceManagementCardLoading}
+            isGridLoading={state.isMarginProductsGridLoading}
+            taxes={productsState.taxes}
+            gridModel={state.marginItemsGridModel}
+            gridRequestModel={state.marginItemsGriRequestModel}
+            onAction={onAction}
+          />
+        </div>
+      )}
       {state.activeCards?.includes("selectMarginCard") && (
         <div
           ref={(el) => {
