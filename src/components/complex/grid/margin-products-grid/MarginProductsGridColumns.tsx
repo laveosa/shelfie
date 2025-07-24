@@ -153,8 +153,9 @@ export function marginProductsGridColumns(
     {
       id: "form",
       accessorKey: "",
-      size: 220,
-      minSize: 220,
+      size: 150,
+      minSize: 150,
+      maxSize: 150,
       header: "",
       cell: ({ row }) => {
         const stockActionId = row.original.stockActionId;
@@ -165,8 +166,9 @@ export function marginProductsGridColumns(
         };
         return (
           <MarginItemsForm
-            taxes={taxes}
             data={data}
+            taxes={taxes}
+            currentPrice={row.getValue("currentPrice")}
             onSubmit={(data) => {
               onAction("updatePurchaseProduct", { data, stockActionId });
             }}

@@ -10,7 +10,43 @@
       .marginItemsFormItem {
         margin-bottom: 0;
         min-height: 100%;
-        width: fit-content;
+        min-width: fit-content;
+
+        .inputChanged {
+          input {
+            border-color: #007AFF;
+          }
+        }
+
+        .selectChanged {
+          button {
+            border-color: #007AFF;
+          }
+        }
+      }
+
+      .marginItemsFormText {
+        width: 60px;
+      }
+
+      .marginItemsFormInput {
+        width: 100px;
+      }
+
+      .marginItemsFormIcon {
+        width: 24px;
+      }
+
+      .formButton {
+
+        background: #007AFF;
+        color: #fff;
+
+      }
+
+      .disabledFormButton {
+        background: #F4F4F5;
+        color: #000;
       }
     }
   }

@@ -74,14 +74,6 @@ export function MarginsPage() {
     if (productsState.taxesList.length === 0) {
       productsService.getTaxesListHandler();
     }
-    // productsService
-    //   .getListOfPurchaseProductsForGridHandler(
-    //     purchaseId,
-    //     productsState.purchasesProductsGridRequestModel,
-    //   )
-    //   .then((res) => {
-    //     dispatch(productsActions.refreshPurchaseProducts(res.items));
-    //   });
     handleCardAction("salePriceManagementCard", true);
   }, [purchaseId]);
 
@@ -373,7 +365,7 @@ export function MarginsPage() {
           <SalePriseManagementCard
             isLoading={state.isSalePriceManagementCardLoading}
             isGridLoading={state.isMarginProductsGridLoading}
-            taxes={productsState.taxes}
+            taxes={productsState.taxesList}
             gridModel={state.marginItemsGridModel}
             gridRequestModel={state.marginItemsGriRequestModel}
             onAction={onAction}
