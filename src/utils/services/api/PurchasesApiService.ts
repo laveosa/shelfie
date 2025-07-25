@@ -6,6 +6,7 @@ import { ApiConfigurationService } from "@/utils/services/api/ApiConfigurationSe
 import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
+import { MarginItemModel } from "@/const/models/MarginItemModel.ts";
 
 const apiConfig = new ApiConfigurationService(ApiUrlEnum.PURCHASES_BASE_URL);
 
@@ -220,6 +221,25 @@ export const PurchasesApiService = createApi({
         url: `${ApiUrlEnum.PURCHASES}/${purchaseId}/invoices`,
         method: "POST",
         body: {},
+      }),
+    }),
+    restoreMarginRuleToDefault: apiConfig.createMutation<any, number>(builder, {
+      query: (purchaseId) => ({
+        url: `${ApiUrlEnum.PURCHASES}/${purchaseId}/margin-rules/restore`,
+        method: "PATCH",
+      }),
+    }),
+    updateMarginItem: apiConfig.createMutation<
+      any,
+      {
+        marginItemId: number;
+        model: MarginItemModel;
+      }
+    >(builder, {
+      query: ({ marginItemId, model }) => ({
+        url: `${ApiUrlEnum.MARGIN_ITEMS}/${marginItemId}/manage`,
+        method: "PATCH",
+        body: JSON.stringify(model),
       }),
     }),
   }),

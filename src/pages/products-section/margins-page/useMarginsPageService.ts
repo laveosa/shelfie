@@ -20,6 +20,9 @@ export function useMarginsPageService() {
   const [connectMarginToPurchase] =
     PurchasesApiHooks.useConnectMarginToPurchaseMutation();
   const [detachMargin] = PurchasesApiHooks.useDetachMarginMutation();
+  const [restoreMarginRuleToDefault] =
+    PurchasesApiHooks.useRestoreMarginRuleToDefaultMutation();
+  const [updateMarginItem] = PurchasesApiHooks.useUpdateMarginItemMutation();
 
   function getMarginsListForGridHandler(model) {
     return getMarginsListForGrid(model).then((res: any) => {
@@ -99,6 +102,18 @@ export function useMarginsPageService() {
     });
   }
 
+  function restoreMarginRuleToDefaultHandler(purchaseId) {
+    return restoreMarginRuleToDefault(purchaseId).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function updateMarginItemHandler(marginItemId, model) {
+    return updateMarginItem({ marginItemId, model }).then((res: any) => {
+      return res.data;
+    });
+  }
+
   return {
     getMarginsListForGridHandler,
     getMarginItemsListForGridHandler,
@@ -112,5 +127,7 @@ export function useMarginsPageService() {
     restoreMarginHandler,
     connectMarginToPurchaseHandler,
     detachMarginHandler,
+    restoreMarginRuleToDefaultHandler,
+    updateMarginItemHandler,
   };
 }

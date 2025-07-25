@@ -1,4 +1,4 @@
-import { MoreHorizontal, ReceiptEuro } from "lucide-react";
+import { MoreHorizontal, ReceiptEuro, Undo2 } from "lucide-react";
 import React from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
@@ -49,31 +49,47 @@ export default function MarginForPurchaseCard({
             <div className={cs.marginDetails}>
               <div className={cs.marginActions}>
                 <span className="she-title">{margin.marginName}</span>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
+                <div className={cs.marginActionsButtonBlock}>
+                  {margin.marginRule.modified && (
                     <SheButton
-                      variant="secondary"
-                      minWidth="40px"
-                      className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
-                    >
-                      <MoreHorizontal />
-                      <span className="sr-only">Open menu</span>
-                    </SheButton>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start" className="w-[160px]">
-                    <DropdownMenuItem
-                      onClick={() => onAction("manageMargin", margin)}
-                    >
-                      Manage margin
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => onAction("replaceMargin")}>
-                      Replace margin
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => onAction("detachMargin")}>
-                      Detach margin
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                      icon={Undo2}
+                      txtColor={"#fff"}
+                      bgColor={"#007AFF"}
+                      onClick={() =>
+                        onAction("restoreMarginRules", margin.marginId)
+                      }
+                    />
+                  )}
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <SheButton
+                        variant="secondary"
+                        minWidth="40px"
+                        className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+                      >
+                        <MoreHorizontal />
+                        <span className="sr-only">Open menu</span>
+                      </SheButton>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="start" className="w-[160px]">
+                      <DropdownMenuItem
+                        onClick={() => onAction("manageMargin", margin)}
+                      >
+                        Manage margin
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => onAction("replaceMargin")}
+                      >
+                        Replace margin
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => onAction("detachMargin")}
+                      >
+                        Detach margin
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               </div>
               <Separator />
               <div className={cs.marginDetailsConfiguration}>

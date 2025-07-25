@@ -80,7 +80,6 @@ export default function MarginConfigurationForm<T>({
         <FormField
           control={form.control}
           name="marginRule.desiredProfit"
-          defaultValue={data?.marginRule?.desiredProfit}
           render={({ field }): React.ReactElement => (
             <SheFormItem
               className={cs.purchaseProductsFormItem}
@@ -102,7 +101,6 @@ export default function MarginConfigurationForm<T>({
         <FormField
           control={form.control}
           name="marginRule.plannedDiscount"
-          defaultValue={data?.marginRule?.plannedDiscount}
           render={({ field }): React.ReactElement => (
             <SheFormItem
               className={cs.purchaseProductsFormItem}
@@ -127,7 +125,6 @@ export default function MarginConfigurationForm<T>({
         <FormField
           control={form.control}
           name="marginRule.fixedCosts"
-          defaultValue={data?.marginRule?.fixedCosts}
           render={({ field }): React.ReactElement => (
             <SheFormItem
               className={cs.purchaseProductsFormItem}

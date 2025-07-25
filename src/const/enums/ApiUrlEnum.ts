@@ -32,4 +32,5 @@ export enum ApiUrlEnum {
   CODES = "/codes",
   STOCK_ACTIONS = "/stock-actions",
   MARGIN = "/margin",
+  MARGIN_ITEMS = "/margin-items",
 }

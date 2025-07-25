@@ -21,7 +21,9 @@ export default function MarginConfigurationCard({
       <div className={cs.selectMarginCardContent}>
         <MarginConfigurationForm
           data={margin}
-          onSubmit={(formData) => onAction("createMargin", formData)}
+          onSubmit={(formData) =>
+            onAction(margin ? "updateMargin" : "createMargin", formData)
+          }
           onCancel={() => onAction("closeMarginConfigurationCard")}
         />
       </div>

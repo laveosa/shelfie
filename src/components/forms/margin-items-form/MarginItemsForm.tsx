@@ -18,11 +18,7 @@ import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import { IMarginItemsForm } from "@/const/interfaces/forms/IMarginItemsForm.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-
-export const DefaultMarginItemsForm = {
-  marginPrice: null,
-  taxTypeId: null,
-};
+import { MarginItemModelDefault } from "@/const/models/MarginItemModel.ts";
 
 export default function MarginItemsForm<T>({
   data,
@@ -37,7 +33,7 @@ export default function MarginItemsForm<T>({
   const form = useAppForm<any>({
     mode: "onSubmit",
     resolver: zodResolver(MarginItemsFormScheme),
-    defaultValues: data || DefaultMarginItemsForm,
+    defaultValues: data || MarginItemModelDefault,
   });
 
   const watchedMarginPrice = useWatch({
@@ -85,7 +81,7 @@ export default function MarginItemsForm<T>({
       <SheForm<T>
         className={cs.marginItemsForm}
         form={form}
-        defaultValues={DefaultMarginItemsForm}
+        defaultValues={MarginItemModelDefault}
         formPosition={DirectionEnum.CENTER}
         view={ComponentViewEnum.STANDARD}
         fullWidth
@@ -125,7 +121,6 @@ export default function MarginItemsForm<T>({
         <FormField
           control={form.control}
           name="marginPrice"
-          defaultValue={data?.marginPrice}
           render={({ field }): React.ReactElement => {
             return (
               <SheFormItem

@@ -150,7 +150,10 @@ export function MarginsPage() {
   async function onAction(actionType: string, payload?: any) {
     switch (actionType) {
       case "openSelectMarginCard":
-        handleCardAction("selectMarginCard", true);
+        handleMultipleCardActions({
+          selectMarginCard: true,
+          salePriceManagementCard: false,
+        });
         if (state.marginsList.length === 0) {
           dispatch(actions.setIsSelectMarginCardLoading(true));
           service
@@ -197,7 +200,10 @@ export function MarginsPage() {
           });
         break;
       case "replaceMargin":
-        handleCardAction("selectMarginCard", true);
+        handleMultipleCardActions({
+          selectMarginCard: true,
+          salePriceManagementCard: false,
+        });
         if (state.marginsList.length === 0) {
           dispatch(actions.setIsSelectMarginCardLoading(true));
           service
@@ -227,6 +233,7 @@ export function MarginsPage() {
         });
         break;
       case "createMargin":
+        console.log("Create Margin");
         dispatch(actions.setIsMarginConfigurationCardLoading(true));
         service.createMarginHandler(payload.marginName).then((res) => {
           if (res) {
@@ -254,6 +261,7 @@ export function MarginsPage() {
         });
         break;
       case "updateMargin":
+        console.log("Update Margin", payload);
         dispatch(actions.setIsMarginConfigurationCardLoading(true));
         Promise.all([
           service.updateMarginHandler(state.managedMargin.marginId, {
@@ -265,6 +273,11 @@ export function MarginsPage() {
           ),
         ]).then(([margin, marginRules]) => {
           dispatch(actions.setIsMarginConfigurationCardLoading(false));
+          dispatch(actions.setIsMarginForPurchaseCardLoading(true));
+          service.getMarginForPurchaseHandler(purchaseId).then((res) => {
+            dispatch(actions.setIsMarginForPurchaseCardLoading(false));
+            dispatch(actions.refreshSelectedMargin(res));
+          });
           if (margin && marginRules) {
             addToast({
               text: "Margin updated successfully",
@@ -279,7 +292,10 @@ export function MarginsPage() {
         });
         break;
       case "manageMargin":
-        handleCardAction("marginConfigurationCard", true);
+        handleMultipleCardActions({
+          marginConfigurationCard: true,
+          salePriceManagementCard: false,
+        });
         dispatch(actions.setIsMarginConfigurationCardLoading(true));
         service.getMarginDetailsHandler(payload.marginId).then((res) => {
           dispatch(actions.setIsMarginConfigurationCardLoading(false));
@@ -310,7 +326,6 @@ export function MarginsPage() {
         if (!confirmed) return;
 
         service.deleteMarginHandler(payload.marginId).then((res) => {
-          console.log(res);
           if (res) {
             service
               .getMarginsListForGridHandler(state.gridRequestModel)
@@ -319,6 +334,26 @@ export function MarginsPage() {
               });
             addToast({
               text: "Margin deleted successfully",
+              type: "success",
+            });
+          } else {
+            addToast({
+              text: res.error.data.detail,
+              type: "error",
+            });
+          }
+        });
+        break;
+      case "restoreMarginRules":
+        dispatch(actions.setIsMarginForPurchaseCardLoading(true));
+        service.restoreMarginRuleToDefaultHandler(purchaseId).then((res) => {
+          if (res) {
+            service.getMarginForPurchaseHandler(purchaseId).then((res) => {
+              dispatch(actions.setIsMarginForPurchaseCardLoading(false));
+              dispatch(actions.refreshSelectedMargin(res));
+            });
+            addToast({
+              text: "Margin restored successfully",
               type: "success",
             });
           } else {
@@ -393,7 +428,7 @@ export function MarginsPage() {
           }}
         >
           <MarginConfigurationCard
-            isLoading={state.isProductConfigurationCardLoading}
+            isLoading={state.isMarginConfigurationCardLoading}
             margin={state.managedMargin}
             onAction={onAction}
           />
