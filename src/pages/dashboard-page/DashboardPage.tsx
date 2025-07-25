@@ -405,8 +405,8 @@ export function DashboardPage() {
             label="Autocomplete"
             required
             // items={options}
-            items={optionsSimple}
-            // items={_items}
+            // items={optionsSimple}
+            items={_items}
             showClearBtn
             showSelectBtn
             autoFocus

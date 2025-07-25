@@ -197,14 +197,18 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     value: string,
     event?: React.MouseEvent | React.KeyboardEvent,
   ) {
-    _setIsOpen(false);
     setSelected(value);
     onSelect?.(value, {
       value,
       model: { ...sheAutocompleteProps, searchValue: value },
       event,
     });
-    setFocus<HTMLInputElement>(true, _triggerRef);
+    setSearchValue(value);
+
+    setTimeout(() => {
+      setFocus<HTMLInputElement>(true, _triggerRef);
+    }, 0);
+
     event?.stopPropagation();
   }
 
@@ -216,6 +220,21 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
 
   function onEnterHandler(event: React.KeyboardEvent) {
     if (event.code === "Enter") onSelectHandler(_searchValue, event);
+  }
+
+  function onClearHandler(event?: React.MouseEvent | React.KeyboardEvent) {
+    setSelected(undefined);
+    setSearchValue("");
+    onSelect?.("", {
+      value: "",
+      model: { ...sheAutocompleteProps, searchValue: "" },
+      event,
+    });
+    event?.stopPropagation();
+    setFocus<HTMLInputElement>(true, _triggerRef);
+    setTimeout(() => {
+      _setIsOpen(true);
+    });
   }
 
   // ==================================================================== PRIVATE
@@ -285,7 +304,7 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
                 onChange={onChangeHandler}
                 onBlur={onBlurHandler}
                 onDelay={onSearchHandler}
-                onClear={onForceSelectHandler}
+                onClear={onClearHandler}
               />
             </PopoverAnchor>
             {showSelectBtn && (
