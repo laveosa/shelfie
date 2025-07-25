@@ -52,7 +52,6 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     disabled,
     isLoading,
     isOpen,
-    openOnFocus,
     minWidth,
     maxWidth,
     fullWidth,
@@ -62,7 +61,6 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     onBlur,
     onSearch,
     onSelect,
-    onSelectModel,
   } = props;
   const sheAutocompleteProps = getCustomProps<
     ISheAutocomplete,
@@ -107,14 +105,20 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
       setSelected(searchValue);
     }
 
-    const tmpSearchValue = searchValue?.trim();
-    const tmpOpen =
-      !_.isNil(minAmount) && minAmount > 0
-        ? tmpSearchValue && tmpSearchValue.length + 1 > minAmount
-        : autoFocus;
-
-    _updateFocusRelatedLogic(tmpOpen, openOnFocus);
+    _updateFocusRelatedLogic(
+      _checkIsOpenCondition(autoFocus, _searchValue?.trim()),
+    );
   }, [items, searchValue]);
+
+  useEffect(() => {
+    const shouldTryOpen = _checkIsOpenCondition(true, _searchValue?.trim());
+
+    if (!_open && _items?.length && shouldTryOpen) {
+      if (document.activeElement === _triggerRef.current) {
+        _setIsOpen(true);
+      }
+    }
+  }, [_items]);
 
   useEffect(() => {
     if (
@@ -136,13 +140,9 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
   }, [isOpen, isLoading, disabled]);
 
   useEffect(() => {
-    const tmpSearchValue = _searchValue?.trim();
-    const tmpOpen =
-      !_.isNil(minAmount) && minAmount > 0
-        ? tmpSearchValue && tmpSearchValue.length + 1 > minAmount
-        : autoFocus;
-
-    _updateFocusRelatedLogic(tmpOpen, openOnFocus);
+    _updateFocusRelatedLogic(
+      _checkIsOpenCondition(autoFocus, _searchValue?.trim()),
+    );
   }, [autoFocus]);
 
   const filteredItems: ISheOption<string>[] = useMemo(() => {
@@ -158,19 +158,16 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
   // ==================================================================== EVENT HANDLERS
   function onChangeHandler(value: string) {
     const tmpSearchValue = value.trim();
-    const tmpOpen =
-      !_.isNil(minAmount) && minAmount > 0
-        ? tmpSearchValue && tmpSearchValue.length + 1 > minAmount
-        : true;
-
-    _setIsOpen(tmpOpen);
+    _setIsOpen(_checkIsOpenCondition(true, tmpSearchValue));
     setSearchValue(tmpSearchValue);
     if (onChange) onChange(tmpSearchValue);
   }
 
   function onBlurHandler() {
-    _setIsOpen(false);
-    if (onBlur) onBlur(_searchValue);
+    setTimeout(() => {
+      _setIsOpen(false);
+      onBlur?.(_searchValue);
+    }, 100);
   }
 
   function onSearchHandler() {
@@ -186,8 +183,7 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     if (value !== _searchValue) setSearchValue(value);
     if (value !== _selected) {
       setSelected(value);
-      onSelect?.(value);
-      onSelectModel?.({
+      onSelect?.(value, {
         value,
         model: { ...sheAutocompleteProps, searchValue: value },
         event,
@@ -203,24 +199,19 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
   ) {
     _setIsOpen(false);
     setSelected(value);
-    onSelect?.(value);
-    onSelectModel?.({
+    onSelect?.(value, {
       value,
       model: { ...sheAutocompleteProps, searchValue: value },
       event,
     });
-    // setFocus<HTMLInputElement>(true, _triggerRef);
+    setFocus<HTMLInputElement>(true, _triggerRef);
     event?.stopPropagation();
   }
 
   function onFocusHandler() {
-    const tmpSearchValue = _searchValue?.trim();
-    const tmpOpen =
-      !_.isNil(minAmount) && minAmount > 0
-        ? tmpSearchValue && tmpSearchValue.length + 1 > minAmount
-        : true;
-
-    setTimeout(() => _setIsOpen(tmpOpen));
+    setTimeout(() =>
+      _setIsOpen(_checkIsOpenCondition(true, _searchValue?.trim())),
+    );
   }
 
   function onEnterHandler(event: React.KeyboardEvent) {
@@ -243,10 +234,16 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     }
   }
 
-  function _updateFocusRelatedLogic(_autoFocus, _openOnFocus) {
+  function _checkIsOpenCondition(_isOpen: boolean, _search: string) {
+    return !_.isNil(minAmount) && minAmount > 0
+      ? _search && _search.length + 1 > minAmount
+      : _isOpen;
+  }
+
+  function _updateFocusRelatedLogic(_autoFocus) {
     if (!items || items.length === 0) return;
 
-    if (_openOnFocus || isOpen) {
+    if (isOpen) {
       _setIsOpen(isOpen ?? _autoFocus);
       setFocus<HTMLDivElement>(_autoFocus, _popoverRef);
     }

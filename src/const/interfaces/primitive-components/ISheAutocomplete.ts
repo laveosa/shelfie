@@ -26,7 +26,6 @@ export interface ISheAutocomplete extends NativeInputProps {
   items?: ISheOption<string>[];
   disabled?: boolean;
   isLoading?: boolean;
-  openOnFocus?: boolean;
   isOpen?: boolean;
   minWidth?: string;
   maxWidth?: string;
@@ -34,8 +33,8 @@ export interface ISheAutocomplete extends NativeInputProps {
   minAmount?: number;
   onOpen?(value: boolean): void;
   onSearch?(value: string): void;
-  onSelect?(value: string): void;
-  onSelectModel?(
+  onSelect?(
+    value: string,
     data: IOutputEventModel<
       string,
       ISheAutocomplete,
@@ -63,7 +62,6 @@ export const SheAutocompleteDefaultModel: ISheAutocomplete = {
   items: undefined,
   disabled: undefined,
   isLoading: undefined,
-  openOnFocus: undefined,
   isOpen: undefined,
   minWidth: undefined,
   maxWidth: undefined,
@@ -72,5 +70,4 @@ export const SheAutocompleteDefaultModel: ISheAutocomplete = {
   onOpen: undefined,
   onSearch: undefined,
   onSelect: undefined,
-  onSelectModel: undefined,
 };

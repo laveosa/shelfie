@@ -220,6 +220,8 @@ export function DashboardPage() {
       }*/
 
       // console.log(popoverRef.current.style);
+
+      // setItems(options);
     }, 3000);
 
     return () => clearTimeout(timer);
@@ -373,7 +375,7 @@ export function DashboardPage() {
           />
         </div>*/}
 
-        <div className="w-full flex">
+        {/*<div className="w-full flex">
           <SheSelect<string>
             // triggerRef={triggerRef}
             // popoverRef={popoverRef}
@@ -396,9 +398,9 @@ export function DashboardPage() {
             onOpen={(value) => console.log("onOpen: ", value)}
             onSelect={(value, model) => console.log("onSelect: ", value, model)}
           />
-        </div>
+        </div>*/}
 
-        {/*<div className="w-full flex">
+        <div className="w-full flex">
           <SheAutocomplete
             label="Autocomplete"
             required
@@ -406,18 +408,15 @@ export function DashboardPage() {
             items={optionsSimple}
             // items={_items}
             showClearBtn
-            // showSelectBtn
-            // isOpen
+            showSelectBtn
             autoFocus
-            // openOnFocus
-            // minAmount={3}
+            // minAmount={2}
             // isOpen
-            onSelect={(event) => console.log("Autocomplete value: ", event)}
-            onSelectModel={(event) =>
-              console.log("Autocomplete model: ", event)
+            onSelect={(event, model) =>
+              console.log("Autocomplete value: ", event, model)
             }
           />
-        </div>*/}
+        </div>
       </div>
 
       <br />
