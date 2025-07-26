@@ -158,20 +158,15 @@ export function marginProductsGridColumns(
       maxSize: 150,
       header: "",
       cell: ({ row }) => {
-        const stockActionId = row.original.stockActionId;
-        const data = {
-          marginPrice: row.original.marginPrice,
-          taxTypeId: Number(row.original.taxTypeId),
-          quantity: row.original.unitsAmount,
-        };
         return (
           <MarginItemsForm
-            data={data}
+            data={row.original}
             taxes={taxes}
             currentPrice={row.getValue("currentPrice")}
-            onSubmit={(data) => {
-              onAction("updatePurchaseProduct", { data, stockActionId });
+            onMarginItemChange={(data) => {
+              onAction("updateMarginItem", data);
             }}
+            onApply={(id) => onAction("applyMarginItem", id)}
           />
         );
       },

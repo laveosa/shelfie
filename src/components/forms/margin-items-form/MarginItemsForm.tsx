@@ -13,20 +13,22 @@ import SheFormItem from "@/components/complex/she-form/components/she-form-item/
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import MarginItemsFormScheme from "@/utils/validation/schemes/MarginItemsFormScheme.ts";
-import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import { IMarginItemsForm } from "@/const/interfaces/forms/IMarginItemsForm.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-import { MarginItemModelDefault } from "@/const/models/MarginItemModel.ts";
+import {
+  MarginItemModel,
+  MarginItemModelDefault,
+} from "@/const/models/MarginItemModel.ts";
+import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 
 export default function MarginItemsForm<T>({
   data,
   taxes,
-  currentPrice,
-  onSubmit,
-  onCancel,
-}: IMarginItemsForm<T>) {
+  onMarginItemChange,
+  onApply,
+}: IMarginItemsForm<MarginItemModel>) {
   const [isDisabled, setIsDisabled] = useState(true);
   const [isInputChanged, setIsInputChanged] = useState(false);
   const [isSelectChanged, setIsSelectChanged] = useState(false);
@@ -60,7 +62,11 @@ export default function MarginItemsForm<T>({
 
   useEffect(() => {
     const watchedMargin = Number(form.watch("marginPrice") ?? 0);
-    if (currentPrice !== watchedMargin || isInputChanged || isSelectChanged) {
+    if (
+      data.currentPrice !== watchedMargin ||
+      isInputChanged ||
+      isSelectChanged
+    ) {
       setIsDisabled(false);
     } else {
       setIsDisabled(true);
@@ -76,6 +82,10 @@ export default function MarginItemsForm<T>({
     );
   }
 
+  function onApplyHandler() {
+    onApply(data.marginItemId);
+  }
+
   return (
     <div className={cs.marginItemsFormWrapper}>
       <SheForm<T>
@@ -87,8 +97,7 @@ export default function MarginItemsForm<T>({
         fullWidth
         hidePrimary
         hideSecondary
-        onSubmit={onSubmit}
-        onCancel={onCancel}
+        onSubmit={onApplyHandler}
       >
         <FormField
           control={form.control}
@@ -97,10 +106,11 @@ export default function MarginItemsForm<T>({
             <SheFormItem
               className={`${cs.marginItemsFormItem} ${cs.marginItemsFormInput}`}
             >
+              {/*//TODO: WHEN NEW SheSelect COMPONENT WILL BE UPLOADED - SET SELECTED ITEM!!!*/}
               <SheSelect
                 className={isSelectChanged ? cs.selectChanged : ""}
                 placeholder=" "
-                selected={field.value || data?.taxTypeId}
+                // selected={field.value || data?.taxTypeId}
                 items={convertTaxesToSelectItems(taxes)}
                 hideFirstOption
                 minWidth="70px"
@@ -108,6 +118,7 @@ export default function MarginItemsForm<T>({
                 onSelect={(value) => {
                   field.onChange(value);
                   void form.trigger("taxTypeId");
+                  onMarginItemChange(form.getValues());
                 }}
               />
             </SheFormItem>
@@ -131,6 +142,9 @@ export default function MarginItemsForm<T>({
                   className={isInputChanged ? cs.inputChanged : ""}
                   minWidth="70px"
                   maxWidth="70px"
+                  onDelay={() => {
+                    onMarginItemChange(form.getValues());
+                  }}
                 />
               </SheFormItem>
             );
@@ -148,7 +162,7 @@ export default function MarginItemsForm<T>({
         />
         <span
           className={`${cs.marginItemsFormText} she-text`}
-        >{`${data.quantity} units`}</span>
+        >{`${data.unitsAmount} units`}</span>
         <SheButton
           className={!isDisabled ? cs.formButton : cs.disabledFormButton}
           value={"Apply"}

@@ -233,7 +233,6 @@ export function MarginsPage() {
         });
         break;
       case "createMargin":
-        console.log("Create Margin");
         dispatch(actions.setIsMarginConfigurationCardLoading(true));
         service.createMarginHandler(payload.marginName).then((res) => {
           if (res) {
@@ -261,7 +260,6 @@ export function MarginsPage() {
         });
         break;
       case "updateMargin":
-        console.log("Update Margin", payload);
         dispatch(actions.setIsMarginConfigurationCardLoading(true));
         Promise.all([
           service.updateMarginHandler(state.managedMargin.marginId, {
@@ -361,6 +359,25 @@ export function MarginsPage() {
               text: res.error.data.detail,
               type: "error",
             });
+          }
+        });
+        break;
+      case "updateMarginItem":
+        service.updateMarginItemHandler(payload.marginItemId, payload);
+
+        break;
+      case "applyMarginItem":
+        console.log("Apply Margin item", payload);
+        service.applyMarginItemHandler(payload).then((res) => {
+          if (res) {
+            service
+              .getMarginItemsListForGridHandler(
+                purchaseId,
+                state.marginItemsGriRequestModel,
+              )
+              .then((res) => {
+                dispatch(actions.refreshMarginItemsGridModel(res));
+              });
           }
         });
         break;

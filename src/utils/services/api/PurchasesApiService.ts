@@ -242,6 +242,12 @@ export const PurchasesApiService = createApi({
         body: JSON.stringify(model),
       }),
     }),
+    applyMarginItem: apiConfig.createMutation<any, number>(builder, {
+      query: (marginItemId) => ({
+        url: `${ApiUrlEnum.MARGIN_ITEMS}/${marginItemId}/apply`,
+        method: "POST",
+      }),
+    }),
   }),
 });
 

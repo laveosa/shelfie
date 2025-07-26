@@ -1,10 +1,10 @@
 import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
+import { MarginItemModel } from "@/const/models/MarginItemModel.ts";
 
 export interface IMarginItemsForm<T> {
-  data?: any;
+  data?: MarginItemModel;
   taxes?: TaxTypeModel[];
   currentPrice?: number;
-  onSubmit?: (data: T) => void;
-  onDelete?: () => void;
-  onCancel?: () => void;
+  onMarginItemChange?: (data: T) => void;
+  onApply?: (id: number) => void;
 }

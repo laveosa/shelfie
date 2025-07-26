@@ -31,42 +31,48 @@ export default function SalePriseManagementCard({
     StoreSliceEnum.PURCHASE_PRODUCTS,
   );
   return (
-    <SheProductCard
-      isLoading={isLoading}
-      className={cs.salePriceManagementCard}
-      showHeader={false}
-      title={"Sale Price Management"}
-      minWidth="1150px"
-    >
+    <div className={cs.salePriceManagementCard}>
+      <SheProductCard
+        title="Sale Price Management"
+        isLoading={isLoading}
+        className={cs.salePriceManagementCardContent}
+        minWidth="1150px"
+      >
+        <DndGridDataTable
+          isLoading={isGridLoading}
+          columns={
+            marginProductsGridColumns(
+              taxes,
+              onAction,
+            ) as ColumnDef<DataWithId>[]
+          }
+          data={gridModel.items}
+          gridModel={gridModel}
+          // sortingItems={sortingOptions}
+          columnsPreferences={preferences}
+          preferenceContext={"productReferences"}
+          skeletonQuantity={gridRequestModel.pageSize}
+          // onApplyColumns={onApplyColumnsHandler}
+          // onDefaultColumns={onResetColumnsHandler}
+          // onGridRequestChange={handleGridRequestChange}
+        />
+      </SheProductCard>
       <div className={cs.buttonBlock}>
         <SheButton
           icon={CheckCheck}
           variant="default"
           onClick={() => onAction("openCreateProductCard")}
           value="Apply visible prices"
+          bgColor="#007AFF"
         />
         <SheButton
           icon={CheckCheck}
           variant="default"
           onClick={() => onAction("openCreateProductCard")}
           value="Apply all prices"
+          bgColor="#007AFF"
         />
       </div>
-      <DndGridDataTable
-        isLoading={isGridLoading}
-        columns={
-          marginProductsGridColumns(taxes, onAction) as ColumnDef<DataWithId>[]
-        }
-        data={gridModel.items}
-        gridModel={gridModel}
-        // sortingItems={sortingOptions}
-        columnsPreferences={preferences}
-        preferenceContext={"productReferences"}
-        skeletonQuantity={gridRequestModel.pageSize}
-        // onApplyColumns={onApplyColumnsHandler}
-        // onDefaultColumns={onResetColumnsHandler}
-        // onGridRequestChange={handleGridRequestChange}
-      />
-    </SheProductCard>
+    </div>
   );
 }
