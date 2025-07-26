@@ -248,7 +248,9 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
       onOpen?.(_isOpen);
 
       if (_isOpen) {
-        calculatePopoverWidth<HTMLInputElement>(_popoverRef, _triggerRef);
+        setTimeout(() =>
+          calculatePopoverWidth<HTMLInputElement>(_popoverRef, _triggerRef),
+        );
       }
     }
   }

@@ -400,23 +400,24 @@ export function DashboardPage() {
           />
         </div>*/}
 
-        <div className="w-full flex">
+        {/*<div className="w-full flex">
           <SheAutocomplete
             label="Autocomplete"
             required
             // items={options}
-            // items={optionsSimple}
-            items={_items}
+            items={optionsSimple}
+            // items={_items}
             showClearBtn
             showSelectBtn
             autoFocus
             // minAmount={2}
             // isOpen
+
             onSelect={(event, model) =>
               console.log("Autocomplete value: ", event, model)
             }
           />
-        </div>
+        </div>*/}
       </div>
 
       <br />
