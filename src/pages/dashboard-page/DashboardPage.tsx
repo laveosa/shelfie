@@ -12,6 +12,7 @@ import { ISheMultiSelectItem } from "@/const/interfaces/primitive-components/ISh
 import SheBadge from "@/components/primitive/she-badge/SheBadge.tsx";
 import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
 import SheBadgeList from "@/components/primitive/she-badge-list/SheBadgeList.tsx";
+import UserForm from "@/components/forms/user-form/UserForm.tsx";
 
 const options: ISheSelectItem<any>[] = [
   {
@@ -198,12 +199,12 @@ export function DashboardPage() {
     }, 1000);
 
     const timer = setTimeout(() => {
-      /*const el = triggerRef.current;
+      const el = triggerRef.current;
       if (el) {
         el.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
         el.dispatchEvent(new MouseEvent("mouseup", { bubbles: true }));
         el.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-      }*/
+      }
     }, 1000);
 
     setTimeout(() => {
@@ -211,6 +212,18 @@ export function DashboardPage() {
       // setSelected([options[2].value]);
       setSelected(optionsSimple[2].value);
     }, 2000);
+
+    setTimeout(() => {
+      setSelected(optionsSimple[1].value);
+    }, 3000);
+
+    setTimeout(() => {
+      setSelected(optionsSimple[2].value);
+    }, 4000);
+
+    setTimeout(() => {
+      setSelected(optionsSimple[1].value);
+    }, 5000);
 
     setTimeout(() => {
       setIsLoading(false);
@@ -229,6 +242,25 @@ export function DashboardPage() {
 
   // ================================================================== EVENT
 
+  function onSelectHandler(value: any, model: any) {
+    console.log("VALUE: ", value);
+    console.log("MODEL: ", model);
+
+    /*setSelected(optionsSimple[3].value);
+
+    setTimeout(() => {
+      setSelected(optionsSimple[1].value);
+    }, 1000);
+
+    setTimeout(() => {
+      setSelected(optionsSimple[2].value);
+    }, 2000);
+
+    setTimeout(() => {
+      setSelected(optionsSimple[3].value);
+    }, 3000);*/
+  }
+
   // ================================================================== LAYOUT
 
   return (
@@ -237,7 +269,11 @@ export function DashboardPage() {
 
       <br />
 
-      {/*<SheBadgeList<any>
+      {/*<UserForm genders={["male", "female"]} />*/}
+
+      <br />
+
+      <SheBadgeList<any>
         label="Badges"
         items={badges}
         showClearBtn
@@ -251,173 +287,43 @@ export function DashboardPage() {
         }
         onClear={(value, model) => console.log("onClear: ", value, model)}
       />
-      <br />*/}
-
-      {/*<div className="flex gap-2">
-        <SheBadge<{ name: string; age: number }>
-          text="Option weijo wie  iweoi weoi woeijf woiejf owien fowien wienf owien owienf owien"
-          showCloseBtn
-          color="#4FA6BF"
-          textWrap="dots"
-          maxWidth="100px"
-          value={{ name: "Cenya", age: 32 }}
-          onClick={(event, model) => console.log("onClick: ", event, model)}
-          onClose={(event, model) => console.log("onClose: ", event, model)}
-        />
-        <SheBadge
-          text={33333333333333333333333333333333333333333333333333333333333333}
-          variant="secondary"
-          showCloseBtn
-          textColor="violet"
-          maxWidth="200px"
-          disabled
-          onClick={(event, model) => console.log("onClick: ", event, model)}
-          onClose={(event, model) => console.log("onClose: ", event, model)}
-        />
-        <SheBadge
-          variant="destructive"
-          icon={ShoppingBasket}
-          iconColor="lime"
-          value="icon"
-          isLoading
-          onClick={(event, model) => console.log("onClick: ", event, model)}
-          onClose={(event, model) => console.log("onClose: ", event, model)}
-        />
-      </div>*/}
-
       <br />
 
-      {/*<div className="flex flex-col">
-        {options.map((item) => (
-          <SheOption
-            {...item}
-            key={item.text}
-            className="mb-2"
-            mode="multiple"
-            isSelected={selected}
-            showColorsColumn
-            showIconsColumn
-            aria-describedby="sss"
-            checkOnClick
-            onCheck={(data) => console.log("onCheck: ", data)}
-            onClick={(data) => console.log("onClick: ", data)}
-          />
-        ))}
-      </div>*/}
-
       <br />
-
-      {/*<SheAutocomplete
-        label="Autocomplete"
-        tooltip="some text for tooltip"
-        items={options}
-        // items={optionsSimple}
-        onSelectModel={(event) => console.log("onSelectModel: ", event)}
-      />*/}
-
-      <br />
-
-      {/*<SheMultiSelect<string>
-        items={options}
-        contextType="badges"
-        showSearch
-        showFooter
-        onSelect={(value) => {
-          // console.log("select: ", value);
-        }}
-        onSelectModel={(value) => {
-          console.log("select model: ", value);
-        }}
-      />*/}
-
-      <br />
-
-      {/*<SheSelect<string>
-        items={options}
-        // items={optionsSimple}
-        showClearBtn
-        onSelect={(value) => console.log("select: ", value)}
-        onSelectModel={(value) => console.log("select model: ", value)}
-      />*/}
 
       <div className="flex gap-5 flex-col">
-        {/*<div className="w-full flex">
+        <div className="w-full flex">
           <SheMultiSelect<string>
-            searchRef={searchRef}
-            ref={triggerRef}
-            popoverRef={popoverRef}
             label="MultiSelect"
-            required
-            // items={options}
-            // items={optionsSimple}
-            items={_items}
-            selectedValues={selected}
+            items={optionsSimple}
             contextType="badges"
             showClearBtn
             showSearch
             showFooter
-            // isOpen
-            autoFocus
-            // openOnFocus
-            // fullWidth
-            // minWidth="600px"
-            // maxWidth="200px"
-            // hideSelectAll
-            onOpen={(value) => {
-              console.log("onOpen: ", value);
-              // setTimeout(() => (searchRef.current.value = "TEST"));
-              //  setTimeout(() => {
-              //   popoverRef.current.style.border = "1px solid red";
-              // });
-            }}
-            onClear={(value) => console.log("onClear: ", value)}
             onSelect={(value, model) => console.log("onSelect: ", value, model)}
           />
-        </div>*/}
+        </div>
 
-        {/*<div className="w-full flex">
+        <div className="w-full flex">
           <SheSelect<string>
-            // triggerRef={triggerRef}
-            // popoverRef={popoverRef}
             label="Select"
-            required
-            // items={options}
-            // items={optionsSimple}
             items={_items}
             selected={selected}
-            autoFocus
-            openOnFocus
-            // isLoading
-            // isOpen
-            // disabled
             showClearBtn
-            // hideFirstOption
-            // showSelectIcon
-            // icon={Home}
-            // fullWidth
-            onOpen={(value) => console.log("onOpen: ", value)}
-            onSelect={(value, model) => console.log("onSelect: ", value, model)}
+            onSelect={(value, model) => onSelectHandler(value, model)}
           />
-        </div>*/}
+        </div>
 
-        {/*<div className="w-full flex">
+        <div className="w-full flex">
           <SheAutocomplete
             label="Autocomplete"
-            required
-            // items={options}
             items={optionsSimple}
-            // items={_items}
             showClearBtn
-            showSelectBtn
-            autoFocus
-            // minAmount={2}
-            // isOpen
-
             onSelect={(event, model) =>
               console.log("Autocomplete value: ", event, model)
             }
           />
-        </div>*/}
+        </div>
       </div>
 
       <br />

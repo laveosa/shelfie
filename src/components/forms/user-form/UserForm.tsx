@@ -119,6 +119,7 @@ export default function UserForm<T>({
                 onSelect={(value) => {
                   field.onChange(value);
                   void form.trigger("gender");
+                  onErrorHandler();
                 }}
               />
             </SheFormItem>

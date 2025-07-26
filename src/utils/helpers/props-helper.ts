@@ -27,6 +27,16 @@ export function removeCustomProps<T extends object>(
   return _omit<T, keyof T>(props, Array.from(keySet));
 }
 
+export function mergeComponentProps<T>(
+  defaultProps: Partial<T>,
+  overrideProps?: Partial<T>,
+): Partial<T> {
+  return {
+    ...defaultProps,
+    ...(overrideProps || {}),
+  };
+}
+
 export const filterCustomProps = <
   TCustomProps extends object,
   TDefaultProps extends ComponentPropsWithRef<any>,

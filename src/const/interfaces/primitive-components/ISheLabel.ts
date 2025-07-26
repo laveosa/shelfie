@@ -11,3 +11,13 @@ export interface ISheLabel extends ComponentPropsWithRef<any> {
   tooltipTransKey?: string;
   ariaDescribedbyId?: string;
 }
+
+export const SheLabelDefaultModel: ISheLabel = {
+  className: undefined,
+  style: undefined,
+  label: undefined,
+  labelTransKey: undefined,
+  tooltip: undefined,
+  tooltipTransKey: undefined,
+  ariaDescribedbyId: undefined,
+};

@@ -12,3 +12,16 @@ export interface ISheSkeleton extends PropsWithChildren {
   maxWidth?: string;
   fullWidth?: boolean;
 }
+
+export const SheSkeletonDefaultModel: ISheSkeleton = {
+  className: undefined,
+  style: undefined,
+  skeletonClassName: undefined,
+  skeletonStyle: undefined,
+  color: undefined,
+  isLoading: undefined,
+  animationDelay: undefined,
+  minWidth: undefined,
+  maxWidth: undefined,
+  fullWidth: undefined,
+};

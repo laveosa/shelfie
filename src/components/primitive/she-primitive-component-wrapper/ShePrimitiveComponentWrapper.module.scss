@@ -1,0 +1,60 @@
+@use "@/styles/variables" as vars;
+
+$iconSize: 20px;
+
+.shePrimitiveComponentWrapper {
+  max-width: vars.$maxWidth + px;
+  width: 100%;
+
+  .shePrimitiveComponentWrapperContext {
+    position: relative;
+
+    .shePrimitiveComponentWrapperControl {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 160ms ease-in-out;
+
+      .shePrimitiveComponentWrapperSkeleton {
+      }
+
+      .iconBlock {
+        color: vars.$subtextColor;
+        max-width: $iconSize;
+        min-width: $iconSize;
+        max-height: $iconSize;
+        min-height: $iconSize;
+      }
+    }
+  }
+}
+
+// ======================================================== FULL WIDTH
+
+.shePrimitiveComponentWrapper.fullWidth {
+  max-width: none;
+  width: 100%;
+}
+
+// ======================================================== REQUIRED
+
+.shePrimitiveComponentWrapper.required {
+  .shePrimitiveComponentWrapperContext:before {
+    position: absolute;
+    left: -10px;
+    top: -14px;
+    color: vars.$colorRed;
+    content: "*";
+    display: inline;
+  }
+}
+
+// ======================================================== WITH ICON
+
+.shePrimitiveComponentWrapper.withIcon {
+  .shePrimitiveComponentWrapperContext {
+    .shePrimitiveComponentWrapperControl {
+    }
+  }
+}
