@@ -20,16 +20,13 @@ export default function MarginForPurchaseCard({
   isLoading,
   margin,
   onAction,
-  ...props
 }: IMarginForPurchaseCard) {
   return (
     <div>
       <SheProductCard
         loading={isLoading}
         title="Margin For Purchase"
-        primaryButtonTitle="Add Variant"
         className={cs.marginForPurchaseCard}
-        {...props}
       >
         <div className={cs.marginForPurchaseCardContent}>
           {!margin && (
@@ -48,18 +45,25 @@ export default function MarginForPurchaseCard({
           {margin && (
             <div className={cs.marginDetails}>
               <div className={cs.marginActions}>
-                <span className="she-title">{margin.marginName}</span>
+                <div className={cs.marginActionsTitleBlock}>
+                  <span
+                    className={`${margin.isDeleted ? cs.marginIsDeletedTitle : ""} she-title`}
+                  >
+                    {margin.marginName}
+                  </span>
+                </div>
                 <div className={cs.marginActionsButtonBlock}>
-                  {margin.marginRule.modified && (
-                    <SheButton
-                      icon={Undo2}
-                      txtColor={"#fff"}
-                      bgColor={"#007AFF"}
-                      onClick={() =>
-                        onAction("restoreMarginRules", margin.marginId)
-                      }
-                    />
-                  )}
+                  {margin.marginRule.modified ||
+                    (!margin.isDeleted && (
+                      <SheButton
+                        icon={Undo2}
+                        txtColor={"#fff"}
+                        bgColor={"#007AFF"}
+                        onClick={() =>
+                          onAction("restoreMarginRules", margin.marginId)
+                        }
+                      />
+                    ))}
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <SheButton
@@ -73,7 +77,7 @@ export default function MarginForPurchaseCard({
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="start" className="w-[160px]">
                       <DropdownMenuItem
-                        onClick={() => onAction("manageMargin", margin)}
+                        onClick={() => onAction("manageSelectedMargin", margin)}
                       >
                         Manage margin
                       </DropdownMenuItem>
@@ -91,6 +95,11 @@ export default function MarginForPurchaseCard({
                   </DropdownMenu>
                 </div>
               </div>
+              {margin.isDeleted && (
+                <div className={cs.marginIsDeletedBlock}>
+                  <span className="she-text">{`>_ The margin is deleted`}</span>
+                </div>
+              )}
               <Separator />
               <div className={cs.marginDetailsConfiguration}>
                 <span className="she-title">Configure Margin Details</span>

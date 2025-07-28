@@ -18,6 +18,7 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
 
 export default function MarginConfigurationForm<T>({
+  className,
   data,
   onSubmit,
   onCancel,
@@ -40,7 +41,7 @@ export default function MarginConfigurationForm<T>({
   // form.getValues("fixedCosts");
 
   return (
-    <div className={cs.marginConfiguration}>
+    <div className={`${cs.marginConfiguration} ${className}`}>
       <SheForm<T>
         className={cs.marginConfigurationForm}
         form={form}

@@ -1,3 +1,10 @@
+import { ColumnDef } from "@tanstack/react-table";
+import { CheckCheck } from "lucide-react";
+import {
+  DataWithId,
+  DndGridDataTable,
+} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
@@ -7,12 +14,6 @@ import { IPurchaseProductsPageSlice } from "@/const/interfaces/store-slices/IPur
 import { ISalePriceManagementCard } from "@/const/interfaces/complex-components/custom-cards/ISalePriceManagementCard.ts";
 import cs from "@/components/complex/custom-cards/sale-price-management-card/SalePriceManagementCard.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { CheckCheck } from "lucide-react";
-import { ColumnDef } from "@tanstack/react-table";
-import {
-  DataWithId,
-  DndGridDataTable,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { marginProductsGridColumns } from "@/components/complex/grid/margin-products-grid/MarginProductsGridColumns.tsx";
 
 export default function SalePriseManagementCard({

@@ -1,8 +1,11 @@
 import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
+import {
+  scrollToRefElement,
+  setSelectedGridItem,
+} from "@/utils/helpers/quick-helper.ts";
 import { MarginsPageSliceActions as actions } from "@/state/slices/MarginsPageSlice";
-
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
@@ -17,10 +20,6 @@ import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card
 import MarginForPurchaseCard from "@/components/complex/custom-cards/margin-for-purchase-card/MarginForPurchaseCard.tsx";
 import SelectMarginCard from "@/components/complex/custom-cards/select-margin-card/SelectMarginCard.tsx";
 import MarginConfigurationCard from "@/components/complex/custom-cards/margin-configuration-card/MarginConfigurationCard.tsx";
-import {
-  scrollToRefElement,
-  setSelectedGridItem,
-} from "@/utils/helpers/quick-helper.ts";
 import SalePriseManagementCard from "@/components/complex/custom-cards/sale-price-management-card/SalePriceManagementCard.tsx";
 
 export function MarginsPage() {
@@ -124,27 +123,6 @@ export function MarginsPage() {
     if (lastAddedCard) {
       scrollToRefElement(cardRefs.current, lastAddedCard);
     }
-  }
-
-  function keepOnlyCards(openCardIdentifiers: string[] = []) {
-    const currentActiveCards = Array.isArray(state.activeCards)
-      ? state.activeCards
-      : [];
-
-    const cardActions = Object.fromEntries(
-      currentActiveCards.map((card) => [
-        card,
-        openCardIdentifiers.includes(card),
-      ]),
-    );
-
-    for (const card of openCardIdentifiers) {
-      if (!cardActions[card]) {
-        cardActions[card] = true;
-      }
-    }
-
-    handleMultipleCardActions(cardActions);
   }
 
   async function onAction(actionType: string, payload?: any) {
@@ -265,17 +243,34 @@ export function MarginsPage() {
           service.updateMarginHandler(state.managedMargin.marginId, {
             marginName: payload.marginName,
           }),
-          service.createMarginRulesHandler(
-            state.managedMargin.marginId,
-            payload.marginRule,
-          ),
+          state.selectedMargin.marginId === state.managedMargin.marginId
+            ? service.updateMarginRulesForPurchaseHandler(
+                purchaseId,
+                payload.marginRule,
+              )
+            : service.createMarginRulesHandler(
+                state.managedMargin.marginId,
+                payload.marginRule,
+              ),
         ]).then(([margin, marginRules]) => {
           dispatch(actions.setIsMarginConfigurationCardLoading(false));
-          dispatch(actions.setIsMarginForPurchaseCardLoading(true));
-          service.getMarginForPurchaseHandler(purchaseId).then((res) => {
-            dispatch(actions.setIsMarginForPurchaseCardLoading(false));
-            dispatch(actions.refreshSelectedMargin(res));
-          });
+          if (margin.marginId === state.selectedMargin.marginId) {
+            dispatch(actions.setIsMarginForPurchaseCardLoading(true));
+            service.getMarginForPurchaseHandler(purchaseId).then((res) => {
+              dispatch(actions.setIsMarginForPurchaseCardLoading(false));
+              dispatch(actions.refreshSelectedMargin(res));
+            });
+          } else {
+            if (margin.marginName !== state.managedMargin.marginName) {
+              dispatch(actions.setIsSelectMarginCardLoading(true));
+              service
+                .getMarginsListForGridHandler(state.gridRequestModel)
+                .then((res) => {
+                  dispatch(actions.setIsSelectMarginCardLoading(false));
+                  dispatch(actions.refreshMarginsList(res.items));
+                });
+            }
+          }
           if (margin && marginRules) {
             addToast({
               text: "Margin updated successfully",
@@ -289,11 +284,15 @@ export function MarginsPage() {
           }
         });
         break;
-      case "manageMargin":
+      case "manageSelectedMargin":
         handleMultipleCardActions({
           marginConfigurationCard: true,
           salePriceManagementCard: false,
         });
+        dispatch(actions.refreshManagedMargin(payload));
+        break;
+      case "manageMargin":
+        handleCardAction("marginConfigurationCard", true);
         dispatch(actions.setIsMarginConfigurationCardLoading(true));
         service.getMarginDetailsHandler(payload.marginId).then((res) => {
           dispatch(actions.setIsMarginConfigurationCardLoading(false));
@@ -315,8 +314,8 @@ export function MarginsPage() {
         break;
       case "deleteMargin":
         const confirmed = await openConfirmationDialog({
-          title: "Deleting margin",
-          text: `You are about to delete margin ${payload.marginName}.`,
+          title: "Deleting margin rule",
+          text: `You are about to delete the margin rule. The prices that were previously calculated using this margin, will remain intact. The margin will no longer be applied to new purchases.`,
           primaryButtonValue: "Delete",
           secondaryButtonValue: "Cancel",
         });
@@ -324,14 +323,32 @@ export function MarginsPage() {
         if (!confirmed) return;
 
         service.deleteMarginHandler(payload.marginId).then((res) => {
-          if (res) {
-            service
-              .getMarginsListForGridHandler(state.gridRequestModel)
-              .then((res) => {
-                dispatch(actions.refreshMarginsList(res.items));
-              });
+          if (!res.error) {
+            service.getMarginDetailsHandler(payload.marginId).then((res) => {
+              dispatch(actions.refreshManagedMargin(res));
+            });
             addToast({
               text: "Margin deleted successfully",
+              type: "success",
+            });
+          } else {
+            addToast({
+              text: res.error.data.detail,
+              type: "error",
+            });
+          }
+        });
+        break;
+      case "restoreMargin":
+        dispatch(actions.setIsMarginConfigurationCardLoading(true));
+        service.restoreMarginHandler(payload.marginId).then((res) => {
+          dispatch(actions.setIsMarginConfigurationCardLoading(false));
+          if (!res.error) {
+            service.getMarginDetailsHandler(payload.marginId).then((res) => {
+              dispatch(actions.refreshManagedMargin(res));
+            });
+            addToast({
+              text: "Margin restored successfully",
               type: "success",
             });
           } else {
@@ -345,9 +362,9 @@ export function MarginsPage() {
       case "restoreMarginRules":
         dispatch(actions.setIsMarginForPurchaseCardLoading(true));
         service.restoreMarginRuleToDefaultHandler(purchaseId).then((res) => {
-          if (res) {
+          dispatch(actions.setIsMarginForPurchaseCardLoading(false));
+          if (!res.error) {
             service.getMarginForPurchaseHandler(purchaseId).then((res) => {
-              dispatch(actions.setIsMarginForPurchaseCardLoading(false));
               dispatch(actions.refreshSelectedMargin(res));
             });
             addToast({
@@ -364,7 +381,6 @@ export function MarginsPage() {
         break;
       case "updateMarginItem":
         service.updateMarginItemHandler(payload.marginItemId, payload);
-
         break;
       case "applyMarginItem":
         console.log("Apply Margin item", payload);

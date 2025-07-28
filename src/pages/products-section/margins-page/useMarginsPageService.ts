@@ -24,6 +24,8 @@ export function useMarginsPageService() {
     PurchasesApiHooks.useRestoreMarginRuleToDefaultMutation();
   const [updateMarginItem] = PurchasesApiHooks.useUpdateMarginItemMutation();
   const [applyMarginItem] = PurchasesApiHooks.useApplyMarginItemMutation();
+  const [updateMarginRulesForPurchase] =
+    PurchasesApiHooks.useUpdateMarginRulesForPurchaseMutation();
 
   function getMarginsListForGridHandler(model) {
     return getMarginsListForGrid(model).then((res: any) => {
@@ -78,13 +80,13 @@ export function useMarginsPageService() {
 
   function deleteMarginHandler(marginId) {
     return deleteMargin(marginId).then((res: any) => {
-      return res.data;
+      return res;
     });
   }
 
   function restoreMarginHandler(marginId) {
     return restoreMargin(marginId).then((res: any) => {
-      return res.data;
+      return res;
     });
   }
 
@@ -105,7 +107,7 @@ export function useMarginsPageService() {
 
   function restoreMarginRuleToDefaultHandler(purchaseId) {
     return restoreMarginRuleToDefault(purchaseId).then((res: any) => {
-      return res.data;
+      return res;
     });
   }
 
@@ -117,6 +119,15 @@ export function useMarginsPageService() {
 
   function applyMarginItemHandler(marginItemId) {
     return applyMarginItem(marginItemId).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function updateMarginRulesForPurchaseHandler(purchaseId, model) {
+    return updateMarginRulesForPurchase({
+      purchaseId,
+      model,
+    }).then((res: any) => {
       return res.data;
     });
   }
@@ -137,5 +148,6 @@ export function useMarginsPageService() {
     restoreMarginRuleToDefaultHandler,
     updateMarginItemHandler,
     applyMarginItemHandler,
+    updateMarginRulesForPurchaseHandler,
   };
 }
