@@ -2,17 +2,17 @@ import React, { JSX } from "react";
 
 import cs from "./ShePrimitiveComponentWrapper.module.scss";
 import {
-  IShePrimitiveComponentWrapper,
-  ShePrimitiveComponentWrapperDefaultModel,
-} from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
-import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
-import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
-import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
-import {
   getCustomProps,
   mergeComponentProps,
   removeCustomProps,
 } from "@/utils/helpers/props-helper.ts";
+import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
+import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
+import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
+import {
+  IShePrimitiveComponentWrapper,
+  ShePrimitiveComponentWrapperDefaultModel,
+} from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
 import {
   ISheLabel,
   SheLabelDefaultModel,
@@ -39,7 +39,6 @@ export default function ShePrimitiveComponentWrapper(
     skeletonProps,
     clearBtnProps,
     clearBtnValue,
-    clearBtnPosition,
     minWidth,
     maxWidth,
     fullWidth,
@@ -103,6 +102,10 @@ export default function ShePrimitiveComponentWrapper(
         />
         <div className={cs.shePrimitiveComponentWrapperControl}>
           <SheSkeleton
+            {...mergeComponentProps<ISheSkeleton>(
+              sheSkeletonProps,
+              skeletonProps,
+            )}
             className={cs.shePrimitiveComponentWrapperSkeleton}
             isLoading={isLoading}
             fullWidth

@@ -15,6 +15,7 @@ export function SheClearButton({
   disabled,
   isLoading,
   ariaDescribedbyId,
+  clearBtnPosition = "in",
   onClear,
 }: ISheClearButton): JSX.Element {
   const isEmpty =

@@ -214,18 +214,6 @@ export function DashboardPage() {
     }, 2000);
 
     setTimeout(() => {
-      setSelected(optionsSimple[1].value);
-    }, 3000);
-
-    setTimeout(() => {
-      setSelected(optionsSimple[2].value);
-    }, 4000);
-
-    setTimeout(() => {
-      setSelected(optionsSimple[1].value);
-    }, 5000);
-
-    setTimeout(() => {
       setIsLoading(false);
 
       /*if (searchRef.current) {
@@ -305,13 +293,13 @@ export function DashboardPage() {
         </div>
 
         <div className="w-full flex">
-          <SheSelect<string>
+          {/*<SheSelect<string>
             label="Select"
             items={_items}
             selected={selected}
             showClearBtn
             onSelect={(value, model) => onSelectHandler(value, model)}
-          />
+          />*/}
         </div>
 
         <div className="w-full flex">
