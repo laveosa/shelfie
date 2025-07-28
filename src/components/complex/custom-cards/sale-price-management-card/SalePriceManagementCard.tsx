@@ -1,36 +1,35 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { CheckCheck } from "lucide-react";
+
 import {
   DataWithId,
   DndGridDataTable,
 } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
-import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
-import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
-import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
-import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { IPurchaseProductsPageSlice } from "@/const/interfaces/store-slices/IPurchaseProductsPageSlice.ts";
 import { ISalePriceManagementCard } from "@/const/interfaces/complex-components/custom-cards/ISalePriceManagementCard.ts";
 import cs from "@/components/complex/custom-cards/sale-price-management-card/SalePriceManagementCard.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { marginProductsGridColumns } from "@/components/complex/grid/margin-products-grid/MarginProductsGridColumns.tsx";
+import GridItemsFilter from "@/components/complex/grid/grid-items-filter/GridItemsFilter.tsx";
+import { BrandModel } from "@/const/models/BrandModel.ts";
+import { CategoryModel } from "@/const/models/CategoryModel.ts";
+import GridTraitsFilter from "@/components/complex/grid/grid-traits-filter/GridTraitsFilter.tsx";
+import GridShowDeletedFilter from "@/components/complex/grid/grid-show-deleted-filter/GridShowDeletedFilter.tsx";
 
 export default function SalePriseManagementCard({
   isLoading,
   isGridLoading,
   preferences,
+  sortingOptions,
+  brands,
+  categories,
+  colors,
+  sizes,
   taxes,
   gridModel,
   gridRequestModel,
   onAction,
 }: ISalePriceManagementCard) {
-  const productsService = useProductsPageService();
-  const dispatch = useAppDispatch();
-  const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
-  const state = useAppSelector<IPurchaseProductsPageSlice>(
-    StoreSliceEnum.PURCHASE_PRODUCTS,
-  );
   return (
     <div className={cs.salePriceManagementCard}>
       <SheProductCard
@@ -49,27 +48,61 @@ export default function SalePriseManagementCard({
           }
           data={gridModel.items}
           gridModel={gridModel}
-          // sortingItems={sortingOptions}
+          sortingItems={sortingOptions}
           columnsPreferences={preferences}
           preferenceContext={"productReferences"}
           skeletonQuantity={gridRequestModel.pageSize}
-          // onApplyColumns={onApplyColumnsHandler}
-          // onDefaultColumns={onResetColumnsHandler}
-          // onGridRequestChange={handleGridRequestChange}
-        />
+          onApplyColumns={(model) => onAction("applyColumns", model)}
+          onDefaultColumns={() => onAction("resetColumns")}
+          onGridRequestChange={(updates) =>
+            onAction("gridRequestChange", updates)
+          }
+        >
+          <GridItemsFilter
+            items={brands}
+            columnName={"Brands"}
+            onSelectionChange={(selectedIds) =>
+              onAction("brandFilter", selectedIds)
+            }
+            getId={(item: BrandModel) => item.brandId}
+            getName={(item: BrandModel) => item.brandName}
+            selected={gridModel.filter?.brands}
+          />
+          <GridItemsFilter
+            items={categories}
+            columnName={"Categories"}
+            onSelectionChange={(selectedIds) =>
+              onAction("categoryFilter", selectedIds)
+            }
+            getId={(item: CategoryModel) => item.categoryId}
+            getName={(item: CategoryModel) => item.categoryName}
+            selected={gridModel.filter?.categories}
+          />
+          <GridTraitsFilter
+            traitOptions={colors}
+            traitType="color"
+            gridRequestModel={gridRequestModel}
+          />
+          <GridTraitsFilter
+            traitOptions={sizes}
+            traitType="size"
+            gridRequestModel={gridRequestModel}
+          />
+          <GridShowDeletedFilter />
+        </DndGridDataTable>
       </SheProductCard>
       <div className={cs.buttonBlock}>
         <SheButton
           icon={CheckCheck}
           variant="default"
-          onClick={() => onAction("openCreateProductCard")}
+          onClick={() => onAction("applyVisibleMarginItems")}
           value="Apply visible prices"
           bgColor="#007AFF"
         />
         <SheButton
           icon={CheckCheck}
           variant="default"
-          onClick={() => onAction("openCreateProductCard")}
+          onClick={() => onAction("applyAllMarginItems")}
           value="Apply all prices"
           bgColor="#007AFF"
         />

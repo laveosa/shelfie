@@ -30,23 +30,52 @@
       }
 
       .marginItemsFormInput {
-        width: 100px;
+        min-width: 55px;
+        max-width: 55px;
       }
 
       .marginItemsFormIcon {
-        width: 24px;
+        min-width: 24px;
+        max-width: 24px;
+
+        svg {
+          width: 24px;
+        }
       }
 
-      .formButton {
+      .arrowIcon {
+        pointer-events: none;
+        cursor: default;
 
-        background: #007AFF;
-        color: #fff;
-
+        svg {
+          display: none;
+        }
       }
 
-      .disabledFormButton {
-        background: #F4F4F5;
-        color: #000;
+
+      .arrowIconActive {
+        cursor: pointer;
+      }
+
+      .lockIcon {
+        cursor: pointer;
+        margin-left: 10px;
+      }
+
+      .undoIcon {
+        pointer-events: none;
+        cursor: default;
+        margin-right: 10px;
+      }
+
+      .undoIconActive {
+        cursor: pointer;
+        margin-right: 10px;
+      }
+
+      .formButtonNotActive {
+        pointer-events: none;
+        cursor: default;
       }
     }
   }

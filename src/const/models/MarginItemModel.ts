@@ -20,6 +20,7 @@ export interface MarginItemModel {
   locked?: boolean;
   isChanged?: boolean;
   marginPriceApplied?: boolean;
+  needApply?: boolean;
 }
 
 export const MarginItemModelDefault: MarginItemModel = {

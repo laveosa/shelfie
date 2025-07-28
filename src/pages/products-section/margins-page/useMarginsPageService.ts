@@ -1,9 +1,6 @@
-import { useAppDispatch } from "@/utils/hooks/redux.ts";
 import PurchasesApiHooks from "@/utils/services/api/PurchasesApiService.ts";
 
 export function useMarginsPageService() {
-  const dispatch = useAppDispatch();
-
   const [getMarginsListForGrid] =
     PurchasesApiHooks.useGetMarginsListForGridMutation();
   const [getMarginItemsListForGrid] =
@@ -26,6 +23,10 @@ export function useMarginsPageService() {
   const [applyMarginItem] = PurchasesApiHooks.useApplyMarginItemMutation();
   const [updateMarginRulesForPurchase] =
     PurchasesApiHooks.useUpdateMarginRulesForPurchaseMutation();
+  const [applyVisibleMarginItems] =
+    PurchasesApiHooks.useApplyVisibleMarginItemsMutation();
+  const [applyAllMarginItems] =
+    PurchasesApiHooks.useApplyAllMarginItemsMutation();
 
   function getMarginsListForGridHandler(model) {
     return getMarginsListForGrid(model).then((res: any) => {
@@ -132,6 +133,21 @@ export function useMarginsPageService() {
     });
   }
 
+  function applyVisibleMarginItemsHandler(purchaseId, model) {
+    return applyVisibleMarginItems({
+      purchaseId,
+      model,
+    }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function applyAllMarginItemsHandler(purchaseId) {
+    return applyAllMarginItems(purchaseId).then((res: any) => {
+      return res.data;
+    });
+  }
+
   return {
     getMarginsListForGridHandler,
     getMarginItemsListForGridHandler,
@@ -149,5 +165,7 @@ export function useMarginsPageService() {
     updateMarginItemHandler,
     applyMarginItemHandler,
     updateMarginRulesForPurchaseHandler,
+    applyVisibleMarginItemsHandler,
+    applyAllMarginItemsHandler,
   };
 }

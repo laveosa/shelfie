@@ -1,10 +1,6 @@
 @use "@/styles/variables" as vars;
 
 .marginForPurchaseCard {
-  & > div {
-    height: 100%;
-  }
-
   .marginForPurchaseCardContent {
     .noSelectedMargin {
       display: flex;
@@ -63,6 +59,10 @@
           display: flex;
           flex-direction: column;
           gap: 20px;
+
+          span {
+            text-wrap: wrap;
+          }
         }
       }
     }

@@ -262,6 +262,25 @@ export const PurchasesApiService = createApi({
         method: "POST",
       }),
     }),
+    applyVisibleMarginItems: apiConfig.createMutation<
+      any,
+      {
+        purchaseId: number;
+        model: GridRequestModel;
+      }
+    >(builder, {
+      query: ({ purchaseId, model }) => ({
+        url: `${ApiUrlEnum.PURCHASES}/${purchaseId}/margin-items/apply`,
+        method: "POST",
+        body: JSON.stringify(model),
+      }),
+    }),
+    applyAllMarginItems: apiConfig.createMutation<any, number>(builder, {
+      query: (purchaseId) => ({
+        url: `${ApiUrlEnum.PURCHASES}/${purchaseId}/margin-items/apply-all`,
+        method: "POST",
+      }),
+    }),
   }),
 });
 

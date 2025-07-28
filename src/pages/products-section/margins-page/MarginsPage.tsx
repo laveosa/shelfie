@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
+import { merge } from "lodash";
 
 import {
   scrollToRefElement,
@@ -21,6 +22,9 @@ import MarginForPurchaseCard from "@/components/complex/custom-cards/margin-for-
 import SelectMarginCard from "@/components/complex/custom-cards/select-margin-card/SelectMarginCard.tsx";
 import MarginConfigurationCard from "@/components/complex/custom-cards/margin-configuration-card/MarginConfigurationCard.tsx";
 import SalePriseManagementCard from "@/components/complex/custom-cards/sale-price-management-card/SalePriceManagementCard.tsx";
+import { AppSliceActions as appActions } from "@/state/slices/AppSlice.ts";
+import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 
 export function MarginsPage() {
   const dispatch = useAppDispatch();
@@ -57,24 +61,55 @@ export function MarginsPage() {
         dispatch(actions.refreshMarginsList(res));
       });
     }
-    if (state.marginItemsGridModel.items.length === 0) {
-      service
-        .getMarginItemsListForGridHandler(
-          purchaseId,
-          state.marginItemsGriRequestModel,
-        )
-        .then((res) => {
-          dispatch(actions.refreshMarginItemsGridModel(res));
-        });
-    }
-    if (productsState.currenciesList.length === 0) {
-      productsService.getCurrenciesListHandler();
-    }
     if (productsState.taxesList.length === 0) {
       productsService.getTaxesListHandler();
     }
+    if (productsState.sortingOptions.length === 0) {
+      productsService.getSortingOptionsForGridHandler();
+    }
+    if (productsState.brands.length === 0) {
+      productsService.getBrandsForFilterHandler().then((res) => {
+        dispatch(productsActions.refreshBrands(res));
+      });
+    }
+    if (productsState.categories.length === 0) {
+      productsService.getCategoriesForFilterHandler().then((res) => {
+        dispatch(productsActions.refreshCategories(res));
+      });
+    }
+    if (
+      productsState.sizesForFilter.length === 0 ||
+      productsState.colorsForFilter.length === 0
+    )
+      productsService.getTraitsForFilterHandler().then((res) => {
+        dispatch(
+          productsActions.refreshSizesForFilter(
+            res
+              .filter((trait) => trait.traitTypeId === 1)
+              .flatMap((trait) => trait.traitOptions),
+          ),
+        );
+        dispatch(
+          productsActions.refreshColorsForFilter(
+            res
+              .filter((trait) => trait.traitTypeId === 2)
+              .flatMap((trait) => trait.traitOptions),
+          ),
+        );
+      });
     handleCardAction("salePriceManagementCard", true);
   }, [purchaseId]);
+
+  useEffect(() => {
+    service
+      .getMarginItemsListForGridHandler(
+        purchaseId,
+        state.marginItemsGriRequestModel,
+      )
+      .then((res) => {
+        dispatch(actions.refreshMarginItemsGridModel(res));
+      });
+  }, [state.marginItemsGriRequestModel]);
 
   function handleCardAction(
     identifier: string,
@@ -125,6 +160,25 @@ export function MarginsPage() {
     }
   }
 
+  function handleGridRequestChange(updates: GridRequestModel) {
+    if (updates.brands || updates.categories || updates.filter) {
+      dispatch(
+        actions.refreshMarginItemsGriRequestModel({
+          ...state.marginItemsGriRequestModel,
+          currentPage: 1,
+          ...updates,
+        }),
+      );
+    } else {
+      dispatch(
+        actions.refreshMarginItemsGriRequestModel({
+          ...state.marginItemsGriRequestModel,
+          ...updates,
+        }),
+      );
+    }
+  }
+
   async function onAction(actionType: string, payload?: any) {
     switch (actionType) {
       case "openSelectMarginCard":
@@ -135,7 +189,7 @@ export function MarginsPage() {
         if (state.marginsList.length === 0) {
           dispatch(actions.setIsSelectMarginCardLoading(true));
           service
-            .getMarginsListForGridHandler(state.gridRequestModel)
+            .getMarginsListForGridHandler(state.marginsGridRequestModel)
             .then((res) => {
               dispatch(actions.setIsSelectMarginCardLoading(false));
               dispatch(actions.refreshMarginsList(res.items));
@@ -146,7 +200,7 @@ export function MarginsPage() {
         dispatch(actions.setIsMarginListGridLoading(true));
         service
           .getMarginsListForGridHandler({
-            ...state.gridRequestModel,
+            ...state.marginsGridRequestModel,
             searchQuery: payload,
           })
           .then((res) => {
@@ -185,7 +239,7 @@ export function MarginsPage() {
         if (state.marginsList.length === 0) {
           dispatch(actions.setIsSelectMarginCardLoading(true));
           service
-            .getMarginsListForGridHandler(state.gridRequestModel)
+            .getMarginsListForGridHandler(state.marginsGridRequestModel)
             .then((res) => {
               dispatch(actions.setIsSelectMarginCardLoading(false));
               dispatch(actions.refreshMarginsList(res.items));
@@ -264,7 +318,7 @@ export function MarginsPage() {
             if (margin.marginName !== state.managedMargin.marginName) {
               dispatch(actions.setIsSelectMarginCardLoading(true));
               service
-                .getMarginsListForGridHandler(state.gridRequestModel)
+                .getMarginsListForGridHandler(state.marginsGridRequestModel)
                 .then((res) => {
                   dispatch(actions.setIsSelectMarginCardLoading(false));
                   dispatch(actions.refreshMarginsList(res.items));
@@ -380,7 +434,20 @@ export function MarginsPage() {
         });
         break;
       case "updateMarginItem":
-        service.updateMarginItemHandler(payload.marginItemId, payload);
+        service
+          .updateMarginItemHandler(payload.marginItemId, payload)
+          .then((res) => {
+            if (res) {
+              service
+                .getMarginItemsListForGridHandler(
+                  purchaseId,
+                  state.marginItemsGriRequestModel,
+                )
+                .then((res) => {
+                  dispatch(actions.refreshMarginItemsGridModel(res));
+                });
+            }
+          });
         break;
       case "applyMarginItem":
         console.log("Apply Margin item", payload);
@@ -406,6 +473,45 @@ export function MarginsPage() {
         break;
       case "closeMarginConfigurationCard":
         handleCardAction("marginConfigurationCard");
+        break;
+      case "applyColumns":
+        const modifiedModel = merge({}, appState.preferences, payload);
+        dispatch(appActions.refreshPreferences(modifiedModel));
+        productsService.updateUserPreferencesHandler(modifiedModel);
+        break;
+      case "resetColumns":
+        productsService.resetUserPreferencesHandler("products");
+        break;
+      case "gridRequestChange":
+        handleGridRequestChange(payload);
+        break;
+      case "brandFilter":
+        handleGridRequestChange({ filter: { brands: payload } });
+        break;
+      case "categoryFilter":
+        handleGridRequestChange({ filter: { categories: payload } });
+        break;
+      case "applyVisibleMarginItems":
+        dispatch(actions.setIsMarginProductsGridLoading(true));
+        service
+          .applyVisibleMarginItemsHandler(
+            purchaseId,
+            state.marginItemsGriRequestModel,
+          )
+          .then((res) => {
+            dispatch(actions.setIsMarginProductsGridLoading(false));
+            if (res) {
+              service
+                .getMarginsListForGridHandler(state.marginsGridRequestModel)
+                .then((res) => {
+                  dispatch(actions.refreshMarginsList(res.items));
+                });
+            } else {
+            }
+          });
+        break;
+      case "applyAllMarginItems":
+        service.applyAllMarginItemsHandler(purchaseId);
         break;
     }
   }
@@ -433,7 +539,12 @@ export function MarginsPage() {
           <SalePriseManagementCard
             isLoading={state.isSalePriceManagementCardLoading}
             isGridLoading={state.isMarginProductsGridLoading}
+            brands={productsState.brands}
+            categories={productsState.categories}
+            sizes={productsState.sizesForFilter}
+            colors={productsState.colorsForFilter}
             taxes={productsState.taxesList}
+            sortingOptions={productsState.sortingOptions}
             gridModel={state.marginItemsGridModel}
             gridRequestModel={state.marginItemsGriRequestModel}
             onAction={onAction}
