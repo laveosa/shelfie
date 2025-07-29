@@ -29,6 +29,10 @@ $iconSize: 20px;
 
 .shePrimitiveComponentWrapper {
   .iconBlock {
+    position: absolute;
+    top: 11px;
+    left: 8px;
+    z-index: 1;
     color: vars.$subtextColor;
     max-width: $iconSize;
     min-width: $iconSize;
@@ -59,7 +63,7 @@ $iconSize: 20px;
 
 // ======================================================== WITH ICON
 
-.shePrimitiveComponentWrapper.withIcon {
+.shePrimitiveComponentWrapper:global(.withIcon) {
   .shePrimitiveComponentWrapperContainer {
     .shePrimitiveComponentWrapperControl {
       .shePrimitiveComponentWrapperContext {

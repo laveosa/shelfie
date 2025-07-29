@@ -291,6 +291,7 @@ export function DashboardPage() {
             showSearch
             showFooter
             autoFocus
+            icon={Home}
             onSelect={(value, model) => console.log("onSelect: ", value, model)}
           />
         </div>

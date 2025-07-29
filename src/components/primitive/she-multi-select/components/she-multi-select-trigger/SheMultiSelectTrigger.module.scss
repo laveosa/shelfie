@@ -1,6 +1,5 @@
 @use "@/styles/variables" as vars;
 
-$iconSize: 20px;
 $chevronIconSize: 16px;
 
 .sheMultiSelectTrigger {
@@ -43,14 +42,6 @@ $chevronIconSize: 16px;
     }
   }
 
-  .iconBlock {
-    color: vars.$subtextColor;
-    max-width: $iconSize;
-    min-width: $iconSize;
-    max-height: $iconSize;
-    min-height: $iconSize;
-  }
-
   .chevronIconBlock {
     color: vars.$subtextColor;
     max-width: $chevronIconSize;
@@ -62,5 +53,13 @@ $chevronIconSize: 16px;
     &.rotateChevronIcon {
       transform: rotate(-180deg);
     }
+  }
+}
+
+// ======================================================== WITH ICON
+
+:global(.withIcon).sheMultiSelectTrigger {
+  .sheMultiSelectTriggerElement {
+    padding-left: 32px;
   }
 }

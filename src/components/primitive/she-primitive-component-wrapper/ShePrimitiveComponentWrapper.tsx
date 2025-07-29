@@ -56,6 +56,7 @@ export default function ShePrimitiveComponentWrapper(
     required,
     icon,
     iconProps,
+    showClearBtn,
     onClear,
   } = props;
   const sheLabelProps = getCustomProps<
@@ -113,7 +114,7 @@ export default function ShePrimitiveComponentWrapper(
   return (
     <div
       id={id}
-      className={`${cs.shePrimitiveComponentWrapper} ${className} ${icon ? cs.withIcon : ""} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""}`}
+      className={`${cs.shePrimitiveComponentWrapper} ${className} ${icon ? "withIcon" : ""} ${showClearBtn ? "withClearButton" : ""} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""}`}
       style={{
         minWidth,
         maxWidth,
@@ -127,7 +128,7 @@ export default function ShePrimitiveComponentWrapper(
           <SheSkeleton {...sheSkeletonProps} fullWidth>
             <SheIcon
               {...mergeComponentProps(sheIconProps, iconProps)}
-              className={cs.iconBlock}
+              className={`${iconProps?.className ?? ""} ${cs.iconBlock}`}
             />
             <div className={cs.shePrimitiveComponentWrapperContext}>
               {children}
