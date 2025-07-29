@@ -51,9 +51,9 @@ export function marginProductsGridColumns(
     {
       accessorKey: "variantCode",
       header: "Code",
-      size: 40,
-      minSize: 40,
-      maxSize: 40,
+      size: 30,
+      minSize: 30,
+      maxSize: 30,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("variantCode")}>
@@ -142,10 +142,22 @@ export function marginProductsGridColumns(
     },
     {
       accessorKey: "currentPrice",
-      header: "Current Price",
-      size: 40,
-      minSize: 40,
-      maxSize: 40,
+      header: () => (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            maxWidth: "60px",
+          }}
+        >
+          <span style={{ textWrap: "wrap" }}>Current Price</span>
+          <SheTooltip showDefaultIcon />
+        </div>
+      ),
+      size: 30,
+      minSize: 30,
+      maxSize: 30,
       cell: ({ row }) => {
         return <span>{row.getValue("currentPrice")}</span>;
       },
@@ -156,7 +168,13 @@ export function marginProductsGridColumns(
       size: 150,
       minSize: 150,
       maxSize: 150,
-      header: "",
+      header: () => (
+        <div className="flex items-center">
+          <span style={{ marginRight: "75px" }}>Tax</span>
+          <span style={{ marginRight: "65px" }}>Margin Price</span>
+          <span>Quantity</span>
+        </div>
+      ),
       cell: ({ row }) => {
         return (
           <MarginItemsForm

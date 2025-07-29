@@ -2,6 +2,10 @@ import { ArrowBigRight, Check, CheckCheck, Lock, Undo2 } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect } from "react";
 
+import {
+  MarginItemModel,
+  MarginItemModelDefault,
+} from "@/const/models/MarginItemModel.ts";
 import useAppForm from "@/utils/hooks/useAppForm.ts";
 import cs from "@/components/forms/margin-items-form/MarginItemsForm.module.scss";
 import SheForm from "@/components/complex/she-form/SheForm.tsx";
@@ -16,10 +20,6 @@ import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import { IMarginItemsForm } from "@/const/interfaces/forms/IMarginItemsForm.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-import {
-  MarginItemModel,
-  MarginItemModelDefault,
-} from "@/const/models/MarginItemModel.ts";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 
 export default function MarginItemsForm<T>({
@@ -28,49 +28,15 @@ export default function MarginItemsForm<T>({
   onMarginItemChange,
   onApply,
 }: IMarginItemsForm<MarginItemModel>) {
-  // const [isDisabled, setIsDisabled] = useState(true);
-  // const [isInputChanged, setIsInputChanged] = useState(false);
-  // const [isSelectChanged, setIsSelectChanged] = useState(false);
   const form = useAppForm<any>({
     mode: "onSubmit",
     resolver: zodResolver(MarginItemsFormScheme),
     defaultValues: data || MarginItemModelDefault,
   });
 
-  // const watchedMarginPrice = useWatch({
-  //   control: form.control,
-  //   name: "marginPrice",
-  // });
-  // const watchedTaxTypeId = useWatch({
-  //   control: form.control,
-  //   name: "taxTypeId",
-  // });
-
   useEffect(() => {
     form.reset(data);
   }, [data]);
-
-  // useEffect(() => {
-  //   setIsInputChanged(data?.marginPrice !== Number(watchedMarginPrice));
-  //   if (watchedTaxTypeId === null || undefined) {
-  //     setIsSelectChanged(false);
-  //   } else {
-  //     setIsSelectChanged(data?.taxTypeId !== watchedTaxTypeId);
-  //   }
-  // }, [watchedMarginPrice, watchedTaxTypeId]);
-  //
-  // useEffect(() => {
-  //   const watchedMargin = Number(form.watch("marginPrice") ?? 0);
-  //   if (
-  //     data.currentPrice !== watchedMargin ||
-  //     isInputChanged ||
-  //     isSelectChanged
-  //   ) {
-  //     setIsDisabled(false);
-  //   } else {
-  //     setIsDisabled(true);
-  //   }
-  // }, [isInputChanged, isSelectChanged]);
 
   function convertTaxesToSelectItems(data: TaxTypeModel[]): ISheSelectItem[] {
     return data?.map(
@@ -147,7 +113,6 @@ export default function MarginItemsForm<T>({
               >
                 <SheInput
                   {...field}
-                  defaultValue={data?.marginPrice}
                   className={data?.marginPriceChanged ? cs.inputChanged : ""}
                   minWidth="70px"
                   maxWidth="70px"
@@ -159,7 +124,9 @@ export default function MarginItemsForm<T>({
             );
           }}
         />
-        <div
+        <SheIcon
+          icon={Lock}
+          color={data.locked ? "#007AFF" : "#E4E4E7"}
           className={`${cs.marginItemsFormItem} ${cs.marginItemsFormIcon} ${cs.lockIcon}`}
           onClick={() =>
             onMarginItemChange({
@@ -167,10 +134,10 @@ export default function MarginItemsForm<T>({
               locked: !data?.locked,
             })
           }
-        >
-          <SheIcon icon={Lock} color={data.locked ? "#007AFF" : "#E4E4E7"} />
-        </div>
-        <div
+        />
+        <SheIcon
+          icon={Undo2}
+          color={data.isChanged ? "#EF4343" : "#E4E4E7"}
           className={`${cs.marginItemsFormItem} ${cs.marginItemsFormIcon} ${data.isChanged ? cs.undoIconActive : cs.undoIcon}`}
           onClick={() =>
             onMarginItemChange({
@@ -178,23 +145,17 @@ export default function MarginItemsForm<T>({
               isChanged: false,
             })
           }
-        >
-          <SheIcon
-            icon={Undo2}
-            color={data.isChanged ? "#EF4343" : "#E4E4E7"}
-          />
-        </div>
+        />
         <span
           className={`${cs.marginItemsFormText} she-text`}
         >{`${data.unitsAmount} units`}</span>
         <SheButton
-          className={data?.needApply ? cs.formButtonActive : ""}
-          value={"Apply"}
+          className={data?.needApply ? "" : cs.formButtonNotActive}
+          value={data?.needApply ? "Apply" : "Applied"}
           icon={data?.needApply ? Check : CheckCheck}
           txtColor={data?.needApply ? "" : "#38BF5E"}
           variant={data?.needApply ? "secondary" : "ghost"}
           type="submit"
-          // disabled={isDisabled}
         />
       </SheForm>
     </div>

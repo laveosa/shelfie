@@ -101,12 +101,14 @@ export function MarginsPage() {
   }, [purchaseId]);
 
   useEffect(() => {
+    dispatch(actions.setIsMarginProductsGridLoading(true));
     service
       .getMarginItemsListForGridHandler(
         purchaseId,
         state.marginItemsGriRequestModel,
       )
       .then((res) => {
+        dispatch(actions.setIsMarginProductsGridLoading(false));
         dispatch(actions.refreshMarginItemsGridModel(res));
       });
   }, [state.marginItemsGriRequestModel]);
@@ -178,6 +180,10 @@ export function MarginsPage() {
       );
     }
   }
+
+  useEffect(() => {
+    console.log("STATE", state.marginItemsGridModel);
+  }, [state.marginItemsGridModel]);
 
   async function onAction(actionType: string, payload?: any) {
     switch (actionType) {
@@ -438,14 +444,16 @@ export function MarginsPage() {
           .updateMarginItemHandler(payload.marginItemId, payload)
           .then((res) => {
             if (res) {
-              service
-                .getMarginItemsListForGridHandler(
-                  purchaseId,
-                  state.marginItemsGriRequestModel,
-                )
-                .then((res) => {
-                  dispatch(actions.refreshMarginItemsGridModel(res));
-                });
+              const updatedItems = state.marginItemsGridModel.items.map(
+                (item) => (item.marginItemId === res.marginItemId ? res : item),
+              );
+
+              dispatch(
+                actions.refreshMarginItemsGridModel({
+                  ...state.marginItemsGridModel,
+                  items: updatedItems,
+                }),
+              );
             }
           });
         break;
@@ -453,14 +461,21 @@ export function MarginsPage() {
         console.log("Apply Margin item", payload);
         service.applyMarginItemHandler(payload).then((res) => {
           if (res) {
-            service
-              .getMarginItemsListForGridHandler(
-                purchaseId,
-                state.marginItemsGriRequestModel,
-              )
-              .then((res) => {
-                dispatch(actions.refreshMarginItemsGridModel(res));
-              });
+            const updatedItems = state.marginItemsGridModel.items.map((item) =>
+              item.marginItemId === res.marginItemId ? res : item,
+            );
+
+            dispatch(
+              actions.refreshMarginItemsGridModel({
+                ...state.marginItemsGridModel,
+                items: updatedItems,
+              }),
+            );
+          } else {
+            addToast({
+              text: res.error.data.detail,
+              type: "error",
+            });
           }
         });
         break;
@@ -501,17 +516,36 @@ export function MarginsPage() {
           .then((res) => {
             dispatch(actions.setIsMarginProductsGridLoading(false));
             if (res) {
-              service
-                .getMarginsListForGridHandler(state.marginsGridRequestModel)
-                .then((res) => {
-                  dispatch(actions.refreshMarginsList(res.items));
-                });
+              dispatch(actions.refreshMarginItemsGridModel(res));
+              addToast({
+                text: "Visible margin items applied successfully",
+                type: "success",
+              });
             } else {
+              addToast({
+                text: res.error.data.detail,
+                type: "error",
+              });
             }
           });
         break;
       case "applyAllMarginItems":
-        service.applyAllMarginItemsHandler(purchaseId);
+        dispatch(actions.setIsMarginProductsGridLoading(true));
+        service.applyAllMarginItemsHandler(purchaseId).then((res) => {
+          dispatch(actions.setIsMarginProductsGridLoading(false));
+          if (res) {
+            dispatch(actions.refreshMarginItemsGridModel(res));
+            addToast({
+              text: "All margin items applied successfully",
+              type: "success",
+            });
+          } else {
+            addToast({
+              text: res.error.data.detail,
+              type: "error",
+            });
+          }
+        });
         break;
     }
   }

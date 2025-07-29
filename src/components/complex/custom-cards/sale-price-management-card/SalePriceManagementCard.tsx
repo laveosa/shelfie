@@ -36,7 +36,7 @@ export default function SalePriseManagementCard({
         title="Sale Price Management"
         isLoading={isLoading}
         className={cs.salePriceManagementCardContent}
-        minWidth="1150px"
+        minWidth="1100px"
       >
         <DndGridDataTable
           isLoading={isGridLoading}

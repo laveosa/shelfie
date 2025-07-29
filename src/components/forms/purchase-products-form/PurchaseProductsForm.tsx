@@ -91,7 +91,7 @@ export default function PurchaseProductsForm<T>({
           control={form.control}
           name="nettoPrice"
           render={({ field }): React.ReactElement => (
-            <SheFormItem className={cs.purchaseProductsFormItem}>
+            <SheFormItem className={cs.purchaseFormItemNettoPrice}>
               <SheInput
                 {...field}
                 className={
@@ -112,7 +112,7 @@ export default function PurchaseProductsForm<T>({
           control={form.control}
           name="currencyId"
           render={({ field }) => (
-            <SheFormItem className={cs.purchaseProductsFormItem}>
+            <SheFormItem className={cs.purchaseFormItemTaxCurrency}>
               <SheSelect
                 selected={field.value || data?.currencyId}
                 className={
@@ -139,7 +139,7 @@ export default function PurchaseProductsForm<T>({
           control={form.control}
           name="taxTypeId"
           render={({ field }) => (
-            <SheFormItem className={cs.purchaseProductsFormItem}>
+            <SheFormItem className={cs.purchaseFormItemTaxCurrency}>
               <SheSelect
                 placeholder=" "
                 className={
@@ -167,7 +167,7 @@ export default function PurchaseProductsForm<T>({
           control={form.control}
           name="unitsAmount"
           render={({ field }): React.ReactElement => (
-            <SheFormItem className={cs.purchaseProductsFormItem}>
+            <SheFormItem className={cs.purchaseFormItemTaxCurrency}>
               <SheInput
                 {...field}
                 className={
@@ -194,6 +194,9 @@ export default function PurchaseProductsForm<T>({
                   : ""
                 : ""
             }
+            style={{
+              marginLeft: "10px",
+            }}
             value={activeTab === "connectProducts" ? "Add" : "Update"}
             variant="ghost"
             type="submit"
