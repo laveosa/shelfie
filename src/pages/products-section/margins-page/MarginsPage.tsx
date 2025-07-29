@@ -384,9 +384,19 @@ export function MarginsPage() {
 
         service.deleteMarginHandler(payload.marginId).then((res) => {
           if (!res.error) {
-            service.getMarginDetailsHandler(payload.marginId).then((res) => {
-              dispatch(actions.refreshManagedMargin(res));
-            });
+            dispatch(
+              actions.refreshManagedMargin({
+                ...state.managedMargin,
+                isDeleted: true,
+              }),
+            );
+            if (state.selectedMargin.marginId === payload.marginId) {
+              dispatch(actions.setIsMarginForPurchaseCardLoading(true));
+              service.getMarginForPurchaseHandler(purchaseId).then((res) => {
+                dispatch(actions.setIsMarginForPurchaseCardLoading(false));
+                dispatch(actions.refreshSelectedMargin(res));
+              });
+            }
             addToast({
               text: "Margin deleted successfully",
               type: "success",
@@ -404,9 +414,19 @@ export function MarginsPage() {
         service.restoreMarginHandler(payload.marginId).then((res) => {
           dispatch(actions.setIsMarginConfigurationCardLoading(false));
           if (!res.error) {
-            service.getMarginDetailsHandler(payload.marginId).then((res) => {
-              dispatch(actions.refreshManagedMargin(res));
-            });
+            dispatch(
+              actions.refreshManagedMargin({
+                ...state.managedMargin,
+                isDeleted: false,
+              }),
+            );
+            if (state.selectedMargin.marginId === payload.marginId) {
+              dispatch(actions.setIsMarginForPurchaseCardLoading(true));
+              service.getMarginForPurchaseHandler(purchaseId).then((res) => {
+                dispatch(actions.setIsMarginForPurchaseCardLoading(false));
+                dispatch(actions.refreshSelectedMargin(res));
+              });
+            }
             addToast({
               text: "Margin restored successfully",
               type: "success",

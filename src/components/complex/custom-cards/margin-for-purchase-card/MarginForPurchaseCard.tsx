@@ -50,17 +50,16 @@ export default function MarginForPurchaseCard({
                 </span>
               </div>
               <div className={cs.marginActionsButtonBlock}>
-                {margin.marginRule.modified ||
-                  (!margin.isDeleted && (
-                    <SheButton
-                      icon={Undo2}
-                      txtColor={"#fff"}
-                      bgColor={"#007AFF"}
-                      onClick={() =>
-                        onAction("restoreMarginRules", margin.marginId)
-                      }
-                    />
-                  ))}
+                {margin.marginRule.modified && (
+                  <SheButton
+                    icon={Undo2}
+                    txtColor={"#fff"}
+                    bgColor={"#007AFF"}
+                    onClick={() =>
+                      onAction("restoreMarginRules", margin.marginId)
+                    }
+                  />
+                )}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <SheButton
