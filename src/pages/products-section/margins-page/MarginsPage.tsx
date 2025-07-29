@@ -113,6 +113,12 @@ export function MarginsPage() {
       });
   }, [state.marginItemsGriRequestModel]);
 
+  useEffect(() => {
+    if (state.activeCards.length === 0) {
+      handleCardAction("salePriceManagementCard", true);
+    }
+  }, [state.activeCards]);
+
   function handleCardAction(
     identifier: string,
     forceOpen: boolean = false,
