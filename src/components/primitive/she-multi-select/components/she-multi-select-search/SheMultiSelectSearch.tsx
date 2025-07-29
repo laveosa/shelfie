@@ -1,11 +1,11 @@
 import { JSX, useEffect, useState } from "react";
 
+import { X } from "lucide-react";
 import cs from "./SheMultiSelectSearch.module.scss";
-import { ISheMultiSelectSearch } from "@/const/interfaces/primitive-components/ISheMultiSelectSearch.ts";
 import { CommandInput } from "@/components/ui/command.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
-import { X } from "lucide-react";
+import { ISheMultiSelectSearch } from "@/const/interfaces/primitive-components/ISheMultiSelectSearch.ts";
 
 export default function SheMultiSelectSearch({
   searchRef,
@@ -64,7 +64,8 @@ export default function SheMultiSelectSearch({
         <SheButton
           icon={X}
           size="small"
-          variant="ghost"
+          variant="secondary"
+          txtColor="#64748b"
           disabled={!_searchValue || _searchValue.length === 0}
           onClick={onClearSearchHandler}
         />

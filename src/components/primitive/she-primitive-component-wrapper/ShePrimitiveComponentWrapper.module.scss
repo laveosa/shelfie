@@ -67,6 +67,30 @@ $iconSize: 20px;
   .shePrimitiveComponentWrapperContainer {
     .shePrimitiveComponentWrapperControl {
       .shePrimitiveComponentWrapperContext {
+        :global(.componentTriggerElement) {
+          padding-left: 32px;
+        }
+      }
+    }
+  }
+}
+
+// ======================================================== WITH CLEAR BUTTON
+
+.shePrimitiveComponentWrapper:global(.withClearButton) {
+  .shePrimitiveComponentWrapperContainer {
+    .shePrimitiveComponentWrapperControl {
+      .clearButton {
+        position: absolute;
+        top: 10px;
+        right: 8px;
+        z-index: 1;
+      }
+
+      .shePrimitiveComponentWrapperContext {
+        :global(.componentTriggerElement) {
+          padding-right: 32px;
+        }
       }
     }
   }

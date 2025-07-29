@@ -57,6 +57,7 @@ export default function ShePrimitiveComponentWrapper(
     icon,
     iconProps,
     showClearBtn,
+    clearBtnPosition = "in",
     onClear,
   } = props;
   const sheLabelProps = getCustomProps<
@@ -76,7 +77,12 @@ export default function ShePrimitiveComponentWrapper(
     SheSkeletonDefaultModel,
   );
   const sheIconProps = getCustomProps<IShePrimitiveComponentWrapper, ISheIcon>(
-    { ...props },
+    {
+      ...props,
+      minWidth: undefined,
+      maxWidth: undefined,
+      fullWidth: undefined,
+    },
     SheIconDefaultModel,
   );
   const sheClearButtonProps = getCustomProps<
@@ -114,7 +120,7 @@ export default function ShePrimitiveComponentWrapper(
   return (
     <div
       id={id}
-      className={`${cs.shePrimitiveComponentWrapper} ${className} ${icon ? "withIcon" : ""} ${showClearBtn ? "withClearButton" : ""} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""}`}
+      className={`${cs.shePrimitiveComponentWrapper} ${className} ${icon ? "withIcon" : ""} ${showClearBtn && clearBtnPosition === "in" ? "withClearButton" : ""} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""}`}
       style={{
         minWidth,
         maxWidth,
@@ -134,7 +140,11 @@ export default function ShePrimitiveComponentWrapper(
               {children}
             </div>
           </SheSkeleton>
-          <SheClearButton {...sheClearButtonProps} onClear={onClearHandler} />
+          <SheClearButton
+            {...sheClearButtonProps}
+            clearBtnClassName={`${sheClearButtonProps?.clearBtnClassName} ${cs.clearButton}`}
+            onClear={onClearHandler}
+          />
         </div>
         <SheDescriptionBlock {...sheDescriptionBockProps} />
         <SheErrorMessageBlock {...sheErrorMessageBlockProps} />

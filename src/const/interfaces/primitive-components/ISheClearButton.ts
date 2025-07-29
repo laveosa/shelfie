@@ -14,7 +14,6 @@ export interface ISheClearButton {
   disabled?: boolean;
   isLoading?: boolean;
   ariaDescribedbyId?: string;
-  clearBtnPosition?: "in" | "out";
   clearBtnProps?: ISheButton;
   onClear?(event: React.MouseEvent | React.KeyboardEvent): void;
 }
@@ -30,7 +29,6 @@ export const SheClearButtonDefaultModel: ISheClearButton = {
   disabled: undefined,
   isLoading: undefined,
   ariaDescribedbyId: undefined,
-  clearBtnPosition: undefined,
   clearBtnProps: undefined,
   onClear: undefined,
 };

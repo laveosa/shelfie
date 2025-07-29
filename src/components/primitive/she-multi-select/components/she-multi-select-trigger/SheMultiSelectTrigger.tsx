@@ -69,13 +69,13 @@ export default function SheMultiSelectTrigger<T>(
     <ShePrimitiveComponentWrapper
       {...shePrimitiveComponentWrapperProps}
       className={`${cs.sheMultiSelectTrigger} ${shePrimitiveComponentWrapperProps.className}`}
-      clearBtnValue={items && items.length > 0}
+      clearBtnValue={items}
       onClear={onClearAll}
     >
       <PopoverTrigger asChild>
         <Button
           {...restProps}
-          className={`${elementClassName} ${cs.sheMultiSelectTriggerElement}`}
+          className={`${elementClassName} ${cs.sheMultiSelectTriggerElement} componentTriggerElement`}
           style={elementStyle}
           disabled={disabled || isLoading}
           onKeyDown={onKeyDownHandler}

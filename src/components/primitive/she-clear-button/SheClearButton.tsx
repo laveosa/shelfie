@@ -1,10 +1,10 @@
 import React, { JSX } from "react";
 
+import { X } from "lucide-react";
 import cs from "./SheClearButton.module.scss";
-import { ISheClearButton } from "@/const/interfaces/primitive-components/ISheClearButton.ts";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { X } from "lucide-react";
+import { ISheClearButton } from "@/const/interfaces/primitive-components/ISheClearButton.ts";
 
 export default function SheClearButton({
   clearBtnClassName = "",
@@ -17,7 +17,6 @@ export default function SheClearButton({
   disabled,
   isLoading,
   ariaDescribedbyId,
-  clearBtnPosition = "in",
   clearBtnProps,
   onClear,
 }: ISheClearButton): JSX.Element {
@@ -28,6 +27,12 @@ export default function SheClearButton({
     (Array.isArray(clearBtnValue) && clearBtnValue.length === 0);
 
   // ==================================================================== EVENT
+
+  function onClearHandler(event: React.MouseEvent | React.KeyboardEvent) {
+    event.stopPropagation();
+    event.preventDefault();
+    onClear?.(event);
+  }
 
   // ==================================================================== PRIVATE
 
@@ -45,13 +50,14 @@ export default function SheClearButton({
           className={cs.sheClearButton}
           title="Clear"
           aria-label="Clear"
-          variant="ghost"
+          variant="secondary"
+          size="small"
           icon={clearBtnIcon}
           txtColor={clearBtnValueColor}
           bgColor={clearBtnBackgroundColor}
           aria-describedby={ariaDescribedbyId}
           disabled={isEmpty || disabled || isLoading}
-          onClick={onClear}
+          onClick={onClearHandler}
           {...clearBtnProps}
         />
       </SheSkeleton>

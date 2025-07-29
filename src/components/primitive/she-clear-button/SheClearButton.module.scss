@@ -1,4 +1,6 @@
-$clearBtnSize: 30px;
+@use "@/styles/variables" as vars;
+
+$clearBtnSize: 16px;
 
 .sheClearButtonWrapper {
   display: flex;
@@ -7,19 +9,11 @@ $clearBtnSize: 30px;
   .sheClearButtonSkeleton {
     display: flex;
     align-self: center;
-    border-radius: 100%;
-    max-width: $clearBtnSize;
-    min-width: $clearBtnSize;
-    max-height: $clearBtnSize;
-    min-height: $clearBtnSize;
     overflow: hidden;
 
     .sheClearButton {
-      border-radius: 100%;
-      max-width: $clearBtnSize;
-      min-width: $clearBtnSize;
-      max-height: $clearBtnSize;
-      min-height: $clearBtnSize;
+      color: vars.$subtextColor;
+      border-radius: vars.$brdR_03;
     }
   }
 }

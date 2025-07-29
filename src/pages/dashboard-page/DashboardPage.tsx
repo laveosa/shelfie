@@ -287,12 +287,13 @@ export function DashboardPage() {
             tooltip="some text for tooltip"
             items={optionsSimple}
             contextType="badges"
-            showClearBtn
+            // showClearBtn
             showSearch
             showFooter
-            autoFocus
+            // autoFocus
             icon={Home}
-            onSelect={(value, model) => console.log("onSelect: ", value, model)}
+            clearBtnPosition="out"
+            // onSelect={(value, model) => console.log("onSelect: ", value, model)}
           />
         </div>
 

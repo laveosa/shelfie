@@ -55,11 +55,3 @@ $chevronIconSize: 16px;
     }
   }
 }
-
-// ======================================================== WITH ICON
-
-:global(.withIcon).sheMultiSelectTrigger {
-  .sheMultiSelectTriggerElement {
-    padding-left: 32px;
-  }
-}

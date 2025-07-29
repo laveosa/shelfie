@@ -39,6 +39,7 @@ export interface IShePrimitiveComponentWrapper
   disable?: boolean;
   required?: boolean;
   ariaDescribedbyId?: string;
+  clearBtnPosition?: "in" | "out";
   icon?: Partial<ISheIcon> | string | React.FC<any>;
   iconProps?: ISheIcon;
   onClear?(value: React.MouseEvent | React.KeyboardEvent): void;
@@ -61,6 +62,7 @@ export const ShePrimitiveComponentWrapperDefaultModel: IShePrimitiveComponentWra
     disable: undefined,
     required: undefined,
     ariaDescribedbyId: undefined,
+    clearBtnPosition: undefined,
     icon: undefined,
     iconProps: undefined,
     onClear: undefined,
