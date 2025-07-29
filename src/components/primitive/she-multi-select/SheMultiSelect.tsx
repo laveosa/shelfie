@@ -24,6 +24,7 @@ import useDefaultRef from "@/utils/hooks/useDefaultRef.ts";
 import useValueWithEvent from "@/utils/hooks/useValueWithEvent.ts";
 import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
 import { ISheMultiSelectItem } from "@/const/interfaces/primitive-components/ISheMultiSelectItem.ts";
+import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 import {
   ISheMultiSelect,
   SheMultiSelectDefaultModel,
@@ -36,7 +37,6 @@ import {
   ISheMultiSelectFooter,
   SheMultiSelectFooterDefaultModel,
 } from "@/const/interfaces/primitive-components/ISheMultiSelectFooter.ts";
-import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 
 export default function SheMultiSelect<T>(
   props: ISheMultiSelect<T>,
@@ -332,6 +332,7 @@ export default function SheMultiSelect<T>(
   return (
     <Popover open={_open} onOpenChange={_setIsOpen}>
       <SheMultiSelectTrigger<T>
+        {...restProps}
         ref={_triggerRef}
         items={_badges}
         isOpen={_open}
@@ -345,7 +346,6 @@ export default function SheMultiSelect<T>(
         onClearAll={(event) =>
           onClearButtonHandler<HTMLButtonElement>(event, _triggerRef)
         }
-        {...restProps}
       />
       <PopoverContent
         ref={_popoverRef}

@@ -5,8 +5,8 @@ import cs from "./SheRadioGroup.module.scss";
 import { RadioGroup } from "@/components/ui/radio-group";
 import { ISheRadioGroup } from "@/const/interfaces/primitive-components/ISheRadioGroup.ts";
 import { generateId } from "@/utils/helpers/quick-helper.ts";
-import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
-import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
+import SheLabel from "@/components/primitive/she-label/SheLabel.tsx";
+import SheClearButton from "@/components/primitive/she-clear-button/SheClearButton.tsx";
 import { ISheRadioItem } from "@/const/interfaces/primitive-components/ISheRadioItem.ts";
 import SheRadioItem from "@/components/primitive/she-radio-group/components/she-radio-item/SheRadioItem.tsx";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
@@ -152,11 +152,11 @@ export default function SheRadioGroup({
               {[...Array(skeletonQuantity)].map((_, idx) => (
                 <div key={idx + 1} className={cs.radioItemSkeletonBlock}>
                   <SheSkeleton
-                    className={cs.radioItemTriggerSkeleton}
+                    skeletonClassName={cs.radioItemTriggerSkeleton}
                     isLoading={isLoading}
                   />
                   <SheSkeleton
-                    className={cs.radioItemContextSkeleton}
+                    skeletonClassName={cs.radioItemContextSkeleton}
                     isLoading={isLoading}
                   />
                 </div>
@@ -165,7 +165,7 @@ export default function SheRadioGroup({
           )}
           {_items && _items.length > 0 && (
             <SheClearButton
-              value={selected}
+              clearBtnValue={selected}
               showClearBtn={showClearBtn}
               disabled={disabled}
               isLoading={isLoading}

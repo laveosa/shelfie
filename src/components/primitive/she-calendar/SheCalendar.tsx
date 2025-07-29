@@ -6,9 +6,9 @@ import _ from "lodash";
 import cs from "./SheCalendar.module.scss";
 import { Calendar } from "@/components/ui/calendar.tsx";
 import { ISheCalendar } from "@/const/interfaces/primitive-components/ISheCalendar.ts";
-import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
+import SheLabel from "@/components/primitive/she-label/SheLabel.tsx";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
-import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
+import SheClearButton from "@/components/primitive/she-clear-button/SheClearButton.tsx";
 import { generateId } from "@/utils/helpers/quick-helper.ts";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
@@ -491,12 +491,12 @@ export default function SheCalendar({
             </SheSkeleton>
           </div>
           <SheClearButton
-            value={_date}
+            clearBtnValue={_date}
+            clearBtnStyle={{ alignSelf: "start" }}
             showClearBtn={showClearBtn}
             disabled={disabled}
             isLoading={isLoading}
             ariaDescribedbyId={ariaDescribedbyId}
-            style={{ alignSelf: "start" }}
             onClear={onClearHandler}
           />
         </div>

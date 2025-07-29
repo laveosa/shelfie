@@ -7,8 +7,8 @@ import {
   getCustomProps,
   removeCustomProps,
 } from "@/utils/helpers/props-helper.ts";
-import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
-import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
+import SheLabel from "@/components/primitive/she-label/SheLabel.tsx";
+import SheClearButton from "@/components/primitive/she-clear-button/SheClearButton.tsx";
 import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import SheBadge from "@/components/primitive/she-badge/SheBadge.tsx";
@@ -356,7 +356,7 @@ export default function SheBadgeList<T>(props: ISheBadgeList<T>): JSX.Element {
             )}
           </div>
           <SheClearButton
-            value={_items && _items.length > 0}
+            clearBtnValue={_items && _items.length > 0}
             showClearBtn={showClearBtn}
             disabled={disabled}
             isLoading={isLoading}

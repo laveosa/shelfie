@@ -1,14 +1,17 @@
 import React, { JSX } from "react";
 
 import cs from "./ShePrimitiveComponentWrapper.module.scss";
+import SheLabel from "@/components/primitive/she-label/SheLabel.tsx";
+import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
+import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import SheClearButton from "@/components/primitive/she-clear-button/SheClearButton.tsx";
+import SheDescriptionBlock from "@/components/primitive/she-description-block/SheDescriptionBlock.tsx";
+import SheErrorMessageBlock from "@/components/primitive/she-error-message-block/SheErrorMessageBlock.tsx";
 import {
   getCustomProps,
   mergeComponentProps,
   removeCustomProps,
 } from "@/utils/helpers/props-helper.ts";
-import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
-import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
-import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
 import {
   IShePrimitiveComponentWrapper,
   ShePrimitiveComponentWrapperDefaultModel,
@@ -22,9 +25,21 @@ import {
   SheSkeletonDefaultModel,
 } from "@/const/interfaces/primitive-components/ISheSkeleton.ts";
 import {
+  ISheIcon,
+  SheIconDefaultModel,
+} from "@/const/interfaces/primitive-components/ISheIcon.ts";
+import {
   ISheClearButton,
   SheClearButtonDefaultModel,
 } from "@/const/interfaces/primitive-components/ISheClearButton.ts";
+import {
+  ISheDescriptionBlock,
+  SheDescriptionBlockDefaultModel,
+} from "@/const/interfaces/primitive-components/ISheDescriptionBlock.ts";
+import {
+  ISheErrorMessageBlock,
+  SheErrorMessageBlockDefaultModel,
+} from "@/const/interfaces/primitive-components/ISheErrorMessageBlock.ts";
 
 export default function ShePrimitiveComponentWrapper(
   props: IShePrimitiveComponentWrapper,
@@ -35,49 +50,60 @@ export default function ShePrimitiveComponentWrapper(
     className,
     style,
     children,
-    labelProps,
-    skeletonProps,
-    clearBtnProps,
-    clearBtnValue,
     minWidth,
     maxWidth,
     fullWidth,
-    isLoading,
-    disabled,
     required,
-    ariaDescribedbyId,
     icon,
+    iconProps,
     onClear,
   } = props;
-  const shePrimitiveComponentWrapperProps = getCustomProps<
-    IShePrimitiveComponentWrapper,
-    IShePrimitiveComponentWrapper
-  >(props, ShePrimitiveComponentWrapperDefaultModel);
   const sheLabelProps = getCustomProps<
     IShePrimitiveComponentWrapper,
     ISheLabel
-  >(props, SheLabelDefaultModel);
+  >({ ...props }, SheLabelDefaultModel);
   const sheSkeletonProps = getCustomProps<
     IShePrimitiveComponentWrapper,
     ISheSkeleton
-  >(props, SheSkeletonDefaultModel);
+  >(
+    {
+      ...props,
+      minWidth: undefined,
+      maxWidth: undefined,
+      fullWidth: undefined,
+    },
+    SheSkeletonDefaultModel,
+  );
+  const sheIconProps = getCustomProps<IShePrimitiveComponentWrapper, ISheIcon>(
+    { ...props },
+    SheIconDefaultModel,
+  );
   const sheClearButtonProps = getCustomProps<
     IShePrimitiveComponentWrapper,
     ISheClearButton
-  >(props, SheClearButtonDefaultModel);
+  >({ ...props }, SheClearButtonDefaultModel);
+  const sheDescriptionBockProps = getCustomProps<
+    IShePrimitiveComponentWrapper,
+    ISheDescriptionBlock
+  >({ ...props }, SheDescriptionBlockDefaultModel);
+  const sheErrorMessageBlockProps = getCustomProps<
+    IShePrimitiveComponentWrapper,
+    ISheErrorMessageBlock
+  >({ ...props }, SheErrorMessageBlockDefaultModel);
   const restProps = removeCustomProps<IShePrimitiveComponentWrapper>(props, [
     ShePrimitiveComponentWrapperDefaultModel,
     SheLabelDefaultModel,
     SheSkeletonDefaultModel,
+    SheIconDefaultModel,
     SheClearButtonDefaultModel,
+    SheDescriptionBlockDefaultModel,
+    SheErrorMessageBlockDefaultModel,
   ]);
 
   // ==================================================================== UTILITIES
 
   // ==================================================================== EVENT HANDLERS
-
   function onClearHandler(event: React.MouseEvent | React.KeyboardEvent) {
-    console.log(event);
     onClear?.(event);
   }
 
@@ -95,35 +121,22 @@ export default function ShePrimitiveComponentWrapper(
       }}
       {...restProps}
     >
-      <div className={cs.shePrimitiveComponentWrapperContext}>
-        <SheLabel
-          {...mergeComponentProps<ISheLabel>(sheLabelProps, labelProps)}
-          ariaDescribedbyId={ariaDescribedbyId}
-        />
+      <div className={cs.shePrimitiveComponentWrapperContainer}>
+        <SheLabel {...sheLabelProps} />
         <div className={cs.shePrimitiveComponentWrapperControl}>
-          <SheSkeleton
-            {...mergeComponentProps<ISheSkeleton>(
-              sheSkeletonProps,
-              skeletonProps,
-            )}
-            className={cs.shePrimitiveComponentWrapperSkeleton}
-            isLoading={isLoading}
-            fullWidth
-          >
-            {children}
+          <SheSkeleton {...sheSkeletonProps} fullWidth>
+            <SheIcon
+              {...mergeComponentProps(sheIconProps, iconProps)}
+              className={cs.iconBlock}
+            />
+            <div className={cs.shePrimitiveComponentWrapperContext}>
+              {children}
+            </div>
           </SheSkeleton>
-          <SheClearButton
-            {...mergeComponentProps<ISheClearButton>(
-              sheClearButtonProps,
-              clearBtnProps,
-            )}
-            value={clearBtnValue}
-            disabled={disabled || !clearBtnValue}
-            isLoading={isLoading}
-            ariaDescribedbyId={ariaDescribedbyId}
-            onClear={onClearHandler}
-          />
+          <SheClearButton {...sheClearButtonProps} onClear={onClearHandler} />
         </div>
+        <SheDescriptionBlock {...sheDescriptionBockProps} />
+        <SheErrorMessageBlock {...sheErrorMessageBlockProps} />
       </div>
     </div>
   );

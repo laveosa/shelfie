@@ -6,23 +6,26 @@ import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { X } from "lucide-react";
 
-export function SheClearButton({
-  className = "",
-  style,
-  value,
-  color,
+export default function SheClearButton({
+  clearBtnClassName = "",
+  clearBtnStyle,
+  clearBtnValue,
+  clearBtnValueColor,
+  clearBtnBackgroundColor,
+  clearBtnIcon = X,
   showClearBtn,
   disabled,
   isLoading,
   ariaDescribedbyId,
   clearBtnPosition = "in",
+  clearBtnProps,
   onClear,
 }: ISheClearButton): JSX.Element {
   const isEmpty =
-    value === undefined ||
-    value === null ||
-    (typeof value === "string" && value.trim().length === 0) ||
-    (Array.isArray(value) && value.length === 0);
+    clearBtnValue === undefined ||
+    clearBtnValue === null ||
+    (typeof clearBtnValue === "string" && clearBtnValue.trim().length === 0) ||
+    (Array.isArray(clearBtnValue) && clearBtnValue.length === 0);
 
   // ==================================================================== EVENT
 
@@ -32,10 +35,10 @@ export function SheClearButton({
   if (!showClearBtn) return null;
 
   return (
-    <div className={`${cs.sheClearButtonWrapper} ${className}`}>
+    <div className={`${cs.sheClearButtonWrapper} ${clearBtnClassName}`}>
       <SheSkeleton
-        className={`${cs.sheClearButtonSkeleton}`}
-        style={style}
+        skeletonClassName={`${cs.sheClearButtonSkeleton}`}
+        skeletonStyle={clearBtnStyle}
         isLoading={isLoading}
       >
         <SheButton
@@ -43,11 +46,13 @@ export function SheClearButton({
           title="Clear"
           aria-label="Clear"
           variant="ghost"
-          icon={X}
-          txtColor={color}
+          icon={clearBtnIcon}
+          txtColor={clearBtnValueColor}
+          bgColor={clearBtnBackgroundColor}
           aria-describedby={ariaDescribedbyId}
           disabled={isEmpty || disabled || isLoading}
           onClick={onClear}
+          {...clearBtnProps}
         />
       </SheSkeleton>
     </div>

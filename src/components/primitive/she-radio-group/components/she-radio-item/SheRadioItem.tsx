@@ -38,7 +38,7 @@ export default function SheRadioItem({
 
   return (
     <SheSkeleton
-      className={cs.sheRadioItemContextSkeleton}
+      skeletonClassName={cs.sheRadioItemContextSkeleton}
       isLoading={view === ComponentViewEnum.CARD && isLoading}
     >
       <div
@@ -47,7 +47,7 @@ export default function SheRadioItem({
       >
         <div className={cs.sheRadioItemCell}>
           <SheSkeleton
-            className={cs.sheRadioItemTriggerSkeleton}
+            skeletonClassName={cs.sheRadioItemTriggerSkeleton}
             isLoading={view !== ComponentViewEnum.CARD && isLoading}
           >
             <RadioGroupItem
@@ -61,7 +61,7 @@ export default function SheRadioItem({
         </div>
         <div className={cs.sheRadioItemContextContainer}>
           <SheSkeleton
-            className={cs.sheRadioItemContextSkeleton}
+            skeletonClassName={cs.sheRadioItemContextSkeleton}
             isLoading={view !== ComponentViewEnum.CARD && isLoading}
           >
             <label htmlFor={id} aria-describedby={ariaDescribedbyId}>

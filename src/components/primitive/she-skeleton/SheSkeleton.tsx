@@ -5,11 +5,9 @@ import { Skeleton } from "@/components/ui/skeleton.tsx";
 import { ISheSkeleton } from "@/const/interfaces/primitive-components/ISheSkeleton.ts";
 
 export default function SheSkeleton({
-  className = "",
-  style,
   skeletonClassName = "",
   skeletonStyle,
-  color,
+  skeletonColor,
   isLoading,
   animationDelay = 0,
   minWidth,
@@ -17,22 +15,22 @@ export default function SheSkeleton({
   fullWidth,
   children,
 }: ISheSkeleton): JSX.Element {
+  // ==================================================================== LAYOUT
   return (
     <div
-      className={`${cs.sheSkeletonWrapper} ${className} ${fullWidth ? cs.fullWidth : ""}`}
+      className={`${cs.sheSkeletonWrapper} ${skeletonClassName} ${fullWidth ? cs.fullWidth : ""}`}
       style={{
         minWidth,
         maxWidth,
-        ...style,
+        ...skeletonStyle,
       }}
     >
       {isLoading ? (
         <Skeleton
-          className={`${cs.sheSkeleton} ${skeletonClassName}`}
+          className={`${cs.sheSkeleton}`}
           style={{
-            ...skeletonStyle,
             animationDelay: `${animationDelay}ms`,
-            backgroundColor: color,
+            backgroundColor: skeletonColor,
           }}
         >
           {children}

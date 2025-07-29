@@ -14,9 +14,9 @@ import {
 } from "@/const/interfaces/primitive-components/ISheSelect.ts";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
+import SheLabel from "@/components/primitive/she-label/SheLabel.tsx";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
-import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
+import SheClearButton from "@/components/primitive/she-clear-button/SheClearButton.tsx";
 import SheSelectItem from "@/components/primitive/she-select/components/she-select-item/SheSelectItem.tsx";
 import useDefaultRef from "@/utils/hooks/useDefaultRef.ts";
 import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
@@ -266,7 +266,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
         />
         <div className={cs.sheSelectControl}>
           <SheSkeleton
-            className={cs.sheSelectSkeleton}
+            skeletonClassName={cs.sheSelectSkeleton}
             isLoading={isLoading}
             fullWidth
           >
@@ -319,7 +319,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
             </Select>
           </SheSkeleton>
           <SheClearButton
-            value={_selected}
+            clearBtnValue={_selected}
             showClearBtn={showClearBtn}
             disabled={disabled}
             isLoading={isLoading}

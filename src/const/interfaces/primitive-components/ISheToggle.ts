@@ -1,11 +1,13 @@
-import React from "react";
+import React, { ComponentPropsWithRef } from "react";
 
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { ISheLabel } from "@/const/interfaces/primitive-components/ISheLabel.ts";
 
-export interface ISheToggle extends ISheLabel {
+export interface ISheToggle extends ISheLabel, ComponentPropsWithRef<any> {
+  className?: string;
+  style?: React.CSSProperties;
   checked?: boolean;
   text?: string;
   textTransKey?: string;

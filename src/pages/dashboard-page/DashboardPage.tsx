@@ -190,7 +190,7 @@ export function DashboardPage() {
   const triggerRef = useRef<HTMLButtonElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  /*useEffect(() => {
     setIsLoading(true);
 
     setTimeout(() => {
@@ -216,9 +216,9 @@ export function DashboardPage() {
     setTimeout(() => {
       setIsLoading(false);
 
-      /*if (searchRef.current) {
+      /!*if (searchRef.current) {
         searchRef.current.value = "TEST";
-      }*/
+      }*!/
 
       // console.log(popoverRef.current.style);
 
@@ -226,7 +226,7 @@ export function DashboardPage() {
     }, 3000);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, []);*/
 
   // ================================================================== EVENT
 
@@ -257,11 +257,10 @@ export function DashboardPage() {
 
       <br />
 
-      {/*<UserForm genders={["male", "female"]} />*/}
+      {/*<UserForm genders={["male", "female"]} />
+      <br />*/}
 
-      <br />
-
-      <SheBadgeList<any>
+      {/*<SheBadgeList<any>
         label="Badges"
         items={badges}
         showClearBtn
@@ -275,7 +274,7 @@ export function DashboardPage() {
         }
         onClear={(value, model) => console.log("onClear: ", value, model)}
       />
-      <br />
+      <br />*/}
 
       <br />
 
@@ -283,11 +282,15 @@ export function DashboardPage() {
         <div className="w-full flex">
           <SheMultiSelect<string>
             label="MultiSelect"
+            labelTransKey="909wefj09wejf09j"
+            required
+            tooltip="some text for tooltip"
             items={optionsSimple}
             contextType="badges"
             showClearBtn
             showSearch
             showFooter
+            autoFocus
             onSelect={(value, model) => console.log("onSelect: ", value, model)}
           />
         </div>
@@ -303,14 +306,14 @@ export function DashboardPage() {
         </div>
 
         <div className="w-full flex">
-          <SheAutocomplete
+          {/*<SheAutocomplete
             label="Autocomplete"
             items={optionsSimple}
             showClearBtn
             onSelect={(event, model) =>
               console.log("Autocomplete value: ", event, model)
             }
-          />
+          />*/}
         </div>
       </div>
 

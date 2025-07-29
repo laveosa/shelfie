@@ -18,3 +18,21 @@ export interface ISheIcon extends ComponentPropsWithRef<"div"> {
   maxHeight?: string;
   hoverEffect?: boolean;
 }
+
+export const SheIconDefaultModel: ISheIcon = {
+  id: undefined,
+  className: undefined,
+  style: undefined,
+  elementClassName: undefined,
+  elementStyle: undefined,
+  icon: undefined,
+  iconView: undefined,
+  size: undefined,
+  color: undefined,
+  fullWidth: undefined,
+  minWidth: undefined,
+  maxWidth: undefined,
+  minHeight: undefined,
+  maxHeight: undefined,
+  hoverEffect: undefined,
+};

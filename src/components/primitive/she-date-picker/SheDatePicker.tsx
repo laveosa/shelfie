@@ -11,8 +11,8 @@ import {
 } from "@/components/ui/popover";
 import { ISheDatePicker } from "@/const/interfaces/primitive-components/ISheDatePicker.ts";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
-import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
-import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
+import SheLabel from "@/components/primitive/she-label/SheLabel.tsx";
+import SheClearButton from "@/components/primitive/she-clear-button/SheClearButton.tsx";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { generateId } from "@/utils/helpers/quick-helper.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
@@ -110,7 +110,7 @@ export default function SheDatePicker({
         />
         <div className={cs.sheDatePickerControl}>
           <SheSkeleton
-            className={cs.sheDatePickerSkeletonContainer}
+            skeletonClassName={cs.sheDatePickerSkeletonContainer}
             isLoading={isLoading}
             fullWidth
           >
@@ -184,7 +184,7 @@ export default function SheDatePicker({
             </Popover>
           </SheSkeleton>
           <SheClearButton
-            value={_date}
+            clearBtnValue={_date}
             showClearBtn={showClearBtn}
             disabled={disabled}
             isLoading={isLoading}

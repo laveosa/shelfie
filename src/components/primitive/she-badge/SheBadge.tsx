@@ -111,7 +111,7 @@ export default function SheBadge<T>(props: ISheBadge<T>): JSX.Element {
       <div className={cs.sheBadgeComponent}>
         <div className={cs.sheBadgeControl}>
           <SheSkeleton
-            className={cs.sheBadgeSkeleton}
+            skeletonClassName={cs.sheBadgeSkeleton}
             isLoading={isLoading}
             fullWidth
           >

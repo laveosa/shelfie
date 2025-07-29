@@ -3,7 +3,7 @@ import { Trans } from "react-i18next";
 
 import cs from "./SheInputEditor.module.scss";
 import { ISheInputEditor } from "@/const/interfaces/primitive-components/ISheInputEditor.ts";
-import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
+import SheLabel from "@/components/primitive/she-label/SheLabel.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { generateId } from "@/utils/helpers/quick-helper.ts";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";

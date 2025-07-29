@@ -6,16 +6,16 @@ import cs from "./SheTimePicker.module.scss";
 import { ISheTimePicker } from "@/const/interfaces/primitive-components/ISheTimePicker.ts";
 import { generateId } from "@/utils/helpers/quick-helper.ts";
 import { useDebounce } from "@/utils/hooks/useDebounce.ts";
-import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
+import SheLabel from "@/components/primitive/she-label/SheLabel.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import SheTimePickerInput from "@/components/primitive/she-time-picker/components/she-time-picker-input/SheTimePickerInput.tsx";
 import { Period } from "@/utils/helpers/time-picker-helper.ts";
 import { TimeFormatEnum } from "@/const/enums/TimeFormatEnum.ts";
 import SheTimePickerSelect from "@/components/primitive/she-time-picker/components/she-time-picker-select/SheTimePickerSelect.tsx";
 import { SheTimePickerTypeEnum } from "@/const/enums/SheTimePickerTypeEnum.ts";
-import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
-import { SheErrorMessageBlock } from "@/components/primitive/she-error-message-block/SheErrorMessageBlock.tsx";
+import SheClearButton from "@/components/primitive/she-clear-button/SheClearButton.tsx";
 import SheDescriptionBlock from "@/components/primitive/she-description-block/SheDescriptionBlock.tsx";
+import SheErrorMessageBlock from "@/components/primitive/she-error-message-block/SheErrorMessageBlock.tsx";
 
 export default function SheTimePicker({
   id,
@@ -84,7 +84,9 @@ export default function SheTimePicker({
   const [_isDateValid, setIsDateValid] = useState<boolean>(null);
   const [_showError, setShowError] = useState(showError);
   const [_error, setError] = useState<string>(error ?? null);
-  const [_errorTransKey, setErrorTransKey] = useState(errorTransKey ?? null);
+  const [_errorTransKey, setErrorTransKey] = useState<string>(
+    errorTransKey ?? null,
+  );
   const [_description, setDescription] = useState<string>(description ?? null);
   const [_descriptionTransKey, setDescriptionTransKey] = useState(
     descriptionTransKey ?? null,
@@ -402,12 +404,12 @@ export default function SheTimePicker({
           </div>
           {type === SheTimePickerTypeEnum.TIME_PICKER && (
             <SheClearButton
-              value={_isDateValid ? _date : null}
+              clearBtnValue={_isDateValid ? _date : null}
               showClearBtn={showClearBtn}
               disabled={disabled}
               isLoading={isLoading}
               ariaDescribedbyId={ariaDescribedbyId}
-              style={{
+              clearBtnStyle={{
                 alignSelf: "end",
                 position: "relative",
                 top: size === "small" ? "0px" : "-4px",
@@ -417,16 +419,16 @@ export default function SheTimePicker({
           )}
         </div>
         <SheDescriptionBlock
-          className={descriptionClassName}
-          style={descriptionStyle}
+          descriptionBlockClassName={descriptionClassName}
+          descriptionBlockStyle={descriptionStyle}
           description={_description}
           descriptionTransKey={_descriptionTransKey}
-          showDescription={showDescription}
+          hideDescription={!showDescription}
         />
         <SheErrorMessageBlock
-          error={_error}
-          errorTransKey={_errorTransKey}
-          showError={_showError}
+          errorMessage={_error}
+          errorMessageTransKey={_errorTransKey}
+          hideErrorMessage={!_showError}
         />
       </div>
     </div>

@@ -6,7 +6,7 @@ $iconSize: 20px;
   max-width: vars.$maxWidth + px;
   width: 100%;
 
-  .shePrimitiveComponentWrapperContext {
+  .shePrimitiveComponentWrapperContainer {
     position: relative;
 
     .shePrimitiveComponentWrapperControl {
@@ -16,17 +16,24 @@ $iconSize: 20px;
       gap: 4px;
       transition: all 160ms ease-in-out;
 
-      .shePrimitiveComponentWrapperSkeleton {
-      }
-
-      .iconBlock {
-        color: vars.$subtextColor;
-        max-width: $iconSize;
-        min-width: $iconSize;
-        max-height: $iconSize;
-        min-height: $iconSize;
+      .shePrimitiveComponentWrapperContext {
+        display: flex;
+        flex-grow: 1;
+        width: 100%;
       }
     }
+  }
+}
+
+// ======================================================== ICON
+
+.shePrimitiveComponentWrapper {
+  .iconBlock {
+    color: vars.$subtextColor;
+    max-width: $iconSize;
+    min-width: $iconSize;
+    max-height: $iconSize;
+    min-height: $iconSize;
   }
 }
 
@@ -40,7 +47,7 @@ $iconSize: 20px;
 // ======================================================== REQUIRED
 
 .shePrimitiveComponentWrapper.required {
-  .shePrimitiveComponentWrapperContext:before {
+  .shePrimitiveComponentWrapperContainer:before {
     position: absolute;
     left: -10px;
     top: -14px;
@@ -53,8 +60,10 @@ $iconSize: 20px;
 // ======================================================== WITH ICON
 
 .shePrimitiveComponentWrapper.withIcon {
-  .shePrimitiveComponentWrapperContext {
+  .shePrimitiveComponentWrapperContainer {
     .shePrimitiveComponentWrapperControl {
+      .shePrimitiveComponentWrapperContext {
+      }
     }
   }
 }

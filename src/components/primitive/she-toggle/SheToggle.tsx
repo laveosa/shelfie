@@ -8,7 +8,7 @@ import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
 import { Checkbox } from "@/components/ui/checkbox.tsx";
 import { Switch } from "@/components/ui/switch.tsx";
-import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
+import SheLabel from "@/components/primitive/she-label/SheLabel.tsx";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
 import useValueWithEvent from "@/utils/hooks/useValueWithEvent.ts";
 

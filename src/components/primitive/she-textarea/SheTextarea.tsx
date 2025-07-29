@@ -8,10 +8,10 @@ import { generateId } from "@/utils/helpers/quick-helper.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { useDebounce } from "@/utils/hooks/useDebounce.ts";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
-import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
-import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
+import SheLabel from "@/components/primitive/she-label/SheLabel.tsx";
+import SheClearButton from "@/components/primitive/she-clear-button/SheClearButton.tsx";
 import { SheContextLengthLimits } from "@/components/primitive/she-context-length-limits/SheContextLengthLimits.tsx";
-import { SheErrorMessageBlock } from "@/components/primitive/she-error-message-block/SheErrorMessageBlock.tsx";
+import SheErrorMessageBlock from "@/components/primitive/she-error-message-block/SheErrorMessageBlock.tsx";
 
 export default function SheTextArea({
   id,
@@ -248,12 +248,12 @@ export default function SheTextArea({
             />
           </SheSkeleton>
           <SheClearButton
-            value={_textValue}
+            clearBtnValue={_textValue}
+            clearBtnStyle={{ alignSelf: "start" }}
             showClearBtn={showClearBtn}
             disabled={disabled}
             isLoading={isLoading}
             ariaDescribedbyId={ariaDescribedbyId}
-            style={{ alignSelf: "start" }}
             onClear={onClearHandler}
           />
         </div>
@@ -265,9 +265,9 @@ export default function SheTextArea({
           contextType={type}
         />
         <SheErrorMessageBlock
-          error={_error}
-          errorTransKey={_errorTransKey}
-          showError={_showError}
+          errorMessage={_error}
+          errorMessageTransKey={_errorTransKey}
+          hideErrorMessage={!_showError}
         />
       </div>
     </div>
