@@ -1,11 +1,13 @@
+import React, { ComponentPropsWithRef } from "react";
 import { ALIGN_OPTIONS, SIDE_OPTIONS } from "@radix-ui/react-popper";
 
 import { SheTooltipEnum } from "@/const/enums/SheTooltipEnum.ts";
-import React, { ComponentPropsWithRef } from "react";
+import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 
 export interface ISheTooltip extends ComponentPropsWithRef<any> {
   className?: string;
   style?: React.CSSProperties;
+  icon?: Partial<ISheIcon> | string | React.FC<any>;
   title?: string;
   titleTransKey?: string;
   text?: string;

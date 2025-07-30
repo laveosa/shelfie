@@ -25,7 +25,7 @@ export default function SheLabel({
           side: "right",
           align: "end",
         }
-      : tooltip?.text
+      : tooltip?.text || tooltip?.title || tooltip?.description
         ? {
             ...tooltip,
             side: tooltip.side || "right",

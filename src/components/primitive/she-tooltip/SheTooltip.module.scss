@@ -1,20 +1,42 @@
 @use "@/styles/variables" as vars;
 
 $tooltipIconSize: 18px;
+$tooltipContextIconSize: 20px;
 
 .sheTooltip {
   border: none;
   position: relative;
-  display: flex;
-  align-items: center;
 
   .tooltipMessageBlock {
-    display: flex;
-    flex-grow: 1;
-    flex-direction: column;
-    //max-width: 200px;
-    max-height: 200px;
-    overflow-y: auto;
+    background: vars.$colorLight;
+    padding: vars.$paddingSmall vars.$paddingSmall
+      calc(#{vars.$paddingSmall} - 3px);
+
+    .tooltipMessageBlockContext {
+      display: flex;
+      flex-grow: 1;
+      max-width: 400px;
+      gap: 6px;
+
+      .tooltipIconContext {
+        max-width: $tooltipContextIconSize;
+        min-width: $tooltipContextIconSize;
+        max-height: $tooltipContextIconSize;
+        min-height: $tooltipContextIconSize;
+      }
+
+      .tooltipMessageContext {
+        display: flex;
+        flex-direction: column;
+        max-height: 200px;
+        overflow-y: auto;
+
+        span {
+          position: relative;
+          top: -3px;
+        }
+      }
+    }
   }
 }
 
@@ -22,24 +44,12 @@ $tooltipIconSize: 18px;
 
 .sheTooltip {
   .tooltipMessageBlock {
-    display: flex;
-    flex-direction: column;
-    background: vars.$colorLight;
-
     &.dark {
       background-color: #18181b;
-
-      span {
-        color: #ffffff;
-      }
     }
 
     &.danger {
       background-color: #db2626;
-
-      span {
-        color: #ffffff;
-      }
     }
 
     &.warning {
@@ -48,18 +58,10 @@ $tooltipIconSize: 18px;
 
     &.success {
       background-color: #22c55e;
-
-      span {
-        color: #ffffff;
-      }
     }
 
     &.primary {
       background: linear-gradient(270deg, #244434 0%, #315947 100%);
-
-      span {
-        color: #ffffff;
-      }
     }
   }
 }
@@ -78,7 +80,7 @@ $tooltipIconSize: 18px;
   min-height: $tooltipIconSize;
   border-radius: 100%;
 
-  .tooltipIconElement {
+  .tooltipIconTrigger {
     min-height: 0;
 
     svg {

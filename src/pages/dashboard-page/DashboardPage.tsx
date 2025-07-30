@@ -290,7 +290,16 @@ export function DashboardPage() {
             label="MultiSelect"
             labelTransKey="909wefj09wejf09j"
             required
-            tooltip="some text for tooltip"
+            tooltip={{
+              title: "TITLE Pp",
+              titleTransKey: "2399u203u09fuj",
+              text: "some text for tooltip",
+              textTransKey: "fw9ef092309fe9u",
+              description:
+                "29 329j 029j3f 0293j 0293j9023f 0293jf029 3jf 0239j032 j2 09n2",
+              descriptionTransKey: "wef902jf309jew09j",
+              icon: Users,
+            }}
             items={optionsSimple}
             contextType="badges"
             // showClearBtn
