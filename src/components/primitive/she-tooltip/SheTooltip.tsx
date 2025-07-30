@@ -53,7 +53,7 @@ export default function SheTooltip({
   return (
     <div className={`${className} ${cs.sheTooltip || ""}`}>
       <TooltipProvider delayDuration={delayDuration}>
-        <Tooltip open={true}>
+        <Tooltip>
           <TooltipTrigger asChild>
             {showDefaultIcon ? (
               <div className={cs.tooltipIcon}>
