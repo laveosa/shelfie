@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { IProductGalleryPageSlice } from "@/const/interfaces/store-slices/IProductGalleryPageSlice.ts";
 import { InvoicesPageSliceActions as actions } from "@/state/slices/InvoicesPageSlice.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import cs from "@/pages/products-section/invoices-page/InvoicesPage.module.scss";
@@ -14,13 +13,12 @@ import useDialogService from "@/utils/services/dialog/DialogService.ts";
 import useInvoicesPageService from "@/pages/products-section/invoices-page/useInvoicesPageService.ts";
 import InvoicesCard from "@/components/complex/custom-cards/invoices-card/InvoicesCard.tsx";
 import InvoicePreviewCard from "@/components/complex/custom-cards/invoice-preview-card/InvoicePreviewCard.tsx";
-import { scrollToRefElement } from "@/utils/helpers/quick-helper.ts";
+import { useCardActions } from "@/utils/hooks/useCardActions.ts";
+import { IInvoicesPageSlice } from "@/const/interfaces/store-slices/IInvoicesPageSlice.ts";
 
 export function InvoicesPage() {
   const dispatch = useAppDispatch();
-  const state = useAppSelector<IProductGalleryPageSlice>(
-    StoreSliceEnum.INVOICES,
-  );
+  const state = useAppSelector<IInvoicesPageSlice>(StoreSliceEnum.INVOICES);
   const productsState = useAppSelector<IProductsPageSlice>(
     StoreSliceEnum.PRODUCTS,
   );
@@ -29,7 +27,10 @@ export function InvoicesPage() {
   const { purchaseId } = useParams();
   const { addToast } = useToast();
   const { openConfirmationDialog } = useDialogService();
-  const cardRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const { handleCardAction, createRefCallback } = useCardActions({
+    selectActiveCards: (state) => state[StoreSliceEnum.INVOICES].activeCards,
+    refreshAction: actions.refreshActiveCards,
+  });
 
   useEffect(() => {
     if (!productsState.purchaseCounters) {
@@ -46,28 +47,6 @@ export function InvoicesPage() {
       });
     }
   }, [purchaseId]);
-
-  function handleCardAction(
-    identifier: string,
-    forceOpen: boolean = false,
-    overrideActiveCards?: string[],
-  ) {
-    const activeCards = overrideActiveCards ?? state.activeCards;
-    let updatedCards: string[];
-
-    if (forceOpen) {
-      if (!activeCards.includes(identifier)) {
-        updatedCards = [...activeCards, identifier];
-        dispatch(actions.refreshActiveCards(updatedCards));
-        scrollToRefElement(cardRefs.current, identifier);
-      } else {
-        dispatch(actions.refreshActiveCards(activeCards));
-      }
-    } else {
-      updatedCards = activeCards.filter((card) => card !== identifier);
-      dispatch(actions.refreshActiveCards(updatedCards));
-    }
-  }
 
   async function onAction(actionType: string, payload: any) {
     switch (actionType) {
@@ -182,11 +161,7 @@ export function InvoicesPage() {
       />
 
       {state.activeCards.includes("invoicePreviewCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["invoicePreviewCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("invoicePreviewCard")}>
           <InvoicePreviewCard
             previewUrl={state.previewUrl}
             onAction={onAction}
