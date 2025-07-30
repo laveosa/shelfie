@@ -2,6 +2,8 @@ import React, { JSX, useEffect, useMemo, useState } from "react";
 import { Trans } from "react-i18next";
 import _ from "lodash";
 
+import { Check } from "lucide-react";
+import { PopoverAnchor } from "@radix-ui/react-popover";
 import cs from "./SheAutocomplete.module.scss";
 import {
   Command,
@@ -9,6 +11,14 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command.tsx";
+import { Popover, PopoverContent } from "@/components/ui/popover.tsx";
+import SheInput from "@/components/primitive/she-input/SheInput.tsx";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import SheOption from "@/components/primitive/she-option/SheOption.tsx";
+import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
+import useDefaultRef from "@/utils/hooks/useDefaultRef.ts";
+import { getCustomProps } from "@/utils/helpers/props-helper.ts";
+import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
 import {
   ISheInput,
   SheInputDefaultModel,
@@ -17,16 +27,6 @@ import {
   ISheAutocomplete,
   SheAutocompleteDefaultModel,
 } from "@/const/interfaces/primitive-components/ISheAutocomplete.ts";
-import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
-import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import { Popover, PopoverContent } from "@/components/ui/popover.tsx";
-import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { getCustomProps } from "@/utils/helpers/props-helper.ts";
-import SheOption from "@/components/primitive/she-option/SheOption.tsx";
-import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
-import useDefaultRef from "@/utils/hooks/useDefaultRef.ts";
-import { PopoverAnchor } from "@radix-ui/react-popover";
-import { Check } from "lucide-react";
 
 export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
   // ==================================================================== PROPS
@@ -311,8 +311,10 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
             </PopoverAnchor>
             {showSelectBtn && (
               <SheButton
+                className={cs.sheAutocompleteSelectButton}
                 icon={Check}
                 variant="secondary"
+                size="small"
                 isLoading={_loading}
                 disabled={
                   !_searchValue ||

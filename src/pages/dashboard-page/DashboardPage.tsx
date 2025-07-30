@@ -357,6 +357,7 @@ export function DashboardPage() {
             label="Autocomplete"
             items={optionsSimple}
             showClearBtn
+            showSelectBtn
             onSelect={(event, model) =>
               console.log("Autocomplete value: ", event, model)
             }
