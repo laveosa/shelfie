@@ -1,5 +1,6 @@
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import { Viewer, Worker } from "@react-pdf-viewer/core";
+import * as pdfjsLib from "pdfjs-dist";
 import React from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
@@ -26,7 +27,9 @@ export default function InvoicePreviewCard({
         className={cs.productPhotosCard}
       >
         <div className={cs.invoicesCardContent}>
-          <Worker workerUrl="/pdfjs/pdf.worker.min.js">
+          <Worker
+            workerUrl={`https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.js`}
+          >
             <Viewer
               fileUrl={previewUrl}
               plugins={[defaultLayoutPluginInstance]}
