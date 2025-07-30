@@ -499,7 +499,6 @@ export function MarginsPage() {
           });
         break;
       case "applyMarginItem":
-        console.log("Apply Margin item", payload);
         service.applyMarginItemHandler(payload).then((res) => {
           if (res) {
             const updatedItems = state.marginItemsGridModel.items.map((item) =>
