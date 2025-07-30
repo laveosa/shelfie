@@ -1,8 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect } from "react";
+import { Plus } from "lucide-react";
 import _ from "lodash";
 
-import { IPurchaseProductsForm } from "@/const/interfaces/forms/IPurchaseProductsForm.ts";
 import useAppForm from "@/utils/hooks/useAppForm.ts";
 import cs from "@/components/forms/margin-configuration-form/MarginConfigurationForm.module.scss";
 import SheForm from "@/components/complex/she-form/SheForm.tsx";
@@ -16,13 +16,16 @@ import MarginConfigurationFormScheme from "@/utils/validation/schemes/MarginConf
 import SheToggle from "@/components/primitive/she-toggle/SheToggle.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
+import { IMarginConfigurationCard } from "@/const/interfaces/forms/IMarginConfigurationForm.ts";
+import { Separator } from "@/components/ui/separator.tsx";
 
 export default function MarginConfigurationForm<T>({
   className,
   data,
+  isConfigurationCard = true,
   onSubmit,
   onCancel,
-}: IPurchaseProductsForm<T>) {
+}: IMarginConfigurationCard<T>) {
   const form = useAppForm<any>({
     mode: "onSubmit",
     resolver: zodResolver(MarginConfigurationFormScheme),
@@ -54,36 +57,61 @@ export default function MarginConfigurationForm<T>({
         onSubmit={onSubmit}
         onCancel={onCancel}
       >
-        <span className={`${cs.marginConfigurationText} she-text`}>
-          This configuration allows you to automatically calculate the target
-          prices based on conditions you set up and the product purchase price
-        </span>
-        <FormField
-          control={form.control}
-          name="marginName"
-          defaultValue={data?.marginName}
-          render={({ field }): React.ReactElement => (
-            <SheFormItem
-              className={cs.purchaseProductsFormItem}
-              label="Margin Name"
-            >
-              <SheInput
-                {...field}
-                fullWidth
-                placeholder="Enter margin name..."
-              />
-            </SheFormItem>
-          )}
-        />
+        {isConfigurationCard && (
+          <>
+            <span className={`${cs.marginConfigurationText} she-text`}>
+              This configuration allows you to automatically calculate the
+              target prices based on conditions you set up and the product
+              purchase price
+            </span>
+            <FormField
+              control={form.control}
+              name="marginName"
+              defaultValue={data?.marginName}
+              render={({ field }): React.ReactElement => (
+                <SheFormItem
+                  className={cs.marginConfigurationFormItem}
+                  label="Margin Name"
+                >
+                  <SheInput
+                    {...field}
+                    fullWidth
+                    placeholder="Enter margin name..."
+                  />
+                </SheFormItem>
+              )}
+            />
+            <Separator />
+            <div className={cs.selectSupplierBlock}>
+              <span className="she-title">
+                Automatic connection to purchase
+              </span>
+              <div className={cs.selectSupplierButton}>
+                <span className="she-text">
+                  Select which supplier, will receive this margin connected
+                  automatically
+                </span>
+                <SheButton
+                  icon={Plus}
+                  variant="secondary"
+                  value="Select Supplier"
+                />
+              </div>
+            </div>
+            <Separator />
+          </>
+        )}
         <span className={`${cs.marginConfigurationTitle} she-title`}>
-          Configure Margin Details
+          {isConfigurationCard
+            ? "Configure Margin Details"
+            : "Adjust margin details for this purchase"}
         </span>
         <FormField
           control={form.control}
           name="marginRule.desiredProfit"
           render={({ field }): React.ReactElement => (
             <SheFormItem
-              className={cs.purchaseProductsFormItem}
+              className={cs.marginConfigurationFormItem}
               label="Desired profit (in %)"
             >
               <SheInput
@@ -104,7 +132,7 @@ export default function MarginConfigurationForm<T>({
           name="marginRule.plannedDiscount"
           render={({ field }): React.ReactElement => (
             <SheFormItem
-              className={cs.purchaseProductsFormItem}
+              className={cs.marginConfigurationFormItem}
               label="Planned discount (in %)"
             >
               <SheInput
@@ -128,7 +156,7 @@ export default function MarginConfigurationForm<T>({
           name="marginRule.fixedCosts"
           render={({ field }): React.ReactElement => (
             <SheFormItem
-              className={cs.purchaseProductsFormItem}
+              className={cs.marginConfigurationFormItem}
               label="Fixed costs (in PLN)"
             >
               <SheInput
@@ -150,7 +178,7 @@ export default function MarginConfigurationForm<T>({
           control={form.control}
           name="roundTo"
           render={({ field }): React.ReactElement => (
-            <SheFormItem className={cs.purchaseProductsFormItem}>
+            <SheFormItem className={cs.marginConfigurationFormItem}>
               <SheToggle
                 {...field}
                 placeholder="Netto price"
@@ -174,7 +202,7 @@ export default function MarginConfigurationForm<T>({
           control={form.control}
           name="nearest9"
           render={({ field }): React.ReactElement => (
-            <SheFormItem className={cs.purchaseProductsFormItem}>
+            <SheFormItem className={cs.marginConfigurationFormItem}>
               <SheToggle
                 {...field}
                 placeholder="Netto price"
@@ -194,11 +222,16 @@ export default function MarginConfigurationForm<T>({
             </SheFormItem>
           )}
         />
-        <div className={cs.buttonBlock}>
-          <SheButton value="Cancel" variant="secondary" onClick={onCancel} />
+        <div
+          className={isConfigurationCard ? cs.buttonBlock : cs.oneButtonBlock}
+        >
+          {isConfigurationCard && (
+            <SheButton value="Cancel" variant="secondary" onClick={onCancel} />
+          )}
           <SheButton
-            value={data ? "Update Margin" : "Create Margin"}
+            value={data ? "Save Changes" : "Create Margin"}
             type="submit"
+            bgColor="#007AFF"
             disabled={!isFormValid}
           />
         </div>

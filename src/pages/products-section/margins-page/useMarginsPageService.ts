@@ -129,7 +129,7 @@ export function useMarginsPageService() {
       purchaseId,
       model,
     }).then((res: any) => {
-      return res.data;
+      return res;
     });
   }
 

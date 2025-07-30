@@ -187,10 +187,6 @@ export function MarginsPage() {
     }
   }
 
-  useEffect(() => {
-    console.log("STATE", state.marginItemsGridModel);
-  }, [state.marginItemsGridModel]);
-
   async function onAction(actionType: string, payload?: any) {
     switch (actionType) {
       case "openSelectMarginCard":
@@ -198,15 +194,18 @@ export function MarginsPage() {
           selectMarginCard: true,
           salePriceManagementCard: false,
         });
-        if (state.marginsList.length === 0) {
-          dispatch(actions.setIsSelectMarginCardLoading(true));
-          service
-            .getMarginsListForGridHandler(state.marginsGridRequestModel)
-            .then((res) => {
-              dispatch(actions.setIsSelectMarginCardLoading(false));
-              dispatch(actions.refreshMarginsList(res.items));
-            });
-        }
+        dispatch(actions.setIsSelectMarginCardLoading(true));
+        service
+          .getMarginsListForGridHandler(state.marginsGridRequestModel)
+          .then((res) => {
+            dispatch(actions.setIsSelectMarginCardLoading(false));
+            dispatch(actions.setIsMarginListGridLoading(false));
+            const modifiedList = res.items.map((item) => ({
+              ...item,
+              isSelected: item.marginId === state.selectedMargin.marginId,
+            }));
+            dispatch(actions.refreshMarginsList(modifiedList));
+          });
         break;
       case "searchMargin":
         dispatch(actions.setIsMarginListGridLoading(true));
@@ -217,8 +216,12 @@ export function MarginsPage() {
           })
           .then((res) => {
             dispatch(actions.setIsMarginListGridLoading(false));
-            console.log(res);
-            dispatch(actions.refreshMarginsList(res.items));
+            dispatch(actions.setIsMarginListGridLoading(false));
+            const modifiedList = res.items.map((item) => ({
+              ...item,
+              isSelected: item.marginId === state.selectedMargin.marginId,
+            }));
+            dispatch(actions.refreshMarginsList(modifiedList));
           });
         break;
       case "selectMargin":
@@ -309,33 +312,21 @@ export function MarginsPage() {
           service.updateMarginHandler(state.managedMargin.marginId, {
             marginName: payload.marginName,
           }),
-          state.selectedMargin.marginId === state.managedMargin.marginId
-            ? service.updateMarginRulesForPurchaseHandler(
-                purchaseId,
-                payload.marginRule,
-              )
-            : service.createMarginRulesHandler(
-                state.managedMargin.marginId,
-                payload.marginRule,
-              ),
+          service.createMarginRulesHandler(state.managedMargin.marginId, {
+            ...payload.marginRule,
+            nearest9: payload.nearest9,
+            roundTo: payload.roundTo,
+          }),
         ]).then(([margin, marginRules]) => {
           dispatch(actions.setIsMarginConfigurationCardLoading(false));
-          if (margin.marginId === state.selectedMargin.marginId) {
-            dispatch(actions.setIsMarginForPurchaseCardLoading(true));
-            service.getMarginForPurchaseHandler(purchaseId).then((res) => {
-              dispatch(actions.setIsMarginForPurchaseCardLoading(false));
-              dispatch(actions.refreshSelectedMargin(res));
-            });
-          } else {
-            if (margin.marginName !== state.managedMargin.marginName) {
-              dispatch(actions.setIsSelectMarginCardLoading(true));
-              service
-                .getMarginsListForGridHandler(state.marginsGridRequestModel)
-                .then((res) => {
-                  dispatch(actions.setIsSelectMarginCardLoading(false));
-                  dispatch(actions.refreshMarginsList(res.items));
-                });
-            }
+          if (margin.marginName !== state.managedMargin.marginName) {
+            dispatch(actions.setIsSelectMarginCardLoading(true));
+            service
+              .getMarginsListForGridHandler(state.marginsGridRequestModel)
+              .then((res) => {
+                dispatch(actions.setIsSelectMarginCardLoading(false));
+                dispatch(actions.refreshMarginsList(res.items));
+              });
           }
           if (margin && marginRules) {
             addToast({
@@ -349,6 +340,30 @@ export function MarginsPage() {
             });
           }
         });
+        break;
+      case "updateSelectedMargin":
+        dispatch(actions.setIsMarginForPurchaseCardLoading(true));
+        service
+          .updateMarginRulesForPurchaseHandler(purchaseId, {
+            ...payload.marginRule,
+            nearest9: payload.nearest9,
+            roundTo: payload.roundTo,
+          })
+          .then((res) => {
+            dispatch(actions.setIsMarginForPurchaseCardLoading(false));
+            if (!res.error) {
+              dispatch(actions.refreshSelectedMargin(res));
+              addToast({
+                text: "Margin updated successfully",
+                type: "success",
+              });
+            } else {
+              addToast({
+                text: `${res.error.data.detail}`,
+                type: "error",
+              });
+            }
+          });
         break;
       case "manageSelectedMargin":
         handleMultipleCardActions({
