@@ -5,6 +5,7 @@ export interface MarginRuleModel {
   fixedCosts?: number;
   roundTo?: boolean;
   nearest9?: boolean;
+  modified?: boolean;
 }
 
 export const MarginRuleModelDefault: MarginRuleModel = {

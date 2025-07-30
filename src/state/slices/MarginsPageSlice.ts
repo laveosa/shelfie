@@ -16,15 +16,15 @@ const initialState: IMarginsPageSlice = {
   marginsList: [],
   selectedMargin: null,
   managedMargin: null,
-  marginProductsGridModel: {
+  marginItemsGridModel: {
     pager: {},
     items: [],
   },
-  marginProductsGriRequestModel: {
+  marginItemsGriRequestModel: {
     currentPage: 1,
     pageSize: 10,
   },
-  gridRequestModel: {
+  marginsGridRequestModel: {
     currentPage: 1,
     pageSize: 10,
   },
@@ -126,27 +126,27 @@ function resetManagedMargin(state: IMarginsPageSlice) {
   state.managedMargin = null;
 }
 
-function refreshMarginProductsGridModel(
+function refreshMarginItemsGridModel(
   state: IMarginsPageSlice,
   action: PayloadAction<GridModel>,
 ) {
-  state.marginProductsGridModel =
-    action?.payload || state.marginProductsGridModel;
+  state.marginItemsGridModel = action?.payload || state.marginItemsGridModel;
 }
 
-function refreshMarginProductsGriRequestModel(
+function refreshMarginItemsGriRequestModel(
   state: IMarginsPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
-  state.marginProductsGriRequestModel =
-    action?.payload || state.marginProductsGriRequestModel;
+  state.marginItemsGriRequestModel =
+    action?.payload || state.marginItemsGriRequestModel;
 }
 
-function refreshGridRequestModel(
+function refreshMarginsGridRequestModel(
   state: IMarginsPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
-  state.gridRequestModel = action?.payload || state.gridRequestModel;
+  state.marginsGridRequestModel =
+    action?.payload || state.marginsGridRequestModel;
 }
 
 const MarginsPageSlice = createSlice({
@@ -167,9 +167,9 @@ const MarginsPageSlice = createSlice({
     resetSelectedMargin,
     refreshManagedMargin,
     resetManagedMargin,
-    refreshMarginProductsGridModel,
-    refreshMarginProductsGriRequestModel,
-    refreshGridRequestModel,
+    refreshMarginItemsGridModel,
+    refreshMarginItemsGriRequestModel,
+    refreshMarginsGridRequestModel,
   },
 });
 

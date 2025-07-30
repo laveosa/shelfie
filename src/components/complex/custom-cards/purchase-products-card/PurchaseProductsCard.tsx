@@ -26,7 +26,6 @@ import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import GridItemsFilter from "@/components/complex/grid/grid-items-filter/GridItemsFilter.tsx";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
-import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { purchaseVariantsGridColumns } from "@/components/complex/grid/purchase-variants-grid/PurchaseVariantsGridColumns.tsx";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
 import GridTraitsFilter from "@/components/complex/grid/grid-traits-filter/GridTraitsFilter.tsx";
@@ -57,9 +56,6 @@ export default function PurchaseProductsCard({
   const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
   const state = useAppSelector<IPurchaseProductsPageSlice>(
     StoreSliceEnum.PURCHASE_PRODUCTS,
-  );
-  const productsState = useAppSelector<IProductsPageSlice>(
-    StoreSliceEnum.PRODUCTS,
   );
 
   function handleTabChange(value: string) {
@@ -162,7 +158,7 @@ export default function PurchaseProductsCard({
         className={cs.purchaseProductsCard}
         showHeader={false}
         title={"Manage Purchases"}
-        minWidth="1150px"
+        minWidth="1100px"
       >
         <div className={cs.purchaseProductsCardContent}>
           <SheTabs

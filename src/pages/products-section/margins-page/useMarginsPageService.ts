@@ -1,13 +1,10 @@
-import { useAppDispatch } from "@/utils/hooks/redux.ts";
 import PurchasesApiHooks from "@/utils/services/api/PurchasesApiService.ts";
 
 export function useMarginsPageService() {
-  const dispatch = useAppDispatch();
-
   const [getMarginsListForGrid] =
     PurchasesApiHooks.useGetMarginsListForGridMutation();
-  const [getMarginProductsListForGrid] =
-    PurchasesApiHooks.useGetMarginProductsListForGridMutation();
+  const [getMarginItemsListForGrid] =
+    PurchasesApiHooks.useGetMarginItemsListForGridMutation();
   const [getAllMargins] = PurchasesApiHooks.useLazyGetAllMarginsQuery();
   const [getMarginForPurchase] =
     PurchasesApiHooks.useLazyGetMarginForPurchaseQuery();
@@ -20,6 +17,16 @@ export function useMarginsPageService() {
   const [connectMarginToPurchase] =
     PurchasesApiHooks.useConnectMarginToPurchaseMutation();
   const [detachMargin] = PurchasesApiHooks.useDetachMarginMutation();
+  const [restoreMarginRuleToDefault] =
+    PurchasesApiHooks.useRestoreMarginRuleToDefaultMutation();
+  const [updateMarginItem] = PurchasesApiHooks.useUpdateMarginItemMutation();
+  const [applyMarginItem] = PurchasesApiHooks.useApplyMarginItemMutation();
+  const [updateMarginRulesForPurchase] =
+    PurchasesApiHooks.useUpdateMarginRulesForPurchaseMutation();
+  const [applyVisibleMarginItems] =
+    PurchasesApiHooks.useApplyVisibleMarginItemsMutation();
+  const [applyAllMarginItems] =
+    PurchasesApiHooks.useApplyAllMarginItemsMutation();
 
   function getMarginsListForGridHandler(model) {
     return getMarginsListForGrid(model).then((res: any) => {
@@ -27,8 +34,8 @@ export function useMarginsPageService() {
     });
   }
 
-  function getMarginProductsListForGridHandler(purchaseId, model) {
-    return getMarginProductsListForGrid({
+  function getMarginItemsListForGridHandler(purchaseId, model) {
+    return getMarginItemsListForGrid({
       purchaseId,
       model,
     }).then((res: any) => {
@@ -74,13 +81,13 @@ export function useMarginsPageService() {
 
   function deleteMarginHandler(marginId) {
     return deleteMargin(marginId).then((res: any) => {
-      return res.data;
+      return res;
     });
   }
 
   function restoreMarginHandler(marginId) {
     return restoreMargin(marginId).then((res: any) => {
-      return res.data;
+      return res;
     });
   }
 
@@ -99,9 +106,51 @@ export function useMarginsPageService() {
     });
   }
 
+  function restoreMarginRuleToDefaultHandler(purchaseId) {
+    return restoreMarginRuleToDefault(purchaseId).then((res: any) => {
+      return res;
+    });
+  }
+
+  function updateMarginItemHandler(marginItemId, model) {
+    return updateMarginItem({ marginItemId, model }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function applyMarginItemHandler(marginItemId) {
+    return applyMarginItem(marginItemId).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function updateMarginRulesForPurchaseHandler(purchaseId, model) {
+    return updateMarginRulesForPurchase({
+      purchaseId,
+      model,
+    }).then((res: any) => {
+      return res;
+    });
+  }
+
+  function applyVisibleMarginItemsHandler(purchaseId, model) {
+    return applyVisibleMarginItems({
+      purchaseId,
+      model,
+    }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function applyAllMarginItemsHandler(purchaseId) {
+    return applyAllMarginItems(purchaseId).then((res: any) => {
+      return res.data;
+    });
+  }
+
   return {
     getMarginsListForGridHandler,
-    getMarginProductsListForGridHandler,
+    getMarginItemsListForGridHandler,
     getAllMarginsHandler,
     getMarginForPurchaseHandler,
     createMarginHandler,
@@ -112,5 +161,11 @@ export function useMarginsPageService() {
     restoreMarginHandler,
     connectMarginToPurchaseHandler,
     detachMarginHandler,
+    restoreMarginRuleToDefaultHandler,
+    updateMarginItemHandler,
+    applyMarginItemHandler,
+    updateMarginRulesForPurchaseHandler,
+    applyVisibleMarginItemsHandler,
+    applyAllMarginItemsHandler,
   };
 }
