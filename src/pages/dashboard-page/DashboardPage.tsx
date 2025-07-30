@@ -4,6 +4,7 @@ import cs from "./DashboardPage.module.scss";
 import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageService.ts";
 import {
   Box,
+  Clock,
   Home,
   LayoutDashboard,
   ShoppingBasket,
@@ -196,22 +197,22 @@ export function DashboardPage() {
   const triggerRef = useRef<HTMLButtonElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
 
-  /*useEffect(() => {
-    setIsLoading(true);
+  useEffect(() => {
+    // setIsLoading(true);
 
     setTimeout(() => {
       setItems(optionsSimple);
       // setItems(options);
     }, 1000);
 
-    const timer = setTimeout(() => {
+    /*const timer = setTimeout(() => {
       const el = triggerRef.current;
       if (el) {
         el.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
         el.dispatchEvent(new MouseEvent("mouseup", { bubbles: true }));
         el.dispatchEvent(new MouseEvent("click", { bubbles: true }));
       }
-    }, 1000);
+    }, 1000);*/
 
     setTimeout(() => {
       // setSelected([optionsSimple[2].value, optionsSimple[4].value]);
@@ -220,19 +221,16 @@ export function DashboardPage() {
     }, 2000);
 
     setTimeout(() => {
-      setIsLoading(false);
-
-      /!*if (searchRef.current) {
+      // setIsLoading(false);
+      /*if (searchRef.current) {
         searchRef.current.value = "TEST";
-      }*!/
-
+      }*/
       // console.log(popoverRef.current.style);
-
       // setItems(options);
     }, 3000);
 
-    return () => clearTimeout(timer);
-  }, []);*/
+    // return () => clearTimeout(timer);
+  }, []);
 
   // ================================================================== EVENT
 
@@ -285,12 +283,14 @@ export function DashboardPage() {
       <br />
 
       <div className="flex gap-5 flex-col">
-        <div className="w-full flex">
+        {/*<div className="w-full flex">
           <SheMultiSelect<string>
             label="MultiSelect"
             labelTransKey="909wefj09wejf09j"
             required
             tooltip={{
+              className: "TOOLTIP-CLASS-NAME",
+              style: { border: "1px solid blue" },
               title: "TITLE Pp",
               titleTransKey: "2399u203u09fuj",
               text: "some text for tooltip",
@@ -302,10 +302,10 @@ export function DashboardPage() {
             }}
             items={optionsSimple}
             contextType="badges"
-            // showClearBtn
+            showClearBtn
             showSearch
             showFooter
-            // autoFocus
+            autoFocus
             icon={Home}
             // clearBtnPosition="out"
             description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
@@ -316,27 +316,51 @@ export function DashboardPage() {
             errorMessageIcon={LayoutDashboard}
             onSelect={(value, model) => console.log("onSelect: ", value, model)}
           />
-        </div>
+        </div>*/}
 
-        <div className="w-full flex">
-          {/*<SheSelect<string>
+        {/*<div className="w-full flex">
+          <SheSelect<string>
             label="Select"
+            labelTransKey="909wefj09wejf09j"
+            required
+            tooltip={{
+              className: "TOOLTIP-CLASS-NAME",
+              style: { border: "1px solid blue" },
+              title: "TITLE Pp",
+              titleTransKey: "2399u203u09fuj",
+              text: "some text for tooltip",
+              textTransKey: "fw9ef092309fe9u",
+              description:
+                "29 329j 029j3f 0293j 0293j9023f 0293jf029 3jf 0239j032 j2 09n2",
+              descriptionTransKey: "wef902jf309jew09j",
+              icon: Users,
+            }}
+            // items={optionsSimple}
             items={_items}
             selected={selected}
+            icon={Clock}
+            autoFocus
             showClearBtn
+            // clearBtnPosition="out"
+            description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
+            descriptionTransKey="f0923fj9wejfwe"
+            descriptionIcon={Users}
+            errorMessage="some error message some error message some error message some error message some error message"
+            errorMessageTransKey="f0wejfw9ejfkwlejfw"
+            errorMessageIcon={LayoutDashboard}
             onSelect={(value, model) => onSelectHandler(value, model)}
-          />*/}
-        </div>
+          />
+        </div>*/}
 
         <div className="w-full flex">
-          {/*<SheAutocomplete
+          <SheAutocomplete
             label="Autocomplete"
             items={optionsSimple}
             showClearBtn
             onSelect={(event, model) =>
               console.log("Autocomplete value: ", event, model)
             }
-          />*/}
+          />
         </div>
       </div>
 

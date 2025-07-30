@@ -8,52 +8,41 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select.tsx";
+import SheSelectItem from "@/components/primitive/she-select/components/she-select-item/SheSelectItem.tsx";
+import useDefaultRef from "@/utils/hooks/useDefaultRef.ts";
+import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
+import useValueWithEvent from "@/utils/hooks/useValueWithEvent.ts";
+import ShePrimitiveComponentWrapper from "@/components/primitive/she-primitive-component-wrapper/ShePrimitiveComponentWrapper.tsx";
+import { generateSafeItemId } from "@/utils/helpers/quick-helper.ts";
+import { getCustomProps } from "@/utils/helpers/props-helper.ts";
+import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import {
   ISheSelect,
   SheSelectDefaultModel,
 } from "@/const/interfaces/primitive-components/ISheSelect.ts";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-import SheLabel from "@/components/primitive/she-label/SheLabel.tsx";
-import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
-import SheClearButton from "@/components/primitive/she-clear-button/SheClearButton.tsx";
-import SheSelectItem from "@/components/primitive/she-select/components/she-select-item/SheSelectItem.tsx";
-import useDefaultRef from "@/utils/hooks/useDefaultRef.ts";
-import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
-import { getCustomProps } from "@/utils/helpers/props-helper.ts";
-import { generateSafeItemId } from "@/utils/helpers/quick-helper.ts";
-import useValueWithEvent from "@/utils/hooks/useValueWithEvent.ts";
+import {
+  IShePrimitiveComponentWrapper,
+  ShePrimitiveComponentWrapperDefaultModel,
+} from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
 
 export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
   // ==================================================================== PROPS
   const {
     triggerRef,
     popoverRef,
-    id,
-    className = "",
-    style,
     elementClassName = "",
     elementStyle,
-    label,
-    labelTransKey,
     placeholder = "select item...",
     placeholderTransKey = "PLACE_VALID_TRANS_KEY",
-    icon,
     selected,
     items,
-    showClearBtn,
     hideFirstOption,
-    tooltip,
-    minWidth,
-    maxWidth,
-    fullWidth,
-    required,
     disabled,
     isLoading,
-    openOnFocus,
     isOpen,
     showSelectIcon,
     autoFocus,
+    openOnFocus,
     onOpen,
     onSelect,
   } = props;
@@ -61,6 +50,10 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
     props,
     SheSelectDefaultModel,
   );
+  const shePrimitiveComponentWrapperProps = getCustomProps<
+    ISheSelect<T>,
+    IShePrimitiveComponentWrapper
+  >(props, ShePrimitiveComponentWrapperDefaultModel);
 
   // ==================================================================== STATE MANAGEMENT
   const [_items, setItems] = useState<ISheSelectItem<T>[]>(null);
@@ -248,86 +241,54 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
 
   // ==================================================================== LAYOUT
   return (
-    <div
-      id={id}
-      className={`${cs.sheSelect} ${className} ${icon ? cs.withIcon : ""} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""}`}
-      style={{
-        minWidth,
-        maxWidth,
-        ...style,
-      }}
+    <ShePrimitiveComponentWrapper
+      {...shePrimitiveComponentWrapperProps}
+      className={`${cs.sheSelect} ${shePrimitiveComponentWrapperProps.className}`}
+      clearBtnValue={_selected}
+      onClear={onClearHandler}
     >
-      <div className={cs.sheSelectComponent}>
-        <SheLabel
-          label={label}
-          labelTransKey={labelTransKey}
-          tooltip={tooltip}
-          ariaDescribedbyId={ariaDescribedbyId}
-        />
-        <div className={cs.sheSelectControl}>
-          <SheSkeleton
-            skeletonClassName={cs.sheSelectSkeleton}
-            isLoading={isLoading}
-            fullWidth
-          >
-            <Select
-              value={_selected?.id ?? ""}
-              open={_open}
-              disabled={disabled || _loading || !items || items.length === 0}
-              onOpenChange={onOpenChangeHandler}
-              onValueChange={(value) => setTimeout(() => valueHandler(value))}
-              {...sheSelectProps}
-            >
-              <SelectTrigger
-                ref={_triggerRef as any}
-                className={`${elementClassName} ${_open ? cs.sheSelectOpen : ""}`}
-                style={elementStyle}
-              >
-                <SheIcon
-                  icon={icon}
-                  className={cs.iconBlock}
-                  aria-describedby={ariaDescribedbyId}
-                />
-                <SelectValue
-                  placeholder={translate(placeholderTransKey, placeholder)}
-                />
-              </SelectTrigger>
-              {_items?.length > 0 && (
-                <SelectContent ref={_popoverRef}>
-                  <div className={cs.sheSelectItemsContainer}>
-                    {_items?.map((item) => (
-                      <SheSelectItem<T>
-                        key={item.id}
-                        {...item}
-                        id={item.id}
-                        className={`${cs.sheSelectItemCover} ${item.className || ""}`}
-                        iconClassName={`${cs.sheSelectItemIconContainer} ${item.iconClassName || ""}`}
-                        colorsClassName={`${cs.sheSelectItemColorsContainer} ${item.colorsClassName || ""}`}
-                        infoClassName={`${cs.sheSelectItemInfoContainer} ${item.infoClassName || ""}`}
-                        tooltipClassName={`${cs.sheSelectItemTooltipContainer} ${item.tooltipClassName || ""}`}
-                        showSelectIcon={showSelectIcon}
-                        ariaDescribedbyId={ariaDescribedbyId}
-                        isLoading={
-                          !_.isNil(item.isLoading) ? item.isLoading : _loading
-                        }
-                        onCheck={(event) => eventHandler(event.event)}
-                      />
-                    ))}
-                  </div>
-                </SelectContent>
-              )}
-            </Select>
-          </SheSkeleton>
-          <SheClearButton
-            clearBtnValue={_selected}
-            showClearBtn={showClearBtn}
-            disabled={disabled}
-            isLoading={isLoading}
-            ariaDescribedbyId={ariaDescribedbyId}
-            onClear={onClearHandler}
+      <Select
+        value={_selected?.id ?? ""}
+        open={_open}
+        disabled={disabled || _loading || !items || items.length === 0}
+        onOpenChange={onOpenChangeHandler}
+        onValueChange={(value) => setTimeout(() => valueHandler(value))}
+        {...sheSelectProps}
+      >
+        <SelectTrigger
+          ref={_triggerRef as any}
+          className={`${elementClassName} ${_open ? cs.sheSelectOpen : ""} componentTriggerElement`}
+          style={elementStyle}
+        >
+          <SelectValue
+            placeholder={translate(placeholderTransKey, placeholder)}
           />
-        </div>
-      </div>
-    </div>
+        </SelectTrigger>
+        {_items?.length > 0 && (
+          <SelectContent ref={_popoverRef}>
+            <div className={cs.sheSelectItemsContainer}>
+              {_items?.map((item) => (
+                <SheSelectItem<T>
+                  key={item.id}
+                  {...item}
+                  id={item.id}
+                  className={`${cs.sheSelectItemCover} ${item.className || ""}`}
+                  iconClassName={`${cs.sheSelectItemIconContainer} ${item.iconClassName || ""}`}
+                  colorsClassName={`${cs.sheSelectItemColorsContainer} ${item.colorsClassName || ""}`}
+                  infoClassName={`${cs.sheSelectItemInfoContainer} ${item.infoClassName || ""}`}
+                  tooltipClassName={`${cs.sheSelectItemTooltipContainer} ${item.tooltipClassName || ""}`}
+                  showSelectIcon={showSelectIcon}
+                  ariaDescribedbyId={ariaDescribedbyId}
+                  isLoading={
+                    !_.isNil(item.isLoading) ? item.isLoading : _loading
+                  }
+                  onCheck={(event) => eventHandler(event.event)}
+                />
+              ))}
+            </div>
+          </SelectContent>
+        )}
+      </Select>
+    </ShePrimitiveComponentWrapper>
   );
 }

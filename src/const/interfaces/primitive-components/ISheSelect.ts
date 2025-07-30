@@ -1,39 +1,28 @@
 import React, { ComponentPropsWithRef, RefObject } from "react";
 
-import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
-import { ISheLabel } from "@/const/interfaces/primitive-components/ISheLabel.ts";
-import { ISheClearButton } from "@/const/interfaces/primitive-components/ISheClearButton.ts";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 import { Select } from "@/components/ui/select.tsx";
+import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
+import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
+import { IShePrimitiveComponentWrapper } from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
 
 export interface ISheSelect<T>
-  extends ISheLabel,
-    ISheClearButton,
+  extends IShePrimitiveComponentWrapper,
     ComponentPropsWithRef<typeof Select> {
   popoverRef?: RefObject<HTMLDivElement>;
-  id?: string;
-  className?: string;
-  style?: React.CSSProperties;
   elementClassName?: string;
   elementStyle?: React.CSSProperties;
   triggerRef?: React.RefObject<any>;
-  icon?: Partial<ISheIcon> | string | React.FC<any>;
   items?: ISheSelectItem<T>[];
   selected?: T;
   hideFirstOption?: boolean;
   placeholder?: string;
   placeholderTransKey?: string;
-  minWidth?: string;
-  maxWidth?: string;
-  fullWidth?: boolean;
   disabled?: boolean;
   isLoading?: boolean;
-  openOnFocus?: boolean;
   isOpen?: boolean;
-  required?: boolean;
   showSelectIcon?: boolean;
   autoFocus?: boolean;
+  openOnFocus?: boolean;
   onOpen?(value: boolean): void;
   onSelect?(
     value: T,
@@ -47,28 +36,20 @@ export interface ISheSelect<T>
 
 export const SheSelectDefaultModel: ISheSelect<any> = {
   popoverRef: undefined,
-  id: undefined,
-  className: undefined,
-  style: undefined,
   elementClassName: undefined,
   elementStyle: undefined,
   triggerRef: undefined,
-  icon: undefined,
   items: undefined,
   selected: undefined,
   hideFirstOption: undefined,
   placeholder: undefined,
   placeholderTransKey: undefined,
-  minWidth: undefined,
-  maxWidth: undefined,
-  fullWidth: undefined,
   disabled: undefined,
   isLoading: undefined,
-  openOnFocus: undefined,
   isOpen: undefined,
-  required: undefined,
   showSelectIcon: undefined,
   autoFocus: undefined,
+  openOnFocus: undefined,
   onOpen: undefined,
   onSelect: undefined,
 };

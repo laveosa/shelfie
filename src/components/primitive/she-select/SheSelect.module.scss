@@ -4,112 +4,86 @@ $iconSize: 20px;
 $chevronIconSize: 16px;
 
 .sheSelect {
-  max-width: vars.$maxWidth + px;
-  width: 100%;
+  button[data-placeholder] {
+    span {
+      color: vars.$placeholderColor;
+      text-align: start;
+    }
+  }
 
-  .sheSelectComponent {
-    position: relative;
+  button[role="combobox"] {
+    transition: all 160ms ease-in-out;
+    min-height: vars.$minHeight + px;
 
-    .sheSelectControl {
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      transition: all 160ms ease-in-out;
+    &:focus-visible {
+      box-shadow: 0 0 0 1px lightgray inset;
+    }
 
-      button[data-placeholder] {
-        span {
-          color: vars.$placeholderColor;
-          text-align: start;
-        }
+    > svg {
+      color: vars.$subtextColor;
+      max-width: $chevronIconSize;
+      min-width: $chevronIconSize;
+      max-height: $chevronIconSize;
+      min-height: $chevronIconSize;
+      transition: all 130ms ease-in-out;
+    }
+
+    > span {
+      width: 100%;
+
+      > div > div {
+        padding: 0;
       }
 
-      button[role="combobox"] {
-        transition: all 160ms ease-in-out;
-        min-height: vars.$minHeight + px;
+      .sheSelectItemCover {
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        gap: 4px;
+      }
 
-        &:focus-visible {
-          box-shadow: 0 0 0 1px lightgray inset;
+      // --------------------------------- ICON
+      .sheSelectItemIconContainer {
+        //display: none;
+      }
+
+      // --------------------------------- COLOR
+      .sheSelectItemColorsContainer {
+        display: none;
+      }
+
+      // --------------------------------- INFO
+      .sheSelectItemInfoContainer {
+        display: flex;
+        flex-grow: 1;
+
+        span {
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
         }
 
-        > svg {
-          color: vars.$subtextColor;
-          max-width: $chevronIconSize;
-          min-width: $chevronIconSize;
-          max-height: $chevronIconSize;
-          min-height: $chevronIconSize;
-          transition: all 130ms ease-in-out;
-        }
-
-        > span {
-          width: 100%;
-
-          > div > div {
-            padding: 0;
-          }
-
-          .sheSelectItemCover {
-            display: flex;
-            align-items: center;
-            justify-content: start;
-            gap: 4px;
-          }
-
-          // --------------------------------- ICON
-          .sheSelectItemIconContainer {
-            //display: none;
-          }
-
-          // --------------------------------- COLOR
-          .sheSelectItemColorsContainer {
-            display: none;
-          }
-
-          // --------------------------------- INFO
-          .sheSelectItemInfoContainer {
+        > div {
+          &:nth-child(1) {
+            text-align: start;
             display: flex;
             flex-grow: 1;
+            width: 10px;
 
-            span {
-              text-overflow: ellipsis;
-              overflow: hidden;
-              white-space: nowrap;
-            }
-
-            > div {
-              &:nth-child(1) {
-                text-align: start;
-                display: flex;
-                flex-grow: 1;
-                width: 10px;
-
-                :global(.she-subtext) {
-                  display: none;
-                }
-              }
-
-              &:nth-child(2) {
-                display: none;
-              }
+            :global(.she-subtext) {
+              display: none;
             }
           }
 
-          // --------------------------------- TOOLTIP
-          .sheSelectItemTooltipContainer {
+          &:nth-child(2) {
             display: none;
           }
         }
       }
 
-      .iconBlock {
-        position: absolute;
-        color: vars.$subtextColor;
-        left: 8px;
-        top: 10px;
-        max-width: $iconSize;
-        min-width: $iconSize;
-        max-height: $iconSize;
-        min-height: $iconSize;
+      // --------------------------------- TOOLTIP
+      .sheSelectItemTooltipContainer {
+        display: none;
       }
     }
   }
@@ -149,38 +123,4 @@ $chevronIconSize: 16px;
   display: flex;
   flex-direction: column;
   gap: 4px;
-}
-
-// ======================================================== FULL WIDTH
-
-.sheSelect.fullWidth {
-  max-width: none;
-  width: 100%;
-}
-
-// ======================================================== REQUIRED
-
-.sheSelect.required {
-  .sheSelectComponent:before {
-    position: absolute;
-    left: -10px;
-    top: -14px;
-    color: vars.$colorRed;
-    content: "*";
-    display: inline;
-  }
-}
-
-// ======================================================== WITH ICON
-
-.sheSelect.withIcon {
-  .sheSelectComponent {
-    .sheSelectControl {
-      .sheSelectSkeleton {
-        button:nth-child(1) {
-          padding-left: 36px;
-        }
-      }
-    }
-  }
 }
