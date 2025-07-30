@@ -8,7 +8,7 @@ export interface ISheDescriptionBlock {
   description?: string;
   descriptionTransKey?: string;
   hideDescription?: boolean;
-  icon?: Partial<ISheIcon> | string | React.FC<any>;
+  descriptionIcon?: Partial<ISheIcon> | string | React.FC<any>;
 }
 
 export const SheDescriptionBlockDefaultModel: ISheDescriptionBlock = {
@@ -17,5 +17,5 @@ export const SheDescriptionBlockDefaultModel: ISheDescriptionBlock = {
   description: undefined,
   descriptionTransKey: undefined,
   hideDescription: undefined,
-  icon: undefined,
+  descriptionIcon: undefined,
 };

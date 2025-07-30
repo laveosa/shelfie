@@ -22,7 +22,7 @@ export default function SheErrorMessageBlock({
       className={`${cs.sheErrorMessageBlock} ${errorMessageBlockClassName}`}
       style={errorMessageBlockStyle}
     >
-      <SheIcon icon={errorMessageIcon} />
+      <SheIcon className={cs.iconBlock} icon={errorMessageIcon} />
       <span className="she-text-error" role="alert" aria-live="assertive">
         <Trans i18nKey={errorMessageTransKey}>{errorMessage}</Trans>
       </span>

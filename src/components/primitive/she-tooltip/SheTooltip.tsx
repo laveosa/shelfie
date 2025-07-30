@@ -1,6 +1,7 @@
 import React from "react";
 import { Trans } from "react-i18next";
 
+import ExclamationMarkIcon from "@/assets/icons/exclamation-mark.svg?react";
 import cs from "./SheTooltip.module.scss";
 import {
   Tooltip,
@@ -8,6 +9,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip.tsx";
+import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { ISheTooltip } from "@/const/interfaces/primitive-components/ISheTooltip.ts";
 
 export default function SheTooltip({
@@ -28,8 +30,7 @@ export default function SheTooltip({
   showDefaultIcon,
   onClick,
 }: ISheTooltip): React.ReactNode {
-  // ==================================================================== EVENT
-
+  // ==================================================================== EVENT HANDLERS
   function onClickHandler(e) {
     e.preventDefault();
     onClick({
@@ -41,10 +42,7 @@ export default function SheTooltip({
     });
   }
 
-  // ==================================================================== PRIVATE
-
   // ==================================================================== LAYOUT
-
   return (
     <div className={`${className} ${cs.sheTooltip || ""}`}>
       <TooltipProvider delayDuration={delayDuration}>
@@ -52,7 +50,10 @@ export default function SheTooltip({
           <TooltipTrigger asChild>
             {showDefaultIcon ? (
               <div className={cs.tooltipIcon}>
-                <span className="she-title">!</span>
+                <SheIcon
+                  icon={ExclamationMarkIcon}
+                  className={cs.tooltipIconElement}
+                />
               </div>
             ) : (
               children

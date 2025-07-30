@@ -1,10 +1,12 @@
 @use "@/styles/variables" as vars;
 
-$tooltipIconSize: 15px;
+$tooltipIconSize: 18px;
 
 .sheTooltip {
   border: none;
   position: relative;
+  display: flex;
+  align-items: center;
 
   .tooltipMessageBlock {
     display: flex;
@@ -74,15 +76,14 @@ $tooltipIconSize: 15px;
   min-width: $tooltipIconSize;
   max-height: $tooltipIconSize;
   min-height: $tooltipIconSize;
-  background-color: vars.$colorDark;
   border-radius: 100%;
 
-  span {
-    color: white;
-    font-weight: bold;
-    font-size: 12px;
-    line-height: 0;
-    position: relative;
-    pointer-events: none;
+  .tooltipIconElement {
+    min-height: 0;
+
+    svg {
+      border-radius: 100%;
+      overflow: hidden;
+    }
   }
 }

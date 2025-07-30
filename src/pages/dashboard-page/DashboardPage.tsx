@@ -2,7 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 
 import cs from "./DashboardPage.module.scss";
 import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageService.ts";
-import { Box, Home, ShoppingBasket } from "lucide-react";
+import {
+  Box,
+  Home,
+  LayoutDashboard,
+  ShoppingBasket,
+  Users,
+} from "lucide-react";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import { SheTooltipEnum } from "@/const/enums/SheTooltipEnum.ts";
@@ -292,8 +298,14 @@ export function DashboardPage() {
             showFooter
             // autoFocus
             icon={Home}
-            clearBtnPosition="out"
-            // onSelect={(value, model) => console.log("onSelect: ", value, model)}
+            // clearBtnPosition="out"
+            description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
+            descriptionTransKey="f0923fj9wejfwe"
+            descriptionIcon={Users}
+            errorMessage="some error message some error message some error message some error message some error message"
+            errorMessageTransKey="f0wejfw9ejfkwlejfw"
+            errorMessageIcon={LayoutDashboard}
+            onSelect={(value, model) => console.log("onSelect: ", value, model)}
           />
         </div>
 

@@ -11,7 +11,7 @@ export default function SheDescriptionBlock({
   description,
   descriptionTransKey,
   hideDescription,
-  icon,
+  descriptionIcon,
 }: ISheDescriptionBlock): JSX.Element {
   // ==================================================================== EVENT
 
@@ -25,7 +25,7 @@ export default function SheDescriptionBlock({
       className={`${cs.sheDescriptionBlock} ${descriptionBlockClassName}`}
       style={descriptionBlockStyle}
     >
-      <SheIcon icon={icon} />
+      <SheIcon className={cs.iconBlock} icon={descriptionIcon} />
       <span className="she-subtext" role="description">
         <Trans i18nKey={descriptionTransKey}>{description}</Trans>
       </span>
