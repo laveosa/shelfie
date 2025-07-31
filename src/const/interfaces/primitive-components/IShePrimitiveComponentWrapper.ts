@@ -10,6 +10,14 @@ import {
   SheClearButtonDefaultModel,
 } from "@/const/interfaces/primitive-components/ISheClearButton.ts";
 import {
+  ISheSkeleton,
+  SheSkeletonDefaultModel,
+} from "@/const/interfaces/primitive-components/ISheSkeleton.ts";
+import {
+  ISheContextLengthLimits,
+  SheContextLengthLimitsDefaultModel,
+} from "@/const/interfaces/primitive-components/ISheContextLengthLimits.ts";
+import {
   ISheErrorMessageBlock,
   SheErrorMessageBlockDefaultModel,
 } from "@/const/interfaces/primitive-components/ISheErrorMessageBlock.ts";
@@ -17,15 +25,12 @@ import {
   ISheDescriptionBlock,
   SheDescriptionBlockDefaultModel,
 } from "@/const/interfaces/primitive-components/ISheDescriptionBlock.ts";
-import {
-  ISheSkeleton,
-  SheSkeletonDefaultModel,
-} from "@/const/interfaces/primitive-components/ISheSkeleton.ts";
 
 export interface IShePrimitiveComponentWrapper
   extends ISheLabel,
     ISheClearButton,
     Omit<ISheSkeleton, "minWidth" | "maxWidth" | "fullWidth">,
+    ISheContextLengthLimits,
     ISheDescriptionBlock,
     ISheErrorMessageBlock,
     ComponentPropsWithRef<"div"> {
@@ -50,6 +55,7 @@ export const ShePrimitiveComponentWrapperDefaultModel: IShePrimitiveComponentWra
     ...SheLabelDefaultModel,
     ...SheSkeletonDefaultModel,
     ...SheClearButtonDefaultModel,
+    ...SheContextLengthLimitsDefaultModel,
     ...SheDescriptionBlockDefaultModel,
     ...SheErrorMessageBlockDefaultModel,
     id: undefined,

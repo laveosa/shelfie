@@ -13,10 +13,6 @@ export default function SheDescriptionBlock({
   hideDescription,
   descriptionIcon,
 }: ISheDescriptionBlock): JSX.Element {
-  // ==================================================================== EVENT
-
-  // ==================================================================== PRIVATE
-
   // ==================================================================== LAYOUT
   if (hideDescription || !description || description.length === 0) return null;
 

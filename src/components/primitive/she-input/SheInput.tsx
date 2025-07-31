@@ -1,65 +1,74 @@
 import React, { JSX, useEffect, useRef, useState } from "react";
 import { isRegExp } from "lodash";
 
+import { Search } from "lucide-react";
 import cs from "./SheInput.module.scss";
 import { Input } from "@/components/ui/input.tsx";
-import { ISheInput } from "@/const/interfaces/primitive-components/ISheInput.ts";
+import ShePrimitiveComponentWrapper from "@/components/primitive/she-primitive-component-wrapper/ShePrimitiveComponentWrapper.tsx";
 import { useDebounce } from "@/utils/hooks/useDebounce.ts";
-import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
-import { generateId } from "@/utils/helpers/quick-helper.ts";
-import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-import SheLabel from "@/components/primitive/she-label/SheLabel.tsx";
-import SheClearButton from "@/components/primitive/she-clear-button/SheClearButton.tsx";
-import { SheContextLengthLimits } from "@/components/primitive/she-context-length-limits/SheContextLengthLimits.tsx";
-import SheErrorMessageBlock from "@/components/primitive/she-error-message-block/SheErrorMessageBlock.tsx";
-import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
-import { Search } from "lucide-react";
+import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
+import {
+  getCustomProps,
+  removeCustomProps,
+} from "@/utils/helpers/props-helper.ts";
+import {
+  ISheInput,
+  SheInputDefaultModel,
+} from "@/const/interfaces/primitive-components/ISheInput.ts";
+import {
+  IShePrimitiveComponentWrapper,
+  ShePrimitiveComponentWrapperDefaultModel,
+} from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
 
-export default function SheInput({
-  ref,
-  id,
-  className = "",
-  style,
-  label,
-  labelTransKey,
-  icon,
-  value,
-  placeholder = "enter text...",
-  placeholderTransKey,
-  type,
-  step,
-  size,
-  autoFocus,
-  isSearch,
-  showClearBtn,
-  tooltip,
-  disabled,
-  isLoading,
-  minWidth,
-  maxWidth,
-  fullWidth,
-  required,
-  minLength,
-  maxLength,
-  isValid = true,
-  ignoreValidation,
-  showError = true,
-  pattern,
-  patternErrorMessage,
-  patternErrorMessageTransKey,
-  delayTime,
-  children,
-  onIsValid,
-  onChange,
-  onBlur,
-  onDelay,
-  onClear,
-  ...props
-}: ISheInput): JSX.Element {
-  const { translate } = useAppTranslation();
-  const [_textValue, setTextValue] = useState<
-    string | number | readonly string[]
-  >(null);
+export default function SheInput(props: ISheInput): JSX.Element {
+  // ==================================================================== PROPS
+  const {
+    ref,
+    icon,
+    value,
+    placeholder = "enter text...",
+    placeholderTransKey,
+    type,
+    step,
+    autoFocus,
+    isSearch,
+    disabled,
+    isLoading,
+    minLength,
+    maxLength,
+    required,
+    isValid = true,
+    ignoreValidation,
+    showError = true,
+    pattern,
+    patternErrorMessage,
+    patternErrorMessageTransKey,
+    delayTime,
+    onIsValid,
+    onChange,
+    onBlur,
+    onDelay,
+    onClear,
+  } = props;
+  const sheInputProps = getCustomProps<ISheInput, ISheInput>(
+    props,
+    SheInputDefaultModel,
+  );
+  const shePrimitiveComponentWrapperProps = getCustomProps<
+    ISheInput,
+    IShePrimitiveComponentWrapper
+  >(props, ShePrimitiveComponentWrapperDefaultModel);
+  const restProps = removeCustomProps<ISheInput>(props, [
+    SheInputDefaultModel,
+    ShePrimitiveComponentWrapperDefaultModel,
+  ]);
+
+  // console.log("input props: ", sheInputProps);
+  // console.log("wrapper props: ", shePrimitiveComponentWrapperProps);
+  // console.log("rest props: ", restProps);
+
+  // ==================================================================== STATE MANAGEMENT
+  const [_textValue, setTextValue] = useState<string | number>(null);
   const [_isValid, setIsValid] = useState(isValid);
   const [_isLengthValid, setIsLengthValid] = useState(isValid);
   const [_showError, setShowError] = useState(showError);
@@ -68,12 +77,18 @@ export default function SheInput({
     patternErrorMessageTransKey,
   );
 
-  const ariaDescribedbyId = `${generateId()}_INPUT_ID`;
-  const iconToRender = icon || (isSearch && Search);
-  const delayValue = useDebounce(_textValue, delayTime);
+  // ==================================================================== REFS
   const isInitialized = useRef(false);
   const isTouched = useRef(false);
 
+  // ==================================================================== UTILITIES
+  const { translate, ariaDescribedbyId } = useComponentUtilities({
+    identifier: "ISheInput",
+  });
+  const iconToRender = icon || (isSearch && Search);
+  const delayValue = useDebounce(_textValue, delayTime);
+
+  // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     const convertedValue = Array.isArray(value) ? value.join("\n") : value;
 
@@ -101,21 +116,20 @@ export default function SheInput({
     }
   }, [isValid]);
 
-  // ==================================================================== EVENT
-
+  // ==================================================================== EVENT HANDLERS
   function onChangeHandler(e) {
     isInitialized.current = true;
     const newValue = e.target.value;
     setTextValue(newValue);
     validateValue(newValue);
-    if (onChange) onChange(newValue);
+    onChange?.(newValue);
   }
 
   function onBlurHandler(e) {
     isTouched.current = true;
     const newValue = e.target.value;
     validateValue(newValue);
-    if (onBlur) onBlur(newValue);
+    onBlur?.(newValue);
   }
 
   function onClearHandler() {
@@ -129,14 +143,13 @@ export default function SheInput({
     setTextValue(newValue);
     validateValue(newValue);
 
-    if (onChange) onChange(newValue);
-    if (onBlur) onBlur(newValue);
-    if (onDelay) onDelay(newValue);
-    if (onClear) onClear(null);
+    onChange?.(newValue);
+    onBlur?.(newValue);
+    onDelay?.(newValue);
+    onClear?.(null);
   }
 
   // ==================================================================== PRIVATE
-
   function validateValue(inputValue) {
     if (ignoreValidation || !isTouched.current) return true;
 
@@ -173,7 +186,9 @@ export default function SheInput({
     }
 
     const valueLength =
-      type === "number" ? (inputValue as number) : inputValue.toString().length;
+      type === "number"
+        ? (inputValue as number)
+        : inputValue?.toString().trim().length;
     const isMinOk =
       typeof minLength === "number" ? valueLength >= minLength : true;
     const isMaxOk =
@@ -220,8 +235,39 @@ export default function SheInput({
   }
 
   // ==================================================================== LAYOUT
-
   return (
+    <ShePrimitiveComponentWrapper
+      {...shePrimitiveComponentWrapperProps}
+      className={`${cs.sheInput} ${shePrimitiveComponentWrapperProps.className} ${!_isValid ? cs.invalid : ""}`}
+      icon={iconToRender}
+      clearBtnValue={_textValue}
+      ariaDescribedbyId={ariaDescribedbyId}
+      contextLengthLimitsValue={_textValue}
+      isContextLengthLimitsValid={_isLengthValid}
+      errorMessage={_error}
+      errorMessageTransKey={_errorTransKey}
+      hideErrorMessage={!_showError}
+      onClear={onClearHandler}
+    >
+      <Input
+        className={`componentTriggerElement`}
+        ref={ref}
+        value={_textValue ?? ""}
+        placeholder={translate(placeholderTransKey, placeholder)}
+        type={type}
+        step={step}
+        autoFocus={autoFocus}
+        aria-invalid={!isValid}
+        aria-describedby={ariaDescribedbyId}
+        disabled={disabled || isLoading}
+        onChange={onChangeHandler}
+        onBlur={onBlurHandler}
+        {...restProps}
+      />
+    </ShePrimitiveComponentWrapper>
+  );
+
+  /*return (
     <div
       id={id}
       className={`${cs.sheInput} ${className}  ${iconToRender ? cs.withIcon : ""} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""} ${!_isValid ? cs.invalid : ""}`}
@@ -259,7 +305,6 @@ export default function SheInput({
               onBlur={onBlurHandler}
               {...props}
             />
-            {children && <div>{children}</div>}
           </SheSkeleton>
           <SheClearButton
             clearBtnValue={_textValue}
@@ -271,11 +316,11 @@ export default function SheInput({
           />
         </div>
         <SheContextLengthLimits
-          value={_textValue}
-          isValid={_isLengthValid}
+          contextLengthLimitsValue={_textValue}
+          isContextLengthLimitsValid={_isLengthValid}
           minLength={minLength}
           maxLength={maxLength}
-          contextType={type}
+          type={type}
         />
         <SheErrorMessageBlock
           errorMessage={_error}
@@ -284,5 +329,5 @@ export default function SheInput({
         />
       </div>
     </div>
-  );
+  );*/
 }

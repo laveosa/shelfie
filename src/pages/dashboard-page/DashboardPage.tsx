@@ -20,6 +20,8 @@ import SheBadge from "@/components/primitive/she-badge/SheBadge.tsx";
 import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
 import SheBadgeList from "@/components/primitive/she-badge-list/SheBadgeList.tsx";
 import UserForm from "@/components/forms/user-form/UserForm.tsx";
+import SheInput from "@/components/primitive/she-input/SheInput.tsx";
+import { ContextPatternEnum } from "@/const/enums/ContextPatternEnum.ts";
 
 const options: ISheSelectItem<any>[] = [
   {
@@ -201,7 +203,7 @@ export function DashboardPage() {
     // setIsLoading(true);
 
     setTimeout(() => {
-      setItems(optionsSimple);
+      // setItems(optionsSimple);
       // setItems(options);
     }, 1000);
 
@@ -217,7 +219,7 @@ export function DashboardPage() {
     setTimeout(() => {
       // setSelected([optionsSimple[2].value, optionsSimple[4].value]);
       // setSelected([options[2].value]);
-      setSelected(optionsSimple[2].value);
+      // setSelected(optionsSimple[2].value);
     }, 2000);
 
     setTimeout(() => {
@@ -352,7 +354,7 @@ export function DashboardPage() {
           />
         </div>*/}
 
-        <div className="w-full flex">
+        {/*<div className="w-full flex">
           <SheAutocomplete
             label="Autocomplete"
             items={optionsSimple}
@@ -361,6 +363,41 @@ export function DashboardPage() {
             onSelect={(event, model) =>
               console.log("Autocomplete value: ", event, model)
             }
+          />
+        </div>*/}
+
+        <div className="w-full flex">
+          <SheInput
+            label="Input"
+            /*labelTransKey="909wefj09wejf09j"
+            required
+            tooltip={{
+              className: "TOOLTIP-CLASS-NAME",
+              style: { border: "1px solid blue" },
+              title: "TITLE Pp",
+              titleTransKey: "2399u203u09fuj",
+              text: "some text for tooltip",
+              textTransKey: "fw9ef092309fe9u",
+              description:
+                "29 329j 029j3f 0293j 0293j9023f 0293jf029 3jf 0239j032 j2 09n2",
+              descriptionTransKey: "wef902jf309jew09j",
+              icon: Users,
+            }}
+            description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
+            descriptionTransKey="f0923fj9wejfwe"
+            descriptionIcon={Users}
+            errorMessage="some error message some error message some error message some error message some error message"
+            errorMessageTransKey="f0wejfw9ejfkwlejfw"
+            errorMessageIcon={LayoutDashboard}
+            clearBtnPosition="out"*/
+            showClearBtn
+            autoFocus
+            // isSearch
+            // icon={Users}
+            // minLength={4}
+            // maxLength={10}
+            required
+            onChange={(event) => console.log(event)}
           />
         </div>
       </div>

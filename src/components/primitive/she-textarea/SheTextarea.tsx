@@ -10,7 +10,7 @@ import { useDebounce } from "@/utils/hooks/useDebounce.ts";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
 import SheLabel from "@/components/primitive/she-label/SheLabel.tsx";
 import SheClearButton from "@/components/primitive/she-clear-button/SheClearButton.tsx";
-import { SheContextLengthLimits } from "@/components/primitive/she-context-length-limits/SheContextLengthLimits.tsx";
+import SheContextLengthLimits from "@/components/primitive/she-context-length-limits/SheContextLengthLimits.tsx";
 import SheErrorMessageBlock from "@/components/primitive/she-error-message-block/SheErrorMessageBlock.tsx";
 
 export default function SheTextArea({
@@ -257,13 +257,13 @@ export default function SheTextArea({
             onClear={onClearHandler}
           />
         </div>
-        <SheContextLengthLimits
+        {/*<SheContextLengthLimits
           value={_textValue}
           isValid={_isLengthValid}
           minLength={minLength}
           maxLength={maxLength}
           contextType={type}
-        />
+        />*/}
         <SheErrorMessageBlock
           errorMessage={_error}
           errorMessageTransKey={_errorTransKey}

@@ -5,6 +5,7 @@ import SheLabel from "@/components/primitive/she-label/SheLabel.tsx";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import SheClearButton from "@/components/primitive/she-clear-button/SheClearButton.tsx";
+import SheContextLengthLimits from "@/components/primitive/she-context-length-limits/SheContextLengthLimits.tsx";
 import SheDescriptionBlock from "@/components/primitive/she-description-block/SheDescriptionBlock.tsx";
 import SheErrorMessageBlock from "@/components/primitive/she-error-message-block/SheErrorMessageBlock.tsx";
 import {
@@ -32,6 +33,10 @@ import {
   ISheClearButton,
   SheClearButtonDefaultModel,
 } from "@/const/interfaces/primitive-components/ISheClearButton.ts";
+import {
+  ISheContextLengthLimits,
+  SheContextLengthLimitsDefaultModel,
+} from "@/const/interfaces/primitive-components/ISheContextLengthLimits.ts";
 import {
   ISheDescriptionBlock,
   SheDescriptionBlockDefaultModel,
@@ -89,6 +94,10 @@ export default function ShePrimitiveComponentWrapper(
     IShePrimitiveComponentWrapper,
     ISheClearButton
   >({ ...props }, SheClearButtonDefaultModel);
+  const sheContextLengthLimitsProps = getCustomProps<
+    IShePrimitiveComponentWrapper,
+    ISheContextLengthLimits
+  >({ ...props }, SheContextLengthLimitsDefaultModel);
   const sheDescriptionBockProps = getCustomProps<
     IShePrimitiveComponentWrapper,
     ISheDescriptionBlock
@@ -107,14 +116,10 @@ export default function ShePrimitiveComponentWrapper(
     SheErrorMessageBlockDefaultModel,
   ]);
 
-  // ==================================================================== UTILITIES
-
   // ==================================================================== EVENT HANDLERS
   function onClearHandler(event: React.MouseEvent | React.KeyboardEvent) {
     onClear?.(event);
   }
-
-  // ==================================================================== PRIVATE
 
   // ==================================================================== LAYOUT
   return (
@@ -146,6 +151,7 @@ export default function ShePrimitiveComponentWrapper(
             onClear={onClearHandler}
           />
         </div>
+        <SheContextLengthLimits {...sheContextLengthLimitsProps} />
         <SheDescriptionBlock {...sheDescriptionBockProps} />
         <SheErrorMessageBlock {...sheErrorMessageBlockProps} />
       </div>

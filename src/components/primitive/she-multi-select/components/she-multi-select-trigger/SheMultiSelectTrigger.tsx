@@ -8,7 +8,7 @@ import { PopoverTrigger } from "@/components/ui/popover.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import SheBadgeList from "@/components/primitive/she-badge-list/SheBadgeList.tsx";
 import ShePrimitiveComponentWrapper from "@/components/primitive/she-primitive-component-wrapper/ShePrimitiveComponentWrapper.tsx";
-import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
+import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
 import {
   getCustomProps,
   removeCustomProps,
@@ -54,7 +54,7 @@ export default function SheMultiSelectTrigger<T>(
   ]);
 
   // ==================================================================== UTILITIES
-  const { translate } = useAppTranslation();
+  const { translate } = useComponentUtilities();
 
   // ==================================================================== EVENT HANDLERS
   function onKeyDownHandler(event) {
