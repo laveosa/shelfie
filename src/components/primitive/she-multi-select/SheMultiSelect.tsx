@@ -65,10 +65,6 @@ export default function SheMultiSelect<T>(
     onClear,
     onSelect,
   } = props;
-  const sheMultiSelectProps = getCustomProps<
-    ISheMultiSelect<T>,
-    ISheMultiSelect<T>
-  >(props, SheMultiSelectDefaultModel);
   const sheMultiSelectSearchProps = getCustomProps<
     ISheMultiSelect<T>,
     ISheMultiSelectSearch
@@ -288,7 +284,7 @@ export default function SheMultiSelect<T>(
     onSelect?.(values, {
       value: values,
       model: {
-        ...sheMultiSelectProps,
+        ...props,
         items: tmpItems,
         selectedValues: values,
         searchValue: _searchValue,

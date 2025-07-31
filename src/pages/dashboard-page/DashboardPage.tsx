@@ -337,9 +337,9 @@ export function DashboardPage() {
               descriptionTransKey: "wef902jf309jew09j",
               icon: Users,
             }}
-            // items={optionsSimple}
-            items={_items}
-            selected={selected}
+            items={optionsSimple}
+            // items={_items}
+            // selected={selected}
             icon={Clock}
             autoFocus
             showClearBtn
@@ -354,7 +354,7 @@ export function DashboardPage() {
           />
         </div>*/}
 
-        {/*<div className="w-full flex">
+        <div className="w-full flex">
           <SheAutocomplete
             label="Autocomplete"
             items={optionsSimple}
@@ -364,12 +364,12 @@ export function DashboardPage() {
               console.log("Autocomplete value: ", event, model)
             }
           />
-        </div>*/}
+        </div>
 
-        <div className="w-full flex">
+        {/*<div className="w-full flex">
           <SheInput
             label="Input"
-            /*labelTransKey="909wefj09wejf09j"
+            labelTransKey="909wefj09wejf09j"
             required
             tooltip={{
               className: "TOOLTIP-CLASS-NAME",
@@ -389,7 +389,7 @@ export function DashboardPage() {
             errorMessage="some error message some error message some error message some error message some error message"
             errorMessageTransKey="f0wejfw9ejfkwlejfw"
             errorMessageIcon={LayoutDashboard}
-            clearBtnPosition="out"*/
+            clearBtnPosition="out"
             showClearBtn
             autoFocus
             // isSearch
@@ -404,7 +404,7 @@ export function DashboardPage() {
             onDelay={(value, model) => console.log("ON DELAY: ", value, model)}
             onBlur={(value, model) => console.log("ON BLUR: ", value, model)}
           />
-        </div>
+        </div>*/}
       </div>
 
       <br />

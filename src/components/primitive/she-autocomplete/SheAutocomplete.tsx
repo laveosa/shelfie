@@ -62,10 +62,6 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     onSearch,
     onSelect,
   } = props;
-  const sheAutocompleteProps = getCustomProps<
-    ISheAutocomplete,
-    ISheAutocomplete
-  >(props, SheAutocompleteDefaultModel);
   const sheInputProps = getCustomProps<ISheAutocomplete, ISheInput>(
     props,
     SheInputDefaultModel,
@@ -185,7 +181,7 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
       setSelected(value);
       onSelect?.(value, {
         value,
-        model: { ...sheAutocompleteProps, searchValue: value },
+        model: { ...props, searchValue: value },
         event,
       });
     }
@@ -200,7 +196,7 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     setSelected(value);
     onSelect?.(value, {
       value,
-      model: { ...sheAutocompleteProps, searchValue: value },
+      model: { ...props, searchValue: value },
       event,
     });
     setSearchValue(value);
@@ -227,7 +223,7 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     setSearchValue("");
     onSelect?.("", {
       value: "",
-      model: { ...sheAutocompleteProps, searchValue: "" },
+      model: { ...props, searchValue: "" },
       event,
     });
     event?.stopPropagation();

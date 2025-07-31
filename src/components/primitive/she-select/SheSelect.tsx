@@ -170,13 +170,13 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
       setItems(tmpItems);
       onSelect?.(selected.value, {
         value: selected.value,
-        model: { ...sheSelectProps, items: tmpItems, selected: selected.value },
+        model: { ...props, items: tmpItems, selected: selected.value },
         event,
       });
     } else {
       onSelect?.(null, {
         value: null,
-        model: { ...sheSelectProps, items: _items, selected: null },
+        model: { ...props, items: _items, selected: null },
         event,
       });
     }
@@ -204,7 +204,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
     setSelected(null);
     onSelect?.(null, {
       value: null,
-      model: { ...sheSelectProps, items: tmpItems, selected: null },
+      model: { ...props, items: tmpItems, selected: null },
       event,
     });
     setFocus<HTMLInputElement>(true, _triggerRef);

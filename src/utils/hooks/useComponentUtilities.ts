@@ -15,7 +15,7 @@ export interface IComponentUtilities {
 
 export default function useComponentUtilities({
   identifier,
-}?: IComponentUtilities) {
+}: IComponentUtilities = {}) {
   // ==================================================================== UTILITIES
   const { translate } = useAppTranslation();
   const [ariaDescribedbyId, setAriaDescribedbyId] = useState<string>(null);
