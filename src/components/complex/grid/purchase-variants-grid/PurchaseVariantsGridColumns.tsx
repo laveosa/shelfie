@@ -23,8 +23,8 @@ export function purchaseVariantsGridColumns(
     {
       accessorKey: "photo",
       header: "Image",
-      size: 40,
-      minSize: 40,
+      size: 30,
+      minSize: 30,
       cell: ({ row, table }) => {
         const image: ImageModel = row.getValue("photo");
         const meta = table.options.meta as {
@@ -72,8 +72,8 @@ export function purchaseVariantsGridColumns(
     {
       accessorKey: "variantName",
       header: "Product Name",
-      size: 50,
-      minSize: 50,
+      size: 40,
+      minSize: 40,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("variantName")}>
@@ -87,8 +87,8 @@ export function purchaseVariantsGridColumns(
     {
       accessorKey: "productCategory",
       header: "Category",
-      size: 50,
-      minSize: 50,
+      size: 40,
+      minSize: 40,
       cell: ({ row }) => {
         const category: CategoryModel = row.getValue("productCategory");
         return (
@@ -183,8 +183,8 @@ export function purchaseVariantsGridColumns(
     {
       id: "nettoPriceGroup",
       accessorKey: "",
-      size: 150,
-      minSize: 150,
+      size: 180,
+      minSize: 180,
       header: () => (
         <div className="flex items-center">
           <span style={{ marginRight: "40px" }}>Netto Price</span>
@@ -212,9 +212,9 @@ export function purchaseVariantsGridColumns(
     },
     {
       id: "manage",
-      size: 50,
-      minSize: 50,
-      maxSize: 50,
+      size: 60,
+      minSize: 60,
+      maxSize: 60,
       cell: ({ row }) => {
         return (
           <div onClick={(e) => e.stopPropagation()}>

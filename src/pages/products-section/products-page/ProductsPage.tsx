@@ -58,26 +58,14 @@ export function ProductsPage() {
 
   useEffect(() => {
     if (state.activeTab === "products") {
-      service
-        .getTheProductsForGridHandler(state.productsGridRequestModel, true)
-        .then((res) => {
-          dispatch(actions.refreshProductsGridModel(res));
-          dispatch(actions.refreshProducts(res.items));
-        });
+      service.getTheProductsForGridHandler(
+        state.productsGridRequestModel,
+        true,
+      );
     } else if (state.activeTab === "variants") {
-      service
-        .getVariantsForGridHandler(state.variantsGridRequestModel)
-        .then((res) => {
-          dispatch(actions.refreshVariantsGridModel(res));
-          dispatch(actions.refreshVariants(res.items));
-        });
+      service.getVariantsForGridHandler(state.variantsGridRequestModel);
     } else if (state.activeTab === "purchases") {
-      service
-        .getListOfPurchasesForGridHandler(state.purchasesGridRequestModel)
-        .then((res) => {
-          dispatch(actions.refreshPurchasesGridModel(res));
-          dispatch(actions.refreshPurchases(res.items));
-        });
+      service.getListOfPurchasesForGridHandler(state.purchasesGridRequestModel);
     }
     dispatch(actions.resetSelectedVariant());
   }, [
@@ -87,6 +75,23 @@ export function ProductsPage() {
     state.activeTab,
     dispatch,
   ]);
+
+  useEffect(() => {
+    if (state.brands.length === 0) {
+      service.getBrandsForFilterHandler();
+    }
+    if (state.categories.length === 0) {
+      service.getCategoriesForFilterHandler();
+    }
+    if (state.sortingOptions.length === 0) {
+      service.getSortingOptionsForGridHandler();
+    }
+    if (state.suppliers.length === 0) {
+      service.getListOfSuppliersHandler();
+    }
+    if (state.sizesForFilter.length === 0 || state.colorsForFilter.length === 0)
+      service.getTraitsForFilterHandler();
+  }, []);
 
   useEffect(() => {
     if (state.productsGridModel?.items?.length > 0) {
@@ -102,46 +107,6 @@ export function ProductsPage() {
       setActiveStates(initialActiveStates);
     }
   }, [state.productsGridModel.items]);
-
-  useEffect(() => {
-    if (state.brands.length === 0) {
-      service.getBrandsForFilterHandler().then((res) => {
-        dispatch(actions.refreshBrands(res));
-      });
-    }
-    if (state.categories.length === 0) {
-      service.getCategoriesForFilterHandler().then((res) => {
-        dispatch(actions.refreshCategories(res));
-      });
-    }
-    if (state.sortingOptions.length === 0) {
-      service.getSortingOptionsForGridHandler().then((res) => {
-        dispatch(actions.refreshSortingOptions(res));
-      });
-    }
-    if (state.suppliers.length === 0) {
-      service.getListOfSuppliersHandler().then((res) => {
-        dispatch(actions.refreshSuppliers(res));
-      });
-    }
-    if (state.sizesForFilter.length === 0 || state.colorsForFilter.length === 0)
-      service.getTraitsForFilterHandler().then((res) => {
-        dispatch(
-          actions.refreshSizesForFilter(
-            res
-              .filter((trait) => trait.traitTypeId === 1)
-              .flatMap((trait) => trait.traitOptions),
-          ),
-        );
-        dispatch(
-          actions.refreshColorsForFilter(
-            res
-              .filter((trait) => trait.traitTypeId === 2)
-              .flatMap((trait) => trait.traitOptions),
-          ),
-        );
-      });
-  }, []);
 
   async function onDelete(data) {
     data.table.options.meta?.hideRow(data.row.original.id);

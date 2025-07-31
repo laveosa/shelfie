@@ -1,6 +1,12 @@
 import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
+import {
+  addGridRowColor,
+  clearSelectedGridItems,
+  formatDate,
+  setSelectedGridItem,
+} from "@/utils/helpers/quick-helper.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { useToast } from "@/hooks/useToast.ts";
@@ -20,19 +26,12 @@ import StockHistoryCard from "@/components/complex/custom-cards/stock-history-ca
 import ManageTraitsCard from "@/components/complex/custom-cards/manage-traits-card/ManageTraitsCard.tsx";
 import AddVariantCard from "@/components/complex/custom-cards/add-variant-card/AddVariantCard.tsx";
 import VariantPhotosCard from "@/components/complex/custom-cards/variant-photos-card/VariantPhotosCard.tsx";
-import {
-  addGridRowColor,
-  clearSelectedGridItems,
-  formatDate,
-  scrollToRefElement,
-  setSelectedGridItem,
-} from "@/utils/helpers/quick-helper.ts";
-import { GridModel } from "@/const/models/GridModel.ts";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
 import { GridRowsColorsEnum } from "@/const/enums/GridRowsColorsEnum.ts";
+import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 
 export function ManageVariantsPage() {
   const dispatch = useAppDispatch();
@@ -46,7 +45,11 @@ export function ManageVariantsPage() {
   );
   const { addToast } = useToast();
   const { productId } = useParams();
-  const cardRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const { handleCardAction, createRefCallback } = useCardActions({
+    selectActiveCards: (state) =>
+      state[StoreSliceEnum.MANAGE_VARIANTS].activeCards,
+    refreshAction: actions.refreshActiveCards,
+  });
   const { openConfirmationDialog } = useDialogService();
   const productsForItemsCard = productsService.itemsCardItemsConvertor(
     productsState.products,
@@ -69,26 +72,27 @@ export function ManageVariantsPage() {
   );
 
   useEffect(() => {
-    if (productsState.variants.length === 0) {
+    if (productsState.products?.length === 0) {
+      dispatch(productsActions.setIsItemsCardLoading(true));
+      productsService
+        .getTheProductsForGridHandler(productsState.productsGridRequestModel)
+        .then(() => {
+          dispatch(productsActions.setIsItemsCardLoading(false));
+        });
+    }
+    if (productsState.variants?.length === 0) {
       dispatch(productsActions.setIsItemsCardLoading(true));
       productsService
         .getVariantsForGridHandler(productsState.variantsGridRequestModel)
-        .then((res: GridModel) => {
+        .then(() => {
           dispatch(productsActions.setIsItemsCardLoading(false));
-          dispatch(productsActions.refreshVariants(res.items));
         });
     }
     if (state.listOfTraitsWithOptionsForProduct.length === 0) {
-      productsService
-        .getListOfTraitsWithOptionsForProductHandler(productId)
-        .then((res) => {
-          dispatch(actions.refreshListOfTraitsWithOptionsForProduct(res));
-        });
+      productsService.getListOfTraitsWithOptionsForProductHandler(productId);
     }
     if (productsState.taxesList.length === 0) {
-      productsService
-        .getTaxesListHandler()
-        .then((res) => dispatch(productsActions.refreshTaxesList(res)));
+      productsService.getTaxesListHandler();
     }
   }, [productId]);
 
@@ -100,9 +104,8 @@ export function ManageVariantsPage() {
       dispatch(productsActions.setIsProductMenuCardLoading(true));
       productsService
         .getCountersForProductsHandler(Number(productId))
-        .then((res) => {
+        .then(() => {
           dispatch(productsActions.setIsProductMenuCardLoading(false));
-          dispatch(productsActions.refreshProductCounter(res));
         });
     }
     if (
@@ -135,54 +138,6 @@ export function ManageVariantsPage() {
       dispatch(actions.refreshActiveCards([]));
     };
   }, [dispatch]);
-
-  function handleCardAction(
-    identifier: string,
-    forceOpen: boolean = false,
-    overrideActiveCards?: string[],
-  ) {
-    const activeCards = overrideActiveCards ?? state.activeCards;
-    let updatedCards: string[];
-
-    if (forceOpen) {
-      if (!activeCards.includes(identifier)) {
-        updatedCards = [...activeCards, identifier];
-        dispatch(actions.refreshActiveCards(updatedCards));
-        scrollToRefElement(cardRefs.current, identifier);
-      } else {
-        dispatch(actions.refreshActiveCards(activeCards));
-      }
-    } else {
-      updatedCards = activeCards.filter((card) => card !== identifier);
-      dispatch(actions.refreshActiveCards(updatedCards));
-    }
-  }
-
-  function handleMultipleCardActions(
-    cardIdentifiers: string[],
-    forceOpen = false,
-  ) {
-    let updatedCards = [...state.activeCards];
-    let lastAddedCard: string | null = null;
-
-    if (forceOpen) {
-      for (const card of cardIdentifiers) {
-        if (!updatedCards.includes(card)) {
-          updatedCards.push(card);
-          lastAddedCard = card;
-        }
-      }
-      dispatch(actions.refreshActiveCards(updatedCards));
-      if (lastAddedCard) {
-        scrollToRefElement(cardRefs.current, lastAddedCard);
-      }
-    } else {
-      updatedCards = updatedCards.filter(
-        (card) => !cardIdentifiers.includes(card),
-      );
-      dispatch(actions.refreshActiveCards(updatedCards));
-    }
-  }
 
   async function onAction(actionType: string, payload?: any) {
     switch (actionType) {
@@ -699,10 +654,7 @@ export function ManageVariantsPage() {
           .then((res) => {
             dispatch(actions.setIsChooseVariantTraitsCardLoading(false));
             if (res) {
-              handleMultipleCardActions([
-                "chooseVariantTraitsCard",
-                "productTraitConfigurationCard",
-              ]);
+              dispatch(actions.resetActiveCards());
               productsService
                 .getListOfTraitsWithOptionsForProductHandler(productId)
                 .then((res) => {
@@ -1009,11 +961,7 @@ export function ManageVariantsPage() {
         onAction={onAction}
       />
       {state.activeCards.includes("variantConfigurationCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["variantConfigurationCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("variantConfigurationCard")}>
           <VariantConfigurationCard
             isLoading={state.isVariantConfigurationCardLoading}
             isVariantOptionsGridLoading={state.isVariantOptionsGridLoading}
@@ -1029,11 +977,7 @@ export function ManageVariantsPage() {
         </div>
       )}
       {state.activeCards.includes("addStockCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["addStockCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("addStockCard")}>
           <AddStockCard
             isLoading={state.isAddStockCardLoading}
             onAction={onAction}
@@ -1045,11 +989,7 @@ export function ManageVariantsPage() {
         </div>
       )}
       {state.activeCards.includes("disposeStockCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["disposeStockCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("disposeStockCard")}>
           <DisposeStockCard
             isLoading={state.isDisposeStockCardLoading}
             variant={productsState.selectedVariant}
@@ -1059,11 +999,7 @@ export function ManageVariantsPage() {
         </div>
       )}
       {state.activeCards.includes("variantHistoryCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["variantHistoryCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("variantHistoryCard")}>
           <StockHistoryCard
             isLoading={state.isVariantHistoryCardLoading}
             isGridLoading={state.isVariantHistoryGridLoading}
@@ -1074,11 +1010,7 @@ export function ManageVariantsPage() {
         </div>
       )}
       {state.activeCards.includes("addVariantCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["addVariantCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("addVariantCard")}>
           <AddVariantCard
             isLoading={state.isAddVariantCardLoading}
             traits={state.listOfTraitsWithOptionsForProduct}
@@ -1088,11 +1020,7 @@ export function ManageVariantsPage() {
         </div>
       )}
       {state.activeCards.includes("manageTraitsCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["manageTraitsCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("manageTraitsCard")}>
           <ManageTraitsCard
             isLoading={state.isManageTraitsCardLoading}
             traits={state.listOfTraitsWithOptionsForProduct}
@@ -1103,11 +1031,7 @@ export function ManageVariantsPage() {
         </div>
       )}
       {state.activeCards.includes("chooseVariantTraitsCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["chooseVariantTraitsCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("chooseVariantTraitsCard")}>
           <ChooseVariantTraitsCard
             isLoading={state.isChooseVariantTraitsCardLoading}
             items={state.traits}
@@ -1120,11 +1044,7 @@ export function ManageVariantsPage() {
         </div>
       )}
       {state.activeCards.includes("productTraitConfigurationCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["productTraitConfigurationCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("productTraitConfigurationCard")}>
           <ProductTraitConfigurationCard
             isLoading={state.isProductTraitConfigurationCardLoading}
             isGridLoading={state.isTraitOptionsGridLoading}
@@ -1139,11 +1059,7 @@ export function ManageVariantsPage() {
         </div>
       )}
       {state.activeCards.includes("variantPhotosCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["variantPhotosCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("variantPhotosCard")}>
           <VariantPhotosCard
             isLoading={state.isVariantPhotosCardLoading}
             isVariantPhotoGridLoading={state.isVariantPhotoGridLoading}

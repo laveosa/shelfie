@@ -42,11 +42,45 @@ export function useCardActions({
     [activeCards, dispatch, refreshAction],
   );
 
+  const handleMultipleCardActions = useCallback(
+    (cardActions: Record<string, boolean>, overrideActiveCards?: string[]) => {
+      const currentCards = overrideActiveCards ?? activeCards;
+      let updatedCards = new Set(currentCards);
+      let lastAddedCard: string | null = null;
+
+      for (const [card, shouldOpen] of Object.entries(cardActions)) {
+        if (shouldOpen) {
+          if (!updatedCards.has(card)) {
+            updatedCards.add(card);
+            lastAddedCard = card;
+          }
+        } else {
+          updatedCards.delete(card);
+        }
+      }
+
+      const updatedCardsArray = Array.from(updatedCards);
+      dispatch(refreshAction(updatedCardsArray));
+
+      if (lastAddedCard) {
+        setTimeout(() => {
+          scrollToRefElement(cardRefs.current, lastAddedCard);
+        }, 100);
+      }
+    },
+    [activeCards, dispatch, refreshAction],
+  );
+
   const createRefCallback = useCallback((identifier: string) => {
     return (el: HTMLElement | null) => {
       cardRefs.current[identifier] = el;
     };
   }, []);
 
-  return { handleCardAction, cardRefs, createRefCallback };
+  return {
+    handleCardAction,
+    handleMultipleCardActions,
+    cardRefs,
+    createRefCallback,
+  };
 }

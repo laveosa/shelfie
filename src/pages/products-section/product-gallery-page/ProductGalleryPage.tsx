@@ -12,7 +12,6 @@ import cs from "@/pages/products-section/product-basic-data-page/ProductBasicDat
 import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
 import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
 import ProductPhotosCard from "@/components/complex/custom-cards/product-photos-card/ProductPhotosCard.tsx";
-import { GridModel } from "@/const/models/GridModel.ts";
 import ConnectImageCard from "@/components/complex/custom-cards/connect-image-card/ConnectImageCard.tsx";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
@@ -63,29 +62,20 @@ export function ProductGalleryPage() {
       dispatch(productsActions.setIsItemsCardLoading(true));
       productsService
         .getTheProductsForGridHandler(productsState.gridRequestModel)
-        .then((res) => {
+        .then(() => {
           dispatch(productsActions.setIsItemsCardLoading(false));
-          if (res) {
-            dispatch(productsActions.refreshProducts(res.items));
-          }
         });
     }
     if (!productsState.productCounter) {
       dispatch(productsActions.setIsProductMenuCardLoading(true));
-      productsService.getCountersForProductsHandler(productId).then((res) => {
+      productsService.getCountersForProductsHandler(productId).then(() => {
         dispatch(productsActions.setIsProductMenuCardLoading(false));
-        if (res) {
-          dispatch(productsActions.refreshProductCounter(res));
-        }
       });
     }
-    if (productsState.productPhotos.length === 0) {
-      dispatch(actions.setIsProductPhotosCardLoading(true));
-      productsService.getProductPhotosHandler(Number(productId)).then((res) => {
-        dispatch(actions.setIsProductPhotosCardLoading(false));
-        dispatch(productsActions.refreshProductPhotos(res));
-      });
-    }
+    dispatch(actions.setIsProductPhotosCardLoading(true));
+    productsService.getProductPhotosHandler(Number(productId)).then(() => {
+      dispatch(actions.setIsProductPhotosCardLoading(false));
+    });
   }, [productId]);
 
   function itemCardHandler(item) {
@@ -104,11 +94,7 @@ export function ProductGalleryPage() {
               .then((res) => {
                 dispatch(productsActions.refreshProductPhotos(res));
               });
-            productsService
-              .getCountersForProductsHandler(productId)
-              .then((res) => {
-                dispatch(productsActions.refreshProductCounter(res));
-              });
+            productsService.getCountersForProductsHandler(productId);
             addToast({
               text: "Photos added successfully",
               type: "success",
@@ -130,14 +116,10 @@ export function ProductGalleryPage() {
           )
           .then(() => {
             if (payload.newIndex === 0 || payload.oldIndex === 0) {
-              productsService
-                .getTheProductsForGridHandler(
-                  productsState.gridRequestModel,
-                  true,
-                )
-                .then((res: GridModel) => {
-                  dispatch(productsActions.refreshProducts(res.items));
-                });
+              productsService.getTheProductsForGridHandler(
+                productsState.gridRequestModel,
+                true,
+              );
             }
           });
         break;
@@ -193,10 +175,9 @@ export function ProductGalleryPage() {
       case "openConnectImageCard":
         dispatch(actions.setIsConnectImageCardLoading(true));
         dispatch(actions.setIsVariantsGridLoading(true));
-        service.getProductVariantsHandler(productId).then((res) => {
+        service.getProductVariantsHandler(productId).then(() => {
           dispatch(actions.setIsConnectImageCardLoading(false));
           dispatch(actions.setIsVariantsGridLoading(false));
-          dispatch(actions.refreshProductVariants(res));
         });
         dispatch(
           productsActions.refreshProductPhotos(

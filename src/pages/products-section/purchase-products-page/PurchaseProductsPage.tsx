@@ -1,6 +1,10 @@
 import { useNavigate, useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
+import {
+  formatDate,
+  setSelectedGridItem,
+} from "@/utils/helpers/quick-helper.ts";
 import cs from "./PurchaseProductsPage.module.scss";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
@@ -19,18 +23,11 @@ import CreateProductBrandCard from "@/components/complex/custom-cards/create-pro
 import { useToast } from "@/hooks/useToast.ts";
 import ManageProductCard from "@/components/complex/custom-cards/manage-product-card/ManageProductCard.tsx";
 import ProductPhotosCard from "@/components/complex/custom-cards/product-photos-card/ProductPhotosCard.tsx";
-import { GridModel } from "@/const/models/GridModel.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
 import ConnectImageCard from "@/components/complex/custom-cards/connect-image-card/ConnectImageCard.tsx";
-import {
-  formatDate,
-  scrollToRefElement,
-  setSelectedGridItem,
-} from "@/utils/helpers/quick-helper.ts";
 import ChooseVariantTraitsCard from "@/components/complex/custom-cards/choose-variant-traits-card/ChooseVariantTraitsCard.tsx";
 import ProductTraitConfigurationCard from "@/components/complex/custom-cards/product-trait-configuration-card/ProductTraitConfigurationCard.tsx";
 import AddVariantCard from "@/components/complex/custom-cards/add-variant-card/AddVariantCard.tsx";
-import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 import VariantConfigurationCard from "@/components/complex/custom-cards/variant-configuration-card/VariantConfigurationCard.tsx";
 import AddStockCard from "@/components/complex/custom-cards/add-stock-card/AddStockCard.tsx";
 import DisposeStockCard from "@/components/complex/custom-cards/dispose-stock-card/DisposeStockCard.tsx";
@@ -38,6 +35,7 @@ import StockHistoryCard from "@/components/complex/custom-cards/stock-history-ca
 import VariantPhotosCard from "@/components/complex/custom-cards/variant-photos-card/VariantPhotosCard.tsx";
 import ManageTraitsCard from "@/components/complex/custom-cards/manage-traits-card/ManageTraitsCard.tsx";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
+import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 
 export function PurchaseProductsPage() {
   const dispatch = useAppDispatch();
@@ -54,15 +52,16 @@ export function PurchaseProductsPage() {
   );
   const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
   const { purchaseId } = useParams();
-  const cardRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const { handleCardAction, handleMultipleCardActions, createRefCallback } =
+    useCardActions({
+      selectActiveCards: (state) =>
+        state[StoreSliceEnum.PURCHASE_PRODUCTS].activeCards,
+      refreshAction: actions.refreshActiveCards,
+    });
 
   useEffect(() => {
     if (!productsState.selectedPurchase) {
-      productsService
-        .getPurchaseDetailsHandler(purchaseId)
-        .then((res: PurchaseModel) => {
-          dispatch(productsActions.refreshSelectedPurchase(res));
-        });
+      productsService.getPurchaseDetailsHandler(purchaseId);
     }
     if (!productsState.purchaseCounters) {
       dispatch(actions.setIsProductMenuCardLoading(true));
@@ -90,12 +89,9 @@ export function PurchaseProductsPage() {
         state.purchasesProductsGridRequestModel,
       ),
       service.getPurchaseSummaryHandler(purchaseId),
-    ]).then(([gridModel, purchaseSummary]) => {
+    ]).then(() => {
       dispatch(actions.setIsPurchaseProductsCardLoading(false));
       dispatch(actions.setIsPurchasesProductsGridLoading(false));
-      dispatch(actions.refreshPurchasesProductsGridModel(gridModel));
-      dispatch(actions.refreshPurchaseProducts(gridModel.items));
-      dispatch(actions.refreshPurchaseSummary(purchaseSummary));
     });
   }, [state.purchasesProductsGridRequestModel]);
 
@@ -114,93 +110,25 @@ export function PurchaseProductsPage() {
 
   useEffect(() => {
     if (productsState.brands.length === 0) {
-      productsService.getBrandsForFilterHandler().then((res) => {
-        dispatch(productsActions.refreshBrands(res));
-      });
+      productsService.getBrandsForFilterHandler();
     }
     if (productsState.categories.length === 0) {
-      productsService.getCategoriesForFilterHandler().then((res) => {
-        dispatch(productsActions.refreshCategories(res));
-      });
+      productsService.getCategoriesForFilterHandler();
     }
     if (productsState.sortingOptions.length === 0) {
-      productsService.getSortingOptionsForGridHandler().then((res) => {
-        dispatch(productsActions.refreshSortingOptions(res));
-      });
+      productsService.getSortingOptionsForGridHandler();
     }
     if (productsState.suppliers.length === 0) {
-      productsService.getListOfSuppliersHandler().then((res) => {
-        dispatch(productsActions.refreshSuppliers(res));
-      });
+      productsService.getListOfSuppliersHandler();
     }
-    if (state.sizesForFilter.length === 0 || state.colorsForFilter.length === 0)
-      productsService.getTraitsForFilterHandler().then((res) => {
-        dispatch(
-          actions.refreshSizesForFilter(
-            res
-              .filter((trait) => trait.traitTypeId === 1)
-              .flatMap((trait) => trait.traitOptions),
-          ),
-        );
-        dispatch(
-          actions.refreshColorsForFilter(
-            res
-              .filter((trait) => trait.traitTypeId === 2)
-              .flatMap((trait) => trait.traitOptions),
-          ),
-        );
-      });
+    if (
+      state.sizesForFilter.length === 0 ||
+      state.colorsForFilter.length === 0
+    ) {
+      productsService.getTraitsForFilterHandler();
+    }
     dispatch(actions.refreshActiveCards(null));
   }, []);
-
-  function handleCardAction(
-    identifier: string,
-    forceOpen: boolean = false,
-    overrideActiveCards?: string[],
-  ) {
-    const activeCards: string[] = Array.isArray(overrideActiveCards)
-      ? overrideActiveCards
-      : Array.isArray(state.activeCards)
-        ? state.activeCards
-        : [];
-    let updatedCards: string[];
-
-    if (forceOpen) {
-      if (!activeCards.includes(identifier)) {
-        updatedCards = [...activeCards, identifier];
-        dispatch(actions.refreshActiveCards(updatedCards));
-        scrollToRefElement(cardRefs.current, identifier);
-      } else {
-        dispatch(actions.refreshActiveCards(activeCards));
-      }
-    } else {
-      updatedCards = activeCards.filter((card) => card !== identifier);
-      dispatch(actions.refreshActiveCards(updatedCards));
-    }
-  }
-
-  function handleMultipleCardActions(cardActions: Record<string, boolean>) {
-    let updatedCards = new Set(state.activeCards);
-    let lastAddedCard: string | null = null;
-
-    for (const [card, shouldOpen] of Object.entries(cardActions)) {
-      if (shouldOpen) {
-        if (!updatedCards.has(card)) {
-          updatedCards.add(card);
-          lastAddedCard = card;
-        }
-      } else {
-        updatedCards.delete(card);
-      }
-    }
-
-    const updatedCardsArray = Array.from(updatedCards);
-    dispatch(actions.refreshActiveCards(updatedCardsArray));
-
-    if (lastAddedCard) {
-      scrollToRefElement(cardRefs.current, lastAddedCard);
-    }
-  }
 
   function keepOnlyCards(openCardIdentifiers: string[] = []) {
     const currentActiveCards = Array.isArray(state.activeCards)
@@ -244,11 +172,8 @@ export function PurchaseProductsPage() {
                   state.purchasesProductsGridRequestModel,
                 ),
                 service.getPurchaseSummaryHandler(purchaseId),
-              ]).then(([gridModel, purchaseSummary]) => {
+              ]).then(() => {
                 dispatch(actions.setIsPurchasesProductsGridLoading(false));
-                dispatch(actions.refreshPurchasesProductsGridModel(gridModel));
-                dispatch(actions.refreshPurchaseProducts(gridModel.items));
-                dispatch(actions.refreshPurchaseSummary(purchaseSummary));
               });
               addToast({
                 text: "Variant added successfully",
@@ -293,10 +218,8 @@ export function PurchaseProductsPage() {
         Promise.all([
           productsService.getSimpleListOfAllBrandsHandler(),
           productsService.getAllCategoriesByOrganizationHandler(),
-        ]).then(([brands, categories]) => {
+        ]).then(() => {
           dispatch(actions.setIsPurchaseProductsCardLoading(false));
-          dispatch(actions.refreshBrands(brands));
-          dispatch(actions.refreshCategories(categories));
           handleMultipleCardActions({
             purchaseProductsCard: false,
             productConfigurationCard: true,
@@ -326,11 +249,7 @@ export function PurchaseProductsPage() {
         productsService.createNewCategoryHandler(state.category).then((res) => {
           if (res.data) {
             dispatch(productsActions.refreshCategory(res.data));
-            productsService
-              .getAllCategoriesByOrganizationHandler()
-              .then((res) => {
-                dispatch(productsActions.refreshCategories(res));
-              });
+            productsService.getAllCategoriesByOrganizationHandler();
             addToast({
               text: "Category created successfully",
               type: "success",
@@ -366,9 +285,7 @@ export function PurchaseProductsPage() {
         productsService.createBrandHandler(state.brand).then((res) => {
           if (res.data) {
             dispatch(productsActions.refreshBrand(res.data));
-            productsService.getSimpleListOfAllBrandsHandler().then((res) => {
-              dispatch(productsActions.refreshBrands(res));
-            });
+            productsService.getSimpleListOfAllBrandsHandler();
             addToast({
               text: "Brand created successfully",
               type: "success",
@@ -474,13 +391,8 @@ export function PurchaseProductsPage() {
             state.selectedPurchase.purchaseId,
             productsState.selectedProduct.productId,
           ),
-        ]).then(([traits, variants]) => {
+        ]).then(([_traits, variants]) => {
           dispatch(actions.setIsManageProductCardLoading(false));
-          dispatch(
-            productsActions.refreshListOfTraitsWithOptionsForProduct(
-              traits.data,
-            ),
-          );
           dispatch(actions.refreshPurchaseProductVariantsGridModel(variants));
           dispatch(actions.refreshPurchaseProductVariants(variants.items));
         });
@@ -494,9 +406,8 @@ export function PurchaseProductsPage() {
           dispatch(actions.setIsProductPhotosCardLoading(true));
           productsService
             .getProductPhotosHandler(Number(state.selectedProduct.productId))
-            .then((res) => {
+            .then(() => {
               dispatch(actions.setIsProductPhotosCardLoading(false));
-              dispatch(productsActions.refreshProductPhotos(res));
             });
         }
         break;
@@ -505,16 +416,12 @@ export function PurchaseProductsPage() {
         productsService.uploadPhotoHandler(payload).then((res) => {
           dispatch(actions.setIsImageUploaderLoading(false));
           if (res.data.photoId) {
-            productsService
-              .getProductPhotosHandler(Number(state.selectedProduct.productId))
-              .then((res) => {
-                dispatch(productsActions.refreshProductPhotos(res));
-              });
-            productsService
-              .getCountersForProductsHandler(state.selectedProduct.productId)
-              .then((res) => {
-                dispatch(productsActions.refreshProductCounter(res));
-              });
+            productsService.getProductPhotosHandler(
+              Number(state.selectedProduct.productId),
+            );
+            productsService.getCountersForProductsHandler(
+              state.selectedProduct.productId,
+            );
             addToast({
               text: "Photos added successfully",
               type: "success",
@@ -528,24 +435,11 @@ export function PurchaseProductsPage() {
         });
         break;
       case "changePhotoPosition":
-        productsService
-          .putPhotoInNewPositionHandler(
-            state.selectedProduct.productId,
-            payload.activeItem.photoId,
-            payload.newIndex,
-          )
-          .then(() => {
-            if (payload.newIndex === 0 || payload.oldIndex === 0) {
-              productsService
-                .getTheProductsForGridHandler(
-                  productsState.gridRequestModel,
-                  true,
-                )
-                .then((res: GridModel) => {
-                  dispatch(productsActions.refreshProducts(res.items));
-                });
-            }
-          });
+        productsService.putPhotoInNewPositionHandler(
+          state.selectedProduct.productId,
+          payload.activeItem.photoId,
+          payload.newIndex,
+        );
         break;
       case "deletePhoto":
         const confirmed = await openConfirmationDialog({
@@ -562,29 +456,9 @@ export function PurchaseProductsPage() {
         try {
           await productsService.deletePhotoHandler(payload.photoId);
 
-          const [productPhotos, counters, photos] = await Promise.all([
-            productsService.getProductPhotosHandler(
-              Number(state.selectedProduct.productId),
-            ),
-            productsService.getCountersForProductsHandler(
-              state.selectedProduct.productId,
-            ),
-            payload.id === 1
-              ? productsService.getTheProductsForGridHandler(
-                  productsState.gridRequestModel,
-                  true,
-                )
-              : Promise.resolve({ items: [] }),
-          ]);
-
-          queueMicrotask(() => {
-            dispatch(productsActions.refreshProductPhotos(productPhotos));
-            dispatch(productsActions.refreshProductCounter(counters));
-
-            if (payload.id === 1) {
-              dispatch(productsActions.refreshProducts(photos.items));
-            }
-          });
+          productsService.getProductPhotosHandler(
+            Number(state.selectedProduct.productId),
+          );
 
           addToast({
             text: "Photo deleted successfully",
@@ -632,8 +506,6 @@ export function PurchaseProductsPage() {
             productsService
               .getProductPhotosHandler(Number(state.selectedProduct.productId))
               .then((res) => {
-                dispatch(productsActions.refreshProductPhotos(res));
-
                 const selectedPhoto = res.find(
                   (photo) => state.selectedPhoto.photoId === photo.photoId,
                 );
@@ -660,8 +532,6 @@ export function PurchaseProductsPage() {
             productsService
               .getProductPhotosHandler(Number(state.selectedProduct.productId))
               .then((res) => {
-                dispatch(productsActions.refreshProductPhotos(res));
-
                 const selectedPhoto = res.find(
                   (photo) => state.selectedPhoto.photoId === photo.photoId,
                 );
@@ -689,22 +559,15 @@ export function PurchaseProductsPage() {
           productsService.getListOfTraitsWithOptionsForProductHandler(
             state.selectedProduct.productId,
           ),
-        ]).then(([traits, productTrait]) => {
+        ]).then(() => {
           dispatch(actions.setIsChooseVariantTraitsCardLoading(false));
-          dispatch(productsActions.refreshTraits(traits));
-          dispatch(
-            productsActions.refreshListOfTraitsWithOptionsForProduct(
-              productTrait,
-            ),
-          );
         });
         break;
       case "addTrait":
         dispatch(actions.setIsProductTraitConfigurationCardLoading(true));
         dispatch(actions.resetSelectedTrait());
-        productsService.getListOfTypesOfTraitsHandler().then((res) => {
+        productsService.getListOfTypesOfTraitsHandler().then(() => {
           dispatch(actions.setIsProductTraitConfigurationCardLoading(false));
-          dispatch(productsActions.refreshTypesOfTraits(res));
           handleCardAction("productTraitConfigurationCard", true);
           dispatch(actions.refreshSelectedTrait({}));
         });
@@ -717,7 +580,7 @@ export function PurchaseProductsPage() {
           productsService.getTraitHandler(payload),
           productsService.getOptionsForTraitHandler(payload),
           productsService.getListOfTypesOfTraitsHandler(),
-        ]).then(([trait, options, types]) => {
+        ]).then(([trait, options, _types]) => {
           dispatch(actions.setIsProductTraitConfigurationCardLoading(false));
           dispatch(actions.setIsTraitOptionsGridLoading(false));
           dispatch(actions.refreshSelectedTrait(trait));
@@ -727,11 +590,9 @@ export function PurchaseProductsPage() {
               items: options.filter((option) => !option.isDeleted),
             }),
           );
-          dispatch(productsActions.refreshTypesOfTraits(types));
         });
         break;
       case "setProductTraits":
-        console.log("PAYLOAD", payload);
         dispatch(actions.refreshSelectedTraitsIds(payload));
         dispatch(actions.setIsChooseVariantTraitsCardLoading(true));
         productsService
@@ -743,17 +604,9 @@ export function PurchaseProductsPage() {
                 chooseVariantTraitsCard: false,
                 productTraitConfigurationCard: false,
               });
-              productsService
-                .getListOfTraitsWithOptionsForProductHandler(
-                  productsState.selectedProduct.productId,
-                )
-                .then((res) => {
-                  dispatch(
-                    productsActions.refreshListOfTraitsWithOptionsForProduct(
-                      res,
-                    ),
-                  );
-                });
+              productsService.getListOfTraitsWithOptionsForProductHandler(
+                productsState.selectedProduct.productId,
+              );
               addToast({
                 text: "Traits set successfully",
                 type: "success",
@@ -782,19 +635,12 @@ export function PurchaseProductsPage() {
         try {
           await productsService.deleteTraitHandler(payload.traitId);
 
-          const [traitsWithOptions, allTraits] = await Promise.all([
+          await Promise.all([
             productsService.getListOfTraitsWithOptionsForProductHandler(
               state.selectedProduct.productId,
             ),
             productsService.getListOfAllTraitsHandler(),
           ]);
-
-          dispatch(
-            productsActions.refreshListOfTraitsWithOptionsForProduct(
-              traitsWithOptions,
-            ),
-          );
-          dispatch(productsActions.refreshTraits(allTraits));
 
           addToast({
             text: "Trait deleted successfully",
@@ -825,9 +671,7 @@ export function PurchaseProductsPage() {
                   }),
                 );
               });
-            productsService.getListOfAllTraitsHandler().then((res) => {
-              dispatch(productsActions.refreshTraits(res));
-            });
+            productsService.getListOfAllTraitsHandler();
             addToast({
               text: "Trait created successfully",
               type: "success",
@@ -848,9 +692,7 @@ export function PurchaseProductsPage() {
           .then((res) => {
             dispatch(actions.setIsProductTraitConfigurationCardLoading(false));
             if (res) {
-              productsService.getListOfAllTraitsHandler().then((res) => {
-                dispatch(productsActions.refreshTraits(res));
-              });
+              productsService.getListOfAllTraitsHandler();
               addToast({
                 text: "Trait updated successfully",
                 type: "success",
@@ -910,9 +752,7 @@ export function PurchaseProductsPage() {
                   items: [...state.colorOptionsGridModel.items, res],
                 }),
               );
-              productsService.getListOfAllTraitsHandler().then((res) => {
-                dispatch(productsActions.refreshTraits(res));
-              });
+              productsService.getListOfAllTraitsHandler();
               addToast({
                 text: "Option created successfully",
                 type: "success",
@@ -941,7 +781,7 @@ export function PurchaseProductsPage() {
         try {
           await productsService.deleteOptionsForTraitHandler(payload.optionId);
 
-          const [options, allTraits] = await Promise.all([
+          const [options, _allTraits] = await Promise.all([
             productsService.getOptionsForTraitHandler(
               state.selectedTrait.traitId,
             ),
@@ -954,7 +794,6 @@ export function PurchaseProductsPage() {
               items: options.filter((option) => !option.isDeleted),
             }),
           );
-          dispatch(productsActions.refreshTraits(allTraits));
 
           addToast({
             text: "Option deleted successfully",
@@ -985,11 +824,8 @@ export function PurchaseProductsPage() {
         dispatch(actions.setIsAddVariantCardLoading(true));
         productsService
           .getListOfTraitsWithOptionsForProductHandler(payload.productId)
-          .then((res) => {
+          .then(() => {
             dispatch(actions.setIsAddVariantCardLoading(false));
-            dispatch(
-              productsActions.refreshListOfTraitsWithOptionsForProduct(res),
-            );
           });
         break;
       case "addVariantGridAction":
@@ -1005,7 +841,7 @@ export function PurchaseProductsPage() {
             productsState.selectedPurchase.purchaseId,
             payload.productId,
           ),
-        ]).then(([productDetails, productTraits, variants]) => {
+        ]).then(([productDetails, _productTraits, variants]) => {
           dispatch(actions.setIsProductConfigurationCardLoading(false));
           dispatch(actions.setIsVariantGridLoading(false));
           if (productDetails) {
@@ -1020,11 +856,6 @@ export function PurchaseProductsPage() {
               type: "error",
             });
           }
-          dispatch(
-            productsActions.refreshListOfTraitsWithOptionsForProduct(
-              productTraits,
-            ),
-          );
           dispatch(actions.refreshPurchaseProductVariants(variants));
         });
         break;
@@ -1190,16 +1021,13 @@ export function PurchaseProductsPage() {
         service.deleteStockActionHandler(payload.stockActionId).then((res) => {
           if (res) {
             dispatch(actions.setIsPurchasesProductsGridLoading(true));
-            productsService;
             service
               .getListOfPurchaseProductsForGridHandler(
                 purchaseId,
                 state.purchasesProductsGridRequestModel,
               )
-              .then((res) => {
+              .then(() => {
                 dispatch(actions.setIsPurchasesProductsGridLoading(false));
-                dispatch(actions.refreshPurchasesProductsGridModel(res));
-                dispatch(actions.refreshPurchaseProducts(res.items));
               });
             addToast({
               text: "Stock action deleted successfully",
@@ -1228,7 +1056,7 @@ export function PurchaseProductsPage() {
             productsState.selectedPurchase.purchaseId,
             payload.productId,
           ),
-        ]).then(([variant, product, traits, variants]) => {
+        ]).then(([variant, product, _traits, variants]) => {
           dispatch(actions.setIsVariantConfigurationCardLoading(false));
           dispatch(actions.setIsVariantOptionsGridLoading(false));
           dispatch(actions.setIsVariantPhotoGridLoading(false));
@@ -1237,9 +1065,6 @@ export function PurchaseProductsPage() {
             dispatch(productsActions.refreshSelectedVariant(variant));
             dispatch(actions.refreshVariantPhotos(variant?.photos));
             dispatch(actions.setIsProductPhotoGridLoading(true));
-            dispatch(
-              productsActions.refreshListOfTraitsWithOptionsForProduct(traits),
-            );
             dispatch(actions.refreshPurchaseProductVariants(variants));
             productsService
               .getProductPhotosForVariantHandler(
@@ -1379,16 +1204,8 @@ export function PurchaseProductsPage() {
               });
             productsService
               .getProductPhotosHandler(Number(state.selectedProduct.productId))
-              .then((res) => {
+              .then(() => {
                 dispatch(actions.setIsProductPhotoGridLoading(false));
-                dispatch(productsActions.refreshProductPhotos(res));
-              });
-            productsService
-              .getCountersForProductsHandler(
-                Number(state.selectedProduct.productId),
-              )
-              .then((res) => {
-                dispatch(productsActions.refreshProductCounter(res));
               });
             addToast({
               text: "Photo uploaded successfully",
@@ -1421,7 +1238,6 @@ export function PurchaseProductsPage() {
             payload.photoId,
           )
           .then((res) => {
-            console.log("RES", res);
             if (!res.error) {
               dispatch(actions.setIsVariantPhotoGridLoading(true));
               productsService
@@ -1569,11 +1385,7 @@ export function PurchaseProductsPage() {
         counter={productsState.purchaseCounters}
       />
       {state.activeCards?.includes("purchaseProductsCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["purchaseProductsCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("purchaseProductsCard")}>
           <PurchaseProductsCard
             isLoading={state.isPurchaseProductsCardLoading}
             isPurchaseProductsGridLoading={state.isPurchasesProductsGridLoading}
@@ -1600,11 +1412,7 @@ export function PurchaseProductsPage() {
         </div>
       )}
       {state.activeCards?.includes("manageProductCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["manageProductCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("manageProductCard")}>
           <ManageProductCard
             isLoading={state.isManageProductCardLoading}
             purchase={productsState.selectedPurchase}
@@ -1619,11 +1427,7 @@ export function PurchaseProductsPage() {
         </div>
       )}
       {state.activeCards?.includes("productConfigurationCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["productConfigurationCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("productConfigurationCard")}>
           <ProductConfigurationCard
             isLoading={state.isProductConfigurationCardLoading}
             product={state.selectedProduct}
@@ -1651,11 +1455,7 @@ export function PurchaseProductsPage() {
         </div>
       )}
       {state.activeCards.includes("createCategoryCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["createCategoryCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("createCategoryCard")}>
           <CreateProductCategoryCard
             isLoading={state.isCreateCategoryCardLoading}
             category={productsState.category}
@@ -1664,11 +1464,7 @@ export function PurchaseProductsPage() {
         </div>
       )}
       {state.activeCards.includes("createBrandCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["createBrandCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("createBrandCard")}>
           <CreateProductBrandCard
             isLoading={state.isCreateBrandCardLoading}
             brand={productsState.brand}
@@ -1677,11 +1473,7 @@ export function PurchaseProductsPage() {
         </div>
       )}
       {state.activeCards.includes("productPhotosCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["productPhotosCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("productPhotosCard")}>
           <ProductPhotosCard
             isLoading={state.isProductPhotosCardLoading}
             isImageUploaderLoading={state.isImageUploaderLoading}
@@ -1695,11 +1487,7 @@ export function PurchaseProductsPage() {
         </div>
       )}
       {state.activeCards.includes("connectImageCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["connectImageCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("connectImageCard")}>
           <ConnectImageCard
             isLoading={state.isConnectImageCardLoading}
             isGridLoading={state.isVariantsGridLoading}
@@ -1711,11 +1499,7 @@ export function PurchaseProductsPage() {
         </div>
       )}
       {state.activeCards.includes("chooseVariantTraitsCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["chooseVariantTraitsCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("chooseVariantTraitsCard")}>
           <ChooseVariantTraitsCard
             isLoading={state.isChooseVariantTraitsCardLoading}
             items={productsState.traits}
@@ -1728,11 +1512,7 @@ export function PurchaseProductsPage() {
         </div>
       )}
       {state.activeCards.includes("productTraitConfigurationCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["productTraitConfigurationCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("productTraitConfigurationCard")}>
           <ProductTraitConfigurationCard
             isLoading={state.isProductTraitConfigurationCardLoading}
             isGridLoading={state.isTraitOptionsGridLoading}
@@ -1747,11 +1527,7 @@ export function PurchaseProductsPage() {
         </div>
       )}
       {state.activeCards.includes("addVariantCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["addVariantCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("addVariantCard")}>
           <AddVariantCard
             isLoading={state.isAddVariantCardLoading}
             traits={productsState.listOfTraitsWithOptionsForProduct}
@@ -1761,11 +1537,7 @@ export function PurchaseProductsPage() {
         </div>
       )}
       {state.activeCards.includes("variantConfigurationCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["variantConfigurationCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("variantConfigurationCard")}>
           <VariantConfigurationCard
             isLoading={state.isVariantConfigurationCardLoading}
             isVariantOptionsGridLoading={state.isVariantOptionsGridLoading}
@@ -1784,11 +1556,7 @@ export function PurchaseProductsPage() {
         </div>
       )}
       {state.activeCards.includes("addStockCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["addStockCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("addStockCard")}>
           <AddStockCard
             isLoading={state.isAddStockCardLoading}
             onAction={onAction}
@@ -1800,11 +1568,7 @@ export function PurchaseProductsPage() {
         </div>
       )}
       {state.activeCards.includes("disposeStockCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["disposeStockCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("disposeStockCard")}>
           <DisposeStockCard
             isLoading={state.isDisposeStockCardLoading}
             variant={productsState.selectedVariant}
@@ -1814,11 +1578,7 @@ export function PurchaseProductsPage() {
         </div>
       )}
       {state.activeCards.includes("variantHistoryCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["variantHistoryCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("variantHistoryCard")}>
           <StockHistoryCard
             isLoading={state.isVariantHistoryCardLoading}
             isGridLoading={state.isVariantHistoryGridLoading}
@@ -1829,11 +1589,7 @@ export function PurchaseProductsPage() {
         </div>
       )}
       {state.activeCards.includes("variantPhotosCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["variantPhotosCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("variantPhotosCard")}>
           <VariantPhotosCard
             isLoading={state.isVariantPhotosCardLoading}
             isVariantPhotoGridLoading={state.isVariantPhotoGridLoading}
@@ -1846,11 +1602,7 @@ export function PurchaseProductsPage() {
         </div>
       )}
       {state.activeCards.includes("manageTraitsCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["manageTraitsCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("manageTraitsCard")}>
           <ManageTraitsCard
             isLoading={state.isManageTraitsCardLoading}
             traits={productsState.listOfTraitsWithOptionsForProduct}

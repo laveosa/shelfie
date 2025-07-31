@@ -48,6 +48,7 @@ export default function usePurchaseProductsPageService() {
 
   function getPurchaseSummaryHandler(purchaseId: any) {
     return getPurchaseSummary(purchaseId).then((res: any) => {
+      dispatch(actions.refreshPurchaseSummary(res.data));
       return res.data;
     });
   }

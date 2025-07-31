@@ -8,6 +8,8 @@
 
     .createSupplierBlock {
       display: flex;
+      align-items: center;
+      justify-content: space-between;
       gap: vars.$paddingStandard;
 
       .createSupplierBlockText {

@@ -41,9 +41,8 @@ export function InvoicesPage() {
     }
     if (state.invoicesGridModel.items.length === 0) {
       dispatch(actions.setIsInvoiceCardGridLoading(true));
-      service.getInvoicesForGridHandler(Number(purchaseId)).then((res) => {
+      service.getInvoicesForGridHandler(Number(purchaseId)).then(() => {
         dispatch(actions.setIsInvoiceCardGridLoading(false));
-        dispatch(actions.refreshInvoicesGridModel(res));
       });
     }
   }, [purchaseId]);
@@ -60,10 +59,9 @@ export function InvoicesPage() {
             Promise.all([
               productsService.getPurchaseCountersHandler(Number(purchaseId)),
               service.getInvoicesForGridHandler(Number(purchaseId)),
-            ]).then(([_counters, gridModel]) => {
+            ]).then(() => {
               dispatch(actions.setIsProductMenuCardLoading(false));
               dispatch(actions.setIsInvoiceCardGridLoading(false));
-              dispatch(actions.refreshInvoicesGridModel(gridModel));
             });
             addToast({
               text: "Invoice added successfully",
