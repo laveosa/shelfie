@@ -1,6 +1,10 @@
 import PurchasesApiHooks from "@/utils/services/api/PurchasesApiService.ts";
+import { MarginsPageSliceActions as actions } from "@/state/slices/MarginsPageSlice.ts";
+import { useAppDispatch } from "@/utils/hooks/redux.ts";
 
 export function useMarginsPageService() {
+  const dispatch = useAppDispatch();
+
   const [getMarginsListForGrid] =
     PurchasesApiHooks.useGetMarginsListForGridMutation();
   const [getMarginItemsListForGrid] =
@@ -30,6 +34,7 @@ export function useMarginsPageService() {
 
   function getMarginsListForGridHandler(model) {
     return getMarginsListForGrid(model).then((res: any) => {
+      dispatch(actions.refreshMarginsList(res.data.items));
       return res.data;
     });
   }
@@ -39,12 +44,14 @@ export function useMarginsPageService() {
       purchaseId,
       model,
     }).then((res: any) => {
+      dispatch(actions.refreshMarginItemsGridModel(res.data));
       return res.data;
     });
   }
 
   function getAllMarginsHandler() {
     return getAllMargins().then((res: any) => {
+      dispatch(actions.refreshMarginsList(res.data));
       return res.data;
     });
   }

@@ -7,7 +7,6 @@ import CreateProductCategoryCard from "@/components/complex/custom-cards/create-
 import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
 import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
 import CreateProductBrandCard from "@/components/complex/custom-cards/create-product-brand-card/CreateProductBrandCard.tsx";
-import { GridModel } from "@/const/models/GridModel.ts";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
@@ -17,9 +16,8 @@ import { ProductBasicDataPageSliceActions as actions } from "@/state/slices/Prod
 import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
-import { ProductModel } from "@/const/models/ProductModel.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
-import { scrollToRefElement } from "@/utils/helpers/quick-helper.ts";
+import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 
 export function ProductBasicDataPage() {
   const dispatch = useAppDispatch();
@@ -33,7 +31,11 @@ export function ProductBasicDataPage() {
   const navigate = useNavigate();
   const { addToast } = useToast();
   const { productId } = useParams();
-  const cardRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const { handleCardAction, createRefCallback } = useCardActions({
+    selectActiveCards: (state) =>
+      state[StoreSliceEnum.PRODUCT_BASIC_DATA].activeCards,
+    refreshAction: actions.refreshActiveCards,
+  });
   const productsForItemsCard = productsService.itemsCardItemsConvertor(
     productsState.products,
     {
@@ -59,20 +61,15 @@ export function ProductBasicDataPage() {
       dispatch(productsActions.setIsItemsCardLoading(true));
       productsService
         .getTheProductsForGridHandler(productsState.gridRequestModel)
-        .then((res) => {
+        .then(() => {
           dispatch(productsActions.setIsItemsCardLoading(false));
-          dispatch(productsActions.refreshProducts(res.items));
         });
     }
     if (productsState.brands.length === 0) {
-      productsService.getSimpleListOfAllBrandsHandler().then((res) => {
-        dispatch(productsActions.refreshBrands(res));
-      });
+      productsService.getSimpleListOfAllBrandsHandler();
     }
     if (productsState.categories.length === 0) {
-      productsService.getAllCategoriesByOrganizationHandler().then((res) => {
-        dispatch(productsActions.refreshCategories(res));
-      });
+      productsService.getAllCategoriesByOrganizationHandler();
     }
     if (productId) {
       if (
@@ -80,9 +77,8 @@ export function ProductBasicDataPage() {
         productsState.product?.productId !== productId
       ) {
         dispatch(productsActions.setIsProductMenuCardLoading(true));
-        productsService.getCountersForProductsHandler(productId).then((res) => {
+        productsService.getCountersForProductsHandler(productId).then(() => {
           dispatch(productsActions.setIsProductMenuCardLoading(false));
-          dispatch(productsActions.refreshProductCounter(res));
         });
       }
       if (
@@ -90,13 +86,9 @@ export function ProductBasicDataPage() {
         productsState.product?.productId !== productId
       ) {
         dispatch(actions.setIsProductConfigurationCardLoading(true));
-        productsService
-          .getProductDetailsHandler(productId)
-          .then((res: ProductModel) => {
-            dispatch(actions.setIsProductConfigurationCardLoading(false));
-            dispatch(actions.refreshActiveCards(["basicData"]));
-            dispatch(productsActions.refreshProduct(res));
-          });
+        productsService.getProductDetailsHandler(productId).then(() => {
+          dispatch(actions.setIsProductConfigurationCardLoading(false));
+        });
       }
     } else {
       dispatch(productsActions.refreshProduct({}));
@@ -104,24 +96,8 @@ export function ProductBasicDataPage() {
     }
   }, [productId]);
 
-  function handleCardAction(identifier: string) {
-    const updatedCards = state.activeCards.includes(identifier)
-      ? state.activeCards.filter((card) => card !== identifier)
-      : [...state.activeCards, identifier];
-    scrollToRefElement(cardRefs.current, identifier);
-    dispatch(actions.refreshActiveCards(updatedCards));
-  }
-
   function itemCardClickHandler(item) {
     productsService.itemCardHandler(item);
-  }
-
-  function updateProductsList() {
-    productsService
-      .getTheProductsForGridHandler(productsState.gridRequestModel, true)
-      .then((res: GridModel) => {
-        dispatch(productsActions.refreshProducts(res.items));
-      });
   }
 
   function updateProductDetails(data) {
@@ -131,7 +107,10 @@ export function ProductBasicDataPage() {
       if (res.data) {
         dispatch(productsActions.refreshProduct(res.data));
         if (productsState.product.productName !== data.productName) {
-          updateProductsList();
+          productsService.getTheProductsForGridHandler(
+            productsState.gridRequestModel,
+            true,
+          );
         }
         addToast({
           text: "Product updated successfully",
@@ -153,11 +132,9 @@ export function ProductBasicDataPage() {
       dispatch(actions.setIsProductConfigurationCardLoading(false));
       if (res.data) {
         dispatch(productsActions.refreshSelectedProduct(res.data));
-        productsService
-          .getTheProductsForGridHandler(productsState.gridRequestModel)
-          .then((res: GridModel) => {
-            dispatch(productsActions.refreshProducts(res.items));
-          });
+        productsService.getTheProductsForGridHandler(
+          productsState.gridRequestModel,
+        );
         navigate(
           `${ApiUrlEnum.PRODUCTS}${ApiUrlEnum.PRODUCT_BASIC_DATA}/${res.data.productId}`,
         );
@@ -207,11 +184,7 @@ export function ProductBasicDataPage() {
         productsService.createNewCategoryHandler(state.category).then((res) => {
           if (res.data) {
             dispatch(productsActions.refreshCategory(res.data));
-            productsService
-              .getAllCategoriesByOrganizationHandler()
-              .then((res) => {
-                dispatch(productsActions.refreshCategories(res));
-              });
+            productsService.getAllCategoriesByOrganizationHandler();
             addToast({
               text: "Category created successfully",
               type: "success",
@@ -247,9 +220,7 @@ export function ProductBasicDataPage() {
         productsService.createBrandHandler(state.brand).then((res) => {
           if (res.data) {
             dispatch(productsActions.refreshBrand(res.data));
-            productsService.getSimpleListOfAllBrandsHandler().then((res) => {
-              dispatch(productsActions.refreshBrands(res));
-            });
+            productsService.getSimpleListOfAllBrandsHandler();
             addToast({
               text: "Brand created successfully",
               type: "success",
@@ -339,18 +310,16 @@ export function ProductBasicDataPage() {
         onGenerateProductCode={productsService.generateProductCodeHandler}
         onProductCodeCheck={productsService.checkProductCodeHandler}
         onOpenCreateProductCategoryCard={() =>
-          handleCardAction("createCategoryCard")
+          handleCardAction("createCategoryCard", true)
         }
-        onOpenCreateProductBrandCard={() => handleCardAction("createBrandCard")}
+        onOpenCreateProductBrandCard={() =>
+          handleCardAction("createBrandCard", true)
+        }
         onSecondaryButtonClick={() => navigate(NavUrlEnum.PRODUCTS)}
         onPrimaryButtonClick={(data) => onSubmitProductDataHandler(data)}
       />
       {state.activeCards.includes("createCategoryCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["createCategoryCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("createCategoryCard")}>
           <CreateProductCategoryCard
             isLoading={state.isCreateCategoryCardLoading}
             category={productsState.category}
@@ -359,11 +328,7 @@ export function ProductBasicDataPage() {
         </div>
       )}
       {state.activeCards.includes("createBrandCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["createBrandCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("createBrandCard")}>
           <CreateProductBrandCard
             isLoading={state.isCreateBrandCardLoading}
             brand={productsState.brand}

@@ -2,7 +2,10 @@ import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { useNavigate } from "react-router-dom";
 
 import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
-import { ProductsPageSliceActions as actions } from "@/state/slices/ProductsPageSlice.ts";
+import {
+  ProductsPageSliceActions as productsActions,
+  ProductsPageSliceActions as actions,
+} from "@/state/slices/ProductsPageSlice.ts";
 import UsersApiHooks from "@/utils/services/api/UsersApiService.ts";
 import PurchasesApiHooks from "@/utils/services/api/PurchasesApiService.ts";
 import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
@@ -149,6 +152,8 @@ export default function useProductsPageService() {
         if (res.error) {
           return;
         } else {
+          dispatch(actions.refreshProductsGridModel(res.data));
+          dispatch(actions.refreshProducts(res.data.items));
           return res.data;
         }
       });
@@ -162,6 +167,8 @@ export default function useProductsPageService() {
           if (res.error) {
             return;
           } else {
+            dispatch(actions.refreshProductsGridModel(res.data));
+            dispatch(actions.refreshProducts(res.data.items));
             return res.data;
           }
         });
@@ -176,6 +183,8 @@ export default function useProductsPageService() {
       if (res.error) {
         return;
       } else {
+        dispatch(actions.refreshPurchasesGridModel(res.data));
+        dispatch(actions.refreshPurchases(res.data.items));
         return res.data;
       }
     });
@@ -195,6 +204,8 @@ export default function useProductsPageService() {
       if (res.error) {
         return;
       } else {
+        dispatch(actions.refreshVariantsGridModel(res.data));
+        dispatch(actions.refreshVariants(res.data.items));
         return res.data;
       }
     });
@@ -223,12 +234,14 @@ export default function useProductsPageService() {
 
   function getCountersForProductsHandler(id: any) {
     return getCountersForProducts(id).then((res: any) => {
+      dispatch(actions.refreshProductCounter(res.data));
       return res.data;
     });
   }
 
   function getProductDetailsHandler(id) {
     return getProductDetails(id).then((res: any) => {
+      dispatch(actions.refreshProduct(res.data));
       return res.data;
     });
   }
@@ -264,6 +277,7 @@ export default function useProductsPageService() {
   function getProductPhotosHandler(id: number) {
     dispatch(actions.setIsProductPhotosLoading(true));
     return getProductPhotos(id).then((res: any) => {
+      dispatch(productsActions.refreshProductPhotos(res.data));
       dispatch(actions.setIsProductPhotosLoading(false));
       return res.data;
     });
@@ -355,6 +369,20 @@ export default function useProductsPageService() {
 
   function getTraitsForFilterHandler() {
     return getTraitsForFilter().then((res: any) => {
+      dispatch(
+        actions.refreshSizesForFilter(
+          res.data
+            .filter((trait) => trait.traitTypeId === 1)
+            .flatMap((trait) => trait.traitOptions),
+        ),
+      );
+      dispatch(
+        actions.refreshColorsForFilter(
+          res.data
+            .filter((trait) => trait.traitTypeId === 2)
+            .flatMap((trait) => trait.traitOptions),
+        ),
+      );
       return res.data;
     });
   }
@@ -367,12 +395,14 @@ export default function useProductsPageService() {
 
   function getSimpleListOfAllBrandsHandler() {
     return getSimpleListOfAllBrands(null).then((res: any) => {
+      dispatch(actions.refreshBrands(res.data));
       return res.data;
     });
   }
 
   function getAllCategoriesByOrganizationHandler() {
     return getAllCategoriesByOrganization(null).then((res: any) => {
+      dispatch(actions.refreshCategories(res.data));
       return res.data;
     });
   }
@@ -465,12 +495,14 @@ export default function useProductsPageService() {
 
   function getListOfTypesOfTraitsHandler() {
     return getListOfTypesOfTraits().then((res: any) => {
+      dispatch(actions.refreshTypesOfTraits(res.data));
       return res.data;
     });
   }
 
   function getListOfTraitsWithOptionsForProductHandler(id) {
     return getListOfTraitsWithOptionsForProduct(id).then((res: any) => {
+      dispatch(actions.refreshListOfTraitsWithOptionsForProduct(res.data));
       return res.data;
     });
   }

@@ -181,8 +181,8 @@ export function purchaseProductsGridColumns(
     },
     {
       accessorKey: "",
-      size: 220,
-      minSize: 220,
+      size: 260,
+      minSize: 260,
       header:
         activeTab === "connectProducts"
           ? "Quantity to add"
@@ -211,8 +211,8 @@ export function purchaseProductsGridColumns(
     {
       id: "rowActions",
       header: "",
-      size: 20,
-      minSize: 20,
+      size: 60,
+      minSize: 60,
       cell: ({ row, table }) => {
         return (
           <div style={{ display: "flex", justifyContent: "center" }}>

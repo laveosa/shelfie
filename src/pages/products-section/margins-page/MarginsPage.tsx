@@ -2,10 +2,7 @@ import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 import { merge } from "lodash";
 
-import {
-  scrollToRefElement,
-  setSelectedGridItem,
-} from "@/utils/helpers/quick-helper.ts";
+import { setSelectedGridItem } from "@/utils/helpers/quick-helper.ts";
 import { MarginsPageSliceActions as actions } from "@/state/slices/MarginsPageSlice";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { useToast } from "@/hooks/useToast.ts";
@@ -23,8 +20,8 @@ import SelectMarginCard from "@/components/complex/custom-cards/select-margin-ca
 import MarginConfigurationCard from "@/components/complex/custom-cards/margin-configuration-card/MarginConfigurationCard.tsx";
 import SalePriseManagementCard from "@/components/complex/custom-cards/sale-price-management-card/SalePriceManagementCard.tsx";
 import { AppSliceActions as appActions } from "@/state/slices/AppSlice.ts";
-import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 
 export function MarginsPage() {
   const dispatch = useAppDispatch();
@@ -40,7 +37,11 @@ export function MarginsPage() {
   );
   const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
   const { purchaseId } = useParams();
-  const cardRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const { handleCardAction, handleMultipleCardActions, createRefCallback } =
+    useCardActions({
+      selectActiveCards: (state) => state[StoreSliceEnum.MARGINS].activeCards,
+      refreshAction: actions.refreshActiveCards,
+    });
 
   useEffect(() => {
     if (!state.selectedMargin) {
@@ -57,9 +58,7 @@ export function MarginsPage() {
         .then(() => dispatch(actions.setIsProductMenuCardLoading(false)));
     }
     if (state.marginsList.length === 0) {
-      service.getAllMarginsHandler().then((res) => {
-        dispatch(actions.refreshMarginsList(res));
-      });
+      service.getAllMarginsHandler();
     }
     if (productsState.taxesList.length === 0) {
       productsService.getTaxesListHandler();
@@ -68,35 +67,16 @@ export function MarginsPage() {
       productsService.getSortingOptionsForGridHandler();
     }
     if (productsState.brands.length === 0) {
-      productsService.getBrandsForFilterHandler().then((res) => {
-        dispatch(productsActions.refreshBrands(res));
-      });
+      productsService.getBrandsForFilterHandler();
     }
     if (productsState.categories.length === 0) {
-      productsService.getCategoriesForFilterHandler().then((res) => {
-        dispatch(productsActions.refreshCategories(res));
-      });
+      productsService.getCategoriesForFilterHandler();
     }
     if (
       productsState.sizesForFilter.length === 0 ||
       productsState.colorsForFilter.length === 0
     )
-      productsService.getTraitsForFilterHandler().then((res) => {
-        dispatch(
-          productsActions.refreshSizesForFilter(
-            res
-              .filter((trait) => trait.traitTypeId === 1)
-              .flatMap((trait) => trait.traitOptions),
-          ),
-        );
-        dispatch(
-          productsActions.refreshColorsForFilter(
-            res
-              .filter((trait) => trait.traitTypeId === 2)
-              .flatMap((trait) => trait.traitOptions),
-          ),
-        );
-      });
+      productsService.getTraitsForFilterHandler();
     handleCardAction("salePriceManagementCard", true);
   }, [purchaseId]);
 
@@ -107,9 +87,8 @@ export function MarginsPage() {
         purchaseId,
         state.marginItemsGriRequestModel,
       )
-      .then((res) => {
+      .then(() => {
         dispatch(actions.setIsMarginProductsGridLoading(false));
-        dispatch(actions.refreshMarginItemsGridModel(res));
       });
   }, [state.marginItemsGriRequestModel]);
 
@@ -118,55 +97,6 @@ export function MarginsPage() {
       handleCardAction("salePriceManagementCard", true);
     }
   }, [state.activeCards]);
-
-  function handleCardAction(
-    identifier: string,
-    forceOpen: boolean = false,
-    overrideActiveCards?: string[],
-  ) {
-    const activeCards: string[] = Array.isArray(overrideActiveCards)
-      ? overrideActiveCards
-      : Array.isArray(state.activeCards)
-        ? state.activeCards
-        : [];
-    let updatedCards: string[];
-
-    if (forceOpen) {
-      if (!activeCards.includes(identifier)) {
-        updatedCards = [...activeCards, identifier];
-        dispatch(actions.refreshActiveCards(updatedCards));
-        scrollToRefElement(cardRefs.current, identifier);
-      } else {
-        dispatch(actions.refreshActiveCards(activeCards));
-      }
-    } else {
-      updatedCards = activeCards.filter((card) => card !== identifier);
-      dispatch(actions.refreshActiveCards(updatedCards));
-    }
-  }
-
-  function handleMultipleCardActions(cardActions: Record<string, boolean>) {
-    let updatedCards = new Set(state.activeCards);
-    let lastAddedCard: string | null = null;
-
-    for (const [card, shouldOpen] of Object.entries(cardActions)) {
-      if (shouldOpen) {
-        if (!updatedCards.has(card)) {
-          updatedCards.add(card);
-          lastAddedCard = card;
-        }
-      } else {
-        updatedCards.delete(card);
-      }
-    }
-
-    const updatedCardsArray = Array.from(updatedCards);
-    dispatch(actions.refreshActiveCards(updatedCardsArray));
-
-    if (lastAddedCard) {
-      scrollToRefElement(cardRefs.current, lastAddedCard);
-    }
-  }
 
   function handleGridRequestChange(updates: GridRequestModel) {
     if (updates.brands || updates.categories || updates.filter) {
@@ -255,9 +185,8 @@ export function MarginsPage() {
           dispatch(actions.setIsSelectMarginCardLoading(true));
           service
             .getMarginsListForGridHandler(state.marginsGridRequestModel)
-            .then((res) => {
+            .then(() => {
               dispatch(actions.setIsSelectMarginCardLoading(false));
-              dispatch(actions.refreshMarginsList(res.items));
             });
         }
         break;
@@ -288,9 +217,8 @@ export function MarginsPage() {
               .then((res) => {
                 if (res) {
                   dispatch(actions.setIsSelectMarginCardLoading(true));
-                  service.getAllMarginsHandler().then((res) => {
+                  service.getAllMarginsHandler().then(() => {
                     dispatch(actions.setIsSelectMarginCardLoading(false));
-                    dispatch(actions.refreshMarginsList(res));
                   });
                   addToast({
                     text: "Margin created successfully",
@@ -323,9 +251,8 @@ export function MarginsPage() {
             dispatch(actions.setIsSelectMarginCardLoading(true));
             service
               .getMarginsListForGridHandler(state.marginsGridRequestModel)
-              .then((res) => {
+              .then(() => {
                 dispatch(actions.setIsSelectMarginCardLoading(false));
-                dispatch(actions.refreshMarginsList(res.items));
               });
           }
           if (margin && marginRules) {
@@ -605,11 +532,7 @@ export function MarginsPage() {
         onAction={onAction}
       />
       {state.activeCards?.includes("salePriceManagementCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["salePriceManagementCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("salePriceManagementCard")}>
           <SalePriseManagementCard
             isLoading={state.isSalePriceManagementCardLoading}
             isGridLoading={state.isMarginProductsGridLoading}
@@ -626,11 +549,7 @@ export function MarginsPage() {
         </div>
       )}
       {state.activeCards?.includes("selectMarginCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["selectMarginCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("selectMarginCard")}>
           <SelectMarginCard
             isLoading={state.isSelectMarginCardLoading}
             isMarginListGridLoading={state.isMarginListGridLoading}
@@ -640,11 +559,7 @@ export function MarginsPage() {
         </div>
       )}
       {state.activeCards?.includes("marginConfigurationCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["marginConfigurationCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("marginConfigurationCard")}>
           <MarginConfigurationCard
             isLoading={state.isMarginConfigurationCardLoading}
             margin={state.managedMargin}
