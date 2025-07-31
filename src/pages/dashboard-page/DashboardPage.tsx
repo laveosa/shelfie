@@ -394,10 +394,15 @@ export function DashboardPage() {
             autoFocus
             // isSearch
             // icon={Users}
-            // minLength={4}
+            // minLength={6}
             // maxLength={10}
+            // pattern={ContextPatternEnum.EMAIL}
             required
-            onChange={(event) => console.log(event)}
+            onChange={(value, model) =>
+              console.log("ON CHANGE: ", value, model)
+            }
+            onDelay={(value, model) => console.log("ON DELAY: ", value, model)}
+            onBlur={(value, model) => console.log("ON BLUR: ", value, model)}
           />
         </div>
       </div>

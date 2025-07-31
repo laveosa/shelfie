@@ -1,7 +1,8 @@
-import { ComponentPropsWithRef, InputHTMLAttributes } from "react";
+import React, { ComponentPropsWithRef, InputHTMLAttributes } from "react";
 
 import { ContextPatternEnum } from "@/const/enums/ContextPatternEnum.ts";
 import { IShePrimitiveComponentWrapper } from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
+import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 
 type NativeInputProps = Omit<
   InputHTMLAttributes<HTMLInputElement>,
@@ -51,11 +52,32 @@ export interface ISheInput
   patternErrorMessage?: string;
   patternErrorMessageTransKey?: string;
   delayTime?: number;
-  onIsValid?: (value: boolean) => void;
-  onChange?: (value: string | number) => void;
-  onBlur?: (value: string | number) => void;
-  onDelay?: (value: string | number) => void;
-  onClear?: (value: null) => void;
+  onIsValid?(value: boolean): void;
+  onChange?(
+    value: string | number,
+    model?: IOutputEventModel<
+      string | number,
+      ISheInput,
+      React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent
+    >,
+  ): void;
+  onBlur?(
+    value: string | number,
+    model?: IOutputEventModel<
+      string | number,
+      ISheInput,
+      React.ChangeEvent<HTMLInputElement>
+    >,
+  ): void;
+  onDelay?(
+    value: string | number,
+    model?: IOutputEventModel<
+      string | number,
+      ISheInput,
+      React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent
+    >,
+  ): void;
+  onClear?(value: null): void;
 }
 
 export const SheInputDefaultModel: ISheInput = {

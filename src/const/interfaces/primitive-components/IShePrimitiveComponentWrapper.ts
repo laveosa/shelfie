@@ -39,7 +39,7 @@ export interface IShePrimitiveComponentWrapper
   style?: React.CSSProperties;
   minWidth?: string;
   maxWidth?: string;
-  fullWidth?: string;
+  fullWidth?: boolean;
   isLoading?: boolean;
   disable?: boolean;
   required?: boolean;

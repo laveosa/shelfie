@@ -22,7 +22,7 @@ export interface ISheMultiSelect<T>
   selectAllPlaceholderTransKey?: string;
   openOnFocus?: boolean;
   isOpen?: boolean;
-  onOpen?: (value: boolean) => void;
+  onOpen?(value: boolean): void;
   onClear?(value: null): void;
   onSelect?(
     values: T[],
