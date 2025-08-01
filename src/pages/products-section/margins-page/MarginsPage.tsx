@@ -523,7 +523,7 @@ export function MarginsPage() {
         isLoading={state.isProductMenuCardLoading}
         title="Report Purchase"
         itemsCollection="purchases"
-        productId={Number(purchaseId)}
+        itemId={Number(purchaseId)}
         counter={productsState.purchaseCounters}
       />
       <MarginForPurchaseCard

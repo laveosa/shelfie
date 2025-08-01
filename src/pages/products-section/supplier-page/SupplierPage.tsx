@@ -472,7 +472,7 @@ export function SupplierPage() {
         isLoading={state.isProductMenuCardLoading}
         title="Report Purchase"
         itemsCollection="purchases"
-        productId={Number(purchaseId)}
+        itemId={Number(purchaseId)}
         counter={productsState.purchaseCounters}
       />
       <SupplierCard

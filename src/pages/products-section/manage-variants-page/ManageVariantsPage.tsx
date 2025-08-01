@@ -949,7 +949,7 @@ export function ManageVariantsPage() {
         itemsCollection="products"
         counter={productsState.productCounter}
         onAction={handleCardAction}
-        productId={Number(productId)}
+        itemId={Number(productId)}
         activeCards={state.activeCards}
       />
       <ManageVariantsCard

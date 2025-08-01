@@ -282,7 +282,7 @@ export function ProductGalleryPage() {
         title={productId ? "Manage Product" : "Create Product"}
         itemsCollection="products"
         counter={productsState.productCounter}
-        productId={Number(productId)}
+        itemId={Number(productId)}
         activeCards={state.activeCards}
       />
       <ProductPhotosCard

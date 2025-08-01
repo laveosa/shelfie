@@ -5,7 +5,7 @@ import App from "@/App.tsx";
 import ErrorPage from "@/pages/error-page/ErrorPage.tsx";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { MessengerSectionRouter } from "@/router/MessengerSectionRouter.tsx";
-import { OrdersSectionRouter } from "@/router/OrdersSectionRouter.tsx";
+import { SalesSectionRouter } from "@/router/SalesSectionRouter.tsx";
 import { SettingsSectionRouter } from "@/router/SettingsSectionRouting.tsx";
 import { SupportSectionRouter } from "@/router/SupportSectionRouter.tsx";
 import { TransmissionsSectionRouter } from "@/router/TransmissionsSectionRouter.tsx";
@@ -65,20 +65,20 @@ const mainRouter = createBrowserRouter([
         },
       },
       {
-        path: NavUrlEnum.ORDERS,
+        path: NavUrlEnum.SALES,
         lazy: async (): Promise<{ element: JSX.Element }> => {
-          const { OrdersSection } = await import(
-            "@/pages/orders-section/OrdersSection.tsx"
+          const { SalesSection } = await import(
+            "@/pages/sales-section/SalesSection.tsx"
           );
           return {
             element: (
               <RouterGuard>
-                <OrdersSection />
+                <SalesSection />
               </RouterGuard>
             ),
           };
         },
-        children: OrdersSectionRouter,
+        children: SalesSectionRouter,
         handle: {
           crumb: () => <Link to={NavUrlEnum.ORDERS}>orders</Link>,
         },
