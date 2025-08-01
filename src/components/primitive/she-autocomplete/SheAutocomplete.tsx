@@ -17,25 +17,43 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheOption from "@/components/primitive/she-option/SheOption.tsx";
 import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
 import useDefaultRef from "@/utils/hooks/useDefaultRef.ts";
-import { getCustomProps } from "@/utils/helpers/props-helper.ts";
+import {
+  filterCustomProps,
+  getCustomProps,
+  removeCustomProps,
+} from "@/utils/helpers/props-helper.ts";
+import ShePrimitiveComponentWrapper from "@/components/primitive/she-primitive-component-wrapper/ShePrimitiveComponentWrapper.tsx";
 import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
+import { ISheAutocomplete } from "@/const/interfaces/primitive-components/ISheAutocomplete.ts";
 import {
-  ISheInput,
-  SheInputDefaultModel,
-} from "@/const/interfaces/primitive-components/ISheInput.ts";
-import {
-  ISheAutocomplete,
-  SheAutocompleteDefaultModel,
-} from "@/const/interfaces/primitive-components/ISheAutocomplete.ts";
+  IShePrimitiveComponentWrapper,
+  ShePrimitiveComponentWrapperDefaultModel,
+} from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
+import { SheLabelDefaultModel } from "@/const/interfaces/primitive-components/ISheLabel.ts";
+import { SheDescriptionBlockDefaultModel } from "@/const/interfaces/primitive-components/ISheDescriptionBlock.ts";
+import { SheErrorMessageBlockDefaultModel } from "@/const/interfaces/primitive-components/ISheErrorMessageBlock.ts";
+
+const SheAutocompletePCWDefaultModel: IShePrimitiveComponentWrapper = {
+  ...SheLabelDefaultModel,
+  ...SheDescriptionBlockDefaultModel,
+  ...SheErrorMessageBlockDefaultModel,
+  id: undefined,
+  className: undefined,
+  style: undefined,
+  minWidth: undefined,
+  maxWidth: undefined,
+  fullWidth: undefined,
+  isLoading: undefined,
+  disabled: undefined,
+  required: undefined,
+  ariaDescribedbyId: undefined,
+};
 
 export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
   // ==================================================================== PROPS
   const {
     ref: triggerRef,
     popoverRef,
-    id,
-    className = "",
-    style,
     elementClassName = "",
     elementStyle,
     popoverClassName = "",
@@ -52,9 +70,6 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     disabled,
     isLoading,
     isOpen,
-    minWidth,
-    maxWidth,
-    fullWidth,
     minAmount = 0,
     onOpen,
     onChange,
@@ -62,10 +77,21 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     onSearch,
     onSelect,
   } = props;
-  const sheInputProps = getCustomProps<ISheAutocomplete, ISheInput>(
-    props,
-    SheInputDefaultModel,
+  const shePrimitiveComponentWrapperProps = getCustomProps<
+    ISheAutocomplete,
+    IShePrimitiveComponentWrapper
+  >(props, ShePrimitiveComponentWrapperDefaultModel);
+  const autocompleteWrapperProps = filterCustomProps(
+    shePrimitiveComponentWrapperProps,
+    [SheAutocompletePCWDefaultModel],
   );
+  const inputWrapperProps = removeCustomProps(
+    shePrimitiveComponentWrapperProps,
+    [SheAutocompletePCWDefaultModel],
+  );
+
+  console.log("AUTOCOMPLETE PROPS: ", autocompleteWrapperProps);
+  console.log("INPUT PROPS: ", inputWrapperProps);
 
   // ==================================================================== STATE MANAGEMENT
   const [_items, setItems] = useState<ISheOption<string>[]>(null);
@@ -79,10 +105,14 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
   const _popoverRef = useDefaultRef<HTMLDivElement>(popoverRef);
 
   // ==================================================================== UTILITIES
-  const { setFocus, initializeItemsList, calculatePopoverWidth } =
-    useComponentUtilities({
-      identifier: "SheAutocomplete",
-    });
+  const {
+    ariaDescribedbyId,
+    setFocus,
+    initializeItemsList,
+    calculatePopoverWidth,
+  } = useComponentUtilities({
+    identifier: "SheAutocomplete",
+  });
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
@@ -156,7 +186,7 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     const tmpSearchValue = value.trim();
     _setIsOpen(_checkIsOpenCondition(true, tmpSearchValue));
     setSearchValue(tmpSearchValue);
-    if (onChange) onChange(tmpSearchValue);
+    onChange?.(tmpSearchValue);
   }
 
   function onBlurHandler() {
@@ -275,58 +305,55 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
   return (
     <Popover open={_open} onOpenChange={setOpen}>
       <Command>
-        <div
-          id={id}
-          className={`${cs.sheAutocomplete} ${className} ${fullWidth ? cs.fullWidth : ""}`}
-          style={{
-            minWidth,
-            maxWidth,
-            ...style,
-          }}
+        <ShePrimitiveComponentWrapper
+          {...autocompleteWrapperProps}
+          className={`${cs.sheAutocomplete} ${shePrimitiveComponentWrapperProps.className}`}
+          ariaDescribedbyId={ariaDescribedbyId}
         >
-          <div className={cs.sheAutocompleteTriggerContainer}>
-            <PopoverAnchor className={cs.sheAutocompleteTriggerAnchor}>
-              <SheInput
-                {...sheInputProps}
-                ref={_triggerRef}
-                className={elementClassName}
-                style={elementStyle}
-                value={_searchValue}
-                disabled={disabled}
-                autoFocus={autoFocus}
-                isLoading={_loading}
-                fullWidth
-                ignoreValidation
-                onFocus={onFocusHandler}
-                onKeyDown={onEnterHandler}
-                onChange={onChangeHandler}
-                onBlur={onBlurHandler}
-                onDelay={onSearchHandler}
-                onClear={onClearHandler}
-              />
-            </PopoverAnchor>
-            {showSelectBtn && (
-              <SheButton
-                className={cs.sheAutocompleteSelectButton}
-                icon={Check}
-                variant="secondary"
-                size="small"
-                isLoading={_loading}
-                disabled={
-                  !_searchValue ||
-                  _searchValue.length === 0 ||
-                  _selected === _searchValue
-                }
-                onKeyDown={(event) =>
-                  event.code === "Enter" &&
-                  onForceSelectHandler(_searchValue, event)
-                }
-                onClick={(event) => onForceSelectHandler(_searchValue, event)}
-                {...selectBtnProps}
-              />
-            )}
-          </div>
-        </div>
+          <PopoverAnchor className={cs.sheAutocompleteTriggerAnchor}>
+            <SheInput
+              ref={_triggerRef}
+              {...inputWrapperProps}
+              ariaDescribedbyId={ariaDescribedbyId}
+              className={elementClassName}
+              style={elementStyle}
+              value={_searchValue}
+              disabled={disabled}
+              autoFocus={autoFocus}
+              isLoading={_loading}
+              fullWidth
+              ignoreValidation
+              hideErrorMessage
+              hideDescription
+              onFocus={onFocusHandler}
+              onKeyDown={onEnterHandler}
+              onChange={onChangeHandler}
+              onBlur={onBlurHandler}
+              onDelay={onSearchHandler}
+              onClear={onClearHandler}
+            />
+          </PopoverAnchor>
+          {showSelectBtn && (
+            <SheButton
+              className={cs.sheAutocompleteSelectButton}
+              icon={Check}
+              variant="secondary"
+              size="small"
+              isLoading={_loading}
+              disabled={
+                !_searchValue ||
+                _searchValue.length === 0 ||
+                _selected === _searchValue
+              }
+              onKeyDown={(event) =>
+                event.code === "Enter" &&
+                onForceSelectHandler(_searchValue, event)
+              }
+              onClick={(event) => onForceSelectHandler(_searchValue, event)}
+              {...selectBtnProps}
+            />
+          )}
+        </ShePrimitiveComponentWrapper>
         <PopoverContent
           ref={_popoverRef}
           className={`${popoverClassName} ${cs.sheAutocompletePopoverContainer} ${disabled || isLoading ? "disabled" : ""}`}

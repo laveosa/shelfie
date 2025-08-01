@@ -1,17 +1,27 @@
-import React, { RefObject } from "react";
+import React, { ComponentPropsWithRef, RefObject } from "react";
 
 import { ISheInput } from "@/const/interfaces/primitive-components/ISheInput.ts";
 import { ISheButton } from "@/const/interfaces/primitive-components/ISheButton.ts";
 import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
 import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
+import { IShePrimitiveComponentWrapper } from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
 
-type NativeInputProps = Omit<ISheInput, "onSelect" | "id" | "size">;
-
-export interface ISheAutocomplete extends NativeInputProps {
+export interface ISheAutocomplete
+  extends Omit<
+      IShePrimitiveComponentWrapper,
+      | "ref"
+      | "onChange"
+      | "onBlur"
+      | "contextLengthLimitsClassName"
+      | "contextLengthLimitsStyle"
+      | "contextLengthLimitsValue"
+      | "isContextLengthLimitsValid"
+      | "minLength"
+      | "maxLength"
+    >,
+    Omit<ISheInput, "onSelect" | "id">,
+    ComponentPropsWithRef<any> {
   popoverRef?: RefObject<HTMLDivElement>;
-  id?: string;
-  className?: string;
-  style?: React.CSSProperties;
   elementClassName?: string;
   elementStyle?: React.CSSProperties;
   popoverClassName?: string;
@@ -27,9 +37,6 @@ export interface ISheAutocomplete extends NativeInputProps {
   disabled?: boolean;
   isLoading?: boolean;
   isOpen?: boolean;
-  minWidth?: string;
-  maxWidth?: string;
-  fullWidth?: boolean;
   minAmount?: number;
   onOpen?(value: boolean): void;
   onSearch?(value: string): void;
@@ -45,9 +52,6 @@ export interface ISheAutocomplete extends NativeInputProps {
 
 export const SheAutocompleteDefaultModel: ISheAutocomplete = {
   popoverRef: undefined,
-  id: undefined,
-  className: undefined,
-  style: undefined,
   elementClassName: undefined,
   elementStyle: undefined,
   popoverClassName: undefined,
@@ -63,9 +67,6 @@ export const SheAutocompleteDefaultModel: ISheAutocomplete = {
   disabled: undefined,
   isLoading: undefined,
   isOpen: undefined,
-  minWidth: undefined,
-  maxWidth: undefined,
-  fullWidth: undefined,
   minAmount: undefined,
   onOpen: undefined,
   onSearch: undefined,

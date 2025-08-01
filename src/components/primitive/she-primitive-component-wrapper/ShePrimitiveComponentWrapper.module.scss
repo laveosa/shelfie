@@ -51,7 +51,7 @@ $iconSize: 20px;
 // ======================================================== REQUIRED
 
 .shePrimitiveComponentWrapper.required {
-  .shePrimitiveComponentWrapperContainer:before {
+  > .shePrimitiveComponentWrapperContainer:before {
     position: absolute;
     left: -10px;
     top: -14px;

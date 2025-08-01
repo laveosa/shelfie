@@ -1,5 +1,5 @@
 import React, { JSX, useEffect, useRef, useState } from "react";
-import { isRegExp } from "lodash";
+import _, { isRegExp } from "lodash";
 
 import { Search } from "lucide-react";
 import cs from "./SheInput.module.scss";
@@ -266,9 +266,15 @@ export default function SheInput(props: ISheInput): JSX.Element {
       ariaDescribedbyId={ariaDescribedbyId}
       contextLengthLimitsValue={_textValue}
       isContextLengthLimitsValid={_isLengthValid}
-      errorMessage={_error}
-      errorMessageTransKey={_errorTransKey}
-      hideErrorMessage={!_showError}
+      errorMessage={shePrimitiveComponentWrapperProps.errorMessage ?? _error}
+      errorMessageTransKey={
+        shePrimitiveComponentWrapperProps.errorMessageTransKey ?? _errorTransKey
+      }
+      hideErrorMessage={
+        !_.isNil(shePrimitiveComponentWrapperProps.hideErrorMessage)
+          ? shePrimitiveComponentWrapperProps.hideErrorMessage
+          : !_showError
+      }
       onClear={onClearHandler}
     >
       <Input

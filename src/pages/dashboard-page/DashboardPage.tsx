@@ -263,6 +263,30 @@ export function DashboardPage() {
 
       <br />
 
+      <SheAutocomplete
+        id="ID_AUTOCOMPLETE"
+        className="CLASS-NAME-FOR-AUTOCOMPLETE"
+        required
+        label="Autocomplete"
+        items={optionsSimple}
+        // clearBtnPosition="out"
+        showClearBtn
+        // showSelectBtn
+        icon={Users}
+        // isLoading
+        // disabled
+        // autoFocus
+        description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
+        descriptionTransKey="f0923fj9wejfwe"
+        descriptionIcon={Users}
+        errorMessage="some error message some error message some error message some error message some error message"
+        errorMessageTransKey="f0wejfw9ejfkwlejfw"
+        errorMessageIcon={LayoutDashboard}
+        onSelect={(event, model) =>
+          console.log("Autocomplete value: ", event, model)
+        }
+      />
+
       {/*<UserForm genders={["male", "female"]} />
       <br />*/}
 
@@ -354,17 +378,24 @@ export function DashboardPage() {
           />
         </div>*/}
 
-        <div className="w-full flex">
+        {/*<div className="w-full flex">
           <SheAutocomplete
             label="Autocomplete"
             items={optionsSimple}
+            // clearBtnPosition="out"
             showClearBtn
-            showSelectBtn
+            // showSelectBtn
+            description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
+            descriptionTransKey="f0923fj9wejfwe"
+            descriptionIcon={Users}
+            errorMessage="some error message some error message some error message some error message some error message"
+            errorMessageTransKey="f0wejfw9ejfkwlejfw"
+            errorMessageIcon={LayoutDashboard}
             onSelect={(event, model) =>
               console.log("Autocomplete value: ", event, model)
             }
           />
-        </div>
+        </div>*/}
 
         {/*<div className="w-full flex">
           <SheInput
