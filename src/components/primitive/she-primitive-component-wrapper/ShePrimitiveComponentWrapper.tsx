@@ -52,7 +52,7 @@ export default function ShePrimitiveComponentWrapper(
   // ==================================================================== PROPS
   const {
     id,
-    className,
+    className = "",
     style,
     children,
     minWidth,
@@ -60,9 +60,11 @@ export default function ShePrimitiveComponentWrapper(
     fullWidth,
     required,
     icon,
+    iconPosition = "in",
     iconProps,
     showClearBtn,
     clearBtnPosition = "in",
+    view = "normal",
     onClear,
   } = props;
   const sheLabelProps = getCustomProps<
@@ -125,7 +127,7 @@ export default function ShePrimitiveComponentWrapper(
   return (
     <div
       id={id}
-      className={`${cs.shePrimitiveComponentWrapper} ${className} ${icon ? "withIcon" : ""} ${showClearBtn && clearBtnPosition === "in" ? "withClearButton" : ""} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""}`}
+      className={`${cs.shePrimitiveComponentWrapper} ${className} ${icon && iconPosition === "in" ? "withIcon" : ""} ${showClearBtn && clearBtnPosition === "in" ? "withClearButton" : ""} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""} ${view === "card" ? cs.card : ""}`}
       style={{
         minWidth,
         maxWidth,

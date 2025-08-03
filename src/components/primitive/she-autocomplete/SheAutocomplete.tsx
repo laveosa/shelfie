@@ -15,6 +15,7 @@ import { Popover, PopoverContent } from "@/components/ui/popover.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheOption from "@/components/primitive/she-option/SheOption.tsx";
+import ShePrimitiveComponentWrapper from "@/components/primitive/she-primitive-component-wrapper/ShePrimitiveComponentWrapper.tsx";
 import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
 import useDefaultRef from "@/utils/hooks/useDefaultRef.ts";
 import {
@@ -22,7 +23,6 @@ import {
   getCustomProps,
   removeCustomProps,
 } from "@/utils/helpers/props-helper.ts";
-import ShePrimitiveComponentWrapper from "@/components/primitive/she-primitive-component-wrapper/ShePrimitiveComponentWrapper.tsx";
 import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
 import { ISheAutocomplete } from "@/const/interfaces/primitive-components/ISheAutocomplete.ts";
 import {
@@ -47,6 +47,7 @@ const SheAutocompletePCWDefaultModel: IShePrimitiveComponentWrapper = {
   disabled: undefined,
   required: undefined,
   ariaDescribedbyId: undefined,
+  view: undefined,
 };
 
 export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
@@ -66,6 +67,8 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     noSearchPlaceholder = "no options was found...",
     noSearchPlaceholderTransKey = "PLACE_VALID_TRANS_KEY",
     items,
+    icon,
+    iconPosition = "in",
     autoFocus,
     disabled,
     isLoading,
@@ -89,9 +92,6 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     shePrimitiveComponentWrapperProps,
     [SheAutocompletePCWDefaultModel],
   );
-
-  console.log("AUTOCOMPLETE PROPS: ", autocompleteWrapperProps);
-  console.log("INPUT PROPS: ", inputWrapperProps);
 
   // ==================================================================== STATE MANAGEMENT
   const [_items, setItems] = useState<ISheOption<string>[]>(null);
@@ -356,7 +356,7 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
         </ShePrimitiveComponentWrapper>
         <PopoverContent
           ref={_popoverRef}
-          className={`${popoverClassName} ${cs.sheAutocompletePopoverContainer} ${disabled || isLoading ? "disabled" : ""}`}
+          className={`${popoverClassName} ${cs.sheAutocompletePopoverContainer} ${icon && iconPosition === "out" ? "withIcon" : ""} ${disabled || isLoading ? "disabled" : ""}`}
           style={{
             ...popoverStyle,
           }}

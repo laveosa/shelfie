@@ -1,21 +1,17 @@
 import React, { JSX } from "react";
 import _ from "lodash";
 
+import { XCircle } from "lucide-react";
 import cs from "./SheBadge.module.scss";
-import {
-  getCustomProps,
-  removeCustomProps,
-} from "@/utils/helpers/props-helper.ts";
+import { Badge } from "@/components/ui/badge.tsx";
+import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
+import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
+import { removeCustomProps } from "@/utils/helpers/props-helper.ts";
 import {
   ISheBadge,
   SheBadgeDefaultModel,
 } from "@/const/interfaces/primitive-components/ISheBadge.ts";
-import { Badge } from "@/components/ui/badge.tsx";
-import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
-import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
-import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-import { XCircle } from "lucide-react";
-import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
 
 export default function SheBadge<T>(props: ISheBadge<T>): JSX.Element {
   // ==================================================================== PROPS
@@ -44,20 +40,14 @@ export default function SheBadge<T>(props: ISheBadge<T>): JSX.Element {
     onClick,
     onClose,
   } = props;
-  const sheBadgeProps: ISheBadge<T> = getCustomProps<
-    ISheBadge<T>,
-    ISheBadge<T>
-  >(props, SheBadgeDefaultModel);
   const restProps = removeCustomProps<ISheBadge<T>>(props, [
     SheBadgeDefaultModel,
   ]);
 
   // ==================================================================== UTILITIES
-  const { getContextColorBasedOnVariant } = useComponentUtilities({
+  const { translate, getContextColorBasedOnVariant } = useComponentUtilities({
     identifier: "SheBadge",
   });
-
-  const { translate } = useAppTranslation();
   const contextColor = getContextColorBasedOnVariant(variant);
   const circleView = _isCircle();
 
@@ -67,7 +57,7 @@ export default function SheBadge<T>(props: ISheBadge<T>): JSX.Element {
     const tmpValue: T | string = value ?? text?.toString();
     onClick?.(tmpValue, {
       event,
-      model: sheBadgeProps,
+      model: props,
       value: tmpValue,
     });
   }
@@ -77,7 +67,7 @@ export default function SheBadge<T>(props: ISheBadge<T>): JSX.Element {
     const tmpValue: T | string = value ?? text?.toString();
     onClose?.(tmpValue, {
       event,
-      model: sheBadgeProps,
+      model: props,
       value: tmpValue,
     });
   }

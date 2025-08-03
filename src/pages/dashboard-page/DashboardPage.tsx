@@ -146,11 +146,13 @@ const badges: ISheBadge<string>[] = [
     text: "React",
     value: "REACT",
     icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1150px-React-icon.svg.png",
+    showCloseBtn: true,
   },
   {
     text: "Angular",
     value: "ANGULAR",
     icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/1200px-Angular_full_color_logo.svg.png",
+    showCloseBtn: true,
   },
   {
     text: "Vue",
@@ -263,6 +265,29 @@ export function DashboardPage() {
 
       <br />
 
+      <SheBadgeList
+        label="Badge List"
+        labelTransKey="0329j9wejf"
+        required
+        tooltip="some tooltip for Badge List component"
+        tooltipTransKey="9f2jfkwejlk"
+        items={badges}
+        itemsWrap="nowrap"
+        icon={Box}
+        // maxBadgeAmount="2"
+        // autoBadgeAmount
+        showCloseBtn
+        showClearBtn
+        onClick={(event, model) => console.log("ON CLICK: ", event, model)}
+        onClear={(event, model) => console.log("ON CLEAR: ", event, model)}
+        onClose={(event, model) => console.log("ON CLOSE: ", event, model)}
+        onCloseAllExtra={(event, model) =>
+          console.log("ON CLOSE ALL: ", event, model)
+        }
+      />
+      <br />
+      <br />
+
       <SheAutocomplete
         id="ID_AUTOCOMPLETE"
         className="CLASS-NAME-FOR-AUTOCOMPLETE"
@@ -270,6 +295,8 @@ export function DashboardPage() {
         label="Autocomplete"
         items={optionsSimple}
         // clearBtnPosition="out"
+        // iconPosition="out"
+        // view="card"
         showClearBtn
         // showSelectBtn
         icon={Users}
@@ -286,6 +313,7 @@ export function DashboardPage() {
           console.log("Autocomplete value: ", event, model)
         }
       />
+      <br />
 
       {/*<UserForm genders={["male", "female"]} />
       <br />*/}
@@ -309,7 +337,7 @@ export function DashboardPage() {
       <br />
 
       <div className="flex gap-5 flex-col">
-        {/*<div className="w-full flex">
+        <div className="w-full flex">
           <SheMultiSelect<string>
             label="MultiSelect"
             labelTransKey="909wefj09wejf09j"
@@ -326,6 +354,9 @@ export function DashboardPage() {
               descriptionTransKey: "wef902jf309jew09j",
               icon: Users,
             }}
+            // clearBtnPosition="out"
+            // iconPosition="out"
+            // view="card"
             items={optionsSimple}
             contextType="badges"
             showClearBtn
@@ -342,9 +373,10 @@ export function DashboardPage() {
             errorMessageIcon={LayoutDashboard}
             onSelect={(value, model) => console.log("onSelect: ", value, model)}
           />
-        </div>*/}
+        </div>
+        <br />
 
-        {/*<div className="w-full flex">
+        <div className="w-full flex">
           <SheSelect<string>
             label="Select"
             labelTransKey="909wefj09wejf09j"
@@ -361,6 +393,9 @@ export function DashboardPage() {
               descriptionTransKey: "wef902jf309jew09j",
               icon: Users,
             }}
+            // clearBtnPosition="out"
+            // iconPosition="out"
+            // view="card"
             items={optionsSimple}
             // items={_items}
             // selected={selected}
@@ -376,7 +411,8 @@ export function DashboardPage() {
             errorMessageIcon={LayoutDashboard}
             onSelect={(value, model) => onSelectHandler(value, model)}
           />
-        </div>*/}
+        </div>
+        <br />
 
         {/*<div className="w-full flex">
           <SheAutocomplete

@@ -3,35 +3,25 @@ import { Trans } from "react-i18next";
 import _ from "lodash";
 
 import cs from "./SheBadgeList.module.scss";
-import {
-  getCustomProps,
-  removeCustomProps,
-} from "@/utils/helpers/props-helper.ts";
-import SheLabel from "@/components/primitive/she-label/SheLabel.tsx";
-import SheClearButton from "@/components/primitive/she-clear-button/SheClearButton.tsx";
+import SheBadge from "@/components/primitive/she-badge/SheBadge.tsx";
+import ShePrimitiveComponentWrapper from "@/components/primitive/she-primitive-component-wrapper/ShePrimitiveComponentWrapper.tsx";
+import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
-import SheBadge from "@/components/primitive/she-badge/SheBadge.tsx";
-import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
+import { getCustomProps } from "@/utils/helpers/props-helper.ts";
 import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
-import { SheClearButtonDefaultModel } from "@/const/interfaces/primitive-components/ISheClearButton.ts";
+import { ISheBadgeList } from "@/const/interfaces/primitive-components/ISheBadgeList.ts";
 import {
-  ISheBadgeList,
-  SheBadgeListDefaultModel,
-} from "@/const/interfaces/primitive-components/ISheBadgeList.ts";
+  IShePrimitiveComponentWrapper,
+  ShePrimitiveComponentWrapperDefaultModel,
+} from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
 
 export default function SheBadgeList<T>(props: ISheBadgeList<T>): JSX.Element {
   // ==================================================================== PROPS
   const {
-    className = "",
-    style,
     elementClassName = "",
     elementStyle,
-    label,
-    labelTransKey,
-    tooltip,
     items,
     extraBudge,
     maxBadgeAmount,
@@ -40,14 +30,9 @@ export default function SheBadgeList<T>(props: ISheBadgeList<T>): JSX.Element {
     color,
     textColor,
     iconColor,
-    icon,
     elementIcon,
     placeholder = "no data to display...",
     placeholderTransKey = "PLACE_FOR_TRANS_KEY",
-    showClearBtn,
-    minWidth,
-    maxWidth,
-    fullWidth = autoBadgeAmount,
     elementMinWidth,
     elementMaxWidth,
     elementFullWidth,
@@ -56,7 +41,6 @@ export default function SheBadgeList<T>(props: ISheBadgeList<T>): JSX.Element {
     itemsWrap = "wrap",
     disabled,
     isLoading,
-    required,
     showCloseBtn,
     componentView = ComponentViewEnum.STANDARD,
     onClick,
@@ -64,14 +48,10 @@ export default function SheBadgeList<T>(props: ISheBadgeList<T>): JSX.Element {
     onCloseAllExtra,
     onClear,
   } = props;
-  const sheBadgeListProps: ISheBadgeList<T> = getCustomProps<
+  const shePrimitiveComponentWrapperProps = getCustomProps<
     ISheBadgeList<T>,
-    ISheBadgeList<T>
-  >(props, SheBadgeListDefaultModel);
-  const restProps = removeCustomProps<ISheBadgeList<T>>(props, [
-    SheBadgeListDefaultModel,
-    SheClearButtonDefaultModel,
-  ]);
+    IShePrimitiveComponentWrapper
+  >(props, ShePrimitiveComponentWrapperDefaultModel);
 
   // ==================================================================== STATE MANAGEMENT
   const [_items, setItems] = useState<ISheBadge<T>[]>(null);
@@ -112,7 +92,7 @@ export default function SheBadgeList<T>(props: ISheBadgeList<T>): JSX.Element {
     item: ISheBadge<T>,
     model: IOutputEventModel<T | string, ISheBadge<T>, React.MouseEvent>,
   ) {
-    onClick?.(item, model);
+    onClick?.(item, { ...model, model: props });
   }
 
   function onCloseHandler(
@@ -126,7 +106,7 @@ export default function SheBadgeList<T>(props: ISheBadgeList<T>): JSX.Element {
     );
     setItems(tmpList);
     _calculateMaxBadgeAmount(tmpList);
-    onClose?.(item, model);
+    onClose?.(item, { ...model, model: props });
   }
 
   function onCloseAllExtraHandler(
@@ -135,13 +115,13 @@ export default function SheBadgeList<T>(props: ISheBadgeList<T>): JSX.Element {
   ) {
     setItems(_items.slice(0, _maxBadgeAmount));
     setMaxBadgeAmount(null);
-    onCloseAllExtra?.(value, model as any);
+    onCloseAllExtra?.(value, { ...model, model: props } as any);
   }
 
   function onClearHandler(event) {
     setItems(null);
     setMaxBadgeAmount(null);
-    onClear?.(null, { event, value: null, model: sheBadgeListProps });
+    onClear?.(null, { event, value: null, model: { ...props, items: null } });
   }
 
   function onScrollHandler(event: React.WheelEvent<HTMLDivElement>) {
@@ -223,148 +203,262 @@ export default function SheBadgeList<T>(props: ISheBadgeList<T>): JSX.Element {
 
   // ==================================================================== LAYOUT
   return (
-    <div
-      className={`${cs.sheBadgeList} ${className} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""} ${cs[componentView]} ${cs[itemsWrap]}`}
-      style={{
-        minWidth,
-        maxWidth,
-        ...style,
-      }}
-      {...restProps}
+    <ShePrimitiveComponentWrapper
+      {...shePrimitiveComponentWrapperProps}
+      className={`${shePrimitiveComponentWrapperProps.className} ${cs.sheBadgeList} ${cs[componentView]} ${cs[itemsWrap]}`}
+      ariaDescribedbyId={ariaDescribedbyId}
+      clearBtnValue={items}
+      clearBtnPosition="out"
+      iconPosition="out"
+      onClear={onClearHandler}
     >
-      <div className={cs.sheBadgeListComponent}>
-        <SheLabel
-          label={label}
-          labelTransKey={labelTransKey}
-          tooltip={tooltip}
-          ariaDescribedbyId={ariaDescribedbyId}
-        />
-        <div className={cs.sheBadgeListControl}>
-          <SheIcon
-            icon={icon}
-            className={cs.iconBlock}
-            aria-describedby={ariaDescribedbyId}
-          />
+      <div
+        ref={badgeListContextRef}
+        className={cs.sheBadgeListContext}
+        style={{
+          paddingBottom: _scrollInfo?.hasHorizontalScroll ? "4px" : "0",
+        }}
+        role="list"
+        tabIndex={0}
+        onWheel={onScrollHandler}
+      >
+        {_items?.length > 0 ? (
           <div
-            ref={badgeListContextRef}
-            className={cs.sheBadgeListContext}
-            style={{
-              paddingBottom: _scrollInfo?.hasHorizontalScroll ? "4px" : "0",
-            }}
-            role="list"
-            tabIndex={0}
-            onWheel={onScrollHandler}
+            className={`${cs.sheBadgeListItemsContainer} ${cs.fadeInAnimation}`}
+            style={{ flexDirection: direction as any }}
           >
-            {_items?.length > 0 ? (
+            {_items.slice(0, _maxBadgeAmount || _items.length).map((item) => (
               <div
-                className={`${cs.sheBadgeListItemsContainer} ${cs.fadeInAnimation}`}
-                style={{ flexDirection: direction as any }}
+                key={item.id}
+                className={`${cs.sheBadgeListItem} badge-list-item-cover`}
+                style={{
+                  width:
+                    item.fullWidth || elementFullWidth ? "100%" : "fit-content",
+                  minWidth: item.minWidth || elementMinWidth,
+                  maxWidth: item.maxWidth || elementMaxWidth,
+                }}
               >
-                {_items
-                  .slice(0, _maxBadgeAmount || _items.length)
-                  .map((item) => (
-                    <div
-                      key={item.id}
-                      className={`${cs.sheBadgeListItem} badge-list-item-cover`}
-                      style={{
-                        width:
-                          item.fullWidth || elementFullWidth
-                            ? "100%"
-                            : "fit-content",
-                        minWidth: item.minWidth || elementMinWidth,
-                        maxWidth: item.maxWidth || elementMaxWidth,
-                      }}
-                    >
-                      <SheBadge<T>
-                        {...item}
-                        className={item.className || elementClassName}
-                        style={item.style || elementStyle}
-                        textWrap={item.textWrap || textWrap}
-                        color={item.color || color}
-                        textColor={item.textColor || textColor}
-                        iconColor={item.iconColor || iconColor}
-                        icon={item.icon || elementIcon}
-                        minWidth="100%"
-                        fullWidth={item.fullWidth || elementFullWidth}
-                        variant={(item.variant || variant) as any}
-                        disabled={
-                          !_.isNil(item.disabled) ? item.disabled : disabled
-                        }
-                        isLoading={
-                          !_.isNil(item.isLoading) ? item.isLoading : isLoading
-                        }
-                        showCloseBtn={
-                          !_.isNil(item.showCloseBtn)
-                            ? item.showCloseBtn
-                            : showCloseBtn
-                        }
-                        onClick={(value, model) => onClickHandler(item, model)}
-                        onClose={(value, model) => onCloseHandler(item, model)}
-                      />
-                    </div>
-                  ))}
-
-                {_maxBadgeAmount && _items?.length > _maxBadgeAmount && (
-                  <div className={cs.sheBadgeListItem}>
-                    <SheBadge<T>
-                      {...extraBudge}
-                      className={extraBudge?.className || elementClassName}
-                      elementClassName={cs.plusMoreBtn}
-                      style={extraBudge?.style || elementStyle}
-                      text={`+ ${_items.length - _maxBadgeAmount} ${translate("PLACE_VALID_TRANS_KEY", "more")}`}
-                      textWrap={extraBudge?.textWrap || textWrap}
-                      color={extraBudge?.color || color}
-                      textColor={extraBudge?.textColor || textColor}
-                      iconColor={extraBudge?.iconColor || iconColor}
-                      maxWidth={plusMoreBtnWidth + "px"}
-                      fullWidth={extraBudge?.fullWidth || elementFullWidth}
-                      variant={(extraBudge?.variant || variant) as any}
-                      value={
-                        _items.slice(_maxBadgeAmount, _items.length) as any
-                      }
-                      disabled={
-                        !_.isNil(extraBudge?.disabled)
-                          ? extraBudge?.disabled
-                          : disabled
-                      }
-                      isLoading={
-                        !_.isNil(extraBudge?.isLoading)
-                          ? extraBudge?.isLoading
-                          : isLoading
-                      }
-                      showCloseBtn={
-                        !_.isNil(extraBudge?.showCloseBtn)
-                          ? extraBudge?.showCloseBtn
-                          : showCloseBtn
-                      }
-                      onClick={(value: any, model) =>
-                        onClickHandler(value, model)
-                      }
-                      onClose={(value: any, model) =>
-                        onCloseAllExtraHandler(value, model)
-                      }
-                    />
-                  </div>
-                )}
+                <SheBadge<T>
+                  {...item}
+                  className={item.className || elementClassName}
+                  style={item.style || elementStyle}
+                  textWrap={item.textWrap || textWrap}
+                  color={item.color || color}
+                  textColor={item.textColor || textColor}
+                  iconColor={item.iconColor || iconColor}
+                  icon={item.icon || elementIcon}
+                  minWidth="100%"
+                  fullWidth={item.fullWidth || elementFullWidth}
+                  variant={(item.variant || variant) as any}
+                  disabled={!_.isNil(item.disabled) ? item.disabled : disabled}
+                  isLoading={
+                    !_.isNil(item.isLoading) ? item.isLoading : isLoading
+                  }
+                  showCloseBtn={
+                    !_.isNil(item.showCloseBtn)
+                      ? item.showCloseBtn
+                      : showCloseBtn
+                  }
+                  onClick={(value, model) => onClickHandler(item, model)}
+                  onClose={(value, model) => onCloseHandler(item, model)}
+                />
               </div>
-            ) : (
-              <div className={cs.noDataBlock}>
-                <span className="she-placeholder">
-                  <Trans i18nKey={placeholderTransKey}>{placeholder}</Trans>
-                </span>
+            ))}
+
+            {_maxBadgeAmount && _items?.length > _maxBadgeAmount && (
+              <div className={cs.sheBadgeListItem}>
+                <SheBadge<T>
+                  {...extraBudge}
+                  className={extraBudge?.className || elementClassName}
+                  elementClassName={cs.plusMoreBtn}
+                  style={extraBudge?.style || elementStyle}
+                  text={`+ ${_items.length - _maxBadgeAmount} ${translate("PLACE_VALID_TRANS_KEY", "more")}`}
+                  textWrap={extraBudge?.textWrap || textWrap}
+                  color={extraBudge?.color || color}
+                  textColor={extraBudge?.textColor || textColor}
+                  iconColor={extraBudge?.iconColor || iconColor}
+                  maxWidth={plusMoreBtnWidth + "px"}
+                  fullWidth={extraBudge?.fullWidth || elementFullWidth}
+                  variant={(extraBudge?.variant || variant) as any}
+                  value={_items.slice(_maxBadgeAmount, _items.length) as any}
+                  disabled={
+                    !_.isNil(extraBudge?.disabled)
+                      ? extraBudge?.disabled
+                      : disabled
+                  }
+                  isLoading={
+                    !_.isNil(extraBudge?.isLoading)
+                      ? extraBudge?.isLoading
+                      : isLoading
+                  }
+                  showCloseBtn={
+                    !_.isNil(extraBudge?.showCloseBtn)
+                      ? extraBudge?.showCloseBtn
+                      : showCloseBtn
+                  }
+                  onClick={(value: any, model) => onClickHandler(value, model)}
+                  onClose={(value: any, model) =>
+                    onCloseAllExtraHandler(value, model)
+                  }
+                />
               </div>
             )}
           </div>
-          <SheClearButton
-            clearBtnValue={_items && _items.length > 0}
-            showClearBtn={showClearBtn}
-            disabled={disabled}
-            isLoading={isLoading}
-            ariaDescribedbyId={ariaDescribedbyId}
-            onClear={onClearHandler}
-          />
-        </div>
+        ) : (
+          <div className={cs.noDataBlock}>
+            <span className="she-placeholder">
+              <Trans i18nKey={placeholderTransKey}>{placeholder}</Trans>
+            </span>
+          </div>
+        )}
       </div>
-    </div>
+    </ShePrimitiveComponentWrapper>
   );
 }
+
+/*
+return (
+  <div
+    className={`${cs.sheBadgeList} ${className} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""} ${cs[componentView]} ${cs[itemsWrap]}`}
+    style={{
+      minWidth,
+      maxWidth,
+      ...style,
+    }}
+    {...restProps}
+  >
+    <div className={cs.sheBadgeListComponent}>
+      <SheLabel
+        label={label}
+        labelTransKey={labelTransKey}
+        tooltip={tooltip}
+        ariaDescribedbyId={ariaDescribedbyId}
+      />
+      <div className={cs.sheBadgeListControl}>
+        <SheIcon
+          icon={icon}
+          className={cs.iconBlock}
+          aria-describedby={ariaDescribedbyId}
+        />
+        <div
+          ref={badgeListContextRef}
+          className={cs.sheBadgeListContext}
+          style={{
+            paddingBottom: _scrollInfo?.hasHorizontalScroll ? "4px" : "0",
+          }}
+          role="list"
+          tabIndex={0}
+          onWheel={onScrollHandler}
+        >
+          {_items?.length > 0 ? (
+            <div
+              className={`${cs.sheBadgeListItemsContainer} ${cs.fadeInAnimation}`}
+              style={{ flexDirection: direction as any }}
+            >
+              {_items
+                .slice(0, _maxBadgeAmount || _items.length)
+                .map((item) => (
+                  <div
+                    key={item.id}
+                    className={`${cs.sheBadgeListItem} badge-list-item-cover`}
+                    style={{
+                      width:
+                        item.fullWidth || elementFullWidth
+                          ? "100%"
+                          : "fit-content",
+                      minWidth: item.minWidth || elementMinWidth,
+                      maxWidth: item.maxWidth || elementMaxWidth,
+                    }}
+                  >
+                    <SheBadge<T>
+                      {...item}
+                      className={item.className || elementClassName}
+                      style={item.style || elementStyle}
+                      textWrap={item.textWrap || textWrap}
+                      color={item.color || color}
+                      textColor={item.textColor || textColor}
+                      iconColor={item.iconColor || iconColor}
+                      icon={item.icon || elementIcon}
+                      minWidth="100%"
+                      fullWidth={item.fullWidth || elementFullWidth}
+                      variant={(item.variant || variant) as any}
+                      disabled={
+                        !_.isNil(item.disabled) ? item.disabled : disabled
+                      }
+                      isLoading={
+                        !_.isNil(item.isLoading) ? item.isLoading : isLoading
+                      }
+                      showCloseBtn={
+                        !_.isNil(item.showCloseBtn)
+                          ? item.showCloseBtn
+                          : showCloseBtn
+                      }
+                      onClick={(value, model) => onClickHandler(item, model)}
+                      onClose={(value, model) => onCloseHandler(item, model)}
+                    />
+                  </div>
+                ))}
+
+              {_maxBadgeAmount && _items?.length > _maxBadgeAmount && (
+                <div className={cs.sheBadgeListItem}>
+                  <SheBadge<T>
+                    {...extraBudge}
+                    className={extraBudge?.className || elementClassName}
+                    elementClassName={cs.plusMoreBtn}
+                    style={extraBudge?.style || elementStyle}
+                    text={`+ ${_items.length - _maxBadgeAmount} ${translate("PLACE_VALID_TRANS_KEY", "more")}`}
+                    textWrap={extraBudge?.textWrap || textWrap}
+                    color={extraBudge?.color || color}
+                    textColor={extraBudge?.textColor || textColor}
+                    iconColor={extraBudge?.iconColor || iconColor}
+                    maxWidth={plusMoreBtnWidth + "px"}
+                    fullWidth={extraBudge?.fullWidth || elementFullWidth}
+                    variant={(extraBudge?.variant || variant) as any}
+                    value={
+                      _items.slice(_maxBadgeAmount, _items.length) as any
+                    }
+                    disabled={
+                      !_.isNil(extraBudge?.disabled)
+                        ? extraBudge?.disabled
+                        : disabled
+                    }
+                    isLoading={
+                      !_.isNil(extraBudge?.isLoading)
+                        ? extraBudge?.isLoading
+                        : isLoading
+                    }
+                    showCloseBtn={
+                      !_.isNil(extraBudge?.showCloseBtn)
+                        ? extraBudge?.showCloseBtn
+                        : showCloseBtn
+                    }
+                    onClick={(value: any, model) =>
+                      onClickHandler(value, model)
+                    }
+                    onClose={(value: any, model) =>
+                      onCloseAllExtraHandler(value, model)
+                    }
+                  />
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className={cs.noDataBlock}>
+                <span className="she-placeholder">
+                  <Trans i18nKey={placeholderTransKey}>{placeholder}</Trans>
+                </span>
+            </div>
+          )}
+        </div>
+        <SheClearButton
+          clearBtnValue={_items && _items.length > 0}
+          showClearBtn={showClearBtn}
+          disabled={disabled}
+          isLoading={isLoading}
+          ariaDescribedbyId={ariaDescribedbyId}
+          onClear={onClearHandler}
+        />
+      </div>
+    </div>
+  </div>
+);*/

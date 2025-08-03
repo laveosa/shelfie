@@ -260,7 +260,7 @@ export default function SheInput(props: ISheInput): JSX.Element {
   return (
     <ShePrimitiveComponentWrapper
       {...shePrimitiveComponentWrapperProps}
-      className={`${cs.sheInput} ${shePrimitiveComponentWrapperProps.className} ${!_isValid ? cs.invalid : ""}`}
+      className={`${shePrimitiveComponentWrapperProps.className} ${cs.sheInput} ${!_isValid ? cs.invalid : ""}`}
       icon={iconToRender}
       clearBtnValue={_textValue}
       ariaDescribedbyId={ariaDescribedbyId}

@@ -1,5 +1,7 @@
 @use "@/styles/variables" as vars;
 
+$iconSize: 20px;
+
 .sheAutocomplete {
   position: relative;
 
@@ -26,6 +28,10 @@
   div[role="listbox"] {
     overflow-y: unset;
     max-height: none;
+  }
+
+  &:global(.withIcon) {
+    margin-left: calc($iconSize + 4px);
   }
 
   .sheAutocompleteGroupContainer {
