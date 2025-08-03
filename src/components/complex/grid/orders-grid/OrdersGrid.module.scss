@@ -1,0 +1,19 @@
+.productStatus {
+  width: 100px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.productStatusAvailable {
+  border: 1px solid #38BF5E;
+  background: #EBF9EF;
+  color: #38BF5E;
+}
+
+.productStatusNotAvailable {
+  border: 1px solid #d31515;
+  background: #F9EBEBFF;
+  color: #d31515;
+}

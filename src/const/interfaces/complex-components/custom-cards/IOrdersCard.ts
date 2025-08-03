@@ -1,15 +1,14 @@
-import { ProductCountersModel } from "@/const/models/CounterModel.ts";
 import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
 
-export interface IOrdersPageSlice {
+export interface IOrdersCard {
   isLoading?: boolean;
-  isOrdersCardLoading?: boolean;
-  isOrdersGridLoading?: boolean;
+  isGridLoading?: boolean;
+  preferences?: PreferencesModel;
   sortingOptions?: GridSortingModel[];
   ordersGridModel?: GridModel;
   ordersGridRequestModel?: GridRequestModel;
-  activeCards?: any[];
-  productCounter?: ProductCountersModel;
+  onAction?: (identifier: string, payload?: any) => void;
 }

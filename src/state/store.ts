@@ -12,25 +12,26 @@ import TransmissionsPageSlice from "@/state/slices/TransmissionsPageSlice.ts";
 import UsersPageSlice from "@/state/slices/UsersPAgeSlice.ts";
 import ProductsPageSlice from "@/state/slices/ProductsPageSlice.ts";
 import AuthPageSlice from "@/state/slices/AuthPageSlice.ts";
+import ProductBasicDataPageSlice from "@/state/slices/ProductBasicDataPageSlice.ts";
+import ProductGalleryPageSlice from "@/state/slices/ProductGalleryPageSlice.ts";
+import ManageVariantsPageSlice from "@/state/slices/ManageVariantsPageSlice.ts";
+import MessengerApiService from "@/utils/services/api/MessengerApiService.ts";
+import AttributesPageSlice from "@/state/slices/AttributesPageSlice.ts";
+import SizeChartPageSlice from "@/state/slices/SizeChartPageSlice.ts";
+import DialogSlice from "@/state/slices/DialogSlice.ts";
+import PurchaseProductsPageSlice from "@/state/slices/PurchaseProductsPageSlice.ts";
+import MarginsPageSlice from "@/state/slices/MarginsPageSlice.ts";
+import InvoicesPageSlice from "@/state/slices/InvoicesPageSlice.ts";
+import SupplierPageSlice from "@/state/slices/SupplierPageSlice.ts";
 import { ProductsApiService } from "@/utils/services/api/ProductsApiService.ts";
 import { AuthApiService } from "@/utils/services/api/AuthApiService.ts";
 import { DictionaryApiService } from "@/utils/services/api/DictionaryApiService.ts";
 import { UsersApiService } from "@/utils/services/api/UsersApiService.ts";
 import { AssetsApiService } from "@/utils/services/api/AssetsApiService.ts";
-import ProductBasicDataPageSlice from "@/state/slices/ProductBasicDataPageSlice.ts";
-import ProductGalleryPageSlice from "@/state/slices/ProductGalleryPageSlice.ts";
-import ManageVariantsPageSlice from "@/state/slices/ManageVariantsPageSlice.ts";
-import MessengerApiService from "@/utils/services/api/MessengerApiService.ts";
 import { FacebookApiService } from "@/utils/services/api/FacebookApiService.ts";
-import AttributesPageSlice from "@/state/slices/AttributesPageSlice.ts";
-import SizeChartPageSlice from "@/state/slices/SizeChartPageSlice.ts";
-import DialogSlice from "@/state/slices/DialogSlice.ts";
 import { PurchasesApiService } from "@/utils/services/api/PurchasesApiService.ts";
 import { SuppliersApiService } from "@/utils/services/api/SuppliersApiService.ts";
-import PurchaseProductsPageSlice from "@/state/slices/PurchaseProductsPageSlice.ts";
-import MarginsPageSlice from "@/state/slices/MarginsPageSlice.ts";
-import InvoicesPageSlice from "@/state/slices/InvoicesPageSlice.ts";
-import SupplierPageSlice from "@/state/slices/SupplierPageSlice.ts";
+import { OrderApiService } from "@/utils/services/api/OrderApiService.ts";
 
 export const store = configureStore({
   reducer: {
@@ -64,6 +65,7 @@ export const store = configureStore({
     [AssetsApiService.reducerPath]: AssetsApiService.reducer,
     [MessengerApiService.reducerPath]: MessengerApiService.reducer,
     [FacebookApiService.reducerPath]: FacebookApiService.reducer,
+    [OrderApiService.reducerPath]: OrderApiService.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -75,7 +77,8 @@ export const store = configureStore({
       .concat(UsersApiService.middleware)
       .concat(AssetsApiService.middleware)
       .concat(MessengerApiService.middleware)
-      .concat(FacebookApiService.middleware),
+      .concat(FacebookApiService.middleware)
+      .concat(OrderApiService.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
