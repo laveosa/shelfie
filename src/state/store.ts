@@ -32,6 +32,14 @@ import { FacebookApiService } from "@/utils/services/api/FacebookApiService.ts";
 import { PurchasesApiService } from "@/utils/services/api/PurchasesApiService.ts";
 import { SuppliersApiService } from "@/utils/services/api/SuppliersApiService.ts";
 import { OrderApiService } from "@/utils/services/api/OrderApiService.ts";
+import OpenCartsPageSlice from "@/state/slices/OpenCartsPageSlice.ts";
+import OrderDetailsPageSlice from "@/state/slices/OrderDetailsPageSlice.ts";
+import OrderPaymentPageSlice from "@/state/slices/OrderPaymentPageSlice.ts";
+import OrderProductsPageSlice from "@/state/slices/OrderProductsPageSlice.ts";
+import PaymentsPageSlice from "@/state/slices/PaymentsPageSlice.ts";
+import ReturnsPageSlice from "@/state/slices/ReturnsPageSlice.ts";
+import ShipmentsPageSlice from "@/state/slices/ShipmentsPageSlice.ts";
+import OrderShipmentPageSlice from "@/state/slices/OrderShipmentPageSlice.ts";
 
 export const store = configureStore({
   reducer: {
@@ -40,7 +48,6 @@ export const store = configureStore({
     [StoreSliceEnum.AUTH]: AuthPageSlice.reducer,
     [StoreSliceEnum.DASHBOARD]: DashboardPageSlice.reducer,
     [StoreSliceEnum.MESSENGER]: MessengerPageSlice.reducer,
-    [StoreSliceEnum.ORDERS]: OrdersPageSlice.reducer,
     [StoreSliceEnum.PRODUCTS]: ProductsPageSlice.reducer,
     [StoreSliceEnum.PRODUCT_BASIC_DATA]: ProductBasicDataPageSlice.reducer,
     [StoreSliceEnum.PRODUCT_GALLERY]: ProductGalleryPageSlice.reducer,
@@ -56,6 +63,15 @@ export const store = configureStore({
     [StoreSliceEnum.SUPPORT]: SupportPageSlice.reducer,
     [StoreSliceEnum.TRANSMISSIONS]: TransmissionsPageSlice.reducer,
     [StoreSliceEnum.USERS]: UsersPageSlice.reducer,
+    [StoreSliceEnum.ORDERS]: OrdersPageSlice.reducer,
+    [StoreSliceEnum.OPEN_CARTS]: OpenCartsPageSlice.reducer,
+    [StoreSliceEnum.RETURNS]: ReturnsPageSlice.reducer,
+    [StoreSliceEnum.SHIPMENTS]: ShipmentsPageSlice.reducer,
+    [StoreSliceEnum.PAYMENTS]: PaymentsPageSlice.reducer,
+    [StoreSliceEnum.ORDER_DETAILS]: OrderDetailsPageSlice.reducer,
+    [StoreSliceEnum.ORDER_PRODUCTS]: OrderProductsPageSlice.reducer,
+    [StoreSliceEnum.ORDER_SHIPMENT]: OrderShipmentPageSlice.reducer,
+    [StoreSliceEnum.ORDER_PAYMENT]: OrderPaymentPageSlice.reducer,
     [AuthApiService.reducerPath]: AuthApiService.reducer,
     [ProductsApiService.reducerPath]: ProductsApiService.reducer,
     [PurchasesApiService.reducerPath]: PurchasesApiService.reducer,
