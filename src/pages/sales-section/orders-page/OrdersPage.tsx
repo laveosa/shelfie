@@ -1,5 +1,6 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import React, { useEffect } from "react";
+import { merge } from "lodash";
 
 import { OrdersPageSliceActions as actions } from "@/state/slices/OrdersPageSlice.ts";
 import cs from "./OrdersPage.module.scss";
@@ -7,10 +8,12 @@ import useOrdersPageService from "@/pages/sales-section/orders-page/useOrdersPag
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
 import OrdersCard from "@/components/complex/custom-cards/orders-card/OrdersCard.tsx";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
+import { AppSliceActions as appActions } from "@/state/slices/AppSlice.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 
 export function OrdersPage() {
   const dispatch = useAppDispatch();
@@ -18,11 +21,6 @@ export function OrdersPage() {
   const state = useAppSelector<IOrdersPageSlice>(StoreSliceEnum.ORDERS);
   const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
   const navigate = useNavigate();
-  const { customerId } = useParams();
-  const { handleCardAction, createRefCallback } = useCardActions({
-    selectActiveCards: (state) => state[StoreSliceEnum.INVOICES].activeCards,
-    refreshAction: actions.refreshActiveCards,
-  });
   useEffect(() => {
     service.getListOfOrdersForGridHandler(state.ordersGridRequestModel);
   }, [state.ordersGridRequestModel]);
@@ -33,13 +31,49 @@ export function OrdersPage() {
     }
   }, []);
 
+  function handleGridRequestChange(updates: GridRequestModel) {
+    if (updates.brands || updates.categories || updates.filter) {
+      dispatch(
+        actions.refreshOrdersGridRequestModel({
+          ...state.ordersGridRequestModel,
+          currentPage: 1,
+          ...updates,
+        }),
+      );
+    } else {
+      dispatch(
+        actions.refreshOrdersGridRequestModel({
+          ...state.ordersGridRequestModel,
+          ...updates,
+        }),
+      );
+    }
+  }
+
   async function onAction(actionType: string, payload: any) {
     switch (actionType) {
+      case "createOrder":
+        service.createOrderHandler().then((res) => {
+          navigate(
+            `${NavUrlEnum.SALES}${NavUrlEnum.ORDERS}${NavUrlEnum.ORDER_DETAILS}/${res.id}`,
+          );
+        });
+        break;
       case "manageOrder":
-        console.log("MANAGE", payload);
-        // navigate(
-        //   `${NavUrlEnum.PRODUCTS}`,
-        // );
+        navigate(
+          `${NavUrlEnum.SALES}${NavUrlEnum.ORDERS}${NavUrlEnum.ORDER_DETAILS}/${payload.id}`,
+        );
+        break;
+      case "gridRequestChange":
+        handleGridRequestChange(payload);
+        break;
+      case "applyColumns":
+        const modifiedModel = merge({}, appState.preferences, payload);
+        dispatch(appActions.refreshPreferences(modifiedModel));
+        service.updateUserPreferencesHandler(modifiedModel);
+        break;
+      case "resetColumns":
+        service.resetUserPreferencesHandler("products");
         break;
     }
   }

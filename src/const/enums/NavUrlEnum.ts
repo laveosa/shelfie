@@ -26,4 +26,8 @@ export enum NavUrlEnum {
   TRANSMISSIONS = "/transmissions",
   USERS = "/users",
   SALES = "/sales",
+  ORDER_DETAILS = "/order-details",
+  ORDER_PRODUCTS = "/order-products",
+  ORDER_SHIPMENT = "/order-shipment",
+  ORDER_PAYMENT = "/order-payment",
 }

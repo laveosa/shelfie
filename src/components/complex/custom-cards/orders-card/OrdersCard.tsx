@@ -1,4 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
+import { Plus } from "lucide-react";
 
 import {
   DataWithId,
@@ -9,6 +10,8 @@ import GridShowDeletedFilter from "@/components/complex/grid/grid-show-deleted-f
 import { IOrdersCard } from "@/const/interfaces/complex-components/custom-cards/IOrdersCard.ts";
 import { ordersGridColumns } from "@/components/complex/grid/orders-grid/OrdersGridColumns.tsx";
 import cs from "./OrdersCard.module.scss";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
 
 export default function OrdersCard({
   isLoading,
@@ -19,17 +22,25 @@ export default function OrdersCard({
   ordersGridRequestModel,
   onAction,
 }: IOrdersCard) {
+  function onGridAction(
+    _rowId?: string,
+    _setLoadingRow?: (rowId: string, loading: boolean) => void,
+    rowData?: any,
+  ) {
+    onAction("manageOrder", rowData);
+  }
+
   return (
-    <div className={cs.salePriceManagementCard}>
+    <div className={cs.ordersCard}>
       <SheProductCard
         title="Orders"
         isLoading={isLoading}
-        className={cs.salePriceManagementCardContent}
+        className={cs.ordersCardContent}
         minWidth="1100px"
       >
         <DndGridDataTable
           isLoading={isGridLoading}
-          columns={ordersGridColumns(onAction) as ColumnDef<DataWithId>[]}
+          columns={ordersGridColumns(onGridAction) as ColumnDef<DataWithId>[]}
           data={ordersGridModel.items}
           gridModel={ordersGridModel}
           sortingItems={sortingOptions}
@@ -42,9 +53,18 @@ export default function OrdersCard({
             onAction("gridRequestChange", updates)
           }
         >
+          <SheDatePicker mode="range" />
           <GridShowDeletedFilter />
         </DndGridDataTable>
       </SheProductCard>
+      <SheButton
+        className={cs.createOrderButton}
+        icon={Plus}
+        variant="default"
+        onClick={() => onAction("createOrder")}
+        value="Create Order"
+        bgColor="#007AFF"
+      />
     </div>
   );
 }

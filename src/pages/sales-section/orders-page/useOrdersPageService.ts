@@ -6,8 +6,12 @@ import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSli
 import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
 import { OrdersPageSliceActions as actions } from "@/state/slices/OrdersPageSlice.ts";
 import OrderApiHooks from "@/utils/services/api/OrderApiService.ts";
+import UsersApiHooks from "@/utils/services/api/UsersApiService.ts";
+import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
+import useAppService from "@/useAppService.ts";
 
 export default function useOrdersPageService() {
+  const appService = useAppService();
   const state = useSelector(
     (state: RootState): IOrdersPageSlice => state[StoreSliceEnum.ORDERS],
   );
@@ -17,6 +21,11 @@ export default function useOrdersPageService() {
     DictionaryApiHooks.useLazyGetSortingOptionsForGridQuery();
   const [getListOfOrdersForGrid] =
     OrderApiHooks.useGetListOfOrdersForGridMutation();
+  const [updateUserPreferences] =
+    UsersApiHooks.useUpdateUserPreferencesMutation();
+  const [resetUserPreferences] =
+    UsersApiHooks.useResetUserPreferencesMutation();
+  const [createOrder] = OrderApiHooks.useCreateOrderMutation();
 
   function getSortingOptionsForGridHandler() {
     return getSortingOptionsForGrid(null).then((res: any) => {
@@ -34,5 +43,30 @@ export default function useOrdersPageService() {
     });
   }
 
-  return { getSortingOptionsForGridHandler, getListOfOrdersForGridHandler };
+  function updateUserPreferencesHandler(model: PreferencesModel) {
+    return updateUserPreferences(model).then(() => {
+      appService.getUserPreferencesHandler();
+    });
+  }
+
+  function resetUserPreferencesHandler(grid) {
+    return resetUserPreferences(grid).then(() => {
+      appService.getUserPreferencesHandler();
+    });
+  }
+
+  function createOrderHandler() {
+    return createOrder().then((res) => {
+      dispatch(actions.refreshSelectedOrder(res.data));
+      return res.data;
+    });
+  }
+
+  return {
+    getSortingOptionsForGridHandler,
+    getListOfOrdersForGridHandler,
+    updateUserPreferencesHandler,
+    resetUserPreferencesHandler,
+    createOrderHandler,
+  };
 }

@@ -18,6 +18,12 @@ export const OrderApiService = createApi({
         body: JSON.stringify(model),
       }),
     }),
+    createOrder: apiConfig.createMutation<any, void>(builder, {
+      query: () => ({
+        url: `${ApiUrlEnum.ORDERS}`,
+        method: "POST",
+      }),
+    }),
   }),
 });
 

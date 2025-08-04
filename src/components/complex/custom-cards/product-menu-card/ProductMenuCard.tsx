@@ -109,7 +109,6 @@ const salesMenuItems: MenuItem[] = [
   },
   {
     id: "open_carts",
-    counterId: "productsAmount",
     icon: <ShoppingBag />,
     label: "Open Carts",
     path: NavUrlEnum.OPEN_CARTS,
@@ -122,17 +121,42 @@ const salesMenuItems: MenuItem[] = [
   },
   {
     id: "returns",
-    counterId: "invoicesAmount",
     icon: <RotateCcwSquare />,
     label: "Returns",
     path: NavUrlEnum.RETURNS,
   },
   {
     id: "payments",
-    counterId: "invoicesAmount",
     icon: <Banknote />,
     label: "Payments",
     path: NavUrlEnum.PAYMENTS,
+  },
+];
+
+const orderMenuItems: MenuItem[] = [
+  {
+    id: "details",
+    icon: <ShoppingCart />,
+    label: "Details",
+    path: NavUrlEnum.ORDER_DETAILS,
+  },
+  {
+    id: "products",
+    icon: <ShoppingBag />,
+    label: "Products",
+    path: NavUrlEnum.ORDER_PRODUCTS,
+  },
+  {
+    id: "shipment",
+    icon: <Truck />,
+    label: "Shipment",
+    path: NavUrlEnum.ORDER_SHIPMENT,
+  },
+  {
+    id: "payment",
+    icon: <Banknote />,
+    label: "Payment",
+    path: NavUrlEnum.ORDER_PAYMENT,
   },
 ];
 
@@ -157,6 +181,14 @@ const collectionConfigs: Record<string, CollectionConfig> = {
     menuItems: salesMenuItems,
     pathBase: NavUrlEnum.ORDERS,
     urlBuilder: (path: string) => `${NavUrlEnum.SALES}${path}`,
+    disableItemsWithoutId: false,
+  },
+  order: {
+    menuItems: orderMenuItems,
+    defaultEnabledItem: "order",
+    pathBase: NavUrlEnum.ORDER_DETAILS,
+    urlBuilder: (path: string, itemId?: string) =>
+      `${NavUrlEnum.SALES}${NavUrlEnum.ORDERS}${path}/${itemId || ""}`,
     disableItemsWithoutId: false,
   },
 };
@@ -188,7 +220,6 @@ export default function ProductMenuCard({
   const renderMenuItem = ({ id, counterId, icon, label, path }: MenuItem) => {
     const fullPath = config.urlBuilder(path, "");
     const pathBase = fullPath.replace(/\/$/, "");
-
     const currentPath = location.pathname.replace(/\/$/, "");
     const isSelected =
       currentPath.startsWith(pathBase) || currentPath === pathBase;

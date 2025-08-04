@@ -5,6 +5,7 @@ import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSli
 import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
 import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { OrderModel } from "@/const/models/OrderModel.ts";
 
 const initialState: IOrdersPageSlice = {
   isLoading: false,
@@ -20,6 +21,7 @@ const initialState: IOrdersPageSlice = {
     currentPage: 1,
     pageSize: 10,
   },
+  selectedOrder: null,
 };
 
 //----------------------------------------------------- LOADERS
@@ -73,6 +75,13 @@ function refreshOrdersGridRequestModel(
     action?.payload || state.ordersGridRequestModel;
 }
 
+function refreshSelectedOrder(
+  state: IOrdersPageSlice,
+  action: PayloadAction<OrderModel>,
+) {
+  state.selectedOrder = action?.payload || state.selectedOrder;
+}
+
 const OrdersPageSlice = createSlice({
   name: StoreSliceEnum.ORDERS,
   initialState,
@@ -84,6 +93,7 @@ const OrdersPageSlice = createSlice({
     refreshSortingOptions,
     refreshOrdersGridModel,
     refreshOrdersGridRequestModel,
+    refreshSelectedOrder,
   },
 });
 
