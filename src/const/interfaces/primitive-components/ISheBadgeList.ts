@@ -1,6 +1,5 @@
 import React, { ComponentPropsWithRef } from "react";
 
-import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
@@ -34,7 +33,6 @@ export interface ISheBadgeList<T>
   disabled?: boolean;
   isLoading?: boolean;
   showCloseBtn?: boolean;
-  componentView?: ComponentViewEnum;
   onClick?(
     value: ISheBadge<T>,
     model?: IOutputEventModel<T | string, ISheBadge<T>, React.MouseEvent>,
@@ -76,7 +74,6 @@ export const SheBadgeListDefaultModel: ISheBadgeList<any> = {
   disabled: undefined,
   isLoading: undefined,
   showCloseBtn: undefined,
-  componentView: undefined,
   onClick: undefined,
   onClose: undefined,
   onCloseAllExtra: undefined,

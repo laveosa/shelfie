@@ -196,6 +196,7 @@ export function DashboardPage() {
   const [_items, setItems] = useState<ISheMultiSelectItem<any>[]>(null);
   const [selected, setSelected] = useState<any>(null);
   const [isLoading, setIsLoading] = useState<boolean>(null);
+  const [_badges, setBadges] = useState<ISheBadge<string>[]>(null);
 
   const searchRef = useRef<HTMLInputElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -207,6 +208,8 @@ export function DashboardPage() {
     setTimeout(() => {
       // setItems(optionsSimple);
       // setItems(options);
+
+      setBadges(badges);
     }, 1000);
 
     /*const timer = setTimeout(() => {
@@ -271,11 +274,12 @@ export function DashboardPage() {
         required
         tooltip="some tooltip for Badge List component"
         tooltipTransKey="9f2jfkwejlk"
-        items={badges}
+        items={_badges}
+        // items={badges}
         itemsWrap="nowrap"
-        icon={Box}
-        // maxBadgeAmount="2"
-        // autoBadgeAmount
+        icon={Home}
+        // maxBadgeAmount="4"
+        autoBadgeAmount
         showCloseBtn
         showClearBtn
         onClick={(event, model) => console.log("ON CLICK: ", event, model)}
@@ -294,8 +298,8 @@ export function DashboardPage() {
         required
         label="Autocomplete"
         items={optionsSimple}
-        // clearBtnPosition="out"
-        // iconPosition="out"
+        clearBtnPosition="out"
+        iconPosition="out"
         // view="card"
         showClearBtn
         // showSelectBtn
@@ -303,6 +307,7 @@ export function DashboardPage() {
         // isLoading
         // disabled
         // autoFocus
+        fullWidth
         description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
         descriptionTransKey="f0923fj9wejfwe"
         descriptionIcon={Users}

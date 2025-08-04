@@ -6,6 +6,11 @@ $iconSize: 20px;
   max-width: none;
   width: fit-content;
 
+  .sheBadgeListSkeleton {
+    position: relative;
+    padding-left: 32px;
+  }
+
   .sheBadgeListContext {
     width: 100%;
     overflow-x: auto;
@@ -25,6 +30,24 @@ $iconSize: 20px;
         width: fit-content;
       }
     }
+  }
+}
+
+// ======================================================== WITH ICON
+
+.sheBadgeList.withIcon {
+  .autocompleteIcon {
+    top: 2px !important;
+  }
+}
+
+// ======================================================== CLEAR BUTTON
+
+.sheBadgeList {
+  .sheBadgeListClearButton {
+    align-self: flex-start;
+    position: relative;
+    top: 1px;
   }
 }
 

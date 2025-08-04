@@ -5,7 +5,6 @@ import _ from "lodash";
 import cs from "./SheBadgeList.module.scss";
 import SheBadge from "@/components/primitive/she-badge/SheBadge.tsx";
 import ShePrimitiveComponentWrapper from "@/components/primitive/she-primitive-component-wrapper/ShePrimitiveComponentWrapper.tsx";
-import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { getCustomProps } from "@/utils/helpers/props-helper.ts";
@@ -42,7 +41,7 @@ export default function SheBadgeList<T>(props: ISheBadgeList<T>): JSX.Element {
     disabled,
     isLoading,
     showCloseBtn,
-    componentView = ComponentViewEnum.STANDARD,
+    icon,
     onClick,
     onClose,
     onCloseAllExtra,
@@ -59,7 +58,7 @@ export default function SheBadgeList<T>(props: ISheBadgeList<T>): JSX.Element {
   const [_maxBadgeAmount, setMaxBadgeAmount] = useState<number>(null);
 
   // ==================================================================== REFS
-  const badgeListContextRef = useRef(null);
+  const badgeListContextRef = useRef<HTMLDivElement>(null);
 
   // ==================================================================== UTILITIES
   const { ariaDescribedbyId, addItemsId, removeItemFromListByIdentifier } =
@@ -78,8 +77,12 @@ export default function SheBadgeList<T>(props: ISheBadgeList<T>): JSX.Element {
   }, []);
 
   useEffect(() => {
-    if (!_.isEqual(items, _items))
+    if (!_.isEqual(items, _items)) {
       setItems(addItemsId(_calculateMaxBadgeAmount(items)));
+      setTimeout(() =>
+        setScrollInfo(_hasVisibleScroll(badgeListContextRef.current)),
+      );
+    }
   }, [items]);
 
   useEffect(() => {
@@ -205,11 +208,14 @@ export default function SheBadgeList<T>(props: ISheBadgeList<T>): JSX.Element {
   return (
     <ShePrimitiveComponentWrapper
       {...shePrimitiveComponentWrapperProps}
-      className={`${shePrimitiveComponentWrapperProps.className} ${cs.sheBadgeList} ${cs[componentView]} ${cs[itemsWrap]}`}
+      className={`${shePrimitiveComponentWrapperProps.className} ${cs.sheBadgeList} ${cs[itemsWrap]} ${icon ? cs.withIcon : ""}`}
+      skeletonClassName={`${shePrimitiveComponentWrapperProps.skeletonClassName} ${cs.sheBadgeListSkeleton}`}
+      clearBtnClassName={`${shePrimitiveComponentWrapperProps.clearBtnClassName} ${cs.sheBadgeListClearButton}`}
+      iconProps={{ className: cs.autocompleteIcon }}
       ariaDescribedbyId={ariaDescribedbyId}
       clearBtnValue={items}
       clearBtnPosition="out"
-      iconPosition="out"
+      iconPosition="in"
       onClear={onClearHandler}
     >
       <div
@@ -315,150 +321,3 @@ export default function SheBadgeList<T>(props: ISheBadgeList<T>): JSX.Element {
     </ShePrimitiveComponentWrapper>
   );
 }
-
-/*
-return (
-  <div
-    className={`${cs.sheBadgeList} ${className} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""} ${cs[componentView]} ${cs[itemsWrap]}`}
-    style={{
-      minWidth,
-      maxWidth,
-      ...style,
-    }}
-    {...restProps}
-  >
-    <div className={cs.sheBadgeListComponent}>
-      <SheLabel
-        label={label}
-        labelTransKey={labelTransKey}
-        tooltip={tooltip}
-        ariaDescribedbyId={ariaDescribedbyId}
-      />
-      <div className={cs.sheBadgeListControl}>
-        <SheIcon
-          icon={icon}
-          className={cs.iconBlock}
-          aria-describedby={ariaDescribedbyId}
-        />
-        <div
-          ref={badgeListContextRef}
-          className={cs.sheBadgeListContext}
-          style={{
-            paddingBottom: _scrollInfo?.hasHorizontalScroll ? "4px" : "0",
-          }}
-          role="list"
-          tabIndex={0}
-          onWheel={onScrollHandler}
-        >
-          {_items?.length > 0 ? (
-            <div
-              className={`${cs.sheBadgeListItemsContainer} ${cs.fadeInAnimation}`}
-              style={{ flexDirection: direction as any }}
-            >
-              {_items
-                .slice(0, _maxBadgeAmount || _items.length)
-                .map((item) => (
-                  <div
-                    key={item.id}
-                    className={`${cs.sheBadgeListItem} badge-list-item-cover`}
-                    style={{
-                      width:
-                        item.fullWidth || elementFullWidth
-                          ? "100%"
-                          : "fit-content",
-                      minWidth: item.minWidth || elementMinWidth,
-                      maxWidth: item.maxWidth || elementMaxWidth,
-                    }}
-                  >
-                    <SheBadge<T>
-                      {...item}
-                      className={item.className || elementClassName}
-                      style={item.style || elementStyle}
-                      textWrap={item.textWrap || textWrap}
-                      color={item.color || color}
-                      textColor={item.textColor || textColor}
-                      iconColor={item.iconColor || iconColor}
-                      icon={item.icon || elementIcon}
-                      minWidth="100%"
-                      fullWidth={item.fullWidth || elementFullWidth}
-                      variant={(item.variant || variant) as any}
-                      disabled={
-                        !_.isNil(item.disabled) ? item.disabled : disabled
-                      }
-                      isLoading={
-                        !_.isNil(item.isLoading) ? item.isLoading : isLoading
-                      }
-                      showCloseBtn={
-                        !_.isNil(item.showCloseBtn)
-                          ? item.showCloseBtn
-                          : showCloseBtn
-                      }
-                      onClick={(value, model) => onClickHandler(item, model)}
-                      onClose={(value, model) => onCloseHandler(item, model)}
-                    />
-                  </div>
-                ))}
-
-              {_maxBadgeAmount && _items?.length > _maxBadgeAmount && (
-                <div className={cs.sheBadgeListItem}>
-                  <SheBadge<T>
-                    {...extraBudge}
-                    className={extraBudge?.className || elementClassName}
-                    elementClassName={cs.plusMoreBtn}
-                    style={extraBudge?.style || elementStyle}
-                    text={`+ ${_items.length - _maxBadgeAmount} ${translate("PLACE_VALID_TRANS_KEY", "more")}`}
-                    textWrap={extraBudge?.textWrap || textWrap}
-                    color={extraBudge?.color || color}
-                    textColor={extraBudge?.textColor || textColor}
-                    iconColor={extraBudge?.iconColor || iconColor}
-                    maxWidth={plusMoreBtnWidth + "px"}
-                    fullWidth={extraBudge?.fullWidth || elementFullWidth}
-                    variant={(extraBudge?.variant || variant) as any}
-                    value={
-                      _items.slice(_maxBadgeAmount, _items.length) as any
-                    }
-                    disabled={
-                      !_.isNil(extraBudge?.disabled)
-                        ? extraBudge?.disabled
-                        : disabled
-                    }
-                    isLoading={
-                      !_.isNil(extraBudge?.isLoading)
-                        ? extraBudge?.isLoading
-                        : isLoading
-                    }
-                    showCloseBtn={
-                      !_.isNil(extraBudge?.showCloseBtn)
-                        ? extraBudge?.showCloseBtn
-                        : showCloseBtn
-                    }
-                    onClick={(value: any, model) =>
-                      onClickHandler(value, model)
-                    }
-                    onClose={(value: any, model) =>
-                      onCloseAllExtraHandler(value, model)
-                    }
-                  />
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className={cs.noDataBlock}>
-                <span className="she-placeholder">
-                  <Trans i18nKey={placeholderTransKey}>{placeholder}</Trans>
-                </span>
-            </div>
-          )}
-        </div>
-        <SheClearButton
-          clearBtnValue={_items && _items.length > 0}
-          showClearBtn={showClearBtn}
-          disabled={disabled}
-          isLoading={isLoading}
-          ariaDescribedbyId={ariaDescribedbyId}
-          onClear={onClearHandler}
-        />
-      </div>
-    </div>
-  </div>
-);*/

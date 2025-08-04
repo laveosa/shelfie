@@ -84,12 +84,14 @@ export default function SheMultiSelectTrigger<T>(
           {contextType === "badges" && (
             <SheBadgeList
               className={cs.sheMultiSelectTriggerBadgeList}
+              skeletonClassName={cs.sheMultiSelectTriggerSkeleton}
               items={items}
               placeholder={placeholder}
               placeholderTransKey={placeholderTransKey}
               maxBadgeAmount={maxCount}
               autoBadgeAmount
               showCloseBtn
+              fullWidth
               onClick={onTogglePopover}
               onClose={(item, model) => onToggleOption(item.value, model.event)}
               onCloseAllExtra={onClearExtraOptions}
