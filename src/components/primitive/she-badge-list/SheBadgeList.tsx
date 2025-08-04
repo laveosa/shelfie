@@ -6,7 +6,6 @@ import cs from "./SheBadgeList.module.scss";
 import SheBadge from "@/components/primitive/she-badge/SheBadge.tsx";
 import ShePrimitiveComponentWrapper from "@/components/primitive/she-primitive-component-wrapper/ShePrimitiveComponentWrapper.tsx";
 import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
-import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { getCustomProps } from "@/utils/helpers/props-helper.ts";
 import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
@@ -61,12 +60,14 @@ export default function SheBadgeList<T>(props: ISheBadgeList<T>): JSX.Element {
   const badgeListContextRef = useRef<HTMLDivElement>(null);
 
   // ==================================================================== UTILITIES
-  const { ariaDescribedbyId, addItemsId, removeItemFromListByIdentifier } =
-    useComponentUtilities({
-      identifier: "SheBadgeList",
-    });
-
-  const { translate } = useAppTranslation();
+  const {
+    translate,
+    ariaDescribedbyId,
+    addItemsId,
+    removeItemFromListByIdentifier,
+  } = useComponentUtilities({
+    identifier: "SheBadgeList",
+  });
   const plusMoreBtnWidth = 100;
 
   // ==================================================================== SIDE EFFECTS

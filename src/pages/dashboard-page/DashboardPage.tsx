@@ -8,6 +8,7 @@ import {
   Home,
   LayoutDashboard,
   ShoppingBasket,
+  Timer,
   User,
   Users,
 } from "lucide-react";
@@ -250,10 +251,26 @@ export function DashboardPage() {
           <b>TimePicker</b>
         </h2>
         <br />
-        <div className="flex gap-4">
+        <div className="flex gap-10">
           <SheTimePicker
             label="Timepicker"
             required
+            icon={Home}
+            date={new Date()}
+            // hideInputLabels
+            // size="small"
+            autoFocus
+            showClearBtn
+            onSetDate={(value) => console.log("SET DATE: ", value)}
+            onDelay={(value) => console.log("DELAY: ", value)}
+            onBlur={(value) => console.log("BLUR: ", value)}
+            onTick={(value) => console.log("TICK: ", value)}
+            onIsValid={(value) => console.log("VALID: ", value)}
+          />
+          <SheTimePicker
+            label="Timepicker"
+            required
+            icon={Home}
             date={new Date()}
             hideInputLabels
             // size="small"
@@ -275,7 +292,7 @@ export function DashboardPage() {
           <b>Autocomplete</b>
         </h2>
         <br />
-        <div className="flex gap-4">
+        <div className="flex gap-10">
           <SheAutocomplete
             id="ID_AUTOCOMPLETE"
             className="CLASS-NAME-FOR-AUTOCOMPLETE"
@@ -338,7 +355,7 @@ export function DashboardPage() {
           <b>Multi Select</b>
         </h2>
         <br />
-        <div className="flex gap-4">
+        <div className="flex gap-10">
           <SheMultiSelect<string>
             label="MultiSelect"
             labelTransKey="909wefj09wejf09j"
@@ -419,7 +436,7 @@ export function DashboardPage() {
           <b>Select</b>
         </h2>
         <br />
-        <div className="flex gap-4">
+        <div className="flex gap-10">
           <SheSelect<string>
             label="Select"
             labelTransKey="909wefj09wejf09j"
@@ -498,7 +515,7 @@ export function DashboardPage() {
           <b>Input</b>
         </h2>
         <br />
-        <div className="flex gap-4">
+        <div className="flex gap-10">
           <SheInput
             label="Input"
             labelTransKey="909wefj09wejf09j"
@@ -587,7 +604,7 @@ export function DashboardPage() {
             <b>Badge List ROW</b>
           </h2>
           <br />
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-10">
             <SheBadgeList
               label="Badge List"
               labelTransKey="0329j9wejf"
@@ -653,7 +670,7 @@ export function DashboardPage() {
             <b>Badge List COLUMN</b>
           </h2>
           <br />
-          <div className="flex gap-4">
+          <div className="flex gap-10">
             <SheBadgeList
               label="Badge List"
               labelTransKey="0329j9wejf"

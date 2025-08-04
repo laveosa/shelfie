@@ -3,98 +3,87 @@ import moment from "moment";
 import _ from "lodash";
 
 import cs from "./SheTimePicker.module.scss";
-import { ISheTimePicker } from "@/const/interfaces/primitive-components/ISheTimePicker.ts";
-import { generateId } from "@/utils/helpers/quick-helper.ts";
-import { useDebounce } from "@/utils/hooks/useDebounce.ts";
-import SheLabel from "@/components/primitive/she-label/SheLabel.tsx";
-import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import ShePrimitiveComponentWrapper from "@/components/primitive/she-primitive-component-wrapper/ShePrimitiveComponentWrapper.tsx";
 import SheTimePickerInput from "@/components/primitive/she-time-picker/components/she-time-picker-input/SheTimePickerInput.tsx";
-import { TimeFormatEnum } from "@/const/enums/TimeFormatEnum.ts";
 import SheTimePickerSelect from "@/components/primitive/she-time-picker/components/she-time-picker-select/SheTimePickerSelect.tsx";
 import { SheTimePickerTypeEnum } from "@/const/enums/SheTimePickerTypeEnum.ts";
-import SheClearButton from "@/components/primitive/she-clear-button/SheClearButton.tsx";
-import SheDescriptionBlock from "@/components/primitive/she-description-block/SheDescriptionBlock.tsx";
-import SheErrorMessageBlock from "@/components/primitive/she-error-message-block/SheErrorMessageBlock.tsx";
+import { TimeFormatEnum } from "@/const/enums/TimeFormatEnum.ts";
 import { Period } from "@/utils/helpers/time-picker-helper.ts";
+import { useDebounce } from "@/utils/hooks/useDebounce.ts";
+import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
+import { getCustomProps } from "@/utils/helpers/props-helper.ts";
+import { ISheTimePicker } from "@/const/interfaces/primitive-components/ISheTimePicker.ts";
+import {
+  IShePrimitiveComponentWrapper,
+  ShePrimitiveComponentWrapperDefaultModel,
+} from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
 
-export default function SheTimePicker({
-  id,
-  className = "",
-  style,
-  inputClassName = "",
-  inputStyle,
-  selectClassName = "",
-  selectStyle,
-  label,
-  labelTransKey,
-  icon,
-  size,
-  view,
-  type = SheTimePickerTypeEnum.TIME_PICKER,
-  hhLabel = size === "small" ? "hh" : "Hours",
-  hhLabelTransKey,
-  mmLabel = size === "small" ? "mm" : "Minutes",
-  mmLabelTransKey,
-  ssLabel = size === "small" ? "ss" : "Seconds",
-  ssLabelTransKey,
-  periodLabel = size === "small" ? "am/pm" : "Period",
-  periodLabelTransKey,
-  date,
-  startDate,
-  endDate,
-  timeFormat,
-  timePeriod,
-  clockWorksheets = "24",
-  isValid = true,
-  showClearBtn,
-  tooltip,
-  disabled,
-  isLoading,
-  minWidth,
-  maxWidth,
-  fullWidth,
-  required,
-  delayTime,
-  hideInputLabels,
-  hideSeconds,
-  hoursRef,
-  minutesRef,
-  secondsRef,
-  periodsRef,
-  autoFocus,
-  descriptionClassName,
-  descriptionStyle,
-  description,
-  descriptionTransKey,
-  showDescription,
-  showError,
-  error,
-  errorTransKey,
-  onSetDate,
-  onDelay,
-  onBlur,
-  onTick,
-  onIsValid,
-  ...props
-}: ISheTimePicker): JSX.Element {
+export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
+  // ==================================================================== PROPS
+  const {
+    inputClassName = "",
+    inputStyle,
+    selectClassName = "",
+    selectStyle,
+    size,
+    type = SheTimePickerTypeEnum.TIME_PICKER,
+    hhLabel = size === "small" ? "hh" : "Hours",
+    hhLabelTransKey,
+    mmLabel = size === "small" ? "mm" : "Minutes",
+    mmLabelTransKey,
+    ssLabel = size === "small" ? "ss" : "Seconds",
+    ssLabelTransKey,
+    periodLabel = size === "small" ? "am/pm" : "Period",
+    periodLabelTransKey,
+    date,
+    startDate,
+    endDate,
+    timeFormat,
+    timePeriod,
+    clockWorksheets = "24",
+    isValid = true,
+    disabled,
+    isLoading,
+    delayTime,
+    hideInputLabels,
+    hideSeconds,
+    hoursRef,
+    minutesRef,
+    secondsRef,
+    periodsRef,
+    autoFocus,
+    description,
+    descriptionTransKey,
+    errorMessage,
+    errorMessageTransKey,
+    onSetDate,
+    onDelay,
+    onBlur,
+    onTick,
+    onIsValid,
+  } = props;
+  const shePrimitiveComponentWrapperProps = getCustomProps<
+    ISheTimePicker,
+    IShePrimitiveComponentWrapper
+  >(props, ShePrimitiveComponentWrapperDefaultModel);
+
+  // ==================================================================== STATE MANAGEMENT
   const [_date, setDate] = useState<Date>(date ?? new Date());
   const [_startDate, setStartDate] = useState<Date>(startDate ?? null);
   const [_period, setPeriod] = useState<Period>(timePeriod);
   const [_isValid, setIsValid] = useState(isValid);
   const [_isDateValid, setIsDateValid] = useState<boolean>(null);
-  const [_showError, setShowError] = useState(showError);
-  const [_error, setError] = useState<string>(error ?? null);
-  const [_errorTransKey, setErrorTransKey] = useState<string>(
-    errorTransKey ?? null,
-  );
-  const [_description, setDescription] = useState<string>(description ?? null);
-  const [_descriptionTransKey, setDescriptionTransKey] = useState(
-    descriptionTransKey ?? null,
+
+  const [_description, setDescription] = useState<string>(null);
+  const [_descriptionTransKey, setDescriptionTransKey] = useState<string>(null);
+  const [_error, setError] = useState<string>(null);
+  const [_errorTransKey, setErrorTransKey] = useState<string>(null);
+  const [_showError, setShowError] = useState<boolean>(
+    !shePrimitiveComponentWrapperProps?.hideErrorMessage ?? null,
   );
 
-  const ariaDescribedbyId = `${generateId()}_TIME_PICKER_ID`;
-  const delayValue = useDebounce(_date, delayTime);
-  const isInitialized = useRef(false);
+  // ==================================================================== REFS
+  const isInitialized = useRef<boolean>(false);
 
   const internalHourRef = React.useRef<HTMLInputElement>(null);
   const internalMinuteRef = React.useRef<HTMLInputElement>(null);
@@ -106,6 +95,13 @@ export default function SheTimePicker({
   const secondRef = secondsRef ?? internalSecondRef;
   const periodRef = periodsRef ?? internalPeriodRef;
 
+  // ==================================================================== UTILITIES
+  const { ariaDescribedbyId } = useComponentUtilities({
+    identifier: "SheTimePicker",
+  });
+  const delayValue = useDebounce(_date, delayTime);
+
+  // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     if (date !== _date) {
       setDate(setDefaultDate(date));
@@ -134,11 +130,15 @@ export default function SheTimePicker({
       setDescription(
         `from: ${moment(startDate).format(TimeFormatEnum.HH_MM_SS)} to: ${moment(endDate).format(TimeFormatEnum.HH_MM_SS)}`,
       );
-      setDescriptionTransKey(
-        "DESCRIPTION DEFAULT TEXT TRANS KET - add here when it will be created...",
-      );
+      setDescriptionTransKey("TRANS_KEY");
     }
   }, [description, descriptionTransKey]);
+
+  useEffect(() => {
+    if (errorMessage !== _error) setError(errorMessage);
+    if (errorMessageTransKey !== _errorTransKey)
+      setErrorTransKey(errorMessageTransKey);
+  }, [errorMessage, errorMessageTransKey]);
 
   useEffect(() => {
     let interval = null;
@@ -199,8 +199,7 @@ export default function SheTimePicker({
     };
   }, [type, _startDate]);
 
-  // ==================================================================== EVENT
-
+  // ==================================================================== EVENT HANDLERS
   function onSetDateHandler(value: Date) {
     isInitialized.current = true;
     checkDateValidation(value);
@@ -236,7 +235,6 @@ export default function SheTimePicker({
   }
 
   // ==================================================================== PRIVATE
-
   function setDefaultDate(value?: Date) {
     return (value ?? type === SheTimePickerTypeEnum.CLOCK)
       ? new Date()
@@ -264,12 +262,13 @@ export default function SheTimePicker({
 
     if (moment(new Date()).isAfter(endDate)) {
       setError("expire time error");
-      setErrorTransKey(
-        "PLACE HERE VALID DEFAULT ERROR MESSAGE TRANS-KEY WHEN IT WILL BE AVAILABLE",
-      );
-      setShowError(!_.isNil(showError) ? showError : true);
+      setErrorTransKey("TRANS-KEY");
+      setShowError(!_.isNil(_showError) ? _showError : true);
       updateIsValid(false);
     } else {
+      setError(shePrimitiveComponentWrapperProps.errorMessage);
+      setErrorTransKey(shePrimitiveComponentWrapperProps.errorMessageTransKey);
+      setShowError(false);
       updateIsValid(true);
     }
   }
@@ -281,155 +280,272 @@ export default function SheTimePicker({
   }
 
   // ==================================================================== LAYOUT
-
   return (
-    <div
-      id={id}
-      className={`${cs.sheTimePicker} ${className} ${cs[view] || ""} ${cs[type] || ""} ${cs[size] || ""} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""} ${!_isValid ? cs.invalid : ""}`}
-      style={{
-        minWidth,
-        maxWidth,
-        ...style,
-      }}
-      {...props}
+    <ShePrimitiveComponentWrapper
+      {...shePrimitiveComponentWrapperProps}
+      className={`${shePrimitiveComponentWrapperProps.className} ${cs.sheTimePicker} ${!hideInputLabels ? cs.sheTimePickerWithLabels : ""} ${cs[type] || ""} ${cs[size] || ""} ${!_isValid ? cs.invalid : ""}`}
+      ariaDescribedbyId={ariaDescribedbyId}
+      iconProps={{ className: cs.sheTimePickerIcon }}
+      iconPosition="out"
+      clearBtnPosition="out"
+      clearBtnValue={_isDateValid ? _date : null}
+      clearBtnClassName={`${shePrimitiveComponentWrapperProps.clearBtnClassName} ${cs.sheTimePickerClearButton}`}
+      showClearBtn={
+        type === SheTimePickerTypeEnum.TIME_PICKER &&
+        shePrimitiveComponentWrapperProps.showClearBtn
+      }
+      description={_description}
+      descriptionTransKey={_descriptionTransKey}
+      errorMessage={_error}
+      errorMessageTransKey={_errorTransKey}
+      hideErrorMessage={!_showError}
+      onClear={onClearHandler}
     >
-      <div className={cs.sheTimePickerComponent}>
-        <SheLabel
-          label={label}
-          labelTransKey={labelTransKey}
-          tooltip={tooltip}
-          ariaDescribedbyId={ariaDescribedbyId}
-        />
-        <div className={cs.sheTimePickerControl}>
-          <SheIcon
-            icon={icon}
-            className={cs.iconBlock}
-            style={{ top: hideInputLabels ? "0" : "7px" }}
-            aria-describedby={ariaDescribedbyId}
+      <div className={cs.sheTimePickerElementWrapper}>
+        <div
+          className={`${cs.sheTimePickerElementInputCell} ${cs.sheTimePickerClockViewCell}`}
+        >
+          <SheTimePickerInput
+            ref={hourRef}
+            className={`${inputClassName} ${cs.sheTimePickerLabel}`}
+            style={inputStyle}
+            label={!hideInputLabels && hhLabel}
+            labelTransKey={hhLabelTransKey}
+            date={_date}
+            picker={
+              clockWorksheets === "12" && type !== SheTimePickerTypeEnum.TIMER
+                ? "12hours"
+                : "hours"
+            }
+            period={_period}
+            disabled={disabled}
+            isLoading={isLoading}
+            autoFocus={autoFocus}
+            setDate={onSetDateHandler}
+            onBlurHandler={onBlurHandler}
+            onRightFocus={() => minuteRef.current?.focus()}
           />
-          <div className={cs.sheTimePickerElementWrapper}>
-            <div
-              className={`${cs.sheTimePickerElementInputCell} ${cs.sheTimePickerClockViewCell}`}
-            >
+        </div>
+        <div
+          className={`${cs.sheTimePickerElementInputCell} ${!hideSeconds ? cs.sheTimePickerClockViewCell : ""}`}
+        >
+          <SheTimePickerInput
+            ref={minuteRef}
+            id={clockWorksheets === "12" ? "minutes12" : ""}
+            className={`${inputClassName} ${cs.sheTimePickerLabel}`}
+            style={inputStyle}
+            label={!hideInputLabels && mmLabel}
+            labelTransKey={mmLabelTransKey}
+            date={_date}
+            picker="minutes"
+            disabled={disabled}
+            isLoading={isLoading}
+            setDate={onSetDateHandler}
+            onBlurHandler={onBlurHandler}
+            onLeftFocus={() => hourRef.current?.focus()}
+            onRightFocus={() =>
+              hideSeconds
+                ? periodRef.current?.focus()
+                : secondRef.current?.focus()
+            }
+          />
+        </div>
+        {!hideSeconds && (
+          <div className={cs.sheTimePickerElementInputCell}>
+            <SheTimePickerInput
+              ref={secondRef}
+              id={clockWorksheets === "12" ? "seconds12" : ""}
+              className={`${inputClassName} ${cs.sheTimePickerLabel}`}
+              style={inputStyle}
+              label={!hideInputLabels && ssLabel}
+              labelTransKey={ssLabelTransKey}
+              date={_date}
+              picker="seconds"
+              period={_period}
+              disabled={disabled}
+              isLoading={isLoading}
+              setDate={onSetDateHandler}
+              onBlurHandler={onBlurHandler}
+              onLeftFocus={() => minuteRef.current?.focus()}
+              onRightFocus={() => periodRef.current?.focus()}
+            />
+          </div>
+        )}
+        {clockWorksheets === "12" && (
+          <div className={cs.sheTimePickerElementInputCell}>
+            <SheTimePickerSelect
+              ref={periodRef}
+              className={`${selectClassName} ${cs.sheTimePickerLabel} ${cs.sheTimePickerSelect}`}
+              style={selectStyle}
+              label={!hideInputLabels && periodLabel}
+              labelTransKey={periodLabelTransKey}
+              date={_date}
+              period={_period}
+              disabled={disabled}
+              isLoading={isLoading}
+              setDate={onSetDateHandler}
+              setPeriod={onSetPeriodHandler}
+              onLeftFocus={() =>
+                hideSeconds
+                  ? minuteRef.current?.focus()
+                  : secondRef.current?.focus()
+              }
+            />
+          </div>
+        )}
+      </div>
+    </ShePrimitiveComponentWrapper>
+  );
+}
+
+/*
+return (
+  <div
+    id={id}
+    className={`${cs.sheTimePicker} ${className} ${cs[view] || ""} ${cs[type] || ""} ${cs[size] || ""} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""} ${!_isValid ? cs.invalid : ""}`}
+    style={{
+      minWidth,
+      maxWidth,
+      ...style,
+    }}
+    {...props}
+  >
+    <div className={cs.sheTimePickerComponent}>
+      <SheLabel
+        label={label}
+        labelTransKey={labelTransKey}
+        tooltip={tooltip}
+        ariaDescribedbyId={ariaDescribedbyId}
+      />
+      <div className={cs.sheTimePickerControl}>
+        <SheIcon
+          icon={icon}
+          className={cs.iconBlock}
+          style={{ top: hideInputLabels ? "0" : "7px" }}
+          aria-describedby={ariaDescribedbyId}
+        />
+        <div className={cs.sheTimePickerElementWrapper}>
+          <div
+            className={`${cs.sheTimePickerElementInputCell} ${cs.sheTimePickerClockViewCell}`}
+          >
+            <SheTimePickerInput
+              ref={hourRef}
+              className={`${inputClassName} ${cs.sheTimePickerLabel}`}
+              style={inputStyle}
+              label={!hideInputLabels && hhLabel}
+              labelTransKey={hhLabelTransKey}
+              date={_date}
+              picker={
+                clockWorksheets === "12" &&
+                type !== SheTimePickerTypeEnum.TIMER
+                  ? "12hours"
+                  : "hours"
+              }
+              period={_period}
+              disabled={disabled}
+              isLoading={isLoading}
+              autoFocus={autoFocus}
+              setDate={onSetDateHandler}
+              onBlurHandler={onBlurHandler}
+              onRightFocus={() => minuteRef.current?.focus()}
+            />
+          </div>
+          <div
+            className={`${cs.sheTimePickerElementInputCell} ${!hideSeconds ? cs.sheTimePickerClockViewCell : ""}`}
+          >
+            <SheTimePickerInput
+              ref={minuteRef}
+              id={clockWorksheets === "12" ? "minutes12" : ""}
+              className={`${inputClassName} ${cs.sheTimePickerLabel}`}
+              style={inputStyle}
+              label={!hideInputLabels && mmLabel}
+              labelTransKey={mmLabelTransKey}
+              date={_date}
+              picker="minutes"
+              disabled={disabled}
+              isLoading={isLoading}
+              setDate={onSetDateHandler}
+              onBlurHandler={onBlurHandler}
+              onLeftFocus={() => hourRef.current?.focus()}
+              onRightFocus={() =>
+                hideSeconds
+                  ? periodRef.current?.focus()
+                  : secondRef.current?.focus()
+              }
+            />
+          </div>
+          {!hideSeconds && (
+            <div className={cs.sheTimePickerElementInputCell}>
               <SheTimePickerInput
-                ref={hourRef}
+                ref={secondRef}
+                id={clockWorksheets === "12" ? "seconds12" : ""}
                 className={`${inputClassName} ${cs.sheTimePickerLabel}`}
                 style={inputStyle}
-                label={!hideInputLabels && hhLabel}
-                labelTransKey={hhLabelTransKey}
+                label={!hideInputLabels && ssLabel}
+                labelTransKey={ssLabelTransKey}
                 date={_date}
-                picker={
-                  clockWorksheets === "12" &&
-                  type !== SheTimePickerTypeEnum.TIMER
-                    ? "12hours"
-                    : "hours"
-                }
+                picker="seconds"
                 period={_period}
                 disabled={disabled}
                 isLoading={isLoading}
-                autoFocus={autoFocus}
                 setDate={onSetDateHandler}
                 onBlurHandler={onBlurHandler}
-                onRightFocus={() => minuteRef.current?.focus()}
+                onLeftFocus={() => minuteRef.current?.focus()}
+                onRightFocus={() => periodRef.current?.focus()}
               />
             </div>
-            <div
-              className={`${cs.sheTimePickerElementInputCell} ${!hideSeconds ? cs.sheTimePickerClockViewCell : ""}`}
-            >
-              <SheTimePickerInput
-                ref={minuteRef}
-                id={clockWorksheets === "12" ? "minutes12" : ""}
-                className={`${inputClassName} ${cs.sheTimePickerLabel}`}
-                style={inputStyle}
-                label={!hideInputLabels && mmLabel}
-                labelTransKey={mmLabelTransKey}
+          )}
+          {clockWorksheets === "12" && (
+            <div className={cs.sheTimePickerElementInputCell}>
+              <SheTimePickerSelect
+                ref={periodRef}
+                className={`${selectClassName} ${cs.sheTimePickerLabel} ${cs.sheTimePickerSelect}`}
+                style={selectStyle}
+                label={!hideInputLabels && periodLabel}
+                labelTransKey={periodLabelTransKey}
                 date={_date}
-                picker="minutes"
+                period={_period}
                 disabled={disabled}
                 isLoading={isLoading}
                 setDate={onSetDateHandler}
-                onBlurHandler={onBlurHandler}
-                onLeftFocus={() => hourRef.current?.focus()}
-                onRightFocus={() =>
+                setPeriod={onSetPeriodHandler}
+                onLeftFocus={() =>
                   hideSeconds
-                    ? periodRef.current?.focus()
+                    ? minuteRef.current?.focus()
                     : secondRef.current?.focus()
                 }
               />
             </div>
-            {!hideSeconds && (
-              <div className={cs.sheTimePickerElementInputCell}>
-                <SheTimePickerInput
-                  ref={secondRef}
-                  id={clockWorksheets === "12" ? "seconds12" : ""}
-                  className={`${inputClassName} ${cs.sheTimePickerLabel}`}
-                  style={inputStyle}
-                  label={!hideInputLabels && ssLabel}
-                  labelTransKey={ssLabelTransKey}
-                  date={_date}
-                  picker="seconds"
-                  period={_period}
-                  disabled={disabled}
-                  isLoading={isLoading}
-                  setDate={onSetDateHandler}
-                  onBlurHandler={onBlurHandler}
-                  onLeftFocus={() => minuteRef.current?.focus()}
-                  onRightFocus={() => periodRef.current?.focus()}
-                />
-              </div>
-            )}
-            {clockWorksheets === "12" && (
-              <div className={cs.sheTimePickerElementInputCell}>
-                <SheTimePickerSelect
-                  ref={periodRef}
-                  className={`${selectClassName} ${cs.sheTimePickerLabel} ${cs.sheTimePickerSelect}`}
-                  style={selectStyle}
-                  label={!hideInputLabels && periodLabel}
-                  labelTransKey={periodLabelTransKey}
-                  date={_date}
-                  period={_period}
-                  disabled={disabled}
-                  isLoading={isLoading}
-                  setDate={onSetDateHandler}
-                  setPeriod={onSetPeriodHandler}
-                  onLeftFocus={() =>
-                    hideSeconds
-                      ? minuteRef.current?.focus()
-                      : secondRef.current?.focus()
-                  }
-                />
-              </div>
-            )}
-          </div>
-          {type === SheTimePickerTypeEnum.TIME_PICKER && (
-            <SheClearButton
-              clearBtnValue={_isDateValid ? _date : null}
-              showClearBtn={showClearBtn}
-              disabled={disabled}
-              isLoading={isLoading}
-              ariaDescribedbyId={ariaDescribedbyId}
-              clearBtnStyle={{
-                alignSelf: "end",
-                position: "relative",
-                top: size === "small" ? "0px" : "-4px",
-              }}
-              onClear={onClearHandler}
-            />
           )}
         </div>
-        <SheDescriptionBlock
-          descriptionBlockClassName={descriptionClassName}
-          descriptionBlockStyle={descriptionStyle}
-          description={_description}
-          descriptionTransKey={_descriptionTransKey}
-          hideDescription={!showDescription}
-        />
-        <SheErrorMessageBlock
-          errorMessage={_error}
-          errorMessageTransKey={_errorTransKey}
-          hideErrorMessage={!_showError}
-        />
+        {type === SheTimePickerTypeEnum.TIME_PICKER && (
+          <SheClearButton
+            clearBtnValue={_isDateValid ? _date : null}
+            showClearBtn={showClearBtn}
+            disabled={disabled}
+            isLoading={isLoading}
+            ariaDescribedbyId={ariaDescribedbyId}
+            clearBtnStyle={{
+              alignSelf: "end",
+              position: "relative",
+              top: size === "small" ? "0px" : "-4px",
+            }}
+            onClear={onClearHandler}
+          />
+        )}
       </div>
+      <SheDescriptionBlock
+        descriptionBlockClassName={descriptionClassName}
+        descriptionBlockStyle={descriptionStyle}
+        description={_description}
+        descriptionTransKey={_descriptionTransKey}
+        hideDescription={!showDescription}
+      />
+      <SheErrorMessageBlock
+        errorMessage={_error}
+        errorMessageTransKey={_errorTransKey}
+        hideErrorMessage={!_showError}
+      />
     </div>
-  );
-}
+  </div>
+);*/
