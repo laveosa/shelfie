@@ -3,12 +3,12 @@ import React, { ComponentPropsWithRef } from "react";
 import { ISheLabel } from "@/const/interfaces/primitive-components/ISheLabel.ts";
 import { ISheClearButton } from "@/const/interfaces/primitive-components/ISheClearButton.ts";
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
-import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
-import { TimeFormatEnum } from "@/const/enums/TimeFormatEnum.ts";
 import { Period } from "@/utils/helpers/time-picker-helper.ts";
-import { SheTimePickerTypeEnum } from "@/const/enums/SheTimePickerTypeEnum.ts";
 import { ISheErrorMessageBlock } from "@/const/interfaces/primitive-components/ISheErrorMessageBlock.ts";
 import { ISheDescriptionBlock } from "@/const/interfaces/primitive-components/ISheDescriptionBlock.ts";
+import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
+import { TimeFormatEnum } from "@/const/enums/TimeFormatEnum.ts";
+import { SheTimePickerTypeEnum } from "@/const/enums/SheTimePickerTypeEnum.ts";
 
 export interface ISheTimePicker
   extends ISheLabel,
@@ -58,9 +58,9 @@ export interface ISheTimePicker
   autoFocus?: boolean;
   descriptionClassName?: string;
   descriptionStyle?: React.CSSProperties;
-  onSetDate?: (value: any) => void;
-  onDelay?: (value: any) => void;
-  onBlur?: (value: any) => void;
-  onTick?: (value: any) => void;
-  onIsValid?: (value: boolean) => void;
+  onSetDate?(value: any): void;
+  onDelay?(value: any): void;
+  onBlur?(value: any): void;
+  onTick?(value: any): void;
+  onIsValid?(value: boolean): void;
 }

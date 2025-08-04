@@ -8,6 +8,7 @@ import {
   Home,
   LayoutDashboard,
   ShoppingBasket,
+  User,
   Users,
 } from "lucide-react";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
@@ -22,6 +23,8 @@ import SheBadgeList from "@/components/primitive/she-badge-list/SheBadgeList.tsx
 import UserForm from "@/components/forms/user-form/UserForm.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { ContextPatternEnum } from "@/const/enums/ContextPatternEnum.ts";
+import SheTimePicker from "@/components/primitive/she-time-picker/SheTimePicker.tsx";
+import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
 
 const options: ISheSelectItem<any>[] = [
   {
@@ -193,10 +196,13 @@ const badges: ISheBadge<string>[] = [
 export function DashboardPage() {
   const service = useDashboardPageService();
 
-  const [_items, setItems] = useState<ISheMultiSelectItem<any>[]>(null);
+  const [_items, setItems] = useState<ISheOption<any>[]>(null);
   const [selected, setSelected] = useState<any>(null);
   const [isLoading, setIsLoading] = useState<boolean>(null);
   const [_badges, setBadges] = useState<ISheBadge<string>[]>(null);
+
+  // -------------------------------------------- INPUT
+  const [_inputValue, setInputValue] = useState<string>(null);
 
   const searchRef = useRef<HTMLInputElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -210,6 +216,7 @@ export function DashboardPage() {
       // setItems(options);
 
       setBadges(badges);
+      setInputValue("input static test!!!");
     }, 1000);
 
     /*const timer = setTimeout(() => {
@@ -219,24 +226,8 @@ export function DashboardPage() {
         el.dispatchEvent(new MouseEvent("mouseup", { bubbles: true }));
         el.dispatchEvent(new MouseEvent("click", { bubbles: true }));
       }
-    }, 1000);*/
-
-    setTimeout(() => {
-      // setSelected([optionsSimple[2].value, optionsSimple[4].value]);
-      // setSelected([options[2].value]);
-      // setSelected(optionsSimple[2].value);
-    }, 2000);
-
-    setTimeout(() => {
-      // setIsLoading(false);
-      /*if (searchRef.current) {
-        searchRef.current.value = "TEST";
-      }*/
-      // console.log(popoverRef.current.style);
-      // setItems(options);
-    }, 3000);
-
-    // return () => clearTimeout(timer);
+    }, 1000);
+    return () => clearTimeout(timer);*/
   }, []);
 
   // ================================================================== EVENT
@@ -244,20 +235,6 @@ export function DashboardPage() {
   function onSelectHandler(value: any, model: any) {
     console.log("VALUE: ", value);
     console.log("MODEL: ", model);
-
-    /*setSelected(optionsSimple[3].value);
-
-    setTimeout(() => {
-      setSelected(optionsSimple[1].value);
-    }, 1000);
-
-    setTimeout(() => {
-      setSelected(optionsSimple[2].value);
-    }, 2000);
-
-    setTimeout(() => {
-      setSelected(optionsSimple[3].value);
-    }, 3000);*/
   }
 
   // ================================================================== LAYOUT
@@ -265,84 +242,103 @@ export function DashboardPage() {
   return (
     <div id={cs["DashboardPage"]}>
       <h1>Dashboard</h1>
-
-      <br />
-
-      <SheBadgeList
-        label="Badge List"
-        labelTransKey="0329j9wejf"
-        required
-        tooltip="some tooltip for Badge List component"
-        tooltipTransKey="9f2jfkwejlk"
-        items={_badges}
-        // items={badges}
-        itemsWrap="nowrap"
-        icon={Home}
-        // maxBadgeAmount="4"
-        autoBadgeAmount
-        showCloseBtn
-        showClearBtn
-        onClick={(event, model) => console.log("ON CLICK: ", event, model)}
-        onClear={(event, model) => console.log("ON CLEAR: ", event, model)}
-        onClose={(event, model) => console.log("ON CLOSE: ", event, model)}
-        onCloseAllExtra={(event, model) =>
-          console.log("ON CLOSE ALL: ", event, model)
-        }
-      />
       <br />
       <br />
 
-      <SheAutocomplete
-        id="ID_AUTOCOMPLETE"
-        className="CLASS-NAME-FOR-AUTOCOMPLETE"
-        required
-        label="Autocomplete"
-        items={optionsSimple}
-        clearBtnPosition="out"
-        iconPosition="out"
-        // view="card"
-        showClearBtn
-        // showSelectBtn
-        icon={Users}
-        // isLoading
-        // disabled
-        // autoFocus
-        fullWidth
-        description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
-        descriptionTransKey="f0923fj9wejfwe"
-        descriptionIcon={Users}
-        errorMessage="some error message some error message some error message some error message some error message"
-        errorMessageTransKey="f0wejfw9ejfkwlejfw"
-        errorMessageIcon={LayoutDashboard}
-        onSelect={(event, model) =>
-          console.log("Autocomplete value: ", event, model)
-        }
-      />
-      <br />
+      <div className="flex flex-col fullWidth">
+        <h2 className="underline">
+          <b>TimePicker</b>
+        </h2>
+        <br />
+        <div className="flex gap-4">
+          <SheTimePicker
+            label="Timepicker"
+            required
+            date={new Date()}
+            hideInputLabels
+            // size="small"
+            autoFocus
+            showClearBtn
+            onSetDate={(value) => console.log("SET DATE: ", value)}
+            onDelay={(value) => console.log("DELAY: ", value)}
+            onBlur={(value) => console.log("BLUR: ", value)}
+            onTick={(value) => console.log("TICK: ", value)}
+            onIsValid={(value) => console.log("VALID: ", value)}
+          />
+        </div>
+        <br />
+        <br />
+      </div>
 
-      {/*<UserForm genders={["male", "female"]} />
-      <br />*/}
+      <div className="flex flex-col fullWidth">
+        <h2 className="underline">
+          <b>Autocomplete</b>
+        </h2>
+        <br />
+        <div className="flex gap-4">
+          <SheAutocomplete
+            id="ID_AUTOCOMPLETE"
+            className="CLASS-NAME-FOR-AUTOCOMPLETE"
+            required
+            label="Autocomplete"
+            items={optionsSimple}
+            // clearBtnPosition="out"
+            // iconPosition="out"
+            // view="card"
+            showClearBtn
+            // showSelectBtn
+            icon={Users}
+            // isLoading
+            // disabled
+            // autoFocus
+            // fullWidth
+            description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
+            descriptionTransKey="f0923fj9wejfwe"
+            descriptionIcon={Users}
+            errorMessage="some error message some error message some error message some error message some error message"
+            errorMessageTransKey="f0wejfw9ejfkwlejfw"
+            errorMessageIcon={LayoutDashboard}
+            onSelect={(event, model) =>
+              console.log("Autocomplete value: ", event, model)
+            }
+          />
+          <SheAutocomplete
+            id="ID_AUTOCOMPLETE"
+            className="CLASS-NAME-FOR-AUTOCOMPLETE"
+            required
+            label="Autocomplete"
+            items={optionsSimple}
+            clearBtnPosition="out"
+            iconPosition="out"
+            // view="card"
+            showClearBtn
+            // showSelectBtn
+            icon={Users}
+            // isLoading
+            // disabled
+            // autoFocus
+            // fullWidth
+            description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
+            descriptionTransKey="f0923fj9wejfwe"
+            descriptionIcon={Users}
+            errorMessage="some error message some error message some error message some error message some error message"
+            errorMessageTransKey="f0wejfw9ejfkwlejfw"
+            errorMessageIcon={LayoutDashboard}
+            onSelect={(event, model) =>
+              console.log("Autocomplete value: ", event, model)
+            }
+          />
+        </div>
+        <br />
+        <br />
+      </div>
 
-      {/*<SheBadgeList<any>
-        label="Badges"
-        items={badges}
-        showClearBtn
-        showCloseBtn
-        itemsWrap="nowrap"
-        maxWidth="400px"
-        onClick={(value, model) => console.log("onClick: ", value, model)}
-        onClose={(value, model) => console.log("onClose: ", value, model)}
-        onCloseAllExtra={(value, model) =>
-          console.log("onCloseAllExtra: ", value, model)
-        }
-        onClear={(value, model) => console.log("onClear: ", value, model)}
-      />
-      <br />*/}
-
-      <br />
-
-      <div className="flex gap-5 flex-col">
-        <div className="w-full flex">
+      <div className="flex flex-col fullWidth">
+        <h2 className="underline">
+          <b>Multi Select</b>
+        </h2>
+        <br />
+        <div className="flex gap-4">
           <SheMultiSelect<string>
             label="MultiSelect"
             labelTransKey="909wefj09wejf09j"
@@ -367,7 +363,42 @@ export function DashboardPage() {
             showClearBtn
             showSearch
             showFooter
-            autoFocus
+            // autoFocus
+            icon={Home}
+            // clearBtnPosition="out"
+            description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
+            descriptionTransKey="f0923fj9wejfwe"
+            descriptionIcon={Users}
+            errorMessage="some error message some error message some error message some error message some error message"
+            errorMessageTransKey="f0wejfw9ejfkwlejfw"
+            errorMessageIcon={LayoutDashboard}
+            onSelect={(value, model) => console.log("onSelect: ", value, model)}
+          />
+          <SheMultiSelect<string>
+            label="MultiSelect"
+            labelTransKey="909wefj09wejf09j"
+            required
+            tooltip={{
+              className: "TOOLTIP-CLASS-NAME",
+              style: { border: "1px solid blue" },
+              title: "TITLE Pp",
+              titleTransKey: "2399u203u09fuj",
+              text: "some text for tooltip",
+              textTransKey: "fw9ef092309fe9u",
+              description:
+                "29 329j 029j3f 0293j 0293j9023f 0293jf029 3jf 0239j032 j2 09n2",
+              descriptionTransKey: "wef902jf309jew09j",
+              icon: Users,
+            }}
+            clearBtnPosition="out"
+            iconPosition="out"
+            // view="card"
+            items={optionsSimple}
+            contextType="badges"
+            showClearBtn
+            showSearch
+            showFooter
+            // autoFocus
             icon={Home}
             // clearBtnPosition="out"
             description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
@@ -380,8 +411,15 @@ export function DashboardPage() {
           />
         </div>
         <br />
+        <br />
+      </div>
 
-        <div className="w-full flex">
+      <div className="flex flex-col fullWidth">
+        <h2 className="underline">
+          <b>Select</b>
+        </h2>
+        <br />
+        <div className="flex gap-4">
           <SheSelect<string>
             label="Select"
             labelTransKey="909wefj09wejf09j"
@@ -405,7 +443,41 @@ export function DashboardPage() {
             // items={_items}
             // selected={selected}
             icon={Clock}
-            autoFocus
+            // autoFocus
+            showClearBtn
+            // clearBtnPosition="out"
+            description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
+            descriptionTransKey="f0923fj9wejfwe"
+            descriptionIcon={Users}
+            errorMessage="some error message some error message some error message some error message some error message"
+            errorMessageTransKey="f0wejfw9ejfkwlejfw"
+            errorMessageIcon={LayoutDashboard}
+            onSelect={(value, model) => onSelectHandler(value, model)}
+          />
+          <SheSelect<string>
+            label="Select"
+            labelTransKey="909wefj09wejf09j"
+            required
+            tooltip={{
+              className: "TOOLTIP-CLASS-NAME",
+              style: { border: "1px solid blue" },
+              title: "TITLE Pp",
+              titleTransKey: "2399u203u09fuj",
+              text: "some text for tooltip",
+              textTransKey: "fw9ef092309fe9u",
+              description:
+                "29 329j 029j3f 0293j 0293j9023f 0293jf029 3jf 0239j032 j2 09n2",
+              descriptionTransKey: "wef902jf309jew09j",
+              icon: Users,
+            }}
+            clearBtnPosition="out"
+            iconPosition="out"
+            // view="card"
+            items={optionsSimple}
+            // items={_items}
+            // selected={selected}
+            icon={Clock}
+            // autoFocus
             showClearBtn
             // clearBtnPosition="out"
             description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
@@ -418,27 +490,54 @@ export function DashboardPage() {
           />
         </div>
         <br />
+        <br />
+      </div>
 
-        {/*<div className="w-full flex">
-          <SheAutocomplete
-            label="Autocomplete"
-            items={optionsSimple}
-            // clearBtnPosition="out"
-            showClearBtn
-            // showSelectBtn
+      <div className="flex flex-col fullWidth">
+        <h2 className="underline">
+          <b>Input</b>
+        </h2>
+        <br />
+        <div className="flex gap-4">
+          <SheInput
+            label="Input"
+            labelTransKey="909wefj09wejf09j"
+            value={_inputValue}
+            required
+            tooltip={{
+              className: "TOOLTIP-CLASS-NAME",
+              style: { border: "1px solid blue" },
+              title: "TITLE Pp",
+              titleTransKey: "2399u203u09fuj",
+              text: "some text for tooltip",
+              textTransKey: "fw9ef092309fe9u",
+              description:
+                "29 329j 029j3f 0293j 0293j9023f 0293jf029 3jf 0239j032 j2 09n2",
+              descriptionTransKey: "wef902jf309jew09j",
+              icon: Users,
+            }}
+            icon={User}
             description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
             descriptionTransKey="f0923fj9wejfwe"
             descriptionIcon={Users}
             errorMessage="some error message some error message some error message some error message some error message"
             errorMessageTransKey="f0wejfw9ejfkwlejfw"
             errorMessageIcon={LayoutDashboard}
-            onSelect={(event, model) =>
-              console.log("Autocomplete value: ", event, model)
+            // clearBtnPosition="out"
+            // iconPosition="out"
+            showClearBtn
+            // autoFocus
+            // isSearch
+            // icon={Users}
+            // minLength={6}
+            // maxLength={10}
+            // pattern={ContextPatternEnum.EMAIL}
+            onChange={(value, model) =>
+              console.log("ON CHANGE: ", value, model)
             }
+            onDelay={(value, model) => console.log("ON DELAY: ", value, model)}
+            onBlur={(value, model) => console.log("ON BLUR: ", value, model)}
           />
-        </div>*/}
-
-        {/*<div className="w-full flex">
           <SheInput
             label="Input"
             labelTransKey="909wefj09wejf09j"
@@ -455,6 +554,7 @@ export function DashboardPage() {
               descriptionTransKey: "wef902jf309jew09j",
               icon: Users,
             }}
+            icon={User}
             description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
             descriptionTransKey="f0923fj9wejfwe"
             descriptionIcon={Users}
@@ -462,24 +562,159 @@ export function DashboardPage() {
             errorMessageTransKey="f0wejfw9ejfkwlejfw"
             errorMessageIcon={LayoutDashboard}
             clearBtnPosition="out"
+            iconPosition="out"
             showClearBtn
-            autoFocus
+            // autoFocus
             // isSearch
             // icon={Users}
             // minLength={6}
             // maxLength={10}
             // pattern={ContextPatternEnum.EMAIL}
-            required
             onChange={(value, model) =>
               console.log("ON CHANGE: ", value, model)
             }
             onDelay={(value, model) => console.log("ON DELAY: ", value, model)}
             onBlur={(value, model) => console.log("ON BLUR: ", value, model)}
           />
-        </div>*/}
+        </div>
+        <br />
+        <br />
       </div>
 
-      <br />
+      <div className="flex justify-between">
+        <div className="flex flex-col fullWidth">
+          <h2 className="underline">
+            <b>Badge List ROW</b>
+          </h2>
+          <br />
+          <div className="flex flex-col gap-4">
+            <SheBadgeList
+              label="Badge List"
+              labelTransKey="0329j9wejf"
+              required
+              tooltip="some tooltip for Badge List component"
+              tooltipTransKey="9f2jfkwejlk"
+              // items={_badges}
+              items={badges}
+              itemsWrap="nowrap"
+              icon={Home}
+              maxBadgeAmount="4"
+              // autoBadgeAmount
+              showCloseBtn
+              showClearBtn
+              onClick={(event, model) =>
+                console.log("ON CLICK: ", event, model)
+              }
+              onClear={(event, model) =>
+                console.log("ON CLEAR: ", event, model)
+              }
+              onClose={(event, model) =>
+                console.log("ON CLOSE: ", event, model)
+              }
+              onCloseAllExtra={(event, model) =>
+                console.log("ON CLOSE ALL: ", event, model)
+              }
+            />
+            <SheBadgeList
+              label="Badge List"
+              labelTransKey="0329j9wejf"
+              required
+              tooltip="some tooltip for Badge List component"
+              tooltipTransKey="9f2jfkwejlk"
+              items={_badges}
+              // items={badges}
+              itemsWrap="nowrap"
+              icon={Home}
+              // maxBadgeAmount="4"
+              // autoBadgeAmount
+              showCloseBtn
+              showClearBtn
+              maxWidth="500px"
+              onClick={(event, model) =>
+                console.log("ON CLICK: ", event, model)
+              }
+              onClear={(event, model) =>
+                console.log("ON CLEAR: ", event, model)
+              }
+              onClose={(event, model) =>
+                console.log("ON CLOSE: ", event, model)
+              }
+              onCloseAllExtra={(event, model) =>
+                console.log("ON CLOSE ALL: ", event, model)
+              }
+            />
+          </div>
+          <br />
+          <br />
+        </div>
+
+        <div className="flex flex-col fullWidth">
+          <h2 className="underline">
+            <b>Badge List COLUMN</b>
+          </h2>
+          <br />
+          <div className="flex gap-4">
+            <SheBadgeList
+              label="Badge List"
+              labelTransKey="0329j9wejf"
+              required
+              tooltip="some tooltip for Badge List component"
+              tooltipTransKey="9f2jfkwejlk"
+              // items={_badges}
+              items={badges}
+              itemsWrap="nowrap"
+              icon={Home}
+              maxBadgeAmount="4"
+              // autoBadgeAmount
+              showCloseBtn
+              showClearBtn
+              direction="column"
+              onClick={(event, model) =>
+                console.log("ON CLICK: ", event, model)
+              }
+              onClear={(event, model) =>
+                console.log("ON CLEAR: ", event, model)
+              }
+              onClose={(event, model) =>
+                console.log("ON CLOSE: ", event, model)
+              }
+              onCloseAllExtra={(event, model) =>
+                console.log("ON CLOSE ALL: ", event, model)
+              }
+            />
+            <SheBadgeList
+              label="Badge List"
+              labelTransKey="0329j9wejf"
+              required
+              tooltip="some tooltip for Badge List component"
+              tooltipTransKey="9f2jfkwejlk"
+              items={_badges}
+              // items={badges}
+              itemsWrap="nowrap"
+              icon={Home}
+              // maxBadgeAmount="4"
+              // autoBadgeAmount
+              showCloseBtn
+              showClearBtn
+              direction="column"
+              onClick={(event, model) =>
+                console.log("ON CLICK: ", event, model)
+              }
+              onClear={(event, model) =>
+                console.log("ON CLEAR: ", event, model)
+              }
+              onClose={(event, model) =>
+                console.log("ON CLOSE: ", event, model)
+              }
+              onCloseAllExtra={(event, model) =>
+                console.log("ON CLOSE ALL: ", event, model)
+              }
+            />
+          </div>
+          <br />
+          <br />
+        </div>
+      </div>
     </div>
   );
 }

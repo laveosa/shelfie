@@ -9,13 +9,13 @@ import { useDebounce } from "@/utils/hooks/useDebounce.ts";
 import SheLabel from "@/components/primitive/she-label/SheLabel.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import SheTimePickerInput from "@/components/primitive/she-time-picker/components/she-time-picker-input/SheTimePickerInput.tsx";
-import { Period } from "@/utils/helpers/time-picker-helper.ts";
 import { TimeFormatEnum } from "@/const/enums/TimeFormatEnum.ts";
 import SheTimePickerSelect from "@/components/primitive/she-time-picker/components/she-time-picker-select/SheTimePickerSelect.tsx";
 import { SheTimePickerTypeEnum } from "@/const/enums/SheTimePickerTypeEnum.ts";
 import SheClearButton from "@/components/primitive/she-clear-button/SheClearButton.tsx";
 import SheDescriptionBlock from "@/components/primitive/she-description-block/SheDescriptionBlock.tsx";
 import SheErrorMessageBlock from "@/components/primitive/she-error-message-block/SheErrorMessageBlock.tsx";
+import { Period } from "@/utils/helpers/time-picker-helper.ts";
 
 export default function SheTimePicker({
   id,
@@ -152,7 +152,6 @@ export default function SheTimePicker({
       interval = setInterval(() => {
         const now = new Date();
         const msDiff = now.getTime() - _startDate.getTime();
-
         const hours = Math.floor(msDiff / (1000 * 60 * 60));
         const minutes = Math.floor((msDiff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((msDiff % (1000 * 60)) / 1000);

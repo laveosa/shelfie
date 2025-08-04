@@ -304,7 +304,7 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
   // ==================================================================== LAYOUT
   return (
     <Popover open={_open} onOpenChange={setOpen}>
-      <Command>
+      <Command className={cs.sheAutocompletePopoverWrapper}>
         <ShePrimitiveComponentWrapper
           {...autocompleteWrapperProps}
           className={`${cs.sheAutocomplete} ${shePrimitiveComponentWrapperProps.className}`}
