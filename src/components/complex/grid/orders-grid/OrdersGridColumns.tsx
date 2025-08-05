@@ -9,7 +9,9 @@ import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 
 export function ordersGridColumns(onGridAction: any): ColumnDef<any>[] {
   const statusClass = (status: string) => {
-    if (status === "Available") {
+    if (status === "New") {
+      return cs.productStatusAvailable;
+    } else if (status === "Pending") {
       return cs.productStatusAvailable;
     } else if (status === "Not Available") {
       return cs.productStatusNotAvailable;
@@ -31,12 +33,12 @@ export function ordersGridColumns(onGridAction: any): ColumnDef<any>[] {
       size: 60,
       minSize: 60,
       maxSize: 60,
-      cell: ({ row, table }) => {
+      cell: ({ row }) => {
         const image: string = row.original.customer.thumbnailUrl;
-        const meta = table.options.meta as {
-          setLoadingRow: (rowId: string, loading: boolean) => void;
-          isRowLoading: (rowId: string) => boolean;
-        };
+        // const meta = table.options.meta as {
+        //   setLoadingRow: (rowId: string, loading: boolean) => void;
+        //   isRowLoading: (rowId: string) => boolean;
+        // };
 
         return (
           <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>

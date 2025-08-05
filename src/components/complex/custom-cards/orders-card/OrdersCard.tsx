@@ -6,7 +6,7 @@ import {
   DndGridDataTable,
 } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
-import GridShowDeletedFilter from "@/components/complex/grid/grid-show-deleted-filter/GridShowDeletedFilter.tsx";
+import GridShowItemsFilter from "@/components/complex/grid/grid-show-deleted-filter/GridShowItemsFilter.tsx";
 import { IOrdersCard } from "@/const/interfaces/complex-components/custom-cards/IOrdersCard.ts";
 import { ordersGridColumns } from "@/components/complex/grid/orders-grid/OrdersGridColumns.tsx";
 import cs from "./OrdersCard.module.scss";
@@ -54,7 +54,7 @@ export default function OrdersCard({
           }
         >
           <SheDatePicker mode="range" />
-          <GridShowDeletedFilter />
+          <GridShowItemsFilter context="Canceled" />
         </DndGridDataTable>
       </SheProductCard>
       <SheButton
