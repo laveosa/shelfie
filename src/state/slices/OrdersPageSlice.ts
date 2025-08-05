@@ -20,6 +20,7 @@ const initialState: IOrdersPageSlice = {
   ordersGridRequestModel: {
     currentPage: 1,
     pageSize: 10,
+    filter: {},
   },
   selectedOrder: null,
 };

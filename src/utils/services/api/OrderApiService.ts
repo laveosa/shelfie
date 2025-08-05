@@ -24,6 +24,11 @@ export const OrderApiService = createApi({
         method: "POST",
       }),
     }),
+    getOrderDetails: apiConfig.createQuery<number, void>(builder, {
+      query: (orderId) => ({
+        url: `${ApiUrlEnum.ORDERS}/${orderId}`,
+      }),
+    }),
   }),
 });
 

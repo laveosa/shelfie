@@ -1,0 +1,62 @@
+
+.orderConfigurationCard {
+  .orderConfigurationCardContentWrapper {
+    height: calc(100vh - 166px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .orderConfigurationCardContent {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      .orderConfigurationCardItem {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        span:first-child {
+          width: 55%;
+        }
+
+        .avatarImage {
+          border-radius: 50%;
+        }
+
+        .avatarInitials {
+          width: 40px;
+          height: 40px;
+          background-color: #ececec;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #555;
+          font-weight: 600;
+          font-size: 16px;
+          user-select: none;
+        }
+      }
+
+      .orderSummaryItems {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        .orderSummaryItem {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          gap: 20px;
+
+          span:first-child {
+            width: 70%;
+          }
+        }
+      }
+
+    }
+  }
+}
+

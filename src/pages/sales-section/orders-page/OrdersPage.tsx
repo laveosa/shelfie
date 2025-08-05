@@ -60,6 +60,8 @@ export function OrdersPage() {
         });
         break;
       case "manageOrder":
+        console.log(payload);
+        dispatch(actions.refreshSelectedOrder(payload));
         navigate(
           `${NavUrlEnum.SALES}${NavUrlEnum.ORDERS}${NavUrlEnum.ORDER_DETAILS}/${payload.id}`,
         );
