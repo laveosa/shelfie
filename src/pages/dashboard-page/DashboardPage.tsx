@@ -2,30 +2,17 @@ import React, { useEffect, useRef, useState } from "react";
 
 import cs from "./DashboardPage.module.scss";
 import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageService.ts";
-import {
-  Box,
-  Clock,
-  Home,
-  LayoutDashboard,
-  ShoppingBasket,
-  Timer,
-  User,
-  Users,
-} from "lucide-react";
+import { Box, Clock, Home, LayoutDashboard, User, Users } from "lucide-react";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import { SheTooltipEnum } from "@/const/enums/SheTooltipEnum.ts";
 import SheMultiSelect from "@/components/primitive/she-multi-select/SheMultiSelect.tsx";
 import SheAutocomplete from "@/components/primitive/she-autocomplete/SheAutocomplete.tsx";
-import { ISheMultiSelectItem } from "@/const/interfaces/primitive-components/ISheMultiSelectItem.ts";
-import SheBadge from "@/components/primitive/she-badge/SheBadge.tsx";
 import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
 import SheBadgeList from "@/components/primitive/she-badge-list/SheBadgeList.tsx";
-import UserForm from "@/components/forms/user-form/UserForm.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import { ContextPatternEnum } from "@/const/enums/ContextPatternEnum.ts";
 import SheTimePicker from "@/components/primitive/she-time-picker/SheTimePicker.tsx";
 import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
+import { TimeFormatEnum } from "@/const/enums/TimeFormatEnum.ts";
 
 const options: ISheSelectItem<any>[] = [
   {
@@ -215,9 +202,8 @@ export function DashboardPage() {
     setTimeout(() => {
       // setItems(optionsSimple);
       // setItems(options);
-
-      setBadges(badges);
-      setInputValue("input static test!!!");
+      // setBadges(badges);
+      // setInputValue("input static test!!!");
     }, 1000);
 
     /*const timer = setTimeout(() => {
@@ -253,35 +239,50 @@ export function DashboardPage() {
         <br />
         <div className="flex gap-10">
           <SheTimePicker
+            // selectClassName="SELECT-CLASS-NAME"
+            // selectStyle={{ border: "1px solid blue" }}
+            // hhLabel="11"
+            // mmLabel="22"
+            // ssLabel="33"
+            // periodLabel="pp"
             label="Timepicker"
             required
             icon={Home}
-            date={new Date()}
+            // date={new Date()}
+            // startDate={new Date()}
+            // endDate={new Date()}
+            // timeFormat={TimeFormatEnum.HH_MM_SS}
+            timePeriod="PM"
+            clockWorksheets="12"
+            // type={SheTimePickerTypeEnum.TIMER}
+            // type={SheTimePickerTypeEnum.CLOCK}
             // hideInputLabels
             // size="small"
-            autoFocus
+            // autoFocus
             showClearBtn
             onSetDate={(value) => console.log("SET DATE: ", value)}
             onDelay={(value) => console.log("DELAY: ", value)}
-            onBlur={(value) => console.log("BLUR: ", value)}
-            onTick={(value) => console.log("TICK: ", value)}
-            onIsValid={(value) => console.log("VALID: ", value)}
+            // onBlur={(value) => console.log("BLUR: ", value)}
+            // onTick={(value) => console.log("TICK: ", value)}
+            // onIsValid={(value) => console.log("VALID: ", value)}
           />
-          <SheTimePicker
+          {/*<SheTimePicker
             label="Timepicker"
             required
             icon={Home}
             date={new Date()}
-            hideInputLabels
-            // size="small"
-            autoFocus
+            // type={SheTimePickerTypeEnum.TIMER}
+            // type={SheTimePickerTypeEnum.CLOCK}
+            // hideInputLabels
+            size="small"
+            // autoFocus
             showClearBtn
             onSetDate={(value) => console.log("SET DATE: ", value)}
             onDelay={(value) => console.log("DELAY: ", value)}
             onBlur={(value) => console.log("BLUR: ", value)}
             onTick={(value) => console.log("TICK: ", value)}
             onIsValid={(value) => console.log("VALID: ", value)}
-          />
+          />*/}
         </div>
         <br />
         <br />
@@ -437,7 +438,7 @@ export function DashboardPage() {
         </h2>
         <br />
         <div className="flex gap-10">
-          <SheSelect<string>
+          {/*<SheSelect<string>
             label="Select"
             labelTransKey="909wefj09wejf09j"
             required
@@ -470,8 +471,8 @@ export function DashboardPage() {
             errorMessageTransKey="f0wejfw9ejfkwlejfw"
             errorMessageIcon={LayoutDashboard}
             onSelect={(value, model) => onSelectHandler(value, model)}
-          />
-          <SheSelect<string>
+          />*/}
+          {/*<SheSelect<string>
             label="Select"
             labelTransKey="909wefj09wejf09j"
             required
@@ -504,7 +505,7 @@ export function DashboardPage() {
             errorMessageTransKey="f0wejfw9ejfkwlejfw"
             errorMessageIcon={LayoutDashboard}
             onSelect={(value, model) => onSelectHandler(value, model)}
-          />
+          />*/}
         </div>
         <br />
         <br />

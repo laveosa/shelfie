@@ -45,6 +45,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
     openOnFocus,
     onOpen,
     onSelect,
+    onTriggerKeyDown,
   } = props;
   const sheSelectProps = getCustomProps<ISheSelect<T>, ISheSelect<T>>(
     props,
@@ -246,6 +247,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
       className={`${cs.sheSelect} ${shePrimitiveComponentWrapperProps.className}`}
       clearBtnValue={_selected}
       onClear={onClearHandler}
+      onKeyDown={onTriggerKeyDown}
     >
       <Select
         value={_selected?.id ?? ""}

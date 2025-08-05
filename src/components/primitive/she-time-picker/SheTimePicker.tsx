@@ -17,6 +17,7 @@ import {
   IShePrimitiveComponentWrapper,
   ShePrimitiveComponentWrapperDefaultModel,
 } from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
+import useDefaultRef from "@/utils/hooks/useDefaultRef.ts";
 
 export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
   // ==================================================================== PROPS
@@ -27,13 +28,21 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
     selectStyle,
     size,
     type = SheTimePickerTypeEnum.TIME_PICKER,
-    hhLabel = size === "small" ? "hh" : "Hours",
+    hhLabel = size === "small" || type !== SheTimePickerTypeEnum.TIME_PICKER
+      ? "hh"
+      : "Hours",
     hhLabelTransKey,
-    mmLabel = size === "small" ? "mm" : "Minutes",
+    mmLabel = size === "small" || type !== SheTimePickerTypeEnum.TIME_PICKER
+      ? "mm"
+      : "Minutes",
     mmLabelTransKey,
-    ssLabel = size === "small" ? "ss" : "Seconds",
+    ssLabel = size === "small" || type !== SheTimePickerTypeEnum.TIME_PICKER
+      ? "ss"
+      : "Seconds",
     ssLabelTransKey,
-    periodLabel = size === "small" ? "am/pm" : "Period",
+    periodLabel = size === "small" || type !== SheTimePickerTypeEnum.TIME_PICKER
+      ? "am/pm"
+      : "Period",
     periodLabelTransKey,
     date,
     startDate,
@@ -67,10 +76,12 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
     IShePrimitiveComponentWrapper
   >(props, ShePrimitiveComponentWrapperDefaultModel);
 
+  console.log("TimePicker RENDER");
+
   // ==================================================================== STATE MANAGEMENT
-  const [_date, setDate] = useState<Date>(date ?? new Date());
+  const [_date, setDate] = useState<Date>(new Date());
   const [_startDate, setStartDate] = useState<Date>(startDate ?? null);
-  const [_period, setPeriod] = useState<Period>(timePeriod);
+  const [_period, setPeriod] = useState<Period>(null);
   const [_isValid, setIsValid] = useState(isValid);
   const [_isDateValid, setIsDateValid] = useState<boolean>(null);
 
@@ -84,16 +95,10 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
 
   // ==================================================================== REFS
   const isInitialized = useRef<boolean>(false);
-
-  const internalHourRef = React.useRef<HTMLInputElement>(null);
-  const internalMinuteRef = React.useRef<HTMLInputElement>(null);
-  const internalSecondRef = React.useRef<HTMLInputElement>(null);
-  const internalPeriodRef = React.useRef<HTMLButtonElement>(null);
-
-  const hourRef = hoursRef ?? internalHourRef;
-  const minuteRef = minutesRef ?? internalMinuteRef;
-  const secondRef = secondsRef ?? internalSecondRef;
-  const periodRef = periodsRef ?? internalPeriodRef;
+  const hourRef = useDefaultRef(hoursRef);
+  const minuteRef = useDefaultRef(minutesRef);
+  const secondRef = useDefaultRef(secondsRef);
+  const periodRef = useDefaultRef(periodsRef);
 
   // ==================================================================== UTILITIES
   const { ariaDescribedbyId } = useComponentUtilities({
@@ -103,13 +108,19 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
-    if (date !== _date) {
+    if (date && date !== _date) {
       setDate(setDefaultDate(date));
+      checkDateValidation(date);
+      configurePeriod(date);
+    } else {
+      checkDateValidation(_date);
+      configurePeriod(_date);
     }
-
-    checkDateValidation(date);
-    configurePeriod(date);
   }, [date]);
+
+  useEffect(() => {
+    if (timePeriod && timePeriod !== _period) setPeriod(timePeriod);
+  }, [timePeriod]);
 
   useEffect(() => {
     if (isInitialized.current && onDelay) {
@@ -209,8 +220,8 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
       onSetDate(timeFormat && value ? moment(value).format(timeFormat) : value);
   }
 
-  function onSetPeriodHandler(period: Period) {
-    setPeriod(period);
+  function onSetPeriodHandler(value: Period) {
+    setPeriod(value);
   }
 
   function onBlurHandler(value: Date) {

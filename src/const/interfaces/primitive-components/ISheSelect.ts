@@ -32,6 +32,7 @@ export interface ISheSelect<T>
       React.MouseEvent | React.KeyboardEvent
     >,
   ): void;
+  onTriggerKeyDown?(value: any): void;
 }
 
 export const SheSelectDefaultModel: ISheSelect<any> = {
@@ -52,4 +53,5 @@ export const SheSelectDefaultModel: ISheSelect<any> = {
   openOnFocus: undefined,
   onOpen: undefined,
   onSelect: undefined,
+  onTriggerKeyDown: undefined,
 };
