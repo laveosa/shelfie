@@ -76,15 +76,12 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
     IShePrimitiveComponentWrapper
   >(props, ShePrimitiveComponentWrapperDefaultModel);
 
-  console.log("TimePicker RENDER");
-
   // ==================================================================== STATE MANAGEMENT
   const [_date, setDate] = useState<Date>(new Date());
   const [_startDate, setStartDate] = useState<Date>(startDate ?? null);
   const [_period, setPeriod] = useState<Period>(null);
   const [_isValid, setIsValid] = useState(isValid);
   const [_isDateValid, setIsDateValid] = useState<boolean>(null);
-
   const [_description, setDescription] = useState<string>(null);
   const [_descriptionTransKey, setDescriptionTransKey] = useState<string>(null);
   const [_error, setError] = useState<string>(null);
@@ -94,11 +91,11 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
   );
 
   // ==================================================================== REFS
-  const isInitialized = useRef<boolean>(false);
-  const hourRef = useDefaultRef(hoursRef);
-  const minuteRef = useDefaultRef(minutesRef);
-  const secondRef = useDefaultRef(secondsRef);
-  const periodRef = useDefaultRef(periodsRef);
+  const _isInitialized = useRef<boolean>(false);
+  const _hourRef = useDefaultRef(hoursRef);
+  const _minuteRef = useDefaultRef(minutesRef);
+  const _secondRef = useDefaultRef(secondsRef);
+  const _periodRef = useDefaultRef(periodsRef);
 
   // ==================================================================== UTILITIES
   const { ariaDescribedbyId } = useComponentUtilities({
@@ -123,7 +120,7 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
   }, [timePeriod]);
 
   useEffect(() => {
-    if (isInitialized.current && onDelay) {
+    if (_isInitialized.current && onDelay) {
       onDelay(
         timeFormat && delayValue
           ? moment(delayValue).format(timeFormat)
@@ -212,7 +209,7 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
 
   // ==================================================================== EVENT HANDLERS
   function onSetDateHandler(value: Date) {
-    isInitialized.current = true;
+    _isInitialized.current = true;
     checkDateValidation(value);
     setDate(value);
 
@@ -230,7 +227,7 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
   }
 
   function onClearHandler() {
-    isInitialized.current = false;
+    _isInitialized.current = false;
     let newValue = setDefaultDate();
     checkDateValidation(newValue);
     setDate(newValue);
@@ -317,7 +314,7 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
           className={`${cs.sheTimePickerElementInputCell} ${cs.sheTimePickerClockViewCell}`}
         >
           <SheTimePickerInput
-            ref={hourRef}
+            ref={_hourRef}
             className={`${inputClassName} ${cs.sheTimePickerLabel}`}
             style={inputStyle}
             label={!hideInputLabels && hhLabel}
@@ -334,14 +331,14 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
             autoFocus={autoFocus}
             setDate={onSetDateHandler}
             onBlurHandler={onBlurHandler}
-            onRightFocus={() => minuteRef.current?.focus()}
+            onRightFocus={() => _minuteRef.current?.focus()}
           />
         </div>
         <div
           className={`${cs.sheTimePickerElementInputCell} ${!hideSeconds ? cs.sheTimePickerClockViewCell : ""}`}
         >
           <SheTimePickerInput
-            ref={minuteRef}
+            ref={_minuteRef}
             id={clockWorksheets === "12" ? "minutes12" : ""}
             className={`${inputClassName} ${cs.sheTimePickerLabel}`}
             style={inputStyle}
@@ -353,18 +350,18 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
             isLoading={isLoading}
             setDate={onSetDateHandler}
             onBlurHandler={onBlurHandler}
-            onLeftFocus={() => hourRef.current?.focus()}
+            onLeftFocus={() => _hourRef.current?.focus()}
             onRightFocus={() =>
               hideSeconds
-                ? periodRef.current?.focus()
-                : secondRef.current?.focus()
+                ? _periodRef.current?.focus()
+                : _secondRef.current?.focus()
             }
           />
         </div>
         {!hideSeconds && (
           <div className={cs.sheTimePickerElementInputCell}>
             <SheTimePickerInput
-              ref={secondRef}
+              ref={_secondRef}
               id={clockWorksheets === "12" ? "seconds12" : ""}
               className={`${inputClassName} ${cs.sheTimePickerLabel}`}
               style={inputStyle}
@@ -377,15 +374,15 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
               isLoading={isLoading}
               setDate={onSetDateHandler}
               onBlurHandler={onBlurHandler}
-              onLeftFocus={() => minuteRef.current?.focus()}
-              onRightFocus={() => periodRef.current?.focus()}
+              onLeftFocus={() => _minuteRef.current?.focus()}
+              onRightFocus={() => _periodRef.current?.focus()}
             />
           </div>
         )}
         {clockWorksheets === "12" && (
           <div className={cs.sheTimePickerElementInputCell}>
             <SheTimePickerSelect
-              ref={periodRef}
+              ref={_periodRef}
               className={`${selectClassName} ${cs.sheTimePickerLabel} ${cs.sheTimePickerSelect}`}
               style={selectStyle}
               label={!hideInputLabels && periodLabel}
@@ -398,8 +395,8 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
               setPeriod={onSetPeriodHandler}
               onLeftFocus={() =>
                 hideSeconds
-                  ? minuteRef.current?.focus()
-                  : secondRef.current?.focus()
+                  ? _minuteRef.current?.focus()
+                  : _secondRef.current?.focus()
               }
             />
           </div>
