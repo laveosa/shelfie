@@ -1,0 +1,209 @@
+import { useDispatch, useSelector } from "react-redux";
+import _ from "lodash";
+
+import { AppDispatch, RootState } from "@/state/store.ts";
+import { CustomersPageSliceActions as actions, selectCustomersPageState } from "@/state/slices/CustomersPageSlice";
+import { OrdersApiService as api } from "@/utils/services/api/OrdersApiService";
+import { useNavigate, useParams } from "react-router-dom";
+import { useToast } from "@/hooks/useToast.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel";
+import { DictionaryApiHooks } from "@/utils/services/api/DictionaryApiService";
+import { convertAddressToRequestModel, createAddressRequestModel } from "@/utils/helpers/address-helper";
+import { AddressModel } from "@/const/models/AddressModel";
+import { AddressRequestModelDefault } from "@/const/models/AddressRequestModel";
+import { clearSelectedGridItems,} from "@/utils/helpers/quick-helper";
+import { DEFAULT_SORTING_OPTIONS } from "@/const/models/GridSortingModel";
+
+
+export default function useCustomerAddressesPageService() {
+  const { appState, state } = useSelector(selectCustomersPageState);
+
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+
+  const [updateCustomerAddress] = api.useUpdateCustomerAddressMutation();
+  const [createCustomerAddress] = api.useCreateCustomerAddressMutation();
+  const [getCustomerAddressDetails] = api.useLazyGetCustomerAddressDetailsQuery();
+  const [deleteCustomerAddress] = api.useDeleteCustomerAddressMutation();
+  const [getCustomerAddressesForGrid] = api.useGetCustomerAddressesForGridMutation();
+  const [getCountryCode] = DictionaryApiHooks.useLazyGetCountryCodeQuery();
+  const [getCustomerInfo] = api.useLazyGetCustomerInfoQuery();
+  const {customerId} = useParams();
+  const { addToast } = useToast();
+
+
+  
+  function getCustomerAddressesForGridHandler(data?: GridRequestModel) {
+    //if the grid is already initiated and the data is in, no need to refresh the grid
+    if(!data && state.customerAddressesGridModel.items.length>0) return;
+    //if the data is the same as the current data, no need to refresh the grid
+    if(_.isEqual(data, state.customerAddressesGridRequestModel)) return;
+    //if the data is not provided, use the current data
+    data = data ?? state.customerAddressesGridRequestModel;
+
+    dispatch(actions.setIsCustomerAddressesLoading(true));
+
+    return getCustomerAddressesForGrid({model: data, id: Number(customerId)}).then((res: any) => {
+      dispatch(actions.setIsCustomerAddressesLoading(false));
+
+      if (!res.error) {
+        const filteredItems = res.data.items.filter((item: any) => !item.isDeleted);
+        dispatch(actions.refreshCustomerAddressesGridModel(res.data));
+        dispatch(actions.refreshCustomerAddresses(filteredItems));
+      }
+      return res;
+    });
+  }
+  
+  function setDefaultSortingOptionsHandler() {
+    dispatch(actions.refreshSortingOptions(DEFAULT_SORTING_OPTIONS));
+  }
+
+  function resolveCustomerAddressData(data: any) {
+    const requestModel = createAddressRequestModel(data.alias, data.addressLine1, data.addressLine2, data.city, data.state, data.postalCode, data.countryId);
+    if(!!state.selectedCustomerAddressId) {
+      return updateCustomerAddressHandler(requestModel)
+    } else {
+      return createCustomerAddressHandler(requestModel);
+    }
+  }
+
+  function updateCustomerAddressHandler(data: any) {
+    const requestData = convertAddressToRequestModel(data);
+    dispatch(actions.setIsCustomerAddressDetailsLoading(true));
+    return updateCustomerAddress({ id: state.selectedCustomerAddressId, model: requestData }).then((res) => {
+      dispatch(actions.setIsCustomerAddressDetailsLoading(false));
+      if (res.error) {
+        return;
+      } else {
+        
+        const updatedAddresses = state.customerAddresses.map(address => 
+          address.addressId === state.selectedCustomerAddressId 
+            ? res.data 
+            : address
+        );
+        dispatch(actions.refreshCustomerAddresses(updatedAddresses));
+        onCloseCustomerAddressCardHandler();
+        addToast({
+          text: "Customer address updated successfully",
+          type: "info",
+        });
+        return res.data;
+      } 
+    });
+  }
+
+  function createCustomerAddressHandler(data: any) {
+    const requestData = convertAddressToRequestModel(data);
+
+    dispatch(actions.setIsCustomerAddressDetailsLoading(true));
+    return createCustomerAddress({id: Number(customerId), model: requestData}).then((res) => {
+      dispatch(actions.setIsCustomerAddressDetailsLoading(false));
+      if (res.error) {
+        return;
+      } else {
+        addToast({
+          text: "New customer address created successfully",
+          type: "info",
+        });
+        // Add new address at the top of the list
+        const updatedAddresses = [res.data, ...state.customerAddresses];
+        onCloseCustomerAddressCardHandler();
+        dispatch(actions.refreshCustomerAddresses(updatedAddresses));
+        return res.data;
+      }
+    });
+  }
+
+  function deleteCustomerAddressHandler(id: number) {
+    // Take a copy of the record to be deleted
+    const addressToDelete = state.customerAddresses.find(address => address.addressId === id);
+    
+    // Remove the record from state
+    const updatedAddresses = state.customerAddresses.filter(address => address.addressId !== id);
+    dispatch(actions.refreshCustomerAddresses(clearSelectedGridItems(updatedAddresses)));
+
+    onCloseCustomerAddressCardHandler();
+    
+    return deleteCustomerAddress(id).then((res) => {
+      if(res.error) {
+        if (addressToDelete && !state.customerAddresses.some(address => address.addressId === addressToDelete.addressId)) {
+          const restoredAddresses = [...state.customerAddresses, addressToDelete];
+          dispatch(actions.refreshCustomerAddresses(clearSelectedGridItems(restoredAddresses)));
+        }
+        addToast({
+          text: "Failed to delete customer address",
+          type: "error",
+        });
+        return;
+      } else {
+        addToast({
+          text: "Customer address deleted successfully",
+          type: "info",
+        });
+        return res.data;
+      }
+    });
+  }
+
+
+  function getCustomerAddressDetailsHandler(id: number) {
+    return getCustomerAddressDetails(id).then((res) => {
+      return res.data;
+    });
+  }
+
+  function onManageCustomerAddressHandler(data: AddressModel) {
+    dispatch(actions.setCreateCustomerAddress(false));
+    dispatch(actions.refreshSelectedCustomerAddress(convertAddressToRequestModel(data)));
+    dispatch(actions.refreshSelectedCustomerAddressId(data.addressId));
+  }
+
+  function onCloseCustomerAddressCardHandler() {
+    dispatch(actions.refreshActiveCards([]));
+    dispatch(actions.refreshSelectedCustomerAddressId(null));
+    dispatch(actions.refreshSelectedCustomerAddress(null));
+    //dispatch(actions.refreshCustomerAddresses(clearSelectedGridItems(state.customerAddresses)));
+  }
+
+  function onCreateCustomerAddressHandler() {
+    dispatch(actions.setCreateCustomerAddress(true));
+    dispatch(actions.refreshSelectedCustomerAddress(AddressRequestModelDefault));
+    dispatch(actions.refreshSelectedCustomerAddressId(null));
+  }
+
+  function getCountryCodeHandler() {
+    return getCountryCode(null).then((res: any) => {
+      if (res.data) {
+        dispatch(actions.refreshCountryList(res.data));
+      }
+      return res;
+    });
+  }
+
+  function getCustomerInfoHandler(id: number) {
+    return getCustomerInfo(id).then((res) => {
+      const counter = res.data;
+      dispatch(actions.refreshCustomerCounter(counter));
+      return res.data;
+    });
+  }
+
+  return { 
+    state,
+    appState,
+    actions,
+    customerId,
+    dispatch,
+    getCustomerAddressDetailsHandler,
+    deleteCustomerAddressHandler,
+    getCustomerAddressesForGridHandler,
+    onManageCustomerAddressHandler,
+    onCloseCustomerAddressCardHandler,
+    onCreateCustomerAddressHandler,
+    getCountryCodeHandler,
+    resolveCustomerAddressData,
+    getCustomerInfoHandler,
+    setDefaultSortingOptionsHandler
+  };
+} 

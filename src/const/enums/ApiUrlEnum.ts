@@ -8,6 +8,8 @@ export enum ApiUrlEnum {
   ASSETS_BASE_URL = "https://photoservice.redground-5e8b9eee.germanywestcentral.azurecontainerapps.io/api/v1",
   MESSENGER_BASE_URL = "https://messagingservice.redground-5e8b9eee.germanywestcentral.azurecontainerapps.io/api/v1",
   FACEBOOK_BASE_URL = "https://graph.facebook.com/v22.0",
+  ORDERS_BASE_URL = "https://orderservice.redground-5e8b9eee.germanywestcentral.azurecontainerapps.io/api/v1",
+  
   PRODUCTS = "/products",
   VARIANTS = "/variants",
   PURCHASES = "/purchases",
@@ -32,4 +34,6 @@ export enum ApiUrlEnum {
   CODES = "/codes",
   STOCK_ACTIONS = "/stock-actions",
   MARGIN = "/margin",
+  CUSTOMERS = "/customers",
+  DELIVERY_ADDRESSES = "/delivery-addresses",
 }

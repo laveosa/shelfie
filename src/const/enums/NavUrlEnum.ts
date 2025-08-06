@@ -21,4 +21,9 @@ export enum NavUrlEnum {
   SUPPORT = "/support",
   TRANSMISSIONS = "/transmissions",
   USERS = "/users",
+  CUSTOMERS = "/customers",
+  CUSTOMER_BASIC_DATA = "customer-basic-data",
+  CUSTOMER_ADDRESSES = "customer-addresses",
+  CUSTOMER_OPEN_CART = "customer-open-cart",
+  CUSTOMER_ORDERS = "customer-orders",
 }

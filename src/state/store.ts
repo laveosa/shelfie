@@ -9,7 +9,7 @@ import ProfilePageSlice from "@/state/slices/ProfilePageSlice.ts";
 import SettingsPageSlice from "@/state/slices/SettingsPageSlice.ts";
 import SupportPageSlice from "@/state/slices/SupportPageSlice.ts";
 import TransmissionsPageSlice from "@/state/slices/TransmissionsPageSlice.ts";
-import UsersPageSlice from "@/state/slices/UsersPAgeSlice.ts";
+import CustomersPageSlice from "@/state/slices/CustomersPageSlice";
 import ProductsPageSlice from "@/state/slices/ProductsPageSlice.ts";
 import AuthPageSlice from "@/state/slices/AuthPageSlice.ts";
 import { ProductsApiService } from "@/utils/services/api/ProductsApiService.ts";
@@ -31,6 +31,7 @@ import PurchaseProductsPageSlice from "@/state/slices/PurchaseProductsPageSlice.
 import MarginsPageSlice from "@/state/slices/MarginsPageSlice.ts";
 import InvoicesPageSlice from "@/state/slices/InvoicesPageSlice.ts";
 import SupplierPageSlice from "@/state/slices/SupplierPageSlice.ts";
+import { OrdersApiService } from "@/utils/services/api/OrdersApiService.ts";
 
 export const store = configureStore({
   reducer: {
@@ -54,7 +55,7 @@ export const store = configureStore({
     [StoreSliceEnum.SETTINGS]: SettingsPageSlice.reducer,
     [StoreSliceEnum.SUPPORT]: SupportPageSlice.reducer,
     [StoreSliceEnum.TRANSMISSIONS]: TransmissionsPageSlice.reducer,
-    [StoreSliceEnum.USERS]: UsersPageSlice.reducer,
+    [StoreSliceEnum.CUSTOMERS]: CustomersPageSlice.reducer,
     [AuthApiService.reducerPath]: AuthApiService.reducer,
     [ProductsApiService.reducerPath]: ProductsApiService.reducer,
     [PurchasesApiService.reducerPath]: PurchasesApiService.reducer,
@@ -64,6 +65,7 @@ export const store = configureStore({
     [AssetsApiService.reducerPath]: AssetsApiService.reducer,
     [MessengerApiService.reducerPath]: MessengerApiService.reducer,
     [FacebookApiService.reducerPath]: FacebookApiService.reducer,
+    [OrdersApiService.reducerPath]: OrdersApiService.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -75,7 +77,8 @@ export const store = configureStore({
       .concat(UsersApiService.middleware)
       .concat(AssetsApiService.middleware)
       .concat(MessengerApiService.middleware)
-      .concat(FacebookApiService.middleware),
+      .concat(FacebookApiService.middleware)
+      .concat(OrdersApiService.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

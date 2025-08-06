@@ -20,4 +20,5 @@ export enum StoreSliceEnum {
   SUPPORT = "supportSlice",
   TRANSMISSIONS = "transmissionsSlice",
   USERS = "usersSlice",
+  CUSTOMERS = "customersSlice",
 }

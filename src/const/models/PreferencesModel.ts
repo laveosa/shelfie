@@ -19,6 +19,7 @@ export interface PreferencesModel {
   viewsReferences?: {
     productReferences?: any;
     variantReferences?: any;
+    customerReferences?: any;
   };
 }
 
@@ -55,6 +56,18 @@ export const PreferencesModelDefault: PreferencesModel = {
         salePrice: false,
         variantCount: false,
         stock: false,
+      },
+    },
+    customerReferences: {
+      columns: {
+        customerId: true,
+        customerName: true,
+        email: true,
+        phoneNumber: true,
+        createdAt: true,
+        lastOrderDate: true,
+        manage: true,
+        rank: false,
       },
     },
   },

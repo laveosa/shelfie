@@ -1,0 +1,42 @@
+@use "@/styles/variables" as vars;
+
+.customerConfigurationFormCard {
+  .customerConfigurationForm > form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-bottom: 20px;
+    justify-content: space-between;
+
+    .customerConfigurationFormRow {
+      display: flex;
+      align-items: end;
+      gap: 20px;
+      justify-content: space-between;
+
+      & > div {
+        width: 100%;
+      }
+    }
+
+    .customerConfigurationFormSwitch {
+      justify-content: flex-start;
+    }
+  }
+
+  .customerCardContent {
+    height: calc(100vh - 166px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  *:focus {
+    box-shadow: none;
+  }
+  .cardFooter {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+} 

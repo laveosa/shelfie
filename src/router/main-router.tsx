@@ -9,7 +9,7 @@ import { OrdersSectionRouter } from "@/router/OrdersSectionRouter.tsx";
 import { SettingsSectionRouter } from "@/router/SettingsSectionRouting.tsx";
 import { SupportSectionRouter } from "@/router/SupportSectionRouter.tsx";
 import { TransmissionsSectionRouter } from "@/router/TransmissionsSectionRouter.tsx";
-import { UsersSectionRouter } from "@/router/UsersSectionRouter.tsx";
+import { CustomersSectionRouter } from "@/router/CustomersSectionRouter";
 import { ProductsSectionRouter } from "@/router/ProductsSectionRouter.tsx";
 import RouterGuard from "@/utils/guards/RouterGuard.tsx";
 
@@ -178,22 +178,21 @@ const mainRouter = createBrowserRouter([
         },
       },
       {
-        path: NavUrlEnum.USERS,
+        path: NavUrlEnum.CUSTOMERS,
         lazy: async (): Promise<{ element: JSX.Element }> => {
-          const { UsersSection } = await import(
-            "@/pages/users-section/UsersSection.tsx"
+          const { CustomersSection } = await import("@/pages/customers-section/CustomersSection.tsx"
           );
           return {
             element: (
               <RouterGuard>
-                <UsersSection />
+                <CustomersSection />
               </RouterGuard>
             ),
           };
         },
-        children: UsersSectionRouter,
+        children: CustomersSectionRouter,
         handle: {
-          crumb: () => <Link to={NavUrlEnum.USERS}>users</Link>,
+          crumb: () => <Link to={NavUrlEnum.CUSTOMERS}>customers</Link>,
         },
       },
     ],

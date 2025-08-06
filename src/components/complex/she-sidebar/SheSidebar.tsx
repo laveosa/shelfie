@@ -87,13 +87,13 @@ const navGroups: ISheSidebarGroup[] = [
     ],
   },
   {
-    title: "USERS",
-    transKey: "SheSidebar.GroupTitle.Users",
+    title: "CUSTOMERS",
+    transKey: "SheSidebar.GroupTitle.Customers",
     items: [
       {
-        title: "Users",
-        transKey: "SheSidebar.NavItems.Users",
-        url: NavUrlEnum.USERS,
+        title: "Customers",
+        transKey: "SheSidebar.NavItems.Customers",
+        url: NavUrlEnum.CUSTOMERS,
         icon: Users,
       },
     ],

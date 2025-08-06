@@ -44,7 +44,7 @@ export const UsersApiService = createApi({
           url: ApiUrlEnum.PREFERENCES,
           method: "PATCH",
           body: JSON.stringify(model),
-        }),
+        }),//TODO - invalidation needs to be conditional. No need to fire a request when the state has not changed.
         invalidatesTags: (result) => [
           {
             type: ApiServiceNameEnum.USERS,
