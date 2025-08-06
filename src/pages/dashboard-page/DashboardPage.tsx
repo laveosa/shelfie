@@ -23,6 +23,7 @@ import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.t
 import { TimeFormatEnum } from "@/const/enums/TimeFormatEnum.ts";
 import { SheTimePickerTypeEnum } from "@/const/enums/SheTimePickerTypeEnum.ts";
 import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
+import SheCalendar from "@/components/primitive/she-calendar/SheCalendar.tsx";
 
 const options: ISheSelectItem<any>[] = [
   {
@@ -260,9 +261,50 @@ export function DashboardPage() {
       <br />
       <br />
 
+      {/*<div className="flex flex-col fullWidth">
+        <h2 className="underline">
+          <b>TimePicker</b>
+        </h2>
+        <br />
+        <div className="flex gap-10">component</div>
+        <br />
+        <div className="divider"></div>
+        <br />
+      </div>*/}
+
       <div className="flex flex-col fullWidth">
         <h2 className="underline">
           <b>TimePicker</b>
+        </h2>
+        <br />
+        <div className="flex gap-10">
+          <SheCalendar
+            label="Calendar Single"
+            onSelectDate={(value, model) =>
+              console.log("CalSingle: ", value, model)
+            }
+          />
+          <SheCalendar
+            label="Calendar Range"
+            onSelectDate={(value, model) =>
+              console.log("CalRange: ", value, model)
+            }
+          />
+          <SheCalendar
+            label="Calendar Multiple"
+            onSelectDate={(value, model) =>
+              console.log("CalMultiple: ", value, model)
+            }
+          />
+        </div>
+        <br />
+        <div className="divider" />
+        <br />
+      </div>
+
+      <div className="flex flex-col fullWidth">
+        <h2 className="underline">
+          <b>DatePicker</b>
         </h2>
         <br />
         <div className="flex gap-10">
@@ -271,7 +313,7 @@ export function DashboardPage() {
           <SheDatePicker label="DatePicker" />
         </div>
         <br />
-        <div className="divider"></div>
+        <div className="divider" />
         <br />
       </div>
 
@@ -609,7 +651,7 @@ export function DashboardPage() {
             // type={SheTimePickerTypeEnum.CLOCK}
             // hideInputLabels
             // size="small"
-            autoFocus
+            // autoFocus
             showClearBtn
             onSetDate={(value) => console.log("SET DATE: ", value)}
             onDelay={(value) => console.log("DELAY: ", value)}

@@ -282,9 +282,8 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
   }
 
   function updateIsValid(value: boolean) {
-    if (onIsValid) onIsValid(value);
-
     setIsValid(value);
+    onIsValid?.(value);
   }
 
   // ==================================================================== LAYOUT
