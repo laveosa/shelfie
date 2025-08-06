@@ -69,6 +69,7 @@ export default function OrderConfigurationCard({
               variant="secondary"
               value={order?.customer ? "Change Customer" : "Select Customer"}
               icon={order?.customer ? UserMinus : UserPlus}
+              onClick={() => onAction("openSelectEntityCard")}
             />
           </div>
           {order?.customer && (

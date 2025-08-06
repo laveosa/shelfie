@@ -26,6 +26,8 @@ export default function useOrdersPageService() {
   const [resetUserPreferences] =
     UsersApiHooks.useResetUserPreferencesMutation();
   const [createOrder] = OrderApiHooks.useCreateOrderMutation();
+  const [getListOfCustomersForGrid] =
+    OrderApiHooks.useGetListOfCustomersForGridMutation();
 
   function getSortingOptionsForGridHandler() {
     return getSortingOptionsForGrid(null).then((res: any) => {
@@ -62,11 +64,19 @@ export default function useOrdersPageService() {
     });
   }
 
+  function getListOfCustomersForGridHandler(model) {
+    return getListOfCustomersForGrid(model).then((res: any) => {
+      dispatch(actions.refreshCustomersGridModel(res.data));
+      return res.data;
+    });
+  }
+
   return {
     getSortingOptionsForGridHandler,
     getListOfOrdersForGridHandler,
     updateUserPreferencesHandler,
     resetUserPreferencesHandler,
     createOrderHandler,
+    getListOfCustomersForGridHandler,
   };
 }

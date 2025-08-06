@@ -14,4 +14,6 @@ export interface IOrdersPageSlice {
   activeCards?: any[];
   productCounter?: ProductCountersModel;
   selectedOrder?: OrderModel;
+  customersGridModel?: GridModel;
+  customersGridRequestModel?: GridRequestModel;
 }

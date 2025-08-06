@@ -8,14 +8,9 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import cs from "./SuppliersListGridColumns.module.scss";
 
 export function SuppliersListGridColumns({
-  onGridAction,
+  onAction,
 }: {
-  onGridAction: (
-    actionType: string,
-    rowId?: string,
-    setLoadingRow?: (rowId: string, loading: boolean) => void,
-    row?: Row<any>,
-  ) => void;
+  onAction: (actionType: string, row?: Row<any>) => void;
 }): ColumnDef<any>[] {
   return [
     {
@@ -33,12 +28,7 @@ export function SuppliersListGridColumns({
         const handleSelectClick = (e) => {
           e.stopPropagation();
           e.preventDefault();
-          onGridAction(
-            "selectSupplier",
-            row.id,
-            meta?.setLoadingRow,
-            row.original,
-          );
+          onAction("selectSupplier", row.original);
         };
 
         return (
@@ -141,12 +131,7 @@ export function SuppliersListGridColumns({
         const handleManageClick = (e) => {
           e.stopPropagation();
           e.preventDefault();
-          onGridAction(
-            "manageSupplier",
-            row.id,
-            meta?.setLoadingRow,
-            row.original,
-          );
+          onAction("manageSupplier", row.original);
         };
 
         return (

@@ -29,6 +29,19 @@ export const OrderApiService = createApi({
         url: `${ApiUrlEnum.ORDERS}/${orderId}`,
       }),
     }),
+    getListOfCustomersForGrid: apiConfig.createMutation<any, any>(builder, {
+      query: (model?: any) => ({
+        url: `${ApiUrlEnum.CUSTOMERS}/list`,
+        method: "POST",
+        body: JSON.stringify(model),
+      }),
+    }),
+    assignCustomerToOrder: apiConfig.createMutation<void, any>(builder, {
+      query: ({ orderId, customerId }) => ({
+        url: `${ApiUrlEnum.ORDERS}/${orderId}/customer/${customerId}`,
+        method: "PATCH",
+      }),
+    }),
   }),
 });
 

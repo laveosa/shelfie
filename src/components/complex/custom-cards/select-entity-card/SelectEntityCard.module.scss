@@ -1,22 +1,23 @@
 @use "@/styles/variables" as vars;
 
-.selectMarginCard {
-  .selectMarginCardContent {
+.selectEntityCard {
+  .selectEntityCardContent {
     display: flex;
     flex-direction: column;
     gap: vars.$paddingStandard;
 
-    .createMarginBlock {
+    .selectEntityCardBlock {
       display: flex;
+      align-items: center;
       justify-content: space-between;
       gap: vars.$paddingStandard;
 
-      .createMarginBlockText {
+      .createEntityBlockText {
         text-wrap: auto;
       }
     }
 
-    .marginListBlock {
+    .entityListBlock {
       display: flex;
       flex-direction: column;
       gap: vars.$paddingStandard;

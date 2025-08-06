@@ -19,6 +19,12 @@
         span:first-child {
           width: 55%;
         }
+      }
+
+      .customerInfo {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
 
         .avatarImage {
           border-radius: 50%;
@@ -55,7 +61,6 @@
           }
         }
       }
-
     }
   }
 }

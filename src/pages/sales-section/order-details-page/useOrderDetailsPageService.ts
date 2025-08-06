@@ -5,6 +5,8 @@ import OrderApiHooks from "@/utils/services/api/OrderApiService.ts";
 export default function useOrderDetailsPageService() {
   const dispatch = useAppDispatch();
   const [getOrderDetails] = OrderApiHooks.useLazyGetOrderDetailsQuery();
+  const [assignCustomerToOrder] =
+    OrderApiHooks.useAssignCustomerToOrderMutation();
 
   function getOrderDetailsHandler(orderId) {
     return getOrderDetails(orderId).then((res: any) => {
@@ -13,7 +15,15 @@ export default function useOrderDetailsPageService() {
     });
   }
 
+  function assignCustomerToOrderHandler(orderId, customerId) {
+    return assignCustomerToOrder({ orderId, customerId }).then((res: any) => {
+      dispatch(ordersActions.refreshSelectedOrder(res.data));
+      return res;
+    });
+  }
+
   return {
     getOrderDetailsHandler,
+    assignCustomerToOrderHandler,
   };
 }

@@ -23,6 +23,15 @@ const initialState: IOrdersPageSlice = {
     filter: {},
   },
   selectedOrder: null,
+  customersGridModel: {
+    pager: {},
+    items: [],
+  },
+  customersGridRequestModel: {
+    currentPage: 1,
+    pageSize: 10,
+    filter: {},
+  },
 };
 
 //----------------------------------------------------- LOADERS
@@ -83,6 +92,21 @@ function refreshSelectedOrder(
   state.selectedOrder = action?.payload || state.selectedOrder;
 }
 
+function refreshCustomersGridModel(
+  state: IOrdersPageSlice,
+  action: PayloadAction<GridModel>,
+) {
+  state.customersGridModel = action?.payload || state.customersGridModel;
+}
+
+function refreshCustomersGridRequestModel(
+  state: IOrdersPageSlice,
+  action: PayloadAction<GridRequestModel>,
+) {
+  state.customersGridRequestModel =
+    action?.payload || state.customersGridRequestModel;
+}
+
 const OrdersPageSlice = createSlice({
   name: StoreSliceEnum.ORDERS,
   initialState,
@@ -95,6 +119,8 @@ const OrdersPageSlice = createSlice({
     refreshOrdersGridModel,
     refreshOrdersGridRequestModel,
     refreshSelectedOrder,
+    refreshCustomersGridModel,
+    refreshCustomersGridRequestModel,
   },
 });
 
