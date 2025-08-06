@@ -88,17 +88,17 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
   const markedParsedDates = React.useMemo(() => {
     if (!Array.isArray(markedDates)) return null;
     return (markedDates || [])
-      .map(parseCalendarSingleDate)
+      .map(_parseCalendarSingleDate)
       .filter(Boolean) as Date[];
   }, [markedDates]);
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     const parsed: Date | Date[] | { from: Date; to: Date } =
-      parseValidDate(date);
+      _parseValidDate(date);
 
     if (parsed && !_.isEqual(parsed, _date)) {
-      const convertedDate = getParsedModel(parsed);
+      const convertedDate = _getParsedModel(parsed);
       setDate(parsed);
       setSelectedMonth(months[getMonth(convertedDate)]);
       setSelectedYear(getYear(convertedDate));
@@ -120,13 +120,13 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
 
   function onSelectDateHandler(selectedDate: any) {
     const normalizedDate =
-      inferCalendarMode(selectedDate) === "multiple"
-        ? sortDateListByDate(selectedDate)
+      _inferCalendarMode(selectedDate) === "multiple"
+        ? _sortDateListByDate(selectedDate)
         : selectedDate;
 
     if (normalizedDate !== _date) setDate(normalizedDate);
 
-    if (onSelectDate) onSelectDate(formatSelectedDateModel(normalizedDate));
+    if (onSelectDate) onSelectDate(_formatSelectedDateModel(normalizedDate));
   }
 
   function onClearHandler() {
@@ -143,13 +143,13 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
 
   function onTimeDelayHandler(value: Date) {
     setSelectedTime(value);
-    const dateWithTime = formatSelectedDateModel(_date, value);
+    const dateWithTime = _formatSelectedDateModel(_date, value);
     if (onSelectDate) onSelectDate(dateWithTime);
   }
 
   // ==================================================================== PRIVATE
-  function getParsedModel(parsed: any): Date {
-    switch (inferCalendarMode(parsed)) {
+  function _getParsedModel(parsed: any): Date {
+    switch (_inferCalendarMode(parsed)) {
       case "multiple":
         return parsed[parsed.length - 1];
       case "range":
@@ -159,34 +159,34 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
     }
   }
 
-  function inferCalendarMode(value: any): "single" | "multiple" | "range" {
-    if (isCalendarMultipleDateValue(value)) return "multiple";
-    if (isCalendarRangeDateValue(value)) return "range";
-    if (isCalendarSingleDateValue(value)) return "single";
+  function _inferCalendarMode(value: any): "single" | "multiple" | "range" {
+    if (_isCalendarMultipleDateValue(value)) return "multiple";
+    if (_isCalendarRangeDateValue(value)) return "range";
+    if (_isCalendarSingleDateValue(value)) return "single";
     return null;
   }
 
   // -------------------------------------------------------------- DATE FORMAT AND SORT
 
-  function formatSelectedDateModel(
+  function _formatSelectedDateModel(
     selectedDate: any,
     timeOverride?: Date,
   ): any {
     const timeToUse: Date = timeOverride ?? _selectedTime;
 
-    if (isCalendarMultipleDateValue(selectedDate)) {
+    if (_isCalendarMultipleDateValue(selectedDate)) {
       return selectedDate.map((item) => {
-        item = combineDateAndTime(item as Date, timeToUse);
+        item = _combineDateAndTime(item as Date, timeToUse);
         return dateFormat ? moment(item).format(dateFormat) : item;
       });
     }
 
-    if (isCalendarRangeDateValue(selectedDate)) {
-      selectedDate.from = combineDateAndTime(
+    if (_isCalendarRangeDateValue(selectedDate)) {
+      selectedDate.from = _combineDateAndTime(
         selectedDate.from as Date,
         timeToUse,
       );
-      selectedDate.to = combineDateAndTime(selectedDate.to as Date, timeToUse);
+      selectedDate.to = _combineDateAndTime(selectedDate.to as Date, timeToUse);
 
       const dateRangeModel = {
         from: selectedDate.from
@@ -206,20 +206,20 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
       }
     }
 
-    if (isCalendarSingleDateValue(selectedDate)) {
-      selectedDate = combineDateAndTime(selectedDate as Date, timeToUse);
+    if (_isCalendarSingleDateValue(selectedDate)) {
+      selectedDate = _combineDateAndTime(selectedDate as Date, timeToUse);
       return dateFormat
         ? moment(selectedDate).format(dateFormat)
         : selectedDate;
     }
   }
 
-  function sortDateListByDate(list: Date[]): Date[] {
+  function _sortDateListByDate(list: Date[]): Date[] {
     if (!list || list.length === 0) return null;
     return list.sort((a, b) => b.getTime() - a.getTime()).reverse();
   }
 
-  function normalizeDateFormat(input: string | Date): string {
+  function _normalizeDateFormat(input: string | Date): string {
     const date = typeof input === "string" ? new Date(input) : input;
 
     if (isNaN(date.getTime())) {
@@ -233,7 +233,7 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
     return `${month}/${day}/${year}`;
   }
 
-  function combineDateAndTime(datePart: Date, timePart: Date): Date {
+  function _combineDateAndTime(datePart: Date, timePart: Date): Date {
     if (!datePart || !timePart) return datePart;
 
     const combined = new Date(datePart);
@@ -247,7 +247,7 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
 
   // -------------------------------------------------------------- CALENDAR MODE DETECTION
 
-  function isCalendarMultipleDateValue(value: unknown): boolean {
+  function _isCalendarMultipleDateValue(value: unknown): boolean {
     if (!value || !Array.isArray(value) || value.length === 0) return null;
 
     let isValueDates = true;
@@ -255,10 +255,10 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
 
     for (const item of value) {
       if (isValueDates) {
-        isValueDates = !!parseCalendarSingleDate(item);
+        isValueDates = !!_parseCalendarSingleDate(item);
       }
 
-      if (!parseCalendarSingleDate(item)) {
+      if (!_parseCalendarSingleDate(item)) {
         invalidDateIndexes.push(value.indexOf(item));
       }
     }
@@ -273,7 +273,7 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
     return isValueDates;
   }
 
-  function isCalendarRangeDateValue(
+  function _isCalendarRangeDateValue(
     value: any,
   ): value is { from: Date | string; to: Date | string } {
     return (
@@ -285,15 +285,15 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
         (value as any).from instanceof Date) &&
       (typeof (value as any).to === "string" ||
         (value as any).to instanceof Date) &&
-      !!parseCalendarSingleDate(value.from) &&
-      !!parseCalendarSingleDate(value.to)
+      !!_parseCalendarSingleDate(value.from) &&
+      !!_parseCalendarSingleDate(value.to)
     );
   }
 
-  function isCalendarSingleDateValue(value: any): boolean {
+  function _isCalendarSingleDateValue(value: any): boolean {
     if (!value || (typeof value === "object" && value.from)) return null;
 
-    const tmpDate: Date = parseCalendarSingleDate(value);
+    const tmpDate: Date = _parseCalendarSingleDate(value);
 
     if (!tmpDate) {
       console.error("Invalid single Date value : ", value);
@@ -304,18 +304,18 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
 
   // -------------------------------------------------------------- DATE PARSERS
 
-  function parseValidDate(
+  function _parseValidDate(
     value: any,
   ): Date | Date[] | { from: Date; to: Date } {
     if (!value) return null;
 
-    switch (inferCalendarMode(value)) {
+    switch (_inferCalendarMode(value)) {
       case "multiple":
-        return parseCalendarMultipleDate(value);
+        return _parseCalendarMultipleDate(value);
       case "range":
-        return parseCalendarRangeDate(value);
+        return _parseCalendarRangeDate(value);
       case "single":
-        return parseCalendarSingleDate(value);
+        return _parseCalendarSingleDate(value);
       default: {
         console.error("Invalid date to parse: ", value);
         return null;
@@ -323,14 +323,14 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
     }
   }
 
-  function parseCalendarMultipleDate(
+  function _parseCalendarMultipleDate(
     value: string[] | Date[] | (string | Date)[],
   ): Date[] | null {
-    if (!isCalendarMultipleDateValue(value)) return null;
+    if (!_isCalendarMultipleDateValue(value)) return null;
 
     const dateList = value
       .map((item) => {
-        const date = new Date(normalizeDateFormat(item));
+        const date = new Date(_normalizeDateFormat(item));
         if (isNaN(date.getTime())) {
           console.warn("Invalid date:", item);
           return null;
@@ -339,19 +339,19 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
       })
       .filter(Boolean) as Date[];
 
-    return sortDateListByDate(dateList);
+    return _sortDateListByDate(dateList);
   }
 
-  function parseCalendarRangeDate(
+  function _parseCalendarRangeDate(
     value:
       | { from: string; to: string }
       | { from: Date; to: Date }
       | { from: string | Date; to: string | Date },
   ): { from: Date; to: Date } | null {
-    if (!isCalendarRangeDateValue(value)) return null;
+    if (!_isCalendarRangeDateValue(value)) return null;
 
-    const from = new Date(normalizeDateFormat(value.from));
-    let to = new Date(normalizeDateFormat(value.to));
+    const from = new Date(_normalizeDateFormat(value.from));
+    let to = new Date(_normalizeDateFormat(value.to));
 
     if (isNaN(from.getTime()) || isNaN(to.getTime())) {
       console.error("Invalid date input.");
@@ -367,7 +367,7 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
     return { from, to };
   }
 
-  function parseCalendarSingleDate(value: string | Date): Date | null {
+  function _parseCalendarSingleDate(value: string | Date): Date | null {
     if (!value) return null;
 
     if (value instanceof Date && !isNaN(value.getTime())) return value;
@@ -376,7 +376,7 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
       const patterns = [
         /\b(\d{2})[./-](\d{2})[./-](\d{4})\b/, // MM.DD.YYYY / MM-DD-YYYY / MM/DD/YYYY
       ];
-      value = normalizeDateFormat(value);
+      value = _normalizeDateFormat(value);
 
       for (const pattern of patterns) {
         const match = value.match(pattern);
@@ -440,7 +440,7 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
             <Calendar
               className={`${cs.sheCalendarElement} ${calendarClassName} ${disabled || isLoading ? "disabled" : ""}`}
               style={calendarStyle}
-              mode={date ? inferCalendarMode(date) : mode}
+              mode={date ? _inferCalendarMode(date) : mode}
               selected={_date as any}
               month={setMonth(
                 setYear(new Date(), _selectedYear),
