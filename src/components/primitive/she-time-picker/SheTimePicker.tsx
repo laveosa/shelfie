@@ -11,13 +11,13 @@ import { TimeFormatEnum } from "@/const/enums/TimeFormatEnum.ts";
 import { Period } from "@/utils/helpers/time-picker-helper.ts";
 import { useDebounce } from "@/utils/hooks/useDebounce.ts";
 import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
+import useDefaultRef from "@/utils/hooks/useDefaultRef.ts";
 import { getCustomProps } from "@/utils/helpers/props-helper.ts";
 import { ISheTimePicker } from "@/const/interfaces/primitive-components/ISheTimePicker.ts";
 import {
   IShePrimitiveComponentWrapper,
   ShePrimitiveComponentWrapperDefaultModel,
 } from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
-import useDefaultRef from "@/utils/hooks/useDefaultRef.ts";
 
 export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
   // ==================================================================== PROPS
@@ -77,7 +77,9 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
   >(props, ShePrimitiveComponentWrapperDefaultModel);
 
   // ==================================================================== STATE MANAGEMENT
-  const [_date, setDate] = useState<Date>(new Date());
+  const [_date, setDate] = useState<Date>(
+    new Date(new Date().setHours(0, 0, 0, 0)),
+  );
   const [_startDate, setStartDate] = useState<Date>(startDate ?? null);
   const [_period, setPeriod] = useState<Period>(null);
   const [_isValid, setIsValid] = useState(isValid);
@@ -134,9 +136,9 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
     if (descriptionTransKey !== _descriptionTransKey)
       setDescriptionTransKey(descriptionTransKey);
 
-    if (_startDate && endDate && !_description) {
+    if ((_startDate || endDate) && !_description) {
       setDescription(
-        `from: ${moment(startDate).format(TimeFormatEnum.HH_MM_SS)} to: ${moment(endDate).format(TimeFormatEnum.HH_MM_SS)}`,
+        `from: ${startDate ? moment(startDate).format(TimeFormatEnum.HH_MM_SS) : "not set"} to: ${endDate ? moment(endDate).format(TimeFormatEnum.HH_MM_SS) : "not set"}`,
       );
       setDescriptionTransKey("TRANS_KEY");
     }
@@ -244,9 +246,7 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
 
   // ==================================================================== PRIVATE
   function setDefaultDate(value?: Date) {
-    return (value ?? type === SheTimePickerTypeEnum.CLOCK)
-      ? new Date()
-      : new Date(new Date().setHours(0, 0, 0, 0));
+    return value ?? new Date(new Date().setHours(0, 0, 0, 0));
   }
 
   function checkDateValidation(value: Date) {
@@ -296,7 +296,9 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
       iconProps={{ className: cs.sheTimePickerIcon }}
       iconPosition="out"
       clearBtnPosition="out"
-      clearBtnValue={_isDateValid ? _date : null}
+      clearBtnValue={
+        moment(_date).format(TimeFormatEnum.HH_MM_SS) !== "00:00:00"
+      }
       clearBtnClassName={`${shePrimitiveComponentWrapperProps.clearBtnClassName} ${cs.sheTimePickerClearButton}`}
       showClearBtn={
         type === SheTimePickerTypeEnum.TIME_PICKER &&
@@ -379,28 +381,29 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
             />
           </div>
         )}
-        {clockWorksheets === "12" && (
-          <div className={cs.sheTimePickerElementInputCell}>
-            <SheTimePickerSelect
-              ref={_periodRef}
-              className={`${selectClassName} ${cs.sheTimePickerLabel} ${cs.sheTimePickerSelect}`}
-              style={selectStyle}
-              label={!hideInputLabels && periodLabel}
-              labelTransKey={periodLabelTransKey}
-              date={_date}
-              period={_period}
-              disabled={disabled}
-              isLoading={isLoading}
-              setDate={onSetDateHandler}
-              setPeriod={onSetPeriodHandler}
-              onLeftFocus={() =>
-                hideSeconds
-                  ? _minuteRef.current?.focus()
-                  : _secondRef.current?.focus()
-              }
-            />
-          </div>
-        )}
+        {clockWorksheets === "12" &&
+          type === SheTimePickerTypeEnum.TIME_PICKER && (
+            <div className={cs.sheTimePickerElementInputCell}>
+              <SheTimePickerSelect
+                ref={_periodRef}
+                className={`${selectClassName} ${cs.sheTimePickerLabel} ${cs.sheTimePickerSelect}`}
+                style={selectStyle}
+                label={!hideInputLabels && periodLabel}
+                labelTransKey={periodLabelTransKey}
+                date={_date}
+                period={_period}
+                disabled={disabled}
+                isLoading={isLoading}
+                setDate={onSetDateHandler}
+                setPeriod={onSetPeriodHandler}
+                onLeftFocus={() =>
+                  hideSeconds
+                    ? _minuteRef.current?.focus()
+                    : _secondRef.current?.focus()
+                }
+              />
+            </div>
+          )}
       </div>
     </ShePrimitiveComponentWrapper>
   );

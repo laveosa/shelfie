@@ -1,4 +1,4 @@
-import React, { JSX, useEffect } from "react";
+import React, { JSX } from "react";
 
 import cs from "./SheTimePickerSelect.module.scss";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
@@ -19,10 +19,6 @@ export default function SheTimePickerSelect({
   onRightFocus,
   ...props
 }: ISheTimePickerSelect): JSX.Element {
-  useEffect(() => {
-    console.log("PERIOD: ", period);
-  }, [period]);
-
   // ==================================================================== EVENT HANDLERS
   function onKeyDown(e: React.KeyboardEvent<HTMLButtonElement>) {
     if (e.key === "ArrowRight") onRightFocus?.(e);
@@ -30,9 +26,7 @@ export default function SheTimePickerSelect({
   }
 
   function onValueChange(value: Period) {
-    if (setPeriod) {
-      setPeriod(value);
-    }
+    setPeriod?.(value);
 
     if (date && setDate) {
       const tempDate = new Date(date);

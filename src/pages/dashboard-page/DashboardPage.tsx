@@ -2,7 +2,15 @@ import React, { useEffect, useRef, useState } from "react";
 
 import cs from "./DashboardPage.module.scss";
 import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageService.ts";
-import { Box, Clock, Home, LayoutDashboard, User, Users } from "lucide-react";
+import {
+  Box,
+  Clock,
+  Divide,
+  Home,
+  LayoutDashboard,
+  User,
+  Users,
+} from "lucide-react";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import SheMultiSelect from "@/components/primitive/she-multi-select/SheMultiSelect.tsx";
@@ -13,6 +21,8 @@ import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheTimePicker from "@/components/primitive/she-time-picker/SheTimePicker.tsx";
 import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
 import { TimeFormatEnum } from "@/const/enums/TimeFormatEnum.ts";
+import { SheTimePickerTypeEnum } from "@/const/enums/SheTimePickerTypeEnum.ts";
+import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
 
 const options: ISheSelectItem<any>[] = [
   {
@@ -188,6 +198,9 @@ export function DashboardPage() {
   const [selected, setSelected] = useState<any>(null);
   const [isLoading, setIsLoading] = useState<boolean>(null);
   const [_badges, setBadges] = useState<ISheBadge<string>[]>(null);
+  const [_time, setTime] = useState<Date>(null);
+  const [_startTime, setStartTime] = useState<Date>(null);
+  const [_endTime, setEndTime] = useState<Date>(null);
 
   // -------------------------------------------- INPUT
   const [_inputValue, setInputValue] = useState<string>(null);
@@ -204,6 +217,11 @@ export function DashboardPage() {
       // setItems(options);
       // setBadges(badges);
       // setInputValue("input static test!!!");
+
+      const tmpTime: Date = new Date();
+      // const tmpStartTime: Date = tmpTime;
+
+      setTime(tmpTime);
     }, 1000);
 
     /*const timer = setTimeout(() => {
@@ -218,14 +236,24 @@ export function DashboardPage() {
   }, []);
 
   // ================================================================== EVENT
-
   function onSelectHandler(value: any, model: any) {
     console.log("VALUE: ", value);
     console.log("MODEL: ", model);
   }
 
-  // ================================================================== LAYOUT
+  // ================================================================== PRIVATE
+  const addMinutes = (date: Date, minutes: number): Date => {
+    const newDate = new Date(date);
+    newDate.setMinutes(newDate.getMinutes() + minutes);
+    return newDate;
+  };
 
+  // Subtract minutes
+  const subtractMinutes = (date: Date, minutes: number): Date => {
+    return addMinutes(date, -minutes);
+  };
+
+  // ================================================================== LAYOUT
   return (
     <div id={cs["DashboardPage"]}>
       <h1>Dashboard</h1>
@@ -238,53 +266,12 @@ export function DashboardPage() {
         </h2>
         <br />
         <div className="flex gap-10">
-          <SheTimePicker
-            // selectClassName="SELECT-CLASS-NAME"
-            // selectStyle={{ border: "1px solid blue" }}
-            // hhLabel="11"
-            // mmLabel="22"
-            // ssLabel="33"
-            // periodLabel="pp"
-            label="Timepicker"
-            required
-            icon={Home}
-            // date={new Date()}
-            // startDate={new Date()}
-            // endDate={new Date()}
-            // timeFormat={TimeFormatEnum.HH_MM_SS}
-            timePeriod="PM"
-            clockWorksheets="12"
-            // type={SheTimePickerTypeEnum.TIMER}
-            // type={SheTimePickerTypeEnum.CLOCK}
-            // hideInputLabels
-            // size="small"
-            // autoFocus
-            showClearBtn
-            onSetDate={(value) => console.log("SET DATE: ", value)}
-            onDelay={(value) => console.log("DELAY: ", value)}
-            // onBlur={(value) => console.log("BLUR: ", value)}
-            // onTick={(value) => console.log("TICK: ", value)}
-            // onIsValid={(value) => console.log("VALID: ", value)}
-          />
-          {/*<SheTimePicker
-            label="Timepicker"
-            required
-            icon={Home}
-            date={new Date()}
-            // type={SheTimePickerTypeEnum.TIMER}
-            // type={SheTimePickerTypeEnum.CLOCK}
-            // hideInputLabels
-            size="small"
-            // autoFocus
-            showClearBtn
-            onSetDate={(value) => console.log("SET DATE: ", value)}
-            onDelay={(value) => console.log("DELAY: ", value)}
-            onBlur={(value) => console.log("BLUR: ", value)}
-            onTick={(value) => console.log("TICK: ", value)}
-            onIsValid={(value) => console.log("VALID: ", value)}
-          />*/}
+          <SheDatePicker label="DatePicker" />
+          <SheDatePicker label="DatePicker" />
+          <SheDatePicker label="DatePicker" />
         </div>
         <br />
+        <div className="divider"></div>
         <br />
       </div>
 
@@ -348,6 +335,7 @@ export function DashboardPage() {
           />
         </div>
         <br />
+        <div className="divider"></div>
         <br />
       </div>
 
@@ -429,6 +417,7 @@ export function DashboardPage() {
           />
         </div>
         <br />
+        <div className="divider"></div>
         <br />
       </div>
 
@@ -508,6 +497,7 @@ export function DashboardPage() {
           />
         </div>
         <br />
+        <div className="divider"></div>
         <br />
       </div>
 
@@ -596,6 +586,102 @@ export function DashboardPage() {
           />
         </div>
         <br />
+        <div className="divider"></div>
+        <br />
+      </div>
+
+      <div className="flex flex-col fullWidth">
+        <h2 className="underline">
+          <b>TimePicker</b>
+        </h2>
+        <br />
+        <div className="flex gap-10">
+          <SheTimePicker
+            label="Timepicker"
+            required
+            icon={Home}
+            // date={new Date()}
+            // date={_time}
+            startDate={addMinutes(new Date(), 0)}
+            endDate={addMinutes(new Date(), 2)}
+            timeFormat={TimeFormatEnum.HH_MM_SS}
+            type={SheTimePickerTypeEnum.TIMER}
+            // type={SheTimePickerTypeEnum.CLOCK}
+            // hideInputLabels
+            // size="small"
+            autoFocus
+            showClearBtn
+            onSetDate={(value) => console.log("SET DATE: ", value)}
+            onDelay={(value) => console.log("DELAY: ", value)}
+            // onBlur={(value) => console.log("BLUR: ", value)}
+            // onTick={(value) => console.log("TICK: ", value)}
+            // onIsValid={(value) => console.log("VALID: ", value)}
+            // description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
+            // descriptionTransKey="f0923fj9wejfwe"
+            // descriptionIcon={Users}
+            // errorMessage="some error message some error message some error message some error message some error message"
+            // errorMessageTransKey="f0wejfw9ejfkwlejfw"
+            // errorMessageIcon={LayoutDashboard}
+          />
+          <div className="flex flex-col gap-6">
+            <SheTimePicker
+              label="Timepicker"
+              required
+              icon={Home}
+              // date={new Date()}
+              date={_time}
+              // type={SheTimePickerTypeEnum.TIMER}
+              // type={SheTimePickerTypeEnum.CLOCK}
+              // hideInputLabels
+              // size="small"
+              // autoFocus
+              showClearBtn
+              onSetDate={(value) => console.log("SET DATE: ", value)}
+              onDelay={(value) => console.log("DELAY: ", value)}
+              onBlur={(value) => console.log("BLUR: ", value)}
+              onTick={(value) => console.log("TICK: ", value)}
+              onIsValid={(value) => console.log("VALID: ", value)}
+            />
+            <SheTimePicker
+              label="Timepicker"
+              required
+              icon={Home}
+              // date={new Date()}
+              date={_time}
+              // type={SheTimePickerTypeEnum.TIMER}
+              // type={SheTimePickerTypeEnum.CLOCK}
+              // hideInputLabels
+              size="small"
+              // autoFocus
+              showClearBtn
+              onSetDate={(value) => console.log("SET DATE: ", value)}
+              onDelay={(value) => console.log("DELAY: ", value)}
+              onBlur={(value) => console.log("BLUR: ", value)}
+              onTick={(value) => console.log("TICK: ", value)}
+              onIsValid={(value) => console.log("VALID: ", value)}
+            />
+          </div>
+          <SheTimePicker
+            label="Timepicker"
+            required
+            icon={Clock}
+            // date={new Date()}
+            // type={SheTimePickerTypeEnum.TIMER}
+            type={SheTimePickerTypeEnum.CLOCK}
+            // hideInputLabels
+            // size="small"
+            // autoFocus
+            showClearBtn
+            hideInputLabels
+            onSetDate={(value) => console.log("SET DATE: ", value)}
+            onDelay={(value) => console.log("DELAY: ", value)}
+            onBlur={(value) => console.log("BLUR: ", value)}
+            onTick={(value) => console.log("TICK: ", value)}
+            onIsValid={(value) => console.log("VALID: ", value)}
+          />
+        </div>
+        <br />
+        <div className="divider"></div>
         <br />
       </div>
 
@@ -663,6 +749,7 @@ export function DashboardPage() {
             />
           </div>
           <br />
+          <div className="divider"></div>
           <br />
         </div>
 
@@ -730,6 +817,7 @@ export function DashboardPage() {
             />
           </div>
           <br />
+          <div className="divider"></div>
           <br />
         </div>
       </div>
