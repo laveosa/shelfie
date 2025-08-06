@@ -108,12 +108,12 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     if (date && date !== _date) {
-      setDate(setDefaultDate(date));
-      checkDateValidation(date);
-      configurePeriod(date);
+      setDate(_setDefaultDate(date));
+      _checkDateValidation(date);
+      _configurePeriod(date);
     } else {
-      checkDateValidation(_date);
-      configurePeriod(_date);
+      _checkDateValidation(_date);
+      _configurePeriod(_date);
     }
   }, [date]);
 
@@ -173,9 +173,9 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
         newDate.setMilliseconds(0);
 
         setDate(newDate);
-        checkDateValidation(newDate);
-        configurePeriod(newDate);
-        validateTimerValue(newDate);
+        _checkDateValidation(newDate);
+        _configurePeriod(newDate);
+        _validateTimerValue(newDate);
 
         if (onTick) {
           const start = _startDate ?? _date ?? new Date();
@@ -199,8 +199,8 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
       interval = setInterval(() => {
         const now = new Date();
         setDate(now);
-        checkDateValidation(now);
-        configurePeriod(now);
+        _checkDateValidation(now);
+        _configurePeriod(now);
       }, 1000);
     }
 
@@ -212,7 +212,7 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
   // ==================================================================== EVENT HANDLERS
   function onSetDateHandler(value: Date) {
     _isInitialized.current = true;
-    checkDateValidation(value);
+    _checkDateValidation(value);
     setDate(value);
 
     if (onSetDate)
@@ -230,8 +230,8 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
 
   function onClearHandler() {
     _isInitialized.current = false;
-    let newValue = setDefaultDate();
-    checkDateValidation(newValue);
+    let newValue = _setDefaultDate();
+    _checkDateValidation(newValue);
     setDate(newValue);
 
     if (onSetDate)
@@ -245,22 +245,22 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
   }
 
   // ==================================================================== PRIVATE
-  function setDefaultDate(value?: Date) {
+  function _setDefaultDate(value?: Date) {
     return value ?? new Date(new Date().setHours(0, 0, 0, 0));
   }
 
-  function checkDateValidation(value: Date) {
+  function _checkDateValidation(value: Date) {
     setIsDateValid(
       value && moment(value).format(TimeFormatEnum.HH_MM_SS) !== "00:00:00",
     );
   }
 
-  function configurePeriod(value: Date) {
+  function _configurePeriod(value: Date) {
     if (timePeriod) return setPeriod(timePeriod);
     setPeriod(value?.getHours() >= 12 ? "PM" : "AM");
   }
 
-  function validateTimerValue(value: Date) {
+  function _validateTimerValue(value: Date) {
     if (
       !value ||
       type !== SheTimePickerTypeEnum.TIMER ||
@@ -272,16 +272,16 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
       setError("expire time error");
       setErrorTransKey("TRANS-KEY");
       setShowError(!_.isNil(_showError) ? _showError : true);
-      updateIsValid(false);
+      _updateIsValid(false);
     } else {
       setError(shePrimitiveComponentWrapperProps.errorMessage);
       setErrorTransKey(shePrimitiveComponentWrapperProps.errorMessageTransKey);
       setShowError(false);
-      updateIsValid(true);
+      _updateIsValid(true);
     }
   }
 
-  function updateIsValid(value: boolean) {
+  function _updateIsValid(value: boolean) {
     setIsValid(value);
     onIsValid?.(value);
   }
