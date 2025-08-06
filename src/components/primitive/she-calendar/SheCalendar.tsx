@@ -126,15 +126,23 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
 
     if (normalizedDate !== _date) setDate(normalizedDate);
 
-    if (onSelectDate) onSelectDate(_formatSelectedDateModel(normalizedDate));
+    const dateWithTime = _formatSelectedDateModel(normalizedDate);
+    onSelectDate?.(dateWithTime, {
+      value: dateWithTime,
+      model: props,
+    });
   }
 
-  function onClearHandler() {
+  function onClearHandler(event: React.MouseEvent | React.KeyboardEvent) {
     setDate(null);
     setSelectedTime(null);
     setSelectedMonth(months[new Date().getMonth()]);
     setSelectedYear(new Date().getFullYear());
-    if (onSelectDate) onSelectDate(null);
+    onSelectDate?.(null, {
+      value: null,
+      model: props,
+      event,
+    });
   }
 
   function onTimeChangeHandler(value: Date) {
@@ -144,7 +152,10 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
   function onTimeDelayHandler(value: Date) {
     setSelectedTime(value);
     const dateWithTime = _formatSelectedDateModel(_date, value);
-    if (onSelectDate) onSelectDate(dateWithTime);
+    onSelectDate?.(dateWithTime, {
+      value: dateWithTime,
+      model: props,
+    });
   }
 
   // ==================================================================== PRIVATE
@@ -398,8 +409,10 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
       {...shePrimitiveComponentWrapperProps}
       className={`${shePrimitiveComponentWrapperProps.className} ${cs.sheCalendar}`}
       ariaDescribedbyId={ariaDescribedbyId}
-      clearBtnValue={_date}
-      clearBtnStyle={{ alignSelf: "start" }}
+      iconPosition="out"
+      clearBtnPosition="out"
+      clearBtnValue={_date && _date.toString().length > 0}
+      clearBtnClassName={`${shePrimitiveComponentWrapperProps.clearBtnClassName} ${cs.sheCalendarClearButton}`}
       onClear={onClearHandler}
     >
       <div className={cs.sheCalendarContextBlock}>

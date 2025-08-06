@@ -3,6 +3,7 @@
 .sheCalendar {
   width: fit-content;
   min-width: 252px;
+  max-width: none;
 
   .sheCalendarContextBlock {
     width: 100%;
@@ -40,6 +41,16 @@
         }
       }
     }
+  }
+}
+
+// ======================================================== CLEAR BUTTON
+
+.sheCalendar {
+  .sheCalendarClearButton {
+    align-self: start;
+    position: relative;
+    top: 10px;
   }
 }
 

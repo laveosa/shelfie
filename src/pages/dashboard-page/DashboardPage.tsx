@@ -4,8 +4,8 @@ import cs from "./DashboardPage.module.scss";
 import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageService.ts";
 import {
   Box,
+  Calendar,
   Clock,
-  Divide,
   Home,
   LayoutDashboard,
   User,
@@ -24,6 +24,7 @@ import { TimeFormatEnum } from "@/const/enums/TimeFormatEnum.ts";
 import { SheTimePickerTypeEnum } from "@/const/enums/SheTimePickerTypeEnum.ts";
 import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
 import SheCalendar from "@/components/primitive/she-calendar/SheCalendar.tsx";
+import { DateFormatEnum } from "@/const/enums/DateFormatEnum.ts";
 
 const options: ISheSelectItem<any>[] = [
   {
@@ -192,6 +193,20 @@ const badges: ISheBadge<string>[] = [
   },
 ];
 
+const singleDate: Date = new Date("01.01.2025");
+const rangeDate: { from: Date | string; to: Date | string } = {
+  from: "01.02.2025",
+  to: "1/6/2025",
+};
+const multipleDate = [
+  new Date("1-01-2025"),
+  new Date("01/2/2025"),
+  new Date("01.03-2025"),
+  "01.04.2025",
+  "01-5.2025",
+  "1/6-2025",
+];
+
 export function DashboardPage() {
   const service = useDashboardPageService();
 
@@ -277,23 +292,65 @@ export function DashboardPage() {
           <b>TimePicker</b>
         </h2>
         <br />
-        <div className="flex gap-10">
+        <div className="flex gap-4">
           <SheCalendar
+            date={singleDate}
+            dateFormat={DateFormatEnum.MM_DD_YYYY}
+            // mode="single"
             label="Calendar Single"
+            required
+            icon={Box}
+            showClearBtn
+            view="card"
+            // tooltip="Calendar Multiple mode: some tooltip text for test purpuse only"
+            // description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
+            // descriptionTransKey="f0923fj9wejfwe"
+            // descriptionIcon={Users}
+            // errorMessage="some error message some error message some error message some error message some error message"
+            // errorMessageTransKey="f0wejfw9ejfkwlejfw"
+            // errorMessageIcon={LayoutDashboard}
             onSelectDate={(value, model) =>
-              console.log("CalSingle: ", value, model)
+              console.log("Single: ", value, model)
             }
           />
           <SheCalendar
+            date={rangeDate}
+            dateFormat={DateFormatEnum.DD_MMM_YYYY}
+            // mode="range"
             label="Calendar Range"
+            required
+            icon={Home}
+            showClearBtn
+            view="card"
+            // tooltip="Calendar Multiple mode: some tooltip text for test purpuse only"
+            // description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
+            // descriptionTransKey="f0923fj9wejfwe"
+            // descriptionIcon={Users}
+            // errorMessage="some error message some error message some error message some error message some error message"
+            // errorMessageTransKey="f0wejfw9ejfkwlejfw"
+            // errorMessageIcon={LayoutDashboard}
             onSelectDate={(value, model) =>
-              console.log("CalRange: ", value, model)
+              console.log("Range: ", value, model)
             }
           />
           <SheCalendar
+            date={multipleDate}
+            dateFormat={DateFormatEnum.AT_h_mm_A}
+            // mode="multiple"
             label="Calendar Multiple"
+            required
+            icon={Calendar}
+            showClearBtn
+            view="card"
+            // tooltip="Calendar Multiple mode: some tooltip text for test purpuse only"
+            // description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
+            // descriptionTransKey="f0923fj9wejfwe"
+            // descriptionIcon={Users}
+            // errorMessage="some error message some error message some error message some error message some error message"
+            // errorMessageTransKey="f0wejfw9ejfkwlejfw"
+            // errorMessageIcon={LayoutDashboard}
             onSelectDate={(value, model) =>
-              console.log("CalMultiple: ", value, model)
+              console.log("Multiple: ", value, model)
             }
           />
         </div>

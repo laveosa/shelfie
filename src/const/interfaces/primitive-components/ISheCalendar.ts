@@ -6,7 +6,15 @@ import { IShePrimitiveComponentWrapper } from "@/const/interfaces/primitive-comp
 import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 
 export interface ISheCalendar
-  extends IShePrimitiveComponentWrapper,
+  extends Omit<
+      IShePrimitiveComponentWrapper,
+      | "clearBtnValue"
+      | "clearBtnPosition"
+      | "iconPosition"
+      | "minWidth"
+      | "maxWidth"
+      | "fullWidth"
+    >,
     ComponentPropsWithRef<any> {
   calendarClassName?: string;
   calendarStyle?: React.CSSProperties;
@@ -32,9 +40,11 @@ export interface ISheCalendar
   hideTimePicker?: boolean;
   onSelectDate?(
     value: any,
-    model?:
-      | IOutputEventModel<any, ISheCalendar, React.MouseEvent>
-      | React.KeyboardEvent,
+    model?: IOutputEventModel<
+      any,
+      ISheCalendar,
+      React.MouseEvent | React.KeyboardEvent
+    >,
   ): void;
 }
 
