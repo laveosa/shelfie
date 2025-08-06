@@ -175,7 +175,7 @@ export default function ProductTraitConfigurationCard({
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            {typesOfTraits.map((option) => (
+                            {typesOfTraits?.map((option) => (
                               <SelectItem
                                 key={option.traitTypeId}
                                 value={option.traitTypeId.toString()}

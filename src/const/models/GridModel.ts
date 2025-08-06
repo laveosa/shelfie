@@ -10,4 +10,5 @@ export interface GridModel {
   items?: any[];
   searchQuery?: string;
   sortOption?: string;
+  filter?: any;
 }

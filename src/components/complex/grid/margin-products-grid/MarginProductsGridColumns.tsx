@@ -1,22 +1,24 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { ImageIcon } from "lucide-react";
+
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import placeholderImage from "@/assets/images/placeholder-image.png";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-import cs from "./PurchaseProductsGridColumns.module.scss";
+import cs from "./MarginProductsGridColumns.module.scss";
+import MarginItemsForm from "@/components/forms/margin-items-form/MarginItemsForm.tsx";
+import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 
 export function marginProductsGridColumns(
-  // currencies: CurrencyModel[],
-  // taxes: TaxTypeModel[],
-  // activeTab: string,
+  taxes: TaxTypeModel[],
   onAction: any,
 ): ColumnDef<any>[] {
   return [
     {
       accessorKey: "thumbnailUrl",
       header: "",
-      size: 40,
-      minSize: 40,
+      size: 30,
+      minSize: 30,
+      maxSize: 30,
       cell: ({ row, table }) => {
         const image: string = row.getValue("thumbnailUrl");
         const meta = table.options.meta as {
@@ -49,8 +51,9 @@ export function marginProductsGridColumns(
     {
       accessorKey: "variantCode",
       header: "Code",
-      size: 40,
-      minSize: 40,
+      size: 30,
+      minSize: 30,
+      maxSize: 30,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("variantCode")}>
@@ -66,6 +69,7 @@ export function marginProductsGridColumns(
       header: "Product Name",
       size: 50,
       minSize: 50,
+      maxSize: 50,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("variantName")}>
@@ -81,6 +85,7 @@ export function marginProductsGridColumns(
       header: "Details",
       size: 40,
       minSize: 40,
+      maxSize: 40,
       cell: ({ row }) => {
         const traitOptions = row.original.traitOptions || [];
 
@@ -130,44 +135,59 @@ export function marginProductsGridColumns(
       header: "Purchase Price",
       size: 40,
       minSize: 40,
+      maxSize: 40,
       cell: ({ row }) => {
         return <span>{row.getValue("purchasePrice")}</span>;
       },
     },
     {
       accessorKey: "currentPrice",
-      header: "Current Price",
-      size: 40,
-      minSize: 40,
+      header: () => (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            maxWidth: "60px",
+          }}
+        >
+          <span style={{ textWrap: "wrap" }}>Current Price</span>
+          <SheTooltip showDefaultIcon />
+        </div>
+      ),
+      size: 30,
+      minSize: 30,
+      maxSize: 30,
       cell: ({ row }) => {
         return <span>{row.getValue("currentPrice")}</span>;
       },
     },
-    // {
-    //   accessorKey: "",
-    //   size: 220,
-    //   minSize: 220,
-    //   header: "",
-    //   cell: ({ row }) => {
-    //     const stockActionId = row.original.stockActionId;
-    //     const data = {
-    //       unitsAmount: row.original.unitsAmount,
-    //       currencyId: Number(row.original.stockDocumentPrice.currencyId),
-    //       taxTypeId: Number(row.original.stockDocumentPrice.taxTypeId),
-    //       nettoPrice: row.original.stockDocumentPrice.netto,
-    //     };
-    //     return (
-    //       <PurchaseProductsForm
-    //         activeTab={activeTab}
-    //         taxes={taxes}
-    //         currencies={currencies}
-    //         data={data}
-    //         onSubmit={(data) => {
-    //           onAction("updatePurchaseProduct", { data, stockActionId });
-    //         }}
-    //       />
-    //     );
-    //   },
-    // },
+    {
+      id: "form",
+      accessorKey: "",
+      size: 150,
+      minSize: 150,
+      maxSize: 150,
+      header: () => (
+        <div className="flex items-center">
+          <span style={{ marginRight: "75px" }}>Tax</span>
+          <span style={{ marginRight: "65px" }}>Margin Price</span>
+          <span>Quantity</span>
+        </div>
+      ),
+      cell: ({ row }) => {
+        return (
+          <MarginItemsForm
+            data={row.original}
+            taxes={taxes}
+            currentPrice={row.getValue("currentPrice")}
+            onMarginItemChange={(data) => {
+              onAction("updateMarginItem", data);
+            }}
+            onApply={(id) => onAction("applyMarginItem", id)}
+          />
+        );
+      },
+    },
   ];
 }

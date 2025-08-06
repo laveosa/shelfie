@@ -1,0 +1,82 @@
+.marginItemsFormWrapper {
+  .marginItemsForm {
+    form > div {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      gap: 10px;
+      padding-top: 0;
+
+      .marginItemsFormItem {
+        margin-bottom: 0;
+        min-height: 100%;
+        min-width: fit-content;
+
+        .inputChanged {
+          input {
+            border-color: #007AFF;
+          }
+        }
+
+        .selectChanged {
+          button {
+            border-color: #007AFF;
+          }
+        }
+      }
+
+      .marginItemsFormText {
+        width: 60px;
+      }
+
+      .marginItemsFormInput {
+        min-width: 55px;
+        max-width: 55px;
+      }
+
+      .marginItemsFormIcon {
+        min-width: 24px;
+        max-width: 24px;
+
+        svg {
+          width: 24px;
+        }
+      }
+
+      .arrowIcon {
+        pointer-events: none;
+        cursor: default;
+
+        svg {
+          display: none;
+        }
+      }
+
+
+      .arrowIconActive {
+        cursor: pointer;
+      }
+
+      .lockIcon {
+        cursor: pointer;
+        margin-left: 10px;
+      }
+
+      .undoIcon {
+        pointer-events: none;
+        cursor: default;
+        margin-right: 10px;
+      }
+
+      .undoIconActive {
+        cursor: pointer;
+        margin-right: 10px;
+      }
+
+      .formButtonNotActive {
+        pointer-events: none;
+        cursor: default;
+      }
+    }
+  }
+}

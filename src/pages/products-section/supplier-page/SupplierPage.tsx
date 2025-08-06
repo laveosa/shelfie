@@ -18,12 +18,12 @@ import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import {
   clearSelectedGridItems,
-  scrollToRefElement,
   setSelectedGridItem,
 } from "@/utils/helpers/quick-helper.ts";
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
 import { SupplierModel } from "@/const/models/SupplierModel.ts";
+import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 
 export function SupplierPage() {
   const dispatch = useAppDispatch();
@@ -36,7 +36,10 @@ export function SupplierPage() {
   const navigate = useNavigate();
   const { purchaseId } = useParams();
   const { addToast } = useToast();
-  const cardRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const { handleCardAction, createRefCallback } = useCardActions({
+    selectActiveCards: (state) => state[StoreSliceEnum.SUPPLIER].activeCards,
+    refreshAction: actions.refreshActiveCards,
+  });
   const { openConfirmationDialog } = useDialogService();
 
   useEffect(() => {
@@ -47,7 +50,6 @@ export function SupplierPage() {
         .getPurchaseDetailsHandler(purchaseId)
         .then((res: PurchaseModel) => {
           dispatch(actions.setIsSupplierCardLoading(false));
-          dispatch(productsActions.refreshSelectedPurchase(res));
           dispatch(
             productsActions.refreshSelectedSupplier({
               ...res.supplier,
@@ -66,32 +68,6 @@ export function SupplierPage() {
     dispatch(actions.refreshActiveCards([]));
     dispatch(productsActions.refreshActiveTab("purchases"));
   }, [purchaseId]);
-
-  function handleCardAction(
-    identifier: string,
-    forceOpen: boolean = false,
-    overrideActiveCards?: string[],
-  ) {
-    const activeCards: string[] = Array.isArray(overrideActiveCards)
-      ? overrideActiveCards
-      : Array.isArray(state.activeCards)
-        ? state.activeCards
-        : [];
-    let updatedCards: string[];
-
-    if (forceOpen) {
-      if (!activeCards.includes(identifier)) {
-        updatedCards = [...activeCards, identifier];
-        dispatch(actions.refreshActiveCards(updatedCards));
-        scrollToRefElement(cardRefs.current, identifier);
-      } else {
-        dispatch(actions.refreshActiveCards(activeCards));
-      }
-    } else {
-      updatedCards = activeCards.filter((card) => card !== identifier);
-      dispatch(actions.refreshActiveCards(updatedCards));
-    }
-  }
 
   async function onAction(actionType: string, payload) {
     switch (actionType) {
@@ -285,11 +261,7 @@ export function SupplierPage() {
                       .then((res) => {
                         dispatch(actions.refreshManagedSupplier(res));
                       });
-                    service.getListOfSuppliersForGridHandler({}).then((res) => {
-                      dispatch(
-                        actions.refreshSuppliersWithLocations(res.items),
-                      );
-                    });
+                    service.getListOfSuppliersForGridHandler({});
                     if (
                       productsState.selectedSupplier.supplierId ===
                       state.managedSupplier.supplierId
@@ -297,9 +269,6 @@ export function SupplierPage() {
                       productsService
                         .getPurchaseDetailsHandler(purchaseId)
                         .then((res: PurchaseModel) => {
-                          dispatch(
-                            productsActions.refreshSelectedPurchase(res),
-                          );
                           dispatch(
                             productsActions.refreshSelectedSupplier({
                               ...res.supplier,
@@ -363,7 +332,6 @@ export function SupplierPage() {
                 productsService
                   .getPurchaseDetailsHandler(purchaseId)
                   .then((res: PurchaseModel) => {
-                    dispatch(productsActions.refreshSelectedPurchase(res));
                     dispatch(
                       productsActions.refreshSelectedSupplier({
                         ...res.supplier,
@@ -405,7 +373,6 @@ export function SupplierPage() {
                 productsService
                   .getPurchaseDetailsHandler(purchaseId)
                   .then((res: PurchaseModel) => {
-                    dispatch(productsActions.refreshSelectedPurchase(res));
                     dispatch(
                       productsActions.refreshSelectedSupplier({
                         ...res.supplier,
@@ -449,7 +416,6 @@ export function SupplierPage() {
                 productsService
                   .getPurchaseDetailsHandler(purchaseId)
                   .then((res: PurchaseModel) => {
-                    dispatch(productsActions.refreshSelectedPurchase(res));
                     dispatch(
                       productsActions.refreshSelectedSupplier({
                         ...res.supplier,
@@ -458,9 +424,7 @@ export function SupplierPage() {
                     );
                   });
               }
-              service.getListOfSuppliersForGridHandler({}).then((res) => {
-                dispatch(actions.refreshSuppliersWithLocations(res.items));
-              });
+              service.getListOfSuppliersForGridHandler({});
               addToast({
                 text: "Photo deleted successfully",
                 type: "success",
@@ -477,11 +441,7 @@ export function SupplierPage() {
           )
           .then((res) => {
             if (!res.error) {
-              productsService
-                .getPurchaseDetailsHandler(purchaseId)
-                .then((res: PurchaseModel) => {
-                  dispatch(productsActions.refreshSelectedPurchase(res));
-                });
+              productsService.getPurchaseDetailsHandler(purchaseId);
             }
           });
         break;
@@ -522,11 +482,7 @@ export function SupplierPage() {
         onAction={onAction}
       />
       {state.activeCards?.includes("selectSupplierCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["selectSupplierCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("selectSupplierCard")}>
           <SelectSupplierCard
             isLoading={state.isSelectSupplierCardLoading}
             isGridLoading={state.isSuppliersGridLoading}
@@ -536,11 +492,7 @@ export function SupplierPage() {
         </div>
       )}
       {state.activeCards?.includes("supplierConfigurationCard") && (
-        <div
-          ref={(el) => {
-            cardRefs.current["supplierConfigurationCard"] = el;
-          }}
-        >
+        <div ref={createRefCallback("supplierConfigurationCard")}>
           <SupplierConfigurationCard
             isLoading={state.isSupplierConfigurationCardLoading}
             isSupplierPhotosGridLoading={state.isSupplierPhotosGridLoading}

@@ -4,7 +4,10 @@ import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";
 import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
-import { ProductGalleryPageSliceActions as action } from "@/state/slices/ProductGalleryPageSlice.ts";
+import {
+  ProductGalleryPageSliceActions as actions,
+  ProductGalleryPageSliceActions as action,
+} from "@/state/slices/ProductGalleryPageSlice.ts";
 
 export default function useProductGalleryPageService() {
   const dispatch = useAppDispatch();
@@ -57,6 +60,7 @@ export default function useProductGalleryPageService() {
 
   function getProductVariantsHandler(id: any) {
     return getProductVariants(id).then((res: any) => {
+      dispatch(actions.refreshProductVariants(res.data));
       return res.data;
     });
   }

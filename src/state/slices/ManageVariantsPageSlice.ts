@@ -243,6 +243,10 @@ function refreshActiveCards(
   state.activeCards = action?.payload || state.activeCards;
 }
 
+function resetActiveCards(state: IManageVariantsPageSlice) {
+  state.activeCards = [];
+}
+
 function refreshContextId(
   state: IManageVariantsPageSlice,
   action: PayloadAction<number>,
@@ -347,6 +351,7 @@ const ManageVariantsPageSlice = createSlice({
     refreshListOfTraitsWithOptionsForProduct,
     refreshProductCounter,
     refreshActiveCards,
+    resetActiveCards,
     refreshSelectedTraitsIds,
     refreshSelectedTrait,
     resetSelectedTrait,
