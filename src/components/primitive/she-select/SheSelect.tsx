@@ -94,15 +94,14 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
       (item) => item.isSelected,
     );
     // ----------------------------------- SET SELECTED ITEM
-    let tmpSelected: ISheSelectItem<T>;
-    if (!_selected || !_.isEqual(selected, _selected.value)) {
-      tmpSelected = getItemFromListByIdentifier(newItems, "value", selected);
-      tmpSelected = tmpSelected
-        ? tmpSelected
-        : listSelected && listSelected.length > 0
-          ? listSelected[0]
-          : null;
-    }
+    let tmpSelected: ISheSelectItem<T> = getItemFromListByIdentifier(
+      newItems,
+      "value",
+      selected,
+    );
+
+    if (!tmpSelected && listSelected && listSelected.length > 0)
+      tmpSelected = listSelected[0];
     // ----------------------------------- ADD NOT SELECTED ITEM
     if (!hideFirstOption) {
       const firstIsNotSelected =
@@ -125,12 +124,13 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
       setItems(updateSelectedItems(_items, tmpSelected));
     }
     // ----------------------------------- SET SELECTED
-    setSelected(tmpSelected);
+    if (!_.isEqual(tmpSelected, _selected)) setSelected(tmpSelected);
     // ----------------------------------- UPDATE FOCUS CONDITION
     _updateFocusRelatedLogic();
   }, [items, selected]);
 
   useEffect(() => {
+    // ----------------------------------- SET IS OPEN
     if (
       !_.isNil(isOpen) &&
       typeof isOpen === "boolean" &&
@@ -138,7 +138,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
     ) {
       _setIsOpen(isOpen);
     }
-
+    // ----------------------------------- SET IS LOADING
     if (
       !_.isNil(isLoading) &&
       typeof isLoading === "boolean" &&

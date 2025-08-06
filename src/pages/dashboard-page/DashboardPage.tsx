@@ -438,7 +438,7 @@ export function DashboardPage() {
         </h2>
         <br />
         <div className="flex gap-10">
-          {/*<SheSelect<string>
+          <SheSelect<string>
             label="Select"
             labelTransKey="909wefj09wejf09j"
             required
@@ -459,7 +459,7 @@ export function DashboardPage() {
             // view="card"
             items={optionsSimple}
             // items={_items}
-            // selected={selected}
+            selected={selected}
             icon={Clock}
             // autoFocus
             showClearBtn
@@ -471,8 +471,8 @@ export function DashboardPage() {
             errorMessageTransKey="f0wejfw9ejfkwlejfw"
             errorMessageIcon={LayoutDashboard}
             onSelect={(value, model) => onSelectHandler(value, model)}
-          />*/}
-          {/*<SheSelect<string>
+          />
+          <SheSelect<string>
             label="Select"
             labelTransKey="909wefj09wejf09j"
             required
@@ -505,7 +505,7 @@ export function DashboardPage() {
             errorMessageTransKey="f0wejfw9ejfkwlejfw"
             errorMessageIcon={LayoutDashboard}
             onSelect={(value, model) => onSelectHandler(value, model)}
-          />*/}
+          />
         </div>
         <br />
         <br />
