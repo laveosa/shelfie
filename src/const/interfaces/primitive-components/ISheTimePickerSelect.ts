@@ -7,7 +7,10 @@ export interface ISheTimePickerSelect extends ISheSelect<string> {
   ref: React.RefObject<any>;
   date: Date | undefined;
   period: Period;
-  setDate: (date: Date | undefined) => void;
+  setDate: (
+    date: Date | undefined,
+    event: React.MouseEvent | React.KeyboardEvent,
+  ) => void;
   setPeriod: (m: Period) => void;
   onRightFocus?: (value: React.KeyboardEvent) => void;
   onLeftFocus?: (value: React.KeyboardEvent) => void;

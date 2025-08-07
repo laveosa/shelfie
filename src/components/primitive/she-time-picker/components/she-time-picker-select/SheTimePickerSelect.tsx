@@ -25,7 +25,7 @@ export default function SheTimePickerSelect({
     if (e.key === "ArrowLeft") onLeftFocus?.(e);
   }
 
-  function onValueChange(value: Period) {
+  function onValueChange(value: Period, { event }) {
     setPeriod?.(value);
 
     if (date && setDate) {
@@ -38,6 +38,7 @@ export default function SheTimePickerSelect({
           "12hours",
           period === "AM" ? "PM" : "AM",
         ),
+        event,
       );
     }
   }

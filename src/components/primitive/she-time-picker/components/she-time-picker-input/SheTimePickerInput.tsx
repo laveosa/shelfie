@@ -64,7 +64,7 @@ export default function SheTimePickerInput({
       if (flag) setFlag(false);
 
       const tempDate = new Date(date);
-      setDate(setDateByType(tempDate, newValue, picker, period));
+      setDate(setDateByType(tempDate, newValue, picker, period), event);
     }
 
     if (event.key >= "0" && event.key <= "9") {
@@ -76,7 +76,7 @@ export default function SheTimePickerInput({
 
       setFlag((prev) => !prev);
       const tempDate = new Date(date);
-      setDate(setDateByType(tempDate, newValue, picker, period));
+      setDate(setDateByType(tempDate, newValue, picker, period), event);
     }
   }
 
@@ -110,9 +110,9 @@ export default function SheTimePickerInput({
         event.preventDefault();
         onChange?.(event);
       }}
-      onBlur={(event: any) => {
+      onBlur={(value: any, { event }) => {
         const tempDate = new Date(date);
-        onBlurHandler(setDateByType(tempDate, event, picker, period));
+        onBlurHandler(setDateByType(tempDate, value, picker, period), event);
       }}
       {...props}
     />

@@ -10,10 +10,6 @@ import {
   CommandGroup,
   CommandList,
 } from "@/components/ui/command";
-import {
-  getCustomProps,
-  removeCustomProps,
-} from "@/utils/helpers/props-helper.ts";
 import { Popover, PopoverContent } from "@/components/ui/popover";
 import SheMultiSelectTrigger from "@/components/primitive/she-multi-select/components/she-multi-select-trigger/SheMultiSelectTrigger.tsx";
 import SheMultiSelectItem from "@/components/primitive/she-multi-select/components/she-multi-select-item/SheMultiSelectItem.tsx";
@@ -22,6 +18,10 @@ import SheMultiSelectSearch from "@/components/primitive/she-multi-select/compon
 import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
 import useDefaultRef from "@/utils/hooks/useDefaultRef.ts";
 import useValueWithEvent from "@/utils/hooks/useValueWithEvent.ts";
+import {
+  getCustomProps,
+  removeCustomProps,
+} from "@/utils/helpers/props-helper.ts";
 import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
 import { ISheMultiSelectItem } from "@/const/interfaces/primitive-components/ISheMultiSelectItem.ts";
 import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";

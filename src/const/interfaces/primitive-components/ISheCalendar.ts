@@ -40,11 +40,7 @@ export interface ISheCalendar
   hideTimePicker?: boolean;
   onSelectDate?(
     value: any,
-    model?: IOutputEventModel<
-      any,
-      ISheCalendar,
-      React.MouseEvent | React.KeyboardEvent
-    >,
+    model?: IOutputEventModel<any, ISheCalendar, React.MouseEvent>,
   ): void;
 }
 

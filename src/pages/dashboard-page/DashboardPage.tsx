@@ -289,85 +289,67 @@ export function DashboardPage() {
 
       <div className="flex flex-col fullWidth">
         <h2 className="underline">
-          <b>TimePicker</b>
-        </h2>
-        <br />
-        <div className="flex gap-4">
-          <SheCalendar
-            date={singleDate}
-            dateFormat={DateFormatEnum.MM_DD_YYYY}
-            // mode="single"
-            label="Calendar Single"
-            required
-            icon={Box}
-            showClearBtn
-            view="card"
-            // tooltip="Calendar Multiple mode: some tooltip text for test purpuse only"
-            // description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
-            // descriptionTransKey="f0923fj9wejfwe"
-            // descriptionIcon={Users}
-            // errorMessage="some error message some error message some error message some error message some error message"
-            // errorMessageTransKey="f0wejfw9ejfkwlejfw"
-            // errorMessageIcon={LayoutDashboard}
-            onSelectDate={(value, model) =>
-              console.log("Single: ", value, model)
-            }
-          />
-          <SheCalendar
-            date={rangeDate}
-            dateFormat={DateFormatEnum.DD_MMM_YYYY}
-            // mode="range"
-            label="Calendar Range"
-            required
-            icon={Home}
-            showClearBtn
-            view="card"
-            // tooltip="Calendar Multiple mode: some tooltip text for test purpuse only"
-            // description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
-            // descriptionTransKey="f0923fj9wejfwe"
-            // descriptionIcon={Users}
-            // errorMessage="some error message some error message some error message some error message some error message"
-            // errorMessageTransKey="f0wejfw9ejfkwlejfw"
-            // errorMessageIcon={LayoutDashboard}
-            onSelectDate={(value, model) =>
-              console.log("Range: ", value, model)
-            }
-          />
-          <SheCalendar
-            date={multipleDate}
-            dateFormat={DateFormatEnum.AT_h_mm_A}
-            // mode="multiple"
-            label="Calendar Multiple"
-            required
-            icon={Calendar}
-            showClearBtn
-            view="card"
-            // tooltip="Calendar Multiple mode: some tooltip text for test purpuse only"
-            // description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
-            // descriptionTransKey="f0923fj9wejfwe"
-            // descriptionIcon={Users}
-            // errorMessage="some error message some error message some error message some error message some error message"
-            // errorMessageTransKey="f0wejfw9ejfkwlejfw"
-            // errorMessageIcon={LayoutDashboard}
-            onSelectDate={(value, model) =>
-              console.log("Multiple: ", value, model)
-            }
-          />
-        </div>
-        <br />
-        <div className="divider" />
-        <br />
-      </div>
-
-      <div className="flex flex-col fullWidth">
-        <h2 className="underline">
           <b>DatePicker</b>
         </h2>
         <br />
         <div className="flex gap-10">
-          <SheDatePicker label="DatePicker" />
-          <SheDatePicker label="DatePicker" />
-          <SheDatePicker label="DatePicker" />
+          <SheDatePicker
+            // className="DATE-PICKER-CLASS-NAME"
+            // style={{ border: "1px solid red" }}
+            // calendarClassName="CALENDAR-CALL-NAME"
+            // calendarStyle={{ border: "1px solid blue" }}
+            label="DatePicker"
+            // mode="single"
+            icon={Home}
+            showClearBtn
+            // view="card"
+            required
+            tooltip="Calendar Multiple mode: some tooltip text for test purpuse only"
+            description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
+            descriptionTransKey="f0923fj9wejfwe"
+            descriptionIcon={Users}
+            errorMessage="some error message some error message some error message some error message some error message"
+            errorMessageTransKey="f0wejfw9ejfkwlejfw"
+            errorMessageIcon={LayoutDashboard}
+            onOpenChange={(value, model) =>
+              console.log("onOpen: ", value, model)
+            }
+            onSelectDate={(value, model) =>
+              console.log("onSelectDate: ", value, model)
+            }
+          />
+          <SheDatePicker
+            label="DatePicker"
+            mode="range"
+            icon={Home}
+            iconPosition="out"
+            showClearBtn
+            clearBtnPosition="out"
+            required
+            tooltip="Calendar Multiple mode: some tooltip text for test purpuse only"
+            description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
+            descriptionTransKey="f0923fj9wejfwe"
+            descriptionIcon={Users}
+            errorMessage="some error message some error message some error message some error message some error message"
+            errorMessageTransKey="f0wejfw9ejfkwlejfw"
+            errorMessageIcon={LayoutDashboard}
+            onOpenChange={(value, model) =>
+              console.log("onOpen: ", value, model)
+            }
+            onSelectDate={(value, model) =>
+              console.log("onSelectDate: ", value, model)
+            }
+          />
+          <SheDatePicker
+            label="DatePicker"
+            mode="multiple"
+            onOpenChange={(value, model) =>
+              console.log("onOpen: ", value, model)
+            }
+            onSelectDate={(value, model) =>
+              console.log("onSelectDate: ", value, model)
+            }
+          />
         </div>
         <br />
         <div className="divider" />
@@ -691,6 +673,79 @@ export function DashboardPage() {
 
       <div className="flex flex-col fullWidth">
         <h2 className="underline">
+          <b>Calendar</b>
+        </h2>
+        <br />
+        <div className="flex gap-4">
+          <SheCalendar
+            date={singleDate}
+            dateFormat={DateFormatEnum.MM_DD_YYYY}
+            markedDates={multipleDate}
+            // mode="single"
+            label="Calendar Single"
+            required
+            icon={Box}
+            showClearBtn
+            view="card"
+            // tooltip="Calendar Multiple mode: some tooltip text for test purpuse only"
+            // description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
+            // descriptionTransKey="f0923fj9wejfwe"
+            // descriptionIcon={Users}
+            // errorMessage="some error message some error message some error message some error message some error message"
+            // errorMessageTransKey="f0wejfw9ejfkwlejfw"
+            // errorMessageIcon={LayoutDashboard}
+            onSelectDate={(value, model) =>
+              console.log("Single: ", value, model)
+            }
+          />
+          <SheCalendar
+            date={rangeDate}
+            dateFormat={DateFormatEnum.DD_MMM_YYYY}
+            // mode="range"
+            label="Calendar Range"
+            required
+            icon={Home}
+            showClearBtn
+            view="card"
+            // tooltip="Calendar Multiple mode: some tooltip text for test purpuse only"
+            // description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
+            // descriptionTransKey="f0923fj9wejfwe"
+            // descriptionIcon={Users}
+            // errorMessage="some error message some error message some error message some error message some error message"
+            // errorMessageTransKey="f0wejfw9ejfkwlejfw"
+            // errorMessageIcon={LayoutDashboard}
+            onSelectDate={(value, model) =>
+              console.log("Range: ", value, model)
+            }
+          />
+          <SheCalendar
+            date={multipleDate}
+            dateFormat={DateFormatEnum.AT_h_mm_A}
+            // mode="multiple"
+            label="Calendar Multiple"
+            required
+            icon={Calendar}
+            showClearBtn
+            view="card"
+            // tooltip="Calendar Multiple mode: some tooltip text for test purpuse only"
+            // description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
+            // descriptionTransKey="f0923fj9wejfwe"
+            // descriptionIcon={Users}
+            // errorMessage="some error message some error message some error message some error message some error message"
+            // errorMessageTransKey="f0wejfw9ejfkwlejfw"
+            // errorMessageIcon={LayoutDashboard}
+            onSelectDate={(value, model) =>
+              console.log("Multiple: ", value, model)
+            }
+          />
+        </div>
+        <br />
+        <div className="divider" />
+        <br />
+      </div>
+
+      <div className="flex flex-col fullWidth">
+        <h2 className="underline">
           <b>TimePicker</b>
         </h2>
         <br />
@@ -776,6 +831,19 @@ export function DashboardPage() {
             onDelay={(value) => console.log("DELAY: ", value)}
             onBlur={(value) => console.log("BLUR: ", value)}
             onTick={(value) => console.log("TICK: ", value)}
+            onIsValid={(value) => console.log("VALID: ", value)}
+          />
+          <SheTimePicker
+            date={new Date()}
+            showClearBtn
+            hideInputLabels
+            clockWorksheets="12"
+            onSetDate={(value, model) =>
+              console.log("SET DATE: ", value, model)
+            }
+            onDelay={(value, model) => console.log("DELAY: ", value, model)}
+            onBlur={(value, model) => console.log("BLUR: ", value, model)}
+            onTick={(value, model) => console.log("TICK: ", value, model)}
             onIsValid={(value) => console.log("VALID: ", value)}
           />
         </div>

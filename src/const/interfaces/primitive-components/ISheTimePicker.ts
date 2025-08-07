@@ -1,8 +1,8 @@
 import React, { ComponentPropsWithRef } from "react";
 
+import { Period } from "@/utils/helpers/time-picker-helper.ts";
 import { TimeFormatEnum } from "@/const/enums/TimeFormatEnum.ts";
 import { SheTimePickerTypeEnum } from "@/const/enums/SheTimePickerTypeEnum.ts";
-import { Period } from "@/utils/helpers/time-picker-helper.ts";
 import { IShePrimitiveComponentWrapper } from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
 import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 
@@ -45,27 +45,35 @@ export interface ISheTimePicker
   autoFocus?: boolean;
   onSetDate?(
     value: any,
-    model?:
-      | IOutputEventModel<any, ISheTimePicker, React.MouseEvent>
-      | React.KeyboardEvent,
+    model?: IOutputEventModel<
+      any,
+      ISheTimePicker,
+      React.KeyboardEvent<HTMLInputElement>
+    >,
   ): void;
   onDelay?(
     value: any,
-    model?:
-      | IOutputEventModel<any, ISheTimePicker, React.MouseEvent>
-      | React.KeyboardEvent,
+    model?: IOutputEventModel<
+      any,
+      ISheTimePicker,
+      React.KeyboardEvent<HTMLInputElement>
+    >,
   ): void;
   onBlur?(
     value: any,
-    model?:
-      | IOutputEventModel<any, ISheTimePicker, React.MouseEvent>
-      | React.KeyboardEvent,
+    model?: IOutputEventModel<
+      any,
+      ISheTimePicker,
+      React.ChangeEvent<HTMLInputElement>
+    >,
   ): void;
   onTick?(
     value: any,
-    model?:
-      | IOutputEventModel<any, ISheTimePicker, React.MouseEvent>
-      | React.KeyboardEvent,
+    model?: IOutputEventModel<
+      any,
+      ISheTimePicker,
+      React.KeyboardEvent<HTMLInputElement>
+    >,
   ): void;
   onIsValid?(value: boolean): void;
 }

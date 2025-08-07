@@ -17,6 +17,7 @@ import {
   IShePrimitiveComponentWrapper,
   ShePrimitiveComponentWrapperDefaultModel,
 } from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
+import useValueWithEvent from "@/utils/hooks/useValueWithEvent.ts";
 
 const months = [
   "January",
@@ -92,6 +93,11 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
       .filter(Boolean) as Date[];
   }, [markedDates]);
 
+  const {
+    eventHandler: eventSelectDateHandler,
+    valueHandler: valueSelectDateHandler,
+  } = useValueWithEvent<any, any>(onSelectDateHandler);
+
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     const parsed: Date | Date[] | { from: Date; to: Date } =
@@ -118,7 +124,7 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
     });
   }
 
-  function onSelectDateHandler(selectedDate: any) {
+  function onSelectDateHandler(selectedDate, event) {
     const normalizedDate =
       _inferCalendarMode(selectedDate) === "multiple"
         ? _sortDateListByDate(selectedDate)
@@ -130,10 +136,11 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
     onSelectDate?.(dateWithTime, {
       value: dateWithTime,
       model: props,
+      event,
     });
   }
 
-  function onClearHandler(event: React.MouseEvent | React.KeyboardEvent) {
+  function onClearHandler(event: React.MouseEvent) {
     setDate(null);
     setSelectedTime(null);
     setSelectedMonth(months[new Date().getMonth()]);
@@ -149,12 +156,13 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
     setSelectedTime(value);
   }
 
-  function onTimeDelayHandler(value: Date) {
+  function onTimeDelayHandler(value: Date, { event }) {
     setSelectedTime(value);
     const dateWithTime = _formatSelectedDateModel(_date, value);
     onSelectDate?.(dateWithTime, {
       value: dateWithTime,
       model: props,
+      event,
     });
   }
 
@@ -449,7 +457,10 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
           />
         </div>
         <SheSkeleton isLoading={isLoading} fullWidth>
-          <div className={cs.sheCalendarElementContainer}>
+          <div
+            className={cs.sheCalendarElementContainer}
+            onClick={eventSelectDateHandler}
+          >
             <Calendar
               className={`${cs.sheCalendarElement} ${calendarClassName} ${disabled || isLoading ? "disabled" : ""}`}
               style={calendarStyle}
@@ -471,7 +482,9 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
               onMonthChange={(value) =>
                 setSelectedMonth(months[getMonth(value)])
               }
-              onSelect={onSelectDateHandler}
+              onSelect={(value) =>
+                setTimeout(() => valueSelectDateHandler(value))
+              }
               {...props}
             />
             {!hideTimePicker && (
@@ -497,115 +510,3 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
     </ShePrimitiveComponentWrapper>
   );
 }
-
-/*
-return (
-  <div
-    id={id}
-    className={`${cs.sheCalendar} ${className} ${cs[view] || ""} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""} ${hideFilters ? cs.noFiltersBlock : ""} ${disabled ? "disabled" : ""}`}
-    style={{
-      minWidth,
-      maxWidth,
-      ...style,
-    }}
-  >
-    <div className={cs.sheCalendarComponent}>
-      <SheLabel
-        label={label}
-        labelTransKey={labelTransKey}
-        tooltip={tooltip}
-        ariaDescribedbyId={ariaDescribedbyId}
-      />
-      <div className={cs.sheCalendarControl}>
-        <div className={cs.sheCalendarContextBlock}>
-          <div className={cs.sheCalendarFilterContainer}>
-            <SheSelect<string>
-              items={months.map(
-                (item): ISheSelectItem<string> => ({
-                  text: item.toString(),
-                  value: item,
-                }),
-              )}
-              placeholder="Month"
-              selected={_selectedMonth}
-              hideFirstOption
-              maxWidth="138px"
-              minWidth="122px"
-              isLoading={isLoading}
-              onSelect={onMonthSelectHandler}
-            />
-            <SheSelect<number>
-              items={years.map(
-                (item): ISheSelectItem<number> => ({
-                  text: item.toString(),
-                  value: item,
-                }),
-              )}
-              placeholder="Year"
-              selected={_selectedYear}
-              hideFirstOption
-              maxWidth="138px"
-              minWidth="122px"
-              isLoading={isLoading}
-              onSelect={onYearSelectHandler}
-            />
-          </div>
-          <SheSkeleton isLoading={isLoading} fullWidth>
-            <div className={cs.sheCalendarElementContainer}>
-              <Calendar
-                className={`${cs.sheCalendarElement} ${calendarClassName} ${disabled || isLoading ? "disabled" : ""}`}
-                style={calendarStyle}
-                mode={date ? inferCalendarMode(date) : mode}
-                selected={_date as any}
-                month={setMonth(
-                  setYear(new Date(), _selectedYear),
-                  months.indexOf(_selectedMonth),
-                )}
-                modifiers={{
-                  marked: markedParsedDates,
-                }}
-                modifiersClassNames={{
-                  marked: cs.markedDay,
-                  today: cs.today,
-                }}
-                min={minAmountOfDates}
-                max={maxAmountOfDates}
-                onMonthChange={(value) =>
-                  setSelectedMonth(months[getMonth(value)])
-                }
-                onSelect={onSelectDateHandler}
-                {...props}
-              />
-              {!hideTimePicker && (
-                <>
-                  <div className="divider"></div>
-                  <SheTimePicker
-                    className={cs.sheCalendarTimePicker}
-                    date={_selectedTime}
-                    showClearBtn
-                    isLoading={isLoading}
-                    disabled={!_date}
-                    delayTime={1600}
-                    fullWidth
-                    onSetDate={onTimeChangeHandler}
-                    onDelay={onTimeDelayHandler}
-                    {...timePicker}
-                  />
-                </>
-              )}
-            </div>
-          </SheSkeleton>
-        </div>
-        <SheClearButton
-          clearBtnValue={_date}
-          clearBtnStyle={{ alignSelf: "start" }}
-          showClearBtn={showClearBtn}
-          disabled={disabled}
-          isLoading={isLoading}
-          ariaDescribedbyId={ariaDescribedbyId}
-          onClear={onClearHandler}
-        />
-      </div>
-    </div>
-  </div>
-);*/

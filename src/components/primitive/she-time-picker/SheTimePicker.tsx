@@ -18,6 +18,7 @@ import {
   IShePrimitiveComponentWrapper,
   ShePrimitiveComponentWrapperDefaultModel,
 } from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
+import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 
 export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
   // ==================================================================== PROPS
@@ -98,6 +99,7 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
   const _minuteRef = useDefaultRef(minutesRef);
   const _secondRef = useDefaultRef(secondsRef);
   const _periodRef = useDefaultRef(periodsRef);
+  const _lastEventDataRef = useRef<any>(null);
 
   // ==================================================================== UTILITIES
   const { ariaDescribedbyId } = useComponentUtilities({
@@ -123,11 +125,12 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
 
   useEffect(() => {
     if (_isInitialized.current && onDelay) {
-      onDelay(
-        timeFormat && delayValue
-          ? moment(delayValue).format(timeFormat)
-          : delayValue,
+      const outputModel = _getOutputModel(
+        delayValue,
+        _lastEventDataRef.current,
       );
+
+      onDelay(outputModel.value, outputModel.model);
     }
   }, [delayValue, timeFormat]);
 
@@ -210,38 +213,39 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
   }, [type, _startDate]);
 
   // ==================================================================== EVENT HANDLERS
-  function onSetDateHandler(value: Date) {
+  function onSetDateHandler(
+    value: Date,
+    event: React.KeyboardEvent<HTMLInputElement>,
+  ) {
     _isInitialized.current = true;
     _checkDateValidation(value);
     setDate(value);
-
-    if (onSetDate)
-      onSetDate(timeFormat && value ? moment(value).format(timeFormat) : value);
+    const outputModel = _getOutputModel(value, event);
+    onSetDate?.(outputModel.value, outputModel.model);
   }
 
   function onSetPeriodHandler(value: Period) {
     setPeriod(value);
   }
 
-  function onBlurHandler(value: Date) {
-    if (onBlur)
-      onBlur(timeFormat && value ? moment(value).format(timeFormat) : value);
+  function onBlurHandler(
+    value: Date,
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) {
+    const outputModel = _getOutputModel(value, event);
+    onBlur?.(outputModel.value, outputModel.model);
   }
 
-  function onClearHandler() {
+  function onClearHandler(event: React.MouseEvent | React.KeyboardEvent) {
     _isInitialized.current = false;
-    let newValue = _setDefaultDate();
-    _checkDateValidation(newValue);
-    setDate(newValue);
+    const value = _setDefaultDate();
+    const outputModel = _getOutputModel(value, event);
 
-    if (onSetDate)
-      onSetDate(timeFormat ? moment(newValue).format(timeFormat) : newValue);
-    if (onDelay)
-      onDelay(timeFormat ? moment(newValue).format(timeFormat) : newValue);
-    if (onBlur)
-      onBlur(
-        timeFormat && newValue ? moment(newValue).format(timeFormat) : newValue,
-      );
+    _checkDateValidation(value);
+    setDate(value);
+    onSetDate?.(outputModel.value, outputModel.model);
+    onDelay?.(outputModel.value, outputModel.model);
+    onBlur?.(outputModel.value, outputModel.model);
   }
 
   // ==================================================================== PRIVATE
@@ -284,6 +288,31 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
   function _updateIsValid(value: boolean) {
     setIsValid(value);
     onIsValid?.(value);
+  }
+
+  function _getValueWithTimeFormat(value: Date) {
+    return timeFormat && value ? moment(value).format(timeFormat) : value;
+  }
+
+  function _getOutputModel(
+    value: Date,
+    event: any,
+  ): {
+    value: any;
+    model?: IOutputEventModel<any, ISheTimePicker, any>;
+  } {
+    _lastEventDataRef.current = event;
+    const outputValue = _getValueWithTimeFormat(value);
+    const outputModel = {
+      value: outputValue,
+      model: props,
+      event: _lastEventDataRef.current,
+    };
+
+    return {
+      value: outputValue,
+      model: outputModel,
+    };
   }
 
   // ==================================================================== LAYOUT
