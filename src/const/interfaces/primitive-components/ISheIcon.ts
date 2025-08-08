@@ -9,7 +9,6 @@ export interface ISheIcon extends ComponentPropsWithRef<"div"> {
   elementStyle?: React.CSSProperties;
   icon?: any;
   iconView?: IconViewEnum;
-  size?: "normal" | "small";
   color?: string;
   fullWidth?: boolean;
   minWidth?: string;
@@ -27,7 +26,6 @@ export const SheIconDefaultModel: ISheIcon = {
   elementStyle: undefined,
   icon: undefined,
   iconView: undefined,
-  size: undefined,
   color: undefined,
   fullWidth: undefined,
   minWidth: undefined,

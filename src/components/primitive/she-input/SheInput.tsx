@@ -20,6 +20,7 @@ import {
   IShePrimitiveComponentWrapper,
   ShePrimitiveComponentWrapperDefaultModel,
 } from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
+import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 
 export default function SheInput(props: ISheInput): JSX.Element {
   // ==================================================================== PROPS
@@ -154,7 +155,7 @@ export default function SheInput(props: ISheInput): JSX.Element {
     });
   }
 
-  function onClearHandler() {
+  function onClearHandler(event) {
     _isInitialized.current = false;
     _isTouched.current = false;
     updateIsValid(true);
@@ -166,9 +167,14 @@ export default function SheInput(props: ISheInput): JSX.Element {
     _validateValue(newValue);
     setFocus(true, _inputRef);
 
-    onChange?.(newValue);
-    onDelay?.(newValue);
-    onClear?.(null);
+    const outputModel: IOutputEventModel<null, ISheInput, any> = {
+      value: null,
+      model: props,
+      event,
+    };
+    onChange?.(null, outputModel);
+    onDelay?.(null, outputModel);
+    onClear?.(null, outputModel);
   }
 
   // ==================================================================== PRIVATE

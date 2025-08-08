@@ -1,12 +1,12 @@
 import React, { JSX } from "react";
 import { Trans } from "react-i18next";
 
-import cs from "./SheButton.module.scss";
-import { ISheButton } from "@/const/interfaces/primitive-components/ISheButton.ts";
-import { Button } from "@/components/ui/button.tsx";
-import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
-import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { Loader2 } from "lucide-react";
+import cs from "./SheButton.module.scss";
+import { Button } from "@/components/ui/button.tsx";
+import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
+import { ISheButton } from "@/const/interfaces/primitive-components/ISheButton.ts";
 
 export default function SheButton({
   className = "",

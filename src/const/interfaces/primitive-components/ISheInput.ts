@@ -77,7 +77,14 @@ export interface ISheInput
       React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent
     >,
   ): void;
-  onClear?(value: null): void;
+  onClear?(
+    value: null,
+    model?: IOutputEventModel<
+      null,
+      ISheInput,
+      React.MouseEvent | React.KeyboardEvent
+    >,
+  ): void;
 }
 
 export const SheInputDefaultModel: ISheInput = {

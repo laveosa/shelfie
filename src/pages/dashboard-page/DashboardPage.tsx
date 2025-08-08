@@ -10,6 +10,7 @@ import {
   LayoutDashboard,
   User,
   Users,
+  Voicemail,
 } from "lucide-react";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
@@ -25,6 +26,8 @@ import { SheTimePickerTypeEnum } from "@/const/enums/SheTimePickerTypeEnum.ts";
 import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
 import SheCalendar from "@/components/primitive/she-calendar/SheCalendar.tsx";
 import { DateFormatEnum } from "@/const/enums/DateFormatEnum.ts";
+import SheInputEditor from "@/components/primitive/she-input-editor/SheInputEditor.tsx";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 
 const options: ISheSelectItem<any>[] = [
   {
@@ -584,6 +587,37 @@ export function DashboardPage() {
 
       <div className="flex flex-col fullWidth">
         <h2 className="underline">
+          <b>Input Editor</b>
+        </h2>
+        <br />
+        <div className="flex gap-10">
+          <SheInputEditor
+            label="Input Editor"
+            value="some text for input editor"
+            icon={Home}
+            showClearBtn
+            required
+            tooltip="Calendar Multiple mode: some tooltip text for test purpuse only"
+            description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
+            descriptionTransKey="f0923fj9wejfwe"
+            descriptionIcon={Users}
+            errorMessage="some error message some error message some error message some error message some error message"
+            errorMessageTransKey="f0wejfw9ejfkwlejfw"
+            errorMessageIcon={LayoutDashboard}
+            onChange={(value, model) => console.log("onChange: ", value, model)}
+            onToggleManage={(value) => console.log("onToggleManage: ", value)}
+            onSave={(value, model) => console.log("onSave: ", value, model)}
+            onCancel={(value, model) => console.log("onCancel: ", value, model)}
+          />
+          <SheInputEditor label="Input Editor" />
+        </div>
+        <br />
+        <div className="divider"></div>
+        <br />
+      </div>
+
+      <div className="flex flex-col fullWidth">
+        <h2 className="underline">
           <b>Input</b>
         </h2>
         <br />
@@ -987,6 +1021,26 @@ export function DashboardPage() {
           <div className="divider"></div>
           <br />
         </div>
+      </div>
+
+      <div className="flex flex-col fullWidth">
+        <h2 className="underline">
+          <b>Button</b>
+        </h2>
+        <br />
+        <div className="flex flex-col gap-10">
+          <div className="flex flex-row gap-6">
+            <SheButton value="Start" />
+            <SheButton icon={Home} />
+          </div>
+          <div className="flex flex-row gap-6">
+            <SheButton value="Start" size="small" />
+            <SheButton icon={Home} size="small" />
+          </div>
+        </div>
+        <br />
+        <div className="divider"></div>
+        <br />
       </div>
     </div>
   );
