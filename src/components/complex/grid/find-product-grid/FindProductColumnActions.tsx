@@ -12,23 +12,13 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 interface ProductsGridColumnActionsProps<TData> {
   row?: Row<TData>;
   table?: Table<TData>;
-  onAction?: (
-    actionType?: string,
-    rowId?: string,
-    setLoadingRow?: (rowId: string, loading: boolean) => void,
-    row?: Row<TData>,
-  ) => void;
+  onAction?: (actionType?: string, row?: Row<TData>) => void;
 }
 
 export default function FindProductColumnActions<TData>({
   row,
-  table,
   onAction,
 }: ProductsGridColumnActionsProps<TData>) {
-  const meta = table.options.meta as {
-    setLoadingRow: (rowId: string, loading: boolean) => void;
-    isRowLoading: (rowId: string) => boolean;
-  };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -41,11 +31,7 @@ export default function FindProductColumnActions<TData>({
         </SheButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-[160px]">
-        <DropdownMenuItem
-          onClick={() =>
-            onAction("deleteVariant", row.id, meta?.setLoadingRow, row)
-          }
-        >
+        <DropdownMenuItem onClick={() => onAction("manageVariant", row)}>
           Delete
         </DropdownMenuItem>
       </DropdownMenuContent>

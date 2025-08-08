@@ -9,6 +9,8 @@ import OrderApiHooks from "@/utils/services/api/OrderApiService.ts";
 import UsersApiHooks from "@/utils/services/api/UsersApiService.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import useAppService from "@/useAppService.ts";
+import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 
 export default function useOrdersPageService() {
   const appService = useAppService();
@@ -28,6 +30,15 @@ export default function useOrdersPageService() {
   const [createOrder] = OrderApiHooks.useCreateOrderMutation();
   const [getListOfCustomersForGrid] =
     OrderApiHooks.useGetListOfCustomersForGridMutation();
+  const [getVariantsForGrid] = ProductsApiHooks.useGetVariantsForGridMutation();
+  const [getBrandsForFilter] =
+    ProductsApiHooks.useLazyGetBrandsForProductsFilterQuery();
+  const [getCategoriesForFilter] =
+    ProductsApiHooks.useLazyGetCategoriesForProductsFilterQuery();
+  const [getTraitsForFilter] =
+    ProductsApiHooks.useLazyGetTraitsForFilterQuery();
+  const [getListOfStockActionsForGrid] =
+    OrderApiHooks.useGetListOfStockActionsForGridMutation();
 
   function getSortingOptionsForGridHandler() {
     return getSortingOptionsForGrid(null).then((res: any) => {
@@ -71,6 +82,60 @@ export default function useOrdersPageService() {
     });
   }
 
+  function getVariantsForGridHandler(data?: GridRequestModel) {
+    dispatch(actions.setIsLoading(true));
+    return getVariantsForGrid(data).then((res: any) => {
+      dispatch(actions.setIsLoading(false));
+      if (res.error) {
+        return;
+      } else {
+        dispatch(actions.refreshVariantsGridModel(res.data));
+        return res.data;
+      }
+    });
+  }
+
+  function getBrandsForFilterHandler() {
+    return getBrandsForFilter(null).then((res: any) => {
+      dispatch(actions.refreshBrands(res.data));
+      return res.data;
+    });
+  }
+
+  function getCategoriesForFilterHandler() {
+    return getCategoriesForFilter(null).then((res: any) => {
+      dispatch(actions.refreshCategories(res.data));
+      return res.data;
+    });
+  }
+
+  function getTraitsForFilterHandler() {
+    return getTraitsForFilter().then((res: any) => {
+      dispatch(
+        actions.refreshSizesForFilter(
+          res.data
+            .filter((trait) => trait.traitTypeId === 1)
+            .flatMap((trait) => trait.traitOptions),
+        ),
+      );
+      dispatch(
+        actions.refreshColorsForFilter(
+          res.data
+            .filter((trait) => trait.traitTypeId === 2)
+            .flatMap((trait) => trait.traitOptions),
+        ),
+      );
+      return res.data;
+    });
+  }
+
+  function getListOfStockActionsForGridHandler(orderId, model) {
+    return getListOfStockActionsForGrid({ orderId, model }).then((res: any) => {
+      dispatch(actions.refreshStockActionsGridModel(res.data));
+      return res.data;
+    });
+  }
+
   return {
     getSortingOptionsForGridHandler,
     getListOfOrdersForGridHandler,
@@ -78,5 +143,10 @@ export default function useOrdersPageService() {
     resetUserPreferencesHandler,
     createOrderHandler,
     getListOfCustomersForGridHandler,
+    getVariantsForGridHandler,
+    getBrandsForFilterHandler,
+    getCategoriesForFilterHandler,
+    getTraitsForFilterHandler,
+    getListOfStockActionsForGridHandler,
   };
 }

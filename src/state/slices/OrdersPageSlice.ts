@@ -6,6 +6,9 @@ import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
 import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { OrderModel } from "@/const/models/OrderModel.ts";
+import { BrandModel } from "@/const/models/BrandModel.ts";
+import { CategoryModel } from "@/const/models/CategoryModel.ts";
+import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
 
 const initialState: IOrdersPageSlice = {
   isLoading: false,
@@ -28,6 +31,28 @@ const initialState: IOrdersPageSlice = {
     items: [],
   },
   customersGridRequestModel: {
+    currentPage: 1,
+    pageSize: 10,
+    filter: {},
+  },
+  variantsGridModel: {
+    pager: {},
+    items: [],
+  },
+  variantsGridRequestModel: {
+    currentPage: 1,
+    pageSize: 10,
+    filter: {},
+  },
+  brands: [],
+  categories: [],
+  colorsForFilter: [],
+  sizesForFilter: [],
+  stockActionsGridModel: {
+    pager: {},
+    items: [],
+  },
+  stockActionsGridRequestModel: {
     currentPage: 1,
     pageSize: 10,
     filter: {},
@@ -107,6 +132,64 @@ function refreshCustomersGridRequestModel(
     action?.payload || state.customersGridRequestModel;
 }
 
+function refreshVariantsGridModel(
+  state: IOrdersPageSlice,
+  action: PayloadAction<GridModel>,
+) {
+  state.variantsGridModel = action?.payload || state.variantsGridModel;
+}
+
+function variantsOrdersGridRequestModel(
+  state: IOrdersPageSlice,
+  action: PayloadAction<GridRequestModel>,
+) {
+  state.variantsGridRequestModel =
+    action?.payload || state.variantsGridRequestModel;
+}
+
+function refreshBrands(
+  state: IOrdersPageSlice,
+  action: PayloadAction<BrandModel[]>,
+) {
+  state.brands = action?.payload || state.brands;
+}
+
+function refreshCategories(
+  state: IOrdersPageSlice,
+  action: PayloadAction<CategoryModel[]>,
+) {
+  state.categories = action?.payload || state.categories;
+}
+
+function refreshSizesForFilter(
+  state: IOrdersPageSlice,
+  action: PayloadAction<TraitOptionModel[]>,
+) {
+  state.sizesForFilter = action?.payload || state.sizesForFilter;
+}
+
+function refreshColorsForFilter(
+  state: IOrdersPageSlice,
+  action: PayloadAction<TraitOptionModel[]>,
+) {
+  state.colorsForFilter = action?.payload || state.colorsForFilter;
+}
+
+function refreshStockActionsGridModel(
+  state: IOrdersPageSlice,
+  action: PayloadAction<GridModel>,
+) {
+  state.stockActionsGridModel = action?.payload || state.stockActionsGridModel;
+}
+
+function refreshStockActionsGridRequestModel(
+  state: IOrdersPageSlice,
+  action: PayloadAction<GridRequestModel>,
+) {
+  state.stockActionsGridRequestModel =
+    action?.payload || state.stockActionsGridRequestModel;
+}
+
 const OrdersPageSlice = createSlice({
   name: StoreSliceEnum.ORDERS,
   initialState,
@@ -121,6 +204,14 @@ const OrdersPageSlice = createSlice({
     refreshSelectedOrder,
     refreshCustomersGridModel,
     refreshCustomersGridRequestModel,
+    refreshVariantsGridModel,
+    variantsOrdersGridRequestModel,
+    refreshBrands,
+    refreshCategories,
+    refreshSizesForFilter,
+    refreshColorsForFilter,
+    refreshStockActionsGridModel,
+    refreshStockActionsGridRequestModel,
   },
 });
 

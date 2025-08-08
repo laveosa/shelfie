@@ -1,5 +1,9 @@
 .productsInOrderCard {
   .productsInOrderCardContent {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
     .addProductBlock {
       display: flex;
       align-items: center;

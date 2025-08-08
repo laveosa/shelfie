@@ -1,17 +1,21 @@
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, Row } from "@tanstack/react-table";
 import { Plus } from "lucide-react";
 
+import cs from "./FindProductGridColumns.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 import placeholderImage from "@/assets/images/placeholder-image.png";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
-import cs from "./VariantGridColumns.module.scss";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import { BrandModel } from "@/const/models/BrandModel.ts";
-import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import FindProductColumnActions from "@/components/complex/grid/find-product-grid/FindProductColumnActions.tsx";
+import QuantityInputCell from "@/components/complex/grid/find-product-grid/QuantityInputCell.tsx";
 
-export function findProductGridColumns(onAction: any): ColumnDef<any>[] {
+export function findProductGridColumns({
+  onAction,
+}: {
+  onAction: (actionType: string, row?: Row<any>, quantity?: string) => void;
+}): ColumnDef<any>[] {
   return [
     {
       accessorKey: "variantCode",
@@ -35,18 +39,10 @@ export function findProductGridColumns(onAction: any): ColumnDef<any>[] {
       size: 60,
       minSize: 60,
       maxSize: 60,
-      cell: ({ row, table }) => {
+      cell: ({ row }) => {
         const image: ImageModel = row.getValue("photo");
-        const meta = table.options.meta as {
-          setLoadingRow: (rowId: string, loading: boolean) => void;
-          isRowLoading: (rowId: string) => boolean;
-        };
-
         return (
-          <div
-            className="relative w-12 h-12 cursor-pointer"
-            onClick={() => onAction("image", row.id, meta?.setLoadingRow)}
-          >
+          <div className="relative w-12 h-12 cursor-pointer">
             <img
               src={image?.thumbnailUrl || placeholderImage}
               alt={row.getValue("variantName")}
@@ -201,35 +197,25 @@ export function findProductGridColumns(onAction: any): ColumnDef<any>[] {
       size: 100,
       minSize: 100,
       maxSize: 100,
-      cell: ({}) => {
-        return <SheInput />;
-      },
+      cell: ({ row }) => <QuantityInputCell row={row} />,
     },
     {
       id: "add",
       header: "",
       minSize: 100,
       maxSize: 100,
-      cell: ({ row, table }) => {
-        const meta = table.options.meta as {
-          setLoadingRow: (rowId: string, loading: boolean) => void;
-          isRowLoading: (rowId: string) => boolean;
-        };
-
-        const handleManageClick = (e) => {
-          e.stopPropagation();
-          e.preventDefault();
-          onAction("addProduct", row.id, meta?.setLoadingRow, row.original);
-        };
-
+      cell: ({ row }) => {
         return (
           <div onClick={(e) => e.stopPropagation()}>
             <SheButton
               icon={Plus}
               value="Add"
               variant="secondary"
-              onClick={handleManageClick}
-              disabled={meta?.isRowLoading(row.id)}
+              onClick={() => onAction("addVariantToOrder", row.original)}
+              disabled={
+                row.original.amount === 0 ||
+                row.original.amount > row.original.stockAmount
+              }
             />
           </div>
         );

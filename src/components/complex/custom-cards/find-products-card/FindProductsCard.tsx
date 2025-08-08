@@ -3,24 +3,21 @@ import React from "react";
 
 import {
   DataWithId,
-  DndGridDataTable
+  DndGridDataTable,
 } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import SheProductCard
-  from "@/components/complex/she-product-card/SheProductCard.tsx";
+import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./FindProductsCard.module.scss";
-import {
-  IFindProductsCard
-} from "@/const/interfaces/complex-components/custom-cards/IFindProductsCard.ts";
-import GridTraitsFilter
-  from "@/components/complex/grid/grid-traits-filter/GridTraitsFilter.tsx";
-import GridShowItemsFilter
-  from "@/components/complex/grid/grid-show-deleted-filter/GridShowItemsFilter.tsx";
-import {
-  findProductGridColumns
-} from "@/components/complex/grid/find-product-grid/FindProductGridColumns.tsx";
+import { IFindProductsCard } from "@/const/interfaces/complex-components/custom-cards/IFindProductsCard.ts";
+import GridTraitsFilter from "@/components/complex/grid/grid-traits-filter/GridTraitsFilter.tsx";
+import GridShowItemsFilter from "@/components/complex/grid/grid-show-deleted-filter/GridShowItemsFilter.tsx";
+import { findProductGridColumns } from "@/components/complex/grid/find-product-grid/FindProductGridColumns.tsx";
+import GridItemsFilter from "@/components/complex/grid/grid-items-filter/GridItemsFilter.tsx";
+import { BrandModel } from "@/const/models/BrandModel.ts";
+import { CategoryModel } from "@/const/models/CategoryModel.ts";
 
 export default function FindProductsCard({
   isLoading,
+  isGridLoading,
   variants,
   preferences,
   gridModel,
@@ -28,17 +25,22 @@ export default function FindProductsCard({
   sortingOptions,
   colorsForFilter,
   sizesForFilter,
+  categories,
+  brands,
   onAction,
 }: IFindProductsCard) {
   return (
     <SheProductCard
       loading={isLoading}
       title="Find Products"
+      width="1100px"
+      showCloseButton
+      onSecondaryButtonClick={() => onAction("closeFindProductsCard")}
       className={cs.findProductsCard}
     >
       <div className={cs.findProductsCardContent}>
         <DndGridDataTable
-          isLoading={isLoading}
+          isLoading={isGridLoading}
           columns={
             findProductGridColumns({
               onAction,
@@ -54,22 +56,22 @@ export default function FindProductsCard({
           onDefaultColumns={() => onAction("onResetColumnsHandler")}
           onGridRequestChange={() => onAction("handleGridRequestChange")}
         >
-          {/*<GridItemsFilter*/}
-          {/*  items={state.brands}*/}
-          {/*  columnName={"Brands"}*/}
-          {/*  onSelectionChange={onBrandSelectHandler}*/}
-          {/*  getId={(item: BrandModel) => item.brandId}*/}
-          {/*  getName={(item: BrandModel) => item.brandName}*/}
-          {/*  selected={state.variantsGridModel.filter?.brands}*/}
-          {/*/>*/}
-          {/*<GridItemsFilter*/}
-          {/*  items={state.categories}*/}
-          {/*  columnName={"Categories"}*/}
-          {/*  onSelectionChange={onCategorySelectHandler}*/}
-          {/*  getId={(item: CategoryModel) => item.categoryId}*/}
-          {/*  getName={(item: CategoryModel) => item.categoryName}*/}
-          {/*  selected={state.variantsGridModel.filter?.categories}*/}
-          {/*/>*/}
+          <GridItemsFilter
+            items={brands}
+            columnName={"Brands"}
+            onSelectionChange={() => onAction("onBrandSelect")}
+            getId={(item: BrandModel) => item.brandId}
+            getName={(item: BrandModel) => item.brandName}
+            selected={gridModel.filter?.brands}
+          />
+          <GridItemsFilter
+            items={categories}
+            columnName={"Categories"}
+            onSelectionChange={() => onAction("onCategorySelect")}
+            getId={(item: CategoryModel) => item.categoryId}
+            getName={(item: CategoryModel) => item.categoryName}
+            selected={gridModel.filter?.categories}
+          />
           <GridTraitsFilter
             traitOptions={colorsForFilter}
             traitType="color"
