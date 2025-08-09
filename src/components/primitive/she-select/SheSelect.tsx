@@ -245,6 +245,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
     <ShePrimitiveComponentWrapper
       {...shePrimitiveComponentWrapperProps}
       className={`${cs.sheSelect} ${shePrimitiveComponentWrapperProps.className}`}
+      ariaDescribedbyId={ariaDescribedbyId}
       clearBtnValue={_selected}
       onClear={onClearHandler}
       onKeyDown={onTriggerKeyDown}

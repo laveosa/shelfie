@@ -9,7 +9,7 @@ import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 
-export default function SheRadioItem({
+export default function SheRadioItem<T>({
   id,
   className = "",
   style,
@@ -27,7 +27,7 @@ export default function SheRadioItem({
   tooltip,
   view,
   ...props
-}: ISheRadioItem): JSX.Element {
+}: ISheRadioItem<T>): JSX.Element {
   const { translate } = useAppTranslation();
 
   // ==================================================================== EVENT
@@ -54,7 +54,7 @@ export default function SheRadioItem({
               id={id}
               className={elementClassName}
               style={elementStyle}
-              value={value}
+              value={value as any}
               {...props}
             />
           </SheSkeleton>

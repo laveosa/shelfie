@@ -10,7 +10,6 @@ import {
   LayoutDashboard,
   User,
   Users,
-  Voicemail,
 } from "lucide-react";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
@@ -28,6 +27,9 @@ import SheCalendar from "@/components/primitive/she-calendar/SheCalendar.tsx";
 import { DateFormatEnum } from "@/const/enums/DateFormatEnum.ts";
 import SheInputEditor from "@/components/primitive/she-input-editor/SheInputEditor.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import SheRadioGroup from "@/components/primitive/she-radio-group/SheRadioGroup.tsx";
+import { ISheRadioItem } from "@/const/interfaces/primitive-components/ISheRadioItem.ts";
+import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 
 const options: ISheSelectItem<any>[] = [
   {
@@ -210,6 +212,86 @@ const multipleDate = [
   "1/6-2025",
 ];
 
+const radioList: ISheRadioItem<string>[] = [
+  {
+    text: "option 1",
+    value: "1",
+  },
+  {
+    text: "option 2",
+    value: "2",
+  },
+  {
+    text: "option 3",
+    value: "3",
+  },
+  {
+    text: "option 4",
+    value: "4",
+  },
+  {
+    text: "option 5",
+    value: "5",
+  },
+  {
+    text: "option 6",
+    value: "6",
+  },
+];
+
+const radioListFull: ISheRadioItem<string>[] = [
+  {
+    text: "option 1",
+    // description: "some description text for test",
+    value: "1",
+    tooltip: {
+      text: "TOOLTIP text for Radio Option: 1",
+    },
+    // view: ComponentViewEnum.CARD,
+  },
+  {
+    icon: User,
+    text: "option 2",
+    description: "some description text for test",
+    value: "2",
+    tooltip: {
+      text: "TOOLTIP text for Radio Option: 2",
+    },
+    view: ComponentViewEnum.CARD,
+  },
+  {
+    icon: Box,
+    text: "option 3",
+    description:
+      "some description text for test some description text for test some description text for test some description text for test",
+    value: "3",
+    tooltip: {
+      text: "TOOLTIP text for Radio Option: 2",
+    },
+    view: ComponentViewEnum.CARD,
+  },
+  {
+    icon: User,
+    text: "option 4",
+    value: "4",
+  },
+  {
+    icon: User,
+    text: "option 5",
+    value: "5",
+    view: ComponentViewEnum.CARD,
+  },
+  {
+    text: "option 6",
+    description:
+      "some description text for test some description text for test some description text for test some description text for test",
+    value: "6",
+    tooltip: {
+      text: "TOOLTIP text for Radio Option: 2",
+    },
+  },
+];
+
 export function DashboardPage() {
   const service = useDashboardPageService();
 
@@ -220,6 +302,9 @@ export function DashboardPage() {
   const [_time, setTime] = useState<Date>(null);
   const [_startTime, setStartTime] = useState<Date>(null);
   const [_endTime, setEndTime] = useState<Date>(null);
+  const [_radioSimple, setRadioSimple] =
+    useState<ISheRadioItem<string>[]>(null);
+  const [_radioFull, setRadioFull] = useState<ISheRadioItem<string>[]>(null);
 
   // -------------------------------------------- INPUT
   const [_inputValue, setInputValue] = useState<string>(null);
@@ -241,6 +326,8 @@ export function DashboardPage() {
       // const tmpStartTime: Date = tmpTime;
 
       setTime(tmpTime);
+      setRadioSimple(radioList);
+      setRadioFull(radioListFull);
     }, 1000);
 
     /*const timer = setTimeout(() => {
@@ -289,6 +376,54 @@ export function DashboardPage() {
         <div className="divider"></div>
         <br />
       </div>*/}
+
+      <div className="flex flex-col fullWidth">
+        <h2 className="underline">
+          <b>RadioGroup</b>
+        </h2>
+        <br />
+        <div className="flex gap-10">
+          <SheRadioGroup<string>
+            items={radioList}
+            label="Radio Group"
+            icon={Home}
+            showClearBtn
+            // minWidth="500px"
+            // view="card"
+            itemsView={ComponentViewEnum.CARD}
+            // required
+            // tooltip="Calendar Multiple mode: some tooltip text for test purpuse only"
+            // description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
+            // descriptionTransKey="f0923fj9wejfwe"
+            // descriptionIcon={Users}
+            // errorMessage="some error message some error message some error message some error message some error message"
+            // errorMessageTransKey="f0wejfw9ejfkwlejfw"
+            // errorMessageIcon={LayoutDashboard}
+            onValueChange={(value) => console.log("onValueChange: ", value)}
+          />
+          <SheRadioGroup<string>
+            items={_radioFull}
+            label="Radio Group"
+            icon={Home}
+            showClearBtn
+            // view="card"
+            // required
+            // direction="row"
+            maxWidth="400px"
+            // tooltip="Calendar Multiple mode: some tooltip text for test purpuse only"
+            // description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
+            // descriptionTransKey="f0923fj9wejfwe"
+            // descriptionIcon={Users}
+            // errorMessage="some error message some error message some error message some error message some error message"
+            // errorMessageTransKey="f0wejfw9ejfkwlejfw"
+            // errorMessageIcon={LayoutDashboard}
+            onValueChange={(value) => console.log("onValueChange: ", value)}
+          />
+        </div>
+        <br />
+        <div className="divider"></div>
+        <br />
+      </div>
 
       <div className="flex flex-col fullWidth">
         <h2 className="underline">
