@@ -15,6 +15,7 @@ import {
   IShePrimitiveComponentWrapper,
   ShePrimitiveComponentWrapperDefaultModel,
 } from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
+import useValueWithEvent from "@/utils/hooks/useValueWithEvent.ts";
 
 export default function SheRadioGroup<T>(
   props: ISheRadioGroup<T>,
@@ -39,16 +40,22 @@ export default function SheRadioGroup<T>(
   const shePrimitiveComponentWrapperProps = getCustomProps<
     ISheRadioGroup<T>,
     IShePrimitiveComponentWrapper
-  >(props, ShePrimitiveComponentWrapperDefaultModel);
+  >(
+    { ...props, disable: undefined, isLoading: undefined },
+    ShePrimitiveComponentWrapperDefaultModel,
+  );
 
   // ==================================================================== STATE MANAGEMENT
   const [_items, setItems] = useState<ISheRadioItem<T>[]>(null);
   const [_selected, setSelected] = useState<any>(null);
 
   // ==================================================================== UTILITIES
-  const { translate, ariaDescribedbyId } = useComponentUtilities({
+  const { translate, ariaDescribedbyId, addItemsId } = useComponentUtilities({
     identifier: "SheRadioGroup",
   });
+  const { eventHandler, valueHandler } = useValueWithEvent<React.MouseEvent, T>(
+    onValueChangeHandler,
+  );
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
@@ -58,37 +65,33 @@ export default function SheRadioGroup<T>(
   }, [selected]);
 
   useEffect(() => {
-    if (items !== _items) setItems(_addItemsIds(items));
+    if (items !== _items) setItems(addItemsId<T>(items));
   }, [items]);
 
   // ==================================================================== EVENT HANDLERS
-  function onValueChangeHandler(value) {
+  function onValueChangeHandler(value, event) {
     if (value === _selected) return;
 
     setSelected(value);
-    onValueChange?.(value);
-  }
-
-  function onClearHandler() {
-    if (_selected !== null) {
-      setSelected(null);
-      onValueChange?.(null);
-    }
-  }
-
-  // ==================================================================== PRIVATE
-
-  function _addItemsIds(items: ISheRadioItem<T>[]) {
-    return items?.map((item, idx) => {
-      return {
-        ...item,
-        id: `${ariaDescribedbyId}_${idx.toString()}`,
-      };
+    onValueChange?.(value, {
+      value,
+      model: props,
+      event,
     });
   }
 
-  // ==================================================================== RENDER
+  function onClearHandler(event) {
+    if (_selected !== null) {
+      setSelected(null);
+      onValueChange?.(null, {
+        value: null,
+        model: props,
+        event,
+      });
+    }
+  }
 
+  // ==================================================================== LAYOUT
   return (
     <ShePrimitiveComponentWrapper
       {...shePrimitiveComponentWrapperProps}
@@ -99,6 +102,7 @@ export default function SheRadioGroup<T>(
       clearBtnClassName={`${shePrimitiveComponentWrapperProps.clearBtnClassName} ${cs.sheRadioGroupClearButton}`}
       clearBtnPosition="out"
       clearBtnValue={_selected}
+      clearBtnProps={{ isLoading: isLoading }}
       onClear={onClearHandler}
     >
       <div className={cs.sheRadioGroupControl}>
@@ -114,7 +118,8 @@ export default function SheRadioGroup<T>(
             }
             name={name}
             value={_selected}
-            onValueChange={onValueChangeHandler}
+            onClick={eventHandler}
+            onValueChange={valueHandler}
           >
             {_items.map((item, idx) => (
               <SheRadioItem<T>

@@ -1,4 +1,5 @@
-import React, { JSX } from "react";
+import React, { JSX, useEffect, useState } from "react";
+import _ from "lodash";
 
 import { X } from "lucide-react";
 import cs from "./SheClearButton.module.scss";
@@ -20,21 +21,39 @@ export default function SheClearButton({
   clearBtnProps,
   onClear,
 }: ISheClearButton): JSX.Element {
+  // ==================================================================== STATE MANAGEMENT
+  const [_loading, setLoading] = useState<boolean>(null);
+
+  // ==================================================================== UTILITIES
   const isEmpty =
     clearBtnValue === undefined ||
     clearBtnValue === null ||
     (typeof clearBtnValue === "string" && clearBtnValue.trim().length === 0) ||
     (Array.isArray(clearBtnValue) && clearBtnValue.length === 0);
 
-  // ==================================================================== EVENT
+  // ==================================================================== SIDE EFFECTS
+  useEffect(() => {
+    if (
+      !_.isNil(isLoading) &&
+      typeof isLoading === "boolean" &&
+      isLoading !== _loading
+    )
+      setLoading(isLoading);
 
+    if (
+      clearBtnProps &&
+      !_.isNil(clearBtnProps.isLoading) &&
+      clearBtnProps.isLoading !== _loading
+    )
+      setTimeout(() => setLoading(clearBtnProps.isLoading));
+  }, [isLoading, clearBtnProps]);
+
+  // ==================================================================== EVENT HANDLERS
   function onClearHandler(event: React.MouseEvent | React.KeyboardEvent) {
     event.stopPropagation();
     event.preventDefault();
     onClear?.(event);
   }
-
-  // ==================================================================== PRIVATE
 
   // ==================================================================== LAYOUT
   if (!showClearBtn) return null;
@@ -44,7 +63,7 @@ export default function SheClearButton({
       <SheSkeleton
         skeletonClassName={`${cs.sheClearButtonSkeleton}`}
         skeletonStyle={clearBtnStyle}
-        isLoading={isLoading}
+        isLoading={_loading}
       >
         <SheButton
           className={cs.sheClearButton}
@@ -56,9 +75,10 @@ export default function SheClearButton({
           txtColor={clearBtnValueColor}
           bgColor={clearBtnBackgroundColor}
           aria-describedby={ariaDescribedbyId}
-          disabled={isEmpty || disabled || isLoading}
+          disabled={isEmpty || disabled || _loading}
           onClick={onClearHandler}
           {...clearBtnProps}
+          isLoading={false}
         />
       </SheSkeleton>
     </div>

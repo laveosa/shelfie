@@ -30,6 +30,7 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheRadioGroup from "@/components/primitive/she-radio-group/SheRadioGroup.tsx";
 import { ISheRadioItem } from "@/const/interfaces/primitive-components/ISheRadioItem.ts";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
+import SheTextArea from "@/components/primitive/she-textarea/SheTextarea.tsx";
 
 const options: ISheSelectItem<any>[] = [
   {
@@ -379,19 +380,16 @@ export function DashboardPage() {
 
       <div className="flex flex-col fullWidth">
         <h2 className="underline">
-          <b>RadioGroup</b>
+          <b>Textarea</b>
         </h2>
         <br />
         <div className="flex gap-10">
-          <SheRadioGroup<string>
-            items={radioList}
-            label="Radio Group"
-            icon={Home}
-            showClearBtn
-            // minWidth="500px"
+          <SheTextArea
+            label="Textarea"
             // view="card"
-            itemsView={ComponentViewEnum.CARD}
             // required
+            // isLoading
+            // disabled
             // tooltip="Calendar Multiple mode: some tooltip text for test purpuse only"
             // description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
             // descriptionTransKey="f0923fj9wejfwe"
@@ -399,7 +397,70 @@ export function DashboardPage() {
             // errorMessage="some error message some error message some error message some error message some error message"
             // errorMessageTransKey="f0wejfw9ejfkwlejfw"
             // errorMessageIcon={LayoutDashboard}
-            onValueChange={(value) => console.log("onValueChange: ", value)}
+            onChange={(event) => console.log("CHANGE: ", event)}
+            onDelay={(event) => console.log("DELAY: ", event)}
+            onBlur={(event) => console.log("BLUR: ", event)}
+            onIsValid={(event) => console.log("IS_VALID: ", event)}
+          />
+        </div>
+        <br />
+        <div className="divider"></div>
+        <br />
+      </div>
+
+      <div className="flex flex-col fullWidth">
+        <h2 className="underline">
+          <b>RadioGroup</b>
+        </h2>
+        <br />
+        <div className="flex gap-10">
+          <SheRadioGroup<string>
+            // id="RGFL_ID"
+            // className="RADIO-GROUP-FULL-LIST"
+            // style={{ border: "1px solid blue" }}
+            items={radioListFull}
+            selected={radioListFull[2].value}
+            label="Radio Group"
+            icon={Home}
+            showClearBtn
+            maxWidth="400px"
+            itemsView={ComponentViewEnum.CARD}
+            view="card"
+            required
+            // isLoading
+            // disabled
+            autoFocus
+            tooltip="Calendar Multiple mode: some tooltip text for test purpuse only"
+            description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
+            descriptionTransKey="f0923fj9wejfwe"
+            descriptionIcon={Users}
+            errorMessage="some error message some error message some error message some error message some error message"
+            errorMessageTransKey="f0wejfw9ejfkwlejfw"
+            errorMessageIcon={LayoutDashboard}
+            onValueChange={(value, model) =>
+              console.log("onValueChange: ", value, model)
+            }
+          />
+          <SheRadioGroup<string>
+            label="Radio Group"
+            items={radioList}
+            selected="3"
+            // icon={Home}
+            // showClearBtn
+            // view="card"
+            // required
+            // direction="row"
+            // maxWidth="400px"
+            // tooltip="Calendar Multiple mode: some tooltip text for test purpuse only"
+            // description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
+            // descriptionTransKey="f0923fj9wejfwe"
+            // descriptionIcon={Users}
+            // errorMessage="some error message some error message some error message some error message some error message"
+            // errorMessageTransKey="f0wejfw9ejfkwlejfw"
+            // errorMessageIcon={LayoutDashboard}
+            onValueChange={(value, model) =>
+              console.log("onValueChange: ", value, model)
+            }
           />
           <SheRadioGroup<string>
             items={_radioFull}
@@ -410,13 +471,13 @@ export function DashboardPage() {
             // required
             // direction="row"
             maxWidth="400px"
-            // tooltip="Calendar Multiple mode: some tooltip text for test purpuse only"
-            // description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
-            // descriptionTransKey="f0923fj9wejfwe"
-            // descriptionIcon={Users}
-            // errorMessage="some error message some error message some error message some error message some error message"
-            // errorMessageTransKey="f0wejfw9ejfkwlejfw"
-            // errorMessageIcon={LayoutDashboard}
+            tooltip="Calendar Multiple mode: some tooltip text for test purpuse only"
+            description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
+            descriptionTransKey="f0923fj9wejfwe"
+            descriptionIcon={Users}
+            errorMessage="some error message some error message some error message some error message some error message"
+            errorMessageTransKey="f0wejfw9ejfkwlejfw"
+            errorMessageIcon={LayoutDashboard}
             onValueChange={(value) => console.log("onValueChange: ", value)}
           />
         </div>

@@ -42,7 +42,7 @@ export default function SheRadioItem<T>({
       isLoading={view === ComponentViewEnum.CARD && isLoading}
     >
       <div
-        className={`${className} ${cs.sheRadioItem} ${isLoading || disabled ? "disabled" : ""} ${view ? cs[view] : ""}`}
+        className={`${className} ${cs.sheRadioItem} ${isLoading || disabled ? "disabled" : ""} ${view ? cs[view] : ""} ${tooltip && tooltip.text?.length > 0 ? cs.withTooltip : ""}`}
         style={style}
       >
         <div className={cs.sheRadioItemCell}>
@@ -99,6 +99,7 @@ export default function SheRadioItem<T>({
                   }}
                 >
                   <SheTooltip
+                    className={cs.sheRadioItemTooltip}
                     showDefaultIcon
                     ariaDescribedbyId={ariaDescribedbyId}
                     {...tooltip}

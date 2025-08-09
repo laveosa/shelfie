@@ -21,11 +21,7 @@ export interface ISheRadioGroup<T>
   noDataMessageTransKey?: string;
   onValueChange?(
     value: T,
-    model?: IOutputEventModel<
-      T,
-      ISheRadioGroup<T>,
-      React.MouseEvent | React.KeyboardEvent
-    >,
+    model?: IOutputEventModel<T, ISheRadioGroup<T>, React.MouseEvent>,
   ): void;
 }
 

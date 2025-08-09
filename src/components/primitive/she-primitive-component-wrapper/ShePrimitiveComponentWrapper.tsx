@@ -80,6 +80,7 @@ export default function ShePrimitiveComponentWrapper(
       minWidth: undefined,
       maxWidth: undefined,
       fullWidth: undefined,
+      style: undefined,
     },
     SheSkeletonDefaultModel,
   );
@@ -89,6 +90,7 @@ export default function ShePrimitiveComponentWrapper(
       minWidth: undefined,
       maxWidth: undefined,
       fullWidth: undefined,
+      style: undefined,
     },
     SheIconDefaultModel,
   );

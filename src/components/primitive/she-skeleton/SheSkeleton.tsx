@@ -9,21 +9,24 @@ export default function SheSkeleton({
   skeletonStyle,
   skeletonColor,
   isLoading,
+  disabled,
   animationDelay = 0,
   minWidth,
   maxWidth,
   fullWidth,
   children,
+  skeletonProps,
 }: ISheSkeleton): JSX.Element {
   // ==================================================================== LAYOUT
   return (
     <div
-      className={`${cs.sheSkeletonWrapper} ${skeletonClassName} ${fullWidth ? cs.fullWidth : ""}`}
+      className={`${cs.sheSkeletonWrapper} ${skeletonClassName} ${fullWidth ? cs.fullWidth : ""} ${disabled ? "disabled" : ""}`}
       style={{
         minWidth,
         maxWidth,
         ...skeletonStyle,
       }}
+      {...skeletonProps}
     >
       {isLoading ? (
         <Skeleton
