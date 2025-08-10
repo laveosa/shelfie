@@ -2,80 +2,94 @@ import React, { JSX, useEffect, useRef, useState } from "react";
 
 import cs from "./SheTextarea.module.scss";
 import { Textarea } from "@/components/ui/textarea.tsx";
-import { ISheTextarea } from "@/const/interfaces/primitive-components/ISheTextarea.ts";
-import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
-import { generateId } from "@/utils/helpers/quick-helper.ts";
-import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import ShePrimitiveComponentWrapper from "@/components/primitive/she-primitive-component-wrapper/ShePrimitiveComponentWrapper.tsx";
+import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
 import { useDebounce } from "@/utils/hooks/useDebounce.ts";
-import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
-import SheLabel from "@/components/primitive/she-label/SheLabel.tsx";
-import SheClearButton from "@/components/primitive/she-clear-button/SheClearButton.tsx";
-import SheContextLengthLimits from "@/components/primitive/she-context-length-limits/SheContextLengthLimits.tsx";
-import SheErrorMessageBlock from "@/components/primitive/she-error-message-block/SheErrorMessageBlock.tsx";
+import { getCustomProps } from "@/utils/helpers/props-helper.ts";
+import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
+import { ISheTextarea } from "@/const/interfaces/primitive-components/ISheTextarea.ts";
+import {
+  IShePrimitiveComponentWrapper,
+  ShePrimitiveComponentWrapperDefaultModel,
+} from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
+import _ from "lodash";
 
-export default function SheTextArea({
-  id,
-  className = "",
-  style,
-  label,
-  labelTransKey,
-  icon,
-  value,
-  placeholder = "enter text...",
-  placeholderTransKey,
-  type,
-  autoFocus,
-  showClearBtn,
-  tooltip,
-  disabled,
-  isLoading,
-  minWidth,
-  maxWidth,
-  fullWidth,
-  required,
-  minLength,
-  maxLength,
-  isValid = true,
-  ignoreValidation,
-  showError = true,
-  resize,
-  rows = 4,
-  rowToExtend,
-  delayTime,
-  onChange,
-  onBlur,
-  onDelay,
-  onIsValid,
-}: ISheTextarea): JSX.Element {
-  const { translate } = useAppTranslation();
-  const [_textValue, setTextValue] = useState<
-    string | number | readonly string[]
-  >(null);
-  const [_isValid, setIsValid] = useState(isValid);
-  const [_isLengthValid, setIsLengthValid] = useState(isValid);
-  const [_showError, setShowError] = useState(showError);
+export default function SheTextArea(props: ISheTextarea): JSX.Element {
+  const {
+    value,
+    icon,
+    iconPosition,
+    placeholder = "enter text...",
+    placeholderTransKey,
+    autoFocus,
+    disabled,
+    isLoading,
+    required,
+    minLength,
+    maxLength,
+    isValid = true,
+    ignoreValidation,
+    showError = true,
+    resize,
+    rows = 4,
+    rowToExtend,
+    delayTime,
+    contextLengthLimitsClassName = "",
+    descriptionBlockClassName = "",
+    descriptionIcon,
+    errorMessageBlockClassName = "",
+    errorMessageIcon,
+    onIsValid,
+    onChange,
+    onBlur,
+    onDelay,
+    onClear,
+  } = props;
+  const shePrimitiveComponentWrapperProps = getCustomProps<
+    ISheTextarea,
+    IShePrimitiveComponentWrapper
+  >(props, ShePrimitiveComponentWrapperDefaultModel);
+
+  // ==================================================================== STATE MANAGEMENT
+  const [_textValue, setTextValue] = useState<string>(null);
+  const [_isValid, setIsValid] = useState<boolean>(isValid);
+  const [_isLengthValid, setIsLengthValid] = useState<boolean>(isValid);
+  const [_showError, setShowError] = useState<boolean>(showError);
   const [_error, setError] = useState<string>(null);
   const [_errorTransKey, setErrorTransKey] = useState<string>(null);
 
-  const ariaDescribedbyId = `${generateId()}_TEXTAREA_ID`;
+  // ==================================================================== REFS
+  const _textAreaRef = useRef<HTMLTextAreaElement>(null);
+  const _isInitialized = useRef(false);
+  const _isTouched = useRef(false);
+  const _lastEventDataRef = useRef<any>(null);
+
+  // ==================================================================== UTILITIES
+  const { translate, ariaDescribedbyId, setFocus } = useComponentUtilities({
+    identifier: "ISheTextarea",
+  });
   const delayValue = useDebounce(_textValue, delayTime);
-  const isInitialized = useRef(false);
-  const isTouched = useRef(false);
-  const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
+  // ==================================================================== SIDE EFFECTS
   useEffect(() => {
-    const convertedValue = Array.isArray(value) ? value.join("\n") : value;
-
-    if (convertedValue !== _textValue) {
-      isTouched.current = true;
-      setTextValue(convertedValue);
-      validateValue(convertedValue);
+    if (value !== _textValue) {
+      _isTouched.current = true;
+      setTextValue(value);
+      _validateValue(value);
     }
   }, [value]);
 
   useEffect(() => {
-    if (isInitialized.current && onDelay) {
-      onDelay(delayValue);
+    if (_isInitialized.current && onDelay) {
+      onDelay(delayValue, {
+        value: delayValue,
+        model: {
+          ...props,
+          value: delayValue,
+          isValid: _isValid,
+        },
+        event: _lastEventDataRef.current,
+      });
     }
   }, [delayValue]);
 
@@ -83,68 +97,79 @@ export default function SheTextArea({
     setIsValid(isValid);
 
     if (isValid) {
-      isInitialized.current = false;
-      isTouched.current = false;
+      _isInitialized.current = false;
+      _isTouched.current = false;
       setIsLengthValid(true);
-      setErrorCondition(false);
+      _setErrorCondition(false);
     }
   }, [isValid]);
 
   // ==================================================================== EVENT
 
-  function onChangeHandler(e) {
-    isInitialized.current = true;
-    const newValue = e.target.value;
+  function onChangeHandler(event: React.ChangeEvent<HTMLTextAreaElement>) {
+    _isInitialized.current = true;
+    _lastEventDataRef.current = event;
+    const newValue = event.target.value;
     setTextValue(newValue);
-    validateValue(newValue);
-    calculateRowToExtend();
-
-    if (onChange) onChange(newValue);
+    const tmpIsValid = _validateValue(newValue);
+    _calculateRowToExtend();
+    onChange?.(newValue, {
+      value: newValue,
+      model: {
+        ...props,
+        value: newValue,
+        isValid: tmpIsValid,
+      },
+      event,
+    });
   }
 
-  function onBlurHandler(e) {
-    isTouched.current = true;
-    const newValue = e.target.value;
-    validateValue(newValue);
-
-    if (onBlur) onBlur(newValue);
+  function onBlurHandler(event: React.ChangeEvent<HTMLTextAreaElement>) {
+    _isTouched.current = true;
+    const newValue = event.target.value;
+    const tmpIsValid = _validateValue(newValue);
+    onBlur?.(newValue, {
+      value: newValue,
+      model: {
+        ...props,
+        value: newValue,
+        isValid: tmpIsValid,
+      },
+      event,
+    });
   }
 
-  function onClearHandler() {
-    isInitialized.current = false;
-    isTouched.current = false;
+  function onClearHandler(event: React.KeyboardEvent) {
+    _isInitialized.current = false;
+    _isTouched.current = false;
     updateIsValid(true);
     setIsLengthValid(true);
-    setErrorCondition(false);
+    _setErrorCondition(false);
 
     const newValue = "";
     setTextValue(newValue);
-    validateValue(newValue);
-    const textarea = textAreaRef.current;
+    _validateValue(newValue);
+    setFocus(true, _textAreaRef);
+    const textarea = _textAreaRef.current;
     textarea.rows = rows;
 
-    if (onChange) onChange(newValue);
-    if (onBlur) onBlur(newValue);
-    if (onDelay) onDelay(newValue);
+    const outputModel: IOutputEventModel<null, ISheTextarea, any> = {
+      value: null,
+      model: props,
+      event,
+    };
+    onChange?.(null, outputModel);
+    onDelay?.(null, outputModel);
+    onClear?.(null, outputModel);
   }
 
   // ==================================================================== PRIVATE
-
-  function calculateRowToExtend() {
-    if (!rowToExtend || !textAreaRef.current) return;
-
-    const textarea = textAreaRef.current;
-    textarea.rows = rows;
-    const currentRows = Math.floor(textarea.scrollHeight / 22);
-    textarea.rows = Math.min(currentRows, rowToExtend);
-  }
-
-  function validateValue(textValue) {
-    if (ignoreValidation || !isTouched.current) return true;
+  function _validateValue(textValue) {
+    if (ignoreValidation || !_isTouched.current) return true;
 
     let validation = true;
-    validation = isRequiredValid(textValue, validation);
-    validation = isLengthValid(textValue, validation);
+    validation = _isRequiredValidCheck(textValue, validation);
+    validation = _isLengthValidCheck(textValue, validation);
     updateIsValid(validation);
   }
 
@@ -154,26 +179,35 @@ export default function SheTextArea({
     setIsValid(value);
   }
 
+  function _calculateRowToExtend() {
+    if (!rowToExtend || !_textAreaRef.current) return;
+
+    const textarea = _textAreaRef.current;
+    textarea.rows = rows;
+    const currentRows = Math.floor(textarea.scrollHeight / 22);
+    textarea.rows = Math.min(currentRows, rowToExtend);
+  }
+
   // ----------------------------- VALIDATION PATTERNS CHECK
 
-  function isRequiredValid(textValue, validation) {
-    if (!required || !validation) return validation;
+  function _isRequiredValidCheck(textValue, validation) {
+    if (!required || !validation || !_isTouched.current) return validation;
 
     const result = textValue?.length > 0;
 
     if (!result) setIsLengthValid(false);
 
-    setShowErrorCondition(result, "context is required", "REPLACE.ME"); // TODO replace with valid translation key
+    _setShowErrorCondition(result, "context is required", "REPLACE.ME"); // TODO replace with valid translation key
     return result;
   }
 
-  function isLengthValid(textValue, validation) {
+  function _isLengthValidCheck(textValue, validation) {
     if ((!minLength && !maxLength) || !validation) {
       setIsLengthValid(true);
       return validation;
     }
 
-    const valueLength = textValue.toString().length;
+    const valueLength = textValue?.toString().trim().length;
     const isMinOk =
       typeof minLength === "number" ? valueLength >= minLength : true;
     const isMaxOk =
@@ -181,23 +215,23 @@ export default function SheTextArea({
     const result = isMinOk && isMaxOk;
 
     setIsLengthValid(result);
-    setShowErrorCondition(result, "value length not valid", "REPLACE.ME"); // TODO replace with valid translation key
+    _setShowErrorCondition(result, "value length not valid", "REPLACE.ME"); // TODO replace with valid translation key
     return result;
   }
 
   // ----------------------------- ERROR CONDITION
 
-  function setShowErrorCondition(
+  function _setShowErrorCondition(
     isValid: boolean,
     message?: string,
     messageTransKey?: string,
   ) {
     !isValid
-      ? setErrorCondition(true, message, messageTransKey)
-      : setErrorCondition(false);
+      ? _setErrorCondition(true, message, messageTransKey)
+      : _setErrorCondition(false);
   }
 
-  function setErrorCondition(
+  function _setErrorCondition(
     show: boolean,
     text?: string,
     errTransKey?: string,
@@ -209,67 +243,41 @@ export default function SheTextArea({
   }
 
   // ==================================================================== LAYOUT
-
   return (
-    <div
-      id={id}
-      className={`${cs.sheTextArea} ${className} ${icon ? cs.withIcon : ""} ${fullWidth ? cs.fullWidth : ""}  ${required ? cs.required : ""} ${resize ? cs.resize : ""} ${!_isValid ? cs.invalid : ""}`}
-      style={{
-        minWidth,
-        maxWidth,
-        ...style,
-      }}
+    <ShePrimitiveComponentWrapper
+      {...shePrimitiveComponentWrapperProps}
+      className={`${shePrimitiveComponentWrapperProps.className} ${cs.sheTextArea} ${!_isValid ? cs.invalid : ""} ${resize ? cs.resize : ""} ${icon && iconPosition === "out" ? cs.sheInputWithIconOut : ""}`}
+      clearBtnValue={_textValue}
+      ariaDescribedbyId={ariaDescribedbyId}
+      contextLengthLimitsValue={_textValue}
+      isContextLengthLimitsValid={_isLengthValid}
+      contextLengthLimitsClassName={`${contextLengthLimitsClassName}  ${cs.sheContextLengthLimits}`}
+      descriptionBlockClassName={`${descriptionBlockClassName} ${!descriptionIcon ? cs.sheInputDescriptionBlock : ""}`}
+      errorMessageBlockClassName={`${errorMessageBlockClassName} ${!errorMessageIcon ? cs.sheInputErrorBlock : ""}`}
+      errorMessage={shePrimitiveComponentWrapperProps.errorMessage ?? _error}
+      errorMessageTransKey={
+        shePrimitiveComponentWrapperProps.errorMessageTransKey ?? _errorTransKey
+      }
+      hideErrorMessage={
+        !_.isNil(shePrimitiveComponentWrapperProps.hideErrorMessage)
+          ? shePrimitiveComponentWrapperProps.hideErrorMessage
+          : !_showError
+      }
+      onClear={onClearHandler}
     >
-      <div className={cs.sheTextAreaComponent}>
-        <SheLabel
-          label={label}
-          labelTransKey={labelTransKey}
-          tooltip={tooltip}
-          ariaDescribedbyId={ariaDescribedbyId}
-        />
-        <div className={cs.sheTextAreaControl}>
-          <SheSkeleton isLoading={isLoading} fullWidth>
-            <SheIcon
-              icon={icon}
-              className={cs.iconBlock}
-              aria-describedby={ariaDescribedbyId}
-            />
-            <Textarea
-              ref={textAreaRef}
-              value={_textValue ?? ""}
-              placeholder={translate(placeholderTransKey, placeholder)}
-              aria-invalid={!isValid}
-              aria-describedby={ariaDescribedbyId}
-              autoFocus={autoFocus}
-              disabled={disabled || isLoading}
-              rows={rows}
-              onChange={onChangeHandler}
-              onBlur={onBlurHandler}
-            />
-          </SheSkeleton>
-          <SheClearButton
-            clearBtnValue={_textValue}
-            clearBtnStyle={{ alignSelf: "start" }}
-            showClearBtn={showClearBtn}
-            disabled={disabled}
-            isLoading={isLoading}
-            ariaDescribedbyId={ariaDescribedbyId}
-            onClear={onClearHandler}
-          />
-        </div>
-        {/*<SheContextLengthLimits
-          value={_textValue}
-          isValid={_isLengthValid}
-          minLength={minLength}
-          maxLength={maxLength}
-          contextType={type}
-        />*/}
-        <SheErrorMessageBlock
-          errorMessage={_error}
-          errorMessageTransKey={_errorTransKey}
-          hideErrorMessage={!_showError}
-        />
-      </div>
-    </div>
+      <Textarea
+        className={`componentTriggerElement`}
+        ref={_textAreaRef}
+        value={_textValue ?? ""}
+        placeholder={translate(placeholderTransKey, placeholder)}
+        aria-invalid={!isValid}
+        aria-describedby={ariaDescribedbyId}
+        autoFocus={autoFocus}
+        disabled={disabled || isLoading}
+        rows={rows}
+        onChange={onChangeHandler}
+        onBlur={onBlurHandler}
+      />
+    </ShePrimitiveComponentWrapper>
   );
 }

@@ -385,21 +385,49 @@ export function DashboardPage() {
         <br />
         <div className="flex gap-10">
           <SheTextArea
-            label="Textarea"
+            label="Textarea TEXT:"
+            required
             // view="card"
             // required
             // isLoading
             // disabled
+            icon={Home}
+            showClearBtn
+            ignoreValidation
+            tooltip="Calendar Multiple mode: some tooltip text for test purpuse only"
+            description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
+            descriptionTransKey="f0923fj9wejfwe"
+            descriptionIcon={Users}
+            errorMessage="some error message some error message some error message some error message some error message"
+            errorMessageTransKey="f0wejfw9ejfkwlejfw"
+            errorMessageIcon={LayoutDashboard}
+            onChange={(event, model) => console.log("CHANGE: ", event, model)}
+            onDelay={(event, model) => console.log("DELAY: ", event, model)}
+            onBlur={(event, model) => console.log("BLUR: ", event, model)}
+            onIsValid={(event) => console.log("IS_VALID: ", event)}
+          />
+          <SheTextArea
+            label="Textarea NUMBER:"
+            minLength={4}
+            maxLength={10}
+            view="card"
+            required
+            // isLoading
+            // disabled
+            icon={Home}
+            iconPosition="out"
+            showClearBtn
+            clearBtnPosition="out"
             // tooltip="Calendar Multiple mode: some tooltip text for test purpuse only"
-            // description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
+            description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
             // descriptionTransKey="f0923fj9wejfwe"
-            // descriptionIcon={Users}
+            descriptionIcon={Users}
             // errorMessage="some error message some error message some error message some error message some error message"
             // errorMessageTransKey="f0wejfw9ejfkwlejfw"
-            // errorMessageIcon={LayoutDashboard}
-            onChange={(event) => console.log("CHANGE: ", event)}
-            onDelay={(event) => console.log("DELAY: ", event)}
-            onBlur={(event) => console.log("BLUR: ", event)}
+            errorMessageIcon={LayoutDashboard}
+            onChange={(event, model) => console.log("CHANGE: ", event, model)}
+            onDelay={(event, model) => console.log("DELAY: ", event, model)}
+            onBlur={(event, model) => console.log("BLUR: ", event, model)}
             onIsValid={(event) => console.log("IS_VALID: ", event)}
           />
         </div>
@@ -791,7 +819,6 @@ export function DashboardPage() {
             label="Input Editor"
             value="some text for input editor"
             icon={Home}
-            showClearBtn
             required
             tooltip="Calendar Multiple mode: some tooltip text for test purpuse only"
             description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
@@ -805,7 +832,23 @@ export function DashboardPage() {
             onSave={(value, model) => console.log("onSave: ", value, model)}
             onCancel={(value, model) => console.log("onCancel: ", value, model)}
           />
-          <SheInputEditor label="Input Editor" />
+          <SheInputEditor
+            label="Input Editor"
+            showClearBtn={false}
+            required
+            icon={Users}
+            tooltip="Calendar Multiple mode: some tooltip text for test purpuse only"
+            description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
+            descriptionTransKey="f0923fj9wejfwe"
+            descriptionIcon={Users}
+            errorMessage="some error message some error message some error message some error message some error message"
+            errorMessageTransKey="f0wejfw9ejfkwlejfw"
+            errorMessageIcon={LayoutDashboard}
+            onChange={(value, model) => console.log("onChange: ", value, model)}
+            onToggleManage={(value) => console.log("onToggleManage: ", value)}
+            onSave={(value, model) => console.log("onSave: ", value, model)}
+            onCancel={(value, model) => console.log("onCancel: ", value, model)}
+          />
         </div>
         <br />
         <div className="divider"></div>
@@ -874,15 +917,17 @@ export function DashboardPage() {
               icon: Users,
             }}
             icon={User}
-            description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
-            descriptionTransKey="f0923fj9wejfwe"
-            descriptionIcon={Users}
-            errorMessage="some error message some error message some error message some error message some error message"
-            errorMessageTransKey="f0wejfw9ejfkwlejfw"
-            errorMessageIcon={LayoutDashboard}
-            clearBtnPosition="out"
             iconPosition="out"
             showClearBtn
+            clearBtnPosition="out"
+            minLength={2}
+            maxLength={10}
+            description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
+            // descriptionTransKey="f0923fj9wejfwe"
+            descriptionIcon={Users}
+            // errorMessage="some error message some error message some error message some error message some error message"
+            // errorMessageTransKey="f0wejfw9ejfkwlejfw"
+            errorMessageIcon={LayoutDashboard}
             // autoFocus
             // isSearch
             // icon={Users}

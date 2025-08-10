@@ -27,6 +27,7 @@ export default function SheInput(props: ISheInput): JSX.Element {
   const {
     ref,
     icon,
+    iconPosition,
     value,
     placeholder = "enter text...",
     placeholderTransKey,
@@ -46,6 +47,11 @@ export default function SheInput(props: ISheInput): JSX.Element {
     patternErrorMessage,
     patternErrorMessageTransKey,
     delayTime,
+    contextLengthLimitsClassName = "",
+    descriptionBlockClassName = "",
+    descriptionIcon,
+    errorMessageBlockClassName = "",
+    errorMessageIcon,
     onIsValid,
     onChange,
     onBlur,
@@ -86,12 +92,10 @@ export default function SheInput(props: ISheInput): JSX.Element {
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
-    const convertedValue = Array.isArray(value) ? value.join("\n") : value;
-
-    if (convertedValue !== _textValue) {
+    if (value !== _textValue) {
       _isTouched.current = true;
-      setTextValue(convertedValue);
-      _validateValue(convertedValue);
+      setTextValue(value);
+      _validateValue(value);
     }
   }, [value]);
 
@@ -122,10 +126,10 @@ export default function SheInput(props: ISheInput): JSX.Element {
 
   // ==================================================================== EVENT HANDLERS
   function onChangeHandler(
-    e: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent,
+    event: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent,
   ) {
     _isInitialized.current = true;
-    _lastEventDataRef.current = e;
+    _lastEventDataRef.current = event;
     const newValue = _inputRef.current.value;
     setTextValue(newValue);
     const tmpIsValid = _validateValue(newValue);
@@ -136,13 +140,13 @@ export default function SheInput(props: ISheInput): JSX.Element {
         value: newValue,
         isValid: tmpIsValid,
       },
-      event: e,
+      event,
     });
   }
 
-  function onBlurHandler(e: React.ChangeEvent<HTMLInputElement>) {
+  function onBlurHandler(event: React.ChangeEvent<HTMLInputElement>) {
     _isTouched.current = true;
-    const newValue = e.target.value;
+    const newValue = event.target.value;
     const tmpIsValid = _validateValue(newValue);
     onBlur?.(newValue, {
       value: newValue,
@@ -151,7 +155,7 @@ export default function SheInput(props: ISheInput): JSX.Element {
         value: newValue,
         isValid: tmpIsValid,
       },
-      event: e,
+      event,
     });
   }
 
@@ -266,12 +270,15 @@ export default function SheInput(props: ISheInput): JSX.Element {
   return (
     <ShePrimitiveComponentWrapper
       {...shePrimitiveComponentWrapperProps}
-      className={`${shePrimitiveComponentWrapperProps.className} ${cs.sheInput} ${!_isValid ? cs.invalid : ""}`}
+      className={`${shePrimitiveComponentWrapperProps.className} ${cs.sheInput} ${!_isValid ? cs.invalid : ""} ${icon && iconPosition === "out" ? cs.sheInputWithIconOut : ""}`}
       icon={iconToRender}
       clearBtnValue={_textValue}
       ariaDescribedbyId={ariaDescribedbyId}
       contextLengthLimitsValue={_textValue}
       isContextLengthLimitsValid={_isLengthValid}
+      contextLengthLimitsClassName={`${contextLengthLimitsClassName}  ${cs.sheContextLengthLimits}`}
+      descriptionBlockClassName={`${descriptionBlockClassName} ${!descriptionIcon ? cs.sheInputDescriptionBlock : ""}`}
+      errorMessageBlockClassName={`${errorMessageBlockClassName} ${!errorMessageIcon ? cs.sheInputErrorBlock : ""}`}
       errorMessage={shePrimitiveComponentWrapperProps.errorMessage ?? _error}
       errorMessageTransKey={
         shePrimitiveComponentWrapperProps.errorMessageTransKey ?? _errorTransKey

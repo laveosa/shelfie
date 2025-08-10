@@ -24,7 +24,7 @@ export default function SheInputEditor(props: ISheInputEditor): JSX.Element {
     noValuePlaceholderTransKey = "PLACE_VALID_TRANS_KEY",
     disabled,
     isLoading,
-    showClearBtn,
+    showClearBtn = true,
     isManage,
     saveOnBlur,
     inputProps,
