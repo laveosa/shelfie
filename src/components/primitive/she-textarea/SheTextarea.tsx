@@ -1,4 +1,5 @@
 import React, { JSX, useEffect, useRef, useState } from "react";
+import _ from "lodash";
 
 import cs from "./SheTextarea.module.scss";
 import { Textarea } from "@/components/ui/textarea.tsx";
@@ -12,13 +13,11 @@ import {
   IShePrimitiveComponentWrapper,
   ShePrimitiveComponentWrapperDefaultModel,
 } from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
-import _ from "lodash";
 
 export default function SheTextArea(props: ISheTextarea): JSX.Element {
   const {
     value,
-    icon,
-    iconPosition,
+    iconProps,
     placeholder = "enter text...",
     placeholderTransKey,
     autoFocus,
@@ -34,11 +33,8 @@ export default function SheTextArea(props: ISheTextarea): JSX.Element {
     rows = 4,
     rowToExtend,
     delayTime,
-    contextLengthLimitsClassName = "",
-    descriptionBlockClassName = "",
-    descriptionIcon,
-    errorMessageBlockClassName = "",
-    errorMessageIcon,
+    clearBtnClassName = "",
+    view,
     onIsValid,
     onChange,
     onBlur,
@@ -246,14 +242,13 @@ export default function SheTextArea(props: ISheTextarea): JSX.Element {
   return (
     <ShePrimitiveComponentWrapper
       {...shePrimitiveComponentWrapperProps}
-      className={`${shePrimitiveComponentWrapperProps.className} ${cs.sheTextArea} ${!_isValid ? cs.invalid : ""} ${resize ? cs.resize : ""} ${icon && iconPosition === "out" ? cs.sheInputWithIconOut : ""}`}
+      className={`${shePrimitiveComponentWrapperProps.className} ${cs.sheTextArea} ${!_isValid ? cs.invalid : ""} ${resize ? cs.resize : ""} ${view === "card" ? cs.sheTextAreaViewCard : cs.sheTextAreaViewNormal}`}
       clearBtnValue={_textValue}
       ariaDescribedbyId={ariaDescribedbyId}
+      iconProps={{ className: `${iconProps?.className} ${cs.sheTextAreaIcon}` }}
+      clearBtnClassName={`${clearBtnClassName} ${cs.sheTextAreaClearButton}`}
       contextLengthLimitsValue={_textValue}
       isContextLengthLimitsValid={_isLengthValid}
-      contextLengthLimitsClassName={`${contextLengthLimitsClassName}  ${cs.sheContextLengthLimits}`}
-      descriptionBlockClassName={`${descriptionBlockClassName} ${!descriptionIcon ? cs.sheInputDescriptionBlock : ""}`}
-      errorMessageBlockClassName={`${errorMessageBlockClassName} ${!errorMessageIcon ? cs.sheInputErrorBlock : ""}`}
       errorMessage={shePrimitiveComponentWrapperProps.errorMessage ?? _error}
       errorMessageTransKey={
         shePrimitiveComponentWrapperProps.errorMessageTransKey ?? _errorTransKey

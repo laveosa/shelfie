@@ -29,11 +29,24 @@
 
 // ======================================================== ICON
 
-.sheTextArea.sheInputWithIconOut {
-  .sheContextLengthLimits,
-  .sheInputDescriptionBlock,
-  .sheInputErrorBlock {
-    padding-left: 23px;
+.sheTextArea.sheTextAreaViewNormal {
+  .sheTextAreaIcon,
+  .sheTextAreaClearButton {
+    top: 9px !important;
+  }
+}
+
+// ======================================================== VIEW
+
+.sheTextArea.sheTextAreaViewCard {
+  .sheTextAreaIcon {
+    top: 0;
+  }
+
+  .sheTextAreaClearButton {
+    align-self: flex-start;
+    position: relative;
+    top: -1px;
   }
 }
 
