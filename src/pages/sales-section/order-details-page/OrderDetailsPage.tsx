@@ -43,8 +43,6 @@ export function OrderDetailsPage() {
 
   async function onAction(actionType: string, payload?: any) {
     switch (actionType) {
-      case "":
-        break;
       case "openSelectEntityCard":
         handleCardAction("selectEntityCard", true);
         if (ordersState.customersGridModel.items.length === 0) {
@@ -70,6 +68,9 @@ export function OrderDetailsPage() {
         break;
       case "closeSelectEntityCard":
         handleCardAction("selectEntityCard");
+        break;
+      case "deleteOrder":
+        service.deleteOrderHandler(Number(orderId));
         break;
     }
   }
