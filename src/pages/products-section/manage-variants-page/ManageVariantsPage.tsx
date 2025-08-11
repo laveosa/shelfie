@@ -363,6 +363,7 @@ export function ManageVariantsPage() {
         }
         break;
       case "increaseStockAmount":
+        console.log(payload);
         dispatch(actions.setIsAddStockCardLoading(true));
         productsService
           .increaseStockAmountForVariantHandler(

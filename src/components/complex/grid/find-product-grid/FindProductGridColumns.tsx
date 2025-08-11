@@ -212,10 +212,10 @@ export function findProductGridColumns({
               value="Add"
               variant="secondary"
               onClick={() => onAction("addVariantToOrder", row.original)}
-              disabled={
-                row.original.amount === 0 ||
-                row.original.amount > row.original.stockAmount
-              }
+              // disabled={
+              //   row.original.amount === 0 ||
+              //   row.original.amount > row.original.stockAmount
+              // }
             />
           </div>
         );

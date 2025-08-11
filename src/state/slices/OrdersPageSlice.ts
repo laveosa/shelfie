@@ -139,7 +139,7 @@ function refreshVariantsGridModel(
   state.variantsGridModel = action?.payload || state.variantsGridModel;
 }
 
-function variantsOrdersGridRequestModel(
+function refreshVariantsGridRequestModel(
   state: IOrdersPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
@@ -205,7 +205,7 @@ const OrdersPageSlice = createSlice({
     refreshCustomersGridModel,
     refreshCustomersGridRequestModel,
     refreshVariantsGridModel,
-    variantsOrdersGridRequestModel,
+    refreshVariantsGridRequestModel,
     refreshBrands,
     refreshCategories,
     refreshSizesForFilter,

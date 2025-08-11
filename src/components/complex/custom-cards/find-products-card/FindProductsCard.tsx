@@ -9,7 +9,6 @@ import SheProductCard from "@/components/complex/she-product-card/SheProductCard
 import cs from "./FindProductsCard.module.scss";
 import { IFindProductsCard } from "@/const/interfaces/complex-components/custom-cards/IFindProductsCard.ts";
 import GridTraitsFilter from "@/components/complex/grid/grid-traits-filter/GridTraitsFilter.tsx";
-import GridShowItemsFilter from "@/components/complex/grid/grid-show-deleted-filter/GridShowItemsFilter.tsx";
 import { findProductGridColumns } from "@/components/complex/grid/find-product-grid/FindProductGridColumns.tsx";
 import GridItemsFilter from "@/components/complex/grid/grid-items-filter/GridItemsFilter.tsx";
 import { BrandModel } from "@/const/models/BrandModel.ts";
@@ -54,7 +53,9 @@ export default function FindProductsCard({
           skeletonQuantity={gridRequestModel.pageSize}
           onApplyColumns={() => onAction("onApplyColumns")}
           onDefaultColumns={() => onAction("onResetColumnsHandler")}
-          onGridRequestChange={() => onAction("handleGridRequestChange")}
+          onGridRequestChange={(updates) =>
+            onAction("variantsGridRequestChange", updates)
+          }
         >
           <GridItemsFilter
             items={brands}
@@ -82,7 +83,6 @@ export default function FindProductsCard({
             traitType="size"
             gridRequestModel={gridRequestModel}
           />
-          <GridShowItemsFilter context="Deleted" />
         </DndGridDataTable>
       </div>
     </SheProductCard>
