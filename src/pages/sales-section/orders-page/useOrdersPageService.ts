@@ -11,6 +11,8 @@ import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import useAppService from "@/useAppService.ts";
 import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
+import { useNavigate } from "react-router-dom";
 
 export default function useOrdersPageService() {
   const appService = useAppService();
@@ -18,6 +20,7 @@ export default function useOrdersPageService() {
     (state: RootState): IOrdersPageSlice => state[StoreSliceEnum.ORDERS],
   );
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
 
   const [getSortingOptionsForGrid] =
     DictionaryApiHooks.useLazyGetSortingOptionsForGridQuery();
@@ -69,8 +72,13 @@ export default function useOrdersPageService() {
   }
 
   function createOrderHandler() {
-    return createOrder().then((res) => {
-      dispatch(actions.refreshSelectedOrder(res.data));
+    return createOrder().then((res: any) => {
+      if (!res.error) {
+        dispatch(actions.refreshSelectedOrder(res.data));
+        navigate(
+          `${NavUrlEnum.SALES}${NavUrlEnum.ORDERS}${NavUrlEnum.ORDER_DETAILS}/${res.data.id}`,
+        );
+      }
       return res.data;
     });
   }

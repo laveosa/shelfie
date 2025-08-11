@@ -53,11 +53,7 @@ export function OrdersPage() {
   async function onAction(actionType: string, payload: any) {
     switch (actionType) {
       case "createOrder":
-        service.createOrderHandler().then((res) => {
-          navigate(
-            `${NavUrlEnum.SALES}${NavUrlEnum.ORDERS}${NavUrlEnum.ORDER_DETAILS}/${res.id}`,
-          );
-        });
+        service.createOrderHandler();
         break;
       case "manageOrder":
         dispatch(actions.refreshSelectedOrder(payload));
