@@ -97,7 +97,7 @@ export default function ProductsInOrderForm<T>({
             />
           </div>
           <SheIcon className={cs.formIcon} icon={Equal} maxWidth="30px" />
-          <div className={cs.formItem}>
+          <div className={`${cs.formItem} ${cs.formItemTotal}`}>
             <span>Total</span>
             <span className={`${cs.totalValue} she-title`}>{total}</span>
           </div>

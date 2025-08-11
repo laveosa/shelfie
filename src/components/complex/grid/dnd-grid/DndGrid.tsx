@@ -120,7 +120,7 @@ const DraggableRow = ({
         style={{
           opacity: isLoading ? 0.7 : 1,
           transform: CSS.Transform.toString(transform),
-          background: isSelected ? "#F4F4F5" : row.original.color || "white",
+          background: isSelected ? "#F4F4F5" : row.original.color || "#F4F4F5",
         }}
       >
         <TableCell
@@ -172,11 +172,8 @@ const DraggableRow = ({
                   colSpan={totalColumns}
                   className={cs.expandedContent}
                   style={{
-                    background: isSelected
-                      ? "#F4F4F5"
-                      : row.original.color || "white", // Use parent row color
+                    background: isSelected ? "#F4F4F5" : "",
                     borderTop: "1px solid #e5e7eb",
-                    // padding: "16px",
                     padding: cellPadding,
                   }}
                 >
@@ -255,7 +252,7 @@ const RegularRow = ({
                   style={{
                     background: isSelected
                       ? "#F4F4F5"
-                      : row.original.color || "white",
+                      : row.original.color || "#F4F4F5",
                     borderTop:
                       expandableRows.length > 1 ? "1px solid white" : "",
                     padding: cellPadding,
