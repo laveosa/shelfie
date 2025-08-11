@@ -397,14 +397,14 @@ export function DashboardPage() {
             label="Toggle 2"
             required
             text="React"
-            // icon={Home}
+            icon={Home}
             tooltip="Calendar Multiple mode: some tooltip text for test purpuse only"
             description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
             descriptionTransKey="f0923fj9wejfwe"
-            descriptionIcon={Users}
+            // descriptionIcon={Users}
             errorMessage="some error message some error message some error message some error message some error message"
             errorMessageTransKey="f0wejfw9ejfkwlejfw"
-            errorMessageIcon={LayoutDashboard}
+            // errorMessageIcon={LayoutDashboard}
             onChecked={(event) => console.log("CHECK: ", event)}
           />
           <SheToggle
@@ -460,17 +460,17 @@ export function DashboardPage() {
             required
             // isLoading
             // disabled
-            icon={Home}
+            // icon={Home}
             iconPosition="out"
             showClearBtn
             clearBtnPosition="out"
             // tooltip="Calendar Multiple mode: some tooltip text for test purpuse only"
             description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
             // descriptionTransKey="f0923fj9wejfwe"
-            descriptionIcon={Users}
-            // errorMessage="some error message some error message some error message some error message some error message"
+            // descriptionIcon={Users}
+            errorMessage="some error message some error message some error message some error message some error message"
             // errorMessageTransKey="f0wejfw9ejfkwlejfw"
-            errorMessageIcon={LayoutDashboard}
+            // errorMessageIcon={LayoutDashboard}
             onChange={(event, model) => console.log("CHANGE: ", event, model)}
             onDelay={(event, model) => console.log("DELAY: ", event, model)}
             onBlur={(event, model) => console.log("BLUR: ", event, model)}

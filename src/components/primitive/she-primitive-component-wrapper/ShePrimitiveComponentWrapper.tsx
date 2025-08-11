@@ -129,7 +129,7 @@ export default function ShePrimitiveComponentWrapper(
   return (
     <div
       id={id}
-      className={`${cs.shePrimitiveComponentWrapper} ${className} ${icon && iconPosition === "in" ? "withIcon" : ""} ${showClearBtn && clearBtnPosition === "in" ? "withClearButton" : ""} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""} ${view === "card" ? cs.card : ""}`}
+      className={`${cs.shePrimitiveComponentWrapper} ${className} ${icon ? (iconPosition === "in" ? "withIconIn" : "withIconOut") : ""} ${showClearBtn && clearBtnPosition === "in" ? "withClearButtonIn" : "withClearButtonOut"} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""} ${view === "card" ? cs.card : ""}`}
       style={{
         minWidth,
         maxWidth,
@@ -155,9 +155,18 @@ export default function ShePrimitiveComponentWrapper(
             onClear={onClearHandler}
           />
         </div>
-        <SheContextLengthLimits {...sheContextLengthLimitsProps} />
-        <SheDescriptionBlock {...sheDescriptionBockProps} />
-        <SheErrorMessageBlock {...sheErrorMessageBlockProps} />
+        <SheContextLengthLimits
+          {...sheContextLengthLimitsProps}
+          contextLengthLimitsClassName={`${sheContextLengthLimitsProps.contextLengthLimitsClassName} ${cs.contextLengthLimits}`}
+        />
+        <SheDescriptionBlock
+          {...sheDescriptionBockProps}
+          descriptionBlockClassName={`${sheDescriptionBockProps.descriptionBlockClassName} ${cs.descriptionBlock}`}
+        />
+        <SheErrorMessageBlock
+          {...sheErrorMessageBlockProps}
+          errorMessageBlockClassName={`${sheErrorMessageBlockProps.errorMessageBlockClassName} ${cs.errorBlock}`}
+        />
       </div>
     </div>
   );

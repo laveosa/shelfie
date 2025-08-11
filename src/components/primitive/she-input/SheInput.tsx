@@ -27,7 +27,6 @@ export default function SheInput(props: ISheInput): JSX.Element {
   const {
     ref,
     icon,
-    iconPosition,
     value,
     placeholder = "enter text...",
     placeholderTransKey,
@@ -47,11 +46,6 @@ export default function SheInput(props: ISheInput): JSX.Element {
     patternErrorMessage,
     patternErrorMessageTransKey,
     delayTime,
-    contextLengthLimitsClassName = "",
-    descriptionBlockClassName = "",
-    descriptionIcon,
-    errorMessageBlockClassName = "",
-    errorMessageIcon,
     onIsValid,
     onChange,
     onBlur,
@@ -270,15 +264,12 @@ export default function SheInput(props: ISheInput): JSX.Element {
   return (
     <ShePrimitiveComponentWrapper
       {...shePrimitiveComponentWrapperProps}
-      className={`${shePrimitiveComponentWrapperProps.className} ${cs.sheInput} ${!_isValid ? cs.invalid : ""} ${icon && iconPosition === "out" ? cs.sheInputWithIconOut : ""}`}
+      className={`${shePrimitiveComponentWrapperProps.className} ${cs.sheInput} ${!_isValid ? cs.invalid : ""}`}
       icon={iconToRender}
       clearBtnValue={_textValue}
       ariaDescribedbyId={ariaDescribedbyId}
       contextLengthLimitsValue={_textValue}
       isContextLengthLimitsValid={_isLengthValid}
-      contextLengthLimitsClassName={`${contextLengthLimitsClassName}  ${cs.sheContextLengthLimits}`}
-      descriptionBlockClassName={`${descriptionBlockClassName} ${!descriptionIcon ? cs.sheInputDescriptionBlock : ""}`}
-      errorMessageBlockClassName={`${errorMessageBlockClassName} ${!errorMessageIcon ? cs.sheInputErrorBlock : ""}`}
       errorMessage={shePrimitiveComponentWrapperProps.errorMessage ?? _error}
       errorMessageTransKey={
         shePrimitiveComponentWrapperProps.errorMessageTransKey ?? _errorTransKey
