@@ -31,6 +31,7 @@ export default function CustomerAddressesCard({
     <SheProductCard
         className={cs.customerAddressesCard}
         minWidth="850px"
+        showHeader={false}
       >
         <div className={cs.customerAddressesCardHeader}>
             <div className="she-title">Customer Addresses</div>
