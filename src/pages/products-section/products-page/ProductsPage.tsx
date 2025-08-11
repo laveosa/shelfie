@@ -42,7 +42,7 @@ import { SupplierModel } from "@/const/models/SupplierModel.ts";
 import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
-import GridShowDeletedFilter from "@/components/complex/grid/grid-show-deleted-filter/GridShowDeletedFilter.tsx";
+import GridShowItemsFilter from "@/components/complex/grid/grid-show-deleted-filter/GridShowItemsFilter.tsx";
 import GridTraitsFilter from "@/components/complex/grid/grid-traits-filter/GridTraitsFilter.tsx";
 
 export function ProductsPage() {
@@ -464,7 +464,7 @@ export function ProductsPage() {
                 getName={(item: CategoryModel) => item.categoryName}
                 selected={state.productsGridModel.filter?.categories}
               />
-              <GridShowDeletedFilter />
+              <GridShowItemsFilter context="Deleted" />
             </DndGridDataTable>
           </TabsContent>
           <TabsContent value="variants">
@@ -508,7 +508,7 @@ export function ProductsPage() {
                 traitType="size"
                 gridRequestModel={state.variantsGridRequestModel}
               />
-              <GridShowDeletedFilter />
+              <GridShowItemsFilter context="Deleted" />
             </DndGridDataTable>
           </TabsContent>
           <TabsContent value="purchases">

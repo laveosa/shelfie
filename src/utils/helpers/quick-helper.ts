@@ -75,9 +75,9 @@ export function formatDate(
 }
 
 export function getInitials(name: string) {
-  const names = name.trim().split(" ");
-  const initials = names.map((n) => n.charAt(0).toUpperCase()).slice(0, 2);
-  return initials.join("");
+  const names = name?.trim().split(" ");
+  const initials = names?.map((n) => n.charAt(0).toUpperCase()).slice(0, 2);
+  return initials?.join("");
 }
 
 export function addGridRowColor(

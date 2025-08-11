@@ -1,6 +1,7 @@
-import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import React from "react";
 import {
+  Banknote,
   Boxes,
   FileSpreadsheet,
   FileText,
@@ -8,18 +9,26 @@ import {
   Layers2,
   ReceiptEuro,
   ReceiptEuroIcon,
+  RotateCcwSquare,
   Ruler,
   Shirt,
+  ShoppingBag,
+  ShoppingCart,
   SlidersHorizontal,
+  Truck,
 } from "lucide-react";
 
+import {
+  CollectionConfig,
+  IProductMenuCard,
+  MenuItem,
+} from "@/const/interfaces/complex-components/custom-cards/IProductMenuCard.ts";
 import { Badge } from "@/components/ui/badge.tsx";
 import cs from "./ProductMenuCard.module.scss";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
-import { IProductMenuCard } from "@/const/interfaces/complex-components/custom-cards/IProductMenuCard.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 
-const productMenuItems = [
+const productMenuItems: MenuItem[] = [
   {
     id: "basic_data",
     counterId: "basic_data",
@@ -62,7 +71,7 @@ const productMenuItems = [
   },
 ];
 
-const purchaseMenuItems = [
+const purchaseMenuItems: MenuItem[] = [
   {
     id: "supplier",
     icon: <Boxes />,
@@ -91,44 +100,141 @@ const purchaseMenuItems = [
   },
 ];
 
+const salesMenuItems: MenuItem[] = [
+  {
+    id: "orders",
+    icon: <ShoppingCart />,
+    label: "Orders",
+    path: NavUrlEnum.ORDERS,
+  },
+  {
+    id: "open_carts",
+    icon: <ShoppingBag />,
+    label: "Open Carts",
+    path: NavUrlEnum.OPEN_CARTS,
+  },
+  {
+    id: "shipments",
+    icon: <Truck />,
+    label: "Shipments",
+    path: NavUrlEnum.SHIPMENTS,
+  },
+  {
+    id: "returns",
+    icon: <RotateCcwSquare />,
+    label: "Returns",
+    path: NavUrlEnum.RETURNS,
+  },
+  {
+    id: "payments",
+    icon: <Banknote />,
+    label: "Payments",
+    path: NavUrlEnum.PAYMENTS,
+  },
+];
+
+const orderMenuItems: MenuItem[] = [
+  {
+    id: "details",
+    icon: <ShoppingCart />,
+    label: "Details",
+    path: NavUrlEnum.ORDER_DETAILS,
+  },
+  {
+    id: "products",
+    icon: <ShoppingBag />,
+    label: "Products",
+    path: NavUrlEnum.ORDER_PRODUCTS,
+  },
+  {
+    id: "shipment",
+    icon: <Truck />,
+    label: "Shipment",
+    path: NavUrlEnum.ORDER_SHIPMENT,
+  },
+  {
+    id: "payment",
+    icon: <Banknote />,
+    label: "Payment",
+    path: NavUrlEnum.ORDER_PAYMENT,
+  },
+];
+
+const collectionConfigs: Record<string, CollectionConfig> = {
+  products: {
+    menuItems: productMenuItems,
+    defaultEnabledItem: "basic_data",
+    pathBase: NavUrlEnum.PRODUCTS,
+    urlBuilder: (path: string, itemId?: string) =>
+      `${NavUrlEnum.PRODUCTS}${path}/${itemId || ""}`,
+    disableItemsWithoutId: true,
+  },
+  purchases: {
+    menuItems: purchaseMenuItems,
+    defaultEnabledItem: "supplier",
+    pathBase: NavUrlEnum.PRODUCTS,
+    urlBuilder: (path: string, itemId?: string) =>
+      `${NavUrlEnum.PRODUCTS}${path}/${itemId || ""}`,
+    disableItemsWithoutId: true,
+  },
+  sales: {
+    menuItems: salesMenuItems,
+    pathBase: NavUrlEnum.ORDERS,
+    urlBuilder: (path: string) => `${NavUrlEnum.SALES}${path}`,
+    disableItemsWithoutId: false,
+  },
+  order: {
+    menuItems: orderMenuItems,
+    defaultEnabledItem: "order",
+    pathBase: NavUrlEnum.ORDER_DETAILS,
+    urlBuilder: (path: string, itemId?: string) =>
+      `${NavUrlEnum.SALES}${NavUrlEnum.ORDERS}${path}/${itemId || ""}`,
+    disableItemsWithoutId: false,
+  },
+};
+
 export default function ProductMenuCard({
   isLoading,
   title,
-  productId,
+  itemId,
   itemsCollection,
   counter,
+  collectionConfig,
   ...props
 }: IProductMenuCard) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  function handleMenuItemClick(path: string) {
-    navigate(`${NavUrlEnum.PRODUCTS}${path}/${productId ? productId : ""}`);
+  const config = collectionConfig || collectionConfigs[itemsCollection];
+
+  if (!config) {
+    console.warn(`No configuration found for collection: ${itemsCollection}`);
+    return null;
   }
 
-  // const renderMenuItem = ({ id, counterId, icon, label, path }) => {
-  //   const pathBase = `${NavUrlEnum.PRODUCTS}${path}/`;
-  //   const isSelected = location.pathname.startsWith(pathBase);
-  //   console.log("isSelected", pathBase);
-  // const isDisabled =
-  //   itemsCollection === "products"
-  //     ? isSelected || (!productId && id !== "basicData")
-  //     : isSelected || (!productId && id !== "supplier");
+  function handleMenuItemClick(path: string) {
+    const url = config.urlBuilder(path, itemId);
+    navigate(url);
+  }
 
-  const renderMenuItem = ({ id, counterId, icon, label, path }) => {
-    const pathBase = `${NavUrlEnum.PRODUCTS}${path}/`;
-    const isSelected = location.pathname.startsWith(pathBase);
+  const renderMenuItem = ({ id, counterId, icon, label, path }: MenuItem) => {
+    const fullPath = config.urlBuilder(path, "");
+    const pathBase = fullPath.replace(/\/$/, "");
+    const currentPath = location.pathname.replace(/\/$/, "");
+    const isSelected =
+      currentPath.startsWith(pathBase) || currentPath === pathBase;
+
     const hasDynamicId = /\d+/.test(location.pathname);
 
     let isDisabled = false;
 
-    if (hasDynamicId) {
-      isDisabled = isSelected;
-    } else {
-      if (itemsCollection === "products") {
-        isDisabled = id !== "basic_data";
+    if (config.disableItemsWithoutId) {
+      if (hasDynamicId) {
+        isDisabled = isSelected;
       } else {
-        isDisabled = id !== "supplier";
+        isDisabled = config.defaultEnabledItem
+          ? id !== config.defaultEnabledItem
+          : false;
       }
     }
 
@@ -141,7 +247,7 @@ export default function ProductMenuCard({
         <div className={cs.iconContainer}>{icon}</div>
         <div className={cs.textContainer}>
           <span className="she-text">{label}</span>
-          {counter && counter[counterId] !== undefined && (
+          {counter && counterId && counter[counterId] !== undefined && (
             <Badge className={cs.itemBadge}>{counter[counterId] ?? 0}</Badge>
           )}
         </div>
@@ -162,9 +268,7 @@ export default function ProductMenuCard({
         {...props}
       >
         <div className={cs.productMenuItems}>
-          {itemsCollection === "products"
-            ? productMenuItems.map(renderMenuItem)
-            : purchaseMenuItems.map(renderMenuItem)}
+          {config.menuItems.map(renderMenuItem)}
         </div>
       </SheProductCard>
     </div>

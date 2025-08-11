@@ -1,6 +1,11 @@
 import { useNavigate, useParams } from "react-router-dom";
+import { ColumnDef } from "@tanstack/react-table";
 import React, { useEffect } from "react";
 
+import {
+  clearSelectedGridItems,
+  setSelectedGridItem,
+} from "@/utils/helpers/quick-helper.ts";
 import cs from "./SupplierPage.module.scss";
 import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
@@ -12,18 +17,16 @@ import useProductsPageService from "@/pages/products-section/products-page/usePr
 import { SupplierPageSliceActions as actions } from "@/state/slices/SupplierPageSlice.ts";
 import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
 import SupplierCard from "@/components/complex/custom-cards/supplier-card/SupplierCard.tsx";
-import SelectSupplierCard from "@/components/complex/custom-cards/select-supplier-card/SelectSupplierCard.tsx";
+import SelectEntityCard from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
 import SupplierConfigurationCard from "@/components/complex/custom-cards/supplier-configuration-card/SupplierConfigurationCard.tsx";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { useToast } from "@/hooks/useToast.ts";
-import {
-  clearSelectedGridItems,
-  setSelectedGridItem,
-} from "@/utils/helpers/quick-helper.ts";
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
 import { SupplierModel } from "@/const/models/SupplierModel.ts";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
+import { SuppliersListGridColumns } from "@/components/complex/grid/suppliers-list-grid/SuppliersListGridColumns.tsx";
+import { DataWithId } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 
 export function SupplierPage() {
   const dispatch = useAppDispatch();
@@ -122,7 +125,7 @@ export function SupplierPage() {
           });
         break;
       case "detachSupplier":
-        handleCardAction("selectSupplierCard", true);
+        handleCardAction("selectEntityCard", true);
 
         function markSelectedSupplier(suppliers: SupplierModel[]) {
           const updatedSuppliers = suppliers.map((supplier) =>
@@ -145,9 +148,9 @@ export function SupplierPage() {
           markSelectedSupplier(state.suppliersWithLocations);
         }
         break;
-      case "openSelectSupplierCard":
+      case "openSelectEntityCard":
         dispatch(productsActions.resetSelectedSupplier());
-        handleCardAction("selectSupplierCard", true);
+        handleCardAction("selectEntityCard", true);
         if (!productsState.countryCodeList) {
           productsService.getCountryCodeHandler().then(() => {});
         }
@@ -158,7 +161,7 @@ export function SupplierPage() {
           dispatch(actions.setIsSuppliersGridLoading(false));
         });
         break;
-      case "openSupplierConfigurationCard":
+      case "openCreateEntityCard":
         dispatch(actions.resetManagedSupplier(null));
         handleCardAction("supplierConfigurationCard", true);
         break;
@@ -201,7 +204,7 @@ export function SupplierPage() {
           }
         });
         break;
-      case "searchSupplier":
+      case "searchEntity":
         dispatch(actions.setIsSelectSupplierCardLoading(true));
         service
           .getListOfSuppliersForGridHandler({ searchQuery: payload })
@@ -210,7 +213,7 @@ export function SupplierPage() {
           });
         break;
       case "selectSupplier":
-        handleCardAction("selectSupplierCard");
+        handleCardAction("selectEntityCard");
         dispatch(productsActions.refreshSelectedSupplier(payload));
         break;
       case "manageSupplier":
@@ -449,8 +452,8 @@ export function SupplierPage() {
         navigate(NavUrlEnum.PRODUCTS);
         dispatch(actions.refreshActiveCards([]));
         break;
-      case "closeSelectSupplierCard":
-        handleCardAction("selectSupplierCard");
+      case "closeSelectEntityCard":
+        handleCardAction("selectEntityCard");
         break;
       case "closeSupplierConfigurationCard":
         handleCardAction("supplierConfigurationCard");
@@ -472,7 +475,7 @@ export function SupplierPage() {
         isLoading={state.isProductMenuCardLoading}
         title="Report Purchase"
         itemsCollection="purchases"
-        productId={Number(purchaseId)}
+        itemId={Number(purchaseId)}
         counter={productsState.purchaseCounters}
       />
       <SupplierCard
@@ -481,13 +484,19 @@ export function SupplierPage() {
         selectedSupplier={productsState.selectedSupplier}
         onAction={onAction}
       />
-      {state.activeCards?.includes("selectSupplierCard") && (
-        <div ref={createRefCallback("selectSupplierCard")}>
-          <SelectSupplierCard
+      {state.activeCards?.includes("selectEntityCard") && (
+        <div ref={createRefCallback("selectEntityCard")}>
+          <SelectEntityCard
             isLoading={state.isSelectSupplierCardLoading}
             isGridLoading={state.isSuppliersGridLoading}
+            entityName="Supplier"
+            entityCollection={state.suppliersWithLocations}
+            columns={
+              SuppliersListGridColumns({
+                onAction,
+              }) as ColumnDef<DataWithId>[]
+            }
             onAction={onAction}
-            suppliers={state.suppliersWithLocations}
           />
         </div>
       )}

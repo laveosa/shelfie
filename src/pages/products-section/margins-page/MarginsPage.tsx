@@ -1,3 +1,4 @@
+import { ColumnDef } from "@tanstack/react-table";
 import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 import { merge } from "lodash";
@@ -16,12 +17,14 @@ import { useMarginsPageService } from "@/pages/products-section/margins-page/use
 import cs from "./MarginsPage.module.scss";
 import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
 import MarginForPurchaseCard from "@/components/complex/custom-cards/margin-for-purchase-card/MarginForPurchaseCard.tsx";
-import SelectMarginCard from "@/components/complex/custom-cards/select-margin-card/SelectMarginCard.tsx";
 import MarginConfigurationCard from "@/components/complex/custom-cards/margin-configuration-card/MarginConfigurationCard.tsx";
 import SalePriseManagementCard from "@/components/complex/custom-cards/sale-price-management-card/SalePriceManagementCard.tsx";
 import { AppSliceActions as appActions } from "@/state/slices/AppSlice.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
+import SelectEntityCard from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
+import { DataWithId } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import { MarginsListGridColumns } from "@/components/complex/grid/margins-list-grid/MarginsListGridColumns.tsx";
 
 export function MarginsPage() {
   const dispatch = useAppDispatch();
@@ -121,7 +124,7 @@ export function MarginsPage() {
     switch (actionType) {
       case "openSelectMarginCard":
         handleMultipleCardActions({
-          selectMarginCard: true,
+          selectEntityCard: true,
           salePriceManagementCard: false,
         });
         dispatch(actions.setIsSelectMarginCardLoading(true));
@@ -137,7 +140,7 @@ export function MarginsPage() {
             dispatch(actions.refreshMarginsList(modifiedList));
           });
         break;
-      case "searchMargin":
+      case "searchEntity":
         dispatch(actions.setIsMarginListGridLoading(true));
         service
           .getMarginsListForGridHandler({
@@ -160,7 +163,7 @@ export function MarginsPage() {
           .connectMarginToPurchaseHandler(purchaseId, payload.marginId)
           .then((res) => {
             dispatch(actions.setIsMarginForPurchaseCardLoading(false));
-            handleCardAction("selectMarginCard");
+            handleCardAction("selectEntityCard");
             if (res) {
               dispatch(actions.refreshActiveCards(null));
               dispatch(actions.refreshSelectedMargin(res));
@@ -446,7 +449,7 @@ export function MarginsPage() {
           }
         });
         break;
-      case "openCreateMarginCard":
+      case "openCreateEntityCard":
         dispatch(actions.resetManagedMargin());
         handleCardAction("marginConfigurationCard", true);
         break;
@@ -523,7 +526,7 @@ export function MarginsPage() {
         isLoading={state.isProductMenuCardLoading}
         title="Report Purchase"
         itemsCollection="purchases"
-        productId={Number(purchaseId)}
+        itemId={Number(purchaseId)}
         counter={productsState.purchaseCounters}
       />
       <MarginForPurchaseCard
@@ -548,12 +551,18 @@ export function MarginsPage() {
           />
         </div>
       )}
-      {state.activeCards?.includes("selectMarginCard") && (
-        <div ref={createRefCallback("selectMarginCard")}>
-          <SelectMarginCard
+      {state.activeCards?.includes("selectEntityCard") && (
+        <div ref={createRefCallback("selectEntityCard")}>
+          <SelectEntityCard
             isLoading={state.isSelectMarginCardLoading}
-            isMarginListGridLoading={state.isMarginListGridLoading}
-            margins={state.marginsList}
+            isGridLoading={state.isMarginListGridLoading}
+            entityName="Margin"
+            entityCollection={state.marginsList}
+            columns={
+              MarginsListGridColumns({
+                onAction,
+              }) as ColumnDef<DataWithId>[]
+            }
             onAction={onAction}
           />
         </div>

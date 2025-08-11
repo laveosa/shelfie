@@ -14,7 +14,7 @@ import GridItemsFilter from "@/components/complex/grid/grid-items-filter/GridIte
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import GridTraitsFilter from "@/components/complex/grid/grid-traits-filter/GridTraitsFilter.tsx";
-import GridShowDeletedFilter from "@/components/complex/grid/grid-show-deleted-filter/GridShowDeletedFilter.tsx";
+import GridShowItemsFilter from "@/components/complex/grid/grid-show-deleted-filter/GridShowItemsFilter.tsx";
 
 export default function SalePriseManagementCard({
   isLoading,
@@ -88,7 +88,7 @@ export default function SalePriseManagementCard({
             traitType="size"
             gridRequestModel={gridRequestModel}
           />
-          <GridShowDeletedFilter />
+          <GridShowItemsFilter context="Deleted" />
         </DndGridDataTable>
       </SheProductCard>
       <div className={cs.buttonBlock}>

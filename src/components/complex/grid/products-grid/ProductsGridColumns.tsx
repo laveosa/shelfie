@@ -259,9 +259,8 @@ export function productsGridColumns(
             <SheButton
               onClick={handleManageClick}
               disabled={meta?.isRowLoading(row.id)}
-            >
-              Manage
-            </SheButton>
+              value="Manage"
+            />
           </div>
         );
       },
