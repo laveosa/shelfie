@@ -9,6 +9,7 @@ import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSli
 import { OrderProductsPageSliceActions as actions } from "@/state/slices/OrderProductsPageSlice";
 import { OrdersPageSliceActions as ordersActions } from "@/state/slices/OrdersPageSlice.ts";
 import { useToast } from "@/hooks/useToast.ts";
+import useOrdersPageService from "@/pages/sales-section/orders-page/useOrdersPageService.ts";
 
 export default function useOrderProductsPageService() {
   const appService = useAppService();
@@ -19,6 +20,7 @@ export default function useOrderProductsPageService() {
   const ordersState = useSelector(
     (state: RootState): IOrdersPageSlice => state[StoreSliceEnum.ORDERS],
   );
+  const ordersService = useOrdersPageService();
   const dispatch = useDispatch<AppDispatch>();
   const { addToast } = useToast();
 
@@ -27,6 +29,15 @@ export default function useOrderProductsPageService() {
     OrderApiHooks.useUpdateStockActionInOrderMutation();
   const [removeStockActionFromOrder] =
     OrderApiHooks.useRemoveStockActionFromOrderMutation();
+
+  function addProductHandler() {
+    dispatch(actions.setIsFindProductsGridLoading(true));
+    ordersService
+      .getVariantsForGridHandler(ordersState.variantsGridRequestModel)
+      .then(() => {
+        dispatch(actions.setIsFindProductsGridLoading(false));
+      });
+  }
 
   function addVariantsToOrderHandler(orderId, model) {
     dispatch(actions.setIsProductsInOrderGridLoading(true));
@@ -49,9 +60,27 @@ export default function useOrderProductsPageService() {
           type: "error",
         });
       }
-      console.log("RES", res.data);
       return res.data;
     });
+  }
+
+  function variantsGridRequestChange(updates) {
+    if (updates.brands || updates.categories || updates.filter) {
+      dispatch(
+        ordersActions.refreshVariantsGridRequestModel({
+          ...ordersState.variantsGridRequestModel,
+          currentPage: 1,
+          ...updates,
+        }),
+      );
+    } else {
+      dispatch(
+        ordersActions.refreshVariantsGridRequestModel({
+          ...ordersState.variantsGridRequestModel,
+          ...updates,
+        }),
+      );
+    }
   }
 
   function updateStockActionInOrderHandler(stockActionId, model) {
@@ -100,7 +129,9 @@ export default function useOrderProductsPageService() {
   }
 
   return {
+    addProductHandler,
     addVariantsToOrderHandler,
+    variantsGridRequestChange,
     updateStockActionInOrderHandler,
     removeStockActionFromOrderHandler,
   };

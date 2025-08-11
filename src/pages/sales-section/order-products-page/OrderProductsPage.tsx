@@ -9,7 +9,6 @@ import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSli
 import useOrdersPageService from "@/pages/sales-section/orders-page/useOrdersPageService.ts";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import { OrderProductsPageSliceActions as actions } from "@/state/slices/OrderProductsPageSlice";
-import { OrdersPageSliceActions as ordersActions } from "@/state/slices/OrdersPageSlice.ts";
 import { IOrderDetailsPageSlice } from "@/const/interfaces/store-slices/IOrderDetailsPageSlice.ts";
 import FindProductsCard from "@/components/complex/custom-cards/find-products-card/FindProductsCard.tsx";
 import ProductsInOrderCard from "@/components/complex/custom-cards/products-in-order-card/ProductsInOrderCard.tsx";
@@ -44,65 +43,6 @@ export function OrderProductsPage() {
       });
   }, [ordersState.stockActionsGridRequestModel]);
 
-  const fakeStockData = {
-    priceType: null,
-    filter: null,
-    pager: {
-      totalItems: 10,
-      totalPages: 1,
-      startPage: 1,
-      endPage: 1,
-      currentPage: 1,
-      pageSize: 10,
-    },
-    items: Array.from({ length: 10 }, (_, i) => ({
-      stockActionId: 100 + i,
-      productId: 200 + i,
-      variantId: 300 + i,
-      variantName: `Mock Product ${i + 1}`,
-      variantCode: `MOCKCODE${300 + i}`,
-      brand: {
-        brandId: 10 + i,
-        brandName: `Brand ${i + 1}`,
-        thumbnail: null,
-      },
-      photo: null,
-      productCategory: {
-        categoryId: 400 + i,
-        categoryName: `Category ${i + 1}`,
-        thumbnail: null,
-      },
-      requestedPrice: null,
-      stockDocumentPrice: {
-        id: 500 + i,
-        brutto: 10 + i,
-        netto: 8 + i,
-        taxAmount: 2,
-        rateExchange: 1,
-        createAt: new Date().toISOString(),
-        activeUntil: null,
-        currencyId: 1,
-        currencyName: "zł.",
-        taxTypeId: 5,
-        taxTypeName: "np.",
-      },
-      traitOptions: [
-        {
-          optionId: 600 + i,
-          optionName: ["Blue", "Red", "Green", "Black", "White"][i % 5],
-          optionColor: ["#003af7", "#ff0000", "#00ff00", "#000000", "#ffffff"][
-            i % 5
-          ],
-          isRaw: false,
-          sortOrder: 0,
-          traitTypeId: 2,
-          traitTypeName: "Color",
-        },
-      ],
-      unitsAmount: 5 + i,
-    })),
-  };
-
   useEffect(() => {
     dispatch(actions.setIsFindProductsGridLoading(true));
     ordersService
@@ -133,12 +73,7 @@ export function OrderProductsPage() {
     switch (actionType) {
       case "addProduct":
         handleCardAction("findProductsCard", true);
-        dispatch(actions.setIsFindProductsGridLoading(true));
-        ordersService
-          .getVariantsForGridHandler(ordersState.variantsGridRequestModel)
-          .then(() => {
-            dispatch(actions.setIsFindProductsGridLoading(false));
-          });
+        service.addProductHandler();
         break;
       case "addVariantToOrder":
         service.addVariantsToOrderHandler(orderId, {
@@ -147,22 +82,7 @@ export function OrderProductsPage() {
         });
         break;
       case "variantsGridRequestChange":
-        if (payload.brands || payload.categories || payload.filter) {
-          dispatch(
-            ordersActions.refreshVariantsGridRequestModel({
-              ...ordersState.variantsGridRequestModel,
-              currentPage: 1,
-              ...payload,
-            }),
-          );
-        } else {
-          dispatch(
-            ordersActions.refreshVariantsGridRequestModel({
-              ...ordersState.variantsGridRequestModel,
-              ...payload,
-            }),
-          );
-        }
+        service.variantsGridRequestChange(payload);
         break;
       case "closeFindProductsCard":
         handleCardAction("findProductsCard");
@@ -191,7 +111,7 @@ export function OrderProductsPage() {
       <ProductsInOrderCard
         isLoading={state.isProductsInOrderCardLoading}
         isGridLoading={state.isProductsInOrderGridLoading}
-        stockActions={fakeStockData.items}
+        stockActions={ordersState.stockActionsGridModel.items}
         onAction={onAction}
       />
       {state.activeCards?.includes("findProductsCard") && (
