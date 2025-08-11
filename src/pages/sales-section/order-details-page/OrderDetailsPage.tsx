@@ -26,12 +26,11 @@ export function OrderDetailsPage() {
   const service = useOrderDetailsPageService();
   const ordersService = useOrdersPageService();
   const { orderId } = useParams();
-  const { handleCardAction, handleMultipleCardActions, createRefCallback } =
-    useCardActions({
-      selectActiveCards: (state) =>
-        state[StoreSliceEnum.ORDER_DETAILS].activeCards,
-      refreshAction: actions.refreshActiveCards,
-    });
+  const { handleCardAction, createRefCallback } = useCardActions({
+    selectActiveCards: (state) =>
+      state[StoreSliceEnum.ORDER_DETAILS].activeCards,
+    refreshAction: actions.refreshActiveCards,
+  });
 
   useEffect(() => {
     if (
@@ -49,15 +48,10 @@ export function OrderDetailsPage() {
       case "openSelectEntityCard":
         handleCardAction("selectEntityCard", true);
         if (ordersState.customersGridModel.items.length === 0) {
-          dispatch(actions.setIsSelectEntityGridLoading(true));
-          ordersService
-            .getListOfCustomersForGridHandler({
-              ...ordersState.customersGridRequestModel,
-              searchQuery: payload,
-            })
-            .then(() => {
-              dispatch(actions.setIsSelectEntityGridLoading(false));
-            });
+          ordersService.getListOfCustomersForGridHandler({
+            ...ordersState.customersGridRequestModel,
+            searchQuery: payload,
+          });
         }
         break;
       case "openCreateEntityCard":
@@ -65,24 +59,14 @@ export function OrderDetailsPage() {
         // handleCardAction("supplierConfigurationCard", true);
         break;
       case "searchEntity":
-        dispatch(actions.setIsSelectEntityGridLoading(true));
-        ordersService
-          .getListOfCustomersForGridHandler({
-            ...ordersState.customersGridRequestModel,
-            searchQuery: payload,
-          })
-          .then(() => {
-            dispatch(actions.setIsSelectEntityGridLoading(false));
-          });
+        service.getListOfCustomersForGridHandler({
+          ...ordersState.customersGridRequestModel,
+          searchQuery: payload,
+        });
         break;
       case "selectCustomer":
         handleCardAction("selectEntityCard");
-        dispatch(actions.setIsOrderConfigurationCardLoading(true));
-        service
-          .assignCustomerToOrderHandler(orderId, payload.customerId)
-          .then(() => {
-            dispatch(actions.setIsOrderConfigurationCardLoading(false));
-          });
+        service.assignCustomerToOrderHandler(orderId, payload.customerId);
         break;
       case "closeSelectEntityCard":
         handleCardAction("selectEntityCard");
