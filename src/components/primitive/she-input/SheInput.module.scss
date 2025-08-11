@@ -18,7 +18,15 @@
 // ======================================================== INVALID
 
 .sheInput.invalid {
-  > input {
+  input {
     border: 1px solid vars.$colorRed;
+  }
+}
+
+// ======================================================== HIGHLIGHT
+
+.sheInput.highlighted {
+  input {
+    border-color: vars.$colorBlue !important;
   }
 }

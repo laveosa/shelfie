@@ -1,4 +1,4 @@
-import React, { JSX, useEffect, useState } from "react";
+import React, { JSX, useEffect, useRef, useState } from "react";
 import { format } from "date-fns";
 
 import cs from "./SheDatePicker.module.scss";
@@ -21,6 +21,7 @@ import {
   ISheCalendar,
   SheCalendarDefaultModel,
 } from "@/const/interfaces/primitive-components/ISheCalendar.ts";
+import _ from "lodash";
 
 export default function SheDatePicker(props: ISheDatePicker): JSX.Element {
   // ==================================================================== PROPS
@@ -49,6 +50,10 @@ export default function SheDatePicker(props: ISheDatePicker): JSX.Element {
   // ==================================================================== STATE MANAGEMENT
   const [_date, setDate] = React.useState<any>(date);
   const [_open, setOpen] = useState<boolean>(isOpen ?? null);
+  const [_isHighlighted, setIsHighlighted] = useState<boolean>(null);
+
+  // ==================================================================== REFS
+  const _sourceValue = useRef<any>(date);
 
   // ==================================================================== UTILITIES
   const { translate, ariaDescribedbyId } = useComponentUtilities({
@@ -57,6 +62,8 @@ export default function SheDatePicker(props: ISheDatePicker): JSX.Element {
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
+    setIsHighlighted(false);
+    _sourceValue.current = date;
     setDate(date);
   }, [date]);
 
@@ -73,6 +80,7 @@ export default function SheDatePicker(props: ISheDatePicker): JSX.Element {
     if (closeOnDateSelect && (mode === "single" || mode === "range"))
       setOpen(false);
 
+    setIsHighlighted(!_.isEqual(_sourceValue.current, value));
     onSelectDate?.(value, {
       value,
       model: props,
@@ -100,7 +108,7 @@ export default function SheDatePicker(props: ISheDatePicker): JSX.Element {
   return (
     <ShePrimitiveComponentWrapper
       {...shePrimitiveComponentWrapperProps}
-      className={`${shePrimitiveComponentWrapperProps.className} ${cs.sheDatePicker}`}
+      className={`${shePrimitiveComponentWrapperProps.className} ${cs.sheDatePicker} ${_isHighlighted ? cs.highlighted : ""}`}
       ariaDescribedbyId={ariaDescribedbyId}
       clearBtnValue={_date && _date.toString().length > 0}
       onClear={onClearHandler}

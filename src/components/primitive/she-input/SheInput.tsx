@@ -70,12 +70,14 @@ export default function SheInput(props: ISheInput): JSX.Element {
   const [_errorTransKey, setErrorTransKey] = useState(
     patternErrorMessageTransKey,
   );
+  const [_isHighlighted, setIsHighlighted] = useState<boolean>(null);
 
   // ==================================================================== REFS
   const _inputRef = useDefaultRef<HTMLInputElement>(ref);
   const _isInitialized = useRef<boolean>(false);
   const _isTouched = useRef<boolean>(false);
   const _lastEventDataRef = useRef<any>(null);
+  const _sourceValue = useRef<string | number>(null);
 
   // ==================================================================== UTILITIES
   const { translate, ariaDescribedbyId, setFocus } = useComponentUtilities({
@@ -86,6 +88,9 @@ export default function SheInput(props: ISheInput): JSX.Element {
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
+    setIsHighlighted(false);
+    _sourceValue.current = value;
+
     if (value !== _textValue) {
       _isTouched.current = true;
       setTextValue(value);
@@ -140,8 +145,9 @@ export default function SheInput(props: ISheInput): JSX.Element {
 
   function onBlurHandler(event: React.ChangeEvent<HTMLInputElement>) {
     _isTouched.current = true;
-    const newValue = event.target.value;
+    const newValue = event.target.value.trim() || null;
     const tmpIsValid = _validateValue(newValue);
+    setIsHighlighted(!_.isEqual(_sourceValue.current, newValue));
     onBlur?.(newValue, {
       value: newValue,
       model: {
@@ -264,7 +270,7 @@ export default function SheInput(props: ISheInput): JSX.Element {
   return (
     <ShePrimitiveComponentWrapper
       {...shePrimitiveComponentWrapperProps}
-      className={`${shePrimitiveComponentWrapperProps.className} ${cs.sheInput} ${!_isValid ? cs.invalid : ""}`}
+      className={`${shePrimitiveComponentWrapperProps.className} ${cs.sheInput} ${_isHighlighted ? cs.highlighted : ""} ${!_isValid ? cs.invalid : ""}`}
       icon={iconToRender}
       clearBtnValue={_textValue}
       ariaDescribedbyId={ariaDescribedbyId}

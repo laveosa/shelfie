@@ -44,3 +44,11 @@
   justify-content: center;
   margin: auto;
 }
+
+// ======================================================== HIGHLIGHT
+
+.sheDatePicker.highlighted {
+  button {
+    border-color: vars.$colorBlue !important;
+  }
+}

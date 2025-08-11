@@ -1,38 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import cs from "./DashboardPage.module.scss";
 import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageService.ts";
-import {
-  Box,
-  Calendar,
-  Clock,
-  Home,
-  LayoutDashboard,
-  User,
-  Users,
-} from "lucide-react";
-import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
+import { Box, User } from "lucide-react";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import SheMultiSelect from "@/components/primitive/she-multi-select/SheMultiSelect.tsx";
-import SheAutocomplete from "@/components/primitive/she-autocomplete/SheAutocomplete.tsx";
 import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
-import SheBadgeList from "@/components/primitive/she-badge-list/SheBadgeList.tsx";
-import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import SheTimePicker from "@/components/primitive/she-time-picker/SheTimePicker.tsx";
-import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
-import { TimeFormatEnum } from "@/const/enums/TimeFormatEnum.ts";
-import { SheTimePickerTypeEnum } from "@/const/enums/SheTimePickerTypeEnum.ts";
 import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
-import SheCalendar from "@/components/primitive/she-calendar/SheCalendar.tsx";
 import { DateFormatEnum } from "@/const/enums/DateFormatEnum.ts";
-import SheInputEditor from "@/components/primitive/she-input-editor/SheInputEditor.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import SheRadioGroup from "@/components/primitive/she-radio-group/SheRadioGroup.tsx";
 import { ISheRadioItem } from "@/const/interfaces/primitive-components/ISheRadioItem.ts";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
-import SheTextArea from "@/components/primitive/she-textarea/SheTextarea.tsx";
-import SheToggle from "@/components/primitive/she-toggle/SheToggle.tsx";
-import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
+import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 
 const options: ISheSelectItem<any>[] = [
   {
@@ -298,23 +276,33 @@ const radioListFull: ISheRadioItem<string>[] = [
 export function DashboardPage() {
   const service = useDashboardPageService();
 
-  const [_items, setItems] = useState<ISheOption<any>[]>(null);
-  const [selected, setSelected] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(null);
-  const [_badges, setBadges] = useState<ISheBadge<string>[]>(null);
-  const [_time, setTime] = useState<Date>(null);
-  const [_startTime, setStartTime] = useState<Date>(null);
-  const [_endTime, setEndTime] = useState<Date>(null);
-  const [_radioSimple, setRadioSimple] =
-    useState<ISheRadioItem<string>[]>(null);
-  const [_radioFull, setRadioFull] = useState<ISheRadioItem<string>[]>(null);
+  const [_sourceValue, setSourceValue] = useState<any>(null);
+  const [_value, setValue] = useState<any>(null);
+
+  const [_singleDateSource, setSingleDateSource] = useState<any>(null);
+  const [_singleDate, setSingleDate] = useState<any>(null);
+  const [_rangeDateSource, setRangeDateSource] = useState<any>(null);
+  const [_rangeDate, setRangeDate] = useState<any>(null);
+  const [_multipleDateSource, setMultipleDateSource] = useState<any>(null);
+  const [_multipleDate, setMultipleDate] = useState<any>(null);
+
+  // const [_items, setItems] = useState<ISheOption<any>[]>(null);
+  // const [selected, setSelected] = useState<any>(null);
+  // const [isLoading, setIsLoading] = useState<boolean>(null);
+  // const [_badges, setBadges] = useState<ISheBadge<string>[]>(null);
+  // const [_time, setTime] = useState<Date>(null);
+  // const [_startTime, setStartTime] = useState<Date>(null);
+  // const [_endTime, setEndTime] = useState<Date>(null);
+  // const [_radioSimple, setRadioSimple] =
+  //   useState<ISheRadioItem<string>[]>(null);
+  // const [_radioFull, setRadioFull] = useState<ISheRadioItem<string>[]>(null);
 
   // -------------------------------------------- INPUT
-  const [_inputValue, setInputValue] = useState<string>(null);
+  // const [_inputValue, setInputValue] = useState<string>(null);
 
-  const searchRef = useRef<HTMLInputElement>(null);
-  const triggerRef = useRef<HTMLButtonElement>(null);
-  const popoverRef = useRef<HTMLDivElement>(null);
+  // const searchRef = useRef<HTMLInputElement>(null);
+  // const triggerRef = useRef<HTMLButtonElement>(null);
+  // const popoverRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // setIsLoading(true);
@@ -328,9 +316,9 @@ export function DashboardPage() {
       const tmpTime: Date = new Date();
       // const tmpStartTime: Date = tmpTime;
 
-      setTime(tmpTime);
-      setRadioSimple(radioList);
-      setRadioFull(radioListFull);
+      // setTime(tmpTime);
+      // setRadioSimple(radioList);
+      // setRadioFull(radioListFull);
     }, 1000);
 
     /*const timer = setTimeout(() => {
@@ -345,9 +333,15 @@ export function DashboardPage() {
   }, []);
 
   // ================================================================== EVENT
-  function onSelectHandler(value: any, model: any) {
+  function onActionHandler(value: any, model: any) {
     console.log("VALUE: ", value);
     console.log("MODEL: ", model);
+  }
+
+  function onBlurHandler(value: any, model: any) {
+    setTimeout(() => {
+      // setValue(value);
+    }, 2000);
   }
 
   // ================================================================== PRIVATE
@@ -381,6 +375,73 @@ export function DashboardPage() {
       </div>*/}
 
       <div className="flex flex-col fullWidth">
+        <h2 className="underline">
+          <b>Highlight Changed</b>
+        </h2>
+        <br />
+        <div className="flex flex-col gap-6">
+          <div className="flex gap-10">
+            <SheButton value="Update" onClick={() => setValue(_sourceValue)} />
+          </div>
+          <div className="flex gap-10">
+            <SheInput label="Input" value={_value} onChange={setSourceValue} />
+          </div>
+        </div>
+        <br />
+        <div className="divider"></div>
+        <br />
+      </div>
+
+      <div className="flex flex-col fullWidth">
+        <h2 className="underline">
+          <b>Highlight Changed</b>
+        </h2>
+        <br />
+        <div className="flex flex-col gap-6">
+          <div className="flex gap-10">
+            <SheButton
+              value="Update Single"
+              onClick={(event) => setSingleDateSource(_singleDate)}
+            />
+            <SheButton
+              value="Update Range"
+              onClick={(event) => setRangeDateSource(_rangeDate)}
+            />
+            <SheButton
+              value="Update Multiple"
+              onClick={(event) => setMultipleDateSource(_multipleDate)}
+            />
+          </div>
+          <div className="flex gap-10">
+            <SheDatePicker
+              label="Single"
+              date={_singleDateSource}
+              mode="single"
+              dateFormat={DateFormatEnum.MM_DD_YYYY}
+              onSelectDate={setSingleDate}
+            />
+            <SheDatePicker
+              label="Range"
+              date={_rangeDateSource}
+              mode="range"
+              dateFormat={DateFormatEnum.MM_DD_YYYY}
+              onSelectDate={setRangeDate}
+            />
+            <SheDatePicker
+              label="Multiple"
+              date={_multipleDateSource}
+              mode="multiple"
+              dateFormat={DateFormatEnum.MM_DD_YYYY}
+              onSelectDate={setMultipleDate}
+            />
+          </div>
+        </div>
+        <br />
+        <div className="divider"></div>
+        <br />
+      </div>
+
+      {/*<div className="flex flex-col fullWidth">
         <h2 className="underline">
           <b>Toggle</b>
         </h2>
@@ -422,9 +483,9 @@ export function DashboardPage() {
         <br />
         <div className="divider"></div>
         <br />
-      </div>
+      </div>*/}
 
-      <div className="flex flex-col fullWidth">
+      {/*<div className="flex flex-col fullWidth">
         <h2 className="underline">
           <b>Textarea</b>
         </h2>
@@ -480,9 +541,9 @@ export function DashboardPage() {
         <br />
         <div className="divider"></div>
         <br />
-      </div>
+      </div>*/}
 
-      <div className="flex flex-col fullWidth">
+      {/*<div className="flex flex-col fullWidth">
         <h2 className="underline">
           <b>RadioGroup</b>
         </h2>
@@ -558,9 +619,9 @@ export function DashboardPage() {
         <br />
         <div className="divider"></div>
         <br />
-      </div>
+      </div>*/}
 
-      <div className="flex flex-col fullWidth">
+      {/*<div className="flex flex-col fullWidth">
         <h2 className="underline">
           <b>DatePicker</b>
         </h2>
@@ -627,9 +688,9 @@ export function DashboardPage() {
         <br />
         <div className="divider" />
         <br />
-      </div>
+      </div>*/}
 
-      <div className="flex flex-col fullWidth">
+      {/*<div className="flex flex-col fullWidth">
         <h2 className="underline">
           <b>Autocomplete</b>
         </h2>
@@ -691,9 +752,9 @@ export function DashboardPage() {
         <br />
         <div className="divider"></div>
         <br />
-      </div>
+      </div>*/}
 
-      <div className="flex flex-col fullWidth">
+      {/*<div className="flex flex-col fullWidth">
         <h2 className="underline">
           <b>Multi Select</b>
         </h2>
@@ -773,9 +834,9 @@ export function DashboardPage() {
         <br />
         <div className="divider"></div>
         <br />
-      </div>
+      </div>*/}
 
-      <div className="flex flex-col fullWidth">
+      {/*<div className="flex flex-col fullWidth">
         <h2 className="underline">
           <b>Select</b>
         </h2>
@@ -853,9 +914,9 @@ export function DashboardPage() {
         <br />
         <div className="divider"></div>
         <br />
-      </div>
+      </div>*/}
 
-      <div className="flex flex-col fullWidth">
+      {/*<div className="flex flex-col fullWidth">
         <h2 className="underline">
           <b>Input Editor</b>
         </h2>
@@ -899,9 +960,9 @@ export function DashboardPage() {
         <br />
         <div className="divider"></div>
         <br />
-      </div>
+      </div>*/}
 
-      <div className="flex flex-col fullWidth">
+      {/*<div className="flex flex-col fullWidth">
         <h2 className="underline">
           <b>Input</b>
         </h2>
@@ -990,9 +1051,9 @@ export function DashboardPage() {
         <br />
         <div className="divider"></div>
         <br />
-      </div>
+      </div>*/}
 
-      <div className="flex flex-col fullWidth">
+      {/*<div className="flex flex-col fullWidth">
         <h2 className="underline">
           <b>Calendar</b>
         </h2>
@@ -1063,9 +1124,9 @@ export function DashboardPage() {
         <br />
         <div className="divider" />
         <br />
-      </div>
+      </div>*/}
 
-      <div className="flex flex-col fullWidth">
+      {/*<div className="flex flex-col fullWidth">
         <h2 className="underline">
           <b>TimePicker</b>
         </h2>
@@ -1171,9 +1232,9 @@ export function DashboardPage() {
         <br />
         <div className="divider"></div>
         <br />
-      </div>
+      </div>*/}
 
-      <div className="flex justify-between">
+      {/*<div className="flex justify-between">
         <div className="flex flex-col fullWidth">
           <h2 className="underline">
             <b>Badge List ROW</b>
@@ -1308,9 +1369,9 @@ export function DashboardPage() {
           <div className="divider"></div>
           <br />
         </div>
-      </div>
+      </div>*/}
 
-      <div className="flex flex-col fullWidth">
+      {/*<div className="flex flex-col fullWidth">
         <h2 className="underline">
           <b>Button</b>
         </h2>
@@ -1328,7 +1389,7 @@ export function DashboardPage() {
         <br />
         <div className="divider"></div>
         <br />
-      </div>
+      </div>*/}
     </div>
   );
 }
