@@ -1,26 +1,39 @@
 import React, { ComponentPropsWithRef } from "react";
 
-import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
-import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
-import { ISheLabel } from "@/const/interfaces/primitive-components/ISheLabel.ts";
+import { IShePrimitiveComponentWrapper } from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
+import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 
-export interface ISheToggle extends ISheLabel, ComponentPropsWithRef<any> {
-  className?: string;
-  style?: React.CSSProperties;
+export interface ISheToggle
+  extends Omit<
+      IShePrimitiveComponentWrapper,
+      | "showClearBtn"
+      | "clearBtnValue"
+      | "clearBtnPosition"
+      | "clearBtnProps"
+      | "iconPosition"
+    >,
+    ComponentPropsWithRef<any> {
   checked?: boolean;
   text?: string;
   textTransKey?: string;
-  description?: string;
-  descriptionTransKey?: string;
-  minWidth?: string;
-  maxWidth?: string;
-  fullWidth?: boolean;
-  icon?: Partial<ISheIcon> | string | React.FC<any>;
   type?: SheToggleTypeEnum;
-  view?: ComponentViewEnum;
   isLoading?: boolean;
   disabled?: boolean;
   required?: boolean;
-  onChecked?(value: boolean, event?: React.MouseEvent): void;
+  onChecked?(
+    value: boolean,
+    model?: IOutputEventModel<boolean, ISheToggle, React.MouseEvent>,
+  ): void;
 }
+
+export const SheToggleDefaultModel: ISheToggle = {
+  checked: undefined,
+  text: undefined,
+  textTransKey: undefined,
+  type: undefined,
+  isLoading: undefined,
+  disabled: undefined,
+  required: undefined,
+  onChecked: undefined,
+};

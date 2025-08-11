@@ -38,7 +38,7 @@ function SheIconComponent({
 
   return (
     <div
-      className={`${cs.sheIcon} ${cs[iconView] || ""} ${className || ""} ${fullWidth ? cs.fullWidth : ""} ${hoverEffect ? cs.hoverEffect : ""} ${onClick ? cs.onClickEffect : ""}`}
+      className={`${cs.sheIcon} ${className} ${iconView ? cs[iconView] : ""} ${fullWidth ? cs.fullWidth : ""} ${hoverEffect ? cs.hoverEffect : ""} ${onClick ? cs.onClickEffect : ""}`}
       style={{
         minWidth,
         maxWidth,
@@ -92,5 +92,7 @@ function Icon({
   icon: React.FC<SVGProps<SVGSVGElement>>;
   color?: string;
 }) {
-  return <IconComponent className={className} style={style} color={color} />;
+  return (
+    <IconComponent className={className ?? ""} style={style} color={color} />
+  );
 }

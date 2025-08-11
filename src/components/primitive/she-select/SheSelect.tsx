@@ -212,7 +212,6 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
   }
 
   // ==================================================================== PRIVATE
-
   function _setIsOpen(_isOpen: boolean) {
     if (isLoading || disabled || !items || items.length === 0) {
       setOpen(false);
