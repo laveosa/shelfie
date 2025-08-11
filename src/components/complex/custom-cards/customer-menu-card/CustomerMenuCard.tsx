@@ -52,7 +52,6 @@ export default function CustomerMenuCard({
   customerId,
   itemsCollection,
   counter,
-  ...props
 }: ICustomerMenuCard) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -101,7 +100,6 @@ export default function CustomerMenuCard({
         minWidth="300px"
         showToggleButton={true}
         className={cs.customerMenuCard}
-        {...props}
       >
         <div className={cs.customerMenuItems}>
           {customerMenuItems.map(renderMenuItem)}

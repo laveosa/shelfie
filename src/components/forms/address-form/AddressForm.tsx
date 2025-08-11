@@ -39,9 +39,6 @@ export default function AddressForm<T>({
     defaultValues: AddressRequestModelDefault,
   });
 
-  useEffect(() => {
-    console.log("DATA", data);
-  }, []);
 
   useEffect(() => {
     form.reset(data);

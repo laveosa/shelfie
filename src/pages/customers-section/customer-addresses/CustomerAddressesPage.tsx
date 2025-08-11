@@ -150,7 +150,6 @@ export function CustomerAddressesPage() {
         isCreate={state.createCustomerAddress}
         onPrimaryButtonClick={(data) => onSubmitCustomerAddressDataHandler(data)}
         onSecondaryButtonClick={onCloseCustomerAddressCard}
-        showCloseButton={true}
         countryList={state.countryList}
         onAction={onAction}
       />

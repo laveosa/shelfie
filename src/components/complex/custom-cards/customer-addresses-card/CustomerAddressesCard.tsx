@@ -20,7 +20,6 @@ export default function CustomerAddressesCard({
   addresses,
   gridModel,
   sortingOptions,
-  ...props
 }: ICustomerAddressesCard) {
   
     const customerAddressColumns = customerAddressGridColumns(
@@ -31,7 +30,6 @@ export default function CustomerAddressesCard({
   return (
     <SheProductCard
         className={cs.customerAddressesCard}
-        showHeader={false}
         minWidth="850px"
       >
         <div className={cs.customerAddressesCardHeader}>

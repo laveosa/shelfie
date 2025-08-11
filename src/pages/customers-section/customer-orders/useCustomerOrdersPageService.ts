@@ -9,7 +9,6 @@ export default function useCustomerOrdersPageService() {
     const { appState, state } = useSelector(selectCustomersPageState);
     const {customerId} = useParams();
     const dispatch = useDispatch<AppDispatch>();
-    const navigate = useNavigate();
 
     const [getCustomerInfo] = api.useLazyGetCustomerInfoQuery();
 

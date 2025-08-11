@@ -25,10 +25,8 @@ export default function CustomerAddressCard({
   isCreate,
   onPrimaryButtonClick,
   onSecondaryButtonClick,
-  showCloseButton,
   countryList,
   onAction,
-  ...props
 }: ICustomerAddressCard) {
   
   
@@ -43,11 +41,10 @@ export default function CustomerAddressCard({
         loading={isLoading}
         title={isCreate ? "Create Customer Address" : "Edit Customer Address"}
         className={cs.customerAddressFormCard}
-        showCloseButton={showCloseButton}
+        showCloseButton={true}
         showSecondaryButton={false}
         showPrimaryButton={false}
         onSecondaryButtonClick={onSecondaryButtonClick}
-        {...props}
       >
         <div className={cs.customerCardContent}>
           <div className={cs.customerAddressForm}>

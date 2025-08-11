@@ -11,13 +11,12 @@ import { NavUrlEnum } from "@/const/enums/NavUrlEnum";
 
 import UsersApiHooks from "@/utils/services/api/UsersApiService";
 import { PreferencesModel, PreferencesModelDefault } from "@/const/models/PreferencesModel";
-import { CustomerCounterModel, createCustomerCounter } from "@/const/models/CustomerCounterModel";
-import useAppService from "@/useAppService";
+import { createCustomerCounter } from "@/const/models/CustomerCounterModel";
+
 import { AppSliceActions as appActions } from "@/state/slices/AppSlice";
 import { DEFAULT_SORTING_OPTIONS } from "@/const/models/GridSortingModel";
 
 export default function useCustomersPageService() {
-  const appService = useAppService();
 
   const { appState, state } = useSelector(selectCustomersPageState);
 
@@ -29,11 +28,8 @@ export default function useCustomersPageService() {
   const [resetUserPreferences] = UsersApiHooks.useResetUserPreferencesMutation();
  
   function getCustomersForGridHandler(data?: GridRequestModel) {
-    //if the grid is already initiated and the data is in, no need to refresh the grid
     if(!data && state.customersGridModel.items.length>0) return;
-    //if the data is the same as the current data, no need to refresh the grid
     if(_.isEqual(data, state.customersGridRequestModel)) return;
-    //if the data is not provided, use the current data
     data = data ?? state.customersGridRequestModel;
 
     dispatch(actions.setIsCustomersLoading(true));
@@ -79,18 +75,14 @@ export default function useCustomersPageService() {
   }
 
   function resetUserPreferencesHandler(grid) {
-    // Immediately update local state with default values
     const resetModel = merge({}, appState.preferences, {
       viewsReferences: {
         customerReferences: PreferencesModelDefault.viewsReferences.customerReferences
       }
     });
     dispatch(appActions.refreshPreferences(resetModel));
-    // Execute API call in background
     return resetUserPreferences(grid).catch((error) => {
       console.error('Failed to reset preferences on server:', error);
-      // Optionally revert the local state if the API call fails
-      // dispatch(appActions.refreshPreferences(appState.preferences));
     });
   }
 

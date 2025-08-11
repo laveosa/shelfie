@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/state/store.ts";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { OrdersApiService as api } from "@/utils/services/api/OrdersApiService.ts";
 import { CustomersPageSliceActions as actions, selectCustomersPageState } from "@/state/slices/CustomersPageSlice.ts";
 
@@ -9,7 +9,6 @@ export default function useCustomerOpenCartPageService() {
     const { appState, state } = useSelector(selectCustomersPageState);
     const {customerId} = useParams();
     const dispatch = useDispatch<AppDispatch>();
-    const navigate = useNavigate();
 
     const [getCustomerInfo] = api.useLazyGetCustomerInfoQuery();
 

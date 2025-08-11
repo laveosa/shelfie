@@ -61,7 +61,7 @@ export function CustomerBasicDataPage() {
   }
 
   return (
-    <div id={cs["CustomerBasicDataPage"]} className={cs.customerBasicDataPage}>
+    <div className={cs.customerBasicDataPage}>
 
       <CustomerMenuCard
         isLoading={state.isCustomerMenuCardLoading}

@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 
-import { AppDispatch, RootState } from "@/state/store.ts";
+import { AppDispatch } from "@/state/store.ts";
 import { CustomersPageSliceActions as actions, selectCustomersPageState } from "@/state/slices/CustomersPageSlice";
 import { OrdersApiService as api } from "@/utils/services/api/OrdersApiService";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useToast } from "@/hooks/useToast.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel";
 import { DictionaryApiHooks } from "@/utils/services/api/DictionaryApiService";
@@ -19,7 +19,6 @@ export default function useCustomerAddressesPageService() {
   const { appState, state } = useSelector(selectCustomersPageState);
 
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
 
   const [updateCustomerAddress] = api.useUpdateCustomerAddressMutation();
   const [createCustomerAddress] = api.useCreateCustomerAddressMutation();
@@ -34,11 +33,8 @@ export default function useCustomerAddressesPageService() {
 
   
   function getCustomerAddressesForGridHandler(data?: GridRequestModel) {
-    //if the grid is already initiated and the data is in, no need to refresh the grid
     if(!data && state.customerAddressesGridModel.items.length>0) return;
-    //if the data is the same as the current data, no need to refresh the grid
     if(_.isEqual(data, state.customerAddressesGridRequestModel)) return;
-    //if the data is not provided, use the current data
     data = data ?? state.customerAddressesGridRequestModel;
 
     dispatch(actions.setIsCustomerAddressesLoading(true));

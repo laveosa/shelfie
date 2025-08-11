@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 
-import { AppDispatch, RootState } from "@/state/store.ts";
+import { AppDispatch } from "@/state/store.ts";
 import { CustomersPageSliceActions as actions, selectCustomersPageState } from "@/state/slices/CustomersPageSlice";
 import { OrdersApiService as api } from "@/utils/services/api/OrdersApiService";
 import { convertCustomerToRequestModel } from "@/utils/helpers/customer-helper.ts";
@@ -52,6 +52,8 @@ export default function useCustomerBasicDataPageService() {
           type: "info",
         });
         dispatch(actions.refreshSelectedCustomer(res.data));
+        dispatch(actions.refreshCustomers([res.data, ...state.customers]));
+        navigate(`${NavUrlEnum.CUSTOMERS}/${NavUrlEnum.CUSTOMER_BASIC_DATA}/${res.data.customerId}`);
         return res.data;
       }
     });
