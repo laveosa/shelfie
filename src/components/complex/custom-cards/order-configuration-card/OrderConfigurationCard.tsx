@@ -20,7 +20,7 @@ import { OrderDiscountsGridColumns } from "@/components/complex/grid/order-disco
 
 export default function OrderConfigurationCard({
   isLoading,
-  isGridLoading,
+  isDiscountsGridLoading,
   order,
   statuses,
   onAction,
@@ -123,7 +123,7 @@ export default function OrderConfigurationCard({
           <div className={cs.orderDiscountsGridWrapper}>
             <DndGridDataTable
               className={cs.orderDiscountsGrid}
-              isLoading={isGridLoading}
+              isLoading={isDiscountsGridLoading}
               showHeader={false}
               columns={
                 OrderDiscountsGridColumns({

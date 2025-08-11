@@ -4,7 +4,8 @@ import { GridModel } from "@/const/models/GridModel.ts";
 
 export interface IOrderConfigurationCard {
   isLoading?: boolean;
-  isGridLoading?: boolean;
+  isDiscountsGridLoading?: boolean;
+  isShipmentsGridLoading?: boolean;
   order?: OrderModel;
   statuses?: StatusModel[];
   shipmentGridModel?: GridModel;

@@ -91,6 +91,7 @@ export function OrderDetailsPage() {
         itemId={Number(orderId)}
       />
       <OrderConfigurationCard
+        isLoading={state.isOrderConfigurationCardLoading}
         order={ordersState.selectedOrder}
         onAction={onAction}
       />

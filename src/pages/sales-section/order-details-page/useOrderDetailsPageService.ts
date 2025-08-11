@@ -46,14 +46,12 @@ export default function useOrderDetailsPageService() {
   }
 
   function assignCustomerToOrderHandler(orderId, customerId) {
-    return (
-      dispatch(actions.setIsOrderConfigurationCardLoading(true)),
-      assignCustomerToOrder({ orderId, customerId }).then((res: any) => {
-        dispatch(actions.setIsOrderConfigurationCardLoading(false));
-        dispatch(ordersActions.refreshSelectedOrder(res.data));
-        return res;
-      })
-    );
+    dispatch(actions.setIsOrderConfigurationCardLoading(true));
+    return assignCustomerToOrder({ orderId, customerId }).then((res: any) => {
+      dispatch(actions.setIsOrderConfigurationCardLoading(false));
+      dispatch(ordersActions.refreshSelectedOrder(res.data));
+      return res;
+    });
   }
 
   function deleteOrderHandler(orderId) {
@@ -75,18 +73,16 @@ export default function useOrderDetailsPageService() {
   }
 
   function getDiscountsListHandler() {
-    return (
-      dispatch(actions.setIsSelectDiscountGridLoading(true)),
-      getDiscountsList().then((res: any) => {
-        dispatch(actions.setIsSelectDiscountGridLoading(false));
-        const modifiedList = res.items.map((item) => ({
-          ...item,
-          isSelected: item.discountId === ordersState.selectedOrder.discountId,
-        }));
-        dispatch(actions.refreshDiscountsList(modifiedList));
-        return res;
-      })
-    );
+    dispatch(actions.setIsSelectDiscountGridLoading(true));
+    return getDiscountsList().then((res: any) => {
+      dispatch(actions.setIsSelectDiscountGridLoading(false));
+      const modifiedList = res.items.map((item) => ({
+        ...item,
+        isSelected: item.discountId === ordersState.selectedOrder.discountId,
+      }));
+      dispatch(actions.refreshDiscountsList(modifiedList));
+      return res;
+    });
   }
 
   function createDiscountHandler(model) {
