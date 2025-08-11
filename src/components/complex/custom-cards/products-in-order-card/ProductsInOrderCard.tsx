@@ -41,7 +41,11 @@ export default function ProductsInOrderCard({
   }, [stockActions]);
 
   const renderExpandedContent = (_row, _stockAction, _stockActionIndex) => {
-    return <ProductsInOrderForm />;
+    return (
+      <ProductsInOrderForm
+        onSubmit={(formData) => onAction("submit", formData)}
+      />
+    );
   };
 
   return (

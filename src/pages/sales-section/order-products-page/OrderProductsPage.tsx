@@ -172,6 +172,9 @@ export function OrderProductsPage() {
       case "closeFindProductsCard":
         handleCardAction("findProductsCard");
         break;
+      case "submit":
+        console.log(payload);
+        break;
     }
   }
 
