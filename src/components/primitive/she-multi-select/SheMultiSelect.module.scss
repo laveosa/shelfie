@@ -58,3 +58,11 @@
     }
   }
 }
+
+// ======================================================== HIGHLIGHT
+
+.highlighted {
+  button {
+    border-color: vars.$colorBlue !important;
+  }
+}

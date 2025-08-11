@@ -1,4 +1,4 @@
-import { JSX, RefObject, useEffect, useState } from "react";
+import { JSX, RefObject, useEffect, useRef, useState } from "react";
 import { Trans } from "react-i18next";
 import * as React from "react";
 import _ from "lodash";
@@ -87,11 +87,13 @@ export default function SheMultiSelect<T>(
   const [_open, setOpen] = useState<boolean>(null);
   const [_loading, setLoading] = useState<boolean>(null);
   const [_searchValue, setSearchValue] = useState<string>(null);
+  const [_isHighlighted, setIsHighlighted] = useState<boolean>(null);
 
   // ==================================================================== REFS
   const _triggerRef = useDefaultRef<HTMLButtonElement>(triggerRef);
   const _popoverRef = useDefaultRef<HTMLDivElement>(popoverRef);
   const _searchRef = useDefaultRef<HTMLInputElement>(searchRef);
+  const _sourceValue = useRef<T[]>([]);
 
   // ==================================================================== UTILITIES
   const {
@@ -145,6 +147,8 @@ export default function SheMultiSelect<T>(
     setSelectedValues(tmpSelectedValues);
     setBadges(_generateBadgesFromSelectedItems(items, tmpSelectedValues));
     _updateFocusRelatedLogic();
+    setIsHighlighted(false);
+    _sourceValue.current = tmpSelectedValues;
   }, [items, selectedValues]);
 
   useEffect(() => {
@@ -280,6 +284,7 @@ export default function SheMultiSelect<T>(
 
     setItems(tmpItems);
     setSelectedValues(values);
+    setIsHighlighted(!_.isEqual(_sourceValue.current, values));
     setBadges(_generateBadgesFromSelectedItems(_items, values));
     onSelect?.(values, {
       value: values,
@@ -330,6 +335,7 @@ export default function SheMultiSelect<T>(
       <SheMultiSelectTrigger<T>
         {...restProps}
         ref={_triggerRef}
+        className={`${_isHighlighted ? cs.highlighted : ""}`}
         items={_badges}
         isOpen={_open}
         ariaDescribedbyId={ariaDescribedbyId}

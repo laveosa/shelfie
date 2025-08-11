@@ -11,6 +11,7 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { ISheRadioItem } from "@/const/interfaces/primitive-components/ISheRadioItem.ts";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
+import SheMultiSelect from "@/components/primitive/she-multi-select/SheMultiSelect.tsx";
 
 const options: ISheSelectItem<any>[] = [
   {
@@ -276,6 +277,9 @@ const radioListFull: ISheRadioItem<string>[] = [
 export function DashboardPage() {
   const service = useDashboardPageService();
 
+  const [_optionsSource, setOptionsSource] = useState<any>(null);
+  const [_options, setOptions] = useState<any>(null);
+
   const [_sourceValue, setSourceValue] = useState<any>(null);
   const [_value, setValue] = useState<any>(null);
 
@@ -373,6 +377,32 @@ export function DashboardPage() {
         <div className="divider"></div>
         <br />
       </div>*/}
+
+      <div className="flex flex-col fullWidth">
+        <h2 className="underline">
+          <b>Highlight Changed</b>
+        </h2>
+        <br />
+        <div className="flex flex-col gap-6">
+          <div className="flex gap-10">
+            <SheButton
+              value="Update"
+              onClick={() => setOptionsSource(_options)}
+            />
+          </div>
+          <div className="flex gap-10">
+            <SheMultiSelect
+              label="MultiSelect"
+              items={optionsSimple}
+              selectedValues={_optionsSource}
+              onSelect={setOptions}
+            />
+          </div>
+        </div>
+        <br />
+        <div className="divider"></div>
+        <br />
+      </div>
 
       <div className="flex flex-col fullWidth">
         <h2 className="underline">
