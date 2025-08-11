@@ -57,7 +57,7 @@ export default function CustomerAddressCard({
               onCancel={onSecondaryButtonClick}
             />
           </div>
-          {customerAddress && (
+          {!isCreate && customerAddressId && (
           <SheCardNotification
             title="Delete Customer Address"
             text="This customer address will be deleted and will no longer be available for selection or automatic connection. Past orders will remain visible."

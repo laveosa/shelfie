@@ -1,7 +1,11 @@
 import { AddressModel } from "@/const/models/AddressModel";
+import { AddressRequestModel } from "@/const/models/AddressRequestModel";
 import { CustomerModel } from "@/const/models/CustomerModel";
+import { CustomerCounterModel } from "@/const/models/CustomerCounterModel";
+import { CountryCodeModel } from "@/const/models/CountryCodeModel";
 import { GridModel } from "@/const/models/GridModel";
 import { GridRequestModel } from "@/const/models/GridRequestModel";
+import { GridSortingModel } from "@/const/models/GridSortingModel";
 
 export interface ICustomersPageSlice {
     isLoading: boolean;

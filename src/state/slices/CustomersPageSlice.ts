@@ -12,6 +12,8 @@ import { RootState } from "@reduxjs/toolkit/query/react";
 import { AddressModel } from "@/const/models/AddressModel";
 import { CustomerCounterModel } from "@/const/models/CustomerCounterModel";
 import { AddressRequestModel } from "@/const/models/AddressRequestModel";
+import { CountryCodeModel } from "@/const/models/CountryCodeModel";
+import { GridSortingModel } from "@/const/models/GridSortingModel";
 
 const initialState: ICustomersPageSlice = {
   isLoading: false,
@@ -60,6 +62,7 @@ const initialState: ICustomersPageSlice = {
   activeCards: [],
   countryList: [],
   sortingOptions: [],
+  customerAddresses: [],
 };
 
 function setIsLoading(
@@ -169,7 +172,7 @@ function refreshCustomerAddresses(
 ) {
   state.customerAddresses = action?.payload || state.customerAddresses;
 }
-function refreshActiveCards(state: IMarginsPageSlice, action: PayloadAction<string[]>) {
+function refreshActiveCards(state: ICustomersPageSlice, action: PayloadAction<string[]>) {
   state.activeCards = action.payload;
 }
 
@@ -210,12 +213,3 @@ const CustomersPageSlice = createSlice({
 
 export const CustomersPageSliceActions = CustomersPageSlice.actions;
 export default CustomersPageSlice;
-
-export const selectCustomersPageState = createSelector(
-  [(state: RootState) => state[StoreSliceEnum.APP] as IAppSlice,
-   (state: RootState) => state[StoreSliceEnum.CUSTOMERS] as ICustomersPageSlice],
-  (appState, customersState) => ({
-    appState,
-    state: customersState
-  })
-);

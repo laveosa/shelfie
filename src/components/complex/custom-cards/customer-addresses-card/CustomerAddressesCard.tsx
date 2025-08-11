@@ -5,6 +5,7 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { DataWithId, DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { customerAddressGridColumns } from "../../grid/customer-address-grid/CustomerAddressGridColumns";
 import { GridSortingModel } from "@/const/models/GridSortingModel";
+import { ColumnDef } from "@tanstack/react-table";
 
 interface ICustomerAddressesCard {
   isLoading?: boolean;

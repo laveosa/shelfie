@@ -1,8 +1,8 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import _ from "lodash";
 
 import { AppDispatch } from "@/state/store.ts";
-import { CustomersPageSliceActions as actions, selectCustomersPageState } from "@/state/slices/CustomersPageSlice";
+import { CustomersPageSliceActions as actions } from "@/state/slices/CustomersPageSlice";
 import { OrdersApiService as api } from "@/utils/services/api/OrdersApiService";
 import { useParams } from "react-router-dom";
 import { useToast } from "@/hooks/useToast.ts";
@@ -13,10 +13,15 @@ import { AddressModel } from "@/const/models/AddressModel";
 import { AddressRequestModelDefault } from "@/const/models/AddressRequestModel";
 import { clearSelectedGridItems,} from "@/utils/helpers/quick-helper";
 import { DEFAULT_SORTING_OPTIONS } from "@/const/models/GridSortingModel";
+import { useAppSelector } from "@/utils/hooks/redux";
+import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum";
+import { ICustomersPageSlice } from "@/const/interfaces/store-slices/ICustomersPageSlice";
+import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice";
 
 
 export default function useCustomerAddressesPageService() {
-  const { appState, state } = useSelector(selectCustomersPageState);
+  const state = useAppSelector<ICustomersPageSlice>(StoreSliceEnum.CUSTOMERS);
+  const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
 
   const dispatch = useDispatch<AppDispatch>();
 

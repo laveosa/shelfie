@@ -1,11 +1,11 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { merge } from "lodash";
 import _ from "lodash";
 
 import { AppDispatch } from "@/state/store.ts";
 import {OrdersApiService as api} from "@/utils/services/api/OrdersApiService.ts";  
 import { GridRequestModel } from "@/const/models/GridRequestModel";
-import { CustomersPageSliceActions as actions, selectCustomersPageState } from "@/state/slices/CustomersPageSlice";
+import { CustomersPageSliceActions as actions } from "@/state/slices/CustomersPageSlice";
 import { useNavigate } from "react-router-dom";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum";
 
@@ -15,10 +15,15 @@ import { createCustomerCounter } from "@/const/models/CustomerCounterModel";
 
 import { AppSliceActions as appActions } from "@/state/slices/AppSlice";
 import { DEFAULT_SORTING_OPTIONS } from "@/const/models/GridSortingModel";
+import { useAppSelector } from "@/utils/hooks/redux";
+import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum";
+import { ICustomersPageSlice } from "@/const/interfaces/store-slices/ICustomersPageSlice";
+import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice";
 
 export default function useCustomersPageService() {
 
-  const { appState, state } = useSelector(selectCustomersPageState);
+  const state = useAppSelector<ICustomersPageSlice>(StoreSliceEnum.CUSTOMERS);
+  const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
 
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();

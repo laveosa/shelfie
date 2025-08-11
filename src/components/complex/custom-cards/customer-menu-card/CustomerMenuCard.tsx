@@ -1,7 +1,5 @@
-import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
-  User,
   MapPin,
   FileText,
   ShoppingCart,
@@ -11,7 +9,7 @@ import {
 import { Badge } from "@/components/ui/badge.tsx";
 import cs from "./CustomerMenuCard.module.scss";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
-// You may want to create a matching ICustomerMenuCard interface, for now use any
+
 type ICustomerMenuCard = any;
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 
@@ -50,7 +48,6 @@ export default function CustomerMenuCard({
   isLoading,
   title,
   customerId,
-  itemsCollection,
   counter,
 }: ICustomerMenuCard) {
   const navigate = useNavigate();

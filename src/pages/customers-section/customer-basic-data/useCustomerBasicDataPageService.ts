@@ -1,15 +1,18 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import { AppDispatch } from "@/state/store.ts";
-import { CustomersPageSliceActions as actions, selectCustomersPageState } from "@/state/slices/CustomersPageSlice";
+import { CustomersPageSliceActions as actions } from "@/state/slices/CustomersPageSlice";
+import { ICustomersPageSlice } from "@/const/interfaces/store-slices/ICustomersPageSlice";
 import { OrdersApiService as api } from "@/utils/services/api/OrdersApiService";
 import { convertCustomerToRequestModel } from "@/utils/helpers/customer-helper.ts";
 import { useNavigate, useParams } from "react-router-dom";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum";
 import { useToast } from "@/hooks/useToast.ts";
+import { useAppSelector } from "@/utils/hooks/redux";
+import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 
 export default function useCustomerBasicDataPageService() {
-  const { appState, state } = useSelector(selectCustomersPageState);
+  const state = useAppSelector<ICustomersPageSlice>(StoreSliceEnum.CUSTOMERS);
 
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
@@ -25,7 +28,7 @@ export default function useCustomerBasicDataPageService() {
   function updateCustomerHandler(data: any) {
     const requestData = convertCustomerToRequestModel(data);
     dispatch(actions.setIsCustomerBasicDataLoading(true));
-    return updateCustomer({ id: state.selectedCustomer?.id, model: requestData }).then((res) => {
+    return updateCustomer({ id: state.selectedCustomer?.customerId, model: requestData }).then((res) => {
       dispatch(actions.setIsCustomerBasicDataLoading(false));
       if (res.error) {
         return;

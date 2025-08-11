@@ -28,7 +28,6 @@ export function CustomerOpenCartPage() {
       <CustomerMenuCard
         isLoading={state.isCustomerMenuCardLoading}
         title="Customer"
-        itemsCollection="customers"
         counter={state.customerCounter}
         customerId={customerId}
       />  

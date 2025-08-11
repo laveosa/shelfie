@@ -66,7 +66,6 @@ export function CustomerBasicDataPage() {
       <CustomerMenuCard
         isLoading={state.isCustomerMenuCardLoading}
         title="Customer"
-        itemsCollection="customers"
         counter={state.customerCounter}
         customerId={customerId}
       />  

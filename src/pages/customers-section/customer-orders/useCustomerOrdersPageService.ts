@@ -1,12 +1,15 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/state/store.ts";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { OrdersApiService as api } from "@/utils/services/api/OrdersApiService.ts";
-import { CustomersPageSliceActions as actions, selectCustomersPageState } from "@/state/slices/CustomersPageSlice.ts";
+import { CustomersPageSliceActions as actions } from "@/state/slices/CustomersPageSlice.ts";
+import { useAppSelector } from "@/utils/hooks/redux";
+import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum";
+import { ICustomersPageSlice } from "@/const/interfaces/store-slices/ICustomersPageSlice";
 
 
 export default function useCustomerOrdersPageService() {
-    const { appState, state } = useSelector(selectCustomersPageState);
+    const state = useAppSelector<ICustomersPageSlice>(StoreSliceEnum.CUSTOMERS);
     const {customerId} = useParams();
     const dispatch = useDispatch<AppDispatch>();
 

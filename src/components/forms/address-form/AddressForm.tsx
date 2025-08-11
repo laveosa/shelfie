@@ -17,7 +17,7 @@ import cs from "./AddressForm.module.scss";
 import { CountryCodeModel } from "@/const/models/CountryCodeModel";
 import { Plus, Save } from "lucide-react";
 
-interface IAddressForm<T> {
+interface IAddressForm {
   data: AddressRequestModel;
   isCreate: boolean;
   onSubmit: (data: AddressRequestModel) => void;
@@ -25,13 +25,13 @@ interface IAddressForm<T> {
   countryList: CountryCodeModel[];
 }
 
-export default function AddressForm<T>({
+export default function AddressForm({
   data,
   isCreate,
   onSubmit,
   onCancel,
   countryList,
-}: IAddressForm<T>): React.ReactNode {
+}: IAddressForm): React.ReactNode {
 
   const form = useAppForm<AddressRequestModel>({
     mode: "onBlur",

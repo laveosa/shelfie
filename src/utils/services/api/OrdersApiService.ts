@@ -5,6 +5,10 @@ import { ApiConfigurationService } from "@/utils/services/api/ApiConfigurationSe
 import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { CustomerModel } from "@/const/models/CustomerModel";
+import { CustomerRequestModel } from "@/const/models/CustomerRequestModel";
+import { AddressModel } from "@/const/models/AddressModel";
+import { AddressRequestModel } from "@/const/models/AddressRequestModel";
+import { CustomerCounterModel } from "@/const/models/CustomerCounterModel";
 
 const apiConfig = new ApiConfigurationService(ApiUrlEnum.ORDERS_BASE_URL);
 

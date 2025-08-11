@@ -125,7 +125,6 @@ export function CustomerAddressesPage() {
       <CustomerMenuCard
         isLoading={state.isCustomerMenuCardLoading}
         title="Customer"
-        itemsCollection="customers"
         counter={state.customerCounter}
         customerId={customerId}
       />  

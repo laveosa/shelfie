@@ -11,22 +11,21 @@ import { Plus, Save } from "lucide-react";
 import { CustomerRequestModel, CustomerRequestModelDefault } from "@/const/models/CustomerRequestModel";
 import CustomerFormScheme from "@/utils/validation/schemes/CustomerFormScheme";
 import cs from "./CustomerForm.module.scss";
-import SheFormFooter from "@/components/complex/she-form/components/she-form-footer/SheFormFooter";
 import SheButton from "@/components/primitive/she-button/SheButton";
 
-interface ICustomerForm<T> {
+interface ICustomerForm {
   data: CustomerRequestModel;
   isCreate: boolean;
   onSubmit: (data: CustomerRequestModel) => void;
   onCancel: () => void;
 }
 
-export default function CustomerForm<T>({
+export default function CustomerForm({
   data,
   isCreate,
   onSubmit,
   onCancel,
-}: ICustomerForm<T>): React.ReactNode {
+}: ICustomerForm): React.ReactNode {
 
   const form = useAppForm<CustomerRequestModel>({
     mode: "onBlur",
