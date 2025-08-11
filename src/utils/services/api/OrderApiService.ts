@@ -25,6 +25,12 @@ export const OrderApiService = createApi({
         method: "POST",
       }),
     }),
+    deleteOrder: apiConfig.createMutation<void, number>(builder, {
+      query: (orderId) => ({
+        url: `${ApiUrlEnum.ORDERS}/${orderId}`,
+        method: "DELETE",
+      }),
+    }),
     getOrderDetails: apiConfig.createQuery<number, void>(builder, {
       query: (orderId) => ({
         url: `${ApiUrlEnum.ORDERS}/${orderId}`,
@@ -63,6 +69,25 @@ export const OrderApiService = createApi({
         body: JSON.stringify(model),
       }),
     }),
+    updateStockActionInOrder: apiConfig.createMutation<
+      void,
+      { stockActionId: number; model: any }
+    >(builder, {
+      query: ({ stockActionId, model }) => ({
+        url: `${ApiUrlEnum.ORDERS}${ApiUrlEnum.STOCK_ACTIONS}/${stockActionId}`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+    }),
+    removeStockActionFromOrder: apiConfig.createMutation<void, number>(
+      builder,
+      {
+        query: (stockActionId) => ({
+          url: `${ApiUrlEnum.ORDERS}${ApiUrlEnum.STOCK_ACTIONS}/${stockActionId}`,
+          method: "DELETE",
+        }),
+      },
+    ),
   }),
 });
 

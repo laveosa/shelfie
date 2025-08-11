@@ -1,6 +1,6 @@
+import React, { useEffect, useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Plus } from "lucide-react";
-import React, { useEffect, useState } from "react";
 
 import {
   DataWithId,
@@ -40,10 +40,13 @@ export default function ProductsInOrderCard({
     );
   }, [stockActions]);
 
-  const renderExpandedContent = (_row, _stockAction, _stockActionIndex) => {
+  const renderExpandedContent = (row) => {
     return (
       <ProductsInOrderForm
-        onSubmit={(formData) => onAction("submit", formData)}
+        onSubmit={(formData) =>
+          onAction("updateStockAction", { formData, row })
+        }
+        onDelete={() => onAction("removeStockAction", row)}
       />
     );
   };
@@ -52,7 +55,8 @@ export default function ProductsInOrderCard({
     <SheProductCard
       loading={isLoading}
       title="Products in order"
-      width="600px"
+      width="485px"
+      minWidth="485px"
       className={cs.productsInOrderCard}
     >
       <div className={cs.productsInOrderCardContent}>

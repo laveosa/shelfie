@@ -1,23 +1,18 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Equal, Trash2, X } from "lucide-react";
 import React, { useEffect } from "react";
-
-import {
-  ICreateSupplierForm
-} from "@/const/interfaces/forms/ICreateSupplierForm.ts";
 import useAppForm from "@/utils/hooks/useAppForm.ts";
 import SheForm from "@/components/complex/she-form/SheForm.tsx";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import { FormField } from "@/components/ui/form.tsx";
-import SheFormItem
-  from "@/components/complex/she-form/components/she-form-item/SheFormItem.tsx";
+import SheFormItem from "@/components/complex/she-form/components/she-form-item/SheFormItem.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import cs from "./ProductsInOrderForm.module.scss";
-import ProductsInOrderFormScheme
-  from "@/utils/validation/schemes/ProductsInOrderFormScheme.ts";
+import ProductsInOrderFormScheme from "@/utils/validation/schemes/ProductsInOrderFormScheme.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import { IProductsInOrderForm } from "@/const/interfaces/forms/IProductsInOrderForm.ts";
 
 interface ProductsInOrderFormData {
   priceBrutto?: number;
@@ -28,7 +23,8 @@ export default function ProductsInOrderForm<T>({
   className,
   data,
   onSubmit,
-}: ICreateSupplierForm<T>) {
+  onDelete,
+}: IProductsInOrderForm<T>) {
   const form = useAppForm<ProductsInOrderFormData>({
     mode: "onSubmit",
     resolver: zodResolver(ProductsInOrderFormScheme),
@@ -120,7 +116,7 @@ export default function ProductsInOrderForm<T>({
               variant="secondary"
               type="button"
               disabled={total === 0}
-              onClick={() => form.reset({ priceBrutto: 0, quantity: 0 })}
+              onClick={() => onDelete()}
             />
           </div>
         </div>

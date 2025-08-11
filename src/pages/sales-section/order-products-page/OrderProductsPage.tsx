@@ -141,15 +141,10 @@ export function OrderProductsPage() {
           });
         break;
       case "addVariantToOrder":
-        dispatch(actions.setIsProductsInOrderGridLoading(true));
-        service
-          .addVariantsToOrderHandler(orderId, {
-            variantId: payload.variantId,
-            amount: payload.amount,
-          })
-          .then(() => {
-            dispatch(actions.setIsFindProductsCardLoading(false));
-          });
+        service.addVariantsToOrderHandler(orderId, {
+          variantId: payload.variantId,
+          amount: payload.amount,
+        });
         break;
       case "variantsGridRequestChange":
         if (payload.brands || payload.categories || payload.filter) {
@@ -172,8 +167,16 @@ export function OrderProductsPage() {
       case "closeFindProductsCard":
         handleCardAction("findProductsCard");
         break;
-      case "submit":
-        console.log(payload);
+      case "updateStockAction":
+        service.updateStockActionInOrderHandler(
+          payload.row.original.stockActionId,
+          payload.formData,
+        );
+        break;
+      case "removeStockAction":
+        service.removeStockActionFromOrderHandler(
+          payload.original.stockActionId,
+        );
         break;
     }
   }

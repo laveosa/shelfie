@@ -14,9 +14,9 @@ export function ProductsInOrderGridColumns({
     {
       accessorKey: "variantName",
       header: "Product",
-      size: 150,
-      minSize: 150,
-      maxSize: 150,
+      size: 100,
+      minSize: 100,
+      maxSize: 100,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("variantName")}>
@@ -30,9 +30,9 @@ export function ProductsInOrderGridColumns({
     {
       accessorKey: "traitOptions",
       header: "Traits",
-      size: 80,
-      minSize: 80,
-      maxSize: 80,
+      size: 60,
+      minSize: 60,
+      maxSize: 60,
       cell: ({ row }) => {
         const traitOptions = row.original.traitOptions || [];
 
@@ -80,6 +80,7 @@ export function ProductsInOrderGridColumns({
     {
       id: "actions",
       header: "Actions",
+      size: 100,
       minSize: 100,
       maxSize: 100,
       cell: ({ row }) => {

@@ -5,6 +5,10 @@ import { AppDispatch, RootState } from "@/state/store.ts";
 import useAppService from "@/useAppService.ts";
 import { IOrderProductsPageSlice } from "@/const/interfaces/store-slices/IOrderProductsPageSlice.ts";
 import OrderApiHooks from "@/utils/services/api/OrderApiService.ts";
+import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
+import { OrderProductsPageSliceActions as actions } from "@/state/slices/OrderProductsPageSlice";
+import { OrdersPageSliceActions as ordersActions } from "@/state/slices/OrdersPageSlice.ts";
+import { useToast } from "@/hooks/useToast.ts";
 
 export default function useOrderProductsPageService() {
   const appService = useAppService();
@@ -12,18 +16,92 @@ export default function useOrderProductsPageService() {
     (state: RootState): IOrderProductsPageSlice =>
       state[StoreSliceEnum.ORDER_PRODUCTS],
   );
+  const ordersState = useSelector(
+    (state: RootState): IOrdersPageSlice => state[StoreSliceEnum.ORDERS],
+  );
   const dispatch = useDispatch<AppDispatch>();
+  const { addToast } = useToast();
 
   const [addVariantsToOrder] = OrderApiHooks.useAddVariantsToOrderMutation();
+  const [updateStockActionInOrder] =
+    OrderApiHooks.useUpdateStockActionInOrderMutation();
+  const [removeStockActionFromOrder] =
+    OrderApiHooks.useRemoveStockActionFromOrderMutation();
 
   function addVariantsToOrderHandler(orderId, model) {
+    dispatch(actions.setIsProductsInOrderGridLoading(true));
     return addVariantsToOrder({ orderId, model }).then((res: any) => {
+      dispatch(actions.setIsProductsInOrderGridLoading(false));
+      if (!res.error) {
+        dispatch(
+          ordersActions.refreshStockActionsGridModel({
+            ...ordersState.stockActionsGridModel,
+            items: [res.data, ...ordersState.stockActionsGridModel.items],
+          }),
+        );
+        addToast({
+          text: "Stock action added successfully",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: `${res.error.data.detail}`,
+          type: "error",
+        });
+      }
       console.log("RES", res.data);
+      return res.data;
+    });
+  }
+
+  function updateStockActionInOrderHandler(stockActionId, model) {
+    return updateStockActionInOrder({ stockActionId, model }).then(
+      (res: any) => {
+        if (!res.error) {
+          addToast({
+            text: "Stock action updated successfully",
+            type: "success",
+          });
+        } else {
+          addToast({
+            text: `${res.error.data.detail}`,
+            type: "error",
+          });
+        }
+        console.log("RES", res.data);
+        return res.data;
+      },
+    );
+  }
+
+  function removeStockActionFromOrderHandler(stockActionId: number) {
+    return removeStockActionFromOrder(stockActionId).then((res: any) => {
+      if (!res.error) {
+        dispatch(
+          ordersActions.refreshStockActionsGridModel({
+            ...ordersState.stockActionsGridModel,
+            items: ordersState.stockActionsGridModel.items.filter(
+              (item) => item.stockActionId !== stockActionId,
+            ),
+          }),
+        );
+        addToast({
+          text: "Stock action deleted successfully",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: `${res.error.data.detail}`,
+          type: "error",
+        });
+      }
       return res.data;
     });
   }
 
   return {
     addVariantsToOrderHandler,
+    updateStockActionInOrderHandler,
+    removeStockActionFromOrderHandler,
   };
 }
