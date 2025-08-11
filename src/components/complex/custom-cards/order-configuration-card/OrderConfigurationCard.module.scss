@@ -45,6 +45,34 @@
         }
       }
 
+      .orderDiscountsGridWrapper {
+        position: relative;
+        margin-bottom: 20px;
+      }
+
+      .gridFooter {
+        position: absolute;
+        width: 100%;
+        height: 30px;
+        left: 0;
+        bottom: -17px;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        background-color: #f4f4f5;
+
+        .gridFooterItems {
+          display: flex;
+          align-items: center;
+          gap: 20px;
+          padding: 3px 10px;
+
+          .gridFooterItem {
+            width: 50%;
+            font-weight: 600;
+          }
+        }
+      }
+
       .orderSummaryItems {
         display: flex;
         flex-direction: column;

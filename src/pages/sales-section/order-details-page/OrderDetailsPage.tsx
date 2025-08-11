@@ -16,6 +16,7 @@ import SelectEntityCard from "@/components/complex/custom-cards/select-entity-ca
 import { IOrderDetailsPageSlice } from "@/const/interfaces/store-slices/IOrderDetailsPageSlice.ts";
 import { DataWithId } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { CustomersListGridColumns } from "@/components/complex/grid/customers-list-grid/CustomersListGridColumns.tsx";
+import SelectDiscountCard from "@/components/complex/custom-cards/select-discount-card/SelectDiscountCard.tsx";
 
 export function OrderDetailsPage() {
   const dispatch = useAppDispatch();
@@ -72,6 +73,13 @@ export function OrderDetailsPage() {
       case "deleteOrder":
         service.deleteOrderHandler(Number(orderId));
         break;
+      case "openSelectDiscountCard":
+        handleCardAction("selectDiscountCard", true);
+        service.getDiscountsListHandler();
+        break;
+      case "closeSelectDiscountCard":
+        handleCardAction("selectDiscountCard");
+        break;
     }
   }
 
@@ -98,6 +106,16 @@ export function OrderDetailsPage() {
                 onAction,
               }) as ColumnDef<DataWithId>[]
             }
+            onAction={onAction}
+          />
+        </div>
+      )}
+      {state.activeCards?.includes("selectDiscountCard") && (
+        <div ref={createRefCallback("selectDiscountCard")}>
+          <SelectDiscountCard
+            isLoading={state.isSelectDiscountCardLoading}
+            isGridLoading={state.isSelectDiscountGridLoading}
+            discounts={state.discounts}
             onAction={onAction}
           />
         </div>

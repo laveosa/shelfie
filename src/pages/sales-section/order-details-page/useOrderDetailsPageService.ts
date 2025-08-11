@@ -1,15 +1,22 @@
-import { useAppDispatch } from "@/utils/hooks/redux.ts";
+import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { OrdersPageSliceActions as ordersActions } from "@/state/slices/OrdersPageSlice";
 import OrderApiHooks from "@/utils/services/api/OrderApiService.ts";
 import { useNavigate } from "react-router-dom";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import { OrderDetailsPageSliceActions as actions } from "@/state/slices/OrderDetailsPageSlice.ts";
+import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
+import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
+import { IOrderDetailsPageSlice } from "@/const/interfaces/store-slices/IOrderDetailsPageSlice.ts";
 
 export default function useOrderDetailsPageService() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { addToast } = useToast();
+  const state = useAppSelector<IOrderDetailsPageSlice>(
+    StoreSliceEnum.ORDER_DETAILS,
+  );
+  const ordersState = useAppSelector<IOrdersPageSlice>(StoreSliceEnum.ORDERS);
 
   const [getOrderDetails] = OrderApiHooks.useLazyGetOrderDetailsQuery();
   const [getListOfCustomersForGrid] =
@@ -17,9 +24,13 @@ export default function useOrderDetailsPageService() {
   const [assignCustomerToOrder] =
     OrderApiHooks.useAssignCustomerToOrderMutation();
   const [deleteOrder] = OrderApiHooks.useDeleteOrderMutation();
+  const [getDiscountsList] = OrderApiHooks.useLazyGetDiscountsListQuery();
+  const [createDiscount] = OrderApiHooks.useCreateDiscountMutation();
 
   function getOrderDetailsHandler(orderId) {
+    dispatch(actions.setIsOrderConfigurationCardLoading(true));
     return getOrderDetails(orderId).then((res: any) => {
+      dispatch(actions.setIsOrderConfigurationCardLoading(false));
       dispatch(ordersActions.refreshSelectedOrder(res.data));
       return res;
     });
@@ -63,10 +74,47 @@ export default function useOrderDetailsPageService() {
     });
   }
 
+  function getDiscountsListHandler() {
+    return (
+      dispatch(actions.setIsSelectDiscountGridLoading(true)),
+      getDiscountsList().then((res: any) => {
+        dispatch(actions.setIsSelectDiscountGridLoading(false));
+        const modifiedList = res.items.map((item) => ({
+          ...item,
+          isSelected: item.discountId === ordersState.selectedOrder.discountId,
+        }));
+        dispatch(actions.refreshDiscountsList(modifiedList));
+        return res;
+      })
+    );
+  }
+
+  function createDiscountHandler(model) {
+    return createDiscount(model).then((res: any) => {
+      if (!res.error) {
+        dispatch(
+          actions.refreshDiscountsList([res.data, ...state.discountsList]),
+        );
+        addToast({
+          text: "Order deleted successfully",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: `${res.error.data.detail}`,
+          type: "error",
+        });
+      }
+      return res;
+    });
+  }
+
   return {
     getOrderDetailsHandler,
     getListOfCustomersForGridHandler,
     assignCustomerToOrderHandler,
     deleteOrderHandler,
+    getDiscountsListHandler,
+    createDiscountHandler,
   };
 }

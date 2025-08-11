@@ -88,6 +88,28 @@ export const OrderApiService = createApi({
         }),
       },
     ),
+    getDiscountsList: apiConfig.createQuery<void, void>(builder, {
+      query: () => ({
+        url: `${ApiUrlEnum.DISCOUNTS}/all`,
+      }),
+    }),
+    createDiscount: apiConfig.createMutation<any, any>(builder, {
+      query: (model) => ({
+        url: `${ApiUrlEnum.DISCOUNTS}`,
+        method: "POST",
+        body: JSON.stringify(model),
+      }),
+    }),
+    updateDiscount: apiConfig.createMutation<
+      void,
+      { discountId: number; model: any }
+    >(builder, {
+      query: ({ discountId, model }) => ({
+        url: `${ApiUrlEnum.DISCOUNTS}/${discountId}`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+    }),
   }),
 });
 

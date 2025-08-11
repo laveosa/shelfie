@@ -1,4 +1,3 @@
-import { VariantModel } from "@/const/models/VariantModel.ts";
 import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
@@ -10,7 +9,7 @@ import { CategoryModel } from "@/const/models/CategoryModel.ts";
 export interface IFindProductsCard {
   isLoading?: boolean;
   isGridLoading?: boolean;
-  variants?: VariantModel[];
+  variants?: any[];
   gridModel?: GridModel;
   gridRequestModel?: GridRequestModel;
   sortingOptions?: GridSortingModel[];

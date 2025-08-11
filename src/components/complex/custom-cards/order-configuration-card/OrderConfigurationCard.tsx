@@ -1,6 +1,11 @@
 import { Plus, Trash2, UserMinus, UserPlus } from "lucide-react";
+import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
 
+import {
+  DataWithId,
+  DndGridDataTable,
+} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./OrderConfigurationCard.module.scss";
 import { IOrderConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IOrderConfigurationCard.ts";
@@ -11,13 +16,13 @@ import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSele
 import { StatusModel } from "@/const/models/StatusModel.ts";
 import { Separator } from "@/components/ui/separator.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import { OrderDiscountsGridColumns } from "@/components/complex/grid/order-discounts-grid/OrderDiscountsGridColumns.tsx";
 
 export default function OrderConfigurationCard({
   isLoading,
+  isGridLoading,
   order,
   statuses,
-  shipmentGridModel,
-  discountGridModel,
   onAction,
 }: IOrderConfigurationCard) {
   function convertStatusesToSelectItems(data: StatusModel[]): ISheSelectItem[] {
@@ -108,9 +113,33 @@ export default function OrderConfigurationCard({
           <Separator />
           <div className={cs.orderConfigurationCardItem}>
             <span className="she-title">Discount</span>
-            <SheButton variant="secondary" value="Apply Discount" icon={Plus} />
+            <SheButton
+              variant="secondary"
+              value="Apply Discount"
+              icon={Plus}
+              onClick={() => onAction("openSelectDiscountCard")}
+            />
           </div>
-          {/*<DndGridDataTable columns={} data={} />*/}
+          <div className={cs.orderDiscountsGridWrapper}>
+            <DndGridDataTable
+              className={cs.orderDiscountsGrid}
+              isLoading={isGridLoading}
+              showHeader={false}
+              columns={
+                OrderDiscountsGridColumns({
+                  onAction,
+                }) as ColumnDef<DataWithId>[]
+              }
+              data={order?.discounts}
+              customMessage="There are no discounts applied"
+            />
+            <div className={cs.gridFooter}>
+              <div className={cs.gridFooterItems}>
+                <span className={cs.gridFooterItem}>Discount total</span>
+                <span className={cs.gridFooterItem}>99,59 PLN</span>
+              </div>
+            </div>
+          </div>
           <Separator />
           <div className={cs.orderConfigurationCardItem}>
             <span className="she-title">Shipment</span>
