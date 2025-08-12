@@ -74,6 +74,40 @@ export function formatDate(
   return "";
 }
 
+// Generic function to format date rows with custom format patterns
+export function formatDateRow(
+  dateString: string | null, 
+  format: string = "dd-mm-yyyy hh:mm", 
+  fallbackText: string = "No Orders"
+): string {
+  if (!dateString) {
+    return fallbackText;
+  }
+  
+  try {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return fallbackText;
+    }
+    
+    // Parse the format string and replace placeholders
+    let formattedDate = format;
+    
+    // Replace format placeholders with actual date values
+    formattedDate = formattedDate
+      .replace(/dd/g, String(date.getDate()).padStart(2, "0"))
+      .replace(/mm/g, String(date.getMonth() + 1).padStart(2, "0"))
+      .replace(/yyyy/g, String(date.getFullYear()))
+      .replace(/hh/g, String(date.getHours()).padStart(2, "0"))
+      .replace(/mm/g, String(date.getMinutes()).padStart(2, "0"))
+      .replace(/ss/g, String(date.getSeconds()).padStart(2, "0"));
+    
+    return formattedDate;
+  } catch (error) {
+    return fallbackText;
+  }
+}
+
 export function getInitials(name: string) {
   const names = name?.trim().split(" ");
   const initials = names?.map((n) => n.charAt(0).toUpperCase()).slice(0, 2);

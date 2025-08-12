@@ -1,0 +1,35 @@
+@use "@/styles/variables" as vars;
+
+.addressForm {
+  .addressForm > form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-bottom: 20px;
+    justify-content: space-between;
+
+    .addressFormRow {
+      display: flex;
+      align-items: end;
+      gap: 20px;
+      justify-content: space-between;
+
+      & > div {
+        width: 100%;
+      }
+    }
+
+    .addressFormSwitch {
+      justify-content: flex-start;
+    }
+  }
+
+  *:focus {
+    box-shadow: none;
+  }
+  .cardFooter {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+} 

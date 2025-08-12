@@ -1,6 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { OrdersPageSliceActions as ordersActions } from "@/state/slices/OrdersPageSlice";
-import OrderApiHooks from "@/utils/services/api/OrderApiService.ts";
 import { useNavigate } from "react-router-dom";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { useToast } from "@/hooks/useToast.ts";
@@ -8,6 +7,7 @@ import { OrderDetailsPageSliceActions as actions } from "@/state/slices/OrderDet
 import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IOrderDetailsPageSlice } from "@/const/interfaces/store-slices/IOrderDetailsPageSlice.ts";
+import OrdersApiHooks from "@/utils/services/api/OrdersApiService.ts";
 
 export default function useOrderDetailsPageService() {
   const dispatch = useAppDispatch();
@@ -18,14 +18,14 @@ export default function useOrderDetailsPageService() {
   );
   const ordersState = useAppSelector<IOrdersPageSlice>(StoreSliceEnum.ORDERS);
 
-  const [getOrderDetails] = OrderApiHooks.useLazyGetOrderDetailsQuery();
+  const [getOrderDetails] = OrdersApiHooks.useLazyGetOrderDetailsQuery();
   const [getListOfCustomersForGrid] =
-    OrderApiHooks.useGetListOfCustomersForGridMutation();
+    OrdersApiHooks.useGetListOfCustomersForGridMutation();
   const [assignCustomerToOrder] =
-    OrderApiHooks.useAssignCustomerToOrderMutation();
-  const [deleteOrder] = OrderApiHooks.useDeleteOrderMutation();
-  const [getDiscountsList] = OrderApiHooks.useLazyGetDiscountsListQuery();
-  const [createDiscount] = OrderApiHooks.useCreateDiscountMutation();
+    OrdersApiHooks.useAssignCustomerToOrderMutation();
+  const [deleteOrder] = OrdersApiHooks.useDeleteOrderMutation();
+  const [getDiscountsList] = OrdersApiHooks.useLazyGetDiscountsListQuery();
+  const [createDiscount] = OrdersApiHooks.useCreateDiscountMutation();
 
   function getOrderDetailsHandler(orderId) {
     dispatch(actions.setIsOrderConfigurationCardLoading(true));

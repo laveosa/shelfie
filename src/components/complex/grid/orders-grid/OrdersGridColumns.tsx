@@ -30,9 +30,9 @@ export function ordersGridColumns(onGridAction: any): ColumnDef<any>[] {
     {
       accessorKey: "customer",
       header: "Customer",
-      size: 60,
-      minSize: 60,
-      maxSize: 60,
+      size: 150,
+      minSize: 150,
+      maxSize: 150,
       cell: ({ row }) => {
         const image: string = row.original.customer.thumbnailUrl;
         // const meta = table.options.meta as {
@@ -57,7 +57,7 @@ export function ordersGridColumns(onGridAction: any): ColumnDef<any>[] {
               <SheTooltip
                 delayDuration={200}
                 text={row.original.customer.name}
-                className="max-w-[130px] overflow-hidden text-ellipsis whitespace-nowrap"
+                className="max-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap"
               >
                 <span>{row.original.customer.name}</span>
               </SheTooltip>
@@ -69,9 +69,9 @@ export function ordersGridColumns(onGridAction: any): ColumnDef<any>[] {
     {
       accessorKey: "date",
       header: "Date",
-      size: 40,
-      minSize: 40,
-      maxSize: 40,
+      size: 60,
+      minSize: 60,
+      maxSize: 60,
       cell: ({ row }) => {
         return <span>{formatDate(row.getValue("date"), "date")}</span>;
       },
@@ -79,9 +79,9 @@ export function ordersGridColumns(onGridAction: any): ColumnDef<any>[] {
     {
       accessorKey: "channel",
       header: "Channel",
-      size: 30,
-      minSize: 30,
-      maxSize: 30,
+      size: 60,
+      minSize: 60,
+      maxSize: 60,
       cell: ({ row }) => {
         return <span>{row.getValue("channel")}</span>;
       },
@@ -89,9 +89,9 @@ export function ordersGridColumns(onGridAction: any): ColumnDef<any>[] {
     {
       accessorKey: "orderStatus",
       header: "Order",
-      size: 40,
-      minSize: 40,
-      maxSize: 40,
+      size: 60,
+      minSize: 60,
+      maxSize: 60,
       cell: ({ row }) => {
         const status: string = row.getValue("orderStatus");
         return (
@@ -104,9 +104,9 @@ export function ordersGridColumns(onGridAction: any): ColumnDef<any>[] {
     {
       accessorKey: "paymentStatus",
       header: "Payment",
-      size: 40,
-      minSize: 40,
-      maxSize: 40,
+      size: 60,
+      minSize: 60,
+      maxSize: 60,
       cell: ({ row }) => {
         const status: string = row.getValue("paymentStatus");
         return (
@@ -119,9 +119,9 @@ export function ordersGridColumns(onGridAction: any): ColumnDef<any>[] {
     {
       accessorKey: "shipmentStatus",
       header: "Shipment",
-      size: 40,
-      minSize: 40,
-      maxSize: 40,
+      size: 60,
+      minSize: 60,
+      maxSize: 60,
       cell: ({ row }) => {
         const status: string = row.getValue("shipmentStatus");
         return (
@@ -134,9 +134,9 @@ export function ordersGridColumns(onGridAction: any): ColumnDef<any>[] {
     {
       accessorKey: "count",
       header: "Items",
-      size: 30,
-      minSize: 30,
-      maxSize: 30,
+      size: 40,
+      minSize: 40,
+      maxSize: 40,
       cell: ({ row }) => {
         return <span>{row.getValue("count")}</span>;
       },
@@ -144,9 +144,9 @@ export function ordersGridColumns(onGridAction: any): ColumnDef<any>[] {
     {
       accessorKey: "value",
       header: "Value",
-      size: 30,
-      minSize: 30,
-      maxSize: 30,
+      size: 40,
+      minSize: 40,
+      maxSize: 40,
       cell: ({ row }) => {
         return (
           <span>{`${row.getValue("value")} ${row.original.currency.briefName}`}</span>
@@ -156,9 +156,9 @@ export function ordersGridColumns(onGridAction: any): ColumnDef<any>[] {
     {
       accessorKey: "income",
       header: "Income",
-      size: 30,
-      minSize: 30,
-      maxSize: 30,
+      size: 40,
+      minSize: 40,
+      maxSize: 40,
       cell: ({ row }) => {
         return (
           <span>{`${row.getValue("income")} ${row.original.currency.briefName}`}</span>
@@ -184,7 +184,10 @@ export function ordersGridColumns(onGridAction: any): ColumnDef<any>[] {
         };
 
         return (
-          <div onClick={(e) => e.stopPropagation()}>
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{ display: "flex", justifyContent: "center" }}
+          >
             <SheButton
               icon={Cog}
               variant="secondary"

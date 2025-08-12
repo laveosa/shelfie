@@ -1,18 +1,18 @@
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { AppDispatch, RootState } from "@/state/store.ts";
 import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
 import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
 import { OrdersPageSliceActions as actions } from "@/state/slices/OrdersPageSlice.ts";
-import OrderApiHooks from "@/utils/services/api/OrderApiService.ts";
 import UsersApiHooks from "@/utils/services/api/UsersApiService.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import useAppService from "@/useAppService.ts";
 import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
-import { useNavigate } from "react-router-dom";
+import OrdersApiHooks from "@/utils/services/api/OrdersApiService.ts";
 
 export default function useOrdersPageService() {
   const appService = useAppService();
@@ -25,14 +25,14 @@ export default function useOrdersPageService() {
   const [getSortingOptionsForGrid] =
     DictionaryApiHooks.useLazyGetSortingOptionsForGridQuery();
   const [getListOfOrdersForGrid] =
-    OrderApiHooks.useGetListOfOrdersForGridMutation();
+    OrdersApiHooks.useGetListOfOrdersForGridMutation();
   const [updateUserPreferences] =
     UsersApiHooks.useUpdateUserPreferencesMutation();
   const [resetUserPreferences] =
     UsersApiHooks.useResetUserPreferencesMutation();
-  const [createOrder] = OrderApiHooks.useCreateOrderMutation();
+  const [createOrder] = OrdersApiHooks.useCreateOrderMutation();
   const [getListOfCustomersForGrid] =
-    OrderApiHooks.useGetListOfCustomersForGridMutation();
+    OrdersApiHooks.useGetListOfCustomersForGridMutation();
   const [getVariantsForGrid] = ProductsApiHooks.useGetVariantsForGridMutation();
   const [getBrandsForFilter] =
     ProductsApiHooks.useLazyGetBrandsForProductsFilterQuery();
@@ -41,7 +41,7 @@ export default function useOrdersPageService() {
   const [getTraitsForFilter] =
     ProductsApiHooks.useLazyGetTraitsForFilterQuery();
   const [getListOfStockActionsForGrid] =
-    OrderApiHooks.useGetListOfStockActionsForGridMutation();
+    OrdersApiHooks.useGetListOfStockActionsForGridMutation();
 
   function getSortingOptionsForGridHandler() {
     return getSortingOptionsForGrid(null).then((res: any) => {

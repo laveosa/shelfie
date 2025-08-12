@@ -9,7 +9,7 @@ import ProfilePageSlice from "@/state/slices/ProfilePageSlice.ts";
 import SettingsPageSlice from "@/state/slices/SettingsPageSlice.ts";
 import SupportPageSlice from "@/state/slices/SupportPageSlice.ts";
 import TransmissionsPageSlice from "@/state/slices/TransmissionsPageSlice.ts";
-import UsersPageSlice from "@/state/slices/UsersPAgeSlice.ts";
+import CustomersPageSlice from "@/state/slices/CustomersPageSlice";
 import ProductsPageSlice from "@/state/slices/ProductsPageSlice.ts";
 import AuthPageSlice from "@/state/slices/AuthPageSlice.ts";
 import ProductBasicDataPageSlice from "@/state/slices/ProductBasicDataPageSlice.ts";
@@ -23,6 +23,7 @@ import PurchaseProductsPageSlice from "@/state/slices/PurchaseProductsPageSlice.
 import MarginsPageSlice from "@/state/slices/MarginsPageSlice.ts";
 import InvoicesPageSlice from "@/state/slices/InvoicesPageSlice.ts";
 import SupplierPageSlice from "@/state/slices/SupplierPageSlice.ts";
+import { OrdersApiService } from "@/utils/services/api/OrdersApiService.ts";
 import { ProductsApiService } from "@/utils/services/api/ProductsApiService.ts";
 import { AuthApiService } from "@/utils/services/api/AuthApiService.ts";
 import { DictionaryApiService } from "@/utils/services/api/DictionaryApiService.ts";
@@ -31,7 +32,6 @@ import { AssetsApiService } from "@/utils/services/api/AssetsApiService.ts";
 import { FacebookApiService } from "@/utils/services/api/FacebookApiService.ts";
 import { PurchasesApiService } from "@/utils/services/api/PurchasesApiService.ts";
 import { SuppliersApiService } from "@/utils/services/api/SuppliersApiService.ts";
-import { OrderApiService } from "@/utils/services/api/OrderApiService.ts";
 import OpenCartsPageSlice from "@/state/slices/OpenCartsPageSlice.ts";
 import OrderDetailsPageSlice from "@/state/slices/OrderDetailsPageSlice.ts";
 import OrderPaymentPageSlice from "@/state/slices/OrderPaymentPageSlice.ts";
@@ -62,7 +62,7 @@ export const store = configureStore({
     [StoreSliceEnum.SETTINGS]: SettingsPageSlice.reducer,
     [StoreSliceEnum.SUPPORT]: SupportPageSlice.reducer,
     [StoreSliceEnum.TRANSMISSIONS]: TransmissionsPageSlice.reducer,
-    [StoreSliceEnum.USERS]: UsersPageSlice.reducer,
+    [StoreSliceEnum.CUSTOMERS]: CustomersPageSlice.reducer,
     [StoreSliceEnum.ORDERS]: OrdersPageSlice.reducer,
     [StoreSliceEnum.OPEN_CARTS]: OpenCartsPageSlice.reducer,
     [StoreSliceEnum.RETURNS]: ReturnsPageSlice.reducer,
@@ -81,7 +81,7 @@ export const store = configureStore({
     [AssetsApiService.reducerPath]: AssetsApiService.reducer,
     [MessengerApiService.reducerPath]: MessengerApiService.reducer,
     [FacebookApiService.reducerPath]: FacebookApiService.reducer,
-    [OrderApiService.reducerPath]: OrderApiService.reducer,
+    [OrdersApiService.reducerPath]: OrdersApiService.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -94,7 +94,7 @@ export const store = configureStore({
       .concat(AssetsApiService.middleware)
       .concat(MessengerApiService.middleware)
       .concat(FacebookApiService.middleware)
-      .concat(OrderApiService.middleware),
+      .concat(OrdersApiService.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

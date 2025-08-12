@@ -4,12 +4,12 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { AppDispatch, RootState } from "@/state/store.ts";
 import useAppService from "@/useAppService.ts";
 import { IOrderProductsPageSlice } from "@/const/interfaces/store-slices/IOrderProductsPageSlice.ts";
-import OrderApiHooks from "@/utils/services/api/OrderApiService.ts";
 import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
 import { OrderProductsPageSliceActions as actions } from "@/state/slices/OrderProductsPageSlice";
 import { OrdersPageSliceActions as ordersActions } from "@/state/slices/OrdersPageSlice.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import useOrdersPageService from "@/pages/sales-section/orders-page/useOrdersPageService.ts";
+import OrdersApiHooks from "@/utils/services/api/OrdersApiService.ts";
 
 export default function useOrderProductsPageService() {
   const appService = useAppService();
@@ -24,11 +24,11 @@ export default function useOrderProductsPageService() {
   const dispatch = useDispatch<AppDispatch>();
   const { addToast } = useToast();
 
-  const [addVariantsToOrder] = OrderApiHooks.useAddVariantsToOrderMutation();
+  const [addVariantsToOrder] = OrdersApiHooks.useAddVariantsToOrderMutation();
   const [updateStockActionInOrder] =
-    OrderApiHooks.useUpdateStockActionInOrderMutation();
+    OrdersApiHooks.useUpdateStockActionInOrderMutation();
   const [removeStockActionFromOrder] =
-    OrderApiHooks.useRemoveStockActionFromOrderMutation();
+    OrdersApiHooks.useRemoveStockActionFromOrderMutation();
 
   function addProductHandler() {
     dispatch(actions.setIsFindProductsGridLoading(true));
