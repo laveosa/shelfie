@@ -1,4 +1,4 @@
-import React, { JSX, useEffect, useState } from "react";
+import React, { JSX, useEffect, useRef, useState } from "react";
 import _ from "lodash";
 
 import cs from "./SheSelect.module.scss";
@@ -61,10 +61,12 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
   const [_selected, setSelected] = useState<ISheSelectItem<T>>(null);
   const [_open, setOpen] = useState<boolean>(null);
   const [_loading, setLoading] = useState<boolean>(null);
+  const [_isHighlighted, setIsHighlighted] = useState<boolean>(null);
 
   // ==================================================================== REFS
   const _triggerRef = useDefaultRef<HTMLInputElement>(triggerRef);
   const _popoverRef = useDefaultRef<HTMLDivElement>(popoverRef);
+  const _sourceValue = useRef<T>(null);
 
   // ==================================================================== UTILITIES
   const {
@@ -125,6 +127,8 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
     }
     // ----------------------------------- SET SELECTED
     if (!_.isEqual(tmpSelected, _selected)) setSelected(tmpSelected);
+    setIsHighlighted(false);
+    _sourceValue.current = tmpSelected.value;
     // ----------------------------------- UPDATE FOCUS CONDITION
     _updateFocusRelatedLogic();
   }, [items, selected]);
@@ -169,6 +173,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
         selected.value,
       );
       setItems(tmpItems);
+      setIsHighlighted(!_.isEqual(_sourceValue.current, selected.value));
       onSelect?.(selected.value, {
         value: selected.value,
         model: { ...props, items: tmpItems, selected: selected.value },
@@ -243,7 +248,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
   return (
     <ShePrimitiveComponentWrapper
       {...shePrimitiveComponentWrapperProps}
-      className={`${cs.sheSelect} ${shePrimitiveComponentWrapperProps.className}`}
+      className={`${cs.sheSelect} ${shePrimitiveComponentWrapperProps.className} ${_isHighlighted ? cs.highlighted : ""}`}
       ariaDescribedbyId={ariaDescribedbyId}
       clearBtnValue={_selected}
       onClear={onClearHandler}
