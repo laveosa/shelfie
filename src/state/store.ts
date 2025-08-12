@@ -12,26 +12,35 @@ import TransmissionsPageSlice from "@/state/slices/TransmissionsPageSlice.ts";
 import CustomersPageSlice from "@/state/slices/CustomersPageSlice";
 import ProductsPageSlice from "@/state/slices/ProductsPageSlice.ts";
 import AuthPageSlice from "@/state/slices/AuthPageSlice.ts";
-import { ProductsApiService } from "@/utils/services/api/ProductsApiService.ts";
-import { AuthApiService } from "@/utils/services/api/AuthApiService.ts";
-import { DictionaryApiService } from "@/utils/services/api/DictionaryApiService.ts";
-import { UsersApiService } from "@/utils/services/api/UsersApiService.ts";
-import { AssetsApiService } from "@/utils/services/api/AssetsApiService.ts";
 import ProductBasicDataPageSlice from "@/state/slices/ProductBasicDataPageSlice.ts";
 import ProductGalleryPageSlice from "@/state/slices/ProductGalleryPageSlice.ts";
 import ManageVariantsPageSlice from "@/state/slices/ManageVariantsPageSlice.ts";
 import MessengerApiService from "@/utils/services/api/MessengerApiService.ts";
-import { FacebookApiService } from "@/utils/services/api/FacebookApiService.ts";
 import AttributesPageSlice from "@/state/slices/AttributesPageSlice.ts";
 import SizeChartPageSlice from "@/state/slices/SizeChartPageSlice.ts";
 import DialogSlice from "@/state/slices/DialogSlice.ts";
-import { PurchasesApiService } from "@/utils/services/api/PurchasesApiService.ts";
-import { SuppliersApiService } from "@/utils/services/api/SuppliersApiService.ts";
 import PurchaseProductsPageSlice from "@/state/slices/PurchaseProductsPageSlice.ts";
 import MarginsPageSlice from "@/state/slices/MarginsPageSlice.ts";
 import InvoicesPageSlice from "@/state/slices/InvoicesPageSlice.ts";
 import SupplierPageSlice from "@/state/slices/SupplierPageSlice.ts";
 import { OrdersApiService } from "@/utils/services/api/OrdersApiService.ts";
+import { ProductsApiService } from "@/utils/services/api/ProductsApiService.ts";
+import { AuthApiService } from "@/utils/services/api/AuthApiService.ts";
+import { DictionaryApiService } from "@/utils/services/api/DictionaryApiService.ts";
+import { UsersApiService } from "@/utils/services/api/UsersApiService.ts";
+import { AssetsApiService } from "@/utils/services/api/AssetsApiService.ts";
+import { FacebookApiService } from "@/utils/services/api/FacebookApiService.ts";
+import { PurchasesApiService } from "@/utils/services/api/PurchasesApiService.ts";
+import { SuppliersApiService } from "@/utils/services/api/SuppliersApiService.ts";
+import { OrderApiService } from "@/utils/services/api/OrderApiService.ts";
+import OpenCartsPageSlice from "@/state/slices/OpenCartsPageSlice.ts";
+import OrderDetailsPageSlice from "@/state/slices/OrderDetailsPageSlice.ts";
+import OrderPaymentPageSlice from "@/state/slices/OrderPaymentPageSlice.ts";
+import OrderProductsPageSlice from "@/state/slices/OrderProductsPageSlice.ts";
+import PaymentsPageSlice from "@/state/slices/PaymentsPageSlice.ts";
+import ReturnsPageSlice from "@/state/slices/ReturnsPageSlice.ts";
+import ShipmentsPageSlice from "@/state/slices/ShipmentsPageSlice.ts";
+import OrderShipmentPageSlice from "@/state/slices/OrderShipmentPageSlice.ts";
 
 export const store = configureStore({
   reducer: {
@@ -40,7 +49,6 @@ export const store = configureStore({
     [StoreSliceEnum.AUTH]: AuthPageSlice.reducer,
     [StoreSliceEnum.DASHBOARD]: DashboardPageSlice.reducer,
     [StoreSliceEnum.MESSENGER]: MessengerPageSlice.reducer,
-    [StoreSliceEnum.ORDERS]: OrdersPageSlice.reducer,
     [StoreSliceEnum.PRODUCTS]: ProductsPageSlice.reducer,
     [StoreSliceEnum.PRODUCT_BASIC_DATA]: ProductBasicDataPageSlice.reducer,
     [StoreSliceEnum.PRODUCT_GALLERY]: ProductGalleryPageSlice.reducer,
@@ -56,6 +64,15 @@ export const store = configureStore({
     [StoreSliceEnum.SUPPORT]: SupportPageSlice.reducer,
     [StoreSliceEnum.TRANSMISSIONS]: TransmissionsPageSlice.reducer,
     [StoreSliceEnum.CUSTOMERS]: CustomersPageSlice.reducer,
+    [StoreSliceEnum.ORDERS]: OrdersPageSlice.reducer,
+    [StoreSliceEnum.OPEN_CARTS]: OpenCartsPageSlice.reducer,
+    [StoreSliceEnum.RETURNS]: ReturnsPageSlice.reducer,
+    [StoreSliceEnum.SHIPMENTS]: ShipmentsPageSlice.reducer,
+    [StoreSliceEnum.PAYMENTS]: PaymentsPageSlice.reducer,
+    [StoreSliceEnum.ORDER_DETAILS]: OrderDetailsPageSlice.reducer,
+    [StoreSliceEnum.ORDER_PRODUCTS]: OrderProductsPageSlice.reducer,
+    [StoreSliceEnum.ORDER_SHIPMENT]: OrderShipmentPageSlice.reducer,
+    [StoreSliceEnum.ORDER_PAYMENT]: OrderPaymentPageSlice.reducer,
     [AuthApiService.reducerPath]: AuthApiService.reducer,
     [ProductsApiService.reducerPath]: ProductsApiService.reducer,
     [PurchasesApiService.reducerPath]: PurchasesApiService.reducer,

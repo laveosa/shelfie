@@ -161,13 +161,12 @@
 //-------------------------------------------------------expandableRows
 
 .expandedContent {
-  padding-top: 0;
+  padding: 0 !important;
 
   & > div {
     display: flex;
     justify-content: flex-end;
-    background: none;
-    padding: 0;
+    padding: 10px;
   }
 }
 

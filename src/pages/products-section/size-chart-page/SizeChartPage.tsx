@@ -38,7 +38,7 @@ export function SizeChartPage() {
         counter={state.productCounter}
         itemsCollection="products"
         onAction={handleCardAction}
-        productId={Number(productId)}
+        itemId={Number(productId)}
         activeCards={state.activeCards}
       />
     </div>

@@ -363,6 +363,7 @@ export function ManageVariantsPage() {
         }
         break;
       case "increaseStockAmount":
+        console.log(payload);
         dispatch(actions.setIsAddStockCardLoading(true));
         productsService
           .increaseStockAmountForVariantHandler(
@@ -949,7 +950,7 @@ export function ManageVariantsPage() {
         itemsCollection="products"
         counter={productsState.productCounter}
         onAction={handleCardAction}
-        productId={Number(productId)}
+        itemId={Number(productId)}
         activeCards={state.activeCards}
       />
       <ManageVariantsCard

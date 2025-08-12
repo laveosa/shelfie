@@ -29,7 +29,7 @@ import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { purchaseVariantsGridColumns } from "@/components/complex/grid/purchase-variants-grid/PurchaseVariantsGridColumns.tsx";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
 import GridTraitsFilter from "@/components/complex/grid/grid-traits-filter/GridTraitsFilter.tsx";
-import GridShowDeletedFilter from "@/components/complex/grid/grid-show-deleted-filter/GridShowDeletedFilter.tsx";
+import GridShowItemsFilter from "@/components/complex/grid/grid-show-deleted-filter/GridShowItemsFilter.tsx";
 
 export default function PurchaseProductsCard({
   isLoading,
@@ -309,7 +309,7 @@ export default function PurchaseProductsCard({
                   traitType="size"
                   gridRequestModel={state.variantsForPurchaseGridRequestModel}
                 />
-                <GridShowDeletedFilter />
+                <GridShowItemsFilter context="Deleted" />
               </DndGridDataTable>
             </TabsContent>
           </SheTabs>

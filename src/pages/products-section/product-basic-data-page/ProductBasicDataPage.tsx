@@ -299,7 +299,7 @@ export function ProductBasicDataPage() {
         title={productId ? "Manage Product" : "Create Product"}
         itemsCollection="products"
         counter={productsState.productCounter}
-        productId={Number(productId)}
+        itemId={Number(productId)}
         activeCards={state.activeCards}
       />
       <ProductConfigurationCard

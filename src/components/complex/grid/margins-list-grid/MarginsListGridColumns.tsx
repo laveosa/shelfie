@@ -6,14 +6,9 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import cs from "./MarginsListGridColumns.module.scss";
 
 export function MarginsListGridColumns({
-  onGridAction,
+  onAction,
 }: {
-  onGridAction: (
-    actionType: string,
-    rowId?: string,
-    setLoadingRow?: (rowId: string, loading: boolean) => void,
-    row?: Row<any>,
-  ) => void;
+  onAction: (actionType: string, row?: Row<any>) => void;
 }): ColumnDef<any>[] {
   return [
     {
@@ -31,12 +26,7 @@ export function MarginsListGridColumns({
         const handleSelectClick = (e) => {
           e.stopPropagation();
           e.preventDefault();
-          onGridAction(
-            "selectMargin",
-            row.id,
-            meta?.setLoadingRow,
-            row.original,
-          );
+          onAction("selectMargin", row.original);
         };
 
         return (
@@ -87,14 +77,7 @@ export function MarginsListGridColumns({
               icon={CogIcon}
               value="Manage"
               variant="secondary"
-              onClick={() =>
-                onGridAction(
-                  "manageMargin",
-                  row.id,
-                  meta?.setLoadingRow,
-                  row.original,
-                )
-              }
+              onClick={() => onAction("manageMargin", row.original)}
               disabled={meta?.isRowLoading(row.id)}
             />
           </div>

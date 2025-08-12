@@ -38,7 +38,7 @@ export function AttributesPage() {
         itemsCollection="products"
         counter={state.productCounter}
         onAction={handleCardAction}
-        productId={Number(productId)}
+        itemId={Number(productId)}
         activeCards={state.activeCards}
       />
     </div>

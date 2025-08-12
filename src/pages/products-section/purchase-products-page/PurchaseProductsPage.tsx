@@ -1381,7 +1381,7 @@ export function PurchaseProductsPage() {
         isLoading={state.isProductMenuCardLoading}
         title="Report Purchase"
         itemsCollection="purchases"
-        productId={Number(purchaseId)}
+        itemId={Number(purchaseId)}
         counter={productsState.purchaseCounters}
       />
       {state.activeCards?.includes("purchaseProductsCard") && (
