@@ -57,3 +57,11 @@
     border: 1px solid vars.$colorRed;
   }
 }
+
+// ======================================================== HIGHLIGHT
+
+.sheTextArea.highlighted {
+  textarea {
+    border-color: vars.$colorBlue !important;
+  }
+}

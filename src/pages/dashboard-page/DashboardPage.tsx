@@ -13,6 +13,7 @@ import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheMultiSelect from "@/components/primitive/she-multi-select/SheMultiSelect.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
+import SheTextArea from "@/components/primitive/she-textarea/SheTextarea.tsx";
 
 const options: ISheSelectItem<any>[] = [
   {
@@ -379,7 +380,29 @@ export function DashboardPage() {
         <br />
       </div>*/}
 
-      <div className="flex flex-col fullWidth">
+      {/*<div className="flex flex-col fullWidth">
+        <h2 className="underline">
+          <b>Highlight Changed</b>
+        </h2>
+        <br />
+        <div className="flex flex-col gap-6">
+          <div className="flex gap-10">
+            <SheButton value="Update" onClick={() => setSourceValue(_value)} />
+          </div>
+          <div className="flex gap-10">
+            <SheTextArea
+              label="Textarea"
+              value={_sourceValue}
+              onChange={setValue}
+            />
+          </div>
+        </div>
+        <br />
+        <div className="divider"></div>
+        <br />
+      </div>*/}
+
+      {/*<div className="flex flex-col fullWidth">
         <h2 className="underline">
           <b>Highlight Changed</b>
         </h2>
@@ -400,7 +423,7 @@ export function DashboardPage() {
         <br />
         <div className="divider"></div>
         <br />
-      </div>
+      </div>*/}
 
       {/*<div className="flex flex-col fullWidth">
         <h2 className="underline">

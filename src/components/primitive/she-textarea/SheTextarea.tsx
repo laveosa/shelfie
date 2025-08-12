@@ -53,12 +53,14 @@ export default function SheTextArea(props: ISheTextarea): JSX.Element {
   const [_showError, setShowError] = useState<boolean>(showError);
   const [_error, setError] = useState<string>(null);
   const [_errorTransKey, setErrorTransKey] = useState<string>(null);
+  const [_isHighlighted, setIsHighlighted] = useState<boolean>(null);
 
   // ==================================================================== REFS
   const _textAreaRef = useRef<HTMLTextAreaElement>(null);
   const _isInitialized = useRef(false);
   const _isTouched = useRef(false);
   const _lastEventDataRef = useRef<any>(null);
+  const _sourceValue = useRef<string>(null);
 
   // ==================================================================== UTILITIES
   const { translate, ariaDescribedbyId, setFocus } = useComponentUtilities({
@@ -68,6 +70,9 @@ export default function SheTextArea(props: ISheTextarea): JSX.Element {
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
+    setIsHighlighted(false);
+    _sourceValue.current = value;
+
     if (value !== _textValue) {
       _isTouched.current = true;
       setTextValue(value);
@@ -124,6 +129,7 @@ export default function SheTextArea(props: ISheTextarea): JSX.Element {
     _isTouched.current = true;
     const newValue = event.target.value;
     const tmpIsValid = _validateValue(newValue);
+    setIsHighlighted(!_.isEqual(_sourceValue.current, newValue));
     onBlur?.(newValue, {
       value: newValue,
       model: {
@@ -242,7 +248,7 @@ export default function SheTextArea(props: ISheTextarea): JSX.Element {
   return (
     <ShePrimitiveComponentWrapper
       {...shePrimitiveComponentWrapperProps}
-      className={`${shePrimitiveComponentWrapperProps.className} ${cs.sheTextArea} ${!_isValid ? cs.invalid : ""} ${resize ? cs.resize : ""} ${view === "card" ? cs.sheTextAreaViewCard : cs.sheTextAreaViewNormal}`}
+      className={`${shePrimitiveComponentWrapperProps.className} ${cs.sheTextArea} ${_isHighlighted ? cs.highlighted : ""} ${!_isValid ? cs.invalid : ""} ${resize ? cs.resize : ""} ${view === "card" ? cs.sheTextAreaViewCard : cs.sheTextAreaViewNormal}`}
       clearBtnValue={_textValue}
       ariaDescribedbyId={ariaDescribedbyId}
       iconProps={{ className: `${iconProps?.className} ${cs.sheTextAreaIcon}` }}
