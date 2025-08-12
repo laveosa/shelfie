@@ -161,11 +161,11 @@ export default function ShePrimitiveComponentWrapper(
         />
         <SheDescriptionBlock
           {...sheDescriptionBockProps}
-          descriptionBlockClassName={`${sheDescriptionBockProps.descriptionBlockClassName} ${cs.descriptionBlock}`}
+          descriptionBlockClassName={`${sheDescriptionBockProps.descriptionBlockClassName} ${cs.descriptionBlock} ${sheDescriptionBockProps.descriptionIcon ? cs.descriptionBlockWithIcon : ""}`}
         />
         <SheErrorMessageBlock
           {...sheErrorMessageBlockProps}
-          errorMessageBlockClassName={`${sheErrorMessageBlockProps.errorMessageBlockClassName} ${cs.errorBlock}`}
+          errorMessageBlockClassName={`${sheErrorMessageBlockProps.errorMessageBlockClassName} ${cs.errorBlock} ${sheErrorMessageBlockProps.errorMessageIcon ? cs.errorBlockWithIcon : ""}`}
         />
       </div>
     </div>

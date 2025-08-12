@@ -43,6 +43,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
     showSelectIcon,
     autoFocus,
     openOnFocus,
+    showHighlighted,
     onOpen,
     onSelect,
     onTriggerKeyDown,
@@ -248,7 +249,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
   return (
     <ShePrimitiveComponentWrapper
       {...shePrimitiveComponentWrapperProps}
-      className={`${cs.sheSelect} ${shePrimitiveComponentWrapperProps.className} ${_isHighlighted ? cs.highlighted : ""}`}
+      className={`${cs.sheSelect} ${shePrimitiveComponentWrapperProps.className} ${showHighlighted && _isHighlighted ? cs.highlighted : ""}`}
       ariaDescribedbyId={ariaDescribedbyId}
       clearBtnValue={_selected}
       onClear={onClearHandler}

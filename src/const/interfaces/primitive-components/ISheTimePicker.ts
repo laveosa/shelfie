@@ -43,6 +43,7 @@ export interface ISheTimePicker
   secondsRef?: React.RefObject<HTMLInputElement>;
   periodsRef?: React.RefObject<HTMLButtonElement>;
   autoFocus?: boolean;
+  showHighlighted?: boolean;
   onSetDate?(
     value: any,
     model?: IOutputEventModel<
@@ -110,6 +111,7 @@ export const SheTimePickerDefaultModel: ISheTimePicker = {
   secondsRef: undefined,
   periodsRef: undefined,
   autoFocus: undefined,
+  showHighlighted: undefined,
   onSetDate: undefined,
   onDelay: undefined,
   onBlur: undefined,

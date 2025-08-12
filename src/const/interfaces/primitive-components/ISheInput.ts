@@ -52,6 +52,7 @@ export interface ISheInput
   patternErrorMessage?: string;
   patternErrorMessageTransKey?: string;
   delayTime?: number;
+  showHighlighted?: boolean;
   onIsValid?(value: boolean): void;
   onChange?(
     value: string | number,
@@ -105,6 +106,7 @@ export const SheInputDefaultModel: ISheInput = {
   patternErrorMessage: undefined,
   patternErrorMessageTransKey: undefined,
   delayTime: undefined,
+  showHighlighted: undefined,
   onIsValid: undefined,
   onChange: undefined,
   onBlur: undefined,

@@ -11,6 +11,7 @@ export interface ISheDatePicker
   placeholderTransKey?: string;
   isOpen?: boolean;
   closeOnDateSelect?: boolean;
+  showHighlighted?: boolean;
   onOpenChange?(
     value: any,
     model?: IOutputEventModel<any, ISheDatePicker, React.MouseEvent>,
@@ -22,5 +23,6 @@ export const SheDatePickerDefaultModel: ISheDatePicker = {
   placeholderTransKey: undefined,
   isOpen: undefined,
   closeOnDateSelect: undefined,
+  showHighlighted: undefined,
   onOpenChange: undefined,
 };

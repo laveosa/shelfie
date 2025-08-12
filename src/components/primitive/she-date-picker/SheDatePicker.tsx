@@ -1,5 +1,6 @@
 import React, { JSX, useEffect, useRef, useState } from "react";
 import { format } from "date-fns";
+import _ from "lodash";
 
 import cs from "./SheDatePicker.module.scss";
 import {
@@ -21,7 +22,6 @@ import {
   ISheCalendar,
   SheCalendarDefaultModel,
 } from "@/const/interfaces/primitive-components/ISheCalendar.ts";
-import _ from "lodash";
 
 export default function SheDatePicker(props: ISheDatePicker): JSX.Element {
   // ==================================================================== PROPS
@@ -34,6 +34,7 @@ export default function SheDatePicker(props: ISheDatePicker): JSX.Element {
     isLoading,
     isOpen,
     closeOnDateSelect = true,
+    showHighlighted,
     hideTimePicker = true,
     onOpenChange,
     onSelectDate,
@@ -108,7 +109,7 @@ export default function SheDatePicker(props: ISheDatePicker): JSX.Element {
   return (
     <ShePrimitiveComponentWrapper
       {...shePrimitiveComponentWrapperProps}
-      className={`${shePrimitiveComponentWrapperProps.className} ${cs.sheDatePicker} ${_isHighlighted ? cs.highlighted : ""}`}
+      className={`${shePrimitiveComponentWrapperProps.className} ${cs.sheDatePicker} ${showHighlighted && _isHighlighted ? cs.highlighted : ""}`}
       ariaDescribedbyId={ariaDescribedbyId}
       clearBtnValue={_date && _date.toString().length > 0}
       onClear={onClearHandler}

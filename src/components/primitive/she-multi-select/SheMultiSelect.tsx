@@ -61,6 +61,7 @@ export default function SheMultiSelect<T>(
     searchValue,
     openOnFocus,
     isOpen,
+    showHighlighted,
     onOpen,
     onClear,
     onSelect,
@@ -335,7 +336,7 @@ export default function SheMultiSelect<T>(
       <SheMultiSelectTrigger<T>
         {...restProps}
         ref={_triggerRef}
-        className={`${_isHighlighted ? cs.highlighted : ""}`}
+        className={`${showHighlighted && _isHighlighted ? cs.highlighted : ""}`}
         items={_badges}
         isOpen={_open}
         ariaDescribedbyId={ariaDescribedbyId}

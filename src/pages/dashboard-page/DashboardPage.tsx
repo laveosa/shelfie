@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import cs from "./DashboardPage.module.scss";
 import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageService.ts";
-import { Box, User } from "lucide-react";
+import { Box, Home, LayoutDashboard, User, Users } from "lucide-react";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
 import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
@@ -721,7 +721,7 @@ export function DashboardPage() {
         <br />
       </div>*/}
 
-      {/*<div className="flex flex-col fullWidth">
+      <div className="flex flex-col fullWidth">
         <h2 className="underline">
           <b>DatePicker</b>
         </h2>
@@ -732,12 +732,15 @@ export function DashboardPage() {
             // style={{ border: "1px solid red" }}
             // calendarClassName="CALENDAR-CALL-NAME"
             // calendarStyle={{ border: "1px solid blue" }}
-            label="DatePicker"
+            label="Single"
             // mode="single"
             icon={Home}
             showClearBtn
-            // view="card"
+            // iconPosition="out"
+            // clearBtnPosition="out"
+            maxWidth="160px"
             required
+            view="card"
             tooltip="Calendar Multiple mode: some tooltip text for test purpuse only"
             description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
             descriptionTransKey="f0923fj9wejfwe"
@@ -753,20 +756,21 @@ export function DashboardPage() {
             }
           />
           <SheDatePicker
-            label="DatePicker"
+            label="Range"
             mode="range"
             icon={Home}
-            iconPosition="out"
             showClearBtn
+            iconPosition="out"
             clearBtnPosition="out"
-            required
-            tooltip="Calendar Multiple mode: some tooltip text for test purpuse only"
-            description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
-            descriptionTransKey="f0923fj9wejfwe"
-            descriptionIcon={Users}
-            errorMessage="some error message some error message some error message some error message some error message"
-            errorMessageTransKey="f0wejfw9ejfkwlejfw"
-            errorMessageIcon={LayoutDashboard}
+            maxWidth="160px"
+            // required
+            // tooltip="Calendar Multiple mode: some tooltip text for test purpuse only"
+            // description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
+            // descriptionTransKey="f0923fj9wejfwe"
+            // descriptionIcon={Users}
+            // errorMessage="some error message some error message some error message some error message some error message"
+            // errorMessageTransKey="f0wejfw9ejfkwlejfw"
+            // errorMessageIcon={LayoutDashboard}
             onOpenChange={(value, model) =>
               console.log("onOpen: ", value, model)
             }
@@ -775,8 +779,20 @@ export function DashboardPage() {
             }
           />
           <SheDatePicker
-            label="DatePicker"
+            label="Multiple"
             mode="multiple"
+            icon={Home}
+            showClearBtn
+            // iconPosition="out"
+            // clearBtnPosition="out"
+            // maxWidth="160px"
+            tooltip="Calendar Multiple mode: some tooltip text for test purpuse only"
+            description="some description for test perpes only some description for test perpes only some description for test perpes only some description for test perpes only"
+            descriptionTransKey="f0923fj9wejfwe"
+            descriptionIcon={Users}
+            errorMessage="some error message some error message some error message some error message some error message"
+            errorMessageTransKey="f0wejfw9ejfkwlejfw"
+            errorMessageIcon={LayoutDashboard}
             onOpenChange={(value, model) =>
               console.log("onOpen: ", value, model)
             }
@@ -788,7 +804,7 @@ export function DashboardPage() {
         <br />
         <div className="divider" />
         <br />
-      </div>*/}
+      </div>
 
       {/*<div className="flex flex-col fullWidth">
         <h2 className="underline">

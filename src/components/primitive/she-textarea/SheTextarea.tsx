@@ -33,6 +33,7 @@ export default function SheTextArea(props: ISheTextarea): JSX.Element {
     rows = 4,
     rowToExtend,
     delayTime,
+    showHighlighted,
     clearBtnClassName = "",
     view,
     onIsValid,
@@ -248,7 +249,7 @@ export default function SheTextArea(props: ISheTextarea): JSX.Element {
   return (
     <ShePrimitiveComponentWrapper
       {...shePrimitiveComponentWrapperProps}
-      className={`${shePrimitiveComponentWrapperProps.className} ${cs.sheTextArea} ${_isHighlighted ? cs.highlighted : ""} ${!_isValid ? cs.invalid : ""} ${resize ? cs.resize : ""} ${view === "card" ? cs.sheTextAreaViewCard : cs.sheTextAreaViewNormal}`}
+      className={`${shePrimitiveComponentWrapperProps.className} ${cs.sheTextArea} ${showHighlighted && _isHighlighted ? cs.highlighted : ""} ${!_isValid ? cs.invalid : ""} ${resize ? cs.resize : ""} ${view === "card" ? cs.sheTextAreaViewCard : cs.sheTextAreaViewNormal}`}
       clearBtnValue={_textValue}
       ariaDescribedbyId={ariaDescribedbyId}
       iconProps={{ className: `${iconProps?.className} ${cs.sheTextAreaIcon}` }}

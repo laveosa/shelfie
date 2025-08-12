@@ -46,6 +46,7 @@ export default function SheInput(props: ISheInput): JSX.Element {
     patternErrorMessage,
     patternErrorMessageTransKey,
     delayTime,
+    showHighlighted,
     onIsValid,
     onChange,
     onBlur,
@@ -270,7 +271,7 @@ export default function SheInput(props: ISheInput): JSX.Element {
   return (
     <ShePrimitiveComponentWrapper
       {...shePrimitiveComponentWrapperProps}
-      className={`${shePrimitiveComponentWrapperProps.className} ${cs.sheInput} ${_isHighlighted ? cs.highlighted : ""} ${!_isValid ? cs.invalid : ""}`}
+      className={`${shePrimitiveComponentWrapperProps.className} ${cs.sheInput} ${showHighlighted && _isHighlighted ? cs.highlighted : ""} ${!_isValid ? cs.invalid : ""}`}
       icon={iconToRender}
       clearBtnValue={_textValue}
       ariaDescribedbyId={ariaDescribedbyId}

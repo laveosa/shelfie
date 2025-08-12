@@ -23,6 +23,7 @@ export interface ISheSelect<T>
   showSelectIcon?: boolean;
   autoFocus?: boolean;
   openOnFocus?: boolean;
+  showHighlighted?: boolean;
   onOpen?(value: boolean): void;
   onSelect?(
     value: T,
@@ -51,6 +52,7 @@ export const SheSelectDefaultModel: ISheSelect<any> = {
   showSelectIcon: undefined,
   autoFocus: undefined,
   openOnFocus: undefined,
+  showHighlighted: undefined,
   onOpen: undefined,
   onSelect: undefined,
   onTriggerKeyDown: undefined,

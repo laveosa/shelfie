@@ -14,6 +14,7 @@ export interface ISheTextarea extends IShePrimitiveComponentWrapper {
   rows?: number;
   rowToExtend?: number;
   delayTime?: number;
+  showHighlighted?: boolean;
   onIsValid?(value: boolean): void;
   onChange?(
     value: string,
@@ -56,6 +57,7 @@ export const SheTextareaDefaultModel: ISheTextarea = {
   rows: undefined,
   rowToExtend: undefined,
   delayTime: undefined,
+  showHighlighted: undefined,
   onIsValid: undefined,
   onChange: undefined,
   onBlur: undefined,
