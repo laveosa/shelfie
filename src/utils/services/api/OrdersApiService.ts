@@ -208,6 +208,28 @@ export const OrdersApiService = createApi({
         body: JSON.stringify(model),
       }),
     }),
+    getShipmentsListForForGrid: apiConfig.createMutation<any, GridRequestModel>(
+      builder,
+      {
+        query: (model) => ({
+          url: `${ApiUrlEnum.SHIPMENTS}/list`,
+          method: "POST",
+          body: JSON.stringify(model),
+        }),
+      },
+    ),
+    getShipmentDetails: apiConfig.createQuery<void, number>(builder, {
+      query: (shipmentId) => ({
+        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}`,
+      }),
+    }),
+    createShipment: apiConfig.createMutation<any, any>(builder, {
+      query: (model) => ({
+        url: `${ApiUrlEnum.SHIPMENTS}`,
+        method: "POST",
+        body: JSON.stringify(model),
+      }),
+    }),
   }),
 });
 export const { endpoints, ...OrdersApiHooks } = OrdersApiService;

@@ -1,0 +1,21 @@
+@use "@/styles/variables" as vars;
+
+.shipmentDetailsCard {
+  .shipmentDetailsCardContent {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .shipmentAllocationBlock {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .shipmentAllocationButtonBlock {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+  }
+}

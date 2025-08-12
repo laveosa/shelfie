@@ -1,9 +1,8 @@
 import { ColumnDef, Row } from "@tanstack/react-table";
-import { Cog } from "lucide-react";
-
-import cs from "./ProductsInOrderGridColumns.module.scss";
+import { Cog, ImageIcon } from "lucide-react";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
+import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 
 export function ProductsInOrderGridColumns({
   onAction,
@@ -12,18 +11,37 @@ export function ProductsInOrderGridColumns({
 }): ColumnDef<any>[] {
   return [
     {
-      accessorKey: "variantName",
+      id: "variantName",
+      accessorFn: (row) => row.variantName,
       header: "Product",
       size: 100,
       minSize: 100,
       maxSize: 100,
       cell: ({ row }) => {
+        const image: string = row.original.photo;
         return (
-          <SheTooltip delayDuration={200} text={row.getValue("variantName")}>
-            <span className={cs.variantName}>
-              {row.getValue("variantName")}
-            </span>
-          </SheTooltip>
+          <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+            <div>
+              {image ? (
+                <img
+                  src={image}
+                  alt={row.original.variantName || "Variant"}
+                  className="object-cover rounded-md w-12 h-12"
+                />
+              ) : (
+                <SheIcon icon={ImageIcon} maxWidth="30px" />
+              )}
+            </div>
+            <div>
+              <SheTooltip
+                delayDuration={200}
+                text={row.getValue("variantName")}
+                className="max-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap"
+              >
+                <span>{row.getValue("variantName")}</span>
+              </SheTooltip>
+            </div>
+          </div>
         );
       },
     },

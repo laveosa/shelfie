@@ -30,6 +30,27 @@ export default function useOrderProductsPageService() {
   const [removeStockActionFromOrder] =
     OrdersApiHooks.useRemoveStockActionFromOrderMutation();
 
+  function getOrderStockActionsListForGrid(orderId) {
+    dispatch(actions.setIsProductsInOrderGridLoading(true));
+    ordersService
+      .getListOfStockActionsForGridHandler(
+        orderId,
+        ordersState.stockActionsGridRequestModel,
+      )
+      .then(() => {
+        dispatch(actions.setIsProductsInOrderGridLoading(false));
+      });
+  }
+
+  function getVariantsListForGrid() {
+    dispatch(actions.setIsFindProductsGridLoading(true));
+    ordersService
+      .getVariantsForGridHandler(ordersState.variantsGridRequestModel)
+      .then(() => {
+        dispatch(actions.setIsFindProductsGridLoading(false));
+      });
+  }
+
   function addProductHandler() {
     dispatch(actions.setIsFindProductsGridLoading(true));
     ordersService
@@ -129,6 +150,8 @@ export default function useOrderProductsPageService() {
   }
 
   return {
+    getOrderStockActionsListForGrid,
+    getVariantsListForGrid,
     addProductHandler,
     addVariantsToOrderHandler,
     variantsGridRequestChange,

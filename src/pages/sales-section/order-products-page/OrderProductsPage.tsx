@@ -32,24 +32,11 @@ export function OrderProductsPage() {
   });
 
   useEffect(() => {
-    dispatch(actions.setIsProductsInOrderGridLoading(true));
-    ordersService
-      .getListOfStockActionsForGridHandler(
-        orderId,
-        ordersState.stockActionsGridRequestModel,
-      )
-      .then(() => {
-        dispatch(actions.setIsProductsInOrderGridLoading(false));
-      });
-  }, [ordersState.stockActionsGridRequestModel]);
+    service.getOrderStockActionsListForGrid(orderId);
+  }, [orderId]);
 
   useEffect(() => {
-    dispatch(actions.setIsFindProductsGridLoading(true));
-    ordersService
-      .getVariantsForGridHandler(ordersState.variantsGridRequestModel)
-      .then(() => {
-        dispatch(actions.setIsFindProductsGridLoading(false));
-      });
+    service.getVariantsListForGrid();
   }, [ordersState.variantsGridRequestModel]);
 
   useEffect(() => {
