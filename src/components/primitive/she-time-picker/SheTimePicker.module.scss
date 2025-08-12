@@ -247,3 +247,11 @@
     }
   }
 }
+
+// ======================================================== HIGHLIGHT
+
+.highlighted {
+  input {
+    border-color: vars.$colorBlue !important;
+  }
+}

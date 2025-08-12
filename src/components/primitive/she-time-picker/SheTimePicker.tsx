@@ -92,6 +92,7 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
   const [_showError, setShowError] = useState<boolean>(
     !shePrimitiveComponentWrapperProps?.hideErrorMessage ?? null,
   );
+  const [_isHighlighted, setIsHighlighted] = useState<boolean>(null);
 
   // ==================================================================== REFS
   const _isInitialized = useRef<boolean>(false);
@@ -100,6 +101,7 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
   const _secondRef = useDefaultRef(secondsRef);
   const _periodRef = useDefaultRef(periodsRef);
   const _lastEventDataRef = useRef<any>(null);
+  const _sourceValue = useRef<Date>(new Date(new Date().setHours(0, 0, 0, 0)));
 
   // ==================================================================== UTILITIES
   const { ariaDescribedbyId } = useComponentUtilities({
@@ -109,13 +111,20 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
+    setIsHighlighted(false);
+
+    console.log("DATE: ", date);
+
     if (date && date !== _date) {
-      setDate(_setDefaultDate(date));
+      const defaultDate = _setDefaultDate(date);
+      setDate(defaultDate);
+      _sourceValue.current = defaultDate;
       _checkDateValidation(date);
       _configurePeriod(date);
     } else {
       _checkDateValidation(_date);
       _configurePeriod(_date);
+      _sourceValue.current = _date;
     }
   }, [date]);
 
@@ -233,6 +242,7 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
     event: React.ChangeEvent<HTMLInputElement>,
   ) {
     const outputModel = _getOutputModel(value, event);
+    setIsHighlighted(!_.isEqual(_sourceValue.current, outputModel.value));
     onBlur?.(outputModel.value, outputModel.model);
   }
 
@@ -345,7 +355,7 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
         >
           <SheTimePickerInput
             ref={_hourRef}
-            className={`${inputClassName} ${cs.sheTimePickerLabel}`}
+            className={`${inputClassName} ${cs.sheTimePickerLabel} ${_isHighlighted ? cs.highlighted : ""}`}
             style={inputStyle}
             label={!hideInputLabels && hhLabel}
             labelTransKey={hhLabelTransKey}
@@ -370,7 +380,7 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
           <SheTimePickerInput
             ref={_minuteRef}
             id={clockWorksheets === "12" ? "minutes12" : ""}
-            className={`${inputClassName} ${cs.sheTimePickerLabel}`}
+            className={`${inputClassName} ${cs.sheTimePickerLabel} ${_isHighlighted ? cs.highlighted : ""}`}
             style={inputStyle}
             label={!hideInputLabels && mmLabel}
             labelTransKey={mmLabelTransKey}
@@ -393,7 +403,7 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
             <SheTimePickerInput
               ref={_secondRef}
               id={clockWorksheets === "12" ? "seconds12" : ""}
-              className={`${inputClassName} ${cs.sheTimePickerLabel}`}
+              className={`${inputClassName} ${cs.sheTimePickerLabel} ${_isHighlighted ? cs.highlighted : ""}`}
               style={inputStyle}
               label={!hideInputLabels && ssLabel}
               labelTransKey={ssLabelTransKey}
