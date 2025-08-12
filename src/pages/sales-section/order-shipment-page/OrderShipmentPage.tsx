@@ -9,6 +9,7 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
 import { IOrderShipmentPageSlice } from "@/const/interfaces/store-slices/IOrderShipmentPageSlice.ts";
 import useOrderShipmentPageService from "@/pages/sales-section/order-shipment-page/useOrderShipmentService.ts";
+import ShipmentConfigurationCard from "@/components/complex/custom-cards/shipment-configuration-card/ShipmentConfigurationCard.tsx";
 
 export function OrderShipmentPage() {
   const { orderId } = useParams();
@@ -50,6 +51,7 @@ export function OrderShipmentPage() {
         isProductsGridLoading={state.isProductsGridLoading}
         isShipmentsGridLoading={state.isShipmentsGridLoading}
       />
+      <ShipmentConfigurationCard />
     </div>
   );
 }

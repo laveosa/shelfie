@@ -9,7 +9,6 @@ import {
 import cs from "./ShipmentDetailsCard.module.scss";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import { IShipmentDetailsCard } from "@/const/interfaces/complex-components/custom-cards/IShipmentDetailsCard.ts";
-import { Separator } from "@/components/ui/separator.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { ProductsInShipmentGridColumns } from "@/components/complex/grid/poducts-in-shipment-grid/ProductsInShipmentGridColumns.tsx";
 import { OrderShipmentsGridColumns } from "@/components/complex/grid/order-shipments-grid/OrderShipmentsGridColumns.tsx";
@@ -38,7 +37,7 @@ export default function ShipmentDetailsCard({
           data={products}
           customMessage="No item in shipment"
         />
-        <Separator />
+        {/*<Separator />*/}
         <div className={cs.shipmentAllocationBlock}>
           <span className="she-title">Shipment allocation</span>
           <div className={cs.shipmentAllocationButtonBlock}>

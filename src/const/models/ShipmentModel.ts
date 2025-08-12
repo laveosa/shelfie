@@ -7,6 +7,7 @@ export interface ShipmentModel {
   customerId?: number;
   customer?: CustomerModel;
   queueDate?: string;
+  queueShipment?: string;
   shipmentStatus?: string;
   deliveryAddressId?: number;
   deliveryAddress?: AddressModel;

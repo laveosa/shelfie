@@ -1,0 +1,60 @@
+.shipmentConfigurationCard {
+  .shipmentConfigurationCardContent {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .shipmentDetailsItem {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+
+      span {
+        width: 50%;
+      }
+
+      .subtitleText {
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      .customerInfoAvatarBlock {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+
+        .avatarImage {
+          border-radius: 50%;
+        }
+
+        .avatarInitials {
+          width: 40px;
+          height: 40px;
+          min-width: 40px;
+          min-height: 40px;
+          background-color: #ececec;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #555;
+          font-weight: 600;
+          font-size: 16px;
+          user-select: none;
+        }
+      }
+
+    }
+
+    .shipmentProductsBlock {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .subtitleText {
+        font-size: 16px;
+        font-weight: 500;
+      }
+    }
+  }
+}
