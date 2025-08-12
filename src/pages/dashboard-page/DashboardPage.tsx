@@ -2,7 +2,15 @@ import React, { useEffect, useState } from "react";
 
 import cs from "./DashboardPage.module.scss";
 import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageService.ts";
-import { Box, Home, LayoutDashboard, User, Users } from "lucide-react";
+import {
+  Box,
+  Clock,
+  Home,
+  LayoutDashboard,
+  Settings,
+  User,
+  Users,
+} from "lucide-react";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
 import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
@@ -721,7 +729,7 @@ export function DashboardPage() {
         <br />
       </div>*/}
 
-      <div className="flex flex-col fullWidth">
+      {/*<div className="flex flex-col fullWidth">
         <h2 className="underline">
           <b>DatePicker</b>
         </h2>
@@ -804,7 +812,7 @@ export function DashboardPage() {
         <br />
         <div className="divider" />
         <br />
-      </div>
+      </div>*/}
 
       {/*<div className="flex flex-col fullWidth">
         <h2 className="underline">
@@ -1487,15 +1495,15 @@ export function DashboardPage() {
         </div>
       </div>*/}
 
-      {/*<div className="flex flex-col fullWidth">
+      <div className="flex flex-col fullWidth">
         <h2 className="underline">
           <b>Button</b>
         </h2>
         <br />
         <div className="flex flex-col gap-10">
           <div className="flex flex-row gap-6">
-            <SheButton value="Start" />
-            <SheButton icon={Home} />
+            <SheButton icon={Clock} value="Replace Supplier" variant="ghost" />
+            <SheButton icon={Settings} value="Manage" variant="ghost" />
           </div>
           <div className="flex flex-row gap-6">
             <SheButton value="Start" size="small" />
@@ -1505,7 +1513,7 @@ export function DashboardPage() {
         <br />
         <div className="divider"></div>
         <br />
-      </div>*/}
+      </div>
     </div>
   );
 }
