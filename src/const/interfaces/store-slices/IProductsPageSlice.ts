@@ -6,13 +6,19 @@ import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
 import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { VariantModel } from "@/const/models/VariantModel.ts";
-import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
+import {
+  ProductCountersModel,
+  PurchaseCountersModel,
+} from "@/const/models/CounterModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 import { SupplierModel } from "@/const/models/SupplierModel.ts";
 import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
+import { TraitModel } from "@/const/models/TraitModel.ts";
+import { TypeOfTraitModel } from "@/const/models/TypeOfTraitModel.ts";
+import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
 
 export interface IProductsPageSlice {
   isLoading?: boolean;
@@ -28,7 +34,7 @@ export interface IProductsPageSlice {
   contextId?: number;
   activeCards?: any[];
   selectedProduct?: ProductModel;
-  productCounter?: ProductCounterModel;
+  productCounter?: ProductCountersModel;
   productVariants?: VariantModel[];
   selectedVariant?: VariantModel;
   selectedSupplier?: SupplierModel;
@@ -49,4 +55,16 @@ export interface IProductsPageSlice {
   taxesList?: TaxTypeModel[];
   currenciesList?: CurrencyModel[];
   countryCodeList?: CountryCodeModel[];
+  purchaseCounters?: PurchaseCountersModel;
+  typesOfTraits?: TypeOfTraitModel[];
+  traits?: TraitModel[];
+  listOfTraitsWithOptionsForProduct?: TraitModel[];
+  brand?: BrandModel;
+  category?: CategoryModel;
+  traitsForFilters?: { color?: TraitOptionModel[]; size?: TraitOptionModel[] };
+  traitsForFilter?: TraitModel[];
+  colorsForFilter?: TraitOptionModel[];
+  sizesForFilter?: TraitOptionModel[];
+  activeTab?: string;
+  variantPhotos?: ImageModel[];
 }

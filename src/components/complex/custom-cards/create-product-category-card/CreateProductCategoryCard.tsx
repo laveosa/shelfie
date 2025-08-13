@@ -3,80 +3,15 @@ import React from "react";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./CreateProductCategoryCard.module.scss";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import useProductBasicDataPageService from "@/pages/products-section/product-basic-data-page/useProductBasicDataPageService.ts";
-import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
-import { SheImageUploader } from "@/components/complex/she-images-uploader/SheImageUploader.tsx";
+import { SheFileUploader } from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { useToast } from "@/hooks/useToast.ts";
-import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
-import { ProductBasicDataPageSliceActions as actions } from "@/state/slices/ProductBasicDataPageSlice.ts";
-import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
-import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
+import { ICreateProductCategoryCard } from "@/const/interfaces/complex-components/custom-cards/ICreateProductCategoryCard.ts";
 
-export default function CreateProductCategoryCard({ isLoading, ...props }) {
-  const service = useProductBasicDataPageService();
-  const state = useAppSelector<IProductBasicDataPageSlice>(
-    StoreSliceEnum.PRODUCT_BASIC_DATA,
-  );
-  const dispatch = useAppDispatch();
-  const { addToast } = useToast();
-
-  const handleInputChange = (event) => {
-    const categoryName = event;
-    dispatch(actions.refreshCategory({ ...state.category, categoryName }));
-    service.checkCategoryNameHandler({ categoryName }).then((res) => {
-      if (res.error) {
-        addToast({
-          text: `${res.error.data.detail}`,
-          type: "error",
-        });
-      }
-    });
-  };
-
-  function onCreateCategoryHandler() {
-    service.createNewCategoryHandler(state.category).then((res) => {
-      if (res.data) {
-        dispatch(actions.refreshContextId(res.data.categoryId));
-        service.getAllCategoriesByOrganizationHandler().then((res) => {
-          dispatch(actions.refreshCategoriesList(res));
-        });
-        addToast({
-          text: "Category created successfully",
-          type: "success",
-        });
-      } else {
-        addToast({
-          text: `${res.error.data.detail}`,
-          type: "error",
-        });
-      }
-    });
-  }
-
-  function handleFileUpload(uploadModel: UploadPhotoModel) {
-    service.uploadPhotoHandler(uploadModel).then((res) => {
-      if (!uploadModel.contextId) {
-        addToast({
-          text: "Create category first",
-          type: "error",
-        });
-      } else {
-        if (res.data.photoId) {
-          addToast({
-            text: "Photos added successfully",
-            type: "success",
-          });
-        } else {
-          addToast({
-            text: `${res.error.data.detail}`,
-            type: "error",
-          });
-        }
-      }
-    });
-  }
-
+export default function CreateProductCategoryCard({
+  isLoading,
+  category,
+  onAction,
+}: ICreateProductCategoryCard) {
   return (
     <div>
       <SheProductCard
@@ -85,7 +20,9 @@ export default function CreateProductCategoryCard({ isLoading, ...props }) {
         showCloseButton
         primaryButtonTitle="Add Category"
         className={cs.createProductCategoryCard}
-        {...props}
+        onSecondaryButtonClick={() =>
+          onAction("closeCreateProductCategoryCard")
+        }
       >
         <div className={cs.cardContent}>
           <SheInput
@@ -93,15 +30,21 @@ export default function CreateProductCategoryCard({ isLoading, ...props }) {
             label="Category Name"
             placeholder="enter category name..."
             fullWidth
-            value={state.category.categoryName || ""}
-            onDelay={handleInputChange}
+            onDelay={(value) => onAction("checkCategoryName", value)}
           />
-          <SheButton onClick={onCreateCategoryHandler}>Add Category</SheButton>
+          <SheButton
+            onClick={() =>
+              onAction("createProductCategory", category.categoryName)
+            }
+            value="Add Category"
+          />
           <div>
-            <SheImageUploader
+            <SheFileUploader
               contextName={"category"}
-              contextId={state.contextId}
-              onUpload={handleFileUpload}
+              contextId={category?.categoryId}
+              onUpload={(model) =>
+                onAction("uploadCategoryOrBrandPhoto", model)
+              }
             />
           </div>
         </div>

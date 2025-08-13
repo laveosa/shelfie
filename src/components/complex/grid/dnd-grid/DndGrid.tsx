@@ -35,10 +35,12 @@ import cs from "./DndGrid.module.scss";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
 
-interface DataWithId {
+export interface DataWithId {
   id: number | string;
   color?: string;
   isGridItemSelected?: boolean;
+  isHidden?: boolean;
+  expandableRows?: any[];
 }
 
 interface DataTableProps<TData extends DataWithId, TValue>
@@ -54,8 +56,10 @@ interface DataTableProps<TData extends DataWithId, TValue>
   showHeader?: boolean;
   showColumnsHeader?: boolean;
   enableDnd?: boolean;
+  enableExpansion?: boolean;
   customMessage?: string;
   skeletonQuantity?: number;
+  cellPadding?: string;
   onAction?: (data) => void;
   onApplyColumns?: (data) => void;
   onDefaultColumns?: () => void;
@@ -64,9 +68,32 @@ interface DataTableProps<TData extends DataWithId, TValue>
     activeItem: TData,
     oldIndex?: number,
   ) => void;
+  renderExpandedContent?: (
+    row: any,
+    expandableItem: any,
+    expandableIndex: number,
+  ) => React.ReactNode;
+  onAddExpandableRow?: (parentRowId: string | number) => void; // Callback to add new expandable row
+  createEmptyExpandableRow?: () => any; // Function to create empty expandable row model
 }
 
-const DraggableRow = ({ row, loadingRows, isDragDisabled = false }) => {
+export interface DndGridRef {
+  hideRow: (rowId: string | number) => void;
+  unhideRow: (rowId: string | number) => void;
+  toggleRowVisibility: (rowId: string | number) => void;
+  isRowHidden: (rowId: string | number) => boolean;
+  getHiddenRows: () => (string | number)[];
+}
+
+const DraggableRow = ({
+  row,
+  loadingRows,
+  isDragDisabled = false,
+  enableExpansion = false,
+  renderExpandedContent,
+  totalColumns,
+  cellPadding,
+}) => {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useSortable({
       id: row.original.id,
@@ -75,78 +102,207 @@ const DraggableRow = ({ row, loadingRows, isDragDisabled = false }) => {
 
   const isLoading = loadingRows.has(row.id);
   const isSelected = row.original.isGridItemSelected;
+  const isHidden = row.original.isHidden;
+  const expandableRows = row.original.expandableRows || [];
+
+  if (isHidden) {
+    return null;
+  }
 
   return (
-    <TableRow
-      className={`${isDragging ? cs.tableRowDragged : cs.tableRow} ${isSelected ? cs.isSelected : ""}`}
-      ref={setNodeRef}
-      {...attributes}
-      key={row.id}
-      data-state={row.getIsSelected() && "selected"}
-      style={{
-        opacity: isLoading ? 0.7 : 1,
-        transform: CSS.Transform.toString(transform),
-        background: isSelected ? "#F8F3FF" : row.original.color || "white",
-      }}
-    >
-      <TableCell
-        className={`${isDragging ? cs.dndIconCellDragged : cs.dndIconCell} ${isSelected ? cs.isSelected : ""}`}
+    <>
+      <TableRow
+        className={`${isDragging ? cs.tableRowDragged : cs.tableRow} ${isSelected ? cs.isSelected : ""}`}
+        ref={setNodeRef}
+        {...attributes}
+        key={row.id}
+        data-state={row.getIsSelected() && "selected"}
         style={{
-          cursor: isDragDisabled || isLoading ? "default" : "grab",
-          background: isSelected ? "#F8F3FF" : "inherit",
-          width: "40px",
-          minWidth: "40px",
-          maxWidth: "40px",
+          opacity: isLoading ? 0.7 : 1,
+          transform: CSS.Transform.toString(transform),
+          background: isSelected ? "#F4F4F5" : row.original.color || "#F4F4F5",
         }}
-        {...listeners}
       >
-        <div className={cs.dndIcon}>
-          <GripVertical />
-        </div>
-      </TableCell>
-      {row.getVisibleCells().map((cell) => (
         <TableCell
-          className={`${isDragging ? cs.tableCellDragged : cs.tableCell} ${isSelected ? cs.isSelected : ""}`}
-          key={cell.id}
-          onClick={(e) => e.stopPropagation()}
+          className={`${isDragging ? cs.dndIconCellDragged : cs.dndIconCell} ${isSelected ? cs.isSelected : ""}`}
           style={{
-            cursor: "default",
-            background: isSelected ? "#F8F3FF" : "inherit",
-            minWidth: cell.column.columnDef.minSize || 50,
-            maxWidth: cell.column.columnDef.maxSize,
+            cursor: isDragDisabled || isLoading ? "default" : "grab",
+            background: isSelected ? "#F4F4F5" : "inherit",
+            width: "20px",
+            minWidth: "10px",
+            maxWidth: "40px",
+            padding: cellPadding,
           }}
+          {...listeners}
         >
-          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+          <div className={cs.dndIcon}>
+            <GripVertical />
+          </div>
         </TableCell>
-      ))}
-    </TableRow>
+
+        {row.getVisibleCells().map((cell) => (
+          <TableCell
+            className={`${isDragging ? cs.tableCellDragged : cs.tableCell} ${isSelected ? cs.isSelected : ""}`}
+            key={cell.id}
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              cursor: "default",
+              background: isSelected ? "#F4F4F5" : "inherit",
+              minWidth: cell.column.columnDef.minSize || 50,
+              maxWidth: cell.column.columnDef.maxSize,
+              padding: cellPadding,
+            }}
+          >
+            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+          </TableCell>
+        ))}
+      </TableRow>
+
+      {/* Render all expandable rows */}
+      {enableExpansion &&
+        expandableRows.length > 0 &&
+        renderExpandedContent && (
+          <>
+            {expandableRows.map((expandableItem, index) => (
+              <TableRow
+                key={`${row.id}-expanded-${index}`}
+                className={`${cs.expandedRow} ${isSelected ? cs.isSelected : ""}`}
+              >
+                <TableCell
+                  colSpan={totalColumns}
+                  className={cs.expandedContent}
+                  style={{
+                    background: isSelected ? "#F4F4F5" : "",
+                    borderTop: "1px solid #e5e7eb",
+                    padding: cellPadding,
+                  }}
+                >
+                  {renderExpandedContent(row, expandableItem, index)}
+                </TableCell>
+              </TableRow>
+            ))}
+          </>
+        )}
+    </>
   );
 };
 
-export function DndGridDataTable<TData extends DataWithId, TValue>({
-  className,
-  columns,
-  data,
-  columnsPreferences,
-  preferenceContext,
-  gridModel,
-  sortingItems,
-  isLoading,
-  showHeader = true,
-  showColumnsHeader = true,
-  showPagination = true,
-  showSorting = true,
-  showColumnsViewOptions = true,
-  showSearch = true,
-  children,
-  customMessage,
-  skeletonQuantity,
-  onGridRequestChange,
-  onApplyColumns,
-  onDefaultColumns,
-  onNewItemPosition,
-  enableDnd,
-}: DataTableProps<TData, TValue>) {
+const RegularRow = ({
+  row,
+  loadingRows,
+  enableExpansion = false,
+  renderExpandedContent,
+  totalColumns,
+  cellPadding = "8px 12px",
+}) => {
+  const isLoading = loadingRows.has(row.id);
+  const isSelected = row.original.isGridItemSelected;
+  const isHidden = row.original.isHidden;
+  const expandableRows = row.original.expandableRows || [];
+
+  if (isHidden) {
+    return null;
+  }
+
+  return (
+    <>
+      <TableRow
+        key={row.id}
+        className={`${
+          isLoading ? "bg-green-50 opacity-70" : ""
+        } ${isSelected ? cs.isSelected : ""}`}
+        style={{
+          pointerEvents: isLoading ? "none" : "auto",
+          background: isSelected ? "#F4F4F5" : row.original.color,
+          borderBottom: expandableRows.length > 0 ? "none" : "",
+        }}
+      >
+        {row.getVisibleCells().map((cell) => (
+          <TableCell
+            key={cell.id}
+            className={`${cs.tableCell} ${isSelected ? cs.isSelected : ""}`}
+            style={{
+              background: isSelected ? "#F4F4F5" : "inherit",
+              ...(cell.column.columnDef.size && {
+                width: `${cell.column.columnDef.size}px`,
+              }),
+              minWidth: cell.column.columnDef.minSize || 50,
+              maxWidth: cell.column.columnDef.maxSize,
+              padding: cellPadding,
+            }}
+          >
+            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+          </TableCell>
+        ))}
+      </TableRow>
+
+      {/* Render all expandable rows */}
+      {enableExpansion &&
+        expandableRows.length > 0 &&
+        renderExpandedContent && (
+          <>
+            {expandableRows.map((expandableItem, index) => (
+              <TableRow
+                key={`${row.id}-expanded-${index}`}
+                className={`${cs.expandedRow} ${isSelected ? cs.isSelected : ""}`}
+              >
+                <TableCell
+                  colSpan={totalColumns}
+                  className={cs.expandedContent}
+                  style={{
+                    background: isSelected
+                      ? "#F4F4F5"
+                      : row.original.color || "#F4F4F5",
+                    borderTop:
+                      expandableRows.length > 1 ? "1px solid white" : "",
+                    padding: cellPadding,
+                  }}
+                >
+                  {renderExpandedContent(row, expandableItem, index)}
+                </TableCell>
+              </TableRow>
+            ))}
+          </>
+        )}
+    </>
+  );
+};
+
+export const DndGridDataTable = React.forwardRef<
+  DndGridRef,
+  DataTableProps<DataWithId, any>
+>(function DndGridDataTable<TData extends DataWithId, TValue>(
+  {
+    className,
+    columns,
+    data,
+    columnsPreferences,
+    preferenceContext,
+    gridModel,
+    sortingItems,
+    isLoading,
+    showHeader = true,
+    showColumnsHeader = true,
+    showPagination = true,
+    showSorting = true,
+    showColumnsViewOptions = true,
+    showSearch = true,
+    enableExpansion = false,
+    children,
+    customMessage,
+    skeletonQuantity,
+    cellPadding,
+    onGridRequestChange,
+    onApplyColumns,
+    onDefaultColumns,
+    onNewItemPosition,
+    enableDnd,
+    renderExpandedContent,
+    onAddExpandableRow,
+    createEmptyExpandableRow,
+  }: DataTableProps<TData, TValue>,
+  ref,
+) {
   const [items, setItems] = useState<TData[]>([]);
   const [loadingRows, setLoadingRows] = useState<Set<string>>(new Set());
   const [isDragging, setIsDragging] = useState(false);
@@ -159,7 +315,11 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
     function prepareItemsForGrid(data: any): TData[] {
       return data.map((item, index) => ({
         ...item,
-        id: index + 1,
+        id: item.id || index + 1,
+        isHidden: item.isHidden || false,
+        expandableRows: Array.isArray(item.expandableRows)
+          ? item.expandableRows
+          : [],
       }));
     }
 
@@ -167,6 +327,47 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
       setItems(prepareItemsForGrid(data));
     }
   }, [data]);
+
+  const hideRow = (rowId: string | number) => {
+    setItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === rowId ? { ...item, isHidden: true } : item,
+      ),
+    );
+  };
+
+  const unhideRow = (rowId: string | number) => {
+    setItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === rowId ? { ...item, isHidden: false } : item,
+      ),
+    );
+  };
+
+  const toggleRowVisibility = (rowId: string | number) => {
+    setItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === rowId ? { ...item, isHidden: !item.isHidden } : item,
+      ),
+    );
+  };
+
+  const isRowHidden = (rowId: string | number): boolean => {
+    const item = items.find((item) => item.id === rowId);
+    return item?.isHidden || false;
+  };
+
+  const getHiddenRows = (): (string | number)[] => {
+    return items.filter((item) => item.isHidden).map((item) => item.id);
+  };
+
+  React.useImperativeHandle(ref, () => ({
+    hideRow,
+    unhideRow,
+    toggleRowVisibility,
+    isRowHidden,
+    getHiddenRows,
+  }));
 
   function handleDragStart() {
     setIsDragging(true);
@@ -193,6 +394,32 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
       }
     }
   }
+
+  const handleAddExpandableRow = (parentRowId: string | number) => {
+    if (createEmptyExpandableRow) {
+      const newExpandableRow = createEmptyExpandableRow();
+
+      setItems((prevItems) =>
+        prevItems.map((item) =>
+          item.id === parentRowId
+            ? {
+                ...item,
+                expandableRows: [
+                  ...(item.expandableRows || []),
+                  newExpandableRow,
+                ],
+              }
+            : item,
+        ),
+      );
+
+      if (onAddExpandableRow) {
+        onAddExpandableRow(parentRowId);
+      }
+    }
+  };
+
+  const totalColumns = columns.length + (enableDnd ? 1 : 0);
 
   const table = useReactTable<TData>({
     data: items,
@@ -226,6 +453,11 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
           old.map((item) => (item.id === rowId ? value : item)),
         );
       },
+      hideRow,
+      unhideRow,
+      toggleRowVisibility,
+      isRowHidden,
+      addExpandableRow: handleAddExpandableRow,
     },
   });
 
@@ -262,7 +494,7 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
             }
             style={{
               width: "100%",
-              tableLayout: "auto",
+              tableLayout: "fixed",
               borderCollapse: "collapse",
             }}
           >
@@ -277,9 +509,10 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
                       <TableHead
                         className={isLoading ? `${cs.tableHeadLoading}` : ""}
                         style={{
-                          width: "40px",
-                          minWidth: "40px",
+                          width: "20px",
+                          minWidth: "10px",
                           maxWidth: "40px",
+                          padding: cellPadding,
                         }}
                       ></TableHead>
                     )}
@@ -293,6 +526,7 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
                           }),
                           minWidth: header.column.columnDef.minSize || 50,
                           maxWidth: header.column.columnDef.maxSize,
+                          padding: cellPadding,
                         }}
                       >
                         {header.isPlaceholder
@@ -307,7 +541,8 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
                 ))}
               </TableHeader>
             )}
-            {isLoading && items.length === 0 ? (
+            {/*{isLoading && items.length === 0 ? (*/}
+            {isLoading ? (
               <TableBody className={cs.tableSkeleton}>
                 {createSkeletonArray(skeletonQuantity ?? 5).map((_, index) => (
                   <TableRow key={index}>
@@ -331,7 +566,9 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
               </TableBody>
             ) : (
               <SortableContext
-                items={items.map((item) => item.id)}
+                items={items
+                  .filter((item) => !item.isHidden)
+                  .map((item) => item.id)}
                 strategy={verticalListSortingStrategy}
               >
                 {data?.length > 0 ? (
@@ -341,55 +578,34 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
                       background: enableDnd ? "#f4f4f5" : "white",
                     }}
                   >
-                    {table.getRowModel().rows.map((row) =>
-                      enableDnd ? (
-                        <DraggableRow
-                          key={row.id}
-                          row={row}
-                          loadingRows={loadingRows}
-                          isDragDisabled={loadingRows.has(row.id) || isDragging}
-                        />
-                      ) : (
-                        <TableRow
-                          key={row.id}
-                          className={`${
-                            loadingRows.has(row.id)
-                              ? "bg-green-50 opacity-70"
-                              : ""
-                          } ${row.original.isGridItemSelected ? cs.isSelected : ""}`}
-                          style={{
-                            pointerEvents: loadingRows.has(row.id)
-                              ? "none"
-                              : "auto",
-                            background: row.original.isGridItemSelected
-                              ? "#F8F3FF"
-                              : row.original.color,
-                          }}
-                        >
-                          {row.getVisibleCells().map((cell) => (
-                            <TableCell
-                              key={cell.id}
-                              className={`${cs.tableCell} ${row.original.isGridItemSelected ? cs.isSelected : ""}`}
-                              style={{
-                                background: row.original.isGridItemSelected
-                                  ? "#F8F3FF"
-                                  : "inherit",
-                                ...(cell.column.columnDef.size && {
-                                  width: `${cell.column.columnDef.size}px`,
-                                }),
-                                minWidth: cell.column.columnDef.minSize || 50,
-                                maxWidth: cell.column.columnDef.maxSize,
-                              }}
-                            >
-                              {flexRender(
-                                cell.column.columnDef.cell,
-                                cell.getContext(),
-                              )}
-                            </TableCell>
-                          ))}
-                        </TableRow>
-                      ),
-                    )}
+                    {table
+                      .getRowModel()
+                      .rows.map((row) =>
+                        enableDnd ? (
+                          <DraggableRow
+                            key={row.id}
+                            row={row}
+                            loadingRows={loadingRows}
+                            isDragDisabled={
+                              loadingRows.has(row.id) || isDragging
+                            }
+                            enableExpansion={enableExpansion}
+                            renderExpandedContent={renderExpandedContent}
+                            totalColumns={totalColumns}
+                            cellPadding={cellPadding}
+                          />
+                        ) : (
+                          <RegularRow
+                            key={row.id}
+                            row={row}
+                            loadingRows={loadingRows}
+                            enableExpansion={enableExpansion}
+                            renderExpandedContent={renderExpandedContent}
+                            totalColumns={totalColumns}
+                            cellPadding={cellPadding}
+                          />
+                        ),
+                      )}
                   </TableBody>
                 ) : (
                   <TableBody
@@ -400,10 +616,11 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
                   >
                     <TableRow>
                       <TableCell
-                        colSpan={columns.length + (enableDnd ? 1 : 0)}
+                        colSpan={totalColumns}
                         className="h-24 text-center"
                         style={{
                           width: "100%",
+                          padding: cellPadding,
                         }}
                       >
                         {customMessage || "NO DATA TO DISPLAY"}
@@ -418,4 +635,4 @@ export function DndGridDataTable<TData extends DataWithId, TValue>({
       </DndContext>
     </GridContext.Provider>
   );
-}
+});

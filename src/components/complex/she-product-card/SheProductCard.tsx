@@ -1,6 +1,6 @@
+import { useEffect, useRef, useState } from "react";
 import { PanelLeft, X } from "lucide-react";
 import { Trans } from "react-i18next";
-import { useState } from "react";
 
 import cs from "./SheProductCard.module.scss";
 import { ISheProductCard } from "@/const/interfaces/complex-components/ISheProductCard.ts";
@@ -20,6 +20,7 @@ export default function SheProductCard({
   textTransKey,
   description,
   descriptionTransKey,
+  showHeader = true,
   showToggleButton,
   showCloseButton,
   children,
@@ -27,13 +28,28 @@ export default function SheProductCard({
   primaryButtonTitle,
   primaryButtonTitleTransKey,
   primaryButtonDisabled,
+  primaryButtonModel,
   showSecondaryButton = false,
   secondaryButtonTitle = "Cancel",
   secondaryButtonTitleTransKey,
+  secondaryButtonModel,
   onPrimaryButtonClick,
   onSecondaryButtonClick,
 }: ISheProductCard) {
   const [isMinimized, setIsMinimized] = useState(false);
+  const cardContentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const element = cardContentRef.current;
+    if (element) {
+      const hasScrollbar = element.scrollHeight > element.clientHeight;
+      if (hasScrollbar) {
+        element.classList.add(cs.hasScrollbar);
+      } else {
+        element.classList.remove(cs.hasScrollbar);
+      }
+    }
+  }, [children]);
 
   function onMinimizeCardHandler() {
     setIsMinimized((prev) => !prev);
@@ -49,52 +65,57 @@ export default function SheProductCard({
         padding: view === "borderless" ? "10px 0 20px 0" : "",
       }}
     >
-      <div className={cs.cardHeader}>
-        <div className={cs.titleBlock}>
-          <div className={cs.cardTitleBlock}>
-            {showToggleButton && (
+      {showHeader && (
+        <div className={cs.cardHeader}>
+          <div className={cs.titleBlock}>
+            <div className={cs.cardTitleBlock}>
+              {showToggleButton && (
+                <SheButton
+                  className={cs.toggleButton}
+                  style={
+                    showToggleButton
+                      ? { display: "block" }
+                      : { display: "none" }
+                  }
+                  icon={PanelLeft}
+                  variant="ghost"
+                  onClick={onMinimizeCardHandler}
+                />
+              )}
+              <div
+                className={`${cs.cardTitle} she-title`}
+                style={{
+                  ...(showToggleButton && { paddingLeft: "40px" }),
+                  visibility: isMinimized ? "hidden" : "visible",
+                }}
+              >
+                <Trans i18nKey={titleTransKey}>{title}</Trans>
+              </div>
+            </div>
+            {!isMinimized && showCloseButton && (
               <SheButton
-                className={cs.toggleButton}
-                style={
-                  showToggleButton ? { display: "block" } : { display: "none" }
-                }
-                icon={PanelLeft}
+                className={cs.closeButton}
+                icon={X}
                 variant="ghost"
-                onClick={onMinimizeCardHandler}
+                onClick={onSecondaryButtonClick}
               />
             )}
-            <div
-              className={`${cs.cardTitle} she-title`}
-              style={{
-                ...(showToggleButton && { paddingLeft: "40px" }),
-                visibility: isMinimized ? "hidden" : "visible",
-              }}
-            >
-              <Trans i18nKey={titleTransKey}>{title}</Trans>
-            </div>
           </div>
-          {!isMinimized && showCloseButton && (
-            <SheButton
-              className={cs.closeButton}
-              icon={X}
-              variant="ghost"
-              onClick={onSecondaryButtonClick}
-            />
+          {!isMinimized && (
+            <>
+              <div className="she-text">
+                <Trans i18nKey={textTransKey}>{text}</Trans>
+              </div>
+              <div className="she-subtext">
+                <Trans i18nKey={descriptionTransKey}>{description}</Trans>
+              </div>
+            </>
           )}
         </div>
-        {!isMinimized && (
-          <>
-            <div className="she-text">
-              <Trans i18nKey={textTransKey}>{text}</Trans>
-            </div>
-            <div className="she-subtext">
-              <Trans i18nKey={descriptionTransKey}>{description}</Trans>
-            </div>
-          </>
-        )}
-      </div>
+      )}
       {loading && <SheLoading />}
       <div
+        ref={cardContentRef}
         className={`${cs.cardContent} ${loading ? cs.cardContentLoading : ""} ${
           showPrimaryButton || showSecondaryButton
             ? cs.cardContentWithFooter
@@ -112,6 +133,7 @@ export default function SheProductCard({
         >
           {showSecondaryButton && (
             <SheButton
+              {...secondaryButtonModel}
               variant="secondary"
               onClick={onSecondaryButtonClick}
               disabled={loading}
@@ -123,6 +145,7 @@ export default function SheProductCard({
           )}
           {showPrimaryButton && (
             <SheButton
+              {...primaryButtonModel}
               onClick={onPrimaryButtonClick}
               disabled={loading || primaryButtonDisabled}
             >

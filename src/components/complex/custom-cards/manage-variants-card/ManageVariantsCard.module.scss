@@ -10,6 +10,7 @@
       align-items: center;
       gap: 20px;
       padding-bottom: 20px;
+      text-wrap: auto;
 
       .dropdownMenu {
         button {
@@ -25,11 +26,7 @@
       align-items: center;
       justify-content: space-between;
       width: 100%;
-      padding-bottom: 20px;
-    }
-
-    .manageVariantsCardGrid > div {
-      max-height: calc(100vh - 306px);
+      padding: 20px 0;
     }
   }
 }

@@ -1,12 +1,22 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ICreateSupplierForm } from "@/const/interfaces/forms/ICreateSupplierForm.ts";
-import useAppForm from "@/utils/hooks/useAppForm.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ColumnDef } from "@tanstack/react-table";
+
 import {
   SupplierModel,
   SupplierModelDefault,
 } from "@/const/models/SupplierModel.ts";
-import CreateSupplierFormScheme from "@/utils/validation/schemes/CreateSupplierFomresolver.ts";
+import {
+  SheFileUploader,
+  SheFileUploaderRef,
+} from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
+import {
+  DataWithId,
+  DndGridDataTable,
+} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import { ICreateSupplierForm } from "@/const/interfaces/forms/ICreateSupplierForm.ts";
+import useAppForm from "@/utils/hooks/useAppForm.ts";
+import CreateSupplierFormScheme from "@/utils/validation/schemes/CreateSupplierFormScheme.ts";
 import SheForm from "@/components/complex/she-form/SheForm.tsx";
 import { UserModelDefault } from "@/const/models/UserModel.ts";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
@@ -15,14 +25,11 @@ import { FormField } from "@/components/ui/form.tsx";
 import SheFormItem from "@/components/complex/she-form/components/she-form-item/SheFormItem.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
-import {
-  SheImageUploader,
-  SheImageUploaderRef,
-} from "@/components/complex/she-images-uploader/SheImageUploader.tsx";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
 import cs from "./CreateSupplierForm.module.scss";
+import { SupplierPhotosGridColumns } from "@/components/complex/grid/supplier-photos-grid/SupplierPhotosGridColumns.tsx";
+import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
 
 interface SupplierFormData extends SupplierModel {
   images?: File[];
@@ -31,17 +38,23 @@ interface SupplierFormData extends SupplierModel {
 
 export default function CreateSupplierForm<T>({
   isLoading,
+  isPhotoUploaderLoading,
+  className,
   data,
   countryList,
   onSubmit,
   onCancel,
+  photos,
+  isGridLoading,
+  onDeletePhoto,
+  onDndPhoto,
 }: ICreateSupplierForm<T>) {
   const form = useAppForm<SupplierModel>({
     mode: "onSubmit",
     resolver: zodResolver(CreateSupplierFormScheme),
     defaultValues: data || SupplierModelDefault,
   });
-  const imageUploaderRef = useRef<SheImageUploaderRef>(null);
+  const imageUploaderRef = useRef<SheFileUploaderRef>(null);
   const [submissionData, setSubmissionData] = useState<SupplierFormData | null>(
     null,
   );
@@ -69,7 +82,7 @@ export default function CreateSupplierForm<T>({
   }
 
   useEffect(() => {
-    form.reset(data);
+    form.reset(data || SupplierModelDefault);
   }, [data]);
 
   const getCurrentImages = () => {
@@ -80,7 +93,7 @@ export default function CreateSupplierForm<T>({
   };
 
   return (
-    <div className={cs.createSupplierForm}>
+    <div className={`${cs.createSupplierForm} ${className}`}>
       <SheForm<T>
         form={form}
         defaultValues={UserModelDefault}
@@ -106,7 +119,7 @@ export default function CreateSupplierForm<T>({
           )}
         />
 
-        {isLoading ? (
+        {isPhotoUploaderLoading ? (
           <div className={cs.uploadingBlockContainer}>
             {getCurrentImages().map((file: any, index) => {
               const imageUrl =
@@ -149,7 +162,8 @@ export default function CreateSupplierForm<T>({
             })}
           </div>
         ) : (
-          <SheImageUploader
+          <SheFileUploader
+            isLoading={isPhotoUploaderLoading}
             ref={imageUploaderRef}
             contextName="supplier"
             contextId={data?.id || undefined}
@@ -157,7 +171,21 @@ export default function CreateSupplierForm<T>({
             hideUploadButton={true}
           />
         )}
-
+        <DndGridDataTable
+          isLoading={isGridLoading}
+          className={cs.formGrid}
+          enableDnd={true}
+          showHeader={false}
+          cellPadding="10px"
+          columns={
+            SupplierPhotosGridColumns(onDeletePhoto) as ColumnDef<DataWithId>[]
+          }
+          data={photos}
+          skeletonQuantity={photos?.length}
+          onNewItemPosition={(newIndex, activeItem) => {
+            onDndPhoto({ newIndex, activeItem });
+          }}
+        />
         <FormField
           control={form.control}
           name="addressLine1"
@@ -243,7 +271,7 @@ export default function CreateSupplierForm<T>({
           onClick={() => onCancel()}
         />
         <SheButton
-          value={data ? "Update Supplier" : "Create Supplier"}
+          value={data ? "Save Changes" : "Create Supplier"}
           onClick={form.handleSubmit(handleFormSubmit)}
         />
       </div>

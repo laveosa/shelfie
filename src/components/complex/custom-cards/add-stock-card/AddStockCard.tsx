@@ -54,7 +54,7 @@ export default function AddStockCard({
         priceType: purchasePriceType?.[0].priceTypeName,
         currencyId: currencyTypes?.[0]?.id,
       },
-      purchaseId: 0,
+      purchaseId: null,
     },
   });
 
@@ -68,7 +68,7 @@ export default function AddStockCard({
         priceType: data.priceModel.priceType,
         currencyId: Number(data.priceModel.currencyId) || 0,
       },
-      purchaseId: Number(data.purchaseId) || 1,
+      purchaseId: Number(data.purchaseId) || 17,
     };
     onAction("increaseStockAmount", { variant, formattedData });
   }

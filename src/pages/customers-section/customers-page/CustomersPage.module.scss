@@ -1,0 +1,11 @@
+#CustomersPage {
+    .customersPageHeader {
+        display: flex;
+        justify-content: space-between;
+    
+        .headerButtonBlock {
+          display: flex;
+          gap: 10px;
+        }
+      }
+}

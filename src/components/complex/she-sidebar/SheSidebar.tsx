@@ -73,9 +73,9 @@ const navGroups: ISheSidebarGroup[] = [
         icon: MessageCircle,
       },
       {
-        title: "Orders",
-        transKey: "SheSidebar.NavItems.Orders",
-        url: NavUrlEnum.ORDERS,
+        title: "Sales",
+        transKey: "SheSidebar.NavItems.Sales",
+        url: `${NavUrlEnum.SALES}/orders`,
         icon: ReceiptEuro,
       },
       {
@@ -87,13 +87,13 @@ const navGroups: ISheSidebarGroup[] = [
     ],
   },
   {
-    title: "USERS",
-    transKey: "SheSidebar.GroupTitle.Users",
+    title: "CUSTOMERS",
+    transKey: "SheSidebar.GroupTitle.Customers",
     items: [
       {
-        title: "Users",
-        transKey: "SheSidebar.NavItems.Users",
-        url: NavUrlEnum.USERS,
+        title: "Customers",
+        transKey: "SheSidebar.NavItems.Customers",
+        url: NavUrlEnum.CUSTOMERS,
         icon: Users,
       },
     ],
@@ -120,7 +120,7 @@ const navGroups: ISheSidebarGroup[] = [
 
 export default function SheSidebar({}: ISheSidebar) {
   const location = useLocation();
-  const [selected, setSelected] = useState<NavUrlEnum>(
+  const [selected, setSelected] = useState<NavUrlEnum | string>(
     getCurrentSectionUrl(location.pathname),
   );
 

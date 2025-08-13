@@ -6,9 +6,12 @@ import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import cs from "./VariantGridColumns.module.scss";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import { BrandModel } from "@/const/models/BrandModel.ts";
-import VariantsGridColumnActions from "@/components/complex/grid/variants-grid/VariantsGridColumnActions.tsx";
+import { TrashIcon } from "lucide-react";
 
-export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
+export function variantsGridColumns(
+  onAction: any,
+  onDelete: (data) => void,
+): ColumnDef<any>[] {
   const statusClass = (status: string) => {
     if (status === "Available") {
       return cs.productStatusAvailable;
@@ -23,14 +26,16 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "variantId",
       header: "ID",
-      minSize: 50,
-      maxSize: 50,
+      size: 60,
+      minSize: 60,
+      maxSize: 60,
     },
     {
       accessorKey: "photo",
       header: "Image",
-      minSize: 70,
-      maxSize: 70,
+      size: 60,
+      minSize: 60,
+      maxSize: 60,
       cell: ({ row, table }) => {
         const image: ImageModel = row.getValue("photo");
         const meta = table.options.meta as {
@@ -58,7 +63,9 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "variantCode",
       header: "Code",
-      maxSize: 100,
+      size: 60,
+      minSize: 60,
+      maxSize: 60,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("variantCode")}>
@@ -72,6 +79,9 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "variantName",
       header: "Variant Name",
+      size: 150,
+      minSize: 150,
+      maxSize: 150,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("variantName")}>
@@ -85,6 +95,9 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "productCategory",
       header: "Category",
+      size: 100,
+      minSize: 100,
+      maxSize: 100,
       cell: ({ row }) => {
         const category: CategoryModel = row.getValue("productCategory");
         return (
@@ -108,6 +121,9 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "brand",
       header: "Brand",
+      size: 100,
+      minSize: 100,
+      maxSize: 100,
       cell: ({ row }) => {
         const brand: BrandModel = row.getValue("brand");
         return (
@@ -128,6 +144,9 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "traitOptions",
       header: "Details",
+      size: 80,
+      minSize: 80,
+      maxSize: 80,
       cell: ({ row }) => {
         const traitOptions = row.original.traitOptions || [];
 
@@ -187,6 +206,9 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "salePrice",
       header: "Price",
+      size: 100,
+      minSize: 100,
+      maxSize: 100,
       cell: ({ row }) => {
         const price: string = row.getValue("salePrice");
         return <span>{price ? price : "N/A"}</span>;
@@ -195,7 +217,9 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "stockAmount",
       header: "In Stock",
-      minSize: 90,
+      size: 60,
+      minSize: 60,
+      maxSize: 60,
       cell: ({ row }) => {
         return <span>{`${row.getValue("stockAmount")} units`}</span>;
       },
@@ -255,12 +279,23 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
       minSize: 70,
       maxSize: 70,
       cell: ({ row, table }) => {
+        const meta = table.options.meta as {
+          setLoadingRow: (rowId: string, loading: boolean) => void;
+          isRowLoading: (rowId: string) => boolean;
+        };
+        const handleDeleteClick = (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          onDelete({ table, row });
+        };
+
         return (
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <VariantsGridColumnActions
-              row={row}
-              onAction={onAction}
-              table={table}
+          <div onClick={(e) => e.stopPropagation()}>
+            <SheButton
+              icon={TrashIcon}
+              variant="secondary"
+              onClick={handleDeleteClick}
+              disabled={meta?.isRowLoading(row.id)}
             />
           </div>
         );

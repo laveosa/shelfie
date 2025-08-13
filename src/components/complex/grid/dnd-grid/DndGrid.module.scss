@@ -1,12 +1,13 @@
 @use "@/styles/variables" as vars;
 
-.dndGrid {
 
+.dndGrid {
 }
 
 .tableRow {
   transition: background-color 0.3s ease;
   cursor: default;
+
 
   .tableCell {
   }
@@ -32,16 +33,16 @@
 //-------------------------------------------------------isDragged
 
 .tableRowDragged {
-  background: #F8F3FF;
+  background: #F4F4F5;
 
   .dndIconCellDragged {
     cursor: grab;
-    background: #F8F3FF;
+    background: #F4F4F5;
   }
 
 
   .tableCellDragged {
-    background: #F8F3FF;
+    background: #F4F4F5;
 
     .dndIconDragged {
 
@@ -54,6 +55,17 @@
 
 
 //-------------------------------------------------------isLoading
+
+.tableLoading th {
+  width: var(--column-width) !important;
+  min-width: var(--column-min-width) !important;
+  max-width: var(--column-max-width) !important;
+  flex: none !important;
+}
+
+.tableLoading {
+  table-layout: fixed !important;
+}
 
 .tableLoading {
   display: flex;
@@ -142,5 +154,19 @@
 //-------------------------------------------------------isSelected
 
 .isSelected {
-  background: #F8F3FF;
+  //background: #F8F3FF;
+  background: #F4F4F5;
 }
+
+//-------------------------------------------------------expandableRows
+
+.expandedContent {
+  padding: 0 !important;
+
+  & > div {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+  }
+}
+

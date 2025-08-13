@@ -9,10 +9,10 @@ export default function useSupplierPageService() {
   const state = useAppSelector<ISupplierPageSlice>(StoreSliceEnum.SUPPLIER);
   const dispatch = useAppDispatch();
 
-  const [getPurchaseDetails] =
-    PurchasesApiHooks.useLazyGetPurchaseDetailsQuery();
   const [createPurchaseForSupplier] =
     PurchasesApiHooks.useCreatePurchaseForSupplierMutation();
+  const [updatePurchaseForSupplier] =
+    PurchasesApiHooks.useUpdatePurchaseForSupplierMutation();
   const [getListOfSuppliers] =
     SuppliersApiHooks.useLazyGetListOfSuppliersQuery();
   const [getListOfSuppliersForGrid] =
@@ -21,16 +21,18 @@ export default function useSupplierPageService() {
     SuppliersApiHooks.useLazyGetSupplierDetailsQuery();
   const [createSupplier] = SuppliersApiHooks.useCreateSupplierMutation();
   const [updateSupplier] = SuppliersApiHooks.useUpdateSupplierMutation();
+  const [changePositionOfSupplierPhoto] =
+    SuppliersApiHooks.useChangePositionOfSupplierPhotoMutation();
 
-  function getPurchaseDetailsHandler(id) {
-    return getPurchaseDetails(id).then((res: any) => {
+  function createPurchaseForSupplierHandler(model) {
+    return createPurchaseForSupplier(model).then((res: any) => {
       dispatch(actions.refreshPurchase(res.data));
       return res.data;
     });
   }
 
-  function createPurchaseForSupplierHandler(model) {
-    return createPurchaseForSupplier(model).then((res: any) => {
+  function updatePurchaseForSupplierHandler(purchaseId, model) {
+    return updatePurchaseForSupplier({ purchaseId, model }).then((res: any) => {
       dispatch(actions.refreshPurchase(res.data));
       return res.data;
     });
@@ -72,13 +74,24 @@ export default function useSupplierPageService() {
     });
   }
 
+  function changePositionOfSupplierPhotoHandler(supplierId, photoId, index) {
+    return changePositionOfSupplierPhoto({
+      supplierId,
+      photoId,
+      index,
+    }).then((res: any) => {
+      return res;
+    });
+  }
+
   return {
-    getPurchaseDetailsHandler,
     createPurchaseForSupplierHandler,
+    updatePurchaseForSupplierHandler,
     getListOfSuppliersHandler,
     getListOfSuppliersForGridHandler,
     getSupplierDetailsHandler,
     createSupplierHandler,
     updateSupplierHandler,
+    changePositionOfSupplierPhotoHandler,
   };
 }

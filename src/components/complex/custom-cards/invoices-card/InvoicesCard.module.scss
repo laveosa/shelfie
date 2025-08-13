@@ -1,0 +1,15 @@
+@use "@/styles/variables" as vars;
+
+.invoicesCard {
+  .invoicesCardContent {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .manageInvoices {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+  }
+}

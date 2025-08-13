@@ -12,4 +12,6 @@ export enum ApiServiceNameEnum {
   FACEBOOK = "Facebook",
   DICTIONARY = "Dictionary",
   LOGS = "Logs",
+  CUSTOMERS = "Customers",
+  ORDERS = "Orders",
 }

@@ -39,6 +39,14 @@ export const AssetsApiService = createApi({
         },
       ],
     }),
+    downloadAsset: apiConfig.createQuery<Blob, number>(builder, {
+      query: (assetId: number) => ({
+        url: `${ApiUrlEnum.ASSET}/${assetId}`,
+        method: "GET",
+        responseHandler: async (response) => await response.blob(),
+        cache: "no-cache",
+      }),
+    }),
   }),
 });
 

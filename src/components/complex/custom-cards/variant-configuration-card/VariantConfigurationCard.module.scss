@@ -1,14 +1,13 @@
 @use "@/styles/variables" as vars;
 
 .variantConfigurationCard {
-  //overflow: auto;
-
   .variantConfigurationCardContent {
     display: flex;
     flex-direction: column;
     gap: 20px;
     overflow-y: auto;
     padding-bottom: 20px;
+    max-height: calc(100vh - 260px);
 
     .variantConfigurationForm {
       display: flex;
@@ -70,10 +69,22 @@
         }
       }
 
+      .stockDetailsTitle {
+        text-wrap: auto;
+      }
+
       .stockBlock {
+        border: 1px solid #e5e5e5;
+        border-radius: 5px;
+
         .stockBlockRow {
           display: flex;
           justify-content: space-between;
+          padding: 10px;
+
+          &:not(:last-child) {
+            border-bottom: 1px solid #e5e5e5;
+          }
 
           .stockBlockRowNumber {
             padding-right: 20px;
@@ -90,7 +101,30 @@
       .variantGridBlockHeader {
         display: flex;
         justify-content: space-between;
+        align-items: center;
       }
+    }
+  }
+}
+
+//-------------------------------------------------------Expandable Row
+
+.variantConfigurationCard {
+  .expandableRow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+
+    .expandableRowIcon {
+      svg {
+        stroke: none;
+      }
+    }
+
+    .expandableRowText {
+      color: #EF4343;
+      font-weight: 500;
     }
   }
 }

@@ -5,14 +5,13 @@ import App from "@/App.tsx";
 import ErrorPage from "@/pages/error-page/ErrorPage.tsx";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { MessengerSectionRouter } from "@/router/MessengerSectionRouter.tsx";
-import { OrdersSectionRouter } from "@/router/OrdersSectionRouter.tsx";
+import { SalesSectionRouter } from "@/router/SalesSectionRouter.tsx";
 import { SettingsSectionRouter } from "@/router/SettingsSectionRouting.tsx";
 import { SupportSectionRouter } from "@/router/SupportSectionRouter.tsx";
 import { TransmissionsSectionRouter } from "@/router/TransmissionsSectionRouter.tsx";
-import { UsersSectionRouter } from "@/router/UsersSectionRouter.tsx";
+import { CustomersSectionRouter } from "@/router/CustomersSectionRouter";
 import { ProductsSectionRouter } from "@/router/ProductsSectionRouter.tsx";
 import RouterGuard from "@/utils/guards/RouterGuard.tsx";
-import AuthGuard from "@/utils/guards/AuthGuard.tsx";
 
 const mainRouter = createBrowserRouter([
   {
@@ -66,20 +65,20 @@ const mainRouter = createBrowserRouter([
         },
       },
       {
-        path: NavUrlEnum.ORDERS,
+        path: NavUrlEnum.SALES,
         lazy: async (): Promise<{ element: JSX.Element }> => {
-          const { OrdersSection } = await import(
-            "@/pages/orders-section/OrdersSection.tsx"
+          const { SalesSection } = await import(
+            "@/pages/sales-section/SalesSection.tsx"
           );
           return {
             element: (
               <RouterGuard>
-                <OrdersSection />
+                <SalesSection />
               </RouterGuard>
             ),
           };
         },
-        children: OrdersSectionRouter,
+        children: SalesSectionRouter,
         handle: {
           crumb: () => <Link to={NavUrlEnum.ORDERS}>orders</Link>,
         },
@@ -179,22 +178,21 @@ const mainRouter = createBrowserRouter([
         },
       },
       {
-        path: NavUrlEnum.USERS,
+        path: NavUrlEnum.CUSTOMERS,
         lazy: async (): Promise<{ element: JSX.Element }> => {
-          const { UsersSection } = await import(
-            "@/pages/users-section/UsersSection.tsx"
+          const { CustomersSection } = await import("@/pages/customers-section/CustomersSection.tsx"
           );
           return {
             element: (
               <RouterGuard>
-                <UsersSection />
+                <CustomersSection />
               </RouterGuard>
             ),
           };
         },
-        children: UsersSectionRouter,
+        children: CustomersSectionRouter,
         handle: {
-          crumb: () => <Link to={NavUrlEnum.USERS}>users</Link>,
+          crumb: () => <Link to={NavUrlEnum.CUSTOMERS}>customers</Link>,
         },
       },
     ],
@@ -202,13 +200,9 @@ const mainRouter = createBrowserRouter([
   {
     path: NavUrlEnum.AUTH,
     lazy: async (): Promise<{ element: JSX.Element }> => {
-      const { AuthPage } = await import("@/pages/auth-page/AuthPage.tsx");
+      const { AuthWrapper } = await import("@/pages/auth-page/AuthWrapper.tsx");
       return {
-        element: (
-          <AuthGuard>
-            <AuthPage />
-          </AuthGuard>
-        ),
+        element: <AuthWrapper />,
       };
     },
   },

@@ -1,0 +1,32 @@
+.productsInOrderCard {
+  .productsInOrderCardContent {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .addProductBlock {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+
+      span {
+        width: 70%;
+      }
+    }
+
+    .productsSummaryBlock {
+      display: flex;
+      flex-direction: column;
+
+      .productsSummary {
+        display: flex;
+        align-items: center;
+
+        span {
+          width: 50%;
+        }
+      }
+    }
+  }
+}

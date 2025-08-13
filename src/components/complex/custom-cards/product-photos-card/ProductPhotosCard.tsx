@@ -2,10 +2,15 @@ import React from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ProductPhotosCard.module.scss";
-import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import { SheImageUploader } from "@/components/complex/she-images-uploader/SheImageUploader.tsx";
+import {
+  DataWithId,
+  DndGridDataTable,
+} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import { SheFileUploader } from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { ProductPhotosGridColumns } from "@/components/complex/grid/variant-photos-grid/ProductPhotosGridColumns.tsx";
+import { IProductPhotosCard } from "@/const/interfaces/complex-components/custom-cards/IProductPhotosCard.ts";
+import { ColumnDef } from "@tanstack/react-table";
 
 export default function ProductPhotosCard({
   isLoading,
@@ -14,18 +19,20 @@ export default function ProductPhotosCard({
   data,
   contextId,
   productCounter,
+  showCloseButton,
   onAction,
-  ...props
-}) {
-  const columns = ProductPhotosGridColumns(onGridAction);
+}: IProductPhotosCard) {
+  const columns = ProductPhotosGridColumns(
+    onGridAction,
+  ) as ColumnDef<DataWithId>[];
 
   function handleAction(actionType: string, payload?: any): any {
     switch (actionType) {
       case "upload":
-        onAction("upload", payload);
+        onAction("uploadPhoto", payload);
         break;
       case "delete":
-        onAction("delete", payload);
+        onAction("deletePhoto", payload);
         break;
       case "connect":
         onAction("openConnectImageCard", payload);
@@ -58,12 +65,13 @@ export default function ProductPhotosCard({
       <SheProductCard
         loading={isLoading}
         title="Product Photos"
-        minWidth="405px"
+        minWidth="450px"
+        showCloseButton={showCloseButton}
+        onSecondaryButtonClick={() => onAction("closeProductPhotsCard")}
         className={cs.productPhotosCard}
-        {...props}
       >
         <div className={cs.productPhotosCardContent}>
-          <SheImageUploader
+          <SheFileUploader
             isLoading={isImageUploaderLoading}
             contextName={"product"}
             contextId={contextId}
@@ -85,6 +93,7 @@ export default function ProductPhotosCard({
                 data={data}
                 gridModel={data}
                 skeletonQuantity={productCounter?.gallery}
+                cellPadding="5px 10px"
                 customMessage="PRODUCT HAS NO PHOTO"
                 onNewItemPosition={(newIndex, activeItem, oldIndex) =>
                   handleAction("dnd", { newIndex, activeItem, oldIndex })

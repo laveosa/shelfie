@@ -40,7 +40,7 @@ export default function GridItemsSorting() {
                 : ArrowUpNarrowWide
               : ArrowDownUp
           }
-          disabled={sortingItems.length === 0}
+          disabled={sortingItems?.length === 0}
           minWidth="120px"
           value={selectedValue ? selectedValue : "Sort"}
           onClick={() => setDropdownOpen(true)}
@@ -49,7 +49,7 @@ export default function GridItemsSorting() {
         </SheButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className={cs.dropdownMenuContent}>
-        {sortingItems.map((item) => (
+        {sortingItems?.map((item) => (
           <DropdownMenuCheckboxItem
             key={item.value}
             className="capitalize"

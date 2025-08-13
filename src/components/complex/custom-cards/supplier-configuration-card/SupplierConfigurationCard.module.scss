@@ -1,6 +1,22 @@
 @use "@/styles/variables" as vars;
 
-.createSupplierCard {
-  .createCardContent {
+.supplierConfigurationCard {
+  .supplierConfigurationCardContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+    max-height: calc(100vh - 166px);
+    gap: 20px;
+
+    .supplierConfigurationCardForm {
+      overflow: auto;
+
+      &::-webkit-scrollbar {
+        width: 6px;
+        height: 10px;
+        background: white;
+      }
+    }
   }
 }

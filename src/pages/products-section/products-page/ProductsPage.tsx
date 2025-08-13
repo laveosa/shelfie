@@ -1,11 +1,10 @@
+import { useEffect, useRef, useState } from "react";
+import { ColumnDef } from "@tanstack/react-table";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { merge } from "lodash";
 import {
   BadgeCheck,
   CalendarRange,
-  Columns3Icon,
-  Download,
   Layers2,
   Plus,
   Receipt,
@@ -30,8 +29,11 @@ import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { ProductsPageSliceActions as actions } from "@/state/slices/ProductsPageSlice.ts";
 import { AppSliceActions as appActions } from "@/state/slices/AppSlice.ts";
-import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
+import {
+  DataWithId,
+  DndGridDataTable,
+  DndGridRef,
+} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { variantsGridColumns } from "@/components/complex/grid/variants-grid/VariantsGridColumns.tsx";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { useToast } from "@/hooks/useToast.ts";
@@ -39,6 +41,9 @@ import { purchasesGridColumns } from "@/components/complex/grid/purchases-grid/P
 import { SupplierModel } from "@/const/models/SupplierModel.ts";
 import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
+import useDialogService from "@/utils/services/dialog/DialogService.ts";
+import GridShowItemsFilter from "@/components/complex/grid/grid-show-deleted-filter/GridShowItemsFilter.tsx";
+import GridTraitsFilter from "@/components/complex/grid/grid-traits-filter/GridTraitsFilter.tsx";
 
 export function ProductsPage() {
   const dispatch = useAppDispatch();
@@ -47,40 +52,46 @@ export function ProductsPage() {
   const service = useProductsPageService();
   const navigate = useNavigate();
   const { addToast } = useToast();
-  const [activeTab, setActiveTab] = useState("products");
   const [activeStates, setActiveStates] = useState<Record<string, boolean>>({});
+  const gridRef = useRef<DndGridRef>(null);
+  const { openConfirmationDialog } = useDialogService();
 
   useEffect(() => {
-    if (activeTab === "products") {
-      service
-        .getTheProductsForGridHandler(state.productsGridRequestModel, true)
-        .then((res) => {
-          dispatch(actions.refreshProductsGridModel(res));
-          dispatch(actions.refreshProducts(res.items));
-        });
-    } else if (activeTab === "variants") {
-      service
-        .getVariantsForGridHandler(state.variantsGridRequestModel)
-        .then((res) => {
-          dispatch(actions.refreshVariantsGridModel(res));
-          dispatch(actions.refreshVariants(res.items));
-        });
-    } else if (activeTab === "purchases") {
-      service
-        .getListOfPurchasesForGridHandler(state.purchasesGridRequestModel)
-        .then((res) => {
-          dispatch(actions.refreshPurchasesGridModel(res));
-          dispatch(actions.refreshPurchases(res.items));
-        });
+    if (state.activeTab === "products") {
+      service.getTheProductsForGridHandler(
+        state.productsGridRequestModel,
+        true,
+      );
+    } else if (state.activeTab === "variants") {
+      service.getVariantsForGridHandler(state.variantsGridRequestModel);
+    } else if (state.activeTab === "purchases") {
+      service.getListOfPurchasesForGridHandler(state.purchasesGridRequestModel);
     }
     dispatch(actions.resetSelectedVariant());
   }, [
     state.productsGridRequestModel,
     state.variantsGridRequestModel,
     state.purchasesGridRequestModel,
-    activeTab,
+    state.activeTab,
     dispatch,
   ]);
+
+  useEffect(() => {
+    if (state.brands.length === 0) {
+      service.getBrandsForFilterHandler();
+    }
+    if (state.categories.length === 0) {
+      service.getCategoriesForFilterHandler();
+    }
+    if (state.sortingOptions.length === 0) {
+      service.getSortingOptionsForGridHandler();
+    }
+    if (state.suppliers.length === 0) {
+      service.getListOfSuppliersHandler();
+    }
+    if (state.sizesForFilter.length === 0 || state.colorsForFilter.length === 0)
+      service.getTraitsForFilterHandler();
+  }, []);
 
   useEffect(() => {
     if (state.productsGridModel?.items?.length > 0) {
@@ -97,42 +108,85 @@ export function ProductsPage() {
     }
   }, [state.productsGridModel.items]);
 
-  useEffect(() => {
-    if (state.brands.length === 0) {
-      service.getBrandsForFilterHandler().then((res) => {
-        dispatch(actions.refreshBrands(res));
-      });
+  async function onDelete(data) {
+    data.table.options.meta?.hideRow(data.row.original.id);
+    switch (state.activeTab) {
+      case "products":
+        const confirmedDeleteProduct = await openConfirmationDialog({
+          title: "Delete Product",
+          text: `You are about to delete product "${data.row.original.productName}".`,
+          primaryButtonValue: "Delete",
+          secondaryButtonValue: "Cancel",
+        });
+
+        if (!confirmedDeleteProduct) {
+          data.table.options.meta?.unhideRow(data.row.original.id);
+        } else {
+          await service
+            .deleteProductHandler(data.row.original.productId)
+            .then((res) => {
+              if (!res.error) {
+                addToast({
+                  text: "Product deleted successfully",
+                  type: "success",
+                });
+              } else {
+                data.table.options.meta?.unhideRow(data.row.original.id);
+                addToast({
+                  text: res.error.data.detail,
+                  type: "error",
+                });
+              }
+            });
+        }
+        break;
+      case "variants":
+        const confirmedDeleteVariant = await openConfirmationDialog({
+          title: "Delete Variant",
+          text: `You are about to delete variant "${data.row.original.variantName}".`,
+          primaryButtonValue: "Delete",
+          secondaryButtonValue: "Cancel",
+        });
+
+        if (!confirmedDeleteVariant) {
+          data.table.options.meta?.unhideRow(data.row.original.id);
+        } else {
+          await service
+            .deleteVariantHandler(data.row.original.variantId)
+            .then((res) => {
+              if (!res.error) {
+                addToast({
+                  text: "Variant deleted successfully",
+                  type: "success",
+                });
+              } else {
+                data.table.options.meta?.unhideRow(data.row.original.id);
+                addToast({
+                  text: res.error.data.detail,
+                  type: "error",
+                });
+              }
+            });
+        }
+        break;
+      case "purchases":
+        console.log("DELETE", data);
+        break;
     }
-    if (state.categories.length === 0) {
-      service.getCategoriesForFilterHandler().then((res) => {
-        dispatch(actions.refreshCategories(res));
-      });
-    }
-    if (state.sortingOptions.length === 0) {
-      service.getSortingOptionsForGridHandler().then((res) => {
-        dispatch(actions.refreshSortingOptions(res));
-      });
-    }
-    if (state.suppliers.length === 0) {
-      service.getListOfSuppliersHandler().then((res) => {
-        dispatch(actions.refreshSuppliers(res));
-      });
-    }
-  }, []);
+  }
 
   function onAction(
     actionType: string,
     rowId?: string,
     setLoadingRow?: (rowId: string, loading: boolean) => void,
     rowData?: any,
-    _rowOriginal?: any,
   ) {
     setLoadingRow(rowId, true);
-
     switch (actionType) {
       case "image":
         break;
-      case "manage":
+      case "manageProduct":
+        dispatch(actions.resetProduct());
         navigate(
           `${NavUrlEnum.PRODUCTS}${NavUrlEnum.PRODUCT_BASIC_DATA}/${rowData?.productId}`,
         );
@@ -166,38 +220,13 @@ export function ProductsPage() {
             });
         }
         break;
-      case "delete":
-        service.deleteProductHandler(rowData.original.productId).then((res) => {
-          if (res) {
-            dispatch(actions.setIsLoading(true));
-            service
-              .getTheProductsForGridHandler(
-                state.productsGridRequestModel,
-                true,
-              )
-              .then((res) => {
-                dispatch(actions.setIsLoading(false));
-                dispatch(actions.refreshProductsGridModel(res));
-                dispatch(actions.refreshProducts(res.items));
-              });
-            addToast({
-              text: "Product deleted successfully",
-              type: "success",
-            });
-          } else {
-            addToast({
-              text: res.error.message,
-              type: "error",
-            });
-          }
-        });
-        break;
       case "activateVariant":
         console.log(`Activating variant ${rowId}`);
         break;
       case "manageVariant":
         service.getVariantDetailsHandler(rowData.variantId).then((res) => {
           dispatch(actions.refreshSelectedVariant(res));
+          dispatch(actions.refreshVariantPhotos(res.photos));
           navigate(
             `${NavUrlEnum.PRODUCTS}${NavUrlEnum.MANAGE_VARIANTS}/${rowData?.productId}`,
           );
@@ -207,7 +236,6 @@ export function ProductsPage() {
         console.log(`Delete variant ${rowId}`);
         break;
       case "managePurchase":
-        dispatch(actions.refreshSelectedPurchase(rowData));
         navigate(
           `${NavUrlEnum.PRODUCTS}${NavUrlEnum.SUPPLIER}/${rowData?.purchaseId}`,
         );
@@ -220,23 +248,39 @@ export function ProductsPage() {
     setLoadingRow(rowId, false);
   }
 
-  const productsColumns = productsGridColumns(onAction, activeStates);
-  const variantsColumns = variantsGridColumns(onAction);
-  const purchasesColumns = purchasesGridColumns(onAction);
+  const productsColumns = productsGridColumns(
+    onAction,
+    onDelete,
+    activeStates,
+  ) as ColumnDef<DataWithId>[];
+  const variantsColumns = variantsGridColumns(
+    onAction,
+    onDelete,
+  ) as ColumnDef<DataWithId>[];
+  const purchasesColumns = purchasesGridColumns(
+    onAction,
+    onDelete,
+  ) as ColumnDef<DataWithId>[];
 
   function handleAddProduct() {
-    navigate(`${ApiUrlEnum.PRODUCTS}${ApiUrlEnum.PRODUCT_BASIC_DATA}`);
+    navigate(`${NavUrlEnum.PRODUCTS}${NavUrlEnum.PRODUCT_BASIC_DATA}`);
   }
 
-  function handleImportProducts() {}
+  //Commented until future notices
 
-  function handleConfigure() {}
+  // function handleImportProducts() {}
+  //
+  // function handleConfigure() {}
 
-  function handleReportPurchase() {}
+  function handleReportPurchase() {
+    dispatch(actions.resetSelectedPurchase());
+    dispatch(actions.resetSelectedSupplier());
+    navigate(`${NavUrlEnum.PRODUCTS}${NavUrlEnum.SUPPLIER}/`);
+  }
 
   function handleGridRequestChange(updates: GridRequestModel) {
     if (updates.brands || updates.categories || updates.filter) {
-      if (activeTab === "products") {
+      if (state.activeTab === "products") {
         dispatch(
           actions.refreshProductsGridRequestModel({
             ...state.productsGridRequestModel,
@@ -244,7 +288,7 @@ export function ProductsPage() {
             ...updates,
           }),
         );
-      } else if (activeTab === "variants") {
+      } else if (state.activeTab === "variants") {
         dispatch(
           actions.refreshVariantsGridRequestModel({
             ...state.variantsGridRequestModel,
@@ -252,7 +296,7 @@ export function ProductsPage() {
             ...updates,
           }),
         );
-      } else if (activeTab === "purchases") {
+      } else if (state.activeTab === "purchases") {
         dispatch(
           actions.refreshPurchasesGridRequestModel({
             ...state.purchasesGridRequestModel,
@@ -262,21 +306,21 @@ export function ProductsPage() {
         );
       }
     } else {
-      if (activeTab === "products") {
+      if (state.activeTab === "products") {
         dispatch(
           actions.refreshProductsGridRequestModel({
             ...state.productsGridRequestModel,
             ...updates,
           }),
         );
-      } else if (activeTab === "variants") {
+      } else if (state.activeTab === "variants") {
         dispatch(
           actions.refreshVariantsGridRequestModel({
             ...state.variantsGridRequestModel,
             ...updates,
           }),
         );
-      } else if (activeTab === "purchases") {
+      } else if (state.activeTab === "purchases") {
         dispatch(
           actions.refreshPurchasesGridRequestModel({
             ...state.purchasesGridRequestModel,
@@ -288,19 +332,15 @@ export function ProductsPage() {
   }
 
   function onBrandSelectHandler(selectedIds: number[]) {
-    handleGridRequestChange({ brands: selectedIds });
+    handleGridRequestChange({ filter: { brands: selectedIds } });
   }
 
   function onCategorySelectHandler(selectedIds: number[]) {
-    handleGridRequestChange({ categories: selectedIds });
+    handleGridRequestChange({ filter: { categories: selectedIds } });
   }
 
   function onSupplierSelectHandler(selectedIds: number[]) {
     handleGridRequestChange({ filter: { suppliers: selectedIds } });
-  }
-
-  function onPurchaseBrandsSelectHandler(selectedIds: number[]) {
-    handleGridRequestChange({ filter: { brands: selectedIds } });
   }
 
   function onPurchaseValueToHandler(value: number) {
@@ -327,19 +367,19 @@ export function ProductsPage() {
   }
 
   function onResetColumnsHandler() {
-    service.resetUserPreferencesHandler();
+    service.resetUserPreferencesHandler(state.activeTab);
   }
 
   function handleTabChange(value: string) {
-    if (value === activeTab) return;
-    setActiveTab(value);
+    if (value === state.activeTab) return;
+    dispatch(actions.refreshActiveTab(value));
   }
 
   return (
     <div id={cs.ProductsPage}>
       <div className={cs.productsPageHeader}>
         <div className="she-title">Products</div>
-        {activeTab === "purchases" ? (
+        {state.activeTab === "purchases" ? (
           <div className={cs.headerButtonBlock}>
             <SheButton
               icon={Plus}
@@ -356,23 +396,24 @@ export function ProductsPage() {
               onClick={handleAddProduct}
               value="Add Product"
             />
-            <SheButton
-              icon={Download}
-              variant="outline"
-              onClick={handleImportProducts}
-              value="Import Products"
-            />
-            <SheButton
-              icon={Columns3Icon}
-              variant="outline"
-              onClick={handleConfigure}
-              value="Configure"
-            />
+            {/*Commented until future notices*/}
+            {/*<SheButton*/}
+            {/*  icon={Download}*/}
+            {/*  variant="outline"*/}
+            {/*  onClick={handleImportProducts}*/}
+            {/*  value="Import Products"*/}
+            {/*/>*/}
+            {/*<SheButton*/}
+            {/*  icon={Columns3Icon}*/}
+            {/*  variant="outline"*/}
+            {/*  onClick={handleConfigure}*/}
+            {/*  value="Configure"*/}
+            {/*/>*/}
           </div>
         )}
       </div>
       <div className={cs.productsPageContent}>
-        <SheTabs defaultValue="products" onValueChange={handleTabChange}>
+        <SheTabs defaultValue={state.activeTab} onValueChange={handleTabChange}>
           <div className={cs.tabItemsWrapper}>
             <TabsList className={cs.tabItems}>
               <TabsTrigger className={cs.tabItemTrigger} value="products">
@@ -395,6 +436,7 @@ export function ProductsPage() {
           <TabsContent value="products">
             <DndGridDataTable
               isLoading={state.isLoading}
+              ref={gridRef}
               columns={productsColumns}
               data={state.productsGridModel.items}
               gridModel={state.productsGridModel}
@@ -412,6 +454,7 @@ export function ProductsPage() {
                 onSelectionChange={onBrandSelectHandler}
                 getId={(item: BrandModel) => item.brandId}
                 getName={(item: BrandModel) => item.brandName}
+                selected={state.productsGridModel.filter?.brands}
               />
               <GridItemsFilter
                 items={state.categories}
@@ -419,12 +462,15 @@ export function ProductsPage() {
                 onSelectionChange={onCategorySelectHandler}
                 getId={(item: CategoryModel) => item.categoryId}
                 getName={(item: CategoryModel) => item.categoryName}
+                selected={state.productsGridModel.filter?.categories}
               />
+              <GridShowItemsFilter context="Deleted" />
             </DndGridDataTable>
           </TabsContent>
           <TabsContent value="variants">
             <DndGridDataTable
               isLoading={state.isLoading}
+              ref={gridRef}
               columns={variantsColumns}
               data={state.variants}
               gridModel={state.variantsGridModel}
@@ -442,6 +488,7 @@ export function ProductsPage() {
                 onSelectionChange={onBrandSelectHandler}
                 getId={(item: BrandModel) => item.brandId}
                 getName={(item: BrandModel) => item.brandName}
+                selected={state.variantsGridModel.filter?.brands}
               />
               <GridItemsFilter
                 items={state.categories}
@@ -449,18 +496,31 @@ export function ProductsPage() {
                 onSelectionChange={onCategorySelectHandler}
                 getId={(item: CategoryModel) => item.categoryId}
                 getName={(item: CategoryModel) => item.categoryName}
+                selected={state.variantsGridModel.filter?.categories}
               />
+              <GridTraitsFilter
+                traitOptions={state.colorsForFilter}
+                traitType="color"
+                gridRequestModel={state.variantsGridRequestModel}
+              />
+              <GridTraitsFilter
+                traitOptions={state.sizesForFilter}
+                traitType="size"
+                gridRequestModel={state.variantsGridRequestModel}
+              />
+              <GridShowItemsFilter context="Deleted" />
             </DndGridDataTable>
           </TabsContent>
           <TabsContent value="purchases">
             <DndGridDataTable
               isLoading={state.isLoading}
+              ref={gridRef}
               columns={purchasesColumns}
               data={state.purchases}
               gridModel={state.purchasesGridModel}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
-              preferenceContext={"productReferences"}
+              preferenceContext={"purchaseReferences"}
               skeletonQuantity={state.purchasesGridRequestModel.pageSize}
               onApplyColumns={onApplyColumnsHandler}
               onDefaultColumns={onResetColumnsHandler}
@@ -473,12 +533,14 @@ export function ProductsPage() {
                 onSelectionChange={onSupplierSelectHandler}
                 getId={(item: SupplierModel) => item.supplierId}
                 getName={(item: SupplierModel) => item.supplierName}
+                selected={state.purchasesGridModel.filter?.suppliers}
               />
               <SheDatePicker
                 mode="range"
                 icon={CalendarRange}
                 placeholder="Pick range"
                 maxWidth="200px"
+                showClearBtn
                 onSelectDate={(data) => {
                   onPurchaseDateRangeHandler(data);
                 }}
@@ -487,7 +549,7 @@ export function ProductsPage() {
                 items={state.brands}
                 columnName={"Brands"}
                 icon={BadgeCheck}
-                onSelectionChange={onPurchaseBrandsSelectHandler}
+                onSelectionChange={onBrandSelectHandler}
                 getId={(item: BrandModel) => item.brandId}
                 getName={(item: BrandModel) => item.brandName}
               />
@@ -495,12 +557,14 @@ export function ProductsPage() {
                 icon={ReceiptEuro}
                 placeholder="Value from"
                 maxWidth="200px"
+                showClearBtn
                 onDelay={(data: number) => onPurchaseValueFromHandler(data)}
               />
               <SheInput
                 icon={ReceiptEuro}
                 placeholder="Value to"
                 maxWidth="200px"
+                showClearBtn
                 onDelay={(data: number) => {
                   onPurchaseValueToHandler(data);
                 }}

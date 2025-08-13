@@ -7,9 +7,13 @@ import { SupplierModel } from "@/const/models/SupplierModel.ts";
 
 const initialState: ISupplierPageSlice = {
   isLoading: false,
+  isProductMenuCardLoading: false,
   isSupplierCardLoading: false,
   isSelectSupplierCardLoading: false,
   isSupplierConfigurationCardLoading: false,
+  isSupplierPhotosGridLoading: false,
+  isSuppliersGridLoading: false,
+  isPhotoUploaderLoading: false,
   activeCards: [],
   purchase: null,
   suppliers: null,
@@ -25,6 +29,13 @@ function setIsLoading(
   action: PayloadAction<boolean>,
 ) {
   state.isLoading = action?.payload;
+}
+
+function setIsProductMenuCardLoading(
+  state: ISupplierPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isProductMenuCardLoading = action?.payload;
 }
 
 function setIsSupplierCardLoading(
@@ -46,6 +57,27 @@ function setIsSupplierConfigurationCardLoading(
   action: PayloadAction<boolean>,
 ) {
   state.isSupplierConfigurationCardLoading = action?.payload;
+}
+
+function setIsSupplierPhotosGridLoading(
+  state: ISupplierPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isSupplierPhotosGridLoading = action?.payload;
+}
+
+function setIsSuppliersGridLoading(
+  state: ISupplierPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isSuppliersGridLoading = action?.payload;
+}
+
+function setIsPhotoUploaderLoading(
+  state: ISupplierPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isPhotoUploaderLoading = action?.payload;
 }
 
 //----------------------------------------------------- API
@@ -105,9 +137,13 @@ const SupplierPageSlice = createSlice({
   initialState,
   reducers: {
     setIsLoading,
+    setIsProductMenuCardLoading,
     setIsSupplierCardLoading,
     setIsSelectSupplierCardLoading,
     setIsSupplierConfigurationCardLoading,
+    setIsSupplierPhotosGridLoading,
+    setIsSuppliersGridLoading,
+    setIsPhotoUploaderLoading,
     refreshActiveCards,
     refreshPurchase,
     refreshSuppliers,

@@ -1,0 +1,16 @@
+@use "@/styles/variables" as vars;
+
+.customerConfigurationFormCard {
+
+  .customerCardContent {
+    height: calc(100vh - 166px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  *:focus {
+    box-shadow: none;
+  }
+
+} 

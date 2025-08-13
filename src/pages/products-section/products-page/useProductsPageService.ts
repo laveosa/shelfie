@@ -2,7 +2,10 @@ import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { useNavigate } from "react-router-dom";
 
 import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
-import { ProductsPageSliceActions as actions } from "@/state/slices/ProductsPageSlice.ts";
+import {
+  ProductsPageSliceActions as productsActions,
+  ProductsPageSliceActions as actions,
+} from "@/state/slices/ProductsPageSlice.ts";
 import UsersApiHooks from "@/utils/services/api/UsersApiService.ts";
 import PurchasesApiHooks from "@/utils/services/api/PurchasesApiService.ts";
 import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
@@ -64,6 +67,75 @@ export default function useProductsPageService() {
     PurchasesApiHooks.useLazyGetPurchaseDetailsQuery();
   const [getCountryCode] = DictionaryApiHooks.useLazyGetCountryCodeQuery();
   const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
+  const [getPurchaseCounters] =
+    PurchasesApiHooks.useLazyGetPurchaseCountersQuery();
+  const [getTraitsForFilter] =
+    ProductsApiHooks.useLazyGetTraitsForFilterQuery();
+  const [generateProductCode] =
+    ProductsApiHooks.useLazyGenerateProductCodeQuery();
+  const [getSimpleListOfAllBrands] =
+    ProductsApiHooks.useLazyGetSimpleListOfAllBrandsQuery();
+  const [getAllCategoriesByOrganization] =
+    ProductsApiHooks.useLazyGetAllCategoriesByOrganizationQuery();
+  const [checkProductCode] = ProductsApiHooks.useCheckProductCodeMutation();
+  const [checkBrandName] = ProductsApiHooks.useCheckBrandNameMutation();
+  const [checkCategoryName] = ProductsApiHooks.useCheckCategoryNameMutation();
+  const [createNewProduct] = ProductsApiHooks.useCreateNewProductMutation();
+  const [updateProduct] = ProductsApiHooks.useUpdateProductMutation();
+  const [createNewCategory] = ProductsApiHooks.useCreateNewCategoryMutation();
+  const [createBrand] = ProductsApiHooks.useCreateBrandMutation();
+  const [putPhotoInNewPosition] =
+    ProductsApiHooks.usePutPhotoInNewPositionMutation();
+  const [deletePhoto] = AssetsApiHooks.useDeletePhotoMutation();
+  const [getListOfAllTraits] =
+    ProductsApiHooks.useLazyGetListOfAllTraitsQuery();
+  const [attachProductPhotoToVariant] =
+    ProductsApiHooks.useAttachProductPhotoToVariantMutation();
+  const [detachVariantPhoto] = ProductsApiHooks.useDetachVariantPhotoMutation();
+  const [getTrait] = ProductsApiHooks.useLazyGetTraitQuery();
+  const [getListOfTypesOfTraits] =
+    DictionaryApiHooks.useLazyGetListOfTypesOfTraitsQuery();
+  ProductsApiHooks.useLazyGetProductVariantsQuery();
+  const [getListOfTraitsWithOptionsForProduct] =
+    ProductsApiHooks.useLazyGetListOfTraitsWithOptionsForProductQuery();
+  const [setProductTraits] = ProductsApiHooks.useSetProductTraitsMutation();
+  const [deleteTrait] = ProductsApiHooks.useDeleteTraitMutation();
+  const [getListOfTraitsForProduct] =
+    ProductsApiHooks.useLazyGetListOfTraitsForProductQuery();
+  const [createNewTrait] = ProductsApiHooks.useCreateNewTraitMutation();
+  const [getOptionsForTrait] =
+    ProductsApiHooks.useLazyGetOptionsForTraitQuery();
+  const [createNewOptionForTrait] =
+    ProductsApiHooks.useCreateNewOptionForTraitMutation();
+  const [updateOptionsForTrait] =
+    ProductsApiHooks.useUpdateOptionOfTraitMutation();
+  const [deleteOptionsForTrait] =
+    ProductsApiHooks.useDeleteOptionOfTraitMutation();
+  const [updateTrait] = ProductsApiHooks.useUpdateTraitMutation();
+  const [changePositionOfTraitOption] =
+    ProductsApiHooks.useChangePositionOfTraitOptionMutation();
+  const [createVariant] = ProductsApiHooks.useCreateVariantMutation();
+  const [checkVariantCombination] =
+    ProductsApiHooks.useCheckVariantCombinationMutation();
+  const [getPurchaseProductVariants] =
+    PurchasesApiHooks.useLazyGetPurchaseProductVariantsQuery();
+  const [getVariantStockHistory] =
+    ProductsApiHooks.useLazyGetVariantStockHistoryQuery();
+  const [getProductPhotosForVariant] =
+    ProductsApiHooks.useLazyGetProductPhotosForVariantQuery();
+  const [updateVariantDetails] =
+    ProductsApiHooks.useUpdateVariantDetailsMutation();
+  const [updateVariantTraitOptions] =
+    ProductsApiHooks.useUpdateVariantTraitOptionsMutation();
+  const [increaseStockAmountForVariant] =
+    ProductsApiHooks.useIncreaseStockAmountForVariantMutation();
+  const [disposeVariantFromStock] =
+    ProductsApiHooks.useDisposeVariantFromStockMutation();
+  const [changePhotoPositionForVariant] =
+    ProductsApiHooks.useChangePhotoPositionForVariantMutation();
+  const [deleteVariant] = ProductsApiHooks.useDeleteVariantMutation();
+  const [deleteSupplier] = SuppliersApiHooks.useDeleteSupplierMutation();
+  const [restoreSupplier] = SuppliersApiHooks.useRestoreSupplierMutation();
 
   //-------------------------------------------------API
 
@@ -80,6 +152,8 @@ export default function useProductsPageService() {
         if (res.error) {
           return;
         } else {
+          dispatch(actions.refreshProductsGridModel(res.data));
+          dispatch(actions.refreshProducts(res.data.items));
           return res.data;
         }
       });
@@ -93,6 +167,8 @@ export default function useProductsPageService() {
           if (res.error) {
             return;
           } else {
+            dispatch(actions.refreshProductsGridModel(res.data));
+            dispatch(actions.refreshProducts(res.data.items));
             return res.data;
           }
         });
@@ -107,6 +183,8 @@ export default function useProductsPageService() {
       if (res.error) {
         return;
       } else {
+        dispatch(actions.refreshPurchasesGridModel(res.data));
+        dispatch(actions.refreshPurchases(res.data.items));
         return res.data;
       }
     });
@@ -126,6 +204,8 @@ export default function useProductsPageService() {
       if (res.error) {
         return;
       } else {
+        dispatch(actions.refreshVariantsGridModel(res.data));
+        dispatch(actions.refreshVariants(res.data.items));
         return res.data;
       }
     });
@@ -140,7 +220,7 @@ export default function useProductsPageService() {
 
   function getListOfSuppliersHandler() {
     return getListOfSuppliers(null).then((res: any) => {
-      dispatch(actions.refreshCategories(res.data));
+      dispatch(actions.refreshSuppliers(res.data));
       return res.data;
     });
   }
@@ -154,12 +234,14 @@ export default function useProductsPageService() {
 
   function getCountersForProductsHandler(id: any) {
     return getCountersForProducts(id).then((res: any) => {
+      dispatch(actions.refreshProductCounter(res.data));
       return res.data;
     });
   }
 
   function getProductDetailsHandler(id) {
     return getProductDetails(id).then((res: any) => {
+      dispatch(actions.refreshProduct(res.data));
       return res.data;
     });
   }
@@ -186,8 +268,8 @@ export default function useProductsPageService() {
     });
   }
 
-  function resetUserPreferencesHandler() {
-    return resetUserPreferences().then(() => {
+  function resetUserPreferencesHandler(grid) {
+    return resetUserPreferences(grid).then(() => {
       appService.getUserPreferencesHandler();
     });
   }
@@ -195,6 +277,7 @@ export default function useProductsPageService() {
   function getProductPhotosHandler(id: number) {
     dispatch(actions.setIsProductPhotosLoading(true));
     return getProductPhotos(id).then((res: any) => {
+      dispatch(productsActions.refreshProductPhotos(res.data));
       dispatch(actions.setIsProductPhotosLoading(false));
       return res.data;
     });
@@ -221,12 +304,14 @@ export default function useProductsPageService() {
 
   function getTaxesListHandler() {
     return getTaxesList().then((res: any) => {
+      dispatch(actions.refreshTaxesList(res.data));
       return res.data;
     });
   }
 
   function getCurrenciesListHandler() {
     return getCurrenciesList().then((res: any) => {
+      dispatch(actions.refreshCurrenciesList(res.data));
       return res.data;
     });
   }
@@ -271,6 +356,305 @@ export default function useProductsPageService() {
 
   function uploadPhotoHandler(model: UploadPhotoModel) {
     return uploadPhoto(model).then((res: any) => {
+      return res;
+    });
+  }
+
+  function getPurchaseCountersHandler(purchaseId: number) {
+    return getPurchaseCounters(purchaseId).then((res: any) => {
+      dispatch(actions.refreshPurchaseCounters(res.data));
+      return res.data;
+    });
+  }
+
+  function getTraitsForFilterHandler() {
+    return getTraitsForFilter().then((res: any) => {
+      dispatch(
+        actions.refreshSizesForFilter(
+          res.data
+            .filter((trait) => trait.traitTypeId === 1)
+            .flatMap((trait) => trait.traitOptions),
+        ),
+      );
+      dispatch(
+        actions.refreshColorsForFilter(
+          res.data
+            .filter((trait) => trait.traitTypeId === 2)
+            .flatMap((trait) => trait.traitOptions),
+        ),
+      );
+      return res.data;
+    });
+  }
+
+  function generateProductCodeHandler() {
+    return generateProductCode(null).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function getSimpleListOfAllBrandsHandler() {
+    return getSimpleListOfAllBrands(null).then((res: any) => {
+      dispatch(actions.refreshBrands(res.data));
+      return res.data;
+    });
+  }
+
+  function getAllCategoriesByOrganizationHandler() {
+    return getAllCategoriesByOrganization(null).then((res: any) => {
+      dispatch(actions.refreshCategories(res.data));
+      return res.data;
+    });
+  }
+
+  function checkProductCodeHandler(code) {
+    return checkProductCode(code).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function checkBrandNameHandler(brandName) {
+    return checkBrandName(brandName).then((res: any) => {
+      return res;
+    });
+  }
+
+  function checkCategoryNameHandler(categoryName) {
+    return checkCategoryName(categoryName).then((res: any) => {
+      return res;
+    });
+  }
+
+  function createNewProductHandler(model) {
+    return createNewProduct(model).then((res: any) => {
+      return res;
+    });
+  }
+
+  function updateProductHandler(productId, model) {
+    return updateProduct({ productId, model }).then((res: any) => {
+      return res;
+    });
+  }
+
+  function createNewCategoryHandler(model) {
+    return createNewCategory(model).then((res: any) => {
+      return res;
+    });
+  }
+
+  function createBrandHandler(model) {
+    return createBrand(model).then((res: any) => {
+      return res;
+    });
+  }
+
+  function putPhotoInNewPositionHandler(productId, photoId, index) {
+    return putPhotoInNewPosition({
+      productId,
+      photoId,
+      index,
+    }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function deletePhotoHandler(photoId) {
+    return deletePhoto(photoId).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function getListOfAllTraitsHandler() {
+    return getListOfAllTraits().then((res: any) => {
+      dispatch(actions.refreshTraits(res.data));
+      return res.data;
+    });
+  }
+
+  function attachProductPhotoToVariantHandler(variantId, photoId) {
+    return attachProductPhotoToVariant({
+      variantId,
+      photoId,
+    }).then((res: any) => {
+      return res;
+    });
+  }
+
+  function detachVariantPhotoHandler(id, photoId) {
+    return detachVariantPhoto({ id, photoId }).then((res: any) => {
+      return res;
+    });
+  }
+
+  function getTraitHandler(id: number) {
+    return getTrait(id).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function getListOfTypesOfTraitsHandler() {
+    return getListOfTypesOfTraits().then((res: any) => {
+      dispatch(actions.refreshTypesOfTraits(res.data));
+      return res.data;
+    });
+  }
+
+  function getListOfTraitsWithOptionsForProductHandler(id) {
+    return getListOfTraitsWithOptionsForProduct(id).then((res: any) => {
+      dispatch(actions.refreshListOfTraitsWithOptionsForProduct(res.data));
+      return res.data;
+    });
+  }
+
+  function setProductTraitsHandler(id, model) {
+    return setProductTraits({ id, model }).then((res: any) => {
+      return res;
+    });
+  }
+
+  function deleteTraitHandler(id) {
+    return deleteTrait(id).then((res: any) => {
+      return res;
+    });
+  }
+
+  function getListOfTraitsForProductHandler(id) {
+    return getListOfTraitsForProduct(id).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function createNewTraitHandler(model) {
+    return createNewTrait(model).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function updateTraitHandler(id, model) {
+    return updateTrait({ id, model }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function getOptionsForTraitHandler(id) {
+    return getOptionsForTrait(id).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function createNewOptionForTraitHandler(id, model) {
+    return createNewOptionForTrait({ id, model }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function updateOptionsForTraitHandler(id, model) {
+    return updateOptionsForTrait({ id, model }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function deleteOptionsForTraitHandler(id) {
+    return deleteOptionsForTrait(id).then((res: any) => {
+      return res;
+    });
+  }
+
+  function changePositionOfTraitOptionHandler(traitId, optionId, index) {
+    return changePositionOfTraitOption({
+      traitId,
+      optionId,
+      index,
+    }).then((res: any) => {
+      return res;
+    });
+  }
+
+  function createVariantHandler(id, model) {
+    return createVariant({ id, model }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function checkVariantCombinationHandler(id, model) {
+    return checkVariantCombination({ id, model }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function getPurchaseProductVariantsHandler(purchaseId, productId) {
+    return getPurchaseProductVariants({
+      purchaseId,
+      productId,
+    }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function getVariantStockHistoryHandler(id) {
+    return getVariantStockHistory(id).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function getProductPhotosForVariantHandler(productId, variantId) {
+    return getProductPhotosForVariant({
+      productId,
+      variantId,
+    }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function updateVariantDetailsHandler(id, model) {
+    return updateVariantDetails({ id, model }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function updateVariantTraitOptionsHandler(id, model) {
+    return updateVariantTraitOptions({ id, model }).then((res: any) => {
+      return res;
+    });
+  }
+
+  function increaseStockAmountForVariantHandler(id, model) {
+    return increaseStockAmountForVariant({ id, model }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function disposeVariantFromStockHandler(id, model) {
+    return disposeVariantFromStock({ id, model }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function changePhotoPositionForVariantHandler(id, photoId, index) {
+    return changePhotoPositionForVariant({
+      id,
+      photoId,
+      index,
+    }).then((res: any) => {
+      return res.data;
+    });
+  }
+
+  function deleteVariantHandler(variantId) {
+    return deleteVariant(variantId).then((res: any) => {
+      return res;
+    });
+  }
+
+  function deleteSupplierHandler(supplierId) {
+    return deleteSupplier(supplierId).then((res: any) => {
+      return res;
+    });
+  }
+
+  function restoreSupplierHandler(supplierId) {
+    return restoreSupplier(supplierId).then((res: any) => {
       return res;
     });
   }
@@ -320,6 +704,7 @@ export default function useProductsPageService() {
       case "variant":
         getVariantDetailsHandler(item.variantId).then((res) => {
           dispatch(actions.refreshSelectedVariant(res));
+          dispatch(actions.refreshVariantPhotos(res.photos));
           navigate(
             `${NavUrlEnum.PRODUCTS}${NavUrlEnum.MANAGE_VARIANTS}/${item?.productId}`,
           );
@@ -360,7 +745,50 @@ export default function useProductsPageService() {
     getPurchaseDetailsHandler,
     getCountryCodeHandler,
     uploadPhotoHandler,
+    getPurchaseCountersHandler,
+    getTraitsForFilterHandler,
     itemsCardItemsConvertor,
     itemCardHandler,
+    generateProductCodeHandler,
+    getSimpleListOfAllBrandsHandler,
+    getAllCategoriesByOrganizationHandler,
+    checkProductCodeHandler,
+    checkBrandNameHandler,
+    checkCategoryNameHandler,
+    createNewProductHandler,
+    updateProductHandler,
+    createNewCategoryHandler,
+    createBrandHandler,
+    putPhotoInNewPositionHandler,
+    deletePhotoHandler,
+    getListOfAllTraitsHandler,
+    attachProductPhotoToVariantHandler,
+    detachVariantPhotoHandler,
+    getTraitHandler,
+    getListOfTypesOfTraitsHandler,
+    getListOfTraitsWithOptionsForProductHandler,
+    setProductTraitsHandler,
+    deleteTraitHandler,
+    getListOfTraitsForProductHandler,
+    createNewTraitHandler,
+    updateTraitHandler,
+    getOptionsForTraitHandler,
+    createNewOptionForTraitHandler,
+    updateOptionsForTraitHandler,
+    deleteOptionsForTraitHandler,
+    changePositionOfTraitOptionHandler,
+    createVariantHandler,
+    checkVariantCombinationHandler,
+    getPurchaseProductVariantsHandler,
+    getVariantStockHistoryHandler,
+    getProductPhotosForVariantHandler,
+    updateVariantDetailsHandler,
+    updateVariantTraitOptionsHandler,
+    increaseStockAmountForVariantHandler,
+    disposeVariantFromStockHandler,
+    changePhotoPositionForVariantHandler,
+    deleteVariantHandler,
+    deleteSupplierHandler,
+    restoreSupplierHandler,
   };
 }

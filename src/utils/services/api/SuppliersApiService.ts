@@ -43,6 +43,31 @@ export const SuppliersApiService = createApi({
         body: JSON.stringify(model),
       }),
     }),
+    deleteSupplier: apiConfig.createMutation<void, any>(builder, {
+      query: (supplierId) => ({
+        url: `${ApiUrlEnum.SUPPLIERS}/${supplierId}`,
+        method: "DELETE",
+      }),
+    }),
+    restoreSupplier: apiConfig.createMutation<void, any>(builder, {
+      query: (supplierId) => ({
+        url: `${ApiUrlEnum.SUPPLIERS}/${supplierId}/restore`,
+        method: "PATCH",
+      }),
+    }),
+    changePositionOfSupplierPhoto: apiConfig.createMutation<
+      any,
+      {
+        supplierId?: number;
+        photoId?: number;
+        index?: number;
+      }
+    >(builder, {
+      query: ({ supplierId, photoId, index }) => ({
+        url: `${ApiUrlEnum.SUPPLIERS}/${supplierId}/photo/${photoId}/${index}`,
+        method: "PATCH",
+      }),
+    }),
   }),
 });
 

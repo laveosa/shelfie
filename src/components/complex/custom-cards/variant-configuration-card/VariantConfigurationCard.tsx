@@ -1,14 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
+import { ColumnDef } from "@tanstack/react-table";
 import { useForm } from "react-hook-form";
-
 import {
   Blocks,
   Clock,
   ImagePlus,
   Minus,
   Plus,
+  Trash2,
   WandSparklesIcon,
 } from "lucide-react";
+
 import {
   FormControl,
   FormField,
@@ -28,12 +30,18 @@ import { IVariantConfigurationCard } from "@/const/interfaces/complex-components
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
-import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import {
+  DataWithId,
+  DndGridDataTable,
+} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
 import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
 import { VariantConfigurationGridColumns } from "@/components/complex/grid/variant-configuration-grid/VariantConfigurationGridColumns.tsx";
 import { VariantPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/VariantPhotosGridColumns.tsx";
 import { VariantModel } from "@/const/models/VariantModel.ts";
+import SheIcon from "@/components/primitive/she-icon/SheIcon";
+import InfoIcon from "@/assets/icons/Info-icon.svg?react";
+import SheCardNotification from "@/components/complex/she-card-notification/SheCardNotification.tsx";
 
 const debounce = (fn: (...args: any[]) => void, delay: number) => {
   let timer: ReturnType<typeof setTimeout>;
@@ -54,15 +62,13 @@ export default function VariantConfigurationCard({
   taxesList,
   productCounter,
   onGenerateProductCode,
-  onSecondaryButtonClick,
   ...props
 }: IVariantConfigurationCard) {
-  const traitsColumns = VariantConfigurationGridColumns;
-  const photoColumns = VariantPhotosGridColumns(onGridAction);
-
-  const currentVariantIdRef = useRef<string | number | null>(
-    variant?.variantId || null,
-  );
+  const traitsColumns =
+    VariantConfigurationGridColumns as ColumnDef<DataWithId>[];
+  const photoColumns = VariantPhotosGridColumns(
+    onGridAction,
+  ) as ColumnDef<DataWithId>[];
 
   const [initialFormValues, setInitialFormValues] = useState({
     variantName: variant?.variantName || "",
@@ -73,23 +79,34 @@ export default function VariantConfigurationCard({
       taxTypeId: variant?.salePrice?.taxTypeId || taxesList?.[0]?.id,
     },
   });
-
-  const userModifiedForm = useRef(false);
-  const debouncedFnRef = useRef<any>(null);
-
   const form = useForm({
     defaultValues: initialFormValues,
   });
+  const currentVariantIdRef = useRef<string | number | null>(
+    variant?.variantId || null,
+  );
+  const userModifiedForm = useRef(false);
+
+  const debouncedSubmit = useRef(
+    debounce(() => {
+      if (userModifiedForm.current) {
+        form.handleSubmit(onSubmit)();
+      }
+    }, 1500),
+  );
+
+  const { setValue, register, getValues } = form;
+  const lastChanged = useRef<"netto" | "brutto" | null>(null);
+  const preparedTraitOptions = prepareTraitOptionsData(variant?.traitOptions);
 
   useEffect(() => {
-    if (debouncedFnRef.current && debouncedFnRef.current.cancel) {
-      debouncedFnRef.current.cancel();
+    if (debouncedSubmit.current) {
+      debouncedSubmit.current = debounce(() => {
+        if (userModifiedForm.current) {
+          form.handleSubmit(onSubmit)();
+        }
+      }, 1500);
     }
-    return () => {
-      if (debouncedFnRef.current && debouncedFnRef.current.cancel) {
-        debouncedFnRef.current.cancel();
-      }
-    };
   }, [variant?.variantId]);
 
   useEffect(() => {
@@ -112,20 +129,77 @@ export default function VariantConfigurationCard({
     }
   }, [variant?.variantId, variant, taxesList, form]);
 
-  const { setValue, register, getValues } = form;
-  const lastChanged = useRef<"netto" | "brutto" | null>(null);
+  function prepareTraitOptionsData(traitOptions) {
+    return (
+      traitOptions?.map((trait) => {
+        const expandableRows = [];
 
-  const createDebouncedSubmit = () => {
-    const fn = debounce(() => {
-      const currentValues = getValues();
-      if (userModifiedForm.current) {
-        form.handleSubmit(onSubmit)();
-      }
-    }, 1500);
+        if (trait.isRemoved) {
+          expandableRows.push({
+            id: `${trait.id}-removed`,
+            type: "removed",
+            message: "Trait option is removed",
+          });
+        }
 
-    debouncedFnRef.current = fn;
-    return fn;
-  };
+        if (trait.isMissing) {
+          expandableRows.push({
+            id: `${trait.id}-missing`,
+            type: "missing",
+            message: "Trait option is missing configuration",
+          });
+        }
+
+        return {
+          ...trait,
+          expandableRows: expandableRows,
+        };
+      }) || []
+    );
+  }
+
+  function renderExpandedContent(expandableItem) {
+    return (
+      <div>
+        {expandableItem.original.expandableRows.map((item) => (
+          <div className={cs.expandableRow} key={item.id}>
+            <SheIcon
+              maxWidth="20px"
+              minWidth="20px"
+              className={cs.expandableRowIcon}
+              icon={InfoIcon}
+            />
+            <span className={cs.expandableRowText}>{item.message}</span>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  function onGenerateCode() {
+    onGenerateProductCode().then((res: ProductCodeModel) => {
+      form.setValue("variantCode", res.code, { shouldDirty: true });
+      userModifiedForm.current = true;
+      form.handleSubmit(onSubmit)();
+    });
+  }
+
+  function handleFieldChange() {
+    const currentValues = getValues();
+    const initialValues = initialFormValues;
+
+    const hasChanged =
+      currentValues.variantName !== initialValues.variantName ||
+      currentValues.variantCode !== initialValues.variantCode ||
+      currentValues.salePrice.netto !== initialValues.salePrice.netto ||
+      currentValues.salePrice.brutto !== initialValues.salePrice.brutto ||
+      currentValues.salePrice.taxTypeId !== initialValues.salePrice.taxTypeId;
+
+    if (hasChanged) {
+      userModifiedForm.current = true;
+      debouncedSubmit.current();
+    }
+  }
 
   function onSubmit(formData: VariantModel) {
     if (!userModifiedForm.current) return;
@@ -174,31 +248,6 @@ export default function VariantConfigurationCard({
     userModifiedForm.current = false;
   }
 
-  const handleFieldChange = () => {
-    const currentValues = getValues();
-    const initialValues = initialFormValues;
-
-    const hasChanged =
-      currentValues.variantName !== initialValues.variantName ||
-      currentValues.variantCode !== initialValues.variantCode ||
-      currentValues.salePrice.netto !== initialValues.salePrice.netto ||
-      currentValues.salePrice.brutto !== initialValues.salePrice.brutto ||
-      currentValues.salePrice.taxTypeId !== initialValues.salePrice.taxTypeId;
-
-    if (hasChanged) {
-      userModifiedForm.current = true;
-      createDebouncedSubmit()();
-    }
-  };
-
-  function onGenerateCode() {
-    onGenerateProductCode().then((res: ProductCodeModel) => {
-      form.setValue("variantCode", res.code, { shouldDirty: true });
-      userModifiedForm.current = true;
-      form.handleSubmit(onSubmit)();
-    });
-  }
-
   function onGridAction(
     _actionType: string,
     _rowId?: string,
@@ -214,7 +263,7 @@ export default function VariantConfigurationCard({
       loading={isLoading}
       title="Manage Variant"
       showCloseButton
-      onSecondaryButtonClick={onSecondaryButtonClick}
+      onSecondaryButtonClick={() => onAction("closeVariantConfigurationCard")}
       className={cs.variantConfigurationCard}
       {...props}
     >
@@ -317,25 +366,30 @@ export default function VariantConfigurationCard({
         <Separator />
         <div className={cs.stockDetailsBlock}>
           <div className={cs.buttonBlock}>
-            <span className="she-title">Stock Details</span>
+            <span className={`${cs.stockDetailsTitle} she-title`}>
+              Stock Details
+            </span>
             <SheButton
               icon={Plus}
-              variant="outline"
+              variant="secondary"
               onClick={() => onAction("openAddStockCard")}
             >
               Add
             </SheButton>
             <SheButton
               icon={Minus}
-              variant="outline"
+              variant="secondary"
               onClick={() => onAction("openDisposeStockCard")}
             >
               Dispose
             </SheButton>
             <SheButton
               icon={Clock}
-              variant="outline"
-              onClick={() => onAction("openVariantHistoryCard")}
+              variant="secondary"
+              maxWidth="89px"
+              onClick={() =>
+                onAction("openVariantHistoryCard", variant.variantId)
+              }
             >
               History
             </SheButton>
@@ -360,7 +414,7 @@ export default function VariantConfigurationCard({
             <span className="she-title">Variant Traits</span>
             <SheButton
               icon={Blocks}
-              variant="outline"
+              variant="secondary"
               onClick={() => onAction("openManageTraitsCard")}
             >
               Manage
@@ -371,8 +425,10 @@ export default function VariantConfigurationCard({
               isLoading={isVariantOptionsGridLoading}
               showHeader={false}
               columns={traitsColumns}
-              data={variant?.traitOptions}
+              data={preparedTraitOptions}
               gridModel={data}
+              enableExpansion={true}
+              renderExpandedContent={renderExpandedContent}
             />
           </div>
         </div>
@@ -381,8 +437,10 @@ export default function VariantConfigurationCard({
             <span className="she-title">Variant Photos</span>
             <SheButton
               icon={ImagePlus}
-              variant="outline"
-              onClick={() => onAction("openVariantPhotosCard")}
+              variant="secondary"
+              onClick={() =>
+                onAction("openVariantPhotosCard", variant.variantId)
+              }
             >
               Manage
             </SheButton>
@@ -396,7 +454,7 @@ export default function VariantConfigurationCard({
                 columns={photoColumns}
                 data={variantPhotos}
                 gridModel={data}
-                skeletonQuantity={productCounter.gallery}
+                skeletonQuantity={productCounter?.gallery}
                 onNewItemPosition={(newIndex, activeItem) =>
                   onAction("dndVariantPhoto", { newIndex, activeItem })
                 }
@@ -405,6 +463,15 @@ export default function VariantConfigurationCard({
           )}
         </div>
       </div>
+      <SheCardNotification
+        title="Delete Variant"
+        text="This variant will be deleted, it will no longer be available for sale but you will still see it in the orders where it sold"
+        buttonColor="#EF4343"
+        buttonVariant="outline"
+        buttonText="Delete"
+        buttonIcon={Trash2}
+        onClick={() => onAction("deleteVariant", variant)}
+      />
     </SheProductCard>
   );
 }

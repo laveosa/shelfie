@@ -8,7 +8,10 @@ import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
 import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
-import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
+import {
+  ProductCountersModel,
+  PurchaseCountersModel,
+} from "@/const/models/CounterModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
@@ -16,6 +19,10 @@ import { VariantModel } from "@/const/models/VariantModel.ts";
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 import { SupplierModel } from "@/const/models/SupplierModel.ts";
 import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
+import { TraitModel } from "@/const/models/TraitModel.ts";
+import { TypeOfTraitModel } from "@/const/models/TypeOfTraitModel.ts";
+import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
+import { IManageVariantsPageSlice } from "@/const/interfaces/store-slices/IManageVariantsPageSlice.ts";
 
 const initialState: IProductsPageSlice = {
   isLoading: false,
@@ -71,9 +78,35 @@ const initialState: IProductsPageSlice = {
   taxesList: [],
   currenciesList: [],
   countryCodeList: null,
+  purchaseCounters: null,
+  typesOfTraits: [],
+  traits: null,
+  listOfTraitsWithOptionsForProduct: null,
+  brand: null,
+  category: null,
+  traitsForFilters: { color: [], size: [] },
+  traitsForFilter: [],
+  colorsForFilter: [],
+  sizesForFilter: [],
+  activeTab: "products",
+  variantPhotos: [],
 };
 
 //----------------------------------------------------- LOADERS
+
+function refreshColorsForFilter(
+  state: IProductsPageSlice,
+  action: PayloadAction<TraitOptionModel[]>,
+) {
+  state.colorsForFilter = action?.payload || state.colorsForFilter;
+}
+
+function refreshSizesForFilter(
+  state: IProductsPageSlice,
+  action: PayloadAction<TraitOptionModel[]>,
+) {
+  state.sizesForFilter = action?.payload || state.sizesForFilter;
+}
 
 function setIsLoading(
   state: IProductsPageSlice,
@@ -160,7 +193,7 @@ function refreshPurchases(
 
 function refreshProductCounter(
   state: IProductsPageSlice,
-  action: PayloadAction<ProductCounterModel>,
+  action: PayloadAction<ProductCountersModel>,
 ) {
   state.productCounter = action?.payload || state.productCounter;
 }
@@ -258,7 +291,7 @@ function refreshProductPhotos(
 
 function refreshProductVariants(
   state: IProductsPageSlice,
-  action: PayloadAction<any[]>,
+  action: PayloadAction<VariantModel[]>,
 ) {
   state.productVariants = action?.payload || state.productVariants;
 }
@@ -277,11 +310,19 @@ function refreshSelectedSupplier(
   state.selectedSupplier = action?.payload || state.selectedSupplier;
 }
 
+function resetSelectedSupplier(state: IProductsPageSlice) {
+  state.selectedSupplier = null;
+}
+
 function refreshSelectedPurchase(
   state: IProductsPageSlice,
   action: PayloadAction<PurchaseModel>,
 ) {
   state.selectedPurchase = action?.payload || state.selectedPurchase;
+}
+
+function resetSelectedPurchase(state: IProductsPageSlice) {
+  state.selectedPurchase = null;
 }
 
 function resetSelectedVariant(state: IProductsPageSlice) {
@@ -307,6 +348,67 @@ function refreshCountryCodeList(
   action: PayloadAction<CountryCodeModel[]>,
 ) {
   state.countryCodeList = action?.payload || state.countryCodeList;
+}
+
+function refreshPurchaseCounters(
+  state: IProductsPageSlice,
+  action: PayloadAction<PurchaseCountersModel>,
+) {
+  state.purchaseCounters = action?.payload || state.purchaseCounters;
+}
+
+function resetPurchaseCounters(state: IProductsPageSlice) {
+  state.purchaseCounters = null;
+}
+
+function refreshTypesOfTraits(
+  state: IProductsPageSlice,
+  action: PayloadAction<TypeOfTraitModel[]>,
+) {
+  state.typesOfTraits = action?.payload || state.typesOfTraits;
+}
+
+function refreshTraits(
+  state: IProductsPageSlice,
+  action: PayloadAction<TraitModel[]>,
+) {
+  state.traits = action?.payload || state.traits;
+}
+
+function refreshListOfTraitsWithOptionsForProduct(
+  state: IProductsPageSlice,
+  action: PayloadAction<TraitModel[]>,
+) {
+  state.listOfTraitsWithOptionsForProduct =
+    action?.payload || state.listOfTraitsWithOptionsForProduct;
+}
+
+function refreshBrand(
+  state: IProductsPageSlice,
+  action: PayloadAction<BrandModel>,
+) {
+  state.brand = action?.payload || state.brand;
+}
+
+function refreshCategory(
+  state: IProductsPageSlice,
+  action: PayloadAction<CategoryModel>,
+) {
+  state.category = action?.payload || state.category;
+}
+
+function refreshActiveTab(
+  state: IProductsPageSlice,
+  action: PayloadAction<string>,
+) {
+  state.activeTab = action?.payload || state.activeTab;
+}
+
+function refreshVariantPhotos(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<ImageModel[]>,
+) {
+  state.variantPhotos = action?.payload || state.variantPhotos;
 }
 
 const ProductsPageSlice = createSlice({
@@ -343,10 +445,23 @@ const ProductsPageSlice = createSlice({
     refreshSelectedVariant,
     resetSelectedVariant,
     refreshSelectedSupplier,
+    resetSelectedSupplier,
     refreshSelectedPurchase,
+    resetSelectedPurchase,
     refreshTaxesList,
     refreshCurrenciesList,
     refreshCountryCodeList,
+    refreshPurchaseCounters,
+    resetPurchaseCounters,
+    refreshTypesOfTraits,
+    refreshTraits,
+    refreshListOfTraitsWithOptionsForProduct,
+    refreshBrand,
+    refreshCategory,
+    refreshColorsForFilter,
+    refreshSizesForFilter,
+    refreshActiveTab,
+    refreshVariantPhotos,
   },
 });
 

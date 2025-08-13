@@ -1,0 +1,45 @@
+.marginConfiguration {
+  .marginConfigurationForm {
+    display: flex;
+    flex-direction: column;
+
+    .marginConfigurationTitle {
+      padding-bottom: 20px;
+      align-self: start;
+    }
+
+    .marginConfigurationText {
+      padding-bottom: 20px;
+    }
+
+    .marginConfigurationFormItem {
+      margin-bottom: 20px;
+      min-height: 100%;
+    }
+
+    .selectSupplierBlock {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .selectSupplierButton {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        justify-content: space-between;
+      }
+    }
+
+    .buttonBlock {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .oneButtonBlock {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}

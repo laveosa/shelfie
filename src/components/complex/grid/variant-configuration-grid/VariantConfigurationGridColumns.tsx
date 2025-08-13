@@ -4,6 +4,9 @@ export const VariantConfigurationGridColumns: ColumnDef<any>[] = [
   {
     accessorKey: "optionColor",
     header: "Type",
+    size: 100,
+    maxSize: 100,
+    minSize: 100,
     cell: ({ row }) => {
       return (
         <span className="she-text">
@@ -15,6 +18,9 @@ export const VariantConfigurationGridColumns: ColumnDef<any>[] = [
   {
     accessorKey: "optionName",
     header: "Value",
+    size: 100,
+    maxSize: 100,
+    minSize: 100,
     cell: ({ row }) => {
       return (
         <div
@@ -25,9 +31,10 @@ export const VariantConfigurationGridColumns: ColumnDef<any>[] = [
                   background: row.original.optionColor,
                   width: "20px",
                   height: "20px",
-                  borderRadius: "10%",
+                  borderRadius: "50%",
+                  alignSelf: "center",
                 }
-              : {}
+              : { alignSelf: "center" }
           }
         >
           {row.original.optionColor === null ? row.original.optionName : ""}
@@ -38,20 +45,11 @@ export const VariantConfigurationGridColumns: ColumnDef<any>[] = [
   {
     id: "traitName",
     header: "Name",
+    size: 100,
+    maxSize: 100,
+    minSize: 100,
     cell: ({ row }) => {
       return <div className="she-text">{row.original.traitName}</div>;
-    },
-  },
-  {
-    id: "isRemoved",
-    header: "",
-    cell: ({ row }) => {
-      return (
-        <div className="she-subtext" style={{ textAlign: "center" }}>
-          {row.original.isRemoved === true ? "Trait removed" : ""}
-          {row.original.isMissing === true ? "Missing" : ""}
-        </div>
-      );
     },
   },
 ];

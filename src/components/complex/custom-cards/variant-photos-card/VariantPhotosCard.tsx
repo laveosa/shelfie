@@ -2,11 +2,15 @@ import React from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./VariantPhotosCard.module.scss";
-import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import { SheImageUploader } from "@/components/complex/she-images-uploader/SheImageUploader.tsx";
+import {
+  DataWithId,
+  DndGridDataTable,
+} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import { SheFileUploader } from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { VariantPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/VariantPhotosGridColumns.tsx";
 import { OtherProductPhotosGridColumns } from "@/components/complex/grid/other-product-photos-grid/OtherProductPhotosGridColumns.tsx";
+import { ColumnDef } from "@tanstack/react-table";
 
 export default function VariantPhotosCard({
   isLoading,
@@ -18,8 +22,12 @@ export default function VariantPhotosCard({
   onAction,
   ...props
 }) {
-  const variantPhotosColumns = VariantPhotosGridColumns(onGridAction);
-  const otherPhotosColumns = OtherProductPhotosGridColumns(onGridAction);
+  const variantPhotosColumns = VariantPhotosGridColumns(
+    onGridAction,
+  ) as ColumnDef<DataWithId>[];
+  const otherPhotosColumns = OtherProductPhotosGridColumns(
+    onGridAction,
+  ) as ColumnDef<DataWithId>[];
 
   function handleAction(actionType: any, payload?: any) {
     switch (actionType) {
@@ -71,7 +79,7 @@ export default function VariantPhotosCard({
         {...props}
       >
         <div className={cs.variantPhotosCardContent}>
-          <SheImageUploader
+          <SheFileUploader
             contextName={"variant"}
             contextId={contextId}
             onUpload={(uploadModel: UploadPhotoModel) =>

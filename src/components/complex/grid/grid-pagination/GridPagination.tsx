@@ -14,7 +14,7 @@ import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 
 export function GridPagination() {
   const { gridModel, onGridRequestChange } = useGridContext();
-  const { currentPage, totalPages, pageSize, endPage } = gridModel.pager;
+  const { currentPage, totalPages, pageSize, endPage } = gridModel?.pager;
 
   function getPageNumbers() {
     const pages = [];

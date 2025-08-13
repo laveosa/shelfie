@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { Plus } from "lucide-react";
 import React from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
@@ -30,7 +31,7 @@ export default function AddVariantCard({
   onAction,
   ...props
 }: IAddVariantCard) {
-  const defaultValues = traits.reduce(
+  const defaultValues = traits?.reduce(
     (acc, trait) => ({
       ...acc,
       [trait.traitId]: "",
@@ -70,9 +71,13 @@ export default function AddVariantCard({
         primaryButtonTitle="Add Variant"
         onPrimaryButtonClick={form.handleSubmit(onSubmit)}
         primaryButtonDisabled={isPrimaryButtonDisabled}
+        primaryButtonModel={{
+          icon: Plus,
+          bgColor: "#007AFF",
+        }}
         showSecondaryButton={true}
         onSecondaryButtonClick={() => onAction("closeAddVariantCard")}
-        showCloseButton={true}
+        showCloseButton
         className={cs.addVariantCard}
         {...props}
       >
@@ -81,7 +86,7 @@ export default function AddVariantCard({
             Select the trait options that you want to add
           </span>
           <SheForm form={form} onSubmit={onSubmit}>
-            {traits.map((trait) => (
+            {traits?.map((trait) => (
               <FormField
                 key={trait.traitId}
                 control={form.control}

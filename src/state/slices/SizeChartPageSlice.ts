@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { ProductCounterModel } from "@/const/models/ProductCounterModel.ts";
+import { ProductCountersModel } from "@/const/models/CounterModel.ts";
 import { ISizeChartPageSlice } from "@/const/interfaces/store-slices/ISizeChartPageSlice.ts";
 
 const initialState: ISizeChartPageSlice = {
@@ -18,7 +18,7 @@ function refreshActiveCards(
 
 function refreshProductCounter(
   state: ISizeChartPageSlice,
-  action: PayloadAction<ProductCounterModel>,
+  action: PayloadAction<ProductCountersModel>,
 ) {
   state.productCounter = action?.payload || state.productCounter;
 }

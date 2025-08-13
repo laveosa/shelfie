@@ -1,37 +1,81 @@
-.dropdownMenuTrigger {
-  min-width: fit-content;
-  box-shadow: none;
-  height: 30px;
-  padding: 8px !important;
+.gridItemsFilterWrapper {
+  .triggerContainer {
+    position: relative;
+    display: inline-block;
 
-  .buttonInnerItems {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    span {
+    .clearButton {
+      position: absolute;
+      top: 50%;
+      right: 8px;
+      transform: translateY(-50%);
       width: 20px;
       height: 20px;
-      padding-top: 3px;
+      background: #f4f4f5;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 2;
+
+      svg {
+        width: 15px;
+        height: 15px;
+      }
     }
 
-    .settingsIcon {
-      width: 20px;
-      height: 20px;
-    }
+    .dropdownMenuTriggerButton {
+      min-width: fit-content;
+      box-shadow: none;
+      height: 30px;
+      padding: 8px !important;
 
-    .chevronIcon {
-      width: 16px;
-      height: 16px;
-      padding-top: 4px;
+      .buttonInnerItems {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .columnName {
+          width: 100%;
+          margin-right: 20px;
+        }
+
+        .columnNameWithIds {
+          width: 100%;
+          margin-right: 46px;
+        }
+
+        span {
+          width: 20px;
+          height: 20px;
+          padding-top: 3px;
+        }
+
+        .settingsIcon {
+          width: 20px;
+          height: 20px;
+        }
+
+        .chevronIcon {
+          width: 16px;
+          height: 16px;
+          padding-top: 4px;
+        }
+
+        .chevronIconWithSelectedIds {
+          position: absolute;
+          top: 0;
+          right: 30px;
+          transition: right 0.9s ease;
+        }
+      }
+
+      &:focus-visible {
+        box-shadow: none;
+      }
     }
   }
-
-  &:focus-visible {
-    box-shadow: none;
-  }
-
-
 }
 
 .dropdownMenuContent {
@@ -40,7 +84,7 @@
   max-height: 500px;
   display: flex;
   flex-direction: column;
-
+  overflow-y: auto;
 
   .itemsContainer {
     overflow-y: auto;
@@ -55,4 +99,5 @@
     min-height: 40px;
   }
 }
+
 

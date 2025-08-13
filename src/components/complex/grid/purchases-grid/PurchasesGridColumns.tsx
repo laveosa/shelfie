@@ -2,28 +2,31 @@ import { ColumnDef } from "@tanstack/react-table";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import placeholderImage from "@/assets/images/placeholder-image.png";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
-import PurchasesGridColumnActions from "@/components/complex/grid/purchases-grid/PurchasesGridColumnsActions.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-import { ImageIcon } from "lucide-react";
+import { ImageIcon, TrashIcon } from "lucide-react";
 import { formatDate } from "@/utils/helpers/quick-helper.ts";
 
-export function purchasesGridColumns(onAction: any): ColumnDef<any>[] {
+export function purchasesGridColumns(
+  onAction: any,
+  onDelete: (data) => void,
+): ColumnDef<any>[] {
   return [
     {
       accessorKey: "purchaseId",
       header: "ID",
-      minSize: 50,
-      maxSize: 50,
+      size: 20,
+      minSize: 20,
+      maxSize: 20,
     },
     {
       id: "supplierName",
       accessorFn: (row) => row.supplier?.supplierName,
       header: "Supplier",
-      size: 200,
-      minSize: 200,
-      maxSize: 200,
+      size: 150,
+      minSize: 150,
+      maxSize: 150,
       cell: ({ row }) => {
-        const imageUrl: string = row.original.supplier?.photo?.thumbnailUrl;
+        const imageUrl: string = row.original.supplier?.thumbnailUrl;
         return (
           <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
             <div>
@@ -41,7 +44,7 @@ export function purchasesGridColumns(onAction: any): ColumnDef<any>[] {
               <SheTooltip
                 delayDuration={200}
                 text={row.getValue("supplierName")}
-                className="max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap"
+                className="max-w-[130px] overflow-hidden text-ellipsis whitespace-nowrap"
               >
                 <span>{row.getValue("supplierName")}</span>
               </SheTooltip>
@@ -51,64 +54,93 @@ export function purchasesGridColumns(onAction: any): ColumnDef<any>[] {
       },
     },
     {
+      accessorKey: "location",
+      header: "Location",
+      size: 100,
+      minSize: 100,
+      maxSize: 200,
+      cell: ({ row }) => {
+        return (
+          <SheTooltip
+            delayDuration={200}
+            text={row.original.location?.address}
+            className="max-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap"
+          >
+            <span>{row.original.location?.address}</span>
+          </SheTooltip>
+        );
+      },
+    },
+    {
+      accessorKey: "documentNotes",
+      header: "Notes",
+      size: 100,
+      minSize: 100,
+      maxSize: 200,
+      cell: ({ row }) => {
+        return (
+          <SheTooltip
+            delayDuration={200}
+            text={row.getValue("documentNotes")}
+            className="max-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap"
+          >
+            <span>{row.getValue("documentNotes")}</span>
+          </SheTooltip>
+        );
+      },
+    },
+    {
       accessorKey: "date",
       header: "Date",
+      size: 100,
+      minSize: 100,
       maxSize: 100,
       cell: ({ row }) => {
         const formattedDate = formatDate(row.getValue("date"), "date");
-        return (
-          <SheTooltip delayDuration={200} text={formattedDate}>
-            <span>{formattedDate}</span>
-          </SheTooltip>
-        );
+        return <span>{formattedDate}</span>;
       },
     },
     {
-      // accessorKey: "date",
+      accessorKey: "unitsAmount",
       header: "Units",
-      maxSize: 100,
-      cell: ({}) => {
-        return (
-          <SheTooltip delayDuration={200} text={""}>
-            <span></span>
-          </SheTooltip>
-        );
+      size: 70,
+      minSize: 70,
+      maxSize: 70,
+      cell: ({ row }) => {
+        return <span>{`${row.getValue("unitsAmount")} units`}</span>;
       },
     },
     {
-      // accessorKey: "date",
+      accessorKey: "expense",
       header: "Expense",
-      maxSize: 100,
-      cell: ({}) => {
-        return (
-          <SheTooltip delayDuration={200} text={""}>
-            <span></span>
-          </SheTooltip>
-        );
+      size: 70,
+      minSize: 70,
+      maxSize: 70,
+      cell: ({ row }) => {
+        const currency: string = row.original.currencyBrief;
+        return <span>{`${row.getValue("expense")} ${currency}`}</span>;
       },
     },
     {
-      // accessorKey: "date",
+      accessorKey: "soldAmount",
       header: "Sold",
-      maxSize: 100,
-      cell: ({}) => {
-        return (
-          <SheTooltip delayDuration={200} text={""}>
-            <span></span>
-          </SheTooltip>
-        );
+      size: 70,
+      minSize: 70,
+      maxSize: 70,
+      cell: ({ row }) => {
+        const currency: string = row.original.currencyBrief;
+        return <span>{`${row.getValue("soldAmount")} ${currency}`}</span>;
       },
     },
     {
-      // accessorKey: "date",
+      accessorKey: "valueAmount",
       header: "Order Value",
-      maxSize: 100,
-      cell: ({}) => {
-        return (
-          <SheTooltip delayDuration={200} text={""}>
-            <span></span>
-          </SheTooltip>
-        );
+      size: 80,
+      minSize: 80,
+      maxSize: 80,
+      cell: ({ row }) => {
+        const currency: string = row.original.currencyBrief;
+        return <span>{`${row.getValue("valueAmount")} ${currency}`}</span>;
       },
     },
     {
@@ -148,12 +180,23 @@ export function purchasesGridColumns(onAction: any): ColumnDef<any>[] {
       minSize: 70,
       maxSize: 70,
       cell: ({ row, table }) => {
+        const meta = table.options.meta as {
+          setLoadingRow: (rowId: string, loading: boolean) => void;
+          isRowLoading: (rowId: string) => boolean;
+        };
+        const handleDeleteClick = (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          onDelete({ table, row });
+        };
+
         return (
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <PurchasesGridColumnActions
-              row={row}
-              onAction={onAction}
-              table={table}
+          <div onClick={(e) => e.stopPropagation()}>
+            <SheButton
+              icon={TrashIcon}
+              variant="secondary"
+              onClick={handleDeleteClick}
+              disabled={meta?.isRowLoading(row.id)}
             />
           </div>
         );

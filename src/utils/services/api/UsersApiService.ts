@@ -44,7 +44,7 @@ export const UsersApiService = createApi({
           url: ApiUrlEnum.PREFERENCES,
           method: "PATCH",
           body: JSON.stringify(model),
-        }),
+        }),//TODO - invalidation needs to be conditional. No need to fire a request when the state has not changed.
         invalidatesTags: (result) => [
           {
             type: ApiServiceNameEnum.USERS,
@@ -53,17 +53,23 @@ export const UsersApiService = createApi({
         ],
       },
     ),
-    resetUserPreferences: apiConfig.createMutation<void, void>(builder, {
-      query: () => ({
-        url: `${ApiUrlEnum.PREFERENCES}/reset`,
-        method: "DELETE",
+    // resetUserPreferences: apiConfig.createMutation<void, void>(builder, {
+    //   query: () => ({
+    //     url: `${ApiUrlEnum.PREFERENCES}/reset`,
+    //     method: "DELETE",
+    //   }),
+    //   invalidatesTags: (_result, _error, id) => [
+    //     {
+    //       type: ApiServiceNameEnum.USERS,
+    //       id,
+    //     },
+    //   ],
+    // }),
+    resetUserPreferences: apiConfig.createMutation<void, any>(builder, {
+      query: (grid: string) => ({
+        url: `${ApiUrlEnum.PREFERENCES}/reset/${grid}`,
+        method: "PATCH",
       }),
-      invalidatesTags: (_result, _error, id) => [
-        {
-          type: ApiServiceNameEnum.USERS,
-          id,
-        },
-      ],
     }),
   }),
 });

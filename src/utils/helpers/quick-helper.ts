@@ -72,10 +72,44 @@ export function formatDate(
   return "";
 }
 
+// Generic function to format date rows with custom format patterns
+export function formatDateRow(
+  dateString: string | null, 
+  format: string = "dd-mm-yyyy hh:mm", 
+  fallbackText: string = "No Orders"
+): string {
+  if (!dateString) {
+    return fallbackText;
+  }
+  
+  try {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return fallbackText;
+    }
+    
+    // Parse the format string and replace placeholders
+    let formattedDate = format;
+    
+    // Replace format placeholders with actual date values
+    formattedDate = formattedDate
+      .replace(/dd/g, String(date.getDate()).padStart(2, "0"))
+      .replace(/mm/g, String(date.getMonth() + 1).padStart(2, "0"))
+      .replace(/yyyy/g, String(date.getFullYear()))
+      .replace(/hh/g, String(date.getHours()).padStart(2, "0"))
+      .replace(/mm/g, String(date.getMinutes()).padStart(2, "0"))
+      .replace(/ss/g, String(date.getSeconds()).padStart(2, "0"));
+    
+    return formattedDate;
+  } catch (error) {
+    return fallbackText;
+  }
+}
+
 export function getInitials(name: string) {
-  const names = name.trim().split(" ");
-  const initials = names.map((n) => n.charAt(0).toUpperCase()).slice(0, 2);
-  return initials.join("");
+  const names = name?.trim().split(" ");
+  const initials = names?.map((n) => n.charAt(0).toUpperCase()).slice(0, 2);
+  return initials?.join("");
 }
 
 export function addGridRowColor(
@@ -107,4 +141,84 @@ export function clearSelectedGridItems(itemsList: any[]) {
     ...item,
     isGridItemSelected: false,
   }));
+}
+
+export function scrollToRefElement(
+  refs: { [key: string]: HTMLElement | null },
+  id: string,
+  offsetX: number = 20,
+  offsetY: number = 20,
+  delay: number = 300,
+): void {
+  setTimeout(() => {
+    const element = refs[id];
+    if (!element) return;
+
+    element.offsetHeight;
+
+    let scrollParent: HTMLElement | Document | null = element;
+    let isWindowScroll = true;
+    while (scrollParent && !(scrollParent instanceof Document)) {
+      const { overflowY, overflowX } = window.getComputedStyle(
+        scrollParent as HTMLElement,
+      );
+      if (
+        overflowY === "auto" ||
+        overflowY === "scroll" ||
+        overflowX === "auto" ||
+        overflowX === "scroll"
+      ) {
+        isWindowScroll = false;
+        break;
+      }
+      scrollParent = (scrollParent as HTMLElement).parentElement;
+    }
+
+    const containerStyles = isWindowScroll
+      ? {
+          paddingLeft: "0px",
+          paddingTop: "0px",
+        }
+      : window.getComputedStyle(scrollParent as HTMLElement);
+    const containerPaddingLeft = parseFloat(containerStyles.paddingLeft) || 0;
+    const containerPaddingTop = parseFloat(containerStyles.paddingTop) || 0;
+
+    element.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+      inline: "start",
+    });
+
+    setTimeout(() => {
+      const rect = element.getBoundingClientRect();
+      const parentRect = isWindowScroll
+        ? {
+            top: 0,
+            left: 0,
+          }
+        : (scrollParent as HTMLElement).getBoundingClientRect();
+      const scrollTop = isWindowScroll
+        ? window.pageYOffset || document.documentElement.scrollTop
+        : (scrollParent as HTMLElement).scrollTop;
+      const scrollLeft = isWindowScroll
+        ? window.pageXOffset || document.documentElement.scrollLeft
+        : (scrollParent as HTMLElement).scrollLeft;
+
+      const targetY =
+        rect.top + scrollTop - parentRect.top - offsetY - containerPaddingTop;
+      const targetX =
+        rect.left +
+        scrollLeft -
+        parentRect.left -
+        offsetX -
+        containerPaddingLeft;
+
+      const scrollTarget = isWindowScroll ? window : scrollParent;
+      scrollTarget.scrollTo({
+        top: Math.max(0, targetY),
+        left: Math.max(0, targetX),
+        behavior: "smooth",
+      });
+    }, 500);
+  }, delay);
 }
