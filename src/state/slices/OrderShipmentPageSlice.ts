@@ -2,13 +2,34 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IOrderShipmentPageSlice } from "@/const/interfaces/store-slices/IOrderShipmentPageSlice.ts";
+import { ShipmentModel } from "@/const/models/ShipmentModel.ts";
+import { GridModel } from "@/const/models/GridModel.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { CustomerModel } from "@/const/models/CustomerModel.ts";
 
 const initialState: IOrderShipmentPageSlice = {
   isProductMenuCardLoading: false,
   isShipmentDetailsCardLoading: false,
+  isShipmentConfigurationCardLoading: false,
+  isSelectEntityCardLoading: false,
+  isSelectShipmentForOrderCardLoading: false,
   isProductsGridLoading: false,
   isShipmentsGridLoading: false,
+  isSelectEntityGridLoading: false,
+  isSelectShipmentForOrderGridLoading: false,
   activeCards: [],
+  selectedShipment: null,
+  selectedCustomer: null,
+  shipmentsGridModel: {
+    pager: {},
+    items: [],
+  },
+  shipmentsGridRequestModel: {
+    currentPage: 1,
+    pageSize: 10,
+    searchQuery: "",
+    filter: {},
+  },
 };
 
 //----------------------------------------------------- LOADERS
@@ -27,6 +48,27 @@ function setIsShipmentDetailsCardLoading(
   state.isShipmentDetailsCardLoading = action?.payload;
 }
 
+function setIsShipmentConfigurationCardLoading(
+  state: IOrderShipmentPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isShipmentConfigurationCardLoading = action?.payload;
+}
+
+function setIsSelectEntityCardLoading(
+  state: IOrderShipmentPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isSelectEntityCardLoading = action?.payload;
+}
+
+function setIsSelectShipmentForOrderCardLoading(
+  state: IOrderShipmentPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isSelectShipmentForOrderCardLoading = action?.payload;
+}
+
 function setIsProductsGridLoading(
   state: IOrderShipmentPageSlice,
   action: PayloadAction<boolean>,
@@ -41,6 +83,20 @@ function setIsShipmentsGridLoading(
   state.isShipmentsGridLoading = action?.payload;
 }
 
+function setIsSelectEntityGridLoading(
+  state: IOrderShipmentPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isSelectEntityGridLoading = action?.payload;
+}
+
+function setIsSelectShipmentForOrderGridLoading(
+  state: IOrderShipmentPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isSelectShipmentForOrderGridLoading = action?.payload;
+}
+
 //----------------------------------------------------- API
 
 function refreshActiveCards(
@@ -50,15 +106,53 @@ function refreshActiveCards(
   state.activeCards = action?.payload || state.activeCards;
 }
 
+function refreshSelectedShipment(
+  state: IOrderShipmentPageSlice,
+  action: PayloadAction<ShipmentModel>,
+) {
+  state.selectedShipment = action?.payload || state.selectedShipment;
+}
+
+function refreshSelectedCustomer(
+  state: IOrderShipmentPageSlice,
+  action: PayloadAction<CustomerModel>,
+) {
+  state.selectedCustomer = action?.payload || state.selectedCustomer;
+}
+
+function refreshShipmentsGridModel(
+  state: IOrderShipmentPageSlice,
+  action: PayloadAction<GridModel>,
+) {
+  state.shipmentsGridModel = action?.payload || state.shipmentsGridModel;
+}
+
+function refreshShipmentsGridRequestModel(
+  state: IOrderShipmentPageSlice,
+  action: PayloadAction<GridRequestModel>,
+) {
+  state.shipmentsGridRequestModel =
+    action?.payload || state.shipmentsGridRequestModel;
+}
+
 const OrderShipmentPageSlice = createSlice({
   name: StoreSliceEnum.ORDER_SHIPMENT,
   initialState,
   reducers: {
     setIsProductMenuCardLoading,
     setIsShipmentDetailsCardLoading,
+    setIsShipmentConfigurationCardLoading,
+    setIsSelectEntityCardLoading,
+    setIsSelectShipmentForOrderCardLoading,
     setIsProductsGridLoading,
     setIsShipmentsGridLoading,
+    setIsSelectEntityGridLoading,
+    setIsSelectShipmentForOrderGridLoading,
     refreshActiveCards,
+    refreshSelectedShipment,
+    refreshSelectedCustomer,
+    refreshShipmentsGridModel,
+    refreshShipmentsGridRequestModel,
   },
 });
 

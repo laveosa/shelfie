@@ -223,10 +223,39 @@ export const OrdersApiService = createApi({
         url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}`,
       }),
     }),
-    createShipment: apiConfig.createMutation<any, any>(builder, {
-      query: (model) => ({
+    createShipment: apiConfig.createMutation<any, void>(builder, {
+      query: () => ({
         url: `${ApiUrlEnum.SHIPMENTS}`,
         method: "POST",
+      }),
+    }),
+    updateShipmentDates: apiConfig.createMutation<
+      void,
+      { shipmentId: number; model: any }
+    >(builder, {
+      query: ({ shipmentId, model }) => ({
+        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/update-dates`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+    }),
+    updateShipmentCustomer: apiConfig.createMutation<
+      void,
+      { shipmentId: number; model: any }
+    >(builder, {
+      query: ({ shipmentId, model }) => ({
+        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/update-customer`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+    }),
+    updateShipmentAddress: apiConfig.createMutation<
+      void,
+      { shipmentId: number; model: any }
+    >(builder, {
+      query: ({ shipmentId, model }) => ({
+        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/update-address`,
+        method: "PATCH",
         body: JSON.stringify(model),
       }),
     }),

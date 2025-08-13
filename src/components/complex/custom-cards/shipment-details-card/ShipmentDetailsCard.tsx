@@ -12,6 +12,7 @@ import { IShipmentDetailsCard } from "@/const/interfaces/complex-components/cust
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { ProductsInShipmentGridColumns } from "@/components/complex/grid/poducts-in-shipment-grid/ProductsInShipmentGridColumns.tsx";
 import { OrderShipmentsGridColumns } from "@/components/complex/grid/order-shipments-grid/OrderShipmentsGridColumns.tsx";
+import { Separator } from "@/components/ui/separator.tsx";
 
 export default function ShipmentDetailsCard({
   isLoading,
@@ -33,11 +34,11 @@ export default function ShipmentDetailsCard({
           isLoading={isProductsGridLoading}
           showHeader={false}
           columns={ProductsInShipmentGridColumns as ColumnDef<DataWithId>[]}
-          skeletonQuantity={products?.length}
+          skeletonQuantity={5}
           data={products}
           customMessage="No item in shipment"
         />
-        {/*<Separator />*/}
+        <Separator />
         <div className={cs.shipmentAllocationBlock}>
           <span className="she-title">Shipment allocation</span>
           <div className={cs.shipmentAllocationButtonBlock}>

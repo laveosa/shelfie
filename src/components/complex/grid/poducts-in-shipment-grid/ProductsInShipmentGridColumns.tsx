@@ -100,7 +100,7 @@ export const ProductsInShipmentGridColumns: ColumnDef<any>[] = [
     },
   },
   {
-    id: "unitsAmount",
+    id: "unitsAmount1",
     header: "Qty to ship",
     size: 40,
     minSize: 40,
@@ -110,7 +110,7 @@ export const ProductsInShipmentGridColumns: ColumnDef<any>[] = [
     },
   },
   {
-    id: "unitsAmount",
+    id: "unitsAmount2",
     header: "Qty shipped",
     size: 40,
     minSize: 40,
