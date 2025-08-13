@@ -44,18 +44,20 @@ export default function PurchaseProductsForm<T>({
 
   function convertCurrenciesToSelectItems(
     data: CurrencyModel[],
-  ): ISheSelectItem[] {
+  ): ISheSelectItem<any>[] {
     return data?.map(
-      (item): ISheSelectItem => ({
+      (item): ISheSelectItem<any> => ({
         value: item.id,
         text: item.briefName,
       }),
     );
   }
 
-  function convertTaxesToSelectItems(data: TaxTypeModel[]): ISheSelectItem[] {
+  function convertTaxesToSelectItems(
+    data: TaxTypeModel[],
+  ): ISheSelectItem<any>[] {
     return data?.map(
-      (item): ISheSelectItem => ({
+      (item): ISheSelectItem<any> => ({
         value: item.id,
         text: item.name,
       }),

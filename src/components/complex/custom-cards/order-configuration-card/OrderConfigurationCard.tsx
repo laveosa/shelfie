@@ -25,9 +25,11 @@ export default function OrderConfigurationCard({
   statuses,
   onAction,
 }: IOrderConfigurationCard) {
-  function convertStatusesToSelectItems(data: StatusModel[]): ISheSelectItem[] {
+  function convertStatusesToSelectItems(
+    data: StatusModel[],
+  ): ISheSelectItem<any>[] {
     return data?.map(
-      (item): ISheSelectItem => ({
+      (item): ISheSelectItem<any> => ({
         value: item.id,
         text: item.statusName,
       }),
