@@ -1,14 +1,26 @@
-import React, { PropsWithChildren } from "react";
+import React from "react";
 
-export interface ISheSkeleton extends PropsWithChildren {
-  className?: string;
-  style?: React.CSSProperties;
+export interface ISheSkeleton {
+  children?: any;
   skeletonClassName?: string;
   skeletonStyle?: React.CSSProperties;
-  color?: string;
-  isLoading: boolean;
+  skeletonColor?: string;
+  isLoading?: boolean;
+  disabled?: boolean;
   animationDelay?: number;
   minWidth?: string;
   maxWidth?: string;
   fullWidth?: boolean;
 }
+
+export const SheSkeletonDefaultModel: ISheSkeleton = {
+  skeletonClassName: undefined,
+  skeletonStyle: undefined,
+  skeletonColor: undefined,
+  isLoading: undefined,
+  disabled: undefined,
+  animationDelay: undefined,
+  minWidth: undefined,
+  maxWidth: undefined,
+  fullWidth: undefined,
+};

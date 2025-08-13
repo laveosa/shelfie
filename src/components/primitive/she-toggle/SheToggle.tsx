@@ -2,121 +2,114 @@ import React, { JSX, useEffect, useState } from "react";
 import { Trans } from "react-i18next";
 
 import cs from "./SheToggle.module.scss";
-import { ISheToggle } from "@/const/interfaces/primitive-components/ISheToggle.ts";
-import { generateId } from "@/utils/helpers/quick-helper.ts";
-import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
+import ShePrimitiveComponentWrapper from "@/components/primitive/she-primitive-component-wrapper/ShePrimitiveComponentWrapper.tsx";
 import { Checkbox } from "@/components/ui/checkbox.tsx";
 import { Switch } from "@/components/ui/switch.tsx";
-import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
-import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
+import useValueWithEvent from "@/utils/hooks/useValueWithEvent.ts";
+import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
+import { generateId } from "@/utils/helpers/quick-helper.ts";
+import { getCustomProps } from "@/utils/helpers/props-helper.ts";
+import { ISheToggle } from "@/const/interfaces/primitive-components/ISheToggle.ts";
+import {
+  IShePrimitiveComponentWrapper,
+  ShePrimitiveComponentWrapperDefaultModel,
+} from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
 
-export default function SheToggle({
-  className,
-  checked,
-  label,
-  labelTransKey,
-  text,
-  textTransKey,
-  description,
-  descriptionTransKey,
-  minWidth,
-  maxWidth,
-  fullWidth,
-  icon,
-  type = SheToggleTypeEnum.CHECKBOX,
-  view,
-  tooltip,
-  isLoading,
-  disabled,
-  required,
-  style,
-  onChecked,
-}: ISheToggle): JSX.Element {
-  const ariaDescribedbyId = `${generateId()}_CHECKBOX_ID`;
-  const checkboxId = generateId(6);
+export default function SheToggle(props: ISheToggle): JSX.Element {
+  // ==================================================================== PROPS
+  const {
+    checked,
+    text,
+    textTransKey,
+    iconProps,
+    type = SheToggleTypeEnum.CHECKBOX,
+    isLoading,
+    disabled,
+    onChecked,
+  } = props;
+  const shePrimitiveComponentWrapperProps = getCustomProps<
+    ISheToggle,
+    IShePrimitiveComponentWrapper
+  >(props, ShePrimitiveComponentWrapperDefaultModel);
 
+  // ==================================================================== STATE MANAGEMENT
   const [_checked, setChecked] = useState<boolean>(checked ?? false);
 
+  // ==================================================================== UTILITIES
+  const { ariaDescribedbyId } = useComponentUtilities({
+    identifier: "SheToggle",
+  });
+  const { eventHandler, valueHandler } = useValueWithEvent<
+    React.MouseEvent,
+    boolean
+  >(onCheckedChangeHandler);
+  const checkboxId = generateId(6);
+
+  // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     if (typeof checked === "boolean" && checked !== _checked) {
       setChecked(checked);
     }
   }, [checked]);
 
-  // ==================================================================== EVENT
-
-  function onCheckedChangeHandler(value: boolean) {
-    onChecked?.(value);
+  // ==================================================================== EVENT HANDLERS
+  function onCheckedChangeHandler(value: boolean, event?: React.MouseEvent) {
     setChecked(value);
+    onChecked?.(value, {
+      value,
+      model: props,
+      event,
+    });
   }
 
-  // ==================================================================== PRIVATE
-
-  // ==================================================================== RENDER
-
+  // ==================================================================== LAYOUT
   return (
-    <div
-      className={`${className || ""} ${cs.sheToggle || ""} ${cs[view] || ""} ${icon ? cs.withIcon : ""} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""}`}
-      style={{
-        minWidth,
-        maxWidth,
-        ...style,
-      }}
+    <ShePrimitiveComponentWrapper
+      {...shePrimitiveComponentWrapperProps}
+      className={`${cs.sheToggle} ${shePrimitiveComponentWrapperProps.className} ${type === SheToggleTypeEnum.SWITCH ? cs.sheToggleViewSwitch : cs.sheToggleViewCheckbox}`}
+      ariaDescribedbyId={ariaDescribedbyId}
+      iconProps={{ className: `${iconProps?.className} ${cs.sheToggleIcon}` }}
+      iconPosition="out"
+      showClearBtn={false}
     >
-      <div className={cs.sheToggleComponent}>
-        <SheLabel
-          label={label}
-          labelTransKey={labelTransKey}
-          tooltip={tooltip}
-          ariaDescribedbyId={ariaDescribedbyId}
-        />
-        <div
-          className={`${cs.sheToggleControl} ${disabled || isLoading ? "disabled" : ""}`}
-        >
-          <SheSkeleton isLoading={isLoading} fullWidth>
-            <SheIcon
-              icon={icon}
-              className={cs.iconBlock}
-              aria-describedby={ariaDescribedbyId}
-            />
-            {type === SheToggleTypeEnum.CHECKBOX && (
-              <Checkbox
-                id={checkboxId}
-                checked={_checked}
-                aria-describedby={ariaDescribedbyId}
-                disabled={disabled || isLoading}
-                onCheckedChange={onCheckedChangeHandler}
-              />
+      <div
+        className={`${cs.sheToggleControl} ${disabled || isLoading ? "disabled" : ""} componentTriggerElement`}
+      >
+        {type === SheToggleTypeEnum.CHECKBOX && (
+          <Checkbox
+            id={checkboxId}
+            checked={_checked}
+            aria-describedby={ariaDescribedbyId}
+            disabled={disabled || isLoading}
+            onClick={eventHandler}
+            onCheckedChange={valueHandler}
+          />
+        )}
+        {type === SheToggleTypeEnum.SWITCH && (
+          <Switch
+            id={checkboxId}
+            checked={_checked}
+            aria-describedby={ariaDescribedbyId}
+            disabled={disabled || isLoading}
+            onClick={eventHandler}
+            onCheckedChange={valueHandler}
+          />
+        )}
+        {text && text.length > 0 && (
+          <label
+            htmlFor={checkboxId}
+            className={cs.sheToggleContextBlock}
+            aria-describedby={ariaDescribedbyId}
+          >
+            {text && (
+              <span className="she-text">
+                <Trans i18nKey={textTransKey}>{text}</Trans>
+              </span>
             )}
-            {type === SheToggleTypeEnum.SWITCH && (
-              <Switch
-                id={checkboxId}
-                checked={_checked}
-                aria-describedby={ariaDescribedbyId}
-                disabled={disabled || isLoading}
-                onCheckedChange={onCheckedChangeHandler}
-              />
-            )}
-            <label
-              htmlFor={checkboxId}
-              className={cs.sheToggleContextBlock}
-              aria-describedby={ariaDescribedbyId}
-            >
-              {text && (
-                <span className="she-text">
-                  <Trans i18nKey={textTransKey}>{text}</Trans>
-                </span>
-              )}
-              {description && (
-                <span className="she-subtext">
-                  <Trans i18nKey={descriptionTransKey}>{description}</Trans>
-                </span>
-              )}
-            </label>
-          </SheSkeleton>
-        </div>
+          </label>
+        )}
       </div>
-    </div>
+    </ShePrimitiveComponentWrapper>
   );
 }

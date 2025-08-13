@@ -14,7 +14,6 @@ function SheIconComponent({
   elementStyle,
   icon,
   iconView = IconViewEnum.SQUARE,
-  size = "normal",
   color,
   fullWidth,
   minWidth,
@@ -23,7 +22,6 @@ function SheIconComponent({
   maxHeight,
   hoverEffect,
   onClick,
-  ...props
 }: ISheIcon): JSX.Element {
   // ==================================================================== EVENT
 
@@ -39,7 +37,8 @@ function SheIconComponent({
 
   return (
     <div
-      className={`${cs.sheIcon} ${cs[iconView] || ""} ${className || ""} ${fullWidth ? cs.fullWidth : ""} ${hoverEffect ? cs.hoverEffect : ""} ${onClick ? cs.onClickEffect : ""}`}
+      id={id}
+      className={`${cs.sheIcon} ${className} ${iconView ? cs[iconView] : ""} ${fullWidth ? cs.fullWidth : ""} ${hoverEffect ? cs.hoverEffect : ""} ${onClick ? cs.onClickEffect : ""}`}
       style={{
         minWidth,
         maxWidth,
@@ -51,7 +50,6 @@ function SheIconComponent({
         ...style,
       }}
       onClick={onClickHandler}
-      {...props}
     >
       {typeof icon === "string" && /\.(png|jpe?g|gif|webp)$/i.test(icon) && (
         <img
@@ -93,5 +91,7 @@ function Icon({
   icon: React.FC<SVGProps<SVGSVGElement>>;
   color?: string;
 }) {
-  return <IconComponent className={className} style={style} color={color} />;
+  return (
+    <IconComponent className={className ?? ""} style={style} color={color} />
+  );
 }

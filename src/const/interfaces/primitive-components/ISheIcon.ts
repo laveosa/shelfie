@@ -1,7 +1,7 @@
 import React, { ComponentPropsWithRef } from "react";
 import { IconViewEnum } from "@/const/enums/IconViewEnum.ts";
 
-export interface ISheIcon extends ComponentPropsWithRef<"div"> {
+export interface ISheIcon extends ComponentPropsWithRef<any> {
   id?: string;
   className?: string;
   style?: React.CSSProperties;
@@ -9,7 +9,6 @@ export interface ISheIcon extends ComponentPropsWithRef<"div"> {
   elementStyle?: React.CSSProperties;
   icon?: any;
   iconView?: IconViewEnum;
-  size?: "normal" | "small";
   color?: string;
   fullWidth?: boolean;
   minWidth?: string;
@@ -18,3 +17,20 @@ export interface ISheIcon extends ComponentPropsWithRef<"div"> {
   maxHeight?: string;
   hoverEffect?: boolean;
 }
+
+export const SheIconDefaultModel: ISheIcon = {
+  id: undefined,
+  className: undefined,
+  style: undefined,
+  elementClassName: undefined,
+  elementStyle: undefined,
+  icon: undefined,
+  iconView: undefined,
+  color: undefined,
+  fullWidth: undefined,
+  minWidth: undefined,
+  maxWidth: undefined,
+  minHeight: undefined,
+  maxHeight: undefined,
+  hoverEffect: undefined,
+};

@@ -38,9 +38,11 @@ export default function MarginItemsForm<T>({
     form.reset(data);
   }, [data]);
 
-  function convertTaxesToSelectItems(data: TaxTypeModel[]): ISheSelectItem[] {
+  function convertTaxesToSelectItems(
+    data: TaxTypeModel[],
+  ): ISheSelectItem<any>[] {
     return data?.map(
-      (item): ISheSelectItem => ({
+      (item): ISheSelectItem<any> => ({
         value: item.id,
         text: item.name,
       }),

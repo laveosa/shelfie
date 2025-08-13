@@ -1,13 +1,13 @@
 import React, { JSX } from "react";
 
+import cs from "./SheTimePickerSelect.module.scss";
+import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import {
   display12HourValue,
   Period,
   setDateByType,
 } from "@/utils/helpers/time-picker-helper.ts";
-import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { ISheTimePickerSelect } from "@/const/interfaces/primitive-components/ISheTimePickerSelect.ts";
-import cs from "./SheTimePickerSelect.module.scss";
 
 export default function SheTimePickerSelect({
   ref,
@@ -19,16 +19,14 @@ export default function SheTimePickerSelect({
   onRightFocus,
   ...props
 }: ISheTimePickerSelect): JSX.Element {
-  // ==================================================================== EVENT
+  // ==================================================================== EVENT HANDLERS
   function onKeyDown(e: React.KeyboardEvent<HTMLButtonElement>) {
-    if (e.key === "ArrowRight") onRightFocus?.();
-    if (e.key === "ArrowLeft") onLeftFocus?.();
+    if (e.key === "ArrowRight") onRightFocus?.(e);
+    if (e.key === "ArrowLeft") onLeftFocus?.(e);
   }
 
-  function onValueChange(value: Period) {
-    if (setPeriod) {
-      setPeriod(value);
-    }
+  function onValueChange(value: Period, { event }) {
+    setPeriod?.(value);
 
     if (date && setDate) {
       const tempDate = new Date(date);
@@ -40,16 +38,14 @@ export default function SheTimePickerSelect({
           "12hours",
           period === "AM" ? "PM" : "AM",
         ),
+        event,
       );
     }
   }
 
-  // ==================================================================== PRIVATE
-
   // ==================================================================== LAYOUT
-
   return (
-    <SheSelect
+    <SheSelect<string>
       className={cs.sheTimePickerSelect}
       triggerRef={ref}
       items={[

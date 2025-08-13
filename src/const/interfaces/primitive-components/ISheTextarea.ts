@@ -1,63 +1,68 @@
 import React from "react";
 
-import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
-import { ISheLabel } from "@/const/interfaces/primitive-components/ISheLabel.ts";
-import { ISheClearButton } from "@/const/interfaces/primitive-components/ISheClearButton.ts";
-import { ISheErrorMessageBlock } from "@/const/interfaces/primitive-components/ISheErrorMessageBlock.ts";
-import { ISheContextLengthLimits } from "@/const/interfaces/primitive-components/ISheContextLengthLimits.ts";
+import { IShePrimitiveComponentWrapper } from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
+import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 
-export interface ISheTextarea
-  extends ISheLabel,
-    ISheClearButton,
-    ISheContextLengthLimits,
-    ISheErrorMessageBlock {
-  id?: string;
-  className?: string;
-  style?: React.CSSProperties;
-  icon?: Partial<ISheIcon> | string | React.FC<any>;
-  value?: string | number | readonly string[];
+export interface ISheTextarea extends IShePrimitiveComponentWrapper {
+  value?: string;
   placeholder?: string;
   placeholderTransKey?: string;
-  type?:
-    | "text"
-    | "password"
-    | "email"
-    | "tel"
-    | "url"
-    | "search"
-    | "number"
-    | "range"
-    | "date"
-    | "datetime-local"
-    | "month"
-    | "week"
-    | "time"
-    | "checkbox"
-    | "radio"
-    | "button"
-    | "submit"
-    | "reset"
-    | "file"
-    | "image"
-    | "hidden"
-    | "color";
   autoFocus?: boolean;
-  disabled?: boolean;
-  isLoading?: boolean;
-  minWidth?: string;
-  maxWidth?: string;
-  fullWidth?: boolean;
-  required?: boolean;
-  minLength?: number;
-  maxLength?: number;
   isValid?: boolean;
   ignoreValidation?: boolean;
   resize?: boolean;
   rows?: number;
   rowToExtend?: number;
   delayTime?: number;
-  onChange?: (value: string | number | readonly string[]) => void;
-  onBlur?: (value: string | number | readonly string[]) => void;
-  onDelay?: (value: string | number | readonly string[]) => void;
-  onIsValid?: (value: boolean) => void;
+  showHighlighted?: boolean;
+  showError?: boolean;
+  onIsValid?(value: boolean): void;
+  onChange?(
+    value: string,
+    model?: IOutputEventModel<
+      string,
+      ISheTextarea,
+      React.ChangeEvent | React.KeyboardEvent
+    >,
+  ): void;
+  onBlur?(
+    value: string,
+    model?: IOutputEventModel<string, ISheTextarea, React.ChangeEvent>,
+  ): void;
+  onDelay?(
+    value: string,
+    model?: IOutputEventModel<
+      string,
+      ISheTextarea,
+      React.ChangeEvent | React.KeyboardEvent
+    >,
+  ): void;
+  onClear?(
+    value: null,
+    model?: IOutputEventModel<
+      null,
+      ISheTextarea,
+      React.MouseEvent | React.KeyboardEvent
+    >,
+  ): void;
 }
+
+export const SheTextareaDefaultModel: ISheTextarea = {
+  value: undefined,
+  placeholder: undefined,
+  placeholderTransKey: undefined,
+  autoFocus: undefined,
+  isValid: undefined,
+  ignoreValidation: undefined,
+  resize: undefined,
+  rows: undefined,
+  rowToExtend: undefined,
+  delayTime: undefined,
+  showHighlighted: undefined,
+  showError: undefined,
+  onIsValid: undefined,
+  onChange: undefined,
+  onBlur: undefined,
+  onDelay: undefined,
+  onClear: undefined,
+};

@@ -1,76 +1,16 @@
 @use "@/styles/variables" as vars;
 
-$iconSize: 20px;
-
 .sheInput {
-  max-width: vars.$maxWidth + px;
-  width: 100%;
+  input {
+    transition: all 160ms ease-in-out;
+    min-height: vars.$minHeight + px;
 
-  .sheInputComponent {
-    position: relative;
-
-    .sheInputControl {
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-
-      .iconBlock {
-        position: absolute;
-        color: vars.$subtextColor;
-        left: 8px;
-        top: 10px;
-        max-width: $iconSize;
-        min-width: $iconSize;
-        max-height: $iconSize;
-        min-height: $iconSize;
-      }
-
-      input {
-        transition: all 160ms ease-in-out;
-
-        &:focus-visible {
-          box-shadow: 0 0 0 1px lightgray inset;
-        }
-
-        &::placeholder {
-          color: vars.$placeholderColor;
-        }
-      }
+    &:focus-visible {
+      box-shadow: 0 0 0 1px lightgray inset;
     }
-  }
-}
 
-// ======================================================== FULL WIDTH
-
-.sheInput.fullWidth {
-  max-width: none;
-  width: 100%;
-}
-
-// ======================================================== REQUIRED
-
-.sheInput.required {
-  position: relative;
-
-  .sheInputComponent:before {
-    position: absolute;
-    left: -10px;
-    top: -14px;
-    color: vars.$colorRed;
-    content: "*";
-    display: inline;
-  }
-}
-
-// ======================================================== WITH ICON
-
-.sheInput.withIcon {
-  .sheInputComponent {
-    .sheInputControl {
-      input {
-        padding-left: 36px;
-      }
+    &::placeholder {
+      color: vars.$placeholderColor;
     }
   }
 }
@@ -78,11 +18,15 @@ $iconSize: 20px;
 // ======================================================== INVALID
 
 .sheInput.invalid {
-  .sheInputComponent {
-    .sheInputControl {
-      > input {
-        border: 1px solid vars.$colorRed;
-      }
-    }
+  input {
+    border: 1px solid vars.$colorRed;
+  }
+}
+
+// ======================================================== HIGHLIGHT
+
+.sheInput.highlighted {
+  input {
+    border-color: vars.$colorBlue !important;
   }
 }

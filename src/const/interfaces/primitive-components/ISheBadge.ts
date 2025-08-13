@@ -2,9 +2,11 @@ import React, { ComponentPropsWithRef } from "react";
 
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { BadgeProps } from "@/components/ui/badge.tsx";
+import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 
-export interface ISheBadge extends BadgeProps, ComponentPropsWithRef<any> {
-  key?: any;
+export interface ISheBadge<T>
+  extends Omit<BadgeProps, "onClick">,
+    ComponentPropsWithRef<any> {
   id?: string;
   className?: string;
   style?: React.CSSProperties;
@@ -17,7 +19,7 @@ export interface ISheBadge extends BadgeProps, ComponentPropsWithRef<any> {
   text?: string | number;
   textTransKey?: string;
   textWrap?: "wrap" | "nowrap" | "dots";
-  value?: any;
+  value?: T | string;
   minWidth?: string;
   maxWidth?: string;
   fullWidth?: boolean;
@@ -25,6 +27,37 @@ export interface ISheBadge extends BadgeProps, ComponentPropsWithRef<any> {
   isLoading?: boolean;
   isCircle?: boolean;
   showCloseBtn?: boolean;
-  onClick?: (value: any) => void;
-  onClose?: (value?: any) => void;
+  onClick?(
+    value: T | string,
+    model?: IOutputEventModel<T | string, ISheBadge<T>, React.MouseEvent>,
+  ): void;
+  onClose?(
+    value: T | string,
+    model?: IOutputEventModel<T | string, ISheBadge<T>, React.MouseEvent>,
+  ): void;
 }
+
+export const SheBadgeDefaultModel: ISheBadge<any> = {
+  id: undefined,
+  className: undefined,
+  style: undefined,
+  elementClassName: undefined,
+  elementStyle: undefined,
+  color: undefined,
+  textColor: undefined,
+  iconColor: undefined,
+  icon: undefined,
+  text: undefined,
+  textTransKey: undefined,
+  textWrap: undefined,
+  value: undefined,
+  minWidth: undefined,
+  maxWidth: undefined,
+  fullWidth: undefined,
+  disabled: undefined,
+  isLoading: undefined,
+  isCircle: undefined,
+  showCloseBtn: undefined,
+  onClick: undefined,
+  onClose: undefined,
+};

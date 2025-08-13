@@ -5,79 +5,45 @@ $iconSize: 20px;
 .sheRadioGroup {
   width: fit-content;
   min-width: 100px;
-
-  .sheRadioGroupComponent {
-    position: relative;
-
-    .sheRadioGroupControl {
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      transition: all 160ms ease-in-out;
-
-      .sheRadioGroupElement {
-        display: flex;
-        flex-grow: 1;
-        width: 100%;
-      }
-
-      .iconBlock {
-        position: absolute;
-        color: vars.$subtextColor;
-        left: 8px;
-        top: 10px;
-        max-width: $iconSize;
-        min-width: $iconSize;
-        max-height: $iconSize;
-        min-height: $iconSize;
-      }
-    }
-  }
-}
-
-// ======================================================== FULL WIDTH
-
-.sheRadioGroup.fullWidth {
   max-width: none;
-  width: 100%;
-}
 
-// ======================================================== REQUIRED
+  .sheRadioGroupControl {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 160ms ease-in-out;
 
-.sheRadioGroup.required {
-  .sheRadioGroupComponent:before {
-    position: absolute;
-    left: -10px;
-    top: -14px;
-    color: vars.$colorRed;
-    content: "*";
-    display: inline;
-  }
-}
+    .sheRadioGroupElement {
+      display: flex;
+      flex-grow: 1;
+      width: 100%;
+    }
 
-// ======================================================== WITH ICON
-
-.sheRadioGroup.withIcon {
-  .sheRadioGroupComponent {
-    .sheRadioGroupControl {
+    .sheRadioGroupPlaceholder {
+      position: relative;
+      top: -5px;
     }
   }
 }
 
-// ======================================================== VIEW
-
-.sheRadioGroup.card {
-  border: 1px solid vars.$brdColor;
-  padding: vars.$paddingStandard;
-  border-radius: vars.$brdR_075;
-}
-
-// ======================================================== NO DATA MESSAGE BLOCK
+// ======================================================== ICON
 
 .sheRadioGroup {
-  .noDataMessageBlock {
-    //min-width: 200px;
+  .sheRadioGroupIcon {
+    top: -1px;
+  }
+}
+
+// ======================================================== CLEAR BUTTON
+
+.sheRadioGroup {
+  .sheRadioGroupClearButton {
+    > div {
+      align-self: start;
+      position: relative;
+      top: -1px;
+    }
   }
 }
 
@@ -123,6 +89,20 @@ $iconSize: 20px;
           height: 100%;
         }
       }
+    }
+  }
+}
+
+// ======================================================== RADIO ITEMS CARD VIEW
+
+.sheRadioGroup.sheRadioGroupItemsCardView {
+  .sheRadioGroupIcon {
+    top: +1px;
+  }
+
+  .sheRadioGroupClearButton {
+    > div {
+      top: +1px;
     }
   }
 }

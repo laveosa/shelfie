@@ -1,4 +1,5 @@
-import React, { JSX, useEffect, useState } from "react";
+import React, { JSX, useEffect, useRef, useState } from "react";
+import _ from "lodash";
 
 import cs from "./SheSelect.module.scss";
 import {
@@ -7,131 +8,191 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select.tsx";
-import { ISheSelect } from "@/const/interfaces/primitive-components/ISheSelect.ts";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
-import { generateId } from "@/utils/helpers/quick-helper.ts";
-import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
-import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
-import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
 import SheSelectItem from "@/components/primitive/she-select/components/she-select-item/SheSelectItem.tsx";
+import useDefaultRef from "@/utils/hooks/useDefaultRef.ts";
+import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
+import useValueWithEvent from "@/utils/hooks/useValueWithEvent.ts";
+import ShePrimitiveComponentWrapper from "@/components/primitive/she-primitive-component-wrapper/ShePrimitiveComponentWrapper.tsx";
+import { generateSafeItemId } from "@/utils/helpers/quick-helper.ts";
+import { getCustomProps } from "@/utils/helpers/props-helper.ts";
+import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
+import {
+  ISheSelect,
+  SheSelectDefaultModel,
+} from "@/const/interfaces/primitive-components/ISheSelect.ts";
+import {
+  IShePrimitiveComponentWrapper,
+  ShePrimitiveComponentWrapperDefaultModel,
+} from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
 
-export default function SheSelect({
-  id,
-  className = "",
-  style,
-  elemClassName = "",
-  elemStyle,
-  triggerRef,
-  label,
-  labelTransKey,
-  placeholder,
-  placeholderTransKey,
-  icon,
-  selected,
-  items,
-  showClearBtn,
-  hideFirstOption,
-  tooltip,
-  minWidth,
-  maxWidth,
-  fullWidth,
-  required,
-  disabled,
-  isLoading,
-  isOpen,
-  showSelectIcon,
-  selectedColor,
-  onTriggerKeyDown,
-  onOpenChange,
-  onSelect,
-  ...props
-}: ISheSelect): JSX.Element {
-  const { translate } = useAppTranslation();
-  const [_selected, setSelected] = useState<ISheSelectItem>(null);
-  const [_items, setItems] = useState<ISheSelectItem[]>(_addItemsIds(null));
+export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
+  // ==================================================================== PROPS
+  const {
+    triggerRef,
+    popoverRef,
+    elementClassName = "",
+    elementStyle,
+    placeholder = "select item...",
+    placeholderTransKey = "PLACE_VALID_TRANS_KEY",
+    selected,
+    items,
+    hideFirstOption,
+    disabled,
+    isLoading,
+    isOpen,
+    showSelectIcon,
+    autoFocus,
+    openOnFocus,
+    showHighlighted,
+    onOpen,
+    onSelect,
+    onTriggerKeyDown,
+  } = props;
+  const sheSelectProps = getCustomProps<ISheSelect<T>, ISheSelect<T>>(
+    props,
+    SheSelectDefaultModel,
+  );
+  const shePrimitiveComponentWrapperProps = getCustomProps<
+    ISheSelect<T>,
+    IShePrimitiveComponentWrapper
+  >(props, ShePrimitiveComponentWrapperDefaultModel);
+
+  // ==================================================================== STATE MANAGEMENT
+  const [_items, setItems] = useState<ISheSelectItem<T>[]>(null);
+  const [_selected, setSelected] = useState<ISheSelectItem<T>>(null);
   const [_open, setOpen] = useState<boolean>(null);
   const [_loading, setLoading] = useState<boolean>(null);
-  const [_isItemsWithIcons, setIsItemsWithIcons] = useState<boolean>(null);
-  const [_isItemsWithColors, setIsItemsWithColors] = useState<boolean>(null);
+  const [_isHighlighted, setIsHighlighted] = useState<boolean>(null);
 
-  const ariaDescribedbyId = `${generateId()}_SELECT_ID`;
+  // ==================================================================== REFS
+  const _triggerRef = useDefaultRef<HTMLInputElement>(triggerRef);
+  const _popoverRef = useDefaultRef<HTMLDivElement>(popoverRef);
+  const _sourceValue = useRef<T>(null);
 
+  // ==================================================================== UTILITIES
+  const {
+    translate,
+    ariaDescribedbyId,
+    setFocus,
+    initializeItemsList,
+    updateSelectedItems,
+    getItemFromListByIdentifier,
+    calculatePopoverWidth,
+  } = useComponentUtilities({
+    identifier: "SheSelect",
+  });
+
+  const { eventHandler, valueHandler } = useValueWithEvent<
+    React.MouseEvent | React.KeyboardEvent,
+    string
+  >(onValueChangeHandler);
+
+  // ==================================================================== SIDE EFFECTS
   useEffect(() => {
-    let updatedItems = [...(items || [])];
-    setIsItemsWithIcons(null);
-    setIsItemsWithColors(null);
+    const newItems = initializeItemsList<T, ISheSelectItem<T>>([
+      ...(items || []),
+    ]);
+    // ----------------------------------- GET ALL SELECTED ITEMS FROM THE LIST
+    const listSelected: ISheSelectItem<T>[] = newItems?.filter(
+      (item) => item.isSelected,
+    );
+    // ----------------------------------- SET SELECTED ITEM
+    let tmpSelected: ISheSelectItem<T> = getItemFromListByIdentifier(
+      newItems,
+      "value",
+      selected,
+    );
 
+    if (!tmpSelected && listSelected && listSelected.length > 0)
+      tmpSelected = listSelected[0];
+    // ----------------------------------- ADD NOT SELECTED ITEM
     if (!hideFirstOption) {
       const firstIsNotSelected =
-        updatedItems.length === 0 || updatedItems[0].text !== "not selected";
+        newItems.length === 0 || newItems[0].text !== "not selected";
 
       if (firstIsNotSelected) {
-        updatedItems.unshift({
-          value: null,
+        newItems.unshift({
+          id: generateSafeItemId("not selected", 0),
+          className: cs.sheSelectItemNotSelected,
           text: "not selected",
           textTransKey: "not_selected",
+          value: null,
         });
       }
     }
-
-    const itemsWithIds = _addItemsIds(updatedItems);
-
-    setItems(itemsWithIds);
-
-    const selectedItem = _getSelectedItemByIdentifier(
-      selected,
-      "value",
-      itemsWithIds,
-    );
-
-    const resolved = selectedItem?.id
-      ? _getSelectedItemById(selectedItem.id, itemsWithIds)
-      : null;
-
-    setSelected(resolved);
-
-    if (isOpen && updatedItems?.length > 0) {
-      requestAnimationFrame(() => {
-        setOpen(true);
-      });
+    // ----------------------------------- SET UPDATED ITEMS
+    if (!_.isEqual(newItems, _items)) {
+      setItems(newItems);
+    } else {
+      setItems(updateSelectedItems(_items, tmpSelected));
     }
+    // ----------------------------------- SET SELECTED
+    if (!_.isEqual(tmpSelected, _selected)) setSelected(tmpSelected);
+    setIsHighlighted(false);
+    _sourceValue.current = tmpSelected.value;
+    // ----------------------------------- UPDATE FOCUS CONDITION
+    _updateFocusRelatedLogic();
   }, [items, selected]);
 
   useEffect(() => {
-    if (isLoading) {
-      setOpen(false);
-    } else if (typeof isOpen === "boolean") {
-      setOpen(isOpen);
+    // ----------------------------------- SET IS OPEN
+    if (
+      !_.isNil(isOpen) &&
+      typeof isOpen === "boolean" &&
+      !_.isEqual(isOpen, _open)
+    ) {
+      _setIsOpen(isOpen);
     }
-
-    if (typeof isLoading === "boolean" && isLoading !== _loading) {
+    // ----------------------------------- SET IS LOADING
+    if (
+      !_.isNil(isLoading) &&
+      typeof isLoading === "boolean" &&
+      !_.isEqual(isLoading, _loading)
+    ) {
       setLoading(isLoading);
+      _setIsOpen(isOpen);
     }
   }, [isOpen, isLoading]);
 
-  // ==================================================================== EVENT
+  useEffect(() => {
+    _updateFocusRelatedLogic();
+  }, [autoFocus]);
 
-  function onValueChangeHandler(id: string) {
-    setSelected(() => {
-      const selected = _getSelectedItemById(id);
+  // ==================================================================== EVENT HANDLERS
+  function onValueChangeHandler(
+    id: string,
+    event?: React.MouseEvent | React.KeyboardEvent,
+  ) {
+    const selected: ISheSelectItem<T> = _.cloneDeep(
+      getItemFromListByIdentifier<ISheSelectItem<T>, string>(items, "id", id),
+    );
 
-      if (onSelect) {
-        setTimeout(() => {
-          onSelect(selected ? selected.value : null);
-        });
-      }
+    if (selected) {
+      selected.isSelected = true;
+      const tmpItems = updateSelectedItems<ISheSelectItem<T>, T>(
+        _items,
+        selected.value,
+      );
+      setItems(tmpItems);
+      setIsHighlighted(!_.isEqual(_sourceValue.current, selected.value));
+      onSelect?.(selected.value, {
+        value: selected.value,
+        model: { ...props, items: tmpItems, selected: selected.value },
+        event,
+      });
+    } else {
+      onSelect?.(null, {
+        value: null,
+        model: { ...props, items: _items, selected: null },
+        event,
+      });
+    }
 
-      return selected;
-    });
+    setSelected(selected);
   }
 
-  function onOpenChangeHandler(event) {
-    if (_loading) return;
-    setOpen(event);
-
-    if (event && _selected) {
+  function onOpenChangeHandler(value: boolean) {
+    if (!_loading && value && _selected) {
       requestAnimationFrame(() => {
         const selectedElement = document.getElementById(_selected.id);
 
@@ -141,131 +202,101 @@ export default function SheSelect({
       });
     }
 
-    if (onOpenChange) onOpenChange(event);
+    setTimeout(() => _setIsOpen(value));
   }
 
-  function onClearHandler() {
+  function onClearHandler(event: React.MouseEvent | React.KeyboardEvent) {
+    const tmpItems = updateSelectedItems<ISheSelectItem<T>, T>(_items);
+    setItems(tmpItems);
     setSelected(null);
-
-    if (onSelect) {
-      onSelect(null);
-    }
+    onSelect?.(null, {
+      value: null,
+      model: { ...props, items: tmpItems, selected: null },
+      event,
+    });
+    setFocus<HTMLInputElement>(true, _triggerRef);
   }
 
   // ==================================================================== PRIVATE
+  function _setIsOpen(_isOpen: boolean) {
+    if (isLoading || disabled || !items || items.length === 0) {
+      setOpen(false);
+      onOpen?.(false);
+    } else if (!_.isEqual(_isOpen, _open)) {
+      setOpen(_isOpen);
+      onOpen?.(_isOpen);
 
-  function _addItemsIds(items: ISheSelectItem[]) {
-    return items?.map((item, idx) => {
-      if (item.icon) setIsItemsWithIcons(true);
-      if (item.colors) setIsItemsWithColors(true);
-
-      return {
-        ...item,
-        id: `${
-          item.text && item.text.length > 0
-            ? item.text.replace(/ /g, "_")
-            : "selectOption_"
-        }_${(idx + 1).toString()}`,
-      };
-    });
+      if (_isOpen) {
+        calculatePopoverWidth<HTMLInputElement>(_popoverRef, _triggerRef);
+      } else {
+        setFocus<HTMLInputElement>(autoFocus, _triggerRef);
+      }
+    }
   }
 
-  function _getSelectedItemById(
-    id: string,
-    fromItems: ISheSelectItem[] = _items,
-  ): ISheSelectItem {
-    if (!id) return null;
+  function _updateFocusRelatedLogic() {
+    if (!items || items.length === 0) return;
 
-    const selected = _getSelectedItemByIdentifier(id, "id", fromItems);
-    return selected?.value ? selected : null;
-  }
-
-  function _getSelectedItemByIdentifier(
-    data: any,
-    identifier: string,
-    items: ISheSelectItem[],
-  ): ISheSelectItem {
-    if (!data || !identifier || !items || items.length === 0) return null;
-
-    return items.find((item) => item[identifier] == data);
+    if (openOnFocus || isOpen) {
+      _setIsOpen(isOpen ?? autoFocus);
+      setFocus<HTMLDivElement>(autoFocus, _popoverRef);
+    } else {
+      setFocus<HTMLInputElement>(autoFocus, _triggerRef);
+    }
   }
 
   // ==================================================================== LAYOUT
-
   return (
-    <div
-      id={id}
-      className={`${cs.sheSelect} ${className} ${icon ? cs.withIcon : ""} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""}`}
-      style={{
-        minWidth,
-        maxWidth,
-        ...style,
-      }}
+    <ShePrimitiveComponentWrapper
+      {...shePrimitiveComponentWrapperProps}
+      className={`${cs.sheSelect} ${shePrimitiveComponentWrapperProps.className} ${showHighlighted && _isHighlighted ? cs.highlighted : ""}`}
+      ariaDescribedbyId={ariaDescribedbyId}
+      clearBtnValue={_selected}
+      onClear={onClearHandler}
+      onKeyDown={onTriggerKeyDown}
     >
-      <div className={cs.sheSelectComponent}>
-        <SheLabel
-          label={label}
-          labelTransKey={labelTransKey}
-          tooltip={tooltip}
-          ariaDescribedbyId={ariaDescribedbyId}
-        />
-        <div className={cs.sheSelectControl}>
-          <SheSkeleton
-            className={cs.sheSelectSkeleton}
-            isLoading={isLoading}
-            fullWidth
-          >
-            <Select
-              value={_selected?.id ?? ""}
-              open={_open}
-              disabled={disabled || _loading || !items || items.length === 0}
-              onOpenChange={onOpenChangeHandler}
-              onValueChange={onValueChangeHandler}
-              {...props}
-            >
-              <SelectTrigger ref={triggerRef} onKeyDown={onTriggerKeyDown}>
-                <SheIcon
-                  icon={icon}
-                  className={cs.iconBlock}
-                  aria-describedby={ariaDescribedbyId}
-                />
-                <SelectValue
-                  placeholder={
-                    placeholder
-                      ? translate(placeholderTransKey, placeholder)
-                      : "select item..."
-                  }
-                />
-              </SelectTrigger>
-              {_items?.length > 0 && (
-                <SelectContent>
-                  {_items?.map((item: ISheSelectItem) => (
-                    <SheSelectItem
-                      key={item.id}
-                      id={item.id}
-                      className={cs.sheSelectItemCover}
-                      isLoading={_loading}
-                      showSelectIcon={showSelectIcon}
-                      isItemsWithIcons={_isItemsWithIcons}
-                      isItemsWithColors={_isItemsWithColors}
-                      ariaDescribedbyId={ariaDescribedbyId}
-                      {...item}
-                    />
-                  ))}
-                </SelectContent>
-              )}
-            </Select>
-          </SheSkeleton>
-          <SheClearButton
-            value={_selected}
-            showClearBtn={showClearBtn}
-            disabled={disabled}
-            isLoading={isLoading}
-            ariaDescribedbyId={ariaDescribedbyId}
-            onClear={onClearHandler}
+      <Select
+        value={_selected?.id ?? ""}
+        open={_open}
+        disabled={disabled || _loading || !items || items.length === 0}
+        onOpenChange={onOpenChangeHandler}
+        onValueChange={(value) => setTimeout(() => valueHandler(value))}
+        {...sheSelectProps}
+      >
+        <SelectTrigger
+          ref={_triggerRef as any}
+          className={`${elementClassName} ${_open ? cs.sheSelectOpen : ""} componentTriggerElement`}
+          style={elementStyle}
+        >
+          <SelectValue
+            placeholder={translate(placeholderTransKey, placeholder)}
           />
-        </div>
-      </div>
-    </div>
+        </SelectTrigger>
+        {_items?.length > 0 && (
+          <SelectContent ref={_popoverRef}>
+            <div className={cs.sheSelectItemsContainer}>
+              {_items?.map((item) => (
+                <SheSelectItem<T>
+                  key={item.id}
+                  {...item}
+                  id={item.id}
+                  className={`${cs.sheSelectItemCover} ${item.className || ""}`}
+                  iconClassName={`${cs.sheSelectItemIconContainer} ${item.iconClassName || ""}`}
+                  colorsClassName={`${cs.sheSelectItemColorsContainer} ${item.colorsClassName || ""}`}
+                  infoClassName={`${cs.sheSelectItemInfoContainer} ${item.infoClassName || ""}`}
+                  tooltipClassName={`${cs.sheSelectItemTooltipContainer} ${item.tooltipClassName || ""}`}
+                  showSelectIcon={showSelectIcon}
+                  ariaDescribedbyId={ariaDescribedbyId}
+                  isLoading={
+                    !_.isNil(item.isLoading) ? item.isLoading : _loading
+                  }
+                  onCheck={(event) => eventHandler(event.event)}
+                />
+              ))}
+            </div>
+          </SelectContent>
+        )}
+      </Select>
+    </ShePrimitiveComponentWrapper>
   );
 }

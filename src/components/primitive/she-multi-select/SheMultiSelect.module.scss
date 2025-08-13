@@ -1,11 +1,21 @@
 @use "@/styles/variables" as vars;
 
-$iconSize: 20px;
-
 .sheMultiSelectPopoverContainer {
+  background: vars.$colorLight;
+
+  div[role="listbox"] {
+    overflow-y: unset;
+    max-height: none;
+  }
+
   .sheMultiSelectPopoverGroupContainer {
-    max-height: 240px;
-    overflow-y: auto;
+    > div[role="group"] {
+      max-height: 35vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
   }
 }
 
@@ -26,6 +36,7 @@ $iconSize: 20px;
       opacity: 0.4;
       color: vars.$placeholderColor;
       text-align: center;
+      word-break: break-all;
     }
   }
 }
@@ -33,15 +44,25 @@ $iconSize: 20px;
 // ========================================================= ITEMS WRAPPER
 
 .sheMultiSelectItemParentWrapper {
-  margin-bottom: 2px;
+  padding: 0;
 
   &:last-child {
     margin-bottom: 0;
   }
 
   &.sheMultiSelectItemParentWrapperSelectAll {
-    span {
-      color: vars.$placeholderColor;
+    div > div > div > div > span {
+      color: vars.$subtextColor;
+      font-weight: bold;
+      opacity: 0.8;
     }
+  }
+}
+
+// ======================================================== HIGHLIGHT
+
+.highlighted {
+  button {
+    border-color: vars.$colorBlue !important;
   }
 }

@@ -1,44 +1,20 @@
 @use "@/styles/variables" as vars;
 
-$iconSize: 20px;
-
 .sheTextArea {
   max-width: vars.$maxWidth + px;
   width: 100%;
 
-  .sheTextAreaComponent {
-    position: relative;
+  textarea {
+    resize: none;
+    min-height: 20px;
+    transition: all 160ms ease-in-out;
 
-    .sheTextAreaControl {
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 4px;
+    &:focus-visible {
+      box-shadow: 0 0 0 1px lightgray inset;
+    }
 
-      .iconBlock {
-        position: absolute;
-        color: vars.$subtextColor;
-        left: 8px;
-        top: 10px;
-        max-width: $iconSize;
-        min-width: $iconSize;
-        max-height: $iconSize;
-        min-height: $iconSize;
-      }
-
-      textarea {
-        resize: none;
-        min-height: 20px;
-        transition: all 160ms ease-in-out;
-
-        &:focus-visible {
-          box-shadow: 0 0 0 1px lightgray inset;
-        }
-
-        &::placeholder {
-          color: vars.$placeholderColor;
-        }
-      }
+    &::placeholder {
+      color: vars.$placeholderColor;
     }
   }
 }
@@ -46,57 +22,46 @@ $iconSize: 20px;
 // ======================================================== RESIZE
 
 .sheTextArea.resize {
-  .sheTextAreaComponent {
-    .sheTextAreaControl {
-      textarea {
-        resize: vertical;
-      }
-    }
+  textarea {
+    resize: vertical;
   }
 }
 
-// ======================================================== FULL WIDTH
+// ======================================================== ICON
 
-.sheTextArea.fullWidth {
-  max-width: none;
-  width: 100%;
-}
-
-// ======================================================== REQUIRED
-
-.sheTextArea.required {
-  position: relative;
-
-  .sheTextAreaComponent:before {
-    position: absolute;
-    left: -10px;
-    top: -14px;
-    color: vars.$colorRed;
-    content: "*";
-    display: inline;
+.sheTextArea.sheTextAreaViewNormal {
+  .sheTextAreaIcon,
+  .sheTextAreaClearButton {
+    top: 9px !important;
   }
 }
 
-// ======================================================== WITH ICON
+// ======================================================== VIEW
 
-.sheTextArea.withIcon {
-  .sheTextAreaComponent {
-    .sheTextAreaControl {
-      textarea {
-        padding-left: 36px;
-      }
-    }
+.sheTextArea.sheTextAreaViewCard {
+  .sheTextAreaIcon {
+    top: 0;
+  }
+
+  .sheTextAreaClearButton {
+    align-self: flex-start;
+    position: relative;
+    top: -1px;
   }
 }
 
 // ======================================================== INVALID
 
 .sheTextArea.invalid {
-  .sheTextAreaComponent {
-    .sheTextAreaControl {
-      textarea {
-        border: 1px solid vars.$colorRed;
-      }
-    }
+  textarea {
+    border: 1px solid vars.$colorRed;
+  }
+}
+
+// ======================================================== HIGHLIGHT
+
+.sheTextArea.highlighted {
+  textarea {
+    border-color: vars.$colorBlue !important;
   }
 }

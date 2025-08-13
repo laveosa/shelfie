@@ -1,36 +1,41 @@
 import React, { ComponentPropsWithRef } from "react";
 
-import { ISheLabel } from "@/const/interfaces/primitive-components/ISheLabel.ts";
-import { ISheClearButton } from "@/const/interfaces/primitive-components/ISheClearButton.ts";
-import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
-import { ISheRadioItem } from "@/const/interfaces/primitive-components/ISheRadioItem.ts";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
+import { ISheRadioItem } from "@/const/interfaces/primitive-components/ISheRadioItem.ts";
+import { IShePrimitiveComponentWrapper } from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
+import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 
-export interface ISheRadioGroup
-  extends ISheLabel,
-    ISheClearButton,
+export interface ISheRadioGroup<T>
+  extends IShePrimitiveComponentWrapper,
     ComponentPropsWithRef<any> {
-  id?: string;
-  className?: string;
-  style?: React.CSSProperties;
   elemClassName?: string;
   elemStyle?: React.CSSProperties;
   direction?: "row" | "column";
   gap?: string;
-  icon?: Partial<ISheIcon> | string | React.FC<any>;
   name?: string;
-  selected?: any;
-  items?: ISheRadioItem[];
+  selected?: T;
+  items?: ISheRadioItem<T>[];
   itemsView?: ComponentViewEnum;
-  view?: ComponentViewEnum;
-  minWidth?: string;
-  maxWidth?: string;
-  fullWidth?: boolean;
-  disabled?: boolean;
-  isLoading?: boolean;
   skeletonQuantity?: number;
-  required?: boolean;
   noDataMessage?: string;
   noDataMessageTransKey?: string;
-  onValueChange?: (value: any) => void;
+  onValueChange?(
+    value: T,
+    model?: IOutputEventModel<T, ISheRadioGroup<T>, React.MouseEvent>,
+  ): void;
 }
+
+export const SheRadioGroupDefaultModel: ISheRadioGroup<any> = {
+  elemClassName: undefined,
+  elemStyle: undefined,
+  direction: undefined,
+  gap: undefined,
+  name: undefined,
+  selected: undefined,
+  items: undefined,
+  itemsView: undefined,
+  skeletonQuantity: undefined,
+  noDataMessage: undefined,
+  noDataMessageTransKey: undefined,
+  onValueChange: undefined,
+};

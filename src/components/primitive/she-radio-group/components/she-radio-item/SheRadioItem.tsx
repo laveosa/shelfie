@@ -9,7 +9,7 @@ import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 
-export default function SheRadioItem({
+export default function SheRadioItem<T>({
   id,
   className = "",
   style,
@@ -27,7 +27,7 @@ export default function SheRadioItem({
   tooltip,
   view,
   ...props
-}: ISheRadioItem): JSX.Element {
+}: ISheRadioItem<T>): JSX.Element {
   const { translate } = useAppTranslation();
 
   // ==================================================================== EVENT
@@ -38,30 +38,30 @@ export default function SheRadioItem({
 
   return (
     <SheSkeleton
-      className={cs.sheRadioItemContextSkeleton}
+      skeletonClassName={cs.sheRadioItemContextSkeleton}
       isLoading={view === ComponentViewEnum.CARD && isLoading}
     >
       <div
-        className={`${className} ${cs.sheRadioItem} ${isLoading || disabled ? "disabled" : ""} ${view ? cs[view] : ""}`}
+        className={`${className} ${cs.sheRadioItem} ${isLoading || disabled ? "disabled" : ""} ${view ? cs[view] : ""} ${tooltip && tooltip.text?.length > 0 ? cs.withTooltip : ""}`}
         style={style}
       >
         <div className={cs.sheRadioItemCell}>
           <SheSkeleton
-            className={cs.sheRadioItemTriggerSkeleton}
+            skeletonClassName={cs.sheRadioItemTriggerSkeleton}
             isLoading={view !== ComponentViewEnum.CARD && isLoading}
           >
             <RadioGroupItem
               id={id}
               className={elementClassName}
               style={elementStyle}
-              value={value}
+              value={value as any}
               {...props}
             />
           </SheSkeleton>
         </div>
         <div className={cs.sheRadioItemContextContainer}>
           <SheSkeleton
-            className={cs.sheRadioItemContextSkeleton}
+            skeletonClassName={cs.sheRadioItemContextSkeleton}
             isLoading={view !== ComponentViewEnum.CARD && isLoading}
           >
             <label htmlFor={id} aria-describedby={ariaDescribedbyId}>
@@ -69,11 +69,7 @@ export default function SheRadioItem({
                 <div
                   className={`${cs.sheRadioItemCell} ${cs.sheRadioItemCellIcon}`}
                 >
-                  <SheIcon
-                    icon={icon}
-                    className={`${cs.iconBlock}`}
-                    aria-describedby={ariaDescribedbyId}
-                  />
+                  <SheIcon icon={icon} className={`${cs.iconBlock}`} />
                 </div>
               )}
               <div
@@ -99,6 +95,7 @@ export default function SheRadioItem({
                   }}
                 >
                   <SheTooltip
+                    className={cs.sheRadioItemTooltip}
                     showDefaultIcon
                     ariaDescribedbyId={ariaDescribedbyId}
                     {...tooltip}

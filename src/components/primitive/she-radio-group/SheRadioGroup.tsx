@@ -3,52 +3,62 @@ import _ from "lodash";
 
 import cs from "./SheRadioGroup.module.scss";
 import { RadioGroup } from "@/components/ui/radio-group";
-import { ISheRadioGroup } from "@/const/interfaces/primitive-components/ISheRadioGroup.ts";
-import { generateId } from "@/utils/helpers/quick-helper.ts";
-import { SheLabel } from "@/components/primitive/she-label/SheLabel.tsx";
-import { SheClearButton } from "@/components/primitive/she-clear-button/SheClearButton.tsx";
-import { ISheRadioItem } from "@/const/interfaces/primitive-components/ISheRadioItem.ts";
 import SheRadioItem from "@/components/primitive/she-radio-group/components/she-radio-item/SheRadioItem.tsx";
-import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
+import ShePrimitiveComponentWrapper from "@/components/primitive/she-primitive-component-wrapper/ShePrimitiveComponentWrapper.tsx";
+import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
+import { ISheRadioGroup } from "@/const/interfaces/primitive-components/ISheRadioGroup.ts";
+import { ISheRadioItem } from "@/const/interfaces/primitive-components/ISheRadioItem.ts";
+import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
+import { getCustomProps } from "@/utils/helpers/props-helper.ts";
+import {
+  IShePrimitiveComponentWrapper,
+  ShePrimitiveComponentWrapperDefaultModel,
+} from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
+import useValueWithEvent from "@/utils/hooks/useValueWithEvent.ts";
 
-export default function SheRadioGroup({
-  id,
-  className = "",
-  style,
-  elemClassName = "",
-  elemStyle,
-  direction = "column",
-  gap,
-  label,
-  labelTransKey,
-  tooltip,
-  icon,
-  name = "radioGroupNameDefault",
-  selected,
-  items,
-  itemsView,
-  view,
-  loop,
-  showClearBtn,
-  minWidth,
-  maxWidth,
-  fullWidth,
-  disabled,
-  isLoading,
-  skeletonQuantity = 3,
-  required,
-  noDataMessage = "no data to show...",
-  noDataMessageTransKey = "PLACE_VALID_TRANS_KEY",
-  onValueChange,
-  ...props
-}: ISheRadioGroup): JSX.Element {
-  const { translate } = useAppTranslation();
+export default function SheRadioGroup<T>(
+  props: ISheRadioGroup<T>,
+): JSX.Element {
+  // ==================================================================== PROPS
+  const {
+    elemClassName = "",
+    elemStyle,
+    direction = "column",
+    gap,
+    name = "radioGroupNameDefault",
+    selected,
+    items,
+    itemsView,
+    disabled,
+    isLoading,
+    skeletonQuantity = 3,
+    noDataMessage = "no data to show...",
+    noDataMessageTransKey = "PLACE_VALID_TRANS_KEY",
+    onValueChange,
+  } = props;
+  const shePrimitiveComponentWrapperProps = getCustomProps<
+    ISheRadioGroup<T>,
+    IShePrimitiveComponentWrapper
+  >(
+    { ...props, disable: undefined, isLoading: undefined },
+    ShePrimitiveComponentWrapperDefaultModel,
+  );
+
+  // ==================================================================== STATE MANAGEMENT
+  const [_items, setItems] = useState<ISheRadioItem<T>[]>(null);
   const [_selected, setSelected] = useState<any>(null);
-  const [_items, setItems] = useState<ISheRadioItem[]>(null);
 
-  const ariaDescribedbyId = `${generateId()}_RADIO_GROUP_ID`;
+  // ==================================================================== UTILITIES
+  const { translate, ariaDescribedbyId, addItemsId } = useComponentUtilities({
+    identifier: "SheRadioGroup",
+  });
+  const { eventHandler, valueHandler } = useValueWithEvent<
+    React.MouseEvent,
+    T | string
+  >(onValueChangeHandler);
 
+  // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     if (!_.isNil(selected) && !_.isEqual(selected, _selected)) {
       setSelected(selected);
@@ -56,125 +66,108 @@ export default function SheRadioGroup({
   }, [selected]);
 
   useEffect(() => {
-    if (items !== _items) setItems(_addItemsIds(items));
+    if (items !== _items) setItems(addItemsId<ISheRadioItem<T>>(items));
   }, [items]);
 
-  // ==================================================================== EVENT
-
-  function onValueChangeHandler(value) {
+  // ==================================================================== EVENT HANDLERS
+  function onValueChangeHandler(value, event) {
     if (value === _selected) return;
 
     setSelected(value);
-    if (onValueChange) onValueChange(value);
-  }
-
-  function onClearHandler() {
-    if (_selected !== null) {
-      setSelected(null);
-      onValueChange?.(null);
-    }
-  }
-
-  // ==================================================================== PRIVATE
-
-  function _addItemsIds(items: ISheRadioItem[]) {
-    return items?.map((item, idx) => {
-      return {
-        ...item,
-        id: `${ariaDescribedbyId}_${idx.toString()}`,
-      };
+    onValueChange?.(value, {
+      value,
+      model: props,
+      event,
     });
   }
 
-  // ==================================================================== RENDER
+  function onClearHandler(event) {
+    if (_selected !== null) {
+      setSelected(null);
+      onValueChange?.(null, {
+        value: null,
+        model: props,
+        event,
+      });
+    }
+  }
 
+  // ==================================================================== LAYOUT
   return (
-    <div
-      id={id}
-      className={`${cs.sheRadioGroup} ${className} ${icon ? cs.withIcon : ""} ${fullWidth ? cs.fullWidth : ""} ${required ? cs.required : ""}  ${view ? cs[view] : ""}`}
-      style={{
-        minWidth,
-        maxWidth,
-        ...style,
-      }}
+    <ShePrimitiveComponentWrapper
+      {...shePrimitiveComponentWrapperProps}
+      className={`${cs.sheRadioGroup} ${shePrimitiveComponentWrapperProps.className} ${itemsView === ComponentViewEnum.CARD ? cs.sheRadioGroupItemsCardView : ""}`}
+      ariaDescribedbyId={ariaDescribedbyId}
+      iconProps={{ className: `${cs.sheRadioGroupIcon}` }}
+      iconPosition="out"
+      clearBtnClassName={`${shePrimitiveComponentWrapperProps.clearBtnClassName} ${cs.sheRadioGroupClearButton}`}
+      clearBtnPosition="out"
+      clearBtnValue={_selected}
+      clearBtnProps={{ isLoading: isLoading }}
+      onClear={onClearHandler}
     >
-      <div className={cs.sheRadioGroupComponent}>
-        <SheLabel
-          label={label}
-          labelTransKey={labelTransKey}
-          tooltip={tooltip}
-          ariaDescribedbyId={ariaDescribedbyId}
-        />
-        <div className={cs.sheRadioGroupControl}>
-          {_items && _items.length > 0 && (
-            <RadioGroup
-              className={`${elemClassName} ${cs.sheRadioGroupElement}`}
-              style={{
+      <div className={cs.sheRadioGroupControl}>
+        {_items && _items.length > 0 && (
+          <RadioGroup
+            className={`${elemClassName} ${cs.sheRadioGroupElement}`}
+            style={
+              {
                 flexDirection: direction,
                 gap: gap,
                 ...elemStyle,
-              }}
-              name={name}
-              value={_selected}
-              onValueChange={onValueChangeHandler}
-              {...props}
-            >
-              {_items.map((item, idx) => (
-                <SheRadioItem
-                  key={item.id}
-                  ariaDescribedbyId={`${item.id}_${idx + 1}`}
-                  icon={!_.isNil(item.icon) ? item.icon : icon}
-                  isLoading={
-                    !_.isNil(item.isLoading) ? item.isLoading : isLoading
-                  }
-                  disabled={!_.isNil(item.disabled) ? item.disabled : disabled}
-                  view={item.view ?? itemsView}
-                  {...item}
-                />
-              ))}
-            </RadioGroup>
-          )}
-          {(!_items || _items.length === 0) && !isLoading && (
-            <div className={cs.noDataMessageBlock}>
-              <span className="she-placeholder">
-                {translate(noDataMessageTransKey, noDataMessage)}
-              </span>
-            </div>
-          )}
-          {(!_items || _items.length === 0) && isLoading && (
-            <div
-              className={cs.sheRadioGroupRadioItemsSkeletons}
-              style={{
+              } as React.CSSProperties
+            }
+            name={name}
+            value={_selected}
+            onClick={eventHandler}
+            onValueChange={valueHandler}
+          >
+            {_items.map((item, idx) => (
+              <SheRadioItem<T>
+                key={item.id}
+                ariaDescribedbyId={`${item.id}_${idx + 1}`}
+                isLoading={
+                  !_.isNil(item.isLoading) ? item.isLoading : isLoading
+                }
+                disabled={!_.isNil(item.disabled) ? item.disabled : disabled}
+                view={item.view ?? itemsView}
+                {...item}
+              />
+            ))}
+          </RadioGroup>
+        )}
+        {(!_items || _items.length === 0) && !isLoading && (
+          <div className={cs.sheRadioGroupPlaceholder}>
+            <span className="she-placeholder">
+              {translate(noDataMessageTransKey, noDataMessage)}
+            </span>
+          </div>
+        )}
+        {(!_items || _items.length === 0) && isLoading && (
+          <div
+            className={cs.sheRadioGroupRadioItemsSkeletons}
+            style={
+              {
                 flexDirection: direction,
                 gap: gap,
-              }}
-            >
-              {[...Array(skeletonQuantity)].map((_, idx) => (
-                <div key={idx + 1} className={cs.radioItemSkeletonBlock}>
-                  <SheSkeleton
-                    className={cs.radioItemTriggerSkeleton}
-                    isLoading={isLoading}
-                  />
-                  <SheSkeleton
-                    className={cs.radioItemContextSkeleton}
-                    isLoading={isLoading}
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-          {_items && _items.length > 0 && (
-            <SheClearButton
-              value={selected}
-              showClearBtn={showClearBtn}
-              disabled={disabled}
-              isLoading={isLoading}
-              ariaDescribedbyId={ariaDescribedbyId}
-              onClear={onClearHandler}
-            />
-          )}
-        </div>
+              } as React.CSSProperties
+            }
+          >
+            {[...Array(skeletonQuantity)].map((_, idx) => (
+              <div key={idx + 1} className={cs.radioItemSkeletonBlock}>
+                <SheSkeleton
+                  skeletonClassName={cs.radioItemTriggerSkeleton}
+                  isLoading={isLoading}
+                />
+                <SheSkeleton
+                  skeletonClassName={cs.radioItemContextSkeleton}
+                  isLoading={isLoading}
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
-    </div>
+    </ShePrimitiveComponentWrapper>
   );
 }

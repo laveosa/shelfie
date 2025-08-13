@@ -26,17 +26,15 @@ export function isSheIconConfig(
   return typeof icon === "object" && icon !== null && "icon" in icon;
 }
 
-export function addItemsId<T>(items: T[], identifier: string = "text"): T[] {
-  if (!items || items.length === 0) return null;
-
-  return items.map((item: T, idx) => ({
-    ...item,
-    id: `${
-      item[identifier] && item[identifier].length > 0
-        ? item[identifier].replace(/ /g, "_")
-        : generateId()
-    }_${(idx + 1).toString()}`,
-  }));
+export function generateSafeItemId(base: string, idx: number): string {
+  const safeBase =
+    typeof base === "string" && base.length > 0
+      ? base
+          .trim()
+          .toLowerCase()
+          .replace(/[^a-z0-9_-]/gi, "_")
+      : generateId();
+  return `${safeBase}_${(idx + 1).toString()}`;
 }
 
 export function generateId(length: number = 8) {

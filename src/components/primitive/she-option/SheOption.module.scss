@@ -1,0 +1,133 @@
+@use "@/styles/variables" as vars;
+
+$iconSize: 20px;
+
+.sheOption {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  gap: 8px;
+  width: 100%;
+  min-height: 16px;
+  cursor: pointer;
+  background-color: vars.$colorLight;
+  transition: all ease-in-out 130ms;
+  border-radius: vars.$brdR_05;
+  padding: 4px 10px;
+  box-sizing: border-box;
+
+  * {
+    background-color: transparent;
+  }
+
+  &:hover {
+    background-color: vars.$colorMuted;
+  }
+
+  // --------------------------------- TOGGLE
+  .sheOptionToggleContainer {
+    max-width: 16px;
+    min-width: 16px;
+  }
+
+  // --------------------------------- ICON
+  .sheOptionIconContainer {
+    max-width: $iconSize;
+    min-width: $iconSize;
+    color: vars.$subtextColor;
+    max-height: $iconSize;
+    min-height: $iconSize;
+
+    &.iconPlaceholder {
+      color: rgba(192, 206, 232, 0.61);
+    }
+  }
+
+  // --------------------------------- COLOR
+  .sheOptionColorsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 6px;
+    max-width: 6px;
+
+    > div {
+      padding: 3px;
+      border-radius: 100%;
+    }
+  }
+
+  // --------------------------------- INFO
+  .sheOptionInfoContainer {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    flex-grow: 1;
+    gap: 10px;
+
+    .sheOptionInfoBlock,
+    .sheOptionExtraInfoBlock {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex-grow: 1;
+      width: 100%;
+
+      :global(.she-subtext) {
+        font-size: 10px;
+      }
+
+      span {
+        word-break: break-all;
+        line-height: 16px;
+      }
+
+      .sheOptionDescription {
+        padding-top: 2px;
+        line-height: 12px;
+      }
+    }
+
+    .sheOptionInfoBlock {
+    }
+
+    .sheOptionExtraInfoBlock {
+      text-align: end;
+      min-width: 30%;
+      max-width: 30%;
+    }
+  }
+
+  // --------------------------------- TOOLTIP
+  .sheOptionTooltipContainer {
+    min-width: 17px;
+    max-width: 17px;
+  }
+}
+
+// ======================================================== FULL WIDTH
+
+.sheOption.fullWidth {
+  max-width: none;
+  width: 100%;
+}
+
+// =========================================================================== SELECTED
+
+.sheOption {
+  &.optionSelected {
+    background-color: vars.$colorMuted;
+  }
+}
+
+// =========================================================================== VIEW
+
+.sheOption {
+  &.normal {
+    border: 0;
+  }
+
+  &.card {
+    border: vars.$brd;
+  }
+}

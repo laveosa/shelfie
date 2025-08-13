@@ -1,0 +1,37 @@
+@use "@/styles/variables" as vars;
+
+.sheListFooter {
+  margin-top: 8px;
+
+  .sheListFooterGroup {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .sheListFooterItem {
+      flex: 1 1 0;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .sheListFooterItemsSeparator {
+      display: flex;
+      min-height: 24px;
+      height: 100%;
+    }
+  }
+}
+
+// ========================================================= VIEW
+
+.sheListFooter {
+  &.normal {
+    padding: 0;
+    border: 0;
+  }
+
+  &.card {
+    padding: 4px;
+    border-top: 1px solid vars.$brdColor;
+  }
+}

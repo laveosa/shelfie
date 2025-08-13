@@ -3,76 +3,52 @@
 $iconSize: 20px;
 
 .sheBadgeList {
+  max-width: none;
   width: fit-content;
 
-  .sheBadgeListComponent {
+  .sheBadgeListSkeleton {
     position: relative;
+    padding-left: 32px;
+  }
 
-    .sheBadgeListControl {
+  .sheBadgeListContext {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    //scroll-behavior: smooth;
+    transition: scroll-behavior 130ms ease-in-out;
+
+    .sheBadgeListItemsContainer {
       position: relative;
       display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 160ms ease-in-out;
+      gap: 4px;
+      flex-wrap: wrap;
+      overflow-y: hidden;
 
-      .sheBadgeListContext {
-        width: 100%;
-        overflow-x: auto;
-        overflow-y: hidden;
-        //scroll-behavior: smooth;
-        transition: scroll-behavior 130ms ease-in-out;
-
-        .sheBadgeListItemsContainer {
-          position: relative;
-          display: flex;
-          gap: 4px;
-          flex-wrap: wrap;
-          overflow-y: hidden;
-
-          .sheBadgeListItem {
-            display: flex;
-            width: fit-content;
-          }
-        }
-      }
-
-      .iconBlock {
-        color: vars.$subtextColor;
-        max-width: $iconSize;
-        min-width: $iconSize;
-        max-height: $iconSize;
-        min-height: $iconSize;
+      .sheBadgeListItem {
+        display: flex;
+        width: fit-content;
       }
     }
   }
 }
 
-// ======================================================== FULL WIDTH
+// ======================================================== WITH ICON
 
-.sheBadgeList.fullWidth {
-  max-width: none;
-  width: 100%;
-}
-
-// ======================================================== REQUIRED
-
-.sheBadgeList.required {
-  .sheBadgeListComponent:before {
-    position: absolute;
-    left: -10px;
-    top: -14px;
-    color: vars.$colorRed;
-    content: "*";
-    display: inline;
+.sheBadgeList.withIcon {
+  .autocompleteIcon {
+    top: 2px !important;
   }
 }
 
-// ======================================================== VIEW
+// ======================================================== CLEAR BUTTON
 
-.sheBadgeList.card {
-  border: 1px solid vars.$brdColor;
-  padding: vars.$paddingStandard;
-  border-radius: vars.$brdR_075;
+.sheBadgeList {
+  .sheBadgeListClearButton {
+    align-self: flex-start;
+    position: relative;
+    top: 1px;
+  }
 }
 
 // ======================================================== NO DATA BLOCK
