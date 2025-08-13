@@ -7,7 +7,7 @@ import { ISheListFooter } from "@/const/interfaces/primitive-components/ISheList
 export interface ISheList<T>
   extends ISheListHeader,
     ISheListFooter,
-    ComponentPropsWithRef<"div"> {
+    ComponentPropsWithRef<any> {
   id?: string;
   className?: string;
   style?: React.CSSProperties;

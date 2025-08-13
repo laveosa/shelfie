@@ -38,18 +38,18 @@ export default function UserForm<T>({
 
   // ================================================================ PRIVATE
 
-  function convertGendersToSelectItems(data: string[]): ISheSelectItem[] {
+  function convertGendersToSelectItems(data: any[]): ISheSelectItem<T>[] {
     return data?.map(
-      (item: string): ISheSelectItem => ({
+      (item): ISheSelectItem<T> => ({
         value: item,
         text: item,
       }),
     );
   }
 
-  function convertPositionsToSelectItems(data: any[]): ISheSelectItem[] {
+  function convertPositionsToSelectItems(data: any[]): ISheSelectItem<T>[] {
     return data?.map(
-      (item): ISheSelectItem => ({
+      (item): ISheSelectItem<T> => ({
         value: item.id,
         text: item.position,
       }),
@@ -119,7 +119,6 @@ export default function UserForm<T>({
                 onSelect={(value) => {
                   field.onChange(value);
                   void form.trigger("gender");
-                  onErrorHandler();
                 }}
               />
             </SheFormItem>

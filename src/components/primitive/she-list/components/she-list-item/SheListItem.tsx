@@ -60,7 +60,7 @@ export default function SheListItem<T>({
             <SheToggle
               checked={isSelected}
               {...toggleProps}
-              onChecked={onSelect}
+              onChecked={(value: any) => onSelect(value)}
             />
           </div>
         )}
@@ -69,7 +69,6 @@ export default function SheListItem<T>({
             <SheIcon
               icon={icon ? icon : Image}
               className={`${cs.iconBlock} ${!icon ? cs.iconPlaceholder : ""}`}
-              aria-describedby={ariaDescribedbyId}
               {...iconProps}
             />
           </div>

@@ -11,7 +11,8 @@ export interface ISheTimePicker
       IShePrimitiveComponentWrapper,
       "iconPosition" | "clearBtnPosition" | "clearBtnValue"
     >,
-    ComponentPropsWithRef<"div"> {
+    ComponentPropsWithRef<any> {
+  children?: React.ReactNode;
   inputClassName?: string;
   inputStyle?: React.CSSProperties;
   selectClassName?: string;

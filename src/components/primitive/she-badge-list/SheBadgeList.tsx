@@ -96,7 +96,7 @@ export default function SheBadgeList<T>(props: ISheBadgeList<T>): JSX.Element {
     item: ISheBadge<T>,
     model: IOutputEventModel<T | string, ISheBadge<T>, React.MouseEvent>,
   ) {
-    onClick?.(item, { ...model, model: props });
+    onClick?.(item, { ...model });
   }
 
   function onCloseHandler(
@@ -110,7 +110,7 @@ export default function SheBadgeList<T>(props: ISheBadgeList<T>): JSX.Element {
     );
     setItems(tmpList);
     _calculateMaxBadgeAmount(tmpList);
-    onClose?.(item, { ...model, model: props });
+    onClose?.(item, { ...model });
   }
 
   function onCloseAllExtraHandler(
@@ -266,8 +266,8 @@ export default function SheBadgeList<T>(props: ISheBadgeList<T>): JSX.Element {
                       ? item.showCloseBtn
                       : showCloseBtn
                   }
-                  onClick={(value, model) => onClickHandler(item, model)}
-                  onClose={(value, model) => onCloseHandler(item, model)}
+                  onClick={(_, model) => onClickHandler(item, model)}
+                  onClose={(_, model) => onCloseHandler(item, model)}
                 />
               </div>
             ))}

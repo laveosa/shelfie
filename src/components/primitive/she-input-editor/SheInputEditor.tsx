@@ -125,11 +125,7 @@ export default function SheInputEditor(props: ISheInputEditor): JSX.Element {
       <div className={cs.sheInputEditorControl}>
         {!_isManage && (
           <div className={cs.sheInputEditorTextContainer}>
-            <SheIcon
-              icon={icon}
-              className={cs.iconBlock}
-              aria-describedby={ariaDescribedbyId}
-            />
+            <SheIcon icon={icon} className={cs.iconBlock} />
             <div
               className={`${cs.sheInputEditorTextBlock} ${disabled || isLoading ? "disabled" : ""}`}
             >

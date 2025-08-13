@@ -22,7 +22,6 @@ function SheIconComponent({
   maxHeight,
   hoverEffect,
   onClick,
-  ...props
 }: ISheIcon): JSX.Element {
   // ==================================================================== EVENT
 
@@ -38,6 +37,7 @@ function SheIconComponent({
 
   return (
     <div
+      id={id}
       className={`${cs.sheIcon} ${className} ${iconView ? cs[iconView] : ""} ${fullWidth ? cs.fullWidth : ""} ${hoverEffect ? cs.hoverEffect : ""} ${onClick ? cs.onClickEffect : ""}`}
       style={{
         minWidth,
@@ -50,7 +50,6 @@ function SheIconComponent({
         ...style,
       }}
       onClick={onClickHandler}
-      {...props}
     >
       {typeof icon === "string" && /\.(png|jpe?g|gif|webp)$/i.test(icon) && (
         <img

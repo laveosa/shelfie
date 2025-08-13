@@ -46,9 +46,9 @@ export default function CreateSupplierForm<T>({
     null,
   );
 
-  function convertCountriesToSelectItems(data: any[]): ISheSelectItem[] {
+  function convertCountriesToSelectItems(data: any[]): ISheSelectItem<T>[] {
     return data?.map(
-      (item): ISheSelectItem => ({
+      (item): ISheSelectItem<T> => ({
         value: item.countryId,
         text: item.countryName,
       }),

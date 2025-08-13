@@ -69,11 +69,7 @@ export default function SheRadioItem<T>({
                 <div
                   className={`${cs.sheRadioItemCell} ${cs.sheRadioItemCellIcon}`}
                 >
-                  <SheIcon
-                    icon={icon}
-                    className={`${cs.iconBlock}`}
-                    aria-describedby={ariaDescribedbyId}
-                  />
+                  <SheIcon icon={icon} className={`${cs.iconBlock}`} />
                 </div>
               )}
               <div

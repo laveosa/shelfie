@@ -7,7 +7,8 @@ import { IShePrimitiveComponentWrapper } from "@/const/interfaces/primitive-comp
 
 export interface ISheSelect<T>
   extends IShePrimitiveComponentWrapper,
-    ComponentPropsWithRef<typeof Select> {
+    Omit<ComponentPropsWithRef<typeof Select>, "defaultValue" | "dir"> {
+  children?: React.ReactNode;
   popoverRef?: RefObject<HTMLDivElement>;
   elementClassName?: string;
   elementStyle?: React.CSSProperties;

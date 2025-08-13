@@ -6,11 +6,8 @@ import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 import { IShePrimitiveComponentWrapper } from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
 
 export interface ISheBadgeList<T>
-  extends Omit<
-      IShePrimitiveComponentWrapper,
-      "onClear" | "iconPosition" | "clearBtnPosition"
-    >,
-    ComponentPropsWithRef<"div"> {
+  extends Omit<IShePrimitiveComponentWrapper, "onClear">,
+    ComponentPropsWithRef<any> {
   elementClassName?: string;
   elementStyle?: React.CSSProperties;
   items?: ISheBadge<T>[];

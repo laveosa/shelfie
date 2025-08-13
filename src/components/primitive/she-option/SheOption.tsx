@@ -72,35 +72,35 @@ export default function SheOption<T>(props: ISheOption<T>): JSX.Element {
     if (checkOnClick && mode === "multiple") {
       setIsSelected((prevState) => {
         const tmpIsSelected = !prevState;
-        onClick?.(_getOutputEventModel<T>(value, event));
-        onCheck?.(_getOutputEventModel<boolean>(value, event, tmpIsSelected));
+        onClick?.(_getOutputEventModel(value, event));
+        onCheck?.(_getOutputEventModel(value, event, tmpIsSelected));
         return tmpIsSelected;
       });
     } else {
-      onClick?.(_getOutputEventModel<T>(value, event));
+      onClick?.(_getOutputEventModel(value, event));
     }
   }
 
-  function onCheckHandler(value: boolean, event: React.MouseEvent) {
+  function onCheckHandler(value: boolean, { event }) {
     event.stopPropagation();
     setIsSelected((prevState) => {
       const tmpIsSelected = !prevState;
-      onCheck?.(_getOutputEventModel<boolean>(value, event, tmpIsSelected));
+      onCheck?.(_getOutputEventModel(value, event, tmpIsSelected));
       return tmpIsSelected;
     });
   }
 
   // ==================================================================== PRIVATE
 
-  function _getOutputEventModel<V>(
-    value: V,
+  function _getOutputEventModel(
+    value: any,
     event: React.MouseEvent,
     selected: boolean = _isSelected,
-  ): IOutputEventModel<T, ISheOption<T>, React.MouseEvent> {
+  ) {
     return {
       value,
       model: {
-        ...getCustomProps<ISheOption<T>>(props, SheOptionDefaultModel),
+        ...props,
         isSelected: selected,
       },
       event,
@@ -136,7 +136,6 @@ export default function SheOption<T>(props: ISheOption<T>): JSX.Element {
             className={`${cs.sheOptionIconContainer} ${iconClassName} ${!icon ? cs.iconPlaceholder : ""}`}
             style={iconStyle}
             icon={icon ? icon : Image}
-            aria-describedby={ariaDescribedbyId}
             {...iconProps}
           />
         )}

@@ -8,7 +8,7 @@ import { IShePrimitiveComponentWrapper } from "@/const/interfaces/primitive-comp
 export interface ISheMultiSelectTrigger<T>
   extends IShePrimitiveComponentWrapper,
     ComponentPropsWithRef<any> {
-  ref?: RefObject<HTMLButtonElement>; // IDE error "Unresolved component prop 'ref'" event that ComponentPropsWithRef was used
+  ref?: RefObject<HTMLButtonElement>;
   elementClassName?: string;
   elementStyle?: React.CSSProperties;
   items?: ISheBadge<T>[];
@@ -20,7 +20,7 @@ export interface ISheMultiSelectTrigger<T>
   autoFocus?: boolean;
   isOpen?: boolean;
   onTogglePopover?(): void;
-  onToggleOption?(value: T, event?: React.MouseEvent): void;
+  onToggleOption?(value: any, event?: React.MouseEvent): void;
   onClearExtraOptions?(
     value: ISheBadge<T>[],
     model?: IOutputEventModel<T[] | string[], ISheBadge<T>[], React.MouseEvent>,

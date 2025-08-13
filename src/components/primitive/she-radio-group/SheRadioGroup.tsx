@@ -53,9 +53,10 @@ export default function SheRadioGroup<T>(
   const { translate, ariaDescribedbyId, addItemsId } = useComponentUtilities({
     identifier: "SheRadioGroup",
   });
-  const { eventHandler, valueHandler } = useValueWithEvent<React.MouseEvent, T>(
-    onValueChangeHandler,
-  );
+  const { eventHandler, valueHandler } = useValueWithEvent<
+    React.MouseEvent,
+    T | string
+  >(onValueChangeHandler);
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
@@ -65,7 +66,7 @@ export default function SheRadioGroup<T>(
   }, [selected]);
 
   useEffect(() => {
-    if (items !== _items) setItems(addItemsId<T>(items));
+    if (items !== _items) setItems(addItemsId<ISheRadioItem<T>>(items));
   }, [items]);
 
   // ==================================================================== EVENT HANDLERS

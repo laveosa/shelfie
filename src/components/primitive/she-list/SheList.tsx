@@ -105,6 +105,7 @@ export default function SheList<T>({
   }
 
   function onSelectHandler(data: T) {
+    console.log(data);
     /*const newSelectedValues = _selectedValues.includes(option)
       ? _selectedValues.filter((value) => value !== option)
       : [..._selectedValues, option];

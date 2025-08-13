@@ -209,7 +209,7 @@ export default function SheMultiSelect<T>(
   }
 
   function onToggleAllHandler(
-    value: T,
+    __,
     event?: React.MouseEvent | React.KeyboardEvent,
   ) {
     const isAllSelected = _items.every((item) =>
@@ -242,7 +242,7 @@ export default function SheMultiSelect<T>(
   ) {
     _updateSelectedValues([], event);
     setSearchValue("");
-    setFocus<T>(true, refElement);
+    setFocus<any>(true, refElement);
     onClear?.(null);
   }
 

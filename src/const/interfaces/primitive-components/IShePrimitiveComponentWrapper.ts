@@ -32,8 +32,8 @@ export interface IShePrimitiveComponentWrapper
     Omit<ISheSkeleton, "minWidth" | "maxWidth" | "fullWidth">,
     ISheContextLengthLimits,
     ISheDescriptionBlock,
-    ISheErrorMessageBlock,
-    ComponentPropsWithRef<"div"> {
+    ISheErrorMessageBlock {
+  children?: React.ReactNode;
   id?: string;
   className?: string;
   style?: React.CSSProperties;
@@ -49,6 +49,7 @@ export interface IShePrimitiveComponentWrapper
   iconPosition?: "in" | "out";
   iconProps?: ISheIcon;
   view?: "normal" | "card";
+  onKeyDown?(event: React.KeyboardEvent): void;
   onClear?(value: React.MouseEvent | React.KeyboardEvent): void;
 }
 

@@ -9,9 +9,6 @@ import { IShePrimitiveComponentWrapper } from "@/const/interfaces/primitive-comp
 export interface ISheAutocomplete
   extends Omit<
       IShePrimitiveComponentWrapper,
-      | "ref"
-      | "onChange"
-      | "onBlur"
       | "contextLengthLimitsClassName"
       | "contextLengthLimitsStyle"
       | "contextLengthLimitsValue"

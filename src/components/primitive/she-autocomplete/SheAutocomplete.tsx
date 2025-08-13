@@ -183,7 +183,7 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
 
   // ==================================================================== EVENT HANDLERS
   function onChangeHandler(value: string) {
-    const tmpSearchValue = value.trim();
+    const tmpSearchValue = value?.trim();
     _setIsOpen(_checkIsOpenCondition(true, tmpSearchValue));
     setSearchValue(tmpSearchValue);
     onChange?.(tmpSearchValue);

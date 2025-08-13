@@ -10,7 +10,7 @@ type NativeInputProps = Omit<
 >;
 
 export interface ISheInput
-  extends IShePrimitiveComponentWrapper,
+  extends Omit<IShePrimitiveComponentWrapper, "onKeyDown">,
     NativeInputProps,
     ComponentPropsWithRef<any> {
   ref?: any;

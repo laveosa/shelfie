@@ -8,7 +8,7 @@ import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 export interface ISheInputEditor
   extends Omit<
       IShePrimitiveComponentWrapper,
-      "clearBtnValue" | "clearBtnPosition" | "iconPosition"
+      "clearBtnValue" | "clearBtnPosition" | "iconPosition" | "onChange"
     >,
     ComponentPropsWithRef<any> {
   textClassName?: string;

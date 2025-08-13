@@ -90,7 +90,7 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
   const [_error, setError] = useState<string>(null);
   const [_errorTransKey, setErrorTransKey] = useState<string>(null);
   const [_showError, setShowError] = useState<boolean>(
-    !shePrimitiveComponentWrapperProps?.hideErrorMessage ?? null,
+    !shePrimitiveComponentWrapperProps?.hideErrorMessage,
   );
   const [_isHighlighted, setIsHighlighted] = useState<boolean>(null);
 

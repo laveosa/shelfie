@@ -4,8 +4,9 @@ export const getCustomProps = <T extends object, C>(
   noEmpty: boolean = true,
 ) => {
   if (!props || !model) return undefined;
-  const keys = Object.keys(model) as (keyof C)[];
-  return _pick<T, keyof C>(props, keys, noEmpty);
+  const keys: any = Object.keys(model) as (keyof C)[];
+  // return _pick<T, keyof C>(props, keys, noEmpty); //TODO build error
+  return _pick(props, keys, noEmpty);
 };
 
 export function mergeComponentProps<T>(

@@ -5,6 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton.tsx";
 import { ISheSkeleton } from "@/const/interfaces/primitive-components/ISheSkeleton.ts";
 
 export default function SheSkeleton({
+  children,
   skeletonClassName = "",
   skeletonStyle,
   skeletonColor,
@@ -14,8 +15,6 @@ export default function SheSkeleton({
   minWidth,
   maxWidth,
   fullWidth,
-  children,
-  skeletonProps,
 }: ISheSkeleton): JSX.Element {
   // ==================================================================== LAYOUT
   return (
@@ -26,7 +25,6 @@ export default function SheSkeleton({
         maxWidth,
         ...skeletonStyle,
       }}
-      {...skeletonProps}
     >
       {isLoading ? (
         <Skeleton

@@ -5,8 +5,8 @@ import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 import { ISheCalendar } from "@/const/interfaces/primitive-components/ISheCalendar.ts";
 
 export interface ISheDatePicker
-  extends ISheCalendar,
-    IShePrimitiveComponentWrapper {
+  extends IShePrimitiveComponentWrapper,
+    ISheCalendar {
   placeholder?: string;
   placeholderTransKey?: string;
   isOpen?: boolean;

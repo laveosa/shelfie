@@ -27,7 +27,7 @@ export default function useComponentUtilities({
   }, [identifier]);
 
   // ================================================================== LOGIC
-  function addItemsId<T>(
+  function addItemsId<T extends { id?: string }>(
     items: T[],
     identifier: string = "item",
     generateLength?: number,
@@ -114,13 +114,16 @@ export default function useComponentUtilities({
     return items?.filter((elem) => elem[identifier] !== value);
   }
 
-  function setFocus<T>(focus: boolean, triggerRef: RefObject<T>) {
+  function setFocus<T extends HTMLElement>(
+    focus: boolean,
+    triggerRef: RefObject<T>,
+  ) {
     if (focus && triggerRef && triggerRef.current) {
       setTimeout(() => triggerRef.current.focus());
     }
   }
 
-  function calculatePopoverWidth<T>(
+  function calculatePopoverWidth<T extends HTMLElement>(
     popoverRef: RefObject<HTMLDivElement>,
     triggerRef: RefObject<T>,
   ) {

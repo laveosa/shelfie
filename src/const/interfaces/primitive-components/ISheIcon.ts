@@ -1,7 +1,7 @@
 import React, { ComponentPropsWithRef } from "react";
 import { IconViewEnum } from "@/const/enums/IconViewEnum.ts";
 
-export interface ISheIcon extends ComponentPropsWithRef<"div"> {
+export interface ISheIcon extends ComponentPropsWithRef<any> {
   id?: string;
   className?: string;
   style?: React.CSSProperties;

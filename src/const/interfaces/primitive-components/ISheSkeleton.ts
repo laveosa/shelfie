@@ -11,7 +11,6 @@ export interface ISheSkeleton {
   minWidth?: string;
   maxWidth?: string;
   fullWidth?: boolean;
-  skeletonProps?: ISheSkeleton;
 }
 
 export const SheSkeletonDefaultModel: ISheSkeleton = {
@@ -24,5 +23,4 @@ export const SheSkeletonDefaultModel: ISheSkeleton = {
   minWidth: undefined,
   maxWidth: undefined,
   fullWidth: undefined,
-  skeletonProps: undefined,
 };

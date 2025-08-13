@@ -164,7 +164,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
     event?: React.MouseEvent | React.KeyboardEvent,
   ) {
     const selected: ISheSelectItem<T> = _.cloneDeep(
-      getItemFromListByIdentifier<ISheSelectItem<T>, T>(items, "id", id),
+      getItemFromListByIdentifier<ISheSelectItem<T>, string>(items, "id", id),
     );
 
     if (selected) {

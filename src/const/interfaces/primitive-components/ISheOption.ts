@@ -8,7 +8,7 @@ import { ISelectable } from "@/const/interfaces/primitive-components/ISelecteble
 
 export interface ISheOption<T>
   extends ISelectable<T>,
-    ComponentPropsWithRef<"div"> {
+    Omit<ComponentPropsWithRef<"div">, "onClick"> {
   id?: string;
   className?: string;
   style?: React.CSSProperties;

@@ -69,6 +69,7 @@ export default function SheMultiSelectTrigger<T>(
     <ShePrimitiveComponentWrapper
       {...shePrimitiveComponentWrapperProps}
       className={`${cs.sheMultiSelectTrigger} ${shePrimitiveComponentWrapperProps.className}`}
+      ariaDescribedbyId={ariaDescribedbyId}
       clearBtnValue={items}
       onClear={onClearAll}
     >
@@ -134,7 +135,6 @@ export default function SheMultiSelectTrigger<T>(
           <SheIcon
             icon={ChevronDown}
             className={`${cs.chevronIconBlock} ${isOpen ? cs.rotateChevronIcon : ""}`}
-            aria-describedby={ariaDescribedbyId}
           />
         </Button>
       </PopoverTrigger>
