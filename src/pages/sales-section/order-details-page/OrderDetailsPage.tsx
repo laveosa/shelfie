@@ -66,11 +66,14 @@ export function OrderDetailsPage() {
         handleCardAction("selectEntityCard");
         service.assignCustomerToOrderHandler(orderId, payload.customerId);
         break;
-      case "closeSelectEntityCard":
-        handleCardAction("selectEntityCard");
-        break;
       case "deleteOrder":
         service.deleteOrderHandler(Number(orderId));
+        break;
+      case "createDiscount":
+        service.createDiscountHandler(payload);
+        break;
+      case "closeSelectEntityCard":
+        handleCardAction("selectEntityCard");
         break;
       case "openSelectDiscountCard":
         handleCardAction("selectDiscountCard", true);
@@ -115,7 +118,7 @@ export function OrderDetailsPage() {
           <SelectDiscountCard
             isLoading={state.isSelectDiscountCardLoading}
             isGridLoading={state.isSelectDiscountGridLoading}
-            discounts={state.discounts}
+            discounts={state.discountsList}
             onAction={onAction}
           />
         </div>

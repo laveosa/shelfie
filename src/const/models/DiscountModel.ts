@@ -1,5 +1,5 @@
 export interface DiscountModel {
-  id?: number;
+  id: number;
   discountId?: number;
   discountRate?: string;
 }

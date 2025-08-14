@@ -74,14 +74,23 @@ export default function useOrderDetailsPageService() {
 
   function getDiscountsListHandler() {
     dispatch(actions.setIsSelectDiscountGridLoading(true));
+
     return getDiscountsList().then((res: any) => {
       dispatch(actions.setIsSelectDiscountGridLoading(false));
-      const modifiedList = res.items.map((item) => ({
+
+      const selectedDiscountIds =
+        ordersState.selectedOrder?.discounts?.map(
+          (discount) => discount.discountId,
+        ) ?? [];
+
+      const modifiedList = res.data?.map((item) => ({
         ...item,
-        isSelected: item.discountId === ordersState.selectedOrder.discountId,
+        isSelected: selectedDiscountIds.includes(item.discountId),
       }));
+
       dispatch(actions.refreshDiscountsList(modifiedList));
-      return res;
+
+      return res.data;
     });
   }
 

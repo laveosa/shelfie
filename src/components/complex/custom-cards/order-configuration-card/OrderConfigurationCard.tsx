@@ -17,11 +17,13 @@ import { StatusModel } from "@/const/models/StatusModel.ts";
 import { Separator } from "@/components/ui/separator.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { OrderDiscountsGridColumns } from "@/components/complex/grid/order-discounts-grid/OrderDiscountsGridColumns.tsx";
+import { OrderShipmentsRateGridColumns } from "@/components/complex/grid/order-shipments-rate-grid/OrderShipmentsRateGridColumns.tsx";
 
 export default function OrderConfigurationCard({
   isLoading,
   isDiscountsGridLoading,
   order,
+  shipmentsRate,
   statuses,
   onAction,
 }: IOrderConfigurationCard) {
@@ -50,8 +52,8 @@ export default function OrderConfigurationCard({
           </div>
           <div className={cs.orderConfigurationCardItem}>
             <span className="she-text">Order status</span>
-            <SheSelect
-              selected={order?.orderStatus}
+            <SheSelect<string>
+              selected={order?.orderStatus || null}
               items={convertStatusesToSelectItems(statuses)}
               hideFirstOption
               minWidth="170px"
@@ -151,20 +153,31 @@ export default function OrderConfigurationCard({
               icon={Plus}
             />
           </div>
-          {/*<DndGridDataTable columns={} data={} />*/}
+          <DndGridDataTable
+            columns={
+              OrderShipmentsRateGridColumns({
+                onAction,
+              }) as ColumnDef<DataWithId>[]
+            }
+            showHeader={false}
+            data={shipmentsRate}
+            customMessage="Shipment rate is not set yet"
+          />
           <span className="she-title">Summary</span>
           <div className={cs.orderSummaryItems}>
             <div className={cs.orderSummaryItem}>
               <span className="she-text">Products Subtotal</span>
-              <span className="she-text">0</span>
+              <span className="she-text">{order?.orderSubTotal?.subtotal}</span>
             </div>
             <div className={cs.orderSummaryItem}>
               <span className="she-text">Total with discount and shipment</span>
-              <span className="she-text">0</span>
+              <span className="she-text">
+                {order?.orderSubTotal?.totalWithDiscountAndShipment}
+              </span>
             </div>
             <div className={cs.orderSummaryItem}>
               <span className="she-text">Profit</span>
-              <span className="she-text">0</span>
+              <span className="she-text">{order?.orderSubTotal?.total}</span>
             </div>
           </div>
           <Separator />
