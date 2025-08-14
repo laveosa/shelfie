@@ -62,7 +62,7 @@ export default function ShipmentDetailsCard({
           columns={
             OrderShipmentsGridColumns(onAction) as ColumnDef<DataWithId>[]
           }
-          skeletonQuantity={shipments?.length}
+          skeletonQuantity={5}
           data={shipments}
           customMessage="No item is scheduled for delivery"
         />

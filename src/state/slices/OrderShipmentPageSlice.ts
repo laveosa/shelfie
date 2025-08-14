@@ -14,10 +14,12 @@ const initialState: IOrderShipmentPageSlice = {
   isSelectEntityCardLoading: false,
   isSelectShipmentForOrderCardLoading: false,
   isProductsGridLoading: false,
+  isOrderShipmentsGridLoading: false,
   isShipmentsGridLoading: false,
   isSelectEntityGridLoading: false,
   isSelectShipmentForOrderGridLoading: false,
   activeCards: [],
+  orderShipments: [],
   selectedShipment: null,
   selectedCustomer: null,
   shipmentsGridModel: {
@@ -76,6 +78,13 @@ function setIsProductsGridLoading(
   state.isProductsGridLoading = action?.payload;
 }
 
+function setIsOrderShipmentsGridLoading(
+  state: IOrderShipmentPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isOrderShipmentsGridLoading = action?.payload;
+}
+
 function setIsShipmentsGridLoading(
   state: IOrderShipmentPageSlice,
   action: PayloadAction<boolean>,
@@ -106,6 +115,13 @@ function refreshActiveCards(
   state.activeCards = action?.payload || state.activeCards;
 }
 
+function refreshOrderShipments(
+  state: IOrderShipmentPageSlice,
+  action: PayloadAction<ShipmentModel[]>,
+) {
+  state.orderShipments = action?.payload || state.orderShipments;
+}
+
 function refreshSelectedShipment(
   state: IOrderShipmentPageSlice,
   action: PayloadAction<ShipmentModel>,
@@ -118,6 +134,10 @@ function refreshSelectedCustomer(
   action: PayloadAction<CustomerModel>,
 ) {
   state.selectedCustomer = action?.payload || state.selectedCustomer;
+}
+
+function resetSelectedCustomer(state: IOrderShipmentPageSlice) {
+  state.selectedCustomer = null;
 }
 
 function refreshShipmentsGridModel(
@@ -145,12 +165,15 @@ const OrderShipmentPageSlice = createSlice({
     setIsSelectEntityCardLoading,
     setIsSelectShipmentForOrderCardLoading,
     setIsProductsGridLoading,
+    setIsOrderShipmentsGridLoading,
     setIsShipmentsGridLoading,
     setIsSelectEntityGridLoading,
     setIsSelectShipmentForOrderGridLoading,
     refreshActiveCards,
+    refreshOrderShipments,
     refreshSelectedShipment,
     refreshSelectedCustomer,
+    resetSelectedCustomer,
     refreshShipmentsGridModel,
     refreshShipmentsGridRequestModel,
   },

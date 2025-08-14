@@ -29,6 +29,10 @@ export default function useOrderShipmentPageService() {
     OrdersApiHooks.useUpdateShipmentAddressMutation();
   const [getShipmentsListForForGrid] =
     OrdersApiHooks.useGetShipmentsListForForGridMutation();
+  const [getShipmentsListForOrder] =
+    OrdersApiHooks.useLazyGetShipmentsListForOrderQuery();
+  const [connectShipmentToOrder] =
+    OrdersApiHooks.useConnectShipmentToOrderMutation();
 
   function getOrderDetailsHandler(orderId) {
     return getOrderDetails(orderId).then((res: any) => {
@@ -55,6 +59,15 @@ export default function useOrderShipmentPageService() {
     return getShipmentsListForForGrid(model).then((res: any) => {
       dispatch(actions.setIsSelectShipmentForOrderGridLoading(false));
       dispatch(actions.refreshShipmentsGridModel(res.data));
+      return res;
+    });
+  }
+
+  function getShipmentsListForOrderHandler(orderId) {
+    dispatch(actions.setIsOrderShipmentsGridLoading(true));
+    return getShipmentsListForOrder(orderId).then((res: any) => {
+      dispatch(actions.setIsOrderShipmentsGridLoading(false));
+      dispatch(actions.refreshOrderShipments(res.data));
       return res;
     });
   }
@@ -131,13 +144,32 @@ export default function useOrderShipmentPageService() {
     });
   }
 
+  function connectShipmentToOrderHandler(shipmentId: number, orderId: number) {
+    return connectShipmentToOrder({ shipmentId, orderId }).then((res: any) => {
+      if (!res.error) {
+        addToast({
+          text: "Shipment successfully added to order",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: res?.error?.message,
+          type: "error",
+        });
+      }
+      return res;
+    });
+  }
+
   return {
     getOrderDetailsHandler,
+    getShipmentsListForOrderHandler,
     getOrderStockActionsListForGrid,
     createShipmentHandler,
     updateShipmentDatesHandler,
     updateShipmentCustomerHandler,
     updateShipmentAddressHandler,
     getShipmentsListForForGridHandler,
+    connectShipmentToOrderHandler,
   };
 }

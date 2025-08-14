@@ -218,6 +218,11 @@ export const OrdersApiService = createApi({
         }),
       },
     ),
+    getShipmentsListForOrder: apiConfig.createQuery<void, number>(builder, {
+      query: (orderId) => ({
+        url: `${ApiUrlEnum.ORDERS}/${orderId}${ApiUrlEnum.SHIPMENTS}`,
+      }),
+    }),
     getShipmentDetails: apiConfig.createQuery<void, number>(builder, {
       query: (shipmentId) => ({
         url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}`,
@@ -257,6 +262,15 @@ export const OrdersApiService = createApi({
         url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/update-address`,
         method: "PATCH",
         body: JSON.stringify(model),
+      }),
+    }),
+    connectShipmentToOrder: apiConfig.createMutation<
+      void,
+      { shipmentId: number; orderId: number }
+    >(builder, {
+      query: ({ shipmentId, orderId }) => ({
+        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/connect/${orderId}`,
+        method: "PATCH",
       }),
     }),
   }),

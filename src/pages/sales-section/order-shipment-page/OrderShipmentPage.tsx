@@ -18,7 +18,6 @@ import { ColumnDef } from "@tanstack/react-table";
 import { DataWithId } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import useOrdersPageService from "@/pages/sales-section/orders-page/useOrdersPageService.ts";
 import SelectShipmentForOrderCard from "@/components/complex/custom-cards/select-shipment-for-order/SelectShipmentForOrder.tsx";
-import { filter } from "lodash";
 
 export function OrderShipmentPage() {
   const { orderId } = useParams();
@@ -44,6 +43,7 @@ export function OrderShipmentPage() {
       service.getOrderDetailsHandler(Number(orderId));
     }
     service.getOrderStockActionsListForGrid(orderId);
+    service.getShipmentsListForOrderHandler(orderId);
   }, [orderId]);
 
   useEffect(() => {
@@ -105,9 +105,30 @@ export function OrderShipmentPage() {
         break;
       case "selectShipment":
         handleCardAction("selectShipmentForOrderCard", true);
-        service.getShipmentsListForForGridHandler(
-          state.shipmentsGridRequestModel,
+        service.getShipmentsListForForGridHandler({
+          ...state.shipmentsGridRequestModel,
+          filter: {
+            customerId: ordersState.selectedOrder.customerId,
+          },
+        });
+        break;
+      case "showAllShipments":
+        dispatch(actions.resetSelectedCustomer());
+        dispatch(
+          actions.refreshShipmentsGridRequestModel({
+            ...state.shipmentsGridRequestModel,
+            filters: {
+              customerId: null,
+            },
+          }),
         );
+        break;
+      case "connectShipmentToOrder":
+        service.connectShipmentToOrderHandler(
+          payload.shipmentId,
+          Number(orderId),
+        );
+        break;
     }
   }
 
@@ -122,9 +143,9 @@ export function OrderShipmentPage() {
       <ShipmentDetailsCard
         isLoading={state.isShipmentDetailsCardLoading}
         products={ordersState.stockActionsGridModel.items}
-        shipments={[]}
+        shipments={state.orderShipments}
         isProductsGridLoading={state.isProductsGridLoading}
-        isShipmentsGridLoading={state.isShipmentsGridLoading}
+        isShipmentsGridLoading={state.isOrderShipmentsGridLoading}
         onAction={onAction}
       />
       {state.activeCards.includes("selectShipmentForOrderCard") && (
