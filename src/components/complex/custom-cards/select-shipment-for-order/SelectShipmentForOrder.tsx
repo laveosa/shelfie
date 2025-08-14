@@ -1,5 +1,5 @@
+import { CalendarDays, Grid2x2Check, Truck, UserMinus, X } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
-import { UserMinus, X } from "lucide-react";
 import React from "react";
 
 import {
@@ -12,11 +12,15 @@ import { ISelectShipmentForOrderCard } from "@/const/interfaces/complex-componen
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { getInitials } from "@/utils/helpers/quick-helper.ts";
 import { SelectShipmentForOrderGridColumns } from "@/components/complex/grid/select-shipment-for-order-grid/SelectShipmentForOrderGridColumns.tsx";
+import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
+import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
 
 export default function SelectShipmentForOrderCard({
   isLoading,
   isGridLoading,
-  shipments,
+  shipmentsGridModel,
+  services,
+  statuses,
   customer,
   onAction,
 }: ISelectShipmentForOrderCard) {
@@ -69,16 +73,46 @@ export default function SelectShipmentForOrderCard({
         </div>
         <DndGridDataTable
           isLoading={isGridLoading}
-          showHeader={false}
           columns={
             SelectShipmentForOrderGridColumns(
               onAction,
             ) as ColumnDef<DataWithId>[]
           }
-          skeletonQuantity={shipments?.length}
-          data={shipments}
+          gridModel={shipmentsGridModel}
+          skeletonQuantity={shipmentsGridModel?.items.length}
+          data={shipmentsGridModel?.items}
           customMessage="No shipments created yet"
-        />
+          onApplyColumns={(model) => onAction("applyColumns", model)}
+          onDefaultColumns={() => onAction("resetColumns")}
+          onGridRequestChange={(updates) =>
+            onAction("gridRequestChange", updates)
+          }
+        >
+          <SheSelect
+            icon={Truck}
+            placeholder="Service"
+            minWidth="150px"
+            onSelect={(value) => onAction("gridRequestChange", value)}
+          />
+          <SheSelect
+            icon={Grid2x2Check}
+            placeholder="Status"
+            minWidth="150px"
+            onSelect={(value) => onAction("gridRequestChange", value)}
+          />
+          <SheDatePicker
+            icon={CalendarDays}
+            placeholder="Date"
+            minWidth="150px"
+            mode="range"
+            onSelectDate={(value) =>
+              onAction("gridRequestChange", {
+                startDate: value.from.toISOString(),
+                endDate: value.to.toISOString(),
+              })
+            }
+          />
+        </DndGridDataTable>
       </div>
     </SheProductCard>
   );

@@ -65,7 +65,7 @@ export function DiscountsListGridColumns({
         const handleManageClick = (e) => {
           e.stopPropagation();
           e.preventDefault();
-          onAction("remove", row.original);
+          onAction("removeDiscount", row.original);
         };
 
         return (

@@ -85,7 +85,18 @@ export default function useOrdersPageService() {
 
   function getListOfCustomersForGridHandler(model) {
     return getListOfCustomersForGrid(model).then((res: any) => {
-      dispatch(actions.refreshCustomersGridModel(res.data));
+      const updatedCustomers = res.data.items.map((customer) =>
+        customer.customerId === state.selectedOrder.customerId
+          ? { ...customer, isSelected: true }
+          : { ...customer, isSelected: false },
+      );
+
+      dispatch(
+        actions.refreshCustomersGridModel({
+          ...res.data,
+          items: updatedCustomers,
+        }),
+      );
       return res.data;
     });
   }

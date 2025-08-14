@@ -1,5 +1,6 @@
 .shipmentConfigurationCard {
   .shipmentConfigurationCardContent {
+    height: calc(100vh - 227px);
     display: flex;
     flex-direction: column;
     gap: 10px;

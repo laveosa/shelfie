@@ -1,7 +1,12 @@
 import { MapPin, Plus, Trash2, User } from "lucide-react";
+import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
 import _ from "lodash";
 
+import {
+  DataWithId,
+  DndGridDataTable,
+} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import cs from "./ShipmentConfigurationCard.module.scss";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import { IShipmentConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IShipmentConfigurationCard.ts";
@@ -11,10 +16,12 @@ import { Separator } from "@/components/ui/separator.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheCardNotification from "@/components/complex/she-card-notification/SheCardNotification.tsx";
 import { getInitials } from "@/utils/helpers/quick-helper.ts";
+import { ordersInShipmentGridColumns } from "@/components/complex/grid/orders-in-shipment-grid/OrdersInShipmentGridColumns.tsx";
 
 export default function ShipmentConfigurationCard({
   isLoading,
   shipment,
+  orders,
   onAction,
 }: IShipmentConfigurationCard) {
   function formatDate(date: Date) {
@@ -151,7 +158,13 @@ export default function ShipmentConfigurationCard({
           <span className={cs.subtitleText}>Orders in shipment</span>
           <SheButton icon={Plus} value="Select Order" variant="secondary" />
         </div>
-        {/*<DndGridDataTable columns= data=/>*/}
+        <DndGridDataTable
+          showHeader={false}
+          columns={
+            ordersInShipmentGridColumns({ onAction }) as ColumnDef<DataWithId>[]
+          }
+          data={orders}
+        />
 
         <Separator />
         <div className={cs.shipmentProductsBlock}>
@@ -160,7 +173,13 @@ export default function ShipmentConfigurationCard({
           </span>
           <SheButton icon={Plus} value="Add All" variant="secondary" />
         </div>
-        {/*<DndGridDataTable columns= data=/>*/}
+        {/*<DndGridDataTable*/}
+        {/*  showHeader={false}*/}
+        {/*  columns={*/}
+        {/*    ordersInShipmentGridColumns({ onAction }) as ColumnDef<DataWithId>[]*/}
+        {/*  }*/}
+        {/*  data={orders}*/}
+        {/*/>*/}
       </div>
       <SheCardNotification
         title="Cancel shipment"

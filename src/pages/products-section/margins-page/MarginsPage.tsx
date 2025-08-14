@@ -453,6 +453,9 @@ export function MarginsPage() {
         dispatch(actions.resetManagedMargin());
         handleCardAction("marginConfigurationCard", true);
         break;
+      case "closeSelectEntityCard":
+        handleCardAction("selectEntityCard");
+        break;
       case "closeSelectMarginCard":
         handleCardAction("selectMarginCard");
         break;

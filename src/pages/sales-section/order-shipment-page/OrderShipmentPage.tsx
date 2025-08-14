@@ -29,11 +29,12 @@ export function OrderShipmentPage() {
   const service = useOrderShipmentPageService();
   const ordersService = useOrdersPageService();
 
-  const { handleCardAction, createRefCallback } = useCardActions({
-    selectActiveCards: (state) =>
-      state[StoreSliceEnum.ORDER_SHIPMENT].activeCards,
-    refreshAction: actions.refreshActiveCards,
-  });
+  const { handleCardAction, handleMultipleCardActions, createRefCallback } =
+    useCardActions({
+      selectActiveCards: (state) =>
+        state[StoreSliceEnum.ORDER_SHIPMENT].activeCards,
+      refreshAction: actions.refreshActiveCards,
+    });
 
   useEffect(() => {
     if (
@@ -45,10 +46,6 @@ export function OrderShipmentPage() {
     service.getOrderStockActionsListForGrid(orderId);
     service.getShipmentsListForOrderHandler(orderId);
   }, [orderId]);
-
-  useEffect(() => {
-    service.getShipmentsListForForGridHandler(state.shipmentsGridRequestModel);
-  }, [state.shipmentsGridRequestModel]);
 
   async function onAction(actionType: string, payload?: any) {
     switch (actionType) {
@@ -67,31 +64,14 @@ export function OrderShipmentPage() {
         break;
       case "changeCustomer":
         handleCardAction("selectEntityCard", true);
-        if (ordersState.customersGridModel.items.length === 0) {
-          ordersService.getListOfCustomersForGridHandler({
-            ...ordersState.customersGridRequestModel,
-            searchQuery: payload,
-          });
-        }
+        service.getListOfCustomersForGridHandler({
+          ...ordersState.customersGridRequestModel,
+          searchQuery: payload,
+        });
         break;
       case "selectCustomer":
         handleCardAction("selectEntityCard");
-        if (!state.selectedShipment?.shipmentId) {
-          dispatch(actions.refreshSelectedCustomer(payload));
-          dispatch(
-            actions.refreshShipmentsGridRequestModel({
-              ...state.shipmentsGridRequestModel,
-              filter: {
-                customerId: payload.customerId,
-              },
-            }),
-          );
-        } else {
-          service.updateShipmentCustomerHandler(
-            state.selectedShipment.shipmentId,
-            { customerId: payload.customerId },
-          );
-        }
+        service.selectCustomerHandler(payload);
         break;
       case "closeSelectEntityCard":
         handleCardAction("selectEntityCard");
@@ -103,31 +83,41 @@ export function OrderShipmentPage() {
           { addressId: payload.addressId },
         );
         break;
-      case "selectShipment":
-        handleCardAction("selectShipmentForOrderCard", true);
-        service.getShipmentsListForForGridHandler({
-          ...state.shipmentsGridRequestModel,
-          filter: {
-            customerId: ordersState.selectedOrder.customerId,
-          },
+      case "selectShipment": {
+        handleMultipleCardActions({
+          shipmentConfigurationCard: false,
+          selectShipmentForOrderCard: true,
         });
+        service.selectShipmentHandler();
         break;
+      }
       case "showAllShipments":
-        dispatch(actions.resetSelectedCustomer());
-        dispatch(
-          actions.refreshShipmentsGridRequestModel({
-            ...state.shipmentsGridRequestModel,
-            filters: {
-              customerId: null,
-            },
-          }),
-        );
+        service.showAllShipmentsHandler();
         break;
       case "connectShipmentToOrder":
         service.connectShipmentToOrderHandler(
           payload.shipmentId,
           Number(orderId),
         );
+        break;
+      case "manageShipment":
+        handleMultipleCardActions({
+          shipmentConfigurationCard: true,
+          selectShipmentForOrderCard: false,
+        });
+        service.getShipmentDetailsHandler(payload.shipmentId);
+        break;
+      case "closeSelectShipmentForOrderCard":
+        handleCardAction("selectShipmentForOrderCard");
+        break;
+      case "applyColumns":
+        service.applyShipmentsGridColumns(payload);
+        break;
+      case "resetColumns":
+        service.resetShipmentsGridColumns("shipments");
+        break;
+      case "gridRequestChange":
+        service.handleShipmentsGridRequestChange(payload);
         break;
     }
   }
@@ -153,7 +143,7 @@ export function OrderShipmentPage() {
           <SelectShipmentForOrderCard
             isLoading={state.isSelectShipmentForOrderCardLoading}
             isGridLoading={state.isSelectShipmentForOrderGridLoading}
-            shipments={state.shipmentsGridModel.items}
+            shipmentsGridModel={state.shipmentsGridModel}
             customer={state.selectedCustomer}
             onAction={onAction}
           />
@@ -164,6 +154,7 @@ export function OrderShipmentPage() {
           <ShipmentConfigurationCard
             isLoading={state.isShipmentConfigurationCardLoading}
             shipment={state.selectedShipment}
+            orders={state.selectedShipment?.orders}
             onAction={onAction}
           />
         </div>

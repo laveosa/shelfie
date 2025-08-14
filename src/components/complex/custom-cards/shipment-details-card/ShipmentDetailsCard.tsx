@@ -26,7 +26,7 @@ export default function ShipmentDetailsCard({
     <SheProductCard
       loading={isLoading}
       title="Shipment details"
-      width="500px"
+      minWidth="660px"
       className={cs.shipmentDetailsCard}
     >
       <div className={cs.shipmentDetailsCardContent}>

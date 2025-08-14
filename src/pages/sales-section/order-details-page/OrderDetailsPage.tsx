@@ -45,12 +45,10 @@ export function OrderDetailsPage() {
     switch (actionType) {
       case "openSelectEntityCard":
         handleCardAction("selectEntityCard", true);
-        if (ordersState.customersGridModel.items.length === 0) {
-          ordersService.getListOfCustomersForGridHandler({
-            ...ordersState.customersGridRequestModel,
-            searchQuery: payload,
-          });
-        }
+        ordersService.getListOfCustomersForGridHandler({
+          ...ordersState.customersGridRequestModel,
+          searchQuery: payload,
+        });
         break;
       case "openCreateEntityCard":
         // dispatch(actions.resetManagedSupplier(null));
@@ -71,6 +69,9 @@ export function OrderDetailsPage() {
         break;
       case "createDiscount":
         service.createDiscountHandler(payload);
+        break;
+      case "removeDiscount":
+        console.log(payload);
         break;
       case "closeSelectEntityCard":
         handleCardAction("selectEntityCard");
