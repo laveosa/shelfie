@@ -1,57 +1,38 @@
 @use "@/styles/variables" as vars;
 
-$iconSize: 20px;
-
 .sheDatePicker {
   max-width: vars.$maxWidth + px;
   width: 100%;
 
-  .sheDatePickerComponent {
-    position: relative;
+  .sheDatePickerPopoverTriggerContainer {
+    display: flex;
+    justify-content: start;
+  }
 
-    .sheDatePickerControl {
-      position: relative;
+  .sheDatePickerPopoverTriggerButton {
+    display: flex;
+    justify-content: flex-start;
+    text-align: left;
+    font-weight: 400;
+
+    > div {
       display: flex;
-      align-items: center;
-      gap: 4px;
+      width: 100%;
 
-      .sheDatePickerSkeletonContainer {
-        .sheDatePickerPopoverTriggerContainer {
-          display: flex;
-          justify-content: start;
-
-          .sheDatePickerPopoverTriggerButton {
-            display: flex;
-            justify-content: flex-start;
-            text-align: left;
-            font-weight: 400;
-
-            .sheDatePickerControlTextContainer {
-              display: flex;
-              flex-grow: 1;
-              width: 100%;
-              max-width: calc(100% - 20px);
-            }
-          }
-        }
-
-        .sheDatePickerPopOverContentContainer {
-          width: auto;
-          padding: 0;
-        }
-      }
-
-      .iconBlock {
-        position: absolute;
-        color: vars.$subtextColor;
-        left: 8px;
-        top: 10px;
-        max-width: $iconSize;
-        min-width: $iconSize;
-        max-height: $iconSize;
-        min-height: $iconSize;
+      .sheDatePickerControlTextContainer {
+        display: flex;
+        flex-grow: 1;
+        width: 10px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
     }
+  }
+
+  .sheDatePickerPopOverContentContainer {
+    width: auto;
+    padding: 0;
   }
 }
 
@@ -62,40 +43,12 @@ $iconSize: 20px;
   display: flex;
   justify-content: center;
   margin: auto;
-
-  &.withClearBtn {
-    width: 264px;
-  }
 }
 
-// ======================================================== WITH CLEAR BUTTON
+// ======================================================== HIGHLIGHT
 
-.sheDatePicker.withClearBtn {
-  .sheDatePickerComponent {
-    .sheDatePickerControl {
-      .sheDatePickerControlTextContainer {
-        max-width: (vars.$maxWidth - 96) + px;
-      }
-    }
-  }
-}
-
-// ======================================================== FULL WIDTH
-
-.sheDatePicker.fullWidth {
-  max-width: none;
-  width: 100%;
-}
-
-// ======================================================== REQUIRED
-
-.sheDatePicker.required {
-  .sheDatePickerComponent:before {
-    position: absolute;
-    left: -10px;
-    top: -14px;
-    color: vars.$colorRed;
-    content: "*";
-    display: inline;
+.sheDatePicker.highlighted {
+  button {
+    border-color: vars.$colorBlue !important;
   }
 }

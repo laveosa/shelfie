@@ -1,31 +1,23 @@
 import React, { ComponentPropsWithRef } from "react";
 
-import { ISheLabel } from "@/const/interfaces/primitive-components/ISheLabel.ts";
-import { ISheClearButton } from "@/const/interfaces/primitive-components/ISheClearButton.ts";
-import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
-import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
-import { TimeFormatEnum } from "@/const/enums/TimeFormatEnum.ts";
 import { Period } from "@/utils/helpers/time-picker-helper.ts";
+import { TimeFormatEnum } from "@/const/enums/TimeFormatEnum.ts";
 import { SheTimePickerTypeEnum } from "@/const/enums/SheTimePickerTypeEnum.ts";
-import { ISheErrorMessageBlock } from "@/const/interfaces/primitive-components/ISheErrorMessageBlock.ts";
-import { ISheDescriptionBlock } from "@/const/interfaces/primitive-components/ISheDescriptionBlock.ts";
+import { IShePrimitiveComponentWrapper } from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
+import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 
 export interface ISheTimePicker
-  extends ISheLabel,
-    ISheClearButton,
-    ISheDescriptionBlock,
-    ISheErrorMessageBlock,
-    ComponentPropsWithRef<"div"> {
-  id?: string;
-  className?: string;
-  style?: React.CSSProperties;
+  extends Omit<
+      IShePrimitiveComponentWrapper,
+      "iconPosition" | "clearBtnPosition" | "clearBtnValue"
+    >,
+    ComponentPropsWithRef<any> {
+  children?: React.ReactNode;
   inputClassName?: string;
   inputStyle?: React.CSSProperties;
   selectClassName?: string;
   selectStyle?: React.CSSProperties;
-  icon?: Partial<ISheIcon> | string | React.FC<any>;
   size?: "normal" | "small";
-  view?: ComponentViewEnum;
   type?: SheTimePickerTypeEnum;
   hhLabel?: string;
   hhLabelTransKey?: string;
@@ -44,10 +36,6 @@ export interface ISheTimePicker
   isValid?: boolean;
   disabled?: boolean;
   isLoading?: boolean;
-  minWidth?: string;
-  maxWidth?: string;
-  fullWidth?: boolean;
-  required?: boolean;
   delayTime?: number;
   hideInputLabels?: boolean;
   hideSeconds?: boolean;
@@ -56,11 +44,78 @@ export interface ISheTimePicker
   secondsRef?: React.RefObject<HTMLInputElement>;
   periodsRef?: React.RefObject<HTMLButtonElement>;
   autoFocus?: boolean;
-  descriptionClassName?: string;
-  descriptionStyle?: React.CSSProperties;
-  onSetDate?: (value: any) => void;
-  onDelay?: (value: any) => void;
-  onBlur?: (value: any) => void;
-  onTick?: (value: any) => void;
-  onIsValid?: (value: boolean) => void;
+  showHighlighted?: boolean;
+  onSetDate?(
+    value: any,
+    model?: IOutputEventModel<
+      any,
+      ISheTimePicker,
+      React.KeyboardEvent<HTMLInputElement>
+    >,
+  ): void;
+  onDelay?(
+    value: any,
+    model?: IOutputEventModel<
+      any,
+      ISheTimePicker,
+      React.KeyboardEvent<HTMLInputElement>
+    >,
+  ): void;
+  onBlur?(
+    value: any,
+    model?: IOutputEventModel<
+      any,
+      ISheTimePicker,
+      React.ChangeEvent<HTMLInputElement>
+    >,
+  ): void;
+  onTick?(
+    value: any,
+    model?: IOutputEventModel<
+      any,
+      ISheTimePicker,
+      React.KeyboardEvent<HTMLInputElement>
+    >,
+  ): void;
+  onIsValid?(value: boolean): void;
 }
+
+export const SheTimePickerDefaultModel: ISheTimePicker = {
+  inputClassName: undefined,
+  inputStyle: undefined,
+  selectClassName: undefined,
+  selectStyle: undefined,
+  size: undefined,
+  type: undefined,
+  hhLabel: undefined,
+  hhLabelTransKey: undefined,
+  mmLabel: undefined,
+  mmLabelTransKey: undefined,
+  ssLabel: undefined,
+  ssLabelTransKey: undefined,
+  periodLabel: undefined,
+  periodLabelTransKey: undefined,
+  date: undefined,
+  startDate: undefined,
+  endDate: undefined,
+  timeFormat: undefined,
+  timePeriod: undefined,
+  clockWorksheets: undefined,
+  isValid: undefined,
+  disabled: undefined,
+  isLoading: undefined,
+  delayTime: undefined,
+  hideInputLabels: undefined,
+  hideSeconds: undefined,
+  hoursRef: undefined,
+  minutesRef: undefined,
+  secondsRef: undefined,
+  periodsRef: undefined,
+  autoFocus: undefined,
+  showHighlighted: undefined,
+  onSetDate: undefined,
+  onDelay: undefined,
+  onBlur: undefined,
+  onTick: undefined,
+  onIsValid: undefined,
+};

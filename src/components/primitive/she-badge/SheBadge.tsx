@@ -1,67 +1,78 @@
 import React, { JSX } from "react";
 import _ from "lodash";
 
+import { XCircle } from "lucide-react";
 import cs from "./SheBadge.module.scss";
 import { Badge } from "@/components/ui/badge.tsx";
-import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
-import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-import { XCircle } from "lucide-react";
+import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
+import { removeCustomProps } from "@/utils/helpers/props-helper.ts";
+import {
+  ISheBadge,
+  SheBadgeDefaultModel,
+} from "@/const/interfaces/primitive-components/ISheBadge.ts";
 
-export default function SheBadge({
-  id,
-  className = "",
-  style,
-  elementClassName = "",
-  elementStyle,
-  color,
-  textColor,
-  iconColor,
-  icon,
-  text,
-  textTransKey,
-  textWrap = "wrap",
-  minWidth,
-  maxWidth,
-  fullWidth,
-  disabled,
-  isLoading,
-  isCircle,
-  showCloseBtn,
-  onClick,
-  onClose,
-  ...props
-}: ISheBadge): JSX.Element {
-  const { translate } = useAppTranslation();
+export default function SheBadge<T>(props: ISheBadge<T>): JSX.Element {
+  // ==================================================================== PROPS
+  const {
+    id,
+    className = "",
+    style,
+    elementClassName = "",
+    elementStyle,
+    color,
+    textColor,
+    iconColor,
+    icon,
+    text,
+    textTransKey,
+    textWrap = "wrap",
+    variant,
+    value,
+    minWidth,
+    maxWidth,
+    fullWidth,
+    disabled,
+    isLoading,
+    isCircle,
+    showCloseBtn,
+    onClick,
+    onClose,
+  } = props;
+  const restProps = removeCustomProps<ISheBadge<T>>(props, [
+    SheBadgeDefaultModel,
+  ]);
 
-  const contextColor = _getContextColor();
+  // ==================================================================== UTILITIES
+  const { translate, getContextColorBasedOnVariant } = useComponentUtilities({
+    identifier: "SheBadge",
+  });
+  const contextColor = getContextColorBasedOnVariant(variant);
   const circleView = _isCircle();
 
-  // ==================================================================== EVENT
-
+  // ==================================================================== EVENT HANDLERS
   function onClickHandler(event: React.MouseEvent<HTMLElement>) {
     event.stopPropagation();
-    if (onClick) onClick(event);
+    const tmpValue: T | string = value ?? text?.toString();
+    onClick?.(tmpValue, {
+      event,
+      model: props,
+      value: tmpValue,
+    });
   }
 
   function onCloseHandler(event: React.MouseEvent<HTMLElement>) {
     event.stopPropagation();
-    if (onClose) onClose(event);
+    const tmpValue: T | string = value ?? text?.toString();
+    onClose?.(tmpValue, {
+      event,
+      model: props,
+      value: tmpValue,
+    });
   }
 
   // ==================================================================== PRIVATE
-
-  function _getContextColor(): string {
-    switch (props.variant) {
-      case "outline":
-      case "secondary":
-        return "black";
-      default:
-        return "white";
-    }
-  }
-
   function _isCircle(): boolean {
     return (
       isCircle ||
@@ -77,7 +88,6 @@ export default function SheBadge({
   }
 
   // ==================================================================== LAYOUT
-
   return (
     <div
       id={id}
@@ -91,7 +101,7 @@ export default function SheBadge({
       <div className={cs.sheBadgeComponent}>
         <div className={cs.sheBadgeControl}>
           <SheSkeleton
-            className={cs.sheBadgeSkeleton}
+            skeletonClassName={cs.sheBadgeSkeleton}
             isLoading={isLoading}
             fullWidth
           >
@@ -102,7 +112,7 @@ export default function SheBadge({
                 ...elementStyle,
               }}
               onClick={onClickHandler}
-              {...props}
+              {...restProps}
             >
               {icon && (
                 <SheIcon

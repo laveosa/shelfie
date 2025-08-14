@@ -3,32 +3,29 @@ import React, { JSX } from "react";
 import cs from "./SheContextLengthLimits.module.scss";
 import { ISheContextLengthLimits } from "@/const/interfaces/primitive-components/ISheContextLengthLimits.ts";
 
-export function SheContextLengthLimits({
-  className = "",
-  style,
-  value,
-  isValid,
+export default function SheContextLengthLimits({
+  contextLengthLimitsClassName = "",
+  contextLengthLimitsStyle,
+  contextLengthLimitsValue,
+  isContextLengthLimitsValid,
   minLength,
   maxLength,
-  contextType,
+  type,
 }: ISheContextLengthLimits): JSX.Element {
-  const valueLength = value
-    ? contextType === "number"
-      ? value
-      : String(value).length
+  // ==================================================================== UTILITIES
+  const valueLength = contextLengthLimitsValue
+    ? type === "number"
+      ? contextLengthLimitsValue
+      : String(contextLengthLimitsValue).length
     : 0;
-
-  // ==================================================================== EVENT
-
-  // ==================================================================== PRIVATE
 
   // ==================================================================== LAYOUT
   if (!minLength && !maxLength) return null;
 
   return (
     <div
-      className={`${cs.sheContextLengthLimits} ${className} ${!isValid ? cs.lengthInvalid : ""}`}
-      style={style}
+      className={`${cs.sheContextLengthLimits} ${contextLengthLimitsClassName} ${!isContextLengthLimitsValid ? cs.lengthInvalid : ""}`}
+      style={contextLengthLimitsStyle}
       aria-live="polite"
     >
       <div className={cs.minMaxBlock}>

@@ -11,8 +11,8 @@ export interface ISheMultiSelectFooter {
   primaryBtnValue?: string;
   primaryBtnValueTransKey?: string;
   showFooter?: boolean;
-  onSecondaryBtnClick?: () => void;
-  onPrimaryBtnClick?: () => void;
+  onSecondaryBtnClick?(event: React.MouseEvent): void;
+  onPrimaryBtnClick?(event: React.MouseEvent): void;
 }
 
 export const SheMultiSelectFooterDefaultModel: ISheMultiSelectFooter = {

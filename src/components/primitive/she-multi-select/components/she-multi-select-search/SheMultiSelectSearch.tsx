@@ -1,11 +1,11 @@
 import { JSX, useEffect, useState } from "react";
 
+import { X } from "lucide-react";
 import cs from "./SheMultiSelectSearch.module.scss";
-import { ISheMultiSelectSearch } from "@/const/interfaces/primitive-components/ISheMultiSelectSearch.ts";
 import { CommandInput } from "@/components/ui/command.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
-import { X } from "lucide-react";
+import { ISheMultiSelectSearch } from "@/const/interfaces/primitive-components/ISheMultiSelectSearch.ts";
 
 export default function SheMultiSelectSearch({
   searchRef,
@@ -20,32 +20,32 @@ export default function SheMultiSelectSearch({
   showSearch,
   onSearch,
 }: ISheMultiSelectSearch): JSX.Element {
-  const { translate } = useAppTranslation();
+  // ==================================================================== STATE MANAGEMENT
   const [_searchValue, setSearchValue] = useState<string>("");
 
+  // ==================================================================== UTILITIES
+  const { translate } = useAppTranslation();
+
+  // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     if (searchValue !== _searchValue) {
       setSearchValue(searchValue);
     }
   }, [searchValue]);
 
-  // ==================================================================== EVENT
-
-  function onSearchChangeHandler(value) {
+  // ==================================================================== EVENT HANDLERS
+  function onSearchChangeHandler(value: string) {
     setSearchValue(value);
-    if (onSearch) onSearch(value);
+    onSearch?.(value);
   }
 
   function onClearSearchHandler() {
     setSearchValue("");
     setTimeout(() => searchRef?.current?.focus());
-    if (onSearch) onSearch("");
+    onSearch?.("");
   }
 
-  // ==================================================================== PRIVATE
-
   // ==================================================================== LAYOUT
-
   if (!showSearch) {
     return null;
   }
@@ -64,7 +64,9 @@ export default function SheMultiSelectSearch({
         <SheButton
           icon={X}
           size="small"
-          variant="ghost"
+          variant="secondary"
+          txtColor="#64748b"
+          disabled={!_searchValue || _searchValue.length === 0}
           onClick={onClearSearchHandler}
         />
       )}

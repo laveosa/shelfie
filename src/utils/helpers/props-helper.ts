@@ -1,15 +1,23 @@
-import { ComponentPropsWithRef } from "react";
-import { createEmptyProps } from "@/utils/helpers/quick-helper.ts";
-
 export const getCustomProps = <T extends object, C>(
   props: T,
   model: C,
   noEmpty: boolean = true,
 ) => {
   if (!props || !model) return undefined;
-  const keys = Object.keys(model) as (keyof T)[];
-  return _pick<T, keyof T>(props, keys, noEmpty);
+  const keys: any = Object.keys(model) as (keyof C)[];
+  // return _pick<T, keyof C>(props, keys, noEmpty); //TODO build error
+  return _pick(props, keys, noEmpty);
 };
+
+export function mergeComponentProps<T>(
+  defaultProps: Partial<T>,
+  overrideProps?: Partial<T>,
+): Partial<T> {
+  return {
+    ...defaultProps,
+    ...(overrideProps || {}),
+  };
+}
 
 export function removeCustomProps<T extends object>(
   props: T,
@@ -28,38 +36,23 @@ export function removeCustomProps<T extends object>(
 }
 
 export const filterCustomProps = <
-  TCustomProps extends object,
-  TDefaultProps extends ComponentPropsWithRef<any>,
+  TProps extends object,
+  TDefaults extends object,
 >(
-  props: TCustomProps & TDefaultProps,
-  customProps: Record<
-    keyof TCustomProps,
-    any
-  > = createEmptyProps<TCustomProps>(),
-) => {
-  const { ...defaultProps } = props;
+  props: Partial<TProps>,
+  defaultModels: TDefaults[],
+): Partial<TProps> => {
+  const keysToExtract = defaultModels.flatMap((model) =>
+    Object.keys(model),
+  ) as (keyof TProps)[];
 
-  (Object.keys(customProps) as Array<keyof TCustomProps>).forEach((key) => {
-    delete (defaultProps as any)[key];
-  });
-
-  return defaultProps as TDefaultProps;
-};
-
-export function filterProps<T extends object>(
-  props: any,
-  validKeys: (keyof T)[],
-): Partial<T> {
-  const result: Partial<T> = {} as any;
-
-  for (const key of validKeys) {
+  return keysToExtract.reduce((acc, key) => {
     if (key in props) {
-      result[key] = props[key];
+      acc[key] = props[key];
     }
-  }
-
-  return result;
-}
+    return acc;
+  }, {} as Partial<TProps>);
+};
 
 // ================================================================== PRIVATE
 

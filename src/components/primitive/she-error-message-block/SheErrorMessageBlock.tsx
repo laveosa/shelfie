@@ -3,25 +3,28 @@ import { Trans } from "react-i18next";
 
 import cs from "./SheErrorMessageBlock.module.scss";
 import { ISheErrorMessageBlock } from "@/const/interfaces/primitive-components/ISheErrorMessageBlock.ts";
+import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 
-export function SheErrorMessageBlock({
-  className = "",
-  style,
-  error,
-  errorTransKey,
-  showError,
+export default function SheErrorMessageBlock({
+  errorMessageBlockClassName = "",
+  errorMessageBlockStyle,
+  errorMessage,
+  errorMessageTransKey,
+  errorMessageIcon,
+  hideErrorMessage,
 }: ISheErrorMessageBlock): JSX.Element {
-  // ==================================================================== EVENT
-
-  // ==================================================================== PRIVATE
-
   // ==================================================================== LAYOUT
-  if (!showError || !error) return null;
+  if (hideErrorMessage || !errorMessage || errorMessage.length === 0)
+    return null;
 
   return (
-    <div className={`${cs.sheErrorMessageBlock} ${className}`} style={style}>
+    <div
+      className={`${cs.sheErrorMessageBlock} ${errorMessageBlockClassName}`}
+      style={errorMessageBlockStyle}
+    >
+      <SheIcon className={cs.iconBlock} icon={errorMessageIcon} />
       <span className="she-text-error" role="alert" aria-live="assertive">
-        <Trans i18nKey={errorTransKey}>{error}</Trans>
+        <Trans i18nKey={errorMessageTransKey}>{errorMessage}</Trans>
       </span>
     </div>
   );

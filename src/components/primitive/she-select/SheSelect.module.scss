@@ -1,120 +1,134 @@
 @use "@/styles/variables" as vars;
 
 $iconSize: 20px;
+$chevronIconSize: 16px;
 
 .sheSelect {
-  max-width: vars.$maxWidth + px;
-  width: 100%;
+  button[data-placeholder] {
+    span {
+      color: vars.$placeholderColor;
+      text-align: start;
+    }
+  }
 
-  .sheSelectComponent {
-    position: relative;
+  button[role="combobox"] {
+    transition: all 160ms ease-in-out;
+    min-height: vars.$minHeight + px;
 
-    .sheSelectControl {
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      transition: all 160ms ease-in-out;
+    &:focus-visible {
+      box-shadow: 0 0 0 1px lightgray inset;
+    }
 
-      button[data-placeholder] {
-        span {
-          color: vars.$placeholderColor;
-          text-align: start;
-        }
+    > svg {
+      color: vars.$subtextColor;
+      max-width: $chevronIconSize;
+      min-width: $chevronIconSize;
+      max-height: $chevronIconSize;
+      min-height: $chevronIconSize;
+      transition: all 130ms ease-in-out;
+    }
+
+    > span {
+      width: 100%;
+
+      > div > div {
+        padding: 0;
       }
 
-      button[role="combobox"] {
-        transition: all 160ms ease-in-out;
+      .sheSelectItemCover {
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        gap: 4px;
+      }
 
-        &:focus-visible {
-          box-shadow: 0 0 0 1px lightgray inset;
+      // --------------------------------- ICON
+      .sheSelectItemIconContainer {
+        //display: none;
+      }
+
+      // --------------------------------- COLOR
+      .sheSelectItemColorsContainer {
+        display: none;
+      }
+
+      // --------------------------------- INFO
+      .sheSelectItemInfoContainer {
+        display: flex;
+        flex-grow: 1;
+
+        span {
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
         }
 
-        > span {
-          width: 100%;
-
-          .sheSelectItemCover {
+        > div {
+          &:nth-child(1) {
+            text-align: start;
             display: flex;
-            align-items: center;
-            justify-content: start;
-            gap: 4px;
+            flex-grow: 1;
+            width: 10px;
 
-            // --------------------------------- ICON
-            :global(.sheSelectItemIconContainer) {
+            :global(.she-subtext) {
               display: none;
             }
+          }
 
-            // --------------------------------- COLOR
-            :global(.sheSelectItemColorsContainer) {
-              display: none;
-            }
-
-            // --------------------------------- INFO
-            :global(.sheSelectItemInfoContainer) {
-              display: flex;
-              flex-grow: 1;
-
-              :global(.sheSelectItemDescription) {
-                display: none;
-              }
-
-              :global(.sheSelectItemExtraInfoBlock) {
-                display: none;
-              }
-            }
-
-            // --------------------------------- TOOLTIP
-            :global(.sheSelectItemTooltipContainer) {
-              display: none;
-            }
+          &:nth-child(2) {
+            display: none;
           }
         }
       }
 
-      .iconBlock {
-        position: absolute;
-        color: vars.$subtextColor;
-        left: 8px;
-        top: 10px;
-        max-width: $iconSize;
-        min-width: $iconSize;
-        max-height: $iconSize;
-        min-height: $iconSize;
+      // --------------------------------- TOOLTIP
+      .sheSelectItemTooltipContainer {
+        display: none;
       }
     }
   }
 }
 
-// ======================================================== FULL WIDTH
+// ======================================================== IS OPEN
 
-.sheSelect.fullWidth {
-  max-width: none;
-  width: 100%;
-}
-
-// ======================================================== REQUIRED
-
-.sheSelect.required {
-  .sheSelectComponent:before {
-    position: absolute;
-    left: -10px;
-    top: -14px;
-    color: vars.$colorRed;
-    content: "*";
-    display: inline;
+.sheSelect {
+  .sheSelectOpen {
+    > svg {
+      transform: rotate(-180deg);
+    }
   }
 }
 
-// ======================================================== WITH ICON
+// ======================================================== NOT SELECT ITEM
 
-.sheSelect.withIcon {
-  .sheSelectComponent {
-    .sheSelectControl {
-      .sheSelectSkeleton {
-        button:nth-child(1) {
-          padding-left: 36px;
-        }
-      }
+.sheSelectItemNotSelected {
+  span {
+    color: vars.$subtextColor;
+    font-weight: bold;
+    opacity: 0.8;
+  }
+
+  .sheSelectItemIconContainer {
+    > * {
+      display: none;
     }
+  }
+}
+
+// ======================================================== SELECT ITEMS CONTAINER
+
+.sheSelectItemsContainer {
+  max-height: 35vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+// ======================================================== HIGHLIGHT
+
+.sheSelect.highlighted {
+  button {
+    border-color: vars.$colorBlue !important;
   }
 }

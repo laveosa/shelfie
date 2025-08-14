@@ -1,41 +1,54 @@
-import React from "react";
+import React, { RefObject } from "react";
 
 import { ISheMultiSelectTrigger } from "@/const/interfaces/primitive-components/ISheMultiSelectTrigger.ts";
 import { ISheMultiSelectItem } from "@/const/interfaces/primitive-components/ISheMultiSelectItem.ts";
 import { ISheMultiSelectFooter } from "@/const/interfaces/primitive-components/ISheMultiSelectFooter.ts";
 import { ISheMultiSelectSearch } from "@/const/interfaces/primitive-components/ISheMultiSelectSearch.ts";
+import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 
-export interface ISheMultiSelect
-  extends ISheMultiSelectTrigger,
+export interface ISheMultiSelect<T>
+  extends Omit<ISheMultiSelectTrigger<T>, "items">,
     ISheMultiSelectSearch,
     ISheMultiSelectFooter {
+  popoverRef?: RefObject<HTMLDivElement>;
   popoverClassName?: string;
   popoverStyle?: React.CSSProperties;
   hideSelectAll?: boolean;
-  options?: ISheMultiSelectItem[];
-  selectedValues?: any[];
+  items?: ISheMultiSelectItem<T>[];
+  selectedValues?: T[];
   emptySearchPlaceholder?: string;
   emptySearchPlaceholderTransKey?: string;
   selectAllPlaceholder?: string;
   selectAllPlaceholderTransKey?: string;
+  openOnFocus?: boolean;
   isOpen?: boolean;
-  onIsOpen?: (value: any) => void;
-  onClear?: (value: any) => void;
-  onValueChange?: (values: any[]) => void;
+  showHighlighted?: boolean;
+  onOpen?(value: boolean): void;
+  onClear?(value: null): void;
+  onSelect?(
+    values: T[],
+    model?: IOutputEventModel<
+      T[],
+      ISheMultiSelect<T>,
+      React.MouseEvent | React.KeyboardEvent
+    >,
+  ): void;
 }
 
-export const SheMultiSelectDefaultModel: ISheMultiSelect = {
+export const SheMultiSelectDefaultModel: ISheMultiSelect<any> = {
   popoverClassName: undefined,
   popoverStyle: undefined,
   hideSelectAll: undefined,
-  options: undefined,
+  items: undefined,
   selectedValues: undefined,
   emptySearchPlaceholder: undefined,
   emptySearchPlaceholderTransKey: undefined,
   selectAllPlaceholder: undefined,
   selectAllPlaceholderTransKey: undefined,
+  openOnFocus: undefined,
   isOpen: undefined,
-  onIsOpen: undefined,
+  showHighlighted: undefined,
+  onOpen: undefined,
   onClear: undefined,
-  onValueChange: undefined,
+  onSelect: undefined,
 };

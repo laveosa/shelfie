@@ -11,7 +11,7 @@ export interface ISheMultiSelectSearch {
   searchPlaceholderTransKey?: string;
   hideSearchClearBtn?: boolean;
   showSearch?: boolean;
-  onSearch?: (data: string) => void;
+  onSearch?(data: string): void;
 }
 
 export const SheMultiSelectSearchDefaultModel: ISheMultiSelectSearch = {

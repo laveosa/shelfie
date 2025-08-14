@@ -1,11 +1,21 @@
 import React from "react";
 
 export interface ISheContextLengthLimits {
-  className?: string;
-  style?: React.CSSProperties;
-  value?: any;
-  isValid?: boolean;
+  contextLengthLimitsClassName?: string;
+  contextLengthLimitsStyle?: React.CSSProperties;
+  contextLengthLimitsValue?: any;
+  isContextLengthLimitsValid?: boolean;
   minLength?: number;
   maxLength?: number;
-  contextType?: string;
+  type?: string;
 }
+
+export const SheContextLengthLimitsDefaultModel: ISheContextLengthLimits = {
+  contextLengthLimitsClassName: undefined,
+  contextLengthLimitsStyle: undefined,
+  contextLengthLimitsValue: undefined,
+  isContextLengthLimitsValid: undefined,
+  minLength: undefined,
+  maxLength: undefined,
+  type: undefined,
+};

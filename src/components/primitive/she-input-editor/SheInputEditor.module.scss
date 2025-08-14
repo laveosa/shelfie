@@ -4,77 +4,54 @@ $iconSize: 20px;
 
 .sheInputEditor {
   max-width: vars.$maxWidth + px;
+  min-height: vars.$minHeight + px;
   width: 100%;
 
-  .sheInputEditorComponent {
-    position: relative;
+  .sheInputEditorControl {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 
-    .sheInputEditorControl {
+    .sheInputEditorTextContainer {
       display: flex;
-      flex-direction: column;
-
-      .sheInputEditorTextContainer {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        padding-left: 8px;
-        min-height: 40px;
-
-        .iconBlock {
-          margin-right: 5px;
-        }
-
-        .sheInputEditorTextBlock {
-          width: 100%;
-          flex-grow: 1;
-        }
-      }
-
-      .sheInputEditorInputContainer {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        min-height: 40px;
-      }
+      align-items: center;
+      padding-left: 13px;
+      min-height: vars.$minHeight + px;
 
       .iconBlock {
-        color: vars.$subtextColor;
-        max-width: $iconSize;
-        min-width: $iconSize;
-        max-height: $iconSize;
-        min-height: $iconSize;
+        margin-right: 5px;
+      }
+
+      .sheInputEditorTextBlock {
+        width: 100%;
+        flex-grow: 1;
       }
     }
-  }
-}
 
-// ======================================================== FULL WIDTH
+    .sheInputEditorInputContainer {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      min-height: 40px;
+    }
 
-.sheInputEditor.fullWidth {
-  max-width: none;
-  width: 100%;
-}
-
-// ======================================================== REQUIRED
-
-.sheInputEditor.required {
-  position: relative;
-
-  .sheInputEditorComponent:before {
-    position: absolute;
-    left: -10px;
-    top: -14px;
-    color: vars.$colorRed;
-    content: "*";
-    display: inline;
+    .iconBlock {
+      color: vars.$subtextColor;
+      border-radius: vars.$brdR_03;
+      max-width: $iconSize;
+      min-width: $iconSize;
+      max-height: $iconSize;
+      min-height: $iconSize;
+    }
   }
 }
 
 // ======================================================== WITH ICON
 
 .sheInputEditor.withIcon {
-  .sheInputEditorComponent {
-    .sheInputEditorControl {
+  .sheInputEditorControl {
+    .sheInputEditorTextContainer {
+      padding-left: 8px;
     }
   }
 }

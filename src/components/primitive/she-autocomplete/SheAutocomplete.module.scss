@@ -2,25 +2,51 @@
 
 $iconSize: 20px;
 
+.sheAutocompletePopoverWrapper {
+  width: fit-content;
+}
+
 .sheAutocomplete {
-  max-width: vars.$maxWidth + px;
-  width: 100%;
+  position: relative;
 
-  .sheAutocompleteTriggerContainer {
+  .sheAutocompleteTriggerAnchor {
     width: 100%;
-    display: flex;
-    align-items: end;
-    gap: 8px;
+  }
+}
 
-    .sheAutocompleteTriggerAnchor {
-      width: 100%;
-    }
+// ======================================================== SELECT BUTTON
+
+.sheAutocomplete {
+  .sheAutocompleteSelectButton {
+    position: relative;
+    top: 9px;
+    left: 4px;
   }
 }
 
 // ======================================================== POPOVER
 
 .sheAutocompletePopoverContainer {
+  background: vars.$colorLight;
+
+  div[role="listbox"] {
+    overflow-y: unset;
+    max-height: none;
+  }
+
+  &:global(.withIcon) {
+    margin-left: calc($iconSize + 4px);
+  }
+
+  .sheAutocompleteGroupContainer {
+    > div[role="group"] {
+      max-height: 35vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+  }
 }
 
 // ======================================================== FULL WIDTH
@@ -54,10 +80,12 @@ $iconSize: 20px;
 // ========================================================= ITEMS WRAPPER
 
 .sheAutocompleteItemParentWrapper {
-  margin-bottom: 2px;
+  padding: 0;
 
-  &:last-child {
-    margin-bottom: 0;
+  .sheSelectItemOption {
+    background: transparent;
+    min-height: 42px;
+    padding: 8px 6px;
   }
 
   > div[role="option"] {

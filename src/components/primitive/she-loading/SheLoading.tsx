@@ -1,4 +1,5 @@
 import cs from "@/components/primitive/she-loading/SheLoading.module.scss";
+import React from "react";
 
 type SheLoadingProps = {
   className?: string;

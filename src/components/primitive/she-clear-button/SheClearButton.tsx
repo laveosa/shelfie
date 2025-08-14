@@ -1,52 +1,84 @@
-import React, { JSX } from "react";
+import React, { JSX, useEffect, useState } from "react";
+import _ from "lodash";
 
+import { X } from "lucide-react";
 import cs from "./SheClearButton.module.scss";
-import { ISheClearButton } from "@/const/interfaces/primitive-components/ISheClearButton.ts";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { X } from "lucide-react";
+import { ISheClearButton } from "@/const/interfaces/primitive-components/ISheClearButton.ts";
 
-export function SheClearButton({
-  className = "",
-  style,
-  value,
-  color,
+export default function SheClearButton({
+  clearBtnClassName = "",
+  clearBtnStyle,
+  clearBtnValue,
+  clearBtnValueColor,
+  clearBtnBackgroundColor,
+  clearBtnIcon = X,
   showClearBtn,
   disabled,
   isLoading,
   ariaDescribedbyId,
+  clearBtnProps,
   onClear,
 }: ISheClearButton): JSX.Element {
+  // ==================================================================== STATE MANAGEMENT
+  const [_loading, setLoading] = useState<boolean>(null);
+
+  // ==================================================================== UTILITIES
   const isEmpty =
-    value === undefined ||
-    value === null ||
-    (typeof value === "string" && value.trim().length === 0) ||
-    (Array.isArray(value) && value.length === 0);
+    clearBtnValue === undefined ||
+    clearBtnValue === null ||
+    (typeof clearBtnValue === "string" && clearBtnValue.trim().length === 0) ||
+    (Array.isArray(clearBtnValue) && clearBtnValue.length === 0);
 
-  // ==================================================================== EVENT
+  // ==================================================================== SIDE EFFECTS
+  useEffect(() => {
+    if (
+      !_.isNil(isLoading) &&
+      typeof isLoading === "boolean" &&
+      isLoading !== _loading
+    )
+      setLoading(isLoading);
 
-  // ==================================================================== PRIVATE
+    if (
+      clearBtnProps &&
+      !_.isNil(clearBtnProps.isLoading) &&
+      clearBtnProps.isLoading !== _loading
+    )
+      setTimeout(() => setLoading(clearBtnProps.isLoading));
+  }, [isLoading, clearBtnProps]);
+
+  // ==================================================================== EVENT HANDLERS
+  function onClearHandler(event: React.MouseEvent | React.KeyboardEvent) {
+    event.stopPropagation();
+    event.preventDefault();
+    onClear?.(event);
+  }
 
   // ==================================================================== LAYOUT
   if (!showClearBtn) return null;
 
   return (
-    <div className={`${cs.sheClearButtonWrapper} ${className}`}>
+    <div className={`${cs.sheClearButtonWrapper} ${clearBtnClassName}`}>
       <SheSkeleton
-        className={`${cs.sheClearButtonSkeleton}`}
-        style={style}
-        isLoading={isLoading}
+        skeletonClassName={`${cs.sheClearButtonSkeleton}`}
+        skeletonStyle={clearBtnStyle}
+        isLoading={_loading}
       >
         <SheButton
           className={cs.sheClearButton}
           title="Clear"
           aria-label="Clear"
-          variant="ghost"
-          icon={X}
-          txtColor={color}
+          variant="secondary"
+          size="small"
+          icon={clearBtnIcon}
+          txtColor={clearBtnValueColor}
+          bgColor={clearBtnBackgroundColor}
           aria-describedby={ariaDescribedbyId}
-          disabled={isEmpty || disabled || isLoading}
-          onClick={onClear}
+          disabled={isEmpty || disabled || _loading}
+          onClick={onClearHandler}
+          {...clearBtnProps}
+          isLoading={false}
         />
       </SheSkeleton>
     </div>

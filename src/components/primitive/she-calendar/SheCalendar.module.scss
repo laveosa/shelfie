@@ -3,73 +3,54 @@
 .sheCalendar {
   width: fit-content;
   min-width: 252px;
+  max-width: none;
 
-  .sheCalendarComponent {
-    position: relative;
+  .sheCalendarContextBlock {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
 
-    .sheCalendarControl {
-      position: relative;
+    .sheCalendarFilterContainer {
+      width: 100%;
       display: flex;
-      gap: 4px;
+      flex-direction: row;
+      gap: 10px;
+      justify-content: center;
+      padding-bottom: 6px;
+    }
 
-      .sheCalendarContextBlock {
-        width: 100%;
+    .sheCalendarElementContainer {
+      display: flex;
+      flex-direction: column;
+
+      .sheCalendarElement {
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 4px;
+        justify-content: center;
+        padding: 0;
+        width: 100%;
+      }
 
-        .sheCalendarFilterContainer {
-          width: 100%;
-          display: flex;
-          flex-direction: row;
-          gap: 10px;
+      .sheCalendarTimePicker {
+        display: flex;
+        justify-content: center;
+
+        label {
           justify-content: center;
-          padding-bottom: 6px;
-        }
-
-        .sheCalendarElementContainer {
-          display: flex;
-          flex-direction: column;
-
-          .sheCalendarElement {
-            display: flex;
-            justify-content: center;
-            padding: 0;
-            width: 100%;
-          }
-
-          .sheCalendarTimePicker {
-            display: flex;
-            justify-content: center;
-
-            label {
-              justify-content: center;
-            }
-          }
         }
       }
     }
   }
 }
 
-// ======================================================== FULL WIDTH
+// ======================================================== CLEAR BUTTON
 
-.sheCalendar.fullWidth {
-  max-width: none;
-  width: 100%;
-}
-
-// ======================================================== REQUIRED
-
-.sheCalendar.required {
-  .sheCalendarComponent:before {
-    position: absolute;
-    left: -10px;
-    top: -14px;
-    color: vars.$colorRed;
-    content: "*";
-    display: inline;
+.sheCalendar {
+  .sheCalendarClearButton {
+    align-self: start;
+    position: relative;
+    top: 10px;
   }
 }
 
@@ -98,24 +79,10 @@
   }
 }
 
-// ======================================================== VIEW
-
-.sheCalendar.card {
-  .sheCalendarComponent {
-    .sheCalendarControl {
-      .sheCalendarElementContainer {
-        border: 1px solid vars.$brdColor;
-        padding: vars.$paddingSmall;
-        border-radius: vars.$brdR_03;
-      }
-    }
-  }
-}
-
 // ======================================================== NO FILTER
 
 .sheCalendar.noFiltersBlock {
-  .sheCalendarComponent .sheCalendarControl .sheCalendarContextBlock {
+  .sheCalendarContextBlock {
     .sheCalendarFilterContainer {
       display: none;
     }

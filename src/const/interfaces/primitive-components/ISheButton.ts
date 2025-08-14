@@ -7,8 +7,8 @@ import { ButtonProps } from "@/components/ui/button.tsx";
 type NativeButtonProps = Omit<ButtonProps, "size">;
 
 export interface ISheButton
-  extends ComponentPropsWithRef<any>,
-    NativeButtonProps {
+  extends NativeButtonProps,
+    ComponentPropsWithRef<any> {
   id?: string;
   className?: string;
   style?: React.CSSProperties;

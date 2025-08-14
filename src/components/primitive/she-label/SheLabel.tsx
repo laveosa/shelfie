@@ -6,23 +6,17 @@ import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import { ISheLabel } from "@/const/interfaces/primitive-components/ISheLabel.ts";
 import { ISheTooltip } from "@/const/interfaces/primitive-components/ISheTooltip.ts";
 
-export function SheLabel({
-  className = "",
-  style,
+export default function SheLabel({
+  labelClassName = "",
+  labelStyle,
   label,
   labelTransKey,
   tooltip,
   tooltipTransKey,
   ariaDescribedbyId,
-  ...props
+  htmlFor,
 }: ISheLabel): JSX.Element {
-  // ==================================================================== EVENT
-
-  // ==================================================================== PRIVATE
-
-  // ==================================================================== LAYOUT
-  if (!label && !tooltip) return null;
-
+  // ==================================================================== UTILITIES
   const normalizedTooltip: ISheTooltip | null =
     typeof tooltip === "string"
       ? {
@@ -31,7 +25,7 @@ export function SheLabel({
           side: "right",
           align: "end",
         }
-      : tooltip?.text
+      : tooltip?.text || tooltip?.title || tooltip?.description
         ? {
             ...tooltip,
             side: tooltip.side || "right",
@@ -39,13 +33,15 @@ export function SheLabel({
           }
         : null;
 
+  // ==================================================================== LAYOUT
+  if (!label && !tooltip) return null;
+
   return (
     <label
-      className={`${cs.sheLabel} ${className} she-text`}
-      style={style}
-      htmlFor={ariaDescribedbyId || props.htmlFor}
+      className={`${cs.sheLabel} ${labelClassName} she-text`}
+      style={labelStyle}
+      htmlFor={ariaDescribedbyId || htmlFor}
       aria-describedby={ariaDescribedbyId}
-      {...props}
     >
       {label && <Trans i18nKey={labelTransKey}>{label}</Trans>}
       {normalizedTooltip && (
