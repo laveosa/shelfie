@@ -17,4 +17,5 @@ export interface OrderModel {
   currency?: CurrencyModel;
   discounts?: any[];
   orderSubTotal?: OrderSubtotalModel;
+  discountAmount?: string;
 }

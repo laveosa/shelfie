@@ -17,6 +17,11 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheCardNotification from "@/components/complex/she-card-notification/SheCardNotification.tsx";
 import { getInitials } from "@/utils/helpers/quick-helper.ts";
 import { ordersInShipmentGridColumns } from "@/components/complex/grid/orders-in-shipment-grid/OrdersInShipmentGridColumns.tsx";
+import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
+import {
+  ShipmentStatus,
+  ShipmentStatusLabels,
+} from "@/const/enums/ShipmentStatusEnum.ts";
 
 export default function ShipmentConfigurationCard({
   isLoading,
@@ -24,6 +29,8 @@ export default function ShipmentConfigurationCard({
   orders,
   onAction,
 }: IShipmentConfigurationCard) {
+  const [status, setStatus] = React.useState<ShipmentStatus>();
+
   function formatDate(date: Date) {
     return date.toLocaleDateString("en-US", {
       day: "numeric",
@@ -33,6 +40,13 @@ export default function ShipmentConfigurationCard({
   }
   const date = new Date(_.now());
   const formattedDate = formatDate(date);
+
+  function convertStatusesToSelectItems(): ISheSelectItem<ShipmentStatus>[] {
+    return Object.values(ShipmentStatus).map((status) => ({
+      value: status,
+      text: ShipmentStatusLabels[status],
+    }));
+  }
 
   return (
     <SheProductCard
@@ -70,7 +84,13 @@ export default function ShipmentConfigurationCard({
         </div>
         <div className={cs.shipmentDetailsItem}>
           <span className="she-text">Shipment status</span>
-          <SheSelect maxWidth="250px" />
+          <SheSelect
+            maxWidth="250px"
+            hideFirstOption
+            selected={shipment?.shipmentStatus as ShipmentStatus}
+            items={convertStatusesToSelectItems()}
+            onSelect={(value: ShipmentStatus) => setStatus(value)}
+          />
         </div>
         <Separator />
         <div className={cs.shipmentDetailsItem}>
@@ -161,7 +181,7 @@ export default function ShipmentConfigurationCard({
         <DndGridDataTable
           showHeader={false}
           columns={
-            ordersInShipmentGridColumns({ onAction }) as ColumnDef<DataWithId>[]
+            ordersInShipmentGridColumns(onAction) as ColumnDef<DataWithId>[]
           }
           data={orders}
         />
@@ -171,7 +191,13 @@ export default function ShipmentConfigurationCard({
           <span className={cs.subtitleText}>
             Products from connected orders waiting for shipment
           </span>
-          <SheButton icon={Plus} value="Add All" variant="secondary" />
+          <SheButton
+            icon={Plus}
+            value="Add All"
+            variant="secondary"
+            bgColor="#007AFF"
+            txtColor="#FAFAFA"
+          />
         </div>
         {/*<DndGridDataTable*/}
         {/*  showHeader={false}*/}

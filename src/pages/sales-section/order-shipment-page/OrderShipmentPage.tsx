@@ -114,10 +114,16 @@ export function OrderShipmentPage() {
         service.applyShipmentsGridColumns(payload);
         break;
       case "resetColumns":
-        service.resetShipmentsGridColumns("shipments");
+        service.resetUserPreferencesHandler("shipments");
         break;
       case "gridRequestChange":
-        service.handleShipmentsGridRequestChange(payload);
+        service.shipmentsGridRequestChangeHandle(payload);
+        break;
+      case "removeOrderFromShipment":
+        service.disconnectOrderFromShipmentHandler(
+          state.selectedShipment.shipmentId,
+          payload.orderId,
+        );
         break;
     }
   }

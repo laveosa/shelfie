@@ -140,7 +140,9 @@ export default function OrderConfigurationCard({
             <div className={cs.gridFooter}>
               <div className={cs.gridFooterItems}>
                 <span className={cs.gridFooterItem}>Discount total</span>
-                <span className={cs.gridFooterItem}>99,59 PLN</span>
+                <span className={cs.gridFooterItem}>
+                  {order?.discountAmount}
+                </span>
               </div>
             </div>
           </div>

@@ -68,10 +68,17 @@ export function OrderDetailsPage() {
         service.deleteOrderHandler(Number(orderId));
         break;
       case "createDiscount":
-        service.createDiscountHandler(payload);
+        service.createDiscountHandler(orderId, payload);
+        break;
+      case "applyDiscountToOrder":
+        service.applyDiscountsToOrderHandler(orderId, {
+          discounts: [payload.discountId],
+        });
         break;
       case "removeDiscount":
-        console.log(payload);
+        service.removeDiscountsFromOrderHandler(orderId, {
+          discounts: [payload.discountId],
+        });
         break;
       case "closeSelectEntityCard":
         handleCardAction("selectEntityCard");

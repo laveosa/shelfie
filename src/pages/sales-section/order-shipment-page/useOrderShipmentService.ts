@@ -50,6 +50,8 @@ export default function useOrderShipmentPageService() {
     UsersApiHooks.useUpdateUserPreferencesMutation();
   const [resetUserPreferences] =
     UsersApiHooks.useResetUserPreferencesMutation();
+  const [disconnectOrderFromShipment] =
+    OrdersApiHooks.useDisconnectOrderFromShipmentMutation();
 
   function getOrderDetailsHandler(orderId) {
     return getOrderDetails(orderId).then((res: any) => {
@@ -303,8 +305,28 @@ export default function useOrderShipmentPageService() {
     updateUserPreferencesHandler(modifiedModel);
   }
 
-  function resetShipmentsGridColumns(grid) {
-    resetUserPreferencesHandler(grid);
+  function disconnectOrderFromShipmentHandler(
+    shipmentId: number,
+    orderId: number,
+  ) {
+    return disconnectOrderFromShipment({ shipmentId, orderId }).then(
+      (res: any) => {
+        if (!res.error) {
+          console.log(res.data);
+          dispatch(actions.refreshSelectedShipment(res.data));
+          addToast({
+            text: "Order successfully deleted from shipment",
+            type: "success",
+          });
+        } else {
+          addToast({
+            text: res?.error?.message,
+            type: "error",
+          });
+        }
+        return res.data;
+      },
+    );
   }
 
   return {
@@ -324,8 +346,8 @@ export default function useOrderShipmentPageService() {
     showAllShipmentsHandler,
     updateUserPreferencesHandler,
     resetUserPreferencesHandler,
-    handleShipmentsGridRequestChange: shipmentsGridRequestChangeHandle,
+    shipmentsGridRequestChangeHandle,
     applyShipmentsGridColumns,
-    resetShipmentsGridColumns,
+    disconnectOrderFromShipmentHandler,
   };
 }

@@ -25,7 +25,7 @@ export function DiscountsListGridColumns({
         const handleSelectClick = (e) => {
           e.stopPropagation();
           e.preventDefault();
-          onAction("selectDiscount", row.original);
+          onAction("applyDiscountToOrder", row.original);
         };
 
         return (

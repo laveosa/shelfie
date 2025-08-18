@@ -1,12 +1,20 @@
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
-import { OrdersPageSliceActions as ordersActions } from "@/state/slices/OrdersPageSlice";
+import {
+  OrdersPageSliceActions as ordersActions
+} from "@/state/slices/OrdersPageSlice";
 import { useNavigate } from "react-router-dom";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { useToast } from "@/hooks/useToast.ts";
-import { OrderDetailsPageSliceActions as actions } from "@/state/slices/OrderDetailsPageSlice.ts";
-import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
+import {
+  OrderDetailsPageSliceActions as actions
+} from "@/state/slices/OrderDetailsPageSlice.ts";
+import {
+  IOrdersPageSlice
+} from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { IOrderDetailsPageSlice } from "@/const/interfaces/store-slices/IOrderDetailsPageSlice.ts";
+import {
+  IOrderDetailsPageSlice
+} from "@/const/interfaces/store-slices/IOrderDetailsPageSlice.ts";
 import OrdersApiHooks from "@/utils/services/api/OrdersApiService.ts";
 
 export default function useOrderDetailsPageService() {
@@ -26,6 +34,10 @@ export default function useOrderDetailsPageService() {
   const [deleteOrder] = OrdersApiHooks.useDeleteOrderMutation();
   const [getDiscountsList] = OrdersApiHooks.useLazyGetDiscountsListQuery();
   const [createDiscount] = OrdersApiHooks.useCreateDiscountMutation();
+  const [removeDiscountsFromOrder] =
+    OrdersApiHooks.useRemoveDiscountsFromOrderMutation();
+  const [applyDiscountsToOrder] =
+    OrdersApiHooks.useApplyDiscountsToOrderMutation();
 
   function getOrderDetailsHandler(orderId) {
     dispatch(actions.setIsOrderConfigurationCardLoading(true));
@@ -94,14 +106,20 @@ export default function useOrderDetailsPageService() {
     });
   }
 
-  function createDiscountHandler(model) {
+  function createDiscountHandler(orderId, model) {
     return createDiscount(model).then((res: any) => {
       if (!res.error) {
-        dispatch(
-          actions.refreshDiscountsList([res.data, ...state.discountsList]),
+        const newDiscount = { ...res.data, isSelected: true };
+        const updatedList = [newDiscount, ...state.discountsList];
+        dispatch(actions.refreshDiscountsList(updatedList));
+
+        applyDiscountsToOrderHandler(
+          orderId,
+          { discounts: [res.data.discountId] },
+          updatedList,
         );
         addToast({
-          text: "Order deleted successfully",
+          text: "Discount created successfully",
           type: "success",
         });
       } else {
@@ -114,6 +132,64 @@ export default function useOrderDetailsPageService() {
     });
   }
 
+  function removeDiscountsFromOrderHandler(orderId, model) {
+    return removeDiscountsFromOrder({ orderId, model }).then((res: any) => {
+      if (!res.error) {
+        dispatch(ordersActions.refreshSelectedOrder(res.data));
+
+        const selectedDiscountIds =
+          res.data.discounts?.map((discount) => discount.discountId) ?? [];
+
+        const modifiedList = state.discountsList?.map((item) => ({
+          ...item,
+          isSelected: selectedDiscountIds.includes(item.discountId),
+        }));
+
+        dispatch(actions.refreshDiscountsList(modifiedList));
+        addToast({
+          text: "Discount successfully removed from order",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: `${res.error.data.detail}`,
+          type: "error",
+        });
+      }
+      return res;
+    });
+  }
+
+  function applyDiscountsToOrderHandler(
+    orderId,
+    model,
+    currentList = state.discountsList,
+  ) {
+    return applyDiscountsToOrder({ orderId, model }).then((res: any) => {
+      if (!res.error) {
+        dispatch(ordersActions.refreshSelectedOrder(res.data));
+
+        const selectedDiscountIds =
+          res.data.discounts?.map((d) => d.discountId) ?? [];
+        const modifiedList = currentList.map((item) => ({
+          ...item,
+          isSelected: selectedDiscountIds.includes(item.discountId),
+        }));
+
+        dispatch(actions.refreshDiscountsList(modifiedList));
+
+        addToast({
+          text: "Discount successfully applied to order",
+          type: "success",
+        });
+      } else {
+        addToast({ text: `${res.error.data.detail}`, type: "error" });
+      }
+
+      return res;
+    });
+  }
+
   return {
     getOrderDetailsHandler,
     getListOfCustomersForGridHandler,
@@ -121,5 +197,7 @@ export default function useOrderDetailsPageService() {
     deleteOrderHandler,
     getDiscountsListHandler,
     createDiscountHandler,
+    removeDiscountsFromOrderHandler,
+    applyDiscountsToOrderHandler,
   };
 }

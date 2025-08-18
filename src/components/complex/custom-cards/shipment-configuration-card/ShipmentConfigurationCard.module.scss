@@ -10,8 +10,11 @@
       align-items: center;
       gap: 20px;
 
-      span {
+      & > span {
         width: 50%;
+        padding-left: 10px;
+        font-size: 14px;
+        color: #474D54
       }
 
       .subtitleText {

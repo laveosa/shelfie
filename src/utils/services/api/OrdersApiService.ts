@@ -208,6 +208,26 @@ export const OrdersApiService = createApi({
         body: JSON.stringify(model),
       }),
     }),
+    removeDiscountsFromOrder: apiConfig.createMutation<
+      void,
+      { orderId: number; model: any }
+    >(builder, {
+      query: ({ orderId, model }) => ({
+        url: `${ApiUrlEnum.ORDERS}/${orderId}/remove-discounts`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+    }),
+    applyDiscountsToOrder: apiConfig.createMutation<
+      void,
+      { orderId: number; model: any }
+    >(builder, {
+      query: ({ orderId, model }) => ({
+        url: `${ApiUrlEnum.ORDERS}/${orderId}/apply-discounts`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+    }),
     getShipmentsListForForGrid: apiConfig.createMutation<any, GridRequestModel>(
       builder,
       {
@@ -270,6 +290,15 @@ export const OrdersApiService = createApi({
     >(builder, {
       query: ({ shipmentId, orderId }) => ({
         url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/connect/${orderId}`,
+        method: "PATCH",
+      }),
+    }),
+    disconnectOrderFromShipment: apiConfig.createMutation<
+      void,
+      { shipmentId: number; orderId: number }
+    >(builder, {
+      query: ({ shipmentId, orderId }) => ({
+        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/disconnect/${orderId}`,
         method: "PATCH",
       }),
     }),
