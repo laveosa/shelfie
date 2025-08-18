@@ -3,7 +3,7 @@ import { CustomerModel } from "@/const/models/CustomerModel.ts";
 import { OrderSubtotalModel } from "@/const/models/OrderSubtotalModel.ts";
 
 export interface OrderModel {
-  id?: number;
+  id: number;
   customerId?: number;
   customer?: CustomerModel;
   date?: string;

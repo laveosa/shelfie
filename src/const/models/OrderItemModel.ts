@@ -1,6 +1,7 @@
 import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
 
 export interface OrderItemModel {
+  id: number;
   stockActionId: number;
   orderId: number;
   productId: number;

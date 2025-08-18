@@ -1,45 +1,45 @@
 import { MapPin, Plus, Trash2, User } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
-import _ from "lodash";
 
 import {
   DataWithId,
-  DndGridDataTable,
+  DndGridDataTable
 } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import cs from "./ShipmentConfigurationCard.module.scss";
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
-import { IShipmentConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IShipmentConfigurationCard.ts";
-import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
+import SheProductCard
+  from "@/components/complex/she-product-card/SheProductCard.tsx";
+import {
+  IShipmentConfigurationCard
+} from "@/const/interfaces/complex-components/custom-cards/IShipmentConfigurationCard.ts";
+import SheDatePicker
+  from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import SheCardNotification from "@/components/complex/she-card-notification/SheCardNotification.tsx";
-import { getInitials } from "@/utils/helpers/quick-helper.ts";
-import { ordersInShipmentGridColumns } from "@/components/complex/grid/orders-in-shipment-grid/OrdersInShipmentGridColumns.tsx";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
+import SheCardNotification
+  from "@/components/complex/she-card-notification/SheCardNotification.tsx";
+import { formatDate, getInitials } from "@/utils/helpers/quick-helper.ts";
+import {
+  ordersInShipmentGridColumns
+} from "@/components/complex/grid/orders-in-shipment-grid/OrdersInShipmentGridColumns.tsx";
+import {
+  ISheSelectItem
+} from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import {
   ShipmentStatus,
-  ShipmentStatusLabels,
+  ShipmentStatusLabels
 } from "@/const/enums/ShipmentStatusEnum.ts";
+import {
+  orderItemsInShipmentGridColumns
+} from "@/components/complex/grid/order-items-in-shipmen-grid/OrderItemsInShipmentGridColumns.tsx";
 
 export default function ShipmentConfigurationCard({
   isLoading,
   shipment,
-  orders,
   onAction,
 }: IShipmentConfigurationCard) {
   const [status, setStatus] = React.useState<ShipmentStatus>();
-
-  function formatDate(date: Date) {
-    return date.toLocaleDateString("en-US", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
-  }
-  const date = new Date(_.now());
-  const formattedDate = formatDate(date);
 
   function convertStatusesToSelectItems(): ISheSelectItem<ShipmentStatus>[] {
     return Object.values(ShipmentStatus).map((status) => ({
@@ -60,7 +60,9 @@ export default function ShipmentConfigurationCard({
       <div className={cs.shipmentConfigurationCardContent}>
         <div className={cs.shipmentDetailsItem}>
           <span className="she-text">Created at</span>
-          <span className="she-text">{formattedDate}</span>
+          <span className="she-text">
+            {formatDate(shipment?.createdAt, "date")}
+          </span>
         </div>
         <div className={cs.shipmentDetailsItem}>
           <span className="she-text">Queue packing</span>
@@ -183,7 +185,7 @@ export default function ShipmentConfigurationCard({
           columns={
             ordersInShipmentGridColumns(onAction) as ColumnDef<DataWithId>[]
           }
-          data={orders}
+          data={shipment?.orders}
         />
 
         <Separator />
@@ -199,13 +201,15 @@ export default function ShipmentConfigurationCard({
             txtColor="#FAFAFA"
           />
         </div>
-        {/*<DndGridDataTable*/}
-        {/*  showHeader={false}*/}
-        {/*  columns={*/}
-        {/*    ordersInShipmentGridColumns({ onAction }) as ColumnDef<DataWithId>[]*/}
-        {/*  }*/}
-        {/*  data={orders}*/}
-        {/*/>*/}
+        <DndGridDataTable
+          showHeader={false}
+          columns={
+            orderItemsInShipmentGridColumns({
+              onAction,
+            }) as ColumnDef<DataWithId>[]
+          }
+          data={shipment?.orderItems}
+        />
       </div>
       <SheCardNotification
         title="Cancel shipment"

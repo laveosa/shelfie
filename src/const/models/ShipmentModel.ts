@@ -22,4 +22,5 @@ export interface ShipmentModel {
   shipmentItems?: OrderItemModel[];
   orders?: OrderModel[];
   history?: ShipmentHistoryModel[];
+  createdAt?: string;
 }

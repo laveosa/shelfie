@@ -27,8 +27,8 @@ export function ordersInShipmentGridColumns(onAction: any): ColumnDef<any>[] {
       minSize: 120,
       maxSize: 120,
       cell: ({ row }) => {
-        const image: string = row.original.customer.thumbnailUrl;
-        const name: string = row.original.customer.name;
+        const image: string = row.original.customer?.thumbnailUrl;
+        const name: string = row.original.customer?.name;
         return (
           <div className={cs.customerNameBlock}>
             <div>
