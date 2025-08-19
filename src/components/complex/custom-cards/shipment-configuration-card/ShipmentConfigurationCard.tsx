@@ -7,7 +7,7 @@ import {
   DndGridDataTable,
 } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import {
-  ShipmentStatus,
+  ShipmentStatusEnum,
   ShipmentStatusLabels,
 } from "@/const/enums/ShipmentStatusEnum.ts";
 import cs from "./ShipmentConfigurationCard.module.scss";
@@ -29,10 +29,10 @@ export default function ShipmentConfigurationCard({
   shipment,
   onAction,
 }: IShipmentConfigurationCard) {
-  const [status, setStatus] = React.useState<ShipmentStatus>();
+  const [status, setStatus] = React.useState<ShipmentStatusEnum>();
 
-  function convertStatusesToSelectItems(): ISheSelectItem<ShipmentStatus>[] {
-    return Object.values(ShipmentStatus).map((status) => ({
+  function convertStatusesToSelectItems(): ISheSelectItem<ShipmentStatusEnum>[] {
+    return Object.values(ShipmentStatusEnum).map((status) => ({
       value: status,
       text: ShipmentStatusLabels[status],
     }));
@@ -82,9 +82,9 @@ export default function ShipmentConfigurationCard({
             <SheSelect
               maxWidth="250px"
               hideFirstOption
-              selected={shipment?.shipmentStatus as ShipmentStatus}
+              selected={shipment?.shipmentStatus as ShipmentStatusEnum}
               items={convertStatusesToSelectItems()}
-              onSelect={(value: ShipmentStatus) => setStatus(value)}
+              onSelect={(value: ShipmentStatusEnum) => setStatus(value)}
             />
           </div>
           <Separator />

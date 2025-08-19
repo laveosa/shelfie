@@ -6,6 +6,14 @@ import {
   DataWithId,
   DndGridDataTable,
 } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import {
+  ShipmentStatusEnum,
+  ShipmentStatusLabels,
+} from "@/const/enums/ShipmentStatusEnum.ts";
+import {
+  GridSortingEnum,
+  GridSortingEnumLabels,
+} from "@/const/enums/GridSortingEnum.ts";
 import cs from "./SelectShipmentForOrder.module.scss";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import { ISelectShipmentForOrderCard } from "@/const/interfaces/complex-components/custom-cards/ISelectShipmentForOrderCard.ts";
@@ -14,16 +22,28 @@ import { getInitials } from "@/utils/helpers/quick-helper.ts";
 import { SelectShipmentForOrderGridColumns } from "@/components/complex/grid/select-shipment-for-order-grid/SelectShipmentForOrderGridColumns.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
+import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 
 export default function SelectShipmentForOrderCard({
   isLoading,
   isGridLoading,
   shipmentsGridModel,
   services,
-  statuses,
   customer,
   onAction,
 }: ISelectShipmentForOrderCard) {
+  function convertStatusesToSelectItems(): ISheSelectItem<ShipmentStatusEnum>[] {
+    return Object.values(ShipmentStatusEnum).map((status) => ({
+      value: status,
+      text: ShipmentStatusLabels[status],
+    }));
+  }
+
+  const sortingItems = Object.values(GridSortingEnum).map((value) => ({
+    value,
+    description: GridSortingEnumLabels[value],
+  }));
+
   return (
     <SheProductCard
       loading={isLoading}
@@ -82,6 +102,7 @@ export default function SelectShipmentForOrderCard({
           skeletonQuantity={shipmentsGridModel?.items.length}
           data={shipmentsGridModel?.items}
           customMessage="No shipments created yet"
+          sortingItems={sortingItems}
           onApplyColumns={(model) => onAction("applyColumns", model)}
           onDefaultColumns={() => onAction("resetColumns")}
           onGridRequestChange={(updates) =>
@@ -92,13 +113,21 @@ export default function SelectShipmentForOrderCard({
             icon={Truck}
             placeholder="Service"
             minWidth="150px"
-            onSelect={(value) => onAction("gridRequestChange", value)}
+            items={services}
+            onSelect={(value) =>
+              onAction("gridRequestChange", { deliveryServiceId: value })
+            }
           />
           <SheSelect
             icon={Grid2x2Check}
             placeholder="Status"
             minWidth="150px"
-            onSelect={(value) => onAction("gridRequestChange", value)}
+            items={convertStatusesToSelectItems()}
+            onSelect={(value: ShipmentStatusEnum) =>
+              onAction("gridRequestChange", { shipmentStatus: value })
+            }
+            hideFirstOption
+            selected={shipmentsGridModel.filter?.status as ShipmentStatusEnum}
           />
           <SheDatePicker
             icon={CalendarDays}
