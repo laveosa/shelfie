@@ -1,20 +1,21 @@
 import { z } from "zod";
 
-import { IZodSchema } from "@/const/interfaces/IZodSchema.ts";
 import { UserModel } from "@/const/models/UserModel.ts";
+import { ContextPatternEnum } from "@/const/enums/ContextPatternEnum.ts";
+import { AppSchemeType } from "@/const/interfaces/types/AppSchemeType.ts";
 
 const nonemptyMessage = "field is required";
 
-const userFormScheme: z.ZodObject<IZodSchema<UserModel>> = z.object({
+const userFormScheme: AppSchemeType<UserModel> = z.object({
   name: z
     .string()
     .nonempty(nonemptyMessage)
-    .min(2, "min value length 2")
+    .min(4, "min value length 4")
     .max(16, "max value length 16"),
   email: z
     .string()
     .nonempty(nonemptyMessage)
-    .regex(/^[^@]+@[^@]+\.[^@]+$/, "invalid email"),
+    .regex(ContextPatternEnum.EMAIL as RegExp, "invalid email"),
   address: z.string().optional(),
   gender: z
     .enum(["male", "female", "unicorn", "banana"])
@@ -26,8 +27,7 @@ const userFormScheme: z.ZodObject<IZodSchema<UserModel>> = z.object({
         });
       }
     }),
-  position: z.number().optional(),
-  comment: z.string().optional(),
+  position: z.string().optional(),
 });
 
 export default userFormScheme;

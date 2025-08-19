@@ -5,6 +5,7 @@ import { Search } from "lucide-react";
 import cs from "./SheInput.module.scss";
 import { Input } from "@/components/ui/input.tsx";
 import ShePrimitiveComponentWrapper from "@/components/primitive/she-primitive-component-wrapper/ShePrimitiveComponentWrapper.tsx";
+import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
 import { useDebounce } from "@/utils/hooks/useDebounce.ts";
 import useDefaultRef from "@/utils/hooks/useDefaultRef.ts";
 import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
@@ -81,7 +82,15 @@ export default function SheInput(props: ISheInput): JSX.Element {
   const _sourceValue = useRef<string | number>(null);
 
   // ==================================================================== UTILITIES
-  const { translate, ariaDescribedbyId, setFocus } = useComponentUtilities({
+  const {
+    translate,
+    ariaDescribedbyId,
+    setFocus,
+    updateFormValue,
+    resetForm,
+    getFormMode,
+  } = useComponentUtilities<ISheInput>({
+    props,
     identifier: "ISheInput",
   });
   const iconToRender = icon || (isSearch && Search);
@@ -125,14 +134,17 @@ export default function SheInput(props: ISheInput): JSX.Element {
   }, [isValid]);
 
   // ==================================================================== EVENT HANDLERS
-  function onChangeHandler(
-    event: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent,
-  ) {
+  function onChangeHandler(event: React.ChangeEvent<HTMLInputElement>) {
     _isInitialized.current = true;
     _lastEventDataRef.current = event;
-    const newValue = _inputRef.current.value;
-    setTextValue(newValue);
+
+    const newValue = _trimExtraSpaces(event.target.value);
     const tmpIsValid = _validateValue(newValue);
+
+    if (getFormMode() === ReactHookFormMode.CHANGE)
+      updateFormValue(newValue || "");
+
+    setTextValue(newValue);
     onChange?.(newValue, {
       value: newValue,
       model: {
@@ -146,8 +158,13 @@ export default function SheInput(props: ISheInput): JSX.Element {
 
   function onBlurHandler(event: React.ChangeEvent<HTMLInputElement>) {
     _isTouched.current = true;
+
     const newValue = event.target.value.trim() || null;
     const tmpIsValid = _validateValue(newValue);
+
+    if (getFormMode() === ReactHookFormMode.BLUR)
+      updateFormValue(newValue || "");
+
     setIsHighlighted(!_.isEqual(_sourceValue.current, newValue));
     onBlur?.(newValue, {
       value: newValue,
@@ -166,6 +183,7 @@ export default function SheInput(props: ISheInput): JSX.Element {
     updateIsValid(true);
     setIsLengthValid(true);
     _setErrorCondition(false);
+    resetForm();
 
     const newValue = "";
     setTextValue(newValue);
@@ -177,12 +195,22 @@ export default function SheInput(props: ISheInput): JSX.Element {
       model: props,
       event,
     };
+
     onChange?.(null, outputModel);
     onDelay?.(null, outputModel);
     onClear?.(null, outputModel);
   }
 
   // ==================================================================== PRIVATE
+  function _trimExtraSpaces(value: any): string {
+    if (typeof value === "string" && value.length > 0) {
+      value = value[0] === " " ? value.slice(1) : value;
+      value = value.replace(/\s+/g, " ");
+    }
+
+    return value;
+  }
+
   function _validateValue(inputValue) {
     if (ignoreValidation || !_isTouched.current) return true;
 

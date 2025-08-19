@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { JSX, useEffect } from "react";
 
 import useAppForm from "@/utils/hooks/useAppForm.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,19 +13,21 @@ import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { IUserForm } from "@/const/interfaces/forms/IUserForm.ts";
 
 import { User } from "lucide-react";
-import TNFLogoIcon from "@/assets/icons/TNF_logo.svg";
+import TNFLogoIcon from "@/assets/icons/TNF_logo.svg?react";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
+import { AppFormType } from "@/const/interfaces/types/AppFormType.ts";
+import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
+import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
 
-export default function UserForm<T>({
+export default function UserForm({
   data,
   genders,
   positions,
   onSubmit,
   onCancel,
-}: IUserForm<T>): React.ReactNode {
+}: IUserForm): JSX.Element {
   const form = useAppForm<UserModel>({
-    mode: "onBlur",
+    mode: ReactHookFormMode.BLUR,
     resolver: zodResolver(UserFormScheme),
     defaultValues: UserModelDefault,
   });
@@ -38,24 +40,6 @@ export default function UserForm<T>({
 
   // ================================================================ PRIVATE
 
-  function convertGendersToSelectItems(data: any[]): ISheSelectItem<T>[] {
-    return data?.map(
-      (item): ISheSelectItem<T> => ({
-        value: item,
-        text: item,
-      }),
-    );
-  }
-
-  function convertPositionsToSelectItems(data: any[]): ISheSelectItem<T>[] {
-    return data?.map(
-      (item): ISheSelectItem<T> => ({
-        value: item.id,
-        text: item.position,
-      }),
-    );
-  }
-
   // ================================================================ RENDER
 
   function onErrorHandler(model) {
@@ -64,86 +48,146 @@ export default function UserForm<T>({
 
   return (
     <div className="flex justify-center">
-      <SheForm<T>
+      <SheForm<UserModel>
+        id="USER_FORM"
         form={form}
         defaultValues={UserModelDefault}
-        image={TNFLogoIcon}
+        icon={TNFLogoIcon}
         formPosition={DirectionEnum.CENTER}
         title="User Form"
+        minWidth="400px"
         view={ComponentViewEnum.CARD}
         onSubmit={onSubmit}
         onError={onErrorHandler}
         onCancel={onCancel}
       >
-        <FormField
-          control={form.control}
+        <SheFormField<UserModel>
+          form={form}
+          label="Name"
           name="name"
-          render={({ field }): React.ReactElement => (
-            <SheFormItem label="Name">
-              <SheInput {...field} placeholder="enter user name..." />
-            </SheFormItem>
+          render={({ field }) => (
+            <SheInput
+              field={field}
+              form={form}
+              placeholder="enter user name..."
+              showClearBtn
+              fullWidth
+              minLength={4}
+              maxLength={16}
+              hideErrorMessage
+            />
           )}
         />
-        <FormField
-          control={form.control}
+        <SheFormField
+          form={form}
+          label="Email"
           name="email"
-          render={({ field }): React.ReactElement => (
-            <SheFormItem label="Email">
-              <SheInput
-                {...field}
-                placeholder="enter user email..."
-                type="email"
-              />
-            </SheFormItem>
+          render={({ field }) => (
+            <SheInput
+              field={field}
+              form={form}
+              placeholder="enter user email..."
+              type="email"
+              showClearBtn
+              fullWidth
+            />
           )}
         />
-        <FormField
-          control={form.control}
+        <SheFormField
+          form={form}
+          label="Address"
           name="address"
-          render={({ field }): React.ReactElement => (
-            <SheFormItem label="Address">
-              <SheInput {...field} placeholder="enter user address..." />
-            </SheFormItem>
+          render={({ field }) => (
+            <SheInput
+              field={field}
+              form={form}
+              placeholder="enter user address..."
+              showClearBtn
+              fullWidth
+            />
           )}
         />
-        <FormField
-          control={form.control}
+        <SheFormField<UserModel>
+          label="Gender"
+          form={form}
           name="gender"
           render={({ field }) => (
-            <SheFormItem label="Gender">
-              <SheSelect
-                selected={field.value}
-                items={convertGendersToSelectItems(genders)}
-                hideFirstOption
-                placeholder="select user gender..."
-                onSelect={(value) => {
-                  field.onChange(value);
-                  void form.trigger("gender");
-                }}
-              />
-            </SheFormItem>
+            <SheSelect<string>
+              selected={field?.value}
+              items={genders}
+              hideFirstOption
+              showClearBtn
+              fullWidth
+              placeholder="select user gender..."
+              onSelect={(value) => {
+                field.onChange(value);
+                void form.trigger("gender");
+              }}
+            />
           )}
         />
-        <FormField
-          control={form.control}
+        <SheFormField
+          form={form}
+          label="Position"
           name="position"
           render={({ field }) => (
-            <SheFormItem label="Position">
-              <SheSelect
-                selected={field.value}
-                items={convertPositionsToSelectItems(positions)}
-                hideFirstOption
-                placeholder="select user position..."
-                icon={User}
-                onSelect={(value) => {
-                  field.onChange(value);
-                  void form.trigger("position");
-                }}
-              />
-            </SheFormItem>
+            <SheSelect
+              selected={field?.value}
+              items={positions}
+              hideFirstOption
+              showClearBtn
+              fullWidth
+              placeholder="select user position..."
+              icon={User}
+              onSelect={(value) => {
+                field.onChange(value);
+                void form.trigger("position");
+              }}
+            />
           )}
         />
       </SheForm>
     </div>
   );
 }
+
+/*// =================================== TYPE STRICT NEW IMPLEMENTATION */
+/*
+<SheFormField<UserModel>
+  label="Gender"
+  form={form}
+  name="gender"
+  render={({ field }) => (
+    <SheSelect<string>
+      selected={field?.value}
+      items={genders}
+      hideFirstOption
+      fullWidth
+      placeholder="select user gender..."
+      onSelect={(value) => {
+        field.onChange(value);
+        void form.trigger("gender");
+      }}
+    />
+  )}
+/>*/
+
+/*// =================================== TYPE STRICT OLD IMPLEMENTATION */
+/*<FormField<AppFormType<UserModel>, "gender">
+  form={form}
+  label="Gender"
+  name="gender"
+  render={({ field }) => (
+    <SheSelect<string>
+      selected={field?.value}
+      items={genders}
+      hideFirstOption
+      fullWidth
+      placeholder="select user gender..."
+      onSelect={(value) => {
+        field.onChange(value);
+        void form.trigger("gender");
+      }}
+    />
+  )}
+/>;*/

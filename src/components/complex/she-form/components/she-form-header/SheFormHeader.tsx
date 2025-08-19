@@ -1,15 +1,17 @@
 import { Trans } from "react-i18next";
-import React from "react";
+import React, { JSX } from "react";
 
+import cs from "./SheFormHeader.module.scss";
+import { FormLabel } from "@/components/ui/form.tsx";
+import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 import { ISheFormHeader } from "@/const/interfaces/forms/ISheFormHeader.ts";
-import { FormLabel } from "@/components/ui/form.tsx";
-import cs from "./SheFormHeader.module.scss";
 
 export default function SheFormHeader({
-  className,
+  headerClassName = "",
+  headerStyles,
   icon,
-  image,
+  iconProps,
   title,
   titleTransKey,
   text,
@@ -17,40 +19,36 @@ export default function SheFormHeader({
   description,
   descriptionTransKey,
   headerPosition = DirectionEnum.CENTER,
-}: ISheFormHeader): React.ReactNode {
+  hideHeader,
+}: ISheFormHeader): JSX.Element {
+  // ==================================================================== LAYOUT
+  if ((!icon && !title && !text && !description) || hideHeader) return null;
+
   return (
-    <>
-      {(icon || image || title || text || description) && (
-        <div
-          className={`${className || ""} ${cs.sheFormHeader} ${cs[headerPosition]}`}
-        >
-          {image && (
-            <div className={cs.sheImage}>
-              <img src={image} alt="form image" />
-            </div>
+    <div
+      className={`${cs.sheFormHeader} ${headerClassName} ${cs[headerPosition]}`}
+      style={{ ...headerStyles }}
+    >
+      <SheIcon icon={icon} className={cs.sheIcon} {...iconProps} />
+      {(title || text || description) && (
+        <FormLabel>
+          {title && (
+            <span className="she-title">
+              <Trans i18nKey={titleTransKey}>{title}</Trans>
+            </span>
           )}
-          {icon && <div className={cs.sheFormIcon}>{icon}</div>}
-          {(title || text || description) && (
-            <FormLabel>
-              {title && (
-                <span className="she-title">
-                  <Trans i18nKey={titleTransKey}>{title}</Trans>
-                </span>
-              )}
-              {text && (
-                <span className="she-text">
-                  <Trans i18nKey={textTransKey}>{text}</Trans>
-                </span>
-              )}
-              {description && (
-                <span className="she-subtext">
-                  <Trans i18nKey={descriptionTransKey}>{description}</Trans>
-                </span>
-              )}
-            </FormLabel>
+          {text && (
+            <span className="she-text">
+              <Trans i18nKey={textTransKey}>{text}</Trans>
+            </span>
           )}
-        </div>
+          {description && (
+            <span className="she-subtext">
+              <Trans i18nKey={descriptionTransKey}>{description}</Trans>
+            </span>
+          )}
+        </FormLabel>
       )}
-    </>
+    </div>
   );
 }

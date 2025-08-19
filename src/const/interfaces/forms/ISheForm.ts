@@ -1,17 +1,27 @@
-import React, { ComponentPropsWithRef } from "react";
+import React, { RefObject } from "react";
+import { UseFormReturn } from "react-hook-form";
 
-import { ISheFormHeader } from "@/const/interfaces/forms/ISheFormHeader.ts";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
-import { ISheFormFooter } from "@/const/interfaces/forms/ISheFormFooter.ts";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 import { FormSecondaryBtnBehaviorEnum } from "@/const/enums/FormSecondaryBtnBehaviorEnum.ts";
+import {
+  ISheFormFooter,
+  SheFormFooterDefaultModel,
+} from "@/const/interfaces/forms/ISheFormFooter.ts";
+import {
+  ISheFormHeader,
+  SheFormHeaderDefaultModel,
+} from "@/const/interfaces/forms/ISheFormHeader.ts";
+import { AppFormType } from "@/const/interfaces/types/AppFormType.ts";
 
-export interface ISheForm<T>
-  extends ComponentPropsWithRef<any>,
-    ISheFormHeader,
-    ISheFormFooter {
-  form: any;
-  data?: T;
+export interface ISheForm<T> extends ISheFormHeader, ISheFormFooter {
+  ref?: RefObject<HTMLFormElement>;
+  id?: string;
+  className?: string;
+  style?: React.CSSProperties;
+  children?: React.ReactNode;
+  form: UseFormReturn<AppFormType<T>>;
+  model?: T;
   defaultValues?: any;
   view?: ComponentViewEnum;
   secondaryBtnBehavior?: FormSecondaryBtnBehaviorEnum;
@@ -21,18 +31,31 @@ export interface ISheForm<T>
   minWidth?: string;
   maxWidth?: string;
   fullWidth?: boolean;
-  onSubmit?: (data: T) => void;
-  onEnter?: (data: T) => void;
-  onError?: (data: T) => void;
-  onCancel?: (data: T) => void;
+  onSubmit?(value: T): void;
+  onEnter?(value: T): void;
+  onError?(value: any): void;
+  onCancel?(value: T): void;
 }
 
-//TODO remove this interface when SheForm component will be completed
-export interface ISheFormFieldProps extends ComponentPropsWithRef<any> {
-  name: string;
-  label?: string;
-  rules?: object;
-  children: React.ReactNode;
-  description?: string;
-  onDelay?: (event) => void;
-}
+export const SheFormDefaultModel: ISheForm<any> = {
+  ...SheFormHeaderDefaultModel,
+  ...SheFormFooterDefaultModel,
+  className: undefined,
+  style: undefined,
+  children: undefined,
+  form: undefined,
+  model: undefined,
+  defaultValues: undefined,
+  view: undefined,
+  secondaryBtnBehavior: undefined,
+  disabled: undefined,
+  isLoading: undefined,
+  formPosition: undefined,
+  minWidth: undefined,
+  maxWidth: undefined,
+  fullWidth: undefined,
+  onSubmit: undefined,
+  onEnter: undefined,
+  onError: undefined,
+  onCancel: undefined,
+};

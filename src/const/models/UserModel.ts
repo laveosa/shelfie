@@ -1,5 +1,6 @@
 export interface UserModel {
   id?: number;
+  image?: any;
   name?: string;
   age?: number;
   email?: string;
@@ -7,16 +8,20 @@ export interface UserModel {
   gender?: string;
   position?: any;
   comments?: string;
+  tags?: string[];
   isAvailable?: boolean;
 }
 
 export const UserModelDefault: UserModel = {
-  id: 0,
-  name: "",
-  age: 0,
-  email: "",
-  address: "",
-  gender: "",
-  position: null,
-  comments: "",
+  id: undefined,
+  image: undefined,
+  name: undefined,
+  age: undefined,
+  email: undefined,
+  address: undefined,
+  gender: undefined,
+  position: undefined,
+  comments: undefined,
+  tags: undefined,
+  isAvailable: undefined,
 };

@@ -25,7 +25,7 @@ import {
   ShePrimitiveComponentWrapperDefaultModel,
 } from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
 
-export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
+export default function SheSelect<T = any>(props: ISheSelect<T>): JSX.Element {
   // ==================================================================== PROPS
   const {
     triggerRef,
@@ -129,7 +129,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
     // ----------------------------------- SET SELECTED
     if (!_.isEqual(tmpSelected, _selected)) setSelected(tmpSelected);
     setIsHighlighted(false);
-    _sourceValue.current = tmpSelected.value;
+    _sourceValue.current = tmpSelected?.value;
     // ----------------------------------- UPDATE FOCUS CONDITION
     _updateFocusRelatedLogic();
   }, [items, selected]);

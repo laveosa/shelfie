@@ -4,18 +4,23 @@ import {
   generateId,
   generateSafeItemId,
 } from "@/utils/helpers/quick-helper.ts";
-import { ISelectable } from "@/const/interfaces/primitive-components/ISelecteble.ts";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
+import { ISelectable } from "@/const/interfaces/primitive-components/ISelecteble.ts";
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
+import { IShePrimitiveComponentWrapper } from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
+import { UseFormReturn } from "react-hook-form";
+import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
 
-export interface IComponentUtilities {
+export interface IComponentUtilities<T extends IShePrimitiveComponentWrapper> {
+  props: T;
   identifier?: string;
 }
 
-export default function useComponentUtilities({
+export default function useComponentUtilities<T>({
+  props,
   identifier,
-}: IComponentUtilities = {}) {
+}: IComponentUtilities<T> = {}) {
   // ==================================================================== UTILITIES
   const { translate } = useAppTranslation();
   const [ariaDescribedbyId, setAriaDescribedbyId] = useState<string>(null);
@@ -149,6 +154,28 @@ export default function useComponentUtilities({
     }
   }
 
+  // --------------------------------------------------------------- FORM
+  function updateFormValue(value: any) {
+    if (props.field) {
+      props.field.onChange(value);
+      void props.form?.trigger(props.field.name);
+    }
+  }
+
+  function resetForm() {
+    if (props.field) {
+      props.form?.resetField?.(props.field.name, {
+        keepDirty: false,
+        keepTouched: false,
+        defaultValue: "",
+      });
+    }
+  }
+
+  function getFormMode(): ReactHookFormMode {
+    return props?.form?.control?._options?.mode as ReactHookFormMode;
+  }
+
   // ================================================================== OUTPUT
   return {
     ariaDescribedbyId,
@@ -162,6 +189,9 @@ export default function useComponentUtilities({
     initializeItemsList,
     calculatePopoverWidth,
     getContextColorBasedOnVariant,
+    updateFormValue,
+    resetForm,
+    getFormMode,
   };
 }
 

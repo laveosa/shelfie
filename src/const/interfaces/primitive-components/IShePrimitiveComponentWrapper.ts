@@ -1,4 +1,5 @@
-import React, { ComponentPropsWithRef } from "react";
+import React from "react";
+import { ControllerRenderProps, UseFormReturn } from "react-hook-form";
 
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import {
@@ -34,6 +35,8 @@ export interface IShePrimitiveComponentWrapper
     ISheDescriptionBlock,
     ISheErrorMessageBlock {
   children?: React.ReactNode;
+  field?: ControllerRenderProps<any, string>;
+  form?: UseFormReturn<any>;
   id?: string;
   className?: string;
   style?: React.CSSProperties;
@@ -62,6 +65,8 @@ export const ShePrimitiveComponentWrapperDefaultModel: IShePrimitiveComponentWra
     ...SheDescriptionBlockDefaultModel,
     ...SheErrorMessageBlockDefaultModel,
     id: undefined,
+    field: undefined,
+    form: undefined,
     className: undefined,
     style: undefined,
     minWidth: undefined,

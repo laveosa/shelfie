@@ -1,7 +1,6 @@
 import { useForm, UseFormProps } from "react-hook-form";
-import { z } from "zod";
-import { IZodSchema } from "@/const/interfaces/IZodSchema.ts";
+import { AppFormType } from "@/const/interfaces/types/AppFormType.ts";
 
 export default function useAppForm<T>(props?: UseFormProps<any>) {
-  return useForm<z.output<z.ZodObject<IZodSchema<T>>>>(props);
+  return useForm<AppFormType<T>>(props);
 }

@@ -6,3 +6,10 @@ export interface ISheFormItem extends ComponentPropsWithRef<"div"> {
   description?: string;
   descriptionTransKey?: string;
 }
+
+export const SheFormItemDefaultModel: ISheFormItem = {
+  label: undefined,
+  labelTransKey: undefined,
+  description: undefined,
+  descriptionTransKey: undefined,
+};
