@@ -1,12 +1,12 @@
 import { ColumnDef, Row } from "@tanstack/react-table";
-import { ImageIcon, PackageMinus, PackagePlus, Plus } from "lucide-react";
+import { ImageIcon, PackageMinus } from "lucide-react";
 
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import QuantityInputCell from "@/components/complex/grid/find-product-grid/QuantityInputCell.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 
-export function orderItemsInShipmentGridColumns({
+export function PackedOrderItemsGridColumns({
   onAction,
 }: {
   onAction: (actionType: string, row?: Row<any>, quantity?: string) => void;
@@ -16,9 +16,9 @@ export function orderItemsInShipmentGridColumns({
       id: "variantName",
       accessorFn: (row) => row.variantName,
       header: "Product",
-      size: 120,
-      minSize: 120,
-      maxSize: 120,
+      size: 110,
+      minSize: 110,
+      maxSize: 110,
       cell: ({ row }) => {
         const image: string = row.original.photo;
         return (
@@ -100,16 +100,16 @@ export function orderItemsInShipmentGridColumns({
     {
       accessorKey: "orderId",
       header: "Order",
-      size: 80,
-      minSize: 80,
-      maxSize: 80,
+      size: 70,
+      minSize: 70,
+      maxSize: 70,
       cell: ({ row }) => {
         return <span>{row.original.orderId}</span>;
       },
     },
     {
-      accessorKey: "orderedAmount",
-      header: "Qty pending",
+      accessorKey: "packedAmount",
+      header: "Qty to pack",
       size: 60,
       minSize: 60,
       maxSize: 60,
@@ -119,25 +119,26 @@ export function orderItemsInShipmentGridColumns({
     },
     {
       accessorKey: "quantity",
-      header: "Qty to add",
+      header: "Qty packed",
       size: 80,
       minSize: 80,
       maxSize: 80,
       cell: ({ row }) => <QuantityInputCell row={row} />,
     },
     {
-      id: "add",
+      id: "remove",
       header: "",
-      minSize: 100,
-      maxSize: 100,
+      size: 90,
+      minSize: 90,
+      maxSize: 90,
       cell: ({ row }) => {
         return (
           <div onClick={(e) => e.stopPropagation()}>
             <SheButton
-              icon={PackagePlus}
-              value="Add"
+              icon={PackageMinus}
+              value="Remove"
               variant="secondary"
-              onClick={() => onAction("addItemToShipment", row.original)}
+              onClick={() => onAction("removeItemFromShipment", row.original)}
             />
           </div>
         );

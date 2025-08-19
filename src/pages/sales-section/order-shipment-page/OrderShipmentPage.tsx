@@ -2,22 +2,37 @@ import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
 import cs from "@/pages/sales-section/orders-page/OrdersPage.module.scss";
-import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
-import ShipmentDetailsCard from "@/components/complex/custom-cards/shipment-details-card/ShipmentDetailsCard.tsx";
+import ProductMenuCard
+  from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
+import ShipmentDetailsCard
+  from "@/components/complex/custom-cards/shipment-details-card/ShipmentDetailsCard.tsx";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
-import { IOrderShipmentPageSlice } from "@/const/interfaces/store-slices/IOrderShipmentPageSlice.ts";
-import useOrderShipmentPageService from "@/pages/sales-section/order-shipment-page/useOrderShipmentService.ts";
-import ShipmentConfigurationCard from "@/components/complex/custom-cards/shipment-configuration-card/ShipmentConfigurationCard.tsx";
+import {
+  IOrdersPageSlice
+} from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
+import {
+  IOrderShipmentPageSlice
+} from "@/const/interfaces/store-slices/IOrderShipmentPageSlice.ts";
+import useOrderShipmentPageService
+  from "@/pages/sales-section/order-shipment-page/useOrderShipmentService.ts";
+import ShipmentConfigurationCard
+  from "@/components/complex/custom-cards/shipment-configuration-card/ShipmentConfigurationCard.tsx";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
-import { OrderShipmentPageSliceActions as actions } from "@/state/slices/OrderShipmentPageSlice";
-import SelectEntityCard from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
-import { CustomersListGridColumns } from "@/components/complex/grid/customers-list-grid/CustomersListGridColumns.tsx";
+import {
+  OrderShipmentPageSliceActions as actions
+} from "@/state/slices/OrderShipmentPageSlice";
+import SelectEntityCard
+  from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
+import {
+  CustomersListGridColumns
+} from "@/components/complex/grid/customers-list-grid/CustomersListGridColumns.tsx";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataWithId } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import useOrdersPageService from "@/pages/sales-section/orders-page/useOrdersPageService.ts";
-import SelectShipmentForOrderCard from "@/components/complex/custom-cards/select-shipment-for-order/SelectShipmentForOrder.tsx";
+import useOrdersPageService
+  from "@/pages/sales-section/orders-page/useOrdersPageService.ts";
+import SelectShipmentForOrderCard
+  from "@/components/complex/custom-cards/select-shipment-for-order/SelectShipmentForOrder.tsx";
 
 export function OrderShipmentPage() {
   const { orderId } = useParams();
@@ -123,6 +138,19 @@ export function OrderShipmentPage() {
         service.disconnectOrderFromShipmentHandler(
           state.selectedShipment.shipmentId,
           payload.orderId,
+        );
+        break;
+      case "addItemToShipment":
+        service.addVariantsToShipmentHandler(
+          state.selectedShipment.shipmentId,
+          {
+            items: [
+              {
+                stockActionId: payload.stockActionId,
+                quantity: payload.quantity,
+              },
+            ],
+          },
         );
         break;
     }

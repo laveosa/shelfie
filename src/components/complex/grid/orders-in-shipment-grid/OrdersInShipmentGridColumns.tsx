@@ -21,14 +21,14 @@ export function ordersInShipmentGridColumns(onAction: any): ColumnDef<any>[] {
       },
     },
     {
-      accessorKey: "customer",
+      accessorKey: "customerName",
       header: "Customer",
       size: 120,
       minSize: 120,
       maxSize: 120,
       cell: ({ row }) => {
         const image: string = row.original.customer?.thumbnailUrl;
-        const name: string = row.original.customer?.name;
+        const name: string = row.original.customer?.customerName;
         return (
           <div className={cs.customerNameBlock}>
             <div>

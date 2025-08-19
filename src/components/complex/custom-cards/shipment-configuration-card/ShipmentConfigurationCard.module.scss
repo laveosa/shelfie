@@ -1,59 +1,106 @@
 .shipmentConfigurationCard {
   .shipmentConfigurationCardContent {
-    height: calc(100vh - 227px);
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    justify-content: space-between;
+    gap: 20px;
+    height: calc(100vh - 166px);
 
-    .shipmentDetailsItem {
+    .shipmentConfiguration {
+      overflow: auto;
       display: flex;
-      align-items: center;
-      gap: 20px;
+      flex-direction: column;
+      gap: 10px;
 
-      & > span {
-        width: 50%;
-        padding-left: 10px;
-        font-size: 14px;
-        color: #474D54
+      &::-webkit-scrollbar {
+        width: 6px;
+        height: 10px;
+        background: white;
       }
 
-      .subtitleText {
-        font-size: 16px;
-        font-weight: 500;
-      }
-
-      .customerInfoAvatarBlock {
+      .shipmentDetailsItem {
         display: flex;
         align-items: center;
         gap: 20px;
 
-        .avatarImage {
-          border-radius: 50%;
+        & > span {
+          width: 50%;
+          padding-left: 10px;
+          font-size: 14px;
+          color: #474D54
         }
 
-        .avatarInitials {
-          width: 40px;
-          height: 40px;
-          min-width: 40px;
-          min-height: 40px;
-          background-color: #ececec;
-          border-radius: 50%;
+        .subtitleText {
+          font-size: 16px;
+          font-weight: 500;
+        }
+
+        .customerInfoAvatarBlock {
           display: flex;
           align-items: center;
-          justify-content: center;
-          color: #555;
-          font-weight: 600;
-          font-size: 16px;
-          user-select: none;
+          gap: 20px;
+
+          .avatarImage {
+            border-radius: 50%;
+          }
+
+          .avatarInitials {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            min-height: 40px;
+            background-color: #ececec;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #555;
+            font-weight: 600;
+            font-size: 16px;
+            user-select: none;
+          }
         }
       }
 
-    }
+      .selectCustomerBlock {
+        display: flex;
+        align-items: center;
 
-    .shipmentProductsBlock {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+        span {
+          width: 50%;
+        }
+      }
+
+      .shipmentProductsBlock {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .shipmentProductsButton {
+        display: flex;
+        justify-content: flex-end
+      }
+
+      .shipmentContentBlock {
+        .packageContentBlock {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          padding: 10px 0;
+        }
+      }
+
+      .deliveryServiceBlock {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        .deliveryServiceButtons {
+          display: flex;
+          justify-content: space-between;
+        }
+      }
 
       .subtitleText {
         font-size: 16px;

@@ -302,6 +302,16 @@ export const OrdersApiService = createApi({
         method: "PATCH",
       }),
     }),
+    addVariantsToShipment: apiConfig.createMutation<
+      void,
+      { shipmentId: number; model: any }
+    >(builder, {
+      query: ({ shipmentId, model }) => ({
+        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/add-variants`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+    }),
   }),
 });
 export const { endpoints, ...OrdersApiHooks } = OrdersApiService;
