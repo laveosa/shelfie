@@ -9,7 +9,6 @@ import { ISelectable } from "@/const/interfaces/primitive-components/ISelecteble
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
 import { IShePrimitiveComponentWrapper } from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
-import { UseFormReturn } from "react-hook-form";
 import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
 
 export interface IComponentUtilities<T extends IShePrimitiveComponentWrapper> {
@@ -173,7 +172,10 @@ export default function useComponentUtilities<T>({
   }
 
   function getFormMode(): ReactHookFormMode {
-    return props?.form?.control?._options?.mode as ReactHookFormMode;
+    return (
+      (props?.form?.control?._options?.mode as ReactHookFormMode) ||
+      ReactHookFormMode.SUBMIT
+    );
   }
 
   // ================================================================== OUTPUT
