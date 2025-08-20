@@ -3,13 +3,9 @@ import { useNavigate } from "react-router-dom";
 
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { AppDispatch, RootState } from "@/state/store.ts";
-import {
-  IOrdersPageSlice
-} from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
+import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
 import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
-import {
-  OrdersPageSliceActions as actions
-} from "@/state/slices/OrdersPageSlice.ts";
+import { OrdersPageSliceActions as actions } from "@/state/slices/OrdersPageSlice.ts";
 import UsersApiHooks from "@/utils/services/api/UsersApiService.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import useAppService from "@/useAppService.ts";
@@ -17,9 +13,13 @@ import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import OrdersApiHooks from "@/utils/services/api/OrdersApiService.ts";
+import { merge } from "lodash";
+import { useAppSelector } from "@/utils/hooks/redux.ts";
+import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 
 export default function useOrdersPageService() {
   const appService = useAppService();
+  const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
   const state = useSelector(
     (state: RootState): IOrdersPageSlice => state[StoreSliceEnum.ORDERS],
   );
@@ -88,7 +88,8 @@ export default function useOrdersPageService() {
   }
 
   function updateUserPreferencesHandler(model: PreferencesModel) {
-    return updateUserPreferences(model).then(() => {
+    const modifiedModel = merge({}, appState.preferences, model);
+    return updateUserPreferences(modifiedModel).then(() => {
       appService.getUserPreferencesHandler();
     });
   }

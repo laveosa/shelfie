@@ -1,6 +1,4 @@
-import { useNavigate } from "react-router-dom";
 import React, { useEffect } from "react";
-import { merge } from "lodash";
 
 import {
   GridSortingEnum,
@@ -8,20 +6,15 @@ import {
 } from "@/const/enums/GridSortingEnum.ts";
 import cs from "./OrdersPage.module.scss";
 import useOrdersPageService from "@/pages/sales-section/orders-page/useOrdersPageService.ts";
-import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
+import { useAppSelector } from "@/utils/hooks/redux.ts";
 import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
 import OrdersCard from "@/components/complex/custom-cards/orders-card/OrdersCard.tsx";
-import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
-import { AppSliceActions as appActions } from "@/state/slices/AppSlice.ts";
 
 export function OrdersPage() {
-  const dispatch = useAppDispatch();
   const service = useOrdersPageService();
   const state = useAppSelector<IOrdersPageSlice>(StoreSliceEnum.ORDERS);
-  const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
-  const navigate = useNavigate();
   const sortingItems = Object.values(GridSortingEnum).map((value) => ({
     value,
     description: GridSortingEnumLabels[value],
@@ -43,9 +36,7 @@ export function OrdersPage() {
         service.handleGridRequestChange(payload);
         break;
       case "applyColumns":
-        const modifiedModel = merge({}, appState.preferences, payload);
-        dispatch(appActions.refreshPreferences(modifiedModel));
-        service.updateUserPreferencesHandler(modifiedModel);
+        service.updateUserPreferencesHandler(payload);
         break;
       case "resetColumns":
         service.resetUserPreferencesHandler("products");
