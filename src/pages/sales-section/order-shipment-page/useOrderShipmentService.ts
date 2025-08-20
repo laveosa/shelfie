@@ -2,23 +2,14 @@ import { useNavigate } from "react-router-dom";
 import { merge } from "lodash";
 
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
-import {
-  OrdersPageSliceActions as ordersActions
-} from "@/state/slices/OrdersPageSlice";
+import { OrdersPageSliceActions as ordersActions } from "@/state/slices/OrdersPageSlice";
 import { useToast } from "@/hooks/useToast.ts";
-import {
-  OrderShipmentPageSliceActions as actions
-} from "@/state/slices/OrderShipmentPageSlice";
-import {
-  IOrdersPageSlice
-} from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
+import { OrderShipmentPageSliceActions as actions } from "@/state/slices/OrderShipmentPageSlice";
+import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import OrdersApiHooks from "@/utils/services/api/OrdersApiService.ts";
-import {
-  IOrderShipmentPageSlice
-} from "@/const/interfaces/store-slices/IOrderShipmentPageSlice.ts";
-import useOrdersPageService
-  from "@/pages/sales-section/orders-page/useOrdersPageService.ts";
+import { IOrderShipmentPageSlice } from "@/const/interfaces/store-slices/IOrderShipmentPageSlice.ts";
+import useOrdersPageService from "@/pages/sales-section/orders-page/useOrdersPageService.ts";
 import { AppSliceActions as appActions } from "@/state/slices/AppSlice.ts";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 import UsersApiHooks from "@/utils/services/api/UsersApiService.ts";
