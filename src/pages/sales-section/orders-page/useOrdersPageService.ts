@@ -3,9 +3,13 @@ import { useNavigate } from "react-router-dom";
 
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { AppDispatch, RootState } from "@/state/store.ts";
-import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
+import {
+  IOrdersPageSlice
+} from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
 import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
-import { OrdersPageSliceActions as actions } from "@/state/slices/OrdersPageSlice.ts";
+import {
+  OrdersPageSliceActions as actions
+} from "@/state/slices/OrdersPageSlice.ts";
 import UsersApiHooks from "@/utils/services/api/UsersApiService.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import useAppService from "@/useAppService.ts";
@@ -59,6 +63,30 @@ export default function useOrdersPageService() {
     });
   }
 
+  function handleGridRequestChange(updates: GridRequestModel) {
+    let gridRequestModel;
+    if (updates?.filter) {
+      gridRequestModel = dispatch(
+        actions.refreshOrdersGridRequestModel({
+          ...state.ordersGridRequestModel,
+          currentPage: 1,
+          filter: {
+            ...state.ordersGridRequestModel.filter,
+            ...updates.filter,
+          },
+        }),
+      );
+    } else {
+      gridRequestModel = dispatch(
+        actions.refreshOrdersGridRequestModel({
+          ...state.ordersGridRequestModel,
+          ...updates,
+        }),
+      );
+    }
+    getListOfOrdersForGridHandler(gridRequestModel.payload);
+  }
+
   function updateUserPreferencesHandler(model: PreferencesModel) {
     return updateUserPreferences(model).then(() => {
       appService.getUserPreferencesHandler();
@@ -81,6 +109,13 @@ export default function useOrdersPageService() {
       }
       return res.data;
     });
+  }
+
+  function manageOrderHandler(order) {
+    dispatch(actions.refreshSelectedOrder(order));
+    navigate(
+      `${NavUrlEnum.SALES}${NavUrlEnum.ORDERS}${NavUrlEnum.ORDER_DETAILS}/${order.id}`,
+    );
   }
 
   function getListOfCustomersForGridHandler(model) {
@@ -158,9 +193,11 @@ export default function useOrdersPageService() {
   return {
     getSortingOptionsForGridHandler,
     getListOfOrdersForGridHandler,
+    handleGridRequestChange,
     updateUserPreferencesHandler,
     resetUserPreferencesHandler,
     createOrderHandler,
+    manageOrderHandler,
     getListOfCustomersForGridHandler,
     getVariantsForGridHandler,
     getBrandsForFilterHandler,

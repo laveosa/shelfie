@@ -40,6 +40,7 @@ import PaymentsPageSlice from "@/state/slices/PaymentsPageSlice.ts";
 import ReturnsPageSlice from "@/state/slices/ReturnsPageSlice.ts";
 import ShipmentsPageSlice from "@/state/slices/ShipmentsPageSlice.ts";
 import OrderShipmentPageSlice from "@/state/slices/OrderShipmentPageSlice.ts";
+import ShipmentDetailsPageSlice from "@/state/slices/ShipmentDetailsPageSlice.ts";
 
 export const store = configureStore({
   reducer: {
@@ -72,6 +73,7 @@ export const store = configureStore({
     [StoreSliceEnum.ORDER_PRODUCTS]: OrderProductsPageSlice.reducer,
     [StoreSliceEnum.ORDER_SHIPMENT]: OrderShipmentPageSlice.reducer,
     [StoreSliceEnum.ORDER_PAYMENT]: OrderPaymentPageSlice.reducer,
+    [StoreSliceEnum.SHIPMENT_DETAILS]: ShipmentDetailsPageSlice.reducer,
     [AuthApiService.reducerPath]: AuthApiService.reducer,
     [ProductsApiService.reducerPath]: ProductsApiService.reducer,
     [PurchasesApiService.reducerPath]: PurchasesApiService.reducer,

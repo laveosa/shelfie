@@ -35,4 +35,5 @@ export enum NavUrlEnum {
   CUSTOMER_ADDRESSES = "customer-addresses",
   CUSTOMER_OPEN_CART = "customer-open-cart",
   CUSTOMER_ORDERS = "customer-orders",
+  SHIPMENT_DETAILS = "/shipment-details",
 }

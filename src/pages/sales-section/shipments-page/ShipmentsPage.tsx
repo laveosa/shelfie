@@ -22,9 +22,13 @@ export function ShipmentsPage() {
     service.getShipmentsListForForGridHandler(state.shipmentsGridRequestModel);
   }, []);
 
-  async function onAction(actionType: string, _payload?: any) {
+  async function onAction(actionType: string, payload?: any) {
     switch (actionType) {
-      case "updateStockAction":
+      case "createShipment":
+        service.createShipmentHandler();
+        break;
+      case "manageShipment":
+        service.manageShipmentHandler(payload);
         break;
     }
   }

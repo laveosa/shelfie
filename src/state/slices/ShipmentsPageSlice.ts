@@ -4,6 +4,7 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IShipmentsPageSlice } from "@/const/interfaces/store-slices/IShipmentsPageSlice.ts";
 import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { ShipmentModel } from "@/const/models/ShipmentModel.ts";
 
 const initialState: IShipmentsPageSlice = {
   isProductMenuCardLoading: false,
@@ -21,6 +22,7 @@ const initialState: IShipmentsPageSlice = {
     searchQuery: "",
     filter: {},
   },
+  selectedShipment: null,
 };
 
 //----------------------------------------------------- LOADERS
@@ -77,6 +79,13 @@ function refreshShipmentsGridRequestModel(
     action?.payload || state.shipmentsGridRequestModel;
 }
 
+function refreshSelectedShipment(
+  state: IShipmentsPageSlice,
+  action: PayloadAction<ShipmentModel>,
+) {
+  state.selectedShipment = action?.payload || state.selectedShipment;
+}
+
 const ShipmentsPageSlice = createSlice({
   name: StoreSliceEnum.SHIPMENTS,
   initialState,
@@ -88,6 +97,7 @@ const ShipmentsPageSlice = createSlice({
     refreshActiveTab,
     refreshShipmentsGridModel,
     refreshShipmentsGridRequestModel,
+    refreshSelectedShipment,
   },
 });
 

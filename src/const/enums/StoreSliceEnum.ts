@@ -28,4 +28,5 @@ export enum StoreSliceEnum {
   ORDER_PRODUCTS = "orderProductsSlice",
   ORDER_SHIPMENT = "orderShipmentSlice",
   ORDER_PAYMENT = "orderPaymentSlice",
+  SHIPMENT_DETAILS = "shipmentDetailsSlice",
 }

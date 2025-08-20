@@ -53,7 +53,18 @@ export default function OrdersCard({
             onAction("gridRequestChange", updates)
           }
         >
-          <SheDatePicker mode="range" />
+          <SheDatePicker
+            mode="range"
+            minWidth="150px"
+            onSelectDate={(updates) => {
+              onAction("gridRequestChange", {
+                filter: {
+                  startDate: updates.from,
+                  endDate: updates.to,
+                },
+              });
+            }}
+          />
           <GridShowItemsFilter context="Canceled" />
         </DndGridDataTable>
       </SheProductCard>

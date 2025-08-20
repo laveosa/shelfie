@@ -156,7 +156,7 @@ export default function ShipmentsCard({
         className={cs.createShipmentButton}
         icon={Plus}
         variant="secondary"
-        onClick={() => onAction("openCreateShipmentCard")}
+        onClick={() => onAction("createShipment")}
         value="Create Shipment"
       />
     </div>
