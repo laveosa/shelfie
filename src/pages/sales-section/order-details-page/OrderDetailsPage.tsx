@@ -99,6 +99,7 @@ export function OrderDetailsPage() {
         title="Order"
         itemsCollection="order"
         itemId={Number(orderId)}
+        counter={ordersState.productCounter}
       />
       <OrderConfigurationCard
         isLoading={state.isOrderConfigurationCardLoading}

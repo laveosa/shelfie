@@ -5,6 +5,7 @@ export interface CounterModel {
   invoicesAmount?: number;
   productsAmount?: number;
   purchaseId?: number;
+  products?: number;
 }
 
 export interface ProductCountersModel
@@ -15,3 +16,4 @@ export interface PurchaseCountersModel
     CounterModel,
     "invoicesAmount" | "productsAmount" | "purchaseId"
   > {}
+export interface OrderCountersModel extends Pick<CounterModel, "products"> {}

@@ -1,12 +1,15 @@
 import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
+import {
+  GridSortingEnum,
+  GridSortingEnumLabels,
+} from "@/const/enums/GridSortingEnum.ts";
 import cs from "@/pages/sales-section/orders-page/OrdersPage.module.scss";
 import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
-import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
+import { useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
-import useOrdersPageService from "@/pages/sales-section/orders-page/useOrdersPageService.ts";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import { OrderProductsPageSliceActions as actions } from "@/state/slices/OrderProductsPageSlice";
 import { IOrderDetailsPageSlice } from "@/const/interfaces/store-slices/IOrderDetailsPageSlice.ts";
@@ -16,45 +19,26 @@ import useOrderProductsPageService from "@/pages/sales-section/order-products-pa
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 
 export function OrderProductsPage() {
-  const dispatch = useAppDispatch();
   const state = useAppSelector<IOrderDetailsPageSlice>(
     StoreSliceEnum.ORDER_PRODUCTS,
   );
   const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
   const ordersState = useAppSelector<IOrdersPageSlice>(StoreSliceEnum.ORDERS);
   const service = useOrderProductsPageService();
-  const ordersService = useOrdersPageService();
   const { orderId } = useParams();
   const { handleCardAction, createRefCallback } = useCardActions({
     selectActiveCards: (state) =>
       state[StoreSliceEnum.ORDER_PRODUCTS].activeCards,
     refreshAction: actions.refreshActiveCards,
   });
+  const sortingItems = Object.values(GridSortingEnum).map((value) => ({
+    value,
+    description: GridSortingEnumLabels[value],
+  }));
 
   useEffect(() => {
     service.getOrderStockActionsListForGrid(orderId);
   }, [orderId]);
-
-  useEffect(() => {
-    service.getVariantsListForGrid();
-  }, [ordersState.variantsGridRequestModel]);
-
-  useEffect(() => {
-    if (ordersState.brands.length === 0) {
-      ordersService.getBrandsForFilterHandler();
-    }
-    if (ordersState.categories.length === 0) {
-      ordersService.getCategoriesForFilterHandler();
-    }
-    if (ordersState.sortingOptions.length === 0) {
-      ordersService.getSortingOptionsForGridHandler();
-    }
-    if (
-      ordersState.sizesForFilter.length === 0 ||
-      ordersState.colorsForFilter.length === 0
-    )
-      ordersService.getTraitsForFilterHandler();
-  }, []);
 
   async function onAction(actionType: string, payload?: any) {
     switch (actionType) {
@@ -94,6 +78,7 @@ export function OrderProductsPage() {
         title="Order"
         itemsCollection="order"
         itemId={Number(orderId)}
+        counter={ordersState.productCounter}
       />
       <ProductsInOrderCard
         isLoading={state.isProductsInOrderCardLoading}
@@ -110,7 +95,7 @@ export function OrderProductsPage() {
             gridRequestModel={ordersState.variantsGridRequestModel}
             gridModel={ordersState.variantsGridModel}
             preferences={appState.preferences}
-            sortingOptions={ordersState.sortingOptions}
+            sortingOptions={sortingItems}
             colorsForFilter={ordersState.colorsForFilter}
             sizesForFilter={ordersState.sizesForFilter}
             categories={ordersState.categories}

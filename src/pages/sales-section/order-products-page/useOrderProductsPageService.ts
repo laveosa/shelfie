@@ -10,6 +10,7 @@ import { OrdersPageSliceActions as ordersActions } from "@/state/slices/OrdersPa
 import { useToast } from "@/hooks/useToast.ts";
 import useOrdersPageService from "@/pages/sales-section/orders-page/useOrdersPageService.ts";
 import OrdersApiHooks from "@/utils/services/api/OrdersApiService.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 
 export default function useOrderProductsPageService() {
   const appService = useAppService();
@@ -42,17 +43,26 @@ export default function useOrderProductsPageService() {
       });
   }
 
-  function getVariantsListForGrid() {
+  function getVariantsListForGrid(model: GridRequestModel) {
     dispatch(actions.setIsFindProductsGridLoading(true));
-    ordersService
-      .getVariantsForGridHandler(ordersState.variantsGridRequestModel)
-      .then(() => {
-        dispatch(actions.setIsFindProductsGridLoading(false));
-      });
+    ordersService.getVariantsForGridHandler(model).then(() => {
+      dispatch(actions.setIsFindProductsGridLoading(false));
+    });
   }
 
   function addProductHandler() {
     dispatch(actions.setIsFindProductsGridLoading(true));
+    if (ordersState.brands.length === 0) {
+      ordersService.getBrandsForFilterHandler();
+    }
+    if (ordersState.categories.length === 0) {
+      ordersService.getCategoriesForFilterHandler();
+    }
+    if (
+      ordersState.sizesForFilter.length === 0 ||
+      ordersState.colorsForFilter.length === 0
+    )
+      ordersService.getTraitsForFilterHandler();
     ordersService
       .getVariantsForGridHandler(ordersState.variantsGridRequestModel)
       .then(() => {
@@ -86,22 +96,27 @@ export default function useOrderProductsPageService() {
   }
 
   function variantsGridRequestChange(updates) {
-    if (updates.brands || updates.categories || updates.filter) {
-      dispatch(
+    let gridRequestModel;
+    if (updates.filter) {
+      gridRequestModel = dispatch(
         ordersActions.refreshVariantsGridRequestModel({
           ...ordersState.variantsGridRequestModel,
           currentPage: 1,
-          ...updates,
+          filter: {
+            ...ordersState.variantsGridRequestModel.filter,
+            ...updates.filter,
+          },
         }),
       );
     } else {
-      dispatch(
+      gridRequestModel = dispatch(
         ordersActions.refreshVariantsGridRequestModel({
           ...ordersState.variantsGridRequestModel,
           ...updates,
         }),
       );
     }
+    getVariantsListForGrid(gridRequestModel.payload);
   }
 
   function updateStockActionInOrderHandler(stockActionId, model) {

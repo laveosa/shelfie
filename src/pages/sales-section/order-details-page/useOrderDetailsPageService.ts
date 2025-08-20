@@ -1,12 +1,21 @@
-import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
-import { OrdersPageSliceActions as ordersActions } from "@/state/slices/OrdersPageSlice";
 import { useNavigate } from "react-router-dom";
+
+import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
+import {
+  OrdersPageSliceActions as ordersActions
+} from "@/state/slices/OrdersPageSlice";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { useToast } from "@/hooks/useToast.ts";
-import { OrderDetailsPageSliceActions as actions } from "@/state/slices/OrderDetailsPageSlice.ts";
-import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
+import {
+  OrderDetailsPageSliceActions as actions
+} from "@/state/slices/OrderDetailsPageSlice.ts";
+import {
+  IOrdersPageSlice
+} from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { IOrderDetailsPageSlice } from "@/const/interfaces/store-slices/IOrderDetailsPageSlice.ts";
+import {
+  IOrderDetailsPageSlice
+} from "@/const/interfaces/store-slices/IOrderDetailsPageSlice.ts";
 import OrdersApiHooks from "@/utils/services/api/OrdersApiService.ts";
 
 export default function useOrderDetailsPageService() {
@@ -36,6 +45,9 @@ export default function useOrderDetailsPageService() {
     return getOrderDetails(orderId).then((res: any) => {
       dispatch(actions.setIsOrderConfigurationCardLoading(false));
       dispatch(ordersActions.refreshSelectedOrder(res.data));
+      dispatch(
+        ordersActions.refreshProductCounter({ products: res.data.unitsAmount }),
+      );
       return res;
     });
   }

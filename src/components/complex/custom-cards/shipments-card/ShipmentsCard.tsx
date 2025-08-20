@@ -14,9 +14,8 @@ import cs from "./ShipmentsCard.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheTabs from "@/components/complex/she-tabs/SheTabs.tsx";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs.tsx";
-import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
 import { IShipmentsCard } from "@/const/interfaces/complex-components/custom-cards/IShipmentsCard.ts";
-import { SelectShipmentForOrderGridColumns } from "@/components/complex/grid/select-shipment-for-order-grid/SelectShipmentForOrderGridColumns.tsx";
+import { ShipmentsListGridColumns } from "@/components/complex/grid/shipments-list-grid/ShipmentsListGridColumns.tsx";
 
 export default function ShipmentsCard({
   isLoading,
@@ -32,16 +31,14 @@ export default function ShipmentsCard({
   }));
 
   return (
-    <div
-      className={`${cs.purchaseProductsCardWrapper} ${isLoading ? cs.cardContentLoading : ""}`}
-    >
-      {isLoading && <SheLoading className={cs.purchaseProductsCardLoader} />}
+    <div className={cs.shipmentsCardWrapper}>
       <SheProductCard
-        className={cs.purchaseProductsCard}
+        loading={isLoading}
+        className={cs.shipmentsCard}
         title="Shipment"
         minWidth="1100px"
       >
-        <div className={cs.purchaseProductsCardContent}>
+        <div className={cs.shipmentsCardContent}>
           <SheTabs
             defaultValue="allShipments"
             onValueChange={() => onAction("setActiveTab")}
@@ -82,21 +79,13 @@ export default function ShipmentsCard({
                     </div>
                   </TabsTrigger>
                 </div>
-                <SheButton
-                  icon={Plus}
-                  variant="default"
-                  onClick={() => onAction("openCreateShipmentCard")}
-                  value="Create Shipment"
-                />
               </TabsList>
             </div>
             <TabsContent value="queued">
               <DndGridDataTable
                 isLoading={isShipmentsGridLoading}
                 columns={
-                  SelectShipmentForOrderGridColumns(
-                    onAction,
-                  ) as ColumnDef<DataWithId>[]
+                  ShipmentsListGridColumns(onAction) as ColumnDef<DataWithId>[]
                 }
                 data={shipmentsGridModel.items}
                 gridModel={shipmentsGridModel}
@@ -113,9 +102,7 @@ export default function ShipmentsCard({
               <DndGridDataTable
                 isLoading={isShipmentsGridLoading}
                 columns={
-                  SelectShipmentForOrderGridColumns(
-                    onAction,
-                  ) as ColumnDef<DataWithId>[]
+                  ShipmentsListGridColumns(onAction) as ColumnDef<DataWithId>[]
                 }
                 data={shipmentsGridModel.items}
                 gridModel={shipmentsGridModel}
@@ -132,9 +119,7 @@ export default function ShipmentsCard({
               <DndGridDataTable
                 isLoading={isShipmentsGridLoading}
                 columns={
-                  SelectShipmentForOrderGridColumns(
-                    onAction,
-                  ) as ColumnDef<DataWithId>[]
+                  ShipmentsListGridColumns(onAction) as ColumnDef<DataWithId>[]
                 }
                 data={shipmentsGridModel.items}
                 gridModel={shipmentsGridModel}
@@ -151,9 +136,7 @@ export default function ShipmentsCard({
               <DndGridDataTable
                 isLoading={isShipmentsGridLoading}
                 columns={
-                  SelectShipmentForOrderGridColumns(
-                    onAction,
-                  ) as ColumnDef<DataWithId>[]
+                  ShipmentsListGridColumns(onAction) as ColumnDef<DataWithId>[]
                 }
                 data={shipmentsGridModel.items}
                 gridModel={shipmentsGridModel}
@@ -169,6 +152,13 @@ export default function ShipmentsCard({
           </SheTabs>
         </div>
       </SheProductCard>
+      <SheButton
+        className={cs.createShipmentButton}
+        icon={Plus}
+        variant="secondary"
+        onClick={() => onAction("openCreateShipmentCard")}
+        value="Create Shipment"
+      />
     </div>
   );
 }

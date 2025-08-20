@@ -142,6 +142,7 @@ const orderMenuItems: MenuItem[] = [
   },
   {
     id: "products",
+    counterId: "products",
     icon: <ShoppingBag />,
     label: "Products",
     path: NavUrlEnum.ORDER_PRODUCTS,
