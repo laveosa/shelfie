@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { UserModel } from "@/const/models/UserModel.ts";
 import { ContextPatternEnum } from "@/const/enums/ContextPatternEnum.ts";
-import { AppSchemeType } from "@/const/interfaces/types/AppSchemeType.ts";
+import { AppSchemeType } from "@/const/types/AppSchemeType.ts";
 
 const nonemptyMessage = "field is required";
 

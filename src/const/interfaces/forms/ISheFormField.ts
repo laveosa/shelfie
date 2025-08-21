@@ -1,7 +1,7 @@
 import { FieldPath, UseFormReturn } from "react-hook-form";
 import { ControllerProps } from "react-hook-form/dist/types/controller";
 
-import { AppFormType } from "@/const/interfaces/types/AppFormType.ts";
+import { AppFormType } from "@/const/types/AppFormType.ts";
 import {
   ISheFormItem,
   SheFormItemDefaultModel,

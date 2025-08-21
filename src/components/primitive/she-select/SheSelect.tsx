@@ -90,6 +90,8 @@ export default function SheSelect<T = any>(props: ISheSelect<T>): JSX.Element {
     string
   >(onValueChangeHandler);
 
+  console.log("RENDER: ", props?.field?.name);
+
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     const newItems = initializeItemsList<T, ISheSelectItem<T>>([

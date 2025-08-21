@@ -6,6 +6,7 @@ import SheFormItem from "@/components/complex/she-form/components/she-form-item/
 import { getCustomProps } from "@/utils/helpers/props-helper.ts";
 import { ISheFormField } from "@/const/interfaces/forms/ISheFormField.ts";
 import { SheFormItemDefaultModel } from "@/const/interfaces/forms/ISheFormItem.ts";
+import { SheFormItemContextProvider } from "@/state/providers/she-form-item-context-provider.tsx";
 
 export default function SheFormField<T = any, TName extends FieldPath<T>>(
   props: ISheFormField<T, TName>,
@@ -25,7 +26,9 @@ export default function SheFormField<T = any, TName extends FieldPath<T>>(
       render={({ field, fieldState, formState }) =>
         (
           <SheFormItem {...sheFormItemProps}>
-            {render({ field, fieldState, formState })}
+            <SheFormItemContextProvider value={{ field, form }}>
+              {render({ field, fieldState, formState })}
+            </SheFormItemContextProvider>
           </SheFormItem>
         ) as any
       }

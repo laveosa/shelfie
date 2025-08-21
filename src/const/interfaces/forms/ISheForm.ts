@@ -12,7 +12,7 @@ import {
   ISheFormHeader,
   SheFormHeaderDefaultModel,
 } from "@/const/interfaces/forms/ISheFormHeader.ts";
-import { AppFormType } from "@/const/interfaces/types/AppFormType.ts";
+import { AppFormType } from "@/const/types/AppFormType.ts";
 
 export interface ISheForm<T> extends ISheFormHeader, ISheFormFooter {
   ref?: RefObject<HTMLFormElement>;

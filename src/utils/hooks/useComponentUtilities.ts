@@ -8,23 +8,35 @@ import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { ISelectable } from "@/const/interfaces/primitive-components/ISelecteble.ts";
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
-import { IShePrimitiveComponentWrapper } from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
 import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
-
-export interface IComponentUtilities<T extends IShePrimitiveComponentWrapper> {
-  props: T;
-  identifier?: string;
-}
+import { useSheFormItemContext } from "@/state/context/she-form-item-context.ts";
+import { IComponentUtilities } from "@/const/interfaces/IComponentUtilities.ts";
+import _ from "lodash";
 
 export default function useComponentUtilities<T>({
   props,
   identifier,
 }: IComponentUtilities<T> = {}) {
-  // ==================================================================== UTILITIES
-  const { translate } = useAppTranslation();
+  // ==================================================================== STATE MANAGEMENT
+  const [_props, setProps] = useState<T>(null);
   const [ariaDescribedbyId, setAriaDescribedbyId] = useState<string>(null);
 
+  // ==================================================================== UTILITIES
+  const { translate } = useAppTranslation();
+  const ctx = useSheFormItemContext();
+
   // ==================================================================== SIDE EFFECTS
+  useEffect(() => {
+    if (props && !_.isEqual(props, _props)) {
+      setProps((oldProps: T): T => {
+        oldProps = _.cloneDeep<T>(props);
+        oldProps.field = oldProps.field || ctx.field;
+        oldProps.form = oldProps.field || ctx.form;
+        return oldProps;
+      });
+    }
+  }, [props]);
+
   useEffect(() => {
     if (identifier !== ariaDescribedbyId)
       setAriaDescribedbyId(`${generateId()}_${identifier ?? "component"}_ID`);
@@ -155,15 +167,15 @@ export default function useComponentUtilities<T>({
 
   // --------------------------------------------------------------- FORM
   function updateFormValue(value: any) {
-    if (props.field) {
-      props.field.onChange(value);
-      void props.form?.trigger(props.field.name);
+    if (_props.field) {
+      _props.field.onChange(value);
+      void _props.form?.trigger(_props.field.name);
     }
   }
 
   function resetForm() {
-    if (props.field) {
-      props.form?.resetField?.(props.field.name, {
+    if (_props.field) {
+      _props.form?.resetField?.(_props.field.name, {
         keepDirty: false,
         keepTouched: false,
         defaultValue: "",
@@ -173,7 +185,7 @@ export default function useComponentUtilities<T>({
 
   function getFormMode(): ReactHookFormMode {
     return (
-      (props?.form?.control?._options?.mode as ReactHookFormMode) ||
+      (_props?.form?.control?._options?.mode as ReactHookFormMode) ||
       ReactHookFormMode.SUBMIT
     );
   }
