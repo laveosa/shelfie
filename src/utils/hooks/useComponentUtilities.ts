@@ -5,20 +5,23 @@ import {
   generateSafeItemId,
 } from "@/utils/helpers/quick-helper.ts";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
+import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
 import { ISelectable } from "@/const/interfaces/primitive-components/ISelecteble.ts";
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
-import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
 import { IComponentUtilities } from "@/const/interfaces/IComponentUtilities.ts";
+import useSheFormData from "@/utils/hooks/useSheFormData.ts";
 
-export default function useComponentUtilities({
+export default function useComponentUtilities<T>({
+  props,
   identifier,
-}: IComponentUtilities = {}) {
+}: IComponentUtilities<T> = {}) {
   // ==================================================================== STATE MANAGEMENT
   const [ariaDescribedbyId, setAriaDescribedbyId] = useState<string>(null);
 
   // ==================================================================== UTILITIES
   const { translate } = useAppTranslation();
+  const { field, form } = useSheFormData<T>(props);
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
@@ -150,14 +153,14 @@ export default function useComponentUtilities({
   }
 
   // --------------------------------------------------------------- FORM
-  function updateFormValue(form, field, value: any) {
+  function updateFormValue(value: any) {
     if (field) {
       field.onChange(value);
-      void form?.trigger(field.name);
+      void form.trigger(field.name);
     }
   }
 
-  function resetForm(form, field) {
+  function resetForm() {
     if (field) {
       form?.resetField?.(field.name, {
         keepDirty: false,
@@ -167,7 +170,7 @@ export default function useComponentUtilities({
     }
   }
 
-  function getFormMode(form): ReactHookFormMode {
+  function getFormMode(): ReactHookFormMode {
     return (
       (form?.control?._options?.mode as ReactHookFormMode) ||
       ReactHookFormMode.SUBMIT
