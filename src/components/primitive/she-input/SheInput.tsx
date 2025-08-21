@@ -5,6 +5,7 @@ import { Search } from "lucide-react";
 import cs from "./SheInput.module.scss";
 import { Input } from "@/components/ui/input.tsx";
 import ShePrimitiveComponentWrapper from "@/components/primitive/she-primitive-component-wrapper/ShePrimitiveComponentWrapper.tsx";
+import { useSheFormItemContext } from "@/state/context/she-form-item-context.ts";
 import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
 import { useDebounce } from "@/utils/hooks/useDebounce.ts";
 import useDefaultRef from "@/utils/hooks/useDefaultRef.ts";
@@ -90,11 +91,13 @@ export default function SheInput(props: ISheInput): JSX.Element {
     resetForm,
     getFormMode,
   } = useComponentUtilities<ISheInput>({
-    props,
     identifier: "ISheInput",
   });
   const iconToRender = icon || (isSearch && Search);
   const delayValue = useDebounce(_textValue, delayTime);
+  const ctx = useSheFormItemContext();
+  const form = props.form || ctx.form;
+  const field = props.field || ctx.field;
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
@@ -134,15 +137,15 @@ export default function SheInput(props: ISheInput): JSX.Element {
   }, [isValid]);
 
   // ==================================================================== EVENT HANDLERS
-  function onChangeHandler(event: React.ChangeEvent<HTMLInputElement>) {
+  function onChangeHandler(event) {
     _isInitialized.current = true;
     _lastEventDataRef.current = event;
 
     const newValue = _trimExtraSpaces(event.target.value);
     const tmpIsValid = _validateValue(newValue);
 
-    if (getFormMode() === ReactHookFormMode.CHANGE)
-      updateFormValue(newValue || "");
+    if (getFormMode(form) === ReactHookFormMode.CHANGE)
+      updateFormValue(form, field, newValue || "");
 
     setTextValue(newValue);
     onChange?.(newValue, {
@@ -162,8 +165,8 @@ export default function SheInput(props: ISheInput): JSX.Element {
     const newValue = event.target.value.trim() || null;
     const tmpIsValid = _validateValue(newValue);
 
-    if (getFormMode() === ReactHookFormMode.BLUR)
-      updateFormValue(newValue || "");
+    if (getFormMode(form) === ReactHookFormMode.BLUR)
+      updateFormValue(form, field, newValue || "");
 
     setIsHighlighted(!_.isEqual(_sourceValue.current, newValue));
     onBlur?.(newValue, {
@@ -183,7 +186,7 @@ export default function SheInput(props: ISheInput): JSX.Element {
     updateIsValid(true);
     setIsLengthValid(true);
     _setErrorCondition(false);
-    resetForm();
+    resetForm(form, field);
 
     const newValue = "";
     setTextValue(newValue);

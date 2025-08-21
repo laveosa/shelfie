@@ -9,34 +9,18 @@ import { ISelectable } from "@/const/interfaces/primitive-components/ISelecteble
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
 import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
-import { useSheFormItemContext } from "@/state/context/she-form-item-context.ts";
 import { IComponentUtilities } from "@/const/interfaces/IComponentUtilities.ts";
-import _ from "lodash";
 
-export default function useComponentUtilities<T>({
-  props,
+export default function useComponentUtilities({
   identifier,
-}: IComponentUtilities<T> = {}) {
+}: IComponentUtilities = {}) {
   // ==================================================================== STATE MANAGEMENT
-  const [_props, setProps] = useState<T>(null);
   const [ariaDescribedbyId, setAriaDescribedbyId] = useState<string>(null);
 
   // ==================================================================== UTILITIES
   const { translate } = useAppTranslation();
-  const ctx = useSheFormItemContext();
 
   // ==================================================================== SIDE EFFECTS
-  useEffect(() => {
-    if (props && !_.isEqual(props, _props)) {
-      setProps((oldProps: T): T => {
-        oldProps = _.cloneDeep<T>(props);
-        oldProps.field = oldProps.field || ctx.field;
-        oldProps.form = oldProps.field || ctx.form;
-        return oldProps;
-      });
-    }
-  }, [props]);
-
   useEffect(() => {
     if (identifier !== ariaDescribedbyId)
       setAriaDescribedbyId(`${generateId()}_${identifier ?? "component"}_ID`);
@@ -166,16 +150,16 @@ export default function useComponentUtilities<T>({
   }
 
   // --------------------------------------------------------------- FORM
-  function updateFormValue(value: any) {
-    if (_props.field) {
-      _props.field.onChange(value);
-      void _props.form?.trigger(_props.field.name);
+  function updateFormValue(form, field, value: any) {
+    if (field) {
+      field.onChange(value);
+      void form?.trigger(field.name);
     }
   }
 
-  function resetForm() {
-    if (_props.field) {
-      _props.form?.resetField?.(_props.field.name, {
+  function resetForm(form, field) {
+    if (field) {
+      form?.resetField?.(field.name, {
         keepDirty: false,
         keepTouched: false,
         defaultValue: "",
@@ -183,9 +167,9 @@ export default function useComponentUtilities<T>({
     }
   }
 
-  function getFormMode(): ReactHookFormMode {
+  function getFormMode(form): ReactHookFormMode {
     return (
-      (_props?.form?.control?._options?.mode as ReactHookFormMode) ||
+      (form?.control?._options?.mode as ReactHookFormMode) ||
       ReactHookFormMode.SUBMIT
     );
   }

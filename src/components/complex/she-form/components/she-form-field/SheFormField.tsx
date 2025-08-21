@@ -26,7 +26,7 @@ export default function SheFormField<T = any, TName extends FieldPath<T>>(
       render={({ field, fieldState, formState }) =>
         (
           <SheFormItem {...sheFormItemProps}>
-            <SheFormItemContextProvider value={{ field, form }}>
+            <SheFormItemContextProvider<T, TName> value={{ field, form }}>
               {render({ field, fieldState, formState })}
             </SheFormItemContextProvider>
           </SheFormItem>

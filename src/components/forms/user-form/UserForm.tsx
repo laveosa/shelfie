@@ -62,10 +62,8 @@ export default function UserForm({
           form={form}
           label="Name"
           name="name"
-          render={({ field }) => (
+          render={() => (
             <SheInput
-              field={field}
-              form={form}
               placeholder="enter user name..."
               showClearBtn
               fullWidth
@@ -79,10 +77,8 @@ export default function UserForm({
           form={form}
           label="Email"
           name="email"
-          render={({ field }) => (
+          render={() => (
             <SheInput
-              field={field}
-              form={form}
               placeholder="enter user email..."
               type="email"
               showClearBtn
@@ -94,10 +90,8 @@ export default function UserForm({
           form={form}
           label="Address"
           name="address"
-          render={({ field }) => (
+          render={() => (
             <SheInput
-              field={field}
-              form={form}
               placeholder="enter user address..."
               showClearBtn
               fullWidth
@@ -110,8 +104,6 @@ export default function UserForm({
           name="gender"
           render={({ field }) => (
             <SheSelect<string>
-              field={field}
-              form={form}
               selected={field?.value}
               items={genders}
               hideFirstOption
@@ -127,8 +119,6 @@ export default function UserForm({
           name="position"
           render={({ field }) => (
             <SheSelect
-              field={field}
-              form={form}
               selected={field?.value}
               items={positions}
               hideFirstOption

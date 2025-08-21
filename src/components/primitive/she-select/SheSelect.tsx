@@ -9,6 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select.tsx";
 import SheSelectItem from "@/components/primitive/she-select/components/she-select-item/SheSelectItem.tsx";
+import { useSheFormItemContext } from "@/state/context/she-form-item-context.ts";
 import useDefaultRef from "@/utils/hooks/useDefaultRef.ts";
 import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
 import useValueWithEvent from "@/utils/hooks/useValueWithEvent.ts";
@@ -80,17 +81,16 @@ export default function SheSelect<T = any>(props: ISheSelect<T>): JSX.Element {
     calculatePopoverWidth,
     updateFormValue,
     resetForm,
-  } = useComponentUtilities<ISheSelect<T>>({
-    props,
+  } = useComponentUtilities({
     identifier: "SheSelect",
   });
-
   const { eventHandler, valueHandler } = useValueWithEvent<
     React.MouseEvent | React.KeyboardEvent,
     string
   >(onValueChangeHandler);
-
-  console.log("RENDER: ", props?.field?.name);
+  const ctx = useSheFormItemContext();
+  const form = props.form || ctx.form;
+  const field = props.field || ctx.field;
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
@@ -180,14 +180,14 @@ export default function SheSelect<T = any>(props: ISheSelect<T>): JSX.Element {
       );
       setItems(tmpItems);
       setIsHighlighted(!_.isEqual(_sourceValue.current, selected.value));
-      updateFormValue(selected.value);
+      updateFormValue(form, field, selected.value);
       onSelect?.(selected.value, {
         value: selected.value,
         model: { ...props, items: tmpItems, selected: selected.value },
         event,
       });
     } else {
-      resetForm();
+      resetForm(form, field);
       onSelect?.(null, {
         value: null,
         model: { ...props, items: _items, selected: null },
@@ -216,7 +216,7 @@ export default function SheSelect<T = any>(props: ISheSelect<T>): JSX.Element {
     const tmpItems = updateSelectedItems<ISheSelectItem<T>, T>(_items);
     setItems(tmpItems);
     setSelected(null);
-    resetForm();
+    resetForm(form, field);
     onSelect?.(null, {
       value: null,
       model: { ...props, items: tmpItems, selected: null },
