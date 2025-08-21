@@ -59,7 +59,6 @@ export default function UserForm({
         onCancel={onCancel}
       >
         <SheFormField<UserModel>
-          form={form}
           label="Name"
           name="name"
           render={() => (
@@ -74,7 +73,6 @@ export default function UserForm({
           )}
         />
         <SheFormField
-          form={form}
           label="Email"
           name="email"
           render={() => (
@@ -87,7 +85,6 @@ export default function UserForm({
           )}
         />
         <SheFormField
-          form={form}
           label="Address"
           name="address"
           render={() => (
@@ -100,7 +97,6 @@ export default function UserForm({
         />
         <SheFormField<UserModel>
           label="Gender"
-          form={form}
           name="gender"
           render={({ field }) => (
             <SheSelect<string>
@@ -114,7 +110,6 @@ export default function UserForm({
           )}
         />
         <SheFormField
-          form={form}
           label="Position"
           name="position"
           render={({ field }) => (

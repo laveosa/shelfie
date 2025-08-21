@@ -23,6 +23,7 @@ import {
   ISheFormFooter,
   SheFormFooterDefaultModel,
 } from "@/const/interfaces/forms/ISheFormFooter.ts";
+import {SheFormContextProvider} from "@/state/providers/she-form-context-provider.tsx";
 
 export default function SheForm<T>(props: ISheForm<T>): JSX.Element {
   // ==================================================================== PROPS
@@ -93,7 +94,9 @@ export default function SheForm<T>(props: ISheForm<T>): JSX.Element {
       <Form {...form}>
         <SheFormHeader {...sheHeaderProps} />
         <form onSubmit={form.handleSubmit(onSubmitHandler, onErrorHandler)}>
-          <div className={cs.sheFormContent}>{children}</div>
+          <SheFormContextProvider value={{ form: form }}>
+            <div className={cs.sheFormContent}>{children}</div>
+          </SheFormContextProvider>
           <SheFormFooter
             {...sheFooterProps}
             isValid={form.formState.isValid}
