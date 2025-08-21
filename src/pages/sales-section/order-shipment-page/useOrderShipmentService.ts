@@ -54,6 +54,8 @@ export default function useOrderShipmentPageService() {
     OrdersApiHooks.useDisconnectOrderFromShipmentMutation();
   const [addVariantsToShipment] =
     OrdersApiHooks.useAddVariantsToShipmentMutation();
+  const [removeVariantFromShipment] =
+    OrdersApiHooks.useRemoveVariantFromShipmentMutation();
 
   function getOrderDetailsHandler(orderId) {
     return getOrderDetails(orderId).then((res: any) => {
@@ -338,6 +340,12 @@ export default function useOrderShipmentPageService() {
     });
   }
 
+  function removeVariantFromShipmentHandler(actionId: number) {
+    return removeVariantFromShipment(actionId).then((res: any) => {
+      return res.data;
+    });
+  }
+
   return {
     getOrderDetailsHandler,
     getShipmentsListForOrderHandler,
@@ -359,5 +367,6 @@ export default function useOrderShipmentPageService() {
     applyShipmentsGridColumns,
     disconnectOrderFromShipmentHandler,
     addVariantsToShipmentHandler,
+    removeVariantFromShipmentHandler,
   };
 }

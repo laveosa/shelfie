@@ -134,6 +134,10 @@ export function OrderShipmentPage() {
           },
         );
         break;
+      case "removeItemFromShipment":
+        service.removeVariantFromShipmentHandler(payload.stockActionId);
+        console.log(payload);
+        break;
     }
   }
 
@@ -150,6 +154,7 @@ export function OrderShipmentPage() {
         isLoading={state.isShipmentDetailsCardLoading}
         products={ordersState.stockActionsGridModel.items}
         shipments={state.orderShipments}
+        customer={state.selectedCustomer}
         isProductsGridLoading={state.isProductsGridLoading}
         isShipmentsGridLoading={state.isOrderShipmentsGridLoading}
         onAction={onAction}

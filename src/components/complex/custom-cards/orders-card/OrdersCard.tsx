@@ -3,22 +3,15 @@ import { CalendarRange, Plus, ShoppingCart } from "lucide-react";
 
 import {
   DataWithId,
-  DndGridDataTable
+  DndGridDataTable,
 } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import cs from "./OrdersCard.module.scss";
-import SheProductCard
-  from "@/components/complex/she-product-card/SheProductCard.tsx";
-import GridShowItemsFilter
-  from "@/components/complex/grid/grid-show-deleted-filter/GridShowItemsFilter.tsx";
-import {
-  IOrdersCard
-} from "@/const/interfaces/complex-components/custom-cards/IOrdersCard.ts";
-import {
-  ordersGridColumns
-} from "@/components/complex/grid/orders-grid/OrdersGridColumns.tsx";
+import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
+import GridShowItemsFilter from "@/components/complex/grid/grid-show-deleted-filter/GridShowItemsFilter.tsx";
+import { IOrdersCard } from "@/const/interfaces/complex-components/custom-cards/IOrdersCard.ts";
+import { ordersGridColumns } from "@/components/complex/grid/orders-grid/OrdersGridColumns.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import SheDatePicker
-  from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
+import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 
 export default function OrdersCard({

@@ -155,9 +155,10 @@ export default function ShipmentsCard({
       <SheButton
         className={cs.createShipmentButton}
         icon={Plus}
-        variant="secondary"
+        variant="default"
         onClick={() => onAction("createShipment")}
         value="Create Shipment"
+        bgColor="#007AFF"
       />
     </div>
   );

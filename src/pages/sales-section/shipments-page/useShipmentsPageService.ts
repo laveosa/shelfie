@@ -22,10 +22,8 @@ export default function useShipmentsPageService() {
   const [createShipment] = OrdersApiHooks.useCreateShipmentMutation();
 
   function getShipmentsListForForGridHandler(model) {
-    dispatch(actions.setIsShipmentsCardLoading(true));
     dispatch(actions.setIsShipmentsGridLoading(true));
     return getShipmentsListForForGrid(model).then((res: any) => {
-      dispatch(actions.setIsShipmentsCardLoading(false));
       dispatch(actions.setIsShipmentsGridLoading(false));
       dispatch(actions.refreshShipmentsGridModel(res.data));
       return res;

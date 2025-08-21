@@ -20,6 +20,7 @@ export default function ShipmentDetailsCard({
   isShipmentsGridLoading,
   products,
   shipments,
+  customer,
   onAction,
 }: IShipmentDetailsCard) {
   return (
@@ -46,6 +47,7 @@ export default function ShipmentDetailsCard({
               icon={Plus}
               value="Create Shipment"
               onClick={() => onAction("createShipment")}
+              disabled={!customer}
             />
             <span>or</span>
             <SheButton

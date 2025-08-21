@@ -312,6 +312,12 @@ export const OrdersApiService = createApi({
         body: JSON.stringify(model),
       }),
     }),
+    removeVariantFromShipment: apiConfig.createMutation<void, number>(builder, {
+      query: (actionId) => ({
+        url: `${ApiUrlEnum.SHIPMENTS}/stock-actions/${actionId}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 export const { endpoints, ...OrdersApiHooks } = OrdersApiService;
