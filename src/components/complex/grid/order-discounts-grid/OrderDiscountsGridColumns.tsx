@@ -18,13 +18,13 @@ export function OrderDiscountsGridColumns({
       cell: ({ row }) => {
         return (
           <div onClick={(e) => e.stopPropagation()}>
-            <span className="she-title">{row.getValue("discountRate")}</span>
+            <span className="she-title">{row.original.discountRate}</span>
           </div>
         );
       },
     },
     {
-      id: "manage",
+      id: "remove",
       header: "Actions",
       minSize: 100,
       maxSize: 100,

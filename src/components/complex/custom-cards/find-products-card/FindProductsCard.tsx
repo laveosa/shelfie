@@ -31,11 +31,11 @@ export default function FindProductsCard({
   return (
     <SheProductCard
       loading={isLoading}
+      className={cs.findProductsCard}
       title="Find Products"
       width="1100px"
       showCloseButton
       onSecondaryButtonClick={() => onAction("closeFindProductsCard")}
-      className={cs.findProductsCard}
     >
       <div className={cs.findProductsCardContent}>
         <DndGridDataTable
@@ -60,18 +60,26 @@ export default function FindProductsCard({
           <GridItemsFilter
             items={brands}
             columnName={"Brands"}
-            onSelectionChange={() => onAction("onBrandSelect")}
             getId={(item: BrandModel) => item.brandId}
             getName={(item: BrandModel) => item.brandName}
             selected={gridModel.filter?.brands}
+            onSelectionChange={(updates) =>
+              onAction("variantsGridRequestChange", {
+                filter: { brands: updates },
+              })
+            }
           />
           <GridItemsFilter
             items={categories}
             columnName={"Categories"}
-            onSelectionChange={() => onAction("onCategorySelect")}
             getId={(item: CategoryModel) => item.categoryId}
             getName={(item: CategoryModel) => item.categoryName}
             selected={gridModel.filter?.categories}
+            onSelectionChange={(updates) =>
+              onAction("variantsGridRequestChange", {
+                filter: { categoryId: updates },
+              })
+            }
           />
           <GridTraitsFilter
             traitOptions={colorsForFilter}

@@ -45,12 +45,10 @@ export function OrderDetailsPage() {
     switch (actionType) {
       case "openSelectEntityCard":
         handleCardAction("selectEntityCard", true);
-        if (ordersState.customersGridModel.items.length === 0) {
-          ordersService.getListOfCustomersForGridHandler({
-            ...ordersState.customersGridRequestModel,
-            searchQuery: payload,
-          });
-        }
+        ordersService.getListOfCustomersForGridHandler({
+          ...ordersState.customersGridRequestModel,
+          searchQuery: payload,
+        });
         break;
       case "openCreateEntityCard":
         // dispatch(actions.resetManagedSupplier(null));
@@ -66,11 +64,24 @@ export function OrderDetailsPage() {
         handleCardAction("selectEntityCard");
         service.assignCustomerToOrderHandler(orderId, payload.customerId);
         break;
-      case "closeSelectEntityCard":
-        handleCardAction("selectEntityCard");
-        break;
       case "deleteOrder":
         service.deleteOrderHandler(Number(orderId));
+        break;
+      case "createDiscount":
+        service.createDiscountHandler(orderId, payload);
+        break;
+      case "applyDiscountToOrder":
+        service.applyDiscountsToOrderHandler(orderId, {
+          discounts: [payload.discountId],
+        });
+        break;
+      case "removeDiscount":
+        service.removeDiscountsFromOrderHandler(orderId, {
+          discounts: [payload.discountId],
+        });
+        break;
+      case "closeSelectEntityCard":
+        handleCardAction("selectEntityCard");
         break;
       case "openSelectDiscountCard":
         handleCardAction("selectDiscountCard", true);
@@ -88,6 +99,7 @@ export function OrderDetailsPage() {
         title="Order"
         itemsCollection="order"
         itemId={Number(orderId)}
+        counter={ordersState.productCounter}
       />
       <OrderConfigurationCard
         isLoading={state.isOrderConfigurationCardLoading}
@@ -115,7 +127,7 @@ export function OrderDetailsPage() {
           <SelectDiscountCard
             isLoading={state.isSelectDiscountCardLoading}
             isGridLoading={state.isSelectDiscountGridLoading}
-            discounts={state.discounts}
+            discounts={state.discountsList}
             onAction={onAction}
           />
         </div>

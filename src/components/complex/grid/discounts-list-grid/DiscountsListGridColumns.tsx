@@ -25,7 +25,7 @@ export function DiscountsListGridColumns({
         const handleSelectClick = (e) => {
           e.stopPropagation();
           e.preventDefault();
-          onAction("selectDiscount", row.original);
+          onAction("applyDiscountToOrder", row.original);
         };
 
         return (
@@ -48,7 +48,7 @@ export function DiscountsListGridColumns({
       minSize: 150,
       maxSize: 150,
       cell: ({ row }) => {
-        return <span>{row.getValue("discountRate")}</span>;
+        return <span>{row.original.discountRate}</span>;
       },
     },
     {
@@ -65,7 +65,7 @@ export function DiscountsListGridColumns({
         const handleManageClick = (e) => {
           e.stopPropagation();
           e.preventDefault();
-          onAction("remove", row.original);
+          onAction("removeDiscount", row.original);
         };
 
         return (

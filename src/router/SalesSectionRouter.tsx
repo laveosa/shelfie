@@ -85,6 +85,15 @@ export const SalesSectionRouter: RouteObject[] = [
     },
   },
   {
+    path: "shipments/shipment-details/:shipmentId?",
+    lazy: async () => {
+      const { ShipmentDetailsPage } = await import(
+        "@/pages/sales-section/shipment-details-page/ShipmentDetailsPage.tsx"
+      );
+      return { element: <ShipmentDetailsPage /> };
+    },
+  },
+  {
     path: "payments/",
     lazy: async () => {
       const { PaymentsPage } = await import(

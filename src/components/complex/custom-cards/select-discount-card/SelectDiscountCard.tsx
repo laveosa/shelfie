@@ -13,6 +13,7 @@ import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { DiscountsListGridColumns } from "@/components/complex/grid/discounts-list-grid/DiscountsListGridColumns.tsx";
+import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 
 export default function SelectDiscountCard({
   isLoading,
@@ -20,10 +21,22 @@ export default function SelectDiscountCard({
   discounts,
   onAction,
 }: ISelectDiscountCard) {
-  const [discount, setDiscount] = React.useState({
-    discountRate: 0,
-    discountType: 0,
-  });
+  const [discount, setDiscount] = React.useState(null);
+
+  const discountType = [
+    { discountType: "Percentage" },
+    { discountType: "Amount" },
+  ];
+
+  function convertStatusesToSelectItems<T>(data: any[]): ISheSelectItem<T>[] {
+    return data?.map(
+      (item): ISheSelectItem<T> => ({
+        value: item.discountType,
+        text: item.discountType,
+      }),
+    );
+  }
+
   return (
     <SheProductCard
       loading={isLoading}
@@ -42,13 +55,19 @@ export default function SelectDiscountCard({
               label="Discount rate"
               placeholder="enter discount rate..."
               onDelay={(value: number) =>
-                setDiscount({ ...discount, discountRate: value })
+                setDiscount({
+                  ...discount,
+                  discountRate: Number(value).toFixed(2),
+                })
               }
             />
             <SheSelect
               label="Type (Currency / %)"
               placeholder="select discount type..."
-              onSelect={(value: number) =>
+              hideFirstOption
+              selected={discount?.discountType}
+              items={convertStatusesToSelectItems(discountType)}
+              onSelect={(value: string) =>
                 setDiscount({ ...discount, discountType: value })
               }
             />

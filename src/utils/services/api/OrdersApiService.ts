@@ -208,6 +208,116 @@ export const OrdersApiService = createApi({
         body: JSON.stringify(model),
       }),
     }),
+    removeDiscountsFromOrder: apiConfig.createMutation<
+      void,
+      { orderId: number; model: any }
+    >(builder, {
+      query: ({ orderId, model }) => ({
+        url: `${ApiUrlEnum.ORDERS}/${orderId}/remove-discounts`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+    }),
+    applyDiscountsToOrder: apiConfig.createMutation<
+      void,
+      { orderId: number; model: any }
+    >(builder, {
+      query: ({ orderId, model }) => ({
+        url: `${ApiUrlEnum.ORDERS}/${orderId}/apply-discounts`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+    }),
+    getShipmentsListForForGrid: apiConfig.createMutation<any, GridRequestModel>(
+      builder,
+      {
+        query: (model) => ({
+          url: `${ApiUrlEnum.SHIPMENTS}/list`,
+          method: "POST",
+          body: JSON.stringify(model),
+        }),
+      },
+    ),
+    getShipmentsListForOrder: apiConfig.createQuery<void, number>(builder, {
+      query: (orderId) => ({
+        url: `${ApiUrlEnum.ORDERS}/${orderId}${ApiUrlEnum.SHIPMENTS}`,
+      }),
+    }),
+    getShipmentDetails: apiConfig.createQuery<void, number>(builder, {
+      query: (shipmentId) => ({
+        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}`,
+      }),
+    }),
+    createShipment: apiConfig.createMutation<any, void>(builder, {
+      query: () => ({
+        url: `${ApiUrlEnum.SHIPMENTS}`,
+        method: "POST",
+      }),
+    }),
+    updateShipmentDates: apiConfig.createMutation<
+      void,
+      { shipmentId: number; model: any }
+    >(builder, {
+      query: ({ shipmentId, model }) => ({
+        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/update-dates`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+    }),
+    updateShipmentCustomer: apiConfig.createMutation<
+      void,
+      { shipmentId: number; model: any }
+    >(builder, {
+      query: ({ shipmentId, model }) => ({
+        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/update-customer`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+    }),
+    updateShipmentAddress: apiConfig.createMutation<
+      void,
+      { shipmentId: number; model: any }
+    >(builder, {
+      query: ({ shipmentId, model }) => ({
+        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/update-address`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+    }),
+    connectShipmentToOrder: apiConfig.createMutation<
+      void,
+      { shipmentId: number; orderId: number }
+    >(builder, {
+      query: ({ shipmentId, orderId }) => ({
+        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/connect/${orderId}`,
+        method: "PATCH",
+      }),
+    }),
+    disconnectOrderFromShipment: apiConfig.createMutation<
+      void,
+      { shipmentId: number; orderId: number }
+    >(builder, {
+      query: ({ shipmentId, orderId }) => ({
+        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/disconnect/${orderId}`,
+        method: "PATCH",
+      }),
+    }),
+    addVariantsToShipment: apiConfig.createMutation<
+      void,
+      { shipmentId: number; model: any }
+    >(builder, {
+      query: ({ shipmentId, model }) => ({
+        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/add-variants`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+    }),
+    removeVariantFromShipment: apiConfig.createMutation<void, number>(builder, {
+      query: (actionId) => ({
+        url: `${ApiUrlEnum.SHIPMENTS}/stock-actions/${actionId}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 export const { endpoints, ...OrdersApiHooks } = OrdersApiService;

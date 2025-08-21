@@ -1,8 +1,9 @@
 import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 import { CustomerModel } from "@/const/models/CustomerModel.ts";
+import { OrderSubtotalModel } from "@/const/models/OrderSubtotalModel.ts";
 
 export interface OrderModel {
-  id?: number;
+  id: number;
   customerId?: number;
   customer?: CustomerModel;
   date?: string;
@@ -15,4 +16,6 @@ export interface OrderModel {
   income?: number;
   currency?: CurrencyModel;
   discounts?: any[];
+  orderSubTotal?: OrderSubtotalModel;
+  discountAmount?: string;
 }

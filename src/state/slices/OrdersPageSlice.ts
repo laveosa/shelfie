@@ -9,6 +9,7 @@ import { OrderModel } from "@/const/models/OrderModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
+import { OrderCountersModel } from "@/const/models/CounterModel.ts";
 
 const initialState: IOrdersPageSlice = {
   isLoading: false,
@@ -57,6 +58,7 @@ const initialState: IOrdersPageSlice = {
     pageSize: 10,
     filter: {},
   },
+  productCounter: null,
 };
 
 //----------------------------------------------------- LOADERS
@@ -190,6 +192,13 @@ function refreshStockActionsGridRequestModel(
     action?.payload || state.stockActionsGridRequestModel;
 }
 
+function refreshProductCounter(
+  state: IOrdersPageSlice,
+  action: PayloadAction<OrderCountersModel>,
+) {
+  state.productCounter = action?.payload || state.productCounter;
+}
+
 const OrdersPageSlice = createSlice({
   name: StoreSliceEnum.ORDERS,
   initialState,
@@ -212,6 +221,7 @@ const OrdersPageSlice = createSlice({
     refreshColorsForFilter,
     refreshStockActionsGridModel,
     refreshStockActionsGridRequestModel,
+    refreshProductCounter,
   },
 });
 

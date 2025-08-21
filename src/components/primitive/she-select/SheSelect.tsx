@@ -129,7 +129,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
     // ----------------------------------- SET SELECTED
     if (!_.isEqual(tmpSelected, _selected)) setSelected(tmpSelected);
     setIsHighlighted(false);
-    _sourceValue.current = tmpSelected.value;
+    _sourceValue.current = tmpSelected?.value;
     // ----------------------------------- UPDATE FOCUS CONDITION
     _updateFocusRelatedLogic();
   }, [items, selected]);

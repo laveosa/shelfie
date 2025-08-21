@@ -13,9 +13,13 @@ import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import OrdersApiHooks from "@/utils/services/api/OrdersApiService.ts";
+import { merge } from "lodash";
+import { useAppSelector } from "@/utils/hooks/redux.ts";
+import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 
 export default function useOrdersPageService() {
   const appService = useAppService();
+  const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
   const state = useSelector(
     (state: RootState): IOrdersPageSlice => state[StoreSliceEnum.ORDERS],
   );
@@ -59,8 +63,33 @@ export default function useOrdersPageService() {
     });
   }
 
+  function handleGridRequestChange(updates: GridRequestModel) {
+    let gridRequestModel;
+    if (updates?.filter) {
+      gridRequestModel = dispatch(
+        actions.refreshOrdersGridRequestModel({
+          ...state.ordersGridRequestModel,
+          currentPage: 1,
+          filter: {
+            ...state.ordersGridRequestModel.filter,
+            ...updates.filter,
+          },
+        }),
+      );
+    } else {
+      gridRequestModel = dispatch(
+        actions.refreshOrdersGridRequestModel({
+          ...state.ordersGridRequestModel,
+          ...updates,
+        }),
+      );
+    }
+    getListOfOrdersForGridHandler(gridRequestModel.payload);
+  }
+
   function updateUserPreferencesHandler(model: PreferencesModel) {
-    return updateUserPreferences(model).then(() => {
+    const modifiedModel = merge({}, appState.preferences, model);
+    return updateUserPreferences(modifiedModel).then(() => {
       appService.getUserPreferencesHandler();
     });
   }
@@ -83,9 +112,27 @@ export default function useOrdersPageService() {
     });
   }
 
+  function manageOrderHandler(order) {
+    dispatch(actions.refreshSelectedOrder(order));
+    navigate(
+      `${NavUrlEnum.SALES}${NavUrlEnum.ORDERS}${NavUrlEnum.ORDER_DETAILS}/${order.id}`,
+    );
+  }
+
   function getListOfCustomersForGridHandler(model) {
     return getListOfCustomersForGrid(model).then((res: any) => {
-      dispatch(actions.refreshCustomersGridModel(res.data));
+      const updatedCustomers = res.data.items.map((customer) =>
+        customer.customerId === state.selectedOrder.customerId
+          ? { ...customer, isSelected: true }
+          : { ...customer, isSelected: false },
+      );
+
+      dispatch(
+        actions.refreshCustomersGridModel({
+          ...res.data,
+          items: updatedCustomers,
+        }),
+      );
       return res.data;
     });
   }
@@ -147,9 +194,11 @@ export default function useOrdersPageService() {
   return {
     getSortingOptionsForGridHandler,
     getListOfOrdersForGridHandler,
+    handleGridRequestChange,
     updateUserPreferencesHandler,
     resetUserPreferencesHandler,
     createOrderHandler,
+    manageOrderHandler,
     getListOfCustomersForGridHandler,
     getVariantsForGridHandler,
     getBrandsForFilterHandler,
