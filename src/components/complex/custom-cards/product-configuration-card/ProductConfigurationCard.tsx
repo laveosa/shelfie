@@ -28,12 +28,8 @@ export default function ProductConfigurationCard({
   product,
   brandsList,
   categoriesList,
-  onProductCodeCheck,
-  onOpenCreateProductCategoryCard,
-  onOpenCreateProductBrandCard,
   onPrimaryButtonClick,
   onAction,
-  ...props
 }: IProductConfigurationCard) {
   const form = useForm({
     defaultValues: {
@@ -80,7 +76,6 @@ export default function ProductConfigurationCard({
         secondaryButtonTitle="Cancel"
         onPrimaryButtonClick={form.handleSubmit(onPrimaryButtonClick)}
         onSecondaryButtonClick={() => onAction("gotoProductsPage")}
-        {...props}
       >
         <div className={cs.productConfigurationForm}>
           <SheForm form={form}>
