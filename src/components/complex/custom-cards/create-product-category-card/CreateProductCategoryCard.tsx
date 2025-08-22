@@ -33,9 +33,7 @@ export default function CreateProductCategoryCard({
             onDelay={(value) => onAction("checkCategoryName", value)}
           />
           <SheButton
-            onClick={() =>
-              onAction("createProductCategory", category.categoryName)
-            }
+            onClick={() => onAction("createProductCategory")}
             value="Add Category"
           />
           <div>

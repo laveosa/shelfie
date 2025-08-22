@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/state/store.ts";
 import { useCallback, useRef } from "react";
 
+import { RootState } from "@/state/store.ts";
 import { scrollToRefElement } from "@/utils/helpers/quick-helper.ts";
 
 export function useCardActions({
