@@ -13,6 +13,7 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import cs from "./GridItemsFilter.module.scss";
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import { useGridContext } from "@/state/context/grid-context.ts";
 
 interface GridFilterProps<T> {
   items: T[];
@@ -21,7 +22,6 @@ interface GridFilterProps<T> {
   getId: (item: T) => number;
   getName: (item: T) => string;
   icon?: Partial<ISheIcon> | string | React.FC<any>;
-  onSelectionChange: (selectedIds: number[]) => void;
 }
 
 export default function GridItemsFilter<T>({
@@ -31,11 +31,10 @@ export default function GridItemsFilter<T>({
   getId,
   getName,
   icon,
-  onSelectionChange,
 }: GridFilterProps<T>) {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
+  const { onGridRequestChange } = useGridContext();
   useEffect(() => {
     if (!dropdownOpen && selected?.length > 0) {
       setSelectedIds(selected);
@@ -54,13 +53,17 @@ export default function GridItemsFilter<T>({
 
   function onResetHandle() {
     setSelectedIds([]);
-    onSelectionChange([]);
+    onGridRequestChange({
+      [columnName]: [],
+    });
     setDropdownOpen(false);
   }
 
   function onApplyHandle() {
     if (selectedIds.length > 0) {
-      onSelectionChange(selectedIds);
+      onGridRequestChange({
+        [columnName]: selectedIds,
+      });
     }
     setDropdownOpen(false);
   }

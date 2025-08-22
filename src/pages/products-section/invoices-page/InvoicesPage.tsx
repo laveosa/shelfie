@@ -42,6 +42,9 @@ export function InvoicesPage() {
         break;
       case "deleteInvoice":
         service.deleteInvoiceHandler(payload, purchaseId);
+        if (payload.row.original.url === state.previewUrl) {
+          handleCardAction("invoicePreviewCard");
+        }
         break;
       case "downloadInvoice":
         service.downloadInvoice(payload);

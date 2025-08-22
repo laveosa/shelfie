@@ -5,7 +5,5 @@ export interface GridRequestModel {
   pageSize?: number;
   searchQuery?: string;
   sortOption?: string;
-  brands?: number[];
-  categories?: number[];
   filter?: GridFiltersModel;
 }

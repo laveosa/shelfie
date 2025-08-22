@@ -25,9 +25,7 @@ export default function GridShowItemsFilter({ context }: { context?: string }) {
   function handleSelect(value: string) {
     setSelectedValue(value);
     onGridRequestChange({
-      filter: {
-        [`show${context}`]: value,
-      },
+      [`show${context}`]: value,
     });
     setDropdownOpen(false);
   }

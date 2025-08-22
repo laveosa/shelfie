@@ -1,107 +1,114 @@
 @use "@/styles/variables" as vars;
 
 .variantConfigurationCard {
-  .variantConfigurationCardContent {
+  .variantConfigurationCardContentWrapper {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    overflow-y: auto;
-    padding-bottom: 20px;
-    max-height: calc(100vh - 260px);
+    justify-content: space-between;
 
-    .variantConfigurationForm {
+    .variantConfigurationCardContent {
       display: flex;
       flex-direction: column;
       gap: 20px;
+      overflow-y: auto;
+      padding-bottom: 20px;
+      max-height: calc(100vh - 260px);
+      height: 100vh;
 
-      .variantCodeFormRow {
+      .variantConfigurationForm {
         display: flex;
-        gap: 10px;
-        justify-content: space-between;
-        align-items: end;
-        padding: 20px 0;
-
-        & > div {
-          width: 100%;
-        }
-      }
-
-      .priceFormRow {
-        display: flex;
-        gap: 10px;
-
-        .priceFormRowItem {
-          width: 33%;
-        }
-      }
-    }
-
-    .salePriceBlock {
-      display: flex;
-      flex-direction: column;
-
-      .salePriceBlockTitle {
-        padding-bottom: 10px;
-      }
-
-      .salePriceBlockInput {
-        display: flex;
+        flex-direction: column;
         gap: 20px;
 
-        label {
-          font-size: 14px;
+        .variantCodeFormRow {
+          display: flex;
+          gap: 10px;
+          justify-content: space-between;
+          align-items: end;
+          padding: 20px 0;
+
+          & > div {
+            width: 100%;
+          }
+        }
+
+        .priceFormRow {
+          display: flex;
+          gap: 10px;
+
+          .priceFormRowItem {
+            width: 33%;
+          }
         }
       }
-    }
 
-    .stockDetailsBlock {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-
-      .buttonBlock {
+      .salePriceBlock {
         display: flex;
-        align-items: center;
-        gap: 10px;
+        flex-direction: column;
 
-        button {
-          padding: 8px 8px;
+        .salePriceBlockTitle {
+          padding-bottom: 10px;
+        }
+
+        .salePriceBlockInput {
+          display: flex;
+          gap: 20px;
+
+          label {
+            font-size: 14px;
+          }
         }
       }
 
-      .stockDetailsTitle {
-        text-wrap: auto;
+      .stockDetailsBlock {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        .buttonBlock {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+
+          button {
+            padding: 8px 8px;
+          }
+        }
+
+        .stockDetailsTitle {
+          text-wrap: auto;
+        }
+
+        .stockBlock {
+          border: 1px solid #e5e5e5;
+          border-radius: 5px;
+
+          .stockBlockRow {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+
+            &:not(:last-child) {
+              border-bottom: 1px solid #e5e5e5;
+            }
+
+            .stockBlockRowNumber {
+              padding-right: 20px;
+            }
+          }
+        }
       }
 
-      .stockBlock {
-        border: 1px solid #e5e5e5;
-        border-radius: 5px;
+      .variantGridBlock {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
 
-        .stockBlockRow {
+        .variantGridBlockHeader {
           display: flex;
           justify-content: space-between;
-          padding: 10px;
-
-          &:not(:last-child) {
-            border-bottom: 1px solid #e5e5e5;
-          }
-
-          .stockBlockRowNumber {
-            padding-right: 20px;
-          }
+          align-items: center;
         }
-      }
-    }
-
-    .variantGridBlock {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-
-      .variantGridBlockHeader {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
       }
     }
   }
