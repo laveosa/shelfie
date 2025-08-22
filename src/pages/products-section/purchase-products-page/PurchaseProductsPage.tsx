@@ -1398,6 +1398,8 @@ export function PurchaseProductsPage() {
             preferences={appState.preferences}
             brands={productsState.brands}
             categories={productsState.categories}
+            colorsForFilter={productsState.colorsForFilter}
+            sizesForFilter={productsState.sizesForFilter}
             purchaseProductsSkeletonQuantity={
               state.purchasesProductsGridRequestModel.pageSize
             }
