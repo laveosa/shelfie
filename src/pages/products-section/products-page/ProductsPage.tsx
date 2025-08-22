@@ -263,7 +263,30 @@ export function ProductsPage() {
   }
 
   function handleGridRequestChange(updates: any) {
-    if (!updates.currentPage) {
+    if ("searchQuery" in updates || "currentPage" in updates) {
+      if (state.activeTab === "products") {
+        dispatch(
+          actions.refreshProductsGridRequestModel({
+            ...state.productsGridRequestModel,
+            ...updates,
+          }),
+        );
+      } else if (state.activeTab === "variants") {
+        dispatch(
+          actions.refreshVariantsGridRequestModel({
+            ...state.variantsGridRequestModel,
+            ...updates,
+          }),
+        );
+      } else if (state.activeTab === "purchases") {
+        dispatch(
+          actions.refreshPurchasesGridRequestModel({
+            ...state.purchasesGridRequestModel,
+            ...updates,
+          }),
+        );
+      }
+    } else {
       if (state.activeTab === "products") {
         dispatch(
           actions.refreshProductsGridRequestModel({
@@ -295,29 +318,6 @@ export function ProductsPage() {
               ...state.purchasesGridRequestModel.filter,
               ...updates,
             },
-          }),
-        );
-      }
-    } else {
-      if (state.activeTab === "products") {
-        dispatch(
-          actions.refreshProductsGridRequestModel({
-            ...state.productsGridRequestModel,
-            ...updates,
-          }),
-        );
-      } else if (state.activeTab === "variants") {
-        dispatch(
-          actions.refreshVariantsGridRequestModel({
-            ...state.variantsGridRequestModel,
-            ...updates,
-          }),
-        );
-      } else if (state.activeTab === "purchases") {
-        dispatch(
-          actions.refreshPurchasesGridRequestModel({
-            ...state.purchasesGridRequestModel,
-            ...updates,
           }),
         );
       }
