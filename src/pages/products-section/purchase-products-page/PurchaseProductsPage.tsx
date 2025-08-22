@@ -1433,7 +1433,6 @@ export function PurchaseProductsPage() {
             product={state.selectedProduct}
             brandsList={productsState.brands}
             categoriesList={productsState.categories}
-            showSecondaryButton={true}
             onGenerateProductCode={productsService.generateProductCodeHandler}
             onProductCodeCheck={productsService.checkProductCodeHandler}
             onOpenCreateProductCategoryCard={() =>
