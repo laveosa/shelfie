@@ -57,6 +57,7 @@ const user: UserModel = {
   address: "Levetano 3/23",
   gender: "male",
   position: "SEO",
+  isAvailable: true,
 };
 
 export function DashboardPage() {

@@ -8,6 +8,7 @@ const nonemptyMessage = "field is required";
 
 const userFormScheme: AppSchemeType<UserModel> = z.object({
   nikName: z.string().nonempty(nonemptyMessage),
+  isAvailable: z.boolean(),
   name: z
     .string()
     .nonempty(nonemptyMessage)

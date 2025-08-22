@@ -16,6 +16,8 @@ import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
 import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
 import SheAutocomplete from "@/components/primitive/she-autocomplete/SheAutocomplete.tsx";
+import SheToggle from "@/components/primitive/she-toggle/SheToggle.tsx";
+import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
 
 export default function UserForm({
   data,
@@ -70,6 +72,13 @@ export default function UserForm({
               required
               hideErrorMessage
             />
+          )}
+        />
+        <SheFormField
+          label="Is Available"
+          name="isAvailable"
+          render={({ field }) => (
+            <SheToggle checked={field.value} type={SheToggleTypeEnum.SWITCH} />
           )}
         />
         <SheFormField<UserModel>
