@@ -32,6 +32,7 @@ import {
 import { SheLabelDefaultModel } from "@/const/interfaces/primitive-components/ISheLabel.ts";
 import { SheDescriptionBlockDefaultModel } from "@/const/interfaces/primitive-components/ISheDescriptionBlock.ts";
 import { SheErrorMessageBlockDefaultModel } from "@/const/interfaces/primitive-components/ISheErrorMessageBlock.ts";
+import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
 
 const SheAutocompletePCWDefaultModel: IShePrimitiveComponentWrapper = {
   ...SheLabelDefaultModel,
@@ -110,7 +111,11 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     setFocus,
     initializeItemsList,
     calculatePopoverWidth,
-  } = useComponentUtilities({
+    updateFormValue,
+    resetFormField,
+    getFormMode,
+  } = useComponentUtilities<ISheAutocomplete>({
+    props,
     identifier: "SheAutocomplete",
   });
 
@@ -186,12 +191,19 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     const tmpSearchValue = value?.trim();
     _setIsOpen(_checkIsOpenCondition(true, tmpSearchValue));
     setSearchValue(tmpSearchValue);
+
+    if (getFormMode() === ReactHookFormMode.CHANGE)
+      updateFormValue(tmpSearchValue);
+
     onChange?.(tmpSearchValue);
   }
 
   function onBlurHandler() {
+    if (getFormMode() === ReactHookFormMode.BLUR) updateFormValue(_searchValue);
+
     setTimeout(() => {
       _setIsOpen(false);
+
       onBlur?.(_searchValue);
     }, 100);
   }
@@ -216,7 +228,8 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
       });
     }
 
-    event?.stopPropagation();
+    updateFormValue(value);
+    event?.preventDefault();
   }
 
   function onForceSelectHandler(
@@ -232,9 +245,10 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     setSearchValue(value);
 
     setTimeout(() => {
-      setFocus<HTMLInputElement>(true, _triggerRef);
+      setFocus<HTMLInputElement>(autoFocus, _triggerRef);
     }, 0);
 
+    updateFormValue(value);
     event?.stopPropagation();
   }
 
@@ -257,10 +271,10 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
       event,
     });
     event?.stopPropagation();
-    setFocus<HTMLInputElement>(true, _triggerRef);
-    setTimeout(() => {
-      _setIsOpen(true);
-    });
+    resetFormField();
+    setFocus<HTMLInputElement>(autoFocus, _triggerRef);
+    _setIsOpen(autoFocus);
+    setTimeout(() => _setIsOpen(autoFocus));
   }
 
   // ==================================================================== PRIVATE
@@ -322,6 +336,7 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
               isLoading={_loading}
               fullWidth
               ignoreValidation
+              ignoreFormAction
               hideErrorMessage
               hideDescription
               onFocus={onFocusHandler}

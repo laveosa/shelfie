@@ -15,6 +15,7 @@ import { IUserForm } from "@/const/interfaces/forms/IUserForm.ts";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
 import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
+import SheAutocomplete from "@/components/primitive/she-autocomplete/SheAutocomplete.tsx";
 
 export default function UserForm({
   data,
@@ -58,16 +59,31 @@ export default function UserForm({
         onError={onErrorHandler}
         onCancel={onCancel}
       >
+        <SheFormField
+          label="Nik Name"
+          name="nikName"
+          render={({ field }) => (
+            <SheAutocomplete
+              items={positions}
+              showClearBtn
+              fullWidth
+              required
+              hideErrorMessage
+            />
+          )}
+        />
         <SheFormField<UserModel>
           label="Name"
           name="name"
-          render={() => (
+          render={({ field }) => (
             <SheInput
+              value={field.value}
               placeholder="enter user name..."
               showClearBtn
               fullWidth
               minLength={4}
               maxLength={16}
+              required
               hideErrorMessage
             />
           )}
@@ -75,20 +91,24 @@ export default function UserForm({
         <SheFormField
           label="Email"
           name="email"
-          render={() => (
+          render={({ field }) => (
             <SheInput
+              value={field.value}
               placeholder="enter user email..."
               type="email"
               showClearBtn
               fullWidth
+              required
+              hideErrorMessage
             />
           )}
         />
         <SheFormField
           label="Address"
           name="address"
-          render={() => (
+          render={({ field }) => (
             <SheInput
+              value={field.value}
               placeholder="enter user address..."
               showClearBtn
               fullWidth
@@ -105,6 +125,7 @@ export default function UserForm({
               hideFirstOption
               showClearBtn
               fullWidth
+              required
               placeholder="select user gender..."
             />
           )}

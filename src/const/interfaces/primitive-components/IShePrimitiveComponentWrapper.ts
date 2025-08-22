@@ -37,6 +37,7 @@ export interface IShePrimitiveComponentWrapper
   children?: React.ReactNode;
   field?: ControllerRenderProps<any, string>;
   form?: UseFormReturn<any>;
+  ignoreFormAction?: boolean;
   id?: string;
   className?: string;
   style?: React.CSSProperties;
@@ -67,6 +68,7 @@ export const ShePrimitiveComponentWrapperDefaultModel: IShePrimitiveComponentWra
     id: undefined,
     field: undefined,
     form: undefined,
+    ignoreFormAction: undefined,
     className: undefined,
     style: undefined,
     minWidth: undefined,

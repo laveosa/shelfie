@@ -87,7 +87,7 @@ export default function SheInput(props: ISheInput): JSX.Element {
     ariaDescribedbyId,
     setFocus,
     updateFormValue,
-    resetForm,
+    resetFormField,
     getFormMode,
   } = useComponentUtilities<ISheInput>({
     props,
@@ -183,7 +183,7 @@ export default function SheInput(props: ISheInput): JSX.Element {
     updateIsValid(true);
     setIsLengthValid(true);
     _setErrorCondition(false);
-    resetForm();
+    resetFormField();
 
     const newValue = "";
     setTextValue(newValue);

@@ -12,6 +12,20 @@ export interface UserModel {
   isAvailable?: boolean;
 }
 
+/*export const UserModelDefault: UserModel = {
+  id: undefined,
+  image: undefined,
+  name: "Tom Hanks",
+  age: 32,
+  email: "test@yahoo.com",
+  address: "Levetano 5/23",
+  gender: "male",
+  position: undefined,
+  comments: undefined,
+  tags: undefined,
+  isAvailable: undefined,
+};*/
+
 export const UserModelDefault: UserModel = {
   id: undefined,
   image: undefined,

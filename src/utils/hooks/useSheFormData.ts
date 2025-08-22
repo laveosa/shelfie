@@ -6,7 +6,7 @@ export default function useSheFormData<
   const ctx = useSheFormItemContext();
 
   return {
-    field: props.field || ctx?.field,
-    form: props.form || ctx?.form,
+    field: props?.field || ctx?.field,
+    form: props?.form || ctx?.form,
   };
 }

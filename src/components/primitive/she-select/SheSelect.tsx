@@ -79,7 +79,7 @@ export default function SheSelect<T = any>(props: ISheSelect<T>): JSX.Element {
     initializeItemsList,
     calculatePopoverWidth,
     updateFormValue,
-    resetForm,
+    resetFormField,
   } = useComponentUtilities<ISheSelect<T>>({
     props,
     identifier: "SheSelect",
@@ -184,7 +184,7 @@ export default function SheSelect<T = any>(props: ISheSelect<T>): JSX.Element {
         event,
       });
     } else {
-      resetForm();
+      resetFormField();
       onSelect?.(null, {
         value: null,
         model: { ...props, items: _items, selected: null },
@@ -213,7 +213,7 @@ export default function SheSelect<T = any>(props: ISheSelect<T>): JSX.Element {
     const tmpItems = updateSelectedItems<ISheSelectItem<T>, T>(_items);
     setItems(tmpItems);
     setSelected(null);
-    resetForm();
+    resetFormField();
     onSelect?.(null, {
       value: null,
       model: { ...props, items: tmpItems, selected: null },

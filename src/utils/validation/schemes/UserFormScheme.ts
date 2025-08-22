@@ -7,6 +7,7 @@ import { AppSchemeType } from "@/const/types/AppSchemeType.ts";
 const nonemptyMessage = "field is required";
 
 const userFormScheme: AppSchemeType<UserModel> = z.object({
+  nikName: z.string().nonempty(nonemptyMessage),
   name: z
     .string()
     .nonempty(nonemptyMessage)

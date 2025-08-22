@@ -2,7 +2,7 @@ import { UserModel } from "@/const/models/UserModel.ts";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 
 export interface IUserForm {
-  model?: UserModel;
+  data?: UserModel;
   genders?: ISheSelectItem<string>[];
   positions?: ISheSelectItem<string>[];
   onSubmit?(value: UserModel): void;

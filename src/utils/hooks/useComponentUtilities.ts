@@ -153,14 +153,18 @@ export default function useComponentUtilities<T>({
   }
 
   // --------------------------------------------------------------- FORM
-  function updateFormValue(value: any) {
+  function updateFormValue(value: any, validate: boolean = true) {
+    if (props.ignoreFormAction) return null;
+
     if (field) {
       field.onChange(value);
-      void form.trigger(field.name);
+      if (validate) void form.trigger(field.name);
     }
   }
 
-  function resetForm() {
+  function resetFormField() {
+    if (props.ignoreFormAction) return null;
+
     if (field) {
       form?.resetField?.(field.name, {
         keepDirty: false,
@@ -171,6 +175,8 @@ export default function useComponentUtilities<T>({
   }
 
   function getFormMode(): ReactHookFormMode {
+    if (props.ignoreFormAction) return null;
+
     return (
       (form?.control?._options?.mode as ReactHookFormMode) ||
       ReactHookFormMode.SUBMIT
@@ -191,7 +197,7 @@ export default function useComponentUtilities<T>({
     calculatePopoverWidth,
     getContextColorBasedOnVariant,
     updateFormValue,
-    resetForm,
+    resetFormField,
     getFormMode,
   };
 }

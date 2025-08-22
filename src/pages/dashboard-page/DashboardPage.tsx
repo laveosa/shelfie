@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import cs from "./DashboardPage.module.scss";
 import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageService.ts";
 import SheTestForm from "@/components/forms/test-from/SheTestForm.tsx";
 import UserForm from "@/components/forms/user-form/UserForm.tsx";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
+import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
+import { UserModel } from "@/const/models/UserModel.ts";
 
 const genders: ISheSelectItem<string>[] = [
   {
@@ -48,8 +50,25 @@ const position: ISheSelectItem<string>[] = [
   },
 ];
 
+const user: UserModel = {
+  name: "Anton",
+  age: 32,
+  email: "anton@yahoo.com",
+  address: "Levetano 3/23",
+  gender: "male",
+  position: "SEO",
+};
+
 export function DashboardPage() {
   const service = useDashboardPageService();
+
+  const [_user, setUser] = useState<UserModel>(null);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setUser(user);
+    }, 3000);
+  }, []);
 
   // ================================================================== STATE
 
@@ -68,6 +87,7 @@ export function DashboardPage() {
       <br />
 
       <UserForm
+        data={_user}
         genders={genders}
         positions={position}
         onSubmit={onAction}
