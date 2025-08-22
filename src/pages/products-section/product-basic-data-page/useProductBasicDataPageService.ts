@@ -1,14 +1,23 @@
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
-import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import {
+  IProductsPageSlice
+} from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
-import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
-import { ProductBasicDataPageSliceActions as actions } from "@/state/slices/ProductBasicDataPageSlice.ts";
+import {
+  ProductsPageSliceActions as productsActions
+} from "@/state/slices/ProductsPageSlice.ts";
+import useProductsPageService
+  from "@/pages/products-section/products-page/useProductsPageService.ts";
+import {
+  ProductBasicDataPageSliceActions as actions
+} from "@/state/slices/ProductBasicDataPageSlice.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { useNavigate } from "react-router-dom";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
-import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
+import {
+  IProductBasicDataPageSlice
+} from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
 
@@ -272,6 +281,17 @@ export default function useProductBasicDataPageService() {
 
   function checkProductCodeHandler(code) {
     return checkProductCode(code).then((res: any) => {
+      if (!res.error) {
+        addToast({
+          text: "Product code is available",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: `${res.error.data.detail}`,
+          type: "error",
+        });
+      }
       return res.data;
     });
   }

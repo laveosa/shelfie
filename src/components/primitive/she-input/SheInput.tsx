@@ -125,12 +125,10 @@ export default function SheInput(props: ISheInput): JSX.Element {
   }, [isValid]);
 
   // ==================================================================== EVENT HANDLERS
-  function onChangeHandler(
-    event: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent,
-  ) {
+  function onChangeHandler(event) {
     _isInitialized.current = true;
     _lastEventDataRef.current = event;
-    const newValue = _inputRef.current.value;
+    const newValue = event.target.value;
     setTextValue(newValue);
     const tmpIsValid = _validateValue(newValue);
     onChange?.(newValue, {
