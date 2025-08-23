@@ -65,7 +65,10 @@ export default function SheBadgeList<T>(props: ISheBadgeList<T>): JSX.Element {
     ariaDescribedbyId,
     addItemsId,
     removeItemFromListByIdentifier,
-  } = useComponentUtilities({
+    updateFormValue,
+    resetFormField,
+  } = useComponentUtilities<ISheBadgeList<T>>({
+    props,
     identifier: "SheBadgeList",
   });
   const plusMoreBtnWidth = 100;
@@ -109,6 +112,7 @@ export default function SheBadgeList<T>(props: ISheBadgeList<T>): JSX.Element {
       item.id,
     );
     setItems(tmpList);
+    updateFormValue(tmpList);
     _calculateMaxBadgeAmount(tmpList);
     onClose?.(item, { ...model });
   }
@@ -117,7 +121,9 @@ export default function SheBadgeList<T>(props: ISheBadgeList<T>): JSX.Element {
     value: ISheBadge<T>[],
     model: IOutputEventModel<T | string, ISheBadge<T>, React.MouseEvent>,
   ) {
-    setItems(_items.slice(0, _maxBadgeAmount));
+    const tmpList: ISheBadge<T>[] = _items.slice(0, _maxBadgeAmount);
+    setItems(tmpList);
+    updateFormValue(tmpList);
     setMaxBadgeAmount(null);
     onCloseAllExtra?.(value, { ...model, model: props } as any);
   }
@@ -125,6 +131,7 @@ export default function SheBadgeList<T>(props: ISheBadgeList<T>): JSX.Element {
   function onClearHandler(event) {
     setItems(null);
     setMaxBadgeAmount(null);
+    resetFormField();
     onClear?.(null, { event, value: null, model: { ...props, items: null } });
   }
 
@@ -216,7 +223,7 @@ export default function SheBadgeList<T>(props: ISheBadgeList<T>): JSX.Element {
       ariaDescribedbyId={ariaDescribedbyId}
       clearBtnValue={items}
       clearBtnPosition="out"
-      iconPosition="in"
+      iconPosition="out"
       onClear={onClearHandler}
     >
       <div

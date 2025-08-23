@@ -8,7 +8,7 @@ export interface UserModel {
   gender?: string;
   position?: any;
   comments?: string;
-  tags?: string[];
+  tags?: any[];
   isAvailable?: boolean;
 }
 

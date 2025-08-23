@@ -30,6 +30,8 @@ const userFormScheme: AppSchemeType<UserModel> = z.object({
       }
     }),
   position: z.string().optional(),
+  tags: z.array(z.any()).nonempty(nonemptyMessage),
+  // tags: z.array(z.any()).min(1, "tag cannot be empty").optional(),
 });
 
 export default userFormScheme;

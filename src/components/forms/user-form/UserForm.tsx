@@ -1,7 +1,7 @@
 import React, { JSX, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { User } from "lucide-react";
+import { Home, User } from "lucide-react";
 import TNFLogoIcon from "@/assets/icons/TNF_logo.svg?react";
 
 import useAppForm from "@/utils/hooks/useAppForm.ts";
@@ -18,11 +18,14 @@ import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
 import SheAutocomplete from "@/components/primitive/she-autocomplete/SheAutocomplete.tsx";
 import SheToggle from "@/components/primitive/she-toggle/SheToggle.tsx";
 import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
+import SheBadgeList from "@/components/primitive/she-badge-list/SheBadgeList.tsx";
 
 export default function UserForm({
   data,
   genders,
   positions,
+  badges,
+  notDisabledSubmit,
   onSubmit,
   onCancel,
 }: IUserForm): JSX.Element {
@@ -57,15 +60,32 @@ export default function UserForm({
         title="User Form"
         minWidth="400px"
         view={ComponentViewEnum.CARD}
+        notDisabledSubmit={notDisabledSubmit}
         onSubmit={onSubmit}
         onError={onErrorHandler}
         onCancel={onCancel}
       >
         <SheFormField
-          label="Nik Name"
+          name="tags"
+          render={(field) => (
+            <SheBadgeList<any>
+              label="Tags"
+              items={badges}
+              required
+              showCloseBtn
+              showClearBtn
+              // elementMinWidth="100px"
+              // itemsWrap="nowrap"
+              maxWidth="400px"
+              // icon={Home}
+            />
+          )}
+        />
+        <SheFormField
           name="nikName"
           render={({ field }) => (
             <SheAutocomplete
+              label="Nik Name"
               items={positions}
               showClearBtn
               fullWidth
@@ -75,17 +95,20 @@ export default function UserForm({
           )}
         />
         <SheFormField
-          label="Is Available"
           name="isAvailable"
           render={({ field }) => (
-            <SheToggle checked={field.value} type={SheToggleTypeEnum.SWITCH} />
+            <SheToggle
+              label="Is Available"
+              checked={field.value}
+              type={SheToggleTypeEnum.SWITCH}
+            />
           )}
         />
         <SheFormField<UserModel>
-          label="Name"
           name="name"
           render={({ field }) => (
             <SheInput
+              label="Name"
               value={field.value}
               placeholder="enter user name..."
               showClearBtn
@@ -98,10 +121,10 @@ export default function UserForm({
           )}
         />
         <SheFormField
-          label="Email"
           name="email"
           render={({ field }) => (
             <SheInput
+              label="Email"
               value={field.value}
               placeholder="enter user email..."
               type="email"
@@ -113,10 +136,10 @@ export default function UserForm({
           )}
         />
         <SheFormField
-          label="Address"
           name="address"
           render={({ field }) => (
             <SheInput
+              label="Address"
               value={field.value}
               placeholder="enter user address..."
               showClearBtn
@@ -125,10 +148,10 @@ export default function UserForm({
           )}
         />
         <SheFormField<UserModel>
-          label="Gender"
           name="gender"
           render={({ field }) => (
             <SheSelect<string>
+              label="Gender"
               selected={field?.value}
               items={genders}
               hideFirstOption
@@ -140,10 +163,10 @@ export default function UserForm({
           )}
         />
         <SheFormField
-          label="Position"
           name="position"
           render={({ field }) => (
             <SheSelect
+              label="Position"
               selected={field?.value}
               items={positions}
               hideFirstOption

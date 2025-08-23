@@ -11,6 +11,7 @@ import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
 import { IComponentUtilities } from "@/const/interfaces/IComponentUtilities.ts";
 import useSheFormData from "@/utils/hooks/useSheFormData.ts";
+import _ from "lodash";
 
 export default function useComponentUtilities<T>({
   props,
@@ -63,10 +64,11 @@ export default function useComponentUtilities<T>({
 
     const { withIcons, withColors } = _analyzeElementsForSpecificData(items);
 
-    return items.map((item: T, idx) => {
+    return _.cloneDeep(items).map((item: T, idx) => {
       // ----------------------------------- INITIALIZE ID
       item.id = generateSafeItemId(item.text, idx);
       // ----------------------------------- INITIALIZE COLUMNS
+
       item.showIconsColumn = withIcons;
       item.showColorsColumn = withColors;
       // ----------------------------------- INITIALIZE SELECTED

@@ -51,15 +51,16 @@ function SheIconComponent({
       }}
       onClick={onClickHandler}
     >
-      {typeof icon === "string" && /\.(png|jpe?g|gif|webp)$/i.test(icon) && (
-        <img
-          src={icon}
-          className={elementClassName}
-          style={{ ...elementStyle }}
-          alt="icon"
-          role="img"
-        />
-      )}
+      {typeof icon === "string" &&
+        /\.(png|jpe?g|gif|webp|svg)$/i.test(icon) && (
+          <img
+            src={icon}
+            className={elementClassName}
+            style={{ ...elementStyle }}
+            alt="icon"
+            role="img"
+          />
+        )}
       {icon && isObject(icon) && (
         <Icon
           icon={icon as React.FC<Object>}
