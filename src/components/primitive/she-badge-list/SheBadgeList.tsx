@@ -82,7 +82,7 @@ export default function SheBadgeList<T>(props: ISheBadgeList<T>): JSX.Element {
 
   useEffect(() => {
     if (!_.isEqual(items, _items)) {
-      setItems(addItemsId(_calculateMaxBadgeAmount(items)));
+      setItems(addItemsId(_calculateMaxBadgeAmount(_.cloneDeep(items))));
       setTimeout(() =>
         setScrollInfo(_hasVisibleScroll(badgeListContextRef.current)),
       );

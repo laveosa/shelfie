@@ -91,8 +91,10 @@ export default function SheSelect<T = any>(props: ISheSelect<T>): JSX.Element {
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
+    console.log("SELECTED: ", selected);
+
     const newItems = initializeItemsList<T, ISheSelectItem<T>>([
-      ...(items || []),
+      ...(_.cloneDeep(items) || []),
     ]);
     // ----------------------------------- GET ALL SELECTED ITEMS FROM THE LIST
     const listSelected: ISheSelectItem<T>[] = newItems?.filter(
@@ -166,7 +168,7 @@ export default function SheSelect<T = any>(props: ISheSelect<T>): JSX.Element {
     event?: React.MouseEvent | React.KeyboardEvent,
   ) {
     const selected: ISheSelectItem<T> = _.cloneDeep(
-      getItemFromListByIdentifier<ISheSelectItem<T>, string>(items, "id", id),
+      getItemFromListByIdentifier<ISheSelectItem<T>, string>(_items, "id", id),
     );
 
     if (selected) {

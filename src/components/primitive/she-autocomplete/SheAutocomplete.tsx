@@ -125,7 +125,9 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
   }, []);
 
   useEffect(() => {
-    const newItems = initializeItemsList<string, ISheOption<string>>(items);
+    const newItems = initializeItemsList<string, ISheOption<string>>(
+      _.cloneDeep(items),
+    );
 
     if (!_.isEqual(newItems, _items)) {
       setItems(newItems);

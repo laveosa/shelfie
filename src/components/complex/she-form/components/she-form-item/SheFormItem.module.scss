@@ -7,6 +7,10 @@
   width: 100%;
   flex-grow: 1;
 
+  > div {
+    overflow: visible;
+  }
+
   > label {
     color: vars.$titleColor;
   }

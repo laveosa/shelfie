@@ -1,7 +1,7 @@
 import React, { JSX, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { Home, User } from "lucide-react";
+import { User } from "lucide-react";
 import TNFLogoIcon from "@/assets/icons/TNF_logo.svg?react";
 
 import useAppForm from "@/utils/hooks/useAppForm.ts";
@@ -19,12 +19,16 @@ import SheAutocomplete from "@/components/primitive/she-autocomplete/SheAutocomp
 import SheToggle from "@/components/primitive/she-toggle/SheToggle.tsx";
 import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
 import SheBadgeList from "@/components/primitive/she-badge-list/SheBadgeList.tsx";
+import SheCalendar from "@/components/primitive/she-calendar/SheCalendar.tsx";
+import { DateFormatEnum } from "@/const/enums/DateFormatEnum.ts";
+import SheMultiSelect from "@/components/primitive/she-multi-select/SheMultiSelect.tsx";
 
 export default function UserForm({
   data,
   genders,
   positions,
   badges,
+  units,
   notDisabledSubmit,
   onSubmit,
   onCancel,
@@ -65,19 +69,40 @@ export default function UserForm({
         onError={onErrorHandler}
         onCancel={onCancel}
       >
+        {/*<SheFormField
+          name="dateBerth"
+          render={({ field }) => (
+            <SheCalendar
+              label="Date Berth"
+              date={field.value}
+              dateFormat={DateFormatEnum.DD_MMM_YYYY}
+              required
+              hideTimePicker
+            />
+          )}
+        />*/}
+        <SheFormField
+          name="units"
+          render={({ field }) => (
+            <SheMultiSelect
+              label="Units"
+              items={units}
+              selectedValues={field.value}
+              showClearBtn
+            />
+          )}
+        />
         <SheFormField
           name="tags"
-          render={(field) => (
-            <SheBadgeList<any>
+          render={({ field }) => (
+            <SheBadgeList
               label="Tags"
-              items={badges}
+              items={field.value}
+              // items={positions}
               required
               showCloseBtn
               showClearBtn
-              // elementMinWidth="100px"
-              // itemsWrap="nowrap"
               maxWidth="400px"
-              // icon={Home}
             />
           )}
         />
@@ -86,6 +111,7 @@ export default function UserForm({
           render={({ field }) => (
             <SheAutocomplete
               label="Nik Name"
+              searchValue={field.value}
               items={positions}
               showClearBtn
               fullWidth
@@ -162,7 +188,7 @@ export default function UserForm({
             />
           )}
         />
-        <SheFormField
+        {/*<SheFormField
           name="position"
           render={({ field }) => (
             <SheSelect
@@ -176,7 +202,7 @@ export default function UserForm({
               icon={User}
             />
           )}
-        />
+        />*/}
       </SheForm>
     </div>
   );

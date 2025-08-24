@@ -102,8 +102,13 @@ export default function SheMultiSelect<T>(
     setFocus,
     initializeItemsList,
     updateSelectedItems,
+    isValueInCollection,
+    deepEqual,
     calculatePopoverWidth,
-  } = useComponentUtilities({
+    updateFormValue,
+    resetFormField,
+  } = useComponentUtilities<ISheMultiSelect<any>>({
+    props,
     identifier: "SheMultiSelect",
   });
 
@@ -135,7 +140,7 @@ export default function SheMultiSelect<T>(
       items?.filter((item) => item.isSelected).map((item) => item.value);
 
     const newItems = initializeItemsList<T, ISheMultiSelectItem<T>>(
-      items,
+      _.cloneDeep(items),
       tmpSelectedValues,
     );
 
@@ -146,7 +151,7 @@ export default function SheMultiSelect<T>(
     }
 
     setSelectedValues(tmpSelectedValues);
-    setBadges(_generateBadgesFromSelectedItems(items, tmpSelectedValues));
+    setBadges(_generateBadgesFromSelectedItems(newItems, tmpSelectedValues));
     _updateFocusRelatedLogic();
     setIsHighlighted(false);
     _sourceValue.current = tmpSelectedValues;
@@ -202,10 +207,12 @@ export default function SheMultiSelect<T>(
     value: T,
     event?: React.MouseEvent | React.KeyboardEvent,
   ) {
-    const newSelectedValues = _selectedValues.includes(value)
-      ? _selectedValues.filter((item) => item !== value)
+    const tmpValues = isValueInCollection(_selectedValues, value)
+      ? _selectedValues.filter((item) => !deepEqual(item, value))
       : [..._selectedValues, value];
-    _updateSelectedValues(newSelectedValues, event);
+
+    _updateSelectedValues(tmpValues, event);
+    updateFormValue(tmpValues);
   }
 
   function onToggleAllHandler(
@@ -213,16 +220,15 @@ export default function SheMultiSelect<T>(
     event?: React.MouseEvent | React.KeyboardEvent,
   ) {
     const isAllSelected = _items.every((item) =>
-      _selectedValues.includes(item.value),
+      isValueInCollection(_selectedValues, item.value),
     );
 
     if (isAllSelected) {
       onClearButtonHandler<HTMLInputElement>(event, _searchRef);
     } else {
-      _updateSelectedValues(
-        _items.map((item) => item.value),
-        event,
-      );
+      const tmpValues = _items.map((item) => item.value);
+      _updateSelectedValues(tmpValues, event);
+      updateFormValue(tmpValues);
     }
   }
 
@@ -230,10 +236,9 @@ export default function SheMultiSelect<T>(
     badges: ISheBadge<T>[],
     model: IOutputEventModel<T[] | string[], ISheBadge<T>[], React.MouseEvent>,
   ) {
-    _updateSelectedValues(
-      _selectedValues.slice(0, -badges.length),
-      model.event,
-    );
+    const tmpValues = _selectedValues.slice(0, -badges.length);
+    _updateSelectedValues(tmpValues, model.event);
+    updateFormValue(tmpValues);
   }
 
   function onClearButtonHandler<T>(
@@ -241,6 +246,7 @@ export default function SheMultiSelect<T>(
     refElement: RefObject<T>,
   ) {
     _updateSelectedValues([], event);
+    resetFormField([]);
     setSearchValue("");
     setFocus<any>(true, refElement);
     onClear?.(null);
@@ -255,8 +261,9 @@ export default function SheMultiSelect<T>(
     fromItems: ISheMultiSelectItem<T>[],
     values: T[],
   ): ISheBadge<T>[] {
-    let selectedItems: ISheMultiSelectItem<T>[] = [];
+    if (!values || values.length === 0) return null;
 
+    let selectedItems: ISheMultiSelectItem<T>[] = [];
     values?.forEach((value: T) => {
       fromItems?.forEach((item: ISheMultiSelectItem<T>) => {
         if (_.isEqual(value, item.value)) {
@@ -387,6 +394,7 @@ export default function SheMultiSelect<T>(
               {!hideSelectAll && (
                 <SheMultiSelectItem<T>
                   className={`${cs.sheMultiSelectItemParentWrapper} ${cs.sheMultiSelectItemParentWrapperSelectAll}`}
+                  value={null}
                   text={selectAllPlaceholder}
                   textTransKey={selectAllPlaceholderTransKey}
                   isSelected={_selectedValues?.length === _items?.length}

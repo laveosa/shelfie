@@ -64,16 +64,15 @@ export default function useComponentUtilities<T>({
 
     const { withIcons, withColors } = _analyzeElementsForSpecificData(items);
 
-    return _.cloneDeep(items).map((item: T, idx) => {
+    return items.map((item: T, idx) => {
       // ----------------------------------- INITIALIZE ID
       item.id = generateSafeItemId(item.text, idx);
       // ----------------------------------- INITIALIZE COLUMNS
-
       item.showIconsColumn = withIcons;
       item.showColorsColumn = withColors;
       // ----------------------------------- INITIALIZE SELECTED
       if (values && values.length > 0) {
-        item.isSelected = values.includes(item.value);
+        item.isSelected = isValueInCollection(values, item.value);
       }
 
       return item;
@@ -106,7 +105,7 @@ export default function useComponentUtilities<T>({
       : selectedValues;
 
     items?.forEach(
-      (item: T) => (item.isSelected = values?.includes(item.value)),
+      (item: T) => (item.isSelected = isValueInCollection(values, item.value)),
     );
     return items;
   }
@@ -117,6 +116,32 @@ export default function useComponentUtilities<T>({
     value: T[K],
   ): T[] {
     return items?.filter((elem) => elem[identifier] !== value);
+  }
+
+  function isValueInCollection<V>(collection: V[], value: V): boolean {
+    return collection.some((v) => deepEqual(v, value));
+  }
+
+  function deepEqual(a: any, b: any): boolean {
+    if (a === b) return true;
+
+    if (a == null || b == null) return a === b;
+
+    if (Array.isArray(a) && Array.isArray(b)) {
+      if (a.length !== b.length) return false;
+
+      return a.every((el, i) => deepEqual(el, b[i]));
+    }
+
+    if (typeof a === "object" && typeof b === "object") {
+      const keysA = Object.keys(a);
+      const keysB = Object.keys(b);
+      if (keysA.length !== keysB.length) return false;
+
+      return keysA.every((key) => deepEqual(a[key], b[key]));
+    }
+
+    return false;
   }
 
   function setFocus<T extends HTMLElement>(
@@ -164,14 +189,14 @@ export default function useComponentUtilities<T>({
     }
   }
 
-  function resetFormField() {
+  function resetFormField(defaultValue: any = "") {
     if (props.ignoreFormAction) return null;
 
     if (field) {
       form?.resetField?.(field.name, {
         keepDirty: false,
         keepTouched: false,
-        defaultValue: "",
+        defaultValue: defaultValue,
       });
     }
   }
@@ -195,6 +220,8 @@ export default function useComponentUtilities<T>({
     updateSelectedItems,
     getItemFromListByIdentifier,
     removeItemFromListByIdentifier,
+    isValueInCollection,
+    deepEqual,
     initializeItemsList,
     calculatePopoverWidth,
     getContextColorBasedOnVariant,

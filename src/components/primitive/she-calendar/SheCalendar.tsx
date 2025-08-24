@@ -83,7 +83,8 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
   const [_selectedTime, setSelectedTime] = useState<Date>(time ?? new Date());
 
   // ==================================================================== UTILITIES
-  const { ariaDescribedbyId } = useComponentUtilities({
+  const { ariaDescribedbyId } = useComponentUtilities<ISheCalendar>({
+    props,
     identifier: "SheCalendar",
   });
   const markedParsedDates = React.useMemo(() => {
@@ -92,7 +93,6 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
       .map(_parseCalendarSingleDate)
       .filter(Boolean) as Date[];
   }, [markedDates]);
-
   const {
     eventHandler: eventSelectDateHandler,
     valueHandler: valueSelectDateHandler,
