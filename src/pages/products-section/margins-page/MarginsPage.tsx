@@ -102,11 +102,10 @@ export function MarginsPage() {
   }, [state.activeCards]);
 
   function handleGridRequestChange(updates: GridRequestModel) {
-    if (updates.brands || updates.categories || updates.filter) {
+    if ("searchQuery" in updates || "currentPage" in updates) {
       dispatch(
         actions.refreshMarginItemsGriRequestModel({
           ...state.marginItemsGriRequestModel,
-          currentPage: 1,
           ...updates,
         }),
       );
@@ -114,7 +113,11 @@ export function MarginsPage() {
       dispatch(
         actions.refreshMarginItemsGriRequestModel({
           ...state.marginItemsGriRequestModel,
-          ...updates,
+          currentPage: 1,
+          filter: {
+            ...state.marginItemsGriRequestModel.filter,
+            ...updates,
+          },
         }),
       );
     }

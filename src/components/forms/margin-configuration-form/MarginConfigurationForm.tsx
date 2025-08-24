@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect } from "react";
-import { Plus } from "lucide-react";
 import _ from "lodash";
 
 import useAppForm from "@/utils/hooks/useAppForm.ts";
@@ -81,23 +80,26 @@ export default function MarginConfigurationForm<T>({
                 </SheFormItem>
               )}
             />
-            <Separator />
-            <div className={cs.selectSupplierBlock}>
-              <span className="she-title">
-                Automatic connection to purchase
-              </span>
-              <div className={cs.selectSupplierButton}>
-                <span className="she-text">
-                  Select which supplier, will receive this margin connected
-                  automatically
-                </span>
-                <SheButton
-                  icon={Plus}
-                  variant="secondary"
-                  value="Select Supplier"
-                />
-              </div>
-            </div>
+
+            {/*Commented until future notices*/}
+
+            {/*<Separator />*/}
+            {/*<div className={cs.selectSupplierBlock}>*/}
+            {/*  <span className="she-title">*/}
+            {/*    Automatic connection to purchase*/}
+            {/*  </span>*/}
+            {/*  <div className={cs.selectSupplierButton}>*/}
+            {/*    <span className="she-text">*/}
+            {/*      Select which supplier, will receive this margin connected*/}
+            {/*      automatically*/}
+            {/*    </span>*/}
+            {/*    <SheButton*/}
+            {/*      icon={Plus}*/}
+            {/*      variant="secondary"*/}
+            {/*      value="Select Supplier"*/}
+            {/*    />*/}
+            {/*  </div>*/}
+            {/*</div>*/}
             <Separator />
           </>
         )}

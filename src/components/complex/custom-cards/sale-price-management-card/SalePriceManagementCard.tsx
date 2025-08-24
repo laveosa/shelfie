@@ -61,9 +61,6 @@ export default function SalePriseManagementCard({
           <GridItemsFilter
             items={brands}
             columnName={"Brands"}
-            onSelectionChange={(selectedIds) =>
-              onAction("brandFilter", selectedIds)
-            }
             getId={(item: BrandModel) => item.brandId}
             getName={(item: BrandModel) => item.brandName}
             selected={gridModel.filter?.brands}
@@ -71,9 +68,6 @@ export default function SalePriseManagementCard({
           <GridItemsFilter
             items={categories}
             columnName={"Categories"}
-            onSelectionChange={(selectedIds) =>
-              onAction("categoryFilter", selectedIds)
-            }
             getId={(item: CategoryModel) => item.categoryId}
             getName={(item: CategoryModel) => item.categoryName}
             selected={gridModel.filter?.categories}
