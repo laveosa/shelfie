@@ -4,11 +4,7 @@ import { IZodSchema } from "@/const/interfaces/IZodSchema.ts";
 const nonemptyMessage = "field is required";
 
 const MarginConfigurationFormScheme: z.ZodObject<IZodSchema<any>> = z.object({
-  marginName: z
-    .string()
-    .nonempty(nonemptyMessage)
-    .min(2, "min value length 2")
-    .max(16, "max value length 16"),
+  marginName: z.string().nonempty(nonemptyMessage).min(2, "min value length 2"),
   marginRule: z.object({
     desiredProfit: z.any().optional(),
     plannedDiscount: z.any().optional(),
