@@ -28,7 +28,7 @@ export function marginProductsGridColumns(
 
         return (
           <div
-            className="relative w-12 h-12 cursor-pointer"
+            className={cs.imageBlock}
             onClick={() => onAction("image", row.id, meta?.setLoadingRow)}
           >
             {image ? (
@@ -38,11 +38,7 @@ export function marginProductsGridColumns(
                 className="object-cover rounded-md w-full h-full"
               />
             ) : (
-              <SheIcon
-                icon={ImageIcon}
-                maxWidth="30px"
-                className={cs.noImageIcon}
-              />
+              <SheIcon icon={ImageIcon} />
             )}
           </div>
         );

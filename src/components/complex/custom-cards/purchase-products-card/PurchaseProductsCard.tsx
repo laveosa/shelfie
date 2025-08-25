@@ -158,7 +158,6 @@ export default function PurchaseProductsCard({
         className={cs.purchaseProductsCard}
         showHeader={false}
         title={"Manage Purchases"}
-        minWidth="1100px"
       >
         <div className={cs.purchaseProductsCardContent}>
           <SheTabs
@@ -197,6 +196,7 @@ export default function PurchaseProductsCard({
             <TabsContent value="purchaseProducts">
               <DndGridDataTable
                 isLoading={isPurchaseProductsGridLoading}
+                className={cs.purchaseProductsGrid}
                 columns={
                   purchaseProductsGridColumns(
                     currencies,
@@ -265,6 +265,7 @@ export default function PurchaseProductsCard({
             <TabsContent value="connectProducts">
               <DndGridDataTable
                 isLoading={isProductsGridLoading}
+                className={cs.purchaseProductsGrid}
                 columns={
                   purchaseVariantsGridColumns(
                     currencies,
