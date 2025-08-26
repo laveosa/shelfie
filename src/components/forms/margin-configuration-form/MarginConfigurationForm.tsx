@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect } from "react";
-import { Plus } from "lucide-react";
 import _ from "lodash";
 
 import useAppForm from "@/utils/hooks/useAppForm.ts";
@@ -81,23 +80,26 @@ export default function MarginConfigurationForm<T>({
                 </SheFormItem>
               )}
             />
-            <Separator />
-            <div className={cs.selectSupplierBlock}>
-              <span className="she-title">
-                Automatic connection to purchase
-              </span>
-              <div className={cs.selectSupplierButton}>
-                <span className="she-text">
-                  Select which supplier, will receive this margin connected
-                  automatically
-                </span>
-                <SheButton
-                  icon={Plus}
-                  variant="secondary"
-                  value="Select Supplier"
-                />
-              </div>
-            </div>
+
+            {/*Commented until future notices*/}
+
+            {/*<Separator />*/}
+            {/*<div className={cs.selectSupplierBlock}>*/}
+            {/*  <span className="she-title">*/}
+            {/*    Automatic connection to purchase*/}
+            {/*  </span>*/}
+            {/*  <div className={cs.selectSupplierButton}>*/}
+            {/*    <span className="she-text">*/}
+            {/*      Select which supplier, will receive this margin connected*/}
+            {/*      automatically*/}
+            {/*    </span>*/}
+            {/*    <SheButton*/}
+            {/*      icon={Plus}*/}
+            {/*      variant="secondary"*/}
+            {/*      value="Select Supplier"*/}
+            {/*    />*/}
+            {/*  </div>*/}
+            {/*</div>*/}
             <Separator />
           </>
         )}
@@ -109,20 +111,45 @@ export default function MarginConfigurationForm<T>({
         <FormField
           control={form.control}
           name="marginRule.desiredProfit"
-          render={({ field }): React.ReactElement => (
+          render={({ field }) => (
             <SheFormItem
-              className={cs.marginConfigurationFormItem}
               label="Desired profit (in %)"
+              className={cs.marginConfigurationFormItem}
             >
               <SheInput
                 {...field}
-                type="number"
-                fullWidth
+                type="text"
+                inputMode="numeric"
                 placeholder="Enter desired profit..."
+                value={field.value ? `${field.value}%` : ""}
+                onChange={(val: string | number) => {
+                  const numeric = String(val).replace(/[^0-9.]/g, "");
+                  field.onChange(numeric ? Number(numeric) : "");
+                }}
+                onKeyDown={(e) => {
+                  if (
+                    [8, 9, 27, 13, 46, 110, 190].indexOf(e.keyCode) !== -1 ||
+                    (e.keyCode === 65 && e.ctrlKey === true) ||
+                    (e.keyCode === 67 && e.ctrlKey === true) ||
+                    (e.keyCode === 86 && e.ctrlKey === true) ||
+                    (e.keyCode === 88 && e.ctrlKey === true) ||
+                    (e.keyCode === 90 && e.ctrlKey === true) ||
+                    (e.keyCode >= 35 && e.keyCode <= 40)
+                  ) {
+                    return;
+                  }
+                  if (
+                    (e.shiftKey || e.keyCode < 48 || e.keyCode > 57) &&
+                    (e.keyCode < 96 || e.keyCode > 105)
+                  ) {
+                    e.preventDefault();
+                  }
+                }}
               />
             </SheFormItem>
           )}
         />
+
         <span className={`${cs.marginConfigurationText} she-subtext`}>
           The profit is calculated based on the purchase price, other
           percentages do not intersect with it, but they result in single total
@@ -130,16 +157,40 @@ export default function MarginConfigurationForm<T>({
         <FormField
           control={form.control}
           name="marginRule.plannedDiscount"
-          render={({ field }): React.ReactElement => (
+          render={({ field }) => (
             <SheFormItem
-              className={cs.marginConfigurationFormItem}
               label="Planned discount (in %)"
+              className={cs.marginConfigurationFormItem}
             >
               <SheInput
                 {...field}
-                type="number"
-                fullWidth
+                type="text"
+                inputMode="numeric"
                 placeholder="Enter planned discount..."
+                value={field.value ? `${field.value}%` : ""}
+                onChange={(val: string | number) => {
+                  const numeric = String(val).replace(/[^0-9.]/g, "");
+                  field.onChange(numeric ? Number(numeric) : "");
+                }}
+                onKeyDown={(e) => {
+                  if (
+                    [8, 9, 27, 13, 46, 110, 190].indexOf(e.keyCode) !== -1 ||
+                    (e.keyCode === 65 && e.ctrlKey === true) ||
+                    (e.keyCode === 67 && e.ctrlKey === true) ||
+                    (e.keyCode === 86 && e.ctrlKey === true) ||
+                    (e.keyCode === 88 && e.ctrlKey === true) ||
+                    (e.keyCode === 90 && e.ctrlKey === true) ||
+                    (e.keyCode >= 35 && e.keyCode <= 40)
+                  ) {
+                    return;
+                  }
+                  if (
+                    (e.shiftKey || e.keyCode < 48 || e.keyCode > 57) &&
+                    (e.keyCode < 96 || e.keyCode > 105)
+                  ) {
+                    e.preventDefault();
+                  }
+                }}
               />
             </SheFormItem>
           )}

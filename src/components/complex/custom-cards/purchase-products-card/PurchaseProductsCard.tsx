@@ -43,6 +43,8 @@ export default function PurchaseProductsCard({
   sortingOptions,
   brands,
   categories,
+  colorsForFilter,
+  sizesForFilter,
   purchaseProductsSkeletonQuantity,
   variantsSkeletonQuantity,
   currencies,
@@ -94,12 +96,11 @@ export default function PurchaseProductsCard({
   }
 
   function handleGridRequestChange(updates: GridRequestModel) {
-    if (updates.brands || updates.categories || updates.filter) {
+    if ("searchQuery" in updates || "currentPage" in updates) {
       if (activeTab === "purchaseProducts") {
         dispatch(
           actions.refreshPurchasesProductsGridRequestModel({
             ...state.purchasesProductsGridRequestModel,
-            currentPage: 1,
             ...updates,
           }),
         );
@@ -107,7 +108,6 @@ export default function PurchaseProductsCard({
         dispatch(
           actions.refreshVariantsForPurchaseGridRequestModel({
             ...state.variantsForPurchaseGridRequestModel,
-            currentPage: 1,
             ...updates,
           }),
         );
@@ -117,26 +117,26 @@ export default function PurchaseProductsCard({
         dispatch(
           actions.refreshPurchasesProductsGridRequestModel({
             ...state.purchasesProductsGridRequestModel,
-            ...updates,
+            currentPage: 1,
+            filter: {
+              ...state.purchasesProductsGridRequestModel.filter,
+              ...updates,
+            },
           }),
         );
       } else if (activeTab === "connectProducts") {
         dispatch(
           actions.refreshVariantsForPurchaseGridRequestModel({
             ...state.variantsForPurchaseGridRequestModel,
-            ...updates,
+            currentPage: 1,
+            filter: {
+              ...state.variantsForPurchaseGridRequestModel.filter,
+              ...updates,
+            },
           }),
         );
       }
     }
-  }
-
-  function onBrandSelectHandler(selectedIds: number[]) {
-    handleGridRequestChange({ brands: selectedIds });
-  }
-
-  function onCategorySelectHandler(selectedIds: number[]) {
-    handleGridRequestChange({ categories: selectedIds });
   }
 
   function onApplyColumnsHandler(model: PreferencesModel) {
@@ -158,7 +158,6 @@ export default function PurchaseProductsCard({
         className={cs.purchaseProductsCard}
         showHeader={false}
         title={"Manage Purchases"}
-        minWidth="1100px"
       >
         <div className={cs.purchaseProductsCardContent}>
           <SheTabs
@@ -197,6 +196,7 @@ export default function PurchaseProductsCard({
             <TabsContent value="purchaseProducts">
               <DndGridDataTable
                 isLoading={isPurchaseProductsGridLoading}
+                className={cs.purchaseProductsGrid}
                 columns={
                   purchaseProductsGridColumns(
                     currencies,
@@ -218,14 +218,12 @@ export default function PurchaseProductsCard({
                 <GridItemsFilter
                   items={brands}
                   columnName={"Brands"}
-                  onSelectionChange={onBrandSelectHandler}
                   getId={(item: BrandModel) => item.brandId}
                   getName={(item: BrandModel) => item.brandName}
                 />
                 <GridItemsFilter
                   items={categories}
                   columnName={"Categories"}
-                  onSelectionChange={onCategorySelectHandler}
                   getId={(item: CategoryModel) => item.categoryId}
                   getName={(item: CategoryModel) => item.categoryName}
                 />
@@ -267,6 +265,7 @@ export default function PurchaseProductsCard({
             <TabsContent value="connectProducts">
               <DndGridDataTable
                 isLoading={isProductsGridLoading}
+                className={cs.purchaseProductsGrid}
                 columns={
                   purchaseVariantsGridColumns(
                     currencies,
@@ -288,24 +287,22 @@ export default function PurchaseProductsCard({
                 <GridItemsFilter
                   items={brands}
                   columnName={"Brands"}
-                  onSelectionChange={onBrandSelectHandler}
                   getId={(item: BrandModel) => item.brandId}
                   getName={(item: BrandModel) => item.brandName}
                 />
                 <GridItemsFilter
                   items={categories}
                   columnName={"Categories"}
-                  onSelectionChange={onCategorySelectHandler}
                   getId={(item: CategoryModel) => item.categoryId}
                   getName={(item: CategoryModel) => item.categoryName}
                 />
                 <GridTraitsFilter
-                  traitOptions={state.colorsForFilter}
+                  traitOptions={colorsForFilter}
                   traitType="color"
                   gridRequestModel={state.variantsForPurchaseGridRequestModel}
                 />
                 <GridTraitsFilter
-                  traitOptions={state.sizesForFilter}
+                  traitOptions={sizesForFilter}
                   traitType="size"
                   gridRequestModel={state.variantsForPurchaseGridRequestModel}
                 />

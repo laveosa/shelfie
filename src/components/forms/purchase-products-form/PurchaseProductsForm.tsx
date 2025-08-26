@@ -116,7 +116,7 @@ export default function PurchaseProductsForm<T>({
           render={({ field }) => (
             <SheFormItem className={cs.purchaseFormItemTaxCurrency}>
               <SheSelect
-                selected={field.value || data?.currencyId}
+                selected={data?.currencyId || field?.value}
                 className={
                   activeTab === "connectProducts"
                     ? field.value

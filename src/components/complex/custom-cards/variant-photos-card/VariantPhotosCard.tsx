@@ -127,7 +127,11 @@ export default function VariantPhotosCard({
                 showColumnsHeader={false}
                 columns={otherPhotosColumns}
                 data={productPhotos}
-                customMessage="PRODUCT HAS NO PHOTO"
+                customMessage={
+                  !variantPhotos && !productPhotos
+                    ? "Product has no photo"
+                    : "All product photos are already attached to the variant."
+                }
                 gridModel={productPhotos}
               />
             </div>

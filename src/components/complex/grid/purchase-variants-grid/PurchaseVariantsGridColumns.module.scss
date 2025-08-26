@@ -25,6 +25,15 @@
   }
 }
 
+.gridButton {
+  display: flex;
+  justify-content: end;
+
+  button {
+    margin-left: 0 !important;
+  }
+}
+
 span {
   display: inline-block;
   overflow: hidden;

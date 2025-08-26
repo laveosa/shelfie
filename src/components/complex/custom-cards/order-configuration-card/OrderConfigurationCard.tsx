@@ -89,15 +89,17 @@ export default function OrderConfigurationCard({
                   {order?.customer.thumbnailUrl ? (
                     <img
                       src={order?.customer.thumbnailUrl}
-                      alt={order?.customer.name}
+                      alt={order?.customer.customerName}
                       className={cs.avatarImage}
                     />
                   ) : (
                     <div className={cs.avatarInitials}>
-                      {getInitials(order?.customer.name)}
+                      {getInitials(order?.customer.customerName)}
                     </div>
                   )}
-                  <span className="she-subtext">{order?.customer.name}</span>
+                  <span className="she-subtext">
+                    {order?.customer.customerName}
+                  </span>
                 </div>
               </div>
               {order?.customer.email && (

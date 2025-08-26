@@ -97,22 +97,22 @@ export default function useOrderProductsPageService() {
 
   function variantsGridRequestChange(updates) {
     let gridRequestModel;
-    if (updates.filter) {
+    if ("searchQuery" in updates || "currentPage" in updates) {
       gridRequestModel = dispatch(
         ordersActions.refreshVariantsGridRequestModel({
           ...ordersState.variantsGridRequestModel,
-          currentPage: 1,
-          filter: {
-            ...ordersState.variantsGridRequestModel.filter,
-            ...updates.filter,
-          },
+          ...updates,
         }),
       );
     } else {
       gridRequestModel = dispatch(
         ordersActions.refreshVariantsGridRequestModel({
           ...ordersState.variantsGridRequestModel,
-          ...updates,
+          currentPage: 1,
+          filter: {
+            ...ordersState.variantsGridRequestModel.filter,
+            ...updates,
+          },
         }),
       );
     }

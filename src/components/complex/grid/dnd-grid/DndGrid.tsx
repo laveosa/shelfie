@@ -27,7 +27,6 @@ import {
 } from "@/components/ui/table.tsx";
 import GridHeader from "@/components/complex/grid/grid-header/GridHeader.tsx";
 import { IGridHeader } from "@/const/interfaces/complex-components/IGridHeader.ts";
-import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
 import { IGridContext } from "@/const/interfaces/context/IGridContext.ts";
 import { GridContext } from "@/state/context/grid-context";
@@ -52,7 +51,7 @@ interface DataTableProps<TData extends DataWithId, TValue>
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   sortingItems?: GridSortingModel[];
-  onGridRequestChange?: (updates: GridRequestModel) => void;
+  onGridRequestChange?: (updates) => void;
   showHeader?: boolean;
   showColumnsHeader?: boolean;
   enableDnd?: boolean;

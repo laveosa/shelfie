@@ -12,6 +12,11 @@ import {
   Shirt,
 } from "lucide-react";
 
+import {
+  DataWithId,
+  DndGridDataTable,
+  DndGridRef,
+} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import cs from "./ProductsPage.module.scss";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
@@ -20,7 +25,6 @@ import SheTabs from "@/components/complex/she-tabs/SheTabs.tsx";
 import { productsGridColumns } from "@/components/complex/grid/products-grid/ProductsGridColumns.tsx";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
-import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import GridItemsFilter from "@/components/complex/grid/grid-items-filter/GridItemsFilter.tsx";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
@@ -29,11 +33,6 @@ import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { ProductsPageSliceActions as actions } from "@/state/slices/ProductsPageSlice.ts";
 import { AppSliceActions as appActions } from "@/state/slices/AppSlice.ts";
-import {
-  DataWithId,
-  DndGridDataTable,
-  DndGridRef,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { variantsGridColumns } from "@/components/complex/grid/variants-grid/VariantsGridColumns.tsx";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { useToast } from "@/hooks/useToast.ts";
@@ -103,7 +102,6 @@ export function ProductsPage() {
         },
         {},
       );
-
       setActiveStates(initialActiveStates);
     }
   }, [state.productsGridModel.items]);
@@ -248,20 +246,6 @@ export function ProductsPage() {
     setLoadingRow(rowId, false);
   }
 
-  const productsColumns = productsGridColumns(
-    onAction,
-    onDelete,
-    activeStates,
-  ) as ColumnDef<DataWithId>[];
-  const variantsColumns = variantsGridColumns(
-    onAction,
-    onDelete,
-  ) as ColumnDef<DataWithId>[];
-  const purchasesColumns = purchasesGridColumns(
-    onAction,
-    onDelete,
-  ) as ColumnDef<DataWithId>[];
-
   function handleAddProduct() {
     navigate(`${NavUrlEnum.PRODUCTS}${NavUrlEnum.PRODUCT_BASIC_DATA}`);
   }
@@ -278,13 +262,12 @@ export function ProductsPage() {
     navigate(`${NavUrlEnum.PRODUCTS}${NavUrlEnum.SUPPLIER}/`);
   }
 
-  function handleGridRequestChange(updates: GridRequestModel) {
-    if (updates.brands || updates.categories || updates.filter) {
+  function handleGridRequestChange(updates: any) {
+    if ("searchQuery" in updates || "currentPage" in updates) {
       if (state.activeTab === "products") {
         dispatch(
           actions.refreshProductsGridRequestModel({
             ...state.productsGridRequestModel,
-            currentPage: 1,
             ...updates,
           }),
         );
@@ -292,7 +275,6 @@ export function ProductsPage() {
         dispatch(
           actions.refreshVariantsGridRequestModel({
             ...state.variantsGridRequestModel,
-            currentPage: 1,
             ...updates,
           }),
         );
@@ -300,7 +282,6 @@ export function ProductsPage() {
         dispatch(
           actions.refreshPurchasesGridRequestModel({
             ...state.purchasesGridRequestModel,
-            currentPage: 1,
             ...updates,
           }),
         );
@@ -310,54 +291,37 @@ export function ProductsPage() {
         dispatch(
           actions.refreshProductsGridRequestModel({
             ...state.productsGridRequestModel,
-            ...updates,
+            currentPage: 1,
+            filter: {
+              ...state.productsGridRequestModel.filter,
+              ...updates,
+            },
           }),
         );
       } else if (state.activeTab === "variants") {
         dispatch(
           actions.refreshVariantsGridRequestModel({
             ...state.variantsGridRequestModel,
-            ...updates,
+            currentPage: 1,
+            filter: {
+              ...state.variantsGridRequestModel.filter,
+              ...updates,
+            },
           }),
         );
       } else if (state.activeTab === "purchases") {
         dispatch(
           actions.refreshPurchasesGridRequestModel({
             ...state.purchasesGridRequestModel,
-            ...updates,
+            currentPage: 1,
+            filter: {
+              ...state.purchasesGridRequestModel.filter,
+              ...updates,
+            },
           }),
         );
       }
     }
-  }
-
-  function onBrandSelectHandler(selectedIds: number[]) {
-    handleGridRequestChange({ filter: { brands: selectedIds } });
-  }
-
-  function onCategorySelectHandler(selectedIds: number[]) {
-    handleGridRequestChange({ filter: { categories: selectedIds } });
-  }
-
-  function onSupplierSelectHandler(selectedIds: number[]) {
-    handleGridRequestChange({ filter: { suppliers: selectedIds } });
-  }
-
-  function onPurchaseValueToHandler(value: number) {
-    handleGridRequestChange({ filter: { valueTo: value } });
-  }
-
-  function onPurchaseValueFromHandler(value: number) {
-    handleGridRequestChange({ filter: { valueFrom: value } });
-  }
-
-  function onPurchaseDateRangeHandler(value: any) {
-    handleGridRequestChange({
-      filter: {
-        dateTo: value.to,
-        dateFrom: value.from,
-      },
-    });
   }
 
   function onApplyColumnsHandler(model: PreferencesModel) {
@@ -437,7 +401,13 @@ export function ProductsPage() {
             <DndGridDataTable
               isLoading={state.isLoading}
               ref={gridRef}
-              columns={productsColumns}
+              columns={
+                productsGridColumns(
+                  onAction,
+                  onDelete,
+                  activeStates,
+                ) as ColumnDef<DataWithId>[]
+              }
               data={state.productsGridModel.items}
               gridModel={state.productsGridModel}
               sortingItems={state.sortingOptions}
@@ -451,7 +421,6 @@ export function ProductsPage() {
               <GridItemsFilter
                 items={state.brands}
                 columnName={"Brands"}
-                onSelectionChange={onBrandSelectHandler}
                 getId={(item: BrandModel) => item.brandId}
                 getName={(item: BrandModel) => item.brandName}
                 selected={state.productsGridModel.filter?.brands}
@@ -459,7 +428,6 @@ export function ProductsPage() {
               <GridItemsFilter
                 items={state.categories}
                 columnName={"Categories"}
-                onSelectionChange={onCategorySelectHandler}
                 getId={(item: CategoryModel) => item.categoryId}
                 getName={(item: CategoryModel) => item.categoryName}
                 selected={state.productsGridModel.filter?.categories}
@@ -471,7 +439,12 @@ export function ProductsPage() {
             <DndGridDataTable
               isLoading={state.isLoading}
               ref={gridRef}
-              columns={variantsColumns}
+              columns={
+                variantsGridColumns(
+                  onAction,
+                  onDelete,
+                ) as ColumnDef<DataWithId>[]
+              }
               data={state.variants}
               gridModel={state.variantsGridModel}
               sortingItems={state.sortingOptions}
@@ -485,7 +458,6 @@ export function ProductsPage() {
               <GridItemsFilter
                 items={state.brands}
                 columnName={"Brands"}
-                onSelectionChange={onBrandSelectHandler}
                 getId={(item: BrandModel) => item.brandId}
                 getName={(item: BrandModel) => item.brandName}
                 selected={state.variantsGridModel.filter?.brands}
@@ -493,7 +465,6 @@ export function ProductsPage() {
               <GridItemsFilter
                 items={state.categories}
                 columnName={"Categories"}
-                onSelectionChange={onCategorySelectHandler}
                 getId={(item: CategoryModel) => item.categoryId}
                 getName={(item: CategoryModel) => item.categoryName}
                 selected={state.variantsGridModel.filter?.categories}
@@ -515,7 +486,12 @@ export function ProductsPage() {
             <DndGridDataTable
               isLoading={state.isLoading}
               ref={gridRef}
-              columns={purchasesColumns}
+              columns={
+                purchasesGridColumns(
+                  onAction,
+                  onDelete,
+                ) as ColumnDef<DataWithId>[]
+              }
               data={state.purchases}
               gridModel={state.purchasesGridModel}
               sortingItems={state.sortingOptions}
@@ -530,7 +506,6 @@ export function ProductsPage() {
                 items={state.suppliers}
                 columnName={"Suppliers"}
                 icon={BadgeCheck}
-                onSelectionChange={onSupplierSelectHandler}
                 getId={(item: SupplierModel) => item.supplierId}
                 getName={(item: SupplierModel) => item.supplierName}
                 selected={state.purchasesGridModel.filter?.suppliers}
@@ -541,15 +516,24 @@ export function ProductsPage() {
                 placeholder="Pick range"
                 maxWidth="200px"
                 showClearBtn
-                onSelectDate={(data) => {
-                  onPurchaseDateRangeHandler(data);
+                onSelectDate={(value) => {
+                  if (value) {
+                    handleGridRequestChange({
+                      dateTo: value.to.toISOString(),
+                      dateFrom: value.from.toISOString(),
+                    });
+                  } else {
+                    handleGridRequestChange({
+                      dateTo: null,
+                      dateFrom: null,
+                    });
+                  }
                 }}
               />
               <GridItemsFilter
                 items={state.brands}
                 columnName={"Brands"}
                 icon={BadgeCheck}
-                onSelectionChange={onBrandSelectHandler}
                 getId={(item: BrandModel) => item.brandId}
                 getName={(item: BrandModel) => item.brandName}
               />
@@ -558,16 +542,20 @@ export function ProductsPage() {
                 placeholder="Value from"
                 maxWidth="200px"
                 showClearBtn
-                onDelay={(data: number) => onPurchaseValueFromHandler(data)}
+                onDelay={(value: number) =>
+                  handleGridRequestChange({ valueFrom: value })
+                }
+                onClear={() => handleGridRequestChange({ valueFrom: null })}
               />
               <SheInput
                 icon={ReceiptEuro}
                 placeholder="Value to"
                 maxWidth="200px"
                 showClearBtn
-                onDelay={(data: number) => {
-                  onPurchaseValueToHandler(data);
+                onDelay={(value: number) => {
+                  handleGridRequestChange({ valueTo: value });
                 }}
+                onClear={() => handleGridRequestChange({ valueTo: null })}
               />
             </DndGridDataTable>
           </TabsContent>

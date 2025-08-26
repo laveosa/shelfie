@@ -72,7 +72,7 @@ export function ManageVariantsPage() {
   );
 
   useEffect(() => {
-    if (productsState.products?.length === 0) {
+    if (productsState.products === null) {
       dispatch(productsActions.setIsItemsCardLoading(true));
       productsService
         .getTheProductsForGridHandler(productsState.productsGridRequestModel)
@@ -282,6 +282,7 @@ export function ManageVariantsPage() {
           });
         break;
       case "updateVariantTraitOptions":
+        handleCardAction("manageTraitsCard");
         dispatch(actions.setIsManageTraitsCardLoading(true));
         productsService
           .updateVariantTraitOptionsHandler(
@@ -290,7 +291,7 @@ export function ManageVariantsPage() {
           )
           .then((res) => {
             dispatch(actions.setIsManageTraitsCardLoading(false));
-            if (res) {
+            if (!res.error) {
               productsService
                 .getProductVariantsHandler(productId)
                 .then((res) => {
@@ -420,22 +421,19 @@ export function ManageVariantsPage() {
         dispatch(actions.setIsVariantPhotosCardLoading(true));
         productsService.uploadPhotoHandler(payload).then((res) => {
           dispatch(actions.setIsVariantPhotosCardLoading(false));
-          if (res) {
-            dispatch(actions.setIsVariantPhotoGridLoading(true));
-            dispatch(actions.setIsProductPhotoGridLoading(true));
-            productsService
-              .getVariantDetailsHandler(payload.contextId)
-              .then((res) => {
-                dispatch(actions.setIsVariantPhotoGridLoading(false));
-                dispatch(productsActions.refreshSelectedVariant(res));
-                dispatch(productsActions.refreshVariantPhotos(res?.photos));
-              });
-            productsService
-              .getProductPhotosHandler(Number(productId))
-              .then((res) => {
-                dispatch(actions.setIsProductPhotoGridLoading(false));
-                dispatch(productsActions.refreshProductPhotos(res));
-              });
+          if (!res.error) {
+            dispatch(
+              productsActions.refreshVariantPhotos([
+                ...productsState.variantPhotos,
+                res.data,
+              ]),
+            );
+            dispatch(
+              productsActions.refreshSelectedVariant({
+                ...productsState.selectedVariant,
+                photos: [...productsState.selectedVariant.photos, res.data],
+              }),
+            );
             productsService
               .getCountersForProductsHandler(Number(productId))
               .then((res) => {
@@ -473,7 +471,7 @@ export function ManageVariantsPage() {
           )
           .then((res) => {
             dispatch(actions.setIsVariantPhotosCardLoading(false));
-            if (res) {
+            if (!res.error) {
               dispatch(actions.setIsVariantPhotoGridLoading(true));
               productsService
                 .getVariantDetailsHandler(

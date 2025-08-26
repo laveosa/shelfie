@@ -185,6 +185,7 @@ export function purchaseVariantsGridColumns(
       accessorKey: "",
       size: 180,
       minSize: 180,
+      maxSize: 180,
       header: () => (
         <div className="flex items-center">
           <span style={{ marginRight: "40px" }}>Netto Price</span>
@@ -212,12 +213,12 @@ export function purchaseVariantsGridColumns(
     },
     {
       id: "manage",
-      size: 60,
-      minSize: 60,
-      maxSize: 60,
+      size: 40,
+      minSize: 40,
+      maxSize: 40,
       cell: ({ row }) => {
         return (
-          <div onClick={(e) => e.stopPropagation()}>
+          <div className={cs.gridButton} onClick={(e) => e.stopPropagation()}>
             <SheButton
               style={{ marginLeft: "20px" }}
               icon={CogIcon}

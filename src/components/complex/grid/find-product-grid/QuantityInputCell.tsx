@@ -2,13 +2,13 @@ import { useState } from "react";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 
 export default function QuantityInputCell({ row }) {
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
 
   row.original.amount = quantity;
 
   return (
     <SheInput
-      placeholder="0"
+      value="1"
       onChange={(value) => {
         setQuantity(Number(value) as number);
         row.original.amount = value;

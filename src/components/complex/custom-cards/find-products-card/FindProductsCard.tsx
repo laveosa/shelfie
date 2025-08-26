@@ -63,11 +63,6 @@ export default function FindProductsCard({
             getId={(item: BrandModel) => item.brandId}
             getName={(item: BrandModel) => item.brandName}
             selected={gridModel.filter?.brands}
-            onSelectionChange={(updates) =>
-              onAction("variantsGridRequestChange", {
-                filter: { brands: updates },
-              })
-            }
           />
           <GridItemsFilter
             items={categories}
@@ -75,11 +70,6 @@ export default function FindProductsCard({
             getId={(item: CategoryModel) => item.categoryId}
             getName={(item: CategoryModel) => item.categoryName}
             selected={gridModel.filter?.categories}
-            onSelectionChange={(updates) =>
-              onAction("variantsGridRequestChange", {
-                filter: { categoryId: updates },
-              })
-            }
           />
           <GridTraitsFilter
             traitOptions={colorsForFilter}
