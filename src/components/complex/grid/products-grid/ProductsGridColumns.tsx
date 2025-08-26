@@ -84,7 +84,6 @@ export function productsGridColumns(
       header: "Product Name",
       size: 150,
       minSize: 150,
-      maxSize: 150,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("productName")}>
@@ -239,9 +238,9 @@ export function productsGridColumns(
     {
       id: "manage",
       header: "",
-      size: 100,
-      minSize: 100,
-      maxSize: 100,
+      size: 80,
+      minSize: 80,
+      maxSize: 80,
       cell: ({ row, table }) => {
         const meta = table.options.meta as {
           setLoadingRow: (rowId: string, loading: boolean) => void;
@@ -268,9 +267,9 @@ export function productsGridColumns(
     {
       id: "rowActions",
       header: "",
-      size: 70,
-      minSize: 70,
-      maxSize: 70,
+      size: 40,
+      minSize: 40,
+      maxSize: 40,
       cell: ({ row, table }) => {
         const meta = table.options.meta as {
           setLoadingRow: (rowId: string, loading: boolean) => void;

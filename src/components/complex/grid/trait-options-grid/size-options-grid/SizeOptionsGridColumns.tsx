@@ -16,9 +16,9 @@ export const SizeOptionsGridColumns = (
   {
     accessorKey: "optionName",
     header: "",
-    size: 50,
-    minSize: 50,
-    maxSize: 50,
+    size: 170,
+    minSize: 170,
+    maxSize: 170,
     cell: ({ row }) => {
       const value: string = row.original.optionName || "";
       const optionId: number = row.original.optionId;
@@ -26,6 +26,7 @@ export const SizeOptionsGridColumns = (
       return (
         <SheInput
           value={value}
+          fullWidth
           placeholder={"Size value"}
           onDelay={(newName: string) => {
             const updatedModel = {
@@ -47,9 +48,9 @@ export const SizeOptionsGridColumns = (
   {
     id: "rowActions",
     header: "",
-    size: 50,
-    minSize: 50,
-    maxSize: 50,
+    size: 40,
+    minSize: 40,
+    maxSize: 40,
     cell: ({ row, table }) => {
       return (
         <TraitOptionsGridColumnActions

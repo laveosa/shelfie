@@ -4,27 +4,68 @@
 .dndGrid {
 }
 
-.tableRow {
-  transition: background-color 0.3s ease;
-  cursor: default;
+.table {
+  .hiddenHeader {
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: none;
 
 
-  .tableCell {
+    th {
+      padding: 0 !important;
+      border: none !important;
+      height: 0 !important;
+    }
+
+    .tableRow {
+      transition: background-color 0.3s ease;
+      cursor: default;
+
+      .tableCell {
+      }
+
+      .dndIconCell {
+        padding-right: 0;
+        text-align: start;
+        touch-action: none;
+        cursor: grab;
+        border: 1px solid red;
+
+        .dndIcon {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          svg {
+            opacity: 0.5;
+          }
+        }
+      }
+    }
   }
 
-  .dndIconCell {
-    padding-right: 0;
-    text-align: center;
-    touch-action: none;
-    cursor: grab;
+  .tableRow {
+    transition: background-color 0.3s ease;
+    cursor: default;
 
-    .dndIcon {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    .tableCell {
+    }
 
-      svg {
-        opacity: 0.5;
+    .dndIconCell {
+      padding-right: 0;
+      text-align: center;
+      touch-action: none;
+      cursor: grab;
+
+      .dndIcon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        svg {
+          opacity: 0.5;
+        }
       }
     }
   }

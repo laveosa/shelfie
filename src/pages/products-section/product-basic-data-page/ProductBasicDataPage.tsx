@@ -146,7 +146,9 @@ export function ProductBasicDataPage() {
         product={productsState.product}
         brandsList={productsState.brands}
         categoriesList={productsState.categories}
+        productCode={productsState.productCode}
         onPrimaryButtonClick={(data) => onAction("submitProductData", data)}
+        onSecondaryButtonClick={() => onAction("gotoProductsPage")}
         onAction={onAction}
       />
       {state.activeCards.includes("createCategoryCard") && (

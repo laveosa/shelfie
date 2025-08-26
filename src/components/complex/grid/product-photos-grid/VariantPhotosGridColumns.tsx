@@ -98,10 +98,11 @@ export const VariantPhotosGridColumns = (
   {
     id: "rowActions",
     header: "Actions",
-    size: 100,
+    size: 60,
     cell: ({ row, table }) => {
       return (
         <VariantPhotosGridColumnActions
+          style={{ paddingLeft: "20px" }}
           row={row}
           onAction={onAction}
           table={table}

@@ -127,10 +127,10 @@ const DraggableRow = ({
           style={{
             cursor: isDragDisabled || isLoading ? "default" : "grab",
             background: isSelected ? "#F4F4F5" : "inherit",
-            width: "20px",
-            minWidth: "10px",
+            width: "40px",
+            minWidth: "40px",
             maxWidth: "40px",
-            padding: cellPadding,
+            padding: "0",
           }}
           {...listeners}
         >
@@ -497,49 +497,41 @@ export const DndGridDataTable = React.forwardRef<
               borderCollapse: "collapse",
             }}
           >
-            {showColumnsHeader && (
-              <TableHeader>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow
-                    className={isLoading ? `${cs.tableRowLoading}` : ""}
-                    key={headerGroup.id}
-                  >
-                    {enableDnd && (
-                      <TableHead
-                        className={isLoading ? `${cs.tableHeadLoading}` : ""}
-                        style={{
-                          width: "20px",
-                          minWidth: "10px",
-                          maxWidth: "40px",
-                          padding: cellPadding,
-                        }}
-                      ></TableHead>
-                    )}
-                    {headerGroup.headers.map((header) => (
-                      <TableHead
-                        className={isLoading ? `${cs.tableHeadLoading}` : ""}
-                        key={header.id}
-                        style={{
-                          ...(header.column.columnDef.size && {
-                            width: `${header.column.columnDef.size}px`,
-                          }),
-                          minWidth: header.column.columnDef.minSize || 50,
-                          maxWidth: header.column.columnDef.maxSize,
-                          padding: cellPadding,
-                        }}
-                      >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            )}
-                      </TableHead>
-                    ))}
-                  </TableRow>
-                ))}
-              </TableHeader>
-            )}
+            <TableHeader className={!showColumnsHeader ? cs.hiddenHeader : ""}>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {enableDnd && (
+                    <TableHead
+                      style={{
+                        width: "40px",
+                        minWidth: "40px",
+                        maxWidth: "40px",
+                        padding: "0",
+                      }}
+                    ></TableHead>
+                  )}
+                  {headerGroup.headers.map((header) => (
+                    <TableHead
+                      key={header.id}
+                      style={{
+                        ...(header.column.columnDef.size && {
+                          width: `${header.column.columnDef.size}px`,
+                        }),
+                        minWidth: header.column.columnDef.minSize || 50,
+                        maxWidth: header.column.columnDef.maxSize,
+                      }}
+                    >
+                      {showColumnsHeader &&
+                        !header.isPlaceholder &&
+                        flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                    </TableHead>
+                  ))}
+                </TableRow>
+              ))}
+            </TableHeader>
             {/*{isLoading && items.length === 0 ? (*/}
             {isLoading ? (
               <TableBody className={cs.tableSkeleton}>

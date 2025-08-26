@@ -81,29 +81,39 @@ export default function ManageVariantsCard({
     >
       <div className={cs.manageVariantsContent}>
         <div className={cs.textBlock}>
-          {traits.length > 0 ? (
-            <span className="she-text">
-              The product is described by following traits:{" "}
-              {traits.map((trait: TraitModel, index: number) => (
-                <Fragment key={trait.traitId}>
-                  <b>{trait.traitName}</b>
-                  {index < traits.length - 1 ? ", " : ""}
-                </Fragment>
-              ))}
-            </span>
+          {traits?.length > 0 ? (
+            <>
+              <span className="she-text">
+                The product is described by following traits:{" "}
+                {traits.map((trait: TraitModel, index: number) => (
+                  <Fragment key={trait.traitId}>
+                    <b>{trait.traitName}</b>
+                    {index < traits.length - 1 ? ", " : ""}
+                  </Fragment>
+                ))}
+              </span>
+              <SheButton
+                icon={SlidersVertical}
+                variant="secondary"
+                value="Manage Traits"
+                onClick={() => onAction("openChooseVariantTraitsCard")}
+              />
+            </>
           ) : (
-            <span className="she-text">
-              The product is not described by traits yet. Please select at least
-              one trait to create variants.
-            </span>
-          )}
-          {traits.length > 0 && (
-            <SheButton
-              icon={SlidersVertical}
-              variant="secondary"
-              value="Manage Traits"
-              onClick={() => onAction("openChooseVariantTraitsCard")}
-            />
+            <>
+              <span className="she-text">
+                The product is not described by traits yet. Please select at
+                least one trait to create variants.
+              </span>
+              <SheButton
+                icon={Plus}
+                variant="outline"
+                value="Select Traits"
+                onClick={() => {
+                  onAction("openChooseVariantTraitsCard");
+                }}
+              />
+            </>
           )}
         </div>
         <Separator />
@@ -112,16 +122,11 @@ export default function ManageVariantsCard({
           <SheButton
             icon={Plus}
             variant="outline"
+            value="Create Variant"
             onClick={() => {
-              onAction?.(
-                traits.length > 0
-                  ? "openAddVariantCard"
-                  : "openChooseVariantTraitsCard",
-              );
+              onAction("openAddVariantCard");
             }}
-          >
-            {traits.length > 0 ? "Create Variant" : "Select Traits"}
-          </SheButton>
+          />
           {/*{traits.length === 0 && (*/}
           {/*  <>*/}
           {/*    <span>or</span>*/}

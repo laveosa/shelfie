@@ -3,66 +3,40 @@ import React, { useEffect } from "react";
 
 import {
   formatDate,
-  setSelectedGridItem
+  setSelectedGridItem,
 } from "@/utils/helpers/quick-helper.ts";
 import cs from "./PurchaseProductsPage.module.scss";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import usePurchaseProductsPageService
-  from "@/pages/products-section/purchase-products-page/usePurchaseProductsPageService.ts";
-import ProductMenuCard
-  from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
-import {
-  IPurchaseProductsPageSlice
-} from "@/const/interfaces/store-slices/IPurchaseProductsPageSlice.ts";
-import PurchaseProductsCard
-  from "@/components/complex/custom-cards/purchase-products-card/PurchaseProductsCard.tsx";
-import useProductsPageService
-  from "@/pages/products-section/products-page/useProductsPageService.ts";
-import {
-  IProductsPageSlice
-} from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
-import {
-  PurchaseProductsPageSliceActions as actions
-} from "@/state/slices/PurchaseProductsPageSlice.ts";
-import {
-  ProductsPageSliceActions as productsActions
-} from "@/state/slices/ProductsPageSlice.ts";
+import usePurchaseProductsPageService from "@/pages/products-section/purchase-products-page/usePurchaseProductsPageService.ts";
+import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
+import { IPurchaseProductsPageSlice } from "@/const/interfaces/store-slices/IPurchaseProductsPageSlice.ts";
+import PurchaseProductsCard from "@/components/complex/custom-cards/purchase-products-card/PurchaseProductsCard.tsx";
+import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
+import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import { PurchaseProductsPageSliceActions as actions } from "@/state/slices/PurchaseProductsPageSlice.ts";
+import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
-import ProductConfigurationCard
-  from "@/components/complex/custom-cards/product-configuration-card/ProductConfigurationCard.tsx";
-import CreateProductCategoryCard
-  from "@/components/complex/custom-cards/create-product-category-card/CreateProductCategoryCard.tsx";
-import CreateProductBrandCard
-  from "@/components/complex/custom-cards/create-product-brand-card/CreateProductBrandCard.tsx";
+import ProductConfigurationCard from "@/components/complex/custom-cards/product-configuration-card/ProductConfigurationCard.tsx";
+import CreateProductCategoryCard from "@/components/complex/custom-cards/create-product-category-card/CreateProductCategoryCard.tsx";
+import CreateProductBrandCard from "@/components/complex/custom-cards/create-product-brand-card/CreateProductBrandCard.tsx";
 import { useToast } from "@/hooks/useToast.ts";
-import ManageProductCard
-  from "@/components/complex/custom-cards/manage-product-card/ManageProductCard.tsx";
-import ProductPhotosCard
-  from "@/components/complex/custom-cards/product-photos-card/ProductPhotosCard.tsx";
+import ManageProductCard from "@/components/complex/custom-cards/manage-product-card/ManageProductCard.tsx";
+import ProductPhotosCard from "@/components/complex/custom-cards/product-photos-card/ProductPhotosCard.tsx";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
-import ConnectImageCard
-  from "@/components/complex/custom-cards/connect-image-card/ConnectImageCard.tsx";
-import ChooseVariantTraitsCard
-  from "@/components/complex/custom-cards/choose-variant-traits-card/ChooseVariantTraitsCard.tsx";
-import ProductTraitConfigurationCard
-  from "@/components/complex/custom-cards/product-trait-configuration-card/ProductTraitConfigurationCard.tsx";
-import AddVariantCard
-  from "@/components/complex/custom-cards/add-variant-card/AddVariantCard.tsx";
-import VariantConfigurationCard
-  from "@/components/complex/custom-cards/variant-configuration-card/VariantConfigurationCard.tsx";
-import AddStockCard
-  from "@/components/complex/custom-cards/add-stock-card/AddStockCard.tsx";
-import DisposeStockCard
-  from "@/components/complex/custom-cards/dispose-stock-card/DisposeStockCard.tsx";
-import StockHistoryCard
-  from "@/components/complex/custom-cards/stock-history-card/StockHistoryCard.tsx";
-import VariantPhotosCard
-  from "@/components/complex/custom-cards/variant-photos-card/VariantPhotosCard.tsx";
-import ManageTraitsCard
-  from "@/components/complex/custom-cards/manage-traits-card/ManageTraitsCard.tsx";
+import ConnectImageCard from "@/components/complex/custom-cards/connect-image-card/ConnectImageCard.tsx";
+import ChooseVariantTraitsCard from "@/components/complex/custom-cards/choose-variant-traits-card/ChooseVariantTraitsCard.tsx";
+import ProductTraitConfigurationCard from "@/components/complex/custom-cards/product-trait-configuration-card/ProductTraitConfigurationCard.tsx";
+import AddVariantCard from "@/components/complex/custom-cards/add-variant-card/AddVariantCard.tsx";
+import VariantConfigurationCard from "@/components/complex/custom-cards/variant-configuration-card/VariantConfigurationCard.tsx";
+import AddStockCard from "@/components/complex/custom-cards/add-stock-card/AddStockCard.tsx";
+import DisposeStockCard from "@/components/complex/custom-cards/dispose-stock-card/DisposeStockCard.tsx";
+import StockHistoryCard from "@/components/complex/custom-cards/stock-history-card/StockHistoryCard.tsx";
+import VariantPhotosCard from "@/components/complex/custom-cards/variant-photos-card/VariantPhotosCard.tsx";
+import ManageTraitsCard from "@/components/complex/custom-cards/manage-traits-card/ManageTraitsCard.tsx";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
+import useProductBasicDataPageService from "@/pages/products-section/product-basic-data-page/useProductBasicDataPageService.ts";
 
 export function PurchaseProductsPage() {
   const dispatch = useAppDispatch();
@@ -71,6 +45,7 @@ export function PurchaseProductsPage() {
   const { openConfirmationDialog } = useDialogService();
   const service = usePurchaseProductsPageService();
   const productsService = useProductsPageService();
+  const productsBasicDataService = useProductBasicDataPageService();
   const state = useAppSelector<IPurchaseProductsPageSlice>(
     StoreSliceEnum.PURCHASE_PRODUCTS,
   );
@@ -253,156 +228,32 @@ export function PurchaseProductsPage() {
           });
         });
         break;
+      case "submitProductData":
+        productsBasicDataService.onSubmitProductDataHandler(null, payload);
+        break;
       case "checkCategoryName":
-        productsService
-          .checkCategoryNameHandler({ categoryName: payload })
-          .then((res) => {
-            if (res.error) {
-              addToast({
-                text: `${res.error.data.detail}`,
-                type: "error",
-              });
-            } else {
-              dispatch(
-                productsActions.refreshCategory({
-                  ...state.category,
-                  categoryName: payload,
-                }),
-              );
-            }
-          });
+        productsBasicDataService.checkCategoryNameHandler(payload);
         break;
       case "createProductCategory":
-        productsService.createNewCategoryHandler(state.category).then((res) => {
-          if (res.data) {
-            dispatch(productsActions.refreshCategory(res.data));
-            productsService.getAllCategoriesByOrganizationHandler();
-            addToast({
-              text: "Category created successfully",
-              type: "success",
-            });
-          } else {
-            addToast({
-              text: `${res.error.data.detail}`,
-              type: "error",
-            });
-          }
-        });
+        productsBasicDataService.createNewCategoryHandler();
         break;
       case "checkBrandName":
-        productsService
-          .checkBrandNameHandler({ brandName: payload })
-          .then((res) => {
-            if (res.error) {
-              addToast({
-                text: `${res.error.data.detail}`,
-                type: "error",
-              });
-            } else {
-              dispatch(
-                productsActions.refreshBrand({
-                  ...state.brand,
-                  brandName: payload,
-                }),
-              );
-            }
-          });
+        productsBasicDataService.checkBrandNameHandler(payload);
         break;
       case "createProductBrand":
-        productsService.createBrandHandler(state.brand).then((res) => {
-          if (res.data) {
-            dispatch(productsActions.refreshBrand(res.data));
-            productsService.getSimpleListOfAllBrandsHandler();
-            addToast({
-              text: "Brand created successfully",
-              type: "success",
-            });
-          } else {
-            addToast({
-              text: `${res.error.data.detail}`,
-              type: "error",
-            });
-          }
-        });
+        productsBasicDataService.createBrandHandler();
         break;
       case "uploadCategoryOrBrandPhoto":
-        productsService.uploadPhotoHandler(payload).then((res) => {
-          if (!payload.contextId) {
-            addToast({
-              text:
-                payload.contextName === "brand"
-                  ? "Create brand first"
-                  : "Create category first",
-              type: "error",
-            });
-          } else {
-            if (res.data.photoId) {
-              addToast({
-                text: "Photos added successfully",
-                type: "success",
-              });
-            } else {
-              addToast({
-                text: `${res.error.data.detail}`,
-                type: "error",
-              });
-            }
-          }
-        });
+        productsBasicDataService.uploadCategoryOrBrandPhotoHandler(payload);
         break;
-      case "createProduct":
-        dispatch(actions.setIsProductConfigurationCardLoading(true));
-        productsService.createNewProductHandler(payload).then((res) => {
-          dispatch(actions.setIsProductConfigurationCardLoading(false));
-          if (res.data) {
-            productsService
-              .getProductDetailsHandler(res.data.productId)
-              .then((res) => {
-                dispatch(actions.refreshSelectedProduct(res.data));
-              });
-            dispatch(actions.refreshSelectedProduct(res.data));
-            handleMultipleCardActions({
-              productConfigurationCard: false,
-              manageProductCard: true,
-            });
-            addToast({
-              text: "Product created successfully",
-              type: "success",
-            });
-          } else {
-            addToast({
-              text: `${res.error.data.detail}`,
-              type: "error",
-            });
-          }
-        });
+      case "closeProductConfigurationCard":
+        handleCardAction("productConfigurationCard");
         break;
-      case "updateProduct":
-        dispatch(actions.setIsProductConfigurationCardLoading(true));
-        productsService
-          .updateProductHandler(state.selectedProduct.productId, payload)
-          .then((res) => {
-            dispatch(actions.setIsProductConfigurationCardLoading(false));
-            if (res.data) {
-              dispatch(actions.refreshSelectedProduct(res.data));
-              addToast({
-                text: "Product updated successfully",
-                type: "success",
-              });
-            } else {
-              addToast({
-                text: "Product not updated",
-                description: res.error.message,
-                type: "error",
-              });
-            }
-          });
+      case "generateProductCode":
+        productsBasicDataService.generateProductCodeHandler();
         break;
-      case "closeCreateProductCategoryCard":
-        handleCardAction("createCategoryCard");
-        break;
-      case "closeCreateProductBrandCard":
-        handleCardAction("createBrandCard");
+      case "checkProductCode":
+        productsService.checkProductCodeHandler(payload);
         break;
       case "openPurchaseProductsCard":
         keepOnlyCards(["purchaseProductsCard"]);
@@ -1380,6 +1231,18 @@ export function PurchaseProductsPage() {
       case "openManageTraitsCard":
         handleCardAction("manageTraitsCard", true);
         break;
+      case "openCreateProductCategoryCard":
+        handleCardAction("createCategoryCard", true);
+        break;
+      case "openCreateProductBrandCard":
+        handleCardAction("createBrandCard", true);
+        break;
+      case "closeCreateProductCategoryCard":
+        handleCardAction("createCategoryCard");
+        break;
+      case "closeCreateProductBrandCard":
+        handleCardAction("createBrandCard");
+        break;
       case "openVariantPhotosCard":
         handleCardAction("variantPhotosCard", true);
         break;
@@ -1431,9 +1294,6 @@ export function PurchaseProductsPage() {
             categories={productsState.categories}
             colorsForFilter={productsState.colorsForFilter}
             sizesForFilter={productsState.sizesForFilter}
-            purchaseProductsSkeletonQuantity={
-              state.purchasesProductsGridRequestModel.pageSize
-            }
             variantsSkeletonQuantity={
               state.variantsForPurchaseGridRequestModel.pageSize
             }
@@ -1466,23 +1326,11 @@ export function PurchaseProductsPage() {
             product={state.selectedProduct}
             brandsList={productsState.brands}
             categoriesList={productsState.categories}
-            onGenerateProductCode={productsService.generateProductCodeHandler}
-            onProductCodeCheck={productsService.checkProductCodeHandler}
-            onOpenCreateProductCategoryCard={() =>
-              handleCardAction("createCategoryCard")
-            }
-            onOpenCreateProductBrandCard={() =>
-              handleCardAction("createBrandCard")
-            }
+            productCode={productsState.productCode}
             onSecondaryButtonClick={() =>
-              handleCardAction("productConfigurationCard")
+              onAction("closeProductConfigurationCard")
             }
-            onPrimaryButtonClick={(data) => {
-              onAction(
-                state.selectedProduct ? "updateProduct" : "createProduct",
-                data,
-              );
-            }}
+            onAction={onAction}
           />
         </div>
       )}

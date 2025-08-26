@@ -24,7 +24,7 @@ export function purchasesGridColumns(
       header: "Supplier",
       size: 150,
       minSize: 150,
-      maxSize: 150,
+      maxSize: 200,
       cell: ({ row }) => {
         const imageUrl: string = row.original.supplier?.thumbnailUrl;
         return (
@@ -44,7 +44,7 @@ export function purchasesGridColumns(
               <SheTooltip
                 delayDuration={200}
                 text={row.getValue("supplierName")}
-                className="max-w-[130px] overflow-hidden text-ellipsis whitespace-nowrap"
+                className="max-w-[100%] overflow-hidden text-ellipsis whitespace-nowrap"
               >
                 <span>{row.getValue("supplierName")}</span>
               </SheTooltip>
@@ -56,15 +56,15 @@ export function purchasesGridColumns(
     {
       accessorKey: "location",
       header: "Location",
-      size: 100,
-      minSize: 100,
+      size: 150,
+      minSize: 150,
       maxSize: 200,
       cell: ({ row }) => {
         return (
           <SheTooltip
             delayDuration={200}
             text={row.original.location?.address}
-            className="max-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap"
+            className="max-w-[100%] overflow-hidden text-ellipsis whitespace-nowrap"
           >
             <span>{row.original.location?.address}</span>
           </SheTooltip>
@@ -82,7 +82,7 @@ export function purchasesGridColumns(
           <SheTooltip
             delayDuration={200}
             text={row.getValue("documentNotes")}
-            className="max-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap"
+            className="max-w-[100%] overflow-hidden text-ellipsis whitespace-nowrap"
           >
             <span>{row.getValue("documentNotes")}</span>
           </SheTooltip>
@@ -146,9 +146,9 @@ export function purchasesGridColumns(
     {
       id: "manage",
       header: "",
-      size: 100,
-      minSize: 100,
-      maxSize: 100,
+      size: 80,
+      minSize: 80,
+      maxSize: 80,
       cell: ({ row, table }) => {
         const meta = table.options.meta as {
           setLoadingRow: (rowId: string, loading: boolean) => void;
@@ -176,9 +176,9 @@ export function purchasesGridColumns(
     {
       id: "rowActions",
       header: "",
-      size: 70,
-      minSize: 70,
-      maxSize: 70,
+      size: 40,
+      minSize: 40,
+      maxSize: 40,
       cell: ({ row, table }) => {
         const meta = table.options.meta as {
           setLoadingRow: (rowId: string, loading: boolean) => void;

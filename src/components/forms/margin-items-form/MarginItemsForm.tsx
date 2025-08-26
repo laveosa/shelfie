@@ -77,7 +77,7 @@ export default function MarginItemsForm<T>({
               <SheSelect
                 className={data?.taxTypeChanged ? cs.selectChanged : ""}
                 placeholder=" "
-                // selected={field.value || data?.taxTypeId}
+                selected={field.value || data?.taxTypeId}
                 items={convertTaxesToSelectItems(taxes)}
                 hideFirstOption
                 minWidth="70px"

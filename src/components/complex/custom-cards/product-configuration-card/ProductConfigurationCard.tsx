@@ -28,7 +28,9 @@ export default function ProductConfigurationCard({
   product,
   brandsList,
   categoriesList,
+  productCode,
   onPrimaryButtonClick,
+  onSecondaryButtonClick,
   onAction,
 }: IProductConfigurationCard) {
   const form = useForm({
@@ -55,14 +57,14 @@ export default function ProductConfigurationCard({
     } else {
       form.reset({
         productName: "",
-        productCode: null,
+        productCode: productCode,
         barcode: "",
         productCategoryId: null,
         brandId: null,
         isActive: false,
       });
     }
-  }, [product]);
+  }, [product, productCode]);
 
   return (
     <div>
@@ -75,7 +77,7 @@ export default function ProductConfigurationCard({
         showSecondaryButton={!product?.productId}
         secondaryButtonTitle="Cancel"
         onPrimaryButtonClick={form.handleSubmit(onPrimaryButtonClick)}
-        onSecondaryButtonClick={() => onAction("gotoProductsPage")}
+        onSecondaryButtonClick={onSecondaryButtonClick}
       >
         <div className={cs.productConfigurationForm}>
           <SheForm form={form}>

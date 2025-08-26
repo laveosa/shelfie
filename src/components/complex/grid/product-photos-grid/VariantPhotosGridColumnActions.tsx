@@ -8,11 +8,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import React from "react";
+import React, { CSSProperties } from "react";
 
 interface ProductPhotoGridColumnActionsProps<TData> {
   row?: Row<TData>;
   table?: Table<TData>;
+  style?:  CSSProperties;
   onAction?: (
     actionType?: string,
     rowId?: string,
@@ -24,6 +25,7 @@ interface ProductPhotoGridColumnActionsProps<TData> {
 export default function VariantPhotosGridColumnActions<TData>({
   row,
   table,
+  style,
   onAction,
 }: ProductPhotoGridColumnActionsProps<TData>) {
   const meta = table.options.meta as {
@@ -31,36 +33,38 @@ export default function VariantPhotosGridColumnActions<TData>({
     isRowLoading: (rowId: string) => boolean;
   };
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <SheButton
-          variant="ghost"
-          className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
-        >
-          <MoreHorizontal />
-          <span className="sr-only">Open menu</span>
-        </SheButton>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" className="w-[160px]">
-        <DropdownMenuItem
-          onClick={() => {
-            queueMicrotask(() => {
-              onAction("detachFromVariant", row.id, meta?.setLoadingRow, row);
-            });
-          }}
-        >
-          Detach photo
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => {
-            queueMicrotask(() => {
-              onAction("deletePhoto", row.id, meta?.setLoadingRow, row);
-            });
-          }}
-        >
-          Delete photo
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div style={style}>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <SheButton
+            variant="ghost"
+            className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+          >
+            <MoreHorizontal />
+            <span className="sr-only">Open menu</span>
+          </SheButton>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start" className="w-[160px]">
+          <DropdownMenuItem
+            onClick={() => {
+              queueMicrotask(() => {
+                onAction("detachFromVariant", row.id, meta?.setLoadingRow, row);
+              });
+            }}
+          >
+            Detach photo
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => {
+              queueMicrotask(() => {
+                onAction("deletePhoto", row.id, meta?.setLoadingRow, row);
+              });
+            }}
+          >
+            Delete photo
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   );
 }

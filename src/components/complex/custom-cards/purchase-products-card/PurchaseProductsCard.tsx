@@ -45,7 +45,6 @@ export default function PurchaseProductsCard({
   categories,
   colorsForFilter,
   sizesForFilter,
-  purchaseProductsSkeletonQuantity,
   variantsSkeletonQuantity,
   currencies,
   taxes,
@@ -210,7 +209,7 @@ export default function PurchaseProductsCard({
                 sortingItems={sortingOptions}
                 columnsPreferences={preferences}
                 preferenceContext={"productReferences"}
-                skeletonQuantity={purchaseProductsSkeletonQuantity}
+                skeletonQuantity={purchaseSummary?.unitsAmount}
                 onApplyColumns={onApplyColumnsHandler}
                 onDefaultColumns={onResetColumnsHandler}
                 onGridRequestChange={handleGridRequestChange}
