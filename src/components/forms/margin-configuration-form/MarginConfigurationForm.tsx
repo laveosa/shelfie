@@ -3,24 +3,19 @@ import React, { useEffect } from "react";
 import _ from "lodash";
 
 import useAppForm from "@/utils/hooks/useAppForm.ts";
-import cs
-  from "@/components/forms/margin-configuration-form/MarginConfigurationForm.module.scss";
+import cs from "@/components/forms/margin-configuration-form/MarginConfigurationForm.module.scss";
 import SheForm from "@/components/complex/she-form/SheForm.tsx";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import { FormField } from "@/components/ui/form.tsx";
-import SheFormItem
-  from "@/components/complex/she-form/components/she-form-item/SheFormItem.tsx";
+import SheFormItem from "@/components/complex/she-form/components/she-form-item/SheFormItem.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { MarginModelDefault } from "@/const/models/MarginModel.ts";
-import MarginConfigurationFormScheme
-  from "@/utils/validation/schemes/MarginConfigurationFormScheme.ts";
+import MarginConfigurationFormScheme from "@/utils/validation/schemes/MarginConfigurationFormScheme.ts";
 import SheToggle from "@/components/primitive/she-toggle/SheToggle.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
-import {
-  IMarginConfigurationCard
-} from "@/const/interfaces/forms/IMarginConfigurationForm.ts";
+import { IMarginConfigurationCard } from "@/const/interfaces/forms/IMarginConfigurationForm.ts";
 import { Separator } from "@/components/ui/separator.tsx";
 
 export default function MarginConfigurationForm<T>({
