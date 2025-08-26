@@ -31,9 +31,9 @@ export const ProductPhotosGridColumns = (
   {
     accessorKey: "thumbnailUrl",
     header: "Preview",
-    size: 20,
-    minSize: 20,
-    maxSize: 20,
+    size: 30,
+    minSize: 30,
+    maxSize: 30,
     cell: ({ row, table }) => {
       const photoUrl: string = row.getValue("thumbnailUrl");
       const meta = table.options.meta as {
@@ -61,9 +61,9 @@ export const ProductPhotosGridColumns = (
   {
     accessorKey: "format",
     header: "Format",
-    size: 20,
-    minSize: 20,
-    maxSize: 20,
+    size: 30,
+    minSize: 30,
+    maxSize: 30,
     cell: ({ row }) => {
       return (
         <span className="she-subtext">{`${row.original.height}px x ${row.original.width}px`}</span>
@@ -96,9 +96,9 @@ export const ProductPhotosGridColumns = (
   {
     id: "map",
     header: "Actions",
-    size: 30,
-    minSize: 30,
-    maxSize: 30,
+    size: 40,
+    minSize: 40,
+    maxSize: 40,
     cell: ({ row, table }) => {
       const meta = table.options.meta as {
         setLoadingRow: (rowId: string, loading: boolean) => void;

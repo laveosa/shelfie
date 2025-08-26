@@ -63,6 +63,8 @@ import ManageTraitsCard
   from "@/components/complex/custom-cards/manage-traits-card/ManageTraitsCard.tsx";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
+import useProductBasicDataPageService
+  from "@/pages/products-section/product-basic-data-page/useProductBasicDataPageService.ts";
 
 export function PurchaseProductsPage() {
   const dispatch = useAppDispatch();
@@ -71,6 +73,7 @@ export function PurchaseProductsPage() {
   const { openConfirmationDialog } = useDialogService();
   const service = usePurchaseProductsPageService();
   const productsService = useProductsPageService();
+  const productsBasicDataService = useProductBasicDataPageService();
   const state = useAppSelector<IPurchaseProductsPageSlice>(
     StoreSliceEnum.PURCHASE_PRODUCTS,
   );
@@ -253,156 +256,32 @@ export function PurchaseProductsPage() {
           });
         });
         break;
+      case "submitProductData":
+        productsBasicDataService.onSubmitProductDataHandler(null, payload);
+        break;
       case "checkCategoryName":
-        productsService
-          .checkCategoryNameHandler({ categoryName: payload })
-          .then((res) => {
-            if (res.error) {
-              addToast({
-                text: `${res.error.data.detail}`,
-                type: "error",
-              });
-            } else {
-              dispatch(
-                productsActions.refreshCategory({
-                  ...state.category,
-                  categoryName: payload,
-                }),
-              );
-            }
-          });
+        productsBasicDataService.checkCategoryNameHandler(payload);
         break;
       case "createProductCategory":
-        productsService.createNewCategoryHandler(state.category).then((res) => {
-          if (res.data) {
-            dispatch(productsActions.refreshCategory(res.data));
-            productsService.getAllCategoriesByOrganizationHandler();
-            addToast({
-              text: "Category created successfully",
-              type: "success",
-            });
-          } else {
-            addToast({
-              text: `${res.error.data.detail}`,
-              type: "error",
-            });
-          }
-        });
+        productsBasicDataService.createNewCategoryHandler();
         break;
       case "checkBrandName":
-        productsService
-          .checkBrandNameHandler({ brandName: payload })
-          .then((res) => {
-            if (res.error) {
-              addToast({
-                text: `${res.error.data.detail}`,
-                type: "error",
-              });
-            } else {
-              dispatch(
-                productsActions.refreshBrand({
-                  ...state.brand,
-                  brandName: payload,
-                }),
-              );
-            }
-          });
+        productsBasicDataService.checkBrandNameHandler(payload);
         break;
       case "createProductBrand":
-        productsService.createBrandHandler(state.brand).then((res) => {
-          if (res.data) {
-            dispatch(productsActions.refreshBrand(res.data));
-            productsService.getSimpleListOfAllBrandsHandler();
-            addToast({
-              text: "Brand created successfully",
-              type: "success",
-            });
-          } else {
-            addToast({
-              text: `${res.error.data.detail}`,
-              type: "error",
-            });
-          }
-        });
+        productsBasicDataService.createBrandHandler();
         break;
       case "uploadCategoryOrBrandPhoto":
-        productsService.uploadPhotoHandler(payload).then((res) => {
-          if (!payload.contextId) {
-            addToast({
-              text:
-                payload.contextName === "brand"
-                  ? "Create brand first"
-                  : "Create category first",
-              type: "error",
-            });
-          } else {
-            if (res.data.photoId) {
-              addToast({
-                text: "Photos added successfully",
-                type: "success",
-              });
-            } else {
-              addToast({
-                text: `${res.error.data.detail}`,
-                type: "error",
-              });
-            }
-          }
-        });
+        productsBasicDataService.uploadCategoryOrBrandPhotoHandler(payload);
         break;
-      case "createProduct":
-        dispatch(actions.setIsProductConfigurationCardLoading(true));
-        productsService.createNewProductHandler(payload).then((res) => {
-          dispatch(actions.setIsProductConfigurationCardLoading(false));
-          if (res.data) {
-            productsService
-              .getProductDetailsHandler(res.data.productId)
-              .then((res) => {
-                dispatch(actions.refreshSelectedProduct(res.data));
-              });
-            dispatch(actions.refreshSelectedProduct(res.data));
-            handleMultipleCardActions({
-              productConfigurationCard: false,
-              manageProductCard: true,
-            });
-            addToast({
-              text: "Product created successfully",
-              type: "success",
-            });
-          } else {
-            addToast({
-              text: `${res.error.data.detail}`,
-              type: "error",
-            });
-          }
-        });
+      case "closeProductConfigurationCard":
+        handleCardAction("productConfigurationCard");
         break;
-      case "updateProduct":
-        dispatch(actions.setIsProductConfigurationCardLoading(true));
-        productsService
-          .updateProductHandler(state.selectedProduct.productId, payload)
-          .then((res) => {
-            dispatch(actions.setIsProductConfigurationCardLoading(false));
-            if (res.data) {
-              dispatch(actions.refreshSelectedProduct(res.data));
-              addToast({
-                text: "Product updated successfully",
-                type: "success",
-              });
-            } else {
-              addToast({
-                text: "Product not updated",
-                description: res.error.message,
-                type: "error",
-              });
-            }
-          });
+      case "generateProductCode":
+        productsBasicDataService.generateProductCodeHandler();
         break;
-      case "closeCreateProductCategoryCard":
-        handleCardAction("createCategoryCard");
-        break;
-      case "closeCreateProductBrandCard":
-        handleCardAction("createBrandCard");
+      case "checkProductCode":
+        productsService.checkProductCodeHandler(payload);
         break;
       case "openPurchaseProductsCard":
         keepOnlyCards(["purchaseProductsCard"]);
@@ -1380,6 +1259,18 @@ export function PurchaseProductsPage() {
       case "openManageTraitsCard":
         handleCardAction("manageTraitsCard", true);
         break;
+      case "openCreateProductCategoryCard":
+        handleCardAction("createCategoryCard", true);
+        break;
+      case "openCreateProductBrandCard":
+        handleCardAction("createBrandCard", true);
+        break;
+      case "closeCreateProductCategoryCard":
+        handleCardAction("createCategoryCard");
+        break;
+      case "closeCreateProductBrandCard":
+        handleCardAction("createBrandCard");
+        break;
       case "openVariantPhotosCard":
         handleCardAction("variantPhotosCard", true);
         break;
@@ -1466,23 +1357,11 @@ export function PurchaseProductsPage() {
             product={state.selectedProduct}
             brandsList={productsState.brands}
             categoriesList={productsState.categories}
-            onGenerateProductCode={productsService.generateProductCodeHandler}
-            onProductCodeCheck={productsService.checkProductCodeHandler}
-            onOpenCreateProductCategoryCard={() =>
-              handleCardAction("createCategoryCard")
-            }
-            onOpenCreateProductBrandCard={() =>
-              handleCardAction("createBrandCard")
-            }
+            productCode={productsState.productCode}
             onSecondaryButtonClick={() =>
-              handleCardAction("productConfigurationCard")
+              onAction("closeProductConfigurationCard")
             }
-            onPrimaryButtonClick={(data) => {
-              onAction(
-                state.selectedProduct ? "updateProduct" : "createProduct",
-                data,
-              );
-            }}
+            onAction={onAction}
           />
         </div>
       )}

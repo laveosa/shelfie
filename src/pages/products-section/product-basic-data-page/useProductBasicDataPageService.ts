@@ -11,6 +11,7 @@ import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
+import { ProductModel } from "@/const/models/ProductModel.ts";
 
 export default function useProductBasicDataPageService() {
   const state = useAppSelector<IProductBasicDataPageSlice>(
@@ -258,14 +259,18 @@ export default function useProductBasicDataPageService() {
     });
   }
 
-  function generateProductCodeHandler() {
+  function generateProductCodeHandler(product?: ProductModel) {
     return generateProductCode(null).then((res: any) => {
-      dispatch(
-        productsActions.refreshProduct({
-          ...productsState.product,
-          productCode: res.data.code,
-        }),
-      );
+      if (product) {
+        dispatch(
+          productsActions.refreshProduct({
+            ...productsState.product,
+            productCode: res.data.code,
+          }),
+        );
+      } else {
+        dispatch(productsActions.refreshProductCode(res.data.code));
+      }
       return res.data;
     });
   }

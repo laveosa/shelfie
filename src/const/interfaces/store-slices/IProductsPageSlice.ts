@@ -67,4 +67,5 @@ export interface IProductsPageSlice {
   sizesForFilter?: TraitOptionModel[];
   activeTab?: string;
   variantPhotos?: ImageModel[];
+  productCode?: string;
 }

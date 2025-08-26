@@ -180,15 +180,8 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
         model: { ...props, items: tmpItems, selected: selected.value },
         event,
       });
-    } else {
-      onSelect?.(null, {
-        value: null,
-        model: { ...props, items: _items, selected: null },
-        event,
-      });
+      setSelected(selected);
     }
-
-    setSelected(selected);
   }
 
   function onOpenChangeHandler(value: boolean) {
@@ -260,7 +253,11 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
         open={_open}
         disabled={disabled || _loading || !items || items.length === 0}
         onOpenChange={onOpenChangeHandler}
-        onValueChange={(value) => setTimeout(() => valueHandler(value))}
+        onValueChange={(value) => {
+          if (value !== _selected?.id) {
+            setTimeout(() => valueHandler(value));
+          }
+        }}
         {...sheSelectProps}
       >
         <SelectTrigger

@@ -65,7 +65,7 @@ export default function ProductPhotosCard({
       <SheProductCard
         loading={isLoading}
         title="Product Photos"
-        minWidth="450px"
+        minWidth="500px"
         showCloseButton={showCloseButton}
         onSecondaryButtonClick={() => onAction("closeProductPhotsCard")}
         className={cs.productPhotosCard}
