@@ -61,7 +61,7 @@ export default function SupplierCard({
               onClick={() => {
                 selectedSupplier
                   ? onAction("detachSupplier")
-                  : onAction("openSelectSupplierCard");
+                  : onAction("openSelectEntityCard");
               }}
             />
           </div>

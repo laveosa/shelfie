@@ -198,7 +198,7 @@ export function SupplierPage() {
             });
           } else {
             addToast({
-              text: res.error.message,
+              text: res?.error?.data.detail,
               type: "error",
             });
           }
@@ -255,6 +255,7 @@ export function SupplierPage() {
 
               Promise.all(uploadPromises).then((results) => {
                 results.forEach((res) => {
+                  dispatch(actions.setIsPhotoUploaderLoading(false));
                   if (res && !res.error) {
                     service
                       .getSupplierDetailsHandler(
@@ -287,7 +288,7 @@ export function SupplierPage() {
                     });
                   } else {
                     addToast({
-                      text: res?.error?.message,
+                      text: res?.error?.data.detail,
                       type: "error",
                     });
                   }
@@ -321,6 +322,14 @@ export function SupplierPage() {
           .then((res) => {
             dispatch(actions.setIsSupplierCardLoading(false));
             if (!res.error) {
+              dispatch(
+                actions.refreshSuppliersWithLocations(
+                  state.suppliersWithLocations.filter(
+                    (s) => s.supplierId !== payload.supplierId,
+                  ),
+                ),
+              );
+              handleCardAction("supplierConfigurationCard");
               service
                 .getSupplierDetailsHandler(
                   payload.supplierId,

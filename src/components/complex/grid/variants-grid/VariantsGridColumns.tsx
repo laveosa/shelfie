@@ -247,8 +247,9 @@ export function variantsGridColumns(
     {
       id: "manage",
       header: "",
-      minSize: 100,
-      maxSize: 100,
+      size: 80,
+      minSize: 80,
+      maxSize: 80,
       cell: ({ row, table }) => {
         const meta = table.options.meta as {
           setLoadingRow: (rowId: string, loading: boolean) => void;
@@ -276,8 +277,9 @@ export function variantsGridColumns(
     {
       id: "rowActions",
       header: "",
-      minSize: 70,
-      maxSize: 70,
+      size: 40,
+      minSize: 40,
+      maxSize: 40,
       cell: ({ row, table }) => {
         const meta = table.options.meta as {
           setLoadingRow: (rowId: string, loading: boolean) => void;

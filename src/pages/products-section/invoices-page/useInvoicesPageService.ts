@@ -85,6 +85,14 @@ export default function useInvoicesPageService() {
         .deletePhotoHandler(model.row.original.assetId)
         .then((res) => {
           productsService.getPurchaseCountersHandler(Number(purchaseId));
+          if (state.invoicesGridModel.items.length === 1) {
+            dispatch(
+              actions.refreshInvoicesGridModel({
+                ...state.invoicesGridModel,
+                items: [],
+              }),
+            );
+          }
           if (!res) {
             addToast({
               text: "Invoice deleted successfully",
