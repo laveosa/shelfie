@@ -1,7 +1,7 @@
 import React, { JSX, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { User } from "lucide-react";
+import { Home, User } from "lucide-react";
 import TNFLogoIcon from "@/assets/icons/TNF_logo.svg?react";
 
 import useAppForm from "@/utils/hooks/useAppForm.ts";
@@ -69,18 +69,22 @@ export default function UserForm({
         onError={onErrorHandler}
         onCancel={onCancel}
       >
-        {/*<SheFormField
-          name="dateBerth"
+        <SheFormField
+          name="dateBirth"
           render={({ field }) => (
             <SheCalendar
               label="Date Berth"
-              date={field.value}
-              dateFormat={DateFormatEnum.DD_MMM_YYYY}
+              date={
+                field.value && field.value instanceof Date ? field.value : null
+              }
+              // date={field.value}
               required
               hideTimePicker
+              icon={Home}
+              showClearBtn
             />
           )}
-        />*/}
+        />
         <SheFormField
           name="units"
           render={({ field }) => (
@@ -188,7 +192,7 @@ export default function UserForm({
             />
           )}
         />
-        {/*<SheFormField
+        <SheFormField
           name="position"
           render={({ field }) => (
             <SheSelect
@@ -202,7 +206,7 @@ export default function UserForm({
               icon={User}
             />
           )}
-        />*/}
+        />
       </SheForm>
     </div>
   );

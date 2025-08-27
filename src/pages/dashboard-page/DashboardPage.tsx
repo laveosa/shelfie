@@ -1,25 +1,14 @@
 import React, { useEffect, useState } from "react";
 
 import cs from "./DashboardPage.module.scss";
-import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageService.ts";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import { UserModel } from "@/const/models/UserModel.ts";
 import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
 import { ContextPatternEnum } from "@/const/enums/ContextPatternEnum.ts";
-import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-import { IconViewEnum } from "@/const/enums/IconViewEnum.ts";
-import SheBadgeList from "@/components/primitive/she-badge-list/SheBadgeList.tsx";
 import UserForm from "@/components/forms/user-form/UserForm.tsx";
-
-import { Home } from "lucide-react";
-import HomeSolid from "@/assets/icons/house-solid.svg?react";
-import Logo from "@/assets/images/AuthLogo.png";
-import SheCalendar from "@/components/primitive/she-calendar/SheCalendar.tsx";
-import SheAutocomplete from "@/components/primitive/she-autocomplete/SheAutocomplete.tsx";
-import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
-import SheMultiSelect from "@/components/primitive/she-multi-select/SheMultiSelect.tsx";
 import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
-const ImageSVG = "https://www.svgrepo.com/show/303206/javascript-logo.svg";
+import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
+import SheCalendar from "@/components/primitive/she-calendar/SheCalendar.tsx";
 
 const badges: ISheBadge<any>[] = [
   {
@@ -284,8 +273,8 @@ const user: UserModel = {
   name: "Anton",
   age: 32,
   email: "anton@yahoo.com",
-  dateBirth: "05/21/1982",
   address: "Levetano 3/23",
+  dateBirth: "05.21.1982",
   gender: "male",
   position: "SEO",
   isAvailable: true,
@@ -295,16 +284,23 @@ const user: UserModel = {
 };
 
 export function DashboardPage() {
-  const service = useDashboardPageService();
+  // const service = useDashboardPageService();
 
   const [_user, setUser] = useState<UserModel>(null);
   const [_badges, setBadges] = useState<ISheBadge<any>[]>(null);
 
+  const [_selectDate, setSelectData] = useState<any[]>(null);
+  const [_selected, setSelected] = useState<any>(null);
+  const [_loading, setLoading] = useState<boolean>(false);
+
   useEffect(() => {
-    /*setTimeout(() => {
+    setTimeout(() => {
       setUser(user);
       setBadges(badges);
-    }, 3000);*/
+    }, 1000);
+    setTimeout(() => {
+      setSelected("male");
+    }, 1000);
   }, []);
 
   // ================================================================== STATE
@@ -316,6 +312,13 @@ export function DashboardPage() {
     console.log("MODEL: ", model);
   }
 
+  function onSelectedHandler(event, model) {
+    setSelected(event);
+    onAction(event, model);
+  }
+
+  // ================================================================== LOGIC
+
   // ================================================================== LAYOUT
   return (
     <div id={cs["DashboardPage"]}>
@@ -323,69 +326,21 @@ export function DashboardPage() {
       <br />
       <br />
 
-      <SheSelect
+      {/*<SheSelect
         label="Select"
-        items={position}
-        selected="HR"
+        items={genders}
+        selected={"male"}
         showClearBtn
-        onSelect={(value, model) => console.log("SELECT: ", value, model)}
+        onSelect={onSelectedHandler}
       />
       <br />
-      <br />
+      <br />*/}
 
-      <SheMultiSelect<string>
+      {/*<SheMultiSelect<string>
         label="MultiSelect"
         items={unitsString}
         selectedValues={["CW-9 White Wolf", "FS-34 Exterminator"]}
         showClearBtn
-        onSelect={(values, model) =>
-          console.log("MULTI SELECT: ", values, model)
-        }
-      />
-      <br />
-      <br />
-
-      {/*<SheMultiSelect<number>
-        label="MultiSelect"
-        items={unitsNumber}
-        selectedValues={[111, 222, 333]}
-        onSelect={(values, model) =>
-          console.log("MULTI SELECT: ", values, model)
-        }
-      />
-      <br />
-      <br />*/}
-
-      {/*<SheMultiSelect<any>
-        label="MultiSelect"
-        items={unitsArray}
-        selectedValues={[
-          [2, 2, 2, 2, 2],
-          [4, 4, 4, 4, 4],
-          [5, 5, 5, 5, 5],
-        ]}
-        onSelect={(values, model) =>
-          console.log("MULTI SELECT: ", values, model)
-        }
-      />
-      <br />
-      <br />*/}
-
-      {/*<SheMultiSelect<any>
-        label="MultiSelect"
-        items={unitsObject}
-        selectedValues={[
-          {
-            name: "name 1",
-            age: 11,
-            isOkay: true,
-          },
-          {
-            name: "name 3",
-            age: 33,
-            isOkay: true,
-          },
-        ]}
         onSelect={(values, model) =>
           console.log("MULTI SELECT: ", values, model)
         }
@@ -405,8 +360,9 @@ export function DashboardPage() {
 
       {/*<SheCalendar
         label="Date Berth"
-        date={"05-21-1982"}
         hideTimePicker
+        // date={_user?.dateBirth}
+        // date={user.dateBirth}
         onSelectDate={(value, model) => console.log("DATE: ", value, model)}
       />*/}
 
@@ -418,7 +374,6 @@ export function DashboardPage() {
         // data={_user}
         genders={genders}
         positions={position}
-        // badges={position}
         badges={badges}
         units={unitsString}
         notDisabledSubmit

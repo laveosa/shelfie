@@ -1,9 +1,9 @@
 @use "@/styles/variables" as vars;
 
 .sheCalendar {
-  width: fit-content;
+  width: fit-content !important;
   min-width: 252px;
-  max-width: none;
+  max-width: none !important;
 
   .sheCalendarContextBlock {
     width: 100%;

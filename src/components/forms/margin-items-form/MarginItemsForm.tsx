@@ -21,6 +21,7 @@ import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSele
 import { IMarginItemsForm } from "@/const/interfaces/forms/IMarginItemsForm.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
+import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
 
 export default function MarginItemsForm<T>({
   data,
@@ -62,22 +63,38 @@ export default function MarginItemsForm<T>({
         formPosition={DirectionEnum.CENTER}
         view={ComponentViewEnum.STANDARD}
         fullWidth
-        hidePrimary
-        hideSecondary
         onSubmit={onApplyHandler}
       >
-        <FormField
+        <SheFormField
+          name="taxTypeId"
+          className={`${cs.marginItemsFormItem} ${cs.marginItemsFormInput}`}
+          render={({ field }) => (
+            <SheSelect
+              className={data?.taxTypeChanged ? cs.selectChanged : ""}
+              placeholder=" "
+              selected={field?.value || data?.taxTypeId}
+              items={convertTaxesToSelectItems(taxes)}
+              hideFirstOption
+              minWidth="70px"
+              maxWidth="70px"
+              onSelect={() => {
+                onMarginItemChange(form.getValues());
+              }}
+            />
+          )}
+        />
+        {/*<FormField
           control={form.control}
           name="taxTypeId"
           render={({ field }) => (
             <SheFormItem
               className={`${cs.marginItemsFormItem} ${cs.marginItemsFormInput}`}
             >
-              {/*//TODO: WHEN NEW SheSelect COMPONENT WILL BE UPLOADED - SET SELECTED ITEM!!!*/}
+              //TODO: WHEN NEW SheSelect COMPONENT WILL BE UPLOADED - SET SELECTED ITEM!!!
               <SheSelect
                 className={data?.taxTypeChanged ? cs.selectChanged : ""}
                 placeholder=" "
-                // selected={field.value || data?.taxTypeId}
+                selected={field.value || data?.taxTypeId}
                 items={convertTaxesToSelectItems(taxes)}
                 hideFirstOption
                 minWidth="70px"
@@ -90,7 +107,7 @@ export default function MarginItemsForm<T>({
               />
             </SheFormItem>
           )}
-        />
+        />*/}
         <div
           className={`${cs.marginItemsFormItem} ${cs.marginItemsFormIcon} ${data.taxTypeChanged ? cs.arrowIconActive : cs.arrowIcon}`}
         >

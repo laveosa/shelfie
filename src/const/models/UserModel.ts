@@ -6,7 +6,7 @@ export interface UserModel {
   age?: number;
   email?: string;
   address?: string;
-  dateBirth?: string;
+  dateBirth?: string | Date;
   gender?: string;
   position?: any;
   comments?: string[];

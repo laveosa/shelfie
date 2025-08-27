@@ -83,10 +83,11 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
   const [_selectedTime, setSelectedTime] = useState<Date>(time ?? new Date());
 
   // ==================================================================== UTILITIES
-  const { ariaDescribedbyId } = useComponentUtilities<ISheCalendar>({
-    props,
-    identifier: "SheCalendar",
-  });
+  const { ariaDescribedbyId, updateFormValue, resetFormField } =
+    useComponentUtilities<ISheCalendar>({
+      props,
+      identifier: "SheCalendar",
+    });
   const markedParsedDates = React.useMemo(() => {
     if (!Array.isArray(markedDates)) return null;
     return (markedDates || [])
@@ -105,6 +106,7 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
 
     if (parsed && !_.isEqual(parsed, _date)) {
       const convertedDate = _getParsedModel(parsed);
+      updateFormValue(parsed);
       setDate(parsed);
       setSelectedMonth(months[getMonth(convertedDate)]);
       setSelectedYear(getYear(convertedDate));
@@ -133,6 +135,8 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
     if (normalizedDate !== _date) setDate(normalizedDate);
 
     const dateWithTime = _formatSelectedDateModel(normalizedDate);
+    updateFormValue(dateWithTime);
+    setDate(dateWithTime);
     onSelectDate?.(dateWithTime, {
       value: dateWithTime,
       model: props,
@@ -145,6 +149,7 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
     setSelectedTime(null);
     setSelectedMonth(months[new Date().getMonth()]);
     setSelectedYear(new Date().getFullYear());
+    resetFormField();
     onSelectDate?.(null, {
       value: null,
       model: props,
@@ -159,6 +164,7 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
   function onTimeDelayHandler(value: Date, { event }) {
     setSelectedTime(value);
     const dateWithTime = _formatSelectedDateModel(_date, value);
+    updateFormValue(dateWithTime);
     onSelectDate?.(dateWithTime, {
       value: dateWithTime,
       model: props,
@@ -245,7 +251,7 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
       throw new Error("Invalid date");
     }
 
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // getMonth() is 0-indexed
+    const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
     const year = date.getFullYear();
 

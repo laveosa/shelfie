@@ -19,9 +19,10 @@ const userFormScheme: AppSchemeType<UserModel> = z.object({
     .nonempty(nonemptyMessage)
     .regex(ContextPatternEnum.EMAIL as RegExp, "invalid email"),
   address: z.string().optional(),
-  // comments: z.array(z.string()).nonempty(nonemptyMessage),
   units: z.array(z.any()).nonempty(nonemptyMessage),
-  // dateBerth: z.string().nonempty(nonemptyMessage),
+  // dateBirth: z.string().nonempty(nonemptyMessage),
+  dateBirth: z.date().or(z.string()),
+  // comments: z.array(z.string()).nonempty(nonemptyMessage),
   gender: z
     .enum(["male", "female", "unicorn", "banana"])
     .superRefine((arg, ctx) => {

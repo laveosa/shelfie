@@ -91,8 +91,6 @@ export default function SheSelect<T = any>(props: ISheSelect<T>): JSX.Element {
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
-    console.log("SELECTED: ", selected);
-
     const newItems = initializeItemsList<T, ISheSelectItem<T>>([
       ...(_.cloneDeep(items) || []),
     ]);
@@ -185,16 +183,8 @@ export default function SheSelect<T = any>(props: ISheSelect<T>): JSX.Element {
         model: { ...props, items: tmpItems, selected: selected.value },
         event,
       });
-    } else {
-      resetFormField();
-      onSelect?.(null, {
-        value: null,
-        model: { ...props, items: _items, selected: null },
-        event,
-      });
+      setSelected(selected);
     }
-
-    setSelected(selected);
   }
 
   function onOpenChangeHandler(value: boolean) {
@@ -267,8 +257,11 @@ export default function SheSelect<T = any>(props: ISheSelect<T>): JSX.Element {
         open={_open}
         disabled={disabled || _loading || !items || items.length === 0}
         onOpenChange={onOpenChangeHandler}
-        onValueChange={(value) => setTimeout(() => valueHandler(value))}
-        {...sheSelectProps}
+        onValueChange={(value) => {
+          if (value !== _selected?.id) {
+            setTimeout(() => valueHandler(value));
+          }
+        }}
       >
         <SelectTrigger
           ref={_triggerRef as any}
