@@ -104,7 +104,8 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
   const _sourceValue = useRef<Date>(new Date(new Date().setHours(0, 0, 0, 0)));
 
   // ==================================================================== UTILITIES
-  const { ariaDescribedbyId } = useComponentUtilities({
+  const { ariaDescribedbyId } = useComponentUtilities<ISheTimePicker>({
+    props,
     identifier: "SheTimePicker",
   });
   const delayValue = useDebounce(_date, delayTime);
@@ -112,8 +113,6 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     setIsHighlighted(false);
-
-    console.log("DATE: ", date);
 
     if (date && date !== _date) {
       const defaultDate = _setDefaultDate(date);

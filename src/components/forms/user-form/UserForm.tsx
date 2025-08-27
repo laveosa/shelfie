@@ -74,12 +74,18 @@ export default function UserForm({
           render={({ field }) => (
             <SheCalendar
               label="Date Berth"
+              /*date={
+                field.value &&
+                (field.value instanceof Date ||
+                  new Date(field.value) instanceof Date)
+                  ? field.value
+                  : null
+              }*/
               date={
                 field.value && field.value instanceof Date ? field.value : null
               }
               // date={field.value}
               required
-              hideTimePicker
               icon={Home}
               showClearBtn
             />

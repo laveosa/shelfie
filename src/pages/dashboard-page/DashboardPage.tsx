@@ -274,7 +274,7 @@ const user: UserModel = {
   age: 32,
   email: "anton@yahoo.com",
   address: "Levetano 3/23",
-  dateBirth: "05.21.1982",
+  dateBirth: new Date("05.21.1982"),
   gender: "male",
   position: "SEO",
   isAvailable: true,

@@ -149,7 +149,7 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
     setSelectedTime(null);
     setSelectedMonth(months[new Date().getMonth()]);
     setSelectedYear(new Date().getFullYear());
-    resetFormField();
+    resetFormField(null);
     onSelectDate?.(null, {
       value: null,
       model: props,
@@ -164,7 +164,11 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
   function onTimeDelayHandler(value: Date, { event }) {
     setSelectedTime(value);
     const dateWithTime = _formatSelectedDateModel(_date, value);
-    updateFormValue(dateWithTime);
+
+    setTimeout(() => {
+      updateFormValue(dateWithTime);
+    }, 100);
+
     onSelectDate?.(dateWithTime, {
       value: dateWithTime,
       model: props,
@@ -491,7 +495,6 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
               onSelect={(value) =>
                 setTimeout(() => valueSelectDateHandler(value))
               }
-              {...props}
             />
             {!hideTimePicker && (
               <>
