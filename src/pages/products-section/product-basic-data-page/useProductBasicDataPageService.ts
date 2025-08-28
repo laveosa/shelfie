@@ -163,7 +163,7 @@ export default function useProductBasicDataPageService() {
       .then((res) => {
         if (res.error) {
           dispatch(
-            productsActions.refreshBrand({
+            productsActions.refreshCategory({
               ...state.category,
               error: res.error.data.detail,
             }),
