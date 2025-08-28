@@ -44,11 +44,7 @@ export function purchaseVariantsGridColumns(
                 className="object-cover rounded-md w-full h-full"
               />
             ) : (
-              <SheIcon
-                icon={ImageIcon}
-                maxWidth="30px"
-                className={cs.noImageIcon}
-              />
+              <SheIcon icon={ImageIcon} className={cs.noImageIcon} />
             )}
           </div>
         );

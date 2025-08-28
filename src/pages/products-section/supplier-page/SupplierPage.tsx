@@ -308,7 +308,7 @@ export function SupplierPage() {
         break;
       case "deleteSupplier":
         const confirmedSupplierDeleting = await openConfirmationDialog({
-          title: "Deleting supplier",
+          headerTitle: "Deleting supplier",
           text: `You are about to delete supplier ${payload.traitName}.`,
           primaryButtonValue: "Delete",
           secondaryButtonValue: "Cancel",
@@ -406,17 +406,16 @@ export function SupplierPage() {
           });
         break;
       case "deleteSupplierPhoto":
-        payload.table.options.meta?.hideRow(payload.row.original.id);
         const confirmed = await openConfirmationDialog({
-          title: "Deleting supplier photo",
+          headerTitle: "Deleting supplier photo",
           text: "You are about to delete supplier photo.",
           primaryButtonValue: "Delete",
           secondaryButtonValue: "Cancel",
         });
 
         if (!confirmed) {
-          payload.table.options.meta?.unhideRow(payload.row.original.id);
         } else {
+          payload.table.options.meta?.hideRow(payload.row.original.id);
           await productsService
             .deletePhotoHandler(payload.row.original.photoId)
             .then(() => {

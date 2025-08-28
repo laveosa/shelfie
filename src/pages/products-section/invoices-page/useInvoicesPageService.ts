@@ -71,16 +71,15 @@ export default function useInvoicesPageService() {
   }
 
   async function deleteInvoiceHandler(model, purchaseId) {
-    model.table.options.meta?.hideRow(model.row.original.id);
     const confirmedDeleteInvoice = await openConfirmationDialog({
-      title: "Delete Invoice",
+      headerTitle: "Delete Invoice",
       text: `You are about to delete invoice "${model.row.original.originalName}".`,
       primaryButtonValue: "Delete",
       secondaryButtonValue: "Cancel",
     });
     if (!confirmedDeleteInvoice) {
-      model.table.options.meta?.unhideRow(model.row.original.id);
     } else {
+      model.table.options.meta?.hideRow(model.row.original.id);
       await productsService
         .deletePhotoHandler(model.row.original.assetId)
         .then((res) => {

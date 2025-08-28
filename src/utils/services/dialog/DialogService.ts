@@ -7,7 +7,6 @@ import { IDialogSlice } from "@/const/interfaces/store-slices/IDialogSlice.ts";
 import { ISheConfirmationDialog } from "@/const/interfaces/dialogs/ISheConfirmationDialog.ts";
 import { IDialogComponent } from "@/const/interfaces/dialogs/IDialogComponent.ts";
 
-// Simple global resolver - shared across all hook instances
 let globalResolver: ((value: boolean) => void) | null = null;
 
 export default function useDialogService() {

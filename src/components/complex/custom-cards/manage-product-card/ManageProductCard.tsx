@@ -1,20 +1,26 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Cog, GalleryThumbnails, Plus, TableProperties } from "lucide-react";
 
-import { IManageProductCard } from "@/const/interfaces/complex-components/custom-cards/IManageProductCard.ts";
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
+import {
+  DataWithId,
+  DndGridDataTable
+} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import {
+  IManageProductCard
+} from "@/const/interfaces/complex-components/custom-cards/IManageProductCard.ts";
+import SheProductCard
+  from "@/components/complex/she-product-card/SheProductCard.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import cs from "./ManageProductCard.module.scss";
 import { formatDate } from "@/utils/helpers/quick-helper.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import {
-  DataWithId,
-  DndGridDataTable,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import { PurchaseProductVariantsGridColumns } from "@/components/complex/grid/purchase-product-variants-grid/PurchaseProductVariantsGridColumns.tsx";
-import PurchaseProductsForm from "@/components/forms/purchase-products-form/PurchaseProductsForm.tsx";
+  PurchaseProductVariantsGridColumns
+} from "@/components/complex/grid/purchase-product-variants-grid/PurchaseProductVariantsGridColumns.tsx";
 import { ColumnDef } from "@tanstack/react-table";
+import ManageProductsForPurchaseForm
+  from "@/components/forms/manage-products-for-purchase-form/ManageProductsForPurchaseForm.tsx";
 
 export default function ManageProductCard({
   isLoading,
@@ -72,7 +78,7 @@ export default function ManageProductCard({
   const renderExpandedContent = (row, stockAction, _stockActionIndex) => {
     return (
       <div>
-        <PurchaseProductsForm
+        <ManageProductsForPurchaseForm
           data={stockAction}
           taxes={taxes}
           currencies={currencies}
@@ -96,6 +102,9 @@ export default function ManageProductCard({
       case "addRow":
         handleAddStockAction(rowData.variantId);
         break;
+      case "manageVariant":
+        onAction("manageVariant", rowData);
+        break;
       case "addStockAction":
         rowData.stockAction.stockActionId
           ? onAction("updateStockAction", rowData)
@@ -106,7 +115,7 @@ export default function ManageProductCard({
 
   return (
     <SheProductCard
-      width="550px"
+      width="560px"
       loading={isLoading}
       className={cs.manageProductCard}
       title={`Manage Product for Purchase ${formatDate(purchase?.date, "date")}`}

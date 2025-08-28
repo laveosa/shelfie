@@ -57,14 +57,20 @@ export default function ProductConfigurationCard({
     } else {
       form.reset({
         productName: "",
-        productCode: productCode,
+        productCode: "",
         barcode: "",
         productCategoryId: null,
         brandId: null,
         isActive: false,
       });
     }
-  }, [product, productCode]);
+  }, [product]);
+
+  useEffect(() => {
+    if (productCode) {
+      form.setValue("productCode", productCode);
+    }
+  }, [productCode, form]);
 
   return (
     <div>

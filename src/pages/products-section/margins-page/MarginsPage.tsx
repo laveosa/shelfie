@@ -354,7 +354,7 @@ export function MarginsPage() {
         break;
       case "deleteMargin":
         const confirmed = await openConfirmationDialog({
-          title: "Deleting margin rule",
+          headerTitle: "Deleting margin rule",
           text: `You are about to delete the margin rule. The prices that were previously calculated using this margin, will remain intact. The margin will no longer be applied to new purchases.`,
           primaryButtonValue: "Delete",
           secondaryButtonValue: "Cancel",

@@ -125,7 +125,7 @@ export function ProductGalleryPage() {
         break;
       case "deletePhoto":
         const confirmed = await openConfirmationDialog({
-          title: "Deleting product photo",
+          headerTitle: "Deleting product photo",
           text: "You are about to delete product photo.",
           primaryButtonValue: "Delete",
           secondaryButtonValue: "Cancel",

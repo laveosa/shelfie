@@ -229,7 +229,11 @@ export function PurchaseProductsPage() {
         });
         break;
       case "submitProductData":
-        productsBasicDataService.onSubmitProductDataHandler(null, payload);
+        service.onSubmitProductDataHandler(payload);
+        handleMultipleCardActions({
+          productConfigurationCard: false,
+          purchaseProductsCard: true,
+        });
         break;
       case "checkCategoryName":
         productsBasicDataService.checkCategoryNameHandler(payload);
@@ -321,7 +325,7 @@ export function PurchaseProductsPage() {
         break;
       case "deletePhoto":
         const confirmed = await openConfirmationDialog({
-          title: "Deleting product photo",
+          headerTitle: "Deleting product photo",
           text: "You are about to delete product photo.",
           primaryButtonValue: "Delete",
           secondaryButtonValue: "Cancel",
@@ -500,7 +504,7 @@ export function PurchaseProductsPage() {
         break;
       case "deleteTrait":
         const confirmedTraitDeleting = await openConfirmationDialog({
-          title: "Deleting trait",
+          headerTitle: "Deleting trait",
           text: `You are about to remove the trait ${payload.traitName}. All products connected to it will loose the configuration and will require your attention to map it to the new trait.`,
           primaryButtonValue: "Delete",
           secondaryButtonValue: "Cancel",
@@ -646,7 +650,7 @@ export function PurchaseProductsPage() {
         break;
       case "deleteOption":
         const confirmedOptionDeleting = await openConfirmationDialog({
-          title: "Deleting option",
+          headerTitle: "Deleting option",
           text: `You are about to remove the option ${payload.optionName}.`,
           primaryButtonValue: "Delete",
           secondaryButtonValue: "Cancel",
@@ -924,6 +928,7 @@ export function PurchaseProductsPage() {
         });
         break;
       case "manageVariant":
+        console.log(payload);
         keepOnlyCards(["manageProductCard", "variantConfigurationCard"]);
         dispatch(actions.setIsVariantConfigurationCardLoading(true));
         dispatch(actions.setIsVariantOptionsGridLoading(true));
@@ -1146,7 +1151,7 @@ export function PurchaseProductsPage() {
         break;
       case "detachPhotoFromVariant":
         const confirmedDetachPhoto = await openConfirmationDialog({
-          title: "Detach photo from variant",
+          headerTitle: "Detach photo from variant",
           text: `You are about to detach photo from variant  "${productsState.selectedVariant.variantName}".`,
           primaryButtonValue: "Detach",
           secondaryButtonValue: "Cancel",
@@ -1327,6 +1332,7 @@ export function PurchaseProductsPage() {
             brandsList={productsState.brands}
             categoriesList={productsState.categories}
             productCode={productsState.productCode}
+            onPrimaryButtonClick={(data) => onAction("submitProductData", data)}
             onSecondaryButtonClick={() =>
               onAction("closeProductConfigurationCard")
             }
