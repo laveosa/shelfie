@@ -71,13 +71,13 @@ export function ProductBasicDataPage() {
         service.checkCategoryNameHandler(payload);
         break;
       case "createProductCategory":
-        service.createNewCategoryHandler();
+        service.createNewCategoryHandler(payload);
         break;
       case "checkBrandName":
         service.checkBrandNameHandler(payload);
         break;
       case "createProductBrand":
-        service.createBrandHandler();
+        service.createBrandHandler(payload);
         break;
       case "uploadCategoryOrBrandPhoto":
         service.uploadCategoryOrBrandPhotoHandler(payload);
@@ -155,6 +155,7 @@ export function ProductBasicDataPage() {
         <div ref={createRefCallback("createCategoryCard")}>
           <CreateProductCategoryCard
             isLoading={state.isCreateCategoryCardLoading}
+            isPhotoUploaderLoading={productsState.isPhotoUploaderLoading}
             category={productsState.category}
             onAction={onAction}
           />
@@ -164,6 +165,7 @@ export function ProductBasicDataPage() {
         <div ref={createRefCallback("createBrandCard")}>
           <CreateProductBrandCard
             isLoading={state.isCreateBrandCardLoading}
+            isPhotoUploaderLoading={productsState.isPhotoUploaderLoading}
             brand={productsState.brand}
             onAction={onAction}
           />

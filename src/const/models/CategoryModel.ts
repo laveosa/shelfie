@@ -3,4 +3,5 @@ export interface CategoryModel {
   categoryName?: string;
   picture?: any;
   thumbnail?: string;
+  error?: string;
 }

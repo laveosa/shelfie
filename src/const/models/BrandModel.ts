@@ -3,4 +3,5 @@ export interface BrandModel {
   brandName?: string;
   picture?: File;
   thumbnail?: string;
+  error?: string;
 }
