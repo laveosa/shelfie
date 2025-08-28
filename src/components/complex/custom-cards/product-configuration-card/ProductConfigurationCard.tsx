@@ -29,6 +29,7 @@ export default function ProductConfigurationCard({
   brandsList,
   categoriesList,
   productCode,
+  showSecondaryButton,
   onPrimaryButtonClick,
   onSecondaryButtonClick,
   onAction,
@@ -78,9 +79,10 @@ export default function ProductConfigurationCard({
         loading={isLoading}
         className={cs.productConfigurationFormCard}
         title={product?.productId ? "Basic Product Data" : "Create Product"}
+        showCloseButton={showSecondaryButton}
         showPrimaryButton={true}
         primaryButtonTitle={product?.productId ? "Save" : "Add Product"}
-        showSecondaryButton={!product?.productId}
+        showSecondaryButton={!product?.productId || showSecondaryButton}
         secondaryButtonTitle="Cancel"
         onPrimaryButtonClick={form.handleSubmit(onPrimaryButtonClick)}
         onSecondaryButtonClick={onSecondaryButtonClick}
