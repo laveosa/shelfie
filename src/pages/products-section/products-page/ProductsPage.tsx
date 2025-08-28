@@ -107,19 +107,18 @@ export function ProductsPage() {
   }, [state.productsGridModel.items]);
 
   async function onDelete(data) {
-    data.table.options.meta?.hideRow(data.row.original.id);
     switch (state.activeTab) {
       case "products":
         const confirmedDeleteProduct = await openConfirmationDialog({
-          title: "Delete Product",
+          headerTitle: "Delete Product",
           text: `You are about to delete product "${data.row.original.productName}".`,
           primaryButtonValue: "Delete",
           secondaryButtonValue: "Cancel",
         });
 
         if (!confirmedDeleteProduct) {
-          data.table.options.meta?.unhideRow(data.row.original.id);
         } else {
+          data.table.options.meta?.hideRow(data.row.original.id);
           await service
             .deleteProductHandler(data.row.original.productId)
             .then((res) => {
@@ -140,15 +139,15 @@ export function ProductsPage() {
         break;
       case "variants":
         const confirmedDeleteVariant = await openConfirmationDialog({
-          title: "Delete Variant",
+          headerTitle: "Delete Variant",
           text: `You are about to delete variant "${data.row.original.variantName}".`,
           primaryButtonValue: "Delete",
           secondaryButtonValue: "Cancel",
         });
 
         if (!confirmedDeleteVariant) {
-          data.table.options.meta?.unhideRow(data.row.original.id);
         } else {
+          data.table.options.meta?.hideRow(data.row.original.id);
           await service
             .deleteVariantHandler(data.row.original.variantId)
             .then((res) => {

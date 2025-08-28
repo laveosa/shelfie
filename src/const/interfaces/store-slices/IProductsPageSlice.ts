@@ -27,6 +27,7 @@ export interface IProductsPageSlice {
   isProductsLoading?: boolean;
   isProductPhotosLoading?: boolean;
   isProductVariantsLoading?: boolean;
+  isPhotoUploaderLoading?: boolean;
   products?: ProductModel[];
   product?: ProductModel;
   variants?: VariantModel[];

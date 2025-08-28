@@ -29,6 +29,7 @@ export default function ProductConfigurationCard({
   brandsList,
   categoriesList,
   productCode,
+  showSecondaryButton,
   onPrimaryButtonClick,
   onSecondaryButtonClick,
   onAction,
@@ -57,14 +58,20 @@ export default function ProductConfigurationCard({
     } else {
       form.reset({
         productName: "",
-        productCode: productCode,
+        productCode: "",
         barcode: "",
         productCategoryId: null,
         brandId: null,
         isActive: false,
       });
     }
-  }, [product, productCode]);
+  }, [product]);
+
+  useEffect(() => {
+    if (productCode) {
+      form.setValue("productCode", productCode);
+    }
+  }, [productCode, form]);
 
   return (
     <div>
@@ -72,9 +79,10 @@ export default function ProductConfigurationCard({
         loading={isLoading}
         className={cs.productConfigurationFormCard}
         title={product?.productId ? "Basic Product Data" : "Create Product"}
+        showCloseButton={showSecondaryButton}
         showPrimaryButton={true}
         primaryButtonTitle={product?.productId ? "Save" : "Add Product"}
-        showSecondaryButton={!product?.productId}
+        showSecondaryButton={!product?.productId || showSecondaryButton}
         secondaryButtonTitle="Cancel"
         onPrimaryButtonClick={form.handleSubmit(onPrimaryButtonClick)}
         onSecondaryButtonClick={onSecondaryButtonClick}

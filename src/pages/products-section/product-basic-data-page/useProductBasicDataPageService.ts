@@ -12,6 +12,7 @@ import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IPro
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
+import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 
 export default function useProductBasicDataPageService() {
   const state = useAppSelector<IProductBasicDataPageSlice>(
@@ -24,6 +25,11 @@ export default function useProductBasicDataPageService() {
   const productsService = useProductsPageService();
   const { addToast } = useToast();
   const navigate = useNavigate();
+  const { handleCardAction, createRefCallback } = useCardActions({
+    selectActiveCards: (state) =>
+      state[StoreSliceEnum.PRODUCT_BASIC_DATA].activeCards,
+    refreshAction: actions.refreshActiveCards,
+  });
 
   const [generateProductCode] =
     ProductsApiHooks.useLazyGenerateProductCodeQuery();
@@ -151,15 +157,17 @@ export default function useProductBasicDataPageService() {
     navigate(NavUrlEnum.PRODUCTS);
   }
 
-  function checkCategoryNameHandler(categoryName) {
+  function checkCategoryNameHandler(categoryName: string) {
     productsService
       .checkCategoryNameHandler({ categoryName: categoryName })
       .then((res) => {
         if (res.error) {
-          addToast({
-            text: `${res.error.data.detail}`,
-            type: "error",
-          });
+          dispatch(
+            productsActions.refreshCategory({
+              ...state.category,
+              error: res.error.data.detail,
+            }),
+          );
         } else {
           dispatch(
             productsActions.refreshCategory({
@@ -171,18 +179,43 @@ export default function useProductBasicDataPageService() {
       });
   }
 
-  function createNewCategoryHandler() {
+  function createNewCategoryHandler(model) {
     productsService
       .createNewCategoryHandler({
-        categoryName: productsState.category.categoryName,
+        categoryName: model.categoryName,
       })
       .then((res) => {
         if (res.data) {
-          dispatch(productsActions.refreshCategory(res.data));
-          productsService.getAllCategoriesByOrganizationHandler();
-          addToast({
-            text: "Category created successfully",
-            type: "success",
+          dispatch(
+            productsActions.refreshCategories([
+              ...productsState.categories,
+              res.data,
+            ]),
+          );
+          dispatch(productsActions.setIsPhotoUploaderLoading(true));
+
+          const uploadPromises = model.uploadModels.map((model) => {
+            model.contextId = res.data.categoryId;
+            return productsService.uploadPhotoHandler(model);
+          });
+
+          Promise.all(uploadPromises).then((results) => {
+            results.forEach((res) => {
+              dispatch(productsActions.setIsPhotoUploaderLoading(false));
+              if (res && !res.error) {
+                dispatch(productsActions.refreshCategory(null));
+                handleCardAction("createCategoryCard");
+                addToast({
+                  text: "Category created successfully",
+                  type: "success",
+                });
+              } else {
+                addToast({
+                  text: res?.error?.data.detail,
+                  type: "error",
+                });
+              }
+            });
           });
         } else {
           addToast({
@@ -193,36 +226,62 @@ export default function useProductBasicDataPageService() {
       });
   }
 
-  function checkBrandNameHandler(brandName) {
+  function checkBrandNameHandler(brandName: string) {
     productsService
       .checkBrandNameHandler({ brandName: brandName })
       .then((res) => {
         if (res.error) {
-          addToast({
-            text: `${res.error.data.detail}`,
-            type: "error",
-          });
+          dispatch(
+            productsActions.refreshBrand({
+              ...state.brand,
+              error: res.error.data.detail,
+            }),
+          );
         } else {
           dispatch(
             productsActions.refreshBrand({
               ...state.brand,
               brandName: brandName,
+              error: null,
             }),
           );
         }
       });
   }
 
-  function createBrandHandler() {
+  function createBrandHandler(model) {
     productsService
-      .createBrandHandler({ brandName: productsState.brand.brandName })
+      .createBrandHandler({ brandName: model.brandName })
       .then((res) => {
         if (res.data) {
-          dispatch(productsActions.refreshBrand(res.data));
-          productsService.getSimpleListOfAllBrandsHandler();
-          addToast({
-            text: "Brand created successfully",
-            type: "success",
+          dispatch(
+            productsActions.refreshBrands([...productsState.brands, res.data]),
+          );
+
+          dispatch(productsActions.setIsPhotoUploaderLoading(true));
+
+          const uploadPromises = model.uploadModels.map((model) => {
+            model.contextId = res.data.brandId;
+            return productsService.uploadPhotoHandler(model);
+          });
+
+          Promise.all(uploadPromises).then((results) => {
+            results.forEach((res) => {
+              dispatch(productsActions.setIsPhotoUploaderLoading(false));
+              if (res && !res.error) {
+                dispatch(productsActions.refreshBrand(null));
+                handleCardAction("createBrandCard");
+                addToast({
+                  text: "Brand created successfully",
+                  type: "success",
+                });
+              } else {
+                addToast({
+                  text: res?.error?.data.detail,
+                  type: "error",
+                });
+              }
+            });
           });
         } else {
           addToast({

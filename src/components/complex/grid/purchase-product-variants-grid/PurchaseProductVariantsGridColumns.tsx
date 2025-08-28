@@ -1,26 +1,36 @@
+import { Cog, Plus } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import cs from "./PurchaseProductVariantsGridColumns.module.scss";
-import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
-import PurchaseProductVariantsGridColumnActions from "@/components/complex/grid/purchase-product-variants-grid/PurchaseProductVariantsGridColumnsActions.tsx";
 
 export function PurchaseProductVariantsGridColumns(
   onAction: any,
 ): ColumnDef<any>[] {
   return [
     {
-      accessorKey: "variantCode",
-      header: "Code",
-      size: 70,
-      minSize: 70,
-      maxSize: 70,
-      cell: ({ row }) => {
+      id: "add",
+      header: "Add",
+      minSize: 20,
+      maxSize: 20,
+      cell: ({ row, table }) => {
+        const meta = table.options.meta as {
+          setLoadingRow: (rowId: string, loading: boolean) => void;
+          isRowLoading: (rowId: string) => boolean;
+        };
+
+        const handleManageClick = (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          onAction("addRow", row.original);
+        };
+
         return (
-          <SheTooltip delayDuration={200} text={row.getValue("variantCode")}>
-            <span className={cs.variantCode}>
-              {row.getValue("variantCode")}
-            </span>
-          </SheTooltip>
+          <div onClick={(e) => e.stopPropagation()}>
+            <SheButton
+              icon={Plus}
+              onClick={handleManageClick}
+              disabled={meta?.isRowLoading(row.id)}
+            />
+          </div>
         );
       },
     },
@@ -71,49 +81,20 @@ export function PurchaseProductVariantsGridColumns(
         );
       },
     },
-    {
-      id: "add",
-      header: "",
-      minSize: 100,
-      maxSize: 100,
-      cell: ({ row, table }) => {
-        const meta = table.options.meta as {
-          setLoadingRow: (rowId: string, loading: boolean) => void;
-          isRowLoading: (rowId: string) => boolean;
-        };
 
-        const handleManageClick = (e) => {
-          e.stopPropagation();
-          e.preventDefault();
-          onAction("addRow", row.original);
-        };
-
-        return (
-          <div onClick={(e) => e.stopPropagation()}>
-            <SheButton
-              onClick={handleManageClick}
-              disabled={meta?.isRowLoading(row.id)}
-              value="Add Row"
-              variant="secondary"
-            />
-          </div>
-        );
-      },
-    },
     {
       id: "rowActions",
-      header: "",
-      minSize: 70,
-      maxSize: 70,
-      cell: ({ row, table }) => {
+      header: "Actions",
+      minSize: 90,
+      maxSize: 90,
+      cell: ({ row }) => {
         return (
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <PurchaseProductVariantsGridColumnActions
-              row={row}
-              onAction={onAction}
-              table={table}
-            />
-          </div>
+          <SheButton
+            icon={Cog}
+            value={"Manage Variant"}
+            variant="secondary"
+            onClick={() => onAction("manageVariant", row.original)}
+          />
         );
       },
     },

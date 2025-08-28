@@ -1,13 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect } from "react";
-import { Check, Trash2, X } from "lucide-react";
+import { Check, Trash2 } from "lucide-react";
 
 import { IPurchaseProductsForm } from "@/const/interfaces/forms/IPurchaseProductsForm.ts";
 import useAppForm from "@/utils/hooks/useAppForm.ts";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
-import cs from "@/components/forms/purchase-products-form/PurchaseProductsForm.module.scss";
+import cs from "@/components/forms/manage-products-for-purchase-form/ManageProductsForPurchaseForm.module.scss";
 import SheForm from "@/components/complex/she-form/SheForm.tsx";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
@@ -17,7 +17,6 @@ import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import PurchaseProductsFormScheme from "@/utils/validation/schemes/PurchaseProductsFormScheme.ts";
-import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 
 export const DefaultPurchaseProductsForm = {
   nettoPrice: null,
@@ -26,12 +25,11 @@ export const DefaultPurchaseProductsForm = {
   unitsAmount: null,
 };
 
-export default function PurchaseProductsForm<T>({
+export default function ManageProductsForPurchaseForm<T>({
   data,
   currencies,
   taxes,
   activeTab,
-  isVariantGrid = false,
   onSubmit,
   onDelete,
   onCancel,
@@ -93,7 +91,7 @@ export default function PurchaseProductsForm<T>({
           control={form.control}
           name="nettoPrice"
           render={({ field }): React.ReactElement => (
-            <SheFormItem className={cs.purchaseFormItemNettoPrice}>
+            <SheFormItem className={cs.purchaseFormItem} label="Price">
               <SheInput
                 {...field}
                 className={
@@ -103,36 +101,9 @@ export default function PurchaseProductsForm<T>({
                       : ""
                     : ""
                 }
-                minWidth="100px"
-                maxWidth="100px"
-                placeholder="Netto price"
-              />
-            </SheFormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="currencyId"
-          render={({ field }) => (
-            <SheFormItem className={cs.purchaseFormItemTaxCurrency}>
-              <SheSelect
-                selected={data?.currencyId || field?.value}
-                className={
-                  activeTab === "connectProducts"
-                    ? field.value
-                      ? cs.formItemsValid
-                      : ""
-                    : ""
-                }
+                minWidth="80px"
+                maxWidth="80px"
                 placeholder=" "
-                items={convertCurrenciesToSelectItems(currencies)}
-                hideFirstOption
-                minWidth="70px"
-                maxWidth="70px"
-                onSelect={(value) => {
-                  field.onChange(value);
-                  void form.trigger("currencyId");
-                }}
               />
             </SheFormItem>
           )}
@@ -141,7 +112,7 @@ export default function PurchaseProductsForm<T>({
           control={form.control}
           name="taxTypeId"
           render={({ field }) => (
-            <SheFormItem className={cs.purchaseFormItemTaxCurrency}>
+            <SheFormItem className={cs.purchaseFormItem} label="Tax">
               <SheSelect
                 placeholder=" "
                 className={
@@ -164,12 +135,38 @@ export default function PurchaseProductsForm<T>({
             </SheFormItem>
           )}
         />
-        <SheIcon className={cs.purchaseProductsFormIcon} icon={X} />
+        <FormField
+          control={form.control}
+          name="currencyId"
+          render={({ field }) => (
+            <SheFormItem className={cs.purchaseFormItem} label="Currency">
+              <SheSelect
+                selected={data?.currencyId || field?.value}
+                className={
+                  activeTab === "connectProducts"
+                    ? field.value
+                      ? cs.formItemsValid
+                      : ""
+                    : ""
+                }
+                placeholder=" "
+                items={convertCurrenciesToSelectItems(currencies)}
+                hideFirstOption
+                minWidth="80px"
+                maxWidth="80px"
+                onSelect={(value) => {
+                  field.onChange(value);
+                  void form.trigger("currencyId");
+                }}
+              />
+            </SheFormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="unitsAmount"
           render={({ field }): React.ReactElement => (
-            <SheFormItem className={cs.purchaseFormItemTaxCurrency}>
+            <SheFormItem className={cs.purchaseFormItem} label="Quantity">
               <SheInput
                 {...field}
                 className={
@@ -179,43 +176,24 @@ export default function PurchaseProductsForm<T>({
                       : ""
                     : ""
                 }
-                width="80px"
-                minWidth="80px"
-                maxWidth="80px"
-                placeholder="Quantity"
+                width="70px"
+                minWidth="70px"
+                maxWidth="70px"
+                placeholder=" "
               />
             </SheFormItem>
           )}
         />
-        {!isVariantGrid ? (
+        <div className={cs.variantGridButtonBlock}>
+          <SheButton icon={Check} variant="secondary" value="Save" />
           <SheButton
-            className={
-              activeTab === "connectProducts"
-                ? isFormValid
-                  ? cs.buttonValid
-                  : ""
-                : ""
-            }
-            style={{
-              marginLeft: "10px",
-            }}
-            value={activeTab === "connectProducts" ? "Add" : "Update"}
-            variant="ghost"
-            type="submit"
-            disabled={activeTab === "connectProducts" ? !isFormValid : false}
+            icon={Trash2}
+            type="button"
+            variant="outline"
+            disabled={!data.stockActionId}
+            onClick={onDelete}
           />
-        ) : (
-          <div className={cs.variantGridButtonBlock}>
-            <SheButton icon={Check} variant="secondary" value="Save" />
-            <SheButton
-              icon={Trash2}
-              type="button"
-              variant="secondary"
-              disabled={!data.stockActionId}
-              onClick={onDelete}
-            />
-          </div>
-        )}
+        </div>
       </SheForm>
     </div>
   );

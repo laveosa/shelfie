@@ -30,6 +30,7 @@ const initialState: IProductsPageSlice = {
   isProductsLoading: false,
   isProductPhotosLoading: false,
   isProductVariantsLoading: false,
+  isPhotoUploaderLoading: false,
   products: null,
   product: null,
   selectedProduct: null,
@@ -148,6 +149,13 @@ function setIsProductVariantsLoading(
   action: PayloadAction<boolean>,
 ) {
   state.isProductVariantsLoading = action?.payload;
+}
+
+function setIsPhotoUploaderLoading(
+  state: IProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isPhotoUploaderLoading = action?.payload;
 }
 
 //----------------------------------------------------- API
@@ -428,6 +436,7 @@ const ProductsPageSlice = createSlice({
     setIsProductsLoading,
     setIsProductPhotosLoading,
     setIsProductVariantsLoading,
+    setIsPhotoUploaderLoading,
     refreshProducts,
     refreshProduct,
     resetProduct,

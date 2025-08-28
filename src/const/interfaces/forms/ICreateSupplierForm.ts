@@ -3,6 +3,7 @@ import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 
 export interface ICreateSupplierForm<T> {
   isLoading?: boolean;
+  isGridLoading?: boolean;
   isPhotoUploaderLoading?: boolean;
   className?: string;
   data?: SupplierModel;
@@ -11,7 +12,6 @@ export interface ICreateSupplierForm<T> {
   onImageUpload?: (data: T) => void;
   onCancel?: () => void;
   photos?: any[];
-  isGridLoading?: boolean;
   onDeletePhoto?: (identifier: string, payload?: any) => void;
   onDndPhoto?: (data: any) => void;
 }

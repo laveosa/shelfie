@@ -14,6 +14,7 @@ const initialState: IProductBasicDataPageSlice = {
   isCreateProductCategoryCardLoading: false,
   isCreateProductBrandCardLoading: false,
   isProductsLoading: false,
+  isPhotoUploaderLoading: false,
   products: [],
   product: {},
   activeCards: [],
@@ -61,6 +62,13 @@ function setProductsLoading(
   action: PayloadAction<boolean>,
 ) {
   state.isProductsLoading = action?.payload;
+}
+
+function setIsPhotoUploaderLoading(
+  state: IProductBasicDataPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isPhotoUploaderLoading = action?.payload;
 }
 
 //------------------------------------- API/
@@ -144,6 +152,7 @@ const ProductBasicDataPageSlice = createSlice({
     setIsCreateProductCategoryCardLoading,
     setIsCreateProductBrandCardLoading,
     setProductsLoading,
+    setIsPhotoUploaderLoading,
     refreshProducts,
     refreshProduct,
     refreshActiveCards,

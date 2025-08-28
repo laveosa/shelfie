@@ -3,12 +3,21 @@ import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IPurchaseProductsPageSlice } from "@/const/interfaces/store-slices/IPurchaseProductsPageSlice.ts";
 import { PurchaseProductsPageSliceActions as actions } from "@/state/slices/PurchaseProductsPageSlice.ts";
+import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
+import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
+import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import { useToast } from "@/hooks/useToast.ts";
 
 export default function usePurchaseProductsPageService() {
   const state = useAppSelector<IPurchaseProductsPageSlice>(
     StoreSliceEnum.PURCHASE_PRODUCTS,
   );
+  const productsState = useAppSelector<IProductsPageSlice>(
+    StoreSliceEnum.PRODUCTS,
+  );
+  const productsService = useProductsPageService();
   const dispatch = useAppDispatch();
+  const { addToast } = useToast();
 
   const [getListOfPurchaseProductsForGrid] =
     PurchasesApiHooks.useGetListOfPurchaseProductsForGridMutation();
@@ -53,11 +62,34 @@ export default function usePurchaseProductsPageService() {
     });
   }
 
+  function onSubmitProductDataHandler(data: any) {
+    dispatch(actions.setIsProductConfigurationCardLoading(true));
+    productsService.createNewProductHandler(data).then((res) => {
+      dispatch(actions.setIsProductConfigurationCardLoading(false));
+      if (res.data) {
+        dispatch(productsActions.refreshSelectedProduct(res.data));
+        productsService.getTheProductsForGridHandler(
+          productsState.gridRequestModel,
+        );
+        addToast({
+          text: "Product created successfully",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: `${res.error.data.detail}`,
+          type: "error",
+        });
+      }
+    });
+  }
+
   return {
     getListOfPurchaseProductsForGridHandler,
     addVariantToPurchaseProductsHandler,
     updatePurchaseProductHandler,
     deleteStockActionHandler,
     getPurchaseSummaryHandler,
+    onSubmitProductDataHandler,
   };
 }

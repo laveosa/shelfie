@@ -78,7 +78,7 @@ export function PurchaseProductsPage() {
       productsService.getTaxesListHandler();
     }
     productsService.getTraitsForFilterHandler();
-    dispatch(actions.refreshActiveCards([]));
+    keepOnlyCards(["purchaseProductsCard"]);
     dispatch(productsActions.refreshActiveTab("purchases"));
   }, [purchaseId]);
 
@@ -132,6 +132,8 @@ export function PurchaseProductsPage() {
     dispatch(actions.refreshActiveCards(null));
   }, []);
 
+  useEffect(() => {}, []);
+
   function keepOnlyCards(openCardIdentifiers: string[] = []) {
     const currentActiveCards = Array.isArray(state.activeCards)
       ? state.activeCards
@@ -152,10 +154,6 @@ export function PurchaseProductsPage() {
 
     handleMultipleCardActions(cardActions);
   }
-
-  useEffect(() => {
-    handleCardAction("purchaseProductsCard", true);
-  }, []);
 
   async function onAction(actionType: string, payload?: any) {
     switch (actionType) {
@@ -229,19 +227,25 @@ export function PurchaseProductsPage() {
         });
         break;
       case "submitProductData":
-        productsBasicDataService.onSubmitProductDataHandler(null, payload);
+        service.onSubmitProductDataHandler(payload);
+        handleMultipleCardActions({
+          productConfigurationCard: false,
+          purchaseProductsCard: true,
+        });
         break;
       case "checkCategoryName":
         productsBasicDataService.checkCategoryNameHandler(payload);
         break;
       case "createProductCategory":
-        productsBasicDataService.createNewCategoryHandler();
+        productsBasicDataService.createNewCategoryHandler(payload);
+        handleCardAction("createCategoryCard");
         break;
       case "checkBrandName":
         productsBasicDataService.checkBrandNameHandler(payload);
         break;
       case "createProductBrand":
-        productsBasicDataService.createBrandHandler();
+        productsBasicDataService.createBrandHandler(payload);
+        handleCardAction("createBrandCard");
         break;
       case "uploadCategoryOrBrandPhoto":
         productsBasicDataService.uploadCategoryOrBrandPhotoHandler(payload);
@@ -321,7 +325,7 @@ export function PurchaseProductsPage() {
         break;
       case "deletePhoto":
         const confirmed = await openConfirmationDialog({
-          title: "Deleting product photo",
+          headerTitle: "Deleting product photo",
           text: "You are about to delete product photo.",
           primaryButtonValue: "Delete",
           secondaryButtonValue: "Cancel",
@@ -500,7 +504,7 @@ export function PurchaseProductsPage() {
         break;
       case "deleteTrait":
         const confirmedTraitDeleting = await openConfirmationDialog({
-          title: "Deleting trait",
+          headerTitle: "Deleting trait",
           text: `You are about to remove the trait ${payload.traitName}. All products connected to it will loose the configuration and will require your attention to map it to the new trait.`,
           primaryButtonValue: "Delete",
           secondaryButtonValue: "Cancel",
@@ -646,7 +650,7 @@ export function PurchaseProductsPage() {
         break;
       case "deleteOption":
         const confirmedOptionDeleting = await openConfirmationDialog({
-          title: "Deleting option",
+          headerTitle: "Deleting option",
           text: `You are about to remove the option ${payload.optionName}.`,
           primaryButtonValue: "Delete",
           secondaryButtonValue: "Cancel",
@@ -924,6 +928,7 @@ export function PurchaseProductsPage() {
         });
         break;
       case "manageVariant":
+        console.log(payload);
         keepOnlyCards(["manageProductCard", "variantConfigurationCard"]);
         dispatch(actions.setIsVariantConfigurationCardLoading(true));
         dispatch(actions.setIsVariantOptionsGridLoading(true));
@@ -1146,7 +1151,7 @@ export function PurchaseProductsPage() {
         break;
       case "detachPhotoFromVariant":
         const confirmedDetachPhoto = await openConfirmationDialog({
-          title: "Detach photo from variant",
+          headerTitle: "Detach photo from variant",
           text: `You are about to detach photo from variant  "${productsState.selectedVariant.variantName}".`,
           primaryButtonValue: "Detach",
           secondaryButtonValue: "Cancel",
@@ -1327,6 +1332,8 @@ export function PurchaseProductsPage() {
             brandsList={productsState.brands}
             categoriesList={productsState.categories}
             productCode={productsState.productCode}
+            showSecondaryButton={true}
+            onPrimaryButtonClick={(data) => onAction("submitProductData", data)}
             onSecondaryButtonClick={() =>
               onAction("closeProductConfigurationCard")
             }
@@ -1338,6 +1345,7 @@ export function PurchaseProductsPage() {
         <div ref={createRefCallback("createCategoryCard")}>
           <CreateProductCategoryCard
             isLoading={state.isCreateCategoryCardLoading}
+            isPhotoUploaderLoading={productsState.isPhotoUploaderLoading}
             category={productsState.category}
             onAction={onAction}
           />
@@ -1347,6 +1355,7 @@ export function PurchaseProductsPage() {
         <div ref={createRefCallback("createBrandCard")}>
           <CreateProductBrandCard
             isLoading={state.isCreateBrandCardLoading}
+            isPhotoUploaderLoading={productsState.isPhotoUploaderLoading}
             brand={productsState.brand}
             onAction={onAction}
           />
