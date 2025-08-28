@@ -126,7 +126,7 @@ export default function ManageProductCard({
               icon={Cog}
               value={"Manage Product"}
               variant="secondary"
-              fullWidth
+              maxWidth="160px"
               onClick={() => onAction("manageProductData")}
             />
           </div>
@@ -182,7 +182,7 @@ export default function ManageProductCard({
               icon={GalleryThumbnails}
               value={"Manage Photos"}
               variant="secondary"
-              fullWidth
+              maxWidth="160px"
               onClick={() => onAction("manageProductPhotos")}
             />
           </div>
@@ -211,7 +211,8 @@ export default function ManageProductCard({
                 icon={TableProperties}
                 value={"Manage Traits"}
                 variant="secondary"
-                fullWidth
+                minWidth="160px"
+                maxWidth="160px"
                 onClick={() => onAction("manageProductTraits")}
               />
             </div>
@@ -230,7 +231,8 @@ export default function ManageProductCard({
                     icon={Plus}
                     value={"Create Variant"}
                     variant="secondary"
-                    fullWidth
+                    minWidth="160px"
+                    maxWidth="160px"
                     onClick={() => onAction("openAddVariantCard", product)}
                   />
                 </div>
