@@ -40,11 +40,15 @@ export function MarginsPage() {
   );
   const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
   const { purchaseId } = useParams();
-  const { handleCardAction, handleMultipleCardActions, createRefCallback } =
-    useCardActions({
-      selectActiveCards: (state) => state[StoreSliceEnum.MARGINS].activeCards,
-      refreshAction: actions.refreshActiveCards,
-    });
+  const {
+    handleCardAction,
+    handleMultipleCardActions,
+    keepOnlyCards,
+    createRefCallback,
+  } = useCardActions({
+    selectActiveCards: (state) => state[StoreSliceEnum.MARGINS].activeCards,
+    refreshAction: actions.refreshActiveCards,
+  });
 
   useEffect(() => {
     if (!state.selectedMargin) {
@@ -80,7 +84,7 @@ export function MarginsPage() {
       productsState.colorsForFilter.length === 0
     )
       productsService.getTraitsForFilterHandler();
-    handleCardAction("salePriceManagementCard", true);
+    keepOnlyCards(["salePriceManagementCard"]);
   }, [purchaseId]);
 
   useEffect(() => {

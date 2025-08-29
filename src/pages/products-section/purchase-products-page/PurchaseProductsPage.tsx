@@ -54,12 +54,16 @@ export function PurchaseProductsPage() {
   );
   const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
   const { purchaseId } = useParams();
-  const { handleCardAction, handleMultipleCardActions, createRefCallback } =
-    useCardActions({
-      selectActiveCards: (state) =>
-        state[StoreSliceEnum.PURCHASE_PRODUCTS].activeCards,
-      refreshAction: actions.refreshActiveCards,
-    });
+  const {
+    handleCardAction,
+    handleMultipleCardActions,
+    keepOnlyCards,
+    createRefCallback,
+  } = useCardActions({
+    selectActiveCards: (state) =>
+      state[StoreSliceEnum.PURCHASE_PRODUCTS].activeCards,
+    refreshAction: actions.refreshActiveCards,
+  });
 
   useEffect(() => {
     if (!productsState.selectedPurchase) {
@@ -132,29 +136,6 @@ export function PurchaseProductsPage() {
     dispatch(actions.refreshActiveCards(null));
   }, []);
 
-  useEffect(() => {}, []);
-
-  function keepOnlyCards(openCardIdentifiers: string[] = []) {
-    const currentActiveCards = Array.isArray(state.activeCards)
-      ? state.activeCards
-      : [];
-
-    const cardActions = Object.fromEntries(
-      currentActiveCards.map((card) => [
-        card,
-        openCardIdentifiers.includes(card),
-      ]),
-    );
-
-    for (const card of openCardIdentifiers) {
-      if (!cardActions[card]) {
-        cardActions[card] = true;
-      }
-    }
-
-    handleMultipleCardActions(cardActions);
-  }
-
   async function onAction(actionType: string, payload?: any) {
     switch (actionType) {
       case "addProductToPurchase":
@@ -214,6 +195,7 @@ export function PurchaseProductsPage() {
           });
         break;
       case "openCreateProductCard":
+        dispatch(actions.resetSelectedProduct());
         dispatch(actions.setIsPurchaseProductsCardLoading(true));
         Promise.all([
           productsService.getSimpleListOfAllBrandsHandler(),
@@ -251,7 +233,11 @@ export function PurchaseProductsPage() {
         productsBasicDataService.uploadCategoryOrBrandPhotoHandler(payload);
         break;
       case "closeProductConfigurationCard":
-        handleCardAction("productConfigurationCard");
+        if (!state.activeCards.includes("manageProductCard")) {
+          keepOnlyCards(["purchaseProductsCard"]);
+        } else {
+          handleCardAction("productConfigurationCard");
+        }
         break;
       case "generateProductCode":
         productsBasicDataService.generateProductCodeHandler();
@@ -1273,6 +1259,10 @@ export function PurchaseProductsPage() {
         break;
     }
   }
+
+  useEffect(() => {
+    console.log(state.selectedProduct);
+  }, [state.selectedProduct]);
 
   return (
     <div className={cs.purchaseProductsPage}>
