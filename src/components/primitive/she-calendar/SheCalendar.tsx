@@ -10,6 +10,7 @@ import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import SheTimePicker from "@/components/primitive/she-time-picker/SheTimePicker.tsx";
 import ShePrimitiveComponentWrapper from "@/components/primitive/she-primitive-component-wrapper/ShePrimitiveComponentWrapper.tsx";
 import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
+import useValueWithEvent from "@/utils/hooks/useValueWithEvent.ts";
 import { getCustomProps } from "@/utils/helpers/props-helper.ts";
 import { ISheCalendar } from "@/const/interfaces/primitive-components/ISheCalendar.ts";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
@@ -17,7 +18,6 @@ import {
   IShePrimitiveComponentWrapper,
   ShePrimitiveComponentWrapperDefaultModel,
 } from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
-import useValueWithEvent from "@/utils/hooks/useValueWithEvent.ts";
 
 const months = [
   "January",
@@ -106,8 +106,8 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
 
     if (parsed && !_.isEqual(parsed, _date)) {
       const convertedDate = _getParsedModel(parsed);
-      updateFormValue(parsed);
       setDate(parsed);
+      updateFormValue(parsed);
       setSelectedMonth(months[getMonth(convertedDate)]);
       setSelectedYear(getYear(convertedDate));
     }
@@ -117,12 +117,14 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
   function onMonthSelectHandler(month: string) {
     setTimeout(() => {
       setSelectedMonth(month);
+      !_date ? resetFormField(null) : _setDateMonth(month);
     });
   }
 
   function onYearSelectHandler(year: number) {
     setTimeout(() => {
       setSelectedYear(year);
+      !_date ? resetFormField(null) : _setDateYear(year);
     });
   }
 
@@ -165,6 +167,7 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
     setSelectedTime(value);
     const dateWithTime = _formatSelectedDateModel(_date, value);
 
+    updateFormValue(dateWithTime);
     setTimeout(() => {
       updateFormValue(dateWithTime);
     }, 100);
@@ -193,6 +196,21 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
     if (_isCalendarRangeDateValue(value)) return "range";
     if (_isCalendarSingleDateValue(value)) return "single";
     return null;
+  }
+
+  function _setDateMonth(monthName: string) {
+    const monthIndex = months.indexOf(monthName);
+    const newDate: Date = _date as Date;
+    newDate.setMonth(monthIndex);
+    setDate(newDate);
+    updateFormValue(newDate);
+  }
+
+  function _setDateYear(yearNumber: number) {
+    const newDate: Date = _date as Date;
+    newDate.setFullYear(yearNumber);
+    setDate(newDate);
+    updateFormValue(newDate);
   }
 
   // -------------------------------------------------------------- DATE FORMAT AND SORT
@@ -448,6 +466,7 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
             maxWidth="138px"
             minWidth="122px"
             isLoading={isLoading}
+            ignoreFormAction
             onSelect={onMonthSelectHandler}
           />
           <SheSelect<number>
@@ -463,6 +482,7 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
             maxWidth="138px"
             minWidth="122px"
             isLoading={isLoading}
+            ignoreFormAction
             onSelect={onYearSelectHandler}
           />
         </div>

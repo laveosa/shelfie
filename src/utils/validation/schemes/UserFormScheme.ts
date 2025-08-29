@@ -1,4 +1,4 @@
-import { string, z } from "zod";
+import { z } from "zod";
 
 import { UserModel } from "@/const/models/UserModel.ts";
 import { ContextPatternEnum } from "@/const/enums/ContextPatternEnum.ts";
@@ -20,8 +20,7 @@ const userFormScheme: AppSchemeType<UserModel> = z.object({
     .regex(ContextPatternEnum.EMAIL as RegExp, "invalid email"),
   address: z.string().optional(),
   units: z.array(z.any()).nonempty(nonemptyMessage),
-  // dateBirth: z.string().nonempty(nonemptyMessage),
-  dateBirth: z.date().or(z.string()),
+  dateBirth: z.date().or(z.string().nonempty(nonemptyMessage)),
   // comments: z.array(z.string()).nonempty(nonemptyMessage),
   gender: z
     .enum(["male", "female", "unicorn", "banana"])

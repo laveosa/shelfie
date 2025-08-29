@@ -9,6 +9,7 @@ import UserForm from "@/components/forms/user-form/UserForm.tsx";
 import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import SheCalendar from "@/components/primitive/she-calendar/SheCalendar.tsx";
+import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 
 const badges: ISheBadge<any>[] = [
   {
@@ -274,7 +275,7 @@ const user: UserModel = {
   age: 32,
   email: "anton@yahoo.com",
   address: "Levetano 3/23",
-  dateBirth: new Date("05.21.1982"),
+  dateBirth: "05.21.1982",
   gender: "male",
   position: "SEO",
   isAvailable: true,
@@ -292,6 +293,8 @@ export function DashboardPage() {
   const [_selectDate, setSelectData] = useState<any[]>(null);
   const [_selected, setSelected] = useState<any>(null);
   const [_loading, setLoading] = useState<boolean>(false);
+
+  const [inputValue, setInputValue] = useState<string>("test");
 
   useEffect(() => {
     setTimeout(() => {
@@ -325,6 +328,14 @@ export function DashboardPage() {
       <h1>Dashboard</h1>
       <br />
       <br />
+
+      {/*<SheInput
+        label="input"
+        value={inputValue}
+        showHighlighted
+        errorMessage="some error message"
+        showError
+      />*/}
 
       {/*<SheSelect
         label="Select"
