@@ -5,30 +5,53 @@ import {
   addGridRowColor,
   clearSelectedGridItems,
   formatDate,
-  setSelectedGridItem,
+  setSelectedGridItem
 } from "@/utils/helpers/quick-helper.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { useToast } from "@/hooks/useToast.ts";
-import cs from "@/pages/products-section/manage-variants-page/ManageVariantsPage.module.scss";
-import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
-import useManageVariantsPageService from "@/pages/products-section/manage-variants-page/useManageVariantsPageService.ts";
-import { IManageVariantsPageSlice } from "@/const/interfaces/store-slices/IManageVariantsPageSlice.ts";
-import { ManageVariantsPageSliceActions as actions } from "@/state/slices/ManageVariantsPageSlice.ts";
-import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice";
-import ManageVariantsCard from "@/components/complex/custom-cards/manage-variants-card/ManageVariantsCard.tsx";
-import ChooseVariantTraitsCard from "@/components/complex/custom-cards/choose-variant-traits-card/ChooseVariantTraitsCard.tsx";
-import ProductTraitConfigurationCard from "@/components/complex/custom-cards/product-trait-configuration-card/ProductTraitConfigurationCard.tsx";
-import VariantConfigurationCard from "@/components/complex/custom-cards/variant-configuration-card/VariantConfigurationCard.tsx";
-import AddStockCard from "@/components/complex/custom-cards/add-stock-card/AddStockCard.tsx";
-import DisposeStockCard from "@/components/complex/custom-cards/dispose-stock-card/DisposeStockCard.tsx";
-import StockHistoryCard from "@/components/complex/custom-cards/stock-history-card/StockHistoryCard.tsx";
-import ManageTraitsCard from "@/components/complex/custom-cards/manage-traits-card/ManageTraitsCard.tsx";
-import AddVariantCard from "@/components/complex/custom-cards/add-variant-card/AddVariantCard.tsx";
-import VariantPhotosCard from "@/components/complex/custom-cards/variant-photos-card/VariantPhotosCard.tsx";
-import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
-import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
-import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
+import cs
+  from "@/pages/products-section/manage-variants-page/ManageVariantsPage.module.scss";
+import ProductMenuCard
+  from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
+import useManageVariantsPageService
+  from "@/pages/products-section/manage-variants-page/useManageVariantsPageService.ts";
+import {
+  IManageVariantsPageSlice
+} from "@/const/interfaces/store-slices/IManageVariantsPageSlice.ts";
+import {
+  ManageVariantsPageSliceActions as actions
+} from "@/state/slices/ManageVariantsPageSlice.ts";
+import {
+  ProductsPageSliceActions as productsActions
+} from "@/state/slices/ProductsPageSlice";
+import ManageVariantsCard
+  from "@/components/complex/custom-cards/manage-variants-card/ManageVariantsCard.tsx";
+import ChooseVariantTraitsCard
+  from "@/components/complex/custom-cards/choose-variant-traits-card/ChooseVariantTraitsCard.tsx";
+import ProductTraitConfigurationCard
+  from "@/components/complex/custom-cards/product-trait-configuration-card/ProductTraitConfigurationCard.tsx";
+import VariantConfigurationCard
+  from "@/components/complex/custom-cards/variant-configuration-card/VariantConfigurationCard.tsx";
+import AddStockCard
+  from "@/components/complex/custom-cards/add-stock-card/AddStockCard.tsx";
+import DisposeStockCard
+  from "@/components/complex/custom-cards/dispose-stock-card/DisposeStockCard.tsx";
+import StockHistoryCard
+  from "@/components/complex/custom-cards/stock-history-card/StockHistoryCard.tsx";
+import ManageTraitsCard
+  from "@/components/complex/custom-cards/manage-traits-card/ManageTraitsCard.tsx";
+import AddVariantCard
+  from "@/components/complex/custom-cards/add-variant-card/AddVariantCard.tsx";
+import VariantPhotosCard
+  from "@/components/complex/custom-cards/variant-photos-card/VariantPhotosCard.tsx";
+import useProductsPageService
+  from "@/pages/products-section/products-page/useProductsPageService.ts";
+import {
+  IProductsPageSlice
+} from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import ItemsCard
+  from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
 import { GridRowsColorsEnum } from "@/const/enums/GridRowsColorsEnum.ts";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
@@ -472,26 +495,36 @@ export function ManageVariantsPage() {
           .then((res) => {
             dispatch(actions.setIsVariantPhotosCardLoading(false));
             if (!res.error) {
-              dispatch(actions.setIsVariantPhotoGridLoading(true));
-              productsService
-                .getVariantDetailsHandler(
-                  productsState.selectedVariant.variantId,
+              const photoToMove = state.productPhotosForVariant.find(
+                (p) => p.photoId === payload.photoId,
+              );
+
+              if (photoToMove) {
+                const currentVariantPhotos = productsState.variantPhotos ?? [];
+
+                const nextVariantPhotos = currentVariantPhotos.some(
+                  (p) => p.photoId === photoToMove.photoId,
                 )
-                .then((res) => {
-                  dispatch(actions.setIsVariantPhotoGridLoading(false));
-                  dispatch(productsActions.refreshVariantPhotos(res?.photos));
-                  dispatch(productsActions.refreshSelectedVariant(res));
-                });
+                  ? currentVariantPhotos
+                  : [...currentVariantPhotos, photoToMove];
+
+                dispatch(
+                  productsActions.refreshVariantPhotos(nextVariantPhotos),
+                );
+
+                dispatch(
+                  actions.refreshProductPhotosForVariant(
+                    state.productPhotosForVariant.filter(
+                      (p) => p.photoId !== payload.photoId,
+                    ),
+                  ),
+                );
+              }
               addToast({
                 text: "Photo added to variant successfully",
                 type: "success",
               });
             } else {
-              addToast({
-                text: "Photo not added to variant",
-                description: res.error.message,
-                type: "error",
-              });
             }
           });
         break;
@@ -505,34 +538,47 @@ export function ManageVariantsPage() {
 
         if (!confirmedDetachPhoto) return;
 
-        try {
-          await productsService.detachVariantPhotoHandler(
+        await productsService
+          .detachVariantPhotoHandler(
             productsState.selectedVariant.variantId,
-            payload.photoId.toString(),
-          );
+            payload.photoId,
+          )
+          .then((res) => {
+            if (!res.error) {
+              const currentVariantPhotos = productsState.variantPhotos ?? [];
+              const photoToMove = currentVariantPhotos.find(
+                (p) => p.photoId === payload.photoId,
+              );
 
-          dispatch(actions.setIsVariantPhotoGridLoading(true));
+              if (photoToMove) {
+                const pool = state.productPhotosForVariant ?? [];
+                const nextPool = pool.some(
+                  (p) => p.photoId === photoToMove.photoId,
+                )
+                  ? pool
+                  : [...pool, photoToMove];
+                dispatch(actions.refreshProductPhotosForVariant(nextPool));
 
-          const variantDetails = await productsService.getVariantDetailsHandler(
-            productsState.selectedVariant.variantId,
-          );
+                const nextVariantPhotos = currentVariantPhotos.filter(
+                  (p) => p.photoId !== payload.photoId,
+                );
+                dispatch(
+                  productsActions.refreshVariantPhotos(nextVariantPhotos),
+                );
+              }
 
-          dispatch(
-            productsActions.refreshVariantPhotos(variantDetails?.photos),
-          );
-
-          addToast({
-            text: "Photo was detached successfully",
-            type: "success",
+              addToast({
+                text: "Photo was detached successfully",
+                type: "success",
+              });
+            } else {
+              addToast({
+                text: "Photo not added to variant",
+                description: res.error.message,
+                type: "error",
+              });
+            }
           });
-        } catch (error: any) {
-          addToast({
-            text: error.message || "Failed to detach photo",
-            type: "error",
-          });
-        } finally {
-          dispatch(actions.setIsVariantPhotoGridLoading(false));
-        }
         break;
       case "dndVariantPhoto":
         productsService

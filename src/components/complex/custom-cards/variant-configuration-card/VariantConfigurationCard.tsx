@@ -254,7 +254,7 @@ export default function VariantConfigurationCard({
     _setLoadingRow?: (rowId: string, loading: boolean) => void,
     row?: any,
   ) {
-    onAction("detachPhotoFromVariant", { row, variant });
+    onAction("detachPhotoFromVariant", row.original);
     onAction("deletePhoto", row.original);
   }
 
