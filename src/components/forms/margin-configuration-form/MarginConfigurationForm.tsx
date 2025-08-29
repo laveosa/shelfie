@@ -1,22 +1,110 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import _ from "lodash";
 
 import useAppForm from "@/utils/hooks/useAppForm.ts";
-import cs from "@/components/forms/margin-configuration-form/MarginConfigurationForm.module.scss";
+import cs
+  from "@/components/forms/margin-configuration-form/MarginConfigurationForm.module.scss";
 import SheForm from "@/components/complex/she-form/SheForm.tsx";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import { FormField } from "@/components/ui/form.tsx";
-import SheFormItem from "@/components/complex/she-form/components/she-form-item/SheFormItem.tsx";
+import SheFormItem
+  from "@/components/complex/she-form/components/she-form-item/SheFormItem.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { MarginModelDefault } from "@/const/models/MarginModel.ts";
-import MarginConfigurationFormScheme from "@/utils/validation/schemes/MarginConfigurationFormScheme.ts";
+import MarginConfigurationFormScheme
+  from "@/utils/validation/schemes/MarginConfigurationFormScheme.ts";
 import SheToggle from "@/components/primitive/she-toggle/SheToggle.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
-import { IMarginConfigurationCard } from "@/const/interfaces/forms/IMarginConfigurationForm.ts";
+import {
+  IMarginConfigurationCard
+} from "@/const/interfaces/forms/IMarginConfigurationForm.ts";
 import { Separator } from "@/components/ui/separator.tsx";
+
+interface SheNumericWithSuffixInputProps
+  extends React.ComponentProps<typeof SheInput> {
+  suffix?: string;
+}
+
+export function SheInputNumericWithSuffix({
+  suffix,
+  value,
+  onChange,
+  ...props
+}: SheNumericWithSuffixInputProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const displayValue =
+    value !== "" && value !== null && value !== undefined
+      ? `${value}${suffix}`
+      : "";
+
+  const handleChange = (val: string | number) => {
+    let input = String(val);
+
+    input = input.replace(",", ".");
+
+    const numeric = input.replace(/[^0-9.]/g, "");
+    const parts = numeric.split(".");
+    const normalized =
+      parts.length > 1 ? `${parts[0]}.${parts.slice(1).join("")}` : parts[0];
+
+    onChange?.(normalized ? Number(normalized) : "");
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const input = e.currentTarget;
+    const val = input.value;
+
+    if (!suffix) return;
+
+    if (
+      (e.key === "Delete" || e.key === "ArrowRight") &&
+      input.selectionStart === val.length - suffix.length &&
+      val.endsWith(suffix)
+    ) {
+      e.preventDefault();
+    }
+
+    if (
+      e.key === "Backspace" &&
+      input.selectionStart === val.length - suffix.length &&
+      val.endsWith(suffix)
+    ) {
+      e.preventDefault();
+      const newVal = val.slice(0, -1 - suffix.length) + suffix;
+      handleChange(newVal);
+    }
+  };
+
+  const keepCursorBeforeSuffix = (
+    e: React.SyntheticEvent<HTMLInputElement>,
+  ) => {
+    const input = e.currentTarget;
+    if (suffix && input.value.endsWith(suffix)) {
+      if (input.selectionStart === input.value.length) {
+        input.setSelectionRange(
+          input.value.length - suffix.length,
+          input.value.length - suffix.length,
+        );
+      }
+    }
+  };
+
+  return (
+    <SheInput
+      {...props}
+      ref={inputRef}
+      value={displayValue}
+      onChange={handleChange}
+      onKeyDown={handleKeyDown}
+      onKeyUp={keepCursorBeforeSuffix}
+      onClick={keepCursorBeforeSuffix}
+      onFocus={keepCursorBeforeSuffix}
+    />
+  );
+}
 
 export default function MarginConfigurationForm<T>({
   className,
@@ -116,35 +204,11 @@ export default function MarginConfigurationForm<T>({
               label="Desired profit (in %)"
               className={cs.marginConfigurationFormItem}
             >
-              <SheInput
-                {...field}
-                type="text"
-                inputMode="numeric"
-                placeholder="Enter desired profit..."
-                value={field.value ? `${field.value}%` : ""}
-                onChange={(val: string | number) => {
-                  const numeric = String(val).replace(/[^0-9.]/g, "");
-                  field.onChange(numeric ? Number(numeric) : "");
-                }}
-                onKeyDown={(e) => {
-                  if (
-                    [8, 9, 27, 13, 46, 110, 190].indexOf(e.keyCode) !== -1 ||
-                    (e.keyCode === 65 && e.ctrlKey === true) ||
-                    (e.keyCode === 67 && e.ctrlKey === true) ||
-                    (e.keyCode === 86 && e.ctrlKey === true) ||
-                    (e.keyCode === 88 && e.ctrlKey === true) ||
-                    (e.keyCode === 90 && e.ctrlKey === true) ||
-                    (e.keyCode >= 35 && e.keyCode <= 40)
-                  ) {
-                    return;
-                  }
-                  if (
-                    (e.shiftKey || e.keyCode < 48 || e.keyCode > 57) &&
-                    (e.keyCode < 96 || e.keyCode > 105)
-                  ) {
-                    e.preventDefault();
-                  }
-                }}
+              <SheInputNumericWithSuffix
+                placeholder="Enter profit..."
+                value={field.value}
+                suffix="%"
+                onChange={(val) => field.onChange(val)}
               />
             </SheFormItem>
           )}
@@ -162,35 +226,11 @@ export default function MarginConfigurationForm<T>({
               label="Planned discount (in %)"
               className={cs.marginConfigurationFormItem}
             >
-              <SheInput
-                {...field}
-                type="text"
-                inputMode="numeric"
+              <SheInputNumericWithSuffix
                 placeholder="Enter planned discount..."
-                value={field.value ? `${field.value}%` : ""}
-                onChange={(val: string | number) => {
-                  const numeric = String(val).replace(/[^0-9.]/g, "");
-                  field.onChange(numeric ? Number(numeric) : "");
-                }}
-                onKeyDown={(e) => {
-                  if (
-                    [8, 9, 27, 13, 46, 110, 190].indexOf(e.keyCode) !== -1 ||
-                    (e.keyCode === 65 && e.ctrlKey === true) ||
-                    (e.keyCode === 67 && e.ctrlKey === true) ||
-                    (e.keyCode === 86 && e.ctrlKey === true) ||
-                    (e.keyCode === 88 && e.ctrlKey === true) ||
-                    (e.keyCode === 90 && e.ctrlKey === true) ||
-                    (e.keyCode >= 35 && e.keyCode <= 40)
-                  ) {
-                    return;
-                  }
-                  if (
-                    (e.shiftKey || e.keyCode < 48 || e.keyCode > 57) &&
-                    (e.keyCode < 96 || e.keyCode > 105)
-                  ) {
-                    e.preventDefault();
-                  }
-                }}
+                value={field.value}
+                suffix="PLN"
+                onChange={(val) => field.onChange(val)}
               />
             </SheFormItem>
           )}
