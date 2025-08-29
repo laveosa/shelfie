@@ -104,10 +104,11 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
   const _sourceValue = useRef<Date>(new Date(new Date().setHours(0, 0, 0, 0)));
 
   // ==================================================================== UTILITIES
-  const { ariaDescribedbyId } = useComponentUtilities<ISheTimePicker>({
-    props,
-    identifier: "SheTimePicker",
-  });
+  const { ariaDescribedbyId, updateFormValue, resetFormField } =
+    useComponentUtilities<ISheTimePicker>({
+      props,
+      identifier: "SheTimePicker",
+    });
   const delayValue = useDebounce(_date, delayTime);
 
   // ==================================================================== SIDE EFFECTS
@@ -116,6 +117,7 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
 
     if (date && date !== _date) {
       const defaultDate = _setDefaultDate(date);
+      updateFormValue(defaultDate);
       setDate(defaultDate);
       _sourceValue.current = defaultDate;
       _checkDateValidation(date);
@@ -124,6 +126,7 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
       _checkDateValidation(_date);
       _configurePeriod(_date);
       _sourceValue.current = _date;
+      updateFormValue(_date);
     }
   }, [date]);
 
@@ -241,6 +244,7 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
     event: React.ChangeEvent<HTMLInputElement>,
   ) {
     const outputModel = _getOutputModel(value, event);
+    updateFormValue(outputModel.value);
     setIsHighlighted(!_.isEqual(_sourceValue.current, outputModel.value));
     onBlur?.(outputModel.value, outputModel.model);
   }
@@ -252,6 +256,7 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
 
     _checkDateValidation(value);
     setDate(value);
+    resetFormField(value);
     onSetDate?.(outputModel.value, outputModel.model);
     onDelay?.(outputModel.value, outputModel.model);
     onBlur?.(outputModel.value, outputModel.model);

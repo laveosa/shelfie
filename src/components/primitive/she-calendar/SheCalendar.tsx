@@ -166,12 +166,7 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
   function onTimeDelayHandler(value: Date, { event }) {
     setSelectedTime(value);
     const dateWithTime = _formatSelectedDateModel(_date, value);
-
     updateFormValue(dateWithTime);
-    setTimeout(() => {
-      updateFormValue(dateWithTime);
-    }, 100);
-
     onSelectDate?.(dateWithTime, {
       value: dateWithTime,
       model: props,
@@ -527,6 +522,7 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
                   disabled={!_date}
                   delayTime={1600}
                   fullWidth
+                  ignoreFormAction
                   onSetDate={onTimeChangeHandler}
                   onDelay={onTimeDelayHandler}
                   {...timePicker}
