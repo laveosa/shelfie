@@ -21,6 +21,7 @@ const userFormScheme: AppSchemeType<UserModel> = z.object({
   address: z.string().optional(),
   units: z.array(z.any()).nonempty(nonemptyMessage),
   dateBirth: z.date().or(z.string().nonempty(nonemptyMessage)),
+  alertTime: z.date().or(z.string().nonempty(nonemptyMessage)).optional(),
   // comments: z.array(z.string()).nonempty(nonemptyMessage),
   gender: z
     .enum(["male", "female", "unicorn", "banana"])

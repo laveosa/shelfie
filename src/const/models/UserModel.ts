@@ -7,6 +7,7 @@ export interface UserModel {
   email?: string;
   address?: string;
   dateBirth?: string | Date;
+  alertTime?: string | Date;
   gender?: string;
   position?: any;
   comments?: string[];
@@ -23,6 +24,7 @@ export const UserModelDefault: UserModel = {
   age: undefined,
   email: undefined,
   dateBirth: undefined,
+  alertTime: undefined,
   address: undefined,
   gender: undefined,
   position: undefined,

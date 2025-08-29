@@ -10,6 +10,8 @@ import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.t
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import SheCalendar from "@/components/primitive/she-calendar/SheCalendar.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
+import SheTimePicker from "@/components/primitive/she-time-picker/SheTimePicker.tsx";
+import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageService.ts";
 
 const badges: ISheBadge<any>[] = [
   {
@@ -270,12 +272,19 @@ const position: ISheSelectItem<string>[] = [
   },
 ];
 
+const timeValue: Date = new Date();
+timeValue.setHours(10);
+timeValue.setMinutes(20);
+timeValue.setSeconds(30);
+
 const user: UserModel = {
   name: "Anton",
   age: 32,
   email: "anton@yahoo.com",
   address: "Levetano 3/23",
+  // dateBirth: new Date("05.21.1982"),
   dateBirth: "05.21.1982",
+  // alertTime: timeValue,
   gender: "male",
   position: "SEO",
   isAvailable: true,
@@ -285,7 +294,7 @@ const user: UserModel = {
 };
 
 export function DashboardPage() {
-  // const service = useDashboardPageService();
+  const service = useDashboardPageService();
 
   const [_user, setUser] = useState<UserModel>(null);
   const [_badges, setBadges] = useState<ISheBadge<any>[]>(null);
@@ -375,8 +384,14 @@ export function DashboardPage() {
         // date={_user?.dateBirth}
         // date={user.dateBirth}
         onSelectDate={(value, model) => console.log("DATE: ", value, model)}
-      />*/}
+      />
+      <br/>
+      <br/>*/}
 
+      <SheTimePicker
+        label="TimePicker"
+        onSetDate={(value, model) => console.log("TIME: ", value)}
+      />
       <br />
       <br />
 

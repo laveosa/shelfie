@@ -20,8 +20,10 @@ import SheToggle from "@/components/primitive/she-toggle/SheToggle.tsx";
 import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
 import SheBadgeList from "@/components/primitive/she-badge-list/SheBadgeList.tsx";
 import SheCalendar from "@/components/primitive/she-calendar/SheCalendar.tsx";
-import { DateFormatEnum } from "@/const/enums/DateFormatEnum.ts";
 import SheMultiSelect from "@/components/primitive/she-multi-select/SheMultiSelect.tsx";
+import SheTimePicker from "@/components/primitive/she-time-picker/SheTimePicker.tsx";
+import { DateFormatEnum } from "@/const/enums/DateFormatEnum.ts";
+import { TimeFormatEnum } from "@/const/enums/TimeFormatEnum.ts";
 
 export default function UserForm({
   data,
@@ -74,10 +76,8 @@ export default function UserForm({
           render={({ field }) => (
             <SheCalendar
               label="Date Berth"
-              /*date={
-                field.value && field.value instanceof Date ? field.value : null
-              }*/
               date={field.value}
+              dateFormat={DateFormatEnum.MM_DD_YYYY}
               required
               icon={Home}
               showClearBtn
@@ -91,6 +91,17 @@ export default function UserForm({
               label="Units"
               items={units}
               selectedValues={field.value}
+              showClearBtn
+            />
+          )}
+        />
+        <SheFormField
+          name="alertTime"
+          render={({ field }) => (
+            <SheTimePicker
+              label="Alert Time"
+              date={field.value}
+              timeFormat={TimeFormatEnum.HH_MM_SS}
               showClearBtn
             />
           )}
