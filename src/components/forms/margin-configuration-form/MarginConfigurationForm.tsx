@@ -229,7 +229,7 @@ export default function MarginConfigurationForm<T>({
               <SheInputNumericWithSuffix
                 placeholder="Enter planned discount..."
                 value={field.value}
-                suffix="PLN"
+                suffix="%"
                 onChange={(val) => field.onChange(val)}
               />
             </SheFormItem>
