@@ -284,7 +284,11 @@ const user: UserModel = {
   address: "Levetano 3/23",
   // dateBirth: new Date("05.21.1982"),
   dateBirth: "05.21.1982",
-  // alertTime: timeValue,
+  alertTime: timeValue,
+  /*dateInterval: {
+    from: new Date("05.21.1982"),
+    to: new Date("05.25.1982"),
+  },*/
   gender: "male",
   position: "SEO",
   isAvailable: true,
@@ -378,24 +382,43 @@ export function DashboardPage() {
       <br />
       <br />*/}
 
-      {/*<SheCalendar
-        label="Date Berth"
-        hideTimePicker
-        // date={_user?.dateBirth}
-        // date={user.dateBirth}
-        onSelectDate={(value, model) => console.log("DATE: ", value, model)}
-      />
-      <br/>
-      <br/>*/}
+      <div className="flex gap-10 w-full justify-between pl-10 pr-10">
+        <SheCalendar
+          label="Single"
+          hideTimePicker
+          // date={_user?.dateBirth}
+          // date={user.dateBirth}
+          mode="single"
+          onSelectDate={(value) => console.log("SINGLE: ", value)}
+        />
+        <SheCalendar
+          label="Range"
+          hideTimePicker
+          // date={_user?.dateBirth}
+          // date={user.dateBirth}
+          mode="range"
+          onSelectDate={(value) => console.log("RANGE ", value)}
+        />
+        <SheCalendar
+          label="Multiple"
+          hideTimePicker
+          // date={_user?.dateBirth}
+          // date={user.dateBirth}
+          mode="multiple"
+          onSelectDate={(value) => console.log("MULTIPLE: ", value)}
+        />
+      </div>
+      <br />
+      <br />
 
-      <SheTimePicker
+      {/*<SheTimePicker
         label="TimePicker"
         onSetDate={(value, model) => console.log("TIME: ", value)}
       />
       <br />
-      <br />
+      <br />*/}
 
-      <UserForm
+      {/*<UserForm
         data={user}
         // data={_user}
         genders={genders}
@@ -405,7 +428,7 @@ export function DashboardPage() {
         notDisabledSubmit
         onSubmit={onAction}
         onCancel={onAction}
-      />
+      />*/}
 
       <br />
       <br />

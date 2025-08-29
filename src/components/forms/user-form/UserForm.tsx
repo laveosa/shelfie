@@ -24,6 +24,7 @@ import SheMultiSelect from "@/components/primitive/she-multi-select/SheMultiSele
 import SheTimePicker from "@/components/primitive/she-time-picker/SheTimePicker.tsx";
 import { DateFormatEnum } from "@/const/enums/DateFormatEnum.ts";
 import { TimeFormatEnum } from "@/const/enums/TimeFormatEnum.ts";
+import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
 
 export default function UserForm({
   data,
@@ -72,6 +73,32 @@ export default function UserForm({
         onCancel={onCancel}
       >
         <SheFormField
+          name="dateInterval"
+          render={({ field }) => (
+            <SheDatePicker
+              label="Date Interval"
+              date={field.value}
+              required
+              icon={Home}
+              mode="range"
+              showClearBtn
+            />
+          )}
+        />
+        {/*<SheFormField
+          name="dateInterval"
+          render={({ field }) => (
+            <SheCalendar
+              label="Date Interval"
+              date={field.value}
+              required
+              icon={Home}
+              mode="range"
+              showClearBtn
+            />
+          )}
+        />*/}
+        {/*<SheFormField
           name="dateBirth"
           render={({ field }) => (
             <SheCalendar
@@ -83,7 +110,7 @@ export default function UserForm({
               showClearBtn
             />
           )}
-        />
+        />*/}
         <SheFormField
           name="units"
           render={({ field }) => (

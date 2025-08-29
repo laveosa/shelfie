@@ -57,9 +57,11 @@ export default function SheDatePicker(props: ISheDatePicker): JSX.Element {
   const _sourceValue = useRef<any>(date);
 
   // ==================================================================== UTILITIES
-  const { translate, ariaDescribedbyId } = useComponentUtilities({
-    identifier: "SheDatePicker",
-  });
+  const { translate, ariaDescribedbyId, updateFormValue, resetFormField } =
+    useComponentUtilities<ISheDatePicker>({
+      props,
+      identifier: "SheDatePicker",
+    });
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
@@ -77,6 +79,7 @@ export default function SheDatePicker(props: ISheDatePicker): JSX.Element {
     if (!value) return;
 
     setDate(value);
+    updateFormValue(value);
 
     if (closeOnDateSelect && (mode === "single" || mode === "range"))
       setOpen(false);
@@ -98,6 +101,7 @@ export default function SheDatePicker(props: ISheDatePicker): JSX.Element {
 
   function onClearHandler(event) {
     setDate(null);
+    resetFormField(null);
     onSelectDate?.(null, {
       value: null,
       model: props,
@@ -173,6 +177,7 @@ export default function SheDatePicker(props: ISheDatePicker): JSX.Element {
             isLoading={isLoading}
             disabled={disabled}
             hideTimePicker={hideTimePicker}
+            ignoreFormAction
             onSelectDate={onSelectHandler}
           />
         </PopoverContent>

@@ -23,6 +23,16 @@ const userFormScheme: AppSchemeType<UserModel> = z.object({
   dateBirth: z.date().or(z.string().nonempty(nonemptyMessage)),
   alertTime: z.date().or(z.string().nonempty(nonemptyMessage)).optional(),
   // comments: z.array(z.string()).nonempty(nonemptyMessage),
+  dateInterval: z
+    .object({
+      from: z.date({ required_error: nonemptyMessage }),
+      to: z.date({ required_error: nonemptyMessage }),
+    })
+    .refine((val) => val.from <= val.to, {
+      message: "Start date must be before end date",
+      path: ["to"],
+    })
+    .optional(),
   gender: z
     .enum(["male", "female", "unicorn", "banana"])
     .superRefine((arg, ctx) => {
