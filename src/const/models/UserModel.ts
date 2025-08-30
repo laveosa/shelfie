@@ -1,41 +1,55 @@
+import { IDateRange } from "@/const/interfaces/IDateRange.ts";
+
 export interface UserModel {
   id?: number;
-  image?: any;
-  name?: string;
+  image?: string;
+  firstName?: string;
+  lastName?: string;
   nikName?: string;
-  status?: string;
   age?: number;
   email?: string;
+  phone?: string;
   address?: string;
+  status?:
+    | "active"
+    | "pending"
+    | "vacation"
+    | "fired"
+    | "unemployed"
+    | "employed";
   dateBirth?: string | Date;
-  alertTime?: string | Date;
-  rangeDate?: { from: Date | string; to: Date | string };
-  multipleDate?: string | Date[];
   gender?: string;
-  position?: any;
+  nationality?: string;
+  maritalStatus?: "married" | "single" | "divorced" | "inRelationship";
+  position?: string;
   comment?: string;
-  units?: any[];
-  tags?: any[];
   isAvailable?: boolean;
+  isRemote?: boolean;
+  communicationPreferences?: string[];
+  interests?: number[];
+  workingHours?: IDateRange;
+  workingDays?: (Date | string)[];
 }
 
 export const UserModelDefault: UserModel = {
   id: undefined,
   image: undefined,
-  name: undefined,
+  firstName: undefined,
+  lastName: undefined,
   nikName: undefined,
-  status: undefined,
   age: undefined,
   email: undefined,
-  dateBirth: undefined,
-  alertTime: undefined,
-  rangeDate: undefined,
-  multipleDate: undefined,
+  phone: undefined,
   address: undefined,
+  status: undefined,
+  dateBirth: undefined,
   gender: undefined,
+  nationality: undefined,
+  maritalStatus: undefined,
   position: undefined,
   comment: undefined,
-  units: undefined,
-  tags: undefined,
   isAvailable: undefined,
+  isRemote: undefined,
+  communicationPreferences: undefined,
+  interests: undefined,
 };

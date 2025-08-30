@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import cs from "./DashboardPage.module.scss";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import { UserModel } from "@/const/models/UserModel.ts";
 import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
 import { ContextPatternEnum } from "@/const/enums/ContextPatternEnum.ts";
 import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
 import SheCalendar from "@/components/primitive/she-calendar/SheCalendar.tsx";
 import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageService.ts";
+import { CalendarModeEnum } from "@/const/enums/CalendarModeEnum.ts";
+import UserForm from "@/components/forms/examples/user-form/UserForm.tsx";
 import { DateFormatEnum } from "@/const/enums/DateFormatEnum.ts";
-import UserForm from "@/components/forms/user-form/UserForm.tsx";
 
 const badges: ISheBadge<any>[] = [
   {
@@ -282,7 +282,7 @@ const arrDate = [
   new Date("5/22/2024"),
 ];
 
-const user: UserModel = {
+/*const user: UserModel = {
   name: "Anton",
   age: 32,
   email: "anton@yahoo.com",
@@ -303,30 +303,10 @@ const user: UserModel = {
   comment:
     " fsd iewi wein weinw en wien wineo nweoin woen wnie ownief ownef owne ofnwoei we we we  fsd iewi wein weinw en wien wineo nweoin woen wnie ownief ownef owne ofnwoei we we we   fsd iewi wein weinw en wien wineo nweoin woen wnie ownief ownef owne ofnwoei we we we   fsd iewi wein weinw en wien wineo nweoin woen wnie ownief ownef owne ofnwoei we we we   fsd iewi wein weinw en wien wineo nweoin woen wnie ownief ownef owne ofnwoei we we we ",
   tags: [badges[0], badges[1], badges[2], badges[4]],
-};
+};*/
 
 export function DashboardPage() {
   const service = useDashboardPageService();
-
-  const [_user, setUser] = useState<UserModel>(null);
-  const [_badges, setBadges] = useState<ISheBadge<any>[]>(null);
-
-  const [_selectDate, setSelectData] = useState<any[]>(null);
-  const [_selected, setSelected] = useState<any>(null);
-  const [_loading, setLoading] = useState<boolean>(false);
-
-  const [inputValue, setInputValue] = useState<string>("test");
-  const [_date, setDate] = useState<any>();
-
-  useEffect(() => {
-    setTimeout(() => {
-      setUser(user);
-      setBadges(badges);
-    }, 1000);
-    setTimeout(() => {
-      setSelected("male");
-    }, 1000);
-  }, []);
 
   // ================================================================== STATE
 
@@ -335,11 +315,6 @@ export function DashboardPage() {
   function onAction(event, model?) {
     console.log("EVENT: ", event);
     console.log("MODEL: ", model);
-  }
-
-  function onSelectedHandler(event, model) {
-    setSelected(event);
-    onAction(event, model);
   }
 
   // ================================================================== LOGIC
@@ -351,85 +326,29 @@ export function DashboardPage() {
       <br />
       <br />
 
-      {/*<SheInput
-        label="input"
-        value={inputValue}
-        showHighlighted
-        errorMessage="some error message"
-        showError
-      />*/}
-
-      {/*<SheSelect
-        label="Select"
-        items={genders}
-        selected={"male"}
-        showClearBtn
-        onSelect={onSelectedHandler}
-      />
-      <br />
-      <br />*/}
-
-      {/*<SheMultiSelect<string>
-        label="MultiSelect"
-        items={unitsString}
-        selectedValues={["CW-9 White Wolf", "FS-34 Exterminator"]}
-        showClearBtn
-        onSelect={(values, model) =>
-          console.log("MULTI SELECT: ", values, model)
-        }
-      />
-      <br />
-      <br />*/}
-
-      {/*<SheBadgeList
-        label="Tags"
-        items={position}
-        required
-        showCloseBtn
-        showClearBtn
-      />
-      <br />
-      <br />*/}
-
-      {/*<div className="flex gap-10 w-full justify-between pl-10 pr-10">
+      {/*<div className="flex justify-between gap-10 pl-20 pr-20">
         <SheCalendar
           label="Single"
-          hideTimePicker
-          // date={_user?.dateBirth}
-          // date={user.dateBirth}
-          mode="single"
+          mode={CalendarModeEnum.SINGLE}
+          dateFormat={DateFormatEnum.MM_DD_YYYY}
           onSelectDate={(value) => console.log("SINGLE: ", value)}
         />
         <SheCalendar
           label="Range"
-          hideTimePicker
-          // date={_user?.dateBirth}
-          // date={user.dateBirth}
-          mode="range"
+          mode={CalendarModeEnum.RANGE}
           dateFormat={DateFormatEnum.MM_DD_YYYY}
-          onSelectDate={(value) => console.log("RANGE ", value)}
+          onSelectDate={(value) => console.log("RANGE: ", value)}
         />
         <SheCalendar
           label="Multiple"
-          hideTimePicker
-          // date={_user?.dateBirth}
-          // date={user.dateBirth}
-          mode="multiple"
+          mode={CalendarModeEnum.MULTIPLE}
+          dateFormat={DateFormatEnum.MM_DD_YYYY}
           onSelectDate={(value) => console.log("MULTIPLE: ", value)}
         />
-      </div>
-      <br />
-      <br />*/}
+      </div>*/}
 
-      {/*<SheTimePicker
-        label="TimePicker"
-        onSetDate={(value, model) => console.log("TIME: ", value)}
-      />
-      <br />
-      <br />*/}
-
-      {/*<UserForm
-        data={user}
+      <UserForm
+        // data={user}
         // data={_user}
         genders={genders}
         positions={position}
@@ -439,12 +358,7 @@ export function DashboardPage() {
         notDisabledSubmit
         onSubmit={onAction}
         onCancel={onAction}
-      />*/}
-
-      <br />
-      <br />
-
-      {/*<SheTestForm />*/}
+      />
 
       <br />
       <br />

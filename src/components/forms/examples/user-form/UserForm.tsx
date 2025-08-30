@@ -77,7 +77,7 @@ export default function UserForm({
         onError={onErrorHandler}
         onCancel={onCancel}
       >
-        <SheFormField
+        {/*<SheFormField
           name="nikName"
           render={({ field }) => (
             <SheInputEditor
@@ -163,13 +163,14 @@ export default function UserForm({
               fullWidth
             />
           )}
-        />
-        {/*<SheFormField
+        />*/}
+        <SheFormField
           name="multipleDate"
           render={({ field }) => (
             <SheCalendar
               label="Multiple date"
               date={field.value}
+              dateFormat={DateFormatEnum.MM_DD_YYYY}
               required
               icon={Home}
               mode="multiple"
@@ -183,6 +184,7 @@ export default function UserForm({
             <SheCalendar
               label="Range date"
               date={field.value}
+              dateFormat={DateFormatEnum.MM_DD_YYYY}
               required
               icon={Home}
               mode="range"
@@ -203,8 +205,8 @@ export default function UserForm({
               showClearBtn
             />
           )}
-        />*/}
-        <SheFormField
+        />
+        {/*<SheFormField
           name="units"
           render={({ field }) => (
             <SheMultiSelect
@@ -337,7 +339,7 @@ export default function UserForm({
               icon={User}
             />
           )}
-        />
+        />*/}
       </SheForm>
     </div>
   );

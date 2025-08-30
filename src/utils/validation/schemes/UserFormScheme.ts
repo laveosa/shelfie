@@ -7,6 +7,34 @@ import { AppSchemeType } from "@/const/types/AppSchemeType.ts";
 const nonemptyMessage = "field is required";
 
 const userFormScheme: AppSchemeType<UserModel> = z.object({
+  dateBirth: z
+    .date({ required_error: nonemptyMessage })
+    .or(z.string().nonempty(nonemptyMessage)),
+  multipleDate: z.array(
+    z
+      .date({ required_error: nonemptyMessage })
+      .or(z.string().nonempty(nonemptyMessage)),
+  ),
+  rangeDate: z
+    .object({
+      from: z
+        .date({ required_error: nonemptyMessage })
+        .or(z.string().nonempty(nonemptyMessage)),
+      to: z
+        .date({ required_error: nonemptyMessage })
+        .or(z.string().nonempty(nonemptyMessage)),
+    })
+    .refine((val) => val.from <= val.to, {
+      message: "Start date must be before end date",
+      path: ["to"],
+    })
+    .optional(),
+});
+
+export default userFormScheme;
+
+/*
+const userFormScheme: AppSchemeType<UserModel> = z.object({
   nikName: z.string().nonempty(nonemptyMessage),
   isAvailable: z.boolean(),
   name: z
@@ -61,6 +89,4 @@ const userFormScheme: AppSchemeType<UserModel> = z.object({
   position: z.string().optional(),
   tags: z.array(z.any()).nonempty(nonemptyMessage),
   // tags: z.array(z.any()).min(1, "tag cannot be empty").optional(),
-});
-
-export default userFormScheme;
+});*/
