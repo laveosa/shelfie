@@ -26,6 +26,7 @@ import { TimeFormatEnum } from "@/const/enums/TimeFormatEnum.ts";
 import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
 import SheCalendar from "@/components/primitive/she-calendar/SheCalendar.tsx";
 import SheTextArea from "@/components/primitive/she-textarea/SheTextarea.tsx";
+import SheInputEditor from "@/components/primitive/she-input-editor/SheInputEditor.tsx";
 
 export default function UserForm({
   data,
@@ -73,6 +74,19 @@ export default function UserForm({
         onError={onErrorHandler}
         onCancel={onCancel}
       >
+        <SheFormField
+          name="nikName"
+          render={({ field }) => (
+            <SheInputEditor
+              label="Nik name edit"
+              value={field.value}
+              required
+              showClearBtn
+              fullWidth
+              hideErrorMessage
+            />
+          )}
+        />
         <SheFormField
           name="comment"
           render={({ field }) => (
