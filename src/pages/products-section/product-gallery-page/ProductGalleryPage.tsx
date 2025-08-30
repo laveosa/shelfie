@@ -3,18 +3,33 @@ import { useParams } from "react-router-dom";
 
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { IProductGalleryPageSlice } from "@/const/interfaces/store-slices/IProductGalleryPageSlice.ts";
-import { ProductGalleryPageSliceActions as actions } from "@/state/slices/ProductGalleryPageSlice.ts";
-import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice";
-import useProductGalleryPageService from "@/pages/products-section/product-gallery-page/useProductGalleryPageService.ts";
+import {
+  IProductGalleryPageSlice
+} from "@/const/interfaces/store-slices/IProductGalleryPageSlice.ts";
+import {
+  ProductGalleryPageSliceActions as actions
+} from "@/state/slices/ProductGalleryPageSlice.ts";
+import {
+  ProductsPageSliceActions as productsActions
+} from "@/state/slices/ProductsPageSlice";
+import useProductGalleryPageService
+  from "@/pages/products-section/product-gallery-page/useProductGalleryPageService.ts";
 import { useToast } from "@/hooks/useToast.ts";
-import cs from "@/pages/products-section/product-basic-data-page/ProductBasicDataPage.module.scss";
-import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
-import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
-import ProductPhotosCard from "@/components/complex/custom-cards/product-photos-card/ProductPhotosCard.tsx";
-import ConnectImageCard from "@/components/complex/custom-cards/connect-image-card/ConnectImageCard.tsx";
-import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
-import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
+import cs
+  from "@/pages/products-section/product-basic-data-page/ProductBasicDataPage.module.scss";
+import ItemsCard
+  from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
+import ProductMenuCard
+  from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
+import ProductPhotosCard
+  from "@/components/complex/custom-cards/product-photos-card/ProductPhotosCard.tsx";
+import ConnectImageCard
+  from "@/components/complex/custom-cards/connect-image-card/ConnectImageCard.tsx";
+import {
+  IProductsPageSlice
+} from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import useProductsPageService
+  from "@/pages/products-section/products-page/useProductsPageService.ts";
 import { setSelectedGridItem } from "@/utils/helpers/quick-helper.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
@@ -76,6 +91,7 @@ export function ProductGalleryPage() {
     productsService.getProductPhotosHandler(Number(productId)).then(() => {
       dispatch(actions.setIsProductPhotosCardLoading(false));
     });
+    service.getProductVariantsHandler(Number(productId));
   }, [productId]);
 
   function itemCardHandler(item) {
@@ -173,12 +189,6 @@ export function ProductGalleryPage() {
         }
         break;
       case "openConnectImageCard":
-        dispatch(actions.setIsConnectImageCardLoading(true));
-        dispatch(actions.setIsVariantsGridLoading(true));
-        service.getProductVariantsHandler(productId).then(() => {
-          dispatch(actions.setIsConnectImageCardLoading(false));
-          dispatch(actions.setIsVariantsGridLoading(false));
-        });
         dispatch(
           productsActions.refreshProductPhotos(
             setSelectedGridItem(
@@ -189,6 +199,20 @@ export function ProductGalleryPage() {
           ),
         );
         dispatch(actions.refreshSelectedPhoto(payload));
+        dispatch(
+          actions.refreshProductVariants(
+            state.productVariants.map((variant) => {
+              const isInSelectedPhoto = payload.variants?.some(
+                (photoVariant) => photoVariant.variantId === variant.variantId,
+              );
+
+              return {
+                ...variant,
+                isActive: isInSelectedPhoto,
+              };
+            }),
+          ),
+        );
         handleCardAction("connectImageCard", true);
         break;
       case "connectImageToVariant":
@@ -197,26 +221,19 @@ export function ProductGalleryPage() {
             payload.variantId,
             state.selectedPhoto.photoId,
           )
-          .then(() => {
-            productsService
-              .getProductPhotosHandler(Number(productId))
-              .then((res) => {
-                dispatch(productsActions.refreshProductPhotos(res));
-
-                const selectedPhoto = res.find(
-                  (photo) => state.selectedPhoto.photoId === photo.photoId,
-                );
-                dispatch(
-                  productsActions.refreshProductPhotos(
-                    setSelectedGridItem(
-                      state.selectedPhoto.photoId,
-                      productsState.productPhotos,
-                      "photoId",
-                    ),
-                  ),
-                );
-                dispatch(actions.refreshSelectedPhoto(selectedPhoto));
+          .then((res) => {
+            if (!res.error) {
+              const updatedVariants = state.productVariants.map((variant) => {
+                if (variant.variantId === payload.variantId) {
+                  return {
+                    ...variant,
+                    isActive: true,
+                  };
+                }
+                return variant;
               });
+              dispatch(actions.refreshProductVariants(updatedVariants));
+            }
           });
         break;
       case "detachImageFromVariant":
@@ -225,26 +242,19 @@ export function ProductGalleryPage() {
             payload.variantId,
             state.selectedPhoto.photoId,
           )
-          .then(() => {
-            productsService
-              .getProductPhotosHandler(Number(productId))
-              .then((res) => {
-                dispatch(productsActions.refreshProductPhotos(res));
-
-                const selectedPhoto = res.find(
-                  (photo) => state.selectedPhoto.photoId === photo.photoId,
-                );
-                dispatch(
-                  productsActions.refreshProductPhotos(
-                    setSelectedGridItem(
-                      state.selectedPhoto.photoId,
-                      productsState.productPhotos,
-                      "photoId",
-                    ),
-                  ),
-                );
-                dispatch(actions.refreshSelectedPhoto(selectedPhoto));
+          .then((res) => {
+            if (!res.error) {
+              const updatedVariants = state.productVariants.map((variant) => {
+                if (variant.variantId === payload.variantId) {
+                  return {
+                    ...variant,
+                    isActive: false,
+                  };
+                }
+                return variant;
               });
+              dispatch(actions.refreshProductVariants(updatedVariants));
+            }
           });
         break;
     }

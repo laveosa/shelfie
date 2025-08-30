@@ -12,8 +12,8 @@ export const ConnectImageGridColumns = (
   ) => void,
 ): ColumnDef<any>[] => [
   {
-    accessorKey: "isConnected",
-    header: "Active",
+    accessorKey: "isActive",
+    header: "Status",
     size: 60,
     maxSize: 60,
     cell: ({ row, table }) => {
@@ -25,7 +25,7 @@ export const ConnectImageGridColumns = (
       return (
         <Switch
           disabled={meta?.isRowLoading(row.id)}
-          checked={row.getValue("isConnected")}
+          checked={row.getValue("isActive")}
           onCheckedChange={() =>
             onAction("switchAction", row.id, meta?.setLoadingRow, row)
           }
@@ -93,9 +93,6 @@ export const ConnectImageGridColumns = (
                   {size}
                 </span>
               </SheTooltip>
-              // <span key={index} style={{ marginRight: "5px" }}>
-              //   {size}
-              // </span>
             ))}
           </div>
         </div>

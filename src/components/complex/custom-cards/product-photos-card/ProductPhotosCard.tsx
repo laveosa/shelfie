@@ -91,7 +91,6 @@ export default function ProductPhotosCard({
                 showHeader={false}
                 columns={columns}
                 data={data}
-                gridModel={data}
                 skeletonQuantity={productCounter?.gallery}
                 cellPadding="5px 10px"
                 customMessage="PRODUCT HAS NO PHOTO"
