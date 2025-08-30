@@ -300,6 +300,8 @@ const user: UserModel = {
   isAvailable: true,
   nikName: "sjdifwoeijfw",
   units: ["CW-9 White Wolf", "FS-34 Exterminator", "CE-81 Juggernaut"],
+  comment:
+    " fsd iewi wein weinw en wien wineo nweoin woen wnie ownief ownef owne ofnwoei we we we  fsd iewi wein weinw en wien wineo nweoin woen wnie ownief ownef owne ofnwoei we we we   fsd iewi wein weinw en wien wineo nweoin woen wnie ownief ownef owne ofnwoei we we we   fsd iewi wein weinw en wien wineo nweoin woen wnie ownief ownef owne ofnwoei we we we   fsd iewi wein weinw en wien wineo nweoin woen wnie ownief ownef owne ofnwoei we we we ",
   tags: [badges[0], badges[1], badges[2], badges[4]],
 };
 

@@ -25,6 +25,7 @@ import { DateFormatEnum } from "@/const/enums/DateFormatEnum.ts";
 import { TimeFormatEnum } from "@/const/enums/TimeFormatEnum.ts";
 import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
 import SheCalendar from "@/components/primitive/she-calendar/SheCalendar.tsx";
+import SheTextArea from "@/components/primitive/she-textarea/SheTextarea.tsx";
 
 export default function UserForm({
   data,
@@ -72,6 +73,20 @@ export default function UserForm({
         onError={onErrorHandler}
         onCancel={onCancel}
       >
+        <SheFormField
+          name="comment"
+          render={({ field }) => (
+            <SheTextArea
+              label="Comment"
+              value={field.value}
+              required
+              icon={Home}
+              showClearBtn
+              fullWidth
+              hideErrorMessage
+            />
+          )}
+        />
         <SheFormField
           name="multipleDate"
           render={({ field }) => (

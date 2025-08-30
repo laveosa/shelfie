@@ -158,7 +158,6 @@ export default function SheInput(props: ISheInput): JSX.Element {
 
   function onBlurHandler(event: React.ChangeEvent<HTMLInputElement>) {
     _isTouched.current = true;
-
     const newValue = event.target.value.trim() || null;
     const tmpIsValid = _validateValue(newValue);
 

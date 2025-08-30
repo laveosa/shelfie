@@ -12,7 +12,7 @@ export interface UserModel {
   multipleDate?: string | Date[];
   gender?: string;
   position?: any;
-  comments?: string[];
+  comment?: string;
   units?: any[];
   tags?: any[];
   isAvailable?: boolean;
@@ -32,7 +32,7 @@ export const UserModelDefault: UserModel = {
   address: undefined,
   gender: undefined,
   position: undefined,
-  comments: undefined,
+  comment: undefined,
   units: undefined,
   tags: undefined,
   isAvailable: undefined,

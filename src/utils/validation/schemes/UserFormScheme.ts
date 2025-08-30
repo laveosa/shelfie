@@ -27,7 +27,7 @@ const userFormScheme: AppSchemeType<UserModel> = z.object({
     .date({ required_error: nonemptyMessage })
     .or(z.string().nonempty(nonemptyMessage))
     .optional(),
-  // comments: z.array(z.string()).nonempty(nonemptyMessage),
+  comment: z.string().nonempty(nonemptyMessage),
   multipleDate: z.array(
     z
       .date({ required_error: nonemptyMessage })
