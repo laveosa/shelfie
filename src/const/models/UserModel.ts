@@ -8,7 +8,8 @@ export interface UserModel {
   address?: string;
   dateBirth?: string | Date;
   alertTime?: string | Date;
-  dateInterval?: { from: Date; to: Date };
+  rangeDate?: { from: Date | string; to: Date | string };
+  multipleDate?: string | Date[];
   gender?: string;
   position?: any;
   comments?: string[];
@@ -26,7 +27,8 @@ export const UserModelDefault: UserModel = {
   email: undefined,
   dateBirth: undefined,
   alertTime: undefined,
-  dateInterval: undefined,
+  rangeDate: undefined,
+  multipleDate: undefined,
   address: undefined,
   gender: undefined,
   position: undefined,

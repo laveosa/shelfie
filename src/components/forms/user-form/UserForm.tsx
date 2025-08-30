@@ -19,12 +19,12 @@ import SheAutocomplete from "@/components/primitive/she-autocomplete/SheAutocomp
 import SheToggle from "@/components/primitive/she-toggle/SheToggle.tsx";
 import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
 import SheBadgeList from "@/components/primitive/she-badge-list/SheBadgeList.tsx";
-import SheCalendar from "@/components/primitive/she-calendar/SheCalendar.tsx";
 import SheMultiSelect from "@/components/primitive/she-multi-select/SheMultiSelect.tsx";
 import SheTimePicker from "@/components/primitive/she-time-picker/SheTimePicker.tsx";
 import { DateFormatEnum } from "@/const/enums/DateFormatEnum.ts";
 import { TimeFormatEnum } from "@/const/enums/TimeFormatEnum.ts";
 import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
+import SheCalendar from "@/components/primitive/she-calendar/SheCalendar.tsx";
 
 export default function UserForm({
   data,
@@ -73,10 +73,66 @@ export default function UserForm({
         onCancel={onCancel}
       >
         <SheFormField
-          name="dateInterval"
+          name="multipleDate"
           render={({ field }) => (
             <SheDatePicker
-              label="Date Interval"
+              label="Multiple date"
+              date={field.value}
+              required
+              icon={Home}
+              mode="multiple"
+              showClearBtn
+              fullWidth
+            />
+          )}
+        />
+        <SheFormField
+          name="rangeDate"
+          render={({ field }) => (
+            <SheDatePicker
+              label="Range date"
+              date={field.value}
+              required
+              icon={Home}
+              mode="range"
+              showClearBtn
+              fullWidth
+            />
+          )}
+        />
+        <SheFormField
+          name="dateBirth"
+          render={({ field }) => (
+            <SheDatePicker
+              label="Single date"
+              date={field.value}
+              dateFormat={DateFormatEnum.MM_DD_YYYY}
+              required
+              icon={Home}
+              mode="single"
+              showClearBtn
+              fullWidth
+            />
+          )}
+        />
+        {/*<SheFormField
+          name="multipleDate"
+          render={({ field }) => (
+            <SheCalendar
+              label="Multiple date"
+              date={field.value}
+              required
+              icon={Home}
+              mode="multiple"
+              showClearBtn
+            />
+          )}
+        />
+        <SheFormField
+          name="rangeDate"
+          render={({ field }) => (
+            <SheCalendar
+              label="Range date"
               date={field.value}
               required
               icon={Home}
@@ -85,28 +141,16 @@ export default function UserForm({
             />
           )}
         />
-        {/*<SheFormField
-          name="dateInterval"
-          render={({ field }) => (
-            <SheCalendar
-              label="Date Interval"
-              date={field.value}
-              required
-              icon={Home}
-              mode="range"
-              showClearBtn
-            />
-          )}
-        />*/}
-        {/*<SheFormField
+        <SheFormField
           name="dateBirth"
           render={({ field }) => (
             <SheCalendar
-              label="Date Berth"
+              label="Single date"
               date={field.value}
               dateFormat={DateFormatEnum.MM_DD_YYYY}
               required
               icon={Home}
+              mode="single"
               showClearBtn
             />
           )}
@@ -117,6 +161,7 @@ export default function UserForm({
             <SheMultiSelect
               label="Units"
               items={units}
+              fullWidth
               selectedValues={field.value}
               showClearBtn
             />

@@ -5,13 +5,11 @@ import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSele
 import { UserModel } from "@/const/models/UserModel.ts";
 import { ISheBadge } from "@/const/interfaces/primitive-components/ISheBadge.ts";
 import { ContextPatternEnum } from "@/const/enums/ContextPatternEnum.ts";
-import UserForm from "@/components/forms/user-form/UserForm.tsx";
 import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
-import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import SheCalendar from "@/components/primitive/she-calendar/SheCalendar.tsx";
-import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import SheTimePicker from "@/components/primitive/she-time-picker/SheTimePicker.tsx";
 import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageService.ts";
+import { DateFormatEnum } from "@/const/enums/DateFormatEnum.ts";
+import UserForm from "@/components/forms/user-form/UserForm.tsx";
 
 const badges: ISheBadge<any>[] = [
   {
@@ -277,6 +275,13 @@ timeValue.setHours(10);
 timeValue.setMinutes(20);
 timeValue.setSeconds(30);
 
+const arrDate = [
+  new Date("05.1.2024"),
+  new Date("5.12/2024"),
+  new Date("5.3/2024"),
+  new Date("5/22/2024"),
+];
+
 const user: UserModel = {
   name: "Anton",
   age: 32,
@@ -285,10 +290,11 @@ const user: UserModel = {
   // dateBirth: new Date("05.21.1982"),
   dateBirth: "05.21.1982",
   alertTime: timeValue,
-  /*dateInterval: {
+  multipleDate: arrDate,
+  rangeDate: {
     from: new Date("05.21.1982"),
     to: new Date("05.25.1982"),
-  },*/
+  },
   gender: "male",
   position: "SEO",
   isAvailable: true,
@@ -308,6 +314,7 @@ export function DashboardPage() {
   const [_loading, setLoading] = useState<boolean>(false);
 
   const [inputValue, setInputValue] = useState<string>("test");
+  const [_date, setDate] = useState<any>();
 
   useEffect(() => {
     setTimeout(() => {
@@ -382,7 +389,7 @@ export function DashboardPage() {
       <br />
       <br />*/}
 
-      <div className="flex gap-10 w-full justify-between pl-10 pr-10">
+      {/*<div className="flex gap-10 w-full justify-between pl-10 pr-10">
         <SheCalendar
           label="Single"
           hideTimePicker
@@ -397,6 +404,7 @@ export function DashboardPage() {
           // date={_user?.dateBirth}
           // date={user.dateBirth}
           mode="range"
+          dateFormat={DateFormatEnum.MM_DD_YYYY}
           onSelectDate={(value) => console.log("RANGE ", value)}
         />
         <SheCalendar
@@ -409,7 +417,7 @@ export function DashboardPage() {
         />
       </div>
       <br />
-      <br />
+      <br />*/}
 
       {/*<SheTimePicker
         label="TimePicker"
@@ -418,7 +426,7 @@ export function DashboardPage() {
       <br />
       <br />*/}
 
-      {/*<UserForm
+      <UserForm
         data={user}
         // data={_user}
         genders={genders}
@@ -428,7 +436,7 @@ export function DashboardPage() {
         notDisabledSubmit
         onSubmit={onAction}
         onCancel={onAction}
-      />*/}
+      />
 
       <br />
       <br />

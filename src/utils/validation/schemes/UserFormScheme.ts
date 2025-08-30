@@ -20,13 +20,27 @@ const userFormScheme: AppSchemeType<UserModel> = z.object({
     .regex(ContextPatternEnum.EMAIL as RegExp, "invalid email"),
   address: z.string().optional(),
   units: z.array(z.any()).nonempty(nonemptyMessage),
-  dateBirth: z.date().or(z.string().nonempty(nonemptyMessage)),
-  alertTime: z.date().or(z.string().nonempty(nonemptyMessage)).optional(),
+  dateBirth: z
+    .date({ required_error: nonemptyMessage })
+    .or(z.string().nonempty(nonemptyMessage)),
+  alertTime: z
+    .date({ required_error: nonemptyMessage })
+    .or(z.string().nonempty(nonemptyMessage))
+    .optional(),
   // comments: z.array(z.string()).nonempty(nonemptyMessage),
-  dateInterval: z
+  multipleDate: z.array(
+    z
+      .date({ required_error: nonemptyMessage })
+      .or(z.string().nonempty(nonemptyMessage)),
+  ),
+  rangeDate: z
     .object({
-      from: z.date({ required_error: nonemptyMessage }),
-      to: z.date({ required_error: nonemptyMessage }),
+      from: z
+        .date({ required_error: nonemptyMessage })
+        .or(z.string().nonempty(nonemptyMessage)),
+      to: z
+        .date({ required_error: nonemptyMessage })
+        .or(z.string().nonempty(nonemptyMessage)),
     })
     .refine((val) => val.from <= val.to, {
       message: "Start date must be before end date",

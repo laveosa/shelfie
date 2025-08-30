@@ -101,10 +101,11 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
-    const parsed: Date | Date[] | { from: Date; to: Date } =
+    let parsed: Date | Date[] | { from: Date; to: Date } =
       _parseValidDate(date);
 
     if (parsed && !_.isEqual(parsed, _date)) {
+      parsed = _sortMultipleDate(parsed);
       const convertedDate = _getParsedModel(parsed);
       setDate(parsed);
       updateFormValue(parsed);
@@ -129,16 +130,14 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
   }
 
   function onSelectDateHandler(selectedDate, event) {
-    const normalizedDate =
-      _inferCalendarMode(selectedDate) === "multiple"
-        ? _sortDateListByDate(selectedDate)
-        : selectedDate;
-
-    if (normalizedDate !== _date) setDate(normalizedDate);
-
+    const normalizedDate = _sortMultipleDate(selectedDate);
     const dateWithTime = _formatSelectedDateModel(normalizedDate);
-    updateFormValue(dateWithTime);
     setDate(dateWithTime);
+
+    if (_inferCalendarMode(selectedDate) === "range" && !dateWithTime.to)
+      return null;
+
+    updateFormValue(dateWithTime);
     onSelectDate?.(dateWithTime, {
       value: dateWithTime,
       model: props,
@@ -193,6 +192,12 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
     return null;
   }
 
+  function _sortMultipleDate(dateArr: any): Date[] {
+    return _inferCalendarMode(dateArr) === "multiple"
+      ? _sortDateListByDate(dateArr)
+      : dateArr;
+  }
+
   function _setDateMonth(monthName: string) {
     const monthIndex = months.indexOf(monthName);
     const newDate: Date = _date as Date;
@@ -230,7 +235,7 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
       );
       selectedDate.to = _combineDateAndTime(selectedDate.to as Date, timeToUse);
 
-      const dateRangeModel = {
+      return {
         from: selectedDate.from
           ? dateFormat
             ? moment(selectedDate.from).format(dateFormat)
@@ -242,10 +247,6 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
             : selectedDate.to
           : null,
       };
-
-      if (dateRangeModel?.from && dateRangeModel?.to) {
-        return dateRangeModel;
-      }
     }
 
     if (_isCalendarSingleDateValue(selectedDate)) {
@@ -315,10 +316,12 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
     return isValueDates;
   }
 
-  function _isCalendarRangeDateValue(
-    value: any,
-  ): value is { from: Date | string; to: Date | string } {
+  function _isCalendarRangeDateValue(value: any): boolean {
     return (
+      value && typeof value === "object" && "from" in value && "to" in value
+    );
+
+    /*return (
       value &&
       typeof value === "object" &&
       "from" in value &&
@@ -329,7 +332,7 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
         (value as any).to instanceof Date) &&
       !!_parseCalendarSingleDate(value.from) &&
       !!_parseCalendarSingleDate(value.to)
-    );
+    );*/
   }
 
   function _isCalendarSingleDateValue(value: any): boolean {
