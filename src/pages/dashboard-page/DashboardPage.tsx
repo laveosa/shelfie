@@ -428,7 +428,7 @@ export function DashboardPage() {
       <br />
       <br />*/}
 
-      <UserForm
+      {/*<UserForm
         data={user}
         // data={_user}
         genders={genders}
@@ -439,7 +439,7 @@ export function DashboardPage() {
         notDisabledSubmit
         onSubmit={onAction}
         onCancel={onAction}
-      />
+      />*/}
 
       <br />
       <br />

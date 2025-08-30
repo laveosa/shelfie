@@ -23,6 +23,7 @@ import {
   getCustomProps,
   removeCustomProps,
 } from "@/utils/helpers/props-helper.ts";
+import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
 import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
 import { ISheAutocomplete } from "@/const/interfaces/primitive-components/ISheAutocomplete.ts";
 import {
@@ -32,7 +33,6 @@ import {
 import { SheLabelDefaultModel } from "@/const/interfaces/primitive-components/ISheLabel.ts";
 import { SheDescriptionBlockDefaultModel } from "@/const/interfaces/primitive-components/ISheDescriptionBlock.ts";
 import { SheErrorMessageBlockDefaultModel } from "@/const/interfaces/primitive-components/ISheErrorMessageBlock.ts";
-import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
 
 const SheAutocompletePCWDefaultModel: IShePrimitiveComponentWrapper = {
   ...SheLabelDefaultModel,
@@ -119,6 +119,16 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     identifier: "SheAutocomplete",
   });
 
+  const filteredItems: ISheOption<string>[] = useMemo(() => {
+    if (!_items || _items.length === 0) return [];
+
+    return _items.filter((item) =>
+      _searchValue && _searchValue.length > 0
+        ? item.text.toLowerCase().includes(_searchValue.toLowerCase())
+        : true,
+    );
+  }, [_items, _searchValue]);
+
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     _updateComponentStyles();
@@ -178,16 +188,6 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     );
   }, [autoFocus]);
 
-  const filteredItems: ISheOption<string>[] = useMemo(() => {
-    if (!_items || _items.length === 0) return [];
-
-    return _items.filter((item) =>
-      _searchValue && _searchValue.length > 0
-        ? item.text.toLowerCase().includes(_searchValue.toLowerCase())
-        : true,
-    );
-  }, [_items, _searchValue]);
-
   // ==================================================================== EVENT HANDLERS
   function onChangeHandler(value: string) {
     const tmpSearchValue = value?.trim();
@@ -205,7 +205,6 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
 
     setTimeout(() => {
       _setIsOpen(false);
-
       onBlur?.(_searchValue);
     }, 100);
   }

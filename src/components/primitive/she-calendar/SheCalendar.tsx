@@ -320,19 +320,6 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
     return (
       value && typeof value === "object" && "from" in value && "to" in value
     );
-
-    /*return (
-      value &&
-      typeof value === "object" &&
-      "from" in value &&
-      "to" in value &&
-      (typeof (value as any).from === "string" ||
-        (value as any).from instanceof Date) &&
-      (typeof (value as any).to === "string" ||
-        (value as any).to instanceof Date) &&
-      !!_parseCalendarSingleDate(value.from) &&
-      !!_parseCalendarSingleDate(value.to)
-    );*/
   }
 
   function _isCalendarSingleDateValue(value: any): boolean {

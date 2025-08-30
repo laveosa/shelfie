@@ -16,10 +16,7 @@ import ShePrimitiveComponentWrapper from "@/components/primitive/she-primitive-c
 import { generateSafeItemId } from "@/utils/helpers/quick-helper.ts";
 import { getCustomProps } from "@/utils/helpers/props-helper.ts";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import {
-  ISheSelect,
-  SheSelectDefaultModel,
-} from "@/const/interfaces/primitive-components/ISheSelect.ts";
+import { ISheSelect } from "@/const/interfaces/primitive-components/ISheSelect.ts";
 import {
   IShePrimitiveComponentWrapper,
   ShePrimitiveComponentWrapperDefaultModel,
@@ -48,10 +45,6 @@ export default function SheSelect<T = any>(props: ISheSelect<T>): JSX.Element {
     onSelect,
     onTriggerKeyDown,
   } = props;
-  const sheSelectProps = getCustomProps<ISheSelect<T>, ISheSelect<T>>(
-    props,
-    SheSelectDefaultModel,
-  );
   const shePrimitiveComponentWrapperProps = getCustomProps<
     ISheSelect<T>,
     IShePrimitiveComponentWrapper
