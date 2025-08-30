@@ -1,5 +1,6 @@
 import { Clock10, Package, PackageOpen, Plus, Truck } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
+import { useTranslation } from "react-i18next";
 
 import {
   DataWithId,
@@ -25,6 +26,7 @@ export default function ShipmentsCard({
   shipmentsGridRequestModel,
   onAction,
 }: IShipmentsCard) {
+  const { t } = useTranslation();
   const sortingItems = Object.values(GridSortingEnum).map((value) => ({
     value,
     description: GridSortingEnumLabels[value],
@@ -35,7 +37,7 @@ export default function ShipmentsCard({
       <SheProductCard
         loading={isLoading}
         className={cs.shipmentsCard}
-        title="Shipment"
+        title={t("SectionTitles.Shipment")}
         minWidth="1100px"
       >
         <div className={cs.shipmentsCardContent}>
@@ -48,7 +50,7 @@ export default function ShipmentsCard({
                 <div>
                   <TabsTrigger className={cs.tabItemTrigger} value="queued">
                     <div className={cs.tabBlock}>
-                      <Clock10 size="16" /> Queued
+                      <Clock10 size="16" /> {t("TabLabels.Queued")}
                     </div>
                   </TabsTrigger>
                   <TabsTrigger
@@ -57,7 +59,7 @@ export default function ShipmentsCard({
                   >
                     <div className={cs.tabBlock}>
                       <PackageOpen size="16" />
-                      Ready for Packing
+                      {t("TabLabels.ReadyForPacking")}
                     </div>
                   </TabsTrigger>
                   <TabsTrigger
@@ -66,7 +68,7 @@ export default function ShipmentsCard({
                   >
                     <div className={cs.tabBlock}>
                       <Package size="16" />
-                      Ready for Sending
+                      {t("TabLabels.ReadyForSending")}
                     </div>
                   </TabsTrigger>
                   <TabsTrigger
@@ -75,7 +77,7 @@ export default function ShipmentsCard({
                   >
                     <div className={cs.tabBlock}>
                       <Truck size="16" />
-                      All Shipments
+                      {t("TabLabels.AllShipments")}
                     </div>
                   </TabsTrigger>
                 </div>
@@ -157,7 +159,7 @@ export default function ShipmentsCard({
         icon={Plus}
         variant="default"
         onClick={() => onAction("createShipment")}
-        value="Create Shipment"
+        value={t("OrderActions.CreateShipment")}
         bgColor="#007AFF"
       />
     </div>

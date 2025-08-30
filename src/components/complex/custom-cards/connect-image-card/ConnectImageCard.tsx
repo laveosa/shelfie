@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ConnectImageCard.module.scss";
@@ -20,6 +21,7 @@ export default function ConnectImageCard({
   onSecondaryButtonClick,
   ...props
 }: IConnectImageCard) {
+  const { t } = useTranslation();
   const columns = ConnectImageGridColumns(
     onGridAction,
   ) as ColumnDef<DataWithId>[];
@@ -69,7 +71,7 @@ export default function ConnectImageCard({
   return (
     <SheProductCard
       loading={isLoading}
-      title="Connect image to product variants"
+      title={t("CardTitles.ConnectImageToProductVariants")}
       showCloseButton
       className={cs.connectImageCard}
       onSecondaryButtonClick={onSecondaryButtonClick}

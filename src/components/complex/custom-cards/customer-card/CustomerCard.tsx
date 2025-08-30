@@ -9,7 +9,7 @@ import SheCardNotification from "@/components/complex/she-card-notification/SheC
 import { Trash2 } from "lucide-react";
 import { ICustomerCard } from "@/const/interfaces/complex-components/custom-cards/ICustomerCard.ts";
 import CustomerForm from "@/components/forms/customer-form/CustomerForm";
-
+import { useTranslation } from "react-i18next";
 
 export default function CustomerCard({
   isLoading,
@@ -19,6 +19,8 @@ export default function CustomerCard({
   onSecondaryButtonClick,
   onAction,
 }: ICustomerCard) {
+  const { t } = useTranslation();
+  
   const form = useForm({
     defaultValues: {
       firstName: "",
@@ -54,7 +56,7 @@ export default function CustomerCard({
     <div>
       <SheProductCard
         loading={isLoading}
-        title={editCustomer ? "Edit Customer" : "Create Customer"}
+        title={editCustomer ? t("CardTitles.EditCustomer") : t("CardTitles.CreateCustomer")}
         className={cs.customerConfigurationFormCard}
       >
         <div className={cs.customerCardContent}>
@@ -66,11 +68,11 @@ export default function CustomerCard({
             />
         {customer && (
         <SheCardNotification
-          title="Delete Customer"
-          text="This customer will be deleted and will no longer be available for selection or automatic connection. Past orders will remain visible."
+          title={t("CardTitles.DeleteCustomer")}
+          text={t("ConfirmationMessages.DeleteCustomer")}
           buttonColor="#EF4343"
           buttonVariant="outline"
-          buttonText="Delete"
+          buttonText={t("CommonButtons.Delete")}
           buttonIcon={Trash2}
             onClick={() => {onAction("deleteCustomer", customer)}}
           />

@@ -1,6 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Plus, Truck } from "lucide-react";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import {
   DataWithId,
@@ -23,10 +24,12 @@ export default function ShipmentDetailsCard({
   customer,
   onAction,
 }: IShipmentDetailsCard) {
+  const { t } = useTranslation();
+
   return (
     <SheProductCard
       loading={isLoading}
-      title="Shipment details"
+      title={t("CardTitles.ShipmentDetails")}
       minWidth="660px"
       className={cs.shipmentDetailsCard}
     >
@@ -37,22 +40,22 @@ export default function ShipmentDetailsCard({
           columns={ProductsInShipmentGridColumns as ColumnDef<DataWithId>[]}
           skeletonQuantity={5}
           data={products}
-          customMessage="No item in shipment"
+          customMessage={t("ShipmentMessages.NoItemsInShipment")}
         />
         <Separator />
         <div className={cs.shipmentAllocationBlock}>
-          <span className="she-title">Shipment allocation</span>
+          <span className="she-title">{t("ShipmentForm.Labels.ShipmentAllocation")}</span>
           <div className={cs.shipmentAllocationButtonBlock}>
             <SheButton
               icon={Plus}
-              value="Create Shipment"
+              value={t("OrderActions.CreateShipment")}
               onClick={() => onAction("createShipment")}
               disabled={!customer}
             />
-            <span>or</span>
+            <span>{t("SpecialText.Or")}</span>
             <SheButton
               icon={Truck}
-              value="Select Shipment"
+              value={t("OrderActions.SelectShipment")}
               variant="secondary"
               onClick={() => onAction("selectShipment")}
             />
@@ -66,7 +69,7 @@ export default function ShipmentDetailsCard({
           }
           skeletonQuantity={5}
           data={shipments}
-          customMessage="No item is scheduled for delivery"
+          customMessage={t("ShipmentMessages.NoItemsScheduledForDelivery")}
         />
       </div>
     </SheProductCard>

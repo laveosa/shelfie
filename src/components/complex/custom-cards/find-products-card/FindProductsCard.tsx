@@ -1,5 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import {
   DataWithId,
@@ -28,11 +29,13 @@ export default function FindProductsCard({
   brands,
   onAction,
 }: IFindProductsCard) {
+  const { t } = useTranslation();
+  
   return (
     <SheProductCard
       loading={isLoading}
       className={cs.findProductsCard}
-      title="Find Products"
+      title={t("CardTitles.FindProducts")}
       width="1100px"
       showCloseButton
       onSecondaryButtonClick={() => onAction("closeFindProductsCard")}
@@ -59,14 +62,14 @@ export default function FindProductsCard({
         >
           <GridItemsFilter
             items={brands}
-            columnName={"Brands"}
+            columnName={t("SectionTitles.Brand")}
             getId={(item: BrandModel) => item.brandId}
             getName={(item: BrandModel) => item.brandName}
             selected={gridModel.filter?.brands}
           />
           <GridItemsFilter
             items={categories}
-            columnName={"Categories"}
+            columnName={t("SectionTitles.Category")}
             getId={(item: CategoryModel) => item.categoryId}
             getName={(item: CategoryModel) => item.categoryName}
             selected={gridModel.filter?.categories}

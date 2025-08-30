@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { Plus } from "lucide-react";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./AddVariantCard.module.scss";
@@ -31,6 +32,8 @@ export default function AddVariantCard({
   onAction,
   ...props
 }: IAddVariantCard) {
+  const { t } = useTranslation();
+
   const defaultValues = traits?.reduce(
     (acc, trait) => ({
       ...acc,
@@ -66,9 +69,9 @@ export default function AddVariantCard({
     <div>
       <SheProductCard
         loading={isLoading}
-        title="Add Variant"
+        title={t("ProductActions.AddVariant")}
         showPrimaryButton={true}
-        primaryButtonTitle="Add Variant"
+        primaryButtonTitle={t("ProductActions.AddVariant")}
         onPrimaryButtonClick={form.handleSubmit(onSubmit)}
         primaryButtonDisabled={isPrimaryButtonDisabled}
         primaryButtonModel={{
@@ -83,7 +86,7 @@ export default function AddVariantCard({
       >
         <div className={cs.addVariantCardContent}>
           <span className={`${cs.addVariantCardText} she-text`}>
-            Select the trait options that you want to add
+            {t("ProductForm.Labels.SelectTraitOptions")}
           </span>
           <SheForm form={form} onSubmit={onSubmit}>
             {traits?.map((trait) => (
@@ -118,7 +121,7 @@ export default function AddVariantCard({
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue
-                                placeholder={`Select ${trait.traitTypeName.toLowerCase()}`}
+                                placeholder={t("ProductForm.Placeholders.SelectTraitType", { traitType: trait.traitTypeName.toLowerCase() })}
                               />
                             </SelectTrigger>
                           </FormControl>
@@ -163,10 +166,7 @@ export default function AddVariantCard({
           </SheForm>
           {isDuplicateVariant && (
             <span className={cs.warningText}>
-              The variant with this trait combination already exist for this
-              product. While not prohibited, it is not recommended to create
-              multiple copies of the same variant, since this will create
-              challenge with stock management
+              {t("ValidationMessages.DuplicateVariantWarning")}
             </span>
           )}
         </div>

@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 import {
   Select,
@@ -27,6 +28,7 @@ import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
 import { useToast } from "@/hooks/useToast.ts";
 
 export default function AuthPage() {
+  const { t } = useTranslation();
   const service = useAuthPageService();
   const dispatch = useAppDispatch();
   const state = useAppSelector<IAuthPageSlice>(StoreSliceEnum.AUTH);
@@ -203,39 +205,39 @@ export default function AuthPage() {
                   <div className={cs.formItem}>
                     <SheForm.Field
                       rules={{
-                        required: "First name is required",
+                        required: t("AuthForm.Validation.FirstNameRequired"),
                         minLength: {
                           value: 3,
-                          message: "First name must be at least 3 characters",
+                          message: t("AuthForm.Validation.FirstNameMinLength"),
                         },
                         maxLength: {
                           value: 50,
-                          message: "First name cannot exceed 50 characters",
+                          message: t("AuthForm.Validation.FirstNameMaxLength"),
                         },
                       }}
                       name="firstName"
-                      label="First Name"
+                      label={t("AuthForm.Labels.FirstName")}
                     >
-                      <Input placeholder="enter first name..." />
+                      <Input placeholder={t("AuthForm.Placeholders.FirstName")} />
                     </SheForm.Field>
                   </div>
                   <div className={cs.formItem}>
                     <SheForm.Field
                       rules={{
-                        required: "Last name is required",
+                        required: t("AuthForm.Validation.LastNameRequired"),
                         minLength: {
                           value: 3,
-                          message: "Last name must be at least 3 characters",
+                          message: t("AuthForm.Validation.LastNameMinLength"),
                         },
                         maxLength: {
                           value: 50,
-                          message: "Last name cannot exceed 50 characters",
+                          message: t("AuthForm.Validation.LastNameMaxLength"),
                         },
                       }}
                       name="lastName"
-                      label="Last Name"
+                      label={t("AuthForm.Labels.LastName")}
                     >
-                      <Input placeholder="enter first name..." />
+                      <Input placeholder={t("AuthForm.Placeholders.LastName")} />
                     </SheForm.Field>
                   </div>
                 </>
@@ -247,24 +249,24 @@ export default function AuthPage() {
                   <div className={cs.formItem}>
                     <SheForm.Field
                       rules={{
-                        required: "Email is required",
+                        required: t("AuthForm.Validation.EmailRequired"),
                         pattern: {
                           value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                          message: "Invalid email address",
+                          message: t("AuthForm.Validation.EmailInvalid"),
                         },
                         minLength: {
                           value: 5,
-                          message: "Email must be at least 5 characters",
+                          message: t("AuthForm.Validation.EmailMinLength"),
                         },
                         maxLength: {
                           value: 50,
-                          message: "Email cannot exceed 50 characters",
+                          message: t("AuthForm.Validation.EmailMaxLength"),
                         },
                       }}
                       name="email"
-                      label="Email"
+                      label={t("AuthForm.Labels.Email")}
                     >
-                      <Input placeholder="enter email..." />
+                      <Input placeholder={t("AuthForm.Placeholders.Email")} />
                     </SheForm.Field>
                   </div>
                 </>
@@ -275,19 +277,19 @@ export default function AuthPage() {
                 <div className={cs.formItem}>
                   <SheForm.Field
                     rules={{
-                      required: "Password is required",
+                      required: t("AuthForm.Validation.PasswordRequired"),
                       minLength: {
                         value: 8,
-                        message: "Password must be at least 8 characters",
+                        message: t("AuthForm.Validation.PasswordMinLength"),
                       },
                     }}
                     name="password"
-                    label="Password"
+                    label={t("AuthForm.Labels.Password")}
                   >
                     <Input
                       className={cs.passwordInput}
                       type="password"
-                      placeholder="enter password..."
+                      placeholder={t("AuthForm.Placeholders.Password")}
                     />
                   </SheForm.Field>
                 </div>
@@ -312,15 +314,15 @@ export default function AuthPage() {
                 <div className={cs.formItem}>
                   <SheForm.Field
                     rules={{
-                      required: "Please confirm your password",
+                      required: t("AuthForm.Validation.ConfirmPasswordRequired"),
                       validate: (value, formValues) =>
                         value === formValues.password ||
-                        "Passwords do not match",
+                        t("AuthForm.Validation.PasswordsDoNotMatch"),
                     }}
                     name="confirmPassword"
-                    label="Confirm Password"
+                    label={t("AuthForm.Labels.ConfirmPassword")}
                   >
-                    <Input type="password" placeholder="confirm password..." />
+                    <Input type="password" placeholder={t("AuthForm.Placeholders.ConfirmPassword")} />
                   </SheForm.Field>
                 </div>
               )}
@@ -328,7 +330,7 @@ export default function AuthPage() {
                 service.authFormView === AuthFormViewEnum.VERIFY_CODE) && (
                 <div className={cs.phoneInput}>
                   <span className={`${cs.phoneNumberTitle} she-title`}>
-                    Phone number
+                    {t("AuthForm.Labels.PhoneNumber")}
                   </span>
                   <div className={cs.phoneInputItems}>
                     {!state.hiddenPhoneNumber && (
@@ -337,7 +339,7 @@ export default function AuthPage() {
                           control={form.control}
                           name="phoneCodeModel"
                           rules={{
-                            required: "Country code is required",
+                            required: t("AuthForm.Validation.CountryCodeRequired"),
                           }}
                           render={({ field }) => (
                             <FormItem className={cs.countryCodeInput}>
@@ -406,22 +408,22 @@ export default function AuthPage() {
                         rules={
                           !state.hiddenPhoneNumber
                             ? {
-                                required: "Phone number is required",
+                                required: t("AuthForm.Validation.PhoneNumberRequired"),
                                 minLength: {
                                   value: 8,
                                   message:
-                                    "Phone number must be at least 8 characters",
+                                    t("AuthForm.Validation.PhoneNumberMinLength"),
                                 },
                                 maxLength: {
                                   value: 9,
                                   message:
-                                    "Phone number cannot exceed 9 characters",
+                                    t("AuthForm.Validation.PhoneNumberMaxLength"),
                                 },
                               }
                             : null
                         }
                         name="phoneNumber"
-                        label={state.hiddenPhoneNumber ? "Phone number" : null}
+                        label={state.hiddenPhoneNumber ? t("AuthForm.Labels.PhoneNumber") : null}
                       >
                         <Input
                           disabled={
@@ -435,7 +437,7 @@ export default function AuthPage() {
                               ? state.hiddenPhoneNumber
                                 ? `Phone ending in ${state.hiddenPhoneNumber}`
                                 : phoneNumber
-                              : "phone number..."
+                              : t("AuthForm.Placeholders.PhoneNumber")
                           }
                           style={
                             state.hiddenPhoneNumber
@@ -468,20 +470,20 @@ export default function AuthPage() {
                 <div className={cs.formItem}>
                   <SheForm.Field
                     rules={{
-                      required: "Please enter code",
+                      required: t("AuthForm.Validation.VerificationCodeRequired"),
                       minLength: {
                         value: 6,
-                        message: "Code must be 6 characters",
+                        message: t("AuthForm.Validation.VerificationCodeLength"),
                       },
                       maxLength: {
                         value: 6,
-                        message: "Code must be 6 characters",
+                        message: t("AuthForm.Validation.VerificationCodeLength"),
                       },
                     }}
                     name="code"
-                    label="Enter the 6-digit code"
+                    label={t("AuthForm.Labels.VerificationCode")}
                   >
-                    <Input type="number" placeholder="enter code..." />
+                    <Input type="number" placeholder={t("AuthForm.Placeholders.VerificationCode")} />
                   </SheForm.Field>
                 </div>
               )}
@@ -495,7 +497,7 @@ export default function AuthPage() {
           {(service.authFormView === AuthFormViewEnum.SIGN_IN ||
             service.authFormView === AuthFormViewEnum.SIGN_UP) && (
             <div className={cs.facebookButtonBlock}>
-              <div className={cs.authContentBorder}>OR</div>
+              <div className={cs.authContentBorder}>{t("AuthForm.StaticText.Or")}</div>
               <SheButton variant="outline">
                 {service.formStaticText.facebookButtonText}
               </SheButton>

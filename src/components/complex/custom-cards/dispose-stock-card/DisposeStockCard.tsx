@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./DisposeStockCard.module.scss";
@@ -27,10 +28,11 @@ export default function DisposeStockCard({
   onSecondaryButtonClick,
   ...props
 }: IDisposeStockCard) {
+  const { t } = useTranslation();
   const reasons = [
-    { reasonId: 1, reasonName: "Damaged" },
-    { reasonId: 2, reasonName: "Lost" },
-    { reasonId: 3, reasonName: "Broken" },
+    { reasonId: 1, reasonName: t("StockForm.Labels.Damaged") },
+    { reasonId: 2, reasonName: t("StockForm.Labels.Lost") },
+    { reasonId: 3, reasonName: t("StockForm.Labels.Broken") },
   ];
 
   const form = useForm({
@@ -51,9 +53,9 @@ export default function DisposeStockCard({
   return (
     <SheProductCard
       loading={isLoading}
-      title={`Dispose ${variant?.variantName} Stock`}
+      title={`${t("StockActions.Dispose")} ${variant?.variantName} ${t("SectionTitles.Product")}`}
       showPrimaryButton={true}
-      primaryButtonTitle="Dispose"
+      primaryButtonTitle={t("StockActions.Dispose")}
       showSecondaryButton={true}
       onPrimaryButtonClick={form.handleSubmit(onSubmit)}
       onSecondaryButtonClick={onSecondaryButtonClick}
@@ -64,16 +66,16 @@ export default function DisposeStockCard({
       <div className={cs.disposeStockCardContent}>
         <div className={cs.currentlyStockBlock}>
           <span className="she-text">
-            {`Currently in stock : ${variant.stockAmount && 0}`}
+            {t("StockForm.Labels.CurrentlyInStock", { amount: variant.stockAmount && 0 })}
           </span>
         </div>
         <div className={cs.disposeFormBlock}>
           <SheForm form={form} onSubmit={onSubmit}>
             <SheForm.Field name="unitAmount">
               <SheInput
-                label="Units"
+                label={t("PurchaseForm.Labels.Units")}
                 type="number"
-                placeholder="enter amount of units..."
+                placeholder={t("PurchaseForm.Placeholders.Units")}
                 showError={true}
                 fullWidth
               />
@@ -86,14 +88,14 @@ export default function DisposeStockCard({
               }}
               render={({ field }) => (
                 <FormItem className={cs.select}>
-                  <FormLabel>Reason</FormLabel>
+                  <FormLabel>{t("StockForm.Labels.Reason")}</FormLabel>
                   <Select
                     onValueChange={(value) => field.onChange(value)}
                     value={field.value ? field.value.toString() : ""}
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select category" />
+                        <SelectValue placeholder={t("SelectOptions.SelectCategory")} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>

@@ -1,6 +1,7 @@
 import { CalendarDays, Grid2x2Check, Truck, UserMinus, X } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import {
   DataWithId,
@@ -32,6 +33,8 @@ export default function SelectShipmentForOrderCard({
   customer,
   onAction,
 }: ISelectShipmentForOrderCard) {
+  const { t } = useTranslation();
+
   function convertStatusesToSelectItems(): ISheSelectItem<ShipmentStatusEnum>[] {
     return Object.values(ShipmentStatusEnum).map((status) => ({
       value: status,
@@ -47,7 +50,7 @@ export default function SelectShipmentForOrderCard({
   return (
     <SheProductCard
       loading={isLoading}
-      title="Select shipment for order"
+      title={t("CardTitles.SelectShipmentForOrder")}
       width="800px"
       className={cs.selectShipmentForOrderCard}
       showCloseButton
@@ -55,7 +58,7 @@ export default function SelectShipmentForOrderCard({
     >
       <div className={cs.selectShipmentForOrderCardContent}>
         <div className={cs.customerBlockContainer}>
-          <span className="she-text">Show pending shipments of customer:</span>
+          <span className="she-text">{t("ShipmentForm.Labels.ShowPendingShipments")}</span>
           <div className={cs.customerBlock}>
             <div className={cs.customerInfo}>
               {customer && (
@@ -78,14 +81,14 @@ export default function SelectShipmentForOrderCard({
               )}
               <SheButton
                 icon={UserMinus}
-                value={customer ? "Change Customer" : "Select Customer"}
+                value={customer ? t("SpecialText.ChangeCustomer") : t("OrderActions.SelectCustomer")}
                 variant="secondary"
                 onClick={() => onAction("changeCustomer")}
               />
             </div>
             <SheButton
               icon={X}
-              value="Show All"
+              value={t("SpecialText.ShowAll")}
               variant="secondary"
               onClick={() => onAction("showAllShipments")}
             />
@@ -101,7 +104,7 @@ export default function SelectShipmentForOrderCard({
           gridModel={shipmentsGridModel}
           skeletonQuantity={shipmentsGridModel?.items.length}
           data={shipmentsGridModel?.items}
-          customMessage="No shipments created yet"
+          customMessage={t("ShipmentMessages.NoShipmentsCreated")}
           sortingItems={sortingItems}
           onApplyColumns={(model) => onAction("applyColumns", model)}
           onDefaultColumns={() => onAction("resetColumns")}
@@ -111,7 +114,7 @@ export default function SelectShipmentForOrderCard({
         >
           <SheSelect
             icon={Truck}
-            placeholder="Service"
+            placeholder={t("SelectOptions.Service")}
             minWidth="150px"
             items={services}
             onSelect={(value) =>
@@ -120,7 +123,7 @@ export default function SelectShipmentForOrderCard({
           />
           <SheSelect
             icon={Grid2x2Check}
-            placeholder="Status"
+            placeholder={t("SelectOptions.Status")}
             minWidth="150px"
             items={convertStatusesToSelectItems()}
             onSelect={(value: ShipmentStatusEnum) =>
@@ -131,7 +134,7 @@ export default function SelectShipmentForOrderCard({
           />
           <SheDatePicker
             icon={CalendarDays}
-            placeholder="Date"
+            placeholder={t("SelectOptions.Date")}
             minWidth="150px"
             mode="range"
             onSelectDate={(value) =>

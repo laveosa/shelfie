@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Plus, WandSparkles } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import {
   FormControl,
@@ -34,6 +35,8 @@ export default function ProductConfigurationCard({
   onSecondaryButtonClick,
   onAction,
 }: IProductConfigurationCard) {
+  const { t } = useTranslation();
+  
   const form = useForm({
     defaultValues: {
       productName: "",
@@ -78,12 +81,12 @@ export default function ProductConfigurationCard({
       <SheProductCard
         loading={isLoading}
         className={cs.productConfigurationFormCard}
-        title={product?.productId ? "Basic Product Data" : "Create Product"}
+        title={product?.productId ? t("CardTitles.BasicProductData") : t("CardTitles.CreateProduct")}
         showCloseButton={showSecondaryButton}
         showPrimaryButton={true}
-        primaryButtonTitle={product?.productId ? "Save" : "Add Product"}
+        primaryButtonTitle={product?.productId ? t("CommonButtons.Save") : t("ProductActions.AddProduct")}
         showSecondaryButton={!product?.productId || showSecondaryButton}
-        secondaryButtonTitle="Cancel"
+        secondaryButtonTitle={t("CommonButtons.Cancel")}
         onPrimaryButtonClick={form.handleSubmit(onPrimaryButtonClick)}
         onSecondaryButtonClick={onSecondaryButtonClick}
       >
@@ -94,18 +97,18 @@ export default function ProductConfigurationCard({
                 required: true,
                 minLength: {
                   value: 3,
-                  message: "Product name must be at least 3 characters",
+                  message: t("ProductForm.Validation.ProductNameMinLength"),
                 },
                 maxLength: {
                   value: 50,
-                  message: "Product name cannot exceed 50 characters",
+                  message: t("ProductForm.Validation.ProductNameMaxLength"),
                 },
               }}
               name="productName"
             >
               <SheInput
-                label="Product Name"
-                placeholder="enter product name..."
+                label={t("ProductForm.Labels.ProductName")}
+                placeholder={t("ProductForm.Placeholders.ProductName")}
                 isValid={!form.formState.errors.productName}
                 patternErrorMessage={form.formState.errors.productName?.message}
                 showError={true}
@@ -116,8 +119,8 @@ export default function ProductConfigurationCard({
               <SheForm.Field name="productCode">
                 <SheInput
                   {...(form.register("productCode") as any)}
-                  label="Product Code"
-                  placeholder="enter product code..."
+                  label={t("ProductForm.Labels.ProductCode")}
+                  placeholder={t("ProductForm.Placeholders.ProductCode")}
                   isValid={!form.formState.errors.productCode}
                   patternErrorMessage={
                     form.formState.errors.productCode?.message
@@ -136,8 +139,8 @@ export default function ProductConfigurationCard({
             </div>
             <SheForm.Field name="barcode">
               <SheInput
-                label="Product Barcode"
-                placeholder="enter product barcode..."
+                label={t("ProductForm.Labels.ProductBarcode")}
+                placeholder={t("ProductForm.Placeholders.ProductBarcode")}
                 fullWidth={true}
               />
             </SheForm.Field>
@@ -150,7 +153,7 @@ export default function ProductConfigurationCard({
                 }}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Product Category</FormLabel>
+                    <FormLabel>{t("ProductForm.Labels.CategoryName")}</FormLabel>
                     <Select
                       key={form.watch("productCategoryId")}
                       onValueChange={(value) => field.onChange(Number(value))}
@@ -158,12 +161,12 @@ export default function ProductConfigurationCard({
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select category">
+                          <SelectValue placeholder={t("ProductForm.Placeholders.SelectCategory")}>
                             {categoriesList.find(
                               (item) =>
                                 item.categoryId ===
                                 form.watch("productCategoryId"),
-                            )?.categoryName ?? "Select category"}
+                            )?.categoryName ?? t("ProductForm.Placeholders.SelectCategory")}
                           </SelectValue>
                         </SelectTrigger>
                       </FormControl>
@@ -197,7 +200,7 @@ export default function ProductConfigurationCard({
                 }}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Product Brand</FormLabel>
+                    <FormLabel>{t("ProductForm.Labels.BrandName")}</FormLabel>
                     <Select
                       key={form.watch("brandId")}
                       onValueChange={(value) => field.onChange(Number(value))}
@@ -205,7 +208,7 @@ export default function ProductConfigurationCard({
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select brand" />
+                          <SelectValue placeholder={t("ProductForm.Placeholders.SelectBrand")} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -239,7 +242,7 @@ export default function ProductConfigurationCard({
                     form.setValue("isActive", checked)
                   }
                 />
-                <div>Is Active</div>
+                <div>{t("ProductForm.Labels.IsActive")}</div>
               </div>
             </SheForm.Field>
           </SheForm>

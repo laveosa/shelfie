@@ -1,5 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import cs from "./StockHistoryCard.module.scss";
 import {
@@ -18,10 +19,12 @@ export default function StockHistoryCard({
   onAction,
   ...props
 }: IVariantHistoryCard) {
+  const { t } = useTranslation();
+  
   return (
     <SheProductCard
       loading={isLoading}
-      title={`${variant?.variantName} Stock History`}
+      title={t("CardTitles.StockHistory", { variantName: variant?.variantName })}
       showCloseButton
       className={cs.stockHistoryCard}
       onSecondaryButtonClick={() => onAction("closeVariantHistoryCard")}

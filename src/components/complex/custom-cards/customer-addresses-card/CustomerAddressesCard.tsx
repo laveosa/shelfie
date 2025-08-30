@@ -6,6 +6,7 @@ import { DataWithId, DndGridDataTable } from "@/components/complex/grid/dnd-grid
 import { customerAddressGridColumns } from "../../grid/customer-address-grid/CustomerAddressGridColumns";
 import { GridSortingModel } from "@/const/models/GridSortingModel";
 import { ColumnDef } from "@tanstack/react-table";
+import { useTranslation } from "react-i18next";
 
 interface ICustomerAddressesCard {
   isLoading?: boolean;
@@ -22,11 +23,11 @@ export default function CustomerAddressesCard({
   gridModel,
   sortingOptions,
 }: ICustomerAddressesCard) {
+  const { t } = useTranslation();
   
-    const customerAddressColumns = customerAddressGridColumns(
-        onAction,
-      ) as ColumnDef<DataWithId>[];
-  
+  const customerAddressColumns = customerAddressGridColumns(
+      onAction,
+    ) as ColumnDef<DataWithId>[];
 
   return (
     <SheProductCard
@@ -35,13 +36,13 @@ export default function CustomerAddressesCard({
         showHeader={false}
       >
         <div className={cs.customerAddressesCardHeader}>
-            <div className="she-title">Customer Addresses</div>
+            <div className="she-title">{t("CardTitles.CustomerAddresses")}</div>
             <div className={cs.headerButtonBlock}>
                 <SheButton
                 icon={Plus}
                 variant="default"
                 onClick={()=>onAction("createCustomerAddress")}
-                value="Create Address"
+                value={t("CustomerActions.CreateAddress")}
                 />
             </div>
         </div>

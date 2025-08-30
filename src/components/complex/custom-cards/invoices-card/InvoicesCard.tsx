@@ -1,5 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./InvoicesCard.module.scss";
@@ -20,6 +21,8 @@ export default function InvoicesCard({
   contextId,
   onAction,
 }: IInvoiceCard) {
+  const { t } = useTranslation();
+  
   function onGridAction(
     actionType: string,
     _rowId?: string,
@@ -44,7 +47,7 @@ export default function InvoicesCard({
     <div className={cs.invoicesCard}>
       <SheProductCard
         loading={isLoading}
-        title="Invoices"
+        title={t("CardTitles.Invoices")}
         className={cs.productPhotosCard}
       >
         <div className={cs.invoicesCardContent}>
@@ -70,7 +73,7 @@ export default function InvoicesCard({
           />
           <div className={cs.manageInvoices}>
             <div className={`${cs.manageInvoicesTitle} she-title`}>
-              Manage Invoices
+              {t("CardTitles.ManageInvoices")}
             </div>
             <div className={cs.manageInvoicesGrid}>
               <DndGridDataTable
@@ -85,7 +88,7 @@ export default function InvoicesCard({
                 }
                 data={data}
                 skeletonQuantity={10}
-                customMessage="There are no files uploaded yet"
+                customMessage={t("InvoiceMessages.NoFilesUploaded")}
               />
             </div>
           </div>

@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { ColumnDef } from "@tanstack/react-table";
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 import {
   clearSelectedGridItems,
@@ -29,6 +30,7 @@ import { SuppliersListGridColumns } from "@/components/complex/grid/suppliers-li
 import { DataWithId } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 
 export function SupplierPage() {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const state = useAppSelector<ISupplierPageSlice>(StoreSliceEnum.SUPPLIER);
   const productsState = useAppSelector<IProductsPageSlice>(
@@ -90,7 +92,7 @@ export function SupplierPage() {
             );
             if (res) {
               addToast({
-                text: "Purchase created successfully",
+                text: t("SuccessMessages.PurchaseCreated"),
                 type: "success",
               });
             } else {
@@ -113,7 +115,7 @@ export function SupplierPage() {
             dispatch(actions.setIsSupplierCardLoading(false));
             if (res) {
               addToast({
-                text: "Purchase updated successfully",
+                text: t("SuccessMessages.PurchaseUpdated"),
                 type: "success",
               });
             } else {
@@ -178,7 +180,7 @@ export function SupplierPage() {
                 dispatch(actions.setIsPhotoUploaderLoading(false));
                 if (res) {
                   addToast({
-                    text: "Image successfully added",
+                    text: t("SuccessMessages.ImageAdded"),
                     type: "success",
                   });
                 } else {

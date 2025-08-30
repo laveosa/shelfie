@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import React, { useEffect } from "react";
 import { Check } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ManageTraitsCard.module.scss";
@@ -67,6 +68,7 @@ export default function ManageTraitsCard({
     [key: string]: any;
   };
 }) {
+  const { t } = useTranslation();
   const variantTraitOptions = variant?.traitOptions || [];
   const defaultValues = traits.reduce((acc, trait) => {
     const matchedOption = variantTraitOptions.find(
@@ -119,9 +121,9 @@ export default function ManageTraitsCard({
   return (
     <SheProductCard
       loading={isLoading}
-      title="Manage Traits"
+      title={t("CardTitles.ManageTraits")}
       showPrimaryButton={true}
-      primaryButtonTitle="Save Changes"
+      primaryButtonTitle={t("CommonButtons.SaveChanges")}
       onPrimaryButtonClick={form.handleSubmit(onSubmit)}
       primaryButtonDisabled={isFormIncomplete}
       primaryButtonModel={{
@@ -129,7 +131,7 @@ export default function ManageTraitsCard({
         bgColor: "#007AFF",
       }}
       showSecondaryButton={true}
-      secondaryButtonTitle="Cancel"
+      secondaryButtonTitle={t("CommonButtons.Cancel")}
       onSecondaryButtonClick={onSecondaryButtonClick}
       showCloseButton
       className={cs.manageTraitsCard}
@@ -137,7 +139,7 @@ export default function ManageTraitsCard({
     >
       <div className={cs.manageTraitsCardContent}>
         <div className={cs.manageTraitsCardTextBlock}>
-          <span className="she-text">Select the trait options for variant</span>
+          <span className="she-text">{t("ProductForm.Labels.SelectTraitOptionsForVariant")}</span>
         </div>
         <div>
           <SheForm form={form} onSubmit={onSubmit}>
@@ -158,7 +160,7 @@ export default function ManageTraitsCard({
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue
-                                placeholder={`Select ${trait.traitTypeName.toLowerCase()}`}
+                                placeholder={t("ProductForm.Placeholders.SelectTraitType", { traitType: trait.traitTypeName.toLowerCase() })}
                               />
                             </SelectTrigger>
                           </FormControl>

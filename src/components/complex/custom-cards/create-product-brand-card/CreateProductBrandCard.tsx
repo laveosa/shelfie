@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import {
   SheFileUploader,
@@ -17,6 +18,7 @@ export default function CreateProductBrandCard({
   brand,
   onAction,
 }: ICreateProductBrandCard) {
+  const { t } = useTranslation();
   const imageUploaderRef = useRef<SheFileUploaderRef>(null);
   const [submissionData, setSubmissionData] = useState<any>({});
 
@@ -44,7 +46,7 @@ export default function CreateProductBrandCard({
     <div>
       <SheProductCard
         loading={isLoading}
-        title="Create Product Brand"
+        title={t("CardTitles.CreateProductBrand")}
         showCloseButton
         className={cs.createProductBrandCard}
         onSecondaryButtonClick={() => onAction("closeCreateProductBrandCard")}
@@ -52,9 +54,9 @@ export default function CreateProductBrandCard({
         <div className={cs.cardContent}>
           <SheInput
             className={cs.productCategoryInput}
-            label="Brand Name"
+            label={t("ProductForm.Labels.BrandName")}
             errorMessage={brand?.error}
-            placeholder="enter brand name..."
+            placeholder={t("ProductForm.Placeholders.BrandName")}
             fullWidth
             onDelay={(value) => onAction("checkBrandName", value)}
           />
@@ -88,7 +90,7 @@ export default function CreateProductBrandCard({
                       </div>
                       <div className={cs.uploadingItemTextBlock}>
                         <p className="truncate text-sm">
-                          {file.name || `Image ${index + 1}`}
+                          {file.name || `${t("ProductForm.Labels.Image")} ${index + 1}`}
                         </p>
                         <p className="text-xs text-muted-foreground">
                           {((file.size || 0) / (1024 * 1024)).toFixed(2)} MB
@@ -112,7 +114,7 @@ export default function CreateProductBrandCard({
           )}
           <SheButton
             onClick={() => handleSubmit()}
-            value="Add Brand"
+            value={t("ProductActions.AddBrand")}
             disabled={!brand?.brandName || !!brand?.error}
           />
         </div>

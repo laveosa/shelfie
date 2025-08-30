@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { WandSparkles } from "lucide-react";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./CreateAttributeCard.module.scss";
@@ -22,6 +23,7 @@ import {
 } from "@/components/ui/select.tsx";
 
 export default function CreateAttributeCard({ data, ...props }) {
+  const { t } = useTranslation();
   const form = useForm({
     defaultValues: { productCategory: "" },
   });
@@ -30,12 +32,12 @@ export default function CreateAttributeCard({ data, ...props }) {
 
   return (
     <SheProductCard
-      title="Create product attribute"
+      title={t("CardTitles.CreateProductAttribute")}
       view="card"
       showPrimaryButton={true}
-      primaryButtonTitle="Create"
+      primaryButtonTitle={t("CommonButtons.Create")}
       showSecondaryButton={true}
-      secondaryButtonTitle="Cancel"
+      secondaryButtonTitle={t("CommonButtons.Cancel")}
       className={cs.createAttributeCard}
       {...props}
     >
@@ -44,8 +46,8 @@ export default function CreateAttributeCard({ data, ...props }) {
           <div className={cs.formInput}>
             <SheForm.Field name="name">
               <SheInput
-                label="Attribute name"
-                placeholder="Enter attribute name"
+                label={t("ProductForm.Labels.AttributeName")}
+                placeholder={t("ProductForm.Placeholders.AttributeName")}
               />
             </SheForm.Field>
           </div>
@@ -56,7 +58,7 @@ export default function CreateAttributeCard({ data, ...props }) {
                 name="productCategory"
                 render={({ field }) => (
                   <FormItem className={cs.select}>
-                    <FormLabel>Product Category</FormLabel>
+                    <FormLabel>{t("ProductForm.Labels.CategoryName")}</FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>

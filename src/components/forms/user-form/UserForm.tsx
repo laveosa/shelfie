@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 import useAppForm from "@/utils/hooks/useAppForm.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,6 +25,7 @@ export default function UserForm<T>({
   onSubmit,
   onCancel,
 }: IUserForm<T>): React.ReactNode {
+  const { t } = useTranslation();
   const form = useAppForm<UserModel>({
     mode: "onBlur",
     resolver: zodResolver(UserFormScheme),
@@ -69,7 +71,7 @@ export default function UserForm<T>({
         defaultValues={UserModelDefault}
         image={TNFLogoIcon}
         formPosition={DirectionEnum.CENTER}
-        title="User Form"
+        title={t("UserForm.Title")}
         view={ComponentViewEnum.CARD}
         onSubmit={onSubmit}
         onError={onErrorHandler}
@@ -79,8 +81,8 @@ export default function UserForm<T>({
           control={form.control}
           name="name"
           render={({ field }): React.ReactElement => (
-            <SheFormItem label="Name">
-              <SheInput {...field} placeholder="enter user name..." />
+            <SheFormItem label={t("UserForm.Labels.Name")}>
+              <SheInput {...field} placeholder={t("UserForm.Placeholders.Name")} />
             </SheFormItem>
           )}
         />
@@ -88,10 +90,10 @@ export default function UserForm<T>({
           control={form.control}
           name="email"
           render={({ field }): React.ReactElement => (
-            <SheFormItem label="Email">
+            <SheFormItem label={t("UserForm.Labels.Email")}>
               <SheInput
                 {...field}
-                placeholder="enter user email..."
+                placeholder={t("UserForm.Placeholders.Email")}
                 type="email"
               />
             </SheFormItem>
@@ -101,8 +103,8 @@ export default function UserForm<T>({
           control={form.control}
           name="address"
           render={({ field }): React.ReactElement => (
-            <SheFormItem label="Address">
-              <SheInput {...field} placeholder="enter user address..." />
+            <SheFormItem label={t("UserForm.Labels.Address")}>
+              <SheInput {...field} placeholder={t("UserForm.Placeholders.Address")} />
             </SheFormItem>
           )}
         />
@@ -110,12 +112,12 @@ export default function UserForm<T>({
           control={form.control}
           name="gender"
           render={({ field }) => (
-            <SheFormItem label="Gender">
+            <SheFormItem label={t("UserForm.Labels.Gender")}>
               <SheSelect
                 selected={field.value}
                 items={convertGendersToSelectItems(genders)}
                 hideFirstOption
-                placeholder="select user gender..."
+                placeholder={t("UserForm.Placeholders.Gender")}
                 onSelect={(value) => {
                   field.onChange(value);
                   void form.trigger("gender");
@@ -128,12 +130,12 @@ export default function UserForm<T>({
           control={form.control}
           name="position"
           render={({ field }) => (
-            <SheFormItem label="Position">
+            <SheFormItem label={t("UserForm.Labels.Position")}>
               <SheSelect
                 selected={field.value}
                 items={convertPositionsToSelectItems(positions)}
                 hideFirstOption
-                placeholder="select user position..."
+                placeholder={t("UserForm.Placeholders.Position")}
                 icon={User}
                 onSelect={(value) => {
                   field.onChange(value);

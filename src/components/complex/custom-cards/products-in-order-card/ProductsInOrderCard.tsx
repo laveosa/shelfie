@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Plus } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import {
   DataWithId,
@@ -19,6 +20,7 @@ export default function ProductsInOrderCard({
   stockActions,
   onAction,
 }: IProductsInOrderCard) {
+  const { t } = useTranslation();
   const createEmptyStockAction = () => ({
     brutto: null,
     unitsAmount: null,
@@ -54,7 +56,7 @@ export default function ProductsInOrderCard({
   return (
     <SheProductCard
       loading={isLoading}
-      title="Products in order"
+      title={t("CardTitles.ProductsInOrder")}
       width="485px"
       minWidth="485px"
       className={cs.productsInOrderCard}
@@ -62,11 +64,11 @@ export default function ProductsInOrderCard({
       <div className={cs.productsInOrderCardContent}>
         <div className={cs.addProductBlock}>
           <span className="she-text">
-            No order is complete without a product! Add some!
+            {t("OrderMessages.NoOrderCompleteWithoutProduct")}
           </span>
           <SheButton
             variant="secondary"
-            value="Add Product"
+            value={t("OrderActions.AddProduct")}
             icon={Plus}
             onClick={() => onAction("addProduct")}
           />
@@ -88,7 +90,7 @@ export default function ProductsInOrderCard({
         <div className={cs.productsSummaryBlock}>
           <span className="she-title"></span>
           <div className={cs.productsSummary}>
-            <span className="she-text">Products Total</span>
+            <span className="she-text">{t("OrderForm.Labels.ProductsTotal")}</span>
             <span className="she-text"></span>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 import useAppForm from "@/utils/hooks/useAppForm.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -35,6 +36,7 @@ export default function AddressForm({
   onCancel,
   countryList,
 }: IAddressForm): React.ReactNode {
+  const { t } = useTranslation();
   const form = useAppForm<AddressRequestModel>({
     mode: "onBlur",
     resolver: zodResolver(AddressFormScheme),
@@ -75,8 +77,8 @@ export default function AddressForm({
           control={form.control}
           name="alias"
           render={({ field }): React.ReactElement => (
-            <SheFormItem label="Alias">
-              <SheInput fullWidth {...field} placeholder="Enter alias..." />
+            <SheFormItem label={t("AddressForm.Labels.Alias")}>
+              <SheInput fullWidth {...field} placeholder={t("AddressForm.Placeholders.Alias")} />
             </SheFormItem>
           )}
         />
@@ -84,11 +86,11 @@ export default function AddressForm({
           control={form.control}
           name="addressLine1"
           render={({ field }): React.ReactElement => (
-            <SheFormItem label="Address Line 1">
+            <SheFormItem label={t("AddressForm.Labels.AddressLine1")}>
               <SheInput
                 fullWidth
                 {...field}
-                placeholder="Enter address line 1..."
+                placeholder={t("AddressForm.Placeholders.AddressLine1")}
               />
             </SheFormItem>
           )}
@@ -97,11 +99,11 @@ export default function AddressForm({
           control={form.control}
           name="addressLine2"
           render={({ field }): React.ReactElement => (
-            <SheFormItem label="Address Line 2">
+            <SheFormItem label={t("AddressForm.Labels.AddressLine2")}>
               <SheInput
                 fullWidth
                 {...field}
-                placeholder="Enter address line 2..."
+                placeholder={t("AddressForm.Placeholders.AddressLine2")}
               />
             </SheFormItem>
           )}
@@ -110,8 +112,8 @@ export default function AddressForm({
           control={form.control}
           name="city"
           render={({ field }): React.ReactElement => (
-            <SheFormItem label="City">
-              <SheInput fullWidth {...field} placeholder="Enter city..." />
+            <SheFormItem label={t("AddressForm.Labels.City")}>
+              <SheInput fullWidth {...field} placeholder={t("AddressForm.Placeholders.City")} />
             </SheFormItem>
           )}
         />
@@ -119,8 +121,8 @@ export default function AddressForm({
           control={form.control}
           name="state"
           render={({ field }): React.ReactElement => (
-            <SheFormItem label="State">
-              <SheInput fullWidth {...field} placeholder="Enter state..." />
+            <SheFormItem label={t("AddressForm.Labels.State")}>
+              <SheInput fullWidth {...field} placeholder={t("AddressForm.Placeholders.State")} />
             </SheFormItem>
           )}
         />
@@ -128,11 +130,11 @@ export default function AddressForm({
           control={form.control}
           name="postalCode"
           render={({ field }): React.ReactElement => (
-            <SheFormItem label="Postal Code">
+            <SheFormItem label={t("AddressForm.Labels.PostalCode")}>
               <SheInput
                 fullWidth
                 {...field}
-                placeholder="Enter postal code..."
+                placeholder={t("AddressForm.Placeholders.PostalCode")}
               />
             </SheFormItem>
           )}
@@ -141,12 +143,12 @@ export default function AddressForm({
           control={form.control}
           name="countryId"
           render={({ field }) => (
-            <SheFormItem label="Country">
+            <SheFormItem label={t("AddressForm.Labels.Country")}>
               <SheSelect
                 selected={field.value}
                 items={convertCountriesToSelectItems()}
                 hideFirstOption
-                placeholder="Choose country..."
+                placeholder={t("AddressForm.Placeholders.Country")}
                 fullWidth
                 onSelect={(value) => {
                   field.onChange(value);
@@ -166,7 +168,7 @@ export default function AddressForm({
             onClick={() => {
               onCancel();
             }}
-            value="Cancel"
+            value={t("CommonButtons.Cancel")}
           />
 
           <SheButton
@@ -175,7 +177,7 @@ export default function AddressForm({
             onClick={() => {
               form.handleSubmit(onSubmit);
             }}
-            value={isCreate ? "Add Address" : "Save Changes"}
+            value={isCreate ? t("CustomerActions.CreateAddress") : t("CommonButtons.Save")}
           />
         </div>
       </SheForm>

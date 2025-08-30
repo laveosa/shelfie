@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   CogIcon,
   ImageIcon,
@@ -25,6 +26,7 @@ export default function SupplierCard({
   selectedSupplier,
   onAction,
 }: ISupplierCard) {
+  const { t } = useTranslation();
   const { purchaseId } = useParams();
   const [selectedDate, setSelectedDate] = useState<string>(
     purchaseId ? selectedPurchase?.date : null,
@@ -43,18 +45,18 @@ export default function SupplierCard({
     <SheProductCard
       loading={isLoading}
       className={cs.supplierCard}
-      title="Supplier"
+      title={t("SectionTitles.Supplier")}
       onSecondaryButtonClick={() => onAction("closeSupplierCard")}
     >
       <div className={cs.supplierCardContent}>
         <div className={cs.purchaseBlock}>
           <div className={cs.noSelectedSupplier}>
             <span className={`${cs.noSelectedSupplierText} she-text`}>
-              Select which supplier provided the products
+              {t("PurchaseForm.Labels.SupplierSelection")}
             </span>
             <SheButton
               icon={selectedSupplier ? RefreshCcwDotIcon : Plus}
-              value={selectedSupplier ? "Replace Supplier" : "Select Supplier"}
+              value={selectedSupplier ? t("SupplierActions.ReplaceSupplier") : t("SupplierActions.SelectSupplier")}
               variant="secondary"
               maxWidth="160px"
               minWidth="160px"
@@ -140,7 +142,7 @@ export default function SupplierCard({
                 <SheButton
                   icon={selectedSupplier.isDeleted === true ? Plus : CogIcon}
                   value={
-                    selectedSupplier.isDeleted === true ? "Restore" : "Manage"
+                    selectedSupplier.isDeleted === true ? t("CommonButtons.Restore") : t("CommonButtons.Manage")
                   }
                   variant="secondary"
                   onClick={() => {
@@ -154,34 +156,34 @@ export default function SupplierCard({
                 <div className={cs.deletedSupplierBlock}>
                   <span
                     className={`${cs.deletedSupplierText} she-text`}
-                  >{`>_  Supplier is deleted`}</span>
+                  >{t("MarginMessages.SupplierIsDeleted")}</span>
                 </div>
               )}
             </div>
           )}
           <Separator />
-          <span className="she-title">Purchase date</span>
+          <span className="she-title">{t("PurchaseForm.Labels.PurchaseDate")}</span>
           <SheDatePicker
             fullWidth
-            label="Set date when purchase took place"
+            label={t("PurchaseForm.Labels.PurchaseDate")}
             date={selectedPurchase?.date}
             onSelectDate={(date) => setSelectedDate(date)}
           />
           <SheTextArea
             fullWidth
-            label="Purchase notes"
-            placeholder="Type your notes here..."
+            label={t("PurchaseForm.Labels.PurchaseNotes")}
+            placeholder={t("PurchaseForm.Placeholders.PurchaseNotes")}
             value={selectedPurchase?.documentNotes || null}
             onDelay={(value: string) => setPurchaseNotes(value)}
           />
           <div className={cs.purchaseButtonBlock}>
             <SheButton
               variant={"secondary"}
-              value={"Cancel"}
+              value={t("CommonButtons.Cancel")}
               onClick={() => onAction("closeSupplierCard")}
             ></SheButton>
             <SheButton
-              value={"Save"}
+              value={t("CommonButtons.Save")}
               disabled={isButtonDisabled}
               onClick={() =>
                 purchaseId
@@ -202,11 +204,10 @@ export default function SupplierCard({
         </div>
         {purchaseId && (
           <SheCardNotification
-            title="Delete Purchase"
-            text=" The purchase will be deleted, but the changes in stock will remain
-              intact."
+            title={t("CardTitles.DeletePurchase")}
+            text={t("ConfirmationMessages.DeletePurchase")}
             buttonIcon={Trash2}
-            buttonText="Delete"
+            buttonText={t("CommonButtons.Delete")}
             buttonVariant="outline"
             buttonColor="#EF4343"
           />
