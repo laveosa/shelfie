@@ -3,6 +3,7 @@ export interface UserModel {
   image?: any;
   name?: string;
   nikName?: string;
+  status?: string;
   age?: number;
   email?: string;
   address?: string;
@@ -23,6 +24,7 @@ export const UserModelDefault: UserModel = {
   image: undefined,
   name: undefined,
   nikName: undefined,
+  status: undefined,
   age: undefined,
   email: undefined,
   dateBirth: undefined,

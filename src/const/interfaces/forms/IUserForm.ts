@@ -8,6 +8,7 @@ export interface IUserForm {
   genders?: ISheSelectItem<string>[];
   positions?: ISheSelectItem<string>[];
   badges?: ISheBadge<any>[];
+  statuses?: string[];
   comments?: ISheSelectItem<string>[];
   units?: ISheOption<any>[];
   notDisabledSubmit?: boolean;

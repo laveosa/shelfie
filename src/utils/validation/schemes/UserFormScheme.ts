@@ -18,6 +18,7 @@ const userFormScheme: AppSchemeType<UserModel> = z.object({
     .string()
     .nonempty(nonemptyMessage)
     .regex(ContextPatternEnum.EMAIL as RegExp, "invalid email"),
+  status: z.string().nonempty(nonemptyMessage),
   address: z.string().optional(),
   units: z.array(z.any()).nonempty(nonemptyMessage),
   dateBirth: z

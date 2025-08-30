@@ -50,7 +50,14 @@ export default function SheRadioGroup<T>(
   const [_selected, setSelected] = useState<any>(null);
 
   // ==================================================================== UTILITIES
-  const { translate, ariaDescribedbyId, addItemsId } = useComponentUtilities({
+  const {
+    translate,
+    ariaDescribedbyId,
+    addItemsId,
+    updateFormValue,
+    resetFormField,
+  } = useComponentUtilities<ISheRadioGroup<T>>({
+    props,
     identifier: "SheRadioGroup",
   });
   const { eventHandler, valueHandler } = useValueWithEvent<
@@ -74,6 +81,7 @@ export default function SheRadioGroup<T>(
     if (value === _selected) return;
 
     setSelected(value);
+    updateFormValue(value);
     onValueChange?.(value, {
       value,
       model: props,
@@ -84,6 +92,7 @@ export default function SheRadioGroup<T>(
   function onClearHandler(event) {
     if (_selected !== null) {
       setSelected(null);
+      resetFormField(null);
       onValueChange?.(null, {
         value: null,
         model: props,

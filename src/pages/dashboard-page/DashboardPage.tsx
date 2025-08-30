@@ -435,6 +435,7 @@ export function DashboardPage() {
         positions={position}
         badges={badges}
         units={unitsString}
+        statuses={["active", "pending", "vacation", "fired", "standby"]}
         notDisabledSubmit
         onSubmit={onAction}
         onCancel={onAction}

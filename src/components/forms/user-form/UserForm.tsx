@@ -27,6 +27,8 @@ import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.
 import SheCalendar from "@/components/primitive/she-calendar/SheCalendar.tsx";
 import SheTextArea from "@/components/primitive/she-textarea/SheTextarea.tsx";
 import SheInputEditor from "@/components/primitive/she-input-editor/SheInputEditor.tsx";
+import SheRadioGroup from "@/components/primitive/she-radio-group/SheRadioGroup.tsx";
+import { ISheRadioItem } from "@/const/interfaces/primitive-components/ISheRadioItem.ts";
 
 export default function UserForm({
   data,
@@ -34,6 +36,7 @@ export default function UserForm({
   positions,
   badges,
   units,
+  statuses,
   notDisabledSubmit,
   onSubmit,
   onCancel,
@@ -84,6 +87,23 @@ export default function UserForm({
               showClearBtn
               fullWidth
               hideErrorMessage
+            />
+          )}
+        />
+        <SheFormField
+          name="status"
+          render={({ field }) => (
+            <SheRadioGroup
+              label="Status"
+              selected={field.value}
+              items={statuses?.map(
+                (item): ISheRadioItem<string> => ({
+                  text: item,
+                  value: item,
+                }),
+              )}
+              required
+              showClearBtn
             />
           )}
         />
