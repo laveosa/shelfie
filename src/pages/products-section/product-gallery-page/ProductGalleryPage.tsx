@@ -3,33 +3,18 @@ import { useParams } from "react-router-dom";
 
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import {
-  IProductGalleryPageSlice
-} from "@/const/interfaces/store-slices/IProductGalleryPageSlice.ts";
-import {
-  ProductGalleryPageSliceActions as actions
-} from "@/state/slices/ProductGalleryPageSlice.ts";
-import {
-  ProductsPageSliceActions as productsActions
-} from "@/state/slices/ProductsPageSlice";
-import useProductGalleryPageService
-  from "@/pages/products-section/product-gallery-page/useProductGalleryPageService.ts";
+import { IProductGalleryPageSlice } from "@/const/interfaces/store-slices/IProductGalleryPageSlice.ts";
+import { ProductGalleryPageSliceActions as actions } from "@/state/slices/ProductGalleryPageSlice.ts";
+import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice";
+import useProductGalleryPageService from "@/pages/products-section/product-gallery-page/useProductGalleryPageService.ts";
 import { useToast } from "@/hooks/useToast.ts";
-import cs
-  from "@/pages/products-section/product-basic-data-page/ProductBasicDataPage.module.scss";
-import ItemsCard
-  from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
-import ProductMenuCard
-  from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
-import ProductPhotosCard
-  from "@/components/complex/custom-cards/product-photos-card/ProductPhotosCard.tsx";
-import ConnectImageCard
-  from "@/components/complex/custom-cards/connect-image-card/ConnectImageCard.tsx";
-import {
-  IProductsPageSlice
-} from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
-import useProductsPageService
-  from "@/pages/products-section/products-page/useProductsPageService.ts";
+import cs from "@/pages/products-section/product-basic-data-page/ProductBasicDataPage.module.scss";
+import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
+import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
+import ProductPhotosCard from "@/components/complex/custom-cards/product-photos-card/ProductPhotosCard.tsx";
+import ConnectImageCard from "@/components/complex/custom-cards/connect-image-card/ConnectImageCard.tsx";
+import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import { setSelectedGridItem } from "@/utils/helpers/quick-helper.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
@@ -187,6 +172,28 @@ export function ProductGalleryPage() {
         } finally {
           dispatch(productsActions.setIsProductPhotosLoading(false));
         }
+        break;
+      case "activatePhoto":
+        service
+          .setPhotoActivationStateHandler(
+            "Product",
+            Number(productId),
+            payload.photoId,
+            { isActive: !payload.isActive },
+          )
+          .then((res) => {
+            if (!res.error) {
+              dispatch(
+                productsActions.refreshProductPhotos(
+                  productsState.productPhotos.map((photo) =>
+                    photo.photoId === payload.photoId
+                      ? { ...photo, isActive: !payload.isActive }
+                      : photo,
+                  ),
+                ),
+              );
+            }
+          });
         break;
       case "openConnectImageCard":
         dispatch(

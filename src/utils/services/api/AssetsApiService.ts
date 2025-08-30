@@ -47,6 +47,21 @@ export const AssetsApiService = createApi({
         cache: "no-cache",
       }),
     }),
+    setPhotoActivationState: apiConfig.createMutation<
+      any,
+      {
+        contextName?: string;
+        contextId?: number;
+        photoId?: number;
+        model?: any;
+      }
+    >(builder, {
+      query: ({ contextName, contextId, photoId, model }) => ({
+        url: `${ApiUrlEnum.ASSET}/${contextName}/${contextId}/${photoId}/activate`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+    }),
   }),
 });
 

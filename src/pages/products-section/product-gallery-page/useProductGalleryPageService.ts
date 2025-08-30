@@ -23,6 +23,8 @@ export default function useProductGalleryPageService() {
   const [attachProductPhotoToVariant] =
     ProductsApiHooks.useAttachProductPhotoToVariantMutation();
   const [detachVariantPhoto] = ProductsApiHooks.useDetachVariantPhotoMutation();
+  const [setPhotoActivationState] =
+    AssetsApiHooks.useSetPhotoActivationStateMutation();
 
   function getTheProductsForGridHandler(data?: GridRequestModel) {
     dispatch(action.setIsLoading(true));
@@ -65,6 +67,22 @@ export default function useProductGalleryPageService() {
     });
   }
 
+  function setPhotoActivationStateHandler(
+    contextName: string,
+    contextId: number,
+    photoId: number,
+    model: any,
+  ) {
+    return setPhotoActivationState({
+      contextName,
+      contextId,
+      photoId,
+      model,
+    }).then((res: any) => {
+      return res;
+    });
+  }
+
   function attachProductPhotoToVariantHandler(variantId, photoId) {
     return attachProductPhotoToVariant({
       variantId,
@@ -86,6 +104,7 @@ export default function useProductGalleryPageService() {
     putPhotoInNewPositionHandler,
     deletePhotoHandler,
     getProductVariantsHandler,
+    setPhotoActivationStateHandler,
     attachProductPhotoToVariantHandler,
     detachVariantPhotoHandler,
   };
