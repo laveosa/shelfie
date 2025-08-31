@@ -20,39 +20,13 @@ export default function ConnectImageCard({
   onSecondaryButtonClick,
   ...props
 }: IConnectImageCard) {
-  function handleAction(actionType: string, payload?: any) {
-    switch (actionType) {
-      case "switchAction":
-        if (!payload.isActive) {
-          onAction("connectImageToVariant", payload);
-        } else {
-          onAction("detachImageFromVariant", payload);
-        }
-
-        break;
-    }
-  }
-
-  function onGridAction(
-    actionType: string,
-    _rowId?: string,
-    _setLoadingRow?: (rowId: string, loading: boolean) => void,
-    row?: any,
-  ) {
-    switch (actionType) {
-      case "switchAction":
-        handleAction("switchAction", row.original);
-        break;
-    }
-  }
-
   return (
     <SheProductCard
       loading={isLoading}
       title="Connect image to product variants"
       showCloseButton
       className={cs.connectImageCard}
-      onSecondaryButtonClick={onSecondaryButtonClick}
+      onSecondaryButtonClick={() => onAction("closeConnectImageCard")}
       {...props}
     >
       <div className={cs.connectImageCardContent}>
@@ -61,7 +35,7 @@ export default function ConnectImageCard({
             isLoading={isGridLoading}
             showHeader={false}
             columns={
-              ConnectImageGridColumns(onGridAction) as ColumnDef<DataWithId>[]
+              ConnectImageGridColumns(onAction) as ColumnDef<DataWithId>[]
             }
             data={variants}
             skeletonQuantity={productCounter?.variants}

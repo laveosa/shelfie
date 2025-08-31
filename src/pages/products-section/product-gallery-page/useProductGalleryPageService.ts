@@ -1,4 +1,4 @@
-import { useAppDispatch } from "@/utils/hooks/redux.ts";
+import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";
@@ -8,9 +8,33 @@ import {
   ProductGalleryPageSliceActions as actions,
   ProductGalleryPageSliceActions as action,
 } from "@/state/slices/ProductGalleryPageSlice.ts";
+import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
+import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
+import { useToast } from "@/hooks/useToast.ts";
+import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
+import useDialogService from "@/utils/services/dialog/DialogService.ts";
+import { useCardActions } from "@/utils/hooks/useCardActions.ts";
+import { ImageModel } from "@/const/models/ImageModel.ts";
+import { setSelectedGridItem } from "@/utils/helpers/quick-helper.ts";
+import { IProductGalleryPageSlice } from "@/const/interfaces/store-slices/IProductGalleryPageSlice.ts";
 
 export default function useProductGalleryPageService() {
   const dispatch = useAppDispatch();
+  const state = useAppSelector<IProductGalleryPageSlice>(
+    StoreSliceEnum.PRODUCT_GALLERY,
+  );
+  const productsService = useProductsPageService();
+  const productsState = useAppSelector<IProductsPageSlice>(
+    StoreSliceEnum.PRODUCTS,
+  );
+  const { openConfirmationDialog } = useDialogService();
+  const { handleCardAction } = useCardActions({
+    selectActiveCards: (state) =>
+      state[StoreSliceEnum.PRODUCT_GALLERY].activeCards,
+    refreshAction: actions.refreshActiveCards,
+  });
+  const { addToast } = useToast();
 
   const [getTheProductsForGrid] =
     ProductsApiHooks.useGetTheProductsForGridMutation();
@@ -38,26 +62,97 @@ export default function useProductGalleryPageService() {
     });
   }
 
-  function uploadPhotoHandler(model: UploadPhotoModel) {
+  function uploadPhotoHandler(
+    model: UploadPhotoModel,
+    productId: string | number,
+  ) {
+    dispatch(actions.setIsImageUploaderLoading(true));
     return uploadPhoto(model).then((res: any) => {
+      if (res.error) {
+        addToast({
+          text: res.error.data?.detail || "Upload failed",
+          type: "error",
+        });
+        return res;
+      }
+      if (res.data.photoId) {
+        dispatch(actions.setIsImageUploaderLoading(false));
+        productsService
+          .getProductPhotosHandler(Number(productId))
+          .then((res) => {
+            dispatch(productsActions.refreshProductPhotos(res));
+          });
+        productsService.getCountersForProductsHandler(productId);
+        addToast({
+          text: "Photos added successfully",
+          type: "success",
+        });
+      }
+
       return res;
     });
   }
 
-  function putPhotoInNewPositionHandler(productId, photoId, index) {
+  function putPhotoInNewPositionHandler(productId, photoId, index, model) {
     return putPhotoInNewPosition({
       productId,
       photoId,
       index,
-    }).then((res: any) => {
-      return res.data;
+    }).then(() => {
+      if (model.newIndex === 0 || model.oldIndex === 0) {
+        productsService.getTheProductsForGridHandler(
+          productsState.gridRequestModel,
+          true,
+        );
+      }
     });
   }
 
-  function deletePhotoHandler(photoId) {
-    return deletePhoto(photoId).then((res: any) => {
-      return res;
+  async function deletePhotoHandler(model, productId) {
+    const confirmed = await openConfirmationDialog({
+      headerTitle: "Deleting product photo",
+      text: "You are about to delete product photo.",
+      primaryButtonValue: "Delete",
+      secondaryButtonValue: "Cancel",
     });
+
+    if (!confirmed) return;
+
+    dispatch(productsActions.setIsProductPhotosLoading(true));
+    const res: any = await deletePhoto(model.photoId);
+
+    if (!res.error) {
+      const [productPhotos, counters, photos] = await Promise.all([
+        productsService.getProductPhotosHandler(Number(productId)),
+        productsService.getCountersForProductsHandler(productId),
+        model.id === 1
+          ? productsService.getTheProductsForGridHandler(
+              productsState.gridRequestModel,
+              true,
+            )
+          : Promise.resolve({ items: [] }),
+      ]);
+
+      queueMicrotask(() => {
+        dispatch(productsActions.refreshProductPhotos(productPhotos));
+        dispatch(productsActions.refreshProductCounter(counters));
+
+        if (model.id === 1) {
+          dispatch(productsActions.refreshProducts(photos.items));
+        }
+      });
+
+      addToast({
+        text: "Photo deleted successfully",
+        type: "success",
+      });
+    } else {
+      addToast({
+        text: "Photo not deleted",
+        description: res.error.message,
+        type: "error",
+      });
+    }
   }
 
   function getProductVariantsHandler(id: any) {
@@ -70,31 +165,94 @@ export default function useProductGalleryPageService() {
   function setPhotoActivationStateHandler(
     contextName: string,
     contextId: number,
-    photoId: number,
     model: any,
+    imageModel: ImageModel,
   ) {
     return setPhotoActivationState({
       contextName,
       contextId,
-      photoId,
+      photoId: imageModel.photoId,
       model,
-    }).then((res: any) => {
-      return res;
+    }).then((res) => {
+      if (!res.error) {
+        dispatch(
+          productsActions.refreshProductPhotos(
+            productsState.productPhotos.map((photo) =>
+              photo.photoId === imageModel.photoId
+                ? { ...photo, isActive: !imageModel.isActive }
+                : photo,
+            ),
+          ),
+        );
+      }
     });
   }
 
-  function attachProductPhotoToVariantHandler(variantId, photoId) {
+  function openConnectImageCard(model) {
+    dispatch(
+      productsActions.refreshProductPhotos(
+        setSelectedGridItem(
+          model.photoId,
+          productsState.productPhotos,
+          "photoId",
+        ),
+      ),
+    );
+    dispatch(actions.refreshSelectedPhoto(model));
+    dispatch(
+      actions.refreshProductVariants(
+        state.productVariants.map((variant) => {
+          const isInSelectedPhoto = model.variants?.some(
+            (photoVariant) => photoVariant.variantId === variant.variantId,
+          );
+
+          return {
+            ...variant,
+            isActive: isInSelectedPhoto,
+          };
+        }),
+      ),
+    );
+    handleCardAction("connectImageCard", true);
+  }
+
+  function attachImageToVariantHandler(model) {
     return attachProductPhotoToVariant({
-      variantId,
-      photoId,
-    }).then((res: any) => {
-      return res.data;
+      variantId: model.row.original.variantId,
+      photoId: state.selectedPhoto.photoId,
+    }).then((res) => {
+      if (!res.error) {
+        const updatedVariants = state.productVariants.map((variant) => {
+          if (variant.variantId === model.row.original.variantId) {
+            return {
+              ...variant,
+              isActive: true,
+            };
+          }
+          return variant;
+        });
+        dispatch(actions.refreshProductVariants(updatedVariants));
+      }
     });
   }
 
-  function detachVariantPhotoHandler(id, photoId) {
-    return detachVariantPhoto({ id, photoId }).then((res: any) => {
-      return res;
+  function detachImageFromVariantHandler(model) {
+    return detachVariantPhoto({
+      id: model.row.original.variantId,
+      photoId: state.selectedPhoto.photoId,
+    }).then((res: any) => {
+      if (!res.error) {
+        const updatedVariants = state.productVariants.map((variant) => {
+          if (variant.variantId === model.row.original.variantId) {
+            return {
+              ...variant,
+              isActive: false,
+            };
+          }
+          return variant;
+        });
+        dispatch(actions.refreshProductVariants(updatedVariants));
+      }
     });
   }
 
@@ -103,9 +261,10 @@ export default function useProductGalleryPageService() {
     uploadPhotoHandler,
     putPhotoInNewPositionHandler,
     deletePhotoHandler,
+    openConnectImageCard,
+    attachImageToVariantHandler,
+    detachImageFromVariantHandler,
     getProductVariantsHandler,
     setPhotoActivationStateHandler,
-    attachProductPhotoToVariantHandler,
-    detachVariantPhotoHandler,
   };
 }
