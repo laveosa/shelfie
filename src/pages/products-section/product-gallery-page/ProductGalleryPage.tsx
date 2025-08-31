@@ -74,12 +74,11 @@ export function ProductGalleryPage() {
     service.getProductVariantsHandler(Number(productId));
   }, [productId]);
 
-  function itemCardHandler(item) {
-    productsService.itemCardHandler(item);
-  }
-
   async function onAction(actionType: string, payload: any) {
     switch (actionType) {
+      case "itemCardClick":
+        productsService.itemCardHandler(payload);
+        break;
       case "uploadPhoto":
         service.uploadPhotoHandler(payload, productId);
         break;
@@ -143,7 +142,7 @@ export function ProductGalleryPage() {
             ? productsState.products?.length
             : productsState.variants?.length
         }
-        onAction={itemCardHandler}
+        onAction={productsService.itemCardHandler}
       />
       <ProductMenuCard
         isLoading={productsState.isProductMenuCardLoading}
