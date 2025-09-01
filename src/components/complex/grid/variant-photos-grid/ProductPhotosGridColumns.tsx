@@ -87,7 +87,7 @@ export const ProductPhotosGridColumns = (
           disabled={meta?.isRowLoading(row.id)}
           checked={row.getValue("isActive")}
           onCheckedChange={() =>
-            onAction("active", row.id, meta?.setLoadingRow)
+            onAction("activate", row.id, meta?.setLoadingRow, row)
           }
         />
       );

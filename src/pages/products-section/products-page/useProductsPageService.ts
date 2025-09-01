@@ -136,6 +136,7 @@ export default function useProductsPageService() {
   const [deleteVariant] = ProductsApiHooks.useDeleteVariantMutation();
   const [deleteSupplier] = SuppliersApiHooks.useDeleteSupplierMutation();
   const [restoreSupplier] = SuppliersApiHooks.useRestoreSupplierMutation();
+  const [deletePurchase] = PurchasesApiHooks.useDeletePurchaseMutation();
 
   //-------------------------------------------------API
 
@@ -659,6 +660,12 @@ export default function useProductsPageService() {
     });
   }
 
+  function deletePurchaseHandler(purchaseId) {
+    return deletePurchase(purchaseId).then((res: any) => {
+      return res;
+    });
+  }
+
   //----------------------------------------------------LOGIC
 
   function itemsCardItemsConvertor(
@@ -790,5 +797,6 @@ export default function useProductsPageService() {
     deleteVariantHandler,
     deleteSupplierHandler,
     restoreSupplierHandler,
+    deletePurchaseHandler,
   };
 }

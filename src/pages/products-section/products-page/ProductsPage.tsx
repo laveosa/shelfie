@@ -167,7 +167,33 @@ export function ProductsPage() {
         }
         break;
       case "purchases":
-        console.log("DELETE", data);
+        const confirmedDeletePurchase = await openConfirmationDialog({
+          headerTitle: "Delete Purchase",
+          text: `You are about to delete purchase "${data.row.original.purchaseId}".`,
+          primaryButtonValue: "Delete",
+          secondaryButtonValue: "Cancel",
+        });
+
+        if (!confirmedDeletePurchase) {
+        } else {
+          data.table.options.meta?.hideRow(data.row.original.id);
+          await service
+            .deletePurchaseHandler(data.row.original.purchaseId)
+            .then((res) => {
+              if (!res.error) {
+                addToast({
+                  text: "Purchase deleted successfully",
+                  type: "success",
+                });
+              } else {
+                data.table.options.meta?.unhideRow(data.row.original.id);
+                addToast({
+                  text: res.error.data.detail,
+                  type: "error",
+                });
+              }
+            });
+        }
         break;
     }
   }

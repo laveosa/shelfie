@@ -23,6 +23,7 @@ export default function useSupplierPageService() {
   const [updateSupplier] = SuppliersApiHooks.useUpdateSupplierMutation();
   const [changePositionOfSupplierPhoto] =
     SuppliersApiHooks.useChangePositionOfSupplierPhotoMutation();
+  const [deletePurchase] = PurchasesApiHooks.useDeletePurchaseMutation();
 
   function createPurchaseForSupplierHandler(model) {
     return createPurchaseForSupplier(model).then((res: any) => {
@@ -84,6 +85,12 @@ export default function useSupplierPageService() {
     });
   }
 
+  function deletePurchaseHandler(purchaseId) {
+    return deletePurchase(purchaseId).then((res: any) => {
+      return res;
+    });
+  }
+
   return {
     createPurchaseForSupplierHandler,
     updatePurchaseForSupplierHandler,
@@ -93,5 +100,6 @@ export default function useSupplierPageService() {
     createSupplierHandler,
     updateSupplierHandler,
     changePositionOfSupplierPhotoHandler,
+    deletePurchaseHandler,
   };
 }

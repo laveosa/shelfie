@@ -6,14 +6,16 @@ import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 export const ConnectImageGridColumns = (
   onAction: (
     actionType: string,
-    rowId?: string,
-    setLoadingRow?: (rowId: string, loading: boolean) => void,
-    row?: Row<any>,
+    payload: {
+      rowId?: string;
+      setLoadingRow?: (rowId: string, loading: boolean) => void;
+      row?: Row<any>;
+    },
   ) => void,
 ): ColumnDef<any>[] => [
   {
-    accessorKey: "isConnected",
-    header: "Active",
+    accessorKey: "isActive",
+    header: "Status",
     size: 60,
     maxSize: 60,
     cell: ({ row, table }) => {
@@ -25,9 +27,13 @@ export const ConnectImageGridColumns = (
       return (
         <Switch
           disabled={meta?.isRowLoading(row.id)}
-          checked={row.getValue("isConnected")}
+          checked={row.getValue("isActive")}
           onCheckedChange={() =>
-            onAction("switchAction", row.id, meta?.setLoadingRow, row)
+            onAction("imageActions", {
+              rowId: row.id,
+              setLoadingRow: meta?.setLoadingRow,
+              row,
+            })
           }
         />
       );
@@ -36,12 +42,14 @@ export const ConnectImageGridColumns = (
   {
     accessorKey: "variantName",
     header: "Variant",
+    size: 80,
+    maxSize: 80,
     cell: ({ row }) => {
       return (
         <SheTooltip
           delayDuration={200}
           text={row.original.variantName}
-          className="max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap"
+          className="max-w-[100%] overflow-hidden text-ellipsis whitespace-nowrap"
         >
           <span className="she-text">{row.original.variantName}</span>
         </SheTooltip>
@@ -51,6 +59,8 @@ export const ConnectImageGridColumns = (
   {
     accessorKey: "traitOptions",
     header: "Traits",
+    size: 60,
+    maxSize: 60,
     cell: ({ row }) => {
       const colors = row.original.traitOptions
         .filter((option) => option.traitTypeId === 2)
@@ -93,9 +103,6 @@ export const ConnectImageGridColumns = (
                   {size}
                 </span>
               </SheTooltip>
-              // <span key={index} style={{ marginRight: "5px" }}>
-              //   {size}
-              // </span>
             ))}
           </div>
         </div>

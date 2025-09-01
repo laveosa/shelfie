@@ -4,6 +4,7 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IProductGalleryPageSlice } from "@/const/interfaces/store-slices/IProductGalleryPageSlice.ts";
 import { ProductCountersModel } from "@/const/models/CounterModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
+import { VariantModel } from "@/const/models/VariantModel.ts";
 
 const initialState: IProductGalleryPageSlice = {
   isLoading: false,
@@ -101,7 +102,7 @@ function refreshProductPhotos(
 
 function refreshProductVariants(
   state: IProductGalleryPageSlice,
-  action: PayloadAction<any[]>,
+  action: PayloadAction<VariantModel[]>,
 ) {
   state.productVariants = action?.payload || state.productVariants;
 }

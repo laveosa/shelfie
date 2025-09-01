@@ -456,6 +456,34 @@ export function SupplierPage() {
             }
           });
         break;
+      case "deletePurchase":
+        const confirmedDeletePurchase = await openConfirmationDialog({
+          headerTitle: "Delete Purchase",
+          text: `You are about to delete purchase "${payload.purchaseId}".`,
+          primaryButtonValue: "Delete",
+          secondaryButtonValue: "Cancel",
+        });
+
+        if (!confirmedDeletePurchase) {
+        } else {
+          await service
+            .deletePurchaseHandler(payload.purchaseId)
+            .then((res) => {
+              if (!res.error) {
+                navigate(NavUrlEnum.PRODUCTS);
+                addToast({
+                  text: "Purchase deleted successfully",
+                  type: "success",
+                });
+              } else {
+                addToast({
+                  text: res.error.data.detail,
+                  type: "error",
+                });
+              }
+            });
+        }
+        break;
       case "closeSupplierCard":
         navigate(NavUrlEnum.PRODUCTS);
         dispatch(actions.refreshActiveCards([]));

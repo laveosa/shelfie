@@ -41,6 +41,9 @@ export default function ProductPhotosCard({
         const { newIndex, activeItem, oldIndex } = payload;
         onAction("changePhotoPosition", { newIndex, activeItem, oldIndex });
         break;
+      case "activate":
+        onAction("activatePhoto", payload);
+        break;
     }
   }
 
@@ -56,6 +59,9 @@ export default function ProductPhotosCard({
         break;
       case "connect":
         handleAction("connect", row.original);
+        break;
+      case "activate":
+        handleAction("activate", row.original);
         break;
     }
   }
@@ -91,7 +97,6 @@ export default function ProductPhotosCard({
                 showHeader={false}
                 columns={columns}
                 data={data}
-                gridModel={data}
                 skeletonQuantity={productCounter?.gallery}
                 cellPadding="5px 10px"
                 customMessage="PRODUCT HAS NO PHOTO"
