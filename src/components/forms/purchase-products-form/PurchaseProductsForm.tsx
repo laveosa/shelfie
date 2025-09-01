@@ -37,7 +37,7 @@ export default function PurchaseProductsForm<T>({
   onCancel,
 }: IPurchaseProductsForm<T>) {
   const form = useAppForm<any>({
-    mode: "onSubmit",
+    mode: "onChange",
     resolver: zodResolver(PurchaseProductsFormScheme),
     defaultValues: data || DefaultPurchaseProductsForm,
   });
@@ -106,6 +106,10 @@ export default function PurchaseProductsForm<T>({
                 minWidth="100px"
                 maxWidth="100px"
                 placeholder="Netto price"
+                onChange={(value) => {
+                  field.onChange(value);
+                  void form.trigger("nettoPrice");
+                }}
               />
             </SheFormItem>
           )}
@@ -183,6 +187,10 @@ export default function PurchaseProductsForm<T>({
                 minWidth="80px"
                 maxWidth="80px"
                 placeholder="Quantity"
+                onChange={(value) => {
+                  field.onChange(value);
+                  void form.trigger("unitsAmount");
+                }}
               />
             </SheFormItem>
           )}

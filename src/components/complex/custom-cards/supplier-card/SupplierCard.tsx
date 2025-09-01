@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
+  CalendarRange,
   CogIcon,
   ImageIcon,
   Plus,
@@ -162,8 +163,9 @@ export default function SupplierCard({
           <Separator />
           <span className="she-title">Purchase date</span>
           <SheDatePicker
-            fullWidth
             label="Set date when purchase took place"
+            icon={CalendarRange}
+            fullWidth
             date={selectedPurchase?.date}
             onSelectDate={(date) => setSelectedDate(date)}
           />
@@ -181,7 +183,10 @@ export default function SupplierCard({
               onClick={() => onAction("closeSupplierCard")}
             ></SheButton>
             <SheButton
-              value={"Save"}
+              value={!selectedPurchase?.purchaseId ? "Create Purchase" : "Save"}
+              icon={!selectedPurchase?.purchaseId && Plus}
+              txtColor={!selectedPurchase?.purchaseId && "#fff"}
+              bgColor={!selectedPurchase?.purchaseId && "#007AFF"}
               disabled={isButtonDisabled}
               onClick={() =>
                 purchaseId
