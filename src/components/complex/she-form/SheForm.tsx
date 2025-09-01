@@ -23,7 +23,7 @@ import {
   ISheFormFooter,
   SheFormFooterDefaultModel,
 } from "@/const/interfaces/forms/ISheFormFooter.ts";
-import {SheFormContextProvider} from "@/state/providers/she-form-context-provider.tsx";
+import { SheFormContextProvider } from "@/state/providers/she-form-context-provider.tsx";
 
 export default function SheForm<T>(props: ISheForm<T>): JSX.Element {
   // ==================================================================== PROPS
@@ -42,7 +42,6 @@ export default function SheForm<T>(props: ISheForm<T>): JSX.Element {
     maxWidth,
     fullWidth,
     onSubmit,
-    onEnter,
     onError,
     onCancel,
   } = props;

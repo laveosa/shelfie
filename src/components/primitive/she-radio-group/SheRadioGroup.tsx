@@ -17,7 +17,7 @@ import {
 } from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
 import useValueWithEvent from "@/utils/hooks/useValueWithEvent.ts";
 
-export default function SheRadioGroup<T>(
+export default function SheRadioGroup<T = any>(
   props: ISheRadioGroup<T>,
 ): JSX.Element {
   // ==================================================================== PROPS

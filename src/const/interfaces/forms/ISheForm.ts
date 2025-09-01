@@ -32,7 +32,6 @@ export interface ISheForm<T> extends ISheFormHeader, ISheFormFooter {
   maxWidth?: string;
   fullWidth?: boolean;
   onSubmit?(value: T): void;
-  onEnter?(value: T): void;
   onError?(value: any): void;
   onCancel?(value: T): void;
 }
@@ -55,7 +54,6 @@ export const SheFormDefaultModel: ISheForm<any> = {
   maxWidth: undefined,
   fullWidth: undefined,
   onSubmit: undefined,
-  onEnter: undefined,
   onError: undefined,
   onCancel: undefined,
 };

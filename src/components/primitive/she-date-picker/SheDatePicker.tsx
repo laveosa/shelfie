@@ -22,12 +22,13 @@ import {
   ISheCalendar,
   SheCalendarDefaultModel,
 } from "@/const/interfaces/primitive-components/ISheCalendar.ts";
+import { CalendarModeEnum } from "@/const/enums/CalendarModeEnum.ts";
 
 export default function SheDatePicker(props: ISheDatePicker): JSX.Element {
   // ==================================================================== PROPS
   const {
     date,
-    mode = "single",
+    mode = CalendarModeEnum.SINGLE,
     placeholder,
     placeholderTransKey,
     disabled,
@@ -81,7 +82,10 @@ export default function SheDatePicker(props: ISheDatePicker): JSX.Element {
     setDate(value);
     updateFormValue(value);
 
-    if (closeOnDateSelect && (mode === "single" || mode === "range"))
+    if (
+      closeOnDateSelect &&
+      (mode === CalendarModeEnum.SINGLE || mode === CalendarModeEnum.RANGE)
+    )
       setOpen(false);
 
     setIsHighlighted(!_.isEqual(_sourceValue.current, value));

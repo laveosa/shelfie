@@ -1,34 +1,34 @@
 import { IDateRange } from "@/const/interfaces/IDateRange.ts";
 
 export interface UserModel {
-  id?: number;
-  image?: string;
-  firstName?: string;
-  lastName?: string;
-  nikName?: string;
-  age?: number;
-  email?: string;
-  phone?: string;
-  address?: string;
+  id?: string;
+  image?: string; // file uploader
+  firstName?: string; // input
+  lastName?: string; // input
+  nickName?: string; // input editor
+  age?: number; // input
+  email?: string; // input
+  phone?: string; // input
+  address?: string; // input
   status?:
     | "active"
     | "pending"
     | "vacation"
     | "fired"
     | "unemployed"
-    | "employed";
-  dateBirth?: string | Date;
-  gender?: string;
-  nationality?: string;
-  maritalStatus?: "married" | "single" | "divorced" | "inRelationship";
-  position?: string;
-  comment?: string;
-  isAvailable?: boolean;
-  isRemote?: boolean;
-  communicationPreferences?: string[];
-  interests?: number[];
-  workingHours?: IDateRange;
-  workingDays?: (Date | string)[];
+    | "employed"; // radio group
+  dateBirth?: string | Date; // datepicker
+  gender?: string; // select
+  nationality?: string; // select
+  maritalStatus?: "married" | "single" | "divorced" | "inRelationship"; // radio group
+  position?: string; // select
+  comment?: string; // textarea
+  isAvailable?: boolean; // toggle
+  isRemote?: boolean; // toggle
+  communicationPreferences?: string[]; // checkbox
+  interests?: number[]; // multiselect display with badge list
+  contractPeriod?: IDateRange; // calendar
+  leaveDays?: (Date | string)[]; // calendar
 }
 
 export const UserModelDefault: UserModel = {
@@ -36,7 +36,7 @@ export const UserModelDefault: UserModel = {
   image: undefined,
   firstName: undefined,
   lastName: undefined,
-  nikName: undefined,
+  nickName: undefined,
   age: undefined,
   email: undefined,
   phone: undefined,
@@ -52,4 +52,6 @@ export const UserModelDefault: UserModel = {
   isRemote: undefined,
   communicationPreferences: undefined,
   interests: undefined,
+  contractPeriod: undefined,
+  leaveDays: undefined,
 };

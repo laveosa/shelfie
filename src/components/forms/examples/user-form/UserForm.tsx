@@ -29,14 +29,215 @@ import SheTextArea from "@/components/primitive/she-textarea/SheTextarea.tsx";
 import SheInputEditor from "@/components/primitive/she-input-editor/SheInputEditor.tsx";
 import SheRadioGroup from "@/components/primitive/she-radio-group/SheRadioGroup.tsx";
 import { ISheRadioItem } from "@/const/interfaces/primitive-components/ISheRadioItem.ts";
+import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
+import { ISheToggle } from "@/const/interfaces/primitive-components/ISheToggle.ts";
+
+const statusList: ISheRadioItem<string>[] = [
+  {
+    text: "Active",
+    value: "active",
+  },
+  {
+    text: "Pending",
+    value: "pending",
+  },
+  {
+    text: "Vacation",
+    value: "vacation",
+  },
+  {
+    text: "Fired",
+    value: "fired",
+  },
+  {
+    text: "Unemployed",
+    value: "unemployed",
+  },
+  {
+    text: "Employed",
+    value: "employed",
+  },
+];
+
+const gendersList: ISheSelectItem<string>[] = [
+  {
+    text: "Male",
+    value: "male",
+  },
+  {
+    text: "Female",
+    value: "female",
+  },
+  {
+    text: "Unicorn",
+    value: "unicorn",
+  },
+  {
+    text: "Banana",
+    value: "banana",
+  },
+];
+
+const nationalityList: ISheSelectItem<string>[] = [
+  {
+    icon: "https://www.countryflags.com/wp-content/uploads/ukraine-flag-png-large.png",
+    text: "Ukraine",
+    value: "UA",
+  },
+  {
+    icon: "https://www.countryflags.com/wp-content/uploads/united-states-of-america-flag-png-large.png",
+    text: "United States of America",
+    value: "US",
+  },
+  {
+    icon: "https://www.countryflags.com/wp-content/uploads/united-kingdom-flag-png-large.png",
+    text: "United Kingdom",
+    value: "GB",
+  },
+  {
+    icon: "https://www.countryflags.com/wp-content/uploads/turkey-flag-png-large.png",
+    text: "Turkey",
+    value: "TR",
+  },
+  {
+    icon: "https://www.countryflags.com/wp-content/uploads/switzerland-flag-png-large.png",
+    text: "Switzerland",
+    value: "CH",
+  },
+  {
+    icon: "https://www.countryflags.com/wp-content/uploads/sweden-flag-png-large.png",
+    text: "Sweden",
+    value: "SE",
+  },
+  {
+    icon: "https://www.countryflags.com/wp-content/uploads/spain-flag-png-large.png",
+    text: "Spain",
+    value: "ES",
+  },
+  {
+    icon: "https://www.countryflags.com/wp-content/uploads/romania-flag-png-large.png",
+    text: "Romania",
+    value: "RO",
+  },
+  {
+    icon: "https://www.countryflags.com/wp-content/uploads/monaco-flag-png-large.png",
+    text: "Poland",
+    value: "PL",
+  },
+  {
+    icon: "https://www.countryflags.com/wp-content/uploads/norway-flag-png-large.png",
+    text: "Norway",
+    value: "NO",
+  },
+  {
+    icon: "https://www.countryflags.com/wp-content/uploads/portugal-flag-400.png",
+    text: "Portugal",
+    value: "PT",
+  },
+  {
+    icon: "https://www.countryflags.com/wp-content/uploads/brazil-flag-png-large.png",
+    text: "Brazil",
+    value: "BR",
+  },
+];
+
+const maritalStatusList: ISheRadioItem<string>[] = [
+  {
+    text: "Married",
+    value: "married",
+  },
+  {
+    text: "Single",
+    value: "single",
+  },
+  {
+    text: "Divorced",
+    value: "divorced",
+  },
+  {
+    text: "In Relationship",
+    value: "inRelationship",
+  },
+];
+
+const positionList: ISheSelectItem<string>[] = [
+  {
+    text: "Frontend",
+    value: "frontend",
+  },
+  {
+    text: "Backend",
+    value: "backend",
+  },
+  {
+    text: "HR",
+    value: "HR",
+  },
+  {
+    text: "SEO",
+    value: "SEO",
+  },
+  {
+    text: "Designer",
+    value: "designer",
+  },
+];
+
+const contactVariety: string[] = [
+  "phone",
+  "email",
+  "sms",
+  "skype LOL",
+  "discord",
+  "ms teams",
+  "slack",
+];
+
+const interestsList: ISheSelectItem<number>[] = [
+  {
+    icon: "https://www.svgrepo.com/show/474334/coding.svg",
+    text: "Programing",
+    value: 1,
+  },
+  {
+    icon: "https://www.svgrepo.com/show/84264/recipes.svg",
+    text: "Cooking",
+    value: 2,
+  },
+  {
+    icon: "https://www.svgrepo.com/show/533551/car.svg",
+    text: "Driving car",
+    value: 3,
+  },
+  {
+    icon: "https://www.svgrepo.com/show/521766/music-note.svg",
+    text: "Music",
+    value: 4,
+  },
+  {
+    icon: "https://www.svgrepo.com/show/164256/television.svg",
+    text: "TV",
+    value: 5,
+  },
+  {
+    icon: "https://www.svgrepo.com/show/281945/painting-art.svg",
+    text: "Painting",
+    value: 6,
+  },
+  {
+    icon: null,
+    text: "Hiking",
+    value: 7,
+  },
+  {
+    icon: "",
+    text: "Sport",
+    value: 8,
+  },
+];
 
 export default function UserForm({
   data,
-  genders,
-  positions,
-  badges,
-  units,
-  statuses,
   notDisabledSubmit,
   onSubmit,
   onCancel,
@@ -54,6 +255,23 @@ export default function UserForm({
   // ================================================================ EVENTS
 
   // ================================================================ PRIVATE
+
+  function _getStateDescription(value: string) {
+    switch (value) {
+      case "active":
+        return "We will be contacting with you ASAP.";
+      case "pending":
+        return "Please let us know when you will be open to new and promising collaborations.";
+      case "vacation":
+        return "Have a nice vacation, we are looking forward to seeing you back.";
+      case "fired":
+        return "Well... it is what it is :)";
+      case "unemployed":
+        return "We can change that!";
+      case "employed":
+        return "We have decent offers which might be interesting for you, please contact with our managers at any time, it will be worth it for you.";
+    }
+  }
 
   // ================================================================ RENDER
 
@@ -77,7 +295,110 @@ export default function UserForm({
         onError={onErrorHandler}
         onCancel={onCancel}
       >
-        {/*<SheFormField
+        <SheFormField
+          name="firstName"
+          render={({ field }) => (
+            <SheInput
+              label="First Name:"
+              value={field.value}
+              required
+              fullWidth
+              showClearBtn
+            />
+          )}
+        />
+        <SheFormField
+          name="lastName"
+          render={({ field }) => (
+            <SheInput
+              label="Last Name:"
+              value={field.value}
+              required
+              fullWidth
+              showClearBtn
+            />
+          )}
+        />
+        <SheFormField
+          name="nickName"
+          render={({ field }) => (
+            <SheInput
+              label="Nick Name:"
+              value={field.value}
+              required
+              fullWidth
+              showClearBtn
+            />
+          )}
+        />
+        <SheFormField
+          name="age"
+          render={({ field }) => (
+            <SheInput
+              label="Age:"
+              value={field.value}
+              required
+              fullWidth
+              showClearBtn
+            />
+          )}
+        />
+        <SheFormField
+          name="email"
+          render={({ field }) => (
+            <SheInput
+              label="Email:"
+              value={field.value}
+              required
+              fullWidth
+              showClearBtn
+            />
+          )}
+        />
+        <SheFormField
+          name="phone"
+          render={({ field }) => (
+            <SheInput
+              label="Phone:"
+              value={field.value}
+              required
+              fullWidth
+              showClearBtn
+            />
+          )}
+        />
+        <SheFormField
+          name="address"
+          render={({ field }) => (
+            <SheInput
+              label="Address:"
+              value={field.value}
+              required
+              fullWidth
+              showClearBtn
+            />
+          )}
+        />
+        <SheFormField
+          name="status"
+          render={({ field }) => (
+            <SheRadioGroup
+              label="Status:"
+              items={statusList}
+              selected={field.value}
+              required
+              fullWidth
+              showClearBtn
+            />
+          )}
+        />
+      </SheForm>
+    </div>
+  );
+}
+
+{
+  /*<SheFormField
           name="nikName"
           render={({ field }) => (
             <SheInputEditor
@@ -163,8 +484,10 @@ export default function UserForm({
               fullWidth
             />
           )}
-        />*/}
-        <SheFormField
+        />*/
+}
+{
+  /*<SheFormField
           name="multipleDate"
           render={({ field }) => (
             <SheCalendar
@@ -205,8 +528,10 @@ export default function UserForm({
               showClearBtn
             />
           )}
-        />
-        {/*<SheFormField
+        />*/
+}
+{
+  /*<SheFormField
           name="units"
           render={({ field }) => (
             <SheMultiSelect
@@ -339,8 +664,5 @@ export default function UserForm({
               icon={User}
             />
           )}
-        />*/}
-      </SheForm>
-    </div>
-  );
+        />*/
 }
