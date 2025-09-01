@@ -281,6 +281,12 @@ export const PurchasesApiService = createApi({
         method: "POST",
       }),
     }),
+    deletePurchase: apiConfig.createMutation<void, number>(builder, {
+      query: (purchaseId: number) => ({
+        url: `${ApiUrlEnum.PURCHASES}/${purchaseId}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 

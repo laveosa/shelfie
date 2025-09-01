@@ -207,6 +207,7 @@ export default function MarginConfigurationForm<T>({
                 placeholder="Enter profit..."
                 value={field.value}
                 suffix="%"
+                fullWidth
                 onChange={(val) => field.onChange(val)}
               />
             </SheFormItem>
@@ -229,6 +230,7 @@ export default function MarginConfigurationForm<T>({
                 placeholder="Enter planned discount..."
                 value={field.value}
                 suffix="%"
+                fullWidth
                 onChange={(val) => field.onChange(val)}
               />
             </SheFormItem>

@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
+  CalendarRange,
   CogIcon,
   ImageIcon,
   Plus,
@@ -164,6 +165,7 @@ export default function SupplierCard({
           <Separator />
           <span className="she-title">{t("PurchaseForm.Labels.PurchaseDate")}</span>
           <SheDatePicker
+            icon={CalendarRange}
             fullWidth
             label={t("PurchaseForm.Labels.PurchaseDate")}
             date={selectedPurchase?.date}
@@ -183,7 +185,10 @@ export default function SupplierCard({
               onClick={() => onAction("closeSupplierCard")}
             ></SheButton>
             <SheButton
-              value={t("CommonButtons.Save")}
+              value={!selectedPurchase?.purchaseId ? "Create Purchase" : t("CommonButtons.Save")}
+              icon={!selectedPurchase?.purchaseId && Plus}
+              txtColor={!selectedPurchase?.purchaseId && "#fff"}
+              bgColor={!selectedPurchase?.purchaseId && "#007AFF"}
               disabled={isButtonDisabled}
               onClick={() =>
                 purchaseId
@@ -210,6 +215,7 @@ export default function SupplierCard({
             buttonText={t("CommonButtons.Delete")}
             buttonVariant="outline"
             buttonColor="#EF4343"
+            onClick={() => onAction("deletePurchase", selectedPurchase)}
           />
         )}
       </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
@@ -22,51 +22,6 @@ export default function ConnectImageCard({
   ...props
 }: IConnectImageCard) {
   const { t } = useTranslation();
-  const columns = ConnectImageGridColumns(
-    onGridAction,
-  ) as ColumnDef<DataWithId>[];
-  const [updatedVariants, setUpdatedVariants] = useState([]);
-
-  useEffect(() => {
-    if (!selectedPhoto?.variants || !variants) return;
-
-    const connectedIds = new Set(
-      selectedPhoto.variants.map((v) => v.variantId),
-    );
-
-    const enrichedVariants = variants.map((variant) => ({
-      ...variant,
-      isConnected: connectedIds.has(variant.variantId),
-    }));
-
-    setUpdatedVariants(enrichedVariants);
-  }, [selectedPhoto, variants]);
-
-  function handleAction(actionType: string, payload?: any) {
-    switch (actionType) {
-      case "switchAction":
-        if (!payload.isConnected) {
-          onAction("connectImageToVariant", payload);
-        } else {
-          onAction("detachImageFromVariant", payload);
-        }
-
-        break;
-    }
-  }
-
-  function onGridAction(
-    actionType: string,
-    _rowId?: string,
-    _setLoadingRow?: (rowId: string, loading: boolean) => void,
-    row?: any,
-  ) {
-    switch (actionType) {
-      case "switchAction":
-        handleAction("switchAction", row.original);
-        break;
-    }
-  }
 
   return (
     <SheProductCard
@@ -74,7 +29,7 @@ export default function ConnectImageCard({
       title={t("CardTitles.ConnectImageToProductVariants")}
       showCloseButton
       className={cs.connectImageCard}
-      onSecondaryButtonClick={onSecondaryButtonClick}
+      onSecondaryButtonClick={() => onAction("closeConnectImageCard")}
       {...props}
     >
       <div className={cs.connectImageCardContent}>
@@ -82,8 +37,10 @@ export default function ConnectImageCard({
           <DndGridDataTable
             isLoading={isGridLoading}
             showHeader={false}
-            columns={columns}
-            data={updatedVariants}
+            columns={
+              ConnectImageGridColumns(onAction) as ColumnDef<DataWithId>[]
+            }
+            data={variants}
             skeletonQuantity={productCounter?.variants}
             gridModel={variants as any}
           />

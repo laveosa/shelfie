@@ -87,7 +87,6 @@ export function PurchaseProductsPage() {
   }, [purchaseId]);
 
   useEffect(() => {
-    dispatch(actions.setIsPurchaseProductsCardLoading(true));
     dispatch(actions.setIsPurchasesProductsGridLoading(true));
     Promise.all([
       service.getListOfPurchaseProductsForGridHandler(
@@ -96,18 +95,15 @@ export function PurchaseProductsPage() {
       ),
       service.getPurchaseSummaryHandler(purchaseId),
     ]).then(() => {
-      dispatch(actions.setIsPurchaseProductsCardLoading(false));
       dispatch(actions.setIsPurchasesProductsGridLoading(false));
     });
   }, [state.purchasesProductsGridRequestModel]);
 
   useEffect(() => {
-    dispatch(actions.setIsPurchaseProductsCardLoading(true));
     dispatch(actions.setIsVariantsForPurchaseGridLoading(true));
     productsService
       .getVariantsForGridHandler(state.variantsForPurchaseGridRequestModel)
       .then((res) => {
-        dispatch(actions.setIsPurchaseProductsCardLoading(false));
         dispatch(actions.setIsVariantsForPurchaseGridLoading(false));
         dispatch(actions.refreshVariantsForPurchaseGridModel(res));
         dispatch(actions.refreshVariants(res.items));
@@ -810,7 +806,7 @@ export function PurchaseProductsPage() {
             variantId: payload.row.original.variantId,
           })
           .then((res) => {
-            if (res) {
+            if (!res.error) {
               productsService
                 .getPurchaseProductVariantsHandler(
                   productsState.selectedPurchase.purchaseId,
@@ -820,6 +816,18 @@ export function PurchaseProductsPage() {
                   dispatch(actions.setIsVariantGridLoading(false));
                   dispatch(actions.refreshPurchaseProductVariants(res));
                 });
+              service.getListOfPurchaseProductsForGridHandler(
+                purchaseId,
+                state.purchasesProductsGridRequestModel,
+              );
+              dispatch(
+                actions.refreshPurchaseSummary({
+                  ...state.purchaseSummary,
+                  unitsAmount: res.unitsAmount,
+                  expense: res.expense,
+                  valueAmount: res.valueAmount,
+                }),
+              );
               addToast({
                 text: "Stock action added successfully",
                 type: "success",
@@ -840,7 +848,7 @@ export function PurchaseProductsPage() {
             payload.formData,
           )
           .then((res) => {
-            if (res) {
+            if (!res.error) {
               productsService
                 .getPurchaseProductVariantsHandler(
                   productsState.selectedPurchase.purchaseId,
@@ -850,6 +858,7 @@ export function PurchaseProductsPage() {
                   dispatch(actions.setIsVariantGridLoading(false));
                   dispatch(actions.refreshPurchaseProductVariants(res));
                 });
+              service.getPurchaseSummaryHandler(purchaseId);
               addToast({
                 text: "Stock action updated successfully",
                 type: "success",
@@ -866,7 +875,6 @@ export function PurchaseProductsPage() {
         dispatch(actions.setIsVariantGridLoading(true));
         service.deleteStockActionHandler(payload.stockActionId).then((res) => {
           dispatch(actions.setIsVariantsGridLoading(false));
-          console.log("DELETE", res);
           if (res) {
             productsService
               .getPurchaseProductVariantsHandler(
@@ -877,6 +885,18 @@ export function PurchaseProductsPage() {
                 dispatch(actions.setIsVariantGridLoading(false));
                 dispatch(actions.refreshPurchaseProductVariants(res));
               });
+            service.getListOfPurchaseProductsForGridHandler(
+              purchaseId,
+              state.purchasesProductsGridRequestModel,
+            );
+            dispatch(
+              actions.refreshPurchaseSummary({
+                ...state.purchaseSummary,
+                unitsAmount: res.unitsAmount,
+                expense: res.expense,
+                valueAmount: res.valueAmount,
+              }),
+            );
             addToast({
               text: "Stock action deleted successfully",
               type: "success",
@@ -891,16 +911,22 @@ export function PurchaseProductsPage() {
         break;
       case "deleteStockActionInGrid":
         service.deleteStockActionHandler(payload.stockActionId).then((res) => {
-          if (res) {
-            dispatch(actions.setIsPurchasesProductsGridLoading(true));
-            service
-              .getListOfPurchaseProductsForGridHandler(
-                purchaseId,
-                state.purchasesProductsGridRequestModel,
-              )
-              .then(() => {
-                dispatch(actions.setIsPurchasesProductsGridLoading(false));
-              });
+          if (!res.error) {
+            dispatch(
+              actions.refreshPurchaseProducts(
+                state.purchaseProducts.filter(
+                  (product) => product.stockActionId !== payload.stockActionId,
+                ),
+              ),
+            );
+            dispatch(
+              actions.refreshPurchaseSummary({
+                ...state.purchaseSummary,
+                unitsAmount: res.unitsAmount,
+                expense: res.expense,
+                valueAmount: res.valueAmount,
+              }),
+            );
             addToast({
               text: "Stock action deleted successfully",
               type: "success",
@@ -914,7 +940,6 @@ export function PurchaseProductsPage() {
         });
         break;
       case "manageVariant":
-        console.log(payload);
         keepOnlyCards(["manageProductCard", "variantConfigurationCard"]);
         dispatch(actions.setIsVariantConfigurationCardLoading(true));
         dispatch(actions.setIsVariantOptionsGridLoading(true));
@@ -1259,10 +1284,6 @@ export function PurchaseProductsPage() {
         break;
     }
   }
-
-  useEffect(() => {
-    console.log(state.selectedProduct);
-  }, [state.selectedProduct]);
 
   return (
     <div className={cs.purchaseProductsPage}>

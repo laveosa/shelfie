@@ -5,53 +5,30 @@ import {
   addGridRowColor,
   clearSelectedGridItems,
   formatDate,
-  setSelectedGridItem
+  setSelectedGridItem,
 } from "@/utils/helpers/quick-helper.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { useToast } from "@/hooks/useToast.ts";
-import cs
-  from "@/pages/products-section/manage-variants-page/ManageVariantsPage.module.scss";
-import ProductMenuCard
-  from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
-import useManageVariantsPageService
-  from "@/pages/products-section/manage-variants-page/useManageVariantsPageService.ts";
-import {
-  IManageVariantsPageSlice
-} from "@/const/interfaces/store-slices/IManageVariantsPageSlice.ts";
-import {
-  ManageVariantsPageSliceActions as actions
-} from "@/state/slices/ManageVariantsPageSlice.ts";
-import {
-  ProductsPageSliceActions as productsActions
-} from "@/state/slices/ProductsPageSlice";
-import ManageVariantsCard
-  from "@/components/complex/custom-cards/manage-variants-card/ManageVariantsCard.tsx";
-import ChooseVariantTraitsCard
-  from "@/components/complex/custom-cards/choose-variant-traits-card/ChooseVariantTraitsCard.tsx";
-import ProductTraitConfigurationCard
-  from "@/components/complex/custom-cards/product-trait-configuration-card/ProductTraitConfigurationCard.tsx";
-import VariantConfigurationCard
-  from "@/components/complex/custom-cards/variant-configuration-card/VariantConfigurationCard.tsx";
-import AddStockCard
-  from "@/components/complex/custom-cards/add-stock-card/AddStockCard.tsx";
-import DisposeStockCard
-  from "@/components/complex/custom-cards/dispose-stock-card/DisposeStockCard.tsx";
-import StockHistoryCard
-  from "@/components/complex/custom-cards/stock-history-card/StockHistoryCard.tsx";
-import ManageTraitsCard
-  from "@/components/complex/custom-cards/manage-traits-card/ManageTraitsCard.tsx";
-import AddVariantCard
-  from "@/components/complex/custom-cards/add-variant-card/AddVariantCard.tsx";
-import VariantPhotosCard
-  from "@/components/complex/custom-cards/variant-photos-card/VariantPhotosCard.tsx";
-import useProductsPageService
-  from "@/pages/products-section/products-page/useProductsPageService.ts";
-import {
-  IProductsPageSlice
-} from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
-import ItemsCard
-  from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
+import cs from "@/pages/products-section/manage-variants-page/ManageVariantsPage.module.scss";
+import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
+import useManageVariantsPageService from "@/pages/products-section/manage-variants-page/useManageVariantsPageService.ts";
+import { IManageVariantsPageSlice } from "@/const/interfaces/store-slices/IManageVariantsPageSlice.ts";
+import { ManageVariantsPageSliceActions as actions } from "@/state/slices/ManageVariantsPageSlice.ts";
+import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice";
+import ManageVariantsCard from "@/components/complex/custom-cards/manage-variants-card/ManageVariantsCard.tsx";
+import ChooseVariantTraitsCard from "@/components/complex/custom-cards/choose-variant-traits-card/ChooseVariantTraitsCard.tsx";
+import ProductTraitConfigurationCard from "@/components/complex/custom-cards/product-trait-configuration-card/ProductTraitConfigurationCard.tsx";
+import VariantConfigurationCard from "@/components/complex/custom-cards/variant-configuration-card/VariantConfigurationCard.tsx";
+import AddStockCard from "@/components/complex/custom-cards/add-stock-card/AddStockCard.tsx";
+import DisposeStockCard from "@/components/complex/custom-cards/dispose-stock-card/DisposeStockCard.tsx";
+import StockHistoryCard from "@/components/complex/custom-cards/stock-history-card/StockHistoryCard.tsx";
+import ManageTraitsCard from "@/components/complex/custom-cards/manage-traits-card/ManageTraitsCard.tsx";
+import AddVariantCard from "@/components/complex/custom-cards/add-variant-card/AddVariantCard.tsx";
+import VariantPhotosCard from "@/components/complex/custom-cards/variant-photos-card/VariantPhotosCard.tsx";
+import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
+import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
 import { GridRowsColorsEnum } from "@/const/enums/GridRowsColorsEnum.ts";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
