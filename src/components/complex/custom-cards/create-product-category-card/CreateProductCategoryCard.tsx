@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./CreateProductCategoryCard.module.scss";
@@ -17,6 +18,7 @@ export default function CreateProductCategoryCard({
   category,
   onAction,
 }: ICreateProductCategoryCard) {
+  const { t } = useTranslation();
   const imageUploaderRef = useRef<SheFileUploaderRef>(null);
   const [submissionData, setSubmissionData] = useState<any>({});
 
@@ -44,9 +46,9 @@ export default function CreateProductCategoryCard({
     <div>
       <SheProductCard
         loading={isLoading}
-        title="Create Product Category"
+        title={t("CardTitles.CreateProductCategory")}
         showCloseButton
-        primaryButtonTitle="Add Category"
+        primaryButtonTitle={t("ProductActions.AddCategory")}
         className={cs.createProductCategoryCard}
         onSecondaryButtonClick={() =>
           onAction("closeCreateProductCategoryCard")
@@ -55,9 +57,9 @@ export default function CreateProductCategoryCard({
         <div className={cs.cardContent}>
           <SheInput
             className={cs.productCategoryInput}
-            label="Category Name"
+            label={t("ProductForm.Labels.CategoryName")}
             errorMessage={category?.error}
-            placeholder="enter category name..."
+            placeholder={t("ProductForm.Placeholders.CategoryName")}
             fullWidth
             onDelay={(value) => onAction("checkCategoryName", value)}
           />
@@ -91,7 +93,7 @@ export default function CreateProductCategoryCard({
                       </div>
                       <div className={cs.uploadingItemTextBlock}>
                         <p className="truncate text-sm">
-                          {file.name || `Image ${index + 1}`}
+                          {file.name || `${t("ProductForm.Labels.Image")} ${index + 1}`}
                         </p>
                         <p className="text-xs text-muted-foreground">
                           {((file.size || 0) / (1024 * 1024)).toFixed(2)} MB
@@ -115,7 +117,7 @@ export default function CreateProductCategoryCard({
           )}
           <SheButton
             onClick={() => handleSubmit()}
-            value="Add Category"
+            value={t("ProductActions.AddCategory")}
             disabled={!category?.categoryName || !!category?.error}
           />
         </div>

@@ -1,6 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Plus } from "lucide-react";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import {
   DataWithId,
@@ -21,6 +22,7 @@ export default function SelectDiscountCard({
   discounts,
   onAction,
 }: ISelectDiscountCard) {
+  const { t } = useTranslation();
   const [discount, setDiscount] = React.useState(null);
 
   const discountType = [
@@ -41,19 +43,19 @@ export default function SelectDiscountCard({
     <SheProductCard
       loading={isLoading}
       className={cs.selectDiscountCard}
-      title="Select Discount"
+      title={t("CardTitles.SelectDiscount")}
       showCloseButton
       onSecondaryButtonClick={() => onAction("closeSelectDiscountCard")}
     >
       <div className={cs.selectDiscountCardContent}>
         <span className={`${cs.selectDiscountText} she-text`}>
-          Reuse standard discounts or create one!
+          {t("DiscountForm.Labels.SelectDiscountDescription")}
         </span>
         <div className={cs.createDiscountBlock}>
           <div className={cs.inputBlock}>
             <SheInput
-              label="Discount rate"
-              placeholder="enter discount rate..."
+              label={t("DiscountForm.Labels.DiscountRate")}
+              placeholder={t("DiscountForm.Placeholders.DiscountRate")}
               onDelay={(value: number) =>
                 setDiscount({
                   ...discount,
@@ -62,8 +64,8 @@ export default function SelectDiscountCard({
               }
             />
             <SheSelect
-              label="Type (Currency / %)"
-              placeholder="select discount type..."
+              label={t("DiscountForm.Labels.DiscountType")}
+              placeholder={t("DiscountForm.Placeholders.SelectDiscountType")}
               hideFirstOption
               selected={discount?.discountType}
               items={convertStatusesToSelectItems(discountType)}
@@ -74,7 +76,7 @@ export default function SelectDiscountCard({
           </div>
           <SheButton
             icon={Plus}
-            value={"Create and Apply"}
+            value={t("DiscountActions.CreateAndApply")}
             variant="secondary"
             maxWidth="165px"
             onClick={() => onAction("createDiscount", discount)}
@@ -88,7 +90,7 @@ export default function SelectDiscountCard({
           }
           data={discounts}
           skeletonQuantity={10}
-          customMessage="There are no discounts created yet"
+          customMessage={t("DiscountMessages.NoDiscountsCreated")}
         />
       </div>
     </SheProductCard>

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useNavigate } from "react-router-dom";
 import { merge } from "lodash";
+import { useTranslation } from "react-i18next";
 import {
   BadgeCheck,
   CalendarRange,
@@ -45,6 +46,7 @@ import GridShowItemsFilter from "@/components/complex/grid/grid-show-deleted-fil
 import GridTraitsFilter from "@/components/complex/grid/grid-traits-filter/GridTraitsFilter.tsx";
 
 export function ProductsPage() {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const state = useAppSelector<IProductsPageSlice>(StoreSliceEnum.PRODUCTS);
   const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
@@ -367,14 +369,14 @@ export function ProductsPage() {
   return (
     <div id={cs.ProductsPage}>
       <div className={cs.productsPageHeader}>
-        <div className="she-title">Products</div>
+        <div className="she-title">{t("PageTitles.Products")}</div>
         {state.activeTab === "purchases" ? (
           <div className={cs.headerButtonBlock}>
             <SheButton
               icon={Plus}
               variant="outline"
               onClick={handleReportPurchase}
-              value="Report Purchase"
+              value={t("SupplierActions.ReportPurchase")}
             />
           </div>
         ) : (
@@ -383,7 +385,7 @@ export function ProductsPage() {
               icon={Plus}
               variant="outline"
               onClick={handleAddProduct}
-              value="Add Product"
+              value={t("ProductActions.AddProduct")}
             />
             {/*Commented until future notices*/}
             {/*<SheButton*/}
@@ -407,17 +409,17 @@ export function ProductsPage() {
             <TabsList className={cs.tabItems}>
               <TabsTrigger className={cs.tabItemTrigger} value="products">
                 <div className={cs.tabBlock}>
-                  <Shirt size="16" /> Products
+                  <Shirt size="16" /> {t("TabContent.Products")}
                 </div>
               </TabsTrigger>
               <TabsTrigger className={cs.tabItemTrigger} value="variants">
                 <div className={cs.tabBlock}>
-                  <Layers2 size="16" /> Variants
+                  <Layers2 size="16" /> {t("TabContent.Variants")}
                 </div>
               </TabsTrigger>
               <TabsTrigger className={cs.tabItemTrigger} value="purchases">
                 <div className={cs.tabBlock}>
-                  <Receipt size="16" /> Purchases
+                  <Receipt size="16" /> {t("TabContent.Purchases")}
                 </div>
               </TabsTrigger>
             </TabsList>

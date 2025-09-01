@@ -1,5 +1,6 @@
 import { Plus, Trash2 } from "lucide-react";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import cs from "./MarginConfigurionCard.module.scss";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
@@ -12,11 +13,13 @@ export default function MarginConfigurationCard({
   margin,
   onAction,
 }: IMarginConfigurationCard) {
+  const { t } = useTranslation();
+  
   return (
     <SheProductCard
       loading={isLoading}
       className={cs.marginConfigurationCard}
-      title={margin ? "Manage Margin" : "Create Margin"}
+      title={margin ? t("CardTitles.ManageMargin") : t("CardTitles.CreateMargin")}
       showCloseButton
       onSecondaryButtonClick={() => onAction("closeMarginConfigurationCard")}
     >
@@ -33,21 +36,21 @@ export default function MarginConfigurationCard({
           <div>
             {!margin?.isDeleted ? (
               <SheCardNotification
-                title="Delete Margin"
-                text="This margin will be deleted and will no longer be available for selection or automatic connection"
+                title={t("CardTitles.DeleteMargin")}
+                text={t("ConfirmationMessages.DeleteMargin")}
                 buttonIcon={Trash2}
                 buttonVariant="outline"
-                buttonText="Delete"
+                buttonText={t("CommonButtons.Delete")}
                 buttonColor="#EF4343"
                 onClick={() => onAction("deleteMargin", margin)}
               />
             ) : (
               <SheCardNotification
-                title="Restore Margin"
-                text="The margin was deleted and is no longer manageable. "
+                title={t("CardTitles.RestoreMargin")}
+                text={t("ConfirmationMessages.RestoreMargin")}
                 buttonIcon={Plus}
                 buttonVariant="outline"
-                buttonText="Restore"
+                buttonText={t("CommonButtons.Restore")}
                 buttonColor="#38BF5E"
                 onClick={() => onAction("restoreMargin", margin)}
               />

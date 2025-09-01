@@ -1,5 +1,6 @@
 import { Plus } from "lucide-react";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import cs from "./SelectEntityCard.module.scss";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
@@ -16,22 +17,24 @@ export default function SelectEntityCard({
   columns,
   onAction,
 }: ISelectEntityCard) {
+  const { t } = useTranslation();
+
   return (
     <SheProductCard
       loading={isLoading}
       className={cs.selectEntityCard}
-      title={`Select ${entityName}`}
+      title={t("CardTitles.SelectEntity", { entityName })}
       showCloseButton
       onSecondaryButtonClick={() => onAction("closeSelectEntityCard")}
     >
       <div className={cs.selectEntityCardContent}>
         <div className={cs.selectEntityCardBlock}>
           <span className={`${cs.createEntityBlockText} she-text`}>
-            {`Missing a ${entityName}? Create one!`}
+            {t("EntityForm.Labels.MissingEntityPrompt", { entityName })}
           </span>
           <SheButton
             icon={Plus}
-            value={`Create ${entityName}`}
+            value={t("EntityActions.CreateEntity", { entityName })}
             variant="outline"
             onClick={() => onAction("openCreateEntityCard")}
           />
@@ -40,7 +43,7 @@ export default function SelectEntityCard({
           <SheInput
             isSearch
             fullWidth
-            placeholder={`Search ${entityName}...`}
+            placeholder={t("EntityForm.Placeholders.SearchEntity", { entityName })}
             onDelay={(data: string) => onAction("searchEntity", data)}
           />
           <DndGridDataTable
@@ -49,7 +52,7 @@ export default function SelectEntityCard({
             columns={columns}
             data={entityCollection}
             skeletonQuantity={10}
-            customMessage={`There are no ${entityName} created yet`}
+            customMessage={t("EntityMessages.NoEntitiesCreated", { entityName })}
           />
         </div>
       </div>

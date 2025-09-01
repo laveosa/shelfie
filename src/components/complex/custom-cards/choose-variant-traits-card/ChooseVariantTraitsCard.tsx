@@ -1,5 +1,6 @@
 import { Check, Cog, Plus } from "lucide-react";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ChooseVariantTraitsCard.module.scss";
@@ -16,6 +17,7 @@ export default function ChooseVariantTraitsCard({
   onAction,
   ...props
 }: IChooseVariantTraitsCard) {
+  const { t } = useTranslation();
   const [selectedTraitId, setSelectedTraitId] = useState<number | null>(null);
   const [checkedTraitIds, setCheckedTraitIds] = useState<number[]>(
     selectedItems?.map((item: TraitModel) => item.traitId),
@@ -34,9 +36,9 @@ export default function ChooseVariantTraitsCard({
   return (
     <SheProductCard
       loading={isLoading}
-      title="Choose variant traits for product"
+      title={t("CardTitles.ChooseVariantTraitsForProduct")}
       showPrimaryButton={true}
-      primaryButtonTitle="Save Traits"
+      primaryButtonTitle={t("ProductActions.SaveTraits")}
       primaryButtonModel={{
         icon: Check,
         bgColor: "#007AFF",
@@ -50,23 +52,22 @@ export default function ChooseVariantTraitsCard({
       <div className={cs.chooseVariantTraitsContent}>
         <div className={cs.textBlock}>
           <span className="she-text">
-            Pick the traits that describe the variety of the product options you
-            offer.
+            {t("ProductForm.Labels.PickTraitsDescription")}
           </span>
-          <span className="she-text"> Missing a trait? Add it!</span>
+          <span className="she-text"> {t("ProductForm.Labels.MissingTraitPrompt")}</span>
         </div>
         <SheButton
           icon={Plus}
           variant="outline"
           onClick={() => onAction("addTrait", null)}
         >
-          Add trait
+          {t("ProductActions.AddTrait")}
         </SheButton>
         <div className={cs.traitsItemsWrapper}>
           <div className={cs.traitsItemsHeader}>
-            <span className={`${cs.headerItemTrait} she-text`}>Trait</span>
-            <span className={`${cs.headerItemOptions} she-text`}>Options</span>
-            <span className={`${cs.headerItemAction} she-text`}>Action</span>
+            <span className={`${cs.headerItemTrait} she-text`}>{t("ProductForm.Labels.Trait")}</span>
+            <span className={`${cs.headerItemOptions} she-text`}>{t("ProductForm.Labels.Options")}</span>
+            <span className={`${cs.headerItemAction} she-text`}>{t("ProductForm.Labels.Action")}</span>
           </div>
           <div className={cs.traitsItems}>
             {items?.length > 0 &&
@@ -107,7 +108,7 @@ export default function ChooseVariantTraitsCard({
                       className={cs.traitButton}
                       variant="secondary"
                       icon={Cog}
-                      value="Manage"
+                      value={t("ProductActions.Manage")}
                       minWidth="120px"
                       maxWidth="120px"
                       onClick={() => {
@@ -133,7 +134,7 @@ export default function ChooseVariantTraitsCard({
                     {/*          });*/}
                     {/*        }}*/}
                     {/*      >*/}
-                    {/*        <span className="she-text">Remove trait</span>*/}
+                    {/*        <span className="she-text">{t("ProductActions.RemoveTrait")}</span>*/}
                     {/*      </DropdownMenuItem>*/}
                     {/*    </DropdownMenuContent>*/}
                     {/*  </DropdownMenu>*/}

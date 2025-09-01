@@ -13,7 +13,680 @@
       "Transmissions": "transmissions",
       "Users": "users",
       "Settings": "settings",
-      "Support": "support"
+      "Support": "support",
+      "Customers": "customers",
+      "Sales": "sales"
     }
+  },
+  "AuthForm": {
+    "Labels": {
+      "FirstName": "First Name",
+      "LastName": "Last Name",
+      "Email": "Email",
+      "Password": "Password",
+      "ConfirmPassword": "Confirm Password",
+      "PhoneNumber": "Phone Number",
+      "CountryCode": "Country Code",
+      "VerificationCode": "Enter the 6-digit code"
+    },
+    "Placeholders": {
+      "FirstName": "enter first name...",
+      "LastName": "enter last name...",
+      "Email": "enter email...",
+      "Password": "enter password...",
+      "ConfirmPassword": "confirm password...",
+      "PhoneNumber": "enter phone number...",
+      "VerificationCode": "enter code..."
+    },
+    "Validation": {
+      "FirstNameRequired": "First name is required",
+      "FirstNameMinLength": "First name must be at least 3 characters",
+      "FirstNameMaxLength": "First name cannot exceed 50 characters",
+      "LastNameRequired": "Last name is required",
+      "LastNameMinLength": "Last name must be at least 3 characters",
+      "LastNameMaxLength": "Last name cannot exceed 50 characters",
+      "EmailRequired": "Email is required",
+      "EmailInvalid": "Invalid email address",
+      "EmailMinLength": "Email must be at least 5 characters",
+      "EmailMaxLength": "Email cannot exceed 50 characters",
+      "PasswordRequired": "Password is required",
+      "PasswordMinLength": "Password must be at least 8 characters",
+      "ConfirmPasswordRequired": "Please confirm your password",
+      "PasswordsDoNotMatch": "Passwords do not match",
+      "CountryCodeRequired": "Country code is required",
+      "PhoneNumberRequired": "Phone number is required",
+      "PhoneNumberMinLength": "Phone number must be at least 8 characters",
+      "PhoneNumberMaxLength": "Phone number cannot exceed 9 characters",
+      "VerificationCodeRequired": "Please enter code",
+      "VerificationCodeLength": "Code must be 6 characters"
+    },
+    "StaticText": {
+      "Or": "OR",
+      "Loading": "Loading..."
+    }
+  },
+  "UserForm": {
+    "Title": "User Form",
+    "Labels": {
+      "Name": "Name",
+      "Email": "Email",
+      "Address": "Address",
+      "Gender": "Gender",
+      "Position": "Position"
+    },
+    "Placeholders": {
+      "Name": "enter user name...",
+      "Email": "enter user email...",
+      "Address": "enter user address...",
+      "Gender": "select user gender...",
+      "Position": "select user position..."
+    }
+  },
+  "CustomerForm": {
+    "Labels": {
+      "FirstName": "First Name",
+      "LastName": "Last Name",
+      "Email": "Email",
+      "PhoneNumber": "Phone Number",
+      "Name": "Name"
+    },
+    "Placeholders": {
+      "FirstName": "Enter first name...",
+      "LastName": "Enter last name...",
+      "Email": "Enter email...",
+      "PhoneNumber": "Enter phone number..."
+    }
+  },
+  "AddressForm": {
+    "Labels": {
+      "Alias": "Alias",
+      "AddressLine1": "Address Line 1",
+      "AddressLine2": "Address Line 2",
+      "City": "City",
+      "State": "State",
+      "PostalCode": "Postal Code",
+      "Country": "Country"
+    },
+    "Placeholders": {
+      "Alias": "Enter alias...",
+      "AddressLine1": "Enter address line 1...",
+      "AddressLine2": "Enter address line 2...",
+      "City": "Enter city...",
+      "State": "Enter state...",
+      "PostalCode": "Enter postal code...",
+      "Country": "Choose country..."
+    }
+  },
+  "SupplierForm": {
+    "Labels": {
+      "Name": "Name",
+      "AddressLine1": "Address line 1",
+      "AddressLine2": "Address line 2",
+      "City": "City",
+      "State": "State/Province/Region",
+      "PostalCode": "Zip/Postal Code",
+      "Country": "Country"
+    },
+    "Placeholders": {
+      "Name": "enter supplier name...",
+      "AddressLine1": "enter address line 1...",
+      "AddressLine2": "enter address line 2...",
+      "City": "enter city...",
+      "State": "enter province...",
+      "PostalCode": "enter postal code...",
+      "Country": "choose country..."
+    }
+  },
+  "ProductForm": {
+    "Labels": {
+      "ProductName": "Product Name",
+      "ProductCode": "Product Code",
+      "ProductBarcode": "Product Barcode",
+      "AttributeName": "Attribute name",
+      "BrandName": "Brand Name",
+      "CategoryName": "Category Name",
+      "TraitName": "Trait Name",
+      "TraitType": "Trait type",
+      "SelectTraitOptions": "Select the trait options that you want to add",
+      "SelectTraitOptionsForVariant": "Select the trait options for variant",
+      "PickAttributesDescription": "Pick the attributes that describe the product best Missing an Attribute? Add it!",
+      "PickTraitsDescription": "Pick the traits that describe the variety of the product options you offer.",
+      "MissingTraitPrompt": "Missing a trait? Add it!",
+      "Trait": "Trait",
+      "Options": "Options",
+      "Action": "Action",
+      "MaterialAndCare": "Material and care",
+      "CanBeBleached": "Can be bleached",
+      "CanBeTumbleDried": "Can be tumble dried",
+      "CanBeMachineWashed": "Can be machine washed",
+      "TypeOfInsulation": "Type of insulation",
+      "Filling": "Filling",
+      "Lining": "Lining",
+      "MaterialComposition": "Material composition",
+      "ProductDetails": "Product details",
+      "ProductDetailsDescription": "Yes. It comes with default styles that matches the other components' aesthetic.",
+      "Cutting": "Cutting",
+      "CuttingDescription": "Yes. It's animated by default, but you can disable it if you prefer.",
+      "Image": "Image",
+      "ProductTraits": "Product Traits",
+      "ConfigureTraitsToCreateVariant": "Configure traits to create variant",
+      "ProductDescribedByTraits": "The product is described by following traits:",
+      "ProductNotDescribedByTraits": "The product is not described by traits yet. Please select at least one trait to create variants.",
+      "IsActive": "Is Active",
+      "OptionalVariantName": "Optional Variant Name",
+      "VariantCode": "Variant Code",
+      "SalePriceNetto": "Sale price netto",
+      "SalePriceBrutto": "Sale price brutto",
+      "VAT": "VAT",
+      "VariantTraits": "Variant Traits",
+      "VariantPhotos": "Variant Photos",
+      "UnitsSold": "Units sold",
+      "OtherProductPhotos": "Other Product Photos"
+    },
+    "Placeholders": {
+      "ProductName": "enter product name...",
+      "ProductCode": "enter product code...",
+      "ProductBarcode": "enter product barcode...",
+      "AttributeName": "Enter attribute name",
+      "BrandName": "enter brand name...",
+      "CategoryName": "enter category name...",
+      "TraitName": "enter trait name...",
+      "SelectTraitType": "Select {{traitType}}",
+      "SelectTraitType": "Select trait type",
+      "SelectCategory": "Select category",
+      "SelectBrand": "Select brand"
+    },
+    "Validation": {
+      "ProductNameMinLength": "Product name must be at least 3 characters",
+      "ProductNameMaxLength": "Product name cannot exceed 50 characters",
+      "TraitNameMinLength": "Product name must be at least 3 characters",
+      "TraitNameMaxLength": "Product name cannot exceed 50 characters"
+    }
+  },
+  "MarginForm": {
+    "Labels": {
+      "MarginName": "Margin Name",
+      "DesiredProfit": "Desired profit (in %)",
+      "PlannedDiscount": "Planned discount (in %)",
+      "FixedCosts": "Fixed costs (in PLN)",
+      "SelectMarginForPurchase": "Select the margin for the purchase"
+    },
+    "Placeholders": {
+      "MarginName": "Enter margin name...",
+      "DesiredProfit": "Enter profit...",
+      "PlannedDiscount": "Enter planned discount...",
+      "FixedCosts": "Netto price"
+    }
+  },
+  "PurchaseForm": {
+    "Labels": {
+      "Price": "Price",
+      "Tax": "Tax",
+      "Currency": "Currency",
+      "Quantity": "Quantity",
+      "Units": "Units",
+      "PurchasePrice": "Purchase price",
+      "InvoiceNumber": "Invoice number (optional)",
+      "PurchaseDetails": "Purchase Details",
+      "PurchaseDate": "Set date when purchase took place (for valid exchange rate)",
+      "SupplierSelection": "Select which supplier provided the products",
+      "PurchaseSummary": "Products Summary",
+      "Expense": "Expense",
+      "ProjectedValue": "Projected value",
+      "PurchaseNotes": "Purchase notes"
+    },
+    "Placeholders": {
+      "PurchasePrice": "Enter purchase prise",
+      "SelectVAT": "Select VAT",
+      "SelectPriceType": "Select price type",
+      "SelectCurrency": "Select currency",
+      "Units": "enter amount of units...",
+      "SelectCategory": "Select category",
+      "PurchaseNotes": "Type your notes here..."
+    }
+  },
+  "CommonButtons": {
+    "Save": "Save",
+    "Cancel": "Cancel",
+    "Add": "Add",
+    "Remove": "Remove",
+    "Manage": "Manage",
+    "Create": "Create",
+    "Delete": "Delete",
+    "Edit": "Edit",
+    "Update": "Update",
+    "Select": "Select",
+    "Apply": "Apply",
+    "Confirm": "Confirm",
+    "Send": "Send",
+    "Close": "Close",
+    "Back": "Back",
+    "Next": "Next",
+    "Previous": "Previous",
+    "Clear": "Clear",
+    "SaveChanges": "Save Changes",
+    "Restore": "Restore",
+    "History": "History"
+  },
+  "ProductActions": {
+    "AddProduct": "Add Product",
+    "CreateProduct": "Create Product",
+    "ManageProduct": "Manage Product",
+    "DeleteProduct": "Delete Product",
+    "AddVariant": "Add Variant",
+    "CreateVariant": "Create Variant",
+    "ManageVariant": "Manage Variant",
+    "DeleteVariant": "Delete Variant",
+    "AddBrand": "Add Brand",
+    "AddCategory": "Add Category",
+    "CreateAttribute": "Create Attribute",
+    "ManageTraits": "Manage Traits",
+    "SelectTraits": "Select Traits",
+    "SaveTraits": "Save Traits",
+    "AddTrait": "Add trait",
+    "Manage": "Manage",
+    "RemoveTrait": "Remove trait",
+    "BackToProductList": "Back to Product list",
+    "ManageVariants": "Manage variants",
+    "CreateTrait": "Create Trait",
+    "AddTraitOption": "Add option"
+  },
+  "OrderActions": {
+    "CreateOrder": "Create Order",
+    "AddProduct": "Add Product",
+    "ApplyDiscount": "Apply Discount",
+    "SetShipmentRate": "Set Shipment Rate",
+    "CancelOrder": "Cancel Order",
+    "CreateShipment": "Create Shipment",
+    "SelectShipment": "Select Shipment",
+    "ConfirmPackedProducts": "Confirm packed products",
+    "ConfirmShipmentSend": "Confirm shipment send",
+    "ReturnShipmentToPacking": "Return shipment to packing",
+    "SelectCustomer": "Select Customer"
+  },
+  "CustomerActions": {
+    "CreateCustomer": "Create Customer",
+    "CreateAddress": "Create Address",
+    "DeleteCustomer": "Delete Customer",
+    "DeleteCustomerAddress": "Delete Customer Address"
+  },
+  "SupplierActions": {
+    "DeleteSupplier": "Delete Supplier",
+    "RestoreSupplier": "Restore Supplier",
+    "DeletePurchase": "Delete Purchase",
+    "ReportPurchase": "Report Purchase",
+    "ReplaceSupplier": "Replace Supplier",
+    "SelectSupplier": "Select Supplier"
+  },
+  "StockActions": {
+    "AddToStock": "Add to Stock",
+    "Dispose": "Dispose"
+  },
+  "PageTitles": {
+    "Dashboard": "Dashboard",
+    "Products": "Products",
+    "Customers": "Customers",
+    "Orders": "Orders",
+    "Shipments": "Shipments",
+    "Settings": "Settings",
+    "Support": "Support",
+    "Transmissions": "Transmissions",
+    "Profile": "Profile",
+    "ErrorPage": "Error Page",
+    "Loading": "Loading..."
+  },
+  "SectionTitles": {
+    "Sales": "Sales",
+    "Customer": "Customer",
+    "Order": "Order",
+    "Shipment": "Shipment",
+    "Supplier": "Supplier",
+    "Margin": "Margin",
+    "Product": "Product",
+    "Variant": "Variant",
+    "Brand": "Brand",
+    "Category": "Category",
+    "Attribute": "Attribute",
+    "Trait": "Trait",
+    "Discount": "Discount",
+    "Summary": "Summary",
+    "StockDetails": "Stock Details"
+  },
+  "CardTitles": {
+    "ManagePhotos": "Manage Photos",
+    "DeleteVariant": "Delete Variant",
+    "CreateProductBrand": "Create Product Brand",
+    "CreateProductCategory": "Create Product Category",
+    "CreateProductAttribute": "Create product attribute",
+    "CancelShipment": "Cancel shipment",
+    "ConnectImageToProductVariants": "Connect image to product variants",
+    "FindProducts": "Find Products",
+    "ChooseAttributesForProduct": "Choose attributes for product",
+    "ChooseVariantTraitsForProduct": "Choose variant traits for product",
+    "SizeChart": "Size Chart",
+    "ManageVariants": "Manage Variants",
+    "ProductPhotos": "Product Photos",
+    "SalePriceManagement": "Sale Price Management",
+    "Invoices": "Invoices",
+    "Preview": "Preview",
+    "ManageProduct": "Manage Product",
+    "MarginForPurchase": "Margin For Purchase",
+    "Orders": "Orders",
+    "ProductsInOrder": "Products in order",
+    "DeleteTrait": "Delete Trait",
+    "DeleteMargin": "Delete Margin",
+    "RestoreMargin": "Restore Margin",
+    "SelectDiscount": "Select Discount",
+    "DeleteCustomer": "Delete Customer",
+    "DeleteCustomerAddress": "Delete Customer Address",
+    "DeleteSupplier": "Delete Supplier",
+    "RestoreSupplier": "Restore Supplier",
+    "DeletePurchase": "Delete Purchase",
+    "ReportPurchase": "Report Purchase",
+    "ManageVariant": "Manage Variant",
+    "Map": "Map",
+    "ManageProductForPurchase": "Manage Product for Purchase {{date}}",
+    "StockHistory": "{{variantName}} Stock History",
+    "CreateCustomerAddress": "Create Customer Address",
+    "EditCustomerAddress": "Edit Customer Address",
+    "CustomerAddresses": "Customer Addresses",
+    "CreateCustomer": "Create Customer",
+    "EditCustomer": "Edit Customer",
+    "ManageInvoices": "Manage Invoices",
+    "ManageMargin": "Manage Margin",
+    "CreateMargin": "Create Margin",
+    "OrderConfiguration": "Order nr {{orderId}}",
+    "CancelOrder": "Cancel Order",
+    "BasicProductData": "Basic Product Data",
+    "CreateProduct": "Create Product",
+    "CreateProductTrait": "Create product trait",
+    "ManageTrait": "Manage: {{traitName}}",
+    "ManagePurchases": "Manage Purchases",
+    "SelectEntity": "Select {{entityName}}",
+    "SelectShipmentForOrder": "Select shipment for order",
+    "ShipmentConfiguration": "Shipment {{shipmentId}}",
+    "ShipmentDetails": "Shipment details",
+    "ManageSupplier": "Manage Supplier",
+    "CreateSupplier": "Create Supplier"
+  },
+  "SuccessMessages": {
+    "PurchaseCreated": "Purchase created successfully",
+    "PurchaseUpdated": "Purchase updated successfully",
+    "ImageAdded": "Image successfully added",
+    "SupplierCreated": "Supplier created successfully",
+    "SupplierUpdated": "Supplier updated successfully",
+    "SupplierDeleted": "Supplier deleted successfully",
+    "SupplierRestored": "Supplier restored successfully",
+    "PhotoDeleted": "Photo deleted successfully",
+    "MarginSelected": "Margin selected successfully",
+    "MarginDetached": "Margin detached successfully",
+    "MarginCreated": "Margin created successfully",
+    "MarginUpdated": "Margin updated successfully",
+    "MarginDeleted": "Margin deleted successfully",
+    "MarginRestored": "Margin restored successfully",
+    "VisibleMarginItemsApplied": "Visible margin items applied successfully",
+    "AllMarginItemsApplied": "All margin items applied successfully",
+    "VariantAdded": "Variant added successfully",
+    "ProductUpdated": "Product updated successfully",
+    "PhotosAdded": "Photos added successfully",
+    "TraitsSet": "Traits set successfully",
+    "TraitDeleted": "Trait deleted successfully",
+    "TraitCreated": "Trait created successfully",
+    "TraitUpdated": "Trait updated successfully",
+    "OptionUpdated": "Option updated successfully",
+    "OptionCreated": "Option created successfully",
+    "OptionDeleted": "Option deleted successfully",
+    "StockActionAdded": "Stock action added successfully",
+    "StockActionUpdated": "Stock action updated successfully",
+    "StockActionDeleted": "Stock action deleted successfully",
+    "VariantUpdated": "Variant updated successfully",
+    "VariantTraitOptionsUpdated": "Variant trait options updated successfully",
+    "VariantDisposed": "Variant disposed successfully",
+    "PhotoUploaded": "Photo uploaded successfully",
+    "PhotoAddedToVariant": "Photo added to variant successfully",
+    "PhotoDetached": "Photo was detached successfully",
+    "ProductDeleted": "Product deleted successfully",
+    "VariantDeleted": "Variant deleted successfully"
+  },
+  "ErrorMessages": {
+    "SomethingGoneWrong": "Something gone wrong",
+    "VariantNotFound": "Variant not found",
+    "VariantNotAdded": "Variant not added",
+    "VariantNotUpdated": "Variant not updated",
+    "VariantNotActivated": "Variant not activated",
+    "TraitNotCreated": "Trait not created",
+    "TraitNotUpdated": "Trait not updated",
+    "TraitsNotSet": "Traits not set",
+    "OptionNotUpdated": "Option not updated",
+    "OptionNotCreated": "Option not created",
+    "StockNotIncreased": "Stock not increased",
+    "PhotoNotUploaded": "Photo not uploaded",
+    "PhotoNotAddedToVariant": "Photo not added to variant",
+    "PhotoNotDeleted": "Photo not deleted",
+    "VariantTraitOptionsNotUpdated": "Variant trait options not updated",
+    "VariantNotDisposed": "Variant not disposed"
+  },
+  "ConfirmationMessages": {
+    "DeleteSupplierPhoto": "You are about to delete supplier photo.",
+    "DeleteProductPhoto": "You are about to delete product photo.",
+    "DeleteCustomerAddress": "This customer address will be deleted and will no longer be available for selection or automatic connection. Past orders will remain visible.",
+    "DeleteCustomer": "This customer will be deleted and will no longer be available for selection or automatic connection. Past orders will remain visible.",
+    "DeleteMargin": "This margin will be deleted and will no longer be available for selection or automatic connection",
+    "RestoreMargin": "The margin was deleted and is no longer manageable.",
+    "CancelOrder": "The order will be cancelled and the stock allocated will be made available for purchase",
+    "DeleteTrait": "This trait will be deleted, it will no longer be available for selection but you will still see it in products where it was used, until you change the trait",
+    "DeletePurchase": "The purchase will be deleted, but the changes in stock will remain intact.",
+    "DeleteSupplier": "The supplier will remain connected to the purchases, but will not be manageable or available for connection to additional purchases",
+    "RestoreSupplier": "The supplier was deleted and is not available for management. if that was a mistake, you can restore the supplier",
+    "DeleteVariant": "This variant will be deleted, it will no longer be available for sale but you will still see it in the orders where it sold"
+  },
+  "TabLabels": {
+    "Products": "products",
+    "Variants": "variants",
+    "Purchases": "purchases",
+    "PurchaseProducts": "purchaseProducts",
+    "ConnectProducts": "connectProducts",
+    "Queued": "queued",
+    "ReadyForPacking": "readyForPacking",
+    "ReadyForSending": "readyForSending",
+    "AllShipments": "allShipments"
+  },
+  "TabContent": {
+    "CreateProduct": "Create Product",
+    "AddProduct": "Add Product",
+    "ImportProducts": "Import Products",
+    "Configure": "Configure",
+    "Products": "Products",
+    "Variants": "Variants",
+    "Purchases": "Purchases"
+  },
+  "ValidationMessages": {
+    "TraitOptionRemoved": "Trait option is removed",
+    "TraitOptionMissingConfiguration": "Trait option is missing configuration",
+    "DuplicateVariantWarning": "The variant with this trait combination already exist for this product. While not prohibited, it is not recommended to create multiple copies of the same variant, since this will create challenge with stock management"
+  },
+  "Accessibility": {
+    "Clear": "Clear",
+    "ToggleSidebar": "Toggle Sidebar",
+    "GoToPreviousPage": "Go to previous page",
+    "GoToNextPage": "Go to next page",
+    "MorePages": "More pages",
+    "Close": "Close",
+    "RemoveFile": "Remove file",
+    "Retry": "Retry",
+    "Dropzone": "dropzone",
+    "DropzoneFileList": "dropzone-file-list",
+    "DropzoneFileListItem": "dropzone-file-list-item",
+    "Breadcrumb": "breadcrumb",
+    "Pagination": "pagination",
+    "PreviousSlide": "Previous slide",
+    "NextSlide": "Next slide"
+  },
+  "ContextLimits": {
+    "Min": "min:",
+    "Value": "value:",
+    "Max": "max:"
+  },
+  "DatePicker": {
+    "Month": "Month",
+    "Year": "Year"
+  },
+  "SelectOptions": {
+    "Option1": "Option 1",
+    "Option2": "Option 2",
+    "Option3": "Option 3",
+    "Option4": "Option 4",
+    "Option5": "Option 5",
+    "DoesNotApply": "does not apply",
+    "SelectVAT": "Select VAT",
+    "SelectPriceType": "Select price type",
+    "SelectCurrency": "Select currency",
+    "SelectCategory": "Select category",
+    "SelectBrand": "Select brand",
+    "SelectDiscountType": "select discount type",
+    "Service": "Service",
+    "Status": "Status",
+    "Date": "Date"
+  },
+  "StockForm": {
+    "Labels": {
+      "Damaged": "Damaged",
+      "Lost": "Lost",
+      "Broken": "Broken",
+      "Reason": "Reason",
+      "CurrentlyInStock": "Currently in stock : {{amount}}"
+    }
+  },
+  "CustomerMenu": {
+    "BasicData": "Basic data",
+    "Addresses": "Addresses",
+    "OpenCart": "Open cart",
+    "Orders": "Orders"
+  },
+  "ProductMenu": {
+    "BasicData": "Basic Data",
+    "Gallery": "Gallery",
+    "Variants": "Variants",
+    "Attributes": "Attributes",
+    "SizeChart": "Size Chart",
+    "Purchase": "Purchase",
+    "Supplier": "Supplier",
+    "PurchaseProducts": "Purchase Products",
+    "Margins": "Margins",
+    "Invoices": "Invoices",
+    "Orders": "Orders",
+    "OpenCarts": "Open Carts",
+    "Shipments": "Shipments",
+    "Returns": "Returns",
+    "Payments": "Payments",
+    "Details": "Details",
+    "Products": "Products",
+    "Shipment": "Shipment",
+    "Payment": "Payment"
+  },
+  "InvoiceMessages": {
+    "NoFilesUploaded": "There are no files uploaded yet"
+  },
+  "ProductMessages": {
+    "NoVariants": "PRODUCT HAS NO VARIANTS",
+    "NoPhotos": "PRODUCT HAS NO PHOTO",
+    "NoVariantPhotos": "VARIANT HAS NO PHOTO",
+    "AllPhotosAttachedToVariant": "All product photos are already attached to the variant."
+  },
+  "OrderMessages": {
+    "NoDiscountsApplied": "There are no discounts applied",
+    "ShipmentRateNotSet": "Shipment rate is not set yet",
+    "NoOrderCompleteWithoutProduct": "No order is complete without a product! Add some!"
+  },
+  "MarginMessages": {
+    "MarginIsDeleted": ">_ The margin is deleted",
+    "SupplierIsDeleted": ">_ Supplier is deleted"
+  },
+  "MarginActions": {
+    "SelectMargin": "Select Margin"
+  },
+  "SpecialText": {
+    "AuthForm": "Auth Form",
+    "UserForm": "User Form",
+    "ApplyVisiblePrices": "Apply visible prices",
+    "ApplyAllPrices": "Apply all prices",
+    "ShowAll": "Show All",
+    "ChangeCustomer": "Change Customer",
+    "ChangeAddress": "Change Address",
+    "SelectOrder": "Select Order",
+    "AddAll": "Add All",
+    "CreatePurchase": "Create Purchase",
+    "CreatePurchaseDescription": "(Or connect to the existing purchase if invoice number is already in the system)",
+    "Or": "or"
+  },
+  "OrderForm": {
+    "Labels": {
+      "CreatedAt": "Created at",
+      "OrderStatus": "Order status",
+      "PaymentStatus": "Payment status",
+      "ShipmentStatus": "Shipment status",
+      "DiscountTotal": "Discount total",
+      "ProductsSubtotal": "Products Subtotal",
+      "ProductsTotal": "Products Total",
+      "TotalWithDiscountAndShipment": "Total with discount and shipment",
+      "Profit": "Profit"
+    },
+    "Placeholders": {
+      "PickRange": "Pick range",
+      "Status": "Status"
+    }
+  },
+  "DiscountForm": {
+    "Labels": {
+      "DiscountRate": "Discount rate",
+      "DiscountType": "Type (Currency / %)",
+      "SelectDiscountDescription": "Reuse standard discounts or create one!"
+    },
+    "Placeholders": {
+      "DiscountRate": "enter discount rate...",
+      "SelectDiscountType": "select discount type..."
+    }
+  },
+  "DiscountActions": {
+    "CreateAndApply": "Create and Apply"
+  },
+  "DiscountMessages": {
+    "NoDiscountsCreated": "There are no discounts created yet"
+  },
+  "EntityForm": {
+    "Labels": {
+      "MissingEntityPrompt": "Missing a {{entityName}}? Create one!"
+    },
+    "Placeholders": {
+      "SearchEntity": "Search {{entityName}}..."
+    }
+  },
+  "EntityActions": {
+    "CreateEntity": "Create {{entityName}}"
+  },
+  "EntityMessages": {
+    "NoEntitiesCreated": "There are no {{entityName}} created yet"
+  },
+  "ShipmentForm": {
+    "Labels": {
+      "ShowPendingShipments": "Show pending shipments of customer:",
+      "QueuePacking": "Queue packing",
+      "QueueShipment": "Queue shipment",
+      "OrdersInShipment": "Orders in shipment",
+      "ProductsWaitingForShipment": "Products from connected orders waiting for shipment",
+      "PackageContent": "Package content",
+      "ConfirmDeliveryService": "Confirm delivery service",
+      "TrackingNumber": "Tracking number",
+      "DeliveryService": "Delivery service",
+      "ShipmentAllocation": "Shipment allocation"
+    },
+    "Placeholders": {
+      "EnterTrackingNumber": "Enter tracking number"
+    }
+  },
+  "ShipmentMessages": {
+    "NoShipmentsCreated": "No shipments created yet",
+    "NoItemsInShipment": "No item in shipment",
+    "NoItemsScheduledForDelivery": "No item is scheduled for delivery"
   }
 }

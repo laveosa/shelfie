@@ -1,5 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { TrashIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { ImageModel } from "@/const/models/ImageModel.ts";
@@ -15,6 +16,7 @@ export function productsGridColumns(
   onDelete: (data) => void,
   activeStates?: Record<string, boolean>,
 ): ColumnDef<any>[] {
+  const { t } = useTranslation();
   const statusClass = (status: string) => {
     if (status === "Available") {
       return cs.productStatusAvailable;
@@ -258,7 +260,7 @@ export function productsGridColumns(
             <SheButton
               onClick={handleManageClick}
               disabled={meta?.isRowLoading(row.id)}
-              value="Manage"
+              value={t("CommonButtons.Manage")}
             />
           </div>
         );

@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 import useAppForm from "@/utils/hooks/useAppForm.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -26,7 +27,7 @@ export default function CustomerForm({
   onSubmit,
   onCancel,
 }: ICustomerForm): React.ReactNode {
-
+  const { t } = useTranslation();
   const form = useAppForm<CustomerRequestModel>({
     mode: "onBlur",
     resolver: zodResolver(CustomerFormScheme),
@@ -60,8 +61,8 @@ export default function CustomerForm({
             control={form.control}
             name="firstName"
             render={({ field }): React.ReactElement => (
-            <SheFormItem label="First Name">
-                <SheInput fullWidth {...field} placeholder="Enter first name..." />
+            <SheFormItem label={t("CustomerForm.Labels.FirstName")}>
+                <SheInput fullWidth {...field} placeholder={t("CustomerForm.Placeholders.FirstName")} />
             </SheFormItem>
             )}
         />
@@ -70,8 +71,8 @@ export default function CustomerForm({
             control={form.control}
             name="lastName"
             render={({ field }): React.ReactElement => (
-            <SheFormItem label="Last Name">
-                <SheInput fullWidth {...field} placeholder="Enter last name..." />
+            <SheFormItem label={t("CustomerForm.Labels.LastName")}>
+                <SheInput fullWidth {...field} placeholder={t("CustomerForm.Placeholders.LastName")} />
             </SheFormItem>
             )}
         />
@@ -79,8 +80,8 @@ export default function CustomerForm({
             control={form.control}
             name="email"
             render={({ field }): React.ReactElement => (
-            <SheFormItem label="Email">
-                <SheInput fullWidth {...field} placeholder="Enter email..." />
+            <SheFormItem label={t("CustomerForm.Labels.Email")}>
+                <SheInput fullWidth {...field} placeholder={t("CustomerForm.Placeholders.Email")} />
             </SheFormItem>
             )}
         />
@@ -88,8 +89,8 @@ export default function CustomerForm({
             control={form.control}
             name="phoneNumber"
             render={({ field }): React.ReactElement => (
-            <SheFormItem label="Phone Number">
-                <SheInput fullWidth {...field} placeholder="Enter phone number..." />
+            <SheFormItem label={t("CustomerForm.Labels.PhoneNumber")}>
+                <SheInput fullWidth {...field} placeholder={t("CustomerForm.Placeholders.PhoneNumber")} />
             </SheFormItem>
             )}
         />
@@ -100,14 +101,14 @@ export default function CustomerForm({
             <SheButton
                 variant="secondary"
                 onClick={() => {onCancel()}}
-                value="Cancel"
+                value={t("CommonButtons.Cancel")}
             />
             
             <SheButton
                 variant="default"
                 icon={isCreate ? Plus : Save}
                 onClick={() => {form.handleSubmit(onSubmit)}}
-                value={isCreate ? "Add Customer" : "Save Changes"}
+                value={isCreate ? t("CustomerActions.CreateCustomer") : t("CommonButtons.Save")}
             />
         </div>
     </SheForm>

@@ -1,5 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { CheckCheck } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import {
   DataWithId,
@@ -30,10 +31,12 @@ export default function SalePriseManagementCard({
   gridRequestModel,
   onAction,
 }: ISalePriceManagementCard) {
+  const { t } = useTranslation();
+
   return (
     <div className={cs.salePriceManagementCard}>
       <SheProductCard
-        title="Sale Price Management"
+        title={t("CardTitles.SalePriceManagement")}
         isLoading={isLoading}
         className={cs.salePriceManagementCardContent}
         minWidth="1100px"
@@ -60,14 +63,14 @@ export default function SalePriseManagementCard({
         >
           <GridItemsFilter
             items={brands}
-            columnName={"Brands"}
+            columnName={t("SectionTitles.Brand")}
             getId={(item: BrandModel) => item.brandId}
             getName={(item: BrandModel) => item.brandName}
             selected={gridModel.filter?.brands}
           />
           <GridItemsFilter
             items={categories}
-            columnName={"Categories"}
+            columnName={t("SectionTitles.Category")}
             getId={(item: CategoryModel) => item.categoryId}
             getName={(item: CategoryModel) => item.categoryName}
             selected={gridModel.filter?.categories}
@@ -90,14 +93,14 @@ export default function SalePriseManagementCard({
           icon={CheckCheck}
           variant="default"
           onClick={() => onAction("applyVisibleMarginItems")}
-          value="Apply visible prices"
+          value={t("SpecialText.ApplyVisiblePrices")}
           bgColor="#007AFF"
         />
         <SheButton
           icon={CheckCheck}
           variant="default"
           onClick={() => onAction("applyAllMarginItems")}
-          value="Apply all prices"
+          value={t("SpecialText.ApplyAllPrices")}
           bgColor="#007AFF"
         />
       </div>

@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ConnectImageCard.module.scss";
@@ -20,10 +21,12 @@ export default function ConnectImageCard({
   onSecondaryButtonClick,
   ...props
 }: IConnectImageCard) {
+  const { t } = useTranslation();
+
   return (
     <SheProductCard
       loading={isLoading}
-      title="Connect image to product variants"
+      title={t("CardTitles.ConnectImageToProductVariants")}
       showCloseButton
       className={cs.connectImageCard}
       onSecondaryButtonClick={() => onAction("closeConnectImageCard")}

@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { ColumnDef } from "@tanstack/react-table";
+import { useTranslation } from "react-i18next";
 
 import cs from "./CustomersPage.module.scss";
 import useCustomersPageService from "@/pages/customers-section/customers-page/useCustomersPageService.ts";
@@ -21,6 +22,7 @@ import { GridRequestModel } from "@/const/models/GridRequestModel";
 
 
 export function CustomersPage() {
+  const { t } = useTranslation();
   const {
     appState,
     state,
@@ -84,13 +86,13 @@ export function CustomersPage() {
   return (
     <div id={cs.CustomersPage}>
       <div className={cs.customersPageHeader}>
-        <div className="she-title">Customers</div>
+        <div className="she-title">{t("PageTitles.Customers")}</div>
           <div className={cs.headerButtonBlock}>
             <SheButton
               icon={Plus}
               variant="outline"
               onClick={handleCreateCustomer}
-              value="Create Customer"
+              value={t("CustomerActions.CreateCustomer")}
             />
           </div>
       </div>

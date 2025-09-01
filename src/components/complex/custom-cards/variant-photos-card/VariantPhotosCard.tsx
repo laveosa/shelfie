@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./VariantPhotosCard.module.scss";
@@ -22,6 +23,7 @@ export default function VariantPhotosCard({
   onAction,
   ...props
 }) {
+  const { t } = useTranslation();
   const variantPhotosColumns = VariantPhotosGridColumns(
     onGridAction,
   ) as ColumnDef<DataWithId>[];
@@ -73,7 +75,7 @@ export default function VariantPhotosCard({
     <div className={cs.variantPhotosCard}>
       <SheProductCard
         loading={isLoading}
-        title="Manage Photos"
+        title={t("CardTitles.ManagePhotos")}
         onSecondaryButtonClick={() => onAction("closeVariantPhotosCard")}
         showCloseButton={true}
         {...props}
@@ -88,7 +90,7 @@ export default function VariantPhotosCard({
           />
           <div className={cs.managePhotos}>
             <div className={`${cs.managePhotosTitle} she-title`}>
-              <span className="she-title">Variant Photos</span>
+              <span className="she-title">{t("ProductForm.Labels.VariantPhotos")}</span>
             </div>
             <div className={cs.managePhotosGrid}>
               <DndGridDataTable
@@ -103,7 +105,7 @@ export default function VariantPhotosCard({
                 columns={variantPhotosColumns}
                 data={variantPhotos}
                 gridModel={variantPhotos}
-                customMessage="VARIANT HAS NO PHOTO"
+                customMessage={t("ProductMessages.NoVariantPhotos")}
                 onNewItemPosition={(newIndex, activeItem) =>
                   handleAction("dnd", { newIndex, activeItem })
                 }
@@ -112,7 +114,7 @@ export default function VariantPhotosCard({
           </div>
           <div className={cs.managePhotos}>
             <div className={`${cs.managePhotosTitle} she-title`}>
-              <span className="she-title">Other Product Photos</span>
+              <span className="she-title">{t("ProductForm.Labels.OtherProductPhotos")}</span>
             </div>
             <div className={cs.managePhotosGrid}>
               <DndGridDataTable
@@ -129,8 +131,8 @@ export default function VariantPhotosCard({
                 data={productPhotos}
                 customMessage={
                   !variantPhotos && !productPhotos
-                    ? "Product has no photo"
-                    : "All product photos are already attached to the variant."
+                    ? t("ProductMessages.NoPhotos")
+                    : t("ProductMessages.AllPhotosAttachedToVariant")
                 }
                 gridModel={productPhotos}
               />

@@ -2,6 +2,7 @@ import { Layers2, Plus, Shirt } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useState } from "react";
 import _, { merge } from "lodash";
+import { useTranslation } from "react-i18next";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import { IPurchaseProductsCard } from "@/const/interfaces/complex-components/custom-cards/IPurchaseProductsCard.ts";
@@ -51,6 +52,7 @@ export default function PurchaseProductsCard({
   purchaseSummary,
   onAction,
 }: IPurchaseProductsCard) {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState("purchaseProducts");
   const productsService = useProductsPageService();
   const dispatch = useAppDispatch();
@@ -156,7 +158,7 @@ export default function PurchaseProductsCard({
       <SheProductCard
         className={cs.purchaseProductsCard}
         showHeader={false}
-        title={"Manage Purchases"}
+        title={t("CardTitles.ManagePurchases")}
       >
         <div className={cs.purchaseProductsCardContent}>
           <SheTabs
@@ -171,7 +173,7 @@ export default function PurchaseProductsCard({
                     value="purchaseProducts"
                   >
                     <div className={cs.tabBlock}>
-                      <Shirt size="16" /> Purchase Products
+                      <Shirt size="16" /> {t("TabLabels.PurchaseProducts")}
                     </div>
                   </TabsTrigger>
                   <TabsTrigger
@@ -180,7 +182,7 @@ export default function PurchaseProductsCard({
                   >
                     <div className={cs.tabBlock}>
                       <Layers2 size="16" />
-                      Connect Products
+                      {t("TabLabels.ConnectProducts")}
                     </div>
                   </TabsTrigger>
                 </div>
@@ -188,7 +190,7 @@ export default function PurchaseProductsCard({
                   icon={Plus}
                   variant="default"
                   onClick={() => onAction("openCreateProductCard")}
-                  value="Create Product"
+                  value={t("ProductActions.CreateProduct")}
                 />
               </TabsList>
             </div>
@@ -216,24 +218,24 @@ export default function PurchaseProductsCard({
               >
                 <GridItemsFilter
                   items={brands}
-                  columnName={"Brands"}
+                  columnName={t("SectionTitles.Brand")}
                   getId={(item: BrandModel) => item.brandId}
                   getName={(item: BrandModel) => item.brandName}
                 />
                 <GridItemsFilter
                   items={categories}
-                  columnName={"Categories"}
+                  columnName={t("SectionTitles.Category")}
                   getId={(item: CategoryModel) => item.categoryId}
                   getName={(item: CategoryModel) => item.categoryName}
                 />
               </DndGridDataTable>
               <div className={cs.purchaseSummary}>
                 <span className={cs.purchaseSummaryTitle}>
-                  Products Summary
+                  {t("PurchaseForm.Labels.PurchaseSummary")}
                 </span>
                 <div className={cs.purchaseSummaryItems}>
                   <div>
-                    <span className={cs.purchaseSummaryTitle}>Units</span>
+                    <span className={cs.purchaseSummaryTitle}>{t("PurchaseForm.Labels.Units")}</span>
                     {!_.isNil(purchaseSummary?.unitsAmount) && (
                       <span className={cs.purchaseSummaryItem}>
                         {`: ${purchaseSummary?.unitsAmount}`}
@@ -241,7 +243,7 @@ export default function PurchaseProductsCard({
                     )}
                   </div>
                   <div>
-                    <span className={cs.purchaseSummaryTitle}>Expense</span>
+                    <span className={cs.purchaseSummaryTitle}>{t("PurchaseForm.Labels.Expense")}</span>
                     {!_.isNil(purchaseSummary?.expense) && (
                       <span className={cs.purchaseSummaryItem}>
                         {`: ${purchaseSummary?.expense} ${purchaseSummary?.currencyBrief}`}
@@ -250,7 +252,7 @@ export default function PurchaseProductsCard({
                   </div>
                   <div>
                     <span className={cs.purchaseSummaryTitle}>
-                      Projected value
+                      {t("PurchaseForm.Labels.ProjectedValue")}
                     </span>
                     {!_.isNil(purchaseSummary?.valueAmount) && (
                       <span className={cs.purchaseSummaryItem}>
@@ -285,13 +287,13 @@ export default function PurchaseProductsCard({
               >
                 <GridItemsFilter
                   items={brands}
-                  columnName={"Brands"}
+                  columnName={t("SectionTitles.Brand")}
                   getId={(item: BrandModel) => item.brandId}
                   getName={(item: BrandModel) => item.brandName}
                 />
                 <GridItemsFilter
                   items={categories}
-                  columnName={"Categories"}
+                  columnName={t("SectionTitles.Category")}
                   getId={(item: CategoryModel) => item.categoryId}
                   getName={(item: CategoryModel) => item.categoryName}
                 />

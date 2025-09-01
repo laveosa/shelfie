@@ -1,5 +1,6 @@
 import { Plus, SlidersVertical } from "lucide-react";
 import React, { Fragment } from "react";
+import { useTranslation } from "react-i18next";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ManageVariantsCard.module.scss";
@@ -24,6 +25,8 @@ export default function ManageVariantsCard({
   onAction,
   ...props
 }: IManageVariantsCard) {
+  const { t } = useTranslation();
+  
   function handleAction(actionType: any, payload?: any) {
     switch (actionType) {
       case "manageVariant":
@@ -70,11 +73,11 @@ export default function ManageVariantsCard({
   return (
     <SheProductCard
       loading={isLoading}
-      title="Manage Variants"
+      title={t("CardTitles.ManageVariants")}
       showPrimaryButton={false}
-      primaryButtonTitle="Save"
+      primaryButtonTitle={t("CommonButtons.Save")}
       showSecondaryButton={false}
-      secondaryButtonTitle="Cancel"
+      secondaryButtonTitle={t("CommonButtons.Cancel")}
       className={cs.manageVariantsCard}
       minWidth={"420px"}
       {...props}
@@ -84,7 +87,7 @@ export default function ManageVariantsCard({
           {traits?.length > 0 ? (
             <>
               <span className="she-text">
-                The product is described by following traits:{" "}
+                {t("ProductForm.Labels.ProductDescribedByTraits")}{" "}
                 {traits.map((trait: TraitModel, index: number) => (
                   <Fragment key={trait.traitId}>
                     <b>{trait.traitName}</b>
@@ -95,20 +98,19 @@ export default function ManageVariantsCard({
               <SheButton
                 icon={SlidersVertical}
                 variant="secondary"
-                value="Manage Traits"
+                value={t("ProductActions.ManageTraits")}
                 onClick={() => onAction("openChooseVariantTraitsCard")}
               />
             </>
           ) : (
             <>
               <span className="she-text">
-                The product is not described by traits yet. Please select at
-                least one trait to create variants.
+                {t("ProductForm.Labels.ProductNotDescribedByTraits")}
               </span>
               <SheButton
                 icon={Plus}
                 variant="outline"
-                value="Select Traits"
+                value={t("ProductActions.SelectTraits")}
                 onClick={() => {
                   onAction("openChooseVariantTraitsCard");
                 }}
@@ -118,11 +120,11 @@ export default function ManageVariantsCard({
         </div>
         <Separator />
         <div className={cs.buttonBlock}>
-          <span className="she-title">Variants</span>
+          <span className="she-title">{t("SectionTitles.Variant")}</span>
           <SheButton
             icon={Plus}
             variant="outline"
-            value="Create Variant"
+            value={t("ProductActions.CreateVariant")}
             onClick={() => {
               onAction("openAddVariantCard");
             }}
@@ -147,7 +149,7 @@ export default function ManageVariantsCard({
             }
             data={variants}
             gridModel={data}
-            customMessage="PRODUCT HAS NO VARIANTS"
+            customMessage={t("ProductMessages.NoVariants")}
             onNewItemPosition={(newIndex, activeItem) =>
               handleAction("dnd", { newIndex, activeItem })
             }

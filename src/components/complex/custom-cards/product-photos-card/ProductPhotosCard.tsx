@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ProductPhotosCard.module.scss";
@@ -22,6 +23,8 @@ export default function ProductPhotosCard({
   showCloseButton,
   onAction,
 }: IProductPhotosCard) {
+  const { t } = useTranslation();
+
   const columns = ProductPhotosGridColumns(
     onGridAction,
   ) as ColumnDef<DataWithId>[];
@@ -70,7 +73,7 @@ export default function ProductPhotosCard({
     <div className={cs.productPhotosCard}>
       <SheProductCard
         loading={isLoading}
-        title="Product Photos"
+        title={t("CardTitles.ProductPhotos")}
         minWidth="500px"
         showCloseButton={showCloseButton}
         onSecondaryButtonClick={() => onAction("closeProductPhotsCard")}
@@ -87,7 +90,7 @@ export default function ProductPhotosCard({
           />
           <div className={cs.managePhotos}>
             <div className={`${cs.managePhotosTitle} she-title`}>
-              Manage Photos
+              {t("CardTitles.ManagePhotos")}
             </div>
             <div className={cs.managePhotosGrid}>
               <DndGridDataTable
@@ -99,7 +102,7 @@ export default function ProductPhotosCard({
                 data={data}
                 skeletonQuantity={productCounter?.gallery}
                 cellPadding="5px 10px"
-                customMessage="PRODUCT HAS NO PHOTO"
+                customMessage={t("ProductMessages.NoPhotos")}
                 onNewItemPosition={(newIndex, activeItem, oldIndex) =>
                   handleAction("dnd", { newIndex, activeItem, oldIndex })
                 }

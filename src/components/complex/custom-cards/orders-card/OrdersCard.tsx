@@ -1,5 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { CalendarRange, Plus, ShoppingCart } from "lucide-react";
+import React from "react";
+import { useTranslation } from "react-i18next";
 
 import {
   DataWithId,
@@ -23,6 +25,8 @@ export default function OrdersCard({
   ordersGridRequestModel,
   onAction,
 }: IOrdersCard) {
+  const { t } = useTranslation();
+
   function onGridAction(
     _rowId?: string,
     _setLoadingRow?: (rowId: string, loading: boolean) => void,
@@ -34,7 +38,7 @@ export default function OrdersCard({
   return (
     <div className={cs.ordersCard}>
       <SheProductCard
-        title="Orders"
+        title={t("CardTitles.Orders")}
         isLoading={isLoading}
         className={cs.ordersCardContent}
         minWidth="1100px"
@@ -58,7 +62,7 @@ export default function OrdersCard({
             icon={CalendarRange}
             mode="range"
             minWidth="150px"
-            placeholder="Pick range"
+            placeholder={t("OrderForm.Placeholders.PickRange")}
             onSelectDate={(updates) => {
               onAction("gridRequestChange", {
                 filter: {
@@ -70,7 +74,7 @@ export default function OrdersCard({
           />
           <SheSelect
             icon={ShoppingCart}
-            placeholder="Status"
+            placeholder={t("OrderForm.Placeholders.Status")}
             minWidth="150px"
           />
           <GridShowItemsFilter context="Canceled" />
@@ -81,7 +85,7 @@ export default function OrdersCard({
         icon={Plus}
         variant="default"
         onClick={() => onAction("createOrder")}
-        value="Create Order"
+        value={t("OrderActions.CreateOrder")}
         bgColor="#007AFF"
       />
     </div>
