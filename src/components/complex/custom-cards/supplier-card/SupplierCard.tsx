@@ -214,6 +214,7 @@ export default function SupplierCard({
             buttonText="Delete"
             buttonVariant="outline"
             buttonColor="#EF4343"
+            onClick={() => onAction("deletePurchase", selectedPurchase)}
           />
         )}
       </div>

@@ -9,55 +9,40 @@ import {
   Plus,
   Receipt,
   ReceiptEuro,
-  Shirt
+  Shirt,
 } from "lucide-react";
 
 import {
   DataWithId,
   DndGridDataTable,
-  DndGridRef
+  DndGridRef,
 } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import cs from "./ProductsPage.module.scss";
-import useProductsPageService
-  from "@/pages/products-section/products-page/useProductsPageService.ts";
+import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SheTabs from "@/components/complex/she-tabs/SheTabs.tsx";
-import {
-  productsGridColumns
-} from "@/components/complex/grid/products-grid/ProductsGridColumns.tsx";
+import { productsGridColumns } from "@/components/complex/grid/products-grid/ProductsGridColumns.tsx";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
-import GridItemsFilter
-  from "@/components/complex/grid/grid-items-filter/GridItemsFilter.tsx";
+import GridItemsFilter from "@/components/complex/grid/grid-items-filter/GridItemsFilter.tsx";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
-import {
-  IProductsPageSlice
-} from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
-import {
-  ProductsPageSliceActions as actions
-} from "@/state/slices/ProductsPageSlice.ts";
+import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import { ProductsPageSliceActions as actions } from "@/state/slices/ProductsPageSlice.ts";
 import { AppSliceActions as appActions } from "@/state/slices/AppSlice.ts";
-import {
-  variantsGridColumns
-} from "@/components/complex/grid/variants-grid/VariantsGridColumns.tsx";
+import { variantsGridColumns } from "@/components/complex/grid/variants-grid/VariantsGridColumns.tsx";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { useToast } from "@/hooks/useToast.ts";
-import {
-  purchasesGridColumns
-} from "@/components/complex/grid/purchases-grid/PurchasesGridColumns.tsx";
+import { purchasesGridColumns } from "@/components/complex/grid/purchases-grid/PurchasesGridColumns.tsx";
 import { SupplierModel } from "@/const/models/SupplierModel.ts";
-import SheDatePicker
-  from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
+import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
-import GridShowItemsFilter
-  from "@/components/complex/grid/grid-show-deleted-filter/GridShowItemsFilter.tsx";
-import GridTraitsFilter
-  from "@/components/complex/grid/grid-traits-filter/GridTraitsFilter.tsx";
+import GridShowItemsFilter from "@/components/complex/grid/grid-show-deleted-filter/GridShowItemsFilter.tsx";
+import GridTraitsFilter from "@/components/complex/grid/grid-traits-filter/GridTraitsFilter.tsx";
 
 export function ProductsPage() {
   const dispatch = useAppDispatch();
