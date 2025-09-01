@@ -11,11 +11,7 @@ import { Switch } from "@/components/ui/switch.tsx";
 import cs from "./ProductsGridColumns.module.scss";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 
-export function productsGridColumns(
-  onAction: any,
-  onDelete: (data) => void,
-  activeStates?: Record<string, boolean>,
-): ColumnDef<any>[] {
+export function ProductsGridColumns(onAction: any): ColumnDef<any>[] {
   const { t } = useTranslation();
   const statusClass = (status: string) => {
     if (status === "Available") {
@@ -213,26 +209,13 @@ export function productsGridColumns(
           setLoadingRow: (rowId: string, loading: boolean) => void;
           isRowLoading: (rowId: string) => boolean;
         };
-
         const rowId = row.id;
-        const isChecked =
-          activeStates && rowId in activeStates
-            ? activeStates[rowId]
-            : row.original.isActive;
 
         return (
           <Switch
             disabled={meta?.isRowLoading(rowId)}
-            checked={isChecked}
-            onCheckedChange={() =>
-              onAction(
-                "activateProduct",
-                rowId,
-                meta?.setLoadingRow,
-                row.original,
-                row.original,
-              )
-            }
+            checked={row.original.isActive}
+            onCheckedChange={() => onAction("activateProduct", row.original)}
           />
         );
       },
@@ -277,18 +260,13 @@ export function productsGridColumns(
           setLoadingRow: (rowId: string, loading: boolean) => void;
           isRowLoading: (rowId: string) => boolean;
         };
-        const handleDeleteClick = (e) => {
-          e.stopPropagation();
-          e.preventDefault();
-          onDelete({ table, row });
-        };
 
         return (
           <div onClick={(e) => e.stopPropagation()}>
             <SheButton
               icon={TrashIcon}
               variant="secondary"
-              onClick={handleDeleteClick}
+              onClick={() => onAction("deleteProduct", { table, row })}
               disabled={meta?.isRowLoading(row.id)}
             />
           </div>

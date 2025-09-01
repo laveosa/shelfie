@@ -8,10 +8,7 @@ import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { TrashIcon } from "lucide-react";
 
-export function variantsGridColumns(
-  onAction: any,
-  onDelete: (data) => void,
-): ColumnDef<any>[] {
+export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
   const statusClass = (status: string) => {
     if (status === "Available") {
       return cs.productStatusAvailable;
@@ -256,16 +253,10 @@ export function variantsGridColumns(
           isRowLoading: (rowId: string) => boolean;
         };
 
-        const handleManageClick = (e) => {
-          e.stopPropagation();
-          e.preventDefault();
-          onAction("manageVariant", row.id, meta?.setLoadingRow, row.original);
-        };
-
         return (
           <div onClick={(e) => e.stopPropagation()}>
             <SheButton
-              onClick={handleManageClick}
+              onClick={() => onAction("manageVariant", row.original)}
               disabled={meta?.isRowLoading(row.id)}
             >
               Manage
@@ -285,18 +276,13 @@ export function variantsGridColumns(
           setLoadingRow: (rowId: string, loading: boolean) => void;
           isRowLoading: (rowId: string) => boolean;
         };
-        const handleDeleteClick = (e) => {
-          e.stopPropagation();
-          e.preventDefault();
-          onDelete({ table, row });
-        };
 
         return (
           <div onClick={(e) => e.stopPropagation()}>
             <SheButton
               icon={TrashIcon}
               variant="secondary"
-              onClick={handleDeleteClick}
+              onClick={() => onAction("deleteVariant", { table, row })}
               disabled={meta?.isRowLoading(row.id)}
             />
           </div>

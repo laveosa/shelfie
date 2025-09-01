@@ -6,10 +6,7 @@ import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { ImageIcon, TrashIcon } from "lucide-react";
 import { formatDate } from "@/utils/helpers/quick-helper.ts";
 
-export function purchasesGridColumns(
-  onAction: any,
-  onDelete: (data) => void,
-): ColumnDef<any>[] {
+export function purchasesGridColumns(onAction: any): ColumnDef<any>[] {
   return [
     {
       accessorKey: "purchaseId",
@@ -155,16 +152,10 @@ export function purchasesGridColumns(
           isRowLoading: (rowId: string) => boolean;
         };
 
-        const handleManageClick = (e) => {
-          e.stopPropagation();
-          e.preventDefault();
-          onAction("managePurchase", row.id, meta?.setLoadingRow, row.original);
-        };
-
         return (
           <div onClick={(e) => e.stopPropagation()}>
             <SheButton
-              onClick={handleManageClick}
+              onClick={() => onAction("managePurchase", row.original)}
               disabled={meta?.isRowLoading(row.id)}
             >
               Manage
@@ -184,18 +175,13 @@ export function purchasesGridColumns(
           setLoadingRow: (rowId: string, loading: boolean) => void;
           isRowLoading: (rowId: string) => boolean;
         };
-        const handleDeleteClick = (e) => {
-          e.stopPropagation();
-          e.preventDefault();
-          onDelete({ table, row });
-        };
 
         return (
           <div onClick={(e) => e.stopPropagation()}>
             <SheButton
               icon={TrashIcon}
               variant="secondary"
-              onClick={handleDeleteClick}
+              onClick={() => onAction("deletePurchase", { table, row })}
               disabled={meta?.isRowLoading(row.id)}
             />
           </div>

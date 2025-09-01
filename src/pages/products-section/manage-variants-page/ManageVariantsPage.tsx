@@ -88,6 +88,12 @@ export function ManageVariantsPage() {
           dispatch(productsActions.setIsItemsCardLoading(false));
         });
     }
+    productsService
+      .getVariantDetailsHandler(productsState.selectedVariant.variantId)
+      .then((res) => {
+        dispatch(productsActions.refreshSelectedVariant(res));
+        dispatch(productsActions.refreshVariantPhotos(res.photos));
+      });
     if (state.listOfTraitsWithOptionsForProduct.length === 0) {
       productsService.getListOfTraitsWithOptionsForProductHandler(productId);
     }
