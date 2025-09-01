@@ -39,7 +39,7 @@ export default function usePurchaseProductsPageService() {
 
   function addVariantToPurchaseProductsHandler(id: any, model) {
     return addVariantToPurchaseProducts({ id, model }).then((res: any) => {
-      return res;
+      return res.data;
     });
   }
 
@@ -51,7 +51,7 @@ export default function usePurchaseProductsPageService() {
 
   function deleteStockActionHandler(stockActionId: any) {
     return deleteStockAction(stockActionId).then((res: any) => {
-      return res;
+      return res.data;
     });
   }
 
