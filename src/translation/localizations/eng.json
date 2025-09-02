@@ -228,6 +228,7 @@
       "PurchasePrice": "Purchase price",
       "InvoiceNumber": "Invoice number (optional)",
       "PurchaseDetails": "Purchase Details",
+      "PurchaseDateTitle": "Purchase Date",
       "PurchaseDate": "Set date when purchase took place (for valid exchange rate)",
       "SupplierSelection": "Select which supplier provided the products",
       "PurchaseSummary": "Products Summary",

@@ -165,7 +165,7 @@ export default function CreateSupplierForm<T>({
           <SheFileUploader
             isLoading={isPhotoUploaderLoading}
             ref={imageUploaderRef}
-            contextName="supplier"
+            contextName="company"
             contextId={data?.id || undefined}
             fullWidth
             hideUploadButton={true}

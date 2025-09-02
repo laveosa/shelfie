@@ -57,7 +57,11 @@ export default function SupplierCard({
             </span>
             <SheButton
               icon={selectedSupplier ? RefreshCcwDotIcon : Plus}
-              value={selectedSupplier ? t("SupplierActions.ReplaceSupplier") : t("SupplierActions.SelectSupplier")}
+              value={
+                selectedSupplier
+                  ? t("SupplierActions.ReplaceSupplier")
+                  : t("SupplierActions.SelectSupplier")
+              }
               variant="secondary"
               maxWidth="160px"
               minWidth="160px"
@@ -143,7 +147,9 @@ export default function SupplierCard({
                 <SheButton
                   icon={selectedSupplier.isDeleted === true ? Plus : CogIcon}
                   value={
-                    selectedSupplier.isDeleted === true ? t("CommonButtons.Restore") : t("CommonButtons.Manage")
+                    selectedSupplier.isDeleted === true
+                      ? t("CommonButtons.Restore")
+                      : t("CommonButtons.Manage")
                   }
                   variant="secondary"
                   onClick={() => {
@@ -155,15 +161,17 @@ export default function SupplierCard({
               </div>
               {selectedSupplier.isDeleted && (
                 <div className={cs.deletedSupplierBlock}>
-                  <span
-                    className={`${cs.deletedSupplierText} she-text`}
-                  >{t("MarginMessages.SupplierIsDeleted")}</span>
+                  <span className={`${cs.deletedSupplierText} she-text`}>
+                    {t("MarginMessages.SupplierIsDeleted")}
+                  </span>
                 </div>
               )}
             </div>
           )}
           <Separator />
-          <span className="she-title">{t("PurchaseForm.Labels.PurchaseDate")}</span>
+          <span className="she-title">
+            {t("PurchaseForm.Labels.PurchaseDateTitle")}
+          </span>
           <SheDatePicker
             icon={CalendarRange}
             fullWidth
@@ -185,7 +193,11 @@ export default function SupplierCard({
               onClick={() => onAction("closeSupplierCard")}
             ></SheButton>
             <SheButton
-              value={!selectedPurchase?.purchaseId ? "Create Purchase" : t("CommonButtons.Save")}
+              value={
+                !selectedPurchase?.purchaseId
+                  ? "Create Purchase"
+                  : t("CommonButtons.Save")
+              }
               icon={!selectedPurchase?.purchaseId && Plus}
               txtColor={!selectedPurchase?.purchaseId && "#fff"}
               bgColor={!selectedPurchase?.purchaseId && "#007AFF"}

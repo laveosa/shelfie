@@ -22,7 +22,7 @@ export default function InvoicesCard({
   onAction,
 }: IInvoiceCard) {
   const { t } = useTranslation();
-  
+
   function onGridAction(
     actionType: string,
     _rowId?: string,
@@ -53,7 +53,7 @@ export default function InvoicesCard({
         <div className={cs.invoicesCardContent}>
           <SheFileUploader
             isLoading={isImageUploaderLoading}
-            contextName={"invoiceDocument"}
+            contextName="invoiceDocument"
             viewMode="file"
             contextId={contextId}
             acceptedFileTypes={{

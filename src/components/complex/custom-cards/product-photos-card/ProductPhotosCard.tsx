@@ -82,7 +82,7 @@ export default function ProductPhotosCard({
         <div className={cs.productPhotosCardContent}>
           <SheFileUploader
             isLoading={isImageUploaderLoading}
-            contextName={"product"}
+            contextName="product"
             contextId={contextId}
             onUpload={(uploadModel: UploadPhotoModel) =>
               handleAction("upload", uploadModel)

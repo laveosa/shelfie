@@ -82,7 +82,7 @@ export default function VariantPhotosCard({
       >
         <div className={cs.variantPhotosCardContent}>
           <SheFileUploader
-            contextName={"variant"}
+            contextName="variant"
             contextId={contextId}
             onUpload={(uploadModel: UploadPhotoModel) =>
               handleAction("upload", uploadModel)
@@ -90,7 +90,9 @@ export default function VariantPhotosCard({
           />
           <div className={cs.managePhotos}>
             <div className={`${cs.managePhotosTitle} she-title`}>
-              <span className="she-title">{t("ProductForm.Labels.VariantPhotos")}</span>
+              <span className="she-title">
+                {t("ProductForm.Labels.VariantPhotos")}
+              </span>
             </div>
             <div className={cs.managePhotosGrid}>
               <DndGridDataTable
@@ -114,7 +116,9 @@ export default function VariantPhotosCard({
           </div>
           <div className={cs.managePhotos}>
             <div className={`${cs.managePhotosTitle} she-title`}>
-              <span className="she-title">{t("ProductForm.Labels.OtherProductPhotos")}</span>
+              <span className="she-title">
+                {t("ProductForm.Labels.OtherProductPhotos")}
+              </span>
             </div>
             <div className={cs.managePhotosGrid}>
               <DndGridDataTable
