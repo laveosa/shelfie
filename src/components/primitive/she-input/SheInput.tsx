@@ -138,11 +138,11 @@ export default function SheInput(props: ISheInput): JSX.Element {
     _isInitialized.current = true;
     _lastEventDataRef.current = event;
 
-    const newValue = _trimExtraSpaces(event.target.value);
+    let newValue = _trimExtraSpaces(event.target.value);
+    newValue = _updateValueType(newValue);
     const tmpIsValid = _validateValue(newValue);
 
-    if (getFormMode() === ReactHookFormMode.CHANGE)
-      updateFormValue(newValue || "");
+    if (getFormMode() === ReactHookFormMode.CHANGE) updateFormValue(newValue);
 
     setTextValue(newValue);
     onChange?.(newValue, {
@@ -159,12 +159,11 @@ export default function SheInput(props: ISheInput): JSX.Element {
   function onBlurHandler(event: React.ChangeEvent<HTMLInputElement>) {
     _isTouched.current = true;
 
-    // const newValue = event.target.value.trim() || null; // delete me if all work fine
-    const newValue = _trimExtraSpaces(event.target.value);
+    let newValue = _trimExtraSpaces(event.target.value);
+    newValue = _updateValueType(newValue);
     const tmpIsValid = _validateValue(newValue);
 
-    if (getFormMode() === ReactHookFormMode.BLUR)
-      updateFormValue(newValue || "");
+    if (getFormMode() === ReactHookFormMode.BLUR) updateFormValue(newValue);
 
     setIsHighlighted(!_.isEqual(_sourceValue.current, newValue));
     onBlur?.(newValue, {
@@ -228,12 +227,18 @@ export default function SheInput(props: ISheInput): JSX.Element {
     setIsValid(value);
   }
 
+  function _updateValueType(value: any) {
+    if (type !== "number" && value.length === 0) return "";
+    if (type === "number") return parseInt(value);
+    return value;
+  }
+
   // ----------------------------- VALIDATION PATTERNS CHECK
 
   function _isRequiredValidCheck(inputValue, validation) {
     if (!required || !validation || !_isTouched.current) return validation;
 
-    const result = inputValue?.length > 0;
+    const result = type !== "number" ? inputValue?.length > 0 : true;
 
     if (!result) setIsLengthValid(false);
 

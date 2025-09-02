@@ -23,6 +23,7 @@ import SheMultiSelect from "@/components/primitive/she-multi-select/SheMultiSele
 import SheBadgeList from "@/components/primitive/she-badge-list/SheBadgeList.tsx";
 import { CalendarModeEnum } from "@/const/enums/CalendarModeEnum.ts";
 import SheCalendar from "@/components/primitive/she-calendar/SheCalendar.tsx";
+import SheInputEditor from "@/components/primitive/she-input-editor/SheInputEditor.tsx";
 
 const statusList: ISheRadioItem<string>[] = [
   {
@@ -228,6 +229,35 @@ const interestsList: ISheSelectItem<number>[] = [
   },
 ];
 
+// use this example model
+export const userFormExampleModel: UserModel = {
+  id: "2323_SDJKLkkaW32kjanlISJI",
+  firstName: "John",
+  lastName: "Doe",
+  nickName: "",
+  age: 30,
+  email: "startlord0521882@example.com",
+  phone: "+1 123-456-7890",
+  address: "5/24 Levetano Str. Odessa, Ukraine",
+  workStatus: "active",
+  dateBirth: new Date("05.21.1982"),
+  gender: "male",
+  nationality: "UA",
+  maritalStatus: "single",
+  position: "frontend",
+  comment:
+    "some comment for test, 233333333333333333333333333333, some comment for test, 233333333333333333333333333333, some comment for test, 233333333333333333333333333333, some comment for test, 233333333333333333333333333333, ",
+  isAvailable: true,
+  isRemote: true,
+  communicationPreferences: ["phone", "email", "ms teams", "slack"],
+  interests: [1, 2, 3, 4, 5],
+  contractPeriod: {
+    from: "09.05.2025",
+    to: "09.15.2025",
+  },
+  leaveDays: ["09.05.2025", "09.11.2025", "09.17.2025", "09.23.2025"],
+};
+
 export default function UserForm({
   data,
   notDisabledSubmit,
@@ -326,7 +356,7 @@ export default function UserForm({
           <SheFormField
             name="nickName"
             render={({ field }) => (
-              <SheInput
+              <SheInputEditor
                 label="Nick Name:"
                 value={field.value}
                 {...commonProps}

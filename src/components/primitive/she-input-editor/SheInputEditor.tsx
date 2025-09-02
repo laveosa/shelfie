@@ -97,7 +97,7 @@ export default function SheInputEditor(props: ISheInputEditor): JSX.Element {
     event: React.KeyboardEvent | React.MouseEvent | React.ChangeEvent,
   ) {
     setSourceValue(_textValue);
-    updateFormValue(_textValue);
+    updateFormValue(_textValue || "");
     onToggleManageHandler(false);
     onSave?.(_textValue, {
       value: _textValue,
