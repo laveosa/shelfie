@@ -158,7 +158,9 @@ export default function SheInput(props: ISheInput): JSX.Element {
 
   function onBlurHandler(event: React.ChangeEvent<HTMLInputElement>) {
     _isTouched.current = true;
-    const newValue = event.target.value.trim() || null;
+
+    // const newValue = event.target.value.trim() || null; // delete me if all work fine
+    const newValue = _trimExtraSpaces(event.target.value);
     const tmpIsValid = _validateValue(newValue);
 
     if (getFormMode() === ReactHookFormMode.BLUR)
@@ -179,7 +181,7 @@ export default function SheInput(props: ISheInput): JSX.Element {
   function onClearHandler(event) {
     _isInitialized.current = false;
     _isTouched.current = false;
-    updateIsValid(true);
+    _updateIsValid(true);
     setIsLengthValid(true);
     _setErrorCondition(false);
     resetFormField();
@@ -217,11 +219,11 @@ export default function SheInput(props: ISheInput): JSX.Element {
     validation = _isRequiredValidCheck(inputValue, validation);
     validation = _isLengthValidCheck(inputValue, validation);
     validation = _isPatternValidCheck(inputValue, validation);
-    updateIsValid(validation);
+    _updateIsValid(validation);
     return validation;
   }
 
-  function updateIsValid(value: boolean) {
+  function _updateIsValid(value: boolean) {
     onIsValid?.(value);
     setIsValid(value);
   }

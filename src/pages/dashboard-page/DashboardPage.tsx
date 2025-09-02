@@ -14,7 +14,7 @@ const user: UserModel = {
   email: "startlord0521882@example.com",
   phone: "+1 123-456-7890",
   address: "5/24 Levetano Str. Odessa, Ukraine",
-  status: "active",
+  workStatus: "active",
   dateBirth: new Date("05.21.1982"),
   gender: "male",
   nationality: "UA",
@@ -27,8 +27,8 @@ const user: UserModel = {
   communicationPreferences: ["phone", "email", "ms teams", "slack"],
   interests: [1, 2, 3, 4, 5],
   contractPeriod: {
-    from: "",
-    to: "",
+    from: "09.05.2025",
+    to: "09.15.2025",
   },
   leaveDays: ["09.05.2025", "09.11.2025", "09.17.2025", "09.23.2025"],
 };
@@ -55,7 +55,7 @@ export function DashboardPage() {
       <br />
 
       <UserForm
-        // data={user}
+        data={user}
         notDisabledSubmit
         onSubmit={onAction}
         onCancel={onAction}

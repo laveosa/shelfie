@@ -14,7 +14,7 @@ export default function SheFormField<T = any, TName extends FieldPath<T>>(
 ) {
   // ==================================================================== PROPS
   const { form } = useSheFormContext<T>();
-  const { name, render } = props;
+  const { name, render, ignoreFormAction } = props;
   const sheFormItemProps = getCustomProps<ISheFormField<T, TName>>(
     props,
     SheFormItemDefaultModel,
@@ -28,7 +28,9 @@ export default function SheFormField<T = any, TName extends FieldPath<T>>(
       render={({ field, fieldState, formState }) =>
         (
           <SheFormItem {...sheFormItemProps}>
-            <SheFormItemContextProvider<T, TName> value={{ field, form }}>
+            <SheFormItemContextProvider<T, TName>
+              value={!ignoreFormAction ? { field, form } : null}
+            >
               {render({ field, fieldState, formState })}
             </SheFormItemContextProvider>
           </SheFormItem>

@@ -24,27 +24,26 @@ const userFormScheme: AppSchemeType<UserModel> = z.object({
     ),
   email: z
     .string()
-    .nonempty(nonemptyMessage)
-    .regex(ContextPatternEnum.EMAIL as RegExp, "invalid email"),
+    .regex(ContextPatternEnum.EMAIL as RegExp, "invalid email")
+    .nonempty(nonemptyMessage),
   phone: z.string().nonempty(nonemptyMessage),
   address: z
     .string()
     .min(4, "no idea where it can be")
     .max(40, "it's too far for us to cooperate with you")
     .nonempty(nonemptyMessage),
-  status: z.enum([
-    "active",
-    "pending",
-    "vacation",
-    "fired",
-    "unemployed",
-    "employed",
-  ]),
+  workStatus: z.enum(
+    ["active", "pending", "vacation", "fired", "unemployed", "employed"],
+    { required_error: nonemptyMessage },
+  ),
   dateBirth: z
     .date({ required_error: nonemptyMessage })
     .or(z.string().nonempty(nonemptyMessage)),
   gender: z
-    .enum(["male", "female", "unicorn", "banana"])
+    .enum(["male", "female", "unicorn", "banana"], {
+      required_error: nonemptyMessage,
+      description: "be reasonable by selecting your gender",
+    })
     .superRefine((arg, ctx) => {
       if (arg !== "male" && arg !== "female") {
         ctx.addIssue({
@@ -54,13 +53,15 @@ const userFormScheme: AppSchemeType<UserModel> = z.object({
       }
     }),
   nationality: z.string().nonempty(nonemptyMessage),
-  maritalStatus: z.enum(["married", "single", "divorced", "inRelationship"]),
+  maritalStatus: z.enum(["married", "single", "divorced", "inRelationship"], {
+    required_error: nonemptyMessage,
+  }),
   position: z.string().nonempty(nonemptyMessage),
   comment: z.string().optional(),
   isAvailable: z.boolean().optional(),
   isRemote: z.boolean().optional(),
   communicationPreferences: z.array(z.string()).optional(),
-  interests: z.array(z.number()),
+  interests: z.array(z.number()).optional(),
   contractPeriod: z
     .object({
       from: z
@@ -73,12 +74,15 @@ const userFormScheme: AppSchemeType<UserModel> = z.object({
     .refine((val) => val.from <= val.to, {
       message: "Start date must be before end date",
       path: ["to"],
-    }),
-  leaveDays: z.array(
-    z
-      .date({ required_error: nonemptyMessage })
-      .or(z.string().nonempty(nonemptyMessage)),
-  ),
+    })
+    .optional(),
+  leaveDays: z
+    .array(
+      z
+        .date({ required_error: nonemptyMessage })
+        .or(z.string().nonempty(nonemptyMessage)),
+    )
+    .optional(),
 });
 
 export default userFormScheme;

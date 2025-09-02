@@ -38,7 +38,7 @@ import {
   SheMultiSelectFooterDefaultModel,
 } from "@/const/interfaces/primitive-components/ISheMultiSelectFooter.ts";
 
-export default function SheMultiSelect<T>(
+export default function SheMultiSelect<T = any>(
   props: ISheMultiSelect<T>,
 ): JSX.Element {
   // ==================================================================== PROPS

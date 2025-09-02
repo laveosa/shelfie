@@ -19,10 +19,11 @@ export default function SheFormItem({
   labelTransKey,
   description,
   descriptionTransKey,
+  required,
 }: ISheFormItem): JSX.Element {
   return (
     <FormItem
-      className={`${cs.sheFormItem} ${className} ${description ? cs.withDescription : ""}`}
+      className={`${cs.sheFormItem} ${className} ${description ? cs.withDescription : ""} ${required ? cs.required : ""}`}
       style={{ ...style }}
     >
       {label && (

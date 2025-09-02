@@ -10,7 +10,7 @@ export interface UserModel {
   email?: string; // input
   phone?: string; // input
   address?: string; // input
-  status?:
+  workStatus?:
     | "active"
     | "pending"
     | "vacation"

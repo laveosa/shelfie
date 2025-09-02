@@ -1,36 +1,28 @@
 import React, { JSX, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { Home, User } from "lucide-react";
-import TNFLogoIcon from "@/assets/icons/TNF_logo.svg?react";
-
 import useAppForm from "@/utils/hooks/useAppForm.ts";
 import { UserModel, UserModelDefault } from "@/const/models/UserModel.ts";
 import UserFormScheme from "@/utils/validation/schemes/UserFormScheme.ts";
 import SheForm from "@/components/complex/she-form/SheForm.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
-import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { IUserForm } from "@/const/interfaces/forms/IUserForm.ts";
-import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
 import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
-import SheAutocomplete from "@/components/primitive/she-autocomplete/SheAutocomplete.tsx";
-import SheToggle from "@/components/primitive/she-toggle/SheToggle.tsx";
-import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
-import SheBadgeList from "@/components/primitive/she-badge-list/SheBadgeList.tsx";
-import SheMultiSelect from "@/components/primitive/she-multi-select/SheMultiSelect.tsx";
-import SheTimePicker from "@/components/primitive/she-time-picker/SheTimePicker.tsx";
 import { DateFormatEnum } from "@/const/enums/DateFormatEnum.ts";
-import { TimeFormatEnum } from "@/const/enums/TimeFormatEnum.ts";
 import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
-import SheCalendar from "@/components/primitive/she-calendar/SheCalendar.tsx";
-import SheTextArea from "@/components/primitive/she-textarea/SheTextarea.tsx";
-import SheInputEditor from "@/components/primitive/she-input-editor/SheInputEditor.tsx";
 import SheRadioGroup from "@/components/primitive/she-radio-group/SheRadioGroup.tsx";
 import { ISheRadioItem } from "@/const/interfaces/primitive-components/ISheRadioItem.ts";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import { ISheToggle } from "@/const/interfaces/primitive-components/ISheToggle.ts";
+import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
+import SheTextArea from "@/components/primitive/she-textarea/SheTextarea.tsx";
+import SheToggle from "@/components/primitive/she-toggle/SheToggle.tsx";
+import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
+import SheMultiSelect from "@/components/primitive/she-multi-select/SheMultiSelect.tsx";
+import SheBadgeList from "@/components/primitive/she-badge-list/SheBadgeList.tsx";
+import { CalendarModeEnum } from "@/const/enums/CalendarModeEnum.ts";
+import SheCalendar from "@/components/primitive/she-calendar/SheCalendar.tsx";
 
 const statusList: ISheRadioItem<string>[] = [
   {
@@ -248,6 +240,14 @@ export default function UserForm({
     defaultValues: UserModelDefault,
   });
 
+  const commonProps: any = {
+    fullWidth: true,
+    showClearBtn: true,
+    hideErrorMessage: true,
+  };
+
+  const formFieldWrapperClassName = "flex gap-5 !mb-5 w-full";
+
   useEffect(() => {
     form.reset(data);
   }, [data]);
@@ -285,384 +285,288 @@ export default function UserForm({
         id="USER_FORM"
         form={form}
         defaultValues={UserModelDefault}
-        icon={TNFLogoIcon}
-        formPosition={DirectionEnum.CENTER}
         title="User Form"
-        minWidth="400px"
+        minWidth="600px"
+        maxWidth="600px"
         view={ComponentViewEnum.CARD}
         notDisabledSubmit={notDisabledSubmit}
         onSubmit={onSubmit}
         onError={onErrorHandler}
         onCancel={onCancel}
       >
+        <div className={formFieldWrapperClassName}>
+          <SheFormField
+            name="firstName"
+            ignoreFormAction // SWITCH OF INTUITIVE FORM ACTIONS FOR MANUAL USAGE (for test only)
+            render={({ field }) => (
+              <SheInput
+                label="First Name:"
+                value={field.value}
+                required
+                minLength={2}
+                maxLength={20}
+                onChange={field.onChange} // manual updating form field value (for test only)
+                {...commonProps}
+              />
+            )}
+          />
+          <SheFormField
+            name="lastName"
+            render={({ field }) => (
+              <SheInput
+                label="Last Name:"
+                value={field.value}
+                required
+                {...commonProps}
+              />
+            )}
+          />
+        </div>
+        <div className={formFieldWrapperClassName}>
+          <SheFormField
+            name="nickName"
+            render={({ field }) => (
+              <SheInput
+                label="Nick Name:"
+                value={field.value}
+                {...commonProps}
+              />
+            )}
+          />
+          <SheFormField
+            name="gender"
+            ignoreFormAction // SWITCH OF INTUITIVE FORM ACTIONS FOR MANUAL USAGE (for test only)
+            render={({ field }) => (
+              <SheSelect
+                label="Gender:"
+                items={gendersList}
+                selected={field.value}
+                required
+                onSelect={(value) => {
+                  // manual updating form field value (for test only)
+                  field.onChange(value);
+                  void form.trigger(field.name);
+                }}
+                {...commonProps}
+              />
+            )}
+          />
+        </div>
+        <div className={formFieldWrapperClassName}>
+          <SheFormField
+            name="age"
+            render={({ field }) => (
+              <SheInput
+                label="Age:"
+                value={field.value}
+                type="number"
+                required
+                {...commonProps}
+              />
+            )}
+          />
+          <SheFormField
+            name="dateBirth"
+            render={({ field }) => (
+              <SheDatePicker
+                label="Date Birth:"
+                date={field.value}
+                dateFormat={DateFormatEnum.MM_DD_YYYY}
+                required
+                {...commonProps}
+              />
+            )}
+          />
+        </div>
+        <div className={formFieldWrapperClassName}>
+          <SheFormField
+            name="email"
+            render={({ field }) => (
+              <SheInput
+                label="Email:"
+                value={field.value}
+                required
+                {...commonProps}
+              />
+            )}
+          />
+          <SheFormField
+            name="phone"
+            render={({ field }) => (
+              <SheInput
+                label="Phone:"
+                value={field.value}
+                required
+                {...commonProps}
+              />
+            )}
+          />
+        </div>
+        <div className={formFieldWrapperClassName}>
+          <SheFormField
+            name="nationality"
+            render={({ field }) => (
+              <SheSelect
+                label="Nationality:"
+                items={nationalityList}
+                selected={field.value}
+                showSelectIcon
+                required
+                {...commonProps}
+              />
+            )}
+          />
+          <SheFormField
+            name="address"
+            render={({ field }) => (
+              <SheInput
+                label="Address:"
+                value={field.value}
+                required
+                {...commonProps}
+              />
+            )}
+          />
+        </div>
+        <div className={formFieldWrapperClassName}>
+          <SheFormField
+            name="workStatus"
+            render={({ field }) => (
+              <SheRadioGroup
+                label="Work Status:"
+                items={statusList}
+                selected={field.value}
+                required
+                description={_getStateDescription(field.value)}
+              />
+            )}
+          />
+          <SheFormField
+            name="maritalStatus"
+            render={({ field }) => (
+              <SheRadioGroup
+                label="Marital Status:"
+                items={maritalStatusList}
+                selected={field.value}
+                required
+              />
+            )}
+          />
+        </div>
+        <div className={formFieldWrapperClassName}>
+          <SheFormField
+            name="position"
+            render={({ field }) => (
+              <SheSelect
+                label="Position:"
+                items={positionList}
+                selected={field.value}
+                required
+                {...commonProps}
+              />
+            )}
+          />
+          <SheFormField
+            label="Contact:"
+            name="communicationPreferences"
+            required
+            ignoreFormAction
+            render={({ field }) => (
+              <div className="flex gap-2 w-full flex-wrap">
+                {contactVariety.map((item, idx) => (
+                  <SheToggle key={item + idx} text={item} />
+                ))}
+              </div>
+            )}
+          />
+        </div>
         <SheFormField
-          name="firstName"
+          name="interests"
+          ignoreFormAction
           render={({ field }) => (
-            <SheInput
-              label="First Name:"
-              value={field.value}
-              required
-              fullWidth
-              showClearBtn
-            />
-          )}
-        />
-        <SheFormField
-          name="lastName"
-          render={({ field }) => (
-            <SheInput
-              label="Last Name:"
-              value={field.value}
-              required
-              fullWidth
-              showClearBtn
-            />
-          )}
-        />
-        <SheFormField
-          name="nickName"
-          render={({ field }) => (
-            <SheInput
-              label="Nick Name:"
-              value={field.value}
-              required
-              fullWidth
-              showClearBtn
-            />
-          )}
-        />
-        <SheFormField
-          name="age"
-          render={({ field }) => (
-            <SheInput
-              label="Age:"
-              value={field.value}
-              required
-              fullWidth
-              showClearBtn
-            />
-          )}
-        />
-        <SheFormField
-          name="email"
-          render={({ field }) => (
-            <SheInput
-              label="Email:"
-              value={field.value}
-              required
-              fullWidth
-              showClearBtn
-            />
-          )}
-        />
-        <SheFormField
-          name="phone"
-          render={({ field }) => (
-            <SheInput
-              label="Phone:"
-              value={field.value}
-              required
-              fullWidth
-              showClearBtn
-            />
-          )}
-        />
-        <SheFormField
-          name="address"
-          render={({ field }) => (
-            <SheInput
-              label="Address:"
-              value={field.value}
-              required
-              fullWidth
-              showClearBtn
-            />
-          )}
-        />
-        <SheFormField
-          name="status"
-          render={({ field }) => (
-            <SheRadioGroup
-              label="Status:"
-              items={statusList}
-              selected={field.value}
-              required
-              fullWidth
-              showClearBtn
-            />
-          )}
-        />
-      </SheForm>
-    </div>
-  );
-}
-
-{
-  /*<SheFormField
-          name="nikName"
-          render={({ field }) => (
-            <SheInputEditor
-              label="Nik name edit"
-              value={field.value}
-              required
-              showClearBtn
-              fullWidth
-              hideErrorMessage
-            />
-          )}
-        />
-        <SheFormField
-          name="status"
-          render={({ field }) => (
-            <SheRadioGroup
-              label="Status"
-              selected={field.value}
-              items={statuses?.map(
-                (item): ISheRadioItem<string> => ({
-                  text: item,
-                  value: item,
-                }),
-              )}
-              required
-              showClearBtn
-            />
+            <div className="flex flex-col gap-2 mb-5 w-full">
+              <SheMultiSelect
+                label="Interests:"
+                items={interestsList}
+                selectedValues={field.value}
+                fullWidth
+                showClearBtn
+                onSelect={field.onChange}
+              />
+              <SheBadgeList
+                items={
+                  interestsList.filter((item) =>
+                    field.value?.includes(item.value),
+                  ) as any
+                }
+                showCloseBtn
+                onClose={(item) => {
+                  field.onChange(
+                    field.value?.filter((value) => value !== item.value),
+                  );
+                }}
+              />
+            </div>
           )}
         />
         <SheFormField
           name="comment"
           render={({ field }) => (
             <SheTextArea
-              label="Comment"
+              label="Comment:"
+              className="!mb-2.5"
               value={field.value}
-              required
-              icon={Home}
-              showClearBtn
-              fullWidth
-              hideErrorMessage
+              {...commonProps}
             />
           )}
         />
-        <SheFormField
-          name="multipleDate"
-          render={({ field }) => (
-            <SheDatePicker
-              label="Multiple date"
-              date={field.value}
-              required
-              icon={Home}
-              mode="multiple"
-              showClearBtn
-              fullWidth
-            />
-          )}
-        />
-        <SheFormField
-          name="rangeDate"
-          render={({ field }) => (
-            <SheDatePicker
-              label="Range date"
-              date={field.value}
-              required
-              icon={Home}
-              mode="range"
-              showClearBtn
-              fullWidth
-            />
-          )}
-        />
-        <SheFormField
-          name="dateBirth"
-          render={({ field }) => (
-            <SheDatePicker
-              label="Single date"
-              date={field.value}
-              dateFormat={DateFormatEnum.MM_DD_YYYY}
-              required
-              icon={Home}
-              mode="single"
-              showClearBtn
-              fullWidth
-            />
-          )}
-        />*/
-}
-{
-  /*<SheFormField
-          name="multipleDate"
-          render={({ field }) => (
-            <SheCalendar
-              label="Multiple date"
-              date={field.value}
-              dateFormat={DateFormatEnum.MM_DD_YYYY}
-              required
-              icon={Home}
-              mode="multiple"
-              showClearBtn
-            />
-          )}
-        />
-        <SheFormField
-          name="rangeDate"
-          render={({ field }) => (
-            <SheCalendar
-              label="Range date"
-              date={field.value}
-              dateFormat={DateFormatEnum.MM_DD_YYYY}
-              required
-              icon={Home}
-              mode="range"
-              showClearBtn
-            />
-          )}
-        />
-        <SheFormField
-          name="dateBirth"
-          render={({ field }) => (
-            <SheCalendar
-              label="Single date"
-              date={field.value}
-              dateFormat={DateFormatEnum.MM_DD_YYYY}
-              required
-              icon={Home}
-              mode="single"
-              showClearBtn
-            />
-          )}
-        />*/
-}
-{
-  /*<SheFormField
-          name="units"
-          render={({ field }) => (
-            <SheMultiSelect
-              label="Units"
-              items={units}
-              fullWidth
-              selectedValues={field.value}
-              showClearBtn
-            />
-          )}
-        />
-        <SheFormField
-          name="alertTime"
-          render={({ field }) => (
-            <SheTimePicker
-              label="Alert Time"
-              date={field.value}
-              timeFormat={TimeFormatEnum.HH_MM_SS}
-              showClearBtn
-            />
-          )}
-        />
-        <SheFormField
-          name="tags"
-          render={({ field }) => (
-            <SheBadgeList
-              label="Tags"
-              items={field.value}
-              // items={positions}
-              required
-              showCloseBtn
-              showClearBtn
-              maxWidth="400px"
-            />
-          )}
-        />
-        <SheFormField
-          name="nikName"
-          render={({ field }) => (
-            <SheAutocomplete
-              label="Nik Name"
-              searchValue={field.value}
-              items={positions}
-              showClearBtn
-              fullWidth
-              required
-              hideErrorMessage
-            />
-          )}
-        />
-        <SheFormField
-          name="isAvailable"
-          render={({ field }) => (
-            <SheToggle
-              label="Is Available"
-              checked={field.value}
-              type={SheToggleTypeEnum.SWITCH}
-            />
-          )}
-        />
-        <SheFormField<UserModel>
-          name="name"
-          render={({ field }) => (
-            <SheInput
-              label="Name"
-              value={field.value}
-              placeholder="enter user name..."
-              showClearBtn
-              fullWidth
-              minLength={4}
-              maxLength={16}
-              required
-              hideErrorMessage
-            />
-          )}
-        />
-        <SheFormField
-          name="email"
-          render={({ field }) => (
-            <SheInput
-              label="Email"
-              value={field.value}
-              placeholder="enter user email..."
-              type="email"
-              showClearBtn
-              fullWidth
-              required
-              hideErrorMessage
-            />
-          )}
-        />
-        <SheFormField
-          name="address"
-          render={({ field }) => (
-            <SheInput
-              label="Address"
-              value={field.value}
-              placeholder="enter user address..."
-              showClearBtn
-              fullWidth
-            />
-          )}
-        />
-        <SheFormField<UserModel>
-          name="gender"
-          render={({ field }) => (
-            <SheSelect<string>
-              label="Gender"
-              selected={field?.value}
-              items={genders}
-              hideFirstOption
-              showClearBtn
-              fullWidth
-              required
-              placeholder="select user gender..."
-            />
-          )}
-        />
-        <SheFormField
-          name="position"
-          render={({ field }) => (
-            <SheSelect
-              label="Position"
-              selected={field?.value}
-              items={positions}
-              hideFirstOption
-              showClearBtn
-              fullWidth
-              placeholder="select user position..."
-              icon={User}
-            />
-          )}
-        />*/
+        <div className="flex gap-2.5 !mb-5">
+          <SheFormField
+            name="isAvailable"
+            render={({ field }) => (
+              <SheToggle
+                text="Is Available"
+                checked={field.value}
+                minWidth="140px"
+                type={SheToggleTypeEnum.SWITCH}
+              />
+            )}
+          />
+          <SheFormField
+            name="isRemote"
+            render={({ field }) => (
+              <SheToggle
+                text="Is Remote"
+                checked={field.value}
+                minWidth="140px"
+                type={SheToggleTypeEnum.SWITCH}
+              />
+            )}
+          />
+        </div>
+        <div className="flex gap-5 w-full">
+          <SheFormField
+            name="contractPeriod"
+            render={({ field }) => (
+              <SheCalendar
+                label="Contract Period:"
+                date={field.value}
+                mode={CalendarModeEnum.RANGE}
+              />
+            )}
+          />
+          <SheFormField
+            name="leaveDays"
+            render={({ field }) => (
+              <SheCalendar
+                label="Leave Days:"
+                date={field.value}
+                mode={CalendarModeEnum.MULTIPLE}
+              />
+            )}
+          />
+        </div>
+      </SheForm>
+    </div>
+  );
 }

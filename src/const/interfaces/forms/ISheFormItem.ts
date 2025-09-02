@@ -5,6 +5,7 @@ export interface ISheFormItem extends ComponentPropsWithRef<"div"> {
   labelTransKey?: string;
   description?: string;
   descriptionTransKey?: string;
+  required?: boolean;
 }
 
 export const SheFormItemDefaultModel: ISheFormItem = {
@@ -12,4 +13,5 @@ export const SheFormItemDefaultModel: ISheFormItem = {
   labelTransKey: undefined,
   description: undefined,
   descriptionTransKey: undefined,
+  required: undefined,
 };

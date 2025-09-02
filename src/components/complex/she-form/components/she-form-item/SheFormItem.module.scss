@@ -6,6 +6,7 @@
   align-items: start;
   width: 100%;
   flex-grow: 1;
+  position: relative;
 
   > div {
     overflow: visible;
@@ -25,4 +26,18 @@
 
 .sheFormItem.withDescription {
   min-height: 98px;
+}
+
+// ======================================================== REQUIRED
+
+.sheFormItem.required {
+  &:before {
+    position: absolute;
+    left: -8px;
+    top: -13px;
+    margin-right: 0;
+    color: vars.$colorRed;
+    content: "*";
+    display: inline;
+  }
 }
