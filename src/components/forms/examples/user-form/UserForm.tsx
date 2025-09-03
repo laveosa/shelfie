@@ -573,7 +573,7 @@ export default function UserForm({
             <div className="flex flex-col gap-2 mb-5 w-full">
               <SheMultiSelect
                 label="Interests:"
-                items={interestsList}
+                items={interestsList as any}
                 selectedValues={field.value}
                 placeholder="select your interests..."
                 fullWidth
