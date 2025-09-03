@@ -35,7 +35,7 @@ export default function PurchaseProductsForm({
   onDelete,
   onCancel,
 }: IPurchaseProductsForm) {
-  const form = useAppForm<any>({
+  const form = useAppForm<PurchaseProductsModel>({
     mode: ReactHookFormMode.BLUR,
     resolver: zodResolver(PurchaseProductsFormScheme),
     defaultValues: data || PurchaseProductsModelDefault,
