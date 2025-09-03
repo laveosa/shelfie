@@ -44,6 +44,7 @@ import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
 import GridShowItemsFilter from "@/components/complex/grid/grid-show-deleted-filter/GridShowItemsFilter.tsx";
 import GridTraitsFilter from "@/components/complex/grid/grid-traits-filter/GridTraitsFilter.tsx";
+import { CalendarModeEnum } from "@/const/enums/CalendarModeEnum.ts";
 
 export function ProductsPage() {
   const dispatch = useAppDispatch();
@@ -536,7 +537,7 @@ export function ProductsPage() {
                 selected={state.purchasesGridModel.filter?.suppliers}
               />
               <SheDatePicker
-                mode="range"
+                mode={CalendarModeEnum.RANGE}
                 icon={CalendarRange}
                 placeholder="Pick range"
                 maxWidth="200px"

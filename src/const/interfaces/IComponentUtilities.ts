@@ -1,4 +1,4 @@
 export interface IComponentUtilities<T> {
-  props: T;
+  props?: T;
   identifier?: string;
 }

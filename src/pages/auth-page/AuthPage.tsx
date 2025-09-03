@@ -31,7 +31,7 @@ export default function AuthPage() {
   const dispatch = useAppDispatch();
   const state = useAppSelector<IAuthPageSlice>(StoreSliceEnum.AUTH);
   const { addToast } = useToast();
-  const form = useForm({
+  const form = useForm<RequestAuthModel>({
     defaultValues: {
       email: "",
       password: "",

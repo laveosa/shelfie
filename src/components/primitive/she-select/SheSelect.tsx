@@ -119,7 +119,7 @@ export default function SheSelect<T = any>(props: ISheSelect<T>): JSX.Element {
     if (!_.isEqual(newItems, _items)) {
       setItems(newItems);
     } else {
-      setItems(updateSelectedItems(_items, tmpSelected));
+      setItems(updateSelectedItems<any, any>(_items, tmpSelected));
     }
     // ----------------------------------- SET SELECTED
     if (!_.isEqual(tmpSelected, _selected)) setSelected(tmpSelected);

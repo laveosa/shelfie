@@ -1,5 +1,4 @@
-import { FieldPath } from "react-hook-form";
-import { ControllerProps } from "react-hook-form/dist/types/controller";
+import { ControllerProps, FieldPath } from "react-hook-form";
 
 import {
   ISheFormItem,

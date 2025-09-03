@@ -26,7 +26,7 @@ const userFormScheme: AppSchemeType<UserModel> = z.object({
   email: z
     .string()
     .max(100, textToLong)
-    .regex(ContextPatternEnum.EMAIL as RegExp, "invalid email")
+    .regex(ContextPatternEnum.EMAIL as any, "invalid email")
     .nonempty(nonemptyMessage),
   phone: z.string().nonempty(nonemptyMessage),
   address: z

@@ -11,12 +11,11 @@ import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
 import { IComponentUtilities } from "@/const/interfaces/IComponentUtilities.ts";
 import useSheFormData from "@/utils/hooks/useSheFormData.ts";
-import _ from "lodash";
+import { IShePrimitiveComponentWrapper } from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
 
-export default function useComponentUtilities<T>({
-  props,
-  identifier,
-}: IComponentUtilities<T> = {}) {
+export default function useComponentUtilities<
+  T extends IShePrimitiveComponentWrapper,
+>({ props, identifier }: IComponentUtilities<T> = {}) {
   // ==================================================================== STATE MANAGEMENT
   const [ariaDescribedbyId, setAriaDescribedbyId] = useState<string>(null);
 
