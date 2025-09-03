@@ -160,26 +160,24 @@ export default function PurchaseProductsForm({
           )}
         />
         <SheIcon className={cs.purchaseProductsFormIcon} icon={X} />
-        <FormField
-          control={form.control}
+        <SheFormField
           name="unitsAmount"
+          className={cs.purchaseFormItemTaxCurrency}
           render={({ field }): React.ReactElement => (
-            <SheFormItem className={cs.purchaseFormItemTaxCurrency}>
-              <SheInput
-                {...field}
-                className={
-                  activeTab === "connectProducts"
-                    ? field.value
-                      ? cs.formItemsValid
-                      : ""
+            <SheInput
+              value={field.value}
+              className={
+                activeTab === "connectProducts"
+                  ? field.value
+                    ? cs.formItemsValid
                     : ""
-                }
-                width="80px"
-                minWidth="80px"
-                maxWidth="80px"
-                placeholder="Quantity"
-              />
-            </SheFormItem>
+                  : ""
+              }
+              width="80px"
+              minWidth="80px"
+              maxWidth="80px"
+              placeholder="Quantity"
+            />
           )}
         />
         {!isVariantGrid ? (
