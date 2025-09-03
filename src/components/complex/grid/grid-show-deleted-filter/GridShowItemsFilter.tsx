@@ -16,7 +16,7 @@ export default function GridShowItemsFilter({ context }: { context?: string }) {
     { value: "false", text: `Hide ${context}` },
     { value: "true", text: `Show ${context}` },
   ];
-  const { onGridRequestChange } = useGridContext();
+  const { onGridRequestChange, gridRequestModel } = useGridContext();
   const [selectedValue, setSelectedValue] = useState<string>(
     gridShowItemsFilterItems[0].value,
   );
@@ -25,7 +25,11 @@ export default function GridShowItemsFilter({ context }: { context?: string }) {
   function handleSelect(value: string) {
     setSelectedValue(value);
     onGridRequestChange({
-      [`show${context}`]: value,
+      ...gridRequestModel,
+      filter: {
+        ...gridRequestModel?.filter,
+        [`show${context}`]: value,
+      },
     });
     setDropdownOpen(false);
   }

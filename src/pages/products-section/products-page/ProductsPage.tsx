@@ -86,10 +86,10 @@ export function ProductsPage() {
   function onAction(actionType: string, payload?: any) {
     switch (actionType) {
       case "activateProduct":
-        service.activateProduct(payload);
+        service.activateProductHandler(payload);
         break;
       case "activateVariant":
-        console.log(`Activating variant ${payload.variantId}`);
+        service.activateVariantActionHandler(payload);
         break;
       case "manageProduct":
         service.manageProductActionHandler(payload.productId);
@@ -201,6 +201,7 @@ export function ProductsPage() {
               columns={ProductsGridColumns(onAction) as ColumnDef<DataWithId>[]}
               data={state.productsGridModel.items}
               gridModel={state.productsGridModel}
+              gridRequestModel={state.productsGridRequestModel}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
               preferenceContext={"productReferences"}
@@ -235,6 +236,7 @@ export function ProductsPage() {
               columns={variantsGridColumns(onAction) as ColumnDef<DataWithId>[]}
               data={state.variants}
               gridModel={state.variantsGridModel}
+              gridRequestModel={state.variantsGridRequestModel}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
               preferenceContext={"variantReferences"}
@@ -262,12 +264,10 @@ export function ProductsPage() {
               <GridTraitsFilter
                 traitOptions={state.colorsForFilter}
                 traitType="color"
-                gridRequestModel={state.variantsGridRequestModel}
               />
               <GridTraitsFilter
                 traitOptions={state.sizesForFilter}
                 traitType="size"
-                gridRequestModel={state.variantsGridRequestModel}
               />
               <GridShowItemsFilter context="Deleted" />
             </DndGridDataTable>
@@ -281,6 +281,7 @@ export function ProductsPage() {
               }
               data={state.purchases}
               gridModel={state.purchasesGridModel}
+              gridRequestModel={state.purchasesGridRequestModel}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
               preferenceContext={"purchaseReferences"}

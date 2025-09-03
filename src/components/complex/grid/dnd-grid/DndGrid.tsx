@@ -33,6 +33,7 @@ import { GridContext } from "@/state/context/grid-context";
 import cs from "./DndGrid.module.scss";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 
 export interface DataWithId {
   id: number | string;
@@ -51,7 +52,7 @@ interface DataTableProps<TData extends DataWithId, TValue>
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   sortingItems?: GridSortingModel[];
-  onGridRequestChange?: (updates) => void;
+  gridRequestModel?: GridRequestModel;
   showHeader?: boolean;
   showColumnsHeader?: boolean;
   enableDnd?: boolean;
@@ -62,6 +63,7 @@ interface DataTableProps<TData extends DataWithId, TValue>
   onAction?: (data) => void;
   onApplyColumns?: (data) => void;
   onDefaultColumns?: () => void;
+  onGridRequestChange?: (updates) => void;
   onNewItemPosition?: (
     newIndex: number,
     activeItem: TData,
@@ -291,7 +293,7 @@ export const DndGridDataTable = React.forwardRef<
     customMessage,
     skeletonQuantity,
     cellPadding,
-    onGridRequestChange,
+    gridRequestModel,
     onApplyColumns,
     onDefaultColumns,
     onNewItemPosition,
@@ -299,6 +301,7 @@ export const DndGridDataTable = React.forwardRef<
     renderExpandedContent,
     onAddExpandableRow,
     createEmptyExpandableRow,
+    onGridRequestChange,
   }: DataTableProps<TData, TValue>,
   ref,
 ) {
@@ -466,16 +469,17 @@ export const DndGridDataTable = React.forwardRef<
         columnsPreferences,
         preferenceContext,
         onApplyColumns,
-        onDefaultColumns,
         showPagination,
         showSorting,
         showColumnsViewOptions,
         showColumnsHeader,
         showSearch,
         gridModel,
-        onGridRequestChange,
         sortingItems,
         children,
+        gridRequestModel,
+        onDefaultColumns,
+        onGridRequestChange,
       }}
     >
       <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>

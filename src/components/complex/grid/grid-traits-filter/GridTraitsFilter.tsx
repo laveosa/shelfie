@@ -10,7 +10,6 @@ import {
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import cs from "./GridTraitsFilter.module.scss";
 import { useGridContext } from "@/state/context/grid-context.ts";
-import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 
 type TraitType = "color" | "size";
@@ -18,15 +17,13 @@ type TraitType = "color" | "size";
 interface IGridTraitsFilter {
   traitOptions: any[];
   traitType?: TraitType;
-  gridRequestModel?: GridRequestModel;
 }
 
 export default function GridTraitsFilter({
   traitOptions,
   traitType,
-  gridRequestModel,
 }: IGridTraitsFilter) {
-  const { onGridRequestChange } = useGridContext();
+  const { onGridRequestChange, gridRequestModel } = useGridContext();
   const [selectedValue, setSelectedValue] = useState<number>();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 

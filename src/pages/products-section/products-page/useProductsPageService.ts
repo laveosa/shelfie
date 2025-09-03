@@ -4,11 +4,11 @@ import { merge } from "lodash";
 
 import {
   ProductsPageSliceActions as productsActions,
-  ProductsPageSliceActions as actions,
+  ProductsPageSliceActions as actions
 } from "@/state/slices/ProductsPageSlice.ts";
 import {
   addGridRowColor,
-  setSelectedGridItem,
+  setSelectedGridItem
 } from "@/utils/helpers/quick-helper.ts";
 import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
 import UsersApiHooks from "@/utils/services/api/UsersApiService.ts";
@@ -18,7 +18,9 @@ import useAppService from "@/useAppService.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
-import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import {
+  IProductsPageSlice
+} from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { GridRowsColorsEnum } from "@/const/enums/GridRowsColorsEnum.ts";
@@ -145,6 +147,8 @@ export default function useProductsPageService() {
   const [deleteSupplier] = SuppliersApiHooks.useDeleteSupplierMutation();
   const [restoreSupplier] = SuppliersApiHooks.useRestoreSupplierMutation();
   const [deletePurchase] = PurchasesApiHooks.useDeletePurchaseMutation();
+  const [toggleVariantIsActive] =
+    ProductsApiHooks.useToggleVariantIsActiveMutation();
 
   //-------------------------------------------------API
 
@@ -676,7 +680,7 @@ export default function useProductsPageService() {
 
   //----------------------------------------------------ACTIONS
 
-  function activateProduct(model) {
+  function activateProductHandler(model) {
     toggleProductActivationHandler(model.productId).then((res: any) => {
       if (!res.error) {
         dispatch(
@@ -819,64 +823,39 @@ export default function useProductsPageService() {
   }
 
   function gridRequestChangeHandler(updates: any) {
-    if ("searchQuery" in updates || "currentPage" in updates) {
-      if (state.activeTab === "products") {
-        dispatch(
-          actions.refreshProductsGridRequestModel({
-            ...state.productsGridRequestModel,
-            ...updates,
-          }),
-        );
-      } else if (state.activeTab === "variants") {
-        dispatch(
-          actions.refreshVariantsGridRequestModel({
-            ...state.variantsGridRequestModel,
-            ...updates,
-          }),
-        );
-      } else if (state.activeTab === "purchases") {
-        dispatch(
-          actions.refreshPurchasesGridRequestModel({
-            ...state.purchasesGridRequestModel,
-            ...updates,
-          }),
-        );
-      }
-    } else {
-      if (state.activeTab === "products") {
-        dispatch(
-          actions.refreshProductsGridRequestModel({
-            ...state.productsGridRequestModel,
-            currentPage: 1,
-            filter: {
-              ...state.productsGridRequestModel.filter,
-              ...updates,
-            },
-          }),
-        );
-      } else if (state.activeTab === "variants") {
-        dispatch(
-          actions.refreshVariantsGridRequestModel({
-            ...state.variantsGridRequestModel,
-            currentPage: 1,
-            filter: {
-              ...state.variantsGridRequestModel.filter,
-              ...updates,
-            },
-          }),
-        );
-      } else if (state.activeTab === "purchases") {
-        dispatch(
-          actions.refreshPurchasesGridRequestModel({
-            ...state.purchasesGridRequestModel,
-            currentPage: 1,
-            filter: {
-              ...state.purchasesGridRequestModel.filter,
-              ...updates,
-            },
-          }),
-        );
-      }
+    if (state.activeTab === "products") {
+      dispatch(
+        actions.refreshProductsGridRequestModel({
+          ...state.productsGridRequestModel,
+          ...updates,
+          filter: {
+            ...state.productsGridRequestModel.filter,
+            ...updates.filter,
+          },
+        }),
+      );
+    } else if (state.activeTab === "variants") {
+      dispatch(
+        actions.refreshVariantsGridRequestModel({
+          ...state.variantsGridRequestModel,
+          ...updates,
+          filter: {
+            ...state.variantsGridRequestModel.filter,
+            ...updates.filter,
+          },
+        }),
+      );
+    } else if (state.activeTab === "purchases") {
+      dispatch(
+        actions.refreshPurchasesGridRequestModel({
+          ...state.purchasesGridRequestModel,
+          ...updates,
+          filter: {
+            ...state.purchasesGridRequestModel.filter,
+            ...updates.filter,
+          },
+        }),
+      );
     }
   }
 
@@ -895,6 +874,32 @@ export default function useProductsPageService() {
     dispatch(actions.refreshActiveTab(value));
   }
 
+  function activateVariantActionHandler(model) {
+    toggleVariantIsActive(model.variantId).then((res: any) => {
+      if (!res.error) {
+        dispatch(
+          actions.refreshVariantsGridModel({
+            ...state.variantsGridModel,
+            items: state.variantsGridModel.items.map((variant) =>
+              variant.variantId === model.variantId
+                ? { ...variant, isActive: !model.isActive }
+                : variant,
+            ),
+          }),
+        );
+        addToast({
+          text: "Variant activated successfully",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: "Variant not activated",
+          description: res.error.message,
+          type: "error",
+        });
+      }
+    });
+  }
   //----------------------------------------------------LOGIC
 
   function itemsCardItemsConvertor(
@@ -968,9 +973,6 @@ export default function useProductsPageService() {
     getSortingOptionsForGridHandler,
     getCountersForProductsHandler,
     getProductDetailsHandler,
-    manageProductHandler,
-    deleteProductHandler,
-    toggleProductActivationHandler,
     updateUserPreferencesHandler,
     resetUserPreferencesHandler,
     getProductPhotosHandler,
@@ -1005,7 +1007,6 @@ export default function useProductsPageService() {
     getListOfTraitsWithOptionsForProductHandler,
     setProductTraitsHandler,
     deleteTraitHandler,
-    getListOfTraitsForProductHandler,
     createNewTraitHandler,
     updateTraitHandler,
     getOptionsForTraitHandler,
@@ -1027,7 +1028,7 @@ export default function useProductsPageService() {
     deleteSupplierHandler,
     restoreSupplierHandler,
     deletePurchaseHandler,
-    activateProduct,
+    activateProductHandler,
     deleteProductActionHandler,
     deleteVariantActionHandler,
     deletePurchaseActionHandler,
@@ -1040,5 +1041,6 @@ export default function useProductsPageService() {
     applyColumnsActionHandler,
     resetColumnsActionHandler,
     tabChangeActionHandler,
+    activateVariantActionHandler,
   };
 }

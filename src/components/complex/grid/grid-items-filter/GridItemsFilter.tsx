@@ -34,7 +34,7 @@ export default function GridItemsFilter<T>({
 }: GridFilterProps<T>) {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const { onGridRequestChange } = useGridContext();
+  const { onGridRequestChange, gridRequestModel } = useGridContext();
   useEffect(() => {
     if (!dropdownOpen && selected?.length > 0) {
       setSelectedIds(selected);
@@ -54,7 +54,12 @@ export default function GridItemsFilter<T>({
   function onResetHandle() {
     setSelectedIds([]);
     onGridRequestChange({
-      [columnName]: [],
+      ...gridRequestModel,
+      currentPage: 1,
+      filter: {
+        ...gridRequestModel?.filter,
+        [columnName]: [],
+      },
     });
     setDropdownOpen(false);
   }
@@ -62,7 +67,11 @@ export default function GridItemsFilter<T>({
   function onApplyHandle() {
     if (selectedIds.length > 0) {
       onGridRequestChange({
-        [columnName]: selectedIds,
+        ...gridRequestModel,
+        filter: {
+          ...gridRequestModel?.filter,
+          [columnName]: selectedIds,
+        },
       });
     }
     setDropdownOpen(false);
@@ -147,10 +156,12 @@ export default function GridItemsFilter<T>({
             <DropdownMenuSeparator />
           </div>
           <div className={cs.buttonBlock}>
-            <SheButton onClick={onResetHandle} variant="outline">
-              Default
-            </SheButton>
-            <SheButton onClick={onApplyHandle}>Apply</SheButton>
+            <SheButton
+              onClick={onResetHandle}
+              variant="outline"
+              value="Default"
+            />
+            <SheButton onClick={onApplyHandle} value="Apply" />
           </div>
         </DropdownMenuContent>
       </DropdownMenu>

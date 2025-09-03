@@ -1,10 +1,10 @@
+import React, { useState } from "react";
 import {
   ArrowDownNarrowWide,
   ArrowDownUp,
   ArrowUpNarrowWide,
   ChevronDown,
 } from "lucide-react";
-import React, { useState } from "react";
 
 import {
   DropdownMenu,
@@ -17,14 +17,19 @@ import cs from "./GridItemsSorting.module.scss";
 import { useGridContext } from "@/state/context/grid-context.ts";
 
 export default function GridItemsSorting() {
-  const { sortingItems, onGridRequestChange } = useGridContext();
+  const { sortingItems, onGridRequestChange, gridRequestModel } =
+    useGridContext();
 
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   function handleSelect(value: string) {
     setSelectedValue(value);
-    onGridRequestChange({ sortOption: value });
+    onGridRequestChange({
+      ...gridRequestModel,
+      currentPage: 1,
+      sortOption: value,
+    });
     setDropdownOpen(false);
   }
 
