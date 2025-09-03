@@ -11,9 +11,10 @@ import cs from "./ShipmentDetailsCard.module.scss";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import { IShipmentDetailsCard } from "@/const/interfaces/complex-components/custom-cards/IShipmentDetailsCard.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { ProductsInShipmentGridColumns } from "@/components/complex/grid/poducts-in-shipment-grid/ProductsInShipmentGridColumns.tsx";
-import { OrderShipmentsGridColumns } from "@/components/complex/grid/order-shipments-grid/OrderShipmentsGridColumns.tsx";
+
 import { Separator } from "@/components/ui/separator.tsx";
+import { ProductsInShipmentGridColumns } from "@/components/complex/grid/custom-grids/poducts-in-shipment-grid/ProductsInShipmentGridColumns.tsx";
+import { OrderShipmentsGridColumns } from "@/components/complex/grid/custom-grids/order-shipments-grid/OrderShipmentsGridColumns.tsx";
 
 export default function ShipmentDetailsCard({
   isLoading,
@@ -44,7 +45,9 @@ export default function ShipmentDetailsCard({
         />
         <Separator />
         <div className={cs.shipmentAllocationBlock}>
-          <span className="she-title">{t("ShipmentForm.Labels.ShipmentAllocation")}</span>
+          <span className="she-title">
+            {t("ShipmentForm.Labels.ShipmentAllocation")}
+          </span>
           <div className={cs.shipmentAllocationButtonBlock}>
             <SheButton
               icon={Plus}

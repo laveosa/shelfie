@@ -10,7 +10,7 @@ import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import PurchaseProductsForm from "@/components/forms/purchase-products-form/PurchaseProductsForm.tsx";
 import { ImageIcon } from "lucide-react";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-import PurchaseProductsGridColumnActions from "@/components/complex/grid/purchase-products-grid/PurchaseProductsGridColumnActions.tsx";
+import PurchaseProductsGridColumnActions from "@/components/complex/grid/custom-grids/purchase-products-grid/PurchaseProductsGridColumnActions.tsx";
 
 export function purchaseProductsGridColumns(
   currencies: CurrencyModel[],

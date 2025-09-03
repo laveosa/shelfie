@@ -11,8 +11,8 @@ import SheProductCard from "@/components/complex/she-product-card/SheProductCard
 import cs from "./ProductsInOrderCard.module.scss";
 import { IProductsInOrderCard } from "@/const/interfaces/complex-components/custom-cards/IProductsInOrderCard.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { ProductsInOrderGridColumns } from "@/components/complex/grid/products-in-order-grid/ProductsInOrderGridColums.tsx";
 import ProductsInOrderForm from "@/components/forms/products-in-order-form/PrductsInOrderForm.tsx";
+import { ProductsInOrderGridColumns } from "@/components/complex/grid/custom-grids/products-in-order-grid/ProductsInOrderGridColums.tsx";
 
 export default function ProductsInOrderCard({
   isLoading,
@@ -90,7 +90,9 @@ export default function ProductsInOrderCard({
         <div className={cs.productsSummaryBlock}>
           <span className="she-title"></span>
           <div className={cs.productsSummary}>
-            <span className="she-text">{t("OrderForm.Labels.ProductsTotal")}</span>
+            <span className="she-text">
+              {t("OrderForm.Labels.ProductsTotal")}
+            </span>
             <span className="she-text"></span>
           </div>
         </div>

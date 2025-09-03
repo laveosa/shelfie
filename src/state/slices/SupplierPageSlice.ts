@@ -88,6 +88,10 @@ function refreshActiveCards(
   state.activeCards = action?.payload || state.activeCards;
 }
 
+function resetActiveCards(state: ISupplierPageSlice) {
+  state.activeCards = [];
+}
+
 function refreshPurchase(
   state: ISupplierPageSlice,
   action: PayloadAction<PurchaseModel>,
@@ -145,6 +149,7 @@ const SupplierPageSlice = createSlice({
     setIsSuppliersGridLoading,
     setIsPhotoUploaderLoading,
     refreshActiveCards,
+    resetActiveCards,
     refreshPurchase,
     refreshSuppliers,
     refreshSuppliersWithLocations,

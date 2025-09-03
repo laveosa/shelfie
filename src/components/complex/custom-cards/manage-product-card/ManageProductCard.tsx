@@ -13,9 +13,9 @@ import { Separator } from "@/components/ui/separator.tsx";
 import cs from "./ManageProductCard.module.scss";
 import { formatDate } from "@/utils/helpers/quick-helper.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
-import { PurchaseProductVariantsGridColumns } from "@/components/complex/grid/purchase-product-variants-grid/PurchaseProductVariantsGridColumns.tsx";
 import { ColumnDef } from "@tanstack/react-table";
 import ManageProductsForPurchaseForm from "@/components/forms/manage-products-for-purchase-form/ManageProductsForPurchaseForm.tsx";
+import { PurchaseProductVariantsGridColumns } from "@/components/complex/grid/custom-grids/purchase-product-variants-grid/PurchaseProductVariantsGridColumns.tsx";
 
 export default function ManageProductCard({
   isLoading,
@@ -115,7 +115,9 @@ export default function ManageProductCard({
       width="560px"
       loading={isLoading}
       className={cs.manageProductCard}
-      title={t("CardTitles.ManageProductForPurchase", { date: formatDate(purchase?.date, "date") })}
+      title={t("CardTitles.ManageProductForPurchase", {
+        date: formatDate(purchase?.date, "date"),
+      })}
       showSecondaryButton={true}
       secondaryButtonTitle={t("ProductActions.BackToProductList")}
       onSecondaryButtonClick={() => onAction("openPurchaseProductsCard")}
@@ -123,7 +125,9 @@ export default function ManageProductCard({
       <div className={cs.manageProductCardContent}>
         <div className={cs.productDataBlock}>
           <div className={cs.productDataRow}>
-            <span className={`${cs.productDataCell} she-title`}>{t("SectionTitles.Product")}</span>
+            <span className={`${cs.productDataCell} she-title`}>
+              {t("SectionTitles.Product")}
+            </span>
             <SheButton
               className={cs.productDataCell}
               icon={Cog}
@@ -134,7 +138,9 @@ export default function ManageProductCard({
             />
           </div>
           <div className={cs.productDataRow}>
-            <span className={`${cs.productDataCell} she-text`}>{t("ProductForm.Labels.ProductName")}</span>
+            <span className={`${cs.productDataCell} she-text`}>
+              {t("ProductForm.Labels.ProductName")}
+            </span>
             <span className={`${cs.productDataCell} she-text`}>
               {product?.productName}
             </span>
@@ -148,7 +154,9 @@ export default function ManageProductCard({
             </span>
           </div>
           <div className={cs.productDataRow}>
-            <span className={`${cs.productDataCell} she-text`}>{t("SectionTitles.Category")}</span>
+            <span className={`${cs.productDataCell} she-text`}>
+              {t("SectionTitles.Category")}
+            </span>
             <div className={cs.productDataCell}>
               {product?.productCategory?.thumbnail && (
                 <img
@@ -162,7 +170,9 @@ export default function ManageProductCard({
             </div>
           </div>
           <div className={cs.productDataRow}>
-            <span className={`${cs.productDataCell} she-text`}>{t("SectionTitles.Brand")}</span>
+            <span className={`${cs.productDataCell} she-text`}>
+              {t("SectionTitles.Brand")}
+            </span>
             <div className={cs.productDataCell}>
               {product?.brand?.thumbnail && (
                 <img

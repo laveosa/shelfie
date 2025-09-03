@@ -184,26 +184,16 @@ export function useMarginsPageService() {
   }
 
   function gridRequestChangeHandle(updates: GridRequestModel) {
-    console.log(updates);
-    if ("searchQuery" in updates || "currentPage" in updates) {
-      dispatch(
-        actions.refreshMarginItemsGriRequestModel({
-          ...state.marginItemsGriRequestModel,
-          ...updates,
-        }),
-      );
-    } else {
-      dispatch(
-        actions.refreshMarginItemsGriRequestModel({
-          ...state.marginItemsGriRequestModel,
-          currentPage: 1,
-          filter: {
-            ...state.marginItemsGriRequestModel.filter,
-            ...updates,
-          },
-        }),
-      );
-    }
+    dispatch(
+      actions.refreshMarginItemsGriRequestModel({
+        ...state.marginItemsGriRequestModel,
+        ...updates,
+        filter: {
+          ...state.marginItemsGriRequestModel.filter,
+          ...updates.filter,
+        },
+      }),
+    );
   }
 
   function openSelectMarginCardHandle() {

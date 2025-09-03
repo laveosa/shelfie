@@ -18,19 +18,19 @@ import {
   DataWithId,
   DndGridDataTable,
 } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import { purchaseProductsGridColumns } from "@/components/complex/grid/purchase-products-grid/PurchaseProductsGridColumns.tsx";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import { AppSliceActions as appActions } from "@/state/slices/AppSlice.ts";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
-import GridItemsFilter from "@/components/complex/grid/grid-items-filter/GridItemsFilter.tsx";
+import GridItemsFilter from "@/components/complex/grid/filters/grid-items-filter/GridItemsFilter.tsx";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
-import { purchaseVariantsGridColumns } from "@/components/complex/grid/purchase-variants-grid/PurchaseVariantsGridColumns.tsx";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
-import GridTraitsFilter from "@/components/complex/grid/grid-traits-filter/GridTraitsFilter.tsx";
-import GridShowItemsFilter from "@/components/complex/grid/grid-show-deleted-filter/GridShowItemsFilter.tsx";
+import GridTraitsFilter from "@/components/complex/grid/filters/grid-traits-filter/GridTraitsFilter.tsx";
+import GridShowItemsFilter from "@/components/complex/grid/filters/grid-show-deleted-filter/GridShowItemsFilter.tsx";
+import { purchaseProductsGridColumns } from "@/components/complex/grid/custom-grids/purchase-products-grid/PurchaseProductsGridColumns.tsx";
+import { purchaseVariantsGridColumns } from "@/components/complex/grid/custom-grids/purchase-variants-grid/PurchaseVariantsGridColumns.tsx";
 
 export default function PurchaseProductsCard({
   isLoading,
@@ -39,7 +39,9 @@ export default function PurchaseProductsCard({
   variants,
   purchaseProducts,
   purchaseProductsGridModel,
+  purchaseProductsGridRequestModel,
   variantsGridModel,
+  variantsGridRequestModel,
   preferences,
   sortingOptions,
   brands,
@@ -97,46 +99,28 @@ export default function PurchaseProductsCard({
   }
 
   function handleGridRequestChange(updates: GridRequestModel) {
-    if ("searchQuery" in updates || "currentPage" in updates) {
-      if (activeTab === "purchaseProducts") {
-        dispatch(
-          actions.refreshPurchasesProductsGridRequestModel({
-            ...state.purchasesProductsGridRequestModel,
-            ...updates,
-          }),
-        );
-      } else if (activeTab === "connectProducts") {
-        dispatch(
-          actions.refreshVariantsForPurchaseGridRequestModel({
-            ...state.variantsForPurchaseGridRequestModel,
-            ...updates,
-          }),
-        );
-      }
+    if (activeTab === "purchaseProducts") {
+      dispatch(
+        actions.refreshPurchasesProductsGridRequestModel({
+          ...state.purchasesProductsGridRequestModel,
+          ...updates,
+          filter: {
+            ...state.purchasesProductsGridRequestModel.filter,
+            ...updates.filter,
+          },
+        }),
+      );
     } else {
-      if (activeTab === "purchaseProducts") {
-        dispatch(
-          actions.refreshPurchasesProductsGridRequestModel({
-            ...state.purchasesProductsGridRequestModel,
-            currentPage: 1,
-            filter: {
-              ...state.purchasesProductsGridRequestModel.filter,
-              ...updates,
-            },
-          }),
-        );
-      } else if (activeTab === "connectProducts") {
-        dispatch(
-          actions.refreshVariantsForPurchaseGridRequestModel({
-            ...state.variantsForPurchaseGridRequestModel,
-            currentPage: 1,
-            filter: {
-              ...state.variantsForPurchaseGridRequestModel.filter,
-              ...updates,
-            },
-          }),
-        );
-      }
+      dispatch(
+        actions.refreshVariantsForPurchaseGridRequestModel({
+          ...state.variantsForPurchaseGridRequestModel,
+          ...updates,
+          filter: {
+            ...state.variantsForPurchaseGridRequestModel.filter,
+            ...updates.filter,
+          },
+        }),
+      );
     }
   }
 
@@ -208,6 +192,7 @@ export default function PurchaseProductsCard({
                 }
                 data={purchaseProducts}
                 gridModel={purchaseProductsGridModel}
+                gridRequestModel={purchaseProductsGridRequestModel}
                 sortingItems={sortingOptions}
                 columnsPreferences={preferences}
                 preferenceContext={"productReferences"}
@@ -235,7 +220,9 @@ export default function PurchaseProductsCard({
                 </span>
                 <div className={cs.purchaseSummaryItems}>
                   <div>
-                    <span className={cs.purchaseSummaryTitle}>{t("PurchaseForm.Labels.Units")}</span>
+                    <span className={cs.purchaseSummaryTitle}>
+                      {t("PurchaseForm.Labels.Units")}
+                    </span>
                     {!_.isNil(purchaseSummary?.unitsAmount) && (
                       <span className={cs.purchaseSummaryItem}>
                         {`: ${purchaseSummary?.unitsAmount}`}
@@ -243,7 +230,9 @@ export default function PurchaseProductsCard({
                     )}
                   </div>
                   <div>
-                    <span className={cs.purchaseSummaryTitle}>{t("PurchaseForm.Labels.Expense")}</span>
+                    <span className={cs.purchaseSummaryTitle}>
+                      {t("PurchaseForm.Labels.Expense")}
+                    </span>
                     {!_.isNil(purchaseSummary?.expense) && (
                       <span className={cs.purchaseSummaryItem}>
                         {`: ${purchaseSummary?.expense} ${purchaseSummary?.currencyBrief}`}
@@ -277,6 +266,7 @@ export default function PurchaseProductsCard({
                 }
                 data={variants}
                 gridModel={variantsGridModel}
+                gridRequestModel={variantsGridRequestModel}
                 sortingItems={sortingOptions}
                 columnsPreferences={preferences}
                 preferenceContext={"productReferences"}
@@ -300,12 +290,10 @@ export default function PurchaseProductsCard({
                 <GridTraitsFilter
                   traitOptions={colorsForFilter}
                   traitType="color"
-                  gridRequestModel={state.variantsForPurchaseGridRequestModel}
                 />
                 <GridTraitsFilter
                   traitOptions={sizesForFilter}
                   traitType="size"
-                  gridRequestModel={state.variantsForPurchaseGridRequestModel}
                 />
                 <GridShowItemsFilter context="Deleted" />
               </DndGridDataTable>

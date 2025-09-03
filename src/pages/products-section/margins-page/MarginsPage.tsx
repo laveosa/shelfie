@@ -16,7 +16,7 @@ import SalePriseManagementCard from "@/components/complex/custom-cards/sale-pric
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import SelectEntityCard from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
 import { DataWithId } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import { MarginsListGridColumns } from "@/components/complex/grid/margins-list-grid/MarginsListGridColumns.tsx";
+import { MarginsListGridColumns } from "@/components/complex/grid/custom-grids/margins-list-grid/MarginsListGridColumns.tsx";
 
 export function MarginsPage() {
   const state = useAppSelector<IPurchaseProductsPageSlice>(

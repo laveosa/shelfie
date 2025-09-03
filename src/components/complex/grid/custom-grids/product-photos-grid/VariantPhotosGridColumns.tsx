@@ -1,6 +1,6 @@
 import { ColumnDef, Row } from "@tanstack/react-table";
 import placeholderImage from "@/assets/images/placeholder-image.png";
-import VariantPhotosGridColumnActions from "@/components/complex/grid/product-photos-grid/VariantPhotosGridColumnActions.tsx";
+import VariantPhotosGridColumnActions from "@/components/complex/grid/custom-grids/product-photos-grid/VariantPhotosGridColumnActions.tsx";
 
 interface IProductPhotoGridColumns {
   id: number | string;

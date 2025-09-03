@@ -232,16 +232,10 @@ export function ProductsGridColumns(onAction: any): ColumnDef<any>[] {
           isRowLoading: (rowId: string) => boolean;
         };
 
-        const handleManageClick = (e) => {
-          e.stopPropagation();
-          e.preventDefault();
-          onAction("manageProduct", row.id, meta?.setLoadingRow, row.original);
-        };
-
         return (
           <div onClick={(e) => e.stopPropagation()}>
             <SheButton
-              onClick={handleManageClick}
+              onClick={() => onAction("manageProduct", row.original.productId)}
               disabled={meta?.isRowLoading(row.id)}
               value={t("CommonButtons.Manage")}
             />

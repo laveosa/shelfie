@@ -68,6 +68,8 @@ export default function ManageTraitsCard({
     [key: string]: any;
   };
 }) {
+  console.log("traits", traits);
+
   const { t } = useTranslation();
   const variantTraitOptions = variant?.traitOptions || [];
   const defaultValues = traits.reduce((acc, trait) => {
@@ -139,7 +141,9 @@ export default function ManageTraitsCard({
     >
       <div className={cs.manageTraitsCardContent}>
         <div className={cs.manageTraitsCardTextBlock}>
-          <span className="she-text">{t("ProductForm.Labels.SelectTraitOptionsForVariant")}</span>
+          <span className="she-text">
+            {t("ProductForm.Labels.SelectTraitOptionsForVariant")}
+          </span>
         </div>
         <div>
           <SheForm form={form} onSubmit={onSubmit}>
@@ -160,7 +164,13 @@ export default function ManageTraitsCard({
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue
-                                placeholder={t("ProductForm.Placeholders.SelectTraitType", { traitType: trait.traitTypeName.toLowerCase() })}
+                                placeholder={t(
+                                  "ProductForm.Placeholders.SelectTraitType",
+                                  {
+                                    traitType:
+                                      trait.traitTypeName.toLowerCase(),
+                                  },
+                                )}
                               />
                             </SelectTrigger>
                           </FormControl>

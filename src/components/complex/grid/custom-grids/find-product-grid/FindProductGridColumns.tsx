@@ -8,8 +8,8 @@ import placeholderImage from "@/assets/images/placeholder-image.png";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import { BrandModel } from "@/const/models/BrandModel.ts";
-import FindProductColumnActions from "@/components/complex/grid/find-product-grid/FindProductColumnActions.tsx";
-import QuantityInputCell from "@/components/complex/grid/find-product-grid/QuantityInputCell.tsx";
+import FindProductColumnActions from "@/components/complex/grid/custom-grids/find-product-grid/FindProductColumnActions.tsx";
+import QuantityInputCell from "@/components/complex/grid/custom-grids/find-product-grid/QuantityInputCell.tsx";
 
 export function findProductGridColumns({
   onAction,

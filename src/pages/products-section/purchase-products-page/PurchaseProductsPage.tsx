@@ -1303,7 +1303,11 @@ export function PurchaseProductsPage() {
             variants={state.variants}
             purchaseProducts={state.purchaseProducts}
             variantsGridModel={state.variantsForPurchaseGridModel}
+            variantsGridRequestModel={state.variantsForPurchaseGridRequestModel}
             purchaseProductsGridModel={state.purchasesProductsGridModel}
+            purchaseProductsGridRequestModel={
+              state.purchasesProductsGridRequestModel
+            }
             sortingOptions={productsState.sortingOptions}
             preferences={appState.preferences}
             brands={productsState.brands}

@@ -61,7 +61,7 @@ export function ProductBasicDataPage() {
 
   async function onAction(actionType: string, payload?: any) {
     switch (actionType) {
-      case "itemCardClick":
+      case "itemsCardClick":
         service.itemCardClickHandler(payload);
         break;
       case "submitProductData":

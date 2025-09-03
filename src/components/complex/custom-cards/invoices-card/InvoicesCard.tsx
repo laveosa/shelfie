@@ -11,7 +11,7 @@ import {
 import { SheFileUploader } from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { IInvoiceCard } from "@/const/interfaces/complex-components/custom-cards/IInvoicesCard.ts";
-import { InvoicesGridColumns } from "@/components/complex/grid/invoices-grid/InvoicesGridColumns.tsx";
+import { InvoicesGridColumns } from "@/components/complex/grid/custom-grids/invoices-grid/InvoicesGridColumns.tsx";
 
 export default function InvoicesCard({
   isLoading,

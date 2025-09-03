@@ -499,7 +499,7 @@ export default function useSupplierPageService() {
       }
     }
     dispatch(productsActions.resetPurchaseCounters());
-    dispatch(actions.refreshActiveCards([]));
+    dispatch(actions.resetActiveCards());
     dispatch(productsActions.refreshActiveTab("purchases"));
   }
 

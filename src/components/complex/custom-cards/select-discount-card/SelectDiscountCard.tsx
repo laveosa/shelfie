@@ -13,7 +13,7 @@ import { ISelectDiscountCard } from "@/const/interfaces/complex-components/custo
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { DiscountsListGridColumns } from "@/components/complex/grid/discounts-list-grid/DiscountsListGridColumns.tsx";
+import { DiscountsListGridColumns } from "@/components/complex/grid/custom-grids/discounts-list-grid/DiscountsListGridColumns.tsx";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 
 export default function SelectDiscountCard({

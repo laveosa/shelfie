@@ -11,7 +11,7 @@ import SheProductCard from "@/components/complex/she-product-card/SheProductCard
 import cs from "./SizeChartCard.module.scss";
 import { Plus } from "lucide-react";
 import { GridDataTable } from "@/components/complex/grid/grid-data-table/GridDataTable.tsx";
-import { SizeChartGridColumns } from "@/components/complex/grid/size-chart-grid/SizeChartGridColumns.tsx";
+import { SizeChartGridColumns } from "@/components/complex/grid/custom-grids/size-chart-grid/SizeChartGridColumns.tsx";
 
 export default function SizeChartCard({
   onOpenCreateProductCategoryCard,

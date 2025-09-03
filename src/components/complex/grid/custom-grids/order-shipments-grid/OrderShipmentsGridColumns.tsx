@@ -5,7 +5,7 @@ import React from "react";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { formatDate } from "@/utils/helpers/quick-helper.ts";
-import cs from "@/components/complex/grid/select-shipment-for-order-grid/SelectShipmentForOrderGrdColumns.module.scss";
+import cs from "./OrderShipmentsGridColumns.module.scss";
 
 export function OrderShipmentsGridColumns(onAction: any): ColumnDef<any>[] {
   const statusClass = (status: string) => {

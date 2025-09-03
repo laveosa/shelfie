@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import cs from "@/components/complex/grid/grid-columns-view-options/ColumnsViewOptions.module.scss";
+import cs from "@/components/complex/grid/filters/grid-columns-view-options/ColumnsViewOptions.module.scss";
 
 interface IProductsGridSorting<TData> {
   table: Table<TData>;

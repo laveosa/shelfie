@@ -401,14 +401,15 @@
     "BasicProductData": "Basic Product Data",
     "CreateProduct": "Create Product",
     "CreateProductTrait": "Create product trait",
-    "ManageTrait": "Manage: {{traitName}}",
+    "ManageTrait": "Manage: ",
     "ManagePurchases": "Manage Purchases",
     "SelectEntity": "Select {{entityName}}",
     "SelectShipmentForOrder": "Select shipment for order",
     "ShipmentConfiguration": "Shipment {{shipmentId}}",
     "ShipmentDetails": "Shipment details",
     "ManageSupplier": "Manage Supplier",
-    "CreateSupplier": "Create Supplier"
+    "CreateSupplier": "Create Supplier",
+    "ManageTraits": "Manage Traits"
   },
   "SuccessMessages": {
     "PurchaseCreated": "Purchase created successfully",
@@ -555,7 +556,7 @@
       "Lost": "Lost",
       "Broken": "Broken",
       "Reason": "Reason",
-      "CurrentlyInStock": "Currently in stock : {{amount}}"
+      "CurrentlyInStock": "Currently in stock"
     }
   },
   "CustomerMenu": {

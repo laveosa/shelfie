@@ -6,7 +6,6 @@ import SheProductCard from "@/components/complex/she-product-card/SheProductCard
 import cs from "./ManageVariantsCard.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { TraitModel } from "@/const/models/TraitModel.ts";
-import { ManageVariantsGridColumns } from "@/components/complex/grid/manage-variants-grid/ManageVariantsGridColumns.tsx";
 import { IManageVariantsCard } from "@/const/interfaces/complex-components/custom-cards/IManageVariantsCard.ts";
 import {
   DataWithId,
@@ -14,6 +13,7 @@ import {
 } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { ColumnDef } from "@tanstack/react-table";
 import { Separator } from "@/components/ui/separator.tsx";
+import { ManageVariantsGridColumns } from "@/components/complex/grid/custom-grids/manage-variants-grid/ManageVariantsGridColumns.tsx";
 
 export default function ManageVariantsCard({
   isLoading,
@@ -26,7 +26,7 @@ export default function ManageVariantsCard({
   ...props
 }: IManageVariantsCard) {
   const { t } = useTranslation();
-  
+
   function handleAction(actionType: any, payload?: any) {
     switch (actionType) {
       case "manageVariant":

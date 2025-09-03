@@ -3,7 +3,6 @@ import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
 import {
   BadgeCheck,
-  CalendarRange,
   Layers2,
   Plus,
   Receipt,
@@ -21,22 +20,22 @@ import useProductsPageService from "@/pages/products-section/products-page/usePr
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SheTabs from "@/components/complex/she-tabs/SheTabs.tsx";
-import { ProductsGridColumns } from "@/components/complex/grid/products-grid/ProductsGridColumns.tsx";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
-import GridItemsFilter from "@/components/complex/grid/grid-items-filter/GridItemsFilter.tsx";
+import GridItemsFilter from "@/components/complex/grid/filters/grid-items-filter/GridItemsFilter.tsx";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { ProductsPageSliceActions as actions } from "@/state/slices/ProductsPageSlice.ts";
-import { variantsGridColumns } from "@/components/complex/grid/variants-grid/VariantsGridColumns.tsx";
-import { purchasesGridColumns } from "@/components/complex/grid/purchases-grid/PurchasesGridColumns.tsx";
+import { purchasesGridColumns } from "@/components/complex/grid/custom-grids/purchases-grid/PurchasesGridColumns.tsx";
 import { SupplierModel } from "@/const/models/SupplierModel.ts";
-import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
-import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import GridShowItemsFilter from "@/components/complex/grid/grid-show-deleted-filter/GridShowItemsFilter.tsx";
-import GridTraitsFilter from "@/components/complex/grid/grid-traits-filter/GridTraitsFilter.tsx";
+import GridShowItemsFilter from "@/components/complex/grid/filters/grid-show-deleted-filter/GridShowItemsFilter.tsx";
+import GridTraitsFilter from "@/components/complex/grid/filters/grid-traits-filter/GridTraitsFilter.tsx";
+import { ProductsGridColumns } from "@/components/complex/grid/custom-grids/products-grid/ProductsGridColumns.tsx";
+import { variantsGridColumns } from "@/components/complex/grid/custom-grids/variants-grid/VariantsGridColumns.tsx";
+import { GridDateRangeFilter } from "@/components/complex/grid/filters/grid-date-range-filter/GridDateRangeFilter.tsx";
+import { GridValueFilter } from "@/components/complex/grid/filters/grid-value-filter/GridValueFilter.tsx";
 
 export function ProductsPage() {
   const { t } = useTranslation();
@@ -92,7 +91,7 @@ export function ProductsPage() {
         service.activateVariantActionHandler(payload);
         break;
       case "manageProduct":
-        service.manageProductActionHandler(payload.productId);
+        service.manageProductActionHandler(payload);
         break;
       case "manageVariant":
         service.manageVariantActionHandler(
@@ -300,26 +299,7 @@ export function ProductsPage() {
                 getName={(item: SupplierModel) => item.supplierName}
                 selected={state.purchasesGridModel.filter?.suppliers}
               />
-              <SheDatePicker
-                mode="range"
-                icon={CalendarRange}
-                placeholder="Pick range"
-                maxWidth="200px"
-                showClearBtn
-                onSelectDate={(value) => {
-                  if (value) {
-                    onAction("gridRequestChange", {
-                      dateTo: value.to.toISOString(),
-                      dateFrom: value.from.toISOString(),
-                    });
-                  } else {
-                    onAction("gridRequestChange", {
-                      dateTo: null,
-                      dateFrom: null,
-                    });
-                  }
-                }}
-              />
+              <GridDateRangeFilter />
               <GridItemsFilter
                 items={state.brands}
                 columnName={"Brands"}
@@ -327,27 +307,15 @@ export function ProductsPage() {
                 getId={(item: BrandModel) => item.brandId}
                 getName={(item: BrandModel) => item.brandName}
               />
-              <SheInput
+              <GridValueFilter
                 icon={ReceiptEuro}
                 placeholder="Value from"
-                maxWidth="200px"
-                showClearBtn
-                onDelay={(value: number) =>
-                  onAction("gridRequestChange", { valueFrom: value })
-                }
-                onClear={() =>
-                  onAction("gridRequestChange", { valueFrom: null })
-                }
+                fieldKey="valueFrom"
               />
-              <SheInput
+              <GridValueFilter
                 icon={ReceiptEuro}
                 placeholder="Value to"
-                maxWidth="200px"
-                showClearBtn
-                onDelay={(value: number) => {
-                  onAction("gridRequestChange", { valueTo: value });
-                }}
-                onClear={() => onAction("gridRequestChange", { valueTo: null })}
+                fieldKey="valueTo"
               />
             </DndGridDataTable>
           </TabsContent>

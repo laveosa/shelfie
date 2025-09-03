@@ -20,10 +20,10 @@ import SheProductCard from "@/components/complex/she-product-card/SheProductCard
 import { ISelectShipmentForOrderCard } from "@/const/interfaces/complex-components/custom-cards/ISelectShipmentForOrderCard.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { getInitials } from "@/utils/helpers/quick-helper.ts";
-import { SelectShipmentForOrderGridColumns } from "@/components/complex/grid/select-shipment-for-order-grid/SelectShipmentForOrderGridColumns.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
+import { SelectShipmentForOrderGridColumns } from "@/components/complex/grid/custom-grids/select-shipment-for-order-grid/SelectShipmentForOrderGridColumns.tsx";
 
 export default function SelectShipmentForOrderCard({
   isLoading,
@@ -58,7 +58,9 @@ export default function SelectShipmentForOrderCard({
     >
       <div className={cs.selectShipmentForOrderCardContent}>
         <div className={cs.customerBlockContainer}>
-          <span className="she-text">{t("ShipmentForm.Labels.ShowPendingShipments")}</span>
+          <span className="she-text">
+            {t("ShipmentForm.Labels.ShowPendingShipments")}
+          </span>
           <div className={cs.customerBlock}>
             <div className={cs.customerInfo}>
               {customer && (
@@ -81,7 +83,11 @@ export default function SelectShipmentForOrderCard({
               )}
               <SheButton
                 icon={UserMinus}
-                value={customer ? t("SpecialText.ChangeCustomer") : t("OrderActions.SelectCustomer")}
+                value={
+                  customer
+                    ? t("SpecialText.ChangeCustomer")
+                    : t("OrderActions.SelectCustomer")
+                }
                 variant="secondary"
                 onClick={() => onAction("changeCustomer")}
               />

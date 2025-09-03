@@ -28,8 +28,8 @@ import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import cs from "./CreateSupplierForm.module.scss";
-import { SupplierPhotosGridColumns } from "@/components/complex/grid/supplier-photos-grid/SupplierPhotosGridColumns.tsx";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
+import { SupplierPhotosGridColumns } from "@/components/complex/grid/custom-grids/supplier-photos-grid/SupplierPhotosGridColumns.tsx";
 
 interface SupplierFormData extends SupplierModel {
   images?: File[];

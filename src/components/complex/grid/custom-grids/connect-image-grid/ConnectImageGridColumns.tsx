@@ -95,6 +95,7 @@ export const ConnectImageGridColumns = (
           <div style={{ display: "flex", gap: "5px" }}>
             {sizes.map((size, index) => (
               <SheTooltip
+                key={index}
                 delayDuration={200}
                 text={size}
                 className="max-w-[50px] overflow-hidden text-ellipsis whitespace-nowrap"
