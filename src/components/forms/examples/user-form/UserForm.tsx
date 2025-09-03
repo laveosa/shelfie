@@ -24,7 +24,8 @@ import SheBadgeList from "@/components/primitive/she-badge-list/SheBadgeList.tsx
 import { CalendarModeEnum } from "@/const/enums/CalendarModeEnum.ts";
 import SheCalendar from "@/components/primitive/she-calendar/SheCalendar.tsx";
 import SheInputEditor from "@/components/primitive/she-input-editor/SheInputEditor.tsx";
-import _, { indexOf } from "lodash";
+import _ from "lodash";
+import { FormSecondaryBtnBehaviorEnum } from "@/const/enums/FormSecondaryBtnBehaviorEnum.ts";
 
 const statusList: ISheRadioItem<string>[] = [
   {
@@ -335,6 +336,7 @@ export default function UserForm({
         maxWidth="600px"
         view={ComponentViewEnum.CARD}
         notDisabledSubmit={notDisabledSubmit}
+        secondaryBtnBehavior={FormSecondaryBtnBehaviorEnum.RESET}
         onSubmit={onSubmit}
         onError={onErrorHandler}
         onCancel={onCancel}
