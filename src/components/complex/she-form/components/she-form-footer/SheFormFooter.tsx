@@ -15,7 +15,7 @@ export default function SheFormFooter({
   secondaryBtnTitle = "Cancel",
   secondaryBtnTitleTransKey = "PLACE_TRANS_KEY",
   secondaryBtnProps,
-  hideBtnSecondary,
+  hideSecondaryBtn,
   notDisabledSubmit,
   isLoading,
   isValid,
@@ -25,14 +25,14 @@ export default function SheFormFooter({
   onSecondaryBtnClick,
 }: ISheFormFooter): JSX.Element {
   // ==================================================================== LAYOUT
-  if ((hidePrimaryBtn && hideBtnSecondary) || hideFooter) return null;
+  if ((hidePrimaryBtn && hideSecondaryBtn) || hideFooter) return null;
 
   return (
     <div
       className={`${cs.sheFormFooter} ${footerClassName}  ${cs[footerPosition]}`}
       style={{ ...footerStyles }}
     >
-      {!hideBtnSecondary && (
+      {!hideSecondaryBtn && (
         <SheButton
           {...secondaryBtnProps}
           value={secondaryBtnTitle}

@@ -13,7 +13,7 @@ export interface ISheFormFooter {
   secondaryBtnTitle?: string;
   secondaryBtnTitleTransKey?: string;
   secondaryBtnProps?: ISheButton;
-  hideBtnSecondary?: boolean;
+  hideSecondaryBtn?: boolean;
   notDisabledSubmit?: boolean;
   isLoading?: boolean;
   isValid?: boolean;
@@ -33,7 +33,7 @@ export const SheFormFooterDefaultModel: ISheFormFooter = {
   secondaryBtnTitle: undefined,
   secondaryBtnTitleTransKey: undefined,
   secondaryBtnProps: undefined,
-  hideBtnSecondary: undefined,
+  hideSecondaryBtn: undefined,
   notDisabledSubmit: undefined,
   isLoading: undefined,
   isValid: undefined,
