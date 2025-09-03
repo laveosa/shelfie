@@ -2,33 +2,33 @@ import { IDateRange } from "@/const/interfaces/IDateRange.ts";
 
 export interface UserModel {
   id?: string;
-  image?: string; // file uploader
-  firstName?: string; // input
-  lastName?: string; // input
-  nickName?: string; // input editor
-  age?: number; // input
-  email?: string; // input
-  phone?: string; // input
-  address?: string; // input
+  image?: string;
+  firstName?: string;
+  lastName?: string;
+  nickName?: string;
+  age?: number;
+  email?: string;
+  phone?: string;
+  address?: string;
   workStatus?:
     | "active"
     | "pending"
     | "vacation"
     | "fired"
     | "unemployed"
-    | "employed"; // radio group
-  dateBirth?: string | Date; // datepicker
-  gender?: string; // select
-  nationality?: string; // select
-  maritalStatus?: "married" | "single" | "divorced" | "inRelationship"; // radio group
-  position?: string; // select
-  comment?: string; // textarea
-  isAvailable?: boolean; // toggle
-  isRemote?: boolean; // toggle
-  communicationPreferences?: string[]; // checkbox
-  interests?: number[]; // multiselect display with badge list
-  contractPeriod?: IDateRange; // calendar
-  leaveDays?: (Date | string)[]; // calendar
+    | "employed";
+  dateBirth?: string | Date;
+  gender?: string;
+  nationality?: string;
+  maritalStatus?: "married" | "single" | "divorced" | "inRelationship";
+  position?: string;
+  comment?: string;
+  isAvailable?: boolean;
+  isRemote?: boolean;
+  communicationPreferences?: string[];
+  interests?: number[];
+  contractPeriod?: IDateRange;
+  leaveDays?: (Date | string)[];
 }
 
 export const UserModelDefault: UserModel = {
@@ -41,7 +41,7 @@ export const UserModelDefault: UserModel = {
   email: undefined,
   phone: undefined,
   address: undefined,
-  status: undefined,
+  workStatus: undefined,
   dateBirth: undefined,
   gender: undefined,
   nationality: undefined,

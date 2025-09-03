@@ -1,4 +1,4 @@
-import React, { JSX, useEffect } from "react";
+import React, { JSX, useEffect, useMemo } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import useAppForm from "@/utils/hooks/useAppForm.ts";
@@ -24,6 +24,7 @@ import SheBadgeList from "@/components/primitive/she-badge-list/SheBadgeList.tsx
 import { CalendarModeEnum } from "@/const/enums/CalendarModeEnum.ts";
 import SheCalendar from "@/components/primitive/she-calendar/SheCalendar.tsx";
 import SheInputEditor from "@/components/primitive/she-input-editor/SheInputEditor.tsx";
+import _, { indexOf } from "lodash";
 
 const statusList: ISheRadioItem<string>[] = [
   {
@@ -73,49 +74,9 @@ const gendersList: ISheSelectItem<string>[] = [
 
 const nationalityList: ISheSelectItem<string>[] = [
   {
-    icon: "https://www.countryflags.com/wp-content/uploads/ukraine-flag-png-large.png",
-    text: "Ukraine",
-    value: "UA",
-  },
-  {
-    icon: "https://www.countryflags.com/wp-content/uploads/united-states-of-america-flag-png-large.png",
-    text: "United States of America",
-    value: "US",
-  },
-  {
-    icon: "https://www.countryflags.com/wp-content/uploads/united-kingdom-flag-png-large.png",
-    text: "United Kingdom",
-    value: "GB",
-  },
-  {
-    icon: "https://www.countryflags.com/wp-content/uploads/turkey-flag-png-large.png",
-    text: "Turkey",
-    value: "TR",
-  },
-  {
-    icon: "https://www.countryflags.com/wp-content/uploads/switzerland-flag-png-large.png",
-    text: "Switzerland",
-    value: "CH",
-  },
-  {
-    icon: "https://www.countryflags.com/wp-content/uploads/sweden-flag-png-large.png",
-    text: "Sweden",
-    value: "SE",
-  },
-  {
-    icon: "https://www.countryflags.com/wp-content/uploads/spain-flag-png-large.png",
-    text: "Spain",
-    value: "ES",
-  },
-  {
-    icon: "https://www.countryflags.com/wp-content/uploads/romania-flag-png-large.png",
-    text: "Romania",
-    value: "RO",
-  },
-  {
-    icon: "https://www.countryflags.com/wp-content/uploads/monaco-flag-png-large.png",
-    text: "Poland",
-    value: "PL",
+    icon: "https://www.countryflags.com/wp-content/uploads/brazil-flag-png-large.png",
+    text: "Brazil",
+    value: "BR",
   },
   {
     icon: "https://www.countryflags.com/wp-content/uploads/norway-flag-png-large.png",
@@ -123,14 +84,54 @@ const nationalityList: ISheSelectItem<string>[] = [
     value: "NO",
   },
   {
+    icon: "https://www.countryflags.com/wp-content/uploads/monaco-flag-png-large.png",
+    text: "Poland",
+    value: "PL",
+  },
+  {
     icon: "https://www.countryflags.com/wp-content/uploads/portugal-flag-400.png",
     text: "Portugal",
     value: "PT",
   },
   {
-    icon: "https://www.countryflags.com/wp-content/uploads/brazil-flag-png-large.png",
-    text: "Brazil",
-    value: "BR",
+    icon: "https://www.countryflags.com/wp-content/uploads/romania-flag-png-large.png",
+    text: "Romania",
+    value: "RO",
+  },
+  {
+    icon: "https://www.countryflags.com/wp-content/uploads/spain-flag-png-large.png",
+    text: "Spain",
+    value: "ES",
+  },
+  {
+    icon: "https://www.countryflags.com/wp-content/uploads/sweden-flag-png-large.png",
+    text: "Sweden",
+    value: "SE",
+  },
+  {
+    icon: "https://www.countryflags.com/wp-content/uploads/switzerland-flag-png-large.png",
+    text: "Switzerland",
+    value: "CH",
+  },
+  {
+    icon: "https://www.countryflags.com/wp-content/uploads/turkey-flag-png-large.png",
+    text: "Turkey",
+    value: "TR",
+  },
+  {
+    icon: "https://www.countryflags.com/wp-content/uploads/ukraine-flag-png-large.png",
+    text: "Ukraine",
+    value: "UA",
+  },
+  {
+    icon: "https://www.countryflags.com/wp-content/uploads/united-kingdom-flag-png-large.png",
+    text: "United Kingdom",
+    value: "GB",
+  },
+  {
+    icon: "https://www.countryflags.com/wp-content/uploads/united-states-of-america-flag-png-large.png",
+    text: "United States of America",
+    value: "US",
   },
 ];
 
@@ -252,10 +253,19 @@ export const userFormExampleModel: UserModel = {
   communicationPreferences: ["phone", "email", "ms teams", "slack"],
   interests: [1, 2, 3, 4, 5],
   contractPeriod: {
-    from: "09.05.2025",
-    to: "09.15.2025",
+    from: "09.01.2025",
+    to: "09.30.2025",
   },
-  leaveDays: ["09.05.2025", "09.11.2025", "09.17.2025", "09.23.2025"],
+  leaveDays: [
+    "09.06.2025",
+    "09.07.2025",
+    "09.13.2025",
+    "09.14.2025",
+    "09.20.2025",
+    "09.21.2025",
+    "09.27.2025",
+    "09.28.2025",
+  ],
 };
 
 export default function UserForm({
@@ -303,6 +313,11 @@ export default function UserForm({
     }
   }
 
+  const _debouncedFormTrigger = useMemo(
+    () => _.debounce((name) => form.trigger(name), 300),
+    [form],
+  );
+
   // ================================================================ RENDER
 
   function onErrorHandler(model) {
@@ -332,10 +347,16 @@ export default function UserForm({
               <SheInput
                 label="First Name:"
                 value={field.value}
+                placeholder="enter your first name..."
                 required
                 minLength={2}
                 maxLength={20}
-                onChange={field.onChange} // manual updating form field value (for test only)
+                onChange={(value) => {
+                  field.onChange(value || ""); // manual updating form field value (for test only)
+                }}
+                onBlur={() => {
+                  void form.trigger(field.name); // manual trigger form validation (for test only)
+                }}
                 {...commonProps}
               />
             )}
@@ -346,6 +367,7 @@ export default function UserForm({
               <SheInput
                 label="Last Name:"
                 value={field.value}
+                placeholder="enter your last name..."
                 required
                 {...commonProps}
               />
@@ -359,6 +381,7 @@ export default function UserForm({
               <SheInputEditor
                 label="Nick Name:"
                 value={field.value}
+                placeholder="enter your first nick name..."
                 {...commonProps}
               />
             )}
@@ -371,6 +394,7 @@ export default function UserForm({
                 label="Gender:"
                 items={gendersList}
                 selected={field.value}
+                placeholder="select your gender..."
                 required
                 onSelect={(value) => {
                   // manual updating form field value (for test only)
@@ -389,6 +413,7 @@ export default function UserForm({
               <SheInput
                 label="Age:"
                 value={field.value}
+                placeholder="enter your age..."
                 type="number"
                 required
                 {...commonProps}
@@ -401,6 +426,7 @@ export default function UserForm({
               <SheDatePicker
                 label="Date Birth:"
                 date={field.value}
+                placeholder="select your date birth..."
                 dateFormat={DateFormatEnum.MM_DD_YYYY}
                 required
                 {...commonProps}
@@ -411,21 +437,30 @@ export default function UserForm({
         <div className={formFieldWrapperClassName}>
           <SheFormField
             name="email"
+            description="example: stubemail@example.com"
+            ignoreFormAction // SWITCH OF INTUITIVE FORM ACTIONS FOR MANUAL USAGE (for test only)
             render={({ field }) => (
               <SheInput
                 label="Email:"
                 value={field.value}
+                placeholder="enter your email..."
                 required
+                onChange={(value) => {
+                  field.onChange(value || ""); // manual updating form field value (for test only)
+                  _debouncedFormTrigger(field.name); // manual trigger form validation with debounce (for test only)
+                }}
                 {...commonProps}
               />
             )}
           />
           <SheFormField
             name="phone"
+            description="example: +1 (123) 456-7890"
             render={({ field }) => (
               <SheInput
                 label="Phone:"
                 value={field.value}
+                placeholder="enter your phone number..."
                 required
                 {...commonProps}
               />
@@ -440,6 +475,7 @@ export default function UserForm({
                 label="Nationality:"
                 items={nationalityList}
                 selected={field.value}
+                placeholder="select your nationality..."
                 showSelectIcon
                 required
                 {...commonProps}
@@ -452,6 +488,7 @@ export default function UserForm({
               <SheInput
                 label="Address:"
                 value={field.value}
+                placeholder="enter your address..."
                 required
                 {...commonProps}
               />
@@ -491,6 +528,7 @@ export default function UserForm({
                 label="Position:"
                 items={positionList}
                 selected={field.value}
+                placeholder="select your position..."
                 required
                 {...commonProps}
               />
@@ -504,7 +542,23 @@ export default function UserForm({
             render={({ field }) => (
               <div className="flex gap-2 w-full flex-wrap">
                 {contactVariety.map((item, idx) => (
-                  <SheToggle key={item + idx} text={item} />
+                  <SheToggle
+                    key={item + idx}
+                    text={item}
+                    checked={field.value?.includes(item)}
+                    onChecked={(value) => {
+                      const idxOf = field.value?.indexOf(item);
+
+                      if (!value && !_.isNil(idxOf)) {
+                        field.value.splice(idxOf, 1);
+                      } else if (value) {
+                        field.value.push(item);
+                      }
+
+                      field.onChange(field.value);
+                      void form.trigger(field.name);
+                    }}
+                  />
                 ))}
               </div>
             )}
@@ -519,6 +573,7 @@ export default function UserForm({
                 label="Interests:"
                 items={interestsList}
                 selectedValues={field.value}
+                placeholder="select your interests..."
                 fullWidth
                 showClearBtn
                 onSelect={field.onChange}
@@ -546,6 +601,7 @@ export default function UserForm({
               label="Comment:"
               className="!mb-2.5"
               value={field.value}
+              placeholder="enter short comment about your self and your experiance..."
               {...commonProps}
             />
           )}
@@ -581,6 +637,7 @@ export default function UserForm({
               <SheCalendar
                 label="Contract Period:"
                 date={field.value}
+                hideTimePicker
                 mode={CalendarModeEnum.RANGE}
               />
             )}
@@ -591,6 +648,7 @@ export default function UserForm({
               <SheCalendar
                 label="Leave Days:"
                 date={field.value}
+                hideTimePicker
                 mode={CalendarModeEnum.MULTIPLE}
               />
             )}
