@@ -15,7 +15,7 @@ import { OrderDetailsPageSliceActions as actions } from "@/state/slices/OrderDet
 import SelectEntityCard from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
 import { IOrderDetailsPageSlice } from "@/const/interfaces/store-slices/IOrderDetailsPageSlice.ts";
 import { DataWithId } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import { CustomersListGridColumns } from "@/components/complex/grid/customers-list-grid/CustomersListGridColumns.tsx";
+import { CustomersListGridColumns } from "@/components/complex/grid/custom-grids/customers-list-grid/CustomersListGridColumns.tsx";
 import SelectDiscountCard from "@/components/complex/custom-cards/select-discount-card/SelectDiscountCard.tsx";
 
 export function OrderDetailsPage() {

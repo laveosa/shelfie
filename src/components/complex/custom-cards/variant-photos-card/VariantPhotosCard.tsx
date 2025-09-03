@@ -1,17 +1,17 @@
-import React from "react";
+import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
+import React from "react";
 
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
-import cs from "./VariantPhotosCard.module.scss";
 import {
   DataWithId,
   DndGridDataTable,
 } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
+import cs from "./VariantPhotosCard.module.scss";
 import { SheFileUploader } from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
-import { VariantPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/VariantPhotosGridColumns.tsx";
-import { OtherProductPhotosGridColumns } from "@/components/complex/grid/other-product-photos-grid/OtherProductPhotosGridColumns.tsx";
-import { ColumnDef } from "@tanstack/react-table";
+import { VariantPhotosGridColumns } from "@/components/complex/grid/custom-grids/product-photos-grid/VariantPhotosGridColumns.tsx";
+import { OtherProductPhotosGridColumns } from "@/components/complex/grid/custom-grids/other-product-photos-grid/OtherProductPhotosGridColumns.tsx";
 
 export default function VariantPhotosCard({
   isLoading,
@@ -82,7 +82,7 @@ export default function VariantPhotosCard({
       >
         <div className={cs.variantPhotosCardContent}>
           <SheFileUploader
-            contextName={"variant"}
+            contextName="variant"
             contextId={contextId}
             onUpload={(uploadModel: UploadPhotoModel) =>
               handleAction("upload", uploadModel)
@@ -90,7 +90,9 @@ export default function VariantPhotosCard({
           />
           <div className={cs.managePhotos}>
             <div className={`${cs.managePhotosTitle} she-title`}>
-              <span className="she-title">{t("ProductForm.Labels.VariantPhotos")}</span>
+              <span className="she-title">
+                {t("ProductForm.Labels.VariantPhotos")}
+              </span>
             </div>
             <div className={cs.managePhotosGrid}>
               <DndGridDataTable
@@ -114,7 +116,9 @@ export default function VariantPhotosCard({
           </div>
           <div className={cs.managePhotos}>
             <div className={`${cs.managePhotosTitle} she-title`}>
-              <span className="she-title">{t("ProductForm.Labels.OtherProductPhotos")}</span>
+              <span className="she-title">
+                {t("ProductForm.Labels.OtherProductPhotos")}
+              </span>
             </div>
             <div className={cs.managePhotosGrid}>
               <DndGridDataTable

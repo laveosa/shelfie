@@ -19,11 +19,11 @@ import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { formatDate, getInitials } from "@/utils/helpers/quick-helper.ts";
-import { ordersInShipmentGridColumns } from "@/components/complex/grid/orders-in-shipment-grid/OrdersInShipmentGridColumns.tsx";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import { orderItemsInShipmentGridColumns } from "@/components/complex/grid/order-items-in-shipmen-grid/OrderItemsInShipmentGridColumns.tsx";
-import { PackedOrderItemsGridColumns } from "@/components/complex/grid/packed-order-items-grid/PackedOrderItemsGridColumns.tsx";
 import SheCardNotification from "@/components/complex/she-card-notification/SheCardNotification.tsx";
+import { ordersInShipmentGridColumns } from "@/components/complex/grid/custom-grids/orders-in-shipment-grid/OrdersInShipmentGridColumns.tsx";
+import { orderItemsInShipmentGridColumns } from "@/components/complex/grid/custom-grids/order-items-in-shipmen-grid/OrderItemsInShipmentGridColumns.tsx";
+import { PackedOrderItemsGridColumns } from "@/components/complex/grid/custom-grids/packed-order-items-grid/PackedOrderItemsGridColumns.tsx";
 
 export default function ShipmentConfigurationCard({
   isLoading,
@@ -44,7 +44,9 @@ export default function ShipmentConfigurationCard({
     <SheProductCard
       loading={isLoading}
       className={cs.shipmentConfigurationCard}
-      title={t("CardTitles.ShipmentConfiguration", { shipmentId: shipment?.shipmentId })}
+      title={t("CardTitles.ShipmentConfiguration", {
+        shipmentId: shipment?.shipmentId,
+      })}
       width="650px"
       showCloseButton
       onSecondaryButtonClick={() => onAction("closeShipmentConfigurationCard")}
@@ -60,7 +62,9 @@ export default function ShipmentConfigurationCard({
             )}
           </div>
           <div className={cs.shipmentDetailsItem}>
-            <span className="she-text">{t("ShipmentForm.Labels.QueuePacking")}</span>
+            <span className="she-text">
+              {t("ShipmentForm.Labels.QueuePacking")}
+            </span>
             <SheDatePicker
               maxWidth="250px"
               date={shipment?.queuePacking}
@@ -70,7 +74,9 @@ export default function ShipmentConfigurationCard({
             />
           </div>
           <div className={cs.shipmentDetailsItem}>
-            <span className="she-text">{t("ShipmentForm.Labels.QueueShipment")}</span>
+            <span className="she-text">
+              {t("ShipmentForm.Labels.QueueShipment")}
+            </span>
             <SheDatePicker
               maxWidth="250px"
               date={shipment?.queueShipment}
@@ -80,7 +86,9 @@ export default function ShipmentConfigurationCard({
             />
           </div>
           <div className={cs.shipmentDetailsItem}>
-            <span className="she-text">{t("OrderForm.Labels.ShipmentStatus")}</span>
+            <span className="she-text">
+              {t("OrderForm.Labels.ShipmentStatus")}
+            </span>
             <SheSelect
               maxWidth="250px"
               hideFirstOption
@@ -91,7 +99,9 @@ export default function ShipmentConfigurationCard({
           </div>
           <Separator />
           <div className={cs.shipmentDetailsItem}>
-            <span className={cs.subtitleText}>{t("SectionTitles.Customer")}</span>
+            <span className={cs.subtitleText}>
+              {t("SectionTitles.Customer")}
+            </span>
             <SheButton
               icon={User}
               value={t("SpecialText.ChangeCustomer")}
@@ -102,7 +112,9 @@ export default function ShipmentConfigurationCard({
           {shipment?.customer && (
             <>
               <div className={cs.shipmentDetailsItem}>
-                <span className="she-text">{t("CustomerForm.Labels.Name")}</span>
+                <span className="she-text">
+                  {t("CustomerForm.Labels.Name")}
+                </span>
                 <div>
                   <div className={cs.customerInfoAvatarBlock}>
                     {shipment?.customer?.thumbnailUrl ? (
@@ -124,13 +136,17 @@ export default function ShipmentConfigurationCard({
               </div>
               {shipment?.customer?.email && (
                 <div className={cs.shipmentDetailsItem}>
-                  <span className="she-text">{t("CustomerForm.Labels.Email")}</span>
+                  <span className="she-text">
+                    {t("CustomerForm.Labels.Email")}
+                  </span>
                   <span className="she-text">{shipment?.customer?.email}</span>
                 </div>
               )}
               {shipment?.customer?.phone && (
                 <div className={cs.shipmentDetailsItem}>
-                  <span className="she-text">{t("CustomerForm.Labels.PhoneNumber")}</span>
+                  <span className="she-text">
+                    {t("CustomerForm.Labels.PhoneNumber")}
+                  </span>
                   <span className="she-text">{shipment?.customer?.phone}</span>
                 </div>
               )}
@@ -139,7 +155,9 @@ export default function ShipmentConfigurationCard({
 
           <Separator />
           <div className={cs.shipmentDetailsItem}>
-            <span className={cs.subtitleText}>{t("AddressForm.Labels.AddressLine1")}</span>
+            <span className={cs.subtitleText}>
+              {t("AddressForm.Labels.AddressLine1")}
+            </span>
             <SheButton
               icon={MapPin}
               value={t("SpecialText.ChangeAddress")}
@@ -149,13 +167,17 @@ export default function ShipmentConfigurationCard({
           {shipment?.deliveryAddress && (
             <>
               <div className={cs.shipmentDetailsItem}>
-                <span className="she-text">{t("AddressForm.Labels.AddressLine1")}</span>
+                <span className="she-text">
+                  {t("AddressForm.Labels.AddressLine1")}
+                </span>
                 <span className="she-text">
                   {shipment?.deliveryAddress?.addressLine1}
                 </span>
               </div>
               <div className={cs.shipmentDetailsItem}>
-                <span className="she-text">{t("AddressForm.Labels.PostalCode")}</span>
+                <span className="she-text">
+                  {t("AddressForm.Labels.PostalCode")}
+                </span>
                 <span className="she-text">
                   {shipment?.deliveryAddress?.postalCode}
                 </span>
@@ -167,19 +189,29 @@ export default function ShipmentConfigurationCard({
                 </span>
               </div>
               <div className={cs.shipmentDetailsItem}>
-                <span className="she-text">{t("AddressForm.Labels.State")}</span>
+                <span className="she-text">
+                  {t("AddressForm.Labels.State")}
+                </span>
                 <span>{shipment?.deliveryAddress?.state}</span>
               </div>
               <div className={cs.shipmentDetailsItem}>
-                <span className="she-text">{t("AddressForm.Labels.Country")}</span>
+                <span className="she-text">
+                  {t("AddressForm.Labels.Country")}
+                </span>
                 <span>{shipment?.deliveryAddress?.countryName}</span>
               </div>
             </>
           )}
           <Separator />
           <div className={cs.selectCustomerBlock}>
-            <span className={cs.subtitleText}>{t("ShipmentForm.Labels.OrdersInShipment")}</span>
-            <SheButton icon={Plus} value={t("SpecialText.SelectOrder")} variant="secondary" />
+            <span className={cs.subtitleText}>
+              {t("ShipmentForm.Labels.OrdersInShipment")}
+            </span>
+            <SheButton
+              icon={Plus}
+              value={t("SpecialText.SelectOrder")}
+              variant="secondary"
+            />
           </div>
           <DndGridDataTable
             showHeader={false}
@@ -215,7 +247,9 @@ export default function ShipmentConfigurationCard({
             <>
               <Separator />
               <div className={cs.shipmentProductsBlock}>
-                <span className={cs.subtitleText}>{t("OrderActions.ConfirmPackedProducts")}</span>
+                <span className={cs.subtitleText}>
+                  {t("OrderActions.ConfirmPackedProducts")}
+                </span>
               </div>
               <DndGridDataTable
                 showHeader={false}
@@ -227,7 +261,10 @@ export default function ShipmentConfigurationCard({
                 data={shipment?.shipmentItems}
               />
               <div className={cs.shipmentProductsButton}>
-                <SheButton icon={Check} value={t("OrderActions.ConfirmPackedProducts")} />
+                <SheButton
+                  icon={Check}
+                  value={t("OrderActions.ConfirmPackedProducts")}
+                />
               </div>
             </>
           )}
@@ -235,7 +272,9 @@ export default function ShipmentConfigurationCard({
             <div className={cs.shipmentContentBlock}>
               <Separator />
               <div className={cs.packageContentBlock}>
-                <span className={cs.subtitleText}>{t("ShipmentForm.Labels.PackageContent")}</span>
+                <span className={cs.subtitleText}>
+                  {t("ShipmentForm.Labels.PackageContent")}
+                </span>
                 <DndGridDataTable
                   showHeader={false}
                   columns={
@@ -249,7 +288,9 @@ export default function ShipmentConfigurationCard({
             </div>
           )}
           <div className={cs.deliveryServiceBlock}>
-            <span className={cs.subtitleText}>{t("ShipmentForm.Labels.ConfirmDeliveryService")}</span>
+            <span className={cs.subtitleText}>
+              {t("ShipmentForm.Labels.ConfirmDeliveryService")}
+            </span>
             <SheSelect
               label={t("ShipmentForm.Labels.TrackingNumber")}
               placeholder={t("ShipmentForm.Placeholders.EnterTrackingNumber")}
@@ -265,7 +306,10 @@ export default function ShipmentConfigurationCard({
                 value={t("OrderActions.ReturnShipmentToPacking")}
                 variant="secondary"
               />
-              <SheButton icon={Check} value={t("OrderActions.ConfirmShipmentSend")} />
+              <SheButton
+                icon={Check}
+                value={t("OrderActions.ConfirmShipmentSend")}
+              />
             </div>
           </div>
         </div>

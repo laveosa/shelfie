@@ -75,7 +75,7 @@ export const PurchasesApiService = createApi({
     >(builder, {
       query: ({ id, model }) => ({
         url: `${ApiUrlEnum.PURCHASES}/${id}${ApiUrlEnum.VARIANTS}`,
-        method: "PATCH",
+        method: "POST",
         body: JSON.stringify(model),
       }),
     }),

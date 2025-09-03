@@ -16,7 +16,7 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheTabs from "@/components/complex/she-tabs/SheTabs.tsx";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs.tsx";
 import { IShipmentsCard } from "@/const/interfaces/complex-components/custom-cards/IShipmentsCard.ts";
-import { ShipmentsListGridColumns } from "@/components/complex/grid/shipments-list-grid/ShipmentsListGridColumns.tsx";
+import { ShipmentsListGridColumns } from "@/components/complex/grid/custom-grids/shipments-list-grid/ShipmentsListGridColumns.tsx";
 
 export default function ShipmentsCard({
   isLoading,

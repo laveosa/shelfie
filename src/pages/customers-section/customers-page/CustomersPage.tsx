@@ -9,42 +9,33 @@ import { Plus } from "lucide-react";
 import {
   DataWithId,
   DndGridDataTable,
-  DndGridRef,
 } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import { CustomersPageSliceActions as actions } from "@/state/slices/CustomersPageSlice";
-
-import { ICustomersPageSlice } from "@/const/interfaces/store-slices/ICustomersPageSlice";
-import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum";
-import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice";
-import { customerGridColumns } from "@/components/complex/grid/customer-grid/CustomerGridColumns";
+import { customerGridColumns } from "@/components/complex/grid/custom-grids/customer-grid/CustomerGridColumns";
 import { PreferencesModel } from "@/const/models/PreferencesModel";
 import { GridRequestModel } from "@/const/models/GridRequestModel";
-
 
 export function CustomersPage() {
   const { t } = useTranslation();
   const {
     appState,
     state,
-    getCustomersForGridHandler, 
-    onManageCustomerHandler, 
-    onCreateCustomerHandler, 
+    getCustomersForGridHandler,
+    onManageCustomerHandler,
+    onCreateCustomerHandler,
     updateUserPreferencesHandler,
     resetUserPreferencesHandler,
-    setDefaultSortingOptionsHandler
-    } = useCustomersPageService();
-
+    setDefaultSortingOptionsHandler,
+  } = useCustomersPageService();
 
   const customerColumns = customerGridColumns(
     onAction,
   ) as ColumnDef<DataWithId>[];
 
-
   useEffect(() => {
-      getCustomersForGridHandler();
-      if(state.sortingOptions.length === 0) {
-        setDefaultSortingOptionsHandler();
-      }
+    getCustomersForGridHandler();
+    if (state.sortingOptions.length === 0) {
+      setDefaultSortingOptionsHandler();
+    }
   }, []);
 
   function onAction(
@@ -81,40 +72,38 @@ export function CustomersPage() {
     getCustomersForGridHandler(updates);
   }
 
-
-  
   return (
     <div id={cs.CustomersPage}>
       <div className={cs.customersPageHeader}>
         <div className="she-title">{t("PageTitles.Customers")}</div>
-          <div className={cs.headerButtonBlock}>
-            <SheButton
-              icon={Plus}
-              variant="outline"
-              onClick={handleCreateCustomer}
-              value={t("CustomerActions.CreateCustomer")}
-            />
-          </div>
+        <div className={cs.headerButtonBlock}>
+          <SheButton
+            icon={Plus}
+            variant="outline"
+            onClick={handleCreateCustomer}
+            value={t("CustomerActions.CreateCustomer")}
+          />
+        </div>
       </div>
       <div className={cs.customersPageContent}>
-            <DndGridDataTable
-              isLoading={state.isCustomersLoading}
-              columns={customerColumns}
-              data={state.customers.map((customer) => ({
-                ...customer,
-                id: customer.customerId,
-              }))}
-              gridModel={state.customersGridModel}
-              sortingItems={state.sortingOptions}
-              columnsPreferences={appState.preferences}
-              preferenceContext={"customerReferences"}
-              skeletonQuantity={state.customersGridRequestModel.pageSize}
-              onApplyColumns={onApplyColumnsHandler}
-              onDefaultColumns={onResetColumnsHandler}
-              onGridRequestChange={handleGridRequestChange}
-            >
-              {/* TODO: Add filters */}
-            </DndGridDataTable>
+        <DndGridDataTable
+          isLoading={state.isCustomersLoading}
+          columns={customerColumns}
+          data={state.customers.map((customer) => ({
+            ...customer,
+            id: customer.customerId,
+          }))}
+          gridModel={state.customersGridModel}
+          sortingItems={state.sortingOptions}
+          columnsPreferences={appState.preferences}
+          preferenceContext={"customerReferences"}
+          skeletonQuantity={state.customersGridRequestModel.pageSize}
+          onApplyColumns={onApplyColumnsHandler}
+          onDefaultColumns={onResetColumnsHandler}
+          onGridRequestChange={handleGridRequestChange}
+        >
+          {/* TODO: Add filters */}
+        </DndGridDataTable>
       </div>
     </div>
   );

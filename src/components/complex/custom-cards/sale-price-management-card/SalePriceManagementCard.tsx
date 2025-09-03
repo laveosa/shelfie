@@ -10,12 +10,12 @@ import SheProductCard from "@/components/complex/she-product-card/SheProductCard
 import { ISalePriceManagementCard } from "@/const/interfaces/complex-components/custom-cards/ISalePriceManagementCard.ts";
 import cs from "@/components/complex/custom-cards/sale-price-management-card/SalePriceManagementCard.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { marginProductsGridColumns } from "@/components/complex/grid/margin-products-grid/MarginProductsGridColumns.tsx";
-import GridItemsFilter from "@/components/complex/grid/grid-items-filter/GridItemsFilter.tsx";
+import GridItemsFilter from "@/components/complex/grid/filters/grid-items-filter/GridItemsFilter.tsx";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
-import GridTraitsFilter from "@/components/complex/grid/grid-traits-filter/GridTraitsFilter.tsx";
-import GridShowItemsFilter from "@/components/complex/grid/grid-show-deleted-filter/GridShowItemsFilter.tsx";
+import GridTraitsFilter from "@/components/complex/grid/filters/grid-traits-filter/GridTraitsFilter.tsx";
+import GridShowItemsFilter from "@/components/complex/grid/filters/grid-show-deleted-filter/GridShowItemsFilter.tsx";
+import { marginProductsGridColumns } from "@/components/complex/grid/custom-grids/margin-products-grid/MarginProductsGridColumns.tsx";
 
 export default function SalePriseManagementCard({
   isLoading,
@@ -53,6 +53,7 @@ export default function SalePriseManagementCard({
           gridModel={gridModel}
           sortingItems={sortingOptions}
           columnsPreferences={preferences}
+          gridRequestModel={gridRequestModel}
           preferenceContext={"productReferences"}
           skeletonQuantity={gridRequestModel.pageSize}
           onApplyColumns={(model) => onAction("applyColumns", model)}
@@ -75,16 +76,8 @@ export default function SalePriseManagementCard({
             getName={(item: CategoryModel) => item.categoryName}
             selected={gridModel.filter?.categories}
           />
-          <GridTraitsFilter
-            traitOptions={colors}
-            traitType="color"
-            gridRequestModel={gridRequestModel}
-          />
-          <GridTraitsFilter
-            traitOptions={sizes}
-            traitType="size"
-            gridRequestModel={gridRequestModel}
-          />
+          <GridTraitsFilter traitOptions={colors} traitType="color" />
+          <GridTraitsFilter traitOptions={sizes} traitType="size" />
           <GridShowItemsFilter context="Deleted" />
         </DndGridDataTable>
       </SheProductCard>

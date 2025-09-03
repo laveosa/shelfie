@@ -9,12 +9,12 @@ import {
 } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import cs from "./OrdersCard.module.scss";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
-import GridShowItemsFilter from "@/components/complex/grid/grid-show-deleted-filter/GridShowItemsFilter.tsx";
+import GridShowItemsFilter from "@/components/complex/grid/filters/grid-show-deleted-filter/GridShowItemsFilter.tsx";
 import { IOrdersCard } from "@/const/interfaces/complex-components/custom-cards/IOrdersCard.ts";
-import { ordersGridColumns } from "@/components/complex/grid/orders-grid/OrdersGridColumns.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
+import { ordersGridColumns } from "@/components/complex/grid/custom-grids/orders-grid/OrdersGridColumns.tsx";
 
 export default function OrdersCard({
   isLoading,

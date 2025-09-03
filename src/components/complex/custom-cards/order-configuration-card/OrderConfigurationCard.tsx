@@ -17,8 +17,8 @@ import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSele
 import { StatusModel } from "@/const/models/StatusModel.ts";
 import { Separator } from "@/components/ui/separator.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { OrderDiscountsGridColumns } from "@/components/complex/grid/order-discounts-grid/OrderDiscountsGridColumns.tsx";
-import { OrderShipmentsRateGridColumns } from "@/components/complex/grid/order-shipments-rate-grid/OrderShipmentsRateGridColumns.tsx";
+import { OrderDiscountsGridColumns } from "@/components/complex/grid/custom-grids/order-discounts-grid/OrderDiscountsGridColumns.tsx";
+import { OrderShipmentsRateGridColumns } from "@/components/complex/grid/custom-grids/order-shipments-rate-grid/OrderShipmentsRateGridColumns.tsx";
 
 export default function OrderConfigurationCard({
   isLoading,
@@ -54,7 +54,9 @@ export default function OrderConfigurationCard({
             <span className="she-text">{formatDate(order?.date, "date")}</span>
           </div>
           <div className={cs.orderConfigurationCardItem}>
-            <span className="she-text">{t("OrderForm.Labels.OrderStatus")}</span>
+            <span className="she-text">
+              {t("OrderForm.Labels.OrderStatus")}
+            </span>
             <SheSelect<string>
               selected={order?.orderStatus || null}
               items={convertStatusesToSelectItems(statuses)}
@@ -67,11 +69,15 @@ export default function OrderConfigurationCard({
             />
           </div>
           <div className={cs.orderConfigurationCardItem}>
-            <span className="she-text">{t("OrderForm.Labels.PaymentStatus")}</span>
+            <span className="she-text">
+              {t("OrderForm.Labels.PaymentStatus")}
+            </span>
             <span className="she-text">{order?.paymentStatus}</span>
           </div>
           <div className={cs.orderConfigurationCardItem}>
-            <span className="she-text">{t("OrderForm.Labels.ShipmentStatus")}</span>
+            <span className="she-text">
+              {t("OrderForm.Labels.ShipmentStatus")}
+            </span>
             <span className="she-text">{order?.shipmentStatus}</span>
           </div>
           <Separator />
@@ -79,7 +85,11 @@ export default function OrderConfigurationCard({
             <span className="she-title">{t("SectionTitles.Customer")}</span>
             <SheButton
               variant="secondary"
-              value={order?.customer ? t("SpecialText.ChangeCustomer") : t("OrderActions.SelectCustomer")}
+              value={
+                order?.customer
+                  ? t("SpecialText.ChangeCustomer")
+                  : t("OrderActions.SelectCustomer")
+              }
               icon={order?.customer ? UserMinus : UserPlus}
               onClick={() => onAction("openSelectEntityCard")}
             />
@@ -87,7 +97,9 @@ export default function OrderConfigurationCard({
           {order?.customer && (
             <div className={cs.customerInfo}>
               <div className={cs.orderConfigurationCardItem}>
-                <span className="she-text">{t("CustomerForm.Labels.Name")}</span>
+                <span className="she-text">
+                  {t("CustomerForm.Labels.Name")}
+                </span>
                 <div className={cs.customerInfoAvatarBlock}>
                   {order?.customer.thumbnailUrl ? (
                     <img
@@ -107,13 +119,17 @@ export default function OrderConfigurationCard({
               </div>
               {order?.customer.email && (
                 <div className={cs.orderConfigurationCardItem}>
-                  <span className="she-text">{t("CustomerForm.Labels.Email")}</span>
+                  <span className="she-text">
+                    {t("CustomerForm.Labels.Email")}
+                  </span>
                   <span className="she-subtext">{order?.customer.email}</span>
                 </div>
               )}
               {order?.customer.phone && (
                 <div className={cs.orderConfigurationCardItem}>
-                  <span className="she-text">{t("CustomerForm.Labels.PhoneNumber")}</span>
+                  <span className="she-text">
+                    {t("CustomerForm.Labels.PhoneNumber")}
+                  </span>
                   <span className="she-subtext">{order?.customer.phone}</span>
                 </div>
               )}
@@ -144,7 +160,9 @@ export default function OrderConfigurationCard({
             />
             <div className={cs.gridFooter}>
               <div className={cs.gridFooterItems}>
-                <span className={cs.gridFooterItem}>{t("OrderForm.Labels.DiscountTotal")}</span>
+                <span className={cs.gridFooterItem}>
+                  {t("OrderForm.Labels.DiscountTotal")}
+                </span>
                 <span className={cs.gridFooterItem}>
                   {order?.discountAmount}
                 </span>
@@ -173,11 +191,15 @@ export default function OrderConfigurationCard({
           <span className="she-title">{t("SectionTitles.Summary")}</span>
           <div className={cs.orderSummaryItems}>
             <div className={cs.orderSummaryItem}>
-              <span className="she-text">{t("OrderForm.Labels.ProductsSubtotal")}</span>
+              <span className="she-text">
+                {t("OrderForm.Labels.ProductsSubtotal")}
+              </span>
               <span className="she-text">{order?.orderSubTotal?.subtotal}</span>
             </div>
             <div className={cs.orderSummaryItem}>
-              <span className="she-text">{t("OrderForm.Labels.TotalWithDiscountAndShipment")}</span>
+              <span className="she-text">
+                {t("OrderForm.Labels.TotalWithDiscountAndShipment")}
+              </span>
               <span className="she-text">
                 {order?.orderSubTotal?.totalWithDiscountAndShipment}
               </span>

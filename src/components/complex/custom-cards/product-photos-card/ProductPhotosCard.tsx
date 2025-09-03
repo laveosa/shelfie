@@ -1,5 +1,6 @@
-import React from "react";
+import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
+import React from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ProductPhotosCard.module.scss";
@@ -9,9 +10,8 @@ import {
 } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { SheFileUploader } from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
-import { ProductPhotosGridColumns } from "@/components/complex/grid/variant-photos-grid/ProductPhotosGridColumns.tsx";
 import { IProductPhotosCard } from "@/const/interfaces/complex-components/custom-cards/IProductPhotosCard.ts";
-import { ColumnDef } from "@tanstack/react-table";
+import { ProductPhotosGridColumns } from "@/components/complex/grid/custom-grids/variant-photos-grid/ProductPhotosGridColumns.tsx";
 
 export default function ProductPhotosCard({
   isLoading,
@@ -82,7 +82,7 @@ export default function ProductPhotosCard({
         <div className={cs.productPhotosCardContent}>
           <SheFileUploader
             isLoading={isImageUploaderLoading}
-            contextName={"product"}
+            contextName="product"
             contextId={contextId}
             onUpload={(uploadModel: UploadPhotoModel) =>
               handleAction("upload", uploadModel)

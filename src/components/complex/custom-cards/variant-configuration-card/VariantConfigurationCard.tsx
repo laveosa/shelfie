@@ -37,12 +37,12 @@ import {
 } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
 import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
-import { VariantConfigurationGridColumns } from "@/components/complex/grid/variant-configuration-grid/VariantConfigurationGridColumns.tsx";
-import { VariantPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/VariantPhotosGridColumns.tsx";
 import { VariantModel } from "@/const/models/VariantModel.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon";
 import InfoIcon from "@/assets/icons/Info-icon.svg?react";
 import SheCardNotification from "@/components/complex/she-card-notification/SheCardNotification.tsx";
+import { VariantConfigurationGridColumns } from "@/components/complex/grid/custom-grids/variant-configuration-grid/VariantConfigurationGridColumns.tsx";
+import { VariantPhotosGridColumns } from "@/components/complex/grid/custom-grids/product-photos-grid/VariantPhotosGridColumns.tsx";
 
 const debounce = (fn: (...args: any[]) => void, delay: number) => {
   let timer: ReturnType<typeof setTimeout>;
@@ -281,7 +281,10 @@ export default function VariantConfigurationCard({
                 />
               </SheForm.Field>
               <div className={cs.variantCodeFormRow}>
-                <SheForm.Field name="variantCode" label={t("ProductForm.Labels.VariantCode")}>
+                <SheForm.Field
+                  name="variantCode"
+                  label={t("ProductForm.Labels.VariantCode")}
+                >
                   <div>
                     <SheInput
                       value={variant?.variantCode}
@@ -331,7 +334,9 @@ export default function VariantConfigurationCard({
                         >
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder={t("SelectOptions.SelectVAT")} />
+                              <SelectValue
+                                placeholder={t("SelectOptions.SelectVAT")}
+                              />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -402,13 +407,17 @@ export default function VariantConfigurationCard({
             </div>
             <div className={cs.stockBlock}>
               <div className={cs.stockBlockRow}>
-                <span className="she-text">{t("StockForm.Labels.CurrentlyInStock")}</span>
+                <span className="she-text">
+                  {t("StockForm.Labels.CurrentlyInStock")}
+                </span>
                 <span className={cs.stockBlockRowNumber}>
                   {variant?.stockAmount}
                 </span>
               </div>
               <div className={cs.stockBlockRow}>
-                <span className="she-text">{t("ProductForm.Labels.UnitsSold")}</span>
+                <span className="she-text">
+                  {t("ProductForm.Labels.UnitsSold")}
+                </span>
                 <span className={cs.stockBlockRowNumber}>
                   {variant?.soldUnits}
                 </span>
@@ -417,7 +426,9 @@ export default function VariantConfigurationCard({
           </div>
           <div className={cs.variantGridBlock}>
             <div className={cs.variantGridBlockHeader}>
-              <span className="she-title">{t("ProductForm.Labels.VariantTraits")}</span>
+              <span className="she-title">
+                {t("ProductForm.Labels.VariantTraits")}
+              </span>
               <SheButton
                 icon={Blocks}
                 variant="secondary"
@@ -440,7 +451,9 @@ export default function VariantConfigurationCard({
           </div>
           <div className={cs.variantGridBlock}>
             <div className={cs.variantGridBlockHeader}>
-              <span className="she-title">{t("ProductForm.Labels.VariantPhotos")}</span>
+              <span className="she-title">
+                {t("ProductForm.Labels.VariantPhotos")}
+              </span>
               <SheButton
                 icon={ImagePlus}
                 variant="secondary"

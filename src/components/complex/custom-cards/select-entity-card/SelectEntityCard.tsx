@@ -43,8 +43,12 @@ export default function SelectEntityCard({
           <SheInput
             isSearch
             fullWidth
-            placeholder={t("EntityForm.Placeholders.SearchEntity", { entityName })}
+            showClearBtn
+            placeholder={t("EntityForm.Placeholders.SearchEntity", {
+              entityName,
+            })}
             onDelay={(data: string) => onAction("searchEntity", data)}
+            onClear={() => onAction("searchEntity", null)}
           />
           <DndGridDataTable
             isLoading={isGridLoading}
@@ -52,7 +56,9 @@ export default function SelectEntityCard({
             columns={columns}
             data={entityCollection}
             skeletonQuantity={10}
-            customMessage={t("EntityMessages.NoEntitiesCreated", { entityName })}
+            customMessage={t("EntityMessages.NoEntitiesCreated", {
+              entityName,
+            })}
           />
         </div>
       </div>

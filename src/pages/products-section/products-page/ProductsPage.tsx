@@ -1,11 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import { useNavigate } from "react-router-dom";
-import { merge } from "lodash";
 import { useTranslation } from "react-i18next";
 import {
   BadgeCheck,
-  CalendarRange,
   Layers2,
   Plus,
   Receipt,
@@ -23,27 +20,22 @@ import useProductsPageService from "@/pages/products-section/products-page/usePr
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SheTabs from "@/components/complex/she-tabs/SheTabs.tsx";
-import { productsGridColumns } from "@/components/complex/grid/products-grid/ProductsGridColumns.tsx";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
-import GridItemsFilter from "@/components/complex/grid/grid-items-filter/GridItemsFilter.tsx";
+import GridItemsFilter from "@/components/complex/grid/filters/grid-items-filter/GridItemsFilter.tsx";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
-import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { ProductsPageSliceActions as actions } from "@/state/slices/ProductsPageSlice.ts";
-import { AppSliceActions as appActions } from "@/state/slices/AppSlice.ts";
-import { variantsGridColumns } from "@/components/complex/grid/variants-grid/VariantsGridColumns.tsx";
-import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
-import { useToast } from "@/hooks/useToast.ts";
-import { purchasesGridColumns } from "@/components/complex/grid/purchases-grid/PurchasesGridColumns.tsx";
+import { purchasesGridColumns } from "@/components/complex/grid/custom-grids/purchases-grid/PurchasesGridColumns.tsx";
 import { SupplierModel } from "@/const/models/SupplierModel.ts";
-import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
-import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import useDialogService from "@/utils/services/dialog/DialogService.ts";
-import GridShowItemsFilter from "@/components/complex/grid/grid-show-deleted-filter/GridShowItemsFilter.tsx";
-import GridTraitsFilter from "@/components/complex/grid/grid-traits-filter/GridTraitsFilter.tsx";
+import GridShowItemsFilter from "@/components/complex/grid/filters/grid-show-deleted-filter/GridShowItemsFilter.tsx";
+import GridTraitsFilter from "@/components/complex/grid/filters/grid-traits-filter/GridTraitsFilter.tsx";
+import { ProductsGridColumns } from "@/components/complex/grid/custom-grids/products-grid/ProductsGridColumns.tsx";
+import { variantsGridColumns } from "@/components/complex/grid/custom-grids/variants-grid/VariantsGridColumns.tsx";
+import { GridDateRangeFilter } from "@/components/complex/grid/filters/grid-date-range-filter/GridDateRangeFilter.tsx";
+import { GridValueFilter } from "@/components/complex/grid/filters/grid-value-filter/GridValueFilter.tsx";
 
 export function ProductsPage() {
   const { t } = useTranslation();
@@ -51,11 +43,7 @@ export function ProductsPage() {
   const state = useAppSelector<IProductsPageSlice>(StoreSliceEnum.PRODUCTS);
   const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
   const service = useProductsPageService();
-  const navigate = useNavigate();
-  const { addToast } = useToast();
-  const [activeStates, setActiveStates] = useState<Record<string, boolean>>({});
   const gridRef = useRef<DndGridRef>(null);
-  const { openConfirmationDialog } = useDialogService();
 
   useEffect(() => {
     if (state.activeTab === "products") {
@@ -94,276 +82,54 @@ export function ProductsPage() {
       service.getTraitsForFilterHandler();
   }, []);
 
-  useEffect(() => {
-    if (state.productsGridModel?.items?.length > 0) {
-      const initialActiveStates = state.productsGridModel.items.reduce(
-        (acc, product) => {
-          const rowId = product.productId.toString();
-          acc[rowId] = product.isActive;
-          return acc;
-        },
-        {},
-      );
-      setActiveStates(initialActiveStates);
-    }
-  }, [state.productsGridModel.items]);
-
-  async function onDelete(data) {
-    switch (state.activeTab) {
-      case "products":
-        const confirmedDeleteProduct = await openConfirmationDialog({
-          headerTitle: "Delete Product",
-          text: `You are about to delete product "${data.row.original.productName}".`,
-          primaryButtonValue: "Delete",
-          secondaryButtonValue: "Cancel",
-        });
-
-        if (!confirmedDeleteProduct) {
-        } else {
-          data.table.options.meta?.hideRow(data.row.original.id);
-          await service
-            .deleteProductHandler(data.row.original.productId)
-            .then((res) => {
-              if (!res.error) {
-                addToast({
-                  text: "Product deleted successfully",
-                  type: "success",
-                });
-              } else {
-                data.table.options.meta?.unhideRow(data.row.original.id);
-                addToast({
-                  text: res.error.data.detail,
-                  type: "error",
-                });
-              }
-            });
-        }
-        break;
-      case "variants":
-        const confirmedDeleteVariant = await openConfirmationDialog({
-          headerTitle: "Delete Variant",
-          text: `You are about to delete variant "${data.row.original.variantName}".`,
-          primaryButtonValue: "Delete",
-          secondaryButtonValue: "Cancel",
-        });
-
-        if (!confirmedDeleteVariant) {
-        } else {
-          data.table.options.meta?.hideRow(data.row.original.id);
-          await service
-            .deleteVariantHandler(data.row.original.variantId)
-            .then((res) => {
-              if (!res.error) {
-                addToast({
-                  text: "Variant deleted successfully",
-                  type: "success",
-                });
-              } else {
-                data.table.options.meta?.unhideRow(data.row.original.id);
-                addToast({
-                  text: res.error.data.detail,
-                  type: "error",
-                });
-              }
-            });
-        }
-        break;
-      case "purchases":
-        const confirmedDeletePurchase = await openConfirmationDialog({
-          headerTitle: "Delete Purchase",
-          text: `You are about to delete purchase "${data.row.original.purchaseId}".`,
-          primaryButtonValue: "Delete",
-          secondaryButtonValue: "Cancel",
-        });
-
-        if (!confirmedDeletePurchase) {
-        } else {
-          data.table.options.meta?.hideRow(data.row.original.id);
-          await service
-            .deletePurchaseHandler(data.row.original.purchaseId)
-            .then((res) => {
-              if (!res.error) {
-                addToast({
-                  text: "Purchase deleted successfully",
-                  type: "success",
-                });
-              } else {
-                data.table.options.meta?.unhideRow(data.row.original.id);
-                addToast({
-                  text: res.error.data.detail,
-                  type: "error",
-                });
-              }
-            });
-        }
-        break;
-    }
-  }
-
-  function onAction(
-    actionType: string,
-    rowId?: string,
-    setLoadingRow?: (rowId: string, loading: boolean) => void,
-    rowData?: any,
-  ) {
-    setLoadingRow(rowId, true);
+  function onAction(actionType: string, payload?: any) {
     switch (actionType) {
-      case "image":
-        break;
-      case "manageProduct":
-        dispatch(actions.resetProduct());
-        navigate(
-          `${NavUrlEnum.PRODUCTS}${NavUrlEnum.PRODUCT_BASIC_DATA}/${rowData?.productId}`,
-        );
-        break;
       case "activateProduct":
-        {
-          const currentActive =
-            rowId && rowId in activeStates
-              ? activeStates[rowId]
-              : rowData?.isActive;
-
-          const newState = !currentActive;
-
-          if (rowId) {
-            setActiveStates((prev) => ({
-              ...prev,
-              [rowId]: newState,
-            }));
-          }
-
-          service
-            .toggleProductActivationHandler(rowData.productId)
-            .catch((error) => {
-              console.error("Failed to toggle product activation:", error);
-              if (rowId) {
-                setActiveStates((prev) => ({
-                  ...prev,
-                  [rowId]: currentActive,
-                }));
-              }
-            });
-        }
+        service.activateProductHandler(payload);
         break;
       case "activateVariant":
-        console.log(`Activating variant ${rowId}`);
+        service.activateVariantActionHandler(payload);
+        break;
+      case "manageProduct":
+        service.manageProductActionHandler(payload);
         break;
       case "manageVariant":
-        service.getVariantDetailsHandler(rowData.variantId).then((res) => {
-          dispatch(actions.refreshSelectedVariant(res));
-          dispatch(actions.refreshVariantPhotos(res.photos));
-          navigate(
-            `${NavUrlEnum.PRODUCTS}${NavUrlEnum.MANAGE_VARIANTS}/${rowData?.productId}`,
-          );
-        });
-        break;
-      case "deleteVariant":
-        console.log(`Delete variant ${rowId}`);
+        service.manageVariantActionHandler(
+          payload.variantId,
+          payload.productId,
+        );
         break;
       case "managePurchase":
-        navigate(
-          `${NavUrlEnum.PRODUCTS}${NavUrlEnum.SUPPLIER}/${rowData?.purchaseId}`,
-        );
+        service.managePurchaseActionHandler(payload?.purchaseId);
+        break;
+      case "deleteProduct":
+        service.deleteProductActionHandler(payload);
+        break;
+      case "deleteVariant":
+        service.deleteVariantActionHandler(payload);
         break;
       case "deletePurchase":
-        console.log(`Delete purchase ${rowId}`);
+        service.deletePurchaseActionHandler(payload);
+        break;
+      case "addProduct":
+        service.addProductActionHandler();
+        break;
+      case "reportPurchase":
+        service.reportPurchaseActionHandler();
+        break;
+      case "gridRequestChange":
+        service.gridRequestChangeHandler(payload);
+        break;
+      case "applyColumns":
+        service.applyColumnsActionHandler(payload);
+        break;
+      case "resetColumns":
+        service.resetColumnsActionHandler();
+        break;
+      case "tabChange":
+        service.tabChangeActionHandler(payload);
         break;
     }
-
-    setLoadingRow(rowId, false);
-  }
-
-  function handleAddProduct() {
-    navigate(`${NavUrlEnum.PRODUCTS}${NavUrlEnum.PRODUCT_BASIC_DATA}`);
-  }
-
-  //Commented until future notices
-
-  // function handleImportProducts() {}
-  //
-  // function handleConfigure() {}
-
-  function handleReportPurchase() {
-    dispatch(actions.resetSelectedPurchase());
-    dispatch(actions.resetSelectedSupplier());
-    navigate(`${NavUrlEnum.PRODUCTS}${NavUrlEnum.SUPPLIER}/`);
-  }
-
-  function handleGridRequestChange(updates: any) {
-    if ("searchQuery" in updates || "currentPage" in updates) {
-      if (state.activeTab === "products") {
-        dispatch(
-          actions.refreshProductsGridRequestModel({
-            ...state.productsGridRequestModel,
-            ...updates,
-          }),
-        );
-      } else if (state.activeTab === "variants") {
-        dispatch(
-          actions.refreshVariantsGridRequestModel({
-            ...state.variantsGridRequestModel,
-            ...updates,
-          }),
-        );
-      } else if (state.activeTab === "purchases") {
-        dispatch(
-          actions.refreshPurchasesGridRequestModel({
-            ...state.purchasesGridRequestModel,
-            ...updates,
-          }),
-        );
-      }
-    } else {
-      if (state.activeTab === "products") {
-        dispatch(
-          actions.refreshProductsGridRequestModel({
-            ...state.productsGridRequestModel,
-            currentPage: 1,
-            filter: {
-              ...state.productsGridRequestModel.filter,
-              ...updates,
-            },
-          }),
-        );
-      } else if (state.activeTab === "variants") {
-        dispatch(
-          actions.refreshVariantsGridRequestModel({
-            ...state.variantsGridRequestModel,
-            currentPage: 1,
-            filter: {
-              ...state.variantsGridRequestModel.filter,
-              ...updates,
-            },
-          }),
-        );
-      } else if (state.activeTab === "purchases") {
-        dispatch(
-          actions.refreshPurchasesGridRequestModel({
-            ...state.purchasesGridRequestModel,
-            currentPage: 1,
-            filter: {
-              ...state.purchasesGridRequestModel.filter,
-              ...updates,
-            },
-          }),
-        );
-      }
-    }
-  }
-
-  function onApplyColumnsHandler(model: PreferencesModel) {
-    const modifiedModel = merge({}, appState.preferences, model);
-    dispatch(appActions.refreshPreferences(modifiedModel));
-    service.updateUserPreferencesHandler(modifiedModel);
-  }
-
-  function onResetColumnsHandler() {
-    service.resetUserPreferencesHandler(state.activeTab);
-  }
-
-  function handleTabChange(value: string) {
-    if (value === state.activeTab) return;
-    dispatch(actions.refreshActiveTab(value));
   }
 
   return (
@@ -375,7 +141,7 @@ export function ProductsPage() {
             <SheButton
               icon={Plus}
               variant="outline"
-              onClick={handleReportPurchase}
+              onClick={() => onAction("reportPurchase")}
               value={t("SupplierActions.ReportPurchase")}
             />
           </div>
@@ -384,7 +150,7 @@ export function ProductsPage() {
             <SheButton
               icon={Plus}
               variant="outline"
-              onClick={handleAddProduct}
+              onClick={() => onAction("addProduct")}
               value={t("ProductActions.AddProduct")}
             />
             {/*Commented until future notices*/}
@@ -404,7 +170,10 @@ export function ProductsPage() {
         )}
       </div>
       <div className={cs.productsPageContent}>
-        <SheTabs defaultValue={state.activeTab} onValueChange={handleTabChange}>
+        <SheTabs
+          defaultValue={state.activeTab}
+          onValueChange={(value: string) => onAction("tabChange", value)}
+        >
           <div className={cs.tabItemsWrapper}>
             <TabsList className={cs.tabItems}>
               <TabsTrigger className={cs.tabItemTrigger} value="products">
@@ -428,22 +197,19 @@ export function ProductsPage() {
             <DndGridDataTable
               isLoading={state.isLoading}
               ref={gridRef}
-              columns={
-                productsGridColumns(
-                  onAction,
-                  onDelete,
-                  activeStates,
-                ) as ColumnDef<DataWithId>[]
-              }
+              columns={ProductsGridColumns(onAction) as ColumnDef<DataWithId>[]}
               data={state.productsGridModel.items}
               gridModel={state.productsGridModel}
+              gridRequestModel={state.productsGridRequestModel}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
               preferenceContext={"productReferences"}
               skeletonQuantity={state.productsGridRequestModel.pageSize}
-              onApplyColumns={onApplyColumnsHandler}
-              onDefaultColumns={onResetColumnsHandler}
-              onGridRequestChange={handleGridRequestChange}
+              onApplyColumns={(model) => onAction("applyColumns", model)}
+              onDefaultColumns={() => onAction("resetColumns")}
+              onGridRequestChange={(updates) =>
+                onAction("gridRequestChange", updates)
+              }
             >
               <GridItemsFilter
                 items={state.brands}
@@ -466,21 +232,19 @@ export function ProductsPage() {
             <DndGridDataTable
               isLoading={state.isLoading}
               ref={gridRef}
-              columns={
-                variantsGridColumns(
-                  onAction,
-                  onDelete,
-                ) as ColumnDef<DataWithId>[]
-              }
+              columns={variantsGridColumns(onAction) as ColumnDef<DataWithId>[]}
               data={state.variants}
               gridModel={state.variantsGridModel}
+              gridRequestModel={state.variantsGridRequestModel}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
               preferenceContext={"variantReferences"}
               skeletonQuantity={state.variantsGridRequestModel.pageSize}
-              onApplyColumns={onApplyColumnsHandler}
-              onDefaultColumns={onResetColumnsHandler}
-              onGridRequestChange={handleGridRequestChange}
+              onApplyColumns={(model) => onAction("applyColumns", model)}
+              onDefaultColumns={() => onAction("resetColumns")}
+              onGridRequestChange={(updates) =>
+                onAction("gridRequestChange", updates)
+              }
             >
               <GridItemsFilter
                 items={state.brands}
@@ -499,12 +263,10 @@ export function ProductsPage() {
               <GridTraitsFilter
                 traitOptions={state.colorsForFilter}
                 traitType="color"
-                gridRequestModel={state.variantsGridRequestModel}
               />
               <GridTraitsFilter
                 traitOptions={state.sizesForFilter}
                 traitType="size"
-                gridRequestModel={state.variantsGridRequestModel}
               />
               <GridShowItemsFilter context="Deleted" />
             </DndGridDataTable>
@@ -514,20 +276,20 @@ export function ProductsPage() {
               isLoading={state.isLoading}
               ref={gridRef}
               columns={
-                purchasesGridColumns(
-                  onAction,
-                  onDelete,
-                ) as ColumnDef<DataWithId>[]
+                purchasesGridColumns(onAction) as ColumnDef<DataWithId>[]
               }
               data={state.purchases}
               gridModel={state.purchasesGridModel}
+              gridRequestModel={state.purchasesGridRequestModel}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
               preferenceContext={"purchaseReferences"}
               skeletonQuantity={state.purchasesGridRequestModel.pageSize}
-              onApplyColumns={onApplyColumnsHandler}
-              onDefaultColumns={onResetColumnsHandler}
-              onGridRequestChange={handleGridRequestChange}
+              onApplyColumns={(model) => onAction("applyColumns", model)}
+              onDefaultColumns={() => onAction("resetColumns")}
+              onGridRequestChange={(updates) =>
+                onAction("gridRequestChange", updates)
+              }
             >
               <GridItemsFilter
                 items={state.suppliers}
@@ -537,26 +299,7 @@ export function ProductsPage() {
                 getName={(item: SupplierModel) => item.supplierName}
                 selected={state.purchasesGridModel.filter?.suppliers}
               />
-              <SheDatePicker
-                mode="range"
-                icon={CalendarRange}
-                placeholder="Pick range"
-                maxWidth="200px"
-                showClearBtn
-                onSelectDate={(value) => {
-                  if (value) {
-                    handleGridRequestChange({
-                      dateTo: value.to.toISOString(),
-                      dateFrom: value.from.toISOString(),
-                    });
-                  } else {
-                    handleGridRequestChange({
-                      dateTo: null,
-                      dateFrom: null,
-                    });
-                  }
-                }}
-              />
+              <GridDateRangeFilter />
               <GridItemsFilter
                 items={state.brands}
                 columnName={"Brands"}
@@ -564,25 +307,15 @@ export function ProductsPage() {
                 getId={(item: BrandModel) => item.brandId}
                 getName={(item: BrandModel) => item.brandName}
               />
-              <SheInput
+              <GridValueFilter
                 icon={ReceiptEuro}
                 placeholder="Value from"
-                maxWidth="200px"
-                showClearBtn
-                onDelay={(value: number) =>
-                  handleGridRequestChange({ valueFrom: value })
-                }
-                onClear={() => handleGridRequestChange({ valueFrom: null })}
+                fieldKey="valueFrom"
               />
-              <SheInput
+              <GridValueFilter
                 icon={ReceiptEuro}
                 placeholder="Value to"
-                maxWidth="200px"
-                showClearBtn
-                onDelay={(value: number) => {
-                  handleGridRequestChange({ valueTo: value });
-                }}
-                onClear={() => handleGridRequestChange({ valueTo: null })}
+                fieldKey="valueTo"
               />
             </DndGridDataTable>
           </TabsContent>
