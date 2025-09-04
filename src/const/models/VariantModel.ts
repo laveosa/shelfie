@@ -18,4 +18,5 @@ export interface VariantModel {
   variantId?: number;
   variantCode?: string;
   variantName?: string;
+  isActive?: boolean;
 }

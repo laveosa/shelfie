@@ -68,8 +68,6 @@ export default function ManageTraitsCard({
     [key: string]: any;
   };
 }) {
-  console.log("traits", traits);
-
   const { t } = useTranslation();
   const variantTraitOptions = variant?.traitOptions || [];
   const defaultValues = traits.reduce((acc, trait) => {
