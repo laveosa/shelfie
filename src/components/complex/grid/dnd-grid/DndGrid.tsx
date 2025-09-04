@@ -27,13 +27,14 @@ import {
 } from "@/components/ui/table.tsx";
 import GridHeader from "@/components/complex/grid/grid-header/GridHeader.tsx";
 import { IGridHeader } from "@/const/interfaces/complex-components/IGridHeader.ts";
-import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
 import { IGridContext } from "@/const/interfaces/context/IGridContext.ts";
 import { GridContext } from "@/state/context/grid-context";
 import cs from "./DndGrid.module.scss";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
+
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 
 export interface DataWithId {
   id: number | string;
@@ -52,7 +53,7 @@ interface DataTableProps<TData extends DataWithId, TValue>
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   sortingItems?: GridSortingModel[];
-  onGridRequestChange?: (updates: GridRequestModel) => void;
+  gridRequestModel?: GridRequestModel;
   showHeader?: boolean;
   showColumnsHeader?: boolean;
   enableDnd?: boolean;
@@ -63,6 +64,7 @@ interface DataTableProps<TData extends DataWithId, TValue>
   onAction?: (data) => void;
   onApplyColumns?: (data) => void;
   onDefaultColumns?: () => void;
+  onGridRequestChange?: (updates) => void;
   onNewItemPosition?: (
     newIndex: number,
     activeItem: TData,
@@ -128,10 +130,10 @@ const DraggableRow = ({
           style={{
             cursor: isDragDisabled || isLoading ? "default" : "grab",
             background: isSelected ? "#F4F4F5" : "inherit",
-            width: "20px",
-            minWidth: "10px",
+            width: "40px",
+            minWidth: "40px",
             maxWidth: "40px",
-            padding: cellPadding,
+            padding: "0",
           }}
           {...listeners}
         >
@@ -292,7 +294,7 @@ export const DndGridDataTable = React.forwardRef<
     customMessage,
     skeletonQuantity,
     cellPadding,
-    onGridRequestChange,
+    gridRequestModel,
     onApplyColumns,
     onDefaultColumns,
     onNewItemPosition,
@@ -300,6 +302,7 @@ export const DndGridDataTable = React.forwardRef<
     renderExpandedContent,
     onAddExpandableRow,
     createEmptyExpandableRow,
+    onGridRequestChange,
   }: DataTableProps<TData, TValue>,
   ref,
 ) {
@@ -467,16 +470,17 @@ export const DndGridDataTable = React.forwardRef<
         columnsPreferences,
         preferenceContext,
         onApplyColumns,
-        onDefaultColumns,
         showPagination,
         showSorting,
         showColumnsViewOptions,
         showColumnsHeader,
         showSearch,
         gridModel,
-        onGridRequestChange,
         sortingItems,
         children,
+        gridRequestModel,
+        onDefaultColumns,
+        onGridRequestChange,
       }}
     >
       <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
@@ -498,49 +502,41 @@ export const DndGridDataTable = React.forwardRef<
               borderCollapse: "collapse",
             }}
           >
-            {showColumnsHeader && (
-              <TableHeader>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow
-                    className={isLoading ? `${cs.tableRowLoading}` : ""}
-                    key={headerGroup.id}
-                  >
-                    {enableDnd && (
-                      <TableHead
-                        className={isLoading ? `${cs.tableHeadLoading}` : ""}
-                        style={{
-                          width: "20px",
-                          minWidth: "10px",
-                          maxWidth: "40px",
-                          padding: cellPadding,
-                        }}
-                      ></TableHead>
-                    )}
-                    {headerGroup.headers.map((header) => (
-                      <TableHead
-                        className={isLoading ? `${cs.tableHeadLoading}` : ""}
-                        key={header.id}
-                        style={{
-                          ...(header.column.columnDef.size && {
-                            width: `${header.column.columnDef.size}px`,
-                          }),
-                          minWidth: header.column.columnDef.minSize || 50,
-                          maxWidth: header.column.columnDef.maxSize,
-                          padding: cellPadding,
-                        }}
-                      >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            )}
-                      </TableHead>
-                    ))}
-                  </TableRow>
-                ))}
-              </TableHeader>
-            )}
+            <TableHeader className={!showColumnsHeader ? cs.hiddenHeader : ""}>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {enableDnd && (
+                    <TableHead
+                      style={{
+                        width: "40px",
+                        minWidth: "40px",
+                        maxWidth: "40px",
+                        padding: "0",
+                      }}
+                    ></TableHead>
+                  )}
+                  {headerGroup.headers.map((header) => (
+                    <TableHead
+                      key={header.id}
+                      style={{
+                        ...(header.column.columnDef.size && {
+                          width: `${header.column.columnDef.size}px`,
+                        }),
+                        minWidth: header.column.columnDef.minSize || 50,
+                        maxWidth: header.column.columnDef.maxSize,
+                      }}
+                    >
+                      {showColumnsHeader &&
+                        !header.isPlaceholder &&
+                        flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                    </TableHead>
+                  ))}
+                </TableRow>
+              ))}
+            </TableHeader>
             {/*{isLoading && items.length === 0 ? (*/}
             {isLoading ? (
               <TableBody className={cs.tableSkeleton}>

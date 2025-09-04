@@ -7,37 +7,32 @@ import CustomerCard from "@/components/complex/custom-cards/customer-card/Custom
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
 
 export function CustomerBasicDataPage() {
-
-  const { 
+  const {
     state,
     customerId,
-    getCustomerHandler ,
+    getCustomerHandler,
     updateCustomerHandler,
     createCustomerHandler,
     onCancelHandler,
     getCustomerInfoHandler,
-    deleteCustomerHandler
+    deleteCustomerHandler,
   } = useCustomerBasicDataPageService();
 
   const { openConfirmationDialog } = useDialogService();
-  
+
   // ================================================================== EVENT
   useEffect(() => {
     getCustomerHandler();
-    if(state.customerCounter.addressesAmount === undefined && customerId) {
+    if (state.customerCounter.addressesAmount === undefined && customerId) {
       getCustomerInfoHandler(Number(customerId));
-    } 
+    }
   }, []);
 
-  async function onAction(
-    actionType: string,
-    data?: any,
-  ) {
+  async function onAction(actionType: string, data?: any) {
     switch (actionType) {
-      
       case "deleteCustomer":
         const confirmedCustomerDeleting = await openConfirmationDialog({
-          title: "Deleting customer",
+          headerTitle: "Deleting customer",
           text: `You are about to delete customer ${data.customerName}.`,
           primaryButtonValue: "Delete",
           secondaryButtonValue: "Cancel",
@@ -47,13 +42,12 @@ export function CustomerBasicDataPage() {
 
         deleteCustomerHandler(data);
         break;
-      
     }
   }
   // ================================================================== LAYOUT
 
   function onSubmitCustomerDataHandler(data: any) {
-    if(customerId) {
+    if (customerId) {
       updateCustomerHandler(data);
     } else {
       createCustomerHandler(data);
@@ -62,13 +56,12 @@ export function CustomerBasicDataPage() {
 
   return (
     <div className={cs.customerBasicDataPage}>
-
       <CustomerMenuCard
         isLoading={state.isCustomerMenuCardLoading}
         title="Customer"
         counter={state.customerCounter}
         customerId={customerId}
-      />  
+      />
       <CustomerCard
         isLoading={state.isCustomerBasicDataLoading}
         customer={state.selectedCustomer}

@@ -1,18 +1,19 @@
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { useNavigate } from "react-router-dom";
+import { merge } from "lodash";
 
-import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
 import {
   ProductsPageSliceActions as productsActions,
   ProductsPageSliceActions as actions,
 } from "@/state/slices/ProductsPageSlice.ts";
-import UsersApiHooks from "@/utils/services/api/UsersApiService.ts";
-import PurchasesApiHooks from "@/utils/services/api/PurchasesApiService.ts";
-import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
 import {
   addGridRowColor,
   setSelectedGridItem,
 } from "@/utils/helpers/quick-helper.ts";
+import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
+import UsersApiHooks from "@/utils/services/api/UsersApiService.ts";
+import PurchasesApiHooks from "@/utils/services/api/PurchasesApiService.ts";
+import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
 import useAppService from "@/useAppService.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
@@ -25,12 +26,19 @@ import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import SuppliersApiHooks from "@/utils/services/api/SuppliersApiService.ts";
 import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
+import { useToast } from "@/hooks/useToast.ts";
+import useDialogService from "@/utils/services/dialog/DialogService.ts";
+import { AppSliceActions as appActions } from "@/state/slices/AppSlice.ts";
+import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 
 export default function useProductsPageService() {
   const appService = useAppService();
+  const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
   const state = useAppSelector<IProductsPageSlice>(StoreSliceEnum.PRODUCTS);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { addToast } = useToast();
+  const { openConfirmationDialog } = useDialogService();
 
   const [getTheProductsForGrid] =
     ProductsApiHooks.useGetTheProductsForGridMutation();
@@ -136,6 +144,9 @@ export default function useProductsPageService() {
   const [deleteVariant] = ProductsApiHooks.useDeleteVariantMutation();
   const [deleteSupplier] = SuppliersApiHooks.useDeleteSupplierMutation();
   const [restoreSupplier] = SuppliersApiHooks.useRestoreSupplierMutation();
+  const [deletePurchase] = PurchasesApiHooks.useDeletePurchaseMutation();
+  const [toggleVariantIsActive] =
+    ProductsApiHooks.useToggleVariantIsActiveMutation();
 
   //-------------------------------------------------API
 
@@ -659,6 +670,234 @@ export default function useProductsPageService() {
     });
   }
 
+  function deletePurchaseHandler(purchaseId) {
+    return deletePurchase(purchaseId).then((res: any) => {
+      return res;
+    });
+  }
+
+  //----------------------------------------------------ACTIONS
+
+  function activateProductHandler(model) {
+    toggleProductActivationHandler(model.productId).then((res: any) => {
+      if (!res.error) {
+        dispatch(
+          actions.refreshProductsGridModel({
+            ...state.productsGridModel,
+            items: state.productsGridModel.items.map((product) =>
+              product.productId === model.productId
+                ? { ...product, isActive: !model.isActive }
+                : product,
+            ),
+          }),
+        );
+        addToast({
+          text: "Product successfully activated",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: res.error.data.detail,
+          type: "error",
+        });
+      }
+    });
+  }
+
+  async function deleteProductActionHandler(data) {
+    const confirmedDeleteProduct = await openConfirmationDialog({
+      headerTitle: "Delete Product",
+      text: `You are about to delete product "${data.row.original.productName}".`,
+      primaryButtonValue: "Delete",
+      secondaryButtonValue: "Cancel",
+    });
+
+    if (!confirmedDeleteProduct) {
+    } else {
+      data.table.options.meta?.hideRow(data.row.original.id);
+      await deleteProductHandler(data.row.original.productId).then((res) => {
+        if (!res.error) {
+          addToast({
+            text: "Product deleted successfully",
+            type: "success",
+          });
+        } else {
+          data.table.options.meta?.unhideRow(data.row.original.id);
+          addToast({
+            text: res.error.data.detail,
+            type: "error",
+          });
+        }
+      });
+    }
+  }
+
+  async function deleteVariantActionHandler(data) {
+    const confirmedDeleteVariant = await openConfirmationDialog({
+      headerTitle: "Delete Variant",
+      text: `You are about to delete variant "${data.row.original.variantName}".`,
+      primaryButtonValue: "Delete",
+      secondaryButtonValue: "Cancel",
+    });
+
+    if (!confirmedDeleteVariant) {
+    } else {
+      data.table.options.meta?.hideRow(data.row.original.id);
+      await deleteVariantHandler(data.row.original.variantId).then((res) => {
+        if (!res.error) {
+          addToast({
+            text: "Variant deleted successfully",
+            type: "success",
+          });
+        } else {
+          data.table.options.meta?.unhideRow(data.row.original.id);
+          addToast({
+            text: res.error.data.detail,
+            type: "error",
+          });
+        }
+      });
+    }
+  }
+
+  async function deletePurchaseActionHandler(data) {
+    const confirmedDeletePurchase = await openConfirmationDialog({
+      headerTitle: "Delete Purchase",
+      text: `You are about to delete purchase "${data.row.original.purchaseId}".`,
+      primaryButtonValue: "Delete",
+      secondaryButtonValue: "Cancel",
+    });
+
+    if (!confirmedDeletePurchase) {
+    } else {
+      data.table.options.meta?.hideRow(data.row.original.id);
+      await deletePurchaseHandler(data.row.original.purchaseId).then((res) => {
+        if (!res.error) {
+          addToast({
+            text: "Purchase deleted successfully",
+            type: "success",
+          });
+        } else {
+          data.table.options.meta?.unhideRow(data.row.original.id);
+          addToast({
+            text: res.error.data.detail,
+            type: "error",
+          });
+        }
+      });
+    }
+  }
+
+  function manageProductActionHandler(productId: any) {
+    dispatch(actions.resetProduct());
+    navigate(
+      `${NavUrlEnum.PRODUCTS}${NavUrlEnum.PRODUCT_BASIC_DATA}/${productId}`,
+    );
+  }
+
+  function manageVariantActionHandler(variantId: number, productId: number) {
+    dispatch(
+      actions.refreshSelectedVariant({
+        variantId,
+      }),
+    );
+    navigate(
+      `${NavUrlEnum.PRODUCTS}${NavUrlEnum.MANAGE_VARIANTS}/${productId}`,
+    );
+  }
+
+  function managePurchaseActionHandler(purchaseId: number) {
+    navigate(`${NavUrlEnum.PRODUCTS}${NavUrlEnum.SUPPLIER}/${purchaseId}`);
+  }
+
+  function addProductActionHandler() {
+    navigate(`${NavUrlEnum.PRODUCTS}${NavUrlEnum.PRODUCT_BASIC_DATA}`);
+  }
+
+  function reportPurchaseActionHandler() {
+    dispatch(actions.resetSelectedPurchase());
+    dispatch(actions.resetSelectedSupplier());
+    navigate(`${NavUrlEnum.PRODUCTS}${NavUrlEnum.SUPPLIER}/`);
+  }
+
+  function gridRequestChangeHandler(updates: any) {
+    if (state.activeTab === "products") {
+      dispatch(
+        actions.refreshProductsGridRequestModel({
+          ...state.productsGridRequestModel,
+          ...updates,
+          filter: {
+            ...state.productsGridRequestModel.filter,
+            ...updates.filter,
+          },
+        }),
+      );
+    } else if (state.activeTab === "variants") {
+      dispatch(
+        actions.refreshVariantsGridRequestModel({
+          ...state.variantsGridRequestModel,
+          ...updates,
+          filter: {
+            ...state.variantsGridRequestModel.filter,
+            ...updates.filter,
+          },
+        }),
+      );
+    } else if (state.activeTab === "purchases") {
+      dispatch(
+        actions.refreshPurchasesGridRequestModel({
+          ...state.purchasesGridRequestModel,
+          ...updates,
+          filter: {
+            ...state.purchasesGridRequestModel.filter,
+            ...updates.filter,
+          },
+        }),
+      );
+    }
+  }
+
+  function applyColumnsActionHandler(model: PreferencesModel) {
+    const modifiedModel = merge({}, appState.preferences, model);
+    dispatch(appActions.refreshPreferences(modifiedModel));
+    updateUserPreferencesHandler(modifiedModel);
+  }
+
+  function resetColumnsActionHandler() {
+    resetUserPreferencesHandler(state.activeTab);
+  }
+
+  function tabChangeActionHandler(value: string) {
+    if (value === state.activeTab) return;
+    dispatch(actions.refreshActiveTab(value));
+  }
+
+  function activateVariantActionHandler(model) {
+    toggleVariantIsActive(model.variantId).then((res: any) => {
+      if (!res.error) {
+        dispatch(
+          actions.refreshVariantsGridModel({
+            ...state.variantsGridModel,
+            items: state.variantsGridModel.items.map((variant) =>
+              variant.variantId === model.variantId
+                ? { ...variant, isActive: !model.isActive }
+                : variant,
+            ),
+          }),
+        );
+        addToast({
+          text: "Variant activated successfully",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: "Variant not activated",
+          description: res.error.message,
+          type: "error",
+        });
+      }
+    });
+  }
   //----------------------------------------------------LOGIC
 
   function itemsCardItemsConvertor(
@@ -732,9 +971,6 @@ export default function useProductsPageService() {
     getSortingOptionsForGridHandler,
     getCountersForProductsHandler,
     getProductDetailsHandler,
-    manageProductHandler,
-    deleteProductHandler,
-    toggleProductActivationHandler,
     updateUserPreferencesHandler,
     resetUserPreferencesHandler,
     getProductPhotosHandler,
@@ -769,7 +1005,6 @@ export default function useProductsPageService() {
     getListOfTraitsWithOptionsForProductHandler,
     setProductTraitsHandler,
     deleteTraitHandler,
-    getListOfTraitsForProductHandler,
     createNewTraitHandler,
     updateTraitHandler,
     getOptionsForTraitHandler,
@@ -790,5 +1025,20 @@ export default function useProductsPageService() {
     deleteVariantHandler,
     deleteSupplierHandler,
     restoreSupplierHandler,
+    deletePurchaseHandler,
+    activateProductHandler,
+    deleteProductActionHandler,
+    deleteVariantActionHandler,
+    deletePurchaseActionHandler,
+    manageProductActionHandler,
+    manageVariantActionHandler,
+    managePurchaseActionHandler,
+    addProductActionHandler,
+    reportPurchaseActionHandler,
+    gridRequestChangeHandler,
+    applyColumnsActionHandler,
+    resetColumnsActionHandler,
+    tabChangeActionHandler,
+    activateVariantActionHandler,
   };
 }

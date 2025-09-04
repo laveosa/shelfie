@@ -74,23 +74,23 @@ export function formatDate(
 
 // Generic function to format date rows with custom format patterns
 export function formatDateRow(
-  dateString: string | null, 
-  format: string = "dd-mm-yyyy hh:mm", 
-  fallbackText: string = "No Orders"
+  dateString: string | null,
+  format: string = "dd-mm-yyyy hh:mm",
+  fallbackText: string = "No Orders",
 ): string {
   if (!dateString) {
     return fallbackText;
   }
-  
+
   try {
     const date = new Date(dateString);
     if (isNaN(date.getTime())) {
       return fallbackText;
     }
-    
+
     // Parse the format string and replace placeholders
     let formattedDate = format;
-    
+
     // Replace format placeholders with actual date values
     formattedDate = formattedDate
       .replace(/dd/g, String(date.getDate()).padStart(2, "0"))
@@ -99,7 +99,7 @@ export function formatDateRow(
       .replace(/hh/g, String(date.getHours()).padStart(2, "0"))
       .replace(/mm/g, String(date.getMinutes()).padStart(2, "0"))
       .replace(/ss/g, String(date.getSeconds()).padStart(2, "0"));
-    
+
     return formattedDate;
   } catch (error) {
     return fallbackText;
@@ -125,8 +125,8 @@ export function addGridRowColor(
   }));
 }
 
-export function setSelectedGridItem<T extends Record<string, any>>(
-  itemId: string,
+export function setSelectedGridItem<T extends Record<string | number, any>>(
+  itemId: string | number,
   itemsList: T[],
   idKey: keyof T,
 ): T[] {

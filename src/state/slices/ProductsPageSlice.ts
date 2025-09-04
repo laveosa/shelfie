@@ -22,7 +22,6 @@ import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import { TypeOfTraitModel } from "@/const/models/TypeOfTraitModel.ts";
 import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
-import { IManageVariantsPageSlice } from "@/const/interfaces/store-slices/IManageVariantsPageSlice.ts";
 
 const initialState: IProductsPageSlice = {
   isLoading: false,
@@ -31,6 +30,7 @@ const initialState: IProductsPageSlice = {
   isProductsLoading: false,
   isProductPhotosLoading: false,
   isProductVariantsLoading: false,
+  isPhotoUploaderLoading: false,
   products: null,
   product: null,
   selectedProduct: null,
@@ -90,6 +90,7 @@ const initialState: IProductsPageSlice = {
   sizesForFilter: [],
   activeTab: "products",
   variantPhotos: [],
+  productCode: null,
 };
 
 //----------------------------------------------------- LOADERS
@@ -148,6 +149,13 @@ function setIsProductVariantsLoading(
   action: PayloadAction<boolean>,
 ) {
   state.isProductVariantsLoading = action?.payload;
+}
+
+function setIsPhotoUploaderLoading(
+  state: IProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isPhotoUploaderLoading = action?.payload;
 }
 
 //----------------------------------------------------- API
@@ -405,10 +413,17 @@ function refreshActiveTab(
 }
 
 function refreshVariantPhotos(
-  state: IManageVariantsPageSlice,
+  state: IProductsPageSlice,
   action: PayloadAction<ImageModel[]>,
 ) {
   state.variantPhotos = action?.payload || state.variantPhotos;
+}
+
+function refreshProductCode(
+  state: IProductsPageSlice,
+  action: PayloadAction<string>,
+) {
+  state.productCode = action?.payload || state.productCode;
 }
 
 const ProductsPageSlice = createSlice({
@@ -421,6 +436,7 @@ const ProductsPageSlice = createSlice({
     setIsProductsLoading,
     setIsProductPhotosLoading,
     setIsProductVariantsLoading,
+    setIsPhotoUploaderLoading,
     refreshProducts,
     refreshProduct,
     resetProduct,
@@ -462,6 +478,7 @@ const ProductsPageSlice = createSlice({
     refreshSizesForFilter,
     refreshActiveTab,
     refreshVariantPhotos,
+    refreshProductCode,
   },
 });
 

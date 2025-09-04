@@ -38,4 +38,5 @@ export enum ApiUrlEnum {
   DELIVERY_ADDRESSES = "/delivery-addresses",
   ORDERS = "/orders",
   DISCOUNTS = "/discounts",
+  SHIPMENTS = "/shipments",
 }

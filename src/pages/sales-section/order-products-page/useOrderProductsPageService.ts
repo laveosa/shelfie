@@ -10,6 +10,7 @@ import { OrdersPageSliceActions as ordersActions } from "@/state/slices/OrdersPa
 import { useToast } from "@/hooks/useToast.ts";
 import useOrdersPageService from "@/pages/sales-section/orders-page/useOrdersPageService.ts";
 import OrdersApiHooks from "@/utils/services/api/OrdersApiService.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 
 export default function useOrderProductsPageService() {
   const appService = useAppService();
@@ -30,8 +31,38 @@ export default function useOrderProductsPageService() {
   const [removeStockActionFromOrder] =
     OrdersApiHooks.useRemoveStockActionFromOrderMutation();
 
+  function getOrderStockActionsListForGrid(orderId) {
+    dispatch(actions.setIsProductsInOrderGridLoading(true));
+    ordersService
+      .getListOfStockActionsForGridHandler(
+        orderId,
+        ordersState.stockActionsGridRequestModel,
+      )
+      .then(() => {
+        dispatch(actions.setIsProductsInOrderGridLoading(false));
+      });
+  }
+
+  function getVariantsListForGrid(model: GridRequestModel) {
+    dispatch(actions.setIsFindProductsGridLoading(true));
+    ordersService.getVariantsForGridHandler(model).then(() => {
+      dispatch(actions.setIsFindProductsGridLoading(false));
+    });
+  }
+
   function addProductHandler() {
     dispatch(actions.setIsFindProductsGridLoading(true));
+    if (ordersState.brands.length === 0) {
+      ordersService.getBrandsForFilterHandler();
+    }
+    if (ordersState.categories.length === 0) {
+      ordersService.getCategoriesForFilterHandler();
+    }
+    if (
+      ordersState.sizesForFilter.length === 0 ||
+      ordersState.colorsForFilter.length === 0
+    )
+      ordersService.getTraitsForFilterHandler();
     ordersService
       .getVariantsForGridHandler(ordersState.variantsGridRequestModel)
       .then(() => {
@@ -65,22 +96,27 @@ export default function useOrderProductsPageService() {
   }
 
   function variantsGridRequestChange(updates) {
-    if (updates.brands || updates.categories || updates.filter) {
-      dispatch(
+    let gridRequestModel;
+    if ("searchQuery" in updates || "currentPage" in updates) {
+      gridRequestModel = dispatch(
         ordersActions.refreshVariantsGridRequestModel({
           ...ordersState.variantsGridRequestModel,
-          currentPage: 1,
           ...updates,
         }),
       );
     } else {
-      dispatch(
+      gridRequestModel = dispatch(
         ordersActions.refreshVariantsGridRequestModel({
           ...ordersState.variantsGridRequestModel,
-          ...updates,
+          currentPage: 1,
+          filter: {
+            ...ordersState.variantsGridRequestModel.filter,
+            ...updates,
+          },
         }),
       );
     }
+    getVariantsListForGrid(gridRequestModel.payload);
   }
 
   function updateStockActionInOrderHandler(stockActionId, model) {
@@ -129,6 +165,8 @@ export default function useOrderProductsPageService() {
   }
 
   return {
+    getOrderStockActionsListForGrid,
+    getVariantsListForGrid,
     addProductHandler,
     addVariantsToOrderHandler,
     variantsGridRequestChange,

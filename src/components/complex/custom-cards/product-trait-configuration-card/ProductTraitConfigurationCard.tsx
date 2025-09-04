@@ -2,6 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Plus, Trash2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 import {
   FormControl,
@@ -41,6 +42,7 @@ export default function ProductTraitConfigurationCard({
   onPrimaryButtonClick,
   ...props
 }: IProductTraitConfigurationCard) {
+  const { t } = useTranslation();
   const [localItems, setLocalItems] = React.useState(data?.items ?? []);
   const form = useForm({
     defaultValues: {
@@ -115,7 +117,7 @@ export default function ProductTraitConfigurationCard({
   return (
     <SheProductCard
       loading={isLoading}
-      title={`${selectedTrait?.traitId ? `Manage: ${selectedTrait.traitName}` : "Create product trait"}`}
+      title={selectedTrait?.traitId ? t("CardTitles.ManageTrait", { traitName: selectedTrait.traitName }) : t("CardTitles.CreateProductTrait")}
       showCloseButton={true}
       className={cs.productTraitConfigurationCard}
       {...props}
@@ -129,18 +131,18 @@ export default function ProductTraitConfigurationCard({
                   required: true,
                   minLength: {
                     value: 3,
-                    message: "Product name must be at least 3 characters",
+                    message: t("ProductForm.Validation.TraitNameMinLength"),
                   },
                   maxLength: {
                     value: 50,
-                    message: "Product name cannot exceed 50 characters",
+                    message: t("ProductForm.Validation.TraitNameMaxLength"),
                   },
                 }}
                 name="traitName"
               >
                 <SheInput
-                  label="Trait Name"
-                  placeholder="enter trait name..."
+                  label={t("ProductForm.Labels.TraitName")}
+                  placeholder={t("ProductForm.Placeholders.TraitName")}
                   isValid={!form.formState.errors.traitName}
                   patternErrorMessage={form.formState.errors.traitName?.message}
                   showError={true}
@@ -160,7 +162,7 @@ export default function ProductTraitConfigurationCard({
                     }}
                     render={({ field }) => (
                       <FormItem className={cs.select}>
-                        <FormLabel>Trait type</FormLabel>
+                        <FormLabel>{t("ProductForm.Labels.TraitType")}</FormLabel>
                         <Select
                           onValueChange={(value) => {
                             field.onChange(Number(value));
@@ -171,7 +173,7 @@ export default function ProductTraitConfigurationCard({
                         >
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder="Select category" />
+                              <SelectValue placeholder={t("ProductForm.Placeholders.SelectTraitType")} />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -195,7 +197,7 @@ export default function ProductTraitConfigurationCard({
                 <div className={cs.buttonBlock}>
                   <SheButton
                     variant="secondary"
-                    value="Cancel"
+                    value={t("CommonButtons.Cancel")}
                     onClick={() =>
                       onAction("closeProductTraitConfigurationCard", null)
                     }
@@ -204,7 +206,7 @@ export default function ProductTraitConfigurationCard({
                     disabled={!form.formState.isValid}
                     icon={Plus}
                     bgColor="#007AFF"
-                    value={"Create Trait"}
+                    value={t("ProductActions.CreateTrait")}
                     onClick={form.handleSubmit(onSubmit)}
                   />
                 </div>
@@ -218,7 +220,7 @@ export default function ProductTraitConfigurationCard({
               <div
                 className={`${cs.productTraitConfigurationGridContainer} she-title`}
               >
-                <span className="she-title">Options</span>
+                <span className="she-title">{t("ProductForm.Labels.Options")}</span>
                 {selectedTrait?.traitTypeId === 1 && (
                   <DndGridDataTable
                     isLoading={isGridLoading}
@@ -229,7 +231,7 @@ export default function ProductTraitConfigurationCard({
                     columns={sizeColumns}
                     data={localItems}
                     gridModel={data}
-                    // cellPadding="10px 10px"
+                    cellPadding="10px 10px"
                     onNewItemPosition={(newIndex, activeItem) =>
                       onAction("dndTraitOption", {
                         selectedTrait,
@@ -268,17 +270,17 @@ export default function ProductTraitConfigurationCard({
               variant="outline"
               onClick={() => onGridAction("addOption")}
             >
-              Add option
+              {t("ProductActions.AddTraitOption")}
             </SheButton>
           )}
         </div>
         {selectedTrait?.traitId && (
           <SheCardNotification
-            title="Delete Trait"
-            text="This trait will be deleted, it will no longer be available for selection but you will still see it in products where it was used, until you change the trait"
+            title={t("CardTitles.DeleteTrait")}
+            text={t("ConfirmationMessages.DeleteTrait")}
             buttonColor="#EF4343"
             buttonVariant="outline"
-            buttonText="Delete"
+            buttonText={t("CommonButtons.Delete")}
             buttonIcon={Trash2}
             onClick={() => onAction("deleteTrait", selectedTrait)}
           />

@@ -9,7 +9,13 @@
   }
 
   .purchaseProductsCard {
+    width: 100%;
+
     .purchaseProductsCardContent {
+      .purchaseProductsGrid {
+        min-width: 1200px;
+      }
+
       .tabItemsWrapper {
         margin: 0 -20px;
         border-bottom: 1px solid vars.$colorMedium;

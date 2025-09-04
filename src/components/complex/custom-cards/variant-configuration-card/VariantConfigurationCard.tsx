@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import {
   Blocks,
   Clock,
@@ -36,12 +37,12 @@ import {
 } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
 import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
-import { VariantConfigurationGridColumns } from "@/components/complex/grid/variant-configuration-grid/VariantConfigurationGridColumns.tsx";
-import { VariantPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/VariantPhotosGridColumns.tsx";
 import { VariantModel } from "@/const/models/VariantModel.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon";
 import InfoIcon from "@/assets/icons/Info-icon.svg?react";
 import SheCardNotification from "@/components/complex/she-card-notification/SheCardNotification.tsx";
+import { VariantConfigurationGridColumns } from "@/components/complex/grid/custom-grids/variant-configuration-grid/VariantConfigurationGridColumns.tsx";
+import { VariantPhotosGridColumns } from "@/components/complex/grid/custom-grids/product-photos-grid/VariantPhotosGridColumns.tsx";
 
 const debounce = (fn: (...args: any[]) => void, delay: number) => {
   let timer: ReturnType<typeof setTimeout>;
@@ -64,6 +65,7 @@ export default function VariantConfigurationCard({
   onGenerateProductCode,
   ...props
 }: IVariantConfigurationCard) {
+  const { t } = useTranslation();
   const traitsColumns =
     VariantConfigurationGridColumns as ColumnDef<DataWithId>[];
   const photoColumns = VariantPhotosGridColumns(
@@ -138,7 +140,7 @@ export default function VariantConfigurationCard({
           expandableRows.push({
             id: `${trait.id}-removed`,
             type: "removed",
-            message: "Trait option is removed",
+            message: t("ValidationMessages.TraitOptionRemoved"),
           });
         }
 
@@ -146,7 +148,7 @@ export default function VariantConfigurationCard({
           expandableRows.push({
             id: `${trait.id}-missing`,
             type: "missing",
-            message: "Trait option is missing configuration",
+            message: t("ValidationMessages.TraitOptionMissingConfiguration"),
           });
         }
 
@@ -254,14 +256,14 @@ export default function VariantConfigurationCard({
     _setLoadingRow?: (rowId: string, loading: boolean) => void,
     row?: any,
   ) {
-    onAction("detachPhotoFromVariant", { row, variant });
+    onAction("detachPhotoFromVariant", row.original);
     onAction("deletePhoto", row.original);
   }
 
   return (
     <SheProductCard
       loading={isLoading}
-      title="Manage Variant"
+      title={t("CardTitles.ManageVariant")}
       showCloseButton
       onSecondaryButtonClick={() => onAction("closeVariantConfigurationCard")}
       className={cs.variantConfigurationCard}
@@ -272,13 +274,15 @@ export default function VariantConfigurationCard({
           <SheForm form={form as any} onSubmit={onSubmit}>
             <SheForm.Field name="variantName">
               <SheInput
-                label="Optional Variant Name"
+                label={t("ProductForm.Labels.OptionalVariantName")}
                 onDelay={handleFieldChange}
                 fullWidth
               />
             </SheForm.Field>
             <div className={cs.variantCodeFormRow}>
-              <SheForm.Field name="variantCode" label="Variant Code">
+              <SheForm.Field
+                name="variantCode"
+                label={t("ProductForm.Labels.VariantCode")}>
                 <div>
                   <SheInput
                     value={variant?.variantCode}
@@ -296,7 +300,9 @@ export default function VariantConfigurationCard({
             </div>
             <div className={cs.priceFormRow}>
               <div className={cs.priceFormRowItem}>
-                <SheForm.Field label="Sale price netto" name="salePrice.netto">
+                <SheForm.Field
+                  label={t("ProductForm.Labels.SalePriceNetto")}
+                  name="salePrice.netto">
                   <SheInput
                     type="number"
                     step="any"
@@ -315,7 +321,7 @@ export default function VariantConfigurationCard({
                   name="salePrice.taxTypeId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>VAT</FormLabel>
+                      <FormLabel>{t("ProductForm.Labels.VAT")}</FormLabel>
                       <Select
                         onValueChange={(value) => {
                           field.onChange(Number(value));
@@ -325,7 +331,8 @@ export default function VariantConfigurationCard({
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select VAT" />
+                            <SelectValue
+                              placeholder={t("SelectOptions.SelectVAT")} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -345,7 +352,7 @@ export default function VariantConfigurationCard({
               </div>
               <div className={cs.priceFormRowItem}>
                 <SheForm.Field
-                  label="Sale price brutto"
+                  label={t("ProductForm.Labels.SalePriceBrutto")}
                   name="salePrice.brutto"
                 >
                   <SheInput
@@ -367,21 +374,21 @@ export default function VariantConfigurationCard({
         <div className={cs.stockDetailsBlock}>
           <div className={cs.buttonBlock}>
             <span className={`${cs.stockDetailsTitle} she-title`}>
-              Stock Details
+              {t("SectionTitles.StockDetails")}
             </span>
             <SheButton
               icon={Plus}
               variant="secondary"
               onClick={() => onAction("openAddStockCard")}
             >
-              Add
+              {t("CommonButtons.Add")}
             </SheButton>
             <SheButton
               icon={Minus}
               variant="secondary"
               onClick={() => onAction("openDisposeStockCard")}
             >
-              Dispose
+              {t("StockActions.Dispose")}
             </SheButton>
             <SheButton
               icon={Clock}
@@ -391,18 +398,18 @@ export default function VariantConfigurationCard({
                 onAction("openVariantHistoryCard", variant.variantId)
               }
             >
-              History
+              {t("CommonButtons.History")}
             </SheButton>
           </div>
           <div className={cs.stockBlock}>
             <div className={cs.stockBlockRow}>
-              <span className="she-text">Currently in stock</span>
+              <span className="she-text">{t("StockForm.Labels.CurrentlyInStock")}</span>
               <span className={cs.stockBlockRowNumber}>
                 {variant?.stockAmount}
               </span>
             </div>
             <div className={cs.stockBlockRow}>
-              <span className="she-text">Units sold</span>
+              <span className="she-text">{t("ProductForm.Labels.UnitsSold")}</span>
               <span className={cs.stockBlockRowNumber}>
                 {variant?.soldUnits}
               </span>
@@ -411,13 +418,13 @@ export default function VariantConfigurationCard({
         </div>
         <div className={cs.variantGridBlock}>
           <div className={cs.variantGridBlockHeader}>
-            <span className="she-title">Variant Traits</span>
+            <span className="she-title">{t("ProductForm.Labels.VariantTraits")}</span>
             <SheButton
               icon={Blocks}
               variant="secondary"
               onClick={() => onAction("openManageTraitsCard")}
             >
-              Manage
+              {t("CommonButtons.Manage")}
             </SheButton>
           </div>
           <div>
@@ -434,7 +441,7 @@ export default function VariantConfigurationCard({
         </div>
         <div className={cs.variantGridBlock}>
           <div className={cs.variantGridBlockHeader}>
-            <span className="she-title">Variant Photos</span>
+            <span className="she-title">{t("ProductForm.Labels.VariantPhotos")}</span>
             <SheButton
               icon={ImagePlus}
               variant="secondary"
@@ -442,7 +449,7 @@ export default function VariantConfigurationCard({
                 onAction("openVariantPhotosCard", variant.variantId)
               }
             >
-              Manage
+              {t("CommonButtons.Manage")}
             </SheButton>
           </div>
           {variant?.photos?.length > 0 && (
@@ -464,11 +471,12 @@ export default function VariantConfigurationCard({
         </div>
       </div>
       <SheCardNotification
-        title="Delete Variant"
-        text="This variant will be deleted, it will no longer be available for sale but you will still see it in the orders where it sold"
+        title={t("CardTitles.DeleteVariant")}
+        text={t("ConfirmationMessages.DeleteVariant")}
         buttonColor="#EF4343"
         buttonVariant="outline"
         buttonText="Delete"
+        buttonText={t("CommonButtons.Delete")}
         buttonIcon={Trash2}
         onClick={() => onAction("deleteVariant", variant)}
       />

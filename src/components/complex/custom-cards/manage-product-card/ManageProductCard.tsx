@@ -1,6 +1,11 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Cog, GalleryThumbnails, Plus, TableProperties } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
+import {
+  DataWithId,
+  DndGridDataTable,
+} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { IManageProductCard } from "@/const/interfaces/complex-components/custom-cards/IManageProductCard.ts";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
@@ -8,13 +13,9 @@ import { Separator } from "@/components/ui/separator.tsx";
 import cs from "./ManageProductCard.module.scss";
 import { formatDate } from "@/utils/helpers/quick-helper.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
-import {
-  DataWithId,
-  DndGridDataTable,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import { PurchaseProductVariantsGridColumns } from "@/components/complex/grid/purchase-product-variants-grid/PurchaseProductVariantsGridColumns.tsx";
-import PurchaseProductsForm from "@/components/forms/purchase-products-form/PurchaseProductsForm.tsx";
 import { ColumnDef } from "@tanstack/react-table";
+import ManageProductsForPurchaseForm from "@/components/forms/manage-products-for-purchase-form/ManageProductsForPurchaseForm.tsx";
+import { PurchaseProductVariantsGridColumns } from "@/components/complex/grid/custom-grids/purchase-product-variants-grid/PurchaseProductVariantsGridColumns.tsx";
 
 export default function ManageProductCard({
   isLoading,
@@ -27,6 +28,8 @@ export default function ManageProductCard({
   productTraits,
   onAction,
 }: IManageProductCard) {
+  const { t } = useTranslation();
+
   const createEmptyStockAction = () => ({
     currencyId: null,
     nettoPrice: null,
@@ -72,7 +75,7 @@ export default function ManageProductCard({
   const renderExpandedContent = (row, stockAction, _stockActionIndex) => {
     return (
       <div>
-        <PurchaseProductsForm
+        <ManageProductsForPurchaseForm
           data={stockAction}
           taxes={taxes}
           currencies={currencies}
@@ -96,6 +99,9 @@ export default function ManageProductCard({
       case "addRow":
         handleAddStockAction(rowData.variantId);
         break;
+      case "manageVariant":
+        onAction("manageVariant", rowData);
+        break;
       case "addStockAction":
         rowData.stockAction.stockActionId
           ? onAction("updateStockAction", rowData)
@@ -106,43 +112,51 @@ export default function ManageProductCard({
 
   return (
     <SheProductCard
-      width="550px"
+      width="560px"
       loading={isLoading}
       className={cs.manageProductCard}
-      title={`Manage Product for Purchase ${formatDate(purchase?.date, "date")}`}
+      title={t("CardTitles.ManageProductForPurchase", {
+        date: formatDate(purchase?.date, "date"),
+      })}
       showSecondaryButton={true}
-      secondaryButtonTitle="Back to Product list"
+      secondaryButtonTitle={t("ProductActions.BackToProductList")}
       onSecondaryButtonClick={() => onAction("openPurchaseProductsCard")}
     >
       <div className={cs.manageProductCardContent}>
         <div className={cs.productDataBlock}>
           <div className={cs.productDataRow}>
-            <span className={`${cs.productDataCell} she-title`}>Product</span>
+            <span className={`${cs.productDataCell} she-title`}>
+              {t("SectionTitles.Product")}
+            </span>
             <SheButton
               className={cs.productDataCell}
               icon={Cog}
-              value={"Manage Product"}
+              value={t("ProductActions.ManageProduct")}
               variant="secondary"
-              fullWidth
+              maxWidth="160px"
               onClick={() => onAction("manageProductData")}
             />
           </div>
           <div className={cs.productDataRow}>
-            <span className={`${cs.productDataCell} she-text`}>Name</span>
+            <span className={`${cs.productDataCell} she-text`}>
+              {t("ProductForm.Labels.ProductName")}
+            </span>
             <span className={`${cs.productDataCell} she-text`}>
               {product?.productName}
             </span>
           </div>
           <div className={cs.productDataRow}>
             <span className={`${cs.productDataCell} she-text`}>
-              Product Code
+              {t("ProductForm.Labels.ProductCode")}
             </span>
             <span className={`${cs.productDataCell} she-text`}>
               {product?.productCode}
             </span>
           </div>
           <div className={cs.productDataRow}>
-            <span className={`${cs.productDataCell} she-text`}>Category</span>
+            <span className={`${cs.productDataCell} she-text`}>
+              {t("SectionTitles.Category")}
+            </span>
             <div className={cs.productDataCell}>
               {product?.productCategory?.thumbnail && (
                 <img
@@ -156,7 +170,9 @@ export default function ManageProductCard({
             </div>
           </div>
           <div className={cs.productDataRow}>
-            <span className={`${cs.productDataCell} she-text`}>Brand</span>
+            <span className={`${cs.productDataCell} she-text`}>
+              {t("SectionTitles.Brand")}
+            </span>
             <div className={cs.productDataCell}>
               {product?.brand?.thumbnail && (
                 <img
@@ -172,14 +188,14 @@ export default function ManageProductCard({
         <div className={cs.productDataBlock}>
           <div className={cs.productDataRow}>
             <span className={`${cs.productDataCell} she-title`}>
-              Product Photos
+              {t("CardTitles.ProductPhotos")}
             </span>
             <SheButton
               className={cs.productDataCell}
               icon={GalleryThumbnails}
-              value={"Manage Photos"}
+              value={t("CardTitles.ManagePhotos")}
               variant="secondary"
-              fullWidth
+              maxWidth="160px"
               onClick={() => onAction("manageProductPhotos")}
             />
           </div>
@@ -189,13 +205,13 @@ export default function ManageProductCard({
           <div className={cs.productDataRow}>
             <span className={`${cs.productDataCell} she-title`}>
               {productTraits?.length > 0
-                ? "Product Traits"
-                : "Configure traits to create variant"}
+                ? t("ProductForm.Labels.ProductTraits")
+                : t("ProductForm.Labels.ConfigureTraitsToCreateVariant")}
             </span>
             <div className={`${cs.productDataCell} ${cs.traitsDataCell}`}>
               {productTraits?.length > 0 && (
                 <span className="she-text">
-                  The product is described by following traits:{" "}
+                  {t("ProductForm.Labels.ProductDescribedByTraits")}{" "}
                   {productTraits.map((trait: TraitModel, index: number) => (
                     <Fragment key={trait.traitId}>
                       <b>{trait.traitName}</b>
@@ -206,9 +222,10 @@ export default function ManageProductCard({
               )}
               <SheButton
                 icon={TableProperties}
-                value={"Manage Traits"}
+                value={t("ProductActions.ManageTraits")}
                 variant="secondary"
-                fullWidth
+                minWidth="160px"
+                maxWidth="160px"
                 onClick={() => onAction("manageProductTraits")}
               />
             </div>
@@ -220,14 +237,15 @@ export default function ManageProductCard({
             <div className={cs.productDataBlock}>
               <div className={cs.productDataRow}>
                 <span className={`${cs.productDataCell} she-title`}>
-                  Manage variants
+                  {t("ProductActions.ManageVariants")}
                 </span>
                 <div className={cs.productDataCell}>
                   <SheButton
                     icon={Plus}
-                    value={"Create Variant"}
+                    value={t("ProductActions.CreateVariant")}
                     variant="secondary"
-                    fullWidth
+                    minWidth="160px"
+                    maxWidth="160px"
                     onClick={() => onAction("openAddVariantCard", product)}
                   />
                 </div>

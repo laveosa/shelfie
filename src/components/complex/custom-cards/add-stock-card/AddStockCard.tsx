@@ -1,6 +1,7 @@
 import { MoreHorizontal } from "lucide-react";
 import { useForm } from "react-hook-form";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./AddStockCard.module.scss";
@@ -40,6 +41,7 @@ export default function AddStockCard({
   onSecondaryButtonClick,
   ...props
 }: IAddStockCard) {
+  const { t } = useTranslation();
   const purchasePriceType: PriceTypeModel[] = [
     { priceTypeId: 1, priceTypeName: "Netto" },
     { priceTypeId: 2, priceTypeName: "Brutto" },
@@ -76,9 +78,9 @@ export default function AddStockCard({
   return (
     <SheProductCard
       loading={isLoading}
-      title={`Add ${variant?.variantName} Stock`}
+      title={`${t("StockActions.AddToStock")} ${variant?.variantName} ${t("SectionTitles.Product")}`}
       showPrimaryButton={true}
-      primaryButtonTitle="Add to Stock"
+      primaryButtonTitle={t("StockActions.AddToStock")}
       showSecondaryButton={true}
       onPrimaryButtonClick={form.handleSubmit(onSubmit)}
       onSecondaryButtonClick={onSecondaryButtonClick}
@@ -91,7 +93,7 @@ export default function AddStockCard({
           <div className={cs.addStockConfigurationForm}>
             <SheForm.Field name="unitAmount">
               <SheInput
-                label="Units"
+                label={t("PurchaseForm.Labels.Units")}
                 type="number"
                 fullWidth
                 onDelay={() => {
@@ -100,14 +102,14 @@ export default function AddStockCard({
               />
             </SheForm.Field>
             <div>
-              <span className="she-title">Purchase Price</span>
+              <span className="she-title">{t("PurchaseForm.Labels.PurchasePrice")}</span>
             </div>
             <div className={cs.purchasePriceFormRow}>
               <div className={cs.formRowItem}>
-                <SheForm.Field label="Purchase price" name="priceModel.price">
+                <SheForm.Field label={t("PurchaseForm.Labels.PurchasePrice")} name="priceModel.price">
                   <SheInput
                     type="number"
-                    placeholder="Enter purchase prise"
+                    placeholder={t("PurchaseForm.Placeholders.PurchasePrice")}
                     onDelay={() => form.handleSubmit(onSubmit)}
                   />
                 </SheForm.Field>
@@ -118,14 +120,14 @@ export default function AddStockCard({
                   name="priceModel.taxTypeId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>VAT</FormLabel>
+                      <FormLabel>{t("PurchaseForm.Labels.Tax")}</FormLabel>
                       <Select
                         onValueChange={(value) => field.onChange(Number(value))}
                         value={field.value ? field.value.toString() : ""}
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select VAT" />
+                            <SelectValue placeholder={t("SelectOptions.SelectVAT")} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -156,7 +158,7 @@ export default function AddStockCard({
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select price type" />
+                            <SelectValue placeholder={t("SelectOptions.SelectPriceType")} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -180,14 +182,14 @@ export default function AddStockCard({
               name="priceModel.currencyId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Currency</FormLabel>
+                  <FormLabel>{t("PurchaseForm.Labels.Currency")}</FormLabel>
                   <Select
                     onValueChange={(value) => field.onChange(Number(value))}
                     value={field.value ? field.value.toString() : ""}
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select currency" />
+                        <SelectValue placeholder={t("SelectOptions.SelectCurrency")} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -206,20 +208,19 @@ export default function AddStockCard({
             ></FormField>
             <div className={cs.purchaseDetailsBlock}>
               <div>
-                <span className="she-title">Purchase Details</span>
+                <span className="she-title">{t("PurchaseForm.Labels.PurchaseDetails")}</span>
               </div>
               <div>
-                <SheInput fullWidth label="Invoice number (optional)" />
+                <SheInput fullWidth label={t("PurchaseForm.Labels.InvoiceNumber")} />
               </div>
               <div className={cs.supplierInformationBlock}>
                 <SheInput
                   fullWidth
-                  label="Set date when purchase took place
-                    (for valid exchange rate)"
+                  label={t("PurchaseForm.Labels.PurchaseDate")}
                 />
                 <div className={cs.supplierInformationBlock}>
                   <span className="she-text">
-                    Select which supplier provided the products
+                    {t("PurchaseForm.Labels.SupplierSelection")}
                   </span>
                   <div className={cs.supplierInformation}>
                     <div>
@@ -242,7 +243,7 @@ export default function AddStockCard({
                         <DropdownMenuItem
                           onClick={() => onAction("deleteTrait")}
                         >
-                          <span className="she-text">Delete</span>
+                          <span className="she-text">{t("CommonButtons.Delete")}</span>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -252,10 +253,9 @@ export default function AddStockCard({
                       <Switch />
                     </div>
                     <div className={cs.createPurchaseToggleDesc}>
-                      <span className="she-subtext">Create Purchase</span>
+                      <span className="she-subtext">{t("SpecialText.CreatePurchase")}</span>
                       <span className="she-subtext">
-                        (Or connect to the existing purchase if invoice number
-                        is already in the system)
+                        {t("SpecialText.CreatePurchaseDescription")}
                       </span>
                     </div>
                   </div>

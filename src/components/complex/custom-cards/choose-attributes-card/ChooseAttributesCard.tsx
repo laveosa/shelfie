@@ -1,6 +1,7 @@
 import { ChevronDown, Plus, WandSparkles } from "lucide-react";
 import { useForm } from "react-hook-form";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ChooseAttributesCard.module.scss";
@@ -18,6 +19,7 @@ export default function ChooseAttributesCard({
   onCreateAttributeHandle,
   ...props
 }) {
+  const { t } = useTranslation();
   const form = useForm({
     defaultValues: {},
   });
@@ -27,32 +29,31 @@ export default function ChooseAttributesCard({
   return (
     <div>
       <SheProductCard
-        title="Choose attributes for product"
+        title={t("CardTitles.ChooseAttributesForProduct")}
         view="card"
         showPrimaryButton={true}
-        primaryButtonTitle="Save"
+        primaryButtonTitle={t("CommonButtons.Save")}
         showSecondaryButton={true}
-        secondaryButtonTitle="Cancel"
+        secondaryButtonTitle={t("CommonButtons.Cancel")}
         className={cs.chooseAttributesCard}
         {...props}
       >
         <div className={cs.chooseAttributesCardContent}>
           <div className="she-subtext">
-            Pick the attributes that describe the product best Missing an
-            Attribute? Add it!
+            {t("ProductForm.Labels.PickAttributesDescription")}
           </div>
           <SheButton
             icon={Plus}
             variant="outline"
             onClick={onCreateAttributeHandle}
           >
-            Add Attribute
+            {t("ProductActions.CreateAttribute")}
           </SheButton>
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="item-1">
               <AccordionTrigger className={cs.accordionTrigger}>
                 <ChevronDown />
-                Material and care
+                {t("ProductForm.Labels.MaterialAndCare")}
               </AccordionTrigger>
               <AccordionContent>
                 <SheForm form={form} onSubmit={onSubmit}>
@@ -60,8 +61,8 @@ export default function ChooseAttributesCard({
                     <div className={cs.formInput}>
                       <SheForm.Field name="name">
                         <SheInput
-                          label="Can be bleached"
-                          placeholder="does not apply"
+                          label={t("ProductForm.Labels.CanBeBleached")}
+                          placeholder={t("SelectOptions.DoesNotApply")}
                         />
                       </SheForm.Field>
                     </div>
@@ -75,8 +76,8 @@ export default function ChooseAttributesCard({
                     <div className={cs.formInput}>
                       <SheForm.Field name="name">
                         <SheInput
-                          label="Can be tumble dried"
-                          placeholder="does not apply"
+                          label={t("ProductForm.Labels.CanBeTumbleDried")}
+                          placeholder={t("SelectOptions.DoesNotApply")}
                         />
                       </SheForm.Field>
                     </div>
@@ -90,8 +91,8 @@ export default function ChooseAttributesCard({
                     <div className={cs.formInput}>
                       <SheForm.Field name="Can be machine washed">
                         <SheInput
-                          label="Can be machine washed"
-                          placeholder="does not apply"
+                          label={t("ProductForm.Labels.CanBeMachineWashed")}
+                          placeholder={t("SelectOptions.DoesNotApply")}
                         />
                       </SheForm.Field>
                     </div>
@@ -105,8 +106,8 @@ export default function ChooseAttributesCard({
                     <div className={cs.formInput}>
                       <SheForm.Field name="Type of insulation">
                         <SheInput
-                          label="Type of insulation"
-                          placeholder="does not apply"
+                          label={t("ProductForm.Labels.TypeOfInsulation")}
+                          placeholder={t("SelectOptions.DoesNotApply")}
                         />
                       </SheForm.Field>
                     </div>
@@ -120,8 +121,8 @@ export default function ChooseAttributesCard({
                     <div className={cs.formInput}>
                       <SheForm.Field name="name">
                         <SheInput
-                          label="Filling"
-                          placeholder="does not apply"
+                          label={t("ProductForm.Labels.Filling")}
+                          placeholder={t("SelectOptions.DoesNotApply")}
                         />
                       </SheForm.Field>
                     </div>
@@ -134,7 +135,10 @@ export default function ChooseAttributesCard({
                   <div className={cs.formRow}>
                     <div className={cs.formInput}>
                       <SheForm.Field name="name">
-                        <SheInput label="Lining" placeholder="does not apply" />
+                        <SheInput 
+                          label={t("ProductForm.Labels.Lining")} 
+                          placeholder={t("SelectOptions.DoesNotApply")} 
+                        />
                       </SheForm.Field>
                     </div>
                     <SheButton
@@ -147,8 +151,8 @@ export default function ChooseAttributesCard({
                     <div className={cs.formInput}>
                       <SheForm.Field name="name">
                         <SheInput
-                          label="Material composition"
-                          placeholder="does not apply"
+                          label={t("ProductForm.Labels.MaterialComposition")}
+                          placeholder={t("SelectOptions.DoesNotApply")}
                         />
                       </SheForm.Field>
                     </div>
@@ -164,21 +168,19 @@ export default function ChooseAttributesCard({
             <AccordionItem value="item-2">
               <AccordionTrigger className={cs.accordionTrigger}>
                 <ChevronDown />
-                Product details
+                {t("ProductForm.Labels.ProductDetails")}
               </AccordionTrigger>
               <AccordionContent>
-                Yes. It comes with default styles that matches the other
-                components&apos; aesthetic.
+                {t("ProductForm.Labels.ProductDetailsDescription")}
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-3">
               <AccordionTrigger className={cs.accordionTrigger}>
                 <ChevronDown />
-                Cutting
+                {t("ProductForm.Labels.Cutting")}
               </AccordionTrigger>
               <AccordionContent>
-                Yes. It&apos;s animated by default, but you can disable it if
-                you prefer.
+                {t("ProductForm.Labels.CuttingDescription")}
               </AccordionContent>
             </AccordionItem>
           </Accordion>

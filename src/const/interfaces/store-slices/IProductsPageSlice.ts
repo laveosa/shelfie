@@ -27,6 +27,7 @@ export interface IProductsPageSlice {
   isProductsLoading?: boolean;
   isProductPhotosLoading?: boolean;
   isProductVariantsLoading?: boolean;
+  isPhotoUploaderLoading?: boolean;
   products?: ProductModel[];
   product?: ProductModel;
   variants?: VariantModel[];
@@ -67,4 +68,5 @@ export interface IProductsPageSlice {
   sizesForFilter?: TraitOptionModel[];
   activeTab?: string;
   variantPhotos?: ImageModel[];
+  productCode?: string;
 }

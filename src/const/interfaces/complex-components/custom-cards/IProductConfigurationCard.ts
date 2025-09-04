@@ -7,11 +7,10 @@ export interface IProductConfigurationCard {
   product: ProductModel;
   brandsList?: BrandModel[];
   categoriesList?: CategoryModel[];
-  showSecondaryButton?: boolean;
   onProductCodeCheck?: (data: any) => Promise<any>;
-  onGenerateProductCode?: () => Promise<any>;
-  onOpenCreateProductCategoryCard?: () => void;
-  onOpenCreateProductBrandCard?: () => void;
+  productCode?: string;
+  showSecondaryButton?: boolean;
   onPrimaryButtonClick?: (data: any) => void;
   onSecondaryButtonClick?: () => void;
+  onAction?: (identifier?: string, payload?: any) => void;
 }

@@ -1,11 +1,11 @@
 import { Plus, SlidersVertical } from "lucide-react";
 import React, { Fragment } from "react";
+import { useTranslation } from "react-i18next";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ManageVariantsCard.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { TraitModel } from "@/const/models/TraitModel.ts";
-import { ManageVariantsGridColumns } from "@/components/complex/grid/manage-variants-grid/ManageVariantsGridColumns.tsx";
 import { IManageVariantsCard } from "@/const/interfaces/complex-components/custom-cards/IManageVariantsCard.ts";
 import {
   DataWithId,
@@ -13,6 +13,7 @@ import {
 } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { ColumnDef } from "@tanstack/react-table";
 import { Separator } from "@/components/ui/separator.tsx";
+import { ManageVariantsGridColumns } from "@/components/complex/grid/custom-grids/manage-variants-grid/ManageVariantsGridColumns.tsx";
 
 export default function ManageVariantsCard({
   isLoading,
@@ -24,6 +25,8 @@ export default function ManageVariantsCard({
   onAction,
   ...props
 }: IManageVariantsCard) {
+  const { t } = useTranslation();
+
   function handleAction(actionType: any, payload?: any) {
     switch (actionType) {
       case "manageVariant":
@@ -70,58 +73,62 @@ export default function ManageVariantsCard({
   return (
     <SheProductCard
       loading={isLoading}
-      title="Manage Variants"
+      title={t("CardTitles.ManageVariants")}
       showPrimaryButton={false}
-      primaryButtonTitle="Save"
+      primaryButtonTitle={t("CommonButtons.Save")}
       showSecondaryButton={false}
-      secondaryButtonTitle="Cancel"
+      secondaryButtonTitle={t("CommonButtons.Cancel")}
       className={cs.manageVariantsCard}
       minWidth={"420px"}
       {...props}
     >
       <div className={cs.manageVariantsContent}>
         <div className={cs.textBlock}>
-          {traits.length > 0 ? (
-            <span className="she-text">
-              The product is described by following traits:{" "}
-              {traits.map((trait: TraitModel, index: number) => (
-                <Fragment key={trait.traitId}>
-                  <b>{trait.traitName}</b>
-                  {index < traits.length - 1 ? ", " : ""}
-                </Fragment>
-              ))}
-            </span>
+          {traits?.length > 0 ? (
+            <>
+              <span className="she-text">
+                {t("ProductForm.Labels.ProductDescribedByTraits")}{" "}
+                {traits.map((trait: TraitModel, index: number) => (
+                  <Fragment key={trait.traitId}>
+                    <b>{trait.traitName}</b>
+                    {index < traits.length - 1 ? ", " : ""}
+                  </Fragment>
+                ))}
+              </span>
+              <SheButton
+                icon={SlidersVertical}
+                variant="secondary"
+                value={t("ProductActions.ManageTraits")}
+                onClick={() => onAction("openChooseVariantTraitsCard")}
+              />
+            </>
           ) : (
-            <span className="she-text">
-              The product is not described by traits yet. Please select at least
-              one trait to create variants.
-            </span>
-          )}
-          {traits.length > 0 && (
-            <SheButton
-              icon={SlidersVertical}
-              variant="secondary"
-              value="Manage Traits"
-              onClick={() => onAction("openChooseVariantTraitsCard")}
-            />
+            <>
+              <span className="she-text">
+                {t("ProductForm.Labels.ProductNotDescribedByTraits")}
+              </span>
+              <SheButton
+                icon={Plus}
+                variant="outline"
+                value={t("ProductActions.SelectTraits")}
+                onClick={() => {
+                  onAction("openChooseVariantTraitsCard");
+                }}
+              />
+            </>
           )}
         </div>
         <Separator />
         <div className={cs.buttonBlock}>
-          <span className="she-title">Variants</span>
+          <span className="she-title">{t("SectionTitles.Variant")}</span>
           <SheButton
             icon={Plus}
             variant="outline"
+            value={t("ProductActions.CreateVariant")}
             onClick={() => {
-              onAction?.(
-                traits.length > 0
-                  ? "openAddVariantCard"
-                  : "openChooseVariantTraitsCard",
-              );
+              onAction("openAddVariantCard");
             }}
-          >
-            {traits.length > 0 ? "Create Variant" : "Select Traits"}
-          </SheButton>
+          />
           {/*{traits.length === 0 && (*/}
           {/*  <>*/}
           {/*    <span>or</span>*/}
@@ -142,7 +149,7 @@ export default function ManageVariantsCard({
             }
             data={variants}
             gridModel={data}
-            customMessage="PRODUCT HAS NO VARIANTS"
+            customMessage={t("ProductMessages.NoVariants")}
             onNewItemPosition={(newIndex, activeItem) =>
               handleAction("dnd", { newIndex, activeItem })
             }

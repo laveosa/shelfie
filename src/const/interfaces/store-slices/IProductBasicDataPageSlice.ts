@@ -10,6 +10,7 @@ export interface IProductBasicDataPageSlice {
   isCreateProductCategoryCardLoading?: boolean;
   isCreateProductBrandCardLoading?: boolean;
   isProductsLoading?: boolean;
+  isPhotoUploaderLoading?: boolean;
   product?: ProductModel;
   brandsList?: BrandModel[];
   categoriesList?: CategoryModel[];

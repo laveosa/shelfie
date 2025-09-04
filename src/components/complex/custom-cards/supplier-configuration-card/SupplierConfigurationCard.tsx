@@ -1,5 +1,6 @@
 import { Plus, Trash2 } from "lucide-react";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./SupplierConfigurationCard.module.scss";
@@ -15,6 +16,8 @@ export default function SupplierConfigurationCard({
   managedSupplier,
   onAction,
 }: ICreateSupplierCard) {
+  const { t } = useTranslation();
+
   function onDeletePhoto(_actionType, table) {
     onAction("deleteSupplierPhoto", table);
   }
@@ -26,7 +29,7 @@ export default function SupplierConfigurationCard({
   return (
     <SheProductCard
       loading={isLoading}
-      title={managedSupplier ? "Manage Supplier" : "Create Supplier"}
+      title={managedSupplier ? t("CardTitles.ManageSupplier") : t("CardTitles.CreateSupplier")}
       className={cs.supplierConfigurationCard}
       showCloseButton
       onSecondaryButtonClick={() => onAction("closeSupplierConfigurationCard")}
@@ -54,21 +57,21 @@ export default function SupplierConfigurationCard({
           <div>
             {!managedSupplier?.isDeleted ? (
               <SheCardNotification
-                title="Delete Supplier"
-                text="The supplier will remain connected to the purchases, but will not be manageable or available for connection to additional purchases"
+                title={t("CardTitles.DeleteSupplier")}
+                text={t("ConfirmationMessages.DeleteSupplier")}
                 buttonIcon={Trash2}
                 buttonVariant="outline"
-                buttonText="Delete"
+                buttonText={t("CommonButtons.Delete")}
                 buttonColor="#EF4343"
                 onClick={() => onAction("deleteSupplier", managedSupplier)}
               />
             ) : (
               <SheCardNotification
-                title="Restore Supplier"
-                text="The supplier was deleted and is not available for management. if that was a mistake, you can restore the supplier"
+                title={t("CardTitles.RestoreSupplier")}
+                text={t("ConfirmationMessages.RestoreSupplier")}
                 buttonIcon={Plus}
                 buttonVariant="outline"
-                buttonText="Restore"
+                buttonText={t("CommonButtons.Restore")}
                 buttonColor="#38BF5E"
                 onClick={() => onAction("restoreSupplier", managedSupplier)}
               />

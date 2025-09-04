@@ -1,6 +1,7 @@
 import { Plus, Trash2, UserMinus, UserPlus } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import {
   DataWithId,
@@ -16,15 +17,19 @@ import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSele
 import { StatusModel } from "@/const/models/StatusModel.ts";
 import { Separator } from "@/components/ui/separator.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { OrderDiscountsGridColumns } from "@/components/complex/grid/order-discounts-grid/OrderDiscountsGridColumns.tsx";
+import { OrderDiscountsGridColumns } from "@/components/complex/grid/custom-grids/order-discounts-grid/OrderDiscountsGridColumns.tsx";
+import { OrderShipmentsRateGridColumns } from "@/components/complex/grid/custom-grids/order-shipments-rate-grid/OrderShipmentsRateGridColumns.tsx";
 
 export default function OrderConfigurationCard({
   isLoading,
   isDiscountsGridLoading,
   order,
+  shipmentsRate,
   statuses,
   onAction,
 }: IOrderConfigurationCard) {
+  const { t } = useTranslation();
+
   function convertStatusesToSelectItems(
     data: StatusModel[],
   ): ISheSelectItem<any>[] {
@@ -39,19 +44,21 @@ export default function OrderConfigurationCard({
   return (
     <SheProductCard
       loading={isLoading}
-      title={`Order nr ${order?.id}`}
+      title={t("CardTitles.OrderConfiguration", { orderId: order?.id })}
       className={cs.orderConfigurationCard}
     >
       <div className={cs.orderConfigurationCardContentWrapper}>
         <div className={cs.orderConfigurationCardContent}>
           <div className={cs.orderConfigurationCardItem}>
-            <span className="she-text">Created at</span>
+            <span className="she-text">{t("OrderForm.Labels.CreatedAt")}</span>
             <span className="she-text">{formatDate(order?.date, "date")}</span>
           </div>
           <div className={cs.orderConfigurationCardItem}>
-            <span className="she-text">Order status</span>
-            <SheSelect
-              selected={order?.orderStatus}
+            <span className="she-text">
+              {t("OrderForm.Labels.OrderStatus")}
+            </span>
+            <SheSelect<string>
+              selected={order?.orderStatus || null}
               items={convertStatusesToSelectItems(statuses)}
               hideFirstOption
               minWidth="170px"
@@ -62,19 +69,27 @@ export default function OrderConfigurationCard({
             />
           </div>
           <div className={cs.orderConfigurationCardItem}>
-            <span className="she-text">Payment status</span>
+            <span className="she-text">
+              {t("OrderForm.Labels.PaymentStatus")}
+            </span>
             <span className="she-text">{order?.paymentStatus}</span>
           </div>
           <div className={cs.orderConfigurationCardItem}>
-            <span className="she-text">Shipment status</span>
+            <span className="she-text">
+              {t("OrderForm.Labels.ShipmentStatus")}
+            </span>
             <span className="she-text">{order?.shipmentStatus}</span>
           </div>
           <Separator />
           <div className={cs.orderConfigurationCardItem}>
-            <span className="she-title">Customer</span>
+            <span className="she-title">{t("SectionTitles.Customer")}</span>
             <SheButton
               variant="secondary"
-              value={order?.customer ? "Change Customer" : "Select Customer"}
+              value={
+                order?.customer
+                  ? t("SpecialText.ChangeCustomer")
+                  : t("OrderActions.SelectCustomer")
+              }
               icon={order?.customer ? UserMinus : UserPlus}
               onClick={() => onAction("openSelectEntityCard")}
             />
@@ -82,31 +97,39 @@ export default function OrderConfigurationCard({
           {order?.customer && (
             <div className={cs.customerInfo}>
               <div className={cs.orderConfigurationCardItem}>
-                <span className="she-text">Name</span>
+                <span className="she-text">
+                  {t("CustomerForm.Labels.Name")}
+                </span>
                 <div className={cs.customerInfoAvatarBlock}>
                   {order?.customer.thumbnailUrl ? (
                     <img
                       src={order?.customer.thumbnailUrl}
-                      alt={order?.customer.name}
+                      alt={order?.customer.customerName}
                       className={cs.avatarImage}
                     />
                   ) : (
                     <div className={cs.avatarInitials}>
-                      {getInitials(order?.customer.name)}
+                      {getInitials(order?.customer.customerName)}
                     </div>
                   )}
-                  <span className="she-subtext">{order?.customer.name}</span>
+                  <span className="she-subtext">
+                    {order?.customer.customerName}
+                  </span>
                 </div>
               </div>
               {order?.customer.email && (
                 <div className={cs.orderConfigurationCardItem}>
-                  <span className="she-text">Email</span>
+                  <span className="she-text">
+                    {t("CustomerForm.Labels.Email")}
+                  </span>
                   <span className="she-subtext">{order?.customer.email}</span>
                 </div>
               )}
               {order?.customer.phone && (
                 <div className={cs.orderConfigurationCardItem}>
-                  <span className="she-text">Phone</span>
+                  <span className="she-text">
+                    {t("CustomerForm.Labels.PhoneNumber")}
+                  </span>
                   <span className="she-subtext">{order?.customer.phone}</span>
                 </div>
               )}
@@ -114,10 +137,10 @@ export default function OrderConfigurationCard({
           )}
           <Separator />
           <div className={cs.orderConfigurationCardItem}>
-            <span className="she-title">Discount</span>
+            <span className="she-title">{t("SectionTitles.Discount")}</span>
             <SheButton
               variant="secondary"
-              value="Apply Discount"
+              value={t("OrderActions.ApplyDiscount")}
               icon={Plus}
               onClick={() => onAction("openSelectDiscountCard")}
             />
@@ -133,48 +156,67 @@ export default function OrderConfigurationCard({
                 }) as ColumnDef<DataWithId>[]
               }
               data={order?.discounts}
-              customMessage="There are no discounts applied"
+              customMessage={t("OrderMessages.NoDiscountsApplied")}
             />
             <div className={cs.gridFooter}>
               <div className={cs.gridFooterItems}>
-                <span className={cs.gridFooterItem}>Discount total</span>
-                <span className={cs.gridFooterItem}>99,59 PLN</span>
+                <span className={cs.gridFooterItem}>
+                  {t("OrderForm.Labels.DiscountTotal")}
+                </span>
+                <span className={cs.gridFooterItem}>
+                  {order?.discountAmount}
+                </span>
               </div>
             </div>
           </div>
           <Separator />
           <div className={cs.orderConfigurationCardItem}>
-            <span className="she-title">Shipment</span>
+            <span className="she-title">{t("SectionTitles.Shipment")}</span>
             <SheButton
               variant="secondary"
-              value="Set Shipment Rate"
+              value={t("OrderActions.SetShipmentRate")}
               icon={Plus}
             />
           </div>
-          {/*<DndGridDataTable columns={} data={} />*/}
-          <span className="she-title">Summary</span>
+          <DndGridDataTable
+            columns={
+              OrderShipmentsRateGridColumns({
+                onAction,
+              }) as ColumnDef<DataWithId>[]
+            }
+            showHeader={false}
+            data={shipmentsRate}
+            customMessage={t("OrderMessages.ShipmentRateNotSet")}
+          />
+          <span className="she-title">{t("SectionTitles.Summary")}</span>
           <div className={cs.orderSummaryItems}>
             <div className={cs.orderSummaryItem}>
-              <span className="she-text">Products Subtotal</span>
-              <span className="she-text">0</span>
+              <span className="she-text">
+                {t("OrderForm.Labels.ProductsSubtotal")}
+              </span>
+              <span className="she-text">{order?.orderSubTotal?.subtotal}</span>
             </div>
             <div className={cs.orderSummaryItem}>
-              <span className="she-text">Total with discount and shipment</span>
-              <span className="she-text">0</span>
+              <span className="she-text">
+                {t("OrderForm.Labels.TotalWithDiscountAndShipment")}
+              </span>
+              <span className="she-text">
+                {order?.orderSubTotal?.totalWithDiscountAndShipment}
+              </span>
             </div>
             <div className={cs.orderSummaryItem}>
-              <span className="she-text">Profit</span>
-              <span className="she-text">0</span>
+              <span className="she-text">{t("OrderForm.Labels.Profit")}</span>
+              <span className="she-text">{order?.orderSubTotal?.total}</span>
             </div>
           </div>
           <Separator />
         </div>
         <SheCardNotification
-          title="Cancel Order"
-          text="The order will be cancelled and the stock allocated will be made available for purchase"
+          title={t("CardTitles.CancelOrder")}
+          text={t("ConfirmationMessages.CancelOrder")}
           buttonColor="#EF4343"
           buttonVariant="outline"
-          buttonText="Delete"
+          buttonText={t("CommonButtons.Delete")}
           buttonIcon={Trash2}
           onClick={() => onAction("deleteOrder", order.id)}
         />

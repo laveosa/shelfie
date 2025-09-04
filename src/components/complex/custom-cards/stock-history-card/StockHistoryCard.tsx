@@ -1,5 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import cs from "./StockHistoryCard.module.scss";
 import {
@@ -8,7 +9,7 @@ import {
 } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import { IVariantHistoryCard } from "@/const/interfaces/complex-components/custom-cards/IVariantHistoryCard.ts";
-import { StockHistoryGridColumns } from "@/components/complex/grid/stock-history-grid/StockHistoryGridColumns.tsx";
+import { StockHistoryGridColumns } from "@/components/complex/grid/custom-grids/stock-history-grid/StockHistoryGridColumns.tsx";
 
 export default function StockHistoryCard({
   isLoading,
@@ -18,10 +19,14 @@ export default function StockHistoryCard({
   onAction,
   ...props
 }: IVariantHistoryCard) {
+  const { t } = useTranslation();
+
   return (
     <SheProductCard
       loading={isLoading}
-      title={`${variant?.variantName} Stock History`}
+      title={t("CardTitles.StockHistory", {
+        variantName: variant?.variantName,
+      })}
       showCloseButton
       className={cs.stockHistoryCard}
       onSecondaryButtonClick={() => onAction("closeVariantHistoryCard")}

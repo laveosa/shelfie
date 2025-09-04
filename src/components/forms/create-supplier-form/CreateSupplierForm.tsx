@@ -28,9 +28,9 @@ import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import cs from "./CreateSupplierForm.module.scss";
-import { SupplierPhotosGridColumns } from "@/components/complex/grid/supplier-photos-grid/SupplierPhotosGridColumns.tsx";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
 import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
+import { SupplierPhotosGridColumns } from "@/components/complex/grid/custom-grids/supplier-photos-grid/SupplierPhotosGridColumns.tsx";
 
 interface SupplierFormData extends SupplierModel {
   images?: File[];
@@ -163,7 +163,7 @@ export default function CreateSupplierForm<T>({
           <SheFileUploader
             isLoading={isPhotoUploaderLoading}
             ref={imageUploaderRef}
-            contextName="supplier"
+            contextName="company"
             contextId={data?.id || undefined}
             fullWidth
             hideUploadButton={true}

@@ -3,7 +3,7 @@ import { LocationModel } from "@/const/models/LocationModel.ts";
 
 export interface SupplierModel {
   photo?: any;
-  supplierId?: number;
+  supplierId?: any;
   supplierName?: string;
   id?: number;
   appId?: string;

@@ -2,6 +2,7 @@ import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import { Viewer, Worker } from "@react-pdf-viewer/core";
 import * as pdfjsLib from "pdfjs-dist";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./InvoicePreviewCard.module.scss";
@@ -14,13 +15,14 @@ export default function InvoicePreviewCard({
   previewUrl,
   onAction,
 }: IInvoicePreviewCard) {
+  const { t } = useTranslation();
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
   return (
     <div className={cs.invoicesCard}>
       <SheProductCard
         loading={isLoading}
-        title="Preview"
+        title={t("CardTitles.Preview")}
         minWidth="600px"
         showCloseButton={true}
         onSecondaryButtonClick={() => onAction("closeInvoicePreviewCard")}

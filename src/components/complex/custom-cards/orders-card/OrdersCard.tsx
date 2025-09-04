@@ -1,17 +1,20 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Plus } from "lucide-react";
+import { CalendarRange, Plus, ShoppingCart } from "lucide-react";
+import React from "react";
+import { useTranslation } from "react-i18next";
 
 import {
   DataWithId,
   DndGridDataTable,
 } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
-import GridShowItemsFilter from "@/components/complex/grid/grid-show-deleted-filter/GridShowItemsFilter.tsx";
-import { IOrdersCard } from "@/const/interfaces/complex-components/custom-cards/IOrdersCard.ts";
-import { ordersGridColumns } from "@/components/complex/grid/orders-grid/OrdersGridColumns.tsx";
 import cs from "./OrdersCard.module.scss";
+import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
+import GridShowItemsFilter from "@/components/complex/grid/filters/grid-show-deleted-filter/GridShowItemsFilter.tsx";
+import { IOrdersCard } from "@/const/interfaces/complex-components/custom-cards/IOrdersCard.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
+import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
+import { ordersGridColumns } from "@/components/complex/grid/custom-grids/orders-grid/OrdersGridColumns.tsx";
 import { CalendarModeEnum } from "@/const/enums/CalendarModeEnum.ts";
 
 export default function OrdersCard({
@@ -23,6 +26,8 @@ export default function OrdersCard({
   ordersGridRequestModel,
   onAction,
 }: IOrdersCard) {
+  const { t } = useTranslation();
+
   function onGridAction(
     _rowId?: string,
     _setLoadingRow?: (rowId: string, loading: boolean) => void,
@@ -34,7 +39,7 @@ export default function OrdersCard({
   return (
     <div className={cs.ordersCard}>
       <SheProductCard
-        title="Orders"
+        title={t("CardTitles.Orders")}
         isLoading={isLoading}
         className={cs.ordersCardContent}
         minWidth="1100px"
@@ -54,7 +59,25 @@ export default function OrdersCard({
             onAction("gridRequestChange", updates)
           }
         >
-          <SheDatePicker mode={CalendarModeEnum.RANGE} />
+          <SheDatePicker
+            icon={CalendarRange}
+            mode={CalendarModeEnum.RANGE}
+            minWidth="150px"
+            placeholder={t("OrderForm.Placeholders.PickRange")}
+            onSelectDate={(updates) => {
+              onAction("gridRequestChange", {
+                filter: {
+                  startDate: updates.from,
+                  endDate: updates.to,
+                },
+              });
+            }}
+          />
+          <SheSelect
+            icon={ShoppingCart}
+            placeholder={t("OrderForm.Placeholders.Status")}
+            minWidth="150px"
+          />
           <GridShowItemsFilter context="Canceled" />
         </DndGridDataTable>
       </SheProductCard>
@@ -63,7 +86,7 @@ export default function OrdersCard({
         icon={Plus}
         variant="default"
         onClick={() => onAction("createOrder")}
-        value="Create Order"
+        value={t("OrderActions.CreateOrder")}
         bgColor="#007AFF"
       />
     </div>

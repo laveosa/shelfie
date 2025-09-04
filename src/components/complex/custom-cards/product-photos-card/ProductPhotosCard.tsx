@@ -1,3 +1,5 @@
+import { ColumnDef } from "@tanstack/react-table";
+import { useTranslation } from "react-i18next";
 import React from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
@@ -8,9 +10,8 @@ import {
 } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { SheFileUploader } from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
-import { ProductPhotosGridColumns } from "@/components/complex/grid/variant-photos-grid/ProductPhotosGridColumns.tsx";
 import { IProductPhotosCard } from "@/const/interfaces/complex-components/custom-cards/IProductPhotosCard.ts";
-import { ColumnDef } from "@tanstack/react-table";
+import { ProductPhotosGridColumns } from "@/components/complex/grid/custom-grids/variant-photos-grid/ProductPhotosGridColumns.tsx";
 
 export default function ProductPhotosCard({
   isLoading,
@@ -22,6 +23,8 @@ export default function ProductPhotosCard({
   showCloseButton,
   onAction,
 }: IProductPhotosCard) {
+  const { t } = useTranslation();
+
   const columns = ProductPhotosGridColumns(
     onGridAction,
   ) as ColumnDef<DataWithId>[];
@@ -41,6 +44,9 @@ export default function ProductPhotosCard({
         const { newIndex, activeItem, oldIndex } = payload;
         onAction("changePhotoPosition", { newIndex, activeItem, oldIndex });
         break;
+      case "activate":
+        onAction("activatePhoto", payload);
+        break;
     }
   }
 
@@ -57,6 +63,9 @@ export default function ProductPhotosCard({
       case "connect":
         handleAction("connect", row.original);
         break;
+      case "activate":
+        handleAction("activate", row.original);
+        break;
     }
   }
 
@@ -64,8 +73,8 @@ export default function ProductPhotosCard({
     <div className={cs.productPhotosCard}>
       <SheProductCard
         loading={isLoading}
-        title="Product Photos"
-        minWidth="450px"
+        title={t("CardTitles.ProductPhotos")}
+        minWidth="500px"
         showCloseButton={showCloseButton}
         onSecondaryButtonClick={() => onAction("closeProductPhotsCard")}
         className={cs.productPhotosCard}
@@ -73,7 +82,7 @@ export default function ProductPhotosCard({
         <div className={cs.productPhotosCardContent}>
           <SheFileUploader
             isLoading={isImageUploaderLoading}
-            contextName={"product"}
+            contextName="product"
             contextId={contextId}
             onUpload={(uploadModel: UploadPhotoModel) =>
               handleAction("upload", uploadModel)
@@ -81,7 +90,7 @@ export default function ProductPhotosCard({
           />
           <div className={cs.managePhotos}>
             <div className={`${cs.managePhotosTitle} she-title`}>
-              Manage Photos
+              {t("CardTitles.ManagePhotos")}
             </div>
             <div className={cs.managePhotosGrid}>
               <DndGridDataTable
@@ -91,10 +100,9 @@ export default function ProductPhotosCard({
                 showHeader={false}
                 columns={columns}
                 data={data}
-                gridModel={data}
                 skeletonQuantity={productCounter?.gallery}
                 cellPadding="5px 10px"
-                customMessage="PRODUCT HAS NO PHOTO"
+                customMessage={t("ProductMessages.NoPhotos")}
                 onNewItemPosition={(newIndex, activeItem, oldIndex) =>
                   handleAction("dnd", { newIndex, activeItem, oldIndex })
                 }

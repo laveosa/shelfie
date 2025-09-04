@@ -72,7 +72,7 @@ export function ManageVariantsPage() {
   );
 
   useEffect(() => {
-    if (productsState.products?.length === 0) {
+    if (productsState.products === null) {
       dispatch(productsActions.setIsItemsCardLoading(true));
       productsService
         .getTheProductsForGridHandler(productsState.productsGridRequestModel)
@@ -88,8 +88,20 @@ export function ManageVariantsPage() {
           dispatch(productsActions.setIsItemsCardLoading(false));
         });
     }
+    if (productsState.selectedVariant) {
+      productsService
+        .getVariantDetailsHandler(productsState.selectedVariant.variantId)
+        .then((res) => {
+          dispatch(productsActions.refreshSelectedVariant(res));
+          dispatch(productsActions.refreshVariantPhotos(res.photos));
+        });
+    }
     if (state.listOfTraitsWithOptionsForProduct.length === 0) {
-      productsService.getListOfTraitsWithOptionsForProductHandler(productId);
+      productsService
+        .getListOfTraitsWithOptionsForProductHandler(productId)
+        .then((res) =>
+          dispatch(actions.refreshListOfTraitsWithOptionsForProduct(res)),
+        );
     }
     if (productsState.taxesList.length === 0) {
       productsService.getTaxesListHandler();
@@ -282,6 +294,7 @@ export function ManageVariantsPage() {
           });
         break;
       case "updateVariantTraitOptions":
+        handleCardAction("manageTraitsCard");
         dispatch(actions.setIsManageTraitsCardLoading(true));
         productsService
           .updateVariantTraitOptionsHandler(
@@ -290,7 +303,7 @@ export function ManageVariantsPage() {
           )
           .then((res) => {
             dispatch(actions.setIsManageTraitsCardLoading(false));
-            if (res) {
+            if (!res.error) {
               productsService
                 .getProductVariantsHandler(productId)
                 .then((res) => {
@@ -335,7 +348,7 @@ export function ManageVariantsPage() {
         break;
       case "deleteVariant":
         const confirmedDeleteVariant = await openConfirmationDialog({
-          title: "Delete Variant",
+          headerTitle: "Delete Variant",
           text: `You are about to delete variant "${payload.variantName}".`,
           primaryButtonValue: "Delete",
           secondaryButtonValue: "Cancel",
@@ -420,22 +433,19 @@ export function ManageVariantsPage() {
         dispatch(actions.setIsVariantPhotosCardLoading(true));
         productsService.uploadPhotoHandler(payload).then((res) => {
           dispatch(actions.setIsVariantPhotosCardLoading(false));
-          if (res) {
-            dispatch(actions.setIsVariantPhotoGridLoading(true));
-            dispatch(actions.setIsProductPhotoGridLoading(true));
-            productsService
-              .getVariantDetailsHandler(payload.contextId)
-              .then((res) => {
-                dispatch(actions.setIsVariantPhotoGridLoading(false));
-                dispatch(productsActions.refreshSelectedVariant(res));
-                dispatch(productsActions.refreshVariantPhotos(res?.photos));
-              });
-            productsService
-              .getProductPhotosHandler(Number(productId))
-              .then((res) => {
-                dispatch(actions.setIsProductPhotoGridLoading(false));
-                dispatch(productsActions.refreshProductPhotos(res));
-              });
+          if (!res.error) {
+            dispatch(
+              productsActions.refreshVariantPhotos([
+                ...productsState.variantPhotos,
+                res.data,
+              ]),
+            );
+            dispatch(
+              productsActions.refreshSelectedVariant({
+                ...productsState.selectedVariant,
+                photos: [...productsState.selectedVariant.photos, res.data],
+              }),
+            );
             productsService
               .getCountersForProductsHandler(Number(productId))
               .then((res) => {
@@ -473,19 +483,81 @@ export function ManageVariantsPage() {
           )
           .then((res) => {
             dispatch(actions.setIsVariantPhotosCardLoading(false));
-            if (res) {
-              dispatch(actions.setIsVariantPhotoGridLoading(true));
-              productsService
-                .getVariantDetailsHandler(
-                  productsState.selectedVariant.variantId,
+            if (!res.error) {
+              const photoToMove = state.productPhotosForVariant.find(
+                (p) => p.photoId === payload.photoId,
+              );
+
+              if (photoToMove) {
+                const currentVariantPhotos = productsState.variantPhotos ?? [];
+
+                const nextVariantPhotos = currentVariantPhotos.some(
+                  (p) => p.photoId === photoToMove.photoId,
                 )
-                .then((res) => {
-                  dispatch(actions.setIsVariantPhotoGridLoading(false));
-                  dispatch(productsActions.refreshVariantPhotos(res?.photos));
-                  dispatch(productsActions.refreshSelectedVariant(res));
-                });
+                  ? currentVariantPhotos
+                  : [...currentVariantPhotos, photoToMove];
+
+                dispatch(
+                  productsActions.refreshVariantPhotos(nextVariantPhotos),
+                );
+
+                dispatch(
+                  actions.refreshProductPhotosForVariant(
+                    state.productPhotosForVariant.filter(
+                      (p) => p.photoId !== payload.photoId,
+                    ),
+                  ),
+                );
+              }
               addToast({
                 text: "Photo added to variant successfully",
+                type: "success",
+              });
+            } else {
+            }
+          });
+        break;
+      case "detachPhotoFromVariant":
+        const confirmedDetachPhoto = await openConfirmationDialog({
+          headerTitle: "Detach photo from variant",
+          text: `You are about to detach photo from variant  "${productsState.selectedVariant.variantName}".`,
+          primaryButtonValue: "Detach",
+          secondaryButtonValue: "Cancel",
+        });
+
+        if (!confirmedDetachPhoto) return;
+
+        await productsService
+          .detachVariantPhotoHandler(
+            productsState.selectedVariant.variantId,
+            payload.photoId,
+          )
+          .then((res) => {
+            if (!res.error) {
+              const currentVariantPhotos = productsState.variantPhotos ?? [];
+              const photoToMove = currentVariantPhotos.find(
+                (p) => p.photoId === payload.photoId,
+              );
+
+              if (photoToMove) {
+                const pool = state.productPhotosForVariant ?? [];
+                const nextPool = pool.some(
+                  (p) => p.photoId === photoToMove.photoId,
+                )
+                  ? pool
+                  : [...pool, photoToMove];
+                dispatch(actions.refreshProductPhotosForVariant(nextPool));
+
+                const nextVariantPhotos = currentVariantPhotos.filter(
+                  (p) => p.photoId !== payload.photoId,
+                );
+                dispatch(
+                  productsActions.refreshVariantPhotos(nextVariantPhotos),
+                );
+              }
+
+              addToast({
+                text: "Photo was detached successfully",
                 type: "success",
               });
             } else {
@@ -496,45 +568,6 @@ export function ManageVariantsPage() {
               });
             }
           });
-        break;
-      case "detachPhotoFromVariant":
-        const confirmedDetachPhoto = await openConfirmationDialog({
-          title: "Detach photo from variant",
-          text: `You are about to detach photo from variant  "${productsState.selectedVariant.variantName}".`,
-          primaryButtonValue: "Detach",
-          secondaryButtonValue: "Cancel",
-        });
-
-        if (!confirmedDetachPhoto) return;
-
-        try {
-          await productsService.detachVariantPhotoHandler(
-            productsState.selectedVariant.variantId,
-            payload.photoId.toString(),
-          );
-
-          dispatch(actions.setIsVariantPhotoGridLoading(true));
-
-          const variantDetails = await productsService.getVariantDetailsHandler(
-            productsState.selectedVariant.variantId,
-          );
-
-          dispatch(
-            productsActions.refreshVariantPhotos(variantDetails?.photos),
-          );
-
-          addToast({
-            text: "Photo was detached successfully",
-            type: "success",
-          });
-        } catch (error: any) {
-          addToast({
-            text: error.message || "Failed to detach photo",
-            type: "error",
-          });
-        } finally {
-          dispatch(actions.setIsVariantPhotoGridLoading(false));
-        }
         break;
       case "dndVariantPhoto":
         productsService
@@ -685,7 +718,7 @@ export function ManageVariantsPage() {
         break;
       case "deleteTrait":
         const confirmedTraitDeleting = await openConfirmationDialog({
-          title: "Deleting trait",
+          headerTitle: "Deleting trait",
           text: `You are about to remove the trait ${payload.traitName}. All products connected to it will loose the configuration and will require your attention to map it to the new trait.`,
           primaryButtonValue: "Delete",
           secondaryButtonValue: "Cancel",
@@ -770,9 +803,11 @@ export function ManageVariantsPage() {
                   items: [...state.colorOptionsGridModel.items, res],
                 }),
               );
-              productsService.getListOfAllTraitsHandler().then((res) => {
-                dispatch(actions.refreshTraits(res));
-              });
+              dispatch(
+                actions.refreshColorOptionsGridModel({
+                  items: [...state.colorOptionsGridModel.items, res],
+                }),
+              );
               addToast({
                 text: "Option created successfully",
                 type: "success",
@@ -788,7 +823,7 @@ export function ManageVariantsPage() {
         break;
       case "deleteOption":
         const confirmedOptionDeleting = await openConfirmationDialog({
-          title: "Deleting option",
+          headerTitle: "Deleting option",
           text: `You are about to remove the option ${payload.optionName}.`,
           primaryButtonValue: "Delete",
           secondaryButtonValue: "Cancel",
@@ -814,8 +849,6 @@ export function ManageVariantsPage() {
               items: options.filter((option) => !option.isDeleted),
             }),
           );
-          dispatch(actions.refreshTraits(allTraits));
-
           addToast({
             text: "Option deleted successfully",
             type: "success",
@@ -957,7 +990,7 @@ export function ManageVariantsPage() {
         isLoading={state.isManageVariantsCardLoading}
         isVariantsLoading={productsState.isProductVariantsLoading}
         variants={productsState.productVariants}
-        traits={state.listOfTraitsWithOptionsForProduct}
+        traits={productsState.listOfTraitsWithOptionsForProduct}
         productCounter={productsState.productCounter}
         onAction={onAction}
       />

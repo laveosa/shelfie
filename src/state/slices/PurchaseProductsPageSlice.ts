@@ -328,6 +328,10 @@ function refreshSelectedProduct(
   state.selectedProduct = action?.payload || state.selectedProduct;
 }
 
+function resetSelectedProduct(state: IPurchaseProductsPageSlice) {
+  state.selectedProduct = null;
+}
+
 function refreshColorOptionsGridModel(
   state: IPurchaseProductsPageSlice,
   action: PayloadAction<GridModel>,
@@ -516,6 +520,7 @@ const PurchaseProductsPageSlice = createSlice({
     refreshActiveTab,
     refreshVariants,
     refreshSelectedProduct,
+    resetSelectedProduct,
     refreshColorOptionsGridModel,
     refreshPurchaseProducts,
     refreshPurchasesProductsGridModel,

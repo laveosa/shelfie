@@ -5,6 +5,7 @@ import { CountryCodeModel } from "@/const/models/CountryCodeModel";
 import AddressForm from "@/components/forms/address-form/AddressForm";
 import { Trash2 } from "lucide-react";
 import { AddressRequestModel } from "@/const/models/AddressRequestModel";
+import { useTranslation } from "react-i18next";
 
 interface ICustomerAddressCard {
   isLoading?: boolean;
@@ -28,18 +29,17 @@ export default function CustomerAddressCard({
   countryList,
   onAction,
 }: ICustomerAddressCard) {
-  
+  const { t } = useTranslation();
   
   function onSubmit(data) {
     onPrimaryButtonClick(data);
   }
 
-
   return (
     <div>
       <SheProductCard
         loading={isLoading}
-        title={isCreate ? "Create Customer Address" : "Edit Customer Address"}
+        title={isCreate ? t("CardTitles.CreateCustomerAddress") : t("CardTitles.EditCustomerAddress")}
         className={cs.customerAddressFormCard}
         showCloseButton={true}
         showSecondaryButton={false}
@@ -59,11 +59,11 @@ export default function CustomerAddressCard({
           </div>
           {!isCreate && customerAddressId && (
           <SheCardNotification
-            title="Delete Customer Address"
-            text="This customer address will be deleted and will no longer be available for selection or automatic connection. Past orders will remain visible."
+            title={t("CardTitles.DeleteCustomerAddress")}
+            text={t("ConfirmationMessages.DeleteCustomerAddress")}
             buttonColor="#EF4343"
             buttonVariant="outline"
-            buttonText="Delete"
+            buttonText={t("CommonButtons.Delete")}
             buttonIcon={Trash2}
               onClick={() => {onAction("deleteCustomerAddress", customerAddressId)}}
             />

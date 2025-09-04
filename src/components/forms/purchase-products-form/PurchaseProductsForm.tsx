@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect } from "react";
-import { Check, TrashIcon, X } from "lucide-react";
+import { Check, Trash2, X } from "lucide-react";
 
 import { IPurchaseProductsForm } from "@/const/interfaces/forms/IPurchaseProductsForm.ts";
 import useAppForm from "@/utils/hooks/useAppForm.ts";
@@ -111,7 +111,7 @@ export default function PurchaseProductsForm({
           render={({ field }) => (
             <SheFormItem className={cs.purchaseFormItemTaxCurrency}>
               <SheSelect
-                selected={field.value || data?.currencyId}
+                selected={data?.currencyId || field?.value}
                 className={
                   activeTab === "connectProducts"
                     ? field.value
@@ -199,9 +199,9 @@ export default function PurchaseProductsForm({
           />
         ) : (
           <div className={cs.variantGridButtonBlock}>
-            <SheButton icon={Check} />
+            <SheButton icon={Check} variant="secondary" value="Save" />
             <SheButton
-              icon={TrashIcon}
+              icon={Trash2}
               type="button"
               variant="secondary"
               disabled={!data.stockActionId}

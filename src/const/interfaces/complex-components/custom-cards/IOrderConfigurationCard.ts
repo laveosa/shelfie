@@ -8,6 +8,7 @@ export interface IOrderConfigurationCard {
   isShipmentsGridLoading?: boolean;
   order?: OrderModel;
   statuses?: StatusModel[];
+  shipmentsRate?: any[];
   shipmentGridModel?: GridModel;
   discountGridModel?: GridModel;
   onAction?: (identifier: string, payload?: any) => void;

@@ -34,6 +34,7 @@
         .traitsDataCell {
           display: flex;
           flex-direction: column;
+          align-items: start;
 
           span {
             text-wrap: auto;

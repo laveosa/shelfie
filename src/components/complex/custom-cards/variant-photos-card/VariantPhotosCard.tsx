@@ -1,16 +1,17 @@
+import { ColumnDef } from "@tanstack/react-table";
+import { useTranslation } from "react-i18next";
 import React from "react";
 
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
-import cs from "./VariantPhotosCard.module.scss";
 import {
   DataWithId,
   DndGridDataTable,
 } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
+import cs from "./VariantPhotosCard.module.scss";
 import { SheFileUploader } from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
-import { VariantPhotosGridColumns } from "@/components/complex/grid/product-photos-grid/VariantPhotosGridColumns.tsx";
-import { OtherProductPhotosGridColumns } from "@/components/complex/grid/other-product-photos-grid/OtherProductPhotosGridColumns.tsx";
-import { ColumnDef } from "@tanstack/react-table";
+import { VariantPhotosGridColumns } from "@/components/complex/grid/custom-grids/product-photos-grid/VariantPhotosGridColumns.tsx";
+import { OtherProductPhotosGridColumns } from "@/components/complex/grid/custom-grids/other-product-photos-grid/OtherProductPhotosGridColumns.tsx";
 
 export default function VariantPhotosCard({
   isLoading,
@@ -22,6 +23,7 @@ export default function VariantPhotosCard({
   onAction,
   ...props
 }) {
+  const { t } = useTranslation();
   const variantPhotosColumns = VariantPhotosGridColumns(
     onGridAction,
   ) as ColumnDef<DataWithId>[];
@@ -73,14 +75,14 @@ export default function VariantPhotosCard({
     <div className={cs.variantPhotosCard}>
       <SheProductCard
         loading={isLoading}
-        title="Manage Photos"
+        title={t("CardTitles.ManagePhotos")}
         onSecondaryButtonClick={() => onAction("closeVariantPhotosCard")}
         showCloseButton={true}
         {...props}
       >
         <div className={cs.variantPhotosCardContent}>
           <SheFileUploader
-            contextName={"variant"}
+            contextName="variant"
             contextId={contextId}
             onUpload={(uploadModel: UploadPhotoModel) =>
               handleAction("upload", uploadModel)
@@ -88,7 +90,9 @@ export default function VariantPhotosCard({
           />
           <div className={cs.managePhotos}>
             <div className={`${cs.managePhotosTitle} she-title`}>
-              <span className="she-title">Variant Photos</span>
+              <span className="she-title">
+                {t("ProductForm.Labels.VariantPhotos")}
+              </span>
             </div>
             <div className={cs.managePhotosGrid}>
               <DndGridDataTable
@@ -103,7 +107,7 @@ export default function VariantPhotosCard({
                 columns={variantPhotosColumns}
                 data={variantPhotos}
                 gridModel={variantPhotos}
-                customMessage="VARIANT HAS NO PHOTO"
+                customMessage={t("ProductMessages.NoVariantPhotos")}
                 onNewItemPosition={(newIndex, activeItem) =>
                   handleAction("dnd", { newIndex, activeItem })
                 }
@@ -112,7 +116,9 @@ export default function VariantPhotosCard({
           </div>
           <div className={cs.managePhotos}>
             <div className={`${cs.managePhotosTitle} she-title`}>
-              <span className="she-title">Other Product Photos</span>
+              <span className="she-title">
+                {t("ProductForm.Labels.OtherProductPhotos")}
+              </span>
             </div>
             <div className={cs.managePhotosGrid}>
               <DndGridDataTable
@@ -127,7 +133,11 @@ export default function VariantPhotosCard({
                 showColumnsHeader={false}
                 columns={otherPhotosColumns}
                 data={productPhotos}
-                customMessage="PRODUCT HAS NO PHOTO"
+                customMessage={
+                  !variantPhotos && !productPhotos
+                    ? t("ProductMessages.NoPhotos")
+                    : t("ProductMessages.AllPhotosAttachedToVariant")
+                }
                 gridModel={productPhotos}
               />
             </div>

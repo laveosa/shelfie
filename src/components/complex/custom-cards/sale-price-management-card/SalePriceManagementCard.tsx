@@ -1,5 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { CheckCheck } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import {
   DataWithId,
@@ -9,12 +10,12 @@ import SheProductCard from "@/components/complex/she-product-card/SheProductCard
 import { ISalePriceManagementCard } from "@/const/interfaces/complex-components/custom-cards/ISalePriceManagementCard.ts";
 import cs from "@/components/complex/custom-cards/sale-price-management-card/SalePriceManagementCard.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { marginProductsGridColumns } from "@/components/complex/grid/margin-products-grid/MarginProductsGridColumns.tsx";
-import GridItemsFilter from "@/components/complex/grid/grid-items-filter/GridItemsFilter.tsx";
+import GridItemsFilter from "@/components/complex/grid/filters/grid-items-filter/GridItemsFilter.tsx";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
-import GridTraitsFilter from "@/components/complex/grid/grid-traits-filter/GridTraitsFilter.tsx";
-import GridShowItemsFilter from "@/components/complex/grid/grid-show-deleted-filter/GridShowItemsFilter.tsx";
+import GridTraitsFilter from "@/components/complex/grid/filters/grid-traits-filter/GridTraitsFilter.tsx";
+import GridShowItemsFilter from "@/components/complex/grid/filters/grid-show-deleted-filter/GridShowItemsFilter.tsx";
+import { marginProductsGridColumns } from "@/components/complex/grid/custom-grids/margin-products-grid/MarginProductsGridColumns.tsx";
 
 export default function SalePriseManagementCard({
   isLoading,
@@ -30,10 +31,12 @@ export default function SalePriseManagementCard({
   gridRequestModel,
   onAction,
 }: ISalePriceManagementCard) {
+  const { t } = useTranslation();
+
   return (
     <div className={cs.salePriceManagementCard}>
       <SheProductCard
-        title="Sale Price Management"
+        title={t("CardTitles.SalePriceManagement")}
         isLoading={isLoading}
         className={cs.salePriceManagementCardContent}
         minWidth="1100px"
@@ -50,6 +53,7 @@ export default function SalePriseManagementCard({
           gridModel={gridModel}
           sortingItems={sortingOptions}
           columnsPreferences={preferences}
+          gridRequestModel={gridRequestModel}
           preferenceContext={"productReferences"}
           skeletonQuantity={gridRequestModel.pageSize}
           onApplyColumns={(model) => onAction("applyColumns", model)}
@@ -60,34 +64,20 @@ export default function SalePriseManagementCard({
         >
           <GridItemsFilter
             items={brands}
-            columnName={"Brands"}
-            onSelectionChange={(selectedIds) =>
-              onAction("brandFilter", selectedIds)
-            }
+            columnName={t("SectionTitles.Brand")}
             getId={(item: BrandModel) => item.brandId}
             getName={(item: BrandModel) => item.brandName}
             selected={gridModel.filter?.brands}
           />
           <GridItemsFilter
             items={categories}
-            columnName={"Categories"}
-            onSelectionChange={(selectedIds) =>
-              onAction("categoryFilter", selectedIds)
-            }
+            columnName={t("SectionTitles.Category")}
             getId={(item: CategoryModel) => item.categoryId}
             getName={(item: CategoryModel) => item.categoryName}
             selected={gridModel.filter?.categories}
           />
-          <GridTraitsFilter
-            traitOptions={colors}
-            traitType="color"
-            gridRequestModel={gridRequestModel}
-          />
-          <GridTraitsFilter
-            traitOptions={sizes}
-            traitType="size"
-            gridRequestModel={gridRequestModel}
-          />
+          <GridTraitsFilter traitOptions={colors} traitType="color" />
+          <GridTraitsFilter traitOptions={sizes} traitType="size" />
           <GridShowItemsFilter context="Deleted" />
         </DndGridDataTable>
       </SheProductCard>
@@ -96,14 +86,14 @@ export default function SalePriseManagementCard({
           icon={CheckCheck}
           variant="default"
           onClick={() => onAction("applyVisibleMarginItems")}
-          value="Apply visible prices"
+          value={t("SpecialText.ApplyVisiblePrices")}
           bgColor="#007AFF"
         />
         <SheButton
           icon={CheckCheck}
           variant="default"
           onClick={() => onAction("applyAllMarginItems")}
-          value="Apply all prices"
+          value={t("SpecialText.ApplyAllPrices")}
           bgColor="#007AFF"
         />
       </div>

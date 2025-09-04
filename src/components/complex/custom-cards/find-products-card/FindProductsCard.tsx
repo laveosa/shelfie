@@ -1,5 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import {
   DataWithId,
@@ -8,9 +9,9 @@ import {
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./FindProductsCard.module.scss";
 import { IFindProductsCard } from "@/const/interfaces/complex-components/custom-cards/IFindProductsCard.ts";
-import GridTraitsFilter from "@/components/complex/grid/grid-traits-filter/GridTraitsFilter.tsx";
-import { findProductGridColumns } from "@/components/complex/grid/find-product-grid/FindProductGridColumns.tsx";
-import GridItemsFilter from "@/components/complex/grid/grid-items-filter/GridItemsFilter.tsx";
+import GridTraitsFilter from "@/components/complex/grid/filters/grid-traits-filter/GridTraitsFilter.tsx";
+import { findProductGridColumns } from "@/components/complex/grid/custom-grids/find-product-grid/FindProductGridColumns.tsx";
+import GridItemsFilter from "@/components/complex/grid/filters/grid-items-filter/GridItemsFilter.tsx";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 
@@ -28,14 +29,16 @@ export default function FindProductsCard({
   brands,
   onAction,
 }: IFindProductsCard) {
+  const { t } = useTranslation();
+
   return (
     <SheProductCard
       loading={isLoading}
-      title="Find Products"
+      className={cs.findProductsCard}
+      title={t("CardTitles.FindProducts")}
       width="1100px"
       showCloseButton
       onSecondaryButtonClick={() => onAction("closeFindProductsCard")}
-      className={cs.findProductsCard}
     >
       <div className={cs.findProductsCardContent}>
         <DndGridDataTable
@@ -59,30 +62,20 @@ export default function FindProductsCard({
         >
           <GridItemsFilter
             items={brands}
-            columnName={"Brands"}
-            onSelectionChange={() => onAction("onBrandSelect")}
+            columnName={t("SectionTitles.Brand")}
             getId={(item: BrandModel) => item.brandId}
             getName={(item: BrandModel) => item.brandName}
             selected={gridModel.filter?.brands}
           />
           <GridItemsFilter
             items={categories}
-            columnName={"Categories"}
-            onSelectionChange={() => onAction("onCategorySelect")}
+            columnName={t("SectionTitles.Category")}
             getId={(item: CategoryModel) => item.categoryId}
             getName={(item: CategoryModel) => item.categoryName}
             selected={gridModel.filter?.categories}
           />
-          <GridTraitsFilter
-            traitOptions={colorsForFilter}
-            traitType="color"
-            gridRequestModel={gridRequestModel}
-          />
-          <GridTraitsFilter
-            traitOptions={sizesForFilter}
-            traitType="size"
-            gridRequestModel={gridRequestModel}
-          />
+          <GridTraitsFilter traitOptions={colorsForFilter} traitType="color" />
+          <GridTraitsFilter traitOptions={sizesForFilter} traitType="size" />
         </DndGridDataTable>
       </div>
     </SheProductCard>

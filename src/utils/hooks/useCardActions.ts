@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/state/store.ts";
 import { useCallback, useRef } from "react";
 
+import { RootState } from "@/state/store.ts";
 import { scrollToRefElement } from "@/utils/helpers/quick-helper.ts";
 
 export function useCardActions({
@@ -71,6 +71,26 @@ export function useCardActions({
     [activeCards, dispatch, refreshAction],
   );
 
+  const keepOnlyCards = useCallback(
+    (openCardIdentifiers: string[] = []) => {
+      const cardActions: Record<string, boolean> = {};
+
+      // mark provided cards as open, others as closed
+      for (const card of activeCards) {
+        cardActions[card] = openCardIdentifiers.includes(card);
+      }
+
+      for (const card of openCardIdentifiers) {
+        if (!cardActions[card]) {
+          cardActions[card] = true;
+        }
+      }
+
+      handleMultipleCardActions(cardActions, []);
+    },
+    [activeCards, handleMultipleCardActions],
+  );
+
   const createRefCallback = useCallback((identifier: string) => {
     return (el: HTMLElement | null) => {
       cardRefs.current[identifier] = el;
@@ -80,6 +100,7 @@ export function useCardActions({
   return {
     handleCardAction,
     handleMultipleCardActions,
+    keepOnlyCards,
     cardRefs,
     createRefCallback,
   };

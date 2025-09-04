@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect } from "react";
-import { Plus } from "lucide-react";
+import React, { useEffect, useRef } from "react";
 import _ from "lodash";
 
 import useAppForm from "@/utils/hooks/useAppForm.ts";
@@ -20,6 +19,89 @@ import { IMarginConfigurationCard } from "@/const/interfaces/forms/IMarginConfig
 import { Separator } from "@/components/ui/separator.tsx";
 import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
 
+interface SheNumericWithSuffixInputProps
+  extends React.ComponentProps<typeof SheInput> {
+  suffix?: string;
+}
+
+export function SheInputNumericWithSuffix({
+  suffix,
+  value,
+  onChange,
+  ...props
+}: SheNumericWithSuffixInputProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const displayValue =
+    value !== "" && value !== null && value !== undefined
+      ? `${value}${suffix}`
+      : "";
+
+  const handleChange = (val: string | number) => {
+    let input = String(val);
+
+    input = input.replace(",", ".");
+
+    const numeric = input.replace(/[^0-9.]/g, "");
+    const parts = numeric.split(".");
+    const normalized =
+      parts.length > 1 ? `${parts[0]}.${parts.slice(1).join("")}` : parts[0];
+
+    onChange?.(normalized ? Number(normalized) : "");
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const input = e.currentTarget;
+    const val = input.value;
+
+    if (!suffix) return;
+
+    if (
+      (e.key === "Delete" || e.key === "ArrowRight") &&
+      input.selectionStart === val.length - suffix.length &&
+      val.endsWith(suffix)
+    ) {
+      e.preventDefault();
+    }
+
+    if (
+      e.key === "Backspace" &&
+      input.selectionStart === val.length - suffix.length &&
+      val.endsWith(suffix)
+    ) {
+      e.preventDefault();
+      const newVal = val.slice(0, -1 - suffix.length) + suffix;
+      handleChange(newVal);
+    }
+  };
+
+  const keepCursorBeforeSuffix = (
+    e: React.SyntheticEvent<HTMLInputElement>,
+  ) => {
+    const input = e.currentTarget;
+    if (suffix && input.value.endsWith(suffix)) {
+      if (input.selectionStart === input.value.length) {
+        input.setSelectionRange(
+          input.value.length - suffix.length,
+          input.value.length - suffix.length,
+        );
+      }
+    }
+  };
+
+  return (
+    <SheInput
+      {...props}
+      ref={inputRef}
+      value={displayValue}
+      onChange={handleChange}
+      onKeyDown={handleKeyDown}
+      onKeyUp={keepCursorBeforeSuffix}
+      onClick={keepCursorBeforeSuffix}
+      onFocus={keepCursorBeforeSuffix}
+    />
+  );
+}
+
 export default function MarginConfigurationForm<T>({
   className,
   data,
@@ -34,7 +116,11 @@ export default function MarginConfigurationForm<T>({
   });
 
   useEffect(() => {
-    form.reset(data);
+    if (data) {
+      form.reset(data);
+    } else {
+      form.reset(MarginModelDefault);
+    }
   }, [data]);
 
   const isFormValid = true;
@@ -78,23 +164,26 @@ export default function MarginConfigurationForm<T>({
                 />
               )}
             />
-            <Separator />
-            <div className={cs.selectSupplierBlock}>
-              <span className="she-title">
-                Automatic connection to purchase
-              </span>
-              <div className={cs.selectSupplierButton}>
-                <span className="she-text">
-                  Select which supplier, will receive this margin connected
-                  automatically
-                </span>
-                <SheButton
-                  icon={Plus}
-                  variant="secondary"
-                  value="Select Supplier"
-                />
-              </div>
-            </div>
+
+            {/*Commented until future notices*/}
+
+            {/*<Separator />*/}
+            {/*<div className={cs.selectSupplierBlock}>*/}
+            {/*  <span className="she-title">*/}
+            {/*    Automatic connection to purchase*/}
+            {/*  </span>*/}
+            {/*  <div className={cs.selectSupplierButton}>*/}
+            {/*    <span className="she-text">*/}
+            {/*      Select which supplier, will receive this margin connected*/}
+            {/*      automatically*/}
+            {/*    </span>*/}
+            {/*    <SheButton*/}
+            {/*      icon={Plus}*/}
+            {/*      variant="secondary"*/}
+            {/*      value="Select Supplier"*/}
+            {/*    />*/}
+            {/*  </div>*/}
+            {/*</div>*/}
             <Separator />
           </>
         )}
@@ -105,31 +194,34 @@ export default function MarginConfigurationForm<T>({
         </span>
         <SheFormField
           name="marginRule.desiredProfit"
+          label="Desired profit (in %)"
           className={cs.marginConfigurationFormItem}
           render={({ field }) => (
-            <SheInput
-              label="Desired profit (in %)"
+            <SheInputNumericWithSuffix
+              placeholder="Enter profit..."
               value={field.value}
-              type="number"
+              suffix="%"
               fullWidth
-              placeholder="Enter desired profit..."
+              onChange={(val) => field.onChange(val)}
             />
           )}
         />
+
         <span className={`${cs.marginConfigurationText} she-subtext`}>
           The profit is calculated based on the purchase price, other
           percentages do not intersect with it, but they result in single total
         </span>
         <SheFormField
           name="marginRule.plannedDiscount"
+          label="Planned discount (in %)"
           className={cs.marginConfigurationFormItem}
           render={({ field }) => (
-            <SheInput
-              label="Planned discount (in %)"
-              value={field.value}
-              type="number"
-              fullWidth
+            <SheInputNumericWithSuffix
               placeholder="Enter planned discount..."
+              value={field.value}
+              suffix="%"
+              fullWidth
+              onChange={(val) => field.onChange(val)}
             />
           )}
         />

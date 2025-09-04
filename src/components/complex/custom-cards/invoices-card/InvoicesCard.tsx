@@ -1,5 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./InvoicesCard.module.scss";
@@ -10,7 +11,7 @@ import {
 import { SheFileUploader } from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { IInvoiceCard } from "@/const/interfaces/complex-components/custom-cards/IInvoicesCard.ts";
-import { InvoicesGridColumns } from "@/components/complex/grid/invoices-grid/InvoicesGridColumns.tsx";
+import { InvoicesGridColumns } from "@/components/complex/grid/custom-grids/invoices-grid/InvoicesGridColumns.tsx";
 
 export default function InvoicesCard({
   isLoading,
@@ -20,6 +21,8 @@ export default function InvoicesCard({
   contextId,
   onAction,
 }: IInvoiceCard) {
+  const { t } = useTranslation();
+
   function onGridAction(
     actionType: string,
     _rowId?: string,
@@ -44,13 +47,13 @@ export default function InvoicesCard({
     <div className={cs.invoicesCard}>
       <SheProductCard
         loading={isLoading}
-        title="Invoices"
+        title={t("CardTitles.Invoices")}
         className={cs.productPhotosCard}
       >
         <div className={cs.invoicesCardContent}>
           <SheFileUploader
             isLoading={isImageUploaderLoading}
-            contextName={"invoiceDocument"}
+            contextName="invoiceDocument"
             viewMode="file"
             contextId={contextId}
             acceptedFileTypes={{
@@ -70,7 +73,7 @@ export default function InvoicesCard({
           />
           <div className={cs.manageInvoices}>
             <div className={`${cs.manageInvoicesTitle} she-title`}>
-              Manage Invoices
+              {t("CardTitles.ManageInvoices")}
             </div>
             <div className={cs.manageInvoicesGrid}>
               <DndGridDataTable
@@ -85,7 +88,7 @@ export default function InvoicesCard({
                 }
                 data={data}
                 skeletonQuantity={10}
-                customMessage="There are no files uploaded yet"
+                customMessage={t("InvoiceMessages.NoFilesUploaded")}
               />
             </div>
           </div>

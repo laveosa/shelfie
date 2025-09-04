@@ -2,6 +2,7 @@ import { Layers2, Plus, Shirt } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useState } from "react";
 import _, { merge } from "lodash";
+import { useTranslation } from "react-i18next";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import { IPurchaseProductsCard } from "@/const/interfaces/complex-components/custom-cards/IPurchaseProductsCard.ts";
@@ -17,19 +18,19 @@ import {
   DataWithId,
   DndGridDataTable,
 } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import { purchaseProductsGridColumns } from "@/components/complex/grid/purchase-products-grid/PurchaseProductsGridColumns.tsx";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import { AppSliceActions as appActions } from "@/state/slices/AppSlice.ts";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
-import GridItemsFilter from "@/components/complex/grid/grid-items-filter/GridItemsFilter.tsx";
+import GridItemsFilter from "@/components/complex/grid/filters/grid-items-filter/GridItemsFilter.tsx";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
-import { purchaseVariantsGridColumns } from "@/components/complex/grid/purchase-variants-grid/PurchaseVariantsGridColumns.tsx";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
-import GridTraitsFilter from "@/components/complex/grid/grid-traits-filter/GridTraitsFilter.tsx";
-import GridShowItemsFilter from "@/components/complex/grid/grid-show-deleted-filter/GridShowItemsFilter.tsx";
+import GridTraitsFilter from "@/components/complex/grid/filters/grid-traits-filter/GridTraitsFilter.tsx";
+import GridShowItemsFilter from "@/components/complex/grid/filters/grid-show-deleted-filter/GridShowItemsFilter.tsx";
+import { purchaseProductsGridColumns } from "@/components/complex/grid/custom-grids/purchase-products-grid/PurchaseProductsGridColumns.tsx";
+import { purchaseVariantsGridColumns } from "@/components/complex/grid/custom-grids/purchase-variants-grid/PurchaseVariantsGridColumns.tsx";
 
 export default function PurchaseProductsCard({
   isLoading,
@@ -38,18 +39,22 @@ export default function PurchaseProductsCard({
   variants,
   purchaseProducts,
   purchaseProductsGridModel,
+  purchaseProductsGridRequestModel,
   variantsGridModel,
+  variantsGridRequestModel,
   preferences,
   sortingOptions,
   brands,
   categories,
-  purchaseProductsSkeletonQuantity,
+  colorsForFilter,
+  sizesForFilter,
   variantsSkeletonQuantity,
   currencies,
   taxes,
   purchaseSummary,
   onAction,
 }: IPurchaseProductsCard) {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState("purchaseProducts");
   const productsService = useProductsPageService();
   const dispatch = useAppDispatch();
@@ -94,49 +99,29 @@ export default function PurchaseProductsCard({
   }
 
   function handleGridRequestChange(updates: GridRequestModel) {
-    if (updates.brands || updates.categories || updates.filter) {
-      if (activeTab === "purchaseProducts") {
-        dispatch(
-          actions.refreshPurchasesProductsGridRequestModel({
-            ...state.purchasesProductsGridRequestModel,
-            currentPage: 1,
-            ...updates,
-          }),
-        );
-      } else if (activeTab === "connectProducts") {
-        dispatch(
-          actions.refreshVariantsForPurchaseGridRequestModel({
-            ...state.variantsForPurchaseGridRequestModel,
-            currentPage: 1,
-            ...updates,
-          }),
-        );
-      }
+    if (activeTab === "purchaseProducts") {
+      dispatch(
+        actions.refreshPurchasesProductsGridRequestModel({
+          ...state.purchasesProductsGridRequestModel,
+          ...updates,
+          filter: {
+            ...state.purchasesProductsGridRequestModel.filter,
+            ...updates.filter,
+          },
+        }),
+      );
     } else {
-      if (activeTab === "purchaseProducts") {
-        dispatch(
-          actions.refreshPurchasesProductsGridRequestModel({
-            ...state.purchasesProductsGridRequestModel,
-            ...updates,
-          }),
-        );
-      } else if (activeTab === "connectProducts") {
-        dispatch(
-          actions.refreshVariantsForPurchaseGridRequestModel({
-            ...state.variantsForPurchaseGridRequestModel,
-            ...updates,
-          }),
-        );
-      }
+      dispatch(
+        actions.refreshVariantsForPurchaseGridRequestModel({
+          ...state.variantsForPurchaseGridRequestModel,
+          ...updates,
+          filter: {
+            ...state.variantsForPurchaseGridRequestModel.filter,
+            ...updates.filter,
+          },
+        }),
+      );
     }
-  }
-
-  function onBrandSelectHandler(selectedIds: number[]) {
-    handleGridRequestChange({ brands: selectedIds });
-  }
-
-  function onCategorySelectHandler(selectedIds: number[]) {
-    handleGridRequestChange({ categories: selectedIds });
   }
 
   function onApplyColumnsHandler(model: PreferencesModel) {
@@ -157,8 +142,7 @@ export default function PurchaseProductsCard({
       <SheProductCard
         className={cs.purchaseProductsCard}
         showHeader={false}
-        title={"Manage Purchases"}
-        minWidth="1100px"
+        title={t("CardTitles.ManagePurchases")}
       >
         <div className={cs.purchaseProductsCardContent}>
           <SheTabs
@@ -173,7 +157,7 @@ export default function PurchaseProductsCard({
                     value="purchaseProducts"
                   >
                     <div className={cs.tabBlock}>
-                      <Shirt size="16" /> Purchase Products
+                      <Shirt size="16" /> {t("TabLabels.PurchaseProducts")}
                     </div>
                   </TabsTrigger>
                   <TabsTrigger
@@ -182,7 +166,7 @@ export default function PurchaseProductsCard({
                   >
                     <div className={cs.tabBlock}>
                       <Layers2 size="16" />
-                      Connect Products
+                      {t("TabLabels.ConnectProducts")}
                     </div>
                   </TabsTrigger>
                 </div>
@@ -190,13 +174,14 @@ export default function PurchaseProductsCard({
                   icon={Plus}
                   variant="default"
                   onClick={() => onAction("openCreateProductCard")}
-                  value="Create Product"
+                  value={t("ProductActions.CreateProduct")}
                 />
               </TabsList>
             </div>
             <TabsContent value="purchaseProducts">
               <DndGridDataTable
                 isLoading={isPurchaseProductsGridLoading}
+                className={cs.purchaseProductsGrid}
                 columns={
                   purchaseProductsGridColumns(
                     currencies,
@@ -207,36 +192,37 @@ export default function PurchaseProductsCard({
                 }
                 data={purchaseProducts}
                 gridModel={purchaseProductsGridModel}
+                gridRequestModel={purchaseProductsGridRequestModel}
                 sortingItems={sortingOptions}
                 columnsPreferences={preferences}
                 preferenceContext={"productReferences"}
-                skeletonQuantity={purchaseProductsSkeletonQuantity}
+                skeletonQuantity={purchaseSummary?.unitsAmount}
                 onApplyColumns={onApplyColumnsHandler}
                 onDefaultColumns={onResetColumnsHandler}
                 onGridRequestChange={handleGridRequestChange}
               >
                 <GridItemsFilter
                   items={brands}
-                  columnName={"Brands"}
-                  onSelectionChange={onBrandSelectHandler}
+                  columnName={t("SectionTitles.Brand")}
                   getId={(item: BrandModel) => item.brandId}
                   getName={(item: BrandModel) => item.brandName}
                 />
                 <GridItemsFilter
                   items={categories}
-                  columnName={"Categories"}
-                  onSelectionChange={onCategorySelectHandler}
+                  columnName={t("SectionTitles.Category")}
                   getId={(item: CategoryModel) => item.categoryId}
                   getName={(item: CategoryModel) => item.categoryName}
                 />
               </DndGridDataTable>
               <div className={cs.purchaseSummary}>
                 <span className={cs.purchaseSummaryTitle}>
-                  Products Summary
+                  {t("PurchaseForm.Labels.PurchaseSummary")}
                 </span>
                 <div className={cs.purchaseSummaryItems}>
                   <div>
-                    <span className={cs.purchaseSummaryTitle}>Units</span>
+                    <span className={cs.purchaseSummaryTitle}>
+                      {t("PurchaseForm.Labels.Units")}
+                    </span>
                     {!_.isNil(purchaseSummary?.unitsAmount) && (
                       <span className={cs.purchaseSummaryItem}>
                         {`: ${purchaseSummary?.unitsAmount}`}
@@ -244,7 +230,9 @@ export default function PurchaseProductsCard({
                     )}
                   </div>
                   <div>
-                    <span className={cs.purchaseSummaryTitle}>Expense</span>
+                    <span className={cs.purchaseSummaryTitle}>
+                      {t("PurchaseForm.Labels.Expense")}
+                    </span>
                     {!_.isNil(purchaseSummary?.expense) && (
                       <span className={cs.purchaseSummaryItem}>
                         {`: ${purchaseSummary?.expense} ${purchaseSummary?.currencyBrief}`}
@@ -253,7 +241,7 @@ export default function PurchaseProductsCard({
                   </div>
                   <div>
                     <span className={cs.purchaseSummaryTitle}>
-                      Projected value
+                      {t("PurchaseForm.Labels.ProjectedValue")}
                     </span>
                     {!_.isNil(purchaseSummary?.valueAmount) && (
                       <span className={cs.purchaseSummaryItem}>
@@ -267,6 +255,7 @@ export default function PurchaseProductsCard({
             <TabsContent value="connectProducts">
               <DndGridDataTable
                 isLoading={isProductsGridLoading}
+                className={cs.purchaseProductsGrid}
                 columns={
                   purchaseVariantsGridColumns(
                     currencies,
@@ -277,6 +266,7 @@ export default function PurchaseProductsCard({
                 }
                 data={variants}
                 gridModel={variantsGridModel}
+                gridRequestModel={variantsGridRequestModel}
                 sortingItems={sortingOptions}
                 columnsPreferences={preferences}
                 preferenceContext={"productReferences"}
@@ -287,27 +277,23 @@ export default function PurchaseProductsCard({
               >
                 <GridItemsFilter
                   items={brands}
-                  columnName={"Brands"}
-                  onSelectionChange={onBrandSelectHandler}
+                  columnName={t("SectionTitles.Brand")}
                   getId={(item: BrandModel) => item.brandId}
                   getName={(item: BrandModel) => item.brandName}
                 />
                 <GridItemsFilter
                   items={categories}
-                  columnName={"Categories"}
-                  onSelectionChange={onCategorySelectHandler}
+                  columnName={t("SectionTitles.Category")}
                   getId={(item: CategoryModel) => item.categoryId}
                   getName={(item: CategoryModel) => item.categoryName}
                 />
                 <GridTraitsFilter
-                  traitOptions={state.colorsForFilter}
+                  traitOptions={colorsForFilter}
                   traitType="color"
-                  gridRequestModel={state.variantsForPurchaseGridRequestModel}
                 />
                 <GridTraitsFilter
-                  traitOptions={state.sizesForFilter}
+                  traitOptions={sizesForFilter}
                   traitType="size"
-                  gridRequestModel={state.variantsForPurchaseGridRequestModel}
                 />
                 <GridShowItemsFilter context="Deleted" />
               </DndGridDataTable>

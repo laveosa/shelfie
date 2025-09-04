@@ -1,5 +1,6 @@
 import { Cog, ReceiptEuro, Undo2 } from "lucide-react";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./MarginForPurchaseCard.module.scss";
@@ -13,19 +14,21 @@ export default function MarginForPurchaseCard({
   margin,
   onAction,
 }: IMarginForPurchaseCard) {
+  const { t } = useTranslation();
+  
   return (
     <SheProductCard
       loading={isLoading}
-      title="Margin For Purchase"
+      title={t("CardTitles.MarginForPurchase")}
       className={cs.marginForPurchaseCard}
     >
       <div className={cs.marginForPurchaseCardContent}>
         <div className={cs.electedMarginBlock}>
-          <span className="she-text">Select the margin for the purchase</span>
+          <span className="she-text">{t("MarginForm.Labels.SelectMarginForPurchase")}</span>
           <SheButton
             icon={ReceiptEuro}
             variant="secondary"
-            value="Select Margin"
+            value={t("MarginActions.SelectMargin")}
             onClick={() => onAction("openSelectMarginCard")}
           />
         </div>
@@ -52,7 +55,7 @@ export default function MarginForPurchaseCard({
                 )}
                 <SheButton
                   icon={Cog}
-                  value={"Manage"}
+                  value={t("ProductActions.Manage")}
                   variant="secondary"
                   onClick={() => onAction("manageSelectedMargin", margin)}
                 />
@@ -60,7 +63,7 @@ export default function MarginForPurchaseCard({
             </div>
             {margin.isDeleted && (
               <div className={cs.marginIsDeletedBlock}>
-                <span className="she-text">{`>_ The margin is deleted`}</span>
+                <span className="she-text">{t("MarginMessages.MarginIsDeleted")}</span>
               </div>
             )}
             <Separator />

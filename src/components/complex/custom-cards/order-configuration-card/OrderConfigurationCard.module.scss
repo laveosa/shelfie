@@ -10,6 +10,7 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
+      padding-bottom: 20px;
 
       .orderConfigurationCardItem {
         display: flex;
@@ -26,28 +27,34 @@
         flex-direction: column;
         gap: 10px;
 
-        .avatarImage {
-          border-radius: 50%;
-        }
-
-        .avatarInitials {
-          width: 40px;
-          height: 40px;
-          background-color: #ececec;
-          border-radius: 50%;
+        .customerInfoAvatarBlock {
           display: flex;
           align-items: center;
-          justify-content: center;
-          color: #555;
-          font-weight: 600;
-          font-size: 16px;
-          user-select: none;
+          gap: 10px;
+
+          .avatarImage {
+            border-radius: 50%;
+          }
+
+          .avatarInitials {
+            width: 40px;
+            height: 40px;
+            background-color: #ececec;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #555;
+            font-weight: 600;
+            font-size: 16px;
+            user-select: none;
+          }
         }
       }
 
       .orderDiscountsGridWrapper {
         position: relative;
-        margin-bottom: 20px;
+        margin-bottom: 30px;
       }
 
       .gridFooter {
@@ -55,7 +62,7 @@
         width: 100%;
         height: 30px;
         left: 0;
-        bottom: -17px;
+        bottom: -28px;
         border-bottom-left-radius: 5px;
         border-bottom-right-radius: 5px;
         background-color: #f4f4f5;

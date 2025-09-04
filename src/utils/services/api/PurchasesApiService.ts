@@ -75,7 +75,7 @@ export const PurchasesApiService = createApi({
     >(builder, {
       query: ({ id, model }) => ({
         url: `${ApiUrlEnum.PURCHASES}/${id}${ApiUrlEnum.VARIANTS}`,
-        method: "PATCH",
+        method: "POST",
         body: JSON.stringify(model),
       }),
     }),
@@ -279,6 +279,12 @@ export const PurchasesApiService = createApi({
       query: (purchaseId) => ({
         url: `${ApiUrlEnum.PURCHASES}/${purchaseId}/margin-items/apply-all`,
         method: "POST",
+      }),
+    }),
+    deletePurchase: apiConfig.createMutation<void, number>(builder, {
+      query: (purchaseId: number) => ({
+        url: `${ApiUrlEnum.PURCHASES}/${purchaseId}`,
+        method: "DELETE",
       }),
     }),
   }),

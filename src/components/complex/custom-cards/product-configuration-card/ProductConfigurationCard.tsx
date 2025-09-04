@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Plus, WandSparkles } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import {
   FormControl,
@@ -20,7 +21,6 @@ import cs from "./ProductConfigurationCard.module.scss";
 import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
 import { Switch } from "@/components/ui/switch.tsx";
 import { IProductConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IProductConfigurationCard.ts";
 
@@ -29,14 +29,14 @@ export default function ProductConfigurationCard({
   product,
   brandsList,
   categoriesList,
+  productCode,
   showSecondaryButton,
-  onProductCodeCheck,
-  onGenerateProductCode,
-  onOpenCreateProductCategoryCard,
-  onOpenCreateProductBrandCard,
   onPrimaryButtonClick,
-  ...props
+  onSecondaryButtonClick,
+  onAction,
 }: IProductConfigurationCard) {
+  const { t } = useTranslation();
+
   const form = useForm({
     defaultValues: {
       productName: "",
@@ -61,7 +61,7 @@ export default function ProductConfigurationCard({
     } else {
       form.reset({
         productName: "",
-        productCode: null,
+        productCode: "",
         barcode: "",
         productCategoryId: null,
         brandId: null,
@@ -70,32 +70,25 @@ export default function ProductConfigurationCard({
     }
   }, [product]);
 
-  function onGenerateCode() {
-    onGenerateProductCode().then((res: ProductCodeModel) => {
-      form.setValue("productCode", res.code);
-    });
-  }
-
-  function onCheckCode(value: string) {
-    onProductCodeCheck({ code: value }).then(() => {});
-  }
-
-  function onSubmit(data) {
-    onPrimaryButtonClick(data);
-  }
+  useEffect(() => {
+    if (productCode) {
+      form.setValue("productCode", productCode);
+    }
+  }, [productCode, form]);
 
   return (
     <div>
       <SheProductCard
         loading={isLoading}
-        title={product?.productId ? "Basic Product Data" : "Create Product"}
-        showPrimaryButton={true}
-        primaryButtonTitle={product?.productId ? "Save" : "Add Product"}
-        showSecondaryButton={!product?.productId || showSecondaryButton}
-        secondaryButtonTitle="Cancel"
         className={cs.productConfigurationFormCard}
-        onPrimaryButtonClick={form.handleSubmit(onSubmit)}
-        {...props}
+        title={product?.productId ? t("CardTitles.BasicProductData") : t("CardTitles.CreateProduct")}
+        showCloseButton={showSecondaryButton}
+        showPrimaryButton={true}
+        primaryButtonTitle={product?.productId ? t("CommonButtons.Save") : t("ProductActions.AddProduct")}
+        showSecondaryButton={!product?.productId || showSecondaryButton}
+        secondaryButtonTitle={t("CommonButtons.Cancel")}
+        onPrimaryButtonClick={form.handleSubmit(onPrimaryButtonClick)}
+        onSecondaryButtonClick={onSecondaryButtonClick}
       >
         <div className={cs.productConfigurationForm}>
           <SheForm form={form as any} onSubmit={onSubmit}>
@@ -104,18 +97,18 @@ export default function ProductConfigurationCard({
                 required: true,
                 minLength: {
                   value: 3,
-                  message: "Product name must be at least 3 characters",
+                  message: t("ProductForm.Validation.ProductNameMinLength"),
                 },
                 maxLength: {
                   value: 50,
-                  message: "Product name cannot exceed 50 characters",
+                  message: t("ProductForm.Validation.ProductNameMaxLength"),
                 },
               }}
               name="productName"
             >
               <SheInput
-                label="Product Name"
-                placeholder="enter product name..."
+                label={t("ProductForm.Labels.ProductName")}
+                placeholder={t("ProductForm.Placeholders.ProductName")}
                 isValid={!form.formState.errors.productName}
                 patternErrorMessage={form.formState.errors.productName?.message}
                 showError={true}
@@ -123,30 +116,31 @@ export default function ProductConfigurationCard({
               />
             </SheForm.Field>
             <div className={cs.productConfigurationFormRow}>
-              <SheForm.Field name="productCode" onDelay={onCheckCode}>
+              <SheForm.Field name="productCode">
                 <SheInput
                   {...(form.register("productCode") as any)}
-                  label="Product Code"
-                  placeholder="enter product code..."
+                  label={t("ProductForm.Labels.ProductCode")}
+                  placeholder={t("ProductForm.Placeholders.ProductCode")}
                   isValid={!form.formState.errors.productCode}
                   patternErrorMessage={
                     form.formState.errors.productCode?.message
                   }
                   showError={true}
                   fullWidth={true}
+                  onDelay={(value) => onAction("checkProductCode", value)}
                 />
               </SheForm.Field>
               <SheButton
                 icon={WandSparkles}
                 type="button"
                 variant="outline"
-                onClick={onGenerateCode}
+                onClick={() => onAction("generateProductCode")}
               />
             </div>
             <SheForm.Field name="barcode">
               <SheInput
-                label="Product Barcode"
-                placeholder="enter product barcode..."
+                label={t("ProductForm.Labels.ProductBarcode")}
+                placeholder={t("ProductForm.Placeholders.ProductBarcode")}
                 fullWidth={true}
               />
             </SheForm.Field>
@@ -159,7 +153,7 @@ export default function ProductConfigurationCard({
                 }}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Product Category</FormLabel>
+                    <FormLabel>{t("ProductForm.Labels.CategoryName")}</FormLabel>
                     <Select
                       key={form.watch("productCategoryId")}
                       onValueChange={(value) => field.onChange(Number(value))}
@@ -167,12 +161,12 @@ export default function ProductConfigurationCard({
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select category">
+                          <SelectValue placeholder={t("ProductForm.Placeholders.SelectCategory")}>
                             {categoriesList.find(
                               (item) =>
                                 item.categoryId ===
                                 form.watch("productCategoryId"),
-                            )?.categoryName ?? "Select category"}
+                            )?.categoryName ?? t("ProductForm.Placeholders.SelectCategory")}
                           </SelectValue>
                         </SelectTrigger>
                       </FormControl>
@@ -194,7 +188,7 @@ export default function ProductConfigurationCard({
                 icon={Plus}
                 variant="outline"
                 type="button"
-                onClick={onOpenCreateProductCategoryCard}
+                onClick={() => onAction("openCreateProductCategoryCard")}
               />
             </div>
             <div className={cs.productConfigurationFormRow}>
@@ -206,7 +200,7 @@ export default function ProductConfigurationCard({
                 }}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Product Brand</FormLabel>
+                    <FormLabel>{t("ProductForm.Labels.BrandName")}</FormLabel>
                     <Select
                       key={form.watch("brandId")}
                       onValueChange={(value) => field.onChange(Number(value))}
@@ -214,7 +208,7 @@ export default function ProductConfigurationCard({
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select brand" />
+                          <SelectValue placeholder={t("ProductForm.Placeholders.SelectBrand")} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -235,7 +229,7 @@ export default function ProductConfigurationCard({
                 icon={Plus}
                 variant="outline"
                 type="button"
-                onClick={onOpenCreateProductBrandCard}
+                onClick={() => onAction("openCreateProductBrandCard")}
               />
             </div>
             <SheForm.Field name="isActive">
@@ -248,7 +242,7 @@ export default function ProductConfigurationCard({
                     form.setValue("isActive", checked)
                   }
                 />
-                <div>Is Active</div>
+                <div>{t("ProductForm.Labels.IsActive")}</div>
               </div>
             </SheForm.Field>
           </SheForm>
