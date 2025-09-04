@@ -256,6 +256,32 @@ export default function useProductGalleryPageService() {
     });
   }
 
+  function getProductGalleryPageDataHandler(productId: string) {
+    if (productsState.products === null) {
+      dispatch(productsActions.setIsItemsCardLoading(true));
+      productsService
+        .getTheProductsForGridHandler(productsState.gridRequestModel)
+        .then(() => {
+          dispatch(productsActions.setIsItemsCardLoading(false));
+        });
+    }
+    if (!productsState.productCounter) {
+      dispatch(productsActions.setIsProductMenuCardLoading(true));
+      productsService.getCountersForProductsHandler(productId).then(() => {
+        dispatch(productsActions.setIsProductMenuCardLoading(false));
+      });
+    }
+    dispatch(actions.setIsProductPhotosCardLoading(true));
+    productsService.getProductPhotosHandler(Number(productId)).then(() => {
+      dispatch(actions.setIsProductPhotosCardLoading(false));
+    });
+    getProductVariantsHandler(Number(productId));
+  }
+
+  function closeConnectImageCardHandler() {
+    handleCardAction("connectImageCard");
+  }
+
   return {
     getTheProductsForGridHandler,
     uploadPhotoHandler,
@@ -266,5 +292,7 @@ export default function useProductGalleryPageService() {
     detachImageFromVariantHandler,
     getProductVariantsHandler,
     setPhotoActivationStateHandler,
+    getProductGalleryPageDataHandler,
+    closeConnectImageCardHandler,
   };
 }
