@@ -1,4 +1,8 @@
-import React, { ComponentPropsWithRef, InputHTMLAttributes } from "react";
+import React, {
+  ComponentPropsWithRef,
+  InputHTMLAttributes,
+  RefObject,
+} from "react";
 
 import { ContextPatternEnum } from "@/const/enums/ContextPatternEnum.ts";
 import { IShePrimitiveComponentWrapper } from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
@@ -6,14 +10,14 @@ import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
 
 type NativeInputProps = Omit<
   InputHTMLAttributes<HTMLInputElement>,
-  "onChange" | "onBlur" | "size"
+  "onChange" | "onBlur" | "size" | "form"
 >;
 
 export interface ISheInput
   extends Omit<IShePrimitiveComponentWrapper, "onKeyDown">,
     NativeInputProps,
     ComponentPropsWithRef<any> {
-  ref?: any;
+  ref?: RefObject<HTMLInputElement>;
   value?: string | number;
   placeholder?: string;
   placeholderTransKey?: string;

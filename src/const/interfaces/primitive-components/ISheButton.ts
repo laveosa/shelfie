@@ -20,6 +20,7 @@ export interface ISheButton
   valueWrap?: boolean;
   size?: "normal" | "small";
   view?: "viewNormal" | "viewCircle";
+  variant?: ButtonProps["variant"];
   disabled?: boolean;
   isLoading?: boolean;
   minWidth?: string;

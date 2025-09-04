@@ -1,6 +1,7 @@
-import React from "react";
+import React, { JSX } from "react";
 import { Trans } from "react-i18next";
 
+import cs from "./SheFormItem.module.scss";
 import {
   FormControl,
   FormDescription,
@@ -8,20 +9,22 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form.tsx";
-import cs from "./SheFormItem.module.scss";
 import { ISheFormItem } from "@/const/interfaces/forms/ISheFormItem.ts";
 
 export default function SheFormItem({
-  className,
+  className = "",
+  style,
   children,
   label,
   labelTransKey,
   description,
   descriptionTransKey,
-}: ISheFormItem): React.ReactNode {
+  required,
+}: ISheFormItem): JSX.Element {
   return (
     <FormItem
-      className={`${className || ""} ${cs.sheFormItem} ${description ? cs.withDescription : ""}`}
+      className={`${cs.sheFormItem} ${className} ${description ? cs.withDescription : ""} ${required ? cs.required : ""}`}
+      style={{ ...style }}
     >
       {label && (
         <FormLabel>

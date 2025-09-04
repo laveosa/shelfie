@@ -37,9 +37,11 @@ export default function SheToggle(props: ISheToggle): JSX.Element {
   const [_checked, setChecked] = useState<boolean>(checked ?? false);
 
   // ==================================================================== UTILITIES
-  const { ariaDescribedbyId } = useComponentUtilities({
-    identifier: "SheToggle",
-  });
+  const { ariaDescribedbyId, updateFormValue } =
+    useComponentUtilities<ISheToggle>({
+      props,
+      identifier: "SheToggle",
+    });
   const { eventHandler, valueHandler } = useValueWithEvent<
     React.MouseEvent,
     boolean
@@ -56,6 +58,7 @@ export default function SheToggle(props: ISheToggle): JSX.Element {
   // ==================================================================== EVENT HANDLERS
   function onCheckedChangeHandler(value: boolean, event?: React.MouseEvent) {
     setChecked(value);
+    updateFormValue(value);
     onChecked?.(value, {
       value,
       model: props,

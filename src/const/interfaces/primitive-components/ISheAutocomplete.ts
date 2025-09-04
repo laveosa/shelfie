@@ -31,6 +31,7 @@ export interface ISheAutocomplete
   noSearchPlaceholder?: string;
   noSearchPlaceholderTransKey?: string;
   items?: ISheOption<string>[];
+  autoFocus?: boolean;
   disabled?: boolean;
   isLoading?: boolean;
   isOpen?: boolean;
@@ -61,6 +62,7 @@ export const SheAutocompleteDefaultModel: ISheAutocomplete = {
   noSearchPlaceholder: undefined,
   noSearchPlaceholderTransKey: undefined,
   items: undefined,
+  autoFocus: undefined,
   disabled: undefined,
   isLoading: undefined,
   isOpen: undefined,

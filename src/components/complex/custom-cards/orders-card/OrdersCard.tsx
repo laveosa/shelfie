@@ -15,6 +15,7 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { ordersGridColumns } from "@/components/complex/grid/custom-grids/orders-grid/OrdersGridColumns.tsx";
+import { CalendarModeEnum } from "@/const/enums/CalendarModeEnum.ts";
 
 export default function OrdersCard({
   isLoading,
@@ -60,7 +61,7 @@ export default function OrdersCard({
         >
           <SheDatePicker
             icon={CalendarRange}
-            mode="range"
+            mode={CalendarModeEnum.RANGE}
             minWidth="150px"
             placeholder={t("OrderForm.Placeholders.PickRange")}
             onSelectDate={(updates) => {

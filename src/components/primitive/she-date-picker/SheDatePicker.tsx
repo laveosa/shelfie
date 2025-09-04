@@ -22,12 +22,13 @@ import {
   ISheCalendar,
   SheCalendarDefaultModel,
 } from "@/const/interfaces/primitive-components/ISheCalendar.ts";
+import { CalendarModeEnum } from "@/const/enums/CalendarModeEnum.ts";
 
 export default function SheDatePicker(props: ISheDatePicker): JSX.Element {
   // ==================================================================== PROPS
   const {
     date,
-    mode = "single",
+    mode = CalendarModeEnum.SINGLE,
     placeholder,
     placeholderTransKey,
     disabled,
@@ -57,9 +58,11 @@ export default function SheDatePicker(props: ISheDatePicker): JSX.Element {
   const _sourceValue = useRef<any>(date);
 
   // ==================================================================== UTILITIES
-  const { translate, ariaDescribedbyId } = useComponentUtilities({
-    identifier: "SheDatePicker",
-  });
+  const { translate, ariaDescribedbyId, updateFormValue, resetFormField } =
+    useComponentUtilities<ISheDatePicker>({
+      props,
+      identifier: "SheDatePicker",
+    });
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
@@ -77,8 +80,12 @@ export default function SheDatePicker(props: ISheDatePicker): JSX.Element {
     if (!value) return;
 
     setDate(value);
+    updateFormValue(value);
 
-    if (closeOnDateSelect && (mode === "single" || mode === "range"))
+    if (
+      closeOnDateSelect &&
+      (mode === CalendarModeEnum.SINGLE || mode === CalendarModeEnum.RANGE)
+    )
       setOpen(false);
 
     setIsHighlighted(!_.isEqual(_sourceValue.current, value));
@@ -98,6 +105,7 @@ export default function SheDatePicker(props: ISheDatePicker): JSX.Element {
 
   function onClearHandler(event) {
     setDate(null);
+    resetFormField(null);
     onSelectDate?.(null, {
       value: null,
       model: props,
@@ -173,6 +181,7 @@ export default function SheDatePicker(props: ISheDatePicker): JSX.Element {
             isLoading={isLoading}
             disabled={disabled}
             hideTimePicker={hideTimePicker}
+            ignoreFormAction
             onSelectDate={onSelectHandler}
           />
         </PopoverContent>

@@ -16,16 +16,13 @@ import ShePrimitiveComponentWrapper from "@/components/primitive/she-primitive-c
 import { generateSafeItemId } from "@/utils/helpers/quick-helper.ts";
 import { getCustomProps } from "@/utils/helpers/props-helper.ts";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import {
-  ISheSelect,
-  SheSelectDefaultModel,
-} from "@/const/interfaces/primitive-components/ISheSelect.ts";
+import { ISheSelect } from "@/const/interfaces/primitive-components/ISheSelect.ts";
 import {
   IShePrimitiveComponentWrapper,
   ShePrimitiveComponentWrapperDefaultModel,
 } from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
 
-export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
+export default function SheSelect<T = any>(props: ISheSelect<T>): JSX.Element {
   // ==================================================================== PROPS
   const {
     triggerRef,
@@ -48,10 +45,6 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
     onSelect,
     onTriggerKeyDown,
   } = props;
-  const sheSelectProps = getCustomProps<ISheSelect<T>, ISheSelect<T>>(
-    props,
-    SheSelectDefaultModel,
-  );
   const shePrimitiveComponentWrapperProps = getCustomProps<
     ISheSelect<T>,
     IShePrimitiveComponentWrapper
@@ -71,17 +64,19 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
 
   // ==================================================================== UTILITIES
   const {
-    translate,
     ariaDescribedbyId,
+    translate,
     setFocus,
-    initializeItemsList,
     updateSelectedItems,
     getItemFromListByIdentifier,
+    initializeItemsList,
     calculatePopoverWidth,
-  } = useComponentUtilities({
+    updateFormValue,
+    resetFormField,
+  } = useComponentUtilities<ISheSelect<T>>({
+    props,
     identifier: "SheSelect",
   });
-
   const { eventHandler, valueHandler } = useValueWithEvent<
     React.MouseEvent | React.KeyboardEvent,
     string
@@ -90,7 +85,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     const newItems = initializeItemsList<T, ISheSelectItem<T>>([
-      ...(items || []),
+      ...(_.cloneDeep(items) || []),
     ]);
     // ----------------------------------- GET ALL SELECTED ITEMS FROM THE LIST
     const listSelected: ISheSelectItem<T>[] = newItems?.filter(
@@ -124,7 +119,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
     if (!_.isEqual(newItems, _items)) {
       setItems(newItems);
     } else {
-      setItems(updateSelectedItems(_items, tmpSelected));
+      setItems(updateSelectedItems<any, any>(_items, tmpSelected));
     }
     // ----------------------------------- SET SELECTED
     if (!_.isEqual(tmpSelected, _selected)) setSelected(tmpSelected);
@@ -164,7 +159,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
     event?: React.MouseEvent | React.KeyboardEvent,
   ) {
     const selected: ISheSelectItem<T> = _.cloneDeep(
-      getItemFromListByIdentifier<ISheSelectItem<T>, string>(items, "id", id),
+      getItemFromListByIdentifier<ISheSelectItem<T>, string>(_items, "id", id),
     );
 
     if (selected) {
@@ -175,6 +170,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
       );
       setItems(tmpItems);
       setIsHighlighted(!_.isEqual(_sourceValue.current, selected.value));
+      updateFormValue(selected.value);
       onSelect?.(selected.value, {
         value: selected.value,
         model: { ...props, items: tmpItems, selected: selected.value },
@@ -202,6 +198,7 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
     const tmpItems = updateSelectedItems<ISheSelectItem<T>, T>(_items);
     setItems(tmpItems);
     setSelected(null);
+    resetFormField();
     onSelect?.(null, {
       value: null,
       model: { ...props, items: tmpItems, selected: null },
@@ -258,7 +255,6 @@ export default function SheSelect<T>(props: ISheSelect<T>): JSX.Element {
             setTimeout(() => valueHandler(value));
           }
         }}
-        {...sheSelectProps}
       >
         <SelectTrigger
           ref={_triggerRef as any}

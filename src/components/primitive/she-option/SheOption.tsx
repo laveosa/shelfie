@@ -2,18 +2,13 @@ import React, { JSX, useEffect, useState } from "react";
 import { Trans } from "react-i18next";
 import _ from "lodash";
 
+import { Image } from "lucide-react";
 import cs from "./SheOption.module.scss";
-import {
-  ISheOption,
-  SheOptionDefaultModel,
-} from "@/const/interfaces/primitive-components/ISheOption.ts";
-import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
+import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
 import SheToggle from "@/components/primitive/she-toggle/SheToggle.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import SheSkeleton from "@/components/primitive/she-skeleton/SheSkeleton.tsx";
-import { getCustomProps } from "@/utils/helpers/props-helper.ts";
-import { Image } from "lucide-react";
 
 export default function SheOption<T>(props: ISheOption<T>): JSX.Element {
   const {
@@ -127,6 +122,7 @@ export default function SheOption<T>(props: ISheOption<T>): JSX.Element {
             className={`${cs.sheOptionToggleContainer} ${toggleClassName}`}
             style={toggleStyle}
             checked={_isSelected}
+            ignoreFormAction
             onChecked={onCheckHandler}
             {...toggleProps}
           />

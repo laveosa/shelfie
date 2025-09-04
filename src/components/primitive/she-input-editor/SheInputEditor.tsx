@@ -47,9 +47,11 @@ export default function SheInputEditor(props: ISheInputEditor): JSX.Element {
   const [_isManage, setIsManage] = useState<boolean>(isManage ?? false);
 
   // ==================================================================== UTILITIES
-  const { ariaDescribedbyId } = useComponentUtilities({
-    identifier: "ISheInputEditor",
-  });
+  const { ariaDescribedbyId, updateFormValue, resetFormField } =
+    useComponentUtilities<ISheInputEditor>({
+      props,
+      identifier: "ISheInputEditor",
+    });
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
@@ -95,6 +97,7 @@ export default function SheInputEditor(props: ISheInputEditor): JSX.Element {
     event: React.KeyboardEvent | React.MouseEvent | React.ChangeEvent,
   ) {
     setSourceValue(_textValue);
+    updateFormValue(_textValue || "");
     onToggleManageHandler(false);
     onSave?.(_textValue, {
       value: _textValue,
@@ -105,6 +108,7 @@ export default function SheInputEditor(props: ISheInputEditor): JSX.Element {
 
   function onCancelHandler(event) {
     setTextValue(_sourceValue);
+    resetFormField(_sourceValue);
     onToggleManageHandler(false);
     onCancel?.(_sourceValue, {
       value: _sourceValue,
@@ -159,6 +163,7 @@ export default function SheInputEditor(props: ISheInputEditor): JSX.Element {
               isLoading={isLoading}
               fullWidth
               autoFocus
+              ignoreFormAction
               showClearBtn={showClearBtn}
               onKeyDown={onInputKeyDownHandler}
               onChange={onChangeHandler}

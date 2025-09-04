@@ -1,7 +1,8 @@
-export interface IUserForm<T> {
-  data?: T;
-  genders?: string[];
-  positions?: any[];
-  onSubmit?: (data: T) => void;
-  onCancel?: (data: T) => void;
+import { UserModel } from "@/const/models/UserModel.ts";
+
+export interface IUserForm {
+  data?: UserModel;
+  notDisabledSubmit?: boolean;
+  onSubmit?(value: UserModel): void;
+  onCancel?(value: UserModel): void;
 }

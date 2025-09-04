@@ -4,21 +4,24 @@ import {
   generateId,
   generateSafeItemId,
 } from "@/utils/helpers/quick-helper.ts";
-import { ISelectable } from "@/const/interfaces/primitive-components/ISelecteble.ts";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
+import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
+import { ISelectable } from "@/const/interfaces/primitive-components/ISelecteble.ts";
 import { ISheIcon } from "@/const/interfaces/primitive-components/ISheIcon.ts";
 import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
+import { IComponentUtilities } from "@/const/interfaces/IComponentUtilities.ts";
+import useSheFormData from "@/utils/hooks/useSheFormData.ts";
+import { IShePrimitiveComponentWrapper } from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
 
-export interface IComponentUtilities {
-  identifier?: string;
-}
+export default function useComponentUtilities<
+  T extends IShePrimitiveComponentWrapper,
+>({ props, identifier }: IComponentUtilities<T> = {}) {
+  // ==================================================================== STATE MANAGEMENT
+  const [ariaDescribedbyId, setAriaDescribedbyId] = useState<string>(null);
 
-export default function useComponentUtilities({
-  identifier,
-}: IComponentUtilities = {}) {
   // ==================================================================== UTILITIES
   const { translate } = useAppTranslation();
-  const [ariaDescribedbyId, setAriaDescribedbyId] = useState<string>(null);
+  const { field, form } = useSheFormData<T>(props);
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
@@ -68,7 +71,7 @@ export default function useComponentUtilities({
       item.showColorsColumn = withColors;
       // ----------------------------------- INITIALIZE SELECTED
       if (values && values.length > 0) {
-        item.isSelected = values.includes(item.value);
+        item.isSelected = isValueInCollection(values, item.value);
       }
 
       return item;
@@ -101,7 +104,7 @@ export default function useComponentUtilities({
       : selectedValues;
 
     items?.forEach(
-      (item: T) => (item.isSelected = values?.includes(item.value)),
+      (item: T) => (item.isSelected = isValueInCollection(values, item.value)),
     );
     return items;
   }
@@ -112,6 +115,32 @@ export default function useComponentUtilities({
     value: T[K],
   ): T[] {
     return items?.filter((elem) => elem[identifier] !== value);
+  }
+
+  function isValueInCollection<V>(collection: V[], value: V): boolean {
+    return collection.some((v) => deepEqual(v, value));
+  }
+
+  function deepEqual(a: any, b: any): boolean {
+    if (a === b) return true;
+
+    if (a == null || b == null) return a === b;
+
+    if (Array.isArray(a) && Array.isArray(b)) {
+      if (a.length !== b.length) return false;
+
+      return a.every((el, i) => deepEqual(el, b[i]));
+    }
+
+    if (typeof a === "object" && typeof b === "object") {
+      const keysA = Object.keys(a);
+      const keysB = Object.keys(b);
+      if (keysA.length !== keysB.length) return false;
+
+      return keysA.every((key) => deepEqual(a[key], b[key]));
+    }
+
+    return false;
   }
 
   function setFocus<T extends HTMLElement>(
@@ -149,6 +178,37 @@ export default function useComponentUtilities({
     }
   }
 
+  // --------------------------------------------------------------- FORM
+  function updateFormValue(value: any, validate: boolean = true) {
+    if (props.ignoreFormAction) return null;
+
+    if (field) {
+      field.onChange(value);
+      if (validate) void form.trigger(field.name);
+    }
+  }
+
+  function resetFormField(defaultValue: any = "") {
+    if (props.ignoreFormAction) return null;
+
+    if (field) {
+      form?.resetField?.(field.name, {
+        keepDirty: false,
+        keepTouched: false,
+        defaultValue: defaultValue,
+      });
+    }
+  }
+
+  function getFormMode(): ReactHookFormMode {
+    if (props.ignoreFormAction) return null;
+
+    return (
+      (form?.control?._options?.mode as ReactHookFormMode) ||
+      ReactHookFormMode.SUBMIT
+    );
+  }
+
   // ================================================================== OUTPUT
   return {
     ariaDescribedbyId,
@@ -159,9 +219,14 @@ export default function useComponentUtilities({
     updateSelectedItems,
     getItemFromListByIdentifier,
     removeItemFromListByIdentifier,
+    isValueInCollection,
+    deepEqual,
     initializeItemsList,
     calculatePopoverWidth,
     getContextColorBasedOnVariant,
+    updateFormValue,
+    resetFormField,
+    getFormMode,
   };
 }
 

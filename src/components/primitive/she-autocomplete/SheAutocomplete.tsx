@@ -23,6 +23,7 @@ import {
   getCustomProps,
   removeCustomProps,
 } from "@/utils/helpers/props-helper.ts";
+import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
 import { ISheOption } from "@/const/interfaces/primitive-components/ISheOption.ts";
 import { ISheAutocomplete } from "@/const/interfaces/primitive-components/ISheAutocomplete.ts";
 import {
@@ -110,9 +111,23 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     setFocus,
     initializeItemsList,
     calculatePopoverWidth,
-  } = useComponentUtilities({
+    updateFormValue,
+    resetFormField,
+    getFormMode,
+  } = useComponentUtilities<ISheAutocomplete>({
+    props,
     identifier: "SheAutocomplete",
   });
+
+  const filteredItems: ISheOption<string>[] = useMemo(() => {
+    if (!_items || _items.length === 0) return [];
+
+    return _items.filter((item) =>
+      _searchValue && _searchValue.length > 0
+        ? item.text.toLowerCase().includes(_searchValue.toLowerCase())
+        : true,
+    );
+  }, [_items, _searchValue]);
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
@@ -120,7 +135,9 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
   }, []);
 
   useEffect(() => {
-    const newItems = initializeItemsList<string, ISheOption<string>>(items);
+    const newItems = initializeItemsList<string, ISheOption<string>>(
+      _.cloneDeep(items),
+    );
 
     if (!_.isEqual(newItems, _items)) {
       setItems(newItems);
@@ -171,25 +188,21 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     );
   }, [autoFocus]);
 
-  const filteredItems: ISheOption<string>[] = useMemo(() => {
-    if (!_items || _items.length === 0) return [];
-
-    return _items.filter((item) =>
-      _searchValue && _searchValue.length > 0
-        ? item.text.toLowerCase().includes(_searchValue.toLowerCase())
-        : true,
-    );
-  }, [_items, _searchValue]);
-
   // ==================================================================== EVENT HANDLERS
   function onChangeHandler(value: string) {
     const tmpSearchValue = value?.trim();
     _setIsOpen(_checkIsOpenCondition(true, tmpSearchValue));
     setSearchValue(tmpSearchValue);
+
+    if (getFormMode() !== ReactHookFormMode.BLUR)
+      updateFormValue(tmpSearchValue);
+
     onChange?.(tmpSearchValue);
   }
 
   function onBlurHandler() {
+    if (getFormMode() === ReactHookFormMode.BLUR) updateFormValue(_searchValue);
+
     setTimeout(() => {
       _setIsOpen(false);
       onBlur?.(_searchValue);
@@ -216,7 +229,8 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
       });
     }
 
-    event?.stopPropagation();
+    updateFormValue(value);
+    event?.preventDefault();
   }
 
   function onForceSelectHandler(
@@ -232,9 +246,10 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     setSearchValue(value);
 
     setTimeout(() => {
-      setFocus<HTMLInputElement>(true, _triggerRef);
+      setFocus<HTMLInputElement>(autoFocus, _triggerRef);
     }, 0);
 
+    updateFormValue(value);
     event?.stopPropagation();
   }
 
@@ -257,10 +272,10 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
       event,
     });
     event?.stopPropagation();
-    setFocus<HTMLInputElement>(true, _triggerRef);
-    setTimeout(() => {
-      _setIsOpen(true);
-    });
+    resetFormField();
+    setFocus<HTMLInputElement>(autoFocus, _triggerRef);
+    _setIsOpen(autoFocus);
+    setTimeout(() => _setIsOpen(autoFocus));
   }
 
   // ==================================================================== PRIVATE
@@ -322,6 +337,7 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
               isLoading={_loading}
               fullWidth
               ignoreValidation
+              ignoreFormAction
               hideErrorMessage
               hideDescription
               onFocus={onFocusHandler}

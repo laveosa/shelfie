@@ -4,6 +4,8 @@ import { DateFormatEnum } from "@/const/enums/DateFormatEnum.ts";
 import { ISheTimePicker } from "@/const/interfaces/primitive-components/ISheTimePicker.ts";
 import { IShePrimitiveComponentWrapper } from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
 import { IOutputEventModel } from "@/const/interfaces/IOutputEventModel.ts";
+import { IDateRange } from "@/const/interfaces/IDateRange.ts";
+import { CalendarModeEnum } from "@/const/enums/CalendarModeEnum.ts";
 
 export interface ISheCalendar
   extends Omit<
@@ -18,20 +20,12 @@ export interface ISheCalendar
     ComponentPropsWithRef<any> {
   calendarClassName?: string;
   calendarStyle?: React.CSSProperties;
-  date?:
-    | string
-    | string[]
-    | Date
-    | Date[]
-    | (Date | string)[]
-    | { from: Date; to: Date }
-    | { from: string; to: string }
-    | { from: Date | string; to: Date | string };
+  date?: string | Date | (Date | string)[] | IDateRange;
   time?: Date;
   timePicker?: ISheTimePicker;
   dateFormat?: DateFormatEnum;
   markedDates?: (string | Date)[];
-  mode?: "default" | "range" | "single" | "multiple";
+  mode?: CalendarModeEnum;
   minAmountOfDates?: number;
   maxAmountOfDates?: number;
   disabled?: boolean;

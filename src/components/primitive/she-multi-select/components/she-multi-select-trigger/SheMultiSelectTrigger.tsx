@@ -93,6 +93,7 @@ export default function SheMultiSelectTrigger<T>(
               autoBadgeAmount
               showCloseBtn
               fullWidth
+              ignoreFormAction
               onClick={onTogglePopover}
               onClose={(item, model) => onToggleOption(item.value, model.event)}
               onCloseAllExtra={onClearExtraOptions}

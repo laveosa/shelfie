@@ -8,6 +8,12 @@ export function DashboardPage() {
   const { t } = useTranslation();
   const service = useDashboardPageService();
 
+  // ================================================================== STATE
+
+  // ================================================================== EVENT HANDLERS
+
+  // ================================================================== LOGIC
+
   // ================================================================== LAYOUT
   return (
     <div id={cs["DashboardPage"]}>
