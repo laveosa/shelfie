@@ -98,7 +98,7 @@ export default function ProductConfigurationCard({
         {...props}
       >
         <div className={cs.productConfigurationForm}>
-          <SheForm form={form} onSubmit={onSubmit}>
+          <SheForm form={form as any} onSubmit={onSubmit}>
             <SheForm.Field
               rules={{
                 required: true,

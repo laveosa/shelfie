@@ -30,6 +30,7 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import cs from "./CreateSupplierForm.module.scss";
 import { SupplierPhotosGridColumns } from "@/components/complex/grid/supplier-photos-grid/SupplierPhotosGridColumns.tsx";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
+import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
 
 interface SupplierFormData extends SupplierModel {
   images?: File[];
@@ -94,28 +95,25 @@ export default function CreateSupplierForm<T>({
 
   return (
     <div className={`${cs.createSupplierForm} ${className}`}>
-      <SheForm<T>
+      <SheForm
         form={form}
         defaultValues={UserModelDefault}
         formPosition={DirectionEnum.CENTER}
         view={ComponentViewEnum.STANDARD}
         fullWidth
-        hidePrimary
-        hideSecondary
+        hideFooter
         onSubmit={() => handleFormSubmit}
         onCancel={onCancel}
       >
-        <FormField
-          control={form.control}
+        <SheFormField
           name="supplierName"
-          render={({ field }): React.ReactElement => (
-            <SheFormItem label="Name">
-              <SheInput
-                {...field}
-                placeholder="enter supplier name..."
-                fullWidth
-              />
-            </SheFormItem>
+          render={({ field }) => (
+            <SheInput
+              label="Name"
+              value={field.value}
+              placeholder="enter supplier name..."
+              fullWidth
+            />
           )}
         />
 
@@ -186,61 +184,59 @@ export default function CreateSupplierForm<T>({
             onDndPhoto({ newIndex, activeItem });
           }}
         />
-        <FormField
-          control={form.control}
+        <SheFormField
           name="addressLine1"
-          render={({ field }): React.ReactElement => (
-            <SheFormItem label="Address line 1">
-              <SheInput
-                {...field}
-                placeholder="enter address line 1..."
-                fullWidth
-              />
-            </SheFormItem>
+          render={({ field }) => (
+            <SheInput
+              label="Address line 1"
+              value={field.value}
+              placeholder="enter address line 1..."
+              fullWidth
+            />
           )}
         />
-        <FormField
-          control={form.control}
+        <SheFormField
           name="addressLine2"
-          render={({ field }): React.ReactElement => (
-            <SheFormItem label="Address line 2">
-              <SheInput
-                {...field}
-                placeholder="enter address line 2..."
-                fullWidth
-              />
-            </SheFormItem>
+          render={({ field }) => (
+            <SheInput
+              label="Address line 2"
+              value={field.value}
+              placeholder="enter address line 2..."
+              fullWidth
+            />
           )}
         />
-        <FormField
-          control={form.control}
+        <SheFormField
           name="city"
-          render={({ field }): React.ReactElement => (
-            <SheFormItem label="City">
-              <SheInput {...field} placeholder="enter city..." fullWidth />
-            </SheFormItem>
+          render={({ field }) => (
+            <SheInput
+              label="City"
+              value={field.value}
+              placeholder="enter city..."
+              fullWidth
+            />
           )}
         />
-        <FormField
-          control={form.control}
+        <SheFormField
           name="state"
-          render={({ field }): React.ReactElement => (
-            <SheFormItem label="State/Province/Region">
-              <SheInput {...field} placeholder="enter province..." fullWidth />
-            </SheFormItem>
+          render={({ field }) => (
+            <SheInput
+              label="State/Province/Region"
+              value={field.value}
+              placeholder="enter province..."
+              fullWidth
+            />
           )}
         />
-        <FormField
-          control={form.control}
+        <SheFormField
           name="postCode"
-          render={({ field }): React.ReactElement => (
-            <SheFormItem label="Zip/Postal Code">
-              <SheInput
-                {...field}
-                placeholder="enter postal code..."
-                fullWidth
-              />
-            </SheFormItem>
+          render={({ field }) => (
+            <SheInput
+              label="Zip/Postal Code"
+              value={field.value}
+              placeholder="enter postal code..."
+              fullWidth
+            />
           )}
         />
         <FormField

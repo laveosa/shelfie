@@ -12,6 +12,7 @@ import { ordersGridColumns } from "@/components/complex/grid/orders-grid/OrdersG
 import cs from "./OrdersCard.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
+import { CalendarModeEnum } from "@/const/enums/CalendarModeEnum.ts";
 
 export default function OrdersCard({
   isLoading,
@@ -53,7 +54,7 @@ export default function OrdersCard({
             onAction("gridRequestChange", updates)
           }
         >
-          <SheDatePicker mode="range" />
+          <SheDatePicker mode={CalendarModeEnum.RANGE} />
           <GridShowItemsFilter context="Canceled" />
         </DndGridDataTable>
       </SheProductCard>

@@ -123,7 +123,7 @@ export default function SheTextArea(props: ISheTextarea): JSX.Element {
     const newValue = event.target.value;
     const tmpIsValid = _validateValue(newValue);
 
-    if (getFormMode() === ReactHookFormMode.CHANGE)
+    if (getFormMode() !== ReactHookFormMode.BLUR)
       updateFormValue(newValue || "");
 
     setTextValue(newValue);

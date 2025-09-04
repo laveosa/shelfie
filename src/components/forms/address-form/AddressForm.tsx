@@ -19,6 +19,7 @@ import {
 import cs from "./AddressForm.module.scss";
 import { CountryCodeModel } from "@/const/models/CountryCodeModel";
 import { Plus, Save } from "lucide-react";
+import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
 
 interface IAddressForm {
   data: AddressRequestModel;
@@ -68,73 +69,72 @@ export default function AddressForm({
         onError={onErrorHandler}
         onCancel={onCancel}
         view={ComponentViewEnum.STANDARD}
-        hidePrimary
-        hideSecondary
+        hideFooter
       >
-        <FormField
-          control={form.control}
+        <SheFormField
           name="alias"
-          render={({ field }): React.ReactElement => (
-            <SheFormItem label="Alias">
-              <SheInput fullWidth {...field} placeholder="Enter alias..." />
-            </SheFormItem>
+          render={({ field }) => (
+            <SheInput
+              label="Alias"
+              value={field.value}
+              fullWidth
+              placeholder="Enter alias..."
+            />
           )}
         />
-        <FormField
-          control={form.control}
+        <SheFormField
           name="addressLine1"
-          render={({ field }): React.ReactElement => (
-            <SheFormItem label="Address Line 1">
-              <SheInput
-                fullWidth
-                {...field}
-                placeholder="Enter address line 1..."
-              />
-            </SheFormItem>
+          render={({ field }) => (
+            <SheInput
+              label="Address Line 1"
+              value={field.value}
+              fullWidth
+              placeholder="Enter address line 1..."
+            />
           )}
         />
-        <FormField
-          control={form.control}
+        <SheFormField
           name="addressLine2"
-          render={({ field }): React.ReactElement => (
-            <SheFormItem label="Address Line 2">
-              <SheInput
-                fullWidth
-                {...field}
-                placeholder="Enter address line 2..."
-              />
-            </SheFormItem>
+          render={({ field }) => (
+            <SheInput
+              label="Address Line 2"
+              value={field.value}
+              fullWidth
+              placeholder="Enter address line 2..."
+            />
           )}
         />
-        <FormField
-          control={form.control}
+        <SheFormField
           name="city"
-          render={({ field }): React.ReactElement => (
-            <SheFormItem label="City">
-              <SheInput fullWidth {...field} placeholder="Enter city..." />
-            </SheFormItem>
+          render={({ field }) => (
+            <SheInput
+              label="City"
+              value={field.value}
+              fullWidth
+              placeholder="Enter city..."
+            />
           )}
         />
-        <FormField
-          control={form.control}
+        <SheFormField
           name="state"
-          render={({ field }): React.ReactElement => (
-            <SheFormItem label="State">
-              <SheInput fullWidth {...field} placeholder="Enter state..." />
-            </SheFormItem>
+          render={({ field }) => (
+            <SheInput
+              label="State"
+              value={field.value}
+              fullWidth
+              placeholder="Enter state..."
+            />
           )}
         />
-        <FormField
-          control={form.control}
+        <SheFormField
           name="postalCode"
-          render={({ field }): React.ReactElement => (
-            <SheFormItem label="Postal Code">
-              <SheInput
-                fullWidth
-                {...field}
-                placeholder="Enter postal code..."
-              />
-            </SheFormItem>
+          render={({ field }) => (
+            <SheInput
+              label="Postal Code"
+              value={field.value}
+              fullWidth
+              placeholder="Enter postal code..."
+            />
           )}
         />
         <FormField
@@ -159,7 +159,7 @@ export default function AddressForm({
 
         <div
           className={cs.cardFooter}
-          style={{ justifyContent: true ? "space-between" : "flex-end" }}
+          style={{ justifyContent: "space-between" }}
         >
           <SheButton
             variant="secondary"

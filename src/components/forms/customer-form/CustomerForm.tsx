@@ -3,15 +3,17 @@ import React, { useEffect } from "react";
 import useAppForm from "@/utils/hooks/useAppForm.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import SheForm from "@/components/complex/she-form/SheForm.tsx";
-import { FormField } from "@/components/ui/form.tsx";
-import SheFormItem from "@/components/complex/she-form/components/she-form-item/SheFormItem.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import { Plus, Save } from "lucide-react";
-import { CustomerRequestModel, CustomerRequestModelDefault } from "@/const/models/CustomerRequestModel";
+import {
+  CustomerRequestModel,
+  CustomerRequestModelDefault,
+} from "@/const/models/CustomerRequestModel";
 import CustomerFormScheme from "@/utils/validation/schemes/CustomerFormScheme";
 import cs from "./CustomerForm.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton";
+import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
 
 interface ICustomerForm {
   data: CustomerRequestModel;
@@ -26,90 +28,98 @@ export default function CustomerForm({
   onSubmit,
   onCancel,
 }: ICustomerForm): React.ReactNode {
-
   const form = useAppForm<CustomerRequestModel>({
     mode: "onBlur",
     resolver: zodResolver(CustomerFormScheme),
     defaultValues: CustomerRequestModelDefault,
   });
 
-
   useEffect(() => {
     form.reset(data);
   }, [data]);
 
-
   // ================================================================ RENDER
-
-
 
   function onErrorHandler(model) {
     console.log(model);
   }
 
   return (
-    <SheForm form={form} onSubmit={onSubmit}
-        className={cs.customerForm}
-        onError={onErrorHandler}
-        onCancel={onCancel}
-        view={ComponentViewEnum.STANDARD}
-        hidePrimary
-        hideSecondary
+    <SheForm
+      form={form}
+      onSubmit={onSubmit}
+      className={cs.customerForm}
+      onError={onErrorHandler}
+      onCancel={onCancel}
+      view={ComponentViewEnum.STANDARD}
+      hideFooter
     >
-        <FormField
-            control={form.control}
-            name="firstName"
-            render={({ field }): React.ReactElement => (
-            <SheFormItem label="First Name">
-                <SheInput fullWidth {...field} placeholder="Enter first name..." />
-            </SheFormItem>
-            )}
+      <SheFormField
+        name="firstName"
+        render={({ field }) => (
+          <SheInput
+            label="First Name"
+            value={field.value}
+            fullWidth
+            placeholder="Enter first name..."
+          />
+        )}
+      />
+
+      <SheFormField
+        name="lastName"
+        render={({ field }) => (
+          <SheInput
+            label="Last Name"
+            value={field.value}
+            fullWidth
+            placeholder="Enter last name..."
+          />
+        )}
+      />
+      <SheFormField
+        name="email"
+        render={({ field }) => (
+          <SheInput
+            label="Email"
+            value={field.value}
+            fullWidth
+            placeholder="Enter email..."
+          />
+        )}
+      />
+      <SheFormField
+        name="phoneNumber"
+        render={({ field }) => (
+          <SheInput
+            label="Phone Number"
+            value={field.value}
+            fullWidth
+            placeholder="Enter phone number..."
+          />
+        )}
+      />
+      <div
+        className={cs.customerFormFooter}
+        style={{ justifyContent: "space-between" }}
+      >
+        <SheButton
+          variant="secondary"
+          onClick={() => {
+            onCancel();
+          }}
+          value="Cancel"
         />
 
-        <FormField
-            control={form.control}
-            name="lastName"
-            render={({ field }): React.ReactElement => (
-            <SheFormItem label="Last Name">
-                <SheInput fullWidth {...field} placeholder="Enter last name..." />
-            </SheFormItem>
-            )}
+        <SheButton
+          variant="default"
+          icon={isCreate ? Plus : Save}
+          onClick={() => {
+            form.handleSubmit(onSubmit);
+          }}
+          value={isCreate ? "Add Customer" : "Save Changes"}
         />
-        <FormField
-            control={form.control}
-            name="email"
-            render={({ field }): React.ReactElement => (
-            <SheFormItem label="Email">
-                <SheInput fullWidth {...field} placeholder="Enter email..." />
-            </SheFormItem>
-            )}
-        />
-        <FormField
-            control={form.control}
-            name="phoneNumber"
-            render={({ field }): React.ReactElement => (
-            <SheFormItem label="Phone Number">
-                <SheInput fullWidth {...field} placeholder="Enter phone number..." />
-            </SheFormItem>
-            )}
-        />
-        <div
-            className={cs.customerFormFooter}
-            style={{ justifyContent: "space-between", }}
-        >
-            <SheButton
-                variant="secondary"
-                onClick={() => {onCancel()}}
-                value="Cancel"
-            />
-            
-            <SheButton
-                variant="default"
-                icon={isCreate ? Plus : Save}
-                onClick={() => {form.handleSubmit(onSubmit)}}
-                value={isCreate ? "Add Customer" : "Save Changes"}
-            />
-        </div>
+      </div>
     </SheForm>
   );
 }

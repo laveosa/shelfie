@@ -142,7 +142,7 @@ export default function SheInput(props: ISheInput): JSX.Element {
     newValue = _updateValueType(newValue);
     const tmpIsValid = _validateValue(newValue);
 
-    if (getFormMode() === ReactHookFormMode.CHANGE) updateFormValue(newValue);
+    if (getFormMode() !== ReactHookFormMode.BLUR) updateFormValue(newValue);
 
     setTextValue(newValue);
     onChange?.(newValue, {

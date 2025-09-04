@@ -26,9 +26,7 @@ function SheIconComponent({
   // ==================================================================== EVENT
 
   function onClickHandler(event) {
-    if (onClick) {
-      onClick(event);
-    }
+    onClick?.(event);
   }
 
   // ==================================================================== PRIVATE

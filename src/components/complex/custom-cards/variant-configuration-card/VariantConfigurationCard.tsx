@@ -269,7 +269,7 @@ export default function VariantConfigurationCard({
     >
       <div className={cs.variantConfigurationCardContent}>
         <div className={cs.variantConfigurationForm}>
-          <SheForm form={form} onSubmit={onSubmit}>
+          <SheForm form={form as any} onSubmit={onSubmit}>
             <SheForm.Field name="variantName">
               <SheInput
                 label="Optional Variant Name"

@@ -40,7 +40,7 @@ export default function CreateAttributeCard({ data, ...props }) {
       {...props}
     >
       <div className={cs.createAttributeCardContent}>
-        <SheForm form={form} onSubmit={onSubmit}>
+        <SheForm form={form as any} onSubmit={onSubmit}>
           <div className={cs.formInput}>
             <SheForm.Field name="name">
               <SheInput

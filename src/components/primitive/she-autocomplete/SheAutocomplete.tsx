@@ -194,7 +194,7 @@ export default function SheAutocomplete(props: ISheAutocomplete): JSX.Element {
     _setIsOpen(_checkIsOpenCondition(true, tmpSearchValue));
     setSearchValue(tmpSearchValue);
 
-    if (getFormMode() === ReactHookFormMode.CHANGE)
+    if (getFormMode() !== ReactHookFormMode.BLUR)
       updateFormValue(tmpSearchValue);
 
     onChange?.(tmpSearchValue);
