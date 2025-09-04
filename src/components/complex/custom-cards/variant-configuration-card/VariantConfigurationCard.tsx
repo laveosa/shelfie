@@ -282,7 +282,8 @@ export default function VariantConfigurationCard({
             <div className={cs.variantCodeFormRow}>
               <SheForm.Field
                 name="variantCode"
-                label={t("ProductForm.Labels.VariantCode")}>
+                label={t("ProductForm.Labels.VariantCode")}
+              >
                 <div>
                   <SheInput
                     value={variant?.variantCode}
@@ -302,7 +303,8 @@ export default function VariantConfigurationCard({
               <div className={cs.priceFormRowItem}>
                 <SheForm.Field
                   label={t("ProductForm.Labels.SalePriceNetto")}
-                  name="salePrice.netto">
+                  name="salePrice.netto"
+                >
                   <SheInput
                     type="number"
                     step="any"
@@ -332,7 +334,8 @@ export default function VariantConfigurationCard({
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue
-                              placeholder={t("SelectOptions.SelectVAT")} />
+                              placeholder={t("SelectOptions.SelectVAT")}
+                            />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -403,13 +406,17 @@ export default function VariantConfigurationCard({
           </div>
           <div className={cs.stockBlock}>
             <div className={cs.stockBlockRow}>
-              <span className="she-text">{t("StockForm.Labels.CurrentlyInStock")}</span>
+              <span className="she-text">
+                {t("StockForm.Labels.CurrentlyInStock")}
+              </span>
               <span className={cs.stockBlockRowNumber}>
                 {variant?.stockAmount}
               </span>
             </div>
             <div className={cs.stockBlockRow}>
-              <span className="she-text">{t("ProductForm.Labels.UnitsSold")}</span>
+              <span className="she-text">
+                {t("ProductForm.Labels.UnitsSold")}
+              </span>
               <span className={cs.stockBlockRowNumber}>
                 {variant?.soldUnits}
               </span>
@@ -418,7 +425,9 @@ export default function VariantConfigurationCard({
         </div>
         <div className={cs.variantGridBlock}>
           <div className={cs.variantGridBlockHeader}>
-            <span className="she-title">{t("ProductForm.Labels.VariantTraits")}</span>
+            <span className="she-title">
+              {t("ProductForm.Labels.VariantTraits")}
+            </span>
             <SheButton
               icon={Blocks}
               variant="secondary"
@@ -441,7 +450,9 @@ export default function VariantConfigurationCard({
         </div>
         <div className={cs.variantGridBlock}>
           <div className={cs.variantGridBlockHeader}>
-            <span className="she-title">{t("ProductForm.Labels.VariantPhotos")}</span>
+            <span className="she-title">
+              {t("ProductForm.Labels.VariantPhotos")}
+            </span>
             <SheButton
               icon={ImagePlus}
               variant="secondary"
@@ -475,7 +486,6 @@ export default function VariantConfigurationCard({
         text={t("ConfirmationMessages.DeleteVariant")}
         buttonColor="#EF4343"
         buttonVariant="outline"
-        buttonText="Delete"
         buttonText={t("CommonButtons.Delete")}
         buttonIcon={Trash2}
         onClick={() => onAction("deleteVariant", variant)}

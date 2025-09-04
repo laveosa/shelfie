@@ -17,6 +17,7 @@ import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import PurchaseProductsFormScheme from "@/utils/validation/schemes/PurchaseProductsFormScheme.ts";
+import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
 
 export const DefaultPurchaseProductsForm = {
   nettoPrice: null,
@@ -25,7 +26,7 @@ export const DefaultPurchaseProductsForm = {
   unitsAmount: null,
 };
 
-export default function ManageProductsForPurchaseForm<T>({
+export default function ManageProductsForPurchaseForm({
   data,
   currencies,
   taxes,
@@ -33,7 +34,7 @@ export default function ManageProductsForPurchaseForm<T>({
   onSubmit,
   onDelete,
   onCancel,
-}: IPurchaseProductsForm<T>) {
+}: IPurchaseProductsForm) {
   const form = useAppForm<any>({
     mode: "onSubmit",
     resolver: zodResolver(PurchaseProductsFormScheme),
@@ -75,37 +76,35 @@ export default function ManageProductsForPurchaseForm<T>({
 
   return (
     <div className={cs.purchaseProducts}>
-      <SheForm<T>
+      <SheForm
         className={cs.purchaseProductsForm}
         form={form}
         defaultValues={DefaultPurchaseProductsForm}
         formPosition={DirectionEnum.CENTER}
         view={ComponentViewEnum.STANDARD}
         fullWidth
-        hidePrimary
-        hideSecondary
+        hideFooter
         onSubmit={onSubmit}
         onCancel={onCancel}
       >
-        <FormField
-          control={form.control}
+        <SheFormField
           name="nettoPrice"
-          render={({ field }): React.ReactElement => (
-            <SheFormItem className={cs.purchaseFormItem} label="Price">
-              <SheInput
-                {...field}
-                className={
-                  activeTab === "connectProducts"
-                    ? field.value
-                      ? cs.formItemsValid
-                      : ""
+          className={cs.purchaseFormItem}
+          render={({ field }) => (
+            <SheInput
+              label="Price"
+              value={field.value}
+              className={
+                activeTab === "connectProducts"
+                  ? field.value
+                    ? cs.formItemsValid
                     : ""
-                }
-                minWidth="80px"
-                maxWidth="80px"
-                placeholder=" "
-              />
-            </SheFormItem>
+                  : ""
+              }
+              minWidth="80px"
+              maxWidth="80px"
+              placeholder=" "
+            />
           )}
         />
         <FormField
@@ -162,26 +161,25 @@ export default function ManageProductsForPurchaseForm<T>({
             </SheFormItem>
           )}
         />
-        <FormField
-          control={form.control}
+        <SheFormField
           name="unitsAmount"
-          render={({ field }): React.ReactElement => (
-            <SheFormItem className={cs.purchaseFormItem} label="Quantity">
-              <SheInput
-                {...field}
-                className={
-                  activeTab === "connectProducts"
-                    ? field.value
-                      ? cs.formItemsValid
-                      : ""
+          className={cs.purchaseFormItem}
+          render={({ field }) => (
+            <SheInput
+              label="Quantity"
+              value={field.value}
+              className={
+                activeTab === "connectProducts"
+                  ? field.value
+                    ? cs.formItemsValid
                     : ""
-                }
-                width="70px"
-                minWidth="70px"
-                maxWidth="70px"
-                placeholder=" "
-              />
-            </SheFormItem>
+                  : ""
+              }
+              width="70px"
+              minWidth="70px"
+              maxWidth="70px"
+              placeholder=" "
+            />
           )}
         />
         <div className={cs.variantGridButtonBlock}>

@@ -2,13 +2,14 @@ import { CalendarRange } from "lucide-react";
 
 import { useGridContext } from "@/state/context/grid-context.ts";
 import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
+import { CalendarModeEnum } from "@/const/enums/CalendarModeEnum.ts";
 
 export function GridDateRangeFilter() {
   const { gridRequestModel, onGridRequestChange } = useGridContext();
 
   return (
     <SheDatePicker
-      mode="range"
+      mode={CalendarModeEnum.RANGE}
       icon={CalendarRange}
       placeholder="Pick range"
       maxWidth="200px"
