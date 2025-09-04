@@ -81,17 +81,25 @@ export default function ProductConfigurationCard({
       <SheProductCard
         loading={isLoading}
         className={cs.productConfigurationFormCard}
-        title={product?.productId ? t("CardTitles.BasicProductData") : t("CardTitles.CreateProduct")}
+        title={
+          product?.productId
+            ? t("CardTitles.BasicProductData")
+            : t("CardTitles.CreateProduct")
+        }
         showCloseButton={showSecondaryButton}
         showPrimaryButton={true}
-        primaryButtonTitle={product?.productId ? t("CommonButtons.Save") : t("ProductActions.AddProduct")}
+        primaryButtonTitle={
+          product?.productId
+            ? t("CommonButtons.Save")
+            : t("ProductActions.AddProduct")
+        }
         showSecondaryButton={!product?.productId || showSecondaryButton}
         secondaryButtonTitle={t("CommonButtons.Cancel")}
         onPrimaryButtonClick={form.handleSubmit(onPrimaryButtonClick)}
         onSecondaryButtonClick={onSecondaryButtonClick}
       >
         <div className={cs.productConfigurationForm}>
-          <SheForm form={form as any} onSubmit={onSubmit}>
+          <SheForm form={form as any}>
             <SheForm.Field
               rules={{
                 required: true,
@@ -153,7 +161,9 @@ export default function ProductConfigurationCard({
                 }}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t("ProductForm.Labels.CategoryName")}</FormLabel>
+                    <FormLabel>
+                      {t("ProductForm.Labels.CategoryName")}
+                    </FormLabel>
                     <Select
                       key={form.watch("productCategoryId")}
                       onValueChange={(value) => field.onChange(Number(value))}
@@ -161,12 +171,17 @@ export default function ProductConfigurationCard({
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder={t("ProductForm.Placeholders.SelectCategory")}>
+                          <SelectValue
+                            placeholder={t(
+                              "ProductForm.Placeholders.SelectCategory",
+                            )}
+                          >
                             {categoriesList.find(
                               (item) =>
                                 item.categoryId ===
                                 form.watch("productCategoryId"),
-                            )?.categoryName ?? t("ProductForm.Placeholders.SelectCategory")}
+                            )?.categoryName ??
+                              t("ProductForm.Placeholders.SelectCategory")}
                           </SelectValue>
                         </SelectTrigger>
                       </FormControl>
@@ -208,7 +223,11 @@ export default function ProductConfigurationCard({
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder={t("ProductForm.Placeholders.SelectBrand")} />
+                          <SelectValue
+                            placeholder={t(
+                              "ProductForm.Placeholders.SelectBrand",
+                            )}
+                          />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
