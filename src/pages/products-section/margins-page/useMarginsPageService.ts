@@ -9,13 +9,16 @@ import useProductsPageService from "@/pages/products-section/products-page/usePr
 import { IPurchaseProductsPageSlice } from "@/const/interfaces/store-slices/IPurchaseProductsPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
-import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { setSelectedGridItem } from "@/utils/helpers/quick-helper.ts";
 import { AppSliceActions as appActions } from "@/state/slices/AppSlice.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 
-export function useMarginsPageService() {
+export function useMarginsPageService(
+  handleCardAction,
+  handleMultipleCardActions,
+  keepOnlyCards,
+) {
   const dispatch = useAppDispatch();
   const { addToast } = useToast();
   const { openConfirmationDialog } = useDialogService();
@@ -27,11 +30,6 @@ export function useMarginsPageService() {
     StoreSliceEnum.PRODUCTS,
   );
   const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
-  const { handleCardAction, handleMultipleCardActions, keepOnlyCards } =
-    useCardActions({
-      selectActiveCards: (state) => state[StoreSliceEnum.MARGINS].activeCards,
-      refreshAction: actions.refreshActiveCards,
-    });
 
   const [getMarginsListForGrid] =
     PurchasesApiHooks.useGetMarginsListForGridMutation();

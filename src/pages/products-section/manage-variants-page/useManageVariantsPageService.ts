@@ -7,7 +7,6 @@ import { IManageVariantsPageSlice } from "@/const/interfaces/store-slices/IManag
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { useToast } from "@/hooks/useToast.ts";
-import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import { ManageVariantsPageSliceActions as actions } from "@/state/slices/ManageVariantsPageSlice.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
 import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
@@ -21,7 +20,7 @@ import { VariantModel } from "@/const/models/VariantModel.ts";
 import { GridRowsColorsEnum } from "@/const/enums/GridRowsColorsEnum.ts";
 import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
 
-export default function useManageVariantsPageService() {
+export default function useManageVariantsPageService(handleCardAction) {
   const dispatch = useAppDispatch();
   const productsService = useProductsPageService();
   const state = useAppSelector<IManageVariantsPageSlice>(
@@ -31,11 +30,6 @@ export default function useManageVariantsPageService() {
     StoreSliceEnum.PRODUCTS,
   );
   const { addToast } = useToast();
-  const { handleCardAction } = useCardActions({
-    selectActiveCards: (state) =>
-      state[StoreSliceEnum.MANAGE_VARIANTS].activeCards,
-    refreshAction: actions.refreshActiveCards,
-  });
   const { openConfirmationDialog } = useDialogService();
 
   const [getVariantsForGrid] = ProductsApiHooks.useGetVariantsForGridMutation();

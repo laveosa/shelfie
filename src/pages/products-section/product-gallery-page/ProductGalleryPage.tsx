@@ -22,14 +22,14 @@ export function ProductGalleryPage() {
   const productsState = useAppSelector<IProductsPageSlice>(
     StoreSliceEnum.PRODUCTS,
   );
-  const service = useProductGalleryPageService();
   const productsService = useProductsPageService();
   const { productId } = useParams();
-  const { createRefCallback } = useCardActions({
+  const { handleCardAction, createRefCallback } = useCardActions({
     selectActiveCards: (state) =>
       state[StoreSliceEnum.PRODUCT_GALLERY].activeCards,
     refreshAction: actions.refreshActiveCards,
   });
+  const service = useProductGalleryPageService(handleCardAction);
   const productsForItemsCard = productsService.itemsCardItemsConvertor(
     productsState.products,
     {

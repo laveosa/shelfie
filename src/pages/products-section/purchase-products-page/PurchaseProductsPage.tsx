@@ -39,21 +39,6 @@ import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import useProductBasicDataPageService from "@/pages/products-section/product-basic-data-page/useProductBasicDataPageService.ts";
 
 export function PurchaseProductsPage() {
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const { addToast } = useToast();
-  const { openConfirmationDialog } = useDialogService();
-  const service = usePurchaseProductsPageService();
-  const productsService = useProductsPageService();
-  const productsBasicDataService = useProductBasicDataPageService();
-  const state = useAppSelector<IPurchaseProductsPageSlice>(
-    StoreSliceEnum.PURCHASE_PRODUCTS,
-  );
-  const productsState = useAppSelector<IProductsPageSlice>(
-    StoreSliceEnum.PRODUCTS,
-  );
-  const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
-  const { purchaseId } = useParams();
   const {
     handleCardAction,
     handleMultipleCardActions,
@@ -64,6 +49,26 @@ export function PurchaseProductsPage() {
       state[StoreSliceEnum.PURCHASE_PRODUCTS].activeCards,
     refreshAction: actions.refreshActiveCards,
   });
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { addToast } = useToast();
+  const { openConfirmationDialog } = useDialogService();
+  const service = usePurchaseProductsPageService(
+    handleCardAction,
+    handleMultipleCardActions,
+    keepOnlyCards,
+  );
+  const productsService = useProductsPageService();
+  const productsBasicDataService =
+    useProductBasicDataPageService(handleCardAction);
+  const state = useAppSelector<IPurchaseProductsPageSlice>(
+    StoreSliceEnum.PURCHASE_PRODUCTS,
+  );
+  const productsState = useAppSelector<IProductsPageSlice>(
+    StoreSliceEnum.PRODUCTS,
+  );
+  const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
+  const { purchaseId } = useParams();
 
   useEffect(() => {
     if (!productsState.selectedPurchase) {

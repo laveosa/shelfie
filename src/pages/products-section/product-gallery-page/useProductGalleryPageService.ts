@@ -14,12 +14,11 @@ import { useToast } from "@/hooks/useToast.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
-import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 import { setSelectedGridItem } from "@/utils/helpers/quick-helper.ts";
 import { IProductGalleryPageSlice } from "@/const/interfaces/store-slices/IProductGalleryPageSlice.ts";
 
-export default function useProductGalleryPageService() {
+export default function useProductGalleryPageService(handleCardAction) {
   const dispatch = useAppDispatch();
   const state = useAppSelector<IProductGalleryPageSlice>(
     StoreSliceEnum.PRODUCT_GALLERY,
@@ -29,11 +28,6 @@ export default function useProductGalleryPageService() {
     StoreSliceEnum.PRODUCTS,
   );
   const { openConfirmationDialog } = useDialogService();
-  const { handleCardAction } = useCardActions({
-    selectActiveCards: (state) =>
-      state[StoreSliceEnum.PRODUCT_GALLERY].activeCards,
-    refreshAction: actions.refreshActiveCards,
-  });
   const { addToast } = useToast();
 
   const [getTheProductsForGrid] =

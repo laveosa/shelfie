@@ -24,9 +24,14 @@ import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.ts
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 
 export function ManageVariantsPage() {
+  const { handleCardAction, createRefCallback } = useCardActions({
+    selectActiveCards: (state) =>
+      state[StoreSliceEnum.MANAGE_VARIANTS].activeCards,
+    refreshAction: actions.refreshActiveCards,
+  });
   const { productId } = useParams();
   const dispatch = useAppDispatch();
-  const service = useManageVariantsPageService();
+  const service = useManageVariantsPageService(handleCardAction);
   const productsService = useProductsPageService();
   const state = useAppSelector<IManageVariantsPageSlice>(
     StoreSliceEnum.MANAGE_VARIANTS,
@@ -34,11 +39,7 @@ export function ManageVariantsPage() {
   const productsState = useAppSelector<IProductsPageSlice>(
     StoreSliceEnum.PRODUCTS,
   );
-  const { handleCardAction, createRefCallback } = useCardActions({
-    selectActiveCards: (state) =>
-      state[StoreSliceEnum.MANAGE_VARIANTS].activeCards,
-    refreshAction: actions.refreshActiveCards,
-  });
+
   const productsForItemsCard = productsService.itemsCardItemsConvertor(
     productsState.products,
     {
