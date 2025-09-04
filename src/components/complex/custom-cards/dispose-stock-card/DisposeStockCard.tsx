@@ -70,7 +70,7 @@ export default function DisposeStockCard({
           </span>
         </div>
         <div className={cs.disposeFormBlock}>
-          <SheForm form={form} onSubmit={onSubmit}>
+          <SheForm form={form as any} onSubmit={onSubmit}>
             <SheForm.Field name="unitAmount">
               <SheInput
                 label={t("PurchaseForm.Labels.Units")}

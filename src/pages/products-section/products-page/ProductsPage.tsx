@@ -36,6 +36,7 @@ import { ProductsGridColumns } from "@/components/complex/grid/custom-grids/prod
 import { variantsGridColumns } from "@/components/complex/grid/custom-grids/variants-grid/VariantsGridColumns.tsx";
 import { GridDateRangeFilter } from "@/components/complex/grid/filters/grid-date-range-filter/GridDateRangeFilter.tsx";
 import { GridValueFilter } from "@/components/complex/grid/filters/grid-value-filter/GridValueFilter.tsx";
+import { CalendarModeEnum } from "@/const/enums/CalendarModeEnum.ts";
 
 export function ProductsPage() {
   const { t } = useTranslation();

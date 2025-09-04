@@ -56,6 +56,7 @@ export default function SheTimePickerSelect({
       hideFirstOption
       minWidth="65px"
       maxWidth="65px"
+      ignoreFormAction
       onTriggerKeyDown={onKeyDown}
       onSelect={onValueChange}
       {...props}

@@ -129,7 +129,7 @@ export default function ProductTraitConfigurationCard({
       <div className={cs.productTraitConfigurationContentWrapper}>
         <div className={cs.productTraitConfigurationContent}>
           <div className={cs.productTraitConfigurationForm}>
-            <SheForm form={form} onSubmit={onSubmit}>
+            <SheForm form={form as any} onSubmit={onSubmit}>
               <SheForm.Field
                 rules={{
                   required: true,

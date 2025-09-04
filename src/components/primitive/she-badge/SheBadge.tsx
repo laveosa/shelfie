@@ -45,7 +45,10 @@ export default function SheBadge<T>(props: ISheBadge<T>): JSX.Element {
   ]);
 
   // ==================================================================== UTILITIES
-  const { translate, getContextColorBasedOnVariant } = useComponentUtilities({
+  const { translate, getContextColorBasedOnVariant } = useComponentUtilities<
+    ISheBadge<T>
+  >({
+    props,
     identifier: "SheBadge",
   });
   const contextColor = getContextColorBasedOnVariant(variant);
@@ -82,7 +85,7 @@ export default function SheBadge<T>(props: ISheBadge<T>): JSX.Element {
         !_.isNil(text) &&
         typeof text === "string" &&
         text.length > 0 &&
-        text.length <= 2 &&
+        text.length <= 1 &&
         !showCloseBtn)
     );
   }

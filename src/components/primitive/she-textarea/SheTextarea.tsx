@@ -13,6 +13,7 @@ import {
   IShePrimitiveComponentWrapper,
   ShePrimitiveComponentWrapperDefaultModel,
 } from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
+import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
 
 export default function SheTextArea(props: ISheTextarea): JSX.Element {
   const {
@@ -64,7 +65,15 @@ export default function SheTextArea(props: ISheTextarea): JSX.Element {
   const _sourceValue = useRef<string>(null);
 
   // ==================================================================== UTILITIES
-  const { translate, ariaDescribedbyId, setFocus } = useComponentUtilities({
+  const {
+    translate,
+    ariaDescribedbyId,
+    setFocus,
+    updateFormValue,
+    resetFormField,
+    getFormMode,
+  } = useComponentUtilities<ISheTextarea>({
+    props,
     identifier: "ISheTextarea",
   });
   const delayValue = useDebounce(_textValue, delayTime);
@@ -112,8 +121,12 @@ export default function SheTextArea(props: ISheTextarea): JSX.Element {
     _isInitialized.current = true;
     _lastEventDataRef.current = event;
     const newValue = event.target.value;
-    setTextValue(newValue);
     const tmpIsValid = _validateValue(newValue);
+
+    if (getFormMode() !== ReactHookFormMode.BLUR)
+      updateFormValue(newValue || "");
+
+    setTextValue(newValue);
     _calculateRowToExtend();
     onChange?.(newValue, {
       value: newValue,
@@ -130,6 +143,10 @@ export default function SheTextArea(props: ISheTextarea): JSX.Element {
     _isTouched.current = true;
     const newValue = event.target.value;
     const tmpIsValid = _validateValue(newValue);
+
+    if (getFormMode() === ReactHookFormMode.BLUR)
+      updateFormValue(newValue || "");
+
     setIsHighlighted(!_.isEqual(_sourceValue.current, newValue));
     onBlur?.(newValue, {
       value: newValue,
@@ -148,6 +165,7 @@ export default function SheTextArea(props: ISheTextarea): JSX.Element {
     updateIsValid(true);
     setIsLengthValid(true);
     _setErrorCondition(false);
+    resetFormField();
 
     const newValue = "";
     setTextValue(newValue);

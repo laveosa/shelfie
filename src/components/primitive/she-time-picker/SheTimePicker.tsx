@@ -66,6 +66,7 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
     descriptionTransKey,
     errorMessage,
     errorMessageTransKey,
+    showHighlighted,
     onSetDate,
     onDelay,
     onBlur,
@@ -104,16 +105,16 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
   const _sourceValue = useRef<Date>(new Date(new Date().setHours(0, 0, 0, 0)));
 
   // ==================================================================== UTILITIES
-  const { ariaDescribedbyId } = useComponentUtilities({
-    identifier: "SheTimePicker",
-  });
+  const { ariaDescribedbyId, updateFormValue, resetFormField } =
+    useComponentUtilities<ISheTimePicker>({
+      props,
+      identifier: "SheTimePicker",
+    });
   const delayValue = useDebounce(_date, delayTime);
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     setIsHighlighted(false);
-
-    console.log("DATE: ", date);
 
     if (date && date !== _date) {
       const defaultDate = _setDefaultDate(date);
@@ -125,6 +126,7 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
       _checkDateValidation(_date);
       _configurePeriod(_date);
       _sourceValue.current = _date;
+      updateFormValue(_date);
     }
   }, [date]);
 
@@ -228,6 +230,7 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
   ) {
     _isInitialized.current = true;
     _checkDateValidation(value);
+    updateFormValue(value);
     setDate(value);
     const outputModel = _getOutputModel(value, event);
     onSetDate?.(outputModel.value, outputModel.model);
@@ -253,6 +256,7 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
 
     _checkDateValidation(value);
     setDate(value);
+    resetFormField(value);
     onSetDate?.(outputModel.value, outputModel.model);
     onDelay?.(outputModel.value, outputModel.model);
     onBlur?.(outputModel.value, outputModel.model);
@@ -355,7 +359,7 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
         >
           <SheTimePickerInput
             ref={_hourRef}
-            className={`${inputClassName} ${cs.sheTimePickerLabel} ${_isHighlighted ? cs.highlighted : ""}`}
+            className={`${inputClassName} ${cs.sheTimePickerLabel} ${showHighlighted && _isHighlighted ? cs.highlighted : ""}`}
             style={inputStyle}
             label={!hideInputLabels && hhLabel}
             labelTransKey={hhLabelTransKey}
@@ -380,7 +384,7 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
           <SheTimePickerInput
             ref={_minuteRef}
             id={clockWorksheets === "12" ? "minutes12" : ""}
-            className={`${inputClassName} ${cs.sheTimePickerLabel} ${_isHighlighted ? cs.highlighted : ""}`}
+            className={`${inputClassName} ${cs.sheTimePickerLabel} ${showHighlighted && _isHighlighted ? cs.highlighted : ""}`}
             style={inputStyle}
             label={!hideInputLabels && mmLabel}
             labelTransKey={mmLabelTransKey}
@@ -403,7 +407,7 @@ export default function SheTimePicker(props: ISheTimePicker): JSX.Element {
             <SheTimePickerInput
               ref={_secondRef}
               id={clockWorksheets === "12" ? "seconds12" : ""}
-              className={`${inputClassName} ${cs.sheTimePickerLabel} ${_isHighlighted ? cs.highlighted : ""}`}
+              className={`${inputClassName} ${cs.sheTimePickerLabel} ${showHighlighted && _isHighlighted ? cs.highlighted : ""}`}
               style={inputStyle}
               label={!hideInputLabels && ssLabel}
               labelTransKey={ssLabelTransKey}

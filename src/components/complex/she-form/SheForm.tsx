@@ -1,74 +1,106 @@
-import React from "react";
+import React, { JSX } from "react";
 
 import cs from "./SheForm.module.scss";
 import { Form } from "@/components/ui/form.tsx";
-import { ISheForm } from "@/const/interfaces/forms/ISheForm.ts";
 import SheFormHeader from "@/components/complex/she-form/components/she-form-header/SheFormHeader.tsx";
 import SheFormFooter from "@/components/complex/she-form/components/she-form-footer/SheFormFooter.tsx";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 import { FormSecondaryBtnBehaviorEnum } from "@/const/enums/FormSecondaryBtnBehaviorEnum.ts";
+import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
+import {
+  getCustomProps,
+  removeCustomProps,
+} from "@/utils/helpers/props-helper.ts";
+import {
+  ISheForm,
+  SheFormDefaultModel,
+} from "@/const/interfaces/forms/ISheForm.ts";
+import {
+  ISheFormHeader,
+  SheFormHeaderDefaultModel,
+} from "@/const/interfaces/forms/ISheFormHeader.ts";
+import {
+  ISheFormFooter,
+  SheFormFooterDefaultModel,
+} from "@/const/interfaces/forms/ISheFormFooter.ts";
+import { SheFormContextProvider } from "@/state/providers/she-form-context-provider.tsx";
 
-export default function SheForm<T>({
-  className,
-  children,
-  form,
-  defaultValues,
-  view,
-  secondaryBtnBehavior = FormSecondaryBtnBehaviorEnum.CLEAR,
-  disabled,
-  isLoading,
-  formPosition = DirectionEnum.LEFT,
-  minWidth,
-  maxWidth,
-  fullWidth,
-  onSubmit,
-  onEnter,
-  onError,
-  onCancel,
-  ...props
-}: ISheForm<T>): React.ReactNode {
-  // ==================================================================== LOGIC
+export default function SheForm<T>(props: ISheForm<T>): JSX.Element {
+  // ==================================================================== PROPS
+  const {
+    className = "",
+    style,
+    children,
+    form,
+    defaultValues,
+    view = ComponentViewEnum.STANDARD,
+    secondaryBtnBehavior = FormSecondaryBtnBehaviorEnum.CLEAR,
+    disabled,
+    isLoading,
+    formPosition = DirectionEnum.LEFT,
+    minWidth,
+    maxWidth,
+    fullWidth,
+    onSubmit,
+    onError,
+    onCancel,
+  } = props;
+  const sheHeaderProps = getCustomProps<ISheForm<T>, ISheFormHeader>(
+    props,
+    SheFormHeaderDefaultModel,
+  );
+  const sheFooterProps = getCustomProps<ISheForm<T>, ISheFormFooter>(
+    props,
+    SheFormFooterDefaultModel,
+  );
+  const restProps = removeCustomProps<ISheForm<T>>(props, [
+    SheFormDefaultModel,
+    SheFormHeaderDefaultModel,
+    SheFormFooterDefaultModel,
+  ]);
 
-  function onSubmitHandler(data: T) {
-    if (onSubmit) onSubmit(data);
+  // ==================================================================== EVENT HANDLERS
+  function onSubmitHandler(value: T) {
+    onSubmit?.(value);
   }
 
-  function onErrorHandler(data: any) {
-    if (onError) onError(data);
-    console.error("Form error: ", data);
+  function onErrorHandler(value: any) {
+    onError?.(value);
+    console.error("Form error: ", value);
   }
 
   function onSecondaryHandler() {
-    const model =
+    const value =
       secondaryBtnBehavior === FormSecondaryBtnBehaviorEnum.RESET
         ? form.control._defaultValues
         : defaultValues;
-    form.reset({ ...model }, { keepErrors: false, keepDirty: false });
+    form.reset({ ...value }, { keepErrors: false, keepDirty: false });
     setTimeout(() => form.clearErrors(), 0);
-    if (onCancel) onCancel(form.control._defaultValues);
+    onCancel?.(value);
   }
 
-  // ==================================================================== PRIVATE
-
-  // ==================================================================== RENDER
-
+  // ==================================================================== LAYOUT
   return (
     <div
-      className={`${className || ""} ${cs.sheForm} ${cs[view] || ""} ${disabled || isLoading ? "disabled" : ""} ${cs[formPosition] || ""} ${fullWidth ? cs.fullWidth : ""}`}
+      className={`${cs.sheForm} ${className} ${cs[view]} ${cs[formPosition]} ${disabled || isLoading ? "disabled" : ""} ${fullWidth ? cs.fullWidth : ""}`}
       style={{
         minWidth,
         maxWidth,
+        ...style,
       }}
+      {...restProps}
     >
       <Form {...form}>
-        <SheFormHeader {...props} />
+        <SheFormHeader {...sheHeaderProps} />
         <form onSubmit={form.handleSubmit(onSubmitHandler, onErrorHandler)}>
-          <div className={cs.sheFormContent}>{children}</div>
+          <SheFormContextProvider value={{ form: form }}>
+            <div className={cs.sheFormContent}>{children}</div>
+          </SheFormContextProvider>
           <SheFormFooter
-            {...props}
+            {...sheFooterProps}
             isValid={form.formState.isValid}
             isLoading={isLoading}
-            onSecondary={onSecondaryHandler}
+            onSecondaryBtnClick={onSecondaryHandler}
           />
         </form>
       </Form>

@@ -4,9 +4,13 @@
   display: flex;
   flex-direction: column;
   align-items: start;
-  min-height: 80px;
   width: 100%;
   flex-grow: 1;
+  position: relative;
+
+  > div {
+    overflow: visible;
+  }
 
   > label {
     color: vars.$titleColor;
@@ -14,7 +18,7 @@
 
   > p {
     margin: 0 !important;
-    line-height: 18px !important;
+    font-size: 12px;
   }
 }
 
@@ -22,4 +26,18 @@
 
 .sheFormItem.withDescription {
   min-height: 98px;
+}
+
+// ======================================================== REQUIRED
+
+.sheFormItem.required {
+  &:before {
+    position: absolute;
+    left: -8px;
+    top: -13px;
+    margin-right: 0;
+    color: vars.$colorRed;
+    content: "*";
+    display: inline;
+  }
 }

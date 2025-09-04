@@ -10,6 +10,7 @@ import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import SheTimePicker from "@/components/primitive/she-time-picker/SheTimePicker.tsx";
 import ShePrimitiveComponentWrapper from "@/components/primitive/she-primitive-component-wrapper/ShePrimitiveComponentWrapper.tsx";
 import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
+import useValueWithEvent from "@/utils/hooks/useValueWithEvent.ts";
 import { getCustomProps } from "@/utils/helpers/props-helper.ts";
 import { ISheCalendar } from "@/const/interfaces/primitive-components/ISheCalendar.ts";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
@@ -17,7 +18,8 @@ import {
   IShePrimitiveComponentWrapper,
   ShePrimitiveComponentWrapperDefaultModel,
 } from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
-import useValueWithEvent from "@/utils/hooks/useValueWithEvent.ts";
+import { IDateRange } from "@/const/interfaces/IDateRange.ts";
+import { CalendarModeEnum } from "@/const/enums/CalendarModeEnum.ts";
 
 const months = [
   "January",
@@ -50,7 +52,7 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
     timePicker,
     dateFormat,
     markedDates,
-    mode = "single",
+    mode = CalendarModeEnum.SINGLE,
     minAmountOfDates,
     maxAmountOfDates,
     disabled,
@@ -65,14 +67,7 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
 
   // ==================================================================== STATE MANAGEMENT
   const [_date, setDate] = React.useState<
-    | string
-    | string[]
-    | Date
-    | Date[]
-    | (Date | string)[]
-    | { from: Date; to: Date }
-    | { from: string; to: string }
-    | { from: Date | string; to: Date | string }
+    string | Date | (Date | string)[] | IDateRange
   >(null);
   const [_selectedMonth, setSelectedMonth] = useState<string>(
     months[new Date().getMonth()],
@@ -83,16 +78,17 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
   const [_selectedTime, setSelectedTime] = useState<Date>(time ?? new Date());
 
   // ==================================================================== UTILITIES
-  const { ariaDescribedbyId } = useComponentUtilities({
-    identifier: "SheCalendar",
-  });
+  const { ariaDescribedbyId, updateFormValue, resetFormField } =
+    useComponentUtilities<ISheCalendar>({
+      props,
+      identifier: "SheCalendar",
+    });
   const markedParsedDates = React.useMemo(() => {
     if (!Array.isArray(markedDates)) return null;
     return (markedDates || [])
       .map(_parseCalendarSingleDate)
       .filter(Boolean) as Date[];
   }, [markedDates]);
-
   const {
     eventHandler: eventSelectDateHandler,
     valueHandler: valueSelectDateHandler,
@@ -100,12 +96,13 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
-    const parsed: Date | Date[] | { from: Date; to: Date } =
-      _parseValidDate(date);
+    let parsed: Date | Date[] | IDateRange = _parseValidDate(date);
 
     if (parsed && !_.isEqual(parsed, _date)) {
+      parsed = _sortMultipleDate(parsed);
       const convertedDate = _getParsedModel(parsed);
       setDate(parsed);
+      updateFormValue(parsed);
       setSelectedMonth(months[getMonth(convertedDate)]);
       setSelectedYear(getYear(convertedDate));
     }
@@ -125,16 +122,19 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
   }
 
   function onSelectDateHandler(selectedDate, event) {
-    const normalizedDate =
-      _inferCalendarMode(selectedDate) === "multiple"
-        ? _sortDateListByDate(selectedDate)
-        : selectedDate;
+    const normalizedDate: any = _sortMultipleDate(selectedDate);
+    setDate(normalizedDate);
 
-    if (normalizedDate !== _date) setDate(normalizedDate);
+    if (
+      _inferCalendarMode(selectedDate) === CalendarModeEnum.RANGE &&
+      !normalizedDate.to
+    )
+      return null;
 
-    const dateWithTime = _formatSelectedDateModel(normalizedDate);
-    onSelectDate?.(dateWithTime, {
-      value: dateWithTime,
+    const formatedDate = _formatSelectedDateModel(normalizedDate);
+    updateFormValue(formatedDate);
+    onSelectDate?.(formatedDate, {
+      value: formatedDate,
       model: props,
       event,
     });
@@ -145,6 +145,7 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
     setSelectedTime(null);
     setSelectedMonth(months[new Date().getMonth()]);
     setSelectedYear(new Date().getFullYear());
+    resetFormField(null);
     onSelectDate?.(null, {
       value: null,
       model: props,
@@ -158,9 +159,10 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
 
   function onTimeDelayHandler(value: Date, { event }) {
     setSelectedTime(value);
-    const dateWithTime = _formatSelectedDateModel(_date, value);
-    onSelectDate?.(dateWithTime, {
-      value: dateWithTime,
+    const formatedDate = _formatSelectedDateModel(_date, value);
+    updateFormValue(formatedDate);
+    onSelectDate?.(formatedDate, {
+      value: formatedDate,
       model: props,
       event,
     });
@@ -169,20 +171,26 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
   // ==================================================================== PRIVATE
   function _getParsedModel(parsed: any): Date {
     switch (_inferCalendarMode(parsed)) {
-      case "multiple":
+      case CalendarModeEnum.MULTIPLE:
         return parsed[parsed.length - 1];
-      case "range":
+      case CalendarModeEnum.RANGE:
         return parsed.to;
-      case "single":
+      case CalendarModeEnum.SINGLE:
         return parsed as Date;
     }
   }
 
-  function _inferCalendarMode(value: any): "single" | "multiple" | "range" {
-    if (_isCalendarMultipleDateValue(value)) return "multiple";
-    if (_isCalendarRangeDateValue(value)) return "range";
-    if (_isCalendarSingleDateValue(value)) return "single";
+  function _inferCalendarMode(value: any): CalendarModeEnum {
+    if (_isCalendarMultipleDateValue(value)) return CalendarModeEnum.MULTIPLE;
+    if (_isCalendarRangeDateValue(value)) return CalendarModeEnum.RANGE;
+    if (_isCalendarSingleDateValue(value)) return CalendarModeEnum.SINGLE;
     return null;
+  }
+
+  function _sortMultipleDate(dateArr: any): Date[] {
+    return _inferCalendarMode(dateArr) === CalendarModeEnum.MULTIPLE
+      ? _sortDateListByDate(dateArr)
+      : dateArr;
   }
 
   // -------------------------------------------------------------- DATE FORMAT AND SORT
@@ -207,7 +215,7 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
       );
       selectedDate.to = _combineDateAndTime(selectedDate.to as Date, timeToUse);
 
-      const dateRangeModel = {
+      return {
         from: selectedDate.from
           ? dateFormat
             ? moment(selectedDate.from).format(dateFormat)
@@ -219,10 +227,6 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
             : selectedDate.to
           : null,
       };
-
-      if (dateRangeModel?.from && dateRangeModel?.to) {
-        return dateRangeModel;
-      }
     }
 
     if (_isCalendarSingleDateValue(selectedDate)) {
@@ -245,7 +249,7 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
       throw new Error("Invalid date");
     }
 
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // getMonth() is 0-indexed
+    const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
     const year = date.getFullYear();
 
@@ -292,20 +296,9 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
     return isValueDates;
   }
 
-  function _isCalendarRangeDateValue(
-    value: any,
-  ): value is { from: Date | string; to: Date | string } {
+  function _isCalendarRangeDateValue(value: any): boolean {
     return (
-      value &&
-      typeof value === "object" &&
-      "from" in value &&
-      "to" in value &&
-      (typeof (value as any).from === "string" ||
-        (value as any).from instanceof Date) &&
-      (typeof (value as any).to === "string" ||
-        (value as any).to instanceof Date) &&
-      !!_parseCalendarSingleDate(value.from) &&
-      !!_parseCalendarSingleDate(value.to)
+      value && typeof value === "object" && "from" in value && "to" in value
     );
   }
 
@@ -323,17 +316,15 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
 
   // -------------------------------------------------------------- DATE PARSERS
 
-  function _parseValidDate(
-    value: any,
-  ): Date | Date[] | { from: Date; to: Date } {
+  function _parseValidDate(value: any): Date | Date[] | IDateRange {
     if (!value) return null;
 
     switch (_inferCalendarMode(value)) {
-      case "multiple":
+      case CalendarModeEnum.MULTIPLE:
         return _parseCalendarMultipleDate(value);
-      case "range":
+      case CalendarModeEnum.RANGE:
         return _parseCalendarRangeDate(value);
-      case "single":
+      case CalendarModeEnum.SINGLE:
         return _parseCalendarSingleDate(value);
       default: {
         console.error("Invalid date to parse: ", value);
@@ -342,9 +333,7 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
     }
   }
 
-  function _parseCalendarMultipleDate(
-    value: string[] | Date[] | (string | Date)[],
-  ): Date[] | null {
+  function _parseCalendarMultipleDate(value: (string | Date)[]): Date[] {
     if (!_isCalendarMultipleDateValue(value)) return null;
 
     const dateList = value
@@ -361,12 +350,7 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
     return _sortDateListByDate(dateList);
   }
 
-  function _parseCalendarRangeDate(
-    value:
-      | { from: string; to: string }
-      | { from: Date; to: Date }
-      | { from: string | Date; to: string | Date },
-  ): { from: Date; to: Date } | null {
+  function _parseCalendarRangeDate(value: IDateRange): IDateRange {
     if (!_isCalendarRangeDateValue(value)) return null;
 
     const from = new Date(_normalizeDateFormat(value.from));
@@ -386,7 +370,7 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
     return { from, to };
   }
 
-  function _parseCalendarSingleDate(value: string | Date): Date | null {
+  function _parseCalendarSingleDate(value: string | Date): Date {
     if (!value) return null;
 
     if (value instanceof Date && !isNaN(value.getTime())) return value;
@@ -438,6 +422,7 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
             maxWidth="138px"
             minWidth="122px"
             isLoading={isLoading}
+            ignoreFormAction
             onSelect={onMonthSelectHandler}
           />
           <SheSelect<number>
@@ -453,6 +438,7 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
             maxWidth="138px"
             minWidth="122px"
             isLoading={isLoading}
+            ignoreFormAction
             onSelect={onYearSelectHandler}
           />
         </div>
@@ -485,7 +471,6 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
               onSelect={(value) =>
                 setTimeout(() => valueSelectDateHandler(value))
               }
-              {...props}
             />
             {!hideTimePicker && (
               <>
@@ -498,6 +483,7 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
                   disabled={!_date}
                   delayTime={1600}
                   fullWidth
+                  ignoreFormAction
                   onSetDate={onTimeChangeHandler}
                   onDelay={onTimeDelayHandler}
                   {...timePicker}

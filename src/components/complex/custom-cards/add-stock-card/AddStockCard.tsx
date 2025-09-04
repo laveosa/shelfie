@@ -89,7 +89,7 @@ export default function AddStockCard({
       {...props}
     >
       <div className={cs.addStockCardContent}>
-        <SheForm form={form} onSubmit={onSubmit}>
+        <SheForm form={form as any} onSubmit={onSubmit}>
           <div className={cs.addStockConfigurationForm}>
             <SheForm.Field name="unitAmount">
               <SheInput

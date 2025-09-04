@@ -1,60 +1,60 @@
-import React from "react";
-import { Trans } from "react-i18next";
+import React, { JSX } from "react";
 
 import cs from "./SheFormFooter.module.scss";
 import { ISheFormFooter } from "@/const/interfaces/forms/ISheFormFooter.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 
 export default function SheFormFooter({
-  className,
-  primaryTitle = "Submit",
-  primaryTitleTransKey,
-  primaryProps,
-  hidePrimary,
-  secondaryTitle = "Cancel",
-  secondaryTitleTransKey,
-  secondaryProps,
-  hideSecondary,
+  footerClassName = "",
+  footerStyles,
+  primaryBtnTitle = "Submit",
+  primaryBtnTitleTransKey = "PLACE_TRANS_KEY",
+  primaryBtnProps,
+  hidePrimaryBtn,
+  secondaryBtnTitle = "Cancel",
+  secondaryBtnTitleTransKey = "PLACE_TRANS_KEY",
+  secondaryBtnProps,
+  hideSecondaryBtn,
   notDisabledSubmit,
   isLoading,
   isValid,
-  footerPosition,
-  onPrimary,
-  onSecondary,
-  ...props
-}: ISheFormFooter): React.ReactNode {
+  footerPosition = DirectionEnum.CENTER,
+  hideFooter,
+  onPrimaryBtnClick,
+  onSecondaryBtnClick,
+}: ISheFormFooter): JSX.Element {
+  // ==================================================================== LAYOUT
+  if ((hidePrimaryBtn && hideSecondaryBtn) || hideFooter) return null;
+
   return (
-    <>
-      {(!hidePrimary || !hideSecondary) && (
-        <div
-          {...props}
-          className={`${cs[className] || ""} ${cs.sheFormFooter} ${cs[footerPosition] || ""}`}
-        >
-          {!hideSecondary && (
-            <SheButton
-              {...secondaryProps}
-              variant="secondary"
-              type="button"
-              minWidth="100px"
-              onClick={onSecondary}
-            >
-              <Trans i18nKey={secondaryTitleTransKey}>{secondaryTitle}</Trans>
-            </SheButton>
-          )}
-          {!hidePrimary && (
-            <SheButton
-              {...primaryProps}
-              type="submit"
-              isLoading={isLoading}
-              disabled={!notDisabledSubmit && !isValid}
-              minWidth="100px"
-              onClick={onPrimary}
-            >
-              <Trans i18nKey={primaryTitleTransKey}>{primaryTitle}</Trans>
-            </SheButton>
-          )}
-        </div>
+    <div
+      className={`${cs.sheFormFooter} ${footerClassName}  ${cs[footerPosition]}`}
+      style={{ ...footerStyles }}
+    >
+      {!hideSecondaryBtn && (
+        <SheButton
+          {...secondaryBtnProps}
+          value={secondaryBtnTitle}
+          valueTransKey={secondaryBtnTitleTransKey}
+          variant="secondary"
+          type="button"
+          minWidth="100px"
+          onClick={onSecondaryBtnClick}
+        />
       )}
-    </>
+      {!hidePrimaryBtn && (
+        <SheButton
+          {...primaryBtnProps}
+          value={primaryBtnTitle}
+          valueTransKey={primaryBtnTitleTransKey}
+          type="submit"
+          isLoading={isLoading}
+          disabled={!notDisabledSubmit && !isValid}
+          minWidth="100px"
+          onClick={onPrimaryBtnClick}
+        />
+      )}
+    </div>
   );
 }

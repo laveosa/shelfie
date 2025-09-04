@@ -18,15 +18,14 @@ import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import PurchaseProductsFormScheme from "@/utils/validation/schemes/PurchaseProductsFormScheme.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
+import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
+import {
+  PurchaseProductsModel,
+  PurchaseProductsModelDefault,
+} from "@/const/models/PurchaseProductsModel.ts";
 
-export const DefaultPurchaseProductsForm = {
-  nettoPrice: null,
-  currencyId: null,
-  taxTypeId: null,
-  unitsAmount: null,
-};
-
-export default function PurchaseProductsForm<T>({
+export default function PurchaseProductsForm({
   data,
   currencies,
   taxes,
@@ -35,11 +34,11 @@ export default function PurchaseProductsForm<T>({
   onSubmit,
   onDelete,
   onCancel,
-}: IPurchaseProductsForm<T>) {
-  const form = useAppForm<any>({
-    mode: "onChange",
+}: IPurchaseProductsForm) {
+  const form = useAppForm<PurchaseProductsModel>({
+    mode: ReactHookFormMode.BLUR,
     resolver: zodResolver(PurchaseProductsFormScheme),
-    defaultValues: data || DefaultPurchaseProductsForm,
+    defaultValues: data || PurchaseProductsModelDefault,
   });
 
   function convertCurrenciesToSelectItems(
@@ -77,41 +76,33 @@ export default function PurchaseProductsForm<T>({
 
   return (
     <div className={cs.purchaseProducts}>
-      <SheForm<T>
-        className={cs.purchaseProductsForm}
+      <SheForm<PurchaseProductsModel>
         form={form}
-        defaultValues={DefaultPurchaseProductsForm}
-        formPosition={DirectionEnum.CENTER}
-        view={ComponentViewEnum.STANDARD}
+        className={cs.purchaseProductsForm}
+        defaultValues={PurchaseProductsModelDefault}
         fullWidth
-        hidePrimary
-        hideSecondary
+        hidePrimaryBtn
+        hideSecondaryBtn
         onSubmit={onSubmit}
         onCancel={onCancel}
       >
-        <FormField
-          control={form.control}
+        <SheFormField
           name="nettoPrice"
-          render={({ field }): React.ReactElement => (
-            <SheFormItem className={cs.purchaseFormItemNettoPrice}>
-              <SheInput
-                {...field}
-                className={
-                  activeTab === "connectProducts"
-                    ? field.value
-                      ? cs.formItemsValid
-                      : ""
+          className={cs.purchaseFormItemNettoPrice}
+          render={({ field }) => (
+            <SheInput
+              value={field.value}
+              className={
+                activeTab === "connectProducts"
+                  ? field.value
+                    ? cs.formItemsValid
                     : ""
-                }
-                minWidth="100px"
-                maxWidth="100px"
-                placeholder="Netto price"
-                onChange={(value) => {
-                  field.onChange(value);
-                  void form.trigger("nettoPrice");
-                }}
-              />
-            </SheFormItem>
+                  : ""
+              }
+              minWidth="100px"
+              maxWidth="100px"
+              placeholder="Netto price"
+            />
           )}
         />
         <FormField
@@ -169,30 +160,24 @@ export default function PurchaseProductsForm<T>({
           )}
         />
         <SheIcon className={cs.purchaseProductsFormIcon} icon={X} />
-        <FormField
-          control={form.control}
+        <SheFormField
           name="unitsAmount"
+          className={cs.purchaseFormItemTaxCurrency}
           render={({ field }): React.ReactElement => (
-            <SheFormItem className={cs.purchaseFormItemTaxCurrency}>
-              <SheInput
-                {...field}
-                className={
-                  activeTab === "connectProducts"
-                    ? field.value
-                      ? cs.formItemsValid
-                      : ""
+            <SheInput
+              value={field.value}
+              className={
+                activeTab === "connectProducts"
+                  ? field.value
+                    ? cs.formItemsValid
                     : ""
-                }
-                width="80px"
-                minWidth="80px"
-                maxWidth="80px"
-                placeholder="Quantity"
-                onChange={(value) => {
-                  field.onChange(value);
-                  void form.trigger("unitsAmount");
-                }}
-              />
-            </SheFormItem>
+                  : ""
+              }
+              width="80px"
+              minWidth="80px"
+              maxWidth="80px"
+              placeholder="Quantity"
+            />
           )}
         />
         {!isVariantGrid ? (

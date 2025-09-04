@@ -17,6 +17,7 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
 import { IMarginConfigurationCard } from "@/const/interfaces/forms/IMarginConfigurationForm.ts";
 import { Separator } from "@/components/ui/separator.tsx";
+import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
 
 interface SheNumericWithSuffixInputProps
   extends React.ComponentProps<typeof SheInput> {
@@ -131,15 +132,15 @@ export default function MarginConfigurationForm<T>({
 
   return (
     <div className={`${cs.marginConfiguration} ${className}`}>
-      <SheForm<T>
+      <SheForm
         className={cs.marginConfigurationForm}
-        form={form}
+        form={form as any}
         defaultValues={MarginModelDefault}
         formPosition={DirectionEnum.CENTER}
         view={ComponentViewEnum.STANDARD}
         fullWidth
-        hidePrimary
-        hideSecondary
+        hidePrimaryBtn
+        hideSecondaryBtn
         onSubmit={onSubmit}
         onCancel={onCancel}
       >
@@ -150,21 +151,17 @@ export default function MarginConfigurationForm<T>({
               target prices based on conditions you set up and the product
               purchase price
             </span>
-            <FormField
-              control={form.control}
+            <SheFormField
               name="marginName"
               defaultValue={data?.marginName}
-              render={({ field }): React.ReactElement => (
-                <SheFormItem
-                  className={cs.marginConfigurationFormItem}
+              className={cs.marginConfigurationFormItem}
+              render={({ field }) => (
+                <SheInput
                   label="Margin Name"
-                >
-                  <SheInput
-                    {...field}
-                    fullWidth
-                    placeholder="Enter margin name..."
-                  />
-                </SheFormItem>
+                  value={field.value}
+                  fullWidth
+                  placeholder="Enter margin name..."
+                />
               )}
             />
 
@@ -195,22 +192,18 @@ export default function MarginConfigurationForm<T>({
             ? "Configure Margin Details"
             : "Adjust margin details for this purchase"}
         </span>
-        <FormField
-          control={form.control}
+        <SheFormField
           name="marginRule.desiredProfit"
+          label="Desired profit (in %)"
+          className={cs.marginConfigurationFormItem}
           render={({ field }) => (
-            <SheFormItem
-              label="Desired profit (in %)"
-              className={cs.marginConfigurationFormItem}
-            >
-              <SheInputNumericWithSuffix
-                placeholder="Enter profit..."
-                value={field.value}
-                suffix="%"
-                fullWidth
-                onChange={(val) => field.onChange(val)}
-              />
-            </SheFormItem>
+            <SheInputNumericWithSuffix
+              placeholder="Enter profit..."
+              value={field.value}
+              suffix="%"
+              fullWidth
+              onChange={(val) => field.onChange(val)}
+            />
           )}
         />
 
@@ -218,22 +211,18 @@ export default function MarginConfigurationForm<T>({
           The profit is calculated based on the purchase price, other
           percentages do not intersect with it, but they result in single total
         </span>
-        <FormField
-          control={form.control}
+        <SheFormField
           name="marginRule.plannedDiscount"
+          label="Planned discount (in %)"
+          className={cs.marginConfigurationFormItem}
           render={({ field }) => (
-            <SheFormItem
-              label="Planned discount (in %)"
-              className={cs.marginConfigurationFormItem}
-            >
-              <SheInputNumericWithSuffix
-                placeholder="Enter planned discount..."
-                value={field.value}
-                suffix="%"
-                fullWidth
-                onChange={(val) => field.onChange(val)}
-              />
-            </SheFormItem>
+            <SheInputNumericWithSuffix
+              placeholder="Enter planned discount..."
+              value={field.value}
+              suffix="%"
+              fullWidth
+              onChange={(val) => field.onChange(val)}
+            />
           )}
         />
         <span className={`${cs.marginConfigurationText} she-subtext`}>
@@ -243,21 +232,17 @@ export default function MarginConfigurationForm<T>({
           amount. If you don’t want to budget for discount, just leave the field
           empty.
         </span>
-        <FormField
-          control={form.control}
+        <SheFormField
           name="marginRule.fixedCosts"
-          render={({ field }): React.ReactElement => (
-            <SheFormItem
-              className={cs.marginConfigurationFormItem}
+          className={cs.marginConfigurationFormItem}
+          render={({ field }) => (
+            <SheInput
               label="Fixed costs (in PLN)"
-            >
-              <SheInput
-                {...field}
-                fullWidth
-                placeholder="Netto price"
-                type="number"
-              />
-            </SheFormItem>
+              value={field.value}
+              fullWidth
+              placeholder="Netto price"
+              type="number"
+            />
           )}
         />
         <span className={`${cs.marginConfigurationText} she-subtext`}>
@@ -273,7 +258,6 @@ export default function MarginConfigurationForm<T>({
             <SheFormItem className={cs.marginConfigurationFormItem}>
               <SheToggle
                 {...field}
-                placeholder="Netto price"
                 text="Round Brutto price to full number"
                 checked={
                   _.isNil(data?.marginRule?.roundTo)
@@ -297,7 +281,6 @@ export default function MarginConfigurationForm<T>({
             <SheFormItem className={cs.marginConfigurationFormItem}>
               <SheToggle
                 {...field}
-                placeholder="Netto price"
                 text="Jump the price to nearest 9"
                 checked={
                   _.isNil(data?.marginRule?.nearest9)

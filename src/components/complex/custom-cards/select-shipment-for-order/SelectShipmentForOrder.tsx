@@ -24,6 +24,7 @@ import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import { SelectShipmentForOrderGridColumns } from "@/components/complex/grid/custom-grids/select-shipment-for-order-grid/SelectShipmentForOrderGridColumns.tsx";
+import { CalendarModeEnum } from "@/const/enums/CalendarModeEnum.ts";
 
 export default function SelectShipmentForOrderCard({
   isLoading,
@@ -142,7 +143,7 @@ export default function SelectShipmentForOrderCard({
             icon={CalendarDays}
             placeholder={t("SelectOptions.Date")}
             minWidth="150px"
-            mode="range"
+            mode={CalendarModeEnum.RANGE}
             onSelectDate={(value) =>
               onAction("gridRequestChange", {
                 startDate: value.from.toISOString(),

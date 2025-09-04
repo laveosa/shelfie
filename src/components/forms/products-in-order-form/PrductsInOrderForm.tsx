@@ -13,6 +13,7 @@ import cs from "./ProductsInOrderForm.module.scss";
 import ProductsInOrderFormScheme from "@/utils/validation/schemes/ProductsInOrderFormScheme.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { IProductsInOrderForm } from "@/const/interfaces/forms/IProductsInOrderForm.ts";
+import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
 
 interface ProductsInOrderFormData {
   priceBrutto?: number;
@@ -52,55 +53,49 @@ export default function ProductsInOrderForm<T>({
 
   return (
     <div className={`${cs.productsInOrderForm} ${className}`}>
-      <SheForm<T>
+      <SheForm
         form={form}
         defaultValues={{ priceBrutto: 0, quantity: 0 }}
         formPosition={DirectionEnum.CENTER}
         view={ComponentViewEnum.STANDARD}
         fullWidth
-        hidePrimary
-        hideSecondary
-        onSubmit={() => handleFormSubmit}
+        hidePrimaryBtn
+        hideSecondaryBtn
+        onSubmit={handleFormSubmit}
       >
         <div className={cs.formItems}>
           <div className={cs.formItem}>
             <span>Price Brutto</span>
-            <FormField
-              control={form.control}
+            <SheFormField
               name="priceBrutto"
-              render={({ field }): React.ReactElement => (
-                <SheFormItem className={cs.inputFormItem}>
-                  <SheInput
-                    {...field}
-                    type="number"
-                    maxWidth="100px"
-                    onDelay={(val) => {
-                      field.onChange(val);
-                      onSubmit(form.getValues() as T);
-                    }}
-                  />
-                </SheFormItem>
+              className={cs.inputFormItem}
+              render={({ field }) => (
+                <SheInput
+                  value={field.value}
+                  type="number"
+                  maxWidth="100px"
+                  onDelay={() => {
+                    onSubmit(form.getValues() as T);
+                  }}
+                />
               )}
             />
           </div>
           <SheIcon className={cs.formIcon} icon={X} maxWidth="30px" />
           <div className={cs.formItem}>
             <span>Quantity</span>
-            <FormField
-              control={form.control}
+            <SheFormField
               name="quantity"
+              className={cs.inputFormItem}
               render={({ field }): React.ReactElement => (
-                <SheFormItem className={cs.inputFormItem}>
-                  <SheInput
-                    {...field}
-                    type="number"
-                    maxWidth="75px"
-                    onDelay={(val) => {
-                      field.onChange(val);
-                      onSubmit(form.getValues() as T);
-                    }}
-                  />
-                </SheFormItem>
+                <SheInput
+                  value={field.value}
+                  type="number"
+                  maxWidth="75px"
+                  onDelay={() => {
+                    onSubmit(form.getValues() as T);
+                  }}
+                />
               )}
             />
           </div>

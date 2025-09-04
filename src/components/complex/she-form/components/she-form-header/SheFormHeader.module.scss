@@ -8,15 +8,12 @@ $iconSize: 60px;
   gap: 2px;
   margin-bottom: vars.$marginStandard;
 
-  .sheImage,
-  .sheFormIcon > svg {
+  .sheIcon {
     max-width: $iconSize;
     min-width: $iconSize;
     max-height: $iconSize;
     min-height: $iconSize;
-  }
 
-  .sheImage {
     img {
       width: 100%;
     }

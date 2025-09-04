@@ -102,6 +102,7 @@ export default function SheTimePickerInput({
       value={value || calculatedValue}
       type={type}
       inputMode="decimal"
+      ignoreFormAction
       onKeyDown={(event: any) => {
         onKeyDown?.(event);
         handleKeyDown(event);

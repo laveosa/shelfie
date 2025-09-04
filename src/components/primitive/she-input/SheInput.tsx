@@ -5,6 +5,7 @@ import { Search } from "lucide-react";
 import cs from "./SheInput.module.scss";
 import { Input } from "@/components/ui/input.tsx";
 import ShePrimitiveComponentWrapper from "@/components/primitive/she-primitive-component-wrapper/ShePrimitiveComponentWrapper.tsx";
+import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
 import { useDebounce } from "@/utils/hooks/useDebounce.ts";
 import useDefaultRef from "@/utils/hooks/useDefaultRef.ts";
 import useComponentUtilities from "@/utils/hooks/useComponentUtilities.ts";
@@ -81,8 +82,16 @@ export default function SheInput(props: ISheInput): JSX.Element {
   const _sourceValue = useRef<string | number>(null);
 
   // ==================================================================== UTILITIES
-  const { translate, ariaDescribedbyId, setFocus } = useComponentUtilities({
-    identifier: "ISheInput",
+  const {
+    translate,
+    ariaDescribedbyId,
+    setFocus,
+    updateFormValue,
+    resetFormField,
+    getFormMode,
+  } = useComponentUtilities<ISheInput>({
+    props,
+    identifier: "SheInput",
   });
   const iconToRender = icon || (isSearch && Search);
   const delayValue = useDebounce(_textValue, delayTime);
@@ -128,9 +137,14 @@ export default function SheInput(props: ISheInput): JSX.Element {
   function onChangeHandler(event) {
     _isInitialized.current = true;
     _lastEventDataRef.current = event;
-    const newValue = event.target.value;
-    setTextValue(newValue);
+
+    let newValue = _trimExtraSpaces(event.target.value);
+    newValue = _updateValueType(newValue);
     const tmpIsValid = _validateValue(newValue);
+
+    if (getFormMode() !== ReactHookFormMode.BLUR) updateFormValue(newValue);
+
+    setTextValue(newValue);
     onChange?.(newValue, {
       value: newValue,
       model: {
@@ -144,8 +158,13 @@ export default function SheInput(props: ISheInput): JSX.Element {
 
   function onBlurHandler(event: React.ChangeEvent<HTMLInputElement>) {
     _isTouched.current = true;
-    const newValue = event.target.value.trim() || null;
+
+    let newValue = _trimExtraSpaces(event.target.value);
+    newValue = _updateValueType(newValue);
     const tmpIsValid = _validateValue(newValue);
+
+    if (getFormMode() === ReactHookFormMode.BLUR) updateFormValue(newValue);
+
     setIsHighlighted(!_.isEqual(_sourceValue.current, newValue));
     onBlur?.(newValue, {
       value: newValue,
@@ -161,26 +180,37 @@ export default function SheInput(props: ISheInput): JSX.Element {
   function onClearHandler(event) {
     _isInitialized.current = false;
     _isTouched.current = false;
-    updateIsValid(true);
+    _updateIsValid(true);
     setIsLengthValid(true);
     _setErrorCondition(false);
+    resetFormField();
 
     const newValue = "";
     setTextValue(newValue);
     _validateValue(newValue);
-    setFocus(true, _inputRef);
+    setFocus(autoFocus, _inputRef);
 
     const outputModel: IOutputEventModel<null, ISheInput, any> = {
       value: null,
       model: props,
       event,
     };
+
     onChange?.(null, outputModel);
     onDelay?.(null, outputModel);
     onClear?.(null, outputModel);
   }
 
   // ==================================================================== PRIVATE
+  function _trimExtraSpaces(value: any): string {
+    if (typeof value === "string" && value.length > 0) {
+      value = value[0] === " " ? value.slice(1) : value;
+      value = value.replace(/\s+/g, " ");
+    }
+
+    return value;
+  }
+
   function _validateValue(inputValue) {
     if (ignoreValidation || !_isTouched.current) return true;
 
@@ -188,13 +218,19 @@ export default function SheInput(props: ISheInput): JSX.Element {
     validation = _isRequiredValidCheck(inputValue, validation);
     validation = _isLengthValidCheck(inputValue, validation);
     validation = _isPatternValidCheck(inputValue, validation);
-    updateIsValid(validation);
+    _updateIsValid(validation);
     return validation;
   }
 
-  function updateIsValid(value: boolean) {
+  function _updateIsValid(value: boolean) {
     onIsValid?.(value);
     setIsValid(value);
+  }
+
+  function _updateValueType(value: any) {
+    if (type !== "number" && value.length === 0) return "";
+    if (type === "number") return parseInt(value);
+    return value;
   }
 
   // ----------------------------- VALIDATION PATTERNS CHECK
@@ -202,7 +238,7 @@ export default function SheInput(props: ISheInput): JSX.Element {
   function _isRequiredValidCheck(inputValue, validation) {
     if (!required || !validation || !_isTouched.current) return validation;
 
-    const result = inputValue?.length > 0;
+    const result = type !== "number" ? inputValue?.length > 0 : true;
 
     if (!result) setIsLengthValid(false);
 

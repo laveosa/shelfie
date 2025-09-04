@@ -20,6 +20,7 @@ import {
 import cs from "./AddressForm.module.scss";
 import { CountryCodeModel } from "@/const/models/CountryCodeModel";
 import { Plus, Save } from "lucide-react";
+import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
 
 interface IAddressForm {
   data: AddressRequestModel;
@@ -70,73 +71,72 @@ export default function AddressForm({
         onError={onErrorHandler}
         onCancel={onCancel}
         view={ComponentViewEnum.STANDARD}
-        hidePrimary
-        hideSecondary
+        hideFooter
       >
-        <FormField
-          control={form.control}
+        <SheFormField
           name="alias"
-          render={({ field }): React.ReactElement => (
-            <SheFormItem label={t("AddressForm.Labels.Alias")}>
-              <SheInput fullWidth {...field} placeholder={t("AddressForm.Placeholders.Alias")} />
-            </SheFormItem>
+          render={({ field }) => (
+            <SheInput
+              label={t("AddressForm.Labels.Alias")}
+              value={field.value}
+              fullWidth
+              placeholder={t("AddressForm.Placeholders.Alias")}
+            />
           )}
         />
-        <FormField
-          control={form.control}
+        <SheFormField
           name="addressLine1"
-          render={({ field }): React.ReactElement => (
-            <SheFormItem label={t("AddressForm.Labels.AddressLine1")}>
-              <SheInput
-                fullWidth
-                {...field}
-                placeholder={t("AddressForm.Placeholders.AddressLine1")}
-              />
-            </SheFormItem>
+          render={({ field }) => (
+            <SheInput
+              label={t("AddressForm.Labels.AddressLine1")}
+              value={field.value}
+              fullWidth
+              placeholder={t("AddressForm.Placeholders.AddressLine1")}
+            />
           )}
         />
-        <FormField
-          control={form.control}
+        <SheFormField
           name="addressLine2"
-          render={({ field }): React.ReactElement => (
-            <SheFormItem label={t("AddressForm.Labels.AddressLine2")}>
-              <SheInput
-                fullWidth
-                {...field}
-                placeholder={t("AddressForm.Placeholders.AddressLine2")}
-              />
-            </SheFormItem>
+          render={({ field }) => (
+            <SheInput
+              label={t("AddressForm.Labels.AddressLine2")}
+              value={field.value}
+              fullWidth
+              placeholder={t("AddressForm.Placeholders.AddressLine2")}
+            />
           )}
         />
-        <FormField
-          control={form.control}
+        <SheFormField
           name="city"
-          render={({ field }): React.ReactElement => (
-            <SheFormItem label={t("AddressForm.Labels.City")}>
-              <SheInput fullWidth {...field} placeholder={t("AddressForm.Placeholders.City")} />
-            </SheFormItem>
+          render={({ field }) => (
+            <SheInput
+              label={t("AddressForm.Labels.City")}
+              value={field.value}
+              fullWidth
+              placeholder={t("AddressForm.Placeholders.City")}
+            />
           )}
         />
-        <FormField
-          control={form.control}
+        <SheFormField
           name="state"
-          render={({ field }): React.ReactElement => (
-            <SheFormItem label={t("AddressForm.Labels.State")}>
-              <SheInput fullWidth {...field} placeholder={t("AddressForm.Placeholders.State")} />
-            </SheFormItem>
+          render={({ field }) => (
+            <SheInput
+              label={t("AddressForm.Labels.State")}
+              value={field.value}
+              fullWidth
+              placeholder={t("AddressForm.Placeholders.State")}
+            />
           )}
         />
-        <FormField
-          control={form.control}
+        <SheFormField
           name="postalCode"
-          render={({ field }): React.ReactElement => (
-            <SheFormItem label={t("AddressForm.Labels.PostalCode")}>
-              <SheInput
-                fullWidth
-                {...field}
-                placeholder={t("AddressForm.Placeholders.PostalCode")}
-              />
-            </SheFormItem>
+          render={({ field }) => (
+            <SheInput
+              label={t("AddressForm.Labels.PostalCode")}
+              value={field.value}
+              fullWidth
+              placeholder={t("AddressForm.Placeholders.PostalCode")}
+            />
           )}
         />
         <FormField
@@ -161,7 +161,7 @@ export default function AddressForm({
 
         <div
           className={cs.cardFooter}
-          style={{ justifyContent: true ? "space-between" : "flex-end" }}
+          style={{ justifyContent: "space-between" }}
         >
           <SheButton
             variant="secondary"

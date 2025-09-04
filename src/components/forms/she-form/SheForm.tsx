@@ -1,5 +1,5 @@
 import { FieldValues } from "react-hook-form";
-import React from "react";
+import React, { ComponentPropsWithRef } from "react";
 
 import {
   Form,
@@ -11,13 +11,20 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import {
-  ISheForm,
-  ISheFormFieldProps,
-} from "@/const/interfaces/forms/ISheForm.ts";
+import { ISheForm } from "@/const/interfaces/forms/ISheForm.ts";
 import InfoIcon from "@/assets/icons/Info-icon.svg?react";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import cs from "./SheForm.module.scss";
+
+//TODO remove this interface when SheForm component will be completed
+export interface ISheFormFieldProps extends ComponentPropsWithRef<any> {
+  name: string;
+  label?: string;
+  rules?: object;
+  children: React.ReactNode;
+  description?: string;
+  onDelay?: (event) => void;
+}
 
 export function SheForm<T extends FieldValues>({
   form,
