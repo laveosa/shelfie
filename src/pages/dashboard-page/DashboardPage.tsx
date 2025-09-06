@@ -1,11 +1,11 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
 
 import cs from "./DashboardPage.module.scss";
 import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageService.ts";
+import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 
 export function DashboardPage() {
-  const { t } = useTranslation();
+  const { translate } = useAppTranslation();
   const service = useDashboardPageService();
 
   // ================================================================== STATE
@@ -17,7 +17,7 @@ export function DashboardPage() {
   // ================================================================== LAYOUT
   return (
     <div id={cs["DashboardPage"]}>
-      <h1>{t("PageTitles.Dashboard")}</h1>
+      <h1>{translate("PageTitles.Dashboard")}</h1>
     </div>
   );
 }

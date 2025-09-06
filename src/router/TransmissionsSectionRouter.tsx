@@ -13,4 +13,4 @@ export const TransmissionsSectionRouter: RouteObject[] = [
       };
     },
   },
-];
+] as RouteObject[];
