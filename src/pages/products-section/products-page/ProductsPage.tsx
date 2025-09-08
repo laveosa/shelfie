@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import { useTranslation } from "react-i18next";
 import {
   BadgeCheck,
   Layers2,
@@ -36,10 +35,10 @@ import { ProductsGridColumns } from "@/components/complex/grid/custom-grids/prod
 import { variantsGridColumns } from "@/components/complex/grid/custom-grids/variants-grid/VariantsGridColumns.tsx";
 import { GridDateRangeFilter } from "@/components/complex/grid/filters/grid-date-range-filter/GridDateRangeFilter.tsx";
 import { GridValueFilter } from "@/components/complex/grid/filters/grid-value-filter/GridValueFilter.tsx";
-import { CalendarModeEnum } from "@/const/enums/CalendarModeEnum.ts";
+import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 
 export function ProductsPage() {
-  const { t } = useTranslation();
+  const { translate } = useAppTranslation();
   const dispatch = useAppDispatch();
   const state = useAppSelector<IProductsPageSlice>(StoreSliceEnum.PRODUCTS);
   const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
@@ -134,41 +133,27 @@ export function ProductsPage() {
   }
 
   return (
-    <div id={cs.ProductsPage}>
+    <div className={cs.productsPage}>
       <div className={cs.productsPageHeader}>
-        <div className="she-title">{t("PageTitles.Products")}</div>
-        {state.activeTab === "purchases" ? (
-          <div className={cs.headerButtonBlock}>
-            <SheButton
-              icon={Plus}
-              variant="outline"
-              onClick={() => onAction("reportPurchase")}
-              value={t("SupplierActions.ReportPurchase")}
-            />
-          </div>
-        ) : (
-          <div className={cs.headerButtonBlock}>
-            <SheButton
-              icon={Plus}
-              variant="outline"
-              onClick={() => onAction("addProduct")}
-              value={t("ProductActions.AddProduct")}
-            />
-            {/*Commented until future notices*/}
-            {/*<SheButton*/}
-            {/*  icon={Download}*/}
-            {/*  variant="outline"*/}
-            {/*  onClick={handleImportProducts}*/}
-            {/*  value="Import Products"*/}
-            {/*/>*/}
-            {/*<SheButton*/}
-            {/*  icon={Columns3Icon}*/}
-            {/*  variant="outline"*/}
-            {/*  onClick={handleConfigure}*/}
-            {/*  value="Configure"*/}
-            {/*/>*/}
-          </div>
-        )}
+        <span className="she-title">{translate("PageTitles.Products")}</span>
+        <div>
+          <SheButton
+            icon={Plus}
+            variant="outline"
+            onClick={() =>
+              onAction(
+                state.activeTab === "purchases"
+                  ? "reportPurchase"
+                  : "addProduct",
+              )
+            }
+            value={
+              state.activeTab === "purchases"
+                ? translate("SupplierActions.ReportPurchase", "Report Purchase")
+                : translate("ProductActions.AddProduct", "Add Product")
+            }
+          />
+        </div>
       </div>
       <div className={cs.productsPageContent}>
         <SheTabs
@@ -179,22 +164,22 @@ export function ProductsPage() {
             <TabsList className={cs.tabItems}>
               <TabsTrigger className={cs.tabItemTrigger} value="products">
                 <div className={cs.tabBlock}>
-                  <Shirt size="16" /> {t("TabContent.Products")}
+                  <Shirt size="16" /> {translate("TabContent.Products")}
                 </div>
               </TabsTrigger>
               <TabsTrigger className={cs.tabItemTrigger} value="variants">
                 <div className={cs.tabBlock}>
-                  <Layers2 size="16" /> {t("TabContent.Variants")}
+                  <Layers2 size="16" /> {translate("TabContent.Variants")}
                 </div>
               </TabsTrigger>
               <TabsTrigger className={cs.tabItemTrigger} value="purchases">
                 <div className={cs.tabBlock}>
-                  <Receipt size="16" /> {t("TabContent.Purchases")}
+                  <Receipt size="16" /> {translate("TabContent.Purchases")}
                 </div>
               </TabsTrigger>
             </TabsList>
           </div>
-          <TabsContent value="products">
+          <TabsContent value="products" className={cs.productsPageTabContext}>
             <DndGridDataTable
               isLoading={state.isLoading}
               ref={gridRef}
@@ -229,7 +214,7 @@ export function ProductsPage() {
               <GridShowItemsFilter context="Deleted" />
             </DndGridDataTable>
           </TabsContent>
-          <TabsContent value="variants">
+          <TabsContent value="variants" className={cs.productsPageTabContext}>
             <DndGridDataTable
               isLoading={state.isLoading}
               ref={gridRef}
@@ -272,7 +257,7 @@ export function ProductsPage() {
               <GridShowItemsFilter context="Deleted" />
             </DndGridDataTable>
           </TabsContent>
-          <TabsContent value="purchases">
+          <TabsContent value="purchases" className={cs.productsPageTabContext}>
             <DndGridDataTable
               isLoading={state.isLoading}
               ref={gridRef}
