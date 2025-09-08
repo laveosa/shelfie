@@ -1,11 +1,10 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
+import { useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IProductGalleryPageSlice } from "@/const/interfaces/store-slices/IProductGalleryPageSlice.ts";
 import { ProductGalleryPageSliceActions as actions } from "@/state/slices/ProductGalleryPageSlice.ts";
-import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice";
 import useProductGalleryPageService from "@/pages/products-section/product-gallery-page/useProductGalleryPageService.ts";
 import cs from "@/pages/products-section/product-basic-data-page/ProductBasicDataPage.module.scss";
 import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
@@ -17,14 +16,12 @@ import useProductsPageService from "@/pages/products-section/products-page/usePr
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 
 export function ProductGalleryPage() {
-  const dispatch = useAppDispatch();
   const state = useAppSelector<IProductGalleryPageSlice>(
     StoreSliceEnum.PRODUCT_GALLERY,
   );
   const productsState = useAppSelector<IProductsPageSlice>(
     StoreSliceEnum.PRODUCTS,
   );
-  const service = useProductGalleryPageService();
   const productsService = useProductsPageService();
   const { productId } = useParams();
   const { handleCardAction, createRefCallback } = useCardActions({
@@ -32,6 +29,7 @@ export function ProductGalleryPage() {
       state[StoreSliceEnum.PRODUCT_GALLERY].activeCards,
     refreshAction: actions.refreshActiveCards,
   });
+  const service = useProductGalleryPageService(handleCardAction);
   const productsForItemsCard = productsService.itemsCardItemsConvertor(
     productsState.products,
     {
@@ -53,25 +51,7 @@ export function ProductGalleryPage() {
   );
 
   useEffect(() => {
-    if (productsState.products === null) {
-      dispatch(productsActions.setIsItemsCardLoading(true));
-      productsService
-        .getTheProductsForGridHandler(productsState.gridRequestModel)
-        .then(() => {
-          dispatch(productsActions.setIsItemsCardLoading(false));
-        });
-    }
-    if (!productsState.productCounter) {
-      dispatch(productsActions.setIsProductMenuCardLoading(true));
-      productsService.getCountersForProductsHandler(productId).then(() => {
-        dispatch(productsActions.setIsProductMenuCardLoading(false));
-      });
-    }
-    dispatch(actions.setIsProductPhotosCardLoading(true));
-    productsService.getProductPhotosHandler(Number(productId)).then(() => {
-      dispatch(actions.setIsProductPhotosCardLoading(false));
-    });
-    service.getProductVariantsHandler(Number(productId));
+    service.getProductGalleryPageDataHandler(productId);
   }, [productId]);
 
   async function onAction(actionType: string, payload: any) {
@@ -112,7 +92,7 @@ export function ProductGalleryPage() {
         }
         break;
       case "closeConnectImageCard":
-        handleCardAction("connectImageCard");
+        service.closeConnectImageCardHandler();
         break;
     }
   }

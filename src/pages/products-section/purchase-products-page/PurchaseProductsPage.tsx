@@ -3,85 +3,42 @@ import React, { useEffect } from "react";
 
 import {
   formatDate,
-  setSelectedGridItem
+  setSelectedGridItem,
 } from "@/utils/helpers/quick-helper.ts";
 import cs from "./PurchaseProductsPage.module.scss";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import usePurchaseProductsPageService
-  from "@/pages/products-section/purchase-products-page/usePurchaseProductsPageService.ts";
-import ProductMenuCard
-  from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
-import {
-  IPurchaseProductsPageSlice
-} from "@/const/interfaces/store-slices/IPurchaseProductsPageSlice.ts";
-import PurchaseProductsCard
-  from "@/components/complex/custom-cards/purchase-products-card/PurchaseProductsCard.tsx";
-import useProductsPageService
-  from "@/pages/products-section/products-page/useProductsPageService.ts";
-import {
-  IProductsPageSlice
-} from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
-import {
-  PurchaseProductsPageSliceActions as actions
-} from "@/state/slices/PurchaseProductsPageSlice.ts";
-import {
-  ProductsPageSliceActions as productsActions
-} from "@/state/slices/ProductsPageSlice.ts";
+import usePurchaseProductsPageService from "@/pages/products-section/purchase-products-page/usePurchaseProductsPageService.ts";
+import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
+import { IPurchaseProductsPageSlice } from "@/const/interfaces/store-slices/IPurchaseProductsPageSlice.ts";
+import PurchaseProductsCard from "@/components/complex/custom-cards/purchase-products-card/PurchaseProductsCard.tsx";
+import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
+import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import { PurchaseProductsPageSliceActions as actions } from "@/state/slices/PurchaseProductsPageSlice.ts";
+import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
-import ProductConfigurationCard
-  from "@/components/complex/custom-cards/product-configuration-card/ProductConfigurationCard.tsx";
-import CreateProductCategoryCard
-  from "@/components/complex/custom-cards/create-product-category-card/CreateProductCategoryCard.tsx";
-import CreateProductBrandCard
-  from "@/components/complex/custom-cards/create-product-brand-card/CreateProductBrandCard.tsx";
+import ProductConfigurationCard from "@/components/complex/custom-cards/product-configuration-card/ProductConfigurationCard.tsx";
+import CreateProductCategoryCard from "@/components/complex/custom-cards/create-product-category-card/CreateProductCategoryCard.tsx";
+import CreateProductBrandCard from "@/components/complex/custom-cards/create-product-brand-card/CreateProductBrandCard.tsx";
 import { useToast } from "@/hooks/useToast.ts";
-import ManageProductCard
-  from "@/components/complex/custom-cards/manage-product-card/ManageProductCard.tsx";
-import ProductPhotosCard
-  from "@/components/complex/custom-cards/product-photos-card/ProductPhotosCard.tsx";
+import ManageProductCard from "@/components/complex/custom-cards/manage-product-card/ManageProductCard.tsx";
+import ProductPhotosCard from "@/components/complex/custom-cards/product-photos-card/ProductPhotosCard.tsx";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
-import ConnectImageCard
-  from "@/components/complex/custom-cards/connect-image-card/ConnectImageCard.tsx";
-import ChooseVariantTraitsCard
-  from "@/components/complex/custom-cards/choose-variant-traits-card/ChooseVariantTraitsCard.tsx";
-import ProductTraitConfigurationCard
-  from "@/components/complex/custom-cards/product-trait-configuration-card/ProductTraitConfigurationCard.tsx";
-import AddVariantCard
-  from "@/components/complex/custom-cards/add-variant-card/AddVariantCard.tsx";
-import VariantConfigurationCard
-  from "@/components/complex/custom-cards/variant-configuration-card/VariantConfigurationCard.tsx";
-import AddStockCard
-  from "@/components/complex/custom-cards/add-stock-card/AddStockCard.tsx";
-import DisposeStockCard
-  from "@/components/complex/custom-cards/dispose-stock-card/DisposeStockCard.tsx";
-import StockHistoryCard
-  from "@/components/complex/custom-cards/stock-history-card/StockHistoryCard.tsx";
-import VariantPhotosCard
-  from "@/components/complex/custom-cards/variant-photos-card/VariantPhotosCard.tsx";
-import ManageTraitsCard
-  from "@/components/complex/custom-cards/manage-traits-card/ManageTraitsCard.tsx";
+import ConnectImageCard from "@/components/complex/custom-cards/connect-image-card/ConnectImageCard.tsx";
+import ChooseVariantTraitsCard from "@/components/complex/custom-cards/choose-variant-traits-card/ChooseVariantTraitsCard.tsx";
+import ProductTraitConfigurationCard from "@/components/complex/custom-cards/product-trait-configuration-card/ProductTraitConfigurationCard.tsx";
+import AddVariantCard from "@/components/complex/custom-cards/add-variant-card/AddVariantCard.tsx";
+import VariantConfigurationCard from "@/components/complex/custom-cards/variant-configuration-card/VariantConfigurationCard.tsx";
+import AddStockCard from "@/components/complex/custom-cards/add-stock-card/AddStockCard.tsx";
+import DisposeStockCard from "@/components/complex/custom-cards/dispose-stock-card/DisposeStockCard.tsx";
+import StockHistoryCard from "@/components/complex/custom-cards/stock-history-card/StockHistoryCard.tsx";
+import VariantPhotosCard from "@/components/complex/custom-cards/variant-photos-card/VariantPhotosCard.tsx";
+import ManageTraitsCard from "@/components/complex/custom-cards/manage-traits-card/ManageTraitsCard.tsx";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
-import useProductBasicDataPageService
-  from "@/pages/products-section/product-basic-data-page/useProductBasicDataPageService.ts";
+import useProductBasicDataPageService from "@/pages/products-section/product-basic-data-page/useProductBasicDataPageService.ts";
 
 export function PurchaseProductsPage() {
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const { addToast } = useToast();
-  const { openConfirmationDialog } = useDialogService();
-  const service = usePurchaseProductsPageService();
-  const productsService = useProductsPageService();
-  const productsBasicDataService = useProductBasicDataPageService();
-  const state = useAppSelector<IPurchaseProductsPageSlice>(
-    StoreSliceEnum.PURCHASE_PRODUCTS,
-  );
-  const productsState = useAppSelector<IProductsPageSlice>(
-    StoreSliceEnum.PRODUCTS,
-  );
-  const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
-  const { purchaseId } = useParams();
   const {
     handleCardAction,
     handleMultipleCardActions,
@@ -92,6 +49,26 @@ export function PurchaseProductsPage() {
       state[StoreSliceEnum.PURCHASE_PRODUCTS].activeCards,
     refreshAction: actions.refreshActiveCards,
   });
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { addToast } = useToast();
+  const { openConfirmationDialog } = useDialogService();
+  const service = usePurchaseProductsPageService(
+    handleCardAction,
+    handleMultipleCardActions,
+    keepOnlyCards,
+  );
+  const productsService = useProductsPageService();
+  const productsBasicDataService =
+    useProductBasicDataPageService(handleCardAction);
+  const state = useAppSelector<IPurchaseProductsPageSlice>(
+    StoreSliceEnum.PURCHASE_PRODUCTS,
+  );
+  const productsState = useAppSelector<IProductsPageSlice>(
+    StoreSliceEnum.PRODUCTS,
+  );
+  const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
+  const { purchaseId } = useParams();
 
   useEffect(() => {
     if (!productsState.selectedPurchase) {

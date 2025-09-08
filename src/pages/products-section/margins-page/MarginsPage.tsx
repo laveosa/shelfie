@@ -19,18 +19,27 @@ import { DataWithId } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { MarginsListGridColumns } from "@/components/complex/grid/custom-grids/margins-list-grid/MarginsListGridColumns.tsx";
 
 export function MarginsPage() {
+  const {
+    handleCardAction,
+    handleMultipleCardActions,
+    keepOnlyCards,
+    createRefCallback,
+  } = useCardActions({
+    selectActiveCards: (state) => state[StoreSliceEnum.MARGINS].activeCards,
+    refreshAction: actions.refreshActiveCards,
+  });
   const state = useAppSelector<IPurchaseProductsPageSlice>(
     StoreSliceEnum.MARGINS,
   );
   const productsState = useAppSelector<IProductsPageSlice>(
     StoreSliceEnum.PRODUCTS,
   );
-  const service = useMarginsPageService();
+  const service = useMarginsPageService(
+    handleCardAction,
+    handleMultipleCardActions,
+    keepOnlyCards,
+  );
   const { purchaseId } = useParams();
-  const { createRefCallback } = useCardActions({
-    selectActiveCards: (state) => state[StoreSliceEnum.MARGINS].activeCards,
-    refreshAction: actions.refreshActiveCards,
-  });
 
   useEffect(() => {
     service.getMarginPageDataHandle(purchaseId);

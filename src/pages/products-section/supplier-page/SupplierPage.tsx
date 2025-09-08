@@ -18,16 +18,16 @@ import { DataWithId } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { SuppliersListGridColumns } from "@/components/complex/grid/custom-grids/suppliers-list-grid/SuppliersListGridColumns.tsx";
 
 export function SupplierPage() {
+  const { handleCardAction, createRefCallback } = useCardActions({
+    selectActiveCards: (state) => state[StoreSliceEnum.SUPPLIER].activeCards,
+    refreshAction: actions.refreshActiveCards,
+  });
   const { purchaseId } = useParams();
-  const service = useSupplierPageService();
+  const service = useSupplierPageService(handleCardAction);
   const state = useAppSelector<ISupplierPageSlice>(StoreSliceEnum.SUPPLIER);
   const productsState = useAppSelector<IProductsPageSlice>(
     StoreSliceEnum.PRODUCTS,
   );
-  const { createRefCallback } = useCardActions({
-    selectActiveCards: (state) => state[StoreSliceEnum.SUPPLIER].activeCards,
-    refreshAction: actions.refreshActiveCards,
-  });
 
   useEffect(() => {
     service.getSupplierPageDataHandler(purchaseId);

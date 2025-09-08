@@ -8,7 +8,11 @@ import useProductsPageService from "@/pages/products-section/products-page/usePr
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { useToast } from "@/hooks/useToast.ts";
 
-export default function usePurchaseProductsPageService() {
+export default function usePurchaseProductsPageService(
+  _handleCardAction,
+  _handleMultipleCardActions,
+  _keepOnlyCards,
+) {
   const state = useAppSelector<IPurchaseProductsPageSlice>(
     StoreSliceEnum.PURCHASE_PRODUCTS,
   );

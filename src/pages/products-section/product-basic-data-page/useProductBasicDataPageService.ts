@@ -12,9 +12,8 @@ import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IPro
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
-import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 
-export default function useProductBasicDataPageService() {
+export default function useProductBasicDataPageService(handleCardAction) {
   const state = useAppSelector<IProductBasicDataPageSlice>(
     StoreSliceEnum.PRODUCT_BASIC_DATA,
   );
@@ -25,11 +24,6 @@ export default function useProductBasicDataPageService() {
   const productsService = useProductsPageService();
   const { addToast } = useToast();
   const navigate = useNavigate();
-  const { handleCardAction, createRefCallback } = useCardActions({
-    selectActiveCards: (state) =>
-      state[StoreSliceEnum.PRODUCT_BASIC_DATA].activeCards,
-    refreshAction: actions.refreshActiveCards,
-  });
 
   const [generateProductCode] =
     ProductsApiHooks.useLazyGenerateProductCodeQuery();

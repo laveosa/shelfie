@@ -1,60 +1,41 @@
-import { MoreHorizontal } from "lucide-react";
-import { useForm } from "react-hook-form";
-import React from "react";
 import { useTranslation } from "react-i18next";
+import { useForm } from "react-hook-form";
+import { ImageIcon, Link2, Plus, RefreshCcw } from "lucide-react";
+import React from "react";
 
+import { FormField } from "@/components/ui/form.tsx";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./AddStockCard.module.scss";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu.tsx";
-import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { Switch } from "@/components/ui/switch.tsx";
-import image from "@/assets/images/AuthLogo.png";
 import { IAddStockCard } from "@/const/interfaces/complex-components/custom-cards/IAddStockCard.ts";
 import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/components/ui/form.tsx";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select.tsx";
-import { PriceTypeModel } from "@/const/models/PriceTypeModel.ts";
+import { Separator } from "@/components/ui/separator.tsx";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import { formatDate } from "@/utils/helpers/quick-helper.ts";
+import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
+import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
+import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
+import SheFormItem from "@/components/complex/she-form/components/she-form-item/SheFormItem.tsx";
+import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 
 export default function AddStockCard({
   isLoading,
   variant,
   onAction,
   taxTypes,
+  purchase,
   currencyTypes,
-  onSecondaryButtonClick,
   ...props
 }: IAddStockCard) {
   const { t } = useTranslation();
-  const purchasePriceType: PriceTypeModel[] = [
-    { priceTypeId: 1, priceTypeName: "Netto" },
-    { priceTypeId: 2, priceTypeName: "Brutto" },
-  ];
-
   const form = useForm({
     defaultValues: {
-      unitAmount: 1,
+      unitAmount: null,
       priceModel: {
-        price: 0,
-        taxTypeId: taxTypes?.[4].id,
-        priceType: purchasePriceType?.[0].priceTypeName,
-        currencyId: currencyTypes?.[0]?.id,
+        price: null,
+        taxTypeId: null,
+        currencyId: null,
       },
       purchaseId: null,
     },
@@ -62,28 +43,46 @@ export default function AddStockCard({
 
   function onSubmit(data) {
     const formattedData = {
-      ...data,
-      unitAmount: Number(data.unitAmount) || 0,
       priceModel: {
-        price: Number(data.priceModel.price) || 0,
+        variantId: variant.variantId,
+        nettoPrice: Number(data.priceModel.price) || 0,
         taxTypeId: Number(data.priceModel.taxTypeId) || 0,
-        priceType: data.priceModel.priceType,
         currencyId: Number(data.priceModel.currencyId) || 0,
+        unitsAmount: Number(data.unitAmount) || 0,
       },
-      purchaseId: Number(data.purchaseId) || 17,
+      purchaseId: Number(purchase.purchaseId),
     };
-    onAction("increaseStockAmount", { variant, formattedData });
+    onAction("increaseStockAmount", formattedData);
+  }
+
+  function convertCurrencyToSelectItems(
+    data: CurrencyModel[],
+  ): ISheSelectItem<CurrencyModel>[] {
+    return data?.map(
+      (item: CurrencyModel): ISheSelectItem<any> => ({
+        value: item.id,
+        text: item.name,
+      }),
+    );
+  }
+
+  function convertTaxesToSelectItems(
+    data: TaxTypeModel[],
+  ): ISheSelectItem<any>[] {
+    return data?.map(
+      (item): ISheSelectItem<any> => ({
+        value: item.id,
+        text: item.name,
+      }),
+    );
   }
 
   return (
     <SheProductCard
       loading={isLoading}
       title={`${t("StockActions.AddToStock")} ${variant?.variantName} ${t("SectionTitles.Product")}`}
-      showPrimaryButton={true}
-      primaryButtonTitle={t("StockActions.AddToStock")}
-      showSecondaryButton={true}
       onPrimaryButtonClick={form.handleSubmit(onSubmit)}
-      onSecondaryButtonClick={onSecondaryButtonClick}
+      onSecondaryButtonClick={() => onAction("closeAddStockCard")}
       showCloseButton
       className={cs.addStockCard}
       {...props}
@@ -91,25 +90,23 @@ export default function AddStockCard({
       <div className={cs.addStockCardContent}>
         <SheForm form={form as any} onSubmit={onSubmit}>
           <div className={cs.addStockConfigurationForm}>
-            <SheForm.Field name="unitAmount">
-              <SheInput
-                label={t("PurchaseForm.Labels.Units")}
-                type="number"
-                fullWidth
-                onDelay={() => {
-                  form.handleSubmit(onSubmit);
-                }}
-              />
-            </SheForm.Field>
             <div>
-              <span className="she-title">{t("PurchaseForm.Labels.PurchasePrice")}</span>
+              <span className="she-title">
+                {t("PurchaseForm.Labels.PurchasePrice")}
+              </span>
             </div>
             <div className={cs.purchasePriceFormRow}>
-              <div className={cs.formRowItem}>
-                <SheForm.Field label={t("PurchaseForm.Labels.PurchasePrice")} name="priceModel.price">
+              <div
+                className={`${cs.purchaseFormItem} ${cs.purchaseFormItemPrice}`}
+              >
+                <SheForm.Field
+                  label={t("PurchaseForm.Labels.PurchasePrice")}
+                  name="priceModel.price"
+                >
                   <SheInput
                     type="number"
-                    placeholder={t("PurchaseForm.Placeholders.PurchasePrice")}
+                    placeholder="enter price netto..."
+                    fullWidth
                     onDelay={() => form.handleSubmit(onSubmit)}
                   />
                 </SheForm.Field>
@@ -117,153 +114,182 @@ export default function AddStockCard({
               <div className={cs.formRowItem}>
                 <FormField
                   control={form.control}
-                  name="priceModel.taxTypeId"
+                  name="priceModel.currencyId"
                   render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t("PurchaseForm.Labels.Tax")}</FormLabel>
-                      <Select
-                        onValueChange={(value) => field.onChange(Number(value))}
-                        value={field.value ? field.value.toString() : ""}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder={t("SelectOptions.SelectVAT")} />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {taxTypes?.map((taxType) => (
-                            <SelectItem
-                              key={taxType.id}
-                              value={taxType.id.toString()}
-                            >
-                              <div>{taxType.name}</div>
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormItem>
+                    <SheFormItem
+                      className={`${cs.purchaseFormItem} ${cs.purchaseFormItemCurrency}`}
+                      label="Currency"
+                    >
+                      <SheSelect
+                        selected={field.value as any}
+                        items={convertCurrencyToSelectItems(currencyTypes)}
+                        placeholder="select vat..."
+                        hideFirstOption
+                        minWidth="100px"
+                        onSelect={(value) => {
+                          field.onChange(value);
+                          void form.trigger("priceModel.currencyId");
+                        }}
+                      />
+                    </SheFormItem>
                   )}
-                ></FormField>
+                />
               </div>
               <div className={cs.formRowItem}>
                 <FormField
                   control={form.control}
-                  name="priceModel.priceType"
+                  name="priceModel.taxTypeId"
                   render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Netto/Brutto</FormLabel>
-                      <Select
-                        onValueChange={(value) => field.onChange(value)}
-                        value={field.value ? field.value.toString() : ""}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder={t("SelectOptions.SelectPriceType")} />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {purchasePriceType?.map((price) => (
-                            <SelectItem
-                              key={price.priceTypeId}
-                              value={price.priceTypeName.toString()}
-                            >
-                              <div>{price.priceTypeName}</div>
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormItem>
+                    <SheFormItem
+                      className={`${cs.purchaseFormItem} ${cs.purchaseFormItemVat}`}
+                      label="VAT"
+                    >
+                      <SheSelect
+                        selected={field.value}
+                        items={convertTaxesToSelectItems(taxTypes)}
+                        placeholder="select tax..."
+                        hideFirstOption
+                        minWidth="100px"
+                        onSelect={(value) => {
+                          field.onChange(value);
+                          void form.trigger("priceModel.taxTypeId");
+                        }}
+                      />
+                    </SheFormItem>
                   )}
-                ></FormField>
+                />
               </div>
             </div>
-            <FormField
-              control={form.control}
-              name="priceModel.currencyId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("PurchaseForm.Labels.Currency")}</FormLabel>
-                  <Select
-                    onValueChange={(value) => field.onChange(Number(value))}
-                    value={field.value ? field.value.toString() : ""}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder={t("SelectOptions.SelectCurrency")} />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {currencyTypes?.map((currencyType) => (
-                        <SelectItem
-                          key={currencyType.id}
-                          value={currencyType.id.toString()}
-                        >
-                          <div>{currencyType.name}</div>
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FormItem>
-              )}
-            ></FormField>
-            <div className={cs.purchaseDetailsBlock}>
-              <div>
-                <span className="she-title">{t("PurchaseForm.Labels.PurchaseDetails")}</span>
-              </div>
-              <div>
-                <SheInput fullWidth label={t("PurchaseForm.Labels.InvoiceNumber")} />
-              </div>
-              <div className={cs.supplierInformationBlock}>
-                <SheInput
-                  fullWidth
-                  label={t("PurchaseForm.Labels.PurchaseDate")}
-                />
-                <div className={cs.supplierInformationBlock}>
-                  <span className="she-text">
-                    {t("PurchaseForm.Labels.SupplierSelection")}
+            <SheForm.Field name="unitAmount">
+              <SheInput
+                label={t("PurchaseForm.Labels.Units")}
+                placeholder="enter unit amount..."
+                type="number"
+                fullWidth
+                onDelay={() => {
+                  form.handleSubmit(onSubmit);
+                }}
+              />
+            </SheForm.Field>
+          </div>
+        </SheForm>
+        <Separator />
+        {purchase ? (
+          <div className={cs.connectedPurchase}>
+            <div className={cs.connectedPurchaseInfo}>
+              <div className={cs.connectedPurchaseHeader}>
+                <div className={cs.connectedPurchaseHeaderTitle}>
+                  <span className="she-title">Connected Purchase</span>
+                  <span className="she-subtext">
+                    If this is not the right purchase :{" "}
                   </span>
-                  <div className={cs.supplierInformation}>
-                    <div>
-                      <img src={image as any} alt="" />
+                </div>
+                <SheButton
+                  icon={RefreshCcw}
+                  variant="secondary"
+                  value={"Replace Purchase"}
+                  onClick={() => onAction("openSelectPurchaseCard")}
+                />
+              </div>
+              <div className={cs.connectedPurchaseSupplier}>
+                <div className={cs.supplierInfo}>
+                  {purchase.supplier?.thumbnailUrl ? (
+                    <div className={cs.supplierInfoImageWrapper}>
+                      <img
+                        src={purchase.supplier?.thumbnailUrl}
+                        alt={purchase.supplier?.supplierName || "Supplier"}
+                        className={cs.supplierInfoImage}
+                      />
                     </div>
-                    <span className="she-subtext">
-                      Babylon Srl VIA DEI NOTAI 135-137 BL, Centergross, 30,
-                      Italy
+                  ) : (
+                    <div className={cs.supplierInfoIcon}>
+                      <SheIcon icon={ImageIcon} maxWidth="30px" />
+                    </div>
+                  )}
+                  <div className={cs.supplierInfoDetails}>
+                    <span className={cs.supplierInfoDetailsName}>
+                      {purchase.supplier?.supplierName}
                     </span>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <SheButton
-                          variant="secondary"
-                          className="flex h-8 p-0 data-[state=open]:bg-muted"
-                        >
-                          <MoreHorizontal />
-                        </SheButton>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="start" className="w-[160px]">
-                        <DropdownMenuItem
-                          onClick={() => onAction("deleteTrait")}
-                        >
-                          <span className="she-text">{t("CommonButtons.Delete")}</span>
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                    <span className="she-text">
+                      {formatDate(purchase.date, "date")}
+                    </span>
                   </div>
-                  <div className={cs.createPurchaseToggleBlock}>
-                    <div className={cs.createPurchaseToggle}>
-                      <Switch />
-                    </div>
-                    <div className={cs.createPurchaseToggleDesc}>
-                      <span className="she-subtext">{t("SpecialText.CreatePurchase")}</span>
-                      <span className="she-subtext">
-                        {t("SpecialText.CreatePurchaseDescription")}
-                      </span>
-                    </div>
-                  </div>
+                </div>
+                <SheButton
+                  icon={Link2}
+                  variant="ghost"
+                  value="Purchase Details"
+                  txtColor="#007AFF"
+                />
+              </div>
+            </div>
+            <div className={cs.connectedPurchaseProductsSummary}>
+              <span className={cs.connectedPurchaseProductsSummaryTitle}>
+                Products in purchase summary
+              </span>
+              <Separator />
+              <div className={cs.connectedPurchaseProductsSummaryHeaders}>
+                <span className={cs.connectedPurchaseProductsSummaryHeader}>
+                  Units
+                </span>
+                <span className={cs.connectedPurchaseProductsSummaryHeader}>
+                  Expense
+                </span>
+                <span className={cs.connectedPurchaseProductsSummaryHeader}>
+                  Projected value
+                </span>
+              </div>
+              <Separator />
+              <div className={cs.connectedPurchaseProductsSummaryInfo}>
+                <div className={cs.unitsColumn}>
+                  <span>{purchase.unitsAmount}</span>
+                </div>
+                <div className={cs.expenseColumn}>
+                  <span>{`${purchase.expense} ${purchase.currencyBrief}`}</span>
+                </div>
+                <div className={cs.valueColumn}>
+                  <span>{`${purchase.orderValueAmount} ${purchase.currencyBrief}`}</span>
                 </div>
               </div>
             </div>
           </div>
-        </SheForm>
+        ) : (
+          <div className={cs.purchaseDetails}>
+            <span className="she-title">Purchase Details</span>
+            <span className="she-text">
+              If you want to be able to track this stock change in the purchase
+              section, please select the purchase this change is connected to.
+            </span>
+            <div className={cs.purchaseDetailsButtonBlock}>
+              <SheButton
+                icon={Plus}
+                variant="secondary"
+                value="Select Purchase"
+                onClick={() => onAction("openSelectPurchaseCard")}
+              />
+              <span className="she-text">or</span>
+              <SheButton
+                icon={Plus}
+                variant="secondary"
+                value="Report Purchase"
+                onClick={() => onAction("openSupplierCard")}
+              />
+            </div>
+          </div>
+        )}
+        <Separator />
+        <div className={cs.footerButtons}>
+          <SheButton
+            variant="secondary"
+            value="Cancel"
+            onClick={() => onAction("closeAddStockCard")}
+          />
+          <SheButton
+            icon={Plus}
+            value="Add to Stock"
+            onClick={() => onSubmit(form.getValues())}
+          />
+        </div>
       </div>
     </SheProductCard>
   );
