@@ -10,4 +10,10 @@ export interface PurchaseModel {
   supplier?: SupplierModel;
   documentNotes?: string;
   location?: LocationModel;
+  expense?: number;
+  isDeleted?: boolean;
+  orderValueAmount?: number;
+  soldAmount?: number;
+  unitsAmount?: number;
+  valueAmount?: number;
 }

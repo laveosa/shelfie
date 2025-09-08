@@ -19,6 +19,11 @@ import {
 import { VariantModel } from "@/const/models/VariantModel.ts";
 import { GridRowsColorsEnum } from "@/const/enums/GridRowsColorsEnum.ts";
 import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
+import PurchasesApiHooks from "@/utils/services/api/PurchasesApiService.ts";
+import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
+import { useTranslation } from "react-i18next";
+import CompaniesApiHooks from "@/utils/services/api/CompaniesApiService.ts";
+import { CompanyModel } from "@/const/models/CompanyModel.ts";
 
 export default function useManageVariantsPageService(handleCardAction) {
   const dispatch = useAppDispatch();
@@ -31,6 +36,7 @@ export default function useManageVariantsPageService(handleCardAction) {
   );
   const { addToast } = useToast();
   const { openConfirmationDialog } = useDialogService();
+  const { t } = useTranslation();
 
   const [getVariantsForGrid] = ProductsApiHooks.useGetVariantsForGridMutation();
   const [toggleVariantIsActive] =
@@ -40,6 +46,16 @@ export default function useManageVariantsPageService(handleCardAction) {
   const [generateProductCode] =
     ProductsApiHooks.useLazyGenerateProductCodeQuery();
   const [deletePhoto] = AssetsApiHooks.useDeletePhotoMutation();
+  const [getListOfPurchasesForGrid] =
+    PurchasesApiHooks.useGetListOfPurchasesForGridMutation();
+  const [addVariantToPurchaseProducts] =
+    PurchasesApiHooks.useAddVariantToPurchaseProductsMutation();
+  const [getPurchaseDetails] =
+    PurchasesApiHooks.useLazyGetPurchaseDetailsQuery();
+  const [createPurchaseForSupplier] =
+    PurchasesApiHooks.useCreatePurchaseForSupplierMutation();
+  const [getListOfCompaniesForGrid] =
+    CompaniesApiHooks.useGetListOfCompaniesForGridMutation();
 
   function getVariantsForGridHandler(data?: GridRequestModel) {
     return getVariantsForGrid(data).then((res: any) => {
@@ -389,26 +405,27 @@ export default function useManageVariantsPageService(handleCardAction) {
 
   function increaseStockAmountHandler(model) {
     dispatch(actions.setIsAddStockCardLoading(true));
-    productsService
-      .increaseStockAmountForVariantHandler(
-        model.variant.variantId,
-        model.formattedData,
-      )
-      .then((res) => {
-        dispatch(actions.setIsAddStockCardLoading(false));
-        if (res) {
-          addToast({
-            text: "Stock increased successfully",
-            type: "success",
-          });
-        } else {
-          addToast({
-            text: "Stock not increased",
-            description: res.error.message,
-            type: "error",
-          });
-        }
+    addVariantToPurchaseProducts({
+      id: model.purchaseId,
+      model: model.priceModel,
+    }).then((res: any) => {
+      dispatch(actions.setIsAddStockCardLoading(false));
+      getPurchaseDetails(model.purchaseId).then((res: any) => {
+        dispatch(actions.refreshSelectedPurchase(res.data));
       });
+      if (res) {
+        addToast({
+          text: "Stock increased successfully",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: "Stock not increased",
+          description: res.error.message,
+          type: "error",
+        });
+      }
+    });
   }
 
   function disposeFromStockHandler(model) {
@@ -878,6 +895,11 @@ export default function useManageVariantsPageService(handleCardAction) {
 
   function openDisposeStockCardHandler() {
     handleCardAction("disposeStockCard", true);
+    productsService
+      .getVariantDetailsHandler(productsState.selectedVariant.variantId)
+      .then((res) => {
+        dispatch(productsActions.refreshSelectedVariant(res));
+      });
   }
 
   function openVariantHistoryCardHandler(model) {
@@ -910,6 +932,24 @@ export default function useManageVariantsPageService(handleCardAction) {
       });
   }
 
+  function openSelectPurchaseCardHandler(model) {
+    handleCardAction("selectPurchaseCard", true);
+    getListOfPurchasesForGrid(model).then((res: any) => {
+      if (res.error) return;
+      const modifiedList = res.data.items.map((item) => ({
+        ...item,
+        isSelected: item.purchaseId === state.selectedPurchase?.purchaseId,
+      }));
+
+      dispatch(
+        actions.refreshPurchaseGridModel({
+          ...res.data,
+          items: modifiedList,
+        }),
+      );
+    });
+  }
+
   function closeProductTraitConfigurationCardHandler() {
     handleCardAction("productTraitConfigurationCard");
   }
@@ -935,6 +975,185 @@ export default function useManageVariantsPageService(handleCardAction) {
 
   function closeVariantHistoryCardHandler() {
     handleCardAction("variantHistoryCard");
+  }
+
+  function closeSelectPurchaseCardHandler() {
+    handleCardAction("selectPurchaseCard");
+  }
+
+  function selectPurchaseHandler(payload: PurchaseModel) {
+    handleCardAction("selectPurchaseCard");
+    dispatch(actions.refreshSelectedPurchase(payload));
+  }
+
+  function closeAddStockCardHandler() {
+    handleCardAction("addStockCard");
+    dispatch(actions.resetSelectedPurchase());
+  }
+
+  function searchSupplierHandle(model) {
+    dispatch(actions.setIsPurchaseGridLoading(true));
+    getListOfPurchasesForGrid({
+      ...state.purchaseGridRequestModel,
+      searchQuery: model,
+    }).then((res) => {
+      if (res.error) return;
+      const modifiedList = res.data.items.map((item) => ({
+        ...item,
+        isSelected: item.purchaseId === state.selectedPurchase?.purchaseId,
+      }));
+
+      dispatch(
+        actions.refreshPurchaseGridModel({
+          ...res.data,
+          items: modifiedList,
+        }),
+      );
+    });
+  }
+
+  function filterSuppliersByDateHandle(model) {
+    dispatch(actions.setIsPurchaseGridLoading(true));
+    getListOfPurchasesForGrid({
+      ...state.purchaseGridRequestModel,
+      filter: model,
+    }).then((res) => {
+      if (res.error) return;
+      const modifiedList = res.data.items.map((item) => ({
+        ...item,
+        isSelected: item.purchaseId === state.selectedPurchase?.purchaseId,
+      }));
+
+      dispatch(
+        actions.refreshPurchaseGridModel({
+          ...res.data,
+          items: modifiedList,
+        }),
+      );
+    });
+  }
+
+  function createPurchaseForSupplierHandler(model) {
+    dispatch(actions.setIsSupplierCardLoading(true));
+    return createPurchaseForSupplier({
+      date: model.selectedDate,
+      supplierId: state.selectedCompany.companyId,
+      documentNotes: model.purchaseNotes,
+    }).then((res: any) => {
+      dispatch(actions.refreshSelectedPurchase(res.data));
+      dispatch(actions.setIsSupplierCardLoading(false));
+      if (res) {
+        addToast({
+          text: t("SuccessMessages.PurchaseCreated"),
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: res.error.message,
+          type: "error",
+        });
+      }
+    });
+  }
+
+  function openSupplierCardHandler() {
+    handleCardAction("supplierCard", true);
+  }
+
+  function openSelectEntityCardHandler() {
+    dispatch(productsActions.resetSelectedSupplier());
+    handleCardAction("selectEntityCard", true);
+    if (!productsState.countryCodeList) {
+      productsService.getCountryCodeHandler().then(() => {});
+    }
+    dispatch(actions.setIsSelectEntityCardLoading(true));
+    dispatch(actions.setIsSuppliersGridLoading(true));
+    getListOfCompaniesForGrid(state.companiesGriRequestModel).then((res) => {
+      dispatch(actions.setIsSelectEntityCardLoading(false));
+      dispatch(actions.setIsSuppliersGridLoading(false));
+      const modifiedList = res.data.items.map((item) => ({
+        ...item,
+        isSelected: item.companyId === state.selectedCompany?.companyId,
+      }));
+      dispatch(
+        actions.refreshCompaniesGridModel({ ...res.data, items: modifiedList }),
+      );
+    });
+  }
+
+  function searchEntityHandle(model) {
+    dispatch(actions.setIsSuppliersGridLoading(true));
+    getListOfCompaniesForGrid({
+      ...state.companiesGriRequestModel,
+      searchQuery: model,
+    }).then((res) => {
+      dispatch(actions.setIsSuppliersGridLoading(false));
+      const modifiedList = res.data.items.map((item) => ({
+        ...item,
+        isSelected: item.companyId === state.selectedCompany?.companyId,
+      }));
+      dispatch(
+        actions.refreshCompaniesGridModel({ ...res.data, items: modifiedList }),
+      );
+    });
+  }
+
+  function selectCompanyHandle(model: CompanyModel) {
+    handleCardAction("selectEntityCard");
+    dispatch(actions.refreshSelectedCompany(model));
+  }
+
+  function detachSupplierHandler() {
+    handleCardAction("selectEntityCard", true);
+    if (state.companiesGridModel === null) {
+      dispatch(actions.setIsSelectEntityCardLoading(true));
+      dispatch(actions.setIsSuppliersGridLoading(true));
+      getListOfCompaniesForGrid(state.companiesGriRequestModel).then((res) => {
+        dispatch(actions.setIsSelectEntityCardLoading(false));
+        dispatch(actions.setIsSuppliersGridLoading(false));
+        const modifiedList = res.data.items.map((item) => ({
+          ...item,
+          isSelected: item.companyId === state.selectedCompany?.companyId,
+        }));
+        dispatch(
+          actions.refreshCompaniesGridModel({
+            ...res.data,
+            items: modifiedList,
+          }),
+        );
+      });
+    } else {
+      const modifiedList = state.companiesGridModel.items.map((item) => ({
+        ...item,
+        isSelected: item.companyId === state.selectedCompany?.companyId,
+      }));
+      dispatch(
+        actions.refreshCompaniesGridModel({
+          ...state.companiesGridModel,
+          items: modifiedList,
+        }),
+      );
+    }
+  }
+
+  function closeSupplierCardHandler() {
+    handleCardAction("supplierCard");
+  }
+
+  function closeSelectEntityCardHandler() {
+    handleCardAction("selectEntityCard");
+  }
+
+  function closeSupplierConfigurationCardHandler() {
+    handleCardAction("supplierConfigurationCard");
+    // dispatch(actions.resetManagedSupplier());
+    // if (state.activeCards.includes("selectEntityCard")) {
+    //   dispatch(
+    //     actions.refreshSuppliersWithLocations(
+    //       clearSelectedGridItems(state.suppliersWithLocations),
+    //     ),
+    //   );
+    // }
   }
 
   return {
@@ -975,10 +1194,25 @@ export default function useManageVariantsPageService(handleCardAction) {
     openVariantHistoryCardHandler,
     openManageTraitsCardHandler,
     openVariantPhotosCardHandler,
+    openSelectPurchaseCardHandler,
     closeProductTraitConfigurationCardHandler,
     closeAddVariantCardHandler,
     closeVariantPhotosCardHandler,
     closeVariantConfigurationCardHandler,
     closeVariantHistoryCardHandler,
+    closeSelectPurchaseCardHandler,
+    selectPurchaseHandler,
+    closeAddStockCardHandler,
+    searchSupplierHandle,
+    filterSuppliersByDateHandle,
+    createPurchaseForSupplierHandler,
+    closeSupplierCardHandler,
+    closeSelectEntityCardHandler,
+    closeSupplierConfigurationCardHandler,
+    openSupplierCardHandler,
+    openSelectEntityCardHandler,
+    searchEntityHandle,
+    selectCompanyHandle,
+    detachSupplierHandler,
   };
 }

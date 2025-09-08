@@ -17,43 +17,144 @@
         display: flex;
         gap: 10px;
 
-        .formRowItem {
-          width: 33%;
+        .purchaseFormItemPrice {
+          min-width: 150px;
+        }
+
+        .purchaseFormItemCurrency {
+          padding-top: 9px;
+        }
+
+        .purchaseFormItemVat {
+          padding-top: 9px;
         }
       }
     }
 
-    .purchaseDetailsBlock {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .supplierInformationBlock {
+    .connectedPurchase {
       display: flex;
       flex-direction: column;
       gap: 20px;
 
-      .supplierInformation {
-        display: flex;
-        justify-content: space-between;
-        gap: 10px;
-      }
-    }
-
-    .createPurchaseToggleBlock {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      .createPurchaseToggle {
-        width: 150px;
-      }
-
-      .createPurchaseToggleDesc {
+      .connectedPurchaseInfo {
         display: flex;
         flex-direction: column;
+        gap: 20px;
+
+        .connectedPurchaseHeader {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 20px;
+
+          .connectedPurchaseHeaderTitle {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+          }
+        }
+
+        .connectedPurchaseSupplier {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 20px;
+
+          .supplierInfo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            .supplierInfoImageWrapper {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+
+              .supplierInfoImage {
+                object-fit: cover;
+                border-radius: calc(var(--radius) - 2px);
+                width: 48px;
+                height: 48px;
+              }
+            }
+
+            .supplierInfoIcon {
+              width: 48px;
+              height: 48px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+
+            .supplierInfoDetails {
+              display: flex;
+              flex-direction: column;
+
+              .supplierInfoDetailsName {
+                font-weight: 600;
+              }
+            }
+          }
+        }
       }
+
+      .connectedPurchaseProductsSummary {
+        display: flex;
+        flex-direction: column;
+        background: #F4F4F5;
+        border-radius: 5px;
+        border: 1px solid #E4E4E7;
+
+        .connectedPurchaseProductsSummaryTitle {
+          font-weight: 700;
+          padding: 5px 10px;
+        }
+
+        .connectedPurchaseProductsSummaryHeaders {
+          display: flex;
+          justify-content: space-between;
+          padding: 5px 10px;
+        }
+
+        .connectedPurchaseProductsSummaryInfo {
+          display: flex;
+          justify-content: space-between;
+          padding: 5px 10px;
+
+          .unitsColumn {
+            width: 112px;
+            padding-left: 5px;
+          }
+
+          .expenseColumn {
+            width: 130px;
+          }
+
+          .valueColumn {
+            width: 100px;
+          }
+        }
+      }
+
+    }
+
+
+    .purchaseDetails {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .purchaseDetailsButtonBlock {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .footerButtons {
+      display: flex;
+      justify-content: space-between;
     }
   }
 }
+

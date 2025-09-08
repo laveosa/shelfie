@@ -218,7 +218,6 @@ export function useMarginsPageService(
       searchQuery: model,
     }).then((res) => {
       dispatch(actions.setIsMarginListGridLoading(false));
-      dispatch(actions.setIsMarginListGridLoading(false));
       const modifiedList = res.items.map((item) => ({
         ...item,
         isSelected: item.marginId === state.selectedMargin.marginId,

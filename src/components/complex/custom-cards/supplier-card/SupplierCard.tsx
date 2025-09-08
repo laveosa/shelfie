@@ -46,7 +46,7 @@ export default function SupplierCard({
     <SheProductCard
       loading={isLoading}
       className={cs.supplierCard}
-      title={t("SectionTitles.Supplier")}
+      title={t("SectionTitles.CreatePurchase")}
       onSecondaryButtonClick={() => onAction("closeSupplierCard")}
     >
       <div className={cs.supplierCardContent}>
@@ -79,7 +79,10 @@ export default function SupplierCard({
                   {selectedSupplier.thumbnailUrl ? (
                     <img
                       src={selectedSupplier?.thumbnailUrl}
-                      alt={selectedSupplier?.supplierName}
+                      alt={
+                        selectedSupplier?.supplierName ||
+                        selectedSupplier?.companyName
+                      }
                     />
                   ) : (
                     <SheIcon icon={ImageIcon} />
@@ -88,13 +91,17 @@ export default function SupplierCard({
                 <div className={cs.supplierDesc}>
                   <SheTooltip
                     delayDuration={200}
-                    text={selectedSupplier?.supplierName}
+                    text={
+                      selectedSupplier?.supplierName ||
+                      selectedSupplier?.companyName
+                    }
                     className="max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap"
                   >
                     <span
                       className={`${selectedSupplier.isDeleted === true ? cs.deletedSupplier : ""} ${cs.supplierName} she-text`}
                     >
-                      {selectedSupplier?.supplierName}
+                      {selectedSupplier?.supplierName ||
+                        selectedSupplier?.companyName}
                     </span>
                   </SheTooltip>
                   {(selectedSupplier?.address ||

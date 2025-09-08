@@ -8,6 +8,8 @@ import { ImageModel } from "@/const/models/ImageModel.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { ProductCountersModel } from "@/const/models/CounterModel.ts";
 import { VariantHistoryModel } from "@/const/models/VariantHistoryModel.ts";
+import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
+import { CompanyModel } from "@/const/models/CompanyModel.ts";
 
 export interface IManageVariantsPageSlice {
   isLoading?: boolean;
@@ -22,12 +24,17 @@ export interface IManageVariantsPageSlice {
   isProductTraitConfigurationCardLoading?: boolean;
   isVariantPhotosCardLoading?: boolean;
   isVariantHistoryCardLoading?: boolean;
+  isSelectPurchaseCardLoading?: boolean;
+  isSelectEntityCardLoading?: boolean;
+  isSupplierCardLoading?: boolean;
   isProductsLoading?: boolean;
   isTraitOptionsGridLoading?: boolean;
   isVariantOptionsGridLoading?: boolean;
   isVariantPhotoGridLoading?: boolean;
   isProductPhotoGridLoading?: boolean;
   isVariantsHistoryGridLoading?: boolean;
+  isPurchaseGridLoading?: boolean;
+  isSuppliersGridLoading?: boolean;
   products?: ProductModel[];
   selectedVariant: VariantModel;
   isDuplicateVariant: boolean;
@@ -49,4 +56,11 @@ export interface IManageVariantsPageSlice {
   variantPhotos?: ImageModel[];
   productPhotosForVariant?: ImageModel[];
   variantHistory?: VariantHistoryModel[];
+  purchasesList?: PurchaseModel[];
+  purchaseGridModel?: GridModel;
+  purchaseGridRequestModel?: GridRequestModel;
+  selectedPurchase?: PurchaseModel;
+  companiesGridModel?: GridModel;
+  companiesGriRequestModel?: GridRequestModel;
+  selectedCompany?: CompanyModel;
 }

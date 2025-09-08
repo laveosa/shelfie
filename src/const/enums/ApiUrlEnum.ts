@@ -9,6 +9,7 @@ export enum ApiUrlEnum {
   MESSENGER_BASE_URL = "https://messagingservice.redground-5e8b9eee.germanywestcentral.azurecontainerapps.io/api/v1",
   FACEBOOK_BASE_URL = "https://graph.facebook.com/v22.0",
   ORDERS_BASE_URL = "https://orderservice.redground-5e8b9eee.germanywestcentral.azurecontainerapps.io/api/v1",
+  COMPANY_BASE_URL = "https://companyservice.redground-5e8b9eee.germanywestcentral.azurecontainerapps.io/api/v1",
   PRODUCTS = "/products",
   VARIANTS = "/variants",
   PURCHASES = "/purchases",

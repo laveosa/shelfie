@@ -22,6 +22,14 @@ import useProductsPageService from "@/pages/products-section/products-page/usePr
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
+import { ColumnDef } from "@tanstack/react-table";
+import { DataWithId } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import SelectPurchaseCard from "@/components/complex/custom-cards/select-purchase-card/SelectPurchaseCard.tsx";
+import { SelectPurchaseGridColumns } from "@/components/complex/grid/custom-grids/select-purchase-grid/SelectPurchaseGridColumns.tsx";
+import SupplierCard from "@/components/complex/custom-cards/supplier-card/SupplierCard.tsx";
+import SelectEntityCard from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
+import SupplierConfigurationCard from "@/components/complex/custom-cards/supplier-configuration-card/SupplierConfigurationCard.tsx";
+import { CompaniesListGridColumns } from "@/components/complex/grid/custom-grids/companies-list-grid/CompaniesListGridColumns.tsx";
 
 export function ManageVariantsPage() {
   const { handleCardAction, createRefCallback } = useCardActions({
@@ -167,6 +175,15 @@ export function ManageVariantsPage() {
       case "openAddStockCard":
         service.openAddStockCardHandler();
         break;
+      case "selectPurchase":
+        service.selectPurchaseHandler(payload);
+        break;
+      case "searchSupplier":
+        service.searchSupplierHandle(payload);
+        break;
+      case "filterSuppliersByDate":
+        service.filterSuppliersByDateHandle(payload);
+        break;
       case "openDisposeStockCard":
         service.openDisposeStockCardHandler();
         break;
@@ -178,6 +195,27 @@ export function ManageVariantsPage() {
         break;
       case "openVariantPhotosCard":
         service.openVariantPhotosCardHandler(payload, productId);
+        break;
+      case "openSelectPurchaseCard":
+        service.openSelectPurchaseCardHandler(state.purchaseGridRequestModel);
+        break;
+      case "openSupplierCard":
+        service.openSupplierCardHandler();
+        break;
+      case "openSelectEntityCard":
+        service.openSelectEntityCardHandler();
+        break;
+      case "searchEntity":
+        service.searchEntityHandle(payload);
+        break;
+      case "selectCompany":
+        service.selectCompanyHandle(payload);
+        break;
+      case "detachSupplier":
+        service.detachSupplierHandler();
+        break;
+      case "createPurchase":
+        service.createPurchaseForSupplierHandler(payload);
         break;
       case "closeProductTraitConfigurationCard":
         service.closeProductTraitConfigurationCardHandler();
@@ -193,6 +231,21 @@ export function ManageVariantsPage() {
         break;
       case "closeVariantHistoryCard":
         service.closeVariantHistoryCardHandler();
+        break;
+      case "closeSelectPurchaseCard":
+        service.closeSelectPurchaseCardHandler();
+        break;
+      case "closeAddStockCard":
+        service.closeAddStockCardHandler();
+        break;
+      case "closeSupplierCard":
+        service.closeSupplierCardHandler();
+        break;
+      case "closeSelectEntityCard":
+        service.closeSelectEntityCardHandler();
+        break;
+      case "closeSupplierConfigurationCard":
+        service.closeSupplierConfigurationCardHandler();
         break;
     }
   }
@@ -261,11 +314,64 @@ export function ManageVariantsPage() {
         <div ref={createRefCallback("addStockCard")}>
           <AddStockCard
             isLoading={state.isAddStockCardLoading}
-            onAction={onAction}
             taxTypes={productsState.taxesList}
             currencyTypes={productsState.currenciesList}
             variant={productsState.selectedVariant}
-            onSecondaryButtonClick={() => handleCardAction("addStockCard")}
+            purchase={state.selectedPurchase}
+            onAction={onAction}
+          />
+        </div>
+      )}
+      {state.activeCards.includes("selectPurchaseCard") && (
+        <div ref={createRefCallback("selectPurchaseCard")}>
+          <SelectPurchaseCard
+            isLoading={state.setIsSelectPurchaseCardLoading}
+            isGridLoading={state.setIsPurchaseGridLoading}
+            purchases={state.purchaseGridModel.items}
+            columns={
+              SelectPurchaseGridColumns({
+                onAction,
+              }) as ColumnDef<DataWithId>[]
+            }
+            onAction={onAction}
+          />
+        </div>
+      )}
+      {state.activeCards.includes("supplierCard") && (
+        <div ref={createRefCallback("supplierCard")}>
+          <SupplierCard
+            isLoading={state.isSupplierCardLoading}
+            selectedPurchase={productsState.selectedPurchase}
+            selectedSupplier={state.selectedCompany}
+            onAction={onAction}
+          />
+        </div>
+      )}
+      {state.activeCards?.includes("selectEntityCard") && (
+        <div ref={createRefCallback("selectEntityCard")}>
+          <SelectEntityCard
+            isLoading={state.isSelectEntityCardLoading}
+            isGridLoading={state.isSuppliersGridLoading}
+            entityName="Company"
+            entityCollection={state.companiesGridModel?.items}
+            columns={
+              CompaniesListGridColumns({
+                onAction,
+              }) as ColumnDef<DataWithId>[]
+            }
+            onAction={onAction}
+          />
+        </div>
+      )}
+      {state.activeCards?.includes("supplierConfigurationCard") && (
+        <div ref={createRefCallback("supplierConfigurationCard")}>
+          <SupplierConfigurationCard
+            isLoading={state.isSupplierConfigurationCardLoading}
+            isSupplierPhotosGridLoading={state.isSupplierPhotosGridLoading}
+            isPhotoUploaderLoading={state.isPhotoUploaderLoading}
+            countryList={productsState.countryCodeList}
+            managedSupplier={state.managedSupplier}
+            onAction={onAction}
           />
         </div>
       )}
