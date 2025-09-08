@@ -139,7 +139,7 @@ export function ProductsPage() {
         <div>
           <SheButton
             icon={Plus}
-            variant="outline"
+            variant="info"
             onClick={() =>
               onAction(
                 state.activeTab === "purchases"
