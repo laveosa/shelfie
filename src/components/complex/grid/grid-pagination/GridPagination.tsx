@@ -70,10 +70,8 @@ export function GridPagination() {
   }
 
   return (
-    <div
-      className={`${cs.gridPagination} flex items-center justify-between px-2`}
-    >
-      <div className="flex items-center ">
+    <div className={`${cs.gridPagination} flex items-center justify-between`}>
+      <div className="flex items-center">
         <div className="flex items-center space-x-2">
           <SheButton
             variant="ghost"

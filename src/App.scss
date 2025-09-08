@@ -157,6 +157,12 @@ body {
   }
 }
 
+.mobile-view {
+  .contentPage {
+    max-width: none;
+  }
+}
+
 /*// -------------------------------------------------------------------------- SELECT LIST*/
 
 div[data-radix-popper-content-wrapper] {

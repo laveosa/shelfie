@@ -5,11 +5,11 @@ import { ISheAppContextMainWrapper } from "@/const/interfaces/complex-components
 export default function SheAppContextMainWrapper({
   children,
 }: ISheAppContextMainWrapper) {
-  const { open } = useSidebar();
+  const { open, isMobile } = useSidebar();
 
   return (
     <main
-      className={`${open ? "sidebar-open" : ""} ${cs.sheAppContextMainWrapper}`}
+      className={`${open ? "sidebar-open" : ""} ${isMobile ? "mobile-view" : ""} ${cs.sheAppContextMainWrapper}`}
     >
       {children}
     </main>

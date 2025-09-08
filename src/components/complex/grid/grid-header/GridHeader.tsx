@@ -33,7 +33,6 @@ export default function GridHeader<TData>({ table }: IGridHeader<TData>) {
         <div className={cs.headerGroup}>
           {showSearch && (
             <SheInput
-              className={cs.searchInput}
               value={searchValue}
               onDelay={handleInputChange}
               placeholder={"Search"}

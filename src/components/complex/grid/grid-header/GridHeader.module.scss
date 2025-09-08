@@ -3,14 +3,16 @@
 .gridHeaderWrapper {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 4px;
   padding-bottom: 10px;
 
   .gridHeader {
     display: flex;
     width: 100%;
+    flex-wrap: wrap;
     justify-content: space-between;
     margin: 5px 0;
+    gap: 10px;
 
     .headerGroup {
       display: flex;
@@ -27,6 +29,8 @@
   .filtersContainer {
     display: flex;
     justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
 
     .customFilters {
       display: flex;
