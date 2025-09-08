@@ -9,48 +9,40 @@ import {
   Minus,
   Plus,
   Trash2,
-  WandSparklesIcon
+  WandSparklesIcon,
 } from "lucide-react";
 
 import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel
+  FormLabel,
 } from "@/components/ui/form.tsx";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from "@/components/ui/select.tsx";
-import SheProductCard
-  from "@/components/complex/she-product-card/SheProductCard.tsx";
+import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./VariantConfigurationCard.module.scss";
-import {
-  IVariantConfigurationCard
-} from "@/const/interfaces/complex-components/custom-cards/IVariantConfigurationCard.ts";
+import { IVariantConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IVariantConfigurationCard.ts";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import {
   DataWithId,
-  DndGridDataTable
+  DndGridDataTable,
 } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
 import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
 import { VariantModel } from "@/const/models/VariantModel.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon";
 import InfoIcon from "@/assets/icons/Info-icon.svg?react";
-import SheCardNotification
-  from "@/components/complex/she-card-notification/SheCardNotification.tsx";
-import {
-  VariantConfigurationGridColumns
-} from "@/components/complex/grid/custom-grids/variant-configuration-grid/VariantConfigurationGridColumns.tsx";
-import {
-  VariantPhotosGridColumns
-} from "@/components/complex/grid/custom-grids/product-photos-grid/VariantPhotosGridColumns.tsx";
+import SheCardNotification from "@/components/complex/she-card-notification/SheCardNotification.tsx";
+import { VariantConfigurationGridColumns } from "@/components/complex/grid/custom-grids/variant-configuration-grid/VariantConfigurationGridColumns.tsx";
+import { VariantPhotosGridColumns } from "@/components/complex/grid/custom-grids/product-photos-grid/VariantPhotosGridColumns.tsx";
 
 const debounce = (fn: (...args: any[]) => void, delay: number) => {
   let timer: ReturnType<typeof setTimeout>;
