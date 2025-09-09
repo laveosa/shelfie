@@ -40,7 +40,6 @@ import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
 import { VariantModel } from "@/const/models/VariantModel.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon";
 import InfoIcon from "@/assets/icons/Info-icon.svg?react";
-import SheCardNotification from "@/components/complex/she-card-notification/SheCardNotification.tsx";
 import { VariantConfigurationGridColumns } from "@/components/complex/grid/custom-grids/variant-configuration-grid/VariantConfigurationGridColumns.tsx";
 import { VariantPhotosGridColumns } from "@/components/complex/grid/custom-grids/product-photos-grid/VariantPhotosGridColumns.tsx";
 
@@ -263,234 +262,235 @@ export default function VariantConfigurationCard({
   return (
     <SheProductCard
       loading={isLoading}
+      className={cs.variantConfigurationCard}
       title={t("CardTitles.ManageVariant")}
       showCloseButton
+      showNotificationCard
+      notificationCardProps={{
+        title: "Delete Variant",
+        titleTransKey: "CardTitles.DeleteVariant",
+        text: "This variant will be deleted, it will no longer be available for sale but you will still see it in the orders where it sold",
+        textTransKey: "ConfirmationMessages.DeleteVariant",
+        buttonText: "Delete",
+        buttonTextTransKey: "CommonButtons.Delete",
+        buttonColor: "#FF0000",
+        buttonIcon: Trash2,
+        onClick: () => onAction("deleteVariant", variant),
+      }}
       onSecondaryButtonClick={() => onAction("closeVariantConfigurationCard")}
-      className={cs.variantConfigurationCard}
       {...props}
     >
-      <div className={cs.variantConfigurationCardContentWrapper}>
-        <div className={cs.variantConfigurationCardContent}>
-          <div className={cs.variantConfigurationForm}>
-            <SheForm form={form as any} onSubmit={onSubmit}>
-              <SheForm.Field name="variantName">
-                <SheInput
-                  label={t("ProductForm.Labels.OptionalVariantName")}
-                  onDelay={handleFieldChange}
-                  fullWidth
-                />
-              </SheForm.Field>
-              <div className={cs.variantCodeFormRow}>
-                <SheForm.Field
-                  name="variantCode"
-                  label={t("ProductForm.Labels.VariantCode")}
-                >
-                  <div>
-                    <SheInput
-                      value={variant?.variantCode}
-                      {...(register("variantCode", {}) as any)}
-                      onDelay={handleFieldChange}
-                    />
-                  </div>
-                </SheForm.Field>
-                <SheButton
-                  icon={WandSparklesIcon}
-                  type="button"
-                  variant="outline"
-                  onClick={onGenerateCode}
-                />
-              </div>
-              <div className={cs.priceFormRow}>
-                <div className={cs.priceFormRowItem}>
-                  <SheForm.Field
-                    label={t("ProductForm.Labels.SalePriceNetto")}
-                    name="salePrice.netto"
-                  >
-                    <SheInput
-                      type="number"
-                      step="any"
-                      {...(register("salePrice.netto", {
-                        onChange: () => {
-                          lastChanged.current = "netto";
-                          handleFieldChange();
-                        },
-                      }) as any)}
-                    />
-                  </SheForm.Field>
-                </div>
-                <div className={cs.priceFormRowItem}>
-                  <FormField
-                    control={form.control}
-                    name="salePrice.taxTypeId"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>{t("ProductForm.Labels.VAT")}</FormLabel>
-                        <Select
-                          onValueChange={(value) => {
-                            field.onChange(Number(value));
-                            handleFieldChange();
-                          }}
-                          value={field.value ? field.value.toString() : ""}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue
-                                placeholder={t("SelectOptions.SelectVAT")}
-                              />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {taxesList?.map((taxType) => (
-                              <SelectItem
-                                key={taxType.id}
-                                value={taxType.id.toString()}
-                              >
-                                <div>{taxType.name}</div>
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </FormItem>
-                    )}
+      <div className={cs.variantConfigurationCardContent}>
+        <div className={cs.variantConfigurationForm}>
+          <SheForm form={form as any} onSubmit={onSubmit}>
+            <SheForm.Field name="variantName">
+              <SheInput
+                label={t("ProductForm.Labels.OptionalVariantName")}
+                onDelay={handleFieldChange}
+                fullWidth
+              />
+            </SheForm.Field>
+            <div className={cs.variantCodeFormRow}>
+              <SheForm.Field
+                name="variantCode"
+                label={t("ProductForm.Labels.VariantCode")}
+              >
+                <div>
+                  <SheInput
+                    value={variant?.variantCode}
+                    {...(register("variantCode", {}) as any)}
+                    onDelay={handleFieldChange}
                   />
                 </div>
-                <div className={cs.priceFormRowItem}>
-                  <SheForm.Field
-                    label={t("ProductForm.Labels.SalePriceBrutto")}
-                    name="salePrice.brutto"
-                  >
-                    <SheInput
-                      type="number"
-                      step="any"
-                      {...(register("salePrice.brutto", {
-                        onChange: () => {
-                          lastChanged.current = "brutto";
-                          handleFieldChange();
-                        },
-                      }) as any)}
-                    />
-                  </SheForm.Field>
-                </div>
-              </div>
-            </SheForm>
-          </div>
-          <Separator />
-          <div className={cs.stockDetailsBlock}>
-            <div className={cs.buttonBlock}>
-              <span className={`${cs.stockDetailsTitle} she-title`}>
-                {t("SectionTitles.StockDetails")}
-              </span>
+              </SheForm.Field>
               <SheButton
-                icon={Plus}
-                variant="secondary"
-                onClick={() => onAction("openAddStockCard")}
-              >
-                {t("CommonButtons.Add")}
-              </SheButton>
-              <SheButton
-                icon={Minus}
-                variant="secondary"
-                onClick={() => onAction("openDisposeStockCard")}
-              >
-                {t("StockActions.Dispose")}
-              </SheButton>
-              <SheButton
-                icon={Clock}
-                variant="secondary"
-                maxWidth="89px"
-                onClick={() =>
-                  onAction("openVariantHistoryCard", variant.variantId)
-                }
-              >
-                {t("CommonButtons.History")}
-              </SheButton>
-            </div>
-            <div className={cs.stockBlock}>
-              <div className={cs.stockBlockRow}>
-                <span className="she-text">
-                  {t("StockForm.Labels.CurrentlyInStock")}
-                </span>
-                <span className={cs.stockBlockRowNumber}>
-                  {variant?.stockAmount}
-                </span>
-              </div>
-              <div className={cs.stockBlockRow}>
-                <span className="she-text">
-                  {t("ProductForm.Labels.UnitsSold")}
-                </span>
-                <span className={cs.stockBlockRowNumber}>
-                  {variant?.soldUnits}
-                </span>
-              </div>
-            </div>
-          </div>
-          <div className={cs.variantGridBlock}>
-            <div className={cs.variantGridBlockHeader}>
-              <span className="she-title">
-                {t("ProductForm.Labels.VariantTraits")}
-              </span>
-              <SheButton
-                icon={Blocks}
-                variant="secondary"
-                onClick={() => onAction("openManageTraitsCard")}
-              >
-                {t("CommonButtons.Manage")}
-              </SheButton>
-            </div>
-            <div>
-              <DndGridDataTable
-                isLoading={isVariantOptionsGridLoading}
-                showHeader={false}
-                columns={traitsColumns}
-                data={preparedTraitOptions}
-                gridModel={data}
-                enableExpansion={true}
-                renderExpandedContent={renderExpandedContent}
+                icon={WandSparklesIcon}
+                type="button"
+                variant="outline"
+                onClick={onGenerateCode}
               />
             </div>
-          </div>
-          <div className={cs.variantGridBlock}>
-            <div className={cs.variantGridBlockHeader}>
-              <span className="she-title">
-                {t("ProductForm.Labels.VariantPhotos")}
-              </span>
-              <SheButton
-                icon={ImagePlus}
-                variant="secondary"
-                onClick={() =>
-                  onAction("openVariantPhotosCard", variant.variantId)
-                }
-              >
-                {t("CommonButtons.Manage")}
-              </SheButton>
-            </div>
-            {variant?.photos?.length > 0 && (
-              <div>
-                <DndGridDataTable
-                  isLoading={isVariantPhotoGridLoading}
-                  enableDnd={true}
-                  showHeader={false}
-                  columns={photoColumns}
-                  data={variantPhotos}
-                  gridModel={data}
-                  skeletonQuantity={productCounter?.gallery}
-                  onNewItemPosition={(newIndex, activeItem) =>
-                    onAction("dndVariantPhoto", { newIndex, activeItem })
-                  }
+            <div className={cs.priceFormRow}>
+              <div className={cs.priceFormRowItem}>
+                <SheForm.Field
+                  label={t("ProductForm.Labels.SalePriceNetto")}
+                  name="salePrice.netto"
+                >
+                  <SheInput
+                    type="number"
+                    step="any"
+                    {...(register("salePrice.netto", {
+                      onChange: () => {
+                        lastChanged.current = "netto";
+                        handleFieldChange();
+                      },
+                    }) as any)}
+                  />
+                </SheForm.Field>
+              </div>
+              <div className={cs.priceFormRowItem}>
+                <FormField
+                  control={form.control}
+                  name="salePrice.taxTypeId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("ProductForm.Labels.VAT")}</FormLabel>
+                      <Select
+                        onValueChange={(value) => {
+                          field.onChange(Number(value));
+                          handleFieldChange();
+                        }}
+                        value={field.value ? field.value.toString() : ""}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue
+                              placeholder={t("SelectOptions.SelectVAT")}
+                            />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {taxesList?.map((taxType) => (
+                            <SelectItem
+                              key={taxType.id}
+                              value={taxType.id.toString()}
+                            >
+                              <div>{taxType.name}</div>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
                 />
               </div>
-            )}
+              <div className={cs.priceFormRowItem}>
+                <SheForm.Field
+                  label={t("ProductForm.Labels.SalePriceBrutto")}
+                  name="salePrice.brutto"
+                >
+                  <SheInput
+                    type="number"
+                    step="any"
+                    {...(register("salePrice.brutto", {
+                      onChange: () => {
+                        lastChanged.current = "brutto";
+                        handleFieldChange();
+                      },
+                    }) as any)}
+                  />
+                </SheForm.Field>
+              </div>
+            </div>
+          </SheForm>
+        </div>
+        <Separator />
+        <div className={cs.stockDetailsBlock}>
+          <div className={cs.buttonBlock}>
+            <span className={`${cs.stockDetailsTitle} she-title`}>
+              {t("SectionTitles.StockDetails")}
+            </span>
+            <SheButton
+              icon={Plus}
+              variant="secondary"
+              onClick={() => onAction("openAddStockCard")}
+            >
+              {t("CommonButtons.Add")}
+            </SheButton>
+            <SheButton
+              icon={Minus}
+              variant="secondary"
+              onClick={() => onAction("openDisposeStockCard")}
+            >
+              {t("StockActions.Dispose")}
+            </SheButton>
+            <SheButton
+              icon={Clock}
+              variant="secondary"
+              maxWidth="89px"
+              onClick={() =>
+                onAction("openVariantHistoryCard", variant.variantId)
+              }
+            >
+              {t("CommonButtons.History")}
+            </SheButton>
+          </div>
+          <div className={cs.stockBlock}>
+            <div className={cs.stockBlockRow}>
+              <span className="she-text">
+                {t("StockForm.Labels.CurrentlyInStock")}
+              </span>
+              <span className={cs.stockBlockRowNumber}>
+                {variant?.stockAmount}
+              </span>
+            </div>
+            <div className={cs.stockBlockRow}>
+              <span className="she-text">
+                {t("ProductForm.Labels.UnitsSold")}
+              </span>
+              <span className={cs.stockBlockRowNumber}>
+                {variant?.soldUnits}
+              </span>
+            </div>
           </div>
         </div>
-        <SheCardNotification
-          title={t("CardTitles.DeleteVariant")}
-          text={t("ConfirmationMessages.DeleteVariant")}
-          buttonColor="#EF4343"
-          buttonVariant="outline"
-          buttonText={t("CommonButtons.Delete")}
-          buttonIcon={Trash2}
-          onClick={() => onAction("deleteVariant", variant)}
-        />
+        <div className={cs.variantGridBlock}>
+          <div className={cs.variantGridBlockHeader}>
+            <span className="she-title">
+              {t("ProductForm.Labels.VariantTraits")}
+            </span>
+            <SheButton
+              icon={Blocks}
+              variant="secondary"
+              onClick={() => onAction("openManageTraitsCard")}
+            >
+              {t("CommonButtons.Manage")}
+            </SheButton>
+          </div>
+          <div>
+            <DndGridDataTable
+              isLoading={isVariantOptionsGridLoading}
+              showHeader={false}
+              columns={traitsColumns}
+              data={preparedTraitOptions}
+              gridModel={data}
+              enableExpansion={true}
+              renderExpandedContent={renderExpandedContent}
+            />
+          </div>
+        </div>
+        <div className={cs.variantGridBlock}>
+          <div className={cs.variantGridBlockHeader}>
+            <span className="she-title">
+              {t("ProductForm.Labels.VariantPhotos")}
+            </span>
+            <SheButton
+              icon={ImagePlus}
+              variant="secondary"
+              onClick={() =>
+                onAction("openVariantPhotosCard", variant.variantId)
+              }
+            >
+              {t("CommonButtons.Manage")}
+            </SheButton>
+          </div>
+          {variant?.photos?.length > 0 && (
+            <div>
+              <DndGridDataTable
+                isLoading={isVariantPhotoGridLoading}
+                enableDnd={true}
+                showHeader={false}
+                columns={photoColumns}
+                data={variantPhotos}
+                gridModel={data}
+                skeletonQuantity={productCounter?.gallery}
+                onNewItemPosition={(newIndex, activeItem) =>
+                  onAction("dndVariantPhoto", { newIndex, activeItem })
+                }
+              />
+            </div>
+          )}
+        </div>
       </div>
     </SheProductCard>
   );

@@ -19,7 +19,6 @@ import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import SheTextArea from "@/components/primitive/she-textarea/SheTextarea.tsx";
-import SheCardNotification from "@/components/complex/she-card-notification/SheCardNotification.tsx";
 
 export default function SupplierCard({
   isLoading,
@@ -47,6 +46,18 @@ export default function SupplierCard({
       loading={isLoading}
       className={cs.supplierCard}
       title={t("SectionTitles.CreatePurchase")}
+      showNotificationCard={!!purchaseId}
+      notificationCardProps={{
+        title: "Delete Purchase",
+        titleTransKey: "CardTitles.DeletePurchase",
+        text: "The purchase will be deleted, but the changes in stock will remain intact.",
+        textTransKey: "ConfirmationMessages.DeletePurchase",
+        buttonText: "Delete",
+        buttonTextTransKey: "CommonButtons.Delete",
+        buttonColor: "#FF0000",
+        buttonIcon: Trash2,
+        onClick: () => onAction("deletePurchase", selectedPurchase),
+      }}
       onSecondaryButtonClick={() => onAction("closeSupplierCard")}
     >
       <div className={cs.supplierCardContent}>
@@ -95,7 +106,7 @@ export default function SupplierCard({
                       selectedSupplier?.supplierName ||
                       selectedSupplier?.companyName
                     }
-                    className="max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap"
+                    className={cs.supplierNameTooltip}
                   >
                     <span
                       className={`${selectedSupplier.isDeleted === true ? cs.deletedSupplier : ""} ${cs.supplierName} she-text`}
@@ -198,7 +209,7 @@ export default function SupplierCard({
               variant={"secondary"}
               value={t("CommonButtons.Cancel")}
               onClick={() => onAction("closeSupplierCard")}
-            ></SheButton>
+            />
             <SheButton
               value={
                 !selectedPurchase?.purchaseId
@@ -223,20 +234,9 @@ export default function SupplierCard({
                       purchaseNotes,
                     })
               }
-            ></SheButton>
+            />
           </div>
         </div>
-        {purchaseId && (
-          <SheCardNotification
-            title={t("CardTitles.DeletePurchase")}
-            text={t("ConfirmationMessages.DeletePurchase")}
-            buttonIcon={Trash2}
-            buttonText={t("CommonButtons.Delete")}
-            buttonVariant="outline"
-            buttonColor="#EF4343"
-            onClick={() => onAction("deletePurchase", selectedPurchase)}
-          />
-        )}
       </div>
     </SheProductCard>
   );

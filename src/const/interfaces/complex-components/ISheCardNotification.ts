@@ -3,6 +3,7 @@ import { ISheButton } from "@/const/interfaces/primitive-components/ISheButton.t
 import React from "react";
 
 export interface ISheCardNotification {
+  className?: string;
   title?: string;
   titleTransKey?: string;
   titleIcon?: Partial<ISheIcon> | string | React.FC<any>;

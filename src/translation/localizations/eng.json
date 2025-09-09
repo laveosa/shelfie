@@ -628,11 +628,11 @@
       "OrderStatus": "Order status",
       "PaymentStatus": "Payment status",
       "ShipmentStatus": "Shipment status",
-      "DiscountTotal": "Discount total",
-      "ProductsSubtotal": "Products Subtotal",
-      "ProductsTotal": "Products Total",
-      "TotalWithDiscountAndShipment": "Total with discount and shipment",
-      "Profit": "Profit"
+      "DiscountTotal": "Discount total: ",
+      "ProductsSubtotal": "Products Subtotal: ",
+      "ProductsTotal": "Products Total: ",
+      "TotalWithDiscountAndShipment": "Total with discount and shipment: ",
+      "Profit": "Profit: "
     },
     "Placeholders": {
       "PickRange": "Pick range",

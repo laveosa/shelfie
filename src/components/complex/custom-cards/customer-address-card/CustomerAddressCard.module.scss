@@ -3,7 +3,7 @@
 .customerAddressFormCard {
 
   .customerCardContent {
-    height: calc(100vh - 166px);
+    height: calc(100vh - 270px);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -12,6 +12,7 @@
   *:focus {
     box-shadow: none;
   }
+
   .cardFooter {
     display: flex;
     justify-content: space-between;

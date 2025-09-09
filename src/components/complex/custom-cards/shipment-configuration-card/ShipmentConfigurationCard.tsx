@@ -20,7 +20,6 @@ import { Separator } from "@/components/ui/separator.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { formatDate, getInitials } from "@/utils/helpers/quick-helper.ts";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import SheCardNotification from "@/components/complex/she-card-notification/SheCardNotification.tsx";
 import { ordersInShipmentGridColumns } from "@/components/complex/grid/custom-grids/orders-in-shipment-grid/OrdersInShipmentGridColumns.tsx";
 import { orderItemsInShipmentGridColumns } from "@/components/complex/grid/custom-grids/order-items-in-shipmen-grid/OrderItemsInShipmentGridColumns.tsx";
 import { PackedOrderItemsGridColumns } from "@/components/complex/grid/custom-grids/packed-order-items-grid/PackedOrderItemsGridColumns.tsx";
@@ -49,6 +48,18 @@ export default function ShipmentConfigurationCard({
       })}
       width="650px"
       showCloseButton
+      showNotificationCard
+      notificationCardProps={{
+        title: "Cancel Shipment",
+        titleTransKey: "CardTitles.CancelShipment",
+        text: "This variant will be deleted, it will no longer be available for sale but you will still see it in the orders where it sold",
+        textTransKey: "ConfirmationMessages.CancelShipment",
+        buttonText: "Delete",
+        buttonTextTransKey: "CommonButtons.Delete",
+        buttonColor: "#EF4343",
+        buttonIcon: Trash2,
+        onClick: () => onAction("deleteShipment", shipment?.shipmentId),
+      }}
       onSecondaryButtonClick={() => onAction("closeShipmentConfigurationCard")}
     >
       <div className={cs.shipmentConfigurationCardContent}>
@@ -313,17 +324,6 @@ export default function ShipmentConfigurationCard({
             </div>
           </div>
         </div>
-        <SheCardNotification
-          title={t("CardTitles.CancelShipment")}
-          text={t("ConfirmationMessages.CancelShipment")}
-          buttonColor="#EF4343"
-          buttonVariant="outline"
-          buttonText={t("CommonButtons.Delete")}
-          buttonIcon={Trash2}
-          onClick={() => {
-            onAction("deleteShipment", shipment?.shipmentId);
-          }}
-        />
       </div>
     </SheProductCard>
   );

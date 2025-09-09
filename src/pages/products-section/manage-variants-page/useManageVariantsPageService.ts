@@ -180,6 +180,7 @@ export default function useManageVariantsPageService(handleCardAction) {
             dispatch(actions.setIsAddVariantCardLoading(false));
             if (res) {
               handleCardAction("addVariantCard");
+              productsService.getCountersForProductsHandler(productId);
               dispatch(
                 productsActions.refreshProductVariants([
                   ...productsState.productVariants,
@@ -211,6 +212,7 @@ export default function useManageVariantsPageService(handleCardAction) {
       dispatch(actions.setIsAddVariantCardLoading(false));
       if (res) {
         handleCardAction("addVariantCard");
+        productsService.getCountersForProductsHandler(productId);
         dispatch(
           productsActions.refreshProductVariants([
             ...productsState.productVariants,
@@ -381,6 +383,7 @@ export default function useManageVariantsPageService(handleCardAction) {
         .deleteVariantHandler(model.variantId)
         .then((res) => {
           if (!res.error) {
+            productsService.getCountersForProductsHandler(model.productId);
             dispatch(
               productsActions.refreshProductVariants(
                 productsState.productVariants.filter(

@@ -60,11 +60,11 @@ export default function useSupplierPageService(handleCardAction) {
     }).then((res: any) => {
       dispatch(actions.refreshPurchase(res.data));
       dispatch(actions.setIsSupplierCardLoading(false));
-      productsService.getPurchaseCountersHandler(res.purchaseId);
-      navigate(
-        `${NavUrlEnum.PRODUCTS}${NavUrlEnum.PURCHASE_PRODUCTS}/${res.purchaseId}`,
-      );
       if (res) {
+        productsService.getPurchaseCountersHandler(res.purchaseId);
+        navigate(
+          `${NavUrlEnum.PRODUCTS}${NavUrlEnum.PURCHASE_PRODUCTS}/${res.data.purchaseId}`,
+        );
         addToast({
           text: t("SuccessMessages.PurchaseCreated"),
           type: "success",
