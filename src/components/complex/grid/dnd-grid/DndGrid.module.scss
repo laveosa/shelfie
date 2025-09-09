@@ -1,16 +1,73 @@
 @use "@/styles/variables" as vars;
 
-
 .dndGrid {
+  position: relative;
+  border: vars.$brd;
+  border-radius: vars.$brdR_03;
+
+  table {
+    .dndGridTableContextWrapper {
+      display: flex;
+      flex-direction: column;
+    }
+
+    thead {
+      tr {
+        display: flex;
+        align-items: stretch;
+        justify-content: space-between;
+
+        th {
+          display: flex;
+          align-items: center;
+          padding: 8px;
+          flex-grow: 1;
+          width: 100% !important;
+          min-height: 38px;
+          height: auto;
+          overflow: hidden;
+
+          > span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        td {
+          display: flex;
+          align-items: center;
+          padding: 2px 8px;
+          flex-grow: 1;
+          width: 100% !important;
+          height: auto;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          min-height: 46px;
+
+          > * {
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+    }
+  }
 }
 
-.table {
+/*.table {
   .hiddenHeader {
     height: 0;
     padding: 0;
     overflow: hidden;
     border: none;
-
 
     th {
       padding: 0 !important;
@@ -75,26 +132,23 @@
 //-------------------------------------------------------isDragged
 
 .tableRowDragged {
-  background: #F4F4F5;
+  background: #f4f4f5;
 
   .dndIconCellDragged {
     cursor: grab;
-    background: #F4F4F5;
+    background: #f4f4f5;
   }
 
-
   .tableCellDragged {
-    background: #F4F4F5;
+    background: #f4f4f5;
 
     .dndIconDragged {
-
       svg {
         opacity: 0.7;
       }
     }
   }
 }
-
 
 //-------------------------------------------------------isLoading
 
@@ -139,7 +193,6 @@
       left: 0;
       right: 0;
       bottom: 0;
-
     }
 
     .shimmer {
@@ -148,15 +201,15 @@
       width: 50%;
       opacity: 0.5;
       animation: shimmer 2.2s infinite;
-      animation-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
+      animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
       background: linear-gradient(
-                      90deg,
-                      rgba(30, 59, 46, 0) 0%,
-                      rgba(30, 59, 46, 0.7) 10%,
-                      rgba(30, 59, 46, 1) 20%,
-                      rgba(30, 59, 46, 1) 80%,
-                      rgba(30, 59, 46, 0.7) 90%,
-                      rgba(30, 59, 46, 0) 100%
+        90deg,
+        rgba(30, 59, 46, 0) 0%,
+        rgba(30, 59, 46, 0.7) 10%,
+        rgba(30, 59, 46, 1) 20%,
+        rgba(30, 59, 46, 1) 80%,
+        rgba(30, 59, 46, 0.7) 90%,
+        rgba(30, 59, 46, 0) 100%
       );
     }
 
@@ -197,7 +250,7 @@
 
 .isSelected {
   //background: #F8F3FF;
-  background: #F4F4F5;
+  background: #f4f4f5;
 }
 
 //-------------------------------------------------------expandableRows
@@ -210,5 +263,4 @@
     justify-content: flex-end;
     padding: 10px;
   }
-}
-
+}*/

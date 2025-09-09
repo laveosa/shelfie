@@ -1,18 +1,18 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { TrashIcon } from "lucide-react";
-import { useTranslation } from "react-i18next";
+import { ImageIcon, TrashIcon } from "lucide-react";
 
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { ImageModel } from "@/const/models/ImageModel.ts";
-import placeholderImage from "@/assets/images/placeholder-image.png";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { Switch } from "@/components/ui/switch.tsx";
 import cs from "./ProductsGridColumns.module.scss";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
+import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import { IconViewEnum } from "@/const/enums/IconViewEnum.ts";
+import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 
-export function ProductsGridColumns(onAction: any): ColumnDef<any>[] {
-  const { t } = useTranslation();
+export function ProductsGridColumns(onAction: any): ColumnDef<any, any>[] {
+  const { translate } = useAppTranslation();
   const statusClass = (status: string) => {
     if (status === "Available") {
       return cs.productStatusAvailable;
@@ -27,60 +27,42 @@ export function ProductsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "productId",
       header: "ID",
-      size: 60,
-      minSize: 60,
-      maxSize: 60,
+      minSize: 40,
+      maxSize: 40,
+      cell: ({ row }) => <span>{row.getValue("productId")}</span>,
     },
     {
       accessorKey: "image",
       header: "Image",
-      size: 60,
-      minSize: 60,
-      maxSize: 60,
-      cell: ({ row, table }) => {
-        const image: ImageModel = row.getValue("image");
-        const meta = table.options.meta as {
-          setLoadingRow: (rowId: string, loading: boolean) => void;
-          isRowLoading: (rowId: string) => boolean;
-        };
-
-        return (
-          <div
-            className="relative w-12 h-12 cursor-pointer"
-            onClick={() => onAction("image", row.id, meta?.setLoadingRow)}
-          >
-            <img
-              src={image?.thumbnailUrl || placeholderImage}
-              alt={row.getValue("productName")}
-              className="object-cover rounded-md w-full h-full"
-              onError={(e) => {
-                e.currentTarget.src = placeholderImage;
-              }}
-            />
-          </div>
-        );
-      },
+      minSize: 56,
+      maxSize: 56,
+      cell: ({ row }) => (
+        <SheIcon
+          icon={row.getValue("image")?.thumbnailUrl || ImageIcon}
+          className="m-auto"
+          style={{
+            ...(!row.getValue("image")?.thumbnailUrl && {
+              padding: "10px",
+            }),
+          }}
+          color="#64748b"
+          iconView={IconViewEnum.BUTTON}
+        />
+      ),
     },
     {
       accessorKey: "productCode",
       header: "Code",
-      size: 60,
       minSize: 60,
-      maxSize: 60,
-      cell: ({ row }) => {
-        return (
-          <SheTooltip delayDuration={200} text={row.getValue("productCode")}>
-            <span className={cs.productCode}>
-              {row.getValue("productCode")}
-            </span>
-          </SheTooltip>
-        );
-      },
+      cell: ({ row }) => (
+        <SheTooltip delayDuration={200} text={row.getValue("productCode")}>
+          <span className={cs.productCode}>{row.getValue("productCode")}</span>
+        </SheTooltip>
+      ),
     },
     {
       accessorKey: "productName",
       header: "Product Name",
-      size: 150,
       minSize: 150,
       cell: ({ row }) => {
         return (
@@ -95,9 +77,7 @@ export function ProductsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "productCategory",
       header: "Category",
-      size: 100,
       minSize: 100,
-      maxSize: 100,
       cell: ({ row }) => {
         const category: CategoryModel = row.getValue("productCategory");
         return (
@@ -121,9 +101,7 @@ export function ProductsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "brand",
       header: "Brand",
-      size: 100,
-      minSize: 100,
-      maxSize: 100,
+      minSize: 40,
       cell: ({ row }) => {
         const brand: BrandModel = row.getValue("brand");
         return (
@@ -135,7 +113,9 @@ export function ProductsGridColumns(onAction: any): ColumnDef<any>[] {
                   alt={row.original.brand.brandName}
                 />
               )}
-              <span>{brand?.brandName || "N/A"}</span>
+              {!row.original.brand?.thumbnail && (
+                <span>{brand?.brandName || "N/A"}</span>
+              )}
             </div>
           </SheTooltip>
         );
@@ -144,16 +124,13 @@ export function ProductsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "barcode",
       header: "Barcode",
-      size: 80,
-      minSize: 80,
-      maxSize: 80,
+      minSize: 40,
+      cell: ({ row }) => <span>{row.getValue("barcode")}</span>,
     },
     {
       accessorKey: "status",
       header: "Status",
-      size: 120,
       minSize: 120,
-      maxSize: 120,
       cell: ({ row }) => {
         const status: string = row.getValue("status");
         return (
@@ -166,9 +143,7 @@ export function ProductsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "salePrice",
       header: "Sale Price",
-      size: 100,
-      minSize: 100,
-      maxSize: 100,
+      minSize: 80,
       cell: ({ row }) => {
         const price: string = row.getValue("salePrice");
         return <span>{price ? price : "N/A"}</span>;
@@ -177,9 +152,7 @@ export function ProductsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "variantsCount",
       header: "Variants",
-      size: 80,
       minSize: 80,
-      maxSize: 80,
       cell: ({ row }) => {
         return (
           <div>
@@ -191,9 +164,7 @@ export function ProductsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "stockAmount",
       header: "Stock",
-      size: 60,
       minSize: 60,
-      maxSize: 60,
       cell: ({ row }) => {
         return <span>{`${row.getValue("stockAmount")} units`}</span>;
       },
@@ -201,9 +172,8 @@ export function ProductsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "isActive",
       header: "Active",
-      size: 60,
-      minSize: 60,
-      maxSize: 60,
+      minSize: 80,
+      maxSize: 160,
       cell: ({ row, table }) => {
         const meta = table.options.meta as {
           setLoadingRow: (rowId: string, loading: boolean) => void;
@@ -223,9 +193,8 @@ export function ProductsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       id: "manage",
       header: "",
-      size: 80,
-      minSize: 80,
-      maxSize: 80,
+      minSize: 100,
+      maxSize: 100,
       cell: ({ row, table }) => {
         const meta = table.options.meta as {
           setLoadingRow: (rowId: string, loading: boolean) => void;
@@ -237,7 +206,7 @@ export function ProductsGridColumns(onAction: any): ColumnDef<any>[] {
             <SheButton
               onClick={() => onAction("manageProduct", row.original.productId)}
               disabled={meta?.isRowLoading(row.id)}
-              value={t("CommonButtons.Manage")}
+              value={translate("CommonButtons.Manage")}
             />
           </div>
         );
@@ -246,9 +215,8 @@ export function ProductsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       id: "rowActions",
       header: "",
-      size: 40,
-      minSize: 40,
-      maxSize: 40,
+      minSize: 56,
+      maxSize: 56,
       cell: ({ row, table }) => {
         const meta = table.options.meta as {
           setLoadingRow: (rowId: string, loading: boolean) => void;
