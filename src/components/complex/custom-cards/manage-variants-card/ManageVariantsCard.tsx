@@ -1,17 +1,17 @@
 import { Plus, SlidersVertical } from "lucide-react";
-import React, { Fragment } from "react";
+import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
+import React, { Fragment } from "react";
 
+import {
+  DataWithId,
+  DndGridDataTable,
+} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ManageVariantsCard.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import { IManageVariantsCard } from "@/const/interfaces/complex-components/custom-cards/IManageVariantsCard.ts";
-import {
-  DataWithId,
-  DndGridDataTable,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import { ColumnDef } from "@tanstack/react-table";
 import { Separator } from "@/components/ui/separator.tsx";
 import { ManageVariantsGridColumns } from "@/components/complex/grid/custom-grids/manage-variants-grid/ManageVariantsGridColumns.tsx";
 
@@ -123,7 +123,7 @@ export default function ManageVariantsCard({
           <span className="she-title">{t("SectionTitles.Variant")}</span>
           <SheButton
             icon={Plus}
-            variant="outline"
+            variant="secondary"
             value={t("ProductActions.CreateVariant")}
             onClick={() => {
               onAction("openAddVariantCard");
