@@ -4,13 +4,20 @@ import { useState } from "react";
 import cs from "./GridHeader.module.scss";
 import { GridPagination } from "@/components/complex/grid/grid-pagination/GridPagination.tsx";
 import { ColumnsViewOptions } from "@/components/complex/grid/filters/grid-columns-view-options/ColumnsViewOptions.tsx";
-import { IGridHeader } from "@/const/interfaces/complex-components/IGridHeader.ts";
 import GridItemsSorting from "@/components/complex/grid/filters/grid-items-sorting/GridItemsSorting.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import { useGridContext } from "@/state/context/grid-context.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import { useGridContext } from "@/state/context/grid-context.ts";
+import { IGridHeader } from "@/const/interfaces/complex-components/IGridHeader.ts";
+import { RowData } from "@tanstack/react-table";
 
-export default function GridHeader<TData>({ table }: IGridHeader<TData>) {
+export default function GridHeader({
+  gridHeaderClassName = "",
+  gridHeaderStyle,
+  table,
+  isLoading,
+  showHeader,
+}: IGridHeader) {
   const {
     showPagination,
     showSorting,
@@ -19,22 +26,32 @@ export default function GridHeader<TData>({ table }: IGridHeader<TData>) {
     children,
     onGridRequestChange,
   } = useGridContext();
+  // ==================================================================== STATE
   const [searchValue, setSearchValue] = useState("");
   const [filtersOpen, setFiltersOpen] = useState(false);
 
-  const handleInputChange = (event) => {
+  // ==================================================================== EVENT HANDLERS
+  const onInputChangeHandler = (event) => {
     setSearchValue(event);
     onGridRequestChange({ searchQuery: event });
   };
 
+  // ==================================================================== LAYOUT
+  if (!showHeader) {
+    return null;
+  }
+
   return (
-    <div className={cs.gridHeaderWrapper}>
+    <div
+      className={`${cs.gridHeaderWrapper} ${gridHeaderClassName} ${isLoading ? "disabled" : ""}`}
+      style={{ ...gridHeaderStyle }}
+    >
       <div className={cs.gridHeader}>
         <div className={cs.headerGroup}>
           {showSearch && (
             <SheInput
               value={searchValue}
-              onDelay={handleInputChange}
+              onDelay={onInputChangeHandler}
               placeholder={"Search"}
               minWidth="130px"
               icon={Search}
@@ -58,7 +75,9 @@ export default function GridHeader<TData>({ table }: IGridHeader<TData>) {
       {filtersOpen && (
         <div className={cs.filtersContainer}>
           <div className={cs.customFilters}>{children}</div>
-          {showColumnsViewOptions && <ColumnsViewOptions table={table} />}
+          {showColumnsViewOptions && (
+            <ColumnsViewOptions<RowData> table={table} />
+          )}
         </div>
       )}
       {showColumnsViewOptions && (
@@ -69,7 +88,7 @@ export default function GridHeader<TData>({ table }: IGridHeader<TData>) {
             visibility: "hidden",
           }}
         >
-          <ColumnsViewOptions table={table} />
+          <ColumnsViewOptions<RowData> table={table} />
         </div>
       )}
     </div>

@@ -15,43 +15,50 @@
       > table {
         border-radius: vars.$brdR_03;
 
-        tr {
-          display: flex;
-          justify-content: space-between;
-
-          th,
-          td {
-            display: flex;
-            align-items: center;
-            padding: 2px 8px;
-            flex-grow: 1;
-            width: 100% !important;
-            height: auto;
-            overflow: hidden;
-
-            > * {
-              overflow: hidden;
-              text-overflow: ellipsis;
-            }
-          }
-        }
-
         thead {
           tr {
+            display: flex;
+            justify-content: space-between;
             align-items: stretch;
 
             th {
+              display: flex;
+              align-items: center;
+              padding: 2px 8px;
+              flex-grow: 1;
+              width: 100% !important;
               min-height: 38px;
+              height: auto;
+              overflow: hidden;
+
+              > * {
+                overflow: hidden;
+                text-overflow: ellipsis;
+              }
             }
           }
         }
 
-        tbody {
+        .dndGridRowsBody {
           tr {
+            display: flex;
+            justify-content: space-between;
             align-items: center;
 
             td {
+              display: flex;
+              align-items: center;
+              padding: 2px 8px;
+              flex-grow: 1;
+              width: 100% !important;
+              height: auto;
               min-height: 46px;
+              overflow: hidden;
+
+              > * {
+                overflow: hidden;
+                text-overflow: ellipsis;
+              }
             }
           }
         }

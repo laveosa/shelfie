@@ -1,6 +1,11 @@
-import { Table } from "@tanstack/react-table";
-import { PropsWithChildren } from "react";
+import React, { PropsWithChildren } from "react";
 
-export interface IGridHeader<TData> extends PropsWithChildren {
-  table?: Table<TData>;
+import { RowData, Table } from "@tanstack/react-table";
+
+export interface IGridHeader extends PropsWithChildren {
+  gridHeaderClassName?: string;
+  gridHeaderStyle?: React.CSSProperties;
+  table?: Table<RowData>;
+  showHeader?: boolean;
+  isLoading?: boolean;
 }

@@ -183,7 +183,7 @@ export function ProductsPage() {
             <DndGridDataTable
               ref={gridRef}
               // isLoading={state.isLoading}
-              // isLoading={true}
+              isLoading={true}
               // showColumnsHeader={false}
               // enableDnd
               columns={ProductsGridColumns(onAction)}

@@ -8,7 +8,6 @@ import {
   getCoreRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  RowData,
   useReactTable,
 } from "@tanstack/react-table";
 import {
@@ -32,10 +31,11 @@ import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
 import { IGridContext } from "@/const/interfaces/context/IGridContext.ts";
 import { GridContext } from "@/state/context/grid-context";
 import cs from "./DndGrid.module.scss";
-import { Skeleton } from "@/components/ui/skeleton.tsx";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
 
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import SheGridSkeleton from "@/components/complex/grid/she-grid-skeleton/SheGridSkeleton.tsx";
+import { ISheGridSkeleton } from "@/const/interfaces/complex-components/ISheGridSkeleton.ts";
 
 export interface DataWithId {
   id: number | string;
@@ -46,8 +46,9 @@ export interface DataWithId {
 }
 
 interface DataTableProps<TData extends DataWithId, TValue>
-  extends IGridHeader<TData>,
+  extends IGridHeader,
     IGridContext,
+    ISheGridSkeleton,
     PropsWithChildren {
   className?: any;
   isLoading?: boolean;
@@ -309,10 +310,6 @@ export const DndGridDataTable = React.forwardRef<
   const [loadingRows, setLoadingRows] = useState<Set<string>>(new Set());
   const [isDragging, setIsDragging] = useState(false);
 
-  function createSkeletonArray(quantity: number): object[] {
-    return Array.from({ length: quantity }, () => ({}));
-  }
-
   useEffect(() => {
     function prepareItemsForGrid(data: any): TData[] {
       return data.map((item, index) => ({
@@ -483,12 +480,14 @@ export const DndGridDataTable = React.forwardRef<
       }}
     >
       <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
-        <div
-          className={`${className} ${cs.dndGrid} ${isLoading ? "disabled" : ""}`}
-        >
-          {showHeader && (
-            <GridHeader<RowData> table={table}>{children}</GridHeader>
-          )}
+        <div className={`${className} ${cs.dndGrid}`}>
+          <GridHeader
+            table={table}
+            showHeader={showHeader}
+            isLoading={isLoading}
+          >
+            {children}
+          </GridHeader>
           <div className={cs.dndGridContainer}>
             <Table>
               <TableHeader
@@ -520,7 +519,7 @@ export const DndGridDataTable = React.forwardRef<
                           padding: cellPadding,
                         }}
                       >
-                        {showColumnsHeader && !header.isPlaceholder && (
+                        {!header.isPlaceholder && (
                           <span>
                             {flexRender(
                               header.column.columnDef.header,
@@ -533,32 +532,11 @@ export const DndGridDataTable = React.forwardRef<
                   </TableRow>
                 ))}
               </TableHeader>
-              {isLoading ? (
-                <TableBody className={cs.tableSkeleton}>
-                  <SheLoading className={cs.dndGridLoader} />
-                  {createSkeletonArray(skeletonQuantity ?? 5).map(
-                    (_, index) => (
-                      <TableRow key={index}>
-                        <TableCell>
-                          <Skeleton className={cs.skeletonRound} />
-                        </TableCell>
-                        <TableCell className={cs.skeletonBarsContainer}>
-                          <div className="space-y-2">
-                            <Skeleton
-                              className={cs.skeletonLongBar}
-                              style={{ width: "100%" }}
-                            />
-                            <Skeleton
-                              className={cs.skeletonShortBar}
-                              style={{ width: "70%" }}
-                            />
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ),
-                  )}
-                </TableBody>
-              ) : (
+              <SheGridSkeleton
+                quantity={skeletonQuantity}
+                isLoading={isLoading}
+              />
+              {!isLoading && (
                 <SortableContext
                   items={items
                     .filter((item) => !item.isHidden)
@@ -567,6 +545,7 @@ export const DndGridDataTable = React.forwardRef<
                 >
                   {data?.length > 0 ? (
                     <TableBody
+                      className={cs.dndGridRowsBody}
                       style={{
                         background: enableDnd ? "#f4f4f5" : "white",
                       }}
