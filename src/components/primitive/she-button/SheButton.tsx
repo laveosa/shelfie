@@ -37,14 +37,12 @@ export default function SheButton({
   const loaderSize: string = size === "small" ? "24px" : "30px";
   const loaderColor: string = _isLoaderDark();
 
-  // ==================================================================== EVENT
-
+  // ==================================================================== EVENT HANDLERS
   function onClickHandler(event) {
     onClick?.(event);
   }
 
   // ==================================================================== PRIVATE
-  // TODO use this logic from useComponentUtilities for getContextColorBasedOnVariant func
   function _isLoaderDark(): string {
     switch (variant) {
       case "ghost":
@@ -58,7 +56,6 @@ export default function SheButton({
   }
 
   // ==================================================================== LAYOUT
-
   return (
     <Button
       className={`${cs.sheButton} ${className} ${cs[variant]} ${cs[`icon-${iconPosition}`] || ""} ${value || children ? cs.withText : ""} ${fullWidth ? cs.fullWidth : ""} ${cs[size]} ${cs[view]} ${twistIcon ? cs.twistIcon : ""} ${valueWrap ? cs.valueWrap : ""} ${icon ? cs[iconPosition + "Icon"] : ""}`}

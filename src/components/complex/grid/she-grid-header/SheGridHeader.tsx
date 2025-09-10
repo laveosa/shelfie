@@ -2,7 +2,7 @@ import { Filter, Search } from "lucide-react";
 import { useState } from "react";
 
 import cs from "./SheGridHeader.module.scss";
-import { GridPagination } from "@/components/complex/grid/grid-pagination/GridPagination.tsx";
+import { SheGridPagination } from "@/components/complex/grid/she-grid-pagination/SheGridPagination.tsx";
 import { ColumnsViewOptions } from "@/components/complex/grid/filters/grid-columns-view-options/ColumnsViewOptions.tsx";
 import GridItemsSorting from "@/components/complex/grid/filters/grid-items-sorting/GridItemsSorting.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
@@ -69,7 +69,7 @@ export default function SheGridHeader({
           />
         </div>
         <div className={cs.headerGroup}>
-          {showPagination && <GridPagination />}
+          {showPagination && <SheGridPagination />}
         </div>
       </div>
       {filtersOpen && (

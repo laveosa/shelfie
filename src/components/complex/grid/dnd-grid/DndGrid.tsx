@@ -546,9 +546,9 @@ export const DndGridDataTable = React.forwardRef<
                   {data?.length > 0 ? (
                     <TableBody
                       className={cs.dndGridRowsBody}
-                      style={{
+                      /*style={{
                         background: enableDnd ? "#f4f4f5" : "white",
-                      }}
+                      }}*/
                     >
                       <SheLoading
                         isLoading={isLoading}
@@ -585,10 +585,9 @@ export const DndGridDataTable = React.forwardRef<
                     </TableBody>
                   ) : (
                     <TableBody
-                      className={cs.tableBody}
-                      style={{
+                    /*style={{
                         background: enableDnd ? "#f4f4f5" : "white",
-                      }}
+                      }}*/
                     >
                       <TableRow>
                         <TableCell
