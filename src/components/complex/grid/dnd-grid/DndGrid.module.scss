@@ -10,54 +10,60 @@
     border-radius: vars.$brdR_03;
 
     > div {
+      border-radius: vars.$brdR_03;
+
       > table {
-        > .dndGridTableContextWrapper {
+        border-radius: vars.$brdR_03;
+
+        tr {
           display: flex;
-          flex-direction: column;
+          justify-content: space-between;
 
-          tr {
+          th,
+          td {
             display: flex;
-            justify-content: space-between;
+            align-items: center;
+            padding: 2px 8px;
+            flex-grow: 1;
+            width: 100% !important;
+            height: auto;
+            overflow: hidden;
 
-            th,
-            td {
-              display: flex;
-              align-items: center;
-              padding: 2px 8px;
-              flex-grow: 1;
-              width: 100% !important;
-              height: auto;
+            > * {
               overflow: hidden;
-
-              > * {
-                overflow: hidden;
-                text-overflow: ellipsis;
-              }
+              text-overflow: ellipsis;
             }
           }
+        }
 
-          > thead {
-            tr {
-              align-items: stretch;
+        thead {
+          tr {
+            align-items: stretch;
 
-              th {
-                min-height: 38px;
-              }
+            th {
+              min-height: 38px;
             }
           }
+        }
 
-          > tbody {
-            tr {
-              align-items: center;
+        tbody {
+          tr {
+            align-items: center;
 
-              td {
-                min-height: 46px;
-              }
+            td {
+              min-height: 46px;
             }
           }
         }
       }
     }
+  }
+}
+
+// ------------------------------------------------------- TABLE HEADER
+.dndGrid .dndGridContainer .dndGridTableHeader {
+  &:hover {
+    background: transparent;
   }
 }
 

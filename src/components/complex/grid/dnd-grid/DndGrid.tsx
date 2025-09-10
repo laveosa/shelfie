@@ -131,9 +131,8 @@ const DraggableRow = ({
           style={{
             cursor: isDragDisabled || isLoading ? "default" : "grab",
             background: isSelected ? "#F4F4F5" : "inherit",
-            width: "40px",
-            minWidth: "40px",
-            maxWidth: "40px",
+            minWidth: "24px",
+            maxWidth: "24px",
             padding: "0",
           }}
           {...listeners}
@@ -492,147 +491,142 @@ export const DndGridDataTable = React.forwardRef<
           )}
           <div className={cs.dndGridContainer}>
             <Table>
-              <div className={cs.dndGridTableContextWrapper}>
-                <TableHeader
-                  className={!showColumnsHeader ? cs.hiddenHeader : ""}
-                >
-                  {table.getHeaderGroups().map((headerGroup) => (
-                    <TableRow key={headerGroup.id}>
-                      {enableDnd && (
-                        <TableHead
-                          style={{
-                            width: "40px",
-                            minWidth: "40px",
-                            maxWidth: "40px",
-                            padding: "0",
-                          }}
-                        ></TableHead>
-                      )}
-                      {headerGroup.headers.map((header) => (
-                        <TableHead
-                          key={header.id}
-                          style={{
+              <TableHeader
+                className={!showColumnsHeader ? cs.hiddenHeader : ""}
+              >
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow
+                    key={headerGroup.id}
+                    className={cs.dndGridTableHeader}
+                  >
+                    {enableDnd && (
+                      <TableHead
+                        style={{
+                          minWidth: "24px",
+                          maxWidth: "24px",
+                          padding: "0",
+                        }}
+                      ></TableHead>
+                    )}
+                    {headerGroup.headers.map((header) => (
+                      <TableHead
+                        key={header.id}
+                        style={{
+                          ...(header.column.columnDef.size && {
                             width: `${header.column.columnDef.size}px`,
-                            minWidth: header.column.columnDef.minSize,
-                            maxWidth: header.column.columnDef.maxSize,
+                          }),
+                          minWidth: header.column.columnDef.minSize,
+                          maxWidth: header.column.columnDef.maxSize,
+                          padding: cellPadding,
+                        }}
+                      >
+                        {showColumnsHeader && !header.isPlaceholder && (
+                          <span>
+                            {flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                          </span>
+                        )}
+                      </TableHead>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableHeader>
+              {isLoading ? (
+                <TableBody className={cs.tableSkeleton}>
+                  <SheLoading className={cs.dndGridLoader} />
+                  {createSkeletonArray(skeletonQuantity ?? 5).map(
+                    (_, index) => (
+                      <TableRow key={index}>
+                        <TableCell>
+                          <Skeleton className={cs.skeletonRound} />
+                        </TableCell>
+                        <TableCell className={cs.skeletonBarsContainer}>
+                          <div className="space-y-2">
+                            <Skeleton
+                              className={cs.skeletonLongBar}
+                              style={{ width: "100%" }}
+                            />
+                            <Skeleton
+                              className={cs.skeletonShortBar}
+                              style={{ width: "70%" }}
+                            />
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ),
+                  )}
+                </TableBody>
+              ) : (
+                <SortableContext
+                  items={items
+                    .filter((item) => !item.isHidden)
+                    .map((item) => item.id)}
+                  strategy={verticalListSortingStrategy}
+                >
+                  {data?.length > 0 ? (
+                    <TableBody
+                      style={{
+                        background: enableDnd ? "#f4f4f5" : "white",
+                      }}
+                    >
+                      <SheLoading
+                        isLoading={isLoading}
+                        className={cs.dndGridLoader}
+                      />
+                      {table
+                        .getRowModel()
+                        .rows.map((row) =>
+                          enableDnd ? (
+                            <DraggableRow
+                              key={row.id}
+                              row={row}
+                              loadingRows={loadingRows}
+                              isDragDisabled={
+                                loadingRows.has(row.id) || isDragging
+                              }
+                              enableExpansion={enableExpansion}
+                              renderExpandedContent={renderExpandedContent}
+                              totalColumns={totalColumns}
+                              cellPadding={cellPadding}
+                            />
+                          ) : (
+                            <RegularRow
+                              key={row.id}
+                              row={row}
+                              loadingRows={loadingRows}
+                              enableExpansion={enableExpansion}
+                              renderExpandedContent={renderExpandedContent}
+                              totalColumns={totalColumns}
+                              cellPadding={cellPadding}
+                            />
+                          ),
+                        )}
+                    </TableBody>
+                  ) : (
+                    <TableBody
+                      className={cs.tableBody}
+                      style={{
+                        background: enableDnd ? "#f4f4f5" : "white",
+                      }}
+                    >
+                      <TableRow>
+                        <TableCell
+                          colSpan={totalColumns}
+                          className="h-24 text-center"
+                          style={{
+                            width: "100%",
                             padding: cellPadding,
                           }}
-                          /*style={{
-                            ...(header.column.columnDef.size && {
-                              width: `${header.column.columnDef.size}px`,
-                            }),
-                            minWidth: header.column.columnDef.minSize || 50,
-                            maxWidth: header.column.columnDef.maxSize,
-                          }}*/
                         >
-                          {showColumnsHeader && !header.isPlaceholder && (
-                            <span>
-                              {flexRender(
-                                header.column.columnDef.header,
-                                header.getContext(),
-                              )}
-                            </span>
-                          )}
-                        </TableHead>
-                      ))}
-                    </TableRow>
-                  ))}
-                </TableHeader>
-                {isLoading ? (
-                  <TableBody className={cs.tableSkeleton}>
-                    <SheLoading className={cs.dndGridLoader} />
-                    {createSkeletonArray(skeletonQuantity ?? 5).map(
-                      (_, index) => (
-                        <TableRow key={index}>
-                          <TableCell>
-                            <Skeleton className={cs.skeletonRound} />
-                          </TableCell>
-                          <TableCell className={cs.skeletonBarsContainer}>
-                            <div className="space-y-2">
-                              <Skeleton
-                                className={cs.skeletonLongBar}
-                                style={{ width: "100%" }}
-                              />
-                              <Skeleton
-                                className={cs.skeletonShortBar}
-                                style={{ width: "70%" }}
-                              />
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      ),
-                    )}
-                  </TableBody>
-                ) : (
-                  <SortableContext
-                    items={items
-                      .filter((item) => !item.isHidden)
-                      .map((item) => item.id)}
-                    strategy={verticalListSortingStrategy}
-                  >
-                    {data?.length > 0 ? (
-                      <TableBody
-                        style={{
-                          background: enableDnd ? "#f4f4f5" : "white",
-                        }}
-                      >
-                        <SheLoading
-                          isLoading={isLoading}
-                          className={cs.dndGridLoader}
-                        />
-                        {table
-                          .getRowModel()
-                          .rows.map((row) =>
-                            enableDnd ? (
-                              <DraggableRow
-                                key={row.id}
-                                row={row}
-                                loadingRows={loadingRows}
-                                isDragDisabled={
-                                  loadingRows.has(row.id) || isDragging
-                                }
-                                enableExpansion={enableExpansion}
-                                renderExpandedContent={renderExpandedContent}
-                                totalColumns={totalColumns}
-                                cellPadding={cellPadding}
-                              />
-                            ) : (
-                              <RegularRow
-                                key={row.id}
-                                row={row}
-                                loadingRows={loadingRows}
-                                enableExpansion={enableExpansion}
-                                renderExpandedContent={renderExpandedContent}
-                                totalColumns={totalColumns}
-                                cellPadding={cellPadding}
-                              />
-                            ),
-                          )}
-                      </TableBody>
-                    ) : (
-                      <TableBody
-                        className={cs.tableBody}
-                        style={{
-                          background: enableDnd ? "#f4f4f5" : "white",
-                        }}
-                      >
-                        <TableRow>
-                          <TableCell
-                            colSpan={totalColumns}
-                            className="h-24 text-center"
-                            style={{
-                              width: "100%",
-                              padding: cellPadding,
-                            }}
-                          >
-                            {customMessage || "NO DATA TO DISPLAY"}
-                          </TableCell>
-                        </TableRow>
-                      </TableBody>
-                    )}
-                  </SortableContext>
-                )}
-              </div>
+                          {customMessage || "NO DATA TO DISPLAY"}
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  )}
+                </SortableContext>
+              )}
             </Table>
           </div>
         </div>
