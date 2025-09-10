@@ -182,7 +182,9 @@ export function ProductsPage() {
           <TabsContent value="products" className={cs.productsPageTabContext}>
             <DndGridDataTable
               ref={gridRef}
-              isLoading={state.isLoading}
+              // isLoading={state.isLoading}
+              // isLoading={true}
+              showColumnsHeader={false}
               columns={ProductsGridColumns(onAction)}
               data={state.productsGridModel.items}
               gridModel={state.productsGridModel}
