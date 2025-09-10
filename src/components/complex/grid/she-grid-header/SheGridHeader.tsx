@@ -1,23 +1,23 @@
 import { Filter, Search } from "lucide-react";
 import { useState } from "react";
 
-import cs from "./GridHeader.module.scss";
+import cs from "./SheGridHeader.module.scss";
 import { GridPagination } from "@/components/complex/grid/grid-pagination/GridPagination.tsx";
 import { ColumnsViewOptions } from "@/components/complex/grid/filters/grid-columns-view-options/ColumnsViewOptions.tsx";
 import GridItemsSorting from "@/components/complex/grid/filters/grid-items-sorting/GridItemsSorting.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { useGridContext } from "@/state/context/grid-context.ts";
-import { IGridHeader } from "@/const/interfaces/complex-components/IGridHeader.ts";
+import { ISheGridHeader } from "@/const/interfaces/complex-components/ISheGridHeader.ts";
 import { RowData } from "@tanstack/react-table";
 
-export default function GridHeader({
+export default function SheGridHeader({
   gridHeaderClassName = "",
   gridHeaderStyle,
   table,
   isLoading,
   showHeader,
-}: IGridHeader) {
+}: ISheGridHeader) {
   const {
     showPagination,
     showSorting,

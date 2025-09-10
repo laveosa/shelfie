@@ -25,8 +25,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table.tsx";
-import GridHeader from "@/components/complex/grid/grid-header/GridHeader.tsx";
-import { IGridHeader } from "@/const/interfaces/complex-components/IGridHeader.ts";
+import SheGridHeader from "@/components/complex/grid/she-grid-header/SheGridHeader.tsx";
+import { ISheGridHeader } from "@/const/interfaces/complex-components/ISheGridHeader.ts";
 import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
 import { IGridContext } from "@/const/interfaces/context/IGridContext.ts";
 import { GridContext } from "@/state/context/grid-context";
@@ -46,7 +46,7 @@ export interface DataWithId {
 }
 
 interface DataTableProps<TData extends DataWithId, TValue>
-  extends IGridHeader,
+  extends ISheGridHeader,
     IGridContext,
     ISheGridSkeleton,
     PropsWithChildren {
@@ -481,13 +481,13 @@ export const DndGridDataTable = React.forwardRef<
     >
       <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
         <div className={`${className} ${cs.dndGrid}`}>
-          <GridHeader
+          <SheGridHeader
             table={table}
             showHeader={showHeader}
             isLoading={isLoading}
           >
             {children}
-          </GridHeader>
+          </SheGridHeader>
           <div className={cs.dndGridContainer}>
             <Table>
               <TableHeader
