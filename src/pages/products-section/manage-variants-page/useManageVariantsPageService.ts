@@ -525,6 +525,10 @@ export default function useManageVariantsPageService(handleCardAction) {
             type: "success",
           });
         } else {
+          addToast({
+            text: "Can`t attach photo to variant",
+            type: "error",
+          });
         }
       });
   }

@@ -1,3 +1,4 @@
+import { ColumnDef } from "@tanstack/react-table";
 import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
@@ -22,7 +23,6 @@ import useProductsPageService from "@/pages/products-section/products-page/usePr
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
-import { ColumnDef } from "@tanstack/react-table";
 import { DataWithId } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import SelectPurchaseCard from "@/components/complex/custom-cards/select-purchase-card/SelectPurchaseCard.tsx";
 import { SelectPurchaseGridColumns } from "@/components/complex/grid/custom-grids/select-purchase-grid/SelectPurchaseGridColumns.tsx";
