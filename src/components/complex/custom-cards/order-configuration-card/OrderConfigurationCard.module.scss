@@ -1,102 +1,96 @@
 
 .orderConfigurationCard {
-  .orderConfigurationCardContentWrapper {
-    height: calc(100vh - 166px);
+  .orderConfigurationCardContent {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    gap: 10px;
+    padding-bottom: 20px;
 
-    .orderConfigurationCardContent {
+    .orderConfigurationCardItem {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+
+      span:first-child {
+        width: 55%;
+      }
+    }
+
+    .customerInfo {
       display: flex;
       flex-direction: column;
       gap: 10px;
-      padding-bottom: 20px;
 
-      .orderConfigurationCardItem {
+      .customerInfoAvatarBlock {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .avatarImage {
+          border-radius: 50%;
+        }
+
+        .avatarInitials {
+          width: 40px;
+          height: 40px;
+          background-color: #ececec;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #555;
+          font-weight: 600;
+          font-size: 16px;
+          user-select: none;
+        }
+      }
+    }
+
+    .orderDiscountsGridWrapper {
+      position: relative;
+      margin-bottom: 30px;
+    }
+
+    .gridFooter {
+      position: absolute;
+      width: 100%;
+      height: 30px;
+      left: 0;
+      bottom: -28px;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+      background-color: #f4f4f5;
+
+      .gridFooterItems {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 3px 10px;
+
+        .gridFooterItem {
+          width: 50%;
+          font-weight: 600;
+        }
+      }
+    }
+
+    .orderSummaryItems {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      .orderSummaryItem {
         display: flex;
         align-items: center;
         justify-content: flex-start;
+        gap: 20px;
 
         span:first-child {
-          width: 55%;
-        }
-      }
-
-      .customerInfo {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-
-        .customerInfoAvatarBlock {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-
-          .avatarImage {
-            border-radius: 50%;
-          }
-
-          .avatarInitials {
-            width: 40px;
-            height: 40px;
-            background-color: #ececec;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #555;
-            font-weight: 600;
-            font-size: 16px;
-            user-select: none;
-          }
-        }
-      }
-
-      .orderDiscountsGridWrapper {
-        position: relative;
-        margin-bottom: 30px;
-      }
-
-      .gridFooter {
-        position: absolute;
-        width: 100%;
-        height: 30px;
-        left: 0;
-        bottom: -28px;
-        border-bottom-left-radius: 5px;
-        border-bottom-right-radius: 5px;
-        background-color: #f4f4f5;
-
-        .gridFooterItems {
-          display: flex;
-          align-items: center;
-          gap: 20px;
-          padding: 3px 10px;
-
-          .gridFooterItem {
-            width: 50%;
-            font-weight: 600;
-          }
-        }
-      }
-
-      .orderSummaryItems {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-
-        .orderSummaryItem {
-          display: flex;
-          align-items: center;
-          justify-content: flex-start;
-          gap: 20px;
-
-          span:first-child {
-            width: 70%;
-          }
+          width: 70%;
         }
       }
     }
   }
 }
+
 

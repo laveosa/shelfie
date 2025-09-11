@@ -1,46 +1,39 @@
 @use "@/styles/variables" as vars;
 
 .productTraitConfigurationCard {
-  .productTraitConfigurationContentWrapper {
+  .productTraitConfigurationContent {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     gap: 20px;
+    min-height: calc(100vh - 295px);
 
-    .productTraitConfigurationContent {
+    form {
       display: flex;
       flex-direction: column;
       gap: 20px;
-      min-height: calc(100vh - 295px);
 
-      form {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-
-        .formInput {
-          max-width: 100%;
-        }
-      }
-
-      .buttonBlock {
-        display: flex;
-        justify-content: space-between;
+      .formInput {
+        max-width: 100%;
       }
     }
 
-    .productTraitConfigurationGridContainer {
+    .buttonBlock {
       display: flex;
-      flex-direction: column;
-      gap: 20px;
+      justify-content: space-between;
+    }
+  }
 
-      .productTraitConfigurationGrid > div {
-        overflow: auto;
-        max-height: calc(100vh - 535px);
+  .productTraitConfigurationGridContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 
-        input {
-          font-weight: normal;
-        }
+    .productTraitConfigurationGrid > div {
+      overflow: auto;
+      max-height: calc(100vh - 535px);
+
+      input {
+        font-weight: normal;
       }
     }
   }

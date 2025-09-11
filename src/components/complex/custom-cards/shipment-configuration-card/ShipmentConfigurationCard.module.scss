@@ -1,11 +1,5 @@
 .shipmentConfigurationCard {
   .shipmentConfigurationCardContent {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 20px;
-    height: calc(100vh - 166px);
-
     .shipmentConfiguration {
       overflow: auto;
       display: flex;

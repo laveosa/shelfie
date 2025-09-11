@@ -30,7 +30,6 @@ import { IProductTraitConfigurationCard } from "@/const/interfaces/complex-compo
 import { ColorOptionsGridColumns } from "@/components/complex/grid/trait-options-grid/color-options-grid/ColorOptionsGridColumns.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { SizeOptionsGridColumns } from "@/components/complex/grid/trait-options-grid/size-options-grid/SizeOptionsGridColumns.tsx";
-import SheCardNotification from "@/components/complex/she-card-notification/SheCardNotification.tsx";
 
 export default function ProductTraitConfigurationCard({
   isLoading,
@@ -117,185 +116,181 @@ export default function ProductTraitConfigurationCard({
   return (
     <SheProductCard
       loading={isLoading}
+      className={cs.productTraitConfigurationCard}
       title={
         selectedTrait?.traitId
           ? t("CardTitles.ManageTrait", { traitName: selectedTrait.traitName })
           : t("CardTitles.CreateProductTrait")
       }
       showCloseButton={true}
-      className={cs.productTraitConfigurationCard}
+      showNotificationCard={!!selectedTrait?.traitId}
+      notificationCardProps={{
+        title: "Delete Trait",
+        titleTransKey: "CardTitles.DeleteTrait",
+        text: "This trait will be deleted, it will no longer be available for selection but you will still see it in products where it was used, until you change the trait",
+        textTransKey: "ConfirmationMessages.DeleteTrait",
+        buttonText: "Delete",
+        buttonTextTransKey: "CommonButtons.Delete",
+        buttonColor: "#FF0000",
+        buttonIcon: Trash2,
+        onClick: () => onAction("deleteTrait", selectedTrait),
+      }}
       {...props}
     >
-      <div className={cs.productTraitConfigurationContentWrapper}>
-        <div className={cs.productTraitConfigurationContent}>
-          <div className={cs.productTraitConfigurationForm}>
-            <SheForm form={form as any} onSubmit={onSubmit}>
-              <SheForm.Field
-                rules={{
-                  required: true,
-                  minLength: {
-                    value: 3,
-                    message: t("ProductForm.Validation.TraitNameMinLength"),
-                  },
-                  maxLength: {
-                    value: 50,
-                    message: t("ProductForm.Validation.TraitNameMaxLength"),
-                  },
-                }}
-                name="traitName"
-              >
-                <SheInput
-                  label={t("ProductForm.Labels.TraitName")}
-                  placeholder={t("ProductForm.Placeholders.TraitName")}
-                  isValid={!form.formState.errors.traitName}
-                  patternErrorMessage={form.formState.errors.traitName?.message}
-                  showError={true}
-                  onDelay={
-                    selectedTrait?.traitId && (() => onSubmit(form.getValues()))
-                  }
-                  className={cs.formInput}
-                />
-              </SheForm.Field>
-              {!selectedTrait?.traitId && (
-                <div className={cs.productConfigurationFormRow}>
-                  <FormField
-                    control={form.control}
-                    name="traitTypeId"
-                    rules={{
-                      required: true,
-                    }}
-                    render={({ field }) => (
-                      <FormItem className={cs.select}>
-                        <FormLabel>
-                          {t("ProductForm.Labels.TraitType")}
-                        </FormLabel>
-                        <Select
-                          onValueChange={(value) => {
-                            field.onChange(Number(value));
-                            selectedTrait?.traitId &&
-                              onSubmit(form.getValues());
-                          }}
-                          value={field.value ? field.value.toString() : ""}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue
-                                placeholder={t(
-                                  "ProductForm.Placeholders.SelectTraitType",
-                                )}
-                              />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {typesOfTraits?.map((option) => (
-                              <SelectItem
-                                key={option.traitTypeId}
-                                value={option.traitTypeId.toString()}
-                              >
-                                <div>{option.traitTypeName}</div>
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </FormItem>
-                    )}
-                  ></FormField>
-                </div>
-              )}
-
-              {!selectedTrait?.traitId && (
-                <div className={cs.buttonBlock}>
-                  <SheButton
-                    variant="secondary"
-                    value={t("CommonButtons.Cancel")}
-                    onClick={() =>
-                      onAction("closeProductTraitConfigurationCard", null)
-                    }
-                  />
-                  <SheButton
-                    disabled={!form.formState.isValid}
-                    icon={Plus}
-                    bgColor="#007AFF"
-                    value={t("ProductActions.CreateTrait")}
-                    onClick={form.handleSubmit(onSubmit)}
-                  />
-                </div>
-              )}
-            </SheForm>
-          </div>
-          {/*{localItems?.length > 0 && (*/}
-          {selectedTrait?.traitId && (
-            <>
-              <Separator />
-              <div
-                className={`${cs.productTraitConfigurationGridContainer} she-title`}
-              >
-                <span className="she-title">
-                  {t("ProductForm.Labels.Options")}
-                </span>
-                {selectedTrait?.traitTypeId === 1 && (
-                  <DndGridDataTable
-                    isLoading={isGridLoading}
-                    className={cs.productTraitConfigurationGrid}
-                    enableDnd={true}
-                    showHeader={false}
-                    showColumnsHeader={false}
-                    columns={sizeColumns}
-                    data={localItems}
-                    gridModel={data}
-                    cellPadding="10px 10px"
-                    onNewItemPosition={(newIndex, activeItem) =>
-                      onAction("dndTraitOption", {
-                        selectedTrait,
-                        newIndex,
-                        activeItem,
-                      })
-                    }
-                  />
-                )}
-                {selectedTrait?.traitTypeId === 2 && (
-                  <DndGridDataTable
-                    isLoading={isGridLoading}
-                    className={cs.productTraitConfigurationGrid}
-                    enableDnd={true}
-                    showHeader={false}
-                    showColumnsHeader={false}
-                    columns={colorColumns}
-                    data={localItems}
-                    gridModel={data}
-                    // cellPadding="10px 10px"
-                    onNewItemPosition={(newIndex, activeItem) =>
-                      onAction("dndTraitOption", {
-                        selectedTrait,
-                        newIndex,
-                        activeItem,
-                      })
-                    }
-                  />
-                )}
-              </div>
-            </>
-          )}
-          {selectedTrait?.traitId && (
-            <SheButton
-              icon={Plus}
-              variant="outline"
-              onClick={() => onGridAction("addOption")}
+      <div className={cs.productTraitConfigurationContent}>
+        <div className={cs.productTraitConfigurationForm}>
+          <SheForm form={form as any} onSubmit={onSubmit}>
+            <SheForm.Field
+              rules={{
+                required: true,
+                minLength: {
+                  value: 3,
+                  message: t("ProductForm.Validation.TraitNameMinLength"),
+                },
+                maxLength: {
+                  value: 50,
+                  message: t("ProductForm.Validation.TraitNameMaxLength"),
+                },
+              }}
+              name="traitName"
             >
-              {t("ProductActions.AddTraitOption")}
-            </SheButton>
-          )}
+              <SheInput
+                label={t("ProductForm.Labels.TraitName")}
+                placeholder={t("ProductForm.Placeholders.TraitName")}
+                isValid={!form.formState.errors.traitName}
+                patternErrorMessage={form.formState.errors.traitName?.message}
+                showError={true}
+                onDelay={
+                  selectedTrait?.traitId && (() => onSubmit(form.getValues()))
+                }
+                className={cs.formInput}
+              />
+            </SheForm.Field>
+            {!selectedTrait?.traitId && (
+              <div className={cs.productConfigurationFormRow}>
+                <FormField
+                  control={form.control}
+                  name="traitTypeId"
+                  rules={{
+                    required: true,
+                  }}
+                  render={({ field }) => (
+                    <FormItem className={cs.select}>
+                      <FormLabel>{t("ProductForm.Labels.TraitType")}</FormLabel>
+                      <Select
+                        onValueChange={(value) => {
+                          field.onChange(Number(value));
+                          selectedTrait?.traitId && onSubmit(form.getValues());
+                        }}
+                        value={field.value ? field.value.toString() : ""}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue
+                              placeholder={t(
+                                "ProductForm.Placeholders.SelectTraitType",
+                              )}
+                            />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {typesOfTraits?.map((option) => (
+                            <SelectItem
+                              key={option.traitTypeId}
+                              value={option.traitTypeId.toString()}
+                            >
+                              <div>{option.traitTypeName}</div>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                ></FormField>
+              </div>
+            )}
+
+            {!selectedTrait?.traitId && (
+              <div className={cs.buttonBlock}>
+                <SheButton
+                  variant="secondary"
+                  value={t("CommonButtons.Cancel")}
+                  onClick={() =>
+                    onAction("closeProductTraitConfigurationCard", null)
+                  }
+                />
+                <SheButton
+                  disabled={!form.formState.isValid}
+                  icon={Plus}
+                  bgColor="#007AFF"
+                  value={t("ProductActions.CreateTrait")}
+                  onClick={form.handleSubmit(onSubmit)}
+                />
+              </div>
+            )}
+          </SheForm>
         </div>
+        {/*{localItems?.length > 0 && (*/}
         {selectedTrait?.traitId && (
-          <SheCardNotification
-            title={t("CardTitles.DeleteTrait")}
-            text={t("ConfirmationMessages.DeleteTrait")}
-            buttonColor="#EF4343"
-            buttonVariant="outline"
-            buttonText={t("CommonButtons.Delete")}
-            buttonIcon={Trash2}
-            onClick={() => onAction("deleteTrait", selectedTrait)}
-          />
+          <>
+            <Separator />
+            <div
+              className={`${cs.productTraitConfigurationGridContainer} she-title`}
+            >
+              <span className="she-title">
+                {t("ProductForm.Labels.Options")}
+              </span>
+              {selectedTrait?.traitTypeId === 1 && (
+                <DndGridDataTable
+                  isLoading={isGridLoading}
+                  className={cs.productTraitConfigurationGrid}
+                  enableDnd={true}
+                  showHeader={false}
+                  showColumnsHeader={false}
+                  columns={sizeColumns}
+                  data={localItems}
+                  gridModel={data}
+                  cellPadding="10px 10px"
+                  onNewItemPosition={(newIndex, activeItem) =>
+                    onAction("dndTraitOption", {
+                      selectedTrait,
+                      newIndex,
+                      activeItem,
+                    })
+                  }
+                />
+              )}
+              {selectedTrait?.traitTypeId === 2 && (
+                <DndGridDataTable
+                  isLoading={isGridLoading}
+                  className={cs.productTraitConfigurationGrid}
+                  enableDnd={true}
+                  showHeader={false}
+                  showColumnsHeader={false}
+                  columns={colorColumns}
+                  data={localItems}
+                  gridModel={data}
+                  // cellPadding="10px 10px"
+                  onNewItemPosition={(newIndex, activeItem) =>
+                    onAction("dndTraitOption", {
+                      selectedTrait,
+                      newIndex,
+                      activeItem,
+                    })
+                  }
+                />
+              )}
+            </div>
+          </>
+        )}
+        {selectedTrait?.traitId && (
+          <SheButton
+            icon={Plus}
+            variant="outline"
+            onClick={() => onGridAction("addOption")}
+          >
+            {t("ProductActions.AddTraitOption")}
+          </SheButton>
         )}
       </div>
     </SheProductCard>

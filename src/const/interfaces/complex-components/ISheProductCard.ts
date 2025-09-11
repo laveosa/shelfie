@@ -1,5 +1,6 @@
 import { IBaseComponent } from "@/const/interfaces/IBaseComponent.ts";
 import { ISheButton } from "@/const/interfaces/primitive-components/ISheButton.ts";
+import { ISheCardNotification } from "@/const/interfaces/complex-components/ISheCardNotification.ts";
 
 export interface ISheProductCard extends IBaseComponent {
   loading?: boolean;
@@ -15,6 +16,8 @@ export interface ISheProductCard extends IBaseComponent {
   showCloseButton?: boolean;
   width?: string;
   fullWidth?: boolean;
+  showNotificationCard?: boolean;
+  notificationCardProps?: ISheCardNotification;
   showPrimaryButton?: boolean;
   primaryButtonTitle?: string;
   primaryButtonTitleTransKey?: string;

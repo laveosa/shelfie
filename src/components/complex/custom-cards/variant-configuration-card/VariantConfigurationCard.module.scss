@@ -1,114 +1,113 @@
 @use "@/styles/variables" as vars;
 
 .variantConfigurationCard {
-  .variantConfigurationCardContentWrapper {
+  .variantConfigurationCardContent {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    gap: 20px;
+    padding-bottom: 20px;
+    max-height: calc(100vh - 260px);
+    height: 100vh;
 
-    .variantConfigurationCardContent {
+    &::-webkit-scrollbar {
+      width: 6px;
+      height: 10px;
+      background: white;
+    }
+
+    .variantConfigurationForm {
       display: flex;
       flex-direction: column;
       gap: 20px;
-      overflow-y: auto;
-      padding-bottom: 20px;
-      max-height: calc(100vh - 260px);
-      height: 100vh;
 
-      .variantConfigurationForm {
+      .variantCodeFormRow {
         display: flex;
-        flex-direction: column;
-        gap: 20px;
+        gap: 10px;
+        justify-content: space-between;
+        align-items: end;
+        padding: 20px 0;
 
-        .variantCodeFormRow {
-          display: flex;
-          gap: 10px;
-          justify-content: space-between;
-          align-items: end;
-          padding: 20px 0;
-
-          & > div {
-            width: 100%;
-          }
-        }
-
-        .priceFormRow {
-          display: flex;
-          gap: 10px;
-
-          .priceFormRowItem {
-            width: 33%;
-          }
+        & > div {
+          width: 100%;
         }
       }
 
-      .salePriceBlock {
+      .priceFormRow {
         display: flex;
-        flex-direction: column;
+        gap: 10px;
 
-        .salePriceBlockTitle {
-          padding-bottom: 10px;
+        .priceFormRowItem {
+          width: 33%;
         }
+      }
+    }
 
-        .salePriceBlockInput {
-          display: flex;
-          gap: 20px;
+    .salePriceBlock {
+      display: flex;
+      flex-direction: column;
 
-          label {
-            font-size: 14px;
-          }
+      .salePriceBlockTitle {
+        padding-bottom: 10px;
+      }
+
+      .salePriceBlockInput {
+        display: flex;
+        gap: 20px;
+
+        label {
+          font-size: 14px;
+        }
+      }
+    }
+
+    .stockDetailsBlock {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .buttonBlock {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        button {
+          padding: 8px 8px;
         }
       }
 
-      .stockDetailsBlock {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-
-        .buttonBlock {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-
-          button {
-            padding: 8px 8px;
-          }
-        }
-
-        .stockDetailsTitle {
-          text-wrap: auto;
-        }
-
-        .stockBlock {
-          border: 1px solid #e5e5e5;
-          border-radius: 5px;
-
-          .stockBlockRow {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px;
-
-            &:not(:last-child) {
-              border-bottom: 1px solid #e5e5e5;
-            }
-
-            .stockBlockRowNumber {
-              padding-right: 20px;
-            }
-          }
-        }
+      .stockDetailsTitle {
+        text-wrap: auto;
       }
 
-      .variantGridBlock {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
+      .stockBlock {
+        border: 1px solid #e5e5e5;
+        border-radius: 5px;
 
-        .variantGridBlockHeader {
+        .stockBlockRow {
           display: flex;
           justify-content: space-between;
-          align-items: center;
+          padding: 10px;
+
+          &:not(:last-child) {
+            border-bottom: 1px solid #e5e5e5;
+          }
+
+          .stockBlockRowNumber {
+            padding-right: 20px;
+          }
         }
+      }
+    }
+
+    .variantGridBlock {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .variantGridBlockHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
     }
   }

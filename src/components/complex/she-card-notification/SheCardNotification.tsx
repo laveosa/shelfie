@@ -7,6 +7,7 @@ import cs from "./SheCardNotification.module.scss";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 
 export default function SheCardNotification({
+  className,
   title,
   titleTransKey,
   titleIcon,
@@ -27,7 +28,7 @@ export default function SheCardNotification({
 }: ISheCardNotification) {
   return (
     <div
-      className={cs.sheCardNotification}
+      className={`${cs.sheCardNotification} ${className}`}
       style={{
         backgroundColor: backgroundColor,
         borderColor: borderColor,
