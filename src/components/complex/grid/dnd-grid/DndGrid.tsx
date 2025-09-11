@@ -588,11 +588,18 @@ export const DndGridDataTable = React.forwardRef<
             </Table>
           </div>
         </div>
-        <DragOverlay>
+        <DragOverlay
+          dropAnimation={{
+            duration: 140,
+            easing: "ease",
+          }}
+          className={cs.dndGridGhostOverlay}
+        >
           {activeRow && (
             <table className="w-full">
               <tbody>
                 <SheGridItem
+                  className={cs.dndGridGhostItem}
                   row={activeRow}
                   isDragDisabled={false}
                   enableDnd={true}

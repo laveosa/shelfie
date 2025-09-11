@@ -64,6 +64,7 @@
 }
 
 // ------------------------------------------------------- TABLE HEADER
+
 .dndGrid .dndGridContainer .dndGridTableHeader {
   &:hover {
     background: transparent;
@@ -80,6 +81,19 @@
 
 .dndGrid .dndGridContainer .hiddenHeader {
   display: none;
+}
+
+// ------------------------------------------------------- DND ROW
+
+.dndGridGhostOverlay {
+  .dndGridGhostItem {
+    border: vars.$brd;
+    box-sizing: border-box;
+    border-radius: vars.$brdR_03;
+
+    td {
+    }
+  }
 }
 
 // ------------------------------------------------------- DND ICON

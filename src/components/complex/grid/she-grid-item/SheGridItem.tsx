@@ -37,9 +37,9 @@ export default function SheGridItem({
   return (
     <>
       <TableRow
+        className={`${cs.sheGridItem} ${className} ${isSelected ? cs.sheGridItemSelected : ""} ${isDragging ? cs.sheGridItemDragging : ""} ${isLoading ? "disabled" : ""}`}
         key={row.id}
         ref={setNodeRef}
-        className={cs.sheGridItem}
         style={{
           transform: CSS.Transform.toString(transform),
         }}

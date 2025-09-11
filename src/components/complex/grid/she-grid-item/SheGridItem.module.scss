@@ -1,3 +1,5 @@
+@use "@/styles/variables" as vars;
+
 .sheGridItem {
   display: flex;
   justify-content: space-between;
@@ -29,6 +31,23 @@
         opacity: 0.5;
       }
     }
+  }
+}
+
+// ------------------------------------------------------- SELECTED
+
+.sheGridItem.sheGridItemSelected {
+  background: vars.$secondaryBg !important;
+}
+
+// ------------------------------------------------------- DRAGGING
+
+.sheGridItem.sheGridItemDragging {
+  background: vars.$secondaryBg !important;
+  border: 4px dashed vars.$brdColor;
+
+  * {
+    display: none;
   }
 }
 
