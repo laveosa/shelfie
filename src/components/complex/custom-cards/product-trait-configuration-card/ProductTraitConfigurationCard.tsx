@@ -249,7 +249,7 @@ export default function ProductTraitConfigurationCard({
                   showColumnsHeader={false}
                   columns={sizeColumns}
                   data={localItems}
-                  gridModel={data}
+                  gridRequestModel={data}
                   cellPadding="10px 10px"
                   onNewItemPosition={(newIndex, activeItem) =>
                     onAction("dndTraitOption", {
@@ -269,8 +269,7 @@ export default function ProductTraitConfigurationCard({
                   showColumnsHeader={false}
                   columns={colorColumns}
                   data={localItems}
-                  gridModel={data}
-                  // cellPadding="10px 10px"
+                  gridRequestModel={data}
                   onNewItemPosition={(newIndex, activeItem) =>
                     onAction("dndTraitOption", {
                       selectedTrait,

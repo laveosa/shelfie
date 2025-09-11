@@ -1,4 +1,3 @@
-import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
@@ -10,7 +9,6 @@ export interface IFindProductsCard {
   isLoading?: boolean;
   isGridLoading?: boolean;
   variants?: any[];
-  gridModel?: GridModel;
   gridRequestModel?: GridRequestModel;
   sortingOptions?: GridSortingModel[];
   preferences?: PreferencesModel[];

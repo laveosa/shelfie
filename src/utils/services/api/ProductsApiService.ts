@@ -33,13 +33,13 @@ export const ProductsApiService = createApi({
         url: `${ApiUrlEnum.PRODUCTS}/${id}`,
       }),
     }),
-    manageProduct: apiConfig.createMutation<void, ProductModel>(builder, {
-      query: (model: ProductModel) => ({
-        url: `${ApiUrlEnum.PRODUCTS}/${model.productId}`,
-        method: "PUT",
-        body: JSON.stringify(model),
-      }),
-    }),
+    // manageProduct: apiConfig.createMutation<void, ProductModel>(builder, {
+    //   query: (model: ProductModel) => ({
+    //     url: `${ApiUrlEnum.PRODUCTS}/${model.productId}`,
+    //     method: "PUT",
+    //     body: JSON.stringify(model),
+    //   }),
+    // }),
     updateProduct: apiConfig.createMutation<void, any>(builder, {
       query: ({ productId, model }) => ({
         url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/${productId}`,

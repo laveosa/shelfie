@@ -70,7 +70,7 @@ export function useMarginsPageService(
       purchaseId,
       model,
     }).then((res: any) => {
-      dispatch(actions.refreshMarginItemsGridModel(res.data));
+      dispatch(actions.refreshMarginItemsGridRequestModel(res.data));
       return res.data;
     });
   }
@@ -183,11 +183,11 @@ export function useMarginsPageService(
 
   function gridRequestChangeHandle(updates: GridRequestModel) {
     dispatch(
-      actions.refreshMarginItemsGriRequestModel({
-        ...state.marginItemsGriRequestModel,
+      actions.refreshMarginItemsGridRequestModel({
+        ...state.marginItemsGridRequestModel,
         ...updates,
         filter: {
-          ...state.marginItemsGriRequestModel.filter,
+          ...state.marginItemsGridRequestModel.filter,
           ...updates.filter,
         },
       }),
@@ -358,7 +358,7 @@ export function useMarginsPageService(
         dispatch(actions.setIsMarginProductsGridLoading(true));
         getMarginItemsListForGridHandler(
           purchaseId,
-          state.marginItemsGriRequestModel,
+          state.marginItemsGridRequestModel,
         ).then(() => {
           dispatch(actions.setIsMarginProductsGridLoading(false));
         });
@@ -492,13 +492,13 @@ export function useMarginsPageService(
   function updateMarginItemHandle(model) {
     updateMarginItemHandler(model.marginItemId, model).then((res) => {
       if (res) {
-        const updatedItems = state.marginItemsGridModel.items.map((item) =>
-          item.marginItemId === res.marginItemId ? res : item,
+        const updatedItems = state.marginItemsGridRequestModel.items.map(
+          (item) => (item.marginItemId === res.marginItemId ? res : item),
         );
 
         dispatch(
-          actions.refreshMarginItemsGridModel({
-            ...state.marginItemsGridModel,
+          actions.refreshMarginItemsGridRequestModel({
+            ...state.marginItemsGridRequestModel,
             items: updatedItems,
           }),
         );
@@ -509,13 +509,13 @@ export function useMarginsPageService(
   function applyMarginItemItemHandle(model) {
     applyMarginItemHandler(model).then((res) => {
       if (res) {
-        const updatedItems = state.marginItemsGridModel.items.map((item) =>
-          item.marginItemId === res.marginItemId ? res : item,
+        const updatedItems = state.marginItemsGridRequestModel.items.map(
+          (item) => (item.marginItemId === res.marginItemId ? res : item),
         );
 
         dispatch(
-          actions.refreshMarginItemsGridModel({
-            ...state.marginItemsGridModel,
+          actions.refreshMarginItemsGridRequestModel({
+            ...state.marginItemsGridRequestModel,
             items: updatedItems,
           }),
         );
@@ -532,11 +532,11 @@ export function useMarginsPageService(
     dispatch(actions.setIsMarginProductsGridLoading(true));
     applyVisibleMarginItemsHandler(
       purchaseId,
-      state.marginItemsGriRequestModel,
+      state.marginItemsGridRequestModel,
     ).then((res) => {
       dispatch(actions.setIsMarginProductsGridLoading(false));
       if (res) {
-        dispatch(actions.refreshMarginItemsGridModel(res));
+        dispatch(actions.refreshMarginItemsGridRequestModel(res));
         addToast({
           text: "Visible margin items applied successfully",
           type: "success",
@@ -555,7 +555,7 @@ export function useMarginsPageService(
     applyAllMarginItemsHandler(purchaseId).then((res) => {
       dispatch(actions.setIsMarginProductsGridLoading(false));
       if (res) {
-        dispatch(actions.refreshMarginItemsGridModel(res));
+        dispatch(actions.refreshMarginItemsGridRequestModel(res));
         addToast({
           text: "All margin items applied successfully",
           type: "success",
@@ -637,7 +637,7 @@ export function useMarginsPageService(
     dispatch(actions.setIsMarginProductsGridLoading(true));
     getMarginItemsListForGridHandler(
       purchaseId,
-      state.marginItemsGriRequestModel,
+      state.marginItemsGridRequestModel,
     ).then(() => {
       dispatch(actions.setIsMarginProductsGridLoading(false));
     });

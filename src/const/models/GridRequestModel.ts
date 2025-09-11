@@ -6,4 +6,5 @@ export interface GridRequestModel {
   searchQuery?: string;
   sortOption?: string;
   filter?: GridFiltersModel;
+  items?: any[];
 }

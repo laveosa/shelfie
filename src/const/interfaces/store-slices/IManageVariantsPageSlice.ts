@@ -1,7 +1,6 @@
 import { VariantModel } from "@/const/models/VariantModel.ts";
 import { TypeOfTraitModel } from "@/const/models/TypeOfTraitModel.ts";
 import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
-import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
@@ -48,19 +47,16 @@ export interface IManageVariantsPageSlice {
   selectedTrait?: TraitModel;
   productCounter?: ProductCountersModel;
   traitOptions?: TraitOptionModel[];
-  colorOptionsGridModel?: GridModel;
-  sizeOptionsGridModel?: GridModel;
-  variantTraitsGridModel?: GridModel;
-  photosGridModel?: GridModel;
-  gridRequestModel?: GridRequestModel;
+  colorOptionsGridRequestModel?: GridRequestModel;
+  sizeOptionsGridRequestModel?: GridRequestModel;
+  variantTraitsGridRequestModel?: GridRequestModel;
+  photosGridRequestModel?: GridRequestModel;
   variantPhotos?: ImageModel[];
   productPhotosForVariant?: ImageModel[];
   variantHistory?: VariantHistoryModel[];
   purchasesList?: PurchaseModel[];
-  purchaseGridModel?: GridModel;
   purchaseGridRequestModel?: GridRequestModel;
   selectedPurchase?: PurchaseModel;
-  companiesGridModel?: GridModel;
-  companiesGriRequestModel?: GridRequestModel;
+  companiesGridRequestModel?: GridRequestModel;
   selectedCompany?: CompanyModel;
 }

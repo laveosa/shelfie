@@ -19,18 +19,18 @@ import { CustomersListGridColumns } from "@/components/complex/grid/custom-grids
 import SelectDiscountCard from "@/components/complex/custom-cards/select-discount-card/SelectDiscountCard.tsx";
 
 export function OrderDetailsPage() {
-  const state = useAppSelector<IOrderDetailsPageSlice>(
-    StoreSliceEnum.ORDER_DETAILS,
-  );
-  const ordersState = useAppSelector<IOrdersPageSlice>(StoreSliceEnum.ORDERS);
-  const service = useOrderDetailsPageService();
-  const ordersService = useOrdersPageService();
-  const { orderId } = useParams();
   const { handleCardAction, createRefCallback } = useCardActions({
     selectActiveCards: (state) =>
       state[StoreSliceEnum.ORDER_DETAILS].activeCards,
     refreshAction: actions.refreshActiveCards,
   });
+  const state = useAppSelector<IOrderDetailsPageSlice>(
+    StoreSliceEnum.ORDER_DETAILS,
+  );
+  const ordersState = useAppSelector<IOrdersPageSlice>(StoreSliceEnum.ORDERS);
+  const service = useOrderDetailsPageService(handleCardAction);
+  const ordersService = useOrdersPageService();
+  const { orderId } = useParams();
 
   useEffect(() => {
     if (
@@ -44,24 +44,16 @@ export function OrderDetailsPage() {
   async function onAction(actionType: string, payload?: any) {
     switch (actionType) {
       case "openSelectEntityCard":
-        handleCardAction("selectEntityCard", true);
-        ordersService.getListOfCustomersForGridHandler({
-          ...ordersState.customersGridRequestModel,
-          searchQuery: payload,
-        });
+        service.openSelectEntityCardHandler(payload);
         break;
       case "openCreateEntityCard":
         // dispatch(actions.resetManagedSupplier(null));
         // handleCardAction("supplierConfigurationCard", true);
         break;
       case "searchEntity":
-        service.getListOfCustomersForGridHandler({
-          ...ordersState.customersGridRequestModel,
-          searchQuery: payload,
-        });
+        service.searchEntityHandler(payload);
         break;
       case "selectCustomer":
-        handleCardAction("selectEntityCard");
         service.assignCustomerToOrderHandler(orderId, payload.customerId);
         break;
       case "deleteOrder":
@@ -81,14 +73,13 @@ export function OrderDetailsPage() {
         });
         break;
       case "closeSelectEntityCard":
-        handleCardAction("selectEntityCard");
+        service.closeSelectEntityCardHandler();
         break;
       case "openSelectDiscountCard":
-        handleCardAction("selectDiscountCard", true);
         service.getDiscountsListHandler();
         break;
       case "closeSelectDiscountCard":
-        handleCardAction("selectDiscountCard");
+        service.closeSelectDiscountCardHandler();
         break;
     }
   }

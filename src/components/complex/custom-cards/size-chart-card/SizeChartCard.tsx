@@ -85,7 +85,7 @@ export default function SizeChartCard({
                   showHeader={false}
                   columns={SizeChartGridColumns(handleInputChange)}
                   data={data}
-                  gridModel={data}
+                  gridRequestModel={data}
                 />
               </div>
             </>

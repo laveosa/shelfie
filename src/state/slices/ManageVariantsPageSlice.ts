@@ -46,33 +46,18 @@ const initialState: IManageVariantsPageSlice = {
   contextId: null,
   selectedTraitsIds: [],
   selectedTrait: null,
-  colorOptionsGridModel: null,
-  sizeOptionsGridModel: {
-    pager: {},
-    items: [],
-  },
-  variantTraitsGridModel: {
-    pager: {},
-    items: [],
-  },
-  photosGridModel: {
-    pager: {},
-    items: [],
-  },
-  gridRequestModel: {
-    currentPage: 1,
-    pageSize: 10,
-  },
+  colorOptionsGridRequestModel: null,
+  sizeOptionsGridRequestModel: {},
+  variantTraitsGridRequestModel: {},
+  photosGridRequestModel: {},
   traitOptions: [],
   variantPhotos: [],
   productPhotosForVariant: [],
   variantHistory: [],
   purchasesList: [],
-  purchaseGridModel: {},
   purchaseGridRequestModel: {},
   selectedPurchase: null,
-  companiesGridModel: {},
-  companiesGriRequestModel: {},
+  companiesGridRequestModel: {},
   selectedCompany: null,
 };
 
@@ -328,25 +313,20 @@ function refreshTraitOption(
   state.traitOptions = action?.payload || state.traitOptions;
 }
 
-function refreshColorOptionsGridModel(
+function refreshColorOptionsGridRequestModel(
   state: IManageVariantsPageSlice,
   action: PayloadAction<GridModel>,
 ) {
-  state.colorOptionsGridModel = action?.payload || state.colorOptionsGridModel;
+  state.colorOptionsGridRequestModel =
+    action?.payload || state.colorOptionsGridRequestModel;
 }
 
-function refreshSizeOptionsGridModel(
+function refreshSizeOptionsGridRequestModel(
   state: IManageVariantsPageSlice,
   action: PayloadAction<GridModel>,
 ) {
-  state.sizeOptionsGridModel = action?.payload || state.sizeOptionsGridModel;
-}
-
-function refreshGridRequestModel(
-  state: IManageVariantsPageSlice,
-  action: PayloadAction<GridRequestModel>,
-) {
-  state.gridRequestModel = action?.payload || state.gridRequestModel;
+  state.sizeOptionsGridRequestModel =
+    action?.payload || state.sizeOptionsGridRequestModel;
 }
 
 function refreshVariantPhotos(
@@ -378,13 +358,6 @@ function refreshPurchasesList(
   state.purchasesList = action?.payload || state.purchasesList;
 }
 
-function refreshPurchaseGridModel(
-  state: IManageVariantsPageSlice,
-  action: PayloadAction<GridModel>,
-) {
-  state.purchaseGridModel = action?.payload || state.purchaseGridModel;
-}
-
 function refreshPurchaseGridRequestModel(
   state: IManageVariantsPageSlice,
   action: PayloadAction<GridRequestModel>,
@@ -404,19 +377,12 @@ function resetSelectedPurchase(state: IManageVariantsPageSlice) {
   state.selectedPurchase = null;
 }
 
-function refreshCompaniesGridModel(
-  state: IManageVariantsPageSlice,
-  action: PayloadAction<GridModel>,
-) {
-  state.companiesGridModel = action?.payload || state.companiesGridModel;
-}
-
-function refreshCompaniesGriRequestModel(
+function refreshCompaniesGridRequestModel(
   state: IManageVariantsPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
-  state.companiesGriRequestModel =
-    action?.payload || state.companiesGriRequestModel;
+  state.companiesGridRequestModel =
+    action?.payload || state.companiesGridRequestModel;
 }
 
 function refreshSelectedCompany(
@@ -466,19 +432,16 @@ const ManageVariantsPageSlice = createSlice({
     resetSelectedTrait,
     refreshContextId,
     refreshTraitOption,
-    refreshColorOptionsGridModel,
-    refreshSizeOptionsGridModel,
-    refreshGridRequestModel,
+    refreshColorOptionsGridRequestModel,
+    refreshSizeOptionsGridRequestModel,
     refreshVariantPhotos,
     refreshProductPhotosForVariant,
     refreshVariantHistory,
     refreshPurchasesList,
-    refreshPurchaseGridModel,
     refreshPurchaseGridRequestModel,
     refreshSelectedPurchase,
     resetSelectedPurchase,
-    refreshCompaniesGridModel,
-    refreshCompaniesGriRequestModel,
+    refreshCompaniesGridRequestModel,
     refreshSelectedCompany,
   },
 });

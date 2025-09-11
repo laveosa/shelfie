@@ -8,16 +8,18 @@ import { useParams } from "react-router-dom";
 import { useToast } from "@/hooks/useToast.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel";
 import { DictionaryApiHooks } from "@/utils/services/api/DictionaryApiService";
-import { convertAddressToRequestModel, createAddressRequestModel } from "@/utils/helpers/address-helper";
+import {
+  convertAddressToRequestModel,
+  createAddressRequestModel,
+} from "@/utils/helpers/address-helper";
 import { AddressModel } from "@/const/models/AddressModel";
 import { AddressRequestModelDefault } from "@/const/models/AddressRequestModel";
-import { clearSelectedGridItems,} from "@/utils/helpers/quick-helper";
+import { clearSelectedGridItems } from "@/utils/helpers/quick-helper";
 import { DEFAULT_SORTING_OPTIONS } from "@/const/models/GridSortingModel";
 import { useAppSelector } from "@/utils/hooks/redux";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum";
 import { ICustomersPageSlice } from "@/const/interfaces/store-slices/ICustomersPageSlice";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice";
-
 
 export default function useCustomerAddressesPageService() {
   const state = useAppSelector<ICustomersPageSlice>(StoreSliceEnum.CUSTOMERS);
@@ -27,43 +29,57 @@ export default function useCustomerAddressesPageService() {
 
   const [updateCustomerAddress] = api.useUpdateCustomerAddressMutation();
   const [createCustomerAddress] = api.useCreateCustomerAddressMutation();
-  const [getCustomerAddressDetails] = api.useLazyGetCustomerAddressDetailsQuery();
+  const [getCustomerAddressDetails] =
+    api.useLazyGetCustomerAddressDetailsQuery();
   const [deleteCustomerAddress] = api.useDeleteCustomerAddressMutation();
-  const [getCustomerAddressesForGrid] = api.useGetCustomerAddressesForGridMutation();
+  const [getCustomerAddressesForGrid] =
+    api.useGetCustomerAddressesForGridMutation();
   const [getCountryCode] = DictionaryApiHooks.useLazyGetCountryCodeQuery();
   const [getCustomerInfo] = api.useLazyGetCustomerInfoQuery();
-  const {customerId} = useParams();
+  const { customerId } = useParams();
   const { addToast } = useToast();
 
-
-  
   function getCustomerAddressesForGridHandler(data?: GridRequestModel) {
-    if(!data && state.customerAddressesGridModel.items.length>0) return;
-    if(_.isEqual(data, state.customerAddressesGridRequestModel)) return;
+    if (!data && state.customerAddressesGridRequestModel.items.length > 0)
+      return;
+    if (_.isEqual(data, state.customerAddressesGridRequestModel)) return;
     data = data ?? state.customerAddressesGridRequestModel;
 
     dispatch(actions.setIsCustomerAddressesLoading(true));
 
-    return getCustomerAddressesForGrid({model: data, id: Number(customerId)}).then((res: any) => {
+    return getCustomerAddressesForGrid({
+      model: data,
+      id: Number(customerId),
+    }).then((res: any) => {
       dispatch(actions.setIsCustomerAddressesLoading(false));
 
       if (!res.error) {
-        const filteredItems = res.data.items.filter((item: any) => !item.isDeleted);
-        dispatch(actions.refreshCustomerAddressesGridModel(res.data));
+        const filteredItems = res.data.items.filter(
+          (item: any) => !item.isDeleted,
+        );
+        dispatch(actions.refreshCustomerAddressesGridRequestModel(res.data));
         dispatch(actions.refreshCustomerAddresses(filteredItems));
       }
       return res;
     });
   }
-  
+
   function setDefaultSortingOptionsHandler() {
     dispatch(actions.refreshSortingOptions(DEFAULT_SORTING_OPTIONS));
   }
 
   function resolveCustomerAddressData(data: any) {
-    const requestModel = createAddressRequestModel(data.alias, data.addressLine1, data.addressLine2, data.city, data.state, data.postalCode, data.countryId);
-    if(!!state.selectedCustomerAddressId) {
-      return updateCustomerAddressHandler(requestModel)
+    const requestModel = createAddressRequestModel(
+      data.alias,
+      data.addressLine1,
+      data.addressLine2,
+      data.city,
+      data.state,
+      data.postalCode,
+      data.countryId,
+    );
+    if (!!state.selectedCustomerAddressId) {
+      return updateCustomerAddressHandler(requestModel);
     } else {
       return createCustomerAddressHandler(requestModel);
     }
@@ -72,16 +88,18 @@ export default function useCustomerAddressesPageService() {
   function updateCustomerAddressHandler(data: any) {
     const requestData = convertAddressToRequestModel(data);
     dispatch(actions.setIsCustomerAddressDetailsLoading(true));
-    return updateCustomerAddress({ id: state.selectedCustomerAddressId, model: requestData }).then((res) => {
+    return updateCustomerAddress({
+      id: state.selectedCustomerAddressId,
+      model: requestData,
+    }).then((res) => {
       dispatch(actions.setIsCustomerAddressDetailsLoading(false));
       if (res.error) {
         return;
       } else {
-        
-        const updatedAddresses = state.customerAddresses.map(address => 
-          address.addressId === state.selectedCustomerAddressId 
-            ? res.data 
-            : address
+        const updatedAddresses = state.customerAddresses.map((address) =>
+          address.addressId === state.selectedCustomerAddressId
+            ? res.data
+            : address,
         );
         dispatch(actions.refreshCustomerAddresses(updatedAddresses));
         onCloseCustomerAddressCardHandler();
@@ -90,7 +108,7 @@ export default function useCustomerAddressesPageService() {
           type: "info",
         });
         return res.data;
-      } 
+      }
     });
   }
 
@@ -98,7 +116,10 @@ export default function useCustomerAddressesPageService() {
     const requestData = convertAddressToRequestModel(data);
 
     dispatch(actions.setIsCustomerAddressDetailsLoading(true));
-    return createCustomerAddress({id: Number(customerId), model: requestData}).then((res) => {
+    return createCustomerAddress({
+      id: Number(customerId),
+      model: requestData,
+    }).then((res) => {
       dispatch(actions.setIsCustomerAddressDetailsLoading(false));
       if (res.error) {
         return;
@@ -118,19 +139,39 @@ export default function useCustomerAddressesPageService() {
 
   function deleteCustomerAddressHandler(id: number) {
     // Take a copy of the record to be deleted
-    const addressToDelete = state.customerAddresses.find(address => address.addressId === id);
-    
+    const addressToDelete = state.customerAddresses.find(
+      (address) => address.addressId === id,
+    );
+
     // Remove the record from state
-    const updatedAddresses = state.customerAddresses.filter(address => address.addressId !== id);
-    dispatch(actions.refreshCustomerAddresses(clearSelectedGridItems(updatedAddresses)));
+    const updatedAddresses = state.customerAddresses.filter(
+      (address) => address.addressId !== id,
+    );
+    dispatch(
+      actions.refreshCustomerAddresses(
+        clearSelectedGridItems(updatedAddresses),
+      ),
+    );
 
     onCloseCustomerAddressCardHandler();
-    
+
     return deleteCustomerAddress(id).then((res) => {
-      if(res.error) {
-        if (addressToDelete && !state.customerAddresses.some(address => address.addressId === addressToDelete.addressId)) {
-          const restoredAddresses = [...state.customerAddresses, addressToDelete];
-          dispatch(actions.refreshCustomerAddresses(clearSelectedGridItems(restoredAddresses)));
+      if (res.error) {
+        if (
+          addressToDelete &&
+          !state.customerAddresses.some(
+            (address) => address.addressId === addressToDelete.addressId,
+          )
+        ) {
+          const restoredAddresses = [
+            ...state.customerAddresses,
+            addressToDelete,
+          ];
+          dispatch(
+            actions.refreshCustomerAddresses(
+              clearSelectedGridItems(restoredAddresses),
+            ),
+          );
         }
         addToast({
           text: "Failed to delete customer address",
@@ -147,7 +188,6 @@ export default function useCustomerAddressesPageService() {
     });
   }
 
-
   function getCustomerAddressDetailsHandler(id: number) {
     return getCustomerAddressDetails(id).then((res) => {
       return res.data;
@@ -156,7 +196,11 @@ export default function useCustomerAddressesPageService() {
 
   function onManageCustomerAddressHandler(data: AddressModel) {
     dispatch(actions.setCreateCustomerAddress(false));
-    dispatch(actions.refreshSelectedCustomerAddress(convertAddressToRequestModel(data)));
+    dispatch(
+      actions.refreshSelectedCustomerAddress(
+        convertAddressToRequestModel(data),
+      ),
+    );
     dispatch(actions.refreshSelectedCustomerAddressId(data.addressId));
   }
 
@@ -169,7 +213,9 @@ export default function useCustomerAddressesPageService() {
 
   function onCreateCustomerAddressHandler() {
     dispatch(actions.setCreateCustomerAddress(true));
-    dispatch(actions.refreshSelectedCustomerAddress(AddressRequestModelDefault));
+    dispatch(
+      actions.refreshSelectedCustomerAddress(AddressRequestModelDefault),
+    );
     dispatch(actions.refreshSelectedCustomerAddressId(null));
   }
 
@@ -190,7 +236,7 @@ export default function useCustomerAddressesPageService() {
     });
   }
 
-  return { 
+  return {
     state,
     appState,
     actions,
@@ -205,6 +251,6 @@ export default function useCustomerAddressesPageService() {
     getCountryCodeHandler,
     resolveCustomerAddressData,
     getCustomerInfoHandler,
-    setDefaultSortingOptionsHandler
+    setDefaultSortingOptionsHandler,
   };
-} 
+}

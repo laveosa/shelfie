@@ -302,7 +302,7 @@ export function ManageVariantsPage() {
             isVariantPhotoGridLoading={state.isVariantPhotoGridLoading}
             variant={productsState.selectedVariant}
             variantPhotos={productsState.variantPhotos}
-            data={state.variantTraitsGridModel}
+            data={state.variantTraitsGridRequestModel}
             taxesList={productsState.taxesList}
             productCounter={productsState.productCounter}
             onAction={onAction}
@@ -327,7 +327,7 @@ export function ManageVariantsPage() {
           <SelectPurchaseCard
             isLoading={state.setIsSelectPurchaseCardLoading}
             isGridLoading={state.setIsPurchaseGridLoading}
-            purchases={state.purchaseGridModel.items}
+            purchases={state.purchaseGridRequestModel.items}
             columns={
               SelectPurchaseGridColumns({
                 onAction,
@@ -353,7 +353,7 @@ export function ManageVariantsPage() {
             isLoading={state.isSelectEntityCardLoading}
             isGridLoading={state.isSuppliersGridLoading}
             entityName="Company"
-            entityCollection={state.companiesGridModel?.items}
+            entityCollection={state.companiesGridRequestModel?.items}
             columns={
               CompaniesListGridColumns({
                 onAction,
@@ -435,7 +435,7 @@ export function ManageVariantsPage() {
           <ProductTraitConfigurationCard
             isLoading={state.isProductTraitConfigurationCardLoading}
             isGridLoading={state.isTraitOptionsGridLoading}
-            data={state.colorOptionsGridModel}
+            data={state.colorOptionsGridRequestModel}
             selectedTrait={state.selectedTrait}
             typesOfTraits={state.typesOfTraits}
             onSecondaryButtonClick={() =>

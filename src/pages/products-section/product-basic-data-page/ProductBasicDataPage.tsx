@@ -52,7 +52,7 @@ export function ProductBasicDataPage() {
   );
 
   useEffect(() => {
-    service.getProductsHandler(productsState.gridRequestModel);
+    service.getProductsHandler(productsState.productsGridRequestModel);
     service.getCategoriesHandler();
     service.getBrandsHandler();
     service.getCountersForProductsHandler(Number(productId));

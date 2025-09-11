@@ -148,7 +148,7 @@ export default function ManageVariantsCard({
               ManageVariantsGridColumns(onGridAction) as ColumnDef<DataWithId>[]
             }
             data={variants}
-            gridModel={data}
+            gridRequestModel={data}
             customMessage={t("ProductMessages.NoVariants")}
             onNewItemPosition={(newIndex, activeItem) =>
               handleAction("dnd", { newIndex, activeItem })

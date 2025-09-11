@@ -57,7 +57,6 @@ export function OrdersPage() {
         isGridLoading={state.isOrdersGridLoading}
         preferences={state.preferences}
         sortingOptions={sortingItems}
-        ordersGridModel={state.ordersGridModel}
         ordersGridRequestModel={state.ordersGridRequestModel}
         onAction={onAction}
       />

@@ -12,10 +12,7 @@ const initialState: IInvoicesPageSlice = {
   isInvoiceCardGridLoading: false,
   isFileUploaderLoading: false,
   activeCards: [],
-  invoicesGridModel: {
-    pager: {},
-    items: [],
-  },
+  invoicesGridRequestModel: {},
   invoices: [],
   previewUrl: null,
 };
@@ -73,11 +70,12 @@ function refreshActiveCards(
   state.activeCards = action?.payload || state.activeCards;
 }
 
-function refreshInvoicesGridModel(
+function refreshInvoicesGridRequestModel(
   state: IInvoicesPageSlice,
   action: PayloadAction<GridModel>,
 ) {
-  state.invoicesGridModel = action?.payload || state.invoicesGridModel;
+  state.invoicesGridRequestModel =
+    action?.payload || state.invoicesGridRequestModel;
 }
 
 function refreshInvoices(
@@ -105,7 +103,7 @@ const InvoicesPageSlice = createSlice({
     setIsInvoiceCardGridLoading,
     setIsFileUploaderLoading,
     refreshActiveCards,
-    refreshInvoicesGridModel,
+    refreshInvoicesGridRequestModel,
     refreshInvoices,
     refreshPreviewUrl,
   },

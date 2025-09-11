@@ -5,70 +5,37 @@ import React, { useEffect } from "react";
 import cs from "./PurchaseProductsPage.module.scss";
 import { useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import usePurchaseProductsPageService
-  from "@/pages/products-section/purchase-products-page/usePurchaseProductsPageService.ts";
-import ProductMenuCard
-  from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
-import {
-  IPurchaseProductsPageSlice
-} from "@/const/interfaces/store-slices/IPurchaseProductsPageSlice.ts";
-import PurchaseProductsCard
-  from "@/components/complex/custom-cards/purchase-products-card/PurchaseProductsCard.tsx";
-import useProductsPageService
-  from "@/pages/products-section/products-page/useProductsPageService.ts";
-import {
-  IProductsPageSlice
-} from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
-import {
-  PurchaseProductsPageSliceActions as actions
-} from "@/state/slices/PurchaseProductsPageSlice.ts";
+import usePurchaseProductsPageService from "@/pages/products-section/purchase-products-page/usePurchaseProductsPageService.ts";
+import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
+import { IPurchaseProductsPageSlice } from "@/const/interfaces/store-slices/IPurchaseProductsPageSlice.ts";
+import PurchaseProductsCard from "@/components/complex/custom-cards/purchase-products-card/PurchaseProductsCard.tsx";
+import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
+import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import { PurchaseProductsPageSliceActions as actions } from "@/state/slices/PurchaseProductsPageSlice.ts";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
-import ProductConfigurationCard
-  from "@/components/complex/custom-cards/product-configuration-card/ProductConfigurationCard.tsx";
-import CreateProductCategoryCard
-  from "@/components/complex/custom-cards/create-product-category-card/CreateProductCategoryCard.tsx";
-import CreateProductBrandCard
-  from "@/components/complex/custom-cards/create-product-brand-card/CreateProductBrandCard.tsx";
-import ManageProductCard
-  from "@/components/complex/custom-cards/manage-product-card/ManageProductCard.tsx";
-import ProductPhotosCard
-  from "@/components/complex/custom-cards/product-photos-card/ProductPhotosCard.tsx";
-import ConnectImageCard
-  from "@/components/complex/custom-cards/connect-image-card/ConnectImageCard.tsx";
-import ChooseVariantTraitsCard
-  from "@/components/complex/custom-cards/choose-variant-traits-card/ChooseVariantTraitsCard.tsx";
-import ProductTraitConfigurationCard
-  from "@/components/complex/custom-cards/product-trait-configuration-card/ProductTraitConfigurationCard.tsx";
-import AddVariantCard
-  from "@/components/complex/custom-cards/add-variant-card/AddVariantCard.tsx";
-import VariantConfigurationCard
-  from "@/components/complex/custom-cards/variant-configuration-card/VariantConfigurationCard.tsx";
-import AddStockCard
-  from "@/components/complex/custom-cards/add-stock-card/AddStockCard.tsx";
-import DisposeStockCard
-  from "@/components/complex/custom-cards/dispose-stock-card/DisposeStockCard.tsx";
-import StockHistoryCard
-  from "@/components/complex/custom-cards/stock-history-card/StockHistoryCard.tsx";
-import VariantPhotosCard
-  from "@/components/complex/custom-cards/variant-photos-card/VariantPhotosCard.tsx";
-import ManageTraitsCard
-  from "@/components/complex/custom-cards/manage-traits-card/ManageTraitsCard.tsx";
+import ProductConfigurationCard from "@/components/complex/custom-cards/product-configuration-card/ProductConfigurationCard.tsx";
+import CreateProductCategoryCard from "@/components/complex/custom-cards/create-product-category-card/CreateProductCategoryCard.tsx";
+import CreateProductBrandCard from "@/components/complex/custom-cards/create-product-brand-card/CreateProductBrandCard.tsx";
+import ManageProductCard from "@/components/complex/custom-cards/manage-product-card/ManageProductCard.tsx";
+import ProductPhotosCard from "@/components/complex/custom-cards/product-photos-card/ProductPhotosCard.tsx";
+import ConnectImageCard from "@/components/complex/custom-cards/connect-image-card/ConnectImageCard.tsx";
+import ChooseVariantTraitsCard from "@/components/complex/custom-cards/choose-variant-traits-card/ChooseVariantTraitsCard.tsx";
+import ProductTraitConfigurationCard from "@/components/complex/custom-cards/product-trait-configuration-card/ProductTraitConfigurationCard.tsx";
+import AddVariantCard from "@/components/complex/custom-cards/add-variant-card/AddVariantCard.tsx";
+import VariantConfigurationCard from "@/components/complex/custom-cards/variant-configuration-card/VariantConfigurationCard.tsx";
+import AddStockCard from "@/components/complex/custom-cards/add-stock-card/AddStockCard.tsx";
+import DisposeStockCard from "@/components/complex/custom-cards/dispose-stock-card/DisposeStockCard.tsx";
+import StockHistoryCard from "@/components/complex/custom-cards/stock-history-card/StockHistoryCard.tsx";
+import VariantPhotosCard from "@/components/complex/custom-cards/variant-photos-card/VariantPhotosCard.tsx";
+import ManageTraitsCard from "@/components/complex/custom-cards/manage-traits-card/ManageTraitsCard.tsx";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
-import SelectPurchaseCard
-  from "@/components/complex/custom-cards/select-purchase-card/SelectPurchaseCard.tsx";
-import {
-  SelectPurchaseGridColumns
-} from "@/components/complex/grid/custom-grids/select-purchase-grid/SelectPurchaseGridColumns.tsx";
+import SelectPurchaseCard from "@/components/complex/custom-cards/select-purchase-card/SelectPurchaseCard.tsx";
+import { SelectPurchaseGridColumns } from "@/components/complex/grid/custom-grids/select-purchase-grid/SelectPurchaseGridColumns.tsx";
 import { DataWithId } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import SupplierCard
-  from "@/components/complex/custom-cards/supplier-card/SupplierCard.tsx";
-import SelectEntityCard
-  from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
-import {
-  CompaniesListGridColumns
-} from "@/components/complex/grid/custom-grids/companies-list-grid/CompaniesListGridColumns.tsx";
-import SupplierConfigurationCard
-  from "@/components/complex/custom-cards/supplier-configuration-card/SupplierConfigurationCard.tsx";
+import SupplierCard from "@/components/complex/custom-cards/supplier-card/SupplierCard.tsx";
+import SelectEntityCard from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
+import { CompaniesListGridColumns } from "@/components/complex/grid/custom-grids/companies-list-grid/CompaniesListGridColumns.tsx";
+import SupplierConfigurationCard from "@/components/complex/custom-cards/supplier-configuration-card/SupplierConfigurationCard.tsx";
 
 export function PurchaseProductsPage() {
   const {
@@ -377,9 +344,7 @@ export function PurchaseProductsPage() {
             isProductsGridLoading={state.isVariantsForPurchaseGridLoading}
             variants={state.variants}
             purchaseProducts={state.purchaseProducts}
-            variantsGridModel={state.variantsForPurchaseGridModel}
             variantsGridRequestModel={state.variantsForPurchaseGridRequestModel}
-            purchaseProductsGridModel={state.purchasesProductsGridModel}
             purchaseProductsGridRequestModel={
               state.purchasesProductsGridRequestModel
             }
@@ -495,7 +460,7 @@ export function PurchaseProductsPage() {
           <ProductTraitConfigurationCard
             isLoading={state.isProductTraitConfigurationCardLoading}
             isGridLoading={state.isTraitOptionsGridLoading}
-            data={state.colorOptionsGridModel}
+            data={state.colorOptionsGridRequestModel}
             selectedTrait={state.selectedTrait}
             typesOfTraits={productsState.typesOfTraits}
             onSecondaryButtonClick={() =>
@@ -523,7 +488,7 @@ export function PurchaseProductsPage() {
             isVariantPhotoGridLoading={state.isVariantPhotoGridLoading}
             variant={productsState.selectedVariant}
             variantPhotos={state.variantPhotos}
-            data={state.variantTraitsGridModel}
+            data={state.variantTraitsGridRequestModel}
             taxesList={productsState.taxesList}
             productCounter={productsState.productCounter}
             onAction={onAction}
@@ -551,7 +516,7 @@ export function PurchaseProductsPage() {
           <SelectPurchaseCard
             isLoading={state.setIsSelectPurchaseCardLoading}
             isGridLoading={state.setIsPurchaseGridLoading}
-            purchases={state.purchaseGridModel.items}
+            purchases={state.purchaseGridRequestModel.items}
             columns={
               SelectPurchaseGridColumns({
                 onAction,
@@ -577,7 +542,7 @@ export function PurchaseProductsPage() {
             isLoading={state.isSelectEntityCardLoading}
             isGridLoading={state.isSuppliersGridLoading}
             entityName="Company"
-            entityCollection={state.companiesGridModel?.items}
+            entityCollection={state.companiesGridRequestModel?.items}
             columns={
               CompaniesListGridColumns({
                 onAction,

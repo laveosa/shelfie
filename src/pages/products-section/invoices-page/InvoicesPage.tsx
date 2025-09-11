@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
+import { useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { InvoicesPageSliceActions as actions } from "@/state/slices/InvoicesPageSlice.ts";
 import cs from "@/pages/products-section/invoices-page/InvoicesPage.module.scss";
@@ -14,17 +14,16 @@ import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import { IInvoicesPageSlice } from "@/const/interfaces/store-slices/IInvoicesPageSlice.ts";
 
 export function InvoicesPage() {
-  const dispatch = useAppDispatch();
   const state = useAppSelector<IInvoicesPageSlice>(StoreSliceEnum.INVOICES);
   const productsState = useAppSelector<IProductsPageSlice>(
     StoreSliceEnum.PRODUCTS,
   );
-  const service = useInvoicesPageService();
   const { purchaseId } = useParams();
   const { handleCardAction, createRefCallback } = useCardActions({
     selectActiveCards: (state) => state[StoreSliceEnum.INVOICES].activeCards,
     refreshAction: actions.refreshActiveCards,
   });
+  const service = useInvoicesPageService(handleCardAction);
 
   useEffect(() => {
     service.getPurchaseCountersHandler(Number(purchaseId));
@@ -37,21 +36,16 @@ export function InvoicesPage() {
         service.uploadInvoiceHandler(Number(purchaseId), payload);
         break;
       case "previewInvoice":
-        handleCardAction("invoicePreviewCard", true);
-        dispatch(actions.refreshPreviewUrl(payload.url));
+        service.previewInvoiceHandler(payload);
         break;
       case "deleteInvoice":
         service.deleteInvoiceHandler(payload, purchaseId);
-        if (payload.row.original.url === state.previewUrl) {
-          handleCardAction("invoicePreviewCard");
-        }
         break;
       case "downloadInvoice":
         service.downloadInvoice(payload);
         break;
       case "closeInvoicePreviewCard":
-        handleCardAction("invoicePreviewCard");
-        dispatch(actions.refreshPreviewUrl(null));
+        service.closeInvoicePreviewCardHandler();
         break;
     }
   }

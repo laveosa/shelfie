@@ -1,13 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { createSelector } from '@reduxjs/toolkit';
 
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { ICustomersPageSlice } from "@/const/interfaces/store-slices/ICustomersPageSlice";
 import { CustomerModel } from "@/const/models/CustomerModel.ts";
-import { GridModel } from "@/const/models/GridModel";
 import { GridRequestModel } from "@/const/models/GridRequestModel";
-import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice";
-import { RootState } from "@reduxjs/toolkit/query/react";
 
 import { AddressModel } from "@/const/models/AddressModel";
 import { CustomerCounterModel } from "@/const/models/CustomerCounterModel";
@@ -24,32 +20,8 @@ const initialState: ICustomersPageSlice = {
   isCustomerAddressDetailsLoading: false,
   isCustomerOpenCartLoading: false,
   customers: [],
-  customersGridModel: {
-    sortOption: "Newest",
-    pager: {
-      pageSize: 10,
-      currentPage: 1,
-    },
-    items: [],
-  },
-  customerAddressesGridModel: {
-    sortOption: "Newest",
-    pager: {
-      pageSize: 10,
-      currentPage: 1,
-    },
-    items: [],
-  },
-  customersGridRequestModel: {
-    sortOption: "Newest",
-    filter: {},
-  },
-  customerAddressesGridRequestModel: {
-    sortOption: "Newest",
-    pageSize: 10,
-    currentPage: 1,
-    filter: {},
-  },
+  customersGridRequestModel: {},
+  customerAddressesGridRequestModel: {},
   selectedCustomer: null,
   selectedCustomerAddress: null,
   selectedCustomerAddressId: null,
@@ -78,30 +50,28 @@ function setIsCustomerMenuCardLoading(
 ) {
   state.isCustomerMenuCardLoading = action?.payload;
 }
-function refreshCustomersGridModel(
-  state: ICustomersPageSlice,
-  action: PayloadAction<GridModel>,
-) {
-  state.customersGridModel = action?.payload || state.customersGridModel;
-}
+
 function refreshSortingOptions(
   state: ICustomersPageSlice,
   action: PayloadAction<GridSortingModel[]>,
 ) {
   state.sortingOptions = action?.payload || state.sortingOptions;
 }
+
 function refreshCustomers(
   state: ICustomersPageSlice,
   action: PayloadAction<CustomerModel[]>,
 ) {
   state.customers = action?.payload || state.customers;
 }
+
 function setIsCustomersLoading(
   state: ICustomersPageSlice,
   action: PayloadAction<boolean>,
 ) {
   state.isCustomersLoading = action?.payload;
 }
+
 function refreshSelectedCustomer(
   state: ICustomersPageSlice,
   action: PayloadAction<CustomerModel>,
@@ -113,7 +83,16 @@ function refreshCustomersGridRequestModel(
   state: ICustomersPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
-  state.customersGridRequestModel = action?.payload || state.customersGridRequestModel;
+  state.customersGridRequestModel =
+    action?.payload || state.customersGridRequestModel;
+}
+
+function refreshCustomerAddressesGridRequestModel(
+  state: ICustomersPageSlice,
+  action: PayloadAction<GridRequestModel>,
+) {
+  state.customerAddressesGridRequestModel =
+    action?.payload || state.customerAddressesGridRequestModel;
 }
 
 function setIsCustomerBasicDataLoading(
@@ -127,7 +106,10 @@ function resetSelectedCustomer(state: ICustomersPageSlice) {
   state.selectedCustomer = null;
 }
 
-function setCreateCustomerAddress(state: ICustomersPageSlice, action: PayloadAction<boolean>) {
+function setCreateCustomerAddress(
+  state: ICustomersPageSlice,
+  action: PayloadAction<boolean>,
+) {
   state.createCustomerAddress = action?.payload;
 }
 
@@ -149,21 +131,16 @@ function refreshSelectedCustomerAddress(
   state: ICustomersPageSlice,
   action: PayloadAction<AddressRequestModel>,
 ) {
-  state.selectedCustomerAddress = action?.payload || state.selectedCustomerAddress;
+  state.selectedCustomerAddress =
+    action?.payload || state.selectedCustomerAddress;
 }
 
 function refreshSelectedCustomerAddressId(
   state: ICustomersPageSlice,
   action: PayloadAction<number>,
 ) {
-  state.selectedCustomerAddressId = action?.payload || state.selectedCustomerAddressId;
-}
-
-function refreshCustomerAddressesGridModel(
-  state: ICustomersPageSlice,
-  action: PayloadAction<GridModel>,
-) {
-  state.customerAddressesGridModel = action?.payload || state.customerAddressesGridModel;
+  state.selectedCustomerAddressId =
+    action?.payload || state.selectedCustomerAddressId;
 }
 
 function refreshCustomerAddresses(
@@ -172,15 +149,24 @@ function refreshCustomerAddresses(
 ) {
   state.customerAddresses = action?.payload || state.customerAddresses;
 }
-function refreshActiveCards(state: ICustomersPageSlice, action: PayloadAction<string[]>) {
+function refreshActiveCards(
+  state: ICustomersPageSlice,
+  action: PayloadAction<string[]>,
+) {
   state.activeCards = action.payload;
 }
 
-function refreshCountryList(state: ICustomersPageSlice, action: PayloadAction<CountryCodeModel[]>) {
+function refreshCountryList(
+  state: ICustomersPageSlice,
+  action: PayloadAction<CountryCodeModel[]>,
+) {
   state.countryList = action.payload;
 }
 
-function refreshCustomerCounter(state: ICustomersPageSlice, action: PayloadAction<CustomerCounterModel>) {
+function refreshCustomerCounter(
+  state: ICustomersPageSlice,
+  action: PayloadAction<CustomerCounterModel>,
+) {
   state.customerCounter = action.payload;
 }
 
@@ -193,21 +179,20 @@ const CustomersPageSlice = createSlice({
     resetSelectedCustomer,
     setCreateCustomerAddress,
     setIsCustomersLoading,
-    refreshCustomersGridModel,
     refreshCustomers,
     refreshCustomersGridRequestModel,
+    refreshCustomerAddressesGridRequestModel,
     setIsCustomerBasicDataLoading,
     setIsCustomerMenuCardLoading,
     setIsCustomerAddressesLoading,
     setIsCustomerAddressDetailsLoading,
     refreshSelectedCustomerAddress,
-    refreshCustomerAddressesGridModel,
     refreshCustomerAddresses,
     refreshSelectedCustomerAddressId,
     refreshActiveCards,
     refreshCountryList,
     refreshCustomerCounter,
-    refreshSortingOptions
+    refreshSortingOptions,
   },
 });
 

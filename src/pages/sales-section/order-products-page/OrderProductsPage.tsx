@@ -93,7 +93,6 @@ export function OrderProductsPage() {
             isGridLoading={state.isFindProductsGridLoading}
             variants={ordersState.variantsGridModel.items}
             gridRequestModel={ordersState.variantsGridRequestModel}
-            gridModel={ordersState.variantsGridModel}
             preferences={appState.preferences}
             sortingOptions={sortingItems}
             colorsForFilter={ordersState.colorsForFilter}

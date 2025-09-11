@@ -6,7 +6,6 @@ import { ProductModel } from "@/const/models/ProductModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
-import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import {
   ProductCountersModel,
@@ -42,34 +41,9 @@ const initialState: IProductsPageSlice = {
   categories: [],
   suppliers: [],
   sortingOptions: [],
-  productsGridModel: {
-    pager: {},
-    items: [],
-  },
-  variantsGridModel: {
-    pager: {},
-    items: [],
-  },
-  purchasesGridModel: {
-    pager: {},
-    items: [],
-  },
-  gridRequestModel: {
-    currentPage: 1,
-    pageSize: 10,
-  },
-  productsGridRequestModel: {
-    currentPage: 1,
-    pageSize: 10,
-  },
-  variantsGridRequestModel: {
-    currentPage: 1,
-    pageSize: 10,
-  },
-  purchasesGridRequestModel: {
-    currentPage: 1,
-    pageSize: 10,
-  },
+  productsGridRequestModel: {},
+  variantsGridRequestModel: {},
+  purchasesGridRequestModel: {},
   productPhotos: [],
   productVariants: [],
   selectedVariant: null,
@@ -208,34 +182,6 @@ function refreshProductCounter(
 
 function resetProductCounter(state: IProductsPageSlice) {
   state.productCounter = null;
-}
-
-function refreshProductsGridModel(
-  state: IProductsPageSlice,
-  action: PayloadAction<GridModel>,
-) {
-  state.productsGridModel = action?.payload || state.productsGridModel;
-}
-
-function refreshVariantsGridModel(
-  state: IProductsPageSlice,
-  action: PayloadAction<GridModel>,
-) {
-  state.variantsGridModel = action?.payload || state.variantsGridModel;
-}
-
-function refreshPurchasesGridModel(
-  state: IProductsPageSlice,
-  action: PayloadAction<GridModel>,
-) {
-  state.purchasesGridModel = action?.payload || state.purchasesGridModel;
-}
-
-function refreshGridRequestModel(
-  state: IProductsPageSlice,
-  action: PayloadAction<GridRequestModel>,
-) {
-  state.gridRequestModel = action?.payload || state.gridRequestModel;
 }
 
 function refreshProductsGridRequestModel(
@@ -445,10 +391,6 @@ const ProductsPageSlice = createSlice({
     refreshPurchases,
     refreshProductCounter,
     resetProductCounter,
-    refreshProductsGridModel,
-    refreshVariantsGridModel,
-    refreshGridRequestModel,
-    refreshPurchasesGridModel,
     refreshProductsGridRequestModel,
     refreshVariantsGridRequestModel,
     refreshPurchasesGridRequestModel,
