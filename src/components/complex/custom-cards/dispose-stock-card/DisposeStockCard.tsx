@@ -35,8 +35,6 @@ export default function DisposeStockCard({
     { reasonId: 3, reasonName: t("StockForm.Labels.Broken") },
   ];
 
-  console.log(variant);
-
   const form = useForm({
     defaultValues: {
       unitAmount: 0,
@@ -67,12 +65,10 @@ export default function DisposeStockCard({
     >
       <div className={cs.disposeStockCardContent}>
         <div className={cs.currentlyStockBlock}>
-          <div>
-            <span className="she-text">
-              {t("StockForm.Labels.CurrentlyInStock")}
-            </span>
-            <span className="she-text">{variant.stockAmount || 0}</span>
-          </div>
+          <span className="she-text">
+            {t("StockForm.Labels.CurrentlyInStock")}
+          </span>
+          <span className="she-text">{variant.stockAmount || 0}</span>
         </div>
         <div className={cs.disposeFormBlock}>
           <SheForm form={form as any} onSubmit={onSubmit}>
