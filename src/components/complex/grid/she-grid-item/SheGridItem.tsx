@@ -1,13 +1,13 @@
 import { flexRender } from "@tanstack/react-table";
 import React, { JSX } from "react";
-
-import cs from "./SheGridItem.module.scss";
-import { ISheGridItem } from "@/const/interfaces/complex-components/ISheGridItem.ts";
-import { TableCell, TableRow } from "@/components/ui/table.tsx";
+import { CSS } from "@dnd-kit/utilities";
 import { useSortable } from "@dnd-kit/sortable";
 import { Arguments } from "@dnd-kit/sortable/dist/hooks/useSortable";
+
 import { GripVertical } from "lucide-react";
-import { CSS } from "@dnd-kit/utilities";
+import cs from "./SheGridItem.module.scss";
+import { TableCell, TableRow } from "@/components/ui/table.tsx";
+import { ISheGridItem } from "@/const/interfaces/complex-components/ISheGridItem.ts";
 
 export default function SheGridItem({
   className = "",

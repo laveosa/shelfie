@@ -45,6 +45,7 @@ import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import SheGridSkeleton from "@/components/complex/grid/she-grid-skeleton/SheGridSkeleton.tsx";
 import { ISheGridSkeleton } from "@/const/interfaces/complex-components/ISheGridSkeleton.ts";
 import SheGridItem from "@/components/complex/grid/she-grid-item/SheGridItem.tsx";
+import SheGridNoDataMessage from "@/components/complex/grid/she-grid-no-data-message/SheGridNoDataMessage.tsx";
 
 export interface DataWithId {
   id: number | string;
@@ -70,6 +71,7 @@ interface DataTableProps<TData extends DataWithId, TValue>
   enableDnd?: boolean;
   enableExpansion?: boolean;
   customMessage?: string;
+  customMessageTransKey?: string;
   skeletonQuantity?: number;
   cellPadding?: string;
   onAction?: (data) => void;
@@ -301,6 +303,7 @@ export const DndGridDataTable = React.forwardRef<
     enableExpansion = false,
     children,
     customMessage,
+    customMessageTransKey,
     skeletonQuantity,
     gridRequestModel,
     onApplyColumns,
@@ -549,40 +552,34 @@ export const DndGridDataTable = React.forwardRef<
                 quantity={skeletonQuantity}
                 isLoading={isLoading}
               />
-              {!isLoading && (
+              <SheGridNoDataMessage
+                items={items}
+                isLoading={isLoading}
+                totalColumns={totalColumns}
+                customMessage={customMessage}
+                customMessageTransKey={customMessageTransKey}
+              />
+              {!isLoading && items && items.length > 0 && (
                 <SortableContext
                   items={items
                     .filter((item) => !item.isHidden)
                     .map((item) => item.id)}
                   strategy={verticalListSortingStrategy}
                 >
-                  {items?.length > 0 ? (
-                    <TableBody className={cs.dndGridRowsBody}>
-                      {table.getRowModel().rows.map((row) => (
-                        <SheGridItem
-                          key={row.id}
-                          row={row}
-                          loadingRows={loadingRows}
-                          isDragDisabled={loadingRows.has(row.id) || isDragging}
-                          enableDnd={enableDnd}
-                          enableExpansion={enableExpansion}
-                          renderExpandedContent={renderExpandedContent}
-                          totalColumns={totalColumns}
-                        />
-                      ))}
-                    </TableBody>
-                  ) : (
-                    <TableBody>
-                      <TableRow>
-                        <TableCell
-                          colSpan={totalColumns}
-                          className="h-24 text-center w-full"
-                        >
-                          {customMessage || "NO DATA TO DISPLAY"}
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  )}
+                  <TableBody className={cs.dndGridRowsBody}>
+                    {table.getRowModel().rows.map((row) => (
+                      <SheGridItem
+                        key={row.id}
+                        row={row}
+                        loadingRows={loadingRows}
+                        isDragDisabled={loadingRows.has(row.id) || isDragging}
+                        enableDnd={enableDnd}
+                        enableExpansion={enableExpansion}
+                        renderExpandedContent={renderExpandedContent}
+                        totalColumns={totalColumns}
+                      />
+                    ))}
+                  </TableBody>
                 </SortableContext>
               )}
             </Table>
