@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import {
   DataWithId,
   DndGridDataTable,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+} from "@/components/complex/grid/DndGrid.tsx";
 import cs from "./OrdersCard.module.scss";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import GridShowItemsFilter from "@/components/complex/grid/filters/grid-show-deleted-filter/GridShowItemsFilter.tsx";

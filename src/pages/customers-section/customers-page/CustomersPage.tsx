@@ -9,7 +9,7 @@ import { Plus } from "lucide-react";
 import {
   DataWithId,
   DndGridDataTable,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+} from "@/components/complex/grid/DndGrid.tsx";
 import { customerGridColumns } from "@/components/complex/grid/custom-grids/customer-grid/CustomerGridColumns";
 import { PreferencesModel } from "@/const/models/PreferencesModel";
 import { GridRequestModel } from "@/const/models/GridRequestModel";

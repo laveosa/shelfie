@@ -15,7 +15,7 @@ import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import { OrderShipmentPageSliceActions as actions } from "@/state/slices/OrderShipmentPageSlice";
 import SelectEntityCard from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
 import { CustomersListGridColumns } from "@/components/complex/grid/custom-grids/customers-list-grid/CustomersListGridColumns.tsx";
-import { DataWithId } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import { DataWithId } from "@/components/complex/grid/DndGrid.tsx";
 import SelectShipmentForOrderCard from "@/components/complex/custom-cards/select-shipment-for-order/SelectShipmentForOrder.tsx";
 
 export function OrderShipmentPage() {

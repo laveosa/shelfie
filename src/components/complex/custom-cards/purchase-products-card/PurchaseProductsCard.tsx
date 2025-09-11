@@ -17,7 +17,7 @@ import { PurchaseProductsPageSliceActions as actions } from "@/state/slices/Purc
 import {
   DataWithId,
   DndGridDataTable,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+} from "@/components/complex/grid/DndGrid.tsx";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import { AppSliceActions as appActions } from "@/state/slices/AppSlice.ts";

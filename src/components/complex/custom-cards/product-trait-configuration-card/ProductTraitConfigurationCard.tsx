@@ -25,7 +25,7 @@ import { Separator } from "@/components/ui/separator.tsx";
 import {
   DataWithId,
   DndGridDataTable,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+} from "@/components/complex/grid/DndGrid.tsx";
 import { IProductTraitConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IProductTraitConfigurationCard.ts";
 import { ColorOptionsGridColumns } from "@/components/complex/grid/trait-options-grid/color-options-grid/ColorOptionsGridColumns.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
@@ -117,7 +117,11 @@ export default function ProductTraitConfigurationCard({
   return (
     <SheProductCard
       loading={isLoading}
-      title={selectedTrait?.traitId ? t("CardTitles.ManageTrait", { traitName: selectedTrait.traitName }) : t("CardTitles.CreateProductTrait")}
+      title={
+        selectedTrait?.traitId
+          ? t("CardTitles.ManageTrait", { traitName: selectedTrait.traitName })
+          : t("CardTitles.CreateProductTrait")
+      }
       showCloseButton={true}
       className={cs.productTraitConfigurationCard}
       {...props}
@@ -162,7 +166,9 @@ export default function ProductTraitConfigurationCard({
                     }}
                     render={({ field }) => (
                       <FormItem className={cs.select}>
-                        <FormLabel>{t("ProductForm.Labels.TraitType")}</FormLabel>
+                        <FormLabel>
+                          {t("ProductForm.Labels.TraitType")}
+                        </FormLabel>
                         <Select
                           onValueChange={(value) => {
                             field.onChange(Number(value));
@@ -173,7 +179,11 @@ export default function ProductTraitConfigurationCard({
                         >
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder={t("ProductForm.Placeholders.SelectTraitType")} />
+                              <SelectValue
+                                placeholder={t(
+                                  "ProductForm.Placeholders.SelectTraitType",
+                                )}
+                              />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -220,7 +230,9 @@ export default function ProductTraitConfigurationCard({
               <div
                 className={`${cs.productTraitConfigurationGridContainer} she-title`}
               >
-                <span className="she-title">{t("ProductForm.Labels.Options")}</span>
+                <span className="she-title">
+                  {t("ProductForm.Labels.Options")}
+                </span>
                 {selectedTrait?.traitTypeId === 1 && (
                   <DndGridDataTable
                     isLoading={isGridLoading}

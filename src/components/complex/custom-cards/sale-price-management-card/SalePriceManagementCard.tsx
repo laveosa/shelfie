@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import {
   DataWithId,
   DndGridDataTable,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+} from "@/components/complex/grid/DndGrid.tsx";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import { ISalePriceManagementCard } from "@/const/interfaces/complex-components/custom-cards/ISalePriceManagementCard.ts";
 import cs from "@/components/complex/custom-cards/sale-price-management-card/SalePriceManagementCard.module.scss";

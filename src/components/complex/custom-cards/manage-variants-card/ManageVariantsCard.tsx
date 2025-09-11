@@ -10,7 +10,7 @@ import { IManageVariantsCard } from "@/const/interfaces/complex-components/custo
 import {
   DataWithId,
   DndGridDataTable,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+} from "@/components/complex/grid/DndGrid.tsx";
 import { ColumnDef } from "@tanstack/react-table";
 import { Separator } from "@/components/ui/separator.tsx";
 import { ManageVariantsGridColumns } from "@/components/complex/grid/custom-grids/manage-variants-grid/ManageVariantsGridColumns.tsx";

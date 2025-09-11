@@ -5,7 +5,7 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import {
   DataWithId,
   DndGridDataTable,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+} from "@/components/complex/grid/DndGrid.tsx";
 import { customerAddressGridColumns } from "@/components/complex/grid/custom-grids/customer-address-grid/CustomerAddressGridColumns";
 import { GridSortingModel } from "@/const/models/GridSortingModel";
 import { ColumnDef } from "@tanstack/react-table";

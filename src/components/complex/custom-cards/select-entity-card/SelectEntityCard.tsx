@@ -7,7 +7,7 @@ import SheProductCard from "@/components/complex/she-product-card/SheProductCard
 import { ISelectEntityCard } from "@/const/interfaces/complex-components/custom-cards/ISelectEntityCard.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import { DndGridDataTable } from "@/components/complex/grid/DndGrid.tsx";
 
 export default function SelectEntityCard({
   isLoading,

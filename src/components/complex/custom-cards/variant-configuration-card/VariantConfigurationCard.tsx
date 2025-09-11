@@ -34,7 +34,7 @@ import { Separator } from "@/components/ui/separator.tsx";
 import {
   DataWithId,
   DndGridDataTable,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+} from "@/components/complex/grid/DndGrid.tsx";
 import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
 import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
 import { VariantModel } from "@/const/models/VariantModel.ts";

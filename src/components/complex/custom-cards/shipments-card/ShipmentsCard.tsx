@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import {
   DataWithId,
   DndGridDataTable,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+} from "@/components/complex/grid/DndGrid.tsx";
 import {
   GridSortingEnum,
   GridSortingEnumLabels,

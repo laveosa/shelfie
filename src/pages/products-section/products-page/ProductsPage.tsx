@@ -13,7 +13,7 @@ import {
   DataWithId,
   DndGridDataTable,
   DndGridRef,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+} from "@/components/complex/grid/DndGrid.tsx";
 import cs from "./ProductsPage.module.scss";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";

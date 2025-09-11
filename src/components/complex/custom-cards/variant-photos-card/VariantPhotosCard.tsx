@@ -5,7 +5,7 @@ import React from "react";
 import {
   DataWithId,
   DndGridDataTable,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+} from "@/components/complex/grid/DndGrid.tsx";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./VariantPhotosCard.module.scss";
 import { SheFileUploader } from "@/components/complex/she-file-uploader/SheFileUploader.tsx";

@@ -13,7 +13,7 @@ import {
 import {
   DataWithId,
   DndGridDataTable,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+} from "@/components/complex/grid/DndGrid.tsx";
 import { ICreateSupplierForm } from "@/const/interfaces/forms/ICreateSupplierForm.ts";
 import useAppForm from "@/utils/hooks/useAppForm.ts";
 import CreateSupplierFormScheme from "@/utils/validation/schemes/CreateSupplierFormScheme.ts";

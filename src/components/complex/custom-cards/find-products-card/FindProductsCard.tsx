@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import {
   DataWithId,
   DndGridDataTable,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+} from "@/components/complex/grid/DndGrid.tsx";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./FindProductsCard.module.scss";
 import { IFindProductsCard } from "@/const/interfaces/complex-components/custom-cards/IFindProductsCard.ts";

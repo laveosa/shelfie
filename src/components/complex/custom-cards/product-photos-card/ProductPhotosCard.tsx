@@ -7,7 +7,7 @@ import cs from "./ProductPhotosCard.module.scss";
 import {
   DataWithId,
   DndGridDataTable,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+} from "@/components/complex/grid/DndGrid.tsx";
 import { SheFileUploader } from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { IProductPhotosCard } from "@/const/interfaces/complex-components/custom-cards/IProductPhotosCard.ts";

@@ -6,7 +6,7 @@ import cs from "./ConnectImageCard.module.scss";
 import {
   DataWithId,
   DndGridDataTable,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+} from "@/components/complex/grid/DndGrid.tsx";
 import { ConnectImageGridColumns } from "@/components/complex/grid/custom-grids/connect-image-grid/ConnectImageGridColumns.tsx";
 import { IConnectImageCard } from "@/const/interfaces/complex-components/custom-cards/IConnectImageCard.ts";
 import { ColumnDef } from "@tanstack/react-table";

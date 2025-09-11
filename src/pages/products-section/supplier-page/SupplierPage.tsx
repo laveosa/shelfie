@@ -14,7 +14,7 @@ import SupplierCard from "@/components/complex/custom-cards/supplier-card/Suppli
 import SelectEntityCard from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
 import SupplierConfigurationCard from "@/components/complex/custom-cards/supplier-configuration-card/SupplierConfigurationCard.tsx";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
-import { DataWithId } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import { DataWithId } from "@/components/complex/grid/DndGrid.tsx";
 import { SuppliersListGridColumns } from "@/components/complex/grid/custom-grids/suppliers-list-grid/SuppliersListGridColumns.tsx";
 
 export function SupplierPage() {

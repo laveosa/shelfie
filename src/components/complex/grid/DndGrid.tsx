@@ -37,7 +37,7 @@ import SheGridHeader from "@/components/complex/grid/she-grid-header/SheGridHead
 import { ISheGridHeader } from "@/const/interfaces/complex-components/ISheGridHeader.ts";
 import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
 import { IGridContext } from "@/const/interfaces/context/IGridContext.ts";
-import { GridContext } from "@/state/context/grid-context";
+import { GridContext } from "@/state/context/grid-context.ts";
 import cs from "./DndGrid.module.scss";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
 
