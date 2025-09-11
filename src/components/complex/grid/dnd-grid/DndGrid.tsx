@@ -1,6 +1,12 @@
 import React, { JSX, PropsWithChildren, useEffect, useState } from "react";
 import { GripVertical } from "lucide-react";
-import { DndContext } from "@dnd-kit/core";
+import {
+  closestCenter,
+  DndContext,
+  DragEndEvent,
+  DragOverlay,
+  DragStartEvent,
+} from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import {
   ColumnDef,
@@ -8,6 +14,8 @@ import {
   getCoreRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  Row,
+  RowData,
   useReactTable,
 } from "@tanstack/react-table";
 import {
@@ -36,6 +44,7 @@ import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import SheGridSkeleton from "@/components/complex/grid/she-grid-skeleton/SheGridSkeleton.tsx";
 import { ISheGridSkeleton } from "@/const/interfaces/complex-components/ISheGridSkeleton.ts";
+import SheGridItem from "@/components/complex/grid/she-grid-item/SheGridItem.tsx";
 
 export interface DataWithId {
   id: number | string;
@@ -89,7 +98,7 @@ export interface DndGridRef {
   getHiddenRows: () => (string | number)[];
 }
 
-const DraggableRow = ({
+/*const DraggableRow = ({
   row,
   loadingRows,
   isDragDisabled = false,
@@ -161,7 +170,7 @@ const DraggableRow = ({
         ))}
       </TableRow>
 
-      {/* Render all expandable rows */}
+      {/!* Render all expandable rows *!/}
       {enableExpansion &&
         expandableRows.length > 0 &&
         renderExpandedContent && (
@@ -188,9 +197,9 @@ const DraggableRow = ({
         )}
     </>
   );
-};
+};*/
 
-const RegularRow = ({
+/*const RegularRow = ({
   row,
   loadingRows,
   enableExpansion = false,
@@ -238,7 +247,7 @@ const RegularRow = ({
         ))}
       </TableRow>
 
-      {/* Render all expandable rows */}
+      {/!* Render all expandable rows *!/}
       {enableExpansion &&
         expandableRows.length > 0 &&
         renderExpandedContent && (
@@ -268,7 +277,7 @@ const RegularRow = ({
         )}
     </>
   );
-};
+};*/
 
 export const DndGridDataTable = React.forwardRef<
   DndGridRef,
@@ -293,7 +302,6 @@ export const DndGridDataTable = React.forwardRef<
     children,
     customMessage,
     skeletonQuantity,
-    cellPadding,
     gridRequestModel,
     onApplyColumns,
     onDefaultColumns,
@@ -309,6 +317,7 @@ export const DndGridDataTable = React.forwardRef<
   const [items, setItems] = useState<TData[]>([]);
   const [loadingRows, setLoadingRows] = useState<Set<string>>(new Set());
   const [isDragging, setIsDragging] = useState(false);
+  const [activeRow, setActiveRow] = useState<Row<RowData>>(null);
 
   useEffect(() => {
     function prepareItemsForGrid(data: any): TData[] {
@@ -368,20 +377,27 @@ export const DndGridDataTable = React.forwardRef<
     getHiddenRows,
   }));
 
-  function handleDragStart() {
+  function handleDragStart(event: DragStartEvent) {
     setIsDragging(true);
+
+    const id = String(event.active.id);
+    const found = table
+      .getRowModel()
+      .rows.find((r) => String(r.original?.id) === id);
+
+    setActiveRow(found || null);
   }
 
-  function handleDragEnd(event) {
+  function handleDragEnd(event: DragEndEvent) {
+    setActiveRow(null);
     setIsDragging(false);
+
     const { active, over } = event;
 
-    if (!over || !active) {
-      return;
-    }
+    if (!over || !active) return null;
+
     const activeItemId = active.id;
     const activeItem = items.find((item) => item.id === activeItemId);
-
     const oldIndex = items.findIndex((item) => item.id === active.id);
     const newIndex = items.findIndex((item) => item.id === over.id);
 
@@ -479,7 +495,11 @@ export const DndGridDataTable = React.forwardRef<
         onGridRequestChange,
       }}
     >
-      <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
+      <DndContext
+        collisionDetection={closestCenter}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+      >
         <div className={`${className} ${cs.dndGrid}`}>
           <SheGridHeader
             table={table}
@@ -499,13 +519,7 @@ export const DndGridDataTable = React.forwardRef<
                     className={cs.dndGridTableHeader}
                   >
                     {enableDnd && (
-                      <TableHead
-                        style={{
-                          minWidth: "24px",
-                          maxWidth: "24px",
-                          padding: "0",
-                        }}
-                      ></TableHead>
+                      <TableHead className="dndTriggerIcon"></TableHead>
                     )}
                     {headerGroup.headers.map((header) => (
                       <TableHead
@@ -516,7 +530,6 @@ export const DndGridDataTable = React.forwardRef<
                           }),
                           minWidth: header.column.columnDef.minSize,
                           maxWidth: header.column.columnDef.maxSize,
-                          padding: cellPadding,
                         }}
                       >
                         {!header.isPlaceholder && (
@@ -543,60 +556,27 @@ export const DndGridDataTable = React.forwardRef<
                     .map((item) => item.id)}
                   strategy={verticalListSortingStrategy}
                 >
-                  {data?.length > 0 ? (
-                    <TableBody
-                      className={cs.dndGridRowsBody}
-                      /*style={{
-                        background: enableDnd ? "#f4f4f5" : "white",
-                      }}*/
-                    >
-                      <SheLoading
-                        isLoading={isLoading}
-                        className={cs.dndGridLoader}
-                      />
-                      {table
-                        .getRowModel()
-                        .rows.map((row) =>
-                          enableDnd ? (
-                            <DraggableRow
-                              key={row.id}
-                              row={row}
-                              loadingRows={loadingRows}
-                              isDragDisabled={
-                                loadingRows.has(row.id) || isDragging
-                              }
-                              enableExpansion={enableExpansion}
-                              renderExpandedContent={renderExpandedContent}
-                              totalColumns={totalColumns}
-                              cellPadding={cellPadding}
-                            />
-                          ) : (
-                            <RegularRow
-                              key={row.id}
-                              row={row}
-                              loadingRows={loadingRows}
-                              enableExpansion={enableExpansion}
-                              renderExpandedContent={renderExpandedContent}
-                              totalColumns={totalColumns}
-                              cellPadding={cellPadding}
-                            />
-                          ),
-                        )}
+                  {items?.length > 0 ? (
+                    <TableBody className={cs.dndGridRowsBody}>
+                      {table.getRowModel().rows.map((row) => (
+                        <SheGridItem
+                          key={row.id}
+                          row={row}
+                          loadingRows={loadingRows}
+                          isDragDisabled={loadingRows.has(row.id) || isDragging}
+                          enableDnd={enableDnd}
+                          enableExpansion={enableExpansion}
+                          renderExpandedContent={renderExpandedContent}
+                          totalColumns={totalColumns}
+                        />
+                      ))}
                     </TableBody>
                   ) : (
-                    <TableBody
-                    /*style={{
-                        background: enableDnd ? "#f4f4f5" : "white",
-                      }}*/
-                    >
+                    <TableBody>
                       <TableRow>
                         <TableCell
                           colSpan={totalColumns}
-                          className="h-24 text-center"
-                          style={{
-                            width: "100%",
-                            padding: cellPadding,
-                          }}
+                          className="h-24 text-center w-full"
                         >
                           {customMessage || "NO DATA TO DISPLAY"}
                         </TableCell>
@@ -608,6 +588,22 @@ export const DndGridDataTable = React.forwardRef<
             </Table>
           </div>
         </div>
+        <DragOverlay>
+          {activeRow && (
+            <table className="w-full">
+              <tbody>
+                <SheGridItem
+                  row={activeRow}
+                  isDragDisabled={false}
+                  enableDnd={true}
+                  totalColumns={totalColumns}
+                  renderExpandedContent={renderExpandedContent}
+                  loadingRows={loadingRows}
+                />
+              </tbody>
+            </table>
+          )}
+        </DragOverlay>
       </DndContext>
     </GridContext.Provider>
   );

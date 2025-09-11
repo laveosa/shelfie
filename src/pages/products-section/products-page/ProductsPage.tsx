@@ -185,7 +185,7 @@ export function ProductsPage() {
               isLoading={state.isLoading}
               // isLoading={true}
               // showColumnsHeader={false}
-              // enableDnd
+              enableDnd
               columns={ProductsGridColumns(onAction)}
               data={state.productsGridModel.items}
               gridModel={state.productsGridModel}

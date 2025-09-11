@@ -101,7 +101,7 @@ export function ProductsGridColumns(onAction: any): ColumnDef<any, any>[] {
     {
       accessorKey: "brand",
       header: "Brand",
-      minSize: 40,
+      minSize: 100,
       cell: ({ row }) => {
         const brand: BrandModel = row.getValue("brand");
         return (
@@ -113,9 +113,7 @@ export function ProductsGridColumns(onAction: any): ColumnDef<any, any>[] {
                   alt={row.original.brand.brandName}
                 />
               )}
-              {!row.original.brand?.thumbnail && (
-                <span>{brand?.brandName || "N/A"}</span>
-              )}
+              <span>{brand?.brandName || "N/A"}</span>
             </div>
           </SheTooltip>
         );

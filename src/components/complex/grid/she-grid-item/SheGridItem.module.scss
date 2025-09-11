@@ -1,97 +1,39 @@
-@use "@/styles/variables" as vars;
-
-.dndGrid {
+.sheGridItem {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  min-height: 58px;
+  cursor: auto;
+  background: white !important;
 
-  .dndGridContainer {
-    position: relative;
-    border: vars.$brd;
-    border-radius: vars.$brdR_03;
+  td {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    flex-grow: 1;
+    width: 100% !important;
+    height: auto;
+    overflow: hidden;
 
-    > div {
-      border-radius: vars.$brdR_03;
+    > * {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
-      > table {
-        border-radius: vars.$brdR_03;
+    .dndIcon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-        thead {
-          tr {
-            display: flex;
-            justify-content: space-between;
-            align-items: stretch;
-
-            th {
-              display: flex;
-              align-items: center;
-              padding: 8px;
-              flex-grow: 1;
-              width: 100% !important;
-              min-height: 38px;
-              height: auto;
-              overflow: hidden;
-              cursor: auto;
-
-              > * {
-                overflow: hidden;
-                text-overflow: ellipsis;
-              }
-            }
-          }
-        }
-
-        .dndGridRowsBody {
-          tr {
-            td {
-              display: flex;
-              align-items: center;
-              padding: 8px;
-              flex-grow: 1;
-              width: 100% !important;
-              height: auto;
-              overflow: hidden;
-
-              > * {
-                overflow: hidden;
-                text-overflow: ellipsis;
-              }
-            }
-          }
-        }
+      svg {
+        opacity: 0.5;
       }
     }
   }
 }
 
-// ------------------------------------------------------- TABLE HEADER
-.dndGrid .dndGridContainer .dndGridTableHeader {
-  &:hover {
-    background: transparent;
-  }
-}
-
-// ------------------------------------------------------- LOADER
-
-.dndGrid .dndGridContainer .dndGridLoader {
-  top: 35px;
-}
-
-// ------------------------------------------------------- HIDE COLUMNS HEADER
-
-.dndGrid .dndGridContainer .hiddenHeader {
-  display: none;
-}
-
-// ------------------------------------------------------- DND ICON
-
-:global(.dndTriggerIcon) {
-  min-width: 24px;
-  max-width: 24px;
-  padding: 0 !important;
-  cursor: grab;
-}
-
-/*.table {
+/*
+.table {
   .hiddenHeader {
     height: 0;
     padding: 0;
@@ -292,4 +234,5 @@
     justify-content: flex-end;
     padding: 10px;
   }
-}*/
+}
+*/
