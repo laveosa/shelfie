@@ -29,10 +29,6 @@ export default function ChooseVariantTraitsCard({
     );
   }
 
-  function handleSave() {
-    onAction?.("setProductTraits", { traitIds: checkedTraitIds });
-  }
-
   return (
     <SheProductCard
       loading={isLoading}
@@ -43,7 +39,9 @@ export default function ChooseVariantTraitsCard({
         icon: Check,
         bgColor: "#007AFF",
       }}
-      onPrimaryButtonClick={handleSave}
+      onPrimaryButtonClick={() =>
+        onAction?.("setProductTraits", { traitIds: checkedTraitIds })
+      }
       showSecondaryButton={true}
       showCloseButton={true}
       className={cs.chooseVariantTraitsCard}
@@ -54,7 +52,9 @@ export default function ChooseVariantTraitsCard({
           <span className="she-text">
             {t("ProductForm.Labels.PickTraitsDescription")}
           </span>
-          <span className="she-text"> {t("ProductForm.Labels.MissingTraitPrompt")}</span>
+          <span className="she-text">
+            {t("ProductForm.Labels.MissingTraitPrompt")}
+          </span>
         </div>
         <SheButton
           icon={Plus}
@@ -65,9 +65,15 @@ export default function ChooseVariantTraitsCard({
         </SheButton>
         <div className={cs.traitsItemsWrapper}>
           <div className={cs.traitsItemsHeader}>
-            <span className={`${cs.headerItemTrait} she-text`}>{t("ProductForm.Labels.Trait")}</span>
-            <span className={`${cs.headerItemOptions} she-text`}>{t("ProductForm.Labels.Options")}</span>
-            <span className={`${cs.headerItemAction} she-text`}>{t("ProductForm.Labels.Action")}</span>
+            <span className={`${cs.headerItemTrait} she-text`}>
+              {t("ProductForm.Labels.Trait")}
+            </span>
+            <span className={`${cs.headerItemOptions} she-text`}>
+              {t("ProductForm.Labels.Options")}
+            </span>
+            <span className={`${cs.headerItemAction} she-text`}>
+              {t("ProductForm.Labels.Action")}
+            </span>
           </div>
           <div className={cs.traitsItems}>
             {items?.length > 0 &&

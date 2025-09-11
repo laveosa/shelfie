@@ -63,33 +63,19 @@ export function ProductGalleryPage() {
         service.uploadPhotoHandler(payload, productId);
         break;
       case "changePhotoPosition":
-        service.putPhotoInNewPositionHandler(
-          productId,
-          payload.activeItem.photoId,
-          payload.newIndex,
-          payload,
-        );
+        service.putPhotoInNewPositionHandler(payload, productId);
         break;
       case "deletePhoto":
         service.deletePhotoHandler(payload, productId);
         break;
       case "activatePhoto":
-        service.setPhotoActivationStateHandler(
-          "Product",
-          Number(productId),
-          { isActive: !payload.isActive },
-          payload,
-        );
+        service.setPhotoActivationStateHandler(Number(productId), payload);
         break;
       case "openConnectImageCard":
         service.openConnectImageCard(payload);
         break;
       case "imageActions":
-        if (!payload.row.original.isActive) {
-          service.attachImageToVariantHandler(payload);
-        } else {
-          service.detachImageFromVariantHandler(payload);
-        }
+        service.imageActionsHandler(payload);
         break;
       case "closeConnectImageCard":
         service.closeConnectImageCardHandler();

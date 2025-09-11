@@ -87,11 +87,11 @@ export default function useProductGalleryPageService(handleCardAction) {
     });
   }
 
-  function putPhotoInNewPositionHandler(productId, photoId, index, model) {
+  function putPhotoInNewPositionHandler(model, productId) {
     return putPhotoInNewPosition({
       productId,
-      photoId,
-      index,
+      photoId: model.activeItem.photoId,
+      index: model.newIndex,
     }).then(() => {
       if (model.newIndex === 0 || model.oldIndex === 0) {
         productsService.getTheProductsForGridHandler(
@@ -157,16 +157,14 @@ export default function useProductGalleryPageService(handleCardAction) {
   }
 
   function setPhotoActivationStateHandler(
-    contextName: string,
     contextId: number,
-    model: any,
     imageModel: ImageModel,
   ) {
     return setPhotoActivationState({
-      contextName,
+      contextName: "Product",
       contextId,
       photoId: imageModel.photoId,
-      model,
+      model: { isActive: !imageModel.isActive },
     }).then((res) => {
       if (!res.error) {
         dispatch(
@@ -208,6 +206,14 @@ export default function useProductGalleryPageService(handleCardAction) {
       ),
     );
     handleCardAction("connectImageCard", true);
+  }
+
+  function imageActionsHandler(model) {
+    if (!model.row.original.isActive) {
+      attachImageToVariantHandler(model);
+    } else {
+      detachImageFromVariantHandler(model);
+    }
   }
 
   function attachImageToVariantHandler(model) {
@@ -282,6 +288,7 @@ export default function useProductGalleryPageService(handleCardAction) {
     putPhotoInNewPositionHandler,
     deletePhotoHandler,
     openConnectImageCard,
+    imageActionsHandler,
     attachImageToVariantHandler,
     detachImageFromVariantHandler,
     getProductVariantsHandler,
