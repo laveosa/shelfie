@@ -47,7 +47,7 @@ export function MarginsPage() {
 
   useEffect(() => {
     service.getMarginItemsListHandle(purchaseId);
-  }, [state.marginItemsGriRequestModel]);
+  }, [state.marginItemsGridRequestModel]);
 
   useEffect(() => {
     service.keepSalePriceManagementCardOpenHandle();
@@ -158,7 +158,7 @@ export function MarginsPage() {
             colors={productsState.colorsForFilter}
             taxes={productsState.taxesList}
             sortingOptions={productsState.sortingOptions}
-            gridRequestModel={state.marginItemsGriRequestModel}
+            gridRequestModel={state.marginItemsGridRequestModel}
             onAction={onAction}
           />
         </div>

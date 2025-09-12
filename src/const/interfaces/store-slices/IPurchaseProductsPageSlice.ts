@@ -74,6 +74,6 @@ export interface IPurchaseProductsPageSlice {
   purchasesList?: PurchaseModel[];
   purchaseGridRequestModel?: GridRequestModel;
   selectedPurchase?: PurchaseModel;
-  companiesGriRequestModel?: GridRequestModel;
+  companiesGridRequestModel?: GridRequestModel;
   selectedCompany?: CompanyModel;
 }

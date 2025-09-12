@@ -1075,7 +1075,7 @@ export default function useManageVariantsPageService(handleCardAction) {
     }
     dispatch(actions.setIsSelectEntityCardLoading(true));
     dispatch(actions.setIsSuppliersGridLoading(true));
-    getListOfCompaniesForGrid(state.companiesGriRequestModel).then((res) => {
+    getListOfCompaniesForGrid(state.companiesGridRequestModel).then((res) => {
       dispatch(actions.setIsSelectEntityCardLoading(false));
       dispatch(actions.setIsSuppliersGridLoading(false));
       const modifiedList = res.data.items.map((item) => ({
@@ -1094,7 +1094,7 @@ export default function useManageVariantsPageService(handleCardAction) {
   function searchEntityHandle(model) {
     dispatch(actions.setIsSuppliersGridLoading(true));
     getListOfCompaniesForGrid({
-      ...state.companiesGriRequestModel,
+      ...state.companiesGridRequestModel,
       searchQuery: model,
     }).then((res) => {
       dispatch(actions.setIsSuppliersGridLoading(false));
@@ -1121,7 +1121,7 @@ export default function useManageVariantsPageService(handleCardAction) {
     if (state.companiesGridRequestModel === null) {
       dispatch(actions.setIsSelectEntityCardLoading(true));
       dispatch(actions.setIsSuppliersGridLoading(true));
-      getListOfCompaniesForGrid(state.companiesGriRequestModel).then((res) => {
+      getListOfCompaniesForGrid(state.companiesGridRequestModel).then((res) => {
         dispatch(actions.setIsSelectEntityCardLoading(false));
         dispatch(actions.setIsSuppliersGridLoading(false));
         const modifiedList = res.data.items.map((item) => ({

@@ -1,9 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import {
-  IShipmentsPageSlice
-} from "@/const/interfaces/store-slices/IShipmentsPageSlice.ts";
+import { IShipmentsPageSlice } from "@/const/interfaces/store-slices/IShipmentsPageSlice.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { ShipmentModel } from "@/const/models/ShipmentModel.ts";
 import _ from "lodash";

@@ -81,7 +81,7 @@ const initialState: IPurchaseProductsPageSlice = {
   purchasesList: [],
   purchaseGridRequestModel: {},
   selectedPurchase: null,
-  companiesGriRequestModel: {},
+  companiesGridRequestModel: {},
   selectedCompany: null,
 };
 
