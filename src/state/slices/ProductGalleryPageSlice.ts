@@ -20,10 +20,6 @@ const initialState: IProductGalleryPageSlice = {
   photos: [],
   productVariants: [],
   selectedPhoto: null,
-  gridRequestModel: {
-    currentPage: 1,
-    pageSize: 10,
-  },
 };
 
 //------------------------------------- LOADERS/

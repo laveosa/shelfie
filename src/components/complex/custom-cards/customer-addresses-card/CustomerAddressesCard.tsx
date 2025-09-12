@@ -1,20 +1,22 @@
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
-import cs from "./CustomerAddressesCard.module.scss";
+import { ColumnDef } from "@tanstack/react-table";
+import { useTranslation } from "react-i18next";
 import { Plus } from "lucide-react";
-import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+
 import {
   DataWithId,
   DndGridDataTable,
 } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
+import cs from "./CustomerAddressesCard.module.scss";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { customerAddressGridColumns } from "@/components/complex/grid/custom-grids/customer-address-grid/CustomerAddressGridColumns";
 import { GridSortingModel } from "@/const/models/GridSortingModel";
-import { ColumnDef } from "@tanstack/react-table";
-import { useTranslation } from "react-i18next";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 
 interface ICustomerAddressesCard {
   isLoading?: boolean;
   addresses?: any[];
-  gridModel?: any;
+  gridRequestModel?: GridRequestModel;
   sortingOptions?: GridSortingModel[];
   onAction: (action: string, data?: any) => void;
 }
@@ -23,14 +25,10 @@ export default function CustomerAddressesCard({
   isLoading,
   onAction,
   addresses,
-  gridModel,
+  gridRequestModel,
   sortingOptions,
 }: ICustomerAddressesCard) {
   const { t } = useTranslation();
-
-  const customerAddressColumns = customerAddressGridColumns(
-    onAction,
-  ) as ColumnDef<DataWithId>[];
 
   return (
     <SheProductCard
@@ -51,9 +49,11 @@ export default function CustomerAddressesCard({
       </div>
       <DndGridDataTable
         isLoading={isLoading}
-        columns={customerAddressColumns}
+        columns={
+          customerAddressGridColumns(onAction) as ColumnDef<DataWithId>[]
+        }
         data={addresses}
-        gridModel={gridModel}
+        gridRequestModel={gridRequestModel}
         sortingItems={sortingOptions}
         //columnsPreferences={appState.preferences}
         //preferenceContext={"customerAddresses"}

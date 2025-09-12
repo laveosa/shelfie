@@ -17,7 +17,10 @@ import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import useAppService from "@/useAppService.ts";
 import { CustomerModel } from "@/const/models/CustomerModel.ts";
 
-export default function useOrderShipmentPageService() {
+export default function useOrderShipmentPageService(
+  handleCardAction,
+  handleMultipleCardActions,
+) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { addToast } = useToast();
@@ -86,7 +89,7 @@ export default function useOrderShipmentPageService() {
     dispatch(actions.setIsSelectShipmentForOrderGridLoading(true));
     return getShipmentsListForForGrid(model).then((res: any) => {
       dispatch(actions.setIsSelectShipmentForOrderGridLoading(false));
-      dispatch(actions.refreshShipmentsGridModel(res.data));
+      dispatch(actions.refreshShipmentsGridRequestModel(res.data));
       return res;
     });
   }
@@ -101,6 +104,7 @@ export default function useOrderShipmentPageService() {
   }
 
   function getListOfCustomersForGridHandler(model) {
+    handleCardAction("selectEntityCard", true);
     return getListOfCustomersForGrid(model).then((res: any) => {
       const updatedCustomers = res.data.items.map((customer) =>
         customer.customerId === state.selectedCustomer?.customerId
@@ -108,7 +112,7 @@ export default function useOrderShipmentPageService() {
           : { ...customer, isSelected: false },
       );
       dispatch(
-        ordersActions.refreshCustomersGridModel({
+        ordersActions.refreshCustomersGridRequestModel({
           ...res.data,
           items: updatedCustomers,
         }),
@@ -118,6 +122,7 @@ export default function useOrderShipmentPageService() {
   }
 
   function createShipmentHandler() {
+    handleCardAction("shipmentConfigurationCard", true);
     dispatch(actions.setIsShipmentConfigurationCardLoading(true));
     dispatch(actions.resetSelectedCustomer());
     return createShipment().then((res: any) => {
@@ -145,6 +150,7 @@ export default function useOrderShipmentPageService() {
   }
 
   function updateShipmentCustomerHandler(shipmentId: number, model: any) {
+    handleCardAction("selectEntityCard");
     return updateShipmentCustomer({ shipmentId, model }).then((res: any) => {
       if (!res.error) {
         dispatch(
@@ -208,6 +214,10 @@ export default function useOrderShipmentPageService() {
   }
 
   function getShipmentDetailsHandler(shipmentId: number) {
+    handleMultipleCardActions({
+      shipmentConfigurationCard: true,
+      selectShipmentForOrderCard: false,
+    });
     dispatch(actions.setIsShipmentDetailsCardLoading(true));
     return getShipmentDetails(shipmentId).then((res: any) => {
       dispatch(actions.setIsShipmentDetailsCardLoading(false));
@@ -217,6 +227,7 @@ export default function useOrderShipmentPageService() {
   }
 
   function selectCustomerHandler(customer: CustomerModel) {
+    handleCardAction("selectEntityCard");
     if (state.activeCards.includes("selectShipmentForOrderCard")) {
       dispatch(actions.refreshSelectedCustomer(customer));
 
@@ -317,7 +328,6 @@ export default function useOrderShipmentPageService() {
     return disconnectOrderFromShipment({ shipmentId, orderId }).then(
       (res: any) => {
         if (!res.error) {
-          console.log(res.data);
           dispatch(actions.refreshSelectedShipment(res.data));
           addToast({
             text: "Order successfully deleted from shipment",
@@ -346,6 +356,18 @@ export default function useOrderShipmentPageService() {
     });
   }
 
+  function closeShipmentConfigurationCardHandler() {
+    handleCardAction("shipmentConfigurationCard");
+  }
+
+  function closeSelectEntityCardHandler() {
+    handleCardAction("selectEntityCard");
+  }
+
+  function closeSelectShipmentForOrderCardHandler() {
+    handleCardAction("selectShipmentForOrderCard");
+  }
+
   return {
     getOrderDetailsHandler,
     getShipmentsListForOrderHandler,
@@ -368,5 +390,8 @@ export default function useOrderShipmentPageService() {
     disconnectOrderFromShipmentHandler,
     addVariantsToShipmentHandler,
     removeVariantFromShipmentHandler,
+    closeShipmentConfigurationCardHandler,
+    closeSelectEntityCardHandler,
+    closeSelectShipmentForOrderCardHandler,
   };
 }

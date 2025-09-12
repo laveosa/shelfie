@@ -3,7 +3,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
 import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
-import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { OrderModel } from "@/const/models/OrderModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
@@ -17,47 +16,15 @@ const initialState: IOrdersPageSlice = {
   isOrdersGridLoading: false,
   activeCards: [],
   sortingOptions: [],
-  ordersGridModel: {
-    pager: {},
-    items: [],
-  },
-  ordersGridRequestModel: {
-    currentPage: 1,
-    pageSize: 10,
-    filter: {},
-  },
+  ordersGridRequestModel: {},
   selectedOrder: null,
-  customersGridModel: {
-    pager: {},
-    items: [],
-  },
-  customersGridRequestModel: {
-    currentPage: 1,
-    pageSize: 10,
-    filter: {},
-  },
-  variantsGridModel: {
-    pager: {},
-    items: [],
-  },
-  variantsGridRequestModel: {
-    currentPage: 1,
-    pageSize: 10,
-    filter: {},
-  },
+  customersGridRequestModel: {},
+  variantsGridRequestModel: {},
   brands: [],
   categories: [],
   colorsForFilter: [],
   sizesForFilter: [],
-  stockActionsGridModel: {
-    pager: {},
-    items: [],
-  },
-  stockActionsGridRequestModel: {
-    currentPage: 1,
-    pageSize: 10,
-    filter: {},
-  },
+  stockActionsGridRequestModel: {},
   productCounter: null,
 };
 
@@ -97,13 +64,6 @@ function refreshSortingOptions(
   state.sortingOptions = action?.payload || state.sortingOptions;
 }
 
-function refreshOrdersGridModel(
-  state: IOrdersPageSlice,
-  action: PayloadAction<GridModel>,
-) {
-  state.ordersGridModel = action?.payload || state.ordersGridModel;
-}
-
 function refreshOrdersGridRequestModel(
   state: IOrdersPageSlice,
   action: PayloadAction<GridRequestModel>,
@@ -119,26 +79,12 @@ function refreshSelectedOrder(
   state.selectedOrder = action?.payload || state.selectedOrder;
 }
 
-function refreshCustomersGridModel(
-  state: IOrdersPageSlice,
-  action: PayloadAction<GridModel>,
-) {
-  state.customersGridModel = action?.payload || state.customersGridModel;
-}
-
 function refreshCustomersGridRequestModel(
   state: IOrdersPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
   state.customersGridRequestModel =
     action?.payload || state.customersGridRequestModel;
-}
-
-function refreshVariantsGridModel(
-  state: IOrdersPageSlice,
-  action: PayloadAction<GridModel>,
-) {
-  state.variantsGridModel = action?.payload || state.variantsGridModel;
 }
 
 function refreshVariantsGridRequestModel(
@@ -177,13 +123,6 @@ function refreshColorsForFilter(
   state.colorsForFilter = action?.payload || state.colorsForFilter;
 }
 
-function refreshStockActionsGridModel(
-  state: IOrdersPageSlice,
-  action: PayloadAction<GridModel>,
-) {
-  state.stockActionsGridModel = action?.payload || state.stockActionsGridModel;
-}
-
 function refreshStockActionsGridRequestModel(
   state: IOrdersPageSlice,
   action: PayloadAction<GridRequestModel>,
@@ -208,18 +147,14 @@ const OrdersPageSlice = createSlice({
     setIsOrdersGridLoading,
     refreshActiveCards,
     refreshSortingOptions,
-    refreshOrdersGridModel,
     refreshOrdersGridRequestModel,
     refreshSelectedOrder,
-    refreshCustomersGridModel,
     refreshCustomersGridRequestModel,
-    refreshVariantsGridModel,
     refreshVariantsGridRequestModel,
     refreshBrands,
     refreshCategories,
     refreshSizesForFilter,
     refreshColorsForFilter,
-    refreshStockActionsGridModel,
     refreshStockActionsGridRequestModel,
     refreshProductCounter,
   },

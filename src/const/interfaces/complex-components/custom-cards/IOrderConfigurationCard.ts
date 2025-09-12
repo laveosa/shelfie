@@ -1,6 +1,6 @@
 import { OrderModel } from "@/const/models/OrderModel.ts";
 import { StatusModel } from "@/const/models/StatusModel.ts";
-import { GridModel } from "@/const/models/GridModel.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 
 export interface IOrderConfigurationCard {
   isLoading?: boolean;
@@ -9,7 +9,7 @@ export interface IOrderConfigurationCard {
   order?: OrderModel;
   statuses?: StatusModel[];
   shipmentsRate?: any[];
-  shipmentGridModel?: GridModel;
-  discountGridModel?: GridModel;
+  shipmentGridModel?: GridRequestModel;
+  discountGridModel?: GridRequestModel;
   onAction?: (identifier: string, payload?: any) => void;
 }

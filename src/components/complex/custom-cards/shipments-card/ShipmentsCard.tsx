@@ -22,7 +22,6 @@ export default function ShipmentsCard({
   isLoading,
   isShipmentsGridLoading,
   preferences,
-  shipmentsGridModel,
   shipmentsGridRequestModel,
   onAction,
 }: IShipmentsCard) {
@@ -89,8 +88,8 @@ export default function ShipmentsCard({
                 columns={
                   ShipmentsListGridColumns(onAction) as ColumnDef<DataWithId>[]
                 }
-                data={shipmentsGridModel.items}
-                gridModel={shipmentsGridModel}
+                data={shipmentsGridRequestModel.items}
+                gridRequestModel={shipmentsGridRequestModel}
                 sortingItems={sortingItems}
                 columnsPreferences={preferences}
                 preferenceContext={"productReferences"}
@@ -106,8 +105,8 @@ export default function ShipmentsCard({
                 columns={
                   ShipmentsListGridColumns(onAction) as ColumnDef<DataWithId>[]
                 }
-                data={shipmentsGridModel.items}
-                gridModel={shipmentsGridModel}
+                data={shipmentsGridRequestModel.items}
+                gridRequestModel={shipmentsGridRequestModel}
                 sortingItems={sortingItems}
                 columnsPreferences={preferences}
                 preferenceContext={"productReferences"}
@@ -123,8 +122,8 @@ export default function ShipmentsCard({
                 columns={
                   ShipmentsListGridColumns(onAction) as ColumnDef<DataWithId>[]
                 }
-                data={shipmentsGridModel.items}
-                gridModel={shipmentsGridModel}
+                data={shipmentsGridRequestModel.items}
+                gridRequestModel={shipmentsGridRequestModel}
                 sortingItems={sortingItems}
                 columnsPreferences={preferences}
                 preferenceContext={"productReferences"}
@@ -140,8 +139,8 @@ export default function ShipmentsCard({
                 columns={
                   ShipmentsListGridColumns(onAction) as ColumnDef<DataWithId>[]
                 }
-                data={shipmentsGridModel.items}
-                gridModel={shipmentsGridModel}
+                data={shipmentsGridRequestModel.items}
+                gridRequestModel={shipmentsGridRequestModel}
                 sortingItems={sortingItems}
                 columnsPreferences={preferences}
                 preferenceContext={"productReferences"}

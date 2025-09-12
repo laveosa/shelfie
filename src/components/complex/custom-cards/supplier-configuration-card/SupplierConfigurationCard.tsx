@@ -25,8 +25,6 @@ export default function SupplierConfigurationCard({
     onAction("dndSupplierPhoto", data);
   }
 
-  console.log(managedSupplier);
-
   return (
     <SheProductCard
       loading={isLoading}

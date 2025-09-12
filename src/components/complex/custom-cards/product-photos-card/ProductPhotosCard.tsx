@@ -25,10 +25,6 @@ export default function ProductPhotosCard({
 }: IProductPhotosCard) {
   const { t } = useTranslation();
 
-  const columns = ProductPhotosGridColumns(
-    onGridAction,
-  ) as ColumnDef<DataWithId>[];
-
   function handleAction(actionType: string, payload?: any): any {
     switch (actionType) {
       case "upload":
@@ -98,7 +94,11 @@ export default function ProductPhotosCard({
                 className={cs.photosGrid}
                 enableDnd={true}
                 showHeader={false}
-                columns={columns}
+                columns={
+                  ProductPhotosGridColumns(
+                    onGridAction,
+                  ) as ColumnDef<DataWithId>[]
+                }
                 data={data}
                 skeletonQuantity={productCounter?.gallery}
                 cellPadding="5px 10px"

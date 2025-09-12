@@ -453,7 +453,7 @@ export default function VariantConfigurationCard({
               showHeader={false}
               columns={traitsColumns}
               data={preparedTraitOptions}
-              gridModel={data}
+              gridRequestModel={data}
               enableExpansion={true}
               renderExpandedContent={renderExpandedContent}
             />
@@ -482,7 +482,7 @@ export default function VariantConfigurationCard({
                 showHeader={false}
                 columns={photoColumns}
                 data={variantPhotos}
-                gridModel={data}
+                gridRequestModel={data}
                 skeletonQuantity={productCounter?.gallery}
                 onNewItemPosition={(newIndex, activeItem) =>
                   onAction("dndVariantPhoto", { newIndex, activeItem })

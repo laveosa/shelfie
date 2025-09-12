@@ -36,7 +36,6 @@ import { ProductsGridColumns } from "@/components/complex/grid/custom-grids/prod
 import { variantsGridColumns } from "@/components/complex/grid/custom-grids/variants-grid/VariantsGridColumns.tsx";
 import { GridDateRangeFilter } from "@/components/complex/grid/filters/grid-date-range-filter/GridDateRangeFilter.tsx";
 import { GridValueFilter } from "@/components/complex/grid/filters/grid-value-filter/GridValueFilter.tsx";
-import { CalendarModeEnum } from "@/const/enums/CalendarModeEnum.ts";
 
 export function ProductsPage() {
   const { t } = useTranslation();
@@ -199,13 +198,12 @@ export function ProductsPage() {
               isLoading={state.isLoading}
               ref={gridRef}
               columns={ProductsGridColumns(onAction) as ColumnDef<DataWithId>[]}
-              data={state.productsGridModel.items}
-              gridModel={state.productsGridModel}
+              data={state.productsGridRequestModel?.items}
               gridRequestModel={state.productsGridRequestModel}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
               preferenceContext={"productReferences"}
-              skeletonQuantity={state.productsGridRequestModel.pageSize}
+              skeletonQuantity={state.productsGridRequestModel?.pageSize}
               onApplyColumns={(model) => onAction("applyColumns", model)}
               onDefaultColumns={() => onAction("resetColumns")}
               onGridRequestChange={(updates) =>
@@ -217,14 +215,14 @@ export function ProductsPage() {
                 columnName={"Brands"}
                 getId={(item: BrandModel) => item.brandId}
                 getName={(item: BrandModel) => item.brandName}
-                selected={state.productsGridModel.filter?.brands}
+                selected={state.productsGridRequestModel?.filter?.brands}
               />
               <GridItemsFilter
                 items={state.categories}
                 columnName={"Categories"}
                 getId={(item: CategoryModel) => item.categoryId}
                 getName={(item: CategoryModel) => item.categoryName}
-                selected={state.productsGridModel.filter?.categories}
+                selected={state.productsGridRequestModel?.filter?.categories}
               />
               <GridShowItemsFilter context="Deleted" />
             </DndGridDataTable>
@@ -235,7 +233,6 @@ export function ProductsPage() {
               ref={gridRef}
               columns={variantsGridColumns(onAction) as ColumnDef<DataWithId>[]}
               data={state.variants}
-              gridModel={state.variantsGridModel}
               gridRequestModel={state.variantsGridRequestModel}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
@@ -252,14 +249,14 @@ export function ProductsPage() {
                 columnName={"Brands"}
                 getId={(item: BrandModel) => item.brandId}
                 getName={(item: BrandModel) => item.brandName}
-                selected={state.variantsGridModel.filter?.brands}
+                selected={state.variantsGridRequestModel?.filter?.brands}
               />
               <GridItemsFilter
                 items={state.categories}
                 columnName={"Categories"}
                 getId={(item: CategoryModel) => item.categoryId}
                 getName={(item: CategoryModel) => item.categoryName}
-                selected={state.variantsGridModel.filter?.categories}
+                selected={state.variantsGridRequestModel?.filter?.categories}
               />
               <GridTraitsFilter
                 traitOptions={state.colorsForFilter}
@@ -280,7 +277,6 @@ export function ProductsPage() {
                 purchasesGridColumns(onAction) as ColumnDef<DataWithId>[]
               }
               data={state.purchases}
-              gridModel={state.purchasesGridModel}
               gridRequestModel={state.purchasesGridRequestModel}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
@@ -298,7 +294,7 @@ export function ProductsPage() {
                 icon={BadgeCheck}
                 getId={(item: SupplierModel) => item.supplierId}
                 getName={(item: SupplierModel) => item.supplierName}
-                selected={state.purchasesGridModel.filter?.suppliers}
+                selected={state.purchasesGridRequestModel?.filter?.suppliers}
               />
               <GridDateRangeFilter />
               <GridItemsFilter
@@ -307,6 +303,7 @@ export function ProductsPage() {
                 icon={BadgeCheck}
                 getId={(item: BrandModel) => item.brandId}
                 getName={(item: BrandModel) => item.brandName}
+                selected={state.purchasesGridRequestModel?.filter?.brands}
               />
               <GridValueFilter
                 icon={ReceiptEuro}

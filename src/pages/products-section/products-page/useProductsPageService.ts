@@ -15,7 +15,6 @@ import UsersApiHooks from "@/utils/services/api/UsersApiService.ts";
 import PurchasesApiHooks from "@/utils/services/api/PurchasesApiService.ts";
 import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
 import useAppService from "@/useAppService.ts";
-import { ProductModel } from "@/const/models/ProductModel.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
@@ -54,7 +53,7 @@ export default function useProductsPageService() {
   const [getCountersForProducts] =
     ProductsApiHooks.useLazyGetCountersForProductsQuery();
   const [getProductDetails] = ProductsApiHooks.useLazyGetProductDetailQuery();
-  const [manageProduct] = ProductsApiHooks.useManageProductMutation();
+  // const [manageProduct] = ProductsApiHooks.useManageProductMutation();
   const [deleteProduct] = ProductsApiHooks.useDeleteProductMutation();
   const [toggleProductActivation] =
     ProductsApiHooks.useToggleProductActivationMutation();
@@ -163,7 +162,7 @@ export default function useProductsPageService() {
         if (res.error) {
           return;
         } else {
-          dispatch(actions.refreshProductsGridModel(res.data));
+          dispatch(actions.refreshProductsGridRequestModel(res.data));
           dispatch(actions.refreshProducts(res.data.items));
           return res.data;
         }
@@ -178,7 +177,7 @@ export default function useProductsPageService() {
           if (res.error) {
             return;
           } else {
-            dispatch(actions.refreshProductsGridModel(res.data));
+            dispatch(actions.refreshProductsGridRequestModel(res.data));
             dispatch(actions.refreshProducts(res.data.items));
             return res.data;
           }
@@ -194,7 +193,7 @@ export default function useProductsPageService() {
       if (res.error) {
         return;
       } else {
-        dispatch(actions.refreshPurchasesGridModel(res.data));
+        dispatch(actions.refreshPurchasesGridRequestModel(res.data));
         dispatch(actions.refreshPurchases(res.data.items));
         return res.data;
       }
@@ -215,7 +214,7 @@ export default function useProductsPageService() {
       if (res.error) {
         return;
       } else {
-        dispatch(actions.refreshVariantsGridModel(res.data));
+        dispatch(actions.refreshVariantsGridRequestModel(res.data));
         dispatch(actions.refreshVariants(res.data.items));
         return res.data;
       }
@@ -257,9 +256,9 @@ export default function useProductsPageService() {
     });
   }
 
-  function manageProductHandler(model: ProductModel) {
-    return manageProduct(model);
-  }
+  // function manageProductHandler(model: ProductModel) {
+  //   return manageProduct(model);
+  // }
 
   function deleteProductHandler(id: number) {
     return deleteProduct(id).then((res: any) => {
@@ -682,9 +681,9 @@ export default function useProductsPageService() {
     toggleProductActivationHandler(model.productId).then((res: any) => {
       if (!res.error) {
         dispatch(
-          actions.refreshProductsGridModel({
-            ...state.productsGridModel,
-            items: state.productsGridModel.items.map((product) =>
+          actions.refreshProductsGridRequestModel({
+            ...state.productsGridRequestModel,
+            items: state.productsGridRequestModel.items.map((product) =>
               product.productId === model.productId
                 ? { ...product, isActive: !model.isActive }
                 : product,
@@ -876,9 +875,9 @@ export default function useProductsPageService() {
     toggleVariantIsActive(model.variantId).then((res: any) => {
       if (!res.error) {
         dispatch(
-          actions.refreshVariantsGridModel({
-            ...state.variantsGridModel,
-            items: state.variantsGridModel.items.map((variant) =>
+          actions.refreshVariantsGridRequestModel({
+            ...state.variantsGridRequestModel,
+            items: state.variantsGridRequestModel.items.map((variant) =>
               variant.variantId === model.variantId
                 ? { ...variant, isActive: !model.isActive }
                 : variant,

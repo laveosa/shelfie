@@ -20,7 +20,6 @@ export default function FindProductsCard({
   isGridLoading,
   variants,
   preferences,
-  gridModel,
   gridRequestModel,
   sortingOptions,
   colorsForFilter,
@@ -49,7 +48,7 @@ export default function FindProductsCard({
             }) as ColumnDef<DataWithId>[]
           }
           data={variants}
-          gridModel={gridModel}
+          gridRequestModel={gridRequestModel}
           sortingItems={sortingOptions}
           columnsPreferences={preferences}
           preferenceContext={"variantReferences"}
@@ -65,14 +64,14 @@ export default function FindProductsCard({
             columnName={t("SectionTitles.Brand")}
             getId={(item: BrandModel) => item.brandId}
             getName={(item: BrandModel) => item.brandName}
-            selected={gridModel.filter?.brands}
+            selected={gridRequestModel.filter?.brands}
           />
           <GridItemsFilter
             items={categories}
             columnName={t("SectionTitles.Category")}
             getId={(item: CategoryModel) => item.categoryId}
             getName={(item: CategoryModel) => item.categoryName}
-            selected={gridModel.filter?.categories}
+            selected={gridRequestModel.filter?.categories}
           />
           <GridTraitsFilter traitOptions={colorsForFilter} traitType="color" />
           <GridTraitsFilter traitOptions={sizesForFilter} traitType="size" />

@@ -3,7 +3,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IOrderShipmentPageSlice } from "@/const/interfaces/store-slices/IOrderShipmentPageSlice.ts";
 import { ShipmentModel } from "@/const/models/ShipmentModel.ts";
-import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { CustomerModel } from "@/const/models/CustomerModel.ts";
 
@@ -22,16 +21,7 @@ const initialState: IOrderShipmentPageSlice = {
   orderShipments: [],
   selectedShipment: null,
   selectedCustomer: null,
-  shipmentsGridModel: {
-    pager: {},
-    items: [],
-  },
-  shipmentsGridRequestModel: {
-    currentPage: 1,
-    pageSize: 10,
-    searchQuery: "",
-    filter: {},
-  },
+  shipmentsGridRequestModel: {},
 };
 
 //----------------------------------------------------- LOADERS
@@ -140,13 +130,6 @@ function resetSelectedCustomer(state: IOrderShipmentPageSlice) {
   state.selectedCustomer = null;
 }
 
-function refreshShipmentsGridModel(
-  state: IOrderShipmentPageSlice,
-  action: PayloadAction<GridModel>,
-) {
-  state.shipmentsGridModel = action?.payload || state.shipmentsGridModel;
-}
-
 function refreshShipmentsGridRequestModel(
   state: IOrderShipmentPageSlice,
   action: PayloadAction<GridRequestModel>,
@@ -174,7 +157,6 @@ const OrderShipmentPageSlice = createSlice({
     refreshSelectedShipment,
     refreshSelectedCustomer,
     resetSelectedCustomer,
-    refreshShipmentsGridModel,
     refreshShipmentsGridRequestModel,
   },
 });

@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IShipmentsPageSlice } from "@/const/interfaces/store-slices/IShipmentsPageSlice.ts";
-import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { ShipmentModel } from "@/const/models/ShipmentModel.ts";
 
@@ -12,16 +11,7 @@ const initialState: IShipmentsPageSlice = {
   isShipmentsGridLoading: false,
   activeCards: [],
   activeTab: "allShipments",
-  shipmentsGridModel: {
-    pager: {},
-    items: [],
-  },
-  shipmentsGridRequestModel: {
-    currentPage: 1,
-    pageSize: 10,
-    searchQuery: "",
-    filter: {},
-  },
+  shipmentsGridRequestModel: {},
   selectedShipment: null,
 };
 
@@ -64,13 +54,6 @@ function refreshActiveTab(
   state.activeTab = action?.payload || state.activeTab;
 }
 
-function refreshShipmentsGridModel(
-  state: IShipmentsPageSlice,
-  action: PayloadAction<GridModel>,
-) {
-  state.shipmentsGridModel = action?.payload || state.shipmentsGridModel;
-}
-
 function refreshShipmentsGridRequestModel(
   state: IShipmentsPageSlice,
   action: PayloadAction<GridRequestModel>,
@@ -95,7 +78,6 @@ const ShipmentsPageSlice = createSlice({
     setIsShipmentsGridLoading,
     refreshActiveCards,
     refreshActiveTab,
-    refreshShipmentsGridModel,
     refreshShipmentsGridRequestModel,
     refreshSelectedShipment,
   },

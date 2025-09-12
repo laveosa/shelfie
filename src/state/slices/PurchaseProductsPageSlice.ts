@@ -3,7 +3,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IPurchaseProductsPageSlice } from "@/const/interfaces/store-slices/IPurchaseProductsPageSlice.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
-import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
@@ -58,25 +57,11 @@ const initialState: IPurchaseProductsPageSlice = {
   activeTab: "purchaseProducts",
   variants: [],
   selectedProduct: null,
-  colorOptionsGridModel: null,
-  purchaseProductVariantsGridModel: null,
+  colorOptionsGridRequestModel: null,
+  purchaseProductVariantsGridRequestModel: null,
   purchaseProducts: [],
-  purchasesProductsGridModel: {
-    pager: {},
-    items: [],
-  },
-  purchasesProductsGridRequestModel: {
-    currentPage: 1,
-    pageSize: 10,
-  },
-  variantsForPurchaseGridModel: {
-    pager: {},
-    items: [],
-  },
-  variantsForPurchaseGridRequestModel: {
-    currentPage: 1,
-    pageSize: 10,
-  },
+  purchasesProductsGridRequestModel: {},
+  variantsForPurchaseGridRequestModel: {},
   brands: [],
   categories: [],
   selectedPhoto: null,
@@ -93,10 +78,8 @@ const initialState: IPurchaseProductsPageSlice = {
   colorsForFilter: [],
   sizesForFilter: [],
   purchasesList: [],
-  purchaseGridModel: {},
   purchaseGridRequestModel: {},
   selectedPurchase: null,
-  companiesGridModel: {},
   companiesGriRequestModel: {},
   selectedCompany: null,
 };
@@ -382,11 +365,12 @@ function resetSelectedProduct(state: IPurchaseProductsPageSlice) {
   state.selectedProduct = null;
 }
 
-function refreshColorOptionsGridModel(
+function refreshColorOptionsGridRequestModel(
   state: IPurchaseProductsPageSlice,
-  action: PayloadAction<GridModel>,
+  action: PayloadAction<GridRequestModel>,
 ) {
-  state.colorOptionsGridModel = action?.payload || state.colorOptionsGridModel;
+  state.colorOptionsGridRequestModel =
+    action?.payload || state.colorOptionsGridRequestModel;
 }
 
 function refreshPurchaseProducts(
@@ -396,20 +380,12 @@ function refreshPurchaseProducts(
   state.purchaseProducts = action?.payload || state.purchaseProducts;
 }
 
-function refreshPurchasesProductsGridModel(
+function refreshPurchaseProductVariantsGridRequestModel(
   state: IPurchaseProductsPageSlice,
-  action: PayloadAction<GridModel>,
+  action: PayloadAction<GridRequestModel>,
 ) {
-  state.purchasesProductsGridModel =
-    action?.payload || state.purchasesProductsGridModel;
-}
-
-function refreshPurchaseProductVariantsGridModel(
-  state: IPurchaseProductsPageSlice,
-  action: PayloadAction<GridModel>,
-) {
-  state.purchaseProductVariantsGridModel =
-    action?.payload || state.purchaseProductVariantsGridModel;
+  state.purchaseProductVariantsGridRequestModel =
+    action?.payload || state.purchaseProductVariantsGridRequestModel;
 }
 
 function refreshPurchasesProductsGridRequestModel(
@@ -418,14 +394,6 @@ function refreshPurchasesProductsGridRequestModel(
 ) {
   state.purchasesProductsGridRequestModel =
     action?.payload || state.purchasesProductsGridRequestModel;
-}
-
-function refreshVariantsForPurchaseGridModel(
-  state: IPurchaseProductsPageSlice,
-  action: PayloadAction<GridModel>,
-) {
-  state.variantsForPurchaseGridModel =
-    action?.payload || state.variantsForPurchaseGridModel;
 }
 
 function refreshVariantsForPurchaseGridRequestModel(
@@ -539,13 +507,6 @@ function refreshPurchasesList(
   state.purchasesList = action?.payload || state.purchasesList;
 }
 
-function refreshPurchaseGridModel(
-  state: IManageVariantsPageSlice,
-  action: PayloadAction<GridModel>,
-) {
-  state.purchaseGridModel = action?.payload || state.purchaseGridModel;
-}
-
 function refreshPurchaseGridRequestModel(
   state: IManageVariantsPageSlice,
   action: PayloadAction<GridRequestModel>,
@@ -565,19 +526,12 @@ function resetSelectedPurchase(state: IManageVariantsPageSlice) {
   state.selectedPurchase = null;
 }
 
-function refreshCompaniesGridModel(
-  state: IManageVariantsPageSlice,
-  action: PayloadAction<GridModel>,
-) {
-  state.companiesGridModel = action?.payload || state.companiesGridModel;
-}
-
-function refreshCompaniesGriRequestModel(
+function refreshCompaniesGridRequestModel(
   state: IManageVariantsPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
-  state.companiesGriRequestModel =
-    action?.payload || state.companiesGriRequestModel;
+  state.companiesGridRequestModel =
+    action?.payload || state.companiesGridRequestModel;
 }
 
 function refreshSelectedCompany(
@@ -631,12 +585,10 @@ const PurchaseProductsPageSlice = createSlice({
     refreshVariants,
     refreshSelectedProduct,
     resetSelectedProduct,
-    refreshColorOptionsGridModel,
+    refreshColorOptionsGridRequestModel,
     refreshPurchaseProducts,
-    refreshPurchasesProductsGridModel,
-    refreshPurchaseProductVariantsGridModel,
+    refreshPurchaseProductVariantsGridRequestModel,
     refreshPurchasesProductsGridRequestModel,
-    refreshVariantsForPurchaseGridModel,
     refreshVariantsForPurchaseGridRequestModel,
     refreshBrands,
     refreshCategories,
@@ -653,12 +605,10 @@ const PurchaseProductsPageSlice = createSlice({
     refreshColorsForFilter,
     refreshSizesForFilter,
     refreshPurchasesList,
-    refreshPurchaseGridModel,
     refreshPurchaseGridRequestModel,
     refreshSelectedPurchase,
     resetSelectedPurchase,
-    refreshCompaniesGridModel,
-    refreshCompaniesGriRequestModel,
+    refreshCompaniesGridRequestModel,
     refreshSelectedCompany,
   },
 });

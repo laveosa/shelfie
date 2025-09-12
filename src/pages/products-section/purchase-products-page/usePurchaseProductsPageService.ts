@@ -74,7 +74,7 @@ export default function usePurchaseProductsPageService(
 
   function getListOfPurchaseProductsForGridHandler(id: any, model) {
     return getListOfPurchaseProductsForGrid({ id, model }).then((res: any) => {
-      dispatch(actions.refreshPurchasesProductsGridModel(res.data));
+      dispatch(actions.refreshPurchasesProductsGridRequestModel(res.data));
       dispatch(actions.refreshPurchaseProducts(res.data.items));
       return res.data;
     });
@@ -145,7 +145,7 @@ export default function usePurchaseProductsPageService(
       .getVariantsForGridHandler(state.variantsForPurchaseGridRequestModel)
       .then((res) => {
         dispatch(actions.setIsVariantsForPurchaseGridLoading(false));
-        dispatch(actions.refreshVariantsForPurchaseGridModel(res));
+        dispatch(actions.refreshVariantsForPurchaseGridRequestModel(res));
         dispatch(actions.refreshVariants(res.items));
       });
   }
@@ -333,7 +333,9 @@ export default function usePurchaseProductsPageService(
       ),
     ]).then(([_traits, variants]) => {
       dispatch(actions.setIsManageProductCardLoading(false));
-      dispatch(actions.refreshPurchaseProductVariantsGridModel(variants));
+      dispatch(
+        actions.refreshPurchaseProductVariantsGridRequestModel(variants),
+      );
       dispatch(actions.refreshPurchaseProductVariants(variants.items));
     });
   }
@@ -557,8 +559,8 @@ export default function usePurchaseProductsPageService(
       dispatch(actions.setIsTraitOptionsGridLoading(false));
       dispatch(actions.refreshSelectedTrait(trait));
       dispatch(
-        actions.refreshColorOptionsGridModel({
-          ...state.colorOptionsGridModel,
+        actions.refreshColorOptionsGridRequestModel({
+          ...state.colorOptionsGridRequestModel,
           items: options.filter((option) => !option.isDeleted),
         }),
       );
@@ -639,8 +641,8 @@ export default function usePurchaseProductsPageService(
         dispatch(actions.refreshSelectedTrait(res));
         productsService.getOptionsForTraitHandler(res.traitId).then((res) => {
           dispatch(
-            actions.refreshColorOptionsGridModel({
-              ...state.colorOptionsGridModel,
+            actions.refreshColorOptionsGridRequestModel({
+              ...state.colorOptionsGridRequestModel,
               items: res.filter((option) => !option.isDeleted),
             }),
           );
@@ -688,9 +690,9 @@ export default function usePurchaseProductsPageService(
       .then((res) => {
         if (res) {
           dispatch(
-            actions.refreshColorOptionsGridModel({
-              ...state.colorOptionsGridModel,
-              items: state.colorOptionsGridModel.items.map((item) =>
+            actions.refreshColorOptionsGridRequestModel({
+              ...state.colorOptionsGridRequestModel,
+              items: state.colorOptionsGridRequestModel.items.map((item) =>
                 item.optionId === res.optionId ? res : item,
               ),
             }),
@@ -720,9 +722,9 @@ export default function usePurchaseProductsPageService(
         dispatch(actions.setIsTraitOptionsGridLoading(false));
         if (res) {
           dispatch(
-            actions.refreshColorOptionsGridModel({
-              ...state.colorOptionsGridModel,
-              items: [...state.colorOptionsGridModel.items, res],
+            actions.refreshColorOptionsGridRequestModel({
+              ...state.colorOptionsGridRequestModel,
+              items: [...state.colorOptionsGridRequestModel.items, res],
             }),
           );
           productsService.getListOfAllTraitsHandler();
@@ -757,9 +759,9 @@ export default function usePurchaseProductsPageService(
         });
 
         dispatch(
-          actions.refreshColorOptionsGridModel({
-            ...state.colorOptionsGridModel,
-            items: state.colorOptionsGridModel.items.filter(
+          actions.refreshColorOptionsGridRequestModel({
+            ...state.colorOptionsGridRequestModel,
+            items: state.colorOptionsGridRequestModel.items.filter(
               (option) => option.optionId !== model.optionId,
             ),
           }),
@@ -1361,7 +1363,7 @@ export default function usePurchaseProductsPageService(
       }));
 
       dispatch(
-        actions.refreshPurchaseGridModel({
+        actions.refreshPurchaseGridRequestModel({
           ...res.data,
           items: modifiedList,
         }),
@@ -1382,7 +1384,7 @@ export default function usePurchaseProductsPageService(
       }));
 
       dispatch(
-        actions.refreshPurchaseGridModel({
+        actions.refreshPurchaseGridRequestModel({
           ...res.data,
           items: modifiedList,
         }),
@@ -1423,7 +1425,7 @@ export default function usePurchaseProductsPageService(
       }));
 
       dispatch(
-        actions.refreshPurchaseGridModel({
+        actions.refreshPurchaseGridRequestModel({
           ...res.data,
           items: modifiedList,
         }),
@@ -1451,7 +1453,10 @@ export default function usePurchaseProductsPageService(
         isSelected: item.companyId === state.selectedCompany?.companyId,
       }));
       dispatch(
-        actions.refreshCompaniesGridModel({ ...res.data, items: modifiedList }),
+        actions.refreshCompaniesGridRequestModel({
+          ...res.data,
+          items: modifiedList,
+        }),
       );
     });
   }
@@ -1468,7 +1473,10 @@ export default function usePurchaseProductsPageService(
         isSelected: item.companyId === state.selectedCompany?.companyId,
       }));
       dispatch(
-        actions.refreshCompaniesGridModel({ ...res.data, items: modifiedList }),
+        actions.refreshCompaniesGridRequestModel({
+          ...res.data,
+          items: modifiedList,
+        }),
       );
     });
   }
@@ -1480,7 +1488,7 @@ export default function usePurchaseProductsPageService(
 
   function detachSupplierHandler() {
     handleCardAction("selectEntityCard", true);
-    if (state.companiesGridModel === null) {
+    if (state.companiesGridRequestModel === null) {
       dispatch(actions.setIsSelectEntityCardLoading(true));
       dispatch(actions.setIsSuppliersGridLoading(true));
       getListOfCompaniesForGrid(state.companiesGriRequestModel).then((res) => {
@@ -1491,20 +1499,22 @@ export default function usePurchaseProductsPageService(
           isSelected: item.companyId === state.selectedCompany?.companyId,
         }));
         dispatch(
-          actions.refreshCompaniesGridModel({
+          actions.refreshCompaniesGridRequestModel({
             ...res.data,
             items: modifiedList,
           }),
         );
       });
     } else {
-      const modifiedList = state.companiesGridModel.items.map((item) => ({
-        ...item,
-        isSelected: item.companyId === state.selectedCompany?.companyId,
-      }));
+      const modifiedList = state.companiesGridRequestModel.items.map(
+        (item) => ({
+          ...item,
+          isSelected: item.companyId === state.selectedCompany?.companyId,
+        }),
+      );
       dispatch(
-        actions.refreshCompaniesGridModel({
-          ...state.companiesGridModel,
+        actions.refreshCompaniesGridRequestModel({
+          ...state.companiesGridRequestModel,
           items: modifiedList,
         }),
       );

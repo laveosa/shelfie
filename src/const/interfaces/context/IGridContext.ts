@@ -1,4 +1,3 @@
-import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
 import { PropsWithChildren } from "react";
@@ -14,7 +13,6 @@ export interface IGridContext extends PropsWithChildren {
   showSorting?: boolean;
   showColumnsViewOptions?: boolean;
   showSearch?: boolean;
-  gridModel?: GridModel;
   gridRequestModel?: GridRequestModel;
   sortingItems?: GridSortingModel[];
   onGridRequestChange?: (updates: GridRequestModel) => void;

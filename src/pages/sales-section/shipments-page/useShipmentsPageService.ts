@@ -25,7 +25,7 @@ export default function useShipmentsPageService() {
     dispatch(actions.setIsShipmentsGridLoading(true));
     return getShipmentsListForForGrid(model).then((res: any) => {
       dispatch(actions.setIsShipmentsGridLoading(false));
-      dispatch(actions.refreshShipmentsGridModel(res.data));
+      dispatch(actions.refreshShipmentsGridRequestModel(res.data));
       return res;
     });
   }

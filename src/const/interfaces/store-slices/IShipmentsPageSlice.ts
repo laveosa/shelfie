@@ -1,4 +1,3 @@
-import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { ShipmentModel } from "@/const/models/ShipmentModel.ts";
 
@@ -8,7 +7,6 @@ export interface IShipmentsPageSlice {
   isShipmentsGridLoading?: boolean;
   activeCards?: any[];
   activeTab?: string;
-  shipmentsGridModel?: GridModel;
   shipmentsGridRequestModel?: GridRequestModel;
   selectedShipment?: ShipmentModel;
 }

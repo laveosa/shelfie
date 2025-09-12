@@ -158,7 +158,6 @@ export function MarginsPage() {
             colors={productsState.colorsForFilter}
             taxes={productsState.taxesList}
             sortingOptions={productsState.sortingOptions}
-            gridModel={state.marginItemsGridModel}
             gridRequestModel={state.marginItemsGriRequestModel}
             onAction={onAction}
           />

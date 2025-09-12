@@ -39,7 +39,6 @@ export function ShipmentsPage() {
       <ShipmentsCard
         isLoading={state.isShipmentsCardLoading}
         isShipmentsGridLoading={state.isShipmentsGridLoading}
-        shipmentsGridModel={state.shipmentsGridModel}
         shipmentsGridRequestModel={state.shipmentsGridRequestModel}
         onAction={onAction}
       />

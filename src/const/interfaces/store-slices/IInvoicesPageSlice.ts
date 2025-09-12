@@ -1,5 +1,5 @@
-import { GridModel } from "@/const/models/GridModel.ts";
 import { InvoiceModel } from "@/const/models/InvoiceModel.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 
 export interface IInvoicesPageSlice {
   isLoading?: boolean;
@@ -9,7 +9,7 @@ export interface IInvoicesPageSlice {
   isInvoiceCardGridLoading?: boolean;
   isFileUploaderLoading?: boolean;
   activeCards?: any[];
-  invoicesGridModel?: GridModel;
+  invoicesGridRequestModel?: GridRequestModel;
   invoices?: InvoiceModel[];
   previewUrl?: string;
 }

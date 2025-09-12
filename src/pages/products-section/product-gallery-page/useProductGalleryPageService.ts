@@ -1,13 +1,13 @@
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 
-import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
-import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";
-import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
-import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import {
   ProductGalleryPageSliceActions as actions,
   ProductGalleryPageSliceActions as action,
 } from "@/state/slices/ProductGalleryPageSlice.ts";
+import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
+import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";
+import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import { useToast } from "@/hooks/useToast.ts";
@@ -95,7 +95,7 @@ export default function useProductGalleryPageService(handleCardAction) {
     }).then(() => {
       if (model.newIndex === 0 || model.oldIndex === 0) {
         productsService.getTheProductsForGridHandler(
-          productsState.gridRequestModel,
+          productsState.productsGridRequestModel,
           true,
         );
       }
@@ -121,7 +121,7 @@ export default function useProductGalleryPageService(handleCardAction) {
         productsService.getCountersForProductsHandler(productId),
         model.id === 1
           ? productsService.getTheProductsForGridHandler(
-              productsState.gridRequestModel,
+              productsState.productsGridRequestModel,
               true,
             )
           : Promise.resolve({ items: [] }),
@@ -260,7 +260,7 @@ export default function useProductGalleryPageService(handleCardAction) {
     if (productsState.products === null) {
       dispatch(productsActions.setIsItemsCardLoading(true));
       productsService
-        .getTheProductsForGridHandler(productsState.gridRequestModel)
+        .getTheProductsForGridHandler(productsState.productsGridRequestModel)
         .then(() => {
           dispatch(productsActions.setIsItemsCardLoading(false));
         });

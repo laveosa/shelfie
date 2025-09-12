@@ -9,8 +9,9 @@ import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSli
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IOrderDetailsPageSlice } from "@/const/interfaces/store-slices/IOrderDetailsPageSlice.ts";
 import OrdersApiHooks from "@/utils/services/api/OrdersApiService.ts";
+import useOrdersPageService from "@/pages/sales-section/orders-page/useOrdersPageService.ts";
 
-export default function useOrderDetailsPageService() {
+export default function useOrderDetailsPageService(handleCardAction) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { addToast } = useToast();
@@ -18,6 +19,7 @@ export default function useOrderDetailsPageService() {
     StoreSliceEnum.ORDER_DETAILS,
   );
   const ordersState = useAppSelector<IOrdersPageSlice>(StoreSliceEnum.ORDERS);
+  const ordersService = useOrdersPageService();
 
   const [getOrderDetails] = OrdersApiHooks.useLazyGetOrderDetailsQuery();
   const [getListOfCustomersForGrid] =
@@ -48,12 +50,13 @@ export default function useOrderDetailsPageService() {
     dispatch(actions.setIsSelectEntityGridLoading(true));
     return getListOfCustomersForGrid(model).then((res: any) => {
       dispatch(actions.setIsSelectEntityGridLoading(false));
-      dispatch(ordersActions.refreshCustomersGridModel(res.data));
+      dispatch(ordersActions.refreshCustomersGridRequestModel(res.data));
       return res.data;
     });
   }
 
   function assignCustomerToOrderHandler(orderId, customerId) {
+    handleCardAction("selectEntityCard");
     dispatch(actions.setIsOrderConfigurationCardLoading(true));
     return assignCustomerToOrder({ orderId, customerId }).then((res: any) => {
       dispatch(actions.setIsOrderConfigurationCardLoading(false));
@@ -81,6 +84,7 @@ export default function useOrderDetailsPageService() {
   }
 
   function getDiscountsListHandler() {
+    handleCardAction("selectDiscountCard", true);
     dispatch(actions.setIsSelectDiscountGridLoading(true));
 
     return getDiscountsList().then((res: any) => {
@@ -186,6 +190,29 @@ export default function useOrderDetailsPageService() {
     });
   }
 
+  function openSelectEntityCardHandler(model) {
+    handleCardAction("selectEntityCard", true);
+    ordersService.getListOfCustomersForGridHandler({
+      ...ordersState.customersGridRequestModel,
+      searchQuery: model,
+    });
+  }
+
+  function searchEntityHandler(model) {
+    getListOfCustomersForGridHandler({
+      ...ordersState.customersGridRequestModel,
+      searchQuery: model,
+    });
+  }
+
+  function closeSelectEntityCardHandler() {
+    handleCardAction("selectEntityCard");
+  }
+
+  function closeSelectDiscountCardHandler() {
+    handleCardAction("selectDiscountCard");
+  }
+
   return {
     getOrderDetailsHandler,
     getListOfCustomersForGridHandler,
@@ -195,5 +222,9 @@ export default function useOrderDetailsPageService() {
     createDiscountHandler,
     removeDiscountsFromOrderHandler,
     applyDiscountsToOrderHandler,
+    openSelectEntityCardHandler,
+    searchEntityHandler,
+    closeSelectEntityCardHandler,
+    closeSelectDiscountCardHandler,
   };
 }

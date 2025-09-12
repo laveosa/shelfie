@@ -1,4 +1,3 @@
-import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
@@ -52,12 +51,10 @@ export interface IPurchaseProductsPageSlice {
   activeTab?: string;
   variants?: VariantModel[];
   selectedProduct?: ProductModel;
-  purchasesProductsGridModel?: GridModel;
   purchasesProductsGridRequestModel?: GridRequestModel;
-  variantsForPurchaseGridModel?: GridModel;
   variantsForPurchaseGridRequestModel?: GridRequestModel;
-  colorOptionsGridModel?: GridModel;
-  purchaseProductVariantsGridModel?: GridModel;
+  colorOptionsGridRequestModel?: GridRequestModel;
+  purchaseProductVariantsGridRequestModel?: GridRequestModel;
   purchaseProducts?: ProductModel[];
   brands?: BrandModel[];
   categories?: CategoryModel[];
@@ -75,10 +72,8 @@ export interface IPurchaseProductsPageSlice {
   colorsForFilter?: TraitOptionModel[];
   sizesForFilter?: TraitOptionModel[];
   purchasesList?: PurchaseModel[];
-  purchaseGridModel?: GridModel;
   purchaseGridRequestModel?: GridRequestModel;
   selectedPurchase?: PurchaseModel;
-  companiesGridModel?: GridModel;
   companiesGriRequestModel?: GridRequestModel;
   selectedCompany?: CompanyModel;
 }

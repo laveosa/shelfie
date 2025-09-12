@@ -3,7 +3,6 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import { ApiServiceNameEnum } from "@/const/enums/ApiServiceNameEnum.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { ApiConfigurationService } from "@/utils/services/api/ApiConfigurationService.ts";
-import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 import { MarginItemModel } from "@/const/models/MarginItemModel.ts";
@@ -17,7 +16,7 @@ export const PurchasesApiService = createApi({
   tagTypes: [ApiServiceNameEnum.PURCHASES],
   endpoints: (builder) => ({
     getListOfPurchasesForGrid: apiConfig.createMutation<
-      GridModel,
+      GridRequestModel,
       GridRequestModel
     >(builder, {
       query: (model?: GridRequestModel) => ({
@@ -27,7 +26,7 @@ export const PurchasesApiService = createApi({
       }),
     }),
     getListOfPurchaseProductsForGrid: apiConfig.createMutation<
-      GridModel,
+      GridRequestModel,
       { id: number; model: GridRequestModel }
     >(builder, {
       query: ({ id, model }) => ({

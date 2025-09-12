@@ -3,7 +3,6 @@ import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
-import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { VariantModel } from "@/const/models/VariantModel.ts";
 import {
@@ -45,9 +44,6 @@ export interface IProductsPageSlice {
   categories?: CategoryModel[];
   suppliers?: SupplierModel[];
   sortingOptions?: GridSortingModel[];
-  productsGridModel?: GridModel;
-  variantsGridModel?: GridModel;
-  purchasesGridModel?: GridModel;
   gridRequestModel?: GridRequestModel;
   productsGridRequestModel?: GridRequestModel;
   variantsGridRequestModel?: GridRequestModel;

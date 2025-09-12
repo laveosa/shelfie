@@ -29,7 +29,7 @@ import { CalendarModeEnum } from "@/const/enums/CalendarModeEnum.ts";
 export default function SelectShipmentForOrderCard({
   isLoading,
   isGridLoading,
-  shipmentsGridModel,
+  shipmentsGridRequestModel,
   services,
   customer,
   onAction,
@@ -108,9 +108,9 @@ export default function SelectShipmentForOrderCard({
               onAction,
             ) as ColumnDef<DataWithId>[]
           }
-          gridModel={shipmentsGridModel}
-          skeletonQuantity={shipmentsGridModel?.items.length}
-          data={shipmentsGridModel?.items}
+          gridRequestModel={shipmentsGridRequestModel}
+          skeletonQuantity={shipmentsGridRequestModel?.items.length}
+          data={shipmentsGridRequestModel?.items}
           customMessage={t("ShipmentMessages.NoShipmentsCreated")}
           sortingItems={sortingItems}
           onApplyColumns={(model) => onAction("applyColumns", model)}
@@ -137,7 +137,9 @@ export default function SelectShipmentForOrderCard({
               onAction("gridRequestChange", { shipmentStatus: value })
             }
             hideFirstOption
-            selected={shipmentsGridModel.filter?.status as ShipmentStatusEnum}
+            selected={
+              shipmentsGridRequestModel.filter?.status as ShipmentStatusEnum
+            }
           />
           <SheDatePicker
             icon={CalendarDays}
