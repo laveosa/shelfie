@@ -103,7 +103,7 @@ export function OrderDetailsPage() {
             isLoading={state.isSelectEntityCardLoading}
             isGridLoading={state.isSelectEntityGridLoading}
             entityName={"Customer"}
-            entityCollection={ordersState.customersGridModel.items}
+            entityCollection={ordersState.customersGridRequestModel.items}
             columns={
               CustomersListGridColumns({
                 onAction,

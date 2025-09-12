@@ -2,7 +2,6 @@ import { IManageVariantsPageSlice } from "@/const/interfaces/store-slices/IManag
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { TypeOfTraitModel } from "@/const/models/TypeOfTraitModel.ts";
-import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
@@ -315,7 +314,7 @@ function refreshTraitOption(
 
 function refreshColorOptionsGridRequestModel(
   state: IManageVariantsPageSlice,
-  action: PayloadAction<GridModel>,
+  action: PayloadAction<GridRequestModel>,
 ) {
   state.colorOptionsGridRequestModel =
     action?.payload || state.colorOptionsGridRequestModel;
@@ -323,7 +322,7 @@ function refreshColorOptionsGridRequestModel(
 
 function refreshSizeOptionsGridRequestModel(
   state: IManageVariantsPageSlice,
-  action: PayloadAction<GridModel>,
+  action: PayloadAction<GridRequestModel>,
 ) {
   state.sizeOptionsGridRequestModel =
     action?.payload || state.sizeOptionsGridRequestModel;

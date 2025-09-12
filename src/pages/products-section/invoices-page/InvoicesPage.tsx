@@ -63,7 +63,7 @@ export function InvoicesPage() {
         isLoading={state.isInvoicesCardLoading}
         isGridLoading={state.isInvoiceCardGridLoading}
         isImageUploaderLoading={state.isFileUploaderLoading}
-        data={state.invoicesGridModel.items}
+        data={state.invoicesGridRequestModel.items}
         contextId={Number(purchaseId)}
         onAction={onAction}
       />

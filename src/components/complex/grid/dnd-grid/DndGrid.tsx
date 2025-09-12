@@ -280,7 +280,6 @@ export const DndGridDataTable = React.forwardRef<
     data,
     columnsPreferences,
     preferenceContext,
-    gridModel,
     sortingItems,
     isLoading,
     showHeader = true,
@@ -434,7 +433,7 @@ export const DndGridDataTable = React.forwardRef<
     columnResizeMode: "onChange",
     initialState: {
       pagination: {
-        pageSize: gridModel?.pager?.pageSize || 10,
+        pageSize: gridRequestModel?.pageSize || 10,
       },
     },
     manualPagination: true,
@@ -475,7 +474,6 @@ export const DndGridDataTable = React.forwardRef<
         showColumnsViewOptions,
         showColumnsHeader,
         showSearch,
-        gridModel,
         sortingItems,
         children,
         gridRequestModel,

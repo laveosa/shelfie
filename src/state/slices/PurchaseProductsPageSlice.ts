@@ -3,7 +3,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IPurchaseProductsPageSlice } from "@/const/interfaces/store-slices/IPurchaseProductsPageSlice.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
-import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
@@ -368,7 +367,7 @@ function resetSelectedProduct(state: IPurchaseProductsPageSlice) {
 
 function refreshColorOptionsGridRequestModel(
   state: IPurchaseProductsPageSlice,
-  action: PayloadAction<GridModel>,
+  action: PayloadAction<GridRequestModel>,
 ) {
   state.colorOptionsGridRequestModel =
     action?.payload || state.colorOptionsGridRequestModel;
@@ -383,7 +382,7 @@ function refreshPurchaseProducts(
 
 function refreshPurchaseProductVariantsGridRequestModel(
   state: IPurchaseProductsPageSlice,
-  action: PayloadAction<GridModel>,
+  action: PayloadAction<GridRequestModel>,
 ) {
   state.purchaseProductVariantsGridRequestModel =
     action?.payload || state.purchaseProductVariantsGridRequestModel;

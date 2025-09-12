@@ -4,7 +4,6 @@ import { ApiServiceNameEnum } from "@/const/enums/ApiServiceNameEnum.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { ApiConfigurationService } from "@/utils/services/api/ApiConfigurationService.ts";
-import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
@@ -60,7 +59,7 @@ export const ProductsApiService = createApi({
       }),
     }),
     getTheProductsForGrid: apiConfig.createMutation<
-      GridModel,
+      GridRequestModel,
       GridRequestModel
     >(builder, {
       query: (model?: GridRequestModel) => ({
@@ -191,16 +190,16 @@ export const ProductsApiService = createApi({
         method: "PATCH",
       }),
     }),
-    getVariantsForGrid: apiConfig.createMutation<GridModel, GridRequestModel>(
-      builder,
-      {
-        query: (model?: GridRequestModel) => ({
-          url: `${ApiUrlEnum.VARIANTS}/list`,
-          method: "POST",
-          body: JSON.stringify(model),
-        }),
-      },
-    ),
+    getVariantsForGrid: apiConfig.createMutation<
+      GridRequestModel,
+      GridRequestModel
+    >(builder, {
+      query: (model?: GridRequestModel) => ({
+        url: `${ApiUrlEnum.VARIANTS}/list`,
+        method: "POST",
+        body: JSON.stringify(model),
+      }),
+    }),
     getProductVariants: apiConfig.createQuery<VariantModel[], number>(builder, {
       query: (id: number) => ({
         url: `${ApiUrlEnum.PRODUCTS}/${id}${ApiUrlEnum.VARIANTS}`,

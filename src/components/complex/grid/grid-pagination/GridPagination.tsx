@@ -1,6 +1,5 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import {
   Select,
   SelectContent,
@@ -11,10 +10,11 @@ import {
 import cs from "./GridPagination.module.scss";
 import { useGridContext } from "@/state/context/grid-context.ts";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 
 export function GridPagination() {
-  const { gridModel, onGridRequestChange } = useGridContext();
-  const { currentPage, totalPages, pageSize, endPage } = gridModel?.pager;
+  const { gridRequestModel, onGridRequestChange } = useGridContext();
+  const { currentPage, totalPages, pageSize, endPage } = gridRequestModel;
 
   function getPageNumbers() {
     const pages = [];

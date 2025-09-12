@@ -40,7 +40,7 @@ export function GridDataTable<TData, TValue>({
   columns,
   data,
   columnsPreferences,
-  gridModel,
+  gridRequestModel,
   sortingItems,
   showHeader = true,
   showPagination = true,
@@ -62,7 +62,7 @@ export function GridDataTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     initialState: {
       pagination: {
-        pageSize: gridModel.pager.pageSize,
+        pageSize: gridRequestModel.pageSize,
       },
     },
     manualPagination: true,
@@ -92,7 +92,7 @@ export function GridDataTable<TData, TValue>({
         showSorting,
         showColumnsViewOptions,
         showSearch,
-        gridModel,
+        gridRequestModel,
         onGridRequestChange,
         sortingItems,
         children,

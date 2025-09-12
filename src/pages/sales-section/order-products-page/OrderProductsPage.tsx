@@ -83,7 +83,7 @@ export function OrderProductsPage() {
       <ProductsInOrderCard
         isLoading={state.isProductsInOrderCardLoading}
         isGridLoading={state.isProductsInOrderGridLoading}
-        stockActions={ordersState.stockActionsGridModel.items}
+        stockActions={ordersState.stockActionsGridRequestModel.items}
         onAction={onAction}
       />
       {state.activeCards?.includes("findProductsCard") && (
@@ -91,7 +91,7 @@ export function OrderProductsPage() {
           <FindProductsCard
             isLoading={state.isFindProductsCardLoading}
             isGridLoading={state.isFindProductsGridLoading}
-            variants={ordersState.variantsGridModel.items}
+            variants={ordersState.variantsGridRequestModel.items}
             gridRequestModel={ordersState.variantsGridRequestModel}
             preferences={appState.preferences}
             sortingOptions={sortingItems}

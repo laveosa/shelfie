@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IInvoicesPageSlice } from "@/const/interfaces/store-slices/IInvoicesPageSlice.ts";
-import { GridModel } from "@/const/models/GridModel.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 
 const initialState: IInvoicesPageSlice = {
   isLoading: false,
@@ -72,7 +72,7 @@ function refreshActiveCards(
 
 function refreshInvoicesGridRequestModel(
   state: IInvoicesPageSlice,
-  action: PayloadAction<GridModel>,
+  action: PayloadAction<GridRequestModel>,
 ) {
   state.invoicesGridRequestModel =
     action?.payload || state.invoicesGridRequestModel;

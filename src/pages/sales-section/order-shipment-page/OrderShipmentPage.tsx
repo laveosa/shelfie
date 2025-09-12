@@ -146,7 +146,7 @@ export function OrderShipmentPage() {
       />
       <ShipmentDetailsCard
         isLoading={state.isShipmentDetailsCardLoading}
-        products={ordersState.stockActionsGridModel.items}
+        products={ordersState.stockActionsGridRequestModel.items}
         shipments={state.orderShipments}
         customer={state.selectedCustomer}
         isProductsGridLoading={state.isProductsGridLoading}
@@ -158,7 +158,7 @@ export function OrderShipmentPage() {
           <SelectShipmentForOrderCard
             isLoading={state.isSelectShipmentForOrderCardLoading}
             isGridLoading={state.isSelectShipmentForOrderGridLoading}
-            shipmentsGridRequestModel={state.shipmentsGridModel}
+            shipmentsGridRequestModel={state.shipmentsGridRequestModel}
             customer={state.selectedCustomer}
             onAction={onAction}
           />
@@ -179,7 +179,7 @@ export function OrderShipmentPage() {
             isLoading={state.isSelectEntityCardLoading}
             isGridLoading={state.isSelectEntityGridLoading}
             entityName={"Customer"}
-            entityCollection={ordersState.customersGridModel.items}
+            entityCollection={ordersState.customersGridRequestModel.items}
             columns={
               CustomersListGridColumns({
                 onAction,

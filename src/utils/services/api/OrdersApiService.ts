@@ -2,7 +2,6 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import { ApiServiceNameEnum } from "@/const/enums/ApiServiceNameEnum.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { ApiConfigurationService } from "@/utils/services/api/ApiConfigurationService.ts";
-import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { CustomerModel } from "@/const/models/CustomerModel";
 import { CustomerRequestModel } from "@/const/models/CustomerRequestModel";
@@ -17,16 +16,16 @@ export const OrdersApiService = createApi({
   baseQuery: apiConfig.baseQueryWithInterceptors,
   tagTypes: [ApiServiceNameEnum.ORDERS],
   endpoints: (builder) => ({
-    getCustomersForGrid: apiConfig.createMutation<GridModel, GridRequestModel>(
-      builder,
-      {
-        query: (model?: GridRequestModel) => ({
-          url: `${ApiUrlEnum.CUSTOMERS}/list`,
-          method: "POST",
-          body: JSON.stringify(model),
-        }),
-      },
-    ),
+    getCustomersForGrid: apiConfig.createMutation<
+      GridRequestModel,
+      GridRequestModel
+    >(builder, {
+      query: (model?: GridRequestModel) => ({
+        url: `${ApiUrlEnum.CUSTOMERS}/list`,
+        method: "POST",
+        body: JSON.stringify(model),
+      }),
+    }),
     getCustomerDetails: apiConfig.createQuery<CustomerModel, number>(builder, {
       query: (id: number) => ({
         url: `${ApiUrlEnum.CUSTOMERS}/${id}`,
@@ -59,7 +58,7 @@ export const OrdersApiService = createApi({
       }),
     }),
     getCustomerAddressesForGrid: apiConfig.createMutation<
-      GridModel,
+      GridRequestModel,
       { model?: GridRequestModel; id: number }
     >(builder, {
       query: ({ model, id }) => ({
