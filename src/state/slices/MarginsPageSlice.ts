@@ -3,6 +3,7 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IMarginsPageSlice } from "@/const/interfaces/store-slices/IMarginsPageSlice.ts";
 import { MarginModel } from "@/const/models/MarginModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import _ from "lodash";
 
 const initialState: IMarginsPageSlice = {
   isLoading: false,
@@ -119,6 +120,10 @@ function refreshMarginItemsGridRequestModel(
   state: IMarginsPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
+  if (_.isEqual(state.marginItemsGridRequestModel, action?.payload)) {
+    return;
+  }
+
   state.marginItemsGridRequestModel =
     action?.payload || state.marginItemsGridRequestModel;
 }
@@ -127,6 +132,10 @@ function refreshMarginsGridRequestModel(
   state: IMarginsPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
+  if (_.isEqual(state.marginsGridRequestModel, action?.payload)) {
+    return;
+  }
+
   state.marginsGridRequestModel =
     action?.payload || state.marginsGridRequestModel;
 }

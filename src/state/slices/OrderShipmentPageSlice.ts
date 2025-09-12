@@ -5,6 +5,7 @@ import { IOrderShipmentPageSlice } from "@/const/interfaces/store-slices/IOrderS
 import { ShipmentModel } from "@/const/models/ShipmentModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { CustomerModel } from "@/const/models/CustomerModel.ts";
+import _ from "lodash";
 
 const initialState: IOrderShipmentPageSlice = {
   isProductMenuCardLoading: false,
@@ -134,6 +135,10 @@ function refreshShipmentsGridRequestModel(
   state: IOrderShipmentPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
+  if (_.isEqual(state.shipmentsGridRequestModel, action?.payload)) {
+    return;
+  }
+
   state.shipmentsGridRequestModel =
     action?.payload || state.shipmentsGridRequestModel;
 }

@@ -16,6 +16,7 @@ import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
 import { IManageVariantsPageSlice } from "@/const/interfaces/store-slices/IManageVariantsPageSlice.ts";
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 import { CompanyModel } from "@/const/models/CompanyModel.ts";
+import _ from "lodash";
 
 const initialState: IPurchaseProductsPageSlice = {
   isLoading: false,
@@ -369,6 +370,10 @@ function refreshColorOptionsGridRequestModel(
   state: IPurchaseProductsPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
+  if (_.isEqual(state.colorOptionsGridRequestModel, action?.payload)) {
+    return;
+  }
+
   state.colorOptionsGridRequestModel =
     action?.payload || state.colorOptionsGridRequestModel;
 }
@@ -384,6 +389,12 @@ function refreshPurchaseProductVariantsGridRequestModel(
   state: IPurchaseProductsPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
+  if (
+    _.isEqual(state.purchaseProductVariantsGridRequestModel, action?.payload)
+  ) {
+    return;
+  }
+
   state.purchaseProductVariantsGridRequestModel =
     action?.payload || state.purchaseProductVariantsGridRequestModel;
 }
@@ -392,6 +403,10 @@ function refreshPurchasesProductsGridRequestModel(
   state: IPurchaseProductsPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
+  if (_.isEqual(state.purchasesProductsGridRequestModel, action?.payload)) {
+    return;
+  }
+
   state.purchasesProductsGridRequestModel =
     action?.payload || state.purchasesProductsGridRequestModel;
 }
@@ -400,6 +415,10 @@ function refreshVariantsForPurchaseGridRequestModel(
   state: IPurchaseProductsPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
+  if (_.isEqual(state.variantsForPurchaseGridRequestModel, action?.payload)) {
+    return;
+  }
+
   state.variantsForPurchaseGridRequestModel =
     action?.payload || state.variantsForPurchaseGridRequestModel;
 }
@@ -511,6 +530,10 @@ function refreshPurchaseGridRequestModel(
   state: IManageVariantsPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
+  if (_.isEqual(state.purchaseGridRequestModel, action?.payload)) {
+    return;
+  }
+
   state.purchaseGridRequestModel =
     action?.payload || state.purchaseGridRequestModel;
 }
@@ -530,6 +553,10 @@ function refreshCompaniesGridRequestModel(
   state: IManageVariantsPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
+  if (_.isEqual(state.companiesGridRequestModel, action?.payload)) {
+    return;
+  }
+
   state.companiesGridRequestModel =
     action?.payload || state.companiesGridRequestModel;
 }
