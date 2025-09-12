@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IInvoicesPageSlice } from "@/const/interfaces/store-slices/IInvoicesPageSlice.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import _ from "lodash";
 
 const initialState: IInvoicesPageSlice = {
   isLoading: false,
@@ -74,6 +75,10 @@ function refreshInvoicesGridRequestModel(
   state: IInvoicesPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
+  if (_.isEqual(state.invoicesGridRequestModel, action?.payload)) {
+    return;
+  }
+
   state.invoicesGridRequestModel =
     action?.payload || state.invoicesGridRequestModel;
 }

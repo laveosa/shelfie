@@ -9,6 +9,7 @@ import { ProductCountersModel } from "@/const/models/CounterModel.ts";
 import { VariantHistoryModel } from "@/const/models/VariantHistoryModel.ts";
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 import { CompanyModel } from "@/const/models/CompanyModel.ts";
+import _ from "lodash";
 
 const initialState: IManageVariantsPageSlice = {
   isLoading: false,
@@ -316,6 +317,10 @@ function refreshColorOptionsGridRequestModel(
   state: IManageVariantsPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
+  if (_.isEqual(state.colorOptionsGridRequestModel, action?.payload)) {
+    return;
+  }
+
   state.colorOptionsGridRequestModel =
     action?.payload || state.colorOptionsGridRequestModel;
 }
@@ -324,6 +329,10 @@ function refreshSizeOptionsGridRequestModel(
   state: IManageVariantsPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
+  if (_.isEqual(state.sizeOptionsGridRequestModel, action?.payload)) {
+    return;
+  }
+
   state.sizeOptionsGridRequestModel =
     action?.payload || state.sizeOptionsGridRequestModel;
 }
@@ -361,6 +370,10 @@ function refreshPurchaseGridRequestModel(
   state: IManageVariantsPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
+  if (_.isEqual(state.purchaseGridRequestModel, action?.payload)) {
+    return;
+  }
+
   state.purchaseGridRequestModel =
     action?.payload || state.purchaseGridRequestModel;
 }
@@ -380,6 +393,10 @@ function refreshCompaniesGridRequestModel(
   state: IManageVariantsPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
+  if (_.isEqual(state.companiesGridRequestModel, action?.payload)) {
+    return;
+  }
+
   state.companiesGridRequestModel =
     action?.payload || state.companiesGridRequestModel;
 }

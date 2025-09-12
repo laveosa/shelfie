@@ -10,6 +10,7 @@ import { CustomerCounterModel } from "@/const/models/CustomerCounterModel";
 import { AddressRequestModel } from "@/const/models/AddressRequestModel";
 import { CountryCodeModel } from "@/const/models/CountryCodeModel";
 import { GridSortingModel } from "@/const/models/GridSortingModel";
+import _ from "lodash";
 
 const initialState: ICustomersPageSlice = {
   isLoading: false,
@@ -83,6 +84,10 @@ function refreshCustomersGridRequestModel(
   state: ICustomersPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
+  if (_.isEqual(state.customersGridRequestModel, action?.payload)) {
+    return;
+  }
+
   state.customersGridRequestModel =
     action?.payload || state.customersGridRequestModel;
 }
@@ -91,6 +96,10 @@ function refreshCustomerAddressesGridRequestModel(
   state: ICustomersPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
+  if (_.isEqual(state.customerAddressesGridRequestModel, action?.payload)) {
+    return;
+  }
+
   state.customerAddressesGridRequestModel =
     action?.payload || state.customerAddressesGridRequestModel;
 }

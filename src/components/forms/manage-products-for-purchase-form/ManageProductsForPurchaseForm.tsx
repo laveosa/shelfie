@@ -83,7 +83,8 @@ export default function ManageProductsForPurchaseForm({
         formPosition={DirectionEnum.CENTER}
         view={ComponentViewEnum.STANDARD}
         fullWidth
-        hideFooter
+        hidePrimaryBtn
+        hideSecondaryBtn
         onSubmit={onSubmit}
         onCancel={onCancel}
       >

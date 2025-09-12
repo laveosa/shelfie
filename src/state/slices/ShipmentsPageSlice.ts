@@ -4,6 +4,7 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IShipmentsPageSlice } from "@/const/interfaces/store-slices/IShipmentsPageSlice.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { ShipmentModel } from "@/const/models/ShipmentModel.ts";
+import _ from "lodash";
 
 const initialState: IShipmentsPageSlice = {
   isProductMenuCardLoading: false,
@@ -58,6 +59,10 @@ function refreshShipmentsGridRequestModel(
   state: IShipmentsPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
+  if (_.isEqual(state.shipmentsGridRequestModel, action?.payload)) {
+    return;
+  }
+
   state.shipmentsGridRequestModel =
     action?.payload || state.shipmentsGridRequestModel;
 }

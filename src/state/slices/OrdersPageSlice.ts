@@ -9,6 +9,7 @@ import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
 import { OrderCountersModel } from "@/const/models/CounterModel.ts";
+import _ from "lodash";
 
 const initialState: IOrdersPageSlice = {
   isLoading: false,
@@ -68,6 +69,10 @@ function refreshOrdersGridRequestModel(
   state: IOrdersPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
+  if (_.isEqual(state.ordersGridRequestModel, action?.payload)) {
+    return;
+  }
+
   state.ordersGridRequestModel =
     action?.payload || state.ordersGridRequestModel;
 }
@@ -83,6 +88,10 @@ function refreshCustomersGridRequestModel(
   state: IOrdersPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
+  if (_.isEqual(state.customersGridRequestModel, action?.payload)) {
+    return;
+  }
+
   state.customersGridRequestModel =
     action?.payload || state.customersGridRequestModel;
 }
@@ -91,6 +100,10 @@ function refreshVariantsGridRequestModel(
   state: IOrdersPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
+  if (_.isEqual(state.variantsGridRequestModel, action?.payload)) {
+    return;
+  }
+
   state.variantsGridRequestModel =
     action?.payload || state.variantsGridRequestModel;
 }
@@ -127,6 +140,10 @@ function refreshStockActionsGridRequestModel(
   state: IOrdersPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
+  if (_.isEqual(state.stockActionsGridRequestModel, action?.payload)) {
+    return;
+  }
+
   state.stockActionsGridRequestModel =
     action?.payload || state.stockActionsGridRequestModel;
 }

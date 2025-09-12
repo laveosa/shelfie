@@ -84,6 +84,7 @@ export default function AddStockCard({
       onPrimaryButtonClick={form.handleSubmit(onSubmit)}
       onSecondaryButtonClick={() => onAction("closeAddStockCard")}
       showCloseButton
+      width="411px"
       className={cs.addStockCard}
       {...props}
     >
