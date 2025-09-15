@@ -20,6 +20,7 @@ import { IMarginItemsForm } from "@/const/interfaces/forms/IMarginItemsForm.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
+import SheFormItem from "@/components/complex/she-form/components/she-form-item/SheFormItem.tsx";
 
 export default function MarginItemsForm({
   data,
@@ -61,24 +62,28 @@ export default function MarginItemsForm({
         formPosition={DirectionEnum.CENTER}
         view={ComponentViewEnum.STANDARD}
         fullWidth
+        hidePrimaryBtn
+        hideSecondaryBtn
         onSubmit={onApplyHandler}
       >
         <SheFormField
           name="taxTypeId"
           className={`${cs.marginItemsFormItem} ${cs.marginItemsFormInput}`}
           render={({ field }) => (
-            <SheSelect
-              className={data?.taxTypeChanged ? cs.selectChanged : ""}
-              placeholder=" "
-              selected={field?.value || data?.taxTypeId}
-              items={convertTaxesToSelectItems(taxes)}
-              hideFirstOption
-              minWidth="70px"
-              maxWidth="70px"
-              onSelect={() => {
-                onMarginItemChange(form.getValues());
-              }}
-            />
+            <SheFormItem className={cs.formItem}>
+              <SheSelect
+                className={data?.taxTypeChanged ? cs.selectChanged : ""}
+                placeholder=" "
+                selected={field?.value || data?.taxTypeId}
+                items={convertTaxesToSelectItems(taxes)}
+                hideFirstOption
+                minWidth="70px"
+                maxWidth="70px"
+                onSelect={() => {
+                  onMarginItemChange(form.getValues());
+                }}
+              />
+            </SheFormItem>
           )}
         />
         {/*<FormField
@@ -124,15 +129,17 @@ export default function MarginItemsForm({
           name="marginPrice"
           className={`${cs.marginItemsFormItem} ${cs.marginItemsFormInput}`}
           render={({ field }) => (
-            <SheInput
-              value={field.value}
-              className={data?.marginPriceChanged ? cs.inputChanged : ""}
-              minWidth="70px"
-              maxWidth="70px"
-              onDelay={() => {
-                onMarginItemChange(form.getValues());
-              }}
-            />
+            <SheFormItem className={cs.formItem}>
+              <SheInput
+                value={field.value}
+                className={data?.marginPriceChanged ? cs.inputChanged : ""}
+                minWidth="70px"
+                maxWidth="70px"
+                onDelay={() => {
+                  onMarginItemChange(form.getValues());
+                }}
+              />
+            </SheFormItem>
           )}
         />
         <SheIcon

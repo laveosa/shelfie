@@ -29,7 +29,6 @@ import { ISheSidebar } from "@/const/interfaces/complex-components/ISheSidebar.t
 import { ISheSidebarGroup } from "@/const/interfaces/complex-components/ISheSidebarGroup.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { ISheSidebarItem } from "@/const/interfaces/complex-components/ISheSidebarItem.ts";
-import { getCurrentSectionUrl } from "@/utils/helpers/quick-helper.ts";
 
 const companies: CompanyModel[] = [
   {
@@ -121,7 +120,7 @@ const navGroups: ISheSidebarGroup[] = [
 export default function SheSidebar({}: ISheSidebar) {
   const location = useLocation();
   const [selected, setSelected] = useState<NavUrlEnum | string>(
-    getCurrentSectionUrl(location.pathname),
+    location.pathname,
   );
 
   return (

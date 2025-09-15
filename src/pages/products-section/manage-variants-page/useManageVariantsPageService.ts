@@ -770,11 +770,9 @@ export default function useManageVariantsPageService(handleCardAction) {
   }
 
   function addOptionHandler() {
-    dispatch(actions.setIsTraitOptionsGridLoading(true));
     productsService
       .createNewOptionForTraitHandler(state.selectedTrait.traitId, {})
       .then((res) => {
-        dispatch(actions.setIsTraitOptionsGridLoading(false));
         if (res) {
           productsService.getListOfAllTraitsHandler().then((res) => {
             dispatch(actions.refreshTraits(res));

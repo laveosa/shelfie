@@ -289,7 +289,7 @@ export const SheFileUploader = forwardRef<SheFileUploaderRef, ISheFileUploader>(
               </div>
             </DropzoneTrigger>
           </DropZoneArea>
-          <DropzoneMessage />
+          {selectedFiles.length > 0 && <DropzoneMessage />}
           <DropzoneFileList
             className={`grid gap-3 p-0 ${
               currentViewMode === "image"

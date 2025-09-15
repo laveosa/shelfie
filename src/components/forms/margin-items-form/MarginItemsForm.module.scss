@@ -29,12 +29,17 @@
         width: 60px;
       }
 
+      .formItem {
+        margin-bottom: -10px;
+      }
+
       .marginItemsFormInput {
         min-width: 55px;
         max-width: 55px;
       }
 
       .marginItemsFormIcon {
+        display: flex;
         min-width: 24px;
         max-width: 24px;
 

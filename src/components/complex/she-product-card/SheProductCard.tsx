@@ -48,8 +48,12 @@ export default function SheProductCard({
       const hasScrollbar = element.scrollHeight > element.clientHeight;
       if (hasScrollbar) {
         element.classList.add(cs.hasScrollbar);
+        element.style.marginRight = "-5px";
+        element.style.paddingRight = "5px";
       } else {
         element.classList.remove(cs.hasScrollbar);
+        element.style.marginRight = "0px";
+        element.style.paddingRight = "0px";
       }
     }
   }, [children]);

@@ -1,9 +1,16 @@
 .createSupplierForm {
   display: flex;
   flex-direction: column;
+  gap: 20px;
+  overflow-y: hidden;
 
   .formGrid {
     width: 100%;
+    margin-bottom: 20px !important;
+  }
+
+  .formItem {
+    padding-bottom: 10px;
   }
 
   .uploadingBlockContainer {

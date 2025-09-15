@@ -48,7 +48,7 @@ export function ProductsPage() {
   useEffect(() => {
     if (state.activeTab === "products") {
       service.getTheProductsForGridHandler(
-        state.productsGridRequestModel,
+        { ...state.productsGridRequestModel, endPage: 21 },
         true,
       );
     } else if (state.activeTab === "variants") {

@@ -2,16 +2,16 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import _, { merge } from "lodash";
 
+import {
+  PreferencesModel,
+  PreferencesModelDefault,
+} from "@/const/models/PreferencesModel";
 import { AppDispatch } from "@/state/store.ts";
 import { OrdersApiService as api } from "@/utils/services/api/OrdersApiService.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel";
 import { CustomersPageSliceActions as actions } from "@/state/slices/CustomersPageSlice";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum";
 import UsersApiHooks from "@/utils/services/api/UsersApiService";
-import {
-  PreferencesModel,
-  PreferencesModelDefault,
-} from "@/const/models/PreferencesModel";
 import { createCustomerCounter } from "@/const/models/CustomerCounterModel";
 import { AppSliceActions as appActions } from "@/state/slices/AppSlice";
 import { DEFAULT_SORTING_OPTIONS } from "@/const/models/GridSortingModel";
@@ -34,7 +34,7 @@ export default function useCustomersPageService() {
     UsersApiHooks.useResetUserPreferencesMutation();
 
   function getCustomersForGridHandler(data?: GridRequestModel) {
-    if (!data && state.customersGridRequestModel.items.length > 0) return;
+    if (!data && state.customersGridRequestModel?.items?.length > 0) return;
     if (_.isEqual(data, state.customersGridRequestModel)) return;
     data = data ?? state.customersGridRequestModel;
 
