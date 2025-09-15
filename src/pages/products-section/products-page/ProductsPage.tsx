@@ -141,6 +141,8 @@ export function ProductsPage() {
             <SheButton
               icon={Plus}
               variant="outline"
+              bgColor="#007AFF"
+              txtColor="#FAFAFA"
               onClick={() => onAction("reportPurchase")}
               value={t("SupplierActions.ReportPurchase")}
             />
