@@ -16,7 +16,7 @@ import { OrderShipmentPageSliceActions as actions } from "@/state/slices/OrderSh
 import SelectEntityCard from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
 import { CustomersListGridColumns } from "@/components/complex/grid/custom-grids/customers-list-grid/CustomersListGridColumns.tsx";
 import { DataWithId } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import SelectShipmentForOrderCard from "@/components/complex/custom-cards/select-shipment-for-order/SelectShipmentForOrder.tsx";
+import SelectShipmentForOrderCard from "@/components/complex/custom-cards/select-shipment-for-order/SelectShipmentForOrderCard.tsx";
 
 export function OrderShipmentPage() {
   const { handleCardAction, handleMultipleCardActions, createRefCallback } =

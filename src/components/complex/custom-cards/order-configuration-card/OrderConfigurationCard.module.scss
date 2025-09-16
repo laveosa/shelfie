@@ -1,6 +1,7 @@
 
 .orderConfigurationCard {
   .orderConfigurationCardContent {
+    height: calc(100vh - 252px);
     display: flex;
     flex-direction: column;
     gap: 10px;

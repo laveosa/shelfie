@@ -1,9 +1,8 @@
 @use "@/styles/variables" as vars;
 
 .customerConfigurationFormCard {
-
   .customerCardContent {
-    height: calc(100vh - 166px);
+    height: calc(100vh - 270px);
     display: flex;
     flex-direction: column;
     justify-content: space-between;

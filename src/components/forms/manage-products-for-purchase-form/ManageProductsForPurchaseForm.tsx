@@ -90,22 +90,23 @@ export default function ManageProductsForPurchaseForm({
       >
         <SheFormField
           name="nettoPrice"
-          className={cs.purchaseFormItem}
           render={({ field }) => (
-            <SheInput
-              label="Price"
-              value={field.value}
-              className={
-                activeTab === "connectProducts"
-                  ? field.value
-                    ? cs.formItemsValid
+            <SheFormItem className={cs.purchaseFormInput}>
+              <SheInput
+                label="Price"
+                value={field.value}
+                className={
+                  activeTab === "connectProducts"
+                    ? field.value
+                      ? cs.formItemsValid
+                      : ""
                     : ""
-                  : ""
-              }
-              minWidth="80px"
-              maxWidth="80px"
-              placeholder=" "
-            />
+                }
+                minWidth="80px"
+                maxWidth="80px"
+                placeholder=" "
+              />
+            </SheFormItem>
           )}
         />
         <FormField
@@ -166,21 +167,23 @@ export default function ManageProductsForPurchaseForm({
           name="unitsAmount"
           className={cs.purchaseFormItem}
           render={({ field }) => (
-            <SheInput
-              label="Quantity"
-              value={field.value}
-              className={
-                activeTab === "connectProducts"
-                  ? field.value
-                    ? cs.formItemsValid
+            <SheFormItem className={cs.purchaseFormInput}>
+              <SheInput
+                label="Quantity"
+                value={field.value}
+                className={
+                  activeTab === "connectProducts"
+                    ? field.value
+                      ? cs.formItemsValid
+                      : ""
                     : ""
-                  : ""
-              }
-              width="70px"
-              minWidth="70px"
-              maxWidth="70px"
-              placeholder=" "
-            />
+                }
+                width="70px"
+                minWidth="70px"
+                maxWidth="70px"
+                placeholder=" "
+              />
+            </SheFormItem>
           )}
         />
         <div className={cs.variantGridButtonBlock}>

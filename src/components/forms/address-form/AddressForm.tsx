@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { Plus, Save } from "lucide-react";
 
 import useAppForm from "@/utils/hooks/useAppForm.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,7 +10,6 @@ import SheFormItem from "@/components/complex/she-form/components/she-form-item/
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
-
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import SheButton from "@/components/primitive/she-button/SheButton";
 import AddressFormScheme from "@/utils/validation/schemes/AddressFormScheme";
@@ -19,7 +19,6 @@ import {
 } from "@/const/models/AddressRequestModel";
 import cs from "./AddressForm.module.scss";
 import { CountryCodeModel } from "@/const/models/CountryCodeModel";
-import { Plus, Save } from "lucide-react";
 import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
 
 interface IAddressForm {
@@ -71,7 +70,8 @@ export default function AddressForm({
         onError={onErrorHandler}
         onCancel={onCancel}
         view={ComponentViewEnum.STANDARD}
-        hideFooter
+        hidePrimaryBtn
+        hideSecondaryBtn
       >
         <SheFormField
           name="alias"
@@ -177,7 +177,11 @@ export default function AddressForm({
             onClick={() => {
               form.handleSubmit(onSubmit);
             }}
-            value={isCreate ? t("CustomerActions.CreateAddress") : t("CommonButtons.Save")}
+            value={
+              isCreate
+                ? t("CustomerActions.CreateAddress")
+                : t("CommonButtons.Save")
+            }
           />
         </div>
       </SheForm>

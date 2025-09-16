@@ -48,7 +48,7 @@ export function ProductsPage() {
   useEffect(() => {
     if (state.activeTab === "products") {
       service.getTheProductsForGridHandler(
-        state.productsGridRequestModel,
+        { ...state.productsGridRequestModel, endPage: 21 },
         true,
       );
     } else if (state.activeTab === "variants") {
@@ -141,6 +141,8 @@ export function ProductsPage() {
             <SheButton
               icon={Plus}
               variant="outline"
+              bgColor="#007AFF"
+              txtColor="#FAFAFA"
               onClick={() => onAction("reportPurchase")}
               value={t("SupplierActions.ReportPurchase")}
             />

@@ -109,7 +109,7 @@ export default function ManageVariantsCard({
               </span>
               <SheButton
                 icon={Plus}
-                variant="outline"
+                variant="secondary"
                 value={t("ProductActions.SelectTraits")}
                 onClick={() => {
                   onAction("openChooseVariantTraitsCard");
@@ -121,14 +121,17 @@ export default function ManageVariantsCard({
         <Separator />
         <div className={cs.buttonBlock}>
           <span className="she-title">{t("SectionTitles.Variant")}</span>
-          <SheButton
-            icon={Plus}
-            variant="secondary"
-            value={t("ProductActions.CreateVariant")}
-            onClick={() => {
-              onAction("openAddVariantCard");
-            }}
-          />
+          {variants.length > 0 && (
+            <SheButton
+              icon={Plus}
+              variant="secondary"
+              value={t("ProductActions.CreateVariant")}
+              onClick={() => {
+                onAction("openAddVariantCard");
+              }}
+            />
+          )}
+
           {/*{traits.length === 0 && (*/}
           {/*  <>*/}
           {/*    <span>or</span>*/}

@@ -15,7 +15,7 @@ import {
   GridSortingEnum,
   GridSortingEnumLabels,
 } from "@/const/enums/GridSortingEnum.ts";
-import cs from "./SelectShipmentForOrder.module.scss";
+import cs from "./SelectShipmentForOrderCard.module.scss";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import { ISelectShipmentForOrderCard } from "@/const/interfaces/complex-components/custom-cards/ISelectShipmentForOrderCard.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
@@ -109,7 +109,7 @@ export default function SelectShipmentForOrderCard({
             ) as ColumnDef<DataWithId>[]
           }
           gridRequestModel={shipmentsGridRequestModel}
-          skeletonQuantity={shipmentsGridRequestModel?.items.length}
+          skeletonQuantity={shipmentsGridRequestModel?.items?.length}
           data={shipmentsGridRequestModel?.items}
           customMessage={t("ShipmentMessages.NoShipmentsCreated")}
           sortingItems={sortingItems}

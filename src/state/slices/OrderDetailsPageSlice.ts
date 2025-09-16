@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IOrderDetailsPageSlice } from "@/const/interfaces/store-slices/IOrderDetailsPageSlice.ts";
 import { DiscountModel } from "@/const/models/DiscountModel.ts";
+import { CustomerModel } from "@/const/models/CustomerModel.ts";
 
 const initialState: IOrderDetailsPageSlice = {
   isOrderConfigurationCardLoading: false,
@@ -10,8 +11,10 @@ const initialState: IOrderDetailsPageSlice = {
   isSelectDiscountCardLoading: false,
   isSelectEntityGridLoading: false,
   isSelectDiscountGridLoading: false,
+  isCustomerCardLoading: false,
   activeCards: [],
   discountsList: [],
+  selectedCustomer: null,
 };
 
 //----------------------------------------------------- LOADERS
@@ -51,6 +54,13 @@ function setIsSelectDiscountGridLoading(
   state.isSelectDiscountGridLoading = action?.payload;
 }
 
+function setIsCustomerCardLoading(
+  state: IOrderDetailsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isCustomerCardLoading = action?.payload;
+}
+
 //----------------------------------------------------- API
 
 function refreshActiveCards(
@@ -67,6 +77,17 @@ function refreshDiscountsList(
   state.discountsList = action?.payload || state.discountsList;
 }
 
+function refreshSelectedCustomer(
+  state: IOrderDetailsPageSlice,
+  action: PayloadAction<CustomerModel>,
+) {
+  state.selectedCustomer = action?.payload || state.selectedCustomer;
+}
+
+function resetSelectedCustomer(state: IOrderDetailsPageSlice) {
+  state.selectedCustomer = null;
+}
+
 const OrderDetailsPageSlice = createSlice({
   name: StoreSliceEnum.ORDER_DETAILS,
   initialState,
@@ -76,8 +97,11 @@ const OrderDetailsPageSlice = createSlice({
     setIsSelectDiscountCardLoading,
     setIsSelectEntityGridLoading,
     setIsSelectDiscountGridLoading,
+    setIsCustomerCardLoading,
     refreshActiveCards,
     refreshDiscountsList,
+    refreshSelectedCustomer,
+    resetSelectedCustomer,
   },
 });
 

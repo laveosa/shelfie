@@ -1,52 +1,18 @@
-import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
-import cs from "./CustomerCard.module.scss";
+import { useTranslation } from "react-i18next";
 import { Trash2 } from "lucide-react";
+import React from "react";
+
+import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import { ICustomerCard } from "@/const/interfaces/complex-components/custom-cards/ICustomerCard.ts";
 import CustomerForm from "@/components/forms/customer-form/CustomerForm";
-import { useTranslation } from "react-i18next";
+import cs from "./CustomerCard.module.scss";
 
 export default function CustomerCard({
   isLoading,
   customer,
-  editCustomer,
-  onPrimaryButtonClick,
-  onSecondaryButtonClick,
   onAction,
 }: ICustomerCard) {
   const { t } = useTranslation();
-
-  const form = useForm({
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      phoneNumber: "",
-    },
-  });
-
-  useEffect(() => {
-    if (customer) {
-      form.reset({
-        firstName: customer.firstName || "",
-        lastName: customer.lastName || "",
-        email: customer.email || "",
-        phoneNumber: customer.phoneNumber || "",
-      });
-    } else {
-      form.reset({
-        firstName: "",
-        lastName: "",
-        email: "",
-        phoneNumber: "",
-      });
-    }
-  }, [customer]);
-
-  function onSubmit(data) {
-    onPrimaryButtonClick(data);
-  }
 
   return (
     <div>
@@ -54,7 +20,7 @@ export default function CustomerCard({
         loading={isLoading}
         className={cs.customerConfigurationFormCard}
         title={
-          editCustomer
+          customer
             ? t("CardTitles.EditCustomer")
             : t("CardTitles.CreateCustomer")
         }
@@ -75,8 +41,12 @@ export default function CustomerCard({
           <CustomerForm
             data={customer}
             isCreate={!customer}
-            onSubmit={onSubmit}
-            onCancel={onSecondaryButtonClick}
+            onSubmit={(data) =>
+              customer
+                ? onAction("updateCustomer", data)
+                : onAction("createCustomer", data)
+            }
+            onCancel={() => onAction("closeCustomerCard")}
           />
         </div>
       </SheProductCard>

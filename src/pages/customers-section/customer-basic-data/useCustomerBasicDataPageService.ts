@@ -10,10 +10,11 @@ import { NavUrlEnum } from "@/const/enums/NavUrlEnum";
 import { useToast } from "@/hooks/useToast.ts";
 import { useAppSelector } from "@/utils/hooks/redux";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
+import useDialogService from "@/utils/services/dialog/DialogService.ts";
 
 export default function useCustomerBasicDataPageService() {
   const state = useAppSelector<ICustomersPageSlice>(StoreSliceEnum.CUSTOMERS);
-
+  const { openConfirmationDialog } = useDialogService();
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
@@ -22,13 +23,16 @@ export default function useCustomerBasicDataPageService() {
   const [getCustomer] = api.useLazyGetCustomerDetailsQuery();
   const [getCustomerInfo] = api.useLazyGetCustomerInfoQuery();
   const [deleteCustomer] = api.useDeleteCustomerMutation();
-  const {customerId} = useParams();
+  const { customerId } = useParams();
   const { addToast } = useToast();
 
   function updateCustomerHandler(data: any) {
     const requestData = convertCustomerToRequestModel(data);
     dispatch(actions.setIsCustomerBasicDataLoading(true));
-    return updateCustomer({ id: state.selectedCustomer?.customerId, model: requestData }).then((res) => {
+    return updateCustomer({
+      id: state.selectedCustomer?.customerId,
+      model: requestData,
+    }).then((res) => {
       dispatch(actions.setIsCustomerBasicDataLoading(false));
       if (res.error) {
         return;
@@ -38,7 +42,7 @@ export default function useCustomerBasicDataPageService() {
           type: "info",
         });
         return res.data;
-      } 
+      }
     });
   }
 
@@ -56,19 +60,19 @@ export default function useCustomerBasicDataPageService() {
         });
         dispatch(actions.refreshSelectedCustomer(res.data));
         dispatch(actions.refreshCustomers([res.data, ...state.customers]));
-        navigate(`${NavUrlEnum.CUSTOMERS}/${NavUrlEnum.CUSTOMER_BASIC_DATA}/${res.data.customerId}`);
+        navigate(
+          `${NavUrlEnum.CUSTOMERS}/${NavUrlEnum.CUSTOMER_BASIC_DATA}/${res.data.customerId}`,
+        );
         return res.data;
       }
     });
   }
 
   function getCustomerHandler() {
-    if(state.selectedCustomer)
-    {
+    if (state.selectedCustomer) {
       return state.selectedCustomer;
     }
-    if(customerId) 
-    {
+    if (customerId) {
       dispatch(actions.setIsCustomerBasicDataLoading(true));
       return getCustomer(Number(customerId)).then((res) => {
         dispatch(actions.setIsCustomerBasicDataLoading(false));
@@ -76,7 +80,6 @@ export default function useCustomerBasicDataPageService() {
         return res.data;
       });
     }
-    
   }
 
   function onCancelHandler() {
@@ -92,8 +95,17 @@ export default function useCustomerBasicDataPageService() {
     });
   }
 
-  function deleteCustomerHandler(data: any) {
-    return deleteCustomer(data.id).then((res) => {
+  async function deleteCustomerHandler(data: any) {
+    const confirmedCustomerDeleting = await openConfirmationDialog({
+      headerTitle: "Deleting customer",
+      text: `You are about to delete customer ${data.customerName}.`,
+      primaryButtonValue: "Delete",
+      secondaryButtonValue: "Cancel",
+    });
+
+    if (!confirmedCustomerDeleting) return;
+
+    deleteCustomer(data.id).then((res) => {
       if (res.error) {
         addToast({
           text: "Failed to delete customer",
@@ -105,13 +117,19 @@ export default function useCustomerBasicDataPageService() {
           text: "Customer deleted successfully",
           type: "info",
         });
-        dispatch(actions.refreshCustomers(state.customers.filter((customer) => customer.customerId !== data.customerId)));
+        dispatch(
+          actions.refreshCustomers(
+            state.customers.filter(
+              (customer) => customer.customerId !== data.customerId,
+            ),
+          ),
+        );
         navigate(`${NavUrlEnum.CUSTOMERS}`);
       }
     });
   }
 
-  return { 
+  return {
     state,
     actions,
     customerId,
@@ -120,6 +138,6 @@ export default function useCustomerBasicDataPageService() {
     getCustomerHandler,
     onCancelHandler,
     getCustomerInfoHandler,
-    deleteCustomerHandler
+    deleteCustomerHandler,
   };
-} 
+}

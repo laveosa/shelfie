@@ -8,7 +8,6 @@ import { useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
 import useOrderDetailsPageService from "@/pages/sales-section/order-details-page/useOrderDetailsPageService.ts";
-import useOrdersPageService from "@/pages/sales-section/orders-page/useOrdersPageService.ts";
 import OrderConfigurationCard from "@/components/complex/custom-cards/order-configuration-card/OrderConfigurationCard.tsx";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import { OrderDetailsPageSliceActions as actions } from "@/state/slices/OrderDetailsPageSlice";
@@ -17,6 +16,7 @@ import { IOrderDetailsPageSlice } from "@/const/interfaces/store-slices/IOrderDe
 import { DataWithId } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { CustomersListGridColumns } from "@/components/complex/grid/custom-grids/customers-list-grid/CustomersListGridColumns.tsx";
 import SelectDiscountCard from "@/components/complex/custom-cards/select-discount-card/SelectDiscountCard.tsx";
+import CustomerCard from "@/components/complex/custom-cards/customer-card/CustomerCard.tsx";
 
 export function OrderDetailsPage() {
   const { handleCardAction, createRefCallback } = useCardActions({
@@ -29,7 +29,6 @@ export function OrderDetailsPage() {
   );
   const ordersState = useAppSelector<IOrdersPageSlice>(StoreSliceEnum.ORDERS);
   const service = useOrderDetailsPageService(handleCardAction);
-  const ordersService = useOrdersPageService();
   const { orderId } = useParams();
 
   useEffect(() => {
@@ -44,11 +43,10 @@ export function OrderDetailsPage() {
   async function onAction(actionType: string, payload?: any) {
     switch (actionType) {
       case "openSelectEntityCard":
-        service.openSelectEntityCardHandler(payload);
+        service.openSelectEntityCardHandler();
         break;
       case "openCreateEntityCard":
-        // dispatch(actions.resetManagedSupplier(null));
-        // handleCardAction("supplierConfigurationCard", true);
+        service.openCreateEntityCardHandler();
         break;
       case "searchEntity":
         service.searchEntityHandler(payload);
@@ -81,6 +79,21 @@ export function OrderDetailsPage() {
       case "closeSelectDiscountCard":
         service.closeSelectDiscountCardHandler();
         break;
+      case "manageCustomer":
+        service.manageCustomerHandler(payload);
+        break;
+      case "createCustomer":
+        service.createCustomerHandler(payload);
+        break;
+      case "updateCustomer":
+        service.updateCustomerHandler(payload);
+        break;
+      case "deleteCustomer":
+        service.deleteCustomerHandler(payload);
+        break;
+      case "closeCustomerCard":
+        service.closeCustomerCardHandler();
+        break;
     }
   }
 
@@ -109,6 +122,15 @@ export function OrderDetailsPage() {
                 onAction,
               }) as ColumnDef<DataWithId>[]
             }
+            onAction={onAction}
+          />
+        </div>
+      )}
+      {state.activeCards?.includes("customerCard") && (
+        <div ref={createRefCallback("customerCard")}>
+          <CustomerCard
+            isLoading={state.isCustomerCardLoading}
+            customer={state.selectedCustomer}
             onAction={onAction}
           />
         </div>
