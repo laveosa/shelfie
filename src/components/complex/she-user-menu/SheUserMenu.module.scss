@@ -1,0 +1,31 @@
+.sidebarMenu {
+  max-width: 250px;
+
+  .dropdownMenuTrigger {
+    box-shadow: none;
+
+    .userText {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}
+
+.dropdownMenuItem {
+  cursor: pointer;
+  max-height: 40px;
+
+  .dropdownMenuItemText {
+    color: #71717A;
+  }
+}
+
+.dropdownMenuItemLogOut {
+  cursor: pointer;
+  max-height: 35px;
+
+  .dropdownMenuItemText {
+    color: #71717A;
+  }
+}
