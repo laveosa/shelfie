@@ -39,6 +39,7 @@ export const SheFileUploader = forwardRef<SheFileUploaderRef, ISheFileUploader>(
   (
     {
       isLoading = false,
+      className,
       contextName,
       contextId,
       fullWidth,
@@ -245,7 +246,7 @@ export const SheFileUploader = forwardRef<SheFileUploaderRef, ISheFileUploader>(
 
     return (
       <div
-        className={`${cs.sheFileUploader} ${fullWidth ? cs.sheFileUploaderFullWidth : ""} `}
+        className={`${cs.sheFileUploader} ${className} ${fullWidth ? cs.sheFileUploaderFullWidth : ""} `}
         style={{
           boxSizing: "border-box",
           padding: "0",

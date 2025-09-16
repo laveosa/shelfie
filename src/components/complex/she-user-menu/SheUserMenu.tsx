@@ -6,7 +6,6 @@ import {
   UserRoundCog,
   UserRoundPlus,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -24,6 +23,9 @@ import {
 } from "@/components/ui/sidebar";
 import cs from "./SheUserMenu.module.scss";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import useDialogService from "@/utils/services/dialog/DialogService.ts";
+import useAppService from "@/useAppService.ts";
+import { useNavigate } from "react-router-dom";
 
 export function SheUserMenu({
   user,
@@ -34,7 +36,24 @@ export function SheUserMenu({
     avatar: string;
   };
 }) {
+  const { logOut } = useAppService();
   const navigate = useNavigate();
+  const { openConfirmationDialog } = useDialogService();
+
+  async function handleLogout() {
+    setTimeout(async () => {
+      const confirmedLogOut = await openConfirmationDialog({
+        headerTitle: "Logging out",
+        text: `You are about to log out from your account.`,
+        primaryButtonValue: "Log Out",
+        secondaryButtonValue: "Cancel",
+      });
+
+      if (!confirmedLogOut) return;
+
+      logOut();
+    }, 100);
+  }
 
   return (
     <SidebarMenu className={cs.sidebarMenu}>
@@ -69,26 +88,49 @@ export function SheUserMenu({
             sideOffset={4}
           >
             <DropdownMenuGroup>
-              <DropdownMenuItem className={cs.dropdownMenuItem}>
-                <SheIcon icon={UserRoundCog} maxWidth="20px" color="#71717A" />
+              <DropdownMenuItem
+                className={cs.dropdownMenuItem}
+                onClick={() => navigate("/profile")}
+              >
+                <SheIcon
+                  className={cs.dropdownMenuItemIcon}
+                  icon={UserRoundCog}
+                  maxWidth="20px"
+                  color="#71717A"
+                />
                 <span className={`${cs.dropdownMenuItemText} she-text`}>
                   Account
                 </span>
               </DropdownMenuItem>
               <DropdownMenuItem className={cs.dropdownMenuItem}>
-                <SheIcon icon={UserRoundPlus} maxWidth="20px" color="#71717A" />
+                <SheIcon
+                  className={cs.dropdownMenuItemIcon}
+                  icon={UserRoundPlus}
+                  maxWidth="20px"
+                  color="#71717A"
+                />
                 <span className={`${cs.dropdownMenuItemText} she-text`}>
                   Invitations
                 </span>
               </DropdownMenuItem>
               <DropdownMenuItem className={cs.dropdownMenuItem}>
-                <SheIcon icon={CreditCard} maxWidth="20px" color="#71717A" />
+                <SheIcon
+                  className={cs.dropdownMenuItemIcon}
+                  icon={CreditCard}
+                  maxWidth="20px"
+                  color="#71717A"
+                />
                 <span className={`${cs.dropdownMenuItemText} she-text`}>
                   Billing
                 </span>
               </DropdownMenuItem>
               <DropdownMenuItem className={cs.dropdownMenuItem}>
-                <SheIcon icon={Cog} maxWidth="20px" color="#71717A" />
+                <SheIcon
+                  className={cs.dropdownMenuItemIcon}
+                  icon={Cog}
+                  maxWidth="20px"
+                  color="#71717A"
+                />
                 <span className={`${cs.dropdownMenuItemText} she-text`}>
                   Administration
                 </span>
@@ -97,9 +139,14 @@ export function SheUserMenu({
             <DropdownMenuSeparator />
             <DropdownMenuItem
               className={cs.dropdownMenuItemLogOut}
-              onClick={() => navigate("/profile")}
+              onClick={handleLogout}
             >
-              <SheIcon icon={LogOut} maxWidth="20px" color="#71717A" />
+              <SheIcon
+                className={cs.dropdownMenuItemIcon}
+                icon={LogOut}
+                maxWidth="20px"
+                color="#71717A"
+              />
               <span className={`${cs.dropdownMenuItemText} she-text`}>
                 Log out
               </span>

@@ -2,9 +2,7 @@ import { KeyboardEvent, useState } from "react";
 
 import cs from "./SheHeader.module.scss";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import {
-  SheUserMenu
-} from "@/components/complex/she-user-menu/SheUserMenu.tsx";
+import { SheUserMenu } from "@/components/complex/she-user-menu/SheUserMenu.tsx";
 
 export default function SheHeader() {
   const [searchValue, setSearchValue] = useState("");

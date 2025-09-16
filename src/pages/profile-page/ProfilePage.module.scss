@@ -1,2 +1,44 @@
-#ProfilePage {
+.profilePage {
+  padding: 20px;
+
+  .profilePageContent {
+    border: 1px solid #E4E4E7;
+    border-radius: 10px;
+
+    .profilePageTitle {
+      padding: 20px;
+    }
+
+    .profilePageBlock {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      padding: 20px;
+
+      .profilePageTextBlock {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        min-width: 400px;
+        max-width: 400px;
+
+        .passwordBlock {
+          .passwordRulesList {
+            list-style-type: disc;
+            margin-left: 30px;
+          }
+        }
+      }
+
+      .profilePageContentBlock {
+        width: 50%;
+        min-width: 400px;
+        max-width: 400px;
+
+        .fileUploader {
+          max-width: 300px;
+        }
+      }
+    }
+  }
 }

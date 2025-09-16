@@ -42,7 +42,7 @@ export default function AuthPage() {
       lastName: "",
       phoneNumber: "",
       verifyPhoneNumber: null,
-      code: state.countryCode[0],
+      code: state?.countryCode?.[0] || null,
       phoneCodeModel: null,
     },
   });
@@ -218,7 +218,9 @@ export default function AuthPage() {
                       name="firstName"
                       label={t("AuthForm.Labels.FirstName")}
                     >
-                      <Input placeholder={t("AuthForm.Placeholders.FirstName")} />
+                      <Input
+                        placeholder={t("AuthForm.Placeholders.FirstName")}
+                      />
                     </SheForm.Field>
                   </div>
                   <div className={cs.formItem}>
@@ -237,7 +239,9 @@ export default function AuthPage() {
                       name="lastName"
                       label={t("AuthForm.Labels.LastName")}
                     >
-                      <Input placeholder={t("AuthForm.Placeholders.LastName")} />
+                      <Input
+                        placeholder={t("AuthForm.Placeholders.LastName")}
+                      />
                     </SheForm.Field>
                   </div>
                 </>
@@ -314,7 +318,9 @@ export default function AuthPage() {
                 <div className={cs.formItem}>
                   <SheForm.Field
                     rules={{
-                      required: t("AuthForm.Validation.ConfirmPasswordRequired"),
+                      required: t(
+                        "AuthForm.Validation.ConfirmPasswordRequired",
+                      ),
                       validate: (value, formValues) =>
                         value === formValues.password ||
                         t("AuthForm.Validation.PasswordsDoNotMatch"),
@@ -322,7 +328,10 @@ export default function AuthPage() {
                     name="confirmPassword"
                     label={t("AuthForm.Labels.ConfirmPassword")}
                   >
-                    <Input type="password" placeholder={t("AuthForm.Placeholders.ConfirmPassword")} />
+                    <Input
+                      type="password"
+                      placeholder={t("AuthForm.Placeholders.ConfirmPassword")}
+                    />
                   </SheForm.Field>
                 </div>
               )}
@@ -339,7 +348,9 @@ export default function AuthPage() {
                           control={form.control}
                           name="phoneCodeModel"
                           rules={{
-                            required: t("AuthForm.Validation.CountryCodeRequired"),
+                            required: t(
+                              "AuthForm.Validation.CountryCodeRequired",
+                            ),
                           }}
                           render={({ field }) => (
                             <FormItem className={cs.countryCodeInput}>
@@ -408,22 +419,30 @@ export default function AuthPage() {
                         rules={
                           !state.hiddenPhoneNumber
                             ? {
-                                required: t("AuthForm.Validation.PhoneNumberRequired"),
+                                required: t(
+                                  "AuthForm.Validation.PhoneNumberRequired",
+                                ),
                                 minLength: {
                                   value: 8,
-                                  message:
-                                    t("AuthForm.Validation.PhoneNumberMinLength"),
+                                  message: t(
+                                    "AuthForm.Validation.PhoneNumberMinLength",
+                                  ),
                                 },
                                 maxLength: {
                                   value: 9,
-                                  message:
-                                    t("AuthForm.Validation.PhoneNumberMaxLength"),
+                                  message: t(
+                                    "AuthForm.Validation.PhoneNumberMaxLength",
+                                  ),
                                 },
                               }
                             : null
                         }
                         name="phoneNumber"
-                        label={state.hiddenPhoneNumber ? t("AuthForm.Labels.PhoneNumber") : null}
+                        label={
+                          state.hiddenPhoneNumber
+                            ? t("AuthForm.Labels.PhoneNumber")
+                            : null
+                        }
                       >
                         <Input
                           disabled={
@@ -470,20 +489,29 @@ export default function AuthPage() {
                 <div className={cs.formItem}>
                   <SheForm.Field
                     rules={{
-                      required: t("AuthForm.Validation.VerificationCodeRequired"),
+                      required: t(
+                        "AuthForm.Validation.VerificationCodeRequired",
+                      ),
                       minLength: {
                         value: 6,
-                        message: t("AuthForm.Validation.VerificationCodeLength"),
+                        message: t(
+                          "AuthForm.Validation.VerificationCodeLength",
+                        ),
                       },
                       maxLength: {
                         value: 6,
-                        message: t("AuthForm.Validation.VerificationCodeLength"),
+                        message: t(
+                          "AuthForm.Validation.VerificationCodeLength",
+                        ),
                       },
                     }}
                     name="code"
                     label={t("AuthForm.Labels.VerificationCode")}
                   >
-                    <Input type="number" placeholder={t("AuthForm.Placeholders.VerificationCode")} />
+                    <Input
+                      type="number"
+                      placeholder={t("AuthForm.Placeholders.VerificationCode")}
+                    />
                   </SheForm.Field>
                 </div>
               )}
@@ -497,7 +525,9 @@ export default function AuthPage() {
           {(service.authFormView === AuthFormViewEnum.SIGN_IN ||
             service.authFormView === AuthFormViewEnum.SIGN_UP) && (
             <div className={cs.facebookButtonBlock}>
-              <div className={cs.authContentBorder}>{t("AuthForm.StaticText.Or")}</div>
+              <div className={cs.authContentBorder}>
+                {t("AuthForm.StaticText.Or")}
+              </div>
               <SheButton variant="outline">
                 {service.formStaticText.facebookButtonText}
               </SheButton>

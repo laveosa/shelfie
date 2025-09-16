@@ -3,6 +3,7 @@ import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts"; // Use ex
 
 export interface ISheFileUploader {
   isLoading?: boolean;
+  className?: string;
   contextName?: string;
   contextId?: number;
   fullWidth?: boolean;
