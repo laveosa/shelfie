@@ -1,17 +1,28 @@
 import { useNavigate } from "react-router-dom";
 
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
-import { OrdersPageSliceActions as ordersActions } from "@/state/slices/OrdersPageSlice";
+import {
+  OrdersPageSliceActions as ordersActions
+} from "@/state/slices/OrdersPageSlice";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { useToast } from "@/hooks/useToast.ts";
-import { OrderDetailsPageSliceActions as actions } from "@/state/slices/OrderDetailsPageSlice.ts";
-import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
+import {
+  OrderDetailsPageSliceActions as actions
+} from "@/state/slices/OrderDetailsPageSlice.ts";
+import {
+  IOrdersPageSlice
+} from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { IOrderDetailsPageSlice } from "@/const/interfaces/store-slices/IOrderDetailsPageSlice.ts";
+import {
+  IOrderDetailsPageSlice
+} from "@/const/interfaces/store-slices/IOrderDetailsPageSlice.ts";
 import OrdersApiHooks from "@/utils/services/api/OrdersApiService.ts";
-import useOrdersPageService from "@/pages/sales-section/orders-page/useOrdersPageService.ts";
+import useOrdersPageService
+  from "@/pages/sales-section/orders-page/useOrdersPageService.ts";
 import { CustomerModel } from "@/const/models/CustomerModel.ts";
-import { convertCustomerToRequestModel } from "@/utils/helpers/customer-helper.ts";
+import {
+  convertCustomerToRequestModel
+} from "@/utils/helpers/customer-helper.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
 
 export default function useOrderDetailsPageService(handleCardAction) {
@@ -72,7 +83,15 @@ export default function useOrderDetailsPageService(handleCardAction) {
     });
   }
 
-  function deleteOrderHandler(orderId) {
+  async function deleteOrderHandler(orderId) {
+    const confirmedCustomerDeleting = await openConfirmationDialog({
+      headerTitle: "Deleting order",
+      text: "You are about to delete order.",
+      primaryButtonValue: "Delete",
+      secondaryButtonValue: "Cancel",
+    });
+
+    if (!confirmedCustomerDeleting) return;
     return deleteOrder(orderId).then((res: any) => {
       if (!res.error) {
         navigate(`${NavUrlEnum.SALES}${NavUrlEnum.ORDERS}`);
