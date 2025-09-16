@@ -2,14 +2,12 @@ import SheProductCard from "@/components/complex/she-product-card/SheProductCard
 import cs from "./CustomerAddressesCard.module.scss";
 import { Plus } from "lucide-react";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import {
-  DataWithId,
-  DndGridDataTable,
-} from "@/components/complex/grid/DndGrid.tsx";
+import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
 import { customerAddressGridColumns } from "@/components/complex/grid/custom-grids/customer-address-grid/CustomerAddressGridColumns";
 import { GridSortingModel } from "@/const/models/GridSortingModel";
 import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 interface ICustomerAddressesCard {
   isLoading?: boolean;

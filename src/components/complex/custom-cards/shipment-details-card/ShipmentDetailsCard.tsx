@@ -3,10 +3,7 @@ import { Plus, Truck } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import {
-  DataWithId,
-  DndGridDataTable,
-} from "@/components/complex/grid/DndGrid.tsx";
+import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
 import cs from "./ShipmentDetailsCard.module.scss";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import { IShipmentDetailsCard } from "@/const/interfaces/complex-components/custom-cards/IShipmentDetailsCard.ts";
@@ -15,6 +12,7 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import { ProductsInShipmentGridColumns } from "@/components/complex/grid/custom-grids/poducts-in-shipment-grid/ProductsInShipmentGridColumns.tsx";
 import { OrderShipmentsGridColumns } from "@/components/complex/grid/custom-grids/order-shipments-grid/OrderShipmentsGridColumns.tsx";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export default function ShipmentDetailsCard({
   isLoading,

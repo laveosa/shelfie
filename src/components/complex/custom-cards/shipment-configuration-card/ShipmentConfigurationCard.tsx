@@ -3,10 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import {
-  DataWithId,
-  DndGridDataTable,
-} from "@/components/complex/grid/DndGrid.tsx";
+import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
 import {
   ShipmentStatusEnum,
   ShipmentStatusLabels,
@@ -24,6 +21,7 @@ import SheCardNotification from "@/components/complex/she-card-notification/SheC
 import { ordersInShipmentGridColumns } from "@/components/complex/grid/custom-grids/orders-in-shipment-grid/OrdersInShipmentGridColumns.tsx";
 import { orderItemsInShipmentGridColumns } from "@/components/complex/grid/custom-grids/order-items-in-shipmen-grid/OrderItemsInShipmentGridColumns.tsx";
 import { PackedOrderItemsGridColumns } from "@/components/complex/grid/custom-grids/packed-order-items-grid/PackedOrderItemsGridColumns.tsx";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export default function ShipmentConfigurationCard({
   isLoading,

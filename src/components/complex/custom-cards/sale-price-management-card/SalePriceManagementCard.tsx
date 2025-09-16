@@ -2,10 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { CheckCheck } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-import {
-  DataWithId,
-  DndGridDataTable,
-} from "@/components/complex/grid/DndGrid.tsx";
+import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import { ISalePriceManagementCard } from "@/const/interfaces/complex-components/custom-cards/ISalePriceManagementCard.ts";
 import cs from "@/components/complex/custom-cards/sale-price-management-card/SalePriceManagementCard.module.scss";
@@ -16,6 +13,7 @@ import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import GridTraitsFilter from "@/components/complex/grid/filters/grid-traits-filter/GridTraitsFilter.tsx";
 import GridShowItemsFilter from "@/components/complex/grid/filters/grid-show-deleted-filter/GridShowItemsFilter.tsx";
 import { marginProductsGridColumns } from "@/components/complex/grid/custom-grids/margin-products-grid/MarginProductsGridColumns.tsx";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export default function SalePriseManagementCard({
   isLoading,

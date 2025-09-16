@@ -9,11 +9,7 @@ import {
   Shirt,
 } from "lucide-react";
 
-import {
-  DataWithId,
-  DndGridDataTable,
-  DndGridRef,
-} from "@/components/complex/grid/DndGrid.tsx";
+import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
 import cs from "./ProductsPage.module.scss";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
@@ -36,6 +32,7 @@ import { variantsGridColumns } from "@/components/complex/grid/custom-grids/vari
 import { GridDateRangeFilter } from "@/components/complex/grid/filters/grid-date-range-filter/GridDateRangeFilter.tsx";
 import { GridValueFilter } from "@/components/complex/grid/filters/grid-value-filter/GridValueFilter.tsx";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export function ProductsPage() {
   const { translate } = useAppTranslation();
@@ -43,7 +40,6 @@ export function ProductsPage() {
   const state = useAppSelector<IProductsPageSlice>(StoreSliceEnum.PRODUCTS);
   const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
   const service = useProductsPageService();
-  const gridRef = useRef<DndGridRef>(null);
 
   useEffect(() => {
     if (state.activeTab === "products") {
@@ -181,14 +177,9 @@ export function ProductsPage() {
           </div>
           <TabsContent value="products" className={cs.productsPageTabContext}>
             <DndGridDataTable
-              ref={gridRef}
               isLoading={state.isLoading}
-              // isLoading={true}
-              // showColumnsHeader={false}
-              enableDnd
               columns={ProductsGridColumns(onAction)}
               data={state.productsGridModel.items}
-              gridModel={state.productsGridModel}
               gridRequestModel={state.productsGridRequestModel}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
@@ -220,10 +211,8 @@ export function ProductsPage() {
           <TabsContent value="variants" className={cs.productsPageTabContext}>
             <DndGridDataTable
               isLoading={state.isLoading}
-              ref={gridRef}
               columns={variantsGridColumns(onAction) as ColumnDef<DataWithId>[]}
               data={state.variants}
-              gridModel={state.variantsGridModel}
               gridRequestModel={state.variantsGridRequestModel}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
@@ -263,12 +252,10 @@ export function ProductsPage() {
           <TabsContent value="purchases" className={cs.productsPageTabContext}>
             <DndGridDataTable
               isLoading={state.isLoading}
-              ref={gridRef}
               columns={
                 purchasesGridColumns(onAction) as ColumnDef<DataWithId>[]
               }
               data={state.purchases}
-              gridModel={state.purchasesGridModel}
               gridRequestModel={state.purchasesGridRequestModel}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}

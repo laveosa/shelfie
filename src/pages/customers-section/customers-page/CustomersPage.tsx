@@ -6,13 +6,11 @@ import cs from "./CustomersPage.module.scss";
 import useCustomersPageService from "@/pages/customers-section/customers-page/useCustomersPageService.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { Plus } from "lucide-react";
-import {
-  DataWithId,
-  DndGridDataTable,
-} from "@/components/complex/grid/DndGrid.tsx";
+import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
 import { customerGridColumns } from "@/components/complex/grid/custom-grids/customer-grid/CustomerGridColumns";
 import { PreferencesModel } from "@/const/models/PreferencesModel";
 import { GridRequestModel } from "@/const/models/GridRequestModel";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export function CustomersPage() {
   const { t } = useTranslation();

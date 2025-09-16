@@ -22,15 +22,13 @@ import cs from "./ProductTraitConfigurationCard.module.scss";
 import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
-import {
-  DataWithId,
-  DndGridDataTable,
-} from "@/components/complex/grid/DndGrid.tsx";
+import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
 import { IProductTraitConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IProductTraitConfigurationCard.ts";
 import { ColorOptionsGridColumns } from "@/components/complex/grid/trait-options-grid/color-options-grid/ColorOptionsGridColumns.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { SizeOptionsGridColumns } from "@/components/complex/grid/trait-options-grid/size-options-grid/SizeOptionsGridColumns.tsx";
 import SheCardNotification from "@/components/complex/she-card-notification/SheCardNotification.tsx";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export default function ProductTraitConfigurationCard({
   isLoading,

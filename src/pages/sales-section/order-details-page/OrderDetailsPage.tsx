@@ -14,9 +14,9 @@ import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import { OrderDetailsPageSliceActions as actions } from "@/state/slices/OrderDetailsPageSlice";
 import SelectEntityCard from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
 import { IOrderDetailsPageSlice } from "@/const/interfaces/store-slices/IOrderDetailsPageSlice.ts";
-import { DataWithId } from "@/components/complex/grid/DndGrid.tsx";
 import { CustomersListGridColumns } from "@/components/complex/grid/custom-grids/customers-list-grid/CustomersListGridColumns.tsx";
 import SelectDiscountCard from "@/components/complex/custom-cards/select-discount-card/SelectDiscountCard.tsx";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export function OrderDetailsPage() {
   const state = useAppSelector<IOrderDetailsPageSlice>(

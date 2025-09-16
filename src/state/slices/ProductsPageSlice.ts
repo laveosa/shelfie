@@ -22,6 +22,7 @@ import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import { TypeOfTraitModel } from "@/const/models/TypeOfTraitModel.ts";
 import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
+import _ from "lodash";
 
 const initialState: IProductsPageSlice = {
   isLoading: false,
@@ -214,6 +215,8 @@ function refreshProductsGridModel(
   state: IProductsPageSlice,
   action: PayloadAction<GridModel>,
 ) {
+  if (_.isEqual(state?.productsGridModel, action?.payload)) return;
+
   state.productsGridModel = action?.payload || state.productsGridModel;
 }
 

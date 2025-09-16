@@ -28,8 +28,8 @@ const pageSizeOptions: ISheSelectItem<number>[] = [
 
 export function SheGridPagination() {
   // ==================================================================== STATE
-  const { gridModel, onGridRequestChange } = useGridContext();
-  const { currentPage, totalPages, pageSize, endPage } = gridModel?.pager;
+  const { gridRequestModel, onGridRequestChange } = useGridContext();
+  const { currentPage, totalPages, pageSize, endPage } = gridRequestModel;
 
   // ==================================================================== EVENT HANDLER
   function onPreviousPageHandler() {
@@ -104,7 +104,7 @@ export function SheGridPagination() {
                 }
                 onClick={onSetCurrentPageHandler}
               >
-                {pageNum}
+                <span className="she-text">{pageNum}</span>
               </SheButton>
             ))}
           </div>
@@ -119,7 +119,7 @@ export function SheGridPagination() {
         <SheSelect<number>
           items={pageSizeOptions}
           selected={pageSize}
-          placeholder=""
+          placeholder=" "
           hideFirstOption
           minWidth="60px"
           maxWidth="60px"

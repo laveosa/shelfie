@@ -10,10 +10,7 @@ import {
   SheFileUploader,
   SheFileUploaderRef,
 } from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
-import {
-  DataWithId,
-  DndGridDataTable,
-} from "@/components/complex/grid/DndGrid.tsx";
+import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
 import { ICreateSupplierForm } from "@/const/interfaces/forms/ICreateSupplierForm.ts";
 import useAppForm from "@/utils/hooks/useAppForm.ts";
 import CreateSupplierFormScheme from "@/utils/validation/schemes/CreateSupplierFormScheme.ts";
@@ -31,6 +28,7 @@ import cs from "./CreateSupplierForm.module.scss";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
 import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
 import { SupplierPhotosGridColumns } from "@/components/complex/grid/custom-grids/supplier-photos-grid/SupplierPhotosGridColumns.tsx";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 interface SupplierFormData extends SupplierModel {
   images?: File[];

@@ -2,10 +2,7 @@ import { Clock10, Package, PackageOpen, Plus, Truck } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
 
-import {
-  DataWithId,
-  DndGridDataTable,
-} from "@/components/complex/grid/DndGrid.tsx";
+import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
 import {
   GridSortingEnum,
   GridSortingEnumLabels,
@@ -17,6 +14,7 @@ import SheTabs from "@/components/complex/she-tabs/SheTabs.tsx";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs.tsx";
 import { IShipmentsCard } from "@/const/interfaces/complex-components/custom-cards/IShipmentsCard.ts";
 import { ShipmentsListGridColumns } from "@/components/complex/grid/custom-grids/shipments-list-grid/ShipmentsListGridColumns.tsx";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export default function ShipmentsCard({
   isLoading,

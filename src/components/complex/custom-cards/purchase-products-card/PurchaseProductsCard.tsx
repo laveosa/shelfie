@@ -14,10 +14,7 @@ import { IPurchaseProductsPageSlice } from "@/const/interfaces/store-slices/IPur
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { PurchaseProductsPageSliceActions as actions } from "@/state/slices/PurchaseProductsPageSlice.ts";
-import {
-  DataWithId,
-  DndGridDataTable,
-} from "@/components/complex/grid/DndGrid.tsx";
+import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import { AppSliceActions as appActions } from "@/state/slices/AppSlice.ts";
@@ -31,6 +28,7 @@ import GridTraitsFilter from "@/components/complex/grid/filters/grid-traits-filt
 import GridShowItemsFilter from "@/components/complex/grid/filters/grid-show-deleted-filter/GridShowItemsFilter.tsx";
 import { purchaseProductsGridColumns } from "@/components/complex/grid/custom-grids/purchase-products-grid/PurchaseProductsGridColumns.tsx";
 import { purchaseVariantsGridColumns } from "@/components/complex/grid/custom-grids/purchase-variants-grid/PurchaseVariantsGridColumns.tsx";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export default function PurchaseProductsCard({
   isLoading,

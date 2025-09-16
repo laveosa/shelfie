@@ -3,10 +3,7 @@ import { CalendarRange, Plus, ShoppingCart } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import {
-  DataWithId,
-  DndGridDataTable,
-} from "@/components/complex/grid/DndGrid.tsx";
+import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
 import cs from "./OrdersCard.module.scss";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import GridShowItemsFilter from "@/components/complex/grid/filters/grid-show-deleted-filter/GridShowItemsFilter.tsx";
@@ -16,6 +13,7 @@ import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { ordersGridColumns } from "@/components/complex/grid/custom-grids/orders-grid/OrdersGridColumns.tsx";
 import { CalendarModeEnum } from "@/const/enums/CalendarModeEnum.ts";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export default function OrdersCard({
   isLoading,

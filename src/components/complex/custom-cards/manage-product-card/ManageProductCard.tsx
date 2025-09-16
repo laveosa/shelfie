@@ -2,10 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Cog, GalleryThumbnails, Plus, TableProperties } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-import {
-  DataWithId,
-  DndGridDataTable,
-} from "@/components/complex/grid/DndGrid.tsx";
+import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
 import { IManageProductCard } from "@/const/interfaces/complex-components/custom-cards/IManageProductCard.ts";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
@@ -16,6 +13,7 @@ import { TraitModel } from "@/const/models/TraitModel.ts";
 import { ColumnDef } from "@tanstack/react-table";
 import ManageProductsForPurchaseForm from "@/components/forms/manage-products-for-purchase-form/ManageProductsForPurchaseForm.tsx";
 import { PurchaseProductVariantsGridColumns } from "@/components/complex/grid/custom-grids/purchase-product-variants-grid/PurchaseProductVariantsGridColumns.tsx";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export default function ManageProductCard({
   isLoading,

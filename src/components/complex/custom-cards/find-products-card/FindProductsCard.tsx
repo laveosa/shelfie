@@ -2,10 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import {
-  DataWithId,
-  DndGridDataTable,
-} from "@/components/complex/grid/DndGrid.tsx";
+import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./FindProductsCard.module.scss";
 import { IFindProductsCard } from "@/const/interfaces/complex-components/custom-cards/IFindProductsCard.ts";
@@ -14,6 +11,7 @@ import { findProductGridColumns } from "@/components/complex/grid/custom-grids/f
 import GridItemsFilter from "@/components/complex/grid/filters/grid-items-filter/GridItemsFilter.tsx";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export default function FindProductsCard({
   isLoading,

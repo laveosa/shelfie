@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { DataWithId } from "@/components/complex/grid/DndGrid.tsx";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export interface ISelectEntityCard {
   isLoading?: boolean;

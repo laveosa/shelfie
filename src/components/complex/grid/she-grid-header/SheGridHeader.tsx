@@ -1,4 +1,5 @@
 import { Filter, Search } from "lucide-react";
+import { RowData } from "@tanstack/react-table";
 import { useState } from "react";
 
 import cs from "./SheGridHeader.module.scss";
@@ -9,7 +10,6 @@ import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { useGridContext } from "@/state/context/grid-context.ts";
 import { ISheGridHeader } from "@/const/interfaces/complex-components/ISheGridHeader.ts";
-import { RowData } from "@tanstack/react-table";
 
 export default function SheGridHeader({
   gridHeaderClassName = "",

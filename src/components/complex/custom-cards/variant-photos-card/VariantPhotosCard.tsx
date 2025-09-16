@@ -2,16 +2,14 @@ import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
 import React from "react";
 
-import {
-  DataWithId,
-  DndGridDataTable,
-} from "@/components/complex/grid/DndGrid.tsx";
+import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./VariantPhotosCard.module.scss";
 import { SheFileUploader } from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { VariantPhotosGridColumns } from "@/components/complex/grid/custom-grids/product-photos-grid/VariantPhotosGridColumns.tsx";
 import { OtherProductPhotosGridColumns } from "@/components/complex/grid/custom-grids/other-product-photos-grid/OtherProductPhotosGridColumns.tsx";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export default function VariantPhotosCard({
   isLoading,
@@ -97,11 +95,6 @@ export default function VariantPhotosCard({
             <div className={cs.managePhotosGrid}>
               <DndGridDataTable
                 isLoading={isVariantPhotoGridLoading}
-                className={
-                  variantPhotos.length > 0
-                    ? cs.productPhotosGridShort
-                    : cs.productPhotosGridLong
-                }
                 enableDnd={true}
                 showHeader={false}
                 columns={variantPhotosColumns}
@@ -124,11 +117,6 @@ export default function VariantPhotosCard({
               <DndGridDataTable
                 isLoading={isProductPhotoGridLoading}
                 enableDnd={false}
-                className={
-                  variantPhotos.length > 0
-                    ? cs.productPhotosGridShort
-                    : cs.productPhotosGridLong
-                }
                 showHeader={false}
                 showColumnsHeader={false}
                 columns={otherPhotosColumns}
