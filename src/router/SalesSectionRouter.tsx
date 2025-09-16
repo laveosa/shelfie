@@ -1,20 +1,24 @@
-import { RouteObject } from "react-router-dom";
+import { Navigate, RouteObject } from "react-router-dom";
 import { ReturnsPage } from "@/pages/sales-section/returns-page/ReturnsPage.tsx";
 import { ShipmentsPage } from "@/pages/sales-section/shipments-page/ShipmentsPage.tsx";
 import { PaymentsPage } from "@/pages/sales-section/payments-page/PaymentsPage.tsx";
 
 export const SalesSectionRouter: RouteObject[] = [
   {
-    path: "orders/",
+    index: true,
+    element: <Navigate to="orders" replace />,
+  },
+  {
+    path: "orders",
     lazy: async () => {
       const { OrdersPage } = await import(
         "@/pages/sales-section/orders-page/OrdersPage.tsx"
-      );
+        );
       return { element: <OrdersPage /> };
     },
   },
   {
-    path: "orders/order-details/:orderId?",
+    path: "order-details/:orderId?",
     lazy: async () => {
       const { OrderDetailsPage } = await import(
         "@/pages/sales-section/order-details-page/OrderDetailsPage.tsx"
@@ -25,7 +29,7 @@ export const SalesSectionRouter: RouteObject[] = [
     },
   },
   {
-    path: "orders/order-products/:orderId?",
+    path: "order-products/:orderId?",
     lazy: async () => {
       const { OrderProductsPage } = await import(
         "@/pages/sales-section/order-products-page/OrderProductsPage.tsx"
@@ -36,7 +40,7 @@ export const SalesSectionRouter: RouteObject[] = [
     },
   },
   {
-    path: "orders/order-shipment/:orderId?",
+    path: "order-shipment/:orderId?",
     lazy: async () => {
       const { OrderShipmentPage } = await import(
         "@/pages/sales-section/order-shipment-page/OrderShipmentPage.tsx"
@@ -47,7 +51,7 @@ export const SalesSectionRouter: RouteObject[] = [
     },
   },
   {
-    path: "orders/order-payment/:orderId?",
+    path: "order-payment/:orderId?",
     lazy: async () => {
       const { OrderPaymentPage } = await import(
         "@/pages/sales-section/order-payment-page/OrderPaymentPage.tsx"
