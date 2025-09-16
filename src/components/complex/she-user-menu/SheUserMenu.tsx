@@ -1,0 +1,112 @@
+import {
+  Cog,
+  CreditCard,
+  EllipsisVertical,
+  LogOut,
+  UserRoundCog,
+  UserRoundPlus,
+} from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@/components/ui/sidebar";
+import cs from "./SheUserMenu.module.scss";
+import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+
+export function SheUserMenu({
+  user,
+}: {
+  user: {
+    name: string;
+    email: string;
+    avatar: string;
+  };
+}) {
+  const navigate = useNavigate();
+
+  return (
+    <SidebarMenu className={cs.sidebarMenu}>
+      <SidebarMenuItem>
+        <DropdownMenu>
+          <DropdownMenuTrigger className={cs.dropdownMenuTrigger} asChild>
+            <SidebarMenuButton
+              size="lg"
+              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+            >
+              <Avatar className="h-8 w-8 rounded-lg">
+                <AvatarImage src={user.avatar} alt={user.name} />
+                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+              </Avatar>
+              <div className="grid flex-1 text-left text-sm leading-tight">
+                <span className={`${cs.userText} she-text`}>{user.name}</span>
+                <span className={`${cs.userText} she-subtext`}>
+                  {user.email}
+                </span>
+              </div>
+              <SheIcon
+                icon={EllipsisVertical}
+                maxWidth="24px"
+                color="#71717A"
+              />
+            </SidebarMenuButton>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            className="w-(--radix-dropdown-menu-trigger-width) min-w-48 rounded-lg"
+            side="bottom"
+            align="start"
+            sideOffset={4}
+          >
+            <DropdownMenuGroup>
+              <DropdownMenuItem className={cs.dropdownMenuItem}>
+                <SheIcon icon={UserRoundCog} maxWidth="20px" color="#71717A" />
+                <span className={`${cs.dropdownMenuItemText} she-text`}>
+                  Account
+                </span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className={cs.dropdownMenuItem}>
+                <SheIcon icon={UserRoundPlus} maxWidth="20px" color="#71717A" />
+                <span className={`${cs.dropdownMenuItemText} she-text`}>
+                  Invitations
+                </span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className={cs.dropdownMenuItem}>
+                <SheIcon icon={CreditCard} maxWidth="20px" color="#71717A" />
+                <span className={`${cs.dropdownMenuItemText} she-text`}>
+                  Billing
+                </span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className={cs.dropdownMenuItem}>
+                <SheIcon icon={Cog} maxWidth="20px" color="#71717A" />
+                <span className={`${cs.dropdownMenuItemText} she-text`}>
+                  Administration
+                </span>
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              className={cs.dropdownMenuItemLogOut}
+              onClick={() => navigate("/profile")}
+            >
+              <SheIcon icon={LogOut} maxWidth="20px" color="#71717A" />
+              <span className={`${cs.dropdownMenuItemText} she-text`}>
+                Log out
+              </span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </SidebarMenuItem>
+    </SidebarMenu>
+  );
+}
