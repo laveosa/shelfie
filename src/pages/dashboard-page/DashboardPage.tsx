@@ -13,10 +13,10 @@ export function DashboardPage() {
   const [getTheProductsForGrid] =
     ProductsApiHooks.useGetTheProductsForGridMutation();
 
-  const [gridModel, setGridModel] = useState<GridRequestModel>({});
+  const [gridModel, setGridModel] = useState<GridRequestModel>(null);
 
   useEffect(() => {
-    getTheProductsForGrid(gridModel).then(() => {});
+    updateGridRequestModel({});
   }, []);
 
   // ================================================================== STATE
@@ -24,7 +24,7 @@ export function DashboardPage() {
   // ================================================================== EVENT HANDLERS
 
   function updateGridRequestModel(model: GridRequestModel) {
-    setGridModel(model);
+    getTheProductsForGrid(model).then((res) => setGridModel(res.data));
   }
 
   // ================================================================== LOGIC
