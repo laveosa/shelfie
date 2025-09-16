@@ -25,7 +25,6 @@ export default function SalePriseManagementCard({
   colors,
   sizes,
   taxes,
-  gridModel,
   gridRequestModel,
   onAction,
 }: ISalePriceManagementCard) {
@@ -47,13 +46,12 @@ export default function SalePriseManagementCard({
               onAction,
             ) as ColumnDef<DataWithId>[]
           }
-          data={gridModel.items}
-          gridModel={gridModel}
+          data={gridRequestModel?.items}
           sortingItems={sortingOptions}
           columnsPreferences={preferences}
           gridRequestModel={gridRequestModel}
           preferenceContext={"productReferences"}
-          skeletonQuantity={gridRequestModel.pageSize}
+          skeletonQuantity={gridRequestModel?.pageSize}
           onApplyColumns={(model) => onAction("applyColumns", model)}
           onDefaultColumns={() => onAction("resetColumns")}
           onGridRequestChange={(updates) =>
@@ -65,14 +63,14 @@ export default function SalePriseManagementCard({
             columnName={t("SectionTitles.Brand")}
             getId={(item: BrandModel) => item.brandId}
             getName={(item: BrandModel) => item.brandName}
-            selected={gridModel.filter?.brands}
+            selected={gridRequestModel?.filter?.brands}
           />
           <GridItemsFilter
             items={categories}
             columnName={t("SectionTitles.Category")}
             getId={(item: CategoryModel) => item.categoryId}
             getName={(item: CategoryModel) => item.categoryName}
-            selected={gridModel.filter?.categories}
+            selected={gridRequestModel?.filter?.categories}
           />
           <GridTraitsFilter traitOptions={colors} traitType="color" />
           <GridTraitsFilter traitOptions={sizes} traitType="size" />

@@ -1,10 +1,10 @@
 import { CustomerModel } from "@/const/models/CustomerModel.ts";
-import { GridModel } from "@/const/models/GridModel.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 
 export interface ISelectShipmentForOrderCard {
   isLoading?: boolean;
   isGridLoading?: boolean;
-  shipmentsGridModel?: GridModel;
+  shipmentsGridRequestModel?: GridRequestModel;
   services?: any[];
   statuses?: any[];
   customer?: CustomerModel;

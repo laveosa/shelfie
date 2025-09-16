@@ -1,25 +1,24 @@
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 
-import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
-import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";
-import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
-import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import {
   ProductGalleryPageSliceActions as actions,
   ProductGalleryPageSliceActions as action,
 } from "@/state/slices/ProductGalleryPageSlice.ts";
+import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
+import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";
+import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
-import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 import { setSelectedGridItem } from "@/utils/helpers/quick-helper.ts";
 import { IProductGalleryPageSlice } from "@/const/interfaces/store-slices/IProductGalleryPageSlice.ts";
 
-export default function useProductGalleryPageService() {
+export default function useProductGalleryPageService(handleCardAction) {
   const dispatch = useAppDispatch();
   const state = useAppSelector<IProductGalleryPageSlice>(
     StoreSliceEnum.PRODUCT_GALLERY,
@@ -29,11 +28,6 @@ export default function useProductGalleryPageService() {
     StoreSliceEnum.PRODUCTS,
   );
   const { openConfirmationDialog } = useDialogService();
-  const { handleCardAction } = useCardActions({
-    selectActiveCards: (state) =>
-      state[StoreSliceEnum.PRODUCT_GALLERY].activeCards,
-    refreshAction: actions.refreshActiveCards,
-  });
   const { addToast } = useToast();
 
   const [getTheProductsForGrid] =
@@ -93,15 +87,15 @@ export default function useProductGalleryPageService() {
     });
   }
 
-  function putPhotoInNewPositionHandler(productId, photoId, index, model) {
+  function putPhotoInNewPositionHandler(model, productId) {
     return putPhotoInNewPosition({
       productId,
-      photoId,
-      index,
+      photoId: model.activeItem.photoId,
+      index: model.newIndex,
     }).then(() => {
       if (model.newIndex === 0 || model.oldIndex === 0) {
         productsService.getTheProductsForGridHandler(
-          productsState.gridRequestModel,
+          productsState.productsGridRequestModel,
           true,
         );
       }
@@ -127,7 +121,7 @@ export default function useProductGalleryPageService() {
         productsService.getCountersForProductsHandler(productId),
         model.id === 1
           ? productsService.getTheProductsForGridHandler(
-              productsState.gridRequestModel,
+              productsState.productsGridRequestModel,
               true,
             )
           : Promise.resolve({ items: [] }),
@@ -163,16 +157,14 @@ export default function useProductGalleryPageService() {
   }
 
   function setPhotoActivationStateHandler(
-    contextName: string,
     contextId: number,
-    model: any,
     imageModel: ImageModel,
   ) {
     return setPhotoActivationState({
-      contextName,
+      contextName: "Product",
       contextId,
       photoId: imageModel.photoId,
-      model,
+      model: { isActive: !imageModel.isActive },
     }).then((res) => {
       if (!res.error) {
         dispatch(
@@ -216,6 +208,14 @@ export default function useProductGalleryPageService() {
     handleCardAction("connectImageCard", true);
   }
 
+  function imageActionsHandler(model) {
+    if (!model.row.original.isActive) {
+      attachImageToVariantHandler(model);
+    } else {
+      detachImageFromVariantHandler(model);
+    }
+  }
+
   function attachImageToVariantHandler(model) {
     return attachProductPhotoToVariant({
       variantId: model.row.original.variantId,
@@ -256,15 +256,44 @@ export default function useProductGalleryPageService() {
     });
   }
 
+  function getProductGalleryPageDataHandler(productId: string) {
+    if (productsState.products === null) {
+      dispatch(productsActions.setIsItemsCardLoading(true));
+      productsService
+        .getTheProductsForGridHandler(productsState.productsGridRequestModel)
+        .then(() => {
+          dispatch(productsActions.setIsItemsCardLoading(false));
+        });
+    }
+    if (!productsState.productCounter) {
+      dispatch(productsActions.setIsProductMenuCardLoading(true));
+      productsService.getCountersForProductsHandler(productId).then(() => {
+        dispatch(productsActions.setIsProductMenuCardLoading(false));
+      });
+    }
+    dispatch(actions.setIsProductPhotosCardLoading(true));
+    productsService.getProductPhotosHandler(Number(productId)).then(() => {
+      dispatch(actions.setIsProductPhotosCardLoading(false));
+    });
+    getProductVariantsHandler(Number(productId));
+  }
+
+  function closeConnectImageCardHandler() {
+    handleCardAction("connectImageCard");
+  }
+
   return {
     getTheProductsForGridHandler,
     uploadPhotoHandler,
     putPhotoInNewPositionHandler,
     deletePhotoHandler,
     openConnectImageCard,
+    imageActionsHandler,
     attachImageToVariantHandler,
     detachImageFromVariantHandler,
     getProductVariantsHandler,
     setPhotoActivationStateHandler,
+    getProductGalleryPageDataHandler,
+    closeConnectImageCardHandler,
   };
 }

@@ -41,6 +41,7 @@ import ReturnsPageSlice from "@/state/slices/ReturnsPageSlice.ts";
 import ShipmentsPageSlice from "@/state/slices/ShipmentsPageSlice.ts";
 import OrderShipmentPageSlice from "@/state/slices/OrderShipmentPageSlice.ts";
 import ShipmentDetailsPageSlice from "@/state/slices/ShipmentDetailsPageSlice.ts";
+import { CompaniesApiService } from "@/utils/services/api/CompaniesApiService.ts";
 
 export const store = configureStore({
   reducer: {
@@ -84,6 +85,7 @@ export const store = configureStore({
     [MessengerApiService.reducerPath]: MessengerApiService.reducer,
     [FacebookApiService.reducerPath]: FacebookApiService.reducer,
     [OrdersApiService.reducerPath]: OrdersApiService.reducer,
+    [CompaniesApiService.reducerPath]: CompaniesApiService.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -96,7 +98,8 @@ export const store = configureStore({
       .concat(AssetsApiService.middleware)
       .concat(MessengerApiService.middleware)
       .concat(FacebookApiService.middleware)
-      .concat(OrdersApiService.middleware),
+      .concat(OrdersApiService.middleware)
+      .concat(CompaniesApiService.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

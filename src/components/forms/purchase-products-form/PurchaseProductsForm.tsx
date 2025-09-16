@@ -9,8 +9,6 @@ import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import cs from "@/components/forms/purchase-products-form/PurchaseProductsForm.module.scss";
 import SheForm from "@/components/complex/she-form/SheForm.tsx";
-import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
-import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import { FormField } from "@/components/ui/form.tsx";
 import SheFormItem from "@/components/complex/she-form/components/she-form-item/SheFormItem.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
@@ -90,19 +88,21 @@ export default function PurchaseProductsForm({
           name="nettoPrice"
           className={cs.purchaseFormItemNettoPrice}
           render={({ field }) => (
-            <SheInput
-              value={field.value}
-              className={
-                activeTab === "connectProducts"
-                  ? field.value
-                    ? cs.formItemsValid
+            <SheFormItem className={cs.purchaseFormItemNettoPrice}>
+              <SheInput
+                value={field.value}
+                className={
+                  activeTab === "connectProducts"
+                    ? field.value
+                      ? cs.formItemsValid
+                      : ""
                     : ""
-                  : ""
-              }
-              minWidth="100px"
-              maxWidth="100px"
-              placeholder="Netto price"
-            />
+                }
+                minWidth="100px"
+                maxWidth="100px"
+                placeholder="Netto price"
+              />
+            </SheFormItem>
           )}
         />
         <FormField
@@ -164,20 +164,22 @@ export default function PurchaseProductsForm({
           name="unitsAmount"
           className={cs.purchaseFormItemTaxCurrency}
           render={({ field }): React.ReactElement => (
-            <SheInput
-              value={field.value}
-              className={
-                activeTab === "connectProducts"
-                  ? field.value
-                    ? cs.formItemsValid
+            <SheFormItem className={cs.purchaseFormItemQuantity}>
+              <SheInput
+                value={field.value}
+                className={
+                  activeTab === "connectProducts"
+                    ? field.value
+                      ? cs.formItemsValid
+                      : ""
                     : ""
-                  : ""
-              }
-              width="80px"
-              minWidth="80px"
-              maxWidth="80px"
-              placeholder="Quantity"
-            />
+                }
+                width="80px"
+                minWidth="80px"
+                maxWidth="80px"
+                placeholder="Quantity"
+              />
+            </SheFormItem>
           )}
         />
         {!isVariantGrid ? (

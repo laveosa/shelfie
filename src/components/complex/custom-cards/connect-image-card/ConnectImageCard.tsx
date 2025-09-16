@@ -40,7 +40,7 @@ export default function ConnectImageCard({
             }
             data={variants}
             skeletonQuantity={productCounter?.variants}
-            gridModel={variants as any}
+            gridRequestModel={variants as any}
           />
         </div>
       </div>

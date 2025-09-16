@@ -8,4 +8,5 @@ export interface GridFiltersModel {
   valueTo?: number;
   showDeleted?: string;
   traitOptions?: number[];
+  status?: any;
 }

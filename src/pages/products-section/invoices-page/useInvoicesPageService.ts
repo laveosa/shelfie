@@ -9,7 +9,7 @@ import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPag
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IInvoicesPageSlice } from "@/const/interfaces/store-slices/IInvoicesPageSlice.ts";
 
-export default function useInvoicesPageService() {
+export default function useInvoicesPageService(handleCardAction) {
   const dispatch = useAppDispatch();
   const productsService = useProductsPageService();
   const state = useAppSelector<IInvoicesPageSlice>(StoreSliceEnum.INVOICES);
@@ -38,7 +38,7 @@ export default function useInvoicesPageService() {
     dispatch(actions.setIsInvoiceCardGridLoading(true));
     return getInvoicesForGrid(purchaseId).then((res: any) => {
       dispatch(actions.setIsInvoiceCardGridLoading(false));
-      dispatch(actions.refreshInvoicesGridModel(res.data));
+      dispatch(actions.refreshInvoicesGridRequestModel(res.data));
       return res.data;
     });
   }
@@ -84,10 +84,10 @@ export default function useInvoicesPageService() {
         .deletePhotoHandler(model.row.original.assetId)
         .then((res) => {
           productsService.getPurchaseCountersHandler(Number(purchaseId));
-          if (state.invoicesGridModel.items.length === 1) {
+          if (state.invoicesGridRequestModel.items.length === 1) {
             dispatch(
-              actions.refreshInvoicesGridModel({
-                ...state.invoicesGridModel,
+              actions.refreshInvoicesGridRequestModel({
+                ...state.invoicesGridRequestModel,
                 items: [],
               }),
             );
@@ -105,6 +105,9 @@ export default function useInvoicesPageService() {
             });
           }
         });
+    }
+    if (model.row.original.url === state.previewUrl) {
+      handleCardAction("invoicePreviewCard");
     }
   }
 
@@ -140,11 +143,23 @@ export default function useInvoicesPageService() {
     });
   }
 
+  function previewInvoiceHandler(model) {
+    handleCardAction("invoicePreviewCard", true);
+    dispatch(actions.refreshPreviewUrl(model.url));
+  }
+
+  function closeInvoicePreviewCardHandler() {
+    handleCardAction("invoicePreviewCard");
+    dispatch(actions.refreshPreviewUrl(null));
+  }
+
   return {
     getPurchaseCountersHandler,
     getInvoicesForGridHandler,
     uploadInvoiceHandler,
     deleteInvoiceHandler,
     downloadInvoice,
+    previewInvoiceHandler,
+    closeInvoicePreviewCardHandler,
   };
 }

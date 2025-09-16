@@ -2,7 +2,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IInvoicesPageSlice } from "@/const/interfaces/store-slices/IInvoicesPageSlice.ts";
-import { GridModel } from "@/const/models/GridModel.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import _ from "lodash";
 
 const initialState: IInvoicesPageSlice = {
   isLoading: false,
@@ -12,10 +13,7 @@ const initialState: IInvoicesPageSlice = {
   isInvoiceCardGridLoading: false,
   isFileUploaderLoading: false,
   activeCards: [],
-  invoicesGridModel: {
-    pager: {},
-    items: [],
-  },
+  invoicesGridRequestModel: {},
   invoices: [],
   previewUrl: null,
 };
@@ -73,11 +71,16 @@ function refreshActiveCards(
   state.activeCards = action?.payload || state.activeCards;
 }
 
-function refreshInvoicesGridModel(
+function refreshInvoicesGridRequestModel(
   state: IInvoicesPageSlice,
-  action: PayloadAction<GridModel>,
+  action: PayloadAction<GridRequestModel>,
 ) {
-  state.invoicesGridModel = action?.payload || state.invoicesGridModel;
+  if (_.isEqual(state.invoicesGridRequestModel, action?.payload)) {
+    return;
+  }
+
+  state.invoicesGridRequestModel =
+    action?.payload || state.invoicesGridRequestModel;
 }
 
 function refreshInvoices(
@@ -105,7 +108,7 @@ const InvoicesPageSlice = createSlice({
     setIsInvoiceCardGridLoading,
     setIsFileUploaderLoading,
     refreshActiveCards,
-    refreshInvoicesGridModel,
+    refreshInvoicesGridRequestModel,
     refreshInvoices,
     refreshPreviewUrl,
   },

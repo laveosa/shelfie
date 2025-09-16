@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { merge } from "lodash";
 
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { AppDispatch, RootState } from "@/state/store.ts";
@@ -13,7 +14,6 @@ import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import OrdersApiHooks from "@/utils/services/api/OrdersApiService.ts";
-import { merge } from "lodash";
 import { useAppSelector } from "@/utils/hooks/redux.ts";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 
@@ -58,7 +58,7 @@ export default function useOrdersPageService() {
     dispatch(actions.setIsOrdersGridLoading(true));
     return getListOfOrdersForGrid(model).then((res: any) => {
       dispatch(actions.setIsOrdersGridLoading(false));
-      dispatch(actions.refreshOrdersGridModel(res.data));
+      dispatch(actions.refreshOrdersGridRequestModel(res.data));
       return res.data;
     });
   }
@@ -128,7 +128,7 @@ export default function useOrdersPageService() {
       );
 
       dispatch(
-        actions.refreshCustomersGridModel({
+        actions.refreshCustomersGridRequestModel({
           ...res.data,
           items: updatedCustomers,
         }),
@@ -144,7 +144,7 @@ export default function useOrdersPageService() {
       if (res.error) {
         return;
       } else {
-        dispatch(actions.refreshVariantsGridModel(res.data));
+        dispatch(actions.refreshVariantsGridRequestModel(res.data));
         return res.data;
       }
     });
@@ -186,7 +186,7 @@ export default function useOrdersPageService() {
 
   function getListOfStockActionsForGridHandler(orderId, model) {
     return getListOfStockActionsForGrid({ orderId, model }).then((res: any) => {
-      dispatch(actions.refreshStockActionsGridModel(res.data));
+      dispatch(actions.refreshStockActionsGridRequestModel(res.data));
       return res.data;
     });
   }

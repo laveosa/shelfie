@@ -237,7 +237,7 @@
       "PurchaseNotes": "Purchase notes"
     },
     "Placeholders": {
-      "PurchasePrice": "Enter purchase prise",
+      "PurchasePrice": "Enter price netto...",
       "SelectVAT": "Select VAT",
       "SelectPriceType": "Select price type",
       "SelectCurrency": "Select currency",
@@ -345,13 +345,14 @@
     "Margin": "Margin",
     "Product": "Product",
     "Variant": "Variant",
-    "Brand": "Brand",
+    "Brand": "Brands",
     "Category": "Category",
     "Attribute": "Attribute",
     "Trait": "Trait",
     "Discount": "Discount",
     "Summary": "Summary",
-    "StockDetails": "Stock Details"
+    "StockDetails": "Stock Details",
+    "CreatePurchase": "Create Purchase"
   },
   "CardTitles": {
     "ManagePhotos": "Manage Photos",
@@ -556,7 +557,7 @@
       "Lost": "Lost",
       "Broken": "Broken",
       "Reason": "Reason",
-      "CurrentlyInStock": "Currently in stock"
+      "CurrentlyInStock": "Currently in stock: "
     }
   },
   "CustomerMenu": {
@@ -627,11 +628,11 @@
       "OrderStatus": "Order status",
       "PaymentStatus": "Payment status",
       "ShipmentStatus": "Shipment status",
-      "DiscountTotal": "Discount total",
-      "ProductsSubtotal": "Products Subtotal",
-      "ProductsTotal": "Products Total",
-      "TotalWithDiscountAndShipment": "Total with discount and shipment",
-      "Profit": "Profit"
+      "DiscountTotal": "Discount total: ",
+      "ProductsSubtotal": "Products Subtotal: ",
+      "ProductsTotal": "Products Total: ",
+      "TotalWithDiscountAndShipment": "Total with discount and shipment: ",
+      "Profit": "Profit: "
     },
     "Placeholders": {
       "PickRange": "Pick range",

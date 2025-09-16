@@ -36,9 +36,7 @@ export default function PurchaseProductsCard({
   isProductsGridLoading,
   variants,
   purchaseProducts,
-  purchaseProductsGridModel,
   purchaseProductsGridRequestModel,
-  variantsGridModel,
   variantsGridRequestModel,
   preferences,
   sortingOptions,
@@ -189,7 +187,6 @@ export default function PurchaseProductsCard({
                   ) as ColumnDef<DataWithId>[]
                 }
                 data={purchaseProducts}
-                gridModel={purchaseProductsGridModel}
                 gridRequestModel={purchaseProductsGridRequestModel}
                 sortingItems={sortingOptions}
                 columnsPreferences={preferences}
@@ -263,7 +260,6 @@ export default function PurchaseProductsCard({
                   ) as ColumnDef<DataWithId>[]
                 }
                 data={variants}
-                gridModel={variantsGridModel}
                 gridRequestModel={variantsGridRequestModel}
                 sortingItems={sortingOptions}
                 columnsPreferences={preferences}

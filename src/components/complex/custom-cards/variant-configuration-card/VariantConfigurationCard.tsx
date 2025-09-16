@@ -37,7 +37,6 @@ import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
 import { VariantModel } from "@/const/models/VariantModel.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon";
 import InfoIcon from "@/assets/icons/Info-icon.svg?react";
-import SheCardNotification from "@/components/complex/she-card-notification/SheCardNotification.tsx";
 import { VariantConfigurationGridColumns } from "@/components/complex/grid/custom-grids/variant-configuration-grid/VariantConfigurationGridColumns.tsx";
 import { VariantPhotosGridColumns } from "@/components/complex/grid/custom-grids/product-photos-grid/VariantPhotosGridColumns.tsx";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
@@ -261,10 +260,22 @@ export default function VariantConfigurationCard({
   return (
     <SheProductCard
       loading={isLoading}
+      className={cs.variantConfigurationCard}
       title={t("CardTitles.ManageVariant")}
       showCloseButton
+      showNotificationCard
+      notificationCardProps={{
+        title: "Delete Variant",
+        titleTransKey: "CardTitles.DeleteVariant",
+        text: "This variant will be deleted, it will no longer be available for sale but you will still see it in the orders where it sold",
+        textTransKey: "ConfirmationMessages.DeleteVariant",
+        buttonText: "Delete",
+        buttonTextTransKey: "CommonButtons.Delete",
+        buttonColor: "#FF0000",
+        buttonIcon: Trash2,
+        onClick: () => onAction("deleteVariant", variant),
+      }}
       onSecondaryButtonClick={() => onAction("closeVariantConfigurationCard")}
-      className={cs.variantConfigurationCard}
       {...props}
     >
       <div className={cs.variantConfigurationCardContent}>
@@ -440,7 +451,7 @@ export default function VariantConfigurationCard({
               showHeader={false}
               columns={traitsColumns}
               data={preparedTraitOptions}
-              gridModel={data}
+              gridRequestModel={data}
               enableExpansion={true}
               renderExpandedContent={renderExpandedContent}
             />
@@ -469,7 +480,7 @@ export default function VariantConfigurationCard({
                 showHeader={false}
                 columns={photoColumns}
                 data={variantPhotos}
-                gridModel={data}
+                gridRequestModel={data}
                 skeletonQuantity={productCounter?.gallery}
                 onNewItemPosition={(newIndex, activeItem) =>
                   onAction("dndVariantPhoto", { newIndex, activeItem })
@@ -479,15 +490,6 @@ export default function VariantConfigurationCard({
           )}
         </div>
       </div>
-      <SheCardNotification
-        title={t("CardTitles.DeleteVariant")}
-        text={t("ConfirmationMessages.DeleteVariant")}
-        buttonColor="#EF4343"
-        buttonVariant="outline"
-        buttonText={t("CommonButtons.Delete")}
-        buttonIcon={Trash2}
-        onClick={() => onAction("deleteVariant", variant)}
-      />
     </SheProductCard>
   );
 }

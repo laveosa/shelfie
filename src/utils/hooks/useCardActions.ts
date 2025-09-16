@@ -75,7 +75,6 @@ export function useCardActions({
     (openCardIdentifiers: string[] = []) => {
       const cardActions: Record<string, boolean> = {};
 
-      // mark provided cards as open, others as closed
       for (const card of activeCards) {
         cardActions[card] = openCardIdentifiers.includes(card);
       }

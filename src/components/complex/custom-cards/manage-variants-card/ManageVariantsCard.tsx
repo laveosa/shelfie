@@ -1,17 +1,18 @@
-import { Plus, SlidersVertical } from "lucide-react";
-import React, { Fragment } from "react";
+import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
+import React, { Fragment } from "react";
 
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
+import { Plus, SlidersVertical } from "lucide-react";
+
 import cs from "./ManageVariantsCard.module.scss";
+import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { TraitModel } from "@/const/models/TraitModel.ts";
-import { IManageVariantsCard } from "@/const/interfaces/complex-components/custom-cards/IManageVariantsCard.ts";
 import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
-import { ColumnDef } from "@tanstack/react-table";
 import { Separator } from "@/components/ui/separator.tsx";
 import { ManageVariantsGridColumns } from "@/components/complex/grid/custom-grids/manage-variants-grid/ManageVariantsGridColumns.tsx";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
+import { IManageVariantsCard } from "@/const/interfaces/complex-components/custom-cards/IManageVariantsCard.ts";
 
 export default function ManageVariantsCard({
   isLoading,
@@ -107,7 +108,7 @@ export default function ManageVariantsCard({
               </span>
               <SheButton
                 icon={Plus}
-                variant="outline"
+                variant="secondary"
                 value={t("ProductActions.SelectTraits")}
                 onClick={() => {
                   onAction("openChooseVariantTraitsCard");
@@ -119,14 +120,17 @@ export default function ManageVariantsCard({
         <Separator />
         <div className={cs.buttonBlock}>
           <span className="she-title">{t("SectionTitles.Variant")}</span>
-          <SheButton
-            icon={Plus}
-            variant="outline"
-            value={t("ProductActions.CreateVariant")}
-            onClick={() => {
-              onAction("openAddVariantCard");
-            }}
-          />
+          {variants.length > 0 && (
+            <SheButton
+              icon={Plus}
+              variant="secondary"
+              value={t("ProductActions.CreateVariant")}
+              onClick={() => {
+                onAction("openAddVariantCard");
+              }}
+            />
+          )}
+
           {/*{traits.length === 0 && (*/}
           {/*  <>*/}
           {/*    <span>or</span>*/}
@@ -146,7 +150,7 @@ export default function ManageVariantsCard({
               ManageVariantsGridColumns(onGridAction) as ColumnDef<DataWithId>[]
             }
             data={variants}
-            gridModel={data}
+            gridRequestModel={data}
             customMessage={t("ProductMessages.NoVariants")}
             onNewItemPosition={(newIndex, activeItem) =>
               handleAction("dnd", { newIndex, activeItem })

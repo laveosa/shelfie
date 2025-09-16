@@ -20,7 +20,6 @@ export default function OrdersCard({
   isGridLoading,
   preferences,
   sortingOptions,
-  ordersGridModel,
   ordersGridRequestModel,
   onAction,
 }: IOrdersCard) {
@@ -45,8 +44,8 @@ export default function OrdersCard({
         <DndGridDataTable
           isLoading={isGridLoading}
           columns={ordersGridColumns(onGridAction) as ColumnDef<DataWithId>[]}
-          data={ordersGridModel.items}
-          gridModel={ordersGridModel}
+          data={ordersGridRequestModel.items}
+          gridRequestModel={ordersGridRequestModel}
           sortingItems={sortingOptions}
           columnsPreferences={preferences}
           preferenceContext={"productReferences"}

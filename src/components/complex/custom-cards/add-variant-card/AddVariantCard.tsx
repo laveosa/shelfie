@@ -121,40 +121,48 @@ export default function AddVariantCard({
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue
-                                placeholder={t("ProductForm.Placeholders.SelectTraitType", { traitType: trait.traitTypeName.toLowerCase() })}
+                                placeholder={t(
+                                  "ProductForm.Placeholders.SelectTraitType",
+                                  {
+                                    traitType:
+                                      trait.traitTypeName.toLowerCase(),
+                                  },
+                                )}
                               />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            {trait.traitOptions.map((option) => (
-                              <SelectItem
-                                key={option.optionId}
-                                value={option.optionId.toString()}
-                              >
-                                {trait.traitTypeId === 2 ? (
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      alignItems: "center",
-                                    }}
-                                  >
+                            {trait.traitOptions
+                              .filter((option) => !option.isRaw)
+                              .map((option) => (
+                                <SelectItem
+                                  key={option.optionId}
+                                  value={option.optionId.toString()}
+                                >
+                                  {trait.traitTypeId === 2 ? (
                                     <div
                                       style={{
-                                        width: "20px",
-                                        height: "20px",
-                                        background:
-                                          option?.optionColor || "#ccc",
-                                        marginRight: "8px",
-                                        borderRadius: "2px",
+                                        display: "flex",
+                                        alignItems: "center",
                                       }}
-                                    ></div>
-                                    {option.optionName}
-                                  </div>
-                                ) : (
-                                  option.optionName
-                                )}
-                              </SelectItem>
-                            ))}
+                                    >
+                                      <div
+                                        style={{
+                                          width: "20px",
+                                          height: "20px",
+                                          background:
+                                            option?.optionColor || "#ccc",
+                                          marginRight: "8px",
+                                          borderRadius: "2px",
+                                        }}
+                                      ></div>
+                                      {option.optionName}
+                                    </div>
+                                  ) : (
+                                    option.optionName
+                                  )}
+                                </SelectItem>
+                              ))}
                           </SelectContent>
                         </Select>
                       </FormItem>

@@ -66,8 +66,9 @@ export default function DisposeStockCard({
       <div className={cs.disposeStockCardContent}>
         <div className={cs.currentlyStockBlock}>
           <span className="she-text">
-            {t("StockForm.Labels.CurrentlyInStock", { amount: variant.stockAmount && 0 })}
+            {t("StockForm.Labels.CurrentlyInStock")}
           </span>
+          <span className="she-text">{variant.stockAmount || 0}</span>
         </div>
         <div className={cs.disposeFormBlock}>
           <SheForm form={form as any} onSubmit={onSubmit}>
@@ -95,7 +96,9 @@ export default function DisposeStockCard({
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder={t("SelectOptions.SelectCategory")} />
+                        <SelectValue
+                          placeholder={t("SelectOptions.SelectCategory")}
+                        />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>

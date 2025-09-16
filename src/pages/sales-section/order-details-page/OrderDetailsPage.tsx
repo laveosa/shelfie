@@ -8,7 +8,6 @@ import { useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
 import useOrderDetailsPageService from "@/pages/sales-section/order-details-page/useOrderDetailsPageService.ts";
-import useOrdersPageService from "@/pages/sales-section/orders-page/useOrdersPageService.ts";
 import OrderConfigurationCard from "@/components/complex/custom-cards/order-configuration-card/OrderConfigurationCard.tsx";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import { OrderDetailsPageSliceActions as actions } from "@/state/slices/OrderDetailsPageSlice";
@@ -17,20 +16,20 @@ import { IOrderDetailsPageSlice } from "@/const/interfaces/store-slices/IOrderDe
 import { CustomersListGridColumns } from "@/components/complex/grid/custom-grids/customers-list-grid/CustomersListGridColumns.tsx";
 import SelectDiscountCard from "@/components/complex/custom-cards/select-discount-card/SelectDiscountCard.tsx";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
+import CustomerCard from "@/components/complex/custom-cards/customer-card/CustomerCard.tsx";
 
 export function OrderDetailsPage() {
-  const state = useAppSelector<IOrderDetailsPageSlice>(
-    StoreSliceEnum.ORDER_DETAILS,
-  );
-  const ordersState = useAppSelector<IOrdersPageSlice>(StoreSliceEnum.ORDERS);
-  const service = useOrderDetailsPageService();
-  const ordersService = useOrdersPageService();
-  const { orderId } = useParams();
   const { handleCardAction, createRefCallback } = useCardActions({
     selectActiveCards: (state) =>
       state[StoreSliceEnum.ORDER_DETAILS].activeCards,
     refreshAction: actions.refreshActiveCards,
   });
+  const state = useAppSelector<IOrderDetailsPageSlice>(
+    StoreSliceEnum.ORDER_DETAILS,
+  );
+  const ordersState = useAppSelector<IOrdersPageSlice>(StoreSliceEnum.ORDERS);
+  const service = useOrderDetailsPageService(handleCardAction);
+  const { orderId } = useParams();
 
   useEffect(() => {
     if (
@@ -44,24 +43,15 @@ export function OrderDetailsPage() {
   async function onAction(actionType: string, payload?: any) {
     switch (actionType) {
       case "openSelectEntityCard":
-        handleCardAction("selectEntityCard", true);
-        ordersService.getListOfCustomersForGridHandler({
-          ...ordersState.customersGridRequestModel,
-          searchQuery: payload,
-        });
+        service.openSelectEntityCardHandler();
         break;
       case "openCreateEntityCard":
-        // dispatch(actions.resetManagedSupplier(null));
-        // handleCardAction("supplierConfigurationCard", true);
+        service.openCreateEntityCardHandler();
         break;
       case "searchEntity":
-        service.getListOfCustomersForGridHandler({
-          ...ordersState.customersGridRequestModel,
-          searchQuery: payload,
-        });
+        service.searchEntityHandler(payload);
         break;
       case "selectCustomer":
-        handleCardAction("selectEntityCard");
         service.assignCustomerToOrderHandler(orderId, payload.customerId);
         break;
       case "deleteOrder":
@@ -81,14 +71,28 @@ export function OrderDetailsPage() {
         });
         break;
       case "closeSelectEntityCard":
-        handleCardAction("selectEntityCard");
+        service.closeSelectEntityCardHandler();
         break;
       case "openSelectDiscountCard":
-        handleCardAction("selectDiscountCard", true);
         service.getDiscountsListHandler();
         break;
       case "closeSelectDiscountCard":
-        handleCardAction("selectDiscountCard");
+        service.closeSelectDiscountCardHandler();
+        break;
+      case "manageCustomer":
+        service.manageCustomerHandler(payload);
+        break;
+      case "createCustomer":
+        service.createCustomerHandler(payload);
+        break;
+      case "updateCustomer":
+        service.updateCustomerHandler(payload);
+        break;
+      case "deleteCustomer":
+        service.deleteCustomerHandler(payload);
+        break;
+      case "closeCustomerCard":
+        service.closeCustomerCardHandler();
         break;
     }
   }
@@ -112,12 +116,21 @@ export function OrderDetailsPage() {
             isLoading={state.isSelectEntityCardLoading}
             isGridLoading={state.isSelectEntityGridLoading}
             entityName={"Customer"}
-            entityCollection={ordersState.customersGridModel.items}
+            entityCollection={ordersState.customersGridRequestModel.items}
             columns={
               CustomersListGridColumns({
                 onAction,
               }) as ColumnDef<DataWithId>[]
             }
+            onAction={onAction}
+          />
+        </div>
+      )}
+      {state.activeCards?.includes("customerCard") && (
+        <div ref={createRefCallback("customerCard")}>
+          <CustomerCard
+            isLoading={state.isCustomerCardLoading}
+            customer={state.selectedCustomer}
             onAction={onAction}
           />
         </div>

@@ -1,16 +1,31 @@
 import { useNavigate } from "react-router-dom";
 
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
-import { OrdersPageSliceActions as ordersActions } from "@/state/slices/OrdersPageSlice";
+import {
+  OrdersPageSliceActions as ordersActions
+} from "@/state/slices/OrdersPageSlice";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { useToast } from "@/hooks/useToast.ts";
-import { OrderDetailsPageSliceActions as actions } from "@/state/slices/OrderDetailsPageSlice.ts";
-import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
+import {
+  OrderDetailsPageSliceActions as actions
+} from "@/state/slices/OrderDetailsPageSlice.ts";
+import {
+  IOrdersPageSlice
+} from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { IOrderDetailsPageSlice } from "@/const/interfaces/store-slices/IOrderDetailsPageSlice.ts";
+import {
+  IOrderDetailsPageSlice
+} from "@/const/interfaces/store-slices/IOrderDetailsPageSlice.ts";
 import OrdersApiHooks from "@/utils/services/api/OrdersApiService.ts";
+import useOrdersPageService
+  from "@/pages/sales-section/orders-page/useOrdersPageService.ts";
+import { CustomerModel } from "@/const/models/CustomerModel.ts";
+import {
+  convertCustomerToRequestModel
+} from "@/utils/helpers/customer-helper.ts";
+import useDialogService from "@/utils/services/dialog/DialogService.ts";
 
-export default function useOrderDetailsPageService() {
+export default function useOrderDetailsPageService(handleCardAction) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { addToast } = useToast();
@@ -18,6 +33,8 @@ export default function useOrderDetailsPageService() {
     StoreSliceEnum.ORDER_DETAILS,
   );
   const ordersState = useAppSelector<IOrdersPageSlice>(StoreSliceEnum.ORDERS);
+  const ordersService = useOrdersPageService();
+  const { openConfirmationDialog } = useDialogService();
 
   const [getOrderDetails] = OrdersApiHooks.useLazyGetOrderDetailsQuery();
   const [getListOfCustomersForGrid] =
@@ -31,6 +48,9 @@ export default function useOrderDetailsPageService() {
     OrdersApiHooks.useRemoveDiscountsFromOrderMutation();
   const [applyDiscountsToOrder] =
     OrdersApiHooks.useApplyDiscountsToOrderMutation();
+  const [createCustomer] = OrdersApiHooks.useCreateCustomerMutation();
+  const [updateCustomer] = OrdersApiHooks.useUpdateCustomerMutation();
+  const [deleteCustomer] = OrdersApiHooks.useDeleteCustomerMutation();
 
   function getOrderDetailsHandler(orderId) {
     dispatch(actions.setIsOrderConfigurationCardLoading(true));
@@ -48,12 +68,13 @@ export default function useOrderDetailsPageService() {
     dispatch(actions.setIsSelectEntityGridLoading(true));
     return getListOfCustomersForGrid(model).then((res: any) => {
       dispatch(actions.setIsSelectEntityGridLoading(false));
-      dispatch(ordersActions.refreshCustomersGridModel(res.data));
+      dispatch(ordersActions.refreshCustomersGridRequestModel(res.data));
       return res.data;
     });
   }
 
   function assignCustomerToOrderHandler(orderId, customerId) {
+    handleCardAction("selectEntityCard");
     dispatch(actions.setIsOrderConfigurationCardLoading(true));
     return assignCustomerToOrder({ orderId, customerId }).then((res: any) => {
       dispatch(actions.setIsOrderConfigurationCardLoading(false));
@@ -62,7 +83,15 @@ export default function useOrderDetailsPageService() {
     });
   }
 
-  function deleteOrderHandler(orderId) {
+  async function deleteOrderHandler(orderId) {
+    const confirmedCustomerDeleting = await openConfirmationDialog({
+      headerTitle: "Deleting order",
+      text: "You are about to delete order.",
+      primaryButtonValue: "Delete",
+      secondaryButtonValue: "Cancel",
+    });
+
+    if (!confirmedCustomerDeleting) return;
     return deleteOrder(orderId).then((res: any) => {
       if (!res.error) {
         navigate(`${NavUrlEnum.SALES}${NavUrlEnum.ORDERS}`);
@@ -81,6 +110,7 @@ export default function useOrderDetailsPageService() {
   }
 
   function getDiscountsListHandler() {
+    handleCardAction("selectDiscountCard", true);
     dispatch(actions.setIsSelectDiscountGridLoading(true));
 
     return getDiscountsList().then((res: any) => {
@@ -186,6 +216,138 @@ export default function useOrderDetailsPageService() {
     });
   }
 
+  function openSelectEntityCardHandler() {
+    handleCardAction("selectEntityCard", true);
+    ordersService
+      .getListOfCustomersForGridHandler(ordersState.customersGridRequestModel)
+      .then((res: any) => {
+        const modifiedList = res.items.map((item) => ({
+          ...item,
+          isSelected: item.customerId === ordersState.selectedOrder.customerId,
+        }));
+        dispatch(
+          ordersActions.refreshCustomersGridRequestModel({
+            ...ordersState.customersGridRequestModel,
+            items: modifiedList,
+          }),
+        );
+      });
+  }
+
+  function searchEntityHandler(model) {
+    getListOfCustomersForGridHandler({
+      ...ordersState.customersGridRequestModel,
+      searchQuery: model,
+    });
+  }
+
+  function closeSelectEntityCardHandler() {
+    handleCardAction("selectEntityCard");
+  }
+
+  function closeSelectDiscountCardHandler() {
+    handleCardAction("selectDiscountCard");
+  }
+
+  function openCreateEntityCardHandler() {
+    handleCardAction("customerCard", true);
+    dispatch(actions.resetSelectedCustomer());
+  }
+
+  function manageCustomerHandler(model: CustomerModel) {
+    handleCardAction("customerCard", true);
+    dispatch(actions.refreshSelectedCustomer(model));
+  }
+
+  function createCustomerHandler(data: any) {
+    const requestData = convertCustomerToRequestModel(data);
+    dispatch(actions.setIsCustomerCardLoading(true));
+    return createCustomer(requestData).then((res) => {
+      dispatch(actions.setIsCustomerCardLoading(false));
+      if (res.error) {
+        return;
+      } else {
+        addToast({
+          text: "New customer created successfully",
+          type: "info",
+        });
+        dispatch(actions.refreshSelectedCustomer(res.data));
+        dispatch(
+          ordersActions.refreshCustomersGridRequestModel({
+            ...ordersState.customersGridRequestModel,
+            items: [...ordersState.customersGridRequestModel.items, res.data],
+          }),
+        );
+      }
+    });
+  }
+
+  function updateCustomerHandler(data: any) {
+    const requestData = convertCustomerToRequestModel(data);
+    dispatch(actions.setIsCustomerCardLoading(true));
+    return updateCustomer({
+      id: state.selectedCustomer?.customerId,
+      model: requestData,
+    }).then((res) => {
+      dispatch(actions.setIsCustomerCardLoading(false));
+      if (res.error) {
+        return;
+      } else {
+        addToast({
+          text: "Customer updated successfully",
+          type: "info",
+        });
+        return res.data;
+      }
+    });
+  }
+
+  async function deleteCustomerHandler(data: any) {
+    const confirmedCustomerDeleting = await openConfirmationDialog({
+      headerTitle: "Deleting customer",
+      text: `You are about to delete customer ${data.customerName}.`,
+      primaryButtonValue: "Delete",
+      secondaryButtonValue: "Cancel",
+    });
+
+    if (!confirmedCustomerDeleting) return;
+    deleteCustomer(data.id).then((res) => {
+      if (res.error) {
+        addToast({
+          text: "Failed to delete customer",
+          type: "error",
+        });
+        return;
+      } else {
+        handleCardAction("customerCard");
+        addToast({
+          text: "Customer deleted successfully",
+          type: "info",
+        });
+        dispatch(
+          ordersActions.refreshCustomersGridRequestModel({
+            ...ordersState.customersGridRequestModel,
+            items: ordersState.customersGridRequestModel.items.filter(
+              (customer) => customer.customerId !== data.customerId,
+            ),
+          }),
+        );
+        if (ordersState.selectedOrder.customerId === data.customerId) {
+          dispatch(
+            ordersActions.refreshSelectedOrder({
+              ...ordersState.selectedOrder,
+              customer: null,
+            }),
+          );
+        }
+      }
+    });
+  }
+
+  function closeCustomerCardHandler() {
+    handleCardAction("customerCard");
+  }
+
   return {
     getOrderDetailsHandler,
     getListOfCustomersForGridHandler,
@@ -195,5 +357,15 @@ export default function useOrderDetailsPageService() {
     createDiscountHandler,
     removeDiscountsFromOrderHandler,
     applyDiscountsToOrderHandler,
+    openSelectEntityCardHandler,
+    searchEntityHandler,
+    closeSelectEntityCardHandler,
+    closeSelectDiscountCardHandler,
+    openCreateEntityCardHandler,
+    manageCustomerHandler,
+    createCustomerHandler,
+    updateCustomerHandler,
+    deleteCustomerHandler,
+    closeCustomerCardHandler,
   };
 }

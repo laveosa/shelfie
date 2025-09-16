@@ -12,7 +12,7 @@ import {
   GridSortingEnum,
   GridSortingEnumLabels,
 } from "@/const/enums/GridSortingEnum.ts";
-import cs from "./SelectShipmentForOrder.module.scss";
+import cs from "./SelectShipmentForOrderCard.module.scss";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import { ISelectShipmentForOrderCard } from "@/const/interfaces/complex-components/custom-cards/ISelectShipmentForOrderCard.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
@@ -27,7 +27,7 @@ import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 export default function SelectShipmentForOrderCard({
   isLoading,
   isGridLoading,
-  shipmentsGridModel,
+  shipmentsGridRequestModel,
   services,
   customer,
   onAction,
@@ -106,9 +106,9 @@ export default function SelectShipmentForOrderCard({
               onAction,
             ) as ColumnDef<DataWithId>[]
           }
-          gridModel={shipmentsGridModel}
-          skeletonQuantity={shipmentsGridModel?.items.length}
-          data={shipmentsGridModel?.items}
+          gridRequestModel={shipmentsGridRequestModel}
+          skeletonQuantity={shipmentsGridRequestModel?.items?.length}
+          data={shipmentsGridRequestModel?.items}
           customMessage={t("ShipmentMessages.NoShipmentsCreated")}
           sortingItems={sortingItems}
           onApplyColumns={(model) => onAction("applyColumns", model)}
@@ -135,7 +135,9 @@ export default function SelectShipmentForOrderCard({
               onAction("gridRequestChange", { shipmentStatus: value })
             }
             hideFirstOption
-            selected={shipmentsGridModel.filter?.status as ShipmentStatusEnum}
+            selected={
+              shipmentsGridRequestModel.filter?.status as ShipmentStatusEnum
+            }
           />
           <SheDatePicker
             icon={CalendarDays}

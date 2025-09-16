@@ -1,4 +1,4 @@
-import { Plus, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
@@ -6,7 +6,6 @@ import SheProductCard from "@/components/complex/she-product-card/SheProductCard
 import cs from "./SupplierConfigurationCard.module.scss";
 import CreateSupplierForm from "@/components/forms/create-supplier-form/CreateSupplierForm.tsx";
 import { ICreateSupplierCard } from "@/const/interfaces/complex-components/custom-cards/ICreateSupplierCard.ts";
-import SheCardNotification from "@/components/complex/she-card-notification/SheCardNotification.tsx";
 
 export default function SupplierConfigurationCard({
   isLoading,
@@ -29,9 +28,25 @@ export default function SupplierConfigurationCard({
   return (
     <SheProductCard
       loading={isLoading}
-      title={managedSupplier ? t("CardTitles.ManageSupplier") : t("CardTitles.CreateSupplier")}
       className={cs.supplierConfigurationCard}
+      title={
+        managedSupplier
+          ? t("CardTitles.ManageSupplier")
+          : t("CardTitles.CreateSupplier")
+      }
       showCloseButton
+      showNotificationCard={!!managedSupplier}
+      notificationCardProps={{
+        title: "Delete Supplier",
+        titleTransKey: "CardTitles.DeleteSupplier",
+        text: "This variant will be deleted, it will no longer be available for sale but you will still see it in the orders where it sold",
+        textTransKey: "ConfirmationMessages.DeleteVariant",
+        buttonText: "Delete",
+        buttonTextTransKey: "CommonButtons.Delete",
+        buttonColor: "#FF0000",
+        buttonIcon: Trash2,
+        onClick: () => onAction("deleteSupplier", managedSupplier),
+      }}
       onSecondaryButtonClick={() => onAction("closeSupplierConfigurationCard")}
     >
       <div className={cs.supplierConfigurationCardContent}>
@@ -53,31 +68,6 @@ export default function SupplierConfigurationCard({
           onImageUpload={(data) => onAction("uploadSupplierPhoto", data)}
           onCancel={() => onAction("closeSupplierConfigurationCard")}
         />
-        {managedSupplier && (
-          <div>
-            {!managedSupplier?.isDeleted ? (
-              <SheCardNotification
-                title={t("CardTitles.DeleteSupplier")}
-                text={t("ConfirmationMessages.DeleteSupplier")}
-                buttonIcon={Trash2}
-                buttonVariant="outline"
-                buttonText={t("CommonButtons.Delete")}
-                buttonColor="#EF4343"
-                onClick={() => onAction("deleteSupplier", managedSupplier)}
-              />
-            ) : (
-              <SheCardNotification
-                title={t("CardTitles.RestoreSupplier")}
-                text={t("ConfirmationMessages.RestoreSupplier")}
-                buttonIcon={Plus}
-                buttonVariant="outline"
-                buttonText={t("CommonButtons.Restore")}
-                buttonColor="#38BF5E"
-                onClick={() => onAction("restoreSupplier", managedSupplier)}
-              />
-            )}
-          </div>
-        )}
       </div>
     </SheProductCard>
   );

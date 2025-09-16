@@ -16,11 +16,10 @@ import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import { SupplierModel } from "@/const/models/SupplierModel.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
-import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
 
-export default function useSupplierPageService() {
+export default function useSupplierPageService(handleCardAction) {
   const productsService = useProductsPageService();
   const state = useAppSelector<ISupplierPageSlice>(StoreSliceEnum.SUPPLIER);
   const productsState = useAppSelector<IProductsPageSlice>(
@@ -31,10 +30,6 @@ export default function useSupplierPageService() {
   const { addToast } = useToast();
   const { t } = useTranslation();
   const { openConfirmationDialog } = useDialogService();
-  const { handleCardAction } = useCardActions({
-    selectActiveCards: (state) => state[StoreSliceEnum.SUPPLIER].activeCards,
-    refreshAction: actions.refreshActiveCards,
-  });
 
   const [createPurchaseForSupplier] =
     PurchasesApiHooks.useCreatePurchaseForSupplierMutation();
@@ -65,11 +60,11 @@ export default function useSupplierPageService() {
     }).then((res: any) => {
       dispatch(actions.refreshPurchase(res.data));
       dispatch(actions.setIsSupplierCardLoading(false));
-      productsService.getPurchaseCountersHandler(res.purchaseId);
-      navigate(
-        `${NavUrlEnum.PRODUCTS}${NavUrlEnum.PURCHASE_PRODUCTS}/${res.purchaseId}`,
-      );
       if (res) {
+        productsService.getPurchaseCountersHandler(res.purchaseId);
+        navigate(
+          `${NavUrlEnum.PRODUCTS}${NavUrlEnum.PURCHASE_PRODUCTS}/${res.data.purchaseId}`,
+        );
         addToast({
           text: t("SuccessMessages.PurchaseCreated"),
           type: "success",

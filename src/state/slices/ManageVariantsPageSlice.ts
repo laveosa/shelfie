@@ -2,12 +2,14 @@ import { IManageVariantsPageSlice } from "@/const/interfaces/store-slices/IManag
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { TypeOfTraitModel } from "@/const/models/TypeOfTraitModel.ts";
-import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 import { ProductCountersModel } from "@/const/models/CounterModel.ts";
 import { VariantHistoryModel } from "@/const/models/VariantHistoryModel.ts";
+import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
+import { CompanyModel } from "@/const/models/CompanyModel.ts";
+import _ from "lodash";
 
 const initialState: IManageVariantsPageSlice = {
   isLoading: false,
@@ -22,12 +24,17 @@ const initialState: IManageVariantsPageSlice = {
   isProductTraitConfigurationCardLoading: false,
   isVariantPhotosCardLoading: false,
   isVariantHistoryCardLoading: false,
+  isSelectPurchaseCardLoading: false,
+  isSupplierCardLoading: false,
+  isSelectEntityCardLoading: false,
   isProductsLoading: false,
   isTraitOptionsGridLoading: false,
   isVariantOptionsGridLoading: false,
   isVariantPhotoGridLoading: false,
   isProductPhotoGridLoading: false,
   isVariantsHistoryGridLoading: false,
+  isPurchaseGridLoading: false,
+  isSuppliersGridLoading: false,
   selectedVariant: null,
   isDuplicateVariant: false,
   productCounter: null,
@@ -39,27 +46,19 @@ const initialState: IManageVariantsPageSlice = {
   contextId: null,
   selectedTraitsIds: [],
   selectedTrait: null,
-  colorOptionsGridModel: null,
-  sizeOptionsGridModel: {
-    pager: {},
-    items: [],
-  },
-  variantTraitsGridModel: {
-    pager: {},
-    items: [],
-  },
-  photosGridModel: {
-    pager: {},
-    items: [],
-  },
-  gridRequestModel: {
-    currentPage: 1,
-    pageSize: 10,
-  },
+  colorOptionsGridRequestModel: null,
+  sizeOptionsGridRequestModel: {},
+  variantTraitsGridRequestModel: {},
+  photosGridRequestModel: {},
   traitOptions: [],
   variantPhotos: [],
   productPhotosForVariant: [],
   variantHistory: [],
+  purchasesList: [],
+  purchaseGridRequestModel: {},
+  selectedPurchase: null,
+  companiesGridRequestModel: {},
+  selectedCompany: null,
 };
 
 //----------------------------------------------------- LOADERS
@@ -148,6 +147,27 @@ function setIsVariantHistoryCardLoading(
   state.isVariantHistoryCardLoading = action?.payload;
 }
 
+function setIsSelectPurchaseCardLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isSelectPurchaseCardLoading = action?.payload;
+}
+
+function setIsSupplierCardLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isSupplierCardLoading = action?.payload;
+}
+
+function setIsSelectEntityCardLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isSelectEntityCardLoading = action?.payload;
+}
+
 function setIsProductsLoading(
   state: IManageVariantsPageSlice,
   action: PayloadAction<boolean>,
@@ -188,6 +208,20 @@ function setIsVariantsHistoryGridLoading(
   action: PayloadAction<boolean>,
 ) {
   state.isVariantsHistoryGridLoading = action?.payload;
+}
+
+function setIsPurchaseGridLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isPurchaseGridLoading = action?.payload;
+}
+
+function setIsSuppliersGridLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isSuppliersGridLoading = action?.payload;
 }
 
 //----------------------------------------------------- API
@@ -279,25 +313,28 @@ function refreshTraitOption(
   state.traitOptions = action?.payload || state.traitOptions;
 }
 
-function refreshColorOptionsGridModel(
-  state: IManageVariantsPageSlice,
-  action: PayloadAction<GridModel>,
-) {
-  state.colorOptionsGridModel = action?.payload || state.colorOptionsGridModel;
-}
-
-function refreshSizeOptionsGridModel(
-  state: IManageVariantsPageSlice,
-  action: PayloadAction<GridModel>,
-) {
-  state.sizeOptionsGridModel = action?.payload || state.sizeOptionsGridModel;
-}
-
-function refreshGridRequestModel(
+function refreshColorOptionsGridRequestModel(
   state: IManageVariantsPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
-  state.gridRequestModel = action?.payload || state.gridRequestModel;
+  if (_.isEqual(state.colorOptionsGridRequestModel, action?.payload)) {
+    return;
+  }
+
+  state.colorOptionsGridRequestModel =
+    action?.payload || state.colorOptionsGridRequestModel;
+}
+
+function refreshSizeOptionsGridRequestModel(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<GridRequestModel>,
+) {
+  if (_.isEqual(state.sizeOptionsGridRequestModel, action?.payload)) {
+    return;
+  }
+
+  state.sizeOptionsGridRequestModel =
+    action?.payload || state.sizeOptionsGridRequestModel;
 }
 
 function refreshVariantPhotos(
@@ -322,6 +359,55 @@ function refreshVariantHistory(
   state.variantHistory = action?.payload || state.variantHistory;
 }
 
+function refreshPurchasesList(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<PurchaseModel[]>,
+) {
+  state.purchasesList = action?.payload || state.purchasesList;
+}
+
+function refreshPurchaseGridRequestModel(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<GridRequestModel>,
+) {
+  if (_.isEqual(state.purchaseGridRequestModel, action?.payload)) {
+    return;
+  }
+
+  state.purchaseGridRequestModel =
+    action?.payload || state.purchaseGridRequestModel;
+}
+
+function refreshSelectedPurchase(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<PurchaseModel>,
+) {
+  state.selectedPurchase = action?.payload || state.selectedPurchase;
+}
+
+function resetSelectedPurchase(state: IManageVariantsPageSlice) {
+  state.selectedPurchase = null;
+}
+
+function refreshCompaniesGridRequestModel(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<GridRequestModel>,
+) {
+  if (_.isEqual(state.companiesGridRequestModel, action?.payload)) {
+    return;
+  }
+
+  state.companiesGridRequestModel =
+    action?.payload || state.companiesGridRequestModel;
+}
+
+function refreshSelectedCompany(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<CompanyModel>,
+) {
+  state.selectedCompany = action?.payload || state.selectedCompany;
+}
+
 const ManageVariantsPageSlice = createSlice({
   name: StoreSliceEnum.MANAGE_VARIANTS,
   initialState,
@@ -338,12 +424,17 @@ const ManageVariantsPageSlice = createSlice({
     setIsProductTraitConfigurationCardLoading,
     setIsVariantPhotosCardLoading,
     setIsVariantHistoryCardLoading,
+    setIsSelectPurchaseCardLoading,
+    setIsSupplierCardLoading,
+    setIsSelectEntityCardLoading,
     setIsProductsLoading,
     setIsTraitOptionsGridLoading,
     setIsVariantOptionsGridLoading,
     setIsVariantPhotoGridLoading,
     setIsProductPhotoGridLoading,
     setIsVariantsHistoryGridLoading,
+    setIsPurchaseGridLoading,
+    setIsSuppliersGridLoading,
     refreshIsDuplicateVariant,
     refreshTraits,
     refreshTypesOfTraits,
@@ -357,12 +448,17 @@ const ManageVariantsPageSlice = createSlice({
     resetSelectedTrait,
     refreshContextId,
     refreshTraitOption,
-    refreshColorOptionsGridModel,
-    refreshSizeOptionsGridModel,
-    refreshGridRequestModel,
+    refreshColorOptionsGridRequestModel,
+    refreshSizeOptionsGridRequestModel,
     refreshVariantPhotos,
     refreshProductPhotosForVariant,
     refreshVariantHistory,
+    refreshPurchasesList,
+    refreshPurchaseGridRequestModel,
+    refreshSelectedPurchase,
+    resetSelectedPurchase,
+    refreshCompaniesGridRequestModel,
+    refreshSelectedCompany,
   },
 });
 

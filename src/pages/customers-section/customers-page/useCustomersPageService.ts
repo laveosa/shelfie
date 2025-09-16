@@ -1,18 +1,18 @@
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { merge } from "lodash";
-import _ from "lodash";
+import _, { merge } from "lodash";
 
+import {
+  PreferencesModel,
+  PreferencesModelDefault,
+} from "@/const/models/PreferencesModel";
 import { AppDispatch } from "@/state/store.ts";
-import {OrdersApiService as api} from "@/utils/services/api/OrdersApiService.ts";  
+import { OrdersApiService as api } from "@/utils/services/api/OrdersApiService.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel";
 import { CustomersPageSliceActions as actions } from "@/state/slices/CustomersPageSlice";
-import { useNavigate } from "react-router-dom";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum";
-
 import UsersApiHooks from "@/utils/services/api/UsersApiService";
-import { PreferencesModel, PreferencesModelDefault } from "@/const/models/PreferencesModel";
 import { createCustomerCounter } from "@/const/models/CustomerCounterModel";
-
 import { AppSliceActions as appActions } from "@/state/slices/AppSlice";
 import { DEFAULT_SORTING_OPTIONS } from "@/const/models/GridSortingModel";
 import { useAppSelector } from "@/utils/hooks/redux";
@@ -21,7 +21,6 @@ import { ICustomersPageSlice } from "@/const/interfaces/store-slices/ICustomersP
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice";
 
 export default function useCustomersPageService() {
-
   const state = useAppSelector<ICustomersPageSlice>(StoreSliceEnum.CUSTOMERS);
   const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
 
@@ -29,12 +28,14 @@ export default function useCustomersPageService() {
   const navigate = useNavigate();
 
   const [getCustomersForGrid] = api.useGetCustomersForGridMutation();
-  const [updateUserPreferences] = UsersApiHooks.useUpdateUserPreferencesMutation();
-  const [resetUserPreferences] = UsersApiHooks.useResetUserPreferencesMutation();
- 
+  const [updateUserPreferences] =
+    UsersApiHooks.useUpdateUserPreferencesMutation();
+  const [resetUserPreferences] =
+    UsersApiHooks.useResetUserPreferencesMutation();
+
   function getCustomersForGridHandler(data?: GridRequestModel) {
-    if(!data && state.customersGridModel.items.length>0) return;
-    if(_.isEqual(data, state.customersGridRequestModel)) return;
+    if (!data && state.customersGridRequestModel?.items?.length > 0) return;
+    if (_.isEqual(data, state.customersGridRequestModel)) return;
     data = data ?? state.customersGridRequestModel;
 
     dispatch(actions.setIsCustomersLoading(true));
@@ -43,21 +44,23 @@ export default function useCustomersPageService() {
       dispatch(actions.setIsCustomersLoading(false));
 
       if (!res.error) {
-        dispatch(actions.refreshCustomersGridModel(res.data));
+        dispatch(actions.refreshCustomersGridRequestModel(res.data));
         dispatch(actions.refreshCustomers(res.data.items));
       }
       return res;
     });
   }
 
-    function onManageCustomerHandler(rowData: any) {
+  function onManageCustomerHandler(rowData: any) {
     dispatch(actions.refreshSelectedCustomer(rowData));
     dispatch(actions.refreshCustomerCounter(createCustomerCounter()));
     dispatch(actions.refreshCustomerAddresses(null));
-    dispatch(actions.refreshCustomerAddressesGridModel({
-      pager: {},
-      items: [],
-    })); 
+    dispatch(
+      actions.refreshCustomerAddressesGridRequestModel({
+        pager: {},
+        items: [],
+      }),
+    );
     navigate(`${NavUrlEnum.CUSTOMER_BASIC_DATA}/${rowData.id}`);
   }
 
@@ -66,33 +69,32 @@ export default function useCustomersPageService() {
     dispatch(actions.resetSelectedCustomer());
     navigate(`${NavUrlEnum.CUSTOMER_BASIC_DATA}`);
   }
-  
+
   function setDefaultSortingOptionsHandler() {
     dispatch(actions.refreshSortingOptions(DEFAULT_SORTING_OPTIONS));
   }
-  
-  function updateUserPreferencesHandler(model: PreferencesModel) {
 
+  function updateUserPreferencesHandler(model: PreferencesModel) {
     const modifiedModel = merge({}, appState.preferences, model);
     dispatch(appActions.refreshPreferences(modifiedModel));
-    
+
     return updateUserPreferences(model);
   }
 
   function resetUserPreferencesHandler(grid) {
     const resetModel = merge({}, appState.preferences, {
       viewsReferences: {
-        customerReferences: PreferencesModelDefault.viewsReferences.customerReferences
-      }
+        customerReferences:
+          PreferencesModelDefault.viewsReferences.customerReferences,
+      },
     });
     dispatch(appActions.refreshPreferences(resetModel));
     return resetUserPreferences(grid).catch((error) => {
-      console.error('Failed to reset preferences on server:', error);
+      console.error("Failed to reset preferences on server:", error);
     });
   }
 
-
-  return { 
+  return {
     appState,
     state,
     getCustomersForGridHandler,
@@ -100,7 +102,6 @@ export default function useCustomersPageService() {
     onCreateCustomerHandler,
     updateUserPreferencesHandler,
     resetUserPreferencesHandler,
-    setDefaultSortingOptionsHandler
+    setDefaultSortingOptionsHandler,
   };
-
 }

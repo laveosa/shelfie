@@ -98,14 +98,18 @@
     margin-bottom: 20px;
   }
 
-  .hasScrollbar {
-    padding-right: 5px;
-  }
+  //.hasScrollbar {
+  //  padding-right: 8px;
+  //}
 
   .cardFooter {
     display: flex;
     justify-content: space-between;
     width: 100%;
+  }
+
+  .cardNotification {
+    margin-top: 10px;
   }
 }
 

@@ -30,7 +30,10 @@ export function CustomerAddressesPage() {
 
   // ================================================================== EVENT
   useEffect(() => {
-    if (state.customerAddressesGridModel.items.length === 0 && customerId) {
+    if (
+      state.customerAddressesGridRequestModel.items.length === 0 &&
+      customerId
+    ) {
       getCustomerAddressesForGridHandler();
     }
 
@@ -137,7 +140,7 @@ export function CustomerAddressesPage() {
       <CustomerAddressesCard
         isLoading={state.isCustomerAddressesLoading}
         addresses={state.customerAddresses}
-        gridModel={state.customerAddressesGridModel}
+        gridRequestModel={state.customerAddressesGridRequestModel}
         onAction={onAction}
         sortingOptions={state.sortingOptions}
       />

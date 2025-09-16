@@ -1,4 +1,3 @@
-import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
@@ -9,6 +8,8 @@ import { VariantModel } from "@/const/models/VariantModel.ts";
 import { IPurchaseSummaryModel } from "@/const/models/PurchaseSummaryModel.ts";
 import { VariantHistoryModel } from "@/const/models/VariantHistoryModel.ts";
 import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
+import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
+import { CompanyModel } from "@/const/models/CompanyModel.ts";
 
 export interface IPurchaseProductsPageSlice {
   isLoading?: boolean;
@@ -31,6 +32,9 @@ export interface IPurchaseProductsPageSlice {
   isVariantHistoryCardLoading?: boolean;
   isVariantPhotosCardLoading?: boolean;
   isManageTraitsCardLoading?: boolean;
+  isSelectPurchaseCardLoading?: boolean;
+  isSelectEntityCardLoading?: boolean;
+  isSupplierCardLoading?: boolean;
   isImageUploaderLoading?: boolean;
   isProductPhotosLoading?: boolean;
   isVariantsGridLoading?: boolean;
@@ -41,16 +45,16 @@ export interface IPurchaseProductsPageSlice {
   isProductPhotoGridLoading?: boolean;
   isVariantHistoryGridLoading?: boolean;
   isVariantsForPurchaseGridLoading?: boolean;
+  isPurchaseGridLoading?: boolean;
+  isSuppliersGridLoading?: boolean;
   activeCards?: any[];
   activeTab?: string;
   variants?: VariantModel[];
   selectedProduct?: ProductModel;
-  purchasesProductsGridModel?: GridModel;
   purchasesProductsGridRequestModel?: GridRequestModel;
-  variantsForPurchaseGridModel?: GridModel;
   variantsForPurchaseGridRequestModel?: GridRequestModel;
-  colorOptionsGridModel?: GridModel;
-  purchaseProductVariantsGridModel?: GridModel;
+  colorOptionsGridRequestModel?: GridRequestModel;
+  purchaseProductVariantsGridRequestModel?: GridRequestModel;
   purchaseProducts?: ProductModel[];
   brands?: BrandModel[];
   categories?: CategoryModel[];
@@ -67,4 +71,9 @@ export interface IPurchaseProductsPageSlice {
   traitsForFilter?: TraitModel[];
   colorsForFilter?: TraitOptionModel[];
   sizesForFilter?: TraitOptionModel[];
+  purchasesList?: PurchaseModel[];
+  purchaseGridRequestModel?: GridRequestModel;
+  selectedPurchase?: PurchaseModel;
+  companiesGridRequestModel?: GridRequestModel;
+  selectedCompany?: CompanyModel;
 }

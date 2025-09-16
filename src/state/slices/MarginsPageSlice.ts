@@ -3,7 +3,7 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IMarginsPageSlice } from "@/const/interfaces/store-slices/IMarginsPageSlice.ts";
 import { MarginModel } from "@/const/models/MarginModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
-import { GridModel } from "@/const/models/GridModel.ts";
+import _ from "lodash";
 
 const initialState: IMarginsPageSlice = {
   isLoading: false,
@@ -16,18 +16,8 @@ const initialState: IMarginsPageSlice = {
   marginsList: [],
   selectedMargin: null,
   managedMargin: null,
-  marginItemsGridModel: {
-    pager: {},
-    items: [],
-  },
-  marginItemsGriRequestModel: {
-    currentPage: 1,
-    pageSize: 10,
-  },
-  marginsGridRequestModel: {
-    currentPage: 1,
-    pageSize: 10,
-  },
+  marginItemsGridRequestModel: {},
+  marginsGridRequestModel: {},
 };
 
 //----------------------------------------------------- LOADERS
@@ -126,25 +116,26 @@ function resetManagedMargin(state: IMarginsPageSlice) {
   state.managedMargin = null;
 }
 
-function refreshMarginItemsGridModel(
-  state: IMarginsPageSlice,
-  action: PayloadAction<GridModel>,
-) {
-  state.marginItemsGridModel = action?.payload || state.marginItemsGridModel;
-}
-
-function refreshMarginItemsGriRequestModel(
+function refreshMarginItemsGridRequestModel(
   state: IMarginsPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
-  state.marginItemsGriRequestModel =
-    action?.payload || state.marginItemsGriRequestModel;
+  if (_.isEqual(state.marginItemsGridRequestModel, action?.payload)) {
+    return;
+  }
+
+  state.marginItemsGridRequestModel =
+    action?.payload || state.marginItemsGridRequestModel;
 }
 
 function refreshMarginsGridRequestModel(
   state: IMarginsPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
+  if (_.isEqual(state.marginsGridRequestModel, action?.payload)) {
+    return;
+  }
+
   state.marginsGridRequestModel =
     action?.payload || state.marginsGridRequestModel;
 }
@@ -167,8 +158,7 @@ const MarginsPageSlice = createSlice({
     resetSelectedMargin,
     refreshManagedMargin,
     resetManagedMargin,
-    refreshMarginItemsGridModel,
-    refreshMarginItemsGriRequestModel,
+    refreshMarginItemsGridRequestModel,
     refreshMarginsGridRequestModel,
   },
 });

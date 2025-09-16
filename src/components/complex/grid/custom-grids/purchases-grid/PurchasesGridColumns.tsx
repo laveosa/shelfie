@@ -1,6 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import placeholderImage from "@/assets/images/placeholder-image.png";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { ImageIcon, TrashIcon } from "lucide-react";
@@ -29,7 +28,7 @@ export function purchasesGridColumns(onAction: any): ColumnDef<any>[] {
             <div>
               {imageUrl ? (
                 <img
-                  src={imageUrl || placeholderImage}
+                  src={imageUrl}
                   alt={row.original.supplier?.supplierName || "Supplier"}
                   className="object-cover rounded-md w-12 h-12"
                 />

@@ -19,18 +19,21 @@ import SelectShipmentForOrderCard from "@/components/complex/custom-cards/select
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export function OrderShipmentPage() {
-  const { orderId } = useParams();
-  const state = useAppSelector<IOrderShipmentPageSlice>(
-    StoreSliceEnum.ORDER_SHIPMENT,
-  );
-  const ordersState = useAppSelector<IOrdersPageSlice>(StoreSliceEnum.ORDERS);
-  const service = useOrderShipmentPageService();
   const { handleCardAction, handleMultipleCardActions, createRefCallback } =
     useCardActions({
       selectActiveCards: (state) =>
         state[StoreSliceEnum.ORDER_SHIPMENT].activeCards,
       refreshAction: actions.refreshActiveCards,
     });
+  const { orderId } = useParams();
+  const state = useAppSelector<IOrderShipmentPageSlice>(
+    StoreSliceEnum.ORDER_SHIPMENT,
+  );
+  const ordersState = useAppSelector<IOrdersPageSlice>(StoreSliceEnum.ORDERS);
+  const service = useOrderShipmentPageService(
+    handleCardAction,
+    handleMultipleCardActions,
+  );
 
   useEffect(() => {
     if (
@@ -46,11 +49,10 @@ export function OrderShipmentPage() {
   async function onAction(actionType: string, payload?: any) {
     switch (actionType) {
       case "createShipment":
-        handleCardAction("shipmentConfigurationCard", true);
         service.createShipmentHandler();
         break;
       case "closeShipmentConfigurationCard":
-        handleCardAction("shipmentConfigurationCard");
+        service.closeShipmentConfigurationCardHandler();
         break;
       case "changeShipmentDate":
         service.updateShipmentDatesHandler(
@@ -59,21 +61,18 @@ export function OrderShipmentPage() {
         );
         break;
       case "changeCustomer":
-        handleCardAction("selectEntityCard", true);
         service.getListOfCustomersForGridHandler({
           ...ordersState.customersGridRequestModel,
           searchQuery: payload,
         });
         break;
       case "selectCustomer":
-        handleCardAction("selectEntityCard");
         service.selectCustomerHandler(payload);
         break;
       case "closeSelectEntityCard":
-        handleCardAction("selectEntityCard");
+        service.closeSelectEntityCardHandler();
         break;
       case "selectAddress":
-        handleCardAction("selectEntityCard");
         service.updateShipmentCustomerHandler(
           state.selectedShipment.shipmentId,
           { addressId: payload.addressId },
@@ -97,14 +96,10 @@ export function OrderShipmentPage() {
         );
         break;
       case "manageShipment":
-        handleMultipleCardActions({
-          shipmentConfigurationCard: true,
-          selectShipmentForOrderCard: false,
-        });
         service.getShipmentDetailsHandler(payload.shipmentId);
         break;
       case "closeSelectShipmentForOrderCard":
-        handleCardAction("selectShipmentForOrderCard");
+        service.closeSelectShipmentForOrderCardHandler();
         break;
       case "applyColumns":
         service.applyShipmentsGridColumns(payload);
@@ -136,7 +131,6 @@ export function OrderShipmentPage() {
         break;
       case "removeItemFromShipment":
         service.removeVariantFromShipmentHandler(payload.stockActionId);
-        console.log(payload);
         break;
     }
   }
@@ -152,7 +146,7 @@ export function OrderShipmentPage() {
       />
       <ShipmentDetailsCard
         isLoading={state.isShipmentDetailsCardLoading}
-        products={ordersState.stockActionsGridModel.items}
+        products={ordersState.stockActionsGridRequestModel.items}
         shipments={state.orderShipments}
         customer={state.selectedCustomer}
         isProductsGridLoading={state.isProductsGridLoading}
@@ -164,7 +158,7 @@ export function OrderShipmentPage() {
           <SelectShipmentForOrderCard
             isLoading={state.isSelectShipmentForOrderCardLoading}
             isGridLoading={state.isSelectShipmentForOrderGridLoading}
-            shipmentsGridModel={state.shipmentsGridModel}
+            shipmentsGridRequestModel={state.shipmentsGridRequestModel}
             customer={state.selectedCustomer}
             onAction={onAction}
           />
@@ -185,7 +179,7 @@ export function OrderShipmentPage() {
             isLoading={state.isSelectEntityCardLoading}
             isGridLoading={state.isSelectEntityGridLoading}
             entityName={"Customer"}
-            entityCollection={ordersState.customersGridModel.items}
+            entityCollection={ordersState.customersGridRequestModel.items}
             columns={
               CustomersListGridColumns({
                 onAction,

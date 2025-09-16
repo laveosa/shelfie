@@ -3,13 +3,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
 import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
-import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { OrderModel } from "@/const/models/OrderModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
 import { OrderCountersModel } from "@/const/models/CounterModel.ts";
+import _ from "lodash";
 
 const initialState: IOrdersPageSlice = {
   isLoading: false,
@@ -17,47 +17,15 @@ const initialState: IOrdersPageSlice = {
   isOrdersGridLoading: false,
   activeCards: [],
   sortingOptions: [],
-  ordersGridModel: {
-    pager: {},
-    items: [],
-  },
-  ordersGridRequestModel: {
-    currentPage: 1,
-    pageSize: 10,
-    filter: {},
-  },
+  ordersGridRequestModel: {},
   selectedOrder: null,
-  customersGridModel: {
-    pager: {},
-    items: [],
-  },
-  customersGridRequestModel: {
-    currentPage: 1,
-    pageSize: 10,
-    filter: {},
-  },
-  variantsGridModel: {
-    pager: {},
-    items: [],
-  },
-  variantsGridRequestModel: {
-    currentPage: 1,
-    pageSize: 10,
-    filter: {},
-  },
+  customersGridRequestModel: {},
+  variantsGridRequestModel: {},
   brands: [],
   categories: [],
   colorsForFilter: [],
   sizesForFilter: [],
-  stockActionsGridModel: {
-    pager: {},
-    items: [],
-  },
-  stockActionsGridRequestModel: {
-    currentPage: 1,
-    pageSize: 10,
-    filter: {},
-  },
+  stockActionsGridRequestModel: {},
   productCounter: null,
 };
 
@@ -97,17 +65,14 @@ function refreshSortingOptions(
   state.sortingOptions = action?.payload || state.sortingOptions;
 }
 
-function refreshOrdersGridModel(
-  state: IOrdersPageSlice,
-  action: PayloadAction<GridModel>,
-) {
-  state.ordersGridModel = action?.payload || state.ordersGridModel;
-}
-
 function refreshOrdersGridRequestModel(
   state: IOrdersPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
+  if (_.isEqual(state.ordersGridRequestModel, action?.payload)) {
+    return;
+  }
+
   state.ordersGridRequestModel =
     action?.payload || state.ordersGridRequestModel;
 }
@@ -119,32 +84,26 @@ function refreshSelectedOrder(
   state.selectedOrder = action?.payload || state.selectedOrder;
 }
 
-function refreshCustomersGridModel(
-  state: IOrdersPageSlice,
-  action: PayloadAction<GridModel>,
-) {
-  state.customersGridModel = action?.payload || state.customersGridModel;
-}
-
 function refreshCustomersGridRequestModel(
   state: IOrdersPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
+  if (_.isEqual(state.customersGridRequestModel, action?.payload)) {
+    return;
+  }
+
   state.customersGridRequestModel =
     action?.payload || state.customersGridRequestModel;
-}
-
-function refreshVariantsGridModel(
-  state: IOrdersPageSlice,
-  action: PayloadAction<GridModel>,
-) {
-  state.variantsGridModel = action?.payload || state.variantsGridModel;
 }
 
 function refreshVariantsGridRequestModel(
   state: IOrdersPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
+  if (_.isEqual(state.variantsGridRequestModel, action?.payload)) {
+    return;
+  }
+
   state.variantsGridRequestModel =
     action?.payload || state.variantsGridRequestModel;
 }
@@ -177,17 +136,14 @@ function refreshColorsForFilter(
   state.colorsForFilter = action?.payload || state.colorsForFilter;
 }
 
-function refreshStockActionsGridModel(
-  state: IOrdersPageSlice,
-  action: PayloadAction<GridModel>,
-) {
-  state.stockActionsGridModel = action?.payload || state.stockActionsGridModel;
-}
-
 function refreshStockActionsGridRequestModel(
   state: IOrdersPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
+  if (_.isEqual(state.stockActionsGridRequestModel, action?.payload)) {
+    return;
+  }
+
   state.stockActionsGridRequestModel =
     action?.payload || state.stockActionsGridRequestModel;
 }
@@ -208,18 +164,14 @@ const OrdersPageSlice = createSlice({
     setIsOrdersGridLoading,
     refreshActiveCards,
     refreshSortingOptions,
-    refreshOrdersGridModel,
     refreshOrdersGridRequestModel,
     refreshSelectedOrder,
-    refreshCustomersGridModel,
     refreshCustomersGridRequestModel,
-    refreshVariantsGridModel,
     refreshVariantsGridRequestModel,
     refreshBrands,
     refreshCategories,
     refreshSizesForFilter,
     refreshColorsForFilter,
-    refreshStockActionsGridModel,
     refreshStockActionsGridRequestModel,
     refreshProductCounter,
   },

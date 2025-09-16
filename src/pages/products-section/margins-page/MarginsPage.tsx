@@ -19,18 +19,27 @@ import { MarginsListGridColumns } from "@/components/complex/grid/custom-grids/m
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export function MarginsPage() {
+  const {
+    handleCardAction,
+    handleMultipleCardActions,
+    keepOnlyCards,
+    createRefCallback,
+  } = useCardActions({
+    selectActiveCards: (state) => state[StoreSliceEnum.MARGINS].activeCards,
+    refreshAction: actions.refreshActiveCards,
+  });
   const state = useAppSelector<IPurchaseProductsPageSlice>(
     StoreSliceEnum.MARGINS,
   );
   const productsState = useAppSelector<IProductsPageSlice>(
     StoreSliceEnum.PRODUCTS,
   );
-  const service = useMarginsPageService();
+  const service = useMarginsPageService(
+    handleCardAction,
+    handleMultipleCardActions,
+    keepOnlyCards,
+  );
   const { purchaseId } = useParams();
-  const { createRefCallback } = useCardActions({
-    selectActiveCards: (state) => state[StoreSliceEnum.MARGINS].activeCards,
-    refreshAction: actions.refreshActiveCards,
-  });
 
   useEffect(() => {
     service.getMarginPageDataHandle(purchaseId);
@@ -38,7 +47,7 @@ export function MarginsPage() {
 
   useEffect(() => {
     service.getMarginItemsListHandle(purchaseId);
-  }, [state.marginItemsGriRequestModel]);
+  }, [state.marginItemsGridRequestModel]);
 
   useEffect(() => {
     service.keepSalePriceManagementCardOpenHandle();
@@ -149,8 +158,7 @@ export function MarginsPage() {
             colors={productsState.colorsForFilter}
             taxes={productsState.taxesList}
             sortingOptions={productsState.sortingOptions}
-            gridModel={state.marginItemsGridModel}
-            gridRequestModel={state.marginItemsGriRequestModel}
+            gridRequestModel={state.marginItemsGridRequestModel}
             onAction={onAction}
           />
         </div>

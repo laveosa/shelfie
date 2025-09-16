@@ -99,7 +99,8 @@ export default function CreateSupplierForm<T>({
         formPosition={DirectionEnum.CENTER}
         view={ComponentViewEnum.STANDARD}
         fullWidth
-        hideFooter
+        hidePrimaryBtn
+        hideSecondaryBtn
         onSubmit={() => handleFormSubmit}
         onCancel={onCancel}
       >
@@ -107,6 +108,7 @@ export default function CreateSupplierForm<T>({
           name="supplierName"
           render={({ field }) => (
             <SheInput
+              className={cs.formItem}
               label="Name"
               value={field.value}
               placeholder="enter supplier name..."
@@ -186,6 +188,7 @@ export default function CreateSupplierForm<T>({
           name="addressLine1"
           render={({ field }) => (
             <SheInput
+              className={cs.formItem}
               label="Address line 1"
               value={field.value}
               placeholder="enter address line 1..."
@@ -197,6 +200,7 @@ export default function CreateSupplierForm<T>({
           name="addressLine2"
           render={({ field }) => (
             <SheInput
+              className={cs.formItem}
               label="Address line 2"
               value={field.value}
               placeholder="enter address line 2..."
@@ -208,6 +212,7 @@ export default function CreateSupplierForm<T>({
           name="city"
           render={({ field }) => (
             <SheInput
+              className={cs.formItem}
               label="City"
               value={field.value}
               placeholder="enter city..."
@@ -219,6 +224,7 @@ export default function CreateSupplierForm<T>({
           name="state"
           render={({ field }) => (
             <SheInput
+              className={cs.formItem}
               label="State/Province/Region"
               value={field.value}
               placeholder="enter province..."
@@ -230,6 +236,7 @@ export default function CreateSupplierForm<T>({
           name="postCode"
           render={({ field }) => (
             <SheInput
+              className={cs.formItem}
               label="Zip/Postal Code"
               value={field.value}
               placeholder="enter postal code..."
@@ -257,7 +264,6 @@ export default function CreateSupplierForm<T>({
           )}
         />
       </SheForm>
-
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <SheButton
           value="Cancel"

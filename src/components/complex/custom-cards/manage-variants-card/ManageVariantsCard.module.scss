@@ -5,6 +5,12 @@
     display: flex;
     flex-direction: column;
 
+    &::-webkit-scrollbar {
+      width: 6px;
+      height: 10px;
+      background: white;
+    }
+
     .textBlock {
       display: flex;
       align-items: center;

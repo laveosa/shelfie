@@ -91,7 +91,7 @@ export function CustomersPage() {
             ...customer,
             id: customer.customerId,
           }))}
-          gridModel={state.customersGridModel}
+          gridRequestModel={state.customersGridRequestModel}
           sortingItems={state.sortingOptions}
           columnsPreferences={appState.preferences}
           preferenceContext={"customerReferences"}

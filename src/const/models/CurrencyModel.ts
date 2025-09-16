@@ -1,5 +1,5 @@
 export interface CurrencyModel {
-  currencyId?: number;
+  currencyId?: any;
   currencyName?: string;
   id?: number;
   name?: string;

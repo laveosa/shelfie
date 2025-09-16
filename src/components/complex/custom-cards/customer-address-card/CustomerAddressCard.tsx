@@ -1,6 +1,5 @@
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./CustomerAddressCard.module.scss";
-import SheCardNotification from "@/components/complex/she-card-notification/SheCardNotification.tsx";
 import { CountryCodeModel } from "@/const/models/CountryCodeModel";
 import AddressForm from "@/components/forms/address-form/AddressForm";
 import { Trash2 } from "lucide-react";
@@ -9,7 +8,7 @@ import { useTranslation } from "react-i18next";
 
 interface ICustomerAddressCard {
   isLoading?: boolean;
-  customerAddress?: AddressRequestModel; 
+  customerAddress?: AddressRequestModel;
   customerAddressId?: number;
   isCreate?: boolean;
   onPrimaryButtonClick: (data: any) => void;
@@ -30,7 +29,7 @@ export default function CustomerAddressCard({
   onAction,
 }: ICustomerAddressCard) {
   const { t } = useTranslation();
-  
+
   function onSubmit(data) {
     onPrimaryButtonClick(data);
   }
@@ -39,37 +38,39 @@ export default function CustomerAddressCard({
     <div>
       <SheProductCard
         loading={isLoading}
-        title={isCreate ? t("CardTitles.CreateCustomerAddress") : t("CardTitles.EditCustomerAddress")}
         className={cs.customerAddressFormCard}
+        title={
+          isCreate
+            ? t("CardTitles.CreateCustomerAddress")
+            : t("CardTitles.EditCustomerAddress")
+        }
         showCloseButton={true}
-        showSecondaryButton={false}
-        showPrimaryButton={false}
+        showNotificationCard={!!(!isCreate && customerAddressId)}
+        notificationCardProps={{
+          title: "Delete Customer Address",
+          titleTransKey: "CardTitles.DeleteCustomerAddress",
+          text: "This customer address will be deleted and will no longer be available for selection or automatic connection. Past orders will remain visible.",
+          textTransKey: "ConfirmationMessages.DeleteCustomerAddress",
+          buttonText: "Delete",
+          buttonTextTransKey: "CommonButtons.Delete",
+          buttonColor: "#EF4343",
+          buttonIcon: Trash2,
+          onClick: () => onAction("deleteCustomerAddress", customerAddressId),
+        }}
         onSecondaryButtonClick={onSecondaryButtonClick}
       >
         <div className={cs.customerCardContent}>
           <div className={cs.customerAddressForm}>
-
-            <AddressForm 
-              data={customerAddress} 
+            <AddressForm
+              data={customerAddress}
               isCreate={isCreate}
-              onSubmit={onSubmit} 
+              onSubmit={onSubmit}
               countryList={countryList}
               onCancel={onSecondaryButtonClick}
             />
           </div>
-          {!isCreate && customerAddressId && (
-          <SheCardNotification
-            title={t("CardTitles.DeleteCustomerAddress")}
-            text={t("ConfirmationMessages.DeleteCustomerAddress")}
-            buttonColor="#EF4343"
-            buttonVariant="outline"
-            buttonText={t("CommonButtons.Delete")}
-            buttonIcon={Trash2}
-              onClick={() => {onAction("deleteCustomerAddress", customerAddressId)}}
-            />
-          )}
         </div>
       </SheProductCard>
     </div>
   );
-} 
+}

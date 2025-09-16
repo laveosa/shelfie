@@ -17,20 +17,20 @@ import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import useProductBasicDataPageService from "@/pages/products-section/product-basic-data-page/useProductBasicDataPageService.ts";
 
 export function ProductBasicDataPage() {
+  const { handleCardAction, createRefCallback } = useCardActions({
+    selectActiveCards: (state) =>
+      state[StoreSliceEnum.PRODUCT_BASIC_DATA].activeCards,
+    refreshAction: actions.refreshActiveCards,
+  });
   const state = useAppSelector<IProductBasicDataPageSlice>(
     StoreSliceEnum.PRODUCT_BASIC_DATA,
   );
   const productsState = useAppSelector<IProductsPageSlice>(
     StoreSliceEnum.PRODUCTS,
   );
-  const service = useProductBasicDataPageService();
+  const service = useProductBasicDataPageService(handleCardAction);
   const productsService = useProductsPageService();
   const { productId } = useParams();
-  const { handleCardAction, createRefCallback } = useCardActions({
-    selectActiveCards: (state) =>
-      state[StoreSliceEnum.PRODUCT_BASIC_DATA].activeCards,
-    refreshAction: actions.refreshActiveCards,
-  });
 
   const productsForItemsCard = productsService.itemsCardItemsConvertor(
     productsState.products,
@@ -52,7 +52,7 @@ export function ProductBasicDataPage() {
   );
 
   useEffect(() => {
-    service.getProductsHandler(productsState.gridRequestModel);
+    service.getProductsHandler(productsState.productsGridRequestModel);
     service.getCategoriesHandler();
     service.getBrandsHandler();
     service.getCountersForProductsHandler(Number(productId));

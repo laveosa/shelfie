@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
@@ -6,15 +8,13 @@ import useProductsPageService from "@/pages/products-section/products-page/usePr
 import { ProductBasicDataPageSliceActions as actions } from "@/state/slices/ProductBasicDataPageSlice.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
-import { useNavigate } from "react-router-dom";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
-import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 
-export default function useProductBasicDataPageService() {
+export default function useProductBasicDataPageService(handleCardAction) {
   const state = useAppSelector<IProductBasicDataPageSlice>(
     StoreSliceEnum.PRODUCT_BASIC_DATA,
   );
@@ -25,11 +25,6 @@ export default function useProductBasicDataPageService() {
   const productsService = useProductsPageService();
   const { addToast } = useToast();
   const navigate = useNavigate();
-  const { handleCardAction, createRefCallback } = useCardActions({
-    selectActiveCards: (state) =>
-      state[StoreSliceEnum.PRODUCT_BASIC_DATA].activeCards,
-    refreshAction: actions.refreshActiveCards,
-  });
 
   const [generateProductCode] =
     ProductsApiHooks.useLazyGenerateProductCodeQuery();
@@ -102,7 +97,7 @@ export default function useProductBasicDataPageService() {
         dispatch(productsActions.refreshProduct(res.data));
         if (productsState.product.productName !== data.productName) {
           productsService.getTheProductsForGridHandler(
-            productsState.gridRequestModel,
+            productsState.productsGridRequestModel,
             true,
           );
         }
@@ -127,7 +122,7 @@ export default function useProductBasicDataPageService() {
       if (res.data) {
         dispatch(productsActions.refreshSelectedProduct(res.data));
         productsService.getTheProductsForGridHandler(
-          productsState.gridRequestModel,
+          productsState.productsGridRequestModel,
         );
         navigate(
           `${ApiUrlEnum.PRODUCTS}${ApiUrlEnum.PRODUCT_BASIC_DATA}/${res.data.productId}`,

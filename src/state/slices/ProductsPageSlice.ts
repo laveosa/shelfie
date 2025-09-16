@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import _ from "lodash";
 
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
@@ -6,7 +7,6 @@ import { ProductModel } from "@/const/models/ProductModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
-import { GridModel } from "@/const/models/GridModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import {
   ProductCountersModel,
@@ -22,7 +22,6 @@ import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import { TypeOfTraitModel } from "@/const/models/TypeOfTraitModel.ts";
 import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
-import _ from "lodash";
 
 const initialState: IProductsPageSlice = {
   isLoading: false,
@@ -43,34 +42,9 @@ const initialState: IProductsPageSlice = {
   categories: [],
   suppliers: [],
   sortingOptions: [],
-  productsGridModel: {
-    pager: {},
-    items: [],
-  },
-  variantsGridModel: {
-    pager: {},
-    items: [],
-  },
-  purchasesGridModel: {
-    pager: {},
-    items: [],
-  },
-  gridRequestModel: {
-    currentPage: 1,
-    pageSize: 10,
-  },
-  productsGridRequestModel: {
-    currentPage: 1,
-    pageSize: 10,
-  },
-  variantsGridRequestModel: {
-    currentPage: 1,
-    pageSize: 10,
-  },
-  purchasesGridRequestModel: {
-    currentPage: 1,
-    pageSize: 10,
-  },
+  productsGridRequestModel: {},
+  variantsGridRequestModel: {},
+  purchasesGridRequestModel: {},
   productPhotos: [],
   productVariants: [],
   selectedVariant: null,
@@ -211,40 +185,13 @@ function resetProductCounter(state: IProductsPageSlice) {
   state.productCounter = null;
 }
 
-function refreshProductsGridModel(
-  state: IProductsPageSlice,
-  action: PayloadAction<GridModel>,
-) {
-  if (_.isEqual(state?.productsGridModel, action?.payload)) return;
-
-  state.productsGridModel = action?.payload || state.productsGridModel;
-}
-
-function refreshVariantsGridModel(
-  state: IProductsPageSlice,
-  action: PayloadAction<GridModel>,
-) {
-  state.variantsGridModel = action?.payload || state.variantsGridModel;
-}
-
-function refreshPurchasesGridModel(
-  state: IProductsPageSlice,
-  action: PayloadAction<GridModel>,
-) {
-  state.purchasesGridModel = action?.payload || state.purchasesGridModel;
-}
-
-function refreshGridRequestModel(
-  state: IProductsPageSlice,
-  action: PayloadAction<GridRequestModel>,
-) {
-  state.gridRequestModel = action?.payload || state.gridRequestModel;
-}
-
 function refreshProductsGridRequestModel(
   state: IProductsPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
+  if (_.isEqual(state.productsGridRequestModel, action?.payload)) {
+    return;
+  }
   state.productsGridRequestModel =
     action?.payload || state.productsGridRequestModel;
 }
@@ -253,6 +200,10 @@ function refreshVariantsGridRequestModel(
   state: IProductsPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
+  if (_.isEqual(state.variantsGridRequestModel, action?.payload)) {
+    return;
+  }
+
   state.variantsGridRequestModel =
     action?.payload || state.variantsGridRequestModel;
 }
@@ -261,6 +212,10 @@ function refreshPurchasesGridRequestModel(
   state: IProductsPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
+  if (_.isEqual(state.purchasesGridRequestModel, action?.payload)) {
+    return;
+  }
+
   state.purchasesGridRequestModel =
     action?.payload || state.purchasesGridRequestModel;
 }
@@ -448,10 +403,6 @@ const ProductsPageSlice = createSlice({
     refreshPurchases,
     refreshProductCounter,
     resetProductCounter,
-    refreshProductsGridModel,
-    refreshVariantsGridModel,
-    refreshGridRequestModel,
-    refreshPurchasesGridModel,
     refreshProductsGridRequestModel,
     refreshVariantsGridRequestModel,
     refreshPurchasesGridRequestModel,

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { ColumnDef } from "@tanstack/react-table";
+
 import {
   BadgeCheck,
   Layers2,
@@ -9,8 +10,8 @@ import {
   Shirt,
 } from "lucide-react";
 
-import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
 import cs from "./ProductsPage.module.scss";
+import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -44,7 +45,7 @@ export function ProductsPage() {
   useEffect(() => {
     if (state.activeTab === "products") {
       service.getTheProductsForGridHandler(
-        state.productsGridRequestModel,
+        { ...state.productsGridRequestModel, endPage: 21 },
         true,
       );
     } else if (state.activeTab === "variants") {
@@ -132,24 +133,40 @@ export function ProductsPage() {
     <div className={cs.productsPage}>
       <div className={cs.productsPageHeader}>
         <span className="she-title">{translate("PageTitles.Products")}</span>
-        <div>
-          <SheButton
-            icon={Plus}
-            variant="info"
-            onClick={() =>
-              onAction(
-                state.activeTab === "purchases"
-                  ? "reportPurchase"
-                  : "addProduct",
-              )
-            }
-            value={
-              state.activeTab === "purchases"
-                ? translate("SupplierActions.ReportPurchase", "Report Purchase")
-                : translate("ProductActions.AddProduct", "Add Product")
-            }
-          />
-        </div>
+        {state.activeTab === "purchases" ? (
+          <div className={cs.headerButtonBlock}>
+            <SheButton
+              icon={Plus}
+              variant="outline"
+              bgColor="#007AFF"
+              txtColor="#FAFAFA"
+              onClick={() => onAction("reportPurchase")}
+              value={translate("SupplierActions.ReportPurchase")}
+            />
+          </div>
+        ) : (
+          <div className={cs.headerButtonBlock}>
+            <SheButton
+              icon={Plus}
+              variant="outline"
+              onClick={() => onAction("addProduct")}
+              value={translate("ProductActions.AddProduct")}
+            />
+            {/*Commented until future notices*/}
+            {/*<SheButton*/}
+            {/*  icon={Download}*/}
+            {/*  variant="outline"*/}
+            {/*  onClick={handleImportProducts}*/}
+            {/*  value="Import Products"*/}
+            {/*/>*/}
+            {/*<SheButton*/}
+            {/*  icon={Columns3Icon}*/}
+            {/*  variant="outline"*/}
+            {/*  onClick={handleConfigure}*/}
+            {/*  value="Configure"*/}
+            {/*/>*/}
+          </div>
+        )}
       </div>
       <div className={cs.productsPageContent}>
         <SheTabs
@@ -178,13 +195,13 @@ export function ProductsPage() {
           <TabsContent value="products" className={cs.productsPageTabContext}>
             <DndGridDataTable
               isLoading={state.isLoading}
-              columns={ProductsGridColumns(onAction)}
-              data={state.productsGridModel.items}
+              columns={ProductsGridColumns(onAction) as ColumnDef<DataWithId>[]}
+              data={state.productsGridRequestModel?.items}
               gridRequestModel={state.productsGridRequestModel}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
               preferenceContext={"productReferences"}
-              skeletonQuantity={state.productsGridRequestModel.pageSize}
+              skeletonQuantity={state.productsGridRequestModel?.pageSize}
               onApplyColumns={(model) => onAction("applyColumns", model)}
               onDefaultColumns={() => onAction("resetColumns")}
               onGridRequestChange={(updates) =>
@@ -196,14 +213,14 @@ export function ProductsPage() {
                 columnName={"Brands"}
                 getId={(item: BrandModel) => item.brandId}
                 getName={(item: BrandModel) => item.brandName}
-                selected={state.productsGridModel.filter?.brands}
+                selected={state.productsGridRequestModel?.filter?.brands}
               />
               <GridItemsFilter
                 items={state.categories}
                 columnName={"Categories"}
                 getId={(item: CategoryModel) => item.categoryId}
                 getName={(item: CategoryModel) => item.categoryName}
-                selected={state.productsGridModel.filter?.categories}
+                selected={state.productsGridRequestModel?.filter?.categories}
               />
               <GridShowItemsFilter context="Deleted" />
             </DndGridDataTable>
@@ -229,14 +246,14 @@ export function ProductsPage() {
                 columnName={"Brands"}
                 getId={(item: BrandModel) => item.brandId}
                 getName={(item: BrandModel) => item.brandName}
-                selected={state.variantsGridModel.filter?.brands}
+                selected={state.variantsGridRequestModel?.filter?.brands}
               />
               <GridItemsFilter
                 items={state.categories}
                 columnName={"Categories"}
                 getId={(item: CategoryModel) => item.categoryId}
                 getName={(item: CategoryModel) => item.categoryName}
-                selected={state.variantsGridModel.filter?.categories}
+                selected={state.variantsGridRequestModel?.filter?.categories}
               />
               <GridTraitsFilter
                 traitOptions={state.colorsForFilter}
@@ -273,7 +290,7 @@ export function ProductsPage() {
                 icon={BadgeCheck}
                 getId={(item: SupplierModel) => item.supplierId}
                 getName={(item: SupplierModel) => item.supplierName}
-                selected={state.purchasesGridModel.filter?.suppliers}
+                selected={state.purchasesGridRequestModel?.filter?.suppliers}
               />
               <GridDateRangeFilter />
               <GridItemsFilter
@@ -282,6 +299,7 @@ export function ProductsPage() {
                 icon={BadgeCheck}
                 getId={(item: BrandModel) => item.brandId}
                 getName={(item: BrandModel) => item.brandName}
+                selected={state.purchasesGridRequestModel?.filter?.brands}
               />
               <GridValueFilter
                 icon={ReceiptEuro}

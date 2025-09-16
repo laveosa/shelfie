@@ -99,7 +99,7 @@ export default function VariantPhotosCard({
                 showHeader={false}
                 columns={variantPhotosColumns}
                 data={variantPhotos}
-                gridModel={variantPhotos}
+                gridRequestModel={variantPhotos}
                 customMessage={t("ProductMessages.NoVariantPhotos")}
                 onNewItemPosition={(newIndex, activeItem) =>
                   handleAction("dnd", { newIndex, activeItem })
@@ -126,7 +126,7 @@ export default function VariantPhotosCard({
                     ? t("ProductMessages.NoPhotos")
                     : t("ProductMessages.AllPhotosAttachedToVariant")
                 }
-                gridModel={productPhotos}
+                gridRequestModel={productPhotos}
               />
             </div>
           </div>

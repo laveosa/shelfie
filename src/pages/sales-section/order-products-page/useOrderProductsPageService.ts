@@ -76,9 +76,12 @@ export default function useOrderProductsPageService() {
       dispatch(actions.setIsProductsInOrderGridLoading(false));
       if (!res.error) {
         dispatch(
-          ordersActions.refreshStockActionsGridModel({
-            ...ordersState.stockActionsGridModel,
-            items: [res.data, ...ordersState.stockActionsGridModel.items],
+          ordersActions.refreshStockActionsGridRequestModel({
+            ...ordersState.stockActionsGridRequestModel,
+            items: [
+              res.data,
+              ...ordersState.stockActionsGridRequestModel.items,
+            ],
           }),
         );
         addToast({
@@ -143,9 +146,9 @@ export default function useOrderProductsPageService() {
     return removeStockActionFromOrder(stockActionId).then((res: any) => {
       if (!res.error) {
         dispatch(
-          ordersActions.refreshStockActionsGridModel({
-            ...ordersState.stockActionsGridModel,
-            items: ordersState.stockActionsGridModel.items.filter(
+          ordersActions.refreshStockActionsGridRequestModel({
+            ...ordersState.stockActionsGridRequestModel,
+            items: ordersState.stockActionsGridRequestModel.items.filter(
               (item) => item.stockActionId !== stockActionId,
             ),
           }),
@@ -166,7 +169,6 @@ export default function useOrderProductsPageService() {
 
   return {
     getOrderStockActionsListForGrid,
-    getVariantsListForGrid,
     addProductHandler,
     addVariantsToOrderHandler,
     variantsGridRequestChange,

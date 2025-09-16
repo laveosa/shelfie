@@ -75,7 +75,7 @@ const navGroups: ISheSidebarGroup[] = [
       {
         title: "Sales",
         transKey: "SheSidebar.NavItems.Sales",
-        url: `${NavUrlEnum.SALES}/orders`,
+        url: `${NavUrlEnum.SALES}`,
         icon: ReceiptEuro,
       },
       {

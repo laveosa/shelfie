@@ -1,21 +1,31 @@
 import { merge } from "lodash";
 
 import PurchasesApiHooks from "@/utils/services/api/PurchasesApiService.ts";
-import { MarginsPageSliceActions as actions } from "@/state/slices/MarginsPageSlice.ts";
+import {
+  MarginsPageSliceActions as actions
+} from "@/state/slices/MarginsPageSlice.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
-import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
-import { IPurchaseProductsPageSlice } from "@/const/interfaces/store-slices/IPurchaseProductsPageSlice.ts";
+import useProductsPageService
+  from "@/pages/products-section/products-page/useProductsPageService.ts";
+import {
+  IPurchaseProductsPageSlice
+} from "@/const/interfaces/store-slices/IPurchaseProductsPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
-import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { setSelectedGridItem } from "@/utils/helpers/quick-helper.ts";
 import { AppSliceActions as appActions } from "@/state/slices/AppSlice.ts";
-import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import {
+  IProductsPageSlice
+} from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 
-export function useMarginsPageService() {
+export function useMarginsPageService(
+  handleCardAction,
+  handleMultipleCardActions,
+  keepOnlyCards,
+) {
   const dispatch = useAppDispatch();
   const { addToast } = useToast();
   const { openConfirmationDialog } = useDialogService();
@@ -27,11 +37,6 @@ export function useMarginsPageService() {
     StoreSliceEnum.PRODUCTS,
   );
   const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
-  const { handleCardAction, handleMultipleCardActions, keepOnlyCards } =
-    useCardActions({
-      selectActiveCards: (state) => state[StoreSliceEnum.MARGINS].activeCards,
-      refreshAction: actions.refreshActiveCards,
-    });
 
   const [getMarginsListForGrid] =
     PurchasesApiHooks.useGetMarginsListForGridMutation();
@@ -72,7 +77,7 @@ export function useMarginsPageService() {
       purchaseId,
       model,
     }).then((res: any) => {
-      dispatch(actions.refreshMarginItemsGridModel(res.data));
+      dispatch(actions.refreshMarginItemsGridRequestModel(res.data));
       return res.data;
     });
   }
@@ -185,11 +190,11 @@ export function useMarginsPageService() {
 
   function gridRequestChangeHandle(updates: GridRequestModel) {
     dispatch(
-      actions.refreshMarginItemsGriRequestModel({
-        ...state.marginItemsGriRequestModel,
+      actions.refreshMarginItemsGridRequestModel({
+        ...state.marginItemsGridRequestModel,
         ...updates,
         filter: {
-          ...state.marginItemsGriRequestModel.filter,
+          ...state.marginItemsGridRequestModel.filter,
           ...updates.filter,
         },
       }),
@@ -220,7 +225,6 @@ export function useMarginsPageService() {
       searchQuery: model,
     }).then((res) => {
       dispatch(actions.setIsMarginListGridLoading(false));
-      dispatch(actions.setIsMarginListGridLoading(false));
       const modifiedList = res.items.map((item) => ({
         ...item,
         isSelected: item.marginId === state.selectedMargin.marginId,
@@ -237,6 +241,7 @@ export function useMarginsPageService() {
       if (res) {
         dispatch(actions.refreshActiveCards(null));
         dispatch(actions.refreshSelectedMargin(res));
+        getMarginItemsListHandle(purchaseId);
         addToast({
           text: "Margin selected successfully",
           type: "success",
@@ -358,13 +363,7 @@ export function useMarginsPageService() {
             marginRule: res,
           }),
         );
-        dispatch(actions.setIsMarginProductsGridLoading(true));
-        getMarginItemsListForGridHandler(
-          purchaseId,
-          state.marginItemsGriRequestModel,
-        ).then(() => {
-          dispatch(actions.setIsMarginProductsGridLoading(false));
-        });
+        getMarginItemsListHandle(purchaseId);
         addToast({
           text: "Margin updated successfully",
           type: "success",
@@ -495,13 +494,13 @@ export function useMarginsPageService() {
   function updateMarginItemHandle(model) {
     updateMarginItemHandler(model.marginItemId, model).then((res) => {
       if (res) {
-        const updatedItems = state.marginItemsGridModel.items.map((item) =>
-          item.marginItemId === res.marginItemId ? res : item,
+        const updatedItems = state.marginItemsGridRequestModel.items.map(
+          (item) => (item.marginItemId === res.marginItemId ? res : item),
         );
 
         dispatch(
-          actions.refreshMarginItemsGridModel({
-            ...state.marginItemsGridModel,
+          actions.refreshMarginItemsGridRequestModel({
+            ...state.marginItemsGridRequestModel,
             items: updatedItems,
           }),
         );
@@ -512,13 +511,13 @@ export function useMarginsPageService() {
   function applyMarginItemItemHandle(model) {
     applyMarginItemHandler(model).then((res) => {
       if (res) {
-        const updatedItems = state.marginItemsGridModel.items.map((item) =>
-          item.marginItemId === res.marginItemId ? res : item,
+        const updatedItems = state.marginItemsGridRequestModel.items.map(
+          (item) => (item.marginItemId === res.marginItemId ? res : item),
         );
 
         dispatch(
-          actions.refreshMarginItemsGridModel({
-            ...state.marginItemsGridModel,
+          actions.refreshMarginItemsGridRequestModel({
+            ...state.marginItemsGridRequestModel,
             items: updatedItems,
           }),
         );
@@ -535,11 +534,11 @@ export function useMarginsPageService() {
     dispatch(actions.setIsMarginProductsGridLoading(true));
     applyVisibleMarginItemsHandler(
       purchaseId,
-      state.marginItemsGriRequestModel,
+      state.marginItemsGridRequestModel,
     ).then((res) => {
       dispatch(actions.setIsMarginProductsGridLoading(false));
       if (res) {
-        dispatch(actions.refreshMarginItemsGridModel(res));
+        dispatch(actions.refreshMarginItemsGridRequestModel(res));
         addToast({
           text: "Visible margin items applied successfully",
           type: "success",
@@ -558,7 +557,7 @@ export function useMarginsPageService() {
     applyAllMarginItemsHandler(purchaseId).then((res) => {
       dispatch(actions.setIsMarginProductsGridLoading(false));
       if (res) {
-        dispatch(actions.refreshMarginItemsGridModel(res));
+        dispatch(actions.refreshMarginItemsGridRequestModel(res));
         addToast({
           text: "All margin items applied successfully",
           type: "success",
@@ -640,7 +639,7 @@ export function useMarginsPageService() {
     dispatch(actions.setIsMarginProductsGridLoading(true));
     getMarginItemsListForGridHandler(
       purchaseId,
-      state.marginItemsGriRequestModel,
+      state.marginItemsGridRequestModel,
     ).then(() => {
       dispatch(actions.setIsMarginProductsGridLoading(false));
     });
