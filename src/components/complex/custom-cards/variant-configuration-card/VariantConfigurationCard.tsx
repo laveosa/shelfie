@@ -31,7 +31,7 @@ import { IVariantConfigurationCard } from "@/const/interfaces/complex-components
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
-import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
 import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
 import { VariantModel } from "@/const/models/VariantModel.ts";
@@ -446,7 +446,7 @@ export default function VariantConfigurationCard({
             </SheButton>
           </div>
           <div>
-            <DndGridDataTable
+            <SheGrid
               isLoading={isVariantOptionsGridLoading}
               showHeader={false}
               columns={traitsColumns}
@@ -474,7 +474,7 @@ export default function VariantConfigurationCard({
           </div>
           {variant?.photos?.length > 0 && (
             <div>
-              <DndGridDataTable
+              <SheGrid
                 isLoading={isVariantPhotoGridLoading}
                 enableDnd={true}
                 showHeader={false}

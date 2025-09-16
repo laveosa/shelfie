@@ -3,7 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ProductsInOrderCard.module.scss";
 import { IProductsInOrderCard } from "@/const/interfaces/complex-components/custom-cards/IProductsInOrderCard.ts";
@@ -71,7 +71,7 @@ export default function ProductsInOrderCard({
             onClick={() => onAction("addProduct")}
           />
         </div>
-        <DndGridDataTable
+        <SheGrid
           key={stockActionsData.length}
           isLoading={isGridLoading}
           showHeader={false}

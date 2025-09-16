@@ -3,7 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./OrderConfigurationCard.module.scss";
 import { IOrderConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IOrderConfigurationCard.ts";
@@ -150,7 +150,7 @@ export default function OrderConfigurationCard({
           />
         </div>
         <div className={cs.orderDiscountsGridWrapper}>
-          <DndGridDataTable
+          <SheGrid
             className={cs.orderDiscountsGrid}
             isLoading={isDiscountsGridLoading}
             showHeader={false}
@@ -180,7 +180,7 @@ export default function OrderConfigurationCard({
             icon={Plus}
           />
         </div>
-        <DndGridDataTable
+        <SheGrid
           columns={
             OrderShipmentsRateGridColumns({
               onAction,

@@ -3,7 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import {
   ShipmentStatusEnum,
   ShipmentStatusLabels,
@@ -222,7 +222,7 @@ export default function ShipmentConfigurationCard({
               variant="secondary"
             />
           </div>
-          <DndGridDataTable
+          <SheGrid
             showHeader={false}
             columns={
               ordersInShipmentGridColumns(onAction) as ColumnDef<DataWithId>[]
@@ -243,7 +243,7 @@ export default function ShipmentConfigurationCard({
               txtColor="#FAFAFA"
             />
           </div>
-          <DndGridDataTable
+          <SheGrid
             showHeader={false}
             columns={
               orderItemsInShipmentGridColumns({
@@ -260,7 +260,7 @@ export default function ShipmentConfigurationCard({
                   {t("OrderActions.ConfirmPackedProducts")}
                 </span>
               </div>
-              <DndGridDataTable
+              <SheGrid
                 showHeader={false}
                 columns={
                   PackedOrderItemsGridColumns({
@@ -284,7 +284,7 @@ export default function ShipmentConfigurationCard({
                 <span className={cs.subtitleText}>
                   {t("ShipmentForm.Labels.PackageContent")}
                 </span>
-                <DndGridDataTable
+                <SheGrid
                   showHeader={false}
                   columns={
                     PackedOrderItemsGridColumns({

@@ -4,7 +4,7 @@ import React from "react";
 import cs from "./SelectPurchaseCard.module.scss";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import { ISelectPurchaseCard } from "@/const/interfaces/complex-components/custom-cards/ISelectPurchaseCard.ts";
 import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
 import { CalendarModeEnum } from "@/const/enums/CalendarModeEnum.ts";
@@ -54,7 +54,7 @@ export default function SelectPurchaseCard({
             onAction("filterSuppliersByDate", null);
           }}
         />
-        <DndGridDataTable
+        <SheGrid
           isLoading={isGridLoading}
           showHeader={false}
           columns={columns}

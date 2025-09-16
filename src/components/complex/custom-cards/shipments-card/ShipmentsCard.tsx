@@ -2,7 +2,7 @@ import { Clock10, Package, PackageOpen, Plus, Truck } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
 
-import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import {
   GridSortingEnum,
   GridSortingEnumLabels,
@@ -81,7 +81,7 @@ export default function ShipmentsCard({
               </TabsList>
             </div>
             <TabsContent value="queued">
-              <DndGridDataTable
+              <SheGrid
                 isLoading={isShipmentsGridLoading}
                 columns={
                   ShipmentsListGridColumns(onAction) as ColumnDef<DataWithId>[]
@@ -98,7 +98,7 @@ export default function ShipmentsCard({
               />
             </TabsContent>
             <TabsContent value="readyForPacking">
-              <DndGridDataTable
+              <SheGrid
                 isLoading={isShipmentsGridLoading}
                 columns={
                   ShipmentsListGridColumns(onAction) as ColumnDef<DataWithId>[]
@@ -115,7 +115,7 @@ export default function ShipmentsCard({
               />
             </TabsContent>
             <TabsContent value="readyForSending">
-              <DndGridDataTable
+              <SheGrid
                 isLoading={isShipmentsGridLoading}
                 columns={
                   ShipmentsListGridColumns(onAction) as ColumnDef<DataWithId>[]
@@ -132,7 +132,7 @@ export default function ShipmentsCard({
               />
             </TabsContent>
             <TabsContent value="allShipments">
-              <DndGridDataTable
+              <SheGrid
                 isLoading={isShipmentsGridLoading}
                 columns={
                   ShipmentsListGridColumns(onAction) as ColumnDef<DataWithId>[]

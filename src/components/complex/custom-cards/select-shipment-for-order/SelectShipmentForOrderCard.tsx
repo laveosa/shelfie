@@ -3,7 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import {
   ShipmentStatusEnum,
   ShipmentStatusLabels,
@@ -99,7 +99,7 @@ export default function SelectShipmentForOrderCard({
             />
           </div>
         </div>
-        <DndGridDataTable
+        <SheGrid
           isLoading={isGridLoading}
           columns={
             SelectShipmentForOrderGridColumns(
@@ -151,7 +151,7 @@ export default function SelectShipmentForOrderCard({
               })
             }
           />
-        </DndGridDataTable>
+        </SheGrid>
       </div>
     </SheProductCard>
   );

@@ -2,7 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./FindProductsCard.module.scss";
 import { IFindProductsCard } from "@/const/interfaces/complex-components/custom-cards/IFindProductsCard.ts";
@@ -38,7 +38,7 @@ export default function FindProductsCard({
       onSecondaryButtonClick={() => onAction("closeFindProductsCard")}
     >
       <div className={cs.findProductsCardContent}>
-        <DndGridDataTable
+        <SheGrid
           isLoading={isGridLoading}
           columns={
             findProductGridColumns({
@@ -73,7 +73,7 @@ export default function FindProductsCard({
           />
           <GridTraitsFilter traitOptions={colorsForFilter} traitType="color" />
           <GridTraitsFilter traitOptions={sizesForFilter} traitType="size" />
-        </DndGridDataTable>
+        </SheGrid>
       </div>
     </SheProductCard>
   );

@@ -3,7 +3,7 @@ import { CalendarRange, Plus, ShoppingCart } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import cs from "./OrdersCard.module.scss";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import GridShowItemsFilter from "@/components/complex/grid/filters/grid-show-deleted-filter/GridShowItemsFilter.tsx";
@@ -41,7 +41,7 @@ export default function OrdersCard({
         className={cs.ordersCardContent}
         minWidth="1100px"
       >
-        <DndGridDataTable
+        <SheGrid
           isLoading={isGridLoading}
           columns={ordersGridColumns(onGridAction) as ColumnDef<DataWithId>[]}
           data={ordersGridRequestModel.items}
@@ -76,7 +76,7 @@ export default function OrdersCard({
             minWidth="150px"
           />
           <GridShowItemsFilter context="Canceled" />
-        </DndGridDataTable>
+        </SheGrid>
       </SheProductCard>
       <SheButton
         className={cs.createOrderButton}

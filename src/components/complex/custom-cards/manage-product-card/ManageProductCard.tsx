@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Cog, GalleryThumbnails, Plus, TableProperties } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import { IManageProductCard } from "@/const/interfaces/complex-components/custom-cards/IManageProductCard.ts";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
@@ -250,7 +250,7 @@ export default function ManageProductCard({
               </div>
             </div>
             <div>
-              <DndGridDataTable
+              <SheGrid
                 key={variantsData.length}
                 isLoading={isVariantGridLoading}
                 data={variantsData}

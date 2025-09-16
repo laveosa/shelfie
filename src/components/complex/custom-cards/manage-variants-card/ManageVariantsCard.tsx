@@ -8,7 +8,7 @@ import cs from "./ManageVariantsCard.module.scss";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { TraitModel } from "@/const/models/TraitModel.ts";
-import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import { ManageVariantsGridColumns } from "@/components/complex/grid/custom-grids/manage-variants-grid/ManageVariantsGridColumns.tsx";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
@@ -141,7 +141,7 @@ export default function ManageVariantsCard({
           {/*)}*/}
         </div>
         <div>
-          <DndGridDataTable
+          <SheGrid
             isLoading={isVariantsLoading}
             className={cs.manageVariantsCardGrid}
             enableDnd={true}

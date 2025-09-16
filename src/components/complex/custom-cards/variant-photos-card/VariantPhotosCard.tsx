@@ -2,7 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
 import React from "react";
 
-import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./VariantPhotosCard.module.scss";
 import { SheFileUploader } from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
@@ -93,7 +93,7 @@ export default function VariantPhotosCard({
               </span>
             </div>
             <div className={cs.managePhotosGrid}>
-              <DndGridDataTable
+              <SheGrid
                 isLoading={isVariantPhotoGridLoading}
                 enableDnd={true}
                 showHeader={false}
@@ -114,7 +114,7 @@ export default function VariantPhotosCard({
               </span>
             </div>
             <div className={cs.managePhotosGrid}>
-              <DndGridDataTable
+              <SheGrid
                 isLoading={isProductPhotoGridLoading}
                 enableDnd={false}
                 showHeader={false}

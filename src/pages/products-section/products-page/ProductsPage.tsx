@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 
 import cs from "./ProductsPage.module.scss";
-import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -193,7 +193,7 @@ export function ProductsPage() {
             </TabsList>
           </div>
           <TabsContent value="products" className={cs.productsPageTabContext}>
-            <DndGridDataTable
+            <SheGrid
               isLoading={state.isLoading}
               columns={ProductsGridColumns(onAction) as ColumnDef<DataWithId>[]}
               data={state.productsGridRequestModel?.items}
@@ -223,10 +223,10 @@ export function ProductsPage() {
                 selected={state.productsGridRequestModel?.filter?.categories}
               />
               <GridShowItemsFilter context="Deleted" />
-            </DndGridDataTable>
+            </SheGrid>
           </TabsContent>
           <TabsContent value="variants" className={cs.productsPageTabContext}>
-            <DndGridDataTable
+            <SheGrid
               isLoading={state.isLoading}
               columns={variantsGridColumns(onAction) as ColumnDef<DataWithId>[]}
               data={state.variants}
@@ -264,10 +264,10 @@ export function ProductsPage() {
                 traitType="size"
               />
               <GridShowItemsFilter context="Deleted" />
-            </DndGridDataTable>
+            </SheGrid>
           </TabsContent>
           <TabsContent value="purchases" className={cs.productsPageTabContext}>
-            <DndGridDataTable
+            <SheGrid
               isLoading={state.isLoading}
               columns={
                 purchasesGridColumns(onAction) as ColumnDef<DataWithId>[]
@@ -311,7 +311,7 @@ export function ProductsPage() {
                 placeholder="Value to"
                 fieldKey="valueTo"
               />
-            </DndGridDataTable>
+            </SheGrid>
           </TabsContent>
         </SheTabs>
       </div>

@@ -2,7 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { CheckCheck } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import { ISalePriceManagementCard } from "@/const/interfaces/complex-components/custom-cards/ISalePriceManagementCard.ts";
 import cs from "@/components/complex/custom-cards/sale-price-management-card/SalePriceManagementCard.module.scss";
@@ -38,7 +38,7 @@ export default function SalePriseManagementCard({
         className={cs.salePriceManagementCardContent}
         minWidth="1100px"
       >
-        <DndGridDataTable
+        <SheGrid
           isLoading={isGridLoading}
           columns={
             marginProductsGridColumns(
@@ -75,7 +75,7 @@ export default function SalePriseManagementCard({
           <GridTraitsFilter traitOptions={colors} traitType="color" />
           <GridTraitsFilter traitOptions={sizes} traitType="size" />
           <GridShowItemsFilter context="Deleted" />
-        </DndGridDataTable>
+        </SheGrid>
       </SheProductCard>
       <div className={cs.buttonBlock}>
         <SheButton

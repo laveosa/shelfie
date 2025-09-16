@@ -14,7 +14,7 @@ import { IPurchaseProductsPageSlice } from "@/const/interfaces/store-slices/IPur
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { PurchaseProductsPageSliceActions as actions } from "@/state/slices/PurchaseProductsPageSlice.ts";
-import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import { AppSliceActions as appActions } from "@/state/slices/AppSlice.ts";
@@ -175,7 +175,7 @@ export default function PurchaseProductsCard({
               </TabsList>
             </div>
             <TabsContent value="purchaseProducts">
-              <DndGridDataTable
+              <SheGrid
                 isLoading={isPurchaseProductsGridLoading}
                 className={cs.purchaseProductsGrid}
                 columns={
@@ -208,7 +208,7 @@ export default function PurchaseProductsCard({
                   getId={(item: CategoryModel) => item.categoryId}
                   getName={(item: CategoryModel) => item.categoryName}
                 />
-              </DndGridDataTable>
+              </SheGrid>
               <div className={cs.purchaseSummary}>
                 <span className={cs.purchaseSummaryTitle}>
                   {t("PurchaseForm.Labels.PurchaseSummary")}
@@ -248,7 +248,7 @@ export default function PurchaseProductsCard({
               </div>
             </TabsContent>
             <TabsContent value="connectProducts">
-              <DndGridDataTable
+              <SheGrid
                 isLoading={isProductsGridLoading}
                 className={cs.purchaseProductsGrid}
                 columns={
@@ -290,7 +290,7 @@ export default function PurchaseProductsCard({
                   traitType="size"
                 />
                 <GridShowItemsFilter context="Deleted" />
-              </DndGridDataTable>
+              </SheGrid>
             </TabsContent>
           </SheTabs>
         </div>

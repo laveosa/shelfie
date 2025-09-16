@@ -6,7 +6,7 @@ import cs from "./CustomersPage.module.scss";
 import useCustomersPageService from "@/pages/customers-section/customers-page/useCustomersPageService.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { Plus } from "lucide-react";
-import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import { customerGridColumns } from "@/components/complex/grid/custom-grids/customer-grid/CustomerGridColumns";
 import { PreferencesModel } from "@/const/models/PreferencesModel";
 import { GridRequestModel } from "@/const/models/GridRequestModel";
@@ -84,7 +84,7 @@ export function CustomersPage() {
         </div>
       </div>
       <div className={cs.customersPageContent}>
-        <DndGridDataTable
+        <SheGrid
           isLoading={state.isCustomersLoading}
           columns={customerColumns}
           data={state.customers.map((customer) => ({
@@ -101,7 +101,7 @@ export function CustomersPage() {
           onGridRequestChange={handleGridRequestChange}
         >
           {/* TODO: Add filters */}
-        </DndGridDataTable>
+        </SheGrid>
       </div>
     </div>
   );

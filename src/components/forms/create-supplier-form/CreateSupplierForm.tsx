@@ -10,7 +10,7 @@ import {
   SheFileUploader,
   SheFileUploaderRef,
 } from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
-import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import { ICreateSupplierForm } from "@/const/interfaces/forms/ICreateSupplierForm.ts";
 import useAppForm from "@/utils/hooks/useAppForm.ts";
 import CreateSupplierFormScheme from "@/utils/validation/schemes/CreateSupplierFormScheme.ts";
@@ -169,7 +169,7 @@ export default function CreateSupplierForm<T>({
             hideUploadButton={true}
           />
         )}
-        <DndGridDataTable
+        <SheGrid
           isLoading={isGridLoading}
           className={cs.formGrid}
           enableDnd={true}

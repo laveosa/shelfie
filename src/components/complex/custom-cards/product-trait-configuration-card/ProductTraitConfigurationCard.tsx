@@ -22,7 +22,7 @@ import cs from "./ProductTraitConfigurationCard.module.scss";
 import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
-import { DndGridDataTable } from "@/components/complex/grid/SheGrid.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import { IProductTraitConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IProductTraitConfigurationCard.ts";
 import { ColorOptionsGridColumns } from "@/components/complex/grid/trait-options-grid/color-options-grid/ColorOptionsGridColumns.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
@@ -240,7 +240,7 @@ export default function ProductTraitConfigurationCard({
                 {t("ProductForm.Labels.Options")}
               </span>
               {selectedTrait?.traitTypeId === 1 && (
-                <DndGridDataTable
+                <SheGrid
                   isLoading={isGridLoading}
                   className={cs.productTraitConfigurationGrid}
                   enableDnd={true}
@@ -260,7 +260,7 @@ export default function ProductTraitConfigurationCard({
                 />
               )}
               {selectedTrait?.traitTypeId === 2 && (
-                <DndGridDataTable
+                <SheGrid
                   isLoading={isGridLoading}
                   className={cs.productTraitConfigurationGrid}
                   enableDnd={true}
