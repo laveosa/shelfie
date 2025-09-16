@@ -1,18 +1,25 @@
 import { merge } from "lodash";
 
 import PurchasesApiHooks from "@/utils/services/api/PurchasesApiService.ts";
-import { MarginsPageSliceActions as actions } from "@/state/slices/MarginsPageSlice.ts";
+import {
+  MarginsPageSliceActions as actions
+} from "@/state/slices/MarginsPageSlice.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
-import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
-import { IPurchaseProductsPageSlice } from "@/const/interfaces/store-slices/IPurchaseProductsPageSlice.ts";
+import useProductsPageService
+  from "@/pages/products-section/products-page/useProductsPageService.ts";
+import {
+  IPurchaseProductsPageSlice
+} from "@/const/interfaces/store-slices/IPurchaseProductsPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { setSelectedGridItem } from "@/utils/helpers/quick-helper.ts";
 import { AppSliceActions as appActions } from "@/state/slices/AppSlice.ts";
-import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import {
+  IProductsPageSlice
+} from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 
 export function useMarginsPageService(
   handleCardAction,
@@ -234,6 +241,7 @@ export function useMarginsPageService(
       if (res) {
         dispatch(actions.refreshActiveCards(null));
         dispatch(actions.refreshSelectedMargin(res));
+        getMarginItemsListHandle(purchaseId);
         addToast({
           text: "Margin selected successfully",
           type: "success",
@@ -355,13 +363,7 @@ export function useMarginsPageService(
             marginRule: res,
           }),
         );
-        dispatch(actions.setIsMarginProductsGridLoading(true));
-        getMarginItemsListForGridHandler(
-          purchaseId,
-          state.marginItemsGridRequestModel,
-        ).then(() => {
-          dispatch(actions.setIsMarginProductsGridLoading(false));
-        });
+        getMarginItemsListHandle(purchaseId);
         addToast({
           text: "Margin updated successfully",
           type: "success",
