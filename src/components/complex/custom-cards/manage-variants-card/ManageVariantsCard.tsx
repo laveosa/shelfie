@@ -5,20 +5,15 @@ import React, { Fragment } from "react";
 
 import {
   DataWithId,
-  DndGridDataTable
+  DndGridDataTable,
 } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import SheProductCard
-  from "@/components/complex/she-product-card/SheProductCard.tsx";
+import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ManageVariantsCard.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { TraitModel } from "@/const/models/TraitModel.ts";
-import {
-  IManageVariantsCard
-} from "@/const/interfaces/complex-components/custom-cards/IManageVariantsCard.ts";
+import { IManageVariantsCard } from "@/const/interfaces/complex-components/custom-cards/IManageVariantsCard.ts";
 import { Separator } from "@/components/ui/separator.tsx";
-import {
-  ManageVariantsGridColumns
-} from "@/components/complex/grid/custom-grids/manage-variants-grid/ManageVariantsGridColumns.tsx";
+import { ManageVariantsGridColumns } from "@/components/complex/grid/custom-grids/manage-variants-grid/ManageVariantsGridColumns.tsx";
 
 export default function ManageVariantsCard({
   isLoading,
