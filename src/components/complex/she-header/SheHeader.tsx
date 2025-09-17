@@ -1,23 +1,26 @@
 import { KeyboardEvent, useState } from "react";
-import { AvatarImage } from "@radix-ui/react-avatar";
-import { BellDot } from "lucide-react";
 
 import cs from "./SheHeader.module.scss";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Avatar } from "@/components/ui/avatar";
-import { useNavigate } from "react-router-dom";
+import {
+  SheUserMenu
+} from "@/components/complex/she-user-menu/SheUserMenu.tsx";
 
 export default function SheHeader() {
   const [searchValue, setSearchValue] = useState("");
   const [isSearching, setIsSearching] = useState(false);
-  const navigate = useNavigate();
+
+  const user = {
+    name: "Joanna Kowalska",
+    email: "kowalska@gmail.com",
+    avatar: "https://github.com/shadcn.png",
+  };
 
   function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
     setIsSearching(true);
     if (event.key === "Enter") {
       event.preventDefault();
       console.log(searchValue);
-      // API call for search
       setSearchValue("");
     }
     setIsSearching(false);
@@ -31,12 +34,6 @@ export default function SheHeader() {
     }
     setSearchValue("");
     setIsSearching(false);
-  }
-
-  function handleBellClick() {}
-
-  function handleUserAvatarClick() {
-    navigate("/profile");
   }
 
   return (
@@ -55,10 +52,7 @@ export default function SheHeader() {
         {/*  disabled={isSearching}*/}
         {/*/>*/}
       </div>
-      <BellDot className={cs.bellIcon} onClick={handleBellClick} />
-      <Avatar className={cs.userAvatar} onClick={handleUserAvatarClick}>
-        <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-      </Avatar>
+      <SheUserMenu user={user} />
     </div>
   );
 }
