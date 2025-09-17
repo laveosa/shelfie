@@ -105,7 +105,7 @@ export default function useOrdersPageService() {
       if (!res.error) {
         dispatch(actions.refreshSelectedOrder(res.data));
         navigate(
-          `${NavUrlEnum.SALES}${NavUrlEnum.ORDERS}${NavUrlEnum.ORDER_DETAILS}/${res.data.id}`,
+          `${NavUrlEnum.SALES}${NavUrlEnum.ORDER_DETAILS}/${res.data.id}`,
         );
       }
       return res.data;
@@ -114,9 +114,7 @@ export default function useOrdersPageService() {
 
   function manageOrderHandler(order) {
     dispatch(actions.refreshSelectedOrder(order));
-    navigate(
-      `${NavUrlEnum.SALES}${NavUrlEnum.ORDERS}${NavUrlEnum.ORDER_DETAILS}/${order.id}`,
-    );
+    navigate(`${NavUrlEnum.SALES}${NavUrlEnum.ORDER_DETAILS}/${order.id}`);
   }
 
   function getListOfCustomersForGridHandler(model) {

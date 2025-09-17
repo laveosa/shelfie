@@ -65,6 +65,9 @@ export default function PurchaseProductsCard({
     if (value === activeTab) return;
     setActiveTab(value);
     dispatch(actions.refreshActiveTab(value));
+    if (value === "purchaseProducts") {
+      onAction("refreshPurchaseProductsTab", purchaseSummary.purchaseId);
+    }
   }
 
   function handleAction(actionType: string, payload?: any) {

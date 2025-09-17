@@ -324,6 +324,9 @@ export function PurchaseProductsPage() {
       case "navigateToManageVariant":
         service.navigateToManageVariantHandler(payload);
         break;
+      case "refreshPurchaseProductsTab":
+        service.refreshPurchaseProductsTabHandler(payload);
+        break;
     }
   }
 

@@ -1,25 +1,18 @@
 import { merge } from "lodash";
 
 import PurchasesApiHooks from "@/utils/services/api/PurchasesApiService.ts";
-import {
-  MarginsPageSliceActions as actions
-} from "@/state/slices/MarginsPageSlice.ts";
+import { MarginsPageSliceActions as actions } from "@/state/slices/MarginsPageSlice.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
-import useProductsPageService
-  from "@/pages/products-section/products-page/useProductsPageService.ts";
-import {
-  IPurchaseProductsPageSlice
-} from "@/const/interfaces/store-slices/IPurchaseProductsPageSlice.ts";
+import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
+import { IPurchaseProductsPageSlice } from "@/const/interfaces/store-slices/IPurchaseProductsPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { setSelectedGridItem } from "@/utils/helpers/quick-helper.ts";
 import { AppSliceActions as appActions } from "@/state/slices/AppSlice.ts";
-import {
-  IProductsPageSlice
-} from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 
 export function useMarginsPageService(
   handleCardAction,
@@ -314,11 +307,7 @@ export function useMarginsPageService(
       updateMarginHandler(state.managedMargin.marginId, {
         marginName: model.marginName,
       }),
-      createMarginRulesHandler(state.managedMargin.marginId, {
-        ...model.marginRule,
-        nearest9: model.nearest9,
-        roundTo: model.roundTo,
-      }),
+      createMarginRulesHandler(state.managedMargin.marginId, model.marginRule),
     ]).then(([margin, marginRules]) => {
       dispatch(actions.setIsMarginConfigurationCardLoading(false));
       if (margin.marginName !== state.managedMargin.marginName) {
@@ -350,31 +339,29 @@ export function useMarginsPageService(
 
   function updateSelectedMarginHandler(model, purchaseId) {
     dispatch(actions.setIsMarginForPurchaseCardLoading(true));
-    updateMarginRulesForPurchaseHandler(purchaseId, {
-      ...model.marginRule,
-      nearest9: model.nearest9,
-      roundTo: model.roundTo,
-    }).then((res) => {
-      dispatch(actions.setIsMarginForPurchaseCardLoading(false));
-      if (!res.error) {
-        dispatch(
-          actions.refreshSelectedMargin({
-            ...state.selectedMargin,
-            marginRule: res,
-          }),
-        );
-        getMarginItemsListHandle(purchaseId);
-        addToast({
-          text: "Margin updated successfully",
-          type: "success",
-        });
-      } else {
-        addToast({
-          text: `${res.error.data.detail}`,
-          type: "error",
-        });
-      }
-    });
+    updateMarginRulesForPurchaseHandler(purchaseId, model.marginRule).then(
+      (res) => {
+        dispatch(actions.setIsMarginForPurchaseCardLoading(false));
+        if (!res.error) {
+          dispatch(
+            actions.refreshSelectedMargin({
+              ...state.selectedMargin,
+              marginRule: res,
+            }),
+          );
+          getMarginItemsListHandle(purchaseId);
+          addToast({
+            text: "Margin updated successfully",
+            type: "success",
+          });
+        } else {
+          addToast({
+            text: `${res.error.data.detail}`,
+            type: "error",
+          });
+        }
+      },
+    );
   }
 
   function manageSelectedMarginHandle(model) {

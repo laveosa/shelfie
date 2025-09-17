@@ -12,5 +12,5 @@ export interface MarginModel {
 
 export const MarginModelDefault: MarginModel = {
   marginName: null,
-  marginRule: MarginRuleModelDefault,
+  marginRule: { ...MarginRuleModelDefault },
 };
