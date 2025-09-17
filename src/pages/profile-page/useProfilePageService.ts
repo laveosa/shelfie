@@ -10,5 +10,5 @@ export default function useProfilePageService() {
   );
   const dispatch = useDispatch<AppDispatch>();
 
-  return { ...state };
+  return {};
 }

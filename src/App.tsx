@@ -14,6 +14,7 @@ function App() {
 
   useEffect(() => {
     service.getUserPreferencesHandler();
+    service.getUserDetailsHandler();
   }, []);
 
   return (

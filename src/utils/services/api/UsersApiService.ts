@@ -4,6 +4,7 @@ import { ApiServiceNameEnum } from "@/const/enums/ApiServiceNameEnum.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { ApiConfigurationService } from "@/utils/services/api/ApiConfigurationService.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
+import { UserModel } from "@/const/models/UserModel.ts";
 
 const apiConfig = new ApiConfigurationService(ApiUrlEnum.USERS_BASE_URL);
 
@@ -44,7 +45,7 @@ export const UsersApiService = createApi({
           url: ApiUrlEnum.PREFERENCES,
           method: "PATCH",
           body: JSON.stringify(model),
-        }),//TODO - invalidation needs to be conditional. No need to fire a request when the state has not changed.
+        }), //TODO - invalidation needs to be conditional. No need to fire a request when the state has not changed.
         invalidatesTags: (result) => [
           {
             type: ApiServiceNameEnum.USERS,
@@ -69,6 +70,12 @@ export const UsersApiService = createApi({
       query: (grid: string) => ({
         url: `${ApiUrlEnum.PREFERENCES}/reset/${grid}`,
         method: "PATCH",
+      }),
+    }),
+    getUserDetails: apiConfig.createQuery<UserModel, void>(builder, {
+      query: () => ({
+        url: `${ApiUrlEnum.USERS}/info`,
+        responseType: "json",
       }),
     }),
   }),
