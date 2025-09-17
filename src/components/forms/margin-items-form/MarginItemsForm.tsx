@@ -164,9 +164,9 @@ export default function MarginItemsForm({
             })
           }
         />
-        <span
-          className={`${cs.marginItemsFormText} she-text`}
-        >{`${data.unitsAmount} units`}</span>
+        <span className={`${cs.marginItemsFormText} she-text`}>
+          {data.unitsAmount} {data.unitsAmount === 1 ? "unit" : "units"}
+        </span>
         <SheButton
           className={data?.needApply ? "" : cs.formButtonNotActive}
           value={data?.needApply ? "Apply" : "Applied"}

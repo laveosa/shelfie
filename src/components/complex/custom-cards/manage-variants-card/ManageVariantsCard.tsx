@@ -121,7 +121,7 @@ export default function ManageVariantsCard({
         <Separator />
         <div className={cs.buttonBlock}>
           <span className="she-title">{t("SectionTitles.Variant")}</span>
-          {variants.length > 0 && (
+          {traits.length > 0 && (
             <SheButton
               icon={Plus}
               variant="secondary"
