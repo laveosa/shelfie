@@ -50,7 +50,7 @@ export const SheGrid = React.forwardRef<DndGridRef, ISheGrid<DataWithId, any>>(
       columnsPreferences,
       preferenceContext,
       sortingItems,
-      isLoading,
+      isLoading = true,
       showHeader = true,
       showColumnsHeader = true,
       showPagination = true,
@@ -235,9 +235,7 @@ export const SheGrid = React.forwardRef<DndGridRef, ISheGrid<DataWithId, any>>(
           ),
         );
 
-        if (onAddExpandableRow) {
-          onAddExpandableRow(parentRowId);
-        }
+        onAddExpandableRow?.(parentRowId);
       }
     }
 
