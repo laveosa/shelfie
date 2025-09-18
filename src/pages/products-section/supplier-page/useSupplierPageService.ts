@@ -124,7 +124,7 @@ export default function useSupplierPageService(handleCardAction) {
       if (res) {
         handleCardAction("supplierConfigurationCard");
         model.uploadModels.map((model) => {
-          model.contextId = res.supplierId;
+          model.contextId = res.data.supplierId;
           dispatch(actions.setIsPhotoUploaderLoading(true));
           productsService.uploadPhotoHandler(model).then((res) => {
             dispatch(actions.setIsPhotoUploaderLoading(false));

@@ -47,7 +47,7 @@ export function MarginsPage() {
 
   useEffect(() => {
     service.getMarginItemsListHandle(purchaseId);
-  }, [state.marginItemsGridRequestModel]);
+  }, []);
 
   useEffect(() => {
     service.keepSalePriceManagementCardOpenHandle();
@@ -71,13 +71,10 @@ export function MarginsPage() {
         service.createMarginHandle(payload);
         break;
       case "updateMargin":
-        service.updateMarginHandle(payload, purchaseId);
+        service.updateMarginHandle(payload);
         break;
       case "updateSelectedMargin":
         service.updateSelectedMarginHandler(payload, purchaseId);
-        break;
-      case "manageSelectedMargin":
-        service.manageSelectedMarginHandle(payload);
         break;
       case "manageMargin":
         service.manageMarginHandle(payload);
@@ -116,14 +113,14 @@ export function MarginsPage() {
         service.resetColumnsHandle();
         break;
       case "gridRequestChange":
-        service.gridRequestChangeHandle(payload);
+        service.gridRequestChangeHandle(purchaseId, payload);
         break;
-      case "brandFilter":
-        service.gridRequestChangeHandle({ filter: { brands: payload } });
-        break;
-      case "categoryFilter":
-        service.gridRequestChangeHandle({ filter: { categories: payload } });
-        break;
+      // case "brandFilter":
+      //   service.gridRequestChangeHandle({ filter: { brands: payload } });
+      //   break;
+      // case "categoryFilter":
+      //   service.gridRequestChangeHandle({ filter: { categories: payload } });
+      //   break;
       case "applyVisibleMarginItems":
         service.applyVisibleMarginItemsHandle(purchaseId);
         break;

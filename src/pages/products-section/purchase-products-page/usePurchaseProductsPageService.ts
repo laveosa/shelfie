@@ -3,19 +3,29 @@ import { useTranslation } from "react-i18next";
 
 import {
   formatDate,
-  setSelectedGridItem,
+  setSelectedGridItem
 } from "@/utils/helpers/quick-helper.ts";
 import PurchasesApiHooks from "@/utils/services/api/PurchasesApiService.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { IPurchaseProductsPageSlice } from "@/const/interfaces/store-slices/IPurchaseProductsPageSlice.ts";
-import { PurchaseProductsPageSliceActions as actions } from "@/state/slices/PurchaseProductsPageSlice.ts";
-import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
-import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
-import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import {
+  IPurchaseProductsPageSlice
+} from "@/const/interfaces/store-slices/IPurchaseProductsPageSlice.ts";
+import {
+  PurchaseProductsPageSliceActions as actions
+} from "@/state/slices/PurchaseProductsPageSlice.ts";
+import {
+  ProductsPageSliceActions as productsActions
+} from "@/state/slices/ProductsPageSlice.ts";
+import useProductsPageService
+  from "@/pages/products-section/products-page/useProductsPageService.ts";
+import {
+  IProductsPageSlice
+} from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
-import useProductBasicDataPageService from "@/pages/products-section/product-basic-data-page/useProductBasicDataPageService.ts";
+import useProductBasicDataPageService
+  from "@/pages/products-section/product-basic-data-page/useProductBasicDataPageService.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
@@ -71,6 +81,7 @@ export default function usePurchaseProductsPageService(
     PurchasesApiHooks.useCreatePurchaseForSupplierMutation();
   const [getListOfCompaniesForGrid] =
     CompaniesApiHooks.useGetListOfCompaniesForGridMutation();
+  const [getVariantsForGrid] = ProductsApiHooks.useGetVariantsForGridMutation();
 
   function getListOfPurchaseProductsForGridHandler(id: any, model) {
     return getListOfPurchaseProductsForGrid({ id, model }).then((res: any) => {
@@ -141,13 +152,13 @@ export default function usePurchaseProductsPageService(
 
   function getVariantsForPurchaseGridDataHandler() {
     dispatch(actions.setIsVariantsForPurchaseGridLoading(true));
-    productsService
-      .getVariantsForGridHandler(state.variantsForPurchaseGridRequestModel)
-      .then((res) => {
+    getVariantsForGrid(state.variantsForPurchaseGridRequestModel).then(
+      (res) => {
         dispatch(actions.setIsVariantsForPurchaseGridLoading(false));
-        dispatch(actions.refreshVariantsForPurchaseGridRequestModel(res));
-        dispatch(actions.refreshVariants(res.items));
-      });
+        dispatch(actions.refreshVariantsForPurchaseGridRequestModel(res.data));
+        dispatch(actions.refreshVariants(res.data.items));
+      },
+    );
   }
 
   function getGridFiltersDataHandler() {
@@ -1569,6 +1580,16 @@ export default function usePurchaseProductsPageService(
     getPurchaseSummaryHandler(purchaseId);
   }
 
+  function gridRequestChangeHandler(purchaseId, model) {
+    if (model.activeTab === "purchaseProducts") {
+      getListOfPurchaseProductsForGridHandler(purchaseId, model.updates);
+    } else {
+      getVariantsForGrid(model.updates).then((res) => {
+        dispatch(actions.refreshVariantsForPurchaseGridRequestModel(res.data));
+      });
+    }
+  }
+
   return {
     getPurchaseProductsPageDataHandler,
     getPurchasesProductsGridDataHandler,
@@ -1658,5 +1679,6 @@ export default function usePurchaseProductsPageService(
     increaseStockAmountHandler,
     closeAddStockCardHandler,
     refreshPurchaseProductsTabHandler,
+    gridRequestChangeHandler,
   };
 }

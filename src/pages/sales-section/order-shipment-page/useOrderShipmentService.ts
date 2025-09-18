@@ -287,32 +287,14 @@ export default function useOrderShipmentPageService(
   }
 
   function shipmentsGridRequestChangeHandle(updates) {
-    let gridRequestModel;
     if (
       updates === "deliveryServiceId" ||
       "shipmentStatus" ||
       "startDate" ||
       "endDate"
     ) {
-      gridRequestModel = dispatch(
-        actions.refreshShipmentsGridRequestModel({
-          ...state.shipmentsGridRequestModel,
-          currentPage: 1,
-          filter: {
-            ...state.shipmentsGridRequestModel.filter,
-            ...updates,
-          },
-        }),
-      );
-    } else {
-      gridRequestModel = dispatch(
-        actions.refreshShipmentsGridRequestModel({
-          ...state.shipmentsGridRequestModel,
-          ...updates,
-        }),
-      );
+      getShipmentsListForForGridHandler(updates);
     }
-    getShipmentsListForForGridHandler(gridRequestModel.payload);
   }
 
   function applyShipmentsGridColumns(model) {

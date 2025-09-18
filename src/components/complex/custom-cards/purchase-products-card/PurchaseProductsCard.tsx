@@ -22,7 +22,6 @@ import useProductsPageService from "@/pages/products-section/products-page/usePr
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import GridItemsFilter from "@/components/complex/grid/filters/grid-items-filter/GridItemsFilter.tsx";
-import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
 import GridTraitsFilter from "@/components/complex/grid/filters/grid-traits-filter/GridTraitsFilter.tsx";
 import GridShowItemsFilter from "@/components/complex/grid/filters/grid-show-deleted-filter/GridShowItemsFilter.tsx";
@@ -34,8 +33,6 @@ export default function PurchaseProductsCard({
   isLoading,
   isPurchaseProductsGridLoading,
   isProductsGridLoading,
-  variants,
-  purchaseProducts,
   purchaseProductsGridRequestModel,
   variantsGridRequestModel,
   preferences,
@@ -94,32 +91,6 @@ export default function PurchaseProductsCard({
       case "navigateToManageVariant":
         onAction("navigateToManageVariant", payload);
         break;
-    }
-  }
-
-  function handleGridRequestChange(updates: GridRequestModel) {
-    if (activeTab === "purchaseProducts") {
-      dispatch(
-        actions.refreshPurchasesProductsGridRequestModel({
-          ...state.purchasesProductsGridRequestModel,
-          ...updates,
-          filter: {
-            ...state.purchasesProductsGridRequestModel.filter,
-            ...updates.filter,
-          },
-        }),
-      );
-    } else {
-      dispatch(
-        actions.refreshVariantsForPurchaseGridRequestModel({
-          ...state.variantsForPurchaseGridRequestModel,
-          ...updates,
-          filter: {
-            ...state.variantsForPurchaseGridRequestModel.filter,
-            ...updates.filter,
-          },
-        }),
-      );
     }
   }
 
@@ -189,7 +160,7 @@ export default function PurchaseProductsCard({
                     handleAction,
                   ) as ColumnDef<DataWithId>[]
                 }
-                data={purchaseProducts}
+                data={purchaseProductsGridRequestModel.items}
                 gridRequestModel={purchaseProductsGridRequestModel}
                 sortingItems={sortingOptions}
                 columnsPreferences={preferences}
@@ -197,19 +168,25 @@ export default function PurchaseProductsCard({
                 skeletonQuantity={purchaseSummary?.unitsAmount}
                 onApplyColumns={onApplyColumnsHandler}
                 onDefaultColumns={onResetColumnsHandler}
-                onGridRequestChange={handleGridRequestChange}
+                onGridRequestChange={(updates) =>
+                  onAction("gridRequestChange", { updates, activeTab })
+                }
               >
                 <GridItemsFilter
                   items={brands}
                   columnName={t("SectionTitles.Brand")}
                   getId={(item: BrandModel) => item.brandId}
                   getName={(item: BrandModel) => item.brandName}
+                  selected={purchaseProductsGridRequestModel?.filter?.brands}
                 />
                 <GridItemsFilter
                   items={categories}
                   columnName={t("SectionTitles.Category")}
                   getId={(item: CategoryModel) => item.categoryId}
                   getName={(item: CategoryModel) => item.categoryName}
+                  selected={
+                    purchaseProductsGridRequestModel?.filter?.categories
+                  }
                 />
               </SheGrid>
               <div className={cs.purchaseSummary}>
@@ -262,7 +239,7 @@ export default function PurchaseProductsCard({
                     handleAction,
                   ) as ColumnDef<DataWithId>[]
                 }
-                data={variants}
+                data={variantsGridRequestModel.items}
                 gridRequestModel={variantsGridRequestModel}
                 sortingItems={sortingOptions}
                 columnsPreferences={preferences}
@@ -270,19 +247,23 @@ export default function PurchaseProductsCard({
                 skeletonQuantity={variantsSkeletonQuantity}
                 onApplyColumns={onApplyColumnsHandler}
                 onDefaultColumns={onResetColumnsHandler}
-                onGridRequestChange={handleGridRequestChange}
+                onGridRequestChange={(updates) =>
+                  onAction("gridRequestChange", { updates, activeTab })
+                }
               >
                 <GridItemsFilter
                   items={brands}
                   columnName={t("SectionTitles.Brand")}
                   getId={(item: BrandModel) => item.brandId}
                   getName={(item: BrandModel) => item.brandName}
+                  selected={variantsGridRequestModel?.filter?.brands}
                 />
                 <GridItemsFilter
                   items={categories}
                   columnName={t("SectionTitles.Category")}
                   getId={(item: CategoryModel) => item.categoryId}
                   getName={(item: CategoryModel) => item.categoryName}
+                  selected={variantsGridRequestModel?.filter?.categories}
                 />
                 <GridTraitsFilter
                   traitOptions={colorsForFilter}

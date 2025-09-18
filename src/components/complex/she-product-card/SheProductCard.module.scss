@@ -90,8 +90,12 @@
     scrollbar-gutter: stable;
     padding-right: 2.5px;
 
+    @-moz-document url-prefix() {
+      padding-right: 8.5px;
+    }
+
     &::-webkit-scrollbar {
-      width: 6px;
+      width: 5px;
       height: 10px;
       background: white;
     }
