@@ -34,17 +34,16 @@ export const InvoicesGridColumns = (
   {
     accessorKey: "thumbnailUrl",
     header: "File Name",
-    size: 130,
-    minSize: 130,
-    maxSize: 130,
+    minSize: 155,
+    maxSize: 155,
     cell: ({ row }) => {
       return (
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <SheIcon icon={FileIcon} maxWidth="30px" />
+          <SheIcon icon={FileIcon} maxWidth="30px" minWidth="30px" />
           <SheTooltip
             delayDuration={200}
             text={row.original.originalName}
-            className="max-w-[100px] min-w-[10px] overflow-hidden text-ellipsis whitespace-nowrap"
+            className="max-w-[100%] min-w-[10px] overflow-hidden text-ellipsis whitespace-nowrap"
           >
             <span className={`${cs.traitName} she-text`}>
               {row.original.originalName}
@@ -57,9 +56,8 @@ export const InvoicesGridColumns = (
   {
     id: "actions",
     header: "Actions",
-    size: 180,
-    minSize: 180,
-    maxSize: 180,
+    minSize: 220,
+    maxSize: 220,
     cell: ({ row, table }) => {
       const meta = table.options.meta as {
         setLoadingRow: (rowId: string, loading: boolean) => void;

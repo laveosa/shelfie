@@ -322,8 +322,8 @@ export function ManageVariantsPage() {
       {state.activeCards.includes("selectPurchaseCard") && (
         <div ref={createRefCallback("selectPurchaseCard")}>
           <SelectPurchaseCard
-            isLoading={state.setIsSelectPurchaseCardLoading}
-            isGridLoading={state.setIsPurchaseGridLoading}
+            isLoading={state.isSelectPurchaseCardLoading}
+            isGridLoading={state.isPurchaseGridLoading}
             purchases={state.purchaseGridRequestModel.items}
             onAction={onAction}
           />

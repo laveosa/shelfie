@@ -31,9 +31,8 @@ export const ProductPhotosGridColumns = (
   {
     accessorKey: "thumbnailUrl",
     header: "Preview",
-    size: 30,
-    minSize: 30,
-    maxSize: 30,
+    minSize: 80,
+    maxSize: 80,
     cell: ({ row, table }) => {
       const photoUrl: string = row.getValue("thumbnailUrl");
       const meta = table.options.meta as {
@@ -61,9 +60,8 @@ export const ProductPhotosGridColumns = (
   {
     accessorKey: "format",
     header: "Format",
-    size: 30,
-    minSize: 30,
-    maxSize: 30,
+    minSize: 150,
+    maxSize: 150,
     cell: ({ row }) => {
       return (
         <span className="she-subtext">{`${row.original.height}px x ${row.original.width}px`}</span>
@@ -73,9 +71,8 @@ export const ProductPhotosGridColumns = (
   {
     accessorKey: "isActive",
     header: "Active",
-    size: 20,
-    minSize: 20,
-    maxSize: 20,
+    minSize: 60,
+    maxSize: 60,
     cell: ({ row, table }) => {
       const meta = table.options.meta as {
         setLoadingRow: (rowId: string, loading: boolean) => void;
@@ -96,9 +93,8 @@ export const ProductPhotosGridColumns = (
   {
     id: "map",
     header: "Actions",
-    size: 40,
-    minSize: 40,
-    maxSize: 40,
+    minSize: 100,
+    maxSize: 100,
     cell: ({ row, table }) => {
       const meta = table.options.meta as {
         setLoadingRow: (rowId: string, loading: boolean) => void;
@@ -116,9 +112,8 @@ export const ProductPhotosGridColumns = (
   },
   {
     id: "delete",
-    size: 20,
-    minSize: 20,
-    maxSize: 20,
+    minSize: 60,
+    maxSize: 60,
     cell: ({ row, table }) => {
       const meta = table.options.meta as {
         setLoadingRow: (rowId: string, loading: boolean) => void;

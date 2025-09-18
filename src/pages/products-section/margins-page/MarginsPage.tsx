@@ -115,12 +115,6 @@ export function MarginsPage() {
       case "gridRequestChange":
         service.gridRequestChangeHandle(purchaseId, payload);
         break;
-      // case "brandFilter":
-      //   service.gridRequestChangeHandle({ filter: { brands: payload } });
-      //   break;
-      // case "categoryFilter":
-      //   service.gridRequestChangeHandle({ filter: { categories: payload } });
-      //   break;
       case "applyVisibleMarginItems":
         service.applyVisibleMarginItemsHandle(purchaseId);
         break;
@@ -145,7 +139,10 @@ export function MarginsPage() {
         onAction={onAction}
       />
       {state.activeCards?.includes("salePriceManagementCard") && (
-        <div ref={createRefCallback("salePriceManagementCard")}>
+        <div
+          className={cs.salePriceManagementCard}
+          ref={createRefCallback("salePriceManagementCard")}
+        >
           <SalePriseManagementCard
             isLoading={state.isSalePriceManagementCardLoading}
             isGridLoading={state.isMarginProductsGridLoading}

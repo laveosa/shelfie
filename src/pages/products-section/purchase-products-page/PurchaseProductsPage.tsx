@@ -340,7 +340,10 @@ export function PurchaseProductsPage() {
         counter={productsState.purchaseCounters}
       />
       {state.activeCards?.includes("purchaseProductsCard") && (
-        <div ref={createRefCallback("purchaseProductsCard")}>
+        <div
+          className={cs.purchaseProductsCard}
+          ref={createRefCallback("purchaseProductsCard")}
+        >
           <PurchaseProductsCard
             isLoading={state.isPurchaseProductsCardLoading}
             isPurchaseProductsGridLoading={state.isPurchasesProductsGridLoading}
