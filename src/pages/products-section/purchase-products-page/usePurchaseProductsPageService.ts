@@ -1569,6 +1569,14 @@ export default function usePurchaseProductsPageService(
     getPurchaseSummaryHandler(purchaseId);
   }
 
+  function gridRequestChangeHandler(purchaseId, model) {
+    if (model.activeTab === "purchaseProducts") {
+      getListOfPurchaseProductsForGridHandler(purchaseId, model.updates);
+    } else {
+      productsService.getVariantsForGridHandler(model.updates);
+    }
+  }
+
   return {
     getPurchaseProductsPageDataHandler,
     getPurchasesProductsGridDataHandler,
@@ -1658,5 +1666,6 @@ export default function usePurchaseProductsPageService(
     increaseStockAmountHandler,
     closeAddStockCardHandler,
     refreshPurchaseProductsTabHandler,
+    gridRequestChangeHandler,
   };
 }

@@ -47,23 +47,14 @@ export function ProductsPage() {
 
   useEffect(() => {
     if (state.activeTab === "products") {
-      service.getTheProductsForGridHandler(
-        { ...state.productsGridRequestModel, endPage: 21 },
-        true,
-      );
+      service.getTheProductsForGridHandler(state.productsGridRequestModel);
     } else if (state.activeTab === "variants") {
       service.getVariantsForGridHandler(state.variantsGridRequestModel);
     } else if (state.activeTab === "purchases") {
       service.getListOfPurchasesForGridHandler(state.purchasesGridRequestModel);
     }
     dispatch(actions.resetSelectedVariant());
-  }, [
-    state.productsGridRequestModel,
-    state.variantsGridRequestModel,
-    state.purchasesGridRequestModel,
-    state.activeTab,
-    dispatch,
-  ]);
+  }, [state.activeTab, dispatch]);
 
   useEffect(() => {
     if (state.brands.length === 0) {

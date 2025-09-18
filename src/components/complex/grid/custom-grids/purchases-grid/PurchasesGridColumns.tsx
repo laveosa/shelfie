@@ -23,13 +23,14 @@ export function purchasesGridColumns(onAction: any): ColumnDef<any>[] {
       maxSize: 200,
       cell: ({ row }) => {
         const imageUrl: string = row.original.supplier?.thumbnailUrl;
+        const name: string = row.original.supplier?.supplierName;
         return (
           <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
             <div>
               {imageUrl ? (
                 <img
                   src={imageUrl}
-                  alt={row.original.supplier?.supplierName || "Supplier"}
+                  alt={name || "Supplier"}
                   className="object-cover rounded-md w-12 h-12"
                 />
               ) : (

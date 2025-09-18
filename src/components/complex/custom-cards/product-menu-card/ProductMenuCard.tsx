@@ -16,18 +16,17 @@ import {
   ShoppingBag,
   ShoppingCart,
   SlidersHorizontal,
-  Truck
+  Truck,
 } from "lucide-react";
 
 import {
   CollectionConfig,
   IProductMenuCard,
-  MenuItem
+  MenuItem,
 } from "@/const/interfaces/complex-components/custom-cards/IProductMenuCard.ts";
 import { Badge } from "@/components/ui/badge.tsx";
 import cs from "./ProductMenuCard.module.scss";
-import SheProductCard
-  from "@/components/complex/she-product-card/SheProductCard.tsx";
+import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 
 export default function ProductMenuCard({

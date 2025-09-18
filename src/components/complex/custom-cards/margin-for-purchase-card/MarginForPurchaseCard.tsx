@@ -15,7 +15,7 @@ export default function MarginForPurchaseCard({
   onAction,
 }: IMarginForPurchaseCard) {
   const { t } = useTranslation();
-  
+
   return (
     <SheProductCard
       loading={isLoading}
@@ -24,7 +24,9 @@ export default function MarginForPurchaseCard({
     >
       <div className={cs.marginForPurchaseCardContent}>
         <div className={cs.electedMarginBlock}>
-          <span className="she-text">{t("MarginForm.Labels.SelectMarginForPurchase")}</span>
+          <span className="she-text">
+            {t("MarginForm.Labels.SelectMarginForPurchase")}
+          </span>
           <SheButton
             icon={ReceiptEuro}
             variant="secondary"
@@ -57,13 +59,15 @@ export default function MarginForPurchaseCard({
                   icon={Cog}
                   value={t("ProductActions.Manage")}
                   variant="secondary"
-                  onClick={() => onAction("manageSelectedMargin", margin)}
+                  onClick={() => onAction("manageMargin", margin)}
                 />
               </div>
             </div>
             {margin.isDeleted && (
               <div className={cs.marginIsDeletedBlock}>
-                <span className="she-text">{t("MarginMessages.MarginIsDeleted")}</span>
+                <span className="she-text">
+                  {t("MarginMessages.MarginIsDeleted")}
+                </span>
               </div>
             )}
             <Separator />

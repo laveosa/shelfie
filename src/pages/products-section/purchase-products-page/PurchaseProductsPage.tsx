@@ -69,11 +69,11 @@ export function PurchaseProductsPage() {
 
   useEffect(() => {
     service.getPurchasesProductsGridDataHandler(purchaseId);
-  }, [state.purchasesProductsGridRequestModel]);
+  }, []);
 
   useEffect(() => {
     service.getVariantsForPurchaseGridDataHandler();
-  }, [state.variantsForPurchaseGridRequestModel]);
+  }, []);
 
   useEffect(() => {
     service.getGridFiltersDataHandler();
@@ -326,6 +326,9 @@ export function PurchaseProductsPage() {
         break;
       case "refreshPurchaseProductsTab":
         service.refreshPurchaseProductsTabHandler(payload);
+        break;
+      case "gridRequestChange":
+        service.gridRequestChangeHandler(purchaseId, payload);
         break;
     }
   }
