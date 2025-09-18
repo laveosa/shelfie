@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 
 import {
@@ -134,7 +134,7 @@ export function ProductsPage() {
       <div className={cs.productsPageHeader}>
         <span className="she-title">{translate("PageTitles.Products")}</span>
         {state.activeTab === "purchases" ? (
-          <div className={cs.headerButtonBlock}>
+          <div>
             <SheButton
               icon={Plus}
               variant="outline"
@@ -145,7 +145,7 @@ export function ProductsPage() {
             />
           </div>
         ) : (
-          <div className={cs.headerButtonBlock}>
+          <div>
             <SheButton
               icon={Plus}
               variant="outline"
@@ -196,12 +196,10 @@ export function ProductsPage() {
             <SheGrid
               isLoading={state.isLoading}
               columns={ProductsGridColumns(onAction) as ColumnDef<DataWithId>[]}
-              data={state.productsGridRequestModel?.items}
               gridRequestModel={state.productsGridRequestModel}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
               preferenceContext={"productReferences"}
-              skeletonQuantity={state.productsGridRequestModel?.pageSize}
               onApplyColumns={(model) => onAction("applyColumns", model)}
               onDefaultColumns={() => onAction("resetColumns")}
               onGridRequestChange={(updates) =>
@@ -229,12 +227,10 @@ export function ProductsPage() {
             <SheGrid
               isLoading={state.isLoading}
               columns={variantsGridColumns(onAction) as ColumnDef<DataWithId>[]}
-              data={state.variants}
               gridRequestModel={state.variantsGridRequestModel}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
               preferenceContext={"variantReferences"}
-              skeletonQuantity={state.variantsGridRequestModel.pageSize}
               onApplyColumns={(model) => onAction("applyColumns", model)}
               onDefaultColumns={() => onAction("resetColumns")}
               onGridRequestChange={(updates) =>
@@ -272,12 +268,10 @@ export function ProductsPage() {
               columns={
                 purchasesGridColumns(onAction) as ColumnDef<DataWithId>[]
               }
-              data={state.purchases}
               gridRequestModel={state.purchasesGridRequestModel}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
               preferenceContext={"purchaseReferences"}
-              skeletonQuantity={state.purchasesGridRequestModel.pageSize}
               onApplyColumns={(model) => onAction("applyColumns", model)}
               onDefaultColumns={() => onAction("resetColumns")}
               onGridRequestChange={(updates) =>

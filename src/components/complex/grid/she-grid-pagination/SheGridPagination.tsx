@@ -29,7 +29,7 @@ const pageSizeOptions: ISheSelectItem<number>[] = [
 export function SheGridPagination() {
   // ==================================================================== STATE
   const { gridRequestModel, onGridRequestChange } = useGridContext();
-  const { currentPage, totalPages, pageSize, endPage } = gridRequestModel;
+  const { currentPage, totalPages, pageSize, endPage } = gridRequestModel || {};
 
   // ==================================================================== EVENT HANDLER
   function onPreviousPageHandler() {

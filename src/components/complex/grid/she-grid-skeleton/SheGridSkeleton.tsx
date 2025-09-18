@@ -4,7 +4,6 @@ import cs from "./SheGridSkeleton.module.scss";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import { TableBody, TableCell, TableRow } from "@/components/ui/table.tsx";
 import { ISheGridSkeleton } from "@/const/interfaces/complex-components/ISheGridSkeleton.ts";
-import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
 
 export default function SheGridSkeleton({
   gridSkeletonClassName = "",
@@ -27,7 +26,6 @@ export default function SheGridSkeleton({
       className={`${gridSkeletonClassName} ${cs.sheGridSkeletonBody}`}
       style={{ ...gridSkeletonStyle }}
     >
-      {/*<SheLoading isLoading={true} />*/}
       {_createSkeletonArray(quantity).map((_, index) => (
         <TableRow key={index}>
           <TableCell>

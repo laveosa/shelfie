@@ -23,7 +23,7 @@ export interface ISheGrid<TData extends DataWithId, TValue>
   className?: any;
   isLoading?: boolean;
   columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+  data?: TData[];
   sortingItems?: GridSortingModel[];
   gridRequestModel?: GridRequestModel;
   showHeader?: boolean;

@@ -21,6 +21,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
+import cs from "./SheGrid.module.scss";
 import {
   Table,
   TableBody,
@@ -29,12 +30,11 @@ import {
   TableRow,
 } from "@/components/ui/table.tsx";
 import SheGridHeader from "@/components/complex/grid/she-grid-header/SheGridHeader.tsx";
-import { GridContext } from "@/state/context/grid-context.ts";
-import cs from "./SheGrid.module.scss";
-
 import SheGridSkeleton from "@/components/complex/grid/she-grid-skeleton/SheGridSkeleton.tsx";
 import SheGridItem from "@/components/complex/grid/she-grid-item/SheGridItem.tsx";
 import SheGridNoDataMessage from "@/components/complex/grid/she-grid-no-data-message/SheGridNoDataMessage.tsx";
+import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
+import { GridContext } from "@/state/context/grid-context.ts";
 import {
   DataWithId,
   DndGridRef,
@@ -132,10 +132,17 @@ export const SheGrid = React.forwardRef<DndGridRef, ISheGrid<DataWithId, any>>(
 
     // ==================================================================== SIDE EFFECTS
     useEffect(() => {
-      if (data && data.length > 0) {
-        setItems(prepareItemsForGrid(data));
-      }
+      if (data && data.length > 0) setItems(prepareItemsForGrid(data));
     }, [data]);
+
+    useEffect(() => {
+      if (
+        gridRequestModel &&
+        gridRequestModel.items &&
+        gridRequestModel.items.length > 0
+      )
+        setItems(prepareItemsForGrid(gridRequestModel.items));
+    }, [gridRequestModel]);
 
     // ==================================================================== EVENT HANDLERS
     function onDragStartHandler(event: DragStartEvent) {
@@ -206,8 +213,8 @@ export const SheGrid = React.forwardRef<DndGridRef, ISheGrid<DataWithId, any>>(
       return items.filter((item) => item.isHidden).map((item) => item.id);
     }
 
-    function prepareItemsForGrid(data: any): TData[] {
-      return data.map((item, index) => ({
+    function prepareItemsForGrid(items: any[]): TData[] {
+      return items.map((item, index) => ({
         ...item,
         id: item.id || index + 1,
         isHidden: item.isHidden || false,
@@ -263,7 +270,9 @@ export const SheGrid = React.forwardRef<DndGridRef, ISheGrid<DataWithId, any>>(
           onDragStart={onDragStartHandler}
           onDragEnd={onDragEndHandler}
         >
-          <div className={`${className} ${cs.dndGrid}`}>
+          <div
+            className={`${className} ${cs.dndGrid} ${showColumnsHeader ? cs.dndGridWithColumnsHeader : ""} ${showHeader ? cs.dndGridWithHeader : ""}`}
+          >
             <SheGridHeader
               table={table}
               showHeader={showHeader}
@@ -272,6 +281,12 @@ export const SheGrid = React.forwardRef<DndGridRef, ISheGrid<DataWithId, any>>(
               {children}
             </SheGridHeader>
             <div className={cs.dndGridContainer}>
+              {!showColumnsHeader && (
+                <SheLoading
+                  isLoading={isLoading}
+                  className={cs.dndGridLoader}
+                />
+              )}
               <Table>
                 <TableHeader
                   className={!showColumnsHeader ? cs.hiddenHeader : ""}
@@ -307,9 +322,17 @@ export const SheGrid = React.forwardRef<DndGridRef, ISheGrid<DataWithId, any>>(
                       ))}
                     </TableRow>
                   ))}
+                  <TableRow className={cs.dndGridLoaderWrapper}>
+                    <TableHead>
+                      <SheLoading
+                        isLoading={isLoading}
+                        className={cs.dndGridLoader}
+                      />
+                    </TableHead>
+                  </TableRow>
                 </TableHeader>
                 <SheGridSkeleton
-                  quantity={skeletonQuantity}
+                  quantity={gridRequestModel?.pageSize || skeletonQuantity}
                   isLoading={isLoading}
                 />
                 <SheGridNoDataMessage
