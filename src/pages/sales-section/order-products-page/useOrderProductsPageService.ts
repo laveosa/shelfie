@@ -99,27 +99,7 @@ export default function useOrderProductsPageService() {
   }
 
   function variantsGridRequestChange(updates) {
-    let gridRequestModel;
-    if ("searchQuery" in updates || "currentPage" in updates) {
-      gridRequestModel = dispatch(
-        ordersActions.refreshVariantsGridRequestModel({
-          ...ordersState.variantsGridRequestModel,
-          ...updates,
-        }),
-      );
-    } else {
-      gridRequestModel = dispatch(
-        ordersActions.refreshVariantsGridRequestModel({
-          ...ordersState.variantsGridRequestModel,
-          currentPage: 1,
-          filter: {
-            ...ordersState.variantsGridRequestModel.filter,
-            ...updates,
-          },
-        }),
-      );
-    }
-    getVariantsListForGrid(gridRequestModel.payload);
+    getVariantsListForGrid(updates);
   }
 
   function updateStockActionInOrderHandler(stockActionId, model) {

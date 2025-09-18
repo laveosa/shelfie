@@ -181,17 +181,8 @@ export function useMarginsPageService(
     });
   }
 
-  function gridRequestChangeHandle(updates: GridRequestModel) {
-    dispatch(
-      actions.refreshMarginItemsGridRequestModel({
-        ...state.marginItemsGridRequestModel,
-        ...updates,
-        filter: {
-          ...state.marginItemsGridRequestModel.filter,
-          ...updates.filter,
-        },
-      }),
-    );
+  function gridRequestChangeHandle(purchaseId, updates: GridRequestModel) {
+    getMarginItemsListForGridHandler(purchaseId, updates);
   }
 
   function openSelectMarginCardHandle() {
