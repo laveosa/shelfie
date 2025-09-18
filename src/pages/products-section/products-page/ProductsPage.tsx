@@ -194,12 +194,13 @@ export function ProductsPage() {
           </div>
           <TabsContent value="products" className={cs.productsPageTabContext}>
             <SheGrid
-              isLoading={state.isLoading}
-              columns={ProductsGridColumns(onAction) as ColumnDef<DataWithId>[]}
               gridRequestModel={state.productsGridRequestModel}
+              columns={ProductsGridColumns(onAction) as ColumnDef<DataWithId>[]}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
               preferenceContext={"productReferences"}
+              isLoading={state.isLoading}
+              skeletonQuantity={10}
               onApplyColumns={(model) => onAction("applyColumns", model)}
               onDefaultColumns={() => onAction("resetColumns")}
               onGridRequestChange={(updates) =>
@@ -225,12 +226,13 @@ export function ProductsPage() {
           </TabsContent>
           <TabsContent value="variants" className={cs.productsPageTabContext}>
             <SheGrid
-              isLoading={state.isLoading}
-              columns={variantsGridColumns(onAction) as ColumnDef<DataWithId>[]}
               gridRequestModel={state.variantsGridRequestModel}
+              columns={variantsGridColumns(onAction) as ColumnDef<DataWithId>[]}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
               preferenceContext={"variantReferences"}
+              isLoading={state.isLoading}
+              skeletonQuantity={10}
               onApplyColumns={(model) => onAction("applyColumns", model)}
               onDefaultColumns={() => onAction("resetColumns")}
               onGridRequestChange={(updates) =>
@@ -264,14 +266,15 @@ export function ProductsPage() {
           </TabsContent>
           <TabsContent value="purchases" className={cs.productsPageTabContext}>
             <SheGrid
-              isLoading={state.isLoading}
+              gridRequestModel={state.purchasesGridRequestModel}
               columns={
                 purchasesGridColumns(onAction) as ColumnDef<DataWithId>[]
               }
-              gridRequestModel={state.purchasesGridRequestModel}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
               preferenceContext={"purchaseReferences"}
+              isLoading={state.isLoading}
+              skeletonQuantity={10}
               onApplyColumns={(model) => onAction("applyColumns", model)}
               onDefaultColumns={() => onAction("resetColumns")}
               onGridRequestChange={(updates) =>

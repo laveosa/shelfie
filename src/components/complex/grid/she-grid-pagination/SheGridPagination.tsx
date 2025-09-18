@@ -40,8 +40,10 @@ export function SheGridPagination() {
     onGridRequestChange({ currentPage: currentPage + 1 });
   }
 
-  function onSetCurrentPageHandler(e) {
-    onGridRequestChange({ currentPage: e.target.innerText });
+  function onSetCurrentPageHandler(pageNum) {
+    if (typeof pageNum !== "number") return null;
+
+    onGridRequestChange({ currentPage: pageNum });
   }
 
   function onSetPageSizeHandler(newPageSize) {
@@ -95,8 +97,13 @@ export function SheGridPagination() {
           <div className={cs.gridPaginationPageIndex}>
             {_getPageNumbers().map((pageNum: any, idx) => (
               <SheButton
-                key={`${pageNum + (idx + 1)}`}
+                key={
+                  typeof pageNum === "number"
+                    ? `page-${pageNum}`
+                    : `ellipsis-${idx}`
+                }
                 variant={pageNum === currentPage ? "outline" : "ghost"}
+                disabled={pageNum === currentPage || pageNum === "..."}
                 className={
                   pageNum === "..."
                     ? cs.gridPaginationPageIndexPlaceholder

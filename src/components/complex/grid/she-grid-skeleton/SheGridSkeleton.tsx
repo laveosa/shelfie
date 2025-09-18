@@ -27,7 +27,7 @@ export default function SheGridSkeleton({
       style={{ ...gridSkeletonStyle }}
     >
       {_createSkeletonArray(quantity).map((_, index) => (
-        <TableRow key={index}>
+        <TableRow key={index} className={cs.sheGridSkeletonRow}>
           <TableCell>
             <Skeleton className={cs.sheGridSkeletonRound} />
           </TableCell>
