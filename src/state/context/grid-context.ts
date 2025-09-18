@@ -1,4 +1,5 @@
 import { createContext, useContext } from "react";
+
 import { IGridContext } from "@/const/interfaces/context/IGridContext.ts";
 
 export const GridContext = createContext<IGridContext>(null);

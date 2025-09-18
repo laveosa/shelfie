@@ -3,13 +3,11 @@ import { useTranslation } from "react-i18next";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ConnectImageCard.module.scss";
-import {
-  DataWithId,
-  DndGridDataTable,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import { ConnectImageGridColumns } from "@/components/complex/grid/custom-grids/connect-image-grid/ConnectImageGridColumns.tsx";
 import { IConnectImageCard } from "@/const/interfaces/complex-components/custom-cards/IConnectImageCard.ts";
 import { ColumnDef } from "@tanstack/react-table";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export default function ConnectImageCard({
   isLoading,
@@ -34,7 +32,7 @@ export default function ConnectImageCard({
     >
       <div className={cs.connectImageCardContent}>
         <div className={cs.connectImageGrid}>
-          <DndGridDataTable
+          <SheGrid
             isLoading={isGridLoading}
             showHeader={false}
             columns={

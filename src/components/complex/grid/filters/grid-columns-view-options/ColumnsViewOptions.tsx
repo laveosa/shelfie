@@ -18,7 +18,7 @@ interface IColumnsViewOptions<TData> {
   table: Table<TData>;
 }
 
-export function ColumnsViewOptions<TData>({
+export function ColumnsViewOptions<TData = any>({
   table,
 }: IColumnsViewOptions<TData>) {
   const {

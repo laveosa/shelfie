@@ -11,4 +11,5 @@ export interface CompanyModel {
   locationId?: number;
   thumbnailUrl?: string;
   address?: string;
+  isSelected?: boolean;
 }

@@ -7,16 +7,16 @@ import SheProductCard from "@/components/complex/she-product-card/SheProductCard
 import { ISelectEntityCard } from "@/const/interfaces/complex-components/custom-cards/ISelectEntityCard.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import { DndGridDataTable } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 
-export default function SelectEntityCard({
+export default function SelectEntityCard<T = any>({
   isLoading,
   isGridLoading,
   entityName,
   entityCollection,
   columns,
   onAction,
-}: ISelectEntityCard) {
+}: ISelectEntityCard<T>) {
   const { t } = useTranslation();
 
   return (
@@ -50,7 +50,7 @@ export default function SelectEntityCard({
             onDelay={(data: string) => onAction("searchEntity", data)}
             onClear={() => onAction("searchEntity", null)}
           />
-          <DndGridDataTable
+          <SheGrid
             isLoading={isGridLoading}
             showHeader={false}
             columns={columns}

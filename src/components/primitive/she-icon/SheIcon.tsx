@@ -50,7 +50,12 @@ function SheIconComponent({
       onClick={onClickHandler}
     >
       {typeof icon === "string" &&
-        /\.(png|jpe?g|gif|webp|svg)$/i.test(icon) && (
+        (/\.(png|jpe?g|gif|webp|svg)$/i.test(icon) ||
+          icon.includes("png") ||
+          icon.includes("jpeg") ||
+          icon.includes("gif") ||
+          icon.includes("webp") ||
+          icon.includes("svg")) && (
           <img
             src={icon}
             className={elementClassName}

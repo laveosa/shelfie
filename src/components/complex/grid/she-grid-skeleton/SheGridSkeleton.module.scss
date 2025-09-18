@@ -1,0 +1,40 @@
+.sheGridSkeletonBody {
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+
+  tr {
+    display: flex;
+    align-items: flex-start;
+
+    td {
+      padding: 8px;
+      min-height: 46px;
+    }
+  }
+
+  .sheGridSkeletonRow {
+    min-height: 58px;
+    align-items: center;
+  }
+
+  .sheGridSkeletonRound {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+  }
+
+  .sheGridSkeletonBarsContainer {
+    width: 80%;
+
+    .sheGridSkeletonLongBar {
+      width: 100%;
+      height: 16px;
+    }
+
+    .sheGridSkeletonShortBar {
+      width: 70%;
+      height: 12px;
+    }
+  }
+}

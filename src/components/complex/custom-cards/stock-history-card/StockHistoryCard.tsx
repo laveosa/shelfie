@@ -3,13 +3,11 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 import cs from "./StockHistoryCard.module.scss";
-import {
-  DataWithId,
-  DndGridDataTable,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import { IVariantHistoryCard } from "@/const/interfaces/complex-components/custom-cards/IVariantHistoryCard.ts";
 import { StockHistoryGridColumns } from "@/components/complex/grid/custom-grids/stock-history-grid/StockHistoryGridColumns.tsx";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export default function StockHistoryCard({
   isLoading,
@@ -34,7 +32,7 @@ export default function StockHistoryCard({
     >
       <div className={cs.stockHistoryCardContent}>
         <div className={cs.stockHistoryGrid}>
-          <DndGridDataTable
+          <SheGrid
             isLoading={isGridLoading}
             showHeader={false}
             columns={StockHistoryGridColumns as ColumnDef<DataWithId>[]}

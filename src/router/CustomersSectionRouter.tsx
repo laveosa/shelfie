@@ -1,6 +1,6 @@
 import { RouteObject } from "react-router-dom";
 import { JSX } from "react";
-import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
+
 import { CustomerBasicDataPage } from "@/pages/customers-section/customer-basic-data/CustomerBasicDataPage.tsx";
 import { CustomerAddressesPage } from "@/pages/customers-section/customer-addresses/CustomerAddressesPage.tsx";
 import { CustomerOpenCartPage } from "@/pages/customers-section/customer-open-cart/CustomerOpenCartPage.tsx";

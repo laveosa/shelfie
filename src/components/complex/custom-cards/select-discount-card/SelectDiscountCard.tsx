@@ -3,10 +3,7 @@ import { Plus } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import {
-  DataWithId,
-  DndGridDataTable,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import cs from "./SelectDiscountCard.module.scss";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import { ISelectDiscountCard } from "@/const/interfaces/complex-components/custom-cards/ISelectDiscountCard.ts";
@@ -15,6 +12,7 @@ import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { DiscountsListGridColumns } from "@/components/complex/grid/custom-grids/discounts-list-grid/DiscountsListGridColumns.tsx";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export default function SelectDiscountCard({
   isLoading,
@@ -82,7 +80,7 @@ export default function SelectDiscountCard({
             onClick={() => onAction("createDiscount", discount)}
           />
         </div>
-        <DndGridDataTable
+        <SheGrid
           isLoading={isGridLoading}
           showHeader={false}
           columns={

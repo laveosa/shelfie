@@ -1,6 +1,7 @@
+import { PropsWithChildren } from "react";
+
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
-import { PropsWithChildren } from "react";
 
 export interface IGridContext extends PropsWithChildren {
   loadingRow?: boolean;

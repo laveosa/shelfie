@@ -136,12 +136,30 @@ body {
 /*// -------------------------------------------------------------------------- CONTENT PAGE*/
 
 .contentPage {
-  min-height: calc(100vh - 42px);
+  $appHeaderHeight: vars.$appHeaderHeight;
+  min-height: calc(100vh - $appHeaderHeight);
+  max-height: calc(100vh - $appHeaderHeight);
+  max-width: calc(100vw - 48px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
 
+  // section div wrapper
   > div {
-    max-height: calc(100vh - 42px);
-    overflow-y: auto;
-    padding: 20px;
+    min-height: calc(100vh - 62px);
+    max-height: calc(100vh - 62px);
+  }
+}
+
+.sidebar-open {
+  .contentPage {
+    max-width: calc(100vw - 256px);
+  }
+}
+
+.mobile-view {
+  .contentPage {
+    max-width: none;
   }
 }
 

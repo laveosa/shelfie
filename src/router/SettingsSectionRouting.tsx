@@ -13,4 +13,4 @@ export const SettingsSectionRouter: RouteObject[] = [
       };
     },
   },
-];
+] as RouteObject[];

@@ -16,4 +16,5 @@ export interface PurchaseModel {
   soldAmount?: number;
   unitsAmount?: number;
   valueAmount?: number;
+  isSelected?: boolean;
 }

@@ -2,10 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { CheckCheck } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-import {
-  DataWithId,
-  DndGridDataTable,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import { ISalePriceManagementCard } from "@/const/interfaces/complex-components/custom-cards/ISalePriceManagementCard.ts";
 import cs from "@/components/complex/custom-cards/sale-price-management-card/SalePriceManagementCard.module.scss";
@@ -16,6 +13,7 @@ import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import GridTraitsFilter from "@/components/complex/grid/filters/grid-traits-filter/GridTraitsFilter.tsx";
 import GridShowItemsFilter from "@/components/complex/grid/filters/grid-show-deleted-filter/GridShowItemsFilter.tsx";
 import { marginProductsGridColumns } from "@/components/complex/grid/custom-grids/margin-products-grid/MarginProductsGridColumns.tsx";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export default function SalePriseManagementCard({
   isLoading,
@@ -40,7 +38,7 @@ export default function SalePriseManagementCard({
         className={cs.salePriceManagementCardContent}
         width="100%"
       >
-        <DndGridDataTable
+        <SheGrid
           isLoading={isGridLoading}
           columns={
             marginProductsGridColumns(
@@ -77,7 +75,7 @@ export default function SalePriseManagementCard({
           <GridTraitsFilter traitOptions={colors} traitType="color" />
           <GridTraitsFilter traitOptions={sizes} traitType="size" />
           <GridShowItemsFilter context="Deleted" />
-        </DndGridDataTable>
+        </SheGrid>
       </SheProductCard>
       <div className={cs.buttonBlock}>
         <SheButton

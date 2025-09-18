@@ -3,10 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import {
-  DataWithId,
-  DndGridDataTable,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import {
   ShipmentStatusEnum,
   ShipmentStatusLabels,
@@ -23,6 +20,7 @@ import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSele
 import { ordersInShipmentGridColumns } from "@/components/complex/grid/custom-grids/orders-in-shipment-grid/OrdersInShipmentGridColumns.tsx";
 import { orderItemsInShipmentGridColumns } from "@/components/complex/grid/custom-grids/order-items-in-shipmen-grid/OrderItemsInShipmentGridColumns.tsx";
 import { PackedOrderItemsGridColumns } from "@/components/complex/grid/custom-grids/packed-order-items-grid/PackedOrderItemsGridColumns.tsx";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export default function ShipmentConfigurationCard({
   isLoading,
@@ -224,7 +222,7 @@ export default function ShipmentConfigurationCard({
               variant="secondary"
             />
           </div>
-          <DndGridDataTable
+          <SheGrid
             showHeader={false}
             columns={
               ordersInShipmentGridColumns(onAction) as ColumnDef<DataWithId>[]
@@ -245,7 +243,7 @@ export default function ShipmentConfigurationCard({
               txtColor="#FAFAFA"
             />
           </div>
-          <DndGridDataTable
+          <SheGrid
             showHeader={false}
             columns={
               orderItemsInShipmentGridColumns({
@@ -262,7 +260,7 @@ export default function ShipmentConfigurationCard({
                   {t("OrderActions.ConfirmPackedProducts")}
                 </span>
               </div>
-              <DndGridDataTable
+              <SheGrid
                 showHeader={false}
                 columns={
                   PackedOrderItemsGridColumns({
@@ -286,7 +284,7 @@ export default function ShipmentConfigurationCard({
                 <span className={cs.subtitleText}>
                   {t("ShipmentForm.Labels.PackageContent")}
                 </span>
-                <DndGridDataTable
+                <SheGrid
                   showHeader={false}
                   columns={
                     PackedOrderItemsGridColumns({

@@ -13,4 +13,4 @@ export const SupportSectionRouter: RouteObject[] = [
       };
     },
   },
-];
+] as RouteObject[];

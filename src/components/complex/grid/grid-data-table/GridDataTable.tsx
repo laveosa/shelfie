@@ -16,15 +16,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table.tsx";
-import GridHeader from "@/components/complex/grid/grid-header/GridHeader.tsx";
-import { IGridHeader } from "@/const/interfaces/complex-components/IGridHeader.ts";
+import SheGridHeader from "@/components/complex/grid/she-grid-header/SheGridHeader.tsx";
+import { ISheGridHeader } from "@/const/interfaces/complex-components/ISheGridHeader.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
 import { IGridContext } from "@/const/interfaces/context/IGridContext.ts";
 import { GridContext } from "@/state/context/grid-context";
 
 interface DataTableProps<TData, TValue>
-  extends IGridHeader<TData>,
+  extends ISheGridHeader,
     IGridContext,
     PropsWithChildren {
   columns: ColumnDef<TData, TValue>[];
@@ -99,7 +99,9 @@ export function GridDataTable<TData, TValue>({
       }}
     >
       <div>
-        {showHeader && <GridHeader table={table}>{children}</GridHeader>}
+        {showHeader && (
+          <SheGridHeader table={table as any}>{children}</SheGridHeader>
+        )}
         <div className="rounded-md border">
           <Table style={{ overflow: "hidden" }}>
             <TableHeader>

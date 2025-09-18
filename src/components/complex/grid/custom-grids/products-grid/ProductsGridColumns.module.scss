@@ -16,7 +16,8 @@
   vertical-align: middle;
 }
 
-.productCategory, .productBrand {
+.productCategory,
+.productBrand {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -36,9 +37,9 @@
   }
 }
 
-
 .productStatus {
-  width: 100px;
+  flex-grow: 1;
+  max-width: 110px;
   padding: 4px 8px;
   border-radius: 8px;
   text-align: center;
@@ -46,13 +47,13 @@
 }
 
 .productStatusAvailable {
-  border: 1px solid #38BF5E;
-  background: #EBF9EF;
-  color: #38BF5E;
+  border: 1px solid #38bf5e;
+  background: #ebf9ef;
+  color: #38bf5e;
 }
 
 .productStatusNotAvailable {
   border: 1px solid #d31515;
-  background: #F9EBEBFF;
+  background: #f9ebebff;
   color: #d31515;
 }

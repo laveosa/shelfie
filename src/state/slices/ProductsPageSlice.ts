@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import _ from "lodash";
 
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
@@ -21,7 +22,6 @@ import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import { TypeOfTraitModel } from "@/const/models/TypeOfTraitModel.ts";
 import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
-import _ from "lodash";
 
 const initialState: IProductsPageSlice = {
   isLoading: false,
