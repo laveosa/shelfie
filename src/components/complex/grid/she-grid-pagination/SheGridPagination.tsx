@@ -109,7 +109,7 @@ export function SheGridPagination() {
                     ? cs.gridPaginationPageIndexPlaceholder
                     : cs.gridPaginationPageIndexItem
                 }
-                onClick={onSetCurrentPageHandler}
+                onClick={() => onSetCurrentPageHandler(pageNum)}
               >
                 <span className="she-text">{pageNum}</span>
               </SheButton>
