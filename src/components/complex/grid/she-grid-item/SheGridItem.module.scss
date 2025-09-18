@@ -7,6 +7,11 @@
   min-height: 58px;
   cursor: auto;
   background: white !important;
+  transition: all 160ms ease-in-out;
+
+  &:hover {
+    background: vars.$secondaryBg !important;
+  }
 
   td {
     display: flex;

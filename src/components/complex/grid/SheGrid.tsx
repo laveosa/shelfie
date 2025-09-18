@@ -346,11 +346,11 @@ export const SheGrid = React.forwardRef<DndGridRef, ISheGrid<DataWithId, any>>(
             </div>
           </div>
           <DragOverlay
+            className={cs.dndGridGhostOverlay}
             dropAnimation={{
               duration: 140,
               easing: "ease",
             }}
-            className={cs.dndGridGhostOverlay}
           >
             {activeRow && (
               <table className="w-full">
