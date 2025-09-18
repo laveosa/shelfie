@@ -36,7 +36,7 @@ export default function SalePriseManagementCard({
         title={t("CardTitles.SalePriceManagement")}
         isLoading={isLoading}
         className={cs.salePriceManagementCardContent}
-        minWidth="1100px"
+        width="100%"
       >
         <SheGrid
           isLoading={isGridLoading}

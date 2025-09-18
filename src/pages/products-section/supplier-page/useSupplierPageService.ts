@@ -61,7 +61,7 @@ export default function useSupplierPageService(handleCardAction) {
       dispatch(actions.refreshPurchase(res.data));
       dispatch(actions.setIsSupplierCardLoading(false));
       if (res) {
-        productsService.getPurchaseCountersHandler(res.purchaseId);
+        productsService.getPurchaseCountersHandler(res.data.purchaseId);
         navigate(
           `${NavUrlEnum.PRODUCTS}${NavUrlEnum.PURCHASE_PRODUCTS}/${res.data.purchaseId}`,
         );
