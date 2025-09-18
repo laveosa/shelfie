@@ -1,12 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { PanelLeft, Trash2, X } from "lucide-react";
 import { Trans } from "react-i18next";
 
 import cs from "./SheProductCard.module.scss";
-import { ISheProductCard } from "@/const/interfaces/complex-components/ISheProductCard.ts";
+import {
+  ISheProductCard
+} from "@/const/interfaces/complex-components/ISheProductCard.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
-import SheCardNotification from "@/components/complex/she-card-notification/SheCardNotification.tsx";
+import SheCardNotification
+  from "@/components/complex/she-card-notification/SheCardNotification.tsx";
 
 export default function SheProductCard({
   className = "",
@@ -42,21 +45,21 @@ export default function SheProductCard({
   const [isMinimized, setIsMinimized] = useState(false);
   const cardContentRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const element = cardContentRef.current;
-    if (element) {
-      const hasScrollbar = element.scrollHeight > element.clientHeight;
-      if (hasScrollbar) {
-        element.classList.add(cs.hasScrollbar);
-        element.style.marginRight = "-5px";
-        element.style.paddingRight = "5px";
-      } else {
-        element.classList.remove(cs.hasScrollbar);
-        element.style.marginRight = "0px";
-        element.style.paddingRight = "0px";
-      }
-    }
-  }, [children]);
+  // useEffect(() => {
+  //   const element = cardContentRef.current;
+  //   if (element) {
+  //     const hasScrollbar = element.scrollHeight > element.clientHeight;
+  //     if (hasScrollbar) {
+  //       element.classList.add(cs.hasScrollbar);
+  //       element.style.marginRight = "-5px";
+  //       element.style.paddingRight = "5px";
+  //     } else {
+  //       element.classList.remove(cs.hasScrollbar);
+  //       element.style.marginRight = "0px";
+  //       element.style.paddingRight = "0px";
+  //     }
+  //   }
+  // }, [children]);
 
   function onMinimizeCardHandler() {
     setIsMinimized((prev) => !prev);

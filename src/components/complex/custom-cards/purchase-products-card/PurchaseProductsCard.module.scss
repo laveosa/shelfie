@@ -17,26 +17,20 @@
       }
 
       .tabItemsWrapper {
-        //margin: 0 -20px;
         border-bottom: 1px solid vars.$colorMedium;
         overflow: hidden;
-        //padding-bottom: 10px;
 
         .tabItems {
           display: flex;
           justify-content: space-between;
           align-items: start;
-          //padding: 0 20px;
           background-color: transparent;
-          //margin-bottom: -3px;
           height: fit-content;
           padding: 0;
 
           .tabItemTrigger {
             box-shadow: none;
             border-radius: 0;
-            //padding-bottom: 17px;
-            //padding-top: 20px;
             height: fit-content;
             padding: 8px 16px;
             padding-bottom: 20px;
