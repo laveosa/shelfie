@@ -33,21 +33,25 @@ export function SheGridPagination() {
 
   // ==================================================================== EVENT HANDLER
   function onPreviousPageHandler() {
-    onGridRequestChange({ currentPage: currentPage - 1 });
+    onGridRequestChange({ ...gridRequestModel, currentPage: currentPage - 1 });
   }
 
   function onNextPageHandler() {
-    onGridRequestChange({ currentPage: currentPage + 1 });
+    onGridRequestChange({ ...gridRequestModel, currentPage: currentPage + 1 });
   }
 
   function onSetCurrentPageHandler(pageNum) {
     if (typeof pageNum !== "number") return null;
 
-    onGridRequestChange({ currentPage: pageNum });
+    onGridRequestChange({ ...gridRequestModel, currentPage: pageNum });
   }
 
   function onSetPageSizeHandler(newPageSize) {
-    onGridRequestChange({ pageSize: parseInt(newPageSize), currentPage: 1 });
+    onGridRequestChange({
+      ...gridRequestModel,
+      pageSize: parseInt(newPageSize),
+      currentPage: 1,
+    });
   }
 
   // ==================================================================== PRIVATE

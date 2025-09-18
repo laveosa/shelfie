@@ -19,6 +19,7 @@ export default function SheGridHeader({
   showHeader,
 }: ISheGridHeader) {
   const {
+    gridRequestModel,
     showPagination,
     showSorting,
     showColumnsViewOptions,
@@ -33,7 +34,7 @@ export default function SheGridHeader({
   // ==================================================================== EVENT HANDLERS
   const onInputChangeHandler = (event) => {
     setSearchValue(event);
-    onGridRequestChange({ searchQuery: event });
+    onGridRequestChange({ ...gridRequestModel, searchQuery: event });
   };
 
   // ==================================================================== LAYOUT

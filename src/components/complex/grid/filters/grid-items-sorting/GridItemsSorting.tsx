@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ArrowDownNarrowWide,
   ArrowDownUp,
@@ -22,6 +22,15 @@ export default function GridItemsSorting() {
 
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    if (
+      gridRequestModel &&
+      gridRequestModel.sortOption &&
+      gridRequestModel.sortOption.length > 0
+    )
+      setSelectedValue(gridRequestModel.sortOption);
+  }, [gridRequestModel]);
 
   function handleSelect(value: string) {
     setSelectedValue(value);
