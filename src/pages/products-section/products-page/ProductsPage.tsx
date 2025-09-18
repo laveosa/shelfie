@@ -24,12 +24,12 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { ProductsPageSliceActions as actions } from "@/state/slices/ProductsPageSlice.ts";
-import { purchasesGridColumns } from "@/components/complex/grid/custom-grids/purchases-grid/PurchasesGridColumns.tsx";
+import { PurchasesGridColumns } from "@/components/complex/grid/custom-grids/purchases-grid/PurchasesGridColumns.tsx";
 import { SupplierModel } from "@/const/models/SupplierModel.ts";
 import GridShowItemsFilter from "@/components/complex/grid/filters/grid-show-deleted-filter/GridShowItemsFilter.tsx";
 import GridTraitsFilter from "@/components/complex/grid/filters/grid-traits-filter/GridTraitsFilter.tsx";
 import { ProductsGridColumns } from "@/components/complex/grid/custom-grids/products-grid/ProductsGridColumns.tsx";
-import { variantsGridColumns } from "@/components/complex/grid/custom-grids/variants-grid/VariantsGridColumns.tsx";
+import { VariantsGridColumns } from "@/components/complex/grid/custom-grids/variants-grid/VariantsGridColumns.tsx";
 import { GridDateRangeFilter } from "@/components/complex/grid/filters/grid-date-range-filter/GridDateRangeFilter.tsx";
 import { GridValueFilter } from "@/components/complex/grid/filters/grid-value-filter/GridValueFilter.tsx";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
@@ -227,7 +227,7 @@ export function ProductsPage() {
           <TabsContent value="variants" className={cs.productsPageTabContext}>
             <SheGrid
               gridRequestModel={state.variantsGridRequestModel}
-              columns={variantsGridColumns(onAction) as ColumnDef<DataWithId>[]}
+              columns={VariantsGridColumns(onAction) as ColumnDef<DataWithId>[]}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
               preferenceContext={"variantReferences"}
@@ -268,7 +268,7 @@ export function ProductsPage() {
             <SheGrid
               gridRequestModel={state.purchasesGridRequestModel}
               columns={
-                purchasesGridColumns(onAction) as ColumnDef<DataWithId>[]
+                PurchasesGridColumns(onAction) as ColumnDef<DataWithId>[]
               }
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}

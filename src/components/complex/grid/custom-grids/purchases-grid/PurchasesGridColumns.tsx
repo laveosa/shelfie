@@ -4,47 +4,53 @@ import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { ImageIcon, TrashIcon } from "lucide-react";
 import { formatDate } from "@/utils/helpers/quick-helper.ts";
+import { SupplierModel } from "@/const/models/SupplierModel.ts";
+import { IconViewEnum } from "@/const/enums/IconViewEnum.ts";
+import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 
-export function purchasesGridColumns(onAction: any): ColumnDef<any>[] {
+export function PurchasesGridColumns(onAction: any): ColumnDef<any, any>[] {
+  const { translate } = useAppTranslation();
+
   return [
     {
       accessorKey: "purchaseId",
       header: "ID",
-      size: 20,
-      minSize: 20,
-      maxSize: 20,
+      minSize: 40,
+      maxSize: 40,
+      cell: ({ row }) => (
+        <span className="she-text">{row.getValue("purchaseId")}</span>
+      ),
     },
     {
-      id: "supplierName",
-      accessorFn: (row) => row.supplier?.supplierName,
+      id: "supplier",
+      accessorFn: (row) => row.supplier,
       header: "Supplier",
-      size: 150,
       minSize: 150,
       maxSize: 200,
       cell: ({ row }) => {
-        const imageUrl: string = row.original.supplier?.thumbnailUrl;
+        const supplier: SupplierModel = row.getValue("supplier");
         return (
-          <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-            <div>
-              {imageUrl ? (
-                <img
-                  src={imageUrl}
-                  alt={row.original.supplier?.supplierName || "Supplier"}
-                  className="object-cover rounded-md w-12 h-12"
-                />
-              ) : (
-                <SheIcon icon={ImageIcon} maxWidth="30px" />
-              )}
-            </div>
-            <div>
-              <SheTooltip
-                delayDuration={200}
-                text={row.getValue("supplierName")}
-                className="max-w-[100%] overflow-hidden text-ellipsis whitespace-nowrap"
-              >
-                <span>{row.getValue("supplierName")}</span>
-              </SheTooltip>
-            </div>
+          <div className="flex items-center gap-4">
+            <SheIcon
+              icon={supplier.thumbnailUrl || ImageIcon}
+              className="m-auto"
+              style={{
+                ...(!supplier.thumbnailUrl && {
+                  padding: "10px",
+                }),
+              }}
+              minWidth="40px"
+              maxWidth="40px"
+              color="#64748b"
+              iconView={IconViewEnum.BUTTON}
+            />
+            <SheTooltip
+              delayDuration={200}
+              text={supplier.supplierName}
+              className="max-w-[100%] overflow-hidden text-ellipsis whitespace-nowrap"
+            >
+              <span className="she-text">{supplier.supplierName}</span>
+            </SheTooltip>
           </div>
         );
       },
@@ -52,140 +58,103 @@ export function purchasesGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "location",
       header: "Location",
-      size: 150,
-      minSize: 150,
+      minSize: 50,
       maxSize: 200,
-      cell: ({ row }) => {
-        return (
-          <SheTooltip
-            delayDuration={200}
-            text={row.original.location?.address}
-            className="max-w-[100%] overflow-hidden text-ellipsis whitespace-nowrap"
-          >
-            <span>{row.original.location?.address}</span>
-          </SheTooltip>
-        );
-      },
+      cell: ({ row }) => (
+        <SheTooltip
+          delayDuration={200}
+          text={row.original.location?.address}
+          className="max-w-[100%] overflow-hidden text-ellipsis whitespace-nowrap"
+        >
+          <span className="she-text">{row.original.location?.address}</span>
+        </SheTooltip>
+      ),
     },
     {
       accessorKey: "documentNotes",
       header: "Notes",
-      size: 100,
       minSize: 100,
-      maxSize: 200,
-      cell: ({ row }) => {
-        return (
-          <SheTooltip
-            delayDuration={200}
-            text={row.getValue("documentNotes")}
-            className="max-w-[100%] overflow-hidden text-ellipsis whitespace-nowrap"
-          >
-            <span>{row.getValue("documentNotes")}</span>
-          </SheTooltip>
-        );
-      },
+      cell: ({ row }) => (
+        <SheTooltip
+          delayDuration={200}
+          text={row.getValue("documentNotes")}
+          className="max-w-[100%] overflow-hidden text-ellipsis whitespace-nowrap"
+        >
+          <span className="she-text">{row.getValue("documentNotes")}</span>
+        </SheTooltip>
+      ),
     },
     {
       accessorKey: "date",
       header: "Date",
-      size: 100,
       minSize: 100,
       maxSize: 100,
-      cell: ({ row }) => {
-        const formattedDate = formatDate(row.getValue("date"), "date");
-        return <span>{formattedDate}</span>;
-      },
+      cell: ({ row }) => (
+        <span className="she-text">
+          {formatDate(row.getValue("date"), "date")}
+        </span>
+      ),
     },
     {
       accessorKey: "unitsAmount",
       header: "Units",
-      size: 70,
       minSize: 70,
-      maxSize: 70,
-      cell: ({ row }) => {
-        return <span>{`${row.getValue("unitsAmount")} units`}</span>;
-      },
+      maxSize: 100,
+      cell: ({ row }) => (
+        <span className="she-text">{`${row.getValue("unitsAmount")} units`}</span>
+      ),
     },
     {
       accessorKey: "expense",
       header: "Expense",
-      size: 70,
       minSize: 70,
-      maxSize: 70,
-      cell: ({ row }) => {
-        const currency: string = row.original.currencyBrief;
-        return <span>{`${row.getValue("expense")} ${currency}`}</span>;
-      },
+      maxSize: 100,
+      cell: ({ row }) => (
+        <span className="she-text">{`${row.getValue("expense")} ${row.original.currencyBrief}`}</span>
+      ),
     },
     {
       accessorKey: "soldAmount",
       header: "Sold",
-      size: 70,
       minSize: 70,
-      maxSize: 70,
-      cell: ({ row }) => {
-        const currency: string = row.original.currencyBrief;
-        return <span>{`${row.getValue("soldAmount")} ${currency}`}</span>;
-      },
+      maxSize: 100,
+      cell: ({ row }) => (
+        <span className="she-text">{`${row.getValue("soldAmount")} ${row.original.currencyBrief}`}</span>
+      ),
     },
     {
       accessorKey: "valueAmount",
       header: "Order Value",
-      size: 80,
       minSize: 80,
-      maxSize: 80,
-      cell: ({ row }) => {
-        const currency: string = row.original.currencyBrief;
-        return <span>{`${row.getValue("valueAmount")} ${currency}`}</span>;
-      },
+      maxSize: 100,
+      cell: ({ row }) => (
+        <span className="she-text">{`${row.getValue("valueAmount")} ${row.original.currencyBrief}`}</span>
+      ),
     },
     {
       id: "manage",
       header: "",
-      size: 80,
-      minSize: 80,
-      maxSize: 80,
-      cell: ({ row, table }) => {
-        const meta = table.options.meta as {
-          setLoadingRow: (rowId: string, loading: boolean) => void;
-          isRowLoading: (rowId: string) => boolean;
-        };
-
-        return (
-          <div onClick={(e) => e.stopPropagation()}>
-            <SheButton
-              onClick={() => onAction("managePurchase", row.original)}
-              disabled={meta?.isRowLoading(row.id)}
-            >
-              Manage
-            </SheButton>
-          </div>
-        );
-      },
+      minSize: 100,
+      maxSize: 100,
+      cell: ({ row }) => (
+        <SheButton
+          value={translate("CommonButtons.Manage")}
+          onClick={() => onAction("managePurchase", row.original)}
+        />
+      ),
     },
     {
       id: "rowActions",
       header: "",
-      size: 40,
-      minSize: 40,
-      maxSize: 40,
-      cell: ({ row, table }) => {
-        const meta = table.options.meta as {
-          setLoadingRow: (rowId: string, loading: boolean) => void;
-          isRowLoading: (rowId: string) => boolean;
-        };
-
-        return (
-          <div onClick={(e) => e.stopPropagation()}>
-            <SheButton
-              icon={TrashIcon}
-              variant="secondary"
-              onClick={() => onAction("deletePurchase", { table, row })}
-              disabled={meta?.isRowLoading(row.id)}
-            />
-          </div>
-        );
-      },
+      minSize: 56,
+      maxSize: 56,
+      cell: ({ row, table }) => (
+        <SheButton
+          icon={TrashIcon}
+          variant="secondary"
+          onClick={() => onAction("deletePurchase", { table, row })}
+        />
+      ),
     },
   ];
 }
