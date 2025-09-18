@@ -10,8 +10,6 @@ export interface IPurchaseProductsCard {
   isLoading?: boolean;
   isPurchaseProductsGridLoading?: boolean;
   isProductsGridLoading?: boolean;
-  variants?: any[];
-  purchaseProducts?: any[];
   variantsGridRequestModel?: GridRequestModel;
   purchaseProductsGridRequestModel?: GridRequestModel;
   sortingOptions?: any;

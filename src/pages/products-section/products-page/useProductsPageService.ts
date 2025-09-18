@@ -4,11 +4,11 @@ import { merge } from "lodash";
 
 import {
   ProductsPageSliceActions as productsActions,
-  ProductsPageSliceActions as actions
+  ProductsPageSliceActions as actions,
 } from "@/state/slices/ProductsPageSlice.ts";
 import {
   addGridRowColor,
-  setSelectedGridItem
+  setSelectedGridItem,
 } from "@/utils/helpers/quick-helper.ts";
 import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
 import UsersApiHooks from "@/utils/services/api/UsersApiService.ts";
@@ -17,9 +17,7 @@ import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
 import useAppService from "@/useAppService.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
-import {
-  IProductsPageSlice
-} from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { GridRowsColorsEnum } from "@/const/enums/GridRowsColorsEnum.ts";
