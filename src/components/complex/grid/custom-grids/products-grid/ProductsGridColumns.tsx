@@ -11,8 +11,11 @@ import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { IconViewEnum } from "@/const/enums/IconViewEnum.ts";
 import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
+import { ProductModel } from "@/const/models/ProductModel.ts";
+import { ImageModel } from "@/const/models/ImageModel.ts";
+import { BrandModel } from "@/const/models/BrandModel.ts";
 
-export function ProductsGridColumns(onAction: any): ColumnDef<any, any>[] {
+export function ProductsGridColumns(onAction: any): ColumnDef<ProductModel>[] {
   const { translate } = useAppTranslation();
   const statusClass = (status: string) => {
     if (status === "Available") {
@@ -39,19 +42,22 @@ export function ProductsGridColumns(onAction: any): ColumnDef<any, any>[] {
       header: "Image",
       minSize: 56,
       maxSize: 56,
-      cell: ({ row }) => (
-        <SheIcon
-          icon={row.getValue("image")?.thumbnailUrl || ImageIcon}
-          className="m-auto"
-          style={{
-            ...(!row.getValue("image")?.thumbnailUrl && {
-              padding: "10px",
-            }),
-          }}
-          color="#64748b"
-          iconView={IconViewEnum.BUTTON}
-        />
-      ),
+      cell: ({ row }) => {
+        const image: ImageModel = row.getValue("image") as ImageModel;
+        return (
+          <SheIcon
+            icon={image?.thumbnailUrl || ImageIcon}
+            className="m-auto"
+            style={{
+              ...(!image?.thumbnailUrl && {
+                padding: "10px",
+              }),
+            }}
+            color="#64748b"
+            iconView={IconViewEnum.BUTTON}
+          />
+        );
+      },
     },
     {
       accessorKey: "productCode",
@@ -107,24 +113,19 @@ export function ProductsGridColumns(onAction: any): ColumnDef<any, any>[] {
       accessorKey: "brand",
       header: "Brand",
       minSize: 100,
-      cell: ({ row }) => (
-        <SheTooltip
-          delayDuration={200}
-          text={row.getValue("brand")?.brandName || "N/A"}
-        >
-          <div className={cs.productBrand}>
-            {row.original.brand?.thumbnail && (
-              <img
-                src={row.original.brand?.thumbnail}
-                alt={row.original.brand.brandName}
-              />
-            )}
-            <span className="she-text">
-              {row.getValue("brand")?.brandName || "N/A"}
-            </span>
-          </div>
-        </SheTooltip>
-      ),
+      cell: ({ row }) => {
+        const brand: BrandModel = row.original.brand as BrandModel;
+        return (
+          <SheTooltip delayDuration={200} text={brand?.brandName || "N/A"}>
+            <div className={cs.productBrand}>
+              {brand?.thumbnail && (
+                <img src={brand?.thumbnail} alt={brand?.brandName} />
+              )}
+              <span className="she-text">{brand?.brandName || "N/A"}</span>
+            </div>
+          </SheTooltip>
+        );
+      },
     },
     {
       accessorKey: "barcode",
@@ -142,7 +143,7 @@ export function ProductsGridColumns(onAction: any): ColumnDef<any, any>[] {
         <div
           className={`${cs.productStatus} ${statusClass(row.getValue("status"))}`}
         >
-          <span className="she-text">{row.getValue("status")}</span>
+          <span>{row.getValue("status")}</span>
         </div>
       ),
     },

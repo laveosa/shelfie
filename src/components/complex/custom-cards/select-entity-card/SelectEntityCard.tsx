@@ -9,14 +9,14 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 
-export default function SelectEntityCard({
+export default function SelectEntityCard<T = any>({
   isLoading,
   isGridLoading,
   entityName,
   entityCollection,
   columns,
   onAction,
-}: ISelectEntityCard) {
+}: ISelectEntityCard<T>) {
   const { t } = useTranslation();
 
   return (

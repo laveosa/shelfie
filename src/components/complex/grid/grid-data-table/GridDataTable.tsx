@@ -24,7 +24,7 @@ import { IGridContext } from "@/const/interfaces/context/IGridContext.ts";
 import { GridContext } from "@/state/context/grid-context";
 
 interface DataTableProps<TData, TValue>
-  extends ISheGridHeader<TData>,
+  extends ISheGridHeader,
     IGridContext,
     PropsWithChildren {
   columns: ColumnDef<TData, TValue>[];
@@ -99,7 +99,9 @@ export function GridDataTable<TData, TValue>({
       }}
     >
       <div>
-        {showHeader && <SheGridHeader table={table}>{children}</SheGridHeader>}
+        {showHeader && (
+          <SheGridHeader table={table as any}>{children}</SheGridHeader>
+        )}
         <div className="rounded-md border">
           <Table style={{ overflow: "hidden" }}>
             <TableHeader>

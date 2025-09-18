@@ -1,17 +1,18 @@
-import { ColumnDef, Row } from "@tanstack/react-table";
+import { ColumnDef } from "@tanstack/react-table";
+
 import { Circle, CircleCheckBig, CogIcon, ImageIcon } from "lucide-react";
 
-import placeholderImage from "@/assets/images/placeholder-image.png";
+import cs from "./CompanieListGridColumns.module.scss";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import cs from "./CompanieListGridColumns.module.scss";
+import { CompanyModel } from "@/const/models/CompanyModel.ts";
 
 export function CompaniesListGridColumns({
   onAction,
 }: {
-  onAction: (actionType: string, row?: Row<any>) => void;
-}): ColumnDef<any>[] {
+  onAction: (actionType: string, row?: any) => void;
+}): ColumnDef<CompanyModel>[] {
   return [
     {
       id: "select",
@@ -66,7 +67,7 @@ export function CompaniesListGridColumns({
             <div>
               {imageUrl ? (
                 <img
-                  src={imageUrl || placeholderImage}
+                  src={imageUrl}
                   alt={name || "Supplier"}
                   className="object-cover rounded-md w-full h-full"
                   style={{ minWidth: "48px", height: "48px" }}

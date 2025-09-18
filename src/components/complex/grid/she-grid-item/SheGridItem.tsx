@@ -9,8 +9,9 @@ import { GripVertical } from "lucide-react";
 import cs from "./SheGridItem.module.scss";
 import { TableCell, TableRow } from "@/components/ui/table.tsx";
 import { ISheGridItem } from "@/const/interfaces/complex-components/ISheGridItem.ts";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
-export default function SheGridItem({
+export default function SheGridItem<TData extends DataWithId = any>({
   className = "",
   row,
   isDragDisabled,
@@ -19,7 +20,7 @@ export default function SheGridItem({
   enableExpansion,
   renderExpandedContent,
   totalColumns,
-}: ISheGridItem): JSX.Element {
+}: ISheGridItem<TData>): JSX.Element {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useSortable({
       id: row.original.id,
@@ -27,9 +28,9 @@ export default function SheGridItem({
     } as Arguments);
 
   const isLoading = loadingRows.has(row.id);
-  const isSelected = row.original.isGridItemSelected;
-  const isHidden = row.original.isHidden;
-  const expandableRows = row.original.expandableRows || [];
+  const isSelected = row.original?.isGridItemSelected;
+  const isHidden = row.original?.isHidden;
+  const expandableRows = row.original?.expandableRows || [];
 
   if (isHidden) {
     return null;

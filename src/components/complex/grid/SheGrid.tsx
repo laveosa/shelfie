@@ -41,8 +41,8 @@ import {
   ISheGrid,
 } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
-export const SheGrid = React.forwardRef<DndGridRef, ISheGrid<DataWithId, any>>(
-  function SheGrid<TData extends DataWithId, TValue>(
+export const SheGrid = React.forwardRef<DndGridRef, ISheGrid<any>>(
+  function SheGrid<TData>(
     {
       className = "",
       columns,
@@ -71,7 +71,7 @@ export const SheGrid = React.forwardRef<DndGridRef, ISheGrid<DataWithId, any>>(
       onAddExpandableRow,
       createEmptyExpandableRow,
       onGridRequestChange,
-    }: ISheGrid<TData, TValue>,
+    }: ISheGrid<TData>,
     ref,
   ) {
     // ==================================================================== STATE MANAGEMENT
@@ -111,7 +111,7 @@ export const SheGrid = React.forwardRef<DndGridRef, ISheGrid<DataWithId, any>>(
         isRowLoading: (rowId: string) => loadingRows.has(rowId),
         updateData: (rowId: string, value: TData) => {
           setItems((old) =>
-            old.map((item) => (item.id === rowId ? value : item)),
+            old.map((item: any) => (item.id === rowId ? value : item)),
           );
         },
         hideRow,
@@ -151,7 +151,7 @@ export const SheGrid = React.forwardRef<DndGridRef, ISheGrid<DataWithId, any>>(
       const id = String(event.active.id);
       const found = table
         .getRowModel()
-        .rows.find((r) => String(r.original?.id) === id);
+        .rows.find((row: any) => String(row.original?.id) === id);
 
       setActiveRow(found || null);
     }
@@ -165,9 +165,9 @@ export const SheGrid = React.forwardRef<DndGridRef, ISheGrid<DataWithId, any>>(
       if (!over || !active) return null;
 
       const activeItemId = active.id;
-      const activeItem = items.find((item) => item.id === activeItemId);
-      const oldIndex = items.findIndex((item) => item.id === active.id);
-      const newIndex = items.findIndex((item) => item.id === over.id);
+      const activeItem = items.find((item: any) => item.id === activeItemId);
+      const oldIndex = items.findIndex((item: any) => item.id === active.id);
+      const newIndex = items.findIndex((item: any) => item.id === over.id);
 
       if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
         const updatedItems = arrayMove(items, oldIndex, newIndex);
@@ -182,7 +182,7 @@ export const SheGrid = React.forwardRef<DndGridRef, ISheGrid<DataWithId, any>>(
 
     function hideRow(rowId: string | number) {
       setItems((prevItems) =>
-        prevItems.map((item) =>
+        prevItems.map((item: any) =>
           item.id === rowId ? { ...item, isHidden: true } : item,
         ),
       );
@@ -190,7 +190,7 @@ export const SheGrid = React.forwardRef<DndGridRef, ISheGrid<DataWithId, any>>(
 
     function unhideRow(rowId: string | number) {
       setItems((prevItems) =>
-        prevItems.map((item) =>
+        prevItems.map((item: any) =>
           item.id === rowId ? { ...item, isHidden: false } : item,
         ),
       );
@@ -198,19 +198,21 @@ export const SheGrid = React.forwardRef<DndGridRef, ISheGrid<DataWithId, any>>(
 
     function toggleRowVisibility(rowId: string | number) {
       setItems((prevItems) =>
-        prevItems.map((item) =>
+        prevItems.map((item: any) =>
           item.id === rowId ? { ...item, isHidden: !item.isHidden } : item,
         ),
       );
     }
 
     function isRowHidden(rowId: string | number): boolean {
-      const item = items.find((item) => item.id === rowId);
+      const item: any = items.find((item: any) => item.id === rowId);
       return item?.isHidden || false;
     }
 
     function getHiddenRows(): (string | number)[] {
-      return items.filter((item) => item.isHidden).map((item) => item.id);
+      return items
+        .filter((item: any) => item.isHidden)
+        .map((item: any) => item.id);
     }
 
     function prepareItemsForGrid(items: any[]): TData[] {
@@ -229,7 +231,7 @@ export const SheGrid = React.forwardRef<DndGridRef, ISheGrid<DataWithId, any>>(
         const newExpandableRow = createEmptyExpandableRow();
 
         setItems((prevItems) =>
-          prevItems.map((item) =>
+          prevItems.map((item: any) =>
             item.id === parentRowId
               ? {
                   ...item,
@@ -274,7 +276,7 @@ export const SheGrid = React.forwardRef<DndGridRef, ISheGrid<DataWithId, any>>(
             className={`${className} ${cs.dndGrid} ${showColumnsHeader ? cs.dndGridWithColumnsHeader : ""} ${showHeader ? cs.dndGridWithHeader : ""}`}
           >
             <SheGridHeader
-              table={table}
+              table={table as any}
               showHeader={showHeader}
               isLoading={isLoading}
             >
@@ -345,12 +347,12 @@ export const SheGrid = React.forwardRef<DndGridRef, ISheGrid<DataWithId, any>>(
                 {!isLoading && items && items.length > 0 && (
                   <SortableContext
                     items={items
-                      .filter((item) => !item.isHidden)
-                      .map((item) => item.id)}
+                      .filter((item: any) => !item.isHidden)
+                      .map((item: any) => item.id)}
                     strategy={verticalListSortingStrategy}
                   >
                     <TableBody className={cs.dndGridRowsBody}>
-                      {table.getRowModel().rows.map((row) => (
+                      {table.getRowModel().rows.map((row: any) => (
                         <SheGridItem
                           key={row.id}
                           row={row}
@@ -380,7 +382,7 @@ export const SheGrid = React.forwardRef<DndGridRef, ISheGrid<DataWithId, any>>(
                 <tbody>
                   <SheGridItem
                     className={cs.dndGridGhostItem}
-                    row={activeRow}
+                    row={activeRow as Row<DataWithId>}
                     isDragDisabled={false}
                     enableDnd={true}
                     totalColumns={totalColumns}

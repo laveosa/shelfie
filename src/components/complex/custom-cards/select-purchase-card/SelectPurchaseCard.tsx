@@ -8,18 +8,17 @@ import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import { ISelectPurchaseCard } from "@/const/interfaces/complex-components/custom-cards/ISelectPurchaseCard.ts";
 import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
 import { CalendarModeEnum } from "@/const/enums/CalendarModeEnum.ts";
+import { SelectPurchaseGridColumns } from "@/components/complex/grid/custom-grids/select-purchase-grid/SelectPurchaseGridColumns.tsx";
 
 export default function SelectPurchaseCard({
   isLoading,
   isGridLoading,
   purchases,
-  columns,
   onAction,
 }: ISelectPurchaseCard) {
   return (
     <SheProductCard
       loading={isLoading}
-      className={cs.selectPurchaseCard}
       title="Select Purchase"
       showCloseButton
       onSecondaryButtonClick={() => onAction("closeSelectPurchaseCard")}
@@ -57,7 +56,9 @@ export default function SelectPurchaseCard({
         <SheGrid
           isLoading={isGridLoading}
           showHeader={false}
-          columns={columns}
+          columns={SelectPurchaseGridColumns({
+            onAction,
+          })}
           data={purchases}
           skeletonQuantity={10}
         />

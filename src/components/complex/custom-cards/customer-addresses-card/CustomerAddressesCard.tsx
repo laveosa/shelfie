@@ -4,15 +4,13 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Plus } from "lucide-react";
 
 import cs from "./CustomerAddressesCard.module.scss";
-import {
-  DndGridDataTable,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { customerAddressGridColumns } from "@/components/complex/grid/custom-grids/customer-address-grid/CustomerAddressGridColumns";
 import { GridSortingModel } from "@/const/models/GridSortingModel";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 
 interface ICustomerAddressesCard {
   isLoading?: boolean;
@@ -48,7 +46,7 @@ export default function CustomerAddressesCard({
           />
         </div>
       </div>
-      <DndGridDataTable
+      <SheGrid
         isLoading={isLoading}
         columns={
           customerAddressGridColumns(onAction) as ColumnDef<DataWithId>[]
@@ -66,7 +64,7 @@ export default function CustomerAddressesCard({
         }
       >
         {/* TODO: Add filters */}
-      </DndGridDataTable>
+      </SheGrid>
     </SheProductCard>
   );
 }

@@ -1,4 +1,3 @@
-import { ColumnDef } from "@tanstack/react-table";
 import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
@@ -23,9 +22,7 @@ import useProductsPageService from "@/pages/products-section/products-page/usePr
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
-import { DataWithId } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import SelectPurchaseCard from "@/components/complex/custom-cards/select-purchase-card/SelectPurchaseCard.tsx";
-import { SelectPurchaseGridColumns } from "@/components/complex/grid/custom-grids/select-purchase-grid/SelectPurchaseGridColumns.tsx";
 import SupplierCard from "@/components/complex/custom-cards/supplier-card/SupplierCard.tsx";
 import SelectEntityCard from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
 import SupplierConfigurationCard from "@/components/complex/custom-cards/supplier-configuration-card/SupplierConfigurationCard.tsx";
@@ -328,11 +325,6 @@ export function ManageVariantsPage() {
             isLoading={state.setIsSelectPurchaseCardLoading}
             isGridLoading={state.setIsPurchaseGridLoading}
             purchases={state.purchaseGridRequestModel.items}
-            columns={
-              SelectPurchaseGridColumns({
-                onAction,
-              }) as ColumnDef<DataWithId>[]
-            }
             onAction={onAction}
           />
         </div>
@@ -354,11 +346,9 @@ export function ManageVariantsPage() {
             isGridLoading={state.isSuppliersGridLoading}
             entityName="Company"
             entityCollection={state.companiesGridRequestModel?.items}
-            columns={
-              CompaniesListGridColumns({
-                onAction,
-              }) as ColumnDef<DataWithId>[]
-            }
+            columns={CompaniesListGridColumns({
+              onAction,
+            })}
             onAction={onAction}
           />
         </div>

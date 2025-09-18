@@ -8,21 +8,21 @@ import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 
 export interface DataWithId {
-  id: number | string;
+  id?: number | string;
   color?: string;
   isGridItemSelected?: boolean;
   isHidden?: boolean;
   expandableRows?: any[];
 }
 
-export interface ISheGrid<TData extends DataWithId, TValue>
+export interface ISheGrid<TData>
   extends ISheGridHeader,
     IGridContext,
     ISheGridSkeleton,
     PropsWithChildren {
   className?: any;
   isLoading?: boolean;
-  columns: ColumnDef<TData, TValue>[];
+  columns: ColumnDef<TData>[];
   data?: TData[];
   sortingItems?: GridSortingModel[];
   gridRequestModel?: GridRequestModel;

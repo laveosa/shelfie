@@ -1,17 +1,19 @@
-import { Circle, CircleCheckBig, ImageIcon } from "lucide-react";
-import { ColumnDef, Row } from "@tanstack/react-table";
+import { ColumnDef } from "@tanstack/react-table";
 
+import { Circle, CircleCheckBig, ImageIcon } from "lucide-react";
+
+import cs from "./SelectPurchaseGridColumns.module.scss";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import cs from "./SelectPurchaseGridColumns.module.scss";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { formatDate } from "@/utils/helpers/quick-helper.ts";
+import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 
 export function SelectPurchaseGridColumns({
   onAction,
 }: {
-  onAction: (actionType: string, row?: Row<any>) => void;
-}): ColumnDef<any>[] {
+  onAction: (actionType: string, row?: PurchaseModel) => void;
+}): ColumnDef<PurchaseModel>[] {
   return [
     {
       id: "select",
