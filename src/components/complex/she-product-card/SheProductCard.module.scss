@@ -7,7 +7,7 @@
   width: 400px;
   height: calc(100vh - 92px);
   overflow: hidden;
-  padding: 10px;
+  padding: 10px 2.5px 10px 10px;
 
   &.card {
     border-radius: 10px;
@@ -87,6 +87,8 @@
     overflow-x: hidden;
     position: relative;
     height: calc(100vh - 92px);
+    scrollbar-gutter: stable;
+    padding-right: 2.5px;
 
     &::-webkit-scrollbar {
       width: 6px;
@@ -98,10 +100,6 @@
   .cardContentWithFooter {
     margin-bottom: 20px;
   }
-
-  //.hasScrollbar {
-  //  padding-right: 8px;
-  //}
 
   .cardFooter {
     display: flex;
