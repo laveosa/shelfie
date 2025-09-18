@@ -301,7 +301,7 @@ export function useMarginsPageService(
     });
   }
 
-  function updateMarginHandle(model, purchaseId) {
+  function updateMarginHandle(model) {
     dispatch(actions.setIsMarginConfigurationCardLoading(true));
     Promise.all([
       updateMarginHandler(state.managedMargin.marginId, {
@@ -316,16 +316,10 @@ export function useMarginsPageService(
           dispatch(actions.setIsSelectMarginCardLoading(false));
         });
       }
-      if (state.selectedMargin.marginId === margin.marginId) {
-        dispatch(actions.setIsMarginForPurchaseCardLoading(true));
-        getMarginForPurchaseHandler(purchaseId).then((res) => {
-          dispatch(actions.setIsMarginForPurchaseCardLoading(false));
-          dispatch(actions.refreshSelectedMargin(res));
-        });
-      }
       if (margin && marginRules) {
+        handleCardAction("marginConfigurationCard");
         addToast({
-          text: "Margin updated successfully",
+          text: "Default margin has been updated",
           type: "success",
         });
       } else {
@@ -364,16 +358,11 @@ export function useMarginsPageService(
     );
   }
 
-  function manageSelectedMarginHandle(model) {
+  function manageMarginHandle(model) {
     handleMultipleCardActions({
       marginConfigurationCard: true,
       salePriceManagementCard: false,
     });
-    dispatch(actions.refreshManagedMargin(model));
-  }
-
-  function manageMarginHandle(model) {
-    handleCardAction("marginConfigurationCard", true);
     dispatch(actions.setIsMarginConfigurationCardLoading(true));
     getMarginDetailsHandler(model.marginId).then((res) => {
       dispatch(actions.setIsMarginConfigurationCardLoading(false));
@@ -586,13 +575,12 @@ export function useMarginsPageService(
   }
 
   function getMarginPageDataHandle(purchaseId) {
-    if (!state.selectedMargin) {
-      dispatch(actions.setIsMarginForPurchaseCardLoading(true));
-      getMarginForPurchaseHandler(purchaseId).then((res) => {
-        dispatch(actions.setIsMarginForPurchaseCardLoading(false));
-        dispatch(actions.refreshSelectedMargin(res));
-      });
-    }
+    dispatch(actions.resetSelectedMargin());
+    dispatch(actions.setIsMarginForPurchaseCardLoading(true));
+    getMarginForPurchaseHandler(purchaseId).then((res) => {
+      dispatch(actions.setIsMarginForPurchaseCardLoading(false));
+      dispatch(actions.refreshSelectedMargin(res));
+    });
     if (!productsState.purchaseCounters) {
       dispatch(actions.setIsProductMenuCardLoading(true));
       productsService
@@ -647,7 +635,6 @@ export function useMarginsPageService(
     createMarginHandle,
     updateMarginHandle,
     updateSelectedMarginHandler,
-    manageSelectedMarginHandle,
     manageMarginHandle,
     deleteMarginHandle,
     restoreMarginHandle,

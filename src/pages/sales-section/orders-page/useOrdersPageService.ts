@@ -64,27 +64,7 @@ export default function useOrdersPageService() {
   }
 
   function handleGridRequestChange(updates: GridRequestModel) {
-    let gridRequestModel;
-    if (updates?.filter) {
-      gridRequestModel = dispatch(
-        actions.refreshOrdersGridRequestModel({
-          ...state.ordersGridRequestModel,
-          currentPage: 1,
-          filter: {
-            ...state.ordersGridRequestModel.filter,
-            ...updates.filter,
-          },
-        }),
-      );
-    } else {
-      gridRequestModel = dispatch(
-        actions.refreshOrdersGridRequestModel({
-          ...state.ordersGridRequestModel,
-          ...updates,
-        }),
-      );
-    }
-    getListOfOrdersForGridHandler(gridRequestModel.payload);
+    getListOfOrdersForGridHandler(updates);
   }
 
   function updateUserPreferencesHandler(model: PreferencesModel) {

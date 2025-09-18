@@ -71,13 +71,10 @@ export function MarginsPage() {
         service.createMarginHandle(payload);
         break;
       case "updateMargin":
-        service.updateMarginHandle(payload, purchaseId);
+        service.updateMarginHandle(payload);
         break;
       case "updateSelectedMargin":
         service.updateSelectedMarginHandler(payload, purchaseId);
-        break;
-      case "manageSelectedMargin":
-        service.manageSelectedMarginHandle(payload);
         break;
       case "manageMargin":
         service.manageMarginHandle(payload);

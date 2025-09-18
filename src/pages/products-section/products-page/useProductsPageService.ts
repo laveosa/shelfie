@@ -4,11 +4,11 @@ import { merge } from "lodash";
 
 import {
   ProductsPageSliceActions as productsActions,
-  ProductsPageSliceActions as actions,
+  ProductsPageSliceActions as actions
 } from "@/state/slices/ProductsPageSlice.ts";
 import {
   addGridRowColor,
-  setSelectedGridItem,
+  setSelectedGridItem
 } from "@/utils/helpers/quick-helper.ts";
 import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
 import UsersApiHooks from "@/utils/services/api/UsersApiService.ts";
@@ -17,7 +17,9 @@ import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
 import useAppService from "@/useAppService.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
-import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import {
+  IProductsPageSlice
+} from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { GridRowsColorsEnum } from "@/const/enums/GridRowsColorsEnum.ts";
@@ -821,38 +823,11 @@ export default function useProductsPageService() {
 
   function gridRequestChangeHandler(updates: any) {
     if (state.activeTab === "products") {
-      dispatch(
-        actions.refreshProductsGridRequestModel({
-          ...state.productsGridRequestModel,
-          ...updates,
-          filter: {
-            ...state.productsGridRequestModel.filter,
-            ...updates.filter,
-          },
-        }),
-      );
+      getTheProductsForGridHandler(updates, true);
     } else if (state.activeTab === "variants") {
-      dispatch(
-        actions.refreshVariantsGridRequestModel({
-          ...state.variantsGridRequestModel,
-          ...updates,
-          filter: {
-            ...state.variantsGridRequestModel.filter,
-            ...updates.filter,
-          },
-        }),
-      );
+      getVariantsForGridHandler(updates);
     } else if (state.activeTab === "purchases") {
-      dispatch(
-        actions.refreshPurchasesGridRequestModel({
-          ...state.purchasesGridRequestModel,
-          ...updates,
-          filter: {
-            ...state.purchasesGridRequestModel.filter,
-            ...updates.filter,
-          },
-        }),
-      );
+      getListOfPurchasesForGridHandler(updates);
     }
   }
 
