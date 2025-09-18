@@ -348,8 +348,6 @@ export function PurchaseProductsPage() {
             isLoading={state.isPurchaseProductsCardLoading}
             isPurchaseProductsGridLoading={state.isPurchasesProductsGridLoading}
             isProductsGridLoading={state.isVariantsForPurchaseGridLoading}
-            variants={state.variants}
-            purchaseProducts={state.purchaseProducts}
             variantsGridRequestModel={state.variantsForPurchaseGridRequestModel}
             purchaseProductsGridRequestModel={
               state.purchasesProductsGridRequestModel
