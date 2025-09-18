@@ -72,7 +72,7 @@ export default function ManageProductCard({
 
   const renderExpandedContent = (row, stockAction, _stockActionIndex) => {
     return (
-      <div>
+      <div className={cs.productsForPurchaseForm}>
         <ManageProductsForPurchaseForm
           data={stockAction}
           taxes={taxes}

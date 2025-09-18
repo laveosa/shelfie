@@ -16,9 +16,8 @@ export const SizeOptionsGridColumns = (
   {
     accessorKey: "optionName",
     header: "",
-    size: 170,
-    minSize: 170,
-    maxSize: 170,
+    minSize: 300,
+    maxSize: 300,
     cell: ({ row }) => {
       const value: string = row.original.optionName || "";
       const optionId: number = row.original.optionId;

@@ -128,9 +128,7 @@ export function ProductsPage() {
           <div>
             <SheButton
               icon={Plus}
-              variant="outline"
-              bgColor="#007AFF"
-              txtColor="#FAFAFA"
+              variant="info"
               onClick={() => onAction("reportPurchase")}
               value={translate("SupplierActions.ReportPurchase")}
             />
@@ -139,7 +137,7 @@ export function ProductsPage() {
           <div>
             <SheButton
               icon={Plus}
-              variant="outline"
+              variant="info"
               onClick={() => onAction("addProduct")}
               value={translate("ProductActions.AddProduct")}
             />

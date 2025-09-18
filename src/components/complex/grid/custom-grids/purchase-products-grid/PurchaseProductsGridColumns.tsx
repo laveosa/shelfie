@@ -22,8 +22,8 @@ export function purchaseProductsGridColumns(
     {
       accessorKey: "photo",
       header: "Image",
-      size: 50,
-      minSize: 50,
+      minSize: 80,
+      maxSize: 80,
       cell: ({ row, table }) => {
         const image: ImageModel = row.getValue("photo");
         const meta = table.options.meta as {
@@ -43,11 +43,13 @@ export function purchaseProductsGridColumns(
                 className="object-cover rounded-md w-full h-full"
               />
             ) : (
-              <SheIcon
-                icon={ImageIcon}
-                maxWidth="30px"
-                className={cs.noImageIcon}
-              />
+              <div>
+                <SheIcon
+                  icon={ImageIcon}
+                  maxWidth="60px"
+                  className={cs.noImageIcon}
+                />
+              </div>
             )}
           </div>
         );
@@ -56,8 +58,8 @@ export function purchaseProductsGridColumns(
     {
       accessorKey: "variantCode",
       header: "Code",
-      size: 70,
       minSize: 70,
+      maxSize: 150,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("variantCode")}>
@@ -71,7 +73,6 @@ export function purchaseProductsGridColumns(
     {
       accessorKey: "variantName",
       header: "Product Name",
-      size: 70,
       minSize: 70,
       cell: ({ row }) => {
         return (
@@ -86,7 +87,6 @@ export function purchaseProductsGridColumns(
     {
       accessorKey: "productCategory",
       header: "Category",
-      size: 70,
       minSize: 70,
       cell: ({ row }) => {
         const category: CategoryModel = row.getValue("productCategory");
@@ -111,8 +111,7 @@ export function purchaseProductsGridColumns(
     {
       accessorKey: "brand",
       header: "Brand",
-      size: 60,
-      minSize: 60,
+      minSize: 70,
       cell: ({ row }) => {
         const brand: BrandModel = row.getValue("brand");
         return (
@@ -133,8 +132,8 @@ export function purchaseProductsGridColumns(
     {
       accessorKey: "traitOptions",
       header: "Details",
-      size: 60,
       minSize: 60,
+      maxSize: 150,
       cell: ({ row }) => {
         const traitOptions = row.original.traitOptions || [];
 
@@ -181,9 +180,8 @@ export function purchaseProductsGridColumns(
     },
     {
       accessorKey: "",
-      size: 260,
-      minSize: 260,
-      maxSize: 260,
+      minSize: 500,
+      maxSize: 500,
       header:
         activeTab === "connectProducts"
           ? "Quantity to add"
@@ -212,9 +210,8 @@ export function purchaseProductsGridColumns(
     {
       id: "rowActions",
       header: "",
-      size: 40,
-      minSize: 40,
-      maxSize: 40,
+      minSize: 50,
+      maxSize: 50,
       cell: ({ row, table }) => {
         return (
           <div style={{ display: "flex", justifyContent: "center" }}>

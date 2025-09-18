@@ -16,7 +16,6 @@ export const ColorOptionsGridColumns = (
 ): ColumnDef<any>[] => [
   {
     accessorKey: "color",
-    size: 50,
     minSize: 50,
     maxSize: 50,
     cell: ({ row }) => {
@@ -49,9 +48,8 @@ export const ColorOptionsGridColumns = (
   },
   {
     accessorKey: "optionName",
-    size: 100,
-    minSize: 100,
-    maxSize: 100,
+    minSize: 250,
+    maxSize: 250,
     cell: ({ row }) => {
       const optionColor: string = row.original.optionColor;
       const optionName: string = row.original.optionName;

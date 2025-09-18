@@ -23,8 +23,8 @@ export function purchaseVariantsGridColumns(
     {
       accessorKey: "photo",
       header: "Image",
-      size: 30,
-      minSize: 30,
+      minSize: 80,
+      maxSize: 80,
       cell: ({ row, table }) => {
         const image: ImageModel = row.getValue("photo");
         const meta = table.options.meta as {
@@ -53,8 +53,8 @@ export function purchaseVariantsGridColumns(
     {
       accessorKey: "variantCode",
       header: "Code",
-      size: 40,
-      minSize: 40,
+      minSize: 70,
+      maxSize: 150,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("variantCode")}>
@@ -68,8 +68,7 @@ export function purchaseVariantsGridColumns(
     {
       accessorKey: "variantName",
       header: "Product Name",
-      size: 40,
-      minSize: 40,
+      minSize: 70,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("variantName")}>
@@ -83,8 +82,7 @@ export function purchaseVariantsGridColumns(
     {
       accessorKey: "productCategory",
       header: "Category",
-      size: 40,
-      minSize: 40,
+      minSize: 70,
       cell: ({ row }) => {
         const category: CategoryModel = row.getValue("productCategory");
         return (
@@ -108,8 +106,7 @@ export function purchaseVariantsGridColumns(
     {
       accessorKey: "brand",
       header: "Brand",
-      size: 40,
-      minSize: 40,
+      minSize: 70,
       cell: ({ row }) => {
         const brand: BrandModel = row.getValue("brand");
         return (
@@ -130,8 +127,8 @@ export function purchaseVariantsGridColumns(
     {
       accessorKey: "traitOptions",
       header: "Details",
-      size: 40,
-      minSize: 40,
+      minSize: 60,
+      maxSize: 150,
       cell: ({ row }) => {
         const traitOptions = row.original.traitOptions || [];
 
@@ -179,9 +176,8 @@ export function purchaseVariantsGridColumns(
     {
       id: "nettoPriceGroup",
       accessorKey: "",
-      size: 180,
-      minSize: 180,
-      maxSize: 180,
+      minSize: 480,
+      maxSize: 480,
       header: () => (
         <div className="flex items-center">
           <span style={{ marginRight: "40px" }}>Netto Price</span>
@@ -209,9 +205,8 @@ export function purchaseVariantsGridColumns(
     },
     {
       id: "manage",
-      size: 40,
-      minSize: 40,
-      maxSize: 40,
+      minSize: 120,
+      maxSize: 120,
       cell: ({ row }) => {
         return (
           <div className={cs.gridButton} onClick={(e) => e.stopPropagation()}>

@@ -18,9 +18,8 @@ export function SelectPurchaseGridColumns({
     {
       id: "select",
       header: "Select",
-      size: 30,
-      minSize: 30,
-      maxSize: 30,
+      minSize: 60,
+      maxSize: 60,
       cell: ({ row, table }) => {
         const meta = table.options.meta as {
           setLoadingRow: (rowId: string, loading: boolean) => void;
@@ -43,9 +42,7 @@ export function SelectPurchaseGridColumns({
     {
       id: "Purchase",
       header: "Purchase",
-      size: 200,
       minSize: 200,
-      maxSize: 200,
       cell: ({ row }) => {
         const imageUrl: string = row.original.supplier?.thumbnailUrl;
         const name: string = row.original.supplier?.supplierName;
@@ -93,7 +90,7 @@ export function SelectPurchaseGridColumns({
               <SheTooltip
                 delayDuration={200}
                 text={name}
-                className="max-w-[250px] overflow-hidden text-ellipsis whitespace-nowrap"
+                className="max-w-[calc(240px)] overflow-hidden text-ellipsis whitespace-nowrap"
               >
                 <span className="she-text">{name}</span>
               </SheTooltip>
@@ -101,19 +98,13 @@ export function SelectPurchaseGridColumns({
                 <SheTooltip
                   delayDuration={200}
                   text={address}
-                  className="max-w-[250px] overflow-hidden text-ellipsis whitespace-nowrap"
+                  className="max-w-[calc(240px)] overflow-hidden text-ellipsis whitespace-nowrap"
                 >
                   <span className="she-subtext">{address}</span>
                 </SheTooltip>
               )}
               {date && (
-                <SheTooltip
-                  delayDuration={200}
-                  text={date}
-                  className="max-w-[calc(100%-20px)] overflow-hidden text-ellipsis whitespace-nowrap"
-                >
-                  <span className="she-text">{formatDate(date, "date")}</span>
-                </SheTooltip>
+                <span className="she-text">{formatDate(date, "date")}</span>
               )}
             </div>
           </div>

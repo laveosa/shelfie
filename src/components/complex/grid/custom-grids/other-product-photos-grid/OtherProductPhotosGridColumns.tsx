@@ -61,9 +61,8 @@ export const OtherProductPhotosGridColumns = (
   {
     accessorKey: "thumbnailUrl",
     header: "Preview",
-    size: 60,
-    minSize: 60,
-    maxSize: 60,
+    minSize: 80,
+    maxSize: 80,
     cell: ({ row, table }) => {
       const photoUrl: string = row.getValue("thumbnailUrl");
       const meta = table.options.meta as {
@@ -91,9 +90,8 @@ export const OtherProductPhotosGridColumns = (
   {
     accessorKey: "format",
     header: "Format",
-    size: 100,
-    minSize: 100,
-    maxSize: 100,
+    minSize: 235,
+    maxSize: 235,
     cell: ({ row }) => {
       return (
         <span className="she-subtext">{`${row.original.height}px x ${row.original.width}px`}</span>
@@ -103,9 +101,8 @@ export const OtherProductPhotosGridColumns = (
   {
     id: "rowActions",
     header: "",
-    size: 40,
-    minSize: 40,
-    maxSize: 40,
+    minSize: 60,
+    maxSize: 60,
     cell: ({ row }) => {
       return (
         <SheButton
