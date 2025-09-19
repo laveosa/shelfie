@@ -50,7 +50,7 @@ export const SheGrid = React.forwardRef<DndGridRef, ISheGrid<any>>(
       columnsPreferences,
       preferenceContext,
       sortingItems,
-      isLoading = true,
+      isLoading,
       showHeader = true,
       showColumnsHeader = true,
       showPagination = true,
