@@ -7,14 +7,10 @@ import CreateProductCategoryCard from "@/components/complex/custom-cards/create-
 import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
 import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
 import CreateProductBrandCard from "@/components/complex/custom-cards/create-product-brand-card/CreateProductBrandCard.tsx";
-import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
-import { useAppSelector } from "@/utils/hooks/redux.ts";
-import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
-import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
 import { ProductBasicDataPageSliceActions as actions } from "@/state/slices/ProductBasicDataPageSlice.ts";
-import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import useProductBasicDataPageService from "@/pages/products-section/product-basic-data-page/useProductBasicDataPageService.ts";
+import { useCardActions } from "@/utils/hooks/useCardActions.ts";
+import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 
 export function ProductBasicDataPage() {
   const { handleCardAction, createRefCallback } = useCardActions({
@@ -22,14 +18,9 @@ export function ProductBasicDataPage() {
       state[StoreSliceEnum.PRODUCT_BASIC_DATA].activeCards,
     refreshAction: actions.refreshActiveCards,
   });
-  const state = useAppSelector<IProductBasicDataPageSlice>(
-    StoreSliceEnum.PRODUCT_BASIC_DATA,
-  );
-  const productsState = useAppSelector<IProductsPageSlice>(
-    StoreSliceEnum.PRODUCTS,
-  );
-  const service = useProductBasicDataPageService(handleCardAction);
-  const productsService = useProductsPageService();
+
+  const { state, productsState, productsService, ...service } =
+    useProductBasicDataPageService(handleCardAction);
   const { productId } = useParams();
 
   const productsForItemsCard = productsService.itemsCardItemsConvertor(
@@ -41,6 +32,7 @@ export function ProductBasicDataPage() {
       type: "product",
     },
   );
+
   const variantsForItemsCard = productsService.itemsCardItemsConvertor(
     productsState.variants,
     {

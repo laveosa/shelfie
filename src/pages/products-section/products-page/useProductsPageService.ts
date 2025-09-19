@@ -2,6 +2,15 @@ import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { useNavigate } from "react-router-dom";
 import { merge } from "lodash";
 
+import useAppService from "@/useAppService.ts";
+import useDialogService from "@/utils/services/dialog/DialogService.ts";
+import SuppliersApiHooks from "@/utils/services/api/SuppliersApiService.ts";
+import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";
+import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
+import UsersApiHooks from "@/utils/services/api/UsersApiService.ts";
+import PurchasesApiHooks from "@/utils/services/api/PurchasesApiService.ts";
+import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
+import { AppSliceActions as appActions } from "@/state/slices/AppSlice.ts";
 import {
   ProductsPageSliceActions as productsActions,
   ProductsPageSliceActions as actions,
@@ -10,27 +19,19 @@ import {
   addGridRowColor,
   setSelectedGridItem,
 } from "@/utils/helpers/quick-helper.ts";
-import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
-import UsersApiHooks from "@/utils/services/api/UsersApiService.ts";
-import PurchasesApiHooks from "@/utils/services/api/PurchasesApiService.ts";
-import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
-import useAppService from "@/useAppService.ts";
-import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
-import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
-import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import { useToast } from "@/hooks/useToast.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { GridRowsColorsEnum } from "@/const/enums/GridRowsColorsEnum.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
-import SuppliersApiHooks from "@/utils/services/api/SuppliersApiService.ts";
-import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
-import { useToast } from "@/hooks/useToast.ts";
-import useDialogService from "@/utils/services/dialog/DialogService.ts";
-import { AppSliceActions as appActions } from "@/state/slices/AppSlice.ts";
+import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 
 export default function useProductsPageService() {
+  // ==================================================================== UTILITIES
   const appService = useAppService();
   const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
   const state = useAppSelector<IProductsPageSlice>(StoreSliceEnum.PRODUCTS);
@@ -39,6 +40,7 @@ export default function useProductsPageService() {
   const { addToast } = useToast();
   const { openConfirmationDialog } = useDialogService();
 
+  // ==================================================================== API INITIALIZATION
   const [getTheProductsForGrid] =
     ProductsApiHooks.useGetTheProductsForGridMutation();
   const [getVariantsForGrid] = ProductsApiHooks.useGetVariantsForGridMutation();
@@ -147,8 +149,7 @@ export default function useProductsPageService() {
   const [toggleVariantIsActive] =
     ProductsApiHooks.useToggleVariantIsActiveMutation();
 
-  //-------------------------------------------------API
-
+  // ==================================================================== API
   function getTheProductsForGridHandler(
     data?: GridRequestModel,
     isForceRefresh?: boolean,
@@ -714,20 +715,22 @@ export default function useProductsPageService() {
     if (!confirmedDeleteProduct) {
     } else {
       data.table.options.meta?.hideRow(data.row.original.id);
-      await deleteProductHandler(data.row.original.productId).then((res) => {
-        if (!res.error) {
-          addToast({
-            text: "Product deleted successfully",
-            type: "success",
-          });
-        } else {
-          data.table.options.meta?.unhideRow(data.row.original.id);
-          addToast({
-            text: res.error.data.detail,
-            type: "error",
-          });
-        }
-      });
+      await deleteProductHandler(data.row.original.productId).then(
+        (res: any) => {
+          if (!res.error) {
+            addToast({
+              text: "Product deleted successfully",
+              type: "success",
+            });
+          } else {
+            data.table.options.meta?.unhideRow(data.row.original.id);
+            addToast({
+              text: res.error.data.detail,
+              type: "error",
+            });
+          }
+        },
+      );
     }
   }
 
@@ -742,20 +745,22 @@ export default function useProductsPageService() {
     if (!confirmedDeleteVariant) {
     } else {
       data.table.options.meta?.hideRow(data.row.original.id);
-      await deleteVariantHandler(data.row.original.variantId).then((res) => {
-        if (!res.error) {
-          addToast({
-            text: "Variant deleted successfully",
-            type: "success",
-          });
-        } else {
-          data.table.options.meta?.unhideRow(data.row.original.id);
-          addToast({
-            text: res.error.data.detail,
-            type: "error",
-          });
-        }
-      });
+      await deleteVariantHandler(data.row.original.variantId).then(
+        (res: any) => {
+          if (!res.error) {
+            addToast({
+              text: "Variant deleted successfully",
+              type: "success",
+            });
+          } else {
+            data.table.options.meta?.unhideRow(data.row.original.id);
+            addToast({
+              text: res.error.data.detail,
+              type: "error",
+            });
+          }
+        },
+      );
     }
   }
 
@@ -770,20 +775,22 @@ export default function useProductsPageService() {
     if (!confirmedDeletePurchase) {
     } else {
       data.table.options.meta?.hideRow(data.row.original.id);
-      await deletePurchaseHandler(data.row.original.purchaseId).then((res) => {
-        if (!res.error) {
-          addToast({
-            text: "Purchase deleted successfully",
-            type: "success",
-          });
-        } else {
-          data.table.options.meta?.unhideRow(data.row.original.id);
-          addToast({
-            text: res.error.data.detail,
-            type: "error",
-          });
-        }
-      });
+      await deletePurchaseHandler(data.row.original.purchaseId).then(
+        (res: any) => {
+          if (!res.error) {
+            addToast({
+              text: "Purchase deleted successfully",
+              type: "success",
+            });
+          } else {
+            data.table.options.meta?.unhideRow(data.row.original.id);
+            addToast({
+              text: res.error.data.detail,
+              type: "error",
+            });
+          }
+        },
+      );
     }
   }
 
@@ -820,8 +827,6 @@ export default function useProductsPageService() {
   }
 
   function gridRequestChangeHandler(updates: any) {
-    console.log(updates);
-
     if (state.activeTab === "products") {
       getTheProductsForGridHandler(updates, true);
     } else if (state.activeTab === "variants") {
@@ -872,8 +877,8 @@ export default function useProductsPageService() {
       }
     });
   }
-  //----------------------------------------------------LOGIC
 
+  // ==================================================================== LOGIC
   function itemsCardItemsConvertor(
     items: any[],
     options: {
@@ -915,7 +920,7 @@ export default function useProductsPageService() {
         );
         break;
       case "variant":
-        getVariantDetailsHandler(item.variantId).then((res) => {
+        getVariantDetailsHandler(item.variantId).then((res: any) => {
           dispatch(actions.refreshSelectedVariant(res));
           dispatch(actions.refreshVariantPhotos(res.photos));
           navigate(
@@ -936,6 +941,9 @@ export default function useProductsPageService() {
   }
 
   return {
+    state,
+    appState,
+    dispatch,
     getTheProductsForGridHandler,
     getVariantsForGridHandler,
     getListOfPurchasesForGridHandler,

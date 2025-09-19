@@ -347,6 +347,9 @@ export default function useProductBasicDataPageService(handleCardAction) {
   }
 
   return {
+    state,
+    productsState,
+    productsService,
     getProductsHandler,
     getCategoriesHandler,
     getBrandsHandler,

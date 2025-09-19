@@ -12,36 +12,31 @@ import {
 
 import cs from "./ProductsPage.module.scss";
 import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
-import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
-import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import SheTabs from "@/components/complex/she-tabs/SheTabs.tsx";
-import { BrandModel } from "@/const/models/BrandModel.ts";
-import { CategoryModel } from "@/const/models/CategoryModel.ts";
-import GridItemsFilter from "@/components/complex/grid/filters/grid-items-filter/GridItemsFilter.tsx";
-import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
-import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
-import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
-import { ProductsPageSliceActions as actions } from "@/state/slices/ProductsPageSlice.ts";
 import { PurchasesGridColumns } from "@/components/complex/grid/custom-grids/purchases-grid/PurchasesGridColumns.tsx";
-import { SupplierModel } from "@/const/models/SupplierModel.ts";
-import GridShowItemsFilter from "@/components/complex/grid/filters/grid-show-deleted-filter/GridShowItemsFilter.tsx";
-import GridTraitsFilter from "@/components/complex/grid/filters/grid-traits-filter/GridTraitsFilter.tsx";
 import { ProductsGridColumns } from "@/components/complex/grid/custom-grids/products-grid/ProductsGridColumns.tsx";
 import { VariantsGridColumns } from "@/components/complex/grid/custom-grids/variants-grid/VariantsGridColumns.tsx";
 import { GridDateRangeFilter } from "@/components/complex/grid/filters/grid-date-range-filter/GridDateRangeFilter.tsx";
 import { GridValueFilter } from "@/components/complex/grid/filters/grid-value-filter/GridValueFilter.tsx";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import SheTabs from "@/components/complex/she-tabs/SheTabs.tsx";
+import GridItemsFilter from "@/components/complex/grid/filters/grid-items-filter/GridItemsFilter.tsx";
+import GridShowItemsFilter from "@/components/complex/grid/filters/grid-show-deleted-filter/GridShowItemsFilter.tsx";
+import GridTraitsFilter from "@/components/complex/grid/filters/grid-traits-filter/GridTraitsFilter.tsx";
+import { ProductsPageSliceActions as actions } from "@/state/slices/ProductsPageSlice.ts";
+import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
+import { BrandModel } from "@/const/models/BrandModel.ts";
+import { CategoryModel } from "@/const/models/CategoryModel.ts";
+import { SupplierModel } from "@/const/models/SupplierModel.ts";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export function ProductsPage() {
+  // ==================================================================== UTILITIES
   const { translate } = useAppTranslation();
-  const dispatch = useAppDispatch();
-  const state = useAppSelector<IProductsPageSlice>(StoreSliceEnum.PRODUCTS);
-  const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
-  const service = useProductsPageService();
+  const { state, appState, dispatch, ...service } = useProductsPageService();
 
+  // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     if (state.activeTab === "products") {
       service.getTheProductsForGridHandler(state.productsGridRequestModel);
@@ -70,6 +65,7 @@ export function ProductsPage() {
       service.getTraitsForFilterHandler();
   }, []);
 
+  // ==================================================================== EVENT HANDLERS
   function onAction(actionType: string, payload?: any) {
     switch (actionType) {
       case "activateProduct":
@@ -120,6 +116,7 @@ export function ProductsPage() {
     }
   }
 
+  // ==================================================================== LAYOUT
   return (
     <div className={cs.productsPage}>
       <div className={cs.productsPageHeader}>
