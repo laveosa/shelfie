@@ -1,7 +1,7 @@
 import { Plus, Trash2, UserMinus, UserPlus } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
-import React from "react";
 import { useTranslation } from "react-i18next";
+import React from "react";
 
 import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
@@ -20,6 +20,7 @@ import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 export default function OrderConfigurationCard({
   isLoading,
   isDiscountsGridLoading,
+  isShipmentsGridLoading,
   order,
   shipmentsRate,
   statuses,
@@ -181,6 +182,7 @@ export default function OrderConfigurationCard({
           />
         </div>
         <SheGrid
+          isLoading={isShipmentsGridLoading}
           columns={
             OrderShipmentsRateGridColumns({
               onAction,

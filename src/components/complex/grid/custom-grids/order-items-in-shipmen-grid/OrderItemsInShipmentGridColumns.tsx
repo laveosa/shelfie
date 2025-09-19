@@ -16,9 +16,7 @@ export function orderItemsInShipmentGridColumns({
       id: "variantName",
       accessorFn: (row) => row.variantName,
       header: "Product",
-      size: 120,
       minSize: 120,
-      maxSize: 120,
       cell: ({ row }) => {
         const image: string = row.original.photo;
         return (
@@ -50,9 +48,8 @@ export function orderItemsInShipmentGridColumns({
     {
       accessorKey: "traitOptions",
       header: "Details",
-      size: 60,
-      minSize: 60,
-      maxSize: 60,
+      minSize: 100,
+      maxSize: 100,
       cell: ({ row }) => {
         const traitOptions = row.original.traitOptions || [];
 
@@ -100,7 +97,6 @@ export function orderItemsInShipmentGridColumns({
     {
       accessorKey: "orderId",
       header: "Order",
-      size: 80,
       minSize: 80,
       maxSize: 80,
       cell: ({ row }) => {
@@ -110,9 +106,8 @@ export function orderItemsInShipmentGridColumns({
     {
       accessorKey: "orderedAmount",
       header: "Qty pending",
-      size: 60,
-      minSize: 60,
-      maxSize: 60,
+      minSize: 80,
+      maxSize: 80,
       cell: ({ row }) => {
         return <span>{row.original.orderId}</span>;
       },
@@ -120,7 +115,6 @@ export function orderItemsInShipmentGridColumns({
     {
       accessorKey: "quantity",
       header: "Qty to add",
-      size: 80,
       minSize: 80,
       maxSize: 80,
       cell: ({ row }) => <QuantityInputCell row={row} />,

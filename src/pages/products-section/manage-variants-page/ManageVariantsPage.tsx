@@ -379,7 +379,7 @@ export function ManageVariantsPage() {
         <div ref={createRefCallback("variantHistoryCard")}>
           <StockHistoryCard
             isLoading={state.isVariantHistoryCardLoading}
-            isGridLoading={state.isVariantHistoryGridLoading}
+            isGridLoading={state.isVariantsHistoryGridLoading}
             variant={productsState.selectedVariant}
             data={state.variantHistory}
             onAction={onAction}

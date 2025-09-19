@@ -5,7 +5,7 @@ import {
   GridSortingEnum,
   GridSortingEnumLabels,
 } from "@/const/enums/GridSortingEnum.ts";
-import cs from "@/pages/sales-section/orders-page/OrdersPage.module.scss";
+import cs from "./OrderProductsPage.module.scss";
 import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
 import { useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
@@ -73,7 +73,7 @@ export function OrderProductsPage() {
   }
 
   return (
-    <div className={cs.ordersPage}>
+    <div className={cs.ordersProductsPage}>
       <ProductMenuCard
         title="Order"
         itemsCollection="order"
@@ -87,7 +87,10 @@ export function OrderProductsPage() {
         onAction={onAction}
       />
       {state.activeCards?.includes("findProductsCard") && (
-        <div ref={createRefCallback("findProductsCard")}>
+        <div
+          className={cs.findProductsCard}
+          ref={createRefCallback("findProductsCard")}
+        >
           <FindProductsCard
             isLoading={state.isFindProductsCardLoading}
             isGridLoading={state.isFindProductsGridLoading}

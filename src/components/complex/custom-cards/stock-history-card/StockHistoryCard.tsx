@@ -36,7 +36,6 @@ export default function StockHistoryCard({
             isLoading={isGridLoading}
             showHeader={false}
             columns={StockHistoryGridColumns as ColumnDef<DataWithId>[]}
-            skeletonQuantity={data.length}
             data={data}
           />
         </div>

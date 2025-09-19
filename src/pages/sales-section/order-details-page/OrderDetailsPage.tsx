@@ -107,6 +107,8 @@ export function OrderDetailsPage() {
       />
       <OrderConfigurationCard
         isLoading={state.isOrderConfigurationCardLoading}
+        isDiscountsGridLoading={state.isDiscountsGridLoading}
+        isShipmentsGridLoading={state.isShipmentsGridLoading}
         order={ordersState.selectedOrder}
         onAction={onAction}
       />

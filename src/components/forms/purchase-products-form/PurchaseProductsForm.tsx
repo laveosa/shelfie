@@ -34,7 +34,7 @@ export default function PurchaseProductsForm({
   onCancel,
 }: IPurchaseProductsForm) {
   const form = useAppForm<PurchaseProductsModel>({
-    mode: ReactHookFormMode.BLUR,
+    mode: ReactHookFormMode.CHANGE,
     resolver: zodResolver(PurchaseProductsFormScheme),
     defaultValues: data || PurchaseProductsModelDefault,
   });
@@ -98,6 +98,8 @@ export default function PurchaseProductsForm({
                       : ""
                     : ""
                 }
+                type="number"
+                min={0}
                 minWidth="100px"
                 maxWidth="100px"
                 placeholder="Netto price"
@@ -174,6 +176,9 @@ export default function PurchaseProductsForm({
                       : ""
                     : ""
                 }
+                type="number"
+                min={0}
+                hideErrorMessage
                 width="80px"
                 minWidth="80px"
                 maxWidth="80px"

@@ -55,6 +55,13 @@ export const CompaniesApiService = createApi({
         method: "PATCH",
       }),
     }),
+    updateLocationDetails: apiConfig.createMutation<void, any>(builder, {
+      query: ({ locationId, model }) => ({
+        url: `${ApiUrlEnum.LOCATIONS}/${locationId}`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+    }),
   }),
 });
 

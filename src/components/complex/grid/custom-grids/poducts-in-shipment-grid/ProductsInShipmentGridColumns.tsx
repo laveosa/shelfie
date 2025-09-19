@@ -8,9 +8,7 @@ export const ProductsInShipmentGridColumns: ColumnDef<any>[] = [
     id: "variantName",
     accessorFn: (row) => row.variantName,
     header: "Product",
-    size: 80,
-    minSize: 80,
-    maxSize: 80,
+    minSize: 100,
     cell: ({ row }) => {
       const image: string = row.original.photo;
       return (
@@ -42,9 +40,8 @@ export const ProductsInShipmentGridColumns: ColumnDef<any>[] = [
   {
     accessorKey: "traitOptions",
     header: "Traits",
-    size: 40,
-    minSize: 40,
-    maxSize: 40,
+    minSize: 100,
+    maxSize: 100,
     cell: ({ row }) => {
       const traitOptions = row.original.traitOptions || [];
 
@@ -92,9 +89,8 @@ export const ProductsInShipmentGridColumns: ColumnDef<any>[] = [
   {
     id: "unitsAmount",
     header: "Qty ordered",
-    size: 40,
-    minSize: 40,
-    maxSize: 40,
+    minSize: 100,
+    maxSize: 100,
     cell: ({ row }) => {
       return <span>{row.original.unitsAmount}</span>;
     },
@@ -102,9 +98,8 @@ export const ProductsInShipmentGridColumns: ColumnDef<any>[] = [
   {
     id: "unitsAmount1",
     header: "Qty to ship",
-    size: 40,
-    minSize: 40,
-    maxSize: 40,
+    minSize: 100,
+    maxSize: 100,
     cell: ({ row }) => {
       return <span>{row.original.unitsAmount}</span>;
     },
@@ -112,9 +107,8 @@ export const ProductsInShipmentGridColumns: ColumnDef<any>[] = [
   {
     id: "unitsAmount2",
     header: "Qty shipped",
-    size: 40,
-    minSize: 40,
-    maxSize: 40,
+    minSize: 100,
+    maxSize: 100,
     cell: ({}) => {
       return <span>0</span>;
     },

@@ -39,7 +39,6 @@ export default function OrdersCard({
         title={t("CardTitles.Orders")}
         isLoading={isLoading}
         className={cs.ordersCardContent}
-        minWidth="1100px"
       >
         <SheGrid
           isLoading={isGridLoading}
