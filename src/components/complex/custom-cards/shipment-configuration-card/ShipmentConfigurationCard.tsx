@@ -223,6 +223,7 @@ export default function ShipmentConfigurationCard({
             />
           </div>
           <SheGrid
+            isLoading={false}
             showHeader={false}
             columns={
               ordersInShipmentGridColumns(onAction) as ColumnDef<DataWithId>[]
@@ -244,6 +245,7 @@ export default function ShipmentConfigurationCard({
             />
           </div>
           <SheGrid
+            isLoading={false}
             showHeader={false}
             columns={
               orderItemsInShipmentGridColumns({
@@ -261,6 +263,7 @@ export default function ShipmentConfigurationCard({
                 </span>
               </div>
               <SheGrid
+                isLoading={false}
                 showHeader={false}
                 columns={
                   PackedOrderItemsGridColumns({
@@ -285,6 +288,7 @@ export default function ShipmentConfigurationCard({
                   {t("ShipmentForm.Labels.PackageContent")}
                 </span>
                 <SheGrid
+                  isLoading={false}
                   showHeader={false}
                   columns={
                     PackedOrderItemsGridColumns({

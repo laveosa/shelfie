@@ -1,5 +1,5 @@
 import { ColumnDef, Row } from "@tanstack/react-table";
-import { Plus } from "lucide-react";
+import { ImageIcon, Plus } from "lucide-react";
 
 import cs from "./FindProductGridColumns.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
@@ -10,6 +10,7 @@ import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import FindProductColumnActions from "@/components/complex/grid/custom-grids/find-product-grid/FindProductColumnActions.tsx";
 import QuantityInputCell from "@/components/complex/grid/custom-grids/find-product-grid/QuantityInputCell.tsx";
+import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 
 export function findProductGridColumns({
   onAction,
@@ -20,9 +21,8 @@ export function findProductGridColumns({
     {
       accessorKey: "variantCode",
       header: "Code",
-      size: 60,
-      minSize: 60,
-      maxSize: 60,
+      minSize: 70,
+      maxSize: 70,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("variantCode")}>
@@ -36,21 +36,27 @@ export function findProductGridColumns({
     {
       accessorKey: "photo",
       header: "Image",
-      size: 60,
-      minSize: 60,
-      maxSize: 60,
+      minSize: 80,
+      maxSize: 80,
       cell: ({ row }) => {
         const image: ImageModel = row.getValue("photo");
         return (
           <div className="relative w-12 h-12 cursor-pointer">
-            <img
-              src={image?.thumbnailUrl || placeholderImage}
-              alt={row.getValue("variantName")}
-              className="object-cover rounded-md w-full h-full"
-              onError={(e) => {
-                e.currentTarget.src = placeholderImage;
-              }}
-            />
+            {image ? (
+              <img
+                src={image?.thumbnailUrl || placeholderImage}
+                alt={row.getValue("variantName")}
+                className="object-cover rounded-md w-full h-full"
+              />
+            ) : (
+              <div>
+                <SheIcon
+                  icon={ImageIcon}
+                  maxWidth="60px"
+                  className={cs.noImageIcon}
+                />
+              </div>
+            )}
           </div>
         );
       },
@@ -58,9 +64,7 @@ export function findProductGridColumns({
     {
       accessorKey: "variantName",
       header: "Product Name",
-      size: 150,
       minSize: 150,
-      maxSize: 150,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("variantName")}>
@@ -74,9 +78,7 @@ export function findProductGridColumns({
     {
       accessorKey: "productCategory",
       header: "Category",
-      size: 100,
       minSize: 100,
-      maxSize: 100,
       cell: ({ row }) => {
         const category: CategoryModel = row.getValue("productCategory");
         return (
@@ -100,9 +102,7 @@ export function findProductGridColumns({
     {
       accessorKey: "brand",
       header: "Brand",
-      size: 100,
       minSize: 100,
-      maxSize: 100,
       cell: ({ row }) => {
         const brand: BrandModel = row.getValue("brand");
         return (
@@ -123,9 +123,8 @@ export function findProductGridColumns({
     {
       accessorKey: "traitOptions",
       header: "Details",
-      size: 80,
-      minSize: 80,
-      maxSize: 80,
+      minSize: 100,
+      maxSize: 100,
       cell: ({ row }) => {
         const traitOptions = row.original.traitOptions || [];
 
@@ -173,9 +172,8 @@ export function findProductGridColumns({
     {
       accessorKey: "stockAmount",
       header: "In Stock",
-      size: 60,
-      minSize: 60,
-      maxSize: 60,
+      minSize: 100,
+      maxSize: 100,
       cell: ({ row }) => {
         return <span>{`${row.getValue("stockAmount")} units`}</span>;
       },
@@ -183,9 +181,8 @@ export function findProductGridColumns({
     {
       accessorKey: "salePrice",
       header: "Price",
-      size: 100,
-      minSize: 100,
-      maxSize: 100,
+      minSize: 120,
+      maxSize: 120,
       cell: ({ row }) => {
         const price: string = row.getValue("salePrice");
         return <span>{price ? price : "N/A"}</span>;

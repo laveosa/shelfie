@@ -24,9 +24,7 @@ export function OrderShipmentsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "queueDate",
       header: "Action Date",
-      size: 50,
-      minSize: 50,
-      maxSize: 50,
+      minSize: 100,
       cell: ({ row }) => {
         return <span>{formatDate(row.getValue("queueDate"), "date")}</span>;
       },
@@ -34,9 +32,7 @@ export function OrderShipmentsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       id: "shipmentStatus",
       header: "Status",
-      size: 80,
-      minSize: 80,
-      maxSize: 80,
+      minSize: 120,
       cell: ({ row }) => {
         const status: string = row.original.shipmentStatus;
         return (
@@ -49,9 +45,7 @@ export function OrderShipmentsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "service",
       header: "Service",
-      size: 60,
-      minSize: 60,
-      maxSize: 60,
+      minSize: 100,
       cell: ({ row }) => {
         const image: string = row.original.service;
         return (
@@ -76,9 +70,8 @@ export function OrderShipmentsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "trackingNumber",
       header: "Tracking Number",
-      size: 90,
-      minSize: 90,
-      maxSize: 90,
+      minSize: 100,
+      maxSize: 100,
       cell: ({ row }) => {
         return <span>{row.getValue("trackingNumber")}</span>;
       },
@@ -86,9 +79,8 @@ export function OrderShipmentsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "quantityPacked",
       header: "Items",
-      size: 40,
-      minSize: 40,
-      maxSize: 40,
+      minSize: 100,
+      maxSize: 100,
       cell: ({ row }) => {
         return <span>{row.original.quantityPacked}</span>;
       },
@@ -96,9 +88,8 @@ export function OrderShipmentsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       id: "manage",
       header: "",
-      size: 80,
-      minSize: 80,
-      maxSize: 80,
+      minSize: 120,
+      maxSize: 120,
       cell: ({ row, table }) => {
         const meta = table.options.meta as {
           setLoadingRow: (rowId: string, loading: boolean) => void;

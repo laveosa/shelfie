@@ -4,7 +4,7 @@ export const StockHistoryGridColumns: ColumnDef<any>[] = [
   {
     accessorKey: "amountUnit",
     header: "Units",
-    size: 60,
+    minSize: 60,
     maxSize: 60,
     cell: ({ row }) => {
       return <span className="she-text">{row.original.amountUnit}</span>;
@@ -13,8 +13,8 @@ export const StockHistoryGridColumns: ColumnDef<any>[] = [
   {
     accessorKey: "actionType",
     header: "Action",
-    size: 80,
-    maxSize: 80,
+    minSize: 100,
+    maxSize: 100,
     cell: ({ row }) => {
       return <span className="she-text">{row.original.actionType}</span>;
     },
@@ -22,7 +22,7 @@ export const StockHistoryGridColumns: ColumnDef<any>[] = [
   {
     id: "createdDate",
     header: "Date",
-    size: 100,
+    minSize: 100,
     maxSize: 100,
     cell: ({ row }) => {
       return <span className="she-text">{row.original.createdDate}</span>;
@@ -31,8 +31,7 @@ export const StockHistoryGridColumns: ColumnDef<any>[] = [
   {
     id: "status",
     header: "Status",
-    size: 100,
-    maxSize: 100,
+    minSize: 100,
     cell: ({ row }) => {
       return (
         <span className="she-text">

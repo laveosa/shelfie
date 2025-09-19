@@ -24,9 +24,8 @@ export function ShipmentsListGridColumns(onAction: any): ColumnDef<any>[] {
     {
       id: "shipmentId",
       header: "ID",
-      size: 40,
-      minSize: 40,
-      maxSize: 40,
+      minSize: 60,
+      maxSize: 60,
       cell: ({ row }) => {
         return <span>{row.original.shipmentId}</span>;
       },
@@ -35,9 +34,7 @@ export function ShipmentsListGridColumns(onAction: any): ColumnDef<any>[] {
       id: "customer",
       accessorFn: (row) => row.variantName,
       header: "customer",
-      size: 120,
       minSize: 120,
-      maxSize: 120,
       cell: ({ row }) => {
         const imageUrl: string = row.original.customer?.thumbnailUrl;
         const name: string = row.original.customer?.name;
@@ -71,9 +68,8 @@ export function ShipmentsListGridColumns(onAction: any): ColumnDef<any>[] {
     {
       id: "createdAt",
       header: "Date",
-      size: 80,
-      minSize: 80,
-      maxSize: 80,
+      minSize: 100,
+      maxSize: 100,
       cell: ({ row }) => {
         return <span>{formatDate(row.original.createdAt, "date")}</span>;
       },
@@ -81,9 +77,7 @@ export function ShipmentsListGridColumns(onAction: any): ColumnDef<any>[] {
     {
       id: "service",
       header: "Service",
-      size: 80,
       minSize: 80,
-      maxSize: 80,
       cell: ({ row }) => {
         return <span>{row.original.service}</span>;
       },
@@ -91,7 +85,6 @@ export function ShipmentsListGridColumns(onAction: any): ColumnDef<any>[] {
     {
       id: "number",
       header: "Number",
-      size: 80,
       minSize: 80,
       maxSize: 80,
       cell: ({ row }) => {
@@ -101,9 +94,8 @@ export function ShipmentsListGridColumns(onAction: any): ColumnDef<any>[] {
     {
       id: "shipmentStatus",
       header: "Status",
-      size: 60,
-      minSize: 60,
-      maxSize: 60,
+      minSize: 150,
+      maxSize: 150,
       cell: ({ row }) => {
         const status: string = row.original.shipmentStatus;
         return (
@@ -116,9 +108,8 @@ export function ShipmentsListGridColumns(onAction: any): ColumnDef<any>[] {
     {
       id: "quantityPacked",
       header: "Qty Packed",
-      size: 80,
-      minSize: 80,
-      maxSize: 80,
+      minSize: 100,
+      maxSize: 100,
       cell: ({ row }) => {
         return <span>{row.original.quantityPacked}</span>;
       },
@@ -126,9 +117,8 @@ export function ShipmentsListGridColumns(onAction: any): ColumnDef<any>[] {
     {
       id: "weight",
       header: "Weight",
-      size: 80,
-      minSize: 80,
-      maxSize: 80,
+      minSize: 100,
+      maxSize: 100,
       cell: ({ row }) => {
         return <span>{row.original.weight}</span>;
       },
@@ -136,9 +126,8 @@ export function ShipmentsListGridColumns(onAction: any): ColumnDef<any>[] {
     {
       id: "manage",
       header: "",
-      size: 100,
-      minSize: 100,
-      maxSize: 100,
+      minSize: 120,
+      maxSize: 120,
       cell: ({ row }) => {
         return (
           <div className={cs.selectButton} onClick={(e) => e.stopPropagation()}>

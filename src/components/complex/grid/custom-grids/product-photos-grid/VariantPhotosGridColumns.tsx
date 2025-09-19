@@ -90,7 +90,6 @@ export const VariantPhotosGridColumns = (
     accessorKey: "format",
     header: "Format",
     minSize: 190,
-    maxSize: 190,
     cell: ({ row }) => {
       return (
         <span className="she-subtext">{`${row.original.height}px x ${row.original.width}px`}</span>
@@ -105,7 +104,7 @@ export const VariantPhotosGridColumns = (
     cell: ({ row, table }) => {
       return (
         <VariantPhotosGridColumnActions
-          style={{ paddingLeft: "20px" }}
+          style={{ paddingLeft: "10px" }}
           row={row}
           onAction={onAction}
           table={table}

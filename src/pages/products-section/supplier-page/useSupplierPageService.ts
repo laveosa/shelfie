@@ -18,6 +18,7 @@ import { SupplierModel } from "@/const/models/SupplierModel.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
+import CompaniesApiHooks from "@/utils/services/api/CompaniesApiService.ts";
 
 export default function useSupplierPageService(handleCardAction) {
   const productsService = useProductsPageService();
@@ -50,6 +51,8 @@ export default function useSupplierPageService(handleCardAction) {
   const [restoreSupplier] = SuppliersApiHooks.useRestoreSupplierMutation();
   const [getPurchaseDetails] =
     PurchasesApiHooks.useLazyGetPurchaseDetailsQuery();
+  const [updateLocationDetails] =
+    CompaniesApiHooks.useUpdateLocationDetailsMutation();
 
   function createPurchaseForSupplierHandler(model) {
     dispatch(actions.setIsSupplierCardLoading(true));
@@ -227,10 +230,12 @@ export default function useSupplierPageService(handleCardAction) {
 
   function updateSupplierHandler(model: any, purchaseId) {
     dispatch(actions.setIsSupplierConfigurationCardLoading(true));
-    return updateSupplier({
-      model,
-      supplierId: state.managedSupplier.supplierId,
+    updateLocationDetails({
       locationId: state.managedSupplier.locationId,
+      model: {
+        ...model,
+        locationName: model.supplierName,
+      },
     }).then((res: any) => {
       dispatch(actions.setIsSupplierConfigurationCardLoading(false));
       if (!res.error) {
@@ -238,7 +243,7 @@ export default function useSupplierPageService(handleCardAction) {
           dispatch(actions.setIsPhotoUploaderLoading(true));
 
           const uploadPromises = model.uploadModels.map((model) => {
-            model.contextId = res.data.supplierId;
+            model.contextId = state.managedSupplier.supplierId;
             return productsService.uploadPhotoHandler(model);
           });
 
@@ -253,6 +258,23 @@ export default function useSupplierPageService(handleCardAction) {
                   dispatch(actions.refreshManagedSupplier(res));
                 });
                 dispatch(actions.setIsPhotoUploaderLoading(false));
+                if (state.activeCards.includes("selectEntityCard")) {
+                  getListOfSuppliersForGridHandler({});
+                }
+                if (
+                  productsState.selectedSupplier.supplierId ===
+                  state.managedSupplier.supplierId
+                ) {
+                  getPurchaseDetails(purchaseId).then((res: any) => {
+                    dispatch(productsActions.refreshSelectedPurchase(res.data));
+                    dispatch(
+                      productsActions.refreshSelectedSupplier({
+                        ...res.data.supplier,
+                        locationId: res.data.location.locationId,
+                      }),
+                    );
+                  });
+                }
                 addToast({
                   text: "Image successfully added",
                   type: "success",
@@ -264,23 +286,6 @@ export default function useSupplierPageService(handleCardAction) {
                 });
               }
             });
-          });
-        }
-        if (state.activeCards.includes("selectEntityCard")) {
-          getListOfSuppliersForGridHandler({});
-        }
-        if (
-          productsState.selectedSupplier.supplierId ===
-          state.managedSupplier.supplierId
-        ) {
-          getPurchaseDetails(purchaseId).then((res: any) => {
-            dispatch(productsActions.refreshSelectedPurchase(res.data));
-            dispatch(
-              productsActions.refreshSelectedSupplier({
-                ...res.data.supplier,
-                locationId: res.data.location.locationId,
-              }),
-            );
           });
         }
         addToast({
