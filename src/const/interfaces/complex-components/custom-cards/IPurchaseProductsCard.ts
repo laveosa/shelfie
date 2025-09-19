@@ -22,6 +22,7 @@ export interface IPurchaseProductsCard {
   variantsSkeletonQuantity?: number;
   currencies?: CurrencyModel[];
   purchaseSummary?: IPurchaseSummaryModel;
+  purchaseId?: any;
   taxes?: TaxTypeModel[];
   onAction?: (identifier: string, payload?: any) => void;
 }

@@ -62,6 +62,7 @@ export default function useSupplierPageService(handleCardAction) {
       documentNotes: model.purchaseNotes,
     }).then((res: any) => {
       dispatch(actions.refreshPurchase(res.data));
+      dispatch(productsActions.refreshCreatedPurchase(res.data));
       dispatch(actions.setIsSupplierCardLoading(false));
       if (res) {
         productsService.getPurchaseCountersHandler(res.data.purchaseId);
