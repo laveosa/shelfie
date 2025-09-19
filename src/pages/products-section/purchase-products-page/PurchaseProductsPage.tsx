@@ -69,10 +69,6 @@ export function PurchaseProductsPage() {
   }, []);
 
   useEffect(() => {
-    service.getVariantsForPurchaseGridDataHandler();
-  }, []);
-
-  useEffect(() => {
     service.getGridFiltersDataHandler();
   }, []);
 
@@ -327,6 +323,9 @@ export function PurchaseProductsPage() {
       case "gridRequestChange":
         service.gridRequestChangeHandler(purchaseId, payload);
         break;
+      case "refreshConnectProductsTab":
+        service.getVariantsForPurchaseGridDataHandler();
+        break;
     }
   }
 
@@ -364,6 +363,7 @@ export function PurchaseProductsPage() {
             currencies={productsState.currenciesList}
             taxes={productsState.taxesList}
             purchaseSummary={state.purchaseSummary}
+            purchaseId={purchaseId}
             onAction={onAction}
           />
         </div>

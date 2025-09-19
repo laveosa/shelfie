@@ -66,6 +66,7 @@ const initialState: IProductsPageSlice = {
   activeTab: "products",
   variantPhotos: [],
   productCode: null,
+  createdPurchase: null,
 };
 
 //----------------------------------------------------- LOADERS
@@ -384,6 +385,13 @@ function refreshProductCode(
   state.productCode = action?.payload || state.productCode;
 }
 
+function refreshCreatedPurchase(
+  state: IProductsPageSlice,
+  action: PayloadAction<PurchaseModel>,
+) {
+  state.createdPurchase = action?.payload || state.createdPurchase;
+}
+
 const ProductsPageSlice = createSlice({
   name: StoreSliceEnum.PRODUCTS,
   initialState,
@@ -433,6 +441,7 @@ const ProductsPageSlice = createSlice({
     refreshActiveTab,
     refreshVariantPhotos,
     refreshProductCode,
+    refreshCreatedPurchase,
   },
 });
 
