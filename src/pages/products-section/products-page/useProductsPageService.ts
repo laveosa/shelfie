@@ -154,50 +154,25 @@ export default function useProductsPageService() {
     data?: GridRequestModel,
     isForceRefresh?: boolean,
   ) {
-    if (isForceRefresh) {
-      dispatch(actions.setIsLoading(true));
-      dispatch(actions.setIsProductsLoading(true));
-      return getTheProductsForGrid(data).then((res: any) => {
-        dispatch(actions.setIsProductsLoading(false));
-        dispatch(actions.setIsLoading(false));
-        if (res.error) {
-          return;
-        } else {
-          dispatch(actions.refreshProductsGridRequestModel(res.data));
-          dispatch(actions.refreshProducts(res.data.items));
-          return res.data;
-        }
-      });
-    } else {
-      if (state.products === null) {
-        dispatch(actions.setIsLoading(true));
-        dispatch(actions.setIsProductsLoading(true));
-        return getTheProductsForGrid(data).then((res: any) => {
-          dispatch(actions.setIsLoading(false));
-          dispatch(actions.setIsProductsLoading(false));
-          if (res.error) {
-            return;
-          } else {
-            dispatch(actions.refreshProductsGridRequestModel(res.data));
-            dispatch(actions.refreshProducts(res.data.items));
-            return res.data;
-          }
-        });
-      }
-    }
+    if (state.products !== null && !isForceRefresh) return null;
+    dispatch(actions.setIsLoading(true));
+    return getTheProductsForGrid(data).then((res: any) => {
+      dispatch(actions.setIsLoading(false));
+      if (res.error) return;
+      dispatch(actions.refreshProductsGridRequestModel(res.data));
+      dispatch(actions.refreshProducts(res.data.items));
+      return res.data;
+    });
   }
 
   function getListOfPurchasesForGridHandler(data?: GridRequestModel) {
     dispatch(actions.setIsLoading(true));
     return getListOfPurchasesForGrid(data).then((res: any) => {
       dispatch(actions.setIsLoading(false));
-      if (res.error) {
-        return;
-      } else {
-        dispatch(actions.refreshPurchasesGridRequestModel(res.data));
-        dispatch(actions.refreshPurchases(res.data.items));
-        return res.data;
-      }
+      if (res.error) return;
+      dispatch(actions.refreshPurchasesGridRequestModel(res.data));
+      dispatch(actions.refreshPurchases(res.data.items));
+      return res.data;
     });
   }
 
@@ -288,8 +263,8 @@ export default function useProductsPageService() {
   function getProductPhotosHandler(id: number) {
     dispatch(actions.setIsProductPhotosLoading(true));
     return getProductPhotos(id).then((res: any) => {
-      dispatch(productsActions.refreshProductPhotos(res.data));
       dispatch(actions.setIsProductPhotosLoading(false));
+      dispatch(productsActions.refreshProductPhotos(res.data));
       return res.data;
     });
   }
@@ -314,14 +289,14 @@ export default function useProductsPageService() {
   }
 
   function getTaxesListHandler() {
-    return getTaxesList().then((res: any) => {
+    return getTaxesList(undefined).then((res: any) => {
       dispatch(actions.refreshTaxesList(res.data));
       return res.data;
     });
   }
 
   function getCurrenciesListHandler() {
-    return getCurrenciesList().then((res: any) => {
+    return getCurrenciesList(undefined).then((res: any) => {
       dispatch(actions.refreshCurrenciesList(res.data));
       return res.data;
     });
@@ -329,7 +304,7 @@ export default function useProductsPageService() {
 
   function getVariantDetailsHandler(id) {
     return getVariantDetails(id).then((res: any) => {
-      const modifiedRes = {
+      return {
         ...res.data,
         traitOptions: addGridRowColor(res.data.traitOptions, "color", [
           {
@@ -344,8 +319,6 @@ export default function useProductsPageService() {
           },
         ]),
       };
-
-      return modifiedRes;
     });
   }
 
@@ -379,7 +352,7 @@ export default function useProductsPageService() {
   }
 
   function getTraitsForFilterHandler() {
-    return getTraitsForFilter().then((res: any) => {
+    return getTraitsForFilter(undefined).then((res: any) => {
       dispatch(
         actions.refreshSizesForFilter(
           res.data
@@ -477,7 +450,7 @@ export default function useProductsPageService() {
   }
 
   function getListOfAllTraitsHandler() {
-    return getListOfAllTraits().then((res: any) => {
+    return getListOfAllTraits(undefined).then((res: any) => {
       dispatch(actions.refreshTraits(res.data));
       return res.data;
     });
@@ -505,7 +478,7 @@ export default function useProductsPageService() {
   }
 
   function getListOfTypesOfTraitsHandler() {
-    return getListOfTypesOfTraits().then((res: any) => {
+    return getListOfTypesOfTraits(undefined).then((res: any) => {
       dispatch(actions.refreshTypesOfTraits(res.data));
       return res.data;
     });
@@ -712,8 +685,7 @@ export default function useProductsPageService() {
       secondaryButtonValue: "Cancel",
     });
 
-    if (!confirmedDeleteProduct) {
-    } else {
+    if (confirmedDeleteProduct) {
       data.table.options.meta?.hideRow(data.row.original.id);
       await deleteProductHandler(data.row.original.productId).then(
         (res: any) => {
