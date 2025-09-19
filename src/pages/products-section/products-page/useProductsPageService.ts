@@ -912,6 +912,7 @@ export default function useProductsPageService() {
     }
   }
 
+  // ==================================================================== PROVIDED API
   return {
     state,
     appState,

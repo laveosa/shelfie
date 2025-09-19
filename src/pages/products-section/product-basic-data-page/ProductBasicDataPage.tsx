@@ -13,16 +13,15 @@ import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 
 export function ProductBasicDataPage() {
+  // ==================================================================== UTILITIES
   const { handleCardAction, createRefCallback } = useCardActions({
     selectActiveCards: (state) =>
       state[StoreSliceEnum.PRODUCT_BASIC_DATA].activeCards,
     refreshAction: actions.refreshActiveCards,
   });
-
   const { state, productsState, productsService, ...service } =
     useProductBasicDataPageService(handleCardAction);
   const { productId } = useParams();
-
   const productsForItemsCard = productsService.itemsCardItemsConvertor(
     productsState.products,
     {
@@ -32,7 +31,6 @@ export function ProductBasicDataPage() {
       type: "product",
     },
   );
-
   const variantsForItemsCard = productsService.itemsCardItemsConvertor(
     productsState.variants,
     {
@@ -43,6 +41,7 @@ export function ProductBasicDataPage() {
     },
   );
 
+  // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     service.getProductsHandler(productsState.productsGridRequestModel);
     service.getCategoriesHandler();
@@ -51,6 +50,7 @@ export function ProductBasicDataPage() {
     service.getProductDetailsHandler(Number(productId));
   }, [productId]);
 
+  // ==================================================================== EVENT HANDLERS
   async function onAction(actionType: string, payload?: any) {
     switch (actionType) {
       case "itemsCardClick":
@@ -98,6 +98,7 @@ export function ProductBasicDataPage() {
     }
   }
 
+  // ==================================================================== LAYOUT
   return (
     <div className={cs.createProductPage}>
       <ItemsCard

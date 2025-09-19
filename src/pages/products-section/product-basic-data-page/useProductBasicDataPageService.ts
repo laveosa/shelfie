@@ -1,20 +1,22 @@
 import { useNavigate } from "react-router-dom";
 
-import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
-import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
-import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
+import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
+import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
 import { ProductBasicDataPageSliceActions as actions } from "@/state/slices/ProductBasicDataPageSlice.ts";
 import { useToast } from "@/hooks/useToast.ts";
+import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
-import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
+import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
-import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
+import { ProductCountersModel } from "@/const/models/CounterModel.ts";
+import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
+import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 
 export default function useProductBasicDataPageService(handleCardAction) {
+  // ==================================================================== UTILITIES
   const state = useAppSelector<IProductBasicDataPageSlice>(
     StoreSliceEnum.PRODUCT_BASIC_DATA,
   );
@@ -26,10 +28,12 @@ export default function useProductBasicDataPageService(handleCardAction) {
   const { addToast } = useToast();
   const navigate = useNavigate();
 
+  // ==================================================================== API INITIALIZATION
   const [generateProductCode] =
     ProductsApiHooks.useLazyGenerateProductCodeQuery();
   const [checkProductCode] = ProductsApiHooks.useCheckProductCodeMutation();
 
+  // ==================================================================== API
   function getProductsHandler(gridRequestModel: GridRequestModel) {
     if (!productsState.products) {
       dispatch(productsActions.setIsItemsCardLoading(true));
@@ -65,7 +69,9 @@ export default function useProductBasicDataPageService(handleCardAction) {
         });
       }
     } else {
-      dispatch(productsActions.refreshProductCounter({}));
+      dispatch(
+        productsActions.refreshProductCounter({} as ProductCountersModel),
+      );
     }
   }
 
@@ -91,7 +97,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
 
   function updateProductDetails(productId, data) {
     dispatch(actions.setIsProductConfigurationCardLoading(true));
-    productsService.updateProductHandler(productId, data).then((res) => {
+    productsService.updateProductHandler(productId, data).then((res: any) => {
       dispatch(actions.setIsProductConfigurationCardLoading(false));
       if (res.data) {
         dispatch(productsActions.refreshProduct(res.data));
@@ -117,7 +123,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
 
   function createNewProduct(data) {
     dispatch(actions.setIsProductConfigurationCardLoading(true));
-    productsService.createNewProductHandler(data).then((res) => {
+    productsService.createNewProductHandler(data).then((res: any) => {
       dispatch(actions.setIsProductConfigurationCardLoading(false));
       if (res.data) {
         dispatch(productsActions.refreshSelectedProduct(res.data));
@@ -155,7 +161,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
   function checkCategoryNameHandler(categoryName: string) {
     productsService
       .checkCategoryNameHandler({ categoryName: categoryName })
-      .then((res) => {
+      .then((res: any) => {
         if (res.error) {
           dispatch(
             productsActions.refreshCategory({
@@ -179,7 +185,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
       .createNewCategoryHandler({
         categoryName: model.categoryName,
       })
-      .then((res) => {
+      .then((res: any) => {
         if (res.data) {
           dispatch(
             productsActions.refreshCategories([
@@ -224,7 +230,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
   function checkBrandNameHandler(brandName: string) {
     productsService
       .checkBrandNameHandler({ brandName: brandName })
-      .then((res) => {
+      .then((res: any) => {
         if (res.error) {
           dispatch(
             productsActions.refreshBrand({
@@ -247,7 +253,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
   function createBrandHandler(model) {
     productsService
       .createBrandHandler({ brandName: model.brandName })
-      .then((res) => {
+      .then((res: any) => {
         if (res.data) {
           dispatch(
             productsActions.refreshBrands([...productsState.brands, res.data]),
@@ -288,7 +294,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
   }
 
   function uploadCategoryOrBrandPhotoHandler(model) {
-    productsService.uploadPhotoHandler(model).then((res) => {
+    productsService.uploadPhotoHandler(model).then((res: any) => {
       if (!model.contextId) {
         addToast({
           text:
@@ -346,6 +352,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
     });
   }
 
+  // ==================================================================== PROVIDED API
   return {
     state,
     productsState,
