@@ -4,8 +4,6 @@ import React, { useEffect } from "react";
 import cs from "./ProductBasicDataPage.module.scss";
 import ProductConfigurationCard from "@/components/complex/custom-cards/product-configuration-card/ProductConfigurationCard.tsx";
 import CreateProductCategoryCard from "@/components/complex/custom-cards/create-product-category-card/CreateProductCategoryCard.tsx";
-import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
-import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
 import CreateProductBrandCard from "@/components/complex/custom-cards/create-product-brand-card/CreateProductBrandCard.tsx";
 import { ProductBasicDataPageSliceActions as actions } from "@/state/slices/ProductBasicDataPageSlice.ts";
 import useProductBasicDataPageService from "@/pages/products-section/product-basic-data-page/useProductBasicDataPageService.ts";
@@ -23,24 +21,6 @@ export function ProductBasicDataPage() {
   const { state, productsState, productsService, ...service } =
     useProductBasicDataPageService(handleCardAction);
   const { productId } = useParams();
-  const productsForItemsCard = productsService.itemsCardItemsConvertor(
-    productsState.products,
-    {
-      idKey: "productId",
-      nameKey: "productName",
-      imageKeyPath: "image.thumbnailUrl",
-      type: "product",
-    },
-  );
-  const variantsForItemsCard = productsService.itemsCardItemsConvertor(
-    productsState.variants,
-    {
-      idKey: "variantId",
-      nameKey: "variantName",
-      imageKeyPath: "photo.thumbnailUrl",
-      type: "variant",
-    },
-  );
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {

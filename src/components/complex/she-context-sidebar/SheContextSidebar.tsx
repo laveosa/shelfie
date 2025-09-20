@@ -10,6 +10,25 @@ export default function SheContextSidebar({
   style,
   children,
 }: ISheContextSidebar) {
+  const productsForItemsCard = productsService.itemsCardItemsConvertor(
+    productsState.products,
+    {
+      idKey: "productId",
+      nameKey: "productName",
+      imageKeyPath: "image.thumbnailUrl",
+      type: "product",
+    },
+  );
+  const variantsForItemsCard = productsService.itemsCardItemsConvertor(
+    productsState.variants,
+    {
+      idKey: "variantId",
+      nameKey: "variantName",
+      imageKeyPath: "photo.thumbnailUrl",
+      type: "variant",
+    },
+  );
+
   return (
     <div
       className={`${cs.sheContextSidebar} ${className}`}
