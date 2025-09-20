@@ -5,8 +5,9 @@ import { Image } from "lucide-react";
 
 import cs from "./ItemsCard.module.scss";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
-import { Separator } from "@/components/ui/separator.tsx";
+import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
+import { IconViewEnum } from "@/const/enums/IconViewEnum.ts";
 import {
   IItemsCard,
   IItemsCardItem,
@@ -17,7 +18,7 @@ export default function ItemsCard({
   items,
   selectedId,
   isLoading,
-  skeletonQuantity,
+  skeletonQuantity = 10,
   onAction,
 }: IItemsCard) {
   // ==================================================================== STATE MANAGEMENT
@@ -49,19 +50,19 @@ export default function ItemsCard({
   // ==================================================================== LAYOUT
   return (
     <SheProductCard
-      className={cs.productsCard}
+      className={cs.itemsCard}
+      headerClassName={cs.itemsCardHeader}
       title={title}
       loading={isLoading}
-      view="borderless"
-      width="300px"
-      minWidth="300px"
+      minWidth="260px"
+      maxWidth="260px"
       showToggleButton
     >
-      <div className={cs.productsList}>
+      <div className={cs.itemsCardList}>
         {isLoading ? (
           <div>
             {_createSkeletonArray(skeletonQuantity ?? 10).map((_, index) => (
-              <div key={index} className={cs.skeletonItems}>
+              <div key={index} className={cs.skeletonItem}>
                 <Skeleton className="h-12 w-12 rounded-full" />
                 <div className="space-y-2">
                   <Skeleton className="h-4 w-[180px]" />
@@ -71,31 +72,32 @@ export default function ItemsCard({
             ))}
           </div>
         ) : (
-          <div>
+          <>
             {items?.map((item: IItemsCardItem) => (
-              <div key={item.id} onClick={() => onClickHandler(item)}>
+              <div
+                className={cs.itemsCardListItemWrapper}
+                key={item.id}
+                onClick={() => onClickHandler(item)}
+              >
                 <div
-                  className={`${cs.productsListItem} ${
+                  className={`${cs.itemsCardListItem} ${
                     _selectedId == item.id ? cs.selected : ""
                   }`}
                 >
-                  {item.imageUrl ? (
-                    <img
-                      src={item.imageUrl}
-                      alt={item.name}
-                      className={cs.productItemImage}
-                    />
-                  ) : (
-                    <div className={cs.productItemPlaceholderIcon}>
-                      <Image />
-                    </div>
-                  )}
-                  <div className={cs.productItemName}>{item.name}</div>
+                  <SheIcon
+                    className={cs.listItemIcon}
+                    icon={item.imageUrl || Image}
+                    iconView={IconViewEnum.BUTTON}
+                    minWidth="20px"
+                    maxWidth="20px"
+                  />
+                  <span className={`${cs.listItemText} she-text`}>
+                    {item.name}
+                  </span>
                 </div>
-                <Separator orientation="horizontal" />
               </div>
             ))}
-          </div>
+          </>
         )}
       </div>
     </SheProductCard>

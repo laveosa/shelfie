@@ -3,20 +3,23 @@
 .sheContextSidebar {
   display: flex;
   gap: vars.$paddingStandard;
-  padding: vars.$paddingStandard;
+  padding: vars.$paddingSmall;
   background-color: vars.$secondaryBg;
 
   .sheContextSidebarMenuAndListContainer {
     display: flex;
-    gap: vars.$paddingStandard;
+    gap: vars.$paddingSmall;
 
     .sheContextSidebarList {
+      //border: 1px solid;
     }
 
     .sheContextSidebarMenu {
+      //border: 1px solid;
     }
   }
 
   .sheContextSidebarContextContainer {
+    padding: vars.$paddingSmall;
   }
 }

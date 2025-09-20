@@ -3,6 +3,9 @@ import { ISheButton } from "@/const/interfaces/primitive-components/ISheButton.t
 import { ISheCardNotification } from "@/const/interfaces/complex-components/ISheCardNotification.ts";
 
 export interface ISheProductCard extends IBaseComponent {
+  className?: string;
+  headerClassName?: string;
+  contextClassName?: string;
   loading?: boolean;
   view?: "borderless" | "card";
   title?: string;

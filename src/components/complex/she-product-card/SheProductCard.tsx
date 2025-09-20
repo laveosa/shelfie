@@ -11,6 +11,8 @@ import { ISheProductCard } from "@/const/interfaces/complex-components/ISheProdu
 
 export default function SheProductCard({
   className = "",
+  headerClassName = "",
+  contextClassName = "",
   view = "card",
   loading,
   width,
@@ -74,7 +76,7 @@ export default function SheProductCard({
       }}
     >
       {showHeader && (
-        <div className={cs.cardHeader}>
+        <div className={`${cs.cardHeader} ${headerClassName}`}>
           <div className={cs.titleBlock}>
             <div className={cs.cardTitleBlock}>
               {showToggleButton && (
@@ -124,7 +126,7 @@ export default function SheProductCard({
       {loading && <SheLoading />}
       <div
         ref={cardContentRef}
-        className={`${cs.cardContent} ${loading ? cs.cardContentLoading : ""} ${
+        className={`${cs.cardContent} ${contextClassName} ${loading ? cs.cardContentLoading : ""} ${
           showPrimaryButton || showSecondaryButton
             ? cs.cardContentWithFooter
             : ""
