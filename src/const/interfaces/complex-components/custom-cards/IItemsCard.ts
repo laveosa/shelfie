@@ -1,9 +1,23 @@
+export interface IItemsCardItemOption {
+  idKey: string;
+  nameKey: string;
+  imageKeyPath?: string;
+  type?: string;
+}
+
+export interface IItemsCardItem {
+  id?: number;
+  imageUrl?: string;
+  name?: string;
+  type?: string;
+  originalItem?: any;
+}
+
 export interface IItemsCard {
-  isLoading?: boolean;
-  isItemsLoading?: boolean;
-  data?: any[];
   title?: string;
+  items?: IItemsCardItem[];
+  selectedId?: number;
+  isLoading?: boolean;
   skeletonQuantity?: number;
-  onAction?: (data: any) => void;
-  selectedItem?: any;
+  onAction?: (value: { item: any; type: string }) => void;
 }

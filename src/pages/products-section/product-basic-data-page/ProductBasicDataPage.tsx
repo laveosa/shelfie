@@ -82,7 +82,27 @@ export function ProductBasicDataPage() {
   // ==================================================================== LAYOUT
   return (
     <div className={cs.productBasicDataPage}>
-      <SheContextSidebar>
+      <SheContextSidebar
+        isListLoading={productsState.isItemsCardLoading}
+        isMenuLoading={productsState.isProductMenuCardLoading}
+        listItems={productsState[productsState.activeTab]}
+        selectedId={
+          productsState.activeTab === "products"
+            ? productId
+            : productsState.selectedVariant?.variantId
+        }
+        skeletonQuantity={
+          productsState.activeTab === "products"
+            ? productsState.products?.length
+            : productsState.variants?.length
+        }
+        activeTab={productsState.activeTab}
+        menuCollectionType="products"
+        counter={productsState.productCounter}
+        itemId={Number(productId)}
+        activeCards={state.activeCards}
+        onAction={(item) => onAction("itemsCardClick", item)}
+      >
         <ProductConfigurationCard
           isLoading={state.isProductConfigurationCardLoading}
           product={productsState.product}

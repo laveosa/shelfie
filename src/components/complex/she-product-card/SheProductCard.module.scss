@@ -8,6 +8,7 @@
   height: calc(100vh - 92px);
   overflow: hidden;
   padding: 10px 2.5px 10px 10px;
+  background-color: white;
 
   &.card {
     border-radius: 10px;
@@ -74,7 +75,7 @@
         }
 
         svg {
-          color: #71717A;
+          color: #71717a;
           width: 18px;
           height: 18px;
         }
@@ -124,9 +125,3 @@
     opacity: 0.5;
   }
 }
-
-
-
-
-
-

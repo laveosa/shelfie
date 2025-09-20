@@ -1,2 +1,22 @@
+@use "@/styles/variables" as vars;
+
 .sheContextSidebar {
+  display: flex;
+  gap: vars.$paddingStandard;
+  padding: vars.$paddingStandard;
+  background-color: vars.$secondaryBg;
+
+  .sheContextSidebarMenuAndListContainer {
+    display: flex;
+    gap: vars.$paddingStandard;
+
+    .sheContextSidebarList {
+    }
+
+    .sheContextSidebarMenu {
+    }
+  }
+
+  .sheContextSidebarContextContainer {
+  }
 }

@@ -1,81 +1,117 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import cs from "./SheContextSidebar.module.scss";
 import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
 import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
 import { ISheContextSidebar } from "@/const/interfaces/complex-components/ISheContextSidebar.ts";
+import {
+  IItemsCardItem,
+  IItemsCardItemOption,
+} from "@/const/interfaces/complex-components/custom-cards/IItemsCard.ts";
 
 export default function SheContextSidebar({
   className = "",
   style,
   children,
+  activeTab,
+  listTitle,
+  listItems,
+  selectedId,
+  isListLoading,
+  menuTitle,
+  menuCollectionType,
+  isMenuLoading,
+  counter,
+  itemId,
+  activeCards,
+  skeletonQuantity,
+  onAction,
 }: ISheContextSidebar) {
-  const productsForItemsCard = productsService.itemsCardItemsConvertor(
-    productsState.products,
-    {
-      idKey: "productId",
-      nameKey: "productName",
-      imageKeyPath: "image.thumbnailUrl",
-      type: "product",
-    },
-  );
-  const variantsForItemsCard = productsService.itemsCardItemsConvertor(
-    productsState.variants,
-    {
-      idKey: "variantId",
-      nameKey: "variantName",
-      imageKeyPath: "photo.thumbnailUrl",
-      type: "variant",
-    },
-  );
+  // ==================================================================== STATE MANAGEMENT
+  const [_listItems, setListItems] = useState<IItemsCardItem[]>(null);
 
+  // ==================================================================== SIDE EFFECTS
+  useEffect(() => {
+    if (listItems && listItems.length > 0)
+      setListItems(_listItemsConvertor(listItems));
+  }, [listItems]);
+
+  // ==================================================================== LOGIC
+
+  // ==================================================================== PRIVATE
+  function _listItemsConvertor(items: any[]): IItemsCardItem[] {
+    switch (activeTab) {
+      case "products":
+        return _itemsCardItemsConvertor(items, {
+          idKey: "productId",
+          nameKey: "productName",
+          imageKeyPath: "image.thumbnailUrl",
+          type: "product",
+        });
+      case "variants":
+        return _itemsCardItemsConvertor(items, {
+          idKey: "variantId",
+          nameKey: "variantName",
+          imageKeyPath: "photo.thumbnailUrl",
+          type: "variant",
+        });
+      default:
+        return null;
+    }
+  }
+
+  function _itemsCardItemsConvertor(
+    items: any[],
+    options: IItemsCardItemOption,
+  ): IItemsCardItem[] {
+    const { idKey, nameKey, imageKeyPath, type } = options;
+
+    return items?.map((item) => ({
+      id: Number(item[idKey]),
+      name: item[nameKey],
+      type,
+      imageUrl:
+        imageKeyPath &&
+        imageKeyPath.split(".").reduce((acc, key) => acc?.[key], item),
+      originalItem: item,
+    }));
+  }
+
+  // ==================================================================== LAYOUT
   return (
     <div
       className={`${cs.sheContextSidebar} ${className}`}
       style={{ ...style }}
     >
-      <div>
-        <div>
+      <div className={cs.sheContextSidebarMenuAndListContainer}>
+        <div className={cs.sheContextSidebarList}>
           <ItemsCard
-            isLoading={productsState.isItemsCardLoading}
-            isItemsLoading={
-              productsState.activeTab === "products"
-                ? productsState.isProductsLoading
-                : productsState.isVariantsLoading
-            }
-            title={
-              productsState.activeTab === "products" ? "Products" : "Variants"
-            }
-            data={
-              productsState.activeTab === "products"
-                ? productsForItemsCard
-                : variantsForItemsCard
-            }
-            selectedItem={
-              productsState.activeTab === "products"
-                ? productId
-                : productsState.selectedVariant?.variantId
-            }
-            skeletonQuantity={
-              productsState.activeTab === "products"
-                ? productsState.products?.length
-                : productsState.variants?.length
-            }
+            isLoading={isListLoading}
+            title={listTitle ? listTitle : activeTab.toString()}
+            items={_listItems}
+            selectedId={selectedId}
+            skeletonQuantity={skeletonQuantity}
             onAction={(item) => onAction("itemsCardClick", item)}
           />
         </div>
-        <div>
+        <div className={cs.sheContextSidebarMenu}>
           <ProductMenuCard
-            isLoading={productsState.isProductMenuCardLoading}
-            title={productId ? "Manage Product" : "Create Product"}
-            itemsCollection="products"
-            counter={productsState.productCounter}
-            itemId={Number(productId)}
-            activeCards={state.activeCards}
+            isLoading={isMenuLoading}
+            title={
+              menuTitle
+                ? menuTitle
+                : itemId
+                  ? "Manage Product"
+                  : "Create Product"
+            }
+            itemsCollection={menuCollectionType}
+            counter={counter}
+            itemId={itemId}
+            activeCards={activeCards}
           />
         </div>
       </div>
-      <div>{children}</div>
+      <div className={cs.sheContextSidebarContextContainer}>{children}</div>
     </div>
   );
 }

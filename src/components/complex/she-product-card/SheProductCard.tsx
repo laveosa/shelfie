@@ -1,12 +1,13 @@
 import React, { useRef, useState } from "react";
-import { PanelLeft, Trash2, X } from "lucide-react";
 import { Trans } from "react-i18next";
 
+import { PanelLeft, Trash2, X } from "lucide-react";
+
 import cs from "./SheProductCard.module.scss";
-import { ISheProductCard } from "@/const/interfaces/complex-components/ISheProductCard.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
 import SheCardNotification from "@/components/complex/she-card-notification/SheCardNotification.tsx";
+import { ISheProductCard } from "@/const/interfaces/complex-components/ISheProductCard.ts";
 
 export default function SheProductCard({
   className = "",
