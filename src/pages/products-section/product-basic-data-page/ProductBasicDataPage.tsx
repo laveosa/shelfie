@@ -11,6 +11,7 @@ import { ProductBasicDataPageSliceActions as actions } from "@/state/slices/Prod
 import useProductBasicDataPageService from "@/pages/products-section/product-basic-data-page/useProductBasicDataPageService.ts";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
+import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
 
 export function ProductBasicDataPage() {
   // ==================================================================== UTILITIES
@@ -100,7 +101,44 @@ export function ProductBasicDataPage() {
 
   // ==================================================================== LAYOUT
   return (
-    <div className={cs.createProductPage}>
+    <div className={cs.productBasicDataPage}>
+      <SheContextSidebar>
+        <ProductConfigurationCard
+          isLoading={state.isProductConfigurationCardLoading}
+          product={productsState.product}
+          brandsList={productsState.brands}
+          categoriesList={productsState.categories}
+          productCode={productsState.productCode}
+          onPrimaryButtonClick={(data) => onAction("submitProductData", data)}
+          onSecondaryButtonClick={() => onAction("gotoProductsPage")}
+          onAction={onAction}
+        />
+        {state.activeCards.includes("createCategoryCard") && (
+          <div ref={createRefCallback("createCategoryCard")}>
+            <CreateProductCategoryCard
+              isLoading={state.isCreateCategoryCardLoading}
+              isPhotoUploaderLoading={productsState.isPhotoUploaderLoading}
+              category={productsState.category}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards.includes("createBrandCard") && (
+          <div ref={createRefCallback("createBrandCard")}>
+            <CreateProductBrandCard
+              isLoading={state.isCreateBrandCardLoading}
+              isPhotoUploaderLoading={productsState.isPhotoUploaderLoading}
+              brand={productsState.brand}
+              onAction={onAction}
+            />
+          </div>
+        )}
+      </SheContextSidebar>
+    </div>
+  );
+
+  /*return (
+    <div className={cs.productBasicDataPage}>
       <ItemsCard
         isLoading={productsState.isItemsCardLoading}
         isItemsLoading={
@@ -165,5 +203,5 @@ export function ProductBasicDataPage() {
         </div>
       )}
     </div>
-  );
+  );*/
 }
