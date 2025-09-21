@@ -11,6 +11,9 @@ export interface ISheFileUploader {
   viewMode?: UploaderViewMode;
   acceptedFileTypes?: Record<string, string[]>;
   maxFiles?: number;
+  previewImage?: any;
+  uploadAreaText?: string;
+  uploadAreaSubtext?: string;
   onUpload?: (uploadModel: UploadPhotoModel) => void;
   onViewModeChange?: (mode: UploaderViewMode) => void;
 }

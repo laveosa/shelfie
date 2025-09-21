@@ -19,7 +19,8 @@
         display: flex;
         flex-direction: column;
         gap: 10px;
-        min-width: 400px;
+        width: 100%;
+        min-width: 100px;
         max-width: 400px;
 
         .passwordBlock {
@@ -33,8 +34,8 @@
       .profilePageContentBlock {
         display: flex;
         gap: 20px;
-        width: 50%;
-        min-width: 400px;
+        width: 100%;
+        min-width: 100px;
         max-width: 400px;
 
         .avatarImageBlock {
@@ -69,10 +70,19 @@
           }
         }
 
+        //.fileUploader {
+        //  max-width: 300px;
+        //}
+      }
+    }
 
-        .fileUploader {
-          max-width: 300px;
-        }
+    .cardNotificationWrapper {
+      display: flex;
+      justify-content: center;
+      padding: 20px 0;
+
+      .cardNotification {
+        width: 830px;
       }
     }
   }

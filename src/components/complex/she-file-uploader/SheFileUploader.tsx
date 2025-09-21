@@ -47,6 +47,9 @@ export const SheFileUploader = forwardRef<SheFileUploaderRef, ISheFileUploader>(
       viewMode = "image", // default to file mode
       acceptedFileTypes = {}, // empty object means all files
       maxFiles = 50,
+      previewImage,
+      uploadAreaText = "Upload images",
+      uploadAreaSubtext = "Click here or drag and drop images to upload",
       onUpload,
       onViewModeChange,
     },
@@ -277,19 +280,40 @@ export const SheFileUploader = forwardRef<SheFileUploaderRef, ISheFileUploader>(
         {/*</div>*/}
 
         <Dropzone {...dropzone}>
-          <DropZoneArea>
-            <DropzoneTrigger
-              className={`${cs.dropzoneTrigger} flex flex-col items-center gap-4 bg-transparent text-center text-sm`}
-            >
-              <CloudUploadIcon className="size-8" />
-              <div>
-                <p className="font-semibold">{uploadText.main}</p>
-                <p className="text-sm text-muted-foreground">
-                  {uploadText.sub}
-                </p>
+          <div style={{ display: "flex", gap: "20px" }}>
+            {previewImage && (
+              <div
+                style={{
+                  width: "180px",
+                  height: "140px",
+                }}
+              >
+                <img
+                  src={previewImage}
+                  alt="preview"
+                  style={{
+                    width: "180px",
+                    height: "140px",
+                    borderRadius: "10px",
+                  }}
+                />
               </div>
-            </DropzoneTrigger>
-          </DropZoneArea>
+            )}
+            <DropZoneArea>
+              <DropzoneTrigger
+                className={`${cs.dropzoneTrigger} flex flex-col items-center gap-4 bg-transparent text-center text-sm`}
+              >
+                <CloudUploadIcon className="size-8" />
+                <div>
+                  <p className="font-semibold">{uploadAreaText}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {uploadAreaSubtext}
+                  </p>
+                </div>
+              </DropzoneTrigger>
+            </DropZoneArea>
+          </div>
+
           {selectedFiles.length > 0 && <DropzoneMessage />}
           <DropzoneFileList
             className={`grid gap-3 p-0 ${
