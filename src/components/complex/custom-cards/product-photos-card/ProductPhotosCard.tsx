@@ -4,14 +4,12 @@ import React from "react";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ProductPhotosCard.module.scss";
-import {
-  DataWithId,
-  DndGridDataTable,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import { SheFileUploader } from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { IProductPhotosCard } from "@/const/interfaces/complex-components/custom-cards/IProductPhotosCard.ts";
 import { ProductPhotosGridColumns } from "@/components/complex/grid/custom-grids/variant-photos-grid/ProductPhotosGridColumns.tsx";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export default function ProductPhotosCard({
   isLoading,
@@ -89,7 +87,7 @@ export default function ProductPhotosCard({
               {t("CardTitles.ManagePhotos")}
             </div>
             <div className={cs.managePhotosGrid}>
-              <DndGridDataTable
+              <SheGrid
                 isLoading={isGridLoading}
                 className={cs.photosGrid}
                 enableDnd={true}

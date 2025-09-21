@@ -203,7 +203,7 @@ export default function ProductMenuCard({
       defaultEnabledItem: "order",
       pathBase: NavUrlEnum.ORDER_DETAILS,
       urlBuilder: (path: string, itemId?: string) =>
-        `${NavUrlEnum.SALES}${NavUrlEnum.ORDERS}${path}/${itemId || ""}`,
+        `${NavUrlEnum.SALES}${path}/${itemId || ""}`,
       disableItemsWithoutId: false,
     },
   };

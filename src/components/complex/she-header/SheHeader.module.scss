@@ -6,10 +6,16 @@
   align-items: center;
   gap: 10px;
   padding: 10px;
-  min-height: 52px;
+  min-height: vars.$appHeaderHeight;
+  max-height: vars.$appHeaderHeight;
 
   .sidebarTrigger {
+    $triggerIconSize: 16px;
     color: #71717a;
+    min-width: $triggerIconSize;
+    max-width: $triggerIconSize;
+    min-height: $triggerIconSize;
+    max-height: $triggerIconSize;
 
     &:hover {
       background-color: transparent;
@@ -18,8 +24,8 @@
     }
 
     svg {
-      width: 18px;
-      height: 18px;
+      width: 100%;
+      height: 100%;
     }
   }
 

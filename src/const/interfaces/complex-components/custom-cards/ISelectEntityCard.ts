@@ -1,11 +1,10 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { DataWithId } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 
-export interface ISelectEntityCard {
+export interface ISelectEntityCard<T> {
   isLoading?: boolean;
   isGridLoading?: boolean;
   entityName?: string;
   entityCollection?: any[];
-  columns?: ColumnDef<DataWithId>[];
+  columns?: ColumnDef<T>[];
   onAction?: (identifier?: string, payload?: any) => void;
 }

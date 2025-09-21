@@ -8,6 +8,7 @@ import SheHeader from "@/components/complex/she-header/SheHeader.tsx";
 import useAppService from "@/useAppService.ts";
 import { ToastProvider } from "@/utils/services/ToastService.tsx";
 import { DialogProvider } from "@/utils/services/dialog/DialogProvider.tsx";
+import SheAppContextMainWrapper from "@/components/complex/she-app-context-main-wrapper/SheAppContextMainWrapper.tsx";
 
 function App() {
   const service = useAppService();
@@ -23,12 +24,12 @@ function App() {
         <DialogProvider>
           <SidebarProvider>
             <SheSidebar />
-            <main className="w-full min-h-screen">
+            <SheAppContextMainWrapper>
               <SheHeader />
               <div className="contentPage">
                 <Outlet />
               </div>
-            </main>
+            </SheAppContextMainWrapper>
           </SidebarProvider>
         </DialogProvider>
       </ToastProvider>

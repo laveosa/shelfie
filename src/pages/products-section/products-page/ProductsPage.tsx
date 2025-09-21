@@ -1,6 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import { useTranslation } from "react-i18next";
+
 import {
   BadgeCheck,
   Layers2,
@@ -10,12 +10,8 @@ import {
   Shirt,
 } from "lucide-react";
 
-import {
-  DataWithId,
-  DndGridDataTable,
-  DndGridRef,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import cs from "./ProductsPage.module.scss";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -28,42 +24,34 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { ProductsPageSliceActions as actions } from "@/state/slices/ProductsPageSlice.ts";
-import { purchasesGridColumns } from "@/components/complex/grid/custom-grids/purchases-grid/PurchasesGridColumns.tsx";
+import { PurchasesGridColumns } from "@/components/complex/grid/custom-grids/purchases-grid/PurchasesGridColumns.tsx";
 import { SupplierModel } from "@/const/models/SupplierModel.ts";
 import GridShowItemsFilter from "@/components/complex/grid/filters/grid-show-deleted-filter/GridShowItemsFilter.tsx";
 import GridTraitsFilter from "@/components/complex/grid/filters/grid-traits-filter/GridTraitsFilter.tsx";
 import { ProductsGridColumns } from "@/components/complex/grid/custom-grids/products-grid/ProductsGridColumns.tsx";
-import { variantsGridColumns } from "@/components/complex/grid/custom-grids/variants-grid/VariantsGridColumns.tsx";
+import { VariantsGridColumns } from "@/components/complex/grid/custom-grids/variants-grid/VariantsGridColumns.tsx";
 import { GridDateRangeFilter } from "@/components/complex/grid/filters/grid-date-range-filter/GridDateRangeFilter.tsx";
 import { GridValueFilter } from "@/components/complex/grid/filters/grid-value-filter/GridValueFilter.tsx";
+import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export function ProductsPage() {
-  const { t } = useTranslation();
+  const { translate } = useAppTranslation();
   const dispatch = useAppDispatch();
   const state = useAppSelector<IProductsPageSlice>(StoreSliceEnum.PRODUCTS);
   const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
   const service = useProductsPageService();
-  const gridRef = useRef<DndGridRef>(null);
 
   useEffect(() => {
     if (state.activeTab === "products") {
-      service.getTheProductsForGridHandler(
-        { ...state.productsGridRequestModel, endPage: 21 },
-        true,
-      );
+      service.getTheProductsForGridHandler(state.productsGridRequestModel);
     } else if (state.activeTab === "variants") {
       service.getVariantsForGridHandler(state.variantsGridRequestModel);
     } else if (state.activeTab === "purchases") {
       service.getListOfPurchasesForGridHandler(state.purchasesGridRequestModel);
     }
     dispatch(actions.resetSelectedVariant());
-  }, [
-    state.productsGridRequestModel,
-    state.variantsGridRequestModel,
-    state.purchasesGridRequestModel,
-    state.activeTab,
-    dispatch,
-  ]);
+  }, [state.activeTab, dispatch]);
 
   useEffect(() => {
     if (state.brands.length === 0) {
@@ -133,27 +121,25 @@ export function ProductsPage() {
   }
 
   return (
-    <div id={cs.ProductsPage}>
+    <div className={cs.productsPage}>
       <div className={cs.productsPageHeader}>
-        <div className="she-title">{t("PageTitles.Products")}</div>
+        <span className="she-title">{translate("PageTitles.Products")}</span>
         {state.activeTab === "purchases" ? (
-          <div className={cs.headerButtonBlock}>
+          <div>
             <SheButton
               icon={Plus}
-              variant="outline"
-              bgColor="#007AFF"
-              txtColor="#FAFAFA"
+              variant="info"
               onClick={() => onAction("reportPurchase")}
-              value={t("SupplierActions.ReportPurchase")}
+              value={translate("SupplierActions.ReportPurchase")}
             />
           </div>
         ) : (
-          <div className={cs.headerButtonBlock}>
+          <div>
             <SheButton
               icon={Plus}
-              variant="outline"
+              variant="info"
               onClick={() => onAction("addProduct")}
-              value={t("ProductActions.AddProduct")}
+              value={translate("ProductActions.AddProduct")}
             />
             {/*Commented until future notices*/}
             {/*<SheButton*/}
@@ -180,32 +166,30 @@ export function ProductsPage() {
             <TabsList className={cs.tabItems}>
               <TabsTrigger className={cs.tabItemTrigger} value="products">
                 <div className={cs.tabBlock}>
-                  <Shirt size="16" /> {t("TabContent.Products")}
+                  <Shirt size="16" /> {translate("TabContent.Products")}
                 </div>
               </TabsTrigger>
               <TabsTrigger className={cs.tabItemTrigger} value="variants">
                 <div className={cs.tabBlock}>
-                  <Layers2 size="16" /> {t("TabContent.Variants")}
+                  <Layers2 size="16" /> {translate("TabContent.Variants")}
                 </div>
               </TabsTrigger>
               <TabsTrigger className={cs.tabItemTrigger} value="purchases">
                 <div className={cs.tabBlock}>
-                  <Receipt size="16" /> {t("TabContent.Purchases")}
+                  <Receipt size="16" /> {translate("TabContent.Purchases")}
                 </div>
               </TabsTrigger>
             </TabsList>
           </div>
-          <TabsContent value="products">
-            <DndGridDataTable
-              isLoading={state.isLoading}
-              ref={gridRef}
-              columns={ProductsGridColumns(onAction) as ColumnDef<DataWithId>[]}
-              data={state.productsGridRequestModel?.items}
+          <TabsContent value="products" className={cs.productsPageTabContext}>
+            <SheGrid
               gridRequestModel={state.productsGridRequestModel}
+              columns={ProductsGridColumns(onAction) as ColumnDef<DataWithId>[]}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
               preferenceContext={"productReferences"}
-              skeletonQuantity={state.productsGridRequestModel?.pageSize}
+              isLoading={state.isLoading}
+              skeletonQuantity={10}
               onApplyColumns={(model) => onAction("applyColumns", model)}
               onDefaultColumns={() => onAction("resetColumns")}
               onGridRequestChange={(updates) =>
@@ -227,19 +211,17 @@ export function ProductsPage() {
                 selected={state.productsGridRequestModel?.filter?.categories}
               />
               <GridShowItemsFilter context="Deleted" />
-            </DndGridDataTable>
+            </SheGrid>
           </TabsContent>
-          <TabsContent value="variants">
-            <DndGridDataTable
-              isLoading={state.isLoading}
-              ref={gridRef}
-              columns={variantsGridColumns(onAction) as ColumnDef<DataWithId>[]}
-              data={state.variants}
+          <TabsContent value="variants" className={cs.productsPageTabContext}>
+            <SheGrid
               gridRequestModel={state.variantsGridRequestModel}
+              columns={VariantsGridColumns(onAction) as ColumnDef<DataWithId>[]}
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
               preferenceContext={"variantReferences"}
-              skeletonQuantity={state.variantsGridRequestModel.pageSize}
+              isLoading={state.isLoading}
+              skeletonQuantity={10}
               onApplyColumns={(model) => onAction("applyColumns", model)}
               onDefaultColumns={() => onAction("resetColumns")}
               onGridRequestChange={(updates) =>
@@ -269,21 +251,19 @@ export function ProductsPage() {
                 traitType="size"
               />
               <GridShowItemsFilter context="Deleted" />
-            </DndGridDataTable>
+            </SheGrid>
           </TabsContent>
-          <TabsContent value="purchases">
-            <DndGridDataTable
-              isLoading={state.isLoading}
-              ref={gridRef}
-              columns={
-                purchasesGridColumns(onAction) as ColumnDef<DataWithId>[]
-              }
-              data={state.purchases}
+          <TabsContent value="purchases" className={cs.productsPageTabContext}>
+            <SheGrid
               gridRequestModel={state.purchasesGridRequestModel}
+              columns={
+                PurchasesGridColumns(onAction) as ColumnDef<DataWithId>[]
+              }
               sortingItems={state.sortingOptions}
               columnsPreferences={appState.preferences}
               preferenceContext={"purchaseReferences"}
-              skeletonQuantity={state.purchasesGridRequestModel.pageSize}
+              isLoading={state.isLoading}
+              skeletonQuantity={10}
               onApplyColumns={(model) => onAction("applyColumns", model)}
               onDefaultColumns={() => onAction("resetColumns")}
               onGridRequestChange={(updates) =>
@@ -317,7 +297,7 @@ export function ProductsPage() {
                 placeholder="Value to"
                 fieldKey="valueTo"
               />
-            </DndGridDataTable>
+            </SheGrid>
           </TabsContent>
         </SheTabs>
       </div>

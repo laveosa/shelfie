@@ -13,4 +13,4 @@ export const MessengerSectionRouter: RouteObject[] = [
       };
     },
   },
-];
+] as RouteObject[];

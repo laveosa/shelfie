@@ -1,29 +1,25 @@
 import { ColumnDef } from "@tanstack/react-table";
+import { ImageIcon } from "lucide-react";
+
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import placeholderImage from "@/assets/images/placeholder-image.png";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-import { ImageIcon, TrashIcon } from "lucide-react";
-import { formatDate, formatDateRow } from "@/utils/helpers/quick-helper.ts";
+import { formatDateRow } from "@/utils/helpers/quick-helper.ts";
 
-export function customerGridColumns(
-  onAction: any,
-): ColumnDef<any>[] {
+export function customerGridColumns(onAction: any): ColumnDef<any>[] {
   return [
     {
       accessorKey: "customerId",
       header: "ID",
-      size: 20,
-      minSize: 20,
-      maxSize: 20,
+      minSize: 40,
+      maxSize: 40,
     },
     {
       id: "customerName",
       accessorFn: (row) => row.customerName,
       header: "Customer",
-      size: 150,
       minSize: 150,
-      maxSize: 150,
       cell: ({ row }) => {
         const imageUrl: string = row.original.thumbnailUrl;
         return (
@@ -55,9 +51,7 @@ export function customerGridColumns(
     {
       accessorKey: "email",
       header: "Email",
-      size: 100,
       minSize: 100,
-      maxSize: 200,
       cell: ({ row }) => {
         return (
           <SheTooltip
@@ -73,9 +67,7 @@ export function customerGridColumns(
     {
       accessorKey: "phoneNumber",
       header: "Phone",
-      size: 100,
       minSize: 100,
-      maxSize: 200,
       cell: ({ row }) => {
         return (
           <SheTooltip
@@ -89,11 +81,9 @@ export function customerGridColumns(
       },
     },
     {
-    accessorKey: "rank",
+      accessorKey: "rank",
       header: "Rank",
-      size: 100,
       minSize: 100,
-      maxSize: 100,
       cell: ({ row }) => {
         return <span>{row.getValue("rank")}</span>;
       },
@@ -101,35 +91,39 @@ export function customerGridColumns(
     {
       accessorKey: "createdAt",
       header: "Created At",
-      size: 70,
-      minSize: 70,
-      maxSize: 70,
+      minSize: 150,
+      maxSize: 150,
       cell: ({ row }) => {
         const createdAt = row.getValue("createdAt") as string | null;
-        const formattedDate = formatDateRow(createdAt, "dd-mm-yyyy hh:mm", "No Date");
+        const formattedDate = formatDateRow(
+          createdAt,
+          "dd-mm-yyyy hh:mm",
+          "No Date",
+        );
         return <span>{formattedDate}</span>;
       },
     },
     {
       accessorKey: "lastOrderDate",
       header: "Last Order Date",
-      size: 70,
-      minSize: 70,
-      maxSize: 70,
+      minSize: 150,
+      maxSize: 150,
       cell: ({ row }) => {
         const lastOrderDate = row.getValue("lastOrderDate") as string | null;
-        const formattedDate = formatDateRow(lastOrderDate, "dd-mm-yyyy hh:mm", "No Orders");
+        const formattedDate = formatDateRow(
+          lastOrderDate,
+          "dd-mm-yyyy hh:mm",
+          "No Orders",
+        );
         return <span>{formattedDate}</span>;
       },
     },
- 
-    
+
     {
       id: "manage",
       header: "",
-      size: 100,
-      minSize: 100,
-      maxSize: 100,
+      minSize: 120,
+      maxSize: 120,
       cell: ({ row, table }) => {
         const meta = table.options.meta as {
           setLoadingRow: (rowId: string, loading: boolean) => void;
@@ -154,6 +148,5 @@ export function customerGridColumns(
         );
       },
     },
-    
   ];
 }

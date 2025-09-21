@@ -3,10 +3,7 @@ import { CalendarRange, Plus, ShoppingCart } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import {
-  DataWithId,
-  DndGridDataTable,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import cs from "./OrdersCard.module.scss";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import GridShowItemsFilter from "@/components/complex/grid/filters/grid-show-deleted-filter/GridShowItemsFilter.tsx";
@@ -16,6 +13,7 @@ import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { ordersGridColumns } from "@/components/complex/grid/custom-grids/orders-grid/OrdersGridColumns.tsx";
 import { CalendarModeEnum } from "@/const/enums/CalendarModeEnum.ts";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export default function OrdersCard({
   isLoading,
@@ -41,9 +39,8 @@ export default function OrdersCard({
         title={t("CardTitles.Orders")}
         isLoading={isLoading}
         className={cs.ordersCardContent}
-        minWidth="1100px"
       >
-        <DndGridDataTable
+        <SheGrid
           isLoading={isGridLoading}
           columns={ordersGridColumns(onGridAction) as ColumnDef<DataWithId>[]}
           data={ordersGridRequestModel.items}
@@ -78,7 +75,7 @@ export default function OrdersCard({
             minWidth="150px"
           />
           <GridShowItemsFilter context="Canceled" />
-        </DndGridDataTable>
+        </SheGrid>
       </SheProductCard>
       <SheButton
         className={cs.createOrderButton}

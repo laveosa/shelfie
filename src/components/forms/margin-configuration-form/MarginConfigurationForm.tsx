@@ -1,23 +1,19 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect, useRef } from "react";
-import _ from "lodash";
 
 import useAppForm from "@/utils/hooks/useAppForm.ts";
 import cs from "@/components/forms/margin-configuration-form/MarginConfigurationForm.module.scss";
 import SheForm from "@/components/complex/she-form/SheForm.tsx";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
-import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
-import { FormField } from "@/components/ui/form.tsx";
-import SheFormItem from "@/components/complex/she-form/components/she-form-item/SheFormItem.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import { MarginModelDefault } from "@/const/models/MarginModel.ts";
+import { MarginModel, MarginModelDefault } from "@/const/models/MarginModel.ts";
 import MarginConfigurationFormScheme from "@/utils/validation/schemes/MarginConfigurationFormScheme.ts";
-import SheToggle from "@/components/primitive/she-toggle/SheToggle.tsx";
-import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
-import { IMarginConfigurationCard } from "@/const/interfaces/forms/IMarginConfigurationForm.ts";
+import { IMarginConfigurationForm } from "@/const/interfaces/forms/IMarginConfigurationForm.ts";
 import { Separator } from "@/components/ui/separator.tsx";
 import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
+import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
+import SheToggle from "@/components/primitive/she-toggle/SheToggle.tsx";
+import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
 
 interface SheNumericWithSuffixInputProps
   extends React.ComponentProps<typeof SheInput> {
@@ -102,15 +98,15 @@ export function SheInputNumericWithSuffix({
   );
 }
 
-export default function MarginConfigurationForm<T>({
+export default function MarginConfigurationForm({
   className,
   data,
   isConfigurationCard = true,
   onSubmit,
   onCancel,
-}: IMarginConfigurationCard<T>) {
-  const form = useAppForm<any>({
-    mode: "onSubmit",
+}: IMarginConfigurationForm) {
+  const form = useAppForm<MarginModel>({
+    mode: ReactHookFormMode.CHANGE,
     resolver: zodResolver(MarginConfigurationFormScheme),
     defaultValues: data || MarginModelDefault,
   });
@@ -132,15 +128,21 @@ export default function MarginConfigurationForm<T>({
 
   return (
     <div className={`${cs.marginConfiguration} ${className}`}>
-      <SheForm
+      <SheForm<MarginModel>
         className={cs.marginConfigurationForm}
-        form={form as any}
+        form={form}
         defaultValues={MarginModelDefault}
         formPosition={DirectionEnum.CENTER}
-        view={ComponentViewEnum.STANDARD}
         fullWidth
-        hidePrimaryBtn
-        hideSecondaryBtn
+        hideSecondaryBtn={!isConfigurationCard}
+        primaryBtnProps={{
+          value: data ? "Save Changes" : "Create Margin",
+          bgColor: "#007AFF",
+          disabled: !isFormValid,
+        }}
+        footerClassName={
+          !isConfigurationCard ? cs.formFooterOneButton : cs.formFooterTwoButton
+        }
         onSubmit={onSubmit}
         onCancel={onCancel}
       >
@@ -153,7 +155,6 @@ export default function MarginConfigurationForm<T>({
             </span>
             <SheFormField
               name="marginName"
-              defaultValue={data?.marginName}
               className={cs.marginConfigurationFormItem}
               render={({ field }) => (
                 <SheInput
@@ -206,7 +207,6 @@ export default function MarginConfigurationForm<T>({
             />
           )}
         />
-
         <span className={`${cs.marginConfigurationText} she-subtext`}>
           The profit is calculated based on the purchase price, other
           percentages do not intersect with it, but they result in single total
@@ -251,65 +251,28 @@ export default function MarginConfigurationForm<T>({
           package, or fraction of the shipping fee. If you don’t want to count
           that in, leave the field empty.
         </span>
-        <FormField
-          control={form.control}
-          name="roundTo"
-          render={({ field }): React.ReactElement => (
-            <SheFormItem className={cs.marginConfigurationFormItem}>
-              <SheToggle
-                {...field}
-                text="Round Brutto price to full number"
-                checked={
-                  _.isNil(data?.marginRule?.roundTo)
-                    ? false
-                    : data?.marginRule?.roundTo
-                }
-                description="(This configuration rounds up all cents to full number)"
-                type={SheToggleTypeEnum.SWITCH}
-                onChecked={(value) => {
-                  field.onChange(value || false);
-                  void form.trigger("roundTo");
-                }}
-              />
-            </SheFormItem>
+        <SheFormField
+          name="marginRule.roundTo"
+          render={({ field }) => (
+            <SheToggle
+              text="Round Brutto price to full number"
+              description="(This configuration rounds up all cents to full number)"
+              type={SheToggleTypeEnum.SWITCH}
+              checked={field.value}
+            />
           )}
-        />
-        <FormField
-          control={form.control}
-          name="nearest9"
-          render={({ field }): React.ReactElement => (
-            <SheFormItem className={cs.marginConfigurationFormItem}>
-              <SheToggle
-                {...field}
-                text="Jump the price to nearest 9"
-                checked={
-                  _.isNil(data?.marginRule?.nearest9)
-                    ? false
-                    : data?.marginRule?.nearest9
-                }
-                description="(This configuration changes the last digit of the price to nearest 9. For example 61 will become 59, but 39 will become 39)"
-                type={SheToggleTypeEnum.SWITCH}
-                onChecked={(value) => {
-                  field.onChange(value || false);
-                  void form.trigger("nearest9");
-                }}
-              />
-            </SheFormItem>
+        ></SheFormField>
+        <SheFormField
+          name="marginRule.nearest9"
+          render={({ field }) => (
+            <SheToggle
+              text="Jump the price to nearest 9"
+              description="(This configuration changes the last digit of the price to nearest 9. For example 61 will become 59, but 39 will become 39)"
+              type={SheToggleTypeEnum.SWITCH}
+              checked={field.value}
+            />
           )}
-        />
-        <div
-          className={isConfigurationCard ? cs.buttonBlock : cs.oneButtonBlock}
-        >
-          {isConfigurationCard && (
-            <SheButton value="Cancel" variant="secondary" onClick={onCancel} />
-          )}
-          <SheButton
-            value={data ? "Save Changes" : "Create Margin"}
-            type="submit"
-            bgColor="#007AFF"
-            disabled={!isFormValid}
-          />
-        </div>
+        ></SheFormField>
       </SheForm>
     </div>
   );

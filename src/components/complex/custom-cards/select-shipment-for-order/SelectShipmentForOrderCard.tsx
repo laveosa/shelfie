@@ -3,10 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import {
-  DataWithId,
-  DndGridDataTable,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import {
   ShipmentStatusEnum,
   ShipmentStatusLabels,
@@ -25,6 +22,7 @@ import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import { SelectShipmentForOrderGridColumns } from "@/components/complex/grid/custom-grids/select-shipment-for-order-grid/SelectShipmentForOrderGridColumns.tsx";
 import { CalendarModeEnum } from "@/const/enums/CalendarModeEnum.ts";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export default function SelectShipmentForOrderCard({
   isLoading,
@@ -101,7 +99,7 @@ export default function SelectShipmentForOrderCard({
             />
           </div>
         </div>
-        <DndGridDataTable
+        <SheGrid
           isLoading={isGridLoading}
           columns={
             SelectShipmentForOrderGridColumns(
@@ -153,7 +151,7 @@ export default function SelectShipmentForOrderCard({
               })
             }
           />
-        </DndGridDataTable>
+        </SheGrid>
       </div>
     </SheProductCard>
   );

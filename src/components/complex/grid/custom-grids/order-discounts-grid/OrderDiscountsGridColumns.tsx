@@ -12,9 +12,7 @@ export function OrderDiscountsGridColumns({
     {
       id: "discountRate",
       header: "Applied Discount rate",
-      size: 150,
       minSize: 150,
-      maxSize: 150,
       cell: ({ row }) => {
         return (
           <div onClick={(e) => e.stopPropagation()}>
@@ -26,8 +24,8 @@ export function OrderDiscountsGridColumns({
     {
       id: "remove",
       header: "Actions",
-      minSize: 100,
-      maxSize: 100,
+      minSize: 120,
+      maxSize: 120,
       cell: ({ row, table }) => {
         const meta = table.options.meta as {
           setLoadingRow: (rowId: string, loading: boolean) => void;

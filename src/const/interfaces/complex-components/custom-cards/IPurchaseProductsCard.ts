@@ -10,8 +10,6 @@ export interface IPurchaseProductsCard {
   isLoading?: boolean;
   isPurchaseProductsGridLoading?: boolean;
   isProductsGridLoading?: boolean;
-  variants?: any[];
-  purchaseProducts?: any[];
   variantsGridRequestModel?: GridRequestModel;
   purchaseProductsGridRequestModel?: GridRequestModel;
   sortingOptions?: any;
@@ -24,6 +22,7 @@ export interface IPurchaseProductsCard {
   variantsSkeletonQuantity?: number;
   currencies?: CurrencyModel[];
   purchaseSummary?: IPurchaseSummaryModel;
+  purchaseId?: any;
   taxes?: TaxTypeModel[];
   onAction?: (identifier: string, payload?: any) => void;
 }

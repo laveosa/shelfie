@@ -13,7 +13,6 @@ export function ordersInShipmentGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "orderId",
       header: "Order Id",
-      size: 60,
       minSize: 60,
       maxSize: 60,
       cell: ({ row }) => {
@@ -23,9 +22,7 @@ export function ordersInShipmentGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "customerName",
       header: "Customer",
-      size: 120,
       minSize: 120,
-      maxSize: 120,
       cell: ({ row }) => {
         const image: string = row.original.customer?.thumbnailUrl;
         const name: string = row.original.customer?.customerName;
@@ -63,9 +60,7 @@ export function ordersInShipmentGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "orderDate",
       header: "Date",
-      size: 60,
-      minSize: 60,
-      maxSize: 60,
+      minSize: 100,
       cell: ({ row }) => {
         return <span>{formatDate(row.getValue("orderDate"), "date")}</span>;
       },
@@ -73,9 +68,8 @@ export function ordersInShipmentGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "unitsAmount",
       header: "Items",
-      size: 40,
-      minSize: 40,
-      maxSize: 40,
+      minSize: 80,
+      maxSize: 80,
       cell: ({ row }) => {
         return <span>{row.getValue("unitsAmount")}</span>;
       },
@@ -83,9 +77,8 @@ export function ordersInShipmentGridColumns(onAction: any): ColumnDef<any>[] {
     {
       id: "manage",
       header: "",
-      size: 100,
-      minSize: 100,
-      maxSize: 100,
+      minSize: 120,
+      maxSize: 120,
       cell: ({ row, table }) => {
         const meta = table.options.meta as {
           setLoadingRow: (rowId: string, loading: boolean) => void;

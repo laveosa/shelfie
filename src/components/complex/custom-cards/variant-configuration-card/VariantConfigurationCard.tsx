@@ -31,10 +31,7 @@ import { IVariantConfigurationCard } from "@/const/interfaces/complex-components
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
-import {
-  DataWithId,
-  DndGridDataTable,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
 import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
 import { VariantModel } from "@/const/models/VariantModel.ts";
@@ -42,6 +39,7 @@ import SheIcon from "@/components/primitive/she-icon/SheIcon";
 import InfoIcon from "@/assets/icons/Info-icon.svg?react";
 import { VariantConfigurationGridColumns } from "@/components/complex/grid/custom-grids/variant-configuration-grid/VariantConfigurationGridColumns.tsx";
 import { VariantPhotosGridColumns } from "@/components/complex/grid/custom-grids/product-photos-grid/VariantPhotosGridColumns.tsx";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 const debounce = (fn: (...args: any[]) => void, delay: number) => {
   let timer: ReturnType<typeof setTimeout>;
@@ -448,7 +446,7 @@ export default function VariantConfigurationCard({
             </SheButton>
           </div>
           <div>
-            <DndGridDataTable
+            <SheGrid
               isLoading={isVariantOptionsGridLoading}
               showHeader={false}
               columns={traitsColumns}
@@ -476,7 +474,7 @@ export default function VariantConfigurationCard({
           </div>
           {variant?.photos?.length > 0 && (
             <div>
-              <DndGridDataTable
+              <SheGrid
                 isLoading={isVariantPhotoGridLoading}
                 enableDnd={true}
                 showHeader={false}

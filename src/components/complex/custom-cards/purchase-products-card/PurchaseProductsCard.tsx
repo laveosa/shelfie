@@ -14,10 +14,7 @@ import { IPurchaseProductsPageSlice } from "@/const/interfaces/store-slices/IPur
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { PurchaseProductsPageSliceActions as actions } from "@/state/slices/PurchaseProductsPageSlice.ts";
-import {
-  DataWithId,
-  DndGridDataTable,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import { AppSliceActions as appActions } from "@/state/slices/AppSlice.ts";
@@ -25,19 +22,17 @@ import useProductsPageService from "@/pages/products-section/products-page/usePr
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import GridItemsFilter from "@/components/complex/grid/filters/grid-items-filter/GridItemsFilter.tsx";
-import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
 import GridTraitsFilter from "@/components/complex/grid/filters/grid-traits-filter/GridTraitsFilter.tsx";
 import GridShowItemsFilter from "@/components/complex/grid/filters/grid-show-deleted-filter/GridShowItemsFilter.tsx";
 import { purchaseProductsGridColumns } from "@/components/complex/grid/custom-grids/purchase-products-grid/PurchaseProductsGridColumns.tsx";
 import { purchaseVariantsGridColumns } from "@/components/complex/grid/custom-grids/purchase-variants-grid/PurchaseVariantsGridColumns.tsx";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export default function PurchaseProductsCard({
   isLoading,
   isPurchaseProductsGridLoading,
   isProductsGridLoading,
-  variants,
-  purchaseProducts,
   purchaseProductsGridRequestModel,
   variantsGridRequestModel,
   preferences,
@@ -50,6 +45,7 @@ export default function PurchaseProductsCard({
   currencies,
   taxes,
   purchaseSummary,
+  purchaseId,
   onAction,
 }: IPurchaseProductsCard) {
   const { t } = useTranslation();
@@ -65,6 +61,12 @@ export default function PurchaseProductsCard({
     if (value === activeTab) return;
     setActiveTab(value);
     dispatch(actions.refreshActiveTab(value));
+    if (value === "purchaseProducts") {
+      onAction("refreshPurchaseProductsTab", purchaseId);
+    }
+    if (value === "connectProducts") {
+      onAction("refreshConnectProductsTab", purchaseId);
+    }
   }
 
   function handleAction(actionType: string, payload?: any) {
@@ -93,32 +95,6 @@ export default function PurchaseProductsCard({
       case "navigateToManageVariant":
         onAction("navigateToManageVariant", payload);
         break;
-    }
-  }
-
-  function handleGridRequestChange(updates: GridRequestModel) {
-    if (activeTab === "purchaseProducts") {
-      dispatch(
-        actions.refreshPurchasesProductsGridRequestModel({
-          ...state.purchasesProductsGridRequestModel,
-          ...updates,
-          filter: {
-            ...state.purchasesProductsGridRequestModel.filter,
-            ...updates.filter,
-          },
-        }),
-      );
-    } else {
-      dispatch(
-        actions.refreshVariantsForPurchaseGridRequestModel({
-          ...state.variantsForPurchaseGridRequestModel,
-          ...updates,
-          filter: {
-            ...state.variantsForPurchaseGridRequestModel.filter,
-            ...updates.filter,
-          },
-        }),
-      );
     }
   }
 
@@ -177,7 +153,7 @@ export default function PurchaseProductsCard({
               </TabsList>
             </div>
             <TabsContent value="purchaseProducts">
-              <DndGridDataTable
+              <SheGrid
                 isLoading={isPurchaseProductsGridLoading}
                 className={cs.purchaseProductsGrid}
                 columns={
@@ -188,7 +164,7 @@ export default function PurchaseProductsCard({
                     handleAction,
                   ) as ColumnDef<DataWithId>[]
                 }
-                data={purchaseProducts}
+                data={purchaseProductsGridRequestModel.items}
                 gridRequestModel={purchaseProductsGridRequestModel}
                 sortingItems={sortingOptions}
                 columnsPreferences={preferences}
@@ -196,21 +172,27 @@ export default function PurchaseProductsCard({
                 skeletonQuantity={purchaseSummary?.unitsAmount}
                 onApplyColumns={onApplyColumnsHandler}
                 onDefaultColumns={onResetColumnsHandler}
-                onGridRequestChange={handleGridRequestChange}
+                onGridRequestChange={(updates) =>
+                  onAction("gridRequestChange", { updates, activeTab })
+                }
               >
                 <GridItemsFilter
                   items={brands}
                   columnName={t("SectionTitles.Brand")}
                   getId={(item: BrandModel) => item.brandId}
                   getName={(item: BrandModel) => item.brandName}
+                  selected={purchaseProductsGridRequestModel?.filter?.brands}
                 />
                 <GridItemsFilter
                   items={categories}
                   columnName={t("SectionTitles.Category")}
                   getId={(item: CategoryModel) => item.categoryId}
                   getName={(item: CategoryModel) => item.categoryName}
+                  selected={
+                    purchaseProductsGridRequestModel?.filter?.categories
+                  }
                 />
-              </DndGridDataTable>
+              </SheGrid>
               <div className={cs.purchaseSummary}>
                 <span className={cs.purchaseSummaryTitle}>
                   {t("PurchaseForm.Labels.PurchaseSummary")}
@@ -250,7 +232,7 @@ export default function PurchaseProductsCard({
               </div>
             </TabsContent>
             <TabsContent value="connectProducts">
-              <DndGridDataTable
+              <SheGrid
                 isLoading={isProductsGridLoading}
                 className={cs.purchaseProductsGrid}
                 columns={
@@ -261,7 +243,7 @@ export default function PurchaseProductsCard({
                     handleAction,
                   ) as ColumnDef<DataWithId>[]
                 }
-                data={variants}
+                data={variantsGridRequestModel.items}
                 gridRequestModel={variantsGridRequestModel}
                 sortingItems={sortingOptions}
                 columnsPreferences={preferences}
@@ -269,19 +251,23 @@ export default function PurchaseProductsCard({
                 skeletonQuantity={variantsSkeletonQuantity}
                 onApplyColumns={onApplyColumnsHandler}
                 onDefaultColumns={onResetColumnsHandler}
-                onGridRequestChange={handleGridRequestChange}
+                onGridRequestChange={(updates) =>
+                  onAction("gridRequestChange", { updates, activeTab })
+                }
               >
                 <GridItemsFilter
                   items={brands}
                   columnName={t("SectionTitles.Brand")}
                   getId={(item: BrandModel) => item.brandId}
                   getName={(item: BrandModel) => item.brandName}
+                  selected={variantsGridRequestModel?.filter?.brands}
                 />
                 <GridItemsFilter
                   items={categories}
                   columnName={t("SectionTitles.Category")}
                   getId={(item: CategoryModel) => item.categoryId}
                   getName={(item: CategoryModel) => item.categoryName}
+                  selected={variantsGridRequestModel?.filter?.categories}
                 />
                 <GridTraitsFilter
                   traitOptions={colorsForFilter}
@@ -292,7 +278,7 @@ export default function PurchaseProductsCard({
                   traitType="size"
                 />
                 <GridShowItemsFilter context="Deleted" />
-              </DndGridDataTable>
+              </SheGrid>
             </TabsContent>
           </SheTabs>
         </div>

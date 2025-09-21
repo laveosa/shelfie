@@ -4,9 +4,18 @@ import React from "react";
 type SheLoadingProps = {
   className?: string;
   style?: React.CSSProperties;
+  isLoading?: boolean;
 };
 
-export default function SheLoading({ className, style }: SheLoadingProps) {
+export default function SheLoading({
+  className,
+  style,
+  isLoading,
+}: SheLoadingProps) {
+  if (!isLoading) {
+    return null;
+  }
+
   return (
     <div className={`${cs.loaderContainer} ${className}`} style={style}>
       <div className={cs.loadingBar}>

@@ -1,4 +1,3 @@
-import { ColumnDef } from "@tanstack/react-table";
 import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
@@ -30,8 +29,6 @@ import VariantPhotosCard from "@/components/complex/custom-cards/variant-photos-
 import ManageTraitsCard from "@/components/complex/custom-cards/manage-traits-card/ManageTraitsCard.tsx";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import SelectPurchaseCard from "@/components/complex/custom-cards/select-purchase-card/SelectPurchaseCard.tsx";
-import { SelectPurchaseGridColumns } from "@/components/complex/grid/custom-grids/select-purchase-grid/SelectPurchaseGridColumns.tsx";
-import { DataWithId } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import SupplierCard from "@/components/complex/custom-cards/supplier-card/SupplierCard.tsx";
 import SelectEntityCard from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
 import { CompaniesListGridColumns } from "@/components/complex/grid/custom-grids/companies-list-grid/CompaniesListGridColumns.tsx";
@@ -69,11 +66,7 @@ export function PurchaseProductsPage() {
 
   useEffect(() => {
     service.getPurchasesProductsGridDataHandler(purchaseId);
-  }, [state.purchasesProductsGridRequestModel]);
-
-  useEffect(() => {
-    service.getVariantsForPurchaseGridDataHandler();
-  }, [state.variantsForPurchaseGridRequestModel]);
+  }, []);
 
   useEffect(() => {
     service.getGridFiltersDataHandler();
@@ -324,6 +317,15 @@ export function PurchaseProductsPage() {
       case "navigateToManageVariant":
         service.navigateToManageVariantHandler(payload);
         break;
+      case "refreshPurchaseProductsTab":
+        service.refreshPurchaseProductsTabHandler(payload);
+        break;
+      case "gridRequestChange":
+        service.gridRequestChangeHandler(purchaseId, payload);
+        break;
+      case "refreshConnectProductsTab":
+        service.getVariantsForPurchaseGridDataHandler();
+        break;
     }
   }
 
@@ -337,13 +339,14 @@ export function PurchaseProductsPage() {
         counter={productsState.purchaseCounters}
       />
       {state.activeCards?.includes("purchaseProductsCard") && (
-        <div ref={createRefCallback("purchaseProductsCard")}>
+        <div
+          className={cs.purchaseProductsCard}
+          ref={createRefCallback("purchaseProductsCard")}
+        >
           <PurchaseProductsCard
             isLoading={state.isPurchaseProductsCardLoading}
             isPurchaseProductsGridLoading={state.isPurchasesProductsGridLoading}
             isProductsGridLoading={state.isVariantsForPurchaseGridLoading}
-            variants={state.variants}
-            purchaseProducts={state.purchaseProducts}
             variantsGridRequestModel={state.variantsForPurchaseGridRequestModel}
             purchaseProductsGridRequestModel={
               state.purchasesProductsGridRequestModel
@@ -360,6 +363,7 @@ export function PurchaseProductsPage() {
             currencies={productsState.currenciesList}
             taxes={productsState.taxesList}
             purchaseSummary={state.purchaseSummary}
+            purchaseId={purchaseId}
             onAction={onAction}
           />
         </div>
@@ -517,11 +521,6 @@ export function PurchaseProductsPage() {
             isLoading={state.setIsSelectPurchaseCardLoading}
             isGridLoading={state.setIsPurchaseGridLoading}
             purchases={state.purchaseGridRequestModel.items}
-            columns={
-              SelectPurchaseGridColumns({
-                onAction,
-              }) as ColumnDef<DataWithId>[]
-            }
             onAction={onAction}
           />
         </div>
@@ -543,11 +542,9 @@ export function PurchaseProductsPage() {
             isGridLoading={state.isSuppliersGridLoading}
             entityName="Company"
             entityCollection={state.companiesGridRequestModel?.items}
-            columns={
-              CompaniesListGridColumns({
-                onAction,
-              }) as ColumnDef<DataWithId>[]
-            }
+            columns={CompaniesListGridColumns({
+              onAction,
+            })}
             onAction={onAction}
           />
         </div>

@@ -1,19 +1,18 @@
-import { Plus, SlidersVertical } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
 import React, { Fragment } from "react";
 
-import {
-  DataWithId,
-  DndGridDataTable,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
+import { Plus, SlidersVertical } from "lucide-react";
+
 import cs from "./ManageVariantsCard.module.scss";
+import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { TraitModel } from "@/const/models/TraitModel.ts";
-import { IManageVariantsCard } from "@/const/interfaces/complex-components/custom-cards/IManageVariantsCard.ts";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import { ManageVariantsGridColumns } from "@/components/complex/grid/custom-grids/manage-variants-grid/ManageVariantsGridColumns.tsx";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
+import { IManageVariantsCard } from "@/const/interfaces/complex-components/custom-cards/IManageVariantsCard.ts";
 
 export default function ManageVariantsCard({
   isLoading,
@@ -121,7 +120,7 @@ export default function ManageVariantsCard({
         <Separator />
         <div className={cs.buttonBlock}>
           <span className="she-title">{t("SectionTitles.Variant")}</span>
-          {variants.length > 0 && (
+          {traits?.length > 0 && (
             <SheButton
               icon={Plus}
               variant="secondary"
@@ -142,7 +141,7 @@ export default function ManageVariantsCard({
           {/*)}*/}
         </div>
         <div>
-          <DndGridDataTable
+          <SheGrid
             isLoading={isVariantsLoading}
             className={cs.manageVariantsCardGrid}
             enableDnd={true}

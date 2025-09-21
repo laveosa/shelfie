@@ -1,14 +1,22 @@
 import { ColumnDef } from "@tanstack/react-table";
-import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { ImageModel } from "@/const/models/ImageModel.ts";
-import placeholderImage from "@/assets/images/placeholder-image.png";
-import { CategoryModel } from "@/const/models/CategoryModel.ts";
+
+import { ImageIcon, TrashIcon } from "lucide-react";
+
 import cs from "./VariantGridColumns.module.scss";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
+import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import SheToggle from "@/components/primitive/she-toggle/SheToggle.tsx";
+import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
+import { IconViewEnum } from "@/const/enums/IconViewEnum.ts";
+import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
+import { CategoryModel } from "@/const/models/CategoryModel.ts";
+import { VariantModel } from "@/const/models/VariantModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
-import { TrashIcon } from "lucide-react";
+import { ImageModel } from "@/const/models/ImageModel.ts";
 
-export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
+export function VariantsGridColumns(onAction: any): ColumnDef<VariantModel>[] {
+  const { translate } = useAppTranslation();
   const statusClass = (status: string) => {
     if (status === "Available") {
       return cs.productStatusAvailable;
@@ -23,78 +31,62 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "variantId",
       header: "ID",
-      size: 60,
-      minSize: 60,
-      maxSize: 60,
+      minSize: 40,
+      maxSize: 40,
+      cell: ({ row }) => (
+        <span className="she-text">{row.getValue("variantId")}</span>
+      ),
     },
     {
       accessorKey: "photo",
       header: "Image",
-      size: 60,
-      minSize: 60,
-      maxSize: 60,
-      cell: ({ row, table }) => {
-        const image: ImageModel = row.getValue("photo");
-        const meta = table.options.meta as {
-          setLoadingRow: (rowId: string, loading: boolean) => void;
-          isRowLoading: (rowId: string) => boolean;
-        };
-
+      minSize: 56,
+      maxSize: 56,
+      cell: ({ row }) => {
+        const image: ImageModel = row.getValue("photo") as ImageModel;
         return (
-          <div
-            className="relative w-12 h-12 cursor-pointer"
-            onClick={() => onAction("image", row.id, meta?.setLoadingRow)}
-          >
-            <img
-              src={image?.thumbnailUrl || placeholderImage}
-              alt={row.getValue("variantName")}
-              className="object-cover rounded-md w-full h-full"
-              onError={(e) => {
-                e.currentTarget.src = placeholderImage;
-              }}
-            />
-          </div>
+          <SheIcon
+            icon={image?.thumbnailUrl || ImageIcon}
+            className="m-auto"
+            style={{
+              ...(!image?.thumbnailUrl && {
+                padding: "10px",
+              }),
+            }}
+            color="#64748b"
+            iconView={IconViewEnum.BUTTON}
+          />
         );
       },
     },
     {
       accessorKey: "variantCode",
       header: "Code",
-      size: 60,
       minSize: 60,
-      maxSize: 60,
-      cell: ({ row }) => {
-        return (
-          <SheTooltip delayDuration={200} text={row.getValue("variantCode")}>
-            <span className={cs.variantCode}>
-              {row.getValue("variantCode")}
-            </span>
-          </SheTooltip>
-        );
-      },
+      cell: ({ row }) => (
+        <SheTooltip delayDuration={200} text={row.getValue("variantCode")}>
+          <span className={`${cs.variantCode} she-text`}>
+            {row.getValue("variantCode")}
+          </span>
+        </SheTooltip>
+      ),
     },
     {
       accessorKey: "variantName",
       header: "Variant Name",
-      size: 150,
       minSize: 150,
-      maxSize: 150,
-      cell: ({ row }) => {
-        return (
-          <SheTooltip delayDuration={200} text={row.getValue("variantName")}>
-            <span className={cs.variantName}>
-              {row.getValue("variantName")}
-            </span>
-          </SheTooltip>
-        );
-      },
+      cell: ({ row }) => (
+        <SheTooltip delayDuration={200} text={row.getValue("variantName")}>
+          <span className={`${cs.variantName} she-text`}>
+            {row.getValue("variantName")}
+          </span>
+        </SheTooltip>
+      ),
     },
     {
       accessorKey: "productCategory",
       header: "Category",
-      size: 100,
       minSize: 100,
-      maxSize: 100,
       cell: ({ row }) => {
         const category: CategoryModel = row.getValue("productCategory");
         return (
@@ -109,7 +101,9 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
                   alt={row.original.productCategory.categoryName}
                 />
               )}
-              <span>{category?.categoryName || "N/A"}</span>
+              <span className="she-text">
+                {category?.categoryName || "N/A"}
+              </span>
             </div>
           </SheTooltip>
         );
@@ -118,21 +112,16 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "brand",
       header: "Brand",
-      size: 100,
       minSize: 100,
-      maxSize: 100,
       cell: ({ row }) => {
-        const brand: BrandModel = row.getValue("brand");
+        const brand: BrandModel = row.original.brand as BrandModel;
         return (
           <SheTooltip delayDuration={200} text={brand?.brandName || "N/A"}>
             <div className={cs.productCategory}>
-              {row.original.brand?.thumbnail && (
-                <img
-                  src={row.original.brand?.thumbnail}
-                  alt={row.original.brand.brandName}
-                />
+              {brand?.thumbnail && (
+                <img src={brand?.thumbnail} alt={brand?.brandName} />
               )}
-              <span>{brand?.brandName || "N/A"}</span>
+              <span className="she-text">{brand?.brandName || "N/A"}</span>
             </div>
           </SheTooltip>
         );
@@ -141,12 +130,10 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "traitOptions",
       header: "Details",
-      size: 80,
       minSize: 80,
       maxSize: 80,
       cell: ({ row }) => {
         const traitOptions = row.original.traitOptions || [];
-
         const colorOptions = traitOptions.filter(
           (option) => option.traitTypeId === 2 && option.optionColor,
         );
@@ -180,7 +167,11 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
               />
             ))}
             {sizeOptions.map((sizeOpt, index) => (
-              <span key={`size-${index}`} style={{ fontSize: "0.875rem" }}>
+              <span
+                key={`size-${index}`}
+                style={{ fontSize: "0.875rem" }}
+                className="she-text"
+              >
                 {sizeOpt.optionName}
               </span>
             ))}
@@ -191,103 +182,73 @@ export function variantsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "status",
       header: "Status",
-      cell: ({ row }) => {
-        const status: string = row.getValue("status");
-        return (
-          <div className={`${cs.productStatus} ${statusClass(status)}`}>
-            <span>{status}</span>
-          </div>
-        );
-      },
+      minSize: 120,
+      cell: ({ row }) => (
+        <div
+          className={`${cs.productStatus} ${statusClass(row.getValue("status"))}`}
+        >
+          <span>{row.getValue("status")}</span>
+        </div>
+      ),
     },
     {
       accessorKey: "salePrice",
       header: "Price",
-      size: 100,
-      minSize: 100,
-      maxSize: 100,
+      minSize: 80,
       cell: ({ row }) => {
         const price: string = row.getValue("salePrice");
-        return <span>{price ? price : "N/A"}</span>;
+        return <span className="she-text">{price ? price : "N/A"}</span>;
       },
     },
     {
       accessorKey: "stockAmount",
       header: "In Stock",
-      size: 60,
       minSize: 60,
-      maxSize: 60,
       cell: ({ row }) => {
-        return <span>{`${row.getValue("stockAmount")} units`}</span>;
+        return (
+          <span className="she-text">{`${row.getValue("stockAmount")} units`}</span>
+        );
       },
     },
-    // {
-    //   accessorKey: "isActive",
-    //   header: "Active",
-    //   cell: ({ row, table }) => {
-    //     const meta = table.options.meta as {
-    //       setLoadingRow: (rowId: string, loading: boolean) => void;
-    //       isRowLoading: (rowId: string) => boolean;
-    //     };
-    //
-    //     return (
-    //       <Switch
-    //         disabled={meta?.isRowLoading(row.id)}
-    //         checked={row.getValue("active")}
-    //         onCheckedChange={() =>
-    //           onAction("activateVariant", row.id, undefined, row.original)
-    //         }
-    //       />
-    //     );
-    //   },
-    // },
+    /*{
+      accessorKey: "isActive",
+      header: "Active",
+      minSize: 80,
+      maxSize: 160,
+      cell: ({ row }) => (
+        <SheToggle
+          checked={row.getValue("active")}
+          type={SheToggleTypeEnum.SWITCH}
+          onChecked={() =>
+            onAction("activateVariant", row.id, undefined, row.original)
+          }
+        />
+      ),
+    },*/
     {
       id: "manage",
       header: "",
-      size: 80,
-      minSize: 80,
-      maxSize: 80,
-      cell: ({ row, table }) => {
-        const meta = table.options.meta as {
-          setLoadingRow: (rowId: string, loading: boolean) => void;
-          isRowLoading: (rowId: string) => boolean;
-        };
-
-        return (
-          <div onClick={(e) => e.stopPropagation()}>
-            <SheButton
-              onClick={() => onAction("manageVariant", row.original)}
-              disabled={meta?.isRowLoading(row.id)}
-            >
-              Manage
-            </SheButton>
-          </div>
-        );
-      },
+      minSize: 100,
+      maxSize: 100,
+      cell: ({ row }) => (
+        <SheButton
+          value={translate("CommonButtons.Manage")}
+          onClick={() => onAction("manageVariant", row.original)}
+        />
+      ),
     },
     {
       id: "rowActions",
       header: "",
-      size: 40,
-      minSize: 40,
-      maxSize: 40,
-      cell: ({ row, table }) => {
-        const meta = table.options.meta as {
-          setLoadingRow: (rowId: string, loading: boolean) => void;
-          isRowLoading: (rowId: string) => boolean;
-        };
-
-        return (
-          <div onClick={(e) => e.stopPropagation()}>
-            <SheButton
-              icon={TrashIcon}
-              variant="secondary"
-              onClick={() => onAction("deleteVariant", { table, row })}
-              disabled={meta?.isRowLoading(row.id)}
-            />
-          </div>
-        );
-      },
+      minSize: 56,
+      maxSize: 56,
+      cell: ({ row, table }) => (
+        <SheButton
+          icon={TrashIcon}
+          variant="secondary"
+          onClick={() => onAction("deleteVariant", { table, row })}
+        />
+      ),
     },
   ];
 }

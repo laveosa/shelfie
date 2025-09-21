@@ -12,6 +12,8 @@ const initialState: IOrderDetailsPageSlice = {
   isSelectEntityGridLoading: false,
   isSelectDiscountGridLoading: false,
   isCustomerCardLoading: false,
+  isDiscountsGridLoading: false,
+  isShipmentsGridLoading: false,
   activeCards: [],
   discountsList: [],
   selectedCustomer: null,
@@ -61,6 +63,20 @@ function setIsCustomerCardLoading(
   state.isCustomerCardLoading = action?.payload;
 }
 
+function setIsDiscountsGridLoading(
+  state: IOrderDetailsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isDiscountsGridLoading = action?.payload;
+}
+
+function setIsShipmentsGridLoading(
+  state: IOrderDetailsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isShipmentsGridLoading = action?.payload;
+}
+
 //----------------------------------------------------- API
 
 function refreshActiveCards(
@@ -98,6 +114,8 @@ const OrderDetailsPageSlice = createSlice({
     setIsSelectEntityGridLoading,
     setIsSelectDiscountGridLoading,
     setIsCustomerCardLoading,
+    setIsDiscountsGridLoading,
+    setIsShipmentsGridLoading,
     refreshActiveCards,
     refreshDiscountsList,
     refreshSelectedCustomer,

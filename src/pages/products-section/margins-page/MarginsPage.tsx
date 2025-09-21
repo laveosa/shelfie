@@ -15,8 +15,8 @@ import MarginConfigurationCard from "@/components/complex/custom-cards/margin-co
 import SalePriseManagementCard from "@/components/complex/custom-cards/sale-price-management-card/SalePriceManagementCard.tsx";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import SelectEntityCard from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
-import { DataWithId } from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
 import { MarginsListGridColumns } from "@/components/complex/grid/custom-grids/margins-list-grid/MarginsListGridColumns.tsx";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export function MarginsPage() {
   const {
@@ -47,7 +47,7 @@ export function MarginsPage() {
 
   useEffect(() => {
     service.getMarginItemsListHandle(purchaseId);
-  }, [state.marginItemsGridRequestModel]);
+  }, []);
 
   useEffect(() => {
     service.keepSalePriceManagementCardOpenHandle();
@@ -71,13 +71,10 @@ export function MarginsPage() {
         service.createMarginHandle(payload);
         break;
       case "updateMargin":
-        service.updateMarginHandle(payload, purchaseId);
+        service.updateMarginHandle(payload);
         break;
       case "updateSelectedMargin":
         service.updateSelectedMarginHandler(payload, purchaseId);
-        break;
-      case "manageSelectedMargin":
-        service.manageSelectedMarginHandle(payload);
         break;
       case "manageMargin":
         service.manageMarginHandle(payload);
@@ -116,13 +113,7 @@ export function MarginsPage() {
         service.resetColumnsHandle();
         break;
       case "gridRequestChange":
-        service.gridRequestChangeHandle(payload);
-        break;
-      case "brandFilter":
-        service.gridRequestChangeHandle({ filter: { brands: payload } });
-        break;
-      case "categoryFilter":
-        service.gridRequestChangeHandle({ filter: { categories: payload } });
+        service.gridRequestChangeHandle(purchaseId, payload);
         break;
       case "applyVisibleMarginItems":
         service.applyVisibleMarginItemsHandle(purchaseId);
@@ -148,7 +139,10 @@ export function MarginsPage() {
         onAction={onAction}
       />
       {state.activeCards?.includes("salePriceManagementCard") && (
-        <div ref={createRefCallback("salePriceManagementCard")}>
+        <div
+          className={cs.salePriceManagementCard}
+          ref={createRefCallback("salePriceManagementCard")}
+        >
           <SalePriseManagementCard
             isLoading={state.isSalePriceManagementCardLoading}
             isGridLoading={state.isMarginProductsGridLoading}

@@ -821,39 +821,14 @@ export default function useProductsPageService() {
   }
 
   function gridRequestChangeHandler(updates: any) {
+    console.log(updates);
+
     if (state.activeTab === "products") {
-      dispatch(
-        actions.refreshProductsGridRequestModel({
-          ...state.productsGridRequestModel,
-          ...updates,
-          filter: {
-            ...state.productsGridRequestModel.filter,
-            ...updates.filter,
-          },
-        }),
-      );
+      getTheProductsForGridHandler(updates, true);
     } else if (state.activeTab === "variants") {
-      dispatch(
-        actions.refreshVariantsGridRequestModel({
-          ...state.variantsGridRequestModel,
-          ...updates,
-          filter: {
-            ...state.variantsGridRequestModel.filter,
-            ...updates.filter,
-          },
-        }),
-      );
+      getVariantsForGridHandler(updates);
     } else if (state.activeTab === "purchases") {
-      dispatch(
-        actions.refreshPurchasesGridRequestModel({
-          ...state.purchasesGridRequestModel,
-          ...updates,
-          filter: {
-            ...state.purchasesGridRequestModel.filter,
-            ...updates.filter,
-          },
-        }),
-      );
+      getListOfPurchasesForGridHandler(updates);
     }
   }
 

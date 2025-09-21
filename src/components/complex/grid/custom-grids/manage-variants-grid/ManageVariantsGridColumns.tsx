@@ -18,8 +18,8 @@ export const ManageVariantsGridColumns = (
   {
     accessorKey: "traits",
     header: "Traits",
-    minSize: 50,
-    maxSize: 50,
+    minSize: 80,
+    maxSize: 80,
     cell: ({ row }) => {
       const traitOptions = row.original.traitOptions || [];
 
@@ -67,11 +67,11 @@ export const ManageVariantsGridColumns = (
   {
     accessorKey: "stock",
     header: "Stock",
-    minSize: 50,
-    maxSize: 50,
+    minSize: 90,
+    maxSize: 90,
     cell: ({ row }) => {
       return (
-        <span style={{ paddingLeft: "15px" }}>
+        <span style={{ paddingLeft: "15px", paddingRight: "15px" }}>
           {row.original.stockAmount ?? 0}
         </span>
       );
@@ -80,8 +80,8 @@ export const ManageVariantsGridColumns = (
   {
     accessorKey: "isActive",
     header: "Active",
-    minSize: 50,
-    maxSize: 50,
+    minSize: 80,
+    maxSize: 80,
     cell: ({ row }) => {
       return (
         <Switch
@@ -96,8 +96,8 @@ export const ManageVariantsGridColumns = (
   {
     id: "manage",
     header: "Actions",
-    minSize: 100,
-    maxSize: 100,
+    minSize: 120,
+    maxSize: 120,
     cell: ({ row, table }) => {
       const meta = table.options.meta as {
         setLoadingRow: (rowId: string, loading: boolean) => void;
@@ -123,33 +123,4 @@ export const ManageVariantsGridColumns = (
       );
     },
   },
-  // {
-  //   id: "delete",
-  //   header: "",
-  //   minSize: 60,
-  //   maxSize: 60,
-  //   cell: ({ row, table }) => {
-  //     const meta = table.options.meta as {
-  //       setLoadingRow: (rowId: string, loading: boolean) => void;
-  //       isRowLoading: (rowId: string) => boolean;
-  //     };
-  //     return (
-  //       <div onClick={(e) => e.stopPropagation()}>
-  //         <SheButton
-  //           icon={Trash2}
-  //           variant="secondary"
-  //           onClick={() =>
-  //             onAction(
-  //               "deleteVariant",
-  //               row.id,
-  //               meta?.setLoadingRow,
-  //               row.original,
-  //             )
-  //           }
-  //           disabled={meta?.isRowLoading(row.id)}
-  //         />
-  //       </div>
-  //     );
-  //   },
-  // },
 ];

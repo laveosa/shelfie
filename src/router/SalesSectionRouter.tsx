@@ -106,4 +106,4 @@ export const SalesSectionRouter: RouteObject[] = [
       return { element: <PaymentsPage /> };
     },
   },
-];
+] as RouteObject[];

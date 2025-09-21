@@ -1,0 +1,26 @@
+.gridPagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .gridPaginationContainer,
+  .gridPaginationPageStepper,
+  .gridPaginationPageIndex {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .gridPaginationPageIndexItem {
+    padding: 8px;
+    max-width: 30px;
+    min-width: 30px;
+  }
+
+  .gridPaginationPageIndexPlaceholder {
+    pointer-events: none;
+    padding: 4px;
+    max-width: 20px;
+    min-width: 20px;
+  }
+}

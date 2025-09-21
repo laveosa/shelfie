@@ -71,6 +71,7 @@ export default function usePurchaseProductsPageService(
     PurchasesApiHooks.useCreatePurchaseForSupplierMutation();
   const [getListOfCompaniesForGrid] =
     CompaniesApiHooks.useGetListOfCompaniesForGridMutation();
+  const [getVariantsForGrid] = ProductsApiHooks.useGetVariantsForGridMutation();
 
   function getListOfPurchaseProductsForGridHandler(id: any, model) {
     return getListOfPurchaseProductsForGrid({ id, model }).then((res: any) => {
@@ -127,27 +128,33 @@ export default function usePurchaseProductsPageService(
   }
 
   function getPurchasesProductsGridDataHandler(purchaseId) {
-    dispatch(actions.setIsPurchasesProductsGridLoading(true));
-    Promise.all([
-      getListOfPurchaseProductsForGridHandler(
-        purchaseId,
-        state.purchasesProductsGridRequestModel,
-      ),
-      getPurchaseSummaryHandler(purchaseId),
-    ]).then(() => {
-      dispatch(actions.setIsPurchasesProductsGridLoading(false));
-    });
+    if (!productsState.createdPurchase) {
+      dispatch(actions.setIsPurchasesProductsGridLoading(true));
+      Promise.all([
+        getListOfPurchaseProductsForGridHandler(
+          purchaseId,
+          state.purchasesProductsGridRequestModel,
+        ),
+        getPurchaseSummaryHandler(purchaseId),
+      ]).then(() => {
+        dispatch(actions.setIsPurchasesProductsGridLoading(false));
+      });
+    }
   }
 
   function getVariantsForPurchaseGridDataHandler() {
-    dispatch(actions.setIsVariantsForPurchaseGridLoading(true));
-    productsService
-      .getVariantsForGridHandler(state.variantsForPurchaseGridRequestModel)
-      .then((res) => {
-        dispatch(actions.setIsVariantsForPurchaseGridLoading(false));
-        dispatch(actions.refreshVariantsForPurchaseGridRequestModel(res));
-        dispatch(actions.refreshVariants(res.items));
-      });
+    if (Object.keys(state.variantsForPurchaseGridRequestModel).length === 0) {
+      dispatch(actions.setIsVariantsForPurchaseGridLoading(true));
+      getVariantsForGrid(state.variantsForPurchaseGridRequestModel).then(
+        (res) => {
+          dispatch(actions.setIsVariantsForPurchaseGridLoading(false));
+          dispatch(
+            actions.refreshVariantsForPurchaseGridRequestModel(res.data),
+          );
+          dispatch(actions.refreshVariants(res.data.items));
+        },
+      );
+    }
   }
 
   function getGridFiltersDataHandler() {
@@ -178,16 +185,6 @@ export default function usePurchaseProductsPageService(
       ...model.data,
     }).then((res) => {
       if (res) {
-        dispatch(actions.setIsPurchasesProductsGridLoading(true));
-        Promise.all([
-          getListOfPurchaseProductsForGridHandler(
-            purchaseId,
-            state.purchasesProductsGridRequestModel,
-          ),
-          getPurchaseSummaryHandler(purchaseId),
-        ]).then(() => {
-          dispatch(actions.setIsPurchasesProductsGridLoading(false));
-        });
         addToast({
           text: "Variant added successfully",
           type: "success",
@@ -1571,6 +1568,24 @@ export default function usePurchaseProductsPageService(
     dispatch(actions.resetSelectedPurchase());
   }
 
+  function refreshPurchaseProductsTabHandler(purchaseId) {
+    getListOfPurchaseProductsForGridHandler(
+      purchaseId,
+      state.purchasesProductsGridRequestModel,
+    );
+    getPurchaseSummaryHandler(purchaseId);
+  }
+
+  function gridRequestChangeHandler(purchaseId, model) {
+    if (model.activeTab === "purchaseProducts") {
+      getListOfPurchaseProductsForGridHandler(purchaseId, model.updates);
+    } else {
+      getVariantsForGrid(model.updates).then((res) => {
+        dispatch(actions.refreshVariantsForPurchaseGridRequestModel(res.data));
+      });
+    }
+  }
+
   return {
     getPurchaseProductsPageDataHandler,
     getPurchasesProductsGridDataHandler,
@@ -1659,5 +1674,7 @@ export default function usePurchaseProductsPageService(
     closeSupplierConfigurationCardHandler,
     increaseStockAmountHandler,
     closeAddStockCardHandler,
+    refreshPurchaseProductsTabHandler,
+    gridRequestChangeHandler,
   };
 }

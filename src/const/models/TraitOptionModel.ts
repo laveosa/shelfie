@@ -6,4 +6,5 @@ export interface TraitOptionModel {
   isRemoved?: boolean;
   isMissing?: boolean;
   isRaw?: boolean;
+  traitTypeId?: number;
 }

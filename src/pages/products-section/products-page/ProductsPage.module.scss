@@ -2,30 +2,29 @@
 
 //----------------------------------------------------------------HEADER
 
-#ProductsPage {
+.productsPage {
   .productsPageHeader {
     display: flex;
     justify-content: space-between;
-
-    .headerButtonBlock {
-      display: flex;
-      gap: 10px;
-    }
+    align-items: center;
+    padding: vars.$paddingSmall vars.$paddingSmall 0;
+    gap: vars.$paddingStandard;
   }
 }
 
 //-------------------------------------------------------------------TABS
 
-#ProductsPage {
+.productsPage {
   .productsPageContent {
     .tabItemsWrapper {
-      margin: 0 -20px;
       border-bottom: 1px solid vars.$colorMedium;
 
       .tabItems {
         background-color: transparent;
         padding-bottom: 0;
         margin-bottom: -3px;
+        position: relative;
+        left: -6px;
 
         .tabItemTrigger {
           box-shadow: none;
@@ -43,6 +42,26 @@
           }
         }
       }
+    }
+  }
+}
+
+// ------------------------------------------------------------------- CONTEXT
+
+.productsPage {
+  .productsPageTabContext {
+    padding: 0 vars.$paddingSmall vars.$paddingSmall;
+    overflow-x: auto;
+    display: none;
+    flex-direction: column;
+    min-height: calc(100vh - 178px);
+
+    &[data-state="active"] {
+      display: flex;
+    }
+
+    &[data-state="inactive"] {
+      display: none;
     }
   }
 }

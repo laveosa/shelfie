@@ -4,14 +4,12 @@ import { useTranslation } from "react-i18next";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./InvoicesCard.module.scss";
-import {
-  DataWithId,
-  DndGridDataTable,
-} from "@/components/complex/grid/dnd-grid/DndGrid.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import { SheFileUploader } from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { IInvoiceCard } from "@/const/interfaces/complex-components/custom-cards/IInvoicesCard.ts";
 import { InvoicesGridColumns } from "@/components/complex/grid/custom-grids/invoices-grid/InvoicesGridColumns.tsx";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export default function InvoicesCard({
   isLoading,
@@ -76,7 +74,7 @@ export default function InvoicesCard({
               {t("CardTitles.ManageInvoices")}
             </div>
             <div className={cs.manageInvoicesGrid}>
-              <DndGridDataTable
+              <SheGrid
                 isLoading={isGridLoading}
                 className={cs.invoicesGrid}
                 showHeader={false}
