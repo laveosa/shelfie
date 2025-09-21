@@ -91,7 +91,7 @@ export default function SheContextSidebar({
             items={_listItems}
             selectedId={selectedId}
             skeletonQuantity={skeletonQuantity}
-            onAction={(item) => onAction("itemsCardClick", item)}
+            onAction={onAction}
           />
         </div>
         <div className={cs.sheContextSidebarMenu}>

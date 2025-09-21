@@ -1,5 +1,6 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Trans } from "react-i18next";
+import _ from "lodash";
 
 import { PanelLeft, Trash2, X } from "lucide-react";
 
@@ -18,6 +19,7 @@ export default function SheProductCard({
   width,
   minWidth = "400px",
   maxWidth,
+  isMinimized,
   title,
   titleTransKey,
   text,
@@ -41,9 +43,15 @@ export default function SheProductCard({
   secondaryButtonModel,
   onPrimaryButtonClick,
   onSecondaryButtonClick,
+  onIsMinimizedChange,
 }: ISheProductCard) {
-  const [isMinimized, setIsMinimized] = useState(false);
+  const [_isMinimized, setIsMinimized] = useState(isMinimized);
   const cardContentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!_.isNil(isMinimized) && isMinimized !== _isMinimized)
+      setIsMinimized(isMinimized);
+  }, [isMinimized]);
 
   // useEffect(() => {
   //   const element = cardContentRef.current;
@@ -62,16 +70,19 @@ export default function SheProductCard({
   // }, [children]);
 
   function onMinimizeCardHandler() {
-    setIsMinimized((prev) => !prev);
+    setIsMinimized((prev) => {
+      onIsMinimizedChange?.(!prev);
+      return !prev;
+    });
   }
 
   return (
     <div
-      className={`${className || ""} ${cs.sheProductCard || ""} ${view === "card" ? cs.card : ""}`}
+      className={`${className || ""} ${cs.sheProductCard || ""} ${view === "card" ? cs.card : ""} ${_isMinimized ? "sheCardMinimized" : ""}`}
       style={{
         width,
-        minWidth: isMinimized ? "50px" : minWidth,
-        maxWidth: isMinimized ? "50px" : maxWidth,
+        minWidth,
+        maxWidth,
         padding: view === "borderless" ? "10px 0 20px 0" : "",
       }}
     >
@@ -96,13 +107,13 @@ export default function SheProductCard({
                 className={`${cs.cardTitle} she-title`}
                 style={{
                   ...(showToggleButton && { paddingLeft: "40px" }),
-                  visibility: isMinimized ? "hidden" : "visible",
+                  visibility: _isMinimized ? "hidden" : "visible",
                 }}
               >
                 <Trans i18nKey={titleTransKey}>{title}</Trans>
               </div>
             </div>
-            {!isMinimized && showCloseButton && (
+            {!_isMinimized && showCloseButton && (
               <SheButton
                 className={cs.closeButton}
                 icon={X}
@@ -111,7 +122,7 @@ export default function SheProductCard({
               />
             )}
           </div>
-          {!isMinimized && (
+          {!_isMinimized && (
             <>
               <div className="she-text">
                 <Trans i18nKey={textTransKey}>{text}</Trans>
@@ -134,7 +145,7 @@ export default function SheProductCard({
       >
         {children}
       </div>
-      {!isMinimized &&
+      {!_isMinimized &&
         (showSecondaryButton || showPrimaryButton || showNotificationCard) && (
           <div
             className={cs.cardFooter}

@@ -39,7 +39,7 @@ export default function ItemsCard({
   // ==================================================================== EVENT HANDLERS
   function onClickHandler(item: IItemsCardItem) {
     setSelectedId(item.id);
-    onAction({ item: item.originalItem, type: item.type });
+    onAction?.({ item: item.originalItem, type: item.type });
   }
 
   // ==================================================================== PRIVATE
@@ -60,13 +60,13 @@ export default function ItemsCard({
     >
       <div className={cs.itemsCardList}>
         {isLoading ? (
-          <div>
+          <div className={cs.itemsCardSkeletonListContainer}>
             {_createSkeletonArray(skeletonQuantity ?? 10).map((_, index) => (
               <div key={index} className={cs.skeletonItem}>
-                <Skeleton className="h-12 w-12 rounded-full" />
-                <div className="space-y-2">
-                  <Skeleton className="h-4 w-[180px]" />
-                  <Skeleton className="h-4 w-[140px]" />
+                <Skeleton className={cs.skeletonItemImage} />
+                <div className={cs.skeletonItemInfoBlock}>
+                  <Skeleton className={cs.skeletonItemInfoTitle} />
+                  <Skeleton className={cs.skeletonItemInfoDescription} />
                 </div>
               </div>
             ))}

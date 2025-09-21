@@ -19,6 +19,7 @@ export interface ISheProductCard extends IBaseComponent {
   showCloseButton?: boolean;
   width?: string;
   fullWidth?: boolean;
+  isMinimized?: boolean;
   showNotificationCard?: boolean;
   notificationCardProps?: ISheCardNotification;
   showPrimaryButton?: boolean;
@@ -32,4 +33,5 @@ export interface ISheProductCard extends IBaseComponent {
   secondaryButtonModel?: ISheButton;
   onPrimaryButtonClick?: () => void;
   onSecondaryButtonClick?: () => void;
+  onIsMinimizedChange?: (value: boolean) => void;
 }

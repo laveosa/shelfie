@@ -5,6 +5,7 @@
   padding: 0;
   border: none !important;
   border-radius: 0 !important;
+  transition: all 160ms ease-in-out;
 
   .itemsCardHeader {
     margin-bottom: 6px;
@@ -95,18 +96,69 @@
           overflow: hidden;
           text-overflow: ellipsis;
           max-width: 100%;
+          opacity: 1;
+          transition: all 160ms ease-in-out;
         }
       }
     }
   }
 }
 
+// ======================================================== MINIMIZED
+
+:global(.sheCardMinimized).itemsCard {
+  min-width: 47px !important;
+  max-width: 47px !important;
+
+  .listItemText {
+    font-size: 0;
+    opacity: 0;
+  }
+}
+
 // ======================================================== SKELETON
 
 .itemsCard {
-  .skeletonItem {
+  .itemsCardSkeletonListContainer {
     display: flex;
-    gap: 20px;
-    padding-top: 10px;
+    flex-direction: column;
+    gap: 4px;
+
+    .skeletonItem {
+      display: flex;
+      gap: 10px;
+      padding: 10px;
+      min-height: 40px;
+
+      .skeletonItemImage {
+        $skeletonIconSize: 20px;
+        min-width: $skeletonIconSize;
+        max-width: $skeletonIconSize;
+        min-height: $skeletonIconSize;
+        max-height: $skeletonIconSize;
+        border-radius: 100%;
+        background-color: vars.$colorMedium;
+      }
+
+      .skeletonItemInfoBlock {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 4px;
+        width: 100%;
+
+        .skeletonItemInfoTitle {
+          height: 8px;
+          width: 40%;
+          background-color: vars.$colorMedium;
+        }
+
+        .skeletonItemInfoDescription {
+          height: 8px;
+          width: 90%;
+          background-color: vars.$colorMedium;
+        }
+      }
+    }
   }
 }
