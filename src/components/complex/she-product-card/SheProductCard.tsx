@@ -45,7 +45,7 @@ export default function SheProductCard({
   onSecondaryButtonClick,
   onIsMinimizedChange,
 }: ISheProductCard) {
-  const [_isMinimized, setIsMinimized] = useState(isMinimized);
+  const [_isMinimized, setIsMinimized] = useState<boolean>(isMinimized);
   const cardContentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

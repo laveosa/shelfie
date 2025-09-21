@@ -12,6 +12,8 @@ import {
   IItemsCard,
   IItemsCardItem,
 } from "@/const/interfaces/complex-components/custom-cards/IItemsCard.ts";
+import StorageService from "@/utils/services/StorageService.ts";
+import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 
 export default function ItemsCard({
   title,
@@ -24,8 +26,23 @@ export default function ItemsCard({
   // ==================================================================== STATE MANAGEMENT
   const [_items, setItems] = useState<IItemsCardItem[]>(null);
   const [_selectedId, setSelectedId] = useState<number>(null);
+  const [_isMinimized, setIsMinimized] = useState<boolean>(null);
+
+  const isMinimizedStorageKey = "isMinimizedStorageKey";
 
   // ==================================================================== SIDE EFFECTS
+  useEffect(() => {
+    const isMinimizedStorageValue: boolean = StorageService.getLocalStorage(
+      isMinimizedStorageKey,
+    );
+
+    if (
+      !_.isNil(isMinimizedStorageValue) &&
+      isMinimizedStorageValue !== _isMinimized
+    )
+      setIsMinimized(isMinimizedStorageValue);
+  }, []);
+
   useEffect(() => {
     if (items && items.length > 0 && !_.isEqual(items, _items)) setItems(items);
     if (
@@ -42,9 +59,35 @@ export default function ItemsCard({
     onAction?.({ item: item.originalItem, type: item.type });
   }
 
+  function onMinimizedHandler(value: boolean) {
+    if (!_.isNil(value) && value !== _isMinimized) {
+      setIsMinimized(value);
+      StorageService.setLocalStorage(isMinimizedStorageKey, value);
+    }
+  }
+
   // ==================================================================== PRIVATE
   function _createSkeletonArray(quantity: number): object[] {
     return Array.from({ length: quantity }, () => ({}));
+  }
+
+  function _getItemInnerLayout(item) {
+    return (
+      <div
+        className={`${cs.itemsCardListItem} ${
+          _selectedId == item.id ? cs.selected : ""
+        }`}
+      >
+        <SheIcon
+          className={cs.listItemIcon}
+          icon={item.imageUrl || Image}
+          iconView={IconViewEnum.BUTTON}
+          minWidth="20px"
+          maxWidth="20px"
+        />
+        <span className={`${cs.listItemText} she-text`}>{item.name}</span>
+      </div>
+    );
   }
 
   // ==================================================================== LAYOUT
@@ -57,6 +100,8 @@ export default function ItemsCard({
       minWidth="260px"
       maxWidth="260px"
       showToggleButton
+      isMinimized={_isMinimized}
+      onIsMinimizedChange={onMinimizedHandler}
     >
       <div className={cs.itemsCardList}>
         {isLoading ? (
@@ -79,22 +124,18 @@ export default function ItemsCard({
                 key={item.id}
                 onClick={() => onClickHandler(item)}
               >
-                <div
-                  className={`${cs.itemsCardListItem} ${
-                    _selectedId == item.id ? cs.selected : ""
-                  }`}
-                >
-                  <SheIcon
-                    className={cs.listItemIcon}
-                    icon={item.imageUrl || Image}
-                    iconView={IconViewEnum.BUTTON}
-                    minWidth="20px"
-                    maxWidth="20px"
-                  />
-                  <span className={`${cs.listItemText} she-text`}>
-                    {item.name}
-                  </span>
-                </div>
+                {_isMinimized ? (
+                  <SheTooltip
+                    text={item.name}
+                    side="right"
+                    align="center"
+                    delayDuration={200}
+                  >
+                    {_getItemInnerLayout(item)}
+                  </SheTooltip>
+                ) : (
+                  _getItemInnerLayout(item)
+                )}
               </div>
             ))}
           </>
