@@ -41,7 +41,7 @@ export function ProfilePage() {
         <Separator />
         <div className={cs.profilePageBlock}>
           <div className={cs.profilePageTextBlock}>
-            <span className="she-title">Avatar</span>
+            <span className={cs.cardSubtitle}>Avatar</span>
             <span className="she-text">Your personal image</span>
           </div>
           <div className={cs.profilePageContentBlock}>
@@ -73,7 +73,7 @@ export function ProfilePage() {
         <Separator />
         <div className={cs.profilePageBlock}>
           <div className={cs.profilePageTextBlock}>
-            <span className="she-title">Contact Information</span>
+            <span className={cs.cardSubtitle}>Contact Information</span>
             <span className="she-text">
               Credentials you will use to authenticate in the system
             </span>
@@ -88,7 +88,7 @@ export function ProfilePage() {
         <Separator />
         <div className={cs.profilePageBlock}>
           <div className={cs.profilePageTextBlock}>
-            <span className="she-title">Password</span>
+            <span className={cs.cardSubtitle}>Password</span>
             <div className={cs.passwordBlock}>
               <span className="she-text">Password requirements :</span>
               <ul className={cs.passwordRulesList}>
@@ -105,7 +105,7 @@ export function ProfilePage() {
         <Separator />
         <div className={cs.profilePageBlock}>
           <div className={cs.profilePageTextBlock}>
-            <span className="she-title">Language</span>
+            <span className={cs.cardSubtitle}>Language</span>
             <span className="she-text">
               Your language of choice for system text
             </span>
