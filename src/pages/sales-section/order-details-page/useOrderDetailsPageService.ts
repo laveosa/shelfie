@@ -131,7 +131,7 @@ export default function useOrderDetailsPageService(handleCardAction) {
         const newDiscount = { ...res.data, isSelected: true };
         const updatedList = [newDiscount, ...state.discountsList];
         dispatch(actions.refreshDiscountsList(updatedList));
-
+        handleCardAction("selectDiscountCard");
         applyDiscountsToOrderHandler(
           orderId,
           { discounts: [res.data.discountId] },

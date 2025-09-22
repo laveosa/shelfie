@@ -29,7 +29,10 @@ function App() {
           <SidebarProvider>
             <SheSidebar />
             <SheAppContextMainWrapper>
-              <SheHeader user={state.userDetails} />
+              <SheHeader
+                user={state.user}
+                isUserMenuLoading={state.isUserMenuLoading}
+              />
               <div className="contentPage">
                 <Outlet />
               </div>

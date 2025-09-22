@@ -1,5 +1,5 @@
 export interface OrderSubtotalModel {
   subtotal: number;
-  total: number;
+  profit: number;
   totalWithDiscountAndShipment: number;
 }

@@ -5,7 +5,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { SheUserMenu } from "@/components/complex/she-user-menu/SheUserMenu.tsx";
 import { ISheHeader } from "@/const/interfaces/complex-components/ISheHeader.ts";
 
-export default function SheHeader({ user }: ISheHeader) {
+export default function SheHeader({ user, isUserMenuLoading }: ISheHeader) {
   const [searchValue, setSearchValue] = useState("");
   const [isSearching, setIsSearching] = useState(false);
 
@@ -45,7 +45,7 @@ export default function SheHeader({ user }: ISheHeader) {
         {/*  disabled={isSearching}*/}
         {/*/>*/}
       </div>
-      <SheUserMenu user={user} />
+      <SheUserMenu isLoading={isUserMenuLoading} user={user} />
     </div>
   );
 }
