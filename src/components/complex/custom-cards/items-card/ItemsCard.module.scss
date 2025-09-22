@@ -109,13 +109,12 @@
 
 // ======================================================== MINIMIZED
 
-:global(.sheCardMinimized).itemsCard {
+.itemsCard:global(.sheCardMinimized) {
   min-width: 47px !important;
   max-width: 47px !important;
 
   .listItemText {
-    font-size: 0;
-    opacity: 0;
+    opacity: 0 !important;
   }
 }
 

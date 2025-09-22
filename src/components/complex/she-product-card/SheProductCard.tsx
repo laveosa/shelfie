@@ -45,13 +45,17 @@ export default function SheProductCard({
   onSecondaryButtonClick,
   onIsMinimizedChange,
 }: ISheProductCard) {
-  const [_isMinimized, setIsMinimized] = useState<boolean>(isMinimized);
+  const [_isMinimized, setIsMinimized] = useState<boolean>(null);
   const cardContentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!_.isNil(isMinimized) && isMinimized !== _isMinimized)
       setIsMinimized(isMinimized);
   }, [isMinimized]);
+
+  useEffect(() => {
+    onIsMinimizedChange?.(_isMinimized);
+  }, [_isMinimized]);
 
   // useEffect(() => {
   //   const element = cardContentRef.current;
@@ -70,15 +74,12 @@ export default function SheProductCard({
   // }, [children]);
 
   function onMinimizeCardHandler() {
-    setIsMinimized((prev) => {
-      onIsMinimizedChange?.(!prev);
-      return !prev;
-    });
+    setIsMinimized((prev) => !prev);
   }
 
   return (
     <div
-      className={`${className || ""} ${cs.sheProductCard || ""} ${view === "card" ? cs.card : ""} ${_isMinimized ? "sheCardMinimized" : ""}`}
+      className={`${className} ${cs.sheProductCard || ""} ${view === "card" ? cs.card : ""} ${_isMinimized ? "sheCardMinimized" : ""}`}
       style={{
         width,
         minWidth,

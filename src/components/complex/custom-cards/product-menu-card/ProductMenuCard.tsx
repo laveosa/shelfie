@@ -1,33 +1,18 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import React from "react";
-import { useTranslation } from "react-i18next";
-import {
-  Banknote,
-  Boxes,
-  FileSpreadsheet,
-  FileText,
-  ImagesIcon,
-  Layers2,
-  ReceiptEuro,
-  ReceiptEuroIcon,
-  RotateCcwSquare,
-  Ruler,
-  Shirt,
-  ShoppingBag,
-  ShoppingCart,
-  SlidersHorizontal,
-  Truck,
-} from "lucide-react";
+import React, { JSX } from "react";
+import _ from "lodash";
 
+import cs from "./ProductMenuCard.module.scss";
+import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
+import { Badge } from "@/components/ui/badge.tsx";
+import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
+import { ContextSidebarService } from "@/utils/services/ContextSidebarService.ts";
+import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import {
   CollectionConfig,
   IProductMenuCard,
   MenuItem,
 } from "@/const/interfaces/complex-components/custom-cards/IProductMenuCard.ts";
-import { Badge } from "@/components/ui/badge.tsx";
-import cs from "./ProductMenuCard.module.scss";
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
-import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 
 export default function ProductMenuCard({
   isLoading,
@@ -37,147 +22,10 @@ export default function ProductMenuCard({
   counter,
   collectionConfig,
   ...props
-}: IProductMenuCard) {
-  const { t } = useTranslation();
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const productMenuItems: MenuItem[] = [
-    {
-      id: "basic_data",
-      counterId: "basic_data",
-      icon: <FileText />,
-      label: t("ProductMenu.BasicData"),
-      path: NavUrlEnum.PRODUCT_BASIC_DATA,
-    },
-    {
-      id: "gallery",
-      counterId: "gallery",
-      icon: <ImagesIcon />,
-      label: t("ProductMenu.Gallery"),
-      path: NavUrlEnum.PRODUCT_GALLERY,
-    },
-    {
-      id: "variants",
-      counterId: "variants",
-      icon: <Layers2 />,
-      label: t("ProductMenu.Variants"),
-      path: NavUrlEnum.MANAGE_VARIANTS,
-    },
-    {
-      id: "attributes",
-      counterId: "attributes",
-      icon: <SlidersHorizontal />,
-      label: t("ProductMenu.Attributes"),
-      path: NavUrlEnum.ATTRIBUTES,
-    },
-    {
-      id: "size_chart",
-      icon: <Ruler />,
-      label: t("ProductMenu.SizeChart"),
-      path: NavUrlEnum.SIZE_CHART,
-    },
-    {
-      id: "purchase",
-      icon: <ReceiptEuroIcon />,
-      label: t("ProductMenu.Purchase"),
-      path: NavUrlEnum.SIZE_CHART,
-    },
-  ];
-
-  const purchaseMenuItems: MenuItem[] = [
-    {
-      id: "supplier",
-      icon: <Boxes />,
-      label: t("ProductMenu.Supplier"),
-      path: NavUrlEnum.SUPPLIER,
-    },
-    {
-      id: "purchase_products",
-      counterId: "productsAmount",
-      icon: <Shirt />,
-      label: t("ProductMenu.PurchaseProducts"),
-      path: NavUrlEnum.PURCHASE_PRODUCTS,
-    },
-    {
-      id: "margins",
-      icon: <ReceiptEuro />,
-      label: t("ProductMenu.Margins"),
-      path: NavUrlEnum.MARGINS,
-    },
-    {
-      id: "invoices",
-      counterId: "invoicesAmount",
-      icon: <FileSpreadsheet />,
-      label: t("ProductMenu.Invoices"),
-      path: NavUrlEnum.INVOICES,
-    },
-  ];
-
-  const salesMenuItems: MenuItem[] = [
-    {
-      id: "orders",
-      icon: <ShoppingCart />,
-      label: t("ProductMenu.Orders"),
-      path: NavUrlEnum.ORDERS,
-    },
-    {
-      id: "open_carts",
-      icon: <ShoppingBag />,
-      label: t("ProductMenu.OpenCarts"),
-      path: NavUrlEnum.OPEN_CARTS,
-    },
-    {
-      id: "shipments",
-      icon: <Truck />,
-      label: t("ProductMenu.Shipments"),
-      path: NavUrlEnum.SHIPMENTS,
-    },
-    {
-      id: "returns",
-      icon: <RotateCcwSquare />,
-      label: t("ProductMenu.Returns"),
-      path: NavUrlEnum.RETURNS,
-    },
-    {
-      id: "payments",
-      icon: <Banknote />,
-      label: t("ProductMenu.Payments"),
-      path: NavUrlEnum.PAYMENTS,
-    },
-  ];
-
-  const orderMenuItems: MenuItem[] = [
-    {
-      id: "details",
-      icon: <ShoppingCart />,
-      label: t("ProductMenu.Details"),
-      path: NavUrlEnum.ORDER_DETAILS,
-    },
-    {
-      id: "products",
-      counterId: "products",
-      icon: <ShoppingBag />,
-      label: t("ProductMenu.Products"),
-      path: NavUrlEnum.ORDER_PRODUCTS,
-    },
-    {
-      id: "shipment",
-      icon: <Truck />,
-      label: t("ProductMenu.Shipment"),
-      path: NavUrlEnum.ORDER_SHIPMENT,
-    },
-    {
-      id: "payment",
-      icon: <Banknote />,
-      label: t("ProductMenu.Payment"),
-      path: NavUrlEnum.ORDER_PAYMENT,
-    },
-  ];
-
+}: IProductMenuCard): JSX.Element {
   const collectionConfigs: Record<string, CollectionConfig> = {
     products: {
-      menuItems: productMenuItems,
+      menuItems: ContextSidebarService.getProductMenuItems(),
       defaultEnabledItem: "basic_data",
       pathBase: NavUrlEnum.PRODUCTS,
       urlBuilder: (path: string, itemId?: string) =>
@@ -185,7 +33,7 @@ export default function ProductMenuCard({
       disableItemsWithoutId: true,
     },
     purchases: {
-      menuItems: purchaseMenuItems,
+      menuItems: ContextSidebarService.getPurchaseMenuItems(),
       defaultEnabledItem: "supplier",
       pathBase: NavUrlEnum.PRODUCTS,
       urlBuilder: (path: string, itemId?: string) =>
@@ -193,13 +41,13 @@ export default function ProductMenuCard({
       disableItemsWithoutId: true,
     },
     sales: {
-      menuItems: salesMenuItems,
+      menuItems: ContextSidebarService.getSalesMenuItems(),
       pathBase: NavUrlEnum.ORDERS,
       urlBuilder: (path: string) => `${NavUrlEnum.SALES}${path}`,
       disableItemsWithoutId: false,
     },
     order: {
-      menuItems: orderMenuItems,
+      menuItems: ContextSidebarService.getOrderMenuItems(),
       defaultEnabledItem: "order",
       pathBase: NavUrlEnum.ORDER_DETAILS,
       urlBuilder: (path: string, itemId?: string) =>
@@ -215,49 +63,6 @@ export default function ProductMenuCard({
     return null;
   }
 
-  function handleMenuItemClick(path: string) {
-    const url = config.urlBuilder(path, itemId);
-    navigate(url);
-  }
-
-  const renderMenuItem = ({ id, counterId, icon, label, path }: MenuItem) => {
-    const fullPath = config.urlBuilder(path, "");
-    const pathBase = fullPath.replace(/\/$/, "");
-    const currentPath = location.pathname.replace(/\/$/, "");
-    const isSelected =
-      currentPath.startsWith(pathBase) || currentPath === pathBase;
-
-    const hasDynamicId = /\d+/.test(location.pathname);
-
-    let isDisabled = false;
-
-    if (config.disableItemsWithoutId) {
-      if (hasDynamicId) {
-        isDisabled = isSelected;
-      } else {
-        isDisabled = config.defaultEnabledItem
-          ? id !== config.defaultEnabledItem
-          : false;
-      }
-    }
-
-    return (
-      <div
-        className={`${cs.productMenuItem} ${isSelected ? cs.selected : ""} ${isDisabled ? cs.disabled : ""}`}
-        onClick={() => !isDisabled && handleMenuItemClick(path)}
-        key={id}
-      >
-        <div className={cs.iconContainer}>{icon}</div>
-        <div className={cs.textContainer}>
-          <span className="she-text">{label}</span>
-          {counter && counterId && counter[counterId] !== undefined && (
-            <Badge className={cs.itemBadge}>{counter[counterId] ?? 0}</Badge>
-          )}
-        </div>
-      </div>
-    );
-  };
-
   return (
     <div>
       <SheProductCard
@@ -271,9 +76,71 @@ export default function ProductMenuCard({
         {...props}
       >
         <div className={cs.productMenuItems}>
-          {config.menuItems.map(renderMenuItem)}
+          {config.menuItems.map((item, idx) => (
+            <ContextSidebarMenuItem
+              key={`${idx}_${itemId}`}
+              {...item}
+              itemId={itemId}
+              config={config}
+              counter={counter}
+            />
+          ))}
         </div>
       </SheProductCard>
+    </div>
+  );
+}
+
+function ContextSidebarMenuItem({
+  id,
+  itemId,
+  counterId,
+  icon,
+  label,
+  labelTransKey,
+  path,
+  config,
+  counter,
+}: MenuItem): JSX.Element {
+  const { translate } = useAppTranslation();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const fullPath = config.urlBuilder(NavUrlEnum[path], "");
+  const pathBase = fullPath.replace(/\/$/, "");
+  const currentPath = location.pathname.replace(/\/$/, "");
+  const isSelected =
+    currentPath.startsWith(pathBase) || currentPath === pathBase;
+  const hasDynamicId = /\d+/.test(location.pathname);
+  let isDisabled = false;
+
+  if (config.disableItemsWithoutId) {
+    if (hasDynamicId) {
+      isDisabled = isSelected;
+    } else {
+      isDisabled = config.defaultEnabledItem
+        ? id !== config.defaultEnabledItem
+        : false;
+    }
+  }
+
+  function handleMenuItemClick(path: string) {
+    const url = config.urlBuilder(path, itemId);
+    navigate(url);
+  }
+
+  return (
+    <div
+      className={`${cs.productMenuItem} ${isSelected ? cs.selected : ""} ${isDisabled ? cs.disabled : ""}`}
+      onClick={() => !isDisabled && handleMenuItemClick(NavUrlEnum[path])}
+      key={id}
+    >
+      <div className={cs.iconContainer}>{icon}</div>
+      <div className={cs.textContainer}>
+        <span className="she-text">{translate(labelTransKey, {}, label)}</span>
+        {counter && counterId && !_.isNil(counter[counterId]) && (
+          <Badge className={cs.itemBadge}>{counter[counterId] ?? 0}</Badge>
+        )}
+      </div>
     </div>
   );
 }

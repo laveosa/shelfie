@@ -1,5 +1,7 @@
 import React from "react";
+
 import { CounterModel } from "@/const/models/CounterModel.ts";
+import { LucideIconType } from "@/const/types/LucideIconType.ts";
 
 export interface IProductMenuCard {
   isLoading?: boolean;
@@ -13,11 +15,16 @@ export interface IProductMenuCard {
 }
 
 export interface MenuItem {
+  key?: string;
+  itemId?: any;
   id?: string;
   counterId?: string;
-  icon?: React.ReactElement;
+  icon?: React.ReactElement | string | LucideIconType;
   label?: string;
+  labelTransKey?: string;
   path?: string;
+  config?: CollectionConfig;
+  counter?: CounterModel;
 }
 
 export interface CollectionConfig {

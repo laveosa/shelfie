@@ -33,10 +33,6 @@ export default function ItemsCard({
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
-    setTimeout(() => setAnimationFlag(true));
-  }, []);
-
-  useEffect(() => {
     const isMinimizedStorageValue: boolean = StorageService.getLocalStorage(
       isMinimizedStorageKey,
     );
@@ -46,6 +42,8 @@ export default function ItemsCard({
       isMinimizedStorageValue !== _isMinimized
     )
       setIsMinimized(isMinimizedStorageValue);
+
+    setTimeout(() => setAnimationFlag(true));
   }, []);
 
   useEffect(() => {

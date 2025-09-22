@@ -1,0 +1,32 @@
+[
+  {
+    "id": "supplier",
+    "icon": "Boxes",
+    "label": "Supplier",
+    "labelTransKey": "ProductMenu.Supplier",
+    "path": "SUPPLIER"
+  },
+  {
+    "id": "purchase_products",
+    "counterId": "productsAmount",
+    "icon": "Shirt",
+    "label": "Purchase Products",
+    "labelTransKey": "ProductMenu.PurchaseProducts",
+    "path": "PURCHASE_PRODUCTS"
+  },
+  {
+    "id": "margins",
+    "icon": "ReceiptEuro",
+    "label": "Margins",
+    "labelTransKey": "ProductMenu.Margins",
+    "path": "MARGINS"
+  },
+  {
+    "id": "invoices",
+    "counterId": "invoicesAmount",
+    "icon": "FileSpreadsheet",
+    "label": "Invoices",
+    "labelTransKey": "ProductMenu.Invoices",
+    "path": "INVOICES"
+  }
+]
