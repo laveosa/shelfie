@@ -1,6 +1,6 @@
 import { UserModel } from "@/const/models/UserModel.ts";
 
-export interface ISheHeader {
+export interface ISheUserMenu {
+  isLoading?: boolean;
   user?: UserModel;
-  isUserMenuLoading?: boolean;
 }

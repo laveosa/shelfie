@@ -86,12 +86,13 @@ export function ProfilePage() {
             {/*</div>*/}
             <SheFileUploader
               className={cs.fileUploader}
-              user={appState.userDetails}
-              avatarImage={appState.userDetails?.thumbnail}
+              user={appState.user}
+              avatarImage={appState.user?.thumbnail}
               uploadAreaText="Upload avatar"
               uploadAreaSubtext="Click here or drag and drop image"
               contextName="user"
-              contextId={appState.userDetails?.userId}
+              maxFiles={1}
+              contextId={appState.user?.userId}
               onUpload={(data) => service.uploadPhotoHandler(data)}
             />
           </div>
@@ -107,7 +108,7 @@ export function ProfilePage() {
           <div className={cs.profilePageContentBlock}>
             <ContactInformationForm
               countryCodes={state.countryCodes}
-              data={appState.userDetails}
+              data={appState.user}
               onSubmit={(data) =>
                 service.updateUserContactInformationHandler(data)
               }
@@ -144,7 +145,7 @@ export function ProfilePage() {
           <div className={cs.profilePageContentBlock}>
             <SheSelect
               items={convertLanguagesToSelectItems(state.languagesList)}
-              selected={appState.userDetails?.localeCode}
+              selected={appState.user?.localeCode}
               hideFirstOption
               label="Language"
               fullWidth

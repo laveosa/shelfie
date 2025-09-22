@@ -210,7 +210,7 @@ export default function OrderConfigurationCard({
           </div>
           <div className={cs.orderSummaryItem}>
             <span className="she-text">{t("OrderForm.Labels.Profit")}</span>
-            <span className="she-text">{order?.orderSubTotal?.total}</span>
+            <span className="she-text">{order?.orderSubTotal?.profit}</span>
           </div>
         </div>
         <Separator />

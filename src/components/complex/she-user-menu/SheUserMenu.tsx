@@ -27,8 +27,10 @@ import useDialogService from "@/utils/services/dialog/DialogService.ts";
 import useAppService from "@/useAppService.ts";
 import { getInitials } from "@/utils/helpers/quick-helper.ts";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ISheUserMenu } from "@/const/interfaces/complex-components/ISheUserMenu.ts";
+import { Skeleton } from "@/components/ui/skeleton.tsx";
 
-export function SheUserMenu({ user }) {
+export function SheUserMenu({ user, isLoading }: ISheUserMenu) {
   const { logOut } = useAppService();
   const navigate = useNavigate();
   const { openConfirmationDialog } = useDialogService();
@@ -57,29 +59,40 @@ export function SheUserMenu({ user }) {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Avatar className="h-8 w-8 rounded-lg">
-                {user?.thumbnail && (
-                  <AvatarImage src={user.thumbnail} alt="avatar" />
-                )}
+              {isLoading ? (
+                <div className={cs.skeletonBlock}>
+                  <Skeleton className={cs.skeletonRound} />
+                  <div className={cs.skeletonBars}>
+                    <Skeleton className={cs.skeletonLongBar} />
+                    <Skeleton className={cs.skeletonShortBar} />
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <Avatar className="h-8 w-8 rounded-lg">
+                    {user?.thumbnail && (
+                      <AvatarImage src={user.thumbnail} alt="avatar" />
+                    )}
 
-                <AvatarFallback className="rounded-lg">
-                  {getInitials(undefined, user?.firstName, user?.lastName)}
-                </AvatarFallback>
-              </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <img src="" alt="" />
-                <span
-                  className={`${cs.userText} she-text`}
-                >{`${user?.firstName} ${user?.lastName}`}</span>
-                <span className={`${cs.userText} she-subtext`}>
-                  {user?.email}
-                </span>
-              </div>
-              <SheIcon
-                icon={EllipsisVertical}
-                maxWidth="24px"
-                color="#71717A"
-              />
+                    <AvatarFallback className="rounded-lg">
+                      {getInitials(undefined, user?.firstName, user?.lastName)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="grid flex-1 text-left text-sm leading-tight">
+                    <span
+                      className={`${cs.userText} she-text`}
+                    >{`${user?.firstName} ${user?.lastName}`}</span>
+                    <span className={`${cs.userText} she-subtext`}>
+                      {user?.email}
+                    </span>
+                  </div>
+                  <SheIcon
+                    icon={EllipsisVertical}
+                    maxWidth="24px"
+                    color="#71717A"
+                  />
+                </>
+              )}
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
