@@ -15,7 +15,6 @@ export interface IProductMenuCard {
 }
 
 export interface MenuItem {
-  key?: string;
   itemId?: any;
   id?: string;
   counterId?: string;

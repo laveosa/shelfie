@@ -2,9 +2,9 @@
 
 .sheContextSidebar {
   display: flex;
-  gap: vars.$paddingStandard;
   padding: vars.$paddingSmall;
   background-color: vars.$secondaryBg;
+  min-height: calc(100vh - 52px);
 
   .sheContextSidebarMenuAndListContainer {
     display: flex;
@@ -20,6 +20,6 @@
   }
 
   .sheContextSidebarContextContainer {
-    padding: vars.$paddingSmall;
+    padding: 0 vars.$paddingSmall;
   }
 }

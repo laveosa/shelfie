@@ -38,7 +38,7 @@ export class ContextSidebarService {
   private static getIconByName(
     iconName: string,
     props?: React.ComponentProps<"svg">,
-  ): React.ReactElement | null {
+  ): React.ReactElement | any {
     const IconComponent = Icons[
       iconName as LucideIconType
     ] as React.ComponentType<any>;
@@ -48,6 +48,6 @@ export class ContextSidebarService {
       return null;
     }
 
-    return React.createElement(IconComponent, props);
+    return props ? React.createElement(IconComponent, props) : IconComponent;
   }
 }

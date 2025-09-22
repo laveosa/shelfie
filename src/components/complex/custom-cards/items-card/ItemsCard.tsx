@@ -29,7 +29,7 @@ export default function ItemsCard({
   const [_isMinimized, setIsMinimized] = useState<boolean>(null);
   const [_animationFlag, setAnimationFlag] = useState<boolean>(false);
 
-  const isMinimizedStorageKey = "isMinimizedStorageKey";
+  const isMinimizedStorageKey = "isMinimizedItemsCardStorageKey";
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
@@ -58,6 +58,8 @@ export default function ItemsCard({
 
   // ==================================================================== EVENT HANDLERS
   function onClickHandler(item: IItemsCardItem) {
+    if (_.isNil(selectedId) || selectedId == item.id) return;
+
     setSelectedId(item.id);
     onAction?.({ item: item.originalItem, type: item.type });
   }
@@ -128,12 +130,7 @@ export default function ItemsCard({
                 onClick={() => onClickHandler(item)}
               >
                 {_isMinimized ? (
-                  <SheTooltip
-                    text={item.name}
-                    side="right"
-                    align="center"
-                    delayDuration={200}
-                  >
+                  <SheTooltip text={item.name} side="right" align="center">
                     {_getItemInnerLayout(item)}
                   </SheTooltip>
                 ) : (
