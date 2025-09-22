@@ -158,8 +158,8 @@ export function marginProductsGridColumns(
       maxSize: 460,
       header: () => (
         <div className="flex items-center">
-          <span style={{ marginRight: "75px" }}>Tax</span>
-          <span style={{ marginRight: "65px" }}>Margin Price</span>
+          <span style={{ marginLeft: "3px", marginRight: "92px" }}>Tax</span>
+          <span style={{ marginRight: "84px" }}>Margin Price</span>
           <span>Quantity</span>
         </div>
       ),

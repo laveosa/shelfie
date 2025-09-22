@@ -132,6 +132,7 @@ export function OrderDetailsPage() {
         <div ref={createRefCallback("customerCard")}>
           <CustomerCard
             isLoading={state.isCustomerCardLoading}
+            showCloseButton={true}
             customer={state.selectedCustomer}
             onAction={onAction}
           />

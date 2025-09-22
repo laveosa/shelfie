@@ -102,7 +102,7 @@ export default function PurchaseProductsForm({
                 min={0}
                 minWidth="100px"
                 maxWidth="100px"
-                placeholder="Netto price"
+                placeholder="0"
               />
             </SheFormItem>
           )}
@@ -182,7 +182,7 @@ export default function PurchaseProductsForm({
                 width="80px"
                 minWidth="80px"
                 maxWidth="80px"
-                placeholder="Quantity"
+                placeholder="0"
               />
             </SheFormItem>
           )}
