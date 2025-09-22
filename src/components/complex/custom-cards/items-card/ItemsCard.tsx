@@ -27,10 +27,15 @@ export default function ItemsCard({
   const [_items, setItems] = useState<IItemsCardItem[]>(null);
   const [_selectedId, setSelectedId] = useState<number>(null);
   const [_isMinimized, setIsMinimized] = useState<boolean>(null);
+  const [_animationFlag, setAnimationFlag] = useState<boolean>(false);
 
   const isMinimizedStorageKey = "isMinimizedStorageKey";
 
   // ==================================================================== SIDE EFFECTS
+  useEffect(() => {
+    setTimeout(() => setAnimationFlag(true));
+  }, []);
+
   useEffect(() => {
     const isMinimizedStorageValue: boolean = StorageService.getLocalStorage(
       isMinimizedStorageKey,
@@ -93,7 +98,7 @@ export default function ItemsCard({
   // ==================================================================== LAYOUT
   return (
     <SheProductCard
-      className={cs.itemsCard}
+      className={`${cs.itemsCard} ${_animationFlag ? cs.itemsCardWithAnimation : ""}`}
       headerClassName={cs.itemsCardHeader}
       title={title}
       loading={isLoading}
