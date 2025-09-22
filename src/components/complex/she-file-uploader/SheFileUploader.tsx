@@ -1,5 +1,10 @@
 import { CloudUploadIcon, FileIcon, Trash2Icon } from "lucide-react";
-import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from "react";
 
 import {
   Dropzone,
@@ -16,6 +21,7 @@ import { UploadFileModel } from "@/const/models/UploadFileModel.ts";
 import cs from "./SheFileUploader.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
+import { getInitials } from "@/utils/helpers/quick-helper.ts";
 
 interface UploadingFile {
   id: string;
@@ -47,7 +53,8 @@ export const SheFileUploader = forwardRef<SheFileUploaderRef, ISheFileUploader>(
       viewMode = "image", // default to file mode
       acceptedFileTypes = {}, // empty object means all files
       maxFiles = 50,
-      previewImage,
+      user,
+      avatarImage,
       uploadAreaText = "Upload images",
       uploadAreaSubtext = "Click here or drag and drop images to upload",
       onUpload,
@@ -281,22 +288,17 @@ export const SheFileUploader = forwardRef<SheFileUploaderRef, ISheFileUploader>(
 
         <Dropzone {...dropzone}>
           <div style={{ display: "flex", gap: "20px" }}>
-            {previewImage && (
-              <div
-                style={{
-                  width: "180px",
-                  height: "140px",
-                }}
-              >
+            {avatarImage ? (
+              <div className={cs.avatarImageContainer}>
                 <img
-                  src={previewImage}
+                  src={avatarImage}
                   alt="preview"
-                  style={{
-                    width: "180px",
-                    height: "140px",
-                    borderRadius: "10px",
-                  }}
+                  className={cs.avatarImage}
                 />
+              </div>
+            ) : (
+              <div className={cs.avatarInitials}>
+                {getInitials(undefined, user?.firstName, user?.lastName)}
               </div>
             )}
             <DropZoneArea>

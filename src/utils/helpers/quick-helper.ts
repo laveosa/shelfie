@@ -106,10 +106,21 @@ export function formatDateRow(
   }
 }
 
-export function getInitials(name: string) {
-  const names = name?.trim().split(" ");
-  const initials = names?.map((n) => n.charAt(0).toUpperCase()).slice(0, 2);
-  return initials?.join("");
+export function getInitials(
+  name?: string,
+  firstName?: string,
+  lastName?: string,
+): string {
+  if (name) {
+    const names = name.trim().split(" ");
+    const initials = names.map((n) => n.charAt(0).toUpperCase()).slice(0, 2);
+    return initials.join("");
+  }
+
+  const firstInitial = firstName?.trim().charAt(0).toUpperCase() ?? "";
+  const lastInitial = lastName?.trim().charAt(0).toUpperCase() ?? "";
+
+  return (firstInitial + lastInitial).trim();
 }
 
 export function addGridRowColor(

@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { Trash2 } from "lucide-react";
 
 import cs from "./ProfilePage.module.scss";
 import { Separator } from "@/components/ui/separator.tsx";
@@ -15,13 +16,15 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import useProfilePageService
   from "@/pages/profile-page/useProfilePageService.ts";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
-import image from "@/assets/images/AuthLogo.png";
 import ContactInformationForm
   from "@/components/forms/contact-information-form/ContactInformationForm.tsx";
-import { Trash2 } from "lucide-react";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import PasswordChangeForm
   from "@/components/forms/password-change-form/PasswordChangeForm.tsx";
+import {
+  ISheSelectItem
+} from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
+import { LanguageModel } from "@/const/models/LanguageModel.ts";
 
 export function ProfilePage() {
   const state = useAppSelector<IProductsPageSlice>(StoreSliceEnum.PROFILE);
@@ -30,7 +33,26 @@ export function ProfilePage() {
 
   useEffect(() => {
     service.getCountryCodesHandler();
+    service.getLanguagesListHandler();
   }, []);
+
+  function svgStringToComponent(svgString: string): React.FC<any> {
+    return (props) => (
+      <span dangerouslySetInnerHTML={{ __html: svgString }} {...props} />
+    );
+  }
+
+  function convertLanguagesToSelectItems(
+    data: LanguageModel[],
+  ): ISheSelectItem<any>[] {
+    return data?.map(
+      (item): ISheSelectItem<any> => ({
+        value: item.localeCode,
+        text: item.name,
+        icon: svgStringToComponent(item.flagIcon),
+      }),
+    );
+  }
 
   return (
     <div className={cs.profilePage}>
@@ -64,9 +86,13 @@ export function ProfilePage() {
             {/*</div>*/}
             <SheFileUploader
               className={cs.fileUploader}
-              previewImage={image}
+              user={appState.userDetails}
+              avatarImage={appState.userDetails?.thumbnail}
               uploadAreaText="Upload avatar"
               uploadAreaSubtext="Click here or drag and drop image"
+              contextName="user"
+              contextId={appState.userDetails?.userId}
+              onUpload={(data) => service.uploadPhotoHandler(data)}
             />
           </div>
         </div>
@@ -81,7 +107,10 @@ export function ProfilePage() {
           <div className={cs.profilePageContentBlock}>
             <ContactInformationForm
               countryCodes={state.countryCodes}
-              data={state.userDetails}
+              data={appState.userDetails}
+              onSubmit={(data) =>
+                service.updateUserContactInformationHandler(data)
+              }
             />
           </div>
         </div>
@@ -99,7 +128,9 @@ export function ProfilePage() {
             </div>
           </div>
           <div className={cs.profilePageContentBlock}>
-            <PasswordChangeForm />
+            <PasswordChangeForm
+              onSubmit={(data) => service.updateUserPasswordHandler(data)}
+            />
           </div>
         </div>
         <Separator />
@@ -111,7 +142,13 @@ export function ProfilePage() {
             </span>
           </div>
           <div className={cs.profilePageContentBlock}>
-            <SheSelect label="Language" fullWidth />
+            <SheSelect
+              items={convertLanguagesToSelectItems(state.languagesList)}
+              selected={appState.userDetails?.localeCode}
+              hideFirstOption
+              label="Language"
+              fullWidth
+            />
           </div>
         </div>
         <Separator />

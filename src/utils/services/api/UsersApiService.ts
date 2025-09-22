@@ -5,6 +5,7 @@ import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { ApiConfigurationService } from "@/utils/services/api/ApiConfigurationService.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import { UserModel } from "@/const/models/UserModel.ts";
+import { PasswordModel } from "@/const/models/PasswordModel.ts";
 
 const apiConfig = new ApiConfigurationService(ApiUrlEnum.USERS_BASE_URL);
 
@@ -76,6 +77,20 @@ export const UsersApiService = createApi({
       query: () => ({
         url: `${ApiUrlEnum.USERS}/info`,
         responseType: "json",
+      }),
+    }),
+    updateUserContactInformation: apiConfig.createMutation<void, any>(builder, {
+      query: (model: UserModel) => ({
+        url: `${ApiUrlEnum.USERS}/`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+    }),
+    updateUserPassword: apiConfig.createMutation<void, any>(builder, {
+      query: (model: PasswordModel) => ({
+        url: `${ApiUrlEnum.USERS}/change-password`,
+        method: "PATCH",
+        body: JSON.stringify(model),
       }),
     }),
   }),

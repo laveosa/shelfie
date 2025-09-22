@@ -4,7 +4,6 @@ import { AppSliceActions as action } from "@/state/slices/AppSlice.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { UserModel } from "@/const/models/UserModel.ts";
 import UsersApiHooks from "@/utils/services/api/UsersApiService.ts";
-import { ProfilePageSliceActions as actions } from "@/state/slices/ProfilePageSlice.ts";
 
 export default function useAppService() {
   const state = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
@@ -23,7 +22,7 @@ export default function useAppService() {
 
   function getUserDetailsHandler() {
     getUserDetails().then((res) => {
-      dispatch(actions.refreshUserDetails(res.data));
+      dispatch(action.refreshUserDetails(res.data));
     });
   }
 

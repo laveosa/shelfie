@@ -22,18 +22,9 @@ const contactInformationFormScheme: z.ZodObject<
     .nonempty(nonemptyMessage)
     .email("Invalid email format")
     .max(100, "Max value length 100"),
-  newEmail: z
-    .string()
-    .nonempty(nonemptyMessage)
-    .email("Invalid email format")
-    .max(100, "Max value length 100"),
-  newCountryCode: z.number(),
+  countryPhoneCode: z.string(),
+  countryId: z.number(),
   phoneNumber: z
-    .string()
-    .nonempty(nonemptyMessage)
-    .min(5, "Min phone number length 5")
-    .max(12, "Max phone number length 12"),
-  newPhoneNumber: z
     .string()
     .nonempty(nonemptyMessage)
     .min(5, "Min phone number length 5")

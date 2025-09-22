@@ -6,8 +6,8 @@ import {
   UserRoundCog,
   UserRoundPlus,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,17 +25,10 @@ import cs from "./SheUserMenu.module.scss";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
 import useAppService from "@/useAppService.ts";
-import { useNavigate } from "react-router-dom";
+import { getInitials } from "@/utils/helpers/quick-helper.ts";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-export function SheUserMenu({
-  user,
-}: {
-  user: {
-    name: string;
-    email: string;
-    avatar: string;
-  };
-}) {
+export function SheUserMenu({ user }) {
   const { logOut } = useAppService();
   const navigate = useNavigate();
   const { openConfirmationDialog } = useDialogService();
@@ -65,13 +58,21 @@ export function SheUserMenu({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                {user?.thumbnail && (
+                  <AvatarImage src={user.thumbnail} alt="avatar" />
+                )}
+
+                <AvatarFallback className="rounded-lg">
+                  {getInitials(undefined, user?.firstName, user?.lastName)}
+                </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className={`${cs.userText} she-text`}>{user.name}</span>
+                <img src="" alt="" />
+                <span
+                  className={`${cs.userText} she-text`}
+                >{`${user?.firstName} ${user?.lastName}`}</span>
                 <span className={`${cs.userText} she-subtext`}>
-                  {user.email}
+                  {user?.email}
                 </span>
               </div>
               <SheIcon

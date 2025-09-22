@@ -33,6 +33,12 @@ export default function PasswordChangeForm({
     form.reset(data);
   }, [data]);
 
+  function onSubmitHandler(data: PasswordModel) {
+    onSubmit(data);
+    form.reset({}, { keepErrors: false, keepDirty: false });
+    setTimeout(() => form.clearErrors(), 0);
+  }
+
   function onErrorHandler(model) {
     console.log(model);
   }
@@ -50,7 +56,7 @@ export default function PasswordChangeForm({
       }}
       hideSecondaryBtn
       footerClassName={cs.formFooter}
-      onSubmit={onSubmit}
+      onSubmit={(data) => onSubmitHandler(data)}
       onError={onErrorHandler}
       onCancel={onCancel}
     >
@@ -60,18 +66,8 @@ export default function PasswordChangeForm({
           <SheInput
             label="Password"
             value={field.value}
+            type="password"
             placeholder="enter your first name..."
-            fullWidth
-          />
-        )}
-      />
-      <SheFormField
-        name="lastName"
-        render={({ field }) => (
-          <SheInput
-            label="Last Name"
-            value={field.value}
-            placeholder="enter old password..."
             fullWidth
           />
         )}
@@ -82,6 +78,7 @@ export default function PasswordChangeForm({
           <SheInput
             label="New Password"
             value={field.value}
+            type="password"
             placeholder="enter new password..."
             fullWidth
           />
@@ -91,8 +88,10 @@ export default function PasswordChangeForm({
         name="confirmPassword"
         render={({ field }) => (
           <SheInput
+            label="Confirm Password"
             className={cs.phoneNumber}
             value={field.value}
+            type="password"
             placeholder="enter new password..."
             fullWidth
           />

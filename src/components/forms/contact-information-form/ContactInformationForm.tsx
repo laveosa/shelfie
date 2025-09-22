@@ -36,12 +36,12 @@ export default function ContactInformationForm({
     if (data) {
       form.reset({
         ...data,
-        newCountryCode: data.newCountryCode ?? countryCodes?.[0]?.countryId,
+        countryId: data.countryId ?? countryCodes?.[0]?.countryId,
       });
     } else {
       form.reset({
         ...ContactInformationModelDefaultModel,
-        newCountryCode: countryCodes?.[0]?.countryId,
+        countryId: countryCodes?.[0]?.countryId,
       });
     }
   }, [data, countryCodes, form]);
@@ -113,7 +113,7 @@ export default function ContactInformationForm({
         )}
       />
       <SheFormField
-        name="newEmail"
+        name="email"
         render={({ field }) => (
           <SheInput
             label="Email"
@@ -126,19 +126,19 @@ export default function ContactInformationForm({
       <div className={cs.phoneNumberBlock}>
         <div className={cs.countryCode}>
           <SheFormField
-            name="newCountryCode"
+            name="countryId"
             render={({ field }) => (
               <SheSelect
                 label="Phone"
                 items={convertCountryCodeToSelectItems(countryCodes)}
-                selected={field.value || countryCodes?.[0]}
+                selected={field.value}
                 hideFirstOption
               />
             )}
           />
         </div>
         <SheFormField
-          name="newPhoneNumber"
+          name="phoneNumber"
           render={({ field }) => (
             <SheInput
               className={cs.phoneNumber}

@@ -3,8 +3,7 @@ import { PasswordModel } from "@/const/models/PasswordModel.ts";
 
 const nonemptyMessage = "field is required";
 
-const passwordRegex =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{9,}$/;
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{9,}$/;
 
 const PasswordChangeFormScheme: ZodType<PasswordModel> = z
   .object({
