@@ -102,8 +102,8 @@ export default function ItemsCard({
       headerClassName={cs.itemsCardHeader}
       title={title}
       loading={isLoading}
-      minWidth="260px"
-      maxWidth="260px"
+      minWidth="220px"
+      maxWidth="220px"
       showToggleButton
       isMinimized={_isMinimized}
       onIsMinimizedChange={onMinimizedHandler}
@@ -111,7 +111,7 @@ export default function ItemsCard({
       <div className={cs.itemsCardList}>
         {isLoading ? (
           <div className={cs.itemsCardSkeletonListContainer}>
-            {_createSkeletonArray(skeletonQuantity ?? 10).map((_, index) => (
+            {_createSkeletonArray(skeletonQuantity).map((_, index) => (
               <div key={index} className={cs.skeletonItem}>
                 <Skeleton className={cs.skeletonItemImage} />
                 <div className={cs.skeletonItemInfoBlock}>
