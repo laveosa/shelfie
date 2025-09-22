@@ -27,6 +27,7 @@ export default function useProfilePageService() {
   const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
   const [updateUserPassword] = UsersApiHooks.useUpdateUserPasswordMutation();
   const [getLanguagesList] = DictionaryApiHooks.useLazyGetLanguagesListQuery();
+  const [changeLanguage] = UsersApiHooks.useChangeLanguageMutation();
 
   function getCountryCodesHandler() {
     getCountryCode().then((res: any) => {
@@ -83,11 +84,29 @@ export default function useProfilePageService() {
     });
   }
 
+  function changeLanguageHandler(languageCode: string) {
+    changeLanguage({ languageCode: languageCode }).then((res: any) => {
+      if (!res.error) {
+        appService.getUserDetailsHandler();
+        addToast({
+          text: "Language updated successfully",
+          type: "success",
+        });
+      } else {
+      }
+      addToast({
+        text: res.error.data?.detail,
+        type: "error",
+      });
+    });
+  }
+
   return {
     getCountryCodesHandler,
     updateUserContactInformationHandler,
     uploadPhotoHandler,
     updateUserPasswordHandler,
     getLanguagesListHandler,
+    changeLanguageHandler,
   };
 }

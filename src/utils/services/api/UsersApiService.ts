@@ -6,6 +6,7 @@ import { ApiConfigurationService } from "@/utils/services/api/ApiConfigurationSe
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import { UserModel } from "@/const/models/UserModel.ts";
 import { PasswordModel } from "@/const/models/PasswordModel.ts";
+import { LanguageModel } from "@/const/models/LanguageModel.ts";
 
 const apiConfig = new ApiConfigurationService(ApiUrlEnum.USERS_BASE_URL);
 
@@ -89,6 +90,13 @@ export const UsersApiService = createApi({
     updateUserPassword: apiConfig.createMutation<void, any>(builder, {
       query: (model: PasswordModel) => ({
         url: `${ApiUrlEnum.USERS}/change-password`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+    }),
+    changeLanguage: apiConfig.createMutation<void, any>(builder, {
+      query: (model: LanguageModel) => ({
+        url: `${ApiUrlEnum.USERS}/change-language`,
         method: "PATCH",
         body: JSON.stringify(model),
       }),

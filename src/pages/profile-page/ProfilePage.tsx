@@ -148,6 +148,7 @@ export function ProfilePage() {
               hideFirstOption
               label="Language"
               fullWidth
+              onSelect={(value) => service.changeLanguageHandler(value)}
             />
           </div>
         </div>
