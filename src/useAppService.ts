@@ -10,12 +10,19 @@ export default function useAppService() {
   const dispatch = useAppDispatch();
 
   const [getUserPreferences] = UsersApiHooks.useLazyGetUserPreferencesQuery();
+  const [getUserDetails] = UsersApiHooks.useLazyGetUserDetailsQuery();
 
   function getUserPreferencesHandler() {
     dispatch(action.setLoading(true));
     return getUserPreferences(null).then((res: any) => {
       dispatch(action.setLoading(false));
       dispatch(action.refreshPreferences(res.data));
+    });
+  }
+
+  function getUserDetailsHandler() {
+    getUserDetails().then((res) => {
+      dispatch(action.refreshUserDetails(res.data));
     });
   }
 
@@ -39,6 +46,7 @@ export default function useAppService() {
   return {
     ...state,
     getUserPreferencesHandler,
+    getUserDetailsHandler,
     refreshPreferences,
     refreshUser,
     refreshToken,

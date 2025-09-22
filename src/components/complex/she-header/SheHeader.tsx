@@ -2,19 +2,12 @@ import { KeyboardEvent, useState } from "react";
 
 import cs from "./SheHeader.module.scss";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import {
-  SheUserMenu
-} from "@/components/complex/she-user-menu/SheUserMenu.tsx";
+import { SheUserMenu } from "@/components/complex/she-user-menu/SheUserMenu.tsx";
+import { ISheHeader } from "@/const/interfaces/complex-components/ISheHeader.ts";
 
-export default function SheHeader() {
+export default function SheHeader({ user }: ISheHeader) {
   const [searchValue, setSearchValue] = useState("");
   const [isSearching, setIsSearching] = useState(false);
-
-  const user = {
-    name: "Joanna Kowalska",
-    email: "kowalska@gmail.com",
-    avatar: "https://github.com/shadcn.png",
-  };
 
   function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
     setIsSearching(true);

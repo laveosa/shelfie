@@ -16,14 +16,39 @@
   cursor: pointer;
   max-height: 40px;
 
+  &:hover {
+    .dropdownMenuItemText {
+      color: black;
+    }
+
+    .dropdownMenuItemIcon {
+      svg {
+        color: black;
+      }
+    }
+  }
+
   .dropdownMenuItemText {
     color: #71717A;
+
   }
 }
 
 .dropdownMenuItemLogOut {
   cursor: pointer;
   max-height: 35px;
+
+  &:hover {
+    .dropdownMenuItemText {
+      color: black;
+    }
+
+    .dropdownMenuItemIcon {
+      svg {
+        color: black;
+      }
+    }
+  }
 
   .dropdownMenuItemText {
     color: #71717A;

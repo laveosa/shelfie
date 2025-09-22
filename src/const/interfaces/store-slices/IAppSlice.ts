@@ -6,4 +6,5 @@ export interface IAppSlice {
   user?: UserModel;
   token?: string;
   preferences?: PreferencesModel;
+  userDetails?: UserModel;
 }

@@ -9,12 +9,17 @@ import useAppService from "@/useAppService.ts";
 import { ToastProvider } from "@/utils/services/ToastService.tsx";
 import { DialogProvider } from "@/utils/services/dialog/DialogProvider.tsx";
 import SheAppContextMainWrapper from "@/components/complex/she-app-context-main-wrapper/SheAppContextMainWrapper.tsx";
+import { useAppSelector } from "@/utils/hooks/redux.ts";
+import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
+import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 
 function App() {
   const service = useAppService();
+  const state = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
 
   useEffect(() => {
     service.getUserPreferencesHandler();
+    service.getUserDetailsHandler();
   }, []);
 
   return (
@@ -24,7 +29,7 @@ function App() {
           <SidebarProvider>
             <SheSidebar />
             <SheAppContextMainWrapper>
-              <SheHeader />
+              <SheHeader user={state.userDetails} />
               <div className="contentPage">
                 <Outlet />
               </div>

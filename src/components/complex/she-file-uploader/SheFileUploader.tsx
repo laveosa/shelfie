@@ -1,5 +1,10 @@
 import { CloudUploadIcon, FileIcon, Trash2Icon } from "lucide-react";
-import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from "react";
 
 import {
   Dropzone,
@@ -16,6 +21,7 @@ import { UploadFileModel } from "@/const/models/UploadFileModel.ts";
 import cs from "./SheFileUploader.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
+import { getInitials } from "@/utils/helpers/quick-helper.ts";
 
 interface UploadingFile {
   id: string;
@@ -39,6 +45,7 @@ export const SheFileUploader = forwardRef<SheFileUploaderRef, ISheFileUploader>(
   (
     {
       isLoading = false,
+      className,
       contextName,
       contextId,
       fullWidth,
@@ -46,6 +53,10 @@ export const SheFileUploader = forwardRef<SheFileUploaderRef, ISheFileUploader>(
       viewMode = "image", // default to file mode
       acceptedFileTypes = {}, // empty object means all files
       maxFiles = 50,
+      user,
+      avatarImage,
+      uploadAreaText = "Upload images",
+      uploadAreaSubtext = "Click here or drag and drop images to upload",
       onUpload,
       onViewModeChange,
     },
@@ -245,7 +256,7 @@ export const SheFileUploader = forwardRef<SheFileUploaderRef, ISheFileUploader>(
 
     return (
       <div
-        className={`${cs.sheFileUploader} ${fullWidth ? cs.sheFileUploaderFullWidth : ""} `}
+        className={`${cs.sheFileUploader} ${className} ${fullWidth ? cs.sheFileUploaderFullWidth : ""} `}
         style={{
           boxSizing: "border-box",
           padding: "0",
@@ -276,19 +287,35 @@ export const SheFileUploader = forwardRef<SheFileUploaderRef, ISheFileUploader>(
         {/*</div>*/}
 
         <Dropzone {...dropzone}>
-          <DropZoneArea>
-            <DropzoneTrigger
-              className={`${cs.dropzoneTrigger} flex flex-col items-center gap-4 bg-transparent text-center text-sm`}
-            >
-              <CloudUploadIcon className="size-8" />
-              <div>
-                <p className="font-semibold">{uploadText.main}</p>
-                <p className="text-sm text-muted-foreground">
-                  {uploadText.sub}
-                </p>
+          <div style={{ display: "flex", gap: "20px" }}>
+            {avatarImage ? (
+              <div className={cs.avatarImageContainer}>
+                <img
+                  src={avatarImage}
+                  alt="preview"
+                  className={cs.avatarImage}
+                />
               </div>
-            </DropzoneTrigger>
-          </DropZoneArea>
+            ) : (
+              <div className={cs.avatarInitials}>
+                {getInitials(undefined, user?.firstName, user?.lastName)}
+              </div>
+            )}
+            <DropZoneArea>
+              <DropzoneTrigger
+                className={`${cs.dropzoneTrigger} flex flex-col items-center gap-4 bg-transparent text-center text-sm`}
+              >
+                <CloudUploadIcon className="size-8" />
+                <div>
+                  <p className="font-semibold">{uploadAreaText}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {uploadAreaSubtext}
+                  </p>
+                </div>
+              </DropzoneTrigger>
+            </DropZoneArea>
+          </div>
+
           {selectedFiles.length > 0 && <DropzoneMessage />}
           <DropzoneFileList
             className={`grid gap-3 p-0 ${

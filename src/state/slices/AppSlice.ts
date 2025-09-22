@@ -15,6 +15,7 @@ import {
 const initialState: IAppSlice = {
   loading: false,
   user: storageService.getLocalStorage(StorageKeyEnum.USER),
+  userDetails: storageService.getLocalStorage(StorageKeyEnum.USER_DETAILS),
   token: storageService.getLocalStorage(StorageKeyEnum.TOKEN),
   preferences: PreferencesModelDefault,
 };
@@ -27,6 +28,17 @@ function refreshUser(state: IAppSlice, action: PayloadAction<UserModel>) {
   const data: UserModel = action?.payload || null;
   storageService.setLocalStorage(StorageKeyEnum.USER, data);
   state.user = storageService.getLocalStorage(StorageKeyEnum.USER);
+}
+
+function refreshUserDetails(
+  state: IAppSlice,
+  action: PayloadAction<UserModel>,
+) {
+  const data: UserModel = action?.payload || null;
+  storageService.setLocalStorage(StorageKeyEnum.USER_DETAILS, data);
+  state.userDetails = storageService.getLocalStorage(
+    StorageKeyEnum.USER_DETAILS,
+  );
 }
 
 function refreshToken(state: IAppSlice, action: PayloadAction<any>) {
@@ -60,6 +72,7 @@ const AppSlice = createSlice({
     refreshToken,
     refreshPreferences,
     logOut,
+    refreshUserDetails,
   },
 });
 

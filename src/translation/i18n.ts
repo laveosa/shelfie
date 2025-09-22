@@ -5,10 +5,10 @@ import engTrans from "@/translation/localizations/eng.json";
 import plTrans from "@/translation/localizations/pl.json";
 
 const resources = {
-  eng: {
+  "en-EN": {
     translation: engTrans,
   },
-  pl: {
+  "pl-PL": {
     translation: plTrans,
   },
 };

@@ -712,6 +712,7 @@ export default function useProductsPageService() {
     });
 
     if (!confirmedDeleteProduct) {
+      return;
     } else {
       data.table.options.meta?.hideRow(data.row.original.id);
       await deleteProductHandler(data.row.original.productId).then((res) => {
