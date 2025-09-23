@@ -11,15 +11,18 @@
     gap: 6px;
 
     .sheContextSidebarList {
-      //border: 1px solid;
     }
 
     .sheContextSidebarMenu {
-      //border: 1px solid;
     }
   }
 
   .sheContextSidebarContextContainer {
-    padding: 0 vars.$paddingSmall;
+    padding: 0 6px;
+    width: 100%;
+    flex-grow: 1;
+    gap: vars.$paddingSmall;
+    display: flex;
+    overflow-x: auto;
   }
 }

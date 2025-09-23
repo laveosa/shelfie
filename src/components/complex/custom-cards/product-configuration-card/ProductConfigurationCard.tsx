@@ -77,196 +77,190 @@ export default function ProductConfigurationCard({
   }, [productCode, form]);
 
   return (
-    <div>
-      <SheProductCard
-        loading={isLoading}
-        className={cs.productConfigurationFormCard}
-        title={
-          product?.productId
-            ? t("CardTitles.BasicProductData")
-            : t("CardTitles.CreateProduct")
-        }
-        showCloseButton={showSecondaryButton}
-        showPrimaryButton={true}
-        primaryButtonTitle={
-          product?.productId
-            ? t("CommonButtons.Save")
-            : t("ProductActions.AddProduct")
-        }
-        showSecondaryButton={!product?.productId || showSecondaryButton}
-        secondaryButtonTitle={t("CommonButtons.Cancel")}
-        onPrimaryButtonClick={form.handleSubmit(onPrimaryButtonClick)}
-        onSecondaryButtonClick={onSecondaryButtonClick}
-      >
-        <div className={cs.productConfigurationForm}>
-          <SheForm form={form as any}>
-            <SheForm.Field
-              rules={{
-                required: true,
-                minLength: {
-                  value: 3,
-                  message: t("ProductForm.Validation.ProductNameMinLength"),
-                },
-                maxLength: {
-                  value: 50,
-                  message: t("ProductForm.Validation.ProductNameMaxLength"),
-                },
-              }}
-              name="productName"
-            >
+    <SheProductCard
+      loading={isLoading}
+      className={cs.productConfigurationFormCard}
+      title={
+        product?.productId
+          ? t("CardTitles.BasicProductData")
+          : t("CardTitles.CreateProduct")
+      }
+      showCloseButton={showSecondaryButton}
+      showPrimaryButton={true}
+      primaryButtonTitle={
+        product?.productId
+          ? t("CommonButtons.Save")
+          : t("ProductActions.AddProduct")
+      }
+      showSecondaryButton={!product?.productId || showSecondaryButton}
+      secondaryButtonTitle={t("CommonButtons.Cancel")}
+      onPrimaryButtonClick={form.handleSubmit(onPrimaryButtonClick)}
+      onSecondaryButtonClick={onSecondaryButtonClick}
+    >
+      <div className={cs.productConfigurationForm}>
+        <SheForm form={form as any}>
+          <SheForm.Field
+            rules={{
+              required: true,
+              minLength: {
+                value: 3,
+                message: t("ProductForm.Validation.ProductNameMinLength"),
+              },
+              maxLength: {
+                value: 50,
+                message: t("ProductForm.Validation.ProductNameMaxLength"),
+              },
+            }}
+            name="productName"
+          >
+            <SheInput
+              label={t("ProductForm.Labels.ProductName")}
+              placeholder={t("ProductForm.Placeholders.ProductName")}
+              isValid={!form.formState.errors.productName}
+              patternErrorMessage={form.formState.errors.productName?.message}
+              showError={true}
+              fullWidth={true}
+            />
+          </SheForm.Field>
+          <div className={cs.productConfigurationFormRow}>
+            <SheForm.Field name="productCode">
               <SheInput
-                label={t("ProductForm.Labels.ProductName")}
-                placeholder={t("ProductForm.Placeholders.ProductName")}
-                isValid={!form.formState.errors.productName}
-                patternErrorMessage={form.formState.errors.productName?.message}
+                {...(form.register("productCode") as any)}
+                label={t("ProductForm.Labels.ProductCode")}
+                placeholder={t("ProductForm.Placeholders.ProductCode")}
+                isValid={!form.formState.errors.productCode}
+                patternErrorMessage={form.formState.errors.productCode?.message}
                 showError={true}
                 fullWidth={true}
+                onDelay={(value) => onAction("checkProductCode", value)}
               />
             </SheForm.Field>
-            <div className={cs.productConfigurationFormRow}>
-              <SheForm.Field name="productCode">
-                <SheInput
-                  {...(form.register("productCode") as any)}
-                  label={t("ProductForm.Labels.ProductCode")}
-                  placeholder={t("ProductForm.Placeholders.ProductCode")}
-                  isValid={!form.formState.errors.productCode}
-                  patternErrorMessage={
-                    form.formState.errors.productCode?.message
-                  }
-                  showError={true}
-                  fullWidth={true}
-                  onDelay={(value) => onAction("checkProductCode", value)}
-                />
-              </SheForm.Field>
-              <SheButton
-                icon={WandSparkles}
-                type="button"
-                variant="outline"
-                onClick={() => onAction("generateProductCode")}
+            <SheButton
+              icon={WandSparkles}
+              type="button"
+              variant="outline"
+              onClick={() => onAction("generateProductCode")}
+            />
+          </div>
+          <SheForm.Field name="barcode">
+            <SheInput
+              label={t("ProductForm.Labels.ProductBarcode")}
+              placeholder={t("ProductForm.Placeholders.ProductBarcode")}
+              fullWidth={true}
+            />
+          </SheForm.Field>
+          <div className={cs.productConfigurationFormRow}>
+            <FormField
+              control={form.control}
+              name="productCategoryId"
+              rules={{
+                required: true,
+              }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("ProductForm.Labels.CategoryName")}</FormLabel>
+                  <Select
+                    key={form.watch("productCategoryId")}
+                    onValueChange={(value) => field.onChange(Number(value))}
+                    value={field.value ? field.value.toString() : ""}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          placeholder={t(
+                            "ProductForm.Placeholders.SelectCategory",
+                          )}
+                        >
+                          {categoriesList.find(
+                            (item) =>
+                              item.categoryId ===
+                              form.watch("productCategoryId"),
+                          )?.categoryName ??
+                            t("ProductForm.Placeholders.SelectCategory")}
+                        </SelectValue>
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {categoriesList.map((option) => (
+                        <SelectItem
+                          key={option.categoryId}
+                          value={option?.categoryId?.toString()}
+                        >
+                          {option.categoryName}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            ></FormField>
+            <SheButton
+              icon={Plus}
+              variant="outline"
+              type="button"
+              onClick={() => onAction("openCreateProductCategoryCard")}
+            />
+          </div>
+          <div className={cs.productConfigurationFormRow}>
+            <FormField
+              control={form.control}
+              name="brandId"
+              rules={{
+                required: true,
+              }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("ProductForm.Labels.BrandName")}</FormLabel>
+                  <Select
+                    key={form.watch("brandId")}
+                    onValueChange={(value) => field.onChange(Number(value))}
+                    value={field.value ? field.value.toString() : ""}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          placeholder={t(
+                            "ProductForm.Placeholders.SelectBrand",
+                          )}
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {brandsList.map((option) => (
+                        <SelectItem
+                          key={option.brandId}
+                          value={option.brandId.toString()}
+                        >
+                          <div>{option.brandName}</div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            ></FormField>
+            <SheButton
+              icon={Plus}
+              variant="outline"
+              type="button"
+              onClick={() => onAction("openCreateProductBrandCard")}
+            />
+          </div>
+          <SheForm.Field name="isActive">
+            <div
+              className={`${cs.productConfigurationFormRow} ${cs.productConfigurationFormSwitch}`}
+            >
+              <Switch
+                checked={form.watch("isActive")}
+                onCheckedChange={(checked) =>
+                  form.setValue("isActive", checked)
+                }
               />
+              <div>{t("ProductForm.Labels.IsActive")}</div>
             </div>
-            <SheForm.Field name="barcode">
-              <SheInput
-                label={t("ProductForm.Labels.ProductBarcode")}
-                placeholder={t("ProductForm.Placeholders.ProductBarcode")}
-                fullWidth={true}
-              />
-            </SheForm.Field>
-            <div className={cs.productConfigurationFormRow}>
-              <FormField
-                control={form.control}
-                name="productCategoryId"
-                rules={{
-                  required: true,
-                }}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      {t("ProductForm.Labels.CategoryName")}
-                    </FormLabel>
-                    <Select
-                      key={form.watch("productCategoryId")}
-                      onValueChange={(value) => field.onChange(Number(value))}
-                      value={field.value ? field.value.toString() : ""}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue
-                            placeholder={t(
-                              "ProductForm.Placeholders.SelectCategory",
-                            )}
-                          >
-                            {categoriesList.find(
-                              (item) =>
-                                item.categoryId ===
-                                form.watch("productCategoryId"),
-                            )?.categoryName ??
-                              t("ProductForm.Placeholders.SelectCategory")}
-                          </SelectValue>
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {categoriesList.map((option) => (
-                          <SelectItem
-                            key={option.categoryId}
-                            value={option?.categoryId?.toString()}
-                          >
-                            {option.categoryName}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
-                )}
-              ></FormField>
-              <SheButton
-                icon={Plus}
-                variant="outline"
-                type="button"
-                onClick={() => onAction("openCreateProductCategoryCard")}
-              />
-            </div>
-            <div className={cs.productConfigurationFormRow}>
-              <FormField
-                control={form.control}
-                name="brandId"
-                rules={{
-                  required: true,
-                }}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("ProductForm.Labels.BrandName")}</FormLabel>
-                    <Select
-                      key={form.watch("brandId")}
-                      onValueChange={(value) => field.onChange(Number(value))}
-                      value={field.value ? field.value.toString() : ""}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue
-                            placeholder={t(
-                              "ProductForm.Placeholders.SelectBrand",
-                            )}
-                          />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {brandsList.map((option) => (
-                          <SelectItem
-                            key={option.brandId}
-                            value={option.brandId.toString()}
-                          >
-                            <div>{option.brandName}</div>
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
-                )}
-              ></FormField>
-              <SheButton
-                icon={Plus}
-                variant="outline"
-                type="button"
-                onClick={() => onAction("openCreateProductBrandCard")}
-              />
-            </div>
-            <SheForm.Field name="isActive">
-              <div
-                className={`${cs.productConfigurationFormRow} ${cs.productConfigurationFormSwitch}`}
-              >
-                <Switch
-                  checked={form.watch("isActive")}
-                  onCheckedChange={(checked) =>
-                    form.setValue("isActive", checked)
-                  }
-                />
-                <div>{t("ProductForm.Labels.IsActive")}</div>
-              </div>
-            </SheForm.Field>
-          </SheForm>
-        </div>
-      </SheProductCard>
-    </div>
+          </SheForm.Field>
+        </SheForm>
+      </div>
+    </SheProductCard>
   );
 }
