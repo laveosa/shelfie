@@ -86,6 +86,7 @@ export function ProductBasicDataPage() {
         isListLoading={productsState.isItemsCardLoading}
         isMenuLoading={productsState.isProductMenuCardLoading}
         listItems={productsState[productsState.activeTab]}
+        showListItems
         selectedId={
           productsState.activeTab === "products"
             ? productId

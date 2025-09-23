@@ -1,7 +1,6 @@
 [
   {
     "id": "basic_data",
-    "counterId": "basic_data",
     "icon": "FileText",
     "label": "Basic Data",
     "labelTransKey": "ProductMenu.BasicData",

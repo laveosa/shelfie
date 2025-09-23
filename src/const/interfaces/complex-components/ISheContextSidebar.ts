@@ -6,6 +6,7 @@ export interface ISheContextSidebar extends PropsWithChildren {
   activeTab?: "products" | "variants";
   listTitle?: string;
   listItems?: any[];
+  showListItems?: boolean;
   selectedId?: number;
   isListLoading?: boolean;
   menuTitle?: string;

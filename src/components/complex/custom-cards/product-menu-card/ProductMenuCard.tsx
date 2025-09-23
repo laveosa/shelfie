@@ -214,9 +214,13 @@ function ContextSidebarMenuItem({
         <span className={`${cs.productMenuCardItemText} "she-text"`}>
           {translate(labelTransKey, {}, label)}
         </span>
-        {counter && counterId && !_.isNil(counter[counterId]) && (
+        {counterId && (
           <Badge className={cs.productMenuCardItemBadge}>
-            {counter[counterId] ?? 0}
+            {counter && !_.isNil(counter[counterId]) ? (
+              <span>{counter[counterId] ?? 0}</span>
+            ) : (
+              <span>0</span>
+            )}
           </Badge>
         )}
       </div>

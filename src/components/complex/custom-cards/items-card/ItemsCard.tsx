@@ -122,25 +122,54 @@ export default function ItemsCard({
             ))}
           </div>
         ) : (
-          <>
-            {items?.map((item: IItemsCardItem) => (
-              <div
-                className={cs.itemsCardListItemWrapper}
-                key={item.id}
-                onClick={() => onClickHandler(item)}
-              >
-                {_isMinimized ? (
-                  <SheTooltip text={item.name} side="left" align="center">
-                    {_getItemInnerLayout(item)}
-                  </SheTooltip>
-                ) : (
-                  _getItemInnerLayout(item)
-                )}
+          <div>
+            {items && items.length > 0 ? (
+              <>
+                {items?.map((item: IItemsCardItem) => (
+                  <div
+                    className={cs.itemsCardListItemWrapper}
+                    key={item.id}
+                    onClick={() => onClickHandler(item)}
+                  >
+                    {_isMinimized ? (
+                      <SheTooltip text={item.name} side="left" align="center">
+                        {_getItemInnerLayout(item)}
+                      </SheTooltip>
+                    ) : (
+                      _getItemInnerLayout(item)
+                    )}
+                  </div>
+                ))}
+              </>
+            ) : (
+              <div className={cs.noDataMessageContainer}>
+                <div className={cs.noDataMessage}>
+                  <span className="she-title">no data to display</span>
+                </div>
               </div>
-            ))}
-          </>
+            )}
+          </div>
         )}
       </div>
     </SheProductCard>
   );
 }
+
+/*
+<>
+  {items?.map((item: IItemsCardItem) => (
+    <div
+      className={cs.itemsCardListItemWrapper}
+      key={item.id}
+      onClick={() => onClickHandler(item)}
+    >
+      {_isMinimized ? (
+        <SheTooltip text={item.name} side="left" align="center">
+          {_getItemInnerLayout(item)}
+        </SheTooltip>
+      ) : (
+        _getItemInnerLayout(item)
+      )}
+    </div>
+  ))}
+</>*/

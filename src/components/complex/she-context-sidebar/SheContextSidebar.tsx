@@ -16,11 +16,11 @@ export default function SheContextSidebar({
   activeTab,
   listTitle,
   listItems,
+  showListItems,
   selectedId,
   isListLoading,
   menuTitle,
   menuCollectionType,
-  isMenuLoading,
   counter,
   itemId,
   activeCards,
@@ -28,7 +28,7 @@ export default function SheContextSidebar({
   onAction,
 }: ISheContextSidebar) {
   // ==================================================================== STATE MANAGEMENT
-  const [_listItems, setListItems] = useState<IItemsCardItem[]>(null);
+  const [_listItems, setListItems] = useState<IItemsCardItem[]>([]);
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
@@ -84,19 +84,20 @@ export default function SheContextSidebar({
       style={{ ...style }}
     >
       <div className={cs.sheContextSidebarMenuAndListContainer}>
-        <div className={cs.sheContextSidebarList}>
-          <ItemsCard
-            isLoading={isListLoading}
-            title={listTitle ? listTitle : activeTab.toString()}
-            items={_listItems}
-            selectedId={selectedId}
-            skeletonQuantity={skeletonQuantity}
-            onAction={onAction}
-          />
-        </div>
+        {showListItems && (
+          <div className={cs.sheContextSidebarList}>
+            <ItemsCard
+              isLoading={isListLoading}
+              title={listTitle ? listTitle : activeTab.toString()}
+              items={_listItems}
+              selectedId={selectedId}
+              skeletonQuantity={skeletonQuantity}
+              onAction={onAction}
+            />
+          </div>
+        )}
         <div className={cs.sheContextSidebarMenu}>
           <ProductMenuCard
-            isLoading={isMenuLoading}
             title={
               menuTitle
                 ? menuTitle

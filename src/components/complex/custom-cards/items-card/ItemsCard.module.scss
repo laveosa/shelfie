@@ -114,6 +114,11 @@
 
   .listItemText {
     opacity: 0 !important;
+    display: none !important;
+  }
+
+  .noDataMessageContainer {
+    display: none !important;
   }
 }
 
@@ -159,6 +164,30 @@
           width: 90%;
           background-color: vars.$colorMedium;
         }
+      }
+    }
+  }
+}
+
+// ======================================================== NO DATA MESSAGE
+
+.itemsCard {
+  .noDataMessageContainer {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100px;
+
+    .noDataMessage {
+      margin: auto;
+      text-align: center;
+      position: relative;
+      left: -13px;
+
+      > span {
+        font-size: 22px;
+        color: lightgray;
       }
     }
   }
