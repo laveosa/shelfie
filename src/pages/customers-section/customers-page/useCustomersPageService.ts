@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import _, { merge } from "lodash";
+import { merge } from "lodash";
 
 import {
   PreferencesModel,
@@ -14,7 +14,6 @@ import { NavUrlEnum } from "@/const/enums/NavUrlEnum";
 import UsersApiHooks from "@/utils/services/api/UsersApiService";
 import { createCustomerCounter } from "@/const/models/CustomerCounterModel";
 import { AppSliceActions as appActions } from "@/state/slices/AppSlice";
-import { DEFAULT_SORTING_OPTIONS } from "@/const/models/GridSortingModel";
 import { useAppSelector } from "@/utils/hooks/redux";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum";
 import { ICustomersPageSlice } from "@/const/interfaces/store-slices/ICustomersPageSlice";
@@ -34,9 +33,7 @@ export default function useCustomersPageService() {
     UsersApiHooks.useResetUserPreferencesMutation();
 
   function getCustomersForGridHandler(data?: GridRequestModel) {
-    if (!data && state.customersGridRequestModel?.items?.length > 0) return;
-    if (_.isEqual(data, state.customersGridRequestModel)) return;
-    data = data ?? state.customersGridRequestModel;
+    // if (_.isEqual(data, state.customersGridRequestModel)) return;
 
     dispatch(actions.setIsCustomersLoading(true));
 
@@ -47,7 +44,6 @@ export default function useCustomersPageService() {
         dispatch(actions.refreshCustomersGridRequestModel(res.data));
         dispatch(actions.refreshCustomers(res.data.items));
       }
-      return res;
     });
   }
 
@@ -68,10 +64,6 @@ export default function useCustomersPageService() {
     dispatch(actions.refreshCustomerCounter(createCustomerCounter()));
     dispatch(actions.resetSelectedCustomer());
     navigate(`${NavUrlEnum.CUSTOMER_BASIC_DATA}`);
-  }
-
-  function setDefaultSortingOptionsHandler() {
-    dispatch(actions.refreshSortingOptions(DEFAULT_SORTING_OPTIONS));
   }
 
   function updateUserPreferencesHandler(model: PreferencesModel) {
@@ -102,6 +94,5 @@ export default function useCustomersPageService() {
     onCreateCustomerHandler,
     updateUserPreferencesHandler,
     resetUserPreferencesHandler,
-    setDefaultSortingOptionsHandler,
   };
 }

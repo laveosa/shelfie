@@ -54,7 +54,7 @@ export const SheFileUploader = forwardRef<SheFileUploaderRef, ISheFileUploader>(
       acceptedFileTypes = {}, // empty object means all files
       maxFiles = 50,
       user,
-      avatarImage,
+      avatarImage = false,
       uploadAreaText = "Upload images",
       uploadAreaSubtext = "Click here or drag and drop images to upload",
       onUpload,
@@ -288,20 +288,24 @@ export const SheFileUploader = forwardRef<SheFileUploaderRef, ISheFileUploader>(
 
         <Dropzone {...dropzone}>
           <div style={{ display: "flex", gap: "20px" }}>
-            {avatarImage ? (
-              <div className={cs.avatarImageContainer}>
-                <img
-                  src={avatarImage}
-                  alt="preview"
-                  className={cs.avatarImage}
-                />
-              </div>
-            ) : (
-              <div className={cs.avatarInitials}>
-                {getInitials(undefined, user?.firstName, user?.lastName)}
+            {avatarImage && (
+              <div>
+                {avatarImage ? (
+                  <div className={cs.avatarImageContainer}>
+                    <img
+                      src={avatarImage}
+                      alt="preview"
+                      className={cs.avatarImage}
+                    />
+                  </div>
+                ) : (
+                  <div className={cs.avatarInitials}>
+                    {getInitials(undefined, user?.firstName, user?.lastName)}
+                  </div>
+                )}
               </div>
             )}
-            <DropZoneArea>
+            <DropZoneArea style={{ width: "100%" }}>
               <DropzoneTrigger
                 className={`${cs.dropzoneTrigger} flex flex-col items-center gap-4 bg-transparent text-center text-sm`}
               >

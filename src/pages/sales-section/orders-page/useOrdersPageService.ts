@@ -5,7 +5,6 @@ import { merge } from "lodash";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { AppDispatch, RootState } from "@/state/store.ts";
 import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
-import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
 import { OrdersPageSliceActions as actions } from "@/state/slices/OrdersPageSlice.ts";
 import UsersApiHooks from "@/utils/services/api/UsersApiService.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
@@ -26,8 +25,6 @@ export default function useOrdersPageService() {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const [getSortingOptionsForGrid] =
-    DictionaryApiHooks.useLazyGetSortingOptionsForGridQuery();
   const [getListOfOrdersForGrid] =
     OrdersApiHooks.useGetListOfOrdersForGridMutation();
   const [updateUserPreferences] =
@@ -46,13 +43,6 @@ export default function useOrdersPageService() {
     ProductsApiHooks.useLazyGetTraitsForFilterQuery();
   const [getListOfStockActionsForGrid] =
     OrdersApiHooks.useGetListOfStockActionsForGridMutation();
-
-  function getSortingOptionsForGridHandler() {
-    return getSortingOptionsForGrid(null).then((res: any) => {
-      dispatch(actions.refreshSortingOptions(res.data));
-      return res.data;
-    });
-  }
 
   function getListOfOrdersForGridHandler(model) {
     dispatch(actions.setIsOrdersGridLoading(true));
@@ -170,7 +160,6 @@ export default function useOrdersPageService() {
   }
 
   return {
-    getSortingOptionsForGridHandler,
     getListOfOrdersForGridHandler,
     handleGridRequestChange,
     updateUserPreferencesHandler,

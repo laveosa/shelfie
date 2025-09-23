@@ -165,9 +165,9 @@ export default function usePurchaseProductsPageService(
     if (productsState.categories.length === 0) {
       productsService.getCategoriesForFilterHandler();
     }
-    if (productsState.sortingOptions.length === 0) {
-      productsService.getSortingOptionsForGridHandler();
-    }
+    // if (productsState.sortingOptions.length === 0) {
+    //   productsService.getSortingOptionsForGridHandler();
+    // }
     if (productsState.suppliers.length === 0) {
       productsService.getListOfSuppliersHandler();
     }
