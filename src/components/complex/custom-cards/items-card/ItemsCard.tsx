@@ -122,7 +122,7 @@ export default function ItemsCard({
             ))}
           </div>
         ) : (
-          <div>
+          <div className={cs.itemsCardListItemContainer}>
             {items && items.length > 0 ? (
               <>
                 {items?.map((item: IItemsCardItem) => (

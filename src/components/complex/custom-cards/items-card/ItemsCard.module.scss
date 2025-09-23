@@ -61,45 +61,50 @@
   .itemsCardList {
     display: flex;
     flex-direction: column;
-    gap: 4px;
 
-    .itemsCardListItemWrapper {
-      .itemsCardListItem {
-        display: flex;
-        align-items: center;
-        gap: vars.$paddingSmall;
-        cursor: pointer;
-        border-radius: 5px;
-        height: 100%;
-        padding: vars.$paddingSmall;
+    .itemsCardListItemContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
 
-        &:hover {
-          background: vars.$colorMuted;
+      .itemsCardListItemWrapper {
+        .itemsCardListItem {
+          display: flex;
+          align-items: center;
+          gap: vars.$paddingSmall;
+          cursor: pointer;
+          border-radius: 5px;
+          height: 100%;
+          padding: vars.$paddingSmall;
+
+          &:hover {
+            background: vars.$colorMuted;
+
+            .listItemIcon {
+              color: vars.$iconColor;
+            }
+
+            .listItemText {
+              font-weight: 500;
+            }
+          }
+
+          &.selected {
+            background: vars.$colorMuted;
+          }
 
           .listItemIcon {
-            color: vars.$iconColor;
+            min-height: 0;
+            color: vars.$iconPlaceholderColor;
           }
 
           .listItemText {
-            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+            opacity: 1;
           }
-        }
-
-        &.selected {
-          background: vars.$colorMuted;
-        }
-
-        .listItemIcon {
-          min-height: 0;
-          color: vars.$iconPlaceholderColor;
-        }
-
-        .listItemText {
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          max-width: 100%;
-          opacity: 1;
         }
       }
     }
