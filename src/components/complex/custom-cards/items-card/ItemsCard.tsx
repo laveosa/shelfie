@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { JSX, useEffect, useState } from "react";
 import _ from "lodash";
 
 import { Image } from "lucide-react";
@@ -6,6 +6,7 @@ import { Image } from "lucide-react";
 import cs from "./ItemsCard.module.scss";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import { IconViewEnum } from "@/const/enums/IconViewEnum.ts";
 import {
@@ -13,7 +14,6 @@ import {
   IItemsCardItem,
 } from "@/const/interfaces/complex-components/custom-cards/IItemsCard.ts";
 import StorageService from "@/utils/services/StorageService.ts";
-import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 
 export default function ItemsCard({
   title,
@@ -22,7 +22,7 @@ export default function ItemsCard({
   isLoading,
   skeletonQuantity = 10,
   onAction,
-}: IItemsCard) {
+}: IItemsCard): JSX.Element {
   // ==================================================================== STATE MANAGEMENT
   const [_items, setItems] = useState<IItemsCardItem[]>(null);
   const [_selectedId, setSelectedId] = useState<number>(null);
@@ -130,7 +130,7 @@ export default function ItemsCard({
                 onClick={() => onClickHandler(item)}
               >
                 {_isMinimized ? (
-                  <SheTooltip text={item.name} side="right" align="center">
+                  <SheTooltip text={item.name} side="left" align="center">
                     {_getItemInnerLayout(item)}
                   </SheTooltip>
                 ) : (

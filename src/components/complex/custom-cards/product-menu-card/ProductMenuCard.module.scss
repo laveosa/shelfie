@@ -6,11 +6,11 @@
   border: none !important;
   border-radius: 0 !important;
 
-  &.itemsCardWithAnimation {
+  &.productMenuCardWithAnimation {
     transition: all 160ms ease-in-out;
   }
 
-  .itemsCardHeader {
+  .productMenuCardHeader {
     margin-bottom: 6px;
     padding: 0 9px;
 
@@ -58,13 +58,13 @@
 // ======================================================== CARD CONTEXT
 
 .productMenuCard {
-  .itemsCardList {
+  .productMenuCardList {
     display: flex;
     flex-direction: column;
     gap: 4px;
 
-    .itemsCardListItemWrapper {
-      .itemsCardListItem {
+    .productMenuCardItemWrapper {
+      .productMenuCardItem {
         display: flex;
         align-items: center;
         gap: vars.$paddingSmall;
@@ -76,11 +76,11 @@
         &:hover {
           background: vars.$colorMuted;
 
-          .listItemIcon {
+          .productMenuCardItemIcon {
             color: vars.$iconColor;
           }
 
-          .listItemText {
+          .productMenuCardItemText {
             font-weight: 500;
           }
         }
@@ -89,20 +89,21 @@
           background: vars.$colorMuted;
         }
 
-        .listItemIcon {
+        .productMenuCardItemIcon {
           min-height: 0;
           color: vars.$iconPlaceholderColor;
         }
 
-        .listItemTextContainer {
+        .productMenuCardItemTextContainer {
           display: flex;
           align-items: center;
           gap: 6px;
           width: 100%;
           max-height: 20px;
           opacity: 1;
+          transition: all 160ms ease-in-out;
 
-          .listItemText {
+          .productMenuCardItemText {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -110,7 +111,7 @@
             flex-grow: 1;
           }
 
-          .itemBadge {
+          .productMenuCardItemBadge {
             background-color: #f4f4f5;
             color: #8439ed;
           }
@@ -126,45 +127,9 @@
   min-width: 47px !important;
   max-width: 47px !important;
 
-  .listItemTextContainer {
+  .productMenuCardItemTextContainer {
     opacity: 0 !important;
     font-size: 0 !important;
+    display: none !important;
   }
 }
-
-/*
-.productMenuItem {
-  display: flex;
-  gap: 20px;
-  padding: 10px;
-  cursor: pointer;
-  border-radius: 5px;
-  align-items: center;
-  min-height: 44px;
-  max-height: 44px;
-  
-  svg {
-    width: 20px;
-    height: 20px;
-  }
-  
-  &:hover {
-    background: vars.$colorMedium;
-    font-weight: 500;
-  }
-  
-  .iconContainer {
-  }
-  
-  .textContainer {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    gap: 15px;
-    
-    .itemBadge {
-      background-color: #f4f4f5;
-      color: #8439ed;
-    }
-  }
-}*/

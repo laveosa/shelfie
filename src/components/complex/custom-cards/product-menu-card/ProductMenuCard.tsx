@@ -2,22 +2,23 @@ import { useLocation, useNavigate } from "react-router-dom";
 import React, { JSX, useEffect, useState } from "react";
 import _ from "lodash";
 
+import { Image } from "lucide-react";
+
 import cs from "./ProductMenuCard.module.scss";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
+import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
 import StorageService from "@/utils/services/StorageService.ts";
 import { ContextSidebarService } from "@/utils/services/ContextSidebarService.ts";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
+import { IconViewEnum } from "@/const/enums/IconViewEnum.ts";
 import {
   CollectionConfig,
   IProductMenuCard,
   MenuItem,
 } from "@/const/interfaces/complex-components/custom-cards/IProductMenuCard.ts";
-import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
-import { Image } from "lucide-react";
-import { IconViewEnum } from "@/const/enums/IconViewEnum.ts";
-import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 
 export default function ProductMenuCard({
   isLoading,
@@ -106,10 +107,11 @@ export default function ProductMenuCard({
     return config;
   }
 
-  function _getItemInnerLayout(item) {
+  function _getItemInnerLayout(item, ref?) {
     return (
       <ContextSidebarMenuItem
         {...item}
+        ref={ref}
         itemId={itemId}
         config={_config}
         counter={counter}
@@ -120,8 +122,8 @@ export default function ProductMenuCard({
   // ==================================================================== LAYOUT
   return (
     <SheProductCard
-      className={`${cs.productMenuCard} ${_animationFlag ? cs.itemsCardWithAnimation : ""}`}
-      headerClassName={cs.itemsCardHeader}
+      className={`${cs.productMenuCard} ${_animationFlag ? cs.productMenuCardWithAnimation : ""}`}
+      headerClassName={cs.productMenuCardHeader}
       title={title}
       loading={isLoading}
       minWidth="220px"
@@ -130,11 +132,11 @@ export default function ProductMenuCard({
       isMinimized={_isMinimized}
       onIsMinimizedChange={onMinimizedHandler}
     >
-      <div className={cs.itemsCardList}>
+      <div className={cs.productMenuCardList}>
         {_config?.menuItems.map((item, idx) => (
           <div
             key={`item_${item.id}_${idx + 1}`}
-            className={cs.itemsCardListItemWrapper}
+            className={cs.productMenuCardItemWrapper}
           >
             {_isMinimized ? (
               <SheTooltip
@@ -143,7 +145,7 @@ export default function ProductMenuCard({
                 side="right"
                 align="center"
               >
-                {_getItemInnerLayout(item)}
+                <div>{_getItemInnerLayout(item)}</div>
               </SheTooltip>
             ) : (
               _getItemInnerLayout(item)
@@ -156,6 +158,7 @@ export default function ProductMenuCard({
 }
 
 function ContextSidebarMenuItem({
+  ref,
   id,
   itemId,
   counterId,
@@ -178,9 +181,7 @@ function ContextSidebarMenuItem({
   let isDisabled = false;
 
   if (config.disableItemsWithoutId) {
-    if (hasDynamicId) {
-      isDisabled = isSelected;
-    } else {
+    if (!hasDynamicId) {
       isDisabled = config.defaultEnabledItem
         ? id !== config.defaultEnabledItem
         : false;
@@ -188,30 +189,35 @@ function ContextSidebarMenuItem({
   }
 
   // ==================================================================== EVENT HANDLERS
-  function onClickHandler(path: string) {
-    const url = config.urlBuilder(path, itemId);
-    navigate(url);
+  function onClickHandler(_path: string) {
+    if (currentPath && !currentPath.includes(_path)) {
+      const url = config.urlBuilder(_path, itemId);
+      navigate(url);
+    }
   }
 
   // ==================================================================== LAYOUT
   return (
     <div
-      className={`${cs.itemsCardListItem} ${isSelected ? cs.selected : ""} ${isDisabled ? "disabled" : ""}`}
+      ref={ref}
+      className={`${cs.productMenuCardItem} ${isSelected ? cs.selected : ""} ${isDisabled ? "disabled" : ""}`}
       onClick={() => onClickHandler(NavUrlEnum[path])}
     >
       <SheIcon
-        className={cs.listItemIcon}
+        className={cs.productMenuCardItemIcon}
         icon={icon || Image}
         iconView={IconViewEnum.BUTTON}
         minWidth="20px"
         maxWidth="20px"
       />
-      <div className={cs.listItemTextContainer}>
-        <span className={`${cs.listItemText} "she-text"`}>
+      <div className={cs.productMenuCardItemTextContainer}>
+        <span className={`${cs.productMenuCardItemText} "she-text"`}>
           {translate(labelTransKey, {}, label)}
         </span>
         {counter && counterId && !_.isNil(counter[counterId]) && (
-          <Badge className={cs.itemBadge}>{counter[counterId] ?? 0}</Badge>
+          <Badge className={cs.productMenuCardItemBadge}>
+            {counter[counterId] ?? 0}
+          </Badge>
         )}
       </div>
     </div>

@@ -15,6 +15,7 @@ export interface IProductMenuCard {
 }
 
 export interface MenuItem {
+  ref?: React.Ref<HTMLDivElement>;
   itemId?: any;
   id?: string;
   counterId?: string;
