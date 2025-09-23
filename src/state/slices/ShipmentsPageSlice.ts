@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import _ from "lodash";
 
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IShipmentsPageSlice } from "@/const/interfaces/store-slices/IShipmentsPageSlice.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { ShipmentModel } from "@/const/models/ShipmentModel.ts";
-import _ from "lodash";
+import { CustomerModel } from "@/const/models/CustomerModel.ts";
 
 const initialState: IShipmentsPageSlice = {
   isProductMenuCardLoading: false,
@@ -14,6 +15,7 @@ const initialState: IShipmentsPageSlice = {
   activeTab: "allShipments",
   shipmentsGridRequestModel: {},
   selectedShipment: null,
+  customersList: [],
 };
 
 //----------------------------------------------------- LOADERS
@@ -74,6 +76,13 @@ function refreshSelectedShipment(
   state.selectedShipment = action?.payload || state.selectedShipment;
 }
 
+function refreshCustomersList(
+  state: IShipmentsPageSlice,
+  action: PayloadAction<CustomerModel[]>,
+) {
+  state.customersList = action?.payload || state.customersList;
+}
+
 const ShipmentsPageSlice = createSlice({
   name: StoreSliceEnum.SHIPMENTS,
   initialState,
@@ -85,6 +94,7 @@ const ShipmentsPageSlice = createSlice({
     refreshActiveTab,
     refreshShipmentsGridRequestModel,
     refreshSelectedShipment,
+    refreshCustomersList,
   },
 });
 
