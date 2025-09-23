@@ -16,11 +16,12 @@ import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { useGridContext } from "@/state/context/grid-context.ts";
 
 interface GridFilterProps<T> {
-  items: T[];
-  columnName: string;
+  items?: T[];
+  columnName?: string;
   selected?: number[];
-  getId: (item: T) => number;
-  getName: (item: T) => string;
+  identifier?: string;
+  getId?: (item: T) => number;
+  getName?: (item: T) => string;
   icon?: Partial<ISheIcon> | string | React.FC<any>;
 }
 
@@ -28,6 +29,7 @@ export default function GridItemsFilter<T>({
   items,
   columnName,
   selected,
+  identifier,
   getId,
   getName,
   icon,
@@ -58,7 +60,7 @@ export default function GridItemsFilter<T>({
       currentPage: 1,
       filter: {
         ...gridRequestModel?.filter,
-        [columnName]: [],
+        [identifier || columnName]: [],
       },
     });
     setDropdownOpen(false);
@@ -70,7 +72,7 @@ export default function GridItemsFilter<T>({
         ...gridRequestModel,
         filter: {
           ...gridRequestModel?.filter,
-          [columnName]: selectedIds,
+          [identifier || columnName]: selectedIds,
         },
       });
     }

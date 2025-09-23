@@ -164,7 +164,8 @@ export default function ShipmentsCard({
               >
                 <GridItemsFilter
                   items={customersList}
-                  columnName={"Customer"}
+                  columnName="Customer"
+                  identifier="customerId"
                   icon={BadgeCheck}
                   getId={(item: CustomerModel) => item.customerId}
                   getName={(item: CustomerModel) => item.customerName}
