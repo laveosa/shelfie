@@ -108,7 +108,7 @@ export function marginProductsGridColumns(
                   minWidth: "20px",
                   minHeight: "20px",
                   borderRadius: "50%",
-                  border: "1px solid #ccc",
+                  border: "2px solid #ccc",
                 }}
               />
             ))}

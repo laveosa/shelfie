@@ -821,8 +821,6 @@ export default function useProductsPageService() {
   }
 
   function gridRequestChangeHandler(updates: any) {
-    console.log(updates);
-
     if (state.activeTab === "products") {
       getTheProductsForGridHandler(updates, true);
     } else if (state.activeTab === "variants") {
