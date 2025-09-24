@@ -118,7 +118,7 @@ export default function SheMultiSelectTrigger<T>(
                         key={`${item.text}_${idx + 1}`}
                         className="she-text"
                       >
-                        {translate(item.textTransKey, item.text.toString())}{" "}
+                        {translate(item.textTransKey, {}, item.text.toString())}{" "}
                         {idx !== items.length - 1 ? "| " : ""}
                       </span>
                     ))}

@@ -326,7 +326,7 @@ export default function SheInput(props: ISheInput): JSX.Element {
         className={`componentTriggerElement`}
         ref={_inputRef}
         value={_textValue ?? ""}
-        placeholder={translate(placeholderTransKey, placeholder)}
+        placeholder={translate(placeholderTransKey, {}, placeholder)}
         type={type}
         step={step}
         autoFocus={autoFocus}

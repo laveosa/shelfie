@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { TFunction, TOptions } from "i18next";
+import { any } from "zod";
 
 export default function useAppTranslation() {
   const { t, i18n }: { t: TFunction; i18n: any } = useTranslation();
@@ -8,7 +9,7 @@ export default function useAppTranslation() {
     key: Key,
     options?: TOptions,
     defaultValue?: string,
-  ): string {
+  ): string | any {
     if (!key) return defaultValue ?? "";
 
     const opts: TOptions = {

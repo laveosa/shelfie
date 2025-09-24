@@ -76,14 +76,14 @@ export default function SheRadioItem<T>({
                 className={`${cs.sheRadioItemCell} ${cs.sheRadioItemCellInfo}`}
               >
                 <span className="she-text">
-                  {translate(textTransKey, text)}
+                  {translate(textTransKey, {}, text)}
                 </span>
                 {description && (
                   <span
                     className="she-subtext"
                     aria-describedby={ariaDescribedbyId}
                   >
-                    {translate(descriptionTransKey, description)}
+                    {translate(descriptionTransKey, {}, description)}
                   </span>
                 )}
               </div>

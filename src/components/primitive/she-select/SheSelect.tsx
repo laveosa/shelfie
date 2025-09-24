@@ -262,7 +262,7 @@ export default function SheSelect<T = any>(props: ISheSelect<T>): JSX.Element {
           style={elementStyle}
         >
           <SelectValue
-            placeholder={translate(placeholderTransKey, placeholder)}
+            placeholder={translate(placeholderTransKey, {}, placeholder)}
           />
         </SelectTrigger>
         {_items?.length > 0 && (

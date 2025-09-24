@@ -57,7 +57,11 @@ export default function SheMultiSelectSearch({
         className={`${cs.sheMultiSelectSearchInput} ${elementClassName}`}
         style={elementStyle}
         value={_searchValue}
-        placeholder={translate(searchPlaceholderTransKey, searchPlaceholder)}
+        placeholder={translate(
+          searchPlaceholderTransKey,
+          {},
+          searchPlaceholder,
+        )}
         onValueChange={onSearchChangeHandler}
       />
       {!hideSearchClearBtn && (

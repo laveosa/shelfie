@@ -286,7 +286,7 @@ export default function SheBadgeList<T>(props: ISheBadgeList<T>): JSX.Element {
                   className={extraBudge?.className || elementClassName}
                   elementClassName={cs.plusMoreBtn}
                   style={extraBudge?.style || elementStyle}
-                  text={`+ ${_items.length - _maxBadgeAmount} ${translate("PLACE_VALID_TRANS_KEY", "more")}`}
+                  text={`+ ${_items.length - _maxBadgeAmount} ${translate("PLACE_VALID_TRANS_KEY", {}, "more")}`}
                   textWrap={extraBudge?.textWrap || textWrap}
                   color={extraBudge?.color || color}
                   textColor={extraBudge?.textColor || textColor}

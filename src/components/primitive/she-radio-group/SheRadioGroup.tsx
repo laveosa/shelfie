@@ -148,7 +148,7 @@ export default function SheRadioGroup<T = any>(
         {(!_items || _items.length === 0) && !isLoading && (
           <div className={cs.sheRadioGroupPlaceholder}>
             <span className="she-placeholder">
-              {translate(noDataMessageTransKey, noDataMessage)}
+              {translate(noDataMessageTransKey, {}, noDataMessage)}
             </span>
           </div>
         )}
