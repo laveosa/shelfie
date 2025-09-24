@@ -335,6 +335,7 @@ export function ManageVariantsPage() {
             isLoading={state.isSupplierCardLoading}
             selectedPurchase={productsState.selectedPurchase}
             selectedSupplier={state.selectedCompany}
+            showCloseButton={true}
             onAction={onAction}
           />
         </div>
