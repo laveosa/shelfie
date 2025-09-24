@@ -2,7 +2,7 @@
 
 .itemsCard {
   background-color: transparent;
-  padding: 0;
+  padding: 0 !important;
   border: none !important;
   border-radius: 0 !important;
 
@@ -11,8 +11,8 @@
   }
 
   .itemsCardHeader {
-    margin-bottom: 6px;
-    padding: 0 9px;
+    margin-bottom: 6px !important;
+    padding: 0 9px !important;
 
     > div:nth-child(1) {
       > div {

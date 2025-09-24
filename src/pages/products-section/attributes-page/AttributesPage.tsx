@@ -2,13 +2,13 @@ import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
 import cs from "./AttributesPage.module.scss";
-import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { ProductCountersModel } from "@/const/models/CounterModel.ts";
 import { IAttributesPageSlice } from "@/const/interfaces/store-slices/IAttributesPageSlice.ts";
 import { AttributesPageSliceActions as actions } from "@/state/slices/AttributesPageSlice";
 import useAttributesPageService from "@/pages/products-section/attributes-page/useAttributesPageService.ts";
+import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
 
 export function AttributesPage() {
   const dispatch = useAppDispatch();
@@ -33,14 +33,16 @@ export function AttributesPage() {
 
   return (
     <div className={cs.attributePage}>
-      <ProductMenuCard
-        title={"Manage Attributes"}
-        itemsCollection="products"
+      <SheContextSidebar
+        menuTitle={"Manage Attributes"}
+        menuCollectionType="products"
         counter={state.productCounter}
-        onAction={handleCardAction}
         itemId={Number(productId)}
         activeCards={state.activeCards}
-      />
+        onAction={handleCardAction}
+      >
+        <h1>Attribute Page</h1>
+      </SheContextSidebar>
     </div>
   );
 }
