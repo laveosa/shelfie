@@ -2,20 +2,17 @@ import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
 import cs from "./SizeChartPage.module.scss";
-import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
-import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { ProductCountersModel } from "@/const/models/CounterModel.ts";
+import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
 import { SizeChartPageSliceActions as actions } from "@/state/slices/SizeChartPageSlice.ts";
-import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
 import useSizeChartPageService from "@/pages/products-section/size-chart-page/useSizeChartPageService.ts";
-import { ISizeChartPageSlice } from "@/const/interfaces/store-slices/ISizeChartPageSlice.ts";
+import { ProductCountersModel } from "@/const/models/CounterModel.ts";
 
 export function SizeChartPage() {
-  const dispatch = useAppDispatch();
-  const service = useSizeChartPageService();
-  const state = useAppSelector<ISizeChartPageSlice>(StoreSliceEnum.SIZE_CHART);
+  // ==================================================================== UTILITIES
+  const { state, dispatch, ...service } = useSizeChartPageService();
   const { productId } = useParams();
 
+  // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     service
       .getCountersForProductsHandler(productId)
@@ -24,6 +21,7 @@ export function SizeChartPage() {
       });
   }, [productId]);
 
+  // ==================================================================== EVENT HANDLERS
   function handleCardAction(identifier: string) {
     const updatedCards = state.activeCards.includes(identifier)
       ? state.activeCards.filter((card) => card !== identifier)
@@ -31,16 +29,18 @@ export function SizeChartPage() {
     dispatch(actions.refreshActiveCards(updatedCards));
   }
 
+  // ==================================================================== LAYOUT
   return (
-    <div className={cs.attributePage}>
-      <ProductMenuCard
-        title={"Manage Size Charts"}
-        counter={state.productCounter}
-        itemsCollection="products"
-        onAction={handleCardAction}
+    <div className={cs.sizeChartPage}>
+      <SheContextSidebar
+        menuTitle="Manage Size Charts"
+        menuCollectionType="products"
         itemId={Number(productId)}
         activeCards={state.activeCards}
-      />
+        onAction={handleCardAction}
+      >
+        <h1>Size Chart Page</h1>
+      </SheContextSidebar>
     </div>
   );
 }
