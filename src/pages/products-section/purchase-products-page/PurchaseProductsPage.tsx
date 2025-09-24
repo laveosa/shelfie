@@ -74,7 +74,7 @@ export function PurchaseProductsPage() {
 
   useEffect(() => {
     service.getPurchasesProductsGridDataHandler(purchaseId);
-  }, []);
+  }, [purchaseId]);
 
   useEffect(() => {
     service.getGridFiltersDataHandler();

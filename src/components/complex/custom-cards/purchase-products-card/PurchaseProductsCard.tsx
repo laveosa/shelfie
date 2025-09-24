@@ -4,29 +4,41 @@ import { useState } from "react";
 import _, { merge } from "lodash";
 import { useTranslation } from "react-i18next";
 
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
-import { IPurchaseProductsCard } from "@/const/interfaces/complex-components/custom-cards/IPurchaseProductsCard.ts";
+import SheProductCard
+  from "@/components/complex/she-product-card/SheProductCard.tsx";
+import {
+  IPurchaseProductsCard
+} from "@/const/interfaces/complex-components/custom-cards/IPurchaseProductsCard.ts";
 import cs from "./PurchaseProductsCard.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheTabs from "@/components/complex/she-tabs/SheTabs.tsx";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs.tsx";
-import { IPurchaseProductsPageSlice } from "@/const/interfaces/store-slices/IPurchaseProductsPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
-import { PurchaseProductsPageSliceActions as actions } from "@/state/slices/PurchaseProductsPageSlice.ts";
+import {
+  PurchaseProductsPageSliceActions as actions
+} from "@/state/slices/PurchaseProductsPageSlice.ts";
 import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import { AppSliceActions as appActions } from "@/state/slices/AppSlice.ts";
-import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
+import useProductsPageService
+  from "@/pages/products-section/products-page/useProductsPageService.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
-import GridItemsFilter from "@/components/complex/grid/filters/grid-items-filter/GridItemsFilter.tsx";
+import GridItemsFilter
+  from "@/components/complex/grid/filters/grid-items-filter/GridItemsFilter.tsx";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
-import GridTraitsFilter from "@/components/complex/grid/filters/grid-traits-filter/GridTraitsFilter.tsx";
-import GridShowItemsFilter from "@/components/complex/grid/filters/grid-show-deleted-filter/GridShowItemsFilter.tsx";
-import { purchaseProductsGridColumns } from "@/components/complex/grid/custom-grids/purchase-products-grid/PurchaseProductsGridColumns.tsx";
-import { purchaseVariantsGridColumns } from "@/components/complex/grid/custom-grids/purchase-variants-grid/PurchaseVariantsGridColumns.tsx";
+import GridTraitsFilter
+  from "@/components/complex/grid/filters/grid-traits-filter/GridTraitsFilter.tsx";
+import GridShowItemsFilter
+  from "@/components/complex/grid/filters/grid-show-deleted-filter/GridShowItemsFilter.tsx";
+import {
+  purchaseProductsGridColumns
+} from "@/components/complex/grid/custom-grids/purchase-products-grid/PurchaseProductsGridColumns.tsx";
+import {
+  purchaseVariantsGridColumns
+} from "@/components/complex/grid/custom-grids/purchase-variants-grid/PurchaseVariantsGridColumns.tsx";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export default function PurchaseProductsCard({
@@ -53,9 +65,6 @@ export default function PurchaseProductsCard({
   const productsService = useProductsPageService();
   const dispatch = useAppDispatch();
   const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
-  const state = useAppSelector<IPurchaseProductsPageSlice>(
-    StoreSliceEnum.PURCHASE_PRODUCTS,
-  );
 
   function handleTabChange(value: string) {
     if (value === activeTab) return;

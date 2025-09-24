@@ -136,11 +136,7 @@ export const SheGrid = React.forwardRef<DndGridRef, ISheGrid<any>>(
     }, [data]);
 
     useEffect(() => {
-      if (
-        gridRequestModel &&
-        gridRequestModel.items &&
-        gridRequestModel.items.length > 0
-      )
+      if (gridRequestModel && gridRequestModel.items)
         setItems(prepareItemsForGrid(gridRequestModel.items));
     }, [gridRequestModel]);
 
