@@ -342,6 +342,8 @@ export default function useOrderDetailsPageService(handleCardAction) {
   }
 
   return {
+    state,
+    ordersState,
     getOrderDetailsHandler,
     getListOfCustomersForGridHandler,
     assignCustomerToOrderHandler,

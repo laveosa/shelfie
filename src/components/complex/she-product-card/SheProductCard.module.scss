@@ -8,6 +8,7 @@
   height: calc(100vh - 92px);
   overflow: hidden;
   padding: 10px 2.5px 10px 10px;
+  background-color: white;
 
   &.card {
     border-radius: 10px;
@@ -39,11 +40,19 @@
         top: -2px;
         left: 6px;
         width: 40px;
+
+        > div {
+          $iconSize: 22px !important;
+          min-width: $iconSize;
+          max-width: $iconSize;
+        }
       }
 
       .cardTitle {
         padding-top: 6px;
         max-width: 300px;
+        opacity: 1;
+        transition: all 160ms ease-in-out;
       }
 
       .cardTitlePadding {
@@ -73,9 +82,9 @@
         }
 
         svg {
-          color: #71717A;
-          width: 18px;
-          height: 18px;
+          color: #71717a;
+          width: 19px;
+          height: 19px;
         }
       }
     }
@@ -125,8 +134,11 @@
   }
 }
 
+// -------------------------------------------------------------------- MINIMISED
 
-
-
-
-
+:global(.sheCardMinimized) {
+  .cardTitle {
+    font-size: 0;
+    opacity: 0;
+  }
+}

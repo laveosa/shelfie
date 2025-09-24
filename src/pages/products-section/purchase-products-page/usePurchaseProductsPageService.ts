@@ -27,6 +27,7 @@ import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 import { CompanyModel } from "@/const/models/CompanyModel.ts";
 import CompaniesApiHooks from "@/utils/services/api/CompaniesApiService.ts";
+import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 
 export default function usePurchaseProductsPageService(
   handleCardAction,
@@ -39,6 +40,7 @@ export default function usePurchaseProductsPageService(
   const productsState = useAppSelector<IProductsPageSlice>(
     StoreSliceEnum.PRODUCTS,
   );
+  const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
   const productsService = useProductsPageService();
   const dispatch = useAppDispatch();
   const { addToast } = useToast();
@@ -1589,6 +1591,10 @@ export default function usePurchaseProductsPageService(
   }
 
   return {
+    state,
+    appState,
+    productsState,
+    productsService,
     getPurchaseProductsPageDataHandler,
     getPurchasesProductsGridDataHandler,
     getVariantsForPurchaseGridDataHandler,

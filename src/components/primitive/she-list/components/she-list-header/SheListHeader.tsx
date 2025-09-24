@@ -62,7 +62,11 @@ export default function SheListHeader({
         className={`${cs.sheListHeaderInput} ${elementClassName}`}
         style={elementStyle}
         value={_searchValue}
-        placeholder={translate(searchPlaceholderTransKey, searchPlaceholder)}
+        placeholder={translate(
+          searchPlaceholderTransKey,
+          {},
+          searchPlaceholder,
+        )}
         onValueChange={onSearchChangeHandler}
       />
       {!hideSearchClearBtn && (

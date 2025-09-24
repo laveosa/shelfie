@@ -1,91 +1,184 @@
-import React, { useEffect, useState } from "react";
+import React, { JSX, useEffect, useState } from "react";
+import _ from "lodash";
 
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
-import cs from "./ItemsCard.module.scss";
-import { Separator } from "@/components/ui/separator.tsx";
-import { IItemsCard } from "@/const/interfaces/complex-components/custom-cards/IItemsCard.ts";
 import { Image } from "lucide-react";
+
+import cs from "./ItemsCard.module.scss";
+import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
+import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
+import { IconViewEnum } from "@/const/enums/IconViewEnum.ts";
+import {
+  IItemsCard,
+  IItemsCardItem,
+} from "@/const/interfaces/complex-components/custom-cards/IItemsCard.ts";
+import StorageService from "@/utils/services/StorageService.ts";
+import { useNavigation } from "react-router-dom";
 
 export default function ItemsCard({
-  isLoading,
-  isItemsLoading,
-  data,
   title,
-  skeletonQuantity,
+  items,
+  selectedId,
+  isLoading,
+  skeletonQuantity = 10,
   onAction,
-  selectedItem,
-  ...props
-}: IItemsCard) {
-  const [selectedId, setSelectedId] = useState(Number(selectedItem));
+}: IItemsCard): JSX.Element {
+  // ==================================================================== STATE MANAGEMENT
+  const [_items, setItems] = useState<IItemsCardItem[]>(null);
+  const [_selectedId, setSelectedId] = useState<number>(null);
+  const [_isMinimized, setIsMinimized] = useState<boolean>(null);
+  const [_animationFlag, setAnimationFlag] = useState<boolean>(false);
 
-  function createSkeletonArray(quantity: number): object[] {
+  const navigation = useNavigation();
+  const isMinimizedStorageKey = "isMinimizedItemsCardStorageKey";
+
+  // ==================================================================== SIDE EFFECTS
+  useEffect(() => {
+    const isMinimizedStorageValue: boolean = StorageService.getLocalStorage(
+      isMinimizedStorageKey,
+    );
+
+    if (
+      !_.isNil(isMinimizedStorageValue) &&
+      isMinimizedStorageValue !== _isMinimized
+    )
+      setIsMinimized(isMinimizedStorageValue);
+
+    setTimeout(() => setAnimationFlag(false));
+  }, []);
+
+  useEffect(() => {
+    if (items && items.length > 0 && !_.isEqual(items, _items)) setItems(items);
+    if (
+      selectedId &&
+      !_.isNil(selectedId) &&
+      !_.isEqual(selectedId, _selectedId)
+    )
+      setSelectedId(selectedId);
+  }, [items, selectedId]);
+
+  useEffect(() => {
+    if (navigation.state === "idle") {
+      setAnimationFlag(false);
+      setTimeout(() => setAnimationFlag(true), 1000);
+    }
+  }, [navigation.state]);
+
+  // ==================================================================== EVENT HANDLERS
+  function onClickHandler(item: IItemsCardItem) {
+    if (_.isNil(selectedId) || selectedId == item.id) return;
+
+    setSelectedId(item.id);
+    onAction?.({ item: item.originalItem, type: item.type });
+  }
+
+  function onMinimizedHandler(value: boolean) {
+    if (!_.isNil(value) && value !== _isMinimized) {
+      setIsMinimized(value);
+      StorageService.setLocalStorage(isMinimizedStorageKey, value);
+    }
+  }
+
+  // ==================================================================== PRIVATE
+  function _createSkeletonArray(quantity: number): object[] {
     return Array.from({ length: quantity }, () => ({}));
   }
 
-  const handleItemClick = (item) => {
-    setSelectedId(item.id);
-    onAction({ item: item.originalItem, type: item.type });
-  };
-
-  useEffect(() => {
-    setSelectedId(Number(selectedItem));
-  }, [selectedItem]);
-
-  return (
-    <div>
-      <SheProductCard
-        loading={isLoading}
-        title={title}
-        view="borderless"
-        width="300px"
-        minWidth="300px"
-        showToggleButton
-        className={cs.productsCard}
-        {...props}
+  function _getItemInnerLayout(item) {
+    return (
+      <div
+        className={`${cs.itemsCardListItem} ${
+          _selectedId == item.id ? cs.selected : ""
+        }`}
       >
-        <div className={cs.productsList}>
-          {isItemsLoading ? (
-            <div>
-              {createSkeletonArray(skeletonQuantity ?? 10).map((_, index) => (
-                <div key={index} className={cs.skeletonItems}>
-                  <Skeleton className="h-12 w-12 rounded-full" />
-                  <div className="space-y-2">
-                    <Skeleton className="h-4 w-[180px]" />
-                    <Skeleton className="h-4 w-[140px]" />
-                  </div>
+        <SheIcon
+          className={cs.listItemIcon}
+          icon={item.imageUrl || Image}
+          iconView={IconViewEnum.BUTTON}
+          minWidth="20px"
+          maxWidth="20px"
+        />
+        <span className={`${cs.listItemText} she-text`}>{item.name}</span>
+      </div>
+    );
+  }
+
+  // ==================================================================== LAYOUT
+  return (
+    <SheProductCard
+      className={`${cs.itemsCard} ${_animationFlag ? cs.itemsCardWithAnimation : ""}`}
+      headerClassName={cs.itemsCardHeader}
+      title={title}
+      loading={isLoading}
+      minWidth="240px"
+      maxWidth="240px"
+      showToggleButton
+      isMinimized={_isMinimized}
+      onIsMinimizedChange={onMinimizedHandler}
+    >
+      <div className={cs.itemsCardList}>
+        {isLoading ? (
+          <div className={cs.itemsCardSkeletonListContainer}>
+            {_createSkeletonArray(skeletonQuantity).map((_, index) => (
+              <div key={index} className={cs.skeletonItem}>
+                <Skeleton className={cs.skeletonItemImage} />
+                <div className={cs.skeletonItemInfoBlock}>
+                  <Skeleton className={cs.skeletonItemInfoTitle} />
+                  <Skeleton className={cs.skeletonItemInfoDescription} />
                 </div>
-              ))}
-            </div>
-          ) : (
-            <div>
-              {data?.map((item) => (
-                <div key={item.id} onClick={() => handleItemClick(item)}>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className={cs.itemsCardListItemContainer}>
+            {items && items.length > 0 ? (
+              <>
+                {items?.map((item: IItemsCardItem) => (
                   <div
-                    className={`${cs.productsListItem} ${
-                      selectedId === item.id ? cs.selected : ""
-                    }`}
+                    className={cs.itemsCardListItemWrapper}
+                    key={item.id}
+                    onClick={() => onClickHandler(item)}
                   >
-                    {item.imageUrl ? (
-                      <img
-                        src={item.imageUrl}
-                        alt={item.name}
-                        className={cs.productItemImage}
-                      />
+                    {_isMinimized ? (
+                      <SheTooltip text={item.name} side="left" align="center">
+                        {_getItemInnerLayout(item)}
+                      </SheTooltip>
                     ) : (
-                      <div className={cs.productItemPlaceholderIcon}>
-                        <Image />
-                      </div>
+                      _getItemInnerLayout(item)
                     )}
-                    <div className={cs.productItemName}>{item.name}</div>
                   </div>
-                  <Separator orientation="horizontal" />
+                ))}
+              </>
+            ) : (
+              <div className={cs.noDataMessageContainer}>
+                <div className={cs.noDataMessage}>
+                  <span className="she-title">no data to display</span>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </SheProductCard>
-    </div>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </SheProductCard>
   );
 }
+
+/*
+<>
+  {items?.map((item: IItemsCardItem) => (
+    <div
+      className={cs.itemsCardListItemWrapper}
+      key={item.id}
+      onClick={() => onClickHandler(item)}
+    >
+      {_isMinimized ? (
+        <SheTooltip text={item.name} side="left" align="center">
+          {_getItemInnerLayout(item)}
+        </SheTooltip>
+      ) : (
+        _getItemInnerLayout(item)
+      )}
+    </div>
+  ))}
+</>*/

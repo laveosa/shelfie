@@ -4,53 +4,25 @@ import React, { useEffect } from "react";
 import cs from "./ProductBasicDataPage.module.scss";
 import ProductConfigurationCard from "@/components/complex/custom-cards/product-configuration-card/ProductConfigurationCard.tsx";
 import CreateProductCategoryCard from "@/components/complex/custom-cards/create-product-category-card/CreateProductCategoryCard.tsx";
-import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
-import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
 import CreateProductBrandCard from "@/components/complex/custom-cards/create-product-brand-card/CreateProductBrandCard.tsx";
-import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
-import { useAppSelector } from "@/utils/hooks/redux.ts";
-import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
-import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
+import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
 import { ProductBasicDataPageSliceActions as actions } from "@/state/slices/ProductBasicDataPageSlice.ts";
-import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import useProductBasicDataPageService from "@/pages/products-section/product-basic-data-page/useProductBasicDataPageService.ts";
+import { useCardActions } from "@/utils/hooks/useCardActions.ts";
+import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 
 export function ProductBasicDataPage() {
+  // ==================================================================== UTILITIES
   const { handleCardAction, createRefCallback } = useCardActions({
     selectActiveCards: (state) =>
       state[StoreSliceEnum.PRODUCT_BASIC_DATA].activeCards,
     refreshAction: actions.refreshActiveCards,
   });
-  const state = useAppSelector<IProductBasicDataPageSlice>(
-    StoreSliceEnum.PRODUCT_BASIC_DATA,
-  );
-  const productsState = useAppSelector<IProductsPageSlice>(
-    StoreSliceEnum.PRODUCTS,
-  );
-  const service = useProductBasicDataPageService(handleCardAction);
-  const productsService = useProductsPageService();
+  const { state, productsState, productsService, ...service } =
+    useProductBasicDataPageService(handleCardAction);
   const { productId } = useParams();
 
-  const productsForItemsCard = productsService.itemsCardItemsConvertor(
-    productsState.products,
-    {
-      idKey: "productId",
-      nameKey: "productName",
-      imageKeyPath: "image.thumbnailUrl",
-      type: "product",
-    },
-  );
-  const variantsForItemsCard = productsService.itemsCardItemsConvertor(
-    productsState.variants,
-    {
-      idKey: "variantId",
-      nameKey: "variantName",
-      imageKeyPath: "photo.thumbnailUrl",
-      type: "variant",
-    },
-  );
-
+  // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     service.getProductsHandler(productsState.productsGridRequestModel);
     service.getCategoriesHandler();
@@ -59,6 +31,7 @@ export function ProductBasicDataPage() {
     service.getProductDetailsHandler(Number(productId));
   }, [productId]);
 
+  // ==================================================================== EVENT HANDLERS
   async function onAction(actionType: string, payload?: any) {
     switch (actionType) {
       case "itemsCardClick":
@@ -106,22 +79,15 @@ export function ProductBasicDataPage() {
     }
   }
 
+  // ==================================================================== LAYOUT
   return (
-    <div className={cs.createProductPage}>
-      <ItemsCard
-        isLoading={productsState.isItemsCardLoading}
-        isItemsLoading={
-          productsState.activeTab === "products"
-            ? productsState.isProductsLoading
-            : productsState.isVariantsLoading
-        }
-        title={productsState.activeTab === "products" ? "Products" : "Variants"}
-        data={
-          productsState.activeTab === "products"
-            ? productsForItemsCard
-            : variantsForItemsCard
-        }
-        selectedItem={
+    <div className={cs.productBasicDataPage}>
+      <SheContextSidebar
+        menuCollectionType="products"
+        isListLoading={productsState.isItemsCardLoading}
+        listItems={productsState[productsState.activeTab]}
+        showListItems
+        selectedId={
           productsState.activeTab === "products"
             ? productId
             : productsState.selectedVariant?.variantId
@@ -131,46 +97,43 @@ export function ProductBasicDataPage() {
             ? productsState.products?.length
             : productsState.variants?.length
         }
-        onAction={(item) => onAction("itemsCardClick", item)}
-      />
-      <ProductMenuCard
-        isLoading={productsState.isProductMenuCardLoading}
-        title={productId ? "Manage Product" : "Create Product"}
-        itemsCollection="products"
+        activeTab={productsState.activeTab}
         counter={productsState.productCounter}
         itemId={Number(productId)}
         activeCards={state.activeCards}
-      />
-      <ProductConfigurationCard
-        isLoading={state.isProductConfigurationCardLoading}
-        product={productsState.product}
-        brandsList={productsState.brands}
-        categoriesList={productsState.categories}
-        productCode={productsState.productCode}
-        onPrimaryButtonClick={(data) => onAction("submitProductData", data)}
-        onSecondaryButtonClick={() => onAction("gotoProductsPage")}
-        onAction={onAction}
-      />
-      {state.activeCards.includes("createCategoryCard") && (
-        <div ref={createRefCallback("createCategoryCard")}>
-          <CreateProductCategoryCard
-            isLoading={state.isCreateCategoryCardLoading}
-            isPhotoUploaderLoading={productsState.isPhotoUploaderLoading}
-            category={productsState.category}
-            onAction={onAction}
-          />
-        </div>
-      )}
-      {state.activeCards.includes("createBrandCard") && (
-        <div ref={createRefCallback("createBrandCard")}>
-          <CreateProductBrandCard
-            isLoading={state.isCreateBrandCardLoading}
-            isPhotoUploaderLoading={productsState.isPhotoUploaderLoading}
-            brand={productsState.brand}
-            onAction={onAction}
-          />
-        </div>
-      )}
+        onAction={(item) => onAction("itemsCardClick", item)}
+      >
+        <ProductConfigurationCard
+          isLoading={state.isProductConfigurationCardLoading}
+          product={productsState.product}
+          brandsList={productsState.brands}
+          categoriesList={productsState.categories}
+          productCode={productsState.productCode}
+          onPrimaryButtonClick={(data) => onAction("submitProductData", data)}
+          onSecondaryButtonClick={() => onAction("gotoProductsPage")}
+          onAction={onAction}
+        />
+        {state.activeCards.includes("createCategoryCard") && (
+          <div ref={createRefCallback("createCategoryCard")}>
+            <CreateProductCategoryCard
+              isLoading={state.isCreateCategoryCardLoading}
+              isPhotoUploaderLoading={productsState.isPhotoUploaderLoading}
+              category={productsState.category}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards.includes("createBrandCard") && (
+          <div ref={createRefCallback("createBrandCard")}>
+            <CreateProductBrandCard
+              isLoading={state.isCreateBrandCardLoading}
+              isPhotoUploaderLoading={productsState.isPhotoUploaderLoading}
+              brand={productsState.brand}
+              onAction={onAction}
+            />
+          </div>
+        )}
+      </SheContextSidebar>
     </div>
   );
 }

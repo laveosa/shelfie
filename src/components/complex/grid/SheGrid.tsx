@@ -40,6 +40,7 @@ import {
   DndGridRef,
   ISheGrid,
 } from "@/const/interfaces/complex-components/ISheGrid.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 
 export const SheGrid = React.forwardRef<DndGridRef, ISheGrid<any>>(
   function SheGrid<TData>(
@@ -50,7 +51,7 @@ export const SheGrid = React.forwardRef<DndGridRef, ISheGrid<any>>(
       columnsPreferences,
       preferenceContext,
       sortingItems,
-      isLoading = true,
+      isLoading,
       showHeader = true,
       showColumnsHeader = true,
       showPagination = true,
@@ -141,6 +142,11 @@ export const SheGrid = React.forwardRef<DndGridRef, ISheGrid<any>>(
     }, [gridRequestModel]);
 
     // ==================================================================== EVENT HANDLERS
+    function onGridRequestChangeHandler(model: GridRequestModel) {
+      const modifiedModel = { ...model, items: null };
+      onGridRequestChange?.(modifiedModel);
+    }
+
     function onDragStartHandler(event: DragStartEvent) {
       setIsDragging(true);
 
@@ -260,7 +266,7 @@ export const SheGrid = React.forwardRef<DndGridRef, ISheGrid<any>>(
           children,
           gridRequestModel,
           onDefaultColumns,
-          onGridRequestChange,
+          onGridRequestChange: onGridRequestChangeHandler,
         }}
       >
         <DndContext

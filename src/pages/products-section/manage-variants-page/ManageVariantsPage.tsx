@@ -1,13 +1,7 @@
 import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
-import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
-import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import cs from "@/pages/products-section/manage-variants-page/ManageVariantsPage.module.scss";
-import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
-import useManageVariantsPageService from "@/pages/products-section/manage-variants-page/useManageVariantsPageService.ts";
-import { IManageVariantsPageSlice } from "@/const/interfaces/store-slices/IManageVariantsPageSlice.ts";
-import { ManageVariantsPageSliceActions as actions } from "@/state/slices/ManageVariantsPageSlice.ts";
+import cs from "./ManageVariantsPage.module.scss";
 import ManageVariantsCard from "@/components/complex/custom-cards/manage-variants-card/ManageVariantsCard.tsx";
 import ChooseVariantTraitsCard from "@/components/complex/custom-cards/choose-variant-traits-card/ChooseVariantTraitsCard.tsx";
 import ProductTraitConfigurationCard from "@/components/complex/custom-cards/product-trait-configuration-card/ProductTraitConfigurationCard.tsx";
@@ -18,53 +12,29 @@ import StockHistoryCard from "@/components/complex/custom-cards/stock-history-ca
 import ManageTraitsCard from "@/components/complex/custom-cards/manage-traits-card/ManageTraitsCard.tsx";
 import AddVariantCard from "@/components/complex/custom-cards/add-variant-card/AddVariantCard.tsx";
 import VariantPhotosCard from "@/components/complex/custom-cards/variant-photos-card/VariantPhotosCard.tsx";
-import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
-import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
-import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
-import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import SelectPurchaseCard from "@/components/complex/custom-cards/select-purchase-card/SelectPurchaseCard.tsx";
 import SupplierCard from "@/components/complex/custom-cards/supplier-card/SupplierCard.tsx";
 import SelectEntityCard from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
 import SupplierConfigurationCard from "@/components/complex/custom-cards/supplier-configuration-card/SupplierConfigurationCard.tsx";
 import { CompaniesListGridColumns } from "@/components/complex/grid/custom-grids/companies-list-grid/CompaniesListGridColumns.tsx";
+import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
+import { ManageVariantsPageSliceActions as actions } from "@/state/slices/ManageVariantsPageSlice.ts";
+import useManageVariantsPageService from "@/pages/products-section/manage-variants-page/useManageVariantsPageService.ts";
+import { useCardActions } from "@/utils/hooks/useCardActions.ts";
+import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 
 export function ManageVariantsPage() {
+  // ==================================================================== UTILITIES
   const { handleCardAction, createRefCallback } = useCardActions({
     selectActiveCards: (state) =>
       state[StoreSliceEnum.MANAGE_VARIANTS].activeCards,
     refreshAction: actions.refreshActiveCards,
   });
+  const { state, productsState, productsService, dispatch, ...service } =
+    useManageVariantsPageService(handleCardAction);
   const { productId } = useParams();
-  const dispatch = useAppDispatch();
-  const service = useManageVariantsPageService(handleCardAction);
-  const productsService = useProductsPageService();
-  const state = useAppSelector<IManageVariantsPageSlice>(
-    StoreSliceEnum.MANAGE_VARIANTS,
-  );
-  const productsState = useAppSelector<IProductsPageSlice>(
-    StoreSliceEnum.PRODUCTS,
-  );
 
-  const productsForItemsCard = productsService.itemsCardItemsConvertor(
-    productsState.products,
-    {
-      idKey: "productId",
-      nameKey: "productName",
-      imageKeyPath: "image.thumbnailUrl",
-      type: "product",
-    },
-  );
-
-  const variantsForItemsCard = productsService.itemsCardItemsConvertor(
-    productsState.variants,
-    {
-      idKey: "variantId",
-      nameKey: "variantName",
-      imageKeyPath: "photo.thumbnailUrl",
-      type: "variant",
-    },
-  );
-
+  // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     service.getManageVariantsPageDataHandler(productId);
   }, [productId]);
@@ -79,6 +49,7 @@ export function ManageVariantsPage() {
     };
   }, [dispatch]);
 
+  // ==================================================================== EVENT HANDLERS
   async function onAction(actionType: string, payload?: any) {
     switch (actionType) {
       case "onProductItemClick":
@@ -247,22 +218,15 @@ export function ManageVariantsPage() {
     }
   }
 
+  // ==================================================================== LAYOUT
   return (
     <div className={cs.manageVariantsPage}>
-      <ItemsCard
-        isLoading={productsState.isItemsCardLoading}
-        isItemsLoading={
-          productsState.activeTab === "products"
-            ? productsState.isProductsLoading
-            : productsState.isVariantsLoading
-        }
-        title={productsState.activeTab === "products" ? "Products" : "Variants"}
-        data={
-          productsState.activeTab === "products"
-            ? productsForItemsCard
-            : variantsForItemsCard
-        }
-        selectedItem={
+      <SheContextSidebar
+        menuCollectionType="products"
+        isListLoading={productsState.isItemsCardLoading}
+        listItems={productsState[productsState.activeTab]}
+        showListItems
+        selectedId={
           productsState.activeTab === "products"
             ? productId
             : productsState.selectedVariant?.variantId
@@ -272,183 +236,183 @@ export function ManageVariantsPage() {
             ? productsState.products?.length
             : productsState.variants?.length
         }
-        onAction={(data) => onAction("onProductItemClick", data)}
-      />
-      <ProductMenuCard
-        isLoading={productsState.isProductMenuCardLoading}
-        title="Manage Product"
-        itemsCollection="products"
+        activeTab={productsState.activeTab}
         counter={productsState.productCounter}
-        onAction={handleCardAction}
         itemId={Number(productId)}
         activeCards={state.activeCards}
-      />
-      <ManageVariantsCard
-        isLoading={state.isManageVariantsCardLoading}
-        isVariantsLoading={productsState.isProductVariantsLoading}
-        variants={productsState.productVariants}
-        traits={productsState.listOfTraitsWithOptionsForProduct}
-        productCounter={productsState.productCounter}
-        onAction={onAction}
-      />
-      {state.activeCards.includes("variantConfigurationCard") && (
-        <div ref={createRefCallback("variantConfigurationCard")}>
-          <VariantConfigurationCard
-            isLoading={state.isVariantConfigurationCardLoading}
-            isVariantOptionsGridLoading={state.isVariantOptionsGridLoading}
-            isVariantPhotoGridLoading={state.isVariantPhotoGridLoading}
-            variant={productsState.selectedVariant}
-            variantPhotos={productsState.variantPhotos}
-            data={state.variantTraitsGridRequestModel}
-            taxesList={productsState.taxesList}
-            productCounter={productsState.productCounter}
-            onAction={onAction}
-            onGenerateProductCode={service.generateProductCodeHandler}
-          />
-        </div>
-      )}
-      {state.activeCards.includes("addStockCard") && (
-        <div ref={createRefCallback("addStockCard")}>
-          <AddStockCard
-            isLoading={state.isAddStockCardLoading}
-            taxTypes={productsState.taxesList}
-            currencyTypes={productsState.currenciesList}
-            variant={productsState.selectedVariant}
-            purchase={state.selectedPurchase}
-            onAction={onAction}
-          />
-        </div>
-      )}
-      {state.activeCards.includes("selectPurchaseCard") && (
-        <div ref={createRefCallback("selectPurchaseCard")}>
-          <SelectPurchaseCard
-            isLoading={state.isSelectPurchaseCardLoading}
-            isGridLoading={state.isPurchaseGridLoading}
-            purchases={state.purchaseGridRequestModel.items}
-            onAction={onAction}
-          />
-        </div>
-      )}
-      {state.activeCards.includes("supplierCard") && (
-        <div ref={createRefCallback("supplierCard")}>
-          <SupplierCard
-            isLoading={state.isSupplierCardLoading}
-            selectedPurchase={productsState.selectedPurchase}
-            selectedSupplier={state.selectedCompany}
-            showCloseButton={true}
-            onAction={onAction}
-          />
-        </div>
-      )}
-      {state.activeCards?.includes("selectEntityCard") && (
-        <div ref={createRefCallback("selectEntityCard")}>
-          <SelectEntityCard
-            isLoading={state.isSelectEntityCardLoading}
-            isGridLoading={state.isSuppliersGridLoading}
-            entityName="Company"
-            entityCollection={state.companiesGridRequestModel?.items}
-            columns={CompaniesListGridColumns({
-              onAction,
-            })}
-            onAction={onAction}
-          />
-        </div>
-      )}
-      {state.activeCards?.includes("supplierConfigurationCard") && (
-        <div ref={createRefCallback("supplierConfigurationCard")}>
-          <SupplierConfigurationCard
-            isLoading={state.isSupplierConfigurationCardLoading}
-            isSupplierPhotosGridLoading={state.isSupplierPhotosGridLoading}
-            isPhotoUploaderLoading={state.isPhotoUploaderLoading}
-            countryList={productsState.countryCodeList}
-            managedSupplier={state.managedSupplier}
-            onAction={onAction}
-          />
-        </div>
-      )}
-      {state.activeCards.includes("disposeStockCard") && (
-        <div ref={createRefCallback("disposeStockCard")}>
-          <DisposeStockCard
-            isLoading={state.isDisposeStockCardLoading}
-            variant={productsState.selectedVariant}
-            onAction={onAction}
-            onSecondaryButtonClick={() => handleCardAction("disposeStockCard")}
-          />
-        </div>
-      )}
-      {state.activeCards.includes("variantHistoryCard") && (
-        <div ref={createRefCallback("variantHistoryCard")}>
-          <StockHistoryCard
-            isLoading={state.isVariantHistoryCardLoading}
-            isGridLoading={state.isVariantsHistoryGridLoading}
-            variant={productsState.selectedVariant}
-            data={state.variantHistory}
-            onAction={onAction}
-          />
-        </div>
-      )}
-      {state.activeCards.includes("addVariantCard") && (
-        <div ref={createRefCallback("addVariantCard")}>
-          <AddVariantCard
-            isLoading={state.isAddVariantCardLoading}
-            traits={state.listOfTraitsWithOptionsForProduct}
-            isDuplicateVariant={state.isDuplicateVariant}
-            onAction={onAction}
-          />
-        </div>
-      )}
-      {state.activeCards.includes("manageTraitsCard") && (
-        <div ref={createRefCallback("manageTraitsCard")}>
-          <ManageTraitsCard
-            isLoading={state.isManageTraitsCardLoading}
-            traits={state.listOfTraitsWithOptionsForProduct}
-            variant={productsState.selectedVariant}
-            onAction={onAction}
-            onSecondaryButtonClick={() => handleCardAction("manageTraitsCard")}
-          />
-        </div>
-      )}
-      {state.activeCards.includes("chooseVariantTraitsCard") && (
-        <div ref={createRefCallback("chooseVariantTraitsCard")}>
-          <ChooseVariantTraitsCard
-            isLoading={state.isChooseVariantTraitsCardLoading}
-            items={state.traits}
-            selectedItems={state.listOfTraitsWithOptionsForProduct}
-            onAction={onAction}
-            onSecondaryButtonClick={() =>
-              handleCardAction("chooseVariantTraitsCard")
-            }
-          />
-        </div>
-      )}
-      {state.activeCards.includes("productTraitConfigurationCard") && (
-        <div ref={createRefCallback("productTraitConfigurationCard")}>
-          <ProductTraitConfigurationCard
-            isLoading={state.isProductTraitConfigurationCardLoading}
-            isGridLoading={state.isTraitOptionsGridLoading}
-            data={state.colorOptionsGridRequestModel}
-            selectedTrait={state.selectedTrait}
-            typesOfTraits={state.typesOfTraits}
-            onSecondaryButtonClick={() =>
-              handleCardAction("productTraitConfigurationCard")
-            }
-            onAction={onAction}
-          />
-        </div>
-      )}
-      {state.activeCards.includes("variantPhotosCard") && (
-        <div ref={createRefCallback("variantPhotosCard")}>
-          <VariantPhotosCard
-            isLoading={state.isVariantPhotosCardLoading}
-            isVariantPhotoGridLoading={state.isVariantPhotoGridLoading}
-            isProductPhotoGridLoading={state.isProductPhotoGridLoading}
-            variantPhotos={productsState.variantPhotos}
-            productPhotos={state.productPhotosForVariant}
-            contextId={productsState.selectedVariant?.variantId}
-            onAction={onAction}
-          />
-        </div>
-      )}
+        onAction={(data) => onAction("onProductItemClick", data)}
+      >
+        <ManageVariantsCard
+          isLoading={state.isManageVariantsCardLoading}
+          isVariantsLoading={productsState.isProductVariantsLoading}
+          variants={productsState.productVariants}
+          traits={productsState.listOfTraitsWithOptionsForProduct}
+          productCounter={productsState.productCounter}
+          onAction={onAction}
+        />
+        {state.activeCards.includes("variantConfigurationCard") && (
+          <div ref={createRefCallback("variantConfigurationCard")}>
+            <VariantConfigurationCard
+              isLoading={state.isVariantConfigurationCardLoading}
+              isVariantOptionsGridLoading={state.isVariantOptionsGridLoading}
+              isVariantPhotoGridLoading={state.isVariantPhotoGridLoading}
+              variant={productsState.selectedVariant}
+              variantPhotos={productsState.variantPhotos}
+              data={state.variantTraitsGridRequestModel}
+              taxesList={productsState.taxesList}
+              productCounter={productsState.productCounter}
+              onAction={onAction}
+              onGenerateProductCode={service.generateProductCodeHandler}
+            />
+          </div>
+        )}
+        {state.activeCards.includes("addStockCard") && (
+          <div ref={createRefCallback("addStockCard")}>
+            <AddStockCard
+              isLoading={state.isAddStockCardLoading}
+              taxTypes={productsState.taxesList}
+              currencyTypes={productsState.currenciesList}
+              variant={productsState.selectedVariant}
+              purchase={state.selectedPurchase}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards.includes("selectPurchaseCard") && (
+          <div ref={createRefCallback("selectPurchaseCard")}>
+            <SelectPurchaseCard
+              isLoading={state.isSelectPurchaseCardLoading}
+              isGridLoading={state.isPurchaseGridLoading}
+              purchases={state.purchaseGridRequestModel.items}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards.includes("supplierCard") && (
+          <div ref={createRefCallback("supplierCard")}>
+            <SupplierCard
+              isLoading={state.isSupplierCardLoading}
+              selectedPurchase={productsState.selectedPurchase}
+              selectedSupplier={state.selectedCompany}
+              showCloseButton={true}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards?.includes("selectEntityCard") && (
+          <div ref={createRefCallback("selectEntityCard")}>
+            <SelectEntityCard
+              isLoading={state.isSelectEntityCardLoading}
+              isGridLoading={state.isSuppliersGridLoading}
+              entityName="Company"
+              entityCollection={state.companiesGridRequestModel?.items}
+              columns={CompaniesListGridColumns({
+                onAction,
+              })}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards?.includes("supplierConfigurationCard") && (
+          <div ref={createRefCallback("supplierConfigurationCard")}>
+            <SupplierConfigurationCard
+              isLoading={state.isSupplierConfigurationCardLoading}
+              isSupplierPhotosGridLoading={state.isSupplierPhotosGridLoading}
+              isPhotoUploaderLoading={state.isPhotoUploaderLoading}
+              countryList={productsState.countryCodeList}
+              managedSupplier={state.managedSupplier}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards.includes("disposeStockCard") && (
+          <div ref={createRefCallback("disposeStockCard")}>
+            <DisposeStockCard
+              isLoading={state.isDisposeStockCardLoading}
+              variant={productsState.selectedVariant}
+              onAction={onAction}
+              onSecondaryButtonClick={() =>
+                handleCardAction("disposeStockCard")
+              }
+            />
+          </div>
+        )}
+        {state.activeCards.includes("variantHistoryCard") && (
+          <div ref={createRefCallback("variantHistoryCard")}>
+            <StockHistoryCard
+              isLoading={state.isVariantHistoryCardLoading}
+              isGridLoading={state.isVariantsHistoryGridLoading}
+              variant={productsState.selectedVariant}
+              data={state.variantHistory}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards.includes("addVariantCard") && (
+          <div ref={createRefCallback("addVariantCard")}>
+            <AddVariantCard
+              isLoading={state.isAddVariantCardLoading}
+              traits={state.listOfTraitsWithOptionsForProduct}
+              isDuplicateVariant={state.isDuplicateVariant}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards.includes("manageTraitsCard") && (
+          <div ref={createRefCallback("manageTraitsCard")}>
+            <ManageTraitsCard
+              isLoading={state.isManageTraitsCardLoading}
+              traits={state.listOfTraitsWithOptionsForProduct}
+              variant={productsState.selectedVariant}
+              onAction={onAction}
+              onSecondaryButtonClick={() =>
+                handleCardAction("manageTraitsCard")
+              }
+            />
+          </div>
+        )}
+        {state.activeCards.includes("chooseVariantTraitsCard") && (
+          <div ref={createRefCallback("chooseVariantTraitsCard")}>
+            <ChooseVariantTraitsCard
+              isLoading={state.isChooseVariantTraitsCardLoading}
+              items={state.traits}
+              selectedItems={state.listOfTraitsWithOptionsForProduct}
+              onAction={onAction}
+              onSecondaryButtonClick={() =>
+                handleCardAction("chooseVariantTraitsCard")
+              }
+            />
+          </div>
+        )}
+        {state.activeCards.includes("productTraitConfigurationCard") && (
+          <div ref={createRefCallback("productTraitConfigurationCard")}>
+            <ProductTraitConfigurationCard
+              isLoading={state.isProductTraitConfigurationCardLoading}
+              isGridLoading={state.isTraitOptionsGridLoading}
+              data={state.colorOptionsGridRequestModel}
+              selectedTrait={state.selectedTrait}
+              typesOfTraits={state.typesOfTraits}
+              onSecondaryButtonClick={() =>
+                handleCardAction("productTraitConfigurationCard")
+              }
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards.includes("variantPhotosCard") && (
+          <div ref={createRefCallback("variantPhotosCard")}>
+            <VariantPhotosCard
+              isLoading={state.isVariantPhotosCardLoading}
+              isVariantPhotoGridLoading={state.isVariantPhotoGridLoading}
+              isProductPhotoGridLoading={state.isProductPhotoGridLoading}
+              variantPhotos={productsState.variantPhotos}
+              productPhotos={state.productPhotosForVariant}
+              contextId={productsState.selectedVariant?.variantId}
+              onAction={onAction}
+            />
+          </div>
+        )}
+      </SheContextSidebar>
     </div>
   );
 }

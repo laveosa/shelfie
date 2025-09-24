@@ -1,6 +1,6 @@
 import { ComponentPropsWithRef } from "react";
 
-export interface IBaseComponent extends ComponentPropsWithRef<"div"> {
+export interface IBaseComponent extends ComponentPropsWithRef<any> {
   transKey?: string;
   minWidth?: string;
   maxWidth?: string;

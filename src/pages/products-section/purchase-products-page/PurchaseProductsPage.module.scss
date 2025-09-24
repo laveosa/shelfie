@@ -1,9 +1,4 @@
-@use "@/styles/variables" as vars;
-
 .purchaseProductsPage {
-  display: flex;
-  gap: 20px;
-
   .purchaseProductsCard {
     width: 100%;
   }

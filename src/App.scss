@@ -144,10 +144,13 @@ body {
   overflow-x: hidden;
   position: relative;
 
-  // section div wrapper
+  // section main wrapper
   > div {
-    min-height: calc(100vh - 62px);
-    max-height: calc(100vh - 62px);
+    min-height: calc(100vh - $appHeaderHeight);
+    // page main wrapper
+    > div {
+      min-height: calc(100vh - $appHeaderHeight);
+    }
   }
 }
 

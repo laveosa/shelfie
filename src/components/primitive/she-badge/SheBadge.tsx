@@ -129,7 +129,7 @@ export default function SheBadge<T>(props: ISheBadge<T>): JSX.Element {
                   className="she-text"
                   style={{ color: textColor || contextColor }}
                 >
-                  {translate(textTransKey, text?.toString())}
+                  {translate(textTransKey, {}, text?.toString())}
                 </span>
               )}
               {showCloseBtn && (

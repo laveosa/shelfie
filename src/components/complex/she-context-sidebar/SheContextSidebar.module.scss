@@ -1,0 +1,28 @@
+@use "@/styles/variables" as vars;
+
+.sheContextSidebar {
+  display: flex;
+  padding: vars.$paddingSmall;
+  background-color: vars.$secondaryBg;
+  min-height: calc(100vh - 52px);
+
+  .sheContextSidebarMenuAndListContainer {
+    display: flex;
+    gap: 6px;
+
+    .sheContextSidebarList {
+    }
+
+    .sheContextSidebarMenu {
+    }
+  }
+
+  .sheContextSidebarContextContainer {
+    padding: 0 6px;
+    width: 100%;
+    flex-grow: 1;
+    gap: vars.$paddingSmall;
+    display: flex;
+    overflow-x: auto;
+  }
+}

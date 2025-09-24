@@ -1,0 +1,37 @@
+[
+  {
+    "id": "orders",
+    "icon": "ShoppingCart",
+    "label": "Orders",
+    "labelTransKey": "ProductMenu.Orders",
+    "path": "ORDERS"
+  },
+  {
+    "id": "open_carts",
+    "icon": "ShoppingBag",
+    "label": "Open Carts",
+    "labelTransKey": "ProductMenu.OpenCarts",
+    "path": "OPEN_CARTS"
+  },
+  {
+    "id": "shipments",
+    "icon": "Truck",
+    "label": "Shipments",
+    "labelTransKey": "ProductMenu.Shipments",
+    "path": "SHIPMENTS"
+  },
+  {
+    "id": "returns",
+    "icon": "RotateCcwSquare",
+    "label": "Returns",
+    "labelTransKey": "ProductMenu.Returns",
+    "path": "RETURNS"
+  },
+  {
+    "id": "payments",
+    "icon": "Banknote",
+    "label": "Payments",
+    "labelTransKey": "ProductMenu.Payments",
+    "path": "PAYMENTS"
+  }
+]

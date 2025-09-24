@@ -8,6 +8,7 @@
   height: calc(100vh - 92px);
   overflow: hidden;
   padding: 20px;
+  background-color: white;
 
   &.card {
     border-radius: 10px;
@@ -73,7 +74,7 @@
         }
 
         svg {
-          color: #71717A;
+          color: #71717a;
           width: 18px;
           height: 18px;
         }
@@ -91,14 +92,18 @@
   }
 }
 
-
 // -------------------------------------------------------------------- LOADER
 
 .sheCard {
   .loaderContainer {
     height: 5px;
     width: 100%;
-    background: repeating-linear-gradient(to right, gray 0%, lightblue 50%, gray 100%);
+    background: repeating-linear-gradient(
+      to right,
+      gray 0%,
+      lightblue 50%,
+      gray 100%
+    );
     background-size: 200% auto;
     animation: gradient 2s infinite;
     animation-fill-mode: forwards;
@@ -114,4 +119,3 @@
     }
   }
 }
-

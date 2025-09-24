@@ -26,7 +26,7 @@ export default function SheGridNoDataMessage({
           colSpan={totalColumns}
           className={cs.sheGridNoDataMessageWrapper}
         >
-          <span>{translate(customMessageTransKey, customMessage)}</span>
+          <span>{translate(customMessageTransKey, {}, customMessage)}</span>
         </TableCell>
       </TableRow>
     </TableBody>

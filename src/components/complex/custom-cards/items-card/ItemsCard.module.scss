@@ -1,59 +1,199 @@
 @use "@/styles/variables" as vars;
 
-.productsCard {
-  .productsList {
-    display: flex;
-    flex-direction: column;
-    gap: vars.$paddingSmall;
+.itemsCard {
+  background-color: transparent;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
 
-    .productsListItem {
-      display: flex;
-      align-items: center;
-      gap: vars.$paddingSmall;
-      cursor: pointer;
-      border-radius: 5px;
-      height: 100%;
-      padding: vars.$paddingSmall;
+  &.itemsCardWithAnimation {
+    transition: all 160ms ease-in-out;
+  }
 
-      .productItemPlaceholderIcon {
-        svg {
-          width: 20px;
-          height: 20px;
+  .itemsCardHeader {
+    margin-bottom: 6px !important;
+    padding: 0 9px !important;
+
+    > div:nth-child(1) {
+      > div {
+        position: relative;
+        left: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+
+        > button {
+          $btnSize: 20px;
+          position: relative !important;
+          top: 0 !important;
+          left: 0 !important;
+          width: $btnSize !important;
+          min-width: $btnSize;
+          max-width: $btnSize;
+          padding: 0;
+
+          &:hover {
+            svg {
+              stroke: vars.$iconColor !important;
+            }
+          }
+        }
+
+        > div {
+          position: relative;
+          top: -1px;
+          padding: 0 !important;
+          text-transform: capitalize;
+          max-width: 100% !important;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
       }
-
-      &:hover {
-        background: vars.$colorMedium;
-        font-weight: 500;
-        cursor: pointer;
-      }
-    }
-
-    .selected {
-      background: vars.$colorMedium;
-    }
-
-    .productItemImage {
-      width: 30px;
-      height: 30px;
-      border-radius: vars.$brdR_03;
-    }
-
-    .productItemName {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 100%;
     }
   }
 }
 
-//------------------------------------------------------LOADING
+// ======================================================== CARD CONTEXT
 
-.productsCard {
-  .skeletonItems {
+.itemsCard {
+  .itemsCardList {
     display: flex;
-    gap: 20px;
-    padding-top: 10px;
+    flex-direction: column;
+
+    .itemsCardListItemContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      .itemsCardListItemWrapper {
+        .itemsCardListItem {
+          display: flex;
+          align-items: center;
+          gap: vars.$paddingSmall;
+          cursor: pointer;
+          border-radius: 5px;
+          height: 100%;
+          padding: vars.$paddingSmall;
+
+          &:hover {
+            background: vars.$colorMuted;
+
+            .listItemIcon {
+              color: vars.$iconColor;
+            }
+
+            .listItemText {
+              font-weight: 500;
+            }
+          }
+
+          &.selected {
+            background: vars.$colorMuted;
+          }
+
+          .listItemIcon {
+            min-height: 0;
+            color: vars.$iconPlaceholderColor;
+          }
+
+          .listItemText {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+}
+
+// ======================================================== MINIMIZED
+
+.itemsCard:global(.sheCardMinimized) {
+  min-width: 47px !important;
+  max-width: 47px !important;
+
+  .listItemText {
+    opacity: 0 !important;
+    display: none !important;
+  }
+
+  .noDataMessageContainer {
+    display: none !important;
+  }
+}
+
+// ======================================================== SKELETON
+
+.itemsCard {
+  .itemsCardSkeletonListContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .skeletonItem {
+      display: flex;
+      gap: 10px;
+      padding: 10px;
+      min-height: 40px;
+
+      .skeletonItemImage {
+        $skeletonIconSize: 20px;
+        min-width: $skeletonIconSize;
+        max-width: $skeletonIconSize;
+        min-height: $skeletonIconSize;
+        max-height: $skeletonIconSize;
+        border-radius: 100%;
+        background-color: vars.$colorMedium;
+      }
+
+      .skeletonItemInfoBlock {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 4px;
+        width: 100%;
+
+        .skeletonItemInfoTitle {
+          height: 8px;
+          width: 40%;
+          background-color: vars.$colorMedium;
+        }
+
+        .skeletonItemInfoDescription {
+          height: 8px;
+          width: 90%;
+          background-color: vars.$colorMedium;
+        }
+      }
+    }
+  }
+}
+
+// ======================================================== NO DATA MESSAGE
+
+.itemsCard {
+  .noDataMessageContainer {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100px;
+
+    .noDataMessage {
+      margin: auto;
+      text-align: center;
+      position: relative;
+      left: -13px;
+
+      > span {
+        font-size: 22px;
+        color: lightgray;
+      }
+    }
   }
 }

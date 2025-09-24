@@ -395,7 +395,6 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
   }
 
   // ==================================================================== LAYOUT
-
   return (
     <ShePrimitiveComponentWrapper
       {...shePrimitiveComponentWrapperProps}

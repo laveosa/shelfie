@@ -516,6 +516,9 @@ export default function useSupplierPageService(handleCardAction) {
   }
 
   return {
+    state,
+    productsState,
+    productsService,
     createPurchaseForSupplierHandler,
     updatePurchaseForSupplierHandler,
     getListOfSuppliersHandler,

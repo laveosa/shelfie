@@ -289,7 +289,7 @@ export default function SheTextArea(props: ISheTextarea): JSX.Element {
         className={`componentTriggerElement`}
         ref={_textAreaRef}
         value={_textValue ?? ""}
-        placeholder={translate(placeholderTransKey, placeholder)}
+        placeholder={translate(placeholderTransKey, {}, placeholder)}
         aria-invalid={!isValid}
         aria-describedby={ariaDescribedbyId}
         autoFocus={autoFocus}

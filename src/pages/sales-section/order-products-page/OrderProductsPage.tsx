@@ -1,11 +1,11 @@
 import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
+import cs from "./OrderProductsPage.module.scss";
 import {
   GridSortingEnum,
   GridSortingEnumLabels,
 } from "@/const/enums/GridSortingEnum.ts";
-import cs from "./OrderProductsPage.module.scss";
 import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
 import { useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
@@ -17,29 +17,33 @@ import FindProductsCard from "@/components/complex/custom-cards/find-products-ca
 import ProductsInOrderCard from "@/components/complex/custom-cards/products-in-order-card/ProductsInOrderCard.tsx";
 import useOrderProductsPageService from "@/pages/sales-section/order-products-page/useOrderProductsPageService.ts";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
+import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
 
 export function OrderProductsPage() {
+  // ==================================================================== UTILITIES
+  const { handleCardAction, createRefCallback } = useCardActions({
+    selectActiveCards: (state) =>
+      state[StoreSliceEnum.ORDER_PRODUCTS].activeCards,
+    refreshAction: actions.refreshActiveCards,
+  });
   const state = useAppSelector<IOrderDetailsPageSlice>(
     StoreSliceEnum.ORDER_PRODUCTS,
   );
   const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
   const ordersState = useAppSelector<IOrdersPageSlice>(StoreSliceEnum.ORDERS);
   const service = useOrderProductsPageService();
-  const { orderId } = useParams();
-  const { handleCardAction, createRefCallback } = useCardActions({
-    selectActiveCards: (state) =>
-      state[StoreSliceEnum.ORDER_PRODUCTS].activeCards,
-    refreshAction: actions.refreshActiveCards,
-  });
   const sortingItems = Object.values(GridSortingEnum).map((value) => ({
     value,
     description: GridSortingEnumLabels[value],
   }));
+  const { orderId } = useParams();
 
+  // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     service.getOrderStockActionsListForGrid(orderId);
   }, [orderId]);
 
+  // ==================================================================== EVENT HANDLERS
   async function onAction(actionType: string, payload?: any) {
     switch (actionType) {
       case "addProduct":
@@ -72,40 +76,39 @@ export function OrderProductsPage() {
     }
   }
 
+  // ==================================================================== LAYOUT
   return (
-    <div className={cs.ordersProductsPage}>
-      <ProductMenuCard
-        title="Order"
-        itemsCollection="order"
+    <div className={cs.orderProductsPage}>
+      <SheContextSidebar
+        menuCollectionType="order"
+        menuTitle="Order"
         itemId={Number(orderId)}
         counter={ordersState.productCounter}
-      />
-      <ProductsInOrderCard
-        isLoading={state.isProductsInOrderCardLoading}
-        isGridLoading={state.isProductsInOrderGridLoading}
-        stockActions={ordersState.stockActionsGridRequestModel.items}
-        onAction={onAction}
-      />
-      {state.activeCards?.includes("findProductsCard") && (
-        <div
-          className={cs.findProductsCard}
-          ref={createRefCallback("findProductsCard")}
-        >
-          <FindProductsCard
-            isLoading={state.isFindProductsCardLoading}
-            isGridLoading={state.isFindProductsGridLoading}
-            variants={ordersState.variantsGridRequestModel.items}
-            gridRequestModel={ordersState.variantsGridRequestModel}
-            preferences={appState.preferences}
-            sortingOptions={sortingItems}
-            colorsForFilter={ordersState.colorsForFilter}
-            sizesForFilter={ordersState.sizesForFilter}
-            categories={ordersState.categories}
-            brands={ordersState.brands}
-            onAction={onAction}
-          />
-        </div>
-      )}
+      >
+        <ProductsInOrderCard
+          isLoading={state.isProductsInOrderCardLoading}
+          isGridLoading={state.isProductsInOrderGridLoading}
+          stockActions={ordersState.stockActionsGridRequestModel.items}
+          onAction={onAction}
+        />
+        {state.activeCards?.includes("findProductsCard") && (
+          <div className={cs.findProductsCard} ref={createRefCallback("findProductsCard")}>
+            <FindProductsCard
+              isLoading={state.isFindProductsCardLoading}
+              isGridLoading={state.isFindProductsGridLoading}
+              variants={ordersState.variantsGridRequestModel.items}
+              gridRequestModel={ordersState.variantsGridRequestModel}
+              preferences={appState.preferences}
+              sortingOptions={sortingItems}
+              colorsForFilter={ordersState.colorsForFilter}
+              sizesForFilter={ordersState.sizesForFilter}
+              categories={ordersState.categories}
+              brands={ordersState.brands}
+              onAction={onAction}
+            />
+          </div>
+        )}
+      </SheContextSidebar>
     </div>
   );
 }

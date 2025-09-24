@@ -2,27 +2,25 @@ import { ColumnDef } from "@tanstack/react-table";
 import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
+import cs from "./MarginsPage.module.scss";
 import {
   GridSortingEnum,
   GridSortingEnumLabels,
 } from "@/const/enums/GridSortingEnum.ts";
-import { MarginsPageSliceActions as actions } from "@/state/slices/MarginsPageSlice";
-import { useAppSelector } from "@/utils/hooks/redux.ts";
-import { IPurchaseProductsPageSlice } from "@/const/interfaces/store-slices/IPurchaseProductsPageSlice.ts";
-import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
-import { useMarginsPageService } from "@/pages/products-section/margins-page/useMarginsPageService.ts";
-import cs from "./MarginsPage.module.scss";
-import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
 import MarginForPurchaseCard from "@/components/complex/custom-cards/margin-for-purchase-card/MarginForPurchaseCard.tsx";
 import MarginConfigurationCard from "@/components/complex/custom-cards/margin-configuration-card/MarginConfigurationCard.tsx";
 import SalePriseManagementCard from "@/components/complex/custom-cards/sale-price-management-card/SalePriceManagementCard.tsx";
-import { useCardActions } from "@/utils/hooks/useCardActions.ts";
-import SelectEntityCard from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
 import { MarginsListGridColumns } from "@/components/complex/grid/custom-grids/margins-list-grid/MarginsListGridColumns.tsx";
+import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
+import SelectEntityCard from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
+import { MarginsPageSliceActions as actions } from "@/state/slices/MarginsPageSlice";
+import { useMarginsPageService } from "@/pages/products-section/margins-page/useMarginsPageService.ts";
+import { useCardActions } from "@/utils/hooks/useCardActions.ts";
+import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export function MarginsPage() {
+  // ==================================================================== UTILITIES
   const {
     handleCardAction,
     handleMultipleCardActions,
@@ -32,13 +30,7 @@ export function MarginsPage() {
     selectActiveCards: (state) => state[StoreSliceEnum.MARGINS].activeCards,
     refreshAction: actions.refreshActiveCards,
   });
-  const state = useAppSelector<IPurchaseProductsPageSlice>(
-    StoreSliceEnum.MARGINS,
-  );
-  const productsState = useAppSelector<IProductsPageSlice>(
-    StoreSliceEnum.PRODUCTS,
-  );
-  const service = useMarginsPageService(
+  const { state, productsState, ...service } = useMarginsPageService(
     handleCardAction,
     handleMultipleCardActions,
     keepOnlyCards,
@@ -49,6 +41,7 @@ export function MarginsPage() {
     description: GridSortingEnumLabels[value],
   }));
 
+  // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     service.getMarginPageDataHandle(purchaseId);
   }, [purchaseId]);
@@ -61,6 +54,7 @@ export function MarginsPage() {
     service.keepSalePriceManagementCardOpenHandle();
   }, [state.activeCards]);
 
+  // ==================================================================== EVENT HANDLERS
   async function onAction(actionType: string, payload?: any) {
     switch (actionType) {
       case "openSelectMarginCard":
@@ -132,12 +126,12 @@ export function MarginsPage() {
     }
   }
 
+  // ==================================================================== LAYOUT
   return (
     <div className={cs.marginPage}>
-      <ProductMenuCard
-        isLoading={state.isProductMenuCardLoading}
-        title="Report Purchase"
-        itemsCollection="purchases"
+      <SheContextSidebar
+        menuCollectionType="purchases"
+        menuTitle="Report Purchase"
         itemId={Number(purchaseId)}
         counter={productsState.purchaseCounters}
       />

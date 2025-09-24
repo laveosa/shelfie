@@ -1,20 +1,25 @@
-import React, { useRef, useState } from "react";
-import { PanelLeft, Trash2, X } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
 import { Trans } from "react-i18next";
+import _ from "lodash";
+
+import { PanelLeft, Trash2, X } from "lucide-react";
 
 import cs from "./SheProductCard.module.scss";
-import { ISheProductCard } from "@/const/interfaces/complex-components/ISheProductCard.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
 import SheCardNotification from "@/components/complex/she-card-notification/SheCardNotification.tsx";
+import { ISheProductCard } from "@/const/interfaces/complex-components/ISheProductCard.ts";
 
 export default function SheProductCard({
   className = "",
+  headerClassName = "",
+  contextClassName = "",
   view = "card",
   loading,
   width,
   minWidth = "400px",
   maxWidth,
+  isMinimized,
   title,
   titleTransKey,
   text,
@@ -38,9 +43,19 @@ export default function SheProductCard({
   secondaryButtonModel,
   onPrimaryButtonClick,
   onSecondaryButtonClick,
+  onIsMinimizedChange,
 }: ISheProductCard) {
-  const [isMinimized, setIsMinimized] = useState(false);
+  const [_isMinimized, setIsMinimized] = useState<boolean>(null);
   const cardContentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!_.isNil(isMinimized) && isMinimized !== _isMinimized)
+      setIsMinimized(isMinimized);
+  }, [isMinimized]);
+
+  useEffect(() => {
+    onIsMinimizedChange?.(_isMinimized);
+  }, [_isMinimized]);
 
   // useEffect(() => {
   //   const element = cardContentRef.current;
@@ -64,16 +79,16 @@ export default function SheProductCard({
 
   return (
     <div
-      className={`${className || ""} ${cs.sheProductCard || ""} ${view === "card" ? cs.card : ""}`}
+      className={`${className} ${cs.sheProductCard || ""} ${view === "card" ? cs.card : ""} ${_isMinimized ? "sheCardMinimized" : ""}`}
       style={{
         width,
-        minWidth: isMinimized ? "50px" : minWidth,
-        maxWidth: isMinimized ? "50px" : maxWidth,
+        minWidth,
+        maxWidth,
         padding: view === "borderless" ? "10px 0 20px 0" : "",
       }}
     >
       {showHeader && (
-        <div className={cs.cardHeader}>
+        <div className={`${cs.cardHeader} ${headerClassName}`}>
           <div className={cs.titleBlock}>
             <div className={cs.cardTitleBlock}>
               {showToggleButton && (
@@ -93,13 +108,13 @@ export default function SheProductCard({
                 className={`${cs.cardTitle} she-title`}
                 style={{
                   ...(showToggleButton && { paddingLeft: "40px" }),
-                  visibility: isMinimized ? "hidden" : "visible",
+                  visibility: _isMinimized ? "hidden" : "visible",
                 }}
               >
                 <Trans i18nKey={titleTransKey}>{title}</Trans>
               </div>
             </div>
-            {!isMinimized && showCloseButton && (
+            {!_isMinimized && showCloseButton && (
               <SheButton
                 className={cs.closeButton}
                 icon={X}
@@ -108,7 +123,7 @@ export default function SheProductCard({
               />
             )}
           </div>
-          {!isMinimized && (
+          {!_isMinimized && (
             <>
               <div className="she-text">
                 <Trans i18nKey={textTransKey}>{text}</Trans>
@@ -123,7 +138,7 @@ export default function SheProductCard({
       {loading && <SheLoading />}
       <div
         ref={cardContentRef}
-        className={`${cs.cardContent} ${loading ? cs.cardContentLoading : ""} ${
+        className={`${cs.cardContent} ${contextClassName} ${loading ? cs.cardContentLoading : ""} ${
           showPrimaryButton || showSecondaryButton
             ? cs.cardContentWithFooter
             : ""
@@ -131,7 +146,7 @@ export default function SheProductCard({
       >
         {children}
       </div>
-      {!isMinimized &&
+      {!_isMinimized &&
         (showSecondaryButton || showPrimaryButton || showNotificationCard) && (
           <div
             className={cs.cardFooter}

@@ -1,5 +1,6 @@
-import cs from "./SalesSection.module.scss";
 import { Outlet } from "react-router-dom";
+
+import cs from "./SalesSection.module.scss";
 
 export function SalesSection() {
   return (

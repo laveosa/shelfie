@@ -191,8 +191,7 @@
       "BrandName": "enter brand name...",
       "CategoryName": "enter category name...",
       "TraitName": "enter trait name...",
-      "SelectTraitType": "Select {{traitType}}",
-      "SelectTraitType": "Select trait type",
+      "SelectTraitType": "Select trait type {{traitType}}",
       "SelectCategory": "Select category",
       "SelectBrand": "Select brand"
     },

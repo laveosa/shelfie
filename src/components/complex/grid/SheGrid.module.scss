@@ -21,7 +21,7 @@
         thead {
           tr {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: stretch;
 
             th {
@@ -43,24 +43,24 @@
           }
         }
 
-        /*.dndGridRowsBody {
+        .dndGridRowsBody {
           tr {
             td {
-              display: flex;
-              align-items: center;
-              padding: 8px;
-              flex-grow: 1;
-              width: 16px !important;
-              height: auto;
-              overflow: hidden;
+              //display: flex;
+              //align-items: center;
+              //padding: 8px;
+              //flex-grow: 1;
+              //width: 16px !important;
+              //height: auto;
+              //overflow: hidden;
 
-              > * {
+              /*> * {
                 overflow: hidden;
                 text-overflow: ellipsis;
-              }
+              }*/
             }
           }
-        }*/
+        }
       }
     }
   }

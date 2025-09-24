@@ -1,0 +1,47 @@
+[
+  {
+    "id": "basic_data",
+    "icon": "FileText",
+    "label": "Basic Data",
+    "labelTransKey": "ProductMenu.BasicData",
+    "path": "PRODUCT_BASIC_DATA"
+  },
+  {
+    "id": "gallery",
+    "counterId": "gallery",
+    "icon": "ImagesIcon",
+    "label": "Gallery",
+    "labelTransKey": "ProductMenu.Gallery",
+    "path": "PRODUCT_GALLERY"
+  },
+  {
+    "id": "variants",
+    "counterId": "variants",
+    "icon": "Layers2",
+    "label": "Variants",
+    "labelTransKey": "ProductMenu.Variants",
+    "path": "MANAGE_VARIANTS"
+  },
+  {
+    "id": "attributes",
+    "counterId": "attributes",
+    "icon": "SlidersHorizontal",
+    "label": "Attributes",
+    "labelTransKey": "ProductMenu.Attributes",
+    "path": "ATTRIBUTES"
+  },
+  {
+    "id": "size_chart",
+    "icon": "Ruler",
+    "label": "Size Chart",
+    "labelTransKey": "ProductMenu.SizeChart",
+    "path": "SIZE_CHART"
+  },
+  {
+    "id": "purchase",
+    "icon": "ReceiptEuroIcon",
+    "label": "Purchase",
+    "labelTransKey": "ProductMenu.Purchase",
+    "path": "SIZE_CHART"
+  }
+]

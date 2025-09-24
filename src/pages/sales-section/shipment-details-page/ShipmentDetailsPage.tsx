@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
-import cs from "@/pages/sales-section/orders-page/OrdersPage.module.scss";
+import cs from "./ShipmentDetailsPage.module.scss";
 import { useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
@@ -12,6 +12,7 @@ import ShipmentConfigurationCard from "@/components/complex/custom-cards/shipmen
 import { IShipmentsPageSlice } from "@/const/interfaces/store-slices/IShipmentsPageSlice.ts";
 
 export function ShipmentDetailsPage() {
+  // ==================================================================== UTILITIES
   const { shipmentId } = useParams();
   const state = useAppSelector<IShipmentDetailsPageSlice>(
     StoreSliceEnum.SHIPMENT_DETAILS,
@@ -27,12 +28,14 @@ export function ShipmentDetailsPage() {
       refreshAction: actions.refreshActiveCards,
     });
 
+  // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     if (!state.selectedShipment || state.selectedShipment.id !== shipmentId) {
       service.getShipmentDetailsHandler(Number(shipmentId));
     }
   }, [shipmentId]);
 
+  // ==================================================================== EVENT HANDLERS
   async function onAction(actionType: string, _payload?: any) {
     switch (actionType) {
       case "createShipment":
@@ -42,6 +45,7 @@ export function ShipmentDetailsPage() {
     }
   }
 
+  // ==================================================================== LAYOUT
   return (
     <div className={cs.shipmentDetailsPage}>
       <ShipmentConfigurationCard

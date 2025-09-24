@@ -1,6 +1,8 @@
 @use "@/styles/variables" as vars;
 
 .productConfigurationFormCard {
+  background-color: white;
+
   .productConfigurationForm > form {
     display: flex;
     flex-direction: column;

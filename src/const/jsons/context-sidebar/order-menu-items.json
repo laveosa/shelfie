@@ -1,0 +1,31 @@
+[
+  {
+    "id": "details",
+    "icon": "ShoppingCart",
+    "label": "Details",
+    "labelTransKey": "ProductMenu.Details",
+    "path": "ORDER_DETAILS"
+  },
+  {
+    "id": "products",
+    "counterId": "products",
+    "icon": "ShoppingBag",
+    "label": "Products",
+    "labelTransKey": "ProductMenu.Products",
+    "path": "ORDER_PRODUCTS"
+  },
+  {
+    "id": "shipment",
+    "icon": "Truck",
+    "label": "Shipment",
+    "labelTransKey": "ProductMenu.Shipment",
+    "path": "ORDER_SHIPMENT"
+  },
+  {
+    "id": "payment",
+    "icon": "Banknote",
+    "label": "Payment",
+    "labelTransKey": "ProductMenu.Payment",
+    "path": "ORDER_PAYMENT"
+  }
+]

@@ -6,16 +6,10 @@ import {
   GridSortingEnumLabels,
 } from "@/const/enums/GridSortingEnum.ts";
 import cs from "./PurchaseProductsPage.module.scss";
-import { useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import usePurchaseProductsPageService from "@/pages/products-section/purchase-products-page/usePurchaseProductsPageService.ts";
-import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
-import { IPurchaseProductsPageSlice } from "@/const/interfaces/store-slices/IPurchaseProductsPageSlice.ts";
 import PurchaseProductsCard from "@/components/complex/custom-cards/purchase-products-card/PurchaseProductsCard.tsx";
-import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
-import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { PurchaseProductsPageSliceActions as actions } from "@/state/slices/PurchaseProductsPageSlice.ts";
-import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 import ProductConfigurationCard from "@/components/complex/custom-cards/product-configuration-card/ProductConfigurationCard.tsx";
 import CreateProductCategoryCard from "@/components/complex/custom-cards/create-product-category-card/CreateProductCategoryCard.tsx";
 import CreateProductBrandCard from "@/components/complex/custom-cards/create-product-brand-card/CreateProductBrandCard.tsx";
@@ -37,8 +31,10 @@ import SupplierCard from "@/components/complex/custom-cards/supplier-card/Suppli
 import SelectEntityCard from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
 import { CompaniesListGridColumns } from "@/components/complex/grid/custom-grids/companies-list-grid/CompaniesListGridColumns.tsx";
 import SupplierConfigurationCard from "@/components/complex/custom-cards/supplier-configuration-card/SupplierConfigurationCard.tsx";
+import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
 
 export function PurchaseProductsPage() {
+  // ==================================================================== UTILITIES
   const {
     handleCardAction,
     handleMultipleCardActions,
@@ -49,30 +45,21 @@ export function PurchaseProductsPage() {
       state[StoreSliceEnum.PURCHASE_PRODUCTS].activeCards,
     refreshAction: actions.refreshActiveCards,
   });
-  const { purchaseId } = useParams();
-  const service = usePurchaseProductsPageService(
-    handleCardAction,
-    handleMultipleCardActions,
-    keepOnlyCards,
-  );
-  const productsService = useProductsPageService();
-  const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
-  const state = useAppSelector<IPurchaseProductsPageSlice>(
-    StoreSliceEnum.PURCHASE_PRODUCTS,
-  );
-  const productsState = useAppSelector<IProductsPageSlice>(
-    StoreSliceEnum.PRODUCTS,
-  );
+  const { state, appState, productsState, productsService, ...service } =
+    usePurchaseProductsPageService(
+      handleCardAction,
+      handleMultipleCardActions,
+      keepOnlyCards,
+    );
   const sortingItems = Object.values(GridSortingEnum).map((value) => ({
     value,
     description: GridSortingEnumLabels[value],
   }));
+  const { purchaseId } = useParams();
 
+  // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     service.getPurchaseProductsPageDataHandler(purchaseId);
-  }, [purchaseId]);
-
-  useEffect(() => {
     service.getPurchasesProductsGridDataHandler(purchaseId);
   }, [purchaseId]);
 
@@ -80,6 +67,7 @@ export function PurchaseProductsPage() {
     service.getGridFiltersDataHandler();
   }, []);
 
+  // ==================================================================== EVENT HANDLERS
   async function onAction(actionType: string, payload?: any) {
     switch (actionType) {
       case "addProductToPurchase":
@@ -337,12 +325,12 @@ export function PurchaseProductsPage() {
     }
   }
 
+  // ==================================================================== LAYOUT
   return (
     <div className={cs.purchaseProductsPage}>
-      <ProductMenuCard
-        isLoading={state.isProductMenuCardLoading}
-        title="Report Purchase"
-        itemsCollection="purchases"
+      <SheContextSidebar
+        menuCollectionType="purchases"
+        menuTitle="Report Purchase"
         itemId={Number(purchaseId)}
         counter={productsState.purchaseCounters}
       />

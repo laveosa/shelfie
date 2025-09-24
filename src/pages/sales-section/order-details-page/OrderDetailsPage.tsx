@@ -4,33 +4,30 @@ import React, { useEffect } from "react";
 
 import cs from "@/pages/sales-section/orders-page/OrdersPage.module.scss";
 import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
-import { useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
 import useOrderDetailsPageService from "@/pages/sales-section/order-details-page/useOrderDetailsPageService.ts";
 import OrderConfigurationCard from "@/components/complex/custom-cards/order-configuration-card/OrderConfigurationCard.tsx";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import { OrderDetailsPageSliceActions as actions } from "@/state/slices/OrderDetailsPageSlice";
 import SelectEntityCard from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
-import { IOrderDetailsPageSlice } from "@/const/interfaces/store-slices/IOrderDetailsPageSlice.ts";
 import { CustomersListGridColumns } from "@/components/complex/grid/custom-grids/customers-list-grid/CustomersListGridColumns.tsx";
 import SelectDiscountCard from "@/components/complex/custom-cards/select-discount-card/SelectDiscountCard.tsx";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 import CustomerCard from "@/components/complex/custom-cards/customer-card/CustomerCard.tsx";
+import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
 
 export function OrderDetailsPage() {
+  // ==================================================================== UTILITIES
   const { handleCardAction, createRefCallback } = useCardActions({
     selectActiveCards: (state) =>
       state[StoreSliceEnum.ORDER_DETAILS].activeCards,
     refreshAction: actions.refreshActiveCards,
   });
-  const state = useAppSelector<IOrderDetailsPageSlice>(
-    StoreSliceEnum.ORDER_DETAILS,
-  );
-  const ordersState = useAppSelector<IOrdersPageSlice>(StoreSliceEnum.ORDERS);
-  const service = useOrderDetailsPageService(handleCardAction);
+  const { state, ordersState, ...service } =
+    useOrderDetailsPageService(handleCardAction);
   const { orderId } = useParams();
 
+  // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     if (
       !ordersState.selectedOrder ||
@@ -40,6 +37,7 @@ export function OrderDetailsPage() {
     }
   }, [orderId]);
 
+  // ==================================================================== EVENT HANDLERS
   async function onAction(actionType: string, payload?: any) {
     switch (actionType) {
       case "openSelectEntityCard":
@@ -97,57 +95,59 @@ export function OrderDetailsPage() {
     }
   }
 
+  // ==================================================================== LAYOUT
   return (
     <div className={cs.ordersPage}>
-      <ProductMenuCard
-        title="Order"
-        itemsCollection="order"
+      <SheContextSidebar
+        menuCollectionType="order"
+        menuTitle="Order"
         itemId={Number(orderId)}
         counter={ordersState.productCounter}
-      />
-      <OrderConfigurationCard
-        isLoading={state.isOrderConfigurationCardLoading}
-        isDiscountsGridLoading={state.isDiscountsGridLoading}
-        isShipmentsGridLoading={state.isShipmentsGridLoading}
-        order={ordersState.selectedOrder}
-        onAction={onAction}
-      />
-      {state.activeCards?.includes("selectEntityCard") && (
-        <div ref={createRefCallback("selectEntityCard")}>
-          <SelectEntityCard
-            isLoading={state.isSelectEntityCardLoading}
-            isGridLoading={state.isSelectEntityGridLoading}
-            entityName={"Customer"}
-            entityCollection={ordersState.customersGridRequestModel.items}
-            columns={
-              CustomersListGridColumns({
-                onAction,
-              }) as ColumnDef<DataWithId>[]
-            }
-            onAction={onAction}
-          />
-        </div>
-      )}
-      {state.activeCards?.includes("customerCard") && (
-        <div ref={createRefCallback("customerCard")}>
-          <CustomerCard
-            isLoading={state.isCustomerCardLoading}
-            showCloseButton={true}
-            customer={state.selectedCustomer}
-            onAction={onAction}
-          />
-        </div>
-      )}
-      {state.activeCards?.includes("selectDiscountCard") && (
-        <div ref={createRefCallback("selectDiscountCard")}>
-          <SelectDiscountCard
-            isLoading={state.isSelectDiscountCardLoading}
-            isGridLoading={state.isSelectDiscountGridLoading}
-            discounts={state.discountsList}
-            onAction={onAction}
-          />
-        </div>
-      )}
+      >
+        <OrderConfigurationCard
+          isLoading={state.isOrderConfigurationCardLoading}
+          isDiscountsGridLoading={state.isDiscountsGridLoading}
+          isShipmentsGridLoading={state.isShipmentsGridLoading}
+          order={ordersState.selectedOrder}
+          onAction={onAction}
+        />
+        {state.activeCards?.includes("selectEntityCard") && (
+          <div ref={createRefCallback("selectEntityCard")}>
+            <SelectEntityCard
+              isLoading={state.isSelectEntityCardLoading}
+              isGridLoading={state.isSelectEntityGridLoading}
+              entityName={"Customer"}
+              entityCollection={ordersState.customersGridRequestModel.items}
+              columns={
+                CustomersListGridColumns({
+                  onAction,
+                }) as ColumnDef<DataWithId>[]
+              }
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards?.includes("customerCard") && (
+          <div ref={createRefCallback("customerCard")}>
+            <CustomerCard
+              isLoading={state.isCustomerCardLoading}
+              showCloseButton={true}
+              customer={state.selectedCustomer}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards?.includes("selectDiscountCard") && (
+          <div ref={createRefCallback("selectDiscountCard")}>
+            <SelectDiscountCard
+              isLoading={state.isSelectDiscountCardLoading}
+              isGridLoading={state.isSelectDiscountGridLoading}
+              discounts={state.discountsList}
+              onAction={onAction}
+            />
+          </div>
+        )}
+      </SheContextSidebar>
     </div>
   );
 }
