@@ -14,6 +14,7 @@ import {
   IItemsCardItem,
 } from "@/const/interfaces/complex-components/custom-cards/IItemsCard.ts";
 import StorageService from "@/utils/services/StorageService.ts";
+import { useNavigation } from "react-router-dom";
 
 export default function ItemsCard({
   title,
@@ -29,6 +30,7 @@ export default function ItemsCard({
   const [_isMinimized, setIsMinimized] = useState<boolean>(null);
   const [_animationFlag, setAnimationFlag] = useState<boolean>(false);
 
+  const navigation = useNavigation();
   const isMinimizedStorageKey = "isMinimizedItemsCardStorageKey";
 
   // ==================================================================== SIDE EFFECTS
@@ -43,7 +45,7 @@ export default function ItemsCard({
     )
       setIsMinimized(isMinimizedStorageValue);
 
-    setTimeout(() => setAnimationFlag(true));
+    setTimeout(() => setAnimationFlag(false));
   }, []);
 
   useEffect(() => {
@@ -55,6 +57,13 @@ export default function ItemsCard({
     )
       setSelectedId(selectedId);
   }, [items, selectedId]);
+
+  useEffect(() => {
+    if (navigation.state === "idle") {
+      setAnimationFlag(false);
+      setTimeout(() => setAnimationFlag(true), 1000);
+    }
+  }, [navigation.state]);
 
   // ==================================================================== EVENT HANDLERS
   function onClickHandler(item: IItemsCardItem) {

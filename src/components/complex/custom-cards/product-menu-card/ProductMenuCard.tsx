@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useNavigation } from "react-router-dom";
 import React, { JSX, useEffect, useState } from "react";
 import _ from "lodash";
 
@@ -33,6 +33,7 @@ export default function ProductMenuCard({
   const [_isMinimized, setIsMinimized] = useState<boolean>(null);
   const [_animationFlag, setAnimationFlag] = useState<boolean>(false);
 
+  const navigation = useNavigation();
   const isMinimizedStorageKey = "isMinimizedProductMenuStorageKey";
 
   // ==================================================================== SIDE EFFECTS
@@ -47,12 +48,19 @@ export default function ProductMenuCard({
     )
       setIsMinimized(isMinimizedStorageValue);
 
-    setTimeout(() => setAnimationFlag(true));
+    setTimeout(() => setAnimationFlag(false));
   }, []);
 
   useEffect(() => {
     setConfig(_getCollectionConfig());
   }, [itemsCollection]);
+
+  useEffect(() => {
+    if (navigation.state === "idle") {
+      setAnimationFlag(false);
+      setTimeout(() => setAnimationFlag(true), 1000);
+    }
+  }, [navigation.state]);
 
   // ==================================================================== EVENT HANDLERS
   function onMinimizedHandler(value: boolean) {
