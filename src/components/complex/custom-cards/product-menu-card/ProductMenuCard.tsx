@@ -134,8 +134,8 @@ export default function ProductMenuCard({
       headerClassName={cs.productMenuCardHeader}
       title={title}
       loading={isLoading}
-      minWidth="220px"
-      maxWidth="220px"
+      minWidth="240px"
+      maxWidth="240px"
       showToggleButton
       isMinimized={_isMinimized}
       onIsMinimizedChange={onMinimizedHandler}
