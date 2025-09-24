@@ -1,6 +1,10 @@
 import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
+import {
+  GridSortingEnum,
+  GridSortingEnumLabels,
+} from "@/const/enums/GridSortingEnum.ts";
 import cs from "./PurchaseProductsPage.module.scss";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import usePurchaseProductsPageService from "@/pages/products-section/purchase-products-page/usePurchaseProductsPageService.ts";
@@ -47,15 +51,19 @@ export function PurchaseProductsPage() {
       handleMultipleCardActions,
       keepOnlyCards,
     );
+  const sortingItems = Object.values(GridSortingEnum).map((value) => ({
+    value,
+    description: GridSortingEnumLabels[value],
+  }));
   const { purchaseId } = useParams();
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     service.getPurchaseProductsPageDataHandler(purchaseId);
+    service.getPurchasesProductsGridDataHandler(purchaseId);
   }, [purchaseId]);
 
   useEffect(() => {
-    service.getPurchasesProductsGridDataHandler(purchaseId);
     service.getGridFiltersDataHandler();
   }, []);
 
@@ -339,7 +347,7 @@ export function PurchaseProductsPage() {
             purchaseProductsGridRequestModel={
               state.purchasesProductsGridRequestModel
             }
-            sortingOptions={productsState.sortingOptions}
+            sortingOptions={sortingItems}
             preferences={appState.preferences}
             brands={productsState.brands}
             categories={productsState.categories}

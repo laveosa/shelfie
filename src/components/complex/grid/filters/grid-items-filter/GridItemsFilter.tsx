@@ -7,7 +7,7 @@ import {
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import cs from "./GridItemsFilter.module.scss";
@@ -16,11 +16,12 @@ import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { useGridContext } from "@/state/context/grid-context.ts";
 
 interface GridFilterProps<T> {
-  items: T[];
-  columnName: string;
+  items?: T[];
+  columnName?: string;
   selected?: number[];
-  getId: (item: T) => number;
-  getName: (item: T) => string;
+  identifier?: string;
+  getId?: (item: T) => number;
+  getName?: (item: T) => string;
   icon?: Partial<ISheIcon> | string | React.FC<any>;
 }
 
@@ -28,18 +29,28 @@ export default function GridItemsFilter<T>({
   items,
   columnName,
   selected,
+  identifier,
   getId,
   getName,
   icon,
 }: GridFilterProps<T>) {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [initialSelectedIds, setInitialSelectedIds] = useState<number[]>([]);
   const { onGridRequestChange, gridRequestModel } = useGridContext();
+
   useEffect(() => {
-    if (!dropdownOpen && selected?.length > 0) {
-      setSelectedIds(selected);
+    if (selected?.length >= 0) {
+      setSelectedIds(selected || []);
     }
-  }, [selected, dropdownOpen]);
+  }, [selected]);
+
+  const arraysEqual = (a: number[], b: number[]) => {
+    if (a.length !== b.length) return false;
+    return (
+      a.every((val) => b.includes(val)) && b.every((val) => a.includes(val))
+    );
+  };
 
   function handleSelect(id: number) {
     setSelectedIds((prev) => {
@@ -53,15 +64,29 @@ export default function GridItemsFilter<T>({
 
   function onResetHandle() {
     setSelectedIds([]);
+    setInitialSelectedIds([]);
     onGridRequestChange({
       ...gridRequestModel,
       currentPage: 1,
       filter: {
         ...gridRequestModel?.filter,
-        [columnName]: [],
+        [identifier || columnName]: [],
       },
     });
     setDropdownOpen(false);
+  }
+
+  function onDefaultButtonClick() {
+    setSelectedIds([]);
+    setInitialSelectedIds([]);
+    onGridRequestChange({
+      ...gridRequestModel,
+      currentPage: 1,
+      filter: {
+        ...gridRequestModel?.filter,
+        [identifier || columnName]: [],
+      },
+    });
   }
 
   function onApplyHandle() {
@@ -70,7 +95,7 @@ export default function GridItemsFilter<T>({
         ...gridRequestModel,
         filter: {
           ...gridRequestModel?.filter,
-          [columnName]: selectedIds,
+          [identifier || columnName]: selectedIds,
         },
       });
     }
@@ -82,8 +107,26 @@ export default function GridItemsFilter<T>({
       <DropdownMenu
         open={dropdownOpen}
         onOpenChange={(open) => {
-          if (!open && selectedIds.length > 0) onApplyHandle();
-          if (!open && selectedIds.length === 0) onResetHandle();
+          if (open) {
+            setInitialSelectedIds([...selectedIds]);
+          } else {
+            const hasChanged = !arraysEqual(selectedIds, initialSelectedIds);
+
+            if (hasChanged) {
+              if (selectedIds.length > 0) {
+                onApplyHandle();
+              } else {
+                onGridRequestChange({
+                  ...gridRequestModel,
+                  currentPage: 1,
+                  filter: {
+                    ...gridRequestModel?.filter,
+                    [identifier || columnName]: [],
+                  },
+                });
+              }
+            }
+          }
           setDropdownOpen(open);
         }}
       >
@@ -157,7 +200,7 @@ export default function GridItemsFilter<T>({
           </div>
           <div className={cs.buttonBlock}>
             <SheButton
-              onClick={onResetHandle}
+              onClick={onDefaultButtonClick}
               variant="outline"
               value="Default"
             />

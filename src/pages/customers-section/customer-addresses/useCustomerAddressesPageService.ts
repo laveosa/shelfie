@@ -1,5 +1,4 @@
 import { useDispatch } from "react-redux";
-import _ from "lodash";
 
 import { AppDispatch } from "@/state/store.ts";
 import { CustomersPageSliceActions as actions } from "@/state/slices/CustomersPageSlice";
@@ -15,7 +14,6 @@ import {
 import { AddressModel } from "@/const/models/AddressModel";
 import { AddressRequestModelDefault } from "@/const/models/AddressRequestModel";
 import { clearSelectedGridItems } from "@/utils/helpers/quick-helper";
-import { DEFAULT_SORTING_OPTIONS } from "@/const/models/GridSortingModel";
 import { useAppSelector } from "@/utils/hooks/redux";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum";
 import { ICustomersPageSlice } from "@/const/interfaces/store-slices/ICustomersPageSlice";
@@ -40,10 +38,7 @@ export default function useCustomerAddressesPageService() {
   const { addToast } = useToast();
 
   function getCustomerAddressesForGridHandler(data?: GridRequestModel) {
-    if (!data && state.customerAddressesGridRequestModel.items.length > 0)
-      return;
-    if (_.isEqual(data, state.customerAddressesGridRequestModel)) return;
-    data = data ?? state.customerAddressesGridRequestModel;
+    // if (_.isEqual(data, state.customerAddressesGridRequestModel)) return;
 
     dispatch(actions.setIsCustomerAddressesLoading(true));
 
@@ -62,10 +57,6 @@ export default function useCustomerAddressesPageService() {
       }
       return res;
     });
-  }
-
-  function setDefaultSortingOptionsHandler() {
-    dispatch(actions.refreshSortingOptions(DEFAULT_SORTING_OPTIONS));
   }
 
   function resolveCustomerAddressData(data: any) {
@@ -251,6 +242,5 @@ export default function useCustomerAddressesPageService() {
     getCountryCodeHandler,
     resolveCustomerAddressData,
     getCustomerInfoHandler,
-    setDefaultSortingOptionsHandler,
   };
 }

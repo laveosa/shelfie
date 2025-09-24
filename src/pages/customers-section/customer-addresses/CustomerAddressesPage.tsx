@@ -11,6 +11,10 @@ import CustomerMenuCard from "@/components/complex/custom-cards/customer-menu-ca
 import CustomerAddressCard from "@/components/complex/custom-cards/customer-address-card/CustomerAddressCard.tsx";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
 import CustomerAddressesCard from "@/components/complex/custom-cards/customer-addresses-card/CustomerAddressesCard.tsx";
+import {
+  GridSortingEnum,
+  GridSortingEnumLabels,
+} from "@/const/enums/GridSortingEnum.ts";
 
 export function CustomerAddressesPage() {
   const {
@@ -26,17 +30,11 @@ export function CustomerAddressesPage() {
     getCountryCodeHandler,
     resolveCustomerAddressData,
     getCustomerInfoHandler,
-    setDefaultSortingOptionsHandler,
   } = useCustomerAddressesPageService();
 
   // ================================================================== EVENT
   useEffect(() => {
-    if (
-      state.customerAddressesGridRequestModel?.items?.length === 0 &&
-      customerId
-    ) {
-      getCustomerAddressesForGridHandler();
-    }
+    getCustomerAddressesForGridHandler(state.customerAddressesGridRequestModel);
 
     if (state.countryList?.length === 0) {
       getCountryCodeHandler();
@@ -45,13 +43,14 @@ export function CustomerAddressesPage() {
     if (state.customerCounter?.addressesAmount === undefined && customerId) {
       getCustomerInfoHandler(Number(customerId));
     }
-    if (state.sortingOptions?.length === 0) {
-      setDefaultSortingOptionsHandler();
-    }
   }, []);
 
   const cardRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const { openConfirmationDialog } = useDialogService();
+  const sortingItems = Object.values(GridSortingEnum).map((value) => ({
+    value,
+    description: GridSortingEnumLabels[value],
+  }));
 
   function handleCardAction(
     identifier: string,
@@ -143,7 +142,7 @@ export function CustomerAddressesPage() {
         addresses={state.customerAddresses}
         gridRequestModel={state.customerAddressesGridRequestModel}
         onAction={onAction}
-        sortingOptions={state.sortingOptions}
+        sortingOptions={sortingItems}
       />
 
       {state.activeCards?.includes("customerAddressCard") && (

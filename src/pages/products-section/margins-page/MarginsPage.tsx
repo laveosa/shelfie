@@ -3,6 +3,10 @@ import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
 import cs from "./MarginsPage.module.scss";
+import {
+  GridSortingEnum,
+  GridSortingEnumLabels,
+} from "@/const/enums/GridSortingEnum.ts";
 import MarginForPurchaseCard from "@/components/complex/custom-cards/margin-for-purchase-card/MarginForPurchaseCard.tsx";
 import MarginConfigurationCard from "@/components/complex/custom-cards/margin-configuration-card/MarginConfigurationCard.tsx";
 import SalePriseManagementCard from "@/components/complex/custom-cards/sale-price-management-card/SalePriceManagementCard.tsx";
@@ -32,6 +36,10 @@ export function MarginsPage() {
     keepOnlyCards,
   );
   const { purchaseId } = useParams();
+  const sortingItems = Object.values(GridSortingEnum).map((value) => ({
+    value,
+    description: GridSortingEnumLabels[value],
+  }));
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
@@ -145,7 +153,7 @@ export function MarginsPage() {
             sizes={productsState.sizesForFilter}
             colors={productsState.colorsForFilter}
             taxes={productsState.taxesList}
-            sortingOptions={productsState.sortingOptions}
+            sortingOptions={sortingItems}
             gridRequestModel={state.marginItemsGridRequestModel}
             onAction={onAction}
           />

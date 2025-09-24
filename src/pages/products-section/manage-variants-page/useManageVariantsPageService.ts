@@ -413,6 +413,22 @@ export default function useManageVariantsPageService(handleCardAction) {
       model: model.priceModel,
     }).then((res: any) => {
       dispatch(actions.setIsAddStockCardLoading(false));
+      productsService
+        .getVariantDetailsHandler(model.priceModel.variantId)
+        .then((res) => {
+          if (res) {
+            dispatch(productsActions.refreshSelectedVariant(res));
+            dispatch(
+              productsActions.refreshProductVariants(
+                productsState.productVariants.map((item) =>
+                  item.variantId === res.variantId
+                    ? { ...item, stockAmount: res.stockAmount }
+                    : item,
+                ),
+              ),
+            );
+          }
+        });
       getPurchaseDetails(model.purchaseId).then((res: any) => {
         dispatch(actions.refreshSelectedPurchase(res.data));
       });
@@ -1052,6 +1068,7 @@ export default function useManageVariantsPageService(handleCardAction) {
       dispatch(actions.refreshSelectedPurchase(res.data));
       dispatch(actions.setIsSupplierCardLoading(false));
       if (res) {
+        handleCardAction("supplierCard");
         addToast({
           text: t("SuccessMessages.PurchaseCreated"),
           type: "success",

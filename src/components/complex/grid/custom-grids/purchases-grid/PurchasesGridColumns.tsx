@@ -101,7 +101,7 @@ export function PurchasesGridColumns(onAction: any): ColumnDef<any, any>[] {
       minSize: 70,
       maxSize: 100,
       cell: ({ row }) => (
-        <span className="she-text">{`${row.getValue("unitsAmount")} units`}</span>
+        <span className="she-text">{`${row.getValue("unitsAmount")} ${row.getValue("unitsAmount") === 1 ? "unit" : "units"}`}</span>
       ),
     },
     {

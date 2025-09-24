@@ -1,3 +1,4 @@
+import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
 import cs from "@/pages/sales-section/orders-page/OrdersPage.module.scss";
@@ -9,7 +10,10 @@ import useShipmentsPageService from "@/pages/sales-section/shipments-page/useShi
 import { useAppSelector } from "@/utils/hooks/redux.ts";
 import { IShipmentsPageSlice } from "@/const/interfaces/store-slices/IShipmentsPageSlice.ts";
 import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
-import { useParams } from "react-router-dom";
+import {
+  GridSortingEnum,
+  GridSortingEnumLabels,
+} from "@/const/enums/GridSortingEnum.ts";
 
 export function ShipmentsPage() {
   // ==================================================================== UTILITIES
@@ -19,11 +23,16 @@ export function ShipmentsPage() {
     selectActiveCards: (state) => state[StoreSliceEnum.SHIPMENTS].activeCards,
     refreshAction: actions.refreshActiveCards,
   });
+  const sortingItems = Object.values(GridSortingEnum).map((value) => ({
+    value,
+    description: GridSortingEnumLabels[value],
+  }));
   const { orderId } = useParams();
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     service.getShipmentsListForForGridHandler(state.shipmentsGridRequestModel);
+    service.getListOfCustomersHandler();
   }, []);
 
   // ==================================================================== EVENT HANDLERS
@@ -34,6 +43,15 @@ export function ShipmentsPage() {
         break;
       case "manageShipment":
         service.manageShipmentHandler(payload);
+        break;
+      case "gridRequestChange":
+        service.handleGridRequestChange(payload);
+        break;
+      case "applyColumns":
+        service.updateUserPreferencesHandler(payload);
+        break;
+      case "resetColumns":
+        service.resetUserPreferencesHandler("products");
         break;
     }
   }
@@ -49,6 +67,8 @@ export function ShipmentsPage() {
         <ShipmentsCard
           isLoading={state.isShipmentsCardLoading}
           isShipmentsGridLoading={state.isShipmentsGridLoading}
+          sortingOptions={sortingItems}
+          customersList={state.customersList}
           shipmentsGridRequestModel={state.shipmentsGridRequestModel}
           onAction={onAction}
         />

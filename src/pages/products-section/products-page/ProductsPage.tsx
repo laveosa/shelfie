@@ -30,11 +30,19 @@ import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { SupplierModel } from "@/const/models/SupplierModel.ts";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
+import {
+  GridSortingEnum,
+  GridSortingEnumLabels,
+} from "@/const/enums/GridSortingEnum.ts";
 
 export function ProductsPage() {
   // ==================================================================== UTILITIES
   const { translate } = useAppTranslation();
   const { state, appState, dispatch, ...service } = useProductsPageService();
+  const sortingItems = Object.values(GridSortingEnum).map((value) => ({
+    value,
+    description: GridSortingEnumLabels[value],
+  }));
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
@@ -54,9 +62,6 @@ export function ProductsPage() {
     }
     if (state.categories.length === 0) {
       service.getCategoriesForFilterHandler();
-    }
-    if (state.sortingOptions.length === 0) {
-      service.getSortingOptionsForGridHandler();
     }
     if (state.suppliers.length === 0) {
       service.getListOfSuppliersHandler();
@@ -182,7 +187,7 @@ export function ProductsPage() {
             <SheGrid
               gridRequestModel={state.productsGridRequestModel}
               columns={ProductsGridColumns(onAction) as ColumnDef<DataWithId>[]}
-              sortingItems={state.sortingOptions}
+              sortingItems={sortingItems}
               columnsPreferences={appState.preferences}
               preferenceContext={"productReferences"}
               isLoading={state.isLoading}
@@ -214,7 +219,7 @@ export function ProductsPage() {
             <SheGrid
               gridRequestModel={state.variantsGridRequestModel}
               columns={VariantsGridColumns(onAction) as ColumnDef<DataWithId>[]}
-              sortingItems={state.sortingOptions}
+              sortingItems={sortingItems}
               columnsPreferences={appState.preferences}
               preferenceContext={"variantReferences"}
               isLoading={state.isLoading}
@@ -256,7 +261,7 @@ export function ProductsPage() {
               columns={
                 PurchasesGridColumns(onAction) as ColumnDef<DataWithId>[]
               }
-              sortingItems={state.sortingOptions}
+              sortingItems={sortingItems}
               columnsPreferences={appState.preferences}
               preferenceContext={"purchaseReferences"}
               isLoading={state.isLoading}
