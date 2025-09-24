@@ -33,6 +33,10 @@ export default function GridItemsSorting() {
   }, [gridRequestModel]);
 
   function handleSelect(value: string) {
+    if (gridRequestModel.sortOption === value) {
+      setDropdownOpen(false);
+      return;
+    }
     setSelectedValue(value);
     onGridRequestChange({
       ...gridRequestModel,

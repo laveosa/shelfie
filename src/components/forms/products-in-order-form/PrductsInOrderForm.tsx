@@ -5,8 +5,6 @@ import useAppForm from "@/utils/hooks/useAppForm.ts";
 import SheForm from "@/components/complex/she-form/SheForm.tsx";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
-import { FormField } from "@/components/ui/form.tsx";
-import SheFormItem from "@/components/complex/she-form/components/she-form-item/SheFormItem.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import cs from "./ProductsInOrderForm.module.scss";
@@ -16,8 +14,10 @@ import { IProductsInOrderForm } from "@/const/interfaces/forms/IProductsInOrderF
 import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
 
 interface ProductsInOrderFormData {
-  priceBrutto?: number;
-  quantity?: number;
+  stockDocumentPrice: {
+    brutto?: number;
+  };
+  unitsAmount?: number;
 }
 
 export default function ProductsInOrderForm<T>({
@@ -29,33 +29,39 @@ export default function ProductsInOrderForm<T>({
   const form = useAppForm<ProductsInOrderFormData>({
     mode: "onSubmit",
     resolver: zodResolver(ProductsInOrderFormScheme),
-    defaultValues: { priceBrutto: 0, quantity: 0, total: 0 },
+    defaultValues: {
+      stockDocumentPrice: { brutto: 0 },
+      unitsAmount: 0,
+      total: 0,
+    },
   });
   const [total, setTotal] = React.useState(0);
 
   useEffect(() => {
     const subscription = form.watch((values) => {
-      setTotal((values.priceBrutto ?? 0) * (values.quantity ?? 0));
+      setTotal(
+        (values.stockDocumentPrice.brutto ?? 0) * (values.unitsAmount ?? 0),
+      );
     });
     return () => subscription.unsubscribe();
   }, [form]);
 
   function handleFormSubmit(formData: ProductsInOrderFormData) {
     onSubmit({
-      priceBrutto: Number(formData.priceBrutto),
-      quantity: Number(formData.quantity),
+      priceBrutto: Number(formData.stockDocumentPrice.brutto),
+      quantity: Number(formData.unitsAmount),
     } as T);
   }
 
   useEffect(() => {
-    form.reset({ priceBrutto: 0, quantity: 0 });
+    form.reset({ stockDocumentPrice: { brutto: 0 }, unitsAmount: 0 });
   }, [data]);
 
   return (
     <div className={`${cs.productsInOrderForm} ${className}`}>
       <SheForm
         form={form}
-        defaultValues={{ priceBrutto: 0, quantity: 0 }}
+        defaultValues={{ stockDocumentPrice: { brutto: 0 }, unitsAmount: 0 }}
         formPosition={DirectionEnum.CENTER}
         view={ComponentViewEnum.STANDARD}
         fullWidth
@@ -71,7 +77,7 @@ export default function ProductsInOrderForm<T>({
               className={cs.inputFormItem}
               render={({ field }) => (
                 <SheInput
-                  value={field.value}
+                  value={field.value || data?.stockDocumentPrice?.brutto}
                   type="number"
                   maxWidth="100px"
                   onDelay={() => {
@@ -89,7 +95,7 @@ export default function ProductsInOrderForm<T>({
               className={cs.inputFormItem}
               render={({ field }): React.ReactElement => (
                 <SheInput
-                  value={field.value}
+                  value={field.value || data.unitsAmount}
                   type="number"
                   maxWidth="75px"
                   onDelay={() => {

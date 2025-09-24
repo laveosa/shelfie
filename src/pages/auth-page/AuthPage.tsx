@@ -286,6 +286,12 @@ export default function AuthPage() {
                         value: 8,
                         message: t("AuthForm.Validation.PasswordMinLength"),
                       },
+                      pattern: {
+                        value:
+                          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/,
+                        message:
+                          "Password must contain at least one uppercase letter,  one lowercase letter, one digit and one special character.",
+                      },
                     }}
                     name="password"
                     label={t("AuthForm.Labels.Password")}

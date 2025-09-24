@@ -584,9 +584,6 @@ export function useMarginsPageService(
     if (productsState.taxesList.length === 0) {
       productsService.getTaxesListHandler();
     }
-    if (productsState.sortingOptions.length === 0) {
-      productsService.getSortingOptionsForGridHandler();
-    }
     if (productsState.brands.length === 0) {
       productsService.getBrandsForFilterHandler();
     }

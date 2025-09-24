@@ -60,11 +60,11 @@ export function OrderDetailsPage() {
       case "createDiscount":
         service.createDiscountHandler(orderId, payload);
         break;
-      // case "applyDiscountToOrder":
-      //   service.applyDiscountsToOrderHandler(orderId, {
-      //     discounts: [payload.discountId],
-      //   });
-      //   break;
+      case "applyDiscountToOrder":
+        service.applyDiscountsToOrderHandler(orderId, {
+          discounts: [payload.discountId],
+        });
+        break;
       case "removeDiscount":
         service.removeDiscountsFromOrderHandler(orderId, {
           discounts: [payload.discountId],

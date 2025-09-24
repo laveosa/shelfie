@@ -168,11 +168,11 @@ export default function MarginItemsForm({
           {data.unitsAmount} {data.unitsAmount === 1 ? "unit" : "units"}
         </span>
         <SheButton
-          className={data?.needApply ? "" : cs.formButtonNotActive}
-          value={data?.needApply ? "Apply" : "Applied"}
-          icon={data?.needApply ? Check : CheckCheck}
-          txtColor={data?.needApply ? "" : "#38BF5E"}
-          variant={data?.needApply ? "secondary" : "ghost"}
+          className={!data?.marginPriceApplied ? "" : cs.formButtonNotActive}
+          value={!data?.marginPriceApplied ? "Apply" : "Applied"}
+          icon={!data?.marginPriceApplied ? Check : CheckCheck}
+          txtColor={!data?.marginPriceApplied ? "" : "#38BF5E"}
+          variant={!data?.marginPriceApplied ? "secondary" : "ghost"}
           type="submit"
         />
       </SheForm>

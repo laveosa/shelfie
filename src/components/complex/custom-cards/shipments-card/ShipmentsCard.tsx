@@ -1,12 +1,17 @@
-import { Clock10, Package, PackageOpen, Plus, Truck } from "lucide-react";
+import {
+  BadgeCheck,
+  Clock10,
+  Package,
+  PackageOpen,
+  Plus,
+  ShoppingCart,
+  Truck,
+} from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
+import React from "react";
 
 import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
-import {
-  GridSortingEnum,
-  GridSortingEnumLabels,
-} from "@/const/enums/GridSortingEnum.ts";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ShipmentsCard.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
@@ -15,19 +20,21 @@ import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs.tsx";
 import { IShipmentsCard } from "@/const/interfaces/complex-components/custom-cards/IShipmentsCard.ts";
 import { ShipmentsListGridColumns } from "@/components/complex/grid/custom-grids/shipments-list-grid/ShipmentsListGridColumns.tsx";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
+import { GridDateRangeFilter } from "@/components/complex/grid/filters/grid-date-range-filter/GridDateRangeFilter.tsx";
+import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
+import GridItemsFilter from "@/components/complex/grid/filters/grid-items-filter/GridItemsFilter.tsx";
+import { CustomerModel } from "@/const/models/CustomerModel.ts";
 
 export default function ShipmentsCard({
   isLoading,
   isShipmentsGridLoading,
   preferences,
+  sortingOptions,
+  customersList,
   shipmentsGridRequestModel,
   onAction,
 }: IShipmentsCard) {
   const { t } = useTranslation();
-  const sortingItems = Object.values(GridSortingEnum).map((value) => ({
-    value,
-    description: GridSortingEnumLabels[value],
-  }));
 
   return (
     <div className={cs.shipmentsCardWrapper}>
@@ -88,13 +95,15 @@ export default function ShipmentsCard({
                 }
                 data={shipmentsGridRequestModel.items}
                 gridRequestModel={shipmentsGridRequestModel}
-                sortingItems={sortingItems}
+                sortingItems={sortingOptions}
                 columnsPreferences={preferences}
                 preferenceContext={"productReferences"}
                 skeletonQuantity={shipmentsGridRequestModel.pageSize}
                 onApplyColumns={() => onAction("applyColumns")}
                 onDefaultColumns={() => onAction("resetColumnsHandler")}
-                onGridRequestChange={() => onAction("gridRequestChange")}
+                onGridRequestChange={(updates) =>
+                  onAction("gridRequestChange", updates)
+                }
               />
             </TabsContent>
             <TabsContent value="readyForPacking">
@@ -105,13 +114,15 @@ export default function ShipmentsCard({
                 }
                 data={shipmentsGridRequestModel.items}
                 gridRequestModel={shipmentsGridRequestModel}
-                sortingItems={sortingItems}
+                sortingItems={sortingOptions}
                 columnsPreferences={preferences}
                 preferenceContext={"productReferences"}
                 skeletonQuantity={shipmentsGridRequestModel.pageSize}
                 onApplyColumns={() => onAction("applyColumns")}
                 onDefaultColumns={() => onAction("resetColumnsHandler")}
-                onGridRequestChange={() => onAction("gridRequestChange")}
+                onGridRequestChange={(updates) =>
+                  onAction("gridRequestChange", updates)
+                }
               />
             </TabsContent>
             <TabsContent value="readyForSending">
@@ -122,13 +133,15 @@ export default function ShipmentsCard({
                 }
                 data={shipmentsGridRequestModel.items}
                 gridRequestModel={shipmentsGridRequestModel}
-                sortingItems={sortingItems}
+                sortingItems={sortingOptions}
                 columnsPreferences={preferences}
                 preferenceContext={"productReferences"}
                 skeletonQuantity={shipmentsGridRequestModel.pageSize}
                 onApplyColumns={() => onAction("applyColumns")}
                 onDefaultColumns={() => onAction("resetColumnsHandler")}
-                onGridRequestChange={() => onAction("gridRequestChange")}
+                onGridRequestChange={(updates) =>
+                  onAction("gridRequestChange", updates)
+                }
               />
             </TabsContent>
             <TabsContent value="allShipments">
@@ -139,14 +152,37 @@ export default function ShipmentsCard({
                 }
                 data={shipmentsGridRequestModel.items}
                 gridRequestModel={shipmentsGridRequestModel}
-                sortingItems={sortingItems}
+                sortingItems={sortingOptions}
                 columnsPreferences={preferences}
                 preferenceContext={"productReferences"}
                 skeletonQuantity={shipmentsGridRequestModel.pageSize}
                 onApplyColumns={() => onAction("applyColumns")}
                 onDefaultColumns={() => onAction("resetColumnsHandler")}
-                onGridRequestChange={() => onAction("gridRequestChange")}
-              />
+                onGridRequestChange={(updates) =>
+                  onAction("gridRequestChange", updates)
+                }
+              >
+                <GridItemsFilter
+                  items={customersList}
+                  columnName="Customer"
+                  identifier="customerId"
+                  icon={BadgeCheck}
+                  getId={(item: CustomerModel) => item.customerId}
+                  getName={(item: CustomerModel) => item.customerName}
+                  selected={shipmentsGridRequestModel?.filter?.suppliers}
+                />
+                <GridDateRangeFilter />
+                <SheSelect
+                  icon={ShoppingCart}
+                  placeholder={t("OrderForm.Placeholders.Status")}
+                  minWidth="150px"
+                />
+                <SheSelect
+                  icon={ShoppingCart}
+                  placeholder={t("OrderForm.Placeholders.Status")}
+                  minWidth="150px"
+                />
+              </SheGrid>
             </TabsContent>
           </SheTabs>
         </div>

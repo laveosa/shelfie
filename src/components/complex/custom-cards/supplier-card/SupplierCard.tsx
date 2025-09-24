@@ -24,6 +24,7 @@ export default function SupplierCard({
   isLoading,
   selectedPurchase,
   selectedSupplier,
+  showCloseButton,
   onAction,
 }: ISupplierCard) {
   const { t } = useTranslation();
@@ -46,6 +47,7 @@ export default function SupplierCard({
       loading={isLoading}
       className={cs.supplierCard}
       title={t("SectionTitles.CreatePurchase")}
+      showCloseButton={showCloseButton}
       showNotificationCard={!!purchaseId}
       notificationCardProps={{
         title: "Delete Purchase",

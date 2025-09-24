@@ -6,10 +6,8 @@ import cs from "./VariantGridColumns.module.scss";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import SheToggle from "@/components/primitive/she-toggle/SheToggle.tsx";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { IconViewEnum } from "@/const/enums/IconViewEnum.ts";
-import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { VariantModel } from "@/const/models/VariantModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
@@ -162,7 +160,7 @@ export function VariantsGridColumns(onAction: any): ColumnDef<VariantModel>[] {
                   minWidth: "20px",
                   minHeight: "20px",
                   borderRadius: "50%",
-                  border: "1px solid #ccc",
+                  border: "2px solid #ccc",
                 }}
               />
             ))}
@@ -206,7 +204,7 @@ export function VariantsGridColumns(onAction: any): ColumnDef<VariantModel>[] {
       minSize: 60,
       cell: ({ row }) => {
         return (
-          <span className="she-text">{`${row.getValue("stockAmount")} units`}</span>
+          <span className="she-text">{`${row.getValue("stockAmount")} ${row.getValue("stockAmount") === 1 ? "unit" : "units"}`}</span>
         );
       },
     },

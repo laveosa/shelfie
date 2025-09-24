@@ -11,7 +11,6 @@ import GridItemsFilter from "@/components/complex/grid/filters/grid-items-filter
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import GridTraitsFilter from "@/components/complex/grid/filters/grid-traits-filter/GridTraitsFilter.tsx";
-import GridShowItemsFilter from "@/components/complex/grid/filters/grid-show-deleted-filter/GridShowItemsFilter.tsx";
 import { marginProductsGridColumns } from "@/components/complex/grid/custom-grids/margin-products-grid/MarginProductsGridColumns.tsx";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
@@ -76,7 +75,6 @@ export default function SalePriseManagementCard({
           />
           <GridTraitsFilter traitOptions={colors} traitType="color" />
           <GridTraitsFilter traitOptions={sizes} traitType="size" />
-          <GridShowItemsFilter context="Deleted" />
         </SheGrid>
       </SheProductCard>
       <div className={cs.buttonBlock}>

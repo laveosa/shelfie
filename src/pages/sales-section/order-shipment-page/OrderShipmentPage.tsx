@@ -50,7 +50,7 @@ export function OrderShipmentPage() {
   async function onAction(actionType: string, payload?: any) {
     switch (actionType) {
       case "createShipment":
-        service.createShipmentHandler();
+        service.createShipmentForOrderHandler(Number(orderId));
         break;
       case "closeShipmentConfigurationCard":
         service.closeShipmentConfigurationCardHandler();

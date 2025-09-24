@@ -169,7 +169,7 @@ export function ProductsGridColumns(onAction: any): ColumnDef<ProductModel>[] {
       header: "Stock",
       minSize: 60,
       cell: ({ row }) => (
-        <span className="she-text">{`${row.getValue("stockAmount")} units`}</span>
+        <span className="she-text">{`${row.getValue("stockAmount")} ${row.getValue("stockAmount") === 1 ? "unit" : "units"}`}</span>
       ),
     },
     {

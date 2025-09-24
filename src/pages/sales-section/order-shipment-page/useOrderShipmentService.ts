@@ -59,6 +59,8 @@ export default function useOrderShipmentPageService(
     OrdersApiHooks.useAddVariantsToShipmentMutation();
   const [removeVariantFromShipment] =
     OrdersApiHooks.useRemoveVariantFromShipmentMutation();
+  const [createShipmentForOrder] =
+    OrdersApiHooks.useCreateShipmentForOrderMutation();
 
   function getOrderDetailsHandler(orderId) {
     return getOrderDetails(orderId).then((res: any) => {
@@ -350,6 +352,17 @@ export default function useOrderShipmentPageService(
     handleCardAction("selectShipmentForOrderCard");
   }
 
+  function createShipmentForOrderHandler(orderId: number) {
+    handleCardAction("shipmentConfigurationCard", true);
+    dispatch(actions.setIsShipmentConfigurationCardLoading(true));
+    dispatch(actions.resetSelectedCustomer());
+    return createShipmentForOrder(orderId).then((res: any) => {
+      dispatch(actions.setIsShipmentConfigurationCardLoading(false));
+      dispatch(actions.refreshSelectedShipment(res.data));
+      return res;
+    });
+  }
+
   return {
     getOrderDetailsHandler,
     getShipmentsListForOrderHandler,
@@ -375,5 +388,6 @@ export default function useOrderShipmentPageService(
     closeShipmentConfigurationCardHandler,
     closeSelectEntityCardHandler,
     closeSelectShipmentForOrderCardHandler,
+    createShipmentForOrderHandler,
   };
 }

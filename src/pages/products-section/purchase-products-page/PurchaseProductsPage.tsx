@@ -1,6 +1,10 @@
 import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
+import {
+  GridSortingEnum,
+  GridSortingEnumLabels,
+} from "@/const/enums/GridSortingEnum.ts";
 import cs from "./PurchaseProductsPage.module.scss";
 import { useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
@@ -59,6 +63,10 @@ export function PurchaseProductsPage() {
   const productsState = useAppSelector<IProductsPageSlice>(
     StoreSliceEnum.PRODUCTS,
   );
+  const sortingItems = Object.values(GridSortingEnum).map((value) => ({
+    value,
+    description: GridSortingEnumLabels[value],
+  }));
 
   useEffect(() => {
     service.getPurchaseProductsPageDataHandler(purchaseId);
@@ -66,7 +74,7 @@ export function PurchaseProductsPage() {
 
   useEffect(() => {
     service.getPurchasesProductsGridDataHandler(purchaseId);
-  }, []);
+  }, [purchaseId]);
 
   useEffect(() => {
     service.getGridFiltersDataHandler();
@@ -351,7 +359,7 @@ export function PurchaseProductsPage() {
             purchaseProductsGridRequestModel={
               state.purchasesProductsGridRequestModel
             }
-            sortingOptions={productsState.sortingOptions}
+            sortingOptions={sortingItems}
             preferences={appState.preferences}
             brands={productsState.brands}
             categories={productsState.categories}

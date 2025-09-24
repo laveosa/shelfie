@@ -317,6 +317,12 @@ export const OrdersApiService = createApi({
         method: "DELETE",
       }),
     }),
+    createShipmentForOrder: apiConfig.createMutation<any, number>(builder, {
+      query: (orderId: number) => ({
+        url: `${ApiUrlEnum.ORDERS}/${orderId}/shipment`,
+        method: "POST",
+      }),
+    }),
   }),
 });
 export const { endpoints, ...OrdersApiHooks } = OrdersApiService;

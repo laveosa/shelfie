@@ -140,6 +140,7 @@ export default function usePurchaseProductsPageService(
         dispatch(actions.setIsPurchasesProductsGridLoading(false));
       });
     }
+    dispatch(actions.refreshPurchasesProductsGridRequestModel({}));
   }
 
   function getVariantsForPurchaseGridDataHandler() {
@@ -164,9 +165,9 @@ export default function usePurchaseProductsPageService(
     if (productsState.categories.length === 0) {
       productsService.getCategoriesForFilterHandler();
     }
-    if (productsState.sortingOptions.length === 0) {
-      productsService.getSortingOptionsForGridHandler();
-    }
+    // if (productsState.sortingOptions.length === 0) {
+    //   productsService.getSortingOptionsForGridHandler();
+    // }
     if (productsState.suppliers.length === 0) {
       productsService.getListOfSuppliersHandler();
     }
@@ -185,6 +186,7 @@ export default function usePurchaseProductsPageService(
       ...model.data,
     }).then((res) => {
       if (res) {
+        productsService.getPurchaseCountersHandler(Number(purchaseId));
         addToast({
           text: "Variant added successfully",
           type: "success",
@@ -359,9 +361,9 @@ export default function usePurchaseProductsPageService(
         productsService.getProductPhotosHandler(
           Number(state.selectedProduct.productId),
         );
-        productsService.getCountersForProductsHandler(
-          state.selectedProduct.productId,
-        );
+        // productsService.getCountersForProductsHandler(
+        //   state.selectedProduct.productId,
+        // );
         addToast({
           text: "Photos added successfully",
           type: "success",

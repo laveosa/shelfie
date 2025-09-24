@@ -9,6 +9,10 @@ import { OrderProductsPageSliceActions as actions } from "@/state/slices/OrderPr
 import useShipmentsPageService from "@/pages/sales-section/shipments-page/useShipmentsPageService.ts";
 import { useAppSelector } from "@/utils/hooks/redux.ts";
 import { IShipmentsPageSlice } from "@/const/interfaces/store-slices/IShipmentsPageSlice.ts";
+import {
+  GridSortingEnum,
+  GridSortingEnumLabels,
+} from "@/const/enums/GridSortingEnum.ts";
 
 export function ShipmentsPage() {
   const service = useShipmentsPageService();
@@ -17,9 +21,14 @@ export function ShipmentsPage() {
     selectActiveCards: (state) => state[StoreSliceEnum.SHIPMENTS].activeCards,
     refreshAction: actions.refreshActiveCards,
   });
+  const sortingItems = Object.values(GridSortingEnum).map((value) => ({
+    value,
+    description: GridSortingEnumLabels[value],
+  }));
 
   useEffect(() => {
     service.getShipmentsListForForGridHandler(state.shipmentsGridRequestModel);
+    service.getListOfCustomersHandler();
   }, []);
 
   async function onAction(actionType: string, payload?: any) {
@@ -30,6 +39,15 @@ export function ShipmentsPage() {
       case "manageShipment":
         service.manageShipmentHandler(payload);
         break;
+      case "gridRequestChange":
+        service.handleGridRequestChange(payload);
+        break;
+      case "applyColumns":
+        service.updateUserPreferencesHandler(payload);
+        break;
+      case "resetColumns":
+        service.resetUserPreferencesHandler("products");
+        break;
     }
   }
 
@@ -39,6 +57,8 @@ export function ShipmentsPage() {
       <ShipmentsCard
         isLoading={state.isShipmentsCardLoading}
         isShipmentsGridLoading={state.isShipmentsGridLoading}
+        sortingOptions={sortingItems}
+        customersList={state.customersList}
         shipmentsGridRequestModel={state.shipmentsGridRequestModel}
         onAction={onAction}
       />

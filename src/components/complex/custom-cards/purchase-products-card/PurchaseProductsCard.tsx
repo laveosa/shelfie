@@ -10,7 +10,6 @@ import cs from "./PurchaseProductsCard.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheTabs from "@/components/complex/she-tabs/SheTabs.tsx";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs.tsx";
-import { IPurchaseProductsPageSlice } from "@/const/interfaces/store-slices/IPurchaseProductsPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { PurchaseProductsPageSliceActions as actions } from "@/state/slices/PurchaseProductsPageSlice.ts";
@@ -53,9 +52,6 @@ export default function PurchaseProductsCard({
   const productsService = useProductsPageService();
   const dispatch = useAppDispatch();
   const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
-  const state = useAppSelector<IPurchaseProductsPageSlice>(
-    StoreSliceEnum.PURCHASE_PRODUCTS,
-  );
 
   function handleTabChange(value: string) {
     if (value === activeTab) return;

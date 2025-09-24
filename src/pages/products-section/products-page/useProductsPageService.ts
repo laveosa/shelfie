@@ -61,8 +61,6 @@ export default function useProductsPageService() {
     UsersApiHooks.useUpdateUserPreferencesMutation();
   const [resetUserPreferences] =
     UsersApiHooks.useResetUserPreferencesMutation();
-  const [getSortingOptionsForGrid] =
-    DictionaryApiHooks.useLazyGetSortingOptionsForGridQuery();
   const [getProductPhotos] = ProductsApiHooks.useLazyGetProductPhotosQuery();
   const [getProductVariants] =
     ProductsApiHooks.useLazyGetProductVariantsQuery();
@@ -231,13 +229,6 @@ export default function useProductsPageService() {
   function getListOfSuppliersHandler() {
     return getListOfSuppliers(null).then((res: any) => {
       dispatch(actions.refreshSuppliers(res.data));
-      return res.data;
-    });
-  }
-
-  function getSortingOptionsForGridHandler() {
-    return getSortingOptionsForGrid(null).then((res: any) => {
-      dispatch(actions.refreshSortingOptions(res.data));
       return res.data;
     });
   }
@@ -821,8 +812,6 @@ export default function useProductsPageService() {
   }
 
   function gridRequestChangeHandler(updates: any) {
-    console.log(updates);
-
     if (state.activeTab === "products") {
       getTheProductsForGridHandler(updates, true);
     } else if (state.activeTab === "variants") {
@@ -943,7 +932,6 @@ export default function useProductsPageService() {
     getBrandsForFilterHandler,
     getCategoriesForFilterHandler,
     getListOfSuppliersHandler,
-    getSortingOptionsForGridHandler,
     getCountersForProductsHandler,
     getProductDetailsHandler,
     updateUserPreferencesHandler,

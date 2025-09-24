@@ -43,6 +43,7 @@ export default function ProductsInOrderCard({
   const renderExpandedContent = (row) => {
     return (
       <ProductsInOrderForm
+        data={row.original}
         onSubmit={(formData) =>
           onAction("updateStockAction", { formData, row })
         }

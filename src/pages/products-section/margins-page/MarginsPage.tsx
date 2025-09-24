@@ -2,6 +2,10 @@ import { ColumnDef } from "@tanstack/react-table";
 import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
+import {
+  GridSortingEnum,
+  GridSortingEnumLabels,
+} from "@/const/enums/GridSortingEnum.ts";
 import { MarginsPageSliceActions as actions } from "@/state/slices/MarginsPageSlice";
 import { useAppSelector } from "@/utils/hooks/redux.ts";
 import { IPurchaseProductsPageSlice } from "@/const/interfaces/store-slices/IPurchaseProductsPageSlice.ts";
@@ -40,6 +44,10 @@ export function MarginsPage() {
     keepOnlyCards,
   );
   const { purchaseId } = useParams();
+  const sortingItems = Object.values(GridSortingEnum).map((value) => ({
+    value,
+    description: GridSortingEnumLabels[value],
+  }));
 
   useEffect(() => {
     service.getMarginPageDataHandle(purchaseId);
@@ -151,7 +159,7 @@ export function MarginsPage() {
             sizes={productsState.sizesForFilter}
             colors={productsState.colorsForFilter}
             taxes={productsState.taxesList}
-            sortingOptions={productsState.sortingOptions}
+            sortingOptions={sortingItems}
             gridRequestModel={state.marginItemsGridRequestModel}
             onAction={onAction}
           />

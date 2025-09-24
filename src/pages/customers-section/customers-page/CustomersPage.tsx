@@ -1,15 +1,17 @@
 import React, { useEffect } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
+import { Plus } from "lucide-react";
 
+import {
+  GridSortingEnum,
+  GridSortingEnumLabels,
+} from "@/const/enums/GridSortingEnum.ts";
 import cs from "./CustomersPage.module.scss";
 import useCustomersPageService from "@/pages/customers-section/customers-page/useCustomersPageService.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { Plus } from "lucide-react";
 import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import { customerGridColumns } from "@/components/complex/grid/custom-grids/customer-grid/CustomerGridColumns";
-import { PreferencesModel } from "@/const/models/PreferencesModel";
-import { GridRequestModel } from "@/const/models/GridRequestModel";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export function CustomersPage() {
@@ -22,18 +24,18 @@ export function CustomersPage() {
     onCreateCustomerHandler,
     updateUserPreferencesHandler,
     resetUserPreferencesHandler,
-    setDefaultSortingOptionsHandler,
   } = useCustomersPageService();
 
   const customerColumns = customerGridColumns(
     onAction,
   ) as ColumnDef<DataWithId>[];
+  const sortingItems = Object.values(GridSortingEnum).map((value) => ({
+    value,
+    description: GridSortingEnumLabels[value],
+  }));
 
   useEffect(() => {
-    getCustomersForGridHandler();
-    if (state.sortingOptions.length === 0) {
-      setDefaultSortingOptionsHandler();
-    }
+    getCustomersForGridHandler(state.customersGridRequestModel);
   }, []);
 
   function onAction(
@@ -50,24 +52,6 @@ export function CustomersPage() {
         onManageCustomerHandler(rowData);
         break;
     }
-
-    setLoadingRow(rowId, false);
-  }
-
-  function handleCreateCustomer() {
-    onCreateCustomerHandler();
-  }
-
-  function onApplyColumnsHandler(model: PreferencesModel) {
-    updateUserPreferencesHandler(model);
-  }
-
-  function onResetColumnsHandler() {
-    resetUserPreferencesHandler("Customers");
-  }
-
-  function handleGridRequestChange(updates: GridRequestModel) {
-    getCustomersForGridHandler(updates);
   }
 
   return (
@@ -78,7 +62,7 @@ export function CustomersPage() {
           <SheButton
             icon={Plus}
             variant="outline"
-            onClick={handleCreateCustomer}
+            onClick={() => onCreateCustomerHandler()}
             value={t("CustomerActions.CreateCustomer")}
           />
         </div>
@@ -92,13 +76,13 @@ export function CustomersPage() {
             id: customer.customerId,
           }))}
           gridRequestModel={state.customersGridRequestModel}
-          sortingItems={state.sortingOptions}
+          sortingItems={sortingItems}
           columnsPreferences={appState.preferences}
           preferenceContext={"customerReferences"}
           skeletonQuantity={state.customersGridRequestModel.pageSize}
-          onApplyColumns={onApplyColumnsHandler}
-          onDefaultColumns={onResetColumnsHandler}
-          onGridRequestChange={handleGridRequestChange}
+          onApplyColumns={(model) => updateUserPreferencesHandler(model)}
+          onDefaultColumns={() => resetUserPreferencesHandler("Customers")}
+          onGridRequestChange={(updates) => getCustomersForGridHandler(updates)}
         >
           {/* TODO: Add filters */}
         </SheGrid>
