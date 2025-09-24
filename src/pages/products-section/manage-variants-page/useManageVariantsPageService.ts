@@ -1170,6 +1170,10 @@ export default function useManageVariantsPageService(handleCardAction) {
   }
 
   return {
+    state,
+    productsState,
+    productsService,
+    dispatch,
     getVariantsForGridHandler,
     changeVariantPositionHandler,
     generateProductCodeHandler,

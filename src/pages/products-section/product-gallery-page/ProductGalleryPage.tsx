@@ -1,59 +1,32 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-import { useAppSelector } from "@/utils/hooks/redux.ts";
-import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { IProductGalleryPageSlice } from "@/const/interfaces/store-slices/IProductGalleryPageSlice.ts";
-import { ProductGalleryPageSliceActions as actions } from "@/state/slices/ProductGalleryPageSlice.ts";
-import useProductGalleryPageService from "@/pages/products-section/product-gallery-page/useProductGalleryPageService.ts";
-import cs from "@/pages/products-section/product-basic-data-page/ProductBasicDataPage.module.scss";
-import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
-import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
+import cs from "./ProductGalleryPage.module.scss";
 import ProductPhotosCard from "@/components/complex/custom-cards/product-photos-card/ProductPhotosCard.tsx";
+import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
 import ConnectImageCard from "@/components/complex/custom-cards/connect-image-card/ConnectImageCard.tsx";
-import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
-import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
+import useProductGalleryPageService from "@/pages/products-section/product-gallery-page/useProductGalleryPageService.ts";
+import { ProductGalleryPageSliceActions as actions } from "@/state/slices/ProductGalleryPageSlice.ts";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
+import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 
 export function ProductGalleryPage() {
-  const state = useAppSelector<IProductGalleryPageSlice>(
-    StoreSliceEnum.PRODUCT_GALLERY,
-  );
-  const productsState = useAppSelector<IProductsPageSlice>(
-    StoreSliceEnum.PRODUCTS,
-  );
-  const productsService = useProductsPageService();
-  const { productId } = useParams();
+  // ==================================================================== UTILITIES
   const { handleCardAction, createRefCallback } = useCardActions({
     selectActiveCards: (state) =>
       state[StoreSliceEnum.PRODUCT_GALLERY].activeCards,
     refreshAction: actions.refreshActiveCards,
   });
-  const service = useProductGalleryPageService(handleCardAction);
-  const productsForItemsCard = productsService.itemsCardItemsConvertor(
-    productsState.products,
-    {
-      idKey: "productId",
-      nameKey: "productName",
-      imageKeyPath: "image.thumbnailUrl",
-      type: "product",
-    },
-  );
+  const { state, productsState, productsService, ...service } =
+    useProductGalleryPageService(handleCardAction);
+  const { productId } = useParams();
 
-  const variantsForItemsCard = productsService.itemsCardItemsConvertor(
-    productsState.variants,
-    {
-      idKey: "variantId",
-      nameKey: "variantName",
-      imageKeyPath: "photo.thumbnailUrl",
-      type: "variant",
-    },
-  );
-
+  // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     service.getProductGalleryPageDataHandler(productId);
   }, [productId]);
 
+  // ==================================================================== EVENT HANDLERS
   async function onAction(actionType: string, payload: any) {
     switch (actionType) {
       case "itemCardClick":
@@ -83,22 +56,15 @@ export function ProductGalleryPage() {
     }
   }
 
+  // ==================================================================== LAYOUT
   return (
-    <div className={cs.createProductPage}>
-      <ItemsCard
-        isLoading={productsState.isItemsCardLoading}
-        isItemsLoading={
-          productsState.activeTab === "products"
-            ? productsState.isProductsLoading
-            : productsState.isVariantsLoading
-        }
-        title={productsState.activeTab === "products" ? "Products" : "Variants"}
-        data={
-          productsState.activeTab === "products"
-            ? productsForItemsCard
-            : variantsForItemsCard
-        }
-        selectedItem={
+    <div className={cs.productGalleryPage}>
+      <SheContextSidebar
+        menuCollectionType="products"
+        isListLoading={productsState.isItemsCardLoading}
+        listItems={productsState[productsState.activeTab]}
+        showListItems
+        selectedId={
           productsState.activeTab === "products"
             ? productId
             : productsState.selectedVariant?.variantId
@@ -108,37 +74,34 @@ export function ProductGalleryPage() {
             ? productsState.products?.length
             : productsState.variants?.length
         }
-        onAction={productsService.itemCardHandler}
-      />
-      <ProductMenuCard
-        isLoading={productsState.isProductMenuCardLoading}
-        title={productId ? "Manage Product" : "Create Product"}
-        itemsCollection="products"
+        activeTab={productsState.activeTab}
         counter={productsState.productCounter}
         itemId={Number(productId)}
         activeCards={state.activeCards}
-      />
-      <ProductPhotosCard
-        isLoading={state.isProductPhotosCardLoading}
-        isImageUploaderLoading={state.isImageUploaderLoading}
-        isGridLoading={productsState.isProductPhotosLoading}
-        data={productsState.productPhotos}
-        productCounter={productsState.productCounter}
-        contextId={productId}
-        onAction={onAction}
-      />
-      {state.activeCards.includes("connectImageCard") && (
-        <div ref={createRefCallback("connectImageCard")}>
-          <ConnectImageCard
-            isLoading={state.isConnectImageCardLoading}
-            isGridLoading={state.isVariantsGridLoading}
-            variants={state.productVariants}
-            selectedPhoto={state.selectedPhoto}
-            productCounter={productsState.productCounter}
-            onAction={onAction}
-          />
-        </div>
-      )}
+        onAction={(item) => onAction("itemsCardClick", item)}
+      >
+        <ProductPhotosCard
+          isLoading={state.isProductPhotosCardLoading}
+          isImageUploaderLoading={state.isImageUploaderLoading}
+          isGridLoading={productsState.isProductPhotosLoading}
+          data={productsState.productPhotos}
+          productCounter={productsState.productCounter}
+          contextId={productId}
+          onAction={onAction}
+        />
+        {state.activeCards.includes("connectImageCard") && (
+          <div ref={createRefCallback("connectImageCard")}>
+            <ConnectImageCard
+              isLoading={state.isConnectImageCardLoading}
+              isGridLoading={state.isVariantsGridLoading}
+              variants={state.productVariants}
+              selectedPhoto={state.selectedPhoto}
+              productCounter={productsState.productCounter}
+              onAction={onAction}
+            />
+          </div>
+        )}
+      </SheContextSidebar>
     </div>
   );
 }

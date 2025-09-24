@@ -83,8 +83,8 @@ export function ProductBasicDataPage() {
   return (
     <div className={cs.productBasicDataPage}>
       <SheContextSidebar
+        menuCollectionType="products"
         isListLoading={productsState.isItemsCardLoading}
-        isMenuLoading={productsState.isProductMenuCardLoading}
         listItems={productsState[productsState.activeTab]}
         showListItems
         selectedId={
@@ -98,7 +98,6 @@ export function ProductBasicDataPage() {
             : productsState.variants?.length
         }
         activeTab={productsState.activeTab}
-        menuCollectionType="products"
         counter={productsState.productCounter}
         itemId={Number(productId)}
         activeCards={state.activeCards}
@@ -137,72 +136,4 @@ export function ProductBasicDataPage() {
       </SheContextSidebar>
     </div>
   );
-
-  /*return (
-    <div className={cs.productBasicDataPage}>
-      <ItemsCard
-        isLoading={productsState.isItemsCardLoading}
-        isItemsLoading={
-          productsState.activeTab === "products"
-            ? productsState.isProductsLoading
-            : productsState.isVariantsLoading
-        }
-        title={productsState.activeTab === "products" ? "Products" : "Variants"}
-        data={
-          productsState.activeTab === "products"
-            ? productsForItemsCard
-            : variantsForItemsCard
-        }
-        selectedItem={
-          productsState.activeTab === "products"
-            ? productId
-            : productsState.selectedVariant?.variantId
-        }
-        skeletonQuantity={
-          productsState.activeTab === "products"
-            ? productsState.products?.length
-            : productsState.variants?.length
-        }
-        onAction={(item) => onAction("itemsCardClick", item)}
-      />
-      <ProductMenuCard
-        isLoading={productsState.isProductMenuCardLoading}
-        title={productId ? "Manage Product" : "Create Product"}
-        itemsCollection="products"
-        counter={productsState.productCounter}
-        itemId={Number(productId)}
-        activeCards={state.activeCards}
-      />
-      <ProductConfigurationCard
-        isLoading={state.isProductConfigurationCardLoading}
-        product={productsState.product}
-        brandsList={productsState.brands}
-        categoriesList={productsState.categories}
-        productCode={productsState.productCode}
-        onPrimaryButtonClick={(data) => onAction("submitProductData", data)}
-        onSecondaryButtonClick={() => onAction("gotoProductsPage")}
-        onAction={onAction}
-      />
-      {state.activeCards.includes("createCategoryCard") && (
-        <div ref={createRefCallback("createCategoryCard")}>
-          <CreateProductCategoryCard
-            isLoading={state.isCreateCategoryCardLoading}
-            isPhotoUploaderLoading={productsState.isPhotoUploaderLoading}
-            category={productsState.category}
-            onAction={onAction}
-          />
-        </div>
-      )}
-      {state.activeCards.includes("createBrandCard") && (
-        <div ref={createRefCallback("createBrandCard")}>
-          <CreateProductBrandCard
-            isLoading={state.isCreateBrandCardLoading}
-            isPhotoUploaderLoading={productsState.isPhotoUploaderLoading}
-            brand={productsState.brand}
-            onAction={onAction}
-          />
-        </div>
-      )}
-    </div>
-  );*/
 }

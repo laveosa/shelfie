@@ -23,10 +23,10 @@ export default function useProductGalleryPageService(handleCardAction) {
   const state = useAppSelector<IProductGalleryPageSlice>(
     StoreSliceEnum.PRODUCT_GALLERY,
   );
-  const productsService = useProductsPageService();
   const productsState = useAppSelector<IProductsPageSlice>(
     StoreSliceEnum.PRODUCTS,
   );
+  const productsService = useProductsPageService();
   const { openConfirmationDialog } = useDialogService();
   const { addToast } = useToast();
 
@@ -283,6 +283,9 @@ export default function useProductGalleryPageService(handleCardAction) {
   }
 
   return {
+    state,
+    productsState,
+    productsService,
     getTheProductsForGridHandler,
     uploadPhotoHandler,
     putPhotoInNewPositionHandler,
