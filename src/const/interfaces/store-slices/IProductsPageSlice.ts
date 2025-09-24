@@ -65,4 +65,5 @@ export interface IProductsPageSlice {
   activeTab?: string;
   variantPhotos?: ImageModel[];
   productCode?: string;
+  createdPurchase?: PurchaseModel;
 }

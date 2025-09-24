@@ -7,6 +7,7 @@ import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 import { TypeOfTraitModel } from "@/const/models/TypeOfTraitModel.ts";
 import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
+import { LanguageModel } from "@/const/models/LanguageModel.ts";
 
 const apiConfig = new ApiConfigurationService(ApiUrlEnum.DICTIONARY_BASE_URL);
 
@@ -51,6 +52,13 @@ export const DictionaryApiService = createApi({
         url: "/currencies/list",
       }),
       providesTags: (result: CurrencyModel[]) =>
+        apiConfig.providesTags(result, ApiServiceNameEnum.DICTIONARY),
+    }),
+    getLanguagesList: apiConfig.createQuery<LanguageModel[], void>(builder, {
+      query: () => ({
+        url: "/languages/all",
+      }),
+      providesTags: (result: LanguageModel[]) =>
         apiConfig.providesTags(result, ApiServiceNameEnum.DICTIONARY),
     }),
   }),

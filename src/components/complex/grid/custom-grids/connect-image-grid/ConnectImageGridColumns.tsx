@@ -16,8 +16,8 @@ export const ConnectImageGridColumns = (
   {
     accessorKey: "isActive",
     header: "Status",
-    size: 60,
-    maxSize: 60,
+    minSize: 80,
+    maxSize: 80,
     cell: ({ row, table }) => {
       const meta = table.options.meta as {
         setLoadingRow: (rowId: string, loading: boolean) => void;
@@ -42,8 +42,8 @@ export const ConnectImageGridColumns = (
   {
     accessorKey: "variantName",
     header: "Variant",
-    size: 80,
-    maxSize: 80,
+    minSize: 200,
+    maxSize: 200,
     cell: ({ row }) => {
       return (
         <SheTooltip
@@ -59,8 +59,8 @@ export const ConnectImageGridColumns = (
   {
     accessorKey: "traitOptions",
     header: "Traits",
-    size: 60,
-    maxSize: 60,
+    minSize: 80,
+    maxSize: 80,
     cell: ({ row }) => {
       const colors = row.original.traitOptions
         .filter((option) => option.traitTypeId === 2)

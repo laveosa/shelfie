@@ -1,14 +1,15 @@
 import React, { useEffect, useRef } from "react";
-import cs from "./CustomerAddressesPage.module.scss";
-import useCustomerAddressesPageService from "./useCustomerAddressesPageService.ts";
-import CustomerMenuCard from "@/components/complex/custom-cards/customer-menu-card/CustomerMenuCard.tsx";
-import CustomerAddressCard from "@/components/complex/custom-cards/customer-address-card/CustomerAddressCard.tsx";
-import useDialogService from "@/utils/services/dialog/DialogService.ts";
+
 import {
   clearSelectedGridItems,
   scrollToRefElement,
   setSelectedGridItem,
 } from "@/utils/helpers/quick-helper.ts";
+import cs from "./CustomerAddressesPage.module.scss";
+import useCustomerAddressesPageService from "./useCustomerAddressesPageService.ts";
+import CustomerMenuCard from "@/components/complex/custom-cards/customer-menu-card/CustomerMenuCard.tsx";
+import CustomerAddressCard from "@/components/complex/custom-cards/customer-address-card/CustomerAddressCard.tsx";
+import useDialogService from "@/utils/services/dialog/DialogService.ts";
 import CustomerAddressesCard from "@/components/complex/custom-cards/customer-addresses-card/CustomerAddressesCard.tsx";
 
 export function CustomerAddressesPage() {
@@ -31,20 +32,20 @@ export function CustomerAddressesPage() {
   // ================================================================== EVENT
   useEffect(() => {
     if (
-      state.customerAddressesGridRequestModel.items.length === 0 &&
+      state.customerAddressesGridRequestModel?.items?.length === 0 &&
       customerId
     ) {
       getCustomerAddressesForGridHandler();
     }
 
-    if (state.countryList.length === 0) {
+    if (state.countryList?.length === 0) {
       getCountryCodeHandler();
     }
 
-    if (state.customerCounter.addressesAmount === undefined && customerId) {
+    if (state.customerCounter?.addressesAmount === undefined && customerId) {
       getCustomerInfoHandler(Number(customerId));
     }
-    if (state.sortingOptions.length === 0) {
+    if (state.sortingOptions?.length === 0) {
       setDefaultSortingOptionsHandler();
     }
   }, []);

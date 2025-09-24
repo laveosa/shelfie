@@ -43,8 +43,12 @@ export default function useOrderDetailsPageService(handleCardAction) {
 
   function getOrderDetailsHandler(orderId) {
     dispatch(actions.setIsOrderConfigurationCardLoading(true));
+    dispatch(actions.setIsDiscountsGridLoading(true));
+    dispatch(actions.setIsShipmentsGridLoading(true));
     return getOrderDetails(orderId).then((res: any) => {
       dispatch(actions.setIsOrderConfigurationCardLoading(false));
+      dispatch(actions.setIsDiscountsGridLoading(false));
+      dispatch(actions.setIsShipmentsGridLoading(false));
       dispatch(ordersActions.refreshSelectedOrder(res.data));
       dispatch(
         ordersActions.refreshProductCounter({ products: res.data.unitsAmount }),
@@ -127,7 +131,7 @@ export default function useOrderDetailsPageService(handleCardAction) {
         const newDiscount = { ...res.data, isSelected: true };
         const updatedList = [newDiscount, ...state.discountsList];
         dispatch(actions.refreshDiscountsList(updatedList));
-
+        handleCardAction("selectDiscountCard");
         applyDiscountsToOrderHandler(
           orderId,
           { discounts: [res.data.discountId] },

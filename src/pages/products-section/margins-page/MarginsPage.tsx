@@ -109,12 +109,6 @@ export function MarginsPage() {
       case "gridRequestChange":
         service.gridRequestChangeHandle(purchaseId, payload);
         break;
-      // case "brandFilter":
-      //   service.gridRequestChangeHandle({ filter: { brands: payload } });
-      //   break;
-      // case "categoryFilter":
-      //   service.gridRequestChangeHandle({ filter: { categories: payload } });
-      //   break;
       case "applyVisibleMarginItems":
         service.applyVisibleMarginItemsHandle(purchaseId);
         break;
@@ -132,54 +126,56 @@ export function MarginsPage() {
         menuTitle="Report Purchase"
         itemId={Number(purchaseId)}
         counter={productsState.purchaseCounters}
-      >
-        <MarginForPurchaseCard
-          isLoading={state.isMarginForPurchaseCardLoading}
-          margin={state.selectedMargin}
-          onAction={onAction}
-        />
-        {state.activeCards?.includes("salePriceManagementCard") && (
-          <div ref={createRefCallback("salePriceManagementCard")}>
-            <SalePriseManagementCard
-              isLoading={state.isSalePriceManagementCardLoading}
-              isGridLoading={state.isMarginProductsGridLoading}
-              brands={productsState.brands}
-              categories={productsState.categories}
-              sizes={productsState.sizesForFilter}
-              colors={productsState.colorsForFilter}
-              taxes={productsState.taxesList}
-              sortingOptions={productsState.sortingOptions}
-              gridRequestModel={state.marginItemsGridRequestModel}
-              onAction={onAction}
-            />
-          </div>
-        )}
-        {state.activeCards?.includes("selectEntityCard") && (
-          <div ref={createRefCallback("selectEntityCard")}>
-            <SelectEntityCard
-              isLoading={state.isSelectMarginCardLoading}
-              isGridLoading={state.isMarginListGridLoading}
-              entityName="Margin"
-              entityCollection={state.marginsList}
-              columns={
-                MarginsListGridColumns({
-                  onAction,
-                }) as ColumnDef<DataWithId>[]
-              }
-              onAction={onAction}
-            />
-          </div>
-        )}
-        {state.activeCards?.includes("marginConfigurationCard") && (
-          <div ref={createRefCallback("marginConfigurationCard")}>
-            <MarginConfigurationCard
-              isLoading={state.isMarginConfigurationCardLoading}
-              margin={state.managedMargin}
-              onAction={onAction}
-            />
-          </div>
-        )}
-      </SheContextSidebar>
+      />
+      <MarginForPurchaseCard
+        isLoading={state.isMarginForPurchaseCardLoading}
+        margin={state.selectedMargin}
+        onAction={onAction}
+      />
+      {state.activeCards?.includes("salePriceManagementCard") && (
+        <div
+          className={cs.salePriceManagementCard}
+          ref={createRefCallback("salePriceManagementCard")}
+        >
+          <SalePriseManagementCard
+            isLoading={state.isSalePriceManagementCardLoading}
+            isGridLoading={state.isMarginProductsGridLoading}
+            brands={productsState.brands}
+            categories={productsState.categories}
+            sizes={productsState.sizesForFilter}
+            colors={productsState.colorsForFilter}
+            taxes={productsState.taxesList}
+            sortingOptions={productsState.sortingOptions}
+            gridRequestModel={state.marginItemsGridRequestModel}
+            onAction={onAction}
+          />
+        </div>
+      )}
+      {state.activeCards?.includes("selectEntityCard") && (
+        <div ref={createRefCallback("selectEntityCard")}>
+          <SelectEntityCard
+            isLoading={state.isSelectMarginCardLoading}
+            isGridLoading={state.isMarginListGridLoading}
+            entityName="Margin"
+            entityCollection={state.marginsList}
+            columns={
+              MarginsListGridColumns({
+                onAction,
+              }) as ColumnDef<DataWithId>[]
+            }
+            onAction={onAction}
+          />
+        </div>
+      )}
+      {state.activeCards?.includes("marginConfigurationCard") && (
+        <div ref={createRefCallback("marginConfigurationCard")}>
+          <MarginConfigurationCard
+            isLoading={state.isMarginConfigurationCardLoading}
+            margin={state.managedMargin}
+            onAction={onAction}
+          />
+        </div>
+      )}
     </div>
   );
 }

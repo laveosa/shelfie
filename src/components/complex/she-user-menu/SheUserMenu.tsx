@@ -8,7 +8,6 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,17 +23,32 @@ import {
 } from "@/components/ui/sidebar";
 import cs from "./SheUserMenu.module.scss";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import useDialogService from "@/utils/services/dialog/DialogService.ts";
+import useAppService from "@/useAppService.ts";
+import { getInitials } from "@/utils/helpers/quick-helper.ts";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ISheUserMenu } from "@/const/interfaces/complex-components/ISheUserMenu.ts";
+import { Skeleton } from "@/components/ui/skeleton.tsx";
 
-export function SheUserMenu({
-  user,
-}: {
-  user: {
-    name: string;
-    email: string;
-    avatar: string;
-  };
-}) {
+export function SheUserMenu({ user, isLoading }: ISheUserMenu) {
+  const { logOut } = useAppService();
   const navigate = useNavigate();
+  const { openConfirmationDialog } = useDialogService();
+
+  async function handleLogout() {
+    setTimeout(async () => {
+      const confirmedLogOut = await openConfirmationDialog({
+        headerTitle: "Logging out",
+        text: `You are about to log out from your account.`,
+        primaryButtonValue: "Log Out",
+        secondaryButtonValue: "Cancel",
+      });
+
+      if (!confirmedLogOut) return;
+
+      logOut();
+    }, 100);
+  }
 
   return (
     <SidebarMenu className={cs.sidebarMenu}>
@@ -45,21 +59,40 @@ export function SheUserMenu({
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
-              </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className={`${cs.userText} she-text`}>{user.name}</span>
-                <span className={`${cs.userText} she-subtext`}>
-                  {user.email}
-                </span>
-              </div>
-              <SheIcon
-                icon={EllipsisVertical}
-                maxWidth="24px"
-                color="#71717A"
-              />
+              {isLoading ? (
+                <div className={cs.skeletonBlock}>
+                  <Skeleton className={cs.skeletonRound} />
+                  <div className={cs.skeletonBars}>
+                    <Skeleton className={cs.skeletonLongBar} />
+                    <Skeleton className={cs.skeletonShortBar} />
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <Avatar className="h-8 w-8 rounded-lg">
+                    {user?.thumbnail && (
+                      <AvatarImage src={user.thumbnail} alt="avatar" />
+                    )}
+
+                    <AvatarFallback className="rounded-lg">
+                      {getInitials(undefined, user?.firstName, user?.lastName)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="grid flex-1 text-left text-sm leading-tight">
+                    <span
+                      className={`${cs.userText} she-text`}
+                    >{`${user?.firstName} ${user?.lastName}`}</span>
+                    <span className={`${cs.userText} she-subtext`}>
+                      {user?.email}
+                    </span>
+                  </div>
+                  <SheIcon
+                    icon={EllipsisVertical}
+                    maxWidth="24px"
+                    color="#71717A"
+                  />
+                </>
+              )}
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -69,26 +102,49 @@ export function SheUserMenu({
             sideOffset={4}
           >
             <DropdownMenuGroup>
-              <DropdownMenuItem className={cs.dropdownMenuItem}>
-                <SheIcon icon={UserRoundCog} maxWidth="20px" color="#71717A" />
+              <DropdownMenuItem
+                className={cs.dropdownMenuItem}
+                onClick={() => navigate("/profile")}
+              >
+                <SheIcon
+                  className={cs.dropdownMenuItemIcon}
+                  icon={UserRoundCog}
+                  maxWidth="20px"
+                  color="#71717A"
+                />
                 <span className={`${cs.dropdownMenuItemText} she-text`}>
                   Account
                 </span>
               </DropdownMenuItem>
               <DropdownMenuItem className={cs.dropdownMenuItem}>
-                <SheIcon icon={UserRoundPlus} maxWidth="20px" color="#71717A" />
+                <SheIcon
+                  className={cs.dropdownMenuItemIcon}
+                  icon={UserRoundPlus}
+                  maxWidth="20px"
+                  color="#71717A"
+                />
                 <span className={`${cs.dropdownMenuItemText} she-text`}>
                   Invitations
                 </span>
               </DropdownMenuItem>
               <DropdownMenuItem className={cs.dropdownMenuItem}>
-                <SheIcon icon={CreditCard} maxWidth="20px" color="#71717A" />
+                <SheIcon
+                  className={cs.dropdownMenuItemIcon}
+                  icon={CreditCard}
+                  maxWidth="20px"
+                  color="#71717A"
+                />
                 <span className={`${cs.dropdownMenuItemText} she-text`}>
                   Billing
                 </span>
               </DropdownMenuItem>
               <DropdownMenuItem className={cs.dropdownMenuItem}>
-                <SheIcon icon={Cog} maxWidth="20px" color="#71717A" />
+                <SheIcon
+                  className={cs.dropdownMenuItemIcon}
+                  icon={Cog}
+                  maxWidth="20px"
+                  color="#71717A"
+                />
                 <span className={`${cs.dropdownMenuItemText} she-text`}>
                   Administration
                 </span>
@@ -97,9 +153,14 @@ export function SheUserMenu({
             <DropdownMenuSeparator />
             <DropdownMenuItem
               className={cs.dropdownMenuItemLogOut}
-              onClick={() => navigate("/profile")}
+              onClick={handleLogout}
             >
-              <SheIcon icon={LogOut} maxWidth="20px" color="#71717A" />
+              <SheIcon
+                className={cs.dropdownMenuItemIcon}
+                icon={LogOut}
+                maxWidth="20px"
+                color="#71717A"
+              />
               <span className={`${cs.dropdownMenuItemText} she-text`}>
                 Log out
               </span>

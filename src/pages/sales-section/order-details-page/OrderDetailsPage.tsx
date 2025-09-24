@@ -58,11 +58,11 @@ export function OrderDetailsPage() {
       case "createDiscount":
         service.createDiscountHandler(orderId, payload);
         break;
-      case "applyDiscountToOrder":
-        service.applyDiscountsToOrderHandler(orderId, {
-          discounts: [payload.discountId],
-        });
-        break;
+      // case "applyDiscountToOrder":
+      //   service.applyDiscountsToOrderHandler(orderId, {
+      //     discounts: [payload.discountId],
+      //   });
+      //   break;
       case "removeDiscount":
         service.removeDiscountsFromOrderHandler(orderId, {
           discounts: [payload.discountId],
@@ -113,6 +113,8 @@ export function OrderDetailsPage() {
       />
       <OrderConfigurationCard
         isLoading={state.isOrderConfigurationCardLoading}
+        isDiscountsGridLoading={state.isDiscountsGridLoading}
+        isShipmentsGridLoading={state.isShipmentsGridLoading}
         order={ordersState.selectedOrder}
         onAction={onAction}
       />
@@ -136,6 +138,7 @@ export function OrderDetailsPage() {
         <div ref={createRefCallback("customerCard")}>
           <CustomerCard
             isLoading={state.isCustomerCardLoading}
+            showCloseButton={true}
             customer={state.selectedCustomer}
             onAction={onAction}
           />

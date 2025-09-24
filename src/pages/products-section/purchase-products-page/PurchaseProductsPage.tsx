@@ -56,7 +56,6 @@ export function PurchaseProductsPage() {
 
   useEffect(() => {
     service.getPurchasesProductsGridDataHandler(purchaseId);
-    service.getVariantsForPurchaseGridDataHandler();
     service.getGridFiltersDataHandler();
   }, []);
 
@@ -312,6 +311,9 @@ export function PurchaseProductsPage() {
       case "gridRequestChange":
         service.gridRequestChangeHandler(purchaseId, payload);
         break;
+      case "refreshConnectProductsTab":
+        service.getVariantsForPurchaseGridDataHandler();
+        break;
     }
   }
 
@@ -323,284 +325,275 @@ export function PurchaseProductsPage() {
         menuTitle="Report Purchase"
         itemId={Number(purchaseId)}
         counter={productsState.purchaseCounters}
-      >
-        {state.activeCards?.includes("purchaseProductsCard") && (
-          <div ref={createRefCallback("purchaseProductsCard")}>
-            <PurchaseProductsCard
-              isLoading={state.isPurchaseProductsCardLoading}
-              isPurchaseProductsGridLoading={
-                state.isPurchasesProductsGridLoading
-              }
-              isProductsGridLoading={state.isVariantsForPurchaseGridLoading}
-              variantsGridRequestModel={
-                state.variantsForPurchaseGridRequestModel
-              }
-              purchaseProductsGridRequestModel={
-                state.purchasesProductsGridRequestModel
-              }
-              sortingOptions={productsState.sortingOptions}
-              preferences={appState.preferences}
-              brands={productsState.brands}
-              categories={productsState.categories}
-              colorsForFilter={productsState.colorsForFilter}
-              sizesForFilter={productsState.sizesForFilter}
-              variantsSkeletonQuantity={
-                state.variantsForPurchaseGridRequestModel.pageSize
-              }
-              currencies={productsState.currenciesList}
-              taxes={productsState.taxesList}
-              purchaseSummary={state.purchaseSummary}
-              onAction={onAction}
-            />
-          </div>
-        )}
-        {state.activeCards?.includes("manageProductCard") && (
-          <div ref={createRefCallback("manageProductCard")}>
-            <ManageProductCard
-              isLoading={state.isManageProductCardLoading}
-              purchase={productsState.selectedPurchase}
-              product={state.selectedProduct}
-              variants={state.purchaseProductVariants}
-              currencies={productsState.currenciesList}
-              taxes={productsState.taxesList}
-              isVariantGridLoading={state.isVariantGridLoading}
-              productTraits={productsState.listOfTraitsWithOptionsForProduct}
-              onAction={onAction}
-            />
-          </div>
-        )}
-        {state.activeCards?.includes("productConfigurationCard") && (
-          <div ref={createRefCallback("productConfigurationCard")}>
-            <ProductConfigurationCard
-              isLoading={state.isProductConfigurationCardLoading}
-              product={state.selectedProduct}
-              brandsList={productsState.brands}
-              categoriesList={productsState.categories}
-              productCode={productsState.productCode}
-              showSecondaryButton={true}
-              onPrimaryButtonClick={(data) =>
-                onAction("submitProductData", data)
-              }
-              onSecondaryButtonClick={() =>
-                onAction("closeProductConfigurationCard")
-              }
-              onAction={onAction}
-            />
-          </div>
-        )}
-        {state.activeCards.includes("createCategoryCard") && (
-          <div ref={createRefCallback("createCategoryCard")}>
-            <CreateProductCategoryCard
-              isLoading={state.isCreateCategoryCardLoading}
-              isPhotoUploaderLoading={productsState.isPhotoUploaderLoading}
-              category={productsState.category}
-              onAction={onAction}
-            />
-          </div>
-        )}
-        {state.activeCards.includes("createBrandCard") && (
-          <div ref={createRefCallback("createBrandCard")}>
-            <CreateProductBrandCard
-              isLoading={state.isCreateBrandCardLoading}
-              isPhotoUploaderLoading={productsState.isPhotoUploaderLoading}
-              brand={productsState.brand}
-              onAction={onAction}
-            />
-          </div>
-        )}
-        {state.activeCards.includes("productPhotosCard") && (
-          <div ref={createRefCallback("productPhotosCard")}>
-            <ProductPhotosCard
-              isLoading={state.isProductPhotosCardLoading}
-              isImageUploaderLoading={state.isImageUploaderLoading}
-              isGridLoading={productsState.isProductPhotosLoading}
-              data={productsState.productPhotos}
-              productCounter={null}
-              contextId={state.selectedProduct.productId}
-              showCloseButton={true}
-              onAction={onAction}
-            />
-          </div>
-        )}
-        {state.activeCards.includes("connectImageCard") && (
-          <div ref={createRefCallback("connectImageCard")}>
-            <ConnectImageCard
-              isLoading={state.isConnectImageCardLoading}
-              isGridLoading={state.isVariantsGridLoading}
-              variants={productsState.productVariants}
-              selectedPhoto={state.selectedPhoto}
-              onAction={onAction}
-              onSecondaryButtonClick={() =>
-                handleCardAction("connectImageCard")
-              }
-            />
-          </div>
-        )}
-        {state.activeCards.includes("chooseVariantTraitsCard") && (
-          <div ref={createRefCallback("chooseVariantTraitsCard")}>
-            <ChooseVariantTraitsCard
-              isLoading={state.isChooseVariantTraitsCardLoading}
-              items={productsState.traits}
-              selectedItems={productsState.listOfTraitsWithOptionsForProduct}
-              onAction={onAction}
-              onSecondaryButtonClick={() =>
-                handleCardAction("chooseVariantTraitsCard")
-              }
-            />
-          </div>
-        )}
-        {state.activeCards.includes("productTraitConfigurationCard") && (
-          <div ref={createRefCallback("productTraitConfigurationCard")}>
-            <ProductTraitConfigurationCard
-              isLoading={state.isProductTraitConfigurationCardLoading}
-              isGridLoading={state.isTraitOptionsGridLoading}
-              data={state.colorOptionsGridRequestModel}
-              selectedTrait={state.selectedTrait}
-              typesOfTraits={productsState.typesOfTraits}
-              onSecondaryButtonClick={() =>
-                handleCardAction("productTraitConfigurationCard")
-              }
-              onAction={onAction}
-            />
-          </div>
-        )}
-        {state.activeCards.includes("addVariantCard") && (
-          <div ref={createRefCallback("addVariantCard")}>
-            <AddVariantCard
-              isLoading={state.isAddVariantCardLoading}
-              traits={productsState.listOfTraitsWithOptionsForProduct}
-              isDuplicateVariant={state.isDuplicateVariant}
-              onAction={onAction}
-            />
-          </div>
-        )}
-        {state.activeCards.includes("variantConfigurationCard") && (
-          <div ref={createRefCallback("variantConfigurationCard")}>
-            <VariantConfigurationCard
-              isLoading={state.isVariantConfigurationCardLoading}
-              isVariantOptionsGridLoading={state.isVariantOptionsGridLoading}
-              isVariantPhotoGridLoading={state.isVariantPhotoGridLoading}
-              variant={productsState.selectedVariant}
-              variantPhotos={state.variantPhotos}
-              data={state.variantTraitsGridRequestModel}
-              taxesList={productsState.taxesList}
-              productCounter={productsState.productCounter}
-              onAction={onAction}
-              onGenerateProductCode={productsService.generateProductCodeHandler}
-              onSecondaryButtonClick={() =>
-                onAction("closeVariantConfigurationCard")
-              }
-            />
-          </div>
-        )}
-        {state.activeCards.includes("addStockCard") && (
-          <div ref={createRefCallback("addStockCard")}>
-            <AddStockCard
-              isLoading={state.isAddStockCardLoading}
-              taxTypes={productsState.taxesList}
-              currencyTypes={productsState.currenciesList}
-              variant={productsState.selectedVariant}
-              purchase={state.selectedPurchase}
-              onAction={onAction}
-            />
-          </div>
-        )}
-        {state.activeCards.includes("selectPurchaseCard") && (
-          <div ref={createRefCallback("selectPurchaseCard")}>
-            <SelectPurchaseCard
-              isLoading={state.setIsSelectPurchaseCardLoading}
-              isGridLoading={state.setIsPurchaseGridLoading}
-              purchases={state.purchaseGridRequestModel.items}
-              onAction={onAction}
-            />
-          </div>
-        )}
-        {state.activeCards.includes("supplierCard") && (
-          <div ref={createRefCallback("supplierCard")}>
-            <SupplierCard
-              isLoading={state.isSupplierCardLoading}
-              selectedPurchase={productsState.selectedPurchase}
-              selectedSupplier={state.selectedCompany}
-              onAction={onAction}
-            />
-          </div>
-        )}
-        {state.activeCards?.includes("selectEntityCard") && (
-          <div ref={createRefCallback("selectEntityCard")}>
-            <SelectEntityCard
-              isLoading={state.isSelectEntityCardLoading}
-              isGridLoading={state.isSuppliersGridLoading}
-              entityName="Company"
-              entityCollection={state.companiesGridRequestModel?.items}
-              columns={CompaniesListGridColumns({
-                onAction,
-              })}
-              onAction={onAction}
-            />
-          </div>
-        )}
-        {state.activeCards?.includes("supplierConfigurationCard") && (
-          <div ref={createRefCallback("supplierConfigurationCard")}>
-            <SupplierConfigurationCard
-              isLoading={state.isSupplierConfigurationCardLoading}
-              isSupplierPhotosGridLoading={state.isSupplierPhotosGridLoading}
-              isPhotoUploaderLoading={state.isPhotoUploaderLoading}
-              countryList={productsState.countryCodeList}
-              managedSupplier={state.managedSupplier}
-              onAction={onAction}
-            />
-          </div>
-        )}
-        {state.activeCards.includes("disposeStockCard") && (
-          <div ref={createRefCallback("disposeStockCard")}>
-            <DisposeStockCard
-              isLoading={state.isDisposeStockCardLoading}
-              variant={productsState.selectedVariant}
-              onAction={onAction}
-              onSecondaryButtonClick={() =>
-                handleCardAction("disposeStockCard")
-              }
-            />
-          </div>
-        )}
-        {state.activeCards.includes("variantHistoryCard") && (
-          <div ref={createRefCallback("variantHistoryCard")}>
-            <StockHistoryCard
-              isLoading={state.isVariantHistoryCardLoading}
-              isGridLoading={state.isVariantHistoryGridLoading}
-              variant={productsState.selectedVariant}
-              data={state.variantHistory}
-              onAction={onAction}
-            />
-          </div>
-        )}
-        {state.activeCards.includes("variantPhotosCard") && (
-          <div ref={createRefCallback("variantPhotosCard")}>
-            <VariantPhotosCard
-              isLoading={state.isVariantPhotosCardLoading}
-              isVariantPhotoGridLoading={state.isVariantPhotoGridLoading}
-              isProductPhotoGridLoading={state.isProductPhotoGridLoading}
-              variantPhotos={state.variantPhotos}
-              productPhotos={state.productPhotosForVariant}
-              contextId={productsState.selectedVariant?.variantId}
-              onAction={onAction}
-            />
-          </div>
-        )}
-        {state.activeCards.includes("manageTraitsCard") && (
-          <div ref={createRefCallback("manageTraitsCard")}>
-            <ManageTraitsCard
-              isLoading={state.isManageTraitsCardLoading}
-              traits={productsState.listOfTraitsWithOptionsForProduct}
-              variant={productsState.selectedVariant}
-              onAction={onAction}
-              onSecondaryButtonClick={() =>
-                handleCardAction("manageTraitsCard")
-              }
-            />
-          </div>
-        )}
-      </SheContextSidebar>
+      />
+      {state.activeCards?.includes("purchaseProductsCard") && (
+        <div
+          className={cs.purchaseProductsCard}
+          ref={createRefCallback("purchaseProductsCard")}
+        >
+          <PurchaseProductsCard
+            isLoading={state.isPurchaseProductsCardLoading}
+            isPurchaseProductsGridLoading={state.isPurchasesProductsGridLoading}
+            isProductsGridLoading={state.isVariantsForPurchaseGridLoading}
+            variantsGridRequestModel={state.variantsForPurchaseGridRequestModel}
+            purchaseProductsGridRequestModel={
+              state.purchasesProductsGridRequestModel
+            }
+            sortingOptions={productsState.sortingOptions}
+            preferences={appState.preferences}
+            brands={productsState.brands}
+            categories={productsState.categories}
+            colorsForFilter={productsState.colorsForFilter}
+            sizesForFilter={productsState.sizesForFilter}
+            variantsSkeletonQuantity={
+              state.variantsForPurchaseGridRequestModel.pageSize
+            }
+            currencies={productsState.currenciesList}
+            taxes={productsState.taxesList}
+            purchaseSummary={state.purchaseSummary}
+            purchaseId={purchaseId}
+            onAction={onAction}
+          />
+        </div>
+      )}
+      {state.activeCards?.includes("manageProductCard") && (
+        <div ref={createRefCallback("manageProductCard")}>
+          <ManageProductCard
+            isLoading={state.isManageProductCardLoading}
+            purchase={productsState.selectedPurchase}
+            product={state.selectedProduct}
+            variants={state.purchaseProductVariants}
+            currencies={productsState.currenciesList}
+            taxes={productsState.taxesList}
+            isVariantGridLoading={state.isVariantGridLoading}
+            productTraits={productsState.listOfTraitsWithOptionsForProduct}
+            onAction={onAction}
+          />
+        </div>
+      )}
+      {state.activeCards?.includes("productConfigurationCard") && (
+        <div ref={createRefCallback("productConfigurationCard")}>
+          <ProductConfigurationCard
+            isLoading={state.isProductConfigurationCardLoading}
+            product={state.selectedProduct}
+            brandsList={productsState.brands}
+            categoriesList={productsState.categories}
+            productCode={productsState.productCode}
+            showSecondaryButton={true}
+            onPrimaryButtonClick={(data) => onAction("submitProductData", data)}
+            onSecondaryButtonClick={() =>
+              onAction("closeProductConfigurationCard")
+            }
+            onAction={onAction}
+          />
+        </div>
+      )}
+      {state.activeCards.includes("createCategoryCard") && (
+        <div ref={createRefCallback("createCategoryCard")}>
+          <CreateProductCategoryCard
+            isLoading={state.isCreateCategoryCardLoading}
+            isPhotoUploaderLoading={productsState.isPhotoUploaderLoading}
+            category={productsState.category}
+            onAction={onAction}
+          />
+        </div>
+      )}
+      {state.activeCards.includes("createBrandCard") && (
+        <div ref={createRefCallback("createBrandCard")}>
+          <CreateProductBrandCard
+            isLoading={state.isCreateBrandCardLoading}
+            isPhotoUploaderLoading={productsState.isPhotoUploaderLoading}
+            brand={productsState.brand}
+            onAction={onAction}
+          />
+        </div>
+      )}
+      {state.activeCards.includes("productPhotosCard") && (
+        <div ref={createRefCallback("productPhotosCard")}>
+          <ProductPhotosCard
+            isLoading={state.isProductPhotosCardLoading}
+            isImageUploaderLoading={state.isImageUploaderLoading}
+            isGridLoading={productsState.isProductPhotosLoading}
+            data={productsState.productPhotos}
+            productCounter={null}
+            contextId={state.selectedProduct.productId}
+            showCloseButton={true}
+            onAction={onAction}
+          />
+        </div>
+      )}
+      {state.activeCards.includes("connectImageCard") && (
+        <div ref={createRefCallback("connectImageCard")}>
+          <ConnectImageCard
+            isLoading={state.isConnectImageCardLoading}
+            isGridLoading={state.isVariantsGridLoading}
+            variants={productsState.productVariants}
+            selectedPhoto={state.selectedPhoto}
+            onAction={onAction}
+            onSecondaryButtonClick={() => handleCardAction("connectImageCard")}
+          />
+        </div>
+      )}
+      {state.activeCards.includes("chooseVariantTraitsCard") && (
+        <div ref={createRefCallback("chooseVariantTraitsCard")}>
+          <ChooseVariantTraitsCard
+            isLoading={state.isChooseVariantTraitsCardLoading}
+            items={productsState.traits}
+            selectedItems={productsState.listOfTraitsWithOptionsForProduct}
+            onAction={onAction}
+            onSecondaryButtonClick={() =>
+              handleCardAction("chooseVariantTraitsCard")
+            }
+          />
+        </div>
+      )}
+      {state.activeCards.includes("productTraitConfigurationCard") && (
+        <div ref={createRefCallback("productTraitConfigurationCard")}>
+          <ProductTraitConfigurationCard
+            isLoading={state.isProductTraitConfigurationCardLoading}
+            isGridLoading={state.isTraitOptionsGridLoading}
+            data={state.colorOptionsGridRequestModel}
+            selectedTrait={state.selectedTrait}
+            typesOfTraits={productsState.typesOfTraits}
+            onSecondaryButtonClick={() =>
+              handleCardAction("productTraitConfigurationCard")
+            }
+            onAction={onAction}
+          />
+        </div>
+      )}
+      {state.activeCards.includes("addVariantCard") && (
+        <div ref={createRefCallback("addVariantCard")}>
+          <AddVariantCard
+            isLoading={state.isAddVariantCardLoading}
+            traits={productsState.listOfTraitsWithOptionsForProduct}
+            isDuplicateVariant={state.isDuplicateVariant}
+            onAction={onAction}
+          />
+        </div>
+      )}
+      {state.activeCards.includes("variantConfigurationCard") && (
+        <div ref={createRefCallback("variantConfigurationCard")}>
+          <VariantConfigurationCard
+            isLoading={state.isVariantConfigurationCardLoading}
+            isVariantOptionsGridLoading={state.isVariantOptionsGridLoading}
+            isVariantPhotoGridLoading={state.isVariantPhotoGridLoading}
+            variant={productsState.selectedVariant}
+            variantPhotos={state.variantPhotos}
+            data={state.variantTraitsGridRequestModel}
+            taxesList={productsState.taxesList}
+            productCounter={productsState.productCounter}
+            onAction={onAction}
+            onGenerateProductCode={productsService.generateProductCodeHandler}
+            onSecondaryButtonClick={() =>
+              onAction("closeVariantConfigurationCard")
+            }
+          />
+        </div>
+      )}
+      {state.activeCards.includes("addStockCard") && (
+        <div ref={createRefCallback("addStockCard")}>
+          <AddStockCard
+            isLoading={state.isAddStockCardLoading}
+            taxTypes={productsState.taxesList}
+            currencyTypes={productsState.currenciesList}
+            variant={productsState.selectedVariant}
+            purchase={state.selectedPurchase}
+            onAction={onAction}
+          />
+        </div>
+      )}
+      {state.activeCards.includes("selectPurchaseCard") && (
+        <div ref={createRefCallback("selectPurchaseCard")}>
+          <SelectPurchaseCard
+            isLoading={state.setIsSelectPurchaseCardLoading}
+            isGridLoading={state.setIsPurchaseGridLoading}
+            purchases={state.purchaseGridRequestModel.items}
+            onAction={onAction}
+          />
+        </div>
+      )}
+      {state.activeCards.includes("supplierCard") && (
+        <div ref={createRefCallback("supplierCard")}>
+          <SupplierCard
+            isLoading={state.isSupplierCardLoading}
+            selectedPurchase={productsState.selectedPurchase}
+            selectedSupplier={state.selectedCompany}
+            onAction={onAction}
+          />
+        </div>
+      )}
+      {state.activeCards?.includes("selectEntityCard") && (
+        <div ref={createRefCallback("selectEntityCard")}>
+          <SelectEntityCard
+            isLoading={state.isSelectEntityCardLoading}
+            isGridLoading={state.isSuppliersGridLoading}
+            entityName="Company"
+            entityCollection={state.companiesGridRequestModel?.items}
+            columns={CompaniesListGridColumns({
+              onAction,
+            })}
+            onAction={onAction}
+          />
+        </div>
+      )}
+      {state.activeCards?.includes("supplierConfigurationCard") && (
+        <div ref={createRefCallback("supplierConfigurationCard")}>
+          <SupplierConfigurationCard
+            isLoading={state.isSupplierConfigurationCardLoading}
+            isSupplierPhotosGridLoading={state.isSupplierPhotosGridLoading}
+            isPhotoUploaderLoading={state.isPhotoUploaderLoading}
+            countryList={productsState.countryCodeList}
+            managedSupplier={state.managedSupplier}
+            onAction={onAction}
+          />
+        </div>
+      )}
+      {state.activeCards.includes("disposeStockCard") && (
+        <div ref={createRefCallback("disposeStockCard")}>
+          <DisposeStockCard
+            isLoading={state.isDisposeStockCardLoading}
+            variant={productsState.selectedVariant}
+            onAction={onAction}
+            onSecondaryButtonClick={() => handleCardAction("disposeStockCard")}
+          />
+        </div>
+      )}
+      {state.activeCards.includes("variantHistoryCard") && (
+        <div ref={createRefCallback("variantHistoryCard")}>
+          <StockHistoryCard
+            isLoading={state.isVariantHistoryCardLoading}
+            isGridLoading={state.isVariantHistoryGridLoading}
+            variant={productsState.selectedVariant}
+            data={state.variantHistory}
+            onAction={onAction}
+          />
+        </div>
+      )}
+      {state.activeCards.includes("variantPhotosCard") && (
+        <div ref={createRefCallback("variantPhotosCard")}>
+          <VariantPhotosCard
+            isLoading={state.isVariantPhotosCardLoading}
+            isVariantPhotoGridLoading={state.isVariantPhotoGridLoading}
+            isProductPhotoGridLoading={state.isProductPhotoGridLoading}
+            variantPhotos={state.variantPhotos}
+            productPhotos={state.productPhotosForVariant}
+            contextId={productsState.selectedVariant?.variantId}
+            onAction={onAction}
+          />
+        </div>
+      )}
+      {state.activeCards.includes("manageTraitsCard") && (
+        <div ref={createRefCallback("manageTraitsCard")}>
+          <ManageTraitsCard
+            isLoading={state.isManageTraitsCardLoading}
+            traits={productsState.listOfTraitsWithOptionsForProduct}
+            variant={productsState.selectedVariant}
+            onAction={onAction}
+            onSecondaryButtonClick={() => handleCardAction("manageTraitsCard")}
+          />
+        </div>
+      )}
     </div>
   );
 }

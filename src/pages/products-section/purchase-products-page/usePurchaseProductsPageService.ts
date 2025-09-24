@@ -130,27 +130,33 @@ export default function usePurchaseProductsPageService(
   }
 
   function getPurchasesProductsGridDataHandler(purchaseId) {
-    dispatch(actions.setIsPurchasesProductsGridLoading(true));
-    Promise.all([
-      getListOfPurchaseProductsForGridHandler(
-        purchaseId,
-        state.purchasesProductsGridRequestModel,
-      ),
-      getPurchaseSummaryHandler(purchaseId),
-    ]).then(() => {
-      dispatch(actions.setIsPurchasesProductsGridLoading(false));
-    });
+    if (!productsState.createdPurchase) {
+      dispatch(actions.setIsPurchasesProductsGridLoading(true));
+      Promise.all([
+        getListOfPurchaseProductsForGridHandler(
+          purchaseId,
+          state.purchasesProductsGridRequestModel,
+        ),
+        getPurchaseSummaryHandler(purchaseId),
+      ]).then(() => {
+        dispatch(actions.setIsPurchasesProductsGridLoading(false));
+      });
+    }
   }
 
   function getVariantsForPurchaseGridDataHandler() {
-    dispatch(actions.setIsVariantsForPurchaseGridLoading(true));
-    getVariantsForGrid(state.variantsForPurchaseGridRequestModel).then(
-      (res) => {
-        dispatch(actions.setIsVariantsForPurchaseGridLoading(false));
-        dispatch(actions.refreshVariantsForPurchaseGridRequestModel(res.data));
-        dispatch(actions.refreshVariants(res.data.items));
-      },
-    );
+    if (Object.keys(state.variantsForPurchaseGridRequestModel).length === 0) {
+      dispatch(actions.setIsVariantsForPurchaseGridLoading(true));
+      getVariantsForGrid(state.variantsForPurchaseGridRequestModel).then(
+        (res) => {
+          dispatch(actions.setIsVariantsForPurchaseGridLoading(false));
+          dispatch(
+            actions.refreshVariantsForPurchaseGridRequestModel(res.data),
+          );
+          dispatch(actions.refreshVariants(res.data.items));
+        },
+      );
+    }
   }
 
   function getGridFiltersDataHandler() {

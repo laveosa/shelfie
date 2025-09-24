@@ -2,12 +2,12 @@ export interface PurchaseProductsModel {
   nettoPrice?: number;
   currencyId?: number;
   taxTypeId?: number;
-  unitsAmount?: string;
+  unitsAmount?: number;
 }
 
 export const PurchaseProductsModelDefault: PurchaseProductsModel = {
-  nettoPrice: undefined,
+  nettoPrice: null,
   currencyId: undefined,
   taxTypeId: undefined,
-  unitsAmount: undefined,
+  unitsAmount: null,
 };

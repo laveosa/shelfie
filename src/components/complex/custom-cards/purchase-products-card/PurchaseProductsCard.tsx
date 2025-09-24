@@ -45,6 +45,7 @@ export default function PurchaseProductsCard({
   currencies,
   taxes,
   purchaseSummary,
+  purchaseId,
   onAction,
 }: IPurchaseProductsCard) {
   const { t } = useTranslation();
@@ -61,7 +62,10 @@ export default function PurchaseProductsCard({
     setActiveTab(value);
     dispatch(actions.refreshActiveTab(value));
     if (value === "purchaseProducts") {
-      onAction("refreshPurchaseProductsTab", purchaseSummary.purchaseId);
+      onAction("refreshPurchaseProductsTab", purchaseId);
+    }
+    if (value === "connectProducts") {
+      onAction("refreshConnectProductsTab", purchaseId);
     }
   }
 

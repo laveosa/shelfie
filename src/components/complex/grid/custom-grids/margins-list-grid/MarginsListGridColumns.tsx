@@ -14,9 +14,8 @@ export function MarginsListGridColumns({
     {
       id: "select",
       header: "Select",
-      size: 50,
-      minSize: 50,
-      maxSize: 50,
+      minSize: 70,
+      maxSize: 70,
       cell: ({ row, table }) => {
         const meta = table.options.meta as {
           setLoadingRow: (rowId: string, loading: boolean) => void;
@@ -45,15 +44,13 @@ export function MarginsListGridColumns({
     {
       id: "marginName",
       header: "Margin name",
-      size: 150,
       minSize: 150,
-      maxSize: 150,
       cell: ({ row }) => {
         return (
           <SheTooltip
             delayDuration={200}
             text={row.original.marginName}
-            className="max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap"
+            className="max-w-[100%] overflow-hidden text-ellipsis whitespace-nowrap"
           >
             <span className="she-text">{row.original.marginName}</span>
           </SheTooltip>
@@ -63,8 +60,8 @@ export function MarginsListGridColumns({
     {
       id: "manage",
       header: "Actions",
-      minSize: 100,
-      maxSize: 100,
+      minSize: 120,
+      maxSize: 120,
       cell: ({ row, table }) => {
         const meta = table.options.meta as {
           setLoadingRow: (rowId: string, loading: boolean) => void;

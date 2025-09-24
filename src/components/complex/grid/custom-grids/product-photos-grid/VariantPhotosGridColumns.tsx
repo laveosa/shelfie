@@ -60,7 +60,8 @@ export const VariantPhotosGridColumns = (
   {
     accessorKey: "thumbnailUrl",
     header: "Preview",
-    size: 50,
+    minSize: 80,
+    maxSize: 80,
     cell: ({ row, table }) => {
       const photoUrl: string = row.getValue("thumbnailUrl");
       const meta = table.options.meta as {
@@ -88,7 +89,7 @@ export const VariantPhotosGridColumns = (
   {
     accessorKey: "format",
     header: "Format",
-    size: 100,
+    minSize: 190,
     cell: ({ row }) => {
       return (
         <span className="she-subtext">{`${row.original.height}px x ${row.original.width}px`}</span>
@@ -98,11 +99,12 @@ export const VariantPhotosGridColumns = (
   {
     id: "rowActions",
     header: "Actions",
-    size: 60,
+    minSize: 80,
+    maxSize: 80,
     cell: ({ row, table }) => {
       return (
         <VariantPhotosGridColumnActions
-          style={{ paddingLeft: "20px" }}
+          style={{ paddingLeft: "10px" }}
           row={row}
           onAction={onAction}
           table={table}

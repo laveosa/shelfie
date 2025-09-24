@@ -9,8 +9,8 @@ export function PurchaseProductVariantsGridColumns(
     {
       id: "add",
       header: "Add",
-      minSize: 20,
-      maxSize: 20,
+      minSize: 100,
+      maxSize: 100,
       cell: ({ row, table }) => {
         const meta = table.options.meta as {
           setLoadingRow: (rowId: string, loading: boolean) => void;
@@ -37,6 +37,8 @@ export function PurchaseProductVariantsGridColumns(
     {
       accessorKey: "traitOptions",
       header: "Details",
+      minSize: 260,
+      maxSize: 260,
       cell: ({ row }) => {
         const traitOptions = row.original.traitOptions || [];
 
@@ -85,8 +87,8 @@ export function PurchaseProductVariantsGridColumns(
     {
       id: "rowActions",
       header: "Actions",
-      minSize: 90,
-      maxSize: 90,
+      minSize: 175,
+      maxSize: 175,
       cell: ({ row }) => {
         return (
           <SheButton

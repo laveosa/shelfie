@@ -20,7 +20,7 @@ export function CustomerBasicDataPage() {
   // ================================================================== EVENT
   useEffect(() => {
     getCustomerHandler();
-    if (state.customerCounter.addressesAmount === undefined && customerId) {
+    if (state.customerCounter?.addressesAmount === undefined && customerId) {
       getCustomerInfoHandler(Number(customerId));
     }
   }, []);

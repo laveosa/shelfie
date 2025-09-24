@@ -1,6 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
-import React from "react";
 import { useTranslation } from "react-i18next";
+import React from "react";
 
 import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
@@ -33,7 +33,7 @@ export default function FindProductsCard({
       loading={isLoading}
       className={cs.findProductsCard}
       title={t("CardTitles.FindProducts")}
-      width="1100px"
+      width="100%"
       showCloseButton
       onSecondaryButtonClick={() => onAction("closeFindProductsCard")}
     >

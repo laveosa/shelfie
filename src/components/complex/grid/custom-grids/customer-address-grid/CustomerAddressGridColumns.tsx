@@ -15,17 +15,14 @@ export function customerAddressGridColumns(
     {
       accessorKey: "addressId",
       header: "ID",
-      size: 20,
-      minSize: 20,
-      maxSize: 20,
+      minSize: 60,
+      maxSize: 60,
     },
     {
       id: "alias",
       accessorFn: (row) => row.alias,
       header: "Alias",
-      size: 150,
       minSize: 150,
-      maxSize: 150,
       cell: ({ row }) => {
         return (
           <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
@@ -45,9 +42,7 @@ export function customerAddressGridColumns(
     {
       accessorKey: "city",
       header: "City",
-      size: 100,
       minSize: 100,
-      maxSize: 200,
       cell: ({ row }) => {
         return (
           <SheTooltip
@@ -63,9 +58,7 @@ export function customerAddressGridColumns(
     {
       accessorKey: "addressLine1",
       header: "Address",
-      size: 100,
       minSize: 100,
-      maxSize: 200,
       cell: ({ row }) => {
         return (
           <SheTooltip
@@ -79,11 +72,10 @@ export function customerAddressGridColumns(
       },
     },
     {
-    accessorKey: "postalCode",
+      accessorKey: "postalCode",
       header: "Postal Code",
-      size: 100,
-      minSize: 100,
-      maxSize: 100,
+      minSize: 120,
+      maxSize: 120,
       cell: ({ row }) => {
         return <span>{row.getValue("postalCode")}</span>;
       },
@@ -91,9 +83,8 @@ export function customerAddressGridColumns(
     {
       id: "manage",
       header: "",
-      size: 100,
-      minSize: 100,
-      maxSize: 100,
+      minSize: 120,
+      maxSize: 120,
       cell: ({ row, table }) => {
         const meta = table.options.meta as {
           setLoadingRow: (rowId: string, loading: boolean) => void;
@@ -120,6 +111,5 @@ export function customerAddressGridColumns(
         );
       },
     },
-    
   ];
 }

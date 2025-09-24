@@ -14,9 +14,7 @@ export function ProductsInOrderGridColumns({
       id: "variantName",
       accessorFn: (row) => row.variantName,
       header: "Product",
-      size: 100,
       minSize: 100,
-      maxSize: 100,
       cell: ({ row }) => {
         const image: string = row.original.photo?.thumbnailUrl;
         return (
@@ -48,9 +46,7 @@ export function ProductsInOrderGridColumns({
     {
       accessorKey: "traitOptions",
       header: "Traits",
-      size: 60,
-      minSize: 60,
-      maxSize: 60,
+      minSize: 100,
       cell: ({ row }) => {
         const traitOptions = row.original.traitOptions || [];
 
@@ -98,9 +94,8 @@ export function ProductsInOrderGridColumns({
     {
       id: "actions",
       header: "Actions",
-      size: 100,
-      minSize: 100,
-      maxSize: 100,
+      minSize: 160,
+      maxSize: 160,
       cell: ({ row }) => {
         return (
           <div onClick={(e) => e.stopPropagation()}>

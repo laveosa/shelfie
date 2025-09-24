@@ -14,6 +14,7 @@ import {
 
 const initialState: IAppSlice = {
   loading: false,
+  isUserMenuLoading: false,
   user: storageService.getLocalStorage(StorageKeyEnum.USER),
   token: storageService.getLocalStorage(StorageKeyEnum.TOKEN),
   preferences: PreferencesModelDefault,
@@ -21,6 +22,13 @@ const initialState: IAppSlice = {
 
 function setLoading(state: IAppSlice, action: PayloadAction<boolean>) {
   state.loading = action?.payload || state.loading;
+}
+
+function setIsUserMenuLoading(
+  state: IAppSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isUserMenuLoading = action?.payload;
 }
 
 function refreshUser(state: IAppSlice, action: PayloadAction<UserModel>) {
@@ -56,6 +64,7 @@ const AppSlice = createSlice({
   initialState,
   reducers: {
     setLoading,
+    setIsUserMenuLoading,
     refreshUser,
     refreshToken,
     refreshPreferences,

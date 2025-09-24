@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { CalendarRange, Plus, ShoppingCart } from "lucide-react";
+import { Plus, ShoppingCart } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
@@ -9,11 +9,10 @@ import SheProductCard from "@/components/complex/she-product-card/SheProductCard
 import GridShowItemsFilter from "@/components/complex/grid/filters/grid-show-deleted-filter/GridShowItemsFilter.tsx";
 import { IOrdersCard } from "@/const/interfaces/complex-components/custom-cards/IOrdersCard.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { ordersGridColumns } from "@/components/complex/grid/custom-grids/orders-grid/OrdersGridColumns.tsx";
-import { CalendarModeEnum } from "@/const/enums/CalendarModeEnum.ts";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
+import { GridDateRangeFilter } from "@/components/complex/grid/filters/grid-date-range-filter/GridDateRangeFilter.tsx";
 
 export default function OrdersCard({
   isLoading,
@@ -39,7 +38,6 @@ export default function OrdersCard({
         title={t("CardTitles.Orders")}
         isLoading={isLoading}
         className={cs.ordersCardContent}
-        minWidth="1100px"
       >
         <SheGrid
           isLoading={isGridLoading}
@@ -56,20 +54,7 @@ export default function OrdersCard({
             onAction("gridRequestChange", updates)
           }
         >
-          <SheDatePicker
-            icon={CalendarRange}
-            mode={CalendarModeEnum.RANGE}
-            minWidth="150px"
-            placeholder={t("OrderForm.Placeholders.PickRange")}
-            onSelectDate={(updates) => {
-              onAction("gridRequestChange", {
-                filter: {
-                  startDate: updates.from,
-                  endDate: updates.to,
-                },
-              });
-            }}
-          />
+          <GridDateRangeFilter />
           <SheSelect
             icon={ShoppingCart}
             placeholder={t("OrderForm.Placeholders.Status")}

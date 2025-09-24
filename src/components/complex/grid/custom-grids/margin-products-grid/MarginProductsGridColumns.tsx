@@ -16,9 +16,8 @@ export function marginProductsGridColumns(
     {
       accessorKey: "thumbnailUrl",
       header: "",
-      size: 30,
-      minSize: 30,
-      maxSize: 30,
+      minSize: 80,
+      maxSize: 80,
       cell: ({ row, table }) => {
         const image: string = row.getValue("thumbnailUrl");
         const meta = table.options.meta as {
@@ -47,9 +46,8 @@ export function marginProductsGridColumns(
     {
       accessorKey: "variantCode",
       header: "Code",
-      size: 30,
-      minSize: 30,
-      maxSize: 30,
+      minSize: 60,
+      maxSize: 150,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("variantCode")}>
@@ -63,9 +61,7 @@ export function marginProductsGridColumns(
     {
       accessorKey: "variantName",
       header: "Product Name",
-      size: 50,
-      minSize: 50,
-      maxSize: 50,
+      minSize: 100,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("variantName")}>
@@ -79,9 +75,8 @@ export function marginProductsGridColumns(
     {
       accessorKey: "traitOptions",
       header: "Details",
-      size: 40,
-      minSize: 40,
-      maxSize: 40,
+      minSize: 80,
+      maxSize: 200,
       cell: ({ row }) => {
         const traitOptions = row.original.traitOptions || [];
 
@@ -129,9 +124,8 @@ export function marginProductsGridColumns(
     {
       accessorKey: "purchasePrice",
       header: "Purchase Price",
-      size: 40,
-      minSize: 40,
-      maxSize: 40,
+      minSize: 120,
+      maxSize: 200,
       cell: ({ row }) => {
         return <span>{row.getValue("purchasePrice")}</span>;
       },
@@ -144,16 +138,15 @@ export function marginProductsGridColumns(
             display: "flex",
             alignItems: "center",
             gap: "10px",
-            maxWidth: "60px",
+            maxWidth: "80px",
           }}
         >
           <span style={{ textWrap: "wrap" }}>Current Price</span>
           <SheTooltip showDefaultIcon />
         </div>
       ),
-      size: 30,
-      minSize: 30,
-      maxSize: 30,
+      minSize: 100,
+      maxSize: 200,
       cell: ({ row }) => {
         return <span>{row.getValue("currentPrice")}</span>;
       },
@@ -161,13 +154,12 @@ export function marginProductsGridColumns(
     {
       id: "form",
       accessorKey: "",
-      size: 150,
-      minSize: 150,
-      maxSize: 150,
+      minSize: 460,
+      maxSize: 460,
       header: () => (
         <div className="flex items-center">
-          <span style={{ marginRight: "75px" }}>Tax</span>
-          <span style={{ marginRight: "65px" }}>Margin Price</span>
+          <span style={{ marginLeft: "3px", marginRight: "92px" }}>Tax</span>
+          <span style={{ marginRight: "84px" }}>Margin Price</span>
           <span>Quantity</span>
         </div>
       ),

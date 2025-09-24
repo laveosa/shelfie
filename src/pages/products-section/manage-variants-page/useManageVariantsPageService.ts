@@ -909,16 +909,17 @@ export default function useManageVariantsPageService(handleCardAction) {
 
   function openVariantHistoryCardHandler(model) {
     handleCardAction("variantHistoryCard", true);
-    dispatch(actions.setIsVariantHistoryCardLoading(true));
     dispatch(actions.setIsVariantsHistoryGridLoading(true));
-    productsService.getVariantStockHistoryHandler(model).then((items) => {
-      const data = items.map((item) => ({
-        ...item,
-        createdDate: formatDate(item.createdDate, "date"),
-      }));
-      dispatch(actions.setIsVariantHistoryCardLoading(false));
+    productsService.getVariantStockHistoryHandler(model).then((res: any) => {
       dispatch(actions.setIsVariantsHistoryGridLoading(false));
-      dispatch(actions.refreshVariantHistory(data));
+      if (res.error) return;
+      if (res) {
+        const data = res?.map((item) => ({
+          ...item,
+          createdDate: formatDate(item.createdDate, "date"),
+        }));
+        dispatch(actions.refreshVariantHistory(data));
+      }
     });
   }
 
@@ -939,13 +940,14 @@ export default function useManageVariantsPageService(handleCardAction) {
 
   function openSelectPurchaseCardHandler(model) {
     handleCardAction("selectPurchaseCard", true);
+    dispatch(actions.setIsPurchaseGridLoading(true));
     getListOfPurchasesForGrid(model).then((res: any) => {
+      dispatch(actions.setIsPurchaseGridLoading(false));
       if (res.error) return;
       const modifiedList = res.data.items.map((item) => ({
         ...item,
         isSelected: item.purchaseId === state.selectedPurchase?.purchaseId,
       }));
-
       dispatch(
         actions.refreshPurchaseGridRequestModel({
           ...res.data,
@@ -1002,6 +1004,7 @@ export default function useManageVariantsPageService(handleCardAction) {
       ...state.purchaseGridRequestModel,
       searchQuery: model,
     }).then((res) => {
+      dispatch(actions.setIsPurchaseGridLoading(false));
       if (res.error) return;
       const modifiedList = res.data.items.map((item) => ({
         ...item,
@@ -1023,6 +1026,7 @@ export default function useManageVariantsPageService(handleCardAction) {
       ...state.purchaseGridRequestModel,
       filter: model,
     }).then((res) => {
+      dispatch(actions.setIsPurchaseGridLoading(false));
       if (res.error) return;
       const modifiedList = res.data.items.map((item) => ({
         ...item,

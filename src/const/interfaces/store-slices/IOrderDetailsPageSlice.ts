@@ -8,6 +8,8 @@ export interface IOrderDetailsPageSlice {
   isSelectEntityGridLoading?: boolean;
   isSelectDiscountGridLoading?: boolean;
   isCustomerCardLoading?: boolean;
+  isDiscountsGridLoading?: boolean;
+  isShipmentsGridLoading?: boolean;
   activeCards?: any[];
   discountsList?: DiscountModel[];
   selectedCustomer?: CustomerModel;

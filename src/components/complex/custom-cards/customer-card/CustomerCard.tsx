@@ -10,6 +10,7 @@ import cs from "./CustomerCard.module.scss";
 export default function CustomerCard({
   isLoading,
   customer,
+  showCloseButton,
   onAction,
 }: ICustomerCard) {
   const { t } = useTranslation();
@@ -24,6 +25,8 @@ export default function CustomerCard({
             ? t("CardTitles.EditCustomer")
             : t("CardTitles.CreateCustomer")
         }
+        showCloseButton={showCloseButton}
+        onSecondaryButtonClick={() => onAction("closeCustomerCard")}
         showNotificationCard={!!customer}
         notificationCardProps={{
           title: "Delete Customer",

@@ -2,7 +2,6 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 import { AppSliceActions as action } from "@/state/slices/AppSlice.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
-import { UserModel } from "@/const/models/UserModel.ts";
 import UsersApiHooks from "@/utils/services/api/UsersApiService.ts";
 
 export default function useAppService() {
@@ -10,6 +9,7 @@ export default function useAppService() {
   const dispatch = useAppDispatch();
 
   const [getUserPreferences] = UsersApiHooks.useLazyGetUserPreferencesQuery();
+  const [getUserDetails] = UsersApiHooks.useLazyGetUserDetailsQuery();
 
   function getUserPreferencesHandler() {
     dispatch(action.setLoading(true));
@@ -19,8 +19,12 @@ export default function useAppService() {
     });
   }
 
-  function refreshUser(model: UserModel) {
-    dispatch(action.refreshUser(model));
+  function getUserDetailsHandler() {
+    dispatch(action.setIsUserMenuLoading(true));
+    getUserDetails().then((res) => {
+      dispatch(action.setIsUserMenuLoading(false));
+      dispatch(action.refreshUser(res.data));
+    });
   }
 
   function refreshToken(model) {
@@ -39,8 +43,8 @@ export default function useAppService() {
   return {
     ...state,
     getUserPreferencesHandler,
+    getUserDetailsHandler,
     refreshPreferences,
-    refreshUser,
     refreshToken,
     logOut,
   };
