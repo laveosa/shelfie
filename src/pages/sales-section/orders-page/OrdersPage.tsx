@@ -1,16 +1,17 @@
+import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
+import cs from "./OrdersPage.module.scss";
 import {
   GridSortingEnum,
   GridSortingEnumLabels,
 } from "@/const/enums/GridSortingEnum.ts";
-import cs from "./OrdersPage.module.scss";
 import useOrdersPageService from "@/pages/sales-section/orders-page/useOrdersPageService.ts";
 import { useAppSelector } from "@/utils/hooks/redux.ts";
 import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
 import OrdersCard from "@/components/complex/custom-cards/orders-card/OrdersCard.tsx";
+import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
 
 export function OrdersPage() {
   const service = useOrdersPageService();
@@ -19,6 +20,7 @@ export function OrdersPage() {
     value,
     description: GridSortingEnumLabels[value],
   }));
+  const { orderId } = useParams();
 
   useEffect(() => {
     service.getListOfOrdersForGridHandler(state.ordersGridRequestModel);
@@ -46,20 +48,21 @@ export function OrdersPage() {
 
   return (
     <div className={cs.ordersPage}>
-      <ProductMenuCard
-        isLoading={state.isProductMenuCardLoading}
-        title="Sales"
-        itemsCollection="sales"
+      <SheContextSidebar
+        menuCollectionType="sales"
+        menuTitle="Sales"
+        itemId={Number(orderId)}
         counter={state.salesCounters}
-      />
-      <OrdersCard
-        isLoading={state.isOrdersCardLoading}
-        isGridLoading={state.isOrdersGridLoading}
-        preferences={state.preferences}
-        sortingOptions={sortingItems}
-        ordersGridRequestModel={state.ordersGridRequestModel}
-        onAction={onAction}
-      />
+      >
+        <OrdersCard
+          isLoading={state.isOrdersCardLoading}
+          isGridLoading={state.isOrdersGridLoading}
+          preferences={state.preferences}
+          sortingOptions={sortingItems}
+          ordersGridRequestModel={state.ordersGridRequestModel}
+          onAction={onAction}
+        />
+      </SheContextSidebar>
     </div>
   );
 }

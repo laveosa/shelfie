@@ -1,28 +1,17 @@
 import { useNavigate } from "react-router-dom";
 
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
-import {
-  OrdersPageSliceActions as ordersActions
-} from "@/state/slices/OrdersPageSlice";
+import { OrdersPageSliceActions as ordersActions } from "@/state/slices/OrdersPageSlice";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { useToast } from "@/hooks/useToast.ts";
-import {
-  OrderDetailsPageSliceActions as actions
-} from "@/state/slices/OrderDetailsPageSlice.ts";
-import {
-  IOrdersPageSlice
-} from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
+import { OrderDetailsPageSliceActions as actions } from "@/state/slices/OrderDetailsPageSlice.ts";
+import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import {
-  IOrderDetailsPageSlice
-} from "@/const/interfaces/store-slices/IOrderDetailsPageSlice.ts";
+import { IOrderDetailsPageSlice } from "@/const/interfaces/store-slices/IOrderDetailsPageSlice.ts";
 import OrdersApiHooks from "@/utils/services/api/OrdersApiService.ts";
-import useOrdersPageService
-  from "@/pages/sales-section/orders-page/useOrdersPageService.ts";
+import useOrdersPageService from "@/pages/sales-section/orders-page/useOrdersPageService.ts";
 import { CustomerModel } from "@/const/models/CustomerModel.ts";
-import {
-  convertCustomerToRequestModel
-} from "@/utils/helpers/customer-helper.ts";
+import { convertCustomerToRequestModel } from "@/utils/helpers/customer-helper.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
 
 export default function useOrderDetailsPageService(handleCardAction) {
@@ -349,6 +338,8 @@ export default function useOrderDetailsPageService(handleCardAction) {
   }
 
   return {
+    state,
+    ordersState,
     getOrderDetailsHandler,
     getListOfCustomersForGridHandler,
     assignCustomerToOrderHandler,
