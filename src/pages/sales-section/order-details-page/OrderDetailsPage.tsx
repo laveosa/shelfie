@@ -103,57 +103,51 @@ export function OrderDetailsPage() {
         menuTitle="Order"
         itemId={Number(orderId)}
         counter={ordersState.productCounter}
-      ></SheContextSidebar>
-
-      <ProductMenuCard
-        title="Order"
-        itemsCollection="order"
-        itemId={Number(orderId)}
-        counter={ordersState.productCounter}
-      />
-      <OrderConfigurationCard
-        isLoading={state.isOrderConfigurationCardLoading}
-        isDiscountsGridLoading={state.isDiscountsGridLoading}
-        isShipmentsGridLoading={state.isShipmentsGridLoading}
-        order={ordersState.selectedOrder}
-        onAction={onAction}
-      />
-      {state.activeCards?.includes("selectEntityCard") && (
-        <div ref={createRefCallback("selectEntityCard")}>
-          <SelectEntityCard
-            isLoading={state.isSelectEntityCardLoading}
-            isGridLoading={state.isSelectEntityGridLoading}
-            entityName={"Customer"}
-            entityCollection={ordersState.customersGridRequestModel.items}
-            columns={
-              CustomersListGridColumns({
-                onAction,
-              }) as ColumnDef<DataWithId>[]
-            }
-            onAction={onAction}
-          />
-        </div>
-      )}
-      {state.activeCards?.includes("customerCard") && (
-        <div ref={createRefCallback("customerCard")}>
-          <CustomerCard
-            isLoading={state.isCustomerCardLoading}
-            showCloseButton={true}
-            customer={state.selectedCustomer}
-            onAction={onAction}
-          />
-        </div>
-      )}
-      {state.activeCards?.includes("selectDiscountCard") && (
-        <div ref={createRefCallback("selectDiscountCard")}>
-          <SelectDiscountCard
-            isLoading={state.isSelectDiscountCardLoading}
-            isGridLoading={state.isSelectDiscountGridLoading}
-            discounts={state.discountsList}
-            onAction={onAction}
-          />
-        </div>
-      )}
+      >
+        <OrderConfigurationCard
+          isLoading={state.isOrderConfigurationCardLoading}
+          isDiscountsGridLoading={state.isDiscountsGridLoading}
+          isShipmentsGridLoading={state.isShipmentsGridLoading}
+          order={ordersState.selectedOrder}
+          onAction={onAction}
+        />
+        {state.activeCards?.includes("selectEntityCard") && (
+          <div ref={createRefCallback("selectEntityCard")}>
+            <SelectEntityCard
+              isLoading={state.isSelectEntityCardLoading}
+              isGridLoading={state.isSelectEntityGridLoading}
+              entityName={"Customer"}
+              entityCollection={ordersState.customersGridRequestModel.items}
+              columns={
+                CustomersListGridColumns({
+                  onAction,
+                }) as ColumnDef<DataWithId>[]
+              }
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards?.includes("customerCard") && (
+          <div ref={createRefCallback("customerCard")}>
+            <CustomerCard
+              isLoading={state.isCustomerCardLoading}
+              showCloseButton={true}
+              customer={state.selectedCustomer}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards?.includes("selectDiscountCard") && (
+          <div ref={createRefCallback("selectDiscountCard")}>
+            <SelectDiscountCard
+              isLoading={state.isSelectDiscountCardLoading}
+              isGridLoading={state.isSelectDiscountGridLoading}
+              discounts={state.discountsList}
+              onAction={onAction}
+            />
+          </div>
+        )}
+      </SheContextSidebar>
     </div>
   );
 }
