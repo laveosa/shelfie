@@ -13,7 +13,6 @@ export default function useInvoicesPageService(handleCardAction) {
   const dispatch = useAppDispatch();
   const productsService = useProductsPageService();
   const state = useAppSelector<IInvoicesPageSlice>(StoreSliceEnum.INVOICES);
-
   const productsState = useAppSelector<IProductsPageSlice>(
     StoreSliceEnum.PRODUCTS,
   );
@@ -154,6 +153,8 @@ export default function useInvoicesPageService(handleCardAction) {
   }
 
   return {
+    state,
+    productsState,
     getPurchaseCountersHandler,
     getInvoicesForGridHandler,
     uploadInvoiceHandler,

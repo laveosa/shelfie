@@ -1,35 +1,32 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-import { useAppSelector } from "@/utils/hooks/redux.ts";
-import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { InvoicesPageSliceActions as actions } from "@/state/slices/InvoicesPageSlice.ts";
 import cs from "@/pages/products-section/invoices-page/InvoicesPage.module.scss";
-import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
-import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
-import useInvoicesPageService from "@/pages/products-section/invoices-page/useInvoicesPageService.ts";
+import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
 import InvoicesCard from "@/components/complex/custom-cards/invoices-card/InvoicesCard.tsx";
 import InvoicePreviewCard from "@/components/complex/custom-cards/invoice-preview-card/InvoicePreviewCard.tsx";
+import { InvoicesPageSliceActions as actions } from "@/state/slices/InvoicesPageSlice.ts";
+import useInvoicesPageService from "@/pages/products-section/invoices-page/useInvoicesPageService.ts";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
-import { IInvoicesPageSlice } from "@/const/interfaces/store-slices/IInvoicesPageSlice.ts";
+import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 
 export function InvoicesPage() {
-  const state = useAppSelector<IInvoicesPageSlice>(StoreSliceEnum.INVOICES);
-  const productsState = useAppSelector<IProductsPageSlice>(
-    StoreSliceEnum.PRODUCTS,
-  );
-  const { purchaseId } = useParams();
+  // ==================================================================== UTILITIES
   const { handleCardAction, createRefCallback } = useCardActions({
     selectActiveCards: (state) => state[StoreSliceEnum.INVOICES].activeCards,
     refreshAction: actions.refreshActiveCards,
   });
-  const service = useInvoicesPageService(handleCardAction);
+  const { state, productsState, ...service } =
+    useInvoicesPageService(handleCardAction);
+  const { purchaseId } = useParams();
 
+  // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     service.getPurchaseCountersHandler(Number(purchaseId));
     service.getInvoicesForGridHandler(Number(purchaseId));
   }, [purchaseId]);
 
+  // ==================================================================== EVENT HANDLERS
   async function onAction(actionType: string, payload: any) {
     switch (actionType) {
       case "uploadInvoice":
@@ -50,32 +47,33 @@ export function InvoicesPage() {
     }
   }
 
+  // ==================================================================== LAYOUT
   return (
     <div className={cs.invoicesPage}>
-      <ProductMenuCard
-        isLoading={state.isProductMenuCardLoading}
-        title="Report Purchase"
-        itemsCollection="purchases"
+      <SheContextSidebar
+        menuCollectionType="purchases"
+        menuTitle="Report Purchase"
         itemId={Number(purchaseId)}
         counter={productsState.purchaseCounters}
-      />
-      <InvoicesCard
-        isLoading={state.isInvoicesCardLoading}
-        isGridLoading={state.isInvoiceCardGridLoading}
-        isImageUploaderLoading={state.isFileUploaderLoading}
-        data={state.invoicesGridRequestModel.items}
-        contextId={Number(purchaseId)}
-        onAction={onAction}
-      />
-
-      {state.activeCards.includes("invoicePreviewCard") && (
-        <div ref={createRefCallback("invoicePreviewCard")}>
-          <InvoicePreviewCard
-            previewUrl={state.previewUrl}
-            onAction={onAction}
-          />
-        </div>
-      )}
+        activeCards={state.activeCards}
+      >
+        <InvoicesCard
+          isLoading={state.isInvoicesCardLoading}
+          isGridLoading={state.isInvoiceCardGridLoading}
+          isImageUploaderLoading={state.isFileUploaderLoading}
+          data={state.invoicesGridRequestModel.items}
+          contextId={Number(purchaseId)}
+          onAction={onAction}
+        />
+        {state.activeCards.includes("invoicePreviewCard") && (
+          <div ref={createRefCallback("invoicePreviewCard")}>
+            <InvoicePreviewCard
+              previewUrl={state.previewUrl}
+              onAction={onAction}
+            />
+          </div>
+        )}
+      </SheContextSidebar>
     </div>
   );
 }

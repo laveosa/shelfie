@@ -5,11 +5,11 @@ import cs from "./ProductBasicDataPage.module.scss";
 import ProductConfigurationCard from "@/components/complex/custom-cards/product-configuration-card/ProductConfigurationCard.tsx";
 import CreateProductCategoryCard from "@/components/complex/custom-cards/create-product-category-card/CreateProductCategoryCard.tsx";
 import CreateProductBrandCard from "@/components/complex/custom-cards/create-product-brand-card/CreateProductBrandCard.tsx";
+import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
 import { ProductBasicDataPageSliceActions as actions } from "@/state/slices/ProductBasicDataPageSlice.ts";
 import useProductBasicDataPageService from "@/pages/products-section/product-basic-data-page/useProductBasicDataPageService.ts";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
 
 export function ProductBasicDataPage() {
   // ==================================================================== UTILITIES

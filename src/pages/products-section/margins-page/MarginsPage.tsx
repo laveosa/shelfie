@@ -7,13 +7,13 @@ import MarginForPurchaseCard from "@/components/complex/custom-cards/margin-for-
 import MarginConfigurationCard from "@/components/complex/custom-cards/margin-configuration-card/MarginConfigurationCard.tsx";
 import SalePriseManagementCard from "@/components/complex/custom-cards/sale-price-management-card/SalePriceManagementCard.tsx";
 import { MarginsListGridColumns } from "@/components/complex/grid/custom-grids/margins-list-grid/MarginsListGridColumns.tsx";
+import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
 import SelectEntityCard from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
 import { MarginsPageSliceActions as actions } from "@/state/slices/MarginsPageSlice";
 import { useMarginsPageService } from "@/pages/products-section/margins-page/useMarginsPageService.ts";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
-import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
 
 export function MarginsPage() {
   // ==================================================================== UTILITIES
