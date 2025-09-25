@@ -3,6 +3,7 @@ import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { ProductCountersModel } from "@/const/models/CounterModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
+import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 
 export interface IProductBasicDataPageSlice {
   isLoading?: boolean;
@@ -12,6 +13,7 @@ export interface IProductBasicDataPageSlice {
   isProductsLoading?: boolean;
   isPhotoUploaderLoading?: boolean;
   product?: ProductModel;
+  countryCodes?: CountryCodeModel[];
   brandsList?: BrandModel[];
   categoriesList?: CategoryModel[];
   category?: CategoryModel;

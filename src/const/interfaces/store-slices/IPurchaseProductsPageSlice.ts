@@ -10,6 +10,7 @@ import { VariantHistoryModel } from "@/const/models/VariantHistoryModel.ts";
 import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 import { CompanyModel } from "@/const/models/CompanyModel.ts";
+import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 
 export interface IPurchaseProductsPageSlice {
   isLoading?: boolean;
@@ -58,6 +59,7 @@ export interface IPurchaseProductsPageSlice {
   purchaseProducts?: ProductModel[];
   brands?: BrandModel[];
   categories?: CategoryModel[];
+  countryCodes?: CountryCodeModel[];
   selectedPhoto?: ImageModel;
   selectedTraitsIds?: number[];
   selectedTrait?: TraitModel;

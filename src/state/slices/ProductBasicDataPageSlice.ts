@@ -7,6 +7,7 @@ import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IPro
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { ProductCountersModel } from "@/const/models/CounterModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
+import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 
 const initialState: IProductBasicDataPageSlice = {
   isLoading: false,
@@ -18,6 +19,7 @@ const initialState: IProductBasicDataPageSlice = {
   products: [],
   product: {},
   activeCards: [],
+  countryCodes: [],
   brandsList: [],
   categoriesList: [],
   brand: {},
@@ -94,6 +96,13 @@ function refreshActiveCards(
   state.activeCards = action?.payload || state.activeCards;
 }
 
+function refreshCountryCodes(
+  state: IProductBasicDataPageSlice,
+  action: PayloadAction<CountryCodeModel[]>,
+) {
+  state.countryCodes = action?.payload || state.countryCodes;
+}
+
 function refreshBrandsList(
   state: IProductBasicDataPageSlice,
   action: PayloadAction<BrandModel[]>,
@@ -156,6 +165,7 @@ const ProductBasicDataPageSlice = createSlice({
     refreshProducts,
     refreshProduct,
     refreshActiveCards,
+    refreshCountryCodes,
     refreshBrandsList,
     refreshCategoriesList,
     refreshBrand,

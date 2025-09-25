@@ -28,6 +28,7 @@ import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 import { CompanyModel } from "@/const/models/CompanyModel.ts";
 import CompaniesApiHooks from "@/utils/services/api/CompaniesApiService.ts";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
+import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
 
 export default function usePurchaseProductsPageService(
   handleCardAction,
@@ -74,6 +75,7 @@ export default function usePurchaseProductsPageService(
   const [getListOfCompaniesForGrid] =
     CompaniesApiHooks.useGetListOfCompaniesForGridMutation();
   const [getVariantsForGrid] = ProductsApiHooks.useGetVariantsForGridMutation();
+  const [getCountryCode] = DictionaryApiHooks.useLazyGetCountryCodeQuery();
 
   function getListOfPurchaseProductsForGridHandler(id: any, model) {
     return getListOfPurchaseProductsForGrid({ id, model }).then((res: any) => {
@@ -167,11 +169,13 @@ export default function usePurchaseProductsPageService(
     if (productsState.categories.length === 0) {
       productsService.getCategoriesForFilterHandler();
     }
-    // if (productsState.sortingOptions.length === 0) {
-    //   productsService.getSortingOptionsForGridHandler();
-    // }
     if (productsState.suppliers.length === 0) {
       productsService.getListOfSuppliersHandler();
+    }
+    if (state.countryCodes.length === 0) {
+      getCountryCode().then((res: any) => {
+        dispatch(actions.refreshCountryCodes(res.data));
+      });
     }
     if (
       state.sizesForFilter.length === 0 ||

@@ -29,6 +29,7 @@ export function ProductBasicDataPage() {
     service.getBrandsHandler();
     service.getCountersForProductsHandler(Number(productId));
     service.getProductDetailsHandler(Number(productId));
+    service.getCountryCodesHandler();
   }, [productId]);
 
   // ==================================================================== EVENT HANDLERS
@@ -106,11 +107,11 @@ export function ProductBasicDataPage() {
         <ProductConfigurationCard
           isLoading={state.isProductConfigurationCardLoading}
           product={productsState.product}
+          productId={productId}
           brandsList={productsState.brands}
           categoriesList={productsState.categories}
+          countryCodesList={state.countryCodes}
           productCode={productsState.productCode}
-          onPrimaryButtonClick={(data) => onAction("submitProductData", data)}
-          onSecondaryButtonClick={() => onAction("gotoProductsPage")}
           onAction={onAction}
         />
         {state.activeCards.includes("createCategoryCard") && (

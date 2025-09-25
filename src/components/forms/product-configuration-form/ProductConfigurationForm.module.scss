@@ -1,0 +1,29 @@
+.productConfigurationForm {
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+
+  & form > div {
+    gap: 5px;
+  }
+
+  .componentWithButton {
+    display: flex;
+    align-content: space-between;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+
+    .formButton {
+      margin-top: 19px;
+    }
+  }
+
+  .formFooterOneButton {
+    justify-content: flex-end;
+  }
+
+  .formFooterTwoButton {
+    justify-content: space-between;
+  }
+}
