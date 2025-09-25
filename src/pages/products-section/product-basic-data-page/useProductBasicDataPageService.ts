@@ -14,6 +14,7 @@ import { ProductModel } from "@/const/models/ProductModel.ts";
 import { ProductCountersModel } from "@/const/models/CounterModel.ts";
 import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
 
 export default function useProductBasicDataPageService(handleCardAction) {
   // ==================================================================== UTILITIES
@@ -32,6 +33,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
   const [generateProductCode] =
     ProductsApiHooks.useLazyGenerateProductCodeQuery();
   const [checkProductCode] = ProductsApiHooks.useCheckProductCodeMutation();
+  const [getCountryCode] = DictionaryApiHooks.useLazyGetCountryCodeQuery();
 
   // ==================================================================== API
   function getProductsHandler(gridRequestModel: GridRequestModel) {
@@ -42,6 +44,14 @@ export default function useProductBasicDataPageService(handleCardAction) {
         .then(() => {
           dispatch(productsActions.setIsItemsCardLoading(false));
         });
+    }
+  }
+
+  function getCountryCodesHandler() {
+    if (state.countryCodes.length === 0) {
+      getCountryCode().then((res: any) => {
+        dispatch(actions.refreshCountryCodes(res.data));
+      });
     }
   }
 
@@ -96,6 +106,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
   }
 
   function updateProductDetails(productId, data) {
+    console.log("UPDATE");
     dispatch(actions.setIsProductConfigurationCardLoading(true));
     productsService.updateProductHandler(productId, data).then((res: any) => {
       dispatch(actions.setIsProductConfigurationCardLoading(false));
@@ -122,6 +133,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
   }
 
   function createNewProduct(data) {
+    console.log("CREATE");
     dispatch(actions.setIsProductConfigurationCardLoading(true));
     productsService.createNewProductHandler(data).then((res: any) => {
       dispatch(actions.setIsProductConfigurationCardLoading(false));
@@ -359,6 +371,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
     productsService,
     getProductsHandler,
     getCategoriesHandler,
+    getCountryCodesHandler,
     getBrandsHandler,
     getCountersForProductsHandler,
     getProductDetailsHandler,

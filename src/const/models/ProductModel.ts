@@ -11,10 +11,31 @@ export interface ProductModel {
   productCategory?: CategoryModel;
   productCategoryId?: number;
   brand?: BrandModel;
+  brandId?: number;
   barcode?: any;
   status?: string;
   salePrice?: number;
   variantsCount?: number;
   stockAmount?: number;
+  countryId?: number;
   isActive?: boolean;
 }
+
+export const ProductDefaultModel: ProductModel = {
+  productId: null,
+  productAppId: undefined,
+  image: undefined,
+  productCode: undefined,
+  productName: undefined,
+  productCategory: undefined,
+  productCategoryId: undefined,
+  brand: undefined,
+  brandId: undefined,
+  barcode: undefined,
+  status: undefined,
+  salePrice: undefined,
+  variantsCount: undefined,
+  stockAmount: undefined,
+  countryId: undefined,
+  isActive: false,
+};
