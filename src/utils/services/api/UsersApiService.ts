@@ -56,18 +56,6 @@ export const UsersApiService = createApi({
         ],
       },
     ),
-    // resetUserPreferences: apiConfig.createMutation<void, void>(builder, {
-    //   query: () => ({
-    //     url: `${ApiUrlEnum.PREFERENCES}/reset`,
-    //     method: "DELETE",
-    //   }),
-    //   invalidatesTags: (_result, _error, id) => [
-    //     {
-    //       type: ApiServiceNameEnum.USERS,
-    //       id,
-    //     },
-    //   ],
-    // }),
     resetUserPreferences: apiConfig.createMutation<void, any>(builder, {
       query: (grid: string) => ({
         url: `${ApiUrlEnum.PREFERENCES}/reset/${grid}`,
@@ -99,6 +87,11 @@ export const UsersApiService = createApi({
         url: `${ApiUrlEnum.USERS}/change-language`,
         method: "PATCH",
         body: JSON.stringify(model),
+      }),
+    }),
+    getUserOrganizations: apiConfig.createQuery<UserModel, void>(builder, {
+      query: () => ({
+        url: `${ApiUrlEnum.ORGANIZATIONS}/list`,
       }),
     }),
   }),

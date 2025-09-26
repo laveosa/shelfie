@@ -23,31 +23,12 @@ import {
   Users,
   Video,
 } from "lucide-react";
-import { CompanyModel } from "@/const/models/CompanyModel.ts";
 import SheSidebarHeader from "@/components/complex/she-sidebar/components/she-sidebar-header/SheSidebarHeader.tsx";
 import { ISheSidebar } from "@/const/interfaces/complex-components/ISheSidebar.ts";
 import { ISheSidebarGroup } from "@/const/interfaces/complex-components/ISheSidebarGroup.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { ISheSidebarItem } from "@/const/interfaces/complex-components/ISheSidebarItem.ts";
 import { getCurrentSectionUrl } from "@/utils/helpers/quick-helper.ts";
-
-const companies: CompanyModel[] = [
-  {
-    id: 1,
-    title: "First",
-    description: "First description",
-    isActive: true,
-    image:
-      "https://res.cloudinary.com/vistaprint/images/c_scale,w_448,h_448,dpr_1.5/f_auto,q_auto/v1711116929/ideas-and-advice-prod/en-gb/hbo/hbo.png?_i=AA",
-  },
-  {
-    id: 2,
-    title: "Second",
-    description: "Second description",
-    image:
-      "https://res.cloudinary.com/vistaprint/images/c_scale,w_448,h_448,dpr_1.5/f_auto,q_auto/v1711116920/ideas-and-advice-prod/en-gb/nasa/nasa.png?_i=AA",
-  },
-];
 
 const navGroups: ISheSidebarGroup[] = [
   {
@@ -118,7 +99,12 @@ const navGroups: ISheSidebarGroup[] = [
   },
 ];
 
-export default function SheSidebar({}: ISheSidebar) {
+export default function SheSidebar({
+  isSidebarHeaderLoading,
+  user,
+  userOrganizations,
+  onSelectedOrganizations,
+}: ISheSidebar) {
   const location = useLocation();
   const [selected, setSelected] = useState<NavUrlEnum | string>(
     getCurrentSectionUrl(location.pathname),
@@ -126,7 +112,12 @@ export default function SheSidebar({}: ISheSidebar) {
 
   return (
     <Sidebar className={cs.sheSidebar} collapsible="icon">
-      <SheSidebarHeader items={companies} />
+      <SheSidebarHeader
+        isLoading={isSidebarHeaderLoading}
+        items={userOrganizations}
+        selectedOrganization={user?.organization}
+        onSelectOrganization={onSelectedOrganizations}
+      />
       <SidebarContent className={cs.sidebarContent}>
         {navGroups.map((group: ISheSidebarGroup) => (
           <SidebarGroup key={group.title}>

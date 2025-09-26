@@ -16,6 +16,36 @@
       background: #385a4a;
     }
 
+    .skeletonBlock {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+
+      .skeletonRound {
+        width: 45px;
+        height: 35px;
+        border-radius: 50%;
+      }
+
+      .skeletonBars {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        width: 100%;
+
+        .skeletonLongBar {
+          width: 100%;
+          height: 16px;
+        }
+
+        .skeletonShortBar {
+          width: 70%;
+          height: 12px;
+        }
+      }
+    }
+
     .headerImage {
       min-width: 32px;
       max-width: 32px;
@@ -26,11 +56,27 @@
       border-radius: vars.$brdR_03;
     }
 
+    .noImage {
+      min-width: 32px;
+      min-height: 32px;
+      background: #71717A;;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-radius: vars.$brdR_03;
+
+      span {
+        color: #b7d5c7;
+      }
+    }
+
     .headerInfo {
       display: flex;
       flex-direction: column;
       overflow: hidden;
       width: 100%;
+      color: white;
 
       span {
         color: #b7d5c7;
@@ -59,9 +105,29 @@
   gap: 10px;
   flex-grow: 1;
 
-  img {
-    max-width: 30px;
-    min-width: 30px;
+  .headerImage {
+    min-width: 32px;
+    max-width: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: vars.$brdR_03;
+  }
+
+  .noImage {
+    min-width: 32px;
+    min-height: 32px;
+    background: #71717A;;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: vars.$brdR_03;
+
+    span {
+      color: #b7d5c7;
+    }
   }
 }
 
