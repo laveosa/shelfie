@@ -7,17 +7,15 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar
+  useSidebar,
 } from "@/components/ui/sidebar.tsx";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
-import {
-  ISheSidebarHeader
-} from "@/const/interfaces/complex-components/ISheSidebarHeader.ts";
+import { ISheSidebarHeader } from "@/const/interfaces/complex-components/ISheSidebarHeader.ts";
 import { UserOrganizationModel } from "@/const/models/UserOrganizationModel.ts";
 import { getInitials } from "@/utils/helpers/quick-helper.ts";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
