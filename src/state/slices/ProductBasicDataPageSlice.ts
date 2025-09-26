@@ -8,14 +8,18 @@ import { ProductModel } from "@/const/models/ProductModel.ts";
 import { ProductCountersModel } from "@/const/models/CounterModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
+import { CompanyModel } from "@/const/models/CompanyModel.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 
 const initialState: IProductBasicDataPageSlice = {
   isLoading: false,
   isProductConfigurationCardLoading: false,
   isCreateProductCategoryCardLoading: false,
   isCreateProductBrandCardLoading: false,
+  isSelectEntityCardLoading: false,
   isProductsLoading: false,
   isPhotoUploaderLoading: false,
+  isCompaniesGridLoading: false,
   products: [],
   product: {},
   activeCards: [],
@@ -27,6 +31,9 @@ const initialState: IProductBasicDataPageSlice = {
   contextId: null,
   productCounter: null,
   photos: [],
+  selectedCompany: undefined,
+  companiesList: [],
+  companiesGridRequestModel: {},
 };
 
 //------------------------------------- LOADERS/
@@ -59,6 +66,13 @@ function setIsCreateProductBrandCardLoading(
   state.isCreateProductBrandCardLoading = action?.payload;
 }
 
+function setIsSelectEntityCardLoading(
+  state: IProductBasicDataPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isSelectEntityCardLoading = action?.payload;
+}
+
 function setProductsLoading(
   state: IProductBasicDataPageSlice,
   action: PayloadAction<boolean>,
@@ -71,6 +85,13 @@ function setIsPhotoUploaderLoading(
   action: PayloadAction<boolean>,
 ) {
   state.isPhotoUploaderLoading = action?.payload;
+}
+
+function setIsCompaniesGridLoading(
+  state: IProductBasicDataPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isCompaniesGridLoading = action?.payload;
 }
 
 //------------------------------------- API/
@@ -152,6 +173,25 @@ function refreshProductPhotos(
   state.photos = action?.payload || state.photos;
 }
 
+function refreshSelectedCompany(
+  state: IProductBasicDataPageSlice,
+  action: PayloadAction<CompanyModel>,
+) {
+  state.selectedCompany = action?.payload || state.selectedCompany;
+}
+
+function resetSelectedCompany(state: IProductBasicDataPageSlice) {
+  state.selectedCompany = null;
+}
+
+function refreshCompaniesGridRequestModel(
+  state: IProductBasicDataPageSlice,
+  action: PayloadAction<GridRequestModel>,
+) {
+  state.companiesGridRequestModel =
+    action?.payload || state.companiesGridRequestModel;
+}
+
 const ProductBasicDataPageSlice = createSlice({
   name: StoreSliceEnum.PRODUCT_BASIC_DATA,
   initialState,
@@ -160,8 +200,10 @@ const ProductBasicDataPageSlice = createSlice({
     setIsProductConfigurationCardLoading,
     setIsCreateProductCategoryCardLoading,
     setIsCreateProductBrandCardLoading,
+    setIsSelectEntityCardLoading,
     setProductsLoading,
     setIsPhotoUploaderLoading,
+    setIsCompaniesGridLoading,
     refreshProducts,
     refreshProduct,
     refreshActiveCards,
@@ -173,6 +215,9 @@ const ProductBasicDataPageSlice = createSlice({
     refreshContextId,
     refreshProductCounter,
     refreshProductPhotos,
+    refreshSelectedCompany,
+    resetSelectedCompany,
+    refreshCompaniesGridRequestModel,
   },
 });
 

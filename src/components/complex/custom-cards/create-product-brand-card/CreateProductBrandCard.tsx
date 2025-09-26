@@ -1,3 +1,4 @@
+import { CogIcon, Copyright, ImageIcon } from "lucide-react";
 import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -11,11 +12,15 @@ import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { ICreateProductBrandCard } from "@/const/interfaces/complex-components/custom-cards/ICreateProductBrandCard.ts";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
+import { Separator } from "@/components/ui/separator.tsx";
+import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 
 export default function CreateProductBrandCard({
   isLoading,
   isPhotoUploaderLoading,
   brand,
+  selectedCompany,
   onAction,
 }: ICreateProductBrandCard) {
   const { t } = useTranslation();
@@ -90,7 +95,8 @@ export default function CreateProductBrandCard({
                       </div>
                       <div className={cs.uploadingItemTextBlock}>
                         <p className="truncate text-sm">
-                          {file.name || `${t("ProductForm.Labels.Image")} ${index + 1}`}
+                          {file.name ||
+                            `${t("ProductForm.Labels.Image")} ${index + 1}`}
                         </p>
                         <p className="text-xs text-muted-foreground">
                           {((file.size || 0) / (1024 * 1024)).toFixed(2)} MB
@@ -112,6 +118,65 @@ export default function CreateProductBrandCard({
               hideUploadButton={true}
             />
           )}
+          <Separator />
+          <div className={cs.brandOwnerBlock}>
+            <div className={cs.brandOwnerSelect}>
+              <span className={`${cs.brandOwnerSelectTitle} she-title`}>
+                Brand owner
+              </span>
+              <SheButton
+                variant="secondary"
+                icon={Copyright}
+                value="Select Company"
+                onClick={() => onAction("openSelectEntityCard")}
+              />
+            </div>
+            {selectedCompany && (
+              <div className={cs.selectedCompany}>
+                <div className={cs.selectedCompanyDetails}>
+                  <div className={cs.companyPhoto}>
+                    {selectedCompany.thumbnailUrl ? (
+                      <img
+                        src={selectedCompany?.thumbnailUrl}
+                        alt={selectedCompany?.companyName}
+                      />
+                    ) : (
+                      <SheIcon icon={ImageIcon} />
+                    )}
+                  </div>
+                  <div className={cs.companyDesc}>
+                    <SheTooltip
+                      delayDuration={200}
+                      text={selectedCompany?.companyName}
+                      className={cs.companyNameTooltip}
+                    >
+                      <span className={`${cs.companyName} she-text`}>
+                        {selectedCompany?.companyName}
+                      </span>
+                    </SheTooltip>
+                    {selectedCompany?.address && (
+                      <SheTooltip
+                        delayDuration={200}
+                        text={selectedCompany?.address}
+                        className="max-w-[150px]"
+                      >
+                        <span className={`${cs.twoLineEllipsis} she-text`}>
+                          {selectedCompany?.address}
+                        </span>
+                      </SheTooltip>
+                    )}
+                  </div>
+                  <SheButton
+                    icon={CogIcon}
+                    value={t("CommonButtons.Manage")}
+                    variant="secondary"
+                    onClick={() => onAction("manageCompany", selectedCompany)}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+          <Separator />
           <SheButton
             onClick={() => handleSubmit()}
             value={t("ProductActions.AddBrand")}

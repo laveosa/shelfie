@@ -13,6 +13,7 @@ import { ProductCountersModel } from "@/const/models/CounterModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
 import { VariantModel } from "@/const/models/VariantModel.ts";
+import { CompanyModel } from "@/const/models/CompanyModel.ts";
 
 const apiConfig = new ApiConfigurationService(ApiUrlEnum.PRODUCTS_BASE_URL);
 
@@ -463,6 +464,16 @@ export const ProductsApiService = createApi({
       query: (variantId: number) => ({
         url: `${ApiUrlEnum.VARIANTS}/${variantId}`,
         method: "DELETE",
+      }),
+    }),
+    updateBrandOwner: apiConfig.createMutation<
+      any,
+      { brandId: number; model: CompanyModel }
+    >(builder, {
+      query: ({ brandId, model }) => ({
+        url: `${ApiUrlEnum.BRANDS}/${brandId}/change-company-owner`,
+        method: "PATCH",
+        body: JSON.stringify(model),
       }),
     }),
   }),

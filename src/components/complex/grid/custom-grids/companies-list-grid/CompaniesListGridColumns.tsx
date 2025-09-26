@@ -17,9 +17,8 @@ export function CompaniesListGridColumns({
     {
       id: "select",
       header: "Select",
-      size: 50,
-      minSize: 50,
-      maxSize: 50,
+      minSize: 70,
+      maxSize: 70,
       cell: ({ row, table }) => {
         const meta = table.options.meta as {
           setLoadingRow: (rowId: string, loading: boolean) => void;
@@ -48,9 +47,6 @@ export function CompaniesListGridColumns({
     {
       id: "companyName",
       header: "Company",
-      size: 150,
-      minSize: 150,
-      maxSize: 150,
       cell: ({ row }) => {
         const imageUrl: string = row.original.thumbnailUrl;
         const name: string = row.original.companyName;
@@ -111,8 +107,8 @@ export function CompaniesListGridColumns({
     {
       id: "manage",
       header: "Actions",
-      minSize: 100,
-      maxSize: 100,
+      minSize: 120,
+      maxSize: 120,
       cell: ({ row, table }) => {
         const meta = table.options.meta as {
           setLoadingRow: (rowId: string, loading: boolean) => void;

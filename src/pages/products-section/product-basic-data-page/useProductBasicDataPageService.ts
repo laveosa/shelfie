@@ -15,6 +15,8 @@ import { ProductCountersModel } from "@/const/models/CounterModel.ts";
 import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
+import CompaniesApiHooks from "@/utils/services/api/CompaniesApiService.ts";
+import { CompanyModel } from "@/const/models/CompanyModel.ts";
 
 export default function useProductBasicDataPageService(handleCardAction) {
   // ==================================================================== UTILITIES
@@ -34,6 +36,9 @@ export default function useProductBasicDataPageService(handleCardAction) {
     ProductsApiHooks.useLazyGenerateProductCodeQuery();
   const [checkProductCode] = ProductsApiHooks.useCheckProductCodeMutation();
   const [getCountryCode] = DictionaryApiHooks.useLazyGetCountryCodeQuery();
+  const [getListOfCompaniesForGrid] =
+    CompaniesApiHooks.useGetListOfCompaniesForGridMutation();
+  const [updateBrandOwner] = ProductsApiHooks.useUpdateBrandOwnerMutation();
 
   // ==================================================================== API
   function getProductsHandler(gridRequestModel: GridRequestModel) {
@@ -271,6 +276,13 @@ export default function useProductBasicDataPageService(handleCardAction) {
             productsActions.refreshBrands([...productsState.brands, res.data]),
           );
 
+          updateBrandOwner({
+            brandId: res.data.brandId,
+            model: {
+              companyId: state.selectedCompany.companyId,
+            },
+          });
+
           dispatch(productsActions.setIsPhotoUploaderLoading(true));
 
           const uploadPromises = model.uploadModels.map((model) => {
@@ -364,6 +376,45 @@ export default function useProductBasicDataPageService(handleCardAction) {
     });
   }
 
+  function openSelectEntityCardHandler() {
+    dispatch(actions.resetSelectedCompany());
+    handleCardAction("selectEntityCard", true);
+    dispatch(actions.setIsCompaniesGridLoading(true));
+    getListOfCompaniesForGrid(state.companiesGridRequestModel).then((res) => {
+      dispatch(actions.setIsCompaniesGridLoading(false));
+      const modifiedList = res.data.items.map((item) => ({
+        ...item,
+        isSelected: item.companyId === state.selectedCompany?.companyId,
+      }));
+      dispatch(
+        actions.refreshCompaniesGridRequestModel({
+          ...res.data,
+          items: modifiedList,
+        }),
+      );
+    });
+  }
+
+  function searchEntityHandler(searchText: string) {
+    dispatch(actions.setIsCompaniesGridLoading(true));
+    getListOfCompaniesForGrid({ searchQuery: searchText }).then(() => {
+      dispatch(actions.setIsCompaniesGridLoading(false));
+    });
+  }
+
+  function selectCompanyHandler(model: CompanyModel) {
+    handleCardAction("selectEntityCard");
+    dispatch(actions.refreshSelectedCompany(model));
+  }
+
+  function openCreateEntityCardHandler() {
+    handleCardAction("createCompanyCard", true);
+  }
+
+  function closeSelectEntityCardHandler() {
+    handleCardAction("selectEntityCard");
+  }
+
   // ==================================================================== PROVIDED API
   return {
     state,
@@ -385,5 +436,10 @@ export default function useProductBasicDataPageService(handleCardAction) {
     uploadCategoryOrBrandPhotoHandler,
     generateProductCodeHandler,
     checkProductCodeHandler,
+    openSelectEntityCardHandler,
+    searchEntityHandler,
+    selectCompanyHandler,
+    openCreateEntityCardHandler,
+    closeSelectEntityCardHandler,
   };
 }

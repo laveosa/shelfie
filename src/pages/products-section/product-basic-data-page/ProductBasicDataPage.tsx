@@ -1,3 +1,4 @@
+import { ColumnDef } from "@tanstack/react-table";
 import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
@@ -10,6 +11,10 @@ import { ProductBasicDataPageSliceActions as actions } from "@/state/slices/Prod
 import useProductBasicDataPageService from "@/pages/products-section/product-basic-data-page/useProductBasicDataPageService.ts";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
+import SelectEntityCard from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
+import { CompaniesListGridColumns } from "@/components/complex/grid/custom-grids/companies-list-grid/CompaniesListGridColumns.tsx";
+import CreateCompanyCard from "@/components/complex/custom-cards/create-company-card/CreateCompanyCard.tsx";
 
 export function ProductBasicDataPage() {
   // ==================================================================== UTILITIES
@@ -77,6 +82,21 @@ export function ProductBasicDataPage() {
       case "closeCreateProductBrandCard":
         handleCardAction("createBrandCard");
         break;
+      case "openSelectEntityCard":
+        service.openSelectEntityCardHandler();
+        break;
+      case "searchEntity":
+        service.searchEntityHandler(payload);
+        break;
+      case "selectCompany":
+        service.selectCompanyHandler(payload);
+        break;
+      case "openCreateEntityCard":
+        service.openCreateEntityCardHandler();
+        break;
+      case "closeSelectEntityCard":
+        service.closeSelectEntityCardHandler();
+        break;
     }
   }
 
@@ -130,6 +150,35 @@ export function ProductBasicDataPage() {
               isLoading={state.isCreateBrandCardLoading}
               isPhotoUploaderLoading={productsState.isPhotoUploaderLoading}
               brand={productsState.brand}
+              selectedCompany={state.selectedCompany}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards.includes("selectEntityCard") && (
+          <div ref={createRefCallback("selectEntityCard")}>
+            <SelectEntityCard
+              isLoading={state.isSelectEntityCardLoading}
+              isGridLoading={state.isCompaniesGridLoading}
+              entityName="Company"
+              entityCollection={state.companiesGridRequestModel.items}
+              columns={
+                CompaniesListGridColumns({
+                  onAction,
+                }) as ColumnDef<DataWithId>[]
+              }
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards.includes("createCompanyCard") && (
+          <div ref={createRefCallback("createCompanyCard")}>
+            <CreateCompanyCard
+              isLoading={state.isSelectEntityCardLoading}
+              isCompanyPhotosGridLoading={state.isCompaniesGridLoading}
+              images={state.selectedCompany?.images}
+              countryCodes={state.countryCodes}
+              isPhotoUploaderLoading={state.isPhotoUploaderLoading}
               onAction={onAction}
             />
           </div>

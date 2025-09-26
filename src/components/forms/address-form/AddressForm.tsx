@@ -22,11 +22,11 @@ import { CountryCodeModel } from "@/const/models/CountryCodeModel";
 import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
 
 interface IAddressForm {
-  data: AddressRequestModel;
-  isCreate: boolean;
-  onSubmit: (data: AddressRequestModel) => void;
-  onCancel: () => void;
-  countryList: CountryCodeModel[];
+  data?: AddressRequestModel;
+  isCreate?: boolean;
+  onSubmit?: (data: AddressRequestModel) => void;
+  onCancel?: () => void;
+  countryList?: CountryCodeModel[];
 }
 
 export default function AddressForm({
