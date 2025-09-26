@@ -10,7 +10,8 @@
   max-height: vars.$appHeaderHeight;
 
   .sidebarTrigger {
-    $triggerIconSize: 16px;
+    $triggerIconSize: 20px;
+    padding: 1px;
     color: #71717a;
     min-width: $triggerIconSize;
     max-width: $triggerIconSize;
@@ -20,7 +21,6 @@
     &:hover {
       background-color: transparent;
       color: vars.$colorDark;
-      transform: scale(1.1);
     }
 
     svg {
@@ -79,5 +79,21 @@
       transition: all 0.2s ease-in 0s;
       transform: scale(1.1);
     }
+  }
+}
+
+:global(.noAnimation) {
+  transition: none !important;
+  animation: none !important;
+  --sidebar-transition-duration: 0ms !important;
+
+  * {
+    transition: none !important;
+    animation: none !important;
+    --sidebar-transition-duration: 0ms !important;
+  }
+
+  [data-sidebar] * {
+    transition-duration: 0ms !important;
   }
 }

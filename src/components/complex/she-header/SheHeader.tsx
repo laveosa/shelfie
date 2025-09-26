@@ -1,13 +1,56 @@
-import { KeyboardEvent, useState } from "react";
+import { KeyboardEvent, useEffect, useRef, useState } from "react";
+import _ from "lodash";
 
 import cs from "./SheHeader.module.scss";
-import { SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { SheUserMenu } from "@/components/complex/she-user-menu/SheUserMenu.tsx";
+import StorageService from "@/utils/services/StorageService.ts";
 import { ISheHeader } from "@/const/interfaces/complex-components/ISheHeader.ts";
 
 export default function SheHeader({ user, isUserMenuLoading }: ISheHeader) {
   const [searchValue, setSearchValue] = useState("");
   const [isSearching, setIsSearching] = useState(false);
+  const [_isMinimized, setIsMinimized] = useState<boolean>(null);
+  const { open, setOpen } = useSidebar();
+
+  const isMinimizedStorageKey = "isMinimizedSheHeaderStorageKey";
+  const clickEventRef = useRef<any>(null);
+
+  useEffect(() => {
+    isAnimationActive(false);
+
+    const isMinimizedStorageValue: boolean = StorageService.getLocalStorage(
+      isMinimizedStorageKey,
+    );
+
+    if (
+      !_.isNil(isMinimizedStorageValue) &&
+      isMinimizedStorageValue !== _isMinimized
+    ) {
+      setIsMinimized(isMinimizedStorageValue);
+      setOpen(isMinimizedStorageValue);
+    }
+
+    setTimeout(() => {
+      isAnimationActive(true);
+    }, 100);
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (!clickEventRef.current) return;
+      clickEventRef.current = false;
+
+      if (_isMinimized !== open) {
+        setIsMinimized(open);
+        StorageService.setLocalStorage(isMinimizedStorageKey, open);
+      }
+    });
+  }, [open]);
+
+  function onSidebarTriggerHandler(event) {
+    clickEventRef.current = event;
+  }
 
   function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
     setIsSearching(true);
@@ -29,9 +72,20 @@ export default function SheHeader({ user, isUserMenuLoading }: ISheHeader) {
     setIsSearching(false);
   }
 
+  function isAnimationActive(value: boolean) {
+    const element = document.querySelector("#ShelfieAppWrapper");
+    if (element)
+      value
+        ? element.classList.remove("noAnimation")
+        : element.classList.add("noAnimation");
+  }
+
   return (
-    <div className={cs.sheHeader}>
-      <SidebarTrigger className={cs.sidebarTrigger} />
+    <div className={`${cs.sheHeader}`}>
+      <SidebarTrigger
+        className={`${cs.sidebarTrigger}`}
+        onClick={onSidebarTriggerHandler}
+      />
       <div className={cs.searchWrapper}>
         {/*<Search className={cs.searchIcon} />*/}
         {/*<Input*/}

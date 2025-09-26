@@ -24,7 +24,7 @@ function App() {
   }, []);
 
   return (
-    <div id="ApplicationNameWrapper">
+    <div id="ShelfieAppWrapper">
       <ToastProvider>
         <DialogProvider>
           <SidebarProvider>
