@@ -1,11 +1,25 @@
-#CustomersPage {
-    .customersPageHeader {
-        display: flex;
-        justify-content: space-between;
-    
-        .headerButtonBlock {
-          display: flex;
-          gap: 10px;
-        }
-      }
+@use "@/styles/variables" as vars;
+
+//----------------------------------------------------------------HEADER
+
+.CustomersPage {
+  .pageHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: vars.$paddingSmall;
+    gap: vars.$paddingStandard;
+  }
+}
+
+// ------------------------------------------------------------------- CONTEXT
+
+.CustomersPage {
+  .customersPageContent {
+    padding: 0 vars.$paddingSmall vars.$paddingSmall;
+    overflow-x: auto;
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 178px);
+  }
 }

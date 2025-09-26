@@ -51,12 +51,7 @@ export default function useCustomersPageService() {
     dispatch(actions.refreshSelectedCustomer(rowData));
     dispatch(actions.refreshCustomerCounter(createCustomerCounter()));
     dispatch(actions.refreshCustomerAddresses(null));
-    dispatch(
-      actions.refreshCustomerAddressesGridRequestModel({
-        pager: {},
-        items: [],
-      }),
-    );
+    dispatch(actions.refreshCustomerAddressesGridRequestModel({}));
     navigate(`${NavUrlEnum.CUSTOMER_BASIC_DATA}/${rowData.id}`);
   }
 
@@ -69,7 +64,6 @@ export default function useCustomersPageService() {
   function updateUserPreferencesHandler(model: PreferencesModel) {
     const modifiedModel = merge({}, appState.preferences, model);
     dispatch(appActions.refreshPreferences(modifiedModel));
-
     return updateUserPreferences(model);
   }
 
@@ -87,8 +81,8 @@ export default function useCustomersPageService() {
   }
 
   return {
-    appState,
     state,
+    appState,
     getCustomersForGridHandler,
     onManageCustomerHandler,
     onCreateCustomerHandler,

@@ -2,8 +2,8 @@
 
 //----------------------------------------------------------------HEADER
 
-.productsPage {
-  .productsPageHeader {
+.ProductsPage {
+  .pageHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -14,7 +14,7 @@
 
 //-------------------------------------------------------------------TABS
 
-.productsPage {
+.ProductsPage {
   .productsPageContent {
     .tabItemsWrapper {
       border-bottom: 1px solid vars.$colorMedium;
@@ -48,7 +48,7 @@
 
 // ------------------------------------------------------------------- CONTEXT
 
-.productsPage {
+.ProductsPage {
   .productsPageTabContext {
     padding: 0 vars.$paddingSmall vars.$paddingSmall;
     overflow-x: auto;
