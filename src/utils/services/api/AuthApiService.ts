@@ -157,6 +157,13 @@ export const AuthApiService = createApi({
         ],
       },
     ),
+    switchUserOrganization: apiConfig.createMutation<any, any>(builder, {
+      query: (model) => ({
+        url: `${ApiUrlEnum.AUTH}/switch-organization`,
+        method: "POST",
+        body: JSON.stringify(model),
+      }),
+    }),
   }),
 });
 

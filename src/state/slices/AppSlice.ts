@@ -11,13 +11,16 @@ import {
   PreferencesModel,
   PreferencesModelDefault,
 } from "@/const/models/PreferencesModel.ts";
+import { UserOrganizationModel } from "@/const/models/UserOrganizationModel.ts";
 
 const initialState: IAppSlice = {
   loading: false,
   isUserMenuLoading: false,
+  isUserOrganizationsLoading: false,
   user: storageService.getLocalStorage(StorageKeyEnum.USER),
   token: storageService.getLocalStorage(StorageKeyEnum.TOKEN),
   preferences: PreferencesModelDefault,
+  userOrganizations: [],
 };
 
 function setLoading(state: IAppSlice, action: PayloadAction<boolean>) {
@@ -29,6 +32,13 @@ function setIsUserMenuLoading(
   action: PayloadAction<boolean>,
 ) {
   state.isUserMenuLoading = action?.payload;
+}
+
+function setIsUserOrganizationsLoading(
+  state: IAppSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isUserOrganizationsLoading = action?.payload;
 }
 
 function refreshUser(state: IAppSlice, action: PayloadAction<UserModel>) {
@@ -59,16 +69,25 @@ function logOut(state: IAppSlice) {
     : `${NavUrlEnum.DEV}${NavUrlEnum.AUTH}`;
 }
 
+function refreshUserOrganizations(
+  state: IAppSlice,
+  action: PayloadAction<UserOrganizationModel[]>,
+) {
+  state.userOrganizations = action?.payload || state.userOrganizations;
+}
+
 const AppSlice = createSlice({
   name: StoreSliceEnum.APP,
   initialState,
   reducers: {
     setLoading,
     setIsUserMenuLoading,
+    setIsUserOrganizationsLoading,
     refreshUser,
     refreshToken,
     refreshPreferences,
     logOut,
+    refreshUserOrganizations,
   },
 });
 
