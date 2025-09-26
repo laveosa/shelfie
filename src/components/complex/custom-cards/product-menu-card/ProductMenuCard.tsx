@@ -38,6 +38,7 @@ export default function ProductMenuCard({
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
+    setTimeout(() => setAnimationFlag(false));
     const isMinimizedStorageValue: boolean = StorageService.getLocalStorage(
       isMinimizedStorageKey,
     );
@@ -47,8 +48,6 @@ export default function ProductMenuCard({
       isMinimizedStorageValue !== _isMinimized
     )
       setIsMinimized(isMinimizedStorageValue);
-
-    setTimeout(() => setAnimationFlag(false));
   }, []);
 
   useEffect(() => {
@@ -130,7 +129,7 @@ export default function ProductMenuCard({
   // ==================================================================== LAYOUT
   return (
     <SheProductCard
-      className={`${cs.productMenuCard} ${_animationFlag ? cs.productMenuCardWithAnimation : ""}`}
+      className={`${cs.productMenuCard} ${_animationFlag ? cs.withAnimation : ""}`}
       headerClassName={cs.productMenuCardHeader}
       title={title}
       loading={isLoading}

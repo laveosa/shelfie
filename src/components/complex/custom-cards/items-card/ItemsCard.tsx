@@ -1,4 +1,5 @@
 import React, { JSX, useEffect, useState } from "react";
+import { useNavigation } from "react-router-dom";
 import _ from "lodash";
 
 import { Image } from "lucide-react";
@@ -8,13 +9,12 @@ import SheProductCard from "@/components/complex/she-product-card/SheProductCard
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
+import StorageService from "@/utils/services/StorageService.ts";
 import { IconViewEnum } from "@/const/enums/IconViewEnum.ts";
 import {
   IItemsCard,
   IItemsCardItem,
 } from "@/const/interfaces/complex-components/custom-cards/IItemsCard.ts";
-import StorageService from "@/utils/services/StorageService.ts";
-import { useNavigation } from "react-router-dom";
 
 export default function ItemsCard({
   title,
@@ -35,6 +35,7 @@ export default function ItemsCard({
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
+    setTimeout(() => setAnimationFlag(false));
     const isMinimizedStorageValue: boolean = StorageService.getLocalStorage(
       isMinimizedStorageKey,
     );
@@ -44,8 +45,6 @@ export default function ItemsCard({
       isMinimizedStorageValue !== _isMinimized
     )
       setIsMinimized(isMinimizedStorageValue);
-
-    setTimeout(() => setAnimationFlag(false));
   }, []);
 
   useEffect(() => {
@@ -107,7 +106,7 @@ export default function ItemsCard({
   // ==================================================================== LAYOUT
   return (
     <SheProductCard
-      className={`${cs.itemsCard} ${_animationFlag ? cs.itemsCardWithAnimation : ""}`}
+      className={`${cs.itemsCard} ${_animationFlag ? cs.withAnimation : ""}`}
       headerClassName={cs.itemsCardHeader}
       title={title}
       loading={isLoading}
@@ -163,22 +162,3 @@ export default function ItemsCard({
     </SheProductCard>
   );
 }
-
-/*
-<>
-  {items?.map((item: IItemsCardItem) => (
-    <div
-      className={cs.itemsCardListItemWrapper}
-      key={item.id}
-      onClick={() => onClickHandler(item)}
-    >
-      {_isMinimized ? (
-        <SheTooltip text={item.name} side="left" align="center">
-          {_getItemInnerLayout(item)}
-        </SheTooltip>
-      ) : (
-        _getItemInnerLayout(item)
-      )}
-    </div>
-  ))}
-</>*/
