@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import _ from "lodash";
 
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IPurchaseProductsPageSlice } from "@/const/interfaces/store-slices/IPurchaseProductsPageSlice.ts";
@@ -16,7 +17,8 @@ import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
 import { IManageVariantsPageSlice } from "@/const/interfaces/store-slices/IManageVariantsPageSlice.ts";
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 import { CompanyModel } from "@/const/models/CompanyModel.ts";
-import _ from "lodash";
+import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
+import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 
 const initialState: IPurchaseProductsPageSlice = {
   isLoading: false,
@@ -65,6 +67,7 @@ const initialState: IPurchaseProductsPageSlice = {
   variantsForPurchaseGridRequestModel: {},
   brands: [],
   categories: [],
+  countryCodes: [],
   selectedPhoto: null,
   selectedTraitsIds: [],
   selectedTrait: null,
@@ -429,6 +432,13 @@ function refreshCategories(
   state.categories = action?.payload || state.categories;
 }
 
+function refreshCountryCodes(
+  state: IProductBasicDataPageSlice,
+  action: PayloadAction<CountryCodeModel[]>,
+) {
+  state.countryCodes = action?.payload || state.countryCodes;
+}
+
 function refreshSelectedPhoto(
   state: IPurchaseProductsPageSlice,
   action: PayloadAction<ImageModel>,
@@ -611,6 +621,7 @@ const PurchaseProductsPageSlice = createSlice({
     refreshVariantsForPurchaseGridRequestModel,
     refreshBrands,
     refreshCategories,
+    refreshCountryCodes,
     refreshSelectedPhoto,
     refreshSelectedTraitsIds,
     refreshSelectedTrait,

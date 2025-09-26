@@ -3,6 +3,7 @@ import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 import { AppSliceActions as action } from "@/state/slices/AppSlice.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import UsersApiHooks from "@/utils/services/api/UsersApiService.ts";
+import AuthApiHooks from "@/utils/services/api/AuthApiService.ts";
 
 export default function useAppService() {
   const state = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
@@ -10,6 +11,10 @@ export default function useAppService() {
 
   const [getUserPreferences] = UsersApiHooks.useLazyGetUserPreferencesQuery();
   const [getUserDetails] = UsersApiHooks.useLazyGetUserDetailsQuery();
+  const [getUserOrganizations] =
+    UsersApiHooks.useLazyGetUserOrganizationsQuery();
+  const [switchUserOrganization] =
+    AuthApiHooks.useSwitchUserOrganizationMutation();
 
   function getUserPreferencesHandler() {
     dispatch(action.setLoading(true));
@@ -24,6 +29,20 @@ export default function useAppService() {
     getUserDetails().then((res) => {
       dispatch(action.setIsUserMenuLoading(false));
       dispatch(action.refreshUser(res.data));
+    });
+  }
+
+  function getUserOrganizationsHandler() {
+    getUserOrganizations().then((res: any) => {
+      dispatch(action.refreshUserOrganizations(res.data));
+    });
+  }
+
+  function switchUserOrganizationHandler(id: number) {
+    switchUserOrganization({ organizationId: id }).then((model: any) => {
+      if (model.data?.token) {
+        refreshToken(model.data.token);
+      }
     });
   }
 
@@ -44,6 +63,8 @@ export default function useAppService() {
     ...state,
     getUserPreferencesHandler,
     getUserDetailsHandler,
+    getUserOrganizationsHandler,
+    switchUserOrganizationHandler,
     refreshPreferences,
     refreshToken,
     logOut,

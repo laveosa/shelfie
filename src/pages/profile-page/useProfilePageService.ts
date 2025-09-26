@@ -2,16 +2,22 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { AppDispatch, RootState } from "@/state/store.ts";
-import { IProfilePageSlice } from "@/const/interfaces/store-slices/IProfilePageSlice.ts";
+import {
+  IProfilePageSlice
+} from "@/const/interfaces/store-slices/IProfilePageSlice.ts";
 import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
-import { ProfilePageSliceActions as actions } from "@/state/slices/ProfilePageSlice.ts";
+import {
+  ProfilePageSliceActions as actions
+} from "@/state/slices/ProfilePageSlice.ts";
 import UsersApiHooks from "@/utils/services/api/UsersApiService.ts";
-import { UserModel } from "@/const/models/UserModel.ts";
 import useAppService from "@/useAppService.ts";
 import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import { PasswordModel } from "@/const/models/PasswordModel.ts";
+import {
+  ContactInformationModel
+} from "@/const/models/ContactInformationModel.ts";
 
 export default function useProfilePageService() {
   const state = useSelector(
@@ -35,7 +41,7 @@ export default function useProfilePageService() {
     });
   }
 
-  function updateUserContactInformationHandler(model: UserModel) {
+  function updateUserContactInformationHandler(model: ContactInformationModel) {
     updateUserContactInformation(model).then((res: any) => {
       if (!res.error) {
         appService.getUserDetailsHandler();

@@ -1,5 +1,5 @@
 import { IDateRange } from "@/const/interfaces/IDateRange.ts";
-import { OrganizationModel } from "@/const/models/OrganizationModel.ts";
+import { UserOrganizationModel } from "@/const/models/UserOrganizationModel.ts";
 
 export interface UserModel {
   id?: string;
@@ -32,7 +32,7 @@ export interface UserModel {
   leaveDays?: (Date | string)[];
   userId?: 0;
   thumbnail?: string;
-  organization?: OrganizationModel;
+  organization?: UserOrganizationModel;
   shortName?: string;
   phoneNumber?: string;
   countryId?: number;
