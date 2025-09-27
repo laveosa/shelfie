@@ -1,88 +1,69 @@
 import React, { useEffect } from "react";
-import { ColumnDef } from "@tanstack/react-table";
-import { useTranslation } from "react-i18next";
+
 import { Plus } from "lucide-react";
 
+import cs from "./CustomersPage.module.scss";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
+import { CustomerGridColumns } from "@/components/complex/grid/custom-grids/customer-grid/CustomerGridColumns";
+import useCustomersPageService from "@/pages/customers-section/customers-page/useCustomersPageService.ts";
+import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import {
   GridSortingEnum,
   GridSortingEnumLabels,
 } from "@/const/enums/GridSortingEnum.ts";
-import cs from "./CustomersPage.module.scss";
-import useCustomersPageService from "@/pages/customers-section/customers-page/useCustomersPageService.ts";
-import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
-import { customerGridColumns } from "@/components/complex/grid/custom-grids/customer-grid/CustomerGridColumns";
-import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export function CustomersPage() {
-  const { t } = useTranslation();
-  const {
-    appState,
-    state,
-    getCustomersForGridHandler,
-    onManageCustomerHandler,
-    onCreateCustomerHandler,
-    updateUserPreferencesHandler,
-    resetUserPreferencesHandler,
-  } = useCustomersPageService();
-
-  const customerColumns = customerGridColumns(
-    onAction,
-  ) as ColumnDef<DataWithId>[];
+  // ==================================================================== UTILITIES
+  const { translate } = useAppTranslation();
+  const { state, appState, ...service } = useCustomersPageService();
   const sortingItems = Object.values(GridSortingEnum).map((value) => ({
     value,
     description: GridSortingEnumLabels[value],
   }));
 
+  // ==================================================================== SIDE EFFECTS
   useEffect(() => {
-    getCustomersForGridHandler(state.customersGridRequestModel);
+    service.getCustomersForGridHandler(state.customersGridRequestModel);
   }, []);
 
-  function onAction(
-    actionType: string,
-    rowId?: string,
-    setLoadingRow?: (rowId: string, loading: boolean) => void,
-    rowData?: any,
-  ) {
-    setLoadingRow(rowId, true);
+  // ==================================================================== EVENT HANDLERS
+  function onAction(actionType: string, payload?: any) {
     switch (actionType) {
-      case "image":
-        break;
       case "manageCustomer":
-        onManageCustomerHandler(rowData);
+        service.onManageCustomerHandler(payload);
         break;
     }
   }
 
+  // ==================================================================== LAYOUT
   return (
-    <div id={cs.CustomersPage}>
-      <div className={cs.customersPageHeader}>
-        <div className="she-title">{t("PageTitles.Customers")}</div>
-        <div className={cs.headerButtonBlock}>
+    <div className={cs.CustomersPage}>
+      <div className={cs.pageHeader}>
+        <span className="she-title">{translate("PageTitles.Customers")}</span>
+        <div>
           <SheButton
+            value={translate("CustomerActions.CreateCustomer")}
             icon={Plus}
-            variant="outline"
-            onClick={() => onCreateCustomerHandler()}
-            value={t("CustomerActions.CreateCustomer")}
+            variant="info"
+            onClick={service.onCreateCustomerHandler}
           />
         </div>
       </div>
       <div className={cs.customersPageContent}>
         <SheGrid
-          isLoading={state.isCustomersLoading}
-          columns={customerColumns}
-          data={state.customers.map((customer) => ({
-            ...customer,
-            id: customer.customerId,
-          }))}
           gridRequestModel={state.customersGridRequestModel}
+          columns={CustomerGridColumns(onAction)}
           sortingItems={sortingItems}
           columnsPreferences={appState.preferences}
           preferenceContext={"customerReferences"}
-          skeletonQuantity={state.customersGridRequestModel.pageSize}
-          onApplyColumns={(model) => updateUserPreferencesHandler(model)}
-          onDefaultColumns={() => resetUserPreferencesHandler("Customers")}
-          onGridRequestChange={(updates) => getCustomersForGridHandler(updates)}
+          isLoading={state.isCustomersLoading}
+          skeletonQuantity={10}
+          onApplyColumns={service.updateUserPreferencesHandler}
+          onDefaultColumns={() =>
+            service.resetUserPreferencesHandler("Customers")
+          }
+          onGridRequestChange={service.getCustomersForGridHandler}
         >
           {/* TODO: Add filters */}
         </SheGrid>

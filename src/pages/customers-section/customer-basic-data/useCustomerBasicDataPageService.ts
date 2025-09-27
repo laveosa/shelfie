@@ -1,16 +1,16 @@
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import { AppDispatch } from "@/state/store.ts";
-import { CustomersPageSliceActions as actions } from "@/state/slices/CustomersPageSlice";
-import { ICustomersPageSlice } from "@/const/interfaces/store-slices/ICustomersPageSlice";
-import { OrdersApiService as api } from "@/utils/services/api/OrdersApiService";
 import { convertCustomerToRequestModel } from "@/utils/helpers/customer-helper.ts";
-import { useNavigate, useParams } from "react-router-dom";
-import { NavUrlEnum } from "@/const/enums/NavUrlEnum";
+import { CustomersPageSliceActions as actions } from "@/state/slices/CustomersPageSlice";
+import { OrdersApiService as api } from "@/utils/services/api/OrdersApiService";
+import useDialogService from "@/utils/services/dialog/DialogService.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import { useAppSelector } from "@/utils/hooks/redux";
+import { NavUrlEnum } from "@/const/enums/NavUrlEnum";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import useDialogService from "@/utils/services/dialog/DialogService.ts";
+import { ICustomersPageSlice } from "@/const/interfaces/store-slices/ICustomersPageSlice";
 
 export default function useCustomerBasicDataPageService() {
   const state = useAppSelector<ICustomersPageSlice>(StoreSliceEnum.CUSTOMERS);
@@ -61,7 +61,7 @@ export default function useCustomerBasicDataPageService() {
         dispatch(actions.refreshSelectedCustomer(res.data));
         dispatch(actions.refreshCustomers([res.data, ...state.customers]));
         navigate(
-          `${NavUrlEnum.CUSTOMERS}/${NavUrlEnum.CUSTOMER_BASIC_DATA}/${res.data.customerId}`,
+          `${NavUrlEnum.CUSTOMERS}/${NavUrlEnum.CUSTOMER_BASIC_DATA}/${res.data?.customerId}`,
         );
         return res.data;
       }

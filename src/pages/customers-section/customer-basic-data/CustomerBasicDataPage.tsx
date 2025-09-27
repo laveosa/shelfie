@@ -2,60 +2,55 @@ import React, { useEffect } from "react";
 
 import cs from "./CustomerBasicDataPage.module.scss";
 import useCustomerBasicDataPageService from "./useCustomerBasicDataPageService.ts";
-import CustomerMenuCard from "@/components/complex/custom-cards/customer-menu-card/CustomerMenuCard.tsx";
 import CustomerCard from "@/components/complex/custom-cards/customer-card/CustomerCard.tsx";
+import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
 
 export function CustomerBasicDataPage() {
-  const {
-    state,
-    customerId,
-    getCustomerHandler,
-    updateCustomerHandler,
-    createCustomerHandler,
-    onCancelHandler,
-    getCustomerInfoHandler,
-    deleteCustomerHandler,
-  } = useCustomerBasicDataPageService();
+  // ==================================================================== UTILITIES
+  const { state, customerId, ...service } = useCustomerBasicDataPageService();
 
-  // ================================================================== EVENT
+  // ==================================================================== SIDE EFFECTS
   useEffect(() => {
-    getCustomerHandler();
+    service.getCustomerHandler();
     if (state.customerCounter?.addressesAmount === undefined && customerId) {
-      getCustomerInfoHandler(Number(customerId));
+      service.getCustomerInfoHandler(Number(customerId));
     }
   }, []);
 
+  // ==================================================================== EVENT HANDLERS
   async function onAction(actionType: string, data?: any) {
     switch (actionType) {
       case "deleteCustomer":
-        deleteCustomerHandler(data);
+        service.deleteCustomerHandler(data);
         break;
       case "createCustomer":
-        createCustomerHandler(data);
+        service.createCustomerHandler(data);
         break;
       case "updateCustomer":
-        updateCustomerHandler(data);
+        service.updateCustomerHandler(data);
         break;
       case "closeCustomerCard":
-        onCancelHandler();
+        service.onCancelHandler();
         break;
     }
   }
-  // ================================================================== LAYOUT
 
+  // ==================================================================== LAYOUT
   return (
-    <div className={cs.customerBasicDataPage}>
-      <CustomerMenuCard
-        isLoading={state.isCustomerMenuCardLoading}
-        title="Customer"
+    <div id="CustomerBasicDataPage" className={cs.customerBasicDataPage}>
+      <SheContextSidebar
+        menuCollectionType="customer"
+        menuTitle="Customer"
         counter={state.customerCounter}
-        customerId={customerId}
-      />
-      <CustomerCard
-        isLoading={state.isCustomerBasicDataLoading}
-        customer={state.selectedCustomer}
-        onAction={onAction}
-      />
+        itemId={Number(customerId)}
+        activeCards={state.activeCards}
+      >
+        <CustomerCard
+          isLoading={state.isCustomerBasicDataLoading}
+          customer={state.selectedCustomer}
+          onAction={onAction}
+        />
+      </SheContextSidebar>
     </div>
   );
 }

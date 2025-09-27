@@ -10,7 +10,12 @@ export interface ISheContextSidebar extends PropsWithChildren {
   selectedId?: number;
   isListLoading?: boolean;
   menuTitle?: string;
-  menuCollectionType?: "products" | "purchases" | "sales" | "order";
+  menuCollectionType?:
+    | "products"
+    | "purchases"
+    | "sales"
+    | "order"
+    | "customer";
   isMenuLoading?: boolean;
   counter?: any;
   itemId?: number;

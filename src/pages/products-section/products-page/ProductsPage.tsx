@@ -123,16 +123,16 @@ export function ProductsPage() {
 
   // ==================================================================== LAYOUT
   return (
-    <div className={cs.productsPage}>
-      <div className={cs.productsPageHeader}>
+    <div className={cs.ProductsPage}>
+      <div className={cs.pageHeader}>
         <span className="she-title">{translate("PageTitles.Products")}</span>
         {state.activeTab === "purchases" ? (
           <div>
             <SheButton
+              value={translate("SupplierActions.ReportPurchase")}
               icon={Plus}
               variant="info"
               onClick={() => onAction("reportPurchase")}
-              value={translate("SupplierActions.ReportPurchase")}
             />
           </div>
         ) : (
@@ -186,7 +186,7 @@ export function ProductsPage() {
           <TabsContent value="products" className={cs.productsPageTabContext}>
             <SheGrid
               gridRequestModel={state.productsGridRequestModel}
-              columns={ProductsGridColumns(onAction) as ColumnDef<DataWithId>[]}
+              columns={ProductsGridColumns(onAction)}
               sortingItems={sortingItems}
               columnsPreferences={appState.preferences}
               preferenceContext={"productReferences"}

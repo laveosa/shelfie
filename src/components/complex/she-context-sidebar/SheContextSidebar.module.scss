@@ -2,9 +2,11 @@
 
 .sheContextSidebar {
   display: flex;
+  flex-grow: 1;
   padding: vars.$paddingSmall;
   background-color: vars.$secondaryBg;
   min-height: calc(100vh - 52px);
+  width: 100%;
 
   .sheContextSidebarMenuAndListContainer {
     display: flex;

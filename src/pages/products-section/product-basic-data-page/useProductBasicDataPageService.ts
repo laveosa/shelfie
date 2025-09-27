@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 
 import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
+import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
 import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
 import { ProductBasicDataPageSliceActions as actions } from "@/state/slices/ProductBasicDataPageSlice.ts";
 import { useToast } from "@/hooks/useToast.ts";
@@ -14,7 +15,6 @@ import { ProductModel } from "@/const/models/ProductModel.ts";
 import { ProductCountersModel } from "@/const/models/CounterModel.ts";
 import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
-import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
 
 export default function useProductBasicDataPageService(handleCardAction) {
   // ==================================================================== UTILITIES
@@ -49,7 +49,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
 
   function getCountryCodesHandler() {
     if (state.countryCodes.length === 0) {
-      getCountryCode().then((res: any) => {
+      getCountryCode(undefined).then((res: any) => {
         dispatch(actions.refreshCountryCodes(res.data));
       });
     }
@@ -133,7 +133,6 @@ export default function useProductBasicDataPageService(handleCardAction) {
   }
 
   function createNewProduct(data) {
-    console.log("CREATE");
     dispatch(actions.setIsProductConfigurationCardLoading(true));
     productsService.createNewProductHandler(data).then((res: any) => {
       dispatch(actions.setIsProductConfigurationCardLoading(false));
