@@ -281,6 +281,8 @@ export default function UserForm({
     defaultValues: UserModelDefault,
   });
 
+  const watchedValues = form.watch();
+
   const commonProps: any = {
     fullWidth: true,
     showClearBtn: true,
@@ -292,6 +294,11 @@ export default function UserForm({
   useEffect(() => {
     form.reset(data);
   }, [data]);
+
+  useEffect(() => {
+    console.log("Form values changed:", watchedValues);
+    // Your logic here
+  }, [watchedValues]);
 
   // ================================================================ EVENTS
 

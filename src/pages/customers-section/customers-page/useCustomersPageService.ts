@@ -52,13 +52,15 @@ export default function useCustomersPageService() {
     dispatch(actions.refreshCustomerCounter(createCustomerCounter()));
     dispatch(actions.refreshCustomerAddresses(null));
     dispatch(actions.refreshCustomerAddressesGridRequestModel({}));
-    navigate(`${NavUrlEnum.CUSTOMER_BASIC_DATA}/${rowData.id}`);
+    navigate(
+      `${NavUrlEnum.CUSTOMERS}${NavUrlEnum.CUSTOMER_BASIC_DATA}/${rowData.id}`,
+    );
   }
 
   function onCreateCustomerHandler() {
     dispatch(actions.refreshCustomerCounter(createCustomerCounter()));
     dispatch(actions.resetSelectedCustomer());
-    navigate(`${NavUrlEnum.CUSTOMER_BASIC_DATA}`);
+    navigate(`${NavUrlEnum.CUSTOMERS}${NavUrlEnum.CUSTOMER_BASIC_DATA}`);
   }
 
   function updateUserPreferencesHandler(model: PreferencesModel) {
