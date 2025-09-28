@@ -27,6 +27,8 @@ interface IAddressForm {
   onSubmit?: (data: AddressRequestModel) => void;
   onCancel?: () => void;
   countryList?: CountryCodeModel[];
+  showFooter?: boolean;
+  onHandleUpData?: (data: any) => void;
 }
 
 export default function AddressForm({
@@ -35,6 +37,8 @@ export default function AddressForm({
   onSubmit,
   onCancel,
   countryList,
+  showFooter = true,
+  onHandleUpData,
 }: IAddressForm): React.ReactNode {
   const { t } = useTranslation();
   const form = useAppForm<AddressRequestModel>({
@@ -46,6 +50,14 @@ export default function AddressForm({
   useEffect(() => {
     form.reset(data);
   }, [data]);
+
+  useEffect(() => {
+    if (form.formState.isValid) {
+      onHandleUpData?.(form.getValues());
+    } else {
+      onHandleUpData?.(null);
+    }
+  }, [form.formState.isValid]);
 
   // ================================================================ RENDER
 
@@ -63,102 +75,102 @@ export default function AddressForm({
   }
 
   return (
-    <div className={cs.addressForm}>
-      <SheForm<AddressRequestModel>
-        form={form}
-        onSubmit={onSubmit}
-        onError={onErrorHandler}
-        onCancel={onCancel}
-        view={ComponentViewEnum.STANDARD}
-        hidePrimaryBtn
-        hideSecondaryBtn
-      >
-        <SheFormField
-          name="alias"
-          render={({ field }) => (
-            <SheInput
-              label={t("AddressForm.Labels.Alias")}
-              value={field.value}
+    <SheForm<AddressRequestModel>
+      className={cs.addressForm}
+      form={form}
+      onSubmit={onSubmit}
+      onError={onErrorHandler}
+      onCancel={onCancel}
+      view={ComponentViewEnum.STANDARD}
+      hidePrimaryBtn
+      hideSecondaryBtn
+    >
+      <SheFormField
+        name="alias"
+        render={({ field }) => (
+          <SheInput
+            label={t("AddressForm.Labels.Alias")}
+            value={field.value}
+            fullWidth
+            placeholder={t("AddressForm.Placeholders.Alias")}
+          />
+        )}
+      />
+      <SheFormField
+        name="addressLine1"
+        render={({ field }) => (
+          <SheInput
+            label={t("AddressForm.Labels.AddressLine1")}
+            value={field.value}
+            fullWidth
+            placeholder={t("AddressForm.Placeholders.AddressLine1")}
+          />
+        )}
+      />
+      <SheFormField
+        name="addressLine2"
+        render={({ field }) => (
+          <SheInput
+            label={t("AddressForm.Labels.AddressLine2")}
+            value={field.value}
+            fullWidth
+            placeholder={t("AddressForm.Placeholders.AddressLine2")}
+          />
+        )}
+      />
+      <SheFormField
+        name="city"
+        render={({ field }) => (
+          <SheInput
+            label={t("AddressForm.Labels.City")}
+            value={field.value}
+            fullWidth
+            placeholder={t("AddressForm.Placeholders.City")}
+          />
+        )}
+      />
+      <SheFormField
+        name="state"
+        render={({ field }) => (
+          <SheInput
+            label={t("AddressForm.Labels.State")}
+            value={field.value}
+            fullWidth
+            placeholder={t("AddressForm.Placeholders.State")}
+          />
+        )}
+      />
+      <SheFormField
+        name="postalCode"
+        render={({ field }) => (
+          <SheInput
+            label={t("AddressForm.Labels.PostalCode")}
+            value={field.value}
+            fullWidth
+            placeholder={t("AddressForm.Placeholders.PostalCode")}
+          />
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="countryId"
+        render={({ field }) => (
+          <SheFormItem label={t("AddressForm.Labels.Country")}>
+            <SheSelect
+              selected={field.value}
+              items={convertCountriesToSelectItems()}
+              hideFirstOption
+              placeholder={t("AddressForm.Placeholders.Country")}
               fullWidth
-              placeholder={t("AddressForm.Placeholders.Alias")}
+              onSelect={(value) => {
+                field.onChange(value);
+                void form.trigger("countryId");
+              }}
             />
-          )}
-        />
-        <SheFormField
-          name="addressLine1"
-          render={({ field }) => (
-            <SheInput
-              label={t("AddressForm.Labels.AddressLine1")}
-              value={field.value}
-              fullWidth
-              placeholder={t("AddressForm.Placeholders.AddressLine1")}
-            />
-          )}
-        />
-        <SheFormField
-          name="addressLine2"
-          render={({ field }) => (
-            <SheInput
-              label={t("AddressForm.Labels.AddressLine2")}
-              value={field.value}
-              fullWidth
-              placeholder={t("AddressForm.Placeholders.AddressLine2")}
-            />
-          )}
-        />
-        <SheFormField
-          name="city"
-          render={({ field }) => (
-            <SheInput
-              label={t("AddressForm.Labels.City")}
-              value={field.value}
-              fullWidth
-              placeholder={t("AddressForm.Placeholders.City")}
-            />
-          )}
-        />
-        <SheFormField
-          name="state"
-          render={({ field }) => (
-            <SheInput
-              label={t("AddressForm.Labels.State")}
-              value={field.value}
-              fullWidth
-              placeholder={t("AddressForm.Placeholders.State")}
-            />
-          )}
-        />
-        <SheFormField
-          name="postalCode"
-          render={({ field }) => (
-            <SheInput
-              label={t("AddressForm.Labels.PostalCode")}
-              value={field.value}
-              fullWidth
-              placeholder={t("AddressForm.Placeholders.PostalCode")}
-            />
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="countryId"
-          render={({ field }) => (
-            <SheFormItem label={t("AddressForm.Labels.Country")}>
-              <SheSelect
-                selected={field.value}
-                items={convertCountriesToSelectItems()}
-                hideFirstOption
-                placeholder={t("AddressForm.Placeholders.Country")}
-                fullWidth
-                onSelect={(value) => {
-                  field.onChange(value);
-                  void form.trigger("countryId");
-                }}
-              />
-            </SheFormItem>
-          )}
-        />
-
+          </SheFormItem>
+        )}
+      />
+      {showFooter && (
         <div
           className={cs.cardFooter}
           style={{ justifyContent: "space-between" }}
@@ -184,7 +196,7 @@ export default function AddressForm({
             }
           />
         </div>
-      </SheForm>
-    </div>
+      )}
+    </SheForm>
   );
 }

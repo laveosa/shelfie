@@ -17,6 +17,7 @@ const initialState: IProductBasicDataPageSlice = {
   isCreateProductCategoryCardLoading: false,
   isCreateProductBrandCardLoading: false,
   isSelectEntityCardLoading: false,
+  isCreateCompanyCardLoading: false,
   isProductsLoading: false,
   isPhotoUploaderLoading: false,
   isCompaniesGridLoading: false,
@@ -71,6 +72,13 @@ function setIsSelectEntityCardLoading(
   action: PayloadAction<boolean>,
 ) {
   state.isSelectEntityCardLoading = action?.payload;
+}
+
+function setIsCreateCompanyCardLoading(
+  state: IProductBasicDataPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isCreateCompanyCardLoading = action?.payload;
 }
 
 function setProductsLoading(
@@ -201,6 +209,7 @@ const ProductBasicDataPageSlice = createSlice({
     setIsCreateProductCategoryCardLoading,
     setIsCreateProductBrandCardLoading,
     setIsSelectEntityCardLoading,
+    setIsCreateCompanyCardLoading,
     setProductsLoading,
     setIsPhotoUploaderLoading,
     setIsCompaniesGridLoading,

@@ -13,6 +13,7 @@ export interface IProductBasicDataPageSlice {
   isCreateProductCategoryCardLoading?: boolean;
   isCreateProductBrandCardLoading?: boolean;
   isSelectEntityCardLoading?: boolean;
+  isCreateCompanyCardLoading?: boolean;
   isProductsLoading?: boolean;
   isPhotoUploaderLoading?: boolean;
   isCompaniesGridLoading?: boolean;

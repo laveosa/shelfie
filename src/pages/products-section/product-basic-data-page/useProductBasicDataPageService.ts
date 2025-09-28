@@ -1,9 +1,15 @@
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
+import useProductsPageService
+  from "@/pages/products-section/products-page/useProductsPageService.ts";
 import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
-import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
-import { ProductBasicDataPageSliceActions as actions } from "@/state/slices/ProductBasicDataPageSlice.ts";
+import {
+  ProductsPageSliceActions as productsActions
+} from "@/state/slices/ProductsPageSlice.ts";
+import {
+  ProductBasicDataPageSliceActions as actions
+} from "@/state/slices/ProductBasicDataPageSlice.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
@@ -12,11 +18,16 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { ProductCountersModel } from "@/const/models/CounterModel.ts";
-import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
-import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import {
+  IProductBasicDataPageSlice
+} from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
+import {
+  IProductsPageSlice
+} from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
 import CompaniesApiHooks from "@/utils/services/api/CompaniesApiService.ts";
 import { CompanyModel } from "@/const/models/CompanyModel.ts";
+import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";
 
 export default function useProductBasicDataPageService(handleCardAction) {
   // ==================================================================== UTILITIES
@@ -30,6 +41,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
   const productsService = useProductsPageService();
   const { addToast } = useToast();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   // ==================================================================== API INITIALIZATION
   const [generateProductCode] =
@@ -39,6 +51,10 @@ export default function useProductBasicDataPageService(handleCardAction) {
   const [getListOfCompaniesForGrid] =
     CompaniesApiHooks.useGetListOfCompaniesForGridMutation();
   const [updateBrandOwner] = ProductsApiHooks.useUpdateBrandOwnerMutation();
+  const [createCompany] = CompaniesApiHooks.useCreateCompanyMutation();
+  const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
+  const [addNewLocationToCompany] =
+    CompaniesApiHooks.useAddNewLocationToCompanyMutation();
 
   // ==================================================================== API
   function getProductsHandler(gridRequestModel: GridRequestModel) {
@@ -415,6 +431,51 @@ export default function useProductBasicDataPageService(handleCardAction) {
     handleCardAction("selectEntityCard");
   }
 
+  function createCompanyHandler(model) {
+    dispatch(actions.setIsCreateCompanyCardLoading(true));
+    createCompany(model.company).then((res: any) => {
+      if (!res.error) {
+        model.image.uploadModels.map((model) => {
+          model.contextId = res.data.companyId;
+          dispatch(actions.setIsPhotoUploaderLoading(true));
+          uploadPhoto(model).then((res: any) => {
+            dispatch(actions.setIsPhotoUploaderLoading(false));
+            if (res) {
+              addToast({
+                text: t("SuccessMessages.ImageAdded"),
+                type: "success",
+              });
+            } else {
+              addToast({
+                text: res.error.details.message,
+                type: "error",
+              });
+            }
+          });
+        });
+        addNewLocationToCompany({
+          companyId: res.data.companyId,
+          model: model.address,
+        });
+        dispatch(actions.setIsCreateCompanyCardLoading(false));
+        handleCardAction("createCompanyCard");
+        addToast({
+          text: "Company created successfully",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: res.error.details.message,
+          type: "error",
+        });
+      }
+    });
+  }
+
+  function closeCreateCompanyCardHandler() {
+    handleCardAction("createCompanyCard");
+  }
+
   // ==================================================================== PROVIDED API
   return {
     state,
@@ -441,5 +502,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
     selectCompanyHandler,
     openCreateEntityCardHandler,
     closeSelectEntityCardHandler,
+    createCompanyHandler,
+    closeCreateCompanyCardHandler,
   };
 }

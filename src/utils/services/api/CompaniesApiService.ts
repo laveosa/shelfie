@@ -62,6 +62,13 @@ export const CompaniesApiService = createApi({
         body: JSON.stringify(model),
       }),
     }),
+    addNewLocationToCompany: apiConfig.createMutation<any, any>(builder, {
+      query: ({ companyId, model }) => ({
+        url: `${ApiUrlEnum.COMPANIES}/${companyId}/locations`,
+        method: "POST",
+        body: JSON.stringify(model),
+      }),
+    }),
   }),
 });
 

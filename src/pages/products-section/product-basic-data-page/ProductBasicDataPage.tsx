@@ -97,6 +97,12 @@ export function ProductBasicDataPage() {
       case "closeSelectEntityCard":
         service.closeSelectEntityCardHandler();
         break;
+      case "createCompany":
+        service.createCompanyHandler(payload);
+        break;
+      case "closeCreateCompanyCard":
+        service.closeCreateCompanyCardHandler();
+        break;
     }
   }
 
@@ -174,11 +180,9 @@ export function ProductBasicDataPage() {
         {state.activeCards.includes("createCompanyCard") && (
           <div ref={createRefCallback("createCompanyCard")}>
             <CreateCompanyCard
-              isLoading={state.isSelectEntityCardLoading}
-              isCompanyPhotosGridLoading={state.isCompaniesGridLoading}
-              images={state.selectedCompany?.images}
-              countryCodes={state.countryCodes}
+              isLoading={state.isCreateCompanyCardLoading}
               isPhotoUploaderLoading={state.isPhotoUploaderLoading}
+              countryCodes={state.countryCodes}
               onAction={onAction}
             />
           </div>

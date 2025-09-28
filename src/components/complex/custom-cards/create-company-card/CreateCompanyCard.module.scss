@@ -1,22 +1,14 @@
 @use "@/styles/variables" as vars;
 
 .createCompanyCard {
-  .createCompanyCard {
+  .createCompanyCardContent {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    height: 100vh;
-    max-height: calc(100vh - 166px);
     gap: 20px;
+  }
 
-    .supplierConfigurationCardForm {
-      overflow: auto;
-
-      &::-webkit-scrollbar {
-        width: 6px;
-        height: 10px;
-        background: white;
-      }
-    }
+  .createCompanyCardButtonBlock {
+    display: flex;
+    justify-content: space-between;
   }
 }

@@ -12,7 +12,7 @@ const CreateCompanyFormScheme: z.ZodObject<IZodSchema<CompanyModel>> = z.object(
       .min(2, "min value length 2")
       .max(16, "max value length 16"),
     nip: z.string().optional(),
-    customerCareEmail: z.string().optional(),
+    customerCareEmail: z.string().email().optional(),
     countryId: z.number().optional(),
   },
 );
