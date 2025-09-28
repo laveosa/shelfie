@@ -1,0 +1,40 @@
+.companyConfigurationCard {
+  .companyConfigurationCardContent {
+    .imagesBlock {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .imagesBlockTitle {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .imagesBlockGrid {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        max-width: 24rem;
+
+        .imagesBlockGridItem {
+          display: flex;
+          aspect-ratio: 1 / 1;
+          align-items: center;
+          justify-content: center;
+          border: 1px solid lightgray;
+          background: gray;
+          margin: -1px 0 0 -1px;
+        }
+
+        .imagesBlockGridItem:nth-child(-n+6) {
+          margin-top: 0;
+        }
+
+        .imagesBlockGridItem:nth-child(6n+1) {
+          margin-left: 0;
+        }
+      }
+    }
+
+  }
+}

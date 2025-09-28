@@ -55,6 +55,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
   const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
   const [addNewLocationToCompany] =
     CompaniesApiHooks.useAddNewLocationToCompanyMutation();
+  const [getCompanyDetails] = CompaniesApiHooks.useLazyGetCompanyDetailsQuery();
 
   // ==================================================================== API
   function getProductsHandler(gridRequestModel: GridRequestModel) {
@@ -476,6 +477,20 @@ export default function useProductBasicDataPageService(handleCardAction) {
     handleCardAction("createCompanyCard");
   }
 
+  function manageCompanyHandler(model: CompanyModel) {
+    handleCardAction("companyConfigurationCard", true);
+    dispatch(actions.setIsCompanyConfigurationCardLoading(true));
+    getCompanyDetails(model.companyId).then((res: any) => {
+      dispatch(actions.setIsCompanyConfigurationCardLoading(false));
+      dispatch(actions.refreshManagedCompany(res.data));
+    });
+  }
+
+  function closeCompanyConfigurationCardHandler() {
+    handleCardAction("companyConfigurationCard");
+    dispatch(actions.resetManagedCompany());
+  }
+
   // ==================================================================== PROVIDED API
   return {
     state,
@@ -504,5 +519,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
     closeSelectEntityCardHandler,
     createCompanyHandler,
     closeCreateCompanyCardHandler,
+    manageCompanyHandler,
+    closeCompanyConfigurationCardHandler,
   };
 }

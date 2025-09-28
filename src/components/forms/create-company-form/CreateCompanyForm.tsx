@@ -24,6 +24,7 @@ export default function CreateCompanyForm<T>({
   isLoading,
   data,
   countryCodes,
+  onSubmit,
   onCancel,
   onHandleUpData,
 }: ICreateCompanyForm<T>) {
@@ -62,14 +63,14 @@ export default function CreateCompanyForm<T>({
 
   useEffect(() => {
     if (form.formState.isValid) {
-      onHandleUpData({
+      onHandleUpData?.({
         companyName: watchedValues[0],
         nip: watchedValues[1],
         countryId: watchedValues[2],
         customerCareEmail: watchedValues[3],
       });
     } else {
-      onHandleUpData(null);
+      onHandleUpData?.(null);
     }
   }, [watchedValues, form.formState.isValid]);
 
@@ -82,8 +83,8 @@ export default function CreateCompanyForm<T>({
       formPosition={DirectionEnum.CENTER}
       view={ComponentViewEnum.STANDARD}
       fullWidth
-      hidePrimaryBtn
-      hideSecondaryBtn
+      hidePrimaryBtn={!data?.companyId}
+      hideSecondaryBtn={!data?.companyId}
       onCancel={onCancel}
     >
       <SheFormField
@@ -96,6 +97,7 @@ export default function CreateCompanyForm<T>({
             value={field.value}
             placeholder="enter company name..."
             fullWidth
+            onDelay={() => onSubmit(watchedValues as T)}
           />
         )}
       />

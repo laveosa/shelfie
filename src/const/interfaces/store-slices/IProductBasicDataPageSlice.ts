@@ -14,6 +14,7 @@ export interface IProductBasicDataPageSlice {
   isCreateProductBrandCardLoading?: boolean;
   isSelectEntityCardLoading?: boolean;
   isCreateCompanyCardLoading?: boolean;
+  isCompanyConfigurationCardLoading?: boolean;
   isProductsLoading?: boolean;
   isPhotoUploaderLoading?: boolean;
   isCompaniesGridLoading?: boolean;
@@ -31,4 +32,5 @@ export interface IProductBasicDataPageSlice {
   selectedCompany?: CompanyModel;
   companiesList?: CompanyModel[];
   companiesGridRequestModel?: GridRequestModel;
+  managedCompany?: CompanyModel;
 }

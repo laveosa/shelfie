@@ -18,6 +18,7 @@ const initialState: IProductBasicDataPageSlice = {
   isCreateProductBrandCardLoading: false,
   isSelectEntityCardLoading: false,
   isCreateCompanyCardLoading: false,
+  isCompanyConfigurationCardLoading: false,
   isProductsLoading: false,
   isPhotoUploaderLoading: false,
   isCompaniesGridLoading: false,
@@ -35,6 +36,7 @@ const initialState: IProductBasicDataPageSlice = {
   selectedCompany: undefined,
   companiesList: [],
   companiesGridRequestModel: {},
+  managedCompany: undefined,
 };
 
 //------------------------------------- LOADERS/
@@ -79,6 +81,13 @@ function setIsCreateCompanyCardLoading(
   action: PayloadAction<boolean>,
 ) {
   state.isCreateCompanyCardLoading = action?.payload;
+}
+
+function setIsCompanyConfigurationCardLoading(
+  state: IProductBasicDataPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isCompanyConfigurationCardLoading = action?.payload;
 }
 
 function setProductsLoading(
@@ -200,6 +209,17 @@ function refreshCompaniesGridRequestModel(
     action?.payload || state.companiesGridRequestModel;
 }
 
+function refreshManagedCompany(
+  state: IProductBasicDataPageSlice,
+  action: PayloadAction<CompanyModel>,
+) {
+  state.managedCompany = action?.payload || state.managedCompany;
+}
+
+function resetManagedCompany(state: IProductBasicDataPageSlice) {
+  state.managedCompany = null;
+}
+
 const ProductBasicDataPageSlice = createSlice({
   name: StoreSliceEnum.PRODUCT_BASIC_DATA,
   initialState,
@@ -210,6 +230,7 @@ const ProductBasicDataPageSlice = createSlice({
     setIsCreateProductBrandCardLoading,
     setIsSelectEntityCardLoading,
     setIsCreateCompanyCardLoading,
+    setIsCompanyConfigurationCardLoading,
     setProductsLoading,
     setIsPhotoUploaderLoading,
     setIsCompaniesGridLoading,
@@ -227,6 +248,8 @@ const ProductBasicDataPageSlice = createSlice({
     refreshSelectedCompany,
     resetSelectedCompany,
     refreshCompaniesGridRequestModel,
+    refreshManagedCompany,
+    resetManagedCompany,
   },
 });
 

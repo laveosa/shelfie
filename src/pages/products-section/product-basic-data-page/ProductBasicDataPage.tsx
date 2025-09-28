@@ -15,6 +15,7 @@ import SelectEntityCard from "@/components/complex/custom-cards/select-entity-ca
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 import { CompaniesListGridColumns } from "@/components/complex/grid/custom-grids/companies-list-grid/CompaniesListGridColumns.tsx";
 import CreateCompanyCard from "@/components/complex/custom-cards/create-company-card/CreateCompanyCard.tsx";
+import CompanyConfigurationCard from "@/components/complex/custom-cards/company-configuration-card/CompanyConfigurationCard.tsx";
 
 export function ProductBasicDataPage() {
   // ==================================================================== UTILITIES
@@ -103,6 +104,12 @@ export function ProductBasicDataPage() {
       case "closeCreateCompanyCard":
         service.closeCreateCompanyCardHandler();
         break;
+      case "manageCompany":
+        service.manageCompanyHandler(payload);
+        break;
+      case "closeCompanyConfigurationCard":
+        service.closeCompanyConfigurationCardHandler();
+        break;
     }
   }
 
@@ -182,6 +189,16 @@ export function ProductBasicDataPage() {
             <CreateCompanyCard
               isLoading={state.isCreateCompanyCardLoading}
               isPhotoUploaderLoading={state.isPhotoUploaderLoading}
+              countryCodes={state.countryCodes}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards.includes("companyConfigurationCard") && (
+          <div ref={createRefCallback("companyConfigurationCard")}>
+            <CompanyConfigurationCard
+              isLoading={state.isCompanyConfigurationCardLoading}
+              company={state.managedCompany}
               countryCodes={state.countryCodes}
               onAction={onAction}
             />
