@@ -6,6 +6,7 @@ import productMenuItems from "@/const/jsons/context-sidebar/product-menu-items.j
 import purchaseMenuItems from "@/const/jsons/context-sidebar/purchase-menu-items.json";
 import salesMenuItems from "@/const/jsons/context-sidebar/sales-menu-items.json";
 import orderMenuItems from "@/const/jsons/context-sidebar/order-menu-items.json";
+import customerMenuItems from "@/const/jsons/context-sidebar/customer-menu-items.json";
 
 import { LucideIconType } from "@/const/types/LucideIconType.ts";
 import { MenuItem } from "@/const/interfaces/complex-components/custom-cards/IProductMenuCard.ts";
@@ -25,6 +26,10 @@ export class ContextSidebarService {
 
   public static getOrderMenuItems(): MenuItem[] {
     return orderMenuItems.map((item) => this.updatedMenuItem(item));
+  }
+
+  public static getCustomerMenuItems(): MenuItem[] {
+    return customerMenuItems.map((item) => this.updatedMenuItem(item));
   }
 
   // ====================================================== PRIVATE

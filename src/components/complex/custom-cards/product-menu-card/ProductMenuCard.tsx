@@ -102,6 +102,14 @@ export default function ProductMenuCard({
           `${NavUrlEnum.SALES}${path}/${itemId || ""}`,
         disableItemsWithoutId: false,
       },
+      customer: {
+        menuItems: ContextSidebarService.getCustomerMenuItems(),
+        defaultEnabledItem: "customer",
+        pathBase: NavUrlEnum.CUSTOMER_BASIC_DATA,
+        urlBuilder: (path: string, itemId?: string) =>
+          `${NavUrlEnum.CUSTOMERS}${path}/${itemId || ""}`,
+        disableItemsWithoutId: false,
+      },
     };
 
     const config = collectionConfig || collectionConfigs[itemsCollection];

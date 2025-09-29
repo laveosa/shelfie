@@ -1,0 +1,34 @@
+[
+  {
+    "id": "basic_data",
+    "counterId": "basic_data",
+    "icon": "FileText",
+    "label": "BasicData",
+    "labelTransKey": "CustomerMenu.BasicData",
+    "path": "CUSTOMER_BASIC_DATA"
+  },
+  {
+    "id": "addresses",
+    "counterId": "addressesAmount",
+    "icon": "MapPin",
+    "label": "Addresses",
+    "labelTransKey": "CustomerMenu.Addresses",
+    "path": "CUSTOMER_ADDRESSES"
+  },
+  {
+    "id": "open_cart",
+    "counterId": "openCartsAmount",
+    "icon": "ShoppingBag",
+    "label": "OpenCart",
+    "labelTransKey": "CustomerMenu.OpenCart",
+    "path": "CUSTOMER_OPEN_CART"
+  },
+  {
+    "id": "orders",
+    "counterId": "ordersAmount",
+    "icon": "ShoppingCart",
+    "label": "Orders",
+    "labelTransKey": "CustomerMenu.Orders",
+    "path": "CUSTOMER_ORDERS"
+  }
+]
