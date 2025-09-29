@@ -7,6 +7,7 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IMessengerPageSlice } from "@/const/interfaces/store-slices/IMessengerPageSlice.ts";
 import MessengerListCard from "@/components/complex/custom-cards/messenger-list-card/MessengerListCard.tsx";
 import MessengerConversationCard from "@/components/complex/custom-cards/messenger-conversation-card/MessengerConversationCard.tsx";
+import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
 
 export function MessengerPage() {
   const dispatch = useAppDispatch();
@@ -65,13 +66,12 @@ export function MessengerPage() {
   }
 
   return (
-    <div className={cs.messengerPage} style={{ padding: "20px" }}>
+    <SheContextSidebar>
       <MessengerListCard
         chats={state.messengerResponseModel.items}
         selectedChat={state.selectedChat?.userId}
         onAction={onAction}
       />
-
       {state.activeCards
         .filter((card) => card.startsWith("messengerConversationCard-"))
         .map((card) => {
@@ -93,6 +93,6 @@ export function MessengerPage() {
             />
           );
         })}
-    </div>
+    </SheContextSidebar>
   );
 }

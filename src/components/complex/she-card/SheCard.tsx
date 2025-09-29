@@ -1,59 +1,37 @@
-import { useEffect, useState } from "react";
-import { Trans } from "react-i18next";
+import React, { useEffect, useState } from "react";
 import _ from "lodash";
 
 import cs from "./SheCard.module.scss";
-import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
-import { ISheCard } from "@/const/interfaces/complex-components/ISheCard.ts";
 import SheCardHeader from "@/components/complex/she-card/components/she-card-header/SheCardHeader.tsx";
-import { getCustomProps } from "@/utils/helpers/props-helper.ts";
+import SheCardFooter from "@/components/complex/she-card/components/she-card-footer/SheCardFooter.tsx";
+import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
+import {
+  getCustomProps,
+  removeCustomProps,
+} from "@/utils/helpers/props-helper.ts";
+import { ISheCard } from "@/const/interfaces/complex-components/ISheCard.ts";
 import {
   ISheCardHeader,
   SheCardHeaderDefaultModel,
 } from "@/const/interfaces/complex-components/ISheCardHeader.ts";
+import {
+  ISheCardFooter,
+  SheCardFooterDefaultModel,
+} from "@/const/interfaces/complex-components/ISheCardFooter.ts";
 
 export default function SheCard(props: ISheCard) {
   // ==================================================================== PROPS
   const {
     children,
     className = "",
-    headerClassName = "",
-    footerClassName = "",
     contextClassName = "",
     view = ComponentViewEnum.CARD,
-    title,
-    titleTransKey,
-    text,
-    textTransKey,
-    description,
-    descriptionTransKey,
-    showToggleButton,
     isMinimized,
-    saveIsMinimizedCondition,
-    isMinimizedConditionStorageKey,
-    showNotificationCard,
-    notificationCardProps,
     width,
     minWidth,
     maxWidth,
-    fullWidth,
     isLoading,
-    disabled,
-    showHeader,
-    showFooter,
-    showCloseButton,
-    showPrimaryButton,
-    primaryButtonTitle,
-    primaryButtonTitleTransKey,
-    primaryButtonDisabled,
-    primaryButtonProps,
-    showSecondaryButton,
-    secondaryButtonTitle,
-    secondaryButtonTitleTransKey,
-    secondaryButtonDisabled,
-    secondaryButtonProps,
-    onPrimaryButtonClick,
     onSecondaryButtonClick,
     onIsMinimizedChange,
   } = props;
@@ -61,6 +39,18 @@ export default function SheCard(props: ISheCard) {
     props,
     SheCardHeaderDefaultModel,
   );
+  const sheCardFooterProps = getCustomProps<ISheCard, ISheCardFooter>(
+    props,
+    SheCardFooterDefaultModel,
+  );
+  const restProps = removeCustomProps<ISheCard>(props, [
+    SheCardHeaderDefaultModel,
+    SheCardFooterDefaultModel,
+  ]);
+
+  console.log("HEADER: ", sheCardHeaderProps);
+  console.log("CONTEXT: ", restProps);
+  console.log("FOOTER: ", sheCardFooterProps);
 
   // ==================================================================== UTILITIES
   const [_isMinimized, setIsMinimized] = useState<boolean>(null);
@@ -98,49 +88,20 @@ export default function SheCard(props: ISheCard) {
         onHeaderToggleClick={onMinimizeCardHandler}
         onHeaderCloseClick={onSecondaryButtonClick}
       />
-      {isLoading && <div className={cs.loaderContainer}></div>}
       <div
-        className={cs.cardContent}
-        style={{ height: !showFooter ? "100%" : "calc(100% - 80px)" }}
+        className={`${cs.cardContextWrapper} ${isLoading ? cs.cardContextIsLoading : ""}`}
+        {...restProps}
       >
-        {children}
-      </div>
-      {showFooter && (
-        <div>
-          {(showSecondaryButton || showPrimaryButton) && (
-            <div
-              className={cs.cardFooter}
-              style={{
-                justifyContent: showSecondaryButton
-                  ? "space-between"
-                  : "flex-end",
-              }}
-            >
-              {showSecondaryButton && (
-                <SheButton
-                  variant="secondary"
-                  onClick={onSecondaryButtonClick}
-                  disabled={isLoading}
-                >
-                  <Trans i18nKey={secondaryButtonTitleTransKey}>
-                    {secondaryButtonTitle}
-                  </Trans>
-                </SheButton>
-              )}
-              {showPrimaryButton && (
-                <SheButton
-                  onClick={onPrimaryButtonClick}
-                  disabled={isLoading || primaryButtonDisabled}
-                >
-                  <Trans i18nKey={primaryButtonTitleTransKey}>
-                    {primaryButtonTitle}
-                  </Trans>
-                </SheButton>
-              )}
-            </div>
-          )}
+        {isLoading && <SheLoading className={cs.sheCardLoading} />}
+        <div className={`${cs.cardContextContainer} ${contextClassName}`}>
+          {children}
         </div>
-      )}
+      </div>
+      <SheCardFooter
+        {...sheCardFooterProps}
+        view={view}
+        isMinimized={_isMinimized}
+      />
     </div>
   );
 }

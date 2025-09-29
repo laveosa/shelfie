@@ -4,53 +4,69 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 300px;
-  height: calc(100vh - 92px);
+  min-width: 400px;
+  max-width: 400px;
+  height: calc(100vh - 72px);
   overflow: hidden;
-  background-color: white;
+
+  .cardContextWrapper {
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    height: calc(100vh - 92px);
+    scrollbar-gutter: stable;
+    padding-right: 2.5px;
+
+    @-moz-document url-prefix() {
+      padding-right: 8.5px;
+    }
+
+    &::-webkit-scrollbar {
+      width: 5px;
+      height: 10px;
+      background: white;
+    }
+
+    .cardContextContainer {
+    }
+  }
+}
+
+// ====================================================================== VIEW
+
+.sheCard {
+  &.standard {
+    border: 0;
+  }
 
   &.card {
     border-radius: 10px;
     border: 1px solid vars.$brdColor;
-  }
+    background-color: white;
 
-  &.standard {
-  }
-
-  .cardContent {
-  }
-
-  .cardFooter {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
+    .cardContextWrapper {
+      padding: 10px 2.5px 10px 10px;
+      margin-right: 2.5px;
+    }
   }
 }
 
-// -------------------------------------------------------------------- LOADER
+// ====================================================================== LOADER
 
 .sheCard {
-  .loaderContainer {
-    height: 5px;
-    width: 100%;
-    background: repeating-linear-gradient(
-      to right,
-      gray 0%,
-      lightblue 50%,
-      gray 100%
-    );
-    background-size: 200% auto;
-    animation: gradient 2s infinite;
-    animation-fill-mode: forwards;
-    animation-timing-function: linear;
+  .cardContextWrapper {
+    .sheCardLoading {
+    }
+
+    .cardContextContainer {
+    }
   }
 
-  @keyframes gradient {
-    0% {
-      background-position: 0 0;
+  .cardContextWrapper.cardContextIsLoading {
+    .sheCardLoading {
     }
-    100% {
-      background-position: -200% 0;
+
+    .cardContextContainer {
     }
   }
 }

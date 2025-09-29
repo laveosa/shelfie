@@ -1,2 +1,56 @@
+@use "@/styles/variables" as vars;
+
 .sheCardFooter {
+  display: flex;
+  flex-direction: column;
+  gap: vars.$paddingSmall;
+
+  .sheCardFooterCardNotificationContainer,
+  .sheCardFooterButtonsContainer {
+    opacity: 1;
+    display: flex;
+    flex-grow: 1;
+    width: 100%;
+  }
+
+  .sheCardFooterCardNotificationContainer {
+  }
+
+  .sheCardFooterButtonsContainer {
+    flex-direction: row;
+    min-height: 40px;
+  }
+}
+
+// ====================================================================== NOTIFICATION CARD
+
+.sheCardFooter {
+  .sheCardFooterCardNotificationContainer {
+    .sheCardFooterCardNotification {
+    }
+  }
+}
+
+// ======================================================== VIEW
+
+.sheCardFooter {
+  &.standard {
+    padding: 0;
+  }
+
+  &.card {
+    padding: 0 vars.$paddingSmall vars.$paddingSmall;
+  }
+}
+
+// ======================================================== MINIMIZED
+
+:global(.sheCardMinimized) {
+  .sheCardFooter {
+    .sheCardFooterCardNotificationContainer,
+    .sheCardFooterButtonsContainer {
+      opacity: 0;
+      display: none;
+    }
+  }
 }

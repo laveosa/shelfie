@@ -3,7 +3,6 @@ import React from "react";
 import SheCard from "@/components/complex/she-card/SheCard.tsx";
 import { IMessengerListCard } from "@/const/interfaces/complex-components/custom-cards/IMessengerListCard.ts";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
-import { Home } from "lucide-react";
 
 export default function MessengerListCard({
   chats,
@@ -11,7 +10,28 @@ export default function MessengerListCard({
   onAction,
 }: IMessengerListCard) {
   return (
-    <SheCard title="Header Title" showHeader showToggleButton showCloseButton>
+    <SheCard
+      // view={ComponentViewEnum.STANDARD}
+      title="Header Title"
+      showHeader
+      showToggleButton
+      // showCloseButton
+      // footerClassName="SOME_FOOTER_CLASS_NAME"
+      // footerStyle={{ border: "1px solid red" }}
+      showNotificationCard
+      notificationCardProps={{
+        title: "Delete Purchase",
+        titleTransKey: "CardTitles.DeletePurchase",
+        text: "The purchase will be deleted, but the changes in stock will remain intact.",
+        textTransKey: "ConfirmationMessages.DeletePurchase",
+        onClick: () => console.log("NOTIFICATION CARD:"),
+      }}
+      showFooter
+      showSecondaryButton
+      showPrimaryButton
+      onSecondaryButtonClick={(event) => console.log("SECONDARY BTN: ", event)}
+      onPrimaryButtonClick={(event) => console.log("PRIMARY BTN: ", event)}
+    >
       <h1>Some card context</h1>
       {/*<p>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores
