@@ -65,7 +65,7 @@ export function MessengerPage() {
   }
 
   return (
-    <div className={cs.messengerPage}>
+    <div className={cs.messengerPage} style={{ padding: "20px" }}>
       <MessengerListCard
         chats={state.messengerResponseModel.items}
         selectedChat={state.selectedChat?.userId}

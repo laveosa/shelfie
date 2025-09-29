@@ -1,12 +1,9 @@
-import { Search } from "lucide-react";
 import React from "react";
 
 import SheCard from "@/components/complex/she-card/SheCard.tsx";
-import cs from "./MessengerListCard.module.scss";
-import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { IMessengerListCard } from "@/const/interfaces/complex-components/custom-cards/IMessengerListCard.ts";
-import { formatDate, getInitials } from "@/utils/helpers/quick-helper.ts";
-import facebookLogo from "@/assets/images/facebook-messenger_logo.svg";
+import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
+import { Home } from "lucide-react";
 
 export default function MessengerListCard({
   chats,
@@ -14,7 +11,37 @@ export default function MessengerListCard({
   onAction,
 }: IMessengerListCard) {
   return (
-    <SheCard view="card" className={cs.messengerCard} width="400px">
+    <SheCard title="Header Title" showHeader showToggleButton showCloseButton>
+      <h1>Some card context</h1>
+      {/*<p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores
+        ducimus nesciunt odit sapiente voluptas. Adipisci cum ipsa magni
+        necessitatibus numquam tempora temporibus vitae? Atque culpa dolorem
+        impedit quasi. Beatae, enim!
+      </p>
+      <p>
+        A accusantium amet debitis dicta dolore dolores, eius et, expedita illo
+        maxime molestiae non odit officia placeat porro quaerat quasi ratione
+        repellat sed voluptatibus? Ducimus facilis non perferendis praesentium
+        vitae!
+      </p>
+      <p>
+        Dolore et pariatur sint sunt veritatis voluptatibus! Autem cupiditate
+        dignissimos explicabo ipsa iure iusto magnam nihil quod recusandae,
+        vitae! Ad blanditiis doloremque harum, inventore magnam maxime neque
+        nostrum officiis voluptate.
+      </p>
+      <p>
+        Ab aperiam architecto aspernatur dolorum eius fugit hic ipsum nam,
+        nesciunt nulla omnis possimus, quae quia quod totam? Alias architecto
+        assumenda libero neque possimus praesentium quae temporibus unde ut
+        voluptas.
+      </p>*/}
+    </SheCard>
+  );
+
+  /*return (
+    <SheCard className={cs.messengerCard} width="400px">
       <div className={cs.messengerCardContent}>
         <SheInput
           icon={Search}
@@ -80,5 +107,5 @@ export default function MessengerListCard({
         </div>
       </div>
     </SheCard>
-  );
+  );*/
 }
