@@ -55,6 +55,7 @@ export default function CompanyConfigurationCard({
               icon={ImagePlus}
               variant="secondary"
               value="Manage Photos"
+              onClick={() => onAction("manageCompanyPhotos")}
             />
           </div>
           <div className={cs.imagesBlock}>

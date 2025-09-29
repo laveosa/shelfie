@@ -16,6 +16,8 @@ import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 import { CompaniesListGridColumns } from "@/components/complex/grid/custom-grids/companies-list-grid/CompaniesListGridColumns.tsx";
 import CreateCompanyCard from "@/components/complex/custom-cards/create-company-card/CreateCompanyCard.tsx";
 import CompanyConfigurationCard from "@/components/complex/custom-cards/company-configuration-card/CompanyConfigurationCard.tsx";
+import PhotosCard from "@/components/complex/custom-cards/photos-card/PhotosCard.tsx";
+import { ManageCompanyPhotosGridColumns } from "@/components/complex/grid/custom-grids/manage-company-photos-grid/ManageCompanyPhotosGridColumns.tsx";
 
 export function ProductBasicDataPage() {
   // ==================================================================== UTILITIES
@@ -58,9 +60,6 @@ export function ProductBasicDataPage() {
         break;
       case "createProductBrand":
         service.createBrandHandler(payload);
-        break;
-      case "uploadCategoryOrBrandPhoto":
-        service.uploadCategoryOrBrandPhotoHandler(payload);
         break;
       case "gotoProductsPage":
         service.gotoProductsPageHandler();
@@ -115,6 +114,18 @@ export function ProductBasicDataPage() {
         break;
       case "closeCompanyConfigurationCard":
         service.closeCompanyConfigurationCardHandler();
+        break;
+      case "manageCompanyPhotos":
+        service.manageCompanyPhotosHandler();
+        break;
+      case "uploadPhoto":
+        service.uploadPhotoHandler(payload);
+        break;
+      case "deleteCompanyPhoto":
+        service.deleteCompanyPhotoHandler(payload);
+        break;
+      case "closePhotosCard":
+        service.closePhotosCardHandler();
         break;
     }
   }
@@ -207,6 +218,23 @@ export function ProductBasicDataPage() {
               isGridLoading={state.isLocationsGridLoading}
               company={state.managedCompany}
               countryCodes={state.countryCodes}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards.includes("photosCard") && (
+          <div ref={createRefCallback("photosCard")}>
+            <PhotosCard
+              isImageUploaderLoading={state.isImageUploaderLoading}
+              data={state.managedCompany?.photos}
+              contextName={"Company"}
+              contextId={state.managedCompany?.companyId}
+              showCloseButton
+              columns={
+                ManageCompanyPhotosGridColumns({
+                  onAction,
+                }) as ColumnDef<DataWithId>[]
+              }
               onAction={onAction}
             />
           </div>

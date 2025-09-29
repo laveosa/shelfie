@@ -1,11 +1,16 @@
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
+import useProductsPageService
+  from "@/pages/products-section/products-page/useProductsPageService.ts";
 import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
 import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
-import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
-import { ProductBasicDataPageSliceActions as actions } from "@/state/slices/ProductBasicDataPageSlice.ts";
+import {
+  ProductsPageSliceActions as productsActions
+} from "@/state/slices/ProductsPageSlice.ts";
+import {
+  ProductBasicDataPageSliceActions as actions
+} from "@/state/slices/ProductBasicDataPageSlice.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
@@ -14,12 +19,18 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { ProductCountersModel } from "@/const/models/CounterModel.ts";
-import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
-import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import {
+  IProductBasicDataPageSlice
+} from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
+import {
+  IProductsPageSlice
+} from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import CompaniesApiHooks from "@/utils/services/api/CompaniesApiService.ts";
 import { CompanyModel } from "@/const/models/CompanyModel.ts";
 import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
+import { ImageModel } from "@/const/models/ImageModel.ts";
+import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 
 export default function useProductBasicDataPageService(handleCardAction) {
   // ==================================================================== UTILITIES
@@ -50,6 +61,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
     CompaniesApiHooks.useAddNewLocationToCompanyMutation();
   const [getCompanyDetails] = CompaniesApiHooks.useLazyGetCompanyDetailsQuery();
   const [deleteCompany] = CompaniesApiHooks.useDeleteCompanyMutation();
+  const [deletePhoto] = AssetsApiHooks.useDeletePhotoMutation();
 
   // ==================================================================== API
   function getProductsHandler(gridRequestModel: GridRequestModel) {
@@ -318,6 +330,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
               }
             });
           });
+          dispatch(actions.resetSelectedCompany());
         } else {
           addToast({
             text: `${res.error.data.detail}`,
@@ -527,6 +540,78 @@ export default function useProductBasicDataPageService(handleCardAction) {
     dispatch(actions.resetManagedCompany());
   }
 
+  function manageCompanyPhotosHandler() {
+    handleCardAction("photosCard", true);
+  }
+
+  async function deleteCompanyPhotoHandler(model: ImageModel) {
+    const confirmedDeleteCompanyPhoto = await openConfirmationDialog({
+      headerTitle: "Deleting company photo",
+      text: "You are about to delete company photo.",
+      primaryButtonValue: "Delete",
+      secondaryButtonValue: "Cancel",
+    });
+
+    if (!confirmedDeleteCompanyPhoto) return;
+
+    deletePhoto(model.photoId).then((res: any) => {
+      const updatedPhotos = state.managedCompany.photos.filter(
+        (photo) => photo.photoId !== model.photoId,
+      );
+
+      dispatch(
+        actions.refreshManagedCompany({
+          ...state.managedCompany,
+          photos: updatedPhotos,
+        }),
+      );
+      if (!res.error) {
+        addToast({
+          text: "Photo deleted successfully",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: "Photo not deleted",
+          description: res.error.details.message,
+          type: "error",
+        });
+      }
+    });
+  }
+
+  function uploadPhotoHandler(model: UploadPhotoModel) {
+    dispatch(actions.setIsPhotoUploaderLoading(true));
+    return uploadPhoto(model).then((res: any) => {
+      if (res.error) {
+        addToast({
+          text: res.error.data?.detail || "Upload failed",
+          type: "error",
+        });
+        return res;
+      }
+      if (res.data.photoId) {
+        dispatch(actions.setIsPhotoUploaderLoading(false));
+        dispatch(
+          actions.refreshManagedCompany({
+            ...state.managedCompany,
+            photos: [...(state.managedCompany.photos || []), res.data],
+          }),
+        );
+        addToast({
+          text: "Photos added successfully",
+          type: "success",
+        });
+      }
+
+      return res;
+    });
+  }
+
+  function closePhotosCardHandler() {
+    handleCardAction("photosCard");
+  }
+
   // ==================================================================== PROVIDED API
   return {
     state,
@@ -558,5 +643,9 @@ export default function useProductBasicDataPageService(handleCardAction) {
     manageCompanyHandler,
     deleteCompanyHandler,
     closeCompanyConfigurationCardHandler,
+    manageCompanyPhotosHandler,
+    deleteCompanyPhotoHandler,
+    uploadPhotoHandler,
+    closePhotosCardHandler,
   };
 }
