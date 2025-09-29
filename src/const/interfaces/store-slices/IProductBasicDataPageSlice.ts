@@ -18,6 +18,7 @@ export interface IProductBasicDataPageSlice {
   isProductsLoading?: boolean;
   isPhotoUploaderLoading?: boolean;
   isCompaniesGridLoading?: boolean;
+  isLocationsGridLoading?: boolean;
   product?: ProductModel;
   countryCodes?: CountryCodeModel[];
   brandsList?: BrandModel[];

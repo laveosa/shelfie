@@ -83,8 +83,8 @@ export default function CreateCompanyForm<T>({
       formPosition={DirectionEnum.CENTER}
       view={ComponentViewEnum.STANDARD}
       fullWidth
-      hidePrimaryBtn={!data?.companyId}
-      hideSecondaryBtn={!data?.companyId}
+      hidePrimaryBtn={!!data?.companyId}
+      hideSecondaryBtn={!!data?.companyId}
       onCancel={onCancel}
     >
       <SheFormField

@@ -107,6 +107,9 @@ export function ProductBasicDataPage() {
       case "manageCompany":
         service.manageCompanyHandler(payload);
         break;
+      case "deleteCompany":
+        service.deleteCompanyHandler(payload);
+        break;
       case "closeCompanyConfigurationCard":
         service.closeCompanyConfigurationCardHandler();
         break;
@@ -198,6 +201,7 @@ export function ProductBasicDataPage() {
           <div ref={createRefCallback("companyConfigurationCard")}>
             <CompanyConfigurationCard
               isLoading={state.isCompanyConfigurationCardLoading}
+              isGridLoading={state.isLocationsGridLoading}
               company={state.managedCompany}
               countryCodes={state.countryCodes}
               onAction={onAction}

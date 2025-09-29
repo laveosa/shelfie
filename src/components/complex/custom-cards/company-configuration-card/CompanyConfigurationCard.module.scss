@@ -1,5 +1,9 @@
 .companyConfigurationCard {
   .companyConfigurationCardContent {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
     .imagesBlock {
       display: flex;
       flex-direction: column;
@@ -21,8 +25,8 @@
           aspect-ratio: 1 / 1;
           align-items: center;
           justify-content: center;
-          border: 1px solid lightgray;
-          background: gray;
+          border: 1px solid #E4E4E7;
+          background: #F4F4F5;
           margin: -1px 0 0 -1px;
         }
 
@@ -32,6 +36,18 @@
 
         .imagesBlockGridItem:nth-child(6n+1) {
           margin-left: 0;
+        }
+      }
+
+      .locationsBlock {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        .locationsBlockTitle {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
         }
       }
     }

@@ -1,15 +1,10 @@
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-import useProductsPageService
-  from "@/pages/products-section/products-page/useProductsPageService.ts";
+import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
-import {
-  ProductsPageSliceActions as productsActions
-} from "@/state/slices/ProductsPageSlice.ts";
-import {
-  ProductBasicDataPageSliceActions as actions
-} from "@/state/slices/ProductBasicDataPageSlice.ts";
+import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
+import { ProductBasicDataPageSliceActions as actions } from "@/state/slices/ProductBasicDataPageSlice.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
@@ -18,16 +13,13 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { ProductCountersModel } from "@/const/models/CounterModel.ts";
-import {
-  IProductBasicDataPageSlice
-} from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
-import {
-  IProductsPageSlice
-} from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
+import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
 import CompaniesApiHooks from "@/utils/services/api/CompaniesApiService.ts";
 import { CompanyModel } from "@/const/models/CompanyModel.ts";
 import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";
+import useDialogService from "@/utils/services/dialog/DialogService.ts";
 
 export default function useProductBasicDataPageService(handleCardAction) {
   // ==================================================================== UTILITIES
@@ -42,6 +34,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
   const { addToast } = useToast();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { openConfirmationDialog } = useDialogService();
 
   // ==================================================================== API INITIALIZATION
   const [generateProductCode] =
@@ -56,6 +49,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
   const [addNewLocationToCompany] =
     CompaniesApiHooks.useAddNewLocationToCompanyMutation();
   const [getCompanyDetails] = CompaniesApiHooks.useLazyGetCompanyDetailsQuery();
+  const [deleteCompany] = CompaniesApiHooks.useDeleteCompanyMutation();
 
   // ==================================================================== API
   function getProductsHandler(gridRequestModel: GridRequestModel) {
@@ -414,8 +408,9 @@ export default function useProductBasicDataPageService(handleCardAction) {
 
   function searchEntityHandler(searchText: string) {
     dispatch(actions.setIsCompaniesGridLoading(true));
-    getListOfCompaniesForGrid({ searchQuery: searchText }).then(() => {
+    getListOfCompaniesForGrid({ searchQuery: searchText }).then((res) => {
       dispatch(actions.setIsCompaniesGridLoading(false));
+      dispatch(actions.refreshCompaniesGridRequestModel(res.data));
     });
   }
 
@@ -480,9 +475,46 @@ export default function useProductBasicDataPageService(handleCardAction) {
   function manageCompanyHandler(model: CompanyModel) {
     handleCardAction("companyConfigurationCard", true);
     dispatch(actions.setIsCompanyConfigurationCardLoading(true));
+    dispatch(actions.setIsLocationsGridLoading(true));
     getCompanyDetails(model.companyId).then((res: any) => {
       dispatch(actions.setIsCompanyConfigurationCardLoading(false));
+      dispatch(actions.setIsLocationsGridLoading(false));
       dispatch(actions.refreshManagedCompany(res.data));
+    });
+  }
+
+  async function deleteCompanyHandler(model: CompanyModel) {
+    const confirmedCompanyDeleting = await openConfirmationDialog({
+      headerTitle: "Deleting company",
+      text: `You are about to delete company ${model.companyName}.`,
+      primaryButtonValue: "Delete",
+      secondaryButtonValue: "Cancel",
+    });
+
+    if (!confirmedCompanyDeleting) return;
+
+    dispatch(actions.setIsCompanyConfigurationCardLoading(true));
+    deleteCompany(model.companyId).then((res) => {
+      if (res.error) {
+        addToast({
+          text: "Failed to delete company",
+          type: "error",
+        });
+        return;
+      } else {
+        addToast({
+          text: "Company deleted successfully",
+          type: "info",
+        });
+        handleCardAction("companyConfigurationCard");
+        dispatch(actions.setIsCompanyConfigurationCardLoading(false));
+        getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
+          (res) => {
+            dispatch(actions.refreshCompaniesGridRequestModel(res.data));
+          },
+        );
+        dispatch(actions.setIsLocationsGridLoading(false));
+      }
     });
   }
 
@@ -520,6 +552,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
     createCompanyHandler,
     closeCreateCompanyCardHandler,
     manageCompanyHandler,
+    deleteCompanyHandler,
     closeCompanyConfigurationCardHandler,
   };
 }

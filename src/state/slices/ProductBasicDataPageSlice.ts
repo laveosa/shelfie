@@ -22,6 +22,7 @@ const initialState: IProductBasicDataPageSlice = {
   isProductsLoading: false,
   isPhotoUploaderLoading: false,
   isCompaniesGridLoading: false,
+  isLocationsGridLoading: false,
   products: [],
   product: {},
   activeCards: [],
@@ -109,6 +110,13 @@ function setIsCompaniesGridLoading(
   action: PayloadAction<boolean>,
 ) {
   state.isCompaniesGridLoading = action?.payload;
+}
+
+function setIsLocationsGridLoading(
+  state: IProductBasicDataPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isLocationsGridLoading = action?.payload;
 }
 
 //------------------------------------- API/
@@ -234,6 +242,7 @@ const ProductBasicDataPageSlice = createSlice({
     setProductsLoading,
     setIsPhotoUploaderLoading,
     setIsCompaniesGridLoading,
+    setIsLocationsGridLoading,
     refreshProducts,
     refreshProduct,
     refreshActiveCards,
