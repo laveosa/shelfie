@@ -46,8 +46,7 @@ export default function CompanyConfigurationCard({
           isLoading={isLoading}
           data={company}
           countryCodes={countryCodes}
-          onSubmit={(data) => onAction("createCompany", data)}
-          onCancel={() => onAction("closeCreateCompanyCard")}
+          onHandleUpData={(data) => onAction("updateCompany", data)}
         />
         <div className={cs.imagesBlock}>
           <div className={cs.imagesBlockTitle}>

@@ -1,16 +1,11 @@
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-import useProductsPageService
-  from "@/pages/products-section/products-page/useProductsPageService.ts";
+import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
 import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
-import {
-  ProductsPageSliceActions as productsActions
-} from "@/state/slices/ProductsPageSlice.ts";
-import {
-  ProductBasicDataPageSliceActions as actions
-} from "@/state/slices/ProductBasicDataPageSlice.ts";
+import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
+import { ProductBasicDataPageSliceActions as actions } from "@/state/slices/ProductBasicDataPageSlice.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
@@ -19,12 +14,8 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { ProductCountersModel } from "@/const/models/CounterModel.ts";
-import {
-  IProductBasicDataPageSlice
-} from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
-import {
-  IProductsPageSlice
-} from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
+import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import CompaniesApiHooks from "@/utils/services/api/CompaniesApiService.ts";
 import { CompanyModel } from "@/const/models/CompanyModel.ts";
 import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";

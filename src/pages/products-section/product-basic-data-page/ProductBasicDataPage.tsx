@@ -107,6 +107,9 @@ export function ProductBasicDataPage() {
       case "manageCompany":
         service.manageCompanyHandler(payload);
         break;
+      case "updateCompany":
+        console.log("UPDATE COMPANY", payload);
+        break;
       case "deleteCompany":
         service.deleteCompanyHandler(payload);
         break;

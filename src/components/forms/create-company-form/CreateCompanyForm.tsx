@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import React, { useEffect, useRef } from "react";
 import { useWatch } from "react-hook-form";
-import React, { useEffect } from "react";
+import { isEqual } from "lodash";
 
 import {
   CompanyModel,
@@ -24,7 +25,6 @@ export default function CreateCompanyForm<T>({
   isLoading,
   data,
   countryCodes,
-  onSubmit,
   onCancel,
   onHandleUpData,
 }: ICreateCompanyForm<T>) {
@@ -33,6 +33,7 @@ export default function CreateCompanyForm<T>({
     resolver: zodResolver(CreateCompanyFormScheme),
     defaultValues: data || CompanyModelDefault,
   });
+  const isFirstRender = useRef(true);
 
   function svgStringToComponent(svgString: string): React.FC<any> {
     return (props) => (
@@ -62,17 +63,35 @@ export default function CreateCompanyForm<T>({
   });
 
   useEffect(() => {
-    if (form.formState.isValid) {
-      onHandleUpData?.({
-        companyName: watchedValues[0],
-        nip: watchedValues[1],
-        countryId: watchedValues[2],
-        customerCareEmail: watchedValues[3],
-      });
-    } else {
-      onHandleUpData?.(null);
+    if (!form.formState.isValid) return;
+
+    const updatedData = {
+      companyName: watchedValues[0],
+      nip: watchedValues[1],
+      countryId: watchedValues[2],
+      customerCareEmail: watchedValues[3],
+    };
+
+    const normalizedData = {
+      companyName: data?.companyName ?? "",
+      nip: data?.nip ?? "",
+      countryId: data?.countryId ?? null,
+      customerCareEmail: data?.customerCareEmail ?? "",
+    };
+
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
     }
-  }, [watchedValues, form.formState.isValid]);
+
+    const handler = setTimeout(() => {
+      if (!isEqual(updatedData, normalizedData)) {
+        onHandleUpData?.(updatedData);
+      }
+    }, 500);
+
+    return () => clearTimeout(handler);
+  }, [watchedValues, form.formState.isValid, data]);
 
   return (
     <SheForm
@@ -83,8 +102,8 @@ export default function CreateCompanyForm<T>({
       formPosition={DirectionEnum.CENTER}
       view={ComponentViewEnum.STANDARD}
       fullWidth
-      hidePrimaryBtn={!!data?.companyId}
-      hideSecondaryBtn={!!data?.companyId}
+      hidePrimaryBtn
+      hideSecondaryBtn
       onCancel={onCancel}
     >
       <SheFormField
@@ -97,7 +116,6 @@ export default function CreateCompanyForm<T>({
             value={field.value}
             placeholder="enter company name..."
             fullWidth
-            onDelay={() => onSubmit(watchedValues as T)}
           />
         )}
       />
