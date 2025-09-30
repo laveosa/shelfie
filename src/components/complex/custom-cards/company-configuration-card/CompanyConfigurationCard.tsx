@@ -64,7 +64,7 @@ export default function CompanyConfigurationCard({
                 <div key={index} className={cs.imagesBlockGridItem}>
                   {img ? (
                     <img
-                      src={img.thumbnailUrl}
+                      src={img?.thumbnailUrl}
                       alt={`image-${index}`}
                       className="object-cover w-full h-full"
                     />
@@ -78,7 +78,12 @@ export default function CompanyConfigurationCard({
           <div className={cs.locationsBlock}>
             <div className={cs.locationsBlockTitle}>
               <span className="she-title">Locations</span>
-              <SheButton icon={Plus} variant="secondary" value="Add Location" />
+              <SheButton
+                icon={Plus}
+                variant="secondary"
+                value="Add Location"
+                onClick={() => onAction("openLocationConfigurationCard")}
+              />
             </div>
             <div className={cs.locatinsGrid}>
               <SheGrid

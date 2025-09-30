@@ -10,6 +10,7 @@ import { ImageModel } from "@/const/models/ImageModel.ts";
 import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 import { CompanyModel } from "@/const/models/CompanyModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { LocationModel } from "@/const/models/LocationModel.ts";
 
 const initialState: IProductBasicDataPageSlice = {
   isLoading: false,
@@ -19,6 +20,7 @@ const initialState: IProductBasicDataPageSlice = {
   isSelectEntityCardLoading: false,
   isCreateCompanyCardLoading: false,
   isCompanyConfigurationCardLoading: false,
+  isLocationConfigurationCardLoading: false,
   isProductsLoading: false,
   isPhotoUploaderLoading: false,
   isCompaniesGridLoading: false,
@@ -38,6 +40,7 @@ const initialState: IProductBasicDataPageSlice = {
   companiesList: [],
   companiesGridRequestModel: {},
   managedCompany: undefined,
+  managedLocation: undefined,
 };
 
 //------------------------------------- LOADERS/
@@ -89,6 +92,13 @@ function setIsCompanyConfigurationCardLoading(
   action: PayloadAction<boolean>,
 ) {
   state.isCompanyConfigurationCardLoading = action?.payload;
+}
+
+function setIsLocationConfigurationCardLoading(
+  state: IProductBasicDataPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isLocationConfigurationCardLoading = action?.payload;
 }
 
 function setProductsLoading(
@@ -228,6 +238,17 @@ function resetManagedCompany(state: IProductBasicDataPageSlice) {
   state.managedCompany = null;
 }
 
+function refreshManagedLocation(
+  state: IProductBasicDataPageSlice,
+  action: PayloadAction<LocationModel>,
+) {
+  state.managedLocation = action?.payload || state.managedLocation;
+}
+
+function resetManagedLocation(state: IProductBasicDataPageSlice) {
+  state.managedLocation = null;
+}
+
 const ProductBasicDataPageSlice = createSlice({
   name: StoreSliceEnum.PRODUCT_BASIC_DATA,
   initialState,
@@ -239,6 +260,7 @@ const ProductBasicDataPageSlice = createSlice({
     setIsSelectEntityCardLoading,
     setIsCreateCompanyCardLoading,
     setIsCompanyConfigurationCardLoading,
+    setIsLocationConfigurationCardLoading,
     setProductsLoading,
     setIsPhotoUploaderLoading,
     setIsCompaniesGridLoading,
@@ -259,6 +281,8 @@ const ProductBasicDataPageSlice = createSlice({
     refreshCompaniesGridRequestModel,
     refreshManagedCompany,
     resetManagedCompany,
+    refreshManagedLocation,
+    resetManagedLocation,
   },
 });
 

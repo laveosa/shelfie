@@ -18,6 +18,7 @@ import CreateCompanyCard from "@/components/complex/custom-cards/create-company-
 import CompanyConfigurationCard from "@/components/complex/custom-cards/company-configuration-card/CompanyConfigurationCard.tsx";
 import PhotosCard from "@/components/complex/custom-cards/photos-card/PhotosCard.tsx";
 import { ManageCompanyPhotosGridColumns } from "@/components/complex/grid/custom-grids/manage-company-photos-grid/ManageCompanyPhotosGridColumns.tsx";
+import LocationConfigurationCard from "@/components/complex/custom-cards/location-configuration-card/LocationConfigurationCard.tsx";
 
 export function ProductBasicDataPage() {
   // ==================================================================== UTILITIES
@@ -127,6 +128,22 @@ export function ProductBasicDataPage() {
       case "closePhotosCard":
         service.closePhotosCardHandler();
         break;
+      case "openLocationConfigurationCard":
+        console.log(payload);
+        service.openLocationConfigurationCardHandler(payload);
+        break;
+      case "createLocation":
+        service.createLocationHandler(payload);
+        break;
+      case "manageLocation":
+        console.log("DELETE LOCATION");
+        break;
+      case "deleteLocation":
+        console.log("DELETE LOCATION");
+        break;
+      case "closeLocationConfigurationCard":
+        service.closeLocationConfigurationCardHandler();
+        break;
     }
   }
 
@@ -217,6 +234,16 @@ export function ProductBasicDataPage() {
               isLoading={state.isCompanyConfigurationCardLoading}
               isGridLoading={state.isLocationsGridLoading}
               company={state.managedCompany}
+              countryCodes={state.countryCodes}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards.includes("locationConfigurationCard") && (
+          <div ref={createRefCallback("locationConfigurationCard")}>
+            <LocationConfigurationCard
+              isLoading={state.isCustomerAddressDetailsLoading}
+              location={state.managedLocation}
               countryCodes={state.countryCodes}
               onAction={onAction}
             />

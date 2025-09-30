@@ -6,6 +6,7 @@ import { ImageModel } from "@/const/models/ImageModel.ts";
 import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 import { CompanyModel } from "@/const/models/CompanyModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { LocationModel } from "@/const/models/LocationModel.ts";
 
 export interface IProductBasicDataPageSlice {
   isLoading?: boolean;
@@ -15,6 +16,7 @@ export interface IProductBasicDataPageSlice {
   isSelectEntityCardLoading?: boolean;
   isCreateCompanyCardLoading?: boolean;
   isCompanyConfigurationCardLoading?: boolean;
+  isLocationConfigurationCardLoading?: boolean;
   isProductsLoading?: boolean;
   isPhotoUploaderLoading?: boolean;
   isCompaniesGridLoading?: boolean;
@@ -34,4 +36,5 @@ export interface IProductBasicDataPageSlice {
   companiesList?: CompanyModel[];
   companiesGridRequestModel?: GridRequestModel;
   managedCompany?: CompanyModel;
+  managedLocation?: LocationModel;
 }

@@ -31,6 +31,7 @@ import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
+import { LocationModel } from "@/const/models/LocationModel.ts";
 
 export default function useProductBasicDataPageService(handleCardAction) {
   // ==================================================================== UTILITIES
@@ -62,6 +63,8 @@ export default function useProductBasicDataPageService(handleCardAction) {
   const [getCompanyDetails] = CompaniesApiHooks.useLazyGetCompanyDetailsQuery();
   const [deleteCompany] = CompaniesApiHooks.useDeleteCompanyMutation();
   const [deletePhoto] = AssetsApiHooks.useDeletePhotoMutation();
+  const [addLocationToCompany] =
+    CompaniesApiHooks.useAddLocationToCompanyMutation();
 
   // ==================================================================== API
   function getProductsHandler(gridRequestModel: GridRequestModel) {
@@ -612,6 +615,48 @@ export default function useProductBasicDataPageService(handleCardAction) {
     handleCardAction("photosCard");
   }
 
+  function openLocationConfigurationCardHandler(model: LocationModel) {
+    handleCardAction("locationConfigurationCard", true);
+    if (!model) {
+      dispatch(actions.resetManagedLocation());
+    } else {
+      dispatch(actions.refreshManagedLocation(model));
+    }
+  }
+
+  function createLocationHandler(model: LocationModel) {
+    dispatch(actions.setIsLocationConfigurationCardLoading(true));
+    addLocationToCompany({
+      companyId: state.managedCompany.companyId,
+      model,
+    }).then((res: any) => {
+      if (!res.error) {
+        handleCardAction("locationConfigurationCard");
+        dispatch(actions.setIsCompanyConfigurationCardLoading(true));
+        dispatch(actions.setIsLocationsGridLoading(true));
+        getCompanyDetails(state.managedCompany.companyId).then((res: any) => {
+          dispatch(actions.setIsCompanyConfigurationCardLoading(false));
+          dispatch(actions.setIsLocationsGridLoading(false));
+          dispatch(actions.refreshManagedCompany(res.data));
+        });
+        addToast({
+          text: "Location added successfully",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: res.error.data?.detail,
+          type: "error",
+        });
+      }
+    });
+  }
+
+  function closeLocationConfigurationCardHandler() {
+    handleCardAction("locationConfigurationCard");
+    dispatch(actions.resetManagedLocation());
+  }
+
   // ==================================================================== PROVIDED API
   return {
     state,
@@ -647,5 +692,8 @@ export default function useProductBasicDataPageService(handleCardAction) {
     deleteCompanyPhotoHandler,
     uploadPhotoHandler,
     closePhotosCardHandler,
+    openLocationConfigurationCardHandler,
+    createLocationHandler,
+    closeLocationConfigurationCardHandler,
   };
 }

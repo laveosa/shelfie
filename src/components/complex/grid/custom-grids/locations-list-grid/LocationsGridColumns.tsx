@@ -106,7 +106,7 @@ export function LocationsListGridColumns({
         const handleManageClick = (e) => {
           e.stopPropagation();
           e.preventDefault();
-          onAction("manageLocation", row.original);
+          onAction("openLocationConfigurationCard", row.original);
         };
 
         return (
