@@ -11,7 +11,7 @@ export default function MessengerListCard({
 }: IMessengerListCard) {
   return (
     <SheCard
-      // view={ComponentViewEnum.STANDARD}
+      view={ComponentViewEnum.STANDARD}
       title="Header Title"
       showHeader
       showToggleButton
