@@ -1,6 +1,7 @@
 @use "@/styles/variables" as vars;
 
 .sheCard {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -13,7 +14,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     position: relative;
-    height: calc(100vh - 92px);
+    flex-grow: 1;
     scrollbar-gutter: stable;
     padding-right: 2.5px;
 
@@ -45,8 +46,21 @@
     background-color: white;
 
     .cardContextWrapper {
-      padding: 10px 2.5px 10px 10px;
-      margin-right: 2.5px;
+      padding-left: 10px;
+      padding-right: 2.5px;
+      margin: 10px 2.5px 10px 0;
+    }
+
+    &.withHeader {
+      .cardContextWrapper {
+        margin-top: 0;
+      }
+    }
+
+    &.withFooter {
+      .cardContextWrapper {
+        margin-bottom: 0;
+      }
     }
   }
 }
@@ -63,6 +77,9 @@
   }
 
   .cardContextWrapper.cardContextIsLoading {
+    pointer-events: none;
+    opacity: 0.6;
+
     .sheCardLoading {
     }
 

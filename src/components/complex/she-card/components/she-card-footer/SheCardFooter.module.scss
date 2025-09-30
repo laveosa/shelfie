@@ -36,10 +36,11 @@
 .sheCardFooter {
   &.standard {
     padding: 0;
+    padding-top: 10px;
   }
 
   &.card {
-    padding: 0 vars.$paddingSmall vars.$paddingSmall;
+    padding: vars.$paddingSmall;
   }
 }
 

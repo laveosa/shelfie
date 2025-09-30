@@ -26,7 +26,8 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  min-height: 34px;
+  min-height: 40px !important;
+  max-height: 40px !important;
 
   .sheCardHeaderCell {
     display: flex;
@@ -82,7 +83,7 @@
 
 .sheCardHeader {
   .sheCardHeaderIcon {
-    $btnSize: 20px;
+    $btnSize: 18px;
     width: $btnSize;
     min-width: $btnSize;
     max-width: $btnSize;
@@ -99,8 +100,9 @@
 // ======================================================== BUTTONS
 
 .sheCardHeader {
+  $btnSize: 19px;
+
   .sheCardHeaderButton {
-    $btnSize: 20px;
     width: $btnSize;
     min-width: $btnSize;
     max-width: $btnSize;
@@ -109,6 +111,15 @@
     max-height: $btnSize;
     background: transparent;
     padding: 0;
+
+    > div {
+      width: $btnSize !important;
+      min-width: $btnSize !important;
+      max-width: $btnSize !important;
+      height: $btnSize !important;
+      min-height: $btnSize !important;
+      max-height: $btnSize !important;
+    }
 
     svg {
       color: vars.$iconLightColor;
@@ -132,7 +143,9 @@
   }
 
   &.card {
-    padding: vars.$paddingSmall vars.$paddingSmall 0;
+    min-height: 50px;
+    max-height: 50px;
+    padding: vars.$paddingStandard vars.$paddingSmall 10px;
   }
 }
 

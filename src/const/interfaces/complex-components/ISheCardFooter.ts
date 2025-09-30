@@ -23,8 +23,9 @@ export interface ISheCardFooter {
   secondaryButtonTitleTransKey?: string;
   secondaryButtonDisabled?: boolean;
   secondaryButtonProps?: ISheButton;
-  onPrimaryButtonClick?(value: any): void;
-  onSecondaryButtonClick?(value: any): void;
+  onPrimaryButtonClick?(value?: any): void;
+  onSecondaryButtonClick?(value?: any): void;
+  onNotificationCardButtonClick?(value?: any): void;
 }
 
 export const SheCardFooterDefaultModel: ISheCardFooter = {
@@ -48,4 +49,5 @@ export const SheCardFooterDefaultModel: ISheCardFooter = {
   secondaryButtonProps: undefined,
   onPrimaryButtonClick: undefined,
   onSecondaryButtonClick: undefined,
+  onNotificationCardButtonClick: undefined,
 };

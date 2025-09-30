@@ -24,39 +24,25 @@ export default function MessengerListCard({
         titleTransKey: "CardTitles.DeletePurchase",
         text: "The purchase will be deleted, but the changes in stock will remain intact.",
         textTransKey: "ConfirmationMessages.DeletePurchase",
-        onClick: () => console.log("NOTIFICATION CARD:"),
+        // onClick: () => console.log("NOTIFICATION CARD:"),
       }}
+      onNotificationCardButtonClick={(value) => console.log("MODEL: ", value)}
       showFooter
       showSecondaryButton
       showPrimaryButton
+      // isLoading
       onSecondaryButtonClick={(event) => console.log("SECONDARY BTN: ", event)}
       onPrimaryButtonClick={(event) => console.log("PRIMARY BTN: ", event)}
     >
       <h1>Some card context</h1>
-      {/*<p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores
-        ducimus nesciunt odit sapiente voluptas. Adipisci cum ipsa magni
-        necessitatibus numquam tempora temporibus vitae? Atque culpa dolorem
-        impedit quasi. Beatae, enim!
-      </p>
-      <p>
-        A accusantium amet debitis dicta dolore dolores, eius et, expedita illo
-        maxime molestiae non odit officia placeat porro quaerat quasi ratione
-        repellat sed voluptatibus? Ducimus facilis non perferendis praesentium
-        vitae!
-      </p>
-      <p>
-        Dolore et pariatur sint sunt veritatis voluptatibus! Autem cupiditate
-        dignissimos explicabo ipsa iure iusto magnam nihil quod recusandae,
-        vitae! Ad blanditiis doloremque harum, inventore magnam maxime neque
-        nostrum officiis voluptate.
-      </p>
-      <p>
-        Ab aperiam architecto aspernatur dolorum eius fugit hic ipsum nam,
-        nesciunt nulla omnis possimus, quae quia quod totam? Alias architecto
-        assumenda libero neque possimus praesentium quae temporibus unde ut
-        voluptas.
-      </p>*/}
+      {[1, 2, 3, 4, 5, 6, 7].map(() => (
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores
+          ducimus nesciunt odit sapiente voluptas. Adipisci cum ipsa magni
+          necessitatibus numquam tempora temporibus vitae? Atque culpa dolorem
+          impedit quasi. Beatae, enim!
+        </p>
+      ))}
     </SheCard>
   );
 

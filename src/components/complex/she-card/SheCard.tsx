@@ -27,6 +27,8 @@ export default function SheCard(props: ISheCard) {
     className = "",
     contextClassName = "",
     view = ComponentViewEnum.CARD,
+    showHeader,
+    showFooter,
     isMinimized,
     width,
     minWidth,
@@ -34,6 +36,7 @@ export default function SheCard(props: ISheCard) {
     isLoading,
     onSecondaryButtonClick,
     onIsMinimizedChange,
+    onNotificationCardButtonClick,
   } = props;
   const sheCardHeaderProps = getCustomProps<ISheCard, ISheCardHeader>(
     props,
@@ -47,10 +50,6 @@ export default function SheCard(props: ISheCard) {
     SheCardHeaderDefaultModel,
     SheCardFooterDefaultModel,
   ]);
-
-  console.log("HEADER: ", sheCardHeaderProps);
-  console.log("CONTEXT: ", restProps);
-  console.log("FOOTER: ", sheCardFooterProps);
 
   // ==================================================================== UTILITIES
   const [_isMinimized, setIsMinimized] = useState<boolean>(null);
@@ -71,16 +70,22 @@ export default function SheCard(props: ISheCard) {
     setIsMinimized((prev) => !prev);
   }
 
+  function onNotificationCardButtonClickHandler() {
+    onNotificationCardButtonClick?.(props);
+  }
+
   // ==================================================================== LAYOUT
   return (
     <div
-      className={`${className} ${cs.sheCard} ${cs[view]} ${_isMinimized ? "sheCardMinimized" : ""}`}
+      className={`${className} ${cs.sheCard} ${cs[view]} ${_isMinimized ? "sheCardMinimized" : ""} ${showHeader && cs.withHeader}
+      ${showFooter && cs.withFooter}`}
       style={{
         width,
         minWidth,
         maxWidth,
       }}
     >
+      <SheLoading className={cs.sheCardLoading} isLoading={isLoading} />
       <SheCardHeader
         {...sheCardHeaderProps}
         view={view}
@@ -92,7 +97,6 @@ export default function SheCard(props: ISheCard) {
         className={`${cs.cardContextWrapper} ${isLoading ? cs.cardContextIsLoading : ""}`}
         {...restProps}
       >
-        {isLoading && <SheLoading className={cs.sheCardLoading} />}
         <div className={`${cs.cardContextContainer} ${contextClassName}`}>
           {children}
         </div>
@@ -101,6 +105,7 @@ export default function SheCard(props: ISheCard) {
         {...sheCardFooterProps}
         view={view}
         isMinimized={_isMinimized}
+        onNotificationCardButtonClick={onNotificationCardButtonClickHandler}
       />
     </div>
   );

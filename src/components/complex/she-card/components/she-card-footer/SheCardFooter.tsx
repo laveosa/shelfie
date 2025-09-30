@@ -28,6 +28,7 @@ export default function SheCardFooter({
   secondaryButtonProps,
   onPrimaryButtonClick,
   onSecondaryButtonClick,
+  onNotificationCardButtonClick,
 }: ISheCardFooter): JSX.Element {
   // ==================================================================== SIDE EFFECTS
 
@@ -56,6 +57,7 @@ export default function SheCardFooter({
             buttonText="Delete"
             buttonTextTransKey="CommonButtons.Delete"
             buttonIcon={Trash2}
+            onClick={onNotificationCardButtonClick}
             {...notificationCardProps}
           />
         </div>
