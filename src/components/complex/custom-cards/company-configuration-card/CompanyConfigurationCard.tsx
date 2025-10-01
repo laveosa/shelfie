@@ -1,6 +1,7 @@
-import { ColumnDef } from "@tanstack/react-table";
 import { ImagePlus, Plus, Trash2 } from "lucide-react";
+import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
+import _ from "lodash";
 
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./CompanyConfigurationCard.module.scss";
@@ -10,6 +11,7 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 import { LocationsListGridColumns } from "@/components/complex/grid/custom-grids/locations-list-grid/LocationsGridColumns.tsx";
+import { CompanyModel } from "@/const/models/CompanyModel.ts";
 
 export default function CompanyConfigurationCard({
   isLoading,
@@ -22,6 +24,24 @@ export default function CompanyConfigurationCard({
     { length: 6 },
     (_, i) => company?.photos?.[i] || null,
   );
+
+  function normalizeCompanyData(model: CompanyModel) {
+    return {
+      companyName: model.companyName || "",
+      countryId: model.countryId ?? null,
+      customerCareEmail: model.customerCareEmail || null,
+      nip: model.nip || null,
+    };
+  }
+
+  function onUpdateCompanyHandler(data: CompanyModel) {
+    const normalizedData = normalizeCompanyData(data);
+    const normalizedCompany = normalizeCompanyData(company);
+
+    if (!_.isEqual(normalizedData, normalizedCompany)) {
+      onAction("updateCompany", data);
+    }
+  }
 
   return (
     <SheProductCard
@@ -46,7 +66,7 @@ export default function CompanyConfigurationCard({
           isLoading={isLoading}
           data={company}
           countryCodes={countryCodes}
-          onHandleUpData={(data) => onAction("updateCompany", data)}
+          onHandleUpData={(data) => onUpdateCompanyHandler(data)}
         />
         <div className={cs.imagesBlock}>
           <div className={cs.imagesBlockTitle}>

@@ -129,14 +129,13 @@ export function ProductBasicDataPage() {
         service.closePhotosCardHandler();
         break;
       case "openLocationConfigurationCard":
-        console.log(payload);
         service.openLocationConfigurationCardHandler(payload);
         break;
       case "createLocation":
         service.createLocationHandler(payload);
         break;
       case "manageLocation":
-        console.log("DELETE LOCATION");
+        console.log("MANAGE LOCATION");
         break;
       case "deleteLocation":
         console.log("DELETE LOCATION");
@@ -252,10 +251,11 @@ export function ProductBasicDataPage() {
         {state.activeCards.includes("photosCard") && (
           <div ref={createRefCallback("photosCard")}>
             <PhotosCard
-              isImageUploaderLoading={state.isImageUploaderLoading}
+              isImageUploaderLoading={state.isPhotoUploaderLoading}
               data={state.managedCompany?.photos}
               contextName={"Company"}
               contextId={state.managedCompany?.companyId}
+              noDataText="COMPANY HAS NO PHOTOS"
               showCloseButton
               columns={
                 ManageCompanyPhotosGridColumns({

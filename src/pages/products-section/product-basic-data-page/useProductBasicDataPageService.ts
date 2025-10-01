@@ -201,6 +201,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
   }
 
   function checkCategoryNameHandler(categoryName: string) {
+    if (!categoryName) return;
     productsService
       .checkCategoryNameHandler({ categoryName: categoryName })
       .then((res: any) => {
@@ -247,7 +248,6 @@ export default function useProductBasicDataPageService(handleCardAction) {
               dispatch(productsActions.setIsPhotoUploaderLoading(false));
               if (res && !res.error) {
                 dispatch(productsActions.refreshCategory(null));
-                handleCardAction("createCategoryCard");
                 addToast({
                   text: "Category created successfully",
                   type: "success",
@@ -260,6 +260,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
               }
             });
           });
+          handleCardAction("createCategoryCard");
         } else {
           addToast({
             text: `${res.error.data.detail}`,
@@ -270,6 +271,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
   }
 
   function checkBrandNameHandler(brandName: string) {
+    if (!brandName) return;
     productsService
       .checkBrandNameHandler({ brandName: brandName })
       .then((res: any) => {
@@ -556,18 +558,29 @@ export default function useProductBasicDataPageService(handleCardAction) {
     });
 
     if (!confirmedDeleteCompanyPhoto) return;
-
     deletePhoto(model.photoId).then((res: any) => {
       const updatedPhotos = state.managedCompany.photos.filter(
         (photo) => photo.photoId !== model.photoId,
       );
-
       dispatch(
         actions.refreshManagedCompany({
           ...state.managedCompany,
           photos: updatedPhotos,
         }),
       );
+      getListOfCompaniesForGrid(state.companiesGridRequestModel).then((res) => {
+        dispatch(actions.setIsCompaniesGridLoading(false));
+        const modifiedList = res.data.items.map((item) => ({
+          ...item,
+          isSelected: item.companyId === state.selectedCompany?.companyId,
+        }));
+        dispatch(
+          actions.refreshCompaniesGridRequestModel({
+            ...res.data,
+            items: modifiedList,
+          }),
+        );
+      });
       if (!res.error) {
         addToast({
           text: "Photo deleted successfully",
@@ -595,6 +608,21 @@ export default function useProductBasicDataPageService(handleCardAction) {
       }
       if (res.data.photoId) {
         dispatch(actions.setIsPhotoUploaderLoading(false));
+        getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
+          (res) => {
+            dispatch(actions.setIsCompaniesGridLoading(false));
+            const modifiedList = res.data.items.map((item) => ({
+              ...item,
+              isSelected: item.companyId === state.selectedCompany?.companyId,
+            }));
+            dispatch(
+              actions.refreshCompaniesGridRequestModel({
+                ...res.data,
+                items: modifiedList,
+              }),
+            );
+          },
+        );
         dispatch(
           actions.refreshManagedCompany({
             ...state.managedCompany,

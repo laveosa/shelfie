@@ -6,6 +6,7 @@ export interface IPhotosCard {
   contextName?: string;
   contextId?: any;
   columns?: any;
+  noDataText?: string;
   skeletonQuantity?: number;
   showCloseButton?: boolean;
   onAction?: (identifier: string, payload?: any) => void;

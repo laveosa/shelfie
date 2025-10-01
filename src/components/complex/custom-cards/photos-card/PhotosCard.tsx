@@ -16,44 +16,12 @@ export default function PhotosCard({
   contextId,
   contextName,
   columns,
+  noDataText,
   skeletonQuantity,
   showCloseButton,
   onAction,
 }: IPhotosCard) {
   const { t } = useTranslation();
-
-  function handleAction(actionType: string, payload?: any): any {
-    switch (actionType) {
-      case "delete":
-        onAction("deletePhoto", payload);
-        break;
-      case "connect":
-        onAction("openConnectImageCard", payload);
-        break;
-      case "activate":
-        onAction("activatePhoto", payload);
-        break;
-    }
-  }
-
-  function onGridAction(
-    actionType: string,
-    _rowId?: string,
-    _setLoadingRow?: (rowId: string, loading: boolean) => void,
-    row?: any,
-  ) {
-    switch (actionType) {
-      case "delete":
-        handleAction("delete", row.original);
-        break;
-      case "connect":
-        handleAction("connect", row.original);
-        break;
-      case "activate":
-        handleAction("activate", row.original);
-        break;
-    }
-  }
 
   return (
     <div className={cs.productPhotosCard}>
@@ -86,7 +54,7 @@ export default function PhotosCard({
                 columns={columns}
                 data={data}
                 skeletonQuantity={skeletonQuantity}
-                customMessage={t("ProductMessages.NoPhotos")}
+                customMessage={noDataText}
                 onNewItemPosition={(newIndex, activeItem, oldIndex) =>
                   onAction("changePhotoPosition", {
                     newIndex,
