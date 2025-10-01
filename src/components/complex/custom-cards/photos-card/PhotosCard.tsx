@@ -24,50 +24,48 @@ export default function PhotosCard({
   const { t } = useTranslation();
 
   return (
-    <div className={cs.productPhotosCard}>
-      <SheProductCard
-        loading={isLoading}
-        title={`${contextName} Photos`}
-        showCloseButton={showCloseButton}
-        onSecondaryButtonClick={() => onAction("closePhotosCard")}
-        className={cs.productPhotosCard}
-      >
-        <div className={cs.productPhotosCardContent}>
-          <SheFileUploader
-            isLoading={isImageUploaderLoading}
-            contextName={contextName}
-            contextId={contextId}
-            onUpload={(uploadModel: UploadPhotoModel) =>
-              onAction("uploadPhoto", uploadModel)
-            }
-          />
-          <div className={cs.managePhotos}>
-            <div className={`${cs.managePhotosTitle} she-title`}>
-              {t("CardTitles.ManagePhotos")}
-            </div>
-            <div className={cs.managePhotosGrid}>
-              <SheGrid
-                isLoading={isGridLoading}
-                className={cs.photosGrid}
-                enableDnd={true}
-                showHeader={false}
-                columns={columns}
-                data={data}
-                skeletonQuantity={skeletonQuantity}
-                customMessage={noDataText}
-                onNewItemPosition={(newIndex, activeItem, oldIndex) =>
-                  onAction("changePhotoPosition", {
-                    newIndex,
-                    activeItem,
-                    oldIndex,
-                  })
-                }
-                onAction={onAction}
-              />
-            </div>
+    <SheProductCard
+      loading={isLoading}
+      title={`${contextName} Photos`}
+      showCloseButton={showCloseButton}
+      onSecondaryButtonClick={() => onAction("closePhotosCard")}
+      className={cs.photosCard}
+    >
+      <div className={cs.photosCardContent}>
+        <SheFileUploader
+          isLoading={isImageUploaderLoading}
+          contextName={contextName}
+          contextId={contextId}
+          onUpload={(uploadModel: UploadPhotoModel) =>
+            onAction("uploadPhoto", uploadModel)
+          }
+        />
+        <div className={cs.managePhotos}>
+          <div className={`${cs.managePhotosTitle} she-title`}>
+            {t("CardTitles.ManagePhotos")}
+          </div>
+          <div className={cs.managePhotosGrid}>
+            <SheGrid
+              isLoading={isGridLoading}
+              className={cs.photosGrid}
+              enableDnd={true}
+              showHeader={false}
+              columns={columns}
+              data={data}
+              skeletonQuantity={skeletonQuantity}
+              customMessage={noDataText}
+              onNewItemPosition={(newIndex, activeItem, oldIndex) =>
+                onAction("changePhotoPosition", {
+                  newIndex,
+                  activeItem,
+                  oldIndex,
+                })
+              }
+              onAction={onAction}
+            />
           </div>
         </div>
-      </SheProductCard>
-    </div>
+      </div>
+    </SheProductCard>
   );
 }

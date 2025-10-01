@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { AppDispatch, RootState } from "@/state/store.ts";
@@ -11,6 +12,8 @@ import { useToast } from "@/hooks/useToast.ts";
 import useOrdersPageService from "@/pages/sales-section/orders-page/useOrdersPageService.ts";
 import OrdersApiHooks from "@/utils/services/api/OrdersApiService.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
+import { VariantModel } from "@/const/models/VariantModel.ts";
 
 export default function useOrderProductsPageService() {
   const appService = useAppService();
@@ -24,6 +27,7 @@ export default function useOrderProductsPageService() {
   const ordersService = useOrdersPageService();
   const dispatch = useDispatch<AppDispatch>();
   const { addToast } = useToast();
+  const navigate = useNavigate();
 
   const [addVariantsToOrder] = OrdersApiHooks.useAddVariantsToOrderMutation();
   const [updateStockActionInOrder] =
@@ -148,6 +152,12 @@ export default function useOrderProductsPageService() {
     });
   }
 
+  function manageProductHandler(model: VariantModel) {
+    navigate(
+      `${NavUrlEnum.PRODUCTS}${NavUrlEnum.PRODUCT_BASIC_DATA}/${model.productId}`,
+    );
+  }
+
   return {
     getOrderStockActionsListForGrid,
     addProductHandler,
@@ -155,5 +165,6 @@ export default function useOrderProductsPageService() {
     variantsGridRequestChange,
     updateStockActionInOrderHandler,
     removeStockActionFromOrderHandler,
+    manageProductHandler,
   };
 }

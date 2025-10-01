@@ -6,7 +6,6 @@ import {
   GridSortingEnum,
   GridSortingEnumLabels,
 } from "@/const/enums/GridSortingEnum.ts";
-import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
 import { useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
@@ -73,6 +72,13 @@ export function OrderProductsPage() {
           payload.original.stockActionId,
         );
         break;
+      case "manageProduct":
+        service.manageProductHandler(payload.original);
+        break;
+      case "manageVariant":
+        break;
+      case "addToStock":
+        break;
     }
   }
 
@@ -92,7 +98,10 @@ export function OrderProductsPage() {
           onAction={onAction}
         />
         {state.activeCards?.includes("findProductsCard") && (
-          <div className={cs.findProductsCard} ref={createRefCallback("findProductsCard")}>
+          <div
+            className={cs.findProductsCard}
+            ref={createRefCallback("findProductsCard")}
+          >
             <FindProductsCard
               isLoading={state.isFindProductsCardLoading}
               isGridLoading={state.isFindProductsGridLoading}

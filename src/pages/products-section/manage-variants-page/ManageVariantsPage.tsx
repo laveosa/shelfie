@@ -1,3 +1,4 @@
+import { ColumnDef } from "@tanstack/react-table";
 import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
@@ -15,13 +16,18 @@ import VariantPhotosCard from "@/components/complex/custom-cards/variant-photos-
 import SelectPurchaseCard from "@/components/complex/custom-cards/select-purchase-card/SelectPurchaseCard.tsx";
 import SupplierCard from "@/components/complex/custom-cards/supplier-card/SupplierCard.tsx";
 import SelectEntityCard from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
-import SupplierConfigurationCard from "@/components/complex/custom-cards/supplier-configuration-card/SupplierConfigurationCard.tsx";
 import { CompaniesListGridColumns } from "@/components/complex/grid/custom-grids/companies-list-grid/CompaniesListGridColumns.tsx";
 import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
 import { ManageVariantsPageSliceActions as actions } from "@/state/slices/ManageVariantsPageSlice.ts";
 import useManageVariantsPageService from "@/pages/products-section/manage-variants-page/useManageVariantsPageService.ts";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
+import CreateCompanyCard from "@/components/complex/custom-cards/create-company-card/CreateCompanyCard.tsx";
+import CompanyConfigurationCard from "@/components/complex/custom-cards/company-configuration-card/CompanyConfigurationCard.tsx";
+import LocationConfigurationCard from "@/components/complex/custom-cards/location-configuration-card/LocationConfigurationCard.tsx";
+import PhotosCard from "@/components/complex/custom-cards/photos-card/PhotosCard.tsx";
+import { ManageCompanyPhotosGridColumns } from "@/components/complex/grid/custom-grids/manage-company-photos-grid/ManageCompanyPhotosGridColumns.tsx";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export function ManageVariantsPage() {
   // ==================================================================== UTILITIES
@@ -176,6 +182,54 @@ export function ManageVariantsPage() {
       case "searchEntity":
         service.searchEntityHandle(payload);
         break;
+      case "openCreateEntityCard":
+        service.openCreateEntityCardHandler();
+        break;
+      case "createCompany":
+        service.createCompanyHandler(payload);
+        break;
+      case "closeCreateCompanyCard":
+        service.closeCreateCompanyCardHandler();
+        break;
+      case "manageCompany":
+        service.manageCompanyHandler(payload);
+        break;
+      case "updateCompany":
+        console.log("UPDATE COMPANY", payload);
+        break;
+      case "deleteCompany":
+        service.deleteCompanyHandler(payload);
+        break;
+      case "closeCompanyConfigurationCard":
+        service.closeCompanyConfigurationCardHandler();
+        break;
+      case "manageCompanyPhotos":
+        service.manageCompanyPhotosHandler();
+        break;
+      case "uploadPhoto":
+        service.uploadPhotoHandler(payload);
+        break;
+      case "deleteCompanyPhoto":
+        service.deleteCompanyPhotoHandler(payload);
+        break;
+      case "closePhotosCard":
+        service.closePhotosCardHandler();
+        break;
+      case "openLocationConfigurationCard":
+        service.openLocationConfigurationCardHandler(payload);
+        break;
+      case "createLocation":
+        service.createLocationHandler(payload);
+        break;
+      case "manageLocation":
+        console.log("MANAGE LOCATION");
+        break;
+      case "deleteLocation":
+        console.log("DELETE LOCATION");
+        break;
+      case "closeLocationConfigurationCard":
+        service.closeLocationConfigurationCardHandler();
+        break;
       case "selectCompany":
         service.selectCompanyHandle(payload);
         break;
@@ -211,9 +265,6 @@ export function ManageVariantsPage() {
         break;
       case "closeSelectEntityCard":
         service.closeSelectEntityCardHandler();
-        break;
-      case "closeSupplierConfigurationCard":
-        service.closeSupplierConfigurationCardHandler();
         break;
     }
   }
@@ -313,14 +364,51 @@ export function ManageVariantsPage() {
             />
           </div>
         )}
-        {state.activeCards?.includes("supplierConfigurationCard") && (
-          <div ref={createRefCallback("supplierConfigurationCard")}>
-            <SupplierConfigurationCard
-              isLoading={state.isSupplierConfigurationCardLoading}
-              isSupplierPhotosGridLoading={state.isSupplierPhotosGridLoading}
+        {state.activeCards.includes("createCompanyCard") && (
+          <div ref={createRefCallback("createCompanyCard")}>
+            <CreateCompanyCard
+              isLoading={state.isCreateCompanyCardLoading}
               isPhotoUploaderLoading={state.isPhotoUploaderLoading}
-              countryList={productsState.countryCodeList}
-              managedSupplier={state.managedSupplier}
+              countryCodes={state.countryCodes}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards.includes("companyConfigurationCard") && (
+          <div ref={createRefCallback("companyConfigurationCard")}>
+            <CompanyConfigurationCard
+              isLoading={state.isCompanyConfigurationCardLoading}
+              isGridLoading={state.isLocationsGridLoading}
+              company={state.managedCompany}
+              countryCodes={state.countryCodes}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards.includes("locationConfigurationCard") && (
+          <div ref={createRefCallback("locationConfigurationCard")}>
+            <LocationConfigurationCard
+              isLoading={state.isCustomerAddressDetailsLoading}
+              location={state.managedLocation}
+              countryCodes={state.countryCodes}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards.includes("photosCard") && (
+          <div ref={createRefCallback("photosCard")}>
+            <PhotosCard
+              isImageUploaderLoading={state.isPhotoUploaderLoading}
+              data={state.managedCompany?.photos}
+              contextName={"Company"}
+              contextId={state.managedCompany?.companyId}
+              noDataText="COMPANY HAS NO PHOTOS"
+              showCloseButton
+              columns={
+                ManageCompanyPhotosGridColumns({
+                  onAction,
+                }) as ColumnDef<DataWithId>[]
+              }
               onAction={onAction}
             />
           </div>

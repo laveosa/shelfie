@@ -9,6 +9,8 @@ import { ProductCountersModel } from "@/const/models/CounterModel.ts";
 import { VariantHistoryModel } from "@/const/models/VariantHistoryModel.ts";
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 import { CompanyModel } from "@/const/models/CompanyModel.ts";
+import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
+import { LocationModel } from "@/const/models/LocationModel.ts";
 
 export interface IManageVariantsPageSlice {
   isLoading?: boolean;
@@ -25,6 +27,9 @@ export interface IManageVariantsPageSlice {
   isVariantHistoryCardLoading?: boolean;
   isSelectPurchaseCardLoading?: boolean;
   isSelectEntityCardLoading?: boolean;
+  isCreateCompanyCardLoading?: boolean;
+  isCompanyConfigurationCardLoading?: boolean;
+  isLocationConfigurationCardLoading?: boolean;
   isSupplierCardLoading?: boolean;
   isProductsLoading?: boolean;
   isTraitOptionsGridLoading?: boolean;
@@ -34,6 +39,8 @@ export interface IManageVariantsPageSlice {
   isVariantsHistoryGridLoading?: boolean;
   isPurchaseGridLoading?: boolean;
   isSuppliersGridLoading?: boolean;
+  isLocationsGridLoading?: boolean;
+  isPhotoUploaderLoading?: boolean;
   products?: ProductModel[];
   selectedVariant: VariantModel;
   isDuplicateVariant: boolean;
@@ -59,4 +66,7 @@ export interface IManageVariantsPageSlice {
   selectedPurchase?: PurchaseModel;
   companiesGridRequestModel?: GridRequestModel;
   selectedCompany?: CompanyModel;
+  countryCodes?: CountryCodeModel[];
+  managedCompany?: CompanyModel;
+  managedLocation?: LocationModel;
 }

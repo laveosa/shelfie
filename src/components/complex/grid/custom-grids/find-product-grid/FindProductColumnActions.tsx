@@ -31,8 +31,14 @@ export default function FindProductColumnActions<TData>({
         </SheButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-[160px]">
+        <DropdownMenuItem onClick={() => onAction("manageProduct", row)}>
+          Manage product
+        </DropdownMenuItem>
         <DropdownMenuItem onClick={() => onAction("manageVariant", row)}>
-          Delete
+          Manage variant
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => onAction("addToStock", row)}>
+          Add to stock
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

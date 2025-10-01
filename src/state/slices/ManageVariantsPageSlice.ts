@@ -9,7 +9,8 @@ import { ProductCountersModel } from "@/const/models/CounterModel.ts";
 import { VariantHistoryModel } from "@/const/models/VariantHistoryModel.ts";
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 import { CompanyModel } from "@/const/models/CompanyModel.ts";
-import _ from "lodash";
+import { LocationModel } from "@/const/models/LocationModel.ts";
+import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 
 const initialState: IManageVariantsPageSlice = {
   isLoading: false,
@@ -27,6 +28,9 @@ const initialState: IManageVariantsPageSlice = {
   isSelectPurchaseCardLoading: false,
   isSupplierCardLoading: false,
   isSelectEntityCardLoading: false,
+  isCreateCompanyCardLoading: false,
+  isCompanyConfigurationCardLoading: false,
+  isLocationConfigurationCardLoading: false,
   isProductsLoading: false,
   isTraitOptionsGridLoading: false,
   isVariantOptionsGridLoading: false,
@@ -35,6 +39,8 @@ const initialState: IManageVariantsPageSlice = {
   isVariantsHistoryGridLoading: false,
   isPurchaseGridLoading: false,
   isSuppliersGridLoading: false,
+  isPhotoUploaderLoading: false,
+  isLocationsGridLoading: false,
   selectedVariant: null,
   isDuplicateVariant: false,
   productCounter: null,
@@ -59,6 +65,9 @@ const initialState: IManageVariantsPageSlice = {
   selectedPurchase: null,
   companiesGridRequestModel: {},
   selectedCompany: null,
+  managedCompany: undefined,
+  managedLocation: undefined,
+  countryCodes: [],
 };
 
 //----------------------------------------------------- LOADERS
@@ -168,6 +177,27 @@ function setIsSelectEntityCardLoading(
   state.isSelectEntityCardLoading = action?.payload;
 }
 
+function setIsCreateCompanyCardLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isCreateCompanyCardLoading = action?.payload;
+}
+
+function setIsCompanyConfigurationCardLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isCompanyConfigurationCardLoading = action?.payload;
+}
+
+function setIsLocationConfigurationCardLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isLocationConfigurationCardLoading = action?.payload;
+}
+
 function setIsProductsLoading(
   state: IManageVariantsPageSlice,
   action: PayloadAction<boolean>,
@@ -222,6 +252,20 @@ function setIsSuppliersGridLoading(
   action: PayloadAction<boolean>,
 ) {
   state.isSuppliersGridLoading = action?.payload;
+}
+
+function setIsPhotoUploaderLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isPhotoUploaderLoading = action?.payload;
+}
+
+function setIsLocationsGridLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isLocationsGridLoading = action?.payload;
 }
 
 //----------------------------------------------------- API
@@ -317,10 +361,6 @@ function refreshColorOptionsGridRequestModel(
   state: IManageVariantsPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
-  if (_.isEqual(state.colorOptionsGridRequestModel, action?.payload)) {
-    return;
-  }
-
   state.colorOptionsGridRequestModel =
     action?.payload || state.colorOptionsGridRequestModel;
 }
@@ -329,10 +369,6 @@ function refreshSizeOptionsGridRequestModel(
   state: IManageVariantsPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
-  if (_.isEqual(state.sizeOptionsGridRequestModel, action?.payload)) {
-    return;
-  }
-
   state.sizeOptionsGridRequestModel =
     action?.payload || state.sizeOptionsGridRequestModel;
 }
@@ -370,10 +406,6 @@ function refreshPurchaseGridRequestModel(
   state: IManageVariantsPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
-  if (_.isEqual(state.purchaseGridRequestModel, action?.payload)) {
-    return;
-  }
-
   state.purchaseGridRequestModel =
     action?.payload || state.purchaseGridRequestModel;
 }
@@ -393,10 +425,6 @@ function refreshCompaniesGridRequestModel(
   state: IManageVariantsPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
-  if (_.isEqual(state.companiesGridRequestModel, action?.payload)) {
-    return;
-  }
-
   state.companiesGridRequestModel =
     action?.payload || state.companiesGridRequestModel;
 }
@@ -406,6 +434,39 @@ function refreshSelectedCompany(
   action: PayloadAction<CompanyModel>,
 ) {
   state.selectedCompany = action?.payload || state.selectedCompany;
+}
+
+function resetSelectedCompany(state: IManageVariantsPageSlice) {
+  state.selectedCompany = null;
+}
+
+function refreshCountryCodes(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<CountryCodeModel[]>,
+) {
+  state.countryCodes = action?.payload || state.countryCodes;
+}
+
+function refreshManagedCompany(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<CompanyModel>,
+) {
+  state.managedCompany = action?.payload || state.managedCompany;
+}
+
+function resetManagedCompany(state: IManageVariantsPageSlice) {
+  state.managedCompany = null;
+}
+
+function refreshManagedLocation(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<LocationModel>,
+) {
+  state.managedLocation = action?.payload || state.managedLocation;
+}
+
+function resetManagedLocation(state: IManageVariantsPageSlice) {
+  state.managedLocation = null;
 }
 
 const ManageVariantsPageSlice = createSlice({
@@ -427,6 +488,9 @@ const ManageVariantsPageSlice = createSlice({
     setIsSelectPurchaseCardLoading,
     setIsSupplierCardLoading,
     setIsSelectEntityCardLoading,
+    setIsCreateCompanyCardLoading,
+    setIsCompanyConfigurationCardLoading,
+    setIsLocationConfigurationCardLoading,
     setIsProductsLoading,
     setIsTraitOptionsGridLoading,
     setIsVariantOptionsGridLoading,
@@ -435,6 +499,8 @@ const ManageVariantsPageSlice = createSlice({
     setIsVariantsHistoryGridLoading,
     setIsPurchaseGridLoading,
     setIsSuppliersGridLoading,
+    setIsPhotoUploaderLoading,
+    setIsLocationsGridLoading,
     refreshIsDuplicateVariant,
     refreshTraits,
     refreshTypesOfTraits,
@@ -459,6 +525,12 @@ const ManageVariantsPageSlice = createSlice({
     resetSelectedPurchase,
     refreshCompaniesGridRequestModel,
     refreshSelectedCompany,
+    resetSelectedCompany,
+    refreshCountryCodes,
+    refreshManagedCompany,
+    resetManagedCompany,
+    refreshManagedLocation,
+    resetManagedLocation,
   },
 });
 

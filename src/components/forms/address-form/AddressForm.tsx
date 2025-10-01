@@ -61,11 +61,20 @@ export default function AddressForm({
 
   // ================================================================ RENDER
 
-  function convertCountriesToSelectItems(): ISheSelectItem<any>[] {
-    return countryList?.map(
+  function svgStringToComponent(svgString: string): React.FC<any> {
+    return (props) => (
+      <span dangerouslySetInnerHTML={{ __html: svgString }} {...props} />
+    );
+  }
+
+  function convertCountryCodeToSelectItems(
+    data: CountryCodeModel[],
+  ): ISheSelectItem<any>[] {
+    return data?.map(
       (item): ISheSelectItem<any> => ({
         value: item.countryId,
         text: item.countryName,
+        icon: svgStringToComponent(item.flagIcon),
       }),
     );
   }
@@ -158,7 +167,7 @@ export default function AddressForm({
           <SheFormItem label={t("AddressForm.Labels.Country")}>
             <SheSelect
               selected={field.value}
-              items={convertCountriesToSelectItems()}
+              items={convertCountryCodeToSelectItems(countryList)}
               hideFirstOption
               placeholder={t("AddressForm.Placeholders.Country")}
               fullWidth
