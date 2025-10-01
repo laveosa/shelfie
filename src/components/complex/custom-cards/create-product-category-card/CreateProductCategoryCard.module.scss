@@ -1,8 +1,6 @@
 @use "@/styles/variables" as vars;
 
 .createProductCategoryCard {
-  display: flex;
-
   .cardContent {
     display: flex;
     flex-direction: column;

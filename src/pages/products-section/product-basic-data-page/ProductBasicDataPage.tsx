@@ -85,7 +85,6 @@ export function ProductBasicDataPage() {
     <div className={cs.productBasicDataPage}>
       <SheContextSidebar
         menuCollectionType="products"
-        menuTitle={Number(productId) ? "Manage Product" : "Create Product"}
         isListLoading={productsState.isItemsCardLoading}
         listItems={productsState[productsState.activeTab]}
         showListItems
@@ -108,11 +107,11 @@ export function ProductBasicDataPage() {
         <ProductConfigurationCard
           isLoading={state.isProductConfigurationCardLoading}
           product={productsState.product}
+          productId={productId}
           brandsList={productsState.brands}
           categoriesList={productsState.categories}
           countryCodesList={state.countryCodes}
           productCode={productsState.productCode}
-          productId={productId}
           onAction={onAction}
         />
         {state.activeCards.includes("createCategoryCard") && (
