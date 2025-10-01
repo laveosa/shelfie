@@ -392,8 +392,8 @@ export function PurchaseProductsPage() {
               categoriesList={productsState.categories}
               countryCodesList={state.countryCodes}
               productCode={productsState.productCode}
-              showSecondaryButton={true}
               productId={state.selectedProduct?.productId}
+              showSecondaryButton
               onSecondaryButtonClick={() =>
                 onAction("closeProductConfigurationCard")
               }

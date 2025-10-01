@@ -51,7 +51,7 @@ export default function SheCard(props: ISheCard) {
     SheCardFooterDefaultModel,
   ]);
 
-  // ==================================================================== UTILITIES
+  // ==================================================================== STATE MANAGEMENT
   const [_isMinimized, setIsMinimized] = useState<boolean>(null);
 
   // ==================================================================== SIDE EFFECTS

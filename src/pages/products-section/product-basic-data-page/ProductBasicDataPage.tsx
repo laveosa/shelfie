@@ -108,11 +108,11 @@ export function ProductBasicDataPage() {
         <ProductConfigurationCard
           isLoading={state.isProductConfigurationCardLoading}
           product={productsState.product}
-          productId={productId}
           brandsList={productsState.brands}
           categoriesList={productsState.categories}
           countryCodesList={state.countryCodes}
           productCode={productsState.productCode}
+          productId={productId}
           onAction={onAction}
         />
         {state.activeCards.includes("createCategoryCard") && (
