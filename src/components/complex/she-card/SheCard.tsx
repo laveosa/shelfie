@@ -94,8 +94,8 @@ export default function SheCard(props: ISheCard) {
         onHeaderCloseClick={onSecondaryButtonClick}
       />
       <div
-        className={`${cs.cardContextWrapper} ${isLoading ? cs.cardContextIsLoading : ""}`}
         {...restProps}
+        className={`${cs.cardContextWrapper} ${isLoading ? cs.cardContextIsLoading : ""}`}
       >
         <div className={`${cs.cardContextContainer} ${contextClassName}`}>
           {children}

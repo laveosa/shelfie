@@ -3,6 +3,7 @@
 .sheContextSidebar {
   display: flex;
   flex-grow: 1;
+  gap: 6px;
   padding: vars.$paddingSmall;
   background-color: vars.$secondaryBg;
   min-height: calc(100vh - 52px);
@@ -20,7 +21,6 @@
   }
 
   .sheContextSidebarContextContainer {
-    padding: 0 0 0 6px;
     width: 100%;
     flex-grow: 1;
     gap: vars.$paddingSmall;

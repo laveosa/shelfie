@@ -22,7 +22,7 @@
         cursor: pointer;
 
         &:hover {
-          background-color: #F4F4F5;
+          background-color: #f4f4f5;
         }
 
         .avatarNameBlock {
@@ -84,19 +84,18 @@
               overflow: hidden;
               text-overflow: ellipsis;
               white-space: nowrap;
-              color: #71717A;
+              color: #71717a;
             }
           }
         }
 
         .chatTime {
           padding-top: 5px;
-          color: #71717A;
+          color: #71717a;
           font-size: 12px;
         }
       }
     }
-
   }
 }
 

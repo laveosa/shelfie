@@ -1,13 +1,14 @@
 import { useEffect } from "react";
+
 import cs from "./MessengerPage.module.scss";
+import MessengerListCard from "@/components/complex/custom-cards/messenger-list-card/MessengerListCard.tsx";
+import MessengerConversationCard from "@/components/complex/custom-cards/messenger-conversation-card/MessengerConversationCard.tsx";
+import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
 import { MessengerPageSliceActions as actions } from "@/state/slices/MessengerPageSlice.ts";
 import useMessengerPageService from "@/pages/messenger-section/pages/messenger-page/useMessengerPageService.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IMessengerPageSlice } from "@/const/interfaces/store-slices/IMessengerPageSlice.ts";
-import MessengerListCard from "@/components/complex/custom-cards/messenger-list-card/MessengerListCard.tsx";
-import MessengerConversationCard from "@/components/complex/custom-cards/messenger-conversation-card/MessengerConversationCard.tsx";
-import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
 
 export function MessengerPage() {
   const dispatch = useAppDispatch();
@@ -66,7 +67,7 @@ export function MessengerPage() {
   }
 
   return (
-    <SheContextSidebar>
+    <SheContextSidebar className={cs.messengerPage} hideSidebarBlock>
       <MessengerListCard
         chats={state.messengerResponseModel.items}
         selectedChat={state.selectedChat?.userId}

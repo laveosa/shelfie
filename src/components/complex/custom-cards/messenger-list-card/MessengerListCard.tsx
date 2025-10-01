@@ -1,8 +1,12 @@
 import React from "react";
 
+import facebookLogo from "@/assets/images/facebook-messenger_logo.svg";
+
+import cs from "./MessengerListCard.module.scss";
 import SheCard from "@/components/complex/she-card/SheCard.tsx";
+import SheInput from "@/components/primitive/she-input/SheInput.tsx";
+import { formatDate, getInitials } from "@/utils/helpers/quick-helper.ts";
 import { IMessengerListCard } from "@/const/interfaces/complex-components/custom-cards/IMessengerListCard.ts";
-import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 
 export default function MessengerListCard({
   chats,
@@ -10,49 +14,13 @@ export default function MessengerListCard({
   onAction,
 }: IMessengerListCard) {
   return (
-    <SheCard
-      view={ComponentViewEnum.STANDARD}
-      title="Header Title"
-      showHeader
-      showToggleButton
-      // showCloseButton
-      // footerClassName="SOME_FOOTER_CLASS_NAME"
-      // footerStyle={{ border: "1px solid red" }}
-      showNotificationCard
-      notificationCardProps={{
-        title: "Delete Purchase",
-        titleTransKey: "CardTitles.DeletePurchase",
-        text: "The purchase will be deleted, but the changes in stock will remain intact.",
-        textTransKey: "ConfirmationMessages.DeletePurchase",
-        // onClick: () => console.log("NOTIFICATION CARD:"),
-      }}
-      onNotificationCardButtonClick={(value) => console.log("MODEL: ", value)}
-      showFooter
-      showSecondaryButton
-      showPrimaryButton
-      // isLoading
-      onSecondaryButtonClick={(event) => console.log("SECONDARY BTN: ", event)}
-      onPrimaryButtonClick={(event) => console.log("PRIMARY BTN: ", event)}
-    >
-      <h1>Some card context</h1>
-      {[1, 2, 3, 4, 5, 6, 7].map(() => (
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores
-          ducimus nesciunt odit sapiente voluptas. Adipisci cum ipsa magni
-          necessitatibus numquam tempora temporibus vitae? Atque culpa dolorem
-          impedit quasi. Beatae, enim!
-        </p>
-      ))}
-    </SheCard>
-  );
-
-  /*return (
-    <SheCard className={cs.messengerCard} width="400px">
+    <SheCard className={cs.messengerCard}>
       <div className={cs.messengerCardContent}>
         <SheInput
-          icon={Search}
           placeholder="Search"
           fullWidth
+          isSearch
+          showClearBtn
           onDelay={(value) => {
             onAction("chatListSearch", { value });
           }}
@@ -113,5 +81,5 @@ export default function MessengerListCard({
         </div>
       </div>
     </SheCard>
-  );*/
+  );
 }
