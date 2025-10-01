@@ -1,0 +1,14 @@
+@use "@/styles/variables" as vars;
+
+.createCompanyCard {
+  .createCompanyCardContent {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .createCompanyCardButtonBlock {
+    display: flex;
+    justify-content: space-between;
+  }
+}

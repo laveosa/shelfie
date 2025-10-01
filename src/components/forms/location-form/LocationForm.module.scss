@@ -1,0 +1,65 @@
+.locationForm {
+  & form > div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 10px;
+    justify-content: space-between;
+
+    .imagesBlockGrid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      max-width: 24rem;
+
+      .imagesBlockGridItem {
+        display: flex;
+        aspect-ratio: 1 / 1;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #E4E4E7;
+        background: #F4F4F5;
+        margin: -1px 0 0 -1px;
+
+        .image {
+          object-fit: cover;
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      .imagesBlockGridItem:nth-child(-n+6) {
+        margin-top: 0;
+      }
+
+      .imagesBlockGridItem:nth-child(6n+1) {
+        margin-left: 0;
+      }
+    }
+
+    .addressFormRow {
+      display: flex;
+      align-items: end;
+      gap: 20px;
+      justify-content: space-between;
+
+      & > div {
+        width: 100%;
+      }
+    }
+
+    .addressFormSwitch {
+      justify-content: flex-start;
+    }
+  }
+
+  *:focus {
+    box-shadow: none;
+  }
+
+  .cardFooter {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+}

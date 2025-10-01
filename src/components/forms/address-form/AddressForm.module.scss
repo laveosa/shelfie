@@ -1,10 +1,11 @@
 @use "@/styles/variables" as vars;
 
 .addressForm {
-  .addressForm > form {
+  & form > div {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
+    padding-top: 10px;
     padding-bottom: 20px;
     justify-content: space-between;
 
@@ -27,6 +28,7 @@
   *:focus {
     box-shadow: none;
   }
+
   .cardFooter {
     display: flex;
     justify-content: space-between;

@@ -8,14 +8,23 @@ import { ProductModel } from "@/const/models/ProductModel.ts";
 import { ProductCountersModel } from "@/const/models/CounterModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
+import { CompanyModel } from "@/const/models/CompanyModel.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { LocationModel } from "@/const/models/LocationModel.ts";
 
 const initialState: IProductBasicDataPageSlice = {
   isLoading: false,
   isProductConfigurationCardLoading: false,
   isCreateProductCategoryCardLoading: false,
   isCreateProductBrandCardLoading: false,
+  isSelectEntityCardLoading: false,
+  isCreateCompanyCardLoading: false,
+  isCompanyConfigurationCardLoading: false,
+  isLocationConfigurationCardLoading: false,
   isProductsLoading: false,
   isPhotoUploaderLoading: false,
+  isCompaniesGridLoading: false,
+  isLocationsGridLoading: false,
   products: [],
   product: {},
   activeCards: [],
@@ -27,6 +36,11 @@ const initialState: IProductBasicDataPageSlice = {
   contextId: null,
   productCounter: null,
   photos: [],
+  selectedCompany: undefined,
+  companiesList: [],
+  companiesGridRequestModel: {},
+  managedCompany: undefined,
+  managedLocation: undefined,
 };
 
 //------------------------------------- LOADERS/
@@ -59,6 +73,34 @@ function setIsCreateProductBrandCardLoading(
   state.isCreateProductBrandCardLoading = action?.payload;
 }
 
+function setIsSelectEntityCardLoading(
+  state: IProductBasicDataPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isSelectEntityCardLoading = action?.payload;
+}
+
+function setIsCreateCompanyCardLoading(
+  state: IProductBasicDataPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isCreateCompanyCardLoading = action?.payload;
+}
+
+function setIsCompanyConfigurationCardLoading(
+  state: IProductBasicDataPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isCompanyConfigurationCardLoading = action?.payload;
+}
+
+function setIsLocationConfigurationCardLoading(
+  state: IProductBasicDataPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isLocationConfigurationCardLoading = action?.payload;
+}
+
 function setProductsLoading(
   state: IProductBasicDataPageSlice,
   action: PayloadAction<boolean>,
@@ -71,6 +113,20 @@ function setIsPhotoUploaderLoading(
   action: PayloadAction<boolean>,
 ) {
   state.isPhotoUploaderLoading = action?.payload;
+}
+
+function setIsCompaniesGridLoading(
+  state: IProductBasicDataPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isCompaniesGridLoading = action?.payload;
+}
+
+function setIsLocationsGridLoading(
+  state: IProductBasicDataPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isLocationsGridLoading = action?.payload;
 }
 
 //------------------------------------- API/
@@ -152,6 +208,47 @@ function refreshProductPhotos(
   state.photos = action?.payload || state.photos;
 }
 
+function refreshSelectedCompany(
+  state: IProductBasicDataPageSlice,
+  action: PayloadAction<CompanyModel>,
+) {
+  state.selectedCompany = action?.payload || state.selectedCompany;
+}
+
+function resetSelectedCompany(state: IProductBasicDataPageSlice) {
+  state.selectedCompany = null;
+}
+
+function refreshCompaniesGridRequestModel(
+  state: IProductBasicDataPageSlice,
+  action: PayloadAction<GridRequestModel>,
+) {
+  state.companiesGridRequestModel =
+    action?.payload || state.companiesGridRequestModel;
+}
+
+function refreshManagedCompany(
+  state: IProductBasicDataPageSlice,
+  action: PayloadAction<CompanyModel>,
+) {
+  state.managedCompany = action?.payload || state.managedCompany;
+}
+
+function resetManagedCompany(state: IProductBasicDataPageSlice) {
+  state.managedCompany = null;
+}
+
+function refreshManagedLocation(
+  state: IProductBasicDataPageSlice,
+  action: PayloadAction<LocationModel>,
+) {
+  state.managedLocation = action?.payload || state.managedLocation;
+}
+
+function resetManagedLocation(state: IProductBasicDataPageSlice) {
+  state.managedLocation = null;
+}
+
 const ProductBasicDataPageSlice = createSlice({
   name: StoreSliceEnum.PRODUCT_BASIC_DATA,
   initialState,
@@ -160,8 +257,14 @@ const ProductBasicDataPageSlice = createSlice({
     setIsProductConfigurationCardLoading,
     setIsCreateProductCategoryCardLoading,
     setIsCreateProductBrandCardLoading,
+    setIsSelectEntityCardLoading,
+    setIsCreateCompanyCardLoading,
+    setIsCompanyConfigurationCardLoading,
+    setIsLocationConfigurationCardLoading,
     setProductsLoading,
     setIsPhotoUploaderLoading,
+    setIsCompaniesGridLoading,
+    setIsLocationsGridLoading,
     refreshProducts,
     refreshProduct,
     refreshActiveCards,
@@ -173,6 +276,13 @@ const ProductBasicDataPageSlice = createSlice({
     refreshContextId,
     refreshProductCounter,
     refreshProductPhotos,
+    refreshSelectedCompany,
+    resetSelectedCompany,
+    refreshCompaniesGridRequestModel,
+    refreshManagedCompany,
+    resetManagedCompany,
+    refreshManagedLocation,
+    resetManagedLocation,
   },
 });
 

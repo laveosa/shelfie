@@ -104,20 +104,18 @@ export function CustomerAddressesPage() {
       case "getCustomerAddressesForGrid":
         service.getCustomerAddressesForGridHandler(data);
         break;
+      case "closeCustomerAddressCard":
+        service.onCloseCustomerAddressCardHandler();
+        dispatch(
+          actions.refreshCustomerAddresses(
+            clearSelectedGridItems(state.customerAddresses),
+          ),
+        );
+        break;
+      case "submitCustomerAddressData":
+        service.resolveCustomerAddressData(data);
+        break;
     }
-  }
-
-  function onSubmitCustomerAddressDataHandler(data: any) {
-    service.resolveCustomerAddressData(data);
-  }
-
-  function onCloseCustomerAddressCard() {
-    service.onCloseCustomerAddressCardHandler();
-    dispatch(
-      actions.refreshCustomerAddresses(
-        clearSelectedGridItems(state.customerAddresses),
-      ),
-    );
   }
 
   // ==================================================================== LAYOUT
@@ -148,10 +146,6 @@ export function CustomerAddressesPage() {
               customerAddress={state.selectedCustomerAddress}
               customerAddressId={state.selectedCustomerAddressId}
               isCreate={state.createCustomerAddress}
-              onPrimaryButtonClick={(data) =>
-                onSubmitCustomerAddressDataHandler(data)
-              }
-              onSecondaryButtonClick={onCloseCustomerAddressCard}
               countryList={state.countryList}
               onAction={onAction}
             />

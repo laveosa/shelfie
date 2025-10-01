@@ -133,7 +133,7 @@ export const SheGrid = React.forwardRef<DndGridRef, ISheGrid<any>>(
 
     // ==================================================================== SIDE EFFECTS
     useEffect(() => {
-      if (data && data.length > 0) setItems(prepareItemsForGrid(data));
+      if (data) setItems(prepareItemsForGrid(data));
     }, [data]);
 
     useEffect(() => {

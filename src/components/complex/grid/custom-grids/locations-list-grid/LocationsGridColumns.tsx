@@ -1,56 +1,26 @@
-import { ColumnDef } from "@tanstack/react-table";
+import { CogIcon, ImageIcon } from "lucide-react";
+import { ColumnDef, Row } from "@tanstack/react-table";
+import React from "react";
 
-import { Circle, CircleCheckBig, CogIcon, ImageIcon } from "lucide-react";
-
-import cs from "./CompanieListGridColumns.module.scss";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { CompanyModel } from "@/const/models/CompanyModel.ts";
 
-export function CompaniesListGridColumns({
+export function LocationsListGridColumns({
   onAction,
 }: {
-  onAction: (actionType: string, row?: any) => void;
-}): ColumnDef<CompanyModel>[] {
+  onAction: (actionType: string, row?: Row<any>) => void;
+}): ColumnDef<any>[] {
   return [
     {
-      id: "select",
-      header: "Select",
-      minSize: 70,
-      maxSize: 70,
-      cell: ({ row, table }) => {
-        const meta = table.options.meta as {
-          setLoadingRow: (rowId: string, loading: boolean) => void;
-          isRowLoading: (rowId: string) => boolean;
-        };
-
-        const handleSelectClick = (e) => {
-          e.stopPropagation();
-          e.preventDefault();
-          onAction("selectCompany", row.original);
-        };
-
-        return (
-          <div onClick={(e) => e.stopPropagation()}>
-            <SheButton
-              className={row.original.isSelected === true ? cs.iconCheck : ""}
-              icon={row.original.isSelected === true ? CircleCheckBig : Circle}
-              variant="ghost"
-              onClick={handleSelectClick}
-              disabled={meta?.isRowLoading(row.id)}
-            />
-          </div>
-        );
-      },
-    },
-    {
-      id: "companyName",
-      header: "Company",
+      id: "name",
+      header: "Locations",
       cell: ({ row }) => {
         const imageUrl: string = row.original.thumbnailUrl;
-        const name: string = row.original.companyName;
-        const address1: string = row.original.address;
+        const name: string = row.original.name;
+        const address1: string = row.original.addressLine1;
+        const address2: string = row.original.addressLine2;
+        const country: string = row.original.countryName;
         return (
           <div
             style={{
@@ -86,7 +56,7 @@ export function CompaniesListGridColumns({
               <SheTooltip
                 delayDuration={200}
                 text={name}
-                className="max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap"
+                className="max-w-[190px] overflow-hidden text-ellipsis whitespace-nowrap"
               >
                 <span className="she-text">{name}</span>
               </SheTooltip>
@@ -94,9 +64,27 @@ export function CompaniesListGridColumns({
                 <SheTooltip
                   delayDuration={200}
                   text={address1}
-                  className="max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap"
+                  className="max-w-[190px] overflow-hidden text-ellipsis whitespace-nowrap"
                 >
                   <span className="she-subtext">{address1}</span>
+                </SheTooltip>
+              )}
+              {address2 && (
+                <SheTooltip
+                  delayDuration={200}
+                  text={address2}
+                  className="max-w-[190px] overflow-hidden text-ellipsis whitespace-nowrap"
+                >
+                  <span className="she-subtext">{address2}</span>
+                </SheTooltip>
+              )}
+              {country && (
+                <SheTooltip
+                  delayDuration={200}
+                  text={country}
+                  className="max-w-[190px] overflow-hidden text-ellipsis whitespace-nowrap"
+                >
+                  <span className="she-subtext">{country}</span>
                 </SheTooltip>
               )}
             </div>
@@ -118,7 +106,7 @@ export function CompaniesListGridColumns({
         const handleManageClick = (e) => {
           e.stopPropagation();
           e.preventDefault();
-          onAction("manageCompany", row.original);
+          onAction("openLocationConfigurationCard", row.original);
         };
 
         return (

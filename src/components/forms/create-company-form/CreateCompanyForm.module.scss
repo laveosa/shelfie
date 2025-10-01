@@ -1,0 +1,13 @@
+.createSupplierForm {
+
+  & form > div {
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .createSupplierFormItem {
+    padding-bottom: 20px;
+  }
+}

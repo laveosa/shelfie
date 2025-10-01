@@ -4,14 +4,23 @@ import { ProductModel } from "@/const/models/ProductModel.ts";
 import { ProductCountersModel } from "@/const/models/CounterModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
+import { CompanyModel } from "@/const/models/CompanyModel.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { LocationModel } from "@/const/models/LocationModel.ts";
 
 export interface IProductBasicDataPageSlice {
   isLoading?: boolean;
   isProductConfigurationCardLoading?: boolean;
   isCreateProductCategoryCardLoading?: boolean;
   isCreateProductBrandCardLoading?: boolean;
+  isSelectEntityCardLoading?: boolean;
+  isCreateCompanyCardLoading?: boolean;
+  isCompanyConfigurationCardLoading?: boolean;
+  isLocationConfigurationCardLoading?: boolean;
   isProductsLoading?: boolean;
   isPhotoUploaderLoading?: boolean;
+  isCompaniesGridLoading?: boolean;
+  isLocationsGridLoading?: boolean;
   product?: ProductModel;
   countryCodes?: CountryCodeModel[];
   brandsList?: BrandModel[];
@@ -23,4 +32,9 @@ export interface IProductBasicDataPageSlice {
   activeCards?: any[];
   productCounter?: ProductCountersModel;
   photos?: ImageModel[];
+  selectedCompany?: CompanyModel;
+  companiesList?: CompanyModel[];
+  companiesGridRequestModel?: GridRequestModel;
+  managedCompany?: CompanyModel;
+  managedLocation?: LocationModel;
 }

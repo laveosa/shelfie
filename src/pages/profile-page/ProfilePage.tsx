@@ -3,17 +3,27 @@ import { Trash2 } from "lucide-react";
 
 import cs from "./ProfilePage.module.scss";
 import { Separator } from "@/components/ui/separator.tsx";
-import SheCardNotification from "@/components/complex/she-card-notification/SheCardNotification.tsx";
-import { SheFileUploader } from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
+import SheCardNotification
+  from "@/components/complex/she-card-notification/SheCardNotification.tsx";
+import {
+  SheFileUploader
+} from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
 import { useAppSelector } from "@/utils/hooks/redux.ts";
-import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import {
+  IProductsPageSlice
+} from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import useProfilePageService from "@/pages/profile-page/useProfilePageService.ts";
+import useProfilePageService
+  from "@/pages/profile-page/useProfilePageService.ts";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
-import ContactInformationForm from "@/components/forms/contact-information-form/ContactInformationForm.tsx";
+import ContactInformationForm
+  from "@/components/forms/contact-information-form/ContactInformationForm.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
-import PasswordChangeForm from "@/components/forms/password-change-form/PasswordChangeForm.tsx";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
+import PasswordChangeForm
+  from "@/components/forms/password-change-form/PasswordChangeForm.tsx";
+import {
+  ISheSelectItem
+} from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import { LanguageModel } from "@/const/models/LanguageModel.ts";
 
 export function ProfilePage() {
@@ -57,25 +67,9 @@ export function ProfilePage() {
             <span className="she-text">Your personal image</span>
           </div>
           <div className={cs.profilePageContentBlock}>
-            {/*<div className={cs.avatarImageBlock}>*/}
-            {/*  {appState.userDetails?.thumbnailUrl ? (*/}
-            {/*    <img*/}
-            {/*      className={cs.avatarImage}*/}
-            {/*      src={appState.userDetails?.thumbnailUrl}*/}
-            {/*      alt={appState.userDetails?.shortName || "User"}*/}
-            {/*    />*/}
-            {/*  ) : appState.userDetails?.shortName ? (*/}
-            {/*    <div className={cs.avatarInitials}>*/}
-            {/*      {getInitials(appState.userDetails?.shortName)}*/}
-            {/*    </div>*/}
-            {/*  ) : (*/}
-            {/*    <div className={cs.noImageIcon}>*/}
-            {/*      <SheIcon icon={ImageIcon} minWidth="100px" />*/}
-            {/*    </div>*/}
-            {/*  )}*/}
-            {/*</div>*/}
             <SheFileUploader
               className={cs.fileUploader}
+              isLoading={state.isImageUploaderLoading}
               user={appState.user}
               avatarImage={appState.user?.thumbnail}
               uploadAreaText="Upload avatar"

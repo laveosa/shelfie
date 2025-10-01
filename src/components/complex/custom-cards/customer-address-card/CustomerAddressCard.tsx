@@ -11,8 +11,6 @@ interface ICustomerAddressCard {
   customerAddress?: AddressRequestModel;
   customerAddressId?: number;
   isCreate?: boolean;
-  onPrimaryButtonClick: (data: any) => void;
-  onSecondaryButtonClick?: () => void;
   showCloseButton?: boolean;
   countryList?: CountryCodeModel[];
   onAction: (action: string, data?: any) => void;
@@ -23,16 +21,10 @@ export default function CustomerAddressCard({
   customerAddress,
   customerAddressId,
   isCreate,
-  onPrimaryButtonClick,
-  onSecondaryButtonClick,
   countryList,
   onAction,
 }: ICustomerAddressCard) {
   const { t } = useTranslation();
-
-  function onSubmit(data) {
-    onPrimaryButtonClick(data);
-  }
 
   return (
     <div>
@@ -57,16 +49,20 @@ export default function CustomerAddressCard({
           buttonIcon: Trash2,
           onClick: () => onAction("deleteCustomerAddress", customerAddressId),
         }}
-        onSecondaryButtonClick={onSecondaryButtonClick}
+        onSecondaryButtonClick={() =>
+          onAction("closeCustomerAddressCard", customerAddressId)
+        }
       >
         <div className={cs.customerCardContent}>
           <div className={cs.customerAddressForm}>
             <AddressForm
               data={customerAddress}
               isCreate={isCreate}
-              onSubmit={onSubmit}
+              onSubmit={(data) => onAction("submitCustomerAddressData", data)}
               countryList={countryList}
-              onCancel={onSecondaryButtonClick}
+              onCancel={() =>
+                onAction("closeCustomerAddressCard", customerAddressId)
+              }
             />
           </div>
         </div>

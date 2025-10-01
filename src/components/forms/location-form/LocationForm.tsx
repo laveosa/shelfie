@@ -1,7 +1,11 @@
-import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Plus, Save } from "lucide-react";
+import React, { useEffect } from "react";
+import { Plus } from "lucide-react";
 
+import {
+  LocationModel,
+  LocationModelDefault,
+} from "@/const/models/LocationModel.ts";
 import useAppForm from "@/utils/hooks/useAppForm.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import SheForm from "@/components/complex/she-form/SheForm.tsx";
@@ -11,41 +15,29 @@ import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import SheButton from "@/components/primitive/she-button/SheButton";
-import AddressFormScheme from "@/utils/validation/schemes/AddressFormScheme";
-import {
-  AddressRequestModel,
-  AddressRequestModelDefault,
-} from "@/const/models/AddressRequestModel";
-import cs from "./AddressForm.module.scss";
-import { CountryCodeModel } from "@/const/models/CountryCodeModel";
+import cs from "./LocationForm.module.scss";
 import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
+import { ILocationForm } from "@/const/interfaces/forms/ILocationForm.ts";
+import locationFormScheme from "@/utils/validation/schemes/LocationFormScheme.ts";
 
-interface IAddressForm {
-  data?: AddressRequestModel;
-  isCreate?: boolean;
-  onSubmit?: (data: AddressRequestModel) => void;
-  onCancel?: () => void;
-  countryList?: CountryCodeModel[];
-  showFooter?: boolean;
-  onHandleUpData?: (data: any) => void;
-}
-
-export default function AddressForm({
+export default function LocationForm({
+  isLoading,
   data,
-  isCreate,
   onSubmit,
   onCancel,
-  countryList,
-  showFooter = true,
+  countryCodes,
   onHandleUpData,
-}: IAddressForm): React.ReactNode {
+}: ILocationForm): React.ReactNode {
   const { t } = useTranslation();
-  const form = useAppForm<AddressRequestModel>({
+  const form = useAppForm<LocationModel>({
     mode: "onBlur",
-    resolver: zodResolver(AddressFormScheme),
-    defaultValues: AddressRequestModelDefault,
+    resolver: zodResolver(locationFormScheme),
+    defaultValues: LocationModelDefault,
   });
+  const slots = Array.from(
+    { length: 6 },
+    (_, i) => data?.pictures?.[i] || null,
+  );
 
   useEffect(() => {
     form.reset(data);
@@ -62,7 +54,7 @@ export default function AddressForm({
   // ================================================================ RENDER
 
   function convertCountriesToSelectItems(): ISheSelectItem<any>[] {
-    return countryList?.map(
+    return countryCodes?.map(
       (item): ISheSelectItem<any> => ({
         value: item.countryId,
         text: item.countryName,
@@ -75,27 +67,51 @@ export default function AddressForm({
   }
 
   return (
-    <SheForm<AddressRequestModel>
-      className={cs.addressForm}
+    <SheForm<LocationModel>
+      isLoading={isLoading}
+      className={cs.locationForm}
       form={form}
       onSubmit={onSubmit}
       onError={onErrorHandler}
       onCancel={onCancel}
       view={ComponentViewEnum.STANDARD}
-      hidePrimaryBtn
-      hideSecondaryBtn
+      hidePrimaryBtn={!!data?.locationId}
+      hideSecondaryBtn={!!data?.locationId}
+      footerClassName={cs.cardFooter}
+      primaryBtnTitle="Create Location"
+      primaryBtnProps={{
+        icon: Plus,
+        variant: "info",
+      }}
     >
       <SheFormField
-        name="alias"
+        name="locationName"
         render={({ field }) => (
           <SheInput
-            label={t("AddressForm.Labels.Alias")}
+            label={"Location Name"}
             value={field.value}
             fullWidth
-            placeholder={t("AddressForm.Placeholders.Alias")}
+            placeholder={"enter location name..."}
           />
         )}
       />
+      {data?.pictures && (
+        <div className={cs.imagesBlockGrid}>
+          {slots.map((img, index) => (
+            <div key={index} className={cs.imagesBlockGridItem}>
+              {img ? (
+                <img
+                  src={img.thumbnailUrl}
+                  alt={`image-${index}`}
+                  className={cs.image}
+                />
+              ) : (
+                <div></div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
       <SheFormField
         name="addressLine1"
         render={({ field }) => (
@@ -141,7 +157,7 @@ export default function AddressForm({
         )}
       />
       <SheFormField
-        name="postalCode"
+        name="postCode"
         render={({ field }) => (
           <SheInput
             label={t("AddressForm.Labels.PostalCode")}
@@ -170,33 +186,6 @@ export default function AddressForm({
           </SheFormItem>
         )}
       />
-      {showFooter && (
-        <div
-          className={cs.cardFooter}
-          style={{ justifyContent: "space-between" }}
-        >
-          <SheButton
-            variant="secondary"
-            onClick={() => {
-              onCancel();
-            }}
-            value={t("CommonButtons.Cancel")}
-          />
-
-          <SheButton
-            variant="default"
-            icon={isCreate ? Plus : Save}
-            onClick={() => {
-              form.handleSubmit(onSubmit);
-            }}
-            value={
-              isCreate
-                ? t("CustomerActions.CreateAddress")
-                : t("CommonButtons.Save")
-            }
-          />
-        </div>
-      )}
     </SheForm>
   );
 }
