@@ -471,6 +471,21 @@ export default function useProductBasicDataPageService(handleCardAction) {
         });
         dispatch(actions.setIsCreateCompanyCardLoading(false));
         handleCardAction("createCompanyCard");
+        getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
+          (res) => {
+            dispatch(actions.setIsCompaniesGridLoading(false));
+            const modifiedList = res.data.items.map((item) => ({
+              ...item,
+              isSelected: item.companyId === state.selectedCompany?.companyId,
+            }));
+            dispatch(
+              actions.refreshCompaniesGridRequestModel({
+                ...res.data,
+                items: modifiedList,
+              }),
+            );
+          },
+        );
         addToast({
           text: "Company created successfully",
           type: "success",
@@ -528,7 +543,17 @@ export default function useProductBasicDataPageService(handleCardAction) {
         dispatch(actions.resetManagedCompany());
         getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
           (res) => {
-            dispatch(actions.refreshCompaniesGridRequestModel(res.data));
+            dispatch(actions.setIsCompaniesGridLoading(false));
+            const modifiedList = res.data.items.map((item) => ({
+              ...item,
+              isSelected: item.companyId === state.selectedCompany?.companyId,
+            }));
+            dispatch(
+              actions.refreshCompaniesGridRequestModel({
+                ...res.data,
+                items: modifiedList,
+              }),
+            );
           },
         );
         if (
