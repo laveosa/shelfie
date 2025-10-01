@@ -100,13 +100,7 @@ export default function SheContextSidebar({
           )}
           <div className={cs.sheContextSidebarMenu}>
             <ProductMenuCard
-              title={
-                menuTitle
-                  ? menuTitle
-                  : itemId
-                    ? "Manage Product"
-                    : "Create Product"
-              }
+              title={menuTitle}
               itemsCollection={menuCollectionType}
               counter={counter}
               itemId={itemId}

@@ -33,8 +33,8 @@ export function SizeChartPage() {
   return (
     <div className={cs.sizeChartPage}>
       <SheContextSidebar
-        menuTitle="Manage Size Charts"
         menuCollectionType="products"
+        menuTitle={"Manage Product"}
         itemId={Number(productId)}
         activeCards={state.activeCards}
         onAction={handleCardAction}
