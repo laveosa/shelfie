@@ -7,15 +7,15 @@ import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
 import SheCard from "@/components/complex/she-card/SheCard.tsx";
+import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
+import { Separator } from "@/components/ui/separator.tsx";
 import {
   SheFileUploader,
   SheFileUploaderRef,
 } from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { ICreateProductBrandCard } from "@/const/interfaces/complex-components/custom-cards/ICreateProductBrandCard.ts";
-import { Separator } from "@/components/ui/separator.tsx";
-import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 
 export default function CreateProductBrandCard({
   isLoading,
@@ -136,9 +136,9 @@ export default function CreateProductBrandCard({
         <Separator />
         <div className={cs.brandOwnerBlock}>
           <div className={cs.brandOwnerSelect}>
-              <span className={`${cs.brandOwnerSelectTitle} she-title`}>
-                Brand owner
-              </span>
+            <span className={`${cs.brandOwnerSelectTitle} she-title`}>
+              Brand owner
+            </span>
             <SheButton
               variant="secondary"
               icon={Copyright}
@@ -165,9 +165,9 @@ export default function CreateProductBrandCard({
                     text={selectedCompany?.companyName}
                     className={cs.companyNameTooltip}
                   >
-                      <span className={`${cs.companyName} she-text`}>
-                        {selectedCompany?.companyName}
-                      </span>
+                    <span className={`${cs.companyName} she-text`}>
+                      {selectedCompany?.companyName}
+                    </span>
                   </SheTooltip>
                   {selectedCompany?.address && (
                     <SheTooltip
@@ -175,15 +175,16 @@ export default function CreateProductBrandCard({
                       text={selectedCompany?.address}
                       className="max-w-[150px]"
                     >
-                        <span className={`${cs.twoLineEllipsis} she-text`}>
-                          {selectedCompany?.address}
-                        </span>
+                      <span className={`${cs.twoLineEllipsis} she-text`}>
+                        {selectedCompany?.address}
+                      </span>
                     </SheTooltip>
                   )}
                 </div>
                 <SheButton
                   icon={CogIcon}
-                  value={t("CommonButtons.Manage")}
+                  value="Manage"
+                  valueTransKey="CommonButtons.Manage"
                   variant="secondary"
                   onClick={() => onAction("manageCompany", selectedCompany)}
                 />
