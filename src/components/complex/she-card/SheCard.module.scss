@@ -9,6 +9,7 @@
   max-width: 400px;
   height: calc(100vh - 82px);
   overflow: hidden;
+  transition: all 160ms ease-in-out;
 
   .cardContextWrapper {
     overflow-y: auto;
@@ -93,4 +94,8 @@
 .sheCard:global(.sheCardMinimized) {
   min-width: 47px !important;
   max-width: 47px !important;
+
+  .cardContextWrapper {
+    overflow: hidden !important;
+  }
 }

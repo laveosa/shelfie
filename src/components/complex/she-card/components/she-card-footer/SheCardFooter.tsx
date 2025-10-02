@@ -48,20 +48,6 @@ export default function SheCardFooter({
       className={`${cs.sheCardFooter} ${className} ${cs[view]}`}
       style={style}
     >
-      {showNotificationCard && (
-        <div className={cs.sheCardFooterCardNotificationContainer}>
-          <SheCardNotification
-            className={cs.sheCardFooterCardNotification}
-            buttonColor="#EF4343"
-            buttonVariant="outline"
-            buttonText="Delete"
-            buttonTextTransKey="CommonButtons.Delete"
-            buttonIcon={Trash2}
-            onClick={onNotificationCardButtonClick}
-            {...notificationCardProps}
-          />
-        </div>
-      )}
       {(showSecondaryButton || showPrimaryButton) && (
         <div
           className={cs.sheCardFooterButtonsContainer}
@@ -94,6 +80,20 @@ export default function SheCardFooter({
               {...primaryButtonProps}
             />
           )}
+        </div>
+      )}
+      {showNotificationCard && (
+        <div className={cs.sheCardFooterCardNotificationContainer}>
+          <SheCardNotification
+            className={cs.sheCardFooterCardNotification}
+            buttonColor="#EF4343"
+            buttonVariant="outline"
+            buttonText="Delete"
+            buttonTextTransKey="CommonButtons.Delete"
+            buttonIcon={Trash2}
+            onClick={onNotificationCardButtonClick}
+            {...notificationCardProps}
+          />
         </div>
       )}
     </div>

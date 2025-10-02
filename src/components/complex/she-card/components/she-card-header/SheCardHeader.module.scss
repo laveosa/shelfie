@@ -24,10 +24,11 @@
 
 .sheCardHeader {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
+  height: fit-content;
   min-height: 40px !important;
-  max-height: 40px !important;
+  //max-height: 40px !important;
 
   .sheCardHeaderCell {
     display: flex;
@@ -36,6 +37,7 @@
     min-width: 20px;
     max-width: 20px;
     opacity: 1;
+    padding-top: 11px;
 
     &.sheCardHeaderCellToggleButton {
       outline: none;
@@ -43,16 +45,17 @@
 
     &.sheCardHeaderCellIcon {
       outline: none;
+      padding-top: 12px;
     }
 
     &.sheCardHeaderCellInfo {
       position: relative;
-      top: -1px;
       flex-direction: column;
       gap: 2px;
       min-width: 0;
       max-width: none;
       margin: 0;
+      padding-top: 8px;
     }
 
     &.sheCardHeaderCellCloseButton {
@@ -144,8 +147,16 @@
 
   &.card {
     min-height: 50px;
-    max-height: 50px;
+    //max-height: 50px;
     padding: vars.$paddingStandard vars.$paddingSmall 10px;
+
+    .sheCardHeaderCell {
+      padding-top: 3px;
+
+      &.sheCardHeaderCellInfo {
+        padding-top: 0;
+      }
+    }
   }
 }
 
