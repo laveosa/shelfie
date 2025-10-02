@@ -9,6 +9,7 @@ import facebookLogo from "@/assets/images/facebook-messenger_logo.svg";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import SheTextArea from "@/components/primitive/she-textarea/SheTextarea.tsx";
+import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 
 export default function MessengerConversationCard({
   chat,
@@ -442,15 +443,15 @@ export default function MessengerConversationCard({
 
   return (
     <SheCard
-      view="card"
       className={cs.messengerConversationCard}
       width="450px"
       showFooter
       showPrimaryButton
       primaryButtonTitle="Send"
-      onPrimaryButtonClick={() => onAction("sendMessage")}
       showSecondaryButton
       secondaryButtonTitle="Close"
+      view={ComponentViewEnum.CARD}
+      onPrimaryButtonClick={() => onAction("sendMessage")}
       onSecondaryButtonClick={() => onAction("onChatClick", chat)}
     >
       <div className={cs.messengerConversationCardContent}>

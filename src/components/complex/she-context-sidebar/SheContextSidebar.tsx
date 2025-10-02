@@ -17,6 +17,7 @@ export default function SheContextSidebar({
   listTitle,
   listItems,
   showListItems,
+  hideSidebarBlock,
   selectedId,
   isListLoading,
   menuTitle,
@@ -83,35 +84,31 @@ export default function SheContextSidebar({
       className={`${cs.sheContextSidebar} ${className}`}
       style={{ ...style }}
     >
-      <div className={cs.sheContextSidebarMenuAndListContainer}>
-        {showListItems && (
-          <div className={cs.sheContextSidebarList}>
-            <ItemsCard
-              isLoading={isListLoading}
-              title={listTitle ? listTitle : activeTab.toString()}
-              items={_listItems}
-              selectedId={selectedId}
-              skeletonQuantity={skeletonQuantity}
-              onAction={onAction}
+      {!hideSidebarBlock && (
+        <div className={cs.sheContextSidebarMenuAndListContainer}>
+          {showListItems && (
+            <div className={cs.sheContextSidebarList}>
+              <ItemsCard
+                isLoading={isListLoading}
+                title={listTitle ? listTitle : activeTab.toString()}
+                items={_listItems}
+                selectedId={selectedId}
+                skeletonQuantity={skeletonQuantity}
+                onAction={onAction}
+              />
+            </div>
+          )}
+          <div className={cs.sheContextSidebarMenu}>
+            <ProductMenuCard
+              title={menuTitle}
+              itemsCollection={menuCollectionType}
+              counter={counter}
+              itemId={itemId}
+              activeCards={activeCards}
             />
           </div>
-        )}
-        <div className={cs.sheContextSidebarMenu}>
-          <ProductMenuCard
-            title={
-              menuTitle
-                ? menuTitle
-                : itemId
-                  ? "Manage Product"
-                  : "Create Product"
-            }
-            itemsCollection={menuCollectionType}
-            counter={counter}
-            itemId={itemId}
-            activeCards={activeCards}
-          />
         </div>
-      </div>
+      )}
       <div className={cs.sheContextSidebarContextContainer}>{children}</div>
     </div>
   );

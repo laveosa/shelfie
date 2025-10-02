@@ -5,6 +5,8 @@ import SheProductCard from "@/components/complex/she-product-card/SheProductCard
 import cs from "./PhotosCard.module.scss";
 import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import { SheFileUploader } from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
+import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { IPhotosCard } from "@/const/interfaces/complex-components/custom-cards/IPhotosCard.ts";
 
@@ -21,17 +23,18 @@ export default function PhotosCard({
   showCloseButton,
   onAction,
 }: IPhotosCard) {
-  const { t } = useTranslation();
+  const { translate } = useAppTranslation();
 
   return (
-    <SheProductCard
-      loading={isLoading}
+    <SheCard
+      className={cs.productPhotosCard}
       title={`${contextName} Photos`}
+      isLoading={isLoading}
+      showHeader
       showCloseButton={showCloseButton}
       onSecondaryButtonClick={() => onAction("closePhotosCard")}
-      className={cs.photosCard}
     >
-      <div className={cs.photosCardContent}>
+      <div className={cs.productPhotosCardContent}>
         <SheFileUploader
           isLoading={isImageUploaderLoading}
           contextName={contextName}
@@ -40,10 +43,12 @@ export default function PhotosCard({
             onAction("uploadPhoto", uploadModel)
           }
         />
-        <div className={cs.managePhotosBlock}>
+        <br />
+        <div className={cs.managePhotos}>
           <div className={`${cs.managePhotosTitle} she-title`}>
-            {t("CardTitles.ManagePhotos")}
+            {translate("CardTitles.ManagePhotos")}
           </div>
+
           <div className={cs.managePhotosGrid}>
             <SheGrid
               isLoading={isGridLoading}
@@ -66,6 +71,6 @@ export default function PhotosCard({
           </div>
         </div>
       </div>
-    </SheProductCard>
+    </SheCard>
   );
 }

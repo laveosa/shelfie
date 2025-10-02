@@ -1,10 +1,10 @@
 import { Trash2 } from "lucide-react";
 import React from "react";
 
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./LocationConfigurationCard.module.scss";
-import { ILocationConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/ILocationConfigurationCard.ts";
 import LocationForm from "@/components/forms/location-form/LocationForm.tsx";
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
+import { ILocationConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/ILocationConfigurationCard.ts";
 
 export default function LocationConfigurationCard({
   isLoading,
@@ -13,8 +13,7 @@ export default function LocationConfigurationCard({
   onAction,
 }: ILocationConfigurationCard) {
   return (
-    <SheProductCard
-      loading={isLoading}
+    <SheCard
       className={cs.locationConfigurationCard}
       title={location?.locationId ? "Manage Location" : "Create Location"}
       showNotificationCard={!!location?.locationId}
@@ -27,10 +26,12 @@ export default function LocationConfigurationCard({
         buttonIcon: Trash2,
         onClick: () => onAction("deleteLocation", location),
       }}
+      showHeader
       showCloseButton
+      isLoading={isLoading}
       onSecondaryButtonClick={() => onAction("closeLocationConfigurationCard")}
     >
-      <div className={cs.locationConfigurationCardContent}>
+      <div>
         <LocationForm
           isLoading={isLoading}
           data={location}
@@ -39,6 +40,6 @@ export default function LocationConfigurationCard({
           onHandleUpData={(data) => onAction("updateLocation", data)}
         />
       </div>
-    </SheProductCard>
+    </SheCard>
   );
 }

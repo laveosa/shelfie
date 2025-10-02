@@ -34,7 +34,7 @@ export function AttributesPage() {
   return (
     <div className={cs.attributePage}>
       <SheContextSidebar
-        menuTitle={"Manage Attributes"}
+        menuTitle={"Manage Product"}
         menuCollectionType="products"
         counter={state.productCounter}
         itemId={Number(productId)}
