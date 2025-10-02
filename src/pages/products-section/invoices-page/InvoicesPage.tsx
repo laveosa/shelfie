@@ -52,7 +52,7 @@ export function InvoicesPage() {
     <div className={cs.invoicesPage}>
       <SheContextSidebar
         menuCollectionType="purchases"
-        menuTitle="Report Purchase"
+        menuTitle={"Manage Product"}
         itemId={Number(purchaseId)}
         counter={productsState.purchaseCounters}
         activeCards={state.activeCards}

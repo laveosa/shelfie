@@ -1,10 +1,9 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
 
 import cs from "./ProductConfigurationCard.module.scss";
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
-import { IProductConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IProductConfigurationCard.ts";
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
 import ProductConfigurationForm from "@/components/forms/product-configuration-form/ProductConfigurationForm.tsx";
+import { IProductConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IProductConfigurationCard.ts";
 
 export default function ProductConfigurationCard({
   isLoading,
@@ -18,17 +17,16 @@ export default function ProductConfigurationCard({
   onSecondaryButtonClick,
   onAction,
 }: IProductConfigurationCard) {
-  const { t } = useTranslation();
-
+  // ==================================================================== LAYOUT
   return (
-    <SheProductCard
-      loading={isLoading}
+    <SheCard
       className={cs.productConfigurationFormCard}
-      title={
-        productId
-          ? t("CardTitles.BasicProductData")
-          : t("CardTitles.CreateProduct")
+      title={productId ? "Basic Product Data" : "Create Product"}
+      titleTransKey={
+        productId ? "CardTitles.BasicProductData" : "CardTitles.CreateProduct"
       }
+      isLoading={isLoading}
+      showHeader
       showCloseButton={showSecondaryButton}
       onSecondaryButtonClick={onSecondaryButtonClick}
     >
@@ -44,6 +42,6 @@ export default function ProductConfigurationCard({
           onCancel={() => onAction("gotoProductsPage")}
         />
       </div>
-    </SheProductCard>
+    </SheCard>
   );
 }

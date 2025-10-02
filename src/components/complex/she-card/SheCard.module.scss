@@ -1,121 +1,101 @@
 @use "@/styles/variables" as vars;
 
 .sheCard {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 300px;
-  height: calc(100vh - 92px);
+  min-width: 400px;
+  max-width: 400px;
+  height: calc(100vh - 82px);
   overflow: hidden;
-  padding: 20px;
-  background-color: white;
+  transition: all 160ms ease-in-out;
+
+  .cardContextWrapper {
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    flex-grow: 1;
+    scrollbar-gutter: stable;
+    padding-right: 2.5px;
+
+    @-moz-document url-prefix() {
+      padding-right: 8.5px;
+    }
+
+    &::-webkit-scrollbar {
+      width: 5px;
+      height: 10px;
+      background: white;
+    }
+
+    .cardContextContainer {
+    }
+  }
+}
+
+// ====================================================================== VIEW
+
+.sheCard {
+  &.standard {
+    border: 0;
+  }
 
   &.card {
     border-radius: 10px;
     border: 1px solid vars.$brdColor;
-  }
+    background-color: white;
 
-  .cardHeader {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-bottom: 10px;
-    max-height: 40px;
-    min-height: 40px;
+    .cardContextWrapper {
+      padding-left: 10px;
+      padding-right: 2.5px;
+      margin: 10px 2.5px 10px 0;
+    }
 
-    .titleBlock {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      .cardTitleBlock {
-        min-height: 28px;
-        position: relative;
-      }
-
-      .toggleButton {
-        position: absolute;
-        top: -2px;
-        left: 6px;
-        width: 40px;
-      }
-
-      .cardTitle {
-        padding-top: 6px;
-        max-width: 270px;
-      }
-
-      .cardTitlePadding {
-        padding-left: 28px;
-      }
-
-      .closeButton {
-        position: absolute;
-        top: 7px;
-        right: 0;
-        background: vars.$colorMuted;
-        min-width: 25px;
-        min-height: 25px;
-        padding: 0;
-        max-height: 25px;
-
-        &:hover {
-          background: vars.$colorMuted;
-        }
-      }
-
-      Button {
-        padding: 5px 0 5px 5px;
-
-        &:hover {
-          background: transparent;
-        }
-
-        svg {
-          color: #71717a;
-          width: 18px;
-          height: 18px;
-        }
+    &.withHeader {
+      .cardContextWrapper {
+        margin-top: 0;
       }
     }
-  }
 
-  .cardContent {
-  }
-
-  .cardFooter {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
+    &.withFooter {
+      .cardContextWrapper {
+        margin-bottom: 0;
+      }
+    }
   }
 }
 
-// -------------------------------------------------------------------- LOADER
+// ====================================================================== LOADER
 
 .sheCard {
-  .loaderContainer {
-    height: 5px;
-    width: 100%;
-    background: repeating-linear-gradient(
-      to right,
-      gray 0%,
-      lightblue 50%,
-      gray 100%
-    );
-    background-size: 200% auto;
-    animation: gradient 2s infinite;
-    animation-fill-mode: forwards;
-    animation-timing-function: linear;
+  .cardContextWrapper {
+    .sheCardLoading {
+    }
+
+    .cardContextContainer {
+    }
   }
 
-  @keyframes gradient {
-    0% {
-      background-position: 0 0;
+  .cardContextWrapper.cardContextIsLoading {
+    pointer-events: none;
+    opacity: 0.6;
+
+    .sheCardLoading {
     }
-    100% {
-      background-position: -200% 0;
+
+    .cardContextContainer {
     }
+  }
+}
+
+// ======================================================== MINIMIZED
+
+.sheCard:global(.sheCardMinimized) {
+  min-width: 47px !important;
+  max-width: 47px !important;
+
+  .cardContextWrapper {
+    overflow: hidden !important;
   }
 }

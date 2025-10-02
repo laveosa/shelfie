@@ -1,27 +1,48 @@
-import { IBaseComponent } from "@/const/interfaces/IBaseComponent.ts";
+import { ComponentPropsWithRef } from "react";
 
-export interface ISheCard extends IBaseComponent {
-  loading?: boolean;
-  view?: "" | "card";
-  title?: string;
-  titleTransKey?: string;
-  text?: string;
-  textTransKey?: string;
-  description?: string;
-  descriptionTransKey?: string;
-  showHeader?: boolean;
-  showFooter?: boolean;
-  showToggleButton?: boolean;
-  showCloseButton?: boolean;
+import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
+import {
+  ISheCardHeader,
+  SheCardHeaderDefaultModel,
+} from "@/const/interfaces/complex-components/ISheCardHeader.ts";
+import {
+  ISheCardFooter,
+  SheCardFooterDefaultModel,
+} from "@/const/interfaces/complex-components/ISheCardFooter.ts";
+
+export interface ISheCard
+  extends ISheCardHeader,
+    ISheCardFooter,
+    ComponentPropsWithRef<"div"> {
+  className?: string;
+  contextClassName?: string;
+  view?: ComponentViewEnum;
+  isMinimized?: boolean;
+  saveIsMinimizedCondition?: boolean;
+  isMinimizedConditionStorageKey?: string;
   width?: string;
+  minWidth?: string;
+  maxWidth?: string;
   fullWidth?: boolean;
-  showPrimaryButton?: boolean;
-  primaryButtonTitle?: string;
-  primaryButtonTitleTransKey?: string;
-  primaryButtonDisabled?: any;
-  showSecondaryButton?: boolean;
-  secondaryButtonTitle?: string;
-  secondaryButtonTitleTransKey?: string;
-  onPrimaryButtonClick?: () => void;
-  onSecondaryButtonClick?: () => void;
+  isLoading?: boolean;
+  disabled?: boolean;
+  onIsMinimizedChange?(value: boolean): void;
 }
+
+export const SheCardDefaultModel: ISheCard = {
+  ...SheCardHeaderDefaultModel,
+  ...SheCardFooterDefaultModel,
+  className: undefined,
+  contextClassName: undefined,
+  view: undefined,
+  isMinimized: undefined,
+  saveIsMinimizedCondition: undefined,
+  isMinimizedConditionStorageKey: undefined,
+  width: undefined,
+  minWidth: undefined,
+  maxWidth: undefined,
+  fullWidth: undefined,
+  isLoading: undefined,
+  disabled: undefined,
+  onIsMinimizedChange: undefined,
+};

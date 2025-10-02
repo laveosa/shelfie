@@ -1,12 +1,12 @@
-import { Search } from "lucide-react";
 import React from "react";
 
-import SheCard from "@/components/complex/she-card/SheCard.tsx";
-import cs from "./MessengerListCard.module.scss";
-import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import { IMessengerListCard } from "@/const/interfaces/complex-components/custom-cards/IMessengerListCard.ts";
-import { formatDate, getInitials } from "@/utils/helpers/quick-helper.ts";
 import facebookLogo from "@/assets/images/facebook-messenger_logo.svg";
+
+import cs from "./MessengerListCard.module.scss";
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
+import SheInput from "@/components/primitive/she-input/SheInput.tsx";
+import { formatDate, getInitials } from "@/utils/helpers/quick-helper.ts";
+import { IMessengerListCard } from "@/const/interfaces/complex-components/custom-cards/IMessengerListCard.ts";
 
 export default function MessengerListCard({
   chats,
@@ -14,12 +14,13 @@ export default function MessengerListCard({
   onAction,
 }: IMessengerListCard) {
   return (
-    <SheCard view="card" className={cs.messengerCard} width="400px">
+    <SheCard className={cs.messengerCard}>
       <div className={cs.messengerCardContent}>
         <SheInput
-          icon={Search}
           placeholder="Search"
           fullWidth
+          isSearch
+          showClearBtn
           onDelay={(value) => {
             onAction("chatListSearch", { value });
           }}

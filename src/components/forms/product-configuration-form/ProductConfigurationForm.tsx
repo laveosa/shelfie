@@ -1,36 +1,29 @@
 import React, { JSX, useEffect } from "react";
-import { useTranslation } from "react-i18next";
 import { zodResolver } from "@hookform/resolvers/zod";
+
 import { CheckCheck, Plus, WandSparkles } from "lucide-react";
 
-import {
-  ProductDefaultModel,
-  ProductModel
-} from "@/const/models/ProductModel.ts";
-import useAppForm from "@/utils/hooks/useAppForm.ts";
+import cs from "./ProductConfigurationForm.module.scss";
 import SheForm from "@/components/complex/she-form/SheForm.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
-import SheFormField
-  from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
-import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
+import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
-import {
-  ISheSelectItem
-} from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
-import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
-import cs from "./ProductConfigurationForm.module.scss";
-import {
-  IProductConfigurationForm
-} from "@/const/interfaces/forms/IProductConfigurationForm.ts";
-import productConfigurationFormScheme
-  from "@/utils/validation/schemes/ProductConfigurationFormScheme.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import SheToggle from "@/components/primitive/she-toggle/SheToggle.tsx";
+import productConfigurationFormScheme from "@/utils/validation/schemes/ProductConfigurationFormScheme.ts";
+import useAppForm from "@/utils/hooks/useAppForm.ts";
+import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
+import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
+import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
+import {
+  ProductDefaultModel,
+  ProductModel,
+} from "@/const/models/ProductModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
-import SheToggle from "@/components/primitive/she-toggle/SheToggle.tsx";
-import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
+import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
+import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
+import { IProductConfigurationForm } from "@/const/interfaces/forms/IProductConfigurationForm.ts";
 
 export default function ProductConfigurationForm({
   data,
@@ -43,27 +36,35 @@ export default function ProductConfigurationForm({
   onCancel,
   onAction,
 }: IProductConfigurationForm): JSX.Element {
-  const { t } = useTranslation();
+  // ==================================================================== UTILITIES
   const form = useAppForm<ProductModel>({
     mode: ReactHookFormMode.CHANGE,
     resolver: zodResolver(productConfigurationFormScheme),
     defaultValues: ProductDefaultModel,
   });
 
+  // ==================================================================== SIDE EFFECTS
   useEffect(() => {
-    if (data?.productId) {
-      form.reset(data);
-    } else {
-      form.reset(ProductDefaultModel);
-    }
-  }, [data, form]);
+    if (data?.productId) form.reset(data);
+  }, [data]);
 
+  useEffect(() => {
+    if (productCode) form.setValue("productCode", productCode);
+  }, [productCode]);
+
+  // ==================================================================== EVENT HANDLERS
+  function onErrorHandler(model) {
+    console.log(model);
+  }
+
+  // ==================================================================== PRIVATE
   function svgStringToComponent(svgString: string): React.FC<any> {
     return (props) => (
       <span dangerouslySetInnerHTML={{ __html: svgString }} {...props} />
     );
   }
 
+  // --------------------------------------------- MODEL CONVERTORS
   function convertCountryCodeToSelectItems(
     data: CountryCodeModel[],
   ): ISheSelectItem<any>[] {
@@ -98,50 +99,38 @@ export default function ProductConfigurationForm({
     );
   }
 
-  useEffect(() => {
-    form.reset(data);
-  }, [data]);
-
-  useEffect(() => {
-    if (productCode) {
-      form.setValue("productCode", productCode);
-    }
-  }, [productCode, form]);
-
-  function onErrorHandler(model) {
-    console.log(model);
-  }
-
+  // ==================================================================== LAYOUT
   return (
     <SheForm<ProductModel>
       id="USER_FORM"
       className={cs.productConfigurationForm}
       form={form}
       defaultValues={ProductDefaultModel}
-      view={ComponentViewEnum.STANDARD}
-      footerPosition={DirectionEnum.RIGHT}
-      primaryBtnTitle={
-        data?.productId
-          ? t("CommonButtons.Save")
-          : t("ProductActions.AddProduct")
+      primaryBtnTitle={data?.productId ? "Save" : "Add Product"}
+      primaryBtnTitleTransKey={
+        data?.productId ? "CommonButtons.Save" : "ProductActions.AddProduct"
       }
       primaryBtnProps={{
         icon: CheckCheck,
       }}
-      hideSecondaryBtn={!data?.productId || showSecondaryButton}
+      hideSecondaryBtn={!data || !data.productId || !showSecondaryButton}
       footerClassName={
-        !data?.productId ? cs.formFooterOneButton : cs.formFooterTwoButton
+        data?.productId ? cs.formFooterTwoButton : cs.formFooterOneButton
       }
+      footerPosition={DirectionEnum.RIGHT}
       onSubmit={onSubmit}
       onError={onErrorHandler}
       onCancel={onCancel}
     >
       <SheFormField
         name="productName"
+        required
         render={({ field }) => (
           <SheInput
-            label={t("ProductForm.Labels.ProductName")}
-            placeholder={t("ProductForm.Placeholders.ProductName")}
+            label="Product Name"
+            labelTransKey="ProductForm.Labels.ProductName"
+            placeholder="enter product name..."
+            placeholderTransKey="ProductForm.Placeholders.ProductName"
             value={field.value}
             fullWidth
           />
@@ -152,8 +141,10 @@ export default function ProductConfigurationForm({
           name="productCode"
           render={({ field }) => (
             <SheInput
-              label={t("ProductForm.Labels.ProductCode")}
-              placeholder={t("ProductForm.Placeholders.ProductCode")}
+              label="Product Code"
+              labelTransKey="ProductForm.Labels.ProductCode"
+              placeholder="enter product code..."
+              placeholderTransKey="ProductForm.Placeholders.ProductCode"
               value={field.value || ""}
               fullWidth
               onDelay={(value) => onAction("checkProductCode", value)}
@@ -172,8 +163,10 @@ export default function ProductConfigurationForm({
         name="barcode"
         render={({ field }) => (
           <SheInput
-            label={t("ProductForm.Labels.ProductBarcode")}
-            placeholder={t("ProductForm.Placeholders.ProductBarcode")}
+            label="Product Barcode"
+            labelTransKey="ProductForm.Labels.ProductBarcode"
+            placeholder="enter product barcode..."
+            placeholderTransKey="ProductForm.Placeholders.ProductBarcode"
             value={field.value || ""}
             fullWidth
           />
@@ -184,8 +177,10 @@ export default function ProductConfigurationForm({
           name="productCategoryId"
           render={({ field }) => (
             <SheSelect
-              label={t("ProductForm.Labels.CategoryName")}
-              placeholder={t("ProductForm.Placeholders.SelectCategory")}
+              label="Category Name"
+              labelTransKey="ProductForm.Labels.CategoryName"
+              placeholder="enter category name..."
+              placeholderTransKey="ProductForm.Placeholders.SelectCategory"
               items={convertCategoriesCodeToSelectItems(categories)}
               selected={field.value}
               hideFirstOption
@@ -206,8 +201,10 @@ export default function ProductConfigurationForm({
           name="brandId"
           render={({ field }) => (
             <SheSelect
-              label={t("ProductForm.Labels.BrandName")}
-              placeholder={t("ProductForm.Placeholders.SelectBrand")}
+              label="Brand Name"
+              labelTransKey="ProductForm.Labels.BrandName"
+              placeholder="enter brand name..."
+              placeholderTransKey="ProductForm.Placeholders.SelectBrand"
               items={convertBrandsCodeToSelectItems(brands)}
               selected={field.value}
               hideFirstOption
@@ -228,6 +225,9 @@ export default function ProductConfigurationForm({
         render={({ field }) => (
           <SheSelect
             label="Country of origin"
+            labelTransKey="ProductForm.Labels.CountryOfOrigin"
+            placeholder="select country of origin..."
+            placeholderTransKey="ProductForm.Placeholders.CountryOfOrigin"
             items={convertCountryCodeToSelectItems(countryCodes)}
             selected={field.value}
             hideFirstOption
@@ -238,13 +238,13 @@ export default function ProductConfigurationForm({
       <div>
         <SheFormField
           name="isActive"
-          required
           ignoreFormAction
           render={({ field }) => (
             <SheToggle
-              text={t("ProductForm.Labels.IsActive")}
-              type={SheToggleTypeEnum.SWITCH}
+              text="Is Active"
+              textTransKey="ProductForm.Labels.IsActive"
               checked={field.value}
+              type={SheToggleTypeEnum.SWITCH}
               onChecked={(value) => {
                 field.onChange(value);
               }}

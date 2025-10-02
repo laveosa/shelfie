@@ -131,7 +131,7 @@ export function MarginsPage() {
     <div className={cs.marginPage}>
       <SheContextSidebar
         menuCollectionType="purchases"
-        menuTitle="Report Purchase"
+        menuTitle={"Manage Product"}
         itemId={Number(purchaseId)}
         counter={productsState.purchaseCounters}
       >
