@@ -40,7 +40,7 @@ export default function PhotosCard({
             onAction("uploadPhoto", uploadModel)
           }
         />
-        <div className={cs.managePhotos}>
+        <div className={cs.managePhotosBlock}>
           <div className={`${cs.managePhotosTitle} she-title`}>
             {t("CardTitles.ManagePhotos")}
           </div>

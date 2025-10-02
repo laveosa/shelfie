@@ -11,6 +11,7 @@ import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 import { CompanyModel } from "@/const/models/CompanyModel.ts";
 import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
+import { LocationModel } from "@/const/models/LocationModel.ts";
 
 export interface IPurchaseProductsPageSlice {
   isLoading?: boolean;
@@ -36,6 +37,9 @@ export interface IPurchaseProductsPageSlice {
   isSelectPurchaseCardLoading?: boolean;
   isSelectEntityCardLoading?: boolean;
   isSupplierCardLoading?: boolean;
+  isCreateCompanyCardLoading?: boolean;
+  isCompanyConfigurationCardLoading?: boolean;
+  isLocationConfigurationCardLoading?: boolean;
   isImageUploaderLoading?: boolean;
   isProductPhotosLoading?: boolean;
   isVariantsGridLoading?: boolean;
@@ -48,6 +52,7 @@ export interface IPurchaseProductsPageSlice {
   isVariantsForPurchaseGridLoading?: boolean;
   isPurchaseGridLoading?: boolean;
   isSuppliersGridLoading?: boolean;
+  isLocationsGridLoading?: boolean;
   activeCards?: any[];
   activeTab?: string;
   variants?: VariantModel[];
@@ -78,4 +83,6 @@ export interface IPurchaseProductsPageSlice {
   selectedPurchase?: PurchaseModel;
   companiesGridRequestModel?: GridRequestModel;
   selectedCompany?: CompanyModel;
+  managedCompany?: CompanyModel;
+  managedLocation?: LocationModel;
 }

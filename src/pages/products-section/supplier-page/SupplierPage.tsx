@@ -5,14 +5,18 @@ import React, { useEffect } from "react";
 import cs from "./SupplierPage.module.scss";
 import SupplierCard from "@/components/complex/custom-cards/supplier-card/SupplierCard.tsx";
 import SelectEntityCard from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
-import SupplierConfigurationCard from "@/components/complex/custom-cards/supplier-configuration-card/SupplierConfigurationCard.tsx";
-import { SuppliersListGridColumns } from "@/components/complex/grid/custom-grids/suppliers-list-grid/SuppliersListGridColumns.tsx";
 import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
 import { SupplierPageSliceActions as actions } from "@/state/slices/SupplierPageSlice.ts";
 import useSupplierPageService from "@/pages/products-section/supplier-page/useSupplierPageService.ts";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
+import { CompaniesListGridColumns } from "@/components/complex/grid/custom-grids/companies-list-grid/CompaniesListGridColumns.tsx";
+import CreateCompanyCard from "@/components/complex/custom-cards/create-company-card/CreateCompanyCard.tsx";
+import CompanyConfigurationCard from "@/components/complex/custom-cards/company-configuration-card/CompanyConfigurationCard.tsx";
+import LocationConfigurationCard from "@/components/complex/custom-cards/location-configuration-card/LocationConfigurationCard.tsx";
+import PhotosCard from "@/components/complex/custom-cards/photos-card/PhotosCard.tsx";
+import { ManageCompanyPhotosGridColumns } from "@/components/complex/grid/custom-grids/manage-company-photos-grid/ManageCompanyPhotosGridColumns.tsx";
 
 export function SupplierPage() {
   // ==================================================================== UTILITIES
@@ -38,7 +42,7 @@ export function SupplierPage() {
       case "updatePurchase":
         service.updatePurchaseForSupplierHandler(payload.purchaseId, {
           date: payload.selectedDate,
-          supplierId: payload.selectedSupplier.supplierId,
+          companyId: payload.selectedCompany.companyId,
           documentNotes: payload.purchaseNotes,
         });
         break;
@@ -51,32 +55,59 @@ export function SupplierPage() {
       case "openCreateEntityCard":
         service.openCreateEntityCardHandler();
         break;
-      case "createSupplier":
-        service.createSupplierHandler(payload);
-        break;
       case "searchEntity":
         service.searchEntityHandler(payload);
         break;
-      case "selectSupplier":
-        service.selectSupplierHandler(payload);
+      case "createCompany":
+        service.createCompanyHandler(payload);
         break;
-      case "manageSupplier":
-        service.manageSupplierHandler(payload);
+      case "closeCreateCompanyCard":
+        service.closeCreateCompanyCardHandler();
         break;
-      case "updateSupplier":
-        service.updateSupplierHandler(payload, purchaseId);
+      case "selectCompany":
+        service.selectCompanyHandler(payload);
         break;
-      case "deleteSupplier":
-        service.deleteSupplierHandler(payload, purchaseId);
+      case "manageCompany":
+        service.manageCompanyHandler(payload);
         break;
-      case "restoreSupplier":
-        service.restoreSupplierHandler(payload, purchaseId);
+      case "updateCompany":
+        console.log("UPDATE COMPANY", payload);
         break;
-      case "deleteSupplierPhoto":
-        service.deleteSupplierPhotoHandler(payload, purchaseId);
+      case "deleteCompany":
+        service.deleteCompanyHandler(payload);
         break;
-      case "dndSupplierPhoto":
-        service.dndSupplierPhotoHandler(payload);
+      case "closeCompanyConfigurationCard":
+        service.closeCompanyConfigurationCardHandler();
+        break;
+      case "manageCompanyPhotos":
+        service.manageCompanyPhotosHandler();
+        break;
+      case "uploadPhoto":
+        service.uploadPhotoHandler(payload);
+        break;
+      case "deleteCompanyPhoto":
+        service.deleteCompanyPhotoHandler(payload);
+        break;
+      case "closePhotosCard":
+        service.closePhotosCardHandler();
+        break;
+      case "openLocationConfigurationCard":
+        service.openLocationConfigurationCardHandler(payload);
+        break;
+      case "createLocation":
+        service.createLocationHandler(payload);
+        break;
+      case "manageLocation":
+        console.log("MANAGE LOCATION");
+        break;
+      case "deleteLocation":
+        console.log("DELETE LOCATION");
+        break;
+      case "closeLocationConfigurationCard":
+        service.closeLocationConfigurationCardHandler();
+        break;
+      case "restoreCompany":
+        service.restoreCompanyHandler(payload, purchaseId);
         break;
       case "deletePurchase":
         service.deletePurchaseHandler(payload);
@@ -86,9 +117,6 @@ export function SupplierPage() {
         break;
       case "closeSelectEntityCard":
         service.closeSelectEntityCardHandler();
-        break;
-      case "closeSupplierConfigurationCard":
-        service.closeSupplierConfigurationCardHandler();
         break;
     }
   }
@@ -106,18 +134,17 @@ export function SupplierPage() {
         <SupplierCard
           isLoading={state.isSupplierCardLoading}
           selectedPurchase={productsState.selectedPurchase}
-          selectedSupplier={productsState.selectedSupplier}
+          selectedSupplier={state.selectedCompany}
           onAction={onAction}
         />
         {state.activeCards?.includes("selectEntityCard") && (
           <div ref={createRefCallback("selectEntityCard")}>
             <SelectEntityCard
-              isLoading={state.isSelectSupplierCardLoading}
-              isGridLoading={state.isSuppliersGridLoading}
-              entityName="Supplier"
-              entityCollection={state.suppliersWithLocations}
+              isGridLoading={state.isCompaniesGridLoading}
+              entityName="Company"
+              entityCollection={state.companiesGridRequestModel.items}
               columns={
-                SuppliersListGridColumns({
+                CompaniesListGridColumns({
                   onAction,
                 }) as ColumnDef<DataWithId>[]
               }
@@ -125,14 +152,51 @@ export function SupplierPage() {
             />
           </div>
         )}
-        {state.activeCards?.includes("supplierConfigurationCard") && (
-          <div ref={createRefCallback("supplierConfigurationCard")}>
-            <SupplierConfigurationCard
-              isLoading={state.isSupplierConfigurationCardLoading}
-              isSupplierPhotosGridLoading={state.isSupplierPhotosGridLoading}
+        {state.activeCards.includes("createCompanyCard") && (
+          <div ref={createRefCallback("createCompanyCard")}>
+            <CreateCompanyCard
+              isLoading={state.isCreateCompanyCardLoading}
               isPhotoUploaderLoading={state.isPhotoUploaderLoading}
-              countryList={productsState.countryCodeList}
-              managedSupplier={state.managedSupplier}
+              countryCodes={state.countryCodes}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards.includes("companyConfigurationCard") && (
+          <div ref={createRefCallback("companyConfigurationCard")}>
+            <CompanyConfigurationCard
+              isLoading={state.isCompanyConfigurationCardLoading}
+              isGridLoading={state.isLocationsGridLoading}
+              company={state.managedCompany}
+              countryCodes={state.countryCodes}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards.includes("locationConfigurationCard") && (
+          <div ref={createRefCallback("locationConfigurationCard")}>
+            <LocationConfigurationCard
+              isLoading={state.isCustomerAddressDetailsLoading}
+              location={state.managedLocation}
+              countryCodes={state.countryCodes}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards.includes("photosCard") && (
+          <div ref={createRefCallback("photosCard")}>
+            <PhotosCard
+              isImageUploaderLoading={state.isPhotoUploaderLoading}
+              data={state.managedCompany?.photos}
+              contextName={"Company"}
+              contextId={state.managedCompany?.companyId}
+              noDataText="COMPANY HAS NO PHOTOS"
+              showCloseButton
+              columns={
+                ManageCompanyPhotosGridColumns({
+                  onAction,
+                }) as ColumnDef<DataWithId>[]
+              }
               onAction={onAction}
             />
           </div>
