@@ -1,18 +1,19 @@
 import React, { useRef, useState } from "react";
 
+import { Plus } from "lucide-react";
+
+import cs from "./CreateCompanyCard.module.scss";
 import {
   SheFileUploader,
   SheFileUploaderRef,
 } from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
-import cs from "./CreateCompanyCard.module.scss";
-import { ICreateCompanyCard } from "@/const/interfaces/complex-components/custom-cards/ICreateCompanyCard.ts";
 import CreateCompanyForm from "@/components/forms/create-company-form/CreateCompanyForm.tsx";
 import AddressForm from "@/components/forms/address-form/AddressForm.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { CompanyModel } from "@/const/models/CompanyModel.ts";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
-import { Plus } from "lucide-react";
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
+import { ICreateCompanyCard } from "@/const/interfaces/complex-components/custom-cards/ICreateCompanyCard.ts";
+import { CompanyModel } from "@/const/models/CompanyModel.ts";
 
 export default function CreateCompanyCard({
   isLoading,
@@ -20,19 +21,19 @@ export default function CreateCompanyCard({
   countryCodes,
   onAction,
 }: ICreateCompanyCard) {
+  // ==================================================================== STATE MANAGEMENT
   const [companyFormData, setCompanyFormData] = useState<CompanyModel>(null);
   const [addressFormData, setAddressFormData] = useState<CompanyModel>(null);
   const [submissionData, setSubmissionData] = useState(null);
-  const imageUploaderRef = useRef<SheFileUploaderRef>(null);
-  const isFormValid = companyFormData !== null && addressFormData !== null;
-  const getCurrentImages = () => {
-    if (isLoading && submissionData?.images) {
-      return submissionData.images;
-    }
-    return imageUploaderRef.current?.getSelectedFiles() || [];
-  };
 
-  function handleFormSubmit() {
+  // ==================================================================== REF
+  const imageUploaderRef = useRef<SheFileUploaderRef>(null);
+
+  // ==================================================================== UTILITIES
+  const isFormValid = companyFormData !== null && addressFormData !== null;
+
+  // ==================================================================== EVENT HANDLERS
+  function onSubmitHandler() {
     const selectedFiles = imageUploaderRef.current?.getSelectedFiles() || [];
     const uploadModels = imageUploaderRef.current?.getUploadModels() || [];
     const completeData = {
@@ -48,25 +49,34 @@ export default function CreateCompanyCard({
     onAction("createCompany", completeData);
   }
 
+  // ==================================================================== PRIVATE
+  const getCurrentImages = () => {
+    if (isLoading && submissionData?.images) {
+      return submissionData.images;
+    }
+    return imageUploaderRef.current?.getSelectedFiles() || [];
+  };
+
+  // ==================================================================== LAYOUT
   return (
-    <SheProductCard
-      loading={isLoading}
+    <SheCard
       className={cs.createCompanyCard}
       title="Create Company"
+      showHeader
       showCloseButton
+      isLoading={isLoading}
       onSecondaryButtonClick={() => onAction("closeCreateCompanyCard")}
     >
       <div className={cs.createCompanyCardContent}>
         <CreateCompanyForm
-          isLoading={isLoading}
-          className={cs.supplierConfigurationCardForm}
           countryCodes={countryCodes}
+          isLoading={isLoading}
           onSubmit={(data) => onAction("createCompany", data)}
           onCancel={() => onAction("closeCreateCompanyCard")}
           onHandleUpData={(data) => setCompanyFormData(data)}
         />
         {isPhotoUploaderLoading ? (
-          <div className={cs.uploadingBlockContainer}>
+          <div>
             {getCurrentImages().map((file: any, index) => {
               const imageUrl =
                 file instanceof File
@@ -79,13 +89,12 @@ export default function CreateCompanyCard({
                   key={file.name || index}
                 >
                   <div
-                    className={`${cs.uploadingItem} flex relative items-center justify-between p-2 pl-4`}
+                    className={` flex relative items-center justify-between p-2 pl-4`}
                   >
-                    <div className={cs.uploadingImageContainer}>
+                    <div>
                       <img
                         src={imageUrl}
                         alt={`uploading-${file.name || `image-${index}`}`}
-                        className={cs.uploadingItemImage}
                         onLoad={() => {
                           if (file instanceof File) {
                             URL.revokeObjectURL(imageUrl);
@@ -93,7 +102,7 @@ export default function CreateCompanyCard({
                         }}
                       />
                     </div>
-                    <div className={cs.uploadingItemTextBlock}>
+                    <div>
                       <p className="truncate text-sm">
                         {file.name || `Image ${index + 1}`}
                       </p>
@@ -101,7 +110,7 @@ export default function CreateCompanyCard({
                         {((file.size || 0) / (1024 * 1024)).toFixed(2)} MB
                       </p>
                     </div>
-                    <SheLoading className={cs.loadingBlock} />
+                    <SheLoading />
                   </div>
                 </div>
               );
@@ -119,10 +128,10 @@ export default function CreateCompanyCard({
         )}
         <AddressForm
           isCreate={true}
-          onSubmit={(data) => onAction("createCompany", data)}
-          onCancel={() => onAction("closeCreateCompanyCard")}
           countryList={countryCodes}
           showFooter={false}
+          onSubmit={(data) => onAction("createCompany", data)}
+          onCancel={() => onAction("closeCreateCompanyCard")}
           onHandleUpData={(data) => setAddressFormData(data)}
         />
       </div>
@@ -137,9 +146,9 @@ export default function CreateCompanyCard({
           value="Create Company"
           variant="info"
           disabled={!isFormValid}
-          onClick={handleFormSubmit}
+          onClick={onSubmitHandler}
         />
       </div>
-    </SheProductCard>
+    </SheCard>
   );
 }

@@ -3,14 +3,14 @@ import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
 import _ from "lodash";
 
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./CompanyConfigurationCard.module.scss";
 import CreateCompanyForm from "@/components/forms/create-company-form/CreateCompanyForm.tsx";
-import { ICompanyConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/ICompanyConfigurationCard.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
 import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
-import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 import { LocationsListGridColumns } from "@/components/complex/grid/custom-grids/locations-list-grid/LocationsGridColumns.tsx";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
+import { ICompanyConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/ICompanyConfigurationCard.ts";
 import { CompanyModel } from "@/const/models/CompanyModel.ts";
 
 export default function CompanyConfigurationCard({
@@ -20,20 +20,13 @@ export default function CompanyConfigurationCard({
   company,
   onAction,
 }: ICompanyConfigurationCard) {
+  // ==================================================================== UTILITIES
   const slots = Array.from(
     { length: 6 },
     (_, i) => company?.photos?.[i] || null,
   );
 
-  function normalizeCompanyData(model: CompanyModel) {
-    return {
-      companyName: model.companyName || "",
-      countryId: model.countryId ?? null,
-      customerCareEmail: model.customerCareEmail || null,
-      nip: model.nip || null,
-    };
-  }
-
+  // ==================================================================== EVENT HANDLERS
   function onUpdateCompanyHandler(data: CompanyModel) {
     const normalizedData = normalizeCompanyData(data);
     const normalizedCompany = normalizeCompanyData(company);
@@ -43,9 +36,19 @@ export default function CompanyConfigurationCard({
     }
   }
 
+  // ==================================================================== PRIVATE
+  function normalizeCompanyData(model: CompanyModel) {
+    return {
+      companyName: model.companyName || "",
+      countryId: model.countryId ?? null,
+      customerCareEmail: model.customerCareEmail || null,
+      nip: model.nip || null,
+    };
+  }
+
+  // ==================================================================== LAYOUT
   return (
-    <SheProductCard
-      loading={isLoading}
+    <SheCard
       className={cs.companyConfigurationCard}
       title="Manage Company"
       showNotificationCard
@@ -58,7 +61,9 @@ export default function CompanyConfigurationCard({
         buttonIcon: Trash2,
         onClick: () => onAction("deleteCompany", company),
       }}
+      showHeader
       showCloseButton
+      isLoading={isLoading}
       onSecondaryButtonClick={() => onAction("closeCompanyConfigurationCard")}
     >
       <div className={cs.companyConfigurationCardContent}>
@@ -105,7 +110,7 @@ export default function CompanyConfigurationCard({
                 onClick={() => onAction("openLocationConfigurationCard")}
               />
             </div>
-            <div className={cs.locatinsGrid}>
+            <div>
               <SheGrid
                 isLoading={isGridLoading}
                 showHeader={false}
@@ -121,6 +126,6 @@ export default function CompanyConfigurationCard({
           </div>
         </div>
       </div>
-    </SheProductCard>
+    </SheCard>
   );
 }
