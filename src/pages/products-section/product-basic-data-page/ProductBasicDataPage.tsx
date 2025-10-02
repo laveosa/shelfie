@@ -1,3 +1,4 @@
+import { ColumnDef } from "@tanstack/react-table";
 import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
@@ -10,6 +11,14 @@ import { ProductBasicDataPageSliceActions as actions } from "@/state/slices/Prod
 import useProductBasicDataPageService from "@/pages/products-section/product-basic-data-page/useProductBasicDataPageService.ts";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
+import SelectEntityCard from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
+import { CompaniesListGridColumns } from "@/components/complex/grid/custom-grids/companies-list-grid/CompaniesListGridColumns.tsx";
+import CreateCompanyCard from "@/components/complex/custom-cards/create-company-card/CreateCompanyCard.tsx";
+import CompanyConfigurationCard from "@/components/complex/custom-cards/company-configuration-card/CompanyConfigurationCard.tsx";
+import PhotosCard from "@/components/complex/custom-cards/photos-card/PhotosCard.tsx";
+import { ManageCompanyPhotosGridColumns } from "@/components/complex/grid/custom-grids/manage-company-photos-grid/ManageCompanyPhotosGridColumns.tsx";
+import LocationConfigurationCard from "@/components/complex/custom-cards/location-configuration-card/LocationConfigurationCard.tsx";
 
 export function ProductBasicDataPage() {
   // ==================================================================== UTILITIES
@@ -53,9 +62,6 @@ export function ProductBasicDataPage() {
       case "createProductBrand":
         service.createBrandHandler(payload);
         break;
-      case "uploadCategoryOrBrandPhoto":
-        service.uploadCategoryOrBrandPhotoHandler(payload);
-        break;
       case "gotoProductsPage":
         service.gotoProductsPageHandler();
         break;
@@ -76,6 +82,66 @@ export function ProductBasicDataPage() {
         break;
       case "closeCreateProductBrandCard":
         handleCardAction("createBrandCard");
+        break;
+      case "openSelectEntityCard":
+        service.openSelectEntityCardHandler();
+        break;
+      case "searchEntity":
+        service.searchEntityHandler(payload);
+        break;
+      case "selectCompany":
+        service.selectCompanyHandler(payload);
+        break;
+      case "openCreateEntityCard":
+        service.openCreateEntityCardHandler();
+        break;
+      case "closeSelectEntityCard":
+        service.closeSelectEntityCardHandler();
+        break;
+      case "createCompany":
+        service.createCompanyHandler(payload);
+        break;
+      case "closeCreateCompanyCard":
+        service.closeCreateCompanyCardHandler();
+        break;
+      case "manageCompany":
+        service.manageCompanyHandler(payload);
+        break;
+      case "updateCompany":
+        console.log("UPDATE COMPANY", payload);
+        break;
+      case "deleteCompany":
+        service.deleteCompanyHandler(payload);
+        break;
+      case "closeCompanyConfigurationCard":
+        service.closeCompanyConfigurationCardHandler();
+        break;
+      case "manageCompanyPhotos":
+        service.manageCompanyPhotosHandler();
+        break;
+      case "uploadPhoto":
+        service.uploadPhotoHandler(payload);
+        break;
+      case "deleteCompanyPhoto":
+        service.deleteCompanyPhotoHandler(payload);
+        break;
+      case "closePhotosCard":
+        service.closePhotosCardHandler();
+        break;
+      case "openLocationConfigurationCard":
+        service.openLocationConfigurationCardHandler(payload);
+        break;
+      case "createLocation":
+        service.createLocationHandler(payload);
+        break;
+      case "manageLocation":
+        console.log("MANAGE LOCATION");
+        break;
+      case "deleteLocation":
+        console.log("DELETE LOCATION");
+        break;
+      case "closeLocationConfigurationCard":
+        service.closeLocationConfigurationCardHandler();
         break;
     }
   }
@@ -130,6 +196,72 @@ export function ProductBasicDataPage() {
               isLoading={state.isCreateBrandCardLoading}
               isPhotoUploaderLoading={productsState.isPhotoUploaderLoading}
               brand={productsState.brand}
+              selectedCompany={state.selectedCompany}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards.includes("selectEntityCard") && (
+          <div ref={createRefCallback("selectEntityCard")}>
+            <SelectEntityCard
+              isLoading={state.isSelectEntityCardLoading}
+              isGridLoading={state.isCompaniesGridLoading}
+              entityName="Company"
+              entityCollection={state.companiesGridRequestModel.items}
+              columns={
+                CompaniesListGridColumns({
+                  onAction,
+                }) as ColumnDef<DataWithId>[]
+              }
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards.includes("createCompanyCard") && (
+          <div ref={createRefCallback("createCompanyCard")}>
+            <CreateCompanyCard
+              isLoading={state.isCreateCompanyCardLoading}
+              isPhotoUploaderLoading={state.isPhotoUploaderLoading}
+              countryCodes={state.countryCodes}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards.includes("companyConfigurationCard") && (
+          <div ref={createRefCallback("companyConfigurationCard")}>
+            <CompanyConfigurationCard
+              isLoading={state.isCompanyConfigurationCardLoading}
+              isGridLoading={state.isLocationsGridLoading}
+              company={state.managedCompany}
+              countryCodes={state.countryCodes}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards.includes("locationConfigurationCard") && (
+          <div ref={createRefCallback("locationConfigurationCard")}>
+            <LocationConfigurationCard
+              isLoading={state.isCustomerAddressDetailsLoading}
+              location={state.managedLocation}
+              countryCodes={state.countryCodes}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards.includes("photosCard") && (
+          <div ref={createRefCallback("photosCard")}>
+            <PhotosCard
+              isImageUploaderLoading={state.isPhotoUploaderLoading}
+              data={state.managedCompany?.photos}
+              contextName={"Company"}
+              contextId={state.managedCompany?.companyId}
+              noDataText="COMPANY HAS NO PHOTOS"
+              showCloseButton
+              columns={
+                ManageCompanyPhotosGridColumns({
+                  onAction,
+                }) as ColumnDef<DataWithId>[]
+              }
               onAction={onAction}
             />
           </div>

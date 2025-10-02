@@ -19,6 +19,7 @@ import { ISheSidebarHeader } from "@/const/interfaces/complex-components/ISheSid
 import { UserOrganizationModel } from "@/const/models/UserOrganizationModel.ts";
 import { getInitials } from "@/utils/helpers/quick-helper.ts";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
+import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 
 export default function SheSidebarHeader({
   isLoading,
@@ -69,7 +70,11 @@ export default function SheSidebarHeader({
                       </div>
                     )}
                     <div className={cs.headerInfo}>
-                      <span className="she-title">{selected?.name}</span>
+                      <SheTooltip delayDuration={200} text={selected?.name}>
+                        <span className={`${cs.headerInfoText} she-title`}>
+                          {selected?.name}
+                        </span>
+                      </SheTooltip>
                     </div>
                     <ChevronsUpDown className={`ml-auto ${cs.headerChevron}`} />
                   </>

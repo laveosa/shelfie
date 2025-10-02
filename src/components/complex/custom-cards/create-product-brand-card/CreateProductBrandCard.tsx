@@ -1,5 +1,7 @@
 import React, { useRef, useState } from "react";
 
+import { CogIcon, Copyright, ImageIcon } from "lucide-react";
+
 import cs from "./CreateProductBrandCard.module.scss";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
@@ -11,11 +13,15 @@ import {
 } from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { ICreateProductBrandCard } from "@/const/interfaces/complex-components/custom-cards/ICreateProductBrandCard.ts";
+import { Separator } from "@/components/ui/separator.tsx";
+import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 
 export default function CreateProductBrandCard({
   isLoading,
   isPhotoUploaderLoading,
   brand,
+  selectedCompany,
   onAction,
 }: ICreateProductBrandCard) {
   // ==================================================================== STATE MANAGEMENT
@@ -127,6 +133,65 @@ export default function CreateProductBrandCard({
             hideUploadButton={true}
           />
         )}
+        <Separator />
+        <div className={cs.brandOwnerBlock}>
+          <div className={cs.brandOwnerSelect}>
+              <span className={`${cs.brandOwnerSelectTitle} she-title`}>
+                Brand owner
+              </span>
+            <SheButton
+              variant="secondary"
+              icon={Copyright}
+              value="Select Company"
+              onClick={() => onAction("openSelectEntityCard")}
+            />
+          </div>
+          {selectedCompany && (
+            <div className={cs.selectedCompany}>
+              <div className={cs.selectedCompanyDetails}>
+                <div className={cs.companyPhoto}>
+                  {selectedCompany.thumbnailUrl ? (
+                    <img
+                      src={selectedCompany?.thumbnailUrl}
+                      alt={selectedCompany?.companyName}
+                    />
+                  ) : (
+                    <SheIcon icon={ImageIcon} />
+                  )}
+                </div>
+                <div className={cs.companyDesc}>
+                  <SheTooltip
+                    delayDuration={200}
+                    text={selectedCompany?.companyName}
+                    className={cs.companyNameTooltip}
+                  >
+                      <span className={`${cs.companyName} she-text`}>
+                        {selectedCompany?.companyName}
+                      </span>
+                  </SheTooltip>
+                  {selectedCompany?.address && (
+                    <SheTooltip
+                      delayDuration={200}
+                      text={selectedCompany?.address}
+                      className="max-w-[150px]"
+                    >
+                        <span className={`${cs.twoLineEllipsis} she-text`}>
+                          {selectedCompany?.address}
+                        </span>
+                    </SheTooltip>
+                  )}
+                </div>
+                <SheButton
+                  icon={CogIcon}
+                  value={t("CommonButtons.Manage")}
+                  variant="secondary"
+                  onClick={() => onAction("manageCompany", selectedCompany)}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+        <Separator />
         <SheButton
           value="Add Brand"
           valueTransKey="ProductActions.AddBrand"
