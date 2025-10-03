@@ -28,7 +28,6 @@ export default function PhotosCard({
       className={cs.productPhotosCard}
       title={`${contextName} Photos`}
       isLoading={isLoading}
-      showHeader
       showCloseButton={showCloseButton}
       onSecondaryButtonClick={() => onAction("closePhotosCard")}
     >

@@ -66,7 +66,6 @@ export default function CreateProductBrandCard({
       title="Create Product Brand"
       titleTransKey="CardTitles.CreateProductBrand"
       isLoading={isLoading}
-      showHeader
       showCloseButton
       onSecondaryButtonClick={onCloseHandler}
     >
