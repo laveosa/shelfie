@@ -1,5 +1,8 @@
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
-import { SupplierModel } from "@/const/models/SupplierModel.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
+import { CompanyModel } from "@/const/models/CompanyModel.ts";
+import { LocationModel } from "@/const/models/LocationModel.ts";
 
 export interface ISupplierPageSlice {
   isLoading?: boolean;
@@ -7,13 +10,19 @@ export interface ISupplierPageSlice {
   isSupplierCardLoading?: boolean;
   isSelectSupplierCardLoading?: boolean;
   isSupplierConfigurationCardLoading?: boolean;
+  isCreateCompanyCardLoading?: boolean;
+  isCompanyConfigurationCardLoading?: boolean;
+  isLocationConfigurationCardLoading?: boolean;
   isSupplierPhotosGridLoading?: boolean;
   isSuppliersGridLoading?: boolean;
   isPhotoUploaderLoading?: boolean;
+  isCompaniesGridLoading?: boolean;
+  isLocationsGridLoading?: boolean;
   activeCards?: any[];
   purchase?: PurchaseModel;
-  suppliers?: SupplierModel[];
-  suppliersWithLocations?: SupplierModel[];
-  selectedSupplier?: SupplierModel;
-  managedSupplier?: SupplierModel;
+  selectedCompany?: CompanyModel;
+  managedCompany?: CompanyModel;
+  companiesGridRequestModel: GridRequestModel;
+  countryCodes?: CountryCodeModel[];
+  managedLocation?: LocationModel;
 }

@@ -25,13 +25,13 @@ export default function PhotosCard({
 
   return (
     <SheCard
-      className={cs.productPhotosCard}
+      className={cs.photosCard}
       title={`${contextName} Photos`}
       isLoading={isLoading}
       showCloseButton={showCloseButton}
       onSecondaryButtonClick={() => onAction("closePhotosCard")}
     >
-      <div className={cs.productPhotosCardContent}>
+      <div className={cs.photosCardContent}>
         <SheFileUploader
           isLoading={isImageUploaderLoading}
           contextName={contextName}
@@ -40,8 +40,7 @@ export default function PhotosCard({
             onAction("uploadPhoto", uploadModel)
           }
         />
-        <br />
-        <div className={cs.managePhotos}>
+        <div className={cs.managePhotosBlock}>
           <div className={`${cs.managePhotosTitle} she-title`}>
             {translate("CardTitles.ManagePhotos")}
           </div>

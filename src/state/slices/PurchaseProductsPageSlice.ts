@@ -12,13 +12,11 @@ import { TraitModel } from "@/const/models/TraitModel.ts";
 import { VariantModel } from "@/const/models/VariantModel.ts";
 import { IPurchaseSummaryModel } from "@/const/models/PurchaseSummaryModel.ts";
 import { VariantHistoryModel } from "@/const/models/VariantHistoryModel.ts";
-import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
-import { IManageVariantsPageSlice } from "@/const/interfaces/store-slices/IManageVariantsPageSlice.ts";
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 import { CompanyModel } from "@/const/models/CompanyModel.ts";
-import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
 import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
+import { LocationModel } from "@/const/models/LocationModel.ts";
 
 const initialState: IPurchaseProductsPageSlice = {
   isLoading: false,
@@ -44,6 +42,9 @@ const initialState: IPurchaseProductsPageSlice = {
   isSelectPurchaseCardLoading: false,
   isSupplierCardLoading: false,
   isSelectEntityCardLoading: false,
+  isCreateCompanyCardLoading: false,
+  isCompanyConfigurationCardLoading: false,
+  isLocationConfigurationCardLoading: false,
   isImageUploaderLoading: false,
   isProductPhotosLoading: false,
   isVariantsGridLoading: false,
@@ -56,6 +57,7 @@ const initialState: IPurchaseProductsPageSlice = {
   isVariantsForPurchaseGridLoading: false,
   isPurchaseGridLoading: false,
   isSuppliersGridLoading: false,
+  isLocationsGridLoading: false,
   activeCards: [],
   activeTab: "purchaseProducts",
   variants: [],
@@ -86,6 +88,8 @@ const initialState: IPurchaseProductsPageSlice = {
   selectedPurchase: null,
   companiesGridRequestModel: {},
   selectedCompany: null,
+  managedCompany: undefined,
+  managedLocation: undefined,
 };
 
 //----------------------------------------------------- LOADERS
@@ -231,24 +235,45 @@ function setIsManageTraitsCardLoading(
 }
 
 function setIsSelectPurchaseCardLoading(
-  state: IManageVariantsPageSlice,
+  state: IPurchaseProductsPageSlice,
   action: PayloadAction<boolean>,
 ) {
   state.isSelectPurchaseCardLoading = action?.payload;
 }
 
 function setIsSupplierCardLoading(
-  state: IManageVariantsPageSlice,
+  state: IPurchaseProductsPageSlice,
   action: PayloadAction<boolean>,
 ) {
   state.isSupplierCardLoading = action?.payload;
 }
 
 function setIsSelectEntityCardLoading(
-  state: IManageVariantsPageSlice,
+  state: IPurchaseProductsPageSlice,
   action: PayloadAction<boolean>,
 ) {
   state.isSelectEntityCardLoading = action?.payload;
+}
+
+function setIsCreateCompanyCardLoading(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isCreateCompanyCardLoading = action?.payload;
+}
+
+function setIsCompanyConfigurationCardLoading(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isCompanyConfigurationCardLoading = action?.payload;
+}
+
+function setIsLocationConfigurationCardLoading(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isLocationConfigurationCardLoading = action?.payload;
 }
 
 function setIsImageUploaderLoading(
@@ -322,17 +347,24 @@ function setIsVariantsForPurchaseGridLoading(
 }
 
 function setIsPurchaseGridLoading(
-  state: IManageVariantsPageSlice,
+  state: IPurchaseProductsPageSlice,
   action: PayloadAction<boolean>,
 ) {
   state.isPurchaseGridLoading = action?.payload;
 }
 
 function setIsSuppliersGridLoading(
-  state: IManageVariantsPageSlice,
+  state: IPurchaseProductsPageSlice,
   action: PayloadAction<boolean>,
 ) {
   state.isSuppliersGridLoading = action?.payload;
+}
+
+function setIsLocationsGridLoading(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isLocationsGridLoading = action?.payload;
 }
 
 //----------------------------------------------------- API
@@ -392,12 +424,6 @@ function refreshPurchaseProductVariantsGridRequestModel(
   state: IPurchaseProductsPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
-  if (
-    _.isEqual(state.purchaseProductVariantsGridRequestModel, action?.payload)
-  ) {
-    return;
-  }
-
   state.purchaseProductVariantsGridRequestModel =
     action?.payload || state.purchaseProductVariantsGridRequestModel;
 }
@@ -433,7 +459,7 @@ function refreshCategories(
 }
 
 function refreshCountryCodes(
-  state: IProductBasicDataPageSlice,
+  state: IPurchaseProductsPageSlice,
   action: PayloadAction<CountryCodeModel[]>,
 ) {
   state.countryCodes = action?.payload || state.countryCodes;
@@ -508,51 +534,47 @@ function refreshVariantHistory(
 }
 
 function refreshColorsForFilter(
-  state: IProductsPageSlice,
+  state: IPurchaseProductsPageSlice,
   action: PayloadAction<TraitOptionModel[]>,
 ) {
   state.colorsForFilter = action?.payload || state.colorsForFilter;
 }
 
 function refreshSizesForFilter(
-  state: IProductsPageSlice,
+  state: IPurchaseProductsPageSlice,
   action: PayloadAction<TraitOptionModel[]>,
 ) {
   state.sizesForFilter = action?.payload || state.sizesForFilter;
 }
 
 function refreshPurchasesList(
-  state: IManageVariantsPageSlice,
+  state: IPurchaseProductsPageSlice,
   action: PayloadAction<PurchaseModel[]>,
 ) {
   state.purchasesList = action?.payload || state.purchasesList;
 }
 
 function refreshPurchaseGridRequestModel(
-  state: IManageVariantsPageSlice,
+  state: IPurchaseProductsPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
-  if (_.isEqual(state.purchaseGridRequestModel, action?.payload)) {
-    return;
-  }
-
   state.purchaseGridRequestModel =
     action?.payload || state.purchaseGridRequestModel;
 }
 
 function refreshSelectedPurchase(
-  state: IManageVariantsPageSlice,
+  state: IPurchaseProductsPageSlice,
   action: PayloadAction<PurchaseModel>,
 ) {
   state.selectedPurchase = action?.payload || state.selectedPurchase;
 }
 
-function resetSelectedPurchase(state: IManageVariantsPageSlice) {
+function resetSelectedPurchase(state: IPurchaseProductsPageSlice) {
   state.selectedPurchase = null;
 }
 
 function refreshCompaniesGridRequestModel(
-  state: IManageVariantsPageSlice,
+  state: IPurchaseProductsPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
   if (_.isEqual(state.companiesGridRequestModel, action?.payload)) {
@@ -564,10 +586,32 @@ function refreshCompaniesGridRequestModel(
 }
 
 function refreshSelectedCompany(
-  state: IManageVariantsPageSlice,
+  state: IPurchaseProductsPageSlice,
   action: PayloadAction<CompanyModel>,
 ) {
   state.selectedCompany = action?.payload || state.selectedCompany;
+}
+
+function refreshManagedCompany(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<CompanyModel>,
+) {
+  state.managedCompany = action?.payload || state.managedCompany;
+}
+
+function resetManagedCompany(state: IPurchaseProductsPageSlice) {
+  state.managedCompany = null;
+}
+
+function refreshManagedLocation(
+  state: IPurchaseProductsPageSlice,
+  action: PayloadAction<LocationModel>,
+) {
+  state.managedLocation = action?.payload || state.managedLocation;
+}
+
+function resetManagedLocation(state: IPurchaseProductsPageSlice) {
+  state.managedLocation = null;
 }
 
 const PurchaseProductsPageSlice = createSlice({
@@ -595,6 +639,9 @@ const PurchaseProductsPageSlice = createSlice({
     setIsManageTraitsCardLoading,
     setIsSelectPurchaseCardLoading,
     setIsSupplierCardLoading,
+    setIsCreateCompanyCardLoading,
+    setIsCompanyConfigurationCardLoading,
+    setIsLocationConfigurationCardLoading,
     setIsSelectEntityCardLoading,
     setIsImageUploaderLoading,
     setIsProductPhotosLoading,
@@ -640,6 +687,11 @@ const PurchaseProductsPageSlice = createSlice({
     resetSelectedPurchase,
     refreshCompaniesGridRequestModel,
     refreshSelectedCompany,
+    setIsLocationsGridLoading,
+    refreshManagedCompany,
+    resetManagedCompany,
+    refreshManagedLocation,
+    resetManagedLocation,
   },
 });
 

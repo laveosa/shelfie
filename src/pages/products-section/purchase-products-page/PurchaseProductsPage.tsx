@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
+import { ColumnDef } from "@tanstack/react-table";
 
 import {
   GridSortingEnum,
@@ -30,8 +31,13 @@ import SelectPurchaseCard from "@/components/complex/custom-cards/select-purchas
 import SupplierCard from "@/components/complex/custom-cards/supplier-card/SupplierCard.tsx";
 import SelectEntityCard from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
 import { CompaniesListGridColumns } from "@/components/complex/grid/custom-grids/companies-list-grid/CompaniesListGridColumns.tsx";
-import SupplierConfigurationCard from "@/components/complex/custom-cards/supplier-configuration-card/SupplierConfigurationCard.tsx";
 import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
+import CreateCompanyCard from "@/components/complex/custom-cards/create-company-card/CreateCompanyCard.tsx";
+import CompanyConfigurationCard from "@/components/complex/custom-cards/company-configuration-card/CompanyConfigurationCard.tsx";
+import LocationConfigurationCard from "@/components/complex/custom-cards/location-configuration-card/LocationConfigurationCard.tsx";
+import PhotosCard from "@/components/complex/custom-cards/photos-card/PhotosCard.tsx";
+import { ManageCompanyPhotosGridColumns } from "@/components/complex/grid/custom-grids/manage-company-photos-grid/ManageCompanyPhotosGridColumns.tsx";
+import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export function PurchaseProductsPage() {
   // ==================================================================== UTILITIES
@@ -283,6 +289,56 @@ export function PurchaseProductsPage() {
       case "openAddStockCard":
         service.openAddStockCardHandler();
         break;
+
+      case "openCreateEntityCard":
+        service.openCreateEntityCardHandler();
+        break;
+      // case "createCompany":
+      //   service.createCompanyHandler(payload);
+      //   break;
+      // case "closeCreateCompanyCard":
+      //   service.closeCreateCompanyCardHandler();
+      //   break;
+      // case "manageCompany":
+      //   service.manageCompanyHandler(payload);
+      //   break;
+      // case "updateCompany":
+      //   console.log("UPDATE COMPANY", payload);
+      //   break;
+      // case "deleteCompany":
+      //   service.deleteCompanyHandler(payload);
+      //   break;
+      // case "closeCompanyConfigurationCard":
+      //   service.closeCompanyConfigurationCardHandler();
+      //   break;
+      // case "manageCompanyPhotos":
+      //   service.manageCompanyPhotosHandler();
+      //   break;
+      // case "uploadPhoto":
+      //   service.uploadPhotoHandler(payload);
+      //   break;
+      // case "deleteCompanyPhoto":
+      //   service.deleteCompanyPhotoHandler(payload);
+      //   break;
+      // case "closePhotosCard":
+      //   service.closePhotosCardHandler();
+      //   break;
+      // case "openLocationConfigurationCard":
+      //   service.openLocationConfigurationCardHandler(payload);
+      //   break;
+      // case "createLocation":
+      //   service.createLocationHandler(payload);
+      //   break;
+      // case "manageLocation":
+      //   console.log("MANAGE LOCATION");
+      //   break;
+      // case "deleteLocation":
+      //   console.log("DELETE LOCATION");
+      //   break;
+      // case "closeLocationConfigurationCard":
+      //   service.closeLocationConfigurationCardHandler();
+      //   break;
+
       case "openDisposeStockCard":
         service.openDisposeStockCardHandler();
         break;
@@ -552,14 +608,63 @@ export function PurchaseProductsPage() {
             />
           </div>
         )}
-        {state.activeCards?.includes("supplierConfigurationCard") && (
-          <div ref={createRefCallback("supplierConfigurationCard")}>
-            <SupplierConfigurationCard
-              isLoading={state.isSupplierConfigurationCardLoading}
-              isSupplierPhotosGridLoading={state.isSupplierPhotosGridLoading}
+        {/*{state.activeCards?.includes("supplierConfigurationCard") && (*/}
+        {/*  <div ref={createRefCallback("supplierConfigurationCard")}>*/}
+        {/*    <SupplierConfigurationCard*/}
+        {/*      isLoading={state.isSupplierConfigurationCardLoading}*/}
+        {/*      isSupplierPhotosGridLoading={state.isSupplierPhotosGridLoading}*/}
+        {/*      isPhotoUploaderLoading={state.isPhotoUploaderLoading}*/}
+        {/*      countryList={productsState.countryCodeList}*/}
+        {/*      managedSupplier={state.managedSupplier}*/}
+        {/*      onAction={onAction}*/}
+        {/*    />*/}
+        {/*  </div>*/}
+        {/*)}*/}
+        {state.activeCards.includes("createCompanyCard") && (
+          <div ref={createRefCallback("createCompanyCard")}>
+            <CreateCompanyCard
+              isLoading={state.isCreateCompanyCardLoading}
               isPhotoUploaderLoading={state.isPhotoUploaderLoading}
-              countryList={productsState.countryCodeList}
-              managedSupplier={state.managedSupplier}
+              countryCodes={state.countryCodes}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards.includes("companyConfigurationCard") && (
+          <div ref={createRefCallback("companyConfigurationCard")}>
+            <CompanyConfigurationCard
+              isLoading={state.isCompanyConfigurationCardLoading}
+              isGridLoading={state.isLocationsGridLoading}
+              company={state.managedCompany}
+              countryCodes={state.countryCodes}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards.includes("locationConfigurationCard") && (
+          <div ref={createRefCallback("locationConfigurationCard")}>
+            <LocationConfigurationCard
+              isLoading={state.isCustomerAddressDetailsLoading}
+              location={state.managedLocation}
+              countryCodes={state.countryCodes}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards.includes("photosCard") && (
+          <div ref={createRefCallback("photosCard")}>
+            <PhotosCard
+              isImageUploaderLoading={state.isPhotoUploaderLoading}
+              data={state.managedCompany?.photos}
+              contextName={"Company"}
+              contextId={state.managedCompany?.companyId}
+              noDataText="COMPANY HAS NO PHOTOS"
+              showCloseButton
+              columns={
+                ManageCompanyPhotosGridColumns({
+                  onAction,
+                }) as ColumnDef<DataWithId>[]
+              }
               onAction={onAction}
             />
           </div>
