@@ -1,0 +1,14 @@
+.addStockForm {
+  form > div {
+    padding-top: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .addStockFormRow {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+}

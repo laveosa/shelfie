@@ -18,3 +18,21 @@ export interface PurchaseModel {
   valueAmount?: number;
   isSelected?: boolean;
 }
+
+export const PurchaseDefaultModel: PurchaseModel = {
+  currencyBrief: undefined,
+  date: undefined,
+  itemsAccount: undefined,
+  purchaseId: undefined,
+  subTotal: undefined,
+  supplier: undefined,
+  documentNotes: undefined,
+  location: undefined,
+  expense: undefined,
+  isDeleted: undefined,
+  orderValueAmount: undefined,
+  soldAmount: undefined,
+  unitsAmount: undefined,
+  valueAmount: undefined,
+  isSelected: undefined,
+};

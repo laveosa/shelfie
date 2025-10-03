@@ -32,7 +32,6 @@ import { ManageCompanyPhotosGridColumns } from "@/components/complex/grid/custom
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 import DisposeStockCard from "@/components/complex/custom-cards/dispose-stock-card/DisposeStockCard.tsx";
 import StockHistoryCard from "@/components/complex/custom-cards/stock-history-card/StockHistoryCard.tsx";
-import AddVariantCard from "@/components/complex/custom-cards/add-variant-card/AddVariantCard.tsx";
 import ManageTraitsCard from "@/components/complex/custom-cards/manage-traits-card/ManageTraitsCard.tsx";
 import ChooseVariantTraitsCard from "@/components/complex/custom-cards/choose-variant-traits-card/ChooseVariantTraitsCard.tsx";
 import ProductTraitConfigurationCard from "@/components/complex/custom-cards/product-trait-configuration-card/ProductTraitConfigurationCard.tsx";
@@ -462,16 +461,6 @@ export function OrderProductsPage() {
               isGridLoading={state.isVariantsHistoryGridLoading}
               variant={state.selectedVariant}
               data={state.variantHistory}
-              onAction={onAction}
-            />
-          </div>
-        )}
-        {state.activeCards.includes("addVariantCard") && (
-          <div ref={createRefCallback("addVariantCard")}>
-            <AddVariantCard
-              isLoading={state.isAddVariantCardLoading}
-              traits={state.listOfTraitsWithOptionsForProduct}
-              isDuplicateVariant={state.isDuplicateVariant}
               onAction={onAction}
             />
           </div>
