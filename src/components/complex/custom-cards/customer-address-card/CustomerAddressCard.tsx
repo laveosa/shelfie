@@ -1,20 +1,7 @@
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./CustomerAddressCard.module.scss";
-import { CountryCodeModel } from "@/const/models/CountryCodeModel";
 import AddressForm from "@/components/forms/address-form/AddressForm";
-import { Trash2 } from "lucide-react";
-import { AddressRequestModel } from "@/const/models/AddressRequestModel";
-import { useTranslation } from "react-i18next";
-
-interface ICustomerAddressCard {
-  isLoading?: boolean;
-  customerAddress?: AddressRequestModel;
-  customerAddressId?: number;
-  isCreate?: boolean;
-  showCloseButton?: boolean;
-  countryList?: CountryCodeModel[];
-  onAction: (action: string, data?: any) => void;
-}
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
+import { ICustomerAddressCard } from "@/const/interfaces/complex-components/custom-cards/ICustomerAddressCard.ts";
 
 export default function CustomerAddressCard({
   isLoading,
@@ -24,49 +11,43 @@ export default function CustomerAddressCard({
   countryList,
   onAction,
 }: ICustomerAddressCard) {
-  const { t } = useTranslation();
-
+  // ==================================================================== LAYOUT
   return (
-    <div>
-      <SheProductCard
-        loading={isLoading}
-        className={cs.customerAddressFormCard}
-        title={
-          isCreate
-            ? t("CardTitles.CreateCustomerAddress")
-            : t("CardTitles.EditCustomerAddress")
-        }
-        showCloseButton={true}
-        showNotificationCard={!!(!isCreate && customerAddressId)}
-        notificationCardProps={{
-          title: "Delete Customer Address",
-          titleTransKey: "CardTitles.DeleteCustomerAddress",
-          text: "This customer address will be deleted and will no longer be available for selection or automatic connection. Past orders will remain visible.",
-          textTransKey: "ConfirmationMessages.DeleteCustomerAddress",
-          buttonText: "Delete",
-          buttonTextTransKey: "CommonButtons.Delete",
-          buttonColor: "#EF4343",
-          buttonIcon: Trash2,
-          onClick: () => onAction("deleteCustomerAddress", customerAddressId),
-        }}
-        onSecondaryButtonClick={() =>
-          onAction("closeCustomerAddressCard", customerAddressId)
-        }
-      >
-        <div className={cs.customerCardContent}>
-          <div className={cs.customerAddressForm}>
-            <AddressForm
-              data={customerAddress}
-              isCreate={isCreate}
-              onSubmit={(data) => onAction("submitCustomerAddressData", data)}
-              countryList={countryList}
-              onCancel={() =>
-                onAction("closeCustomerAddressCard", customerAddressId)
-              }
-            />
-          </div>
+    <SheCard
+      className={cs.customerAddressFormCard}
+      title={isCreate ? "Create Customer Address" : "Edit Customer Address"}
+      titleTransKey={
+        isCreate
+          ? "CardTitles.CreateCustomerAddress"
+          : "CardTitles.EditCustomerAddress"
+      }
+      isLoading={isLoading}
+      showCloseButton
+      showNotificationCard={!!(!isCreate && customerAddressId)}
+      notificationCardProps={{
+        title: "Delete Customer Address",
+        titleTransKey: "CardTitles.DeleteCustomerAddress",
+        text: "This customer address will be deleted and will no longer be available for selection or automatic connection. Past orders will remain visible.",
+        textTransKey: "ConfirmationMessages.DeleteCustomerAddress",
+        onClick: () => onAction("deleteCustomerAddress", customerAddressId),
+      }}
+      onSecondaryButtonClick={() =>
+        onAction("closeCustomerAddressCard", customerAddressId)
+      }
+    >
+      <div className={cs.customerCardContent}>
+        <div>
+          <AddressForm
+            data={customerAddress}
+            countryList={countryList}
+            isCreate={isCreate}
+            onSubmit={(data) => onAction("submitCustomerAddressData", data)}
+            onCancel={() =>
+              onAction("closeCustomerAddressCard", customerAddressId)
+            }
+          />
         </div>
-      </SheProductCard>
-    </div>
+      </div>
+    </SheCard>
   );
 }
