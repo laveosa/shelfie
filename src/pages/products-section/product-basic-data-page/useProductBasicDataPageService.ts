@@ -471,6 +471,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
         });
         dispatch(actions.setIsCreateCompanyCardLoading(false));
         handleCardAction("createCompanyCard");
+        dispatch(actions.setIsCompaniesGridLoading(true));
         getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
           (res) => {
             dispatch(actions.setIsCompaniesGridLoading(false));
@@ -541,6 +542,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
         dispatch(actions.setIsCompanyConfigurationCardLoading(false));
         dispatch(actions.setIsLocationsGridLoading(false));
         dispatch(actions.resetManagedCompany());
+        dispatch(actions.setIsCompaniesGridLoading(true));
         getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
           (res) => {
             dispatch(actions.setIsCompaniesGridLoading(false));
@@ -593,6 +595,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
           photos: updatedPhotos,
         }),
       );
+      dispatch(actions.setIsCompaniesGridLoading(true));
       getListOfCompaniesForGrid(state.companiesGridRequestModel).then((res) => {
         dispatch(actions.setIsCompaniesGridLoading(false));
         const modifiedList = res.data.items.map((item) => ({
@@ -633,6 +636,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
       }
       if (res.data.photoId) {
         dispatch(actions.setIsPhotoUploaderLoading(false));
+        dispatch(actions.setIsCompaniesGridLoading(true));
         getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
           (res) => {
             dispatch(actions.setIsCompaniesGridLoading(false));

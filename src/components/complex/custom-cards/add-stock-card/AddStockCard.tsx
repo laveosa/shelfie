@@ -1,23 +1,17 @@
 import { useTranslation } from "react-i18next";
-import { useForm } from "react-hook-form";
 import { ImageIcon, Link2, Plus, RefreshCcw } from "lucide-react";
-import React from "react";
-
-import { FormField } from "@/components/ui/form.tsx";
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
+import React, { useState } from "react";
+import SheProductCard
+  from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./AddStockCard.module.scss";
-import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import { IAddStockCard } from "@/const/interfaces/complex-components/custom-cards/IAddStockCard.ts";
-import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
+import {
+  IAddStockCard
+} from "@/const/interfaces/complex-components/custom-cards/IAddStockCard.ts";
 import { Separator } from "@/components/ui/separator.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import { formatDate } from "@/utils/helpers/quick-helper.ts";
-import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
-import SheFormItem from "@/components/complex/she-form/components/she-form-item/SheFormItem.tsx";
-import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
+import AddStockForm from "@/components/forms/add-stock-form/AddStockForm.tsx";
 
 export default function AddStockCard({
   isLoading,
@@ -29,59 +23,26 @@ export default function AddStockCard({
   ...props
 }: IAddStockCard) {
   const { t } = useTranslation();
-  const form = useForm({
-    defaultValues: {
-      unitAmount: null,
-      priceModel: {
-        price: null,
-        taxTypeId: null,
-        currencyId: null,
-      },
-      purchaseId: null,
-    },
-  });
+  const [addStockFormData, setAddStockFormData] = useState<any>(undefined);
 
-  function onSubmit(data) {
+  function onSubmit() {
     const formattedData = {
       priceModel: {
         variantId: variant.variantId,
-        nettoPrice: Number(data.priceModel.price) || 0,
-        taxTypeId: Number(data.priceModel.taxTypeId) || 0,
-        currencyId: Number(data.priceModel.currencyId) || 0,
-        unitsAmount: Number(data.unitAmount) || 0,
+        unitsAmount: addStockFormData.unitsAmount,
+        nettoPrice: addStockFormData.nettoPrice,
+        taxTypeId: addStockFormData.taxTypeId,
+        currencyId: addStockFormData.currencyId,
       },
       purchaseId: Number(purchase.purchaseId),
     };
     onAction("increaseStockAmount", formattedData);
   }
 
-  function convertCurrencyToSelectItems(
-    data: CurrencyModel[],
-  ): ISheSelectItem<CurrencyModel>[] {
-    return data?.map(
-      (item: CurrencyModel): ISheSelectItem<any> => ({
-        value: item.id,
-        text: item.name,
-      }),
-    );
-  }
-
-  function convertTaxesToSelectItems(
-    data: TaxTypeModel[],
-  ): ISheSelectItem<any>[] {
-    return data?.map(
-      (item): ISheSelectItem<any> => ({
-        value: item.id,
-        text: item.name,
-      }),
-    );
-  }
-
   return (
     <SheProductCard
       loading={isLoading}
       title={`${t("StockActions.AddToStock")} ${variant?.variantName} ${t("SectionTitles.Product")}`}
-      onPrimaryButtonClick={form.handleSubmit(onSubmit)}
       onSecondaryButtonClick={() => onAction("closeAddStockCard")}
       showCloseButton
       width="411px"
@@ -89,91 +50,11 @@ export default function AddStockCard({
       {...props}
     >
       <div className={cs.addStockCardContent}>
-        <SheForm form={form as any} onSubmit={onSubmit}>
-          <div className={cs.addStockConfigurationForm}>
-            <div>
-              <span className="she-title">
-                {t("PurchaseForm.Labels.PurchasePrice")}
-              </span>
-            </div>
-            <div className={cs.purchasePriceFormRow}>
-              <div
-                className={`${cs.purchaseFormItem} ${cs.purchaseFormItemPrice}`}
-              >
-                <SheForm.Field
-                  label={t("PurchaseForm.Labels.PurchasePrice")}
-                  name="priceModel.price"
-                >
-                  <SheInput
-                    type="number"
-                    placeholder="enter price netto..."
-                    fullWidth
-                    onDelay={() => form.handleSubmit(onSubmit)}
-                  />
-                </SheForm.Field>
-              </div>
-              <div className={cs.formRowItem}>
-                <FormField
-                  control={form.control}
-                  name="priceModel.currencyId"
-                  render={({ field }) => (
-                    <SheFormItem
-                      className={`${cs.purchaseFormItem} ${cs.purchaseFormItemCurrency}`}
-                      label="Currency"
-                    >
-                      <SheSelect
-                        selected={field.value as any}
-                        items={convertCurrencyToSelectItems(currencyTypes)}
-                        placeholder="select vat..."
-                        hideFirstOption
-                        minWidth="100px"
-                        onSelect={(value) => {
-                          field.onChange(value);
-                          void form.trigger("priceModel.currencyId");
-                        }}
-                      />
-                    </SheFormItem>
-                  )}
-                />
-              </div>
-              <div className={cs.formRowItem}>
-                <FormField
-                  control={form.control}
-                  name="priceModel.taxTypeId"
-                  render={({ field }) => (
-                    <SheFormItem
-                      className={`${cs.purchaseFormItem} ${cs.purchaseFormItemVat}`}
-                      label="VAT"
-                    >
-                      <SheSelect
-                        selected={field.value}
-                        items={convertTaxesToSelectItems(taxTypes)}
-                        placeholder="select tax..."
-                        hideFirstOption
-                        minWidth="100px"
-                        onSelect={(value) => {
-                          field.onChange(value);
-                          void form.trigger("priceModel.taxTypeId");
-                        }}
-                      />
-                    </SheFormItem>
-                  )}
-                />
-              </div>
-            </div>
-            <SheForm.Field name="unitAmount">
-              <SheInput
-                label={t("PurchaseForm.Labels.Units")}
-                placeholder="enter unit amount..."
-                type="number"
-                fullWidth
-                onDelay={() => {
-                  form.handleSubmit(onSubmit);
-                }}
-              />
-            </SheForm.Field>
-          </div>
-        </SheForm>
+        <AddStockForm
+          currencyTypes={currencyTypes}
+          taxTypes={taxTypes}
+          onHandleUpData={(data) => setAddStockFormData(data)}
+        />
         <Separator />
         {purchase ? (
           <div className={cs.connectedPurchase}>
@@ -288,7 +169,8 @@ export default function AddStockCard({
           <SheButton
             icon={Plus}
             value="Add to Stock"
-            onClick={() => onSubmit(form.getValues())}
+            disabled={!purchase || !addStockFormData}
+            onClick={onSubmit}
           />
         </div>
       </div>

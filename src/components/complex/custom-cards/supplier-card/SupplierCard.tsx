@@ -92,10 +92,7 @@ export default function SupplierCard({
                   {selectedSupplier.thumbnailUrl ? (
                     <img
                       src={selectedSupplier?.thumbnailUrl}
-                      alt={
-                        selectedSupplier?.supplierName ||
-                        selectedSupplier?.companyName
-                      }
+                      alt={selectedSupplier?.companyName}
                     />
                   ) : (
                     <SheIcon icon={ImageIcon} />
@@ -104,17 +101,13 @@ export default function SupplierCard({
                 <div className={cs.supplierDesc}>
                   <SheTooltip
                     delayDuration={200}
-                    text={
-                      selectedSupplier?.supplierName ||
-                      selectedSupplier?.companyName
-                    }
+                    text={selectedSupplier?.companyName}
                     className={cs.supplierNameTooltip}
                   >
                     <span
                       className={`${selectedSupplier.isDeleted === true ? cs.deletedSupplier : ""} ${cs.supplierName} she-text`}
                     >
-                      {selectedSupplier?.supplierName ||
-                        selectedSupplier?.companyName}
+                      {selectedSupplier?.companyName}
                     </span>
                   </SheTooltip>
                   {(selectedSupplier?.address ||
@@ -174,8 +167,8 @@ export default function SupplierCard({
                   variant="secondary"
                   onClick={() => {
                     selectedSupplier.isDeleted === true
-                      ? onAction("restoreSupplier", selectedSupplier)
-                      : onAction("manageSupplier", selectedSupplier);
+                      ? onAction("restoreCompany", selectedSupplier)
+                      : onAction("manageCompany", selectedSupplier);
                   }}
                 />
               </div>

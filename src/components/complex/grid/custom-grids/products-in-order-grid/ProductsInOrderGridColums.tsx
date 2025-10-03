@@ -103,7 +103,7 @@ export function ProductsInOrderGridColumns({
               icon={Cog}
               value="Manage Variant"
               variant="secondary"
-              onClick={() => onAction("manageStockAction", row.original)}
+              onClick={() => onAction("manageVariant", row.original)}
             />
           </div>
         );

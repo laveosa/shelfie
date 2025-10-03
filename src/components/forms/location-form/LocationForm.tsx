@@ -19,6 +19,7 @@ import cs from "./LocationForm.module.scss";
 import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
 import { ILocationForm } from "@/const/interfaces/forms/ILocationForm.ts";
 import locationFormScheme from "@/utils/validation/schemes/LocationFormScheme.ts";
+import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 
 export default function LocationForm({
   isLoading,
@@ -53,11 +54,20 @@ export default function LocationForm({
 
   // ================================================================ RENDER
 
-  function convertCountriesToSelectItems(): ISheSelectItem<any>[] {
-    return countryCodes?.map(
+  function svgStringToComponent(svgString: string): React.FC<any> {
+    return (props) => (
+      <span dangerouslySetInnerHTML={{ __html: svgString }} {...props} />
+    );
+  }
+
+  function convertCountryCodeToSelectItems(
+    data: CountryCodeModel[],
+  ): ISheSelectItem<any>[] {
+    return data?.map(
       (item): ISheSelectItem<any> => ({
         value: item.countryId,
         text: item.countryName,
+        icon: svgStringToComponent(item.flagIcon),
       }),
     );
   }
@@ -174,7 +184,7 @@ export default function LocationForm({
           <SheFormItem label={t("AddressForm.Labels.Country")}>
             <SheSelect
               selected={field.value}
-              items={convertCountriesToSelectItems()}
+              items={convertCountryCodeToSelectItems(countryCodes)}
               hideFirstOption
               placeholder={t("AddressForm.Placeholders.Country")}
               fullWidth

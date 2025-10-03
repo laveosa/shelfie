@@ -1,14 +1,13 @@
-.productPhotosCard {
-  .productPhotosCardContent {
-    .managePhotos {
-      .managePhotosTitle {
-        margin-bottom: 10px;
-      }
+.photosCard {
+  .photosCardContent {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 
-      .managePhotosGrid {
-        .photosGrid {
-        }
-      }
+    .managePhotosBlock {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
   }
 }

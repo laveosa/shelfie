@@ -3,7 +3,10 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { ISupplierPageSlice } from "@/const/interfaces/store-slices/ISupplierPageSlice.ts";
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
-import { SupplierModel } from "@/const/models/SupplierModel.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
+import { CompanyModel } from "@/const/models/CompanyModel.ts";
+import { LocationModel } from "@/const/models/LocationModel.ts";
 
 const initialState: ISupplierPageSlice = {
   isLoading: false,
@@ -11,15 +14,21 @@ const initialState: ISupplierPageSlice = {
   isSupplierCardLoading: false,
   isSelectSupplierCardLoading: false,
   isSupplierConfigurationCardLoading: false,
+  isCreateCompanyCardLoading: false,
+  isCompanyConfigurationCardLoading: false,
+  isLocationConfigurationCardLoading: false,
   isSupplierPhotosGridLoading: false,
   isSuppliersGridLoading: false,
   isPhotoUploaderLoading: false,
+  isCompaniesGridLoading: false,
+  isLocationsGridLoading: false,
   activeCards: [],
   purchase: null,
-  suppliers: null,
-  suppliersWithLocations: null,
-  selectedSupplier: null,
-  managedSupplier: null,
+  selectedCompany: null,
+  managedCompany: null,
+  companiesGridRequestModel: {},
+  countryCodes: [],
+  managedLocation: undefined,
 };
 
 //----------------------------------------------------- LOADERS
@@ -45,13 +54,6 @@ function setIsSupplierCardLoading(
   state.isSupplierCardLoading = action?.payload;
 }
 
-function setIsSelectSupplierCardLoading(
-  state: ISupplierPageSlice,
-  action: PayloadAction<boolean>,
-) {
-  state.isSelectSupplierCardLoading = action?.payload;
-}
-
 function setIsSupplierConfigurationCardLoading(
   state: ISupplierPageSlice,
   action: PayloadAction<boolean>,
@@ -59,11 +61,25 @@ function setIsSupplierConfigurationCardLoading(
   state.isSupplierConfigurationCardLoading = action?.payload;
 }
 
-function setIsSupplierPhotosGridLoading(
+function setIsCreateCompanyCardLoading(
   state: ISupplierPageSlice,
   action: PayloadAction<boolean>,
 ) {
-  state.isSupplierPhotosGridLoading = action?.payload;
+  state.isCreateCompanyCardLoading = action?.payload;
+}
+
+function setIsCompanyConfigurationCardLoading(
+  state: ISupplierPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isCompanyConfigurationCardLoading = action?.payload;
+}
+
+function setIsLocationConfigurationCardLoading(
+  state: ISupplierPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isLocationConfigurationCardLoading = action?.payload;
 }
 
 function setIsSuppliersGridLoading(
@@ -78,6 +94,20 @@ function setIsPhotoUploaderLoading(
   action: PayloadAction<boolean>,
 ) {
   state.isPhotoUploaderLoading = action?.payload;
+}
+
+function setIsCompaniesGridLoading(
+  state: ISupplierPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isCompaniesGridLoading = action?.payload;
+}
+
+function setIsLocationsGridLoading(
+  state: ISupplierPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isLocationsGridLoading = action?.payload;
 }
 
 //----------------------------------------------------- API
@@ -99,41 +129,52 @@ function refreshPurchase(
   state.purchase = action?.payload || state.purchase;
 }
 
-function refreshSuppliers(
+function refreshSelectedCompany(
   state: ISupplierPageSlice,
-  action: PayloadAction<SupplierModel[]>,
+  action: PayloadAction<CompanyModel>,
 ) {
-  state.suppliers = action?.payload || state.suppliers;
+  state.selectedCompany = action?.payload || state.selectedCompany;
 }
 
-function refreshSuppliersWithLocations(
+function resetSelectedCompany(state: ISupplierPageSlice) {
+  state.selectedCompany = null;
+}
+
+function refreshManagedCompany(
   state: ISupplierPageSlice,
-  action: PayloadAction<SupplierModel[]>,
+  action: PayloadAction<CompanyModel>,
 ) {
-  state.suppliersWithLocations =
-    action?.payload || state.suppliersWithLocations;
+  state.managedCompany = action?.payload || state.managedCompany;
 }
 
-function refreshSelectedSupplier(
+function resetManagedCompany(state: ISupplierPageSlice) {
+  state.managedCompany = null;
+}
+
+function refreshCompaniesGridRequestModel(
   state: ISupplierPageSlice,
-  action: PayloadAction<SupplierModel>,
+  action: PayloadAction<GridRequestModel>,
 ) {
-  state.selectedSupplier = action?.payload || state.selectedSupplier;
+  state.companiesGridRequestModel =
+    action?.payload || state.companiesGridRequestModel;
 }
 
-function resetSelectedSupplier(state: ISupplierPageSlice) {
-  state.selectedSupplier = null;
-}
-
-function refreshManagedSupplier(
+function refreshCountryCodes(
   state: ISupplierPageSlice,
-  action: PayloadAction<SupplierModel>,
+  action: PayloadAction<CountryCodeModel[]>,
 ) {
-  state.managedSupplier = action?.payload || state.managedSupplier;
+  state.countryCodes = action?.payload || state.countryCodes;
 }
 
-function resetManagedSupplier(state: ISupplierPageSlice) {
-  state.managedSupplier = null;
+function refreshManagedLocation(
+  state: ISupplierPageSlice,
+  action: PayloadAction<LocationModel>,
+) {
+  state.managedLocation = action?.payload || state.managedLocation;
+}
+
+function resetManagedLocation(state: ISupplierPageSlice) {
+  state.managedLocation = null;
 }
 
 const SupplierPageSlice = createSlice({
@@ -143,20 +184,25 @@ const SupplierPageSlice = createSlice({
     setIsLoading,
     setIsProductMenuCardLoading,
     setIsSupplierCardLoading,
-    setIsSelectSupplierCardLoading,
     setIsSupplierConfigurationCardLoading,
-    setIsSupplierPhotosGridLoading,
+    setIsCreateCompanyCardLoading,
+    setIsCompanyConfigurationCardLoading,
+    setIsLocationConfigurationCardLoading,
     setIsSuppliersGridLoading,
     setIsPhotoUploaderLoading,
+    setIsCompaniesGridLoading,
+    setIsLocationsGridLoading,
     refreshActiveCards,
     resetActiveCards,
     refreshPurchase,
-    refreshSuppliers,
-    refreshSuppliersWithLocations,
-    refreshSelectedSupplier,
-    resetSelectedSupplier,
-    refreshManagedSupplier,
-    resetManagedSupplier,
+    refreshSelectedCompany,
+    resetSelectedCompany,
+    refreshManagedCompany,
+    resetManagedCompany,
+    refreshCompaniesGridRequestModel,
+    refreshCountryCodes,
+    refreshManagedLocation,
+    resetManagedLocation,
   },
 });
 

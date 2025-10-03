@@ -1,6 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Trans } from "react-i18next";
 import { NavLink, useLocation } from "react-router-dom";
+import {
+  LayoutDashboard,
+  LifeBuoy,
+  MessageCircle,
+  ReceiptEuro,
+  Settings,
+  Shirt,
+  Users,
+  Video,
+} from "lucide-react";
 
 import cs from "./SheSidebar.module.scss";
 import {
@@ -13,16 +23,6 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar.tsx";
-import {
-  LayoutDashboard,
-  LifeBuoy,
-  MessageCircle,
-  ReceiptEuro,
-  Settings,
-  Shirt,
-  Users,
-  Video,
-} from "lucide-react";
 import SheSidebarHeader from "@/components/complex/she-sidebar/components/she-sidebar-header/SheSidebarHeader.tsx";
 import { ISheSidebar } from "@/const/interfaces/complex-components/ISheSidebar.ts";
 import { ISheSidebarGroup } from "@/const/interfaces/complex-components/ISheSidebarGroup.ts";
@@ -109,6 +109,10 @@ export default function SheSidebar({
   const [selected, setSelected] = useState<NavUrlEnum | string>(
     getCurrentSectionUrl(location.pathname),
   );
+
+  useEffect(() => {
+    setSelected(getCurrentSectionUrl(location.pathname));
+  }, [location.pathname]);
 
   return (
     <Sidebar className={cs.sheSidebar} collapsible="icon">

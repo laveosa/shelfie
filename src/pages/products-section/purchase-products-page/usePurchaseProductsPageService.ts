@@ -76,6 +76,14 @@ export default function usePurchaseProductsPageService(
     CompaniesApiHooks.useGetListOfCompaniesForGridMutation();
   const [getVariantsForGrid] = ProductsApiHooks.useGetVariantsForGridMutation();
   const [getCountryCode] = DictionaryApiHooks.useLazyGetCountryCodeQuery();
+  const [addNewLocationToCompany] =
+    CompaniesApiHooks.useAddNewLocationToCompanyMutation();
+  const [createCompany] = CompaniesApiHooks.useCreateCompanyMutation();
+  const [getCompanyDetails] = CompaniesApiHooks.useLazyGetCompanyDetailsQuery();
+  const [deleteCompany] = CompaniesApiHooks.useDeleteCompanyMutation();
+  const [addLocationToCompany] =
+    CompaniesApiHooks.useAddLocationToCompanyMutation();
+  const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
 
   function getListOfPurchaseProductsForGridHandler(id: any, model) {
     return getListOfPurchaseProductsForGrid({ id, model }).then((res: any) => {
@@ -172,11 +180,7 @@ export default function usePurchaseProductsPageService(
     if (productsState.suppliers.length === 0) {
       productsService.getListOfSuppliersHandler();
     }
-    if (state.countryCodes.length === 0) {
-      getCountryCode().then((res: any) => {
-        dispatch(actions.refreshCountryCodes(res.data));
-      });
-    }
+    getCountryCodesHandler();
     if (
       state.sizesForFilter.length === 0 ||
       state.colorsForFilter.length === 0
@@ -184,6 +188,14 @@ export default function usePurchaseProductsPageService(
       productsService.getTraitsForFilterHandler();
     }
     dispatch(actions.refreshActiveCards(null));
+  }
+
+  function getCountryCodesHandler() {
+    if (state.countryCodes.length === 0) {
+      getCountryCode().then((res: any) => {
+        dispatch(actions.refreshCountryCodes(res.data));
+      });
+    }
   }
 
   function addProductToPurchaseHandler(model, purchaseId) {
@@ -361,15 +373,12 @@ export default function usePurchaseProductsPageService(
 
   function uploadPhotoHandler(model) {
     dispatch(actions.setIsImageUploaderLoading(true));
-    productsService.uploadPhotoHandler(model).then((res) => {
+    uploadPhoto(model).then((res: any) => {
       dispatch(actions.setIsImageUploaderLoading(false));
       if (res.data.photoId) {
         productsService.getProductPhotosHandler(
           Number(state.selectedProduct.productId),
         );
-        // productsService.getCountersForProductsHandler(
-        //   state.selectedProduct.productId,
-        // );
         addToast({
           text: "Photos added successfully",
           type: "success",
@@ -1145,7 +1154,7 @@ export default function usePurchaseProductsPageService(
 
   function uploadPhotoToVariantHandler(model) {
     dispatch(actions.setIsVariantPhotosCardLoading(true));
-    productsService.uploadPhotoHandler(model).then((res) => {
+    uploadPhoto(model).then((res: any) => {
       dispatch(actions.setIsVariantPhotosCardLoading(false));
       if (!res.error) {
         dispatch(
@@ -1445,8 +1454,8 @@ export default function usePurchaseProductsPageService(
   function openSelectEntityCardHandler() {
     dispatch(productsActions.resetSelectedSupplier());
     handleCardAction("selectEntityCard", true);
-    if (!productsState.countryCodeList) {
-      productsService.getCountryCodeHandler().then(() => {});
+    if (!state.countryCodes) {
+      getCountryCodesHandler();
     }
     dispatch(actions.setIsSelectEntityCardLoading(true));
     dispatch(actions.setIsSuppliersGridLoading(true));
@@ -1594,6 +1603,72 @@ export default function usePurchaseProductsPageService(
     }
   }
 
+  function openCreateEntityCardHandler() {
+    handleCardAction("createCompanyCard", true);
+    getCountryCodesHandler();
+  }
+
+  function createCompanyHandler(model) {
+    dispatch(actions.setIsCreateCompanyCardLoading(true));
+    createCompany(model.company).then((res: any) => {
+      if (!res.error) {
+        model.image.uploadModels.map((model) => {
+          model.contextId = res.data.companyId;
+          dispatch(actions.setIsImageUploaderLoading(true));
+          uploadPhoto(model).then((res: any) => {
+            dispatch(actions.setIsImageUploaderLoading(false));
+            if (res) {
+              addToast({
+                text: t("SuccessMessages.ImageAdded"),
+                type: "success",
+              });
+            } else {
+              addToast({
+                text: res.error.details.message,
+                type: "error",
+              });
+            }
+          });
+        });
+        addNewLocationToCompany({
+          companyId: res.data.companyId,
+          model: model.address,
+        });
+        dispatch(actions.setIsCreateCompanyCardLoading(false));
+        handleCardAction("createCompanyCard");
+        dispatch(actions.setIsSuppliersGridLoading(true));
+        getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
+          (res) => {
+            dispatch(actions.setIsSuppliersGridLoading(false));
+            const modifiedList = res.data.items.map((item) => ({
+              ...item,
+              isSelected: item.companyId === state.selectedCompany?.companyId,
+            }));
+            dispatch(
+              actions.refreshCompaniesGridRequestModel({
+                ...res.data,
+                items: modifiedList,
+              }),
+            );
+          },
+        );
+        addToast({
+          text: "Company created successfully",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: res.error.details.message,
+          type: "error",
+        });
+      }
+    });
+  }
+
+  function closeCreateCompanyCardHandler() {
+    handleCardAction("createCompanyCard");
+  }
+
   return {
     state,
     appState,
@@ -1688,5 +1763,8 @@ export default function usePurchaseProductsPageService(
     closeAddStockCardHandler,
     refreshPurchaseProductsTabHandler,
     gridRequestChangeHandler,
+    openCreateEntityCardHandler,
+    createCompanyHandler,
+    closeCreateCompanyCardHandler,
   };
 }
