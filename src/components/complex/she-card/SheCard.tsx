@@ -27,7 +27,7 @@ export default function SheCard(props: ISheCard) {
     className = "",
     contextClassName = "",
     view = ComponentViewEnum.CARD,
-    showHeader,
+    showHeader = true,
     showFooter,
     isMinimized,
     width,
@@ -90,6 +90,7 @@ export default function SheCard(props: ISheCard) {
         {...sheCardHeaderProps}
         view={view}
         isMinimized={_isMinimized}
+        showHeader={showHeader}
         onHeaderToggleClick={onMinimizeCardHandler}
         onHeaderCloseClick={onSecondaryButtonClick}
       />
