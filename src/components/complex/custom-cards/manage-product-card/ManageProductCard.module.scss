@@ -1,12 +1,14 @@
 .manageProductCard {
   .manageProductCardContent {
-    margin-top: 20px;
-
     .productDataBlock {
       display: flex;
       flex-direction: column;
       gap: 20px;
       padding: 20px 0;
+
+      &.productDataBlockManage {
+        padding-top: 10px;
+      }
 
       .productDataRow {
         display: flex;
@@ -28,7 +30,6 @@
             width: 30px;
             border-radius: 6px;
           }
-
         }
 
         .traitsDataCell {
