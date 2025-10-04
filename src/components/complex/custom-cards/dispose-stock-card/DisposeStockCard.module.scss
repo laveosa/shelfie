@@ -1,22 +1,4 @@
 @use "@/styles/variables" as vars;
 
 .disposeStockCard {
-  .disposeStockCardContent {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding-bottom: 20px;
-
-    .currentlyStockBlock {
-      display: flex;
-      gap: 10px;
-      padding-top: 20px;
-    }
-
-    .disposeFormBlock {
-      .select {
-        padding-top: 20px;
-      }
-    }
-  }
 }
