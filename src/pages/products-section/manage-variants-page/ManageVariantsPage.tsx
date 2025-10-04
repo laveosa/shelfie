@@ -212,8 +212,11 @@ export function ManageVariantsPage() {
       case "deleteCompanyPhoto":
         service.deleteCompanyPhotoHandler(payload);
         break;
+      case "changePhotoPosition":
+        service.changePhotoPositionHandler(payload);
+        break;
       case "closePhotosCard":
-        service.closePhotosCardHandler();
+        service.closePhotosCardHandler(payload);
         break;
       case "openLocationConfigurationCard":
         service.openLocationConfigurationCardHandler(payload);
@@ -226,6 +229,12 @@ export function ManageVariantsPage() {
         break;
       case "deleteLocation":
         console.log("DELETE LOCATION");
+        break;
+      case "manageLocationPhotos":
+        service.manageLocationPhotosHandler();
+        break;
+      case "deleteLocationPhoto":
+        service.deleteLocationPhotoHandler(payload);
         break;
       case "closeLocationConfigurationCard":
         service.closeLocationConfigurationCardHandler();
@@ -386,6 +395,24 @@ export function ManageVariantsPage() {
             />
           </div>
         )}
+        {state.activeCards.includes("companyPhotosCard") && (
+          <div ref={createRefCallback("companyPhotosCard")}>
+            <PhotosCard
+              isImageUploaderLoading={state.isPhotoUploaderLoading}
+              data={state.managedCompany?.photos}
+              contextName={"Company"}
+              contextId={state.managedCompany?.companyId}
+              noDataText="COMPANY HAS NO PHOTOS"
+              showCloseButton
+              columns={
+                ManageCompanyPhotosGridColumns({
+                  onAction,
+                }) as ColumnDef<DataWithId>[]
+              }
+              onAction={onAction}
+            />
+          </div>
+        )}
         {state.activeCards.includes("locationConfigurationCard") && (
           <div ref={createRefCallback("locationConfigurationCard")}>
             <LocationConfigurationCard
@@ -396,14 +423,14 @@ export function ManageVariantsPage() {
             />
           </div>
         )}
-        {state.activeCards.includes("photosCard") && (
-          <div ref={createRefCallback("photosCard")}>
+        {state.activeCards.includes("locationPhotosCard") && (
+          <div ref={createRefCallback("locationPhotosCard")}>
             <PhotosCard
               isImageUploaderLoading={state.isPhotoUploaderLoading}
-              data={state.managedCompany?.photos}
-              contextName={"Company"}
-              contextId={state.managedCompany?.companyId}
-              noDataText="COMPANY HAS NO PHOTOS"
+              data={state.managedLocation?.photos}
+              contextName={"Location"}
+              contextId={state.managedLocation?.locationId}
+              noDataText="LOCATION HAS NO PHOTOS"
               showCloseButton
               columns={
                 ManageCompanyPhotosGridColumns({

@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import React, { useEffect } from "react";
-import { Plus } from "lucide-react";
+import { ImagePlus, Plus } from "lucide-react";
 
 import {
   LocationModel,
@@ -20,6 +20,7 @@ import SheFormField from "@/components/complex/she-form/components/she-form-fiel
 import { ILocationForm } from "@/const/interfaces/forms/ILocationForm.ts";
 import locationFormScheme from "@/utils/validation/schemes/LocationFormScheme.ts";
 import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 
 export default function LocationForm({
   isLoading,
@@ -28,6 +29,7 @@ export default function LocationForm({
   onCancel,
   countryCodes,
   onHandleUpData,
+  onAction,
 }: ILocationForm): React.ReactNode {
   const { t } = useTranslation();
   const form = useAppForm<LocationModel>({
@@ -106,20 +108,30 @@ export default function LocationForm({
         )}
       />
       {data?.pictures && (
-        <div className={cs.imagesBlockGrid}>
-          {slots.map((img, index) => (
-            <div key={index} className={cs.imagesBlockGridItem}>
-              {img ? (
-                <img
-                  src={img.thumbnailUrl}
-                  alt={`image-${index}`}
-                  className={cs.image}
-                />
-              ) : (
-                <div></div>
-              )}
-            </div>
-          ))}
+        <div className={cs.locationFormImageBlock}>
+          <div className={cs.ImageBlockTitle}>
+            <span className="she-title">Location Photos</span>
+            <SheButton
+              image={ImagePlus}
+              value="Manage Photos"
+              onClick={() => onAction("manageLocationPhotos")}
+            />
+          </div>
+          <div className={cs.imagesBlockGrid}>
+            {slots.map((img, index) => (
+              <div key={index} className={cs.imagesBlockGridItem}>
+                {img ? (
+                  <img
+                    src={img.thumbnailUrl}
+                    alt={`image-${index}`}
+                    className={cs.image}
+                  />
+                ) : (
+                  <div></div>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       )}
       <SheFormField

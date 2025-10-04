@@ -38,6 +38,7 @@ export default function LocationConfigurationCard({
           countryCodes={countryCodes}
           onSubmit={(data) => onAction("createLocation", data)}
           onHandleUpData={(data) => onAction("updateLocation", data)}
+          onAction={onAction}
         />
       </div>
     </SheCard>
