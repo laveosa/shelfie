@@ -77,12 +77,16 @@ export default function useManageVariantsPageService(handleCardAction) {
   const [getCountryCode] = DictionaryApiHooks.useLazyGetCountryCodeQuery();
   const [getCompanyDetails] = CompaniesApiHooks.useLazyGetCompanyDetailsQuery();
   const [deleteCompany] = CompaniesApiHooks.useDeleteCompanyMutation();
+  const [updateCompanyDetails] =
+    CompaniesApiHooks.useUpdateCompanyDetailsMutation();
   const [addLocationToCompany] =
     CompaniesApiHooks.useAddLocationToCompanyMutation();
   const [changePositionOfCompanyPhoto] =
     CompaniesApiHooks.useChangePositionOfCompanyPhotoMutation();
   const [changePositionOfLocationPhoto] =
     CompaniesApiHooks.useChangePositionOfLocationPhotoMutation();
+  const [updateLocationDetails] =
+    CompaniesApiHooks.useUpdateLocationDetailsMutation();
 
   function getVariantsForGridHandler(data?: GridRequestModel) {
     return getVariantsForGrid(data).then((res: any) => {
@@ -1336,6 +1340,44 @@ export default function useManageVariantsPageService(handleCardAction) {
     });
   }
 
+  function updateCompanyHandler(model: CompanyModel) {
+    dispatch(actions.setIsCompanyConfigurationCardLoading(true));
+    updateCompanyDetails({
+      companyId: state.managedCompany.companyId,
+      model,
+    }).then((res: any) => {
+      dispatch(actions.setIsCompanyConfigurationCardLoading(false));
+      if (!res.error) {
+        dispatch(actions.refreshManagedCompany(res.data));
+        dispatch(actions.setIsSuppliersGridLoading(true));
+        getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
+          (res) => {
+            dispatch(actions.setIsSuppliersGridLoading(false));
+            const modifiedList = res.data.items.map((item) => ({
+              ...item,
+              isSelected: item.companyId === state.selectedCompany?.companyId,
+            }));
+            dispatch(
+              actions.refreshCompaniesGridRequestModel({
+                ...res.data,
+                items: modifiedList,
+              }),
+            );
+          },
+        );
+        addToast({
+          text: "Company updated successfully",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: "Failed to update company",
+          type: "error",
+        });
+      }
+    });
+  }
+
   function closeCompanyConfigurationCardHandler() {
     handleCardAction("companyConfigurationCard");
     dispatch(actions.resetManagedCompany());
@@ -1485,6 +1527,32 @@ export default function useManageVariantsPageService(handleCardAction) {
 
   function manageLocationPhotosHandler() {
     handleCardAction("companyPhotosCard", true);
+  }
+
+  function updateLocationHandler(model: LocationModel) {
+    dispatch(actions.setIsLocationConfigurationCardLoading(true));
+    updateLocationDetails({
+      locationId: state.managedLocation.locationId,
+      model,
+    }).then((res: any) => {
+      dispatch(actions.setIsLocationConfigurationCardLoading(false));
+      if (!res.error) {
+        dispatch(actions.setIsCompanyConfigurationCardLoading(true));
+        getCompanyDetails(state.managedCompany.companyId).then((res: any) => {
+          dispatch(actions.setIsCompanyConfigurationCardLoading(false));
+          dispatch(actions.refreshManagedCompany(res.data));
+        });
+        addToast({
+          text: "Location updated successfully",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: "Failed to update location",
+          type: "error",
+        });
+      }
+    });
   }
 
   async function deleteLocationPhotoHandler(model: ImageModel) {
@@ -1656,6 +1724,7 @@ export default function useManageVariantsPageService(handleCardAction) {
     selectCompanyHandle,
     manageCompanyHandler,
     deleteCompanyHandler,
+    updateCompanyHandler,
     closeCompanyConfigurationCardHandler,
     manageCompanyPhotosHandler,
     deleteCompanyPhotoHandler,
@@ -1665,6 +1734,7 @@ export default function useManageVariantsPageService(handleCardAction) {
     closeLocationConfigurationCardHandler,
     createLocationHandler,
     manageLocationPhotosHandler,
+    updateLocationHandler,
     deleteLocationPhotoHandler,
     detachSupplierHandler,
     getCountryCodesHandler,

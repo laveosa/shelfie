@@ -195,7 +195,7 @@ export function ManageVariantsPage() {
         service.manageCompanyHandler(payload);
         break;
       case "updateCompany":
-        console.log("UPDATE COMPANY", payload);
+        service.updateCompanyHandler(payload);
         break;
       case "deleteCompany":
         service.deleteCompanyHandler(payload);
@@ -224,8 +224,8 @@ export function ManageVariantsPage() {
       case "createLocation":
         service.createLocationHandler(payload);
         break;
-      case "manageLocation":
-        console.log("MANAGE LOCATION");
+      case "updateLocation":
+        service.updateLocationHandler(payload);
         break;
       case "deleteLocation":
         console.log("DELETE LOCATION");
