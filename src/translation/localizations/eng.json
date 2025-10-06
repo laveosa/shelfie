@@ -685,7 +685,7 @@
       "ShipmentAllocation": "Shipment allocation"
     },
     "Placeholders": {
-      "EnterTrackingNumber": "Enter tracking number"
+      "EnterTrackingNumber": "enter tracking number..."
     }
   },
   "ShipmentMessages": {
