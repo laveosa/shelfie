@@ -27,17 +27,17 @@ export default function SupplierCard({
   showCloseButton,
   onAction,
 }: ISupplierCard) {
-  // ==================================================================== UTILITIES
-  const { translate } = useAppTranslation();
   const { purchaseId } = useParams();
-  const isDateSelected = Boolean(selectedDate || selectedPurchase?.date);
-  const isButtonDisabled = !isDateSelected || !selectedSupplier;
-
   // ==================================================================== STATE MANAGEMENT
   const [selectedDate, setSelectedDate] = useState<string>(
     purchaseId ? selectedPurchase?.date : null,
   );
   const [purchaseNotes, setPurchaseNotes] = useState<string>(null);
+
+  // ==================================================================== UTILITIES
+  const { translate } = useAppTranslation();
+  const isDateSelected = Boolean(selectedDate || selectedPurchase?.date);
+  const isButtonDisabled = !isDateSelected || !selectedSupplier;
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
