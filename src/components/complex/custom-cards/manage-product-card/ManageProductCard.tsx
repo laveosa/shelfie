@@ -132,9 +132,9 @@ export default function ManageProductCard({
             </span>
             <SheButton
               className={cs.productDataCell}
-              icon={Cog}
               value="Manage Product"
-              valueWrap="ProductActions.ManageProduct"
+              valueTransKey="ProductActions.ManageProduct"
+              icon={Cog}
               variant="secondary"
               maxWidth="160px"
               onClick={() => onAction("manageProductData")}
