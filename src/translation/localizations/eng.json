@@ -404,7 +404,7 @@
     "BasicProductData": "Basic Product Data",
     "CreateProduct": "Create Product",
     "CreateProductTrait": "Create product trait",
-    "ManageTrait": "Manage: ",
+    "ManageTrait": "Manage: {{traitName}}",
     "ManagePurchases": "Manage Purchases",
     "SelectEntity": "Select {{entityName}}",
     "SelectShipmentForOrder": "Select shipment for order",

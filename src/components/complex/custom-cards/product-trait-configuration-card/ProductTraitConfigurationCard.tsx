@@ -109,6 +109,8 @@ export default function ProductTraitConfigurationCard({
   }
 
   // ==================================================================== LAYOUT
+  console.log(selectedTrait);
+
   return (
     <SheCard
       className={cs.productTraitConfigurationCard}
@@ -120,7 +122,6 @@ export default function ProductTraitConfigurationCard({
           : translate("CardTitles.CreateProductTrait")
       }
       isLoading={isLoading}
-      showFooter
       showNotificationCard={!!selectedTrait?.traitId}
       notificationCardProps={{
         title: "Delete Trait",
