@@ -1,3 +1,5 @@
+import React from "react";
+
 import {
   BadgeCheck,
   Clock10,
@@ -7,22 +9,19 @@ import {
   ShoppingCart,
   Truck,
 } from "lucide-react";
-import { ColumnDef } from "@tanstack/react-table";
-import { useTranslation } from "react-i18next";
-import React from "react";
 
-import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ShipmentsCard.module.scss";
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import SheTabs from "@/components/complex/she-tabs/SheTabs.tsx";
-import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs.tsx";
-import { IShipmentsCard } from "@/const/interfaces/complex-components/custom-cards/IShipmentsCard.ts";
-import { ShipmentsListGridColumns } from "@/components/complex/grid/custom-grids/shipments-list-grid/ShipmentsListGridColumns.tsx";
-import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
-import { GridDateRangeFilter } from "@/components/complex/grid/filters/grid-date-range-filter/GridDateRangeFilter.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
+import SheTabs from "@/components/complex/she-tabs/SheTabs.tsx";
 import GridItemsFilter from "@/components/complex/grid/filters/grid-items-filter/GridItemsFilter.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
+import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs.tsx";
+import { ShipmentsListGridColumns } from "@/components/complex/grid/custom-grids/shipments-list-grid/ShipmentsListGridColumns.tsx";
+import { GridDateRangeFilter } from "@/components/complex/grid/filters/grid-date-range-filter/GridDateRangeFilter.tsx";
+import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
+import { IShipmentsCard } from "@/const/interfaces/complex-components/custom-cards/IShipmentsCard.ts";
 import { CustomerModel } from "@/const/models/CustomerModel.ts";
 
 export default function ShipmentsCard({
@@ -34,15 +33,17 @@ export default function ShipmentsCard({
   shipmentsGridRequestModel,
   onAction,
 }: IShipmentsCard) {
-  const { t } = useTranslation();
+  // ==================================================================== UTILITIES
+  const { translate } = useAppTranslation();
 
+  // ==================================================================== LAYOUT
   return (
     <div className={cs.shipmentsCardWrapper}>
-      <SheProductCard
-        loading={isLoading}
+      <SheCard
         className={cs.shipmentsCard}
-        title={t("SectionTitles.Shipment")}
-        minWidth="1100px"
+        title="Shipment"
+        titleTransKey="SectionTitles.Shipment"
+        isLoading={isLoading}
       >
         <div className={cs.shipmentsCardContent}>
           <SheTabs
@@ -54,7 +55,7 @@ export default function ShipmentsCard({
                 <div>
                   <TabsTrigger className={cs.tabItemTrigger} value="queued">
                     <div className={cs.tabBlock}>
-                      <Clock10 size="16" /> {t("TabLabels.Queued")}
+                      <Clock10 size="16" /> {translate("TabLabels.Queued")}
                     </div>
                   </TabsTrigger>
                   <TabsTrigger
@@ -63,7 +64,7 @@ export default function ShipmentsCard({
                   >
                     <div className={cs.tabBlock}>
                       <PackageOpen size="16" />
-                      {t("TabLabels.ReadyForPacking")}
+                      {translate("TabLabels.ReadyForPacking")}
                     </div>
                   </TabsTrigger>
                   <TabsTrigger
@@ -72,7 +73,7 @@ export default function ShipmentsCard({
                   >
                     <div className={cs.tabBlock}>
                       <Package size="16" />
-                      {t("TabLabels.ReadyForSending")}
+                      {translate("TabLabels.ReadyForSending")}
                     </div>
                   </TabsTrigger>
                   <TabsTrigger
@@ -81,7 +82,7 @@ export default function ShipmentsCard({
                   >
                     <div className={cs.tabBlock}>
                       <Truck size="16" />
-                      {t("TabLabels.AllShipments")}
+                      {translate("TabLabels.AllShipments")}
                     </div>
                   </TabsTrigger>
                 </div>
@@ -90,9 +91,7 @@ export default function ShipmentsCard({
             <TabsContent value="queued">
               <SheGrid
                 isLoading={isShipmentsGridLoading}
-                columns={
-                  ShipmentsListGridColumns(onAction) as ColumnDef<DataWithId>[]
-                }
+                columns={ShipmentsListGridColumns(onAction)}
                 data={shipmentsGridRequestModel.items}
                 gridRequestModel={shipmentsGridRequestModel}
                 sortingItems={sortingOptions}
@@ -109,9 +108,7 @@ export default function ShipmentsCard({
             <TabsContent value="readyForPacking">
               <SheGrid
                 isLoading={isShipmentsGridLoading}
-                columns={
-                  ShipmentsListGridColumns(onAction) as ColumnDef<DataWithId>[]
-                }
+                columns={ShipmentsListGridColumns(onAction)}
                 data={shipmentsGridRequestModel.items}
                 gridRequestModel={shipmentsGridRequestModel}
                 sortingItems={sortingOptions}
@@ -128,9 +125,7 @@ export default function ShipmentsCard({
             <TabsContent value="readyForSending">
               <SheGrid
                 isLoading={isShipmentsGridLoading}
-                columns={
-                  ShipmentsListGridColumns(onAction) as ColumnDef<DataWithId>[]
-                }
+                columns={ShipmentsListGridColumns(onAction)}
                 data={shipmentsGridRequestModel.items}
                 gridRequestModel={shipmentsGridRequestModel}
                 sortingItems={sortingOptions}
@@ -147,9 +142,7 @@ export default function ShipmentsCard({
             <TabsContent value="allShipments">
               <SheGrid
                 isLoading={isShipmentsGridLoading}
-                columns={
-                  ShipmentsListGridColumns(onAction) as ColumnDef<DataWithId>[]
-                }
+                columns={ShipmentsListGridColumns(onAction)}
                 data={shipmentsGridRequestModel.items}
                 gridRequestModel={shipmentsGridRequestModel}
                 sortingItems={sortingOptions}
@@ -163,7 +156,7 @@ export default function ShipmentsCard({
                 }
               >
                 <GridItemsFilter
-                  items={customersList}
+                  items={customersList as any}
                   columnName="Customer"
                   identifier="customerId"
                   icon={BadgeCheck}
@@ -173,27 +166,29 @@ export default function ShipmentsCard({
                 />
                 <GridDateRangeFilter />
                 <SheSelect
+                  placeholder="Status"
+                  placeholderTransKey="OrderForm.Placeholders.Status"
                   icon={ShoppingCart}
-                  placeholder={t("OrderForm.Placeholders.Status")}
                   minWidth="150px"
                 />
                 <SheSelect
+                  placeholder="Status"
+                  placeholderTransKey="OrderForm.Placeholders.Status"
                   icon={ShoppingCart}
-                  placeholder={t("OrderForm.Placeholders.Status")}
                   minWidth="150px"
                 />
               </SheGrid>
             </TabsContent>
           </SheTabs>
         </div>
-      </SheProductCard>
+      </SheCard>
       <SheButton
         className={cs.createShipmentButton}
+        value="Create Shipment"
+        valueTransKey="OrderActions.CreateShipment"
         icon={Plus}
-        variant="default"
+        variant="info"
         onClick={() => onAction("createShipment")}
-        value={t("OrderActions.CreateShipment")}
-        bgColor="#007AFF"
       />
     </div>
   );
