@@ -6,6 +6,11 @@
 
   .ordersCardContent {
     width: 100%;
+    max-width: none;
+
+    .ordersCardHeader {
+      min-height: 64px !important;
+    }
   }
 
   .createOrderButton {
