@@ -13,7 +13,7 @@
 
     .purchaseProductsCardContent {
       .purchaseProductsGrid {
-        min-width: 1200px;
+        //min-width: 1200px;
       }
 
       .tabItemsWrapper {
@@ -60,7 +60,6 @@
         border-color: vars.$colorMedium;
         border-radius: vars.$brdR_03;
 
-
         .purchaseSummaryTitle {
           font-weight: bold;
         }
@@ -70,7 +69,6 @@
           gap: 20px;
 
           .purchaseSummaryItem {
-
           }
         }
       }

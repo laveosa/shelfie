@@ -2,9 +2,11 @@ export interface TraitOptionModel {
   optionId?: number;
   optionName?: string;
   optionColor?: string;
-  traitName?: string;
-  isRemoved?: boolean;
-  isMissing?: boolean;
-  isRaw?: boolean;
+  color?: string;
   traitTypeId?: number;
+  traitId?: number;
+  traitName?: string;
+  isMissing?: boolean;
+  isRemoved?: boolean;
+  isRaw?: boolean;
 }
