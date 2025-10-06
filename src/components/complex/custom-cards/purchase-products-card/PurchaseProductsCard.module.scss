@@ -1,84 +1,69 @@
 @use "@/styles/variables" as vars;
 
-.purchaseProductsCardWrapper {
-  position: relative;
+.purchaseProductsCard {
+  width: 100%;
+  max-width: none !important;
 
-  .purchaseProductsCardLoader {
-    position: absolute;
-    top: 73px;
-  }
+  .purchaseProductsCardContent {
+    .purchaseProductsGrid {
+      //min-width: 1200px;
+    }
 
-  .purchaseProductsCard {
-    width: 100%;
+    .tabItemsWrapper {
+      border-bottom: 1px solid vars.$colorMedium;
+      overflow: hidden;
 
-    .purchaseProductsCardContent {
-      .purchaseProductsGrid {
-        //min-width: 1200px;
-      }
-
-      .tabItemsWrapper {
-        border-bottom: 1px solid vars.$colorMedium;
-        overflow: hidden;
-
-        .tabItems {
-          display: flex;
-          justify-content: space-between;
-          align-items: start;
-          background-color: transparent;
-          height: fit-content;
-          padding: 0;
-
-          .tabItemTrigger {
-            box-shadow: none;
-            border-radius: 0;
-            height: fit-content;
-            padding: 8px 16px;
-            padding-bottom: 20px;
-
-            &[data-state="active"] {
-              border-bottom: 1px solid #38bf5e;
-            }
-
-            .tabBlock {
-              position: relative;
-              top: 4px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              gap: 5px;
-            }
-          }
-        }
-      }
-
-      .purchaseSummary {
+      .tabItems {
         display: flex;
-        align-items: center;
         justify-content: space-between;
-        padding: 5px 20px;
-        background: vars.$colorMuted;
-        border-color: vars.$colorMedium;
-        border-radius: vars.$brdR_03;
+        align-items: start;
+        background-color: transparent;
+        height: fit-content;
+        padding: 0;
 
-        .purchaseSummaryTitle {
-          font-weight: bold;
-        }
+        .tabItemTrigger {
+          box-shadow: none;
+          border-radius: 0;
+          height: fit-content;
+          padding: 8px 16px;
+          padding-bottom: 20px;
 
-        .purchaseSummaryItems {
-          display: flex;
-          gap: 20px;
+          &[data-state="active"] {
+            border-bottom: 1px solid #38bf5e;
+          }
 
-          .purchaseSummaryItem {
+          .tabBlock {
+            position: relative;
+            top: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
           }
         }
       }
     }
+
+    .purchaseSummary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 5px 20px;
+      background: vars.$colorMuted;
+      border-color: vars.$colorMedium;
+      border-radius: vars.$brdR_03;
+
+      .purchaseSummaryTitle {
+        font-weight: bold;
+      }
+
+      .purchaseSummaryItems {
+        display: flex;
+        gap: 20px;
+
+        .purchaseSummaryItem {
+        }
+      }
+    }
   }
-}
-
-// -------------------------------------------------------------------- LOADING
-
-.cardContentLoading {
-  pointer-events: none;
-  opacity: 0.5;
 }
