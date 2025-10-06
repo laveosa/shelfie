@@ -1,9 +1,17 @@
-import { CalendarDays, Grid2x2Check, Truck, UserMinus, X } from "lucide-react";
-import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
-import { useTranslation } from "react-i18next";
 
+import { CalendarDays, Grid2x2Check, Truck, UserMinus, X } from "lucide-react";
+
+import cs from "./SelectShipmentForOrderCard.module.scss";
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
+import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
 import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
+import { SelectShipmentForOrderGridColumns } from "@/components/complex/grid/custom-grids/select-shipment-for-order-grid/SelectShipmentForOrderGridColumns.tsx";
+import { getInitials } from "@/utils/helpers/quick-helper.ts";
+import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
+import { CalendarModeEnum } from "@/const/enums/CalendarModeEnum.ts";
 import {
   ShipmentStatusEnum,
   ShipmentStatusLabels,
@@ -12,17 +20,9 @@ import {
   GridSortingEnum,
   GridSortingEnumLabels,
 } from "@/const/enums/GridSortingEnum.ts";
-import cs from "./SelectShipmentForOrderCard.module.scss";
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import { ISelectShipmentForOrderCard } from "@/const/interfaces/complex-components/custom-cards/ISelectShipmentForOrderCard.ts";
-import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { getInitials } from "@/utils/helpers/quick-helper.ts";
-import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
-import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import { SelectShipmentForOrderGridColumns } from "@/components/complex/grid/custom-grids/select-shipment-for-order-grid/SelectShipmentForOrderGridColumns.tsx";
-import { CalendarModeEnum } from "@/const/enums/CalendarModeEnum.ts";
-import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
+import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
 
 export default function SelectShipmentForOrderCard({
   isLoading,
@@ -32,33 +32,39 @@ export default function SelectShipmentForOrderCard({
   customer,
   onAction,
 }: ISelectShipmentForOrderCard) {
-  const { t } = useTranslation();
+  // ==================================================================== UTILITIES
+  const { translate } = useAppTranslation();
 
-  function convertStatusesToSelectItems(): ISheSelectItem<ShipmentStatusEnum>[] {
+  // ==================================================================== PRIVATE
+  function convertStatusesToSelectItems(): ISheSelectItem<string>[] {
     return Object.values(ShipmentStatusEnum).map((status) => ({
       value: status,
       text: ShipmentStatusLabels[status],
     }));
   }
 
-  const sortingItems = Object.values(GridSortingEnum).map((value) => ({
-    value,
-    description: GridSortingEnumLabels[value],
-  }));
+  function convertToSortingItems(): GridSortingModel[] {
+    return Object.values(GridSortingEnum).map((value) => ({
+      value,
+      description: GridSortingEnumLabels[value],
+    }));
+  }
 
+  // ==================================================================== LAYOUT
   return (
-    <SheProductCard
-      loading={isLoading}
-      title={t("CardTitles.SelectShipmentForOrder")}
-      width="800px"
+    <SheCard
       className={cs.selectShipmentForOrderCard}
+      title="Select shipment for order"
+      titleTransKey="CardTitles.SelectShipmentForOrder"
+      width="800px"
       showCloseButton
+      isLoading={isLoading}
       onSecondaryButtonClick={() => onAction("closeSelectShipmentForOrderCard")}
     >
       <div className={cs.selectShipmentForOrderCardContent}>
         <div className={cs.customerBlockContainer}>
           <span className="she-text">
-            {t("ShipmentForm.Labels.ShowPendingShipments")}
+            {translate("ShipmentForm.Labels.ShowPendingShipments")}
           </span>
           <div className={cs.customerBlock}>
             <div className={cs.customerInfo}>
@@ -81,36 +87,35 @@ export default function SelectShipmentForOrderCard({
                 </div>
               )}
               <SheButton
-                icon={UserMinus}
-                value={
+                value={customer ? "Change Customer" : "Select Customer"}
+                valueTransKey={
                   customer
-                    ? t("SpecialText.ChangeCustomer")
-                    : t("OrderActions.SelectCustomer")
+                    ? "SpecialText.ChangeCustomer"
+                    : "OrderActions.SelectCustomer"
                 }
+                icon={UserMinus}
                 variant="secondary"
                 onClick={() => onAction("changeCustomer")}
               />
             </div>
             <SheButton
+              value="Show All"
+              valueTransKey="SpecialText.ShowAll"
               icon={X}
-              value={t("SpecialText.ShowAll")}
               variant="secondary"
               onClick={() => onAction("showAllShipments")}
             />
           </div>
         </div>
         <SheGrid
-          isLoading={isGridLoading}
-          columns={
-            SelectShipmentForOrderGridColumns(
-              onAction,
-            ) as ColumnDef<DataWithId>[]
-          }
           gridRequestModel={shipmentsGridRequestModel}
-          skeletonQuantity={shipmentsGridRequestModel?.items?.length}
           data={shipmentsGridRequestModel?.items}
-          customMessage={t("ShipmentMessages.NoShipmentsCreated")}
-          sortingItems={sortingItems}
+          columns={SelectShipmentForOrderGridColumns(onAction)}
+          sortingItems={convertToSortingItems()}
+          skeletonQuantity={shipmentsGridRequestModel?.items?.length}
+          customMessage="No shipments created yet"
+          customMessageTransKey="ShipmentMessages.NoShipmentsCreated"
+          isLoading={isGridLoading}
           onApplyColumns={(model) => onAction("applyColumns", model)}
           onDefaultColumns={() => onAction("resetColumns")}
           onGridRequestChange={(updates) =>
@@ -118,32 +123,35 @@ export default function SelectShipmentForOrderCard({
           }
         >
           <SheSelect
-            icon={Truck}
-            placeholder={t("SelectOptions.Service")}
-            minWidth="150px"
             items={services}
+            placeholder="Service"
+            placeholderTransKey="SelectOptions.Service"
+            icon={Truck}
+            minWidth="150px"
             onSelect={(value) =>
               onAction("gridRequestChange", { deliveryServiceId: value })
             }
           />
           <SheSelect
-            icon={Grid2x2Check}
-            placeholder={t("SelectOptions.Status")}
-            minWidth="150px"
             items={convertStatusesToSelectItems()}
-            onSelect={(value: ShipmentStatusEnum) =>
-              onAction("gridRequestChange", { shipmentStatus: value })
-            }
-            hideFirstOption
             selected={
               shipmentsGridRequestModel.filter?.status as ShipmentStatusEnum
             }
+            placeholder="Status"
+            placeholderTransKey="SelectOptions.Status"
+            icon={Grid2x2Check}
+            minWidth="150px"
+            hideFirstOption
+            onSelect={(value: ShipmentStatusEnum) =>
+              onAction("gridRequestChange", { shipmentStatus: value })
+            }
           />
           <SheDatePicker
-            icon={CalendarDays}
-            placeholder={t("SelectOptions.Date")}
-            minWidth="150px"
+            placeholder="Date"
+            placeholderTransKey="SelectOptions.Date"
             mode={CalendarModeEnum.RANGE}
+            icon={CalendarDays}
+            minWidth="150px"
             onSelectDate={(value) =>
               onAction("gridRequestChange", {
                 startDate: value.from.toISOString(),
@@ -153,6 +161,6 @@ export default function SelectShipmentForOrderCard({
           />
         </SheGrid>
       </div>
-    </SheProductCard>
+    </SheCard>
   );
 }
