@@ -1,27 +1,26 @@
-import { useTranslation } from "react-i18next";
-import { Plus, Trash2 } from "lucide-react";
 import React from "react";
 
+import { Plus, Trash2 } from "lucide-react";
+
 import cs from "./MarginConfigurionCard.module.scss";
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
-import { IMarginConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IMarginConfigurationCard.ts";
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
 import MarginConfigurationForm from "@/components/forms/margin-configuration-form/MarginConfigurationForm.tsx";
+import { IMarginConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IMarginConfigurationCard.ts";
 
 export default function MarginConfigurationCard({
   isLoading,
   margin,
   onAction,
 }: IMarginConfigurationCard) {
-  const { t } = useTranslation();
-
   return (
-    <SheProductCard
-      loading={isLoading}
+    <SheCard
       className={cs.marginConfigurationCard}
-      title={
-        margin ? t("CardTitles.ManageMargin") : t("CardTitles.CreateMargin")
+      title={margin ? "Manage Margin" : "Create Margin"}
+      titleTransKey={
+        margin ? "CardTitles.ManageMargin" : "CardTitles.CreateMargin"
       }
       showCloseButton
+      isLoading={isLoading}
       showNotificationCard={margin}
       notificationCardProps={{
         title: margin?.isDeleted ? "RestoreMargin" : "Delete Margin",
@@ -57,6 +56,6 @@ export default function MarginConfigurationCard({
           onCancel={() => onAction("closeMarginConfigurationCard")}
         />
       </div>
-    </SheProductCard>
+    </SheCard>
   );
 }
