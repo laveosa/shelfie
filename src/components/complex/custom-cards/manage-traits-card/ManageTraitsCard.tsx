@@ -1,9 +1,8 @@
 import { useForm } from "react-hook-form";
-import React, { useEffect } from "react";
+import React, { JSX, useEffect } from "react";
 import { Check } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ManageTraitsCard.module.scss";
 import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
 import {
@@ -20,36 +19,10 @@ import {
   SelectValue,
 } from "@/components/ui/select.tsx";
 import { IManageTraitsCard } from "@/const/interfaces/complex-components/custom-cards/IManageTraitsCard.ts";
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
 
 interface TraitForm {
   [key: string]: string;
-}
-
-interface TraitOption {
-  optionId: number;
-  optionName: string;
-  optionColor?: string | null;
-  isRaw?: boolean;
-}
-
-interface Trait {
-  traitId: number;
-  traitName: string;
-  traitTypeId: number;
-  traitTypeName: string;
-  optionsAmount: number;
-  traitOptions: TraitOption[];
-}
-
-interface VariantTraitOption {
-  optionId: number | null;
-  optionName: string | null;
-  optionColor: string | null;
-  traitId: number;
-  traitName: string;
-  isMissing?: boolean;
-  isRemoved?: boolean;
-  color?: string;
 }
 
 export default function ManageTraitsCard({
@@ -59,15 +32,7 @@ export default function ManageTraitsCard({
   onAction,
   onSecondaryButtonClick,
   ...props
-}: IManageTraitsCard & {
-  traits: Trait[];
-  variant: {
-    variantId: number;
-    variantName: string;
-    traitOptions: VariantTraitOption[];
-    [key: string]: any;
-  };
-}) {
+}: IManageTraitsCard): JSX.Element {
   const { t } = useTranslation();
   const variantTraitOptions = variant?.traitOptions || [];
   const defaultValues = traits.reduce((acc, trait) => {
@@ -84,6 +49,7 @@ export default function ManageTraitsCard({
   const form = useForm<TraitForm>({
     defaultValues,
   });
+  const isFormIncomplete = Object.values(form.watch()).some((value) => !value);
 
   useEffect(() => {
     if (variant?.traitOptions) {
@@ -104,8 +70,6 @@ export default function ManageTraitsCard({
     }
   }, [variant, traits, variantTraitOptions]);
 
-  const isFormIncomplete = Object.values(form.watch()).some((value) => !value);
-
   function onSubmit(data: TraitForm) {
     const optionIds = Object.values(data)
       .filter((value) => value !== "")
@@ -118,23 +82,26 @@ export default function ManageTraitsCard({
     onAction("updateVariantTraitOptions", { variant, submissionData });
   }
 
+  // ==================================================================== LAYOUT
   return (
-    <SheProductCard
-      loading={isLoading}
-      title={t("CardTitles.ManageTraits")}
-      showPrimaryButton={true}
-      primaryButtonTitle={t("CommonButtons.SaveChanges")}
-      onPrimaryButtonClick={form.handleSubmit(onSubmit)}
-      primaryButtonDisabled={isFormIncomplete}
-      primaryButtonModel={{
-        icon: Check,
-        bgColor: "#007AFF",
-      }}
-      showSecondaryButton={true}
-      secondaryButtonTitle={t("CommonButtons.Cancel")}
-      onSecondaryButtonClick={onSecondaryButtonClick}
-      showCloseButton
+    <SheCard
       className={cs.manageTraitsCard}
+      title="Manage Traits"
+      titleTransKey="CardTitles.ManageTraits"
+      showCloseButton
+      isLoading={isLoading}
+      showFooter
+      primaryButtonProps={{
+        value: "Save Changes",
+        valueTransKey: "CommonButtons.SaveChanges",
+        variant: "info",
+        icon: Check,
+        disabled: isFormIncomplete,
+      }}
+      secondaryButtonTitle="Cancel"
+      secondaryButtonTitleTransKey="CommonButtons.Cancel"
+      onPrimaryButtonClick={form.handleSubmit(onSubmit)}
+      onSecondaryButtonClick={onSecondaryButtonClick}
       {...props}
     >
       <div className={cs.manageTraitsCardContent}>
@@ -213,6 +180,6 @@ export default function ManageTraitsCard({
           </SheForm>
         </div>
       </div>
-    </SheProductCard>
+    </SheCard>
   );
 }

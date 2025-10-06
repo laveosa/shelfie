@@ -1,13 +1,10 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
 
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./ConnectImageCard.module.scss";
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
 import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import { ConnectImageGridColumns } from "@/components/complex/grid/custom-grids/connect-image-grid/ConnectImageGridColumns.tsx";
 import { IConnectImageCard } from "@/const/interfaces/complex-components/custom-cards/IConnectImageCard.ts";
-import { ColumnDef } from "@tanstack/react-table";
-import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export default function ConnectImageCard({
   isLoading,
@@ -19,14 +16,14 @@ export default function ConnectImageCard({
   onSecondaryButtonClick,
   ...props
 }: IConnectImageCard) {
-  const { t } = useTranslation();
-
+  // ==================================================================== LAYOUT
   return (
-    <SheProductCard
-      loading={isLoading}
-      title={t("CardTitles.ConnectImageToProductVariants")}
-      showCloseButton
+    <SheCard
       className={cs.connectImageCard}
+      title="Connect image to product variants"
+      titleTransKey="CardTitles.ConnectImageToProductVariants"
+      showCloseButton
+      isLoading={isLoading}
       onSecondaryButtonClick={() => onAction("closeConnectImageCard")}
       {...props}
     >
@@ -35,15 +32,13 @@ export default function ConnectImageCard({
           <SheGrid
             isLoading={isGridLoading}
             showHeader={false}
-            columns={
-              ConnectImageGridColumns(onAction) as ColumnDef<DataWithId>[]
-            }
+            columns={ConnectImageGridColumns(onAction)}
             data={variants}
             skeletonQuantity={productCounter?.variants}
             gridRequestModel={variants as any}
           />
         </div>
       </div>
-    </SheProductCard>
+    </SheCard>
   );
 }

@@ -1,4 +1,3 @@
-
 .orderConfigurationCard {
   .orderConfigurationCardContent {
     height: calc(100vh - 252px);
@@ -50,6 +49,9 @@
     .orderDiscountsGridWrapper {
       position: relative;
       margin-bottom: 30px;
+
+      .orderDiscountsGrid {
+      }
     }
 
     .gridFooter {
@@ -93,5 +95,3 @@
     }
   }
 }
-
-

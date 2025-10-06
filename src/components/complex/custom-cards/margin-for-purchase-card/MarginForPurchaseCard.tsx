@@ -1,36 +1,41 @@
-import { Cog, ReceiptEuro, Undo2 } from "lucide-react";
 import React from "react";
-import { useTranslation } from "react-i18next";
 
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
+import { Cog, ReceiptEuro, Undo2 } from "lucide-react";
+
 import cs from "./MarginForPurchaseCard.module.scss";
-import { IMarginForPurchaseCard } from "@/const/interfaces/complex-components/custom-cards/IMarginForPurchaseCard.ts";
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import { Separator } from "@/components/ui/separator.tsx";
 import MarginConfigurationForm from "@/components/forms/margin-configuration-form/MarginConfigurationForm.tsx";
+import { Separator } from "@/components/ui/separator.tsx";
+import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
+import { IMarginForPurchaseCard } from "@/const/interfaces/complex-components/custom-cards/IMarginForPurchaseCard.ts";
 
 export default function MarginForPurchaseCard({
   isLoading,
   margin,
   onAction,
 }: IMarginForPurchaseCard) {
-  const { t } = useTranslation();
+  // ==================================================================== UTILITIES
+  const { translate } = useAppTranslation();
 
+  // ==================================================================== LAYOUT
   return (
-    <SheProductCard
-      loading={isLoading}
-      title={t("CardTitles.MarginForPurchase")}
+    <SheCard
       className={cs.marginForPurchaseCard}
+      title="Margin For Purchase"
+      titleTransKey="CardTitles.MarginForPurchase"
+      isLoading={isLoading}
     >
       <div className={cs.marginForPurchaseCardContent}>
         <div className={cs.electedMarginBlock}>
           <span className="she-text">
-            {t("MarginForm.Labels.SelectMarginForPurchase")}
+            {translate("MarginForm.Labels.SelectMarginForPurchase")}
           </span>
           <SheButton
+            value="Select Margin"
+            valueTransKey="MarginActions.SelectMargin"
             icon={ReceiptEuro}
             variant="secondary"
-            value={t("MarginActions.SelectMargin")}
             onClick={() => onAction("openSelectMarginCard")}
           />
         </div>
@@ -56,8 +61,9 @@ export default function MarginForPurchaseCard({
                   />
                 )}
                 <SheButton
+                  value="Manage"
+                  valueTransKey="ProductActions.Manage"
                   icon={Cog}
-                  value={t("ProductActions.Manage")}
                   variant="secondary"
                   onClick={() => onAction("manageMargin", margin)}
                 />
@@ -66,13 +72,12 @@ export default function MarginForPurchaseCard({
             {margin.isDeleted && (
               <div className={cs.marginIsDeletedBlock}>
                 <span className="she-text">
-                  {t("MarginMessages.MarginIsDeleted")}
+                  {translate("MarginMessages.MarginIsDeleted")}
                 </span>
               </div>
             )}
             <Separator />
             <MarginConfigurationForm
-              className={cs.marginConfigurationCardForm}
               data={margin}
               isConfigurationCard={false}
               onSubmit={(formData) =>
@@ -82,6 +87,6 @@ export default function MarginForPurchaseCard({
           </div>
         )}
       </div>
-    </SheProductCard>
+    </SheCard>
   );
 }

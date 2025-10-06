@@ -26,7 +26,6 @@ export default function ProductConfigurationCard({
         productId ? "CardTitles.BasicProductData" : "CardTitles.CreateProduct"
       }
       isLoading={isLoading}
-      showHeader
       showCloseButton={showSecondaryButton}
       onSecondaryButtonClick={onSecondaryButtonClick}
     >

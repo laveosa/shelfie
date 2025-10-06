@@ -1,9 +1,7 @@
 import { useForm } from "react-hook-form";
 import { Plus } from "lucide-react";
 import React from "react";
-import { useTranslation } from "react-i18next";
 
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./AddVariantCard.module.scss";
 import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
 import {
@@ -20,6 +18,8 @@ import {
   SelectValue,
 } from "@/components/ui/select.tsx";
 import { IAddVariantCard } from "@/const/interfaces/complex-components/custom-cards/IAddVariantCard.ts";
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
+import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 
 interface TraitForm {
   [key: string]: string;
@@ -32,7 +32,7 @@ export default function AddVariantCard({
   onAction,
   ...props
 }: IAddVariantCard) {
-  const { t } = useTranslation();
+  const { translate } = useAppTranslation();
 
   const defaultValues = traits?.reduce(
     (acc, trait) => ({
@@ -66,119 +66,115 @@ export default function AddVariantCard({
   );
 
   return (
-    <div>
-      <SheProductCard
-        loading={isLoading}
-        title={t("ProductActions.AddVariant")}
-        showPrimaryButton={true}
-        primaryButtonTitle={t("ProductActions.AddVariant")}
-        onPrimaryButtonClick={form.handleSubmit(onSubmit)}
-        primaryButtonDisabled={isPrimaryButtonDisabled}
-        primaryButtonModel={{
-          icon: Plus,
-          bgColor: "#007AFF",
-        }}
-        showSecondaryButton={true}
-        onSecondaryButtonClick={() => onAction("closeAddVariantCard")}
-        showCloseButton
-        className={cs.addVariantCard}
-        {...props}
-      >
-        <div className={cs.addVariantCardContent}>
-          <span className={`${cs.addVariantCardText} she-text`}>
-            {t("ProductForm.Labels.SelectTraitOptions")}
-          </span>
-          <SheForm form={form} onSubmit={onSubmit}>
-            {traits?.map((trait) => (
-              <FormField
-                key={trait.traitId}
-                control={form.control}
-                name={trait.traitId.toString()}
-                render={({ field }) => {
-                  return (
-                    <div
-                      className={cs.addVariantCardFormItem}
-                      style={
-                        isDuplicateVariant
-                          ? { paddingBottom: "10px" }
-                          : { paddingBottom: "20px" }
+    <SheCard
+      className={cs.addVariantCard}
+      title="Add Variant"
+      titleTransKey="ProductActions.AddVariant"
+      isLoading={isLoading}
+      showCloseButton
+      showFooter
+      primaryButtonProps={{
+        value: "Add Variant",
+        valueTransKey: "ProductActions.AddVariant",
+        icon: Plus,
+        variant: "info",
+        disabled: isPrimaryButtonDisabled,
+      }}
+      onSecondaryButtonClick={() => onAction("closeAddVariantCard")}
+      onPrimaryButtonClick={form.handleSubmit(onSubmit)}
+      {...props}
+    >
+      <div className={cs.addVariantCardContent}>
+        <span className="she-text">
+          {translate("ProductForm.Labels.SelectTraitOptions")}
+        </span>
+        <SheForm form={form} onSubmit={onSubmit}>
+          {traits?.map((trait) => (
+            <FormField
+              key={trait.traitId}
+              control={form.control}
+              name={trait.traitId.toString()}
+              render={({ field }) => {
+                return (
+                  <div
+                    className={cs.addVariantCardFormItem}
+                    style={
+                      isDuplicateVariant
+                        ? { paddingBottom: "10px" }
+                        : { paddingBottom: "20px" }
+                    }
+                  >
+                    <FormItem
+                      className={
+                        !isDuplicateVariant ? cs.select : cs.warningColorSelect
                       }
                     >
-                      <FormItem
-                        className={
-                          !isDuplicateVariant
-                            ? cs.select
-                            : cs.warningColorSelect
-                        }
+                      <FormLabel>{trait.traitName}</FormLabel>
+                      <Select
+                        onValueChange={(value) => {
+                          field.onChange(value);
+                        }}
+                        value={field.value}
                       >
-                        <FormLabel>{trait.traitName}</FormLabel>
-                        <Select
-                          onValueChange={(value) => {
-                            field.onChange(value);
-                          }}
-                          value={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue
-                                placeholder={t(
-                                  "ProductForm.Placeholders.SelectTraitType",
-                                  {
-                                    traitType:
-                                      trait.traitTypeName.toLowerCase(),
-                                  },
-                                )}
-                              />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {trait.traitOptions
-                              .filter((option) => !option.isRaw)
-                              .map((option) => (
-                                <SelectItem
-                                  key={option.optionId}
-                                  value={option.optionId.toString()}
-                                >
-                                  {trait.traitTypeId === 2 ? (
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue
+                              placeholder={translate(
+                                "ProductForm.Placeholders.SelectTraitType",
+                                {
+                                  traitType: trait.traitTypeName.toLowerCase(),
+                                },
+                              )}
+                            />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {trait.traitOptions
+                            .filter((option) => !option.isRaw)
+                            .map((option) => (
+                              <SelectItem
+                                key={option.optionId}
+                                value={option.optionId.toString()}
+                              >
+                                {trait.traitTypeId === 2 ? (
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                    }}
+                                  >
                                     <div
                                       style={{
-                                        display: "flex",
-                                        alignItems: "center",
+                                        width: "20px",
+                                        height: "20px",
+                                        background:
+                                          option?.optionColor || "#ccc",
+                                        marginRight: "8px",
+                                        borderRadius: "2px",
                                       }}
-                                    >
-                                      <div
-                                        style={{
-                                          width: "20px",
-                                          height: "20px",
-                                          background:
-                                            option?.optionColor || "#ccc",
-                                          marginRight: "8px",
-                                          borderRadius: "2px",
-                                        }}
-                                      ></div>
-                                      {option.optionName}
-                                    </div>
-                                  ) : (
-                                    option.optionName
-                                  )}
-                                </SelectItem>
-                              ))}
-                          </SelectContent>
-                        </Select>
-                      </FormItem>
-                    </div>
-                  );
-                }}
-              />
-            ))}
-          </SheForm>
-          {isDuplicateVariant && (
-            <span className={cs.warningText}>
-              {t("ValidationMessages.DuplicateVariantWarning")}
-            </span>
-          )}
-        </div>
-      </SheProductCard>
-    </div>
+                                    ></div>
+                                    {option.optionName}
+                                  </div>
+                                ) : (
+                                  option.optionName
+                                )}
+                              </SelectItem>
+                            ))}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  </div>
+                );
+              }}
+            />
+          ))}
+        </SheForm>
+        {isDuplicateVariant && (
+          <span className={cs.warningText}>
+            {translate("ValidationMessages.DuplicateVariantWarning")}
+          </span>
+        )}
+      </div>
+    </SheCard>
   );
 }

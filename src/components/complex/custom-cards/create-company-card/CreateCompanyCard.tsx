@@ -62,7 +62,6 @@ export default function CreateCompanyCard({
     <SheCard
       className={cs.createCompanyCard}
       title="Create Company"
-      showHeader
       showCloseButton
       isLoading={isLoading}
       onSecondaryButtonClick={() => onAction("closeCreateCompanyCard")}

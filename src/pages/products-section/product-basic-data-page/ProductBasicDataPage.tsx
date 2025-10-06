@@ -257,11 +257,9 @@ export function ProductBasicDataPage() {
               contextId={state.managedCompany?.companyId}
               noDataText="COMPANY HAS NO PHOTOS"
               showCloseButton
-              columns={
-                ManageCompanyPhotosGridColumns({
-                  onAction,
-                }) as ColumnDef<DataWithId>[]
-              }
+              columns={ManageCompanyPhotosGridColumns({
+                onAction,
+              })}
               onAction={onAction}
             />
           </div>

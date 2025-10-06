@@ -1,7 +1,7 @@
-import { ImagePlus, Plus, Trash2 } from "lucide-react";
-import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
 import _ from "lodash";
+
+import { ImagePlus, Plus } from "lucide-react";
 
 import cs from "./CompanyConfigurationCard.module.scss";
 import CreateCompanyForm from "@/components/forms/create-company-form/CreateCompanyForm.tsx";
@@ -9,7 +9,6 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheCard from "@/components/complex/she-card/SheCard.tsx";
 import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import { LocationsListGridColumns } from "@/components/complex/grid/custom-grids/locations-list-grid/LocationsGridColumns.tsx";
-import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 import { ICompanyConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/ICompanyConfigurationCard.ts";
 import { CompanyModel } from "@/const/models/CompanyModel.ts";
 
@@ -55,13 +54,8 @@ export default function CompanyConfigurationCard({
       notificationCardProps={{
         title: "Delete Company",
         text: "The company will be deleted and it will no longer be available. The past purchases and labels will remain available.",
-        buttonText: "Delete",
-        buttonTextTransKey: "CommonButtons.Delete",
-        buttonColor: "#FF0000",
-        buttonIcon: Trash2,
         onClick: () => onAction("deleteCompany", company),
       }}
-      showHeader
       showCloseButton
       isLoading={isLoading}
       onSecondaryButtonClick={() => onAction("closeCompanyConfigurationCard")}
@@ -114,11 +108,9 @@ export default function CompanyConfigurationCard({
               <SheGrid
                 isLoading={isGridLoading}
                 showHeader={false}
-                columns={
-                  LocationsListGridColumns({
-                    onAction,
-                  }) as ColumnDef<DataWithId>[]
-                }
+                columns={LocationsListGridColumns({
+                  onAction,
+                })}
                 data={company?.locations}
                 customMessage={"No locations to display"}
               />

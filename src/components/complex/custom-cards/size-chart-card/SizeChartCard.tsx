@@ -1,15 +1,11 @@
 import React, { useState } from "react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select.tsx";
-import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
-import cs from "./SizeChartCard.module.scss";
+
 import { Plus } from "lucide-react";
+
+import cs from "./SizeChartCard.module.scss";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
+import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import { GridDataTable } from "@/components/complex/grid/grid-data-table/GridDataTable.tsx";
 import { SizeChartGridColumns } from "@/components/complex/grid/custom-grids/size-chart-grid/SizeChartGridColumns.tsx";
 
@@ -18,80 +14,80 @@ export default function SizeChartCard({
   data,
   ...props
 }) {
+  // ==================================================================== STATE MANAGEMENT
   const [selectedOption, setSelectedOption] = useState("");
   const [manageSizeChart, setManageSizeChart] = useState(false);
 
-  const handleSelect = () => {
+  // ==================================================================== EVENT HANDLERS
+  function onSelectHandler() {
     console.log(`You selected: ${selectedOption}`);
     setManageSizeChart(true);
-  };
+  }
 
-  function handleInputChange() {}
+  function onInputChangeHandler() {}
 
+  // ==================================================================== LAYOUT
   return (
-    <div>
-      <SheProductCard
-        title="Size Chart"
-        view="card"
-        showPrimaryButton={manageSizeChart && true}
-        primaryButtonTitle="Save"
-        showSecondaryButton={manageSizeChart && true}
-        secondaryButtonTitle="Cancel"
-        className={cs.sizeChartCard}
-        showCloseButton={true}
-        {...props}
-      >
-        <div className={cs.sizeChartCardContent}>
-          {!manageSizeChart && (
-            <>
-              <div className={`${cs.sizeChartCardText} she-text`}>
-                To manage the size chart you need to pick the product category
-                first
-              </div>
-              <div className={cs.sizeChartCardSelectBlock}>
-                <div className={cs.sizeChartCardSelect}>
-                  <Select onValueChange={setSelectedOption}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="option1">Option 1</SelectItem>
-                      <SelectItem value="option2">Option 2</SelectItem>
-                      <SelectItem value="option3">Option 3</SelectItem>
-                      <SelectItem value="option4">Option 4</SelectItem>
-                      <SelectItem value="option5">Option 5</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <SheButton
-                    className={cs.formRowButton}
-                    icon={Plus}
-                    variant="outline"
-                    onClick={onOpenCreateProductCategoryCard}
-                  />
-                </div>
-                <SheButton onClick={handleSelect}>Set Category</SheButton>
-              </div>
-            </>
-          )}
-          {manageSizeChart && (
-            <>
-              <div className={cs.setSizeChart}>
-                <div className={`${cs.setSizeChartText} she-text`}>
-                  Fill in the size options for the product
-                </div>
-              </div>
-              <div className={cs.managePhotosGrid}>
-                <GridDataTable
-                  showHeader={false}
-                  columns={SizeChartGridColumns(handleInputChange)}
-                  data={data}
-                  gridRequestModel={data}
+    <SheCard
+      className={cs.sizeChartCard}
+      title="Size Chart"
+      showCloseButton
+      showPrimaryButton={manageSizeChart}
+      primaryButtonTitle="Save"
+      showSecondaryButton={manageSizeChart}
+      secondaryButtonTitle="Cancel"
+      {...props}
+    >
+      <div className={cs.sizeChartCardContent}>
+        {!manageSizeChart && (
+          <>
+            <div className={`${cs.sizeChartCardText} she-text`}>
+              To manage the size chart you need to pick the product category
+              first
+            </div>
+            <div className={cs.sizeChartCardSelectBlock}>
+              <div className={cs.sizeChartCardSelect}>
+                <SheSelect
+                  label="Category"
+                  placeholder="select category..."
+                  items={[
+                    { value: "option1", text: "Option 1" },
+                    { value: "option2", text: "Option 2" },
+                    { value: "option3", text: "Option 3" },
+                    { value: "option4", text: "Option 4" },
+                    { value: "option5", text: "Option 5" },
+                  ]}
+                  onSelect={setSelectedOption}
+                />
+                <SheButton
+                  className={cs.formRowButton}
+                  icon={Plus}
+                  variant="outline"
+                  onClick={onOpenCreateProductCategoryCard}
                 />
               </div>
-            </>
-          )}
-        </div>
-      </SheProductCard>
-    </div>
+              <SheButton value="Set Category" onClick={onSelectHandler} />
+            </div>
+          </>
+        )}
+        {manageSizeChart && (
+          <div className={cs.setSizeChartContainer}>
+            <div className={cs.setSizeChart}>
+              <span className={`${cs.setSizeChartText} she-text`}>
+                Fill in the size options for the product
+              </span>
+            </div>
+            <div className={cs.managePhotosGrid}>
+              <GridDataTable
+                showHeader={false}
+                columns={SizeChartGridColumns(onInputChangeHandler)}
+                data={data}
+                gridRequestModel={data}
+              />
+            </div>
+          </div>
+        )}
+      </div>
+    </SheCard>
   );
 }

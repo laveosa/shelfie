@@ -7,6 +7,9 @@
     gap: vars.$paddingSmall;
     padding: 0 vars.$paddingSmall;
 
+    .sizeChartCardText {
+    }
+
     .sizeChartCardSelectBlock {
       display: flex;
       flex-direction: column;
@@ -25,6 +28,20 @@
           }
         }
       }
+    }
+  }
+}
+
+// =========================================================================
+
+.sizeChartCard {
+  .setSizeChartContainer {
+    .setSizeChart {
+      .setSizeChartText {
+      }
+    }
+
+    .managePhotosGrid {
     }
   }
 }

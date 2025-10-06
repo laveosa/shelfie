@@ -5,7 +5,6 @@ import React, { Fragment } from "react";
 import { Plus, SlidersVertical } from "lucide-react";
 
 import cs from "./ManageVariantsCard.module.scss";
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
@@ -13,6 +12,7 @@ import { Separator } from "@/components/ui/separator.tsx";
 import { ManageVariantsGridColumns } from "@/components/complex/grid/custom-grids/manage-variants-grid/ManageVariantsGridColumns.tsx";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 import { IManageVariantsCard } from "@/const/interfaces/complex-components/custom-cards/IManageVariantsCard.ts";
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
 
 export default function ManageVariantsCard({
   isLoading,
@@ -70,14 +70,11 @@ export default function ManageVariantsCard({
   }
 
   return (
-    <SheProductCard
-      loading={isLoading}
-      title={t("CardTitles.ManageVariants")}
-      showPrimaryButton={false}
-      primaryButtonTitle={t("CommonButtons.Save")}
-      showSecondaryButton={false}
-      secondaryButtonTitle={t("CommonButtons.Cancel")}
+    <SheCard
       className={cs.manageVariantsCard}
+      title="Manage Variants"
+      titleTransKey="CardTitles.ManageVariants"
+      isLoading={isLoading}
       minWidth={"420px"}
       {...props}
     >
@@ -158,6 +155,6 @@ export default function ManageVariantsCard({
           />
         </div>
       </div>
-    </SheProductCard>
+    </SheCard>
   );
 }

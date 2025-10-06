@@ -36,8 +36,8 @@ export default function SheCardFooter({
 
   // ==================================================================== LAYOUT
   if (
-    !showFooter ||
     isMinimized ||
+    (!showFooter && !showNotificationCard) ||
     (!showSecondaryButton && !showPrimaryButton && !showNotificationCard)
   ) {
     return null;
@@ -48,7 +48,7 @@ export default function SheCardFooter({
       className={`${cs.sheCardFooter} ${className} ${cs[view]}`}
       style={style}
     >
-      {(showSecondaryButton || showPrimaryButton) && (
+      {showFooter && (showSecondaryButton || showPrimaryButton) && (
         <div
           className={cs.sheCardFooterButtonsContainer}
           style={{

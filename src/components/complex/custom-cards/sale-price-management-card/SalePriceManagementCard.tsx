@@ -1,18 +1,16 @@
-import { ColumnDef } from "@tanstack/react-table";
 import { CheckCheck } from "lucide-react";
-import { useTranslation } from "react-i18next";
 
-import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
-import { ISalePriceManagementCard } from "@/const/interfaces/complex-components/custom-cards/ISalePriceManagementCard.ts";
 import cs from "@/components/complex/custom-cards/sale-price-management-card/SalePriceManagementCard.module.scss";
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import GridItemsFilter from "@/components/complex/grid/filters/grid-items-filter/GridItemsFilter.tsx";
+import GridTraitsFilter from "@/components/complex/grid/filters/grid-traits-filter/GridTraitsFilter.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
+import { marginProductsGridColumns } from "@/components/complex/grid/custom-grids/margin-products-grid/MarginProductsGridColumns.tsx";
+import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
+import { ISalePriceManagementCard } from "@/const/interfaces/complex-components/custom-cards/ISalePriceManagementCard.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
-import GridTraitsFilter from "@/components/complex/grid/filters/grid-traits-filter/GridTraitsFilter.tsx";
-import { marginProductsGridColumns } from "@/components/complex/grid/custom-grids/margin-products-grid/MarginProductsGridColumns.tsx";
-import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 
 export default function SalePriseManagementCard({
   isLoading,
@@ -27,26 +25,21 @@ export default function SalePriseManagementCard({
   gridRequestModel,
   onAction,
 }: ISalePriceManagementCard) {
-  const { t } = useTranslation();
+  // ==================================================================== UTILITIES
+  const { translate } = useAppTranslation();
 
+  // ==================================================================== LAYOUT
   return (
     <div className={cs.salePriceManagementCard}>
-      <SheProductCard
-        title={t("CardTitles.SalePriceManagement")}
-        isLoading={isLoading}
+      <SheCard
         className={cs.salePriceManagementCardContent}
-        minWidth="100%"
-        maxWidth="100%"
-        width="100%"
+        title="Sale Price Management"
+        titleTransKey="CardTitles.SalePriceManagement"
+        isLoading={isLoading}
       >
         <SheGrid
           isLoading={isGridLoading}
-          columns={
-            marginProductsGridColumns(
-              taxes,
-              onAction,
-            ) as ColumnDef<DataWithId>[]
-          }
+          columns={marginProductsGridColumns(taxes, onAction)}
           data={gridRequestModel?.items}
           sortingItems={sortingOptions}
           columnsPreferences={preferences}
@@ -60,15 +53,15 @@ export default function SalePriseManagementCard({
           }
         >
           <GridItemsFilter
-            items={brands}
-            columnName={t("SectionTitles.Brand")}
+            items={brands as any}
+            columnName={translate("SectionTitles.Brand")}
             getId={(item: BrandModel) => item.brandId}
             getName={(item: BrandModel) => item.brandName}
             selected={gridRequestModel?.filter?.brands}
           />
           <GridItemsFilter
-            items={categories}
-            columnName={t("SectionTitles.Category")}
+            items={categories as any}
+            columnName={translate("SectionTitles.Category")}
             getId={(item: CategoryModel) => item.categoryId}
             getName={(item: CategoryModel) => item.categoryName}
             selected={gridRequestModel?.filter?.categories}
@@ -76,21 +69,21 @@ export default function SalePriseManagementCard({
           <GridTraitsFilter traitOptions={colors} traitType="color" />
           <GridTraitsFilter traitOptions={sizes} traitType="size" />
         </SheGrid>
-      </SheProductCard>
+      </SheCard>
       <div className={cs.buttonBlock}>
         <SheButton
+          value="Apply visible prices"
+          valueTransKey="SpecialText.ApplyVisiblePrices"
           icon={CheckCheck}
-          variant="default"
+          variant="info"
           onClick={() => onAction("applyVisibleMarginItems")}
-          value={t("SpecialText.ApplyVisiblePrices")}
-          bgColor="#007AFF"
         />
         <SheButton
+          value="Apply all prices"
+          valueTransKey="SpecialText.ApplyAllPrices"
           icon={CheckCheck}
-          variant="default"
+          variant="info"
           onClick={() => onAction("applyAllMarginItems")}
-          value={t("SpecialText.ApplyAllPrices")}
-          bgColor="#007AFF"
         />
       </div>
     </div>

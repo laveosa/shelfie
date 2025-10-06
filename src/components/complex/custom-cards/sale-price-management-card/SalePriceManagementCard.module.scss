@@ -3,6 +3,12 @@
 .salePriceManagementCard {
   position: relative;
 
+  .salePriceManagementCardContent {
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+  }
+
   .buttonBlock {
     position: absolute;
     top: 10px;

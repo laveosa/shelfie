@@ -1,18 +1,16 @@
-import { ColumnDef } from "@tanstack/react-table";
-import { Plus, ShoppingCart } from "lucide-react";
 import React from "react";
-import { useTranslation } from "react-i18next";
 
-import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
+import { Plus, ShoppingCart } from "lucide-react";
+
 import cs from "./OrdersCard.module.scss";
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
 import GridShowItemsFilter from "@/components/complex/grid/filters/grid-show-deleted-filter/GridShowItemsFilter.tsx";
-import { IOrdersCard } from "@/const/interfaces/complex-components/custom-cards/IOrdersCard.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import { ordersGridColumns } from "@/components/complex/grid/custom-grids/orders-grid/OrdersGridColumns.tsx";
-import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 import { GridDateRangeFilter } from "@/components/complex/grid/filters/grid-date-range-filter/GridDateRangeFilter.tsx";
+import { IOrdersCard } from "@/const/interfaces/complex-components/custom-cards/IOrdersCard.ts";
 
 export default function OrdersCard({
   isLoading,
@@ -22,8 +20,7 @@ export default function OrdersCard({
   ordersGridRequestModel,
   onAction,
 }: IOrdersCard) {
-  const { t } = useTranslation();
-
+  // ==================================================================== LAYOUT
   function onGridAction(
     _rowId?: string,
     _setLoadingRow?: (rowId: string, loading: boolean) => void,
@@ -32,16 +29,19 @@ export default function OrdersCard({
     onAction("manageOrder", rowData);
   }
 
+  // ==================================================================== LAYOUT
   return (
     <div className={cs.ordersCard}>
-      <SheProductCard
-        title={t("CardTitles.Orders")}
-        isLoading={isLoading}
+      <SheCard
         className={cs.ordersCardContent}
+        headerClassName={cs.ordersCardHeader}
+        title="Orders"
+        titleTransKey="CardTitles.Orders"
+        isLoading={isLoading}
       >
         <SheGrid
           isLoading={isGridLoading}
-          columns={ordersGridColumns(onGridAction) as ColumnDef<DataWithId>[]}
+          columns={ordersGridColumns(onGridAction)}
           data={ordersGridRequestModel.items}
           gridRequestModel={ordersGridRequestModel}
           sortingItems={sortingOptions}
@@ -57,19 +57,20 @@ export default function OrdersCard({
           <GridDateRangeFilter />
           <SheSelect
             icon={ShoppingCart}
-            placeholder={t("OrderForm.Placeholders.Status")}
+            placeholder="Status"
+            placeholderTransKey="OrderForm.Placeholders.Status"
             minWidth="150px"
           />
           <GridShowItemsFilter context="Canceled" />
         </SheGrid>
-      </SheProductCard>
+      </SheCard>
       <SheButton
         className={cs.createOrderButton}
+        value="Create Order"
+        valueTransKey="OrderActions.CreateOrder"
         icon={Plus}
-        variant="default"
+        variant="info"
         onClick={() => onAction("createOrder")}
-        value={t("OrderActions.CreateOrder")}
-        bgColor="#007AFF"
       />
     </div>
   );
