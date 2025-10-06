@@ -1,15 +1,13 @@
-import { ColumnDef } from "@tanstack/react-table";
-import { useTranslation } from "react-i18next";
 import React from "react";
 
-import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./VariantPhotosCard.module.scss";
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import { SheFileUploader } from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
-import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { VariantPhotosGridColumns } from "@/components/complex/grid/custom-grids/product-photos-grid/VariantPhotosGridColumns.tsx";
 import { OtherProductPhotosGridColumns } from "@/components/complex/grid/custom-grids/other-product-photos-grid/OtherProductPhotosGridColumns.tsx";
-import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
+import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
+import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 
 export default function VariantPhotosCard({
   isLoading,
@@ -21,14 +19,10 @@ export default function VariantPhotosCard({
   onAction,
   ...props
 }) {
-  const { t } = useTranslation();
-  const variantPhotosColumns = VariantPhotosGridColumns(
-    onGridAction,
-  ) as ColumnDef<DataWithId>[];
-  const otherPhotosColumns = OtherProductPhotosGridColumns(
-    onGridAction,
-  ) as ColumnDef<DataWithId>[];
+  // ==================================================================== UTILITIES
+  const { translate } = useAppTranslation();
 
+  // ==================================================================== EVENT HANDLERS
   function handleAction(actionType: any, payload?: any) {
     switch (actionType) {
       case "image":
@@ -69,69 +63,77 @@ export default function VariantPhotosCard({
     }
   }
 
+  // ==================================================================== LAYOUT
   return (
-    <div className={cs.variantPhotosCard}>
-      <SheProductCard
-        loading={isLoading}
-        title={t("CardTitles.ManagePhotos")}
-        onSecondaryButtonClick={() => onAction("closeVariantPhotosCard")}
-        showCloseButton={true}
-        {...props}
-      >
-        <div className={cs.variantPhotosCardContent}>
-          <SheFileUploader
-            contextName="variant"
-            contextId={contextId}
-            onUpload={(uploadModel: UploadPhotoModel) =>
-              handleAction("upload", uploadModel)
-            }
-          />
-          <div className={cs.managePhotos}>
-            <div className={`${cs.managePhotosTitle} she-title`}>
-              <span className="she-title">
-                {t("ProductForm.Labels.VariantPhotos")}
-              </span>
-            </div>
-            <div className={cs.managePhotosGrid}>
-              <SheGrid
-                isLoading={isVariantPhotoGridLoading}
-                enableDnd={true}
-                showHeader={false}
-                columns={variantPhotosColumns}
-                data={variantPhotos}
-                gridRequestModel={variantPhotos}
-                customMessage={t("ProductMessages.NoVariantPhotos")}
-                onNewItemPosition={(newIndex, activeItem) =>
-                  handleAction("dnd", { newIndex, activeItem })
-                }
-              />
-            </div>
+    <SheCard
+      className={cs.variantPhotosCard}
+      title="Manage Photos"
+      titleTransKey="CardTitles.ManagePhotos"
+      isLoading={isLoading}
+      showCloseButton
+      showFooter
+      onSecondaryButtonClick={() => onAction("closeVariantPhotosCard")}
+      {...props}
+    >
+      <div className={cs.variantPhotosCardContent}>
+        <SheFileUploader
+          contextName="variant"
+          contextId={contextId}
+          onUpload={(uploadModel: UploadPhotoModel) =>
+            handleAction("upload", uploadModel)
+          }
+        />
+        <div className={cs.managePhotos}>
+          <div className={`${cs.managePhotosTitle} she-title`}>
+            <span className="she-title">
+              {translate("ProductForm.Labels.VariantPhotos")}
+            </span>
           </div>
-          <div className={cs.managePhotos}>
-            <div className={`${cs.managePhotosTitle} she-title`}>
-              <span className="she-title">
-                {t("ProductForm.Labels.OtherProductPhotos")}
-              </span>
-            </div>
-            <div className={cs.managePhotosGrid}>
-              <SheGrid
-                isLoading={isProductPhotoGridLoading}
-                enableDnd={false}
-                showHeader={false}
-                showColumnsHeader={false}
-                columns={otherPhotosColumns}
-                data={productPhotos}
-                customMessage={
-                  !variantPhotos && !productPhotos
-                    ? t("ProductMessages.NoPhotos")
-                    : t("ProductMessages.AllPhotosAttachedToVariant")
-                }
-                gridRequestModel={productPhotos}
-              />
-            </div>
+          <div className={cs.managePhotosGrid}>
+            <SheGrid
+              isLoading={isVariantPhotoGridLoading}
+              enableDnd={true}
+              showHeader={false}
+              columns={VariantPhotosGridColumns(onGridAction)}
+              data={variantPhotos}
+              gridRequestModel={variantPhotos}
+              customMessage="VARIANT HAS NO PHOTO"
+              customMessageTransKey="ProductMessages.NoVariantPhotos"
+              onNewItemPosition={(newIndex, activeItem) =>
+                handleAction("dnd", { newIndex, activeItem })
+              }
+            />
           </div>
         </div>
-      </SheProductCard>
-    </div>
+        <div className={cs.managePhotos}>
+          <div className={`${cs.managePhotosTitle} she-title`}>
+            <span className="she-title">
+              {translate("ProductForm.Labels.OtherProductPhotos")}
+            </span>
+          </div>
+          <div className={cs.managePhotosGrid}>
+            <SheGrid
+              isLoading={isProductPhotoGridLoading}
+              enableDnd={false}
+              showHeader={false}
+              showColumnsHeader={false}
+              columns={OtherProductPhotosGridColumns(onGridAction)}
+              data={productPhotos}
+              customMessage={
+                !variantPhotos && !productPhotos
+                  ? "PRODUCT HAS NO PHOTO"
+                  : "All product photos are already attached to the variant."
+              }
+              customMessageTransKey={
+                !variantPhotos && !productPhotos
+                  ? "ProductMessages.NoPhotos"
+                  : "ProductMessages.AllPhotosAttachedToVariant"
+              }
+              gridRequestModel={productPhotos}
+            />
+          </div>
+        </div>
+      </div>
+    </SheCard>
   );
 }
