@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { merge } from "lodash";
 
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
@@ -22,7 +21,6 @@ export default function useOrderShipmentPageService(
   handleMultipleCardActions,
 ) {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const { addToast } = useToast();
   const appService = useAppService();
   const state = useAppSelector<IOrderShipmentPageSlice>(
@@ -201,6 +199,9 @@ export default function useOrderShipmentPageService(
   function connectShipmentToOrderHandler(shipmentId: number, orderId: number) {
     return connectShipmentToOrder({ shipmentId, orderId }).then((res: any) => {
       if (!res.error) {
+        dispatch(
+          actions.refreshOrderShipments([...state.orderShipments, res.data]),
+        );
         addToast({
           text: "Shipment successfully added to order",
           type: "success",
@@ -215,15 +216,42 @@ export default function useOrderShipmentPageService(
     });
   }
 
+  // function getShipmentDetailsHandler(shipmentId: number) {
+  //   handleMultipleCardActions({
+  //     shipmentConfigurationCard: true,
+  //     selectShipmentForOrderCard: false,
+  //   });
+  //   dispatch(actions.setIsShipmentDetailsCardLoading(true));
+  //   return getShipmentDetails(shipmentId).then((res: any) => {
+  //     dispatch(actions.setIsShipmentDetailsCardLoading(false));
+  //     dispatch(actions.refreshSelectedShipment(res.data));
+  //     return res;
+  //   });
+  // }
+
   function getShipmentDetailsHandler(shipmentId: number) {
     handleMultipleCardActions({
       shipmentConfigurationCard: true,
       selectShipmentForOrderCard: false,
     });
+
     dispatch(actions.setIsShipmentDetailsCardLoading(true));
     return getShipmentDetails(shipmentId).then((res: any) => {
       dispatch(actions.setIsShipmentDetailsCardLoading(false));
-      dispatch(actions.refreshSelectedShipment(res.data));
+
+      if (res?.data) {
+        const cleanedShipment = {
+          ...res.data,
+          orderItems:
+            res.data.orderItems?.filter(
+              (item: any) => item.orderedAmount !== 0,
+            ) || [],
+        };
+
+        dispatch(actions.refreshSelectedShipment(cleanedShipment));
+        return cleanedShipment;
+      }
+
       return res;
     });
   }
@@ -330,7 +358,7 @@ export default function useOrderShipmentPageService(
 
   function addVariantsToShipmentHandler(shipmentId: number, model: any) {
     return addVariantsToShipment({ shipmentId, model }).then((res: any) => {
-      return res.data;
+      dispatch(actions.refreshSelectedShipment(res.data));
     });
   }
 

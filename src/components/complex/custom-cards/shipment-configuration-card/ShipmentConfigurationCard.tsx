@@ -230,30 +230,31 @@ export default function ShipmentConfigurationCard({
             }
             data={shipment?.orders}
           />
-
-          <Separator />
-          <div className={cs.shipmentProductsBlock}>
-            <span className={cs.subtitleText}>
-              {t("ShipmentForm.Labels.ProductsWaitingForShipment")}
-            </span>
-            <SheButton
-              icon={Plus}
-              value={t("SpecialText.AddAll")}
-              variant="secondary"
-              bgColor="#007AFF"
-              txtColor="#FAFAFA"
-            />
-          </div>
-          <SheGrid
-            isLoading={false}
-            showHeader={false}
-            columns={
-              orderItemsInShipmentGridColumns({
-                onAction,
-              }) as ColumnDef<DataWithId>[]
-            }
-            data={shipment?.orderItems}
-          />
+          {shipment?.orderItems?.length > 0 && (
+            <>
+              <Separator />
+              <div className={cs.shipmentProductsBlock}>
+                <span className={cs.subtitleText}>
+                  {t("ShipmentForm.Labels.ProductsWaitingForShipment")}
+                </span>
+                <SheButton
+                  icon={Plus}
+                  value={t("SpecialText.AddAll")}
+                  variant="info"
+                />
+              </div>
+              <SheGrid
+                isLoading={false}
+                showHeader={false}
+                columns={
+                  orderItemsInShipmentGridColumns({
+                    onAction,
+                  }) as ColumnDef<DataWithId>[]
+                }
+                data={shipment?.orderItems}
+              />
+            </>
+          )}
           {shipment?.shipmentItems && (
             <>
               <Separator />

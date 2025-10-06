@@ -49,7 +49,7 @@ export default function ProductsInOrderForm<T>({
   function handleFormSubmit(formData: ProductsInOrderFormData) {
     onSubmit({
       priceBrutto: Number(formData.stockDocumentPrice.brutto),
-      quantity: Number(formData.unitsAmount),
+      unitsAmount: Number(formData.unitsAmount),
     } as T);
   }
 
@@ -91,7 +91,7 @@ export default function ProductsInOrderForm<T>({
           <div className={cs.formItem}>
             <span>Quantity</span>
             <SheFormField
-              name="quantity"
+              name="unitsAmount"
               className={cs.inputFormItem}
               render={({ field }): React.ReactElement => (
                 <SheInput

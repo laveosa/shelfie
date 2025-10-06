@@ -63,10 +63,6 @@ export function OrderProductsPage() {
     service.getOrderStockActionsListForGrid(orderId);
   }, [orderId]);
 
-  useEffect(() => {
-    service.getVariantDetailsHandler(2);
-  }, [orderId]);
-
   // ==================================================================== EVENT HANDLERS
   async function onAction(actionType: string, payload?: any) {
     switch (actionType) {

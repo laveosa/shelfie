@@ -1,15 +1,16 @@
-import { ColumnDef, Row } from "@tanstack/react-table";
+import { ColumnDef } from "@tanstack/react-table";
 import { ImageIcon, PackagePlus } from "lucide-react";
 
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import QuantityInputCell from "@/components/complex/grid/custom-grids/find-product-grid/QuantityInputCell.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import cs from "./OrderItemsInShipment.module.scss";
 
 export function orderItemsInShipmentGridColumns({
   onAction,
 }: {
-  onAction: (actionType: string, row?: Row<any>, quantity?: string) => void;
+  onAction: (actionType: string, row?: any, quantity?: string) => void;
 }): ColumnDef<any>[] {
   return [
     {
@@ -18,25 +19,27 @@ export function orderItemsInShipmentGridColumns({
       header: "Product",
       minSize: 120,
       cell: ({ row }) => {
-        const image: string = row.original.photo;
+        const image: string = row.original.photo?.thumbnailUrl;
         return (
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <div>
+          <div className={cs.variantNameCell}>
+            <div className={cs.imageBlock}>
               {image ? (
                 <img
                   src={image}
                   alt={row.original.variantName || "Variant"}
-                  className="object-cover rounded-md w-12 h-12"
+                  className={cs.variantPhoto}
                 />
               ) : (
-                <SheIcon icon={ImageIcon} maxWidth="30px" />
+                <div className={cs.iconContainer}>
+                  <SheIcon icon={ImageIcon} maxWidth="30px" />
+                </div>
               )}
             </div>
             <div>
               <SheTooltip
                 delayDuration={200}
                 text={row.getValue("variantName")}
-                className="max-w-[80px] overflow-hidden text-ellipsis whitespace-nowrap"
+                className={cs.variantName}
               >
                 <span>{row.getValue("variantName")}</span>
               </SheTooltip>
@@ -47,7 +50,7 @@ export function orderItemsInShipmentGridColumns({
     },
     {
       accessorKey: "traitOptions",
-      header: "Details",
+      header: "Traits",
       minSize: 100,
       maxSize: 100,
       cell: ({ row }) => {
@@ -61,27 +64,13 @@ export function orderItemsInShipmentGridColumns({
         );
 
         return (
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "10px",
-              maxWidth: "50px",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",
-              verticalAlign: "middle",
-            }}
-          >
+          <div className={cs.traitOptionsCell}>
             {colorOptions.map((colorOpt, index) => (
               <div
                 key={`color-${index}`}
+                className={cs.colorOptions}
                 style={{
                   background: colorOpt.optionColor,
-                  minWidth: "20px",
-                  minHeight: "20px",
-                  borderRadius: "50%",
-                  border: "2px solid #ccc",
                 }}
               />
             ))}
@@ -106,17 +95,15 @@ export function orderItemsInShipmentGridColumns({
     {
       accessorKey: "orderedAmount",
       header: "Qty pending",
-      minSize: 80,
-      maxSize: 80,
+      minSize: 100,
       cell: ({ row }) => {
-        return <span>{row.original.orderId}</span>;
+        return <span>{row.original.order}</span>;
       },
     },
     {
       accessorKey: "quantity",
       header: "Qty to add",
-      minSize: 80,
-      maxSize: 80,
+      minSize: 100,
       cell: ({ row }) => <QuantityInputCell row={row} />,
     },
     {
@@ -131,7 +118,12 @@ export function orderItemsInShipmentGridColumns({
               icon={PackagePlus}
               value="Add"
               variant="secondary"
-              onClick={() => onAction("addItemToShipment", row.original)}
+              onClick={() => {
+                onAction("addItemToShipment", {
+                  id: row.original.stockActionId,
+                  amount: row.original.amount,
+                });
+              }}
             />
           </div>
         );

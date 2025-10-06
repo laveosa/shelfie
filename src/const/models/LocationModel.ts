@@ -17,6 +17,7 @@ export interface LocationModel {
   isDeleted?: boolean;
   pictures?: ImageModel[];
   photos?: ImageModel[];
+  name?: string;
 }
 
 export const LocationModelDefault: LocationModel = {

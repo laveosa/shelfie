@@ -1,6 +1,8 @@
 import { useTranslation } from "react-i18next";
 import React, { useEffect } from "react";
 import { ImagePlus, Plus } from "lucide-react";
+import { isEqual } from "lodash";
+import { useWatch } from "react-hook-form";
 
 import {
   LocationModel,
@@ -21,6 +23,7 @@ import { ILocationForm } from "@/const/interfaces/forms/ILocationForm.ts";
 import locationFormScheme from "@/utils/validation/schemes/LocationFormScheme.ts";
 import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
 
 export default function LocationForm({
   isLoading,
@@ -33,9 +36,9 @@ export default function LocationForm({
 }: ILocationForm): React.ReactNode {
   const { t } = useTranslation();
   const form = useAppForm<LocationModel>({
-    mode: "onBlur",
+    mode: ReactHookFormMode.SUBMIT,
     resolver: zodResolver(locationFormScheme),
-    defaultValues: LocationModelDefault,
+    defaultValues: data || LocationModelDefault,
   });
   const slots = Array.from({ length: 6 }, (_, i) => data?.photos?.[i] || null);
 
@@ -43,13 +46,18 @@ export default function LocationForm({
     form.reset(data);
   }, [data]);
 
+  const watchedValues = useWatch({ control: form.control });
+
   useEffect(() => {
-    if (form.formState.isValid) {
-      onHandleUpData?.(form.getValues());
-    } else {
-      onHandleUpData?.(null);
-    }
-  }, [form.formState.isValid]);
+    if (!form.formState.isValid) return;
+    const handler = setTimeout(() => {
+      if (!isEqual(data, form.getValues())) {
+        onHandleUpData?.(form.getValues());
+      }
+    }, 500);
+
+    return () => clearTimeout(handler);
+  }, [watchedValues, form.formState.isValid]);
 
   // ================================================================ RENDER
 
@@ -98,7 +106,7 @@ export default function LocationForm({
         render={({ field }) => (
           <SheInput
             label={"Location Name"}
-            value={field.value}
+            value={field.value || data.name}
             fullWidth
             placeholder={"enter location name..."}
           />

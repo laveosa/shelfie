@@ -13,25 +13,8 @@ export default function LocationConfigurationCard({
   onAction,
 }: ILocationConfigurationCard) {
   // ==================================================================== EVENT HANDLERS
-  // function onUpdateLocationHandler(data: LocationModel) {
-  //   console.log("DATA", data);
-  //   const normalizedData = normalizeCompanyData(data);
-  //   const normalizedCompany = normalizeCompanyData(company);
-  //
-  //   if (!_.isEqual(normalizedData, normalizedCompany)) {
-  //     onAction("updateLocation", data);
-  //   }
-  // }
 
   // ==================================================================== PRIVATE
-  // function normalizeCompanyData(model: CompanyModel) {
-  //   return {
-  //     companyName: model.companyName || "",
-  //     countryId: model.countryId ?? null,
-  //     customerCareEmail: model.customerCareEmail || null,
-  //     nip: model.nip || null,
-  //   };
-  // }
 
   // ==================================================================== LAYOUT
 
@@ -60,7 +43,6 @@ export default function LocationConfigurationCard({
           data={location}
           countryCodes={countryCodes}
           onSubmit={(data) => onAction("createLocation", data)}
-          // onHandleUpData={(data) => onUpdateLocationHandler(data)}
           onHandleUpData={(data) => onAction("updateLocation", data)}
           onAction={onAction}
         />

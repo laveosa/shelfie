@@ -28,6 +28,7 @@ import LocationConfigurationCard from "@/components/complex/custom-cards/locatio
 import PhotosCard from "@/components/complex/custom-cards/photos-card/PhotosCard.tsx";
 import { ManageCompanyPhotosGridColumns } from "@/components/complex/grid/custom-grids/manage-company-photos-grid/ManageCompanyPhotosGridColumns.tsx";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
+import { ManageLocationPhotosGridColumns } from "@/components/complex/grid/custom-grids/manage-location-photos-grid/ManageLocationPhotosGridColumns.tsx";
 
 export function ManageVariantsPage() {
   // ==================================================================== UTILITIES
@@ -433,7 +434,7 @@ export function ManageVariantsPage() {
               noDataText="LOCATION HAS NO PHOTOS"
               showCloseButton
               columns={
-                ManageCompanyPhotosGridColumns({
+                ManageLocationPhotosGridColumns({
                   onAction,
                 }) as ColumnDef<DataWithId>[]
               }

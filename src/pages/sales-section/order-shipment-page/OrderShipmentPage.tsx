@@ -125,8 +125,8 @@ export function OrderShipmentPage() {
           {
             items: [
               {
-                stockActionId: payload.stockActionId,
-                quantity: payload.quantity,
+                stockActionId: payload.id,
+                quantity: payload.amount,
               },
             ],
           },

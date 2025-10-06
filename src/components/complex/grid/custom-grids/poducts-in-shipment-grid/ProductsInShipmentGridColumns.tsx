@@ -10,7 +10,7 @@ export const ProductsInShipmentGridColumns: ColumnDef<any>[] = [
     header: "Product",
     minSize: 100,
     cell: ({ row }) => {
-      const image: string = row.original.photo;
+      const image: string = row.original.photo?.thumbnailUrl;
       return (
         <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
           <div>

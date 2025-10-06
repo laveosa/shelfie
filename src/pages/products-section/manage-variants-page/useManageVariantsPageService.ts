@@ -670,9 +670,15 @@ export default function useManageVariantsPageService(handleCardAction) {
         break;
       case "Location":
         changePositionOfLocationPhoto({
-          locationId: state.managedlocation.locationId,
+          locationId: state.managedLocation.locationId,
           photoId: model.activeItem.photoId,
           index: model.newIndex,
+        }).then((res) => {
+          if (!res.error) {
+            getCompanyDetails(state.managedCompany.companyId).then((res) => {
+              dispatch(actions.refreshManagedCompany(res.data));
+            });
+          }
         });
         break;
       default:
@@ -1436,7 +1442,6 @@ export default function useManageVariantsPageService(handleCardAction) {
   }
 
   function uploadPhotoHandler(model: UploadPhotoModel) {
-    console.log("MODEL", model);
     dispatch(actions.setIsPhotoUploaderLoading(true));
     return uploadPhoto(model).then((res: any) => {
       if (res.error) {
@@ -1448,7 +1453,7 @@ export default function useManageVariantsPageService(handleCardAction) {
       }
       if (res.data.photoId) {
         dispatch(actions.setIsPhotoUploaderLoading(false));
-        if (model.contextName === "company") {
+        if (model.contextName === "Company") {
           dispatch(actions.setIsSuppliersGridLoading(true));
           getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
             (res) => {
@@ -1566,14 +1571,14 @@ export default function useManageVariantsPageService(handleCardAction) {
   }
 
   async function deleteLocationPhotoHandler(model: ImageModel) {
-    const confirmedDeleteCompanyPhoto = await openConfirmationDialog({
+    const confirmedDeleteLocationPhoto = await openConfirmationDialog({
       headerTitle: "Deleting location photo",
       text: "You are about to delete location photo.",
       primaryButtonValue: "Delete",
       secondaryButtonValue: "Cancel",
     });
 
-    if (!confirmedDeleteCompanyPhoto) return;
+    if (!confirmedDeleteLocationPhoto) return;
     deletePhoto(model.photoId).then((res: any) => {
       const updatedPhotos = state.managedLocation.photos.filter(
         (photo) => photo.photoId !== model.photoId,
@@ -1584,20 +1589,6 @@ export default function useManageVariantsPageService(handleCardAction) {
           photos: updatedPhotos,
         }),
       );
-      // dispatch(actions.setIsLocationsGridLoading(true));
-      // getListOfCompaniesForGrid(state.companiesGridRequestModel).then((res) => {
-      //   dispatch(actions.setIsLocationsGridLoading(false));
-      //   const modifiedList = res.data.items.map((item) => ({
-      //     ...item,
-      //     isSelected: item.companyId === state.selectedCompany?.companyId,
-      //   }));
-      //   dispatch(
-      //     actions.refreshCompaniesGridRequestModel({
-      //       ...res.data,
-      //       items: modifiedList,
-      //     }),
-      //   );
-      // });
       if (!res.error) {
         addToast({
           text: "Photo deleted successfully",
