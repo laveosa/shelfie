@@ -33,8 +33,6 @@ import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 import DisposeStockCard from "@/components/complex/custom-cards/dispose-stock-card/DisposeStockCard.tsx";
 import StockHistoryCard from "@/components/complex/custom-cards/stock-history-card/StockHistoryCard.tsx";
 import ManageTraitsCard from "@/components/complex/custom-cards/manage-traits-card/ManageTraitsCard.tsx";
-import ChooseVariantTraitsCard from "@/components/complex/custom-cards/choose-variant-traits-card/ChooseVariantTraitsCard.tsx";
-import ProductTraitConfigurationCard from "@/components/complex/custom-cards/product-trait-configuration-card/ProductTraitConfigurationCard.tsx";
 import VariantPhotosCard from "@/components/complex/custom-cards/variant-photos-card/VariantPhotosCard.tsx";
 
 export function OrderProductsPage() {
@@ -120,13 +118,6 @@ export function OrderProductsPage() {
       case "disposeFromStock":
         service.disposeFromStockHandler(payload);
         break;
-      case "changeVariantPosition":
-        service.changeVariantPositionHandler(
-          state.productId,
-          payload.activeItem.variantId,
-          payload.newIndex,
-        );
-        break;
       case "uploadPhotoToVariant":
         service.uploadPhotoToVariantHandler(payload);
         break;
@@ -141,39 +132,6 @@ export function OrderProductsPage() {
         break;
       case "dndVariantPhoto":
         service.changePhotoPositionHandler(payload);
-        break;
-      case "addTrait":
-        service.addTraitHandler();
-        break;
-      case "manageTrait":
-        service.manageTraitHandler(payload);
-        break;
-      case "createTrait":
-        service.createTraitHandler(payload);
-        break;
-      case "updateTrait":
-        service.updateTraitHandler(payload);
-        break;
-      case "setProductTraits":
-        service.setProductTraitsHandler(payload);
-        break;
-      case "deleteTrait":
-        service.deleteTraitHandler(payload);
-        break;
-      case "addOption":
-        service.addOptionHandler();
-        break;
-      case "updateOption":
-        service.updateOptionHandler(payload);
-        break;
-      case "deleteOption":
-        service.deleteOptionHandler(payload);
-        break;
-      case "dndTraitOption":
-        service.dndTraitOptionHandler(payload);
-        break;
-      case "openChooseVariantTraitsCard":
-        service.openChooseVariantTraitsCardHandler();
         break;
       case "openAddStockCard":
         service.openAddStockCardHandler();
@@ -267,9 +225,6 @@ export function OrderProductsPage() {
         break;
       case "createPurchase":
         service.createPurchaseForSupplierHandler(payload);
-        break;
-      case "closeProductTraitConfigurationCard":
-        service.closeProductTraitConfigurationCardHandler();
         break;
       case "closeVariantPhotosCard":
         service.closeVariantPhotosCardHandler();
@@ -475,34 +430,6 @@ export function OrderProductsPage() {
               onSecondaryButtonClick={() =>
                 handleCardAction("manageTraitsCard")
               }
-            />
-          </div>
-        )}
-        {state.activeCards.includes("chooseVariantTraitsCard") && (
-          <div ref={createRefCallback("chooseVariantTraitsCard")}>
-            <ChooseVariantTraitsCard
-              isLoading={state.isChooseVariantTraitsCardLoading}
-              items={state.traits}
-              selectedItems={state.listOfTraitsWithOptionsForProduct}
-              onAction={onAction}
-              onSecondaryButtonClick={() =>
-                handleCardAction("chooseVariantTraitsCard")
-              }
-            />
-          </div>
-        )}
-        {state.activeCards.includes("productTraitConfigurationCard") && (
-          <div ref={createRefCallback("productTraitConfigurationCard")}>
-            <ProductTraitConfigurationCard
-              isLoading={state.isProductTraitConfigurationCardLoading}
-              isGridLoading={state.isTraitOptionsGridLoading}
-              data={state.colorOptionsGridRequestModel}
-              selectedTrait={state.selectedTrait}
-              typesOfTraits={state.typesOfTraits}
-              onSecondaryButtonClick={() =>
-                handleCardAction("productTraitConfigurationCard")
-              }
-              onAction={onAction}
             />
           </div>
         )}

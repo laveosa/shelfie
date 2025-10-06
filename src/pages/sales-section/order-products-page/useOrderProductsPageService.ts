@@ -22,7 +22,6 @@ import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
 import { addGridRowColor, formatDate } from "@/utils/helpers/quick-helper.ts";
 import { GridRowsColorsEnum } from "@/const/enums/GridRowsColorsEnum.ts";
 import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
-import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 import { CompanyModel } from "@/const/models/CompanyModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
@@ -53,8 +52,6 @@ export default function useOrderProductsPageService(
     OrdersApiHooks.useUpdateStockActionInOrderMutation();
   const [removeStockActionFromOrder] =
     OrdersApiHooks.useRemoveStockActionFromOrderMutation();
-  const [changeVariantPosition] =
-    ProductsApiHooks.useChangeVariantPositionMutation();
   const [generateProductCode] =
     ProductsApiHooks.useLazyGenerateProductCodeQuery();
   const [deletePhoto] = AssetsApiHooks.useDeletePhotoMutation();
@@ -95,25 +92,6 @@ export default function useOrderProductsPageService(
   const [detachVariantPhoto] = ProductsApiHooks.useDetachVariantPhotoMutation();
   const [changePhotoPositionForVariant] =
     ProductsApiHooks.useChangePhotoPositionForVariantMutation();
-  const [getListOfTypesOfTraits] =
-    DictionaryApiHooks.useLazyGetListOfTypesOfTraitsQuery();
-  const [getTrait] = ProductsApiHooks.useLazyGetTraitQuery();
-  const [getOptionsForTrait] =
-    ProductsApiHooks.useLazyGetOptionsForTraitQuery();
-  const [createNewTrait] = ProductsApiHooks.useCreateNewTraitMutation();
-  const [getListOfAllTraits] =
-    ProductsApiHooks.useLazyGetListOfAllTraitsQuery();
-  const [updateTrait] = ProductsApiHooks.useUpdateTraitMutation();
-  const [setProductTraits] = ProductsApiHooks.useSetProductTraitsMutation();
-  const [deleteTrait] = ProductsApiHooks.useDeleteTraitMutation();
-  const [createNewOptionForTrait] =
-    ProductsApiHooks.useCreateNewOptionForTraitMutation();
-  const [updateOptionsForTrait] =
-    ProductsApiHooks.useUpdateOptionOfTraitMutation();
-  const [deleteOptionsForTrait] =
-    ProductsApiHooks.useDeleteOptionOfTraitMutation();
-  const [changePositionOfTraitOption] =
-    ProductsApiHooks.useChangePositionOfTraitOptionMutation();
   const [getCurrenciesList] =
     DictionaryApiHooks.useLazyGetCurrenciesListQuery();
   const [getVariantStockHistory] =
@@ -248,16 +226,6 @@ export default function useOrderProductsPageService(
     });
   }
 
-  function changeVariantPositionHandler(productId, variantId, index) {
-    return changeVariantPosition({
-      productId,
-      variantId,
-      index,
-    }).then((res: any) => {
-      return res.data;
-    });
-  }
-
   function deletePhotoHandler(photoId) {
     return deletePhoto(photoId).then((res: any) => {
       return res.data;
@@ -301,59 +269,6 @@ export default function useOrderProductsPageService(
 
   function detachVariantPhotoHandler(id, photoId) {
     return detachVariantPhoto({ id, photoId }).then((res: any) => {
-      return res;
-    });
-  }
-
-  function getListOfTypesOfTraitsHandler() {
-    return getListOfTypesOfTraits(undefined).then((res: any) => {
-      dispatch(actions.refreshTypesOfTraits(res.data));
-      return res.data;
-    });
-  }
-
-  function getTraitHandler(id: number) {
-    return getTrait(id).then((res: any) => {
-      return res.data;
-    });
-  }
-
-  function getOptionsForTraitHandler(id) {
-    return getOptionsForTrait(id).then((res: any) => {
-      return res.data;
-    });
-  }
-
-  function updateTraitsHandler(id, model) {
-    return updateTrait({ id, model }).then((res: any) => {
-      return res.data;
-    });
-  }
-
-  function setProductsTraitsHandler(id, model) {
-    return setProductTraits({ id, model }).then((res: any) => {
-      return res;
-    });
-  }
-
-  function createNewOptionForTraitHandler(id, model) {
-    return createNewOptionForTrait({ id, model }).then((res: any) => {
-      return res.data;
-    });
-  }
-
-  function updateOptionsForTraitHandler(id, model) {
-    return updateOptionsForTrait({ id, model }).then((res: any) => {
-      return res.data;
-    });
-  }
-
-  function changePositionOfTraitOptionHandler(traitId, optionId, index) {
-    return changePositionOfTraitOption({
-      traitId,
-      optionId,
-      index,
-    }).then((res: any) => {
       return res;
     });
   }
@@ -490,13 +405,6 @@ export default function useOrderProductsPageService(
       photoId,
       index,
     }).then((res: any) => {
-      return res.data;
-    });
-  }
-
-  function getListOfAllTraitsHandler() {
-    return getListOfAllTraits(undefined).then((res: any) => {
-      dispatch(actions.refreshTraits(res.data));
       return res.data;
     });
   }
@@ -714,267 +622,6 @@ export default function useOrderProductsPageService(
     });
   }
 
-  function addTraitHandler() {
-    dispatch(actions.setIsProductTraitConfigurationCardLoading(true));
-    dispatch(actions.resetSelectedTrait());
-    getListOfTypesOfTraitsHandler().then((res) => {
-      dispatch(actions.setIsProductTraitConfigurationCardLoading(false));
-      dispatch(actions.refreshTypesOfTraits(res));
-      handleCardAction("productTraitConfigurationCard", true);
-      dispatch(actions.refreshSelectedTrait({}));
-    });
-  }
-
-  function manageTraitHandler(model) {
-    handleCardAction("productTraitConfigurationCard", true);
-    dispatch(actions.setIsProductTraitConfigurationCardLoading(true));
-    dispatch(actions.setIsTraitOptionsGridLoading(true));
-    Promise.all([
-      getTraitHandler(model),
-      getOptionsForTraitHandler(model),
-      getListOfTypesOfTraitsHandler(),
-    ]).then(([trait, options, types]) => {
-      dispatch(actions.setIsProductTraitConfigurationCardLoading(false));
-      dispatch(actions.setIsTraitOptionsGridLoading(false));
-      dispatch(actions.refreshSelectedTrait(trait));
-      dispatch(
-        actions.refreshColorOptionsGridRequestModel({
-          ...state.colorOptionsGridRequestModel,
-          items: options.filter((option) => !option.isDeleted),
-        }),
-      );
-      dispatch(actions.refreshTypesOfTraits(types));
-    });
-  }
-
-  function createTraitHandler(model) {
-    dispatch(actions.setIsProductTraitConfigurationCardLoading(true));
-    createNewTrait(model).then((res: any) => {
-      dispatch(actions.setIsProductTraitConfigurationCardLoading(false));
-      if (res) {
-        dispatch(actions.refreshSelectedTrait(res));
-        getOptionsForTraitHandler(res.data.traitId).then((res) => {
-          dispatch(
-            actions.refreshColorOptionsGridRequestModel({
-              ...state.colorOptionsGridRequestModel,
-              items: res.filter((option) => !option.isDeleted),
-            }),
-          );
-        });
-        getListOfAllTraitsHandler().then((res) => {
-          dispatch(actions.refreshTraits(res));
-        });
-        addToast({
-          text: "Trait created successfully",
-          type: "success",
-        });
-      } else {
-        addToast({
-          text: "Trait not created",
-          description: res.error.message,
-          type: "error",
-        });
-      }
-    });
-  }
-
-  function updateTraitHandler(model) {
-    dispatch(actions.setIsProductTraitConfigurationCardLoading(true));
-    updateTraitsHandler(state.selectedTrait.traitId, model).then((res) => {
-      dispatch(actions.setIsProductTraitConfigurationCardLoading(false));
-      if (res) {
-        getListOfAllTraitsHandler().then((res) => {
-          dispatch(actions.refreshTraits(res));
-        });
-        addToast({
-          text: "Trait updated successfully",
-          type: "success",
-        });
-      } else {
-        addToast({
-          text: "Trait not updated",
-          description: res.error.message,
-          type: "error",
-        });
-      }
-    });
-  }
-
-  function setProductTraitsHandler(model) {
-    dispatch(actions.refreshSelectedTraitsIds(model));
-    dispatch(actions.setIsChooseVariantTraitsCardLoading(true));
-    setProductsTraitsHandler(state.productId, model).then((res) => {
-      dispatch(actions.setIsChooseVariantTraitsCardLoading(false));
-      if (res) {
-        dispatch(actions.resetActiveCards());
-        getListOfTraitsWithOptionsForProductHandler(state.productId).then(
-          (res) => {
-            dispatch(actions.refreshListOfTraitsWithOptionsForProduct(res));
-          },
-        );
-        addToast({
-          text: "Traits set successfully",
-          type: "success",
-        });
-      } else {
-        addToast({
-          text: "Traits not set",
-          description: res.error.message,
-          type: "error",
-        });
-      }
-    });
-  }
-
-  async function deleteTraitHandler(model) {
-    const confirmedTraitDeleting = await openConfirmationDialog({
-      headerTitle: "Deleting trait",
-      text: `You are about to remove the trait ${model.traitName}. All products connected to it will loose the configuration and will require your attention to map it to the new trait.`,
-      primaryButtonValue: "Delete",
-      secondaryButtonValue: "Cancel",
-    });
-
-    if (!confirmedTraitDeleting) return;
-
-    dispatch(actions.setIsChooseVariantTraitsCardLoading(true));
-
-    try {
-      await deleteTrait(model.traitId);
-
-      const [traitsWithOptions, allTraits] = await Promise.all([
-        getListOfTraitsWithOptionsForProductHandler(state.productId),
-        getListOfAllTraitsHandler(),
-      ]);
-      dispatch(
-        actions.refreshListOfTraitsWithOptionsForProduct(traitsWithOptions),
-      );
-      dispatch(actions.refreshTraits(allTraits));
-
-      addToast({
-        text: "Trait deleted successfully",
-        type: "success",
-      });
-    } catch (error: any) {
-      addToast({
-        text: error.message || "Failed to delete trait",
-        type: "error",
-      });
-    } finally {
-      dispatch(actions.setIsChooseVariantTraitsCardLoading(false));
-      handleCardAction("productTraitConfigurationCard");
-    }
-  }
-
-  function addOptionHandler() {
-    createNewOptionForTraitHandler(state.selectedTrait.traitId, {}).then(
-      (res) => {
-        if (res) {
-          getListOfAllTraitsHandler().then((res) => {
-            dispatch(actions.refreshTraits(res));
-          });
-          dispatch(
-            actions.refreshColorOptionsGridRequestModel({
-              ...state.colorOptionsGridRequestModel,
-              items: [...state.colorOptionsGridRequestModel.items, res],
-            }),
-          );
-          addToast({
-            text: "Option created successfully",
-            type: "success",
-          });
-        } else {
-          addToast({
-            text: "Option not created",
-            description: res.error.message,
-            type: "error",
-          });
-        }
-      },
-    );
-  }
-
-  function updateOptionHandler(model) {
-    updateOptionsForTraitHandler(model.optionId, model.updatedModel).then(
-      (res) => {
-        if (res) {
-          dispatch(
-            actions.refreshColorOptionsGridRequestModel({
-              ...state.colorOptionsGridRequestModel,
-              items: state.colorOptionsGridRequestModel.items.map((item) =>
-                item.optionId === res.optionId ? res : item,
-              ),
-            }),
-          );
-          addToast({
-            text: "Option updated successfully",
-            type: "success",
-          });
-        } else {
-          addToast({
-            text: "Option not updated",
-            description: res.error.message,
-            type: "error",
-          });
-        }
-      },
-    );
-  }
-
-  async function deleteOptionHandler(model: TraitOptionModel) {
-    const confirmedOptionDeleting = await openConfirmationDialog({
-      headerTitle: "Deleting option",
-      text: `You are about to remove the option ${model.optionName}.`,
-      primaryButtonValue: "Delete",
-      secondaryButtonValue: "Cancel",
-    });
-
-    if (!confirmedOptionDeleting) return;
-
-    deleteOptionsForTrait({ id: model.optionId }).then((res: any) => {
-      if (!res.error) {
-        getListOfAllTraitsHandler().then((res) => {
-          dispatch(actions.refreshTraits(res));
-        });
-
-        dispatch(
-          actions.refreshColorOptionsGridRequestModel({
-            ...state.colorOptionsGridRequestModel,
-            items: state.colorOptionsGridRequestModel.items.filter(
-              (option) => option.optionId !== model.optionId,
-            ),
-          }),
-        );
-
-        addToast({
-          text: "Option deleted successfully",
-          type: "success",
-        });
-      } else {
-        addToast({
-          text: res.error?.message,
-          type: "error",
-        });
-      }
-    });
-  }
-
-  function dndTraitOptionHandler(model) {
-    changePositionOfTraitOptionHandler(
-      model.selectedTrait.traitId,
-      model.activeItem.optionId,
-      model.newIndex,
-    );
-  }
-
-  function openChooseVariantTraitsCardHandler() {
-    dispatch(actions.setIsChooseVariantTraitsCardLoading(true));
-    getListOfAllTraitsHandler().then((res) => {
-      dispatch(actions.setIsChooseVariantTraitsCardLoading(false));
-      dispatch(actions.refreshTraits(res));
-    });
-    handleCardAction("chooseVariantTraitsCard", true);
-  }
-
   function openAddStockCardHandler() {
     handleMultipleCardActions({
       findProductsCard: false,
@@ -1012,6 +659,7 @@ export default function useOrderProductsPageService(
 
   function openManageTraitsCardHandler() {
     handleCardAction("manageTraitsCard", true);
+    getListOfTraitsWithOptionsForProductHandler(state.productId);
   }
 
   function openVariantPhotosCardHandler(model) {
@@ -1532,7 +1180,6 @@ export default function useOrderProductsPageService(
     removeStockActionFromOrderHandler,
     manageProductHandler,
     generateProductCodeHandler,
-    changeVariantPositionHandler,
     deletePhotoHandler,
     getVariantDetailsHandler,
     getListOfTraitsWithOptionsForProductHandler,
@@ -1547,17 +1194,6 @@ export default function useOrderProductsPageService(
     addPhotoToVariantHandler,
     detachPhotoFromVariantHandler,
     changePhotoPositionHandler,
-    addTraitHandler,
-    manageTraitHandler,
-    createTraitHandler,
-    updateTraitHandler,
-    setProductTraitsHandler,
-    deleteTraitHandler,
-    addOptionHandler,
-    updateOptionHandler,
-    deleteOptionHandler,
-    dndTraitOptionHandler,
-    openChooseVariantTraitsCardHandler,
     openAddStockCardHandler,
     openDisposeStockCardHandler,
     openVariantHistoryCardHandler,

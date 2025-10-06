@@ -37,10 +37,7 @@ export default function LocationForm({
     resolver: zodResolver(locationFormScheme),
     defaultValues: LocationModelDefault,
   });
-  const slots = Array.from(
-    { length: 6 },
-    (_, i) => data?.pictures?.[i] || null,
-  );
+  const slots = Array.from({ length: 6 }, (_, i) => data?.photos?.[i] || null);
 
   useEffect(() => {
     form.reset(data);
@@ -107,33 +104,31 @@ export default function LocationForm({
           />
         )}
       />
-      {data?.pictures && (
-        <div className={cs.locationFormImageBlock}>
-          <div className={cs.ImageBlockTitle}>
-            <span className="she-title">Location Photos</span>
-            <SheButton
-              image={ImagePlus}
-              value="Manage Photos"
-              onClick={() => onAction("manageLocationPhotos")}
-            />
-          </div>
-          <div className={cs.imagesBlockGrid}>
-            {slots.map((img, index) => (
-              <div key={index} className={cs.imagesBlockGridItem}>
-                {img ? (
-                  <img
-                    src={img.thumbnailUrl}
-                    alt={`image-${index}`}
-                    className={cs.image}
-                  />
-                ) : (
-                  <div></div>
-                )}
-              </div>
-            ))}
-          </div>
+      <div className={cs.locationFormImageBlock}>
+        <div className={cs.imageBlockTitle}>
+          <span className="she-title">Location Photos</span>
+          <SheButton
+            image={ImagePlus}
+            value="Manage Photos"
+            onClick={() => onAction("manageLocationPhotos")}
+          />
         </div>
-      )}
+        <div className={cs.imagesBlockGrid}>
+          {slots.map((img, index) => (
+            <div key={index} className={cs.imagesBlockGridItem}>
+              {img ? (
+                <img
+                  src={img.thumbnailUrl}
+                  alt={`image-${index}`}
+                  className={cs.image}
+                />
+              ) : (
+                <div></div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
       <SheFormField
         name="addressLine1"
         render={({ field }) => (
