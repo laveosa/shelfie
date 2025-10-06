@@ -1,9 +1,7 @@
-import { Trash2 } from "lucide-react";
 import React from "react";
-import { useTranslation } from "react-i18next";
 
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./SupplierConfigurationCard.module.scss";
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
 import CreateSupplierForm from "@/components/forms/create-supplier-form/CreateSupplierForm.tsx";
 import { ICreateSupplierCard } from "@/const/interfaces/complex-components/custom-cards/ICreateSupplierCard.ts";
 
@@ -15,8 +13,7 @@ export default function SupplierConfigurationCard({
   managedSupplier,
   onAction,
 }: ICreateSupplierCard) {
-  const { t } = useTranslation();
-
+  // ==================================================================== EVENT HANDLER
   function onDeletePhoto(_actionType, table) {
     onAction("deleteSupplierPhoto", table);
   }
@@ -25,26 +22,25 @@ export default function SupplierConfigurationCard({
     onAction("dndSupplierPhoto", data);
   }
 
+  // ==================================================================== LAYOUT
   return (
-    <SheProductCard
-      loading={isLoading}
+    <SheCard
       className={cs.supplierConfigurationCard}
-      title={
+      title={managedSupplier ? "Manage Supplier" : "Create Supplier"}
+      titleTransKey={
         managedSupplier
-          ? t("CardTitles.ManageSupplier")
-          : t("CardTitles.CreateSupplier")
+          ? "CardTitles.ManageSupplier"
+          : "CardTitles.CreateSupplier"
       }
       showCloseButton
+      showFooter
+      isLoading={isLoading}
       showNotificationCard={!!managedSupplier}
       notificationCardProps={{
         title: "Delete Supplier",
         titleTransKey: "CardTitles.DeleteSupplier",
         text: "This variant will be deleted, it will no longer be available for sale but you will still see it in the orders where it sold",
         textTransKey: "ConfirmationMessages.DeleteVariant",
-        buttonText: "Delete",
-        buttonTextTransKey: "CommonButtons.Delete",
-        buttonColor: "#FF0000",
-        buttonIcon: Trash2,
         onClick: () => onAction("deleteSupplier", managedSupplier),
       }}
       onSecondaryButtonClick={() => onAction("closeSupplierConfigurationCard")}
@@ -60,15 +56,15 @@ export default function SupplierConfigurationCard({
           photos={managedSupplier?.photos}
           onDndPhoto={onDndPhoto}
           onDeletePhoto={onDeletePhoto}
+          onImageUpload={(data) => onAction("uploadSupplierPhoto", data)}
+          onCancel={() => onAction("closeSupplierConfigurationCard")}
           onSubmit={(data) => {
             managedSupplier
               ? onAction("updateSupplier", data)
               : onAction("createSupplier", data);
           }}
-          onImageUpload={(data) => onAction("uploadSupplierPhoto", data)}
-          onCancel={() => onAction("closeSupplierConfigurationCard")}
         />
       </div>
-    </SheProductCard>
+    </SheCard>
   );
 }
