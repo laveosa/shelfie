@@ -1,24 +1,24 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+
 import {
   CalendarRange,
   CogIcon,
   ImageIcon,
   Plus,
   RefreshCcwDotIcon,
-  Trash2,
 } from "lucide-react";
 
 import cs from "./SupplierCard.module.scss";
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
-import { ISupplierCard } from "@/const/interfaces/complex-components/custom-cards/ISupplierCard.ts";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-import { Separator } from "@/components/ui/separator.tsx";
 import SheTextArea from "@/components/primitive/she-textarea/SheTextarea.tsx";
+import { Separator } from "@/components/ui/separator.tsx";
+import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
+import { ISupplierCard } from "@/const/interfaces/complex-components/custom-cards/ISupplierCard.ts";
 
 export default function SupplierCard({
   isLoading,
@@ -27,37 +27,39 @@ export default function SupplierCard({
   showCloseButton,
   onAction,
 }: ISupplierCard) {
-  const { t } = useTranslation();
   const { purchaseId } = useParams();
+  // ==================================================================== STATE MANAGEMENT
   const [selectedDate, setSelectedDate] = useState<string>(
     purchaseId ? selectedPurchase?.date : null,
   );
   const [purchaseNotes, setPurchaseNotes] = useState<string>(null);
+
+  // ==================================================================== UTILITIES
+  const { translate } = useAppTranslation();
   const isDateSelected = Boolean(selectedDate || selectedPurchase?.date);
   const isButtonDisabled = !isDateSelected || !selectedSupplier;
 
+  // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     if (selectedPurchase?.date) {
       setSelectedDate(selectedPurchase.date);
     }
   }, [selectedPurchase?.date]);
 
+  // ==================================================================== LAYOUT
   return (
-    <SheProductCard
-      loading={isLoading}
+    <SheCard
       className={cs.supplierCard}
-      title={t("SectionTitles.CreatePurchase")}
+      title="Create Purchase"
+      titleTransKey="SectionTitles.CreatePurchase"
       showCloseButton={showCloseButton}
+      isLoading={isLoading}
       showNotificationCard={!!purchaseId}
       notificationCardProps={{
         title: "Delete Purchase",
         titleTransKey: "CardTitles.DeletePurchase",
         text: "The purchase will be deleted, but the changes in stock will remain intact.",
         textTransKey: "ConfirmationMessages.DeletePurchase",
-        buttonText: "Delete",
-        buttonTextTransKey: "CommonButtons.Delete",
-        buttonColor: "#FF0000",
-        buttonIcon: Trash2,
         onClick: () => onAction("deletePurchase", selectedPurchase),
       }}
       onSecondaryButtonClick={() => onAction("closeSupplierCard")}
@@ -66,14 +68,15 @@ export default function SupplierCard({
         <div className={cs.purchaseBlock}>
           <div className={cs.noSelectedSupplier}>
             <span className={`${cs.noSelectedSupplierText} she-text`}>
-              {t("PurchaseForm.Labels.SupplierSelection")}
+              {translate("PurchaseForm.Labels.SupplierSelection")}
             </span>
             <SheButton
               icon={selectedSupplier ? RefreshCcwDotIcon : Plus}
-              value={
+              value={selectedSupplier ? "Replace Supplier" : "Select Supplier"}
+              valueTransKey={
                 selectedSupplier
-                  ? t("SupplierActions.ReplaceSupplier")
-                  : t("SupplierActions.SelectSupplier")
+                  ? "SupplierActions.ReplaceSupplier"
+                  : "SupplierActions.SelectSupplier"
               }
               variant="secondary"
               maxWidth="160px"
@@ -105,7 +108,7 @@ export default function SupplierCard({
                     className={cs.supplierNameTooltip}
                   >
                     <span
-                      className={`${selectedSupplier.isDeleted === true ? cs.deletedSupplier : ""} ${cs.supplierName} she-text`}
+                      className={`${selectedSupplier.isDeleted ? cs.deletedSupplier : ""} ${cs.supplierName} she-text`}
                     >
                       {selectedSupplier?.companyName}
                     </span>
@@ -122,7 +125,7 @@ export default function SupplierCard({
                     >
                       <span
                         className={`
-                        ${selectedSupplier.isDeleted === true ? cs.deletedSupplier : ""}
+                        ${selectedSupplier.isDeleted ? cs.deletedSupplier : ""}
                         ${cs.twoLineEllipsis} she-text`}
                       >
                         {selectedSupplier?.address ||
@@ -158,15 +161,16 @@ export default function SupplierCard({
                   {/*)}*/}
                 </div>
                 <SheButton
-                  icon={selectedSupplier.isDeleted === true ? Plus : CogIcon}
-                  value={
-                    selectedSupplier.isDeleted === true
-                      ? t("CommonButtons.Restore")
-                      : t("CommonButtons.Manage")
+                  icon={selectedSupplier.isDeleted ? Plus : CogIcon}
+                  value={selectedSupplier.isDeleted ? "Restore" : "Manage"}
+                  valueTransKey={
+                    selectedSupplier.isDeleted
+                      ? "CommonButtons.Restore"
+                      : "CommonButtons.Manage"
                   }
                   variant="secondary"
                   onClick={() => {
-                    selectedSupplier.isDeleted === true
+                    selectedSupplier.isDeleted
                       ? onAction("restoreCompany", selectedSupplier)
                       : onAction("manageCompany", selectedSupplier);
                   }}
@@ -175,7 +179,7 @@ export default function SupplierCard({
               {selectedSupplier.isDeleted && (
                 <div className={cs.deletedSupplierBlock}>
                   <span className={`${cs.deletedSupplierText} she-text`}>
-                    {t("MarginMessages.SupplierIsDeleted")}
+                    {translate("MarginMessages.SupplierIsDeleted")}
                   </span>
                 </div>
               )}
@@ -183,33 +187,38 @@ export default function SupplierCard({
           )}
           <Separator />
           <span className="she-title">
-            {t("PurchaseForm.Labels.PurchaseDateTitle")}
+            {translate("PurchaseForm.Labels.PurchaseDateTitle")}
           </span>
           <SheDatePicker
+            date={selectedPurchase?.date}
+            label="Purchase Date"
+            labelTransKey="PurchaseForm.Labels.PurchaseDate"
             icon={CalendarRange}
             fullWidth
-            label={t("PurchaseForm.Labels.PurchaseDate")}
-            date={selectedPurchase?.date}
             onSelectDate={(date) => setSelectedDate(date)}
           />
           <SheTextArea
-            fullWidth
-            label={t("PurchaseForm.Labels.PurchaseNotes")}
-            placeholder={t("PurchaseForm.Placeholders.PurchaseNotes")}
             value={selectedPurchase?.documentNotes || null}
+            label="Purchase notes"
+            labelTransKey="PurchaseForm.Labels.PurchaseNotes"
+            placeholder="Type your notes here..."
+            placeholderTransKey="PurchaseForm.Placeholders.PurchaseNotes"
+            fullWidth
             onDelay={(value: string) => setPurchaseNotes(value)}
           />
           <div className={cs.purchaseButtonBlock}>
             <SheButton
+              value="Cancel"
+              valueTransKey="CommonButtons.Cancel"
               variant={"secondary"}
-              value={t("CommonButtons.Cancel")}
               onClick={() => onAction("closeSupplierCard")}
             />
             <SheButton
-              value={
+              value={!selectedPurchase?.purchaseId ? "Create Purchase" : "Save"}
+              valueTransKey={
                 !selectedPurchase?.purchaseId
-                  ? "Create Purchase"
-                  : t("CommonButtons.Save")
+                  ? "CommonButtons.CreatePurchase"
+                  : "CommonButtons.Save"
               }
               icon={!selectedPurchase?.purchaseId && Plus}
               txtColor={!selectedPurchase?.purchaseId && "#fff"}
@@ -233,6 +242,6 @@ export default function SupplierCard({
           </div>
         </div>
       </div>
-    </SheProductCard>
+    </SheCard>
   );
 }

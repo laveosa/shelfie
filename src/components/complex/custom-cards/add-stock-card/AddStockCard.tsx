@@ -1,14 +1,17 @@
 import { useTranslation } from "react-i18next";
 import { ImageIcon, Link2, Plus, RefreshCcw } from "lucide-react";
 import React, { useState } from "react";
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
+import SheProductCard
+  from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./AddStockCard.module.scss";
-import { IAddStockCard } from "@/const/interfaces/complex-components/custom-cards/IAddStockCard.ts";
 import { Separator } from "@/components/ui/separator.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-import { formatDate } from "@/utils/helpers/quick-helper.ts";
 import AddStockForm from "@/components/forms/add-stock-form/AddStockForm.tsx";
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
+import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
+import { formatDate } from "@/utils/helpers/quick-helper.ts";
+import { IAddStockCard } from "@/const/interfaces/complex-components/custom-cards/IAddStockCard.ts";
 
 export default function AddStockCard({
   isLoading,
@@ -19,10 +22,12 @@ export default function AddStockCard({
   currencyTypes,
   ...props
 }: IAddStockCard) {
-  const { t } = useTranslation();
+  // ==================================================================== UTILITIES
+  const { translate } = useAppTranslation();
   const [addStockFormData, setAddStockFormData] = useState<any>(undefined);
 
-  function onSubmit() {
+  // ==================================================================== EVENT HANDLERS
+  function onSubmitHandler() {
     const formattedData = {
       priceModel: {
         variantId: variant.variantId,
@@ -36,14 +41,15 @@ export default function AddStockCard({
     onAction("increaseStockAmount", formattedData);
   }
 
+  // ==================================================================== LAYOUT
   return (
-    <SheProductCard
-      loading={isLoading}
-      title={`${t("StockActions.AddToStock")} ${variant?.variantName} ${t("SectionTitles.Product")}`}
-      onSecondaryButtonClick={() => onAction("closeAddStockCard")}
-      showCloseButton
-      width="411px"
+    <SheCard
       className={cs.addStockCard}
+      title={`${translate("StockActions.AddToStock")} ${variant?.variantName} ${translate("SectionTitles.Product")}`}
+      width="411px"
+      isLoading={isLoading}
+      showCloseButton
+      onSecondaryButtonClick={() => onAction("closeAddStockCard")}
       {...props}
     >
       <div className={cs.addStockCardContent}>
@@ -108,15 +114,9 @@ export default function AddStockCard({
               </span>
               <Separator />
               <div className={cs.connectedPurchaseProductsSummaryHeaders}>
-                <span className={cs.connectedPurchaseProductsSummaryHeader}>
-                  Units
-                </span>
-                <span className={cs.connectedPurchaseProductsSummaryHeader}>
-                  Expense
-                </span>
-                <span className={cs.connectedPurchaseProductsSummaryHeader}>
-                  Projected value
-                </span>
+                <span>Units</span>
+                <span>Expense</span>
+                <span>Projected value</span>
               </div>
               <Separator />
               <div className={cs.connectedPurchaseProductsSummaryInfo}>
@@ -167,10 +167,10 @@ export default function AddStockCard({
             icon={Plus}
             value="Add to Stock"
             disabled={!purchase || !addStockFormData}
-            onClick={onSubmit}
+            onClick={onSubmitHandler}
           />
         </div>
       </div>
-    </SheProductCard>
+    </SheCard>
   );
 }

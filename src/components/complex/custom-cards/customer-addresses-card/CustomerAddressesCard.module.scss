@@ -1,12 +1,12 @@
 .customerAddressesCard {
+  .customerAddressesCardHeader {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
 
-    .customerAddressesCardHeader {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 10px;
-        .headerButtonBlock {
-          display: flex;
-          gap: 10px;
-        }
-      }
+    .headerButtonBlock {
+      display: flex;
+      gap: 10px;
+    }
+  }
 }

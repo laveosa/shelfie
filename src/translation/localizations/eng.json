@@ -188,7 +188,7 @@
       "ProductName": "enter product name...",
       "ProductCode": "enter product code...",
       "ProductBarcode": "enter product barcode...",
-      "AttributeName": "Enter attribute name",
+      "AttributeName": "enter attribute name...",
       "BrandName": "enter brand name...",
       "CategoryName": "enter category name...",
       "CountryOfOrigin": "select country of origin...",
@@ -268,7 +268,8 @@
     "Clear": "Clear",
     "SaveChanges": "Save Changes",
     "Restore": "Restore",
-    "History": "History"
+    "History": "History",
+    "CreatePurchase": "Create Purchase"
   },
   "ProductActions": {
     "AddProduct": "Add Product",
@@ -403,7 +404,7 @@
     "BasicProductData": "Basic Product Data",
     "CreateProduct": "Create Product",
     "CreateProductTrait": "Create product trait",
-    "ManageTrait": "Manage: ",
+    "ManageTrait": "Manage: {{traitName}}",
     "ManagePurchases": "Manage Purchases",
     "SelectEntity": "Select {{entityName}}",
     "SelectShipmentForOrder": "Select shipment for order",
@@ -558,7 +559,7 @@
       "Lost": "Lost",
       "Broken": "Broken",
       "Reason": "Reason",
-      "CurrentlyInStock": "Currently in stock: "
+      "CurrentlyInStock": "Currently in stock: {{stockAmount}}"
     }
   },
   "CustomerMenu": {
@@ -685,7 +686,7 @@
       "ShipmentAllocation": "Shipment allocation"
     },
     "Placeholders": {
-      "EnterTrackingNumber": "Enter tracking number"
+      "EnterTrackingNumber": "enter tracking number..."
     }
   },
   "ShipmentMessages": {

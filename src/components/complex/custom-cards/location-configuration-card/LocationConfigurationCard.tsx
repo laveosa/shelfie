@@ -1,4 +1,3 @@
-import { Trash2 } from "lucide-react";
 import React from "react";
 
 import cs from "./LocationConfigurationCard.module.scss";
@@ -26,13 +25,8 @@ export default function LocationConfigurationCard({
       notificationCardProps={{
         title: "Delete Location",
         text: "The location will be deleted and will no longer appear on new labels. The current labels will require an update to replace deleted location.",
-        buttonText: "Delete",
-        buttonTextTransKey: "CommonButtons.Delete",
-        buttonColor: "#FF0000",
-        buttonIcon: Trash2,
         onClick: () => onAction("deleteLocation", location),
       }}
-      showHeader
       showCloseButton
       isLoading={isLoading}
       onSecondaryButtonClick={() => onAction("closeLocationConfigurationCard")}

@@ -1,18 +1,16 @@
-import { ColumnDef } from "@tanstack/react-table";
-import { Plus, Truck } from "lucide-react";
 import React from "react";
-import { useTranslation } from "react-i18next";
 
-import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
+import { Plus, Truck } from "lucide-react";
+
 import cs from "./ShipmentDetailsCard.module.scss";
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
-import { IShipmentDetailsCard } from "@/const/interfaces/complex-components/custom-cards/IShipmentDetailsCard.ts";
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
-import { ProductsInShipmentGridColumns } from "@/components/complex/grid/custom-grids/poducts-in-shipment-grid/ProductsInShipmentGridColumns.tsx";
 import { OrderShipmentsGridColumns } from "@/components/complex/grid/custom-grids/order-shipments-grid/OrderShipmentsGridColumns.tsx";
-import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
+import { ProductsInShipmentGridColumns } from "@/components/complex/grid/custom-grids/poducts-in-shipment-grid/ProductsInShipmentGridColumns.tsx";
+import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
+import { IShipmentDetailsCard } from "@/const/interfaces/complex-components/custom-cards/IShipmentDetailsCard.ts";
 
 export default function ShipmentDetailsCard({
   isLoading,
@@ -23,40 +21,45 @@ export default function ShipmentDetailsCard({
   customer,
   onAction,
 }: IShipmentDetailsCard) {
-  const { t } = useTranslation();
+  // ==================================================================== UTILITIES
+  const { translate } = useAppTranslation();
 
+  // ==================================================================== LAYOUT
   return (
-    <SheProductCard
-      loading={isLoading}
-      title={t("CardTitles.ShipmentDetails")}
-      minWidth="660px"
+    <SheCard
       className={cs.shipmentDetailsCard}
+      title="Shipment details"
+      titleTransKey="CardTitles.ShipmentDetails"
+      isLoading={isLoading}
     >
       <div className={cs.shipmentDetailsCardContent}>
         <SheGrid
           isLoading={isProductsGridLoading}
           showHeader={false}
-          columns={ProductsInShipmentGridColumns as ColumnDef<DataWithId>[]}
+          columns={ProductsInShipmentGridColumns}
           skeletonQuantity={5}
           data={products}
-          customMessage={t("ShipmentMessages.NoItemsInShipment")}
+          customMessage="No item in shipment"
+          customMessageTransKey="ShipmentMessages.NoItemsInShipment"
         />
         <Separator />
         <div className={cs.shipmentAllocationBlock}>
           <span className="she-title">
-            {t("ShipmentForm.Labels.ShipmentAllocation")}
+            {translate("ShipmentForm.Labels.ShipmentAllocation")}
           </span>
           <div className={cs.shipmentAllocationButtonBlock}>
             <SheButton
+              value="Create Shipment"
+              valueTransKey="OrderActions.CreateShipment"
               icon={Plus}
-              value={t("OrderActions.CreateShipment")}
-              onClick={() => onAction("createShipment")}
               disabled={!customer}
+              onClick={() => onAction("createShipment")}
             />
-            <span>{t("SpecialText.Or")}</span>
+            <span>{translate("SpecialText.Or")}</span>
             <SheButton
+              value="Select Shipment"
+              valueTransKey="OrderActions.SelectShipment"
               icon={Truck}
-              value={t("OrderActions.SelectShipment")}
               variant="secondary"
               onClick={() => onAction("selectShipment")}
             />
@@ -65,14 +68,13 @@ export default function ShipmentDetailsCard({
         <SheGrid
           isLoading={isShipmentsGridLoading}
           showHeader={false}
-          columns={
-            OrderShipmentsGridColumns(onAction) as ColumnDef<DataWithId>[]
-          }
+          columns={OrderShipmentsGridColumns(onAction)}
           skeletonQuantity={5}
           data={shipments}
-          customMessage={t("ShipmentMessages.NoItemsScheduledForDelivery")}
+          customMessage="No item is scheduled for delivery"
+          customMessageTransKey="ShipmentMessages.NoItemsScheduledForDelivery"
         />
       </div>
-    </SheProductCard>
+    </SheCard>
   );
 }

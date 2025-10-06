@@ -1,13 +1,11 @@
-import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
-import { useTranslation } from "react-i18next";
 
 import cs from "./StockHistoryCard.module.scss";
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
 import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
-import { IVariantHistoryCard } from "@/const/interfaces/complex-components/custom-cards/IVariantHistoryCard.ts";
 import { StockHistoryGridColumns } from "@/components/complex/grid/custom-grids/stock-history-grid/StockHistoryGridColumns.tsx";
-import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
+import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
+import { IVariantHistoryCard } from "@/const/interfaces/complex-components/custom-cards/IVariantHistoryCard.ts";
 
 export default function StockHistoryCard({
   isLoading,
@@ -17,16 +15,19 @@ export default function StockHistoryCard({
   onAction,
   ...props
 }: IVariantHistoryCard) {
-  const { t } = useTranslation();
+  // ==================================================================== UTILITIES
+  const { translate } = useAppTranslation();
 
+  // ==================================================================== LAYOUT
   return (
-    <SheProductCard
-      loading={isLoading}
-      title={t("CardTitles.StockHistory", {
+    <SheCard
+      className={cs.stockHistoryCard}
+      title={translate("CardTitles.StockHistory", {
         variantName: variant?.variantName,
       })}
       showCloseButton
-      className={cs.stockHistoryCard}
+      showFooter
+      isLoading={isLoading}
       onSecondaryButtonClick={() => onAction("closeVariantHistoryCard")}
       {...props}
     >
@@ -35,11 +36,11 @@ export default function StockHistoryCard({
           <SheGrid
             isLoading={isGridLoading}
             showHeader={false}
-            columns={StockHistoryGridColumns as ColumnDef<DataWithId>[]}
+            columns={StockHistoryGridColumns}
             data={data}
           />
         </div>
       </div>
-    </SheProductCard>
+    </SheCard>
   );
 }

@@ -38,6 +38,7 @@ export const SheFormFooterDefaultModel: ISheFormFooter = {
   isLoading: undefined,
   isValid: undefined,
   footerPosition: undefined,
+  hideFooter: undefined,
   onPrimaryBtnClick: undefined,
   onSecondaryBtnClick: undefined,
 };

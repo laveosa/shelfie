@@ -1,16 +1,16 @@
-import { useTranslation } from "react-i18next";
 import { ColumnDef } from "@tanstack/react-table";
 
 import { Plus } from "lucide-react";
 
 import cs from "./CustomerAddressesCard.module.scss";
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { customerAddressGridColumns } from "@/components/complex/grid/custom-grids/customer-address-grid/CustomerAddressGridColumns";
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
+import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { GridSortingModel } from "@/const/models/GridSortingModel";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
-import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 
 interface ICustomerAddressesCard {
   isLoading?: boolean;
@@ -27,22 +27,27 @@ export default function CustomerAddressesCard({
   gridRequestModel,
   sortingOptions,
 }: ICustomerAddressesCard) {
-  const { t } = useTranslation();
+  // ==================================================================== UTILITIES
+  const { translate } = useAppTranslation();
 
+  // ==================================================================== LAYOUT
   return (
-    <SheProductCard
+    <SheCard
       className={cs.customerAddressesCard}
       minWidth="850px"
       showHeader={false}
     >
       <div className={cs.customerAddressesCardHeader}>
-        <div className="she-title">{t("CardTitles.CustomerAddresses")}</div>
+        <div className="she-title">
+          {translate("CardTitles.CustomerAddresses")}
+        </div>
         <div className={cs.headerButtonBlock}>
           <SheButton
+            value="Create Address"
+            valueTransKey="CustomerActions.CreateAddress"
             icon={Plus}
             variant="default"
             onClick={() => onAction("createCustomerAddress")}
-            value={t("CustomerActions.CreateAddress")}
           />
         </div>
       </div>
@@ -65,6 +70,6 @@ export default function CustomerAddressesCard({
       >
         {/* TODO: Add filters */}
       </SheGrid>
-    </SheProductCard>
+    </SheCard>
   );
 }

@@ -1,4 +1,7 @@
 .shipmentConfigurationCard {
+  min-width: 650px;
+  max-width: 650px;
+
   .shipmentConfigurationCardContent {
     .shipmentConfiguration {
       overflow: auto;
@@ -21,7 +24,7 @@
           width: 50%;
           padding-left: 10px;
           font-size: 14px;
-          color: #474D54
+          color: #474d54;
         }
 
         .subtitleText {
@@ -73,7 +76,7 @@
 
       .shipmentProductsButton {
         display: flex;
-        justify-content: flex-end
+        justify-content: flex-end;
       }
 
       .shipmentContentBlock {

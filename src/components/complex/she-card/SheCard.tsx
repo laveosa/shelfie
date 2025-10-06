@@ -10,7 +10,10 @@ import {
   getCustomProps,
   removeCustomProps,
 } from "@/utils/helpers/props-helper.ts";
-import { ISheCard } from "@/const/interfaces/complex-components/ISheCard.ts";
+import {
+  ISheCard,
+  SheCardDefaultModel,
+} from "@/const/interfaces/complex-components/ISheCard.ts";
 import {
   ISheCardHeader,
   SheCardHeaderDefaultModel,
@@ -27,7 +30,7 @@ export default function SheCard(props: ISheCard) {
     className = "",
     contextClassName = "",
     view = ComponentViewEnum.CARD,
-    showHeader,
+    showHeader = true,
     showFooter,
     isMinimized,
     width,
@@ -49,6 +52,7 @@ export default function SheCard(props: ISheCard) {
   const restProps = removeCustomProps<ISheCard>(props, [
     SheCardHeaderDefaultModel,
     SheCardFooterDefaultModel,
+    SheCardDefaultModel,
   ]);
 
   // ==================================================================== STATE MANAGEMENT
@@ -65,7 +69,6 @@ export default function SheCard(props: ISheCard) {
   }, [_isMinimized]);
 
   // ==================================================================== EVENT HANDLERS
-
   function onMinimizeCardHandler() {
     setIsMinimized((prev) => !prev);
   }
@@ -90,6 +93,7 @@ export default function SheCard(props: ISheCard) {
         {...sheCardHeaderProps}
         view={view}
         isMinimized={_isMinimized}
+        showHeader={showHeader}
         onHeaderToggleClick={onMinimizeCardHandler}
         onHeaderCloseClick={onSecondaryButtonClick}
       />

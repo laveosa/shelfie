@@ -1,9 +1,8 @@
 import { useForm } from "react-hook-form";
-import { WandSparkles } from "lucide-react";
 import React from "react";
-import { useTranslation } from "react-i18next";
 
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
+import { WandSparkles } from "lucide-react";
+
 import cs from "./CreateAttributeCard.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { SheForm } from "@/components/forms/she-form/SheForm.tsx";
@@ -21,24 +20,30 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select.tsx";
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
+import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 
 export default function CreateAttributeCard({ data, ...props }) {
-  const { t } = useTranslation();
+  // ==================================================================== UTILITIES
+  const { translate } = useAppTranslation();
   const form = useForm({
     defaultValues: { productCategory: "" },
   });
 
+  // ==================================================================== EVENT HANDLERS
   function onSubmit() {}
 
+  // ==================================================================== LAYOUT
   return (
-    <SheProductCard
-      title={t("CardTitles.CreateProductAttribute")}
-      view="card"
-      showPrimaryButton={true}
-      primaryButtonTitle={t("CommonButtons.Create")}
-      showSecondaryButton={true}
-      secondaryButtonTitle={t("CommonButtons.Cancel")}
+    <SheCard
       className={cs.createAttributeCard}
+      title="Connect image to product variants"
+      titleTransKey="CardTitles.CreateProductAttribute"
+      showFooter
+      primaryButtonTitle="Create"
+      primaryButtonTitleTransKey="CommonButtons.Create"
+      secondaryButtonTitle="Cancel"
+      secondaryButtonTitleTransKey="CommonButtons.Cancel"
       {...props}
     >
       <div className={cs.createAttributeCardContent}>
@@ -46,8 +51,10 @@ export default function CreateAttributeCard({ data, ...props }) {
           <div className={cs.formInput}>
             <SheForm.Field name="name">
               <SheInput
-                label={t("ProductForm.Labels.AttributeName")}
-                placeholder={t("ProductForm.Placeholders.AttributeName")}
+                label="Attribute name"
+                labelTransKey="ProductForm.Labels.AttributeName"
+                placeholder="enter attribute name..."
+                placeholderTransKey="ProductForm.Placeholders.AttributeName"
               />
             </SheForm.Field>
           </div>
@@ -57,8 +64,10 @@ export default function CreateAttributeCard({ data, ...props }) {
                 control={form.control}
                 name="productCategory"
                 render={({ field }) => (
-                  <FormItem className={cs.select}>
-                    <FormLabel>{t("ProductForm.Labels.CategoryName")}</FormLabel>
+                  <FormItem>
+                    <FormLabel>
+                      {translate("ProductForm.Labels.CategoryName")}
+                    </FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
@@ -88,6 +97,6 @@ export default function CreateAttributeCard({ data, ...props }) {
           </div>
         </SheForm>
       </div>
-    </SheProductCard>
+    </SheCard>
   );
 }

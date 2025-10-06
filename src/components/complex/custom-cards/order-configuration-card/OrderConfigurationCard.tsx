@@ -1,21 +1,22 @@
-import { Plus, Trash2, UserMinus, UserPlus } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
-import { useTranslation } from "react-i18next";
 import React from "react";
 
-import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
+import { Plus, Trash2, UserMinus, UserPlus } from "lucide-react";
+
 import cs from "./OrderConfigurationCard.module.scss";
-import { IOrderConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IOrderConfigurationCard.ts";
-import { formatDate, getInitials } from "@/utils/helpers/quick-helper.ts";
+import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import { StatusModel } from "@/const/models/StatusModel.ts";
-import { Separator } from "@/components/ui/separator.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
+import { Separator } from "@/components/ui/separator.tsx";
 import { OrderDiscountsGridColumns } from "@/components/complex/grid/custom-grids/order-discounts-grid/OrderDiscountsGridColumns.tsx";
 import { OrderShipmentsRateGridColumns } from "@/components/complex/grid/custom-grids/order-shipments-rate-grid/OrderShipmentsRateGridColumns.tsx";
+import { formatDate, getInitials } from "@/utils/helpers/quick-helper.ts";
+import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
+import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
+import { IOrderConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IOrderConfigurationCard.ts";
+import { StatusModel } from "@/const/models/StatusModel.ts";
 
 export default function OrderConfigurationCard({
   isLoading,
@@ -26,8 +27,12 @@ export default function OrderConfigurationCard({
   statuses,
   onAction,
 }: IOrderConfigurationCard) {
-  const { t } = useTranslation();
+  // ==================================================================== UTILITIES
+  const { translate } = useAppTranslation();
 
+  // ==================================================================== EVENT HANDLERS
+
+  // ==================================================================== LOGIC
   function convertStatusesToSelectItems(
     data: StatusModel[],
   ): ISheSelectItem<any>[] {
@@ -39,11 +44,12 @@ export default function OrderConfigurationCard({
     );
   }
 
+  // ==================================================================== LAYOUT
   return (
     <SheProductCard
       loading={isLoading}
       className={cs.orderConfigurationCard}
-      title={t("CardTitles.OrderConfiguration", { orderId: order?.id })}
+      title={translate("CardTitles.OrderConfiguration", { orderId: order?.id })}
       showNotificationCard
       notificationCardProps={{
         title: "Cancel Order",
@@ -59,11 +65,15 @@ export default function OrderConfigurationCard({
     >
       <div className={cs.orderConfigurationCardContent}>
         <div className={cs.orderConfigurationCardItem}>
-          <span className="she-text">{t("OrderForm.Labels.CreatedAt")}</span>
+          <span className="she-text">
+            {translate("OrderForm.Labels.CreatedAt")}
+          </span>
           <span className="she-text">{formatDate(order?.date, "date")}</span>
         </div>
         <div className={cs.orderConfigurationCardItem}>
-          <span className="she-text">{t("OrderForm.Labels.OrderStatus")}</span>
+          <span className="she-text">
+            {translate("OrderForm.Labels.OrderStatus")}
+          </span>
           <SheSelect<string>
             selected={order?.orderStatus || null}
             items={convertStatusesToSelectItems(statuses)}
@@ -77,34 +87,39 @@ export default function OrderConfigurationCard({
         </div>
         <div className={cs.orderConfigurationCardItem}>
           <span className="she-text">
-            {t("OrderForm.Labels.PaymentStatus")}
+            {translate("OrderForm.Labels.PaymentStatus")}
           </span>
           <span className="she-text">{order?.paymentStatus}</span>
         </div>
         <div className={cs.orderConfigurationCardItem}>
           <span className="she-text">
-            {t("OrderForm.Labels.ShipmentStatus")}
+            {translate("OrderForm.Labels.ShipmentStatus")}
           </span>
           <span className="she-text">{order?.shipmentStatus}</span>
         </div>
         <Separator />
         <div className={cs.orderConfigurationCardItem}>
-          <span className="she-title">{t("SectionTitles.Customer")}</span>
+          <span className="she-title">
+            {translate("SectionTitles.Customer")}
+          </span>
           <SheButton
-            variant="secondary"
-            value={
+            value={order?.customer ? "Change Customer" : "Select Customer"}
+            valueTransKey={
               order?.customer
-                ? t("SpecialText.ChangeCustomer")
-                : t("OrderActions.SelectCustomer")
+                ? "SpecialText.ChangeCustomer"
+                : "OrderActions.SelectCustomer"
             }
             icon={order?.customer ? UserMinus : UserPlus}
+            variant="secondary"
             onClick={() => onAction("openSelectEntityCard")}
           />
         </div>
         {order?.customer && (
           <div className={cs.customerInfo}>
             <div className={cs.orderConfigurationCardItem}>
-              <span className="she-text">{t("CustomerForm.Labels.Name")}</span>
+              <span className="she-text">
+                {translate("CustomerForm.Labels.Name")}
+              </span>
               <div className={cs.customerInfoAvatarBlock}>
                 {order?.customer.thumbnailUrl ? (
                   <img
@@ -125,7 +140,7 @@ export default function OrderConfigurationCard({
             {order?.customer.email && (
               <div className={cs.orderConfigurationCardItem}>
                 <span className="she-text">
-                  {t("CustomerForm.Labels.Email")}
+                  {translate("CustomerForm.Labels.Email")}
                 </span>
                 <span className="she-subtext">{order?.customer.email}</span>
               </div>
@@ -133,7 +148,7 @@ export default function OrderConfigurationCard({
             {order?.customer.phone && (
               <div className={cs.orderConfigurationCardItem}>
                 <span className="she-text">
-                  {t("CustomerForm.Labels.PhoneNumber")}
+                  {translate("CustomerForm.Labels.PhoneNumber")}
                 </span>
                 <span className="she-subtext">{order?.customer.phone}</span>
               </div>
@@ -142,11 +157,14 @@ export default function OrderConfigurationCard({
         )}
         <Separator />
         <div className={cs.orderConfigurationCardItem}>
-          <span className="she-title">{t("SectionTitles.Discount")}</span>
+          <span className="she-title">
+            {translate("SectionTitles.Discount")}
+          </span>
           <SheButton
-            variant="secondary"
-            value={t("OrderActions.ApplyDiscount")}
+            value="Apply Discount"
+            valueTransKey="OrderActions.ApplyDiscount"
             icon={Plus}
+            variant="secondary"
             onClick={() => onAction("openSelectDiscountCard")}
           />
         </div>
@@ -155,18 +173,17 @@ export default function OrderConfigurationCard({
             className={cs.orderDiscountsGrid}
             isLoading={isDiscountsGridLoading}
             showHeader={false}
-            columns={
-              OrderDiscountsGridColumns({
-                onAction,
-              }) as ColumnDef<DataWithId>[]
-            }
+            columns={OrderDiscountsGridColumns({
+              onAction,
+            })}
             data={order?.discounts}
-            customMessage={t("OrderMessages.NoDiscountsApplied")}
+            customMessage="There are no discounts applied"
+            customMessageTransKey="OrderMessages.NoDiscountsApplied"
           />
           <div className={cs.gridFooter}>
             <div className={cs.gridFooterItems}>
               <span className={cs.gridFooterItem}>
-                {t("OrderForm.Labels.DiscountTotal")}
+                {translate("OrderForm.Labels.DiscountTotal")}
               </span>
               <span className={cs.gridFooterItem}>{order?.discountAmount}</span>
             </div>
@@ -174,11 +191,14 @@ export default function OrderConfigurationCard({
         </div>
         <Separator />
         <div className={cs.orderConfigurationCardItem}>
-          <span className="she-title">{t("SectionTitles.Shipment")}</span>
+          <span className="she-title">
+            {translate("SectionTitles.Shipment")}
+          </span>
           <SheButton
-            variant="secondary"
-            value={t("OrderActions.SetShipmentRate")}
+            value="Set Shipment Rate"
+            valueTransKey="OrderActions.SetShipmentRate"
             icon={Plus}
+            variant="secondary"
           />
         </div>
         <SheGrid
@@ -190,26 +210,29 @@ export default function OrderConfigurationCard({
           }
           showHeader={false}
           data={shipmentsRate}
-          customMessage={t("OrderMessages.ShipmentRateNotSet")}
+          customMessage="Shipment rate is not set yet"
+          customMessageTransKey="OrderMessages.ShipmentRateNotSet"
         />
-        <span className="she-title">{t("SectionTitles.Summary")}</span>
+        <span className="she-title">{translate("SectionTitles.Summary")}</span>
         <div className={cs.orderSummaryItems}>
           <div className={cs.orderSummaryItem}>
             <span className="she-text">
-              {t("OrderForm.Labels.ProductsSubtotal")}
+              {translate("OrderForm.Labels.ProductsSubtotal")}
             </span>
             <span className="she-text">{order?.orderSubTotal?.subtotal}</span>
           </div>
           <div className={cs.orderSummaryItem}>
             <span className="she-text">
-              {t("OrderForm.Labels.TotalWithDiscountAndShipment")}
+              {translate("OrderForm.Labels.TotalWithDiscountAndShipment")}
             </span>
             <span className="she-text">
               {order?.orderSubTotal?.totalWithDiscountAndShipment}
             </span>
           </div>
           <div className={cs.orderSummaryItem}>
-            <span className="she-text">{t("OrderForm.Labels.Profit")}</span>
+            <span className="she-text">
+              {translate("OrderForm.Labels.Profit")}
+            </span>
             <span className="she-text">{order?.orderSubTotal?.profit}</span>
           </div>
         </div>

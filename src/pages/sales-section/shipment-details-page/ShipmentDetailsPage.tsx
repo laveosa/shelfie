@@ -10,6 +10,7 @@ import { IShipmentDetailsPageSlice } from "@/const/interfaces/store-slices/IShip
 import useShipmentDetailsPageService from "@/pages/sales-section/shipment-details-page/useShipmentDetailsPageService.ts";
 import ShipmentConfigurationCard from "@/components/complex/custom-cards/shipment-configuration-card/ShipmentConfigurationCard.tsx";
 import { IShipmentsPageSlice } from "@/const/interfaces/store-slices/IShipmentsPageSlice.ts";
+import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
 
 export function ShipmentDetailsPage() {
   // ==================================================================== UTILITIES
@@ -48,11 +49,13 @@ export function ShipmentDetailsPage() {
   // ==================================================================== LAYOUT
   return (
     <div className={cs.shipmentDetailsPage}>
-      <ShipmentConfigurationCard
-        isLoading={state.isShipmentConfigurationCardLoading}
-        shipment={shipmentsState.selectedShipment}
-        onAction={onAction}
-      />
+      <SheContextSidebar hideSidebarBlock>
+        <ShipmentConfigurationCard
+          isLoading={state.isShipmentConfigurationCardLoading}
+          shipment={shipmentsState.selectedShipment}
+          onAction={onAction}
+        />
+      </SheContextSidebar>
     </div>
   );
 }

@@ -24,7 +24,6 @@ export default function SelectEntityCard<T = any>({
       className={cs.selectEntityCard}
       title={translate("CardTitles.SelectEntity", { entityName })}
       isLoading={isLoading}
-      showHeader
       showCloseButton
       onSecondaryButtonClick={() => onAction("closeSelectEntityCard")}
     >

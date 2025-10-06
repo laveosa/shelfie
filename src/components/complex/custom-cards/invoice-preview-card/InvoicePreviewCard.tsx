@@ -1,44 +1,44 @@
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import { Viewer, Worker } from "@react-pdf-viewer/core";
-import * as pdfjsLib from "pdfjs-dist";
 import React from "react";
-import { useTranslation } from "react-i18next";
 
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
-import cs from "./InvoicePreviewCard.module.scss";
-import { IInvoicePreviewCard } from "@/const/interfaces/complex-components/custom-cards/IInvoicePreviewCard.ts";
+import * as pdfjsLib from "pdfjs-dist";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
+
+import cs from "./InvoicePreviewCard.module.scss";
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
+import { IInvoicePreviewCard } from "@/const/interfaces/complex-components/custom-cards/IInvoicePreviewCard.ts";
 
 export default function InvoicePreviewCard({
   isLoading,
   previewUrl,
   onAction,
 }: IInvoicePreviewCard) {
-  const { t } = useTranslation();
+  // ==================================================================== UTILITIES
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
+  // ==================================================================== LAYOUT
   return (
-    <div className={cs.invoicesCard}>
-      <SheProductCard
-        loading={isLoading}
-        title={t("CardTitles.Preview")}
-        minWidth="600px"
-        showCloseButton={true}
-        onSecondaryButtonClick={() => onAction("closeInvoicePreviewCard")}
-        className={cs.productPhotosCard}
-      >
-        <div className={cs.invoicesCardContent}>
-          <Worker
-            workerUrl={`https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.js`}
-          >
-            <Viewer
-              fileUrl={previewUrl}
-              plugins={[defaultLayoutPluginInstance]}
-            />
-          </Worker>
-        </div>
-      </SheProductCard>
-    </div>
+    <SheCard
+      className={cs.invoicesCard}
+      title="Preview"
+      titleTransKey="CardTitles.Preview"
+      minWidth="600px"
+      isLoading={isLoading}
+      showCloseButton
+      onSecondaryButtonClick={() => onAction("closeInvoicePreviewCard")}
+    >
+      <div className={cs.invoicesCardContent}>
+        <Worker
+          workerUrl={`https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.js`}
+        >
+          <Viewer
+            fileUrl={previewUrl}
+            plugins={[defaultLayoutPluginInstance]}
+          />
+        </Worker>
+      </div>
+    </SheCard>
   );
 }

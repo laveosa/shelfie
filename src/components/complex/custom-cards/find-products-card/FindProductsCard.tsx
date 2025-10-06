@@ -1,17 +1,17 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { useTranslation } from "react-i18next";
 import React from "react";
 
-import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import cs from "./FindProductsCard.module.scss";
-import { IFindProductsCard } from "@/const/interfaces/complex-components/custom-cards/IFindProductsCard.ts";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import GridTraitsFilter from "@/components/complex/grid/filters/grid-traits-filter/GridTraitsFilter.tsx";
 import { findProductGridColumns } from "@/components/complex/grid/custom-grids/find-product-grid/FindProductGridColumns.tsx";
 import GridItemsFilter from "@/components/complex/grid/filters/grid-items-filter/GridItemsFilter.tsx";
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
+import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
+import { IFindProductsCard } from "@/const/interfaces/complex-components/custom-cards/IFindProductsCard.ts";
 
 export default function FindProductsCard({
   isLoading,
@@ -26,14 +26,16 @@ export default function FindProductsCard({
   brands,
   onAction,
 }: IFindProductsCard) {
-  const { t } = useTranslation();
+  // ==================================================================== UTILITIES
+  const { translate } = useAppTranslation();
 
+  // ==================================================================== LAYOUT
   return (
-    <SheProductCard
-      loading={isLoading}
+    <SheCard
       className={cs.findProductsCard}
-      title={t("CardTitles.FindProducts")}
+      title={translate("CardTitles.FindProducts")}
       width="100%"
+      isLoading={isLoading}
       showCloseButton
       onSecondaryButtonClick={() => onAction("closeFindProductsCard")}
     >
@@ -57,16 +59,16 @@ export default function FindProductsCard({
             onAction("variantsGridRequestChange", updates)
           }
         >
-          <GridItemsFilter
+          <GridItemsFilter<BrandModel>
             items={brands}
-            columnName={t("SectionTitles.Brand")}
+            columnName={translate("SectionTitles.Brand")}
             getId={(item: BrandModel) => item.brandId}
             getName={(item: BrandModel) => item.brandName}
             selected={gridRequestModel.filter?.brands}
           />
-          <GridItemsFilter
+          <GridItemsFilter<CategoryModel>
             items={categories}
-            columnName={t("SectionTitles.Category")}
+            columnName={translate("SectionTitles.Category")}
             getId={(item: CategoryModel) => item.categoryId}
             getName={(item: CategoryModel) => item.categoryName}
             selected={gridRequestModel.filter?.categories}
@@ -75,6 +77,6 @@ export default function FindProductsCard({
           <GridTraitsFilter traitOptions={sizesForFilter} traitType="size" />
         </SheGrid>
       </div>
-    </SheProductCard>
+    </SheCard>
   );
 }

@@ -60,7 +60,6 @@ export default function CreateProductCategoryCard({
       title="Create Product Category"
       titleTransKey="CardTitles.CreateProductCategory"
       isLoading={isLoading}
-      showHeader
       showCloseButton
       onSecondaryButtonClick={onCloseHandler}
     >

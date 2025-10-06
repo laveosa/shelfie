@@ -2,8 +2,12 @@
 
 .shipmentsCardWrapper {
   position: relative;
+  width: 100%;
 
   .shipmentsCard {
+    width: 100%;
+    max-width: none !important;
+
     .shipmentsCardContent {
       .tabItemsWrapper {
         margin: 0 -20px;

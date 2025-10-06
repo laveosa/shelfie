@@ -1,11 +1,9 @@
-import { useTranslation } from "react-i18next";
-import { Trash2 } from "lucide-react";
 import React from "react";
 
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
-import { ICustomerCard } from "@/const/interfaces/complex-components/custom-cards/ICustomerCard.ts";
-import CustomerForm from "@/components/forms/customer-form/CustomerForm";
 import cs from "./CustomerCard.module.scss";
+import CustomerForm from "@/components/forms/customer-form/CustomerForm";
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
+import { ICustomerCard } from "@/const/interfaces/complex-components/custom-cards/ICustomerCard.ts";
 
 export default function CustomerCard({
   isLoading,
@@ -13,30 +11,24 @@ export default function CustomerCard({
   showCloseButton,
   onAction,
 }: ICustomerCard) {
-  const { t } = useTranslation();
-
+  // ==================================================================== LAYOUT
   return (
     <div>
-      <SheProductCard
-        loading={isLoading}
+      <SheCard
         className={cs.customerConfigurationFormCard}
-        title={
-          customer
-            ? t("CardTitles.EditCustomer")
-            : t("CardTitles.CreateCustomer")
+        title={customer ? "EditCustomer" : "CreateCustomer"}
+        titleTransKey={
+          customer ? "CardTitles.EditCustomer" : "CardTitles.CreateCustomer"
         }
         showCloseButton={showCloseButton}
         onSecondaryButtonClick={() => onAction("closeCustomerCard")}
+        isLoading={isLoading}
         showNotificationCard={!!customer}
         notificationCardProps={{
           title: "Delete Customer",
           titleTransKey: "CardTitles.DeleteCustomer",
           text: "This customer will be deleted and will no longer be available for selection or automatic connection. Past orders will remain visible.",
           textTransKey: "ConfirmationMessages.DeleteCustomer",
-          buttonText: "Delete",
-          buttonTextTransKey: "CommonButtons.Delete",
-          buttonColor: "#FF0000",
-          buttonIcon: Trash2,
           onClick: () => onAction("deleteCustomer", customer),
         }}
       >
@@ -52,7 +44,7 @@ export default function CustomerCard({
             onCancel={() => onAction("closeCustomerCard")}
           />
         </div>
-      </SheProductCard>
+      </SheCard>
     </div>
   );
 }
