@@ -268,7 +268,8 @@
     "Clear": "Clear",
     "SaveChanges": "Save Changes",
     "Restore": "Restore",
-    "History": "History"
+    "History": "History",
+    "CreatePurchase": "Create Purchase"
   },
   "ProductActions": {
     "AddProduct": "Add Product",
