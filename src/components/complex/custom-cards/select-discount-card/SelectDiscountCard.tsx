@@ -1,18 +1,17 @@
-import { ColumnDef } from "@tanstack/react-table";
-import { Plus } from "lucide-react";
 import React from "react";
-import { useTranslation } from "react-i18next";
 
-import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
+import { Plus } from "lucide-react";
+
 import cs from "./SelectDiscountCard.module.scss";
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
-import { ISelectDiscountCard } from "@/const/interfaces/complex-components/custom-cards/ISelectDiscountCard.ts";
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import { DiscountsListGridColumns } from "@/components/complex/grid/custom-grids/discounts-list-grid/DiscountsListGridColumns.tsx";
+import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
+import { ISelectDiscountCard } from "@/const/interfaces/complex-components/custom-cards/ISelectDiscountCard.ts";
 
 export default function SelectDiscountCard({
   isLoading,
@@ -20,14 +19,17 @@ export default function SelectDiscountCard({
   discounts,
   onAction,
 }: ISelectDiscountCard) {
-  const { t } = useTranslation();
+  // ==================================================================== STATE MANAGEMENT
   const [discount, setDiscount] = React.useState(null);
 
+  // ==================================================================== UTILITIES
+  const { translate } = useAppTranslation();
   const discountType = [
     { discountType: "Percentage" },
     { discountType: "Amount" },
   ];
 
+  // ==================================================================== PRIVATE
   function convertStatusesToSelectItems<T>(data: any[]): ISheSelectItem<T>[] {
     return data?.map(
       (item): ISheSelectItem<T> => ({
@@ -37,23 +39,27 @@ export default function SelectDiscountCard({
     );
   }
 
+  // ==================================================================== LAYOUT
   return (
-    <SheProductCard
-      loading={isLoading}
+    <SheCard
       className={cs.selectDiscountCard}
-      title={t("CardTitles.SelectDiscount")}
+      title="Select Discount"
+      titleTransKey="CardTitles.SelectDiscount"
+      isLoading={isLoading}
       showCloseButton
       onSecondaryButtonClick={() => onAction("closeSelectDiscountCard")}
     >
       <div className={cs.selectDiscountCardContent}>
         <span className={`${cs.selectDiscountText} she-text`}>
-          {t("DiscountForm.Labels.SelectDiscountDescription")}
+          {translate("DiscountForm.Labels.SelectDiscountDescription")}
         </span>
         <div className={cs.createDiscountBlock}>
           <div className={cs.inputBlock}>
             <SheInput
-              label={t("DiscountForm.Labels.DiscountRate")}
-              placeholder={t("DiscountForm.Placeholders.DiscountRate")}
+              label="Discount Rate"
+              labelTransKey="DiscountForm.Labels.DiscountRate"
+              placeholder="Discount rate"
+              placeholderTransKey="DiscountForm.Placeholders.DiscountRate"
               onDelay={(value: number) =>
                 setDiscount({
                   ...discount,
@@ -62,8 +68,10 @@ export default function SelectDiscountCard({
               }
             />
             <SheSelect
-              label={t("DiscountForm.Labels.DiscountType")}
-              placeholder={t("DiscountForm.Placeholders.SelectDiscountType")}
+              label="Discount Type"
+              labelTransKey="DiscountForm.Labels.DiscountType"
+              placeholder="select discount type..."
+              placeholderTransKey="DiscountForm.Placeholders.SelectDiscountType"
               hideFirstOption
               selected={discount?.discountType}
               items={convertStatusesToSelectItems(discountType)}
@@ -73,8 +81,9 @@ export default function SelectDiscountCard({
             />
           </div>
           <SheButton
+            value="Create and Apply"
+            valueTransKey="DiscountActions.CreateAndApply"
             icon={Plus}
-            value={t("DiscountActions.CreateAndApply")}
             variant="secondary"
             maxWidth="165px"
             onClick={() => onAction("createDiscount", discount)}
@@ -83,14 +92,13 @@ export default function SelectDiscountCard({
         <SheGrid
           isLoading={isGridLoading}
           showHeader={false}
-          columns={
-            DiscountsListGridColumns({ onAction }) as ColumnDef<DataWithId>[]
-          }
+          columns={DiscountsListGridColumns({ onAction })}
           data={discounts}
           skeletonQuantity={10}
-          customMessage={t("DiscountMessages.NoDiscountsCreated")}
+          customMessage="There are no discounts created yet"
+          customMessageTransKey="DiscountMessages.NoDiscountsCreated"
         />
       </div>
-    </SheProductCard>
+    </SheCard>
   );
 }
