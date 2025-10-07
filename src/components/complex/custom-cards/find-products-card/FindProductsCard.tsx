@@ -1,16 +1,14 @@
-import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
 
 import cs from "./FindProductsCard.module.scss";
-import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import GridTraitsFilter from "@/components/complex/grid/filters/grid-traits-filter/GridTraitsFilter.tsx";
-import { findProductGridColumns } from "@/components/complex/grid/custom-grids/find-product-grid/FindProductGridColumns.tsx";
 import GridItemsFilter from "@/components/complex/grid/filters/grid-items-filter/GridItemsFilter.tsx";
 import SheCard from "@/components/complex/she-card/SheCard.tsx";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
+import { findProductGridColumns } from "@/components/complex/grid/custom-grids/find-product-grid/FindProductGridColumns.tsx";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
-import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 import { IFindProductsCard } from "@/const/interfaces/complex-components/custom-cards/IFindProductsCard.ts";
 
 export default function FindProductsCard({
@@ -34,7 +32,6 @@ export default function FindProductsCard({
     <SheCard
       className={cs.findProductsCard}
       title={translate("CardTitles.FindProducts")}
-      width="100%"
       isLoading={isLoading}
       showCloseButton
       onSecondaryButtonClick={() => onAction("closeFindProductsCard")}
@@ -42,11 +39,9 @@ export default function FindProductsCard({
       <div className={cs.findProductsCardContent}>
         <SheGrid
           isLoading={isGridLoading}
-          columns={
-            findProductGridColumns({
-              onAction,
-            }) as ColumnDef<DataWithId>[]
-          }
+          columns={findProductGridColumns({
+            onAction,
+          })}
           data={variants}
           gridRequestModel={gridRequestModel}
           sortingItems={sortingOptions}
