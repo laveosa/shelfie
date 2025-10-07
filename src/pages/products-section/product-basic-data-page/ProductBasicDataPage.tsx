@@ -3,41 +3,23 @@ import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
 import cs from "./ProductBasicDataPage.module.scss";
-import ProductConfigurationCard
-  from "@/components/complex/custom-cards/product-configuration-card/ProductConfigurationCard.tsx";
-import CreateProductCategoryCard
-  from "@/components/complex/custom-cards/create-product-category-card/CreateProductCategoryCard.tsx";
-import CreateProductBrandCard
-  from "@/components/complex/custom-cards/create-product-brand-card/CreateProductBrandCard.tsx";
-import SheContextSidebar
-  from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
-import {
-  ProductBasicDataPageSliceActions as actions
-} from "@/state/slices/ProductBasicDataPageSlice.ts";
-import useProductBasicDataPageService
-  from "@/pages/products-section/product-basic-data-page/useProductBasicDataPageService.ts";
+import ProductConfigurationCard from "@/components/complex/custom-cards/product-configuration-card/ProductConfigurationCard.tsx";
+import CreateProductCategoryCard from "@/components/complex/custom-cards/create-product-category-card/CreateProductCategoryCard.tsx";
+import CreateProductBrandCard from "@/components/complex/custom-cards/create-product-brand-card/CreateProductBrandCard.tsx";
+import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
+import { ProductBasicDataPageSliceActions as actions } from "@/state/slices/ProductBasicDataPageSlice.ts";
+import useProductBasicDataPageService from "@/pages/products-section/product-basic-data-page/useProductBasicDataPageService.ts";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import SelectEntityCard
-  from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
+import SelectEntityCard from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
-import {
-  CompaniesListGridColumns
-} from "@/components/complex/grid/custom-grids/companies-list-grid/CompaniesListGridColumns.tsx";
-import CreateCompanyCard
-  from "@/components/complex/custom-cards/create-company-card/CreateCompanyCard.tsx";
-import CompanyConfigurationCard
-  from "@/components/complex/custom-cards/company-configuration-card/CompanyConfigurationCard.tsx";
-import PhotosCard
-  from "@/components/complex/custom-cards/photos-card/PhotosCard.tsx";
-import {
-  ManageCompanyPhotosGridColumns
-} from "@/components/complex/grid/custom-grids/manage-company-photos-grid/ManageCompanyPhotosGridColumns.tsx";
-import LocationConfigurationCard
-  from "@/components/complex/custom-cards/location-configuration-card/LocationConfigurationCard.tsx";
-import {
-  ManageLocationPhotosGridColumns
-} from "@/components/complex/grid/custom-grids/manage-location-photos-grid/ManageLocationPhotosGridColumns.tsx";
+import { CompaniesListGridColumns } from "@/components/complex/grid/custom-grids/companies-list-grid/CompaniesListGridColumns.tsx";
+import CreateCompanyCard from "@/components/complex/custom-cards/create-company-card/CreateCompanyCard.tsx";
+import CompanyConfigurationCard from "@/components/complex/custom-cards/company-configuration-card/CompanyConfigurationCard.tsx";
+import PhotosCard from "@/components/complex/custom-cards/photos-card/PhotosCard.tsx";
+import { ManageCompanyPhotosGridColumns } from "@/components/complex/grid/custom-grids/manage-company-photos-grid/ManageCompanyPhotosGridColumns.tsx";
+import LocationConfigurationCard from "@/components/complex/custom-cards/location-configuration-card/LocationConfigurationCard.tsx";
+import { ManageLocationPhotosGridColumns } from "@/components/complex/grid/custom-grids/manage-location-photos-grid/ManageLocationPhotosGridColumns.tsx";
 
 export function ProductBasicDataPage() {
   // ==================================================================== UTILITIES
