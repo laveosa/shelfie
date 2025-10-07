@@ -3,14 +3,16 @@ import { ImageIcon, PackagePlus } from "lucide-react";
 
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
-import QuantityInputCell from "@/components/complex/grid/custom-grids/find-product-grid/QuantityInputCell.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import cs from "./OrderItemsInShipment.module.scss";
+import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 
 export function orderItemsInShipmentGridColumns({
   onAction,
+  onHandelUpGridData,
 }: {
   onAction: (actionType: string, row?: any, quantity?: string) => void;
+  onHandelUpGridData: (table?: any[]) => void;
 }): ColumnDef<any>[] {
   return [
     {
@@ -97,14 +99,23 @@ export function orderItemsInShipmentGridColumns({
       header: "Qty pending",
       minSize: 100,
       cell: ({ row }) => {
-        return <span>{row.original.order}</span>;
+        return <span>{row.original.orderedAmount}</span>;
       },
     },
     {
       accessorKey: "quantity",
       header: "Qty to add",
       minSize: 100,
-      cell: ({ row }) => <QuantityInputCell row={row} />,
+      cell: ({ row, table }) => (
+        <SheInput
+          value={row.original.amount}
+          type="number"
+          onChange={(value) => {
+            row.original.amount = value;
+            onHandelUpGridData(table.options.data);
+          }}
+        />
+      ),
     },
     {
       id: "add",
@@ -120,8 +131,8 @@ export function orderItemsInShipmentGridColumns({
               variant="secondary"
               onClick={() => {
                 onAction("addItemToShipment", {
-                  id: row.original.stockActionId,
-                  amount: row.original.amount,
+                  stockActionId: row.original.stockActionId,
+                  quantity: row.original.amount,
                 });
               }}
             />

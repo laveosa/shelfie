@@ -119,13 +119,13 @@ export default function useOrderProductsPageService(
 
   function getVariantsListForGrid(model: GridRequestModel) {
     dispatch(actions.setIsFindProductsGridLoading(true));
-    ordersService.getVariantsForGridHandler(model).then(() => {
+    ordersService.getVariantsForGridHandler(model).then((res) => {
+      dispatch(ordersActions.refreshVariantsGridRequestModel(res.data));
       dispatch(actions.setIsFindProductsGridLoading(false));
     });
   }
 
-  function addProductHandler() {
-    dispatch(actions.setIsFindProductsGridLoading(true));
+  function addProductHandler(model: GridRequestModel) {
     if (ordersState.brands.length === 0) {
       ordersService.getBrandsForFilterHandler();
     }
@@ -135,21 +135,17 @@ export default function useOrderProductsPageService(
     if (
       ordersState.sizesForFilter.length === 0 ||
       ordersState.colorsForFilter.length === 0
-    )
+    ) {
       ordersService.getTraitsForFilterHandler();
-    ordersService
-      .getVariantsForGridHandler(ordersState.variantsGridRequestModel)
-      .then(() => {
-        dispatch(actions.setIsFindProductsGridLoading(false));
-      });
+    }
+    ordersService.getVariantsForGridHandler(model);
   }
 
   function addVariantsToOrderHandler(orderId, model) {
-    dispatch(actions.setIsProductsInOrderGridLoading(true));
     return addVariantsToOrder({ orderId, model }).then((res: any) => {
-      dispatch(actions.setIsProductsInOrderGridLoading(false));
       if (!res.error) {
         getOrderStockActionsListForGrid(orderId);
+        getVariantsListForGrid(ordersState.variantsGridRequestModel);
         // dispatch(
         //   ordersActions.refreshStockActionsGridRequestModel({
         //     ...ordersState.stockActionsGridRequestModel,

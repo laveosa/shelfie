@@ -4,22 +4,34 @@ import { Check, MapPin, Plus, User } from "lucide-react";
 
 import cs from "./ShipmentConfigurationCard.module.scss";
 import SheCard from "@/components/complex/she-card/SheCard.tsx";
-import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
+import SheDatePicker
+  from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
-import { ordersInShipmentGridColumns } from "@/components/complex/grid/custom-grids/orders-in-shipment-grid/OrdersInShipmentGridColumns.tsx";
-import { orderItemsInShipmentGridColumns } from "@/components/complex/grid/custom-grids/order-items-in-shipmen-grid/OrderItemsInShipmentGridColumns.tsx";
-import { PackedOrderItemsGridColumns } from "@/components/complex/grid/custom-grids/packed-order-items-grid/PackedOrderItemsGridColumns.tsx";
+import {
+  ordersInShipmentGridColumns
+} from "@/components/complex/grid/custom-grids/orders-in-shipment-grid/OrdersInShipmentGridColumns.tsx";
+import {
+  orderItemsInShipmentGridColumns
+} from "@/components/complex/grid/custom-grids/order-items-in-shipmen-grid/OrderItemsInShipmentGridColumns.tsx";
+import {
+  PackedOrderItemsGridColumns
+} from "@/components/complex/grid/custom-grids/packed-order-items-grid/PackedOrderItemsGridColumns.tsx";
 import { formatDate, getInitials } from "@/utils/helpers/quick-helper.ts";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import {
   ShipmentStatusEnum,
-  ShipmentStatusLabels,
+  ShipmentStatusLabels
 } from "@/const/enums/ShipmentStatusEnum.ts";
-import { IShipmentConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IShipmentConfigurationCard.ts";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
+import {
+  IShipmentConfigurationCard
+} from "@/const/interfaces/complex-components/custom-cards/IShipmentConfigurationCard.ts";
+import {
+  ISheSelectItem
+} from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
+import { OrderItemModel } from "@/const/models/OrderItemModel.ts";
 
 export default function ShipmentConfigurationCard({
   isLoading,
@@ -31,13 +43,29 @@ export default function ShipmentConfigurationCard({
 
   // ==================================================================== UTILITIES
   const { translate } = useAppTranslation();
-
+  const sourceRef = React.useRef(null);
+  const dataRef = React.useRef(null);
   // ==================================================================== PRIVATE
+  React.useEffect(() => {
+    sourceRef.current = shipment?.orderItems.map((item) => ({
+      ...item,
+      amount: 1,
+    }));
+    dataRef.current = shipment?.orderItems.map((item) => ({
+      ...item,
+      amount: 1,
+    }));
+  }, [shipment?.orderItems]);
+
   function convertStatusesToSelectItems(): ISheSelectItem<string>[] {
     return Object.values(ShipmentStatusEnum).map((status) => ({
       value: status,
       text: ShipmentStatusLabels[status],
     }));
+  }
+
+  function onHandelUpGridData(data: OrderItemModel[]) {
+    dataRef.current = data;
   }
 
   // ==================================================================== LAYOUT
@@ -245,6 +273,9 @@ export default function ShipmentConfigurationCard({
                   valueTransKey="SpecialText.AddAll"
                   icon={Plus}
                   variant="info"
+                  onClick={() =>
+                    onAction("addAllItemsToShipment", dataRef.current)
+                  }
                 />
               </div>
               <SheGrid
@@ -252,12 +283,13 @@ export default function ShipmentConfigurationCard({
                 showHeader={false}
                 columns={orderItemsInShipmentGridColumns({
                   onAction,
+                  onHandelUpGridData,
                 })}
-                data={shipment?.orderItems}
+                data={dataRef.current}
               />
             </>
           )}
-          {shipment?.shipmentItems && (
+          {shipment?.shipmentItems.length > 0 && (
             <>
               <Separator />
               <div className={cs.shipmentProductsBlock}>
@@ -282,24 +314,24 @@ export default function ShipmentConfigurationCard({
               </div>
             </>
           )}
-          {shipment?.shipmentItems && (
-            <div className={cs.shipmentContentBlock}>
-              <Separator />
-              <div className={cs.packageContentBlock}>
-                <span className={cs.subtitleText}>
-                  {translate("ShipmentForm.Labels.PackageContent")}
-                </span>
-                <SheGrid
-                  isLoading={false}
-                  showHeader={false}
-                  columns={PackedOrderItemsGridColumns({
-                    onAction,
-                  })}
-                  data={shipment?.shipmentItems}
-                />
-              </div>
-            </div>
-          )}
+          {/*{shipment?.shipmentItems && (*/}
+          {/*  <div className={cs.shipmentContentBlock}>*/}
+          {/*    <Separator />*/}
+          {/*    <div className={cs.packageContentBlock}>*/}
+          {/*      <span className={cs.subtitleText}>*/}
+          {/*        {translate("ShipmentForm.Labels.PackageContent")}*/}
+          {/*      </span>*/}
+          {/*      <SheGrid*/}
+          {/*        isLoading={false}*/}
+          {/*        showHeader={false}*/}
+          {/*        columns={PackedOrderItemsGridColumns({*/}
+          {/*          onAction,*/}
+          {/*        })}*/}
+          {/*        data={shipment?.shipmentItems}*/}
+          {/*      />*/}
+          {/*    </div>*/}
+          {/*  </div>*/}
+          {/*)}*/}
           <div className={cs.deliveryServiceBlock}>
             <span className={cs.subtitleText}>
               {translate("ShipmentForm.Labels.ConfirmDeliveryService")}

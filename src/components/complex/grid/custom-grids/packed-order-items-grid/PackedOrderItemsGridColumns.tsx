@@ -96,7 +96,7 @@ export function PackedOrderItemsGridColumns({
       header: "Qty to pack",
       minSize: 100,
       cell: ({ row }) => {
-        return <span>{row.original.orderId}</span>;
+        return <span>{row.original.quantityToShip}</span>;
       },
     },
     {

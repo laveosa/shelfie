@@ -69,7 +69,7 @@ export function OrderProductsPage() {
     switch (actionType) {
       case "addProduct":
         handleCardAction("findProductsCard", true);
-        service.addProductHandler();
+        service.addProductHandler(ordersState.variantsGridRequestModel);
         break;
       case "addVariantToOrder":
         service.addVariantsToOrderHandler(orderId, {

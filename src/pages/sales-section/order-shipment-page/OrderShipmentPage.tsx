@@ -122,14 +122,13 @@ export function OrderShipmentPage() {
       case "addItemToShipment":
         service.addVariantsToShipmentHandler(
           state.selectedShipment.shipmentId,
-          {
-            items: [
-              {
-                stockActionId: payload.id,
-                quantity: payload.amount,
-              },
-            ],
-          },
+          payload,
+        );
+        break;
+      case "addAllItemsToShipment":
+        service.addAllVariantsToShipmentHandler(
+          state.selectedShipment.shipmentId,
+          payload,
         );
         break;
       case "removeItemFromShipment":

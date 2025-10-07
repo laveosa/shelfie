@@ -235,9 +235,9 @@ export default function useOrderShipmentPageService(
       selectShipmentForOrderCard: false,
     });
 
-    dispatch(actions.setIsShipmentDetailsCardLoading(true));
+    dispatch(actions.setIsShipmentConfigurationCardLoading(true));
     return getShipmentDetails(shipmentId).then((res: any) => {
-      dispatch(actions.setIsShipmentDetailsCardLoading(false));
+      dispatch(actions.setIsShipmentConfigurationCardLoading(false));
 
       if (res?.data) {
         const cleanedShipment = {
@@ -357,14 +357,37 @@ export default function useOrderShipmentPageService(
   }
 
   function addVariantsToShipmentHandler(shipmentId: number, model: any) {
-    return addVariantsToShipment({ shipmentId, model }).then((res: any) => {
-      dispatch(actions.refreshSelectedShipment(res.data));
-    });
+    const normalizedData = {
+      items: [
+        {
+          ...model,
+        },
+      ],
+    };
+    return addVariantsToShipment({ shipmentId, model: normalizedData }).then(
+      (res: any) => {
+        dispatch(actions.refreshSelectedShipment(res.data));
+      },
+    );
+  }
+
+  function addAllVariantsToShipmentHandler(shipmentId: number, model: any) {
+    const normalizedData = {
+      items: model.map((item: any) => ({
+        stockActionId: item.stockActionId,
+        quantity: item.amount,
+      })),
+    };
+    addVariantsToShipment({ shipmentId, model: normalizedData }).then(
+      (res: any) => {
+        dispatch(actions.refreshSelectedShipment(res.data));
+      },
+    );
   }
 
   function removeVariantFromShipmentHandler(actionId: number) {
     return removeVariantFromShipment(actionId).then((res: any) => {
-      return res.data;
+      dispatch(actions.refreshSelectedShipment(res.data));
     });
   }
 
@@ -412,6 +435,7 @@ export default function useOrderShipmentPageService(
     applyShipmentsGridColumns,
     disconnectOrderFromShipmentHandler,
     addVariantsToShipmentHandler,
+    addAllVariantsToShipmentHandler,
     removeVariantFromShipmentHandler,
     closeShipmentConfigurationCardHandler,
     closeSelectEntityCardHandler,
