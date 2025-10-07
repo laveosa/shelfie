@@ -1,8 +1,6 @@
-import { useTranslation } from "react-i18next";
 import { ImageIcon, Link2, Plus, RefreshCcw } from "lucide-react";
 import React, { useState } from "react";
-import SheProductCard
-  from "@/components/complex/she-product-card/SheProductCard.tsx";
+
 import cs from "./AddStockCard.module.scss";
 import { Separator } from "@/components/ui/separator.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";

@@ -49,7 +49,6 @@ export default function ShipmentConfigurationCard({
       })}
       showCloseButton
       isLoading={isLoading}
-      showFooter
       showNotificationCard
       notificationCardProps={{
         title: "Cancel Shipment",
@@ -238,9 +237,9 @@ export default function ShipmentConfigurationCard({
             <>
               <Separator />
               <div className={cs.shipmentProductsBlock}>
-               <span className={cs.subtitleText}>
-              {translate("ShipmentForm.Labels.ProductsWaitingForShipment")}
-            </span>
+                <span className={cs.subtitleText}>
+                  {translate("ShipmentForm.Labels.ProductsWaitingForShipment")}
+                </span>
                 <SheButton
                   value="Add All"
                   valueTransKey="SpecialText.AddAll"

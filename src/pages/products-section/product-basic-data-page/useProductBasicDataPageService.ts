@@ -1,16 +1,11 @@
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-import useProductsPageService
-  from "@/pages/products-section/products-page/useProductsPageService.ts";
+import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
 import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
 import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
-import {
-  ProductsPageSliceActions as productsActions
-} from "@/state/slices/ProductsPageSlice.ts";
-import {
-  ProductBasicDataPageSliceActions as actions
-} from "@/state/slices/ProductBasicDataPageSlice.ts";
+import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
+import { ProductBasicDataPageSliceActions as actions } from "@/state/slices/ProductBasicDataPageSlice.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
@@ -19,12 +14,8 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { ProductCountersModel } from "@/const/models/CounterModel.ts";
-import {
-  IProductBasicDataPageSlice
-} from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
-import {
-  IProductsPageSlice
-} from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import { IProductBasicDataPageSlice } from "@/const/interfaces/store-slices/IProductBasicDataPageSlice.ts";
+import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import CompaniesApiHooks from "@/utils/services/api/CompaniesApiService.ts";
 import { CompanyModel } from "@/const/models/CompanyModel.ts";
 import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";
@@ -65,6 +56,14 @@ export default function useProductBasicDataPageService(handleCardAction) {
   const [deletePhoto] = AssetsApiHooks.useDeletePhotoMutation();
   const [addLocationToCompany] =
     CompaniesApiHooks.useAddLocationToCompanyMutation();
+  const [updateCompanyDetails] =
+    CompaniesApiHooks.useUpdateCompanyDetailsMutation();
+  const [changePositionOfCompanyPhoto] =
+    CompaniesApiHooks.useChangePositionOfCompanyPhotoMutation();
+  const [changePositionOfLocationPhoto] =
+    CompaniesApiHooks.useChangePositionOfLocationPhotoMutation();
+  const [updateLocationDetails] =
+    CompaniesApiHooks.useUpdateLocationDetailsMutation();
 
   // ==================================================================== API
   function getProductsHandler(gridRequestModel: GridRequestModel) {
@@ -573,7 +572,45 @@ export default function useProductBasicDataPageService(handleCardAction) {
   }
 
   function manageCompanyPhotosHandler() {
-    handleCardAction("photosCard", true);
+    handleCardAction("companyPhotosCard", true);
+  }
+
+  function updateCompanyHandler(model: CompanyModel) {
+    dispatch(actions.setIsCompanyConfigurationCardLoading(true));
+    updateCompanyDetails({
+      companyId: state.managedCompany.companyId,
+      model,
+    }).then((res: any) => {
+      dispatch(actions.setIsCompanyConfigurationCardLoading(false));
+      if (!res.error) {
+        dispatch(actions.refreshManagedCompany(res.data));
+        dispatch(actions.setIsCompaniesGridLoading(true));
+        getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
+          (res) => {
+            dispatch(actions.setIsCompaniesGridLoading(false));
+            const modifiedList = res.data.items.map((item) => ({
+              ...item,
+              isSelected: item.companyId === state.selectedCompany?.companyId,
+            }));
+            dispatch(
+              actions.refreshCompaniesGridRequestModel({
+                ...res.data,
+                items: modifiedList,
+              }),
+            );
+          },
+        );
+        addToast({
+          text: "Company updated successfully",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: "Failed to update company",
+          type: "error",
+        });
+      }
+    });
   }
 
   async function deleteCompanyPhotoHandler(model: ImageModel) {
@@ -636,28 +673,37 @@ export default function useProductBasicDataPageService(handleCardAction) {
       }
       if (res.data.photoId) {
         dispatch(actions.setIsPhotoUploaderLoading(false));
-        dispatch(actions.setIsCompaniesGridLoading(true));
-        getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
-          (res) => {
-            dispatch(actions.setIsCompaniesGridLoading(false));
-            const modifiedList = res.data.items.map((item) => ({
-              ...item,
-              isSelected: item.companyId === state.selectedCompany?.companyId,
-            }));
-            dispatch(
-              actions.refreshCompaniesGridRequestModel({
-                ...res.data,
-                items: modifiedList,
-              }),
-            );
-          },
-        );
-        dispatch(
-          actions.refreshManagedCompany({
-            ...state.managedCompany,
-            photos: [...(state.managedCompany.photos || []), res.data],
-          }),
-        );
+        if (model.contextName === "Company") {
+          dispatch(actions.setIsCompaniesGridLoading(true));
+          getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
+            (res) => {
+              dispatch(actions.setIsCompaniesGridLoading(false));
+              const modifiedList = res.data.items.map((item) => ({
+                ...item,
+                isSelected: item.companyId === state.selectedCompany?.companyId,
+              }));
+              dispatch(
+                actions.refreshCompaniesGridRequestModel({
+                  ...res.data,
+                  items: modifiedList,
+                }),
+              );
+            },
+          );
+          dispatch(
+            actions.refreshManagedCompany({
+              ...state.managedCompany,
+              photos: [...(state.managedCompany.photos || []), res.data],
+            }),
+          );
+        } else {
+          dispatch(
+            actions.refreshManagedLocation({
+              ...state.managedLocation,
+              photos: [...(state.managedLocation.photos || []), res.data],
+            }),
+          );
+        }
         addToast({
           text: "Photos added successfully",
           type: "success",
@@ -668,8 +714,65 @@ export default function useProductBasicDataPageService(handleCardAction) {
     });
   }
 
-  function closePhotosCardHandler() {
-    handleCardAction("photosCard");
+  function changePhotoPositionHandler(model) {
+    switch (model.contextName) {
+      case "Company":
+        changePositionOfCompanyPhoto({
+          companyId: state.managedCompany.companyId,
+          photoId: model.activeItem.photoId,
+          index: model.newIndex,
+        }).then((res) => {
+          if (!res.error) {
+            getCompanyDetails(state.managedCompany.companyId).then((res) => {
+              dispatch(actions.refreshManagedCompany(res.data));
+            });
+            if (model.newIndex === 0 || model.oldIndex === 0) {
+              dispatch(actions.setIsSelectEntityCardLoading(true));
+              dispatch(actions.setIsCompaniesGridLoading(true));
+              getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
+                (res) => {
+                  dispatch(actions.setIsSelectEntityCardLoading(false));
+                  dispatch(actions.setIsCompaniesGridLoading(false));
+                  const modifiedList = res.data.items.map((item) => ({
+                    ...item,
+                    isSelected:
+                      item.companyId === state.selectedCompany?.companyId,
+                  }));
+                  dispatch(
+                    actions.refreshCompaniesGridRequestModel({
+                      ...res.data,
+                      items: modifiedList,
+                    }),
+                  );
+                },
+              );
+            }
+          }
+        });
+        break;
+      case "Location":
+        changePositionOfLocationPhoto({
+          locationId: state.managedLocation.locationId,
+          photoId: model.activeItem.photoId,
+          index: model.newIndex,
+        }).then((res) => {
+          if (!res.error) {
+            getCompanyDetails(state.managedCompany.companyId).then((res) => {
+              dispatch(actions.refreshManagedCompany(res.data));
+            });
+          }
+        });
+        break;
+    }
+  }
+
+  function closePhotosCardHandler(contextName: string) {
+    console.log("NAME", contextName);
+    if (contextName === "Company") {
+      handleCardAction("companyPhotosCard");
+    } else {
+      handleCardAction("locationPhotosCard");
+    }
   }
 
   function openLocationConfigurationCardHandler(model: LocationModel) {
@@ -709,9 +812,73 @@ export default function useProductBasicDataPageService(handleCardAction) {
     });
   }
 
+  function updateLocationHandler(model: LocationModel) {
+    dispatch(actions.setIsLocationConfigurationCardLoading(true));
+    updateLocationDetails({
+      locationId: state.managedLocation.locationId,
+      model,
+    }).then((res: any) => {
+      dispatch(actions.setIsLocationConfigurationCardLoading(false));
+      if (!res.error) {
+        dispatch(actions.setIsCompanyConfigurationCardLoading(true));
+        getCompanyDetails(state.managedCompany.companyId).then((res: any) => {
+          dispatch(actions.setIsCompanyConfigurationCardLoading(false));
+          dispatch(actions.refreshManagedCompany(res.data));
+        });
+        addToast({
+          text: "Location updated successfully",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: "Failed to update location",
+          type: "error",
+        });
+      }
+    });
+  }
+
   function closeLocationConfigurationCardHandler() {
     handleCardAction("locationConfigurationCard");
     dispatch(actions.resetManagedLocation());
+  }
+
+  async function deleteLocationPhotoHandler(model: ImageModel) {
+    const confirmedDeleteLocationPhoto = await openConfirmationDialog({
+      headerTitle: "Deleting location photo",
+      text: "You are about to delete location photo.",
+      primaryButtonValue: "Delete",
+      secondaryButtonValue: "Cancel",
+    });
+
+    if (!confirmedDeleteLocationPhoto) return;
+    deletePhoto(model.photoId).then((res: any) => {
+      const updatedPhotos = state.managedLocation.photos.filter(
+        (photo) => photo.photoId !== model.photoId,
+      );
+      dispatch(
+        actions.refreshManagedLocation({
+          ...state.managedLocation,
+          photos: updatedPhotos,
+        }),
+      );
+      if (!res.error) {
+        addToast({
+          text: "Photo deleted successfully",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: "Photo not deleted",
+          description: res.error.details.message,
+          type: "error",
+        });
+      }
+    });
+  }
+
+  function manageLocationPhotosHandler() {
+    handleCardAction("locationPhotosCard", true);
   }
 
   // ==================================================================== PROVIDED API
@@ -746,11 +913,16 @@ export default function useProductBasicDataPageService(handleCardAction) {
     deleteCompanyHandler,
     closeCompanyConfigurationCardHandler,
     manageCompanyPhotosHandler,
+    updateCompanyHandler,
     deleteCompanyPhotoHandler,
     uploadPhotoHandler,
+    changePhotoPositionHandler,
     closePhotosCardHandler,
     openLocationConfigurationCardHandler,
     createLocationHandler,
+    updateLocationHandler,
     closeLocationConfigurationCardHandler,
+    deleteLocationPhotoHandler,
+    manageLocationPhotosHandler,
   };
 }

@@ -34,7 +34,6 @@ export default function FindProductsCard({
     <SheCard
       className={cs.findProductsCard}
       title={translate("CardTitles.FindProducts")}
-      width="100%"
       isLoading={isLoading}
       showCloseButton
       onSecondaryButtonClick={() => onAction("closeFindProductsCard")}
