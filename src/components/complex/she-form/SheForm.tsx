@@ -1,4 +1,4 @@
-import React, { JSX } from "react";
+import React, { JSX, useEffect } from "react";
 
 import cs from "./SheForm.module.scss";
 import { Form } from "@/components/ui/form.tsx";
@@ -24,6 +24,7 @@ import {
   SheFormFooterDefaultModel,
 } from "@/const/interfaces/forms/ISheFormFooter.ts";
 import { SheFormContextProvider } from "@/state/providers/she-form-context-provider.tsx";
+import { useWatch } from "react-hook-form";
 
 export default function SheForm<T>(props: ISheForm<T>): JSX.Element {
   // ==================================================================== PROPS
@@ -42,6 +43,7 @@ export default function SheForm<T>(props: ISheForm<T>): JSX.Element {
     maxWidth,
     fullWidth,
     onSubmit,
+    onChange,
     onError,
     onCancel,
   } = props;
@@ -58,6 +60,14 @@ export default function SheForm<T>(props: ISheForm<T>): JSX.Element {
     SheFormHeaderDefaultModel,
     SheFormFooterDefaultModel,
   ]);
+
+  // ==================================================================== UTILITIES
+  const formValue = useWatch({ control: form.control });
+
+  // ==================================================================== SIDE EFFECTS
+  useEffect(() => {
+    onChange?.(formValue);
+  }, [formValue]);
 
   // ==================================================================== EVENT HANDLERS
   function onSubmitHandler(value: T) {

@@ -6,9 +6,7 @@ export interface IAddStockForm {
   data?: StockUnitModel;
   taxTypes?: TaxTypeModel[];
   currencyTypes?: CurrencyModel[];
-  onHandleUpData?: (data: StockUnitModel) => void;
-
+  onHandleUpData?: (data: any) => void;
   onSubmit?(value: StockUnitModel): void;
-
   onCancel?(value: StockUnitModel): void;
 }

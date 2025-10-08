@@ -23,7 +23,7 @@ export default function AddStockCard({
 }: IAddStockCard) {
   // ==================================================================== UTILITIES
   const { translate } = useAppTranslation();
-  const [addStockFormData, setAddStockFormData] = useState<any>(undefined);
+  const [addStockFormData, setAddStockFormData] = useState<any>(null);
 
   // ==================================================================== EVENT HANDLERS
   function onSubmitHandler() {
@@ -55,7 +55,7 @@ export default function AddStockCard({
         <AddStockForm
           currencyTypes={currencyTypes}
           taxTypes={taxTypes}
-          onHandleUpData={(data) => setAddStockFormData(data)}
+          onHandleUpData={setAddStockFormData}
         />
         <Separator />
         {purchase ? (

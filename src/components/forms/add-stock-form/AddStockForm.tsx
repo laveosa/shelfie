@@ -1,25 +1,23 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTranslation } from "react-i18next";
 import React, { JSX, useEffect } from "react";
 
+import cs from "./AddStockForm.module.scss";
+import useAppForm from "@/utils/hooks/useAppForm.ts";
+import SheForm from "@/components/complex/she-form/SheForm.tsx";
+import SheInput from "@/components/primitive/she-input/SheInput.tsx";
+import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
+import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
+import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
+import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
+import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
+import { IAddStockForm } from "@/const/interfaces/forms/IAddStockForm.ts";
+import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
+import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 import {
   StockUnitModel,
   StockUnitModelDefaultModel,
 } from "@/const/models/StockUnitModel.ts";
-import useAppForm from "@/utils/hooks/useAppForm.ts";
-import SheForm from "@/components/complex/she-form/SheForm.tsx";
-import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
-import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
-import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
-import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import cs from "./AddStockForm.module.scss";
-import { IAddStockForm } from "@/const/interfaces/forms/IAddStockForm.ts";
-import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
-import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 import addStockFormScheme from "@/utils/validation/schemes/AddStockFormScheme.ts";
-import { useWatch } from "react-hook-form";
 
 export default function AddStockForm({
   data,
@@ -29,16 +27,36 @@ export default function AddStockForm({
   onCancel,
   onHandleUpData,
 }: IAddStockForm): JSX.Element {
-  const { t } = useTranslation();
+  // ==================================================================== UTILITIES
   const form = useAppForm<StockUnitModel>({
     mode: ReactHookFormMode.CHANGE,
     resolver: zodResolver(addStockFormScheme),
     defaultValues: StockUnitModelDefaultModel,
   });
 
+  // ==================================================================== SIDE EFFECTS
+  useEffect(() => {
+    form.reset(data);
+  }, [data]);
+
+  // ==================================================================== EVENT HANDLERS
+  function onFormChangeHandler(model: StockUnitModel) {
+    onHandleUpData?.({
+      unitsAmount: model.unitAmount,
+      nettoPrice: model.priceModel.price,
+      taxTypeId: model.priceModel.taxTypeId,
+      currencyId: model.priceModel.currencyId,
+    });
+  }
+
+  function onErrorHandler(model) {
+    console.log(model);
+  }
+
+  // ==================================================================== PRIVATE
   function convertTaxTypesToSelectItems(
     data: TaxTypeModel[],
-  ): ISheSelectItem<any>[] {
+  ): ISheSelectItem<number>[] {
     return data?.map(
       (item): ISheSelectItem<any> => ({
         value: item.id,
@@ -49,7 +67,7 @@ export default function AddStockForm({
 
   function convertCurrencyTypesToSelectItems(
     data: CurrencyModel[],
-  ): ISheSelectItem<any>[] {
+  ): ISheSelectItem<number>[] {
     return data?.map(
       (item): ISheSelectItem<any> => ({
         value: item.id,
@@ -58,37 +76,7 @@ export default function AddStockForm({
     );
   }
 
-  useEffect(() => {
-    form.reset(data);
-  }, [data]);
-
-  function onErrorHandler(model) {
-    console.log(model);
-  }
-
-  const watchedValues = useWatch({
-    control: form.control,
-    name: [
-      "unitAmount",
-      "priceModel.price",
-      "priceModel.taxTypeId",
-      "priceModel.currencyId",
-    ],
-  });
-
-  useEffect(() => {
-    if (!form.formState.isValid) return;
-
-    const updatedData: any = {
-      unitsAmount: watchedValues[0],
-      nettoPrice: watchedValues[1],
-      taxTypeId: watchedValues[2],
-      currencyId: watchedValues[3],
-    };
-
-    onHandleUpData(updatedData);
-  }, [watchedValues, form.formState.isValid, data]);
-
+  // ==================================================================== LAYOUT
   return (
     <SheForm<StockUnitModel>
       className={cs.addStockForm}
@@ -98,6 +86,7 @@ export default function AddStockForm({
       hideSecondaryBtn
       hidePrimaryBtn
       onSubmit={onSubmit}
+      onChange={onFormChangeHandler}
       onError={onErrorHandler}
       onCancel={onCancel}
     >
@@ -106,7 +95,8 @@ export default function AddStockForm({
           name="priceModel.price"
           render={({ field }) => (
             <SheInput
-              label={t("PurchaseForm.Labels.PurchasePrice")}
+              label="Purchase Price"
+              labelTransKey="PurchaseForm.Labels.PurchasePrice"
               value={field.value}
               placeholder="enter price netto..."
               type="number"
