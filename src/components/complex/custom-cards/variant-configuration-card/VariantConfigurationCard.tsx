@@ -424,7 +424,9 @@ export default function VariantConfigurationCard({
           <div className={cs.stockBlock}>
             <div className={cs.stockBlockRow}>
               <span className="she-text">
-                {translate("StockForm.Labels.CurrentlyInStock")}
+                {translate("StockForm.Labels.CurrentlyInStock", {
+                  stockAmount: "",
+                })}
               </span>
               <span className={cs.stockBlockRowNumber}>
                 {variant?.stockAmount}

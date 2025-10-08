@@ -11,6 +11,12 @@ export default function LocationConfigurationCard({
   location,
   onAction,
 }: ILocationConfigurationCard) {
+  // ==================================================================== EVENT HANDLERS
+
+  // ==================================================================== PRIVATE
+
+  // ==================================================================== LAYOUT
+
   return (
     <SheCard
       className={cs.locationConfigurationCard}
@@ -32,6 +38,7 @@ export default function LocationConfigurationCard({
           countryCodes={countryCodes}
           onSubmit={(data) => onAction("createLocation", data)}
           onHandleUpData={(data) => onAction("updateLocation", data)}
+          onAction={onAction}
         />
       </div>
     </SheCard>

@@ -15,7 +15,9 @@ export interface LocationModel {
   postCode?: string;
   address?: string;
   isDeleted?: boolean;
-  pictures?: ImageModel;
+  pictures?: ImageModel[];
+  photos?: ImageModel[];
+  name?: string;
 }
 
 export const LocationModelDefault: LocationModel = {

@@ -122,18 +122,26 @@ export function OrderShipmentPage() {
       case "addItemToShipment":
         service.addVariantsToShipmentHandler(
           state.selectedShipment.shipmentId,
-          {
-            items: [
-              {
-                stockActionId: payload.stockActionId,
-                quantity: payload.quantity,
-              },
-            ],
-          },
+          payload,
+        );
+        break;
+      case "addAllItemsToShipment":
+        service.addAllVariantsToShipmentHandler(
+          state.selectedShipment.shipmentId,
+          payload,
         );
         break;
       case "removeItemFromShipment":
         service.removeVariantFromShipmentHandler(payload.stockActionId);
+        break;
+      case "changePackedOrderItemQuantity":
+        service.changePackedOrderItemQuantityHandler(payload);
+        break;
+      case "confirmPackedProducts":
+        service.confirmPackedProductsHandler(
+          state.selectedShipment.shipmentId,
+          payload,
+        );
         break;
     }
   }

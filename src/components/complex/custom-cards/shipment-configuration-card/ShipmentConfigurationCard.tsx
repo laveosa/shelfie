@@ -20,6 +20,8 @@ import {
 } from "@/const/enums/ShipmentStatusEnum.ts";
 import { IShipmentConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IShipmentConfigurationCard.ts";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
+import { OrderItemModel } from "@/const/models/OrderItemModel.ts";
+import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 
 export default function ShipmentConfigurationCard({
   isLoading,
@@ -28,16 +30,44 @@ export default function ShipmentConfigurationCard({
 }: IShipmentConfigurationCard) {
   // ==================================================================== STATE MANAGEMENT
   const [status, setStatus] = React.useState<ShipmentStatusEnum>();
-
+  const [orderItems, setOrderItems] = React.useState<OrderItemModel[]>(null);
+  const [packedOrderItems, setPackedOrderItems] =
+    React.useState<OrderItemModel[]>(null);
   // ==================================================================== UTILITIES
   const { translate } = useAppTranslation();
+  const orderItemsRef = React.useRef(null);
+  const packedOrderItemsRef = React.useRef(null);
 
   // ==================================================================== PRIVATE
+  React.useEffect(() => {
+    setOrderItems(() => {
+      const orderItemsList = shipment?.orderItems.map((item) => ({
+        ...item,
+        amount: 1,
+      }));
+      orderItemsRef.current = orderItemsList;
+      return orderItemsList;
+    });
+
+    setPackedOrderItems(() => {
+      const packedOrderItemsList = shipment?.shipmentItems.map((item) => ({
+        ...item,
+        amount: 1,
+      }));
+      packedOrderItemsRef.current = packedOrderItemsList;
+      return packedOrderItemsList;
+    });
+  }, [shipment?.orderItems]);
+
   function convertStatusesToSelectItems(): ISheSelectItem<string>[] {
     return Object.values(ShipmentStatusEnum).map((status) => ({
       value: status,
       text: ShipmentStatusLabels[status],
     }));
+  }
+
+  function onHandelUpGridData(data: OrderItemModel[]) {
+    orderItemsRef.current = data;
   }
 
   // ==================================================================== LAYOUT
@@ -49,7 +79,6 @@ export default function ShipmentConfigurationCard({
       })}
       showCloseButton
       isLoading={isLoading}
-      showFooter
       showNotificationCard
       notificationCardProps={{
         title: "Cancel Shipment",
@@ -234,100 +263,118 @@ export default function ShipmentConfigurationCard({
             columns={ordersInShipmentGridColumns(onAction)}
             data={shipment?.orders}
           />
-          <Separator />
-          <div className={cs.shipmentProductsBlock}>
-            <span className={cs.subtitleText}>
-              {translate("ShipmentForm.Labels.ProductsWaitingForShipment")}
-            </span>
-            <SheButton
-              value="Add All"
-              valueTransKey="SpecialText.AddAll"
-              icon={Plus}
-              variant="info"
-            />
-          </div>
-          <SheGrid
-            isLoading={false}
-            showHeader={false}
-            columns={orderItemsInShipmentGridColumns({
-              onAction,
-            })}
-            data={shipment?.orderItems}
-          />
-          {shipment?.shipmentItems && (
-            <>
-              <Separator />
-              <div className={cs.shipmentProductsBlock}>
-                <span className={cs.subtitleText}>
-                  {translate("OrderActions.ConfirmPackedProducts")}
-                </span>
-              </div>
-              <SheGrid
-                isLoading={false}
-                showHeader={false}
-                columns={PackedOrderItemsGridColumns({
-                  onAction,
-                })}
-                data={shipment?.shipmentItems}
-              />
-              <div className={cs.shipmentProductsButton}>
-                <SheButton
-                  value="Confirm packed products"
-                  valueTransKey="OrderActions.ConfirmPackedProducts"
-                  icon={Check}
+          {shipment?.orderItems?.length > 0 &&
+            shipment?.shipmentStatus !== "DeliveryPending" && (
+              <>
+                <Separator />
+                <div className={cs.shipmentProductsBlock}>
+                  <span className={cs.subtitleText}>
+                    {translate(
+                      "ShipmentForm.Labels.ProductsWaitingForShipment",
+                    )}
+                  </span>
+                  <SheButton
+                    value="Add All"
+                    valueTransKey="SpecialText.AddAll"
+                    icon={Plus}
+                    variant="info"
+                    onClick={() =>
+                      onAction("addAllItemsToShipment", orderItemsRef.current)
+                    }
+                  />
+                </div>
+                <SheGrid
+                  isLoading={false}
+                  showHeader={false}
+                  columns={orderItemsInShipmentGridColumns({
+                    onAction,
+                    onHandelUpGridData,
+                  })}
+                  data={orderItems}
                 />
-              </div>
-            </>
-          )}
-          {shipment?.shipmentItems && (
-            <div className={cs.shipmentContentBlock}>
-              <Separator />
-              <div className={cs.packageContentBlock}>
-                <span className={cs.subtitleText}>
-                  {translate("ShipmentForm.Labels.PackageContent")}
-                </span>
+              </>
+            )}
+          {shipment?.shipmentItems.length > 0 &&
+            shipment?.shipmentStatus !== "DeliveryPending" && (
+              <>
+                <Separator />
+                <div className={cs.shipmentProductsBlock}>
+                  <span className={cs.subtitleText}>
+                    {translate("OrderActions.ConfirmPackedProducts")}
+                  </span>
+                </div>
                 <SheGrid
                   isLoading={false}
                   showHeader={false}
                   columns={PackedOrderItemsGridColumns({
                     onAction,
                   })}
-                  data={shipment?.shipmentItems}
+                  data={packedOrderItems}
                 />
+                <div className={cs.shipmentProductsButton}>
+                  <SheButton
+                    value="Confirm packed products"
+                    valueTransKey="OrderActions.ConfirmPackedProducts"
+                    icon={Check}
+                    onClick={() =>
+                      onAction("confirmPackedProducts", packedOrderItems)
+                    }
+                  />
+                </div>
+              </>
+            )}
+          {shipment?.shipmentStatus === "DeliveryPending" && (
+            <>
+              <div className={cs.shipmentContentBlock}>
+                <Separator />
+                <div className={cs.packageContentBlock}>
+                  <span className={cs.subtitleText}>
+                    {translate("ShipmentForm.Labels.PackageContent")}
+                  </span>
+                  <SheGrid
+                    isLoading={false}
+                    showHeader={false}
+                    columns={PackedOrderItemsGridColumns({
+                      onAction,
+                    })}
+                    data={shipment?.shipmentItems}
+                  />
+                </div>
               </div>
-            </div>
+
+              <div className={cs.deliveryServiceBlock}>
+                <span className={cs.subtitleText}>
+                  {translate("ShipmentForm.Labels.ConfirmDeliveryService")}
+                </span>
+                <SheInput
+                  label="Tracking number"
+                  labelTransKey="ShipmentForm.Labels.TrackingNumber"
+                  placeholder="enter tracking number..."
+                  placeholderTransKey="ShipmentForm.Placeholders.EnterTrackingNumber"
+                  fullWidth
+                />
+                <SheSelect
+                  label="Delivery service"
+                  labelTransKey="ShipmentForm.Labels.DeliveryService"
+                  placeholder="enter tracking number..."
+                  placeholderTransKey="ShipmentForm.Placeholders.EnterTrackingNumber"
+                  fullWidth
+                />
+                <div className={cs.deliveryServiceButtons}>
+                  <SheButton
+                    value="Return shipment to packing"
+                    valueTransKey="OrderActions.ReturnShipmentToPacking"
+                    variant="secondary"
+                  />
+                  <SheButton
+                    value="Confirm shipment send"
+                    valueTransKey="OrderActions.ConfirmShipmentSend"
+                    icon={Check}
+                  />
+                </div>
+              </div>
+            </>
           )}
-          <div className={cs.deliveryServiceBlock}>
-            <span className={cs.subtitleText}>
-              {translate("ShipmentForm.Labels.ConfirmDeliveryService")}
-            </span>
-            <SheSelect
-              label="Tracking number"
-              labelTransKey="ShipmentForm.Labels.TrackingNumber"
-              placeholder="enter tracking number..."
-              placeholderTransKey="ShipmentForm.Placeholders.EnterTrackingNumber"
-              fullWidth
-            />
-            <SheSelect
-              label="Delivery service"
-              labelTransKey="ShipmentForm.Labels.DeliveryService"
-              placeholder="enter tracking number..."
-              placeholderTransKey="ShipmentForm.Placeholders.EnterTrackingNumber"
-              fullWidth
-            />
-            <div className={cs.deliveryServiceButtons}>
-              <SheButton
-                value="Return shipment to packing"
-                valueTransKey="OrderActions.ReturnShipmentToPacking"
-                variant="secondary"
-              />
-              <SheButton
-                value="Confirm shipment send"
-                valueTransKey="OrderActions.ConfirmShipmentSend"
-                icon={Check}
-              />
-            </div>
-          </div>
         </div>
       </div>
     </SheCard>

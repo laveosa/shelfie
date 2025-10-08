@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useWatch } from "react-hook-form";
 import React from "react";
 import _ from "lodash";
 
@@ -42,6 +43,11 @@ export default function DisposeStockCard({
     defaultValues: disposeStockDefaultModel,
   });
 
+  const watchedUnitAmount = useWatch({
+    control: form.control,
+    name: "unitAmount",
+  });
+
   // ==================================================================== EVENT HANDLERS
   function onSubmitHandler(data: DisposeStockModel) {
     const formattedData = {
@@ -62,7 +68,8 @@ export default function DisposeStockCard({
       primaryButtonTitleTransKey="StockActions.Dispose"
       primaryButtonDisabled={
         !form.formState.isValid ||
-        _.isEqual(disposeStockDefaultModel, form.getValues())
+        _.isEqual(disposeStockDefaultModel, form.getValues()) ||
+        Number(watchedUnitAmount) > Number(variant?.stockAmount)
       }
       onPrimaryButtonClick={form.handleSubmit(onSubmitHandler)}
       onSecondaryButtonClick={onSecondaryButtonClick}
@@ -89,6 +96,10 @@ export default function DisposeStockCard({
               placeholder="enter amount of units..."
               placeholderTransKey="PurchaseForm.Placeholders.Units"
               min={0}
+              errorMessage={
+                watchedUnitAmount > variant?.stockAmount &&
+                "You try to dispose more units the you have in stock"
+              }
               type="number"
               fullWidth
             />

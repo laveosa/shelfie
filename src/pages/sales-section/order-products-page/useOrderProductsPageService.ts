@@ -22,7 +22,6 @@ import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
 import { addGridRowColor, formatDate } from "@/utils/helpers/quick-helper.ts";
 import { GridRowsColorsEnum } from "@/const/enums/GridRowsColorsEnum.ts";
 import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
-import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 import { CompanyModel } from "@/const/models/CompanyModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
@@ -53,8 +52,6 @@ export default function useOrderProductsPageService(
     OrdersApiHooks.useUpdateStockActionInOrderMutation();
   const [removeStockActionFromOrder] =
     OrdersApiHooks.useRemoveStockActionFromOrderMutation();
-  const [changeVariantPosition] =
-    ProductsApiHooks.useChangeVariantPositionMutation();
   const [generateProductCode] =
     ProductsApiHooks.useLazyGenerateProductCodeQuery();
   const [deletePhoto] = AssetsApiHooks.useDeletePhotoMutation();
@@ -95,29 +92,19 @@ export default function useOrderProductsPageService(
   const [detachVariantPhoto] = ProductsApiHooks.useDetachVariantPhotoMutation();
   const [changePhotoPositionForVariant] =
     ProductsApiHooks.useChangePhotoPositionForVariantMutation();
-  const [getListOfTypesOfTraits] =
-    DictionaryApiHooks.useLazyGetListOfTypesOfTraitsQuery();
-  const [getTrait] = ProductsApiHooks.useLazyGetTraitQuery();
-  const [getOptionsForTrait] =
-    ProductsApiHooks.useLazyGetOptionsForTraitQuery();
-  const [createNewTrait] = ProductsApiHooks.useCreateNewTraitMutation();
-  const [getListOfAllTraits] =
-    ProductsApiHooks.useLazyGetListOfAllTraitsQuery();
-  const [updateTrait] = ProductsApiHooks.useUpdateTraitMutation();
-  const [setProductTraits] = ProductsApiHooks.useSetProductTraitsMutation();
-  const [deleteTrait] = ProductsApiHooks.useDeleteTraitMutation();
-  const [createNewOptionForTrait] =
-    ProductsApiHooks.useCreateNewOptionForTraitMutation();
-  const [updateOptionsForTrait] =
-    ProductsApiHooks.useUpdateOptionOfTraitMutation();
-  const [deleteOptionsForTrait] =
-    ProductsApiHooks.useDeleteOptionOfTraitMutation();
-  const [changePositionOfTraitOption] =
-    ProductsApiHooks.useChangePositionOfTraitOptionMutation();
   const [getCurrenciesList] =
     DictionaryApiHooks.useLazyGetCurrenciesListQuery();
   const [getVariantStockHistory] =
     ProductsApiHooks.useLazyGetVariantStockHistoryQuery();
+  const [updateCompanyDetails] =
+    CompaniesApiHooks.useUpdateCompanyDetailsMutation();
+  const [changePositionOfCompanyPhoto] =
+    CompaniesApiHooks.useChangePositionOfCompanyPhotoMutation();
+  const [changePositionOfLocationPhoto] =
+    CompaniesApiHooks.useChangePositionOfLocationPhotoMutation();
+  const [updateLocationDetails] =
+    CompaniesApiHooks.useUpdateLocationDetailsMutation();
+  const [deleteLocation] = CompaniesApiHooks.useDeleteLocationMutation();
 
   function getOrderStockActionsListForGrid(orderId) {
     dispatch(actions.setIsProductsInOrderGridLoading(true));
@@ -133,13 +120,13 @@ export default function useOrderProductsPageService(
 
   function getVariantsListForGrid(model: GridRequestModel) {
     dispatch(actions.setIsFindProductsGridLoading(true));
-    ordersService.getVariantsForGridHandler(model).then(() => {
+    ordersService.getVariantsForGridHandler(model).then((res) => {
+      dispatch(ordersActions.refreshVariantsGridRequestModel(res.data));
       dispatch(actions.setIsFindProductsGridLoading(false));
     });
   }
 
-  function addProductHandler() {
-    dispatch(actions.setIsFindProductsGridLoading(true));
+  function addProductHandler(model: GridRequestModel) {
     if (ordersState.brands.length === 0) {
       ordersService.getBrandsForFilterHandler();
     }
@@ -149,21 +136,17 @@ export default function useOrderProductsPageService(
     if (
       ordersState.sizesForFilter.length === 0 ||
       ordersState.colorsForFilter.length === 0
-    )
+    ) {
       ordersService.getTraitsForFilterHandler();
-    ordersService
-      .getVariantsForGridHandler(ordersState.variantsGridRequestModel)
-      .then(() => {
-        dispatch(actions.setIsFindProductsGridLoading(false));
-      });
+    }
+    ordersService.getVariantsForGridHandler(model);
   }
 
   function addVariantsToOrderHandler(orderId, model) {
-    dispatch(actions.setIsProductsInOrderGridLoading(true));
     return addVariantsToOrder({ orderId, model }).then((res: any) => {
-      dispatch(actions.setIsProductsInOrderGridLoading(false));
       if (!res.error) {
         getOrderStockActionsListForGrid(orderId);
+        getVariantsListForGrid(ordersState.variantsGridRequestModel);
         // dispatch(
         //   ordersActions.refreshStockActionsGridRequestModel({
         //     ...ordersState.stockActionsGridRequestModel,
@@ -248,16 +231,6 @@ export default function useOrderProductsPageService(
     });
   }
 
-  function changeVariantPositionHandler(productId, variantId, index) {
-    return changeVariantPosition({
-      productId,
-      variantId,
-      index,
-    }).then((res: any) => {
-      return res.data;
-    });
-  }
-
   function deletePhotoHandler(photoId) {
     return deletePhoto(photoId).then((res: any) => {
       return res.data;
@@ -301,59 +274,6 @@ export default function useOrderProductsPageService(
 
   function detachVariantPhotoHandler(id, photoId) {
     return detachVariantPhoto({ id, photoId }).then((res: any) => {
-      return res;
-    });
-  }
-
-  function getListOfTypesOfTraitsHandler() {
-    return getListOfTypesOfTraits(undefined).then((res: any) => {
-      dispatch(actions.refreshTypesOfTraits(res.data));
-      return res.data;
-    });
-  }
-
-  function getTraitHandler(id: number) {
-    return getTrait(id).then((res: any) => {
-      return res.data;
-    });
-  }
-
-  function getOptionsForTraitHandler(id) {
-    return getOptionsForTrait(id).then((res: any) => {
-      return res.data;
-    });
-  }
-
-  function updateTraitsHandler(id, model) {
-    return updateTrait({ id, model }).then((res: any) => {
-      return res.data;
-    });
-  }
-
-  function setProductsTraitsHandler(id, model) {
-    return setProductTraits({ id, model }).then((res: any) => {
-      return res;
-    });
-  }
-
-  function createNewOptionForTraitHandler(id, model) {
-    return createNewOptionForTrait({ id, model }).then((res: any) => {
-      return res.data;
-    });
-  }
-
-  function updateOptionsForTraitHandler(id, model) {
-    return updateOptionsForTrait({ id, model }).then((res: any) => {
-      return res.data;
-    });
-  }
-
-  function changePositionOfTraitOptionHandler(traitId, optionId, index) {
-    return changePositionOfTraitOption({
-      traitId,
-      optionId,
-      index,
-    }).then((res: any) => {
       return res;
     });
   }
@@ -415,7 +335,7 @@ export default function useOrderProductsPageService(
       if (res) {
         const modifiedRes = {
           ...res.data,
-          traitOptions: addGridRowColor(res.data.traitOptions, "color", [
+          traitOptions: addGridRowColor(res.data?.traitOptions, "color", [
             {
               field: "isRemoved",
               value: true,
@@ -494,13 +414,6 @@ export default function useOrderProductsPageService(
     });
   }
 
-  function getListOfAllTraitsHandler() {
-    return getListOfAllTraits(undefined).then((res: any) => {
-      dispatch(actions.refreshTraits(res.data));
-      return res.data;
-    });
-  }
-
   async function deleteVariantHandler(model) {
     const confirmedDeleteVariant = await openConfirmationDialog({
       headerTitle: "Delete Variant",
@@ -564,20 +477,15 @@ export default function useOrderProductsPageService(
     disposeVariantFromStockHandler(
       model.variant.variantId,
       model.formattedData,
-    ).then((res) => {
+    ).then(() => {
       dispatch(actions.setIsDisposeStockCardLoading(false));
-      if (res) {
-        addToast({
-          text: "Variant disposed successfully",
-          type: "success",
-        });
-      } else {
-        addToast({
-          text: "Variant not disposed",
-          description: res.error.message,
-          type: "error",
-        });
-      }
+      getVariantDetailsHandler(model.variant.variantId).then((res) => {
+        dispatch(actions.refreshSelectedVariant(res));
+      });
+      addToast({
+        text: "Variant disposed successfully",
+        type: "success",
+      });
     });
   }
 
@@ -700,279 +608,75 @@ export default function useOrderProductsPageService(
   }
 
   function changePhotoPositionHandler(model) {
-    changePhotoPositionForVariantHandler(
-      state.selectedVariant.variantId,
-      model.activeItem.photoId,
-      model.newIndex,
-    ).then(() => {
-      dispatch(actions.setIsVariantPhotoGridLoading(true));
-      getVariantDetailsHandler(state.selectedVariant.variantId).then((res) => {
-        dispatch(actions.setIsVariantPhotoGridLoading(false));
-        dispatch(actions.refreshSelectedVariant(res));
-        dispatch(actions.refreshVariantPhotos(res?.photos));
-      });
-    });
-  }
-
-  function addTraitHandler() {
-    dispatch(actions.setIsProductTraitConfigurationCardLoading(true));
-    dispatch(actions.resetSelectedTrait());
-    getListOfTypesOfTraitsHandler().then((res) => {
-      dispatch(actions.setIsProductTraitConfigurationCardLoading(false));
-      dispatch(actions.refreshTypesOfTraits(res));
-      handleCardAction("productTraitConfigurationCard", true);
-      dispatch(actions.refreshSelectedTrait({}));
-    });
-  }
-
-  function manageTraitHandler(model) {
-    handleCardAction("productTraitConfigurationCard", true);
-    dispatch(actions.setIsProductTraitConfigurationCardLoading(true));
-    dispatch(actions.setIsTraitOptionsGridLoading(true));
-    Promise.all([
-      getTraitHandler(model),
-      getOptionsForTraitHandler(model),
-      getListOfTypesOfTraitsHandler(),
-    ]).then(([trait, options, types]) => {
-      dispatch(actions.setIsProductTraitConfigurationCardLoading(false));
-      dispatch(actions.setIsTraitOptionsGridLoading(false));
-      dispatch(actions.refreshSelectedTrait(trait));
-      dispatch(
-        actions.refreshColorOptionsGridRequestModel({
-          ...state.colorOptionsGridRequestModel,
-          items: options.filter((option) => !option.isDeleted),
-        }),
-      );
-      dispatch(actions.refreshTypesOfTraits(types));
-    });
-  }
-
-  function createTraitHandler(model) {
-    dispatch(actions.setIsProductTraitConfigurationCardLoading(true));
-    createNewTrait(model).then((res: any) => {
-      dispatch(actions.setIsProductTraitConfigurationCardLoading(false));
-      if (res) {
-        dispatch(actions.refreshSelectedTrait(res));
-        getOptionsForTraitHandler(res.data.traitId).then((res) => {
-          dispatch(
-            actions.refreshColorOptionsGridRequestModel({
-              ...state.colorOptionsGridRequestModel,
-              items: res.filter((option) => !option.isDeleted),
-            }),
+    switch (model.contextName) {
+      case "Company":
+        changePositionOfCompanyPhoto({
+          companyId: state.managedCompany.companyId,
+          photoId: model.activeItem.photoId,
+          index: model.newIndex,
+        }).then((res) => {
+          if (!res.error) {
+            getCompanyDetails(state.managedCompany.companyId).then((res) => {
+              dispatch(actions.refreshManagedCompany(res.data));
+            });
+            if (model.newIndex === 0 || model.oldIndex === 0) {
+              dispatch(actions.setIsSelectEntityCardLoading(true));
+              dispatch(actions.setIsSuppliersGridLoading(true));
+              getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
+                (res) => {
+                  dispatch(actions.setIsSelectEntityCardLoading(false));
+                  dispatch(actions.setIsSuppliersGridLoading(false));
+                  const modifiedList = res.data.items.map((item) => ({
+                    ...item,
+                    isSelected:
+                      item.companyId === state.selectedCompany?.companyId,
+                  }));
+                  dispatch(
+                    actions.refreshCompaniesGridRequestModel({
+                      ...res.data,
+                      items: modifiedList,
+                    }),
+                  );
+                },
+              );
+            }
+          }
+        });
+        break;
+      case "Location":
+        changePositionOfLocationPhoto({
+          locationId: state.managedLocation.locationId,
+          photoId: model.activeItem.photoId,
+          index: model.newIndex,
+        }).then((res) => {
+          if (!res.error) {
+            getCompanyDetails(state.managedCompany.companyId).then((res) => {
+              dispatch(actions.refreshManagedCompany(res.data));
+            });
+          }
+        });
+        break;
+      default:
+        changePhotoPositionForVariantHandler(
+          state.selectedVariant.variantId,
+          model.activeItem.photoId,
+          model.newIndex,
+        );
+        changePhotoPositionForVariantHandler(
+          state.selectedVariant.variantId,
+          model.activeItem.photoId,
+          model.newIndex,
+        ).then(() => {
+          dispatch(actions.setIsVariantPhotoGridLoading(true));
+          getVariantDetailsHandler(state.selectedVariant.variantId).then(
+            (res) => {
+              dispatch(actions.setIsVariantPhotoGridLoading(false));
+              dispatch(actions.refreshSelectedVariant(res));
+              dispatch(actions.refreshVariantPhotos(res?.photos));
+            },
           );
         });
-        getListOfAllTraitsHandler().then((res) => {
-          dispatch(actions.refreshTraits(res));
-        });
-        addToast({
-          text: "Trait created successfully",
-          type: "success",
-        });
-      } else {
-        addToast({
-          text: "Trait not created",
-          description: res.error.message,
-          type: "error",
-        });
-      }
-    });
-  }
-
-  function updateTraitHandler(model) {
-    dispatch(actions.setIsProductTraitConfigurationCardLoading(true));
-    updateTraitsHandler(state.selectedTrait.traitId, model).then((res) => {
-      dispatch(actions.setIsProductTraitConfigurationCardLoading(false));
-      if (res) {
-        getListOfAllTraitsHandler().then((res) => {
-          dispatch(actions.refreshTraits(res));
-        });
-        addToast({
-          text: "Trait updated successfully",
-          type: "success",
-        });
-      } else {
-        addToast({
-          text: "Trait not updated",
-          description: res.error.message,
-          type: "error",
-        });
-      }
-    });
-  }
-
-  function setProductTraitsHandler(model) {
-    dispatch(actions.refreshSelectedTraitsIds(model));
-    dispatch(actions.setIsChooseVariantTraitsCardLoading(true));
-    setProductsTraitsHandler(state.productId, model).then((res) => {
-      dispatch(actions.setIsChooseVariantTraitsCardLoading(false));
-      if (res) {
-        dispatch(actions.resetActiveCards());
-        getListOfTraitsWithOptionsForProductHandler(state.productId).then(
-          (res) => {
-            dispatch(actions.refreshListOfTraitsWithOptionsForProduct(res));
-          },
-        );
-        addToast({
-          text: "Traits set successfully",
-          type: "success",
-        });
-      } else {
-        addToast({
-          text: "Traits not set",
-          description: res.error.message,
-          type: "error",
-        });
-      }
-    });
-  }
-
-  async function deleteTraitHandler(model) {
-    const confirmedTraitDeleting = await openConfirmationDialog({
-      headerTitle: "Deleting trait",
-      text: `You are about to remove the trait ${model.traitName}. All products connected to it will loose the configuration and will require your attention to map it to the new trait.`,
-      primaryButtonValue: "Delete",
-      secondaryButtonValue: "Cancel",
-    });
-
-    if (!confirmedTraitDeleting) return;
-
-    dispatch(actions.setIsChooseVariantTraitsCardLoading(true));
-
-    try {
-      await deleteTrait(model.traitId);
-
-      const [traitsWithOptions, allTraits] = await Promise.all([
-        getListOfTraitsWithOptionsForProductHandler(state.productId),
-        getListOfAllTraitsHandler(),
-      ]);
-      dispatch(
-        actions.refreshListOfTraitsWithOptionsForProduct(traitsWithOptions),
-      );
-      dispatch(actions.refreshTraits(allTraits));
-
-      addToast({
-        text: "Trait deleted successfully",
-        type: "success",
-      });
-    } catch (error: any) {
-      addToast({
-        text: error.message || "Failed to delete trait",
-        type: "error",
-      });
-    } finally {
-      dispatch(actions.setIsChooseVariantTraitsCardLoading(false));
-      handleCardAction("productTraitConfigurationCard");
     }
-  }
-
-  function addOptionHandler() {
-    createNewOptionForTraitHandler(state.selectedTrait.traitId, {}).then(
-      (res) => {
-        if (res) {
-          getListOfAllTraitsHandler().then((res) => {
-            dispatch(actions.refreshTraits(res));
-          });
-          dispatch(
-            actions.refreshColorOptionsGridRequestModel({
-              ...state.colorOptionsGridRequestModel,
-              items: [...state.colorOptionsGridRequestModel.items, res],
-            }),
-          );
-          addToast({
-            text: "Option created successfully",
-            type: "success",
-          });
-        } else {
-          addToast({
-            text: "Option not created",
-            description: res.error.message,
-            type: "error",
-          });
-        }
-      },
-    );
-  }
-
-  function updateOptionHandler(model) {
-    updateOptionsForTraitHandler(model.optionId, model.updatedModel).then(
-      (res) => {
-        if (res) {
-          dispatch(
-            actions.refreshColorOptionsGridRequestModel({
-              ...state.colorOptionsGridRequestModel,
-              items: state.colorOptionsGridRequestModel.items.map((item) =>
-                item.optionId === res.optionId ? res : item,
-              ),
-            }),
-          );
-          addToast({
-            text: "Option updated successfully",
-            type: "success",
-          });
-        } else {
-          addToast({
-            text: "Option not updated",
-            description: res.error.message,
-            type: "error",
-          });
-        }
-      },
-    );
-  }
-
-  async function deleteOptionHandler(model: TraitOptionModel) {
-    const confirmedOptionDeleting = await openConfirmationDialog({
-      headerTitle: "Deleting option",
-      text: `You are about to remove the option ${model.optionName}.`,
-      primaryButtonValue: "Delete",
-      secondaryButtonValue: "Cancel",
-    });
-
-    if (!confirmedOptionDeleting) return;
-
-    deleteOptionsForTrait({ id: model.optionId }).then((res: any) => {
-      if (!res.error) {
-        getListOfAllTraitsHandler().then((res) => {
-          dispatch(actions.refreshTraits(res));
-        });
-
-        dispatch(
-          actions.refreshColorOptionsGridRequestModel({
-            ...state.colorOptionsGridRequestModel,
-            items: state.colorOptionsGridRequestModel.items.filter(
-              (option) => option.optionId !== model.optionId,
-            ),
-          }),
-        );
-
-        addToast({
-          text: "Option deleted successfully",
-          type: "success",
-        });
-      } else {
-        addToast({
-          text: res.error?.message,
-          type: "error",
-        });
-      }
-    });
-  }
-
-  function dndTraitOptionHandler(model) {
-    changePositionOfTraitOptionHandler(
-      model.selectedTrait.traitId,
-      model.activeItem.optionId,
-      model.newIndex,
-    );
-  }
-
-  function openChooseVariantTraitsCardHandler() {
-    dispatch(actions.setIsChooseVariantTraitsCardLoading(true));
-    getListOfAllTraitsHandler().then((res) => {
-      dispatch(actions.setIsChooseVariantTraitsCardLoading(false));
-      dispatch(actions.refreshTraits(res));
-    });
-    handleCardAction("chooseVariantTraitsCard", true);
   }
 
   function openAddStockCardHandler() {
@@ -981,10 +685,13 @@ export default function useOrderProductsPageService(
       addStockCard: true,
     });
     dispatch(actions.setIsAddStockCardLoading(true));
-    getCurrenciesList().then((res) => {
-      dispatch(actions.setIsAddStockCardLoading(false));
-      dispatch(actions.refreshCurrenciesList(res.data));
-    });
+    Promise.all([getCurrenciesList(), getTaxesList()]).then(
+      ([currencies, taxes]) => {
+        dispatch(actions.setIsAddStockCardLoading(false));
+        dispatch(actions.refreshCurrenciesList(currencies.data));
+        dispatch(actions.refreshTaxesList(taxes.data));
+      },
+    );
   }
 
   function openDisposeStockCardHandler() {
@@ -1012,6 +719,7 @@ export default function useOrderProductsPageService(
 
   function openManageTraitsCardHandler() {
     handleCardAction("manageTraitsCard", true);
+    getListOfTraitsWithOptionsForProductHandler(state.productId);
   }
 
   function openVariantPhotosCardHandler(model) {
@@ -1330,7 +1038,45 @@ export default function useOrderProductsPageService(
   }
 
   function manageCompanyPhotosHandler() {
-    handleCardAction("photosCard", true);
+    handleCardAction("companyPhotosCard", true);
+  }
+
+  function updateCompanyHandler(model: CompanyModel) {
+    dispatch(actions.setIsCompanyConfigurationCardLoading(true));
+    updateCompanyDetails({
+      companyId: state.managedCompany.companyId,
+      model,
+    }).then((res: any) => {
+      dispatch(actions.setIsCompanyConfigurationCardLoading(false));
+      if (!res.error) {
+        dispatch(actions.refreshManagedCompany(res.data));
+        dispatch(actions.setIsSuppliersGridLoading(true));
+        getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
+          (res) => {
+            dispatch(actions.setIsSuppliersGridLoading(false));
+            const modifiedList = res.data.items.map((item) => ({
+              ...item,
+              isSelected: item.companyId === state.selectedCompany?.companyId,
+            }));
+            dispatch(
+              actions.refreshCompaniesGridRequestModel({
+                ...res.data,
+                items: modifiedList,
+              }),
+            );
+          },
+        );
+        addToast({
+          text: "Company updated successfully",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: "Failed to update company",
+          type: "error",
+        });
+      }
+    });
   }
 
   async function deleteCompanyPhotoHandler(model: ImageModel) {
@@ -1393,28 +1139,37 @@ export default function useOrderProductsPageService(
       }
       if (res.data.photoId) {
         dispatch(actions.setIsPhotoUploaderLoading(false));
-        dispatch(actions.setIsSuppliersGridLoading(true));
-        getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
-          (res) => {
-            dispatch(actions.setIsSuppliersGridLoading(false));
-            const modifiedList = res.data.items.map((item) => ({
-              ...item,
-              isSelected: item.companyId === state.selectedCompany?.companyId,
-            }));
-            dispatch(
-              actions.refreshCompaniesGridRequestModel({
-                ...res.data,
-                items: modifiedList,
-              }),
-            );
-          },
-        );
-        dispatch(
-          actions.refreshManagedCompany({
-            ...state.managedCompany,
-            photos: [...(state.managedCompany.photos || []), res.data],
-          }),
-        );
+        if (model.contextName === "Company") {
+          dispatch(actions.setIsSuppliersGridLoading(true));
+          getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
+            (res) => {
+              dispatch(actions.setIsSuppliersGridLoading(false));
+              const modifiedList = res.data.items.map((item) => ({
+                ...item,
+                isSelected: item.companyId === state.selectedCompany?.companyId,
+              }));
+              dispatch(
+                actions.refreshCompaniesGridRequestModel({
+                  ...res.data,
+                  items: modifiedList,
+                }),
+              );
+            },
+          );
+          dispatch(
+            actions.refreshManagedCompany({
+              ...state.managedCompany,
+              photos: [...(state.managedCompany.photos || []), res.data],
+            }),
+          );
+        } else {
+          dispatch(
+            actions.refreshManagedLocation({
+              ...state.managedLocation,
+              photos: [...(state.managedLocation.photos || []), res.data],
+            }),
+          );
+        }
         addToast({
           text: "Photos added successfully",
           type: "success",
@@ -1425,8 +1180,12 @@ export default function useOrderProductsPageService(
     });
   }
 
-  function closePhotosCardHandler() {
-    handleCardAction("photosCard");
+  function closePhotosCardHandler(contextName: string) {
+    if (contextName === "Company") {
+      handleCardAction("companyPhotosCard");
+    } else {
+      handleCardAction("locationPhotosCard");
+    }
   }
 
   function openLocationConfigurationCardHandler(model: LocationModel) {
@@ -1461,6 +1220,57 @@ export default function useOrderProductsPageService(
       } else {
         addToast({
           text: res.error.data?.detail,
+          type: "error",
+        });
+      }
+    });
+  }
+
+  function deleteLocationHandler(model: LocationModel) {
+    dispatch(actions.setIsLocationConfigurationCardLoading(true));
+    deleteLocation(model.locationId).then((res: any) => {
+      if (!res.error) {
+        handleCardAction("locationConfigurationCard");
+        dispatch(actions.setIsCompanyConfigurationCardLoading(true));
+        dispatch(actions.setIsLocationsGridLoading(true));
+        getCompanyDetails(state.managedCompany.companyId).then((res: any) => {
+          dispatch(actions.setIsCompanyConfigurationCardLoading(false));
+          dispatch(actions.setIsLocationsGridLoading(false));
+          dispatch(actions.refreshManagedCompany(res.data));
+        });
+        addToast({
+          text: "Location deleted successfully",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: res.error.data?.detail,
+          type: "error",
+        });
+      }
+    });
+  }
+
+  function updateLocationHandler(model: LocationModel) {
+    dispatch(actions.setIsLocationConfigurationCardLoading(true));
+    updateLocationDetails({
+      locationId: state.managedLocation.locationId,
+      model,
+    }).then((res: any) => {
+      dispatch(actions.setIsLocationConfigurationCardLoading(false));
+      if (!res.error) {
+        dispatch(actions.setIsCompanyConfigurationCardLoading(true));
+        getCompanyDetails(state.managedCompany.companyId).then((res: any) => {
+          dispatch(actions.setIsCompanyConfigurationCardLoading(false));
+          dispatch(actions.refreshManagedCompany(res.data));
+        });
+        addToast({
+          text: "Location updated successfully",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: "Failed to update location",
           type: "error",
         });
       }
@@ -1515,6 +1325,44 @@ export default function useOrderProductsPageService(
     handleCardAction("selectEntityCard");
   }
 
+  function manageLocationPhotosHandler() {
+    handleCardAction("locationPhotosCard", true);
+  }
+
+  async function deleteLocationPhotoHandler(model: ImageModel) {
+    const confirmedDeleteLocationPhoto = await openConfirmationDialog({
+      headerTitle: "Deleting location photo",
+      text: "You are about to delete location photo.",
+      primaryButtonValue: "Delete",
+      secondaryButtonValue: "Cancel",
+    });
+
+    if (!confirmedDeleteLocationPhoto) return;
+    deletePhoto(model.photoId).then((res: any) => {
+      const updatedPhotos = state.managedLocation.photos.filter(
+        (photo) => photo.photoId !== model.photoId,
+      );
+      dispatch(
+        actions.refreshManagedLocation({
+          ...state.managedLocation,
+          photos: updatedPhotos,
+        }),
+      );
+      if (!res.error) {
+        addToast({
+          text: "Photo deleted successfully",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: "Photo not deleted",
+          description: res.error.details.message,
+          type: "error",
+        });
+      }
+    });
+  }
+
   function getCountryCodesHandler() {
     if (state.countryCodes.length === 0) {
       getCountryCode(undefined).then((res: any) => {
@@ -1532,7 +1380,6 @@ export default function useOrderProductsPageService(
     removeStockActionFromOrderHandler,
     manageProductHandler,
     generateProductCodeHandler,
-    changeVariantPositionHandler,
     deletePhotoHandler,
     getVariantDetailsHandler,
     getListOfTraitsWithOptionsForProductHandler,
@@ -1547,17 +1394,6 @@ export default function useOrderProductsPageService(
     addPhotoToVariantHandler,
     detachPhotoFromVariantHandler,
     changePhotoPositionHandler,
-    addTraitHandler,
-    manageTraitHandler,
-    createTraitHandler,
-    updateTraitHandler,
-    setProductTraitsHandler,
-    deleteTraitHandler,
-    addOptionHandler,
-    updateOptionHandler,
-    deleteOptionHandler,
-    dndTraitOptionHandler,
-    openChooseVariantTraitsCardHandler,
     openAddStockCardHandler,
     openDisposeStockCardHandler,
     openVariantHistoryCardHandler,
@@ -1587,13 +1423,18 @@ export default function useOrderProductsPageService(
     deleteCompanyHandler,
     closeCompanyConfigurationCardHandler,
     manageCompanyPhotosHandler,
+    updateCompanyHandler,
     deleteCompanyPhotoHandler,
     uploadPhotoHandler,
     closePhotosCardHandler,
     openLocationConfigurationCardHandler,
     closeLocationConfigurationCardHandler,
     createLocationHandler,
+    deleteLocationHandler,
+    updateLocationHandler,
     detachSupplierHandler,
+    manageLocationPhotosHandler,
+    deleteLocationPhotoHandler,
     getCountryCodesHandler,
   };
 }
