@@ -229,7 +229,7 @@ export function ManageVariantsPage() {
         service.updateLocationHandler(payload);
         break;
       case "deleteLocation":
-        console.log("DELETE LOCATION");
+        service.deleteLocationHandler(payload);
         break;
       case "manageLocationPhotos":
         service.manageLocationPhotosHandler();

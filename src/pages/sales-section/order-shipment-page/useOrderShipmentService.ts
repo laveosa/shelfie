@@ -15,6 +15,7 @@ import UsersApiHooks from "@/utils/services/api/UsersApiService.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import useAppService from "@/useAppService.ts";
 import { CustomerModel } from "@/const/models/CustomerModel.ts";
+import { OrderItemModel } from "@/const/models/OrderItemModel.ts";
 
 export default function useOrderShipmentPageService(
   handleCardAction,
@@ -59,6 +60,10 @@ export default function useOrderShipmentPageService(
     OrdersApiHooks.useRemoveVariantFromShipmentMutation();
   const [createShipmentForOrder] =
     OrdersApiHooks.useCreateShipmentForOrderMutation();
+  const [updateStockActionForShipment] =
+    OrdersApiHooks.useUpdateStockActionForShipmentMutation();
+  const [confirmPackedProducts] =
+    OrdersApiHooks.useConfirmPackedProductsMutation();
 
   function getOrderDetailsHandler(orderId) {
     return getOrderDetails(orderId).then((res: any) => {
@@ -414,6 +419,32 @@ export default function useOrderShipmentPageService(
     });
   }
 
+  function changePackedOrderItemQuantityHandler(model: OrderItemModel) {
+    updateStockActionForShipment({
+      stockActionId: model.stockActionId,
+      model: { quantity: model.amount },
+    }).then((res: any) => {
+      dispatch(actions.refreshSelectedShipment(res.data));
+    });
+  }
+
+  function confirmPackedProductsHandler(
+    shipmentId: number,
+    model: OrderItemModel[],
+  ) {
+    confirmPackedProducts({
+      shipmentId,
+      model: {
+        items: model.map((item) => ({
+          stockActionId: item.stockActionId,
+          quantity: item.amount,
+        })),
+      },
+    }).then((res: any) => {
+      dispatch(actions.refreshSelectedShipment(res.data));
+    });
+  }
+
   return {
     getOrderDetailsHandler,
     getShipmentsListForOrderHandler,
@@ -441,5 +472,7 @@ export default function useOrderShipmentPageService(
     closeSelectEntityCardHandler,
     closeSelectShipmentForOrderCardHandler,
     createShipmentForOrderHandler,
+    changePackedOrderItemQuantityHandler,
+    confirmPackedProductsHandler,
   };
 }

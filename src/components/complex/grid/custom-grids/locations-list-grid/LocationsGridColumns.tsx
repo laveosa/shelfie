@@ -16,7 +16,7 @@ export function LocationsListGridColumns({
       id: "name",
       header: "Locations",
       cell: ({ row }) => {
-        const imageUrl: string = row.original.photos[0].thumbnailUrl;
+        const imageUrl: string = row.original.photos?.[0]?.thumbnailUrl;
         const name: string = row.original.name;
         const address1: string = row.original.addressLine1;
         const address2: string = row.original.addressLine2;

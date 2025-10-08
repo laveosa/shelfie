@@ -87,6 +87,7 @@ export default function useManageVariantsPageService(handleCardAction) {
     CompaniesApiHooks.useChangePositionOfLocationPhotoMutation();
   const [updateLocationDetails] =
     CompaniesApiHooks.useUpdateLocationDetailsMutation();
+  const [deleteLocation] = CompaniesApiHooks.useDeleteLocationMutation();
 
   function getVariantsForGridHandler(data?: GridRequestModel) {
     return getVariantsForGrid(data).then((res: any) => {
@@ -645,11 +646,9 @@ export default function useManageVariantsPageService(handleCardAction) {
               dispatch(actions.refreshManagedCompany(res.data));
             });
             if (model.newIndex === 0 || model.oldIndex === 0) {
-              dispatch(actions.setIsSelectEntityCardLoading(true));
               dispatch(actions.setIsSuppliersGridLoading(true));
               getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
                 (res) => {
-                  dispatch(actions.setIsSelectEntityCardLoading(false));
                   dispatch(actions.setIsSuppliersGridLoading(false));
                   const modifiedList = res.data.items.map((item) => ({
                     ...item,
@@ -1540,6 +1539,31 @@ export default function useManageVariantsPageService(handleCardAction) {
     });
   }
 
+  function deleteLocationHandler(model: LocationModel) {
+    dispatch(actions.setIsLocationConfigurationCardLoading(true));
+    deleteLocation(model.locationId).then((res: any) => {
+      if (!res.error) {
+        handleCardAction("locationConfigurationCard");
+        dispatch(actions.setIsCompanyConfigurationCardLoading(true));
+        dispatch(actions.setIsLocationsGridLoading(true));
+        getCompanyDetails(state.managedCompany.companyId).then((res: any) => {
+          dispatch(actions.setIsCompanyConfigurationCardLoading(false));
+          dispatch(actions.setIsLocationsGridLoading(false));
+          dispatch(actions.refreshManagedCompany(res.data));
+        });
+        addToast({
+          text: "Location deleted successfully",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: res.error.data?.detail,
+          type: "error",
+        });
+      }
+    });
+  }
+
   function manageLocationPhotosHandler() {
     handleCardAction("locationPhotosCard", true);
   }
@@ -1734,6 +1758,7 @@ export default function useManageVariantsPageService(handleCardAction) {
     openLocationConfigurationCardHandler,
     closeLocationConfigurationCardHandler,
     createLocationHandler,
+    deleteLocationHandler,
     manageLocationPhotosHandler,
     updateLocationHandler,
     deleteLocationPhotoHandler,

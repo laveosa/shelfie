@@ -3,9 +3,9 @@ import { ImageIcon, PackageMinus } from "lucide-react";
 
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
-import QuantityInputCell from "@/components/complex/grid/custom-grids/find-product-grid/QuantityInputCell.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import cs from "./PackedOrderItemsGridColumns.module.scss";
+import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 
 export function PackedOrderItemsGridColumns({
   onAction,
@@ -103,7 +103,16 @@ export function PackedOrderItemsGridColumns({
       accessorKey: "quantity",
       header: "Qty packed",
       minSize: 100,
-      cell: ({ row }) => <QuantityInputCell row={row} />,
+      cell: ({ row }) => (
+        <SheInput
+          value={row.original.amount}
+          type="number"
+          onDelay={(value) => {
+            row.original.amount = value;
+            onAction("changePackedOrderItemQuantity", row.original);
+          }}
+        />
+      ),
     },
     {
       id: "remove",

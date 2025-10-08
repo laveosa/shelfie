@@ -49,11 +49,9 @@ export default function LocationForm({
   const watchedValues = useWatch({ control: form.control });
 
   useEffect(() => {
-    if (!form.formState.isValid) return;
+    if (!form.formState.isValid || isEqual(data, form.getValues())) return;
     const handler = setTimeout(() => {
-      if (!isEqual(data, form.getValues())) {
-        onHandleUpData?.(form.getValues());
-      }
+      onHandleUpData?.(form.getValues());
     }, 500);
 
     return () => clearTimeout(handler);
@@ -106,7 +104,7 @@ export default function LocationForm({
         render={({ field }) => (
           <SheInput
             label={"Location Name"}
-            value={field.value || data?.name}
+            value={field.value}
             fullWidth
             placeholder={"enter location name..."}
           />

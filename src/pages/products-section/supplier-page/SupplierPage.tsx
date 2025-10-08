@@ -17,6 +17,7 @@ import CompanyConfigurationCard from "@/components/complex/custom-cards/company-
 import LocationConfigurationCard from "@/components/complex/custom-cards/location-configuration-card/LocationConfigurationCard.tsx";
 import PhotosCard from "@/components/complex/custom-cards/photos-card/PhotosCard.tsx";
 import { ManageCompanyPhotosGridColumns } from "@/components/complex/grid/custom-grids/manage-company-photos-grid/ManageCompanyPhotosGridColumns.tsx";
+import { ManageLocationPhotosGridColumns } from "@/components/complex/grid/custom-grids/manage-location-photos-grid/ManageLocationPhotosGridColumns.tsx";
 
 export function SupplierPage() {
   // ==================================================================== UTILITIES
@@ -71,7 +72,7 @@ export function SupplierPage() {
         service.manageCompanyHandler(payload);
         break;
       case "updateCompany":
-        console.log("UPDATE COMPANY", payload);
+        service.updateCompanyHandler(payload);
         break;
       case "deleteCompany":
         service.deleteCompanyHandler(payload);
@@ -88,8 +89,11 @@ export function SupplierPage() {
       case "deleteCompanyPhoto":
         service.deleteCompanyPhotoHandler(payload);
         break;
+      case "changePhotoPosition":
+        service.changePhotoPositionHandler(payload);
+        break;
       case "closePhotosCard":
-        service.closePhotosCardHandler();
+        service.closePhotosCardHandler(payload);
         break;
       case "openLocationConfigurationCard":
         service.openLocationConfigurationCardHandler(payload);
@@ -97,14 +101,20 @@ export function SupplierPage() {
       case "createLocation":
         service.createLocationHandler(payload);
         break;
-      case "manageLocation":
-        console.log("MANAGE LOCATION");
+      case "updateLocation":
+        service.updateLocationHandler(payload);
         break;
       case "deleteLocation":
-        console.log("DELETE LOCATION");
+        service.deleteLocationHandler(payload);
         break;
       case "closeLocationConfigurationCard":
         service.closeLocationConfigurationCardHandler();
+        break;
+      case "manageLocationPhotos":
+        service.manageLocationPhotosHandler();
+        break;
+      case "deleteLocationPhoto":
+        service.deleteLocationPhotoHandler(payload);
         break;
       case "restoreCompany":
         service.restoreCompanyHandler(payload, purchaseId);
@@ -173,6 +183,24 @@ export function SupplierPage() {
             />
           </div>
         )}
+        {state.activeCards.includes("companyPhotosCard") && (
+          <div ref={createRefCallback("companyPhotosCard")}>
+            <PhotosCard
+              isImageUploaderLoading={state.isPhotoUploaderLoading}
+              data={state.managedCompany?.photos}
+              contextName={"Company"}
+              contextId={state.managedCompany?.companyId}
+              noDataText="COMPANY HAS NO PHOTOS"
+              showCloseButton
+              columns={
+                ManageCompanyPhotosGridColumns({
+                  onAction,
+                }) as ColumnDef<DataWithId>[]
+              }
+              onAction={onAction}
+            />
+          </div>
+        )}
         {state.activeCards.includes("locationConfigurationCard") && (
           <div ref={createRefCallback("locationConfigurationCard")}>
             <LocationConfigurationCard
@@ -183,17 +211,17 @@ export function SupplierPage() {
             />
           </div>
         )}
-        {state.activeCards.includes("photosCard") && (
-          <div ref={createRefCallback("photosCard")}>
+        {state.activeCards.includes("locationPhotosCard") && (
+          <div ref={createRefCallback("locationPhotosCard")}>
             <PhotosCard
               isImageUploaderLoading={state.isPhotoUploaderLoading}
-              data={state.managedCompany?.photos}
-              contextName={"Company"}
-              contextId={state.managedCompany?.companyId}
-              noDataText="COMPANY HAS NO PHOTOS"
+              data={state.managedLocation?.photos}
+              contextName={"Location"}
+              contextId={state.managedLocation?.locationId}
+              noDataText="LOCATION HAS NO PHOTOS"
               showCloseButton
               columns={
-                ManageCompanyPhotosGridColumns({
+                ManageLocationPhotosGridColumns({
                   onAction,
                 }) as ColumnDef<DataWithId>[]
               }

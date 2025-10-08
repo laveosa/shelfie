@@ -134,6 +134,15 @@ export function OrderShipmentPage() {
       case "removeItemFromShipment":
         service.removeVariantFromShipmentHandler(payload.stockActionId);
         break;
+      case "changePackedOrderItemQuantity":
+        service.changePackedOrderItemQuantityHandler(payload);
+        break;
+      case "confirmPackedProducts":
+        service.confirmPackedProductsHandler(
+          state.selectedShipment.shipmentId,
+          payload,
+        );
+        break;
     }
   }
 

@@ -5,36 +5,65 @@ import React, { useEffect } from "react";
 import cs from "./OrderProductsPage.module.scss";
 import {
   GridSortingEnum,
-  GridSortingEnumLabels,
+  GridSortingEnumLabels
 } from "@/const/enums/GridSortingEnum.ts";
 import { useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
+import {
+  IOrdersPageSlice
+} from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
-import { OrderProductsPageSliceActions as actions } from "@/state/slices/OrderProductsPageSlice";
-import { IOrderDetailsPageSlice } from "@/const/interfaces/store-slices/IOrderDetailsPageSlice.ts";
-import FindProductsCard from "@/components/complex/custom-cards/find-products-card/FindProductsCard.tsx";
-import ProductsInOrderCard from "@/components/complex/custom-cards/products-in-order-card/ProductsInOrderCard.tsx";
-import useOrderProductsPageService from "@/pages/sales-section/order-products-page/useOrderProductsPageService.ts";
+import {
+  OrderProductsPageSliceActions as actions
+} from "@/state/slices/OrderProductsPageSlice";
+import {
+  IOrderDetailsPageSlice
+} from "@/const/interfaces/store-slices/IOrderDetailsPageSlice.ts";
+import FindProductsCard
+  from "@/components/complex/custom-cards/find-products-card/FindProductsCard.tsx";
+import ProductsInOrderCard
+  from "@/components/complex/custom-cards/products-in-order-card/ProductsInOrderCard.tsx";
+import useOrderProductsPageService
+  from "@/pages/sales-section/order-products-page/useOrderProductsPageService.ts";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
-import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
-import VariantConfigurationCard from "@/components/complex/custom-cards/variant-configuration-card/VariantConfigurationCard.tsx";
-import AddStockCard from "@/components/complex/custom-cards/add-stock-card/AddStockCard.tsx";
-import SelectPurchaseCard from "@/components/complex/custom-cards/select-purchase-card/SelectPurchaseCard.tsx";
-import SupplierCard from "@/components/complex/custom-cards/supplier-card/SupplierCard.tsx";
-import SelectEntityCard from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
-import { CompaniesListGridColumns } from "@/components/complex/grid/custom-grids/companies-list-grid/CompaniesListGridColumns.tsx";
-import CreateCompanyCard from "@/components/complex/custom-cards/create-company-card/CreateCompanyCard.tsx";
-import CompanyConfigurationCard from "@/components/complex/custom-cards/company-configuration-card/CompanyConfigurationCard.tsx";
-import LocationConfigurationCard from "@/components/complex/custom-cards/location-configuration-card/LocationConfigurationCard.tsx";
-import PhotosCard from "@/components/complex/custom-cards/photos-card/PhotosCard.tsx";
-import { ManageCompanyPhotosGridColumns } from "@/components/complex/grid/custom-grids/manage-company-photos-grid/ManageCompanyPhotosGridColumns.tsx";
+import SheContextSidebar
+  from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
+import VariantConfigurationCard
+  from "@/components/complex/custom-cards/variant-configuration-card/VariantConfigurationCard.tsx";
+import AddStockCard
+  from "@/components/complex/custom-cards/add-stock-card/AddStockCard.tsx";
+import SelectPurchaseCard
+  from "@/components/complex/custom-cards/select-purchase-card/SelectPurchaseCard.tsx";
+import SupplierCard
+  from "@/components/complex/custom-cards/supplier-card/SupplierCard.tsx";
+import SelectEntityCard
+  from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
+import {
+  CompaniesListGridColumns
+} from "@/components/complex/grid/custom-grids/companies-list-grid/CompaniesListGridColumns.tsx";
+import CreateCompanyCard
+  from "@/components/complex/custom-cards/create-company-card/CreateCompanyCard.tsx";
+import CompanyConfigurationCard
+  from "@/components/complex/custom-cards/company-configuration-card/CompanyConfigurationCard.tsx";
+import LocationConfigurationCard
+  from "@/components/complex/custom-cards/location-configuration-card/LocationConfigurationCard.tsx";
+import PhotosCard
+  from "@/components/complex/custom-cards/photos-card/PhotosCard.tsx";
+import {
+  ManageCompanyPhotosGridColumns
+} from "@/components/complex/grid/custom-grids/manage-company-photos-grid/ManageCompanyPhotosGridColumns.tsx";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
-import DisposeStockCard from "@/components/complex/custom-cards/dispose-stock-card/DisposeStockCard.tsx";
-import StockHistoryCard from "@/components/complex/custom-cards/stock-history-card/StockHistoryCard.tsx";
-import ManageTraitsCard from "@/components/complex/custom-cards/manage-traits-card/ManageTraitsCard.tsx";
-import VariantPhotosCard from "@/components/complex/custom-cards/variant-photos-card/VariantPhotosCard.tsx";
-import { ManageLocationPhotosGridColumns } from "@/components/complex/grid/custom-grids/manage-location-photos-grid/ManageLocationPhotosGridColumns.tsx";
+import DisposeStockCard
+  from "@/components/complex/custom-cards/dispose-stock-card/DisposeStockCard.tsx";
+import StockHistoryCard
+  from "@/components/complex/custom-cards/stock-history-card/StockHistoryCard.tsx";
+import ManageTraitsCard
+  from "@/components/complex/custom-cards/manage-traits-card/ManageTraitsCard.tsx";
+import VariantPhotosCard
+  from "@/components/complex/custom-cards/variant-photos-card/VariantPhotosCard.tsx";
+import {
+  ManageLocationPhotosGridColumns
+} from "@/components/complex/grid/custom-grids/manage-location-photos-grid/ManageLocationPhotosGridColumns.tsx";
 
 export function OrderProductsPage() {
   // ==================================================================== UTILITIES
@@ -212,7 +241,7 @@ export function OrderProductsPage() {
         service.updateLocationHandler(payload);
         break;
       case "deleteLocation":
-        console.log("DELETE LOCATION");
+        service.deleteLocationHandler(payload);
         break;
       case "closeLocationConfigurationCard":
         service.closeLocationConfigurationCardHandler();

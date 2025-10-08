@@ -102,6 +102,12 @@ export const CompaniesApiService = createApi({
         method: "PATCH",
       }),
     }),
+    deleteLocation: apiConfig.createMutation<void, any>(builder, {
+      query: (locationId) => ({
+        url: `${ApiUrlEnum.LOCATIONS}/${locationId}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 

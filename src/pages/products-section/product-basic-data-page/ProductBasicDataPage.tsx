@@ -139,7 +139,7 @@ export function ProductBasicDataPage() {
         service.createLocationHandler(payload);
         break;
       case "deleteLocation":
-        console.log("DELETE LOCATION");
+        service.deleteLocationHandler(payload);
         break;
       case "updateLocation":
         service.updateLocationHandler(payload);

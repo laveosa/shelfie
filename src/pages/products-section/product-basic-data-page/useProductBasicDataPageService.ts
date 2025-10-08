@@ -64,6 +64,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
     CompaniesApiHooks.useChangePositionOfLocationPhotoMutation();
   const [updateLocationDetails] =
     CompaniesApiHooks.useUpdateLocationDetailsMutation();
+  const [deleteLocation] = CompaniesApiHooks.useDeleteLocationMutation();
 
   // ==================================================================== API
   function getProductsHandler(gridRequestModel: GridRequestModel) {
@@ -812,6 +813,31 @@ export default function useProductBasicDataPageService(handleCardAction) {
     });
   }
 
+  function deleteLocationHandler(model: LocationModel) {
+    dispatch(actions.setIsLocationConfigurationCardLoading(true));
+    deleteLocation(model.locationId).then((res: any) => {
+      if (!res.error) {
+        handleCardAction("locationConfigurationCard");
+        dispatch(actions.setIsCompanyConfigurationCardLoading(true));
+        dispatch(actions.setIsLocationsGridLoading(true));
+        getCompanyDetails(state.managedCompany.companyId).then((res: any) => {
+          dispatch(actions.setIsCompanyConfigurationCardLoading(false));
+          dispatch(actions.setIsLocationsGridLoading(false));
+          dispatch(actions.refreshManagedCompany(res.data));
+        });
+        addToast({
+          text: "Location deleted successfully",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: res.error.data?.detail,
+          type: "error",
+        });
+      }
+    });
+  }
+
   function updateLocationHandler(model: LocationModel) {
     dispatch(actions.setIsLocationConfigurationCardLoading(true));
     updateLocationDetails({
@@ -920,6 +946,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
     closePhotosCardHandler,
     openLocationConfigurationCardHandler,
     createLocationHandler,
+    deleteLocationHandler,
     updateLocationHandler,
     closeLocationConfigurationCardHandler,
     deleteLocationPhotoHandler,
