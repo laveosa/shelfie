@@ -41,17 +41,6 @@ export default function LocationForm({
     form.reset(data);
   }, [data]);
 
-  // const watchedValues = useWatch({ control: form.control });
-
-  /*useEffect(() => {
-    if (!form.formState.isValid || isEqual(data, form.getValues())) return;
-    const handler = setTimeout(() => {
-      onHandleUpData?.(form.getValues());
-    }, 500);
-
-    return () => clearTimeout(handler);
-  }, [watchedValues, form.formState.isValid]);*/
-
   // ================================================================ PRIMARY
   function svgStringToComponent(svgString: string): React.FC<any> {
     return (props) => (
@@ -84,6 +73,7 @@ export default function LocationForm({
       onSubmit={onSubmit}
       onError={onErrorHandler}
       onCancel={onCancel}
+      onChange={onHandleUpData}
       hidePrimaryBtn={!!data?.locationId}
       hideSecondaryBtn={!!data?.locationId}
       footerClassName={cs.cardFooter}

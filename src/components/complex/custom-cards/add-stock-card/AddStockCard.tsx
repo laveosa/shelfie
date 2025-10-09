@@ -31,7 +31,7 @@ export default function AddStockCard({
   const { translate } = useAppTranslation();
 
   // ==================================================================== REF
-  const stockDataRef = new useRef<any>(null);
+  const stockDataRef = useRef<any>(null);
 
   // ==================================================================== EVENT HANDLERS
   function onAddStockChangeHandler(

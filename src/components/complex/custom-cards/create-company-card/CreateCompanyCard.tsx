@@ -38,12 +38,12 @@ export default function CreateCompanyCard({
   // ==================================================================== UTILITIES
 
   // ==================================================================== EVENT HANDLERS
-  function onCompanyFormChange(value, form) {
+  function onCompanyFormChange(_, form) {
     setCompanyFormData(form);
     _checkIsValid();
   }
 
-  function onAddressFormChange(value, form) {
+  function onAddressFormChange(_, form) {
     setAddressFormData(form);
     _checkIsValid();
   }
