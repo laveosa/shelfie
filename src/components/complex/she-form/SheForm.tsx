@@ -30,6 +30,7 @@ export default function SheForm<T>(props: ISheForm<T>): JSX.Element {
   // ==================================================================== PROPS
   const {
     className = "",
+    contentClassName = "",
     style,
     children,
     form,
@@ -106,7 +107,9 @@ export default function SheForm<T>(props: ISheForm<T>): JSX.Element {
         <SheFormHeader {...sheHeaderProps} />
         <form>
           <SheFormContextProvider value={{ form: form }}>
-            <div className={cs.sheFormContent}>{children}</div>
+            <div className={`${cs.sheFormContent} ${contentClassName}`}>
+              {children}
+            </div>
           </SheFormContextProvider>
           <SheFormFooter
             {...sheFooterProps}

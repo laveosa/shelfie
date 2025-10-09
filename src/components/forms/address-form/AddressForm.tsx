@@ -63,11 +63,12 @@ export default function AddressForm({
   // ==================================================================== LAYOUT
   return (
     <SheForm<AddressRequestModel>
-      className={cs.addressForm}
       form={form}
+      className={cs.addressForm}
       formPosition={DirectionEnum.CENTER}
       fullWidth
       hideFooter={!showFooter}
+      footerPosition={DirectionEnum.SPACE}
       primaryBtnProps={{
         value: isCreate ? "CreateAddress" : "Save",
         valueTransKey: isCreate

@@ -18,6 +18,7 @@ export interface ISheForm<T> extends ISheFormHeader, ISheFormFooter {
   ref?: RefObject<HTMLFormElement>;
   id?: string;
   className?: string;
+  contentClassName?: string;
   style?: React.CSSProperties;
   children?: React.ReactNode;
   form: UseFormReturn<AppFormType<T>>;
