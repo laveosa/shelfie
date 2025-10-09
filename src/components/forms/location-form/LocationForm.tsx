@@ -1,25 +1,22 @@
-import { useTranslation } from "react-i18next";
-import React, { useEffect } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import React, { JSX, useEffect } from "react";
 import { Plus } from "lucide-react";
 
+import cs from "./LocationForm.module.scss";
+import SheForm from "@/components/complex/she-form/SheForm.tsx";
+import SheInput from "@/components/primitive/she-input/SheInput.tsx";
+import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
+import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
+import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
+import useAppForm from "@/utils/hooks/useAppForm.ts";
+import locationFormScheme from "@/utils/validation/schemes/LocationFormScheme.ts";
+import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
+import { ILocationForm } from "@/const/interfaces/forms/ILocationForm.ts";
+import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 import {
   LocationModel,
   LocationModelDefault,
 } from "@/const/models/LocationModel.ts";
-import useAppForm from "@/utils/hooks/useAppForm.ts";
-import { zodResolver } from "@hookform/resolvers/zod";
-import SheForm from "@/components/complex/she-form/SheForm.tsx";
-import { FormField } from "@/components/ui/form.tsx";
-import SheFormItem from "@/components/complex/she-form/components/she-form-item/SheFormItem.tsx";
-import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
-import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import cs from "./LocationForm.module.scss";
-import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
-import { ILocationForm } from "@/const/interfaces/forms/ILocationForm.ts";
-import locationFormScheme from "@/utils/validation/schemes/LocationFormScheme.ts";
-import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 
 export default function LocationForm({
   isLoading,
@@ -28,10 +25,10 @@ export default function LocationForm({
   onCancel,
   countryCodes,
   onHandleUpData,
-}: ILocationForm): React.ReactNode {
-  const { t } = useTranslation();
+}: ILocationForm): JSX.Element {
+  // ==================================================================== UTILITIES
   const form = useAppForm<LocationModel>({
-    mode: "onBlur",
+    mode: ReactHookFormMode.BLUR,
     resolver: zodResolver(locationFormScheme),
     defaultValues: LocationModelDefault,
   });
@@ -40,6 +37,7 @@ export default function LocationForm({
     (_, i) => data?.pictures?.[i] || null,
   );
 
+  // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     form.reset(data);
   }, [data]);
@@ -52,8 +50,7 @@ export default function LocationForm({
     }
   }, [form.formState.isValid]);
 
-  // ================================================================ RENDER
-
+  // ================================================================ PRIMARY
   function svgStringToComponent(svgString: string): React.FC<any> {
     return (props) => (
       <span dangerouslySetInnerHTML={{ __html: svgString }} {...props} />
@@ -76,6 +73,7 @@ export default function LocationForm({
     console.log(model);
   }
 
+  // ==================================================================== LAYOUT
   return (
     <SheForm<LocationModel>
       isLoading={isLoading}
@@ -84,7 +82,6 @@ export default function LocationForm({
       onSubmit={onSubmit}
       onError={onErrorHandler}
       onCancel={onCancel}
-      view={ComponentViewEnum.STANDARD}
       hidePrimaryBtn={!!data?.locationId}
       hideSecondaryBtn={!!data?.locationId}
       footerClassName={cs.cardFooter}
@@ -126,10 +123,12 @@ export default function LocationForm({
         name="addressLine1"
         render={({ field }) => (
           <SheInput
-            label={t("AddressForm.Labels.AddressLine1")}
             value={field.value}
+            label="Address Line 1"
+            labelTransKey="AddressForm.Labels.AddressLine1"
+            placeholder="Enter address line 1..."
+            placeholderTransKey="AddressForm.Placeholders.AddressLine1"
             fullWidth
-            placeholder={t("AddressForm.Placeholders.AddressLine1")}
           />
         )}
       />
@@ -137,10 +136,12 @@ export default function LocationForm({
         name="addressLine2"
         render={({ field }) => (
           <SheInput
-            label={t("AddressForm.Labels.AddressLine2")}
             value={field.value}
+            label="Address Line 2"
+            labelTransKey="AddressForm.Labels.AddressLine2"
+            placeholder="Enter address line 2..."
+            placeholderTransKey="AddressForm.Placeholders.AddressLine2"
             fullWidth
-            placeholder={t("AddressForm.Placeholders.AddressLine2")}
           />
         )}
       />
@@ -148,10 +149,12 @@ export default function LocationForm({
         name="city"
         render={({ field }) => (
           <SheInput
-            label={t("AddressForm.Labels.City")}
             value={field.value}
+            label="City"
+            labelTransKey="AddressForm.Labels.City"
+            placeholder="Enter city..."
+            placeholderTransKey="AddressForm.Placeholders.City"
             fullWidth
-            placeholder={t("AddressForm.Placeholders.City")}
           />
         )}
       />
@@ -159,10 +162,12 @@ export default function LocationForm({
         name="state"
         render={({ field }) => (
           <SheInput
-            label={t("AddressForm.Labels.State")}
             value={field.value}
+            label="State"
+            labelTransKey="AddressForm.Labels.State"
+            placeholder="Enter state..."
+            placeholderTransKey="AddressForm.Placeholders.State"
             fullWidth
-            placeholder={t("AddressForm.Placeholders.State")}
           />
         )}
       />
@@ -170,30 +175,28 @@ export default function LocationForm({
         name="postCode"
         render={({ field }) => (
           <SheInput
-            label={t("AddressForm.Labels.PostalCode")}
             value={field.value}
+            label="Postal Code"
+            labelTransKey="AddressForm.Labels.PostalCode"
+            placeholder="Enter postal code..."
+            placeholderTransKey="AddressForm.Placeholders.PostalCode"
             fullWidth
-            placeholder={t("AddressForm.Placeholders.PostalCode")}
           />
         )}
       />
-      <FormField
-        control={form.control}
+      <SheFormField
         name="countryId"
         render={({ field }) => (
-          <SheFormItem label={t("AddressForm.Labels.Country")}>
-            <SheSelect
-              selected={field.value}
-              items={convertCountryCodeToSelectItems(countryCodes)}
-              hideFirstOption
-              placeholder={t("AddressForm.Placeholders.Country")}
-              fullWidth
-              onSelect={(value) => {
-                field.onChange(value);
-                void form.trigger("countryId");
-              }}
-            />
-          </SheFormItem>
+          <SheSelect
+            selected={field.value}
+            items={convertCountryCodeToSelectItems(countryCodes)}
+            label="Country"
+            labelTransKey="AddressForm.Labels.Country"
+            placeholder="Choose country..."
+            placeholderTransKey="AddressForm.Placeholders.Country"
+            hideFirstOption
+            fullWidth
+          />
         )}
       />
     </SheForm>

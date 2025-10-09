@@ -25,15 +25,13 @@ export default function LocationConfigurationCard({
       isLoading={isLoading}
       onSecondaryButtonClick={() => onAction("closeLocationConfigurationCard")}
     >
-      <div>
-        <LocationForm
-          isLoading={isLoading}
-          data={location}
-          countryCodes={countryCodes}
-          onSubmit={(data) => onAction("createLocation", data)}
-          onHandleUpData={(data) => onAction("updateLocation", data)}
-        />
-      </div>
+      <LocationForm
+        isLoading={isLoading}
+        data={location}
+        countryCodes={countryCodes}
+        onSubmit={(data) => onAction("createLocation", data)}
+        onHandleUpData={(data) => onAction("updateLocation", data)}
+      />
     </SheCard>
   );
 }
