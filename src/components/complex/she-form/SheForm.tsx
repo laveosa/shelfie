@@ -92,7 +92,7 @@ export default function SheForm<T>(props: ISheForm<T>): JSX.Element {
     >
       <Form {...form}>
         <SheFormHeader {...sheHeaderProps} />
-        <form onSubmit={form.handleSubmit(onSubmitHandler, onErrorHandler)}>
+        <form>
           <SheFormContextProvider value={{ form: form }}>
             <div className={cs.sheFormContent}>{children}</div>
           </SheFormContextProvider>
@@ -101,6 +101,10 @@ export default function SheForm<T>(props: ISheForm<T>): JSX.Element {
             isValid={form.formState.isValid}
             isLoading={isLoading}
             onSecondaryBtnClick={onSecondaryHandler}
+            onPrimaryBtnClick={form.handleSubmit(
+              onSubmitHandler,
+              onErrorHandler,
+            )}
           />
         </form>
       </Form>
