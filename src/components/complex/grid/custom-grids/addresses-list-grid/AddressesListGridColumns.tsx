@@ -46,7 +46,7 @@ export function AddressesListGridColumns({
       header: "Address",
       minSize: 100,
       cell: ({ row }) => {
-        const city: string = row.original.city;
+        const addressName: string = row.original.alias;
         const addressLine1: string = row.original.addressLine1;
         const addressLine2: string = row.original.addressLine2;
         return (
@@ -54,10 +54,10 @@ export function AddressesListGridColumns({
             <div style={{ display: "flex", flexDirection: "column" }}>
               <SheTooltip
                 delayDuration={200}
-                text={city}
+                text={addressName}
                 className="max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap"
               >
-                <span className="she-text">{city}</span>
+                <span className="she-text">{addressName}</span>
               </SheTooltip>
               {addressLine1 && (
                 <SheTooltip

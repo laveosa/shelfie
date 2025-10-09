@@ -19,6 +19,7 @@ import SelectShipmentForOrderCard from "@/components/complex/custom-cards/select
 import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
 import SelectCustomerAddress from "@/components/complex/custom-cards/select-customer-address/SelectCustomerAddress.tsx";
 import CustomerCard from "@/components/complex/custom-cards/customer-card/CustomerCard.tsx";
+import CustomerAddressCard from "@/components/complex/custom-cards/customer-address-card/CustomerAddressCard.tsx";
 
 export function OrderShipmentPage() {
   // ==================================================================== UTILITIES
@@ -172,6 +173,15 @@ export function OrderShipmentPage() {
       case "closeCustomerCard":
         service.closeCustomerCardHandler();
         break;
+      case "manageAddress":
+        service.manageAddressHandler(payload);
+        break;
+      case "submitCustomerAddressData":
+        service.resolveCustomerAddressData(payload);
+        break;
+      case "closeCustomerAddressCard":
+        service.closeCustomerAddressCardHandler();
+        break;
     }
   }
 
@@ -247,6 +257,16 @@ export function OrderShipmentPage() {
               customer={state.managedCustomer}
               showCloseButton={true}
               hideNotificationCard={true}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards?.includes("customerAddressCard") && (
+          <div ref={createRefCallback("customerAddressCard")}>
+            <CustomerAddressCard
+              isLoading={state.isCustomerAddressCardLoading}
+              customerAddress={state.managedAddress}
+              countryList={state.countryCodesList}
               onAction={onAction}
             />
           </div>

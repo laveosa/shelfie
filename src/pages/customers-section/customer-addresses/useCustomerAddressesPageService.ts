@@ -2,13 +2,15 @@ import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import { AppDispatch } from "@/state/store.ts";
-import { CustomersPageSliceActions as actions } from "@/state/slices/CustomersPageSlice";
+import {
+  CustomersPageSliceActions as actions
+} from "@/state/slices/CustomersPageSlice";
 import { OrdersApiService as api } from "@/utils/services/api/OrdersApiService";
 import { DictionaryApiHooks } from "@/utils/services/api/DictionaryApiService";
 import { AddressRequestModelDefault } from "@/const/models/AddressRequestModel";
 import {
   convertAddressToRequestModel,
-  createAddressRequestModel,
+  createAddressRequestModel
 } from "@/utils/helpers/address-helper";
 import { clearSelectedGridItems } from "@/utils/helpers/quick-helper";
 import { useAppSelector } from "@/utils/hooks/redux";
@@ -16,7 +18,9 @@ import { useToast } from "@/hooks/useToast.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum";
 import { AddressModel } from "@/const/models/AddressModel";
 import { GridRequestModel } from "@/const/models/GridRequestModel";
-import { ICustomersPageSlice } from "@/const/interfaces/store-slices/ICustomersPageSlice";
+import {
+  ICustomersPageSlice
+} from "@/const/interfaces/store-slices/ICustomersPageSlice";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice";
 
 export default function useCustomerAddressesPageService() {
@@ -69,7 +73,7 @@ export default function useCustomerAddressesPageService() {
       data.postalCode,
       data.countryId,
     );
-    if (!!state.selectedCustomerAddressId) {
+    if (data.addressId) {
       return updateCustomerAddressHandler(requestModel);
     } else {
       return createCustomerAddressHandler(requestModel);
@@ -187,11 +191,7 @@ export default function useCustomerAddressesPageService() {
 
   function onManageCustomerAddressHandler(data: AddressModel) {
     dispatch(actions.setCreateCustomerAddress(false));
-    dispatch(
-      actions.refreshSelectedCustomerAddress(
-        convertAddressToRequestModel(data),
-      ),
-    );
+    dispatch(actions.refreshSelectedCustomerAddress(data));
     dispatch(actions.refreshSelectedCustomerAddressId(data.addressId));
   }
 
@@ -199,7 +199,6 @@ export default function useCustomerAddressesPageService() {
     dispatch(actions.refreshActiveCards([]));
     dispatch(actions.refreshSelectedCustomerAddressId(null));
     dispatch(actions.refreshSelectedCustomerAddress(null));
-    //dispatch(actions.refreshCustomerAddresses(clearSelectedGridItems(state.customerAddresses)));
   }
 
   function onCreateCustomerAddressHandler() {

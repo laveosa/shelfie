@@ -5,6 +5,8 @@ import { IOrderShipmentPageSlice } from "@/const/interfaces/store-slices/IOrderS
 import { ShipmentModel } from "@/const/models/ShipmentModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { CustomerModel } from "@/const/models/CustomerModel.ts";
+import { AddressModel } from "@/const/models/AddressModel.ts";
+import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 
 const initialState: IOrderShipmentPageSlice = {
   isProductMenuCardLoading: false,
@@ -13,6 +15,8 @@ const initialState: IOrderShipmentPageSlice = {
   isSelectEntityCardLoading: false,
   isSelectShipmentForOrderCardLoading: false,
   isSelectCustomerAddressCardLoading: false,
+  isCustomerCardLoading: false,
+  isCustomerAddressCardLoading: false,
   isProductsGridLoading: false,
   isOrderShipmentsGridLoading: false,
   isShipmentsGridLoading: false,
@@ -26,6 +30,7 @@ const initialState: IOrderShipmentPageSlice = {
   shipmentsGridRequestModel: {},
   addressesGridRequestModel: {},
   managedCustomer: null,
+  countryCodesList: null,
 };
 
 //----------------------------------------------------- LOADERS
@@ -77,6 +82,13 @@ function setIsCustomerCardLoading(
   action: PayloadAction<boolean>,
 ) {
   state.isCustomerCardLoading = action?.payload;
+}
+
+function setIsCustomerAddressCardLoading(
+  state: IOrderShipmentPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isCustomerAddressCardLoading = action?.payload;
 }
 
 function setIsProductsGridLoading(
@@ -182,6 +194,24 @@ function resetManagedCustomer(state: IOrderShipmentPageSlice) {
   state.managedCustomer = null;
 }
 
+function refreshManagedAddress(
+  state: IOrderShipmentPageSlice,
+  action: PayloadAction<AddressModel>,
+) {
+  state.managedAddress = action?.payload || state.managedAddress;
+}
+
+function resetManagedAddress(state: IOrderShipmentPageSlice) {
+  state.managedAddress = null;
+}
+
+function refreshCountryCodesList(
+  state: IOrderShipmentPageSlice,
+  action: PayloadAction<CountryCodeModel[]>,
+) {
+  state.countryCodesList = action?.payload || state.countryCodesList;
+}
+
 const OrderShipmentPageSlice = createSlice({
   name: StoreSliceEnum.ORDER_SHIPMENT,
   initialState,
@@ -192,6 +222,7 @@ const OrderShipmentPageSlice = createSlice({
     setIsSelectEntityCardLoading,
     setIsSelectShipmentForOrderCardLoading,
     setIsSelectCustomerAddressCardLoading,
+    setIsCustomerAddressCardLoading,
     setIsProductsGridLoading,
     setIsOrderShipmentsGridLoading,
     setIsShipmentsGridLoading,
@@ -208,6 +239,9 @@ const OrderShipmentPageSlice = createSlice({
     refreshAddressesGridRequestModel,
     refreshManagedCustomer,
     resetManagedCustomer,
+    refreshManagedAddress,
+    resetManagedAddress,
+    refreshCountryCodesList,
   },
 });
 

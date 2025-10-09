@@ -1,6 +1,8 @@
 import { ShipmentModel } from "@/const/models/ShipmentModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { CustomerModel } from "@/const/models/CustomerModel.ts";
+import { AddressModel } from "@/const/models/AddressModel.ts";
+import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 
 export interface IOrderShipmentPageSlice {
   isProductMenuCardLoading?: boolean;
@@ -10,6 +12,7 @@ export interface IOrderShipmentPageSlice {
   isSelectShipmentForOrderCardLoading?: boolean;
   isSelectCustomerAddressCardLoading?: boolean;
   isCustomerCardLoading?: boolean;
+  isCustomerAddressCardLoading?: boolean;
   isProductsGridLoading?: boolean;
   isOrderShipmentsGridLoading?: boolean;
   isShipmentsGridLoading?: boolean;
@@ -23,4 +26,6 @@ export interface IOrderShipmentPageSlice {
   shipmentsGridRequestModel?: GridRequestModel;
   addressesGridRequestModel?: GridRequestModel;
   managedCustomer?: CustomerModel;
+  managedAddress?: AddressModel;
+  countryCodesList?: CountryCodeModel[];
 }

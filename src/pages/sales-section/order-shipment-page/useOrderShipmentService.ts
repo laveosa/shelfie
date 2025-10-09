@@ -17,6 +17,12 @@ import useAppService from "@/useAppService.ts";
 import { CustomerModel } from "@/const/models/CustomerModel.ts";
 import { OrderItemModel } from "@/const/models/OrderItemModel.ts";
 import { convertCustomerToRequestModel } from "@/utils/helpers/customer-helper.ts";
+import { AddressModel } from "@/const/models/AddressModel.ts";
+import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
+import {
+  convertAddressToRequestModel,
+  createAddressRequestModel,
+} from "@/utils/helpers/address-helper.ts";
 
 export default function useOrderShipmentPageService(
   handleCardAction,
@@ -70,6 +76,11 @@ export default function useOrderShipmentPageService(
   const [getCustomer] = OrdersApiHooks.useLazyGetCustomerDetailsQuery();
   const [createCustomer] = OrdersApiHooks.useCreateCustomerMutation();
   const [updateCustomer] = OrdersApiHooks.useUpdateCustomerMutation();
+  const [getCountryCode] = DictionaryApiHooks.useLazyGetCountryCodeQuery();
+  const [updateCustomerAddress] =
+    OrdersApiHooks.useUpdateCustomerAddressMutation();
+  const [createCustomerAddress] =
+    OrdersApiHooks.useCreateCustomerAddressMutation();
 
   function getOrderDetailsHandler(orderId) {
     return getOrderDetails(orderId).then((res: any) => {
@@ -623,6 +634,112 @@ export default function useOrderShipmentPageService(
     dispatch(actions.resetManagedCustomer());
   }
 
+  function manageAddressHandler(model: AddressModel) {
+    handleCardAction("customerAddressCard", true);
+    getCountryCode(null).then((res: any) => {
+      if (res.data) {
+        dispatch(actions.refreshCountryCodesList(res.data));
+      }
+    });
+    if (model) {
+      dispatch(actions.refreshManagedAddress(model));
+    }
+  }
+
+  function resolveCustomerAddressData(data: any) {
+    const requestModel = createAddressRequestModel(
+      data.alias,
+      data.addressLine1,
+      data.addressLine2,
+      data.city,
+      data.state,
+      data.postalCode,
+      data.countryId,
+    );
+    if (data.addressId) {
+      return updateCustomerAddressHandler(requestModel);
+    } else {
+      return createCustomerAddressHandler(requestModel);
+    }
+  }
+
+  function updateCustomerAddressHandler(data: any) {
+    const requestData = convertAddressToRequestModel(data);
+    dispatch(actions.setIsCustomerAddressCardLoading(true));
+    return updateCustomerAddress({
+      id: state.managedAddress.addressId,
+      model: requestData,
+    }).then((res) => {
+      dispatch(actions.setIsCustomerAddressCardLoading(false));
+      if (res.error) {
+        return;
+      }
+      const updatedItems = state.addressesGridRequestModel.items.map((item) =>
+        item.locationId === res.data.locationId ? res.data : item,
+      );
+      const modifiedList = updatedItems.map((item) => ({
+        ...item,
+        isSelected: item.addressId === state.selectedShipment.deliveryAddressId,
+      }));
+      dispatch(
+        actions.refreshAddressesGridRequestModel({
+          ...state.addressesGridRequestModel,
+          items: modifiedList,
+        }),
+      );
+      dispatch(actions.resetManagedAddress());
+      handleCardAction("customerAddressCard");
+      addToast({
+        text: "Customer address updated successfully",
+        type: "info",
+      });
+    });
+  }
+
+  function createCustomerAddressHandler(data: any) {
+    const requestData = convertAddressToRequestModel(data);
+
+    dispatch(actions.setIsCustomerAddressCardLoading(true));
+    return createCustomerAddress({
+      id: state.selectedShipment.customerId,
+      model: requestData,
+    }).then((res) => {
+      dispatch(actions.setIsCustomerAddressCardLoading(false));
+      if (res.error) {
+        return;
+      } else {
+        const updatedItems = [
+          res.data,
+          ...state.addressesGridRequestModel.items,
+        ];
+
+        const modifiedList = updatedItems.map((item) => ({
+          ...item,
+          isSelected:
+            item.addressId === state.selectedShipment.deliveryAddressId,
+        }));
+
+        dispatch(
+          actions.refreshAddressesGridRequestModel({
+            ...state.addressesGridRequestModel,
+            items: modifiedList,
+          }),
+        );
+        addToast({
+          text: "New customer address created successfully",
+          type: "info",
+        });
+        dispatch(actions.resetManagedAddress());
+        handleCardAction("customerAddressCard");
+      }
+    });
+  }
+
+  function closeCustomerAddressCardHandler() {
+    handleCardAction("customerAddressCard");
+    dispatch(actions.resetManagedAddress());
+  }
+
   return {
     getOrderDetailsHandler,
     getShipmentsListForOrderHandler,
@@ -661,5 +778,8 @@ export default function useOrderShipmentPageService(
     createCustomerHandler,
     updateCustomerHandler,
     closeCustomerCardHandler,
+    manageAddressHandler,
+    resolveCustomerAddressData,
+    closeCustomerAddressCardHandler,
   };
 }

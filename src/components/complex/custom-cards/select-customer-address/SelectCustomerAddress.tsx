@@ -88,7 +88,7 @@ export default function SelectCustomerAddress({
             value="Create Address"
             icon={Plus}
             variant="secondary"
-            onClick={() => onAction("openAddressConfigurationCard")}
+            onClick={() => onAction("manageAddress", null)}
           />
         </div>
         <div className={cs.addressesListBlock}>
