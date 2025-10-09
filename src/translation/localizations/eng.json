@@ -323,6 +323,7 @@
   },
   "StockActions": {
     "AddToStock": "Add to Stock",
+    "AddProductToStock": "Add product to stock",
     "Dispose": "Dispose"
   },
   "PageTitles": {

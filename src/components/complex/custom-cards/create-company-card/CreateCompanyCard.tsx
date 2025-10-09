@@ -14,6 +14,9 @@ import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
 import SheCard from "@/components/complex/she-card/SheCard.tsx";
 import { ICreateCompanyCard } from "@/const/interfaces/complex-components/custom-cards/ICreateCompanyCard.ts";
 import { CompanyModel } from "@/const/models/CompanyModel.ts";
+import { UseFormReturn } from "react-hook-form";
+import { AppFormType } from "@/const/types/AppFormType.ts";
+import { AddressRequestModel } from "@/const/models/AddressRequestModel.ts";
 
 export default function CreateCompanyCard({
   isLoading,
@@ -22,23 +25,35 @@ export default function CreateCompanyCard({
   onAction,
 }: ICreateCompanyCard) {
   // ==================================================================== STATE MANAGEMENT
-  const [companyFormData, setCompanyFormData] = useState<CompanyModel>(null);
-  const [addressFormData, setAddressFormData] = useState<CompanyModel>(null);
+  const [companyFormData, setCompanyFormData] =
+    useState<UseFormReturn<AppFormType<CompanyModel>>>(null);
+  const [addressFormData, setAddressFormData] =
+    useState<UseFormReturn<AppFormType<AddressRequestModel>>>(null);
   const [submissionData, setSubmissionData] = useState(null);
+  const [isValid, setIsValid] = useState<boolean>(null);
 
   // ==================================================================== REF
   const imageUploaderRef = useRef<SheFileUploaderRef>(null);
 
   // ==================================================================== UTILITIES
-  const isFormValid = companyFormData !== null && addressFormData !== null;
 
   // ==================================================================== EVENT HANDLERS
+  function onCompanyFormChange(value, form) {
+    setCompanyFormData(form);
+    _checkIsValid();
+  }
+
+  function onAddressFormChange(value, form) {
+    setAddressFormData(form);
+    _checkIsValid();
+  }
+
   function onSubmitHandler() {
     const selectedFiles = imageUploaderRef.current?.getSelectedFiles() || [];
     const uploadModels = imageUploaderRef.current?.getUploadModels() || [];
     const completeData = {
-      company: companyFormData,
-      address: addressFormData,
+      company: companyFormData.getValues(),
+      address: addressFormData.getValues(),
       image: {
         images: selectedFiles,
         uploadModels: uploadModels,
@@ -50,12 +65,22 @@ export default function CreateCompanyCard({
   }
 
   // ==================================================================== PRIVATE
-  const getCurrentImages = () => {
-    if (isLoading && submissionData?.images) {
-      return submissionData.images;
+  function _getCurrentImages() {
+    return isLoading && submissionData?.images
+      ? submissionData.images
+      : imageUploaderRef.current?.getSelectedFiles() || [];
+  }
+
+  function _checkIsValid() {
+    if (!companyFormData || !addressFormData) {
+      setIsValid(false);
+      return;
     }
-    return imageUploaderRef.current?.getSelectedFiles() || [];
-  };
+
+    setIsValid(
+      companyFormData.formState.isValid && addressFormData.formState.isValid,
+    );
+  }
 
   // ==================================================================== LAYOUT
   return (
@@ -69,14 +94,11 @@ export default function CreateCompanyCard({
       <div className={cs.createCompanyCardContent}>
         <CreateCompanyForm
           countryCodes={countryCodes}
-          isLoading={isLoading}
-          onSubmit={(data) => onAction("createCompany", data)}
-          onCancel={() => onAction("closeCreateCompanyCard")}
-          onHandleUpData={(data) => setCompanyFormData(data)}
+          onChange={onCompanyFormChange}
         />
         {isPhotoUploaderLoading ? (
           <div>
-            {getCurrentImages().map((file: any, index) => {
+            {_getCurrentImages().map((file: any, index) => {
               const imageUrl =
                 file instanceof File
                   ? URL.createObjectURL(file)
@@ -126,12 +148,12 @@ export default function CreateCompanyCard({
           />
         )}
         <AddressForm
-          isCreate={true}
           countryList={countryCodes}
+          isCreate
           showFooter={false}
+          onChange={onAddressFormChange}
           onSubmit={(data) => onAction("createCompany", data)}
           onCancel={() => onAction("closeCreateCompanyCard")}
-          onHandleUpData={(data) => setAddressFormData(data)}
         />
       </div>
       <div className={cs.createCompanyCardButtonBlock}>
@@ -144,7 +166,7 @@ export default function CreateCompanyCard({
           icon={Plus}
           value="Create Company"
           variant="info"
-          disabled={!isFormValid}
+          disabled={!isValid}
           onClick={onSubmitHandler}
         />
       </div>

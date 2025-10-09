@@ -38,7 +38,7 @@ export const CompanyModelDefault: CompanyModel = {
   isSelected: undefined,
   nip: undefined,
   customerCareEmail: undefined,
-  photos: [],
-  locations: [],
+  photos: undefined,
+  locations: undefined,
   countryId: undefined,
 };

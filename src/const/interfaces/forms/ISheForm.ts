@@ -32,7 +32,7 @@ export interface ISheForm<T> extends ISheFormHeader, ISheFormFooter {
   maxWidth?: string;
   fullWidth?: boolean;
   onSubmit?(value: T): void;
-  onChange?(value: T): void;
+  onChange?(value: T, form?: UseFormReturn<AppFormType<T>>): void;
   onError?(value: any): void;
   onCancel?(value: T): void;
 }

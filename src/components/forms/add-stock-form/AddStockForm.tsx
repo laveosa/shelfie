@@ -23,9 +23,9 @@ export default function AddStockForm({
   data,
   taxTypes,
   currencyTypes,
+  onChange,
   onSubmit,
   onCancel,
-  onHandleUpData,
 }: IAddStockForm): JSX.Element {
   // ==================================================================== UTILITIES
   const form = useAppForm<StockUnitModel>({
@@ -40,17 +40,16 @@ export default function AddStockForm({
   }, [data]);
 
   // ==================================================================== EVENT HANDLERS
-  function onFormChangeHandler(model: StockUnitModel) {
-    onHandleUpData?.({
-      unitsAmount: model.unitAmount,
-      nettoPrice: model.priceModel.price,
-      taxTypeId: model.priceModel.taxTypeId,
-      currencyId: model.priceModel.currencyId,
-    });
-  }
-
-  function onErrorHandler(model) {
-    console.log(model);
+  function onChangeHandler(model: StockUnitModel, form) {
+    onChange?.(
+      {
+        unitsAmount: model.unitAmount,
+        nettoPrice: model.priceModel.price,
+        taxTypeId: model.priceModel.taxTypeId,
+        currencyId: model.priceModel.currencyId,
+      },
+      form,
+    );
   }
 
   // ==================================================================== PRIVATE
@@ -85,9 +84,8 @@ export default function AddStockForm({
       view={ComponentViewEnum.STANDARD}
       hideSecondaryBtn
       hidePrimaryBtn
+      onChange={onChangeHandler}
       onSubmit={onSubmit}
-      onChange={onFormChangeHandler}
-      onError={onErrorHandler}
       onCancel={onCancel}
     >
       <div className={cs.addStockFormRow}>
