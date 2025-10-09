@@ -11,6 +11,12 @@ export default function LocationConfigurationCard({
   location,
   onAction,
 }: ILocationConfigurationCard) {
+  // ==================================================================== EVENT HANDLERS
+
+  // ==================================================================== PRIVATE
+
+  // ==================================================================== LAYOUT
+
   return (
     <SheCard
       className={cs.locationConfigurationCard}
@@ -25,13 +31,16 @@ export default function LocationConfigurationCard({
       isLoading={isLoading}
       onSecondaryButtonClick={() => onAction("closeLocationConfigurationCard")}
     >
-      <LocationForm
-        isLoading={isLoading}
-        data={location}
-        countryCodes={countryCodes}
-        onSubmit={(data) => onAction("createLocation", data)}
-        onHandleUpData={(data) => onAction("updateLocation", data)}
-      />
+      <div>
+        <LocationForm
+          isLoading={isLoading}
+          data={location}
+          countryCodes={countryCodes}
+          onSubmit={(data) => onAction("createLocation", data)}
+          onHandleUpData={(data) => onAction("updateLocation", data)}
+          onAction={onAction}
+        />
+      </div>
     </SheCard>
   );
 }

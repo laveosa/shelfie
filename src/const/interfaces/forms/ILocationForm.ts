@@ -9,4 +9,5 @@ export interface ILocationForm {
   onSubmit?: (data: AddressRequestModel) => void;
   onCancel?: () => void;
   onHandleUpData?: (data: any) => void;
+  onAction?: (identifier: string, payload?: any) => void;
 }

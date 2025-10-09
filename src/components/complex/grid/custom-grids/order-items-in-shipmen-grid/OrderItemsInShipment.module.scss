@@ -1,0 +1,48 @@
+.variantNameCell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .imageBlock {
+    width: 40px;
+    display: flex;
+    align-items: center;
+
+    .variantPhoto {
+      object-fit: cover;
+      border-radius: 5px;
+      width: 40px;
+    }
+
+    .iconContainer {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  .variantName {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.traitOptionsCell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 50px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+
+  .colorOptions {
+    min-width: 20px;
+    min-height: 20px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+  }
+}

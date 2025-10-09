@@ -39,6 +39,8 @@ export default function SheButton({
 
   // ==================================================================== EVENT HANDLERS
   function onClickHandler(event) {
+    event.preventDefault();
+    event.stopPropagation();
     onClick?.(event);
   }
 

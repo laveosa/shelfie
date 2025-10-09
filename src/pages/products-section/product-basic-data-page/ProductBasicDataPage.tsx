@@ -19,6 +19,7 @@ import CompanyConfigurationCard from "@/components/complex/custom-cards/company-
 import PhotosCard from "@/components/complex/custom-cards/photos-card/PhotosCard.tsx";
 import { ManageCompanyPhotosGridColumns } from "@/components/complex/grid/custom-grids/manage-company-photos-grid/ManageCompanyPhotosGridColumns.tsx";
 import LocationConfigurationCard from "@/components/complex/custom-cards/location-configuration-card/LocationConfigurationCard.tsx";
+import { ManageLocationPhotosGridColumns } from "@/components/complex/grid/custom-grids/manage-location-photos-grid/ManageLocationPhotosGridColumns.tsx";
 
 export function ProductBasicDataPage() {
   // ==================================================================== UTILITIES
@@ -108,7 +109,7 @@ export function ProductBasicDataPage() {
         service.manageCompanyHandler(payload);
         break;
       case "updateCompany":
-        console.log("UPDATE COMPANY", payload);
+        service.updateCompanyHandler(payload);
         break;
       case "deleteCompany":
         service.deleteCompanyHandler(payload);
@@ -125,8 +126,11 @@ export function ProductBasicDataPage() {
       case "deleteCompanyPhoto":
         service.deleteCompanyPhotoHandler(payload);
         break;
+      case "changePhotoPosition":
+        service.changePhotoPositionHandler(payload);
+        break;
       case "closePhotosCard":
-        service.closePhotosCardHandler();
+        service.closePhotosCardHandler(payload);
         break;
       case "openLocationConfigurationCard":
         service.openLocationConfigurationCardHandler(payload);
@@ -134,11 +138,17 @@ export function ProductBasicDataPage() {
       case "createLocation":
         service.createLocationHandler(payload);
         break;
-      case "manageLocation":
-        console.log("MANAGE LOCATION");
-        break;
       case "deleteLocation":
-        console.log("DELETE LOCATION");
+        service.deleteLocationHandler(payload);
+        break;
+      case "updateLocation":
+        service.updateLocationHandler(payload);
+        break;
+      case "manageLocationPhotos":
+        service.manageLocationPhotosHandler();
+        break;
+      case "deleteLocationPhoto":
+        service.deleteLocationPhotoHandler(payload);
         break;
       case "closeLocationConfigurationCard":
         service.closeLocationConfigurationCardHandler();
@@ -238,18 +248,8 @@ export function ProductBasicDataPage() {
             />
           </div>
         )}
-        {state.activeCards.includes("locationConfigurationCard") && (
-          <div ref={createRefCallback("locationConfigurationCard")}>
-            <LocationConfigurationCard
-              isLoading={state.isCustomerAddressDetailsLoading}
-              location={state.managedLocation}
-              countryCodes={state.countryCodes}
-              onAction={onAction}
-            />
-          </div>
-        )}
-        {state.activeCards.includes("photosCard") && (
-          <div ref={createRefCallback("photosCard")}>
+        {state.activeCards.includes("companyPhotosCard") && (
+          <div ref={createRefCallback("companyPhotosCard")}>
             <PhotosCard
               isImageUploaderLoading={state.isPhotoUploaderLoading}
               data={state.managedCompany?.photos}
@@ -260,6 +260,34 @@ export function ProductBasicDataPage() {
               columns={ManageCompanyPhotosGridColumns({
                 onAction,
               })}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards.includes("locationConfigurationCard") && (
+          <div ref={createRefCallback("locationConfigurationCard")}>
+            <LocationConfigurationCard
+              isLoading={state.isCustomerAddressDetailsLoading}
+              location={state.managedLocation}
+              countryCodes={state.countryCodes}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards.includes("locationPhotosCard") && (
+          <div ref={createRefCallback("locationPhotosCard")}>
+            <PhotosCard
+              isImageUploaderLoading={state.isPhotoUploaderLoading}
+              data={state.managedLocation?.photos}
+              contextName={"Location"}
+              contextId={state.managedLocation?.locationId}
+              noDataText="LOCATION HAS NO PHOTOS"
+              showCloseButton
+              columns={
+                ManageLocationPhotosGridColumns({
+                  onAction,
+                }) as ColumnDef<DataWithId>[]
+              }
               onAction={onAction}
             />
           </div>

@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { JSX, useEffect } from "react";
-import { Plus } from "lucide-react";
+import { Plus, ImagePlus } from "lucide-react";
 
 import cs from "./LocationForm.module.scss";
 import SheForm from "@/components/complex/she-form/SheForm.tsx";
@@ -17,6 +17,7 @@ import {
   LocationModel,
   LocationModelDefault,
 } from "@/const/models/LocationModel.ts";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 
 export default function LocationForm({
   isLoading,
@@ -25,6 +26,7 @@ export default function LocationForm({
   onCancel,
   countryCodes,
   onHandleUpData,
+  onAction,
 }: ILocationForm): JSX.Element {
   // ==================================================================== UTILITIES
   const form = useAppForm<LocationModel>({
@@ -32,23 +34,23 @@ export default function LocationForm({
     resolver: zodResolver(locationFormScheme),
     defaultValues: LocationModelDefault,
   });
-  const slots = Array.from(
-    { length: 6 },
-    (_, i) => data?.pictures?.[i] || null,
-  );
+  const slots = Array.from({ length: 6 }, (_, i) => data?.photos?.[i] || null);
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     form.reset(data);
   }, [data]);
 
-  useEffect(() => {
-    if (form.formState.isValid) {
+  // const watchedValues = useWatch({ control: form.control });
+
+  /*useEffect(() => {
+    if (!form.formState.isValid || isEqual(data, form.getValues())) return;
+    const handler = setTimeout(() => {
       onHandleUpData?.(form.getValues());
-    } else {
-      onHandleUpData?.(null);
-    }
-  }, [form.formState.isValid]);
+    }, 500);
+
+    return () => clearTimeout(handler);
+  }, [watchedValues, form.formState.isValid]);*/
 
   // ================================================================ PRIMARY
   function svgStringToComponent(svgString: string): React.FC<any> {
@@ -102,7 +104,16 @@ export default function LocationForm({
           />
         )}
       />
-      {data?.pictures && (
+      <div className={cs.locationFormImageBlock}>
+        <div className={cs.imageBlockTitle}>
+          <span className="she-title">Location Photos</span>
+          <SheButton
+            icon={ImagePlus}
+            variant="secondary"
+            value="Manage Photos"
+            onClick={() => onAction("manageLocationPhotos")}
+          />
+        </div>
         <div className={cs.imagesBlockGrid}>
           {slots.map((img, index) => (
             <div key={index} className={cs.imagesBlockGridItem}>
@@ -118,7 +129,7 @@ export default function LocationForm({
             </div>
           ))}
         </div>
-      )}
+      </div>
       <SheFormField
         name="addressLine1"
         render={({ field }) => (

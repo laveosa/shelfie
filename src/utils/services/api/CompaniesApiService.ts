@@ -69,6 +69,45 @@ export const CompaniesApiService = createApi({
         body: JSON.stringify(model),
       }),
     }),
+    updateCompanyDetails: apiConfig.createMutation<void, any>(builder, {
+      query: ({ companyId, model }) => ({
+        url: `${ApiUrlEnum.COMPANIES}/${companyId}`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+    }),
+    changePositionOfCompanyPhoto: apiConfig.createMutation<
+      any,
+      {
+        companyId?: number;
+        photoId?: number;
+        index?: number;
+      }
+    >(builder, {
+      query: ({ companyId, photoId, index }) => ({
+        url: `${ApiUrlEnum.COMPANIES}/${companyId}/photo/${photoId}/${index}`,
+        method: "PATCH",
+      }),
+    }),
+    changePositionOfLocationPhoto: apiConfig.createMutation<
+      any,
+      {
+        locationId?: number;
+        photoId?: number;
+        index?: number;
+      }
+    >(builder, {
+      query: ({ locationId, photoId, index }) => ({
+        url: `${ApiUrlEnum.LOCATIONS}/${locationId}/photo/${photoId}/${index}`,
+        method: "PATCH",
+      }),
+    }),
+    deleteLocation: apiConfig.createMutation<void, any>(builder, {
+      query: (locationId) => ({
+        url: `${ApiUrlEnum.LOCATIONS}/${locationId}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 

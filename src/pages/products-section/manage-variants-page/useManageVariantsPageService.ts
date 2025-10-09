@@ -4,20 +4,29 @@ import {
   addGridRowColor,
   clearSelectedGridItems,
   formatDate,
-  setSelectedGridItem,
+  setSelectedGridItem
 } from "@/utils/helpers/quick-helper.ts";
 import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
-import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
-import { IManageVariantsPageSlice } from "@/const/interfaces/store-slices/IManageVariantsPageSlice.ts";
+import useProductsPageService
+  from "@/pages/products-section/products-page/useProductsPageService.ts";
+import {
+  IManageVariantsPageSlice
+} from "@/const/interfaces/store-slices/IManageVariantsPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import {
+  IProductsPageSlice
+} from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { useToast } from "@/hooks/useToast.ts";
-import { ManageVariantsPageSliceActions as actions } from "@/state/slices/ManageVariantsPageSlice.ts";
+import {
+  ManageVariantsPageSliceActions as actions
+} from "@/state/slices/ManageVariantsPageSlice.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
-import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
+import {
+  ProductsPageSliceActions as productsActions
+} from "@/state/slices/ProductsPageSlice.ts";
 import { VariantModel } from "@/const/models/VariantModel.ts";
 import { GridRowsColorsEnum } from "@/const/enums/GridRowsColorsEnum.ts";
 import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
@@ -68,8 +77,17 @@ export default function useManageVariantsPageService(handleCardAction) {
   const [getCountryCode] = DictionaryApiHooks.useLazyGetCountryCodeQuery();
   const [getCompanyDetails] = CompaniesApiHooks.useLazyGetCompanyDetailsQuery();
   const [deleteCompany] = CompaniesApiHooks.useDeleteCompanyMutation();
+  const [updateCompanyDetails] =
+    CompaniesApiHooks.useUpdateCompanyDetailsMutation();
   const [addLocationToCompany] =
     CompaniesApiHooks.useAddLocationToCompanyMutation();
+  const [changePositionOfCompanyPhoto] =
+    CompaniesApiHooks.useChangePositionOfCompanyPhotoMutation();
+  const [changePositionOfLocationPhoto] =
+    CompaniesApiHooks.useChangePositionOfLocationPhotoMutation();
+  const [updateLocationDetails] =
+    CompaniesApiHooks.useUpdateLocationDetailsMutation();
+  const [deleteLocation] = CompaniesApiHooks.useDeleteLocationMutation();
 
   function getVariantsForGridHandler(data?: GridRequestModel) {
     return getVariantsForGrid(data).then((res: any) => {
@@ -616,29 +634,77 @@ export default function useManageVariantsPageService(handleCardAction) {
   }
 
   function changePhotoPositionHandler(model) {
-    productsService
-      .changePhotoPositionForVariantHandler(
-        productsState.selectedVariant.variantId,
-        model.activeItem.photoId,
-        model.newIndex,
-      )
-      .then(() => {
-        dispatch(actions.setIsVariantPhotoGridLoading(true));
-        if (model.newIndex === 0 || model.oldIndex === 0) {
-          productsService
-            .getVariantsForGridHandler(productsState.gridRequestModel)
-            .then((res) =>
-              dispatch(productsActions.refreshVariants(res.items)),
-            );
-        }
+    switch (model.contextName) {
+      case "Company":
+        changePositionOfCompanyPhoto({
+          companyId: state.managedCompany.companyId,
+          photoId: model.activeItem.photoId,
+          index: model.newIndex,
+        }).then((res) => {
+          if (!res.error) {
+            getCompanyDetails(state.managedCompany.companyId).then((res) => {
+              dispatch(actions.refreshManagedCompany(res.data));
+            });
+            if (model.newIndex === 0 || model.oldIndex === 0) {
+              dispatch(actions.setIsSuppliersGridLoading(true));
+              getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
+                (res) => {
+                  dispatch(actions.setIsSuppliersGridLoading(false));
+                  const modifiedList = res.data.items.map((item) => ({
+                    ...item,
+                    isSelected:
+                      item.companyId === state.selectedCompany?.companyId,
+                  }));
+                  dispatch(
+                    actions.refreshCompaniesGridRequestModel({
+                      ...res.data,
+                      items: modifiedList,
+                    }),
+                  );
+                },
+              );
+            }
+          }
+        });
+        break;
+      case "Location":
+        changePositionOfLocationPhoto({
+          locationId: state.managedLocation.locationId,
+          photoId: model.activeItem.photoId,
+          index: model.newIndex,
+        }).then((res) => {
+          if (!res.error) {
+            getCompanyDetails(state.managedCompany.companyId).then((res) => {
+              dispatch(actions.refreshManagedCompany(res.data));
+            });
+          }
+        });
+        break;
+      default:
         productsService
-          .getVariantDetailsHandler(productsState.selectedVariant.variantId)
-          .then((res) => {
-            dispatch(actions.setIsVariantPhotoGridLoading(false));
-            dispatch(productsActions.refreshSelectedVariant(res));
-            dispatch(productsActions.refreshVariantPhotos(res?.photos));
+          .changePhotoPositionForVariantHandler(
+            productsState.selectedVariant.variantId,
+            model.activeItem.photoId,
+            model.newIndex,
+          )
+          .then(() => {
+            dispatch(actions.setIsVariantPhotoGridLoading(true));
+            if (model.newIndex === 0 || model.oldIndex === 0) {
+              productsService
+                .getVariantsForGridHandler(productsState.gridRequestModel)
+                .then((res) =>
+                  dispatch(productsActions.refreshVariants(res.items)),
+                );
+            }
+            productsService
+              .getVariantDetailsHandler(productsState.selectedVariant.variantId)
+              .then((res) => {
+                dispatch(actions.setIsVariantPhotoGridLoading(false));
+                dispatch(productsActions.refreshSelectedVariant(res));
+                dispatch(productsActions.refreshVariantPhotos(res?.photos));
+              });
           });
-      });
+    }
   }
 
   function addTraitHandler() {
@@ -1279,13 +1345,51 @@ export default function useManageVariantsPageService(handleCardAction) {
     });
   }
 
+  function updateCompanyHandler(model: CompanyModel) {
+    dispatch(actions.setIsCompanyConfigurationCardLoading(true));
+    updateCompanyDetails({
+      companyId: state.managedCompany.companyId,
+      model,
+    }).then((res: any) => {
+      dispatch(actions.setIsCompanyConfigurationCardLoading(false));
+      if (!res.error) {
+        dispatch(actions.refreshManagedCompany(res.data));
+        dispatch(actions.setIsSuppliersGridLoading(true));
+        getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
+          (res) => {
+            dispatch(actions.setIsSuppliersGridLoading(false));
+            const modifiedList = res.data.items.map((item) => ({
+              ...item,
+              isSelected: item.companyId === state.selectedCompany?.companyId,
+            }));
+            dispatch(
+              actions.refreshCompaniesGridRequestModel({
+                ...res.data,
+                items: modifiedList,
+              }),
+            );
+          },
+        );
+        addToast({
+          text: "Company updated successfully",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: "Failed to update company",
+          type: "error",
+        });
+      }
+    });
+  }
+
   function closeCompanyConfigurationCardHandler() {
     handleCardAction("companyConfigurationCard");
     dispatch(actions.resetManagedCompany());
   }
 
   function manageCompanyPhotosHandler() {
-    handleCardAction("photosCard", true);
+    handleCardAction("companyPhotosCard", true);
   }
 
   async function deleteCompanyPhotoHandler(model: ImageModel) {
@@ -1348,28 +1452,37 @@ export default function useManageVariantsPageService(handleCardAction) {
       }
       if (res.data.photoId) {
         dispatch(actions.setIsPhotoUploaderLoading(false));
-        dispatch(actions.setIsSuppliersGridLoading(true));
-        getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
-          (res) => {
-            dispatch(actions.setIsSuppliersGridLoading(false));
-            const modifiedList = res.data.items.map((item) => ({
-              ...item,
-              isSelected: item.companyId === state.selectedCompany?.companyId,
-            }));
-            dispatch(
-              actions.refreshCompaniesGridRequestModel({
-                ...res.data,
-                items: modifiedList,
-              }),
-            );
-          },
-        );
-        dispatch(
-          actions.refreshManagedCompany({
-            ...state.managedCompany,
-            photos: [...(state.managedCompany.photos || []), res.data],
-          }),
-        );
+        if (model.contextName === "Company") {
+          dispatch(actions.setIsSuppliersGridLoading(true));
+          getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
+            (res) => {
+              dispatch(actions.setIsSuppliersGridLoading(false));
+              const modifiedList = res.data.items.map((item) => ({
+                ...item,
+                isSelected: item.companyId === state.selectedCompany?.companyId,
+              }));
+              dispatch(
+                actions.refreshCompaniesGridRequestModel({
+                  ...res.data,
+                  items: modifiedList,
+                }),
+              );
+            },
+          );
+          dispatch(
+            actions.refreshManagedCompany({
+              ...state.managedCompany,
+              photos: [...(state.managedCompany.photos || []), res.data],
+            }),
+          );
+        } else {
+          dispatch(
+            actions.refreshManagedLocation({
+              ...state.managedLocation,
+              photos: [...(state.managedLocation.photos || []), res.data],
+            }),
+          );
+        }
         addToast({
           text: "Photos added successfully",
           type: "success",
@@ -1380,8 +1493,12 @@ export default function useManageVariantsPageService(handleCardAction) {
     });
   }
 
-  function closePhotosCardHandler() {
-    handleCardAction("photosCard");
+  function closePhotosCardHandler(contextName: string) {
+    if (contextName === "Company") {
+      handleCardAction("companyPhotosCard");
+    } else {
+      handleCardAction("locationPhotosCard");
+    }
   }
 
   function openLocationConfigurationCardHandler(model: LocationModel) {
@@ -1416,6 +1533,95 @@ export default function useManageVariantsPageService(handleCardAction) {
       } else {
         addToast({
           text: res.error.data?.detail,
+          type: "error",
+        });
+      }
+    });
+  }
+
+  function deleteLocationHandler(model: LocationModel) {
+    dispatch(actions.setIsLocationConfigurationCardLoading(true));
+    deleteLocation(model.locationId).then((res: any) => {
+      if (!res.error) {
+        handleCardAction("locationConfigurationCard");
+        dispatch(actions.setIsCompanyConfigurationCardLoading(true));
+        dispatch(actions.setIsLocationsGridLoading(true));
+        getCompanyDetails(state.managedCompany.companyId).then((res: any) => {
+          dispatch(actions.setIsCompanyConfigurationCardLoading(false));
+          dispatch(actions.setIsLocationsGridLoading(false));
+          dispatch(actions.refreshManagedCompany(res.data));
+        });
+        addToast({
+          text: "Location deleted successfully",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: res.error.data?.detail,
+          type: "error",
+        });
+      }
+    });
+  }
+
+  function manageLocationPhotosHandler() {
+    handleCardAction("locationPhotosCard", true);
+  }
+
+  function updateLocationHandler(model: LocationModel) {
+    dispatch(actions.setIsLocationConfigurationCardLoading(true));
+    updateLocationDetails({
+      locationId: state.managedLocation.locationId,
+      model,
+    }).then((res: any) => {
+      dispatch(actions.setIsLocationConfigurationCardLoading(false));
+      if (!res.error) {
+        dispatch(actions.setIsCompanyConfigurationCardLoading(true));
+        getCompanyDetails(state.managedCompany.companyId).then((res: any) => {
+          dispatch(actions.setIsCompanyConfigurationCardLoading(false));
+          dispatch(actions.refreshManagedCompany(res.data));
+        });
+        addToast({
+          text: "Location updated successfully",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: "Failed to update location",
+          type: "error",
+        });
+      }
+    });
+  }
+
+  async function deleteLocationPhotoHandler(model: ImageModel) {
+    const confirmedDeleteLocationPhoto = await openConfirmationDialog({
+      headerTitle: "Deleting location photo",
+      text: "You are about to delete location photo.",
+      primaryButtonValue: "Delete",
+      secondaryButtonValue: "Cancel",
+    });
+
+    if (!confirmedDeleteLocationPhoto) return;
+    deletePhoto(model.photoId).then((res: any) => {
+      const updatedPhotos = state.managedLocation.photos.filter(
+        (photo) => photo.photoId !== model.photoId,
+      );
+      dispatch(
+        actions.refreshManagedLocation({
+          ...state.managedLocation,
+          photos: updatedPhotos,
+        }),
+      );
+      if (!res.error) {
+        addToast({
+          text: "Photo deleted successfully",
+          type: "success",
+        });
+      } else {
+        addToast({
+          text: "Photo not deleted",
+          description: res.error.details.message,
           type: "error",
         });
       }
@@ -1543,6 +1749,7 @@ export default function useManageVariantsPageService(handleCardAction) {
     selectCompanyHandle,
     manageCompanyHandler,
     deleteCompanyHandler,
+    updateCompanyHandler,
     closeCompanyConfigurationCardHandler,
     manageCompanyPhotosHandler,
     deleteCompanyPhotoHandler,
@@ -1551,6 +1758,10 @@ export default function useManageVariantsPageService(handleCardAction) {
     openLocationConfigurationCardHandler,
     closeLocationConfigurationCardHandler,
     createLocationHandler,
+    deleteLocationHandler,
+    manageLocationPhotosHandler,
+    updateLocationHandler,
+    deleteLocationPhotoHandler,
     detachSupplierHandler,
     getCountryCodesHandler,
   };

@@ -29,7 +29,7 @@ export default function PhotosCard({
       title={`${contextName} Photos`}
       isLoading={isLoading}
       showCloseButton={showCloseButton}
-      onSecondaryButtonClick={() => onAction("closePhotosCard")}
+      onSecondaryButtonClick={() => onAction("closePhotosCard", contextName)}
     >
       <div className={cs.photosCardContent}>
         <SheFileUploader
@@ -60,6 +60,7 @@ export default function PhotosCard({
                   newIndex,
                   activeItem,
                   oldIndex,
+                  contextName,
                 })
               }
               onAction={onAction}

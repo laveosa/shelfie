@@ -323,6 +323,26 @@ export const OrdersApiService = createApi({
         method: "POST",
       }),
     }),
+    updateStockActionForShipment: apiConfig.createMutation<
+      void,
+      { stockActionId: number; model: any }
+    >(builder, {
+      query: ({ stockActionId, model }) => ({
+        url: `${ApiUrlEnum.SHIPMENTS}${ApiUrlEnum.STOCK_ACTIONS}/${stockActionId}`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+    }),
+    confirmPackedProducts: apiConfig.createMutation<
+      void,
+      { shipmentId: number; model: any }
+    >(builder, {
+      query: ({ shipmentId, model }) => ({
+        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/package`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+    }),
   }),
 });
 export const { endpoints, ...OrdersApiHooks } = OrdersApiService;

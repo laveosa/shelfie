@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { merge } from "lodash";
 
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
@@ -16,13 +15,13 @@ import UsersApiHooks from "@/utils/services/api/UsersApiService.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import useAppService from "@/useAppService.ts";
 import { CustomerModel } from "@/const/models/CustomerModel.ts";
+import { OrderItemModel } from "@/const/models/OrderItemModel.ts";
 
 export default function useOrderShipmentPageService(
   handleCardAction,
   handleMultipleCardActions,
 ) {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const { addToast } = useToast();
   const appService = useAppService();
   const state = useAppSelector<IOrderShipmentPageSlice>(
@@ -61,6 +60,10 @@ export default function useOrderShipmentPageService(
     OrdersApiHooks.useRemoveVariantFromShipmentMutation();
   const [createShipmentForOrder] =
     OrdersApiHooks.useCreateShipmentForOrderMutation();
+  const [updateStockActionForShipment] =
+    OrdersApiHooks.useUpdateStockActionForShipmentMutation();
+  const [confirmPackedProducts] =
+    OrdersApiHooks.useConfirmPackedProductsMutation();
 
   function getOrderDetailsHandler(orderId) {
     return getOrderDetails(orderId).then((res: any) => {
@@ -201,6 +204,9 @@ export default function useOrderShipmentPageService(
   function connectShipmentToOrderHandler(shipmentId: number, orderId: number) {
     return connectShipmentToOrder({ shipmentId, orderId }).then((res: any) => {
       if (!res.error) {
+        dispatch(
+          actions.refreshOrderShipments([...state.orderShipments, res.data]),
+        );
         addToast({
           text: "Shipment successfully added to order",
           type: "success",
@@ -215,15 +221,42 @@ export default function useOrderShipmentPageService(
     });
   }
 
+  // function getShipmentDetailsHandler(shipmentId: number) {
+  //   handleMultipleCardActions({
+  //     shipmentConfigurationCard: true,
+  //     selectShipmentForOrderCard: false,
+  //   });
+  //   dispatch(actions.setIsShipmentDetailsCardLoading(true));
+  //   return getShipmentDetails(shipmentId).then((res: any) => {
+  //     dispatch(actions.setIsShipmentDetailsCardLoading(false));
+  //     dispatch(actions.refreshSelectedShipment(res.data));
+  //     return res;
+  //   });
+  // }
+
   function getShipmentDetailsHandler(shipmentId: number) {
     handleMultipleCardActions({
       shipmentConfigurationCard: true,
       selectShipmentForOrderCard: false,
     });
-    dispatch(actions.setIsShipmentDetailsCardLoading(true));
+
+    dispatch(actions.setIsShipmentConfigurationCardLoading(true));
     return getShipmentDetails(shipmentId).then((res: any) => {
-      dispatch(actions.setIsShipmentDetailsCardLoading(false));
-      dispatch(actions.refreshSelectedShipment(res.data));
+      dispatch(actions.setIsShipmentConfigurationCardLoading(false));
+
+      if (res?.data) {
+        const cleanedShipment = {
+          ...res.data,
+          orderItems:
+            res.data.orderItems?.filter(
+              (item: any) => item.orderedAmount !== 0,
+            ) || [],
+        };
+
+        dispatch(actions.refreshSelectedShipment(cleanedShipment));
+        return cleanedShipment;
+      }
+
       return res;
     });
   }
@@ -329,14 +362,37 @@ export default function useOrderShipmentPageService(
   }
 
   function addVariantsToShipmentHandler(shipmentId: number, model: any) {
-    return addVariantsToShipment({ shipmentId, model }).then((res: any) => {
-      return res.data;
-    });
+    const normalizedData = {
+      items: [
+        {
+          ...model,
+        },
+      ],
+    };
+    return addVariantsToShipment({ shipmentId, model: normalizedData }).then(
+      (res: any) => {
+        dispatch(actions.refreshSelectedShipment(res.data));
+      },
+    );
+  }
+
+  function addAllVariantsToShipmentHandler(shipmentId: number, model: any) {
+    const normalizedData = {
+      items: model.map((item: any) => ({
+        stockActionId: item.stockActionId,
+        quantity: item.amount,
+      })),
+    };
+    addVariantsToShipment({ shipmentId, model: normalizedData }).then(
+      (res: any) => {
+        dispatch(actions.refreshSelectedShipment(res.data));
+      },
+    );
   }
 
   function removeVariantFromShipmentHandler(actionId: number) {
     return removeVariantFromShipment(actionId).then((res: any) => {
-      return res.data;
+      dispatch(actions.refreshSelectedShipment(res.data));
     });
   }
 
@@ -363,6 +419,32 @@ export default function useOrderShipmentPageService(
     });
   }
 
+  function changePackedOrderItemQuantityHandler(model: OrderItemModel) {
+    updateStockActionForShipment({
+      stockActionId: model.stockActionId,
+      model: { quantity: model.amount },
+    }).then((res: any) => {
+      dispatch(actions.refreshSelectedShipment(res.data));
+    });
+  }
+
+  function confirmPackedProductsHandler(
+    shipmentId: number,
+    model: OrderItemModel[],
+  ) {
+    confirmPackedProducts({
+      shipmentId,
+      model: {
+        items: model.map((item) => ({
+          stockActionId: item.stockActionId,
+          quantity: item.amount,
+        })),
+      },
+    }).then((res: any) => {
+      dispatch(actions.refreshSelectedShipment(res.data));
+    });
+  }
+
   return {
     getOrderDetailsHandler,
     getShipmentsListForOrderHandler,
@@ -384,10 +466,13 @@ export default function useOrderShipmentPageService(
     applyShipmentsGridColumns,
     disconnectOrderFromShipmentHandler,
     addVariantsToShipmentHandler,
+    addAllVariantsToShipmentHandler,
     removeVariantFromShipmentHandler,
     closeShipmentConfigurationCardHandler,
     closeSelectEntityCardHandler,
     closeSelectShipmentForOrderCardHandler,
     createShipmentForOrderHandler,
+    changePackedOrderItemQuantityHandler,
+    confirmPackedProductsHandler,
   };
 }

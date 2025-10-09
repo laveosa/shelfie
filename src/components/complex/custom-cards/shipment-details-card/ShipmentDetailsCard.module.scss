@@ -1,8 +1,8 @@
 @use "@/styles/variables" as vars;
 
 .shipmentDetailsCard {
-  min-width: 660px;
-  max-width: 660px;
+  min-width: 660px !important;
+  max-width: 660px !important;
 
   .shipmentDetailsCardContent {
     display: flex;

@@ -3,8 +3,9 @@ import { ImageIcon, PackageMinus } from "lucide-react";
 
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
-import QuantityInputCell from "@/components/complex/grid/custom-grids/find-product-grid/QuantityInputCell.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import cs from "./PackedOrderItemsGridColumns.module.scss";
+import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 
 export function PackedOrderItemsGridColumns({
   onAction,
@@ -16,29 +17,29 @@ export function PackedOrderItemsGridColumns({
       id: "variantName",
       accessorFn: (row) => row.variantName,
       header: "Product",
-      size: 110,
-      minSize: 110,
-      maxSize: 110,
+      minSize: 120,
       cell: ({ row }) => {
-        const image: string = row.original.photo;
+        const image: string = row.original.photo?.thumbnailUrl;
         return (
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <div>
+          <div className={cs.variantNameCell}>
+            <div className={cs.imageBlock}>
               {image ? (
                 <img
                   src={image}
                   alt={row.original.variantName || "Variant"}
-                  className="object-cover rounded-md w-12 h-12"
+                  className={cs.variantPhoto}
                 />
               ) : (
-                <SheIcon icon={ImageIcon} maxWidth="30px" />
+                <div className={cs.iconContainer}>
+                  <SheIcon icon={ImageIcon} maxWidth="30px" />
+                </div>
               )}
             </div>
             <div>
               <SheTooltip
                 delayDuration={200}
                 text={row.getValue("variantName")}
-                className="max-w-[80px] overflow-hidden text-ellipsis whitespace-nowrap"
+                className={cs.variantName}
               >
                 <span>{row.getValue("variantName")}</span>
               </SheTooltip>
@@ -50,9 +51,8 @@ export function PackedOrderItemsGridColumns({
     {
       accessorKey: "traitOptions",
       header: "Details",
-      size: 60,
-      minSize: 60,
-      maxSize: 60,
+      minSize: 100,
+      maxSize: 100,
       cell: ({ row }) => {
         const traitOptions = row.original.traitOptions || [];
 
@@ -64,27 +64,13 @@ export function PackedOrderItemsGridColumns({
         );
 
         return (
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "10px",
-              maxWidth: "50px",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",
-              verticalAlign: "middle",
-            }}
-          >
+          <div className={cs.traitOptionsCell}>
             {colorOptions.map((colorOpt, index) => (
               <div
                 key={`color-${index}`}
+                className={cs.colorOptions}
                 style={{
                   background: colorOpt.optionColor,
-                  minWidth: "20px",
-                  minHeight: "20px",
-                  borderRadius: "50%",
-                  border: "2px solid #ccc",
                 }}
               />
             ))}
@@ -100,9 +86,7 @@ export function PackedOrderItemsGridColumns({
     {
       accessorKey: "orderId",
       header: "Order",
-      size: 70,
       minSize: 70,
-      maxSize: 70,
       cell: ({ row }) => {
         return <span>{row.original.orderId}</span>;
       },
@@ -110,27 +94,31 @@ export function PackedOrderItemsGridColumns({
     {
       accessorKey: "packedAmount",
       header: "Qty to pack",
-      size: 60,
-      minSize: 60,
-      maxSize: 60,
+      minSize: 100,
       cell: ({ row }) => {
-        return <span>{row.original.orderId}</span>;
+        return <span>{row.original.quantityToShip}</span>;
       },
     },
     {
       accessorKey: "quantity",
       header: "Qty packed",
-      size: 80,
-      minSize: 80,
-      maxSize: 80,
-      cell: ({ row }) => <QuantityInputCell row={row} />,
+      minSize: 100,
+      cell: ({ row }) => (
+        <SheInput
+          value={row.original.amount}
+          type="number"
+          onDelay={(value) => {
+            row.original.amount = value;
+            onAction("changePackedOrderItemQuantity", row.original);
+          }}
+        />
+      ),
     },
     {
       id: "remove",
       header: "",
-      size: 90,
-      minSize: 90,
-      maxSize: 90,
+      minSize: 120,
+      maxSize: 120,
       cell: ({ row }) => {
         return (
           <div onClick={(e) => e.stopPropagation()}>

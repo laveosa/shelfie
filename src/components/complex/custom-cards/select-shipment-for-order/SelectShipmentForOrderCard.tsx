@@ -56,7 +56,6 @@ export default function SelectShipmentForOrderCard({
       className={cs.selectShipmentForOrderCard}
       title="Select shipment for order"
       titleTransKey="CardTitles.SelectShipmentForOrder"
-      width="800px"
       showCloseButton
       isLoading={isLoading}
       onSecondaryButtonClick={() => onAction("closeSelectShipmentForOrderCard")}
