@@ -1,15 +1,19 @@
+import { UseFormReturn } from "react-hook-form";
+import React, { useRef, useState } from "react";
+import _ from "lodash";
+
 import { ImageIcon, Link2, Plus, RefreshCcw } from "lucide-react";
-import React, { useState } from "react";
 
 import cs from "./AddStockCard.module.scss";
-import { Separator } from "@/components/ui/separator.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import AddStockForm from "@/components/forms/add-stock-form/AddStockForm.tsx";
 import SheCard from "@/components/complex/she-card/SheCard.tsx";
-import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
+import { Separator } from "@/components/ui/separator.tsx";
 import { formatDate } from "@/utils/helpers/quick-helper.ts";
+import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { IAddStockCard } from "@/const/interfaces/complex-components/custom-cards/IAddStockCard.ts";
+import { AppFormType } from "@/const/types/AppFormType.ts";
 
 export default function AddStockCard({
   isLoading,
@@ -20,19 +24,33 @@ export default function AddStockCard({
   currencyTypes,
   ...props
 }: IAddStockCard) {
+  // ==================================================================== STATE MANAGEMENT
+  const [_isFormValid, setIsFormValid] = useState<boolean>(null);
+
   // ==================================================================== UTILITIES
   const { translate } = useAppTranslation();
-  const [addStockFormData, setAddStockFormData] = useState<any>(undefined);
+
+  // ==================================================================== REF
+  const stockDataRef = useRef<any>(null);
 
   // ==================================================================== EVENT HANDLERS
+  function onAddStockChangeHandler(
+    value: any,
+    form: UseFormReturn<AppFormType<any>>,
+  ) {
+    setIsFormValid(form.formState?.isValid);
+    if (!_.isEqual(value, stockDataRef.current)) stockDataRef.current = value;
+  }
+
   function onSubmitHandler() {
+    const stockData = stockDataRef.current;
     const formattedData = {
       priceModel: {
         variantId: variant.variantId,
-        unitsAmount: addStockFormData.unitsAmount,
-        nettoPrice: addStockFormData.nettoPrice,
-        taxTypeId: addStockFormData.taxTypeId,
-        currencyId: addStockFormData.currencyId,
+        unitsAmount: stockData.unitsAmount,
+        nettoPrice: stockData.nettoPrice,
+        taxTypeId: stockData.taxTypeId,
+        currencyId: stockData.currencyId,
       },
       purchaseId: Number(purchase.purchaseId),
     };
@@ -43,18 +61,26 @@ export default function AddStockCard({
   return (
     <SheCard
       className={cs.addStockCard}
-      title={`${translate("StockActions.AddToStock")} ${variant?.variantName} ${translate("SectionTitles.Product")}`}
-      width="411px"
+      title="Add product to stock"
+      titleTransKey="StockActions.AddProductToStock"
+      description={`${translate("SectionTitles.Product")}: "${variant?.variantName}"`}
       isLoading={isLoading}
       showCloseButton
+      showFooter
       onSecondaryButtonClick={() => onAction("closeAddStockCard")}
+      primaryButtonProps={{
+        value: "Add to Stock",
+        icon: Plus,
+        disabled: !purchase || !_isFormValid,
+      }}
+      onPrimaryButtonClick={onSubmitHandler}
       {...props}
     >
       <div className={cs.addStockCardContent}>
         <AddStockForm
           currencyTypes={currencyTypes}
           taxTypes={taxTypes}
-          onHandleUpData={(data) => setAddStockFormData(data)}
+          onChange={onAddStockChangeHandler}
         />
         <Separator />
         {purchase ? (
@@ -154,20 +180,6 @@ export default function AddStockCard({
             </div>
           </div>
         )}
-        <Separator />
-        <div className={cs.footerButtons}>
-          <SheButton
-            variant="secondary"
-            value="Cancel"
-            onClick={() => onAction("closeAddStockCard")}
-          />
-          <SheButton
-            icon={Plus}
-            value="Add to Stock"
-            disabled={!purchase || !addStockFormData}
-            onClick={onSubmitHandler}
-          />
-        </div>
       </div>
     </SheCard>
   );

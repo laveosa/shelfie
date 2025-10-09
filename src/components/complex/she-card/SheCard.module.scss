@@ -17,7 +17,8 @@
     position: relative;
     flex-grow: 1;
     scrollbar-gutter: stable;
-    padding-right: 2.5px;
+    padding-top: 3px;
+    padding-right: 3px;
 
     @-moz-document url-prefix() {
       padding-right: 8.5px;
@@ -47,9 +48,8 @@
     background-color: white;
 
     .cardContextWrapper {
-      padding-left: 10px;
-      padding-right: 2.5px;
-      margin: 10px 2.5px 10px 0;
+      padding: 6px 3px 3px 10px;
+      margin: 10px 3px 6px 0;
     }
 
     &.withHeader {

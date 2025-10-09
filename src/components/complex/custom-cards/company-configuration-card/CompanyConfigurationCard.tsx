@@ -38,10 +38,10 @@ export default function CompanyConfigurationCard({
   // ==================================================================== PRIVATE
   function normalizeCompanyData(model: CompanyModel) {
     return {
-      companyName: model.companyName || "",
-      countryId: model.countryId ?? null,
-      customerCareEmail: model.customerCareEmail || null,
-      nip: model.nip || null,
+      companyName: model?.companyName || "",
+      countryId: model?.countryId ?? null,
+      customerCareEmail: model?.customerCareEmail || null,
+      nip: model?.nip || null,
     };
   }
 
@@ -62,10 +62,9 @@ export default function CompanyConfigurationCard({
     >
       <div className={cs.companyConfigurationCardContent}>
         <CreateCompanyForm
-          isLoading={isLoading}
           data={company}
           countryCodes={countryCodes}
-          onHandleUpData={(data) => onUpdateCompanyHandler(data)}
+          onChange={onUpdateCompanyHandler}
         />
         <div className={cs.imagesBlock}>
           <div className={cs.imagesBlockTitle}>

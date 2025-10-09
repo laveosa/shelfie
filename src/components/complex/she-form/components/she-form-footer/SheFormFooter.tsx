@@ -1,9 +1,9 @@
 import React, { JSX } from "react";
 
 import cs from "./SheFormFooter.module.scss";
-import { ISheFormFooter } from "@/const/interfaces/forms/ISheFormFooter.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
+import { ISheFormFooter } from "@/const/interfaces/forms/ISheFormFooter.ts";
 
 export default function SheFormFooter({
   footerClassName = "",

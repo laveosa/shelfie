@@ -1,40 +1,61 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect, useRef } from "react";
-import { useWatch } from "react-hook-form";
-import { isEqual } from "lodash";
+import React, { JSX, useEffect } from "react";
 
+import cs from "./CreateCompanyForm.module.scss";
+import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
+import SheForm from "@/components/complex/she-form/SheForm.tsx";
+import SheInput from "@/components/primitive/she-input/SheInput.tsx";
+import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
+import CreateCompanyFormScheme from "@/utils/validation/schemes/CreateCompanyFormScheme.ts";
+import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
+import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
+import useAppForm from "@/utils/hooks/useAppForm.ts";
+import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
+import { ICreateCompanyForm } from "@/const/interfaces/forms/ICreateCompanyForm.ts";
+import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 import {
   CompanyModel,
   CompanyModelDefault,
 } from "@/const/models/CompanyModel.ts";
-import useAppForm from "@/utils/hooks/useAppForm.ts";
-import SheForm from "@/components/complex/she-form/SheForm.tsx";
-import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
-import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
-import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import cs from "./CreateCompanyForm.module.scss";
-import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
-import CreateCompanyFormScheme from "@/utils/validation/schemes/CreateCompanyFormScheme.ts";
-import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
-import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
-import { ICreateCompanyForm } from "@/const/interfaces/forms/ICreateCompanyForm.ts";
-import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
+import { UseFormReturn } from "react-hook-form";
+import { AppFormType } from "@/const/types/AppFormType.ts";
 
-export default function CreateCompanyForm<T>({
-  isLoading,
+export default function CreateCompanyForm({
   data,
   countryCodes,
+  onChange,
+  onSubmit,
   onCancel,
-  onHandleUpData,
-}: ICreateCompanyForm<T>) {
+}: ICreateCompanyForm): JSX.Element {
+  // ==================================================================== UTILITIES
   const form = useAppForm<CompanyModel>({
-    mode: ReactHookFormMode.SUBMIT,
+    mode: ReactHookFormMode.BLUR,
     resolver: zodResolver(CreateCompanyFormScheme),
-    defaultValues: data || CompanyModelDefault,
+    defaultValues: CompanyModelDefault,
   });
-  const isFirstRender = useRef(true);
 
+  // ==================================================================== SIDE EFFECTS
+  useEffect(() => {
+    form.reset(data);
+  }, [data]);
+
+  // ==================================================================== EVENT HANDLERS
+  function onFormChangeHandler(
+    value: CompanyModel,
+    form?: UseFormReturn<AppFormType<CompanyModel>>,
+  ) {
+    onChange?.(
+      {
+        companyName: value.companyName || "",
+        nip: value.nip || "",
+        customerCareEmail: value.customerCareEmail || "",
+        countryId: value.countryId || null,
+      },
+      form,
+    );
+  }
+
+  // ==================================================================== PRIVATE
   function svgStringToComponent(svgString: string): React.FC<any> {
     return (props) => (
       <span dangerouslySetInnerHTML={{ __html: svgString }} {...props} />
@@ -43,7 +64,7 @@ export default function CreateCompanyForm<T>({
 
   function convertCountryCodeToSelectItems(
     data: CountryCodeModel[],
-  ): ISheSelectItem<any>[] {
+  ): ISheSelectItem<number>[] {
     return data?.map(
       (item): ISheSelectItem<any> => ({
         value: item.countryId,
@@ -53,57 +74,16 @@ export default function CreateCompanyForm<T>({
     );
   }
 
-  useEffect(() => {
-    form.reset(data || CompanyModelDefault);
-  }, [data]);
-
-  const watchedValues = useWatch({
-    control: form.control,
-    name: ["companyName", "nip", "countryId", "customerCareEmail"],
-  });
-
-  useEffect(() => {
-    if (!form.formState.isValid) return;
-
-    const updatedData = {
-      companyName: watchedValues[0],
-      nip: watchedValues[1],
-      countryId: watchedValues[2],
-      customerCareEmail: watchedValues[3],
-    };
-
-    const normalizedData = {
-      companyName: data?.companyName ?? "",
-      nip: data?.nip ?? "",
-      countryId: data?.countryId ?? null,
-      customerCareEmail: data?.customerCareEmail ?? "",
-    };
-
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
-
-    const handler = setTimeout(() => {
-      if (!isEqual(updatedData, normalizedData)) {
-        onHandleUpData?.(updatedData);
-      }
-    }, 500);
-
-    return () => clearTimeout(handler);
-  }, [watchedValues, form.formState.isValid, data]);
-
+  // ==================================================================== LAYOUT
   return (
-    <SheForm
+    <SheForm<CompanyModel>
       className={cs.createSupplierForm}
-      isLoading={isLoading}
       form={form}
-      defaultValues={CompanyModelDefault}
       formPosition={DirectionEnum.CENTER}
-      view={ComponentViewEnum.STANDARD}
       fullWidth
-      hidePrimaryBtn
-      hideSecondaryBtn
+      hideFooter
+      onChange={onFormChangeHandler}
+      onSubmit={onSubmit}
       onCancel={onCancel}
     >
       <SheFormField
@@ -111,10 +91,13 @@ export default function CreateCompanyForm<T>({
         name="companyName"
         render={({ field }) => (
           <SheInput
+            value={field.value}
+            minLength={2}
+            maxLength={16}
             className={cs.formItem}
             label="Company Name"
-            value={field.value}
             placeholder="enter company name..."
+            required
             fullWidth
           />
         )}
@@ -124,9 +107,9 @@ export default function CreateCompanyForm<T>({
         name="nip"
         render={({ field }) => (
           <SheInput
+            value={field.value}
             className={cs.formItem}
             label="NIP"
-            value={field.value}
             placeholder="enter NIP..."
             fullWidth
           />
@@ -137,9 +120,9 @@ export default function CreateCompanyForm<T>({
         name="customerCareEmail"
         render={({ field }) => (
           <SheInput
+            value={field.value}
             className={cs.formItem}
             label="Customer Care Email"
-            value={field.value}
             placeholder="enter customer car email..."
             fullWidth
           />
@@ -150,10 +133,10 @@ export default function CreateCompanyForm<T>({
         name="countryId"
         render={({ field }) => (
           <SheSelect
-            label="Products country of origin"
             items={convertCountryCodeToSelectItems(countryCodes)}
-            placeholder="Select country..."
             selected={field.value}
+            label="Products country of origin"
+            placeholder="Select country..."
             hideFirstOption
             fullWidth
           />

@@ -14,7 +14,7 @@ export default function CustomerAddressCard({
   // ==================================================================== LAYOUT
   return (
     <SheCard
-      className={cs.customerAddressFormCard}
+      className={cs.customerAddressCard}
       title={isCreate ? "Create Customer Address" : "Edit Customer Address"}
       titleTransKey={
         isCreate
@@ -29,25 +29,18 @@ export default function CustomerAddressCard({
         titleTransKey: "CardTitles.DeleteCustomerAddress",
         text: "This customer address will be deleted and will no longer be available for selection or automatic connection. Past orders will remain visible.",
         textTransKey: "ConfirmationMessages.DeleteCustomerAddress",
-        onClick: () => onAction("deleteCustomerAddress", customerAddressId),
       }}
-      onSecondaryButtonClick={() =>
-        onAction("closeCustomerAddressCard", customerAddressId)
+      onNotificationCardButtonClick={() =>
+        onAction("deleteCustomerAddress", customerAddressId)
       }
     >
-      <div className={cs.customerCardContent}>
-        <div>
-          <AddressForm
-            data={customerAddress}
-            countryList={countryList}
-            isCreate={isCreate}
-            onSubmit={(data) => onAction("submitCustomerAddressData", data)}
-            onCancel={() =>
-              onAction("closeCustomerAddressCard", customerAddressId)
-            }
-          />
-        </div>
-      </div>
+      <AddressForm
+        data={customerAddress}
+        countryList={countryList}
+        isCreate={isCreate}
+        onSubmit={(data) => onAction("submitCustomerAddressData", data)}
+        onCancel={() => onAction("closeCustomerAddressCard", customerAddressId)}
+      />
     </SheCard>
   );
 }
