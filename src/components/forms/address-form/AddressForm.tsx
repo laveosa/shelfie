@@ -1,66 +1,47 @@
-import React, { useEffect } from "react";
-import { useTranslation } from "react-i18next";
+import { zodResolver } from "@hookform/resolvers/zod";
+import React, { JSX, useEffect } from "react";
+
 import { Plus, Save } from "lucide-react";
 
-import useAppForm from "@/utils/hooks/useAppForm.ts";
-import { zodResolver } from "@hookform/resolvers/zod";
+import cs from "./AddressForm.module.scss";
 import SheForm from "@/components/complex/she-form/SheForm.tsx";
-import { FormField } from "@/components/ui/form.tsx";
-import SheFormItem from "@/components/complex/she-form/components/she-form-item/SheFormItem.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import SheButton from "@/components/primitive/she-button/SheButton";
+import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
 import AddressFormScheme from "@/utils/validation/schemes/AddressFormScheme";
+import useAppForm from "@/utils/hooks/useAppForm.ts";
+import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
+import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
+import { IAddressForm } from "@/const/interfaces/forms/IAddressForm.ts";
+import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
+import { CountryCodeModel } from "@/const/models/CountryCodeModel";
 import {
   AddressRequestModel,
   AddressRequestModelDefault,
 } from "@/const/models/AddressRequestModel";
-import cs from "./AddressForm.module.scss";
-import { CountryCodeModel } from "@/const/models/CountryCodeModel";
-import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
-
-interface IAddressForm {
-  data?: AddressRequestModel;
-  isCreate?: boolean;
-  onSubmit?: (data: AddressRequestModel) => void;
-  onCancel?: () => void;
-  countryList?: CountryCodeModel[];
-  showFooter?: boolean;
-  onHandleUpData?: (data: any) => void;
-}
 
 export default function AddressForm({
   data,
   isCreate,
-  onSubmit,
-  onCancel,
   countryList,
   showFooter = true,
-  onHandleUpData,
-}: IAddressForm): React.ReactNode {
-  const { t } = useTranslation();
+  onChange,
+  onSubmit,
+  onCancel,
+}: IAddressForm): JSX.Element {
+  // ==================================================================== UTILITIES
   const form = useAppForm<AddressRequestModel>({
-    mode: "onBlur",
+    mode: ReactHookFormMode.BLUR,
     resolver: zodResolver(AddressFormScheme),
     defaultValues: AddressRequestModelDefault,
   });
 
+  // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     form.reset(data);
   }, [data]);
 
-  useEffect(() => {
-    if (form.formState.isValid) {
-      onHandleUpData?.(form.getValues());
-    } else {
-      onHandleUpData?.(null);
-    }
-  }, [form.formState.isValid]);
-
-  // ================================================================ RENDER
-
+  // ================================================================ PRIMARY
   function svgStringToComponent(svgString: string): React.FC<any> {
     return (props) => (
       <span dangerouslySetInnerHTML={{ __html: svgString }} {...props} />
@@ -69,7 +50,7 @@ export default function AddressForm({
 
   function convertCountryCodeToSelectItems(
     data: CountryCodeModel[],
-  ): ISheSelectItem<any>[] {
+  ): ISheSelectItem<number>[] {
     return data?.map(
       (item): ISheSelectItem<any> => ({
         value: item.countryId,
@@ -79,29 +60,40 @@ export default function AddressForm({
     );
   }
 
-  function onErrorHandler(model) {
-    console.log(model);
-  }
-
+  // ==================================================================== LAYOUT
   return (
     <SheForm<AddressRequestModel>
-      className={cs.addressForm}
       form={form}
+      className={cs.addressForm}
+      formPosition={DirectionEnum.CENTER}
+      fullWidth
+      hideFooter={!showFooter}
+      footerPosition={DirectionEnum.SPACE}
+      primaryBtnProps={{
+        value: isCreate ? "CreateAddress" : "Save",
+        valueTransKey: isCreate
+          ? "CustomerActions.CreateAddress"
+          : "CommonButtons.Save",
+        icon: isCreate ? Plus : Save,
+      }}
+      onChange={onChange}
       onSubmit={onSubmit}
-      onError={onErrorHandler}
       onCancel={onCancel}
-      view={ComponentViewEnum.STANDARD}
-      hidePrimaryBtn
-      hideSecondaryBtn
     >
       <SheFormField
         name="alias"
         render={({ field }) => (
           <SheInput
-            label={t("AddressForm.Labels.Alias")}
             value={field.value}
+            minLength={2}
+            maxLength={50}
+            label="Alias"
+            labelTransKey="AddressForm.Labels.Alias"
+            placeholder="Alias"
+            placeholderTransKey="AddressForm.Placeholders.Alias"
+            required
+            hideErrorMessage
             fullWidth
-            placeholder={t("AddressForm.Placeholders.Alias")}
           />
         )}
       />
@@ -109,10 +101,16 @@ export default function AddressForm({
         name="addressLine1"
         render={({ field }) => (
           <SheInput
-            label={t("AddressForm.Labels.AddressLine1")}
             value={field.value}
+            minLength={5}
+            maxLength={100}
+            label="Address Line 1"
+            labelTransKey="AddressForm.Labels.AddressLine1"
+            placeholder="Enter address line 1..."
+            placeholderTransKey="AddressForm.Placeholders.AddressLine1"
+            required
+            hideErrorMessage
             fullWidth
-            placeholder={t("AddressForm.Placeholders.AddressLine1")}
           />
         )}
       />
@@ -120,10 +118,12 @@ export default function AddressForm({
         name="addressLine2"
         render={({ field }) => (
           <SheInput
-            label={t("AddressForm.Labels.AddressLine2")}
             value={field.value}
+            label="Address Line 2"
+            labelTransKey="AddressForm.Labels.AddressLine2"
+            placeholder="Enter address line 2..."
+            placeholderTransKey="AddressForm.Placeholders.AddressLine2"
             fullWidth
-            placeholder={t("AddressForm.Placeholders.AddressLine2")}
           />
         )}
       />
@@ -131,10 +131,16 @@ export default function AddressForm({
         name="city"
         render={({ field }) => (
           <SheInput
-            label={t("AddressForm.Labels.City")}
             value={field.value}
+            minLength={2}
+            maxLength={50}
+            label="City"
+            labelTransKey="AddressForm.Labels.City"
+            placeholder="Enter city..."
+            placeholderTransKey="AddressForm.Placeholders.City"
+            required
+            hideErrorMessage
             fullWidth
-            placeholder={t("AddressForm.Placeholders.City")}
           />
         )}
       />
@@ -142,10 +148,16 @@ export default function AddressForm({
         name="state"
         render={({ field }) => (
           <SheInput
-            label={t("AddressForm.Labels.State")}
             value={field.value}
+            minLength={2}
+            maxLength={50}
+            label="State"
+            labelTransKey="AddressForm.Labels.State"
+            placeholder="Enter state..."
+            placeholderTransKey="AddressForm.Placeholders.State"
+            required
+            hideErrorMessage
             fullWidth
-            placeholder={t("AddressForm.Placeholders.State")}
           />
         )}
       />
@@ -153,59 +165,36 @@ export default function AddressForm({
         name="postalCode"
         render={({ field }) => (
           <SheInput
-            label={t("AddressForm.Labels.PostalCode")}
             value={field.value}
+            minLength={3}
+            maxLength={10}
+            label="Postal Code"
+            labelTransKey="AddressForm.Labels.PostalCode"
+            placeholder="Enter postal code..."
+            placeholderTransKey="AddressForm.Placeholders.PostalCode"
+            required
+            hideErrorMessage
             fullWidth
-            placeholder={t("AddressForm.Placeholders.PostalCode")}
           />
         )}
       />
-      <FormField
-        control={form.control}
+      <SheFormField
         name="countryId"
         render={({ field }) => (
-          <SheFormItem label={t("AddressForm.Labels.Country")}>
-            <SheSelect
-              selected={field.value}
-              items={convertCountryCodeToSelectItems(countryList)}
-              hideFirstOption
-              placeholder={t("AddressForm.Placeholders.Country")}
-              fullWidth
-              onSelect={(value) => {
-                field.onChange(value);
-                void form.trigger("countryId");
-              }}
-            />
-          </SheFormItem>
+          <SheSelect
+            items={convertCountryCodeToSelectItems(countryList)}
+            selected={field.value}
+            label="Country"
+            labelTransKey="AddressForm.Labels.Country"
+            placeholder="Choose country..."
+            placeholderTransKey="AddressForm.Placeholders.Country"
+            hideFirstOption
+            required
+            hideErrorMessage
+            fullWidth
+          />
         )}
       />
-      {showFooter && (
-        <div
-          className={cs.cardFooter}
-          style={{ justifyContent: "space-between" }}
-        >
-          <SheButton
-            variant="secondary"
-            onClick={() => {
-              onCancel();
-            }}
-            value={t("CommonButtons.Cancel")}
-          />
-
-          <SheButton
-            variant="default"
-            icon={isCreate ? Plus : Save}
-            onClick={() => {
-              form.handleSubmit(onSubmit);
-            }}
-            value={
-              isCreate
-                ? t("CustomerActions.CreateAddress")
-                : t("CommonButtons.Save")
-            }
-          />
-        </div>
-      )}
     </SheForm>
   );
 }

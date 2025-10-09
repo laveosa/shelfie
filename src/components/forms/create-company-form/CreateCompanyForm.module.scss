@@ -1,5 +1,4 @@
 .createSupplierForm {
-
   & form > div {
     padding-top: 10px;
     display: flex;
@@ -9,5 +8,8 @@
 
   .createSupplierFormItem {
     padding-bottom: 20px;
+
+    .formItem {
+    }
   }
 }

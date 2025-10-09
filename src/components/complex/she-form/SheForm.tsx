@@ -1,9 +1,11 @@
-import React, { JSX } from "react";
+import React, { JSX, useEffect } from "react";
+import { useWatch } from "react-hook-form";
 
 import cs from "./SheForm.module.scss";
-import { Form } from "@/components/ui/form.tsx";
 import SheFormHeader from "@/components/complex/she-form/components/she-form-header/SheFormHeader.tsx";
 import SheFormFooter from "@/components/complex/she-form/components/she-form-footer/SheFormFooter.tsx";
+import { Form } from "@/components/ui/form.tsx";
+import { SheFormContextProvider } from "@/state/providers/she-form-context-provider.tsx";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 import { FormSecondaryBtnBehaviorEnum } from "@/const/enums/FormSecondaryBtnBehaviorEnum.ts";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
@@ -23,12 +25,12 @@ import {
   ISheFormFooter,
   SheFormFooterDefaultModel,
 } from "@/const/interfaces/forms/ISheFormFooter.ts";
-import { SheFormContextProvider } from "@/state/providers/she-form-context-provider.tsx";
 
 export default function SheForm<T>(props: ISheForm<T>): JSX.Element {
   // ==================================================================== PROPS
   const {
     className = "",
+    contentClassName = "",
     style,
     children,
     form,
@@ -42,6 +44,7 @@ export default function SheForm<T>(props: ISheForm<T>): JSX.Element {
     maxWidth,
     fullWidth,
     onSubmit,
+    onChange,
     onError,
     onCancel,
   } = props;
@@ -58,6 +61,16 @@ export default function SheForm<T>(props: ISheForm<T>): JSX.Element {
     SheFormHeaderDefaultModel,
     SheFormFooterDefaultModel,
   ]);
+
+  // ==================================================================== UTILITIES
+  const formValue = useWatch({ control: form.control });
+
+  // ==================================================================== SIDE EFFECTS
+  useEffect(() => {
+    setTimeout(() => {
+      onChange?.(formValue as T, form);
+    });
+  }, [formValue]);
 
   // ==================================================================== EVENT HANDLERS
   function onSubmitHandler(value: T) {
@@ -94,7 +107,9 @@ export default function SheForm<T>(props: ISheForm<T>): JSX.Element {
         <SheFormHeader {...sheHeaderProps} />
         <form>
           <SheFormContextProvider value={{ form: form }}>
-            <div className={cs.sheFormContent}>{children}</div>
+            <div className={`${cs.sheFormContent} ${contentClassName}`}>
+              {children}
+            </div>
           </SheFormContextProvider>
           <SheFormFooter
             {...sheFooterProps}
