@@ -68,7 +68,7 @@ export default function SheForm<T>(props: ISheForm<T>): JSX.Element {
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     setTimeout(() => {
-      onChange?.(formValue, form);
+      onChange?.(formValue as T, form);
     });
   }, [formValue]);
 
