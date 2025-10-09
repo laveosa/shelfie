@@ -203,6 +203,9 @@ export default function ShipmentConfigurationCard({
               valueTransKey="SpecialText.ChangeAddress"
               icon={MapPin}
               variant="secondary"
+              onClick={() =>
+                onAction("openSelectAddressCard", shipment?.customerId)
+              }
             />
           </div>
           {shipment?.deliveryAddress && (
@@ -323,7 +326,9 @@ export default function ShipmentConfigurationCard({
                 </div>
               </>
             )}
-          {shipment?.shipmentStatus === "DeliveryPending" && (
+          {["DeliveryPending", "Completed"].includes(
+            shipment?.shipmentStatus,
+          ) && (
             <>
               <div className={cs.shipmentContentBlock}>
                 <Separator />
@@ -365,11 +370,25 @@ export default function ShipmentConfigurationCard({
                     value="Return shipment to packing"
                     valueTransKey="OrderActions.ReturnShipmentToPacking"
                     variant="secondary"
+                    onClick={() => console.log("Return shipment to packing")}
                   />
                   <SheButton
-                    value="Confirm shipment send"
-                    valueTransKey="OrderActions.ConfirmShipmentSend"
+                    value={
+                      shipment?.shipmentStatus === "DeliveryPending"
+                        ? "Confirm shipment send"
+                        : "Save changes"
+                    }
+                    valueTransKey={
+                      shipment?.shipmentStatus === "DeliveryPending"
+                        ? "OrderActions.ConfirmShipmentSend"
+                        : ""
+                    }
                     icon={Check}
+                    onClick={() => {
+                      shipment?.shipmentStatus === "DeliveryPending"
+                        ? console.log("Return shipment to packing")
+                        : console.log("Save changes");
+                    }}
                   />
                 </div>
               </div>

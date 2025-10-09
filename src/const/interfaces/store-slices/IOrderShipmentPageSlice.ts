@@ -8,14 +8,19 @@ export interface IOrderShipmentPageSlice {
   isShipmentConfigurationCardLoading?: boolean;
   isSelectEntityCardLoading?: boolean;
   isSelectShipmentForOrderCardLoading?: boolean;
+  isSelectCustomerAddressCardLoading?: boolean;
+  isCustomerCardLoading?: boolean;
   isProductsGridLoading?: boolean;
   isOrderShipmentsGridLoading?: boolean;
   isShipmentsGridLoading?: boolean;
   isSelectEntityGridLoading?: boolean;
   isSelectShipmentForOrderGridLoading?: boolean;
+  isCustomerAddressesGridLoading?: boolean;
   activeCards?: any[];
   orderShipments?: ShipmentModel[];
   selectedShipment?: ShipmentModel;
   selectedCustomer?: CustomerModel;
   shipmentsGridRequestModel?: GridRequestModel;
+  addressesGridRequestModel?: GridRequestModel;
+  managedCustomer?: CustomerModel;
 }

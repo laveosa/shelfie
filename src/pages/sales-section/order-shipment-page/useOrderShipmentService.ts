@@ -16,6 +16,7 @@ import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import useAppService from "@/useAppService.ts";
 import { CustomerModel } from "@/const/models/CustomerModel.ts";
 import { OrderItemModel } from "@/const/models/OrderItemModel.ts";
+import { convertCustomerToRequestModel } from "@/utils/helpers/customer-helper.ts";
 
 export default function useOrderShipmentPageService(
   handleCardAction,
@@ -64,6 +65,11 @@ export default function useOrderShipmentPageService(
     OrdersApiHooks.useUpdateStockActionForShipmentMutation();
   const [confirmPackedProducts] =
     OrdersApiHooks.useConfirmPackedProductsMutation();
+  const [getCustomerAddressesForGrid] =
+    OrdersApiHooks.useGetCustomerAddressesForGridMutation();
+  const [getCustomer] = OrdersApiHooks.useLazyGetCustomerDetailsQuery();
+  const [createCustomer] = OrdersApiHooks.useCreateCustomerMutation();
+  const [updateCustomer] = OrdersApiHooks.useUpdateCustomerMutation();
 
   function getOrderDetailsHandler(orderId) {
     return getOrderDetails(orderId).then((res: any) => {
@@ -178,13 +184,29 @@ export default function useOrderShipmentPageService(
     });
   }
 
-  function updateShipmentAddressHandler(shipmentId: number, model: any) {
-    return updateShipmentAddress({ shipmentId, model }).then((res: any) => {
+  function updateShipmentAddressHandler(addressId: number) {
+    return updateShipmentAddress({
+      shipmentId: state.selectedShipment.shipmentId,
+      model: { addressId },
+    }).then((res: any) => {
       if (!res.error) {
         dispatch(
           actions.refreshSelectedShipment({
             ...state.selectedShipment,
             deliveryAddress: res.data,
+            deliveryAddressId: res.data.addressId,
+          }),
+        );
+        const modifiedList = state.addressesGridRequestModel.items.map(
+          (item) => ({
+            ...item,
+            isSelected: item.addressId === res.data.addressId,
+          }),
+        );
+        dispatch(
+          actions.refreshAddressesGridRequestModel({
+            ...state.addressesGridRequestModel,
+            items: modifiedList,
           }),
         );
         addToast({
@@ -400,6 +422,31 @@ export default function useOrderShipmentPageService(
     handleCardAction("shipmentConfigurationCard");
   }
 
+  function openCreateEntityCardHandler() {
+    handleCardAction("customerCard", true);
+  }
+
+  function searchEntityHandle(model) {
+    dispatch(actions.setIsSelectEntityGridLoading(true));
+    return getListOfCustomersForGrid({
+      ...ordersState.CustomersGridRequestModel,
+      searchQuery: model,
+    }).then((res: any) => {
+      dispatch(actions.setIsSelectEntityGridLoading(false));
+      const updatedCustomers = res.data.items.map((customer) =>
+        customer.customerId === state.selectedCustomer?.customerId
+          ? { ...customer, isSelected: true }
+          : { ...customer, isSelected: false },
+      );
+      dispatch(
+        ordersActions.refreshCustomersGridRequestModel({
+          ...res.data,
+          items: updatedCustomers,
+        }),
+      );
+    });
+  }
+
   function closeSelectEntityCardHandler() {
     handleCardAction("selectEntityCard");
   }
@@ -445,6 +492,137 @@ export default function useOrderShipmentPageService(
     });
   }
 
+  function getCustomerAddressesForGridHandler(customerId: number) {
+    dispatch(actions.setIsCustomerAddressesGridLoading(true));
+    return getCustomerAddressesForGrid({
+      model: state.addressesGridRequestModel,
+      id: customerId,
+    }).then((res: any) => {
+      dispatch(actions.setIsCustomerAddressesGridLoading(false));
+      if (res.error) return;
+      dispatch(actions.refreshAddressesGridRequestModel(res.data));
+      return res;
+    });
+  }
+
+  function openSelectAddressCardHandler(customerId: number) {
+    handleCardAction("selectCustomerAddressCard", true);
+    dispatch(actions.setIsCustomerAddressesGridLoading(true));
+    getCustomerAddressesForGridHandler(customerId).then((res: any) => {
+      dispatch(actions.setIsCustomerAddressesGridLoading(false));
+      if (res.data) {
+        const modifiedList = res.data.items.map((item) => ({
+          ...item,
+          isSelected:
+            item.addressId === state.selectedShipment.deliveryAddressId,
+        }));
+        dispatch(
+          actions.refreshAddressesGridRequestModel({
+            ...state.addressesGridRequestModel,
+            items: modifiedList,
+          }),
+        );
+      }
+    });
+  }
+
+  function searchAddressHandle(model: any) {
+    dispatch(actions.setIsCustomerAddressesGridLoading(true));
+    getCustomerAddressesForGrid({
+      model: {
+        searchQuery: model,
+      },
+      id: state.selectedShipment.customerId,
+    }).then((res: any) => {
+      dispatch(actions.setIsCustomerAddressesGridLoading(false));
+      if (res.data) {
+        const modifiedList = res.data.items.map((item) => ({
+          ...item,
+          isSelected:
+            item.addressId === state.selectedShipment.deliveryAddressId,
+        }));
+        dispatch(
+          actions.refreshAddressesGridRequestModel({
+            ...state.addressesGridRequestModel,
+            items: modifiedList,
+          }),
+        );
+      }
+    });
+  }
+
+  function closeSelectAddressCardHandler() {
+    handleCardAction("selectCustomerAddressCard");
+  }
+
+  function openCustomerCardHandler() {
+    handleCardAction("customerCard", true);
+    getCustomer(state.selectedShipment.customerId).then((res: any) => {
+      dispatch(actions.refreshManagedCustomer(res.data));
+    });
+  }
+
+  function createCustomerHandler(data: any) {
+    const requestData = convertCustomerToRequestModel(data);
+    dispatch(actions.setIsCustomerCardLoading(true));
+    return createCustomer(requestData).then((res) => {
+      dispatch(actions.setIsCustomerCardLoading(false));
+      if (res.error) {
+        return;
+      } else {
+        addToast({
+          text: "New customer created successfully",
+          type: "info",
+        });
+        handleCardAction("customerCard");
+        dispatch(
+          ordersActions.refreshCustomersGridRequestModel({
+            ...ordersState.customersGridRequestModel,
+            items: [res.data, ...ordersState.customersGridRequestModel.items],
+          }),
+        );
+        return res.data;
+      }
+    });
+  }
+
+  function updateCustomerHandler(data: any) {
+    const requestData = convertCustomerToRequestModel(data);
+    dispatch(actions.setIsCustomerCardLoading(true));
+    return updateCustomer({
+      id: state.managedCustomer?.customerId,
+      model: requestData,
+    }).then((res) => {
+      dispatch(actions.setIsCustomerCardLoading(false));
+      if (res.error) {
+        return;
+      } else {
+        handleCardAction("customerCard");
+        dispatch(actions.resetManagedCustomer());
+        dispatch(
+          actions.refreshSelectedShipment({
+            ...state.selectedShipment,
+            customer: {
+              customerName: res.data.customerName,
+              email: res.data.email,
+              phone: res.data.phoneNumber,
+            },
+          }),
+        );
+        addToast({
+          text: "Customer updated successfully",
+          type: "info",
+        });
+        return res.data;
+      }
+    });
+  }
+
+  function closeCustomerCardHandler() {
+    handleCardAction("customerCard");
+    dispatch(actions.resetManagedCustomer());
+  }
+
   return {
     getOrderDetailsHandler,
     getShipmentsListForOrderHandler,
@@ -469,10 +647,19 @@ export default function useOrderShipmentPageService(
     addAllVariantsToShipmentHandler,
     removeVariantFromShipmentHandler,
     closeShipmentConfigurationCardHandler,
+    openCreateEntityCardHandler,
+    searchEntityHandle,
     closeSelectEntityCardHandler,
     closeSelectShipmentForOrderCardHandler,
     createShipmentForOrderHandler,
     changePackedOrderItemQuantityHandler,
     confirmPackedProductsHandler,
+    openSelectAddressCardHandler,
+    searchAddressHandle,
+    closeSelectAddressCardHandler,
+    openCustomerCardHandler,
+    createCustomerHandler,
+    updateCustomerHandler,
+    closeCustomerCardHandler,
   };
 }

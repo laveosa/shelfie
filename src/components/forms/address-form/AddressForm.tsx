@@ -195,9 +195,7 @@ export default function AddressForm({
           <SheButton
             variant="default"
             icon={isCreate ? Plus : Save}
-            onClick={() => {
-              form.handleSubmit(onSubmit);
-            }}
+            onClick={form.handleSubmit(onSubmit)}
             value={
               isCreate
                 ? t("CustomerActions.CreateAddress")

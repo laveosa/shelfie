@@ -17,6 +17,8 @@ import { CustomersListGridColumns } from "@/components/complex/grid/custom-grids
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 import SelectShipmentForOrderCard from "@/components/complex/custom-cards/select-shipment-for-order/SelectShipmentForOrderCard.tsx";
 import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
+import SelectCustomerAddress from "@/components/complex/custom-cards/select-customer-address/SelectCustomerAddress.tsx";
+import CustomerCard from "@/components/complex/custom-cards/customer-card/CustomerCard.tsx";
 
 export function OrderShipmentPage() {
   // ==================================================================== UTILITIES
@@ -72,14 +74,17 @@ export function OrderShipmentPage() {
       case "selectCustomer":
         service.selectCustomerHandler(payload);
         break;
+      case "searchEntity":
+        service.searchEntityHandle(payload);
+        break;
+      case "openCreateEntityCard":
+        service.openCreateEntityCardHandler();
+        break;
       case "closeSelectEntityCard":
         service.closeSelectEntityCardHandler();
         break;
       case "selectAddress":
-        service.updateShipmentCustomerHandler(
-          state.selectedShipment.shipmentId,
-          { addressId: payload.addressId },
-        );
+        service.updateShipmentAddressHandler(payload);
         break;
       case "selectShipment": {
         handleMultipleCardActions({
@@ -143,6 +148,30 @@ export function OrderShipmentPage() {
           payload,
         );
         break;
+      case "openSelectAddressCard":
+        service.openSelectAddressCardHandler(payload);
+        break;
+      case "searchAddress":
+        service.searchAddressHandle(payload);
+        break;
+      case "closeSelectAddressCard":
+        service.closeSelectAddressCardHandler();
+        break;
+      case "manageCustomer":
+        service.openCustomerCardHandler();
+        break;
+      case "openCustomerCard":
+        service.openCustomerCardHandler();
+        break;
+      case "createCustomer":
+        service.createCustomerHandler(payload);
+        break;
+      case "updateCustomer":
+        service.updateCustomerHandler(payload);
+        break;
+      case "closeCustomerCard":
+        service.closeCustomerCardHandler();
+        break;
     }
   }
 
@@ -196,6 +225,28 @@ export function OrderShipmentPage() {
                   onAction,
                 }) as ColumnDef<DataWithId>[]
               }
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards?.includes("selectCustomerAddressCard") && (
+          <div ref={createRefCallback("selectCustomerAddressCard")}>
+            <SelectCustomerAddress
+              isLoading={state.isSelectCustomerAddressCardLoading}
+              isGridLoading={state.isCustomerAddressesGridLoading}
+              customer={state.selectedShipment?.customer}
+              addressesList={state.addressesGridRequestModel?.items}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards?.includes("customerCard") && (
+          <div ref={createRefCallback("customerCard")}>
+            <CustomerCard
+              isLoading={state.isCustomerCardLoading}
+              customer={state.managedCustomer}
+              showCloseButton={true}
+              hideNotificationCard={true}
               onAction={onAction}
             />
           </div>

@@ -5,6 +5,7 @@ export interface ICustomerCard {
   customer?: CustomerModel;
   editCustomer?: boolean;
   showCloseButton?: boolean;
+  hideNotificationCard?: boolean;
   onPrimaryButtonClick?: (data: any) => void;
   onSecondaryButtonClick?: () => void;
   onAction?: (actionType: string, data?: any) => void;

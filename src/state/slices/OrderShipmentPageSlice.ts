@@ -5,7 +5,6 @@ import { IOrderShipmentPageSlice } from "@/const/interfaces/store-slices/IOrderS
 import { ShipmentModel } from "@/const/models/ShipmentModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { CustomerModel } from "@/const/models/CustomerModel.ts";
-import _ from "lodash";
 
 const initialState: IOrderShipmentPageSlice = {
   isProductMenuCardLoading: false,
@@ -13,16 +12,20 @@ const initialState: IOrderShipmentPageSlice = {
   isShipmentConfigurationCardLoading: false,
   isSelectEntityCardLoading: false,
   isSelectShipmentForOrderCardLoading: false,
+  isSelectCustomerAddressCardLoading: false,
   isProductsGridLoading: false,
   isOrderShipmentsGridLoading: false,
   isShipmentsGridLoading: false,
   isSelectEntityGridLoading: false,
   isSelectShipmentForOrderGridLoading: false,
+  isCustomerAddressesGridLoading: false,
   activeCards: [],
   orderShipments: [],
   selectedShipment: null,
   selectedCustomer: null,
   shipmentsGridRequestModel: {},
+  addressesGridRequestModel: {},
+  managedCustomer: null,
 };
 
 //----------------------------------------------------- LOADERS
@@ -62,6 +65,20 @@ function setIsSelectShipmentForOrderCardLoading(
   state.isSelectShipmentForOrderCardLoading = action?.payload;
 }
 
+function setIsSelectCustomerAddressCardLoading(
+  state: IOrderShipmentPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isSelectCustomerAddressCardLoading = action?.payload;
+}
+
+function setIsCustomerCardLoading(
+  state: IOrderShipmentPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isCustomerCardLoading = action?.payload;
+}
+
 function setIsProductsGridLoading(
   state: IOrderShipmentPageSlice,
   action: PayloadAction<boolean>,
@@ -95,6 +112,13 @@ function setIsSelectShipmentForOrderGridLoading(
   action: PayloadAction<boolean>,
 ) {
   state.isSelectShipmentForOrderGridLoading = action?.payload;
+}
+
+function setIsCustomerAddressesGridLoading(
+  state: IOrderShipmentPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isCustomerAddressesGridLoading = action?.payload;
 }
 
 //----------------------------------------------------- API
@@ -135,12 +159,27 @@ function refreshShipmentsGridRequestModel(
   state: IOrderShipmentPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
-  if (_.isEqual(state.shipmentsGridRequestModel, action?.payload)) {
-    return;
-  }
-
   state.shipmentsGridRequestModel =
     action?.payload || state.shipmentsGridRequestModel;
+}
+
+function refreshAddressesGridRequestModel(
+  state: IOrderShipmentPageSlice,
+  action: PayloadAction<GridRequestModel>,
+) {
+  state.addressesGridRequestModel =
+    action?.payload || state.addressesGridRequestModel;
+}
+
+function refreshManagedCustomer(
+  state: IOrderShipmentPageSlice,
+  action: PayloadAction<CustomerModel>,
+) {
+  state.managedCustomer = action?.payload || state.managedCustomer;
+}
+
+function resetManagedCustomer(state: IOrderShipmentPageSlice) {
+  state.managedCustomer = null;
 }
 
 const OrderShipmentPageSlice = createSlice({
@@ -152,17 +191,23 @@ const OrderShipmentPageSlice = createSlice({
     setIsShipmentConfigurationCardLoading,
     setIsSelectEntityCardLoading,
     setIsSelectShipmentForOrderCardLoading,
+    setIsSelectCustomerAddressCardLoading,
     setIsProductsGridLoading,
     setIsOrderShipmentsGridLoading,
     setIsShipmentsGridLoading,
     setIsSelectEntityGridLoading,
     setIsSelectShipmentForOrderGridLoading,
+    setIsCustomerAddressesGridLoading,
+    setIsCustomerCardLoading,
     refreshActiveCards,
     refreshOrderShipments,
     refreshSelectedShipment,
     refreshSelectedCustomer,
     resetSelectedCustomer,
     refreshShipmentsGridRequestModel,
+    refreshAddressesGridRequestModel,
+    refreshManagedCustomer,
+    resetManagedCustomer,
   },
 });
 
