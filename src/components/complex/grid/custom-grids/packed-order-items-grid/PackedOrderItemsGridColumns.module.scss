@@ -1,10 +1,12 @@
 .variantNameCell {
   display: flex;
+  flex-direction: row;
   align-items: center;
   gap: 10px;
 
   .imageBlock {
-    width: 40px;
+    min-width: 40px;
+    max-width: 40px;
     display: flex;
     align-items: center;
 
@@ -22,7 +24,7 @@
   }
 
   .variantName {
-    max-width: 100%;
+    max-width: 60px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

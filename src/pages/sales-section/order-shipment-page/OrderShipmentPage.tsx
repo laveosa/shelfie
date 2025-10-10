@@ -3,23 +3,42 @@ import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
 import cs from "./OrderShipmentPage.module.scss";
-import ShipmentDetailsCard from "@/components/complex/custom-cards/shipment-details-card/ShipmentDetailsCard.tsx";
+import ShipmentDetailsCard
+  from "@/components/complex/custom-cards/shipment-details-card/ShipmentDetailsCard.tsx";
 import { useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
-import { IOrderShipmentPageSlice } from "@/const/interfaces/store-slices/IOrderShipmentPageSlice.ts";
-import useOrderShipmentPageService from "@/pages/sales-section/order-shipment-page/useOrderShipmentService.ts";
-import ShipmentConfigurationCard from "@/components/complex/custom-cards/shipment-configuration-card/ShipmentConfigurationCard.tsx";
+import {
+  IOrdersPageSlice
+} from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
+import {
+  IOrderShipmentPageSlice
+} from "@/const/interfaces/store-slices/IOrderShipmentPageSlice.ts";
+import useOrderShipmentPageService
+  from "@/pages/sales-section/order-shipment-page/useOrderShipmentService.ts";
+import ShipmentConfigurationCard
+  from "@/components/complex/custom-cards/shipment-configuration-card/ShipmentConfigurationCard.tsx";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
-import { OrderShipmentPageSliceActions as actions } from "@/state/slices/OrderShipmentPageSlice";
-import SelectEntityCard from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
-import { CustomersListGridColumns } from "@/components/complex/grid/custom-grids/customers-list-grid/CustomersListGridColumns.tsx";
+import {
+  OrderShipmentPageSliceActions as actions
+} from "@/state/slices/OrderShipmentPageSlice";
+import SelectEntityCard
+  from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
+import {
+  CustomersListGridColumns
+} from "@/components/complex/grid/custom-grids/customers-list-grid/CustomersListGridColumns.tsx";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
-import SelectShipmentForOrderCard from "@/components/complex/custom-cards/select-shipment-for-order/SelectShipmentForOrderCard.tsx";
-import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
-import SelectCustomerAddress from "@/components/complex/custom-cards/select-customer-address/SelectCustomerAddress.tsx";
-import CustomerCard from "@/components/complex/custom-cards/customer-card/CustomerCard.tsx";
-import CustomerAddressCard from "@/components/complex/custom-cards/customer-address-card/CustomerAddressCard.tsx";
+import SelectShipmentForOrderCard
+  from "@/components/complex/custom-cards/select-shipment-for-order-card/SelectShipmentForOrderCard.tsx";
+import SheContextSidebar
+  from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
+import SelectCustomerAddress
+  from "@/components/complex/custom-cards/select-customer-address/SelectCustomerAddress.tsx";
+import CustomerCard
+  from "@/components/complex/custom-cards/customer-card/CustomerCard.tsx";
+import CustomerAddressCard
+  from "@/components/complex/custom-cards/customer-address-card/CustomerAddressCard.tsx";
+import SelectOrderForShipmentCard
+  from "@/components/complex/custom-cards/select-order-for-shipment-card/SelectOrderForShipmentCard.tsx";
 
 export function OrderShipmentPage() {
   // ==================================================================== UTILITIES
@@ -159,7 +178,7 @@ export function OrderShipmentPage() {
         service.closeSelectAddressCardHandler();
         break;
       case "manageCustomer":
-        service.openCustomerCardHandler();
+        service.openCustomerCardHandler(payload);
         break;
       case "openCustomerCard":
         service.openCustomerCardHandler();
@@ -181,6 +200,15 @@ export function OrderShipmentPage() {
         break;
       case "closeCustomerAddressCard":
         service.closeCustomerAddressCardHandler();
+        break;
+      case "openSelectOrderForShipmentCard":
+        service.openSelectOrderForShipmentCardHandler();
+        break;
+      case "connectOrderToShipment":
+        service.addOrderToShipmentHandler(payload);
+        break;
+      case "closeSelectOrderForShipmentCard":
+        service.closeSelectOrderForShipmentCardHandler();
         break;
     }
   }
@@ -219,6 +247,17 @@ export function OrderShipmentPage() {
             <ShipmentConfigurationCard
               isLoading={state.isShipmentConfigurationCardLoading}
               shipment={state.selectedShipment}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards?.includes("selectOrderForShipmentCard") && (
+          <div ref={createRefCallback("selectOrderForShipmentCard")}>
+            <SelectOrderForShipmentCard
+              isLoading={state.isSelectOrderForShipmentCardLoading}
+              isGridLoading={state.isOrdersGridLoading}
+              customer={state.selectedCustomer}
+              ordersGridRequestModel={state.ordersGridRequestModel}
               onAction={onAction}
             />
           </div>

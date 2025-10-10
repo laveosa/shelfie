@@ -13,7 +13,7 @@ export const ProductsInShipmentGridColumns: ColumnDef<any>[] = [
       const image: string = row.original.photo?.thumbnailUrl;
       return (
         <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-          <div>
+          <div style={{ width: "40px" }}>
             {image ? (
               <img
                 src={image}
@@ -28,7 +28,7 @@ export const ProductsInShipmentGridColumns: ColumnDef<any>[] = [
             <SheTooltip
               delayDuration={200}
               text={row.getValue("variantName")}
-              className="max-w-[80px] overflow-hidden text-ellipsis whitespace-nowrap"
+              className="max-w-[100%] overflow-hidden text-ellipsis whitespace-nowrap"
             >
               <span>{row.getValue("variantName")}</span>
             </SheTooltip>

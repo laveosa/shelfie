@@ -51,8 +51,8 @@ export function PackedOrderItemsGridColumns({
     {
       accessorKey: "traitOptions",
       header: "Details",
-      minSize: 100,
-      maxSize: 100,
+      minSize: 60,
+      maxSize: 60,
       cell: ({ row }) => {
         const traitOptions = row.original.traitOptions || [];
 
@@ -102,7 +102,7 @@ export function PackedOrderItemsGridColumns({
     {
       accessorKey: "quantity",
       header: "Qty packed",
-      minSize: 100,
+      minSize: 120,
       cell: ({ row }) => (
         <SheInput
           value={row.original.amount}

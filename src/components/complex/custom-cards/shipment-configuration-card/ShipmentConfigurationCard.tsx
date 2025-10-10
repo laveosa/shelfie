@@ -258,6 +258,7 @@ export default function ShipmentConfigurationCard({
               valueTransKey="SpecialText.SelectOrder"
               icon={Plus}
               variant="secondary"
+              onClick={() => onAction("openSelectOrderForShipmentCard")}
             />
           </div>
           <SheGrid

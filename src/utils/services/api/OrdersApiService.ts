@@ -292,6 +292,15 @@ export const OrdersApiService = createApi({
         method: "PATCH",
       }),
     }),
+    addOrderToShipment: apiConfig.createMutation<
+      void,
+      { shipmentId: number; orderId: number }
+    >(builder, {
+      query: ({ shipmentId, orderId }) => ({
+        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/connect/${orderId}`,
+        method: "PATCH",
+      }),
+    }),
     disconnectOrderFromShipment: apiConfig.createMutation<
       void,
       { shipmentId: number; orderId: number }

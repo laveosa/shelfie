@@ -52,6 +52,7 @@ export default function ShipmentDetailsCard({
               value="Create Shipment"
               valueTransKey="OrderActions.CreateShipment"
               icon={Plus}
+              variant="info"
               disabled={!customer}
               onClick={() => onAction("createShipment")}
             />
@@ -60,7 +61,7 @@ export default function ShipmentDetailsCard({
               value="Select Shipment"
               valueTransKey="OrderActions.SelectShipment"
               icon={Truck}
-              variant="secondary"
+              variant="default"
               onClick={() => onAction("selectShipment")}
             />
           </div>
