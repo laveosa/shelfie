@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { JSX, useEffect } from "react";
+import React, { JSX } from "react";
 import { Plus, ImagePlus } from "lucide-react";
 
 import cs from "./LocationForm.module.scss";
@@ -36,11 +36,6 @@ export default function LocationForm({
   });
   const slots = Array.from({ length: 6 }, (_, i) => data?.photos?.[i] || null);
 
-  // ==================================================================== SIDE EFFECTS
-  useEffect(() => {
-    form.reset(data);
-  }, [data]);
-
   // ================================================================ PRIMARY
   function svgStringToComponent(svgString: string): React.FC<any> {
     return (props) => (
@@ -66,6 +61,7 @@ export default function LocationForm({
       isLoading={isLoading}
       className={cs.locationForm}
       form={form}
+      data={data}
       onChange={onChange}
       onSubmit={onSubmit}
       onCancel={onCancel}

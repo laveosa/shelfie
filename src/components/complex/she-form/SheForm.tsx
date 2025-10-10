@@ -35,6 +35,7 @@ export default function SheForm<T>(props: ISheForm<T>): JSX.Element {
     style,
     children,
     form,
+    data,
     defaultValues,
     view = ComponentViewEnum.STANDARD,
     secondaryBtnBehavior = FormSecondaryBtnBehaviorEnum.CLEAR,
@@ -68,8 +69,15 @@ export default function SheForm<T>(props: ISheForm<T>): JSX.Element {
 
   // ==================================================================== REF
   const isInitialMount = useRef<boolean>(true);
+  const previousData = useRef<T | undefined>(null);
 
   // ==================================================================== SIDE EFFECTS
+  useEffect(() => {
+    if (data && !_.isEqual(data, previousData.current)) {
+      form.reset(data);
+      previousData.current = data;
+    }
+  }, [data]);
 
   useEffect(() => {
     if (isInitialMount.current) {
