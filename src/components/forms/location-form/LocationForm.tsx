@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { JSX, useEffect } from "react";
+import React, { JSX } from "react";
 import { Plus, ImagePlus } from "lucide-react";
 
 import cs from "./LocationForm.module.scss";
@@ -22,10 +22,10 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 export default function LocationForm({
   isLoading,
   data,
+  countryCodes,
+  onChange,
   onSubmit,
   onCancel,
-  countryCodes,
-  onHandleUpData,
   onAction,
 }: ILocationForm): JSX.Element {
   // ==================================================================== UTILITIES
@@ -35,11 +35,6 @@ export default function LocationForm({
     defaultValues: LocationModelDefault,
   });
   const slots = Array.from({ length: 6 }, (_, i) => data?.photos?.[i] || null);
-
-  // ==================================================================== SIDE EFFECTS
-  useEffect(() => {
-    form.reset(data);
-  }, [data]);
 
   // ================================================================ PRIMARY
   function svgStringToComponent(svgString: string): React.FC<any> {
@@ -60,20 +55,16 @@ export default function LocationForm({
     );
   }
 
-  function onErrorHandler(model) {
-    console.log(model);
-  }
-
   // ==================================================================== LAYOUT
   return (
     <SheForm<LocationModel>
       isLoading={isLoading}
       className={cs.locationForm}
       form={form}
+      data={data}
+      onChange={onChange}
       onSubmit={onSubmit}
-      onError={onErrorHandler}
       onCancel={onCancel}
-      onChange={onHandleUpData}
       hidePrimaryBtn={!!data?.locationId}
       hideSecondaryBtn={!!data?.locationId}
       footerClassName={cs.cardFooter}

@@ -407,19 +407,21 @@ export default function useProductBasicDataPageService(handleCardAction) {
   function openSelectEntityCardHandler() {
     handleCardAction("selectEntityCard", true);
     dispatch(actions.setIsCompaniesGridLoading(true));
-    getListOfCompaniesForGrid(state.companiesGridRequestModel).then((res) => {
-      dispatch(actions.setIsCompaniesGridLoading(false));
-      const modifiedList = res.data.items.map((item) => ({
-        ...item,
-        isSelected: item.companyId === state.selectedCompany?.companyId,
-      }));
-      dispatch(
-        actions.refreshCompaniesGridRequestModel({
-          ...res.data,
-          items: modifiedList,
-        }),
-      );
-    });
+    getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
+      (res: any) => {
+        dispatch(actions.setIsCompaniesGridLoading(false));
+        const modifiedList = res.data.items.map((item) => ({
+          ...item,
+          isSelected: item.companyId === state.selectedCompany?.companyId,
+        }));
+        dispatch(
+          actions.refreshCompaniesGridRequestModel({
+            ...res.data,
+            items: modifiedList,
+          }),
+        );
+      },
+    );
   }
 
   function searchEntityHandler(searchText: string) {
@@ -473,7 +475,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
         handleCardAction("createCompanyCard");
         dispatch(actions.setIsCompaniesGridLoading(true));
         getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
-          (res) => {
+          (res: any) => {
             dispatch(actions.setIsCompaniesGridLoading(false));
             const modifiedList = res.data.items.map((item) => ({
               ...item,
@@ -544,7 +546,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
         dispatch(actions.resetManagedCompany());
         dispatch(actions.setIsCompaniesGridLoading(true));
         getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
-          (res) => {
+          (res: any) => {
             dispatch(actions.setIsCompaniesGridLoading(false));
             const modifiedList = res.data.items.map((item) => ({
               ...item,
@@ -587,7 +589,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
         dispatch(actions.refreshManagedCompany(res.data));
         dispatch(actions.setIsCompaniesGridLoading(true));
         getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
-          (res) => {
+          (res: any) => {
             dispatch(actions.setIsCompaniesGridLoading(false));
             const modifiedList = res.data.items.map((item) => ({
               ...item,
@@ -634,19 +636,21 @@ export default function useProductBasicDataPageService(handleCardAction) {
         }),
       );
       dispatch(actions.setIsCompaniesGridLoading(true));
-      getListOfCompaniesForGrid(state.companiesGridRequestModel).then((res) => {
-        dispatch(actions.setIsCompaniesGridLoading(false));
-        const modifiedList = res.data.items.map((item) => ({
-          ...item,
-          isSelected: item.companyId === state.selectedCompany?.companyId,
-        }));
-        dispatch(
-          actions.refreshCompaniesGridRequestModel({
-            ...res.data,
-            items: modifiedList,
-          }),
-        );
-      });
+      getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
+        (res: any) => {
+          dispatch(actions.setIsCompaniesGridLoading(false));
+          const modifiedList = res.data.items.map((item) => ({
+            ...item,
+            isSelected: item.companyId === state.selectedCompany?.companyId,
+          }));
+          dispatch(
+            actions.refreshCompaniesGridRequestModel({
+              ...res.data,
+              items: modifiedList,
+            }),
+          );
+        },
+      );
       if (!res.error) {
         addToast({
           text: "Photo deleted successfully",
@@ -677,7 +681,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
         if (model.contextName === "Company") {
           dispatch(actions.setIsCompaniesGridLoading(true));
           getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
-            (res) => {
+            (res: any) => {
               dispatch(actions.setIsCompaniesGridLoading(false));
               const modifiedList = res.data.items.map((item) => ({
                 ...item,
@@ -731,7 +735,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
               dispatch(actions.setIsSelectEntityCardLoading(true));
               dispatch(actions.setIsCompaniesGridLoading(true));
               getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
-                (res) => {
+                (res: any) => {
                   dispatch(actions.setIsSelectEntityCardLoading(false));
                   dispatch(actions.setIsCompaniesGridLoading(false));
                   const modifiedList = res.data.items.map((item) => ({
