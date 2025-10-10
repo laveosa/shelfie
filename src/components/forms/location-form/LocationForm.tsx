@@ -22,10 +22,10 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 export default function LocationForm({
   isLoading,
   data,
+  countryCodes,
+  onChange,
   onSubmit,
   onCancel,
-  countryCodes,
-  onHandleUpData,
   onAction,
 }: ILocationForm): JSX.Element {
   // ==================================================================== UTILITIES
@@ -60,20 +60,15 @@ export default function LocationForm({
     );
   }
 
-  function onErrorHandler(model) {
-    console.log(model);
-  }
-
   // ==================================================================== LAYOUT
   return (
     <SheForm<LocationModel>
       isLoading={isLoading}
       className={cs.locationForm}
       form={form}
+      onChange={onChange}
       onSubmit={onSubmit}
-      onError={onErrorHandler}
       onCancel={onCancel}
-      onChange={onHandleUpData}
       hidePrimaryBtn={!!data?.locationId}
       hideSecondaryBtn={!!data?.locationId}
       footerClassName={cs.cardFooter}

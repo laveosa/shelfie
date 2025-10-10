@@ -105,7 +105,7 @@ export default function SheForm<T>(props: ISheForm<T>): JSX.Element {
     >
       <Form {...form}>
         <SheFormHeader {...sheHeaderProps} />
-        <form>
+        <form onClick={(event) => event.preventDefault()}>
           <SheFormContextProvider value={{ form: form }}>
             <div className={`${cs.sheFormContent} ${contentClassName}`}>
               {children}

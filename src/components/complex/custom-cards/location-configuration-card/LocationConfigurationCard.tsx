@@ -21,6 +21,7 @@ export default function LocationConfigurationCard({
     <SheCard
       className={cs.locationConfigurationCard}
       title={location?.locationId ? "Manage Location" : "Create Location"}
+      isLoading={isLoading}
       showNotificationCard={!!location?.locationId}
       notificationCardProps={{
         title: "Delete Location",
@@ -28,19 +29,16 @@ export default function LocationConfigurationCard({
         onClick: () => onAction("deleteLocation", location),
       }}
       showCloseButton
-      isLoading={isLoading}
-      onSecondaryButtonClick={() => onAction("closeLocationConfigurationCard")}
+      onHeaderCloseClick={() => onAction("closeLocationConfigurationCard")}
     >
-      <div>
-        <LocationForm
-          isLoading={isLoading}
-          data={location}
-          countryCodes={countryCodes}
-          onSubmit={(data) => onAction("createLocation", data)}
-          onHandleUpData={(data) => onAction("updateLocation", data)}
-          onAction={onAction}
-        />
-      </div>
+      <LocationForm
+        isLoading={isLoading}
+        data={location}
+        countryCodes={countryCodes}
+        // onChange={(data) => onAction("updateLocation", data)}
+        onSubmit={(data) => onAction("createLocation", data)}
+        onAction={onAction}
+      />
     </SheCard>
   );
 }
