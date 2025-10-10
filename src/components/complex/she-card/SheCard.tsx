@@ -37,6 +37,7 @@ export default function SheCard(props: ISheCard) {
     minWidth,
     maxWidth,
     isLoading,
+    onHeaderCloseClick,
     onSecondaryButtonClick,
     onIsMinimizedChange,
     onNotificationCardButtonClick,
@@ -95,7 +96,7 @@ export default function SheCard(props: ISheCard) {
         isMinimized={_isMinimized}
         showHeader={showHeader}
         onHeaderToggleClick={onMinimizeCardHandler}
-        onHeaderCloseClick={onSecondaryButtonClick}
+        onHeaderCloseClick={onHeaderCloseClick || onSecondaryButtonClick}
       />
       <div
         {...restProps}

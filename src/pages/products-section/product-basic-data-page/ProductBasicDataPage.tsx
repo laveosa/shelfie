@@ -283,11 +283,9 @@ export function ProductBasicDataPage() {
               contextId={state.managedLocation?.locationId}
               noDataText="LOCATION HAS NO PHOTOS"
               showCloseButton
-              columns={
-                ManageLocationPhotosGridColumns({
-                  onAction,
-                }) as ColumnDef<DataWithId>[]
-              }
+              columns={ManageLocationPhotosGridColumns({
+                onAction,
+              })}
               onAction={onAction}
             />
           </div>
