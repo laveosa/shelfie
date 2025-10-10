@@ -35,7 +35,7 @@ export default function LocationConfigurationCard({
         isLoading={isLoading}
         data={location}
         countryCodes={countryCodes}
-        // onChange={(data) => onAction("updateLocation", data)}
+        onChange={(data) => onAction("updateLocation", data)}
         onSubmit={(data) => onAction("createLocation", data)}
         onAction={onAction}
       />

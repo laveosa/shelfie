@@ -1,4 +1,4 @@
-import React, { JSX, useEffect } from "react";
+import React, { JSX, useEffect, useRef } from "react";
 import { useWatch } from "react-hook-form";
 
 import cs from "./SheForm.module.scss";
@@ -25,6 +25,7 @@ import {
   ISheFormFooter,
   SheFormFooterDefaultModel,
 } from "@/const/interfaces/forms/ISheFormFooter.ts";
+import _ from "lodash";
 
 export default function SheForm<T>(props: ISheForm<T>): JSX.Element {
   // ==================================================================== PROPS
@@ -65,12 +66,24 @@ export default function SheForm<T>(props: ISheForm<T>): JSX.Element {
   // ==================================================================== UTILITIES
   const formValue = useWatch({ control: form.control });
 
+  // ==================================================================== REF
+  const isInitialMount = useRef<boolean>(true);
+
   // ==================================================================== SIDE EFFECTS
+
   useEffect(() => {
-    setTimeout(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
+    if (
+      form.formState.isDirty &&
+      !_.isEqual(formValue, form.control._defaultValues)
+    ) {
       onChange?.(formValue as T, form);
-    });
-  }, [formValue]);
+    }
+  }, [formValue, form.formState.isDirty]);
 
   // ==================================================================== EVENT HANDLERS
   function onSubmitHandler(value: T) {
