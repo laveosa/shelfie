@@ -27,7 +27,7 @@ export interface IUseAppForm<T> {
 }
 
 export default function useAppForm<T>({
-  value,
+  values,
   scheme,
   ...props
 }: IUseAppFormProps<T>): IUseAppForm<T> {
@@ -47,15 +47,15 @@ export default function useAppForm<T>({
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
-    if (value && !_.isEqual(value, previousValue.current)) {
-      form.reset(value);
-      previousValue.current = _.cloneDeep(value);
+    if (values && !_.isEqual(values, previousValue.current)) {
+      form.reset(values);
+      previousValue.current = _.cloneDeep(values);
       setIsDisabled(true);
     }
-  }, [value]);
+  }, [values]);
 
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       const currentValues = form.getValues();
       const cleanCurrent = JSON.parse(JSON.stringify(currentValues));
       const cleanPrevious = JSON.parse(
@@ -64,6 +64,8 @@ export default function useAppForm<T>({
       const isEqual = _.isEqual(cleanCurrent, cleanPrevious);
       setIsDisabled(!form.formState.isValid || isEqual);
     });
+
+    return () => clearTimeout(timer);
   }, [formValue]);
 
   // ==================================================================== LOGIC
@@ -73,7 +75,7 @@ export default function useAppForm<T>({
 
   function setValue(identifier: string, value: any) {
     if (identifier && identifier.length > 0 && !_.isNil(value))
-      form.reset(value);
+      form.setValue(identifier as any, value);
   }
 
   // ==================================================================== OUTPUT
