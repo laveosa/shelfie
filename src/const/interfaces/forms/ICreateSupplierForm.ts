@@ -1,17 +1,17 @@
 import { SupplierModel } from "@/const/models/SupplierModel.ts";
 import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 
-export interface ICreateSupplierForm<T> {
+export interface ICreateSupplierForm {
+  className?: string;
   isLoading?: boolean;
   isGridLoading?: boolean;
   isPhotoUploaderLoading?: boolean;
-  className?: string;
   data?: SupplierModel;
   countryList?: CountryCodeModel[];
-  onSubmit?: (data: T) => void;
-  onImageUpload?: (data: T) => void;
-  onCancel?: () => void;
   photos?: any[];
-  onDeletePhoto?: (identifier: string, payload?: any) => void;
+  onImageUpload?: (data: SupplierModel) => void;
   onDndPhoto?: (data: any) => void;
+  onDeletePhoto?: (identifier: string, payload?: any) => void;
+  onSubmit?: (data: SupplierModel) => void;
+  onCancel?: () => void;
 }

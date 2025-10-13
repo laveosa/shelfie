@@ -1,11 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
+import React, { useRef, useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 
-import {
-  SupplierModel,
-  SupplierModelDefault,
-} from "@/const/models/SupplierModel.ts";
 import {
   SheFileUploader,
   SheFileUploaderRef,
@@ -29,13 +24,18 @@ import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
 import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
 import { SupplierPhotosGridColumns } from "@/components/complex/grid/custom-grids/supplier-photos-grid/SupplierPhotosGridColumns.tsx";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
+import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
+import {
+  SupplierModel,
+  SupplierModelDefault,
+} from "@/const/models/SupplierModel.ts";
 
 interface SupplierFormData extends SupplierModel {
   images?: File[];
   uploadModels?: any[];
 }
 
-export default function CreateSupplierForm<T>({
+export default function CreateSupplierForm({
   isLoading,
   isPhotoUploaderLoading,
   className,
@@ -47,20 +47,23 @@ export default function CreateSupplierForm<T>({
   isGridLoading,
   onDeletePhoto,
   onDndPhoto,
-}: ICreateSupplierForm<T>) {
-  const form = useAppForm<SupplierModel>({
-    mode: "onSubmit",
-    resolver: zodResolver(CreateSupplierFormScheme),
-    defaultValues: data || SupplierModelDefault,
+}: ICreateSupplierForm) {
+  const { form } = useAppForm<SupplierModel>({
+    values: data,
+    defaultValues: SupplierModelDefault,
+    scheme: CreateSupplierFormScheme,
+    mode: ReactHookFormMode.SUBMIT,
   });
   const imageUploaderRef = useRef<SheFileUploaderRef>(null);
   const [submissionData, setSubmissionData] = useState<SupplierFormData | null>(
     null,
   );
 
-  function convertCountriesToSelectItems(data: any[]): ISheSelectItem<T>[] {
+  function convertCountriesToSelectItems(
+    data: any[],
+  ): ISheSelectItem<SupplierModel>[] {
     return data?.map(
-      (item): ISheSelectItem<T> => ({
+      (item): ISheSelectItem<SupplierModel> => ({
         value: item.countryId,
         text: item.countryName,
       }),
@@ -77,12 +80,8 @@ export default function CreateSupplierForm<T>({
     };
 
     setSubmissionData(completeData);
-    onSubmit(completeData as T);
+    onSubmit(completeData as SupplierModel);
   }
-
-  useEffect(() => {
-    form.reset(data || SupplierModelDefault);
-  }, [data]);
 
   const getCurrentImages = () => {
     if (isLoading && submissionData?.images) {
@@ -93,7 +92,7 @@ export default function CreateSupplierForm<T>({
 
   return (
     <div className={`${cs.createSupplierForm} ${className}`}>
-      <SheForm
+      <SheForm<SupplierModel>
         form={form}
         defaultValues={UserModelDefault}
         formPosition={DirectionEnum.CENTER}
