@@ -16,7 +16,6 @@ export default function LocationConfigurationCard({
   // ==================================================================== PRIVATE
 
   // ==================================================================== LAYOUT
-
   return (
     <SheCard
       className={cs.locationConfigurationCard}

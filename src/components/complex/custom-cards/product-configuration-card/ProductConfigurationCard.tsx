@@ -1,4 +1,4 @@
-import React from "react";
+import React, { JSX } from "react";
 
 import cs from "./ProductConfigurationCard.module.scss";
 import SheCard from "@/components/complex/she-card/SheCard.tsx";
@@ -16,7 +16,7 @@ export default function ProductConfigurationCard({
   showSecondaryButton,
   onSecondaryButtonClick,
   onAction,
-}: IProductConfigurationCard) {
+}: IProductConfigurationCard): JSX.Element {
   // ==================================================================== LAYOUT
   return (
     <SheCard

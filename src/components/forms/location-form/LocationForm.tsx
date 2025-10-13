@@ -1,5 +1,5 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import React, { JSX } from "react";
+
 import { Plus, ImagePlus } from "lucide-react";
 
 import cs from "./LocationForm.module.scss";
@@ -7,7 +7,7 @@ import SheForm from "@/components/complex/she-form/SheForm.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
-import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import useAppForm from "@/utils/hooks/useAppForm.ts";
 import locationFormScheme from "@/utils/validation/schemes/LocationFormScheme.ts";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
@@ -17,7 +17,6 @@ import {
   LocationModel,
   LocationModelDefault,
 } from "@/const/models/LocationModel.ts";
-import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 
 export default function LocationForm({
   isLoading,
@@ -29,10 +28,10 @@ export default function LocationForm({
   onAction,
 }: ILocationForm): JSX.Element {
   // ==================================================================== UTILITIES
-  const form = useAppForm<LocationModel>({
-    mode: ReactHookFormMode.BLUR,
-    resolver: zodResolver(locationFormScheme),
+  const { form } = useAppForm<LocationModel>({
+    values: data,
     defaultValues: LocationModelDefault,
+    scheme: locationFormScheme,
   });
   const slots = Array.from({ length: 6 }, (_, i) => data?.photos?.[i] || null);
 
@@ -61,10 +60,6 @@ export default function LocationForm({
       isLoading={isLoading}
       className={cs.locationForm}
       form={form}
-      data={data}
-      onChange={onChange}
-      onSubmit={onSubmit}
-      onCancel={onCancel}
       hidePrimaryBtn={!!data?.locationId}
       hideSecondaryBtn={!!data?.locationId}
       footerClassName={cs.cardFooter}
@@ -73,6 +68,9 @@ export default function LocationForm({
         icon: Plus,
         variant: "info",
       }}
+      onChange={onChange}
+      onSubmit={onSubmit}
+      onCancel={onCancel}
     >
       <SheFormField
         name="locationName"

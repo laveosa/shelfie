@@ -34,9 +34,9 @@ export default function SheFormFooter({
     >
       {!hideSecondaryBtn && (
         <SheButton
-          {...secondaryBtnProps}
           value={secondaryBtnTitle}
           valueTransKey={secondaryBtnTitleTransKey}
+          {...secondaryBtnProps}
           variant="secondary"
           type="button"
           minWidth="100px"
@@ -45,12 +45,15 @@ export default function SheFormFooter({
       )}
       {!hidePrimaryBtn && (
         <SheButton
-          {...primaryBtnProps}
           value={primaryBtnTitle}
           valueTransKey={primaryBtnTitleTransKey}
-          type="submit"
           isLoading={isLoading}
-          disabled={!notDisabledSubmit && !isValid}
+          {...primaryBtnProps}
+          disabled={
+            (!notDisabledSubmit && !isValid) ||
+            (!notDisabledSubmit && primaryBtnProps.disabled)
+          }
+          type="submit"
           minWidth="100px"
           onClick={onPrimaryBtnClick}
         />

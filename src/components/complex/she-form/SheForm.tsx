@@ -1,5 +1,6 @@
 import React, { JSX, useEffect, useRef } from "react";
 import { useWatch } from "react-hook-form";
+import _ from "lodash";
 
 import cs from "./SheForm.module.scss";
 import SheFormHeader from "@/components/complex/she-form/components/she-form-header/SheFormHeader.tsx";
@@ -25,7 +26,6 @@ import {
   ISheFormFooter,
   SheFormFooterDefaultModel,
 } from "@/const/interfaces/forms/ISheFormFooter.ts";
-import _ from "lodash";
 
 export default function SheForm<T>(props: ISheForm<T>): JSX.Element {
   // ==================================================================== PROPS
@@ -35,7 +35,6 @@ export default function SheForm<T>(props: ISheForm<T>): JSX.Element {
     style,
     children,
     form,
-    data,
     defaultValues,
     view = ComponentViewEnum.STANDARD,
     secondaryBtnBehavior = FormSecondaryBtnBehaviorEnum.CLEAR,
@@ -69,16 +68,8 @@ export default function SheForm<T>(props: ISheForm<T>): JSX.Element {
 
   // ==================================================================== REF
   const isInitialMount = useRef<boolean>(true);
-  const previousData = useRef<T | undefined>(null);
 
   // ==================================================================== SIDE EFFECTS
-  useEffect(() => {
-    if (data && !_.isEqual(data, previousData.current)) {
-      form.reset(data);
-      previousData.current = data;
-    }
-  }, [data]);
-
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;

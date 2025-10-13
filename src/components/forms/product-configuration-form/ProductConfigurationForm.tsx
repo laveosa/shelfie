@@ -1,5 +1,4 @@
 import React, { JSX, useEffect } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
 
 import { CheckCheck, Plus, WandSparkles } from "lucide-react";
 
@@ -13,7 +12,6 @@ import SheToggle from "@/components/primitive/she-toggle/SheToggle.tsx";
 import productConfigurationFormScheme from "@/utils/validation/schemes/ProductConfigurationFormScheme.ts";
 import useAppForm from "@/utils/hooks/useAppForm.ts";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
-import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
 import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
 import {
   ProductDefaultModel,
@@ -37,25 +35,16 @@ export default function ProductConfigurationForm({
   onAction,
 }: IProductConfigurationForm): JSX.Element {
   // ==================================================================== UTILITIES
-  const form = useAppForm<ProductModel>({
-    mode: ReactHookFormMode.CHANGE,
-    resolver: zodResolver(productConfigurationFormScheme),
+  const { form, isDisabled, setValue } = useAppForm<ProductModel>({
+    values: data,
     defaultValues: ProductDefaultModel,
+    scheme: productConfigurationFormScheme,
   });
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
-    if (data?.productId) form.reset(data);
-  }, [data]);
-
-  useEffect(() => {
-    if (productCode) form.setValue("productCode", productCode);
+    setValue("productCode", productCode);
   }, [productCode]);
-
-  // ==================================================================== EVENT HANDLERS
-  function onErrorHandler(model) {
-    console.log(model);
-  }
 
   // ==================================================================== PRIVATE
   function svgStringToComponent(svgString: string): React.FC<any> {
@@ -105,21 +94,20 @@ export default function ProductConfigurationForm({
       id="USER_FORM"
       className={cs.productConfigurationForm}
       form={form}
-      defaultValues={ProductDefaultModel}
-      primaryBtnTitle={data?.productId ? "Save" : "Add Product"}
-      primaryBtnTitleTransKey={
-        data?.productId ? "CommonButtons.Save" : "ProductActions.AddProduct"
-      }
-      primaryBtnProps={{
-        icon: CheckCheck,
-      }}
-      hideSecondaryBtn={!data || !data.productId || !showSecondaryButton}
       footerClassName={
         data?.productId ? cs.formFooterTwoButton : cs.formFooterOneButton
       }
       footerPosition={DirectionEnum.RIGHT}
+      primaryBtnProps={{
+        value: data?.productId ? "Save" : "Add Product",
+        valueTransKey: data?.productId
+          ? "CommonButtons.Save"
+          : "ProductActions.AddProduct",
+        icon: CheckCheck,
+        disabled: isDisabled,
+      }}
+      hideSecondaryBtn={!data || !data.productId || !showSecondaryButton}
       onSubmit={onSubmit}
-      onError={onErrorHandler}
       onCancel={onCancel}
     >
       <SheFormField
