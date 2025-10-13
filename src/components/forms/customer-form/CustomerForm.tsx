@@ -1,28 +1,19 @@
-import { useTranslation } from "react-i18next";
-import { Plus, Save } from "lucide-react";
-import React, { useEffect } from "react";
+import React from "react";
 
+import { Plus, Save } from "lucide-react";
+
+import cs from "./CustomerForm.module.scss";
+import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
+import SheForm from "@/components/complex/she-form/SheForm.tsx";
+import SheInput from "@/components/primitive/she-input/SheInput.tsx";
+import useAppForm from "@/utils/hooks/useAppForm.ts";
+import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
+import CustomerFormScheme from "@/utils/validation/schemes/CustomerFormScheme";
+import { ICustomerForm } from "@/const/interfaces/forms/ICustomerForm.ts";
 import {
   CustomerRequestModel,
   CustomerRequestModelDefault,
 } from "@/const/models/CustomerRequestModel";
-import useAppForm from "@/utils/hooks/useAppForm.ts";
-import { zodResolver } from "@hookform/resolvers/zod";
-import SheForm from "@/components/complex/she-form/SheForm.tsx";
-import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
-import CustomerFormScheme from "@/utils/validation/schemes/CustomerFormScheme";
-import cs from "./CustomerForm.module.scss";
-import SheButton from "@/components/primitive/she-button/SheButton";
-import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
-import SheFormItem from "@/components/complex/she-form/components/she-form-item/SheFormItem.tsx";
-
-interface ICustomerForm {
-  data: CustomerRequestModel;
-  isCreate: boolean;
-  onSubmit: (data: CustomerRequestModel) => void;
-  onCancel: () => void;
-}
 
 export default function CustomerForm({
   data,
@@ -30,14 +21,14 @@ export default function CustomerForm({
   onSubmit,
   onCancel,
 }: ICustomerForm): React.ReactNode {
-  const { t } = useTranslation();
-  const form = useAppForm<CustomerRequestModel>({
-    mode: "onBlur",
-    resolver: zodResolver(CustomerFormScheme),
+  const { form } = useAppForm<CustomerRequestModel>({
+    values: data,
     defaultValues: CustomerRequestModelDefault,
+    scheme: CustomerFormScheme,
   });
 
-  useEffect(() => {
+  // ---------------------------------- REMOVE THIS LOGIC IF ALL WORK FINE
+  /*useEffect(() => {
     if (data) {
       form.reset({
         firstName: data.firstName || "",
@@ -45,110 +36,78 @@ export default function CustomerForm({
         email: data.email || "",
         phoneNumber: data.phoneNumber || "",
       });
-    } else {
-      form.reset({
-        firstName: "",
-        lastName: "",
-        email: "",
-        phoneNumber: "",
-      });
     }
-  }, [data]);
+  }, [data]);*/
 
   // ================================================================ RENDER
 
-  function onErrorHandler(model) {
-    console.log(model);
-  }
-
   return (
-    <SheForm
+    <SheForm<CustomerRequestModel>
       form={form}
-      onSubmit={onSubmit}
       className={cs.customerForm}
-      onError={onErrorHandler}
+      footerPosition={DirectionEnum.SPACE}
+      primaryBtnProps={{
+        value: isCreate ? "Create Customer" : "Save",
+        valueTransKey: isCreate
+          ? "CustomerActions.CreateCustomer"
+          : "CommonButtons.Save",
+        icon: isCreate ? Plus : Save,
+      }}
       onCancel={onCancel}
-      view={ComponentViewEnum.STANDARD}
-      hidePrimaryBtn
-      hideSecondaryBtn
+      onSubmit={onSubmit}
     >
       <SheFormField
         name="firstName"
         render={({ field }) => (
-          <SheFormItem className={cs.formItem}>
-            <SheInput
-              label={t("CustomerForm.Labels.FirstName")}
-              value={field.value}
-              fullWidth
-              placeholder={t("CustomerForm.Placeholders.FirstName")}
-            />
-          </SheFormItem>
+          <SheInput
+            value={field.value}
+            label="First Name"
+            labelTransKey="CustomerForm.Labels.FirstName"
+            placeholder="Enter first name..."
+            placeholderTransKey="CustomerForm.Placeholders.FirstName"
+            fullWidth
+          />
         )}
       />
-
       <SheFormField
         name="lastName"
         render={({ field }) => (
-          <SheFormItem className={cs.formItem}>
-            <SheInput
-              label={t("CustomerForm.Labels.LastName")}
-              value={field.value}
-              fullWidth
-              placeholder={t("CustomerForm.Placeholders.LastName")}
-            />
-          </SheFormItem>
+          <SheInput
+            value={field.value}
+            label="Last Name"
+            labelTransKey="CustomerForm.Labels.LastName"
+            placeholder="Enter last name..."
+            placeholderTransKey="CustomerForm.Placeholders.LastName"
+            fullWidth
+          />
         )}
       />
       <SheFormField
         name="email"
         render={({ field }) => (
-          <SheFormItem className={cs.formItem}>
-            <SheInput
-              label={t("CustomerForm.Labels.Email")}
-              value={field.value}
-              fullWidth
-              placeholder={t("CustomerForm.Placeholders.Email")}
-            />
-          </SheFormItem>
+          <SheInput
+            value={field.value}
+            label="Email"
+            labelTransKey="CustomerForm.Labels.Email"
+            placeholder="Enter email..."
+            placeholderTransKey="CustomerForm.Placeholders.Email"
+            fullWidth
+          />
         )}
       />
       <SheFormField
         name="phoneNumber"
         render={({ field }) => (
-          <SheFormItem className={cs.formItem}>
-            <SheInput
-              label={t("CustomerForm.Labels.PhoneNumber")}
-              value={field.value}
-              fullWidth
-              placeholder={t("CustomerForm.Placeholders.PhoneNumber")}
-            />
-          </SheFormItem>
+          <SheInput
+            value={field.value}
+            label="Phone Number"
+            labelTransKey="CustomerForm.Labels.PhoneNumber"
+            placeholder="Enter phone number..."
+            placeholderTransKey="CustomerForm.Placeholders.PhoneNumber"
+            fullWidth
+          />
         )}
       />
-      <div
-        className={cs.customerFormFooter}
-        style={{ justifyContent: "space-between" }}
-      >
-        <SheButton
-          value={t("CommonButtons.Cancel")}
-          variant="secondary"
-          onClick={() => {
-            onCancel();
-          }}
-        />
-        <SheButton
-          value={
-            isCreate
-              ? t("CustomerActions.CreateCustomer")
-              : t("CommonButtons.Save")
-          }
-          variant="default"
-          icon={isCreate ? Plus : Save}
-          onClick={() => {
-            form.handleSubmit(onSubmit);
-          }}
-        />
-      </div>
     </SheForm>
   );
 }
