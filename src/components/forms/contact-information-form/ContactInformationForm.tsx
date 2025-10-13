@@ -1,4 +1,5 @@
-import React, { JSX } from "react";
+import React, { JSX, useEffect } from "react";
+import _ from "lodash";
 
 import { CheckCheck } from "lucide-react";
 
@@ -24,28 +25,26 @@ export default function ContactInformationForm({
   countryCodes,
   onSubmit,
 }: IContactInformationForm): JSX.Element {
-  const { form } = useAppForm<ContactInformationModel>({
+  // ==================================================================== UTILITIES
+  const { form, setValue } = useAppForm<ContactInformationModel>({
     values: data,
     defaultValues: ContactInformationModelDefaultModel,
     scheme: contactInformationFormScheme,
     mode: ReactHookFormMode.CHANGE,
   });
 
-  // -------------------------------- SET FIRST SELECTED COUNTRY BY DEFAULT IF THERE IS NO SELECTED COUNTRY
-  /*useEffect(() => {
-    if (data) {
-      form.reset({
-        ...data,
-        countryId: data.countryId ?? countryCodes?.[0]?.countryId,
-      });
-    } else {
-      form.reset({
-        ...ContactInformationModelDefaultModel,
-        countryId: countryCodes?.[0]?.countryId,
-      });
-    }
-  }, [data, countryCodes, form]);*/
+  // ==================================================================== SIDE EFFECTS
+  useEffect(() => {
+    if (
+      data &&
+      _.isNil(data.countryId) &&
+      countryCodes &&
+      countryCodes.length > 0
+    )
+      setValue("countryId", countryCodes[0].countryId);
+  }, [data, countryCodes]);
 
+  // ==================================================================== PRIVATE
   function svgStringToComponent(svgString: string): React.FC<any> {
     return (props) => (
       <span dangerouslySetInnerHTML={{ __html: svgString }} {...props} />

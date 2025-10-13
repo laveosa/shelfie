@@ -12,6 +12,4 @@ export interface ICreateCompanyForm {
     value: CompanyModel,
     form?: UseFormReturn<AppFormType<CompanyModel>>,
   ) => void;
-  onSubmit?: (data: CompanyModel) => void;
-  onCancel?: () => void;
 }
