@@ -13,6 +13,4 @@ export interface IAddStockForm {
     value: any,
     form?: UseFormReturn<AppFormType<StockUnitModel>>,
   ) => void;
-  onSubmit?(value: StockUnitModel): void;
-  onCancel?(value: StockUnitModel): void;
 }

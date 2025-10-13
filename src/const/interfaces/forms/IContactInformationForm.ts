@@ -6,5 +6,4 @@ export interface IContactInformationForm {
   countryCodes?: CountryCodeModel[];
   notDisabledSubmit?: boolean;
   onSubmit?(value: ContactInformationModel): void;
-  onCancel?(value: ContactInformationModel): void;
 }

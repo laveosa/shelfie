@@ -1,38 +1,38 @@
-import React, { JSX, useEffect } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
+import React, { JSX } from "react";
 
+import { CheckCheck } from "lucide-react";
+
+import cs from "./ContactInformationForm.module.scss";
 import useAppForm from "@/utils/hooks/useAppForm.ts";
 import SheForm from "@/components/complex/she-form/SheForm.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
-import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
+import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
+import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
 import contactInformationFormScheme from "@/utils/validation/schemes/ContactInformationFormScheme.ts";
+import { IContactInformationForm } from "@/const/interfaces/forms/IContactInformationForm.ts";
+import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
+import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 import {
   ContactInformationModel,
   ContactInformationModelDefaultModel,
 } from "@/const/models/ContactInformationModel.ts";
-import { IContactInformationForm } from "@/const/interfaces/forms/IContactInformationForm.ts";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
-import cs from "./ContactInformationForm.module.scss";
-import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
-import { CheckCheck } from "lucide-react";
 
 export default function ContactInformationForm({
   data,
   countryCodes,
   onSubmit,
-  onCancel,
 }: IContactInformationForm): JSX.Element {
-  const form = useAppForm<ContactInformationModel>({
-    mode: ReactHookFormMode.CHANGE,
-    resolver: zodResolver(contactInformationFormScheme),
+  const { form } = useAppForm<ContactInformationModel>({
+    values: data,
     defaultValues: ContactInformationModelDefaultModel,
+    scheme: contactInformationFormScheme,
+    mode: ReactHookFormMode.CHANGE,
   });
 
-  useEffect(() => {
+  // -------------------------------- SET FIRST SELECTED COUNTRY BY DEFAULT IF THERE IS NO SELECTED COUNTRY
+  /*useEffect(() => {
     if (data) {
       form.reset({
         ...data,
@@ -44,7 +44,7 @@ export default function ContactInformationForm({
         countryId: countryCodes?.[0]?.countryId,
       });
     }
-  }, [data, countryCodes, form]);
+  }, [data, countryCodes, form]);*/
 
   function svgStringToComponent(svgString: string): React.FC<any> {
     return (props) => (
@@ -64,38 +64,27 @@ export default function ContactInformationForm({
     );
   }
 
-  useEffect(() => {
-    form.reset(data);
-  }, [data]);
-
-  function onErrorHandler(model) {
-    console.log(model);
-  }
-
+  // ==================================================================== LAYOUT
   return (
     <SheForm<ContactInformationModel>
-      id="USER_FORM"
-      className={cs.contactInformationForm}
       form={form}
-      defaultValues={ContactInformationModelDefaultModel}
-      view={ComponentViewEnum.STANDARD}
+      className={cs.contactInformationForm}
+      footerClassName={cs.formFooter}
       footerPosition={DirectionEnum.RIGHT}
-      primaryBtnTitle="Save Changes"
       primaryBtnProps={{
+        value: "Save Changes",
+        valueTransKey: "CommonButtons.SaveChanges",
         icon: CheckCheck,
       }}
       hideSecondaryBtn
-      footerClassName={cs.formFooter}
       onSubmit={onSubmit}
-      onError={onErrorHandler}
-      onCancel={onCancel}
     >
       <SheFormField
         name="firstName"
         render={({ field }) => (
           <SheInput
-            label="First Name"
             value={field.value}
+            label="First Name"
             placeholder="enter your first name..."
             fullWidth
           />
@@ -105,8 +94,8 @@ export default function ContactInformationForm({
         name="lastName"
         render={({ field }) => (
           <SheInput
-            label="Last Name"
             value={field.value}
+            label="Last Name"
             placeholder="enter your last name..."
             fullWidth
           />
@@ -116,8 +105,8 @@ export default function ContactInformationForm({
         name="email"
         render={({ field }) => (
           <SheInput
-            label="Email"
             value={field.value}
+            label="Email"
             placeholder="enter your email..."
             fullWidth
           />
@@ -129,9 +118,9 @@ export default function ContactInformationForm({
             name="countryId"
             render={({ field }) => (
               <SheSelect
-                label="Phone"
                 items={convertCountryCodeToSelectItems(countryCodes)}
                 selected={field.value}
+                label="Phone"
                 hideFirstOption
               />
             )}
@@ -141,8 +130,8 @@ export default function ContactInformationForm({
           name="phoneNumber"
           render={({ field }) => (
             <SheInput
-              className={cs.phoneNumber}
               value={field.value}
+              className={cs.phoneNumber}
               placeholder="enter your phone number..."
               type="number"
               fullWidth
