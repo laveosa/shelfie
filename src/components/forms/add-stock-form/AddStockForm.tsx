@@ -1,5 +1,4 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import React, { JSX, useEffect } from "react";
+import React, { JSX } from "react";
 
 import cs from "./AddStockForm.module.scss";
 import useAppForm from "@/utils/hooks/useAppForm.ts";
@@ -7,8 +6,8 @@ import SheForm from "@/components/complex/she-form/SheForm.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
-import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
+import addStockFormScheme from "@/utils/validation/schemes/AddStockFormScheme.ts";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import { IAddStockForm } from "@/const/interfaces/forms/IAddStockForm.ts";
 import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
@@ -17,7 +16,6 @@ import {
   StockUnitModel,
   StockUnitModelDefaultModel,
 } from "@/const/models/StockUnitModel.ts";
-import addStockFormScheme from "@/utils/validation/schemes/AddStockFormScheme.ts";
 
 export default function AddStockForm({
   data,
@@ -28,16 +26,12 @@ export default function AddStockForm({
   onCancel,
 }: IAddStockForm): JSX.Element {
   // ==================================================================== UTILITIES
-  const form = useAppForm<StockUnitModel>({
-    mode: ReactHookFormMode.CHANGE,
-    resolver: zodResolver(addStockFormScheme),
+  const { form } = useAppForm<StockUnitModel>({
+    values: data,
     defaultValues: StockUnitModelDefaultModel,
+    scheme: addStockFormScheme,
+    mode: ReactHookFormMode.CHANGE,
   });
-
-  // ==================================================================== SIDE EFFECTS
-  useEffect(() => {
-    form.reset(data);
-  }, [data]);
 
   // ==================================================================== EVENT HANDLERS
   function onChangeHandler(model: StockUnitModel, form) {
@@ -80,10 +74,7 @@ export default function AddStockForm({
     <SheForm<StockUnitModel>
       className={cs.addStockForm}
       form={form}
-      defaultValues={StockUnitModelDefaultModel}
-      view={ComponentViewEnum.STANDARD}
-      hideSecondaryBtn
-      hidePrimaryBtn
+      hideFooter
       onChange={onChangeHandler}
       onSubmit={onSubmit}
       onCancel={onCancel}
