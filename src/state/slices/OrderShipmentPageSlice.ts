@@ -36,6 +36,7 @@ const initialState: IOrderShipmentPageSlice = {
   managedAddress: null,
   ordersGridRequestModel: {},
   activeCardForCustomers: undefined,
+  orderStockActions: [],
 };
 
 //----------------------------------------------------- LOADERS
@@ -251,6 +252,13 @@ function resetActiveCardForCustomers(state: IOrderShipmentPageSlice) {
   state.activeCardForCustomers = undefined;
 }
 
+function refreshOrderStockActions(
+  state: IOrderShipmentPageSlice,
+  action: PayloadAction<any[]>,
+) {
+  state.orderStockActions = action?.payload || state.orderStockActions;
+}
+
 const OrderShipmentPageSlice = createSlice({
   name: StoreSliceEnum.ORDER_SHIPMENT,
   initialState,
@@ -286,6 +294,7 @@ const OrderShipmentPageSlice = createSlice({
     refreshOrdersGridRequestModel,
     refreshActiveCardForCustomers,
     resetActiveCardForCustomers,
+    refreshOrderStockActions,
   },
 });
 

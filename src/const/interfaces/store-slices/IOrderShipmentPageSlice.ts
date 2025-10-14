@@ -32,4 +32,5 @@ export interface IOrderShipmentPageSlice {
   countryCodesList?: CountryCodeModel[];
   ordersGridRequestModel?: GridRequestModel;
   activeCardForCustomers?: string;
+  orderStockActions?: any[];
 }

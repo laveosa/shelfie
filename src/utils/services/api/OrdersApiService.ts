@@ -352,6 +352,11 @@ export const OrdersApiService = createApi({
         body: JSON.stringify(model),
       }),
     }),
+    getShipmentStatusForOrder: apiConfig.createQuery<void, number>(builder, {
+      query: (orderId) => ({
+        url: `${ApiUrlEnum.ORDERS}/${orderId}/shipment-status`,
+      }),
+    }),
   }),
 });
 export const { endpoints, ...OrdersApiHooks } = OrdersApiService;

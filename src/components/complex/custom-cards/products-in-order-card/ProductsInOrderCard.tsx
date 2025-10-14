@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import { Plus } from "lucide-react";
 
 import cs from "./ProductsInOrderCard.module.scss";
@@ -18,14 +17,13 @@ export default function ProductsInOrderCard({
   onAction,
 }: IProductsInOrderCard) {
   // ==================================================================== STATE MANAGEMENT
-  const [stockActionsData, setStockActionsData] = useState([]);
-
+  const [stockActionsData, setStockActionsData] = useState(null);
   // ==================================================================== UTILITIES
   const { translate } = useAppTranslation();
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
-    if (!stockActions || stockActions.length === 0) return;
+    if (!stockActions) return;
 
     setStockActionsData(
       stockActions.map((stockAction) => ({
@@ -81,7 +79,7 @@ export default function ProductsInOrderCard({
           />
         </div>
         <SheGrid
-          key={stockActionsData.length}
+          key={stockActionsData?.length}
           isLoading={isGridLoading}
           showHeader={false}
           columns={ProductsInOrderGridColumns({

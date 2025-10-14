@@ -41,7 +41,7 @@ export default function ShipmentConfigurationCard({
   // ==================================================================== PRIVATE
   React.useEffect(() => {
     setOrderItems(() => {
-      const orderItemsList = shipment?.orderItems.map((item) => ({
+      const orderItemsList = shipment?.orderItems?.map((item) => ({
         ...item,
         amount: 1,
       }));
@@ -50,7 +50,7 @@ export default function ShipmentConfigurationCard({
     });
 
     setPackedOrderItems(() => {
-      const packedOrderItemsList = shipment?.shipmentItems.map((item) => ({
+      const packedOrderItemsList = shipment?.shipmentItems?.map((item) => ({
         ...item,
         amount: 1,
       }));
@@ -298,7 +298,7 @@ export default function ShipmentConfigurationCard({
                 />
               </>
             )}
-          {shipment?.shipmentItems.length > 0 &&
+          {shipment?.shipmentItems?.length > 0 &&
             shipment?.shipmentStatus !== "DeliveryPending" && (
               <>
                 <Separator />

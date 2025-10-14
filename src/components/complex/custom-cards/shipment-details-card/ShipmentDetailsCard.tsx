@@ -39,7 +39,7 @@ export default function ShipmentDetailsCard({
           columns={ProductsInShipmentGridColumns}
           skeletonQuantity={5}
           data={products}
-          customMessage="No item in shipment"
+          customMessage="No items in order"
           customMessageTransKey="ShipmentMessages.NoItemsInShipment"
         />
         <Separator />

@@ -143,19 +143,19 @@ export default function useOrderProductsPageService(
   }
 
   function addVariantsToOrderHandler(orderId, model) {
+    dispatch(actions.setIsFindProductsGridLoading(true));
     return addVariantsToOrder({ orderId, model }).then((res: any) => {
       if (!res.error) {
-        getOrderStockActionsListForGrid(orderId);
         getVariantsListForGrid(ordersState.variantsGridRequestModel);
-        // dispatch(
-        //   ordersActions.refreshStockActionsGridRequestModel({
-        //     ...ordersState.stockActionsGridRequestModel,
-        //     items: [
-        //       res.data,
-        //       ...ordersState.stockActionsGridRequestModel.items,
-        //     ],
-        //   }),
-        // );
+        dispatch(
+          ordersActions.refreshStockActionsGridRequestModel({
+            ...ordersState.stockActionsGridRequestModel,
+            items: [
+              res.data,
+              ...ordersState.stockActionsGridRequestModel.items,
+            ],
+          }),
+        );
         addToast({
           text: "Stock action added successfully",
           type: "success",
