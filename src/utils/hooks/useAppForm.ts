@@ -1,30 +1,12 @@
-import { useEffect, useRef, useState } from "react";
-import { z } from "zod";
+import { useForm, useWatch, UseFormProps } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useRef, useState } from "react";
 import _ from "lodash";
-import {
-  useForm,
-  UseFormProps,
-  UseFormReturn,
-  useWatch,
-} from "react-hook-form";
 
 import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
 import { AppFormType } from "@/const/types/AppFormType.ts";
-import { IZodSchema } from "@/const/interfaces/IZodSchema.ts";
-
-export interface IUseAppFormProps<T> extends UseFormProps<AppFormType<T>> {
-  values?: T;
-  scheme?: z.ZodObject<IZodSchema<T>>;
-}
-
-export interface IUseAppForm<T> {
-  form: UseFormReturn<AppFormType<T>>;
-  isValid?: boolean;
-  isDisabled?: boolean;
-  resetForm?(value: T): void;
-  setValue?(identifier: string, value: any): void;
-}
+import { IUseAppFormProps } from "@/const/interfaces/forms/IUseAppFormProps.ts";
+import { IUseAppForm } from "@/const/interfaces/forms/IUseAppForm.ts";
 
 export default function useAppForm<T>({
   values,
