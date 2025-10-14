@@ -6,8 +6,8 @@ export interface PurchaseProductsModel {
 }
 
 export const PurchaseProductsModelDefault: PurchaseProductsModel = {
-  nettoPrice: null,
+  nettoPrice: undefined,
   currencyId: undefined,
   taxTypeId: undefined,
-  unitsAmount: null,
+  unitsAmount: undefined,
 };

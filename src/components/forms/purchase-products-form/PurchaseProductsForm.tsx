@@ -1,5 +1,5 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect } from "react";
+import React, { JSX } from "react";
+
 import { Check, Trash2, X } from "lucide-react";
 
 import { IPurchaseProductsForm } from "@/const/interfaces/forms/IPurchaseProductsForm.ts";
@@ -32,11 +32,12 @@ export default function PurchaseProductsForm({
   onSubmit,
   onDelete,
   onCancel,
-}: IPurchaseProductsForm) {
-  const form = useAppForm<PurchaseProductsModel>({
+}: IPurchaseProductsForm): JSX.Element {
+  const { form, isValid } = useAppForm<PurchaseProductsModel>({
+    values: data,
+    defaultValues: PurchaseProductsModelDefault,
+    scheme: PurchaseProductsFormScheme,
     mode: ReactHookFormMode.CHANGE,
-    resolver: zodResolver(PurchaseProductsFormScheme),
-    defaultValues: data || PurchaseProductsModelDefault,
   });
 
   function convertCurrenciesToSelectItems(
@@ -60,17 +61,6 @@ export default function PurchaseProductsForm({
       }),
     );
   }
-
-  useEffect(() => {
-    form.reset(data);
-  }, [data]);
-
-  const isFormValid =
-    form.formState.isValid &&
-    form.getValues("nettoPrice") &&
-    form.getValues("currencyId") &&
-    form.getValues("taxTypeId") &&
-    form.getValues("unitsAmount");
 
   return (
     <div className={cs.purchaseProducts}>
@@ -191,7 +181,7 @@ export default function PurchaseProductsForm({
           <SheButton
             className={
               activeTab === "connectProducts"
-                ? isFormValid
+                ? isValid
                   ? cs.buttonValid
                   : ""
                 : ""
@@ -202,7 +192,7 @@ export default function PurchaseProductsForm({
             value={activeTab === "connectProducts" ? "Add" : "Update"}
             variant="ghost"
             type="submit"
-            disabled={activeTab === "connectProducts" ? !isFormValid : false}
+            disabled={activeTab === "connectProducts" ? !isValid : false}
           />
         ) : (
           <div className={cs.variantGridButtonBlock}>

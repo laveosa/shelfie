@@ -1,5 +1,5 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect } from "react";
+import React, { JSX } from "react";
+
 import { Check, Trash2 } from "lucide-react";
 
 import { IPurchaseProductsForm } from "@/const/interfaces/forms/IPurchaseProductsForm.ts";
@@ -9,8 +9,6 @@ import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import cs from "@/components/forms/manage-products-for-purchase-form/ManageProductsForPurchaseForm.module.scss";
 import SheForm from "@/components/complex/she-form/SheForm.tsx";
-import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
-import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import { FormField } from "@/components/ui/form.tsx";
 import SheFormItem from "@/components/complex/she-form/components/she-form-item/SheFormItem.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
@@ -18,13 +16,11 @@ import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import PurchaseProductsFormScheme from "@/utils/validation/schemes/PurchaseProductsFormScheme.ts";
 import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
-
-export const DefaultPurchaseProductsForm = {
-  nettoPrice: null,
-  currencyId: null,
-  taxTypeId: null,
-  unitsAmount: null,
-};
+import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
+import {
+  PurchaseProductsModel,
+  PurchaseProductsModelDefault,
+} from "@/const/models/PurchaseProductsModel.ts";
 
 export default function ManageProductsForPurchaseForm({
   data,
@@ -34,11 +30,12 @@ export default function ManageProductsForPurchaseForm({
   onSubmit,
   onDelete,
   onCancel,
-}: IPurchaseProductsForm) {
-  const form = useAppForm<any>({
-    mode: "onSubmit",
-    resolver: zodResolver(PurchaseProductsFormScheme),
-    defaultValues: data || DefaultPurchaseProductsForm,
+}: IPurchaseProductsForm): JSX.Element {
+  const { form } = useAppForm<PurchaseProductsModel>({
+    values: data,
+    defaultValues: PurchaseProductsModelDefault,
+    scheme: PurchaseProductsFormScheme,
+    mode: ReactHookFormMode.SUBMIT,
   });
 
   function convertCurrenciesToSelectItems(
@@ -63,25 +60,11 @@ export default function ManageProductsForPurchaseForm({
     );
   }
 
-  useEffect(() => {
-    form.reset(data);
-  }, [data]);
-
-  const isFormValid =
-    form.formState.isValid &&
-    form.getValues("nettoPrice") &&
-    form.getValues("currencyId") &&
-    form.getValues("taxTypeId") &&
-    form.getValues("unitsAmount");
-
   return (
     <div className={cs.purchaseProducts}>
       <SheForm
         className={cs.purchaseProductsForm}
         form={form}
-        defaultValues={DefaultPurchaseProductsForm}
-        formPosition={DirectionEnum.CENTER}
-        view={ComponentViewEnum.STANDARD}
         fullWidth
         hidePrimaryBtn
         hideSecondaryBtn

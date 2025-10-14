@@ -76,10 +76,10 @@ export default function LocationForm({
         name="locationName"
         render={({ field }) => (
           <SheInput
-            label={"Location Name"}
             value={field.value}
-            fullWidth
+            label={"Location Name"}
             placeholder={"enter location name..."}
+            fullWidth
           />
         )}
       />
@@ -87,9 +87,9 @@ export default function LocationForm({
         <div className={cs.imageBlockTitle}>
           <span className="she-title">Location Photos</span>
           <SheButton
+            value="Manage Photos"
             icon={ImagePlus}
             variant="secondary"
-            value="Manage Photos"
             onClick={() => onAction("manageLocationPhotos")}
           />
         </div>
