@@ -109,8 +109,6 @@ export default function ProductTraitConfigurationCard({
   }
 
   // ==================================================================== LAYOUT
-  console.log(selectedTrait);
-
   return (
     <SheCard
       className={cs.productTraitConfigurationCard}
