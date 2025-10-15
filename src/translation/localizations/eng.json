@@ -269,7 +269,8 @@
     "SaveChanges": "Save Changes",
     "Restore": "Restore",
     "History": "History",
-    "CreatePurchase": "Create Purchase"
+    "CreatePurchase": "Create Purchase",
+    "CreateSupplier": "Create Supplier"
   },
   "ProductActions": {
     "AddProduct": "Add Product",
