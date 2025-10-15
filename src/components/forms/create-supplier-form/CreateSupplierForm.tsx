@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { JSX, useRef, useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 
 import cs from "./CreateSupplierForm.module.scss";
@@ -41,7 +41,7 @@ export default function CreateSupplierForm({
   isGridLoading,
   onDeletePhoto,
   onDndPhoto,
-}: ICreateSupplierForm) {
+}: ICreateSupplierForm): JSX.Element {
   // ==================================================================== STATE MANAGEMENT
   const [submissionData, setSubmissionData] = useState<SupplierFormData>(null);
 

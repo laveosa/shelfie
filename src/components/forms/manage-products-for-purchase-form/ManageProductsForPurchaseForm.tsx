@@ -2,21 +2,20 @@ import React, { JSX } from "react";
 
 import { Check, Trash2 } from "lucide-react";
 
-import { IPurchaseProductsForm } from "@/const/interfaces/forms/IPurchaseProductsForm.ts";
-import useAppForm from "@/utils/hooks/useAppForm.ts";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
-import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import cs from "@/components/forms/manage-products-for-purchase-form/ManageProductsForPurchaseForm.module.scss";
 import SheForm from "@/components/complex/she-form/SheForm.tsx";
-import { FormField } from "@/components/ui/form.tsx";
 import SheFormItem from "@/components/complex/she-form/components/she-form-item/SheFormItem.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import PurchaseProductsFormScheme from "@/utils/validation/schemes/PurchaseProductsFormScheme.ts";
 import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
+import useAppForm from "@/utils/hooks/useAppForm.ts";
 import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
+import PurchaseProductsFormScheme from "@/utils/validation/schemes/PurchaseProductsFormScheme.ts";
+import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
+import { IPurchaseProductsForm } from "@/const/interfaces/forms/IPurchaseProductsForm.ts";
+import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
+import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import {
   PurchaseProductsModel,
   PurchaseProductsModelDefault,
@@ -31,6 +30,7 @@ export default function ManageProductsForPurchaseForm({
   onDelete,
   onCancel,
 }: IPurchaseProductsForm): JSX.Element {
+  // ==================================================================== UTILITIES
   const { form } = useAppForm<PurchaseProductsModel>({
     values: data,
     defaultValues: PurchaseProductsModelDefault,
@@ -38,6 +38,7 @@ export default function ManageProductsForPurchaseForm({
     mode: ReactHookFormMode.SUBMIT,
   });
 
+  // ==================================================================== PRIVATE
   function convertCurrenciesToSelectItems(
     data: CurrencyModel[],
   ): ISheSelectItem<any>[] {
@@ -60,6 +61,7 @@ export default function ManageProductsForPurchaseForm({
     );
   }
 
+  // ==================================================================== LAYOUT
   return (
     <div className={cs.purchaseProducts}>
       <SheForm
@@ -74,30 +76,28 @@ export default function ManageProductsForPurchaseForm({
         <SheFormField
           name="nettoPrice"
           render={({ field }) => (
-            <SheFormItem className={cs.purchaseFormInput}>
-              <SheInput
-                label="Price"
-                value={field.value}
-                className={
-                  activeTab === "connectProducts"
-                    ? field.value
-                      ? cs.formItemsValid
-                      : ""
+            <SheInput
+              label="Price"
+              value={field.value}
+              className={
+                activeTab === "connectProducts"
+                  ? field.value
+                    ? cs.formItemsValid
                     : ""
-                }
-                minWidth="80px"
-                maxWidth="80px"
-                placeholder=" "
-              />
-            </SheFormItem>
+                  : ""
+              }
+              minWidth="80px"
+              maxWidth="80px"
+              placeholder=" "
+            />
           )}
         />
-        <FormField
-          control={form.control}
+        <SheFormField
           name="taxTypeId"
           render={({ field }) => (
-            <SheFormItem className={cs.purchaseFormItem} label="Tax">
+            <SheFormItem className={cs.purchaseFormItem}>
               <SheSelect
+                label="Tax"
                 placeholder=" "
                 className={
                   activeTab === "connectProducts"
@@ -111,21 +111,17 @@ export default function ManageProductsForPurchaseForm({
                 hideFirstOption
                 minWidth="70px"
                 maxWidth="70px"
-                onSelect={(value) => {
-                  field.onChange(value);
-                  void form.trigger("taxTypeId");
-                }}
               />
             </SheFormItem>
           )}
         />
-        <FormField
-          control={form.control}
+        <SheFormField
           name="currencyId"
           render={({ field }) => (
-            <SheFormItem className={cs.purchaseFormItem} label="Currency">
+            <SheFormItem className={cs.purchaseFormItem}>
               <SheSelect
                 selected={data?.currencyId || field?.value}
+                items={convertCurrenciesToSelectItems(currencies)}
                 className={
                   activeTab === "connectProducts"
                     ? field.value
@@ -133,15 +129,11 @@ export default function ManageProductsForPurchaseForm({
                       : ""
                     : ""
                 }
+                label="Currency"
                 placeholder=" "
-                items={convertCurrenciesToSelectItems(currencies)}
                 hideFirstOption
                 minWidth="80px"
                 maxWidth="80px"
-                onSelect={(value) => {
-                  field.onChange(value);
-                  void form.trigger("currencyId");
-                }}
               />
             </SheFormItem>
           )}
@@ -150,23 +142,21 @@ export default function ManageProductsForPurchaseForm({
           name="unitsAmount"
           className={cs.purchaseFormItem}
           render={({ field }) => (
-            <SheFormItem className={cs.purchaseFormInput}>
-              <SheInput
-                label="Quantity"
-                value={field.value}
-                className={
-                  activeTab === "connectProducts"
-                    ? field.value
-                      ? cs.formItemsValid
-                      : ""
+            <SheInput
+              label="Quantity"
+              value={field.value}
+              className={
+                activeTab === "connectProducts"
+                  ? field.value
+                    ? cs.formItemsValid
                     : ""
-                }
-                width="70px"
-                minWidth="70px"
-                maxWidth="70px"
-                placeholder=" "
-              />
-            </SheFormItem>
+                  : ""
+              }
+              width="70px"
+              minWidth="70px"
+              maxWidth="70px"
+              placeholder=" "
+            />
           )}
         />
         <div className={cs.variantGridButtonBlock}>
