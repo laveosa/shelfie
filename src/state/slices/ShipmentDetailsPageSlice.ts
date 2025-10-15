@@ -37,7 +37,7 @@ const initialState: IShipmentDetailsPageSlice = {
   ordersGridRequestModel: {},
   activeCardForCustomers: undefined,
   orderStockActions: [],
-  deliveryServicesList: [],
+  deliveryServicesList: undefined,
 };
 
 //----------------------------------------------------- LOADERS

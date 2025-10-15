@@ -2,32 +2,22 @@ import { useNavigate } from "react-router-dom";
 
 import {
   convertAddressToRequestModel,
-  createAddressRequestModel
+  createAddressRequestModel,
 } from "@/utils/helpers/address-helper.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { useToast } from "@/hooks/useToast.ts";
-import {
-  ShipmentDetailsPageSliceActions as actions
-} from "@/state/slices/ShipmentDetailsPageSlice.ts";
+import { ShipmentDetailsPageSliceActions as actions } from "@/state/slices/ShipmentDetailsPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import OrdersApiHooks from "@/utils/services/api/OrdersApiService.ts";
-import {
-  IShipmentDetailsPageSlice
-} from "@/const/interfaces/store-slices/IShipmentDetailsPageSlice.ts";
-import {
-  IOrdersPageSlice
-} from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
+import { IShipmentDetailsPageSlice } from "@/const/interfaces/store-slices/IShipmentDetailsPageSlice.ts";
+import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
 import DictionaryApiHooks, {
-  DictionaryApiService
+  DictionaryApiService,
 } from "@/utils/services/api/DictionaryApiService.ts";
-import {
-  OrdersPageSliceActions as ordersActions
-} from "@/state/slices/OrdersPageSlice.ts";
+import { OrdersPageSliceActions as ordersActions } from "@/state/slices/OrdersPageSlice.ts";
 import { CustomerModel } from "@/const/models/CustomerModel.ts";
 import { OrderItemModel } from "@/const/models/OrderItemModel.ts";
-import {
-  convertCustomerToRequestModel
-} from "@/utils/helpers/customer-helper.ts";
+import { convertCustomerToRequestModel } from "@/utils/helpers/customer-helper.ts";
 import { AddressModel } from "@/const/models/AddressModel.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 
@@ -778,7 +768,7 @@ export default function useShipmentDetailsPageService(handleCardAction) {
         deliveryServiceId: model.deliveryServiceId,
       },
     }).then((res: any) => {
-      dispatch(actions.setIsShipmentConfigurationCardLoading(true));
+      dispatch(actions.setIsShipmentConfigurationCardLoading(false));
       dispatch(actions.refreshSelectedShipment(res.data));
     });
   }

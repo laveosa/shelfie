@@ -1,6 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { merge } from "lodash";
 
+import DictionaryApiHooks, {
+  DictionaryApiService,
+} from "@/utils/services/api/DictionaryApiService.ts";
 import {
   convertAddressToRequestModel,
   createAddressRequestModel,
@@ -23,7 +26,6 @@ import { CustomerModel } from "@/const/models/CustomerModel.ts";
 import { OrderItemModel } from "@/const/models/OrderItemModel.ts";
 import { convertCustomerToRequestModel } from "@/utils/helpers/customer-helper.ts";
 import { AddressModel } from "@/const/models/AddressModel.ts";
-import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 
 export default function useOrderShipmentPageService(handleCardAction) {
@@ -86,6 +88,22 @@ export default function useOrderShipmentPageService(handleCardAction) {
   const [addOrderToShipment] = OrdersApiHooks.useAddOrderToShipmentMutation();
   const [getShipmentStatusForOrder] =
     OrdersApiHooks.useLazyGetShipmentStatusForOrderQuery();
+  const [addShipmentStockActionWithQuantity] =
+    OrdersApiHooks.useAddShipmentStockActionWithQuantityMutation();
+  const [increaseShipmentStockAction] =
+    OrdersApiHooks.useIncreaseShipmentStockActionMutation();
+  const [decreaseShipmentStockAction] =
+    OrdersApiHooks.useDecreaseShipmentStockActionMutation();
+  const [addAllStockActionsToPackage] =
+    OrdersApiHooks.useAddAllStockActionsToPackageMutation();
+  const [addVariantToShipment] =
+    OrdersApiHooks.useAddVariantToShipmentMutation();
+  const [cancelShipment] = OrdersApiHooks.useCancelShipmentMutation();
+  const [returnShipmentStatusToPrevious] =
+    OrdersApiHooks.useReturnShipmentStatusToPreviousMutation();
+  const [getDeliveryServicesList] =
+    DictionaryApiService.useLazyGetDeliveryServicesListQuery();
+  const [confirmDeliveryData] = OrdersApiHooks.useConfirmDeliveryDataMutation();
 
   function getOrderDetailsHandler(orderId) {
     return getOrderDetails(orderId).then((res: any) => {
@@ -215,6 +233,7 @@ export default function useOrderShipmentPageService(handleCardAction) {
       model: { addressId },
     }).then((res: any) => {
       if (!res.error) {
+        handleCardAction("selectCustomerAddressCard");
         dispatch(
           actions.refreshSelectedShipment({
             ...state.selectedShipment,
@@ -435,38 +454,6 @@ export default function useOrderShipmentPageService(handleCardAction) {
     );
   }
 
-  function addVariantsToShipmentHandler(shipmentId: number, model: any) {
-    const normalizedData = {
-      items: [
-        {
-          ...model,
-        },
-      ],
-    };
-    return addVariantsToShipment({ shipmentId, model: normalizedData }).then(
-      (res: any) => {
-        if (!res.error) {
-          dispatch(actions.refreshSelectedShipment(res.data));
-          getShipmentStatusForOrderHandler(Number(orderId));
-        }
-      },
-    );
-  }
-
-  function addAllVariantsToShipmentHandler(shipmentId: number, model: any) {
-    const normalizedData = {
-      items: model.map((item: any) => ({
-        stockActionId: item.stockActionId,
-        quantity: item.amount,
-      })),
-    };
-    addVariantsToShipment({ shipmentId, model: normalizedData }).then(
-      (res: any) => {
-        dispatch(actions.refreshSelectedShipment(res.data));
-      },
-    );
-  }
-
   function removeVariantFromShipmentHandler(actionId: number) {
     return removeVariantFromShipment(actionId).then((res: any) => {
       dispatch(actions.refreshSelectedShipment(res.data));
@@ -530,33 +517,16 @@ export default function useOrderShipmentPageService(handleCardAction) {
     });
   }
 
-  function changePackedOrderItemQuantityHandler(model: OrderItemModel) {
-    updateStockActionForShipment({
-      stockActionId: model.stockActionId,
-      model: { quantity: model.amount },
-    }).then((res: any) => {
-      dispatch(actions.refreshSelectedShipment(res.data));
-    });
-  }
-
-  function confirmPackedProductsHandler(
-    shipmentId: number,
-    model: OrderItemModel[],
-  ) {
-    confirmPackedProducts({
-      shipmentId,
-      model: {
-        items: model.map((item) => ({
-          stockActionId: item.stockActionId,
-          quantity: item.amount,
-        })),
+  function confirmPackedProductsHandler() {
+    dispatch(actions.setIsShipmentConfigurationCardLoading(true));
+    confirmPackedProducts(state.selectedShipment.shipmentId).then(
+      (res: any) => {
+        dispatch(actions.setIsShipmentConfigurationCardLoading(false));
+        if (!res.error) {
+          dispatch(actions.refreshSelectedShipment(res.data));
+        }
       },
-    }).then((res: any) => {
-      if (!res.error) {
-        dispatch(actions.refreshSelectedShipment(res.data));
-        getShipmentStatusForOrderHandler(Number(orderId));
-      }
-    });
+    );
   }
 
   function getCustomerAddressesForGridHandler(customerId: number) {
@@ -890,6 +860,94 @@ export default function useOrderShipmentPageService(handleCardAction) {
     navigate(`${NavUrlEnum.SALES}${NavUrlEnum.ORDER_DETAILS}/${orderId}`);
   }
 
+  function increaseShipmentStockActionHandler(stockActionId: number) {
+    dispatch(actions.setIsShipmentConfigurationCardLoading(true));
+    increaseShipmentStockAction(stockActionId).then((res: any) => {
+      dispatch(actions.setIsShipmentConfigurationCardLoading(false));
+      dispatch(actions.refreshSelectedShipment(res.data));
+    });
+  }
+
+  function decreaseShipmentStockActionHandler(stockActionId: number) {
+    dispatch(actions.setIsShipmentConfigurationCardLoading(true));
+    decreaseShipmentStockAction(stockActionId).then((res: any) => {
+      dispatch(actions.setIsShipmentConfigurationCardLoading(false));
+      dispatch(actions.refreshSelectedShipment(res.data));
+    });
+  }
+
+  function changePackedOrderItemQuantityHandler(model: OrderItemModel) {
+    dispatch(actions.setIsShipmentConfigurationCardLoading(true));
+    addShipmentStockActionWithQuantity({
+      stockActionId: model.stockActionId,
+      model: { quantity: model.quantityToPack },
+    }).then((res: any) => {
+      dispatch(actions.setIsShipmentConfigurationCardLoading(false));
+      dispatch(actions.refreshSelectedShipment(res.data));
+    });
+  }
+
+  function addVariantToShipmentHandler(stockActionId: number) {
+    dispatch(actions.setIsShipmentConfigurationCardLoading(true));
+    return addVariantToShipment({
+      shipmentId: state.selectedShipment.shipmentId,
+      stockActionId,
+    }).then((res: any) => {
+      dispatch(actions.setIsShipmentConfigurationCardLoading(false));
+      if (!res.error) {
+        dispatch(actions.refreshSelectedShipment(res.data));
+      }
+    });
+  }
+
+  function addAllVariantsToShipmentHandler() {
+    dispatch(actions.setIsShipmentConfigurationCardLoading(true));
+    addAllStockActionsToPackage(state.selectedShipment.shipmentId).then(
+      (res: any) => {
+        dispatch(actions.setIsShipmentConfigurationCardLoading(false));
+        dispatch(actions.refreshSelectedShipment(res.data));
+      },
+    );
+  }
+
+  function cancelShipmentHandler() {
+    dispatch(actions.setIsShipmentConfigurationCardLoading(true));
+    cancelShipment(state.selectedShipment.shipmentId).then((res: any) => {
+      dispatch(actions.setIsShipmentConfigurationCardLoading(false));
+      dispatch(actions.refreshSelectedShipment(res.data));
+    });
+  }
+
+  function returnShipmentStatusToPreviousHandler() {
+    dispatch(actions.setIsShipmentConfigurationCardLoading(true));
+    returnShipmentStatusToPrevious(state.selectedShipment.shipmentId).then(
+      (res: any) => {
+        dispatch(actions.setIsShipmentConfigurationCardLoading(false));
+        dispatch(actions.refreshSelectedShipment(res.data));
+      },
+    );
+  }
+
+  function getDeliveryServicesListHandler() {
+    getDeliveryServicesList().then((res: any) => {
+      dispatch(actions.refreshDeliveryServicesList(res.data));
+    });
+  }
+
+  function confirmDeliveryDataHandler(model: any) {
+    dispatch(actions.setIsShipmentConfigurationCardLoading(true));
+    confirmDeliveryData({
+      shipmentId: state.selectedShipment.shipmentId,
+      model: {
+        trackNumber: model.trackNumber,
+        deliveryServiceId: model.deliveryServiceId,
+      },
+    }).then((res: any) => {
+      dispatch(actions.setIsShipmentConfigurationCardLoading(false));
+      dispatch(actions.refreshSelectedShipment(res.data));
+    });
+  }
+
   return {
     getOrderDetailsHandler,
     getShipmentsListForOrderHandler,
@@ -910,7 +968,7 @@ export default function useOrderShipmentPageService(handleCardAction) {
     shipmentsGridRequestChangeHandle,
     applyShipmentsGridColumns,
     disconnectOrderFromShipmentHandler,
-    addVariantsToShipmentHandler,
+    addVariantToShipmentHandler,
     addAllVariantsToShipmentHandler,
     removeVariantFromShipmentHandler,
     closeShipmentConfigurationCardHandler,
@@ -919,7 +977,6 @@ export default function useOrderShipmentPageService(handleCardAction) {
     closeSelectEntityCardHandler,
     closeSelectShipmentForOrderCardHandler,
     createShipmentForOrderHandler,
-    changePackedOrderItemQuantityHandler,
     confirmPackedProductsHandler,
     openSelectAddressCardHandler,
     searchAddressHandle,
@@ -936,5 +993,12 @@ export default function useOrderShipmentPageService(handleCardAction) {
     addOrderToShipmentHandler,
     getShipmentStatusForOrderHandler,
     navigateToOrderHandler,
+    increaseShipmentStockActionHandler,
+    decreaseShipmentStockActionHandler,
+    changePackedOrderItemQuantityHandler,
+    cancelShipmentHandler,
+    returnShipmentStatusToPreviousHandler,
+    getDeliveryServicesListHandler,
+    confirmDeliveryDataHandler,
   };
 }

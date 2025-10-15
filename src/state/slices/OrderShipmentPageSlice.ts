@@ -7,6 +7,8 @@ import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { CustomerModel } from "@/const/models/CustomerModel.ts";
 import { AddressModel } from "@/const/models/AddressModel.ts";
 import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
+import { IShipmentDetailsPageSlice } from "@/const/interfaces/store-slices/IShipmentDetailsPageSlice.ts";
+import { DeliveryServiceModel } from "@/const/models/DeliveryServiceModel.ts";
 
 const initialState: IOrderShipmentPageSlice = {
   isProductMenuCardLoading: false,
@@ -37,6 +39,7 @@ const initialState: IOrderShipmentPageSlice = {
   ordersGridRequestModel: {},
   activeCardForCustomers: undefined,
   orderStockActions: [],
+  deliveryServicesList: undefined,
 };
 
 //----------------------------------------------------- LOADERS
@@ -259,6 +262,13 @@ function refreshOrderStockActions(
   state.orderStockActions = action?.payload || state.orderStockActions;
 }
 
+function refreshDeliveryServicesList(
+  state: IShipmentDetailsPageSlice,
+  action: PayloadAction<DeliveryServiceModel[]>,
+) {
+  state.deliveryServicesList = action?.payload || state.deliveryServicesList;
+}
+
 const OrderShipmentPageSlice = createSlice({
   name: StoreSliceEnum.ORDER_SHIPMENT,
   initialState,
@@ -295,6 +305,7 @@ const OrderShipmentPageSlice = createSlice({
     refreshActiveCardForCustomers,
     resetActiveCardForCustomers,
     refreshOrderStockActions,
+    refreshDeliveryServicesList,
   },
 });
 

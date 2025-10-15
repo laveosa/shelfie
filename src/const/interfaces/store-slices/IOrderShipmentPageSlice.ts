@@ -3,6 +3,7 @@ import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { CustomerModel } from "@/const/models/CustomerModel.ts";
 import { AddressModel } from "@/const/models/AddressModel.ts";
 import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
+import { DeliveryServiceModel } from "@/const/models/DeliveryServiceModel.ts";
 
 export interface IOrderShipmentPageSlice {
   isProductMenuCardLoading?: boolean;
@@ -33,4 +34,5 @@ export interface IOrderShipmentPageSlice {
   ordersGridRequestModel?: GridRequestModel;
   activeCardForCustomers?: string;
   orderStockActions?: any[];
+  deliveryServicesList?: DeliveryServiceModel[];
 }

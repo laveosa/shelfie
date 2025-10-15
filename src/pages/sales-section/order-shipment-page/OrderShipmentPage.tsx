@@ -48,6 +48,7 @@ export function OrderShipmentPage() {
     }
     service.getShipmentStatusForOrderHandler(Number(orderId));
     service.getShipmentsListForOrderHandler(orderId);
+    service.getDeliveryServicesListHandler();
     dispatch(actions.refreshSelectedShipment({}));
     dispatch(actions.refreshActiveCards([]));
   }, [orderId]);
@@ -127,16 +128,10 @@ export function OrderShipmentPage() {
         );
         break;
       case "addItemToShipment":
-        service.addVariantsToShipmentHandler(
-          state.selectedShipment.shipmentId,
-          payload,
-        );
+        service.addVariantToShipmentHandler(payload);
         break;
       case "addAllItemsToShipment":
-        service.addAllVariantsToShipmentHandler(
-          state.selectedShipment.shipmentId,
-          payload,
-        );
+        service.addAllVariantsToShipmentHandler();
         break;
       case "removeItemFromShipment":
         service.removeVariantFromShipmentHandler(payload.stockActionId);
@@ -144,11 +139,14 @@ export function OrderShipmentPage() {
       case "changePackedOrderItemQuantity":
         service.changePackedOrderItemQuantityHandler(payload);
         break;
+      case "decreasePackedOrderItemQuantity":
+        service.decreaseShipmentStockActionHandler(payload);
+        break;
+      case "increasePackedOrderItemQuantity":
+        service.increaseShipmentStockActionHandler(payload);
+        break;
       case "confirmPackedProducts":
-        service.confirmPackedProductsHandler(
-          state.selectedShipment.shipmentId,
-          payload,
-        );
+        service.confirmPackedProductsHandler();
         break;
       case "openSelectAddressCard":
         service.openSelectAddressCardHandler(payload);
@@ -195,6 +193,15 @@ export function OrderShipmentPage() {
       case "navigateToOrder":
         service.navigateToOrderHandler(payload);
         break;
+      case "cancelShipment":
+        service.cancelShipmentHandler();
+        break;
+      case "returnShipmentStatusToPrevious":
+        service.returnShipmentStatusToPreviousHandler();
+        break;
+      case "confirmDeliveryData":
+        service.confirmDeliveryDataHandler(payload);
+        break;
     }
   }
 
@@ -232,6 +239,7 @@ export function OrderShipmentPage() {
             <ShipmentConfigurationCard
               isLoading={state.isShipmentConfigurationCardLoading}
               shipment={state.selectedShipment}
+              deliveryServices={state.deliveryServicesList}
               onAction={onAction}
             />
           </div>
