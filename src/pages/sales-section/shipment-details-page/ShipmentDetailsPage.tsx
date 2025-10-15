@@ -6,7 +6,7 @@ import cs from "./ShipmentDetailsPage.module.scss";
 import { useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { useCardActions } from "@/utils/hooks/useCardActions.ts";
-import { OrderShipmentPageSliceActions as actions } from "@/state/slices/OrderShipmentPageSlice";
+import { ShipmentDetailsPageSliceActions as actions } from "@/state/slices/ShipmentDetailsPageSlice.ts";
 import { IShipmentDetailsPageSlice } from "@/const/interfaces/store-slices/IShipmentDetailsPageSlice.ts";
 import useShipmentDetailsPageService from "@/pages/sales-section/shipment-details-page/useShipmentDetailsPageService.ts";
 import ShipmentConfigurationCard from "@/components/complex/custom-cards/shipment-configuration-card/ShipmentConfigurationCard.tsx";
@@ -22,12 +22,11 @@ import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSli
 
 export function ShipmentDetailsPage() {
   // ==================================================================== UTILITIES
-  const { handleCardAction, handleMultipleCardActions, createRefCallback } =
-    useCardActions({
-      selectActiveCards: (state) =>
-        state[StoreSliceEnum.SHIPMENT_DETAILS].activeCards,
-      refreshAction: actions.refreshActiveCards,
-    });
+  const { handleCardAction, createRefCallback } = useCardActions({
+    selectActiveCards: (state) =>
+      state[StoreSliceEnum.SHIPMENT_DETAILS].activeCards,
+    refreshAction: actions.refreshActiveCards,
+  });
   const { shipmentId } = useParams();
   const state = useAppSelector<IShipmentDetailsPageSlice>(
     StoreSliceEnum.SHIPMENT_DETAILS,
@@ -41,6 +40,7 @@ export function ShipmentDetailsPage() {
       service.getShipmentDetailsHandler(Number(shipmentId));
     }
     service.getShipmentDetailsHandler(Number(shipmentId));
+    service.getDeliveryServicesListHandler();
   }, [shipmentId]);
 
   // ==================================================================== EVENT HANDLERS
@@ -87,16 +87,10 @@ export function ShipmentDetailsPage() {
         );
         break;
       case "addItemToShipment":
-        service.addVariantsToShipmentHandler(
-          state.selectedShipment.shipmentId,
-          payload,
-        );
+        service.addVariantToShipmentHandler(payload);
         break;
       case "addAllItemsToShipment":
-        service.addAllVariantsToShipmentHandler(
-          state.selectedShipment.shipmentId,
-          payload,
-        );
+        service.addAllVariantsToShipmentHandler();
         break;
       case "removeItemFromShipment":
         service.removeVariantFromShipmentHandler(payload.stockActionId);
@@ -104,11 +98,14 @@ export function ShipmentDetailsPage() {
       case "changePackedOrderItemQuantity":
         service.changePackedOrderItemQuantityHandler(payload);
         break;
+      case "decreasePackedOrderItemQuantity":
+        service.decreaseShipmentStockActionHandler(payload);
+        break;
+      case "increasePackedOrderItemQuantity":
+        service.increaseShipmentStockActionHandler(payload);
+        break;
       case "confirmPackedProducts":
-        service.confirmPackedProductsHandler(
-          state.selectedShipment.shipmentId,
-          payload,
-        );
+        service.confirmPackedProductsHandler();
         break;
       case "openSelectAddressCard":
         service.openSelectAddressCardHandler(payload);
@@ -152,6 +149,18 @@ export function ShipmentDetailsPage() {
       case "closeSelectOrderForShipmentCard":
         service.closeSelectOrderForShipmentCardHandler();
         break;
+      case "navigateToOrder":
+        service.navigateToOrderHandler(payload);
+        break;
+      case "cancelShipment":
+        service.cancelShipmentHandler();
+        break;
+      case "returnShipmentStatusToPrevious":
+        service.returnShipmentStatusToPreviousHandler();
+        break;
+      case "confirmDeliveryData":
+        service.confirmDeliveryDataHandler(payload);
+        break;
     }
   }
 
@@ -162,6 +171,7 @@ export function ShipmentDetailsPage() {
         <ShipmentConfigurationCard
           isLoading={state.isShipmentConfigurationCardLoading}
           shipment={state.selectedShipment}
+          deliveryServices={state.deliveryServicesList}
           onAction={onAction}
         />
         {state.activeCards?.includes("selectOrderForShipmentCard") && (

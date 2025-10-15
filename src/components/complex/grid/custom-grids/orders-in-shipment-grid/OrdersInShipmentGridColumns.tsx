@@ -6,7 +6,7 @@ import { formatDate, getInitials } from "@/utils/helpers/quick-helper.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
-import cs from "@/components/complex/grid/custom-grids/customers-list-grid/CustomersListGridColumns.module.scss";
+import cs from "./OrdersInShipmentGridColumns.module.scss";
 
 export function ordersInShipmentGridColumns(onAction: any): ColumnDef<any>[] {
   return [
@@ -16,7 +16,14 @@ export function ordersInShipmentGridColumns(onAction: any): ColumnDef<any>[] {
       minSize: 100,
       maxSize: 100,
       cell: ({ row }) => {
-        return <a>{row.getValue("orderId")}</a>;
+        return (
+          <div
+            className={`${cs.orderLink} she-text-link`}
+            onClick={() => onAction("navigateToOrder", row.original.orderId)}
+          >
+            {row.original.orderId}
+          </div>
+        );
       },
     },
     {

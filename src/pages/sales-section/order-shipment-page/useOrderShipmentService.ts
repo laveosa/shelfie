@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { merge } from "lodash";
 
 import {
@@ -24,6 +24,7 @@ import { OrderItemModel } from "@/const/models/OrderItemModel.ts";
 import { convertCustomerToRequestModel } from "@/utils/helpers/customer-helper.ts";
 import { AddressModel } from "@/const/models/AddressModel.ts";
 import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
+import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 
 export default function useOrderShipmentPageService(handleCardAction) {
   const dispatch = useAppDispatch();
@@ -32,6 +33,7 @@ export default function useOrderShipmentPageService(handleCardAction) {
   const state = useAppSelector<IOrderShipmentPageSlice>(
     StoreSliceEnum.ORDER_SHIPMENT,
   );
+  const navigate = useNavigate();
   const { orderId } = useParams();
   const ordersService = useOrdersPageService();
   const ordersState = useAppSelector<IOrdersPageSlice>(StoreSliceEnum.ORDERS);
@@ -330,16 +332,17 @@ export default function useOrderShipmentPageService(handleCardAction) {
         model: customer,
       }).then((res: any) => {
         if (!res.error) {
-          getShipmentDetailsHandler(state.selectedShipment.shipmentId).then(
-            (res: any) => {
-              if (!res.error) {
-                addToast({
-                  text: "Shipment successfully updated",
-                  type: "success",
-                });
-              }
-            },
+          dispatch(
+            actions.refreshSelectedShipment({
+              ...state.selectedShipment,
+              customer: customer,
+              customerId: customer.customerId,
+            }),
           );
+          addToast({
+            text: "Shipment successfully updated",
+            type: "success",
+          });
         } else {
           addToast({
             text: res?.error?.message,
@@ -692,11 +695,8 @@ export default function useOrderShipmentPageService(handleCardAction) {
           dispatch(
             actions.refreshSelectedShipment({
               ...state.selectedShipment,
-              customer: {
-                customerName: res.data.customerName,
-                email: res.data.email,
-                phone: res.data.phoneNumber,
-              },
+              customer: res.data,
+              customerId: res.data.customerId,
             }),
           );
         } else {
@@ -759,7 +759,7 @@ export default function useOrderShipmentPageService(handleCardAction) {
         return;
       }
       const updatedItems = state.addressesGridRequestModel.items.map((item) =>
-        item.locationId === res.data.locationId ? res.data : item,
+        item.addressId === res.data.addressId ? res.data : item,
       );
       const modifiedList = updatedItems.map((item) => ({
         ...item,
@@ -771,6 +771,15 @@ export default function useOrderShipmentPageService(handleCardAction) {
           items: modifiedList,
         }),
       );
+      if (state.selectedShipment.deliveryAddressId === res.data.addressId) {
+        dispatch(
+          actions.refreshSelectedShipment({
+            ...state.selectedShipment,
+            deliveryAddress: res.data,
+            deliveryAddressId: res.data.addressId,
+          }),
+        );
+      }
       dispatch(actions.resetManagedAddress());
       handleCardAction("customerAddressCard");
       addToast({
@@ -845,23 +854,20 @@ export default function useOrderShipmentPageService(handleCardAction) {
     addOrderToShipment({
       shipmentId: state.selectedShipment.shipmentId,
       orderId: model.id,
-    }).then(() => {
+    }).then((res: any) => {
       dispatch(actions.setIsShipmentConfigurationCardLoading(false));
-      getShipmentDetailsHandler(state.selectedShipment.shipmentId);
-      // dispatch(
-      //   actions.refreshSelectedShipment({
-      //     ...state.selectedShipment,
-      //     orders: [
-      //       ...state.selectedShipment.orders,
-      //       {
-      //         customer: model.customer,
-      //         orderDate: model.date,
-      //         orderId: model.id,
-      //         unitsAmount: model.count,
-      //       },
-      //     ],
-      //   }),
-      // );
+      if (!res.error) {
+        dispatch(actions.refreshSelectedShipment(res.data));
+        addToast({
+          text: "Order successfully connected to shipment",
+          type: "info",
+        });
+      } else {
+        addToast({
+          text: res?.error?.message,
+          type: "error",
+        });
+      }
     });
   }
 
@@ -878,6 +884,10 @@ export default function useOrderShipmentPageService(handleCardAction) {
       dispatch(actions.setIsProductsGridLoading(false));
       dispatch(actions.refreshOrderStockActions(res.data));
     });
+  }
+
+  function navigateToOrderHandler(orderId: number) {
+    navigate(`${NavUrlEnum.SALES}${NavUrlEnum.ORDER_DETAILS}/${orderId}`);
   }
 
   return {
@@ -925,5 +935,6 @@ export default function useOrderShipmentPageService(handleCardAction) {
     closeSelectOrderForShipmentCardHandler,
     addOrderToShipmentHandler,
     getShipmentStatusForOrderHandler,
+    navigateToOrderHandler,
   };
 }

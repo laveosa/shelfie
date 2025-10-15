@@ -1,5 +1,4 @@
 import React from "react";
-
 import { Check, MapPin, Plus, User } from "lucide-react";
 
 import cs from "./ShipmentConfigurationCard.module.scss";
@@ -22,14 +21,22 @@ import { IShipmentConfigurationCard } from "@/const/interfaces/complex-component
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import { OrderItemModel } from "@/const/models/OrderItemModel.ts";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
+import { DeliveryServiceModel } from "@/const/models/DeliveryServiceModel.ts";
 
 export default function ShipmentConfigurationCard({
   isLoading,
   shipment,
+  deliveryServices,
   onAction,
 }: IShipmentConfigurationCard) {
   // ==================================================================== STATE MANAGEMENT
   const [status, setStatus] = React.useState<ShipmentStatusEnum>();
+  const [trackNumber, setTrackNumber] = React.useState<number>(
+    shipment?.trackNumber || null,
+  );
+  const [deliveryServiceId, setDeliveryServiceId] = React.useState<number>(
+    shipment?.deliveryServiceId || null,
+  );
   const [orderItems, setOrderItems] = React.useState<OrderItemModel[]>(null);
   const [packedOrderItems, setPackedOrderItems] =
     React.useState<OrderItemModel[]>(null);
@@ -37,6 +44,25 @@ export default function ShipmentConfigurationCard({
   const { translate } = useAppTranslation();
   const orderItemsRef = React.useRef(null);
   const packedOrderItemsRef = React.useRef(null);
+
+  //===================================================================== CONVERTERS
+  function svgStringToComponent(svgString: string): React.FC<any> {
+    return (props) => (
+      <span dangerouslySetInnerHTML={{ __html: svgString }} {...props} />
+    );
+  }
+
+  function convertDeliveryServiceToSelectItems(
+    data: DeliveryServiceModel[],
+  ): ISheSelectItem<number>[] {
+    return data?.map(
+      (item): ISheSelectItem<any> => ({
+        value: item.deliveryServiceId,
+        text: item.deliveryServiceName,
+        icon: svgStringToComponent(item.deliveryServiceLogo),
+      }),
+    );
+  }
 
   // ==================================================================== PRIVATE
   React.useEffect(() => {
@@ -85,7 +111,9 @@ export default function ShipmentConfigurationCard({
         titleTransKey: "CardTitles.CancelShipment",
         text: "This variant will be deleted, it will no longer be available for sale but you will still see it in the orders where it sold",
         textTransKey: "ConfirmationMessages.CancelShipment",
-        onClick: () => onAction("deleteShipment", shipment?.shipmentId),
+        buttonText: "Cancel",
+        buttonTextTransKey: "Cancel",
+        onClick: () => onAction("cancelShipment", shipment?.shipmentId),
       }}
       onSecondaryButtonClick={() => onAction("closeShipmentConfigurationCard")}
     >
@@ -109,7 +137,10 @@ export default function ShipmentConfigurationCard({
               maxWidth="250px"
               date={shipment?.queuePacking}
               onSelectDate={(value) =>
-                onAction("changeShipmentDate", { queuePacking: value })
+                onAction("changeShipmentDate", {
+                  queuePacking: value,
+                  queueShipment: shipment?.queueShipment,
+                })
               }
             />
           </div>
@@ -121,7 +152,10 @@ export default function ShipmentConfigurationCard({
               maxWidth="250px"
               date={shipment?.queueShipment}
               onSelectDate={(value) =>
-                onAction("changeShipmentDate", { queueShipment: value })
+                onAction("changeShipmentDate", {
+                  queuePacking: shipment?.queuePacking,
+                  queueShipment: value,
+                })
               }
             />
           </div>
@@ -203,6 +237,7 @@ export default function ShipmentConfigurationCard({
               valueTransKey="SpecialText.ChangeAddress"
               icon={MapPin}
               variant="secondary"
+              disabled={!shipment?.customer}
               onClick={() =>
                 onAction("openSelectAddressCard", shipment?.customerId)
               }
@@ -282,9 +317,7 @@ export default function ShipmentConfigurationCard({
                     valueTransKey="SpecialText.AddAll"
                     icon={Plus}
                     variant="info"
-                    onClick={() =>
-                      onAction("addAllItemsToShipment", orderItemsRef.current)
-                    }
+                    onClick={() => onAction("addAllItemsToShipment")}
                   />
                 </div>
                 <SheGrid
@@ -358,6 +391,8 @@ export default function ShipmentConfigurationCard({
                   placeholder="enter tracking number..."
                   placeholderTransKey="ShipmentForm.Placeholders.EnterTrackingNumber"
                   fullWidth
+                  value={trackNumber}
+                  onDelay={(value: number) => setTrackNumber(value)}
                 />
                 <SheSelect
                   label="Delivery service"
@@ -365,13 +400,16 @@ export default function ShipmentConfigurationCard({
                   placeholder="enter tracking number..."
                   placeholderTransKey="ShipmentForm.Placeholders.EnterTrackingNumber"
                   fullWidth
+                  items={convertDeliveryServiceToSelectItems(deliveryServices)}
+                  selected={deliveryServiceId}
+                  onSelect={(value) => setDeliveryServiceId(value)}
                 />
                 <div className={cs.deliveryServiceButtons}>
                   <SheButton
                     value="Return shipment to packing"
                     valueTransKey="OrderActions.ReturnShipmentToPacking"
                     variant="secondary"
-                    onClick={() => console.log("Return shipment to packing")}
+                    onClick={() => onAction("returnShipmentStatusToPrevious")}
                   />
                   <SheButton
                     value={
@@ -387,7 +425,10 @@ export default function ShipmentConfigurationCard({
                     icon={Check}
                     onClick={() => {
                       shipment?.shipmentStatus === "DeliveryPending"
-                        ? console.log("Return shipment to packing")
+                        ? onAction("confirmDeliveryData", {
+                            trackNumber,
+                            deliveryServiceId,
+                          })
                         : console.log("Save changes");
                     }}
                   />

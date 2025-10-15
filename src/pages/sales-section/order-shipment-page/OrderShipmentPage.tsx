@@ -192,6 +192,9 @@ export function OrderShipmentPage() {
       case "closeSelectOrderForShipmentCard":
         service.closeSelectOrderForShipmentCardHandler();
         break;
+      case "navigateToOrder":
+        service.navigateToOrderHandler(payload);
+        break;
     }
   }
 

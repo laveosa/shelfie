@@ -23,4 +23,5 @@ export interface ShipmentModel {
   orders?: OrderModel[];
   history?: ShipmentHistoryModel[];
   createdAt?: string;
+  trackNumber?: number;
 }

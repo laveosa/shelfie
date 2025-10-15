@@ -24,7 +24,7 @@
   }
 
   .variantName {
-    max-width: 60px;
+    max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -46,5 +46,36 @@
     min-height: 20px;
     border-radius: 50%;
     border: 2px solid #ccc;
+  }
+}
+
+.orderLink {
+  font-weight: 700;
+}
+
+.inputBlock {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+
+  .quantityNumber {
+    position: absolute;
+    top: 11px;
+    left: 50px;
+    display: flex;
+    width: 65px;
+    z-index: 1;
+
+    span {
+      width: 100%;
+      text-align: end;
+    }
+  }
+
+  .quantityInput {
+    input {
+      padding-left: 52%;
+    }
   }
 }
