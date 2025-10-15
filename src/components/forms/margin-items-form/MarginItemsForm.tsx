@@ -6,13 +6,12 @@ import cs from "@/components/forms/margin-items-form/MarginItemsForm.module.scss
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
-import SheFormItem from "@/components/complex/she-form/components/she-form-item/SheFormItem.tsx";
 import SheForm from "@/components/complex/she-form/SheForm.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import MarginItemsFormScheme from "@/utils/validation/schemes/MarginItemsFormScheme.ts";
 import useAppForm from "@/utils/hooks/useAppForm.ts";
 import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
+import MarginItemsFormScheme from "@/utils/validation/schemes/MarginItemsFormScheme.ts";
 import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import { IMarginItemsForm } from "@/const/interfaces/forms/IMarginItemsForm.ts";
@@ -27,6 +26,7 @@ export default function MarginItemsForm({
   onMarginItemChange,
   onApply,
 }: IMarginItemsForm) {
+  // ==================================================================== UTILITIES
   const { form } = useAppForm<MarginItemModel>({
     values: data,
     defaultValues: MarginItemModelDefault,
@@ -34,6 +34,7 @@ export default function MarginItemsForm({
     mode: ReactHookFormMode.SUBMIT,
   });
 
+  // ==================================================================== PRIVATE
   function convertTaxesToSelectItems(
     data: TaxTypeModel[],
   ): ISheSelectItem<any>[] {
@@ -45,6 +46,7 @@ export default function MarginItemsForm({
     );
   }
 
+  // ==================================================================== LAYOUT
   return (
     <div className={cs.marginItemsFormWrapper}>
       <SheForm className={cs.marginItemsForm} form={form} fullWidth hideFooter>
@@ -52,20 +54,18 @@ export default function MarginItemsForm({
           name="taxTypeId"
           className={`${cs.marginItemsFormItem} ${cs.marginItemsFormInput}`}
           render={({ field }) => (
-            <SheFormItem className={cs.formItem}>
-              <SheSelect
-                className={data?.taxTypeChanged ? cs.selectChanged : ""}
-                placeholder=" "
-                selected={field?.value || data?.taxTypeId}
-                items={convertTaxesToSelectItems(taxes)}
-                hideFirstOption
-                minWidth="70px"
-                maxWidth="70px"
-                onSelect={() => {
-                  onMarginItemChange(form.getValues());
-                }}
-              />
-            </SheFormItem>
+            <SheSelect
+              className={data?.taxTypeChanged ? cs.selectChanged : ""}
+              placeholder=" "
+              selected={field?.value || data?.taxTypeId}
+              items={convertTaxesToSelectItems(taxes)}
+              hideFirstOption
+              minWidth="70px"
+              maxWidth="70px"
+              onSelect={() => {
+                onMarginItemChange(form.getValues());
+              }}
+            />
           )}
         />
         {/*<FormField
@@ -111,17 +111,15 @@ export default function MarginItemsForm({
           name="marginPrice"
           className={`${cs.marginItemsFormItem} ${cs.marginItemsFormInput}`}
           render={({ field }) => (
-            <SheFormItem className={cs.formItem}>
-              <SheInput
-                value={field.value}
-                className={data?.marginPriceChanged ? cs.inputChanged : ""}
-                minWidth="70px"
-                maxWidth="70px"
-                onDelay={() => {
-                  onMarginItemChange(form.getValues());
-                }}
-              />
-            </SheFormItem>
+            <SheInput
+              value={field.value}
+              className={data?.marginPriceChanged ? cs.inputChanged : ""}
+              minWidth="70px"
+              maxWidth="70px"
+              onDelay={() => {
+                onMarginItemChange(form.getValues());
+              }}
+            />
           )}
         />
         <SheIcon
