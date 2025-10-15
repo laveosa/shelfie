@@ -1,14 +1,14 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { ImageIcon, Truck } from "lucide-react";
+import { ImageIcon, PackagePlus } from "lucide-react";
 import React from "react";
 
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-import cs from "./SelectShipmentForOrderGrdColumns.module.scss";
+import cs from "./OrderForShipmentGridColumns.module.scss";
 import { formatDate, getInitials } from "@/utils/helpers/quick-helper.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 
-export function SelectShipmentForOrderGridColumns(
+export function SelectOrderForShipmentGridColumns(
   onAction: any,
 ): ColumnDef<any>[] {
   const statusClass = (status: string) => {
@@ -23,6 +23,15 @@ export function SelectShipmentForOrderGridColumns(
     }
   };
   return [
+    {
+      id: "id",
+      header: "ID",
+      minSize: 60,
+      maxSize: 60,
+      cell: ({ row }) => {
+        return <span>{row.original.id}</span>;
+      },
+    },
     {
       id: "customer",
       accessorFn: (row) => row.variantName,
@@ -60,12 +69,40 @@ export function SelectShipmentForOrderGridColumns(
     },
 
     {
-      id: "queueDate",
-      header: "Queue Date",
+      id: "date",
+      header: "Date",
+      minSize: 90,
+      maxSize: 90,
+      cell: ({ row }) => {
+        return <span>{formatDate(row.original.date, "date")}</span>;
+      },
+    },
+    {
+      id: "orderStatus",
+      header: "Order",
       minSize: 100,
       maxSize: 100,
       cell: ({ row }) => {
-        return <span>{formatDate(row.original.queueDate, "date")}</span>;
+        const status: string = row.original.orderStatus;
+        return (
+          <div className={`${cs.shipmentStatus} ${statusClass(status)}`}>
+            <span>{status}</span>
+          </div>
+        );
+      },
+    },
+    {
+      id: "paymentStatus",
+      header: "Payment",
+      minSize: 100,
+      maxSize: 100,
+      cell: ({ row }) => {
+        const status: string = row.original.paymentStatus;
+        return (
+          <div className={`${cs.shipmentStatus} ${statusClass(status)}`}>
+            <span>{status}</span>
+          </div>
+        );
       },
     },
     {
@@ -83,44 +120,30 @@ export function SelectShipmentForOrderGridColumns(
       },
     },
     {
-      id: "deliveryAddress",
-      header: "Address",
-      minSize: 100,
+      id: "value",
+      header: "Value",
+      minSize: 80,
+      maxSize: 80,
       cell: ({ row }) => {
-        const alias: string = row.original.deliveryAddress?.alias;
-        const address: string = row.original.deliveryAddress?.addressLine1;
-        const city: string = row.original.deliveryAddress?.city;
+        const currensy: string = row.original.currency.briefName;
         return (
-          <div className={cs.deliveryAddress}>
-            <span className={`${cs.alias} she-text`}>{alias}</span>
-            <span className={`${cs.address} she-text`}>{address}</span>
-            <span className={`${cs.address} she-text`}>{city}</span>
-          </div>
+          <span className="she-text">{`${row.original.value}${currensy}`}</span>
         );
       },
     },
     {
-      id: "quantityPacked",
-      header: "Qty Packed",
+      id: "add",
+      header: "",
       minSize: 100,
       maxSize: 100,
-      cell: ({ row }) => {
-        return <span>{row.original.quantityPacked}</span>;
-      },
-    },
-    {
-      id: "select",
-      header: "",
-      minSize: 110,
-      maxSize: 110,
       cell: ({ row }) => {
         return (
           <div className={cs.selectButton} onClick={(e) => e.stopPropagation()}>
             <SheButton
-              icon={Truck}
-              value="Select"
+              icon={PackagePlus}
+              value="Add"
               variant="secondary"
-              onClick={() => onAction("connectShipmentToOrder", row.original)}
+              onClick={() => onAction("connectOrderToShipment", row.original)}
             />
           </div>
         );

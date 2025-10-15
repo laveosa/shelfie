@@ -292,6 +292,15 @@ export const OrdersApiService = createApi({
         method: "PATCH",
       }),
     }),
+    addOrderToShipment: apiConfig.createMutation<
+      void,
+      { shipmentId: number; orderId: number }
+    >(builder, {
+      query: ({ shipmentId, orderId }) => ({
+        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/connect/${orderId}`,
+        method: "PATCH",
+      }),
+    }),
     disconnectOrderFromShipment: apiConfig.createMutation<
       void,
       { shipmentId: number; orderId: number }
@@ -333,12 +342,84 @@ export const OrdersApiService = createApi({
         body: JSON.stringify(model),
       }),
     }),
-    confirmPackedProducts: apiConfig.createMutation<
+    confirmPackedProducts: apiConfig.createMutation<void, number>(builder, {
+      query: (shipmentId) => ({
+        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/package`,
+        method: "PATCH",
+      }),
+    }),
+    getShipmentStatusForOrder: apiConfig.createQuery<void, number>(builder, {
+      query: (orderId) => ({
+        url: `${ApiUrlEnum.ORDERS}/${orderId}/shipment-status`,
+      }),
+    }),
+    returnShipmentStatusToPrevious: apiConfig.createMutation<void, number>(
+      builder,
+      {
+        query: (shipmentId) => ({
+          url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/return`,
+          method: "PATCH",
+        }),
+      },
+    ),
+    cancelShipment: apiConfig.createMutation<void, number>(builder, {
+      query: (shipmentId) => ({
+        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/cancel`,
+        method: "PATCH",
+      }),
+    }),
+    increaseShipmentStockAction: apiConfig.createMutation<void, number>(
+      builder,
+      {
+        query: (stockActionId) => ({
+          url: `${ApiUrlEnum.SHIPMENTS}${ApiUrlEnum.STOCK_ACTIONS}/${stockActionId}/increase-amount`,
+          method: "PATCH",
+        }),
+      },
+    ),
+    decreaseShipmentStockAction: apiConfig.createMutation<void, number>(
+      builder,
+      {
+        query: (stockActionId) => ({
+          url: `${ApiUrlEnum.SHIPMENTS}${ApiUrlEnum.STOCK_ACTIONS}/${stockActionId}/decrease-amount`,
+          method: "PATCH",
+        }),
+      },
+    ),
+    addShipmentStockActionWithQuantity: apiConfig.createMutation<
+      void,
+      { stockActionId: number; model: any }
+    >(builder, {
+      query: ({ stockActionId, model }) => ({
+        url: `${ApiUrlEnum.SHIPMENTS}${ApiUrlEnum.STOCK_ACTIONS}/${stockActionId}`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+    }),
+    addAllStockActionsToPackage: apiConfig.createMutation<void, number>(
+      builder,
+      {
+        query: (shipmentId) => ({
+          url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/add-all-variants`,
+          method: "PATCH",
+        }),
+      },
+    ),
+    addVariantToShipment: apiConfig.createMutation<
+      void,
+      { shipmentId: number; stockActionId: number }
+    >(builder, {
+      query: ({ shipmentId, stockActionId }) => ({
+        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/add-variant/${stockActionId}`,
+        method: "PATCH",
+      }),
+    }),
+    confirmDeliveryData: apiConfig.createMutation<
       void,
       { shipmentId: number; model: any }
     >(builder, {
       query: ({ shipmentId, model }) => ({
-        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/package`,
+        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/delivery`,
         method: "PATCH",
         body: JSON.stringify(model),
       }),

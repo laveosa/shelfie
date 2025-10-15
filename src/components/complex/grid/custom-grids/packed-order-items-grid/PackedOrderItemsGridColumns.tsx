@@ -1,11 +1,11 @@
 import { ColumnDef, Row } from "@tanstack/react-table";
-import { ImageIcon, PackageMinus } from "lucide-react";
+import { ImageIcon, Minus, Plus } from "lucide-react";
 
-import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import cs from "./PackedOrderItemsGridColumns.module.scss";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
+import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 
 export function PackedOrderItemsGridColumns({
   onAction,
@@ -17,7 +17,8 @@ export function PackedOrderItemsGridColumns({
       id: "variantName",
       accessorFn: (row) => row.variantName,
       header: "Product",
-      minSize: 120,
+      minSize: 160,
+      maxSize: 160,
       cell: ({ row }) => {
         const image: string = row.original.photo?.thumbnailUrl;
         return (
@@ -86,51 +87,108 @@ export function PackedOrderItemsGridColumns({
     {
       accessorKey: "orderId",
       header: "Order",
-      minSize: 70,
+      minSize: 80,
       cell: ({ row }) => {
-        return <span>{row.original.orderId}</span>;
-      },
-    },
-    {
-      accessorKey: "packedAmount",
-      header: "Qty to pack",
-      minSize: 100,
-      cell: ({ row }) => {
-        return <span>{row.original.quantityToShip}</span>;
+        return (
+          <div
+            className={`${cs.orderLink} she-text-link`}
+            onClick={() => onAction("navigateToOrder", row.original.orderId)}
+          >
+            {row.original.orderId}
+          </div>
+        );
       },
     },
     {
       accessorKey: "quantity",
-      header: "Qty packed",
-      minSize: 100,
-      cell: ({ row }) => (
-        <SheInput
-          value={row.original.amount}
-          type="number"
-          onDelay={(value) => {
-            row.original.amount = value;
-            onAction("changePackedOrderItemQuantity", row.original);
-          }}
-        />
-      ),
-    },
-    {
-      id: "remove",
-      header: "",
-      minSize: 120,
-      maxSize: 120,
+      header: "Qty to pack",
+      minSize: 250,
+      maxSize: 250,
       cell: ({ row }) => {
         return (
-          <div onClick={(e) => e.stopPropagation()}>
+          <div className={cs.inputBlock}>
             <SheButton
-              icon={PackageMinus}
-              value="Remove"
+              icon={Minus}
               variant="secondary"
-              onClick={() => onAction("removeItemFromShipment", row.original)}
+              onClick={() =>
+                onAction(
+                  "decreasePackedOrderItemQuantity",
+                  row.original.stockActionId,
+                )
+              }
+            />
+            <div className={cs.quantityNumber}>
+              <span className="she-text">{`${row.original.limitQuantityToPack}  /`}</span>
+            </div>
+
+            <SheInput
+              className={cs.quantityInput}
+              value={row.original.quantityToPack}
+              type="number"
+              minWidth="130px"
+              maxWidth="130px"
+              onDelay={(value) => {
+                row.original.quantityToPack = value;
+                onAction("changePackedOrderItemQuantity", row.original);
+              }}
+            />
+            <SheButton
+              icon={Plus}
+              variant="secondary"
+              disabled={
+                row.original.limitQuantityToPack === row.original.quantityToPack
+              }
+              onClick={() =>
+                onAction(
+                  "increasePackedOrderItemQuantity",
+                  row.original.stockActionId,
+                )
+              }
             />
           </div>
         );
       },
     },
+    // {
+    //   accessorKey: "packedAmount",
+    //   header: "Qty to pack",
+    //   minSize: 100,
+    //   cell: ({ row }) => {
+    //     return <span>{row.original.quantityToShip}</span>;
+    //   },
+    // },
+    // {
+    //   accessorKey: "quantity",
+    //   header: "Qty packed",
+    //   minSize: 120,
+    //   cell: ({ row }) => (
+    //     <SheInput
+    //       value={row.original.amount}
+    //       type="number"
+    //       onDelay={(value) => {
+    //         row.original.amount = value;
+    //         onAction("changePackedOrderItemQuantity", row.original);
+    //       }}
+    //     />
+    //   ),
+    // },
+    // {
+    //   id: "remove",
+    //   header: "",
+    //   minSize: 120,
+    //   maxSize: 120,
+    //   cell: ({ row }) => {
+    //     return (
+    //       <div onClick={(e) => e.stopPropagation()}>
+    //         <SheButton
+    //           icon={PackageMinus}
+    //           value="Remove"
+    //           variant="secondary"
+    //           onClick={() => onAction("removeItemFromShipment", row.original)}
+    //         />
+    //       </div>
+    //     );
+    //   },
+    // },
   ];
 }

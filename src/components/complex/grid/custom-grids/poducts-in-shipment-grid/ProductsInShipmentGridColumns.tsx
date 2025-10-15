@@ -13,7 +13,7 @@ export const ProductsInShipmentGridColumns: ColumnDef<any>[] = [
       const image: string = row.original.photo?.thumbnailUrl;
       return (
         <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-          <div>
+          <div style={{ width: "40px" }}>
             {image ? (
               <img
                 src={image}
@@ -28,7 +28,7 @@ export const ProductsInShipmentGridColumns: ColumnDef<any>[] = [
             <SheTooltip
               delayDuration={200}
               text={row.getValue("variantName")}
-              className="max-w-[80px] overflow-hidden text-ellipsis whitespace-nowrap"
+              className="max-w-[100%] overflow-hidden text-ellipsis whitespace-nowrap"
             >
               <span>{row.getValue("variantName")}</span>
             </SheTooltip>
@@ -87,30 +87,30 @@ export const ProductsInShipmentGridColumns: ColumnDef<any>[] = [
     },
   },
   {
-    id: "unitsAmount",
+    id: "qtyOrdered",
     header: "Qty ordered",
     minSize: 100,
     maxSize: 100,
     cell: ({ row }) => {
-      return <span>{row.original.unitsAmount}</span>;
+      return <span>{row.original.qtyOrdered}</span>;
     },
   },
   {
-    id: "unitsAmount1",
+    id: "qtyToShip",
     header: "Qty to ship",
     minSize: 100,
     maxSize: 100,
     cell: ({ row }) => {
-      return <span>{row.original.unitsAmount}</span>;
+      return <span>{row.original.qtyToShip}</span>;
     },
   },
   {
-    id: "unitsAmount2",
+    id: "qtyShipped",
     header: "Qty shipped",
     minSize: 100,
     maxSize: 100,
-    cell: ({}) => {
-      return <span>0</span>;
+    cell: ({ row }) => {
+      return <span>{row.original.qtyShipped}</span>;
     },
   },
 ];

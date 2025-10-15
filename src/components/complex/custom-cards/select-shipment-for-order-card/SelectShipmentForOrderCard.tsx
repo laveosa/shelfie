@@ -1,7 +1,14 @@
 import React from "react";
-
 import { CalendarDays, Grid2x2Check, Truck, UserMinus, X } from "lucide-react";
 
+import {
+  ShipmentStatusEnum,
+  ShipmentStatusLabels,
+} from "@/const/enums/ShipmentStatusEnum.ts";
+import {
+  GridSortingEnum,
+  GridSortingEnumLabels,
+} from "@/const/enums/GridSortingEnum.ts";
 import cs from "./SelectShipmentForOrderCard.module.scss";
 import SheCard from "@/components/complex/she-card/SheCard.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
@@ -12,17 +19,10 @@ import { SelectShipmentForOrderGridColumns } from "@/components/complex/grid/cus
 import { getInitials } from "@/utils/helpers/quick-helper.ts";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { CalendarModeEnum } from "@/const/enums/CalendarModeEnum.ts";
-import {
-  ShipmentStatusEnum,
-  ShipmentStatusLabels,
-} from "@/const/enums/ShipmentStatusEnum.ts";
-import {
-  GridSortingEnum,
-  GridSortingEnumLabels,
-} from "@/const/enums/GridSortingEnum.ts";
 import { ISelectShipmentForOrderCard } from "@/const/interfaces/complex-components/custom-cards/ISelectShipmentForOrderCard.ts";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import { GridSortingModel } from "@/const/models/GridSortingModel.ts";
+import { GridDateRangeFilter } from "@/components/complex/grid/filters/grid-date-range-filter/GridDateRangeFilter.tsx";
 
 export default function SelectShipmentForOrderCard({
   isLoading,
@@ -158,6 +158,7 @@ export default function SelectShipmentForOrderCard({
               })
             }
           />
+          <GridDateRangeFilter />
         </SheGrid>
       </div>
     </SheCard>

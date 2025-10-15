@@ -1,5 +1,13 @@
+import { useNavigate, useParams } from "react-router-dom";
 import { merge } from "lodash";
 
+import DictionaryApiHooks, {
+  DictionaryApiService,
+} from "@/utils/services/api/DictionaryApiService.ts";
+import {
+  convertAddressToRequestModel,
+  createAddressRequestModel,
+} from "@/utils/helpers/address-helper.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { OrdersPageSliceActions as ordersActions } from "@/state/slices/OrdersPageSlice";
 import { useToast } from "@/hooks/useToast.ts";
@@ -16,18 +24,19 @@ import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import useAppService from "@/useAppService.ts";
 import { CustomerModel } from "@/const/models/CustomerModel.ts";
 import { OrderItemModel } from "@/const/models/OrderItemModel.ts";
+import { convertCustomerToRequestModel } from "@/utils/helpers/customer-helper.ts";
+import { AddressModel } from "@/const/models/AddressModel.ts";
+import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 
-export default function useOrderShipmentPageService(
-  handleCardAction,
-  handleMultipleCardActions,
-) {
+export default function useOrderShipmentPageService(handleCardAction) {
   const dispatch = useAppDispatch();
   const { addToast } = useToast();
   const appService = useAppService();
   const state = useAppSelector<IOrderShipmentPageSlice>(
     StoreSliceEnum.ORDER_SHIPMENT,
   );
-
+  const navigate = useNavigate();
+  const { orderId } = useParams();
   const ordersService = useOrdersPageService();
   const ordersState = useAppSelector<IOrdersPageSlice>(StoreSliceEnum.ORDERS);
   const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
@@ -64,6 +73,37 @@ export default function useOrderShipmentPageService(
     OrdersApiHooks.useUpdateStockActionForShipmentMutation();
   const [confirmPackedProducts] =
     OrdersApiHooks.useConfirmPackedProductsMutation();
+  const [getCustomerAddressesForGrid] =
+    OrdersApiHooks.useGetCustomerAddressesForGridMutation();
+  const [getCustomer] = OrdersApiHooks.useLazyGetCustomerDetailsQuery();
+  const [createCustomer] = OrdersApiHooks.useCreateCustomerMutation();
+  const [updateCustomer] = OrdersApiHooks.useUpdateCustomerMutation();
+  const [getCountryCode] = DictionaryApiHooks.useLazyGetCountryCodeQuery();
+  const [updateCustomerAddress] =
+    OrdersApiHooks.useUpdateCustomerAddressMutation();
+  const [createCustomerAddress] =
+    OrdersApiHooks.useCreateCustomerAddressMutation();
+  const [getListOfOrdersForGrid] =
+    OrdersApiHooks.useGetListOfOrdersForGridMutation();
+  const [addOrderToShipment] = OrdersApiHooks.useAddOrderToShipmentMutation();
+  const [getShipmentStatusForOrder] =
+    OrdersApiHooks.useLazyGetShipmentStatusForOrderQuery();
+  const [addShipmentStockActionWithQuantity] =
+    OrdersApiHooks.useAddShipmentStockActionWithQuantityMutation();
+  const [increaseShipmentStockAction] =
+    OrdersApiHooks.useIncreaseShipmentStockActionMutation();
+  const [decreaseShipmentStockAction] =
+    OrdersApiHooks.useDecreaseShipmentStockActionMutation();
+  const [addAllStockActionsToPackage] =
+    OrdersApiHooks.useAddAllStockActionsToPackageMutation();
+  const [addVariantToShipment] =
+    OrdersApiHooks.useAddVariantToShipmentMutation();
+  const [cancelShipment] = OrdersApiHooks.useCancelShipmentMutation();
+  const [returnShipmentStatusToPrevious] =
+    OrdersApiHooks.useReturnShipmentStatusToPreviousMutation();
+  const [getDeliveryServicesList] =
+    DictionaryApiService.useLazyGetDeliveryServicesListQuery();
+  const [confirmDeliveryData] = OrdersApiHooks.useConfirmDeliveryDataMutation();
 
   function getOrderDetailsHandler(orderId) {
     return getOrderDetails(orderId).then((res: any) => {
@@ -111,11 +151,16 @@ export default function useOrderShipmentPageService(
   function getListOfCustomersForGridHandler(model) {
     handleCardAction("selectEntityCard", true);
     return getListOfCustomersForGrid(model).then((res: any) => {
-      const updatedCustomers = res.data.items.map((customer) =>
-        customer.customerId === state.selectedCustomer?.customerId
-          ? { ...customer, isSelected: true }
-          : { ...customer, isSelected: false },
-      );
+      const updatedCustomers = res.data.items.map((customer) => {
+        const targetCustomerId =
+          state.activeCardForCustomers === "shipmentConfigurationCard"
+            ? state.selectedShipment?.customerId
+            : state.selectedCustomer?.customerId;
+        return {
+          ...customer,
+          isSelected: customer.customerId === targetCustomerId,
+        };
+      });
       dispatch(
         ordersActions.refreshCustomersGridRequestModel({
           ...res.data,
@@ -155,36 +200,57 @@ export default function useOrderShipmentPageService(
   }
 
   function updateShipmentCustomerHandler(shipmentId: number, model: any) {
-    handleCardAction("selectEntityCard");
     return updateShipmentCustomer({ shipmentId, model }).then((res: any) => {
       if (!res.error) {
-        dispatch(
-          actions.refreshSelectedShipment({
-            ...state.selectedShipment,
-            customer: res.data,
-          }),
+        getShipmentDetailsHandler(state.selectedShipment.shipmentId).then(
+          (res: any) => {
+            if (!res.error) {
+              addToast({
+                text: "Shipment successfully updated",
+                type: "success",
+              });
+            }
+          },
         );
-        addToast({
-          text: "Shipment successfully updated",
-          type: "success",
-        });
+        // dispatch(
+        //   actions.refreshSelectedShipment({
+        //     ...state.selectedShipment,
+        //     customer: res.data,
+        //   }),
+        // );
       } else {
         addToast({
           text: res?.error?.message,
           type: "error",
         });
       }
-      return res;
     });
   }
 
-  function updateShipmentAddressHandler(shipmentId: number, model: any) {
-    return updateShipmentAddress({ shipmentId, model }).then((res: any) => {
+  function updateShipmentAddressHandler(addressId: number) {
+    return updateShipmentAddress({
+      shipmentId: state.selectedShipment.shipmentId,
+      model: { addressId },
+    }).then((res: any) => {
       if (!res.error) {
+        handleCardAction("selectCustomerAddressCard");
         dispatch(
           actions.refreshSelectedShipment({
             ...state.selectedShipment,
             deliveryAddress: res.data,
+            deliveryAddressId: res.data.addressId,
+          }),
+        );
+        const modifiedList = state.addressesGridRequestModel.items.map(
+          (item) => ({
+            ...item,
+            isSelected: item.addressId === res.data.addressId,
+          }),
+        );
+        dispatch(
+          actions.refreshAddressesGridRequestModel({
+            ...state.addressesGridRequestModel,
+            items: modifiedList,
           }),
         );
         addToast({
@@ -221,25 +287,13 @@ export default function useOrderShipmentPageService(
     });
   }
 
-  // function getShipmentDetailsHandler(shipmentId: number) {
-  //   handleMultipleCardActions({
-  //     shipmentConfigurationCard: true,
-  //     selectShipmentForOrderCard: false,
-  //   });
-  //   dispatch(actions.setIsShipmentDetailsCardLoading(true));
-  //   return getShipmentDetails(shipmentId).then((res: any) => {
-  //     dispatch(actions.setIsShipmentDetailsCardLoading(false));
-  //     dispatch(actions.refreshSelectedShipment(res.data));
-  //     return res;
-  //   });
-  // }
-
   function getShipmentDetailsHandler(shipmentId: number) {
-    handleMultipleCardActions({
-      shipmentConfigurationCard: true,
-      selectShipmentForOrderCard: false,
-    });
-
+    if (!state.activeCards.includes("shipmentConfigurationCard")) {
+      handleCardAction("shipmentConfigurationCard", true);
+    }
+    dispatch(
+      actions.refreshActiveCardForCustomers("shipmentConfigurationCard"),
+    );
     dispatch(actions.setIsShipmentConfigurationCardLoading(true));
     return getShipmentDetails(shipmentId).then((res: any) => {
       dispatch(actions.setIsShipmentConfigurationCardLoading(false));
@@ -256,29 +310,64 @@ export default function useOrderShipmentPageService(
         dispatch(actions.refreshSelectedShipment(cleanedShipment));
         return cleanedShipment;
       }
-
       return res;
     });
   }
 
   function selectCustomerHandler(customer: CustomerModel) {
     handleCardAction("selectEntityCard");
-    if (state.activeCards.includes("selectShipmentForOrderCard")) {
+    if (state.activeCardForCustomers === "selectShipmentForOrderCard") {
       dispatch(actions.refreshSelectedCustomer(customer));
 
       const updatedModel = {
         ...state.shipmentsGridRequestModel,
         filter: {
           ...state.shipmentsGridRequestModel.filter,
-          customerId: customer.customerId,
+          customers: [customer.customerId],
         },
       };
       dispatch(actions.refreshShipmentsGridRequestModel(updatedModel));
 
       getShipmentsListForForGridHandler(updatedModel);
+    } else if (state.activeCardForCustomers === "selectOrderForShipmentCard") {
+      dispatch(actions.refreshSelectedCustomer(customer));
+
+      const updatedModel = {
+        ...state.ordersGridRequestModel,
+        filter: {
+          ...state.ordersGridRequestModel.filter,
+          customerId: customer.customerId,
+        },
+      };
+      dispatch(actions.refreshOrdersGridRequestModel(updatedModel));
+      dispatch(actions.setIsOrdersGridLoading(true));
+      getListOfOrdersForGrid(updatedModel).then((res: any) => {
+        dispatch(actions.setIsOrdersGridLoading(false));
+        dispatch(actions.refreshOrdersGridRequestModel(res.data));
+      });
     } else {
-      updateShipmentCustomerHandler(state.selectedShipment.shipmentId, {
-        customerId: customer.customerId,
+      updateShipmentCustomer({
+        shipmentId: state.selectedShipment.shipmentId,
+        model: customer,
+      }).then((res: any) => {
+        if (!res.error) {
+          dispatch(
+            actions.refreshSelectedShipment({
+              ...state.selectedShipment,
+              customer: customer,
+              customerId: customer.customerId,
+            }),
+          );
+          addToast({
+            text: "Shipment successfully updated",
+            type: "success",
+          });
+        } else {
+          addToast({
+            text: res?.error?.message,
+            type: "error",
+          });
+        }
       });
     }
   }
@@ -287,26 +376,28 @@ export default function useOrderShipmentPageService(
     const updatedModel = {
       ...state.shipmentsGridRequestModel,
       filter: {
-        customerId: state.selectedCustomer.customerId,
+        customers: [state.selectedCustomer.customerId],
       },
     };
     dispatch(actions.refreshShipmentsGridRequestModel(updatedModel));
 
     getShipmentsListForForGridHandler(updatedModel);
+    dispatch(
+      actions.refreshActiveCardForCustomers("selectShipmentForOrderCard"),
+    );
   }
 
   function showAllShipmentsHandler() {
     dispatch(actions.resetSelectedCustomer());
-    dispatch(
-      actions.refreshShipmentsGridRequestModel({
-        ...state.shipmentsGridRequestModel,
-        filter: {
-          ...state.shipmentsGridRequestModel.filter,
-          customerId: null,
-        },
-      }),
-    );
-    getShipmentsListForForGridHandler(state.shipmentsGridRequestModel);
+    const updatedModel = {
+      ...state.shipmentsGridRequestModel,
+      filter: {
+        ...state.shipmentsGridRequestModel.filter,
+        customers: [],
+      },
+    };
+    dispatch(actions.refreshShipmentsGridRequestModel(updatedModel));
+    getShipmentsListForForGridHandler(updatedModel);
   }
 
   function updateUserPreferencesHandler(model: PreferencesModel) {
@@ -342,8 +433,10 @@ export default function useOrderShipmentPageService(
     shipmentId: number,
     orderId: number,
   ) {
+    dispatch(actions.setIsShipmentConfigurationCardLoading(true));
     return disconnectOrderFromShipment({ shipmentId, orderId }).then(
       (res: any) => {
+        dispatch(actions.setIsShipmentConfigurationCardLoading(false));
         if (!res.error) {
           dispatch(actions.refreshSelectedShipment(res.data));
           addToast({
@@ -361,35 +454,6 @@ export default function useOrderShipmentPageService(
     );
   }
 
-  function addVariantsToShipmentHandler(shipmentId: number, model: any) {
-    const normalizedData = {
-      items: [
-        {
-          ...model,
-        },
-      ],
-    };
-    return addVariantsToShipment({ shipmentId, model: normalizedData }).then(
-      (res: any) => {
-        dispatch(actions.refreshSelectedShipment(res.data));
-      },
-    );
-  }
-
-  function addAllVariantsToShipmentHandler(shipmentId: number, model: any) {
-    const normalizedData = {
-      items: model.map((item: any) => ({
-        stockActionId: item.stockActionId,
-        quantity: item.amount,
-      })),
-    };
-    addVariantsToShipment({ shipmentId, model: normalizedData }).then(
-      (res: any) => {
-        dispatch(actions.refreshSelectedShipment(res.data));
-      },
-    );
-  }
-
   function removeVariantFromShipmentHandler(actionId: number) {
     return removeVariantFromShipment(actionId).then((res: any) => {
       dispatch(actions.refreshSelectedShipment(res.data));
@@ -398,6 +462,39 @@ export default function useOrderShipmentPageService(
 
   function closeShipmentConfigurationCardHandler() {
     handleCardAction("shipmentConfigurationCard");
+    dispatch(actions.resetActiveCardForCustomers());
+  }
+
+  function openCreateEntityCardHandler() {
+    handleCardAction("customerCard", true);
+  }
+
+  function searchEntityHandle(model) {
+    dispatch(actions.setIsSelectEntityGridLoading(true));
+    return getListOfCustomersForGrid({
+      ...ordersState.CustomersGridRequestModel,
+      searchQuery: model,
+    }).then((res: any) => {
+      dispatch(actions.setIsSelectEntityGridLoading(false));
+      const updatedCustomers = res.data.items.map((customer) => {
+        const targetCustomerId = state.activeCards.includes(
+          "shipmentConfigurationCard",
+        )
+          ? state.selectedShipment?.customerId
+          : state.selectedCustomer?.customerId;
+
+        return {
+          ...customer,
+          isSelected: customer.customerId === targetCustomerId,
+        };
+      });
+      dispatch(
+        ordersActions.refreshCustomersGridRequestModel({
+          ...res.data,
+          items: updatedCustomers,
+        }),
+      );
+    });
   }
 
   function closeSelectEntityCardHandler() {
@@ -406,6 +503,7 @@ export default function useOrderShipmentPageService(
 
   function closeSelectShipmentForOrderCardHandler() {
     handleCardAction("selectShipmentForOrderCard");
+    dispatch(actions.resetActiveCardForCustomers());
   }
 
   function createShipmentForOrderHandler(orderId: number) {
@@ -419,28 +517,433 @@ export default function useOrderShipmentPageService(
     });
   }
 
-  function changePackedOrderItemQuantityHandler(model: OrderItemModel) {
-    updateStockActionForShipment({
-      stockActionId: model.stockActionId,
-      model: { quantity: model.amount },
+  function confirmPackedProductsHandler() {
+    dispatch(actions.setIsShipmentConfigurationCardLoading(true));
+    confirmPackedProducts(state.selectedShipment.shipmentId).then(
+      (res: any) => {
+        dispatch(actions.setIsShipmentConfigurationCardLoading(false));
+        if (!res.error) {
+          dispatch(actions.refreshSelectedShipment(res.data));
+        }
+      },
+    );
+  }
+
+  function getCustomerAddressesForGridHandler(customerId: number) {
+    dispatch(actions.setIsCustomerAddressesGridLoading(true));
+    return getCustomerAddressesForGrid({
+      model: state.addressesGridRequestModel,
+      id: customerId,
     }).then((res: any) => {
+      dispatch(actions.setIsCustomerAddressesGridLoading(false));
+      if (res.error) return;
+      dispatch(actions.refreshAddressesGridRequestModel(res.data));
+      return res;
+    });
+  }
+
+  function openSelectAddressCardHandler(customerId: number) {
+    handleCardAction("selectCustomerAddressCard", true);
+    dispatch(actions.setIsCustomerAddressesGridLoading(true));
+    getCustomerAddressesForGridHandler(customerId).then((res: any) => {
+      dispatch(actions.setIsCustomerAddressesGridLoading(false));
+      if (res.data) {
+        const modifiedList = res.data.items.map((item) => ({
+          ...item,
+          isSelected:
+            item.addressId === state.selectedShipment.deliveryAddressId,
+        }));
+        dispatch(
+          actions.refreshAddressesGridRequestModel({
+            ...state.addressesGridRequestModel,
+            items: modifiedList,
+          }),
+        );
+      }
+    });
+  }
+
+  function searchAddressHandle(model: any) {
+    dispatch(actions.setIsCustomerAddressesGridLoading(true));
+    getCustomerAddressesForGrid({
+      model: {
+        searchQuery: model,
+      },
+      id: state.selectedShipment.customerId,
+    }).then((res: any) => {
+      dispatch(actions.setIsCustomerAddressesGridLoading(false));
+      if (res.data) {
+        const modifiedList = res.data.items.map((item) => ({
+          ...item,
+          isSelected:
+            item.addressId === state.selectedShipment.deliveryAddressId,
+        }));
+        dispatch(
+          actions.refreshAddressesGridRequestModel({
+            ...state.addressesGridRequestModel,
+            items: modifiedList,
+          }),
+        );
+      }
+    });
+  }
+
+  function closeSelectAddressCardHandler() {
+    handleCardAction("selectCustomerAddressCard");
+  }
+
+  function openCustomerCardHandler(model?: CustomerModel) {
+    handleCardAction("customerCard", true);
+    getCustomer(
+      state.activeCards.includes("ShipmentConfigurationCard")
+        ? state.selectedShipment.customerId
+        : model.customerId,
+    ).then((res: any) => {
+      dispatch(actions.refreshManagedCustomer(res.data));
+    });
+  }
+
+  function createCustomerHandler(data: any) {
+    const requestData = convertCustomerToRequestModel(data);
+    dispatch(actions.setIsCustomerCardLoading(true));
+    return createCustomer(requestData).then((res) => {
+      dispatch(actions.setIsCustomerCardLoading(false));
+      if (res.error) {
+        return;
+      } else {
+        addToast({
+          text: "New customer created successfully",
+          type: "info",
+        });
+        handleCardAction("customerCard");
+        dispatch(
+          ordersActions.refreshCustomersGridRequestModel({
+            ...ordersState.customersGridRequestModel,
+            items: [res.data, ...ordersState.customersGridRequestModel.items],
+          }),
+        );
+        return res.data;
+      }
+    });
+  }
+
+  function updateCustomerHandler(data: any) {
+    const requestData = convertCustomerToRequestModel(data);
+    dispatch(actions.setIsCustomerCardLoading(true));
+    return updateCustomer({
+      id: state.managedCustomer?.customerId,
+      model: requestData,
+    }).then((res) => {
+      dispatch(actions.setIsCustomerCardLoading(false));
+      if (res.error) {
+        return;
+      } else {
+        handleCardAction("customerCard");
+        dispatch(actions.resetManagedCustomer());
+        const updatedItems = ordersState.customersGridRequestModel.items.map(
+          (item) => (item.customerId === res.data.customerId ? res.data : item),
+        );
+        const modifiedList = updatedItems.map((item) => ({
+          ...item,
+          isSelected:
+            item.customerId ===
+              state.activeCards.includes("shipmentConfigurationCard") ||
+            state.activeCards.includes("selectOrderForShipmentCard")
+              ? state.selectedShipment.customerId
+              : item.customerId === state.selectedCustomer.customerId,
+        }));
+        dispatch(
+          ordersActions.refreshCustomersGridRequestModel({
+            ...ordersState.customersGridRequestModel,
+            items: modifiedList,
+          }),
+        );
+        if (
+          state.activeCards.includes("shipmentConfigurationCard") &&
+          state.selectedShipment.customerId === res.data.customerId
+        ) {
+          dispatch(
+            actions.refreshSelectedShipment({
+              ...state.selectedShipment,
+              customer: res.data,
+              customerId: res.data.customerId,
+            }),
+          );
+        } else {
+          if (state.selectedCustomer.customerId === res.data.customerId) {
+            dispatch(actions.refreshSelectedCustomer(res.data));
+          }
+        }
+        addToast({
+          text: "Customer updated successfully",
+          type: "info",
+        });
+        return res.data;
+      }
+    });
+  }
+
+  function closeCustomerCardHandler() {
+    handleCardAction("customerCard");
+    dispatch(actions.resetManagedCustomer());
+  }
+
+  function manageAddressHandler(model: AddressModel) {
+    handleCardAction("customerAddressCard", true);
+    getCountryCode(null).then((res: any) => {
+      if (res.data) {
+        dispatch(actions.refreshCountryCodesList(res.data));
+      }
+    });
+    if (model) {
+      dispatch(actions.refreshManagedAddress(model));
+    }
+  }
+
+  function resolveCustomerAddressData(data: any) {
+    const requestModel = createAddressRequestModel(
+      data.alias,
+      data.addressLine1,
+      data.addressLine2,
+      data.city,
+      data.state,
+      data.postalCode,
+      data.countryId,
+    );
+    if (data.addressId) {
+      return updateCustomerAddressHandler(requestModel);
+    } else {
+      return createCustomerAddressHandler(requestModel);
+    }
+  }
+
+  function updateCustomerAddressHandler(data: any) {
+    const requestData = convertAddressToRequestModel(data);
+    dispatch(actions.setIsCustomerAddressCardLoading(true));
+    return updateCustomerAddress({
+      id: state.managedAddress.addressId,
+      model: requestData,
+    }).then((res) => {
+      dispatch(actions.setIsCustomerAddressCardLoading(false));
+      if (res.error) {
+        return;
+      }
+      const updatedItems = state.addressesGridRequestModel.items.map((item) =>
+        item.addressId === res.data.addressId ? res.data : item,
+      );
+      const modifiedList = updatedItems.map((item) => ({
+        ...item,
+        isSelected: item.addressId === state.selectedShipment.deliveryAddressId,
+      }));
+      dispatch(
+        actions.refreshAddressesGridRequestModel({
+          ...state.addressesGridRequestModel,
+          items: modifiedList,
+        }),
+      );
+      if (state.selectedShipment.deliveryAddressId === res.data.addressId) {
+        dispatch(
+          actions.refreshSelectedShipment({
+            ...state.selectedShipment,
+            deliveryAddress: res.data,
+            deliveryAddressId: res.data.addressId,
+          }),
+        );
+      }
+      dispatch(actions.resetManagedAddress());
+      handleCardAction("customerAddressCard");
+      addToast({
+        text: "Customer address updated successfully",
+        type: "info",
+      });
+    });
+  }
+
+  function createCustomerAddressHandler(data: any) {
+    const requestData = convertAddressToRequestModel(data);
+
+    dispatch(actions.setIsCustomerAddressCardLoading(true));
+    return createCustomerAddress({
+      id: state.selectedCustomer.customerId,
+      model: requestData,
+    }).then((res) => {
+      dispatch(actions.setIsCustomerAddressCardLoading(false));
+      if (res.error) {
+        return;
+      } else {
+        const updatedItems = [
+          res.data,
+          ...state.addressesGridRequestModel.items,
+        ];
+
+        const modifiedList = updatedItems.map((item) => ({
+          ...item,
+          isSelected:
+            item.addressId === state.selectedShipment.deliveryAddressId,
+        }));
+
+        dispatch(
+          actions.refreshAddressesGridRequestModel({
+            ...state.addressesGridRequestModel,
+            items: modifiedList,
+          }),
+        );
+        addToast({
+          text: "New customer address created successfully",
+          type: "info",
+        });
+        dispatch(actions.resetManagedAddress());
+        handleCardAction("customerAddressCard");
+      }
+    });
+  }
+
+  function closeCustomerAddressCardHandler() {
+    handleCardAction("customerAddressCard");
+    dispatch(actions.resetManagedAddress());
+  }
+
+  function openSelectOrderForShipmentCardHandler() {
+    handleCardAction("selectOrderForShipmentCard", true);
+    dispatch(actions.setIsOrdersGridLoading(true));
+    getListOfOrdersForGrid({
+      ...state.ordersGridRequestModel,
+      filter: { customerId: state.selectedCustomer?.customerId },
+    }).then((res) => {
+      dispatch(actions.setIsOrdersGridLoading(false));
+      dispatch(actions.refreshOrdersGridRequestModel(res.data));
+    });
+    dispatch(
+      actions.refreshActiveCardForCustomers("selectOrderForShipmentCard"),
+    );
+  }
+
+  function addOrderToShipmentHandler(model: any) {
+    handleCardAction("selectOrderForShipmentCard");
+    dispatch(actions.setIsShipmentConfigurationCardLoading(true));
+    addOrderToShipment({
+      shipmentId: state.selectedShipment.shipmentId,
+      orderId: model.id,
+    }).then((res: any) => {
+      dispatch(actions.setIsShipmentConfigurationCardLoading(false));
+      if (!res.error) {
+        dispatch(actions.refreshSelectedShipment(res.data));
+        addToast({
+          text: "Order successfully connected to shipment",
+          type: "info",
+        });
+      } else {
+        addToast({
+          text: res?.error?.message,
+          type: "error",
+        });
+      }
+    });
+  }
+
+  function closeSelectOrderForShipmentCardHandler() {
+    handleCardAction("selectOrderForShipmentCard");
+    dispatch(
+      actions.refreshActiveCardForCustomers("shipmentConfigurationCard"),
+    );
+  }
+
+  function getShipmentStatusForOrderHandler(orderId: number) {
+    dispatch(actions.setIsProductsGridLoading(true));
+    getShipmentStatusForOrder(orderId).then((res: any) => {
+      dispatch(actions.setIsProductsGridLoading(false));
+      dispatch(actions.refreshOrderStockActions(res.data));
+    });
+  }
+
+  function navigateToOrderHandler(orderId: number) {
+    navigate(`${NavUrlEnum.SALES}${NavUrlEnum.ORDER_DETAILS}/${orderId}`);
+  }
+
+  function increaseShipmentStockActionHandler(stockActionId: number) {
+    dispatch(actions.setIsShipmentConfigurationCardLoading(true));
+    increaseShipmentStockAction(stockActionId).then((res: any) => {
+      dispatch(actions.setIsShipmentConfigurationCardLoading(false));
       dispatch(actions.refreshSelectedShipment(res.data));
     });
   }
 
-  function confirmPackedProductsHandler(
-    shipmentId: number,
-    model: OrderItemModel[],
-  ) {
-    confirmPackedProducts({
-      shipmentId,
+  function decreaseShipmentStockActionHandler(stockActionId: number) {
+    dispatch(actions.setIsShipmentConfigurationCardLoading(true));
+    decreaseShipmentStockAction(stockActionId).then((res: any) => {
+      dispatch(actions.setIsShipmentConfigurationCardLoading(false));
+      dispatch(actions.refreshSelectedShipment(res.data));
+    });
+  }
+
+  function changePackedOrderItemQuantityHandler(model: OrderItemModel) {
+    dispatch(actions.setIsShipmentConfigurationCardLoading(true));
+    addShipmentStockActionWithQuantity({
+      stockActionId: model.stockActionId,
+      model: { quantity: model.quantityToPack },
+    }).then((res: any) => {
+      dispatch(actions.setIsShipmentConfigurationCardLoading(false));
+      dispatch(actions.refreshSelectedShipment(res.data));
+    });
+  }
+
+  function addVariantToShipmentHandler(stockActionId: number) {
+    dispatch(actions.setIsShipmentConfigurationCardLoading(true));
+    return addVariantToShipment({
+      shipmentId: state.selectedShipment.shipmentId,
+      stockActionId,
+    }).then((res: any) => {
+      dispatch(actions.setIsShipmentConfigurationCardLoading(false));
+      if (!res.error) {
+        dispatch(actions.refreshSelectedShipment(res.data));
+      }
+    });
+  }
+
+  function addAllVariantsToShipmentHandler() {
+    dispatch(actions.setIsShipmentConfigurationCardLoading(true));
+    addAllStockActionsToPackage(state.selectedShipment.shipmentId).then(
+      (res: any) => {
+        dispatch(actions.setIsShipmentConfigurationCardLoading(false));
+        dispatch(actions.refreshSelectedShipment(res.data));
+      },
+    );
+  }
+
+  function cancelShipmentHandler() {
+    dispatch(actions.setIsShipmentConfigurationCardLoading(true));
+    cancelShipment(state.selectedShipment.shipmentId).then((res: any) => {
+      dispatch(actions.setIsShipmentConfigurationCardLoading(false));
+      dispatch(actions.refreshSelectedShipment(res.data));
+    });
+  }
+
+  function returnShipmentStatusToPreviousHandler() {
+    dispatch(actions.setIsShipmentConfigurationCardLoading(true));
+    returnShipmentStatusToPrevious(state.selectedShipment.shipmentId).then(
+      (res: any) => {
+        dispatch(actions.setIsShipmentConfigurationCardLoading(false));
+        dispatch(actions.refreshSelectedShipment(res.data));
+      },
+    );
+  }
+
+  function getDeliveryServicesListHandler() {
+    getDeliveryServicesList().then((res: any) => {
+      dispatch(actions.refreshDeliveryServicesList(res.data));
+    });
+  }
+
+  function confirmDeliveryDataHandler(model: any) {
+    dispatch(actions.setIsShipmentConfigurationCardLoading(true));
+    confirmDeliveryData({
+      shipmentId: state.selectedShipment.shipmentId,
       model: {
-        items: model.map((item) => ({
-          stockActionId: item.stockActionId,
-          quantity: item.amount,
-        })),
+        trackNumber: model.trackNumber,
+        deliveryServiceId: model.deliveryServiceId,
       },
     }).then((res: any) => {
+      dispatch(actions.setIsShipmentConfigurationCardLoading(false));
       dispatch(actions.refreshSelectedShipment(res.data));
     });
   }
@@ -465,14 +968,37 @@ export default function useOrderShipmentPageService(
     shipmentsGridRequestChangeHandle,
     applyShipmentsGridColumns,
     disconnectOrderFromShipmentHandler,
-    addVariantsToShipmentHandler,
+    addVariantToShipmentHandler,
     addAllVariantsToShipmentHandler,
     removeVariantFromShipmentHandler,
     closeShipmentConfigurationCardHandler,
+    openCreateEntityCardHandler,
+    searchEntityHandle,
     closeSelectEntityCardHandler,
     closeSelectShipmentForOrderCardHandler,
     createShipmentForOrderHandler,
-    changePackedOrderItemQuantityHandler,
     confirmPackedProductsHandler,
+    openSelectAddressCardHandler,
+    searchAddressHandle,
+    closeSelectAddressCardHandler,
+    openCustomerCardHandler,
+    createCustomerHandler,
+    updateCustomerHandler,
+    closeCustomerCardHandler,
+    manageAddressHandler,
+    resolveCustomerAddressData,
+    closeCustomerAddressCardHandler,
+    openSelectOrderForShipmentCardHandler,
+    closeSelectOrderForShipmentCardHandler,
+    addOrderToShipmentHandler,
+    getShipmentStatusForOrderHandler,
+    navigateToOrderHandler,
+    increaseShipmentStockActionHandler,
+    decreaseShipmentStockActionHandler,
+    changePackedOrderItemQuantityHandler,
+    cancelShipmentHandler,
+    returnShipmentStatusToPreviousHandler,
+    getDeliveryServicesListHandler,
+    confirmDeliveryDataHandler,
   };
 }

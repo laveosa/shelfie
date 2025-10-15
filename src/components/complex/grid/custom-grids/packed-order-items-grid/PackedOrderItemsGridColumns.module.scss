@@ -1,10 +1,12 @@
 .variantNameCell {
   display: flex;
+  flex-direction: row;
   align-items: center;
   gap: 10px;
 
   .imageBlock {
-    width: 40px;
+    min-width: 40px;
+    max-width: 40px;
     display: flex;
     align-items: center;
 
@@ -44,5 +46,36 @@
     min-height: 20px;
     border-radius: 50%;
     border: 2px solid #ccc;
+  }
+}
+
+.orderLink {
+  font-weight: 700;
+}
+
+.inputBlock {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+
+  .quantityNumber {
+    position: absolute;
+    top: 11px;
+    left: 50px;
+    display: flex;
+    width: 65px;
+    z-index: 1;
+
+    span {
+      width: 100%;
+      text-align: end;
+    }
+  }
+
+  .quantityInput {
+    input {
+      padding-left: 52%;
+    }
   }
 }

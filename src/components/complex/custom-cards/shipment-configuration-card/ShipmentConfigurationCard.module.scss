@@ -1,6 +1,6 @@
 .shipmentConfigurationCard {
-  min-width: 650px;
-  max-width: 650px;
+  min-width: 650px !important;
+  max-width: 650px !important;
 
   .shipmentConfigurationCardContent {
     .shipmentConfiguration {
@@ -62,6 +62,7 @@
       .selectCustomerBlock {
         display: flex;
         align-items: center;
+        gap: 20px;
 
         span {
           width: 50%;

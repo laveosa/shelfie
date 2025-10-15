@@ -1,0 +1,59 @@
+.selectCustomerAddressCard {
+  .selectCustomerAddressCardContent {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .customerInformationBlock {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+
+      .customerBlock {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .noImageIcon {
+          width: 48px;
+          height: 48px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .avatarInitials {
+          width: 40px;
+          height: 40px;
+          background-color: #ececec;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #555;
+          font-weight: 600;
+          font-size: 16px;
+          user-select: none;
+        }
+      }
+    }
+
+    .createAddressBlock {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+
+      .createAddressText {
+        display: flex;
+        flex-direction: column;
+
+      }
+    }
+
+    .addressesListBlock {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+  }
+}

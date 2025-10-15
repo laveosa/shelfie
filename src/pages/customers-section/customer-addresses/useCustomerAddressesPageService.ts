@@ -69,7 +69,7 @@ export default function useCustomerAddressesPageService() {
       data.postalCode,
       data.countryId,
     );
-    if (!!state.selectedCustomerAddressId) {
+    if (data.addressId) {
       return updateCustomerAddressHandler(requestModel);
     } else {
       return createCustomerAddressHandler(requestModel);
@@ -187,11 +187,7 @@ export default function useCustomerAddressesPageService() {
 
   function onManageCustomerAddressHandler(data: AddressModel) {
     dispatch(actions.setCreateCustomerAddress(false));
-    dispatch(
-      actions.refreshSelectedCustomerAddress(
-        convertAddressToRequestModel(data),
-      ),
-    );
+    dispatch(actions.refreshSelectedCustomerAddress(data));
     dispatch(actions.refreshSelectedCustomerAddressId(data.addressId));
   }
 
@@ -199,7 +195,6 @@ export default function useCustomerAddressesPageService() {
     dispatch(actions.refreshActiveCards([]));
     dispatch(actions.refreshSelectedCustomerAddressId(null));
     dispatch(actions.refreshSelectedCustomerAddress(null));
-    //dispatch(actions.refreshCustomerAddresses(clearSelectedGridItems(state.customerAddresses)));
   }
 
   function onCreateCustomerAddressHandler() {

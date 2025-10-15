@@ -22,7 +22,6 @@ import {
 
 export default function AddressForm({
   data,
-  isCreate,
   countryList,
   showFooter = true,
   onChange,
@@ -70,11 +69,11 @@ export default function AddressForm({
       hideFooter={!showFooter}
       footerPosition={DirectionEnum.SPACE}
       primaryBtnProps={{
-        value: isCreate ? "CreateAddress" : "Save",
-        valueTransKey: isCreate
-          ? "CustomerActions.CreateAddress"
-          : "CommonButtons.Save",
-        icon: isCreate ? Plus : Save,
+        value: data?.addressId ? "Save" : "CreateAddress",
+        valueTransKey: data?.addressId
+          ? "CommonButtons.Save"
+          : "CustomerActions.CreateAddress",
+        icon: data?.addressId ? Save : Plus,
       }}
       onChange={onChange}
       onSubmit={onSubmit}

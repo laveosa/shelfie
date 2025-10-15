@@ -1,14 +1,12 @@
-import { Circle, CircleCheckBig, CogIcon, ImageIcon } from "lucide-react";
+import { Circle, CircleCheckBig, CogIcon } from "lucide-react";
 import { ColumnDef, Row } from "@tanstack/react-table";
 import React from "react";
 
-import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import cs from "./CustomersListGridColumns.module.scss";
-import { getInitials } from "@/utils/helpers/quick-helper.ts";
+import cs from "./AddressesListGridColumns.module.scss";
 
-export function CustomersListGridColumns({
+export function AddressesListGridColumns({
   onAction,
 }: {
   onAction: (actionType: string, row?: Row<any>) => void;
@@ -16,73 +14,67 @@ export function CustomersListGridColumns({
   return [
     {
       id: "select",
-      header: "Select",
       minSize: 70,
       maxSize: 70,
-      cell: ({ row }) => {
+      cell: ({ row, table }) => {
+        const meta = table.options.meta as {
+          setLoadingRow: (rowId: string, loading: boolean) => void;
+          isRowLoading: (rowId: string) => boolean;
+        };
+
+        const handleSelectClick = (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          onAction("selectAddress", row.original.addressId);
+        };
+
         return (
           <div onClick={(e) => e.stopPropagation()}>
             <SheButton
               className={row.original.isSelected === true ? cs.iconCheck : ""}
               icon={row.original.isSelected === true ? CircleCheckBig : Circle}
               variant="ghost"
-              onClick={() => onAction("selectCustomer", row.original)}
+              onClick={handleSelectClick}
+              disabled={meta?.isRowLoading(row.id)}
             />
           </div>
         );
       },
     },
     {
-      id: "customerName",
-      header: "Customer",
+      id: "city",
+      header: "Address",
       minSize: 100,
       cell: ({ row }) => {
-        const imageUrl: string = row.original.thumbnailUrl;
-        const name: string = row.original.customerName;
-        const email: string = row.original.email;
-        const phoneNumber: string = row.original.phoneNumber;
+        const addressName: string = row.original.alias;
+        const addressLine1: string = row.original.addressLine1;
+        const addressLine2: string = row.original.addressLine2;
         return (
           <div className={cs.customerNameBlock}>
-            <div>
-              {imageUrl ? (
-                <img
-                  src={imageUrl}
-                  alt={name || "Customer"}
-                  className="object-cover rounded-md w-full h-full"
-                  style={{ width: "48px", height: "48px" }}
-                />
-              ) : name ? (
-                <div className={cs.avatarInitials}>{getInitials(name)}</div>
-              ) : (
-                <div className={cs.noImageIcon}>
-                  <SheIcon icon={ImageIcon} maxWidth="30px" />
-                </div>
-              )}
-            </div>
             <div style={{ display: "flex", flexDirection: "column" }}>
               <SheTooltip
                 delayDuration={200}
-                text={name}
+                text={addressName}
                 className="max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap"
               >
-                <span className="she-text">{name}</span>
+                <span className="she-text">{addressName}</span>
               </SheTooltip>
-              {email && (
+              {addressLine1 && (
                 <SheTooltip
                   delayDuration={200}
-                  text={email}
+                  text={addressLine1}
                   className="max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap"
                 >
-                  <span className="she-subtext">{email}</span>
+                  <span className="she-subtext">{addressLine1}</span>
                 </SheTooltip>
               )}
-              {phoneNumber && (
+              {addressLine2 && (
                 <SheTooltip
                   delayDuration={200}
-                  text={phoneNumber}
+                  text={addressLine2}
                   className="max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap"
                 >
-                  <span className="she-subtext">{phoneNumber}</span>
+                  <span className="she-subtext">{addressLine2}</span>
                 </SheTooltip>
               )}
             </div>
@@ -104,7 +96,7 @@ export function CustomersListGridColumns({
         const handleManageClick = (e) => {
           e.stopPropagation();
           e.preventDefault();
-          onAction("manageCustomer", row.original);
+          onAction("manageAddress", row.original);
         };
 
         return (

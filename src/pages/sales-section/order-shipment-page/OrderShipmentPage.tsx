@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 
 import cs from "./OrderShipmentPage.module.scss";
 import ShipmentDetailsCard from "@/components/complex/custom-cards/shipment-details-card/ShipmentDetailsCard.tsx";
-import { useAppSelector } from "@/utils/hooks/redux.ts";
+import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
 import { IOrderShipmentPageSlice } from "@/const/interfaces/store-slices/IOrderShipmentPageSlice.ts";
@@ -15,8 +15,12 @@ import { OrderShipmentPageSliceActions as actions } from "@/state/slices/OrderSh
 import SelectEntityCard from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
 import { CustomersListGridColumns } from "@/components/complex/grid/custom-grids/customers-list-grid/CustomersListGridColumns.tsx";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
-import SelectShipmentForOrderCard from "@/components/complex/custom-cards/select-shipment-for-order/SelectShipmentForOrderCard.tsx";
+import SelectShipmentForOrderCard from "@/components/complex/custom-cards/select-shipment-for-order-card/SelectShipmentForOrderCard.tsx";
 import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
+import SelectCustomerAddress from "@/components/complex/custom-cards/select-customer-address/SelectCustomerAddress.tsx";
+import CustomerCard from "@/components/complex/custom-cards/customer-card/CustomerCard.tsx";
+import CustomerAddressCard from "@/components/complex/custom-cards/customer-address-card/CustomerAddressCard.tsx";
+import SelectOrderForShipmentCard from "@/components/complex/custom-cards/select-order-for-shipment-card/SelectOrderForShipmentCard.tsx";
 
 export function OrderShipmentPage() {
   // ==================================================================== UTILITIES
@@ -27,14 +31,12 @@ export function OrderShipmentPage() {
       refreshAction: actions.refreshActiveCards,
     });
   const { orderId } = useParams();
+  const dispatch = useAppDispatch();
   const state = useAppSelector<IOrderShipmentPageSlice>(
     StoreSliceEnum.ORDER_SHIPMENT,
   );
   const ordersState = useAppSelector<IOrdersPageSlice>(StoreSliceEnum.ORDERS);
-  const service = useOrderShipmentPageService(
-    handleCardAction,
-    handleMultipleCardActions,
-  );
+  const service = useOrderShipmentPageService(handleCardAction);
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
@@ -44,8 +46,11 @@ export function OrderShipmentPage() {
     ) {
       service.getOrderDetailsHandler(Number(orderId));
     }
-    service.getOrderStockActionsListForGrid(orderId);
+    service.getShipmentStatusForOrderHandler(Number(orderId));
     service.getShipmentsListForOrderHandler(orderId);
+    service.getDeliveryServicesListHandler();
+    dispatch(actions.refreshSelectedShipment({}));
+    dispatch(actions.refreshActiveCards([]));
   }, [orderId]);
 
   // ==================================================================== EVENT HANDLERS
@@ -72,14 +77,17 @@ export function OrderShipmentPage() {
       case "selectCustomer":
         service.selectCustomerHandler(payload);
         break;
+      case "searchEntity":
+        service.searchEntityHandle(payload);
+        break;
+      case "openCreateEntityCard":
+        service.openCreateEntityCardHandler();
+        break;
       case "closeSelectEntityCard":
         service.closeSelectEntityCardHandler();
         break;
       case "selectAddress":
-        service.updateShipmentCustomerHandler(
-          state.selectedShipment.shipmentId,
-          { addressId: payload.addressId },
-        );
+        service.updateShipmentAddressHandler(payload);
         break;
       case "selectShipment": {
         handleMultipleCardActions({
@@ -120,16 +128,10 @@ export function OrderShipmentPage() {
         );
         break;
       case "addItemToShipment":
-        service.addVariantsToShipmentHandler(
-          state.selectedShipment.shipmentId,
-          payload,
-        );
+        service.addVariantToShipmentHandler(payload);
         break;
       case "addAllItemsToShipment":
-        service.addAllVariantsToShipmentHandler(
-          state.selectedShipment.shipmentId,
-          payload,
-        );
+        service.addAllVariantsToShipmentHandler();
         break;
       case "removeItemFromShipment":
         service.removeVariantFromShipmentHandler(payload.stockActionId);
@@ -137,11 +139,68 @@ export function OrderShipmentPage() {
       case "changePackedOrderItemQuantity":
         service.changePackedOrderItemQuantityHandler(payload);
         break;
+      case "decreasePackedOrderItemQuantity":
+        service.decreaseShipmentStockActionHandler(payload);
+        break;
+      case "increasePackedOrderItemQuantity":
+        service.increaseShipmentStockActionHandler(payload);
+        break;
       case "confirmPackedProducts":
-        service.confirmPackedProductsHandler(
-          state.selectedShipment.shipmentId,
-          payload,
-        );
+        service.confirmPackedProductsHandler();
+        break;
+      case "openSelectAddressCard":
+        service.openSelectAddressCardHandler(payload);
+        break;
+      case "searchAddress":
+        service.searchAddressHandle(payload);
+        break;
+      case "closeSelectAddressCard":
+        service.closeSelectAddressCardHandler();
+        break;
+      case "manageCustomer":
+        service.openCustomerCardHandler(payload);
+        break;
+      case "openCustomerCard":
+        service.openCustomerCardHandler();
+        break;
+      case "createCustomer":
+        service.createCustomerHandler(payload);
+        break;
+      case "updateCustomer":
+        service.updateCustomerHandler(payload);
+        break;
+      case "closeCustomerCard":
+        service.closeCustomerCardHandler();
+        break;
+      case "manageAddress":
+        service.manageAddressHandler(payload);
+        break;
+      case "submitCustomerAddressData":
+        service.resolveCustomerAddressData(payload);
+        break;
+      case "closeCustomerAddressCard":
+        service.closeCustomerAddressCardHandler();
+        break;
+      case "openSelectOrderForShipmentCard":
+        service.openSelectOrderForShipmentCardHandler();
+        break;
+      case "connectOrderToShipment":
+        service.addOrderToShipmentHandler(payload);
+        break;
+      case "closeSelectOrderForShipmentCard":
+        service.closeSelectOrderForShipmentCardHandler();
+        break;
+      case "navigateToOrder":
+        service.navigateToOrderHandler(payload);
+        break;
+      case "cancelShipment":
+        service.cancelShipmentHandler();
+        break;
+      case "returnShipmentStatusToPrevious":
+        service.returnShipmentStatusToPreviousHandler();
+        break;
+      case "confirmDeliveryData":
+        service.confirmDeliveryDataHandler(payload);
         break;
     }
   }
@@ -157,7 +216,7 @@ export function OrderShipmentPage() {
       >
         <ShipmentDetailsCard
           isLoading={state.isShipmentDetailsCardLoading}
-          products={ordersState.stockActionsGridRequestModel.items}
+          products={state.orderStockActions}
           shipments={state.orderShipments}
           customer={state.selectedCustomer}
           isProductsGridLoading={state.isProductsGridLoading}
@@ -180,6 +239,18 @@ export function OrderShipmentPage() {
             <ShipmentConfigurationCard
               isLoading={state.isShipmentConfigurationCardLoading}
               shipment={state.selectedShipment}
+              deliveryServices={state.deliveryServicesList}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards?.includes("selectOrderForShipmentCard") && (
+          <div ref={createRefCallback("selectOrderForShipmentCard")}>
+            <SelectOrderForShipmentCard
+              isLoading={state.isSelectOrderForShipmentCardLoading}
+              isGridLoading={state.isOrdersGridLoading}
+              customer={state.selectedCustomer}
+              ordersGridRequestModel={state.ordersGridRequestModel}
               onAction={onAction}
             />
           </div>
@@ -196,6 +267,38 @@ export function OrderShipmentPage() {
                   onAction,
                 }) as ColumnDef<DataWithId>[]
               }
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards?.includes("selectCustomerAddressCard") && (
+          <div ref={createRefCallback("selectCustomerAddressCard")}>
+            <SelectCustomerAddress
+              isLoading={state.isSelectCustomerAddressCardLoading}
+              isGridLoading={state.isCustomerAddressesGridLoading}
+              customer={state.selectedShipment?.customer}
+              addressesList={state.addressesGridRequestModel?.items}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards?.includes("customerCard") && (
+          <div ref={createRefCallback("customerCard")}>
+            <CustomerCard
+              isLoading={state.isCustomerCardLoading}
+              customer={state.managedCustomer}
+              showCloseButton={true}
+              hideNotificationCard={true}
+              onAction={onAction}
+            />
+          </div>
+        )}
+        {state.activeCards?.includes("customerAddressCard") && (
+          <div ref={createRefCallback("customerAddressCard")}>
+            <CustomerAddressCard
+              isLoading={state.isCustomerAddressCardLoading}
+              customerAddress={state.managedAddress}
+              countryList={state.countryCodesList}
               onAction={onAction}
             />
           </div>

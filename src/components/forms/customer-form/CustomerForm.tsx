@@ -144,9 +144,7 @@ export default function CustomerForm({
           }
           variant="default"
           icon={isCreate ? Plus : Save}
-          onClick={() => {
-            form.handleSubmit(onSubmit);
-          }}
+          onClick={form.handleSubmit(onSubmit)}
         />
       </div>
     </SheForm>
