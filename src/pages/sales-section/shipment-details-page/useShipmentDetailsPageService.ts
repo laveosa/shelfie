@@ -766,6 +766,7 @@ export default function useShipmentDetailsPageService(handleCardAction) {
       model: {
         trackNumber: model.trackNumber,
         deliveryServiceId: model.deliveryServiceId,
+        addressItemId: model.deliveryAddressId,
       },
     }).then((res: any) => {
       dispatch(actions.setIsShipmentConfigurationCardLoading(false));
