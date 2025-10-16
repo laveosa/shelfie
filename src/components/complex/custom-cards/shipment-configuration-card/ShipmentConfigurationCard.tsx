@@ -1,6 +1,10 @@
 import React from "react";
 import { Check, MapPin, Plus, User } from "lucide-react";
 
+import {
+  ShipmentStatusEnum,
+  ShipmentStatusLabels,
+} from "@/const/enums/ShipmentStatusEnum.ts";
 import cs from "./ShipmentConfigurationCard.module.scss";
 import SheCard from "@/components/complex/she-card/SheCard.tsx";
 import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
@@ -13,15 +17,12 @@ import { orderItemsInShipmentGridColumns } from "@/components/complex/grid/custo
 import { PackedOrderItemsGridColumns } from "@/components/complex/grid/custom-grids/packed-order-items-grid/PackedOrderItemsGridColumns.tsx";
 import { formatDate, getInitials } from "@/utils/helpers/quick-helper.ts";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
-import {
-  ShipmentStatusEnum,
-  ShipmentStatusLabels,
-} from "@/const/enums/ShipmentStatusEnum.ts";
 import { IShipmentConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IShipmentConfigurationCard.ts";
 import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import { OrderItemModel } from "@/const/models/OrderItemModel.ts";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { DeliveryServiceModel } from "@/const/models/DeliveryServiceModel.ts";
+import { PackageContentGridColumns } from "@/components/complex/grid/custom-grids/package-content-grid/PackageContentGridColumns.tsx";
 
 export default function ShipmentConfigurationCard({
   isLoading,
@@ -373,7 +374,7 @@ export default function ShipmentConfigurationCard({
                   <SheGrid
                     isLoading={false}
                     showHeader={false}
-                    columns={PackedOrderItemsGridColumns({
+                    columns={PackageContentGridColumns({
                       onAction,
                     })}
                     data={shipment?.shipmentItems}
@@ -423,13 +424,17 @@ export default function ShipmentConfigurationCard({
                         : ""
                     }
                     icon={Check}
+                    disabled={
+                      !trackNumber ||
+                      !deliveryServiceId ||
+                      !shipment.deliveryAddressId
+                    }
                     onClick={() => {
-                      shipment?.shipmentStatus === "DeliveryPending"
-                        ? onAction("confirmDeliveryData", {
-                            trackNumber,
-                            deliveryServiceId,
-                          })
-                        : console.log("Save changes");
+                      onAction("confirmDeliveryData", {
+                        trackNumber,
+                        deliveryServiceId,
+                        deliveryAddressId: shipment.deliveryAddressId,
+                      });
                     }}
                   />
                 </div>
