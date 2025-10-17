@@ -4,12 +4,21 @@ import { useTranslation } from "react-i18next";
 
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { AppDispatch, RootState } from "@/state/store.ts";
-import { IOrderProductsPageSlice } from "@/const/interfaces/store-slices/IOrderProductsPageSlice.ts";
-import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
-import { OrderProductsPageSliceActions as actions } from "@/state/slices/OrderProductsPageSlice";
-import { OrdersPageSliceActions as ordersActions } from "@/state/slices/OrdersPageSlice.ts";
+import {
+  IOrderProductsPageSlice
+} from "@/const/interfaces/store-slices/IOrderProductsPageSlice.ts";
+import {
+  IOrdersPageSlice
+} from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
+import {
+  OrderProductsPageSliceActions as actions
+} from "@/state/slices/OrderProductsPageSlice";
+import {
+  OrdersPageSliceActions as ordersActions
+} from "@/state/slices/OrdersPageSlice.ts";
 import { useToast } from "@/hooks/useToast.ts";
-import useOrdersPageService from "@/pages/sales-section/orders-page/useOrdersPageService.ts";
+import useOrdersPageService
+  from "@/pages/sales-section/orders-page/useOrdersPageService.ts";
 import OrdersApiHooks from "@/utils/services/api/OrdersApiService.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
@@ -21,7 +30,9 @@ import CompaniesApiHooks from "@/utils/services/api/CompaniesApiService.ts";
 import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
 import { addGridRowColor, formatDate } from "@/utils/helpers/quick-helper.ts";
 import { GridRowsColorsEnum } from "@/const/enums/GridRowsColorsEnum.ts";
-import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
+import {
+  ProductsPageSliceActions as productsActions
+} from "@/state/slices/ProductsPageSlice.ts";
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 import { CompanyModel } from "@/const/models/CompanyModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
@@ -140,8 +151,8 @@ export default function useOrderProductsPageService(
   function getVariantsListForGrid(model: GridRequestModel) {
     dispatch(actions.setIsFindProductsGridLoading(true));
     ordersService.getVariantsForGridHandler(model).then((res) => {
-      dispatch(ordersActions.refreshVariantsGridRequestModel(res.data));
       dispatch(actions.setIsFindProductsGridLoading(false));
+      dispatch(ordersActions.refreshVariantsGridRequestModel(res.data));
     });
   }
 
@@ -158,7 +169,7 @@ export default function useOrderProductsPageService(
     ) {
       ordersService.getTraitsForFilterHandler();
     }
-    ordersService.getVariantsForGridHandler(model);
+    getVariantsListForGrid(model);
   }
 
   function addVariantsToOrderHandler(orderId, model) {
@@ -265,15 +276,28 @@ export default function useOrderProductsPageService(
     );
   }
 
-  function removeStockActionFromOrderHandler(stockActionId: number) {
-    return removeStockActionFromOrder(stockActionId).then((res: any) => {
+  function removeStockActionFromOrderHandler(model: any) {
+    return removeStockActionFromOrder(model.stockActionId).then((res: any) => {
       if (!res.error) {
         dispatch(
           actions.refreshStockActionsGridRequestModel({
             ...state.stockActionsGridRequestModel,
             items: state.stockActionsGridRequestModel.items.filter(
-              (item) => item.stockActionId !== stockActionId,
+              (item) => item.stockActionId !== model.stockActionId,
             ),
+          }),
+        );
+        dispatch(
+          ordersActions.refreshVariantsGridRequestModel({
+            ...ordersState.variantsGridRequestModel,
+            items: ordersState.variantsGridRequestModel.items.map((item) => {
+              if (item.variantId == model.variantId) {
+                const amount =
+                  Number(item.stockAmount) + Number(model.unitsAmount);
+                return { ...item, stockAmount: amount };
+              }
+              return item;
+            }),
           }),
         );
         addToast({
