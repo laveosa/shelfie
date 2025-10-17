@@ -4,21 +4,12 @@ import { useTranslation } from "react-i18next";
 
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { AppDispatch, RootState } from "@/state/store.ts";
-import {
-  IOrderProductsPageSlice
-} from "@/const/interfaces/store-slices/IOrderProductsPageSlice.ts";
-import {
-  IOrdersPageSlice
-} from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
-import {
-  OrderProductsPageSliceActions as actions
-} from "@/state/slices/OrderProductsPageSlice";
-import {
-  OrdersPageSliceActions as ordersActions
-} from "@/state/slices/OrdersPageSlice.ts";
+import { IOrderProductsPageSlice } from "@/const/interfaces/store-slices/IOrderProductsPageSlice.ts";
+import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
+import { OrderProductsPageSliceActions as actions } from "@/state/slices/OrderProductsPageSlice";
+import { OrdersPageSliceActions as ordersActions } from "@/state/slices/OrdersPageSlice.ts";
 import { useToast } from "@/hooks/useToast.ts";
-import useOrdersPageService
-  from "@/pages/sales-section/orders-page/useOrdersPageService.ts";
+import useOrdersPageService from "@/pages/sales-section/orders-page/useOrdersPageService.ts";
 import OrdersApiHooks from "@/utils/services/api/OrdersApiService.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
@@ -30,15 +21,14 @@ import CompaniesApiHooks from "@/utils/services/api/CompaniesApiService.ts";
 import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
 import { addGridRowColor, formatDate } from "@/utils/helpers/quick-helper.ts";
 import { GridRowsColorsEnum } from "@/const/enums/GridRowsColorsEnum.ts";
-import {
-  ProductsPageSliceActions as productsActions
-} from "@/state/slices/ProductsPageSlice.ts";
+import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 import { CompanyModel } from "@/const/models/CompanyModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { LocationModel } from "@/const/models/LocationModel.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
+import _ from "lodash";
 
 export default function useOrderProductsPageService(
   handleCardAction,
@@ -116,17 +106,35 @@ export default function useOrderProductsPageService(
   const [updateLocationDetails] =
     CompaniesApiHooks.useUpdateLocationDetailsMutation();
   const [deleteLocation] = CompaniesApiHooks.useDeleteLocationMutation();
+  const [getListOfStockActionsForGrid] =
+    OrdersApiHooks.useGetListOfStockActionsForGridMutation();
 
   function getOrderStockActionsListForGrid(orderId) {
     dispatch(actions.setIsProductsInOrderGridLoading(true));
-    ordersService
-      .getListOfStockActionsForGridHandler(
-        orderId,
-        ordersState.stockActionsGridRequestModel,
-      )
-      .then(() => {
-        dispatch(actions.setIsProductsInOrderGridLoading(false));
-      });
+
+    getListOfStockActionsForGrid({
+      orderId,
+      model: state.stockActionsGridRequestModel,
+    }).then((res) => {
+      dispatch(actions.setIsProductsInOrderGridLoading(false));
+
+      if (res?.data?.items) {
+        dispatch(
+          actions.refreshStockActionsGridRequestModel({
+            ...res.data,
+            items: res.data.items.map((item) => ({
+              ...item,
+              stockItemPrice:
+                item.stockDocumentPrice?.brutto !== null &&
+                item.stockDocumentPrice?.brutto !== undefined &&
+                item.stockDocumentPrice?.currencyName
+                  ? `${item.stockDocumentPrice.brutto}${item.stockDocumentPrice.currencyName}`
+                  : "0" + (item.stockDocumentPrice?.currencyName || ""),
+            })),
+          }),
+        );
+      }
+    });
   }
 
   function getVariantsListForGrid(model: GridRequestModel) {
@@ -154,31 +162,61 @@ export default function useOrderProductsPageService(
   }
 
   function addVariantsToOrderHandler(orderId, model) {
-    dispatch(actions.setIsFindProductsGridLoading(true));
-    return addVariantsToOrder({ orderId, model }).then((res: any) => {
-      if (!res.error) {
-        getVariantsListForGrid(ordersState.variantsGridRequestModel);
-        dispatch(
-          ordersActions.refreshStockActionsGridRequestModel({
-            ...ordersState.stockActionsGridRequestModel,
-            items: [
-              res.data,
-              ...ordersState.stockActionsGridRequestModel.items,
-            ],
-          }),
-        );
-        addToast({
-          text: "Stock action added successfully",
-          type: "success",
-        });
-      } else {
-        addToast({
-          text: `${res.error.data.detail}`,
-          type: "error",
-        });
-      }
-      return res.data;
-    });
+    const updatedModel = _.cloneDeep(model);
+    const identicalItem = state.stockActionsGridRequestModel.items?.find(
+      (item) =>
+        item.variantId === updatedModel.variantId &&
+        item.stockItemPrice === updatedModel?.salePrice
+          ? item
+          : undefined,
+    );
+
+    if (!identicalItem) {
+      return addVariantsToOrder({
+        orderId,
+        model: {
+          variantId: updatedModel.variantId,
+          amount: updatedModel.amount,
+        },
+      }).then((res: any) => {
+        if (!res.error) {
+          dispatch(
+            ordersActions.refreshVariantsGridRequestModel({
+              ...ordersState.variantsGridRequestModel,
+              items: ordersState.variantsGridRequestModel.items.map((item) => {
+                if (item.variantId == updatedModel.variantId) {
+                  const amount =
+                    Number(item.stockAmount) - Number(updatedModel.amount);
+                  return { ...item, stockAmount: amount };
+                }
+                return item;
+              }),
+            }),
+          );
+          dispatch(
+            actions.refreshStockActionsGridRequestModel({
+              ...state.stockActionsGridRequestModel,
+              items: [res.data, ...state.stockActionsGridRequestModel.items],
+            }),
+          );
+          addToast({
+            text: "Stock action added successfully",
+            type: "success",
+          });
+        } else {
+          addToast({
+            text: `${res.error.data.detail}`,
+            type: "error",
+          });
+        }
+        return res.data;
+      });
+    } else {
+      updateStockActionInOrderHandler(identicalItem.stockActionId, {
+        unitsAmount: identicalItem.unitsAmount + updatedModel.amount,
+        brutto: identicalItem.stockDocumentPrice.brutto,
+      });
+    }
   }
 
   function variantsGridRequestChange(updates) {
@@ -190,20 +228,19 @@ export default function useOrderProductsPageService(
       (res: any) => {
         if (!res.error) {
           dispatch(
-            ordersActions.refreshStockActionsGridRequestModel({
-              ...ordersState.stockActionsGridRequestModel,
-              items: ordersState.stockActionsGridRequestModel.items.map(
-                (item) =>
-                  item.stockActionId === stockActionId
-                    ? {
-                        ...item,
-                        unitsAmount: model.unitsAmount,
-                        stockDocumentPrice: {
-                          ...item.stockDocumentPrice,
-                          brutto: model.brutto,
-                        },
-                      }
-                    : item,
+            actions.refreshStockActionsGridRequestModel({
+              ...state.stockActionsGridRequestModel,
+              items: state.stockActionsGridRequestModel.items.map((item) =>
+                item.stockActionId === stockActionId
+                  ? {
+                      ...item,
+                      unitsAmount: model.unitsAmount,
+                      stockDocumentPrice: {
+                        ...item.stockDocumentPrice,
+                        brutto: model.brutto,
+                      },
+                    }
+                  : item,
               ),
             }),
           );
@@ -213,9 +250,9 @@ export default function useOrderProductsPageService(
           });
         } else {
           dispatch(
-            ordersActions.refreshStockActionsGridRequestModel({
-              ...ordersState.stockActionsGridRequestModel,
-              items: [...ordersState.stockActionsGridRequestModel.items],
+            actions.refreshStockActionsGridRequestModel({
+              ...state.stockActionsGridRequestModel,
+              items: [...state.stockActionsGridRequestModel.items],
             }),
           );
           addToast({
@@ -232,9 +269,9 @@ export default function useOrderProductsPageService(
     return removeStockActionFromOrder(stockActionId).then((res: any) => {
       if (!res.error) {
         dispatch(
-          ordersActions.refreshStockActionsGridRequestModel({
-            ...ordersState.stockActionsGridRequestModel,
-            items: ordersState.stockActionsGridRequestModel.items.filter(
+          actions.refreshStockActionsGridRequestModel({
+            ...state.stockActionsGridRequestModel,
+            items: state.stockActionsGridRequestModel.items.filter(
               (item) => item.stockActionId !== stockActionId,
             ),
           }),

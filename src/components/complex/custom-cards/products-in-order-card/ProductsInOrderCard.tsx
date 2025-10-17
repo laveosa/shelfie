@@ -66,10 +66,6 @@ export default function ProductsInOrderCard({
     setProductsTotal(computedProductsTotal);
   }, [stockActionsData]);
 
-  useEffect(() => {
-    console.log("DATA", stockActionsData);
-  }, [stockActionsData]);
-
   // ==================================================================== PRIVATE
   function renderExpandedContent(row) {
     return (
