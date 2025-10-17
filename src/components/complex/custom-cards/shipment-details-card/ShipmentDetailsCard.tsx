@@ -18,7 +18,6 @@ export default function ShipmentDetailsCard({
   isShipmentsGridLoading,
   products,
   shipments,
-  customer,
   onAction,
 }: IShipmentDetailsCard) {
   // ==================================================================== UTILITIES
@@ -53,7 +52,6 @@ export default function ShipmentDetailsCard({
               valueTransKey="OrderActions.CreateShipment"
               icon={Plus}
               variant="info"
-              disabled={!customer}
               onClick={() => onAction("createShipment")}
             />
             <span>{translate("SpecialText.Or")}</span>

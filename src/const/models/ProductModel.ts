@@ -19,6 +19,7 @@ export interface ProductModel {
   stockAmount?: number;
   countryId?: number;
   isActive?: boolean;
+  countryOfOriginId?: number;
 }
 
 export const ProductDefaultModel: ProductModel = {
@@ -38,4 +39,5 @@ export const ProductDefaultModel: ProductModel = {
   stockAmount: undefined,
   countryId: undefined,
   isActive: false,
+  countryOfOriginId: undefined,
 };

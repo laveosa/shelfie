@@ -140,10 +140,6 @@ function refreshStockActionsGridRequestModel(
   state: IOrdersPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
-  if (_.isEqual(state.stockActionsGridRequestModel, action?.payload)) {
-    return;
-  }
-
   state.stockActionsGridRequestModel =
     action?.payload || state.stockActionsGridRequestModel;
 }
