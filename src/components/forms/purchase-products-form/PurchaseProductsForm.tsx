@@ -2,25 +2,33 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect } from "react";
 import { Check, Trash2, X } from "lucide-react";
 
-import { IPurchaseProductsForm } from "@/const/interfaces/forms/IPurchaseProductsForm.ts";
+import {
+  IPurchaseProductsForm
+} from "@/const/interfaces/forms/IPurchaseProductsForm.ts";
 import useAppForm from "@/utils/hooks/useAppForm.ts";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
+import {
+  ISheSelectItem
+} from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
-import cs from "@/components/forms/purchase-products-form/PurchaseProductsForm.module.scss";
+import cs
+  from "@/components/forms/purchase-products-form/PurchaseProductsForm.module.scss";
 import SheForm from "@/components/complex/she-form/SheForm.tsx";
 import { FormField } from "@/components/ui/form.tsx";
-import SheFormItem from "@/components/complex/she-form/components/she-form-item/SheFormItem.tsx";
+import SheFormItem
+  from "@/components/complex/she-form/components/she-form-item/SheFormItem.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import PurchaseProductsFormScheme from "@/utils/validation/schemes/PurchaseProductsFormScheme.ts";
+import PurchaseProductsFormScheme
+  from "@/utils/validation/schemes/PurchaseProductsFormScheme.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
+import SheFormField
+  from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
 import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
 import {
   PurchaseProductsModel,
-  PurchaseProductsModelDefault,
+  PurchaseProductsModelDefault
 } from "@/const/models/PurchaseProductsModel.ts";
 
 export default function PurchaseProductsForm({
@@ -71,6 +79,10 @@ export default function PurchaseProductsForm({
     form.getValues("currencyId") &&
     form.getValues("taxTypeId") &&
     form.getValues("unitsAmount");
+
+  function onSubmitHandle() {
+    onSubmit(form.getValues());
+  }
 
   return (
     <div className={cs.purchaseProducts}>
@@ -203,6 +215,7 @@ export default function PurchaseProductsForm({
             variant="ghost"
             type="submit"
             disabled={activeTab === "connectProducts" ? !isFormValid : false}
+            onClick={() => onSubmitHandle()}
           />
         ) : (
           <div className={cs.variantGridButtonBlock}>

@@ -4,21 +4,12 @@ import { useTranslation } from "react-i18next";
 
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { AppDispatch, RootState } from "@/state/store.ts";
-import {
-  IOrderProductsPageSlice
-} from "@/const/interfaces/store-slices/IOrderProductsPageSlice.ts";
-import {
-  IOrdersPageSlice
-} from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
-import {
-  OrderProductsPageSliceActions as actions
-} from "@/state/slices/OrderProductsPageSlice";
-import {
-  OrdersPageSliceActions as ordersActions
-} from "@/state/slices/OrdersPageSlice.ts";
+import { IOrderProductsPageSlice } from "@/const/interfaces/store-slices/IOrderProductsPageSlice.ts";
+import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSlice.ts";
+import { OrderProductsPageSliceActions as actions } from "@/state/slices/OrderProductsPageSlice";
+import { OrdersPageSliceActions as ordersActions } from "@/state/slices/OrdersPageSlice.ts";
 import { useToast } from "@/hooks/useToast.ts";
-import useOrdersPageService
-  from "@/pages/sales-section/orders-page/useOrdersPageService.ts";
+import useOrdersPageService from "@/pages/sales-section/orders-page/useOrdersPageService.ts";
 import OrdersApiHooks from "@/utils/services/api/OrdersApiService.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
@@ -30,9 +21,7 @@ import CompaniesApiHooks from "@/utils/services/api/CompaniesApiService.ts";
 import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
 import { addGridRowColor, formatDate } from "@/utils/helpers/quick-helper.ts";
 import { GridRowsColorsEnum } from "@/const/enums/GridRowsColorsEnum.ts";
-import {
-  ProductsPageSliceActions as productsActions
-} from "@/state/slices/ProductsPageSlice.ts";
+import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
 import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 import { CompanyModel } from "@/const/models/CompanyModel.ts";
 import { ImageModel } from "@/const/models/ImageModel.ts";
