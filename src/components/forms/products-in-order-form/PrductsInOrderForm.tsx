@@ -37,24 +37,28 @@ export default function ProductsInOrderForm<T>({
   });
   const [total, setTotal] = React.useState(0);
 
-  useEffect(() => {
-    const subscription = form.watch((values) => {
-      setTotal(
-        (values.stockDocumentPrice.brutto ?? 0) * (values.unitsAmount ?? 0),
-      );
-    });
-    return () => subscription.unsubscribe();
-  }, [form]);
-
   function handleFormSubmit(formData: ProductsInOrderFormData) {
     onSubmit({
-      priceBrutto: Number(formData.stockDocumentPrice.brutto),
+      brutto: Number(formData.stockDocumentPrice.brutto),
       unitsAmount: Number(formData.unitsAmount),
     } as T);
   }
 
   useEffect(() => {
-    form.reset({ stockDocumentPrice: { brutto: 0 }, unitsAmount: 0 });
+    const subscription = form.watch((value) => {
+      const brutto = Number(value.stockDocumentPrice?.brutto) || 0;
+      const units = Number(value.unitsAmount) || 0;
+      setTotal(brutto * units);
+    });
+    return () => subscription.unsubscribe();
+  }, [form]);
+
+  // useEffect(() => {
+  //   form.reset({ stockDocumentPrice: { brutto: 0 }, unitsAmount: 0 });
+  // }, [data]);
+
+  useEffect(() => {
+    form.reset(data);
   }, [data]);
 
   return (
@@ -73,15 +77,15 @@ export default function ProductsInOrderForm<T>({
           <div className={cs.formItem}>
             <span>Price Brutto</span>
             <SheFormField
-              name="priceBrutto"
+              name="stockDocumentPrice.brutto"
               className={cs.inputFormItem}
               render={({ field }) => (
                 <SheInput
-                  value={field.value || data?.stockDocumentPrice?.brutto}
+                  value={field.value}
                   type="number"
                   maxWidth="100px"
                   onDelay={() => {
-                    onSubmit(form.getValues() as T);
+                    handleFormSubmit(form.getValues() as any);
                   }}
                 />
               )}
@@ -95,11 +99,11 @@ export default function ProductsInOrderForm<T>({
               className={cs.inputFormItem}
               render={({ field }): React.ReactElement => (
                 <SheInput
-                  value={field.value || data.unitsAmount}
+                  value={field.value}
                   type="number"
                   maxWidth="75px"
                   onDelay={() => {
-                    onSubmit(form.getValues() as T);
+                    handleFormSubmit(form.getValues() as any);
                   }}
                 />
               )}
@@ -108,7 +112,9 @@ export default function ProductsInOrderForm<T>({
           <SheIcon className={cs.formIcon} icon={Equal} maxWidth="30px" />
           <div className={`${cs.formItem} ${cs.formItemTotal}`}>
             <span>Total</span>
-            <span className={`${cs.totalValue} she-title`}>{total}</span>
+            <span
+              className={`${cs.totalValue} she-title`}
+            >{`${total} ${data?.stockDocumentPrice?.currencyName ?? ""}`}</span>
           </div>
           <div className={cs.formItem}>
             <span>Remove</span>

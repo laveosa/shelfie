@@ -45,7 +45,9 @@ export default function ProductConfigurationForm({
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
-    if (data?.productId) form.reset(data);
+    if (data?.productId) {
+      form.reset(data);
+    } else form.reset(ProductDefaultModel);
   }, [data]);
 
   useEffect(() => {
@@ -221,7 +223,7 @@ export default function ProductConfigurationForm({
         />
       </div>
       <SheFormField
-        name="countryId"
+        name="countryOfOriginId"
         render={({ field }) => (
           <SheSelect
             label="Country of origin"

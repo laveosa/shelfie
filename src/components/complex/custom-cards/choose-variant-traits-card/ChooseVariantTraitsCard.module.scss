@@ -102,5 +102,11 @@
     .selected {
       background-color: #f4f4f5;
     }
+
+    .buttonBlock {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 20px;
+    }
   }
 }

@@ -72,6 +72,10 @@ export default function PurchaseProductsForm({
     form.getValues("taxTypeId") &&
     form.getValues("unitsAmount");
 
+  function onSubmitHandle() {
+    onSubmit(form.getValues());
+  }
+
   return (
     <div className={cs.purchaseProducts}>
       <SheForm<PurchaseProductsModel>
@@ -203,6 +207,7 @@ export default function PurchaseProductsForm({
             variant="ghost"
             type="submit"
             disabled={activeTab === "connectProducts" ? !isFormValid : false}
+            onClick={() => onSubmitHandle()}
           />
         ) : (
           <div className={cs.variantGridButtonBlock}>

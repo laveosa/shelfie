@@ -401,6 +401,7 @@ export default function ShipmentConfigurationCard({
                   placeholder="enter tracking number..."
                   placeholderTransKey="ShipmentForm.Placeholders.EnterTrackingNumber"
                   fullWidth
+                  hideFirstOption
                   items={convertDeliveryServiceToSelectItems(deliveryServices)}
                   selected={deliveryServiceId}
                   onSelect={(value) => setDeliveryServiceId(value)}

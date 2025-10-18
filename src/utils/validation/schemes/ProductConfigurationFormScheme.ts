@@ -16,7 +16,7 @@ const productConfigurationFormScheme: z.ZodObject<IZodSchema<ProductModel>> =
     barcode: z.string().optional(),
     brandId: z.number().optional(),
     productCategoryId: z.number().optional(),
-    countryId: z.number().optional(),
+    countryOfOriginId: z.number().optional(),
     isActive: z.boolean().optional(),
   });
 

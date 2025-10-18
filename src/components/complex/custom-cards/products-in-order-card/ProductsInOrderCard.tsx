@@ -18,6 +18,10 @@ export default function ProductsInOrderCard({
 }: IProductsInOrderCard) {
   // ==================================================================== STATE MANAGEMENT
   const [stockActionsData, setStockActionsData] = useState(null);
+  const [productsTotal, setProductsTotal] = useState({
+    total: 0,
+    currency: "",
+  });
   // ==================================================================== UTILITIES
   const { translate } = useAppTranslation();
 
@@ -41,6 +45,26 @@ export default function ProductsInOrderCard({
       })),
     );
   }, [stockActions]);
+
+  useEffect(() => {
+    if (!stockActionsData?.length) return;
+
+    const computedProductsTotal = stockActionsData.reduce(
+      (acc, item) => {
+        const brutto = Number(item.stockDocumentPrice?.brutto) || 0;
+        const units = Number(item.unitsAmount) || 0;
+        const currency = item.stockDocumentPrice?.currencyName || acc.currency;
+
+        return {
+          total: acc.total + brutto * units,
+          currency,
+        };
+      },
+      { total: 0, currency: "" },
+    );
+
+    setProductsTotal(computedProductsTotal);
+  }, [stockActionsData]);
 
   // ==================================================================== PRIVATE
   function renderExpandedContent(row) {
@@ -91,12 +115,17 @@ export default function ProductsInOrderCard({
           renderExpandedContent={renderExpandedContent}
         />
         <div className={cs.productsSummaryBlock}>
-          <span className="she-title"></span>
           <div className={cs.productsSummary}>
-            <span className="she-text">
-              {translate("OrderForm.Labels.ProductsTotal")}
-            </span>
-            <span className="she-text"></span>
+            <span className={cs.productsSummaryTitle}>Summary</span>
+            <div className={cs.productsSummaryTextBlock}>
+              <span className={`${cs.productsSummaryText} she-text`}>
+                {translate("OrderForm.Labels.ProductsTotal")}
+              </span>
+              <span className={`${cs.productsSummaryText} she-text`}>
+                {productsTotal.total}
+                {productsTotal.currency}
+              </span>
+            </div>
           </div>
         </div>
       </div>

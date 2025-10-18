@@ -72,10 +72,7 @@ export function OrderProductsPage() {
         service.addProductHandler(ordersState.variantsGridRequestModel);
         break;
       case "addVariantToOrder":
-        service.addVariantsToOrderHandler(orderId, {
-          variantId: payload.variantId,
-          amount: payload.amount,
-        });
+        service.addVariantsToOrderHandler(orderId, payload);
         break;
       case "variantsGridRequestChange":
         service.variantsGridRequestChange(payload);
@@ -90,9 +87,7 @@ export function OrderProductsPage() {
         );
         break;
       case "removeStockAction":
-        service.removeStockActionFromOrderHandler(
-          payload.original.stockActionId,
-        );
+        service.removeStockActionFromOrderHandler(payload.original);
         break;
       case "manageProduct":
         service.manageProductHandler(payload);
@@ -268,7 +263,7 @@ export function OrderProductsPage() {
         <ProductsInOrderCard
           isLoading={state.isProductsInOrderCardLoading}
           isGridLoading={state.isProductsInOrderGridLoading}
-          stockActions={ordersState.stockActionsGridRequestModel.items}
+          stockActions={state.stockActionsGridRequestModel.items}
           onAction={onAction}
         />
         {state.activeCards?.includes("findProductsCard") && (

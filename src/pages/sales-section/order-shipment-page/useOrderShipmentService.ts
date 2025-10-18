@@ -513,6 +513,12 @@ export default function useOrderShipmentPageService(handleCardAction) {
     return createShipmentForOrder(orderId).then((res: any) => {
       dispatch(actions.setIsShipmentConfigurationCardLoading(false));
       dispatch(actions.refreshSelectedShipment(res.data));
+      dispatch(
+        actions.refreshOrderShipments([
+          { ...res.data, queueDate: res.data.queuePacking, quantityPacked: 0 },
+          ...state.orderShipments,
+        ]),
+      );
       return res;
     });
   }
