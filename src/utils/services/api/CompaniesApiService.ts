@@ -24,6 +24,16 @@ export const CompaniesApiService = createApi({
         body: JSON.stringify(model),
       }),
     }),
+    getListOfCompaniesWithLocationsForGrid: apiConfig.createMutation<any, any>(
+      builder,
+      {
+        query: (model?: any) => ({
+          url: `${ApiUrlEnum.LOCATIONS}/list`,
+          method: "POST",
+          body: JSON.stringify(model),
+        }),
+      },
+    ),
     createCompany: apiConfig.createMutation<any, any>(builder, {
       query: (model?: any) => ({
         url: `${ApiUrlEnum.COMPANIES}`,

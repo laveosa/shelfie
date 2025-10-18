@@ -64,8 +64,10 @@ export default function useOrderProductsPageService(
     PurchasesApiHooks.useLazyGetPurchaseDetailsQuery();
   const [createPurchaseForSupplier] =
     PurchasesApiHooks.useCreatePurchaseForSupplierMutation();
-  const [getListOfCompaniesForGrid] =
-    CompaniesApiHooks.useGetListOfCompaniesForGridMutation();
+  // const [getListOfCompaniesForGrid] =
+  //   CompaniesApiHooks.useGetListOfCompaniesForGridMutation();
+  const [getListOfCompaniesWithLocationsForGrid] =
+    CompaniesApiHooks.useGetListOfCompaniesWithLocationsForGridMutation();
   const [createCompany] = CompaniesApiHooks.useCreateCompanyMutation();
   const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
   const [addNewLocationToCompany] =
@@ -706,23 +708,23 @@ export default function useOrderProductsPageService(
             if (model.newIndex === 0 || model.oldIndex === 0) {
               dispatch(actions.setIsSelectEntityCardLoading(true));
               dispatch(actions.setIsSuppliersGridLoading(true));
-              getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
-                (res) => {
-                  dispatch(actions.setIsSelectEntityCardLoading(false));
-                  dispatch(actions.setIsSuppliersGridLoading(false));
-                  const modifiedList = res.data.items.map((item) => ({
-                    ...item,
-                    isSelected:
-                      item.companyId === state.selectedCompany?.companyId,
-                  }));
-                  dispatch(
-                    actions.refreshCompaniesGridRequestModel({
-                      ...res.data,
-                      items: modifiedList,
-                    }),
-                  );
-                },
-              );
+              getListOfCompaniesWithLocationsForGrid(
+                state.companiesGridRequestModel,
+              ).then((res) => {
+                dispatch(actions.setIsSelectEntityCardLoading(false));
+                dispatch(actions.setIsSuppliersGridLoading(false));
+                const modifiedList = res.data.items.map((item) => ({
+                  ...item,
+                  isSelected:
+                    item.companyId === state.selectedCompany?.companyId,
+                }));
+                dispatch(
+                  actions.refreshCompaniesGridRequestModel({
+                    ...res.data,
+                    items: modifiedList,
+                  }),
+                );
+              });
             }
           }
         });
@@ -944,7 +946,9 @@ export default function useOrderProductsPageService(
     }
     dispatch(actions.setIsSelectEntityCardLoading(true));
     dispatch(actions.setIsSuppliersGridLoading(true));
-    getListOfCompaniesForGrid(state.companiesGridRequestModel).then((res) => {
+    getListOfCompaniesWithLocationsForGrid(
+      state.companiesGridRequestModel,
+    ).then((res) => {
       dispatch(actions.setIsSelectEntityCardLoading(false));
       dispatch(actions.setIsSuppliersGridLoading(false));
       const modifiedList = res.data.items.map((item) => ({
@@ -962,7 +966,7 @@ export default function useOrderProductsPageService(
 
   function searchEntityHandle(model) {
     dispatch(actions.setIsSuppliersGridLoading(true));
-    getListOfCompaniesForGrid({
+    getListOfCompaniesWithLocationsForGrid({
       ...state.companiesGridRequestModel,
       searchQuery: model,
     }).then((res) => {
@@ -1019,21 +1023,21 @@ export default function useOrderProductsPageService(
         dispatch(actions.setIsCreateCompanyCardLoading(false));
         handleCardAction("createCompanyCard");
         dispatch(actions.setIsSuppliersGridLoading(true));
-        getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
-          (res) => {
-            dispatch(actions.setIsSuppliersGridLoading(false));
-            const modifiedList = res.data.items.map((item) => ({
-              ...item,
-              isSelected: item.companyId === state.selectedCompany?.companyId,
-            }));
-            dispatch(
-              actions.refreshCompaniesGridRequestModel({
-                ...res.data,
-                items: modifiedList,
-              }),
-            );
-          },
-        );
+        getListOfCompaniesWithLocationsForGrid(
+          state.companiesGridRequestModel,
+        ).then((res) => {
+          dispatch(actions.setIsSuppliersGridLoading(false));
+          const modifiedList = res.data.items.map((item) => ({
+            ...item,
+            isSelected: item.companyId === state.selectedCompany?.companyId,
+          }));
+          dispatch(
+            actions.refreshCompaniesGridRequestModel({
+              ...res.data,
+              items: modifiedList,
+            }),
+          );
+        });
         addToast({
           text: "Company created successfully",
           type: "success",
@@ -1091,21 +1095,21 @@ export default function useOrderProductsPageService(
         dispatch(actions.setIsLocationsGridLoading(false));
         dispatch(actions.resetManagedCompany());
         dispatch(actions.setIsSuppliersGridLoading(true));
-        getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
-          (res) => {
-            dispatch(actions.setIsSuppliersGridLoading(false));
-            const modifiedList = res.data.items.map((item) => ({
-              ...item,
-              isSelected: item.companyId === state.selectedCompany?.companyId,
-            }));
-            dispatch(
-              actions.refreshCompaniesGridRequestModel({
-                ...res.data,
-                items: modifiedList,
-              }),
-            );
-          },
-        );
+        getListOfCompaniesWithLocationsForGrid(
+          state.companiesGridRequestModel,
+        ).then((res) => {
+          dispatch(actions.setIsSuppliersGridLoading(false));
+          const modifiedList = res.data.items.map((item) => ({
+            ...item,
+            isSelected: item.companyId === state.selectedCompany?.companyId,
+          }));
+          dispatch(
+            actions.refreshCompaniesGridRequestModel({
+              ...res.data,
+              items: modifiedList,
+            }),
+          );
+        });
         if (
           state.selectedCompany.companyId === state.managedCompany.companyId
         ) {
@@ -1134,21 +1138,21 @@ export default function useOrderProductsPageService(
       if (!res.error) {
         dispatch(actions.refreshManagedCompany(res.data));
         dispatch(actions.setIsSuppliersGridLoading(true));
-        getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
-          (res) => {
-            dispatch(actions.setIsSuppliersGridLoading(false));
-            const modifiedList = res.data.items.map((item) => ({
-              ...item,
-              isSelected: item.companyId === state.selectedCompany?.companyId,
-            }));
-            dispatch(
-              actions.refreshCompaniesGridRequestModel({
-                ...res.data,
-                items: modifiedList,
-              }),
-            );
-          },
-        );
+        getListOfCompaniesWithLocationsForGrid(
+          state.companiesGridRequestModel,
+        ).then((res) => {
+          dispatch(actions.setIsSuppliersGridLoading(false));
+          const modifiedList = res.data.items.map((item) => ({
+            ...item,
+            isSelected: item.companyId === state.selectedCompany?.companyId,
+          }));
+          dispatch(
+            actions.refreshCompaniesGridRequestModel({
+              ...res.data,
+              items: modifiedList,
+            }),
+          );
+        });
         addToast({
           text: "Company updated successfully",
           type: "success",
@@ -1182,7 +1186,9 @@ export default function useOrderProductsPageService(
         }),
       );
       dispatch(actions.setIsSuppliersGridLoading(true));
-      getListOfCompaniesForGrid(state.companiesGridRequestModel).then((res) => {
+      getListOfCompaniesWithLocationsForGrid(
+        state.companiesGridRequestModel,
+      ).then((res) => {
         dispatch(actions.setIsSuppliersGridLoading(false));
         const modifiedList = res.data.items.map((item) => ({
           ...item,
@@ -1224,21 +1230,21 @@ export default function useOrderProductsPageService(
         dispatch(actions.setIsPhotoUploaderLoading(false));
         if (model.contextName === "Company") {
           dispatch(actions.setIsSuppliersGridLoading(true));
-          getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
-            (res) => {
-              dispatch(actions.setIsSuppliersGridLoading(false));
-              const modifiedList = res.data.items.map((item) => ({
-                ...item,
-                isSelected: item.companyId === state.selectedCompany?.companyId,
-              }));
-              dispatch(
-                actions.refreshCompaniesGridRequestModel({
-                  ...res.data,
-                  items: modifiedList,
-                }),
-              );
-            },
-          );
+          getListOfCompaniesWithLocationsForGrid(
+            state.companiesGridRequestModel,
+          ).then((res) => {
+            dispatch(actions.setIsSuppliersGridLoading(false));
+            const modifiedList = res.data.items.map((item) => ({
+              ...item,
+              isSelected: item.companyId === state.selectedCompany?.companyId,
+            }));
+            dispatch(
+              actions.refreshCompaniesGridRequestModel({
+                ...res.data,
+                items: modifiedList,
+              }),
+            );
+          });
           dispatch(
             actions.refreshManagedCompany({
               ...state.managedCompany,
@@ -1370,7 +1376,9 @@ export default function useOrderProductsPageService(
     if (state.companiesGridRequestModel === null) {
       dispatch(actions.setIsSelectEntityCardLoading(true));
       dispatch(actions.setIsSuppliersGridLoading(true));
-      getListOfCompaniesForGrid(state.companiesGridRequestModel).then((res) => {
+      getListOfCompaniesWithLocationsForGrid(
+        state.companiesGridRequestModel,
+      ).then((res) => {
         dispatch(actions.setIsSelectEntityCardLoading(false));
         dispatch(actions.setIsSuppliersGridLoading(false));
         const modifiedList = res.data.items.map((item) => ({
