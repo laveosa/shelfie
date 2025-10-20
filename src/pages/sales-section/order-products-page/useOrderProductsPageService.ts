@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import _ from "lodash";
 
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { AppDispatch, RootState } from "@/state/store.ts";
@@ -28,7 +29,6 @@ import { ImageModel } from "@/const/models/ImageModel.ts";
 import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { LocationModel } from "@/const/models/LocationModel.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
-import _ from "lodash";
 
 export default function useOrderProductsPageService(
   handleCardAction,

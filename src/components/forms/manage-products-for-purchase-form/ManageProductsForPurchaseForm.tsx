@@ -95,6 +95,7 @@ export default function ManageProductsForPurchaseForm({
               <SheInput
                 label="Price"
                 value={field.value}
+                type="number"
                 className={
                   activeTab === "connectProducts"
                     ? field.value
@@ -171,6 +172,7 @@ export default function ManageProductsForPurchaseForm({
               <SheInput
                 label="Quantity"
                 value={field.value}
+                type="number"
                 className={
                   activeTab === "connectProducts"
                     ? field.value
