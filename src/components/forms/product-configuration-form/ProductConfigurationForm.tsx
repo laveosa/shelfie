@@ -31,6 +31,7 @@ export default function ProductConfigurationForm({
   brands,
   categories,
   productCode,
+  selectedCategory,
   showSecondaryButton,
   onSubmit,
   onCancel,
@@ -49,6 +50,10 @@ export default function ProductConfigurationForm({
       form.reset(data);
     } else form.reset(ProductDefaultModel);
   }, [data]);
+
+  useEffect(() => {
+    if (selectedCategory) form.setValue("productCategoryId", selectedCategory);
+  }, [selectedCategory]);
 
   useEffect(() => {
     if (productCode) form.setValue("productCode", productCode);
@@ -231,7 +236,7 @@ export default function ProductConfigurationForm({
             placeholder="select country of origin..."
             placeholderTransKey="ProductForm.Placeholders.CountryOfOrigin"
             items={convertCountryCodeToSelectItems(countryCodes)}
-            selected={field.value}
+            selected={field.value || selectedCategory}
             hideFirstOption
             fullWidth
           />

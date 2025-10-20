@@ -20,6 +20,7 @@ import { OrderItemModel } from "@/const/models/OrderItemModel.ts";
 import { convertCustomerToRequestModel } from "@/utils/helpers/customer-helper.ts";
 import { AddressModel } from "@/const/models/AddressModel.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
+import useDialogService from "@/utils/services/dialog/DialogService.ts";
 
 export default function useShipmentDetailsPageService(handleCardAction) {
   const dispatch = useAppDispatch();
@@ -29,6 +30,7 @@ export default function useShipmentDetailsPageService(handleCardAction) {
     StoreSliceEnum.SHIPMENT_DETAILS,
   );
   const ordersState = useAppSelector<IOrdersPageSlice>(StoreSliceEnum.ORDERS);
+  const { openConfirmationDialog } = useDialogService();
 
   const [createShipment] = OrdersApiHooks.useCreateShipmentMutation();
   const [updateShipmentDates] = OrdersApiHooks.useUpdateShipmentDatesMutation();
@@ -735,12 +737,43 @@ export default function useShipmentDetailsPageService(handleCardAction) {
     );
   }
 
-  function cancelShipmentHandler() {
-    dispatch(actions.setIsShipmentConfigurationCardLoading(true));
-    cancelShipment(state.selectedShipment.shipmentId).then((res: any) => {
-      dispatch(actions.setIsShipmentConfigurationCardLoading(false));
-      dispatch(actions.refreshSelectedShipment(res.data));
+  // function cancelShipmentHandler() {
+  //   dispatch(actions.setIsShipmentConfigurationCardLoading(true));
+  //   cancelShipment(state.selectedShipment.shipmentId).then((res: any) => {
+  //     dispatch(actions.setIsShipmentConfigurationCardLoading(false));
+  //     dispatch(actions.refreshSelectedShipment(res.data));
+  //   });
+  // }
+
+  async function cancelShipmentHandler() {
+    const confirmedCancelShipment = await openConfirmationDialog({
+      headerTitle: "Cancel Shipment",
+      text: `You are about to cancel shipment "${state.selectedShipment.shipmentId}".`,
+      primaryButtonValue: "Cancel Shipment",
+      secondaryButtonValue: "Cancel",
     });
+
+    if (!confirmedCancelShipment) {
+    } else {
+      dispatch(actions.setIsShipmentConfigurationCardLoading(true));
+      await cancelShipment(state.selectedShipment.shipmentId).then(
+        (res: any) => {
+          dispatch(actions.setIsShipmentConfigurationCardLoading(false));
+          if (!res.error) {
+            dispatch(actions.refreshSelectedShipment(res.data));
+            addToast({
+              text: "Shipment canceled successfully",
+              type: "success",
+            });
+          } else {
+            addToast({
+              text: res.error.data.detail,
+              type: "error",
+            });
+          }
+        },
+      );
+    }
   }
 
   function returnShipmentStatusToPreviousHandler() {

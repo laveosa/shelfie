@@ -1,3 +1,12 @@
+.productNameImageBlock {
+  .productNameImage {
+    object-fit: cover;
+    border-radius: 5px;
+    min-width: 30px;
+    max-width: 30px;
+  }
+}
+
 .variantName, .variantCode {
   display: inline-block;
   max-width: 70px;

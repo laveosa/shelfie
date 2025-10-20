@@ -8,6 +8,7 @@ export interface IProductConfigurationForm {
   brands?: BrandModel[];
   categories?: CategoryModel[];
   countryCodes?: CountryCodeModel[];
+  selectedCategory?: number;
   productCode?: string;
   notDisabledSubmit?: boolean;
   showSecondaryButton?: boolean;

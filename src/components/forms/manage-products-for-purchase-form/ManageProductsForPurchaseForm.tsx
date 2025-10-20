@@ -15,7 +15,6 @@ import { FormField } from "@/components/ui/form.tsx";
 import SheFormItem from "@/components/complex/she-form/components/she-form-item/SheFormItem.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
-import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import PurchaseProductsFormScheme from "@/utils/validation/schemes/PurchaseProductsFormScheme.ts";
 import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
 
@@ -33,7 +32,6 @@ export default function ManageProductsForPurchaseForm({
   activeTab,
   onSubmit,
   onDelete,
-  onCancel,
 }: IPurchaseProductsForm) {
   const form = useAppForm<any>({
     mode: "onSubmit",
@@ -67,13 +65,6 @@ export default function ManageProductsForPurchaseForm({
     form.reset(data);
   }, [data]);
 
-  const isFormValid =
-    form.formState.isValid &&
-    form.getValues("nettoPrice") &&
-    form.getValues("currencyId") &&
-    form.getValues("taxTypeId") &&
-    form.getValues("unitsAmount");
-
   return (
     <div className={cs.purchaseProducts}>
       <SheForm
@@ -83,10 +74,21 @@ export default function ManageProductsForPurchaseForm({
         formPosition={DirectionEnum.CENTER}
         view={ComponentViewEnum.STANDARD}
         fullWidth
-        hidePrimaryBtn
-        hideSecondaryBtn
+        primaryBtnProps={{
+          value: "Save",
+          icon: Check,
+          variant: "secondary",
+          disabled: !form.formState.isValid,
+        }}
+        primaryBtnTitle="Save"
+        secondaryBtnProps={{
+          value: null,
+          icon: Trash2,
+          variant: "outline",
+          disabled: !data.stockActionId,
+        }}
         onSubmit={onSubmit}
-        onCancel={onCancel}
+        onCancel={onDelete}
       >
         <SheFormField
           name="nettoPrice"
@@ -124,7 +126,7 @@ export default function ManageProductsForPurchaseForm({
                       : ""
                     : ""
                 }
-                selected={field.value || data?.taxTypeId}
+                selected={field.value}
                 items={convertTaxesToSelectItems(taxes)}
                 hideFirstOption
                 minWidth="70px"
@@ -143,7 +145,7 @@ export default function ManageProductsForPurchaseForm({
           render={({ field }) => (
             <SheFormItem className={cs.purchaseFormItem} label="Currency">
               <SheSelect
-                selected={data?.currencyId || field?.value}
+                selected={field?.value}
                 className={
                   activeTab === "connectProducts"
                     ? field.value
@@ -166,7 +168,6 @@ export default function ManageProductsForPurchaseForm({
         />
         <SheFormField
           name="unitsAmount"
-          className={cs.purchaseFormItem}
           render={({ field }) => (
             <SheFormItem className={cs.purchaseFormInput}>
               <SheInput
@@ -188,16 +189,6 @@ export default function ManageProductsForPurchaseForm({
             </SheFormItem>
           )}
         />
-        <div className={cs.variantGridButtonBlock}>
-          <SheButton icon={Check} variant="secondary" value="Save" />
-          <SheButton
-            icon={Trash2}
-            type="button"
-            variant="outline"
-            disabled={!data.stockActionId}
-            onClick={onDelete}
-          />
-        </div>
       </SheForm>
     </div>
   );

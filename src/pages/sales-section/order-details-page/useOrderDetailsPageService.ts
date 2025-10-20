@@ -250,6 +250,18 @@ export default function useOrderDetailsPageService(handleCardAction) {
   function manageCustomerHandler(model: CustomerModel) {
     handleCardAction("customerCard", true);
     dispatch(actions.refreshSelectedCustomer(model));
+    const modifiedList = ordersState.customersGridRequestModel.items.map(
+      (item) =>
+        item.customerId === model.customerId
+          ? { ...item, isGridItemSelected: true }
+          : { ...item, isGridItemSelected: false },
+    );
+    dispatch(
+      ordersActions.refreshCustomersGridRequestModel({
+        ...ordersState.customersGridRequestModel,
+        items: modifiedList,
+      }),
+    );
   }
 
   function createCustomerHandler(data: any) {

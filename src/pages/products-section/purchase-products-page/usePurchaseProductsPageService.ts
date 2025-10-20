@@ -3,29 +3,19 @@ import { useTranslation } from "react-i18next";
 
 import {
   formatDate,
-  setSelectedGridItem
+  setSelectedGridItem,
 } from "@/utils/helpers/quick-helper.ts";
 import PurchasesApiHooks from "@/utils/services/api/PurchasesApiService.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import {
-  IPurchaseProductsPageSlice
-} from "@/const/interfaces/store-slices/IPurchaseProductsPageSlice.ts";
-import {
-  PurchaseProductsPageSliceActions as actions
-} from "@/state/slices/PurchaseProductsPageSlice.ts";
-import {
-  ProductsPageSliceActions as productsActions
-} from "@/state/slices/ProductsPageSlice.ts";
-import useProductsPageService
-  from "@/pages/products-section/products-page/useProductsPageService.ts";
-import {
-  IProductsPageSlice
-} from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import { IPurchaseProductsPageSlice } from "@/const/interfaces/store-slices/IPurchaseProductsPageSlice.ts";
+import { PurchaseProductsPageSliceActions as actions } from "@/state/slices/PurchaseProductsPageSlice.ts";
+import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
+import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
+import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
-import useProductBasicDataPageService
-  from "@/pages/products-section/product-basic-data-page/useProductBasicDataPageService.ts";
+import useProductBasicDataPageService from "@/pages/products-section/product-basic-data-page/useProductBasicDataPageService.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
@@ -82,10 +72,10 @@ export default function usePurchaseProductsPageService(
     PurchasesApiHooks.useLazyGetPurchaseDetailsQuery();
   const [createPurchaseForSupplier] =
     PurchasesApiHooks.useCreatePurchaseForSupplierMutation();
-  // const [getListOfCompaniesForGrid] =
-  //   CompaniesApiHooks.useGetListOfCompaniesForGridMutation();
-  const [getListOfCompaniesWithLocationsForGrid] =
-    CompaniesApiHooks.useGetListOfCompaniesWithLocationsForGridMutation();
+  const [getListOfCompaniesForGrid] =
+    CompaniesApiHooks.useGetListOfCompaniesForGridMutation();
+  // const [getListOfCompaniesWithLocationsForGrid] =
+  //   CompaniesApiHooks.useGetListOfCompaniesWithLocationsForGridMutation();
   const [getVariantsForGrid] = ProductsApiHooks.useGetVariantsForGridMutation();
   const [getCountryCode] = DictionaryApiHooks.useLazyGetCountryCodeQuery();
   const [addNewLocationToCompany] =
@@ -1471,9 +1461,7 @@ export default function usePurchaseProductsPageService(
     }
     dispatch(actions.setIsSelectEntityCardLoading(true));
     dispatch(actions.setIsSuppliersGridLoading(true));
-    getListOfCompaniesWithLocationsForGrid(
-      state.companiesGridRequestModel,
-    ).then((res) => {
+    getListOfCompaniesForGrid(state.companiesGridRequestModel).then((res) => {
       dispatch(actions.setIsSelectEntityCardLoading(false));
       dispatch(actions.setIsSuppliersGridLoading(false));
       const modifiedList = res.data.items.map((item) => ({
@@ -1491,7 +1479,7 @@ export default function usePurchaseProductsPageService(
 
   function searchEntityHandle(model) {
     dispatch(actions.setIsSuppliersGridLoading(true));
-    getListOfCompaniesWithLocationsForGrid({
+    getListOfCompaniesForGrid({
       ...state.companiesGridRequestModel,
       searchQuery: model,
     }).then((res) => {
@@ -1519,9 +1507,7 @@ export default function usePurchaseProductsPageService(
     if (state.companiesGridRequestModel === null) {
       dispatch(actions.setIsSelectEntityCardLoading(true));
       dispatch(actions.setIsSuppliersGridLoading(true));
-      getListOfCompaniesWithLocationsForGrid(
-        state.companiesGridRequestModel,
-      ).then((res) => {
+      getListOfCompaniesForGrid(state.companiesGridRequestModel).then((res) => {
         dispatch(actions.setIsSelectEntityCardLoading(false));
         dispatch(actions.setIsSuppliersGridLoading(false));
         const modifiedList = res.data.items.map((item) => ({
@@ -1654,21 +1640,21 @@ export default function usePurchaseProductsPageService(
         dispatch(actions.setIsCreateCompanyCardLoading(false));
         handleCardAction("createCompanyCard");
         dispatch(actions.setIsSuppliersGridLoading(true));
-        getListOfCompaniesWithLocationsForGrid(
-          state.companiesGridRequestModel,
-        ).then((res) => {
-          dispatch(actions.setIsSuppliersGridLoading(false));
-          const modifiedList = res.data.items.map((item) => ({
-            ...item,
-            isSelected: item.companyId === state.selectedCompany?.companyId,
-          }));
-          dispatch(
-            actions.refreshCompaniesGridRequestModel({
-              ...res.data,
-              items: modifiedList,
-            }),
-          );
-        });
+        getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
+          (res) => {
+            dispatch(actions.setIsSuppliersGridLoading(false));
+            const modifiedList = res.data.items.map((item) => ({
+              ...item,
+              isSelected: item.companyId === state.selectedCompany?.companyId,
+            }));
+            dispatch(
+              actions.refreshCompaniesGridRequestModel({
+                ...res.data,
+                items: modifiedList,
+              }),
+            );
+          },
+        );
         addToast({
           text: "Company created successfully",
           type: "success",

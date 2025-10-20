@@ -21,28 +21,24 @@ export function PackageContentGridColumns({
         const image: string = row.original.photo?.thumbnailUrl;
         return (
           <div className={cs.variantNameCell}>
-            <div className={cs.imageBlock}>
+            <div className={cs.productNameImageBlock}>
               {image ? (
                 <img
                   src={image}
                   alt={row.original.variantName || "Variant"}
-                  className={cs.variantPhoto}
+                  className={cs.productNameImage}
                 />
               ) : (
-                <div className={cs.iconContainer}>
-                  <SheIcon icon={ImageIcon} maxWidth="30px" />
-                </div>
+                <SheIcon icon={ImageIcon} maxWidth="30px" />
               )}
             </div>
-            <div>
-              <SheTooltip
-                delayDuration={200}
-                text={row.getValue("variantName")}
-                className={cs.variantName}
-              >
-                <span>{row.getValue("variantName")}</span>
-              </SheTooltip>
-            </div>
+            <SheTooltip
+              delayDuration={200}
+              text={row.getValue("variantName")}
+              className={cs.variantName}
+            >
+              <span>{row.getValue("variantName")}</span>
+            </SheTooltip>
           </div>
         );
       },

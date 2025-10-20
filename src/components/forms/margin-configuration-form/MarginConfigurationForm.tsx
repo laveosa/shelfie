@@ -49,6 +49,22 @@ export function SheInputNumericWithSuffix({
     const input = e.currentTarget;
     const val = input.value;
 
+    const allowedControlKeys = [
+      "Backspace",
+      "Delete",
+      "ArrowLeft",
+      "ArrowRight",
+      "Tab",
+    ];
+
+    const isNumberKey = /^[0-9.,]$/.test(e.key);
+    const isControlKey = allowedControlKeys.includes(e.key);
+
+    if (!isNumberKey && !isControlKey) {
+      e.preventDefault();
+      return;
+    }
+
     if (!suffix) return;
 
     if (
