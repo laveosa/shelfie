@@ -544,6 +544,7 @@ export default function useOrderProductsPageService(
         dispatch(actions.refreshSelectedPurchase(res.data));
       });
       if (res) {
+        handleCardAction("addStockCard");
         addToast({
           text: "Stock increased successfully",
           type: "success",

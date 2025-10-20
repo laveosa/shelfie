@@ -196,7 +196,7 @@ export default function useOrderDetailsPageService(handleCardAction) {
         }));
 
         dispatch(actions.refreshDiscountsList(modifiedList));
-
+        handleCardAction("selectDiscountCard");
         addToast({
           text: "Discount successfully applied to order",
           type: "success",

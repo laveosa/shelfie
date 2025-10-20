@@ -467,6 +467,7 @@ export default function useManageVariantsPageService(handleCardAction) {
         dispatch(actions.refreshSelectedPurchase(res.data));
       });
       if (res) {
+        handleCardAction("addStockCard");
         addToast({
           text: "Stock increased successfully",
           type: "success",
