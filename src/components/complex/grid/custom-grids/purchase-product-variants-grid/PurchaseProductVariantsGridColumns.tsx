@@ -37,8 +37,7 @@ export function PurchaseProductVariantsGridColumns(
     {
       accessorKey: "traitOptions",
       header: "Details",
-      minSize: 260,
-      maxSize: 260,
+      minSize: 250,
       cell: ({ row }) => {
         const traitOptions = row.original.traitOptions || [];
 

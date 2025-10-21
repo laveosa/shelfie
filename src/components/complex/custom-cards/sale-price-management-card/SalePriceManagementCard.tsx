@@ -44,7 +44,7 @@ export default function SalePriseManagementCard({
           sortingItems={sortingOptions}
           columnsPreferences={preferences}
           gridRequestModel={gridRequestModel}
-          preferenceContext={"productReferences"}
+          preferenceContext={"salePriceManagementReferences"}
           skeletonQuantity={gridRequestModel?.pageSize}
           onApplyColumns={(model) => onAction("applyColumns", model)}
           onDefaultColumns={() => onAction("resetColumns")}

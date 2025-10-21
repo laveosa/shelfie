@@ -1,6 +1,12 @@
 import React, { Fragment, JSX, useEffect, useState } from "react";
 
-import { Cog, GalleryThumbnails, Plus, TableProperties } from "lucide-react";
+import {
+  ArrowLeft,
+  Cog,
+  GalleryThumbnails,
+  Plus,
+  TableProperties,
+} from "lucide-react";
 
 import cs from "./ManageProductCard.module.scss";
 import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
@@ -119,9 +125,13 @@ export default function ManageProductCard({
       maxWidth="560px"
       isLoading={isLoading}
       showFooter
+      footerClassName={cs.footerBlock}
       showPrimaryButton={false}
       secondaryButtonTitle="Back to Product list"
       secondaryButtonTitleTransKey="ProductActions.BackToProductList"
+      secondaryButtonProps={{
+        icon: ArrowLeft,
+      }}
       onSecondaryButtonClick={() => onAction("openPurchaseProductsCard")}
     >
       <div className={cs.manageProductCardContent}>

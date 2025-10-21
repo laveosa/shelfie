@@ -1,5 +1,7 @@
 import { ColumnDef, Row } from "@tanstack/react-table";
 import { Cog, ImageIcon } from "lucide-react";
+
+import cs from "./ProductsInOrderGridColumns.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
@@ -18,13 +20,13 @@ export function ProductsInOrderGridColumns({
       cell: ({ row }) => {
         const image: string = row.original.photo?.thumbnailUrl;
         return (
-          <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-            <div>
+          <div className={cs.productNameWrapper}>
+            <div className={cs.productNameImageBlock}>
               {image ? (
                 <img
                   src={image}
                   alt={row.original.variantName || "Variant"}
-                  className="object-cover rounded-md w-12 h-12"
+                  className={cs.productNameImage}
                 />
               ) : (
                 <SheIcon icon={ImageIcon} maxWidth="30px" />

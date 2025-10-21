@@ -12,6 +12,7 @@ export default function ProductConfigurationCard({
   brandsList,
   categoriesList,
   countryCodesList,
+  selectedCategory,
   productCode,
   showSecondaryButton,
   onSecondaryButtonClick,
@@ -35,6 +36,7 @@ export default function ProductConfigurationCard({
           brands={brandsList}
           categories={categoriesList}
           countryCodes={countryCodesList}
+          selectedCategory={selectedCategory}
           productCode={productCode}
           onAction={onAction}
           onSubmit={(data) => onAction("submitProductData", data)}

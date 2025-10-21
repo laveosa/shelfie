@@ -71,7 +71,7 @@ export default function VariantPhotosCard({
       titleTransKey="CardTitles.ManagePhotos"
       isLoading={isLoading}
       showCloseButton
-      showFooter
+      showFooter={false}
       onSecondaryButtonClick={() => onAction("closeVariantPhotosCard")}
       {...props}
     >

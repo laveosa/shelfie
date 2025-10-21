@@ -41,6 +41,7 @@ const initialState: IProductBasicDataPageSlice = {
   companiesGridRequestModel: {},
   managedCompany: undefined,
   managedLocation: undefined,
+  selectedCategory: undefined,
 };
 
 //------------------------------------- LOADERS/
@@ -249,6 +250,13 @@ function resetManagedLocation(state: IProductBasicDataPageSlice) {
   state.managedLocation = null;
 }
 
+function refreshSelectedCategory(
+  state: IProductBasicDataPageSlice,
+  action: PayloadAction<number>,
+) {
+  state.selectedCategory = action?.payload || state.selectedCategory;
+}
+
 const ProductBasicDataPageSlice = createSlice({
   name: StoreSliceEnum.PRODUCT_BASIC_DATA,
   initialState,
@@ -283,6 +291,7 @@ const ProductBasicDataPageSlice = createSlice({
     resetManagedCompany,
     refreshManagedLocation,
     resetManagedLocation,
+    refreshSelectedCategory,
   },
 });
 

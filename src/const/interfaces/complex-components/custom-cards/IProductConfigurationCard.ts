@@ -11,6 +11,7 @@ export interface IProductConfigurationCard {
   categoriesList?: CategoryModel[];
   countryCodesList?: CountryCodeModel[];
   onProductCodeCheck?: (data: any) => Promise<any>;
+  selectedCategory?: number;
   productCode?: string;
   showSecondaryButton?: boolean;
   onPrimaryButtonClick?: (data: any) => void;

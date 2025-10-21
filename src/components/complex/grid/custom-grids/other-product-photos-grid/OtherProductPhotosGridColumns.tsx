@@ -91,7 +91,6 @@ export const OtherProductPhotosGridColumns = (
     accessorKey: "format",
     header: "Format",
     minSize: 235,
-    maxSize: 235,
     cell: ({ row }) => {
       return (
         <span className="she-subtext">{`${row.original.height}px x ${row.original.width}px`}</span>
@@ -101,8 +100,8 @@ export const OtherProductPhotosGridColumns = (
   {
     id: "rowActions",
     header: "",
-    minSize: 60,
-    maxSize: 60,
+    minSize: 55,
+    maxSize: 55,
     cell: ({ row }) => {
       return (
         <SheButton

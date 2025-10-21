@@ -4,22 +4,12 @@
   align-items: center;
   gap: 10px;
 
-  .imageBlock {
-    min-width: 40px;
-    max-width: 40px;
-    display: flex;
-    align-items: center;
-
-    .variantPhoto {
+  .productNameImageBlock {
+    .productNameImage {
       object-fit: cover;
       border-radius: 5px;
-      width: 40px;
-    }
-
-    .iconContainer {
-      width: 100%;
-      display: flex;
-      justify-content: center;
+      min-width: 30px;
+      max-width: 30px;
     }
   }
 
