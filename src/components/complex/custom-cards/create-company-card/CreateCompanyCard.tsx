@@ -97,6 +97,7 @@ export default function CreateCompanyCard({
           countryCodes={convertToSelectItems(countryCodes, {
             text: "countryName",
             value: "countryId",
+            icon: "flagIcon",
           })}
           onChange={onCompanyFormChange}
         />

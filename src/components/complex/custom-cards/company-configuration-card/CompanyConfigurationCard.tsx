@@ -67,6 +67,7 @@ export default function CompanyConfigurationCard({
           countryCodes={convertToSelectItems(countryCodes, {
             text: "countryName",
             value: "countryId",
+            icon: "flagIcon",
           })}
           onChange={onUpdateCompanyHandler}
         />

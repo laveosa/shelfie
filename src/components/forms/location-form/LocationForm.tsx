@@ -10,9 +10,7 @@ import SheFormField from "@/components/complex/she-form/components/she-form-fiel
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import useAppForm from "@/utils/hooks/useAppForm.ts";
 import locationFormScheme from "@/utils/validation/schemes/LocationFormScheme.ts";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import { ILocationForm } from "@/const/interfaces/forms/ILocationForm.ts";
-import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 import {
   LocationModel,
   LocationModelDefault,
@@ -34,25 +32,6 @@ export default function LocationForm({
     scheme: locationFormScheme,
   });
   const slots = Array.from({ length: 6 }, (_, i) => data?.photos?.[i] || null);
-
-  // ================================================================ PRIMARY
-  function svgStringToComponent(svgString: string): React.FC<any> {
-    return (props) => (
-      <span dangerouslySetInnerHTML={{ __html: svgString }} {...props} />
-    );
-  }
-
-  function convertCountryCodeToSelectItems(
-    data: CountryCodeModel[],
-  ): ISheSelectItem<any>[] {
-    return data?.map(
-      (item): ISheSelectItem<any> => ({
-        value: item.countryId,
-        text: item.countryName,
-        icon: svgStringToComponent(item.flagIcon),
-      }),
-    );
-  }
 
   // ==================================================================== LAYOUT
   return (
@@ -179,7 +158,7 @@ export default function LocationForm({
         render={({ field }) => (
           <SheSelect
             selected={field.value}
-            items={convertCountryCodeToSelectItems(countryCodes)}
+            items={countryCodes}
             label="Country"
             labelTransKey="AddressForm.Labels.Country"
             placeholder="Choose country..."

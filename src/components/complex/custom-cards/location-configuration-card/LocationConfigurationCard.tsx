@@ -4,6 +4,7 @@ import cs from "./LocationConfigurationCard.module.scss";
 import LocationForm from "@/components/forms/location-form/LocationForm.tsx";
 import SheCard from "@/components/complex/she-card/SheCard.tsx";
 import { ILocationConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/ILocationConfigurationCard.ts";
+import { convertToSelectItems } from "@/utils/converters/primitive-components/she-select-convertors.ts";
 
 export default function LocationConfigurationCard({
   isLoading,
@@ -33,7 +34,11 @@ export default function LocationConfigurationCard({
       <LocationForm
         isLoading={isLoading}
         data={location}
-        countryCodes={countryCodes}
+        countryCodes={convertToSelectItems(countryCodes, {
+          text: "countryName",
+          value: "countryId",
+          icon: "flagIcon",
+        })}
         onChange={(data) => onAction("updateLocation", data)}
         onSubmit={(data) => onAction("createLocation", data)}
         onAction={onAction}
