@@ -13,8 +13,6 @@ import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
 import contactInformationFormScheme from "@/utils/validation/schemes/ContactInformationFormScheme.ts";
 import { IContactInformationForm } from "@/const/interfaces/forms/IContactInformationForm.ts";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 import {
   ContactInformationModel,
   ContactInformationModelDefaultModel,
@@ -41,27 +39,8 @@ export default function ContactInformationForm({
       countryCodes &&
       countryCodes.length > 0
     )
-      setValue("countryId", countryCodes[0].countryId);
+      setValue("countryId", countryCodes[0].value);
   }, [data, countryCodes]);
-
-  // ==================================================================== PRIVATE
-  function svgStringToComponent(svgString: string): React.FC<any> {
-    return (props) => (
-      <span dangerouslySetInnerHTML={{ __html: svgString }} {...props} />
-    );
-  }
-
-  function convertCountryCodeToSelectItems(
-    data: CountryCodeModel[],
-  ): ISheSelectItem<any>[] {
-    return data?.map(
-      (item): ISheSelectItem<any> => ({
-        value: item.countryId,
-        text: item.countryName,
-        icon: svgStringToComponent(item.flagIcon),
-      }),
-    );
-  }
 
   // ==================================================================== LAYOUT
   return (
@@ -117,7 +96,7 @@ export default function ContactInformationForm({
             name="countryId"
             render={({ field }) => (
               <SheSelect
-                items={convertCountryCodeToSelectItems(countryCodes)}
+                items={countryCodes}
                 selected={field.value}
                 label="Phone"
                 hideFirstOption
