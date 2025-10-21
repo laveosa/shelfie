@@ -13,13 +13,13 @@ import { useCardActions } from "@/utils/hooks/useCardActions.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import SelectEntityCard from "@/components/complex/custom-cards/select-entity-card/SelectEntityCard.tsx";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
-import { CompaniesListGridColumns } from "@/components/complex/grid/custom-grids/companies-list-grid/CompaniesListGridColumns.tsx";
 import CreateCompanyCard from "@/components/complex/custom-cards/create-company-card/CreateCompanyCard.tsx";
 import CompanyConfigurationCard from "@/components/complex/custom-cards/company-configuration-card/CompanyConfigurationCard.tsx";
 import PhotosCard from "@/components/complex/custom-cards/photos-card/PhotosCard.tsx";
 import { ManageCompanyPhotosGridColumns } from "@/components/complex/grid/custom-grids/manage-company-photos-grid/ManageCompanyPhotosGridColumns.tsx";
 import LocationConfigurationCard from "@/components/complex/custom-cards/location-configuration-card/LocationConfigurationCard.tsx";
 import { ManageLocationPhotosGridColumns } from "@/components/complex/grid/custom-grids/manage-location-photos-grid/ManageLocationPhotosGridColumns.tsx";
+import { CompaniesListForBrandGridColumns } from "@/components/complex/grid/custom-grids/companies-list-for-brand-grid/CompaniesListForBrandGridColumns.tsx";
 
 export function ProductBasicDataPage() {
   // ==================================================================== UTILITIES
@@ -187,6 +187,7 @@ export function ProductBasicDataPage() {
           productId={productId}
           brandsList={productsState.brands}
           categoriesList={productsState.categories}
+          selectedCategory={state.selectedCategory}
           countryCodesList={state.countryCodes}
           productCode={productsState.productCode}
           onAction={onAction}
@@ -220,7 +221,7 @@ export function ProductBasicDataPage() {
               entityName="Company"
               entityCollection={state.companiesGridRequestModel.items}
               columns={
-                CompaniesListGridColumns({
+                CompaniesListForBrandGridColumns({
                   onAction,
                 }) as ColumnDef<DataWithId>[]
               }

@@ -68,10 +68,21 @@ export default function ManageProductsForPurchaseForm({
         className={cs.purchaseProductsForm}
         form={form}
         fullWidth
-        hidePrimaryBtn
-        hideSecondaryBtn
+        primaryBtnProps={{
+          value: "Save",
+          icon: Check,
+          variant: "secondary",
+          disabled: !form.formState.isValid,
+        }}
+        primaryBtnTitle="Save"
+        secondaryBtnProps={{
+          value: null,
+          icon: Trash2,
+          variant: "outline",
+          disabled: !data.stockActionId,
+        }}
         onSubmit={onSubmit}
-        onCancel={onCancel}
+        onCancel={onDelete}
       >
         <SheFormField
           name="nettoPrice"
@@ -86,6 +97,7 @@ export default function ManageProductsForPurchaseForm({
                     : ""
                   : ""
               }
+              type="number"
               minWidth="80px"
               maxWidth="80px"
               placeholder=" "
@@ -95,56 +107,52 @@ export default function ManageProductsForPurchaseForm({
         <SheFormField
           name="taxTypeId"
           render={({ field }) => (
-            <SheFormItem className={cs.purchaseFormItem}>
-              <SheSelect
-                label="Tax"
-                placeholder=" "
-                className={
-                  activeTab === "connectProducts"
-                    ? field.value
-                      ? cs.formItemsValid
-                      : ""
+            <SheSelect
+              label="Tax"
+              placeholder=" "
+              className={
+                activeTab === "connectProducts"
+                  ? field.value
+                    ? cs.formItemsValid
                     : ""
-                }
-                selected={field.value || data?.taxTypeId}
-                items={convertTaxesToSelectItems(taxes)}
-                hideFirstOption
-                minWidth="70px"
-                maxWidth="70px"
-              />
-            </SheFormItem>
+                  : ""
+              }
+              selected={field.value}
+              items={convertTaxesToSelectItems(taxes)}
+              hideFirstOption
+              minWidth="70px"
+              maxWidth="70px"
+            />
           )}
         />
         <SheFormField
           name="currencyId"
           render={({ field }) => (
-            <SheFormItem className={cs.purchaseFormItem}>
-              <SheSelect
-                selected={data?.currencyId || field?.value}
-                items={convertCurrenciesToSelectItems(currencies)}
-                className={
-                  activeTab === "connectProducts"
-                    ? field.value
-                      ? cs.formItemsValid
-                      : ""
+            <SheSelect
+              selected={field?.value}
+              items={convertCurrenciesToSelectItems(currencies)}
+              className={
+                activeTab === "connectProducts"
+                  ? field.value
+                    ? cs.formItemsValid
                     : ""
-                }
-                label="Currency"
-                placeholder=" "
-                hideFirstOption
-                minWidth="80px"
-                maxWidth="80px"
-              />
-            </SheFormItem>
+                  : ""
+              }
+              label="Currency"
+              placeholder=" "
+              hideFirstOption
+              minWidth="80px"
+              maxWidth="80px"
+            />
           )}
         />
         <SheFormField
           name="unitsAmount"
-          className={cs.purchaseFormItem}
           render={({ field }) => (
             <SheInput
               label="Quantity"
               value={field.value}
+              type="number"
               className={
                 activeTab === "connectProducts"
                   ? field.value
@@ -159,16 +167,6 @@ export default function ManageProductsForPurchaseForm({
             />
           )}
         />
-        <div className={cs.variantGridButtonBlock}>
-          <SheButton icon={Check} variant="secondary" value="Save" />
-          <SheButton
-            icon={Trash2}
-            type="button"
-            variant="outline"
-            disabled={!data.stockActionId}
-            onClick={onDelete}
-          />
-        </div>
       </SheForm>
     </div>
   );

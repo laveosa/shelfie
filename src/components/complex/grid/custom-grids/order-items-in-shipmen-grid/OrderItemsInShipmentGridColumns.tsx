@@ -5,11 +5,9 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import cs from "./OrderItemsInShipment.module.scss";
-import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 
 export function orderItemsInShipmentGridColumns({
   onAction,
-  onHandelUpGridData,
 }: {
   onAction: (actionType: string, row?: any, quantity?: string) => void;
   onHandelUpGridData: (table?: any[]) => void;
@@ -19,33 +17,30 @@ export function orderItemsInShipmentGridColumns({
       id: "variantName",
       accessorFn: (row) => row.variantName,
       header: "Product",
-      minSize: 120,
+      minSize: 160,
+      maxSize: 160,
       cell: ({ row }) => {
         const image: string = row.original.photo?.thumbnailUrl;
         return (
           <div className={cs.variantNameCell}>
-            <div className={cs.imageBlock}>
+            <div className={cs.productNameImageBlock}>
               {image ? (
                 <img
                   src={image}
                   alt={row.original.variantName || "Variant"}
-                  className={cs.variantPhoto}
+                  className={cs.productNameImage}
                 />
               ) : (
-                <div className={cs.iconContainer}>
-                  <SheIcon icon={ImageIcon} maxWidth="30px" />
-                </div>
+                <SheIcon icon={ImageIcon} maxWidth="30px" />
               )}
             </div>
-            <div>
-              <SheTooltip
-                delayDuration={200}
-                text={row.getValue("variantName")}
-                className={cs.variantName}
-              >
-                <span>{row.getValue("variantName")}</span>
-              </SheTooltip>
-            </div>
+            <SheTooltip
+              delayDuration={200}
+              text={row.getValue("variantName")}
+              className={cs.variantName}
+            >
+              <span>{row.getValue("variantName")}</span>
+            </SheTooltip>
           </div>
         );
       },
@@ -89,34 +84,41 @@ export function orderItemsInShipmentGridColumns({
       accessorKey: "orderId",
       header: "Order",
       minSize: 80,
-      maxSize: 80,
       cell: ({ row }) => {
-        return <span>{row.original.orderId}</span>;
+        return (
+          <div
+            className={`${cs.orderLink} she-text-link`}
+            onClick={() => onAction("navigateToOrder", row.original.orderId)}
+          >
+            {row.original.orderId}
+          </div>
+        );
       },
     },
     {
-      accessorKey: "orderedAmount",
+      accessorKey: "quantityPending",
       header: "Qty pending",
       minSize: 100,
+      maxSize: 100,
       cell: ({ row }) => {
-        return <span>{row.original.orderedAmount}</span>;
+        return <span>{row.original.quantityPending}</span>;
       },
     },
-    {
-      accessorKey: "quantity",
-      header: "Qty to add",
-      minSize: 100,
-      cell: ({ row, table }) => (
-        <SheInput
-          value={row.original.amount}
-          type="number"
-          onChange={(value) => {
-            row.original.amount = value;
-            onHandelUpGridData(table.options.data);
-          }}
-        />
-      ),
-    },
+    // {
+    //   accessorKey: "quantity",
+    //   header: "Qty to add",
+    //   minSize: 100,
+    //   cell: ({ row, table }) => (
+    //     <SheInput
+    //       value={row.original.amount}
+    //       type="number"
+    //       onChange={(value) => {
+    //         row.original.amount = value;
+    //         onHandelUpGridData(table.options.data);
+    //       }}
+    //     />
+    //   ),
+    // },
     {
       id: "add",
       header: "",
@@ -130,10 +132,7 @@ export function orderItemsInShipmentGridColumns({
               value="Add"
               variant="secondary"
               onClick={() => {
-                onAction("addItemToShipment", {
-                  stockActionId: row.original.stockActionId,
-                  quantity: row.original.amount,
-                });
+                onAction("addItemToShipment", row.original.stockActionId);
               }}
             />
           </div>

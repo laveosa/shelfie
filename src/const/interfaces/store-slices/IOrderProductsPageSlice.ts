@@ -77,4 +77,5 @@ export interface IOrderProductsPageSlice {
   productId?: number;
   taxesList?: TaxTypeModel[];
   currenciesList?: CurrencyModel[];
+  stockActionsGridRequestModel?: GridRequestModel;
 }

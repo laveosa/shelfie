@@ -144,8 +144,6 @@ export function CustomerAddressesPage() {
             <CustomerAddressCard
               isLoading={state.isCustomerAddressDetailsLoading}
               customerAddress={state.selectedCustomerAddress}
-              customerAddressId={state.selectedCustomerAddressId}
-              isCreate={state.createCustomerAddress}
               countryList={state.countryList}
               onAction={onAction}
             />

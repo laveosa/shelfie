@@ -24,5 +24,7 @@ export interface OrderItemModel {
   quantityToShip?: number;
   quantityShipped?: number;
   quantityPacked?: number;
+  quantityToPack?: number;
+  limitQuantityToPack?: number;
   amount?: number;
 }

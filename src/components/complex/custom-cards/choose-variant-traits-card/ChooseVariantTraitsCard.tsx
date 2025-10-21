@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Check, Cog, Plus } from "lucide-react";
+import { Check, CheckCheck, Cog, Plus } from "lucide-react";
 
 import cs from "./ChooseVariantTraitsCard.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
@@ -16,6 +16,7 @@ export default function ChooseVariantTraitsCard({
   items,
   selectedItems,
   onAction,
+  onSecondaryButtonClick,
   ...props
 }: IChooseVariantTraitsCard) {
   // ==================================================================== STATE MANAGEMENT
@@ -48,9 +49,7 @@ export default function ChooseVariantTraitsCard({
         icon: Check,
         variant: "info",
       }}
-      onPrimaryButtonClick={() =>
-        onAction?.("setProductTraits", { traitIds: checkedTraitIds })
-      }
+      onSecondaryButtonClick={onSecondaryButtonClick}
       {...props}
     >
       <div className={cs.chooseVariantTraitsContent}>
@@ -156,6 +155,20 @@ export default function ChooseVariantTraitsCard({
                   </div>
                 </div>
               ))}
+          </div>
+          <div className={cs.buttonBlock}>
+            <SheButton
+              value="Cancel"
+              variant="secondary"
+              onClick={onSecondaryButtonClick}
+            />
+            <SheButton
+              icon={CheckCheck}
+              value="Save Traits"
+              onClick={() =>
+                onAction?.("setProductTraits", { traitIds: checkedTraitIds })
+              }
+            />
           </div>
         </div>
       </div>

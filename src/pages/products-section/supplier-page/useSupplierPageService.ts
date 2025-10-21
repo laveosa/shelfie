@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { useToast } from "@/hooks/useToast.ts";
 import { useTranslation } from "react-i18next";
+
+import { useToast } from "@/hooks/useToast.ts";
 import PurchasesApiHooks from "@/utils/services/api/PurchasesApiService.ts";
 import { SupplierPageSliceActions as actions } from "@/state/slices/SupplierPageSlice.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
@@ -44,6 +45,8 @@ export default function useSupplierPageService(handleCardAction) {
     PurchasesApiHooks.useLazyGetPurchaseDetailsQuery();
   const [getListOfCompaniesForGrid] =
     CompaniesApiHooks.useGetListOfCompaniesForGridMutation();
+  // const [getListOfCompaniesWithLocationsForGrid] =
+  //   CompaniesApiHooks.useGetListOfCompaniesWithLocationsForGridMutation();
   const [getCountryCode] = DictionaryApiHooks.useLazyGetCountryCodeQuery();
   const [createCompany] = CompaniesApiHooks.useCreateCompanyMutation();
   const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
@@ -130,6 +133,26 @@ export default function useSupplierPageService(handleCardAction) {
     });
   }
 
+  // function getListOfCompaniesWithLocationsForGridHandler(
+  //   model: GridRequestModel,
+  // ) {
+  //   dispatch(actions.setIsCompaniesGridLoading(true));
+  //   return getListOfCompaniesWithLocationsForGrid(model).then((res: any) => {
+  //     dispatch(actions.setIsCompaniesGridLoading(false));
+  //     const modifiedList = res.data.items?.map((item) => ({
+  //       ...item,
+  //       isSelected: item.companyId === state.selectedCompany.companyId,
+  //     }));
+  //     dispatch(
+  //       actions.refreshCompaniesGridRequestModel({
+  //         ...res.data,
+  //         items: modifiedList,
+  //       }),
+  //     );
+  //     return res.data;
+  //   });
+  // }
+
   function getCountryCodesHandler() {
     if (state.countryCodes.length === 0) {
       return getCountryCode().then((res: any) => {
@@ -154,11 +177,12 @@ export default function useSupplierPageService(handleCardAction) {
   function openSelectEntityCardHandler() {
     dispatch(actions.resetSelectedCompany());
     handleCardAction("selectEntityCard", true);
-    getListOfCompaniesHandler(state.companiesGridRequestModel).then(() => {});
+    getListOfCompaniesHandler(state.companiesGridRequestModel);
   }
 
   function searchEntityHandler(searchText: string) {
-    getListOfCompaniesHandler({ searchQuery: searchText }).then(() => {});
+    // getListOfCompaniesHandler({ searchQuery: searchText }).then(() => {});
+    getListOfCompaniesHandler({ searchQuery: searchText });
   }
 
   function openCreateEntityCardHandler() {

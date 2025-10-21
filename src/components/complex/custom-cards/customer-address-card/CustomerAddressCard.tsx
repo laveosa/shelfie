@@ -7,8 +7,6 @@ import { convertToSelectItems } from "@/utils/converters/primitive-components/sh
 export default function CustomerAddressCard({
   isLoading,
   customerAddress,
-  customerAddressId,
-  isCreate,
   countryList,
   onAction,
 }: ICustomerAddressCard) {
@@ -16,24 +14,28 @@ export default function CustomerAddressCard({
   return (
     <SheCard
       className={cs.customerAddressCard}
-      title={isCreate ? "Create Customer Address" : "Edit Customer Address"}
+      title={
+        customerAddress?.addressId
+          ? "Edit Customer Address"
+          : "Create Customer Address"
+      }
       titleTransKey={
-        isCreate
-          ? "CardTitles.CreateCustomerAddress"
-          : "CardTitles.EditCustomerAddress"
+        customerAddress?.addressId
+          ? "CardTitles.EditCustomerAddress"
+          : "CardTitles.CreateCustomerAddress"
       }
       isLoading={isLoading}
       showCloseButton
-      showNotificationCard={!!(!isCreate && customerAddressId)}
+      showNotificationCard={!!customerAddress?.addressId}
       notificationCardProps={{
         title: "Delete Customer Address",
         titleTransKey: "CardTitles.DeleteCustomerAddress",
         text: "This customer address will be deleted and will no longer be available for selection or automatic connection. Past orders will remain visible.",
         textTransKey: "ConfirmationMessages.DeleteCustomerAddress",
+        onClick: () =>
+          onAction("deleteCustomerAddress", customerAddress?.addressId),
       }}
-      onNotificationCardButtonClick={() =>
-        onAction("deleteCustomerAddress", customerAddressId)
-      }
+      onSecondaryButtonClick={() => onAction("closeCustomerAddressCard")}
     >
       <AddressForm
         data={customerAddress}
@@ -41,9 +43,8 @@ export default function CustomerAddressCard({
           text: "countryName",
           value: "countryId",
         })}
-        isCreate={isCreate}
         onSubmit={(data) => onAction("submitCustomerAddressData", data)}
-        onCancel={() => onAction("closeCustomerAddressCard", customerAddressId)}
+        onCancel={() => onAction("closeCustomerAddressCard")}
       />
     </SheCard>
   );

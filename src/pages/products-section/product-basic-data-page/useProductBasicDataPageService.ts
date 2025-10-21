@@ -46,7 +46,8 @@ export default function useProductBasicDataPageService(handleCardAction) {
   const [getCountryCode] = DictionaryApiHooks.useLazyGetCountryCodeQuery();
   const [getListOfCompaniesForGrid] =
     CompaniesApiHooks.useGetListOfCompaniesForGridMutation();
-  const [updateBrandOwner] = ProductsApiHooks.useUpdateBrandOwnerMutation();
+  // const [getListOfCompaniesWithLocationsForGrid] =
+  //   CompaniesApiHooks.useGetListOfCompaniesWithLocationsForGridMutation();
   const [createCompany] = CompaniesApiHooks.useCreateCompanyMutation();
   const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
   const [addNewLocationToCompany] =
@@ -236,6 +237,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
               res.data,
             ]),
           );
+          dispatch(actions.refreshSelectedCategory(res.data.categoryId));
           dispatch(productsActions.setIsPhotoUploaderLoading(true));
 
           const uploadPromises = model.uploadModels.map((model) => {
@@ -296,44 +298,41 @@ export default function useProductBasicDataPageService(handleCardAction) {
 
   function createBrandHandler(model) {
     productsService
-      .createBrandHandler({ brandName: model.brandName })
+      .createBrandHandler({
+        brandName: model.brandName,
+        companyId: state.selectedCompany.companyId,
+      })
       .then((res: any) => {
         if (res.data) {
           dispatch(
             productsActions.refreshBrands([...productsState.brands, res.data]),
           );
+          if (model.uploadModels.length > 0) {
+            dispatch(productsActions.setIsPhotoUploaderLoading(true));
 
-          updateBrandOwner({
-            brandId: res.data.brandId,
-            model: {
-              companyId: state.selectedCompany.companyId,
-            },
-          });
-
-          dispatch(productsActions.setIsPhotoUploaderLoading(true));
-
-          const uploadPromises = model.uploadModels.map((model) => {
-            model.contextId = res.data.brandId;
-            return productsService.uploadPhotoHandler(model);
-          });
-
-          Promise.all(uploadPromises).then((results) => {
-            results.forEach((res) => {
-              dispatch(productsActions.setIsPhotoUploaderLoading(false));
-              if (res && !res.error) {
-                dispatch(productsActions.refreshBrand(null));
-                handleCardAction("createBrandCard");
-                addToast({
-                  text: "Brand created successfully",
-                  type: "success",
-                });
-              } else {
-                addToast({
-                  text: res?.error?.data.detail,
-                  type: "error",
-                });
-              }
+            const uploadPromises = model.uploadModels.map((model) => {
+              model.contextId = res.data.brandId;
+              return productsService.uploadPhotoHandler(model);
             });
+
+            Promise.all(uploadPromises).then((results) => {
+              results.forEach((res) => {
+                dispatch(productsActions.setIsPhotoUploaderLoading(false));
+                if (res && !res.error) {
+                  dispatch(productsActions.refreshBrand(null));
+                } else {
+                  addToast({
+                    text: res?.error?.data.detail,
+                    type: "error",
+                  });
+                }
+              });
+            });
+          }
+          handleCardAction("createBrandCard");
+          addToast({
+            text: "Brand created successfully",
+            type: "success",
           });
           dispatch(actions.resetSelectedCompany());
         } else {

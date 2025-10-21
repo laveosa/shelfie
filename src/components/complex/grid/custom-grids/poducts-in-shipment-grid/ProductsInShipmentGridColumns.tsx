@@ -2,6 +2,8 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ImageIcon } from "lucide-react";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import cs
+  from "@/components/complex/grid/custom-grids/products-in-order-grid/ProductsInOrderGridColumns.module.scss";
 
 export const ProductsInShipmentGridColumns: ColumnDef<any>[] = [
   {
@@ -12,13 +14,13 @@ export const ProductsInShipmentGridColumns: ColumnDef<any>[] = [
     cell: ({ row }) => {
       const image: string = row.original.photo?.thumbnailUrl;
       return (
-        <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-          <div>
+        <div className={cs.productNameWrapper}>
+          <div className={cs.productNameImageBlock}>
             {image ? (
               <img
                 src={image}
                 alt={row.original.variantName || "Variant"}
-                className="object-cover rounded-md w-12 h-12"
+                className={cs.productNameImage}
               />
             ) : (
               <SheIcon icon={ImageIcon} maxWidth="30px" />
@@ -28,7 +30,7 @@ export const ProductsInShipmentGridColumns: ColumnDef<any>[] = [
             <SheTooltip
               delayDuration={200}
               text={row.getValue("variantName")}
-              className="max-w-[80px] overflow-hidden text-ellipsis whitespace-nowrap"
+              className="max-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap"
             >
               <span>{row.getValue("variantName")}</span>
             </SheTooltip>
@@ -87,30 +89,30 @@ export const ProductsInShipmentGridColumns: ColumnDef<any>[] = [
     },
   },
   {
-    id: "unitsAmount",
+    id: "qtyOrdered",
     header: "Qty ordered",
     minSize: 100,
     maxSize: 100,
     cell: ({ row }) => {
-      return <span>{row.original.unitsAmount}</span>;
+      return <span>{row.original.qtyOrdered}</span>;
     },
   },
   {
-    id: "unitsAmount1",
+    id: "qtyToShip",
     header: "Qty to ship",
     minSize: 100,
     maxSize: 100,
     cell: ({ row }) => {
-      return <span>{row.original.unitsAmount}</span>;
+      return <span>{row.original.qtyToShip}</span>;
     },
   },
   {
-    id: "unitsAmount2",
+    id: "qtyShipped",
     header: "Qty shipped",
     minSize: 100,
     maxSize: 100,
-    cell: ({}) => {
-      return <span>0</span>;
+    cell: ({ row }) => {
+      return <span>{row.original.qtyShipped}</span>;
     },
   },
 ];

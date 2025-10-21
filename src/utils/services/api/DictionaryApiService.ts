@@ -61,6 +61,16 @@ export const DictionaryApiService = createApi({
       providesTags: (result: LanguageModel[]) =>
         apiConfig.providesTags(result, ApiServiceNameEnum.DICTIONARY),
     }),
+    getDeliveryServicesList: apiConfig.createQuery<LanguageModel[], void>(
+      builder,
+      {
+        query: () => ({
+          url: "/delivery-services/list",
+        }),
+        providesTags: (result: LanguageModel[]) =>
+          apiConfig.providesTags(result, ApiServiceNameEnum.DICTIONARY),
+      },
+    ),
   }),
 });
 

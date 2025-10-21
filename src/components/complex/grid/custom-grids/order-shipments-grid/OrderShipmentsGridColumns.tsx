@@ -24,7 +24,7 @@ export function OrderShipmentsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "queueDate",
       header: "Action Date",
-      minSize: 100,
+      minSize: 90,
       cell: ({ row }) => {
         return <span>{formatDate(row.getValue("queueDate"), "date")}</span>;
       },
@@ -32,7 +32,7 @@ export function OrderShipmentsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       id: "shipmentStatus",
       header: "Status",
-      minSize: 120,
+      minSize: 100,
       cell: ({ row }) => {
         const status: string = row.original.shipmentStatus;
         return (
@@ -70,8 +70,8 @@ export function OrderShipmentsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "trackingNumber",
       header: "Tracking Number",
-      minSize: 100,
-      maxSize: 100,
+      minSize: 120,
+      maxSize: 120,
       cell: ({ row }) => {
         return <span>{row.getValue("trackingNumber")}</span>;
       },
@@ -79,8 +79,8 @@ export function OrderShipmentsGridColumns(onAction: any): ColumnDef<any>[] {
     {
       accessorKey: "quantityPacked",
       header: "Items",
-      minSize: 100,
-      maxSize: 100,
+      minSize: 60,
+      maxSize: 60,
       cell: ({ row }) => {
         return <span>{row.original.quantityPacked}</span>;
       },

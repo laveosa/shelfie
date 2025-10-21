@@ -27,12 +27,10 @@ export function SelectShipmentForOrderGridColumns(
       id: "customer",
       accessorFn: (row) => row.variantName,
       header: "customer",
-      size: 120,
       minSize: 120,
-      maxSize: 120,
       cell: ({ row }) => {
         const imageUrl: string = row.original.customer?.thumbnailUrl;
-        const name: string = row.original.customer?.name;
+        const name: string = row.original.customer?.customerName;
         return (
           <div className={cs.customerNameBlock}>
             {imageUrl ? (
@@ -52,7 +50,7 @@ export function SelectShipmentForOrderGridColumns(
             <SheTooltip
               delayDuration={200}
               text={name}
-              className="max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap"
+              className="max-w-[100%] overflow-hidden text-ellipsis whitespace-nowrap"
             >
               <span className="she-text">{name}</span>
             </SheTooltip>
@@ -64,9 +62,8 @@ export function SelectShipmentForOrderGridColumns(
     {
       id: "queueDate",
       header: "Queue Date",
-      size: 80,
-      minSize: 80,
-      maxSize: 80,
+      minSize: 100,
+      maxSize: 100,
       cell: ({ row }) => {
         return <span>{formatDate(row.original.queueDate, "date")}</span>;
       },
@@ -74,9 +71,8 @@ export function SelectShipmentForOrderGridColumns(
     {
       id: "shipmentStatus",
       header: "Status",
-      size: 60,
-      minSize: 60,
-      maxSize: 60,
+      minSize: 100,
+      maxSize: 100,
       cell: ({ row }) => {
         const status: string = row.original.shipmentStatus;
         return (
@@ -89,9 +85,7 @@ export function SelectShipmentForOrderGridColumns(
     {
       id: "deliveryAddress",
       header: "Address",
-      size: 100,
       minSize: 100,
-      maxSize: 100,
       cell: ({ row }) => {
         const alias: string = row.original.deliveryAddress?.alias;
         const address: string = row.original.deliveryAddress?.addressLine1;
@@ -108,9 +102,8 @@ export function SelectShipmentForOrderGridColumns(
     {
       id: "quantityPacked",
       header: "Qty Packed",
-      size: 80,
-      minSize: 80,
-      maxSize: 80,
+      minSize: 100,
+      maxSize: 100,
       cell: ({ row }) => {
         return <span>{row.original.quantityPacked}</span>;
       },
@@ -118,9 +111,8 @@ export function SelectShipmentForOrderGridColumns(
     {
       id: "select",
       header: "",
-      size: 100,
-      minSize: 100,
-      maxSize: 100,
+      minSize: 110,
+      maxSize: 110,
       cell: ({ row }) => {
         return (
           <div className={cs.selectButton} onClick={(e) => e.stopPropagation()}>

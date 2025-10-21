@@ -79,6 +79,7 @@ const initialState: IOrderProductsPageSlice = {
   productId: null,
   taxesList: [],
   currenciesList: [],
+  stockActionsGridRequestModel: {},
 };
 
 //----------------------------------------------------- LOADERS
@@ -529,6 +530,14 @@ function refreshCurrenciesList(
   state.currenciesList = action?.payload || state.currenciesList;
 }
 
+function refreshStockActionsGridRequestModel(
+  state: IOrderProductsPageSlice,
+  action: PayloadAction<GridRequestModel>,
+) {
+  state.stockActionsGridRequestModel =
+    action?.payload || state.stockActionsGridRequestModel;
+}
+
 const OrderProductsPageSlice = createSlice({
   name: StoreSliceEnum.ORDER_PRODUCTS,
   initialState,
@@ -598,6 +607,7 @@ const OrderProductsPageSlice = createSlice({
     refreshTaxesList,
     refreshSelectedVariant,
     refreshCurrenciesList,
+    refreshStockActionsGridRequestModel,
   },
 });
 

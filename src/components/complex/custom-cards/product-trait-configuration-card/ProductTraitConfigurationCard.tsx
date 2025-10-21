@@ -36,6 +36,7 @@ export default function ProductTraitConfigurationCard({
   selectedTrait,
   onAction,
   onPrimaryButtonClick,
+  onSecondaryButtonClick,
   ...props
 }: IProductTraitConfigurationCard) {
   // ==================================================================== STATE MANAGEMENT
@@ -128,6 +129,8 @@ export default function ProductTraitConfigurationCard({
         textTransKey: "ConfirmationMessages.DeleteTrait",
         onClick: () => onAction("deleteTrait", selectedTrait),
       }}
+      showCloseButton
+      onSecondaryButtonClick={onSecondaryButtonClick}
       {...props}
     >
       <div className={cs.productTraitConfigurationContent}>

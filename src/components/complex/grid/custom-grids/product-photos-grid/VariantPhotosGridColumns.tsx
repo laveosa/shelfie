@@ -104,7 +104,7 @@ export const VariantPhotosGridColumns = (
     cell: ({ row, table }) => {
       return (
         <VariantPhotosGridColumnActions
-          style={{ paddingLeft: "10px" }}
+          style={{ paddingLeft: "30px" }}
           row={row}
           onAction={onAction}
           table={table}

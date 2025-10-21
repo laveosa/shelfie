@@ -305,7 +305,11 @@ export const SheFileUploader = forwardRef<SheFileUploaderRef, ISheFileUploader>(
                 )}
               </div>
             )}
-            <DropZoneArea style={{ width: "100%" }}>
+            <DropZoneArea
+              style={{
+                width: "100%",
+              }}
+            >
               <DropzoneTrigger
                 className={`${cs.dropzoneTrigger} flex flex-col items-center gap-4 bg-transparent text-center text-sm`}
               >

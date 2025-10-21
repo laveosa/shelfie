@@ -19,26 +19,14 @@ export function CustomersListGridColumns({
       header: "Select",
       minSize: 70,
       maxSize: 70,
-      cell: ({ row, table }) => {
-        const meta = table.options.meta as {
-          setLoadingRow: (rowId: string, loading: boolean) => void;
-          isRowLoading: (rowId: string) => boolean;
-        };
-
-        const handleSelectClick = (e) => {
-          e.stopPropagation();
-          e.preventDefault();
-          onAction("selectCustomer", row.original);
-        };
-
+      cell: ({ row }) => {
         return (
           <div onClick={(e) => e.stopPropagation()}>
             <SheButton
               className={row.original.isSelected === true ? cs.iconCheck : ""}
               icon={row.original.isSelected === true ? CircleCheckBig : Circle}
               variant="ghost"
-              onClick={handleSelectClick}
-              disabled={meta?.isRowLoading(row.id)}
+              onClick={() => onAction("selectCustomer", row.original)}
             />
           </div>
         );

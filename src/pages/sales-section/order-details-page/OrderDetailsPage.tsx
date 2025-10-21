@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
 import cs from "@/pages/sales-section/orders-page/OrdersPage.module.scss";
-import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import useOrderDetailsPageService from "@/pages/sales-section/order-details-page/useOrderDetailsPageService.ts";
 import OrderConfigurationCard from "@/components/complex/custom-cards/order-configuration-card/OrderConfigurationCard.tsx";

@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import _ from "lodash";
 
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { AppDispatch, RootState } from "@/state/store.ts";
@@ -46,6 +47,7 @@ export default function useOrderProductsPageService(
   const navigate = useNavigate();
   const { openConfirmationDialog } = useDialogService();
   const { t } = useTranslation();
+  const { orderId } = useParams();
 
   const [addVariantsToOrder] = OrdersApiHooks.useAddVariantsToOrderMutation();
   const [updateStockActionInOrder] =
@@ -65,6 +67,8 @@ export default function useOrderProductsPageService(
     PurchasesApiHooks.useCreatePurchaseForSupplierMutation();
   const [getListOfCompaniesForGrid] =
     CompaniesApiHooks.useGetListOfCompaniesForGridMutation();
+  // const [getListOfCompaniesWithLocationsForGrid] =
+  //   CompaniesApiHooks.useGetListOfCompaniesWithLocationsForGridMutation();
   const [createCompany] = CompaniesApiHooks.useCreateCompanyMutation();
   const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
   const [addNewLocationToCompany] =
@@ -105,24 +109,42 @@ export default function useOrderProductsPageService(
   const [updateLocationDetails] =
     CompaniesApiHooks.useUpdateLocationDetailsMutation();
   const [deleteLocation] = CompaniesApiHooks.useDeleteLocationMutation();
+  const [getListOfStockActionsForGrid] =
+    OrdersApiHooks.useGetListOfStockActionsForGridMutation();
 
   function getOrderStockActionsListForGrid(orderId) {
     dispatch(actions.setIsProductsInOrderGridLoading(true));
-    ordersService
-      .getListOfStockActionsForGridHandler(
-        orderId,
-        ordersState.stockActionsGridRequestModel,
-      )
-      .then(() => {
-        dispatch(actions.setIsProductsInOrderGridLoading(false));
-      });
+
+    getListOfStockActionsForGrid({
+      orderId,
+      model: state.stockActionsGridRequestModel,
+    }).then((res) => {
+      dispatch(actions.setIsProductsInOrderGridLoading(false));
+
+      if (res?.data?.items) {
+        dispatch(
+          actions.refreshStockActionsGridRequestModel({
+            ...res.data,
+            items: res.data.items.map((item) => ({
+              ...item,
+              stockItemPrice:
+                item.stockDocumentPrice?.brutto !== null &&
+                item.stockDocumentPrice?.brutto !== undefined &&
+                item.stockDocumentPrice?.currencyName
+                  ? `${item.stockDocumentPrice.brutto}${item.stockDocumentPrice.currencyName}`
+                  : "0" + (item.stockDocumentPrice?.currencyName || ""),
+            })),
+          }),
+        );
+      }
+    });
   }
 
   function getVariantsListForGrid(model: GridRequestModel) {
     dispatch(actions.setIsFindProductsGridLoading(true));
     ordersService.getVariantsForGridHandler(model).then((res) => {
-      dispatch(ordersActions.refreshVariantsGridRequestModel(res.data));
       dispatch(actions.setIsFindProductsGridLoading(false));
+      dispatch(ordersActions.refreshVariantsGridRequestModel(res.data));
     });
   }
 
@@ -139,35 +161,65 @@ export default function useOrderProductsPageService(
     ) {
       ordersService.getTraitsForFilterHandler();
     }
-    ordersService.getVariantsForGridHandler(model);
+    getVariantsListForGrid(model);
   }
 
   function addVariantsToOrderHandler(orderId, model) {
-    return addVariantsToOrder({ orderId, model }).then((res: any) => {
-      if (!res.error) {
-        getOrderStockActionsListForGrid(orderId);
-        getVariantsListForGrid(ordersState.variantsGridRequestModel);
-        // dispatch(
-        //   ordersActions.refreshStockActionsGridRequestModel({
-        //     ...ordersState.stockActionsGridRequestModel,
-        //     items: [
-        //       res.data,
-        //       ...ordersState.stockActionsGridRequestModel.items,
-        //     ],
-        //   }),
-        // );
-        addToast({
-          text: "Stock action added successfully",
-          type: "success",
-        });
-      } else {
-        addToast({
-          text: `${res.error.data.detail}`,
-          type: "error",
-        });
-      }
-      return res.data;
-    });
+    const updatedModel = _.cloneDeep(model);
+    const identicalItem = state.stockActionsGridRequestModel.items?.find(
+      (item) =>
+        item.variantId === updatedModel.variantId &&
+        item.stockItemPrice === updatedModel?.salePrice
+          ? item
+          : undefined,
+    );
+
+    if (!identicalItem) {
+      return addVariantsToOrder({
+        orderId,
+        model: {
+          variantId: updatedModel.variantId,
+          amount: updatedModel.amount,
+        },
+      }).then((res: any) => {
+        if (!res.error) {
+          dispatch(
+            ordersActions.refreshVariantsGridRequestModel({
+              ...ordersState.variantsGridRequestModel,
+              items: ordersState.variantsGridRequestModel.items.map((item) => {
+                if (item.variantId == updatedModel.variantId) {
+                  const amount =
+                    Number(item.stockAmount) - Number(updatedModel.amount);
+                  return { ...item, stockAmount: amount };
+                }
+                return item;
+              }),
+            }),
+          );
+          dispatch(
+            actions.refreshStockActionsGridRequestModel({
+              ...state.stockActionsGridRequestModel,
+              items: [res.data, ...state.stockActionsGridRequestModel.items],
+            }),
+          );
+          addToast({
+            text: "Stock action added successfully",
+            type: "success",
+          });
+        } else {
+          addToast({
+            text: `${res.error.data.detail}`,
+            type: "error",
+          });
+        }
+        return res.data;
+      });
+    } else {
+      updateStockActionInOrderHandler(identicalItem.stockActionId, {
+        unitsAmount: identicalItem.unitsAmount + updatedModel.amount,
+        brutto: identicalItem.stockDocumentPrice.brutto,
+      });
+    }
   }
 
   function variantsGridRequestChange(updates) {
@@ -178,31 +230,66 @@ export default function useOrderProductsPageService(
     return updateStockActionInOrder({ stockActionId, model }).then(
       (res: any) => {
         if (!res.error) {
+          dispatch(
+            actions.refreshStockActionsGridRequestModel({
+              ...state.stockActionsGridRequestModel,
+              items: state.stockActionsGridRequestModel.items.map((item) =>
+                item.stockActionId === stockActionId
+                  ? {
+                      ...item,
+                      unitsAmount: model.unitsAmount,
+                      stockDocumentPrice: {
+                        ...item.stockDocumentPrice,
+                        brutto: model.brutto,
+                      },
+                    }
+                  : item,
+              ),
+            }),
+          );
           addToast({
             text: "Stock action updated successfully",
             type: "success",
           });
         } else {
+          dispatch(
+            actions.refreshStockActionsGridRequestModel({
+              ...state.stockActionsGridRequestModel,
+              items: [...state.stockActionsGridRequestModel.items],
+            }),
+          );
           addToast({
             text: `${res.error.data.detail}`,
             type: "error",
           });
         }
-        console.log("RES", res.data);
         return res.data;
       },
     );
   }
 
-  function removeStockActionFromOrderHandler(stockActionId: number) {
-    return removeStockActionFromOrder(stockActionId).then((res: any) => {
+  function removeStockActionFromOrderHandler(model: any) {
+    return removeStockActionFromOrder(model.stockActionId).then((res: any) => {
       if (!res.error) {
         dispatch(
-          ordersActions.refreshStockActionsGridRequestModel({
-            ...ordersState.stockActionsGridRequestModel,
-            items: ordersState.stockActionsGridRequestModel.items.filter(
-              (item) => item.stockActionId !== stockActionId,
+          actions.refreshStockActionsGridRequestModel({
+            ...state.stockActionsGridRequestModel,
+            items: state.stockActionsGridRequestModel.items.filter(
+              (item) => item.stockActionId !== model.stockActionId,
             ),
+          }),
+        );
+        dispatch(
+          ordersActions.refreshVariantsGridRequestModel({
+            ...ordersState.variantsGridRequestModel,
+            items: ordersState.variantsGridRequestModel.items.map((item) => {
+              if (item.variantId == model.variantId) {
+                const amount =
+                  Number(item.stockAmount) + Number(model.unitsAmount);
+                return { ...item, stockAmount: amount };
+              }
+              return item;
+            }),
           }),
         );
         addToast({
@@ -458,6 +545,7 @@ export default function useOrderProductsPageService(
         dispatch(actions.refreshSelectedPurchase(res.data));
       });
       if (res) {
+        handleCardAction("addStockCard");
         addToast({
           text: "Stock increased successfully",
           type: "success",
@@ -503,6 +591,9 @@ export default function useOrderProductsPageService(
             photos: [...state.selectedVariant.photos, res.data],
           }),
         );
+        if (state.variantPhotos.length === 0) {
+          getOrderStockActionsListForGrid(orderId);
+        }
         addToast({
           text: "Photo uploaded successfully",
           type: "success",
@@ -546,6 +637,9 @@ export default function useOrderProductsPageService(
               ),
             ),
           );
+        }
+        if (state.variantPhotos.length === 0) {
+          getOrderStockActionsListForGrid(orderId);
         }
         addToast({
           text: "Photo added to variant successfully",
@@ -591,6 +685,10 @@ export default function useOrderProductsPageService(
             (p) => p.photoId !== model.photoId,
           );
           dispatch(actions.refreshVariantPhotos(nextVariantPhotos));
+        }
+
+        if (state.variantPhotos.length === 1) {
+          getOrderStockActionsListForGrid(orderId);
         }
 
         addToast({
@@ -675,6 +773,9 @@ export default function useOrderProductsPageService(
               dispatch(actions.refreshVariantPhotos(res?.photos));
             },
           );
+          if (model.newIndex === 0 || model.activeItem.sortOrder === 1) {
+            getOrderStockActionsListForGrid(orderId);
+          }
         });
     }
   }
@@ -685,11 +786,10 @@ export default function useOrderProductsPageService(
       addStockCard: true,
     });
     dispatch(actions.setIsAddStockCardLoading(true));
-    Promise.all([getCurrenciesList(), getTaxesList()]).then(
-      ([currencies, taxes]) => {
+    Promise.all([getCurrenciesList(), getTaxesListHandler()]).then(
+      ([currencies]) => {
         dispatch(actions.setIsAddStockCardLoading(false));
         dispatch(actions.refreshCurrenciesList(currencies.data));
-        dispatch(actions.refreshTaxesList(taxes.data));
       },
     );
   }

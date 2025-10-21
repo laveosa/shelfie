@@ -18,7 +18,6 @@ export default function ShipmentDetailsCard({
   isShipmentsGridLoading,
   products,
   shipments,
-  customer,
   onAction,
 }: IShipmentDetailsCard) {
   // ==================================================================== UTILITIES
@@ -39,7 +38,7 @@ export default function ShipmentDetailsCard({
           columns={ProductsInShipmentGridColumns}
           skeletonQuantity={5}
           data={products}
-          customMessage="No item in shipment"
+          customMessage="No items in order"
           customMessageTransKey="ShipmentMessages.NoItemsInShipment"
         />
         <Separator />
@@ -52,7 +51,7 @@ export default function ShipmentDetailsCard({
               value="Create Shipment"
               valueTransKey="OrderActions.CreateShipment"
               icon={Plus}
-              disabled={!customer}
+              variant="info"
               onClick={() => onAction("createShipment")}
             />
             <span>{translate("SpecialText.Or")}</span>
@@ -60,7 +59,7 @@ export default function ShipmentDetailsCard({
               value="Select Shipment"
               valueTransKey="OrderActions.SelectShipment"
               icon={Truck}
-              variant="secondary"
+              variant="default"
               onClick={() => onAction("selectShipment")}
             />
           </div>

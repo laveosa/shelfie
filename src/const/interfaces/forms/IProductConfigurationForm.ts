@@ -6,6 +6,7 @@ export interface IProductConfigurationForm {
   categories?: ISheSelectItem<number>[];
   brands?: ISheSelectItem<number>[];
   countryCodes?: ISheSelectItem<number>[];
+  selectedCategory?: number;
   productCode?: string;
   notDisabledSubmit?: boolean;
   showSecondaryButton?: boolean;

@@ -3,21 +3,12 @@
   align-items: center;
   gap: 10px;
 
-  .imageBlock {
-    width: 40px;
-    display: flex;
-    align-items: center;
-
-    .variantPhoto {
+  .productNameImageBlock {
+    .productNameImage {
       object-fit: cover;
-      border-radius: 5px;
-      width: 40px;
-    }
-
-    .iconContainer {
-      width: 100%;
-      display: flex;
-      justify-content: center;
+      border-radius: 10px;
+      min-width: 30px;
+      max-width: 30px;
     }
   }
 
@@ -45,4 +36,8 @@
     border-radius: 50%;
     border: 2px solid #ccc;
   }
+}
+
+.orderLink {
+  font-weight: 700;
 }

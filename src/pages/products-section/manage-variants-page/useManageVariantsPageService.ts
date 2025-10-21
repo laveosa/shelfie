@@ -4,29 +4,20 @@ import {
   addGridRowColor,
   clearSelectedGridItems,
   formatDate,
-  setSelectedGridItem
+  setSelectedGridItem,
 } from "@/utils/helpers/quick-helper.ts";
 import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
-import useProductsPageService
-  from "@/pages/products-section/products-page/useProductsPageService.ts";
-import {
-  IManageVariantsPageSlice
-} from "@/const/interfaces/store-slices/IManageVariantsPageSlice.ts";
+import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
+import { IManageVariantsPageSlice } from "@/const/interfaces/store-slices/IManageVariantsPageSlice.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import {
-  IProductsPageSlice
-} from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { useToast } from "@/hooks/useToast.ts";
-import {
-  ManageVariantsPageSliceActions as actions
-} from "@/state/slices/ManageVariantsPageSlice.ts";
+import { ManageVariantsPageSliceActions as actions } from "@/state/slices/ManageVariantsPageSlice.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
-import {
-  ProductsPageSliceActions as productsActions
-} from "@/state/slices/ProductsPageSlice.ts";
+import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
 import { VariantModel } from "@/const/models/VariantModel.ts";
 import { GridRowsColorsEnum } from "@/const/enums/GridRowsColorsEnum.ts";
 import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
@@ -70,6 +61,8 @@ export default function useManageVariantsPageService(handleCardAction) {
     PurchasesApiHooks.useCreatePurchaseForSupplierMutation();
   const [getListOfCompaniesForGrid] =
     CompaniesApiHooks.useGetListOfCompaniesForGridMutation();
+  // const [getListOfCompaniesWithLocationsForGrid] =
+  //   CompaniesApiHooks.useGetListOfCompaniesWithLocationsForGridMutation();
   const [createCompany] = CompaniesApiHooks.useCreateCompanyMutation();
   const [uploadPhoto] = AssetsApiHooks.useUploadPhotoMutation();
   const [addNewLocationToCompany] =
@@ -465,6 +458,7 @@ export default function useManageVariantsPageService(handleCardAction) {
         dispatch(actions.refreshSelectedPurchase(res.data));
       });
       if (res) {
+        handleCardAction("addStockCard");
         addToast({
           text: "Stock increased successfully",
           type: "success",

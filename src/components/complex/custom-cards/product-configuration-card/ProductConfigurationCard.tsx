@@ -16,6 +16,7 @@ export default function ProductConfigurationCard({
   categoriesList,
   brandsList,
   countryCodesList,
+  selectedCategory,
   productCode,
   showSecondaryButton,
   onSecondaryButtonClick,
@@ -55,6 +56,7 @@ export default function ProductConfigurationCard({
               icon: "flagIcon",
             },
           )}
+          selectedCategory={selectedCategory}
           productCode={productCode}
           onAction={onAction}
           onSubmit={(data) => onAction("submitProductData", data)}

@@ -4,7 +4,6 @@ import { ImageIcon, Plus } from "lucide-react";
 import cs from "./FindProductGridColumns.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { ImageModel } from "@/const/models/ImageModel.ts";
-import placeholderImage from "@/assets/images/placeholder-image.png";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
 import { BrandModel } from "@/const/models/BrandModel.ts";
@@ -41,21 +40,15 @@ export function findProductGridColumns({
       cell: ({ row }) => {
         const image: ImageModel = row.getValue("photo");
         return (
-          <div className="relative w-12 h-12 cursor-pointer">
+          <div className={cs.productNameImageBlock}>
             {image ? (
               <img
-                src={image?.thumbnailUrl || placeholderImage}
+                src={image?.thumbnailUrl}
                 alt={row.getValue("variantName")}
-                className="object-cover rounded-md w-full h-full"
+                className={cs.productNameImage}
               />
             ) : (
-              <div>
-                <SheIcon
-                  icon={ImageIcon}
-                  maxWidth="60px"
-                  className={cs.noImageIcon}
-                />
-              </div>
+              <SheIcon icon={ImageIcon} maxWidth="30px" />
             )}
           </div>
         );

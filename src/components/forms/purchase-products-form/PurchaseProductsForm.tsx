@@ -41,6 +41,11 @@ export default function PurchaseProductsForm({
     mode: ReactHookFormMode.CHANGE,
   });
 
+  // ==================================================================== EVENT HANDLER
+  function onSubmitHandle() {
+    onSubmit(form.getValues());
+  }
+
   // ==================================================================== PRIVATE
   function convertCurrenciesToSelectItems(
     data: CurrencyModel[],
@@ -196,6 +201,7 @@ export default function PurchaseProductsForm({
             variant="ghost"
             type="submit"
             disabled={activeTab === "connectProducts" ? !isValid : false}
+            onClick={() => onSubmitHandle()}
           />
         ) : (
           <div className={cs.variantGridButtonBlock}>

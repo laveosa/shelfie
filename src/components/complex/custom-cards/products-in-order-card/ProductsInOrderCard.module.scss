@@ -21,9 +21,20 @@
 
       .productsSummary {
         display: flex;
-        align-items: center;
+        flex-direction: column;
+        gap: 10px;
 
-        span {
+        .productsSummaryTitle {
+          font-weight: 500;
+          font-size: 16px;
+        }
+
+        .productsSummaryTextBlock {
+          display: flex;
+          width: 100%;
+        }
+
+        .productsSummaryText {
           width: 50%;
         }
       }

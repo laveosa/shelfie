@@ -37,4 +37,5 @@ export interface IProductBasicDataPageSlice {
   companiesGridRequestModel?: GridRequestModel;
   managedCompany?: CompanyModel;
   managedLocation?: LocationModel;
+  selectedCategory?: number;
 }

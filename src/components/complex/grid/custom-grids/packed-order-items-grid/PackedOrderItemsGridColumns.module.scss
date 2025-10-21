@@ -1,23 +1,15 @@
 .variantNameCell {
   display: flex;
+  flex-direction: row;
   align-items: center;
   gap: 10px;
 
-  .imageBlock {
-    width: 40px;
-    display: flex;
-    align-items: center;
-
-    .variantPhoto {
+  .productNameImageBlock {
+    .productNameImage {
       object-fit: cover;
       border-radius: 5px;
-      width: 40px;
-    }
-
-    .iconContainer {
-      width: 100%;
-      display: flex;
-      justify-content: center;
+      min-width: 30px;
+      max-width: 30px;
     }
   }
 
@@ -44,5 +36,36 @@
     min-height: 20px;
     border-radius: 50%;
     border: 2px solid #ccc;
+  }
+}
+
+.orderLink {
+  font-weight: 700;
+}
+
+.inputBlock {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+
+  .quantityNumber {
+    position: absolute;
+    //top: 11px;
+    left: 50px;
+    display: flex;
+    width: 65px;
+    z-index: 1;
+
+    span {
+      width: 100%;
+      text-align: end;
+    }
+  }
+
+  .quantityInput {
+    input {
+      padding-left: 52%;
+    }
   }
 }

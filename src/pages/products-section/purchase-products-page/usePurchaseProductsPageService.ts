@@ -74,6 +74,8 @@ export default function usePurchaseProductsPageService(
     PurchasesApiHooks.useCreatePurchaseForSupplierMutation();
   const [getListOfCompaniesForGrid] =
     CompaniesApiHooks.useGetListOfCompaniesForGridMutation();
+  // const [getListOfCompaniesWithLocationsForGrid] =
+  //   CompaniesApiHooks.useGetListOfCompaniesWithLocationsForGridMutation();
   const [getVariantsForGrid] = ProductsApiHooks.useGetVariantsForGridMutation();
   const [getCountryCode] = DictionaryApiHooks.useLazyGetCountryCodeQuery();
   const [addNewLocationToCompany] =
@@ -1566,6 +1568,7 @@ export default function usePurchaseProductsPageService(
         dispatch(actions.refreshSelectedPurchase(res.data));
       });
       if (res) {
+        handleCardAction("addStockCard");
         addToast({
           text: "Stock increased successfully",
           type: "success",

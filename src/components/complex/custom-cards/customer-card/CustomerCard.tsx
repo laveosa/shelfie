@@ -9,6 +9,7 @@ export default function CustomerCard({
   isLoading,
   customer,
   showCloseButton,
+  hideNotificationCard,
   onAction,
 }: ICustomerCard) {
   // ==================================================================== LAYOUT
@@ -23,7 +24,7 @@ export default function CustomerCard({
         showCloseButton={showCloseButton}
         onSecondaryButtonClick={() => onAction("closeCustomerCard")}
         isLoading={isLoading}
-        showNotificationCard={!!customer}
+        showNotificationCard={!hideNotificationCard && !!customer}
         notificationCardProps={{
           title: "Delete Customer",
           titleTransKey: "CardTitles.DeleteCustomer",

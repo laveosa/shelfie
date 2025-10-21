@@ -26,6 +26,7 @@ export default function ProductConfigurationForm({
   brands,
   countryCodes,
   productCode,
+  selectedCategory,
   showSecondaryButton,
   onSubmit,
   onCancel,
@@ -40,6 +41,16 @@ export default function ProductConfigurationForm({
   });
 
   // ==================================================================== SIDE EFFECTS
+  useEffect(() => {
+    if (data?.productId) {
+      form.reset(data);
+    } else form.reset(ProductDefaultModel);
+  }, [data]);
+
+  useEffect(() => {
+    if (selectedCategory) setValue("productCategoryId", selectedCategory);
+  }, [selectedCategory]);
+
   useEffect(() => {
     setValue("productCode", productCode);
   }, [productCode]);
@@ -169,7 +180,7 @@ export default function ProductConfigurationForm({
         render={({ field }) => (
           <SheSelect
             items={countryCodes}
-            selected={field.value}
+            selected={field.value || selectedCategory}
             label="Country of origin"
             labelTransKey="ProductForm.Labels.CountryOfOrigin"
             placeholder="select country of origin..."
