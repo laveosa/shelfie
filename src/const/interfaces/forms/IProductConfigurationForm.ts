@@ -1,13 +1,11 @@
-import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
-import { BrandModel } from "@/const/models/BrandModel.ts";
-import { CategoryModel } from "@/const/models/CategoryModel.ts";
+import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 
 export interface IProductConfigurationForm {
   data?: ProductModel;
-  brands?: BrandModel[];
-  categories?: CategoryModel[];
-  countryCodes?: CountryCodeModel[];
+  categories?: ISheSelectItem<number>[];
+  brands?: ISheSelectItem<number>[];
+  countryCodes?: ISheSelectItem<number>[];
   productCode?: string;
   notDisabledSubmit?: boolean;
   showSecondaryButton?: boolean;

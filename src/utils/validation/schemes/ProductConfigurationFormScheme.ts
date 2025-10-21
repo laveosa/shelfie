@@ -15,7 +15,7 @@ const productConfigurationFormScheme: AppSchemeType<ProductModel> = z.object({
   barcode: z.string().optional(),
   brandId: z.number().optional(),
   productCategoryId: z.number().optional(),
-  countryId: z.number().optional(),
+  countryOfOriginId: z.number().optional(),
   isActive: z.boolean().optional(),
 });
 

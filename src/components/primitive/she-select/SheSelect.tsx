@@ -1,4 +1,4 @@
-import React, { JSX, useEffect, useRef, useState } from "react";
+import React, { JSX, memo, useEffect, useRef, useState } from "react";
 import _ from "lodash";
 
 import cs from "./SheSelect.module.scss";
@@ -22,7 +22,7 @@ import {
   ShePrimitiveComponentWrapperDefaultModel,
 } from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
 
-export default function SheSelect<T = any>(props: ISheSelect<T>): JSX.Element {
+function SheSelect<T = any>(props: ISheSelect<T>): JSX.Element {
   // ==================================================================== PROPS
   const {
     triggerRef,
@@ -293,3 +293,5 @@ export default function SheSelect<T = any>(props: ISheSelect<T>): JSX.Element {
     </ShePrimitiveComponentWrapper>
   );
 }
+
+export default memo(SheSelect);
