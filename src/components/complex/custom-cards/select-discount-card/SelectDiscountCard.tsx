@@ -10,8 +10,8 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import { DiscountsListGridColumns } from "@/components/complex/grid/custom-grids/discounts-list-grid/DiscountsListGridColumns.tsx";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import { ISelectDiscountCard } from "@/const/interfaces/complex-components/custom-cards/ISelectDiscountCard.ts";
+import { convertToSelectItems } from "@/utils/converters/primitive-components/she-select-convertors.ts";
 
 export default function SelectDiscountCard({
   isLoading,
@@ -28,16 +28,6 @@ export default function SelectDiscountCard({
     { discountType: "Percentage" },
     { discountType: "Amount" },
   ];
-
-  // ==================================================================== PRIVATE
-  function convertStatusesToSelectItems<T>(data: any[]): ISheSelectItem<T>[] {
-    return data?.map(
-      (item): ISheSelectItem<T> => ({
-        value: item.discountType,
-        text: item.discountType,
-      }),
-    );
-  }
 
   // ==================================================================== LAYOUT
   return (
@@ -74,7 +64,10 @@ export default function SelectDiscountCard({
               placeholderTransKey="DiscountForm.Placeholders.SelectDiscountType"
               hideFirstOption
               selected={discount?.discountType}
-              items={convertStatusesToSelectItems(discountType)}
+              items={convertToSelectItems(discountType, {
+                value: "discountType",
+                text: "discountType",
+              })}
               onSelect={(value: string) =>
                 setDiscount({ ...discount, discountType: value })
               }

@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
 
-import { Plus, Trash2, UserMinus, UserPlus } from "lucide-react";
+import { Plus, UserMinus, UserPlus } from "lucide-react";
 
 import cs from "./OrderConfigurationCard.module.scss";
 import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
@@ -12,11 +12,10 @@ import { Separator } from "@/components/ui/separator.tsx";
 import { OrderDiscountsGridColumns } from "@/components/complex/grid/custom-grids/order-discounts-grid/OrderDiscountsGridColumns.tsx";
 import { OrderShipmentsRateGridColumns } from "@/components/complex/grid/custom-grids/order-shipments-rate-grid/OrderShipmentsRateGridColumns.tsx";
 import { formatDate, getInitials } from "@/utils/helpers/quick-helper.ts";
+import { convertToSelectItems } from "@/utils/converters/primitive-components/she-select-convertors.ts";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 import { IOrderConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IOrderConfigurationCard.ts";
-import { StatusModel } from "@/const/models/StatusModel.ts";
 
 export default function OrderConfigurationCard({
   isLoading,
@@ -30,20 +29,6 @@ export default function OrderConfigurationCard({
   // ==================================================================== UTILITIES
   const { translate } = useAppTranslation();
 
-  // ==================================================================== EVENT HANDLERS
-
-  // ==================================================================== LOGIC
-  function convertStatusesToSelectItems(
-    data: StatusModel[],
-  ): ISheSelectItem<any>[] {
-    return data?.map(
-      (item): ISheSelectItem<any> => ({
-        value: item.id,
-        text: item.statusName,
-      }),
-    );
-  }
-
   // ==================================================================== LAYOUT
   return (
     <SheProductCard
@@ -56,10 +41,6 @@ export default function OrderConfigurationCard({
         titleTransKey: "CardTitles.CancelOrder",
         text: "The order will be cancelled and the stock allocated will be made available for purchase",
         textTransKey: "ConfirmationMessages.CancelOrder",
-        buttonText: "Delete",
-        buttonTextTransKey: "CommonButtons.Delete",
-        buttonColor: "#EF4343",
-        buttonIcon: Trash2,
         onClick: () => onAction("deleteOrder", order.id),
       }}
     >
@@ -76,7 +57,10 @@ export default function OrderConfigurationCard({
           </span>
           <SheSelect<string>
             selected={order?.orderStatus || null}
-            items={convertStatusesToSelectItems(statuses)}
+            items={convertToSelectItems(statuses, {
+              text: "statusName",
+              value: "id",
+            })}
             hideFirstOption
             minWidth="170px"
             maxWidth="170px"
