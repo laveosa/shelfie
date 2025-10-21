@@ -13,6 +13,7 @@ import AddressForm from "@/components/forms/address-form/AddressForm.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
 import SheCard from "@/components/complex/she-card/SheCard.tsx";
+import { convertToSelectItems } from "@/utils/converters/primitive-components/she-select-convertors.ts";
 import { ICreateCompanyCard } from "@/const/interfaces/complex-components/custom-cards/ICreateCompanyCard.ts";
 import { CompanyModel } from "@/const/models/CompanyModel.ts";
 import { AppFormType } from "@/const/types/AppFormType.ts";
@@ -93,7 +94,10 @@ export default function CreateCompanyCard({
     >
       <div className={cs.createCompanyCardContent}>
         <CreateCompanyForm
-          countryCodes={countryCodes}
+          countryCodes={convertToSelectItems(countryCodes, {
+            text: "countryName",
+            value: "countryId",
+          })}
           onChange={onCompanyFormChange}
         />
         {isPhotoUploaderLoading ? (
@@ -148,7 +152,10 @@ export default function CreateCompanyCard({
           />
         )}
         <AddressForm
-          countryList={countryCodes}
+          countryList={convertToSelectItems(countryCodes, {
+            text: "countryName",
+            value: "countryId",
+          })}
           isCreate
           showFooter={false}
           onChange={onAddressFormChange}

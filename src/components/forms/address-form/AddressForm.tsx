@@ -11,8 +11,6 @@ import useAppForm from "@/utils/hooks/useAppForm.ts";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 import AddressFormScheme from "@/utils/validation/schemes/AddressFormScheme";
 import { IAddressForm } from "@/const/interfaces/forms/IAddressForm.ts";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import { CountryCodeModel } from "@/const/models/CountryCodeModel";
 import {
   AddressRequestModel,
   AddressRequestModelDefault,
@@ -33,25 +31,6 @@ export default function AddressForm({
     defaultValues: AddressRequestModelDefault,
     scheme: AddressFormScheme,
   });
-
-  // ================================================================ PRIMARY
-  function svgStringToComponent(svgString: string): React.FC<any> {
-    return (props) => (
-      <span dangerouslySetInnerHTML={{ __html: svgString }} {...props} />
-    );
-  }
-
-  function convertCountryCodeToSelectItems(
-    data: CountryCodeModel[],
-  ): ISheSelectItem<number>[] {
-    return data?.map(
-      (item): ISheSelectItem<any> => ({
-        value: item.countryId,
-        text: item.countryName,
-        icon: svgStringToComponent(item.flagIcon),
-      }),
-    );
-  }
 
   // ==================================================================== LAYOUT
   return (
@@ -175,7 +154,7 @@ export default function AddressForm({
         name="countryId"
         render={({ field }) => (
           <SheSelect
-            items={convertCountryCodeToSelectItems(countryList)}
+            items={countryList}
             selected={field.value}
             label="Country"
             labelTransKey="AddressForm.Labels.Country"
