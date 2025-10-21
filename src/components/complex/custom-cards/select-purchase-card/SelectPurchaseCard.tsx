@@ -43,8 +43,8 @@ export default function SelectPurchaseCard({
               "filterSuppliersByDate",
               updates
                 ? {
-                    startDate: updates.from,
-                    endDate: updates.to,
+                    dateFrom: updates.from,
+                    dateTo: updates.to,
                   }
                 : {},
             );

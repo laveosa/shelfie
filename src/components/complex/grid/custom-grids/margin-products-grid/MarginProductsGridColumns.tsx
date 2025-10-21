@@ -15,7 +15,7 @@ export function marginProductsGridColumns(
   return [
     {
       accessorKey: "thumbnailUrl",
-      header: "",
+      header: "Image",
       minSize: 80,
       maxSize: 80,
       cell: ({ row, table }) => {
@@ -126,6 +126,7 @@ export function marginProductsGridColumns(
       header: "Purchase Price",
       minSize: 120,
       maxSize: 200,
+      enableHiding: false,
       cell: ({ row }) => {
         return <span>{row.getValue("purchasePrice")}</span>;
       },
@@ -147,6 +148,7 @@ export function marginProductsGridColumns(
       ),
       minSize: 100,
       maxSize: 200,
+      enableHiding: false,
       cell: ({ row }) => {
         return <span>{row.getValue("currentPrice")}</span>;
       },
@@ -156,6 +158,7 @@ export function marginProductsGridColumns(
       accessorKey: "",
       minSize: 460,
       maxSize: 460,
+      enableHiding: false,
       header: () => (
         <div className="flex items-center">
           <span style={{ marginLeft: "3px", marginRight: "92px" }}>Tax</span>

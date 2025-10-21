@@ -28,6 +28,7 @@ import { convertCustomerToRequestModel } from "@/utils/helpers/customer-helper.t
 import { AddressModel } from "@/const/models/AddressModel.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
+import { setSelectedGridItem } from "@/utils/helpers/quick-helper.ts";
 
 export default function useOrderShipmentPageService(handleCardAction) {
   const dispatch = useAppDispatch();
@@ -299,6 +300,11 @@ export default function useOrderShipmentPageService(handleCardAction) {
     dispatch(actions.setIsShipmentConfigurationCardLoading(true));
     return getShipmentDetails(shipmentId).then((res: any) => {
       dispatch(actions.setIsShipmentConfigurationCardLoading(false));
+      dispatch(
+        actions.refreshOrderShipments(
+          setSelectedGridItem(shipmentId, state.orderShipments, "shipmentId"),
+        ),
+      );
 
       if (res?.data) {
         const cleanedShipment = {
