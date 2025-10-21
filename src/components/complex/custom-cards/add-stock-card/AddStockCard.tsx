@@ -14,6 +14,7 @@ import { formatDate } from "@/utils/helpers/quick-helper.ts";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { IAddStockCard } from "@/const/interfaces/complex-components/custom-cards/IAddStockCard.ts";
 import { AppFormType } from "@/const/types/AppFormType.ts";
+import { convertToSelectItems } from "@/utils/converters/primitive-components/she-select-convertors.ts";
 
 export default function AddStockCard({
   isLoading,
@@ -78,8 +79,14 @@ export default function AddStockCard({
     >
       <div className={cs.addStockCardContent}>
         <AddStockForm
-          currencyTypes={currencyTypes}
-          taxTypes={taxTypes}
+          currencyTypes={convertToSelectItems(currencyTypes, {
+            text: "name",
+            value: "id",
+          })}
+          taxTypes={convertToSelectItems(taxTypes, {
+            text: "name",
+            value: "id",
+          })}
           onChange={onAddStockChangeHandler}
         />
         <Separator />

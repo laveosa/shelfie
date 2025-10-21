@@ -1,14 +1,13 @@
 import { UseFormReturn } from "react-hook-form";
 
-import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
-import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 import { StockUnitModel } from "@/const/models/StockUnitModel.ts";
 import { AppFormType } from "@/const/types/AppFormType.ts";
+import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 
 export interface IAddStockForm {
   data?: StockUnitModel;
-  taxTypes?: TaxTypeModel[];
-  currencyTypes?: CurrencyModel[];
+  taxTypes?: ISheSelectItem<number>[];
+  currencyTypes?: ISheSelectItem<number>[];
   onChange?: (
     value: any,
     form?: UseFormReturn<AppFormType<StockUnitModel>>,

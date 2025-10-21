@@ -8,10 +8,7 @@ import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
 import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
 import addStockFormScheme from "@/utils/validation/schemes/AddStockFormScheme.ts";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import { IAddStockForm } from "@/const/interfaces/forms/IAddStockForm.ts";
-import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
-import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 import {
   StockUnitModel,
   StockUnitModelDefaultModel,
@@ -45,27 +42,6 @@ export default function AddStockForm({
   }
 
   // ==================================================================== PRIVATE
-  function convertTaxTypesToSelectItems(
-    data: TaxTypeModel[],
-  ): ISheSelectItem<number>[] {
-    return data?.map(
-      (item): ISheSelectItem<any> => ({
-        value: item.id,
-        text: item.name,
-      }),
-    );
-  }
-
-  function convertCurrencyTypesToSelectItems(
-    data: CurrencyModel[],
-  ): ISheSelectItem<number>[] {
-    return data?.map(
-      (item): ISheSelectItem<any> => ({
-        value: item.id,
-        text: item.name,
-      }),
-    );
-  }
 
   // ==================================================================== LAYOUT
   return (
@@ -93,7 +69,7 @@ export default function AddStockForm({
           name="priceModel.currencyId"
           render={({ field }) => (
             <SheSelect
-              items={convertCurrencyTypesToSelectItems(currencyTypes)}
+              items={currencyTypes}
               selected={field.value}
               label="Currency"
               placeholder=" "
@@ -106,7 +82,7 @@ export default function AddStockForm({
           name="priceModel.taxTypeId"
           render={({ field }) => (
             <SheSelect
-              items={convertTaxTypesToSelectItems(taxTypes)}
+              items={taxTypes}
               selected={field.value}
               label="VAT"
               placeholder=" "
