@@ -7,12 +7,10 @@ import SheForm from "@/components/complex/she-form/SheForm.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
 import CreateCompanyFormScheme from "@/utils/validation/schemes/CreateCompanyFormScheme.ts";
-import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 import useAppForm from "@/utils/hooks/useAppForm.ts";
+import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 import { AppFormType } from "@/const/types/AppFormType.ts";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import { ICreateCompanyForm } from "@/const/interfaces/forms/ICreateCompanyForm.ts";
-import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 import {
   CompanyModel,
   CompanyModelDefault,
@@ -43,25 +41,6 @@ export default function CreateCompanyForm({
         countryId: value.countryId || null,
       },
       form,
-    );
-  }
-
-  // ==================================================================== PRIVATE
-  function svgStringToComponent(svgString: string): React.FC<any> {
-    return (props) => (
-      <span dangerouslySetInnerHTML={{ __html: svgString }} {...props} />
-    );
-  }
-
-  function convertCountryCodeToSelectItems(
-    data: CountryCodeModel[],
-  ): ISheSelectItem<number>[] {
-    return data?.map(
-      (item): ISheSelectItem<any> => ({
-        value: item.countryId,
-        text: item.countryName,
-        icon: svgStringToComponent(item.flagIcon),
-      }),
     );
   }
 
@@ -122,7 +101,7 @@ export default function CreateCompanyForm({
         name="countryId"
         render={({ field }) => (
           <SheSelect
-            items={convertCountryCodeToSelectItems(countryCodes)}
+            items={countryCodes}
             selected={field.value}
             label="Products country of origin"
             placeholder="Select country..."
