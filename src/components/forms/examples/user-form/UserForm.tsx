@@ -1,5 +1,5 @@
 import React, { JSX, useEffect, useMemo } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
+import _ from "lodash";
 
 import useAppForm from "@/utils/hooks/useAppForm.ts";
 import { UserModel, UserModelDefault } from "@/const/models/UserModel.ts";
@@ -24,7 +24,6 @@ import SheBadgeList from "@/components/primitive/she-badge-list/SheBadgeList.tsx
 import { CalendarModeEnum } from "@/const/enums/CalendarModeEnum.ts";
 import SheCalendar from "@/components/primitive/she-calendar/SheCalendar.tsx";
 import SheInputEditor from "@/components/primitive/she-input-editor/SheInputEditor.tsx";
-import _ from "lodash";
 import { FormSecondaryBtnBehaviorEnum } from "@/const/enums/FormSecondaryBtnBehaviorEnum.ts";
 
 const statusList: ISheRadioItem<string>[] = [
@@ -275,11 +274,13 @@ export default function UserForm({
   onSubmit,
   onCancel,
 }: IUserForm): JSX.Element {
-  const form = useAppForm<UserModel>({
-    mode: ReactHookFormMode.BLUR,
-    resolver: zodResolver(UserFormScheme),
-    defaultValues: UserModelDefault,
-  });
+  const { form, isValid, isDisabled, setValue, resetForm } =
+    useAppForm<UserModel>({
+      values: data,
+      defaultValues: UserModelDefault,
+      scheme: UserFormScheme,
+      mode: ReactHookFormMode.BLUR,
+    });
 
   const watchedValues = form.watch();
 
@@ -290,10 +291,6 @@ export default function UserForm({
   };
 
   const formFieldWrapperClassName = "flex gap-5 !mb-5 w-full";
-
-  useEffect(() => {
-    form.reset(data);
-  }, [data]);
 
   useEffect(() => {
     console.log("Form values changed:", watchedValues);

@@ -120,7 +120,7 @@ export default function ManageTraitsCard({
                   name={trait.traitId.toString()}
                   render={({ field }) => {
                     return (
-                      <FormItem className={cs.select}>
+                      <FormItem>
                         <FormLabel>{trait.traitName}</FormLabel>
                         <Select
                           onValueChange={field.onChange}

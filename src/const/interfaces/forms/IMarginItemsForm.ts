@@ -1,9 +1,9 @@
-import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import { MarginItemModel } from "@/const/models/MarginItemModel.ts";
+import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 
 export interface IMarginItemsForm {
   data?: MarginItemModel;
-  taxes?: TaxTypeModel[];
+  taxes?: ISheSelectItem<number>[];
   currentPrice?: number;
   onMarginItemChange?: (data: MarginItemModel) => void;
   onApply?: (id: number) => void;

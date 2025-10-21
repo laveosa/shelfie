@@ -1,4 +1,3 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useWatch } from "react-hook-form";
 import React from "react";
 import _ from "lodash";
@@ -37,10 +36,10 @@ export default function DisposeStockCard({
     reason: reasons[0].value,
     unitAmount: 0,
   };
-  const form = useAppForm<DisposeStockModel>({
-    mode: ReactHookFormMode.CHANGE,
-    resolver: zodResolver(disposeStockFormScheme),
+  const { form } = useAppForm<DisposeStockModel>({
     defaultValues: disposeStockDefaultModel,
+    scheme: disposeStockFormScheme,
+    mode: ReactHookFormMode.CHANGE,
   });
 
   const watchedUnitAmount = useWatch({
@@ -77,7 +76,6 @@ export default function DisposeStockCard({
     >
       <SheForm<DisposeStockModel>
         form={form}
-        defaultValues={disposeStockDefaultModel}
         text={translate(
           "StockForm.Labels.CurrentlyInStock",
           { stockAmount: variant?.stockAmount || 0 },

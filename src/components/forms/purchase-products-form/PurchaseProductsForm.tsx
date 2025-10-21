@@ -1,12 +1,7 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect } from "react";
+import React, { JSX } from "react";
+
 import { Check, Trash2, X } from "lucide-react";
 
-import { IPurchaseProductsForm } from "@/const/interfaces/forms/IPurchaseProductsForm.ts";
-import useAppForm from "@/utils/hooks/useAppForm.ts";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
-import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import cs from "@/components/forms/purchase-products-form/PurchaseProductsForm.module.scss";
 import SheForm from "@/components/complex/she-form/SheForm.tsx";
 import { FormField } from "@/components/ui/form.tsx";
@@ -14,10 +9,12 @@ import SheFormItem from "@/components/complex/she-form/components/she-form-item/
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import PurchaseProductsFormScheme from "@/utils/validation/schemes/PurchaseProductsFormScheme.ts";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
+import useAppForm from "@/utils/hooks/useAppForm.ts";
 import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
+import PurchaseProductsFormScheme from "@/utils/validation/schemes/PurchaseProductsFormScheme.ts";
+import { IPurchaseProductsForm } from "@/const/interfaces/forms/IPurchaseProductsForm.ts";
 import {
   PurchaseProductsModel,
   PurchaseProductsModelDefault,
@@ -32,50 +29,21 @@ export default function PurchaseProductsForm({
   onSubmit,
   onDelete,
   onCancel,
-}: IPurchaseProductsForm) {
-  const form = useAppForm<PurchaseProductsModel>({
+}: IPurchaseProductsForm): JSX.Element {
+  // ==================================================================== UTILITIES
+  const { form, isValid } = useAppForm<PurchaseProductsModel>({
+    values: data,
+    defaultValues: PurchaseProductsModelDefault,
+    scheme: PurchaseProductsFormScheme,
     mode: ReactHookFormMode.CHANGE,
-    resolver: zodResolver(PurchaseProductsFormScheme),
-    defaultValues: data || PurchaseProductsModelDefault,
   });
 
-  function convertCurrenciesToSelectItems(
-    data: CurrencyModel[],
-  ): ISheSelectItem<any>[] {
-    return data?.map(
-      (item): ISheSelectItem<any> => ({
-        value: item.id,
-        text: item.briefName,
-      }),
-    );
-  }
-
-  function convertTaxesToSelectItems(
-    data: TaxTypeModel[],
-  ): ISheSelectItem<any>[] {
-    return data?.map(
-      (item): ISheSelectItem<any> => ({
-        value: item.id,
-        text: item.name,
-      }),
-    );
-  }
-
-  useEffect(() => {
-    form.reset(data);
-  }, [data]);
-
-  const isFormValid =
-    form.formState.isValid &&
-    form.getValues("nettoPrice") &&
-    form.getValues("currencyId") &&
-    form.getValues("taxTypeId") &&
-    form.getValues("unitsAmount");
-
+  // ==================================================================== EVENT HANDLER
   function onSubmitHandle() {
     onSubmit(form.getValues());
   }
 
+  // ==================================================================== LAYOUT
   return (
     <div className={cs.purchaseProducts}>
       <SheForm<PurchaseProductsModel>
@@ -126,7 +94,7 @@ export default function PurchaseProductsForm({
                     : ""
                 }
                 placeholder=" "
-                items={convertCurrenciesToSelectItems(currencies)}
+                items={currencies}
                 hideFirstOption
                 minWidth="70px"
                 maxWidth="70px"
@@ -153,7 +121,7 @@ export default function PurchaseProductsForm({
                     : ""
                 }
                 selected={field.value || data?.taxTypeId}
-                items={convertTaxesToSelectItems(taxes)}
+                items={taxes}
                 hideFirstOption
                 minWidth="70px"
                 maxWidth="70px"
@@ -195,7 +163,7 @@ export default function PurchaseProductsForm({
           <SheButton
             className={
               activeTab === "connectProducts"
-                ? isFormValid
+                ? isValid
                   ? cs.buttonValid
                   : ""
                 : ""
@@ -206,7 +174,7 @@ export default function PurchaseProductsForm({
             value={activeTab === "connectProducts" ? "Add" : "Update"}
             variant="ghost"
             type="submit"
-            disabled={activeTab === "connectProducts" ? !isFormValid : false}
+            disabled={activeTab === "connectProducts" ? !isValid : false}
             onClick={() => onSubmitHandle()}
           />
         ) : (

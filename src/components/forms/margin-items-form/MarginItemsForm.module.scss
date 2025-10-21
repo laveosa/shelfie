@@ -13,13 +13,13 @@
 
         .inputChanged {
           input {
-            border-color: #007AFF;
+            border-color: #007aff;
           }
         }
 
         .selectChanged {
           button {
-            border-color: #007AFF;
+            border-color: #007aff;
           }
         }
       }
@@ -27,10 +27,6 @@
       .marginItemsFormText {
         min-width: 60px;
         max-width: 60px;
-      }
-
-      .formItem {
-        margin-bottom: -10px;
       }
 
       .marginItemsFormInput {
@@ -56,7 +52,6 @@
           display: none;
         }
       }
-
 
       .arrowIconActive {
         cursor: pointer;

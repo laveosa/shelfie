@@ -11,6 +11,7 @@ import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import { LocationsListGridColumns } from "@/components/complex/grid/custom-grids/locations-list-grid/LocationsGridColumns.tsx";
 import { ICompanyConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/ICompanyConfigurationCard.ts";
 import { CompanyModel } from "@/const/models/CompanyModel.ts";
+import { convertToSelectItems } from "@/utils/converters/primitive-components/she-select-convertors.ts";
 
 export default function CompanyConfigurationCard({
   isLoading,
@@ -63,7 +64,11 @@ export default function CompanyConfigurationCard({
       <div className={cs.companyConfigurationCardContent}>
         <CreateCompanyForm
           data={company}
-          countryCodes={countryCodes}
+          countryCodes={convertToSelectItems(countryCodes, {
+            text: "countryName",
+            value: "countryId",
+            icon: "flagIcon",
+          })}
           onChange={onUpdateCompanyHandler}
         />
         <div className={cs.imagesBlock}>

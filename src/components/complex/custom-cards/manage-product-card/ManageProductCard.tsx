@@ -20,6 +20,7 @@ import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import { StockActionDefaultModel } from "@/const/models/StockActionModel.ts";
 import { IManageProductCard } from "@/const/interfaces/complex-components/custom-cards/IManageProductCard.ts";
+import { convertToSelectItems } from "@/utils/converters/primitive-components/she-select-convertors.ts";
 
 export default function ManageProductCard({
   isLoading,
@@ -98,8 +99,14 @@ export default function ManageProductCard({
       <div className={cs.productsForPurchaseForm}>
         <ManageProductsForPurchaseForm
           data={stockAction}
-          taxes={taxes}
-          currencies={currencies}
+          taxes={convertToSelectItems(taxes, {
+            text: "name",
+            value: "id",
+          })}
+          currencies={convertToSelectItems(currencies, {
+            text: "briefName",
+            value: "id",
+          })}
           isVariantGrid={true}
           onSubmit={(formData) => {
             onActionHandler("addStockAction", {
