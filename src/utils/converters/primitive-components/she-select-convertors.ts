@@ -3,7 +3,7 @@ import {
   ISheSelectItemConvertorConfig,
 } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 
-export function convertToSelectItems<L, T>(
+export function convertToSelectItems<L = any, T = any>(
   list: L[],
   config: ISheSelectItemConvertorConfig,
   common?: (item: L) => ISheSelectItem<T>,
