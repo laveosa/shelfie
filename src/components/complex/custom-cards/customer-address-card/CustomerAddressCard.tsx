@@ -2,6 +2,7 @@ import cs from "./CustomerAddressCard.module.scss";
 import AddressForm from "@/components/forms/address-form/AddressForm";
 import SheCard from "@/components/complex/she-card/SheCard.tsx";
 import { ICustomerAddressCard } from "@/const/interfaces/complex-components/custom-cards/ICustomerAddressCard.ts";
+import { convertToSelectItems } from "@/utils/converters/primitive-components/she-select-convertors.ts";
 
 export default function CustomerAddressCard({
   isLoading,
@@ -36,7 +37,10 @@ export default function CustomerAddressCard({
     >
       <AddressForm
         data={customerAddress}
-        countryList={countryList}
+        countryList={convertToSelectItems(countryList, {
+          text: "countryName",
+          value: "countryId",
+        })}
         isCreate={isCreate}
         onSubmit={(data) => onAction("submitCustomerAddressData", data)}
         onCancel={() => onAction("closeCustomerAddressCard", customerAddressId)}
