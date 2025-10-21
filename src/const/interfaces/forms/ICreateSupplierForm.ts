@@ -1,5 +1,5 @@
 import { SupplierModel } from "@/const/models/SupplierModel.ts";
-import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
+import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 
 export interface ICreateSupplierForm {
   className?: string;
@@ -7,7 +7,7 @@ export interface ICreateSupplierForm {
   isGridLoading?: boolean;
   isPhotoUploaderLoading?: boolean;
   data?: SupplierModel;
-  countryList?: CountryCodeModel[];
+  countryList?: ISheSelectItem<number>[];
   photos?: any[];
   onImageUpload?: (data: SupplierModel) => void;
   onDndPhoto?: (data: any) => void;

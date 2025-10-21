@@ -18,7 +18,6 @@ import {
 } from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 import { ICreateSupplierForm } from "@/const/interfaces/forms/ICreateSupplierForm.ts";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import {
   SupplierModel,
   SupplierModelDefault,
@@ -71,17 +70,6 @@ export default function CreateSupplierForm({
   }
 
   // ==================================================================== PRIVATE
-  function convertCountriesToSelectItems(
-    data: any[],
-  ): ISheSelectItem<SupplierModel>[] {
-    return data?.map(
-      (item): ISheSelectItem<SupplierModel> => ({
-        value: item.countryId,
-        text: item.countryName,
-      }),
-    );
-  }
-
   const getCurrentImages = () => {
     if (isLoading && submissionData?.images) {
       return submissionData.images;
@@ -241,7 +229,7 @@ export default function CreateSupplierForm({
           name="countryId"
           render={({ field }) => (
             <SheSelect
-              items={convertCountriesToSelectItems(countryList)}
+              items={countryList}
               selected={field.value}
               label="Country"
               placeholder="choose country..."
