@@ -17,7 +17,9 @@ export const SheFormItemContextProvider = <T, TName>({
   }, [value?.field?.name, value?.form]);
 
   return (
-    <SheFormItemContext.Provider value={memoizedValue}>
+    <SheFormItemContext.Provider
+      value={memoizedValue as ISheFormItemContext<T, TName>}
+    >
       {children}
     </SheFormItemContext.Provider>
   );

@@ -1,24 +1,20 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Equal, Trash2, X } from "lucide-react";
 import React, { useEffect } from "react";
-import useAppForm from "@/utils/hooks/useAppForm.ts";
+
+import { Equal, Trash2, X } from "lucide-react";
+
+import cs from "./ProductsInOrderForm.module.scss";
 import SheForm from "@/components/complex/she-form/SheForm.tsx";
-import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
-import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
+import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
+import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import cs from "./ProductsInOrderForm.module.scss";
 import ProductsInOrderFormScheme from "@/utils/validation/schemes/ProductsInOrderFormScheme.ts";
-import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
+import useAppForm from "@/utils/hooks/useAppForm.ts";
+import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
+import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
+import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
 import { IProductsInOrderForm } from "@/const/interfaces/forms/IProductsInOrderForm.ts";
-import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
-
-interface ProductsInOrderFormData {
-  stockDocumentPrice: {
-    brutto?: number;
-  };
-  unitsAmount?: number;
-}
+import { ProductsInOrderFormDataModel } from "@/const/models/ProductsInOrderFormDataModel.ts";
 
 export default function ProductsInOrderForm<T>({
   className,
@@ -26,14 +22,14 @@ export default function ProductsInOrderForm<T>({
   onSubmit,
   onDelete,
 }: IProductsInOrderForm<T>) {
-  const form = useAppForm<ProductsInOrderFormData>({
-    mode: "onSubmit",
-    resolver: zodResolver(ProductsInOrderFormScheme),
+  const { form, resetForm } = useAppForm<ProductsInOrderFormDataModel>({
     defaultValues: {
       stockDocumentPrice: { brutto: 0 },
       unitsAmount: 0,
       total: 0,
     },
+    scheme: ProductsInOrderFormScheme,
+    mode: ReactHookFormMode.SUBMIT,
   });
   const [total, setTotal] = React.useState(0);
 
@@ -46,7 +42,7 @@ export default function ProductsInOrderForm<T>({
     return () => subscription.unsubscribe();
   }, [form]);
 
-  function handleFormSubmit(formData: ProductsInOrderFormData) {
+  function handleFormSubmit(formData: ProductsInOrderFormDataModel) {
     onSubmit({
       priceBrutto: Number(formData.stockDocumentPrice.brutto),
       unitsAmount: Number(formData.unitsAmount),
@@ -54,7 +50,7 @@ export default function ProductsInOrderForm<T>({
   }
 
   useEffect(() => {
-    form.reset({ stockDocumentPrice: { brutto: 0 }, unitsAmount: 0 });
+    resetForm({ stockDocumentPrice: { brutto: 0 }, unitsAmount: 0 });
   }, [data]);
 
   return (
@@ -81,7 +77,7 @@ export default function ProductsInOrderForm<T>({
                   type="number"
                   maxWidth="100px"
                   onDelay={() => {
-                    onSubmit(form.getValues() as T);
+                    onSubmit(field.value);
                   }}
                 />
               )}
@@ -99,7 +95,7 @@ export default function ProductsInOrderForm<T>({
                   type="number"
                   maxWidth="75px"
                   onDelay={() => {
-                    onSubmit(form.getValues() as T);
+                    onSubmit(field.value);
                   }}
                 />
               )}

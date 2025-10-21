@@ -22,7 +22,7 @@ import {
   ShePrimitiveComponentWrapperDefaultModel,
 } from "@/const/interfaces/primitive-components/IShePrimitiveComponentWrapper.ts";
 
-function SheSelect<T = any>(props: ISheSelect<T>): JSX.Element {
+function SheSelectComponent<T = any>(props: ISheSelect<T>): JSX.Element {
   // ==================================================================== PROPS
   const {
     triggerRef,
@@ -294,4 +294,5 @@ function SheSelect<T = any>(props: ISheSelect<T>): JSX.Element {
   );
 }
 
-export default memo(SheSelect);
+const SheSelect = memo(SheSelectComponent) as typeof SheSelectComponent;
+export default SheSelect;
