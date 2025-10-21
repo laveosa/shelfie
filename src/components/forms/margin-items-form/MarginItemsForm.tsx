@@ -12,8 +12,6 @@ import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import useAppForm from "@/utils/hooks/useAppForm.ts";
 import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
 import MarginItemsFormScheme from "@/utils/validation/schemes/MarginItemsFormScheme.ts";
-import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import { IMarginItemsForm } from "@/const/interfaces/forms/IMarginItemsForm.ts";
 import {
   MarginItemModel,
@@ -34,18 +32,6 @@ export default function MarginItemsForm({
     mode: ReactHookFormMode.SUBMIT,
   });
 
-  // ==================================================================== PRIVATE
-  function convertTaxesToSelectItems(
-    data: TaxTypeModel[],
-  ): ISheSelectItem<any>[] {
-    return data?.map(
-      (item): ISheSelectItem<any> => ({
-        value: item.id,
-        text: item.name,
-      }),
-    );
-  }
-
   // ==================================================================== LAYOUT
   return (
     <div className={cs.marginItemsFormWrapper}>
@@ -58,7 +44,7 @@ export default function MarginItemsForm({
               className={data?.taxTypeChanged ? cs.selectChanged : ""}
               placeholder=" "
               selected={field?.value || data?.taxTypeId}
-              items={convertTaxesToSelectItems(taxes)}
+              items={taxes}
               hideFirstOption
               minWidth="70px"
               maxWidth="70px"

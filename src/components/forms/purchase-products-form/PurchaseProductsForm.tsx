@@ -14,10 +14,7 @@ import SheFormField from "@/components/complex/she-form/components/she-form-fiel
 import useAppForm from "@/utils/hooks/useAppForm.ts";
 import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
 import PurchaseProductsFormScheme from "@/utils/validation/schemes/PurchaseProductsFormScheme.ts";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import { IPurchaseProductsForm } from "@/const/interfaces/forms/IPurchaseProductsForm.ts";
-import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
-import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import {
   PurchaseProductsModel,
   PurchaseProductsModelDefault,
@@ -44,29 +41,6 @@ export default function PurchaseProductsForm({
   // ==================================================================== EVENT HANDLER
   function onSubmitHandle() {
     onSubmit(form.getValues());
-  }
-
-  // ==================================================================== PRIVATE
-  function convertCurrenciesToSelectItems(
-    data: CurrencyModel[],
-  ): ISheSelectItem<any>[] {
-    return data?.map(
-      (item): ISheSelectItem<any> => ({
-        value: item.id,
-        text: item.briefName,
-      }),
-    );
-  }
-
-  function convertTaxesToSelectItems(
-    data: TaxTypeModel[],
-  ): ISheSelectItem<any>[] {
-    return data?.map(
-      (item): ISheSelectItem<any> => ({
-        value: item.id,
-        text: item.name,
-      }),
-    );
   }
 
   // ==================================================================== LAYOUT
@@ -120,7 +94,7 @@ export default function PurchaseProductsForm({
                     : ""
                 }
                 placeholder=" "
-                items={convertCurrenciesToSelectItems(currencies)}
+                items={currencies}
                 hideFirstOption
                 minWidth="70px"
                 maxWidth="70px"
@@ -147,7 +121,7 @@ export default function PurchaseProductsForm({
                     : ""
                 }
                 selected={field.value || data?.taxTypeId}
-                items={convertTaxesToSelectItems(taxes)}
+                items={taxes}
                 hideFirstOption
                 minWidth="70px"
                 maxWidth="70px"

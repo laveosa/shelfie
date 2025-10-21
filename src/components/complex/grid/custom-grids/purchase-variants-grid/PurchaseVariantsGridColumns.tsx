@@ -12,6 +12,7 @@ import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import PurchaseProductsForm from "@/components/forms/purchase-products-form/PurchaseProductsForm.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import { convertToSelectItems } from "@/utils/converters/primitive-components/she-select-convertors.ts";
 
 export function purchaseVariantsGridColumns(
   currencies: CurrencyModel[],
@@ -191,8 +192,14 @@ export function purchaseVariantsGridColumns(
         return (
           <PurchaseProductsForm
             activeTab={activeTab}
-            taxes={taxes}
-            currencies={currencies}
+            taxes={convertToSelectItems(taxes, {
+              text: "name",
+              value: "id",
+            })}
+            currencies={convertToSelectItems(currencies, {
+              text: "briefName",
+              value: "id",
+            })}
             onSubmit={(data) => {
               onAction("addProductToPurchase", {
                 data,

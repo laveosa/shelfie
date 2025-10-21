@@ -4,18 +4,13 @@ import { Check, Trash2 } from "lucide-react";
 
 import cs from "@/components/forms/manage-products-for-purchase-form/ManageProductsForPurchaseForm.module.scss";
 import SheForm from "@/components/complex/she-form/SheForm.tsx";
-import SheFormItem from "@/components/complex/she-form/components/she-form-item/SheFormItem.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
-import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
 import useAppForm from "@/utils/hooks/useAppForm.ts";
 import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
 import PurchaseProductsFormScheme from "@/utils/validation/schemes/PurchaseProductsFormScheme.ts";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
 import { IPurchaseProductsForm } from "@/const/interfaces/forms/IPurchaseProductsForm.ts";
-import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
-import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import {
   PurchaseProductsModel,
   PurchaseProductsModelDefault,
@@ -28,7 +23,6 @@ export default function ManageProductsForPurchaseForm({
   activeTab,
   onSubmit,
   onDelete,
-  onCancel,
 }: IPurchaseProductsForm): JSX.Element {
   // ==================================================================== UTILITIES
   const { form } = useAppForm<PurchaseProductsModel>({
@@ -37,29 +31,6 @@ export default function ManageProductsForPurchaseForm({
     scheme: PurchaseProductsFormScheme,
     mode: ReactHookFormMode.SUBMIT,
   });
-
-  // ==================================================================== PRIVATE
-  function convertCurrenciesToSelectItems(
-    data: CurrencyModel[],
-  ): ISheSelectItem<any>[] {
-    return data?.map(
-      (item): ISheSelectItem<any> => ({
-        value: item.id,
-        text: item.briefName,
-      }),
-    );
-  }
-
-  function convertTaxesToSelectItems(
-    data: TaxTypeModel[],
-  ): ISheSelectItem<any>[] {
-    return data?.map(
-      (item): ISheSelectItem<any> => ({
-        value: item.id,
-        text: item.name,
-      }),
-    );
-  }
 
   // ==================================================================== LAYOUT
   return (
@@ -118,7 +89,7 @@ export default function ManageProductsForPurchaseForm({
                   : ""
               }
               selected={field.value}
-              items={convertTaxesToSelectItems(taxes)}
+              items={taxes}
               hideFirstOption
               minWidth="70px"
               maxWidth="70px"
@@ -130,7 +101,7 @@ export default function ManageProductsForPurchaseForm({
           render={({ field }) => (
             <SheSelect
               selected={field?.value}
-              items={convertCurrenciesToSelectItems(currencies)}
+              items={currencies}
               className={
                 activeTab === "connectProducts"
                   ? field.value
