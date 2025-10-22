@@ -1,5 +1,4 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import React, { JSX, useEffect } from "react";
+import React, { JSX } from "react";
 
 import { Plus, Save } from "lucide-react";
 
@@ -8,13 +7,10 @@ import SheForm from "@/components/complex/she-form/SheForm.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
-import AddressFormScheme from "@/utils/validation/schemes/AddressFormScheme";
 import useAppForm from "@/utils/hooks/useAppForm.ts";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
-import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
+import AddressFormScheme from "@/utils/validation/schemes/AddressFormScheme";
 import { IAddressForm } from "@/const/interfaces/forms/IAddressForm.ts";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import { CountryCodeModel } from "@/const/models/CountryCodeModel";
 import {
   AddressRequestModel,
   AddressRequestModelDefault,
@@ -29,35 +25,11 @@ export default function AddressForm({
   onCancel,
 }: IAddressForm): JSX.Element {
   // ==================================================================== UTILITIES
-  const form = useAppForm<AddressRequestModel>({
-    mode: ReactHookFormMode.BLUR,
-    resolver: zodResolver(AddressFormScheme),
+  const { form } = useAppForm<AddressRequestModel>({
+    values: data,
     defaultValues: AddressRequestModelDefault,
+    scheme: AddressFormScheme,
   });
-
-  // ==================================================================== SIDE EFFECTS
-  useEffect(() => {
-    form.reset(data);
-  }, [data]);
-
-  // ================================================================ PRIMARY
-  function svgStringToComponent(svgString: string): React.FC<any> {
-    return (props) => (
-      <span dangerouslySetInnerHTML={{ __html: svgString }} {...props} />
-    );
-  }
-
-  function convertCountryCodeToSelectItems(
-    data: CountryCodeModel[],
-  ): ISheSelectItem<number>[] {
-    return data?.map(
-      (item): ISheSelectItem<any> => ({
-        value: item.countryId,
-        text: item.countryName,
-        icon: svgStringToComponent(item.flagIcon),
-      }),
-    );
-  }
 
   // ==================================================================== LAYOUT
   return (
@@ -181,7 +153,7 @@ export default function AddressForm({
         name="countryId"
         render={({ field }) => (
           <SheSelect
-            items={convertCountryCodeToSelectItems(countryList)}
+            items={countryList}
             selected={field.value}
             label="Country"
             labelTransKey="AddressForm.Labels.Country"

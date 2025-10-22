@@ -1,11 +1,13 @@
-import { z, ZodType } from "zod";
+import { z } from "zod";
+
 import { PasswordModel } from "@/const/models/PasswordModel.ts";
+import { AppSchemeType } from "@/const/types/AppSchemeType.ts";
 
 const nonemptyMessage = "field is required";
 
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{9,}$/;
 
-const PasswordChangeFormScheme: ZodType<PasswordModel> = z
+const PasswordChangeFormScheme: AppSchemeType<PasswordModel> = z
   .object({
     password: z
       .string()

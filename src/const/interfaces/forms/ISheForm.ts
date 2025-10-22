@@ -22,7 +22,6 @@ export interface ISheForm<T> extends ISheFormHeader, ISheFormFooter {
   style?: React.CSSProperties;
   children?: React.ReactNode;
   form: UseFormReturn<AppFormType<T>>;
-  data?: T;
   defaultValues?: any;
   view?: ComponentViewEnum;
   secondaryBtnBehavior?: FormSecondaryBtnBehaviorEnum;
@@ -45,7 +44,6 @@ export const SheFormDefaultModel: ISheForm<any> = {
   style: undefined,
   children: undefined,
   form: undefined,
-  data: undefined,
   defaultValues: undefined,
   view: undefined,
   secondaryBtnBehavior: undefined,

@@ -11,6 +11,7 @@ import PurchaseProductsForm from "@/components/forms/purchase-products-form/Purc
 import { ImageIcon } from "lucide-react";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import PurchaseProductsGridColumnActions from "@/components/complex/grid/custom-grids/purchase-products-grid/PurchaseProductsGridColumnActions.tsx";
+import { convertToSelectItems } from "@/utils/converters/primitive-components/she-select-convertors.ts";
 
 export function purchaseProductsGridColumns(
   currencies: CurrencyModel[],
@@ -197,8 +198,14 @@ export function purchaseProductsGridColumns(
         return (
           <PurchaseProductsForm
             activeTab={activeTab}
-            taxes={taxes}
-            currencies={currencies}
+            taxes={convertToSelectItems(taxes, {
+              text: "name",
+              value: "id",
+            })}
+            currencies={convertToSelectItems(currencies, {
+              text: "briefName",
+              value: "id",
+            })}
             data={data}
             onSubmit={(data) => {
               onAction("updatePurchaseProduct", { data, stockActionId });

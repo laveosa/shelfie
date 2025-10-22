@@ -1,19 +1,18 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 
-import useAppForm from "@/utils/hooks/useAppForm.ts";
 import cs from "@/components/forms/margin-configuration-form/MarginConfigurationForm.module.scss";
+import useAppForm from "@/utils/hooks/useAppForm.ts";
 import SheForm from "@/components/complex/she-form/SheForm.tsx";
-import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
-import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import { MarginModel, MarginModelDefault } from "@/const/models/MarginModel.ts";
-import MarginConfigurationFormScheme from "@/utils/validation/schemes/MarginConfigurationFormScheme.ts";
-import { IMarginConfigurationForm } from "@/const/interfaces/forms/IMarginConfigurationForm.ts";
-import { Separator } from "@/components/ui/separator.tsx";
-import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
-import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
 import SheToggle from "@/components/primitive/she-toggle/SheToggle.tsx";
+import SheInput from "@/components/primitive/she-input/SheInput.tsx";
+import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
+import { Separator } from "@/components/ui/separator.tsx";
+import MarginConfigurationFormScheme from "@/utils/validation/schemes/MarginConfigurationFormScheme.ts";
+import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
+import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
 import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
+import { IMarginConfigurationForm } from "@/const/interfaces/forms/IMarginConfigurationForm.ts";
+import { MarginModel, MarginModelDefault } from "@/const/models/MarginModel.ts";
 
 interface SheNumericWithSuffixInputProps
   extends React.ComponentProps<typeof SheInput> {
@@ -121,26 +120,12 @@ export default function MarginConfigurationForm({
   onSubmit,
   onCancel,
 }: IMarginConfigurationForm) {
-  const form = useAppForm<MarginModel>({
+  const { form } = useAppForm<MarginModel>({
+    values: data,
+    defaultValues: MarginModelDefault,
+    scheme: MarginConfigurationFormScheme,
     mode: ReactHookFormMode.CHANGE,
-    resolver: zodResolver(MarginConfigurationFormScheme),
-    defaultValues: data || MarginModelDefault,
   });
-
-  useEffect(() => {
-    if (data) {
-      form.reset(data);
-    } else {
-      form.reset(MarginModelDefault);
-    }
-  }, [data]);
-
-  const isFormValid = true;
-  // form.formState.isValid &&
-  // form.getValues("marginName") &&
-  // form.getValues("desiredProfit") &&
-  // form.getValues("plannedDiscount") &&
-  // form.getValues("fixedCosts");
 
   return (
     <div className={`${cs.marginConfiguration} ${className}`}>
@@ -154,7 +139,6 @@ export default function MarginConfigurationForm({
         primaryBtnProps={{
           value: data ? "Save Changes" : "Create Margin",
           bgColor: "#007AFF",
-          disabled: !isFormValid,
         }}
         footerClassName={
           !isConfigurationCard ? cs.formFooterOneButton : cs.formFooterTwoButton

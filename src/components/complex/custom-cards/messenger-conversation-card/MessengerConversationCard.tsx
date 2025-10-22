@@ -18,8 +18,6 @@ export default function MessengerConversationCard({
 }: IMessengerConversationCard) {
   // const [messages, setMessages] = useState<any[]>([]);
 
-  console.log(chat.userId);
-
   const messages = [
     {
       id: 1,

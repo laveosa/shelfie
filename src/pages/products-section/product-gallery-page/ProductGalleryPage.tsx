@@ -61,7 +61,7 @@ export function ProductGalleryPage() {
     <div className={cs.productGalleryPage}>
       <SheContextSidebar
         menuCollectionType="products"
-        menuTitle={"Manage Product"}
+        menuTitle="Manage Product"
         isListLoading={productsState.isItemsCardLoading}
         listItems={productsState[productsState.activeTab]}
         showListItems

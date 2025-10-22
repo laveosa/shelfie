@@ -28,17 +28,16 @@ export default function SheFormField<T = any, TName extends FieldPath<T> = any>(
     <FormField<T, TName>
       control={form.control}
       name={name}
-      render={({ field, fieldState, formState }) =>
-        (
+      render={({ field, fieldState, formState }) => {
+        const contextValue = !ignoreFormAction ? { field, form } : null;
+        return (
           <SheFormItem {...sheFormItemProps}>
-            <SheFormItemContextProvider<T, TName>
-              value={!ignoreFormAction ? { field, form } : null}
-            >
+            <SheFormItemContextProvider<T, TName> value={contextValue}>
               {render({ field, fieldState, formState })}
             </SheFormItemContextProvider>
           </SheFormItem>
-        ) as any
-      }
+        ) as any;
+      }}
     />
   );
 }

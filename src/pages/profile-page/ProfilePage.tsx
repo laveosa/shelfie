@@ -1,59 +1,33 @@
 import React, { useEffect } from "react";
+
 import { Trash2 } from "lucide-react";
 
 import cs from "./ProfilePage.module.scss";
-import { Separator } from "@/components/ui/separator.tsx";
-import SheCardNotification
-  from "@/components/complex/she-card-notification/SheCardNotification.tsx";
-import {
-  SheFileUploader
-} from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
-import { useAppSelector } from "@/utils/hooks/redux.ts";
-import {
-  IProductsPageSlice
-} from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
-import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import useProfilePageService
-  from "@/pages/profile-page/useProfilePageService.ts";
-import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
-import ContactInformationForm
-  from "@/components/forms/contact-information-form/ContactInformationForm.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
-import PasswordChangeForm
-  from "@/components/forms/password-change-form/PasswordChangeForm.tsx";
-import {
-  ISheSelectItem
-} from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import { LanguageModel } from "@/const/models/LanguageModel.ts";
+import SheCardNotification from "@/components/complex/she-card-notification/SheCardNotification.tsx";
+import ContactInformationForm from "@/components/forms/contact-information-form/ContactInformationForm.tsx";
+import PasswordChangeForm from "@/components/forms/password-change-form/PasswordChangeForm.tsx";
+import { Separator } from "@/components/ui/separator.tsx";
+import { SheFileUploader } from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
+import { useAppSelector } from "@/utils/hooks/redux.ts";
+import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
+import { convertToSelectItems } from "@/utils/converters/primitive-components/she-select-convertors.ts";
+import useProfilePageService from "@/pages/profile-page/useProfilePageService.ts";
+import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 
 export function ProfilePage() {
   const state = useAppSelector<IProductsPageSlice>(StoreSliceEnum.PROFILE);
   const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
   const service = useProfilePageService();
 
+  // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     service.getCountryCodesHandler();
     service.getLanguagesListHandler();
   }, []);
 
-  function svgStringToComponent(svgString: string): React.FC<any> {
-    return (props) => (
-      <span dangerouslySetInnerHTML={{ __html: svgString }} {...props} />
-    );
-  }
-
-  function convertLanguagesToSelectItems(
-    data: LanguageModel[],
-  ): ISheSelectItem<any>[] {
-    return data?.map(
-      (item): ISheSelectItem<any> => ({
-        value: item.localeCode,
-        text: item.name,
-        icon: svgStringToComponent(item.flagIcon),
-      }),
-    );
-  }
-
+  // ==================================================================== LAYOUT
   return (
     <div className={cs.profilePage}>
       <div className={cs.profilePageContent}>
@@ -91,7 +65,11 @@ export function ProfilePage() {
           </div>
           <div className={cs.profilePageContentBlock}>
             <ContactInformationForm
-              countryCodes={state.countryCodes}
+              countryCodes={convertToSelectItems(state.countryCodes, {
+                text: "countryName",
+                value: "countryId",
+                icon: "flagIcon",
+              })}
               data={appState.user}
               onSubmit={(data) =>
                 service.updateUserContactInformationHandler(data)
@@ -127,13 +105,17 @@ export function ProfilePage() {
             </span>
           </div>
           <div className={cs.profilePageContentBlock}>
-            <SheSelect
-              items={convertLanguagesToSelectItems(state.languagesList)}
+            <SheSelect<string>
+              items={convertToSelectItems(state.languagesList, {
+                text: "name",
+                value: "localeCode",
+                icon: "flagIcon",
+              })}
               selected={appState.user?.localeCode}
               hideFirstOption
               label="Language"
               fullWidth
-              onSelect={(value) => service.changeLanguageHandler(value)}
+              onSelect={service.changeLanguageHandler}
             />
           </div>
         </div>

@@ -20,10 +20,6 @@
       //  max-width: 70px;
       //}
 
-      //.purchaseFormInput {
-      //  margin-bottom: -13px;
-      //}
-      //
       //.purchaseFormItem {
       //  margin-bottom: 0;
       //  min-height: 100%;
@@ -38,14 +34,15 @@
   }
 
   .formItemsValid {
-    input, button {
-      border: 1px solid #007AFF;
+    input,
+    button {
+      border: 1px solid #007aff;
       border-radius: 6px;
     }
   }
 
   .buttonValid {
-    background: #007AFF;
+    background: #007aff;
     color: #fff;
   }
 }

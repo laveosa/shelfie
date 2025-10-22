@@ -415,6 +415,8 @@ export default function VariantConfigurationCard({
               valueTransKey="StockActions.Dispose"
               icon={Minus}
               variant="secondary"
+              maxWidth="100px"
+              minWidth="100px"
               onClick={() => onAction("openDisposeStockCard")}
             />
             <SheButton
@@ -422,7 +424,8 @@ export default function VariantConfigurationCard({
               valueTransKey="CommonButtons.History"
               icon={Clock}
               variant="secondary"
-              maxWidth="89px"
+              maxWidth="100px"
+              minWidth="100px"
               onClick={() =>
                 onAction("openVariantHistoryCard", variant.variantId)
               }

@@ -1,73 +1,61 @@
-import React, { JSX, useEffect } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
+import React, { JSX } from "react";
 import { CheckCheck } from "lucide-react";
 
+import cs from "./PasswordChangeForm.module.scss";
+import useAppForm from "@/utils/hooks/useAppForm.ts";
+import SheForm from "@/components/complex/she-form/SheForm.tsx";
+import SheInput from "@/components/primitive/she-input/SheInput.tsx";
+import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
+import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
+import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
+import PasswordChangeFormScheme from "@/utils/validation/schemes/PasswordChangeFormScheme.ts";
+import { IChangePasswordForm } from "@/const/interfaces/forms/IChangePasswordForm.ts";
 import {
   PasswordModel,
   PasswordModelDefaultModel,
 } from "@/const/models/PasswordModel.ts";
-import useAppForm from "@/utils/hooks/useAppForm.ts";
-import SheForm from "@/components/complex/she-form/SheForm.tsx";
-import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
-import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
-import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
-import { ContactInformationModelDefaultModel } from "@/const/models/ContactInformationModel.ts";
-import cs from "./PasswordChangeForm.module.scss";
-import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
-import passwordChangeFormScheme from "@/utils/validation/schemes/PasswordChangeFormScheme.ts";
-import { IChangePasswordForm } from "@/const/interfaces/forms/IChangePasswordForm.ts";
 
 export default function PasswordChangeForm({
   data,
   onSubmit,
-  onCancel,
 }: IChangePasswordForm): JSX.Element {
-  const form = useAppForm<PasswordModel>({
-    mode: ReactHookFormMode.CHANGE,
-    resolver: zodResolver(passwordChangeFormScheme),
+  // ==================================================================== UTILITIES
+  const { form } = useAppForm<PasswordModel>({
+    values: data,
     defaultValues: PasswordModelDefaultModel,
+    scheme: PasswordChangeFormScheme,
+    mode: ReactHookFormMode.CHANGE,
   });
 
-  useEffect(() => {
-    form.reset(data);
-  }, [data]);
-
+  // ==================================================================== EVENT HANDLERS
   function onSubmitHandler(data: PasswordModel) {
-    onSubmit(data);
+    onSubmit?.(data);
     form.reset({}, { keepErrors: false, keepDirty: false });
     setTimeout(() => form.clearErrors(), 0);
   }
 
-  function onErrorHandler(model) {
-    console.log(model);
-  }
-
+  // ==================================================================== LAYOUT
   return (
     <SheForm<PasswordModel>
-      className={cs.changePasswordForm}
       form={form}
-      defaultValues={ContactInformationModelDefaultModel}
-      view={ComponentViewEnum.STANDARD}
+      className={cs.changePasswordForm}
+      footerClassName={cs.formFooter}
       footerPosition={DirectionEnum.RIGHT}
+      hideSecondaryBtn
       primaryBtnTitle="Save Changes"
       primaryBtnProps={{
         icon: CheckCheck,
       }}
-      hideSecondaryBtn
-      footerClassName={cs.formFooter}
-      onSubmit={(data) => onSubmitHandler(data)}
-      onError={onErrorHandler}
-      onCancel={onCancel}
+      onSubmit={onSubmitHandler}
     >
       <SheFormField
         name="password"
         render={({ field }) => (
           <SheInput
-            label="Password"
             value={field.value}
-            type="password"
+            label="Password"
             placeholder="enter your first name..."
+            type="password"
             fullWidth
           />
         )}
@@ -76,10 +64,10 @@ export default function PasswordChangeForm({
         name="newPassword"
         render={({ field }) => (
           <SheInput
-            label="New Password"
             value={field.value}
-            type="password"
+            label="New Password"
             placeholder="enter new password..."
+            type="password"
             fullWidth
           />
         )}
@@ -88,11 +76,10 @@ export default function PasswordChangeForm({
         name="confirmPassword"
         render={({ field }) => (
           <SheInput
-            label="Confirm Password"
-            className={cs.phoneNumber}
             value={field.value}
-            type="password"
+            label="Confirm Password"
             placeholder="enter new password..."
+            type="password"
             fullWidth
           />
         )}

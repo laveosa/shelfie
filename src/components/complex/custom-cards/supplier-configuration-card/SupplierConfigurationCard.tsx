@@ -4,6 +4,7 @@ import cs from "./SupplierConfigurationCard.module.scss";
 import SheCard from "@/components/complex/she-card/SheCard.tsx";
 import CreateSupplierForm from "@/components/forms/create-supplier-form/CreateSupplierForm.tsx";
 import { ICreateSupplierCard } from "@/const/interfaces/complex-components/custom-cards/ICreateSupplierCard.ts";
+import { convertToSelectItems } from "@/utils/converters/primitive-components/she-select-convertors.ts";
 
 export default function SupplierConfigurationCard({
   isLoading,
@@ -51,7 +52,10 @@ export default function SupplierConfigurationCard({
           isGridLoading={isSupplierPhotosGridLoading}
           isPhotoUploaderLoading={isPhotoUploaderLoading}
           className={cs.supplierConfigurationCardForm}
-          countryList={countryList}
+          countryList={convertToSelectItems(countryList, {
+            text: "countryName",
+            value: "countryId",
+          })}
           data={managedSupplier}
           photos={managedSupplier?.photos}
           onDndPhoto={onDndPhoto}

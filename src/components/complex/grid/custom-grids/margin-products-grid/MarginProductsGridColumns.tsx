@@ -7,6 +7,7 @@ import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import cs from "./MarginProductsGridColumns.module.scss";
 import MarginItemsForm from "@/components/forms/margin-items-form/MarginItemsForm.tsx";
 import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
+import { convertToSelectItems } from "@/utils/converters/primitive-components/she-select-convertors.ts";
 
 export function marginProductsGridColumns(
   taxes: TaxTypeModel[],
@@ -170,7 +171,10 @@ export function marginProductsGridColumns(
         return (
           <MarginItemsForm
             data={row.original}
-            taxes={taxes}
+            taxes={convertToSelectItems(taxes, {
+              text: "name",
+              value: "id",
+            })}
             currentPrice={row.getValue("currentPrice")}
             onMarginItemChange={(data) => {
               onAction("updateMarginItem", data);

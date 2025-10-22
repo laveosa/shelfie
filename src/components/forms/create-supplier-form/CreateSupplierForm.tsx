@@ -1,41 +1,34 @@
-import React, { useEffect, useRef, useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
+import React, { JSX, useRef, useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 
-import {
-  SupplierModel,
-  SupplierModelDefault,
-} from "@/const/models/SupplierModel.ts";
+import cs from "./CreateSupplierForm.module.scss";
+import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
+import SheForm from "@/components/complex/she-form/SheForm.tsx";
+import SheInput from "@/components/primitive/she-input/SheInput.tsx";
+import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
+import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
+import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
+import { SupplierPhotosGridColumns } from "@/components/complex/grid/custom-grids/supplier-photos-grid/SupplierPhotosGridColumns.tsx";
+import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
+import useAppForm from "@/utils/hooks/useAppForm.ts";
+import CreateSupplierFormScheme from "@/utils/validation/schemes/CreateSupplierFormScheme.ts";
 import {
   SheFileUploader,
   SheFileUploaderRef,
 } from "@/components/complex/she-file-uploader/SheFileUploader.tsx";
-import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
-import { ICreateSupplierForm } from "@/const/interfaces/forms/ICreateSupplierForm.ts";
-import useAppForm from "@/utils/hooks/useAppForm.ts";
-import CreateSupplierFormScheme from "@/utils/validation/schemes/CreateSupplierFormScheme.ts";
-import SheForm from "@/components/complex/she-form/SheForm.tsx";
-import { UserModelDefault } from "@/const/models/UserModel.ts";
-import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
-import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
-import { FormField } from "@/components/ui/form.tsx";
-import SheFormItem from "@/components/complex/she-form/components/she-form-item/SheFormItem.tsx";
-import SheInput from "@/components/primitive/she-input/SheInput.tsx";
-import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
-import { ISheSelectItem } from "@/const/interfaces/primitive-components/ISheSelectItem.ts";
-import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import cs from "./CreateSupplierForm.module.scss";
-import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
-import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
-import { SupplierPhotosGridColumns } from "@/components/complex/grid/custom-grids/supplier-photos-grid/SupplierPhotosGridColumns.tsx";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
+import { ICreateSupplierForm } from "@/const/interfaces/forms/ICreateSupplierForm.ts";
+import {
+  SupplierModel,
+  SupplierModelDefault,
+} from "@/const/models/SupplierModel.ts";
 
 interface SupplierFormData extends SupplierModel {
   images?: File[];
   uploadModels?: any[];
 }
 
-export default function CreateSupplierForm<T>({
+export default function CreateSupplierForm({
   isLoading,
   isPhotoUploaderLoading,
   className,
@@ -47,27 +40,23 @@ export default function CreateSupplierForm<T>({
   isGridLoading,
   onDeletePhoto,
   onDndPhoto,
-}: ICreateSupplierForm<T>) {
-  const form = useAppForm<SupplierModel>({
-    mode: "onSubmit",
-    resolver: zodResolver(CreateSupplierFormScheme),
-    defaultValues: data || SupplierModelDefault,
+}: ICreateSupplierForm): JSX.Element {
+  // ==================================================================== STATE MANAGEMENT
+  const [submissionData, setSubmissionData] = useState<SupplierFormData>(null);
+
+  // ==================================================================== UTILITIES
+  const { form } = useAppForm<SupplierModel>({
+    values: data,
+    defaultValues: SupplierModelDefault,
+    scheme: CreateSupplierFormScheme,
+    mode: ReactHookFormMode.SUBMIT,
   });
+
+  // ==================================================================== REF
   const imageUploaderRef = useRef<SheFileUploaderRef>(null);
-  const [submissionData, setSubmissionData] = useState<SupplierFormData | null>(
-    null,
-  );
 
-  function convertCountriesToSelectItems(data: any[]): ISheSelectItem<T>[] {
-    return data?.map(
-      (item): ISheSelectItem<T> => ({
-        value: item.countryId,
-        text: item.countryName,
-      }),
-    );
-  }
-
-  function handleFormSubmit(formData: SupplierModel) {
+  // ==================================================================== EVENT HANDLER
+  function onSubmitHandler(formData: SupplierModel) {
     const selectedFiles = imageUploaderRef.current?.getSelectedFiles() || [];
     const uploadModels = imageUploaderRef.current?.getUploadModels() || [];
     const completeData: SupplierFormData = {
@@ -77,13 +66,10 @@ export default function CreateSupplierForm<T>({
     };
 
     setSubmissionData(completeData);
-    onSubmit(completeData as T);
+    onSubmit(completeData as SupplierModel);
   }
 
-  useEffect(() => {
-    form.reset(data || SupplierModelDefault);
-  }, [data]);
-
+  // ==================================================================== PRIVATE
   const getCurrentImages = () => {
     if (isLoading && submissionData?.images) {
       return submissionData.images;
@@ -91,32 +77,32 @@ export default function CreateSupplierForm<T>({
     return imageUploaderRef.current?.getSelectedFiles() || [];
   };
 
+  // ==================================================================== LAYOUT
   return (
     <div className={`${cs.createSupplierForm} ${className}`}>
-      <SheForm
+      <SheForm<SupplierModel>
         form={form}
-        defaultValues={UserModelDefault}
-        formPosition={DirectionEnum.CENTER}
-        view={ComponentViewEnum.STANDARD}
         fullWidth
-        hidePrimaryBtn
-        hideSecondaryBtn
-        onSubmit={() => handleFormSubmit}
+        primaryBtnProps={{
+          value: data ? "Save Changes" : "Create Supplier",
+          valueTransKey: data
+            ? "CommonButtons.SaveChanges"
+            : "CommonButtons.CreateSupplier",
+        }}
         onCancel={onCancel}
+        onSubmit={onSubmitHandler}
       >
         <SheFormField
           name="supplierName"
           render={({ field }) => (
             <SheInput
-              className={cs.formItem}
-              label="Name"
               value={field.value}
+              label="Name"
               placeholder="enter supplier name..."
               fullWidth
             />
           )}
         />
-
         {isPhotoUploaderLoading ? (
           <div className={cs.uploadingBlockContainer}>
             {getCurrentImages().map((file: any, index) => {
@@ -188,9 +174,8 @@ export default function CreateSupplierForm<T>({
           name="addressLine1"
           render={({ field }) => (
             <SheInput
-              className={cs.formItem}
-              label="Address line 1"
               value={field.value}
+              label="Address line 1"
               placeholder="enter address line 1..."
               fullWidth
             />
@@ -200,9 +185,8 @@ export default function CreateSupplierForm<T>({
           name="addressLine2"
           render={({ field }) => (
             <SheInput
-              className={cs.formItem}
-              label="Address line 2"
               value={field.value}
+              label="Address line 2"
               placeholder="enter address line 2..."
               fullWidth
             />
@@ -212,9 +196,8 @@ export default function CreateSupplierForm<T>({
           name="city"
           render={({ field }) => (
             <SheInput
-              className={cs.formItem}
-              label="City"
               value={field.value}
+              label="City"
               placeholder="enter city..."
               fullWidth
             />
@@ -224,9 +207,8 @@ export default function CreateSupplierForm<T>({
           name="state"
           render={({ field }) => (
             <SheInput
-              className={cs.formItem}
-              label="State/Province/Region"
               value={field.value}
+              label="State/Province/Region"
               placeholder="enter province..."
               fullWidth
             />
@@ -236,45 +218,27 @@ export default function CreateSupplierForm<T>({
           name="postCode"
           render={({ field }) => (
             <SheInput
-              className={cs.formItem}
-              label="Zip/Postal Code"
               value={field.value}
+              label="Zip/Postal Code"
               placeholder="enter postal code..."
               fullWidth
             />
           )}
         />
-        <FormField
-          control={form.control}
+        <SheFormField
           name="countryId"
           render={({ field }) => (
-            <SheFormItem label="Country">
-              <SheSelect
-                selected={field.value}
-                items={convertCountriesToSelectItems(countryList)}
-                hideFirstOption
-                placeholder="choose country..."
-                fullWidth
-                onSelect={(value) => {
-                  field.onChange(value);
-                  void form.trigger("countryId");
-                }}
-              />
-            </SheFormItem>
+            <SheSelect
+              items={countryList}
+              selected={field.value}
+              label="Country"
+              placeholder="choose country..."
+              hideFirstOption
+              fullWidth
+            />
           )}
         />
       </SheForm>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <SheButton
-          value="Cancel"
-          variant="secondary"
-          onClick={() => onCancel()}
-        />
-        <SheButton
-          value={data ? "Save Changes" : "Create Supplier"}
-          onClick={form.handleSubmit(handleFormSubmit)}
-        />
-      </div>
     </div>
   );
 }

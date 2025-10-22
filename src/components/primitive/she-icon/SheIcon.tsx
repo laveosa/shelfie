@@ -50,6 +50,7 @@ function SheIconComponent({
       onClick={onClickHandler}
     >
       {typeof icon === "string" &&
+        !icon.trim().startsWith("<svg") &&
         (/\.(png|jpe?g|gif|webp|svg)$/i.test(icon) ||
           icon.includes("png") ||
           icon.includes("jpeg") ||
@@ -62,6 +63,17 @@ function SheIconComponent({
             style={{ ...elementStyle }}
             alt="icon"
             role="img"
+          />
+        )}
+      {typeof icon === "string" &&
+        icon.trim().startsWith("<svg") &&
+        icon.trim().endsWith("</svg>") && (
+          <div
+            className={elementClassName}
+            style={elementStyle}
+            dangerouslySetInnerHTML={{
+              __html: icon.replace(/^"|"$/g, "").replace(/\\"/g, '"'),
+            }}
           />
         )}
       {icon && isObject(icon) && (

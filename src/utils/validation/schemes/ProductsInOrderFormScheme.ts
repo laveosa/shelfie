@@ -1,9 +1,12 @@
 import { z } from "zod";
-import { IZodSchema } from "@/const/interfaces/IZodSchema.ts";
 
-const ProductsInOrderFormScheme: z.ZodObject<IZodSchema<any>> = z.object({
-  priceBrutto: z.any(),
-  quantity: z.any(),
-});
+import { AppSchemeType } from "@/const/types/AppSchemeType.ts";
+import { ProductsInOrderFormDataModel } from "@/const/models/ProductsInOrderFormDataModel.ts";
+
+const ProductsInOrderFormScheme: AppSchemeType<ProductsInOrderFormDataModel> =
+  z.object({
+    priceBrutto: z.any(),
+    quantity: z.any(),
+  });
 
 export default ProductsInOrderFormScheme;
