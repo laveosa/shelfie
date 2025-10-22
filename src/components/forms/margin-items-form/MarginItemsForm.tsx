@@ -1,6 +1,6 @@
 import { ArrowBigRight, Check, CheckCheck, Lock, Undo2 } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 import {
   MarginItemModel,
@@ -21,6 +21,7 @@ import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
 import SheFormItem from "@/components/complex/she-form/components/she-form-item/SheFormItem.tsx";
+import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
 
 export default function MarginItemsForm({
   data,
@@ -29,14 +30,22 @@ export default function MarginItemsForm({
   onApply,
 }: IMarginItemsForm) {
   const form = useAppForm<MarginItemModel>({
-    mode: "onSubmit",
+    mode: ReactHookFormMode.CHANGE,
     resolver: zodResolver(MarginItemsFormScheme),
     defaultValues: data || MarginItemModelDefault,
   });
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
     form.reset(data);
   }, [data]);
+
+  useEffect(() => {
+    if (data?.selectedItem && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [data?.selectedItem]);
 
   function convertTaxesToSelectItems(
     data: TaxTypeModel[],
@@ -86,31 +95,6 @@ export default function MarginItemsForm({
             </SheFormItem>
           )}
         />
-        {/*<FormField
-          control={form.control}
-          name="taxTypeId"
-          render={({ field }) => (
-            <SheFormItem
-              className={`${cs.marginItemsFormItem} ${cs.marginItemsFormInput}`}
-            >
-              //TODO: WHEN NEW SheSelect COMPONENT WILL BE UPLOADED - SET SELECTED ITEM!!!
-              <SheSelect
-                className={data?.taxTypeChanged ? cs.selectChanged : ""}
-                placeholder=" "
-                selected={field.value || data?.taxTypeId}
-                items={convertTaxesToSelectItems(taxes)}
-                hideFirstOption
-                minWidth="70px"
-                maxWidth="70px"
-                onSelect={(value) => {
-                  field.onChange(value);
-                  void form.trigger("taxTypeId");
-                  onMarginItemChange(form.getValues());
-                }}
-              />
-            </SheFormItem>
-          )}
-        />*/}
         <div
           className={`${cs.marginItemsFormItem} ${cs.marginItemsFormIcon} ${data.taxTypeChanged ? cs.arrowIconActive : cs.arrowIcon}`}
         >
@@ -131,12 +115,17 @@ export default function MarginItemsForm({
           render={({ field }) => (
             <SheFormItem className={cs.formItem}>
               <SheInput
+                ref={inputRef}
                 value={field.value}
                 className={data?.marginPriceChanged ? cs.inputChanged : ""}
                 minWidth="70px"
                 maxWidth="70px"
+                autoFocus={data.selectedItem}
+                delayTime={1500}
                 onDelay={() => {
-                  onMarginItemChange(form.getValues());
+                  onMarginItemChange({
+                    ...form.getValues(),
+                  });
                 }}
               />
             </SheFormItem>
