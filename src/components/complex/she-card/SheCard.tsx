@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import _ from "lodash";
 
 import cs from "./SheCard.module.scss";
-import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import SheCardHeader from "@/components/complex/she-card/components/she-card-header/SheCardHeader.tsx";
 import SheCardFooter from "@/components/complex/she-card/components/she-card-footer/SheCardFooter.tsx";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
+import { CarouselItem } from "@/components/ui/carousel.tsx";
+import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import {
   getCustomProps,
   removeCustomProps,
@@ -80,38 +81,40 @@ export default function SheCard(props: ISheCard) {
 
   // ==================================================================== LAYOUT
   return (
-    <div
-      className={`${className} ${cs.sheCard} ${cs[view]} ${_isMinimized && "sheCardMinimized"} ${showHeader && cs.withHeader}
-      ${showFooter && cs.withFooter}`}
-      style={{
-        width,
-        minWidth,
-        maxWidth,
-      }}
-    >
-      <SheLoading className={cs.sheCardLoading} isLoading={isLoading} />
-      <SheCardHeader
-        {...sheCardHeaderProps}
-        view={view}
-        isMinimized={_isMinimized}
-        showHeader={showHeader}
-        onHeaderToggleClick={onMinimizeCardHandler}
-        onHeaderCloseClick={onHeaderCloseClick || onSecondaryButtonClick}
-      />
+    <CarouselItem className={cs.cardCarouselItem}>
       <div
-        {...restProps}
-        className={`${cs.cardContextWrapper} ${isLoading ? cs.cardContextIsLoading : ""}`}
+        className={`${className} ${cs.sheCard} ${cs[view]} ${_isMinimized && "sheCardMinimized"} ${showHeader && cs.withHeader}
+      ${showFooter && cs.withFooter}`}
+        style={{
+          width,
+          minWidth,
+          maxWidth,
+        }}
       >
-        <div className={`${cs.cardContextContainer} ${contextClassName}`}>
-          {children}
+        <SheLoading className={cs.sheCardLoading} isLoading={isLoading} />
+        <SheCardHeader
+          {...sheCardHeaderProps}
+          view={view}
+          isMinimized={_isMinimized}
+          showHeader={showHeader}
+          onHeaderToggleClick={onMinimizeCardHandler}
+          onHeaderCloseClick={onHeaderCloseClick || onSecondaryButtonClick}
+        />
+        <div
+          {...restProps}
+          className={`${cs.cardContextWrapper} ${isLoading ? cs.cardContextIsLoading : ""}`}
+        >
+          <div className={`${cs.cardContextContainer} ${contextClassName}`}>
+            {children}
+          </div>
         </div>
+        <SheCardFooter
+          {...sheCardFooterProps}
+          view={view}
+          isMinimized={_isMinimized}
+          onNotificationCardButtonClick={onNotificationCardButtonClickHandler}
+        />
       </div>
-      <SheCardFooter
-        {...sheCardFooterProps}
-        view={view}
-        isMinimized={_isMinimized}
-        onNotificationCardButtonClick={onNotificationCardButtonClickHandler}
-      />
-    </div>
+    </CarouselItem>
   );
 }

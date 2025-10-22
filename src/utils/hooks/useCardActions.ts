@@ -28,9 +28,9 @@ export function useCardActions({
         if (!currentCards.includes(identifier)) {
           updatedCards = [...currentCards, identifier];
           dispatch(refreshAction(updatedCards));
-          setTimeout(() => {
+          /*setTimeout(() => {
             scrollToRefElement(cardRefs.current, identifier);
-          }, 100);
+          }, 100);*/
         } else {
           dispatch(refreshAction(currentCards));
         }
@@ -62,11 +62,11 @@ export function useCardActions({
       const updatedCardsArray = Array.from(updatedCards);
       dispatch(refreshAction(updatedCardsArray));
 
-      if (lastAddedCard) {
+      /*if (lastAddedCard) {
         setTimeout(() => {
           scrollToRefElement(cardRefs.current, lastAddedCard);
         }, 100);
-      }
+      }*/
     },
     [activeCards, dispatch, refreshAction],
   );

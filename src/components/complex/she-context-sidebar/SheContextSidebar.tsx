@@ -1,8 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import cs from "./SheContextSidebar.module.scss";
 import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
 import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
+import {
+  Carousel,
+  CarouselApi,
+  CarouselContent,
+} from "@/components/ui/carousel.tsx";
 import { ISheContextSidebar } from "@/const/interfaces/complex-components/ISheContextSidebar.ts";
 import {
   IItemsCardItem,
@@ -30,12 +35,36 @@ export default function SheContextSidebar({
 }: ISheContextSidebar) {
   // ==================================================================== STATE MANAGEMENT
   const [_listItems, setListItems] = useState<IItemsCardItem[]>([]);
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
+
+  // ==================================================================== REF
+  const prevCardsCount = useRef(activeCards?.length || 0);
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     if (listItems && listItems.length > 0)
       setListItems(_listItemsConvertor(listItems));
   }, [listItems]);
+
+  useEffect(() => {
+    if (carouselApi) {
+      const currentCount = activeCards?.length || 0;
+      const cardsAdded = currentCount > prevCardsCount.current;
+
+      requestAnimationFrame(() => {
+        carouselApi.reInit();
+
+        if (cardsAdded) {
+          requestAnimationFrame(() => {
+            const lastIndex = carouselApi.scrollSnapList().length - 1;
+            carouselApi.scrollTo(lastIndex, true);
+          });
+        }
+      });
+
+      prevCardsCount.current = currentCount;
+    }
+  }, [activeCards, children, carouselApi]);
 
   // ==================================================================== LOGIC
 
@@ -109,7 +138,21 @@ export default function SheContextSidebar({
           </div>
         </div>
       )}
-      <div className={cs.sheContextSidebarContextContainer}>{children}</div>
+      <div className={cs.sheContextSidebarContextContainer}>
+        <Carousel
+          setApi={setCarouselApi}
+          className={cs.carouselContainer}
+          opts={{
+            align: "start",
+            dragFree: true,
+            slidesToScroll: "auto",
+          }}
+        >
+          <CarouselContent className={cs.carouselContent}>
+            {children}
+          </CarouselContent>
+        </Carousel>
+      </div>
     </div>
   );
 }
