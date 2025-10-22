@@ -31,6 +31,7 @@ export default function SheContextSidebar({
   itemId,
   activeCards,
   skeletonQuantity,
+  noHorizontalScroll,
   onAction,
 }: ISheContextSidebar) {
   // ==================================================================== STATE MANAGEMENT
@@ -65,6 +66,56 @@ export default function SheContextSidebar({
       prevCardsCount.current = currentCount;
     }
   }, [activeCards, children, carouselApi]);
+
+  useEffect(() => {
+    if (!noHorizontalScroll && carouselApi) {
+      const container = carouselApi.containerNode();
+
+      const handleWheel = (e: WheelEvent) => {
+        const target = e.target as HTMLElement;
+        let scrollableElement: HTMLElement | null = null;
+        let currentElement = target;
+
+        while (currentElement && currentElement !== container) {
+          const hasOverflow =
+            currentElement.scrollHeight > currentElement.clientHeight;
+          const isScrollable =
+            window.getComputedStyle(currentElement).overflowY !== "hidden";
+
+          if (hasOverflow && isScrollable) {
+            scrollableElement = currentElement;
+            break;
+          }
+
+          currentElement = currentElement.parentElement;
+        }
+
+        if (scrollableElement) {
+          const { scrollTop, scrollHeight, clientHeight } = scrollableElement;
+          const isAtTop = scrollTop <= 1;
+          const isAtBottom = scrollTop + clientHeight >= scrollHeight - 1;
+
+          if ((e.deltaY > 0 && !isAtBottom) || (e.deltaY < 0 && !isAtTop)) {
+            return;
+          }
+        }
+
+        e.preventDefault();
+        setTimeout(() => {
+          carouselApi.scrollTo(
+            carouselApi.selectedScrollSnap() + (e.deltaY > 0 ? 1 : -1),
+            false,
+          );
+        });
+      };
+
+      container.addEventListener("wheel", handleWheel, { passive: false });
+
+      return () => {
+        container.removeEventListener("wheel", handleWheel);
+      };
+    }
+  }, [carouselApi]);
 
   // ==================================================================== LOGIC
 

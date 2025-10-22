@@ -22,5 +22,6 @@ export interface ISheContextSidebar extends PropsWithChildren {
   itemId?: number;
   activeCards?: any;
   skeletonQuantity?: number;
+  noHorizontalScroll?: boolean;
   onAction?: (value: any) => void;
 }
