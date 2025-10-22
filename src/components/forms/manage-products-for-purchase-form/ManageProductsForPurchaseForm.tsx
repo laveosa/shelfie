@@ -43,19 +43,21 @@ export default function ManageProductsForPurchaseForm({
           value: "Save",
           icon: Check,
           variant: "secondary",
+          minWidth: "fit-content",
           disabled: !form.formState.isValid,
         }}
-        primaryBtnTitle="Save"
         secondaryBtnProps={{
           value: null,
           icon: Trash2,
           variant: "outline",
-          disabled: !data.stockActionId,
+          minWidth: "fit-content",
+          disabled: !data?.stockActionId,
         }}
         onSubmit={onSubmit}
         onCancel={onDelete}
       >
         <SheFormField
+          className={cs.formItem}
           name="nettoPrice"
           render={({ field }) => (
             <SheInput

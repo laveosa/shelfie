@@ -3,19 +3,29 @@ import { useTranslation } from "react-i18next";
 
 import {
   formatDate,
-  setSelectedGridItem,
+  setSelectedGridItem
 } from "@/utils/helpers/quick-helper.ts";
 import PurchasesApiHooks from "@/utils/services/api/PurchasesApiService.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { IPurchaseProductsPageSlice } from "@/const/interfaces/store-slices/IPurchaseProductsPageSlice.ts";
-import { PurchaseProductsPageSliceActions as actions } from "@/state/slices/PurchaseProductsPageSlice.ts";
-import { ProductsPageSliceActions as productsActions } from "@/state/slices/ProductsPageSlice.ts";
-import useProductsPageService from "@/pages/products-section/products-page/useProductsPageService.ts";
-import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import {
+  IPurchaseProductsPageSlice
+} from "@/const/interfaces/store-slices/IPurchaseProductsPageSlice.ts";
+import {
+  PurchaseProductsPageSliceActions as actions
+} from "@/state/slices/PurchaseProductsPageSlice.ts";
+import {
+  ProductsPageSliceActions as productsActions
+} from "@/state/slices/ProductsPageSlice.ts";
+import useProductsPageService
+  from "@/pages/products-section/products-page/useProductsPageService.ts";
+import {
+  IProductsPageSlice
+} from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
-import useProductBasicDataPageService from "@/pages/products-section/product-basic-data-page/useProductBasicDataPageService.ts";
+import useProductBasicDataPageService
+  from "@/pages/products-section/product-basic-data-page/useProductBasicDataPageService.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
@@ -221,28 +231,42 @@ export default function usePurchaseProductsPageService(
   }
 
   function updatePurchaseProductHandler(model, purchaseId) {
+    dispatch(
+      actions.refreshPurchasesProductsGridRequestModel({
+        ...state.purchasesProductsGridRequestModel,
+        items: state.purchasesProductsGridRequestModel.items.map((item) =>
+          item.stockActionId === model.stockActionId
+            ? {
+                ...item,
+                unitsAmount: model.data.unitsAmount,
+                stockDocumentPrice: {
+                  ...item.stockDocumentPrice,
+                  currencyId: model.data.currencyId,
+                  taxTypeId: model.data.taxTypeId,
+                  netto: model.data.nettoPrice,
+                },
+              }
+            : item,
+        ),
+      }),
+    );
     updatePurchaseProductApiHandler(model.stockActionId, model.data).then(
       (res) => {
         if (!res.error) {
-          dispatch(actions.setIsPurchasesProductsGridLoading(true));
-          Promise.all([
-            getListOfPurchaseProductsForGridHandler(
-              purchaseId,
-              state.purchasesProductsGridRequestModel,
-            ),
-            getPurchaseSummaryHandler(purchaseId),
-          ]).then(() => {
-            dispatch(actions.setIsPurchasesProductsGridLoading(false));
-          });
-          addToast({
-            text: "Product updated successfully",
-            type: "success",
-          });
+          getPurchaseSummaryHandler(purchaseId),
+            addToast({
+              text: "Product updated successfully",
+              type: "success",
+            });
         } else {
-          addToast({
-            text: `${res.error.data.detail}`,
-            type: "error",
-          });
+          getListOfPurchaseProductsForGridHandler(
+            purchaseId,
+            state.purchasesProductsGridRequestModel,
+          ),
+            addToast({
+              text: `${res.error.data.detail}`,
+              type: "error",
+            });
         }
       },
     );
@@ -931,6 +955,21 @@ export default function usePurchaseProductsPageService(
       variantId: model.row.original.variantId,
     }).then((res) => {
       if (!res.error) {
+        dispatch(
+          actions.refreshPurchaseProductVariants(
+            state.purchaseProductVariants.map((item) =>
+              item.variantId === model.row.original.variantId
+                ? {
+                    ...item,
+                    variantStockActions: [
+                      ...(item.variantStockActions || []),
+                      res,
+                    ],
+                  }
+                : item,
+            ),
+          ),
+        );
         addToast({
           text: "Stock action added successfully",
           type: "success",
