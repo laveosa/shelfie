@@ -170,7 +170,7 @@ export default function SheContextSidebar({
     >
       {!hideSidebarBlock && (
         <div className={cs.sheContextSidebarMenuAndListContainer}>
-          {showListItems && (
+          {!isMobile && showListItems && (
             <div className={cs.sheContextSidebarList}>
               <ItemsCard
                 isLoading={isListLoading}
@@ -209,7 +209,7 @@ export default function SheContextSidebar({
             </CarouselContent>
           </Carousel>
         ) : (
-          <div>{children}</div>
+          <>{children}</>
         )}
       </div>
     </div>

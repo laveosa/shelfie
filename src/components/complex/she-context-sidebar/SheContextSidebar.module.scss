@@ -57,6 +57,9 @@
 
 .sheContextSidebar {
   &.isMobile {
+    .sheContextSidebarMenuAndListContainer {
+    }
+
     .sheContextSidebarContextContainer {
       overflow-x: auto;
       margin-bottom: 6px;
