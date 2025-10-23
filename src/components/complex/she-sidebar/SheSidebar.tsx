@@ -109,7 +109,7 @@ export default function SheSidebar({
 }: ISheSidebar) {
   // ========================================================= UTILITIES
   const location = useLocation();
-  const { setOpenMobile } = useSidebar();
+  const { isMobile, setOpenMobile } = useSidebar();
 
   // ========================================================= STATE MANAGEMENT
   const [selected, setSelected] = useState<NavUrlEnum | string>(
@@ -124,7 +124,7 @@ export default function SheSidebar({
   // ========================================================= EVENT HANDLERS
   function onSelectMenuOptionHandler(item) {
     setSelected(item.url);
-    setOpenMobile(false);
+    if (isMobile) setOpenMobile(false);
   }
 
   // ========================================================= LAYOUT
