@@ -13,6 +13,7 @@ import {
   IItemsCardItem,
   IItemsCardItemOption,
 } from "@/const/interfaces/complex-components/custom-cards/IItemsCard.ts";
+import { useSidebar } from "@/components/ui/sidebar.tsx";
 
 export default function SheContextSidebar({
   className = "",
@@ -31,15 +32,18 @@ export default function SheContextSidebar({
   itemId,
   activeCards,
   skeletonQuantity,
-  noHorizontalScroll,
+  isMouseWheelHorizontalScroll,
   onAction,
 }: ISheContextSidebar) {
   // ==================================================================== STATE MANAGEMENT
   const [_listItems, setListItems] = useState<IItemsCardItem[]>([]);
-  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>(null);
 
   // ==================================================================== REF
   const prevCardsCount = useRef(activeCards?.length || 0);
+
+  // ==================================================================== UTILITIES
+  const { isMobile } = useSidebar();
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
@@ -68,7 +72,7 @@ export default function SheContextSidebar({
   }, [activeCards, children, carouselApi]);
 
   useEffect(() => {
-    if (!noHorizontalScroll && carouselApi) {
+    if (isMouseWheelHorizontalScroll && carouselApi) {
       const container = carouselApi.containerNode();
 
       const handleWheel = (e: WheelEvent) => {
@@ -161,7 +165,7 @@ export default function SheContextSidebar({
   // ==================================================================== LAYOUT
   return (
     <div
-      className={`${cs.sheContextSidebar} ${className}`}
+      className={`${cs.sheContextSidebar} ${className} ${hideSidebarBlock && cs.sheContextSidebarNoSideBar} ${isMobile && cs.isMobile}`}
       style={{ ...style }}
     >
       {!hideSidebarBlock && (
@@ -190,19 +194,23 @@ export default function SheContextSidebar({
         </div>
       )}
       <div className={cs.sheContextSidebarContextContainer}>
-        <Carousel
-          setApi={setCarouselApi}
-          className={cs.carouselContainer}
-          opts={{
-            align: "start",
-            dragFree: true,
-            slidesToScroll: "auto",
-          }}
-        >
-          <CarouselContent className={cs.carouselContent}>
-            {children}
-          </CarouselContent>
-        </Carousel>
+        {!isMobile ? (
+          <Carousel
+            setApi={setCarouselApi}
+            className={cs.carouselContainer}
+            opts={{
+              align: "start",
+              dragFree: true,
+              slidesToScroll: "auto",
+            }}
+          >
+            <CarouselContent className={cs.carouselContent}>
+              {children}
+            </CarouselContent>
+          </Carousel>
+        ) : (
+          <div>{children}</div>
+        )}
       </div>
     </div>
   );

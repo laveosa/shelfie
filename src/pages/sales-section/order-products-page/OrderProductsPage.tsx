@@ -258,6 +258,7 @@ export function OrderProductsPage() {
         menuCollectionType="order"
         menuTitle="Order"
         itemId={Number(orderId)}
+        activeCards={state.activeCards}
         counter={ordersState.productCounter}
       >
         <ProductsInOrderCard

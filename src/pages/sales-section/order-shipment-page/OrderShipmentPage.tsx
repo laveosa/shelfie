@@ -213,6 +213,7 @@ export function OrderShipmentPage() {
         menuTitle="Order"
         itemId={Number(orderId)}
         counter={ordersState.productCounter}
+        activeCards={state.activeCards}
       >
         <ShipmentDetailsCard
           isLoading={state.isShipmentDetailsCardLoading}

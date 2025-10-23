@@ -134,6 +134,7 @@ export function MarginsPage() {
         menuTitle={"Manage Product"}
         itemId={Number(purchaseId)}
         counter={productsState.purchaseCounters}
+        activeCards={state.activeCards}
       >
         <MarginForPurchaseCard
           isLoading={state.isMarginForPurchaseCardLoading}
