@@ -1,3 +1,6 @@
+import { useNavigate } from "react-router-dom";
+import { JSX } from "react";
+
 import {
   Cog,
   CreditCard,
@@ -6,8 +9,8 @@ import {
   UserRoundCog,
   UserRoundPlus,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
+import cs from "./SheUserMenu.module.scss";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,16 +24,15 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import cs from "./SheUserMenu.module.scss";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Skeleton } from "@/components/ui/skeleton.tsx";
 import useAppService from "@/useAppService.ts";
 import { getInitials } from "@/utils/helpers/quick-helper.ts";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ISheUserMenu } from "@/const/interfaces/complex-components/ISheUserMenu.ts";
-import { Skeleton } from "@/components/ui/skeleton.tsx";
 
-export function SheUserMenu({ user, isLoading }: ISheUserMenu) {
+export function SheUserMenu({ user, isLoading }: ISheUserMenu): JSX.Element {
   const { logOut } = useAppService();
   const navigate = useNavigate();
   const { openConfirmationDialog } = useDialogService();
@@ -68,30 +70,36 @@ export function SheUserMenu({ user, isLoading }: ISheUserMenu) {
                   </div>
                 </div>
               ) : (
-                <>
-                  <Avatar className="h-8 w-8 rounded-lg">
-                    {user?.thumbnail && (
-                      <AvatarImage src={user.thumbnail} alt="avatar" />
-                    )}
+                ((
+                  <>
+                    <Avatar className="h-8 w-8 rounded-lg">
+                      {user?.thumbnail && (
+                        <AvatarImage src={user.thumbnail} alt="avatar" />
+                      )}
 
-                    <AvatarFallback className="rounded-lg">
-                      {getInitials(undefined, user?.firstName, user?.lastName)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span
-                      className={`${cs.userText} she-text`}
-                    >{`${user?.firstName} ${user?.lastName}`}</span>
-                    <span className={`${cs.userText} she-subtext`}>
-                      {user?.email}
-                    </span>
-                  </div>
-                  <SheIcon
-                    icon={EllipsisVertical}
-                    maxWidth="24px"
-                    color="#71717A"
-                  />
-                </>
+                      <AvatarFallback className="rounded-lg">
+                        {getInitials(
+                          undefined,
+                          user?.firstName,
+                          user?.lastName,
+                        )}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="grid flex-1 text-left text-sm leading-tight">
+                      <span
+                        className={`${cs.userText} she-text`}
+                      >{`${user?.firstName} ${user?.lastName}`}</span>
+                      <span className={`${cs.userText} she-subtext`}>
+                        {user?.email}
+                      </span>
+                    </div>
+                    <SheIcon
+                      icon={EllipsisVertical}
+                      maxWidth="24px"
+                      color="#71717A"
+                    />
+                  </>
+                ) as JSX.Element)
               )}
             </SidebarMenuButton>
           </DropdownMenuTrigger>
