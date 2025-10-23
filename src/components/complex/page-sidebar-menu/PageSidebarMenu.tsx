@@ -16,18 +16,18 @@ import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { IconViewEnum } from "@/const/enums/IconViewEnum.ts";
 import {
   CollectionConfig,
-  IProductMenuCard,
+  IPageSidebarMenu,
   MenuItem,
-} from "@/const/interfaces/complex-components/custom-cards/IProductMenuCard.ts";
+} from "@/const/interfaces/complex-components/IPageSidebarMenu.ts";
 
-export default function ProductMenuCard({
+export default function PageSidebarMenu({
   isLoading,
   title,
   itemId,
   itemsCollection,
   counter,
   collectionConfig,
-}: IProductMenuCard): JSX.Element {
+}: IPageSidebarMenu): JSX.Element {
   // ==================================================================== STATE MANAGEMENT
   const [_config, setConfig] = useState<CollectionConfig>(null);
   const [_isMinimized, setIsMinimized] = useState<boolean>(null);

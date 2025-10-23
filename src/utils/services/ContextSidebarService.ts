@@ -9,7 +9,7 @@ import orderMenuItems from "@/const/jsons/context-sidebar/order-menu-items.json"
 import customerMenuItems from "@/const/jsons/context-sidebar/customer-menu-items.json";
 
 import { LucideIconType } from "@/const/types/LucideIconType.ts";
-import { MenuItem } from "@/const/interfaces/complex-components/custom-cards/IProductMenuCard.ts";
+import { MenuItem } from "@/const/interfaces/complex-components/IPageSidebarMenu.ts";
 
 export class ContextSidebarService {
   public static getProductMenuItems(): MenuItem[] {

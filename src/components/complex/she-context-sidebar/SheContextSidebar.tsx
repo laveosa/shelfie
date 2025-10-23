@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 import cs from "./SheContextSidebar.module.scss";
 import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
-import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
+import PageSidebarMenu from "@/components/complex/page-sidebar-menu/PageSidebarMenu.tsx";
 import {
   Carousel,
   CarouselApi,
@@ -183,7 +183,7 @@ export default function SheContextSidebar({
             </div>
           )}
           <div className={cs.sheContextSidebarMenu}>
-            <ProductMenuCard
+            <PageSidebarMenu
               title={menuTitle}
               itemsCollection={menuCollectionType}
               counter={counter}
