@@ -2,9 +2,9 @@ import { CalendarRange } from "lucide-react";
 import React from "react";
 
 import cs from "./SelectPurchaseCard.module.scss";
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheDatePicker from "@/components/primitive/she-date-picker/SheDatePicker.tsx";
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
 import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import { SelectPurchaseGridColumns } from "@/components/complex/grid/custom-grids/select-purchase-grid/SelectPurchaseGridColumns.tsx";
 import { CalendarModeEnum } from "@/const/enums/CalendarModeEnum.ts";
@@ -17,10 +17,10 @@ export default function SelectPurchaseCard({
   onAction,
 }: ISelectPurchaseCard) {
   return (
-    <SheProductCard
-      loading={isLoading}
+    <SheCard
       title="Select Purchase"
       showCloseButton
+      isLoading={isLoading}
       onSecondaryButtonClick={() => onAction("closeSelectPurchaseCard")}
     >
       <div className={cs.selectPurchaseCardContent}>
@@ -63,6 +63,6 @@ export default function SelectPurchaseCard({
           skeletonQuantity={10}
         />
       </div>
-    </SheProductCard>
+    </SheCard>
   );
 }
