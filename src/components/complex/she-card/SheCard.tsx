@@ -6,6 +6,7 @@ import SheCardHeader from "@/components/complex/she-card/components/she-card-hea
 import SheCardFooter from "@/components/complex/she-card/components/she-card-footer/SheCardFooter.tsx";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
 import { CarouselItem } from "@/components/ui/carousel.tsx";
+import { useSidebar } from "@/components/ui/sidebar.tsx";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import {
   getCustomProps,
@@ -60,6 +61,9 @@ export default function SheCard(props: ISheCard) {
   // ==================================================================== STATE MANAGEMENT
   const [_isMinimized, setIsMinimized] = useState<boolean>(null);
 
+  // ==================================================================== UTILITIES
+  const { isMobile } = useSidebar();
+
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     if (!_.isNil(isMinimized) && isMinimized !== _isMinimized)
@@ -80,8 +84,8 @@ export default function SheCard(props: ISheCard) {
   }
 
   // ==================================================================== LAYOUT
-  return (
-    <CarouselItem className={cs.cardCarouselItem}>
+  function mainLayoutWrapper() {
+    return (
       <div
         className={`${className} ${cs.sheCard} ${cs[view]} ${_isMinimized && "sheCardMinimized"} ${showHeader && cs.withHeader}
       ${showFooter && cs.withFooter}`}
@@ -115,6 +119,18 @@ export default function SheCard(props: ISheCard) {
           onNotificationCardButtonClick={onNotificationCardButtonClickHandler}
         />
       </div>
-    </CarouselItem>
+    );
+  }
+
+  return (
+    <>
+      {isMobile ? (
+        <>{mainLayoutWrapper()}</>
+      ) : (
+        <CarouselItem className={cs.cardCarouselItem}>
+          {mainLayoutWrapper()}
+        </CarouselItem>
+      )}
+    </>
   );
 }

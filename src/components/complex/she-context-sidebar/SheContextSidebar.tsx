@@ -52,7 +52,7 @@ export default function SheContextSidebar({
   }, [listItems]);
 
   useEffect(() => {
-    if (carouselApi) {
+    if (!isMobile && carouselApi) {
       const currentCount = activeCards?.length || 0;
       const cardsAdded = currentCount > prevCardsCount.current;
 
@@ -72,7 +72,7 @@ export default function SheContextSidebar({
   }, [activeCards, children, carouselApi]);
 
   useEffect(() => {
-    if (isMouseWheelHorizontalScroll && carouselApi) {
+    if (!isMobile && isMouseWheelHorizontalScroll && carouselApi) {
       const container = carouselApi.containerNode();
 
       const handleWheel = (e: WheelEvent) => {
