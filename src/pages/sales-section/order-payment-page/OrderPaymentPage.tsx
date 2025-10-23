@@ -20,7 +20,7 @@ export function OrderPaymentPage() {
         menuTitle="Order"
         itemId={Number(orderId)}
         counter={ordersState.productCounter}
-        activeCards={state.activeCards}
+        activeCards={ordersState.activeCards}
       >
         <h1>Open Carts Page</h1>
       </SheContextSidebar>
