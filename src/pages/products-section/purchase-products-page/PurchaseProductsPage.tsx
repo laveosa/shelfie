@@ -389,6 +389,7 @@ export function PurchaseProductsPage() {
       menuTitle="Report Purchase"
       itemId={Number(purchaseId)}
       counter={productsState.purchaseCounters}
+      activeCards={state.activeCards}
     >
       {state.activeCards?.includes("purchaseProductsCard") && (
         <div

@@ -102,6 +102,7 @@ export function OrderDetailsPage() {
         menuTitle="Order"
         itemId={Number(orderId)}
         counter={ordersState.productCounter}
+        activeCards={state.activeCards}
       >
         <OrderConfigurationCard
           isLoading={state.isOrderConfigurationCardLoading}

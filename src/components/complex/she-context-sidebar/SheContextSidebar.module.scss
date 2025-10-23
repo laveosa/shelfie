@@ -45,3 +45,11 @@
     }
   }
 }
+
+// ================================================== NO SIDEBAR
+
+.sheContextSidebar {
+  &.sheContextSidebarNoSideBar {
+    padding-left: vars.$paddingSmall;
+  }
+}

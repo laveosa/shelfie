@@ -167,7 +167,7 @@ export function ShipmentDetailsPage() {
   // ==================================================================== LAYOUT
   return (
     <div className={cs.shipmentDetailsPage}>
-      <SheContextSidebar hideSidebarBlock>
+      <SheContextSidebar hideSidebarBlock activeCards={state.activeCards}>
         <ShipmentConfigurationCard
           isLoading={state.isShipmentConfigurationCardLoading}
           shipment={state.selectedShipment}

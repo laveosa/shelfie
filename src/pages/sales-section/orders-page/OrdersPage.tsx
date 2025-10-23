@@ -53,6 +53,7 @@ export function OrdersPage() {
         menuTitle="Sales"
         itemId={Number(orderId)}
         counter={state.salesCounters}
+        activeCards={state.activeCards}
       >
         <OrdersCard
           isLoading={state.isOrdersCardLoading}

@@ -31,7 +31,7 @@ export default function SheContextSidebar({
   itemId,
   activeCards,
   skeletonQuantity,
-  noHorizontalScroll,
+  isMouseWheelHorizontalScroll,
   onAction,
 }: ISheContextSidebar) {
   // ==================================================================== STATE MANAGEMENT
@@ -68,7 +68,7 @@ export default function SheContextSidebar({
   }, [activeCards, children, carouselApi]);
 
   useEffect(() => {
-    if (!noHorizontalScroll && carouselApi) {
+    if (isMouseWheelHorizontalScroll && carouselApi) {
       const container = carouselApi.containerNode();
 
       const handleWheel = (e: WheelEvent) => {
@@ -161,7 +161,7 @@ export default function SheContextSidebar({
   // ==================================================================== LAYOUT
   return (
     <div
-      className={`${cs.sheContextSidebar} ${className}`}
+      className={`${cs.sheContextSidebar} ${className} ${hideSidebarBlock && cs.sheContextSidebarNoSideBar}`}
       style={{ ...style }}
     >
       {!hideSidebarBlock && (
