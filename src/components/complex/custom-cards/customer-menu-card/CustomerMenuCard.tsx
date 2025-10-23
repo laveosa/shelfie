@@ -87,7 +87,6 @@ export default function CustomerMenuCard({
   return (
     <SheCard
       title={title}
-      view="borderless"
       width="300px"
       minWidth="300px"
       isLoading={isLoading}
