@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 import { ChevronsUpDown } from "lucide-react";
 
 import cs from "./SheSidebarHeader.module.scss";
@@ -87,27 +87,33 @@ export default function SheSidebarHeader({
               side={isMobile ? "bottom" : "right"}
               sideOffset={4}
             >
-              {items?.map((item: UserOrganizationModel) => (
-                <DropdownMenuItem key={item?.id} asChild>
-                  <div
-                    className={cs.headerItem}
-                    onClick={() => onSelect(item?.id)}
-                  >
-                    {selected?.thumbnail ? (
-                      <div className={cs.headerImage}>
-                        <img src={selected?.thumbnail} alt="company-image" />
+              {items?.map(
+                (item: UserOrganizationModel) =>
+                  (
+                    <DropdownMenuItem key={item?.id} asChild>
+                      <div
+                        className={cs.headerItem}
+                        onClick={() => onSelect(item?.id)}
+                      >
+                        {selected?.thumbnail ? (
+                          <div className={cs.headerImage}>
+                            <img
+                              src={selected?.thumbnail}
+                              alt="company-image"
+                            />
+                          </div>
+                        ) : (
+                          <div className={cs.noImage}>
+                            <span className="she-title">
+                              {getInitials(selected?.name)}
+                            </span>
+                          </div>
+                        )}
+                        <span className="she-title">{item?.name}</span>
                       </div>
-                    ) : (
-                      <div className={cs.noImage}>
-                        <span className="she-title">
-                          {getInitials(selected?.name)}
-                        </span>
-                      </div>
-                    )}
-                    <span className="she-title">{item?.name}</span>
-                  </div>
-                </DropdownMenuItem>
-              ))}
+                    </DropdownMenuItem>
+                  ) as JSX.Element,
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </SidebarMenuItem>

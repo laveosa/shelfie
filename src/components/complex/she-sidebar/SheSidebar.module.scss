@@ -1,6 +1,7 @@
 @use "@/styles/variables" as vars;
 
-.sheSidebar {
+.sheSidebar,
+:global([data-sidebar="sidebar"][data-mobile="true"]) {
   .sidebarContent {
     background: linear-gradient(270deg, #1b3529 0%, #244637 100%);
 
