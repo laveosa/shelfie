@@ -3,6 +3,7 @@ import { useCallback, useRef } from "react";
 
 import { RootState } from "@/state/store.ts";
 import { scrollToRefElement } from "@/utils/helpers/quick-helper.ts";
+import { useSidebar } from "@/components/ui/sidebar.tsx";
 
 export function useCardActions({
   selectActiveCards,
@@ -14,6 +15,7 @@ export function useCardActions({
   const dispatch = useDispatch();
   const activeCards = useSelector(selectActiveCards);
   const cardRefs = useRef<Record<string, HTMLElement | null>>({});
+  const { isMobile } = useSidebar();
 
   const handleCardAction = useCallback(
     (
@@ -28,9 +30,12 @@ export function useCardActions({
         if (!currentCards.includes(identifier)) {
           updatedCards = [...currentCards, identifier];
           dispatch(refreshAction(updatedCards));
-          /*setTimeout(() => {
-            scrollToRefElement(cardRefs.current, identifier);
-          }, 100);*/
+
+          if (isMobile) {
+            setTimeout(() => {
+              scrollToRefElement(cardRefs.current, identifier);
+            }, 100);
+          }
         } else {
           dispatch(refreshAction(currentCards));
         }
@@ -62,11 +67,11 @@ export function useCardActions({
       const updatedCardsArray = Array.from(updatedCards);
       dispatch(refreshAction(updatedCardsArray));
 
-      /*if (lastAddedCard) {
+      if (isMobile && lastAddedCard) {
         setTimeout(() => {
           scrollToRefElement(cardRefs.current, lastAddedCard);
         }, 100);
-      }*/
+      }
     },
     [activeCards, dispatch, refreshAction],
   );

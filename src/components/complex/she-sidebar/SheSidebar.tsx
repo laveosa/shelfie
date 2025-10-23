@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
-import { Trans } from "react-i18next";
 import { NavLink, useLocation } from "react-router-dom";
+import { JSX, useEffect, useState } from "react";
+import { Trans } from "react-i18next";
+
 import {
   LayoutDashboard,
   LifeBuoy,
@@ -24,11 +25,11 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar.tsx";
 import SheSidebarHeader from "@/components/complex/she-sidebar/components/she-sidebar-header/SheSidebarHeader.tsx";
+import { getCurrentSectionUrl } from "@/utils/helpers/quick-helper.ts";
+import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { ISheSidebar } from "@/const/interfaces/complex-components/ISheSidebar.ts";
 import { ISheSidebarGroup } from "@/const/interfaces/complex-components/ISheSidebarGroup.ts";
-import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { ISheSidebarItem } from "@/const/interfaces/complex-components/ISheSidebarItem.ts";
-import { getCurrentSectionUrl } from "@/utils/helpers/quick-helper.ts";
 
 const navGroups: ISheSidebarGroup[] = [
   {
@@ -123,36 +124,39 @@ export default function SheSidebar({
         onSelectOrganization={onSelectedOrganizations}
       />
       <SidebarContent className={cs.sidebarContent}>
-        {navGroups.map((group: ISheSidebarGroup) => (
-          <SidebarGroup key={group.title}>
-            <SidebarGroupLabel>
-              <span className={cs.groupTitle}>
-                <Trans i18nKey={group.transKey}>{group.title}</Trans>
-              </span>
-            </SidebarGroupLabel>
-            <SidebarMenu>
-              {group.items.map((item: ISheSidebarItem) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    asChild
-                    className={
-                      selected === item.url ? cs.sidebarItemActive : ""
-                    }
-                    tooltip={item.title}
-                    onClick={() => setSelected(item.url)}
-                  >
-                    <NavLink to={item.url}>
-                      <item.icon />
-                      <span className={cs.navItemTitle}>
-                        <Trans i18nKey={item.transKey}>{item.title}</Trans>
-                      </span>
-                    </NavLink>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroup>
-        ))}
+        {navGroups.map(
+          (group: ISheSidebarGroup) =>
+            (
+              <SidebarGroup key={group.title}>
+                <SidebarGroupLabel>
+                  <span className={cs.groupTitle}>
+                    <Trans i18nKey={group.transKey}>{group.title}</Trans>
+                  </span>
+                </SidebarGroupLabel>
+                <SidebarMenu>
+                  {group.items.map((item: ISheSidebarItem) => (
+                    <SidebarMenuItem key={item.title}>
+                      <SidebarMenuButton
+                        asChild
+                        className={
+                          selected === item.url ? cs.sidebarItemActive : ""
+                        }
+                        tooltip={item.title}
+                        onClick={() => setSelected(item.url)}
+                      >
+                        <NavLink to={item.url}>
+                          <item.icon />
+                          <span className={cs.navItemTitle}>
+                            <Trans i18nKey={item.transKey}>{item.title}</Trans>
+                          </span>
+                        </NavLink>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
+                </SidebarMenu>
+              </SidebarGroup>
+            ) as JSX.Element,
+        )}
       </SidebarContent>
       <SidebarRail />
     </Sidebar>
