@@ -1034,25 +1034,26 @@ export default function useOrderProductsPageService(
         addNewLocationToCompany({
           companyId: res.data.companyId,
           model: model.address,
+        }).then(() => {
+          dispatch(actions.setIsCreateCompanyCardLoading(false));
+          handleCardAction("createCompanyCard");
+          dispatch(actions.setIsSuppliersGridLoading(true));
+          getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
+            (res) => {
+              dispatch(actions.setIsSuppliersGridLoading(false));
+              const modifiedList = res.data.items.map((item) => ({
+                ...item,
+                isSelected: item.companyId === state.selectedCompany?.companyId,
+              }));
+              dispatch(
+                actions.refreshCompaniesGridRequestModel({
+                  ...res.data,
+                  items: modifiedList,
+                }),
+              );
+            },
+          );
         });
-        dispatch(actions.setIsCreateCompanyCardLoading(false));
-        handleCardAction("createCompanyCard");
-        dispatch(actions.setIsSuppliersGridLoading(true));
-        getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
-          (res) => {
-            dispatch(actions.setIsSuppliersGridLoading(false));
-            const modifiedList = res.data.items.map((item) => ({
-              ...item,
-              isSelected: item.companyId === state.selectedCompany?.companyId,
-            }));
-            dispatch(
-              actions.refreshCompaniesGridRequestModel({
-                ...res.data,
-                items: modifiedList,
-              }),
-            );
-          },
-        );
         addToast({
           text: "Company created successfully",
           type: "success",

@@ -17,6 +17,7 @@ import { PurchaseModel } from "@/const/models/PurchaseModel.ts";
 import { CompanyModel } from "@/const/models/CompanyModel.ts";
 import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 import { LocationModel } from "@/const/models/LocationModel.ts";
+import { IManageVariantsPageSlice } from "@/const/interfaces/store-slices/IManageVariantsPageSlice.ts";
 
 const initialState: IPurchaseProductsPageSlice = {
   isLoading: false,
@@ -46,6 +47,7 @@ const initialState: IPurchaseProductsPageSlice = {
   isCompanyConfigurationCardLoading: false,
   isLocationConfigurationCardLoading: false,
   isImageUploaderLoading: false,
+  isPhotoUploaderLoading: false,
   isProductPhotosLoading: false,
   isVariantsGridLoading: false,
   isTraitOptionsGridLoading: false,
@@ -367,6 +369,13 @@ function setIsLocationsGridLoading(
   state.isLocationsGridLoading = action?.payload;
 }
 
+function setIsPhotoUploaderLoading(
+  state: IManageVariantsPageSlice,
+  action: PayloadAction<boolean>,
+) {
+  state.isPhotoUploaderLoading = action?.payload;
+}
+
 //----------------------------------------------------- API
 
 function refreshActiveCards(
@@ -577,10 +586,6 @@ function refreshCompaniesGridRequestModel(
   state: IPurchaseProductsPageSlice,
   action: PayloadAction<GridRequestModel>,
 ) {
-  if (_.isEqual(state.companiesGridRequestModel, action?.payload)) {
-    return;
-  }
-
   state.companiesGridRequestModel =
     action?.payload || state.companiesGridRequestModel;
 }
@@ -590,6 +595,10 @@ function refreshSelectedCompany(
   action: PayloadAction<CompanyModel>,
 ) {
   state.selectedCompany = action?.payload || state.selectedCompany;
+}
+
+function resetSelectedCompany(state: IPurchaseProductsPageSlice) {
+  state.selectedCompany = null;
 }
 
 function refreshManagedCompany(
@@ -656,6 +665,7 @@ const PurchaseProductsPageSlice = createSlice({
     setIsVariantsForPurchaseGridLoading,
     setIsPurchaseGridLoading,
     setIsSuppliersGridLoading,
+    setIsPhotoUploaderLoading,
     refreshActiveCards,
     refreshActiveTab,
     refreshVariants,
@@ -687,6 +697,7 @@ const PurchaseProductsPageSlice = createSlice({
     resetSelectedPurchase,
     refreshCompaniesGridRequestModel,
     refreshSelectedCompany,
+    resetSelectedCompany,
     setIsLocationsGridLoading,
     refreshManagedCompany,
     resetManagedCompany,

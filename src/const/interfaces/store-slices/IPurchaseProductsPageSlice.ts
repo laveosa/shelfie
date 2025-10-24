@@ -41,6 +41,7 @@ export interface IPurchaseProductsPageSlice {
   isCompanyConfigurationCardLoading?: boolean;
   isLocationConfigurationCardLoading?: boolean;
   isImageUploaderLoading?: boolean;
+  isPhotoUploaderLoading?: boolean;
   isProductPhotosLoading?: boolean;
   isVariantsGridLoading?: boolean;
   isTraitOptionsGridLoading?: boolean;

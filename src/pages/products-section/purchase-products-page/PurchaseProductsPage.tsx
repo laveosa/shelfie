@@ -38,6 +38,7 @@ import LocationConfigurationCard from "@/components/complex/custom-cards/locatio
 import PhotosCard from "@/components/complex/custom-cards/photos-card/PhotosCard.tsx";
 import { ManageCompanyPhotosGridColumns } from "@/components/complex/grid/custom-grids/manage-company-photos-grid/ManageCompanyPhotosGridColumns.tsx";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
+import { ManageLocationPhotosGridColumns } from "@/components/complex/grid/custom-grids/manage-location-photos-grid/ManageLocationPhotosGridColumns.tsx";
 
 export function PurchaseProductsPage() {
   // ==================================================================== UTILITIES
@@ -129,9 +130,6 @@ export function PurchaseProductsPage() {
         break;
       case "manageProductPhotos":
         service.manageProductPhotosHandler();
-        break;
-      case "uploadPhoto":
-        service.uploadPhotoHandler(payload);
         break;
       case "changePhotoPosition":
         service.changePhotoPositionHandler(payload);
@@ -262,6 +260,9 @@ export function PurchaseProductsPage() {
       case "closeAddStockCard":
         service.closeAddStockCardHandler();
         break;
+      case "closeSelectPurchaseCard":
+        service.closeSelectPurchaseCardHandler();
+        break;
       case "closeSupplierCard":
         service.closeSupplierCardHandler();
         break;
@@ -289,56 +290,60 @@ export function PurchaseProductsPage() {
       case "openAddStockCard":
         service.openAddStockCardHandler();
         break;
-
       case "openCreateEntityCard":
         service.openCreateEntityCardHandler();
         break;
-      // case "createCompany":
-      //   service.createCompanyHandler(payload);
-      //   break;
-      // case "closeCreateCompanyCard":
-      //   service.closeCreateCompanyCardHandler();
-      //   break;
-      // case "manageCompany":
-      //   service.manageCompanyHandler(payload);
-      //   break;
-      // case "updateCompany":
-      //   console.log("UPDATE COMPANY", payload);
-      //   break;
-      // case "deleteCompany":
-      //   service.deleteCompanyHandler(payload);
-      //   break;
-      // case "closeCompanyConfigurationCard":
-      //   service.closeCompanyConfigurationCardHandler();
-      //   break;
-      // case "manageCompanyPhotos":
-      //   service.manageCompanyPhotosHandler();
-      //   break;
-      // case "uploadPhoto":
-      //   service.uploadPhotoHandler(payload);
-      //   break;
-      // case "deleteCompanyPhoto":
-      //   service.deleteCompanyPhotoHandler(payload);
-      //   break;
-      // case "closePhotosCard":
-      //   service.closePhotosCardHandler();
-      //   break;
-      // case "openLocationConfigurationCard":
-      //   service.openLocationConfigurationCardHandler(payload);
-      //   break;
-      // case "createLocation":
-      //   service.createLocationHandler(payload);
-      //   break;
-      // case "manageLocation":
-      //   console.log("MANAGE LOCATION");
-      //   break;
-      // case "deleteLocation":
-      //   console.log("DELETE LOCATION");
-      //   break;
-      // case "closeLocationConfigurationCard":
-      //   service.closeLocationConfigurationCardHandler();
-      //   break;
-
+      case "createCompany":
+        service.createCompanyHandler(payload);
+        break;
+      case "closeCreateCompanyCard":
+        service.closeCreateCompanyCardHandler();
+        break;
+      case "manageCompany":
+        service.manageCompanyHandler(payload);
+        break;
+      case "updateCompany":
+        service.updateCompanyHandler(payload);
+        break;
+      case "deleteCompany":
+        service.deleteCompanyHandler(payload);
+        break;
+      case "closeCompanyConfigurationCard":
+        service.closeCompanyConfigurationCardHandler();
+        break;
+      case "manageCompanyPhotos":
+        service.manageCompanyPhotosHandler();
+        break;
+      case "uploadPhoto":
+        service.uploadPhotoHandler(payload);
+        break;
+      case "deleteCompanyPhoto":
+        service.deleteCompanyPhotoHandler(payload);
+        break;
+      case "closePhotosCard":
+        service.closePhotosCardHandler(payload);
+        break;
+      case "openLocationConfigurationCard":
+        service.openLocationConfigurationCardHandler(payload);
+        break;
+      case "createLocation":
+        service.createLocationHandler(payload);
+        break;
+      case "updateLocation":
+        service.updateLocationHandler(payload);
+        break;
+      case "deleteLocation":
+        service.deleteLocationHandler(payload);
+        break;
+      case "manageLocationPhotos":
+        service.manageLocationPhotosHandler();
+        break;
+      case "deleteLocationPhoto":
+        service.deleteLocationPhotoHandler(payload);
+        break;
+      case "closeLocationConfigurationCard":
+        service.closeLocationConfigurationCardHandler();
+        break;
       case "openDisposeStockCard":
         service.openDisposeStockCardHandler();
         break;
@@ -602,18 +607,6 @@ export function PurchaseProductsPage() {
           />
         </div>
       )}
-      {/*{state.activeCards?.includes("supplierConfigurationCard") && (*/}
-      {/*  <div ref={createRefCallback("supplierConfigurationCard")}>*/}
-      {/*    <SupplierConfigurationCard*/}
-      {/*      isLoading={state.isSupplierConfigurationCardLoading}*/}
-      {/*      isSupplierPhotosGridLoading={state.isSupplierPhotosGridLoading}*/}
-      {/*      isPhotoUploaderLoading={state.isPhotoUploaderLoading}*/}
-      {/*      countryList={productsState.countryCodeList}*/}
-      {/*      managedSupplier={state.managedSupplier}*/}
-      {/*      onAction={onAction}*/}
-      {/*    />*/}
-      {/*  </div>*/}
-      {/*)}*/}
       {state.activeCards.includes("createCompanyCard") && (
         <div ref={createRefCallback("createCompanyCard")}>
           <CreateCompanyCard
@@ -635,6 +628,24 @@ export function PurchaseProductsPage() {
           />
         </div>
       )}
+      {state.activeCards.includes("companyPhotosCard") && (
+        <div ref={createRefCallback("companyPhotosCard")}>
+          <PhotosCard
+            isImageUploaderLoading={state.isPhotoUploaderLoading}
+            data={state.managedCompany?.photos}
+            contextName={"Company"}
+            contextId={state.managedCompany?.companyId}
+            noDataText="COMPANY HAS NO PHOTOS"
+            showCloseButton
+            columns={
+              ManageCompanyPhotosGridColumns({
+                onAction,
+              }) as ColumnDef<DataWithId>[]
+            }
+            onAction={onAction}
+          />
+        </div>
+      )}
       {state.activeCards.includes("locationConfigurationCard") && (
         <div ref={createRefCallback("locationConfigurationCard")}>
           <LocationConfigurationCard
@@ -645,17 +656,17 @@ export function PurchaseProductsPage() {
           />
         </div>
       )}
-      {state.activeCards.includes("photosCard") && (
-        <div ref={createRefCallback("photosCard")}>
+      {state.activeCards.includes("locationPhotosCard") && (
+        <div ref={createRefCallback("locationPhotosCard")}>
           <PhotosCard
             isImageUploaderLoading={state.isPhotoUploaderLoading}
-            data={state.managedCompany?.photos}
-            contextName={"Company"}
-            contextId={state.managedCompany?.companyId}
-            noDataText="COMPANY HAS NO PHOTOS"
+            data={state.managedLocation?.photos}
+            contextName={"Location"}
+            contextId={state.managedLocation?.locationId}
+            noDataText="LOCATION HAS NO PHOTOS"
             showCloseButton
             columns={
-              ManageCompanyPhotosGridColumns({
+              ManageLocationPhotosGridColumns({
                 onAction,
               }) as ColumnDef<DataWithId>[]
             }

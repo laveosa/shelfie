@@ -67,14 +67,8 @@ export default function AddStockCard({
       description={`${translate("SectionTitles.Product")}: "${variant?.variantName}"`}
       isLoading={isLoading}
       showCloseButton
-      showFooter
+      showFooter={false}
       onSecondaryButtonClick={() => onAction("closeAddStockCard")}
-      primaryButtonProps={{
-        value: "Add to Stock",
-        icon: Plus,
-        disabled: !purchase || !_isFormValid,
-      }}
-      onPrimaryButtonClick={onSubmitHandler}
       {...props}
     >
       <div className={cs.addStockCardContent}>
@@ -187,6 +181,22 @@ export default function AddStockCard({
             </div>
           </div>
         )}
+        <Separator />
+        <div className={cs.cardButtonBlock}>
+          <SheButton
+            icon={Plus}
+            variant="secondary"
+            value="Cancel"
+            onClick={() => onAction("closeAddStockCard")}
+          />
+          <SheButton
+            icon={Plus}
+            variant="info"
+            value="Add to Stock"
+            disabled={!purchase || !_isFormValid}
+            onClick={onSubmitHandler}
+          />
+        </div>
       </div>
     </SheCard>
   );

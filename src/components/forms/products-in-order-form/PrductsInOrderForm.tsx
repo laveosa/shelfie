@@ -4,23 +4,17 @@ import { Equal, Trash2, X } from "lucide-react";
 
 import cs from "./ProductsInOrderForm.module.scss";
 import SheForm from "@/components/complex/she-form/SheForm.tsx";
-import SheFormField
-  from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
+import SheFormField from "@/components/complex/she-form/components/she-form-field/SheFormField.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import ProductsInOrderFormScheme
-  from "@/utils/validation/schemes/ProductsInOrderFormScheme.ts";
+import ProductsInOrderFormScheme from "@/utils/validation/schemes/ProductsInOrderFormScheme.ts";
 import useAppForm from "@/utils/hooks/useAppForm.ts";
 import { DirectionEnum } from "@/const/enums/DirectionEnum.ts";
 import { ComponentViewEnum } from "@/const/enums/ComponentViewEnum.ts";
 import { ReactHookFormMode } from "@/const/enums/ReactHookFormMode.ts";
-import {
-  IProductsInOrderForm
-} from "@/const/interfaces/forms/IProductsInOrderForm.ts";
-import {
-  ProductsInOrderFormDataModel
-} from "@/const/models/ProductsInOrderFormDataModel.ts";
+import { IProductsInOrderForm } from "@/const/interfaces/forms/IProductsInOrderForm.ts";
+import { ProductsInOrderFormDataModel } from "@/const/models/ProductsInOrderFormDataModel.ts";
 
 export default function ProductsInOrderForm<T>({
   className,
@@ -80,6 +74,7 @@ export default function ProductsInOrderForm<T>({
                 <SheInput
                   value={field.value}
                   type="number"
+                  step={2}
                   maxWidth="90px"
                   minWidth="90px"
                   onDelay={() => {

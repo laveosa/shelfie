@@ -3,17 +3,12 @@ import { Plus } from "lucide-react";
 
 import cs from "./ProductsInOrderCard.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import ProductsInOrderForm
-  from "@/components/forms/products-in-order-form/PrductsInOrderForm.tsx";
+import ProductsInOrderForm from "@/components/forms/products-in-order-form/PrductsInOrderForm.tsx";
 import SheCard from "@/components/complex/she-card/SheCard.tsx";
 import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
-import {
-  ProductsInOrderGridColumns
-} from "@/components/complex/grid/custom-grids/products-in-order-grid/ProductsInOrderGridColums.tsx";
+import { ProductsInOrderGridColumns } from "@/components/complex/grid/custom-grids/products-in-order-grid/ProductsInOrderGridColums.tsx";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
-import {
-  IProductsInOrderCard
-} from "@/const/interfaces/complex-components/custom-cards/IProductsInOrderCard.ts";
+import { IProductsInOrderCard } from "@/const/interfaces/complex-components/custom-cards/IProductsInOrderCard.ts";
 
 export default function ProductsInOrderCard({
   isLoading,
