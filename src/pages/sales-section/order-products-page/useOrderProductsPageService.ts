@@ -353,10 +353,11 @@ export default function useOrderProductsPageService(
   }
 
   function getTaxesListHandler() {
-    return getTaxesList(undefined).then((res: any) => {
-      dispatch(actions.refreshTaxesList(res.data));
-      return res.data;
-    });
+    if (!state.taxesList.length) {
+      getTaxesList(undefined).then((res: any) => {
+        dispatch(actions.refreshTaxesList(res.data));
+      });
+    }
   }
 
   function detachVariantPhotoHandler(id, photoId) {
@@ -397,6 +398,7 @@ export default function useOrderProductsPageService(
         },
       );
     }
+    getTaxesListHandler();
     getVariantDetailsHandler(model.variantId).then((res) => {
       dispatch(actions.setIsVariantConfigurationCardLoading(false));
       dispatch(actions.setIsVariantOptionsGridLoading(false));

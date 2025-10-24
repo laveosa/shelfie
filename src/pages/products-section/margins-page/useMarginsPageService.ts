@@ -572,7 +572,7 @@ export function useMarginsPageService(
   }
 
   function resetColumnsHandle() {
-    productsService.resetUserPreferencesHandler("products");
+    productsService.resetUserPreferencesHandler("salePriceManagement");
   }
 
   function getMarginPageDataHandle(purchaseId) {
@@ -626,6 +626,7 @@ export function useMarginsPageService(
 
   return {
     state,
+    appState,
     productsState,
     gridRequestChangeHandle,
     openSelectMarginCardHandle,

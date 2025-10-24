@@ -71,6 +71,15 @@ export default function ManageProductsForPurchaseForm({
                   : ""
               }
               type="number"
+              onBeforeInput={(
+                e: React.FormEvent<HTMLInputElement> & {
+                  nativeEvent: InputEvent;
+                },
+              ) => {
+                if (!/[0-9.,\-]/.test(e.nativeEvent.data ?? "")) {
+                  e.preventDefault();
+                }
+              }}
               minWidth="80px"
               maxWidth="80px"
               placeholder=" "
@@ -126,6 +135,15 @@ export default function ManageProductsForPurchaseForm({
               label="Quantity"
               value={field.value}
               type="number"
+              onBeforeInput={(
+                e: React.FormEvent<HTMLInputElement> & {
+                  nativeEvent: InputEvent;
+                },
+              ) => {
+                if (!/[0-9.,\-]/.test(e.nativeEvent.data ?? "")) {
+                  e.preventDefault();
+                }
+              }}
               className={
                 activeTab === "connectProducts"
                   ? field.value

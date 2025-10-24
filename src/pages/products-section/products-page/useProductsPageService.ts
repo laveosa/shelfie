@@ -29,6 +29,7 @@ import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
+import CompaniesApiHooks from "@/utils/services/api/CompaniesApiService.ts";
 
 export default function useProductsPageService() {
   // ==================================================================== UTILITIES
@@ -146,6 +147,7 @@ export default function useProductsPageService() {
   const [deletePurchase] = PurchasesApiHooks.useDeletePurchaseMutation();
   const [toggleVariantIsActive] =
     ProductsApiHooks.useToggleVariantIsActiveMutation();
+  const [getCompaniesList] = CompaniesApiHooks.useLazyGetCompaniesListQuery();
 
   // ==================================================================== API
   function getTheProductsForGridHandler(
@@ -841,6 +843,14 @@ export default function useProductsPageService() {
     });
   }
 
+  function getCompaniesListHandler() {
+    if (!state.companies) {
+      getCompaniesList().then((res: any) => {
+        dispatch(actions.refreshCompanies(res.data));
+      });
+    }
+  }
+
   // ==================================================================== LOGIC
   function itemsCardItemsConvertor(
     items: any[],
@@ -985,5 +995,6 @@ export default function useProductsPageService() {
     resetColumnsActionHandler,
     tabChangeActionHandler,
     activateVariantActionHandler,
+    getCompaniesListHandler,
   };
 }

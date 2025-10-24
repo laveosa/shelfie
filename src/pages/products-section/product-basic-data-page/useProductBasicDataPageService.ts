@@ -176,6 +176,10 @@ export default function useProductBasicDataPageService(handleCardAction) {
         navigate(
           `${ApiUrlEnum.PRODUCTS}${ApiUrlEnum.PRODUCT_BASIC_DATA}/${res.data.productId}`,
         );
+        productsService.getTheProductsForGridHandler(
+          productsState.productsGridRequestModel,
+          true,
+        );
         addToast({
           text: "Product created successfully",
           type: "success",

@@ -28,12 +28,12 @@ import useProductsPageService from "@/pages/products-section/products-page/usePr
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
-import { SupplierModel } from "@/const/models/SupplierModel.ts";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 import {
   GridSortingEnum,
   GridSortingEnumLabels,
 } from "@/const/enums/GridSortingEnum.ts";
+import { CompanyModel } from "@/const/models/CompanyModel.ts";
 
 export function ProductsPage() {
   // ==================================================================== UTILITIES
@@ -63,11 +63,9 @@ export function ProductsPage() {
     if (state.categories.length === 0) {
       service.getCategoriesForFilterHandler();
     }
-    if (state.suppliers.length === 0) {
-      service.getListOfSuppliersHandler();
-    }
     if (state.sizesForFilter.length === 0 || state.colorsForFilter.length === 0)
       service.getTraitsForFilterHandler();
+    service.getCompaniesListHandler();
   }, []);
 
   // ==================================================================== EVENT HANDLERS
@@ -273,11 +271,11 @@ export function ProductsPage() {
               }
             >
               <GridItemsFilter
-                items={state.suppliers}
+                items={state.companies}
                 columnName={"Suppliers"}
                 icon={BadgeCheck}
-                getId={(item: SupplierModel) => item.supplierId}
-                getName={(item: SupplierModel) => item.supplierName}
+                getId={(item: CompanyModel) => item.companyId}
+                getName={(item: CompanyModel) => item.companyName}
                 selected={state.purchasesGridRequestModel?.filter?.suppliers}
               />
               <GridDateRangeFilter />

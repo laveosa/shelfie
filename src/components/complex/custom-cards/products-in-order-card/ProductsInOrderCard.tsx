@@ -3,12 +3,17 @@ import { Plus } from "lucide-react";
 
 import cs from "./ProductsInOrderCard.module.scss";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
-import ProductsInOrderForm from "@/components/forms/products-in-order-form/PrductsInOrderForm.tsx";
+import ProductsInOrderForm
+  from "@/components/forms/products-in-order-form/PrductsInOrderForm.tsx";
 import SheCard from "@/components/complex/she-card/SheCard.tsx";
 import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
-import { ProductsInOrderGridColumns } from "@/components/complex/grid/custom-grids/products-in-order-grid/ProductsInOrderGridColums.tsx";
+import {
+  ProductsInOrderGridColumns
+} from "@/components/complex/grid/custom-grids/products-in-order-grid/ProductsInOrderGridColums.tsx";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
-import { IProductsInOrderCard } from "@/const/interfaces/complex-components/custom-cards/IProductsInOrderCard.ts";
+import {
+  IProductsInOrderCard
+} from "@/const/interfaces/complex-components/custom-cards/IProductsInOrderCard.ts";
 
 export default function ProductsInOrderCard({
   isLoading,
@@ -47,7 +52,10 @@ export default function ProductsInOrderCard({
   }, [stockActions]);
 
   useEffect(() => {
-    if (!stockActionsData?.length) return;
+    if (!stockActionsData?.length) {
+      setProductsTotal({ total: 0, currency: "" });
+      return;
+    }
 
     const computedProductsTotal = stockActionsData.reduce(
       (acc, item) => {
@@ -62,7 +70,6 @@ export default function ProductsInOrderCard({
       },
       { total: 0, currency: "" },
     );
-
     setProductsTotal(computedProductsTotal);
   }, [stockActionsData]);
 
@@ -122,7 +129,7 @@ export default function ProductsInOrderCard({
                 {translate("OrderForm.Labels.ProductsTotal")}
               </span>
               <span className={`${cs.productsSummaryText} she-text`}>
-                {productsTotal.total}
+                {productsTotal.total.toFixed(2) || 0}
                 {productsTotal.currency}
               </span>
             </div>

@@ -118,6 +118,11 @@ export const CompaniesApiService = createApi({
         method: "DELETE",
       }),
     }),
+    getCompaniesList: apiConfig.createQuery<void, void>(builder, {
+      query: () => ({
+        url: `${ApiUrlEnum.COMPANIES}/all`,
+      }),
+    }),
   }),
 });
 

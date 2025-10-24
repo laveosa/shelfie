@@ -121,7 +121,7 @@ export default function useSupplierPageService(handleCardAction) {
       dispatch(actions.setIsCompaniesGridLoading(false));
       const modifiedList = res.data.items?.map((item) => ({
         ...item,
-        isSelected: item.companyId === state.selectedCompany.companyId,
+        isSelected: item?.companyId === state.selectedCompany?.companyId,
       }));
       dispatch(
         actions.refreshCompaniesGridRequestModel({
@@ -169,9 +169,7 @@ export default function useSupplierPageService(handleCardAction) {
 
   function detachSupplierHandler() {
     handleCardAction("selectEntityCard", true);
-    if (!state.companiesGridRequestModel.items) {
-      getListOfCompaniesHandler(state.companiesGridRequestModel);
-    }
+    getListOfCompaniesHandler({});
   }
 
   function openSelectEntityCardHandler() {
@@ -181,7 +179,6 @@ export default function useSupplierPageService(handleCardAction) {
   }
 
   function searchEntityHandler(searchText: string) {
-    // getListOfCompaniesHandler({ searchQuery: searchText }).then(() => {});
     getListOfCompaniesHandler({ searchQuery: searchText });
   }
 
@@ -744,7 +741,7 @@ export default function useSupplierPageService(handleCardAction) {
         .getPurchaseCountersHandler(Number(purchaseId))
         .then(() => dispatch(actions.setIsProductMenuCardLoading(false)));
       getCountryCodesHandler();
-    }
+    } else dispatch(actions.resetSelectedCompany());
     dispatch(productsActions.resetPurchaseCounters());
     dispatch(actions.resetActiveCards());
     dispatch(productsActions.refreshActiveTab("purchases"));

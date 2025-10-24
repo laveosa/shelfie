@@ -29,6 +29,24 @@
       min-height: 100%;
     }
 
+    .percentInputBlock {
+      position: relative;
+      width: 100%;
+
+      .percentInputSymbol {
+        position: absolute;
+        z-index: 1;
+        top: 11px;
+        left: 10px;
+      }
+
+      .percentInput {
+        input {
+          padding-left: 25px;
+        }
+      }
+    }
+
     .selectSupplierBlock {
       display: flex;
       flex-direction: column;
