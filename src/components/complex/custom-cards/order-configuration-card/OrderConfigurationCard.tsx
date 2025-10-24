@@ -4,9 +4,9 @@ import React from "react";
 import { Plus, UserMinus, UserPlus } from "lucide-react";
 
 import cs from "./OrderConfigurationCard.module.scss";
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
 import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
 import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import { OrderDiscountsGridColumns } from "@/components/complex/grid/custom-grids/order-discounts-grid/OrderDiscountsGridColumns.tsx";
@@ -31,11 +31,11 @@ export default function OrderConfigurationCard({
 
   // ==================================================================== LAYOUT
   return (
-    <SheProductCard
-      loading={isLoading}
+    <SheCard
       className={cs.orderConfigurationCard}
       title={translate("CardTitles.OrderConfiguration", { orderId: order?.id })}
       showNotificationCard
+      isLoading={isLoading}
       notificationCardProps={{
         title: "Cancel Order",
         titleTransKey: "CardTitles.CancelOrder",
@@ -222,6 +222,6 @@ export default function OrderConfigurationCard({
         </div>
         <Separator />
       </div>
-    </SheProductCard>
+    </SheCard>
   );
 }

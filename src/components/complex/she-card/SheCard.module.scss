@@ -1,5 +1,9 @@
 @use "@/styles/variables" as vars;
 
+.cardCarouselItem {
+  flex-basis: fit-content;
+}
+
 .sheCard {
   position: relative;
   display: flex;

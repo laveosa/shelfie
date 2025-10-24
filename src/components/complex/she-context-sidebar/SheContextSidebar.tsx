@@ -1,13 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import cs from "./SheContextSidebar.module.scss";
 import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
 import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
+import {
+  Carousel,
+  CarouselApi,
+  CarouselContent,
+} from "@/components/ui/carousel.tsx";
 import { ISheContextSidebar } from "@/const/interfaces/complex-components/ISheContextSidebar.ts";
 import {
   IItemsCardItem,
   IItemsCardItemOption,
 } from "@/const/interfaces/complex-components/custom-cards/IItemsCard.ts";
+import { useSidebar } from "@/components/ui/sidebar.tsx";
 
 export default function SheContextSidebar({
   className = "",
@@ -26,16 +32,94 @@ export default function SheContextSidebar({
   itemId,
   activeCards,
   skeletonQuantity,
+  isMouseWheelHorizontalScroll,
   onAction,
 }: ISheContextSidebar) {
   // ==================================================================== STATE MANAGEMENT
   const [_listItems, setListItems] = useState<IItemsCardItem[]>([]);
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>(null);
+
+  // ==================================================================== REF
+  const prevCardsCount = useRef(activeCards?.length || 0);
+
+  // ==================================================================== UTILITIES
+  const { isMobile } = useSidebar();
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
     if (listItems && listItems.length > 0)
       setListItems(_listItemsConvertor(listItems));
   }, [listItems]);
+
+  useEffect(() => {
+    if (!isMobile && carouselApi) {
+      const currentCount = activeCards?.length || 0;
+      const cardsAdded = currentCount > prevCardsCount.current;
+
+      requestAnimationFrame(() => {
+        carouselApi.reInit();
+
+        if (cardsAdded) {
+          requestAnimationFrame(() => {
+            const lastIndex = carouselApi.scrollSnapList().length - 1;
+            carouselApi.scrollTo(lastIndex, true);
+          });
+        }
+      });
+
+      prevCardsCount.current = currentCount;
+    }
+  }, [activeCards, children, carouselApi]);
+
+  useEffect(() => {
+    if (!isMobile && isMouseWheelHorizontalScroll && carouselApi) {
+      const container = carouselApi.containerNode();
+
+      const handleWheel = (e: WheelEvent) => {
+        const target = e.target as HTMLElement;
+        let scrollableElement: HTMLElement | null = null;
+        let currentElement = target;
+
+        while (currentElement && currentElement !== container) {
+          const hasOverflow =
+            currentElement.scrollHeight > currentElement.clientHeight;
+          const isScrollable =
+            window.getComputedStyle(currentElement).overflowY !== "hidden";
+
+          if (hasOverflow && isScrollable) {
+            scrollableElement = currentElement;
+            break;
+          }
+
+          currentElement = currentElement.parentElement;
+        }
+
+        if (scrollableElement) {
+          const { scrollTop, scrollHeight, clientHeight } = scrollableElement;
+          const isAtTop = scrollTop <= 1;
+          const isAtBottom = scrollTop + clientHeight >= scrollHeight - 1;
+
+          if ((e.deltaY > 0 && !isAtBottom) || (e.deltaY < 0 && !isAtTop)) {
+            return;
+          }
+        }
+
+        e.preventDefault();
+        setTimeout(() => {
+          carouselApi.scrollTo(
+            carouselApi.selectedScrollSnap() + (e.deltaY > 0 ? 1 : -1),
+            false,
+          );
+        });
+      };
+
+      container.addEventListener("wheel", handleWheel, { passive: false });
+
+      return () => {
+        container.removeEventListener("wheel", handleWheel);
+      };
+    }
+  }, [carouselApi]);
 
   // ==================================================================== LOGIC
 
@@ -81,7 +165,7 @@ export default function SheContextSidebar({
   // ==================================================================== LAYOUT
   return (
     <div
-      className={`${cs.sheContextSidebar} ${className}`}
+      className={`${cs.sheContextSidebar} ${className} ${hideSidebarBlock && cs.sheContextSidebarNoSideBar} ${isMobile && cs.isMobile}`}
       style={{ ...style }}
     >
       {!hideSidebarBlock && (
@@ -109,7 +193,25 @@ export default function SheContextSidebar({
           </div>
         </div>
       )}
-      <div className={cs.sheContextSidebarContextContainer}>{children}</div>
+      <div className={cs.sheContextSidebarContextContainer}>
+        {!isMobile ? (
+          <Carousel
+            setApi={setCarouselApi}
+            className={cs.carouselContainer}
+            opts={{
+              align: "start",
+              dragFree: true,
+              slidesToScroll: "auto",
+            }}
+          >
+            <CarouselContent className={cs.carouselContent}>
+              {children}
+            </CarouselContent>
+          </Carousel>
+        ) : (
+          <div>{children}</div>
+        )}
+      </div>
     </div>
   );
 }

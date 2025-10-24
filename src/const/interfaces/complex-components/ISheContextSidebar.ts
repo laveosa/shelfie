@@ -7,7 +7,7 @@ export interface ISheContextSidebar extends PropsWithChildren {
   listTitle?: string;
   listItems?: any[];
   showListItems?: boolean;
-  hideSidebarBlock?: boolean; //  REMOVE THIS PROPS AND REPLACE WITH RELATED LOGIC THAT WILL KNOW WHEN TO SHOW SIDEBAR BLOCK, WITH ALL INNER COMPONENTS, BASED ON PROVIDED DATA
+  hideSidebarBlock?: boolean; //  REMOVE THIS PROPS AND REPLACE WITH RELATED LOGIC THAT WILL KNOW WHEN TO SHOW SIDEBAR BLOCK BASED ON PROVIDED DATA
   selectedId?: number;
   isListLoading?: boolean;
   menuTitle?: string;
@@ -22,5 +22,6 @@ export interface ISheContextSidebar extends PropsWithChildren {
   itemId?: number;
   activeCards?: any;
   skeletonQuantity?: number;
+  isMouseWheelHorizontalScroll?: boolean;
   onAction?: (value: any) => void;
 }

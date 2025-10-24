@@ -20,6 +20,7 @@ export function OpenCartsPage() {
         menuTitle="Sales"
         itemId={Number(orderId)}
         counter={state.salesCounters}
+        activeCards={state.activeCards}
       >
         <h1>Open Carts Page</h1>
       </SheContextSidebar>

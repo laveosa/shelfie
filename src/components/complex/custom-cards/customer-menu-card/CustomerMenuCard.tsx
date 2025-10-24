@@ -1,18 +1,13 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  MapPin,
-  FileText,
-  ShoppingCart,
-  ShoppingBag,
-} from "lucide-react";
-import { useTranslation } from "react-i18next";
 
-import { Badge } from "@/components/ui/badge.tsx";
+import { MapPin, FileText, ShoppingCart, ShoppingBag } from "lucide-react";
+
 import cs from "./CustomerMenuCard.module.scss";
-import SheProductCard from "@/components/complex/she-product-card/SheProductCard.tsx";
-
-type ICustomerMenuCard = any;
+import SheCard from "@/components/complex/she-card/SheCard.tsx";
+import { Badge } from "@/components/ui/badge.tsx";
+import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
+type ICustomerMenuCard = any;
 
 export default function CustomerMenuCard({
   isLoading,
@@ -20,7 +15,7 @@ export default function CustomerMenuCard({
   customerId,
   counter,
 }: ICustomerMenuCard) {
-  const { t } = useTranslation();
+  const { translate } = useAppTranslation();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -29,28 +24,28 @@ export default function CustomerMenuCard({
       id: "basic_data",
       counterId: "basic_data",
       icon: <FileText />,
-      label: t("CustomerMenu.BasicData"),
+      label: translate("CustomerMenu.BasicData"),
       path: NavUrlEnum.CUSTOMER_BASIC_DATA,
     },
     {
       id: "addresses",
       counterId: "addressesAmount",
       icon: <MapPin />,
-      label: t("CustomerMenu.Addresses"),
+      label: translate("CustomerMenu.Addresses"),
       path: NavUrlEnum.CUSTOMER_ADDRESSES,
     },
     {
       id: "open_cart",
       counterId: "openCartsAmount",
       icon: <ShoppingBag />,
-      label: t("CustomerMenu.OpenCart"),
+      label: translate("CustomerMenu.OpenCart"),
       path: NavUrlEnum.CUSTOMER_OPEN_CART,
     },
     {
       id: "orders",
       counterId: "ordersAmount",
       icon: <ShoppingCart />,
-      label: t("CustomerMenu.Orders"),
+      label: translate("CustomerMenu.Orders"),
       path: NavUrlEnum.CUSTOMER_ORDERS,
     },
   ];
@@ -90,20 +85,17 @@ export default function CustomerMenuCard({
   };
 
   return (
-    <div>
-      <SheProductCard
-        loading={isLoading}
-        title={title}
-        view="borderless"
-        width="300px"
-        minWidth="300px"
-        showToggleButton={true}
-        className={cs.customerMenuCard}
-      >
-        <div className={cs.customerMenuItems}>
-          {customerMenuItems.map(renderMenuItem)}
-        </div>
-      </SheProductCard>
-    </div>
+    <SheCard
+      title={title}
+      width="300px"
+      minWidth="300px"
+      isLoading={isLoading}
+      showToggleButton
+      className={cs.customerMenuCard}
+    >
+      <div className={cs.customerMenuItems}>
+        {customerMenuItems.map(renderMenuItem)}
+      </div>
+    </SheCard>
   );
-} 
+}

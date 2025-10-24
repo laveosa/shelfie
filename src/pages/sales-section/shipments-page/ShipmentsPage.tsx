@@ -63,6 +63,7 @@ export function ShipmentsPage() {
         menuCollectionType="sales"
         menuTitle="Sales"
         itemId={Number(orderId)}
+        activeCards={state.activeCards}
       >
         <ShipmentsCard
           isLoading={state.isShipmentsCardLoading}

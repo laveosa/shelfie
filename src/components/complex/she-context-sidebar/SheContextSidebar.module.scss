@@ -23,11 +23,43 @@
   .sheContextSidebarContextContainer {
     display: flex;
     flex-grow: 1;
+    width: 100px;
     gap: vars.$paddingSmall;
-    overflow-x: auto;
-    width: 100%;
     padding-top: 10px;
     margin-right: 10px;
-    margin-bottom: 6px;
+    overflow-x: hidden;
+
+    .carouselContainer {
+      width: 100px;
+      flex-grow: 1;
+
+      .carouselContent {
+        &:active {
+          user-select: none;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+        }
+      }
+    }
+  }
+}
+
+// ================================================== NO SIDEBAR
+
+.sheContextSidebar {
+  &.sheContextSidebarNoSideBar {
+    padding-left: vars.$paddingSmall;
+  }
+}
+
+// ================================================== MOBILE
+
+.sheContextSidebar {
+  &.isMobile {
+    .sheContextSidebarContextContainer {
+      overflow-x: auto;
+      margin-bottom: 6px;
+    }
   }
 }
