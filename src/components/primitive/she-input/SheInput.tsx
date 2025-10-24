@@ -229,7 +229,12 @@ export default function SheInput(props: ISheInput): JSX.Element {
 
   function _updateValueType(value: any) {
     if (type !== "number" && value.length === 0) return "";
-    if (type === "number") return parseInt(value);
+    if (type === "number") {
+      if (value === "" || value === null || value === undefined) return "";
+
+      const parsed = parseFloat(value);
+      return isNaN(parsed) ? "" : parsed;
+    }
     return value;
   }
 
