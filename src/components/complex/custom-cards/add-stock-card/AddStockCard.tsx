@@ -1,6 +1,5 @@
 import { UseFormReturn } from "react-hook-form";
-import React, { useRef, useState } from "react";
-import _ from "lodash";
+import React, { useState } from "react";
 
 import { ImageIcon, Link2, Plus, RefreshCcw } from "lucide-react";
 
@@ -12,9 +11,13 @@ import SheCard from "@/components/complex/she-card/SheCard.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import { formatDate } from "@/utils/helpers/quick-helper.ts";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
-import { IAddStockCard } from "@/const/interfaces/complex-components/custom-cards/IAddStockCard.ts";
+import {
+  IAddStockCard
+} from "@/const/interfaces/complex-components/custom-cards/IAddStockCard.ts";
+import {
+  convertToSelectItems
+} from "@/utils/converters/primitive-components/she-select-convertors.ts";
 import { AppFormType } from "@/const/types/AppFormType.ts";
-import { convertToSelectItems } from "@/utils/converters/primitive-components/she-select-convertors.ts";
 
 export default function AddStockCard({
   isLoading,
@@ -27,12 +30,10 @@ export default function AddStockCard({
 }: IAddStockCard) {
   // ==================================================================== STATE MANAGEMENT
   const [_isFormValid, setIsFormValid] = useState<boolean>(null);
+  const [formData, setFormData] = useState<any>(undefined);
 
   // ==================================================================== UTILITIES
   const { translate } = useAppTranslation();
-
-  // ==================================================================== REF
-  const stockDataRef = useRef<any>(null);
 
   // ==================================================================== EVENT HANDLERS
   function onAddStockChangeHandler(
@@ -40,18 +41,17 @@ export default function AddStockCard({
     form: UseFormReturn<AppFormType<any>>,
   ) {
     setIsFormValid(form.formState?.isValid);
-    if (!_.isEqual(value, stockDataRef.current)) stockDataRef.current = value;
+    setFormData(value);
   }
 
   function onSubmitHandler() {
-    const stockData = stockDataRef.current;
     const formattedData = {
       priceModel: {
         variantId: variant.variantId,
-        unitsAmount: stockData.unitsAmount,
-        nettoPrice: stockData.nettoPrice,
-        taxTypeId: stockData.taxTypeId,
-        currencyId: stockData.currencyId,
+        unitsAmount: formData.unitsAmount,
+        nettoPrice: formData.nettoPrice,
+        taxTypeId: formData.taxTypeId,
+        currencyId: formData.currencyId,
       },
       purchaseId: Number(purchase.purchaseId),
     };
