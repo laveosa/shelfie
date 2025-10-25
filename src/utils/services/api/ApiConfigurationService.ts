@@ -84,12 +84,40 @@ export class ApiConfigurationService {
     }
   }
 
+  // private customBaseQuery(baseUrl: ApiUrlEnum) {
+  //   return fetchBaseQuery({
+  //     baseUrl,
+  //     prepareHeaders: (headers, { arg }) => {
+  //       const token = storageService.getLocalStorage(StorageKeyEnum.TOKEN);
+  //       headers.set("Authorization", `Bearer ${token}`);
+  //
+  //       if (
+  //         !(
+  //           arg &&
+  //           typeof arg === "object" &&
+  //           "body" in arg &&
+  //           arg.body instanceof FormData
+  //         )
+  //       ) {
+  //         headers.set("Content-Type", "application/json");
+  //       }
+  //
+  //       return headers;
+  //     },
+  //   });
+  // }
+
   private customBaseQuery(baseUrl: ApiUrlEnum) {
     return fetchBaseQuery({
       baseUrl,
       prepareHeaders: (headers, { arg }) => {
         const token = storageService.getLocalStorage(StorageKeyEnum.TOKEN);
-        headers.set("Authorization", `Bearer ${token}`);
+        const user = storageService.getLocalStorage(StorageKeyEnum.USER);
+        const language =
+          (typeof user === "object" && user?.languageCode) ||
+          (navigator.language?.split("-")[0] ?? "en");
+
+        if (token) headers.set("Authorization", `Bearer ${token}`);
 
         if (
           !(
@@ -101,6 +129,8 @@ export class ApiConfigurationService {
         ) {
           headers.set("Content-Type", "application/json");
         }
+
+        headers.set("X-Language", language || "en");
 
         return headers;
       },

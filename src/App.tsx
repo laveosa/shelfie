@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { useEffect } from "react";
+import i18n from "i18next";
 
 import "@/App.scss";
 import { SidebarProvider } from "@/components/ui/sidebar.tsx";
@@ -16,6 +17,20 @@ import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 function App() {
   const service = useAppService();
   const state = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
+
+  const languageCode = state.user?.languageCode;
+
+  useEffect(() => {
+    const supportedLangs = ["en-EN", "pl-PL"];
+    const browserLang = navigator.language || navigator.languages[0] || "en-EN";
+    const targetLang =
+      languageCode ??
+      (supportedLangs.includes(browserLang) ? browserLang : "en-EN");
+
+    if (i18n.language !== targetLang) {
+      i18n.changeLanguage(targetLang);
+    }
+  }, [languageCode]);
 
   useEffect(() => {
     service.getUserPreferencesHandler();
