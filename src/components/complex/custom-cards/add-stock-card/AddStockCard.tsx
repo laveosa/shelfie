@@ -11,12 +11,8 @@ import SheCard from "@/components/complex/she-card/SheCard.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import { formatDate } from "@/utils/helpers/quick-helper.ts";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
-import {
-  IAddStockCard
-} from "@/const/interfaces/complex-components/custom-cards/IAddStockCard.ts";
-import {
-  convertToSelectItems
-} from "@/utils/converters/primitive-components/she-select-convertors.ts";
+import { IAddStockCard } from "@/const/interfaces/complex-components/custom-cards/IAddStockCard.ts";
+import { convertToSelectItems } from "@/utils/converters/primitive-components/she-select-convertors.ts";
 import { AppFormType } from "@/const/types/AppFormType.ts";
 
 export default function AddStockCard({
