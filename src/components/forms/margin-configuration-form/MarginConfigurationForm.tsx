@@ -198,13 +198,39 @@ export default function MarginConfigurationForm({
           label="Desired profit (in %)"
           className={cs.marginConfigurationFormItem}
           render={({ field }) => (
-            <SheInputNumericWithSuffix
-              placeholder="Enter profit..."
-              value={field.value}
-              suffix="%"
-              fullWidth
-              onChange={(val) => field.onChange(val)}
-            />
+            <div className={cs.percentInputBlock}>
+              <span className={`${cs.percentInputSymbol} she-text`}>%</span>
+              <SheInput
+                className={cs.percentInput}
+                placeholder="Enter profit..."
+                value={field.value}
+                type="text"
+                fullWidth
+                inputMode="decimal"
+                onBeforeInput={(
+                  e: React.FormEvent<HTMLInputElement> & {
+                    nativeEvent: InputEvent;
+                  },
+                ) => {
+                  const char = e.nativeEvent.data ?? "";
+                  if (!/[0-9.,]/.test(char)) {
+                    e.preventDefault();
+                  }
+                }}
+                onChange={(val) => {
+                  const normalized =
+                    typeof val === "string" ? val.replace(",", ".") : val;
+                  field.onChange(normalized);
+                }}
+              />
+            </div>
+            // <SheInputNumericWithSuffix
+            //   placeholder="Enter profit..."
+            //   value={field.value}
+            //   suffix="%"
+            //   fullWidth
+            //   onChange={(val) => field.onChange(val)}
+            // />
           )}
         />
         <span className={`${cs.marginConfigurationText} she-subtext`}>
@@ -216,13 +242,39 @@ export default function MarginConfigurationForm({
           label="Planned discount (in %)"
           className={cs.marginConfigurationFormItem}
           render={({ field }) => (
-            <SheInputNumericWithSuffix
-              placeholder="Enter planned discount..."
-              value={field.value}
-              suffix="%"
-              fullWidth
-              onChange={(val) => field.onChange(val)}
-            />
+            <div className={cs.percentInputBlock}>
+              <span className={`${cs.percentInputSymbol} she-text`}>%</span>
+              <SheInput
+                className={cs.percentInput}
+                placeholder="Enter planned discount..."
+                value={field.value}
+                type="text"
+                fullWidth
+                inputMode="decimal"
+                onBeforeInput={(
+                  e: React.FormEvent<HTMLInputElement> & {
+                    nativeEvent: InputEvent;
+                  },
+                ) => {
+                  const char = e.nativeEvent.data ?? "";
+                  if (!/[0-9.,]/.test(char)) {
+                    e.preventDefault();
+                  }
+                }}
+                onChange={(val) => {
+                  const normalized =
+                    typeof val === "string" ? val.replace(",", ".") : val;
+                  field.onChange(normalized);
+                }}
+              />
+            </div>
+            // <SheInputNumericWithSuffix
+            //   placeholder="Enter planned discount..."
+            //   value={field.value}
+            //   suffix="%"
+            //   fullWidth
+            //   onChange={(val) => field.onChange(val)}
+            // />
           )}
         />
         <span className={`${cs.marginConfigurationText} she-subtext`}>

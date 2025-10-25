@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import { Equal, Trash2, X } from "lucide-react";
 
@@ -22,42 +22,41 @@ export default function ProductsInOrderForm<T>({
   onSubmit,
   onDelete,
 }: IProductsInOrderForm<T>) {
-  const { form, resetForm } = useAppForm<ProductsInOrderFormDataModel>({
+  const { form } = useAppForm<any>({
+    values: setValues(data),
     defaultValues: {
       stockDocumentPrice: { brutto: 0 },
       unitsAmount: 0,
       total: 0,
     },
     scheme: ProductsInOrderFormScheme,
-    mode: ReactHookFormMode.SUBMIT,
+    mode: ReactHookFormMode.CHANGE,
   });
-  const [total, setTotal] = React.useState(0);
-
-  useEffect(() => {
-    const subscription = form.watch((value) => {
-      const brutto = Number(value.stockDocumentPrice?.brutto) || 0;
-      const units = Number(value.unitsAmount) || 0;
-      setTotal(brutto * units);
-    });
-    return () => subscription.unsubscribe();
-  }, [form]);
-
-  useEffect(() => {
-    resetForm({ stockDocumentPrice: { brutto: 0 }, unitsAmount: 0 });
-  }, [data]);
 
   function handleFormSubmit(formData: ProductsInOrderFormDataModel) {
     onSubmit({
-      priceBrutto: Number(formData.stockDocumentPrice.brutto),
+      brutto: Number(formData.stockDocumentPrice.brutto),
       unitsAmount: Number(formData.unitsAmount),
     } as T);
+  }
+
+  function setValues(
+    model: ProductsInOrderFormDataModel,
+  ): ProductsInOrderFormDataModel {
+    const brutto = Number(model.stockDocumentPrice?.brutto) || 0;
+    const units = Number(model.unitsAmount) || 0;
+    const total = brutto * units;
+    return {
+      stockDocumentPrice: { brutto },
+      unitsAmount: units,
+      total: total,
+    };
   }
 
   return (
     <div className={`${cs.productsInOrderForm} ${className}`}>
       <SheForm
         form={form}
-        defaultValues={{ stockDocumentPrice: { brutto: 0 }, unitsAmount: 0 }}
         formPosition={DirectionEnum.CENTER}
         view={ComponentViewEnum.STANDARD}
         fullWidth
@@ -75,7 +74,9 @@ export default function ProductsInOrderForm<T>({
                 <SheInput
                   value={field.value}
                   type="number"
-                  maxWidth="100px"
+                  step={2}
+                  maxWidth="90px"
+                  minWidth="90px"
                   onDelay={() => {
                     handleFormSubmit(form.getValues() as any);
                   }}
@@ -93,7 +94,8 @@ export default function ProductsInOrderForm<T>({
                 <SheInput
                   value={field.value}
                   type="number"
-                  maxWidth="75px"
+                  maxWidth="70px"
+                  minWidth="70"
                   onDelay={() => {
                     handleFormSubmit(form.getValues() as any);
                   }}
@@ -102,11 +104,16 @@ export default function ProductsInOrderForm<T>({
             />
           </div>
           <SheIcon className={cs.formIcon} icon={Equal} maxWidth="30px" />
-          <div className={`${cs.formItem} ${cs.formItemTotal}`}>
+          <div className={cs.formItem}>
             <span>Total</span>
-            <span
-              className={`${cs.totalValue} she-title`}
-            >{`${total} ${data?.stockDocumentPrice?.currencyName ?? ""}`}</span>
+            <SheFormField
+              name="total"
+              render={({ field }): React.ReactElement => (
+                <span
+                  className={`${cs.totalValue} she-title`}
+                >{`${field.value.toFixed(2)} ${data?.stockDocumentPrice?.currencyName ?? ""}`}</span>
+              )}
+            />
           </div>
           <div className={cs.formItem}>
             <span>Remove</span>

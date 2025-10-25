@@ -13,6 +13,7 @@ export function GridDateRangeFilter() {
       icon={CalendarRange}
       placeholder="Pick range"
       maxWidth="200px"
+      minWidth="200px"
       showClearBtn
       onSelectDate={(value) => {
         if (value) {

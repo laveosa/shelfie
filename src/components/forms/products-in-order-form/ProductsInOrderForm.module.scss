@@ -9,24 +9,20 @@
     .formItem {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 10px;;
 
       .inputFormItem {
         min-height: 0;
       }
-    }
-
-    .formItemTotal {
-      min-width: 60px;
 
       .totalValue {
-        padding-top: 7px;
         min-height: 40px;
+        padding-top: 3px;
       }
     }
 
     .formIcon {
-      padding-top: 30px;
+      padding-top: 25px;
     }
   }
 }

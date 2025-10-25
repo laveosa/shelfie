@@ -344,6 +344,7 @@ export default function VariantConfigurationCard({
                       <Select
                         onValueChange={(value) => {
                           field.onChange(Number(value));
+                          lastChanged.current = "netto";
                           onFieldChangeHandler();
                         }}
                         value={field.value ? field.value.toString() : ""}

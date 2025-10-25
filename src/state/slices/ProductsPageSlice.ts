@@ -22,6 +22,7 @@ import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import { TypeOfTraitModel } from "@/const/models/TypeOfTraitModel.ts";
 import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
+import { CompanyModel } from "@/const/models/CompanyModel.ts";
 
 const initialState: IProductsPageSlice = {
   isLoading: false,
@@ -67,6 +68,7 @@ const initialState: IProductsPageSlice = {
   variantPhotos: [],
   productCode: null,
   createdPurchase: null,
+  companies: undefined,
 };
 
 //----------------------------------------------------- LOADERS
@@ -392,6 +394,13 @@ function refreshCreatedPurchase(
   state.createdPurchase = action?.payload || state.createdPurchase;
 }
 
+function refreshCompanies(
+  state: IProductsPageSlice,
+  action: PayloadAction<CompanyModel[]>,
+) {
+  state.companies = action?.payload || state.companies;
+}
+
 const ProductsPageSlice = createSlice({
   name: StoreSliceEnum.PRODUCTS,
   initialState,
@@ -442,6 +451,7 @@ const ProductsPageSlice = createSlice({
     refreshVariantPhotos,
     refreshProductCode,
     refreshCreatedPurchase,
+    refreshCompanies,
   },
 });
 

@@ -4,6 +4,7 @@
       display: flex;
       flex-direction: row;
       align-items: center;
+      gap: 10px;
     }
 
     form > div {
@@ -12,37 +13,23 @@
       flex-direction: row;
       justify-content: space-between;
       gap: 10px;
-      //padding-top: 0;
 
-      //.purchaseFormItemTaxCurrency {
-      //  margin-bottom: 0;
-      //  min-height: 100%;
-      //  max-width: 70px;
-      //}
-
-      //.purchaseFormItem {
-      //  margin-bottom: 0;
-      //  min-height: 100%;
-      //}
+      & > div {
+        margin-top: 15px;
+      }
     }
 
-    //.variantGridButtonBlock {
-    //  display: flex;
-    //  gap: 10px;
-    //  margin-top: 23px;
-    //}
-  }
-
-  .formItemsValid {
-    input,
-    button {
-      border: 1px solid #007aff;
-      border-radius: 6px;
+    .formItemsValid {
+      input,
+      button {
+        border: 1px solid #007aff;
+        border-radius: 6px;
+      }
     }
-  }
 
-  .buttonValid {
-    background: #007aff;
-    color: #fff;
+    .buttonValid {
+      background: #007aff;
+      color: #fff;
+    }
   }
 }

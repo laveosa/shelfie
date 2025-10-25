@@ -43,19 +43,21 @@ export default function ManageProductsForPurchaseForm({
           value: "Save",
           icon: Check,
           variant: "secondary",
+          minWidth: "fit-content",
           disabled: !form.formState.isValid,
         }}
-        primaryBtnTitle="Save"
         secondaryBtnProps={{
           value: null,
           icon: Trash2,
           variant: "outline",
-          disabled: !data.stockActionId,
+          minWidth: "fit-content",
+          disabled: !data?.stockActionId,
         }}
         onSubmit={onSubmit}
         onCancel={onDelete}
       >
         <SheFormField
+          className={cs.formItem}
           name="nettoPrice"
           render={({ field }) => (
             <SheInput
@@ -69,6 +71,15 @@ export default function ManageProductsForPurchaseForm({
                   : ""
               }
               type="number"
+              onBeforeInput={(
+                e: React.FormEvent<HTMLInputElement> & {
+                  nativeEvent: InputEvent;
+                },
+              ) => {
+                if (!/[0-9.,\-]/.test(e.nativeEvent.data ?? "")) {
+                  e.preventDefault();
+                }
+              }}
               minWidth="80px"
               maxWidth="80px"
               placeholder=" "
@@ -124,6 +135,15 @@ export default function ManageProductsForPurchaseForm({
               label="Quantity"
               value={field.value}
               type="number"
+              onBeforeInput={(
+                e: React.FormEvent<HTMLInputElement> & {
+                  nativeEvent: InputEvent;
+                },
+              ) => {
+                if (!/[0-9.,\-]/.test(e.nativeEvent.data ?? "")) {
+                  e.preventDefault();
+                }
+              }}
               className={
                 activeTab === "connectProducts"
                   ? field.value

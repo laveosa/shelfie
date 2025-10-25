@@ -9,10 +9,10 @@ import { setSelectedGridItem } from "@/utils/helpers/quick-helper.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
-import { IPurchaseProductsPageSlice } from "@/const/interfaces/store-slices/IPurchaseProductsPageSlice.ts";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
+import { IMarginsPageSlice } from "@/const/interfaces/store-slices/IMarginsPageSlice.ts";
 
 export function useMarginsPageService(
   handleCardAction,
@@ -23,9 +23,7 @@ export function useMarginsPageService(
   const { addToast } = useToast();
   const { openConfirmationDialog } = useDialogService();
   const productsService = useProductsPageService();
-  const state = useAppSelector<IPurchaseProductsPageSlice>(
-    StoreSliceEnum.MARGINS,
-  );
+  const state = useAppSelector<IMarginsPageSlice>(StoreSliceEnum.MARGINS);
   const productsState = useAppSelector<IProductsPageSlice>(
     StoreSliceEnum.PRODUCTS,
   );
@@ -459,19 +457,31 @@ export function useMarginsPageService(
   }
 
   function updateMarginItemHandle(model) {
+    const updatedItems = state.marginItemsGridRequestModel.items.map((item) =>
+      item.marginItemId === model.marginItemId
+        ? { ...model, selectedItem: true }
+        : { ...item, selectedItem: false },
+    );
+    dispatch(
+      actions.refreshMarginItemsGridRequestModel({
+        ...state.marginItemsGridRequestModel,
+        items: updatedItems,
+      }),
+    );
     updateMarginItemHandler(model.marginItemId, model).then((res) => {
-      if (res) {
-        const updatedItems = state.marginItemsGridRequestModel.items.map(
-          (item) => (item.marginItemId === res.marginItemId ? res : item),
-        );
+      const updatedItems = state.marginItemsGridRequestModel.items.map(
+        (item) =>
+          item.marginItemId === model.marginItemId
+            ? { ...res, selectedItem: true }
+            : { ...item, selectedItem: false },
+      );
 
-        dispatch(
-          actions.refreshMarginItemsGridRequestModel({
-            ...state.marginItemsGridRequestModel,
-            items: updatedItems,
-          }),
-        );
-      }
+      dispatch(
+        actions.refreshMarginItemsGridRequestModel({
+          ...state.marginItemsGridRequestModel,
+          items: updatedItems,
+        }),
+      );
     });
   }
 
@@ -562,7 +572,7 @@ export function useMarginsPageService(
   }
 
   function resetColumnsHandle() {
-    productsService.resetUserPreferencesHandler("products");
+    productsService.resetUserPreferencesHandler("salePriceManagement");
   }
 
   function getMarginPageDataHandle(purchaseId) {
@@ -616,6 +626,7 @@ export function useMarginsPageService(
 
   return {
     state,
+    appState,
     productsState,
     gridRequestChangeHandle,
     openSelectMarginCardHandle,

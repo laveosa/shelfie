@@ -44,7 +44,7 @@ export default function SupplierCard({
     if (selectedPurchase?.date) {
       setSelectedDate(selectedPurchase.date);
     }
-  }, [selectedPurchase?.date]);
+  }, [selectedPurchase]);
 
   // ==================================================================== LAYOUT
   return (

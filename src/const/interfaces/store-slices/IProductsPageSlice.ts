@@ -18,6 +18,7 @@ import { CountryCodeModel } from "@/const/models/CountryCodeModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
 import { TypeOfTraitModel } from "@/const/models/TypeOfTraitModel.ts";
 import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
+import { CompanyModel } from "@/const/models/CompanyModel.ts";
 
 export interface IProductsPageSlice {
   isLoading?: boolean;
@@ -66,4 +67,5 @@ export interface IProductsPageSlice {
   variantPhotos?: ImageModel[];
   productCode?: string;
   createdPurchase?: PurchaseModel;
+  companies?: CompanyModel[];
 }

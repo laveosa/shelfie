@@ -30,7 +30,7 @@ export function MarginsPage() {
     selectActiveCards: (state) => state[StoreSliceEnum.MARGINS].activeCards,
     refreshAction: actions.refreshActiveCards,
   });
-  const { state, productsState, ...service } = useMarginsPageService(
+  const { state, appState, productsState, ...service } = useMarginsPageService(
     handleCardAction,
     handleMultipleCardActions,
     keepOnlyCards,
@@ -149,6 +149,7 @@ export function MarginsPage() {
             <SalePriseManagementCard
               isLoading={state.isSalePriceManagementCardLoading}
               isGridLoading={state.isMarginProductsGridLoading}
+              preferences={appState.preferences}
               brands={productsState.brands}
               categories={productsState.categories}
               sizes={productsState.sizesForFilter}

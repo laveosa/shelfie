@@ -21,6 +21,7 @@ export interface MarginItemModel {
   isChanged?: boolean;
   marginPriceApplied?: boolean;
   needApply?: boolean;
+  selectedItem?: boolean;
 }
 
 export const MarginItemModelDefault: MarginItemModel = {

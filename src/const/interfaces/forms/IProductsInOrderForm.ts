@@ -3,4 +3,5 @@ export interface IProductsInOrderForm<T> {
   data?: any;
   onSubmit?: (data: T) => void;
   onDelete?: () => void;
+  onChange?: (value: any) => void;
 }

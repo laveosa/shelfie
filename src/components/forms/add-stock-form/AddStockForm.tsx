@@ -15,14 +15,12 @@ import {
 } from "@/const/models/StockUnitModel.ts";
 
 export default function AddStockForm({
-  data,
   taxTypes,
   currencyTypes,
   onChange,
 }: IAddStockForm): JSX.Element {
   // ==================================================================== UTILITIES
   const { form } = useAppForm<StockUnitModel>({
-    values: data,
     defaultValues: StockUnitModelDefaultModel,
     scheme: addStockFormScheme,
     mode: ReactHookFormMode.CHANGE,
@@ -30,15 +28,17 @@ export default function AddStockForm({
 
   // ==================================================================== EVENT HANDLERS
   function onChangeHandler(model: StockUnitModel, form) {
-    onChange?.(
-      {
-        unitsAmount: model.unitAmount,
-        nettoPrice: model.priceModel.price,
-        taxTypeId: model.priceModel.taxTypeId,
-        currencyId: model.priceModel.currencyId,
-      },
-      form,
-    );
+    setTimeout(() => {
+      onChange?.(
+        {
+          unitsAmount: model.unitAmount,
+          nettoPrice: model.priceModel.price,
+          taxTypeId: model.priceModel.taxTypeId,
+          currencyId: model.priceModel.currencyId,
+        },
+        form,
+      );
+    });
   }
 
   // ==================================================================== PRIVATE

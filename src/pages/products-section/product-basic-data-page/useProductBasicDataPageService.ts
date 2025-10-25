@@ -176,6 +176,10 @@ export default function useProductBasicDataPageService(handleCardAction) {
         navigate(
           `${ApiUrlEnum.PRODUCTS}${ApiUrlEnum.PRODUCT_BASIC_DATA}/${res.data.productId}`,
         );
+        productsService.getTheProductsForGridHandler(
+          productsState.productsGridRequestModel,
+          true,
+        );
         addToast({
           text: "Product created successfully",
           type: "success",
@@ -469,25 +473,26 @@ export default function useProductBasicDataPageService(handleCardAction) {
         addNewLocationToCompany({
           companyId: res.data.companyId,
           model: model.address,
+        }).then(() => {
+          dispatch(actions.setIsCreateCompanyCardLoading(false));
+          handleCardAction("createCompanyCard");
+          dispatch(actions.setIsCompaniesGridLoading(true));
+          getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
+            (res) => {
+              dispatch(actions.setIsCompaniesGridLoading(false));
+              const modifiedList = res.data.items.map((item) => ({
+                ...item,
+                isSelected: item.companyId === state.selectedCompany?.companyId,
+              }));
+              dispatch(
+                actions.refreshCompaniesGridRequestModel({
+                  ...res.data,
+                  items: modifiedList,
+                }),
+              );
+            },
+          );
         });
-        dispatch(actions.setIsCreateCompanyCardLoading(false));
-        handleCardAction("createCompanyCard");
-        dispatch(actions.setIsCompaniesGridLoading(true));
-        getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
-          (res: any) => {
-            dispatch(actions.setIsCompaniesGridLoading(false));
-            const modifiedList = res.data.items.map((item) => ({
-              ...item,
-              isSelected: item.companyId === state.selectedCompany?.companyId,
-            }));
-            dispatch(
-              actions.refreshCompaniesGridRequestModel({
-                ...res.data,
-                items: modifiedList,
-              }),
-            );
-          },
-        );
         addToast({
           text: "Company created successfully",
           type: "success",

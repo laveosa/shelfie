@@ -47,7 +47,10 @@ export default function ProductsInOrderCard({
   }, [stockActions]);
 
   useEffect(() => {
-    if (!stockActionsData?.length) return;
+    if (!stockActionsData?.length) {
+      setProductsTotal({ total: 0, currency: "" });
+      return;
+    }
 
     const computedProductsTotal = stockActionsData.reduce(
       (acc, item) => {
@@ -62,7 +65,6 @@ export default function ProductsInOrderCard({
       },
       { total: 0, currency: "" },
     );
-
     setProductsTotal(computedProductsTotal);
   }, [stockActionsData]);
 
@@ -122,7 +124,7 @@ export default function ProductsInOrderCard({
                 {translate("OrderForm.Labels.ProductsTotal")}
               </span>
               <span className={`${cs.productsSummaryText} she-text`}>
-                {productsTotal.total}
+                {productsTotal.total.toFixed(2) || 0}
                 {productsTotal.currency}
               </span>
             </div>

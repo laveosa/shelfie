@@ -54,31 +54,6 @@ export default function MarginItemsForm({
             />
           )}
         />
-        {/*<FormField
-          control={form.control}
-          name="taxTypeId"
-          render={({ field }) => (
-            <SheFormItem
-              className={`${cs.marginItemsFormItem} ${cs.marginItemsFormInput}`}
-            >
-              //TODO: WHEN NEW SheSelect COMPONENT WILL BE UPLOADED - SET SELECTED ITEM!!!
-              <SheSelect
-                className={data?.taxTypeChanged ? cs.selectChanged : ""}
-                placeholder=" "
-                selected={field.value || data?.taxTypeId}
-                items={convertTaxesToSelectItems(taxes)}
-                hideFirstOption
-                minWidth="70px"
-                maxWidth="70px"
-                onSelect={(value) => {
-                  field.onChange(value);
-                  void form.trigger("taxTypeId");
-                  onMarginItemChange(form.getValues());
-                }}
-              />
-            </SheFormItem>
-          )}
-        />*/}
         <div
           className={`${cs.marginItemsFormItem} ${cs.marginItemsFormIcon} ${data.taxTypeChanged ? cs.arrowIconActive : cs.arrowIcon}`}
         >
@@ -102,6 +77,8 @@ export default function MarginItemsForm({
               className={data?.marginPriceChanged ? cs.inputChanged : ""}
               minWidth="70px"
               maxWidth="70px"
+              autoFocus={data.selectedItem}
+              delayTime={1500}
               onDelay={() => {
                 onMarginItemChange(form.getValues());
               }}
