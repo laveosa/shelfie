@@ -3,18 +3,18 @@ import React, { useEffect, useRef, useState } from "react";
 import cs from "./SheContextSidebar.module.scss";
 import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
 import PageSidebarMenu from "@/components/complex/page-sidebar-menu/PageSidebarMenu.tsx";
+import PageSidebarMenuMobile from "@/components/complex/page-sidebar-menu-mobile/PageSidebarMenuMobile.tsx";
 import {
   Carousel,
   CarouselApi,
   CarouselContent,
 } from "@/components/ui/carousel.tsx";
+import { useSidebar } from "@/components/ui/sidebar.tsx";
 import { ISheContextSidebar } from "@/const/interfaces/complex-components/ISheContextSidebar.ts";
 import {
   IItemsCardItem,
   IItemsCardItemOption,
 } from "@/const/interfaces/complex-components/custom-cards/IItemsCard.ts";
-import { useSidebar } from "@/components/ui/sidebar.tsx";
-import PageSidebarMenuMobile from "@/components/complex/page-sidebar-menu-mobile/PageSidebarMenuMobile.tsx";
 
 export default function SheContextSidebar({
   className = "",
