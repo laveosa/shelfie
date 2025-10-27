@@ -26,6 +26,7 @@ import { StorageKeyEnum } from "@/const/enums/StorageKeyEnum.ts";
 import logo from "@/assets/images/AuthLogo.png";
 import SheLoading from "@/components/primitive/she-loading/SheLoading.tsx";
 import { useToast } from "@/hooks/useToast.ts";
+import { useIsMobile } from "@/utils/hooks/useIsMobile.ts";
 
 export default function AuthPage() {
   const { t } = useTranslation();
@@ -46,6 +47,7 @@ export default function AuthPage() {
       phoneCodeModel: null,
     },
   });
+  const isMobile = useIsMobile();
 
   const phoneNumber: string = form.watch("phoneNumber");
   const phoneCode: string = form.watch("phoneCodeModel.phoneCode");
@@ -187,7 +189,7 @@ export default function AuthPage() {
   // }, [state.isLoading]);
 
   return (
-    <div id={cs["AuthPage"]}>
+    <div className={`${cs.authPage} ${isMobile ? cs.isMobile : ""}`}>
       <div
         className={`${cs.authPageWrapper} ${state.isLoading ? cs.authPageLoading : ""}`}
       >
