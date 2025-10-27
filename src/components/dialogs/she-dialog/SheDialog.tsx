@@ -90,23 +90,20 @@ export default function SheDialog({
                 <SheButton
                   className={cs.secondaryButton}
                   variant="secondary"
+                  value={secondaryButtonValue}
+                  valueTransKey={secondaryButtonValueTransKey}
+                  minWidth="100px"
                   {...secondaryButtonModel}
                   onClick={onSecondaryButtonClick}
-                >
-                  <Trans i18nKey={secondaryButtonValueTransKey}>
-                    {secondaryButtonValue}
-                  </Trans>
-                </SheButton>
+                />
                 <SheButton
                   className={cs.primaryButton}
-                  variant="default"
+                  value={primaryButtonValue}
+                  valueTransKey={primaryButtonValueTransKey}
+                  minWidth="100px"
                   {...primaryButtonModel}
                   onClick={onPrimaryButtonClick}
-                >
-                  <Trans i18nKey={primaryButtonValueTransKey}>
-                    {primaryButtonValue}
-                  </Trans>
-                </SheButton>
+                />
               </DialogFooter>
             )}
           </DialogContent>
