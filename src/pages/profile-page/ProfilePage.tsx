@@ -13,6 +13,7 @@ import { useAppSelector } from "@/utils/hooks/redux.ts";
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import { convertToSelectItems } from "@/utils/converters/primitive-components/she-select-convertors.ts";
 import useProfilePageService from "@/pages/profile-page/useProfilePageService.ts";
+import { useIsMobile } from "@/utils/hooks/useIsMobile.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 
@@ -20,6 +21,7 @@ export function ProfilePage() {
   const state = useAppSelector<IProductsPageSlice>(StoreSliceEnum.PROFILE);
   const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
   const service = useProfilePageService();
+  const isMobile = useIsMobile();
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
@@ -29,7 +31,7 @@ export function ProfilePage() {
 
   // ==================================================================== LAYOUT
   return (
-    <div className={cs.profilePage}>
+    <div className={`${cs.profilePage} ${isMobile ? cs.isMobile : ""}`}>
       <div className={cs.profilePageContent}>
         <div className={cs.profilePageTitle}>
           <span className="she-title">Account</span>
