@@ -101,7 +101,7 @@ export default function PageSidebarMenuMobile({
               {_selected.label ? (
                 <div className={cs.pageSidebarMenuMobileSelectItemLabel}>
                   <span className="she-text">
-                    {translate(_selected.labelTransKey, _selected.label)}
+                    {translate(_selected.labelTransKey, null, _selected.label)}
                   </span>
                 </div>
               ) : (
