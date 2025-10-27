@@ -1,8 +1,14 @@
+.sheConfirmationDialog {
+}
+
 .confirmationDialogContent {
   display: flex;
   flex-direction: column;
+  min-width: 400px;
 
-  .confirmationDialogTitle, .confirmationDialogText, .confirmationDialogDescription {
+  .confirmationDialogTitle,
+  .confirmationDialogText,
+  .confirmationDialogDescription {
     padding-bottom: 20px;
   }
 

@@ -6,7 +6,7 @@
   flex-direction: column;
 }
 
-#AuthPage {
+.authPage {
   @include flex-settings;
   padding: 100px;
   justify-content: center;
@@ -45,7 +45,6 @@
       .authInputBlock {
         position: relative;
 
-
         .phoneInput {
           display: flex;
           flex-direction: column;
@@ -83,8 +82,6 @@
               }
             }
           }
-
-
         }
 
         .passwordInput {
@@ -151,7 +148,7 @@
 
 //------------------------------------------------------------------- SOCIAL MEDIA AUTH
 
-#AuthPage {
+.authPage {
   .facebookButtonBlock {
     @include flex-settings;
     gap: 20px;
@@ -178,7 +175,7 @@
 
 //------------------------------------------------------------------- FOOTER TEXT
 
-#AuthPage {
+.authPage {
   .footerText {
     text-align: center;
     padding-top: 20px;
@@ -197,4 +194,19 @@
 .authPageLoading {
   pointer-events: none;
   opacity: 0.5;
+}
+
+// -------------------------------------------------------------------- IS MOBILE
+
+.authPage {
+  &.isMobile {
+    padding: 10px;
+
+    .authPageWrapper {
+      max-width: none;
+      min-width: 0;
+      width: 100%;
+      height: calc(100vh - 20px);
+    }
+  }
 }
