@@ -62,7 +62,7 @@
     .noImage {
       min-width: 32px;
       min-height: 32px;
-      background: #71717A;;
+      background: #71717a;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -81,7 +81,7 @@
       width: 100%;
       color: white;
 
-      span {
+      .headerInfoText {
         max-width: 100%;
         color: #b7d5c7;
         text-overflow: ellipsis;
@@ -135,7 +135,7 @@
   .noImage {
     min-width: 32px;
     min-height: 32px;
-    background: #71717A;;
+    background: #71717a;
     display: flex;
     align-items: center;
     justify-content: center;

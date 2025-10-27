@@ -16,18 +16,18 @@ import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 import { IconViewEnum } from "@/const/enums/IconViewEnum.ts";
 import {
   CollectionConfig,
-  IProductMenuCard,
+  IPageSidebarMenu,
   MenuItem,
-} from "@/const/interfaces/complex-components/custom-cards/IProductMenuCard.ts";
+} from "@/const/interfaces/complex-components/IPageSidebarMenu.ts";
 
-export default function ProductMenuCard({
+export default function PageSidebarMenu({
   isLoading,
   title,
   itemId,
   itemsCollection,
   counter,
   collectionConfig,
-}: IProductMenuCard): JSX.Element {
+}: IPageSidebarMenu): JSX.Element {
   // ==================================================================== STATE MANAGEMENT
   const [_config, setConfig] = useState<CollectionConfig>(null);
   const [_isMinimized, setIsMinimized] = useState<boolean>(null);
@@ -51,7 +51,12 @@ export default function ProductMenuCard({
   }, []);
 
   useEffect(() => {
-    setConfig(_getCollectionConfig());
+    setConfig(
+      ContextSidebarService.getSidebarMenuOptions(
+        collectionConfig,
+        itemsCollection,
+      ),
+    );
   }, [itemsCollection]);
 
   useEffect(() => {
@@ -70,57 +75,6 @@ export default function ProductMenuCard({
   }
 
   // ==================================================================== PRIVATE
-  function _getCollectionConfig(): CollectionConfig {
-    const collectionConfigs: Record<string, CollectionConfig> = {
-      products: {
-        menuItems: ContextSidebarService.getProductMenuItems(),
-        defaultEnabledItem: "basic_data",
-        pathBase: NavUrlEnum.PRODUCTS,
-        urlBuilder: (path: string, itemId?: string) =>
-          `${NavUrlEnum.PRODUCTS}${path}/${itemId || ""}`,
-        disableItemsWithoutId: true,
-      },
-      purchases: {
-        menuItems: ContextSidebarService.getPurchaseMenuItems(),
-        defaultEnabledItem: "supplier",
-        pathBase: NavUrlEnum.PRODUCTS,
-        urlBuilder: (path: string, itemId?: string) =>
-          `${NavUrlEnum.PRODUCTS}${path}/${itemId || ""}`,
-        disableItemsWithoutId: true,
-      },
-      sales: {
-        menuItems: ContextSidebarService.getSalesMenuItems(),
-        pathBase: NavUrlEnum.ORDERS,
-        urlBuilder: (path: string) => `${NavUrlEnum.SALES}${path}`,
-        disableItemsWithoutId: false,
-      },
-      order: {
-        menuItems: ContextSidebarService.getOrderMenuItems(),
-        defaultEnabledItem: "order",
-        pathBase: NavUrlEnum.ORDER_DETAILS,
-        urlBuilder: (path: string, itemId?: string) =>
-          `${NavUrlEnum.SALES}${path}/${itemId || ""}`,
-        disableItemsWithoutId: false,
-      },
-      customer: {
-        menuItems: ContextSidebarService.getCustomerMenuItems(),
-        defaultEnabledItem: "customer",
-        pathBase: NavUrlEnum.CUSTOMER_BASIC_DATA,
-        urlBuilder: (path: string, itemId?: string) =>
-          `${NavUrlEnum.CUSTOMERS}${path}/${itemId || ""}`,
-        disableItemsWithoutId: false,
-      },
-    };
-
-    const config = collectionConfig || collectionConfigs[itemsCollection];
-
-    if (!config) {
-      console.warn(`No configuration found for collection: ${itemsCollection}`);
-      return null;
-    }
-
-    return config;
-  }
 
   function _getItemInnerLayout(item, ref?) {
     return (
@@ -172,8 +126,9 @@ export default function ProductMenuCard({
   );
 }
 
-function ContextSidebarMenuItem({
+export function ContextSidebarMenuItem({
   ref,
+  className = "",
   id,
   itemId,
   counterId,
@@ -215,7 +170,7 @@ function ContextSidebarMenuItem({
   return (
     <div
       ref={ref}
-      className={`${cs.productMenuCardItem} ${isSelected ? cs.selected : ""} ${isDisabled ? "disabled" : ""}`}
+      className={`${cs.productMenuCardItem} ${className} ${isSelected ? cs.selected : ""} ${isDisabled ? "disabled" : ""}`}
       onClick={() => onClickHandler(NavUrlEnum[path])}
     >
       <SheIcon

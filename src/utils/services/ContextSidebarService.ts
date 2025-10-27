@@ -9,7 +9,11 @@ import orderMenuItems from "@/const/jsons/context-sidebar/order-menu-items.json"
 import customerMenuItems from "@/const/jsons/context-sidebar/customer-menu-items.json";
 
 import { LucideIconType } from "@/const/types/LucideIconType.ts";
-import { MenuItem } from "@/const/interfaces/complex-components/custom-cards/IProductMenuCard.ts";
+import {
+  CollectionConfig,
+  MenuItem,
+} from "@/const/interfaces/complex-components/IPageSidebarMenu.ts";
+import { NavUrlEnum } from "@/const/enums/NavUrlEnum.ts";
 
 export class ContextSidebarService {
   public static getProductMenuItems(): MenuItem[] {
@@ -30,6 +34,61 @@ export class ContextSidebarService {
 
   public static getCustomerMenuItems(): MenuItem[] {
     return customerMenuItems.map((item) => this.updatedMenuItem(item));
+  }
+
+  public static getSidebarMenuOptions(
+    collectionConfig,
+    itemsCollection,
+  ): CollectionConfig {
+    const collectionConfigs: Record<string, CollectionConfig> = {
+      products: {
+        menuItems: this.getProductMenuItems(),
+        defaultEnabledItem: "basic_data",
+        pathBase: NavUrlEnum.PRODUCTS,
+        urlBuilder: (path: string, itemId?: string) =>
+          `${NavUrlEnum.PRODUCTS}${path}/${itemId || ""}`,
+        disableItemsWithoutId: true,
+      },
+      purchases: {
+        menuItems: this.getPurchaseMenuItems(),
+        defaultEnabledItem: "supplier",
+        pathBase: NavUrlEnum.PRODUCTS,
+        urlBuilder: (path: string, itemId?: string) =>
+          `${NavUrlEnum.PRODUCTS}${path}/${itemId || ""}`,
+        disableItemsWithoutId: true,
+      },
+      sales: {
+        menuItems: this.getSalesMenuItems(),
+        pathBase: NavUrlEnum.ORDERS,
+        urlBuilder: (path: string) => `${NavUrlEnum.SALES}${path}`,
+        disableItemsWithoutId: false,
+      },
+      order: {
+        menuItems: this.getOrderMenuItems(),
+        defaultEnabledItem: "order",
+        pathBase: NavUrlEnum.ORDER_DETAILS,
+        urlBuilder: (path: string, itemId?: string) =>
+          `${NavUrlEnum.SALES}${path}/${itemId || ""}`,
+        disableItemsWithoutId: false,
+      },
+      customer: {
+        menuItems: this.getCustomerMenuItems(),
+        defaultEnabledItem: "customer",
+        pathBase: NavUrlEnum.CUSTOMER_BASIC_DATA,
+        urlBuilder: (path: string, itemId?: string) =>
+          `${NavUrlEnum.CUSTOMERS}${path}/${itemId || ""}`,
+        disableItemsWithoutId: false,
+      },
+    };
+
+    const config = collectionConfig || collectionConfigs[itemsCollection];
+
+    if (!config) {
+      console.warn(`No configuration found for collection: ${itemsCollection}`);
+      return null;
+    }
+
+    return config;
   }
 
   // ====================================================== PRIVATE

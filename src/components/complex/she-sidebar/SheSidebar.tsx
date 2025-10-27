@@ -23,6 +23,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
+  useSidebar,
 } from "@/components/ui/sidebar.tsx";
 import SheSidebarHeader from "@/components/complex/she-sidebar/components/she-sidebar-header/SheSidebarHeader.tsx";
 import { getCurrentSectionUrl } from "@/utils/helpers/quick-helper.ts";
@@ -106,15 +107,27 @@ export default function SheSidebar({
   userOrganizations,
   onSelectedOrganizations,
 }: ISheSidebar) {
+  // ========================================================= UTILITIES
   const location = useLocation();
+  const { isMobile, setOpenMobile } = useSidebar();
+
+  // ========================================================= STATE MANAGEMENT
   const [selected, setSelected] = useState<NavUrlEnum | string>(
     getCurrentSectionUrl(location.pathname),
   );
 
+  // ========================================================= SIDE EFFECTS
   useEffect(() => {
     setSelected(getCurrentSectionUrl(location.pathname));
   }, [location.pathname]);
 
+  // ========================================================= EVENT HANDLERS
+  function onSelectMenuOptionHandler(item) {
+    setSelected(item.url);
+    if (isMobile) setOpenMobile(false);
+  }
+
+  // ========================================================= LAYOUT
   return (
     <Sidebar className={cs.sheSidebar} collapsible="icon">
       <SheSidebarHeader
@@ -142,7 +155,7 @@ export default function SheSidebar({
                           selected === item.url ? cs.sidebarItemActive : ""
                         }
                         tooltip={item.title}
-                        onClick={() => setSelected(item.url)}
+                        onClick={() => onSelectMenuOptionHandler(item)}
                       >
                         <NavLink to={item.url}>
                           <item.icon />

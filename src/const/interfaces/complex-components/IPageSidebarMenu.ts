@@ -3,7 +3,7 @@ import React from "react";
 import { CounterModel } from "@/const/models/CounterModel.ts";
 import { LucideIconType } from "@/const/types/LucideIconType.ts";
 
-export interface IProductMenuCard {
+export interface IPageSidebarMenu {
   isLoading?: boolean;
   title?: string;
   itemId?: any;
@@ -16,6 +16,7 @@ export interface IProductMenuCard {
 
 export interface MenuItem {
   ref?: React.Ref<HTMLDivElement>;
+  className?: string;
   itemId?: any;
   id?: string;
   counterId?: string;

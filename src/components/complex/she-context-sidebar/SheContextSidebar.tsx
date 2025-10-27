@@ -2,18 +2,19 @@ import React, { useEffect, useRef, useState } from "react";
 
 import cs from "./SheContextSidebar.module.scss";
 import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
-import ProductMenuCard from "@/components/complex/custom-cards/product-menu-card/ProductMenuCard.tsx";
+import PageSidebarMenu from "@/components/complex/page-sidebar-menu/PageSidebarMenu.tsx";
+import PageSidebarMenuMobile from "@/components/complex/page-sidebar-menu-mobile/PageSidebarMenuMobile.tsx";
 import {
   Carousel,
   CarouselApi,
   CarouselContent,
 } from "@/components/ui/carousel.tsx";
+import { useSidebar } from "@/components/ui/sidebar.tsx";
 import { ISheContextSidebar } from "@/const/interfaces/complex-components/ISheContextSidebar.ts";
 import {
   IItemsCardItem,
   IItemsCardItemOption,
 } from "@/const/interfaces/complex-components/custom-cards/IItemsCard.ts";
-import { useSidebar } from "@/components/ui/sidebar.tsx";
 
 export default function SheContextSidebar({
   className = "",
@@ -165,12 +166,12 @@ export default function SheContextSidebar({
   // ==================================================================== LAYOUT
   return (
     <div
-      className={`${cs.sheContextSidebar} ${className} ${hideSidebarBlock && cs.sheContextSidebarNoSideBar} ${isMobile && cs.isMobile}`}
+      className={`${cs.sheContextSidebar} ${className} ${hideSidebarBlock ? cs.sheContextSidebarNoSideBar : ""} ${isMobile ? cs.isMobile : ""}`}
       style={{ ...style }}
     >
       {!hideSidebarBlock && (
         <div className={cs.sheContextSidebarMenuAndListContainer}>
-          {showListItems && (
+          {!isMobile && showListItems && (
             <div className={cs.sheContextSidebarList}>
               <ItemsCard
                 isLoading={isListLoading}
@@ -183,13 +184,22 @@ export default function SheContextSidebar({
             </div>
           )}
           <div className={cs.sheContextSidebarMenu}>
-            <ProductMenuCard
-              title={menuTitle}
-              itemsCollection={menuCollectionType}
-              counter={counter}
-              itemId={itemId}
-              activeCards={activeCards}
-            />
+            {!isMobile ? (
+              <PageSidebarMenu
+                title={menuTitle}
+                itemsCollection={menuCollectionType}
+                counter={counter}
+                itemId={itemId}
+                activeCards={activeCards}
+              />
+            ) : (
+              <PageSidebarMenuMobile
+                itemsCollection={menuCollectionType}
+                counter={counter}
+                itemId={itemId}
+                activeCards={activeCards}
+              />
+            )}
           </div>
         </div>
       )}
@@ -209,7 +219,7 @@ export default function SheContextSidebar({
             </CarouselContent>
           </Carousel>
         ) : (
-          <div>{children}</div>
+          <>{children}</>
         )}
       </div>
     </div>

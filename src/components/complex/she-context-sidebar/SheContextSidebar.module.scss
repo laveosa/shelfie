@@ -57,9 +57,25 @@
 
 .sheContextSidebar {
   &.isMobile {
+    display: flex;
+    flex-direction: column;
+
+    .sheContextSidebarMenuAndListContainer {
+      gap: 0;
+      padding: 0;
+
+      .sheContextSidebarMenu {
+        width: 100%;
+        flex-grow: 1;
+      }
+    }
+
     .sheContextSidebarContextContainer {
       overflow-x: auto;
-      margin-bottom: 6px;
+      margin: 3px 6px 6px 7px;
+      padding: 0 14px 0 0;
+      width: 100%;
+      flex-grow: 1;
     }
   }
 }
