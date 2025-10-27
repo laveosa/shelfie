@@ -16,6 +16,7 @@ export interface IPageSidebarMenu {
 
 export interface MenuItem {
   ref?: React.Ref<HTMLDivElement>;
+  className?: string;
   itemId?: any;
   id?: string;
   counterId?: string;

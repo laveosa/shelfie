@@ -1,0 +1,152 @@
+@use "@/styles/variables" as vars;
+
+.pageSidebarMenuMobile {
+  .pageSidebarMenuMobileHeader {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 10px;
+    min-height: 40px;
+    max-height: 40px;
+    background: white;
+    border-bottom: 1px solid #f1f1f2;
+
+    .pageSidebarMenuMobileHeaderTrigger {
+    }
+
+    .pageSidebarMenuMobileHeaderInfo {
+      width: 100%;
+
+      .pageSidebarMenuMobileSelectItem {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+
+        .pageSidebarMenuMobileSelectItemLabel {
+          display: flex;
+          align-items: center;
+          overflow: hidden;
+          width: 100px;
+          flex-grow: 1;
+
+          span {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            font-size: 16px;
+            font-weight: 500;
+            color: vars.$subtextColor;
+          }
+        }
+      }
+    }
+  }
+
+  .pageSidebarMenuMobileBody {
+    position: relative;
+    height: 0;
+
+    .pageSidebarMenuMobileCurtain {
+      z-index: 2;
+      position: absolute;
+      left: 0;
+      top: 0;
+      background: gray;
+      width: 100%;
+      height: 0;
+      opacity: 0;
+      transition: all ease-in-out 160ms;
+    }
+
+    .pageSidebarMenuMobileItemsList {
+      position: relative;
+      z-index: 3;
+      background: white;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      border-radius: 0 0 3px 3px;
+      overflow: hidden;
+      overflow-y: auto;
+      opacity: 0;
+      max-height: 0;
+      transition: all ease-in-out 160ms;
+
+      .pageSidebarMenuMobileItem {
+        .sidebarMenuItemMobile {
+          padding: 10px 5px;
+        }
+      }
+    }
+  }
+}
+
+// ====================================================== IS OPEN
+
+.pageSidebarMenuMobile {
+  &.pageSidebarMenuMobileBodyOpen {
+    .pageSidebarMenuMobileBody {
+      .pageSidebarMenuMobileCurtain {
+        height: calc(100vh - 92px);
+        opacity: 0.4;
+      }
+
+      .pageSidebarMenuMobileItemsList {
+        padding: 5px 5px 10px;
+        opacity: 1;
+        max-height: calc(100vh - 430px);
+      }
+    }
+  }
+}
+
+// ====================================================== LOADING
+
+.pageSidebarMenuMobile {
+  .pageSidebarMenuMobileLoading {
+    position: absolute;
+    height: 100%;
+    opacity: 0.2;
+  }
+}
+
+// ====================================================== COUNTER BADGE
+
+.pageSidebarMenuMobile {
+  .productMenuCardItemBadge {
+    background-color: #f4f4f5;
+    color: #8439ed;
+    min-width: 35px;
+    max-width: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+// ====================================================== HEADER TRIGGER
+
+.pageSidebarMenuMobile {
+  .headerTrigger {
+    $triggerIconSize: 20px;
+    padding: 1px;
+    color: #71717a;
+    min-width: $triggerIconSize;
+    max-width: $triggerIconSize;
+    min-height: $triggerIconSize;
+    max-height: $triggerIconSize;
+
+    &:hover {
+      background-color: transparent;
+      color: vars.$colorDark;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}

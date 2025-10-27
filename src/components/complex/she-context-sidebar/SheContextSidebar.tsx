@@ -14,6 +14,7 @@ import {
   IItemsCardItemOption,
 } from "@/const/interfaces/complex-components/custom-cards/IItemsCard.ts";
 import { useSidebar } from "@/components/ui/sidebar.tsx";
+import PageSidebarMenuMobile from "@/components/complex/page-sidebar-menu-mobile/PageSidebarMenuMobile.tsx";
 
 export default function SheContextSidebar({
   className = "",
@@ -165,7 +166,7 @@ export default function SheContextSidebar({
   // ==================================================================== LAYOUT
   return (
     <div
-      className={`${cs.sheContextSidebar} ${className} ${hideSidebarBlock && cs.sheContextSidebarNoSideBar} ${isMobile && cs.isMobile}`}
+      className={`${cs.sheContextSidebar} ${className} ${hideSidebarBlock ? cs.sheContextSidebarNoSideBar : ""} ${isMobile ? cs.isMobile : ""}`}
       style={{ ...style }}
     >
       {!hideSidebarBlock && (
@@ -183,13 +184,22 @@ export default function SheContextSidebar({
             </div>
           )}
           <div className={cs.sheContextSidebarMenu}>
-            <PageSidebarMenu
-              title={menuTitle}
-              itemsCollection={menuCollectionType}
-              counter={counter}
-              itemId={itemId}
-              activeCards={activeCards}
-            />
+            {!isMobile ? (
+              <PageSidebarMenu
+                title={menuTitle}
+                itemsCollection={menuCollectionType}
+                counter={counter}
+                itemId={itemId}
+                activeCards={activeCards}
+              />
+            ) : (
+              <PageSidebarMenuMobile
+                itemsCollection={menuCollectionType}
+                counter={counter}
+                itemId={itemId}
+                activeCards={activeCards}
+              />
+            )}
           </div>
         </div>
       )}

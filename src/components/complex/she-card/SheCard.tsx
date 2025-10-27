@@ -88,7 +88,7 @@ export default function SheCard(props: ISheCard) {
     return (
       <div
         className={`${className} ${cs.sheCard} ${cs[view]} ${_isMinimized && "sheCardMinimized"} ${showHeader && cs.withHeader}
-      ${showFooter && cs.withFooter}`}
+      ${showFooter && cs.withFooter} ${isMobile && cs.sheCardMobile}`}
         style={{
           width,
           minWidth,
