@@ -19,6 +19,7 @@ export function DashboardPage() {
       <div>
         <h2>this is copy of original Sheltie project</h2>
         <h2>Igor test</h2>
+        <h2>Igor test2</h2>
       </div>
     </div>
   );
