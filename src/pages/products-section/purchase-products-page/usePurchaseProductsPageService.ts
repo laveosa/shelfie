@@ -251,20 +251,20 @@ export default function usePurchaseProductsPageService(
     updatePurchaseProductApiHandler(model.stockActionId, model.data).then(
       (res) => {
         if (!res.error) {
-          getPurchaseSummaryHandler(purchaseId),
+          (getPurchaseSummaryHandler(purchaseId),
             addToast({
               text: "Product updated successfully",
               type: "success",
-            });
+            }));
         } else {
-          getListOfPurchaseProductsForGridHandler(
+          (getListOfPurchaseProductsForGridHandler(
             purchaseId,
             state.purchasesProductsGridRequestModel,
           ),
             addToast({
               text: `${res.error.data.detail}`,
               type: "error",
-            });
+            }));
         }
       },
     );
@@ -1490,6 +1490,7 @@ export default function usePurchaseProductsPageService(
     productsService.getVariantDetailsHandler(model.variantId).then((res) => {
       dispatch(productsActions.refreshSelectedVariant(res));
       dispatch(productsActions.refreshVariantPhotos(res.photos));
+      dispatch(productsActions.refreshActiveTab("products"));
       navigate(
         `${NavUrlEnum.PRODUCTS}${NavUrlEnum.MANAGE_VARIANTS}/${model?.productId}`,
       );

@@ -42,8 +42,9 @@ export default function SheContextSidebar({
 
   // ==================================================================== SIDE EFFECTS
   useEffect(() => {
-    if (listItems && listItems.length > 0)
-      setListItems(_listItemsConvertor(listItems));
+    if (listItems && listItems.length > 0) console.log("ITEMS: ", listItems);
+
+    setListItems(_listItemsConvertor(listItems));
   }, [listItems]);
 
   /*useEffect(() => {

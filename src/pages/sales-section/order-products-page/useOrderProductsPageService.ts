@@ -307,6 +307,7 @@ export default function useOrderProductsPageService(
   }
 
   function manageProductHandler(model: VariantModel) {
+    dispatch(productsActions.refreshActiveTab("products"));
     navigate(
       `${NavUrlEnum.PRODUCTS}${NavUrlEnum.PRODUCT_BASIC_DATA}/${model.productId}`,
     );
