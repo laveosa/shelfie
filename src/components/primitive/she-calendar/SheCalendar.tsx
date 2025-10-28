@@ -449,7 +449,7 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
             <Calendar
               className={`${cs.sheCalendarElement} ${calendarClassName} ${disabled || isLoading ? "disabled" : ""}`}
               style={calendarStyle}
-              mode={date ? _inferCalendarMode(date) : mode}
+              mode={date ? _inferCalendarMode(date) : (mode as any)}
               selected={_date as any}
               month={setMonth(
                 setYear(new Date(), _selectedYear),
