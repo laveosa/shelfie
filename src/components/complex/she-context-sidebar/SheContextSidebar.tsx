@@ -1,10 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import cs from "./SheContextSidebar.module.scss";
 import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
 import PageSidebarMenu from "@/components/complex/page-sidebar-menu/PageSidebarMenu.tsx";
 import PageSidebarMenuMobile from "@/components/complex/page-sidebar-menu-mobile/PageSidebarMenuMobile.tsx";
-import { CarouselApi, CarouselContent } from "@/components/ui/carousel.tsx";
 import { useSidebar } from "@/components/ui/sidebar.tsx";
 import { ISheContextSidebar } from "@/const/interfaces/complex-components/ISheContextSidebar.ts";
 import {
@@ -29,7 +28,6 @@ export default function SheContextSidebar({
   itemId,
   activeCards,
   skeletonQuantity,
-  isMouseWheelHorizontalScroll,
   onAction,
 }: ISheContextSidebar) {
   // ==================================================================== STATE MANAGEMENT
@@ -37,7 +35,7 @@ export default function SheContextSidebar({
   // const [carouselApi, setCarouselApi] = useState<CarouselApi>(null);
 
   // ==================================================================== REF
-  const prevCardsCount = useRef(activeCards?.length || 0);
+  // const prevCardsCount = useRef(activeCards?.length || 0);
 
   // ==================================================================== UTILITIES
   const { isMobile } = useSidebar();
