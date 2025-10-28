@@ -60,9 +60,7 @@ export default function ProductConfigurationForm({
     <SheForm<ProductModel>
       form={form}
       className={cs.productConfigurationForm}
-      footerClassName={
-        data?.productId ? cs.formFooterTwoButton : cs.formFooterOneButton
-      }
+      footerClassName={cs.formFooter}
       footerPosition={DirectionEnum.RIGHT}
       primaryBtnProps={{
         value: data?.productId ? "Save" : "Add Product",

@@ -19,7 +19,6 @@ export default function ProductConfigurationCard({
   selectedCategory,
   productCode,
   showSecondaryButton,
-  onSecondaryButtonClick,
   onAction,
 }: IProductConfigurationCard): JSX.Element {
   // ==================================================================== LAYOUT
@@ -32,7 +31,6 @@ export default function ProductConfigurationCard({
       }
       isLoading={isLoading}
       showCloseButton={showSecondaryButton}
-      onSecondaryButtonClick={onSecondaryButtonClick}
     >
       <div className={cs.productConfigurationForm}>
         <ProductConfigurationForm
