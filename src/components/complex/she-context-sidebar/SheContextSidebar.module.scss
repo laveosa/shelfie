@@ -27,7 +27,8 @@
     gap: vars.$paddingSmall;
     padding-top: 10px;
     margin-right: 10px;
-    overflow-x: hidden;
+    overflow-x: auto;
+    margin-bottom: 6px;
 
     .carouselContainer {
       width: 100px;

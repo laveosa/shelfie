@@ -4,11 +4,7 @@ import cs from "./SheContextSidebar.module.scss";
 import ItemsCard from "@/components/complex/custom-cards/items-card/ItemsCard.tsx";
 import PageSidebarMenu from "@/components/complex/page-sidebar-menu/PageSidebarMenu.tsx";
 import PageSidebarMenuMobile from "@/components/complex/page-sidebar-menu-mobile/PageSidebarMenuMobile.tsx";
-import {
-  Carousel,
-  CarouselApi,
-  CarouselContent,
-} from "@/components/ui/carousel.tsx";
+import { CarouselApi, CarouselContent } from "@/components/ui/carousel.tsx";
 import { useSidebar } from "@/components/ui/sidebar.tsx";
 import { ISheContextSidebar } from "@/const/interfaces/complex-components/ISheContextSidebar.ts";
 import {
@@ -38,7 +34,7 @@ export default function SheContextSidebar({
 }: ISheContextSidebar) {
   // ==================================================================== STATE MANAGEMENT
   const [_listItems, setListItems] = useState<IItemsCardItem[]>([]);
-  const [carouselApi, setCarouselApi] = useState<CarouselApi>(null);
+  // const [carouselApi, setCarouselApi] = useState<CarouselApi>(null);
 
   // ==================================================================== REF
   const prevCardsCount = useRef(activeCards?.length || 0);
@@ -52,7 +48,7 @@ export default function SheContextSidebar({
       setListItems(_listItemsConvertor(listItems));
   }, [listItems]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (!isMobile && carouselApi) {
       const currentCount = activeCards?.length || 0;
       const cardsAdded = currentCount > prevCardsCount.current;
@@ -70,9 +66,9 @@ export default function SheContextSidebar({
 
       prevCardsCount.current = currentCount;
     }
-  }, [activeCards, children, carouselApi]);
+  }, [activeCards, children, carouselApi]);*/
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (!isMobile && isMouseWheelHorizontalScroll && carouselApi) {
       const container = carouselApi.containerNode();
 
@@ -120,7 +116,7 @@ export default function SheContextSidebar({
         container.removeEventListener("wheel", handleWheel);
       };
     }
-  }, [carouselApi]);
+  }, [carouselApi]);*/
 
   // ==================================================================== LOGIC
 
@@ -203,25 +199,7 @@ export default function SheContextSidebar({
           </div>
         </div>
       )}
-      <div className={cs.sheContextSidebarContextContainer}>
-        {!isMobile ? (
-          <Carousel
-            setApi={setCarouselApi}
-            className={cs.carouselContainer}
-            opts={{
-              align: "start",
-              dragFree: true,
-              slidesToScroll: "auto",
-            }}
-          >
-            <CarouselContent className={cs.carouselContent}>
-              {children}
-            </CarouselContent>
-          </Carousel>
-        ) : (
-          <>{children}</>
-        )}
-      </div>
+      <div className={cs.sheContextSidebarContextContainer}>{children}</div>
     </div>
   );
 }
