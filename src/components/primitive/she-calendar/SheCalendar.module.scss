@@ -4,14 +4,14 @@
   width: fit-content !important;
   min-width: 252px;
   max-width: none !important;
-
+  
   .sheCalendarContextBlock {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 4px;
-
+    
     .sheCalendarFilterContainer {
       width: 100%;
       display: flex;
@@ -20,22 +20,38 @@
       justify-content: center;
       padding-bottom: 6px;
     }
-
+    
     .sheCalendarElementContainer {
       display: flex;
       flex-direction: column;
-
+      width: 100%;
+      
       .sheCalendarElement {
         display: flex;
         justify-content: center;
         padding: 0;
         width: 100%;
+        
+        table {
+          tbody {
+            tr {
+              display: flex;
+              gap: 4px;
+              
+              td {
+                > button {
+                  --tw-ring-offset-width: 0 !important;
+                }
+              }
+            }
+          }
+        }
       }
-
+      
       .sheCalendarTimePicker {
         display: flex;
         justify-content: center;
-
+        
         label {
           justify-content: center;
         }
@@ -60,22 +76,27 @@
   [aria-selected="true"] {
     box-shadow: 0 0 0 0.4px lightgray inset;
   }
-
-  .today:before {
+  
+  .today > button:before {
     position: absolute;
     left: 2px;
-    top: -19px;
+    top: -14px;
+    width: 6px;
+    height: 6px;
     color: vars.$colorGreen;
     content: ".";
     font-size: 46px;
-    display: inline;
+    line-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-
-  .markedDay {
+  
+  .markedDay > button {
     position: relative;
     box-sizing: border-box;
     color: vars.$colorBlue;
-    box-shadow: 0 0 0 0.4px vars.$colorBlue inset;
+    box-shadow: 0 0 0 0.4px vars.$colorBlue inset !important;
   }
 }
 
