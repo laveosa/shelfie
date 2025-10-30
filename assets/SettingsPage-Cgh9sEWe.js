@@ -1,0 +1,1 @@
+import{u as s,S as n,b as i,j as r}from"./index-wSBNnuB8.js";const S={};function a(){const e=s(t=>t[n.SETTINGS]);return i(),{...e}}function o(){return a(),r.jsx("div",{id:S.SettingsPage,children:"Settings Page"})}export{o as SettingsPage};
