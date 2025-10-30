@@ -1,13 +1,13 @@
 {
   "name": "shelfiefrontend",
-  "homepage": "https://laveosa.github.io/shelfie/",
+  "homepage": "https://laveosa.github.io/shelfie",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "build": "tsc -b && vite build",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist",
+    "deploy": "npm run build && gh-pages -d dist",
     "dev": "vite",
     "lint": "eslint .",
     "preview": "vite preview"

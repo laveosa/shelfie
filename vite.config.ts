@@ -5,7 +5,7 @@ import svgr from "vite-plugin-svgr";
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: "/shelfie/",
+  base: "/shelfie",
   plugins: [react(), svgr()],
   server: {
     port: 8000,
