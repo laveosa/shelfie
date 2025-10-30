@@ -1,4 +1,4 @@
-import { createBrowserRouter, Link, Navigate } from "react-router-dom";
+import {createBrowserRouter, Link, Navigate} from "react-router-dom";
 import { JSX } from "react";
 
 import App from "@/App.tsx";
@@ -206,6 +206,6 @@ const mainRouter = createBrowserRouter([
       };
     },
   },
-]);
+], { basename: import.meta.env.BASE_URL});
 
 export default mainRouter;
