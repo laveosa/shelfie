@@ -1,0 +1,1 @@
+function t(o,e,s){return!o||o.length===0?null:e?o.map(r=>({id:r[e.id],text:r[e.text],description:r[e.description],icon:r[e.icon],value:r[e.value],colors:r[e.colors],sideText:r[e.sideText],sideDescription:r[e.sideDescription],isSelected:r[e.isSelected]})):(console.error("ERROR Convert To Select Items: no 'config' model!"),null)}export{t as c};

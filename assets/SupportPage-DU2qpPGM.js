@@ -1,0 +1,1 @@
+import{u as r,S as s,b as o,j as u}from"./index-INVZ2mfS.js";const p={};function n(){const e=r(t=>t[s.SUPPORT]);return o(),{...e}}function c(){return n(),u.jsx("div",{id:p.SupportPage,children:"Support Page"})}export{c as SupportPage};
