@@ -1,5 +1,5 @@
 export enum NavUrlEnum {
-  DEV = "https://green-glacier-0d48d5603.4.azurestaticapps.net",
+  DEV = "https://laveosa.github.io/shelfie",
   LOCAL = "http://localhost:8000",
   AUTH = "/auth",
   DASHBOARD = "/dashboard",
