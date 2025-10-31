@@ -1,0 +1,1 @@
+import{u as r,S as s,b as o,j as u}from"./index-B43MI0p9.js";const p={};function n(){const e=r(t=>t[s.SUPPORT]);return o(),{...e}}function c(){return n(),u.jsx("div",{id:p.SupportPage,children:"Support Page"})}export{c as SupportPage};
