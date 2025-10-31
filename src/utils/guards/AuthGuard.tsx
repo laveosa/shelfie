@@ -16,6 +16,5 @@ export default function AuthGuard({ children }) {
 
   return <>{!user && children}</>;*/
 
-  // TODO update this logic when user api will be updated
   return children;
 }

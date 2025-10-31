@@ -16,11 +16,6 @@ export function DashboardPage() {
   return (
     <div id={cs["DashboardPage"]}>
       <h1>Dashboard Page</h1>
-      <div>
-        <h2>this is copy of original Sheltie project</h2>
-        <h2>Igor test</h2>
-        <h2>Igor test2</h2>
-      </div>
     </div>
   );
 }
