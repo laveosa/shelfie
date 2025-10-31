@@ -6,7 +6,7 @@ export interface GridFiltersModel {
   dateTo?: string;
   valueFrom?: number;
   valueTo?: number;
-  showDeleted?: string;
+  showDeleted?: boolean;
   traitOptions?: number[];
   status?: any;
 }

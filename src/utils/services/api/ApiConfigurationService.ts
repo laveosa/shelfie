@@ -63,6 +63,15 @@ export class ApiConfigurationService {
       : [{ type: type, id: "LIST" }];
   }
 
+  public createFakeBuilder<T>(identifier: string, controller: T): any {
+    return {
+      async queryFn(...args: any[]) {
+        const _data = await controller[identifier].apply(controller, args);
+        return { data: _data };
+      },
+    };
+  }
+
   // ============================================================ PRIVATE
 
   private requestHandler(_args: any): void {

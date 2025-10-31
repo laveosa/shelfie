@@ -1,9 +1,10 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 
+import { ProductsController as controller } from "db/controllers/products-controller.ts";
+import { ApiConfigurationService } from "@/utils/services/api/ApiConfigurationService.ts";
 import { ApiServiceNameEnum } from "@/const/enums/ApiServiceNameEnum.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { ProductModel } from "@/const/models/ProductModel.ts";
-import { ApiConfigurationService } from "@/utils/services/api/ApiConfigurationService.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
@@ -16,37 +17,26 @@ import { VariantModel } from "@/const/models/VariantModel.ts";
 import { CompanyModel } from "@/const/models/CompanyModel.ts";
 
 const apiConfig = new ApiConfigurationService(ApiUrlEnum.PRODUCTS_BASE_URL);
+type ControllerType = typeof controller;
 
 export const ProductsApiService = createApi({
   reducerPath: ApiServiceNameEnum.PRODUCTS,
-  baseQuery: apiConfig.baseQueryWithInterceptors,
+  baseQuery: async () => ({ data: undefined }),
+  // baseQuery: apiConfig.baseQueryWithInterceptors,
   tagTypes: [ApiServiceNameEnum.PRODUCTS],
   endpoints: (builder) => ({
-    getAllProducts: apiConfig.createQuery<ProductModel[], void>(builder, {
-      query: () => ({
-        url: ApiUrlEnum.PRODUCTS,
-      }),
-      transformResponse: (res: any) => res.products, //TODO delete this code after we will receive real data
-    }),
-    getProductDetail: apiConfig.createQuery<ProductModel, number>(builder, {
-      query: (id: number) => ({
-        url: `${ApiUrlEnum.PRODUCTS}/${id}`,
-      }),
-    }),
-    // manageProduct: apiConfig.createMutation<void, ProductModel>(builder, {
-    //   query: (model: ProductModel) => ({
-    //     url: `${ApiUrlEnum.PRODUCTS}/${model.productId}`,
-    //     method: "PUT",
-    //     body: JSON.stringify(model),
-    //   }),
-    // }),
-    updateProduct: apiConfig.createMutation<void, any>(builder, {
-      query: ({ productId, model }) => ({
-        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/${productId}`,
-        method: "PATCH",
-        body: JSON.stringify(model),
-      }),
-    }),
+    getAllProducts: builder.query<GridRequestModel, void>(
+      apiConfig.createFakeBuilder<ControllerType>("getAllProducts", controller),
+    ),
+    getProductDetail: builder.query<ProductModel, number>(
+      apiConfig.createFakeBuilder<ControllerType>(
+        "getProductDetail",
+        controller,
+      ),
+    ),
+    updateProduct: builder.mutation<void, any>(
+      apiConfig.createFakeBuilder<ControllerType>("updateProduct", controller),
+    ),
     toggleProductActivation: apiConfig.createMutation<void, any>(builder, {
       query: (productId) => ({
         url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/${productId}/active`,
@@ -476,6 +466,20 @@ export const ProductsApiService = createApi({
         body: JSON.stringify(model),
       }),
     }),
+    // ============================================================= EXAMPLE QUERY
+    /*getProductDetail: apiConfig.createQuery<ProductModel, number>(builder, {
+      query: (id: number) => ({
+        url: `${ApiUrlEnum.PRODUCTS}/${id}`,
+      }),
+    }),*/
+    // ============================================================= EXAMPLE MUTATION
+    /*updateProduct: apiConfig.createMutation<void, any>(builder, {
+      query: ({ productId, model }) => ({
+        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/${productId}`,
+        method: "PATCH",
+        body: JSON.stringify(model),
+      }),
+    }),*/
   }),
 });
 
