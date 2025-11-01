@@ -1,0 +1,1 @@
+import{j as t,O as o}from"./index-DE8FC31Q.js";const c="_ProductsSection_10j09_1",s={ProductsSection:c};function r(){return t.jsx("div",{className:s.ProductsSection,children:t.jsx(o,{})})}export{r as ProductsSection};
