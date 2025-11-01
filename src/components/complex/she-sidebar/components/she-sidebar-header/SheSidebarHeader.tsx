@@ -93,7 +93,7 @@ export default function SheSidebarHeader({
                   (
                     <DropdownMenuItem key={item?.id} asChild>
                       <div
-                        className={`${cs.headerItem} ${item.id === selected.id ? cs.headerItemSelected : ""}`}
+                        className={`${cs.headerItem} ${item?.id === selected?.id ? cs.headerItemSelected : ""}`}
                         onClick={() => onSelect(item?.id)}
                       >
                         {item?.thumbnail ? (
