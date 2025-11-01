@@ -1,0 +1,42 @@
+[
+  {
+    "photoUrl": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80",
+    "productName": "Classic White Cotton T-Shirt",
+    "itemsSold": 342
+  },
+  {
+    "photoUrl": "https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=800&q=80",
+    "productName": "Slim Fit Dark Blue Jeans",
+    "itemsSold": 289
+  },
+  {
+    "photoUrl": "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=800&q=80",
+    "productName": "Premium Black Leather Jacket",
+    "itemsSold": 178
+  },
+  {
+    "photoUrl": "https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=800&q=80",
+    "productName": "Cozy Beige Knit Sweater",
+    "itemsSold": 223
+  },
+  {
+    "photoUrl": "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=800&q=80",
+    "productName": "Elegant Summer Floral Dress",
+    "itemsSold": 412
+  },
+  {
+    "photoUrl": "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=800&q=80",
+    "productName": "Vintage Denim Jacket",
+    "itemsSold": 198
+  },
+  {
+    "photoUrl": "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=800&q=80",
+    "productName": "Urban Grey Pullover Hoodie",
+    "itemsSold": 356
+  },
+  {
+    "photoUrl": "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?auto=format&fit=crop&w=800&q=80",
+    "productName": "Athletic Performance Shorts",
+    "itemsSold": 264
+  }
+]

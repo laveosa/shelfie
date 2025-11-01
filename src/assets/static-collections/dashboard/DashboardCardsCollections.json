@@ -1,0 +1,34 @@
+[
+  {
+    "title": "Total Balance",
+    "sum": "$543,023",
+    "arrow": "ArrowUp",
+    "arrowColor": "#22c55e",
+    "percent": "4.5%",
+    "description": "Compare from last month"
+  },
+  {
+    "title": "Total Income",
+    "sum": "$123,345",
+    "arrow": "ArrowUp",
+    "arrowColor": "#22c55e",
+    "percent": "2.5%",
+    "description": "Compare from last month"
+  },
+  {
+    "title": "Total Expense",
+    "sum": "$22,237",
+    "arrow": "ArrowDown",
+    "arrowColor": "#db2626",
+    "percent": "6.5%",
+    "description": "Compare from last month"
+  },
+  {
+    "title": "Total Sales Tax",
+    "sum": "$15,861",
+    "arrow": "ArrowUp",
+    "arrowColor": "#22c55e",
+    "percent": "5.0%",
+    "description": "Compare from last month"
+  }
+]
