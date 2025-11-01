@@ -1,0 +1,30 @@
+{
+  "desktop": [
+    { "month": "January", "desktop": 1860 },
+    { "month": "February", "desktop": 1500 },
+    { "month": "March", "desktop": 2370 },
+    { "month": "April", "desktop": 730 },
+    { "month": "May", "desktop": 2090 },
+    { "month": "June", "desktop": 2140 },
+    { "month": "July", "desktop": 2250 },
+    { "month": "August", "desktop": 2320 },
+    { "month": "September", "desktop": 2280 },
+    { "month": "October", "desktop": 2420 },
+    { "month": "November", "desktop": 2360 },
+    { "month": "December", "desktop": 2450 }
+  ],
+  "mobile": [
+    { "month": "January", "mobile": 800 },
+    { "month": "February", "mobile": 2000 },
+    { "month": "March", "mobile": 1200 },
+    { "month": "April", "mobile": 1900 },
+    { "month": "May", "mobile": 1300 },
+    { "month": "June", "mobile": 1400 },
+    { "month": "July", "mobile": 1600 },
+    { "month": "August", "mobile": 1800 },
+    { "month": "September", "mobile": 2100 },
+    { "month": "October", "mobile": 2200 },
+    { "month": "November", "mobile": 1900 },
+    { "month": "December", "mobile": 2100 }
+  ]
+}

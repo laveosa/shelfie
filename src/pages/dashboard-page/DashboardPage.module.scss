@@ -1,3 +1,370 @@
+@use "@/styles/variables" as vars;
+
 #DashboardPage {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   padding: 20px;
+  background: vars.$secondaryBg;
+
+
+  .chartAndCardBlock {
+    display: flex;
+    gap: 20px;
+    min-height: auto;
+    //====================================================== CHART
+
+    .chartBlock {
+      border: 1px solid vars.$brdColor;
+      border-radius: 10px;
+      width: 50%;
+      min-height: auto;
+      overflow: hidden;
+      background-color: vars.$colorLight;
+
+      .chartHeader {
+        display: flex;
+        justify-content: space-between;
+
+        .chartInfo {
+          display: flex;
+          flex-direction: column;
+          padding: 10px 10px 0 10px;
+
+          .chartInfoTitle {
+            font-size: 22px;
+          }
+
+          .chartInfoDescription {
+            color: vars.$iconLightColor;
+            font-size: 16px;
+          }
+        }
+
+        .chartButtons {
+          display: flex;
+          flex-direction: row;
+          border-left: 1px solid vars.$brdColor;
+          border-bottom: 1px solid vars.$brdColor;
+          border-bottom-left-radius: 10px;
+          overflow: hidden;
+
+          .chartButton {
+            border-radius: 0;
+
+            .chartButtonValue {
+              display: flex;
+              flex-direction: column;
+              padding: 0 20px;
+
+              .chartButtonValueText {
+                font-weight: bold;
+                font-size: 16px;
+                color: vars.$iconLightColor;
+              }
+
+              .chartButtonValueNumber {
+                font-size: 32px;
+              }
+            }
+          }
+
+          .buttonSelected {
+            background-color: vars.$brdColor;
+          }
+        }
+      }
+
+      .chartBody {
+        min-height: auto;
+        padding: 20px 10px;
+
+        & > div {
+          height: auto;
+        }
+
+        & > div {
+          max-height: 300px;
+        }
+      }
+    }
+
+    //=============================================================CARDS
+
+    .cardsWrapper {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      width: 50%;
+
+      .card {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px;
+        padding: 20px;
+        border: 1px solid vars.$brdColor;
+        border-radius: 10px;
+        height: auto;
+        background-color: vars.$colorLight;
+
+        .cardTitle {
+          font-size: 22px;
+          color: vars.$iconLightColor;
+        }
+
+        .cardSum {
+          font-weight: bold;
+          font-size: 32px;
+        }
+
+        .descriptionBlock {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+
+          .iconBlock {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+
+            .iconBlockText {
+              font-size: 16px;
+            }
+          }
+
+          .descriptionBlockText {
+            color: vars.$iconLightColor;
+            font-size: 16px;
+          }
+        }
+      }
+    }
+  }
+
+  .topSellingAndGridBlock {
+    min-height: auto;
+    display: flex;
+    gap: 20px;
+
+    //=============================================================TOP SELLING PRODUCTS
+
+    .topProductsWrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      border: 1px solid vars.$brdColor;
+      border-radius: 10px;
+      padding: 20px;
+      width: 35%;
+      background-color: vars.$colorLight;
+
+      .topProductsHeader {
+        display: flex;
+        justify-content: space-between;
+
+        .topProductsHeaderTitleBlock {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+
+          .topProductsHeaderTitle {
+            font-size: 22px;
+          }
+
+          .topProductsHeaderDescription {
+            color: vars.$iconLightColor;
+            font-size: 16px;
+          }
+        }
+      }
+
+      .topProductsCardsList {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        .productCard {
+          display: flex;
+          gap: 20px;
+          border: 1px solid vars.$brdColor;
+          border-radius: 10px;
+          padding: 10px;
+          align-items: center;
+          justify-content: space-between;
+
+          .productCardProduct {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+
+            .productCardImage {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: 60px;
+              height: 60px;
+              overflow: hidden;
+              border-radius: 20%;
+            }
+
+            .productCardImage img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              border-radius: 20%;
+            }
+          }
+
+          .productCardTitle {
+          }
+
+          .productCardItemsSold {
+            color: vars.$colorGreen;
+            font-size: 18px;
+          }
+        }
+      }
+    }
+
+    //=============================================================ORDERS GRID
+
+    .ordersGridWrapper {
+      width: 65%;
+      border: 1px solid vars.$brdColor;
+      border-radius: 10px;
+      padding: 20px;
+      background-color: vars.$colorLight;
+
+      .ordersGridHeader {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding-bottom: 20px;
+
+        .ordersGridHeaderTitleBlock {
+          display: flex;
+          justify-content: space-between;
+
+          .ordersGridHeaderTitle {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            .ordersGridHeaderTitleText {
+              font-size: 22px;
+            }
+
+            .ordersGridHeaderTitleDescription {
+              color: vars.$iconLightColor;
+              font-size: 16px;
+            }
+          }
+        }
+
+        .ordersGridOrderStatusesBlock {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 20px;
+
+          .ordersGridOrderStatusCard {
+            width: 25%;
+
+            .cardNumber {
+              font-weight: bold;
+              font-size: 32px;
+            }
+
+            .cardStatus {
+              color: vars.$iconLightColor;
+              font-size: 16px;
+            }
+
+            .cardIconBlockWrapper {
+              display: flex;
+              align-items: center;
+              gap: 10px;
+
+              .cardIconBlock {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+
+                .cardIcon {
+                }
+
+                .cardIconText {
+                  font-size: 16px;
+                }
+              }
+            }
+
+            .cardProgressbar {
+              &.colorBlue {
+                background: rgba(80, 162, 255, 0.15);
+
+                & > div {
+                  background: #50A2FF;
+                }
+              }
+
+              &.colorTeal {
+                background: rgba(0, 213, 190, 0.15);
+
+                & > div {
+                  background: #00D5BE;
+                }
+              }
+
+              &.colorGreen {
+                background: rgba(5, 223, 119, 0.15);
+
+                & > div {
+                  background: #05DF77;
+                }
+              }
+
+              &.colorOrange {
+                background: rgba(255, 137, 4, 0.15);
+
+                & > div {
+                  background: #FF8904;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// ========================================== MOBILE
+@media (max-width: 768px) {
+  #DashboardPage {
+    .chartAndCardBlock,
+    .topSellingAndGridBlock {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .chartAndCardBlock {
+      .chartBlock,
+      .cardsWrapper {
+        width: 100%;
+      }
+
+      .cardsWrapper {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .topSellingAndGridBlock {
+      .topProductsWrapper,
+      .ordersGridWrapper {
+        width: 100%;
+      }
+    }
+  }
 }

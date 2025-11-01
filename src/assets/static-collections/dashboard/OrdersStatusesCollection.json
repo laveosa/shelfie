@@ -1,0 +1,38 @@
+[
+  {
+    "number": "50",
+    "status": "New Order",
+    "arrow": "ArrowUp",
+    "arrowColor": "#22c55e",
+    "percent": "2.5%",
+    "progress": 33,
+    "progressBarColor": "#50A2FF"
+  },
+  {
+    "number": "12",
+    "status": "On Progress",
+    "arrow": "ArrowUp",
+    "arrowColor": "#22c55e",
+    "percent": "3.4%",
+    "progress": 24,
+    "progressBarColor": "#00D5BE"
+  },
+  {
+    "number": "65",
+    "status": "Completed",
+    "arrow": "ArrowDown",
+    "arrowColor": "#db2626",
+    "percent": "0.8%",
+    "progress": 65,
+    "progressBarColor": "#05DF72"
+  },
+  {
+    "number": "3",
+    "status": "Return",
+    "arrow": "ArrowUp",
+    "arrowColor": "#22c55e",
+    "percent": "0.3%",
+    "progress": 50,
+    "progressBarColor": "#FF8904"
+  }
+]
