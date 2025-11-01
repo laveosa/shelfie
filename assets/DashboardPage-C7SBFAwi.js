@@ -1,0 +1,1 @@
+import{u as r,S as o,r as c,j as a}from"./index-CrrK3HZl.js";const i="_DashboardPage_3gxp6_1",n={DashboardPage:i};function d(){r(t=>t[o.DASHBOARD]);const[s,e]=c.useState(null);return{statistic:s,setStatistic:e}}function h(){return d(),a.jsx("div",{id:n.DashboardPage,children:a.jsx("h1",{children:"Dashboard Page"})})}export{h as DashboardPage};
