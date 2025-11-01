@@ -20,6 +20,7 @@ import { UserOrganizationModel } from "@/const/models/UserOrganizationModel.ts";
 import { getInitials } from "@/utils/helpers/quick-helper.ts";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
+import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 
 export default function SheSidebarHeader({
   isLoading,
@@ -36,7 +37,7 @@ export default function SheSidebarHeader({
 
   function onSelect(id: number) {
     onSelectOrganization(id);
-    setSelected(items.find((item: UserOrganizationModel) => item.id));
+    setSelected(items.find((item: UserOrganizationModel) => item.id === id));
   }
 
   return (
@@ -60,7 +61,7 @@ export default function SheSidebarHeader({
                   <>
                     {selected?.thumbnail ? (
                       <div className={cs.headerImage}>
-                        <img src={selected?.thumbnail} alt="company-image" />
+                        <img src={selected.thumbnail} alt="company-image" />
                       </div>
                     ) : (
                       <div className={cs.noImage}>
@@ -92,20 +93,17 @@ export default function SheSidebarHeader({
                   (
                     <DropdownMenuItem key={item?.id} asChild>
                       <div
-                        className={cs.headerItem}
+                        className={`${cs.headerItem} ${item.id === selected.id ? cs.headerItemSelected : ""}`}
                         onClick={() => onSelect(item?.id)}
                       >
-                        {selected?.thumbnail ? (
+                        {item?.thumbnail ? (
                           <div className={cs.headerImage}>
-                            <img
-                              src={selected?.thumbnail}
-                              alt="company-image"
-                            />
+                            <SheIcon icon={item.thumbnail} />
                           </div>
                         ) : (
                           <div className={cs.noImage}>
                             <span className="she-title">
-                              {getInitials(selected?.name)}
+                              {getInitials(item?.name)}
                             </span>
                           </div>
                         )}

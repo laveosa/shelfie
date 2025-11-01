@@ -1,0 +1,24 @@
+{
+  "userId": "usr_7k2m9n4p6q8r",
+  "firstName": "Alexandra",
+  "lastName": "Morrison",
+  "email": "alexandra.morrison@example.com",
+  "thumbnail": "https://i.pravatar.cc/150?img=5",
+  "organization": {
+    "id": 1001,
+    "name": "Khaite",
+    "shortName": "KHT",
+    "subscription": {
+      "status": "Active"
+    },
+    "key": "9181784c-11f8-438d-a490-1f6014c98dfe",
+    "thumbnail": "src/assets/images/organizations/KHAITE.png",
+    "current": true
+  },
+  "shortName": "NNG",
+  "phoneNumber": 5551234567,
+  "countryId": 1,
+  "countryPhoneCode": "+380",
+  "languageCode": "en-US",
+  "localeCode": "en-US"
+}
