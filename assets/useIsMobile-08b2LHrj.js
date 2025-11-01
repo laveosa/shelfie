@@ -1,0 +1,1 @@
+import{r}from"./index-BgQa47gg.js";function d(e=768){const[o,n]=r.useState(()=>typeof window<"u"?window.innerWidth<e:!1);return r.useEffect(()=>{const t=window.matchMedia(`(max-width: ${e-1}px)`),i=()=>{n(window.innerWidth<e)};return t.addEventListener("change",i),n(window.innerWidth<e),()=>{t.removeEventListener("change",i)}},[e]),o}export{d as u};
