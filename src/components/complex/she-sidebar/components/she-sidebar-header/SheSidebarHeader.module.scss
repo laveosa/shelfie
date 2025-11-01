@@ -122,6 +122,10 @@
   gap: 10px;
   flex-grow: 1;
 
+  &.headerItemSelected {
+    background: #f5f5f5 !important;
+  }
+
   .headerImage {
     min-width: 32px;
     max-width: 32px;

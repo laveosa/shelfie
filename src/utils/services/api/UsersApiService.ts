@@ -1,32 +1,25 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 
-import { ApiServiceNameEnum } from "@/const/enums/ApiServiceNameEnum.ts";
-import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
+import { UsersController as controller } from "db/controllers/users-controller.ts";
 import { ApiConfigurationService } from "@/utils/services/api/ApiConfigurationService.ts";
+import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
+import { ApiServiceNameEnum } from "@/const/enums/ApiServiceNameEnum.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import { UserModel } from "@/const/models/UserModel.ts";
 import { PasswordModel } from "@/const/models/PasswordModel.ts";
 import { LanguageModel } from "@/const/models/LanguageModel.ts";
 
 const apiConfig = new ApiConfigurationService(ApiUrlEnum.USERS_BASE_URL);
+type ControllerType = typeof controller;
 
 export const UsersApiService = createApi({
   reducerPath: ApiServiceNameEnum.USERS,
   baseQuery: apiConfig.baseQueryWithInterceptors,
   tagTypes: [ApiServiceNameEnum.USERS],
   endpoints: (builder) => ({
-    getUserPreferences: apiConfig.createQuery<PreferencesModel, void>(builder, {
-      query: () => ({
-        url: ApiUrlEnum.PREFERENCES,
-        responseType: "json",
-      }),
-      providesTags: (result, _error, _id) => [
-        {
-          type: ApiServiceNameEnum.USERS,
-          result,
-        },
-      ],
-    }),
+    getUserPreferences: builder.query<PreferencesModel, void>(
+      apiConfig.getStaticData<ControllerType>("getUserPreferences", controller),
+    ),
     getDefaultUserPreferences: apiConfig.createQuery<PreferencesModel, void>(
       builder,
       {
@@ -62,12 +55,9 @@ export const UsersApiService = createApi({
         method: "PATCH",
       }),
     }),
-    getUserDetails: apiConfig.createQuery<UserModel, void>(builder, {
-      query: () => ({
-        url: `${ApiUrlEnum.USERS}/info`,
-        responseType: "json",
-      }),
-    }),
+    getUserDetails: builder.query<UserModel, void>(
+      apiConfig.getStaticData<ControllerType>("getUserDetails", controller),
+    ),
     updateUserContactInformation: apiConfig.createMutation<void, any>(builder, {
       query: (model: UserModel) => ({
         url: `${ApiUrlEnum.USERS}/`,
@@ -89,11 +79,12 @@ export const UsersApiService = createApi({
         body: JSON.stringify(model),
       }),
     }),
-    getUserOrganizations: apiConfig.createQuery<UserModel, void>(builder, {
-      query: () => ({
-        url: `${ApiUrlEnum.ORGANIZATIONS}/list`,
-      }),
-    }),
+    getUserOrganizations: builder.query<UserModel, void>(
+      apiConfig.getStaticData<ControllerType>(
+        "getUserOrganization",
+        controller,
+      ),
+    ),
   }),
 });
 

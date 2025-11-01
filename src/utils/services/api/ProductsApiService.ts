@@ -26,16 +26,13 @@ export const ProductsApiService = createApi({
   tagTypes: [ApiServiceNameEnum.PRODUCTS],
   endpoints: (builder) => ({
     getAllProducts: builder.query<GridRequestModel, void>(
-      apiConfig.createFakeBuilder<ControllerType>("getAllProducts", controller),
+      apiConfig.getStaticData<ControllerType>("getAllProducts", controller),
     ),
     getProductDetail: builder.query<ProductModel, number>(
-      apiConfig.createFakeBuilder<ControllerType>(
-        "getProductDetail",
-        controller,
-      ),
+      apiConfig.getStaticData<ControllerType>("getProductDetail", controller),
     ),
     updateProduct: builder.mutation<void, any>(
-      apiConfig.createFakeBuilder<ControllerType>("updateProduct", controller),
+      apiConfig.getStaticData<ControllerType>("updateProduct", controller),
     ),
     toggleProductActivation: apiConfig.createMutation<void, any>(builder, {
       query: (productId) => ({
