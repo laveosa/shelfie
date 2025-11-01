@@ -1,0 +1,1 @@
+import{u as s,S as i,i as n,j as r}from"./index-v5GGPS6e.js";const S={};function a(){const e=s(t=>t[i.SETTINGS]);return n(),{...e}}function o(){return a(),r.jsx("div",{id:S.SettingsPage,children:"Settings Page"})}export{o as SettingsPage};
