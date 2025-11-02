@@ -6,79 +6,52 @@ import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { ApiServiceNameEnum } from "@/const/enums/ApiServiceNameEnum.ts";
 import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import { UserModel } from "@/const/models/UserModel.ts";
-import { PasswordModel } from "@/const/models/PasswordModel.ts";
-import { LanguageModel } from "@/const/models/LanguageModel.ts";
 
 const apiConfig = new ApiConfigurationService(ApiUrlEnum.USERS_BASE_URL);
 type ControllerType = typeof controller;
 
 export const UsersApiService = createApi({
   reducerPath: ApiServiceNameEnum.USERS,
-  baseQuery: apiConfig.baseQueryWithInterceptors,
+  baseQuery: async () => ({ data: undefined }),
+  // baseQuery: apiConfig.baseQueryWithInterceptors,
   tagTypes: [ApiServiceNameEnum.USERS],
   endpoints: (builder) => ({
     getUserPreferences: builder.query<PreferencesModel, void>(
       apiConfig.getStaticData<ControllerType>("getUserPreferences", controller),
     ),
-    getDefaultUserPreferences: apiConfig.createQuery<PreferencesModel, void>(
-      builder,
-      {
-        query: () => ({
-          url: `${ApiUrlEnum.PREFERENCES}/default`,
-        }),
-        providesTags: (_result, _error, _id) => [
-          {
-            type: ApiServiceNameEnum.USERS,
-          },
-        ],
-      },
+    getDefaultUserPreferences: builder.query<PreferencesModel, void>(
+      apiConfig.getStaticData<ControllerType>(
+        "getDefaultUserPreferences",
+        controller,
+      ),
     ),
-    updateUserPreferences: apiConfig.createMutation<void, PreferencesModel>(
-      builder,
-      {
-        query: (model: PreferencesModel) => ({
-          url: ApiUrlEnum.PREFERENCES,
-          method: "PATCH",
-          body: JSON.stringify(model),
-        }), //TODO - invalidation needs to be conditional. No need to fire a request when the state has not changed.
-        invalidatesTags: (result) => [
-          {
-            type: ApiServiceNameEnum.USERS,
-            result,
-          },
-        ],
-      },
+    updateUserPreferences: builder.mutation<void, PreferencesModel>(
+      apiConfig.getStaticData<ControllerType>(
+        "updateUserPreferences",
+        controller,
+      ),
     ),
-    resetUserPreferences: apiConfig.createMutation<void, any>(builder, {
-      query: (grid: string) => ({
-        url: `${ApiUrlEnum.PREFERENCES}/reset/${grid}`,
-        method: "PATCH",
-      }),
-    }),
+    resetUserPreferences: builder.mutation<void, PreferencesModel>(
+      apiConfig.getStaticData<ControllerType>(
+        "resetUserPreferences",
+        controller,
+      ),
+    ),
     getUserDetails: builder.query<UserModel, void>(
       apiConfig.getStaticData<ControllerType>("getUserDetails", controller),
     ),
-    updateUserContactInformation: apiConfig.createMutation<void, any>(builder, {
-      query: (model: UserModel) => ({
-        url: `${ApiUrlEnum.USERS}/`,
-        method: "PATCH",
-        body: JSON.stringify(model),
-      }),
-    }),
-    updateUserPassword: apiConfig.createMutation<void, any>(builder, {
-      query: (model: PasswordModel) => ({
-        url: `${ApiUrlEnum.USERS}/change-password`,
-        method: "PATCH",
-        body: JSON.stringify(model),
-      }),
-    }),
-    changeLanguage: apiConfig.createMutation<void, any>(builder, {
-      query: (model: LanguageModel) => ({
-        url: `${ApiUrlEnum.USERS}/change-language`,
-        method: "PATCH",
-        body: JSON.stringify(model),
-      }),
-    }),
+    updateUserContactInformation: builder.mutation<void, any>(
+      apiConfig.getStaticData<ControllerType>(
+        "updateUserContactInformation",
+        controller,
+      ),
+    ),
+    updateUserPassword: builder.mutation<void, any>(
+      apiConfig.getStaticData("updateUserPassword", controller),
+    ),
+    changeLanguage: builder.mutation<void, any>(
+      apiConfig.getStaticData<ControllerType>("changeLanguage", controller),
+    ),
     getUserOrganizations: builder.query<UserModel, void>(
       apiConfig.getStaticData<ControllerType>(
         "getUserOrganization",
