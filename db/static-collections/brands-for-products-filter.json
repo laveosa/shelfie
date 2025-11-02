@@ -1,0 +1,32 @@
+[
+  {
+    "brandId": 0,
+    "brandName": "<Unbranded>",
+    "thumbnail": null
+  },
+  {
+    "brandId": 1001,
+    "brandName": "Khaite",
+    "thumbnail": "./images/organizations/KHAITE.png"
+  },
+  {
+    "brandId": 1002,
+    "brandName": "DISSH",
+    "thumbnail": "./images/organizations/DISSH.png"
+  },
+  {
+    "brandId": 1003,
+    "brandName": "ASICS",
+    "thumbnail": "./images/organizations/ASICS.png"
+  },
+  {
+    "brandId": 1004,
+    "brandName": "Apex Dynamics",
+    "thumbnail": null
+  },
+  {
+    "brandId": 1005,
+    "brandName": "THE ROW",
+    "thumbnail": "./images/organizations/THE_ROW.png"
+  }
+]

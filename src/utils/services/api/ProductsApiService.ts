@@ -34,54 +34,45 @@ export const ProductsApiService = createApi({
     updateProduct: builder.mutation<void, any>(
       apiConfig.getStaticData<ControllerType>("updateProduct", controller),
     ),
-    toggleProductActivation: apiConfig.createMutation<void, any>(builder, {
-      query: (productId) => ({
-        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/${productId}/active`,
-        method: "PATCH",
-      }),
-    }),
-    deleteProduct: apiConfig.createMutation<void, number>(builder, {
-      query: (id: number) => ({
-        url: `${ApiUrlEnum.PRODUCTS}/${id}`,
-        method: "DELETE",
-      }),
-    }),
-    getTheProductsForGrid: apiConfig.createMutation<
-      GridRequestModel,
-      GridRequestModel
-    >(builder, {
-      query: (model?: GridRequestModel) => ({
-        url: `${ApiUrlEnum.PRODUCTS}/list`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-    }),
-    getBrandsForProductsFilter: apiConfig.createQuery<BrandModel[], void>(
-      builder,
-      {
-        query: () => ({
-          url: `${ApiUrlEnum.BRANDS}/for-filter`,
-        }),
-      },
+    toggleProductActivation: builder.mutation<void, any>(
+      apiConfig.getStaticData<ControllerType>(
+        "toggleProductActivation",
+        controller,
+      ),
     ),
-    getCategoriesForProductsFilter: apiConfig.createQuery<
-      CategoryModel[],
-      void
-    >(builder, {
-      query: () => ({
-        url: `${ApiUrlEnum.PRODUCT_CATEGORIES}/for-filter`,
-      }),
-    }),
-    generateProductCode: apiConfig.createQuery<any, void>(builder, {
-      query: () => ({
-        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.CODES}/generate-code`,
-      }),
-    }),
-    getSimpleListOfAllBrands: apiConfig.createQuery<any[], void>(builder, {
-      query: () => ({
-        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.BRANDS}/all`,
-      }),
-    }),
+    deleteProduct: builder.mutation<void, number>(
+      apiConfig.getStaticData<ControllerType>("deleteProduct", controller),
+    ),
+    getTheProductsForGrid: builder.mutation<GridRequestModel, GridRequestModel>(
+      apiConfig.getStaticData<ControllerType>(
+        "getTheProductsForGrid",
+        controller,
+      ),
+    ),
+    getBrandsForProductsFilter: builder.query<BrandModel[], void>(
+      apiConfig.getStaticData<ControllerType>(
+        "getBrandsForProductsFilter",
+        controller,
+      ),
+    ),
+    getCategoriesForProductsFilter: builder.query<CategoryModel[], void>(
+      apiConfig.getStaticData<ControllerType>(
+        "getCategoriesForProductsFilter",
+        controller,
+      ),
+    ),
+    generateProductCode: builder.query<string, void>(
+      apiConfig.getStaticData<ControllerType>(
+        "generateProductCode",
+        controller,
+      ),
+    ),
+    getSimpleListOfAllBrands: builder.query<BrandModel[], void>(
+      apiConfig.getStaticData<ControllerType>(
+        "getSimpleListOfAllBrands",
+        controller,
+      ),
+    ),
     getAllCategoriesByOrganization: apiConfig.createQuery<any, void>(builder, {
       query: () => ({
         url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCT_CATEGORIES}/all`,
