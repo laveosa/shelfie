@@ -6,6 +6,8 @@ import theProductsForGrid from "../static-collections/the-products-for-grid.json
 import brandsForProductsFilter from "../static-collections/brands-for-products-filter.json";
 import productCode from "../static-collections/product-code.json";
 import simpleListOfAllBrands from "../static-collections/simple-list-of-all-brands.json";
+import allCategoriesByOrganization from "../static-collections/all-categories-by-organization.json";
+import newProduct from "../static-collections/new-product.json";
 
 export class ProductsController extends BaseController {
   public static getAllProducts() {
@@ -48,5 +50,25 @@ export class ProductsController extends BaseController {
 
   public static getSimpleListOfAllBrands() {
     return this.staticDataApiHandler(simpleListOfAllBrands);
+  }
+
+  public static getAllCategoriesByOrganization() {
+    return this.staticDataApiHandler(allCategoriesByOrganization);
+  }
+
+  public static checkProductCode() {
+    return this.staticDataApiHandler({});
+  }
+
+  public static checkBrandName() {
+    return this.staticDataApiHandler({});
+  }
+
+  public static checkCategoryName() {
+    return this.staticDataApiHandler({});
+  }
+
+  public static createNewProduct() {
+    return this.staticDataApiHandler(newProduct);
   }
 }

@@ -73,42 +73,24 @@ export const ProductsApiService = createApi({
         controller,
       ),
     ),
-    getAllCategoriesByOrganization: apiConfig.createQuery<any, void>(builder, {
-      query: () => ({
-        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCT_CATEGORIES}/all`,
-      }),
-    }),
-    checkProductCode: apiConfig.createMutation<void, ProductCodeModel>(
-      builder,
-      {
-        query: (code: ProductCodeModel) => ({
-          url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.CODES}/check-code`,
-          method: "POST",
-          body: JSON.stringify(code),
-        }),
-      },
+    getAllCategoriesByOrganization: builder.query<any, void>(
+      apiConfig.getStaticData<ControllerType>(
+        "getAllCategoriesByOrganization",
+        controller,
+      ),
     ),
-    checkBrandName: apiConfig.createMutation<void, BrandModel>(builder, {
-      query: (brandName: BrandModel) => ({
-        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.BRANDS}/check-name`,
-        method: "POST",
-        body: JSON.stringify(brandName),
-      }),
-    }),
-    checkCategoryName: apiConfig.createMutation<void, CategoryModel>(builder, {
-      query: (categoryName: CategoryModel) => ({
-        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCT_CATEGORIES}/check-name`,
-        method: "POST",
-        body: JSON.stringify(categoryName),
-      }),
-    }),
-    createNewProduct: apiConfig.createMutation<void, ProductModel>(builder, {
-      query: (model: ProductModel) => ({
-        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-    }),
+    checkProductCode: builder.mutation<void, ProductCodeModel>(
+      apiConfig.getStaticData<ControllerType>("checkProductCode", controller),
+    ),
+    checkBrandName: builder.mutation<void, BrandModel>(
+      apiConfig.getStaticData<ControllerType>("checkBrandName", controller),
+    ),
+    checkCategoryName: builder.mutation<void, CategoryModel>(
+      apiConfig.getStaticData<ControllerType>("checkCategoryName", controller),
+    ),
+    createNewProduct: builder.mutation<void, ProductModel>(
+      apiConfig.getStaticData<ControllerType>("createNewProduct", controller),
+    ),
     createNewCategory: apiConfig.createMutation<void, CategoryModel>(builder, {
       query: (model: CategoryModel) => ({
         url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCT_CATEGORIES}`,

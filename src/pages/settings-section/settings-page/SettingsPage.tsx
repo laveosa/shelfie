@@ -4,5 +4,9 @@ import useSettingsPageService from "@/pages/settings-section/settings-page/useSe
 export function SettingsPage() {
   const service = useSettingsPageService();
 
-  return <div className={cs.settingsPage}>Settings Page</div>;
+  return (
+    <div className={cs.settingsPage}>
+      <h1>Settings Page</h1>
+    </div>
+  );
 }
