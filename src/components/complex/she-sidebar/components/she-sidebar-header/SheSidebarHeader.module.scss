@@ -1,5 +1,7 @@
 @use "@/styles/variables" as vars;
 
+$ImageSize: 32px;
+
 .sheSidebarHeader {
   background: linear-gradient(270deg, #1b3529 0%, #244637 100%);
 
@@ -50,8 +52,8 @@
     }
 
     .headerImage {
-      min-width: 32px;
-      max-width: 32px;
+      min-width: $ImageSize;
+      max-width: $ImageSize;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -72,6 +74,10 @@
       span {
         color: #b7d5c7;
       }
+    }
+
+    .headerTitle {
+      font-size: 16px;
     }
 
     .headerInfo {
@@ -121,19 +127,27 @@
   align-items: center;
   gap: 10px;
   flex-grow: 1;
-
-  &.headerItemSelected {
-    background: #f5f5f5 !important;
-  }
+  cursor: pointer;
 
   .headerImage {
-    min-width: 32px;
-    max-width: 32px;
+    min-width: $ImageSize;
+    max-width: $ImageSize;
+    min-height: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
     border-radius: vars.$brdR_03;
+    box-shadow: 0 2px 4px -1px vars.$brdColor;
+
+    .headerImageCustom {
+      min-height: $ImageSize;
+    }
+  }
+
+  &.headerItemSelected {
+    background: #f5f5f5 !important;
+    box-shadow: 0 0 0 0 !important;
   }
 
   .noImage {
@@ -149,6 +163,12 @@
     span {
       color: #b7d5c7;
     }
+  }
+
+  .headerTitle {
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.2px;
   }
 }
 
