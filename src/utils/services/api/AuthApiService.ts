@@ -1,5 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 
+import { AuthController as controller } from "db/controllers/auth-controller.ts";
 import { ApiServiceNameEnum } from "@/const/enums/ApiServiceNameEnum.ts";
 import { ApiConfigurationService } from "@/utils/services/api/ApiConfigurationService.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
@@ -7,163 +8,56 @@ import { RequestAuthModel } from "@/const/models/RequestAuthModel.ts";
 import { ResponseAuthModel } from "@/const/models/ResponseAuthModel.ts";
 
 const apiConfig = new ApiConfigurationService(ApiUrlEnum.AUTH_BASE_URL);
+type ControllerType = typeof controller;
 
 export const AuthApiService = createApi({
   reducerPath: ApiServiceNameEnum.AUTH,
-  baseQuery: apiConfig.baseQueryWithInterceptors,
+  baseQuery: async () => ({ date: undefined }),
+  // baseQuery: apiConfig.baseQueryWithInterceptors,
   tagTypes: [ApiServiceNameEnum.AUTH],
   endpoints: (builder) => ({
-    userSignIn: apiConfig.createMutation<ResponseAuthModel, RequestAuthModel>(
-      builder,
-      {
-        query: (model: RequestAuthModel) => ({
-          url: `${ApiUrlEnum.AUTH}/signin`,
-          method: "POST",
-          body: JSON.stringify(model),
-        }),
-        invalidatesTags: (result) => [
-          {
-            type: ApiServiceNameEnum.AUTH,
-            result,
-          },
-        ],
-      },
+    userSignIn: builder.mutation<ResponseAuthModel, RequestAuthModel>(
+      apiConfig.getStaticData<ControllerType>("userSignIn", controller),
     ),
-    userSignUp: apiConfig.createMutation<ResponseAuthModel, RequestAuthModel>(
-      builder,
-      {
-        query: (model: RequestAuthModel) => ({
-          url: `${ApiUrlEnum.AUTH}/signup`,
-          method: "POST",
-          body: JSON.stringify(model),
-        }),
-        invalidatesTags: (result) => [
-          {
-            type: ApiServiceNameEnum.AUTH,
-            result,
-          },
-        ],
-      },
+    userSignUp: builder.mutation<ResponseAuthModel, RequestAuthModel>(
+      apiConfig.getStaticData<ControllerType>("userSignUp", controller),
     ),
-    switchOrganization: apiConfig.createMutation<void, RequestAuthModel>(
-      builder,
-      {
-        query: (model: RequestAuthModel) => ({
-          url: `${ApiUrlEnum.AUTH}/switch-organization`,
-          method: "POST",
-          body: JSON.stringify(model),
-        }),
-        invalidatesTags: (result) => [
-          {
-            type: ApiServiceNameEnum.AUTH,
-            result,
-          },
-        ],
-      },
+    switchOrganization: builder.mutation<void, RequestAuthModel>(
+      apiConfig.getStaticData<ControllerType>("switchOrganization", controller),
     ),
-    forgotPassword: apiConfig.createMutation<
-      ResponseAuthModel,
-      RequestAuthModel
-    >(builder, {
-      query: (model: RequestAuthModel) => ({
-        url: `${ApiUrlEnum.AUTH}/forgot-password`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-      invalidatesTags: (result) => [
-        {
-          type: ApiServiceNameEnum.AUTH,
-          result,
-        },
-      ],
-    }),
-    resetPassword: apiConfig.createMutation<
-      ResponseAuthModel,
-      RequestAuthModel
-    >(builder, {
-      query: (model: RequestAuthModel) => ({
-        url: `${ApiUrlEnum.AUTH}/reset-password`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-      invalidatesTags: (result) => [
-        {
-          type: ApiServiceNameEnum.AUTH,
-          result,
-        },
-      ],
-    }),
-    confirmSignInNumber: apiConfig.createMutation<
-      ResponseAuthModel,
-      RequestAuthModel
-    >(builder, {
-      query: (model: RequestAuthModel) => ({
-        url: `${ApiUrlEnum.AUTH}/confirm-signin-number`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-      invalidatesTags: (result) => [
-        {
-          type: ApiServiceNameEnum.AUTH,
-          result,
-        },
-      ],
-    }),
-    confirmSignUpPhoneNumber: apiConfig.createMutation<
-      ResponseAuthModel,
-      RequestAuthModel
-    >(builder, {
-      query: (model: RequestAuthModel) => ({
-        url: `${ApiUrlEnum.AUTH}/confirm-signup-number`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-      invalidatesTags: (result) => [
-        {
-          type: ApiServiceNameEnum.AUTH,
-          result,
-        },
-      ],
-    }),
-    verifySignUpNumber: apiConfig.createMutation<
-      ResponseAuthModel,
-      RequestAuthModel
-    >(builder, {
-      query: (model: RequestAuthModel) => ({
-        url: `${ApiUrlEnum.AUTH}/verify-signup-number`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-      invalidatesTags: (result) => [
-        {
-          type: ApiServiceNameEnum.AUTH,
-          result,
-        },
-      ],
-    }),
-    verifySignInNumber: apiConfig.createMutation<ResponseAuthModel, void>(
-      builder,
-      {
-        query: () => ({
-          url: `${ApiUrlEnum.AUTH}/verify-signin-number`,
-          method: "POST",
-          body: {},
-        }),
-        invalidatesTags: (result) => [
-          {
-            type: ApiServiceNameEnum.AUTH,
-            result,
-          },
-        ],
-      },
+    forgotPassword: builder.mutation<ResponseAuthModel, RequestAuthModel>(
+      apiConfig.getStaticData<ControllerType>("forgotPassword", controller),
     ),
-    switchUserOrganization: apiConfig.createMutation<any, any>(builder, {
-      query: (model) => ({
-        url: `${ApiUrlEnum.AUTH}/switch-organization`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-    }),
+    resetPassword: builder.mutation<ResponseAuthModel, RequestAuthModel>(
+      apiConfig.getStaticData<ControllerType>("resetPassword", controller),
+    ),
+    confirmSignInNumber: builder.mutation<ResponseAuthModel, RequestAuthModel>(
+      apiConfig.getStaticData<ControllerType>(
+        "confirmSignInNumber",
+        controller,
+      ),
+    ),
+    confirmSignUpPhoneNumber: builder.mutation<
+      ResponseAuthModel,
+      RequestAuthModel
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "confirmSignUpPhoneNumber",
+        controller,
+      ),
+    ),
+    verifySignUpNumber: builder.mutation<ResponseAuthModel, RequestAuthModel>(
+      apiConfig.getStaticData<ControllerType>("verifySignUpNumber", controller),
+    ),
+    verifySignInNumber: builder.mutation<ResponseAuthModel, void>(
+      apiConfig.getStaticData<ControllerType>("verifySignInNumber", controller),
+    ),
+    switchUserOrganization: builder.mutation<any, any>(
+      apiConfig.getStaticData<ControllerType>(
+        "switchUserOrganization",
+        controller,
+      ),
+    ),
   }),
 });
 
