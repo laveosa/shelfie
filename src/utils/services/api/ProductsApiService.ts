@@ -273,10 +273,10 @@ export const ProductsApiService = createApi({
     getTrait: builder.query<any, number>(
       apiConfig.getStaticData<ControllerType>("getTrait", controller),
     ),
-    createNewTrait: builder.query<any, TraitModel>(
+    createNewTrait: builder.mutation<any, TraitModel>(
       apiConfig.getStaticData<ControllerType>("createNewTrait", controller),
     ),
-    updateTrait: builder.query<
+    updateTrait: builder.mutation<
       any,
       {
         id?: number;
