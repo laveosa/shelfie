@@ -1,0 +1,68 @@
+[
+  {
+    "variantId": 2,
+    "variantName": "test 1",
+    "stockAmount": 0,
+    "showAlert": false,
+    "isActive": true,
+    "isDeleted": false,
+    "traitOptions": [
+      {
+        "optionId": 2,
+        "optionName": "Green",
+        "optionColor": "#14d069",
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitTypeId": 2,
+        "traitTypeName": "Color",
+        "traitId": 1,
+        "traitName": "Color",
+        "isDeleted": false
+      }
+    ]
+  },
+  {
+    "variantId": 3,
+    "variantName": "Greeen 111 2",
+    "stockAmount": 2,
+    "showAlert": false,
+    "isActive": true,
+    "isDeleted": false,
+    "traitOptions": [
+      {
+        "optionId": 2,
+        "optionName": "Green",
+        "optionColor": "#14d069",
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitTypeId": 2,
+        "traitTypeName": "Color",
+        "traitId": 1,
+        "traitName": "Color",
+        "isDeleted": false
+      }
+    ]
+  },
+  {
+    "variantId": 36,
+    "variantName": "Greeen 111 3",
+    "stockAmount": 197,
+    "showAlert": false,
+    "isActive": true,
+    "isDeleted": false,
+    "traitOptions": [
+      {
+        "optionId": 3,
+        "optionName": "Blue",
+        "optionColor": "#104ee6",
+        "isRaw": false,
+        "sortOrder": 1,
+        "traitTypeId": 2,
+        "traitTypeName": "Color",
+        "traitId": 1,
+        "traitName": "Color",
+        "isDeleted": false
+      }
+    ]
+  }
+]

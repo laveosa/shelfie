@@ -1,0 +1,14 @@
+[
+  {
+    "optionId": 5,
+    "optionName": null,
+    "optionColor": "#fff",
+    "isRaw": true,
+    "sortOrder": 0,
+    "traitTypeId": 2,
+    "traitTypeName": "Color",
+    "traitId": 2,
+    "traitName": "NikTestTrait 111",
+    "isDeleted": false
+  }
+]

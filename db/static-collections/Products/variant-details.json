@@ -1,0 +1,27 @@
+{
+  "variantId": 2,
+  "variantName": "test 1",
+  "variantCode": "I131",
+  "productId": 2,
+  "salePrice": {
+    "brutto": 39.0,
+    "netto": 36.11,
+    "taxTypeId": 1
+  },
+  "stockAmount": 0,
+  "soldUnits": 0,
+  "traitOptions": [
+    {
+      "optionId": 2,
+      "optionName": "Green",
+      "optionColor": "#14d069",
+      "traitId": 1,
+      "traitName": "Color",
+      "traitTypeId": 2,
+      "traitTypeName": "Color",
+      "isRemoved": false,
+      "isMissing": false
+    }
+  ],
+  "photos": []
+}
