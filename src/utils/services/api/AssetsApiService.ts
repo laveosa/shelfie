@@ -1,53 +1,29 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 
+import { AssetsController as controller } from "db/controllers/assets-controller.ts";
 import { ApiServiceNameEnum } from "@/const/enums/ApiServiceNameEnum.ts";
 import { ApiConfigurationService } from "@/utils/services/api/ApiConfigurationService.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
-import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 
 const apiConfig = new ApiConfigurationService(ApiUrlEnum.ASSETS_BASE_URL);
+type ControllerType = typeof controller;
 
 export const AssetsApiService = createApi({
   reducerPath: ApiServiceNameEnum.ASSETS,
-  baseQuery: apiConfig.baseQueryWithInterceptors,
+  baseQuery: async () => ({ date: undefined }),
+  // baseQuery: apiConfig.baseQueryWithInterceptors,
   tagTypes: [ApiServiceNameEnum.ASSETS],
   endpoints: (builder) => ({
-    uploadPhoto: apiConfig.createMutation<void, any>(builder, {
-      query: (model: UploadPhotoModel) => {
-        return {
-          url: `${ApiUrlEnum.ASSETS_BASE_URL}${ApiUrlEnum.ASSET}/${model.contextName}/${model.contextId}/upload-photo`,
-          method: "POST",
-          body: model.file,
-        };
-      },
-      invalidatesTags: (_result, _error, file) => [
-        {
-          type: ApiServiceNameEnum.ASSETS,
-          file,
-        },
-      ],
-    }),
-    deletePhoto: apiConfig.createMutation<void, number>(builder, {
-      query: (id: number) => ({
-        url: `${ApiUrlEnum.ASSETS_BASE_URL}${ApiUrlEnum.ASSET}/${id}`,
-        method: "DELETE",
-      }),
-      invalidatesTags: (_result, _error, id) => [
-        {
-          type: ApiServiceNameEnum.ASSETS,
-          id,
-        },
-      ],
-    }),
-    downloadAsset: apiConfig.createQuery<Blob, number>(builder, {
-      query: (assetId: number) => ({
-        url: `${ApiUrlEnum.ASSET}/${assetId}`,
-        method: "GET",
-        responseHandler: async (response) => await response.blob(),
-        cache: "no-cache",
-      }),
-    }),
-    setPhotoActivationState: apiConfig.createMutation<
+    uploadPhoto: builder.mutation<void, any>(
+      apiConfig.getStaticData<ControllerType>("uploadPhoto", controller),
+    ),
+    deletePhoto: builder.mutation<void, number>(
+      apiConfig.getStaticData<ControllerType>("deletePhoto", controller),
+    ),
+    downloadAsset: builder.query<Blob, number>(
+      apiConfig.getStaticData<ControllerType>("downloadAsset", controller),
+    ),
+    setPhotoActivationState: builder.mutation<
       any,
       {
         contextName?: string;
@@ -55,13 +31,12 @@ export const AssetsApiService = createApi({
         photoId?: number;
         model?: any;
       }
-    >(builder, {
-      query: ({ contextName, contextId, photoId, model }) => ({
-        url: `${ApiUrlEnum.ASSET}/${contextName}/${contextId}/${photoId}/activate`,
-        method: "PATCH",
-        body: JSON.stringify(model),
-      }),
-    }),
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "setPhotoActivationState",
+        controller,
+      ),
+    ),
   }),
 });
 
