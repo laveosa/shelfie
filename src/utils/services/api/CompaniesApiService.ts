@@ -1,128 +1,109 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 
+import { CompaniesController as controller } from "db/controllers/companies-controller.ts";
 import { ApiServiceNameEnum } from "@/const/enums/ApiServiceNameEnum.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { ApiConfigurationService } from "@/utils/services/api/ApiConfigurationService.ts";
 import { CompanyModel } from "@/const/models/CompanyModel.ts";
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { LocationModel } from "@/const/models/LocationModel.ts";
 
 const apiConfig = new ApiConfigurationService(ApiUrlEnum.COMPANY_BASE_URL);
+type ControllerType = typeof controller;
 
 export const CompaniesApiService = createApi({
   reducerPath: ApiServiceNameEnum.COMPANIES,
-  baseQuery: apiConfig.baseQueryWithInterceptors,
+  baseQuery: async () => ({ data: undefined }),
+  // baseQuery: apiConfig.baseQueryWithInterceptors,
   tagTypes: [ApiServiceNameEnum.COMPANIES],
   endpoints: (builder) => ({
-    getListOfCompanies: apiConfig.createQuery<CompanyModel[], void>(builder, {
-      query: () => ({
-        url: `${ApiUrlEnum.COMPANIES}/all`,
-      }),
-    }),
-    getListOfCompaniesForGrid: apiConfig.createMutation<any, any>(builder, {
-      query: (model?: any) => ({
-        url: `${ApiUrlEnum.COMPANIES}/list`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-    }),
-    getListOfCompaniesWithLocationsForGrid: apiConfig.createMutation<any, any>(
-      builder,
-      {
-        query: (model?: any) => ({
-          url: `${ApiUrlEnum.LOCATIONS}/list`,
-          method: "POST",
-          body: JSON.stringify(model),
-        }),
-      },
+    getListOfCompanies: builder.query<CompanyModel[], void>(
+      apiConfig.getStaticData<ControllerType>("getListOfCompanies", controller),
     ),
-    createCompany: apiConfig.createMutation<any, any>(builder, {
-      query: (model?: any) => ({
-        url: `${ApiUrlEnum.COMPANIES}`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-    }),
-    getCompanyDetails: apiConfig.createQuery<CompanyModel, any>(builder, {
-      query: (companyId) => ({
-        url: `${ApiUrlEnum.COMPANIES}/${companyId}`,
-      }),
-    }),
-    addLocationToCompany: apiConfig.createMutation<void, any>(builder, {
-      query: ({ companyId, model }) => ({
-        url: `${ApiUrlEnum.COMPANIES}/${companyId}${ApiUrlEnum.LOCATIONS}`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-    }),
-    deleteCompany: apiConfig.createMutation<void, any>(builder, {
-      query: (companyId) => ({
-        url: `${ApiUrlEnum.COMPANIES}/${companyId}`,
-        method: "DELETE",
-      }),
-    }),
-    restoreCompany: apiConfig.createMutation<void, any>(builder, {
-      query: (companyId) => ({
-        url: `${ApiUrlEnum.SUPPLIERS}/${companyId}/restore`,
-        method: "PATCH",
-      }),
-    }),
-    updateLocationDetails: apiConfig.createMutation<void, any>(builder, {
-      query: ({ locationId, model }) => ({
-        url: `${ApiUrlEnum.LOCATIONS}/${locationId}`,
-        method: "PATCH",
-        body: JSON.stringify(model),
-      }),
-    }),
-    addNewLocationToCompany: apiConfig.createMutation<any, any>(builder, {
-      query: ({ companyId, model }) => ({
-        url: `${ApiUrlEnum.COMPANIES}/${companyId}/locations`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-    }),
-    updateCompanyDetails: apiConfig.createMutation<void, any>(builder, {
-      query: ({ companyId, model }) => ({
-        url: `${ApiUrlEnum.COMPANIES}/${companyId}`,
-        method: "PATCH",
-        body: JSON.stringify(model),
-      }),
-    }),
-    changePositionOfCompanyPhoto: apiConfig.createMutation<
+    getListOfCompaniesForGrid: builder.mutation<
+      GridRequestModel,
+      GridRequestModel
+    >(apiConfig.getStaticData("getListOfCompaniesForGrid", controller)),
+    getListOfCompaniesWithLocationsForGrid: builder.mutation<
+      GridRequestModel,
+      GridRequestModel
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "getListOfCompaniesWithLocationsForGrid",
+        controller,
+      ),
+    ),
+    createCompany: builder.mutation<CompanyModel, CompanyModel>(
+      apiConfig.getStaticData<ControllerType>("createCompany", controller),
+    ),
+    getCompanyDetails: builder.query<CompanyModel, number>(
+      apiConfig.getStaticData<ControllerType>("getCompanyDetails", controller),
+    ),
+    addLocationToCompany: builder.mutation<void, LocationModel>(
+      apiConfig.getStaticData<ControllerType>(
+        "addLocationToCompany",
+        controller,
+      ),
+    ),
+    deleteCompany: builder.mutation<void, number>(
+      apiConfig.getStaticData<ControllerType>(
+        "addLocationToCompany",
+        controller,
+      ),
+    ),
+    restoreCompany: builder.mutation<void, any>(
+      apiConfig.getStaticData<ControllerType>("restoreCompany", controller),
+    ),
+    updateLocationDetails: builder.mutation<void, LocationModel>(
+      apiConfig.getStaticData<ControllerType>(
+        "updateLocationDetails",
+        controller,
+      ),
+    ),
+    addNewLocationToCompany: builder.mutation<any, any>(
+      apiConfig.getStaticData<ControllerType>(
+        "addNewLocationToCompany",
+        controller,
+      ),
+    ),
+    updateCompanyDetails: builder.mutation<void, any>(
+      apiConfig.getStaticData<ControllerType>(
+        "updateCompanyDetails",
+        controller,
+      ),
+    ),
+    changePositionOfCompanyPhoto: builder.mutation<
       any,
       {
         companyId?: number;
         photoId?: number;
         index?: number;
       }
-    >(builder, {
-      query: ({ companyId, photoId, index }) => ({
-        url: `${ApiUrlEnum.COMPANIES}/${companyId}/photo/${photoId}/${index}`,
-        method: "PATCH",
-      }),
-    }),
-    changePositionOfLocationPhoto: apiConfig.createMutation<
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "changePositionOfCompanyPhoto",
+        controller,
+      ),
+    ),
+    changePositionOfLocationPhoto: builder.mutation<
       any,
       {
         locationId?: number;
         photoId?: number;
         index?: number;
       }
-    >(builder, {
-      query: ({ locationId, photoId, index }) => ({
-        url: `${ApiUrlEnum.LOCATIONS}/${locationId}/photo/${photoId}/${index}`,
-        method: "PATCH",
-      }),
-    }),
-    deleteLocation: apiConfig.createMutation<void, any>(builder, {
-      query: (locationId) => ({
-        url: `${ApiUrlEnum.LOCATIONS}/${locationId}`,
-        method: "DELETE",
-      }),
-    }),
-    getCompaniesList: apiConfig.createQuery<void, void>(builder, {
-      query: () => ({
-        url: `${ApiUrlEnum.COMPANIES}/all`,
-      }),
-    }),
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "changePositionOfLocationPhoto",
+        controller,
+      ),
+    ),
+    deleteLocation: builder.mutation<void, number>(
+      apiConfig.getStaticData<ControllerType>("deleteLocation", controller),
+    ),
+    getCompaniesList: builder.query<void, void>(
+      apiConfig.getStaticData<ControllerType>("getCompaniesList", controller),
+    ),
   }),
 });
 

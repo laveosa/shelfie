@@ -1,0 +1,72 @@
+[
+  {
+    "companyId": 41,
+    "companyName": "123121111 eeee",
+    "locationId": 57,
+    "thumbnailUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/0199c517-8915-7b38-bb62-8907e4a78d18/thumbnail/0199c517-8915-7b38-bb62-8907e4a78d18.jpeg?sv=2025-07-05&se=2026-11-09T13%3A38%3A18Z&sr=b&sp=r&sig=A8Y6ED%2FwLhBr3%2FeWK19csDdJy09rIYxlqRl32VZ4IAE%3D",
+    "address": "test address2 123123 er er, 123123 123, Andorra"
+  },
+  {
+    "companyId": 41,
+    "companyName": "123121111 eeee",
+    "locationId": 58,
+    "thumbnailUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/0199c517-8915-7b38-bb62-8907e4a78d18/thumbnail/0199c517-8915-7b38-bb62-8907e4a78d18.jpeg?sv=2025-07-05&se=2026-11-09T13%3A38%3A18Z&sr=b&sp=r&sig=A8Y6ED%2FwLhBr3%2FeWK19csDdJy09rIYxlqRl32VZ4IAE%3D",
+    "address": "asafssafsf asfsafsafsaf, asfasfa asfsafasf, Andorra"
+  },
+  {
+    "companyId": 41,
+    "companyName": "123121111 eeee",
+    "locationId": 59,
+    "thumbnailUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/0199c517-8915-7b38-bb62-8907e4a78d18/thumbnail/0199c517-8915-7b38-bb62-8907e4a78d18.jpeg?sv=2025-07-05&se=2026-11-09T13%3A38%3A18Z&sr=b&sp=r&sig=A8Y6ED%2FwLhBr3%2FeWK19csDdJy09rIYxlqRl32VZ4IAE%3D",
+    "address": "12345 12345, 12345 12345, Andorra"
+  },
+  {
+    "companyId": 41,
+    "companyName": "123121111 eeee",
+    "locationId": 60,
+    "thumbnailUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/0199c517-8915-7b38-bb62-8907e4a78d18/thumbnail/0199c517-8915-7b38-bb62-8907e4a78d18.jpeg?sv=2025-07-05&se=2026-11-09T13%3A38%3A18Z&sr=b&sp=r&sig=A8Y6ED%2FwLhBr3%2FeWK19csDdJy09rIYxlqRl32VZ4IAE%3D",
+    "address": "qwerty qwerty, qwerty qwerty, Andorra"
+  },
+  {
+    "companyId": 46,
+    "companyName": "Babylon s.r.l",
+    "locationId": 65,
+    "thumbnailUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/0199ec3f-dc81-7a2e-882a-6b253bd9daa7/thumbnail/0199ec3f-dc81-7a2e-882a-6b253bd9daa7.png?sv=2025-07-05&se=2026-11-09T13%3A38%3A18Z&sr=b&sp=r&sig=an0lnCyeyjrZ3Jklp7tmeGuURW%2F9ljtNU3xr5dE3v%2BU%3D",
+    "address": "VIA DEI NOTAI 135-137 BL, Centergross, 30, Funo, Italy"
+  },
+  {
+    "companyId": 42,
+    "companyName": "cwcqw",
+    "locationId": 61,
+    "thumbnailUrl": null,
+    "address": "ascascqw, cqsacasc, Bosnia & Herzegovina"
+  },
+  {
+    "companyId": 45,
+    "companyName": "Dixie Slr",
+    "locationId": 64,
+    "thumbnailUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/0199ec28-9aa8-7dbe-ab0a-baad2f4cacc5/thumbnail/0199ec28-9aa8-7dbe-ab0a-baad2f4cacc5.png?sv=2025-07-05&se=2026-11-09T13%3A38%3A18Z&sr=b&sp=r&sig=Dag7bshT8%2FpkcQTPTR6l6RrSh7MQOti2ggWCCgX7rJc%3D",
+    "address": "Via Rotonda Segnatello, 4, Funo, Italy"
+  },
+  {
+    "companyId": 43,
+    "companyName": "erer",
+    "locationId": 62,
+    "thumbnailUrl": null,
+    "address": "werwer, wrwerw, Bosnia & Herzegovina"
+  },
+  {
+    "companyId": 80,
+    "companyName": "Nemesis Inc.",
+    "locationId": 99,
+    "thumbnailUrl": null,
+    "address": "V.Velykogo 74/4, Drohobych, Ukraine"
+  },
+  {
+    "companyId": 79,
+    "companyName": "Sample company",
+    "locationId": 98,
+    "thumbnailUrl": null,
+    "address": "Main street 15, City, Andorra"
+  }
+]
