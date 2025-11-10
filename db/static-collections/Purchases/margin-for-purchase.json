@@ -1,0 +1,14 @@
+{
+  "marginId": 2,
+  "marginName": "Test1",
+  "isDeleted": false,
+  "marginRule": {
+    "modified": false,
+    "marginRuleId": 2,
+    "desiredProfit": 10.0,
+    "plannedDiscount": 10.0,
+    "fixedCosts": 10.0,
+    "roundTo": true,
+    "nearest9": true
+  }
+}
