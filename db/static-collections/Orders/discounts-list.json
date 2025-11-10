@@ -1,0 +1,14 @@
+[
+  {
+    "discountId": 1,
+    "discountRate": "10.00 %"
+  },
+  {
+    "discountId": 34,
+    "discountRate": "15.00 %"
+  },
+  {
+    "discountId": 67,
+    "discountRate": "100.00 %"
+  }
+]

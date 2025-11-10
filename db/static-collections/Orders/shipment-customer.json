@@ -1,0 +1,6 @@
+{
+  "thumbnailUrl": "string",
+  "customerName": "string",
+  "phone": "string",
+  "email": "string"
+}

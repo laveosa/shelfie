@@ -1,0 +1,13 @@
+{
+  "addressId": 1,
+  "addressItemId": 1,
+  "alias": "Test address",
+  "addressLine1": "Address line 1",
+  "addressLine2": "Address line 2",
+  "city": "City",
+  "state": "State",
+  "postalCode": "Code",
+  "countryId": 4,
+  "countryName": "Andorra",
+  "isDeleted": true
+}

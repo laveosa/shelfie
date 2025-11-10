@@ -1,0 +1,131 @@
+{
+  "shipmentId": 0,
+  "createdAt": "2019-08-24T14:15:22.123Z",
+  "queuePacking": "2019-08-24T14:15:22.123Z",
+  "queueShipment": "2019-08-24T14:15:22.123Z",
+  "shipmentStatus": "string",
+  "customerId": 0,
+  "customer": {
+    "thumbnailUrl": "string",
+    "customerName": "string",
+    "phone": "string",
+    "email": "string"
+  },
+  "deliveryAddressId": 0,
+  "deliveryAddress": {
+    "addressId": 0,
+    "addressItemId": 0,
+    "alias": "string",
+    "addressLine1": "string",
+    "addressLine2": "string",
+    "city": "string",
+    "state": "string",
+    "postalCode": "string",
+    "countryId": 0,
+    "countryName": "string",
+    "countryCode": "string",
+    "isDeleted": true
+  },
+  "shipmentItems": [
+    {
+      "stockActionId": 0,
+      "orderId": 0,
+      "productId": 0,
+      "variantId": 0,
+      "variantName": "string",
+      "variantCode": "string",
+      "traitOptions": [
+        {
+          "optionId": 0,
+          "optionName": "string",
+          "optionColor": "string",
+          "isRaw": true,
+          "sortOrder": 0,
+          "traitTypeId": 0,
+          "traitTypeName": "string",
+          "traitId": 0,
+          "traitName": "string",
+          "isDeleted": true
+        }
+      ],
+      "photo": {
+        "originalName": "string",
+        "assetId": 0,
+        "photoId": 0,
+        "thumbnailUrl": "string",
+        "adaptedUrl": "string",
+        "width": 0,
+        "height": 0,
+        "sortOrder": 0,
+        "isActive": true
+      },
+      "quantityPending": 0,
+      "quantityToPack": 0,
+      "quantityPacked": 0,
+      "quantitySent": 0,
+      "limitQuantityToPack": 0
+    }
+  ],
+  "orderItems": [
+    {
+      "stockActionId": 0,
+      "orderId": 0,
+      "productId": 0,
+      "variantId": 0,
+      "variantName": "string",
+      "variantCode": "string",
+      "traitOptions": [
+        {
+          "optionId": 0,
+          "optionName": "string",
+          "optionColor": "string",
+          "isRaw": true,
+          "sortOrder": 0,
+          "traitTypeId": 0,
+          "traitTypeName": "string",
+          "traitId": 0,
+          "traitName": "string",
+          "isDeleted": true
+        }
+      ],
+      "photo": {
+        "originalName": "string",
+        "assetId": 0,
+        "photoId": 0,
+        "thumbnailUrl": "string",
+        "adaptedUrl": "string",
+        "width": 0,
+        "height": 0,
+        "sortOrder": 0,
+        "isActive": true
+      },
+      "quantityPending": 0,
+      "quantityToPack": 0,
+      "quantityPacked": 0,
+      "quantitySent": 0,
+      "limitQuantityToPack": 0
+    }
+  ],
+  "orders": [
+    {
+      "orderId": 0,
+      "customer": {
+        "thumbnailUrl": "string",
+        "customerName": "string",
+        "phone": "string",
+        "email": "string"
+      },
+      "orderDate": "2019-08-24T14:15:22.123Z",
+      "unitsAmount": 0
+    }
+  ],
+  "history": [
+    {
+      "created": "2019-08-24T14:15:22.123Z",
+      "shipmentStatus": "string",
+      "serviceLogo": "string",
+      "trackingNumber": "string",
+      "unitsAmount": 0
+    }
+  ]
+}

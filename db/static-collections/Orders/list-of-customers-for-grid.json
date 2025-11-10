@@ -1,0 +1,86 @@
+[
+  {
+    "customerId": 1,
+    "customerName": "Test 11 Customer",
+    "firstName": "Test 11",
+    "lastName": "Customer",
+    "email": "test@test.com",
+    "phoneNumber": "+123123123123",
+    "rank": "Five",
+    "createdAt": "2025-10-01T14:23:44.615045Z",
+    "lastOrderDate": "2025-10-28T00:00:00Z",
+    "thumbnailUrl": null
+  },
+  {
+    "customerId": 34,
+    "customerName": "Test 2 Customer",
+    "firstName": "Test 2",
+    "lastName": "Customer",
+    "email": "test@test.com",
+    "phoneNumber": "+99878901",
+    "rank": "Five",
+    "createdAt": "2025-10-09T16:37:38.221857Z",
+    "lastOrderDate": null,
+    "thumbnailUrl": null
+  },
+  {
+    "customerId": 35,
+    "customerName": "Test 333 Customer",
+    "firstName": "Test 333",
+    "lastName": "Customer",
+    "email": "test@test.com",
+    "phoneNumber": "+123123123",
+    "rank": "Five",
+    "createdAt": "2025-10-09T16:40:00.639224Z",
+    "lastOrderDate": null,
+    "thumbnailUrl": null
+  },
+  {
+    "customerId": 36,
+    "customerName": "New  Customer",
+    "firstName": "New ",
+    "lastName": "Customer",
+    "email": "new@mail.com",
+    "phoneNumber": "+123123123",
+    "rank": "Five",
+    "createdAt": "2025-10-09T16:50:56.118375Z",
+    "lastOrderDate": "2025-10-14T00:00:00Z",
+    "thumbnailUrl": null
+  },
+  {
+    "customerId": 37,
+    "customerName": "Test  Customer",
+    "firstName": "Test ",
+    "lastName": "Customer",
+    "email": "test@test.com",
+    "phoneNumber": "+123456789",
+    "rank": "Five",
+    "createdAt": "2025-10-14T10:22:03.718426Z",
+    "lastOrderDate": "2025-10-16T00:00:00Z",
+    "thumbnailUrl": null
+  },
+  {
+    "customerId": 70,
+    "customerName": "Jane Doe",
+    "firstName": "Jane",
+    "lastName": "Doe",
+    "email": "doe@gmail.com",
+    "phoneNumber": "+48789000888",
+    "rank": "Five",
+    "createdAt": "2025-10-26T13:25:45.598658Z",
+    "lastOrderDate": "2025-10-30T00:00:00Z",
+    "thumbnailUrl": null
+  },
+  {
+    "customerId": 71,
+    "customerName": "Katarzyna Morawiecka",
+    "firstName": "Katarzyna",
+    "lastName": "Morawiecka",
+    "email": "morawiecka@gmail.com",
+    "phoneNumber": "+48780999000",
+    "rank": "Five",
+    "createdAt": "2025-11-08T14:20:02.200359Z",
+    "lastOrderDate": "2025-11-08T00:00:00Z",
+    "thumbnailUrl": null
+  }
+]
