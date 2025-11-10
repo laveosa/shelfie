@@ -1,0 +1,10 @@
+[
+  {
+    "traitTypeId": 1,
+    "traitTypeName": "Size"
+  },
+  {
+    "traitTypeId": 2,
+    "traitTypeName": "Color"
+  }
+]

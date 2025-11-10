@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "name": "Złoty polski",
+    "briefName": "zł."
+  },
+  {
+    "id": 2,
+    "name": "Dolar amerykański",
+    "briefName": "$"
+  },
+  {
+    "id": 3,
+    "name": "Euro",
+    "briefName": "Euro"
+  },
+  {
+    "id": 4,
+    "name": "Funt szterling",
+    "briefName": "funt."
+  }
+]
