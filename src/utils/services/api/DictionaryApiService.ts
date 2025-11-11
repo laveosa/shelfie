@@ -16,7 +16,7 @@ type ControllerType = typeof controller;
 
 export const DictionaryApiService = createApi({
   reducerPath: ApiServiceNameEnum.DICTIONARY,
-  baseQuery: async () => ({ date: undefined }),
+  baseQuery: async () => ({ data: undefined }),
   // baseQuery: apiConfig.baseQueryWithInterceptors,
   tagTypes: [ApiServiceNameEnum.DICTIONARY],
   endpoints: (builder) => ({

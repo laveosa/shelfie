@@ -6,7 +6,6 @@ import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { ApiConfigurationService } from "@/utils/services/api/ApiConfigurationService.ts";
 import { CompanyModel } from "@/const/models/CompanyModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
-import { LocationModel } from "@/const/models/LocationModel.ts";
 
 const apiConfig = new ApiConfigurationService(ApiUrlEnum.COMPANY_BASE_URL);
 type ControllerType = typeof controller;
@@ -39,7 +38,7 @@ export const CompaniesApiService = createApi({
     getCompanyDetails: builder.query<CompanyModel, number>(
       apiConfig.getStaticData<ControllerType>("getCompanyDetails", controller),
     ),
-    addLocationToCompany: builder.mutation<void, LocationModel>(
+    addLocationToCompany: builder.mutation<void, any>(
       apiConfig.getStaticData<ControllerType>(
         "addLocationToCompany",
         controller,
@@ -54,7 +53,7 @@ export const CompaniesApiService = createApi({
     restoreCompany: builder.mutation<void, any>(
       apiConfig.getStaticData<ControllerType>("restoreCompany", controller),
     ),
-    updateLocationDetails: builder.mutation<void, LocationModel>(
+    updateLocationDetails: builder.mutation<void, any>(
       apiConfig.getStaticData<ControllerType>(
         "updateLocationDetails",
         controller,

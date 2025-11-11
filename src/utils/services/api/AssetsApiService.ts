@@ -10,7 +10,7 @@ type ControllerType = typeof controller;
 
 export const AssetsApiService = createApi({
   reducerPath: ApiServiceNameEnum.ASSETS,
-  baseQuery: async () => ({ date: undefined }),
+  baseQuery: async () => ({ data: undefined }),
   // baseQuery: apiConfig.baseQueryWithInterceptors,
   tagTypes: [ApiServiceNameEnum.ASSETS],
   endpoints: (builder) => ({

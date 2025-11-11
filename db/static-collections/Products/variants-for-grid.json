@@ -1,375 +1,360 @@
-{
-  "searchQuery": null,
-  "sortOption": "Newest",
-  "filter": {
-    "brands": [],
-    "categories": [],
-    "traitOptions": [],
-    "showDeleted": false,
-    "showOnlyDeleted": false
+[
+  {
+    "variantId": 113,
+    "variantAppId": "019a3003-f5c5-7732-b932-7858ea79c71c",
+    "productId": 106,
+    "photo": null,
+    "variantCode": "TFM2",
+    "variantName": "Refresh list",
+    "productCategory": {
+      "categoryId": 1,
+      "categoryName": "Shirts",
+      "thumbnail": null
+    },
+    "brand": {
+      "thumbnail": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/019a2151-6273-7038-b336-250d0a02e052/thumbnail/019a2151-6273-7038-b336-250d0a02e052.png?sv=2025-07-05&se=2026-11-06T12%3A39%3A23Z&sr=b&sp=r&sig=jmCo6SsDfVLJ3Vvj75M7IcwCzg%2BMad98Q9wN4ZoT8Mw%3D",
+      "brandId": 102,
+      "brandName": "Babylon"
+    },
+    "status": "Out of stock",
+    "salePrice": "123zł.",
+    "stockAmount": 0,
+    "isDeleted": false,
+    "traitOptions": [
+      {
+        "optionId": 3,
+        "optionName": "Blue",
+        "optionColor": "#104ee6",
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitTypeId": 2,
+        "traitTypeName": "Color",
+        "traitId": 1,
+        "traitName": "Color",
+        "isDeleted": false
+      }
+    ]
   },
-  "currentPage": 1,
-  "pageSize": 10,
-  "totalPages": 2,
-  "endPage": 2,
-  "items": [
-    {
-      "variantId": 113,
-      "variantAppId": "019a3003-f5c5-7732-b932-7858ea79c71c",
-      "productId": 106,
-      "photo": null,
-      "variantCode": "TFM2",
-      "variantName": "Refresh list",
-      "productCategory": {
-        "categoryId": 1,
-        "categoryName": "Shirts",
-        "thumbnail": null
-      },
-      "brand": {
-        "thumbnail": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/019a2151-6273-7038-b336-250d0a02e052/thumbnail/019a2151-6273-7038-b336-250d0a02e052.png?sv=2025-07-05&se=2026-11-06T12%3A39%3A23Z&sr=b&sp=r&sig=jmCo6SsDfVLJ3Vvj75M7IcwCzg%2BMad98Q9wN4ZoT8Mw%3D",
-        "brandId": 102,
-        "brandName": "Babylon"
-      },
-      "status": "Out of stock",
-      "salePrice": "123zł.",
-      "stockAmount": 0,
-      "isDeleted": false,
-      "traitOptions": [
-        {
-          "optionId": 3,
-          "optionName": "Blue",
-          "optionColor": "#104ee6",
-          "isRaw": false,
-          "sortOrder": 0,
-          "traitTypeId": 2,
-          "traitTypeName": "Color",
-          "traitId": 1,
-          "traitName": "Color",
-          "isDeleted": false
-        }
-      ]
+  {
+    "variantId": 112,
+    "variantAppId": "019a2b78-1243-7cb7-8f63-73b68f41842e",
+    "productId": 106,
+    "photo": null,
+    "variantCode": "TFM1",
+    "variantName": "Refresh list 1",
+    "productCategory": {
+      "categoryId": 1,
+      "categoryName": "Shirts",
+      "thumbnail": null
     },
-    {
-      "variantId": 112,
-      "variantAppId": "019a2b78-1243-7cb7-8f63-73b68f41842e",
-      "productId": 106,
-      "photo": null,
-      "variantCode": "TFM1",
-      "variantName": "Refresh list 1",
-      "productCategory": {
-        "categoryId": 1,
-        "categoryName": "Shirts",
-        "thumbnail": null
-      },
-      "brand": {
-        "thumbnail": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/019a2151-6273-7038-b336-250d0a02e052/thumbnail/019a2151-6273-7038-b336-250d0a02e052.png?sv=2025-07-05&se=2026-11-06T12%3A39%3A23Z&sr=b&sp=r&sig=jmCo6SsDfVLJ3Vvj75M7IcwCzg%2BMad98Q9wN4ZoT8Mw%3D",
-        "brandId": 102,
-        "brandName": "Babylon"
-      },
-      "status": "Available",
-      "salePrice": "16.11zł.",
-      "stockAmount": 9,
-      "isDeleted": false,
-      "traitOptions": [
-        {
-          "optionId": 2,
-          "optionName": "Green",
-          "optionColor": "#14d069",
-          "isRaw": false,
-          "sortOrder": 0,
-          "traitTypeId": 2,
-          "traitTypeName": "Color",
-          "traitId": 1,
-          "traitName": "Color",
-          "isDeleted": false
-        }
-      ]
+    "brand": {
+      "thumbnail": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/019a2151-6273-7038-b336-250d0a02e052/thumbnail/019a2151-6273-7038-b336-250d0a02e052.png?sv=2025-07-05&se=2026-11-06T12%3A39%3A23Z&sr=b&sp=r&sig=jmCo6SsDfVLJ3Vvj75M7IcwCzg%2BMad98Q9wN4ZoT8Mw%3D",
+      "brandId": 102,
+      "brandName": "Babylon"
     },
-    {
-      "variantId": 111,
-      "variantAppId": "019a2a50-ecab-7af6-a27b-7921d7b765e6",
-      "productId": 72,
-      "photo": null,
-      "variantCode": "1912",
-      "variantName": "Country test 2",
-      "productCategory": {
-        "categoryId": 36,
-        "categoryName": "Skirts",
-        "thumbnail": null
-      },
-      "brand": {
-        "thumbnail": null,
-        "brandId": 1,
-        "brandName": "Test"
-      },
-      "status": "Available",
-      "salePrice": null,
-      "stockAmount": 1,
-      "isDeleted": false,
-      "traitOptions": [
-        {
-          "optionId": 3,
-          "optionName": "Blue",
-          "optionColor": "#104ee6",
-          "isRaw": false,
-          "sortOrder": 0,
-          "traitTypeId": 2,
-          "traitTypeName": "Color",
-          "traitId": 1,
-          "traitName": "Color",
-          "isDeleted": false
-        }
-      ]
-    },
-    {
-      "variantId": 78,
-      "variantAppId": "019a1005-bbdd-7272-b78e-0151821855fe",
-      "productId": 72,
-      "photo": null,
-      "variantCode": "1911",
-      "variantName": "Availability test",
-      "productCategory": {
-        "categoryId": 36,
-        "categoryName": "Skirts",
-        "thumbnail": null
-      },
-      "brand": {
-        "thumbnail": null,
-        "brandId": 1,
-        "brandName": "Test"
-      },
-      "status": "Available",
-      "salePrice": "147.6zł.",
-      "stockAmount": 1,
-      "isDeleted": false,
-      "traitOptions": [
-        {
-          "optionId": 2,
-          "optionName": "Green",
-          "optionColor": "#14d069",
-          "isRaw": false,
-          "sortOrder": 0,
-          "traitTypeId": 2,
-          "traitTypeName": "Color",
-          "traitId": 1,
-          "traitName": "Color",
-          "isDeleted": false
-        }
-      ]
-    },
-    {
-      "variantId": 77,
-      "variantAppId": "019a0ca6-fcde-72fa-93fd-3f9459944018",
-      "productId": 71,
-      "photo": null,
-      "variantCode": "HH32",
-      "variantName": "new test111 wewfjefjijoi 2",
-      "productCategory": {
-        "categoryId": 35,
-        "categoryName": "fwewef",
-        "thumbnail": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/0199baa7-f2fd-72b4-b881-cc4652ea3e04/thumbnail/0199baa7-f2fd-72b4-b881-cc4652ea3e04.jpeg?sv=2025-07-05&se=2026-11-06T12%3A39%3A23Z&sr=b&sp=r&sig=d7isfB4VYaA0bdpcOy0Y1m1mB%2F4psgsUck%2Fy2XAqAn4%3D"
-      },
-      "brand": {
-        "thumbnail": null,
-        "brandId": 34,
-        "brandName": "Nemesis"
-      },
-      "status": "Out of stock",
-      "salePrice": "19.44zł.",
-      "stockAmount": 0,
-      "isDeleted": false,
-      "traitOptions": [
-        {
-          "optionId": 40,
-          "optionName": "M",
-          "optionColor": null,
-          "isRaw": false,
-          "sortOrder": 0,
-          "traitTypeId": 1,
-          "traitTypeName": "Size",
-          "traitId": 35,
-          "traitName": "Test Size",
-          "isDeleted": false
-        }
-      ]
-    },
-    {
-      "variantId": 76,
-      "variantAppId": "019a0b68-c438-7553-8cd0-8c183bbd760a",
-      "productId": 71,
-      "photo": null,
-      "variantCode": "100",
-      "variantName": "Test",
-      "productCategory": {
-        "categoryId": 35,
-        "categoryName": "fwewef",
-        "thumbnail": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/0199baa7-f2fd-72b4-b881-cc4652ea3e04/thumbnail/0199baa7-f2fd-72b4-b881-cc4652ea3e04.jpeg?sv=2025-07-05&se=2026-11-06T12%3A39%3A23Z&sr=b&sp=r&sig=d7isfB4VYaA0bdpcOy0Y1m1mB%2F4psgsUck%2Fy2XAqAn4%3D"
-      },
-      "brand": {
-        "thumbnail": null,
-        "brandId": 34,
-        "brandName": "Nemesis"
-      },
-      "status": "Out of stock",
-      "salePrice": "9zł.",
-      "stockAmount": 0,
-      "isDeleted": false,
-      "traitOptions": [
-        {
-          "optionId": 41,
-          "optionName": "S",
-          "optionColor": null,
-          "isRaw": false,
-          "sortOrder": 0,
-          "traitTypeId": 1,
-          "traitTypeName": "Size",
-          "traitId": 35,
-          "traitName": "Test Size",
-          "isDeleted": false
-        }
-      ]
-    },
-    {
-      "variantId": 43,
-      "variantAppId": "0199f827-25fc-7875-8b46-94b6969fa805",
-      "productId": 38,
-      "photo": {
-        "photoId": 139,
-        "thumbnailUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/019a0140-a525-7aef-b959-76cbfbba3309/thumbnail/019a0140-a525-7aef-b959-76cbfbba3309.jpeg?sv=2025-07-05&se=2026-11-06T12%3A39%3A23Z&sr=b&sp=r&sig=OppJ%2FqSxWLsOb63xKpP7WyO6TpXga9%2FKshIRQlzKWOQ%3D",
-        "adaptedUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/019a0140-a525-7aef-b959-76cbfbba3309/adapted/019a0140-a525-7aef-b959-76cbfbba3309.jpeg?sv=2025-07-05&se=2026-11-06T12%3A39%3A23Z&sr=b&sp=r&sig=yaUAqTtxxT7Y268qByoH5eUIs3OPFOYaT1vd6ywoRRs%3D",
-        "width": 225,
-        "height": 144,
+    "status": "Available",
+    "salePrice": "16.11zł.",
+    "stockAmount": 9,
+    "isDeleted": false,
+    "traitOptions": [
+      {
+        "optionId": 2,
+        "optionName": "Green",
+        "optionColor": "#14d069",
+        "isRaw": false,
         "sortOrder": 0,
-        "isActive": true,
-        "originalName": null,
-        "assetId": 139
-      },
-      "variantCode": "6CP",
-      "variantName": "Test1",
-      "productCategory": null,
-      "brand": null,
-      "status": "Available",
-      "salePrice": "0zł.",
-      "stockAmount": 6,
-      "isDeleted": false,
-      "traitOptions": [
-        {
-          "optionId": 2,
-          "optionName": "Green",
-          "optionColor": "#14d069",
-          "isRaw": false,
-          "sortOrder": 0,
-          "traitTypeId": 2,
-          "traitTypeName": "Color",
-          "traitId": 1,
-          "traitName": "Color",
-          "isDeleted": false
-        }
-      ]
+        "traitTypeId": 2,
+        "traitTypeName": "Color",
+        "traitId": 1,
+        "traitName": "Color",
+        "isDeleted": false
+      }
+    ]
+  },
+  {
+    "variantId": 111,
+    "variantAppId": "019a2a50-ecab-7af6-a27b-7921d7b765e6",
+    "productId": 72,
+    "photo": null,
+    "variantCode": "1912",
+    "variantName": "Country test 2",
+    "productCategory": {
+      "categoryId": 36,
+      "categoryName": "Skirts",
+      "thumbnail": null
     },
-    {
-      "variantId": 42,
-      "variantAppId": "0199f718-84de-7f82-911b-f5fd2c4c2bcf",
-      "productId": 3,
-      "photo": {
-        "photoId": 96,
-        "thumbnailUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/0199be6c-1044-7c0c-bfeb-f510f3bb938f/thumbnail/0199be6c-1044-7c0c-bfeb-f510f3bb938f.jpeg?sv=2025-07-05&se=2026-11-06T12%3A39%3A23Z&sr=b&sp=r&sig=7tMuneReUn565c5%2F%2Fn%2B47lzKeehyB9dWdkTJzwguYEY%3D",
-        "adaptedUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/0199be6c-1044-7c0c-bfeb-f510f3bb938f/adapted/0199be6c-1044-7c0c-bfeb-f510f3bb938f.jpeg?sv=2025-07-05&se=2026-11-06T12%3A39%3A23Z&sr=b&sp=r&sig=ddZn92o5L8zEiqZIDplt%2BZgQRUE3PBQhd%2FAmte5qTFY%3D",
-        "width": 308,
-        "height": 164,
+    "brand": {
+      "thumbnail": null,
+      "brandId": 1,
+      "brandName": "Test"
+    },
+    "status": "Available",
+    "salePrice": null,
+    "stockAmount": 1,
+    "isDeleted": false,
+    "traitOptions": [
+      {
+        "optionId": 3,
+        "optionName": "Blue",
+        "optionColor": "#104ee6",
+        "isRaw": false,
         "sortOrder": 0,
-        "isActive": true,
-        "originalName": null,
-        "assetId": 96
-      },
-      "variantCode": "TNO6",
-      "variantName": "Product NIk 111 6",
-      "productCategory": null,
-      "brand": null,
-      "status": "Available",
-      "salePrice": "7zł.",
-      "stockAmount": 1,
-      "isDeleted": false,
-      "traitOptions": [
-        {
-          "optionId": 3,
-          "optionName": "Blue",
-          "optionColor": "#104ee6",
-          "isRaw": false,
-          "sortOrder": 0,
-          "traitTypeId": 2,
-          "traitTypeName": "Color",
-          "traitId": 1,
-          "traitName": "Color",
-          "isDeleted": false
-        }
-      ]
+        "traitTypeId": 2,
+        "traitTypeName": "Color",
+        "traitId": 1,
+        "traitName": "Color",
+        "isDeleted": false
+      }
+    ]
+  },
+  {
+    "variantId": 78,
+    "variantAppId": "019a1005-bbdd-7272-b78e-0151821855fe",
+    "productId": 72,
+    "photo": null,
+    "variantCode": "1911",
+    "variantName": "Availability test",
+    "productCategory": {
+      "categoryId": 36,
+      "categoryName": "Skirts",
+      "thumbnail": null
     },
-    {
-      "variantId": 40,
-      "variantAppId": "0199f717-2bbd-76d9-93c0-64bba1f00259",
-      "productId": 3,
-      "photo": null,
-      "variantCode": "TNO4",
-      "variantName": "Product NIk 111 4",
-      "productCategory": null,
-      "brand": null,
-      "status": "Available",
-      "salePrice": "0zł.",
-      "stockAmount": 1,
-      "isDeleted": false,
-      "traitOptions": [
-        {
-          "optionId": 2,
-          "optionName": "Green",
-          "optionColor": "#14d069",
-          "isRaw": false,
-          "sortOrder": 0,
-          "traitTypeId": 2,
-          "traitTypeName": "Color",
-          "traitId": 1,
-          "traitName": "Color",
-          "isDeleted": false
-        }
-      ]
+    "brand": {
+      "thumbnail": null,
+      "brandId": 1,
+      "brandName": "Test"
     },
-    {
-      "variantId": 39,
-      "variantAppId": "0199eeae-1f33-75f8-8c4a-c0a39ffc0504",
-      "productId": 3,
-      "photo": {
-        "photoId": 141,
-        "thumbnailUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/019a017a-04a6-7b08-8a82-5a66d0ddd3c4/thumbnail/019a017a-04a6-7b08-8a82-5a66d0ddd3c4.jpeg?sv=2025-07-05&se=2026-11-06T12%3A39%3A23Z&sr=b&sp=r&sig=1c4kdZRjA%2B1a%2F%2BIkxP0aylECwC%2FdUd6X8k8oJTcNw4U%3D",
-        "adaptedUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/019a017a-04a6-7b08-8a82-5a66d0ddd3c4/adapted/019a017a-04a6-7b08-8a82-5a66d0ddd3c4.jpeg?sv=2025-07-05&se=2026-11-06T12%3A39%3A23Z&sr=b&sp=r&sig=rRZnXPez0Q%2BNkX%2FeHu%2FrotDC%2B1W5VzpOf2npc1yXGHw%3D",
-        "width": 900,
-        "height": 900,
+    "status": "Available",
+    "salePrice": "147.6zł.",
+    "stockAmount": 1,
+    "isDeleted": false,
+    "traitOptions": [
+      {
+        "optionId": 2,
+        "optionName": "Green",
+        "optionColor": "#14d069",
+        "isRaw": false,
         "sortOrder": 0,
-        "isActive": true,
-        "originalName": null,
-        "assetId": 141
-      },
-      "variantCode": "TNO3",
-      "variantName": "Product NIk 111 3",
-      "productCategory": null,
-      "brand": null,
-      "status": "Available",
-      "salePrice": "0zł.",
-      "stockAmount": 12,
-      "isDeleted": false,
-      "traitOptions": [
-        {
-          "optionId": 41,
-          "optionName": "S",
-          "optionColor": null,
-          "isRaw": false,
-          "sortOrder": 0,
-          "traitTypeId": 1,
-          "traitTypeName": "Size",
-          "traitId": 35,
-          "traitName": "Test Size",
-          "isDeleted": false
-        }
-      ]
-    }
-  ]
-}
+        "traitTypeId": 2,
+        "traitTypeName": "Color",
+        "traitId": 1,
+        "traitName": "Color",
+        "isDeleted": false
+      }
+    ]
+  },
+  {
+    "variantId": 77,
+    "variantAppId": "019a0ca6-fcde-72fa-93fd-3f9459944018",
+    "productId": 71,
+    "photo": null,
+    "variantCode": "HH32",
+    "variantName": "new test111 wewfjefjijoi 2",
+    "productCategory": {
+      "categoryId": 35,
+      "categoryName": "fwewef",
+      "thumbnail": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/0199baa7-f2fd-72b4-b881-cc4652ea3e04/thumbnail/0199baa7-f2fd-72b4-b881-cc4652ea3e04.jpeg?sv=2025-07-05&se=2026-11-06T12%3A39%3A23Z&sr=b&sp=r&sig=d7isfB4VYaA0bdpcOy0Y1m1mB%2F4psgsUck%2Fy2XAqAn4%3D"
+    },
+    "brand": {
+      "thumbnail": null,
+      "brandId": 34,
+      "brandName": "Nemesis"
+    },
+    "status": "Out of stock",
+    "salePrice": "19.44zł.",
+    "stockAmount": 0,
+    "isDeleted": false,
+    "traitOptions": [
+      {
+        "optionId": 40,
+        "optionName": "M",
+        "optionColor": null,
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitTypeId": 1,
+        "traitTypeName": "Size",
+        "traitId": 35,
+        "traitName": "Test Size",
+        "isDeleted": false
+      }
+    ]
+  },
+  {
+    "variantId": 76,
+    "variantAppId": "019a0b68-c438-7553-8cd0-8c183bbd760a",
+    "productId": 71,
+    "photo": null,
+    "variantCode": "100",
+    "variantName": "Test",
+    "productCategory": {
+      "categoryId": 35,
+      "categoryName": "fwewef",
+      "thumbnail": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/0199baa7-f2fd-72b4-b881-cc4652ea3e04/thumbnail/0199baa7-f2fd-72b4-b881-cc4652ea3e04.jpeg?sv=2025-07-05&se=2026-11-06T12%3A39%3A23Z&sr=b&sp=r&sig=d7isfB4VYaA0bdpcOy0Y1m1mB%2F4psgsUck%2Fy2XAqAn4%3D"
+    },
+    "brand": {
+      "thumbnail": null,
+      "brandId": 34,
+      "brandName": "Nemesis"
+    },
+    "status": "Out of stock",
+    "salePrice": "9zł.",
+    "stockAmount": 0,
+    "isDeleted": false,
+    "traitOptions": [
+      {
+        "optionId": 41,
+        "optionName": "S",
+        "optionColor": null,
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitTypeId": 1,
+        "traitTypeName": "Size",
+        "traitId": 35,
+        "traitName": "Test Size",
+        "isDeleted": false
+      }
+    ]
+  },
+  {
+    "variantId": 43,
+    "variantAppId": "0199f827-25fc-7875-8b46-94b6969fa805",
+    "productId": 38,
+    "photo": {
+      "photoId": 139,
+      "thumbnailUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/019a0140-a525-7aef-b959-76cbfbba3309/thumbnail/019a0140-a525-7aef-b959-76cbfbba3309.jpeg?sv=2025-07-05&se=2026-11-06T12%3A39%3A23Z&sr=b&sp=r&sig=OppJ%2FqSxWLsOb63xKpP7WyO6TpXga9%2FKshIRQlzKWOQ%3D",
+      "adaptedUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/019a0140-a525-7aef-b959-76cbfbba3309/adapted/019a0140-a525-7aef-b959-76cbfbba3309.jpeg?sv=2025-07-05&se=2026-11-06T12%3A39%3A23Z&sr=b&sp=r&sig=yaUAqTtxxT7Y268qByoH5eUIs3OPFOYaT1vd6ywoRRs%3D",
+      "width": 225,
+      "height": 144,
+      "sortOrder": 0,
+      "isActive": true,
+      "originalName": null,
+      "assetId": 139
+    },
+    "variantCode": "6CP",
+    "variantName": "Test1",
+    "productCategory": null,
+    "brand": null,
+    "status": "Available",
+    "salePrice": "0zł.",
+    "stockAmount": 6,
+    "isDeleted": false,
+    "traitOptions": [
+      {
+        "optionId": 2,
+        "optionName": "Green",
+        "optionColor": "#14d069",
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitTypeId": 2,
+        "traitTypeName": "Color",
+        "traitId": 1,
+        "traitName": "Color",
+        "isDeleted": false
+      }
+    ]
+  },
+  {
+    "variantId": 42,
+    "variantAppId": "0199f718-84de-7f82-911b-f5fd2c4c2bcf",
+    "productId": 3,
+    "photo": {
+      "photoId": 96,
+      "thumbnailUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/0199be6c-1044-7c0c-bfeb-f510f3bb938f/thumbnail/0199be6c-1044-7c0c-bfeb-f510f3bb938f.jpeg?sv=2025-07-05&se=2026-11-06T12%3A39%3A23Z&sr=b&sp=r&sig=7tMuneReUn565c5%2F%2Fn%2B47lzKeehyB9dWdkTJzwguYEY%3D",
+      "adaptedUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/0199be6c-1044-7c0c-bfeb-f510f3bb938f/adapted/0199be6c-1044-7c0c-bfeb-f510f3bb938f.jpeg?sv=2025-07-05&se=2026-11-06T12%3A39%3A23Z&sr=b&sp=r&sig=ddZn92o5L8zEiqZIDplt%2BZgQRUE3PBQhd%2FAmte5qTFY%3D",
+      "width": 308,
+      "height": 164,
+      "sortOrder": 0,
+      "isActive": true,
+      "originalName": null,
+      "assetId": 96
+    },
+    "variantCode": "TNO6",
+    "variantName": "Product NIk 111 6",
+    "productCategory": null,
+    "brand": null,
+    "status": "Available",
+    "salePrice": "7zł.",
+    "stockAmount": 1,
+    "isDeleted": false,
+    "traitOptions": [
+      {
+        "optionId": 3,
+        "optionName": "Blue",
+        "optionColor": "#104ee6",
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitTypeId": 2,
+        "traitTypeName": "Color",
+        "traitId": 1,
+        "traitName": "Color",
+        "isDeleted": false
+      }
+    ]
+  },
+  {
+    "variantId": 40,
+    "variantAppId": "0199f717-2bbd-76d9-93c0-64bba1f00259",
+    "productId": 3,
+    "photo": null,
+    "variantCode": "TNO4",
+    "variantName": "Product NIk 111 4",
+    "productCategory": null,
+    "brand": null,
+    "status": "Available",
+    "salePrice": "0zł.",
+    "stockAmount": 1,
+    "isDeleted": false,
+    "traitOptions": [
+      {
+        "optionId": 2,
+        "optionName": "Green",
+        "optionColor": "#14d069",
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitTypeId": 2,
+        "traitTypeName": "Color",
+        "traitId": 1,
+        "traitName": "Color",
+        "isDeleted": false
+      }
+    ]
+  },
+  {
+    "variantId": 39,
+    "variantAppId": "0199eeae-1f33-75f8-8c4a-c0a39ffc0504",
+    "productId": 3,
+    "photo": {
+      "photoId": 141,
+      "thumbnailUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/019a017a-04a6-7b08-8a82-5a66d0ddd3c4/thumbnail/019a017a-04a6-7b08-8a82-5a66d0ddd3c4.jpeg?sv=2025-07-05&se=2026-11-06T12%3A39%3A23Z&sr=b&sp=r&sig=1c4kdZRjA%2B1a%2F%2BIkxP0aylECwC%2FdUd6X8k8oJTcNw4U%3D",
+      "adaptedUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/019a017a-04a6-7b08-8a82-5a66d0ddd3c4/adapted/019a017a-04a6-7b08-8a82-5a66d0ddd3c4.jpeg?sv=2025-07-05&se=2026-11-06T12%3A39%3A23Z&sr=b&sp=r&sig=rRZnXPez0Q%2BNkX%2FeHu%2FrotDC%2B1W5VzpOf2npc1yXGHw%3D",
+      "width": 900,
+      "height": 900,
+      "sortOrder": 0,
+      "isActive": true,
+      "originalName": null,
+      "assetId": 141
+    },
+    "variantCode": "TNO3",
+    "variantName": "Product NIk 111 3",
+    "productCategory": null,
+    "brand": null,
+    "status": "Available",
+    "salePrice": "0zł.",
+    "stockAmount": 12,
+    "isDeleted": false,
+    "traitOptions": [
+      {
+        "optionId": 41,
+        "optionName": "S",
+        "optionColor": null,
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitTypeId": 1,
+        "traitTypeName": "Size",
+        "traitId": 35,
+        "traitName": "Test Size",
+        "isDeleted": false
+      }
+    ]
+  }
+]

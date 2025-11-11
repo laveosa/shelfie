@@ -12,7 +12,7 @@ type ControllerType = typeof controller;
 
 export const AuthApiService = createApi({
   reducerPath: ApiServiceNameEnum.AUTH,
-  baseQuery: async () => ({ date: undefined }),
+  baseQuery: async () => ({ data: undefined }),
   // baseQuery: apiConfig.baseQueryWithInterceptors,
   tagTypes: [ApiServiceNameEnum.AUTH],
   endpoints: (builder) => ({
