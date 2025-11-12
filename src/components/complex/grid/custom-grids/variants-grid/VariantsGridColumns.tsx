@@ -61,6 +61,7 @@ export function VariantsGridColumns(onAction: any): ColumnDef<VariantModel>[] {
       accessorKey: "variantCode",
       header: "Code",
       minSize: 60,
+      maxSize: 60,
       cell: ({ row }) => (
         <SheTooltip delayDuration={200} text={row.getValue("variantCode")}>
           <span className={`${cs.variantCode} she-text`}>

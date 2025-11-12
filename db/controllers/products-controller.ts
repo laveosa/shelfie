@@ -26,9 +26,12 @@ import trait from "../static-collections/Products/trait.json";
 import optionsForTrait from "../static-collections/Products/options-for-trait.json";
 import newOptionForTrait from "../static-collections/Products/new-option-for-trait.json";
 
+import productsList from "../static-collections/Products/products-list_TABLE.json";
+import brandsList from "../static-collections/Products/brands-list_TABLE.json";
+
 export class ProductsController extends BaseController {
   public static getAllProducts() {
-    return this.staticDataApiHandler(this.createGridDefaultModel(allProducts));
+    return this.staticDataApiHandler(this.createGridDefaultModel(productsList));
   }
 
   public static getProductDetail() {
@@ -48,9 +51,7 @@ export class ProductsController extends BaseController {
   }
 
   public static getTheProductsForGrid() {
-    return this.staticDataApiHandler(
-      this.createGridDefaultModel(theProductsForGrid),
-    );
+    return this.staticDataApiHandler(this.createGridDefaultModel(productsList));
   }
 
   public static getBrandsForProductsFilter() {
@@ -66,7 +67,7 @@ export class ProductsController extends BaseController {
   }
 
   public static getSimpleListOfAllBrands() {
-    return this.staticDataApiHandler(simpleListOfAllBrands);
+    return this.staticDataApiHandler(brandsList);
   }
 
   public static getAllCategoriesByOrganization() {

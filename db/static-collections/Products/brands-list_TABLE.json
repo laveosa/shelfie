@@ -1,10 +1,5 @@
 [
   {
-    "brandId": 0,
-    "brandName": "<Unbranded>",
-    "thumbnail": null
-  },
-  {
     "brandId": 101,
     "brandName": "Nike",
     "thumbnail": "./images/brands/nike-logo.svg"
