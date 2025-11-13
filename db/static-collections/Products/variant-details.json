@@ -1,27 +1,34 @@
 {
-  "variantId": 2,
-  "variantName": "test 1",
-  "variantCode": "I131",
-  "productId": 2,
-  "salePrice": {
-    "brutto": 39.0,
-    "netto": 36.11,
-    "taxTypeId": 1
-  },
-  "stockAmount": 0,
-  "soldUnits": 0,
+  "variantId": 221,
+  "variantName": "Nike Air Max 90",
+  "stockAmount": 76,
+  "showAlert": false,
+  "isActive": true,
+  "isDeleted": false,
   "traitOptions": [
     {
-      "optionId": 2,
-      "optionName": "Green",
-      "optionColor": "#14d069",
-      "traitId": 1,
-      "traitName": "Color",
+      "optionId": 41,
+      "optionName": "M",
+      "optionColor": null,
+      "isRaw": false,
+      "sortOrder": 0,
+      "traitTypeId": 1,
+      "traitTypeName": "Size",
+      "traitId": 35,
+      "traitName": "Test Size",
+      "isDeleted": false
+    },
+    {
+      "optionId": 413,
+      "optionName": "Gray",
+      "optionColor": "#798387",
+      "isRaw": false,
+      "sortOrder": 0,
       "traitTypeId": 2,
       "traitTypeName": "Color",
-      "isRemoved": false,
-      "isMissing": false
+      "traitId": 1,
+      "traitName": "Color",
+      "isDeleted": false
     }
-  ],
-  "photos": []
+  ]
 }

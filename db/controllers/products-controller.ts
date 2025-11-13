@@ -1,11 +1,15 @@
 import { BaseController } from "./base-controller.ts";
 
 import allProducts from "../static-collections/Products/all-products.json";
-import productDetail from "../static-collections/Products/product-details.json";
 import theProductsForGrid from "../static-collections/Products/the-products-for-grid.json";
+import simpleListOfAllBrands from "../static-collections/Products/simple-list-of-all-brands.json";
+import variantsForGrid from "../static-collections/Products/variants-for-grid.json";
+import createVariant from "../static-collections/Products/create-variant.json";
+import variantDetails from "../static-collections/Products/variant-details.json";
+
+import productDetail from "../static-collections/Products/product-details.json";
 import brandsForProductsFilter from "../static-collections/Products/brands-for-products-filter.json";
 import productCode from "../static-collections/Products/product-code.json";
-import simpleListOfAllBrands from "../static-collections/Products/simple-list-of-all-brands.json";
 import allCategoriesByOrganization from "../static-collections/Products/all-categories-by-organization.json";
 import newProduct from "../static-collections/Products/new-product.json";
 import newCategory from "../static-collections/Products/new-category.json";
@@ -13,10 +17,6 @@ import newBrand from "../static-collections/Products/new-brand.json";
 import countersForProducts from "../static-collections/Products/counters-for-products.json";
 import listOfProductPhotos from "../static-collections/Products/list-of-product-photos.json";
 import productPhotosForVariant from "../static-collections/Products/product-photos-for-variant.json";
-import variantsForGrid from "../static-collections/Products/variants-for-grid.json";
-import productVariants from "../static-collections/Products/product-variants.json";
-import createVariant from "../static-collections/Products/create-variant.json";
-import variantDetails from "../static-collections/Products/variant-details.json";
 import disposeVariantFromStock from "../static-collections/Products/dispose-variant-from-stock.json";
 import variantStockHistory from "../static-collections/Products/variant-stock-history.json";
 import listOfAllTraits from "../static-collections/Products/list-of-all-traits.json";
@@ -28,7 +28,9 @@ import newOptionForTrait from "../static-collections/Products/new-option-for-tra
 
 import brandsList from "../static-collections/Products/brands-list_TABLE.json";
 import productsList from "../static-collections/Products/products-list_TABLE.json";
+import variant from "../static-collections/Products/variant_TABLE.json";
 import variantsList from "../static-collections/Products/variants-list_TABLE.json";
+import productVariants from "../static-collections/Products/product-variants.json";
 
 export class ProductsController extends BaseController {
   public static getAllProducts() {
@@ -132,7 +134,7 @@ export class ProductsController extends BaseController {
   }
 
   public static createVariant() {
-    return this.staticDataApiHandler(createVariant);
+    return this.staticDataApiHandler(variant);
   }
 
   public static checkVariantCombination() {
@@ -140,7 +142,7 @@ export class ProductsController extends BaseController {
   }
 
   public static getVariantDetails() {
-    return this.staticDataApiHandler(variantDetails);
+    return this.staticDataApiHandler(variant);
   }
 
   public static toggleVariantIsActive() {
