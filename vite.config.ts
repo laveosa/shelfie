@@ -3,8 +3,8 @@ import path from "path";
 import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 
-export default defineConfig({
-  base: "/shelfie",
+export default defineConfig(({ command }) => ({
+  base: command === "build" ? "/shelfie/" : "/",
   plugins: [react(), svgr()],
   server: {
     port: 8000,
@@ -12,7 +12,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      "db": path.resolve(__dirname, "./db"),
+      db: path.resolve(__dirname, "./db"),
     },
   },
   css: {
@@ -25,4 +25,4 @@ export default defineConfig({
   build: {
     chunkSizeWarningLimit: 1000,
   },
-});
+}));
