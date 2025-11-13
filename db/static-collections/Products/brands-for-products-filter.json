@@ -7,51 +7,51 @@
   {
     "brandId": 101,
     "brandName": "Nike",
-    "thumbnail": "./images/brands/nike-logo.svg"
+    "thumbnail": "/shelfie/images/brands/nike-logo.svg"
   },
   {
     "brandId": 102,
     "brandName": "Adidas",
-    "thumbnail": "./images/brands/adidas-logo.svg"
+    "thumbnail": "/shelfie/images/brands/adidas-logo.svg"
   },
   {
     "brandId": 103,
     "brandName": "Levi’s",
-    "thumbnail": "./images/brands/levis-logo.svg"
+    "thumbnail": "/shelfie/images/brands/levis-logo.svg"
   },
   {
     "brandId": 104,
     "brandName": "Zara",
-    "thumbnail": "./images/brands/zara-logo.svg"
+    "thumbnail": "/shelfie/images/brands/zara-logo.svg"
   },
   {
     "brandId": 105,
     "brandName": "H&M",
-    "thumbnail": "./images/brands/hm-logo.svg"
+    "thumbnail": "/shelfie/images/brands/hm-logo.svg"
   },
   {
     "brandId": 106,
     "brandName": "Puma",
-    "thumbnail": "./images/brands/puma-logo.svg"
+    "thumbnail": "/shelfie/images/brands/puma-logo.svg"
   },
   {
     "brandId": 107,
     "brandName": "Uniqlo",
-    "thumbnail": "./images/brands/uniqlo-logo.svg"
+    "thumbnail": "/shelfie/images/brands/uniqlo-logo.svg"
   },
   {
     "brandId": 108,
     "brandName": "Reebok",
-    "thumbnail": "./images/brands/reebok-logo.svg"
+    "thumbnail": "/shelfie/images/brands/reebok-logo.svg"
   },
   {
     "brandId": 111,
     "brandName": "Under Armour",
-    "thumbnail": "./images/brands/under-armour-logo.svg"
+    "thumbnail": "/shelfie/images/brands/under-armour-logo.svg"
   },
   {
     "brandId": 116,
     "brandName": "Hugo Boss",
-    "thumbnail": "./images/brands/hugo-boss-logo.svg"
+    "thumbnail": "/shelfie/images/brands/hugo-boss-logo.svg"
   }
 ]

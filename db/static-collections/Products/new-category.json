@@ -1,5 +1,5 @@
 {
   "categoryId": 1,
   "categoryName": "Shirts",
-  "thumbnail": "./images/categories/shirt.png"
+  "thumbnail": "/shelfie/images/categories/shirt.png"
 }

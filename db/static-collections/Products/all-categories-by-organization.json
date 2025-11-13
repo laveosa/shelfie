@@ -7,26 +7,26 @@
   {
     "categoryId": 1,
     "categoryName": "Shirts",
-    "thumbnail": "./images/categories/shirt.png"
+    "thumbnail": "/shelfie/images/categories/shirt.png"
   },
   {
     "categoryId": 2,
     "categoryName": "Pants",
-    "thumbnail": "./images/categories/pants.png"
+    "thumbnail": "/shelfie/images/categories/pants.png"
   },
   {
     "categoryId": 3,
     "categoryName": "Skirts",
-    "thumbnail": "./images/categories/skirt.png"
+    "thumbnail": "/shelfie/images/categories/skirt.png"
   },
   {
     "categoryId": 4,
     "categoryName": "T Shirt",
-    "thumbnail": "./images/categories/t-shirt.png"
+    "thumbnail": "/shelfie/images/categories/t-shirt.png"
   },
   {
     "categoryId": 5,
     "categoryName": "Shoes",
-    "thumbnail": "./images/categories/shoes.png"
+    "thumbnail": "/shelfie/images/categories/shoes.png"
   }
 ]

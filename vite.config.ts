@@ -3,8 +3,8 @@ import path from "path";
 import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 
-export default defineConfig(({ command }) => ({
-  base: command === "build" ? "/shelfie/" : "/",
+export default defineConfig(() => ({
+  base: "/shelfie/",
   plugins: [react(), svgr()],
   server: {
     port: 8000,

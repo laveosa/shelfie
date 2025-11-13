@@ -3,21 +3,21 @@
     "id": 1001,
     "name": "Khaite",
     "key": "9181784c-11f8-438d-a490-1f6014c98dfe",
-    "thumbnail": "/images/organizations/KHAITE.png",
+    "thumbnail": "/shelfie/images/organizations/KHAITE.png",
     "current": true
   },
   {
     "id": 1002,
     "name": "DISSH",
     "key": "a7f3c2d9-5e84-4b1a-9c7d-8f2a6b4e3c1d",
-    "thumbnail": "/images/organizations/DISSH.png",
+    "thumbnail": "/shelfie/images/organizations/DISSH.png",
     "current": false
   },
   {
     "id": 1003,
     "name": "ASICS",
     "key": "3d8e9f1a-2b4c-4a7e-8f3d-9c1a5b6e7d2f",
-    "thumbnail": "/images/organizations/ASICS.png",
+    "thumbnail": "/shelfie/images/organizations/ASICS.png",
     "current": false
   },
   {
@@ -31,7 +31,7 @@
     "id": 1005,
     "name": "THE ROW",
     "key": "f1e2d3c4-b5a6-4978-8c9d-0e1f2a3b4c5d",
-    "thumbnail": "/images/organizations/THE_ROW.png",
+    "thumbnail": "/shelfie/images/organizations/THE_ROW.png",
     "current": false
   }
 ]

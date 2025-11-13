@@ -2,17 +2,17 @@
   {
     "brandId": 1001,
     "brandName": "Khaite",
-    "thumbnail": "./images/organizations/KHAITE.png"
+    "thumbnail": "/shelfie/images/organizations/KHAITE.png"
   },
   {
     "brandId": 1002,
     "brandName": "DISSH",
-    "thumbnail": "./images/organizations/DISSH.png"
+    "thumbnail": "/shelfie/images/organizations/DISSH.png"
   },
   {
     "brandId": 1003,
     "brandName": "ASICS",
-    "thumbnail": "./images/organizations/ASICS.png"
+    "thumbnail": "/shelfie/images/organizations/ASICS.png"
   },
   {
     "brandId": 1004,
@@ -22,6 +22,6 @@
   {
     "brandId": 1005,
     "brandName": "THE ROW",
-    "thumbnail": "./images/organizations/THE_ROW.png"
+    "thumbnail": "/shelfie/images/organizations/THE_ROW.png"
   }
 ]

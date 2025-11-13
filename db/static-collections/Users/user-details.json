@@ -1,9 +1,9 @@
 {
   "userId": "usr_7k2m9n4p6q8r",
-  "firstName": "Alexandra",
+  "firstName": "Alexandr",
   "lastName": "Morrison",
-  "email": "alexandra.morrison@example.com",
-  "thumbnail": "https://i.pravatar.cc/150?img=5",
+  "email": "alexandr.morrison@example.com",
+  "thumbnail": "/shelfie/images/user/avatar.png",
   "organization": {
     "id": 1001,
     "name": "Khaite",
@@ -12,7 +12,7 @@
       "status": "Active"
     },
     "key": "9181784c-11f8-438d-a490-1f6014c98dfe",
-    "thumbnail": "./images/organizations/KHAITE.png",
+    "thumbnail": "/shelfie/images/organizations/KHAITE.png",
     "current": true
   },
   "shortName": "NNG",
