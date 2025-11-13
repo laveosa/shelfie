@@ -127,7 +127,7 @@
       "isActive": true,
       "originalName": null
     },
-    "isActive": true,
+    "isActive": false,
     "isDeleted": false,
     "productCategory": {
       "categoryId": 3,
@@ -163,7 +163,7 @@
       "isActive": true,
       "originalName": null
     },
-    "isActive": true,
+    "isActive": false,
     "isDeleted": false,
     "productCategory": {
       "categoryId": 4,
@@ -271,7 +271,7 @@
       "isActive": true,
       "originalName": null
     },
-    "isActive": true,
+    "isActive": false,
     "isDeleted": false,
     "productCategory": {
       "categoryId": 2,
@@ -284,7 +284,7 @@
     "productName": "Reebok Classic Sweatpants",
     "salePrice": "$49.99",
     "status": "Available",
-    "stockAmount": 220,
+    "stockAmount": 0,
     "variantsCount": 4
   },
   {

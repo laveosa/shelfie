@@ -29,8 +29,8 @@ export function VariantsGridColumns(onAction: any): ColumnDef<VariantModel>[] {
     {
       accessorKey: "variantId",
       header: "ID",
-      minSize: 40,
-      maxSize: 40,
+      minSize: 50,
+      maxSize: 50,
       cell: ({ row }) => (
         <span className="she-text">{row.getValue("variantId")}</span>
       ),
@@ -111,7 +111,7 @@ export function VariantsGridColumns(onAction: any): ColumnDef<VariantModel>[] {
     {
       accessorKey: "brand",
       header: "Brand",
-      minSize: 100,
+      minSize: 60,
       cell: ({ row }) => {
         const brand: BrandModel = row.original.brand as BrandModel;
         return (
@@ -120,7 +120,7 @@ export function VariantsGridColumns(onAction: any): ColumnDef<VariantModel>[] {
               {brand?.thumbnail && (
                 <img src={brand?.thumbnail} alt={brand?.brandName} />
               )}
-              <span className="she-text">{brand?.brandName || "N/A"}</span>
+              {/*<span className="she-text">{brand?.brandName || "N/A"}</span>*/}
             </div>
           </SheTooltip>
         );

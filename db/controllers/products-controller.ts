@@ -26,8 +26,9 @@ import trait from "../static-collections/Products/trait.json";
 import optionsForTrait from "../static-collections/Products/options-for-trait.json";
 import newOptionForTrait from "../static-collections/Products/new-option-for-trait.json";
 
-import productsList from "../static-collections/Products/products-list_TABLE.json";
 import brandsList from "../static-collections/Products/brands-list_TABLE.json";
+import productsList from "../static-collections/Products/products-list_TABLE.json";
+import variantsList from "../static-collections/Products/variants-list_TABLE.json";
 
 export class ProductsController extends BaseController {
   public static getAllProducts() {
@@ -123,9 +124,7 @@ export class ProductsController extends BaseController {
   }
 
   public static getVariantsForGrid() {
-    return this.staticDataApiHandler(
-      this.createGridDefaultModel(variantsForGrid),
-    );
+    return this.staticDataApiHandler(this.createGridDefaultModel(variantsList));
   }
 
   public static getProductVariants() {
