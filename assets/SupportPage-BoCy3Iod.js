@@ -1,0 +1,1 @@
+import{u as r,S as s,i as o,j as u}from"./index-BEjRToIq.js";const p={};function i(){const e=r(t=>t[s.SUPPORT]);return o(),{...e}}function a(){return i(),u.jsx("div",{id:p.SupportPage,children:"Support Page"})}export{a as SupportPage};
