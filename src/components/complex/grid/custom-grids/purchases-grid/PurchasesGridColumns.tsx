@@ -15,8 +15,8 @@ export function PurchasesGridColumns(onAction: any): ColumnDef<any, any>[] {
     {
       accessorKey: "purchaseId",
       header: "ID",
-      minSize: 40,
-      maxSize: 40,
+      minSize: 50,
+      maxSize: 50,
       cell: ({ row }) => (
         <span className="she-text">{row.getValue("purchaseId")}</span>
       ),

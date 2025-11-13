@@ -1,0 +1,101 @@
+[
+  {
+    "amountUnit": 1,
+    "actionType": "Shipment",
+    "createdDate": "2025-10-14T18:40:10.33815Z",
+    "stockDocument": {
+      "DocumentType": "Shipment",
+      "DocumentId": "70"
+    }
+  },
+  {
+    "amountUnit": 1,
+    "actionType": "Sold",
+    "createdDate": "2025-10-14T07:02:22.912885Z",
+    "stockDocument": {
+      "DocumentType": "Order",
+      "DocumentId": "67"
+    }
+  },
+  {
+    "amountUnit": 0,
+    "actionType": "Sold",
+    "createdDate": "2025-10-13T08:27:53.88949Z",
+    "stockDocument": {
+      "DocumentType": "Order",
+      "DocumentId": "63"
+    }
+  },
+  {
+    "amountUnit": 0,
+    "actionType": "Sold",
+    "createdDate": "2025-10-13T08:25:44.457355Z",
+    "stockDocument": {
+      "DocumentType": "Order",
+      "DocumentId": "63"
+    }
+  },
+  {
+    "amountUnit": 0,
+    "actionType": "Sold",
+    "createdDate": "2025-10-13T08:11:27.991777Z",
+    "stockDocument": {
+      "DocumentType": "Order",
+      "DocumentId": "63"
+    }
+  },
+  {
+    "amountUnit": 1,
+    "actionType": "Sold",
+    "createdDate": "2025-10-13T08:09:10.47868Z",
+    "stockDocument": {
+      "DocumentType": "Order",
+      "DocumentId": "63"
+    }
+  },
+  {
+    "amountUnit": 5,
+    "actionType": "Sold",
+    "createdDate": "2025-10-11T07:40:29.806183Z",
+    "stockDocument": {
+      "DocumentType": "Order",
+      "DocumentId": "4"
+    }
+  },
+  {
+    "amountUnit": 10,
+    "actionType": "Sold",
+    "createdDate": "2025-10-10T12:18:40.813032Z",
+    "stockDocument": {
+      "DocumentType": "Order",
+      "DocumentId": "63"
+    }
+  },
+  {
+    "amountUnit": 5,
+    "actionType": "Shipment",
+    "createdDate": "2025-10-06T17:57:37.062223Z",
+    "stockDocument": {
+      "DocumentType": "Shipment",
+      "DocumentId": "48"
+    }
+  },
+  {
+    "amountUnit": 5,
+    "actionType": "Sold",
+    "createdDate": "2025-10-06T13:57:35.539001Z",
+    "stockDocument": {
+      "DocumentType": "Order",
+      "DocumentId": "1"
+    }
+  },
+  {
+    "amountUnit": 22,
+    "actionType": "Added",
+    "createdDate": "2025-10-01T00:00:00Z",
+    "stockDocument": {
+      "DocumentType": "Purchase",
+      "DocumentId": "2"
+    }
+  }
+]

@@ -1,0 +1,188 @@
+[
+  {
+    "stockActionId": 70,
+    "productId": 2,
+    "variantId": 3,
+    "variantName": "Greeen 111 2",
+    "variantCode": "I132",
+    "traitOptions": [
+      {
+        "optionId": 2,
+        "optionName": "Green",
+        "optionColor": "#14d069",
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitTypeId": 2,
+        "traitTypeName": "Color",
+        "traitId": 1,
+        "traitName": "Color",
+        "isDeleted": false
+      }
+    ],
+    "photo": {
+      "photoId": 10,
+      "thumbnailUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/01999bac-b175-7d3a-865e-d324887a3055/thumbnail/01999bac-b175-7d3a-865e-d324887a3055.jpeg?sv=2025-07-05&se=2026-11-10T15%3A30%3A41Z&sr=b&sp=r&sig=kED%2FpLN9RCpPD2CE7QWwYX%2FUAcFAinibbwaSKxnbnoQ%3D",
+      "adaptedUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/01999bac-b175-7d3a-865e-d324887a3055/adapted/01999bac-b175-7d3a-865e-d324887a3055.jpeg?sv=2025-07-05&se=2026-11-10T15%3A30%3A41Z&sr=b&sp=r&sig=NgqfMViQqk%2BPTXdj4ZtoQ0x4O%2F76NPqZILrHl9Cn7Ao%3D",
+      "width": 900,
+      "height": 900,
+      "sortOrder": null,
+      "isActive": null,
+      "originalName": null,
+      "assetId": 10
+    },
+    "unitsAmount": 1,
+    "brand": {
+      "thumbnail": null,
+      "brandId": 1,
+      "brandName": "Test"
+    },
+    "productCategory": {
+      "categoryId": 1,
+      "categoryName": "Shirts",
+      "thumbnail": null
+    },
+    "stockDocumentPrice": null
+  },
+  {
+    "stockActionId": 69,
+    "productId": 2,
+    "variantId": 3,
+    "variantName": "Greeen 111 2",
+    "variantCode": "I132",
+    "traitOptions": [
+      {
+        "optionId": 2,
+        "optionName": "Green",
+        "optionColor": "#14d069",
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitTypeId": 2,
+        "traitTypeName": "Color",
+        "traitId": 1,
+        "traitName": "Color",
+        "isDeleted": false
+      }
+    ],
+    "photo": {
+      "photoId": 10,
+      "thumbnailUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/01999bac-b175-7d3a-865e-d324887a3055/thumbnail/01999bac-b175-7d3a-865e-d324887a3055.jpeg?sv=2025-07-05&se=2026-11-10T15%3A30%3A41Z&sr=b&sp=r&sig=kED%2FpLN9RCpPD2CE7QWwYX%2FUAcFAinibbwaSKxnbnoQ%3D",
+      "adaptedUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/01999bac-b175-7d3a-865e-d324887a3055/adapted/01999bac-b175-7d3a-865e-d324887a3055.jpeg?sv=2025-07-05&se=2026-11-10T15%3A30%3A41Z&sr=b&sp=r&sig=NgqfMViQqk%2BPTXdj4ZtoQ0x4O%2F76NPqZILrHl9Cn7Ao%3D",
+      "width": 900,
+      "height": 900,
+      "sortOrder": null,
+      "isActive": null,
+      "originalName": null,
+      "assetId": 10
+    },
+    "unitsAmount": 5,
+    "brand": {
+      "thumbnail": null,
+      "brandId": 1,
+      "brandName": "Test"
+    },
+    "productCategory": {
+      "categoryId": 1,
+      "categoryName": "Shirts",
+      "thumbnail": null
+    },
+    "stockDocumentPrice": null
+  },
+  {
+    "stockActionId": 49,
+    "productId": 2,
+    "variantId": 2,
+    "variantName": "test 1",
+    "variantCode": "I131",
+    "traitOptions": [
+      {
+        "optionId": 2,
+        "optionName": "Green",
+        "optionColor": "#14d069",
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitTypeId": 2,
+        "traitTypeName": "Color",
+        "traitId": 1,
+        "traitName": "Color",
+        "isDeleted": false
+      }
+    ],
+    "photo": null,
+    "unitsAmount": 5,
+    "brand": {
+      "thumbnail": null,
+      "brandId": 1,
+      "brandName": "Test"
+    },
+    "productCategory": {
+      "categoryId": 1,
+      "categoryName": "Shirts",
+      "thumbnail": null
+    },
+    "stockDocumentPrice": {
+      "id": 42,
+      "brutto": 0.00,
+      "taxAmount": 0.00,
+      "netto": 0.0,
+      "currencyId": 1,
+      "taxTypeId": 1,
+      "rateExchange": 1.0,
+      "activeUntil": "2025-10-01T00:00:00Z",
+      "createAt": "2025-10-06T13:28:09.159084Z",
+      "currencyName": "zł.",
+      "taxTypeName": "23%"
+    }
+  },
+  {
+    "stockActionId": 3,
+    "productId": 1,
+    "variantId": 1,
+    "variantName": "Top 1",
+    "variantCode": "Z9J1",
+    "traitOptions": [
+      {
+        "optionId": 1,
+        "optionName": "Red",
+        "optionColor": "#fd0000",
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitTypeId": 2,
+        "traitTypeName": "Color",
+        "traitId": 1,
+        "traitName": "Color",
+        "isDeleted": false
+      }
+    ],
+    "photo": {
+      "photoId": 3,
+      "thumbnailUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/01999a4f-3856-716c-85d8-968f0e9e5d37/thumbnail/01999a4f-3856-716c-85d8-968f0e9e5d37.jpeg?sv=2025-07-05&se=2026-11-10T15%3A30%3A41Z&sr=b&sp=r&sig=Gc4VbqZ56cms1YrSpaYeKW1%2FjW8TTBV1ayRuACWAMDE%3D",
+      "adaptedUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/01999a4f-3856-716c-85d8-968f0e9e5d37/adapted/01999a4f-3856-716c-85d8-968f0e9e5d37.jpeg?sv=2025-07-05&se=2026-11-10T15%3A30%3A41Z&sr=b&sp=r&sig=KGZXcK4ex%2BX4n5%2F2rEeUQfIDCti3xrx4t1zgtyoG1i4%3D",
+      "width": 899,
+      "height": 1599,
+      "sortOrder": null,
+      "isActive": null,
+      "originalName": null,
+      "assetId": 3
+    },
+    "unitsAmount": 5,
+    "brand": null,
+    "productCategory": {
+      "categoryId": 1,
+      "categoryName": "Shirts",
+      "thumbnail": null
+    },
+    "stockDocumentPrice": {
+      "id": 1,
+      "brutto": 0.00,
+      "taxAmount": 0.00,
+      "netto": 0.0,
+      "currencyId": 1,
+      "taxTypeId": 1,
+      "rateExchange": 1.0,
+      "activeUntil": "2025-10-01T00:00:00Z",
+      "createAt": "2025-09-30T11:10:08.672488Z",
+      "currencyName": "zł.",
+      "taxTypeName": "23%"
+    }
+  }
+]

@@ -1,0 +1,74 @@
+{
+  "globalPreferences": {},
+  "viewsReferences": {
+    "productReferences": {
+      "columns": {
+        "barcode": true,
+        "brand": true,
+        "image": true,
+        "isActive": true,
+        "manage": true,
+        "productCategory": true,
+        "productCode": true,
+        "productId": true,
+        "productName": true,
+        "rowActions": true,
+        "salePrice": true,
+        "status": true,
+        "stockAmount": true,
+        "variantsCount": true
+      }
+    },
+    "variantReferences": {
+      "columns": {
+        "manage": true,
+        "photo": true,
+        "productCategory": true,
+        "rowActions": true,
+        "salePrice": true,
+        "status": true,
+        "stockAmount": true,
+        "traitOptions": true,
+        "variantCode": true,
+        "variantId": true,
+        "variantName": true,
+        "brand": true
+      }
+    },
+    "purchaseReferences": {
+      "columns": {
+        "purchaseId": true,
+        "supplierName": true,
+        "date": true,
+        "unitsAmount": true,
+        "expense": true,
+        "soldAmount": true,
+        "otherValue": true,
+        "rowActions": true,
+        "valueAmount": true,
+        "manage": true
+      }
+    },
+    "customerReferences": {
+      "columns": {
+        "createdAt": true,
+        "customerId": true,
+        "customerName": true,
+        "email": true,
+        "lastOrderDate": true,
+        "manage": true,
+        "phoneNumber": true,
+        "rank": true,
+        "rowActions": true
+      }
+    },
+    "salePriceManagementReferences": {
+      "columns": {
+        "thumbnailUrl": true,
+        "variantCode": true,
+        "variantName": true,
+        "traitOptions": true
+      }
+    }
+  }
+}

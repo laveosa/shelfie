@@ -98,7 +98,10 @@ export default function SheSidebarHeader({
                       >
                         {item?.thumbnail ? (
                           <div className={cs.headerImage}>
-                            <SheIcon icon={item.thumbnail} />
+                            <SheIcon
+                              icon={item.thumbnail}
+                              className={cs.headerImageCustom}
+                            />
                           </div>
                         ) : (
                           <div className={cs.noImage}>
@@ -107,7 +110,9 @@ export default function SheSidebarHeader({
                             </span>
                           </div>
                         )}
-                        <span className="she-title">{item?.name}</span>
+                        <span className={`${cs.headerTitle}`}>
+                          {item?.name}
+                        </span>
                       </div>
                     </DropdownMenuItem>
                   ) as JSX.Element,

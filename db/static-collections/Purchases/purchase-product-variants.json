@@ -1,0 +1,89 @@
+[
+  {
+    "variantId": 2,
+    "productId": 2,
+    "variantCode": "I131",
+    "variantName": "test 1",
+    "traitOptions": [
+      {
+        "optionId": 2,
+        "optionName": "Green",
+        "optionColor": "#14d069",
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitTypeId": 2,
+        "traitTypeName": "Color",
+        "traitId": 1,
+        "traitName": "Color",
+        "isDeleted": false
+      }
+    ],
+    "variantStockActions": [
+      {
+        "stockActionId": 8,
+        "currencyId": 1,
+        "nettoPrice": 23.0,
+        "taxTypeId": 2,
+        "unitsAmount": 22
+      }
+    ]
+  },
+  {
+    "variantId": 3,
+    "productId": 2,
+    "variantCode": "I132",
+    "variantName": "Greeen 111 2",
+    "traitOptions": [
+      {
+        "optionId": 2,
+        "optionName": "Green",
+        "optionColor": "#14d069",
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitTypeId": 2,
+        "traitTypeName": "Color",
+        "traitId": 1,
+        "traitName": "Color",
+        "isDeleted": false
+      }
+    ],
+    "variantStockActions": [
+      {
+        "stockActionId": 52,
+        "currencyId": 1,
+        "nettoPrice": 5.0,
+        "taxTypeId": 1,
+        "unitsAmount": 20
+      }
+    ]
+  },
+  {
+    "variantId": 36,
+    "productId": 2,
+    "variantCode": "I133",
+    "variantName": "Greeen 111 3",
+    "traitOptions": [
+      {
+        "optionId": 3,
+        "optionName": "Blue",
+        "optionColor": "#104ee6",
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitTypeId": 2,
+        "traitTypeName": "Color",
+        "traitId": 1,
+        "traitName": "Color",
+        "isDeleted": false
+      }
+    ],
+    "variantStockActions": [
+      {
+        "stockActionId": 53,
+        "currencyId": 1,
+        "nettoPrice": 5.0,
+        "taxTypeId": 3,
+        "unitsAmount": 10
+      }
+    ]
+  }
+]

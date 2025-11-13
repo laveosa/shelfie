@@ -1,0 +1,13 @@
+{
+  "continuationToken": "string",
+  "items": [
+    {
+      "pageId": "string",
+      "timeStamp": "2019-08-24T14:15:22.123Z",
+      "sender": "string",
+      "recipient": "string",
+      "messageType": "string"
+    }
+  ],
+  "limit": 0
+}

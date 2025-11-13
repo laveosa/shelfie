@@ -1,0 +1,94 @@
+[
+  {
+    "purchaseId": 190,
+    "date": "2025-11-11T00:00:00Z",
+    "currencyBrief": "zł.",
+    "unitsAmount": 20,
+    "expense": 3013.30,
+    "valueAmount": 0.0,
+    "soldAmount": 0.0,
+    "orderValueAmount": 0.0,
+    "supplier": {
+      "companyId": 45,
+      "companyName": "Dixie Slr",
+      "locationId": 64,
+      "thumbnailUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/0199f82a-3abc-74fe-ac6b-40eaa336e3e5/thumbnail/0199f82a-3abc-74fe-ac6b-40eaa336e3e5.png?sv=2025-07-05&se=2026-11-10T15%3A27%3A09Z&sr=b&sp=r&sig=wcKL4G9hPevNBmb8xOZQe3SPoD0vjIjrbPNGmidMo5o%3D",
+      "address": "Via Rotonda Segnatello, 4, Funo, Italy"
+    },
+    "location": {
+      "locationId": 64,
+      "address": "Via Rotonda Segnatello, 4, Funo, Italy"
+    },
+    "documentNotes": "Duży zakup",
+    "isDeleted": false
+  },
+  {
+    "purchaseId": 93,
+    "date": "2025-10-18T07:10:50.611Z",
+    "currencyBrief": "zł.",
+    "unitsAmount": 77,
+    "expense": 3460.72,
+    "valueAmount": 0.0,
+    "soldAmount": 0.0,
+    "orderValueAmount": 0.0,
+    "supplier": {
+      "companyId": 45,
+      "companyName": "Dixie Slr",
+      "locationId": 64,
+      "thumbnailUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/0199f82a-3abc-74fe-ac6b-40eaa336e3e5/thumbnail/0199f82a-3abc-74fe-ac6b-40eaa336e3e5.png?sv=2025-07-05&se=2026-11-10T15%3A27%3A09Z&sr=b&sp=r&sig=wcKL4G9hPevNBmb8xOZQe3SPoD0vjIjrbPNGmidMo5o%3D",
+      "address": "Via Rotonda Segnatello, 4, Funo, Italy"
+    },
+    "location": {
+      "locationId": 64,
+      "address": "Via Rotonda Segnatello, 4, Funo, Italy"
+    },
+    "documentNotes": null,
+    "isDeleted": false
+  },
+  {
+    "purchaseId": 62,
+    "date": "2025-10-02T00:00:00Z",
+    "currencyBrief": "zł.",
+    "unitsAmount": 205,
+    "expense": 4928.61,
+    "valueAmount": 0.0,
+    "soldAmount": 0.0,
+    "orderValueAmount": 0.0,
+    "supplier": {
+      "companyId": 41,
+      "companyName": "123121111 eeee",
+      "locationId": 57,
+      "thumbnailUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/0199c517-8915-7b38-bb62-8907e4a78d18/thumbnail/0199c517-8915-7b38-bb62-8907e4a78d18.jpeg?sv=2025-07-05&se=2026-11-10T15%3A27%3A09Z&sr=b&sp=r&sig=pgLzZwCw4CiKgbiWi3ipQ0NYekaERunz770TN8wuKhg%3D",
+      "address": "test address2 123123 er er, 123123 123, Andorra"
+    },
+    "location": {
+      "locationId": 57,
+      "address": "test address2 123123 er er, 123123 123, Andorra"
+    },
+    "documentNotes": null,
+    "isDeleted": false
+  },
+  {
+    "purchaseId": 2,
+    "date": "2025-10-01T00:00:00Z",
+    "currencyBrief": "zł.",
+    "unitsAmount": 4880,
+    "expense": 101337.18,
+    "valueAmount": 0.0,
+    "soldAmount": 0.0,
+    "orderValueAmount": 0.0,
+    "supplier": {
+      "companyId": 4,
+      "companyName": "Test1",
+      "locationId": 5,
+      "thumbnailUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/0199c514-4e25-7e4d-becb-d742ed7a9952/thumbnail/0199c514-4e25-7e4d-becb-d742ed7a9952.jpeg?sv=2025-07-05&se=2026-11-10T15%3A27%3A09Z&sr=b&sp=r&sig=Lg5EK63lnqBkO%2Boq0ZQRJx5I1dM2U173%2F8jE3%2B0Q5qE%3D",
+      "address": "Test address 111 Test address 2, Citysw 1111w, Bulgaria"
+    },
+    "location": {
+      "locationId": 5,
+      "address": "Test address 111 Test address 2, Citysw 1111w, Bulgaria"
+    },
+    "documentNotes": null,
+    "isDeleted": false
+  }
+]

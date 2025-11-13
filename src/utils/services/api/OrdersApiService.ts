@@ -1,4 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
+
+import { OrdersController as controller } from "db/controllers/orders-controller.ts";
 import { ApiServiceNameEnum } from "@/const/enums/ApiServiceNameEnum.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
 import { ApiConfigurationService } from "@/utils/services/api/ApiConfigurationService.ts";
@@ -10,420 +12,321 @@ import { AddressRequestModel } from "@/const/models/AddressRequestModel";
 import { CustomerCounterModel } from "@/const/models/CustomerCounterModel";
 
 const apiConfig = new ApiConfigurationService(ApiUrlEnum.ORDERS_BASE_URL);
+type ControllerType = typeof controller;
 
 export const OrdersApiService = createApi({
   reducerPath: ApiServiceNameEnum.ORDERS,
-  baseQuery: apiConfig.baseQueryWithInterceptors,
+  baseQuery: async () => ({ data: undefined }),
+  // baseQuery: apiConfig.baseQueryWithInterceptors,
   tagTypes: [ApiServiceNameEnum.ORDERS],
   endpoints: (builder) => ({
-    getCustomersForGrid: apiConfig.createMutation<
-      GridRequestModel,
-      GridRequestModel
-    >(builder, {
-      query: (model?: GridRequestModel) => ({
-        url: `${ApiUrlEnum.CUSTOMERS}/list`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-    }),
-    getCustomerDetails: apiConfig.createQuery<CustomerModel, number>(builder, {
-      query: (id: number) => ({
-        url: `${ApiUrlEnum.CUSTOMERS}/${id}`,
-      }),
-    }),
-    createCustomer: apiConfig.createMutation<any, CustomerRequestModel>(
-      builder,
-      {
-        query: (model: CustomerRequestModel) => ({
-          url: `${ApiUrlEnum.CUSTOMERS}`,
-          method: "POST",
-          body: JSON.stringify(model),
-        }),
-      },
+    getCustomersForGrid: builder.mutation<GridRequestModel, GridRequestModel>(
+      apiConfig.getStaticData<ControllerType>(
+        "getCustomersForGrid",
+        controller,
+      ),
     ),
-    updateCustomer: apiConfig.createMutation<
+    getCustomerDetails: builder.query<CustomerModel, number>(
+      apiConfig.getStaticData<ControllerType>("getCustomerDetails", controller),
+    ),
+    createCustomer: builder.mutation<any, CustomerRequestModel>(
+      apiConfig.getStaticData<ControllerType>("createCustomer", controller),
+    ),
+    updateCustomer: builder.mutation<
       any,
       { id: number; model: CustomerRequestModel }
-    >(builder, {
-      query: ({ id, model }) => ({
-        url: `${ApiUrlEnum.CUSTOMERS}/${id}`,
-        method: "PATCH",
-        body: JSON.stringify(model),
-      }),
-    }),
-    deleteCustomer: apiConfig.createMutation<any, number>(builder, {
-      query: (id: number) => ({
-        url: `${ApiUrlEnum.CUSTOMERS}/${id}`,
-        method: "DELETE",
-      }),
-    }),
-    getCustomerAddressesForGrid: apiConfig.createMutation<
+    >(apiConfig.getStaticData<ControllerType>("updateCustomer", controller)),
+    deleteCustomer: builder.mutation<any, number>(
+      apiConfig.getStaticData<ControllerType>("deleteCustomer", controller),
+    ),
+    getCustomerAddressesForGrid: builder.mutation<
       GridRequestModel,
       { model?: GridRequestModel; id: number }
-    >(builder, {
-      query: ({ model, id }) => ({
-        url: `${ApiUrlEnum.CUSTOMERS}/${id}/delivery-addresses`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-    }),
-    getCustomerAddressDetails: apiConfig.createQuery<AddressModel, number>(
-      builder,
-      {
-        query: (id: number) => ({
-          url: `${ApiUrlEnum.DELIVERY_ADDRESSES}/${id}`,
-        }),
-      },
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "getCustomerAddressesForGrid",
+        controller,
+      ),
     ),
-    createCustomerAddress: apiConfig.createMutation<
+    getCustomerAddressDetails: builder.query<AddressModel, number>(
+      apiConfig.getStaticData<ControllerType>(
+        "getCustomerAddressDetails",
+        controller,
+      ),
+    ),
+    createCustomerAddress: builder.mutation<
       any,
       { id: number; model: AddressRequestModel }
-    >(builder, {
-      query: ({ id, model }) => ({
-        url: `${ApiUrlEnum.CUSTOMERS}/${id}/delivery-addresses/create`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-    }),
-    updateCustomerAddress: apiConfig.createMutation<
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "createCustomerAddress",
+        controller,
+      ),
+    ),
+    updateCustomerAddress: builder.mutation<
       any,
       { id: number; model: AddressRequestModel }
-    >(builder, {
-      query: ({ id, model }) => ({
-        url: `${ApiUrlEnum.DELIVERY_ADDRESSES}/${id}`,
-        method: "PATCH",
-        body: JSON.stringify(model),
-      }),
-    }),
-    deleteCustomerAddress: apiConfig.createMutation<any, number>(builder, {
-      query: (id: number) => ({
-        url: `${ApiUrlEnum.DELIVERY_ADDRESSES}/${id}`,
-        method: "DELETE",
-      }),
-    }),
-    getCustomerInfo: apiConfig.createQuery<CustomerCounterModel, number>(
-      builder,
-      {
-        query: (id: number) => ({
-          url: `${ApiUrlEnum.CUSTOMERS}/${id}/info`,
-        }),
-      },
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "updateCustomerAddress",
+        controller,
+      ),
     ),
-    getListOfOrdersForGrid: apiConfig.createMutation<any, any>(builder, {
-      query: (model?: any) => ({
-        url: `${ApiUrlEnum.ORDERS}/list`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-    }),
-    createOrder: apiConfig.createMutation<any, void>(builder, {
-      query: () => ({
-        url: `${ApiUrlEnum.ORDERS}`,
-        method: "POST",
-      }),
-    }),
-    deleteOrder: apiConfig.createMutation<void, number>(builder, {
-      query: (orderId) => ({
-        url: `${ApiUrlEnum.ORDERS}/${orderId}`,
-        method: "DELETE",
-      }),
-    }),
-    getOrderDetails: apiConfig.createQuery<number, void>(builder, {
-      query: (orderId) => ({
-        url: `${ApiUrlEnum.ORDERS}/${orderId}`,
-      }),
-    }),
-    getListOfCustomersForGrid: apiConfig.createMutation<any, any>(builder, {
-      query: (model?: any) => ({
-        url: `${ApiUrlEnum.CUSTOMERS}/list`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-    }),
-    assignCustomerToOrder: apiConfig.createMutation<void, any>(builder, {
-      query: ({ orderId, customerId }) => ({
-        url: `${ApiUrlEnum.ORDERS}/${orderId}/customer/${customerId}`,
-        method: "PATCH",
-      }),
-    }),
-    getListOfStockActionsForGrid: apiConfig.createMutation<
+    deleteCustomerAddress: builder.mutation<any, number>(
+      apiConfig.getStaticData<ControllerType>(
+        "deleteCustomerAddress",
+        controller,
+      ),
+    ),
+    getCustomerInfo: builder.query<CustomerCounterModel, number>(
+      apiConfig.getStaticData<ControllerType>("getCustomerInfo", controller),
+    ),
+    getListOfOrdersForGrid: builder.mutation<any, any>(
+      apiConfig.getStaticData<ControllerType>(
+        "getListOfOrdersForGrid",
+        controller,
+      ),
+    ),
+    createOrder: builder.mutation<any, void>(
+      apiConfig.getStaticData<ControllerType>("createOrder", controller),
+    ),
+    deleteOrder: builder.mutation<void, number>(
+      apiConfig.getStaticData<ControllerType>("deleteOrder", controller),
+    ),
+    getOrderDetails: builder.query<number, void>(
+      apiConfig.getStaticData<ControllerType>("getOrderDetails", controller),
+    ),
+    getListOfCustomersForGrid: builder.mutation<any, any>(
+      apiConfig.getStaticData<ControllerType>(
+        "getListOfCustomersForGrid",
+        controller,
+      ),
+    ),
+    assignCustomerToOrder: builder.mutation<void, any>(
+      apiConfig.getStaticData<ControllerType>(
+        "assignCustomerToOrder",
+        controller,
+      ),
+    ),
+    getListOfStockActionsForGrid: builder.mutation<
       any,
       { orderId: number; model: GridRequestModel }
-    >(builder, {
-      query: ({ orderId, model }) => ({
-        url: `${ApiUrlEnum.ORDERS}/${orderId}/stock-actions`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-    }),
-    addVariantsToOrder: apiConfig.createMutation<
-      void,
-      { orderId: number; model: any }
-    >(builder, {
-      query: ({ orderId, model }) => ({
-        url: `${ApiUrlEnum.ORDERS}/${orderId}/variants`,
-        method: "PATCH",
-        body: JSON.stringify(model),
-      }),
-    }),
-    updateStockActionInOrder: apiConfig.createMutation<
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "getListOfStockActionsForGrid",
+        controller,
+      ),
+    ),
+    addVariantsToOrder: builder.mutation<void, { orderId: number; model: any }>(
+      apiConfig.getStaticData<ControllerType>("addVariantsToOrder", controller),
+    ),
+    updateStockActionInOrder: builder.mutation<
       void,
       { stockActionId: number; model: any }
-    >(builder, {
-      query: ({ stockActionId, model }) => ({
-        url: `${ApiUrlEnum.ORDERS}${ApiUrlEnum.STOCK_ACTIONS}/${stockActionId}`,
-        method: "PATCH",
-        body: JSON.stringify(model),
-      }),
-    }),
-    removeStockActionFromOrder: apiConfig.createMutation<void, number>(
-      builder,
-      {
-        query: (stockActionId) => ({
-          url: `${ApiUrlEnum.ORDERS}${ApiUrlEnum.STOCK_ACTIONS}/${stockActionId}`,
-          method: "DELETE",
-        }),
-      },
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "updateStockActionInOrder",
+        controller,
+      ),
     ),
-    getDiscountsList: apiConfig.createQuery<void, void>(builder, {
-      query: () => ({
-        url: `${ApiUrlEnum.DISCOUNTS}/all`,
-      }),
-    }),
-    createDiscount: apiConfig.createMutation<any, any>(builder, {
-      query: (model) => ({
-        url: `${ApiUrlEnum.DISCOUNTS}`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-    }),
-    updateDiscount: apiConfig.createMutation<
-      void,
-      { discountId: number; model: any }
-    >(builder, {
-      query: ({ discountId, model }) => ({
-        url: `${ApiUrlEnum.DISCOUNTS}/${discountId}`,
-        method: "PATCH",
-        body: JSON.stringify(model),
-      }),
-    }),
-    removeDiscountsFromOrder: apiConfig.createMutation<
+    removeStockActionFromOrder: builder.mutation<void, number>(
+      apiConfig.getStaticData<ControllerType>(
+        "removeStockActionFromOrder",
+        controller,
+      ),
+    ),
+    getDiscountsList: builder.query<void, void>(
+      apiConfig.getStaticData<ControllerType>("getDiscountsList", controller),
+    ),
+    createDiscount: builder.mutation<any, any>(
+      apiConfig.getStaticData<ControllerType>("createDiscount", controller),
+    ),
+    updateDiscount: builder.mutation<void, { discountId: number; model: any }>(
+      apiConfig.getStaticData<ControllerType>("updateDiscount", controller),
+    ),
+    removeDiscountsFromOrder: builder.mutation<
       void,
       { orderId: number; model: any }
-    >(builder, {
-      query: ({ orderId, model }) => ({
-        url: `${ApiUrlEnum.ORDERS}/${orderId}/remove-discounts`,
-        method: "PATCH",
-        body: JSON.stringify(model),
-      }),
-    }),
-    applyDiscountsToOrder: apiConfig.createMutation<
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "removeDiscountsFromOrder",
+        controller,
+      ),
+    ),
+    applyDiscountsToOrder: builder.mutation<
       void,
       { orderId: number; model: any }
-    >(builder, {
-      query: ({ orderId, model }) => ({
-        url: `${ApiUrlEnum.ORDERS}/${orderId}/apply-discounts`,
-        method: "PATCH",
-        body: JSON.stringify(model),
-      }),
-    }),
-    getShipmentsListForForGrid: apiConfig.createMutation<any, GridRequestModel>(
-      builder,
-      {
-        query: (model) => ({
-          url: `${ApiUrlEnum.SHIPMENTS}/list`,
-          method: "POST",
-          body: JSON.stringify(model),
-        }),
-      },
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "applyDiscountsToOrder",
+        controller,
+      ),
     ),
-    getShipmentsListForOrder: apiConfig.createQuery<void, number>(builder, {
-      query: (orderId) => ({
-        url: `${ApiUrlEnum.ORDERS}/${orderId}${ApiUrlEnum.SHIPMENTS}`,
-      }),
-    }),
-    getShipmentDetails: apiConfig.createQuery<void, number>(builder, {
-      query: (shipmentId) => ({
-        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}`,
-      }),
-    }),
-    createShipment: apiConfig.createMutation<any, void>(builder, {
-      query: () => ({
-        url: `${ApiUrlEnum.SHIPMENTS}`,
-        method: "POST",
-      }),
-    }),
-    updateShipmentDates: apiConfig.createMutation<
+    getShipmentsListForForGrid: builder.mutation<any, GridRequestModel>(
+      apiConfig.getStaticData<ControllerType>(
+        "getShipmentsListForForGrid",
+        controller,
+      ),
+    ),
+    getShipmentsListForOrder: builder.query<void, number>(
+      apiConfig.getStaticData<ControllerType>(
+        "getShipmentsListForOrder",
+        controller,
+      ),
+    ),
+    getShipmentDetails: builder.query<void, number>(
+      apiConfig.getStaticData<ControllerType>("getShipmentDetails", controller),
+    ),
+    createShipment: builder.mutation<any, void>(
+      apiConfig.getStaticData<ControllerType>("createShipment", controller),
+    ),
+    updateShipmentDates: builder.mutation<
       void,
       { shipmentId: number; model: any }
-    >(builder, {
-      query: ({ shipmentId, model }) => ({
-        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/update-dates`,
-        method: "PATCH",
-        body: JSON.stringify(model),
-      }),
-    }),
-    updateShipmentCustomer: apiConfig.createMutation<
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "updateShipmentDates",
+        controller,
+      ),
+    ),
+    updateShipmentCustomer: builder.mutation<
       void,
       { shipmentId: number; model: any }
-    >(builder, {
-      query: ({ shipmentId, model }) => ({
-        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/update-customer`,
-        method: "PATCH",
-        body: JSON.stringify(model),
-      }),
-    }),
-    updateShipmentAddress: apiConfig.createMutation<
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "updateShipmentCustomer",
+        controller,
+      ),
+    ),
+    updateShipmentAddress: builder.mutation<
       void,
       { shipmentId: number; model: any }
-    >(builder, {
-      query: ({ shipmentId, model }) => ({
-        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/update-address`,
-        method: "PATCH",
-        body: JSON.stringify(model),
-      }),
-    }),
-    connectShipmentToOrder: apiConfig.createMutation<
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "updateShipmentAddress",
+        controller,
+      ),
+    ),
+    connectShipmentToOrder: builder.mutation<
       void,
       { shipmentId: number; orderId: number }
-    >(builder, {
-      query: ({ shipmentId, orderId }) => ({
-        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/connect/${orderId}`,
-        method: "PATCH",
-      }),
-    }),
-    addOrderToShipment: apiConfig.createMutation<
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "connectShipmentToOrder",
+        controller,
+      ),
+    ),
+    addOrderToShipment: builder.mutation<
       void,
       { shipmentId: number; orderId: number }
-    >(builder, {
-      query: ({ shipmentId, orderId }) => ({
-        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/connect/${orderId}`,
-        method: "PATCH",
-      }),
-    }),
-    disconnectOrderFromShipment: apiConfig.createMutation<
+    >(
+      apiConfig.getStaticData<ControllerType>("addOrderToShipment", controller),
+    ),
+    disconnectOrderFromShipment: builder.mutation<
       void,
       { shipmentId: number; orderId: number }
-    >(builder, {
-      query: ({ shipmentId, orderId }) => ({
-        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/disconnect/${orderId}`,
-        method: "PATCH",
-      }),
-    }),
-    addVariantsToShipment: apiConfig.createMutation<
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "disconnectOrderFromShipment",
+        controller,
+      ),
+    ),
+    addVariantsToShipment: builder.mutation<
       void,
       { shipmentId: number; model: any }
-    >(builder, {
-      query: ({ shipmentId, model }) => ({
-        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/add-variants`,
-        method: "PATCH",
-        body: JSON.stringify(model),
-      }),
-    }),
-    removeVariantFromShipment: apiConfig.createMutation<void, number>(builder, {
-      query: (actionId) => ({
-        url: `${ApiUrlEnum.SHIPMENTS}/stock-actions/${actionId}`,
-        method: "DELETE",
-      }),
-    }),
-    createShipmentForOrder: apiConfig.createMutation<any, number>(builder, {
-      query: (orderId: number) => ({
-        url: `${ApiUrlEnum.ORDERS}/${orderId}/shipment`,
-        method: "POST",
-      }),
-    }),
-    updateStockActionForShipment: apiConfig.createMutation<
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "addVariantsToShipment",
+        controller,
+      ),
+    ),
+    removeVariantFromShipment: builder.mutation<void, number>(
+      apiConfig.getStaticData<ControllerType>(
+        "removeVariantFromShipment",
+        controller,
+      ),
+    ),
+    createShipmentForOrder: builder.mutation<any, number>(
+      apiConfig.getStaticData<ControllerType>(
+        "createShipmentForOrder",
+        controller,
+      ),
+    ),
+    updateStockActionForShipment: builder.mutation<
       void,
       { stockActionId: number; model: any }
-    >(builder, {
-      query: ({ stockActionId, model }) => ({
-        url: `${ApiUrlEnum.SHIPMENTS}${ApiUrlEnum.STOCK_ACTIONS}/${stockActionId}`,
-        method: "PATCH",
-        body: JSON.stringify(model),
-      }),
-    }),
-    confirmPackedProducts: apiConfig.createMutation<void, number>(builder, {
-      query: (shipmentId) => ({
-        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/package`,
-        method: "PATCH",
-      }),
-    }),
-    getShipmentStatusForOrder: apiConfig.createQuery<void, number>(builder, {
-      query: (orderId) => ({
-        url: `${ApiUrlEnum.ORDERS}/${orderId}/shipment-status`,
-      }),
-    }),
-    returnShipmentStatusToPrevious: apiConfig.createMutation<void, number>(
-      builder,
-      {
-        query: (shipmentId) => ({
-          url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/return`,
-          method: "PATCH",
-        }),
-      },
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "updateStockActionForShipment",
+        controller,
+      ),
     ),
-    cancelShipment: apiConfig.createMutation<void, number>(builder, {
-      query: (shipmentId) => ({
-        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/cancel`,
-        method: "PATCH",
-      }),
-    }),
-    increaseShipmentStockAction: apiConfig.createMutation<void, number>(
-      builder,
-      {
-        query: (stockActionId) => ({
-          url: `${ApiUrlEnum.SHIPMENTS}${ApiUrlEnum.STOCK_ACTIONS}/${stockActionId}/increase-amount`,
-          method: "PATCH",
-        }),
-      },
+    confirmPackedProducts: builder.mutation<void, number>(
+      apiConfig.getStaticData<ControllerType>(
+        "confirmPackedProducts",
+        controller,
+      ),
     ),
-    decreaseShipmentStockAction: apiConfig.createMutation<void, number>(
-      builder,
-      {
-        query: (stockActionId) => ({
-          url: `${ApiUrlEnum.SHIPMENTS}${ApiUrlEnum.STOCK_ACTIONS}/${stockActionId}/decrease-amount`,
-          method: "PATCH",
-        }),
-      },
+    getShipmentStatusForOrder: builder.query<void, number>(
+      apiConfig.getStaticData<ControllerType>(
+        "getShipmentStatusForOrder",
+        controller,
+      ),
     ),
-    addShipmentStockActionWithQuantity: apiConfig.createMutation<
+    returnShipmentStatusToPrevious: builder.mutation<void, number>(
+      apiConfig.getStaticData<ControllerType>(
+        "returnShipmentStatusToPrevious",
+        controller,
+      ),
+    ),
+    cancelShipment: builder.mutation<void, number>(
+      apiConfig.getStaticData<ControllerType>("cancelShipment", controller),
+    ),
+    increaseShipmentStockAction: builder.mutation<void, number>(
+      apiConfig.getStaticData<ControllerType>(
+        "increaseShipmentStockAction",
+        controller,
+      ),
+    ),
+    decreaseShipmentStockAction: builder.mutation<void, number>(
+      apiConfig.getStaticData<ControllerType>(
+        "decreaseShipmentStockAction",
+        controller,
+      ),
+    ),
+    addShipmentStockActionWithQuantity: builder.mutation<
       void,
       { stockActionId: number; model: any }
-    >(builder, {
-      query: ({ stockActionId, model }) => ({
-        url: `${ApiUrlEnum.SHIPMENTS}${ApiUrlEnum.STOCK_ACTIONS}/${stockActionId}`,
-        method: "PATCH",
-        body: JSON.stringify(model),
-      }),
-    }),
-    addAllStockActionsToPackage: apiConfig.createMutation<void, number>(
-      builder,
-      {
-        query: (shipmentId) => ({
-          url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/add-all-variants`,
-          method: "PATCH",
-        }),
-      },
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "addShipmentStockActionWithQuantity",
+        controller,
+      ),
     ),
-    addVariantToShipment: apiConfig.createMutation<
+    addAllStockActionsToPackage: builder.mutation<void, number>(
+      apiConfig.getStaticData<ControllerType>(
+        "addAllStockActionsToPackage",
+        controller,
+      ),
+    ),
+    addVariantToShipment: builder.mutation<
       void,
       { shipmentId: number; stockActionId: number }
-    >(builder, {
-      query: ({ shipmentId, stockActionId }) => ({
-        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/add-variant/${stockActionId}`,
-        method: "PATCH",
-      }),
-    }),
-    confirmDeliveryData: apiConfig.createMutation<
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "addVariantToShipment",
+        controller,
+      ),
+    ),
+    confirmDeliveryData: builder.mutation<
       void,
       { shipmentId: number; model: any }
-    >(builder, {
-      query: ({ shipmentId, model }) => ({
-        url: `${ApiUrlEnum.SHIPMENTS}/${shipmentId}/delivery`,
-        method: "PATCH",
-        body: JSON.stringify(model),
-      }),
-    }),
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "confirmDeliveryData",
+        controller,
+      ),
+    ),
   }),
 });
 export const { endpoints, ...OrdersApiHooks } = OrdersApiService;

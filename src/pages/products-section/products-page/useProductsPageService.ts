@@ -2,19 +2,20 @@ import { useAppDispatch, useAppSelector } from "@/utils/hooks/redux.ts";
 import { useNavigate } from "react-router-dom";
 import { merge } from "lodash";
 
-import useAppService from "@/useAppService.ts";
-import useDialogService from "@/utils/services/dialog/DialogService.ts";
 import SuppliersApiHooks from "@/utils/services/api/SuppliersApiService.ts";
 import AssetsApiHooks from "@/utils/services/api/AssetsApiService.ts";
 import ProductsApiHooks from "@/utils/services/api/ProductsApiService.ts";
 import UsersApiHooks from "@/utils/services/api/UsersApiService.ts";
 import PurchasesApiHooks from "@/utils/services/api/PurchasesApiService.ts";
 import DictionaryApiHooks from "@/utils/services/api/DictionaryApiService.ts";
+import CompaniesApiHooks from "@/utils/services/api/CompaniesApiService.ts";
 import { AppSliceActions as appActions } from "@/state/slices/AppSlice.ts";
 import {
   ProductsPageSliceActions as productsActions,
   ProductsPageSliceActions as actions,
 } from "@/state/slices/ProductsPageSlice.ts";
+import useAppService from "@/useAppService.ts";
+import useDialogService from "@/utils/services/dialog/DialogService.ts";
 import {
   addGridRowColor,
   setSelectedGridItem,
@@ -29,7 +30,6 @@ import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { IProductsPageSlice } from "@/const/interfaces/store-slices/IProductsPageSlice.ts";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
-import CompaniesApiHooks from "@/utils/services/api/CompaniesApiService.ts";
 
 export default function useProductsPageService() {
   // ==================================================================== UTILITIES

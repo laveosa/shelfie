@@ -122,6 +122,9 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
   }
 
   function onSelectDateHandler(selectedDate, event) {
+    console.log("VALUE: ", selectedDate);
+    console.log("DATE: ", _date);
+
     const normalizedDate: any = _sortMultipleDate(selectedDate);
     setDate(normalizedDate);
 
@@ -191,6 +194,34 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
     return _inferCalendarMode(dateArr) === CalendarModeEnum.MULTIPLE
       ? _sortDateListByDate(dateArr)
       : dateArr;
+  }
+
+  function _rangeModeSelectDateModifications(value) {
+    return normalizeRangeSelection(_date as IDateRange, value);
+  }
+
+  function normalizeRangeSelection(prev: IDateRange, next: any): IDateRange {
+    if (mode !== CalendarModeEnum.RANGE || !next || typeof next !== "object")
+      return next;
+
+    if (next.from && next.to && next.from.getTime() === next.to.getTime())
+      return { from: next.from, to: undefined };
+
+    if (prev && prev.from && prev.to) {
+      return { from: getChangedDate(prev, next), to: undefined };
+    }
+
+    return next;
+  }
+
+  function getChangedDate(oldDate: IDateRange, newDate: IDateRange) {
+    const isSameFrom = moment(oldDate.from).isSame(newDate.from);
+    const isSameTo = moment(oldDate.to).isSame(newDate.to);
+
+    if (!isSameFrom) return newDate.from;
+    if (isSameFrom && !isSameTo) return newDate.to;
+
+    return new Date();
   }
 
   // -------------------------------------------------------------- DATE FORMAT AND SORT
@@ -468,7 +499,11 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
                 setSelectedMonth(months[getMonth(value)])
               }
               onSelect={(value) =>
-                setTimeout(() => valueSelectDateHandler(value))
+                setTimeout(() =>
+                  valueSelectDateHandler(
+                    _rangeModeSelectDateModifications(value),
+                  ),
+                )
               }
             />
             {!hideTimePicker && (

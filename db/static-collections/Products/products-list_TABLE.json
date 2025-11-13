@@ -1,0 +1,362 @@
+[
+  {
+    "barcode": "WD128U9",
+    "brand": {
+      "brandId": 101,
+      "brandName": "Nike",
+      "thumbnail": "./images/brands/nike-logo.svg"
+    },
+    "brandId": 101,
+    "image": {
+      "variants": [],
+      "photoId": 11,
+      "assetId": 11,
+      "thumbnailUrl": "./images/products/nike-air-max-90.jpg",
+      "adaptedUrl": "./images/products/nike-air-max-90.jpg",
+      "width": 275,
+      "height": 183,
+      "sortOrder": 0,
+      "isActive": true,
+      "originalName": null
+    },
+    "isActive": true,
+    "isDeleted": false,
+    "productCategory": {
+      "categoryId": 5,
+      "categoryName": "Shoes",
+      "thumbnail": "./images/categories/shoes.png"
+    },
+    "productCategoryId": 1,
+    "productCode": "AM90",
+    "productId": 1001,
+    "productName": "Nike Air Max 90",
+    "salePrice": "$149.99",
+    "status": "Available",
+    "stockAmount": 250,
+    "variantsCount": 5
+  },
+  {
+    "barcode": "Z9Y8X7W",
+    "brand": {
+      "brandId": 102,
+      "brandName": "Adidas",
+      "thumbnail": "./images/brands/adidas-logo.svg"
+    },
+    "brandId": 102,
+    "image": {
+      "variants": [],
+      "photoId": 22,
+      "assetId": 22,
+      "thumbnailUrl": "./images/products/adidas-stan-smith.jpg",
+      "adaptedUrl": "./images/products/adidas-stan-smith.jpg",
+      "width": 275,
+      "height": 183,
+      "sortOrder": 0,
+      "isActive": true,
+      "originalName": null
+    },
+    "isActive": true,
+    "isDeleted": false,
+    "productCategory": {
+      "categoryId": 5,
+      "categoryName": "Shoes",
+      "thumbnail": "./images/categories/shoes.png"
+    },
+    "productCategoryId": 1,
+    "productCode": "SS21",
+    "productId": 1002,
+    "productName": "Adidas Stan Smith",
+    "salePrice": "$99.99",
+    "status": "Available",
+    "stockAmount": 180,
+    "variantsCount": 3
+  },
+  {
+    "barcode": "M3N46U7",
+    "brand": {
+      "brandId": 103,
+      "brandName": "Levi’s",
+      "thumbnail": "./images/brands/levis-logo.svg"
+    },
+    "brandId": 103,
+    "image": {
+      "variants": [],
+      "photoId": 33,
+      "assetId": 33,
+      "thumbnailUrl": "./images/products/levis-501-original-fit-jeans.jpg",
+      "adaptedUrl": "./images/products/levis-501-original-fit-jeans.jpg",
+      "width": 275,
+      "height": 183,
+      "sortOrder": 0,
+      "isActive": true,
+      "originalName": null
+    },
+    "isActive": true,
+    "isDeleted": false,
+    "productCategory": {
+      "categoryId": 2,
+      "categoryName": "Pants",
+      "thumbnail": "./images/categories/pants.png"
+    },
+    "productCategoryId": 2,
+    "productCode": "501",
+    "productId": 1003,
+    "productName": "Levi’s 501 Original Fit Jeans",
+    "salePrice": "$69.99",
+    "status": "Available",
+    "stockAmount": 300,
+    "variantsCount": 4
+  },
+  {
+    "barcode": "F2GJ5K6",
+    "brand": {
+      "brandId": 104,
+      "brandName": "Zara",
+      "thumbnail": "./images/brands/zara-logo.svg"
+    },
+    "brandId": 104,
+    "image": {
+      "variants": [],
+      "photoId": 44,
+      "assetId": 44,
+      "thumbnailUrl": "./images/products/zara-poplin-midi-skirt.jpg",
+      "adaptedUrl": "./images/products/zara-poplin-midi-skirt.jpg",
+      "width": 275,
+      "height": 183,
+      "sortOrder": 0,
+      "isActive": true,
+      "originalName": null
+    },
+    "isActive": false,
+    "isDeleted": false,
+    "productCategory": {
+      "categoryId": 3,
+      "categoryName": "Skirts",
+      "thumbnail": "./images/categories/skirt.png"
+    },
+    "productCategoryId": 3,
+    "productCode": "SKRT",
+    "productId": 1004,
+    "productName": "Zara Poplin Midi Skirt",
+    "salePrice": "$39.99",
+    "status": "Not Available",
+    "stockAmount": 120,
+    "variantsCount": 2
+  },
+  {
+    "barcode": "H1J24M5",
+    "brand": {
+      "brandId": 105,
+      "brandName": "H&M",
+      "thumbnail": "./images/brands/hm-logo.svg"
+    },
+    "brandId": 105,
+    "image": {
+      "variants": [],
+      "photoId": 55,
+      "assetId": 55,
+      "thumbnailUrl": "./images/products/hm-cotton-loose-fit-tshirt.jpg",
+      "adaptedUrl": "./images/products/hm-cotton-loose-fit-tshirt.jpg",
+      "width": 275,
+      "height": 183,
+      "sortOrder": 0,
+      "isActive": true,
+      "originalName": null
+    },
+    "isActive": false,
+    "isDeleted": false,
+    "productCategory": {
+      "categoryId": 4,
+      "categoryName": "T Shirt",
+      "thumbnail": "./images/categories/t-shirt.png"
+    },
+    "productCategoryId": 4,
+    "productCode": "TS01",
+    "productId": 1005,
+    "productName": "H&M Cotton Loose Fit T-Shirt",
+    "salePrice": "$14.99",
+    "status": "Not Available",
+    "stockAmount": 500,
+    "variantsCount": 6
+  },
+  {
+    "barcode": "Q9W8ET5",
+    "brand": {
+      "brandId": 106,
+      "brandName": "Puma",
+      "thumbnail": "./images/brands/puma-logo.svg"
+    },
+    "brandId": 106,
+    "image": {
+      "variants": [],
+      "photoId": 66,
+      "assetId": 66,
+      "thumbnailUrl": "./images/products/puma-rs-x-sneaker.jpg",
+      "adaptedUrl": "./images/products/puma-rs-x-sneaker.jpg",
+      "width": 275,
+      "height": 183,
+      "sortOrder": 0,
+      "isActive": true,
+      "originalName": null
+    },
+    "isActive": true,
+    "isDeleted": false,
+    "productCategory": {
+      "categoryId": 5,
+      "categoryName": "Shoes",
+      "thumbnail": "./images/categories/shoes.png"
+    },
+    "productCategoryId": 1,
+    "productCode": "RS-X",
+    "productId": 1006,
+    "productName": "Puma RS-X Sneaker",
+    "salePrice": "$119.99",
+    "status": "Available",
+    "stockAmount": 200,
+    "variantsCount": 4
+  },
+  {
+    "barcode": "U6Y5T42",
+    "brand": {
+      "brandId": 107,
+      "brandName": "Uniqlo",
+      "thumbnail": "./images/brands/uniqlo-logo.svg"
+    },
+    "brandId": 107,
+    "image": {
+      "variants": [],
+      "photoId": 77,
+      "assetId": 77,
+      "thumbnailUrl": "./images/products/uniqlo-u-crew-neck.jpg",
+      "adaptedUrl": "./images/products/uniqlo-u-crew-neck.jpg",
+      "width": 275,
+      "height": 183,
+      "sortOrder": 0,
+      "isActive": true,
+      "originalName": null
+    },
+    "isActive": true,
+    "isDeleted": false,
+    "productCategory": {
+      "categoryId": 4,
+      "categoryName": "T Shirt",
+      "thumbnail": "./images/categories/t-shirt.png"
+    },
+    "productCategoryId": 4,
+    "productCode": "UT01",
+    "productId": 1007,
+    "productName": "Uniqlo U Crew Neck T-Shirt",
+    "salePrice": "$19.90",
+    "status": "Available",
+    "stockAmount": 350,
+    "variantsCount": 5
+  },
+  {
+    "barcode": "OI1L0K9",
+    "brand": {
+      "brandId": 108,
+      "brandName": "Reebok",
+      "thumbnail": "./images/brands/reebok-logo.svg"
+    },
+    "brandId": 108,
+    "image": {
+      "variants": [],
+      "photoId": 88,
+      "assetId": 88,
+      "thumbnailUrl": "",
+      "adaptedUrl": "",
+      "width": 275,
+      "height": 183,
+      "sortOrder": 0,
+      "isActive": true,
+      "originalName": null
+    },
+    "isActive": false,
+    "isDeleted": false,
+    "productCategory": {
+      "categoryId": 2,
+      "categoryName": "Pants",
+      "thumbnail": "./images/categories/pants.png"
+    },
+    "productCategoryId": 2,
+    "productCode": "CLSER",
+    "productId": 1008,
+    "productName": "Reebok Classic Sweatpants",
+    "salePrice": "$49.99",
+    "status": "Available",
+    "stockAmount": 0,
+    "variantsCount": 4
+  },
+  {
+    "barcode": "P5U2Y1",
+    "brand": {
+      "brandId": 111,
+      "brandName": "Under Armour",
+      "thumbnail": "./images/brands/under-armour-logo.svg"
+    },
+    "brandId": 111,
+    "image": {
+      "variants": [],
+      "photoId": 99,
+      "assetId": 99,
+      "thumbnailUrl": "./images/products/under-armour-tech-2_0-tshirt.jpg",
+      "adaptedUrl": "./images/products/under-armour-tech-2_0-tshirt.jpg",
+      "width": 275,
+      "height": 183,
+      "sortOrder": 0,
+      "isActive": true,
+      "originalName": null
+    },
+    "isActive": true,
+    "isDeleted": false,
+    "productCategory": {
+      "categoryId": 4,
+      "categoryName": "T Shirt",
+      "thumbnail": "./images/categories/t-shirt.png"
+    },
+    "productCategoryId": 4,
+    "productCode": "TECH2",
+    "productId": 1011,
+    "productName": "Under Armour Tech 2.0 T-Shirt",
+    "salePrice": "$24.99",
+    "status": "Available",
+    "stockAmount": 400,
+    "variantsCount": 6
+  },
+  {
+    "barcode": "N5M4BC1",
+    "brand": {
+      "brandId": 116,
+      "brandName": "Hugo Boss",
+      "thumbnail": "./images/brands/hugo-boss-logo.svg"
+    },
+    "brandId": 116,
+    "image": {
+      "variants": [],
+      "photoId": 99,
+      "assetId": 99,
+      "thumbnailUrl": "./images/products/hugo-boss-leather-skirt.jpg",
+      "adaptedUrl": "./images/products/hugo-boss-leather-skirt.jpg",
+      "width": 275,
+      "height": 183,
+      "sortOrder": 0,
+      "isActive": true,
+      "originalName": null
+    },
+    "isActive": true,
+    "isDeleted": false,
+    "productCategory": {
+      "categoryId": 3,
+      "categoryName": "Skirts",
+      "thumbnail": "./images/categories/skirt.png"
+    },
+    "productCategoryId": 3,
+    "productCode": "BOSSK",
+    "productId": 1016,
+    "productName": "Hugo Boss Leather Skirt",
+    "salePrice": "$249.00",
+    "status": "Available",
+    "stockAmount": 90,
+    "variantsCount": 2
+  }
+]

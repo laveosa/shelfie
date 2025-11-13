@@ -1,0 +1,38 @@
+[
+  {
+    "stockActionId": 0,
+    "productId": 0,
+    "variantId": 0,
+    "variantName": "string",
+    "variantCode": "string",
+    "traitOptions": [
+      {
+        "optionId": 0,
+        "optionName": "string",
+        "optionColor": "string",
+        "isRaw": true,
+        "sortOrder": 0,
+        "traitTypeId": 0,
+        "traitTypeName": "string",
+        "traitId": 0,
+        "traitName": "string",
+        "isDeleted": true
+      }
+    ],
+    "photo": {
+      "originalName": "string",
+      "assetId": 0,
+      "photoId": 0,
+      "thumbnailUrl": "string",
+      "adaptedUrl": "string",
+      "width": 0,
+      "height": 0,
+      "sortOrder": 0,
+      "isActive": true
+    },
+    "unitsAmount": 0,
+    "qtyOrdered": 0,
+    "qtyToShip": 0,
+    "qtyShipped": 0
+  }
+]

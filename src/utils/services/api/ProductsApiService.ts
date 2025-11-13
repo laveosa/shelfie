@@ -8,7 +8,6 @@ import { ProductModel } from "@/const/models/ProductModel.ts";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import { ProductCodeModel } from "@/const/models/ProductCodeModel.ts";
-import { UploadPhotoModel } from "@/const/models/UploadPhotoModel.ts";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { ProductCountersModel } from "@/const/models/CounterModel.ts";
 import { TraitModel } from "@/const/models/TraitModel.ts";
@@ -34,435 +33,327 @@ export const ProductsApiService = createApi({
     updateProduct: builder.mutation<void, any>(
       apiConfig.getStaticData<ControllerType>("updateProduct", controller),
     ),
-    toggleProductActivation: apiConfig.createMutation<void, any>(builder, {
-      query: (productId) => ({
-        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/${productId}/active`,
-        method: "PATCH",
-      }),
-    }),
-    deleteProduct: apiConfig.createMutation<void, number>(builder, {
-      query: (id: number) => ({
-        url: `${ApiUrlEnum.PRODUCTS}/${id}`,
-        method: "DELETE",
-      }),
-    }),
-    getTheProductsForGrid: apiConfig.createMutation<
-      GridRequestModel,
-      GridRequestModel
-    >(builder, {
-      query: (model?: GridRequestModel) => ({
-        url: `${ApiUrlEnum.PRODUCTS}/list`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-    }),
-    getBrandsForProductsFilter: apiConfig.createQuery<BrandModel[], void>(
-      builder,
-      {
-        query: () => ({
-          url: `${ApiUrlEnum.BRANDS}/for-filter`,
-        }),
-      },
+    toggleProductActivation: builder.mutation<void, any>(
+      apiConfig.getStaticData<ControllerType>(
+        "toggleProductActivation",
+        controller,
+      ),
     ),
-    getCategoriesForProductsFilter: apiConfig.createQuery<
-      CategoryModel[],
-      void
-    >(builder, {
-      query: () => ({
-        url: `${ApiUrlEnum.PRODUCT_CATEGORIES}/for-filter`,
-      }),
-    }),
-    generateProductCode: apiConfig.createQuery<any, void>(builder, {
-      query: () => ({
-        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.CODES}/generate-code`,
-      }),
-    }),
-    getSimpleListOfAllBrands: apiConfig.createQuery<any[], void>(builder, {
-      query: () => ({
-        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.BRANDS}/all`,
-      }),
-    }),
-    getAllCategoriesByOrganization: apiConfig.createQuery<any, void>(builder, {
-      query: () => ({
-        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCT_CATEGORIES}/all`,
-      }),
-    }),
-    checkProductCode: apiConfig.createMutation<void, ProductCodeModel>(
-      builder,
-      {
-        query: (code: ProductCodeModel) => ({
-          url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.CODES}/check-code`,
-          method: "POST",
-          body: JSON.stringify(code),
-        }),
-      },
+    deleteProduct: builder.mutation<void, number>(
+      apiConfig.getStaticData<ControllerType>("deleteProduct", controller),
     ),
-    checkBrandName: apiConfig.createMutation<void, BrandModel>(builder, {
-      query: (brandName: BrandModel) => ({
-        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.BRANDS}/check-name`,
-        method: "POST",
-        body: JSON.stringify(brandName),
-      }),
-    }),
-    checkCategoryName: apiConfig.createMutation<void, CategoryModel>(builder, {
-      query: (categoryName: CategoryModel) => ({
-        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCT_CATEGORIES}/check-name`,
-        method: "POST",
-        body: JSON.stringify(categoryName),
-      }),
-    }),
-    createNewProduct: apiConfig.createMutation<void, ProductModel>(builder, {
-      query: (model: ProductModel) => ({
-        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-    }),
-    createNewCategory: apiConfig.createMutation<void, CategoryModel>(builder, {
-      query: (model: CategoryModel) => ({
-        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCT_CATEGORIES}`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-    }),
-    createBrand: apiConfig.createMutation<void, BrandModel>(builder, {
-      query: (model: BrandModel) => ({
-        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.BRANDS}`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-    }),
-    uploadPhoto: apiConfig.createMutation<void, any>(builder, {
-      query: (model: UploadPhotoModel) => ({
-        url: `${ApiUrlEnum.ASSETS_BASE_URL}/${model.contextName}/${model.contextId}/upload-photo`,
-        method: "POST",
-        body: model.file,
-        headers: {
-          "Content-Type": model.file.type,
-        },
-      }),
-    }),
-    getCountersForProducts: apiConfig.createQuery<ProductCountersModel, number>(
-      builder,
-      {
-        query: (id: number) => ({
-          url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/${id}/counters`,
-        }),
-      },
+    getTheProductsForGrid: builder.mutation<GridRequestModel, GridRequestModel>(
+      apiConfig.getStaticData<ControllerType>(
+        "getTheProductsForGrid",
+        controller,
+      ),
     ),
-    getProductPhotos: apiConfig.createQuery<any, number>(builder, {
-      query: (id: number) => ({
-        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/${id}/photos`,
-      }),
-    }),
-    getProductPhotosForVariant: apiConfig.createQuery<any, any>(builder, {
-      query: ({ productId, variantId }) => ({
-        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/${productId}/photos/exclude-variant/${variantId}`,
-      }),
-    }),
-    putPhotoInNewPosition: apiConfig.createMutation<void, any>(builder, {
-      query: ({ productId, photoId, index }) => ({
-        url: `${ApiUrlEnum.PRODUCTS_BASE_URL}${ApiUrlEnum.PRODUCTS}/${productId}/photo/${photoId}/${index}`,
-        method: "PATCH",
-      }),
-    }),
-    detachVariantPhoto: apiConfig.createMutation<
+    getBrandsForProductsFilter: builder.query<BrandModel[], void>(
+      apiConfig.getStaticData<ControllerType>(
+        "getBrandsForProductsFilter",
+        controller,
+      ),
+    ),
+    getCategoriesForProductsFilter: builder.query<CategoryModel[], void>(
+      apiConfig.getStaticData<ControllerType>(
+        "getCategoriesForProductsFilter",
+        controller,
+      ),
+    ),
+    generateProductCode: builder.query<string, void>(
+      apiConfig.getStaticData<ControllerType>(
+        "generateProductCode",
+        controller,
+      ),
+    ),
+    getSimpleListOfAllBrands: builder.query<BrandModel[], void>(
+      apiConfig.getStaticData<ControllerType>(
+        "getSimpleListOfAllBrands",
+        controller,
+      ),
+    ),
+    getAllCategoriesByOrganization: builder.query<any, void>(
+      apiConfig.getStaticData<ControllerType>(
+        "getAllCategoriesByOrganization",
+        controller,
+      ),
+    ),
+    checkProductCode: builder.mutation<void, ProductCodeModel>(
+      apiConfig.getStaticData<ControllerType>("checkProductCode", controller),
+    ),
+    checkBrandName: builder.mutation<void, BrandModel>(
+      apiConfig.getStaticData<ControllerType>("checkBrandName", controller),
+    ),
+    checkCategoryName: builder.mutation<void, CategoryModel>(
+      apiConfig.getStaticData<ControllerType>("checkCategoryName", controller),
+    ),
+    createNewProduct: builder.mutation<void, ProductModel>(
+      apiConfig.getStaticData<ControllerType>("createNewProduct", controller),
+    ),
+    createNewCategory: builder.mutation<void, CategoryModel>(
+      apiConfig.getStaticData<ControllerType>("createNewCategory", controller),
+    ),
+    createBrand: builder.mutation<void, BrandModel>(
+      apiConfig.getStaticData<ControllerType>("createBrand", controller),
+    ),
+    uploadPhoto: builder.mutation<void, any>(
+      apiConfig.getStaticData<ControllerType>("uploadPhoto", controller),
+    ),
+    getCountersForProducts: builder.query<ProductCountersModel, number>(
+      apiConfig.getStaticData<ControllerType>(
+        "getCountersForProducts",
+        controller,
+      ),
+    ),
+    getProductPhotos: builder.query<any, number>(
+      apiConfig.getStaticData<ControllerType>("getProductPhotos", controller),
+    ),
+    getProductPhotosForVariant: builder.query<any, any>(
+      apiConfig.getStaticData<ControllerType>(
+        "getProductPhotosForVariant",
+        controller,
+      ),
+    ),
+    putPhotoInNewPosition: builder.mutation<void, any>(
+      apiConfig.getStaticData<ControllerType>(
+        "putPhotoInNewPosition",
+        controller,
+      ),
+    ),
+    detachVariantPhoto: builder.mutation<
       any,
       {
         id?: number;
         photoId?: number;
       }
-    >(builder, {
-      query: ({ id, photoId }) => ({
-        url: `${ApiUrlEnum.VARIANTS}/${id}/detach-photo/${photoId}`,
-        method: "PATCH",
-      }),
-    }),
-    getVariantsForGrid: apiConfig.createMutation<
-      GridRequestModel,
-      GridRequestModel
-    >(builder, {
-      query: (model?: GridRequestModel) => ({
-        url: `${ApiUrlEnum.VARIANTS}/list`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-    }),
-    getProductVariants: apiConfig.createQuery<VariantModel[], number>(builder, {
-      query: (id: number) => ({
-        url: `${ApiUrlEnum.PRODUCTS}/${id}${ApiUrlEnum.VARIANTS}`,
-      }),
-    }),
-    createVariant: apiConfig.createMutation<
+    >(
+      apiConfig.getStaticData<ControllerType>("detachVariantPhoto", controller),
+    ),
+    getVariantsForGrid: builder.mutation<GridRequestModel, GridRequestModel>(
+      apiConfig.getStaticData<ControllerType>("getVariantsForGrid", controller),
+    ),
+    getProductVariants: builder.query<VariantModel[], number>(
+      apiConfig.getStaticData<ControllerType>("getProductVariants", controller),
+    ),
+    createVariant: builder.mutation<
       any,
       {
         id: number;
         model: number[];
       }
-    >(builder, {
-      query: ({ id, model }) => ({
-        url: `${ApiUrlEnum.PRODUCTS}/${id}${ApiUrlEnum.VARIANTS}`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-    }),
-    checkVariantCombination: apiConfig.createMutation<
+    >(apiConfig.getStaticData<ControllerType>("createVariant", controller)),
+    checkVariantCombination: builder.mutation<
       any,
       {
         id: number;
         model: number[];
       }
-    >(builder, {
-      query: ({ id, model }) => ({
-        url: `${ApiUrlEnum.PRODUCTS}/${id}/check-variant-combination`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-    }),
-    getVariantDetails: apiConfig.createQuery<VariantModel, number>(builder, {
-      query: (id: number) => ({
-        url: `${ApiUrlEnum.VARIANTS}/${id}`,
-      }),
-    }),
-    toggleVariantIsActive: apiConfig.createMutation<any, number>(builder, {
-      query: (id: number) => ({
-        url: `${ApiUrlEnum.VARIANTS}/${id}/toggle-active`,
-        method: "PATCH",
-      }),
-    }),
-    updateVariantDetails: apiConfig.createMutation<
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "checkVariantCombination",
+        controller,
+      ),
+    ),
+    getVariantDetails: builder.query<VariantModel, number>(
+      apiConfig.getStaticData<ControllerType>("getVariantDetails", controller),
+    ),
+    toggleVariantIsActive: builder.mutation<any, number>(
+      apiConfig.getStaticData<ControllerType>(
+        "toggleVariantIsActive",
+        controller,
+      ),
+    ),
+    updateVariantDetails: builder.mutation<
       any,
       {
         id?: number;
         model?: any;
       }
-    >(builder, {
-      query: ({ id, model }) => ({
-        url: `${ApiUrlEnum.VARIANTS}/${id}`,
-        method: "PATCH",
-        body: JSON.stringify(model),
-      }),
-    }),
-    updateVariantTraitOptions: apiConfig.createMutation<
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "updateVariantDetails",
+        controller,
+      ),
+    ),
+    updateVariantTraitOptions: builder.mutation<
       any,
       {
         id?: number;
         model?: any;
       }
-    >(builder, {
-      query: ({ id, model }) => ({
-        url: `${ApiUrlEnum.VARIANTS}/${id}/trait-options`,
-        method: "PATCH",
-        body: JSON.stringify(model),
-      }),
-    }),
-    increaseStockAmountForVariant: apiConfig.createMutation<
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "updateVariantTraitOptions",
+        controller,
+      ),
+    ),
+    increaseStockAmountForVariant: builder.mutation<
       any,
       {
         id: number;
         model: any;
       }
-    >(builder, {
-      query: ({ id, model }) => ({
-        url: `${ApiUrlEnum.VARIANTS}/${id}/increase-stock`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-    }),
-    disposeVariantFromStock: apiConfig.createMutation<
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "increaseStockAmountForVariant",
+        controller,
+      ),
+    ),
+    disposeVariantFromStock: builder.mutation<
       any,
       {
         id: number;
         model: any;
       }
-    >(builder, {
-      query: ({ id, model }) => ({
-        url: `${ApiUrlEnum.VARIANTS}/${id}/dispose-from-stock`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-    }),
-    getVariantStockHistory: apiConfig.createQuery<any, number>(builder, {
-      query: (id: number) => ({
-        url: `${ApiUrlEnum.VARIANTS}/${id}/stock-history`,
-      }),
-    }),
-    changeVariantPosition: apiConfig.createMutation<
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "disposeVariantFromStock",
+        controller,
+      ),
+    ),
+    getVariantStockHistory: builder.query<any, number>(
+      apiConfig.getStaticData<ControllerType>(
+        "getVariantStockHistory",
+        controller,
+      ),
+    ),
+    changeVariantPosition: builder.mutation<
       any,
       {
         productId?: number;
         variantId?: number;
         index?: number;
       }
-    >(builder, {
-      query: ({ productId, variantId, index }) => ({
-        url: `${ApiUrlEnum.PRODUCTS}/${productId}/variant/${variantId}/${index}`,
-        method: "PATCH",
-      }),
-    }),
-    changePhotoPositionForVariant: apiConfig.createMutation<
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "changeVariantPosition",
+        controller,
+      ),
+    ),
+    changePhotoPositionForVariant: builder.mutation<
       any,
       {
         id?: number;
         photoId?: number;
         index?: number;
       }
-    >(builder, {
-      query: ({ id, photoId, index }) => ({
-        url: `${ApiUrlEnum.VARIANTS}/${id}/photo/${photoId}/${index}`,
-        method: "PATCH",
-      }),
-    }),
-    attachProductPhotoToVariant: apiConfig.createMutation<
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "changePhotoPositionForVariant",
+        controller,
+      ),
+    ),
+    attachProductPhotoToVariant: builder.mutation<
       any,
       {
         variantId?: number;
         photoId?: number;
       }
-    >(builder, {
-      query: ({ variantId, photoId }) => ({
-        url: `${ApiUrlEnum.VARIANTS}/${variantId}/attach-photo/${photoId}`,
-        method: "PATCH",
-      }),
-    }),
-    getListOfAllTraits: apiConfig.createQuery<any, void>(builder, {
-      query: () => ({
-        url: `${ApiUrlEnum.TRAITS}/all`,
-      }),
-    }),
-    getListOfTraitsForProduct: apiConfig.createQuery<any, number>(builder, {
-      query: (id) => ({
-        url: `${ApiUrlEnum.PRODUCTS}/${id}${ApiUrlEnum.TRAITS}`,
-      }),
-    }),
-    getListOfTraitsWithOptionsForProduct: apiConfig.createQuery<any, number>(
-      builder,
-      {
-        query: (id) => ({
-          url: `${ApiUrlEnum.PRODUCTS}/${id}/traits-with-options`,
-        }),
-      },
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "attachProductPhotoToVariant",
+        controller,
+      ),
     ),
-    getTrait: apiConfig.createQuery<any, number>(builder, {
-      query: (id) => ({
-        url: `${ApiUrlEnum.TRAITS}/${id}`,
-      }),
-    }),
-    createNewTrait: apiConfig.createMutation<any, TraitModel>(builder, {
-      query: (model?: any) => ({
-        url: `${ApiUrlEnum.TRAITS}`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-    }),
-    updateTrait: apiConfig.createMutation<
+    getListOfAllTraits: builder.query<any, void>(
+      apiConfig.getStaticData<ControllerType>("getListOfAllTraits", controller),
+    ),
+    getListOfTraitsForProduct: builder.query<any, number>(
+      apiConfig.getStaticData<ControllerType>(
+        "getListOfTraitsForProduct",
+        controller,
+      ),
+    ),
+    getListOfTraitsWithOptionsForProduct: builder.query<any, number>(
+      apiConfig.getStaticData<ControllerType>(
+        "getListOfTraitsWithOptionsForProduct",
+        controller,
+      ),
+    ),
+    getTrait: builder.query<any, number>(
+      apiConfig.getStaticData<ControllerType>("getTrait", controller),
+    ),
+    createNewTrait: builder.mutation<any, TraitModel>(
+      apiConfig.getStaticData<ControllerType>("createNewTrait", controller),
+    ),
+    updateTrait: builder.mutation<
       any,
       {
         id?: number;
         model?: TraitModel;
       }
-    >(builder, {
-      query: ({ id, model }) => ({
-        url: `${ApiUrlEnum.TRAITS}/${id}`,
-        method: "PATCH",
-        body: JSON.stringify(model),
-      }),
-    }),
-    setProductTraits: apiConfig.createMutation<
+    >(apiConfig.getStaticData<ControllerType>("updateTrait", controller)),
+    setProductTraits: builder.mutation<
       any,
       {
         id?: number;
         model?: TraitModel;
       }
-    >(builder, {
-      query: ({ id, model }) => ({
-        url: `${ApiUrlEnum.PRODUCTS}/${id}${ApiUrlEnum.TRAITS}`,
-        method: "PATCH",
-        body: JSON.stringify(model),
-      }),
-    }),
-    deleteTrait: apiConfig.createMutation<void, number>(builder, {
-      query: (id: number) => ({
-        url: `${ApiUrlEnum.TRAITS}/${id}`,
-        method: "DELETE",
-      }),
-    }),
-    getOptionsForTrait: apiConfig.createQuery<any, number>(builder, {
-      query: (id: number) => ({
-        url: `${ApiUrlEnum.TRAITS}/${id}${ApiUrlEnum.OPTIONS}`,
-      }),
-    }),
-    createNewOptionForTrait: apiConfig.createMutation<
+    >(apiConfig.getStaticData<ControllerType>("setProductTraits", controller)),
+    deleteTrait: builder.mutation<void, number>(
+      apiConfig.getStaticData<ControllerType>("deleteTrait", controller),
+    ),
+    getOptionsForTrait: builder.query<any, number>(
+      apiConfig.getStaticData<ControllerType>("getOptionsForTrait", controller),
+    ),
+    createNewOptionForTrait: builder.mutation<
       any,
       {
         id?: number;
         model?: TraitOptionModel;
       }
-    >(builder, {
-      query: ({ id, model }) => ({
-        url: `${ApiUrlEnum.TRAITS}/${id}${ApiUrlEnum.OPTIONS}`,
-        method: "POST",
-        body: JSON.stringify(model),
-      }),
-    }),
-    updateOptionOfTrait: apiConfig.createMutation<
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "createNewOptionForTrait",
+        controller,
+      ),
+    ),
+    updateOptionOfTrait: builder.mutation<
       any,
       {
         id?: number;
         model?: TraitOptionModel;
       }
-    >(builder, {
-      query: ({ id, model }) => ({
-        url: `${ApiUrlEnum.TRAIT_OPTIONS}/${id}`,
-        method: "PATCH",
-        body: JSON.stringify(model),
-      }),
-    }),
-    deleteOptionOfTrait: apiConfig.createMutation<
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "updateOptionOfTrait",
+        controller,
+      ),
+    ),
+    deleteOptionOfTrait: builder.mutation<
       any,
       {
         id?: number;
       }
-    >(builder, {
-      query: (id) => ({
-        url: `${ApiUrlEnum.TRAIT_OPTIONS}/${id}`,
-        method: "DELETE",
-      }),
-    }),
-    changePositionOfTraitOption: apiConfig.createMutation<
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "deleteOptionOfTrait",
+        controller,
+      ),
+    ),
+    changePositionOfTraitOption: builder.mutation<
       any,
       {
         traitId?: number;
         optionId?: number;
         index?: number;
       }
-    >(builder, {
-      query: ({ traitId, optionId, index }) => ({
-        url: `${ApiUrlEnum.TRAITS}/${traitId}/options/${optionId}/${index}`,
-        method: "PATCH",
-      }),
-    }),
-    getTraitsForFilter: apiConfig.createQuery<any, void>(builder, {
-      query: () => ({
-        url: `${ApiUrlEnum.TRAITS}/for-filter/`,
-      }),
-    }),
-    deleteVariant: apiConfig.createMutation<void, number>(builder, {
-      query: (variantId: number) => ({
-        url: `${ApiUrlEnum.VARIANTS}/${variantId}`,
-        method: "DELETE",
-      }),
-    }),
-    updateBrandOwner: apiConfig.createMutation<
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "changePositionOfTraitOption",
+        controller,
+      ),
+    ),
+    getTraitsForFilter: builder.query<any, void>(
+      apiConfig.getStaticData<ControllerType>("getTraitsForFilter", controller),
+    ),
+    deleteVariant: builder.mutation<void, number>(
+      apiConfig.getStaticData<ControllerType>("deleteVariant", controller),
+    ),
+    updateBrandOwner: builder.mutation<
       any,
       { brandId: number; model: CompanyModel }
-    >(builder, {
-      query: ({ brandId, model }) => ({
-        url: `${ApiUrlEnum.BRANDS}/${brandId}/change-company-owner`,
-        method: "PATCH",
-        body: JSON.stringify(model),
-      }),
-    }),
+    >(apiConfig.getStaticData<ControllerType>("updateBrandOwner", controller)),
     // ============================================================= EXAMPLE QUERY
     /*getProductDetail: apiConfig.createQuery<ProductModel, number>(builder, {
       query: (id: number) => ({

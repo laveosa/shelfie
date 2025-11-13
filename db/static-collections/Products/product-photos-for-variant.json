@@ -1,0 +1,59 @@
+[
+  {
+    "variants": [
+      {
+        "variantId": 3,
+        "variantName": "Greeen 111 2",
+        "stockAmount": 0,
+        "showAlert": false,
+        "isActive": false,
+        "isDeleted": false,
+        "traitOptions": [
+          {
+            "optionId": 2,
+            "optionName": "Green",
+            "optionColor": "#14d069",
+            "isRaw": false,
+            "sortOrder": 0,
+            "traitTypeId": 2,
+            "traitTypeName": "Color",
+            "traitId": 1,
+            "traitName": "Color",
+            "isDeleted": false
+          }
+        ]
+      },
+      {
+        "variantId": 36,
+        "variantName": "Greeen 111 3",
+        "stockAmount": 0,
+        "showAlert": false,
+        "isActive": false,
+        "isDeleted": false,
+        "traitOptions": [
+          {
+            "optionId": 3,
+            "optionName": "Blue",
+            "optionColor": "#104ee6",
+            "isRaw": false,
+            "sortOrder": 1,
+            "traitTypeId": 2,
+            "traitTypeName": "Color",
+            "traitId": 1,
+            "traitName": "Color",
+            "isDeleted": false
+          }
+        ]
+      }
+    ],
+    "photoId": 10,
+    "thumbnailUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/01999bac-b175-7d3a-865e-d324887a3055/thumbnail/01999bac-b175-7d3a-865e-d324887a3055.jpeg?sv=2025-07-05&se=2026-11-06T12%3A11%3A24Z&sr=b&sp=r&sig=pCmUj%2F7QRdRHhxE5AuluUd3ZOkV75GtAIukr6KfhmM0%3D",
+    "adaptedUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/01999bac-b175-7d3a-865e-d324887a3055/adapted/01999bac-b175-7d3a-865e-d324887a3055.jpeg?sv=2025-07-05&se=2026-11-06T12%3A11%3A24Z&sr=b&sp=r&sig=t3xkeND6RdEdOUQ5T9o9hhCQ2Xu89l7kXY67FtFhjZw%3D",
+    "width": 900,
+    "height": 900,
+    "sortOrder": 0,
+    "isActive": true,
+    "originalName": "sample.jpg",
+    "assetId": 10
+  }
+]

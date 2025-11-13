@@ -1,0 +1,14 @@
+{
+  "continuationToken": "string",
+  "items": [
+    {
+      "conversationId": "string",
+      "lastTimeUpdate": "2019-08-24T14:15:22.123Z",
+      "userId": "string",
+      "userName": "string",
+      "userEmail": "string",
+      "userPrifilePic": "string"
+    }
+  ],
+  "searchQuery": "string"
+}

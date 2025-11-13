@@ -19,8 +19,6 @@ export default function useAppService() {
   function getUserPreferencesHandler() {
     dispatch(action.setLoading(true));
     return getUserPreferences(null).then((res: any) => {
-      console.log("PREFERENCES: ", res.data);
-
       dispatch(action.setLoading(false));
       dispatch(action.refreshPreferences(res.data));
     });
@@ -29,8 +27,6 @@ export default function useAppService() {
   function getUserDetailsHandler() {
     dispatch(action.setIsUserMenuLoading(true));
     getUserDetails().then((res) => {
-      console.log("DETAILS: ", res.data);
-
       dispatch(action.setIsUserMenuLoading(false));
       dispatch(action.refreshUser(res.data));
     });
@@ -38,8 +34,6 @@ export default function useAppService() {
 
   function getUserOrganizationsHandler() {
     getUserOrganizations().then((res: any) => {
-      console.log("ORGANIZATIONS: ", res.data);
-
       dispatch(action.refreshUserOrganizations(res.data));
     });
   }

@@ -31,8 +31,8 @@ export function ProductsGridColumns(onAction: any): ColumnDef<ProductModel>[] {
     {
       accessorKey: "productId",
       header: "ID",
-      minSize: 40,
-      maxSize: 40,
+      minSize: 50,
+      maxSize: 50,
       cell: ({ row }) => (
         <span className="she-text">{row.getValue("productId")}</span>
       ),
@@ -63,6 +63,7 @@ export function ProductsGridColumns(onAction: any): ColumnDef<ProductModel>[] {
       accessorKey: "productCode",
       header: "Code",
       minSize: 60,
+      maxSize: 60,
       cell: ({ row }) => (
         <SheTooltip delayDuration={200} text={row.getValue("productCode")}>
           <span className={`${cs.productCode} she-text`}>
@@ -112,7 +113,7 @@ export function ProductsGridColumns(onAction: any): ColumnDef<ProductModel>[] {
     {
       accessorKey: "brand",
       header: "Brand",
-      minSize: 100,
+      minSize: 60,
       cell: ({ row }) => {
         const brand: BrandModel = row.original.brand as BrandModel;
         return (
@@ -121,7 +122,7 @@ export function ProductsGridColumns(onAction: any): ColumnDef<ProductModel>[] {
               {brand?.thumbnail && (
                 <img src={brand?.thumbnail} alt={brand?.brandName} />
               )}
-              <span className="she-text">{brand?.brandName || "N/A"}</span>
+              {/*<span className="she-text">{brand?.brandName || "N/A"}</span>*/}
             </div>
           </SheTooltip>
         );
@@ -130,7 +131,7 @@ export function ProductsGridColumns(onAction: any): ColumnDef<ProductModel>[] {
     {
       accessorKey: "barcode",
       header: "Barcode",
-      minSize: 40,
+      minSize: 100,
       cell: ({ row }) => (
         <span className="she-text">{row.getValue("barcode")}</span>
       ),

@@ -1,0 +1,36 @@
+{
+  "marginItemId": 0,
+  "stockActionId": 0,
+  "variantId": 0,
+  "thumbnailUrl": "string",
+  "productId": 0,
+  "variantCode": "string",
+  "variantName": "string",
+  "traitOptions": [
+    {
+      "optionId": 0,
+      "optionName": "string",
+      "optionColor": "string",
+      "isRaw": true,
+      "sortOrder": 0,
+      "traitTypeId": 0,
+      "traitTypeName": "string",
+      "traitId": 0,
+      "traitName": "string",
+      "isDeleted": true
+    }
+  ],
+  "purchasePrice": "string",
+  "currentPriceDecimal": 0,
+  "currentPrice": "string",
+  "taxTypeId": 0,
+  "marginPrice": 0,
+  "unitsAmount": 0,
+  "taxTypeChanged": true,
+  "marginPriceChanged": true,
+  "taxChangesNotApplied": true,
+  "locked": true,
+  "isChanged": true,
+  "marginPriceApplied": true,
+  "needApply": true
+}

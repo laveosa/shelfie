@@ -1,5 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 
+import { DictionaryController as controller } from "db/controllers/dictionary-controller.ts";
 import { ApiConfigurationService } from "@/utils/services/api/ApiConfigurationService.ts";
 import { ApiServiceNameEnum } from "@/const/enums/ApiServiceNameEnum.ts";
 import { ApiUrlEnum } from "@/const/enums/ApiUrlEnum.ts";
@@ -8,68 +9,46 @@ import { TypeOfTraitModel } from "@/const/models/TypeOfTraitModel.ts";
 import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import { CurrencyModel } from "@/const/models/CurrencyModel.ts";
 import { LanguageModel } from "@/const/models/LanguageModel.ts";
+import { DeliveryServiceModel } from "@/const/models/DeliveryServiceModel.ts";
 
 const apiConfig = new ApiConfigurationService(ApiUrlEnum.DICTIONARY_BASE_URL);
+type ControllerType = typeof controller;
 
 export const DictionaryApiService = createApi({
   reducerPath: ApiServiceNameEnum.DICTIONARY,
-  baseQuery: apiConfig.baseQueryWithInterceptors,
+  baseQuery: async () => ({ data: undefined }),
+  // baseQuery: apiConfig.baseQueryWithInterceptors,
   tagTypes: [ApiServiceNameEnum.DICTIONARY],
   endpoints: (builder) => ({
-    getCountryCode: apiConfig.createQuery<CountryCodeModel[], void>(builder, {
-      query: () => ({
-        url: "/countries/list",
-      }),
-      providesTags: (result: CountryCodeModel[]) =>
-        apiConfig.providesTags(result, ApiServiceNameEnum.DICTIONARY),
-    }),
-    getSortingOptionsForGrid: apiConfig.createQuery<any, void>(builder, {
-      query: () => ({
-        url: "/sortingoptions/products",
-      }),
-      providesTags: (result: any) =>
-        apiConfig.providesTags(result, ApiServiceNameEnum.DICTIONARY),
-    }),
-    getListOfTypesOfTraits: apiConfig.createQuery<TypeOfTraitModel[], void>(
-      builder,
-      {
-        query: () => ({
-          url: "/TraitTypes/all",
-        }),
-        providesTags: (result: TypeOfTraitModel[]) =>
-          apiConfig.providesTags(result, ApiServiceNameEnum.DICTIONARY),
-      },
+    getCountryCode: builder.query<CountryCodeModel[], void>(
+      apiConfig.getStaticData<ControllerType>("getCountryCode", controller),
     ),
-    getTaxesList: apiConfig.createQuery<TaxTypeModel[], void>(builder, {
-      query: () => ({
-        url: "/taxes/list",
-      }),
-      providesTags: (result: TaxTypeModel[]) =>
-        apiConfig.providesTags(result, ApiServiceNameEnum.DICTIONARY),
-    }),
-    getCurrenciesList: apiConfig.createQuery<CurrencyModel[], void>(builder, {
-      query: () => ({
-        url: "/currencies/list",
-      }),
-      providesTags: (result: CurrencyModel[]) =>
-        apiConfig.providesTags(result, ApiServiceNameEnum.DICTIONARY),
-    }),
-    getLanguagesList: apiConfig.createQuery<LanguageModel[], void>(builder, {
-      query: () => ({
-        url: "/languages/all",
-      }),
-      providesTags: (result: LanguageModel[]) =>
-        apiConfig.providesTags(result, ApiServiceNameEnum.DICTIONARY),
-    }),
-    getDeliveryServicesList: apiConfig.createQuery<LanguageModel[], void>(
-      builder,
-      {
-        query: () => ({
-          url: "/delivery-services/list",
-        }),
-        providesTags: (result: LanguageModel[]) =>
-          apiConfig.providesTags(result, ApiServiceNameEnum.DICTIONARY),
-      },
+    getSortingOptionsForGrid: builder.query<any, void>(
+      apiConfig.getStaticData<ControllerType>(
+        "getSortingOptionsForGrid",
+        controller,
+      ),
+    ),
+    getListOfTypesOfTraits: builder.query<TypeOfTraitModel[], void>(
+      apiConfig.getStaticData<ControllerType>(
+        "getListOfTypesOfTraits",
+        controller,
+      ),
+    ),
+    getTaxesList: builder.query<TaxTypeModel[], void>(
+      apiConfig.getStaticData<ControllerType>("getTaxesList", controller),
+    ),
+    getCurrenciesList: builder.query<CurrencyModel[], void>(
+      apiConfig.getStaticData<ControllerType>("getCurrenciesList", controller),
+    ),
+    getLanguagesList: builder.query<LanguageModel[], void>(
+      apiConfig.getStaticData<ControllerType>("getLanguagesList", controller),
+    ),
+    getDeliveryServicesList: builder.query<DeliveryServiceModel[], void>(
+      apiConfig.getStaticData<ControllerType>(
+        "getDeliveryServicesList",
+        controller,
+      ),
     ),
   }),
 });
