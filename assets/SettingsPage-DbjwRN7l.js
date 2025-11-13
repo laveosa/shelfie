@@ -1,0 +1,1 @@
+import{u as n,S as i,i as r,j as e}from"./index-CsFqcJLY.js";const a={};function c(){const s=n(t=>t[i.SETTINGS]);return r(),{...s}}function u(){return c(),e.jsx("div",{className:a.settingsPage,children:e.jsx("h1",{children:"Settings Page"})})}export{u as SettingsPage};
