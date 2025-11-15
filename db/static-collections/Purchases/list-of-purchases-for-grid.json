@@ -2,93 +2,116 @@
   {
     "purchaseId": 190,
     "date": "2025-11-11T00:00:00Z",
-    "currencyBrief": "zł.",
+    "currencyBrief": "$",
     "unitsAmount": 20,
-    "expense": 3013.30,
-    "valueAmount": 0.0,
-    "soldAmount": 0.0,
-    "orderValueAmount": 0.0,
+    "expense": 4580,
+    "valueAmount": 124,
+    "soldAmount": 23,
+    "orderValueAmount": 0,
     "supplier": {
-      "companyId": 45,
-      "companyName": "Dixie Slr",
-      "locationId": 64,
-      "thumbnailUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/0199f82a-3abc-74fe-ac6b-40eaa336e3e5/thumbnail/0199f82a-3abc-74fe-ac6b-40eaa336e3e5.png?sv=2025-07-05&se=2026-11-10T15%3A27%3A09Z&sr=b&sp=r&sig=wcKL4G9hPevNBmb8xOZQe3SPoD0vjIjrbPNGmidMo5o%3D",
-      "address": "Via Rotonda Segnatello, 4, Funo, Italy"
+      "companyId": 1001,
+      "supplierName": "Nike Ukraine LLC",
+      "thumbnailUrl": "/shelfie/images/brands/nike-logo.svg",
+      "locationId": 201,
+      "address": "12 Velyka Vasylkivska St, Kyiv, Ukraine"
     },
     "location": {
-      "locationId": 64,
-      "address": "Via Rotonda Segnatello, 4, Funo, Italy"
+      "locationId": 201,
+      "address": "12 Velyka Vasylkivska St, Kyiv, Ukraine"
     },
-    "documentNotes": "Duży zakup",
+    "documentNotes": "Some nots for current purchase...",
     "isDeleted": false
   },
   {
     "purchaseId": 93,
     "date": "2025-10-18T07:10:50.611Z",
-    "currencyBrief": "zł.",
+    "currencyBrief": "$",
     "unitsAmount": 77,
     "expense": 3460.72,
-    "valueAmount": 0.0,
-    "soldAmount": 0.0,
+    "valueAmount": 44,
+    "soldAmount": 112,
     "orderValueAmount": 0.0,
     "supplier": {
-      "companyId": 45,
-      "companyName": "Dixie Slr",
-      "locationId": 64,
-      "thumbnailUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/0199f82a-3abc-74fe-ac6b-40eaa336e3e5/thumbnail/0199f82a-3abc-74fe-ac6b-40eaa336e3e5.png?sv=2025-07-05&se=2026-11-10T15%3A27%3A09Z&sr=b&sp=r&sig=wcKL4G9hPevNBmb8xOZQe3SPoD0vjIjrbPNGmidMo5o%3D",
-      "address": "Via Rotonda Segnatello, 4, Funo, Italy"
+      "companyId": 1002,
+      "supplierName": "Adidas Eastern Europe Trading",
+      "thumbnailUrl": "/shelfie/images/brands/adidas-logo.svg",
+      "locationId": 202,
+      "address": "22 Lesi Ukrainky Blvd, Kyiv, Ukraine"
     },
     "location": {
-      "locationId": 64,
-      "address": "Via Rotonda Segnatello, 4, Funo, Italy"
+      "locationId": 202,
+      "address": "22 Lesi Ukrainky Blvd, Kyiv, Ukraine"
     },
     "documentNotes": null,
-    "isDeleted": false
+    "isDeleted": true
   },
   {
     "purchaseId": 62,
     "date": "2025-10-02T00:00:00Z",
-    "currencyBrief": "zł.",
+    "currencyBrief": "$",
     "unitsAmount": 205,
-    "expense": 4928.61,
-    "valueAmount": 0.0,
-    "soldAmount": 0.0,
+    "expense": 1200,
+    "valueAmount": 44,
+    "soldAmount": 112,
     "orderValueAmount": 0.0,
     "supplier": {
-      "companyId": 41,
-      "companyName": "123121111 eeee",
-      "locationId": 57,
-      "thumbnailUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/0199c517-8915-7b38-bb62-8907e4a78d18/thumbnail/0199c517-8915-7b38-bb62-8907e4a78d18.jpeg?sv=2025-07-05&se=2026-11-10T15%3A27%3A09Z&sr=b&sp=r&sig=pgLzZwCw4CiKgbiWi3ipQ0NYekaERunz770TN8wuKhg%3D",
-      "address": "test address2 123123 er er, 123123 123, Andorra"
+      "companyId": 1003,
+      "supplierName": "Levi’s Distribution Europe",
+      "thumbnailUrl": "/shelfie/images/brands/levis-logo.svg",
+      "locationId": 203,
+      "address": "14 Rue de Rivoli, Paris, France"
     },
     "location": {
-      "locationId": 57,
-      "address": "test address2 123123 er er, 123123 123, Andorra"
+      "locationId": 203,
+      "address": "14 Rue de Rivoli, Paris, France"
     },
-    "documentNotes": null,
+    "documentNotes": "Some nots for current purchase...",
     "isDeleted": false
   },
   {
     "purchaseId": 2,
     "date": "2025-10-01T00:00:00Z",
-    "currencyBrief": "zł.",
+    "currencyBrief": "$",
     "unitsAmount": 4880,
     "expense": 101337.18,
-    "valueAmount": 0.0,
-    "soldAmount": 0.0,
+    "valueAmount": 21.0,
+    "soldAmount": 110.0,
     "orderValueAmount": 0.0,
     "supplier": {
-      "companyId": 4,
-      "companyName": "Test1",
-      "locationId": 5,
-      "thumbnailUrl": "https://shelfiestorageaccount.blob.core.windows.net/photos/9181784c-11f8-438d-a490-1f6014c98dfe/0199c514-4e25-7e4d-becb-d742ed7a9952/thumbnail/0199c514-4e25-7e4d-becb-d742ed7a9952.jpeg?sv=2025-07-05&se=2026-11-10T15%3A27%3A09Z&sr=b&sp=r&sig=Lg5EK63lnqBkO%2Boq0ZQRJx5I1dM2U173%2F8jE3%2B0Q5qE%3D",
-      "address": "Test address 111 Test address 2, Citysw 1111w, Bulgaria"
+      "companyId": 1004,
+      "supplierName": "Zara Logistics Spain S.A.",
+      "thumbnailUrl": "/shelfie/images/brands/zara-logo.svg",
+      "locationId": 204,
+      "address": "151 Avenida de Arteixo, A Coruña, Spain"
     },
     "location": {
-      "locationId": 5,
-      "address": "Test address 111 Test address 2, Citysw 1111w, Bulgaria"
+      "locationId": 204,
+      "address": "151 Avenida de Arteixo, A Coruña, Spain"
     },
-    "documentNotes": null,
+    "documentNotes": "Some nots for current purchase...",
+    "isDeleted": false
+  },
+  {
+    "purchaseId": 2,
+    "date": "2025-10-01T00:00:00Z",
+    "currencyBrief": "$",
+    "unitsAmount": 4880,
+    "expense": 101337.18,
+    "valueAmount": 223.0,
+    "soldAmount": 10.0,
+    "orderValueAmount": 0.0,
+    "supplier": {
+      "companyId": 1005,
+      "supplierName": "H&M Hennes & Mauritz Supply AB",
+      "thumbnailUrl": "/shelfie/images/brands/hm-logo.svg",
+      "locationId": 205,
+      "address": "Mäster Samuelsgatan 46, Stockholm, Sweden"
+    },
+    "location": {
+      "locationId": 205,
+      "address": "Mäster Samuelsgatan 46, Stockholm, Sweden"
+    },
+    "documentNotes": "Some nots for current purchase...",
     "isDeleted": false
   }
 ]

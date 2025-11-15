@@ -59,7 +59,6 @@ export function PurchasesGridColumns(onAction: any): ColumnDef<any, any>[] {
       accessorKey: "location",
       header: "Location",
       minSize: 50,
-      maxSize: 200,
       cell: ({ row }) => (
         <SheTooltip
           delayDuration={200}
