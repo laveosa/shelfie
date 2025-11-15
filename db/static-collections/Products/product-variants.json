@@ -1,7 +1,7 @@
 [
   {
     "variantId": 111,
-    "variantName": "Zara Poplin Midi Skirt",
+    "variantName": "Zara Poplin Midi Skirt: variant 1",
     "stockAmount": 12,
     "showAlert": false,
     "isActive": true,
@@ -35,7 +35,7 @@
   },
   {
     "variantId": 122,
-    "variantName": "Zara Poplin Midi Skirt",
+    "variantName": "Zara Poplin Midi Skirt: variant 2",
     "stockAmount": 24,
     "showAlert": false,
     "isActive": true,
@@ -69,7 +69,7 @@
   },
   {
     "variantId": 133,
-    "variantName": "Zara Poplin Midi Skirt",
+    "variantName": "Zara Poplin Midi Skirt: variant 3",
     "stockAmount": 21,
     "showAlert": false,
     "isActive": true,

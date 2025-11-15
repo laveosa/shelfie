@@ -3,7 +3,7 @@
   "brand": {
     "brandId": 128,
     "brandName": "Lululemon",
-    "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/9/93/Lululemon_logo.svg"
+    "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/2/22/Lululemon_Athletica_logo.svg"
   },
   "brandId": 128,
   "countryOfOrigin": {
@@ -26,3 +26,5 @@
   "productId": 1028,
   "productName": "Lululemon Athletica Swiftly Tee"
 }
+
+

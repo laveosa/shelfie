@@ -346,6 +346,8 @@ export default function useProductsPageService() {
 
   function getTraitsForFilterHandler() {
     return getTraitsForFilter(undefined).then((res: any) => {
+      console.log(res);
+
       dispatch(
         actions.refreshSizesForFilter(
           res.data

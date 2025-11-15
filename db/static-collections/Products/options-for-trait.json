@@ -1,14 +1,35 @@
 [
   {
-    "optionId": 5,
-    "optionName": null,
-    "optionColor": "#fff",
-    "isRaw": true,
+    "optionId": 12,
+    "optionName": "S",
+    "isRaw": false,
     "sortOrder": 0,
-    "traitTypeId": 2,
-    "traitTypeName": "Color",
-    "traitId": 2,
-    "traitName": "NikTestTrait 111",
+    "traitId": 1,
+    "traitName": "Size",
+    "traitTypeId": 111,
+    "traitTypeName": "EOSC",
+    "isDeleted": false
+  },
+  {
+    "optionId": 13,
+    "optionName": "M",
+    "isRaw": false,
+    "sortOrder": 0,
+    "traitId": 1,
+    "traitName": "Size",
+    "traitTypeId": 111,
+    "traitTypeName": "EOSC",
+    "isDeleted": false
+  },
+  {
+    "optionId": 11,
+    "optionName": "L",
+    "isRaw": false,
+    "sortOrder": 0,
+    "traitId": 1,
+    "traitName": "Size",
+    "traitTypeId": 111,
+    "traitTypeName": "EOSC",
     "isDeleted": false
   }
 ]

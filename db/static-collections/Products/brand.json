@@ -1,0 +1,24 @@
+{
+  "brandId": 101,
+  "brandName": "Nike",
+  "photos": [
+    {
+      "photoId": 11,
+      "assetId": 11,
+      "thumbnailUrl": "/shelfie/images/brands/nike-logo.svg",
+      "adaptedUrl": "/shelfie/images/brands/nike-logo.svg",
+      "width": 275,
+      "height": 183,
+      "sortOrder": 0,
+      "isActive": true,
+      "originalName": "Nike"
+    }
+  ],
+  "company": {
+    "companyId": 1001,
+    "supplierName": "Nike Ukraine LLC",
+    "thumbnailUrl": "/shelfie/images/brands/nike-logo.svg",
+    "locationId": 201,
+    "address": "12 Velyka Vasylkivska St, Kyiv, Ukraine"
+  }
+}

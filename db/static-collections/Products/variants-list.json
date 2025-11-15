@@ -38,10 +38,10 @@
         "optionColor": null,
         "isRaw": false,
         "sortOrder": 0,
-        "traitTypeId": 1,
-        "traitTypeName": "Size",
-        "traitId": 35,
-        "traitName": "Test Size",
+        "traitId": 1,
+        "traitName": "Size",
+        "traitTypeId": 111,
+        "traitTypeName": "EOSC",
         "isDeleted": false
       },
       {
@@ -50,10 +50,10 @@
         "optionColor": "#B89D72",
         "isRaw": false,
         "sortOrder": 0,
-        "traitTypeId": 2,
+        "traitId": 2,
         "traitTypeName": "Color",
-        "traitId": 1,
-        "traitName": "Color",
+        "traitTypeId": 2,
+        "traitName": "Standard",
         "isDeleted": false
       }
     ]
@@ -97,10 +97,10 @@
         "optionColor": null,
         "isRaw": false,
         "sortOrder": 0,
-        "traitTypeId": 1,
-        "traitTypeName": "Size",
-        "traitId": 35,
-        "traitName": "Test Size",
+        "traitId": 1,
+        "traitName": "Size",
+        "traitTypeId": 111,
+        "traitTypeName": "EOSC",
         "isDeleted": false
       },
       {
@@ -109,10 +109,10 @@
         "optionColor": "#B89D72",
         "isRaw": false,
         "sortOrder": 0,
-        "traitTypeId": 2,
+        "traitId": 2,
         "traitTypeName": "Color",
-        "traitId": 1,
-        "traitName": "Color",
+        "traitTypeId": 2,
+        "traitName": "Standard",
         "isDeleted": false
       }
     ]
@@ -156,10 +156,10 @@
         "optionColor": null,
         "isRaw": false,
         "sortOrder": 0,
-        "traitTypeId": 1,
-        "traitTypeName": "Size",
-        "traitId": 35,
-        "traitName": "Test Size",
+        "traitId": 1,
+        "traitName": "Size",
+        "traitTypeId": 111,
+        "traitTypeName": "EOSC",
         "isDeleted": false
       },
       {
@@ -168,10 +168,10 @@
         "optionColor": "#1F2122",
         "isRaw": false,
         "sortOrder": 0,
-        "traitTypeId": 2,
+        "traitId": 2,
         "traitTypeName": "Color",
-        "traitId": 1,
-        "traitName": "Color",
+        "traitTypeId": 2,
+        "traitName": "Standard",
         "isDeleted": false
       }
     ]
@@ -215,10 +215,10 @@
         "optionColor": null,
         "isRaw": false,
         "sortOrder": 0,
-        "traitTypeId": 1,
-        "traitTypeName": "Size",
-        "traitId": 35,
-        "traitName": "Test Size",
+        "traitId": 1,
+        "traitName": "Size",
+        "traitTypeId": 111,
+        "traitTypeName": "EOSC",
         "isDeleted": false
       },
       {
@@ -227,10 +227,10 @@
         "optionColor": "#798387",
         "isRaw": false,
         "sortOrder": 0,
-        "traitTypeId": 2,
+        "traitId": 2,
         "traitTypeName": "Color",
-        "traitId": 1,
-        "traitName": "Color",
+        "traitTypeId": 2,
+        "traitName": "Standard",
         "isDeleted": false
       }
     ]
@@ -274,10 +274,10 @@
         "optionColor": null,
         "isRaw": false,
         "sortOrder": 0,
-        "traitTypeId": 1,
-        "traitTypeName": "Size",
-        "traitId": 35,
-        "traitName": "Test Size",
+        "traitId": 1,
+        "traitName": "Size",
+        "traitTypeId": 111,
+        "traitTypeName": "EOSC",
         "isDeleted": false
       },
       {
@@ -286,10 +286,10 @@
         "optionColor": "#7C90FF",
         "isRaw": false,
         "sortOrder": 0,
-        "traitTypeId": 2,
+        "traitId": 2,
         "traitTypeName": "Color",
-        "traitId": 1,
-        "traitName": "Color",
+        "traitTypeId": 2,
+        "traitName": "Standard",
         "isDeleted": false
       }
     ]
@@ -333,10 +333,10 @@
         "optionColor": null,
         "isRaw": false,
         "sortOrder": 0,
-        "traitTypeId": 1,
-        "traitTypeName": "Size",
-        "traitId": 35,
-        "traitName": "Test Size",
+        "traitId": 1,
+        "traitName": "Size",
+        "traitTypeId": 111,
+        "traitTypeName": "EOSC",
         "isDeleted": false
       },
       {
@@ -345,10 +345,10 @@
         "optionColor": "#7C90FF",
         "isRaw": false,
         "sortOrder": 0,
-        "traitTypeId": 2,
+        "traitId": 2,
         "traitTypeName": "Color",
-        "traitId": 1,
-        "traitName": "Color",
+        "traitTypeId": 2,
+        "traitName": "Standard",
         "isDeleted": false
       }
     ]
@@ -392,10 +392,10 @@
         "optionColor": null,
         "isRaw": false,
         "sortOrder": 0,
-        "traitTypeId": 1,
-        "traitTypeName": "Size",
-        "traitId": 35,
-        "traitName": "Test Size",
+        "traitId": 1,
+        "traitName": "Size",
+        "traitTypeId": 111,
+        "traitTypeName": "EOSC",
         "isDeleted": false
       },
       {
@@ -404,10 +404,10 @@
         "optionColor": "#2E4062",
         "isRaw": false,
         "sortOrder": 0,
-        "traitTypeId": 2,
+        "traitId": 2,
         "traitTypeName": "Color",
-        "traitId": 1,
-        "traitName": "Color",
+        "traitTypeId": 2,
+        "traitName": "Standard",
         "isDeleted": false
       }
     ]
@@ -451,10 +451,10 @@
         "optionColor": null,
         "isRaw": false,
         "sortOrder": 0,
-        "traitTypeId": 1,
-        "traitTypeName": "Size",
-        "traitId": 35,
-        "traitName": "Test Size",
+        "traitId": 1,
+        "traitName": "Size",
+        "traitTypeId": 111,
+        "traitTypeName": "EOSC",
         "isDeleted": false
       },
       {
@@ -463,10 +463,10 @@
         "optionColor": "#2E4062",
         "isRaw": false,
         "sortOrder": 0,
-        "traitTypeId": 2,
+        "traitId": 2,
         "traitTypeName": "Color",
-        "traitId": 1,
-        "traitName": "Color",
+        "traitTypeId": 2,
+        "traitName": "Standard",
         "isDeleted": false
       }
     ]
@@ -510,10 +510,10 @@
         "optionColor": null,
         "isRaw": false,
         "sortOrder": 0,
-        "traitTypeId": 1,
-        "traitTypeName": "Size",
-        "traitId": 35,
-        "traitName": "Test Size",
+        "traitId": 1,
+        "traitName": "Size",
+        "traitTypeId": 111,
+        "traitTypeName": "EOSC",
         "isDeleted": false
       },
       {
@@ -522,10 +522,10 @@
         "optionColor": "#2E4062",
         "isRaw": false,
         "sortOrder": 0,
-        "traitTypeId": 2,
+        "traitId": 2,
         "traitTypeName": "Color",
-        "traitId": 1,
-        "traitName": "Color",
+        "traitTypeId": 2,
+        "traitName": "Standard",
         "isDeleted": false
       }
     ]
@@ -569,10 +569,10 @@
         "optionColor": null,
         "isRaw": false,
         "sortOrder": 0,
-        "traitTypeId": 1,
-        "traitTypeName": "Size",
-        "traitId": 35,
-        "traitName": "Test Size",
+        "traitId": 1,
+        "traitName": "Size",
+        "traitTypeId": 111,
+        "traitTypeName": "EOSC",
         "isDeleted": false
       },
       {
@@ -581,10 +581,10 @@
         "optionColor": "#432E2B",
         "isRaw": false,
         "sortOrder": 0,
-        "traitTypeId": 2,
+        "traitId": 2,
         "traitTypeName": "Color",
-        "traitId": 1,
-        "traitName": "Color",
+        "traitTypeId": 2,
+        "traitName": "Standard",
         "isDeleted": false
       }
     ]

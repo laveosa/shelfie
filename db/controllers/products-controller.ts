@@ -1,36 +1,24 @@
 import { BaseController } from "./base-controller.ts";
 
-import allProducts from "../static-collections/Products/all-products.json";
-import theProductsForGrid from "../static-collections/Products/the-products-for-grid.json";
-import simpleListOfAllBrands from "../static-collections/Products/simple-list-of-all-brands.json";
-import variantsForGrid from "../static-collections/Products/variants-for-grid.json";
-import createVariant from "../static-collections/Products/create-variant.json";
-import variantDetails from "../static-collections/Products/variant-details.json";
-
-import productDetail from "../static-collections/Products/product-details.json";
-import brandsForProductsFilter from "../static-collections/Products/brands-for-products-filter.json";
-import productCode from "../static-collections/Products/product-code.json";
-import allCategoriesByOrganization from "../static-collections/Products/all-categories-by-organization.json";
-import newProduct from "../static-collections/Products/new-product.json";
-import newCategory from "../static-collections/Products/new-category.json";
-import newBrand from "../static-collections/Products/new-brand.json";
-import countersForProducts from "../static-collections/Products/counters-for-products.json";
-import listOfProductPhotos from "../static-collections/Products/list-of-product-photos.json";
-import productPhotosForVariant from "../static-collections/Products/product-photos-for-variant.json";
-import disposeVariantFromStock from "../static-collections/Products/dispose-variant-from-stock.json";
-import variantStockHistory from "../static-collections/Products/variant-stock-history.json";
-import listOfAllTraits from "../static-collections/Products/list-of-all-traits.json";
-import listOfTraitsForProduct from "../static-collections/Products/list-of-traits-for-product.json";
-import listOfTraitsWithOptionsForProduct from "../static-collections/Products/list-of-traits-with-options-for-product.json";
-import trait from "../static-collections/Products/trait.json";
-import optionsForTrait from "../static-collections/Products/options-for-trait.json";
-import newOptionForTrait from "../static-collections/Products/new-option-for-trait.json";
-
-import brandsList from "../static-collections/Products/brands-list_TABLE.json";
-import productsList from "../static-collections/Products/products-list_TABLE.json";
-import variant from "../static-collections/Products/variant_TABLE.json";
-import variantsList from "../static-collections/Products/variants-list_TABLE.json";
+import product from "../static-collections/Products/product.json";
+import productsList from "../static-collections/Products/products-list.json";
 import productVariants from "../static-collections/Products/product-variants.json";
+import productCode from "../static-collections/Products/product-code.json";
+import productPhotos from "../static-collections/Products/product-photos.json";
+import countersForProducts from "../static-collections/Products/counters-for-products.json";
+import variant from "../static-collections/Products/variant.json";
+import variantsList from "../static-collections/Products/variants-list.json";
+import variantStockHistory from "../static-collections/Products/variant-stock-history.json";
+import disposeVariantFromStock from "../static-collections/Products/dispose-variant-from-stock.json";
+import brand from "../static-collections/Products/brand.json";
+import brandsList from "../static-collections/Products/brands-list.json";
+import brandsForProductsFilter from "../static-collections/Products/brands-for-products-filter.json";
+import category from "../static-collections/Products/category.json";
+import categoriesList from "../static-collections/Products/categories-list.json";
+import trait from "../static-collections/Products/trait.json";
+import traitList from "../static-collections/Products/trait-list.json";
+import traitOption from "../static-collections/Products/trait-option.json";
+import optionsForTrait from "../static-collections/Products/options-for-trait.json";
 
 export class ProductsController extends BaseController {
   public static getAllProducts() {
@@ -38,7 +26,7 @@ export class ProductsController extends BaseController {
   }
 
   public static getProductDetail() {
-    return this.staticDataApiHandler(productDetail);
+    return this.staticDataApiHandler(product);
   }
 
   public static updateProduct() {
@@ -74,7 +62,7 @@ export class ProductsController extends BaseController {
   }
 
   public static getAllCategoriesByOrganization() {
-    return this.staticDataApiHandler(allCategoriesByOrganization);
+    return this.staticDataApiHandler(categoriesList);
   }
 
   public static checkProductCode() {
@@ -90,19 +78,19 @@ export class ProductsController extends BaseController {
   }
 
   public static createNewProduct() {
-    return this.staticDataApiHandler(newProduct);
+    return this.staticDataApiHandler(product);
   }
 
   public static createNewCategory() {
-    return this.staticDataApiHandler(newCategory);
+    return this.staticDataApiHandler(category);
   }
 
   public static createBrand() {
-    return this.staticDataApiHandler(newBrand);
+    return this.staticDataApiHandler(brand);
   }
 
   public static uploadPhoto() {
-    return this.staticDataApiHandler(newBrand);
+    return this.staticDataApiHandler(brand);
   }
 
   public static getCountersForProducts() {
@@ -110,11 +98,11 @@ export class ProductsController extends BaseController {
   }
 
   public static getProductPhotos() {
-    return this.staticDataApiHandler(listOfProductPhotos);
+    return this.staticDataApiHandler(productPhotos);
   }
 
   public static getProductPhotosForVariant() {
-    return this.staticDataApiHandler(productPhotosForVariant);
+    return this.staticDataApiHandler(productPhotos);
   }
 
   public static putPhotoInNewPosition() {
@@ -178,15 +166,15 @@ export class ProductsController extends BaseController {
   }
 
   public static getListOfAllTraits() {
-    return this.staticDataApiHandler(listOfAllTraits);
+    return this.staticDataApiHandler(traitList);
   }
 
   public static getListOfTraitsForProduct() {
-    return this.staticDataApiHandler(listOfTraitsForProduct);
+    return this.staticDataApiHandler(traitList);
   }
 
   public static getListOfTraitsWithOptionsForProduct() {
-    return this.staticDataApiHandler(listOfTraitsWithOptionsForProduct);
+    return this.staticDataApiHandler(traitList);
   }
 
   public static getTrait() {
@@ -214,7 +202,7 @@ export class ProductsController extends BaseController {
   }
 
   public static createNewOptionForTrait() {
-    return this.staticDataApiHandler(newOptionForTrait);
+    return this.staticDataApiHandler(traitOption);
   }
 
   public static deleteOptionOfTrait() {
