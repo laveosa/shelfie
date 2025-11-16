@@ -1,0 +1,86 @@
+[
+  {
+    "customerId": 1,
+    "customerName": "Emma Richardson",
+    "firstName": "Emma",
+    "lastName": "Richardson",
+    "email": "emma.richardson@email.com",
+    "phoneNumber": "+44 20 7946 0958",
+    "rank": "Platinum",
+    "createdAt": "2024-03-15T09:42:18.000Z",
+    "lastOrderDate": "2025-11-12T00:00:00Z",
+    "thumbnailUrl": "https://img.freepik.com/free-photo/portrait-beautiful-business-office-business-center_1303-20365.jpg"
+  },
+  {
+    "customerId": 34,
+    "customerName": "Marcus Chen",
+    "firstName": "Marcus",
+    "lastName": "Chen",
+    "email": "marcus.chen@techmail.com",
+    "phoneNumber": "+1 415 555 0142",
+    "rank": "Bronze",
+    "createdAt": "2025-10-09T16:37:38.221857Z",
+    "lastOrderDate": null,
+    "thumbnailUrl": "https://img.freepik.com/premium-photo/smiling-business-man-full-black-suit-glasses-looking-camera-standing-cityscape-background_283617-8299.jpg"
+  },
+  {
+    "customerId": 35,
+    "customerName": "Sofia Martinez",
+    "firstName": "Sofia",
+    "lastName": "Martinez",
+    "email": "sofia.martinez@webmail.es",
+    "phoneNumber": "+34 91 123 4567",
+    "rank": "Silver",
+    "createdAt": "2025-10-09T16:40:00.639224Z",
+    "lastOrderDate": null,
+    "thumbnailUrl": "https://www.lanacion.com.ar/resizer/v2/sofia-martinez-con-nuevos-desafios-en-la-AHRQWQ4UNJAZPGDZ2S5RF3MX6Q.jpg"
+  },
+  {
+    "customerId": 36,
+    "customerName": "Lucas Bergström",
+    "firstName": "Lucas",
+    "lastName": "Bergström",
+    "email": "lucas.bergstrom@nordicmail.se",
+    "phoneNumber": "+46 8 123 456 78",
+    "rank": "Gold",
+    "createdAt": "2025-10-09T16:50:56.118375Z",
+    "lastOrderDate": "2025-10-14T00:00:00Z",
+    "thumbnailUrl": "https://img.freepik.com/premium-photo/group-happy-business-man-business-women-dressed-suits-are-smiling-office_457222-5269.jpg"
+  },
+  {
+    "customerId": 37,
+    "customerName": "Amélie Dubois",
+    "firstName": "Amélie",
+    "lastName": "Dubois",
+    "email": "amelie.dubois@laposte.fr",
+    "phoneNumber": "+33 1 42 86 82 00",
+    "rank": "Gold",
+    "createdAt": "2025-10-14T10:22:03.718426Z",
+    "lastOrderDate": "2025-10-16T00:00:00Z",
+    "thumbnailUrl": "https://img.freepik.com/premium-photo/portrait-smiling-brunette_53419-5937.jpg"
+  },
+  {
+    "customerId": 70,
+    "customerName": "Alessandro Rossi",
+    "firstName": "Alessandro",
+    "lastName": "Rossi",
+    "email": "a.rossi@italmail.it",
+    "phoneNumber": "+39 06 1234 5678",
+    "rank": "Platinum",
+    "createdAt": "2025-10-26T13:25:45.598658Z",
+    "lastOrderDate": "2025-10-30T00:00:00Z",
+    "thumbnailUrl": "https://img.freepik.com/premium-photo/portrait-businessman-with-glasses-goes-work-office-business-suit-smiles_283470-7493.jpg"
+  },
+  {
+    "customerId": 71,
+    "customerName": "Nina Kowalska",
+    "firstName": "Nina",
+    "lastName": "Kowalska",
+    "email": "nina.kowalska@poczta.pl",
+    "phoneNumber": "+48 22 123 45 67",
+    "rank": "Diamond",
+    "createdAt": "2025-11-08T14:20:02.200359Z",
+    "lastOrderDate": "2025-11-08T00:00:00Z",
+    "thumbnailUrl": "https://img.freepik.com/free-photo/front-view-business-woman-suit_23-2148603018.jpg"
+  }
+]

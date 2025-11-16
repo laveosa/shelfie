@@ -1,0 +1,222 @@
+[
+  {
+    "id": 225,
+    "customerId": null,
+    "customer": {
+      "thumbnailUrl": "https://img.freepik.com/premium-photo/group-happy-business-man-business-women-dressed-suits-are-smiling-office_457222-5269.jpg",
+      "customerName": "Lucas Bergström",
+      "phone": "+46 8 123 456 78",
+      "email": "lucas.bergstrom@nordicmail.se"
+    },
+    "date": "2025-11-10T00:00:00Z",
+    "channel": "Walk-in",
+    "orderStatus": "Processing",
+    "paymentStatus": "Pending",
+    "count": 2,
+    "value": 185.50,
+    "income": 67.25,
+    "currency": {
+      "id": 1,
+      "name": "Euro",
+      "briefName": "EUR"
+    }
+  },
+  {
+    "id": 189,
+    "customerId": null,
+    "customer": {
+      "thumbnailUrl": "https://img.freepik.com/premium-photo/group-happy-business-man-business-women-dressed-suits-are-smiling-office_457222-5269.jpg",
+      "customerName": "Lucas Bergström",
+      "phone": "+46 8 123 456 78",
+      "email": "lucas.bergstrom@nordicmail.se"
+    },
+    "date": "2025-11-08T00:00:00Z",
+    "channel": "Walk-in",
+    "orderStatus": "New",
+    "paymentStatus": "Pending",
+    "count": 1,
+    "value": 89.99,
+    "income": 32.40,
+    "currency": {
+      "id": 1,
+      "name": "Euro",
+      "briefName": "EUR"
+    }
+  },
+  {
+    "id": 191,
+    "customerId": 71,
+    "customer": {
+      "thumbnailUrl": "https://img.freepik.com/free-photo/front-view-business-woman-suit_23-2148603018.jpg",
+      "customerName": "Nina Kowalska",
+      "phone": "+48 22 123 45 67",
+      "email": "nina.kowalska@poczta.pl"
+    },
+    "date": "2025-11-08T00:00:00Z",
+    "channel": "Online Store",
+    "orderStatus": "Shipped",
+    "paymentStatus": "Paid",
+    "count": 3,
+    "value": 456.80,
+    "income": 168.75,
+    "currency": {
+      "id": 1,
+      "name": "Euro",
+      "briefName": "EUR"
+    }
+  },
+  {
+    "id": 183,
+    "customerId": 70,
+    "customer": {
+      "thumbnailUrl": "https://img.freepik.com/premium-photo/portrait-businessman-with-glasses-goes-work-office-business-suit-smiles_283470-7493.jpg",
+      "customerName": "Alessandro Rossi",
+      "phone": "+39 06 1234 5678",
+      "email": "a.rossi@italmail.it"
+    },
+    "date": "2025-10-30T00:00:00Z",
+    "channel": "Mobile App",
+    "orderStatus": "Delivered",
+    "paymentStatus": "Paid",
+    "count": 2,
+    "value": 234.60,
+    "income": 89.50,
+    "currency": {
+      "id": 1,
+      "name": "Euro",
+      "briefName": "EUR"
+    }
+  },
+  {
+    "id": 172,
+    "customerId": 70,
+    "customer": {
+      "thumbnailUrl": "https://img.freepik.com/premium-photo/portrait-businessman-with-glasses-goes-work-office-business-suit-smiles_283470-7493.jpg",
+      "customerName": "Alessandro Rossi",
+      "phone": "+39 06 1234 5678",
+      "email": "a.rossi@italmail.it"
+    },
+    "date": "2025-10-26T00:00:00Z",
+    "channel": "Online Store",
+    "orderStatus": "Cancelled",
+    "paymentStatus": "Refunded",
+    "count": 8,
+    "value": 892.75,
+    "income": 0.0,
+    "currency": {
+      "id": 1,
+      "name": "Euro",
+      "briefName": "EUR"
+    }
+  },
+  {
+    "id": 180,
+    "customerId": 1,
+    "customer": {
+      "thumbnailUrl": "https://img.freepik.com/free-photo/portrait-beautiful-business-office-business-center_1303-20365.jpg",
+      "customerName": "Emma Richardson",
+      "phone": "+44 20 7946 0958",
+      "email": "emma.richardson@email.com"
+    },
+    "date": "2025-10-28T00:00:00Z",
+    "channel": "Online Store",
+    "orderStatus": "Delivered",
+    "paymentStatus": "Paid",
+    "count": 5,
+    "value": 678.90,
+    "income": 245.30,
+    "currency": {
+      "id": 2,
+      "name": "British Pound",
+      "briefName": "GBP"
+    }
+  },
+  {
+    "id": 81,
+    "customerId": 1,
+    "customer": {
+      "thumbnailUrl": "https://img.freepik.com/free-photo/portrait-beautiful-business-office-business-center_1303-20365.jpg",
+      "customerName": "Emma Richardson",
+      "phone": "+44 20 7946 0958",
+      "email": "emma.richardson@email.com"
+    },
+    "date": "2025-10-16T00:00:00Z",
+    "channel": "Mobile App",
+    "orderStatus": "Shipped",
+    "paymentStatus": "Paid",
+    "count": 6,
+    "value": 1245.80,
+    "income": 467.30,
+    "currency": {
+      "id": 2,
+      "name": "British Pound",
+      "briefName": "GBP"
+    }
+  },
+  {
+    "id": 140,
+    "customerId": 34,
+    "customer": {
+      "thumbnailUrl": "https://img.freepik.com/premium-photo/smiling-business-man-full-black-suit-glasses-looking-camera-standing-cityscape-background_283617-8299.jpg",
+      "customerName": "Marcus Chen",
+      "phone": "+1 415 555 0142",
+      "email": "marcus.chen@techmail.com"
+    },
+    "date": "2025-10-23T00:00:00Z",
+    "channel": "Phone Order",
+    "orderStatus": "Processing",
+    "paymentStatus": "Paid",
+    "count": 3,
+    "value": 412.80,
+    "income": 156.90,
+    "currency": {
+      "id": 3,
+      "name": "US Dollar",
+      "briefName": "USD"
+    }
+  },
+  {
+    "id": 78,
+    "customerId": 37,
+    "customer": {
+      "thumbnailUrl": "https://img.freepik.com/premium-photo/portrait-smiling-brunette_53419-5937.jpg",
+      "customerName": "Amélie Dubois",
+      "phone": "+33 1 42 86 82 00",
+      "email": "amelie.dubois@laposte.fr"
+    },
+    "date": "2025-10-16T00:00:00Z",
+    "channel": "Online Store",
+    "orderStatus": "Delivered",
+    "paymentStatus": "Paid",
+    "count": 4,
+    "value": 523.40,
+    "income": 198.20,
+    "currency": {
+      "id": 1,
+      "name": "Euro",
+      "briefName": "EUR"
+    }
+  },
+  {
+    "id": 80,
+    "customerId": 37,
+    "customer": {
+      "thumbnailUrl": "https://img.freepik.com/premium-photo/portrait-smiling-brunette_53419-5937.jpg",
+      "customerName": "Amélie Dubois",
+      "phone": "+33 1 42 86 82 00",
+      "email": "amelie.dubois@laposte.fr"
+    },
+    "date": "2025-10-16T00:00:00Z",
+    "channel": "Online Store",
+    "orderStatus": "Returned",
+    "paymentStatus": "Refunded",
+    "count": 1,
+    "value": 156.50,
+    "income": -156.50,
+    "currency": {
+      "id": 1,
+      "name": "Euro",
+      "briefName": "EUR"
+    }
+  }
+]

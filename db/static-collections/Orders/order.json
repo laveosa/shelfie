@@ -1,0 +1,32 @@
+{
+  "id": 10245,
+  "customerId": 1,
+  "customer": {
+    "thumbnailUrl": "/assets/avatars/emma-richardson.jpg",
+    "customerName": "Emma Richardson",
+    "phone": "+44 20 7946 0958",
+    "email": "emma.richardson@email.com"
+  },
+  "date": "2025-11-12T14:32:18.456Z",
+  "channel": "Online Store",
+  "orderStatus": "Delivered",
+  "paymentStatus": "Paid",
+  "orderSubTotal": {
+    "subtotal": 342.50,
+    "totalWithDiscountAndShipment": 325.75,
+    "profit": 127.40
+  },
+  "currency": {
+    "id": 1,
+    "name": "Euro",
+    "briefName": "EUR"
+  },
+  "discounts": [
+    {
+      "discountId": 15,
+      "discountRate": "10%"
+    }
+  ],
+  "unitsAmount": 3,
+  "discountAmount": 34.25
+}
