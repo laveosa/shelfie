@@ -6,7 +6,59 @@
     "isDeleted": false,
     "thumbnailUrl": "/shelfie/images/brands/nike-logo.svg",
     "locationId": 201,
-    "address": "12 Velyka Vasylkivska St, Kyiv, Ukraine"
+    "address": "12 Velyka Vasylkivska St, Kyiv, Ukraine",
+    "locations": [
+      {
+        "locationId": 201,
+        "locationAppId": "0199a621-0001-7001-a001-08de122df01c",
+        "locationName": "Nike Ukraine HQ",
+        "addressLine1": "12 Velyka Vasylkivska St",
+        "addressLine2": "Office 401",
+        "city": "Kyiv",
+        "state": "Kyiv Oblast",
+        "postCode": "03150",
+        "countryId": 804,
+        "countryName": "Ukraine",
+        "lat": 50.4265807,
+        "long": 30.5383858,
+        "isDeleted": false,
+        "photos": [
+          {
+            "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/6/6f/%D0%9A%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D0%B0%D1%80%D0%BC%D0%B5%D0%B9%D1%81%D0%BA%D0%B0%D1%8F_12_%D0%9A%D0%B8%D0%B5%D0%B2_2012_01.JPG",
+            "adaptedUrl": "https://upload.wikimedia.org/wikipedia/commons/6/6f/%D0%9A%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D0%B0%D1%80%D0%BC%D0%B5%D0%B9%D1%81%D0%BA%D0%B0%D1%8F_12_%D0%9A%D0%B8%D0%B5%D0%B2_2012_01.JPG",
+            "width": 900,
+            "height": 900,
+            "sortOrder": 0,
+            "isActive": true,
+            "originalName": null,
+            "assetId": 10,
+            "photoId": 10
+          },
+          {
+            "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/2/20/%D0%91%D0%BE%D0%BB%D1%8C%D1%88%D0%B0%D1%8F_%D0%92%D0%B0%D1%81%D0%B8%D0%BB%D1%8C%D0%BA%D0%BE%D0%B2%D1%81%D0%BA%D0%B0%D1%8F%2C_12_%D0%91_%D0%B2_%D0%9A%D0%B8%D0%B5%D0%B2%D0%B5.jpg",
+            "adaptedUrl": "https://upload.wikimedia.org/wikipedia/commons/2/20/%D0%91%D0%BE%D0%BB%D1%8C%D1%88%D0%B0%D1%8F_%D0%92%D0%B0%D1%81%D0%B8%D0%BB%D1%8C%D0%BA%D0%BE%D0%B2%D1%81%D0%BA%D0%B0%D1%8F%2C_12_%D0%91_%D0%B2_%D0%9A%D0%B8%D0%B5%D0%B2%D0%B5.jpg",
+            "width": 900,
+            "height": 900,
+            "sortOrder": 0,
+            "isActive": true,
+            "originalName": null,
+            "assetId": 10,
+            "photoId": 10
+          },
+          {
+            "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/d/dd/%D0%91%D1%83%D0%B4%D0%B8%D0%BD%D0%BE%D0%BA_%D0%BF%D1%80%D0%B8%D0%B1%D1%83%D1%82%D0%BA%D0%BE%D0%B2%D0%B8%D0%B9_0571.jpg",
+            "adaptedUrl": "https://upload.wikimedia.org/wikipedia/commons/d/dd/%D0%91%D1%83%D0%B4%D0%B8%D0%BD%D0%BE%D0%BA_%D0%BF%D1%80%D0%B8%D0%B1%D1%83%D1%82%D0%BA%D0%BE%D0%B2%D0%B8%D0%B9_0571.jpg",
+            "width": 900,
+            "height": 900,
+            "sortOrder": 0,
+            "isActive": true,
+            "originalName": null,
+            "assetId": 10,
+            "photoId": 10
+          }
+        ]
+      }
+    ]
   },
   {
     "companyId": 1002,
@@ -15,16 +67,193 @@
     "isDeleted": false,
     "thumbnailUrl": "/shelfie/images/brands/adidas-logo.svg",
     "locationId": 202,
-    "address": "22 Lesi Ukrainky Blvd, Kyiv, Ukraine"
+    "address": "22 Lesi Ukrainky Blvd, Kyiv, Ukraine",
+    "locations": [
+      {
+        "locationId": 202,
+        "locationAppId": "01999f77-0001-7001-a001-4bd91478020d",
+        "locationName": "Adidas Kyiv Office",
+        "addressLine1": "22 Lesi Ukrainky Blvd",
+        "addressLine2": "Building B",
+        "city": "Kyiv",
+        "state": "Kyiv Oblast",
+        "postCode": "01133",
+        "countryId": 804,
+        "countryName": "Ukraine",
+        "lat": 50.4208606,
+        "long": 30.5383858,
+        "isDeleted": false,
+        "photos": [
+          {
+            "thumbnailUrl": "https://www.shutterstock.com/image-photo/lviv-ukraine-april-18-2019-260nw-1385354018.jpg",
+            "adaptedUrl": "https://www.shutterstock.com/image-photo/lviv-ukraine-april-18-2019-260nw-1385354018.jpg",
+            "width": 900,
+            "height": 900,
+            "sortOrder": 0,
+            "isActive": true,
+            "originalName": null,
+            "assetId": 10,
+            "photoId": 10
+          },
+          {
+            "thumbnailUrl": "https://www.shutterstock.com/image-photo/lviv-ukraine-april-18-2019-260nw-1384704020.jpg",
+            "adaptedUrl": "https://www.shutterstock.com/image-photo/lviv-ukraine-april-18-2019-260nw-1384704020.jpg",
+            "width": 900,
+            "height": 900,
+            "sortOrder": 0,
+            "isActive": true,
+            "originalName": null,
+            "assetId": 10,
+            "photoId": 10
+          },
+          {
+            "thumbnailUrl": "https://www.shutterstock.com/image-photo/lviv-ukraine-august-6-2020-260nw-1794601483.jpg",
+            "adaptedUrl": "https://www.shutterstock.com/image-photo/lviv-ukraine-august-6-2020-260nw-1794601483.jpg",
+            "width": 900,
+            "height": 900,
+            "sortOrder": 0,
+            "isActive": true,
+            "originalName": null,
+            "assetId": 10,
+            "photoId": 10
+          }
+        ]
+      },
+      {
+        "locationId": 2021,
+        "locationAppId": "01999f77-0002-7002-a002-4bd91478020d",
+        "locationName": "Adidas Lviv Distribution Center",
+        "addressLine1": "45 Shevchenko Prospekt",
+        "addressLine2": "",
+        "city": "Lviv",
+        "state": "Lviv Oblast",
+        "postCode": "79000",
+        "countryId": 804,
+        "countryName": "Ukraine",
+        "lat": 49.8397,
+        "long": 24.0297,
+        "isDeleted": false,
+        "photos": [
+          {
+            "thumbnailUrl": "https://mir-s3-cdn-cf.behance.net/projects/404/c42855161508773.Y3JvcCwzNDA5LDI2NjcsMTM1LDA.jpg",
+            "adaptedUrl": "https://mir-s3-cdn-cf.behance.net/projects/404/c42855161508773.Y3JvcCwzNDA5LDI2NjcsMTM1LDA.jpg",
+            "width": 900,
+            "height": 900,
+            "sortOrder": 0,
+            "isActive": true,
+            "originalName": null,
+            "assetId": 10,
+            "photoId": 10
+          }
+        ]
+      }
+    ]
   },
   {
     "companyId": 1003,
     "appId": "0199c969-6605-764c-a728-6793a109c8db",
-    "companyName": "Levi’s Distribution Europe",
+    "companyName": "Levi's Distribution Europe",
     "isDeleted": false,
     "thumbnailUrl": "/shelfie/images/brands/levis-logo.svg",
     "locationId": 203,
-    "address": "14 Rue de Rivoli, Paris, France"
+    "address": "14 Rue de Rivoli, Paris, France",
+    "locations": [
+      {
+        "locationId": 203,
+        "locationAppId": "0199c969-0001-7001-a001-6793a109c8db",
+        "locationName": "Levi's Paris Headquarters",
+        "addressLine1": "14 Rue de Rivoli",
+        "addressLine2": "3rd Floor",
+        "city": "Paris",
+        "state": "Île-de-France",
+        "postCode": "75004",
+        "countryId": 250,
+        "countryName": "France",
+        "lat": 48.8566,
+        "long": 2.3522,
+        "isDeleted": false,
+        "photos": [
+          {
+            "thumbnailUrl": "https://mir-s3-cdn-cf.behance.net/projects/404/c42855161508773.Y3JvcCwzNDA5LDI2NjcsMTM1LDA.jpg",
+            "adaptedUrl": "https://mir-s3-cdn-cf.behance.net/projects/404/c42855161508773.Y3JvcCwzNDA5LDI2NjcsMTM1LDA.jpg",
+            "width": 900,
+            "height": 900,
+            "sortOrder": 0,
+            "isActive": true,
+            "originalName": null,
+            "assetId": 10,
+            "photoId": 10
+          },
+          {
+            "thumbnailUrl": "https://mir-s3-cdn-cf.behance.net/projects/404/a429ba200247165.Y3JvcCwzOTk1LDMxMjUsMCww.jpg",
+            "adaptedUrl": "https://mir-s3-cdn-cf.behance.net/projects/404/a429ba200247165.Y3JvcCwzOTk1LDMxMjUsMCww.jpg",
+            "width": 900,
+            "height": 900,
+            "sortOrder": 0,
+            "isActive": true,
+            "originalName": null,
+            "assetId": 10,
+            "photoId": 10
+          }
+        ]
+      },
+      {
+        "locationId": 2031,
+        "locationAppId": "0199c969-0002-7002-a002-6793a109c8db",
+        "locationName": "Levi's Amsterdam Office",
+        "addressLine1": "120 Keizersgracht",
+        "addressLine2": "",
+        "city": "Amsterdam",
+        "state": "North Holland",
+        "postCode": "1015 CW",
+        "countryId": 528,
+        "countryName": "Netherlands",
+        "lat": 52.3676,
+        "long": 4.9041,
+        "isDeleted": false,
+        "photos": [
+          {
+            "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCA3LYs3SkWNJRB7hPMXVW8wU521OpUnwpzrRvk6IwSfr6VDWmqT6eaNo5DsWvtvUeOl4&usqp=CAU",
+            "adaptedUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCA3LYs3SkWNJRB7hPMXVW8wU521OpUnwpzrRvk6IwSfr6VDWmqT6eaNo5DsWvtvUeOl4&usqp=CAU",
+            "width": 900,
+            "height": 900,
+            "sortOrder": 0,
+            "isActive": true,
+            "originalName": null,
+            "assetId": 10,
+            "photoId": 10
+          }
+        ]
+      },
+      {
+        "locationId": 2032,
+        "locationAppId": "0199c969-0003-7003-a003-6793a109c8db",
+        "locationName": "Levi's Berlin Warehouse",
+        "addressLine1": "88 Warschauer Straße",
+        "addressLine2": "",
+        "city": "Berlin",
+        "state": "Berlin",
+        "postCode": "10243",
+        "countryId": 276,
+        "countryName": "Germany",
+        "lat": 52.52,
+        "long": 13.405,
+        "isDeleted": false,
+        "photos": [
+          {
+            "thumbnailUrl": "https://previews.123rf.com/images/vicu9/vicu92004/vicu9200400270/144233409-lviv-ukraine-december-08-2019-modern-buildings-in-the-historic-part-of-lviv-ukraine.jpg",
+            "adaptedUrl": "https://previews.123rf.com/images/vicu9/vicu92004/vicu9200400270/144233409-lviv-ukraine-december-08-2019-modern-buildings-in-the-historic-part-of-lviv-ukraine.jpg",
+            "width": 900,
+            "height": 900,
+            "sortOrder": 0,
+            "isActive": true,
+            "originalName": null,
+            "assetId": 10,
+            "photoId": 10
+          }
+        ]
+      }
+    ]
   },
   {
     "companyId": 1004,
@@ -33,7 +262,87 @@
     "isDeleted": false,
     "thumbnailUrl": "/shelfie/images/brands/zara-logo.svg",
     "locationId": 204,
-    "address": "151 Avenida de Arteixo, A Coruña, Spain"
+    "address": "151 Avenida de Arteixo, A Coruña, Spain",
+    "locations": [
+      {
+        "locationId": 204,
+        "locationAppId": "0199c9e4-0001-7001-a001-c49810a8a861",
+        "locationName": "Zara Headquarters & Distribution",
+        "addressLine1": "151 Avenida de Arteixo",
+        "addressLine2": "Polígono Industrial de Sabón",
+        "city": "A Coruña",
+        "state": "Galicia",
+        "postCode": "15142",
+        "countryId": 724,
+        "countryName": "Spain",
+        "lat": 43.3623,
+        "long": -8.4115,
+        "isDeleted": false,
+        "photos": [
+          {
+            "thumbnailUrl": "https://againstthecompass.com/wp-content/uploads/2020/10/lviv-off-the-beaten-track-1024x683.jpg",
+            "adaptedUrl": "https://againstthecompass.com/wp-content/uploads/2020/10/lviv-off-the-beaten-track-1024x683.jpg",
+            "width": 900,
+            "height": 900,
+            "sortOrder": 0,
+            "isActive": true,
+            "originalName": null,
+            "assetId": 10,
+            "photoId": 10
+          },
+          {
+            "thumbnailUrl": "https://thumbs.dreamstime.com/z/regional-tax-administration-lviv-ukraine-office-building-authority-33571396.jpg",
+            "adaptedUrl": "https://thumbs.dreamstime.com/z/regional-tax-administration-lviv-ukraine-office-building-authority-33571396.jpg",
+            "width": 900,
+            "height": 900,
+            "sortOrder": 0,
+            "isActive": true,
+            "originalName": null,
+            "assetId": 10,
+            "photoId": 10
+          },
+          {
+            "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlegDNTwEJY-V7-qmvF3tURU4Pw4WnLQKTdJEeuth-5QUFs3FEJ9wP_PfdsCpFzlfL9zc&usqp=CAU",
+            "adaptedUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlegDNTwEJY-V7-qmvF3tURU4Pw4WnLQKTdJEeuth-5QUFs3FEJ9wP_PfdsCpFzlfL9zc&usqp=CAU",
+            "width": 900,
+            "height": 900,
+            "sortOrder": 0,
+            "isActive": true,
+            "originalName": null,
+            "assetId": 10,
+            "photoId": 10
+          }
+        ]
+      },
+      {
+        "locationId": 2041,
+        "locationAppId": "0199c9e4-0002-7002-a002-c49810a8a861",
+        "locationName": "Zara Madrid Flagship",
+        "addressLine1": "28 Calle de Preciados",
+        "addressLine2": "",
+        "city": "Madrid",
+        "state": "Community of Madrid",
+        "postCode": "28013",
+        "countryId": 724,
+        "countryName": "Spain",
+        "lat": 40.4168,
+        "long": -3.7038,
+        "isDeleted": false,
+        "photos": [
+          {
+            "thumbnailUrl": "https://thumbs.dreamstime.com/b/lviv-ukraine-october-modern-turquoise-building-office-center-262018873.jpg",
+            "adaptedUrl": "https://thumbs.dreamstime.com/b/lviv-ukraine-october-modern-turquoise-building-office-center-262018873.jpg",
+            "width": 900,
+            "height": 900,
+            "sortOrder": 0,
+            "isActive": true,
+            "originalName": null,
+            "assetId": 10,
+            "photoId": 10
+          }
+        ]
+      }
+    ]
   },
   {
     "companyId": 1005,
@@ -42,7 +351,37 @@
     "isDeleted": false,
     "thumbnailUrl": "/shelfie/images/brands/hm-logo.svg",
     "locationId": 205,
-    "address": "Mäster Samuelsgatan 46, Stockholm, Sweden"
+    "address": "Mäster Samuelsgatan 46, Stockholm, Sweden",
+    "locations": [
+      {
+        "locationId": 205,
+        "locationAppId": "0199c516-0001-7001-a001-c92eefdbb2e3",
+        "locationName": "H&M Stockholm HQ",
+        "addressLine1": "Mäster Samuelsgatan 46",
+        "addressLine2": "",
+        "city": "Stockholm",
+        "state": "Stockholm County",
+        "postCode": "106 38",
+        "countryId": 752,
+        "countryName": "Sweden",
+        "lat": 59.3293,
+        "long": 18.0686,
+        "isDeleted": false,
+        "photos": [
+          {
+            "thumbnailUrl": "https://thumbs.dreamstime.com/b/office-building-odessa-ukraine-24326498.jpg",
+            "adaptedUrl": "https://thumbs.dreamstime.com/b/office-building-odessa-ukraine-24326498.jpg",
+            "width": 900,
+            "height": 900,
+            "sortOrder": 0,
+            "isActive": true,
+            "originalName": null,
+            "assetId": 10,
+            "photoId": 10
+          }
+        ]
+      }
+    ]
   },
   {
     "companyId": 1006,
@@ -51,7 +390,65 @@
     "isDeleted": false,
     "thumbnailUrl": "/shelfie/images/brands/puma-logo.svg",
     "locationId": 206,
-    "address": "1 PUMA Way, Herzogenaurach, Germany"
+    "address": "1 PUMA Way, Herzogenaurach, Germany",
+    "locations": [
+      {
+        "locationId": 206,
+        "locationAppId": "0199cd6c-0001-7001-a001-d81742f4c1de",
+        "locationName": "Puma Global Headquarters",
+        "addressLine1": "1 PUMA Way",
+        "addressLine2": "",
+        "city": "Herzogenaurach",
+        "state": "Bavaria",
+        "postCode": "91074",
+        "countryId": 276,
+        "countryName": "Germany",
+        "lat": 49.5706,
+        "long": 10.8854,
+        "isDeleted": false,
+        "photos": [
+          {
+            "thumbnailUrl": "https://www.aljazeera.com/wp-content/uploads/2023/04/A-historic-building-in-central-Odesa-1681996457.jpg",
+            "adaptedUrl": "https://www.aljazeera.com/wp-content/uploads/2023/04/A-historic-building-in-central-Odesa-1681996457.jpg",
+            "width": 900,
+            "height": 900,
+            "sortOrder": 0,
+            "isActive": true,
+            "originalName": null,
+            "assetId": 10,
+            "photoId": 10
+          }
+        ]
+      },
+      {
+        "locationId": 2061,
+        "locationAppId": "0199cd6c-0002-7002-a002-d81742f4c1de",
+        "locationName": "Puma Munich Design Studio",
+        "addressLine1": "42 Maximilianstraße",
+        "addressLine2": "",
+        "city": "Munich",
+        "state": "Bavaria",
+        "postCode": "80539",
+        "countryId": 276,
+        "countryName": "Germany",
+        "lat": 48.1351,
+        "long": 11.582,
+        "isDeleted": false,
+        "photos": [
+          {
+            "thumbnailUrl": "https://img.freepik.com/premium-photo/building-kreschatyk-street-kyiv-ukraine_261932-4421.jpg",
+            "adaptedUrl": "https://img.freepik.com/premium-photo/building-kreschatyk-street-kyiv-ukraine_261932-4421.jpg",
+            "width": 900,
+            "height": 900,
+            "sortOrder": 0,
+            "isActive": true,
+            "originalName": null,
+            "assetId": 10,
+            "photoId": 10
+          }
+        ]
+      }
+    ]
   },
   {
     "companyId": 1007,
@@ -60,7 +457,59 @@
     "isDeleted": false,
     "thumbnailUrl": "/shelfie/images/brands/uniqlo-logo.svg",
     "locationId": 207,
-    "address": "311 Oxford St, London, United Kingdom"
+    "address": "311 Oxford St, London, United Kingdom",
+    "locations": [
+      {
+        "locationId": 207,
+        "locationAppId": "0199ec28-0001-7001-a001-14fdab9e38fd",
+        "locationName": "Uniqlo London Flagship",
+        "addressLine1": "311 Oxford Street",
+        "addressLine2": "",
+        "city": "London",
+        "state": "Greater London",
+        "postCode": "W1C 2HP",
+        "countryId": 826,
+        "countryName": "United Kingdom",
+        "lat": 51.5074,
+        "long": -0.1278,
+        "isDeleted": false,
+        "photos": [
+          {
+            "thumbnailUrl": "https://img.freepik.com/premium-photo/greek-square-mall-odessa-ukraine_3510-4403.jpg",
+            "adaptedUrl": "https://img.freepik.com/premium-photo/greek-square-mall-odessa-ukraine_3510-4403.jpg",
+            "width": 900,
+            "height": 900,
+            "sortOrder": 0,
+            "isActive": true,
+            "originalName": null,
+            "assetId": 10,
+            "photoId": 10
+          },
+          {
+            "thumbnailUrl": "https://c8.alamy.com/comp/2PKD4W3/greek-square-odessa-ukraine-2PKD4W3.jpg",
+            "adaptedUrl": "https://c8.alamy.com/comp/2PKD4W3/greek-square-odessa-ukraine-2PKD4W3.jpg",
+            "width": 900,
+            "height": 900,
+            "sortOrder": 0,
+            "isActive": true,
+            "originalName": null,
+            "assetId": 10,
+            "photoId": 10
+          },
+          {
+            "thumbnailUrl": "https://c8.alamy.com/comp/CP3Y2G/ukraine-odessa-the-casino-CP3Y2G.jpg",
+            "adaptedUrl": "https://c8.alamy.com/comp/CP3Y2G/ukraine-odessa-the-casino-CP3Y2G.jpg",
+            "width": 900,
+            "height": 900,
+            "sortOrder": 0,
+            "isActive": true,
+            "originalName": null,
+            "assetId": 10,
+            "photoId": 10
+          }
+        ]
+      }
+    ]
   },
   {
     "companyId": 1008,
@@ -69,7 +518,87 @@
     "isDeleted": false,
     "thumbnailUrl": "/shelfie/images/brands/reebok-logo.svg",
     "locationId": 208,
-    "address": "25 Drydock Ave, Boston, MA, USA"
+    "address": "25 Drydock Ave, Boston, MA, USA",
+    "locations": [
+      {
+        "locationId": 208,
+        "locationAppId": "0199ec3f-0001-7001-a001-713808a69475",
+        "locationName": "Reebok Boston Headquarters",
+        "addressLine1": "25 Drydock Avenue",
+        "addressLine2": "Suite 300",
+        "city": "Boston",
+        "state": "Massachusetts",
+        "postCode": "02210",
+        "countryId": 840,
+        "countryName": "United States",
+        "lat": 42.3601,
+        "long": -71.0589,
+        "isDeleted": false,
+        "photos": [
+          {
+            "thumbnailUrl": "https://www.shutterstock.com/image-photo/odessa-ukraine-july-6-2016-260nw-450496801.jpg",
+            "adaptedUrl": "https://www.shutterstock.com/image-photo/odessa-ukraine-july-6-2016-260nw-450496801.jpg",
+            "width": 900,
+            "height": 900,
+            "sortOrder": 0,
+            "isActive": true,
+            "originalName": null,
+            "assetId": 10,
+            "photoId": 10
+          },
+          {
+            "thumbnailUrl": "https://www.goodfreephotos.com/albums/ukraine/odessa/sea-port-tower-and-skyscraper-in-odessa-ukraine.jpg",
+            "adaptedUrl": "https://www.goodfreephotos.com/albums/ukraine/odessa/sea-port-tower-and-skyscraper-in-odessa-ukraine.jpg",
+            "width": 900,
+            "height": 900,
+            "sortOrder": 0,
+            "isActive": true,
+            "originalName": null,
+            "assetId": 10,
+            "photoId": 10
+          }
+        ]
+      },
+      {
+        "locationId": 2081,
+        "locationAppId": "0199ec3f-0002-7002-a002-713808a69475",
+        "locationName": "Reebok NYC Showroom",
+        "addressLine1": "1411 Broadway",
+        "addressLine2": "Floor 11",
+        "city": "New York",
+        "state": "New York",
+        "postCode": "10018",
+        "countryId": 840,
+        "countryName": "United States",
+        "lat": 40.7128,
+        "long": -74.006,
+        "isDeleted": false,
+        "photos": [
+          {
+            "thumbnailUrl": "https://investpro-odessa.co.il/wp-content/uploads/2020/08/36056.jpg",
+            "adaptedUrl": "https://investpro-odessa.co.il/wp-content/uploads/2020/08/36056.jpg",
+            "width": 900,
+            "height": 900,
+            "sortOrder": 0,
+            "isActive": true,
+            "originalName": null,
+            "assetId": 10,
+            "photoId": 10
+          },
+          {
+            "thumbnailUrl": "https://gstatic.me/uploads/building_photos/6a73ac75ec074da988e6c3a3d869049a.large.webp",
+            "adaptedUrl": "https://gstatic.me/uploads/building_photos/6a73ac75ec074da988e6c3a3d869049a.large.webp",
+            "width": 900,
+            "height": 900,
+            "sortOrder": 0,
+            "isActive": true,
+            "originalName": null,
+            "assetId": 10,
+            "photoId": 10
+          }
+        ]
+      }
+    ]
   },
   {
     "companyId": 1009,
@@ -78,7 +607,93 @@
     "isDeleted": false,
     "thumbnailUrl": "/shelfie/images/brands/under-armour-logo.svg",
     "locationId": 209,
-    "address": "5th Floor, Strawinskylaan 4117, Amsterdam, Netherlands"
+    "address": "5th Floor, Strawinskylaan 4117, Amsterdam, Netherlands",
+    "locations": [
+      {
+        "locationId": 209,
+        "locationAppId": "019a00eb-0001-7001-a001-f5cfcf6b5b7c",
+        "locationName": "Under Armour Amsterdam HQ",
+        "addressLine1": "Strawinskylaan 4117",
+        "addressLine2": "5th Floor",
+        "city": "Amsterdam",
+        "state": "North Holland",
+        "postCode": "1077 ZX",
+        "countryId": 528,
+        "countryName": "Netherlands",
+        "lat": 52.3676,
+        "long": 4.9041,
+        "isDeleted": false,
+        "photos": [
+          {
+            "thumbnailUrl": "https://thumbs.dreamstime.com/b/odessa-ukraine-july-modern-office-building-glass-facade-green-lawn-modern-office-building-glass-facade-151641175.jpg",
+            "adaptedUrl": "https://thumbs.dreamstime.com/b/odessa-ukraine-july-modern-office-building-glass-facade-green-lawn-modern-office-building-glass-facade-151641175.jpg",
+            "width": 900,
+            "height": 900,
+            "sortOrder": 0,
+            "isActive": true,
+            "originalName": null,
+            "assetId": 10,
+            "photoId": 10
+          }
+        ]
+      },
+      {
+        "locationId": 2091,
+        "locationAppId": "019a00eb-0002-7002-a002-f5cfcf6b5b7c",
+        "locationName": "Under Armour London Office",
+        "addressLine1": "20 Regent Street",
+        "addressLine2": "",
+        "city": "London",
+        "state": "Greater London",
+        "postCode": "SW1Y 4PH",
+        "countryId": 826,
+        "countryName": "United Kingdom",
+        "lat": 51.5074,
+        "long": -0.1278,
+        "isDeleted": false,
+        "photos": [
+          {
+            "thumbnailUrl": "https://www.shutterstock.com/shutterstock/photos/2604618845/display_1500/stock-photo-odessa-ukraine-modern-commercial-building-kosmos-with-a-sleek-glass-facade-and-2604618845.jpg",
+            "adaptedUrl": "https://www.shutterstock.com/shutterstock/photos/2604618845/display_1500/stock-photo-odessa-ukraine-modern-commercial-building-kosmos-with-a-sleek-glass-facade-and-2604618845.jpg",
+            "width": 900,
+            "height": 900,
+            "sortOrder": 0,
+            "isActive": true,
+            "originalName": null,
+            "assetId": 10,
+            "photoId": 10
+          }
+        ]
+      },
+      {
+        "locationId": 2092,
+        "locationAppId": "019a00eb-0003-7003-a003-f5cfcf6b5b7c",
+        "locationName": "Under Armour Munich Distribution",
+        "addressLine1": "78 Landsberger Straße",
+        "addressLine2": "",
+        "city": "Munich",
+        "state": "Bavaria",
+        "postCode": "80339",
+        "countryId": 276,
+        "countryName": "Germany",
+        "lat": 48.1351,
+        "long": 11.582,
+        "isDeleted": false,
+        "photos": [
+          {
+            "thumbnailUrl": "https://previews.123rf.com/images/efesenko84/efesenko841602/efesenko84160200410/53640841-odessa-ukraine-may-17-2015-the-huge-building-in-the-centre-of-the-city-is-a-former-hotel.jpg",
+            "adaptedUrl": "https://previews.123rf.com/images/efesenko84/efesenko841602/efesenko84160200410/53640841-odessa-ukraine-may-17-2015-the-huge-building-in-the-centre-of-the-city-is-a-former-hotel.jpg",
+            "width": 900,
+            "height": 900,
+            "sortOrder": 0,
+            "isActive": true,
+            "originalName": null,
+            "assetId": 10,
+            "photoId": 10
+          }
+        ]
+      }
+    ]
   },
   {
     "companyId": 1010,
@@ -87,6 +702,58 @@
     "isDeleted": false,
     "thumbnailUrl": "/shelfie/images/brands/hugo-boss-logo.svg",
     "locationId": 210,
-    "address": "Hugo-Boss-Platz 1, Metzingen, Germany"
+    "address": "Hugo-Boss-Platz 1, Metzingen, Germany",
+    "locations": [
+      {
+        "locationId": 210,
+        "locationAppId": "019a0727-0001-7001-a001-85b26e25bb20",
+        "locationName": "Hugo Boss Metzingen Campus",
+        "addressLine1": "Hugo-Boss-Platz 1",
+        "addressLine2": "",
+        "city": "Metzingen",
+        "state": "Baden-Württemberg",
+        "postCode": "72555",
+        "countryId": 276,
+        "countryName": "Germany",
+        "lat": 48.5389,
+        "long": 9.2839,
+        "isDeleted": false,
+        "photos": [
+          {
+            "thumbnailUrl": "https://www.stex-tov.com/wp/wp-content/uploads/2023/07/odesa_stex-ukraine-llc-768x576.jpg",
+            "adaptedUrl": "https://www.stex-tov.com/wp/wp-content/uploads/2023/07/odesa_stex-ukraine-llc-768x576.jpg",
+            "width": 900,
+            "height": 900,
+            "sortOrder": 0,
+            "isActive": true,
+            "originalName": null,
+            "assetId": 10,
+            "photoId": 10
+          },
+          {
+            "thumbnailUrl": "https://images.alphacoders.com/749/749409.jpg",
+            "adaptedUrl": "https://images.alphacoders.com/749/749409.jpg",
+            "width": 900,
+            "height": 900,
+            "sortOrder": 0,
+            "isActive": true,
+            "originalName": null,
+            "assetId": 10,
+            "photoId": 10
+          },
+          {
+            "thumbnailUrl": "https://thumbs.dreamstime.com/b/panoramic-shot-opera-house-odessa-ukraine-16702036.jpg",
+            "adaptedUrl": "https://thumbs.dreamstime.com/b/panoramic-shot-opera-house-odessa-ukraine-16702036.jpg",
+            "width": 900,
+            "height": 900,
+            "sortOrder": 0,
+            "isActive": true,
+            "originalName": null,
+            "assetId": 10,
+            "photoId": 10
+          }
+        ]
+      }
+    ]
   }
 ]

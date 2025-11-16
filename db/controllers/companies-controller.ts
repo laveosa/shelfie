@@ -1,41 +1,36 @@
 import { BaseController } from "./base-controller";
 
-import listOfCompanies from "../static-collections/Companies/list-of-companies.json";
-import listOfCompaniesForGrid from "../static-collections/Companies/list-of-companies-for-grid.json";
-import listOfCompaniesWithLocationsForGrid from "../static-collections/Companies/list-of-companies-with-locations-for-grid.json";
-import newCompany from "../static-collections/Companies/new-company.json";
-import companyDetails from "../static-collections/Companies/company-details.json";
-import locationToCompany from "../static-collections/Companies/location-to-company.json";
-import newLocationToCompany from "../static-collections/Companies/new-location-to-company.json";
 import companiesList from "../static-collections/Companies/companies-list.json";
+import company from "../static-collections/Companies/company.json";
+import companyLocation from "../static-collections/Companies/company-location.json";
 
 export class CompaniesController extends BaseController {
   public static getListOfCompanies() {
-    return this.staticDataApiHandler(listOfCompanies);
+    return this.staticDataApiHandler(companiesList);
   }
 
   public static getListOfCompaniesForGrid() {
     return this.staticDataApiHandler(
-      this.createGridDefaultModel(listOfCompaniesForGrid),
+      this.createGridDefaultModel(companiesList),
     );
   }
 
   public static getListOfCompaniesWithLocationsForGrid() {
     return this.staticDataApiHandler(
-      this.createGridDefaultModel(listOfCompaniesWithLocationsForGrid),
+      this.createGridDefaultModel(companiesList),
     );
   }
 
   public static createCompany() {
-    return this.staticDataApiHandler(newCompany);
+    return this.staticDataApiHandler(company);
   }
 
   public static getCompanyDetails() {
-    return this.staticDataApiHandler(companyDetails);
+    return this.staticDataApiHandler(company);
   }
 
   public static addLocationToCompany() {
-    return this.staticDataApiHandler(locationToCompany);
+    return this.staticDataApiHandler(companyLocation);
   }
 
   public static deleteCompany() {
@@ -51,7 +46,7 @@ export class CompaniesController extends BaseController {
   }
 
   public static addNewLocationToCompany() {
-    return this.staticDataApiHandler(newLocationToCompany);
+    return this.staticDataApiHandler(companyLocation);
   }
 
   public static updateCompanyDetails() {
