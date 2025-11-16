@@ -122,9 +122,6 @@ export default function SheCalendar(props: ISheCalendar): JSX.Element {
   }
 
   function onSelectDateHandler(selectedDate, event) {
-    console.log("VALUE: ", selectedDate);
-    console.log("DATE: ", _date);
-
     const normalizedDate: any = _sortMultipleDate(selectedDate);
     setDate(normalizedDate);
 

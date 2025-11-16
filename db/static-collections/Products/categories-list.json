@@ -1,10 +1,5 @@
 [
   {
-    "categoryId": 0,
-    "categoryName": "<No category>",
-    "thumbnail": null
-  },
-  {
     "categoryId": 1,
     "categoryName": "Shirts",
     "thumbnail": "/shelfie/images/categories/shirt.png"

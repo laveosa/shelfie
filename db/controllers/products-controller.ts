@@ -50,7 +50,7 @@ export class ProductsController extends BaseController {
   }
 
   public static getCategoriesForProductsFilter() {
-    return this.staticDataApiHandler(brandsForProductsFilter);
+    return this.staticDataApiHandler(categoriesList);
   }
 
   public static generateProductCode() {
@@ -214,7 +214,7 @@ export class ProductsController extends BaseController {
   }
 
   public static getTraitsForFilter() {
-    return this.staticDataApiHandler({});
+    return this.staticDataApiHandler(traitList);
   }
 
   public static deleteVariant() {

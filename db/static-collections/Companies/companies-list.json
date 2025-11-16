@@ -1,155 +1,92 @@
 [
   {
-    "companyId": 8,
+    "companyId": 1001,
     "appId": "0199a621-8d03-727f-a533-08de122df01c",
-    "companyName": "Test1",
-    "thumbnailUrl": null,
+    "companyName": "Nike Ukraine LLC",
     "isDeleted": false,
-    "locationId": null,
-    "address": null
+    "thumbnailUrl": "/shelfie/images/brands/nike-logo.svg",
+    "locationId": 201,
+    "address": "12 Velyka Vasylkivska St, Kyiv, Ukraine"
   },
   {
-    "companyId": 4,
+    "companyId": 1002,
     "appId": "01999f77-fbee-713f-8aa4-4bd91478020d",
-    "companyName": "Test1",
-    "thumbnailUrl": null,
+    "companyName": "Adidas Eastern Europe Trading",
     "isDeleted": false,
-    "locationId": null,
-    "address": null
+    "thumbnailUrl": "/shelfie/images/brands/adidas-logo.svg",
+    "locationId": 202,
+    "address": "22 Lesi Ukrainky Blvd, Kyiv, Ukraine"
   },
   {
-    "companyId": 42,
+    "companyId": 1003,
     "appId": "0199c969-6605-764c-a728-6793a109c8db",
-    "companyName": "cwcqw",
-    "thumbnailUrl": null,
+    "companyName": "Levi’s Distribution Europe",
     "isDeleted": false,
-    "locationId": null,
-    "address": null
+    "thumbnailUrl": "/shelfie/images/brands/levis-logo.svg",
+    "locationId": 203,
+    "address": "14 Rue de Rivoli, Paris, France"
   },
   {
-    "companyId": 43,
+    "companyId": 1004,
     "appId": "0199c9e4-e66f-7c56-9fdd-c49810a8a861",
-    "companyName": "erer",
-    "thumbnailUrl": null,
+    "companyName": "Zara Logistics Spain S.A.",
     "isDeleted": false,
-    "locationId": null,
-    "address": null
+    "thumbnailUrl": "/shelfie/images/brands/zara-logo.svg",
+    "locationId": 204,
+    "address": "151 Avenida de Arteixo, A Coruña, Spain"
   },
   {
-    "companyId": 41,
+    "companyId": 1005,
     "appId": "0199c516-951f-7a17-a778-c92eefdbb2e3",
-    "companyName": "123121111 eeee",
-    "thumbnailUrl": null,
+    "companyName": "H&M Hennes & Mauritz Supply AB",
     "isDeleted": false,
-    "locationId": null,
-    "address": null
+    "thumbnailUrl": "/shelfie/images/brands/hm-logo.svg",
+    "locationId": 205,
+    "address": "Mäster Samuelsgatan 46, Stockholm, Sweden"
   },
   {
-    "companyId": 44,
+    "companyId": 1006,
     "appId": "0199cd6c-84e3-76ac-8ae5-d81742f4c1de",
-    "companyName": "TEST NIK 1212",
-    "thumbnailUrl": null,
+    "companyName": "Puma SE Central Europe",
     "isDeleted": false,
-    "locationId": null,
-    "address": null
+    "thumbnailUrl": "/shelfie/images/brands/puma-logo.svg",
+    "locationId": 206,
+    "address": "1 PUMA Way, Herzogenaurach, Germany"
   },
   {
-    "companyId": 45,
+    "companyId": 1007,
     "appId": "0199ec28-9735-7931-9fd1-14fdab9e38fd",
-    "companyName": "Dixie Slr",
-    "thumbnailUrl": null,
+    "companyName": "Uniqlo Europe Ltd",
     "isDeleted": false,
-    "locationId": null,
-    "address": null
+    "thumbnailUrl": "/shelfie/images/brands/uniqlo-logo.svg",
+    "locationId": 207,
+    "address": "311 Oxford St, London, United Kingdom"
   },
   {
-    "companyId": 46,
+    "companyId": 1008,
     "appId": "0199ec3f-d995-70c2-98b2-713808a69475",
-    "companyName": "Babylon s.r.l",
-    "thumbnailUrl": null,
+    "companyName": "Reebok International Ltd",
     "isDeleted": false,
-    "locationId": null,
-    "address": null
+    "thumbnailUrl": "/shelfie/images/brands/reebok-logo.svg",
+    "locationId": 208,
+    "address": "25 Drydock Ave, Boston, MA, USA"
   },
   {
-    "companyId": 79,
+    "companyId": 1009,
     "appId": "019a00eb-d3dd-73b0-a2a0-f5cfcf6b5b7c",
-    "companyName": "Sample company",
-    "thumbnailUrl": null,
+    "companyName": "Under Armour EMEA B.V.",
     "isDeleted": false,
-    "locationId": null,
-    "address": null
+    "thumbnailUrl": "/shelfie/images/brands/under-armour-logo.svg",
+    "locationId": 209,
+    "address": "5th Floor, Strawinskylaan 4117, Amsterdam, Netherlands"
   },
   {
-    "companyId": 80,
+    "companyId": 1010,
     "appId": "019a0727-6256-78ac-a508-85b26e25bb20",
-    "companyName": "Nemesis Inc.",
-    "thumbnailUrl": null,
+    "companyName": "Hugo Boss AG Global Supply",
     "isDeleted": false,
-    "locationId": null,
-    "address": null
-  },
-  {
-    "companyId": 81,
-    "appId": "019a104d-43cf-76d9-97a0-41c9749292dc",
-    "companyName": "Test Company",
-    "thumbnailUrl": null,
-    "isDeleted": false,
-    "locationId": null,
-    "address": null
-  },
-  {
-    "companyId": 82,
-    "appId": "019a1052-cfcf-74a9-b0b2-d0b98e06970e",
-    "companyName": "Test Company 2",
-    "thumbnailUrl": null,
-    "isDeleted": false,
-    "locationId": null,
-    "address": null
-  },
-  {
-    "companyId": 83,
-    "appId": "019a1594-2ff4-7bb3-906a-e4aea1ee63cf",
-    "companyName": "Test company 3",
-    "thumbnailUrl": null,
-    "isDeleted": false,
-    "locationId": null,
-    "address": null
-  },
-  {
-    "companyId": 84,
-    "appId": "019a159a-f95d-72bd-90ef-a198faa99228",
-    "companyName": "Test company 4",
-    "thumbnailUrl": null,
-    "isDeleted": false,
-    "locationId": null,
-    "address": null
-  },
-  {
-    "companyId": 85,
-    "appId": "019a159d-850f-772b-9136-72ff53c95cd0",
-    "companyName": "Test company 5",
-    "thumbnailUrl": null,
-    "isDeleted": false,
-    "locationId": null,
-    "address": null
-  },
-  {
-    "companyId": 86,
-    "appId": "019a1657-7522-7c32-b8d6-fbaf4b7b7c11",
-    "companyName": "Test companys 6",
-    "thumbnailUrl": null,
-    "isDeleted": false,
-    "locationId": null,
-    "address": null
-  },
-  {
-    "companyId": 119,
-    "appId": "019a68d9-cffb-7c02-9de7-39d5349f4541",
-    "companyName": "NikTest Company 121212",
-    "thumbnailUrl": null,
-    "isDeleted": false,
-    "locationId": null,
-    "address": null
+    "thumbnailUrl": "/shelfie/images/brands/hugo-boss-logo.svg",
+    "locationId": 210,
+    "address": "Hugo-Boss-Platz 1, Metzingen, Germany"
   }
 ]

@@ -141,19 +141,6 @@ export function ProductsPage() {
               onClick={() => onAction("addProduct")}
               value={translate("ProductActions.AddProduct")}
             />
-            {/*Commented until future notices*/}
-            {/*<SheButton*/}
-            {/*  icon={Download}*/}
-            {/*  variant="outline"*/}
-            {/*  onClick={handleImportProducts}*/}
-            {/*  value="Import Products"*/}
-            {/*/>*/}
-            {/*<SheButton*/}
-            {/*  icon={Columns3Icon}*/}
-            {/*  variant="outline"*/}
-            {/*  onClick={handleConfigure}*/}
-            {/*  value="Configure"*/}
-            {/*/>*/}
           </div>
         )}
       </div>

@@ -19,7 +19,7 @@ export class BaseController {
   }
 
   protected static staticDataApiHandler(data: any) {
-    const delayTime = 500 + Math.random() * 1000;
+    const delayTime = 300 + Math.random() * 1000;
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(data);
