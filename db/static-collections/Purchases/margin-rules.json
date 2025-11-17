@@ -1,8 +1,8 @@
 {
-  "marginRuleId": 0,
-  "desiredProfit": 0,
-  "plannedDiscount": 0,
-  "fixedCosts": 0,
+  "marginRuleId": 1,
+  "desiredProfit": 10.0,
+  "plannedDiscount": 10.0,
+  "fixedCosts": 10.0,
   "roundTo": true,
   "nearest9": true
 }
