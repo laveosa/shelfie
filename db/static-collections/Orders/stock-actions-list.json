@@ -1,0 +1,712 @@
+[
+  {
+    "stockActionId": 435,
+    "productId": 1004,
+    "variantId": 111,
+    "variantName": "Zara Poplin Midi Skirt",
+    "variantCode": "TNO3",
+    "traitOptions": [
+      {
+        "optionId": 41,
+        "optionName": "S",
+        "optionColor": null,
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitId": 1,
+        "traitName": "Size",
+        "traitTypeId": 111,
+        "traitTypeName": "EOSC",
+        "isDeleted": false
+      },
+      {
+        "optionId": 413,
+        "optionName": "Brown",
+        "optionColor": "#B89D72",
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitId": 2,
+        "traitTypeName": "Color",
+        "traitTypeId": 2,
+        "traitName": "Standard",
+        "isDeleted": false
+      }
+    ],
+    "photo": {
+      "photoId": 44,
+      "assetId": 44,
+      "thumbnailUrl": "/shelfie/images/products/zara-poplin-midi-skirt.jpg",
+      "adaptedUrl": "/shelfie/images/products/zara-poplin-midi-skirt.jpg",
+      "width": 275,
+      "height": 183,
+      "sortOrder": 0,
+      "isActive": true,
+      "originalName": null
+    },
+    "unitsAmount": 1,
+    "brand": {
+      "brandId": 104,
+      "brandName": "Zara",
+      "thumbnail": "/shelfie/images/brands/zara-logo.svg"
+    },
+    "productCategory": {
+      "categoryId": 3,
+      "categoryName": "Skirts",
+      "thumbnail": "/shelfie/images/categories/skirt.png"
+    },
+    "stockDocumentPrice": {
+      "activeUntil": null,
+      "brutto": 0,
+      "createAt": "2025-10-22T00:00:00Z",
+      "currencyId": 1,
+      "currencyName": "$",
+      "id": 394,
+      "netto": 0,
+      "rateExchange": 1,
+      "taxAmount": 0,
+      "taxTypeId": 3,
+      "taxTypeName": "0%"
+    },
+    "qtyOrdered": 1,
+    "qtyToShip": 2,
+    "qtyShipped": 4
+  },
+  {
+    "stockActionId": 436,
+    "productId": 1004,
+    "variantId": 112,
+    "variantName": "Zara Poplin Midi Skirt",
+    "variantCode": "1NO3",
+    "traitOptions": [
+      {
+        "optionId": 41,
+        "optionName": "M",
+        "optionColor": null,
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitId": 1,
+        "traitName": "Size",
+        "traitTypeId": 111,
+        "traitTypeName": "EOSC",
+        "isDeleted": false
+      },
+      {
+        "optionId": 413,
+        "optionName": "Brown",
+        "optionColor": "#B89D72",
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitId": 2,
+        "traitTypeName": "Color",
+        "traitTypeId": 2,
+        "traitName": "Standard",
+        "isDeleted": false
+      }
+    ],
+    "photo": {
+      "photoId": 44,
+      "assetId": 44,
+      "thumbnailUrl": "/shelfie/images/products/zara-poplin-midi-skirt.jpg",
+      "adaptedUrl": "/shelfie/images/products/zara-poplin-midi-skirt.jpg",
+      "width": 275,
+      "height": 183,
+      "sortOrder": 0,
+      "isActive": true,
+      "originalName": null
+    },
+    "unitsAmount": 2,
+    "brand": {
+      "brandId": 104,
+      "brandName": "Zara",
+      "thumbnail": "/shelfie/images/brands/zara-logo.svg"
+    },
+    "productCategory": {
+      "categoryId": 3,
+      "categoryName": "Skirts",
+      "thumbnail": "/shelfie/images/categories/skirt.png"
+    },
+    "stockDocumentPrice": {
+      "activeUntil": null,
+      "brutto": 0,
+      "createAt": "2025-10-23T00:00:00Z",
+      "currencyId": 1,
+      "currencyName": "$",
+      "id": 395,
+      "netto": 0,
+      "rateExchange": 1,
+      "taxAmount": 0,
+      "taxTypeId": 3,
+      "taxTypeName": "0%"
+    },
+    "qtyOrdered": 1,
+    "qtyToShip": 2,
+    "qtyShipped": 4
+  },
+  {
+    "stockActionId": 437,
+    "productId": 1001,
+    "variantId": 221,
+    "variantName": "Nike Air Max 90",
+    "variantCode": "T221",
+    "traitOptions": [
+      {
+        "optionId": 41,
+        "optionName": "M",
+        "optionColor": null,
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitId": 1,
+        "traitName": "Size",
+        "traitTypeId": 111,
+        "traitTypeName": "EOSC",
+        "isDeleted": false
+      },
+      {
+        "optionId": 413,
+        "optionName": "Gray",
+        "optionColor": "#798387",
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitId": 2,
+        "traitTypeName": "Color",
+        "traitTypeId": 2,
+        "traitName": "Standard",
+        "isDeleted": false
+      }
+    ],
+    "photo": {
+      "photoId": 11,
+      "assetId": 11,
+      "thumbnailUrl": "/shelfie/images/products/nike-air-max-90.jpg",
+      "adaptedUrl": "/shelfie/images/products/nike-air-max-90.jpg",
+      "width": 275,
+      "height": 183,
+      "sortOrder": 0,
+      "isActive": true,
+      "originalName": null
+    },
+    "unitsAmount": 3,
+    "brand": {
+      "brandId": 101,
+      "brandName": "Nike",
+      "thumbnail": "/shelfie/images/brands/nike-logo.svg"
+    },
+    "productCategory": {
+      "categoryId": 5,
+      "categoryName": "Shoes",
+      "thumbnail": "/shelfie/images/categories/shoes.png"
+    },
+    "stockDocumentPrice": {
+      "activeUntil": null,
+      "brutto": 0,
+      "createAt": "2025-10-24T00:00:00Z",
+      "currencyId": 1,
+      "currencyName": "$",
+      "id": 396,
+      "netto": 0,
+      "rateExchange": 1,
+      "taxAmount": 0,
+      "taxTypeId": 3,
+      "taxTypeName": "0%"
+    },
+    "qtyOrdered": 1,
+    "qtyToShip": 2,
+    "qtyShipped": 4
+  },
+  {
+    "stockActionId": 438,
+    "productId": 1003,
+    "variantId": 431,
+    "variantName": "Levi's 501 Original Fit Jeans",
+    "variantCode": "T521",
+    "traitOptions": [
+      {
+        "optionId": 41,
+        "optionName": "M",
+        "optionColor": null,
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitId": 1,
+        "traitName": "Size",
+        "traitTypeId": 111,
+        "traitTypeName": "EOSC",
+        "isDeleted": false
+      },
+      {
+        "optionId": 413,
+        "optionName": "Jeans",
+        "optionColor": "#7C90FF",
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitId": 2,
+        "traitTypeName": "Color",
+        "traitTypeId": 2,
+        "traitName": "Standard",
+        "isDeleted": false
+      }
+    ],
+    "photo": {
+      "photoId": 33,
+      "assetId": 33,
+      "thumbnailUrl": "/shelfie/images/products/levis-501-original-fit-jeans.jpg",
+      "adaptedUrl": "/shelfie/images/products/levis-501-original-fit-jeans.jpg",
+      "width": 275,
+      "height": 183,
+      "sortOrder": 0,
+      "isActive": true,
+      "originalName": null
+    },
+    "unitsAmount": 5,
+    "brand": {
+      "brandId": 103,
+      "brandName": "Levi's",
+      "thumbnail": "/shelfie/images/brands/levis-logo.svg"
+    },
+    "productCategory": {
+      "categoryId": 2,
+      "categoryName": "Pants",
+      "thumbnail": "/shelfie/images/categories/pants.png"
+    },
+    "stockDocumentPrice": {
+      "activeUntil": null,
+      "brutto": 0,
+      "createAt": "2025-10-25T00:00:00Z",
+      "currencyId": 1,
+      "currencyName": "$",
+      "id": 397,
+      "netto": 0,
+      "rateExchange": 1,
+      "taxAmount": 0,
+      "taxTypeId": 3,
+      "taxTypeName": "0%"
+    },
+    "qtyOrdered": 1,
+    "qtyToShip": 2,
+    "qtyShipped": 4
+  },
+  {
+    "stockActionId": 439,
+    "productId": 1003,
+    "variantId": 771,
+    "variantName": "Levi's 501 Original Fit Jeans",
+    "variantCode": "T5DD",
+    "traitOptions": [
+      {
+        "optionId": 41,
+        "optionName": "L",
+        "optionColor": null,
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitId": 1,
+        "traitName": "Size",
+        "traitTypeId": 111,
+        "traitTypeName": "EOSC",
+        "isDeleted": false
+      },
+      {
+        "optionId": 413,
+        "optionName": "Jeans",
+        "optionColor": "#7C90FF",
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitId": 2,
+        "traitTypeName": "Color",
+        "traitTypeId": 2,
+        "traitName": "Standard",
+        "isDeleted": false
+      }
+    ],
+    "photo": {
+      "photoId": 33,
+      "assetId": 33,
+      "thumbnailUrl": "/shelfie/images/products/levis-501-original-fit-jeans.jpg",
+      "adaptedUrl": "/shelfie/images/products/levis-501-original-fit-jeans.jpg",
+      "width": 275,
+      "height": 183,
+      "sortOrder": 0,
+      "isActive": true,
+      "originalName": null
+    },
+    "unitsAmount": 4,
+    "brand": {
+      "brandId": 103,
+      "brandName": "Levi's",
+      "thumbnail": "/shelfie/images/brands/levis-logo.svg"
+    },
+    "productCategory": {
+      "categoryId": 2,
+      "categoryName": "Pants",
+      "thumbnail": "/shelfie/images/categories/pants.png"
+    },
+    "stockDocumentPrice": {
+      "activeUntil": null,
+      "brutto": 0,
+      "createAt": "2025-10-26T00:00:00Z",
+      "currencyId": 1,
+      "currencyName": "$",
+      "id": 398,
+      "netto": 0,
+      "rateExchange": 1,
+      "taxAmount": 0,
+      "taxTypeId": 3,
+      "taxTypeName": "0%"
+    },
+    "qtyOrdered": 1,
+    "qtyToShip": 2,
+    "qtyShipped": 4
+  },
+  {
+    "stockActionId": 440,
+    "productId": 1007,
+    "variantId": 113,
+    "variantName": "Uniqlo U Crew Neck T-Shirt",
+    "variantCode": "T111",
+    "traitOptions": [
+      {
+        "optionId": 41,
+        "optionName": "S",
+        "optionColor": null,
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitId": 1,
+        "traitName": "Size",
+        "traitTypeId": 111,
+        "traitTypeName": "EOSC",
+        "isDeleted": false
+      },
+      {
+        "optionId": 413,
+        "optionName": "Marine",
+        "optionColor": "#2E4062",
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitId": 2,
+        "traitTypeName": "Color",
+        "traitTypeId": 2,
+        "traitName": "Standard",
+        "isDeleted": false
+      }
+    ],
+    "photo": {
+      "photoId": 77,
+      "assetId": 77,
+      "thumbnailUrl": "/shelfie/images/products/uniqlo-u-crew-neck.jpg",
+      "adaptedUrl": "/shelfie/images/products/uniqlo-u-crew-neck.jpg",
+      "width": 275,
+      "height": 183,
+      "sortOrder": 0,
+      "isActive": true,
+      "originalName": null
+    },
+    "unitsAmount": 2,
+    "brand": {
+      "brandId": 107,
+      "brandName": "Uniqlo",
+      "thumbnail": "/shelfie/images/brands/uniqlo-logo.svg"
+    },
+    "productCategory": {
+      "categoryId": 4,
+      "categoryName": "T Shirt",
+      "thumbnail": "/shelfie/images/categories/t-shirt.png"
+    },
+    "stockDocumentPrice": {
+      "activeUntil": null,
+      "brutto": 0,
+      "createAt": "2025-10-27T00:00:00Z",
+      "currencyId": 1,
+      "currencyName": "$",
+      "id": 399,
+      "netto": 0,
+      "rateExchange": 1,
+      "taxAmount": 0,
+      "taxTypeId": 3,
+      "taxTypeName": "0%"
+    },
+    "qtyOrdered": 1,
+    "qtyToShip": 2,
+    "qtyShipped": 4
+  },
+  {
+    "stockActionId": 441,
+    "productId": 1007,
+    "variantId": 113,
+    "variantName": "Uniqlo U Crew Neck T-Shirt",
+    "variantCode": "T81X",
+    "traitOptions": [
+      {
+        "optionId": 41,
+        "optionName": "M",
+        "optionColor": null,
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitId": 1,
+        "traitName": "Size",
+        "traitTypeId": 111,
+        "traitTypeName": "EOSC",
+        "isDeleted": false
+      },
+      {
+        "optionId": 413,
+        "optionName": "Marine",
+        "optionColor": "#2E4062",
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitId": 2,
+        "traitTypeName": "Color",
+        "traitTypeId": 2,
+        "traitName": "Standard",
+        "isDeleted": false
+      }
+    ],
+    "photo": {
+      "photoId": 77,
+      "assetId": 77,
+      "thumbnailUrl": "/shelfie/images/products/uniqlo-u-crew-neck.jpg",
+      "adaptedUrl": "/shelfie/images/products/uniqlo-u-crew-neck.jpg",
+      "width": 275,
+      "height": 183,
+      "sortOrder": 0,
+      "isActive": true,
+      "originalName": null
+    },
+    "unitsAmount": 6,
+    "brand": {
+      "brandId": 107,
+      "brandName": "Uniqlo",
+      "thumbnail": "/shelfie/images/brands/uniqlo-logo.svg"
+    },
+    "productCategory": {
+      "categoryId": 4,
+      "categoryName": "T Shirt",
+      "thumbnail": "/shelfie/images/categories/t-shirt.png"
+    },
+    "stockDocumentPrice": {
+      "activeUntil": null,
+      "brutto": 0,
+      "createAt": "2025-10-28T00:00:00Z",
+      "currencyId": 1,
+      "currencyName": "$",
+      "id": 400,
+      "netto": 0,
+      "rateExchange": 1,
+      "taxAmount": 0,
+      "taxTypeId": 3,
+      "taxTypeName": "0%"
+    },
+    "qtyOrdered": 1,
+    "qtyToShip": 2,
+    "qtyShipped": 4
+  },
+  {
+    "stockActionId": 442,
+    "productId": 1007,
+    "variantId": 113,
+    "variantName": "Uniqlo U Crew Neck T-Shirt",
+    "variantCode": "T1ZZ",
+    "traitOptions": [
+      {
+        "optionId": 41,
+        "optionName": "L",
+        "optionColor": null,
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitId": 1,
+        "traitName": "Size",
+        "traitTypeId": 111,
+        "traitTypeName": "EOSC",
+        "isDeleted": false
+      },
+      {
+        "optionId": 413,
+        "optionName": "Marine",
+        "optionColor": "#2E4062",
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitId": 2,
+        "traitTypeName": "Color",
+        "traitTypeId": 2,
+        "traitName": "Standard",
+        "isDeleted": false
+      }
+    ],
+    "photo": {
+      "photoId": 77,
+      "assetId": 77,
+      "thumbnailUrl": "/shelfie/images/products/uniqlo-u-crew-neck.jpg",
+      "adaptedUrl": "/shelfie/images/products/uniqlo-u-crew-neck.jpg",
+      "width": 275,
+      "height": 183,
+      "sortOrder": 0,
+      "isActive": true,
+      "originalName": null
+    },
+    "unitsAmount": 3,
+    "brand": {
+      "brandId": 107,
+      "brandName": "Uniqlo",
+      "thumbnail": "/shelfie/images/brands/uniqlo-logo.svg"
+    },
+    "productCategory": {
+      "categoryId": 4,
+      "categoryName": "T Shirt",
+      "thumbnail": "/shelfie/images/categories/t-shirt.png"
+    },
+    "stockDocumentPrice": {
+      "activeUntil": null,
+      "brutto": 0,
+      "createAt": "2025-10-29T00:00:00Z",
+      "currencyId": 1,
+      "currencyName": "$",
+      "id": 401,
+      "netto": 0,
+      "rateExchange": 1,
+      "taxAmount": 0,
+      "taxTypeId": 3,
+      "taxTypeName": "0%"
+    },
+    "qtyOrdered": 1,
+    "qtyToShip": 2,
+    "qtyShipped": 4
+  },
+  {
+    "stockActionId": 443,
+    "productId": 1016,
+    "variantId": 771,
+    "variantName": "Hugo Boss Leather Skirt",
+    "variantCode": "123D",
+    "traitOptions": [
+      {
+        "optionId": 41,
+        "optionName": "M",
+        "optionColor": null,
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitId": 1,
+        "traitName": "Size",
+        "traitTypeId": 111,
+        "traitTypeName": "EOSC",
+        "isDeleted": false
+      },
+      {
+        "optionId": 413,
+        "optionName": "Brown",
+        "optionColor": "#432E2B",
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitId": 2,
+        "traitTypeName": "Color",
+        "traitTypeId": 2,
+        "traitName": "Standard",
+        "isDeleted": false
+      }
+    ],
+    "photo": {
+      "photoId": 99,
+      "assetId": 99,
+      "thumbnailUrl": "/shelfie/images/products/hugo-boss-leather-skirt.jpg",
+      "adaptedUrl": "/shelfie/images/products/hugo-boss-leather-skirt.jpg",
+      "width": 275,
+      "height": 183,
+      "sortOrder": 0,
+      "isActive": true,
+      "originalName": null
+    },
+    "unitsAmount": 1,
+    "brand": {
+      "brandId": 116,
+      "brandName": "Hugo Boss",
+      "thumbnail": "/shelfie/images/brands/hugo-boss-logo.svg"
+    },
+    "productCategory": {
+      "categoryId": 3,
+      "categoryName": "Skirts",
+      "thumbnail": "/shelfie/images/categories/skirt.png"
+    },
+    "stockDocumentPrice": {
+      "activeUntil": null,
+      "brutto": 0,
+      "createAt": "2025-10-30T00:00:00Z",
+      "currencyId": 1,
+      "currencyName": "$",
+      "id": 402,
+      "netto": 0,
+      "rateExchange": 1,
+      "taxAmount": 0,
+      "taxTypeId": 3,
+      "taxTypeName": "0%"
+    },
+    "qtyOrdered": 1,
+    "qtyToShip": 2,
+    "qtyShipped": 4
+  },
+  {
+    "stockActionId": 444,
+    "productId": 1004,
+    "variantId": 113,
+    "variantName": "Zara Poplin Midi Skirt",
+    "variantCode": "TNS1",
+    "traitOptions": [
+      {
+        "optionId": 41,
+        "optionName": "M",
+        "optionColor": null,
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitId": 1,
+        "traitName": "Size",
+        "traitTypeId": 111,
+        "traitTypeName": "EOSC",
+        "isDeleted": false
+      },
+      {
+        "optionId": 413,
+        "optionName": "Black",
+        "optionColor": "#1F2122",
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitId": 2,
+        "traitTypeName": "Color",
+        "traitTypeId": 2,
+        "traitName": "Standard",
+        "isDeleted": false
+      }
+    ],
+    "photo": {
+      "photoId": 44,
+      "assetId": 44,
+      "thumbnailUrl": "/shelfie/images/products/zara-poplin-midi-skirt.jpg",
+      "adaptedUrl": "/shelfie/images/products/zara-poplin-midi-skirt.jpg",
+      "width": 275,
+      "height": 183,
+      "sortOrder": 0,
+      "isActive": true,
+      "originalName": null
+    },
+    "unitsAmount": 2,
+    "brand": {
+      "brandId": 104,
+      "brandName": "Zara",
+      "thumbnail": "/shelfie/images/brands/zara-logo.svg"
+    },
+    "productCategory": {
+      "categoryId": 3,
+      "categoryName": "Skirts",
+      "thumbnail": "/shelfie/images/categories/skirt.png"
+    },
+    "stockDocumentPrice": {
+      "activeUntil": null,
+      "brutto": 0,
+      "createAt": "2025-10-31T00:00:00Z",
+      "currencyId": 1,
+      "currencyName": "$",
+      "id": 403,
+      "netto": 0,
+      "rateExchange": 1,
+      "taxAmount": 0,
+      "taxTypeId": 3,
+      "taxTypeName": "0%"
+    },
+    "qtyOrdered": 1,
+    "qtyToShip": 2,
+    "qtyShipped": 4
+  }
+]

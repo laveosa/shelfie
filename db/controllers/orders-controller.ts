@@ -7,34 +7,14 @@ import customerAddress from "../static-collections/Orders/customer-address.json"
 import customerAddressesList from "../static-collections/Orders/customer-addresses-list.json";
 import order from "../static-collections/Orders/order.json";
 import ordersList from "../static-collections/Orders/orders-list.json";
-
-import listOfStockActionsForGrid from "../static-collections/Orders/list-of-stock-actions-for-grid.json";
-import stockActionInOrder from "../static-collections/Orders/stock-action-in-order.json";
-import allStockActionsToPackage from "../static-collections/Orders/all-stock-actions-to-package.json";
+import stockAction from "../static-collections/Orders/stock-action.json";
+import stockActionsList from "../static-collections/Orders/stock-actions-list.json";
+import discount from "../static-collections/Orders/discount.json";
 import discountsList from "../static-collections/Orders/discounts-list.json";
-import newDiscount from "../static-collections/Orders/new-discount.json";
-import updateDiscount from "../static-collections/Orders/update-discount.json";
 import discountsToOrder from "../static-collections/Orders/discounts-to-order.json";
-
-import shipmentsListForForGrid from "../static-collections/Orders/shipments-list-for-grid.json";
-import shipmentsListForOrder from "../static-collections/Orders/shipments-list-for-order.json";
-import shipmentDetails from "../static-collections/Orders/shipment-details.json";
-import newShipment from "../static-collections/Orders/new-shipment.json";
-import updateShipment from "../static-collections/Orders/update-shipment.json";
-import shipmentCustomer from "../static-collections/Orders/shipment-customer.json";
-import shipmentAddress from "../static-collections/Orders/shipment-address.json";
-import variantsToShipment from "../static-collections/Orders/variants-to-shipment.json";
-import newShipmentForOrder from "../static-collections/Orders/new-shipment-for-order.json";
-import stockActionForShipment from "../static-collections/Orders/update-stock-action-for-shipment.json";
-import packageProducts from "../static-collections/Orders/package-products.json";
+import shipment from "../static-collections/Orders/shipment.json";
+import shipmentsList from "../static-collections/Orders/shipments-list.json";
 import shipmentStatusForOrder from "../static-collections/Orders/shipment-status-for-order.json";
-import shipmentStatusToPrevious from "../static-collections/Orders/shipment-status-to-previous.json";
-import cancelShipmentModel from "../static-collections/Orders/cancel-shipment.json";
-import increaseShipmentStockActionModel from "../static-collections/Orders/increase-shipment-stock-action.json";
-import decreaseShipmentStockActionModel from "../static-collections/Orders/decrease-shipment-stock-action.json";
-import shipmentStockActionWithQuantity from "../static-collections/Orders/shipment-stock-action-with-quantity.json";
-import variantToShipment from "../static-collections/Orders/variant-to-shipment.json";
-import deliveryData from "../static-collections/Orders/confirm-delivery-data.json";
 
 export class OrdersController extends BaseController {
   public static getCustomersForGrid() {
@@ -113,7 +93,7 @@ export class OrdersController extends BaseController {
 
   public static getListOfStockActionsForGrid() {
     return this.staticDataApiHandler(
-      this.createGridDefaultModel(listOfStockActionsForGrid),
+      this.createGridDefaultModel(stockActionsList),
     );
   }
 
@@ -122,7 +102,7 @@ export class OrdersController extends BaseController {
   }
 
   public static updateStockActionInOrder() {
-    return this.staticDataApiHandler(stockActionInOrder);
+    return this.staticDataApiHandler(stockAction);
   }
 
   public static removeStockActionFromOrder() {
@@ -134,11 +114,11 @@ export class OrdersController extends BaseController {
   }
 
   public static createDiscount() {
-    return this.staticDataApiHandler(newDiscount);
+    return this.staticDataApiHandler(discount);
   }
 
   public static updateDiscount() {
-    return this.staticDataApiHandler(updateDiscount);
+    return this.staticDataApiHandler(discount);
   }
 
   public static removeDiscountsFromOrder() {
@@ -151,32 +131,32 @@ export class OrdersController extends BaseController {
 
   public static getShipmentsListForForGrid() {
     return this.staticDataApiHandler(
-      this.createGridDefaultModel(shipmentsListForForGrid),
+      this.createGridDefaultModel(shipmentsList),
     );
   }
 
   public static getShipmentsListForOrder() {
-    return this.staticDataApiHandler(shipmentsListForOrder);
+    return this.staticDataApiHandler(shipmentsList);
   }
 
   public static getShipmentDetails() {
-    return this.staticDataApiHandler(shipmentDetails);
+    return this.staticDataApiHandler(shipment);
   }
 
   public static createShipment() {
-    return this.staticDataApiHandler(newShipment);
+    return this.staticDataApiHandler(shipment);
   }
 
   public static updateShipmentDates() {
-    return this.staticDataApiHandler(updateShipment);
+    return this.staticDataApiHandler(shipment);
   }
 
   public static updateShipmentCustomer() {
-    return this.staticDataApiHandler(shipmentCustomer);
+    return this.staticDataApiHandler(customer);
   }
 
   public static updateShipmentAddress() {
-    return this.staticDataApiHandler(shipmentAddress);
+    return this.staticDataApiHandler(customerAddress);
   }
 
   public static connectShipmentToOrder() {
@@ -192,7 +172,7 @@ export class OrdersController extends BaseController {
   }
 
   public static addVariantsToShipment() {
-    return this.staticDataApiHandler(variantsToShipment);
+    return this.staticDataApiHandler(shipment);
   }
 
   public static removeVariantFromShipment() {
@@ -200,15 +180,15 @@ export class OrdersController extends BaseController {
   }
 
   public static createShipmentForOrder() {
-    return this.staticDataApiHandler(newShipmentForOrder);
+    return this.staticDataApiHandler({});
   }
 
   public static updateStockActionForShipment() {
-    return this.staticDataApiHandler(stockActionForShipment);
+    return this.staticDataApiHandler(shipment);
   }
 
   public static confirmPackedProducts() {
-    return this.staticDataApiHandler(packageProducts);
+    return this.staticDataApiHandler(shipment);
   }
 
   public static getShipmentStatusForOrder() {
@@ -216,34 +196,34 @@ export class OrdersController extends BaseController {
   }
 
   public static returnShipmentStatusToPrevious() {
-    return this.staticDataApiHandler(shipmentStatusToPrevious);
+    return this.staticDataApiHandler(shipment);
   }
 
   public static cancelShipment() {
-    return this.staticDataApiHandler(cancelShipmentModel);
+    return this.staticDataApiHandler(shipment);
   }
 
   public static increaseShipmentStockAction() {
-    return this.staticDataApiHandler(increaseShipmentStockActionModel);
+    return this.staticDataApiHandler(shipment);
   }
 
   public static decreaseShipmentStockAction() {
-    return this.staticDataApiHandler(decreaseShipmentStockActionModel);
+    return this.staticDataApiHandler(shipment);
   }
 
   public static addShipmentStockActionWithQuantity() {
-    return this.staticDataApiHandler(shipmentStockActionWithQuantity);
+    return this.staticDataApiHandler(shipment);
   }
 
   public static addAllStockActionsToPackage() {
-    return this.staticDataApiHandler(allStockActionsToPackage);
+    return this.staticDataApiHandler(stockAction);
   }
 
   public static addVariantToShipment() {
-    return this.staticDataApiHandler(variantToShipment);
+    return this.staticDataApiHandler(shipment);
   }
 
   public static confirmDeliveryData() {
-    return this.staticDataApiHandler(deliveryData);
+    return this.staticDataApiHandler(shipment);
   }
 }

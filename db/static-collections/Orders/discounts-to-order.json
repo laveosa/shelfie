@@ -1,32 +1,32 @@
 {
-  "id": 0,
-  "customerId": 0,
+  "id": 2323,
+  "customerId": 1,
   "customer": {
-    "thumbnailUrl": "string",
-    "customerName": "string",
-    "phone": "string",
-    "email": "string"
+    "thumbnailUrl": "/assets/avatars/customer-001.jpg",
+    "customerName": "Emma Richardson",
+    "phone": "+44 20 7946 0958",
+    "email": "emma.richardson@email.com"
   },
   "date": "2019-08-24T14:15:22.123Z",
-  "channel": "string",
-  "orderStatus": "string",
-  "paymentStatus": "string",
+  "channel": "Mobile Platform",
+  "orderStatus": "New",
+  "paymentStatus": "Pending",
   "orderSubTotal": {
-    "subtotal": 0,
-    "totalWithDiscountAndShipment": 0,
-    "profit": 0
+    "subtotal": 342.50,
+    "totalWithDiscountAndShipment": 325.75,
+    "profit": 127.40
   },
   "currency": {
-    "id": 0,
-    "name": "string",
-    "briefName": "string"
+    "id": 1,
+    "name": "Euro",
+    "briefName": "EUR"
   },
   "discounts": [
     {
-      "discountId": 0,
-      "discountRate": "string"
+      "discountId": 1,
+      "discountRate": "10.00 %"
     }
   ],
-  "unitsAmount": 0,
-  "discountAmount": 0
+  "unitsAmount": 21,
+  "discountAmount": 10
 }
