@@ -5,11 +5,11 @@ export class BaseController {
     return {
       items: items,
       currentPage: 1,
-      endPage: 2,
+      endPage: 8,
       pageSize: 10,
       searchQuery: null,
       sortOption: "Newest",
-      totalPages: 2,
+      totalPages: 8,
       filter: {
         brands: [],
         categories: [],

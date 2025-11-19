@@ -24,13 +24,13 @@ export default function GridShowItemsFilter({ context }: { context?: string }) {
 
   function handleSelect(value: string) {
     setSelectedValue(value);
-    onGridRequestChange({
+    /*onGridRequestChange({
       ...gridRequestModel,
       filter: {
         ...gridRequestModel?.filter,
         [`show${context}`]: value,
       },
-    });
+    });*/
     setDropdownOpen(false);
   }
 
@@ -40,14 +40,17 @@ export default function GridShowItemsFilter({ context }: { context?: string }) {
 
   return (
     <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
-      <DropdownMenuTrigger className={cs.dropdownMenuTrigger} asChild>
+      <DropdownMenuTrigger
+        className={`${cs.dropdownMenuTrigger} ${dropdownOpen ? cs.dropdownMenuOpen : ""}`}
+        asChild
+      >
         <SheButton
           variant="outline"
           icon={Trash}
           value={selectedOption.text}
           onClick={() => setDropdownOpen(true)}
         >
-          <ChevronDown />
+          <ChevronDown className={cs.chevronIcon} />
         </SheButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className={cs.dropdownMenuContent}>
@@ -61,7 +64,7 @@ export default function GridShowItemsFilter({ context }: { context?: string }) {
               event.preventDefault();
             }}
           >
-            {item.text}
+            <span>{item.text}</span>
           </DropdownMenuCheckboxItem>
         ))}
       </DropdownMenuContent>

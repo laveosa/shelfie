@@ -33,22 +33,22 @@ export default function GridItemsSorting() {
   }, [gridRequestModel]);
 
   function handleSelect(value: string) {
-    if (gridRequestModel.sortOption === value) {
-      setDropdownOpen(false);
-      return;
-    }
     setSelectedValue(value);
-    onGridRequestChange({
+
+    /*onGridRequestChange({
       ...gridRequestModel,
       currentPage: 1,
       sortOption: value,
-    });
+    });*/
     setDropdownOpen(false);
   }
 
   return (
     <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
-      <DropdownMenuTrigger className={cs.dropdownMenuTrigger} asChild>
+      <DropdownMenuTrigger
+        className={`${cs.dropdownMenuTrigger} ${dropdownOpen ? cs.dropdownMenuOpen : ""}`}
+        asChild
+      >
         <SheButton
           variant="outline"
           icon={
@@ -63,7 +63,7 @@ export default function GridItemsSorting() {
           value={selectedValue ? selectedValue : "Sort"}
           onClick={() => setDropdownOpen(true)}
         >
-          <ChevronDown />
+          <ChevronDown className={cs.chevronIcon} />
         </SheButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className={cs.dropdownMenuContent}>

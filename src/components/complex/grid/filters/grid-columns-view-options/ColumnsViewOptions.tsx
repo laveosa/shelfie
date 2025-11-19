@@ -104,15 +104,18 @@ export function ColumnsViewOptions<TData = any>({
 
   return (
     <DropdownMenu open={dropdownOpen} onOpenChange={onOpenChangeHandler}>
-      <DropdownMenuTrigger className={cs.dropdownMenuTrigger} asChild>
+      <DropdownMenuTrigger
+        className={`${cs.dropdownMenuTrigger} ${dropdownOpen ? cs.dropdownMenuOpen : ""}`}
+        asChild
+      >
         <SheButton
           variant="outline"
           icon={Settings2}
           onClick={() => setDropdownOpen(true)}
         >
           <div className={cs.buttonInnerItems}>
-            Columns
-            <ChevronDown />
+            <span>Columns</span>
+            <ChevronDown className={cs.chevronIcon} />
           </div>
         </SheButton>
       </DropdownMenuTrigger>
@@ -125,19 +128,22 @@ export function ColumnsViewOptions<TData = any>({
             (column) =>
               typeof column.accessorFn !== "undefined" && column.getCanHide(),
           )
-          .map((column) => (
-            <DropdownMenuCheckboxItem
-              key={column.id}
-              className="capitalize"
-              checked={selectedColumns.includes(column.id)}
-              onCheckedChange={(value) => onCheckedHandler(value, column)}
-              onSelect={(event) => {
-                event.preventDefault();
-              }}
-            >
-              {column.columnDef.header as string}
-            </DropdownMenuCheckboxItem>
-          ))}
+          .map(
+            (column) =>
+              (
+                <DropdownMenuCheckboxItem
+                  key={column.id}
+                  className="capitalize"
+                  checked={selectedColumns.includes(column.id)}
+                  onCheckedChange={(value) => onCheckedHandler(value, column)}
+                  onSelect={(event) => {
+                    event.preventDefault();
+                  }}
+                >
+                  {column.columnDef.header as string}
+                </DropdownMenuCheckboxItem>
+              ) as any,
+          )}
         <DropdownMenuSeparator />
         <div className={cs.buttonBlock}>
           <SheButton onClick={onResetHandler} variant="outline">

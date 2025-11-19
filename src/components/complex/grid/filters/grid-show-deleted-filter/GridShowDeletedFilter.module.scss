@@ -13,7 +13,15 @@
     box-shadow: none;
   }
 
-  svg {
-    padding-top: 4px;
+  .chevronIcon {
+    transition: all ease-in-out 160ms;
+  }
+}
+
+// ===================================================== OPEN
+
+.dropdownMenuOpen {
+  .chevronIcon {
+    transform: rotate(180deg);
   }
 }

@@ -182,7 +182,7 @@ export function ProductsGridColumns(onAction: any): ColumnDef<ProductModel>[] {
         <SheToggle
           checked={row.original.isActive}
           type={SheToggleTypeEnum.SWITCH}
-          onChecked={() => onAction("activateProduct", row.original)}
+          // onChecked={() => onAction("activateProduct", row.original)}
         />
       ),
     },
