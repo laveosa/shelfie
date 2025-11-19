@@ -23,6 +23,7 @@ export function GridValueFilter({
       placeholder={placeholder}
       maxWidth="200px"
       showClearBtn
+      type="number"
       onDelay={(value) => {
         onGridRequestChange?.({
           ...gridRequestModel,

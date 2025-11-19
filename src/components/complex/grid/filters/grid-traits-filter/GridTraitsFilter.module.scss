@@ -39,8 +39,8 @@
       box-shadow: none;
     }
 
-    svg {
-      padding-top: 4px;
+    .chevronIcon {
+      transition: all ease-in-out 160ms;
     }
   }
 
@@ -51,7 +51,6 @@
   .chevronIconRight {
     margin-right: 20px;
   }
-
 }
 
 .dropdownMenuContent {
@@ -71,3 +70,12 @@
   }
 }
 
+// ================================================================ OPEN
+
+.gridTraitsFilterWrapper {
+  .dropdownMenuOpen {
+    .chevronIcon {
+      transform: rotate(180deg);
+    }
+  }
+}

@@ -2,7 +2,7 @@
   {
     "traitId": 1,
     "traitName": "Size",
-    "traitTypeId": 111,
+    "traitTypeId": 1,
     "traitTypeName": "EOSC",
     "optionsAmount": 3,
     "traitOptions": [
