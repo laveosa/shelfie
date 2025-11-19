@@ -34,7 +34,7 @@ export default function SheGridHeader({
   // ==================================================================== EVENT HANDLERS
   const onInputChangeHandler = (event) => {
     setSearchValue(event);
-    onGridRequestChange({ ...gridRequestModel, searchQuery: event });
+    // onGridRequestChange({ ...gridRequestModel, searchQuery: event });
   };
 
   // ==================================================================== LAYOUT
