@@ -47,6 +47,7 @@ export function SheGridPagination() {
   }
 
   function onSetPageSizeHandler(newPageSize) {
+    newPageSize = !newPageSize ? 0 : newPageSize;
     /*onGridRequestChange({
       ...gridRequestModel,
       pageSize: parseInt(newPageSize),
