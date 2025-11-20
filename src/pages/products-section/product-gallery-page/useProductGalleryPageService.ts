@@ -62,6 +62,7 @@ export default function useProductGalleryPageService(handleCardAction) {
   ) {
     dispatch(actions.setIsImageUploaderLoading(true));
     return uploadPhoto(model).then((res: any) => {
+      dispatch(actions.setIsImageUploaderLoading(false));
       if (res.error) {
         addToast({
           text: res.error.data?.detail || "Upload failed",
@@ -69,8 +70,8 @@ export default function useProductGalleryPageService(handleCardAction) {
         });
         return res;
       }
+
       if (res.data.photoId) {
-        dispatch(actions.setIsImageUploaderLoading(false));
         productsService
           .getProductPhotosHandler(Number(productId))
           .then((res) => {

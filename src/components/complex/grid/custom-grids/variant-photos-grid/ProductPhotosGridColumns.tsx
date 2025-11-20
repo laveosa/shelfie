@@ -1,10 +1,10 @@
 import React from "react";
 import { ColumnDef, Row } from "@tanstack/react-table";
 import { ListTree, Trash2 } from "lucide-react";
-
-import { Switch } from "@/components/ui/switch.tsx";
 import placeholderImage from "@/assets/images/placeholder-image.png";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
+import SheToggle from "@/components/primitive/she-toggle/SheToggle.tsx";
+import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
 
 interface IProductPhotoGridColumns {
   id: number | string;
@@ -80,12 +80,13 @@ export const ProductPhotosGridColumns = (
       };
 
       return (
-        <Switch
+        <SheToggle
           disabled={meta?.isRowLoading(row.id)}
+          type={SheToggleTypeEnum.SWITCH}
           checked={row.getValue("isActive")}
-          onCheckedChange={() =>
+          /*onCheckedChange={() =>
             onAction("activate", row.id, meta?.setLoadingRow, row)
-          }
+          }*/
         />
       );
     },

@@ -1,7 +1,7 @@
 import { ColumnDef, Row } from "@tanstack/react-table";
-
-import { Switch } from "@/components/ui/switch.tsx";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
+import SheToggle from "@/components/primitive/she-toggle/SheToggle.tsx";
+import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
 
 export const ConnectImageGridColumns = (
   onAction: (
@@ -25,16 +25,17 @@ export const ConnectImageGridColumns = (
       };
 
       return (
-        <Switch
+        <SheToggle
           disabled={meta?.isRowLoading(row.id)}
           checked={row.getValue("isActive")}
-          onCheckedChange={() =>
+          type={SheToggleTypeEnum.SWITCH}
+          /*onCheckedChange={() =>
             onAction("imageActions", {
               rowId: row.id,
               setLoadingRow: meta?.setLoadingRow,
               row,
             })
-          }
+          }*/
         />
       );
     },
