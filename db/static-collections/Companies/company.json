@@ -4,6 +4,10 @@
   "companyName": "Nike Ukraine LLC",
   "isDeleted": false,
   "thumbnailUrl": "/shelfie/images/brands/nike-logo.svg",
+  "customerCareEmail": "nike-ukr-llc@gmail.com",
+  "nip": "23d23",
+  "countryId": 2,
+  "countryName": "Ukraine",
   "locationId": 201,
   "address": "12 Velyka Vasylkivska St, Kyiv, Ukraine",
   "photos": [
@@ -82,6 +86,84 @@
         {
           "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/d/dd/%D0%91%D1%83%D0%B4%D0%B8%D0%BD%D0%BE%D0%BA_%D0%BF%D1%80%D0%B8%D0%B1%D1%83%D1%82%D0%BA%D0%BE%D0%B2%D0%B8%D0%B9_0571.jpg",
           "adaptedUrl": "https://upload.wikimedia.org/wikipedia/commons/d/dd/%D0%91%D1%83%D0%B4%D0%B8%D0%BD%D0%BE%D0%BA_%D0%BF%D1%80%D0%B8%D0%B1%D1%83%D1%82%D0%BA%D0%BE%D0%B2%D0%B8%D0%B9_0571.jpg",
+          "width": 900,
+          "height": 900,
+          "sortOrder": 0,
+          "isActive": true,
+          "originalName": null,
+          "assetId": 10,
+          "photoId": 10
+        }
+      ]
+    },
+    {
+      "locationId": 202,
+      "locationAppId": "01999f77-0001-7001-a001-4bd91478020d",
+      "locationName": "Adidas Kyiv Office",
+      "addressLine1": "22 Lesi Ukrainky Blvd",
+      "addressLine2": "Building B",
+      "city": "Kyiv",
+      "state": "Kyiv Oblast",
+      "postCode": "01133",
+      "countryId": 804,
+      "countryName": "Ukraine",
+      "lat": 50.4208606,
+      "long": 30.5383858,
+      "isDeleted": false,
+      "photos": [
+        {
+          "thumbnailUrl": "https://www.shutterstock.com/image-photo/lviv-ukraine-april-18-2019-260nw-1385354018.jpg",
+          "adaptedUrl": "https://www.shutterstock.com/image-photo/lviv-ukraine-april-18-2019-260nw-1385354018.jpg",
+          "width": 900,
+          "height": 900,
+          "sortOrder": 0,
+          "isActive": true,
+          "originalName": null,
+          "assetId": 10,
+          "photoId": 10
+        },
+        {
+          "thumbnailUrl": "https://www.shutterstock.com/image-photo/lviv-ukraine-april-18-2019-260nw-1384704020.jpg",
+          "adaptedUrl": "https://www.shutterstock.com/image-photo/lviv-ukraine-april-18-2019-260nw-1384704020.jpg",
+          "width": 900,
+          "height": 900,
+          "sortOrder": 0,
+          "isActive": true,
+          "originalName": null,
+          "assetId": 10,
+          "photoId": 10
+        },
+        {
+          "thumbnailUrl": "https://www.shutterstock.com/image-photo/lviv-ukraine-august-6-2020-260nw-1794601483.jpg",
+          "adaptedUrl": "https://www.shutterstock.com/image-photo/lviv-ukraine-august-6-2020-260nw-1794601483.jpg",
+          "width": 900,
+          "height": 900,
+          "sortOrder": 0,
+          "isActive": true,
+          "originalName": null,
+          "assetId": 10,
+          "photoId": 10
+        }
+      ]
+    },
+    {
+      "locationId": 2021,
+      "locationAppId": "01999f77-0002-7002-a002-4bd91478020d",
+      "locationName": "Adidas Lviv Distribution Center",
+      "addressLine1": "45 Shevchenko Prospekt",
+      "addressLine2": "",
+      "city": "Lviv",
+      "state": "Lviv Oblast",
+      "postCode": "79000",
+      "countryId": 804,
+      "countryName": "Ukraine",
+      "lat": 49.8397,
+      "long": 24.0297,
+      "isDeleted": false,
+      "photos": [
+        {
+          "thumbnailUrl": "https://mir-s3-cdn-cf.behance.net/projects/404/c42855161508773.Y3JvcCwzNDA5LDI2NjcsMTM1LDA.jpg",
+          "adaptedUrl": "https://mir-s3-cdn-cf.behance.net/projects/404/c42855161508773.Y3JvcCwzNDA5LDI2NjcsMTM1LDA.jpg",
           "width": 900,
           "height": 900,
           "sortOrder": 0,

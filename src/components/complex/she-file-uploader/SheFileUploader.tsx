@@ -154,9 +154,15 @@ export const SheFileUploader = forwardRef<SheFileUploaderRef, ISheFileUploader>(
         }),
       );
 
-      setUploadingFiles((prevFiles) => [...filesToUpload, ...prevFiles]);
+      // setUploadingFiles((prevFiles) => [...filesToUpload, ...prevFiles]);
 
-      setSelectedFiles([]);
+      setTimeout(
+        () => {
+          setSelectedFiles([]);
+        },
+        300 + Math.random() * 1000,
+      );
+
       dropzone.fileStatuses.forEach((file) => {
         dropzone.onRemoveFile(file.id);
       });
@@ -306,6 +312,7 @@ export const SheFileUploader = forwardRef<SheFileUploaderRef, ISheFileUploader>(
               </div>
             )}
             <DropZoneArea
+              className={`${cs.dropZoneArea} ${isLoading ? "disabled" : ""}`}
               style={{
                 width: "100%",
               }}
@@ -320,6 +327,10 @@ export const SheFileUploader = forwardRef<SheFileUploaderRef, ISheFileUploader>(
                     {uploadAreaSubtext}
                   </p>
                 </div>
+                <SheLoading
+                  className={cs.dropZoneLoadingBlock}
+                  isLoading={isLoading}
+                />
               </DropzoneTrigger>
             </DropZoneArea>
           </div>

@@ -17,8 +17,8 @@ export function CompaniesListForBrandGridColumns({
     {
       id: "select",
       header: "Select",
-      minSize: 70,
-      maxSize: 70,
+      minSize: 58,
+      maxSize: 58,
       cell: ({ row, table }) => {
         const meta = table.options.meta as {
           setLoadingRow: (rowId: string, loading: boolean) => void;
@@ -56,30 +56,20 @@ export function CompaniesListForBrandGridColumns({
             style={{
               display: "flex",
               alignItems: "center",
-              gap: "10px",
-              marginLeft: "-8px",
+              gap: "6px",
+              width: "100%",
             }}
           >
-            <div>
+            <div style={{ width: "100%", maxWidth: "40px" }}>
               {imageUrl ? (
                 <img
                   src={imageUrl}
                   alt={name || "Supplier"}
                   className="object-cover rounded-md w-full h-full"
-                  style={{ minWidth: "48px", height: "48px" }}
+                  style={{ width: "100%" }}
                 />
               ) : (
-                <div
-                  style={{
-                    width: "48px",
-                    height: "48px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <SheIcon icon={ImageIcon} maxWidth="30px" />
-                </div>
+                <SheIcon icon={ImageIcon} />
               )}
             </div>
             <SheTooltip

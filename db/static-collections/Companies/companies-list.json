@@ -5,6 +5,10 @@
     "companyName": "Nike Ukraine LLC",
     "isDeleted": false,
     "thumbnailUrl": "/shelfie/images/brands/nike-logo.svg",
+    "customerCareEmail": "nike-ukr-llc@gmail.com",
+    "nip": "23d23",
+    "countryId": 2,
+    "countryName": "Ukraine",
     "locationId": 201,
     "address": "12 Velyka Vasylkivska St, Kyiv, Ukraine",
     "locations": [
@@ -66,6 +70,10 @@
     "companyName": "Adidas Eastern Europe Trading",
     "isDeleted": false,
     "thumbnailUrl": "/shelfie/images/brands/adidas-logo.svg",
+    "customerCareEmail": "nike-ukr-llc@gmail.com",
+    "nip": "23d23",
+    "countryId": 2,
+    "countryName": "Ukraine",
     "locationId": 202,
     "address": "22 Lesi Ukrainky Blvd, Kyiv, Ukraine",
     "locations": [
@@ -155,6 +163,10 @@
     "companyName": "Levi's Distribution Europe",
     "isDeleted": false,
     "thumbnailUrl": "/shelfie/images/brands/levis-logo.svg",
+    "customerCareEmail": "levis-europe@gmail.com",
+    "nip": "32id0",
+    "countryId": 18,
+    "countryName": "France",
     "locationId": 203,
     "address": "14 Rue de Rivoli, Paris, France",
     "locations": [
@@ -261,6 +273,10 @@
     "companyName": "Zara Logistics Spain S.A.",
     "isDeleted": false,
     "thumbnailUrl": "/shelfie/images/brands/zara-logo.svg",
+    "customerCareEmail": "zara-logistics@gmail.com",
+    "nip": "32ZZ1",
+    "countryId": 44,
+    "countryName": "Spain",
     "locationId": 204,
     "address": "151 Avenida de Arteixo, A Coruña, Spain",
     "locations": [
@@ -350,6 +366,9 @@
     "companyName": "H&M Hennes & Mauritz Supply AB",
     "isDeleted": false,
     "thumbnailUrl": "/shelfie/images/brands/hm-logo.svg",
+    "nip": "SD90Sd",
+    "countryId": 45,
+    "countryName": "Sweden",
     "locationId": 205,
     "address": "Mäster Samuelsgatan 46, Stockholm, Sweden",
     "locations": [
@@ -389,6 +408,9 @@
     "companyName": "Puma SE Central Europe",
     "isDeleted": false,
     "thumbnailUrl": "/shelfie/images/brands/puma-logo.svg",
+    "nip": "wCE9wecl",
+    "countryId": 20,
+    "countryName": "Germany",
     "locationId": 206,
     "address": "1 PUMA Way, Herzogenaurach, Germany",
     "locations": [
@@ -456,6 +478,9 @@
     "companyName": "Uniqlo Europe Ltd",
     "isDeleted": false,
     "thumbnailUrl": "/shelfie/images/brands/uniqlo-logo.svg",
+    "nip": "DS0jew",
+    "countryId": 48,
+    "countryName": "United Kingdom",
     "locationId": 207,
     "address": "311 Oxford St, London, United Kingdom",
     "locations": [
@@ -517,6 +542,9 @@
     "companyName": "Reebok International Ltd",
     "isDeleted": false,
     "thumbnailUrl": "/shelfie/images/brands/reebok-logo.svg",
+    "nip": "dsw9Jds",
+    "countryId": 0,
+    "countryName": "USA",
     "locationId": 208,
     "address": "25 Drydock Ave, Boston, MA, USA",
     "locations": [
@@ -606,6 +634,9 @@
     "companyName": "Under Armour EMEA B.V.",
     "isDeleted": false,
     "thumbnailUrl": "/shelfie/images/brands/under-armour-logo.svg",
+    "nip": "238SAS0",
+    "countryId": 35,
+    "countryName": "Netherlands",
     "locationId": 209,
     "address": "5th Floor, Strawinskylaan 4117, Amsterdam, Netherlands",
     "locations": [
@@ -701,6 +732,9 @@
     "companyName": "Hugo Boss AG Global Supply",
     "isDeleted": false,
     "thumbnailUrl": "/shelfie/images/brands/hugo-boss-logo.svg",
+    "nip": "111DSD",
+    "countryId": 20,
+    "countryName": "Germany",
     "locationId": 210,
     "address": "Hugo-Boss-Platz 1, Metzingen, Germany",
     "locations": [

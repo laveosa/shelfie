@@ -254,6 +254,7 @@ export function ProductBasicDataPage() {
           <div ref={createRefCallback("companyPhotosCard")}>
             <PhotosCard
               isImageUploaderLoading={state.isPhotoUploaderLoading}
+              isGridLoading={state.isCompaniesGridLoading}
               data={state.managedCompany?.photos}
               contextName={"Company"}
               contextId={state.managedCompany?.companyId}
