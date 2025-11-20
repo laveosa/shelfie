@@ -28,6 +28,8 @@ export default function StockHistoryCard({
       showCloseButton
       showFooter
       isLoading={isLoading}
+      showPrimaryButton={false}
+      secondaryButtonTitle="CLOSE"
       onSecondaryButtonClick={() => onAction("closeVariantHistoryCard")}
       {...props}
     >

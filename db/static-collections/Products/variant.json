@@ -1,10 +1,76 @@
 {
   "variantId": 221,
+  "variantAppId": "0199eeae-1f33-75f8-8c4a-c0a39ffc0504",
   "variantName": "Nike Air Max 90",
-  "stockAmount": 76,
+  "variantCode": "T221",
+  "status": "Available",
+  "salePrice": {
+    "brutto":  277.75,
+    "netto": 225.81,
+    "taxTypeId": 1
+  },
+  "soldUnits": 4,
+  "stockAmount": 22,
   "showAlert": false,
   "isActive": true,
   "isDeleted": false,
+  "photo": {
+    "photoId": 11,
+    "assetId": 11,
+    "thumbnailUrl": "/shelfie/images/products/nike-air-max-90.jpg",
+    "adaptedUrl": "/shelfie/images/products/nike-air-max-90.jpg",
+    "width": 275,
+    "height": 183,
+    "sortOrder": 0,
+    "isActive": true,
+    "originalName": null
+  },
+  "photos": [
+    {
+      "photoId": 181,
+      "thumbnailUrl": "/shelfie/images/products/nike-air-max-90.jpg",
+      "adaptedUrl": "/shelfie/images/products/nike-air-max-90.jpg",
+      "width": 1500,
+      "height": 2250,
+      "sortOrder": 1,
+      "isActive": true,
+      "originalName": null,
+      "assetId": 181
+    },
+    {
+      "photoId": 182,
+      "thumbnailUrl": "/shelfie/images/products/nike-air-max-90.jpg",
+      "adaptedUrl": "/shelfie/images/products/nike-air-max-90.jpg",
+      "width": 733,
+      "height": 1100,
+      "sortOrder": 2,
+      "isActive": true,
+      "originalName": null,
+      "assetId": 182
+    },
+    {
+      "photoId": 183,
+      "thumbnailUrl": "/shelfie/images/products/nike-air-max-90.jpg",
+      "adaptedUrl": "/shelfie/images/products/nike-air-max-90.jpg",
+      "width": 733,
+      "height": 1100,
+      "sortOrder": 2,
+      "isActive": true,
+      "originalName": null,
+      "assetId": 183
+    }
+  ],
+  "productCategory": {
+    "categoryId": 5,
+    "categoryName": "Shoes",
+    "thumbnail": "/shelfie/images/categories/shoes.png"
+  },
+  "brand": {
+    "brandId": 101,
+    "brandName": "Nike",
+    "thumbnail": "/shelfie/images/brands/nike-logo.svg"
+  },
+  "brandId": 101,
   "traitOptions": [
     {
       "optionId": 41,
@@ -12,10 +78,10 @@
       "optionColor": null,
       "isRaw": false,
       "sortOrder": 0,
+      "traitId": 1,
+      "traitName": "Size",
       "traitTypeId": 1,
-      "traitTypeName": "Size",
-      "traitId": 35,
-      "traitName": "Test Size",
+      "traitTypeName": "EOSC",
       "isDeleted": false
     },
     {
@@ -24,10 +90,10 @@
       "optionColor": "#798387",
       "isRaw": false,
       "sortOrder": 0,
-      "traitTypeId": 2,
+      "traitId": 2,
       "traitTypeName": "Color",
-      "traitId": 1,
-      "traitName": "Color",
+      "traitTypeId": 2,
+      "traitName": "Standard",
       "isDeleted": false
     }
   ]
