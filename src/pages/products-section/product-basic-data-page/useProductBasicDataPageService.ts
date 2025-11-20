@@ -138,7 +138,6 @@ export default function useProductBasicDataPageService(handleCardAction) {
   }
 
   function updateProductDetails(productId, data) {
-    console.log("UPDATE");
     dispatch(actions.setIsProductConfigurationCardLoading(true));
     productsService.updateProductHandler(productId, data).then((res: any) => {
       dispatch(actions.setIsProductConfigurationCardLoading(false));
@@ -229,11 +228,13 @@ export default function useProductBasicDataPageService(handleCardAction) {
   }
 
   function createNewCategoryHandler(model) {
+    dispatch(actions.setIsCreateProductCategoryCardLoading(true));
     productsService
       .createNewCategoryHandler({
         categoryName: model.categoryName,
       })
       .then((res: any) => {
+        dispatch(actions.setIsCreateProductCategoryCardLoading(false));
         if (res.data) {
           dispatch(
             productsActions.refreshCategories([
@@ -278,6 +279,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
 
   function checkBrandNameHandler(brandName: string) {
     if (!brandName) return;
+
     productsService
       .checkBrandNameHandler({ brandName: brandName })
       .then((res: any) => {
@@ -301,12 +303,14 @@ export default function useProductBasicDataPageService(handleCardAction) {
   }
 
   function createBrandHandler(model) {
+    dispatch(actions.setIsCreateProductBrandCardLoading(true));
     productsService
       .createBrandHandler({
         brandName: model.brandName,
-        companyId: state.selectedCompany.companyId,
+        companyId: 1289182989,
       })
       .then((res: any) => {
+        dispatch(actions.setIsCreateProductBrandCardLoading(false));
         if (res.data) {
           dispatch(
             productsActions.refreshBrands([...productsState.brands, res.data]),

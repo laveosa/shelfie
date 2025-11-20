@@ -9,10 +9,32 @@
   "photos": [
     {
       "originalName": "Nike",
-      "assetId": 12,
-      "photoId": 12,
+      "assetId": 11,
+      "photoId": 11,
       "thumbnailUrl": "https://i.brecorder.com/primary/2022/06/23190820d27184e.jpg",
       "adaptedUrl": "https://i.brecorder.com/primary/2022/06/23190820d27184e.jpg",
+      "width": 900,
+      "height": 900,
+      "sortOrder": 0,
+      "isActive": true
+    },
+    {
+      "originalName": "Nike",
+      "assetId": 12,
+      "photoId": 12,
+      "thumbnailUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/images/panoramic/nike-elliot-hill-inc-1801104700_545200_k2cjot.jpg",
+      "adaptedUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/images/panoramic/nike-elliot-hill-inc-1801104700_545200_k2cjot.jpg",
+      "width": 900,
+      "height": 900,
+      "sortOrder": 0,
+      "isActive": true
+    },
+    {
+      "originalName": "Nike",
+      "assetId": 13,
+      "photoId": 13,
+      "thumbnailUrl": "https://d3ghupt9z9s6o0.cloudfront.net/app/uploads/2019/12/13095037/Nike-Shop.jpg",
+      "adaptedUrl": "https://d3ghupt9z9s6o0.cloudfront.net/app/uploads/2019/12/13095037/Nike-Shop.jpg",
       "width": 900,
       "height": 900,
       "sortOrder": 0,

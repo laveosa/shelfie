@@ -179,7 +179,7 @@ export function ProductBasicDataPage() {
         counter={productsState.productCounter}
         itemId={Number(productId)}
         activeCards={state.activeCards}
-        onAction={(item) => onAction("itemsCardClick", item)}
+        // onAction={(item) => onAction("itemsCardClick", item)}
       >
         <ProductConfigurationCard
           isLoading={state.isProductConfigurationCardLoading}
@@ -195,7 +195,7 @@ export function ProductBasicDataPage() {
         {state.activeCards.includes("createCategoryCard") && (
           <div ref={createRefCallback("createCategoryCard")}>
             <CreateProductCategoryCard
-              isLoading={state.isCreateCategoryCardLoading}
+              isLoading={state.isCreateProductCategoryCardLoading}
               isPhotoUploaderLoading={productsState.isPhotoUploaderLoading}
               category={productsState.category}
               onAction={onAction}
@@ -205,7 +205,7 @@ export function ProductBasicDataPage() {
         {state.activeCards.includes("createBrandCard") && (
           <div ref={createRefCallback("createBrandCard")}>
             <CreateProductBrandCard
-              isLoading={state.isCreateBrandCardLoading}
+              isLoading={state.isCreateProductBrandCardLoading}
               isPhotoUploaderLoading={productsState.isPhotoUploaderLoading}
               brand={productsState.brand}
               selectedCompany={state.selectedCompany}

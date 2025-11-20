@@ -30,7 +30,7 @@ export class ProductsController extends BaseController {
   }
 
   public static updateProduct() {
-    return this.staticDataApiHandler({});
+    return this.staticDataApiHandler(product);
   }
 
   public static toggleProductActivation() {
