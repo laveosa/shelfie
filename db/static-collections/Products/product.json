@@ -19,7 +19,7 @@
   "productCategory": {
     "categoryId": 4,
     "categoryName": "T Shirt",
-    "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/7/7d/Tshirt_icon.svg"
+    "thumbnail": "/shelfie/images/categories/t-shirt.png"
   },
   "productCategoryId": 4,
   "productCode": "ABCFS",

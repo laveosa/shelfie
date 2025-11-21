@@ -462,13 +462,15 @@ export function useMarginsPageService(
         ? { ...model, selectedItem: true }
         : { ...item, selectedItem: false },
     );
+
     dispatch(
       actions.refreshMarginItemsGridRequestModel({
         ...state.marginItemsGridRequestModel,
         items: updatedItems,
       }),
     );
-    updateMarginItemHandler(model.marginItemId, model).then((res) => {
+
+    /*updateMarginItemHandler(model.marginItemId, model).then((res) => {
       const updatedItems = state.marginItemsGridRequestModel.items.map(
         (item) =>
           item.marginItemId === model.marginItemId
@@ -482,7 +484,7 @@ export function useMarginsPageService(
           items: updatedItems,
         }),
       );
-    });
+    });*/
   }
 
   function applyMarginItemItemHandle(model) {

@@ -99,8 +99,8 @@ export default function useSupplierPageService(handleCardAction) {
   function updatePurchaseForSupplierHandler(purchaseId, model) {
     dispatch(actions.setIsSupplierCardLoading(true));
     return updatePurchaseForSupplier({ purchaseId, model }).then((res: any) => {
-      dispatch(actions.refreshPurchase(res.data));
       dispatch(actions.setIsSupplierCardLoading(false));
+      dispatch(actions.refreshPurchase(res.data));
       if (res) {
         addToast({
           text: t("SuccessMessages.PurchaseUpdated"),
@@ -112,6 +112,8 @@ export default function useSupplierPageService(handleCardAction) {
           type: "error",
         });
       }
+
+      closeSupplierCardHandler();
     });
   }
 

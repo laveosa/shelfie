@@ -25,24 +25,24 @@ export function GridValueFilter({
       showClearBtn
       type="number"
       onDelay={(value) => {
-        onGridRequestChange?.({
+        /*onGridRequestChange?.({
           ...gridRequestModel,
           currentPage: 0,
           filter: {
             ...gridRequestModel?.filter,
             [fieldKey]: value,
           },
-        });
+        });*/
       }}
       onClear={() => {
-        onGridRequestChange?.({
+        /*onGridRequestChange?.({
           ...gridRequestModel,
           currentPage: 0,
           filter: {
             ...gridRequestModel?.filter,
             [fieldKey]: null,
           },
-        });
+        });*/
       }}
     />
   );

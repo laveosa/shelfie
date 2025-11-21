@@ -62,8 +62,6 @@ export default function VariantConfigurationCard({
   onGenerateProductCode,
   ...props
 }: IVariantConfigurationCard) {
-  console.log("VARIANT PHOTOS: ", variantPhotos);
-
   // ==================================================================== STATE MANAGEMENT
   const [initialFormValues, setInitialFormValues] = useState({
     variantName: variant?.variantName || "",

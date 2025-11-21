@@ -1,11 +1,22 @@
 [
   {
     "variantId": 111,
+    "variantAppId": "0199eeae-1f33-75f8-8c4a-c0a39ffc0504",
     "variantName": "Zara Poplin Midi Skirt: variant 1",
+    "productId": 1004,
     "stockAmount": 12,
     "showAlert": false,
     "isActive": true,
     "isDeleted": false,
+    "variantStockActions": [
+      {
+        "stockActionId": 436,
+        "currencyId": 1,
+        "nettoPrice": 100,
+        "taxTypeId": 1,
+        "unitsAmount": 3
+      }
+    ],
     "traitOptions": [
       {
         "optionId": 41,
@@ -35,11 +46,29 @@
   },
   {
     "variantId": 122,
+    "variantAppId": "0199eeae-1f33-75f8-8c4a-c0a39ffc0504",
     "variantName": "Zara Poplin Midi Skirt: variant 2",
+    "productId": 1004,
     "stockAmount": 24,
     "showAlert": false,
     "isActive": true,
     "isDeleted": false,
+    "variantStockActions": [
+      {
+        "stockActionId": 437,
+        "currencyId": 1,
+        "nettoPrice": 100,
+        "taxTypeId": 1,
+        "unitsAmount": 12
+      },
+      {
+        "stockActionId": 439,
+        "currencyId": 3,
+        "nettoPrice": 55,
+        "taxTypeId": 5,
+        "unitsAmount": 5
+      }
+    ],
     "traitOptions": [
       {
         "optionId": 42,
@@ -69,11 +98,22 @@
   },
   {
     "variantId": 133,
+    "variantAppId": "0199eeae-1f33-75f8-8c4a-c0a39ffc0504",
     "variantName": "Zara Poplin Midi Skirt: variant 3",
+    "productId": 1004,
     "stockAmount": 21,
     "showAlert": false,
     "isActive": true,
     "isDeleted": false,
+    "variantStockActions": [
+      {
+        "stockActionId": 437,
+        "currencyId": 7,
+        "nettoPrice": 24,
+        "taxTypeId": 7,
+        "unitsAmount": 17
+      }
+    ],
     "traitOptions": [
       {
         "optionId": 42,

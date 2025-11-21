@@ -50,8 +50,9 @@ export default function SupplierCard({
   return (
     <SheCard
       className={cs.supplierCard}
-      title="Create Purchase"
-      titleTransKey="SectionTitles.CreatePurchase"
+      title={
+        selectedPurchase?.purchaseId ? "Manage Purchase" : "Create Purchase"
+      }
       showCloseButton={showCloseButton}
       isLoading={isLoading}
       showNotificationCard={!!purchaseId}
@@ -211,6 +212,7 @@ export default function SupplierCard({
               value="Cancel"
               valueTransKey="CommonButtons.Cancel"
               variant={"secondary"}
+              minWidth="100px"
               onClick={() => onAction("closeSupplierCard")}
             />
             <SheButton
@@ -224,6 +226,7 @@ export default function SupplierCard({
               txtColor={!selectedPurchase?.purchaseId && "#fff"}
               bgColor={!selectedPurchase?.purchaseId && "#007AFF"}
               disabled={isButtonDisabled}
+              minWidth="100px"
               onClick={() =>
                 purchaseId
                   ? onAction("updatePurchase", {

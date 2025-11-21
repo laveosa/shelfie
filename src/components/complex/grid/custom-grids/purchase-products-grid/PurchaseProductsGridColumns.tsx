@@ -1,6 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { ImageModel } from "@/const/models/ImageModel.ts";
-import placeholderImage from "@/assets/images/placeholder-image.png";
 import { CategoryModel } from "@/const/models/CategoryModel.ts";
 import { BrandModel } from "@/const/models/BrandModel.ts";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
@@ -12,6 +11,7 @@ import { ImageIcon } from "lucide-react";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import PurchaseProductsGridColumnActions from "@/components/complex/grid/custom-grids/purchase-products-grid/PurchaseProductsGridColumnActions.tsx";
 import { convertToSelectItems } from "@/utils/converters/primitive-components/she-select-convertors.ts";
+import { IconViewEnum } from "@/const/enums/IconViewEnum.ts";
 
 export function purchaseProductsGridColumns(
   currencies: CurrencyModel[],
@@ -23,44 +23,31 @@ export function purchaseProductsGridColumns(
     {
       accessorKey: "photo",
       header: "Image",
-      minSize: 80,
-      maxSize: 80,
+      minSize: 56,
+      maxSize: 56,
       cell: ({ row, table }) => {
         const image: ImageModel = row.getValue("photo");
-        const meta = table.options.meta as {
-          setLoadingRow: (rowId: string, loading: boolean) => void;
-          isRowLoading: (rowId: string) => boolean;
-        };
 
         return (
-          <div
-            className="relative w-12 h-12 cursor-pointer"
-            onClick={() => onAction("image", row.id, meta?.setLoadingRow)}
-          >
-            {image ? (
-              <img
-                src={image?.thumbnailUrl || placeholderImage}
-                alt={row.getValue("variantName")}
-                className="object-cover rounded-md w-full h-full"
-              />
-            ) : (
-              <div>
-                <SheIcon
-                  icon={ImageIcon}
-                  maxWidth="60px"
-                  className={cs.noImageIcon}
-                />
-              </div>
-            )}
-          </div>
+          <SheIcon
+            icon={image?.thumbnailUrl || ImageIcon}
+            className="m-auto"
+            style={{
+              ...(!image?.thumbnailUrl && {
+                padding: "10px",
+              }),
+            }}
+            color="#64748b"
+            iconView={IconViewEnum.BUTTON}
+          />
         );
       },
     },
     {
       accessorKey: "variantCode",
       header: "Code",
-      minSize: 70,
-      maxSize: 150,
+      minSize: 60,
+      maxSize: 60,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("variantCode")}>
@@ -74,7 +61,7 @@ export function purchaseProductsGridColumns(
     {
       accessorKey: "variantName",
       header: "Product Name",
-      minSize: 70,
+      minSize: 150,
       cell: ({ row }) => {
         return (
           <SheTooltip delayDuration={200} text={row.getValue("variantName")}>
@@ -88,7 +75,7 @@ export function purchaseProductsGridColumns(
     {
       accessorKey: "productCategory",
       header: "Category",
-      minSize: 70,
+      minSize: 100,
       cell: ({ row }) => {
         const category: CategoryModel = row.getValue("productCategory");
         return (
@@ -112,7 +99,7 @@ export function purchaseProductsGridColumns(
     {
       accessorKey: "brand",
       header: "Brand",
-      minSize: 70,
+      minSize: 60,
       cell: ({ row }) => {
         const brand: BrandModel = row.getValue("brand");
         return (
@@ -124,7 +111,7 @@ export function purchaseProductsGridColumns(
                   alt={row.original.brand.brandName}
                 />
               )}
-              <span>{brand?.brandName || "N/A"}</span>
+              {/*<span>{brand?.brandName || "N/A"}</span>*/}
             </div>
           </SheTooltip>
         );
@@ -137,7 +124,6 @@ export function purchaseProductsGridColumns(
       maxSize: 150,
       cell: ({ row }) => {
         const traitOptions = row.original.traitOptions || [];
-
         const colorOptions = traitOptions.filter(
           (option) => option.traitTypeId === 2 && option.optionColor,
         );

@@ -1,13 +1,13 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { ImageIcon } from "lucide-react";
 
-import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
-import placeholderImage from "@/assets/images/placeholder-image.png";
-import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import cs from "./MarginProductsGridColumns.module.scss";
+import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
+import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import MarginItemsForm from "@/components/forms/margin-items-form/MarginItemsForm.tsx";
 import { TaxTypeModel } from "@/const/models/TaxTypeModel.ts";
 import { convertToSelectItems } from "@/utils/converters/primitive-components/she-select-convertors.ts";
+import { IconViewEnum } from "@/const/enums/IconViewEnum.ts";
 
 export function marginProductsGridColumns(
   taxes: TaxTypeModel[],
@@ -17,30 +17,23 @@ export function marginProductsGridColumns(
     {
       accessorKey: "thumbnailUrl",
       header: "Image",
-      minSize: 80,
-      maxSize: 80,
+      minSize: 56,
+      maxSize: 56,
       cell: ({ row, table }) => {
         const image: string = row.getValue("thumbnailUrl");
-        const meta = table.options.meta as {
-          setLoadingRow: (rowId: string, loading: boolean) => void;
-          isRowLoading: (rowId: string) => boolean;
-        };
 
         return (
-          <div
-            className={cs.imageBlock}
-            onClick={() => onAction("image", row.id, meta?.setLoadingRow)}
-          >
-            {image ? (
-              <img
-                src={image || placeholderImage}
-                alt={row.getValue("variantName")}
-                className="object-cover rounded-md w-full h-full"
-              />
-            ) : (
-              <SheIcon icon={ImageIcon} />
-            )}
-          </div>
+          <SheIcon
+            icon={image || ImageIcon}
+            className="m-auto"
+            style={{
+              ...(!image && {
+                padding: "10px",
+              }),
+            }}
+            color="#64748b"
+            iconView={IconViewEnum.BUTTON}
+          />
         );
       },
     },
@@ -170,6 +163,7 @@ export function marginProductsGridColumns(
       cell: ({ row }) => {
         return (
           <MarginItemsForm
+            className={cs.marginItemsForm}
             data={row.original}
             taxes={convertToSelectItems(taxes, {
               text: "name",
