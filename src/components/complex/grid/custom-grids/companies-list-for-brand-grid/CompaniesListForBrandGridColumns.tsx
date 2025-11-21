@@ -50,7 +50,7 @@ export function CompaniesListForBrandGridColumns({
       cell: ({ row }) => {
         const imageUrl: string = row.original.thumbnailUrl;
         const name: string = row.original.companyName;
-        const address1: string = row.original.address;
+
         return (
           <div
             style={{
