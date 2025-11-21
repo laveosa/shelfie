@@ -33,8 +33,6 @@ export default function ManageProductCard({
   productTraits,
   onAction,
 }: IManageProductCard) {
-  console.log("VARIANTS: ", variants);
-
   // ==================================================================== STATE MANAGEMENT
   const [variantsData, setVariantsData] = useState([]);
 

@@ -6,7 +6,7 @@
     "customer": {
       "thumbnailUrl": "https://img.freepik.com/free-photo/portrait-beautiful-business-office-business-center_1303-20365.jpg",
       "customerName": "Emma Richardson",
-      "phone": "+44 20 7946 0958",
+      "phone": "+442079460958",
       "email": "emma.richardson@email.com"
     },
     "queueDate": "2025-11-09T00:00:00Z",
@@ -42,7 +42,7 @@
     "customer": {
       "thumbnailUrl": "https://img.freepik.com/premium-photo/smiling-business-man-full-black-suit-glasses-looking-camera-standing-cityscape-background_283617-8299.jpg",
       "customerName": "Marcus Chen",
-      "phone": "+1 415 555 0142",
+      "phone": "+14155550142",
       "email": "marcus.chen@techmail.com"
     },
     "queueDate": "2025-11-10T00:00:00Z",
@@ -78,7 +78,7 @@
     "customer": {
       "thumbnailUrl": "https://www.lanacion.com.ar/resizer/v2/sofia-martinez-con-nuevos-desafios-en-la-AHRQWQ4UNJAZPGDZ2S5RF3MX6Q.jpg",
       "customerName": "Sofia Martinez",
-      "phone": "+34 91 123 4567",
+      "phone": "+34911234567",
       "email": "sofia.martinez@webmail.es"
     },
     "queueDate": "2025-11-11T00:00:00Z",
@@ -114,7 +114,7 @@
     "customer": {
       "thumbnailUrl": "https://img.freepik.com/premium-photo/group-happy-business-man-business-women-dressed-suits-are-smiling-office_457222-5269.jpg",
       "customerName": "Lucas Bergström",
-      "phone": "+46 8 123 456 78",
+      "phone": "+46812345678",
       "email": "lucas.bergstrom@nordicmail.se"
     },
     "queueDate": "2025-11-12T00:00:00Z",
@@ -150,7 +150,7 @@
     "customer": {
       "thumbnailUrl": "https://img.freepik.com/premium-photo/portrait-smiling-brunette_53419-5937.jpg",
       "customerName": "Amélie Dubois",
-      "phone": "+33 1 42 86 82 00",
+      "phone": "+33142868200",
       "email": "amelie.dubois@laposte.fr"
     },
     "queueDate": "2025-11-12T00:00:00Z",
@@ -186,7 +186,7 @@
     "customer": {
       "thumbnailUrl": "https://img.freepik.com/premium-photo/portrait-businessman-with-glasses-goes-work-office-business-suit-smiles_283470-7493.jpg",
       "customerName": "Alessandro Rossi",
-      "phone": "+39 06 1234 5678",
+      "phone": "+390612345678",
       "email": "a.rossi@italmail.it"
     },
     "queueDate": "2025-11-13T00:00:00Z",
@@ -222,7 +222,7 @@
     "customer": {
       "thumbnailUrl": "https://img.freepik.com/free-photo/front-view-business-woman-suit_23-2148603018.jpg",
       "customerName": "Nina Kowalska",
-      "phone": "+48 22 123 45 67",
+      "phone": "+48221234567",
       "email": "nina.kowalska@poczta.pl"
     },
     "queueDate": "2025-11-14T00:00:00Z",
@@ -258,7 +258,7 @@
     "customer": {
       "thumbnailUrl": "https://img.freepik.com/free-photo/front-view-business-woman-suit_23-2148603018.jpg",
       "customerName": "Nina Kowalska",
-      "phone": "+48 22 123 45 67",
+      "phone": "+48221234567",
       "email": "nina.kowalska@poczta.pl"
     },
     "queueDate": "2025-11-15T00:00:00Z",
@@ -293,7 +293,7 @@
     "customer": {
       "thumbnailUrl": "https://img.freepik.com/premium-photo/smiling-business-man-full-black-suit-glasses-looking-camera-standing-cityscape-background_283617-8299.jpg",
       "customerName": "Marcus Chen",
-      "phone": "+1 415 555 0142",
+      "phone": "+14155550142",
       "email": "marcus.chen@techmail.com"
     },
     "queueDate": "2025-11-07T00:00:00Z",
@@ -328,7 +328,7 @@
     "customer": {
       "thumbnailUrl": "https://img.freepik.com/premium-photo/smiling-business-man-full-black-suit-glasses-looking-camera-standing-cityscape-background_283617-8299.jpg",
       "customerName": "Marcus Chen",
-      "phone": "+1 415 555 0142",
+      "phone": "+14155550142",
       "email": "marcus.chen@techmail.com"
     },
     "queueDate": "2025-11-15T00:00:00Z",

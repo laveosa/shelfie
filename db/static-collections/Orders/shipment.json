@@ -9,7 +9,7 @@
   "customer": {
     "thumbnailUrl": "https://img.freepik.com/premium-photo/smiling-business-man-full-black-suit-glasses-looking-camera-standing-cityscape-background_283617-8299.jpg",
     "customerName": "Marcus Chen",
-    "phone": "+1 415 555 0142",
+    "phone": "+14155550142",
     "email": "marcus.chen@techmail.com"
   },
   "deliveryAddressId": 8,
@@ -93,7 +93,7 @@
       "customer": {
         "thumbnailUrl": "https://img.freepik.com/premium-photo/smiling-business-man-full-black-suit-glasses-looking-camera-standing-cityscape-background_283617-8299.jpg",
         "customerName": "Marcus Chen",
-        "phone": "+1 415 555 0142",
+        "phone": "+14155550142",
         "email": "marcus.chen@techmail.com"
       },
       "orderDate": "2025-10-28T00:00:00Z",
