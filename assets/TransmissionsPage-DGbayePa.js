@@ -1,0 +1,1 @@
+import{u as i,S as n,i as r,j as t}from"./index-DybU9lv3.js";const a={};function o(){const s=i(e=>e[n.TRANSMISSIONS]);return r(),{...s}}function u(){return o(),t.jsx("div",{id:a.TransmissionsPage,children:"Transmissions Page"})}export{u as TransmissionsPage};
