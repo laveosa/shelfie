@@ -25,6 +25,7 @@ export function GridValueFilter({
       showClearBtn
       type="number"
       onDelay={(value) => {
+        value = value; // =============== BUILD TMP FIX
         /*onGridRequestChange?.({
           ...gridRequestModel,
           currentPage: 0,
@@ -35,6 +36,7 @@ export function GridValueFilter({
         });*/
       }}
       onClear={() => {
+        const tmp = fieldKey; // =============== BUILD TMP FIX
         /*onGridRequestChange?.({
           ...gridRequestModel,
           currentPage: 0,

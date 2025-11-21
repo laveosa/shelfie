@@ -19,7 +19,7 @@ export function marginProductsGridColumns(
       header: "Image",
       minSize: 56,
       maxSize: 56,
-      cell: ({ row, table }) => {
+      cell: ({ row }) => {
         const image: string = row.getValue("thumbnailUrl");
 
         return (

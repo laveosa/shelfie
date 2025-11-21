@@ -25,7 +25,7 @@ export function purchaseProductsGridColumns(
       header: "Image",
       minSize: 56,
       maxSize: 56,
-      cell: ({ row, table }) => {
+      cell: ({ row }) => {
         const image: ImageModel = row.getValue("photo");
 
         return (

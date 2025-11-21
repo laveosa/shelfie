@@ -29,13 +29,14 @@ export const ConnectImageGridColumns = (
           disabled={meta?.isRowLoading(row.id)}
           checked={row.getValue("isActive")}
           type={SheToggleTypeEnum.SWITCH}
-          /*onCheckedChange={() =>
-            onAction("imageActions", {
+          onCheckedChange={() => {
+            const tmp = onAction; // =============== BUILD TMP FIX
+            /*onAction("imageActions", {
               rowId: row.id,
               setLoadingRow: meta?.setLoadingRow,
               row,
-            })
-          }*/
+            })*/
+          }}
         />
       );
     },
