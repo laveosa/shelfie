@@ -2,20 +2,84 @@
   display: flex;
   justify-content: center;
   width: 60px;
-  padding: 0 8px;
+  padding: 2px 8px;
+  min-width: 80px;
   border-radius: 8px;
   text-align: center;
   font-size: 12px;
+
+  span {
+    font-weight: bold;
+  }
 }
 
-.productStatusAvailable {
-  border: 1px solid #38BF5E;
-  background: #EBF9EF;
-  color: #38BF5E;
+.customerBlock {
+  display: flex;
+  gap: 6px;
+
+  .customerImage {
+    width: 100%;
+    max-width: 56px;
+    min-width: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .customerInfo {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
 }
 
-.productStatusNotAvailable {
+// ======================================================== STATUS
+
+.statusBlank {
+  border: 1px solid #314549;
+  background: white;
+  color: #314549;
+}
+
+.statusSuccess {
+  border: 1px solid #38bf5e;
+  background: rgba(56, 191, 94, 0.1);
+  color: #38bf5e;
+}
+
+.statusWarning {
+  border: 1px solid #ffd400;
+  background: rgba(255, 212, 0, 0.1);
+  color: #ffd400;
+}
+
+.statusProcess {
+  border: 1px solid #6455e6;
+  background: rgba(100, 85, 230, 0.1);
+  color: #6455e6;
+}
+
+.statusProgressing {
+  border: 1px solid #24a0a6;
+  background: #ebf9ef;
+  color: #24a0a6;
+}
+
+.statusDone {
+  border: 1px solid #259cd8;
+  background: rgba(36, 160, 166, 0.1);
+  color: #259cd8;
+}
+
+.statusError {
   border: 1px solid #d31515;
-  background: #F9EBEBFF;
+  background: rgba(211, 21, 21, 0.1);
   color: #d31515;
 }

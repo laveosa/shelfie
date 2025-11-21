@@ -6,10 +6,34 @@ import { formatDate } from "@/utils/helpers/quick-helper.ts";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
+import { IconViewEnum } from "@/const/enums/IconViewEnum.ts";
 
 export function ordersGridColumns(onGridAction: any): ColumnDef<any>[] {
   const statusClass = (status: string) => {
-    if (status === "New") {
+    switch (status) {
+      case "New":
+        return cs.statusBlank;
+      case "Processing":
+        return cs.statusProcess;
+      case "Pending":
+        return cs.statusWarning;
+      case "Shipped":
+        return cs.statusProgressing;
+      case "Delivered":
+        return cs.statusDone;
+      case "Returned":
+        return cs.statusWarning;
+      case "Refunded":
+        return cs.statusError;
+      case "Cancelled":
+        return cs.statusError;
+      case "Paid":
+        return cs.statusSuccess;
+      default:
+        return cs.statusBlank;
+    }
+
+    /*if (status === "New") {
       return cs.productStatusAvailable;
     } else if (status === "Pending") {
       return cs.productStatusAvailable;
@@ -17,8 +41,9 @@ export function ordersGridColumns(onGridAction: any): ColumnDef<any>[] {
       return cs.productStatusNotAvailable;
     } else {
       return "";
-    }
+    }*/
   };
+
   return [
     {
       accessorKey: "id",
@@ -29,11 +54,41 @@ export function ordersGridColumns(onGridAction: any): ColumnDef<any>[] {
     {
       accessorKey: "customer",
       header: "Customer",
-      minSize: 120,
+      minSize: 220,
       cell: ({ row }) => {
         const image: string = row.original.customer.thumbnailUrl;
 
         return (
+          <SheTooltip
+            delayDuration={200}
+            text={row.original.customer.customerName}
+            description={`email: ${row.original.customer.email}, phone: ${row.original.customer.phone}`}
+            className="max-w-[100%] overflow-hidden text-ellipsis whitespace-nowrap"
+          >
+            <div className={cs.customerBlock}>
+              <div className={cs.customerImage}>
+                <SheIcon
+                  icon={image || ImageIcon}
+                  fullWidth
+                  iconView={IconViewEnum.BUTTON}
+                />
+              </div>
+              <div className={cs.customerInfo}>
+                <span className="she-text">
+                  {row.original.customer.customerName}
+                </span>
+                <span className="she-subtext">
+                  {row.original.customer.email}
+                </span>
+                <span className="she-subtext">
+                  {row.original.customer.phone}
+                </span>
+              </div>
+            </div>
+          </SheTooltip>
+        );
+
+        /*return (
           <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
             <div>
               {image ? (
@@ -56,7 +111,7 @@ export function ordersGridColumns(onGridAction: any): ColumnDef<any>[] {
               </SheTooltip>
             </div>
           </div>
-        );
+        );*/
       },
     },
     {
@@ -101,7 +156,7 @@ export function ordersGridColumns(onGridAction: any): ColumnDef<any>[] {
         );
       },
     },
-    {
+    /*{
       accessorKey: "shipmentStatus",
       header: "Shipment",
       minSize: 100,
@@ -113,7 +168,7 @@ export function ordersGridColumns(onGridAction: any): ColumnDef<any>[] {
           </div>
         );
       },
-    },
+    },*/
     {
       accessorKey: "count",
       header: "Items",

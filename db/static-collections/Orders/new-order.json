@@ -1,0 +1,18 @@
+{
+  "id": 10245,
+  "customerId": 999,
+  "customer": null,
+  "date": "2025-11-12T14:32:18.456Z",
+  "channel": null,
+  "orderStatus": null,
+  "paymentStatus": null,
+  "orderSubTotal": null,
+  "currency": {
+    "id": 1,
+    "name": "Euro",
+    "briefName": "EUR"
+  },
+  "discounts": null,
+  "unitsAmount": null,
+  "discountAmount": null
+}

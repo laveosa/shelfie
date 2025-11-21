@@ -2,10 +2,16 @@
   "id": 10245,
   "customerId": 1,
   "customer": {
-    "thumbnailUrl": "/assets/avatars/emma-richardson.jpg",
+    "customerId": 1,
     "customerName": "Emma Richardson",
-    "phone": "+442079460958",
-    "email": "emma.richardson@email.com"
+    "firstName": "Emma",
+    "lastName": "Richardson",
+    "email": "emma.richardson@email.com",
+    "phoneNumber": "+442079460958",
+    "rank": "Platinum",
+    "createdAt": "2024-03-15T09:42:18.000Z",
+    "lastOrderDate": "2025-11-12T00:00:00Z",
+    "thumbnailUrl": "https://img.freepik.com/free-photo/portrait-beautiful-business-office-business-center_1303-20365.jpg"
   },
   "date": "2025-11-12T14:32:18.456Z",
   "channel": "Online Store",

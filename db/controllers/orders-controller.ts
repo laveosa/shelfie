@@ -1,11 +1,13 @@
 import { BaseController } from "./base-controller";
 
 import customer from "../static-collections/Orders/customer.json";
+import newCustomer from "../static-collections/Orders/new-customer.json";
 import customersList from "../static-collections/Orders/customers-list.json";
 import customerInfo from "../static-collections/Orders/customer-info.json";
 import customerAddress from "../static-collections/Orders/customer-address.json";
 import customerAddressesList from "../static-collections/Orders/customer-addresses-list.json";
 import order from "../static-collections/Orders/order.json";
+import newOrder from "../static-collections/Orders/new-order.json";
 import ordersList from "../static-collections/Orders/orders-list.json";
 import stockAction from "../static-collections/Orders/stock-action.json";
 import stockActionsList from "../static-collections/Orders/stock-actions-list.json";
@@ -28,7 +30,7 @@ export class OrdersController extends BaseController {
   }
 
   public static createCustomer() {
-    return this.staticDataApiHandler(customer);
+    return this.staticDataApiHandler(newCustomer);
   }
 
   public static updateCustomer() {
@@ -70,7 +72,7 @@ export class OrdersController extends BaseController {
   }
 
   public static createOrder() {
-    return this.staticDataApiHandler(order);
+    return this.staticDataApiHandler(newOrder);
   }
 
   public static deleteOrder() {
