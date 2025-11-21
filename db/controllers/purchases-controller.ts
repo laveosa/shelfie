@@ -1,51 +1,42 @@
 import { BaseController } from "./base-controller";
 
-import listOfPurchasesForGrid from "../static-collections/Purchases/list-of-purchases-for-grid.json";
-import listOfPurchaseProductsForGrid from "../static-collections/Purchases/list-of-purchase-products-for-grid.json";
-import purchaseDetailsModel from "../static-collections/Purchases/purchase-details.json";
-import newPurchase from "../static-collections/Purchases/new-purchase.json";
-import updatePurchase from "../static-collections/Purchases/update-purchase.json";
+import purchase from "../static-collections/Purchases/purchase.json";
+import purchasesList from "../static-collections/Purchases/purchases-list.json";
+import purchaseProductsList from "../static-collections/Purchases/purchase-products-list.json";
 import purchaseCounters from "../static-collections/Purchases/purchase-counters.json";
 import variantToPurchaseProducts from "../static-collections/Purchases/variant-to-purchase-products.json";
 import purchaseProductVariants from "../static-collections/Purchases/purchase-product-variants.json";
 import purchaseSummary from "../static-collections/Purchases/purchase-summary.json";
-import marginsListForGrid from "../static-collections/Purchases/margins-list-for-grid.json";
-import allMargins from "../static-collections/Purchases/all-margins.json";
-import marginForPurchase from "../static-collections/Purchases/margin-for-purchase.json";
-import marginDetails from "../static-collections/Purchases/margin-details.json";
-import createMarginModel from "../static-collections/Purchases/create-margin.json";
-import updateMarginModel from "../static-collections/Purchases/update-margin.json";
+import margin from "../static-collections/Purchases/margin.json";
+import marginsList from "../static-collections/Purchases/margins-list.json";
 import marginRules from "../static-collections/Purchases/margin-rules.json";
-import connectMarginToPurchaseModel from "../static-collections/Purchases/connect-margin-to-purchase.json";
-import marginRulesForPurchase from "../static-collections/Purchases/margin-rules-for-purchase.json";
-import marginItemsListForGrid from "../static-collections/Purchases/margin-items-list-for-grid.json";
-import invoicesForGrid from "../static-collections/Purchases/invoices-for-grid.json";
-import marginRuleToDefault from "../static-collections/Purchases/margin-rule-to-default.json";
 import marginItem from "../static-collections/Purchases/margin-item.json";
+import marginItemsList from "../static-collections/Purchases/margin-items-list.json";
+import invoicesForGrid from "../static-collections/Purchases/invoices-for-grid.json";
 
 export class PurchasesController extends BaseController {
   public static getListOfPurchasesForGrid() {
     return this.staticDataApiHandler(
-      this.createGridDefaultModel(listOfPurchasesForGrid),
+      this.createGridDefaultModel(purchasesList),
     );
   }
 
   public static getListOfPurchaseProductsForGrid() {
     return this.staticDataApiHandler(
-      this.createGridDefaultModel(listOfPurchaseProductsForGrid),
+      this.createGridDefaultModel(purchaseProductsList),
     );
   }
 
   public static getPurchaseDetails() {
-    return this.staticDataApiHandler(purchaseDetailsModel);
+    return this.staticDataApiHandler(purchase);
   }
 
   public static createPurchaseForSupplier() {
-    return this.staticDataApiHandler(newPurchase);
+    return this.staticDataApiHandler(purchase);
   }
 
   public static updatePurchaseForSupplier() {
-    return this.staticDataApiHandler(updatePurchase);
+    return this.staticDataApiHandler(purchase);
   }
 
   public static getPurchaseCounters() {
@@ -73,29 +64,27 @@ export class PurchasesController extends BaseController {
   }
 
   public static getMarginsListForGrid() {
-    return this.staticDataApiHandler(
-      this.createGridDefaultModel(marginsListForGrid),
-    );
+    return this.staticDataApiHandler(this.createGridDefaultModel(marginsList));
   }
 
   public static getAllMargins() {
-    return this.staticDataApiHandler(allMargins);
+    return this.staticDataApiHandler(margin);
   }
 
   public static getMarginForPurchase() {
-    return this.staticDataApiHandler(marginForPurchase);
+    return this.staticDataApiHandler(margin);
   }
 
   public static getMarginDetails() {
-    return this.staticDataApiHandler(marginDetails);
+    return this.staticDataApiHandler(margin);
   }
 
   public static createMargin() {
-    return this.staticDataApiHandler(createMarginModel);
+    return this.staticDataApiHandler(margin);
   }
 
   public static updateMargin() {
-    return this.staticDataApiHandler(updateMarginModel);
+    return this.staticDataApiHandler(margin);
   }
 
   public static createMarginRules() {
@@ -111,7 +100,7 @@ export class PurchasesController extends BaseController {
   }
 
   public static connectMarginToPurchase() {
-    return this.staticDataApiHandler(connectMarginToPurchaseModel);
+    return this.staticDataApiHandler(margin);
   }
 
   public static detachMargin() {
@@ -119,12 +108,12 @@ export class PurchasesController extends BaseController {
   }
 
   public static updateMarginRulesForPurchase() {
-    return this.staticDataApiHandler(marginRulesForPurchase);
+    return this.staticDataApiHandler(marginRules);
   }
 
   public static getMarginItemsListForGrid() {
     return this.staticDataApiHandler(
-      this.createGridDefaultModel(marginItemsListForGrid),
+      this.createGridDefaultModel(marginItemsList),
     );
   }
 
@@ -135,7 +124,7 @@ export class PurchasesController extends BaseController {
   }
 
   public static restoreMarginRuleToDefault() {
-    return this.staticDataApiHandler(marginRuleToDefault);
+    return this.staticDataApiHandler(margin);
   }
 
   public static updateMarginItem() {

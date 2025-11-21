@@ -1,72 +1,39 @@
 [
   {
-    "variantId": 2,
-    "productId": 2,
-    "variantCode": "I131",
-    "variantName": "test 1",
-    "traitOptions": [
-      {
-        "optionId": 2,
-        "optionName": "Green",
-        "optionColor": "#14d069",
-        "isRaw": false,
-        "sortOrder": 0,
-        "traitTypeId": 2,
-        "traitTypeName": "Color",
-        "traitId": 1,
-        "traitName": "Color",
-        "isDeleted": false
-      }
-    ],
+    "variantId": 111,
+    "variantAppId": "0199eeae-1f33-75f8-8c4a-c0a39ffc0504",
+    "variantName": "Zara Poplin Midi Skirt: variant 1",
+    "productId": 1004,
+    "stockAmount": 12,
+    "showAlert": false,
+    "isActive": true,
+    "isDeleted": false,
     "variantStockActions": [
       {
-        "stockActionId": 8,
+        "stockActionId": 436,
         "currencyId": 1,
-        "nettoPrice": 23.0,
-        "taxTypeId": 2,
-        "unitsAmount": 22
-      }
-    ]
-  },
-  {
-    "variantId": 3,
-    "productId": 2,
-    "variantCode": "I132",
-    "variantName": "Greeen 111 2",
-    "traitOptions": [
-      {
-        "optionId": 2,
-        "optionName": "Green",
-        "optionColor": "#14d069",
-        "isRaw": false,
-        "sortOrder": 0,
-        "traitTypeId": 2,
-        "traitTypeName": "Color",
-        "traitId": 1,
-        "traitName": "Color",
-        "isDeleted": false
-      }
-    ],
-    "variantStockActions": [
-      {
-        "stockActionId": 52,
-        "currencyId": 1,
-        "nettoPrice": 5.0,
+        "nettoPrice": 100,
         "taxTypeId": 1,
-        "unitsAmount": 20
+        "unitsAmount": 3
       }
-    ]
-  },
-  {
-    "variantId": 36,
-    "productId": 2,
-    "variantCode": "I133",
-    "variantName": "Greeen 111 3",
+    ],
     "traitOptions": [
       {
-        "optionId": 3,
-        "optionName": "Blue",
-        "optionColor": "#104ee6",
+        "optionId": 41,
+        "optionName": "S",
+        "optionColor": null,
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitTypeId": 1,
+        "traitTypeName": "Size",
+        "traitId": 35,
+        "traitName": "Test Size",
+        "isDeleted": false
+      },
+      {
+        "optionId": 413,
+        "optionName": "Brown",
+        "optionColor": "#B89D72",
         "isRaw": false,
         "sortOrder": 0,
         "traitTypeId": 2,
@@ -75,14 +42,102 @@
         "traitName": "Color",
         "isDeleted": false
       }
-    ],
+    ]
+  },
+  {
+    "variantId": 122,
+    "variantAppId": "0199eeae-1f33-75f8-8c4a-c0a39ffc0504",
+    "variantName": "Zara Poplin Midi Skirt: variant 2",
+    "productId": 1004,
+    "stockAmount": 24,
+    "showAlert": false,
+    "isActive": true,
+    "isDeleted": false,
     "variantStockActions": [
       {
-        "stockActionId": 53,
+        "stockActionId": 437,
         "currencyId": 1,
-        "nettoPrice": 5.0,
-        "taxTypeId": 3,
-        "unitsAmount": 10
+        "nettoPrice": 100,
+        "taxTypeId": 1,
+        "unitsAmount": 12
+      },
+      {
+        "stockActionId": 439,
+        "currencyId": 3,
+        "nettoPrice": 55,
+        "taxTypeId": 5,
+        "unitsAmount": 5
+      }
+    ],
+    "traitOptions": [
+      {
+        "optionId": 42,
+        "optionName": "M",
+        "optionColor": null,
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitTypeId": 1,
+        "traitTypeName": "Size",
+        "traitId": 35,
+        "traitName": "Test Size",
+        "isDeleted": false
+      },
+      {
+        "optionId": 413,
+        "optionName": "Brown",
+        "optionColor": "#B89D72",
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitTypeId": 2,
+        "traitTypeName": "Color",
+        "traitId": 1,
+        "traitName": "Color",
+        "isDeleted": false
+      }
+    ]
+  },
+  {
+    "variantId": 133,
+    "variantAppId": "0199eeae-1f33-75f8-8c4a-c0a39ffc0504",
+    "variantName": "Zara Poplin Midi Skirt: variant 3",
+    "productId": 1004,
+    "stockAmount": 21,
+    "showAlert": false,
+    "isActive": true,
+    "isDeleted": false,
+    "variantStockActions": [
+      {
+        "stockActionId": 437,
+        "currencyId": 7,
+        "nettoPrice": 24,
+        "taxTypeId": 7,
+        "unitsAmount": 17
+      }
+    ],
+    "traitOptions": [
+      {
+        "optionId": 42,
+        "optionName": "M",
+        "optionColor": null,
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitTypeId": 1,
+        "traitTypeName": "Size",
+        "traitId": 35,
+        "traitName": "Test Size",
+        "isDeleted": false
+      },
+      {
+        "optionId": 413,
+        "optionName": "Black",
+        "optionColor": "#1F1F1F",
+        "isRaw": false,
+        "sortOrder": 0,
+        "traitTypeId": 2,
+        "traitTypeName": "Color",
+        "traitId": 1,
+        "traitName": "Color",
+        "isDeleted": false
       }
     ]
   }

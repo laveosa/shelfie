@@ -43,7 +43,7 @@ export function SupplierPage() {
       case "updatePurchase":
         service.updatePurchaseForSupplierHandler(payload.purchaseId, {
           date: payload.selectedDate,
-          companyId: payload.selectedCompany.companyId,
+          companyId: payload.selectedSupplier.companyId,
           documentNotes: payload.purchaseNotes,
         });
         break;

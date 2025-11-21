@@ -99,19 +99,16 @@ export default function AddStockCard({
               </div>
               <div className={cs.connectedPurchaseSupplier}>
                 <div className={cs.supplierInfo}>
-                  {purchase.supplier?.thumbnailUrl ? (
-                    <div className={cs.supplierInfoImageWrapper}>
+                  <div style={{ width: "100%", maxWidth: "40px" }}>
+                    {purchase.supplier?.thumbnailUrl ? (
                       <img
                         src={purchase.supplier?.thumbnailUrl}
                         alt={purchase.supplier?.supplierName || "Supplier"}
-                        className={cs.supplierInfoImage}
                       />
-                    </div>
-                  ) : (
-                    <div className={cs.supplierInfoIcon}>
-                      <SheIcon icon={ImageIcon} maxWidth="30px" />
-                    </div>
-                  )}
+                    ) : (
+                      <SheIcon icon={ImageIcon} />
+                    )}
+                  </div>
                   <div className={cs.supplierInfoDetails}>
                     <span className={cs.supplierInfoDetailsName}>
                       {purchase.supplier?.supplierName}

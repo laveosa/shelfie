@@ -1,0 +1,359 @@
+[
+  {
+    "shipmentId": 192,
+    "createdAt": "2025-11-09T10:22:11.112Z",
+    "customerId": 1,
+    "customer": {
+      "thumbnailUrl": "https://img.freepik.com/free-photo/portrait-beautiful-business-office-business-center_1303-20365.jpg",
+      "customerName": "Emma Richardson",
+      "phone": "+442079460958",
+      "email": "emma.richardson@email.com"
+    },
+    "queueDate": "2025-11-09T00:00:00Z",
+    "shipmentStatus": "DeliveryPending",
+    "deliveryAddressId": 1,
+    "deliveryAddress": {
+      "addressId": 1,
+      "addressItemId": 1,
+      "alias": "Home",
+      "addressLine1": "Corso Italia",
+      "addressLine2": "APT. 23",
+      "city": "Rome",
+      "state": "RM",
+      "postalCode": "00185",
+      "countryId": 1,
+      "countryName": "Italy",
+      "isDeleted": false
+    },
+    "quantityPacked": 3,
+    "deliveryServiceId": 1,
+    "deliveryService": {
+      "id": 1,
+      "name": "DHL",
+      "description": null,
+      "logoIcon": "<svg ...></svg>"
+    }
+  },
+
+  {
+    "shipmentId": 193,
+    "createdAt": "2025-11-10T14:01:55.661Z",
+    "customerId": 2,
+    "customer": {
+      "thumbnailUrl": "https://img.freepik.com/premium-photo/smiling-business-man-full-black-suit-glasses-looking-camera-standing-cityscape-background_283617-8299.jpg",
+      "customerName": "Marcus Chen",
+      "phone": "+14155550142",
+      "email": "marcus.chen@techmail.com"
+    },
+    "queueDate": "2025-11-10T00:00:00Z",
+    "shipmentStatus": "InTransit",
+    "deliveryAddressId": 2,
+    "deliveryAddress": {
+      "addressId": 2,
+      "addressItemId": 2,
+      "alias": "Office",
+      "addressLine1": "450 Market Street",
+      "addressLine2": "Suite 1200",
+      "city": "San Francisco",
+      "state": "California",
+      "postalCode": "94102",
+      "countryId": 2,
+      "countryName": "United States",
+      "isDeleted": false
+    },
+    "quantityPacked": 2,
+    "deliveryServiceId": 1,
+    "deliveryService": {
+      "id": 1,
+      "name": "DHL",
+      "description": null,
+      "logoIcon": "<svg ...></svg>"
+    }
+  },
+
+  {
+    "shipmentId": 194,
+    "createdAt": "2025-11-11T08:50:33.882Z",
+    "customerId": 3,
+    "customer": {
+      "thumbnailUrl": "https://www.lanacion.com.ar/resizer/v2/sofia-martinez-con-nuevos-desafios-en-la-AHRQWQ4UNJAZPGDZ2S5RF3MX6Q.jpg",
+      "customerName": "Sofia Martinez",
+      "phone": "+34911234567",
+      "email": "sofia.martinez@webmail.es"
+    },
+    "queueDate": "2025-11-11T00:00:00Z",
+    "shipmentStatus": "Delivered",
+    "deliveryAddressId": 3,
+    "deliveryAddress": {
+      "addressId": 3,
+      "addressItemId": 3,
+      "alias": "Home",
+      "addressLine1": "Main Street 125",
+      "addressLine2": "Level 2",
+      "city": "Sydney",
+      "state": "NSW",
+      "postalCode": "2000",
+      "countryId": 3,
+      "countryName": "Australia",
+      "isDeleted": false
+    },
+    "quantityPacked": 5,
+    "deliveryServiceId": 1,
+    "deliveryService": {
+      "id": 1,
+      "name": "DHL",
+      "description": null,
+      "logoIcon": "<svg ...></svg>"
+    }
+  },
+
+  {
+    "shipmentId": 195,
+    "createdAt": "2025-11-12T12:33:10.441Z",
+    "customerId": 4,
+    "customer": {
+      "thumbnailUrl": "https://img.freepik.com/premium-photo/group-happy-business-man-business-women-dressed-suits-are-smiling-office_457222-5269.jpg",
+      "customerName": "Lucas Bergström",
+      "phone": "+46812345678",
+      "email": "lucas.bergstrom@nordicmail.se"
+    },
+    "queueDate": "2025-11-12T00:00:00Z",
+    "shipmentStatus": "DeliveryPending",
+    "deliveryAddressId": 4,
+    "deliveryAddress": {
+      "addressId": 4,
+      "addressItemId": 4,
+      "alias": "Home",
+      "addressLine1": "Rua das Flores 89",
+      "addressLine2": null,
+      "city": "Rio de Janeiro",
+      "state": "RJ",
+      "postalCode": "22031-012",
+      "countryId": 4,
+      "countryName": "Brazil",
+      "isDeleted": false
+    },
+    "quantityPacked": 1,
+    "deliveryServiceId": 1,
+    "deliveryService": {
+      "id": 1,
+      "name": "DHL",
+      "description": null,
+      "logoIcon": "<svg ...></svg>"
+    }
+  },
+
+  {
+    "shipmentId": 196,
+    "createdAt": "2025-11-12T15:05:27.551Z",
+    "customerId": 5,
+    "customer": {
+      "thumbnailUrl": "https://img.freepik.com/premium-photo/portrait-smiling-brunette_53419-5937.jpg",
+      "customerName": "Amélie Dubois",
+      "phone": "+33142868200",
+      "email": "amelie.dubois@laposte.fr"
+    },
+    "queueDate": "2025-11-12T00:00:00Z",
+    "shipmentStatus": "InTransit",
+    "deliveryAddressId": 5,
+    "deliveryAddress": {
+      "addressId": 5,
+      "addressItemId": 5,
+      "alias": "Home",
+      "addressLine1": "221B Baker Street",
+      "addressLine2": null,
+      "city": "London",
+      "state": "London",
+      "postalCode": "NW1 6XE",
+      "countryId": 5,
+      "countryName": "United Kingdom",
+      "isDeleted": false
+    },
+    "quantityPacked": 6,
+    "deliveryServiceId": 1,
+    "deliveryService": {
+      "id": 1,
+      "name": "DHL",
+      "description": null,
+      "logoIcon": "<svg ...></svg>"
+    }
+  },
+
+  {
+    "shipmentId": 197,
+    "createdAt": "2025-11-13T08:15:10.118Z",
+    "customerId": 6,
+    "customer": {
+      "thumbnailUrl": "https://img.freepik.com/premium-photo/portrait-businessman-with-glasses-goes-work-office-business-suit-smiles_283470-7493.jpg",
+      "customerName": "Alessandro Rossi",
+      "phone": "+390612345678",
+      "email": "a.rossi@italmail.it"
+    },
+    "queueDate": "2025-11-13T00:00:00Z",
+    "shipmentStatus": "DeliveryPending",
+    "deliveryAddressId": 6,
+    "deliveryAddress": {
+      "addressId": 6,
+      "addressItemId": 6,
+      "alias": "Home",
+      "addressLine1": "Friedrichstrasse 75",
+      "addressLine2": null,
+      "city": "Berlin",
+      "state": "Berlin",
+      "postalCode": "10117",
+      "countryId": 6,
+      "countryName": "Germany",
+      "isDeleted": false
+    },
+    "quantityPacked": 2,
+    "deliveryServiceId": 1,
+    "deliveryService": {
+      "id": 1,
+      "name": "DHL",
+      "description": null,
+      "logoIcon": "<svg ...></svg>"
+    }
+  },
+
+  {
+    "shipmentId": 198,
+    "createdAt": "2025-11-14T11:20:42.744Z",
+    "customerId": 7,
+    "customer": {
+      "thumbnailUrl": "https://img.freepik.com/free-photo/front-view-business-woman-suit_23-2148603018.jpg",
+      "customerName": "Nina Kowalska",
+      "phone": "+48221234567",
+      "email": "nina.kowalska@poczta.pl"
+    },
+    "queueDate": "2025-11-14T00:00:00Z",
+    "shipmentStatus": "InTransit",
+    "deliveryAddressId": 7,
+    "deliveryAddress": {
+      "addressId": 7,
+      "addressItemId": 7,
+      "alias": "Office",
+      "addressLine1": "Shibuya Crossing 12",
+      "addressLine2": "Floor 9",
+      "city": "Tokyo",
+      "state": "Tokyo",
+      "postalCode": "150-0002",
+      "countryId": 7,
+      "countryName": "Japan",
+      "isDeleted": false
+    },
+    "quantityPacked": 7,
+    "deliveryServiceId": 1,
+    "deliveryService": {
+      "id": 1,
+      "name": "DHL",
+      "description": null,
+      "logoIcon": "<svg ...></svg>"
+    }
+  },
+
+  {
+    "shipmentId": 199,
+    "createdAt": "2025-11-15T09:44:51.227Z",
+    "customerId": 8,
+    "customer": {
+      "thumbnailUrl": "https://img.freepik.com/free-photo/front-view-business-woman-suit_23-2148603018.jpg",
+      "customerName": "Nina Kowalska",
+      "phone": "+48221234567",
+      "email": "nina.kowalska@poczta.pl"
+    },
+    "queueDate": "2025-11-15T00:00:00Z",
+    "shipmentStatus": "Delivered",
+    "deliveryAddressId": 8,
+    "deliveryAddress": {
+      "addressId": 8,
+      "addressItemId": 8,
+      "alias": "Home",
+      "addressLine1": "Calle Mayor 22",
+      "addressLine2": null,
+      "city": "Madrid",
+      "state": "Madrid",
+      "postalCode": "28013",
+      "countryId": 8,
+      "countryName": "Spain",
+      "isDeleted": false
+    },
+    "quantityPacked": 4,
+    "deliveryServiceId": 1,
+    "deliveryService": {
+      "id": 1,
+      "name": "DHL",
+      "description": null,
+      "logoIcon": "<svg ...></svg>"
+    }
+  },
+  {
+    "shipmentId": 191,
+    "createdAt": "2025-11-07T09:15:33.445821Z",
+    "customerId": 34,
+    "customer": {
+      "thumbnailUrl": "https://img.freepik.com/premium-photo/smiling-business-man-full-black-suit-glasses-looking-camera-standing-cityscape-background_283617-8299.jpg",
+      "customerName": "Marcus Chen",
+      "phone": "+14155550142",
+      "email": "marcus.chen@techmail.com"
+    },
+    "queueDate": "2025-11-07T00:00:00Z",
+    "shipmentStatus": "DeliveryPending",
+    "deliveryAddressId": 2,
+    "deliveryAddress": {
+      "addressId": 15,
+      "addressItemId": 15,
+      "alias": "Office",
+      "addressLine1": "450 Market Street",
+      "addressLine2": "Suite 1200",
+      "city": "San Francisco",
+      "state": "California",
+      "postalCode": "94102",
+      "countryId": 2,
+      "countryName": "United States",
+      "isDeleted": false
+    },
+    "quantityPacked": 4,
+    "deliveryServiceId": 1,
+    "deliveryService": {
+      "id": 1,
+      "name": "DHL",
+      "description": null,
+      "logoIcon": "<svg fill=\"#000000\" width=\"800px\" height=\"800px\" viewBox=\"0 0 32 32\" ... </svg>"
+    }
+  },
+  {
+    "shipmentId": 200,
+    "createdAt": "2025-11-15T17:25:18.991Z",
+    "customerId": 9,
+    "customer": {
+      "thumbnailUrl": "https://img.freepik.com/premium-photo/smiling-business-man-full-black-suit-glasses-looking-camera-standing-cityscape-background_283617-8299.jpg",
+      "customerName": "Marcus Chen",
+      "phone": "+14155550142",
+      "email": "marcus.chen@techmail.com"
+    },
+    "queueDate": "2025-11-15T00:00:00Z",
+    "shipmentStatus": "DeliveryPending",
+    "deliveryAddressId": 9,
+    "deliveryAddress": {
+      "addressId": 9,
+      "addressItemId": 9,
+      "alias": "Home",
+      "addressLine1": "Beijing Road 88",
+      "addressLine2": "Tower 5",
+      "city": "Shanghai",
+      "state": "Shanghai",
+      "postalCode": "200001",
+      "countryId": 9,
+      "countryName": "China",
+      "isDeleted": false
+    },
+    "quantityPacked": 3,
+    "deliveryServiceId": 1,
+    "deliveryService": {
+      "id": 1,
+      "name": "DHL",
+      "description": null,
+      "logoIcon": "<svg ...></svg>"
+    }
+  }
+]

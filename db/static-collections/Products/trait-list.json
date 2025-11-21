@@ -1,0 +1,53 @@
+[
+  {
+    "traitId": 1,
+    "traitName": "Size",
+    "traitTypeId": 1,
+    "traitTypeName": "EOSC",
+    "optionsAmount": 3,
+    "traitOptions": [
+      {
+        "optionId": 12,
+        "optionName": "S",
+        "isRaw": true
+      },
+      {
+        "optionId": 13,
+        "optionName": "M",
+        "isRaw": false
+      },
+      {
+        "optionId": 11,
+        "optionName": "L",
+        "isRaw": false
+      }
+    ]
+  },
+  {
+    "traitId": 2,
+    "traitTypeName": "Color",
+    "traitTypeId": 2,
+    "traitName": "Standard",
+    "optionsAmount": 1,
+    "traitOptions": [
+      {
+        "optionId": 22,
+        "optionName": "Green",
+        "optionColor": "#14d069",
+        "isRaw": false
+      },
+      {
+        "optionId": 23,
+        "optionName": "Blue",
+        "optionColor": "#104ee6",
+        "isRaw": false
+      },
+      {
+        "optionId": 21,
+        "optionName": "Red",
+        "optionColor": "#fd0000",
+        "isRaw": false
+      }
+    ]
+  }
+]

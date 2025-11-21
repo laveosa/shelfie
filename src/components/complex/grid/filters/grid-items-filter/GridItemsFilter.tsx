@@ -65,39 +65,39 @@ export default function GridItemsFilter<T>({
   function onResetHandle() {
     setSelectedIds([]);
     setInitialSelectedIds([]);
-    onGridRequestChange({
+    /*onGridRequestChange({
       ...gridRequestModel,
       currentPage: 1,
       filter: {
         ...gridRequestModel?.filter,
         [identifier || columnName]: [],
       },
-    });
+    });*/
     setDropdownOpen(false);
   }
 
   function onDefaultButtonClick() {
     setSelectedIds([]);
     setInitialSelectedIds([]);
-    onGridRequestChange({
+    /*onGridRequestChange({
       ...gridRequestModel,
       currentPage: 1,
       filter: {
         ...gridRequestModel?.filter,
         [identifier || columnName]: [],
       },
-    });
+    });*/
   }
 
   function onApplyHandle() {
     if (selectedIds.length > 0) {
-      onGridRequestChange({
+      /*onGridRequestChange({
         ...gridRequestModel,
         filter: {
           ...gridRequestModel?.filter,
           [identifier || columnName]: selectedIds,
         },
-      });
+      });*/
     }
     setDropdownOpen(false);
   }
@@ -130,7 +130,9 @@ export default function GridItemsFilter<T>({
           setDropdownOpen(open);
         }}
       >
-        <div className={cs.triggerContainer}>
+        <div
+          className={`${cs.triggerContainer} ${dropdownOpen ? cs.dropdownMenuOpen : ""}`}
+        >
           <DropdownMenuTrigger asChild>
             <SheButton
               className={cs.dropdownMenuTriggerButton}
@@ -140,7 +142,7 @@ export default function GridItemsFilter<T>({
             >
               <div className={cs.buttonInnerItems}>
                 {selectedIds?.length > 0 ? (
-                  <span>{selectedIds.length}</span>
+                  <span className={cs.selectedIdx}>{selectedIds.length}</span>
                 ) : icon ? (
                   <SheIcon icon={icon} className={cs.settingsIcon} />
                 ) : (
@@ -156,11 +158,7 @@ export default function GridItemsFilter<T>({
                   {columnName}
                 </span>
                 <ChevronDown
-                  className={
-                    selectedIds.length === 0
-                      ? cs.chevronIcon
-                      : `${cs.chevronIcon} ${cs.chevronIconWithSelectedIds}`
-                  }
+                  className={`${cs.chevronIcon} ${selectedIds.length > 0 ? cs.chevronIconWithSelectedIds : ""}`}
                 />
               </div>
             </SheButton>
@@ -178,7 +176,7 @@ export default function GridItemsFilter<T>({
           )}
         </div>
         <DropdownMenuContent align="start" className={cs.dropdownMenuContent}>
-          <div className={cs.itemsList}>
+          <div>
             <DropdownMenuLabel>{columnName}</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <div className={cs.itemsContainer}>

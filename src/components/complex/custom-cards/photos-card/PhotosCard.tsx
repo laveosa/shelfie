@@ -55,14 +55,14 @@ export default function PhotosCard({
               data={data}
               skeletonQuantity={skeletonQuantity}
               customMessage={noDataText}
-              onNewItemPosition={(newIndex, activeItem, oldIndex) =>
+              /*onNewItemPosition={(newIndex, activeItem, oldIndex) =>
                 onAction("changePhotoPosition", {
                   newIndex,
                   activeItem,
                   oldIndex,
                   contextName,
                 })
-              }
+              }*/
               onAction={onAction}
             />
           </div>

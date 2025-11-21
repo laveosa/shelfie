@@ -25,3 +25,15 @@
   white-space: nowrap;
   vertical-align: middle;
 }
+
+.marginItemsForm {
+  form {
+    > div {
+      align-items: center !important;
+
+      > * {
+        margin-bottom: 0 !important;
+      }
+    }
+  }
+}

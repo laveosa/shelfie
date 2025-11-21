@@ -1,0 +1,24 @@
+{
+  "purchaseId": 1221,
+  "date": "2019-08-24T14:15:22.123Z",
+  "currencyBrief": "$",
+  "unitsAmount": 24,
+  "expense": 2,
+  "valueAmount": 421,
+  "soldAmount": 12,
+  "orderValueAmount": 4,
+  "supplier": {
+    "companyId": 1001,
+    "supplierName": "Nike Ukraine LLC",
+    "companyName": "Nike Ukraine LLC",
+    "thumbnailUrl": "/shelfie/images/brands/nike-logo.svg",
+    "locationId": 201,
+    "address": "12 Velyka Vasylkivska St, Kyiv, Ukraine"
+  },
+  "location": {
+    "locationId": 201,
+    "address": "12 Velyka Vasylkivska St, Kyiv, Ukraine"
+  },
+  "documentNotes": "some document notes...",
+  "isDeleted": false
+}

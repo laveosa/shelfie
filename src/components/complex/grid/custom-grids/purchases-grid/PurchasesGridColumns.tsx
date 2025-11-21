@@ -26,7 +26,6 @@ export function PurchasesGridColumns(onAction: any): ColumnDef<any, any>[] {
       accessorFn: (row) => row.supplier,
       header: "Supplier",
       minSize: 150,
-      maxSize: 200,
       cell: ({ row }) => {
         const supplier: SupplierModel = row.getValue("supplier");
         return (
@@ -59,7 +58,6 @@ export function PurchasesGridColumns(onAction: any): ColumnDef<any, any>[] {
       accessorKey: "location",
       header: "Location",
       minSize: 50,
-      maxSize: 200,
       cell: ({ row }) => (
         <SheTooltip
           delayDuration={200}
@@ -99,7 +97,6 @@ export function PurchasesGridColumns(onAction: any): ColumnDef<any, any>[] {
       accessorKey: "unitsAmount",
       header: "Units",
       minSize: 70,
-      maxSize: 100,
       cell: ({ row }) => (
         <span className="she-text">{`${row.getValue("unitsAmount")} ${row.getValue("unitsAmount") === 1 ? "unit" : "units"}`}</span>
       ),
@@ -108,7 +105,6 @@ export function PurchasesGridColumns(onAction: any): ColumnDef<any, any>[] {
       accessorKey: "expense",
       header: "Expense",
       minSize: 70,
-      maxSize: 100,
       cell: ({ row }) => (
         <span className="she-text">{`${row.getValue("expense")} ${row.original.currencyBrief}`}</span>
       ),
@@ -117,7 +113,6 @@ export function PurchasesGridColumns(onAction: any): ColumnDef<any, any>[] {
       accessorKey: "soldAmount",
       header: "Sold",
       minSize: 70,
-      maxSize: 100,
       cell: ({ row }) => (
         <span className="she-text">{`${row.getValue("soldAmount")} ${row.original.currencyBrief}`}</span>
       ),
@@ -126,7 +121,6 @@ export function PurchasesGridColumns(onAction: any): ColumnDef<any, any>[] {
       accessorKey: "valueAmount",
       header: "Order Value",
       minSize: 80,
-      maxSize: 100,
       cell: ({ row }) => (
         <span className="she-text">{`${row.getValue("valueAmount")} ${row.original.currencyBrief}`}</span>
       ),

@@ -242,14 +242,18 @@ export default function useProductsPageService() {
   }
 
   function updateUserPreferencesHandler(model: PreferencesModel) {
+    dispatch(actions.setIsLoading(true));
     return updateUserPreferences(model).then(() => {
-      appService.getUserPreferencesHandler();
+      dispatch(actions.setIsLoading(false));
+      // appService.getUserPreferencesHandler();
     });
   }
 
   function resetUserPreferencesHandler(grid) {
+    dispatch(actions.setIsLoading(true));
     return resetUserPreferences(grid).then(() => {
       appService.getUserPreferencesHandler();
+      dispatch(actions.setIsLoading(false));
     });
   }
 

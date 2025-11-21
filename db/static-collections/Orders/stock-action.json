@@ -1,0 +1,71 @@
+{
+  "stockActionId": 435,
+  "productId": 1004,
+  "variantId": 111,
+  "variantName": "Zara Poplin Midi Skirt",
+  "variantCode": "TNO3",
+  "traitOptions": [
+    {
+      "optionId": 41,
+      "optionName": "S",
+      "optionColor": null,
+      "isRaw": false,
+      "sortOrder": 0,
+      "traitId": 1,
+      "traitName": "Size",
+      "traitTypeId": 1,
+      "traitTypeName": "EOSC",
+      "isDeleted": false
+    },
+    {
+      "optionId": 413,
+      "optionName": "Brown",
+      "optionColor": "#B89D72",
+      "isRaw": false,
+      "sortOrder": 0,
+      "traitId": 2,
+      "traitTypeName": "Color",
+      "traitTypeId": 2,
+      "traitName": "Standard",
+      "isDeleted": false
+    }
+  ],
+  "photo": {
+    "photoId": 44,
+    "assetId": 44,
+    "thumbnailUrl": "/shelfie/images/products/zara-poplin-midi-skirt.jpg",
+    "adaptedUrl": "/shelfie/images/products/zara-poplin-midi-skirt.jpg",
+    "width": 275,
+    "height": 183,
+    "sortOrder": 0,
+    "isActive": true,
+    "originalName": null
+  },
+  "unitsAmount": 1,
+  "brand": {
+    "brandId": 104,
+    "brandName": "Zara",
+    "thumbnail": "/shelfie/images/brands/zara-logo.svg"
+  },
+  "productCategory": {
+    "categoryId": 3,
+    "categoryName": "Skirts",
+    "thumbnail": "/shelfie/images/categories/skirt.png"
+  },
+  "stockDocumentPrice": {
+    "activeUntil": null,
+    "brutto": 0,
+    "createAt": "2025-10-22T00:00:00Z",
+    "currencyId": 1,
+    "currencyName": "$",
+    "id": 394,
+    "netto": 0,
+    "rateExchange": 1,
+    "taxAmount": 0,
+    "taxTypeId": 3,
+    "taxTypeName": "0%"
+  },
+  "qtyOrdered": 1,
+  "qtyToShip": 2,
+  "qtyShipped": 4
+}

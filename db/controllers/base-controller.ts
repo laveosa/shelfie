@@ -5,11 +5,11 @@ export class BaseController {
     return {
       items: items,
       currentPage: 1,
-      endPage: 2,
+      endPage: 8,
       pageSize: 10,
       searchQuery: null,
       sortOption: "Newest",
-      totalPages: 2,
+      totalPages: 8,
       filter: {
         brands: [],
         categories: [],
@@ -19,7 +19,7 @@ export class BaseController {
   }
 
   protected static staticDataApiHandler(data: any) {
-    const delayTime = 500 + Math.random() * 1000;
+    const delayTime = 300 + Math.random() * 1000;
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(data);

@@ -25,7 +25,6 @@
     }
 
     .dropdownMenuTriggerButton {
-      min-width: fit-content;
       box-shadow: none;
       height: 30px;
       padding: 8px !important;
@@ -34,7 +33,9 @@
         position: relative;
         display: flex;
         align-items: center;
-        gap: 10px;
+        justify-content: space-between;
+        gap: 8px;
+        width: 100%;
 
         .columnName {
           width: 100%;
@@ -60,14 +61,12 @@
         .chevronIcon {
           width: 16px;
           height: 16px;
-          padding-top: 4px;
+          transition: all ease-in-out 160ms;
         }
 
         .chevronIconWithSelectedIds {
           position: absolute;
-          top: 0;
-          right: 30px;
-          transition: right 0.9s ease;
+          right: 24px;
         }
       }
 
@@ -97,5 +96,40 @@
     gap: 20px;
     margin-top: 10px;
     min-height: 40px;
+  }
+}
+
+.gridItemsFilterWrapper {
+  .triggerContainer {
+    button {
+      min-width: 160px;
+
+      > div {
+        width: 100%;
+
+        .buttonInnerItems {
+          span {
+            text-align: start;
+          }
+
+          .selectedIdx {
+            width: 20px;
+          }
+
+          .columnNameWithIds {
+          }
+        }
+      }
+    }
+  }
+}
+
+// =========================================================================== OPEN
+
+.gridItemsFilterWrapper {
+  .dropdownMenuOpen {
+    .chevronIcon {
+      transform: rotate(180deg);
+    }
   }
 }

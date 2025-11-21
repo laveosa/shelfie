@@ -47,13 +47,13 @@ export default function GridTraitsFilter({
       value,
     ];
 
-    onGridRequestChange({
+    /*onGridRequestChange({
       ...gridRequestModel,
       filter: {
         ...gridRequestModel?.filter,
         traitOptions: newTraitOptions,
       },
-    });
+    });*/
 
     setDropdownOpen(false);
   }
@@ -66,20 +66,22 @@ export default function GridTraitsFilter({
         (id) => id !== selectedValue,
       ) || [];
 
-    onGridRequestChange({
+    /*onGridRequestChange({
       ...gridRequestModel,
       filter: {
         ...gridRequestModel.filter,
         traitOptions: updatedTraitOptions,
       },
-    });
+    });*/
     setSelectedValue(null);
   }
 
   return (
     <div className={cs.gridTraitsFilterWrapper}>
       <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
-        <div className={cs.triggerContainer}>
+        <div
+          className={`${cs.triggerContainer} ${dropdownOpen ? cs.dropdownMenuOpen : ""}`}
+        >
           <DropdownMenuTrigger className={cs.dropdownMenuTrigger} asChild>
             <SheButton
               variant="outline"
@@ -89,9 +91,7 @@ export default function GridTraitsFilter({
               onClick={() => setDropdownOpen(true)}
             >
               <ChevronDown
-                className={
-                  selectedValue ? cs.chevronIconRight : cs.chevronIconLeft
-                }
+                className={`${cs.chevronIcon} ${selectedValue ? cs.chevronIconRight : cs.chevronIconLeft}`}
               />
             </SheButton>
           </DropdownMenuTrigger>

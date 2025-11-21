@@ -40,11 +40,13 @@ export default function ProductConfigurationCard({
             {
               text: "categoryName",
               value: "categoryId",
+              icon: "thumbnail",
             },
           )}
           brands={convertToSelectItems<BrandModel, number>(brandsList, {
             text: "brandName",
             value: "brandId",
+            icon: "thumbnail",
           })}
           countryCodes={convertToSelectItems<CountryCodeModel, number>(
             countryCodesList,

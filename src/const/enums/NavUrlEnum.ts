@@ -1,6 +1,6 @@
 export enum NavUrlEnum {
   DEV = "https://laveosa.github.io/shelfie",
-  LOCAL = "http://localhost:8000",
+  LOCAL = "http://localhost:8000/shelfie",
   AUTH = "/auth",
   DASHBOARD = "/dashboard",
   ERROR = "/error",

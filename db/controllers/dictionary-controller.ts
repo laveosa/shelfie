@@ -1,7 +1,7 @@
 import { BaseController } from "./base-controller";
 
 import countyCodeModel from "../static-collections/Dictionaries/country-code.json";
-import sortingOptionsForGrid from "../static-collections/Dictionaries/sorting-options-for-grid.json";
+import sortingOptionsList from "../static-collections/Dictionaries/sorting-options-list.json";
 import listOfTypesOfTraits from "../static-collections/Dictionaries/list-of-types-traits.json";
 import taxesList from "../static-collections/Dictionaries/taxes-list.json";
 import currenciesList from "../static-collections/Dictionaries/currencies-list.json";
@@ -15,7 +15,7 @@ export class DictionaryController extends BaseController {
 
   public static getSortingOptionsForGrid() {
     return this.staticDataApiHandler(
-      this.createGridDefaultModel(sortingOptionsForGrid),
+      this.createGridDefaultModel(sortingOptionsList),
     );
   }
 

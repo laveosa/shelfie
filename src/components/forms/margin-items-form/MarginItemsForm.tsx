@@ -19,6 +19,7 @@ import {
 } from "@/const/models/MarginItemModel.ts";
 
 export default function MarginItemsForm({
+  className = "",
   data,
   taxes,
   onMarginItemChange,
@@ -34,7 +35,7 @@ export default function MarginItemsForm({
 
   // ==================================================================== LAYOUT
   return (
-    <div className={cs.marginItemsFormWrapper}>
+    <div className={`${className} ${cs.marginItemsFormWrapper}`}>
       <SheForm className={cs.marginItemsForm} form={form} fullWidth hideFooter>
         <SheFormField
           name="taxTypeId"

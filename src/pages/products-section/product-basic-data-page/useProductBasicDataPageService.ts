@@ -138,7 +138,6 @@ export default function useProductBasicDataPageService(handleCardAction) {
   }
 
   function updateProductDetails(productId, data) {
-    console.log("UPDATE");
     dispatch(actions.setIsProductConfigurationCardLoading(true));
     productsService.updateProductHandler(productId, data).then((res: any) => {
       dispatch(actions.setIsProductConfigurationCardLoading(false));
@@ -229,11 +228,13 @@ export default function useProductBasicDataPageService(handleCardAction) {
   }
 
   function createNewCategoryHandler(model) {
+    dispatch(actions.setIsCreateProductCategoryCardLoading(true));
     productsService
       .createNewCategoryHandler({
         categoryName: model.categoryName,
       })
       .then((res: any) => {
+        dispatch(actions.setIsCreateProductCategoryCardLoading(false));
         if (res.data) {
           dispatch(
             productsActions.refreshCategories([
@@ -278,6 +279,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
 
   function checkBrandNameHandler(brandName: string) {
     if (!brandName) return;
+
     productsService
       .checkBrandNameHandler({ brandName: brandName })
       .then((res: any) => {
@@ -301,12 +303,14 @@ export default function useProductBasicDataPageService(handleCardAction) {
   }
 
   function createBrandHandler(model) {
+    dispatch(actions.setIsCreateProductBrandCardLoading(true));
     productsService
       .createBrandHandler({
         brandName: model.brandName,
-        companyId: state.selectedCompany.companyId,
+        companyId: 1289182989,
       })
       .then((res: any) => {
+        dispatch(actions.setIsCreateProductBrandCardLoading(false));
         if (res.data) {
           dispatch(
             productsActions.refreshBrands([...productsState.brands, res.data]),
@@ -629,7 +633,10 @@ export default function useProductBasicDataPageService(handleCardAction) {
     });
 
     if (!confirmedDeleteCompanyPhoto) return;
+
+    dispatch(actions.setIsCompaniesGridLoading(true));
     deletePhoto(model.photoId).then((res: any) => {
+      dispatch(actions.setIsCompaniesGridLoading(false));
       const updatedPhotos = state.managedCompany.photos.filter(
         (photo) => photo.photoId !== model.photoId,
       );
@@ -639,7 +646,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
           photos: updatedPhotos,
         }),
       );
-      dispatch(actions.setIsCompaniesGridLoading(true));
+      /*dispatch(actions.setIsCompaniesGridLoading(true));
       getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
         (res: any) => {
           dispatch(actions.setIsCompaniesGridLoading(false));
@@ -654,7 +661,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
             }),
           );
         },
-      );
+      );*/
       if (!res.error) {
         addToast({
           text: "Photo deleted successfully",
@@ -673,6 +680,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
   function uploadPhotoHandler(model: UploadPhotoModel) {
     dispatch(actions.setIsPhotoUploaderLoading(true));
     return uploadPhoto(model).then((res: any) => {
+      dispatch(actions.setIsPhotoUploaderLoading(false));
       if (res.error) {
         addToast({
           text: res.error.data?.detail || "Upload failed",
@@ -681,9 +689,8 @@ export default function useProductBasicDataPageService(handleCardAction) {
         return res;
       }
       if (res.data.photoId) {
-        dispatch(actions.setIsPhotoUploaderLoading(false));
         if (model.contextName === "Company") {
-          dispatch(actions.setIsCompaniesGridLoading(true));
+          /*dispatch(actions.setIsCompaniesGridLoading(true));
           getListOfCompaniesForGrid(state.companiesGridRequestModel).then(
             (res: any) => {
               dispatch(actions.setIsCompaniesGridLoading(false));
@@ -698,7 +705,7 @@ export default function useProductBasicDataPageService(handleCardAction) {
                 }),
               );
             },
-          );
+          );*/
           dispatch(
             actions.refreshManagedCompany({
               ...state.managedCompany,
@@ -713,11 +720,12 @@ export default function useProductBasicDataPageService(handleCardAction) {
             }),
           );
         }
-        addToast({
-          text: "Photos added successfully",
-          type: "success",
-        });
       }
+
+      addToast({
+        text: "Photos added successfully",
+        type: "success",
+      });
 
       return res;
     });

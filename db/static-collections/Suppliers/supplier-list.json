@@ -1,0 +1,82 @@
+[
+  {
+    "companyId": 1001,
+    "supplierName": "Nike Ukraine LLC",
+    "companyName": "Nike Ukraine LLC",
+    "thumbnailUrl": "/shelfie/images/brands/nike-logo.svg",
+    "locationId": 201,
+    "address": "12 Velyka Vasylkivska St, Kyiv, Ukraine"
+  },
+  {
+    "companyId": 1002,
+    "supplierName": "Adidas Eastern Europe Trading",
+    "companyName": "Adidas Eastern Europe Trading",
+    "thumbnailUrl": "/shelfie/images/brands/adidas-logo.svg",
+    "locationId": 202,
+    "address": "22 Lesi Ukrainky Blvd, Kyiv, Ukraine"
+  },
+  {
+    "companyId": 1003,
+    "supplierName": "Levi’s Distribution Europe",
+    "companyName": "Levi’s Distribution Europe",
+    "thumbnailUrl": "/shelfie/images/brands/levis-logo.svg",
+    "locationId": 203,
+    "address": "14 Rue de Rivoli, Paris, France"
+  },
+  {
+    "companyId": 1004,
+    "supplierName": "Zara Logistics Spain S.A.",
+    "companyName": "Zara Logistics Spain S.A.",
+    "thumbnailUrl": "/shelfie/images/brands/zara-logo.svg",
+    "locationId": 204,
+    "address": "151 Avenida de Arteixo, A Coruña, Spain"
+  },
+  {
+    "companyId": 1005,
+    "supplierName": "H&M Hennes & Mauritz Supply AB",
+    "companyName": "H&M Hennes & Mauritz Supply AB",
+    "thumbnailUrl": "/shelfie/images/brands/hm-logo.svg",
+    "locationId": 205,
+    "address": "Mäster Samuelsgatan 46, Stockholm, Sweden"
+  },
+  {
+    "companyId": 1006,
+    "supplierName": "Puma SE Central Europe",
+    "companyName": "Puma SE Central Europe",
+    "thumbnailUrl": "/shelfie/images/brands/puma-logo.svg",
+    "locationId": 206,
+    "address": "1 PUMA Way, Herzogenaurach, Germany"
+  },
+  {
+    "companyId": 1007,
+    "supplierName": "Uniqlo Europe Ltd",
+    "companyName": "Uniqlo Europe Ltd",
+    "thumbnailUrl": "/shelfie/images/brands/uniqlo-logo.svg",
+    "locationId": 207,
+    "address": "311 Oxford St, London, United Kingdom"
+  },
+  {
+    "companyId": 1008,
+    "supplierName": "Reebok International Ltd",
+    "companyName": "Reebok International Ltd",
+    "thumbnailUrl": "/shelfie/images/brands/reebok-logo.svg",
+    "locationId": 208,
+    "address": "25 Drydock Ave, Boston, MA, USA"
+  },
+  {
+    "companyId": 1009,
+    "supplierName": "Under Armour EMEA B.V.",
+    "companyName": "Under Armour EMEA B.V.",
+    "thumbnailUrl": "/shelfie/images/brands/under-armour-logo.svg",
+    "locationId": 209,
+    "address": "5th Floor, Strawinskylaan 4117, Amsterdam, Netherlands"
+  },
+  {
+    "companyId": 1010,
+    "supplierName": "Hugo Boss AG Global Supply",
+    "companyName": "Hugo Boss AG Global Supply",
+    "thumbnailUrl": "/shelfie/images/brands/hugo-boss-logo.svg",
+    "locationId": 210,
+    "address": "Hugo-Boss-Platz 1, Metzingen, Germany"
+  }
+]

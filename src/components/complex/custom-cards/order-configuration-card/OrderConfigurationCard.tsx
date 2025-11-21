@@ -4,7 +4,6 @@ import React from "react";
 import { Plus, UserMinus, UserPlus } from "lucide-react";
 
 import cs from "./OrderConfigurationCard.module.scss";
-import SheSelect from "@/components/primitive/she-select/SheSelect.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import SheCard from "@/components/complex/she-card/SheCard.tsx";
 import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
@@ -12,10 +11,10 @@ import { Separator } from "@/components/ui/separator.tsx";
 import { OrderDiscountsGridColumns } from "@/components/complex/grid/custom-grids/order-discounts-grid/OrderDiscountsGridColumns.tsx";
 import { OrderShipmentsRateGridColumns } from "@/components/complex/grid/custom-grids/order-shipments-rate-grid/OrderShipmentsRateGridColumns.tsx";
 import { formatDate, getInitials } from "@/utils/helpers/quick-helper.ts";
-import { convertToSelectItems } from "@/utils/converters/primitive-components/she-select-convertors.ts";
 import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
 import { IOrderConfigurationCard } from "@/const/interfaces/complex-components/custom-cards/IOrderConfigurationCard.ts";
+import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 
 export default function OrderConfigurationCard({
   isLoading,
@@ -23,7 +22,6 @@ export default function OrderConfigurationCard({
   isShipmentsGridLoading,
   order,
   shipmentsRate,
-  statuses,
   onAction,
 }: IOrderConfigurationCard) {
   // ==================================================================== UTILITIES
@@ -51,7 +49,7 @@ export default function OrderConfigurationCard({
           </span>
           <span className="she-text">{formatDate(order?.date, "date")}</span>
         </div>
-        <div className={cs.orderConfigurationCardItem}>
+        {/*<div className={cs.orderConfigurationCardItem}>
           <span className="she-text">
             {translate("OrderForm.Labels.OrderStatus")}
           </span>
@@ -68,7 +66,7 @@ export default function OrderConfigurationCard({
               onAction("updateOrder", { orderStatus: value });
             }}
           />
-        </div>
+        </div>*/}
         <div className={cs.orderConfigurationCardItem}>
           <span className="she-text">
             {translate("OrderForm.Labels.PaymentStatus")}
@@ -106,10 +104,9 @@ export default function OrderConfigurationCard({
               </span>
               <div className={cs.customerInfoAvatarBlock}>
                 {order?.customer.thumbnailUrl ? (
-                  <img
-                    src={order?.customer.thumbnailUrl}
-                    alt={order?.customer.customerName}
+                  <SheIcon
                     className={cs.avatarImage}
+                    icon={order?.customer.thumbnailUrl}
                   />
                 ) : (
                   <div className={cs.avatarInitials}>

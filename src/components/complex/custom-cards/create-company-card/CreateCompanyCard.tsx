@@ -156,6 +156,7 @@ export default function CreateCompanyCard({
           countryList={convertToSelectItems(countryCodes, {
             text: "countryName",
             value: "countryId",
+            icon: "flagIcon",
           })}
           isCreate
           showFooter={false}

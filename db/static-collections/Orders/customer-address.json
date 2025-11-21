@@ -1,14 +1,13 @@
 {
-  "addressId": 0,
-  "addressItemId": 0,
-  "alias": "string",
-  "addressLine1": "string",
-  "addressLine2": "string",
-  "city": "string",
-  "state": "string",
-  "postalCode": "string",
-  "countryId": 0,
-  "countryName": "string",
-  "countryCode": "string",
-  "isDeleted": true
+  "addressId": 6,
+  "addressItemId": 6,
+  "alias": "Paris Warehouse",
+  "addressLine1": "67 Avenue des Champs-Élysées",
+  "addressLine2": "Suite 200",
+  "city": "Paris",
+  "state": "Île-de-France",
+  "postalCode": "75008",
+  "countryId": 4,
+  "countryName": "France",
+  "isDeleted": false
 }

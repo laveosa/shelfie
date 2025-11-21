@@ -1,23 +1,19 @@
 import { BaseController } from "./base-controller";
 
-import signInModel from "../static-collections/Auth/user-sign-in.json";
-import signUpModel from "../static-collections/Auth/user-sign-up.json";
-import switchOrganizationModel from "../static-collections/Auth/switch-organization.json";
-import resetPasswordModel from "../static-collections/Auth/reset-password.json";
+import token from "../static-collections/Auth/token.json";
 import signInNumber from "../static-collections/Auth/sign-in-number.json";
-import switchUserOrganizationModel from "../static-collections/Auth/switch-user-organization.json";
 
 export class AuthController extends BaseController {
   public static userSignIn() {
-    return this.staticDataApiHandler(signInModel);
+    return this.staticDataApiHandler(token);
   }
 
   public static userSignUp() {
-    return this.staticDataApiHandler(signUpModel);
+    return this.staticDataApiHandler(token);
   }
 
   public static switchOrganization() {
-    return this.staticDataApiHandler(switchOrganizationModel);
+    return this.staticDataApiHandler(token);
   }
 
   public static forgotPassword() {
@@ -25,7 +21,7 @@ export class AuthController extends BaseController {
   }
 
   public static resetPassword() {
-    return this.staticDataApiHandler(resetPasswordModel);
+    return this.staticDataApiHandler(token);
   }
 
   public static confirmSignInNumber() {
@@ -45,6 +41,6 @@ export class AuthController extends BaseController {
   }
 
   public static switchUserOrganization() {
-    return this.staticDataApiHandler(switchUserOrganizationModel);
+    return this.staticDataApiHandler(token);
   }
 }

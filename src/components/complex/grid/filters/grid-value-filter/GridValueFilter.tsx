@@ -23,25 +23,28 @@ export function GridValueFilter({
       placeholder={placeholder}
       maxWidth="200px"
       showClearBtn
+      type="number"
       onDelay={(value) => {
-        onGridRequestChange?.({
+        value = value; // =============== BUILD TMP FIX
+        /*onGridRequestChange?.({
           ...gridRequestModel,
           currentPage: 0,
           filter: {
             ...gridRequestModel?.filter,
             [fieldKey]: value,
           },
-        });
+        });*/
       }}
       onClear={() => {
-        onGridRequestChange?.({
+        const tmp = fieldKey; // =============== BUILD TMP FIX
+        /*onGridRequestChange?.({
           ...gridRequestModel,
           currentPage: 0,
           filter: {
             ...gridRequestModel?.filter,
             [fieldKey]: null,
           },
-        });
+        });*/
       }}
     />
   );

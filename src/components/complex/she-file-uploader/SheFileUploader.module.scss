@@ -53,6 +53,10 @@
     }
   }
 
+  .dropZoneArea {
+    position: relative;
+  }
+
   .dropzoneTrigger {
     width: 100%;
   }
@@ -219,6 +223,17 @@
           font-size: 0.875rem;
         }
       }
+    }
+  }
+}
+
+// ====================================================== DROP-ZONE-LOADING
+
+.sheFileUploader {
+  .dropZoneArea {
+    .dropZoneLoadingBlock {
+      height: 100%;
+      opacity: 0.15;
     }
   }
 }

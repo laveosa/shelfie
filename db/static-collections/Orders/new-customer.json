@@ -1,13 +1,12 @@
 {
-  "customerId": 1,
-  "customerName": "Test 11 Customer",
-  "firstName": "Test 11",
-  "lastName": "Customer",
-  "email": "test@test.com",
-  "phoneNumber": "+123123123123",
-  "rank": "Five",
-  "createdAt": "2025-10-01T14:23:44.615045Z",
-  "lastOrderDate": "2025-10-28T00:00:00Z",
-  "thumbnailUrl": null
+  "customerId": 999,
+  "customerName": "",
+  "firstName": "",
+  "lastName": "",
+  "email": "",
+  "phoneNumber": "",
+  "rank": "Platinum",
+  "createdAt": "2024-03-15T09:42:18.000Z",
+  "lastOrderDate": "",
+  "thumbnailUrl": ""
 }
-

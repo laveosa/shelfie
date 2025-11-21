@@ -1,7 +1,24 @@
 {
-  "traitTypeId": 2,
-  "traitTypeName": "Color",
-  "optionsAmount": 1,
-  "traitId": 2,
-  "traitName": "NikTestTrait 111"
+  "traitId": 1,
+  "traitName": "Size",
+  "traitTypeId": 1,
+  "traitTypeName": "EOSC",
+  "optionsAmount": 3,
+  "traitOptions": [
+    {
+      "optionId": 2,
+      "optionName": "S",
+      "isRaw": false
+    },
+    {
+      "optionId": 3,
+      "optionName": "M",
+      "isRaw": false
+    },
+    {
+      "optionId": 1,
+      "optionName": "L",
+      "isRaw": false
+    }
+  ]
 }

@@ -1,11 +1,11 @@
 import { ColumnDef, Row } from "@tanstack/react-table";
 import { CogIcon } from "lucide-react";
 import React from "react";
-
-import { Switch } from "@/components/ui/switch.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import cs from "@/components/complex/custom-cards/choose-variant-traits-card/ChooseVariantTraitsCard.module.scss";
 import SheTooltip from "@/components/primitive/she-tooltip/SheTooltip.tsx";
+import SheToggle from "@/components/primitive/she-toggle/SheToggle.tsx";
+import { SheToggleTypeEnum } from "@/const/enums/SheToggleTypeEnum.ts";
 
 export const ManageVariantsGridColumns = (
   onAction: (
@@ -84,11 +84,12 @@ export const ManageVariantsGridColumns = (
     maxSize: 80,
     cell: ({ row }) => {
       return (
-        <Switch
+        <SheToggle
           checked={row.original.isActive}
-          onCheckedChange={() =>
+          type={SheToggleTypeEnum.SWITCH}
+          /*onCheckedChange={() =>
             onAction("activateVariant", row.id, undefined, row)
-          }
+          }*/
         />
       );
     },

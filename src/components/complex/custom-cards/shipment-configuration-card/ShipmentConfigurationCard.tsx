@@ -23,6 +23,7 @@ import { OrderItemModel } from "@/const/models/OrderItemModel.ts";
 import SheInput from "@/components/primitive/she-input/SheInput.tsx";
 import { DeliveryServiceModel } from "@/const/models/DeliveryServiceModel.ts";
 import { PackageContentGridColumns } from "@/components/complex/grid/custom-grids/package-content-grid/PackageContentGridColumns.tsx";
+import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
 
 export default function ShipmentConfigurationCard({
   isLoading,
@@ -194,19 +195,20 @@ export default function ShipmentConfigurationCard({
                 <div>
                   <div className={cs.customerInfoAvatarBlock}>
                     {shipment?.customer?.thumbnailUrl ? (
-                      <img
-                        src={shipment?.customer?.thumbnailUrl}
-                        alt={shipment?.customer?.customerName}
+                      <SheIcon
                         className={cs.avatarImage}
+                        icon={shipment?.customer.thumbnailUrl}
                       />
                     ) : (
                       <div className={cs.avatarInitials}>
                         {getInitials(shipment?.customer?.customerName)}
                       </div>
                     )}
-                    <span className="she-text">
-                      {shipment?.customer?.customerName}
-                    </span>
+                    <div className={cs.customerInfoBlock}>
+                      <span className="she-text">
+                        {shipment?.customer?.customerName}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>

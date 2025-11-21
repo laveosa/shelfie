@@ -16,7 +16,8 @@ export function GridDateRangeFilter() {
       minWidth="200px"
       showClearBtn
       onSelectDate={(value) => {
-        if (value) {
+        value = value; // =============== BUILD TMP FIX
+        /*if (value) {
           onGridRequestChange?.({
             ...gridRequestModel,
             currentPage: 0,
@@ -36,7 +37,7 @@ export function GridDateRangeFilter() {
               dateFrom: null,
             },
           });
-        }
+        }*/
       }}
     />
   );

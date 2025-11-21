@@ -1,32 +1,18 @@
 {
-  "id": 0,
-  "customerId": 0,
-  "customer": {
-    "thumbnailUrl": "string",
-    "customerName": "string",
-    "phone": "string",
-    "email": "string"
-  },
-  "date": "2019-08-24T14:15:22.123Z",
-  "channel": "string",
-  "orderStatus": "string",
-  "paymentStatus": "string",
-  "orderSubTotal": {
-    "subtotal": 0,
-    "totalWithDiscountAndShipment": 0,
-    "profit": 0
-  },
+  "id": 10245,
+  "customerId": 999,
+  "customer": null,
+  "date": "2025-11-12T14:32:18.456Z",
+  "channel": null,
+  "orderStatus": null,
+  "paymentStatus": null,
+  "orderSubTotal": null,
   "currency": {
-    "id": 0,
-    "name": "string",
-    "briefName": "string"
+    "id": 1,
+    "name": "Euro",
+    "briefName": "EUR"
   },
-  "discounts": [
-    {
-      "discountId": 0,
-      "discountRate": "string"
-    }
-  ],
-  "unitsAmount": 0,
-  "discountAmount": 0
+  "discounts": null,
+  "unitsAmount": null,
+  "discountAmount": null
 }

@@ -1,0 +1,50 @@
+{
+  "locationId": 201,
+  "locationAppId": "0199a621-0001-7001-a001-08de122df01c",
+  "locationName": "Nike Ukraine HQ",
+  "addressLine1": "12 Velyka Vasylkivska St",
+  "addressLine2": "Office 401",
+  "city": "Kyiv",
+  "state": "Kyiv Oblast",
+  "postCode": "03150",
+  "countryId": 804,
+  "countryName": "Ukraine",
+  "lat": 50.4265807,
+  "long": 30.5383858,
+  "isDeleted": false,
+  "photos": [
+    {
+      "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/6/6f/%D0%9A%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D0%B0%D1%80%D0%BC%D0%B5%D0%B9%D1%81%D0%BA%D0%B0%D1%8F_12_%D0%9A%D0%B8%D0%B5%D0%B2_2012_01.JPG",
+      "adaptedUrl": "https://upload.wikimedia.org/wikipedia/commons/6/6f/%D0%9A%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D0%B0%D1%80%D0%BC%D0%B5%D0%B9%D1%81%D0%BA%D0%B0%D1%8F_12_%D0%9A%D0%B8%D0%B5%D0%B2_2012_01.JPG",
+      "width": 900,
+      "height": 900,
+      "sortOrder": 0,
+      "isActive": true,
+      "originalName": null,
+      "assetId": 10,
+      "photoId": 10
+    },
+    {
+      "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/2/20/%D0%91%D0%BE%D0%BB%D1%8C%D1%88%D0%B0%D1%8F_%D0%92%D0%B0%D1%81%D0%B8%D0%BB%D1%8C%D0%BA%D0%BE%D0%B2%D1%81%D0%BA%D0%B0%D1%8F%2C_12_%D0%91_%D0%B2_%D0%9A%D0%B8%D0%B5%D0%B2%D0%B5.jpg",
+      "adaptedUrl": "https://upload.wikimedia.org/wikipedia/commons/2/20/%D0%91%D0%BE%D0%BB%D1%8C%D1%88%D0%B0%D1%8F_%D0%92%D0%B0%D1%81%D0%B8%D0%BB%D1%8C%D0%BA%D0%BE%D0%B2%D1%81%D0%BA%D0%B0%D1%8F%2C_12_%D0%91_%D0%B2_%D0%9A%D0%B8%D0%B5%D0%B2%D0%B5.jpg",
+      "width": 900,
+      "height": 900,
+      "sortOrder": 0,
+      "isActive": true,
+      "originalName": null,
+      "assetId": 10,
+      "photoId": 10
+    },
+    {
+      "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/d/dd/%D0%91%D1%83%D0%B4%D0%B8%D0%BD%D0%BE%D0%BA_%D0%BF%D1%80%D0%B8%D0%B1%D1%83%D1%82%D0%BA%D0%BE%D0%B2%D0%B8%D0%B9_0571.jpg",
+      "adaptedUrl": "https://upload.wikimedia.org/wikipedia/commons/d/dd/%D0%91%D1%83%D0%B4%D0%B8%D0%BD%D0%BE%D0%BA_%D0%BF%D1%80%D0%B8%D0%B1%D1%83%D1%82%D0%BA%D0%BE%D0%B2%D0%B8%D0%B9_0571.jpg",
+      "width": 900,
+      "height": 900,
+      "sortOrder": 0,
+      "isActive": true,
+      "originalName": null,
+      "assetId": 10,
+      "photoId": 10
+    }
+  ]
+}

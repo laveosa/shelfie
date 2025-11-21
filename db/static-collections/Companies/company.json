@@ -1,0 +1,178 @@
+{
+  "companyId": 1001,
+  "appId": "0199a621-8d03-727f-a533-08de122df01c",
+  "companyName": "Nike Ukraine LLC",
+  "isDeleted": false,
+  "thumbnailUrl": "/shelfie/images/brands/nike-logo.svg",
+  "customerCareEmail": "nike-ukr-llc@gmail.com",
+  "nip": "23d23",
+  "countryId": 2,
+  "countryName": "Ukraine",
+  "locationId": 201,
+  "address": "12 Velyka Vasylkivska St, Kyiv, Ukraine",
+  "photos": [
+    {
+      "originalName": "Nike",
+      "assetId": 11,
+      "photoId": 11,
+      "thumbnailUrl": "https://i.brecorder.com/primary/2022/06/23190820d27184e.jpg",
+      "adaptedUrl": "https://i.brecorder.com/primary/2022/06/23190820d27184e.jpg",
+      "width": 900,
+      "height": 900,
+      "sortOrder": 0,
+      "isActive": true
+    },
+    {
+      "originalName": "Nike",
+      "assetId": 12,
+      "photoId": 12,
+      "thumbnailUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/images/panoramic/nike-elliot-hill-inc-1801104700_545200_k2cjot.jpg",
+      "adaptedUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/images/panoramic/nike-elliot-hill-inc-1801104700_545200_k2cjot.jpg",
+      "width": 900,
+      "height": 900,
+      "sortOrder": 0,
+      "isActive": true
+    },
+    {
+      "originalName": "Nike",
+      "assetId": 13,
+      "photoId": 13,
+      "thumbnailUrl": "https://d3ghupt9z9s6o0.cloudfront.net/app/uploads/2019/12/13095037/Nike-Shop.jpg",
+      "adaptedUrl": "https://d3ghupt9z9s6o0.cloudfront.net/app/uploads/2019/12/13095037/Nike-Shop.jpg",
+      "width": 900,
+      "height": 900,
+      "sortOrder": 0,
+      "isActive": true
+    }
+  ],
+  "locations": [
+    {
+      "locationId": 201,
+      "locationAppId": "0199a621-0001-7001-a001-08de122df01c",
+      "locationName": "Nike Ukraine HQ",
+      "addressLine1": "12 Velyka Vasylkivska St",
+      "addressLine2": "Office 401",
+      "city": "Kyiv",
+      "state": "Kyiv Oblast",
+      "postCode": "03150",
+      "countryId": 804,
+      "countryName": "Ukraine",
+      "lat": 50.4265807,
+      "long": 30.5383858,
+      "isDeleted": false,
+      "photos": [
+        {
+          "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/6/6f/%D0%9A%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D0%B0%D1%80%D0%BC%D0%B5%D0%B9%D1%81%D0%BA%D0%B0%D1%8F_12_%D0%9A%D0%B8%D0%B5%D0%B2_2012_01.JPG",
+          "adaptedUrl": "https://upload.wikimedia.org/wikipedia/commons/6/6f/%D0%9A%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D0%B0%D1%80%D0%BC%D0%B5%D0%B9%D1%81%D0%BA%D0%B0%D1%8F_12_%D0%9A%D0%B8%D0%B5%D0%B2_2012_01.JPG",
+          "width": 900,
+          "height": 900,
+          "sortOrder": 0,
+          "isActive": true,
+          "originalName": null,
+          "assetId": 10,
+          "photoId": 10
+        },
+        {
+          "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/2/20/%D0%91%D0%BE%D0%BB%D1%8C%D1%88%D0%B0%D1%8F_%D0%92%D0%B0%D1%81%D0%B8%D0%BB%D1%8C%D0%BA%D0%BE%D0%B2%D1%81%D0%BA%D0%B0%D1%8F%2C_12_%D0%91_%D0%B2_%D0%9A%D0%B8%D0%B5%D0%B2%D0%B5.jpg",
+          "adaptedUrl": "https://upload.wikimedia.org/wikipedia/commons/2/20/%D0%91%D0%BE%D0%BB%D1%8C%D1%88%D0%B0%D1%8F_%D0%92%D0%B0%D1%81%D0%B8%D0%BB%D1%8C%D0%BA%D0%BE%D0%B2%D1%81%D0%BA%D0%B0%D1%8F%2C_12_%D0%91_%D0%B2_%D0%9A%D0%B8%D0%B5%D0%B2%D0%B5.jpg",
+          "width": 900,
+          "height": 900,
+          "sortOrder": 0,
+          "isActive": true,
+          "originalName": null,
+          "assetId": 10,
+          "photoId": 10
+        },
+        {
+          "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/d/dd/%D0%91%D1%83%D0%B4%D0%B8%D0%BD%D0%BE%D0%BA_%D0%BF%D1%80%D0%B8%D0%B1%D1%83%D1%82%D0%BA%D0%BE%D0%B2%D0%B8%D0%B9_0571.jpg",
+          "adaptedUrl": "https://upload.wikimedia.org/wikipedia/commons/d/dd/%D0%91%D1%83%D0%B4%D0%B8%D0%BD%D0%BE%D0%BA_%D0%BF%D1%80%D0%B8%D0%B1%D1%83%D1%82%D0%BA%D0%BE%D0%B2%D0%B8%D0%B9_0571.jpg",
+          "width": 900,
+          "height": 900,
+          "sortOrder": 0,
+          "isActive": true,
+          "originalName": null,
+          "assetId": 10,
+          "photoId": 10
+        }
+      ]
+    },
+    {
+      "locationId": 202,
+      "locationAppId": "01999f77-0001-7001-a001-4bd91478020d",
+      "locationName": "Adidas Kyiv Office",
+      "addressLine1": "22 Lesi Ukrainky Blvd",
+      "addressLine2": "Building B",
+      "city": "Kyiv",
+      "state": "Kyiv Oblast",
+      "postCode": "01133",
+      "countryId": 804,
+      "countryName": "Ukraine",
+      "lat": 50.4208606,
+      "long": 30.5383858,
+      "isDeleted": false,
+      "photos": [
+        {
+          "thumbnailUrl": "https://www.shutterstock.com/image-photo/lviv-ukraine-april-18-2019-260nw-1385354018.jpg",
+          "adaptedUrl": "https://www.shutterstock.com/image-photo/lviv-ukraine-april-18-2019-260nw-1385354018.jpg",
+          "width": 900,
+          "height": 900,
+          "sortOrder": 0,
+          "isActive": true,
+          "originalName": null,
+          "assetId": 10,
+          "photoId": 10
+        },
+        {
+          "thumbnailUrl": "https://www.shutterstock.com/image-photo/lviv-ukraine-april-18-2019-260nw-1384704020.jpg",
+          "adaptedUrl": "https://www.shutterstock.com/image-photo/lviv-ukraine-april-18-2019-260nw-1384704020.jpg",
+          "width": 900,
+          "height": 900,
+          "sortOrder": 0,
+          "isActive": true,
+          "originalName": null,
+          "assetId": 10,
+          "photoId": 10
+        },
+        {
+          "thumbnailUrl": "https://www.shutterstock.com/image-photo/lviv-ukraine-august-6-2020-260nw-1794601483.jpg",
+          "adaptedUrl": "https://www.shutterstock.com/image-photo/lviv-ukraine-august-6-2020-260nw-1794601483.jpg",
+          "width": 900,
+          "height": 900,
+          "sortOrder": 0,
+          "isActive": true,
+          "originalName": null,
+          "assetId": 10,
+          "photoId": 10
+        }
+      ]
+    },
+    {
+      "locationId": 2021,
+      "locationAppId": "01999f77-0002-7002-a002-4bd91478020d",
+      "locationName": "Adidas Lviv Distribution Center",
+      "addressLine1": "45 Shevchenko Prospekt",
+      "addressLine2": "",
+      "city": "Lviv",
+      "state": "Lviv Oblast",
+      "postCode": "79000",
+      "countryId": 804,
+      "countryName": "Ukraine",
+      "lat": 49.8397,
+      "long": 24.0297,
+      "isDeleted": false,
+      "photos": [
+        {
+          "thumbnailUrl": "https://mir-s3-cdn-cf.behance.net/projects/404/c42855161508773.Y3JvcCwzNDA5LDI2NjcsMTM1LDA.jpg",
+          "adaptedUrl": "https://mir-s3-cdn-cf.behance.net/projects/404/c42855161508773.Y3JvcCwzNDA5LDI2NjcsMTM1LDA.jpg",
+          "width": 900,
+          "height": 900,
+          "sortOrder": 0,
+          "isActive": true,
+          "originalName": null,
+          "assetId": 10,
+          "photoId": 10
+        }
+      ]
+    }
+  ]
+}
