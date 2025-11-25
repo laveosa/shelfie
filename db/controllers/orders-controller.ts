@@ -19,6 +19,7 @@ import shipmentsList from "../static-collections/Orders/shipments-list.json";
 import shipmentStatusForOrder from "../static-collections/Orders/shipment-status-for-order.json";
 import cartsListList from "../static-collections/Orders/carts-list.json";
 import cart from "../static-collections/Orders/cart.json";
+import cartsWithSpecificProduct from "../static-collections/Orders/carts-with-specific-product.json";
 
 export class OrdersController extends BaseController {
   public static getCustomersForGrid() {
@@ -244,34 +245,34 @@ export class OrdersController extends BaseController {
   }
 
   public static createCart() {
-    return this.staticDataApiHandler(shipment);
+    return this.staticDataApiHandler({});
   }
 
   public static updateCartCustomer() {
-    return this.staticDataApiHandler(shipment);
+    return this.staticDataApiHandler({});
   }
 
   public static addVariantToCart() {
-    return this.staticDataApiHandler(shipment);
+    return this.staticDataApiHandler({});
   }
 
   public static deleteStockActionFromCart() {
-    return this.staticDataApiHandler(shipment);
+    return this.staticDataApiHandler({});
   }
 
   public static cancelCart() {
-    return this.staticDataApiHandler(shipment);
+    return this.staticDataApiHandler({});
   }
 
   public static updateCartPrepackedStatus() {
-    return this.staticDataApiHandler(shipment);
+    return this.staticDataApiHandler({});
   }
 
   public static getCartsWithSearchedProduct() {
-    return this.staticDataApiHandler(shipment);
+    return this.staticDataApiHandler(cartsWithSpecificProduct);
   }
 
   public static updateStockActionPriceInCart() {
-    return this.staticDataApiHandler(shipment);
+    return this.staticDataApiHandler({});
   }
 }

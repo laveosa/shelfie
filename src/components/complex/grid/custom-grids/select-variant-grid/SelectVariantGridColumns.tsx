@@ -19,7 +19,7 @@ export const SelectVariantGridColumns = (
             className={row.original.isSelected === true ? cs.iconCheck : ""}
             icon={row.original.isSelected === true ? CircleCheckBig : Circle}
             variant="ghost"
-            onClick={() => onAction("selectMargin", row.original)}
+            onClick={() => onAction("selectReplacedVariant", row.original)}
           />
         </div>
       );

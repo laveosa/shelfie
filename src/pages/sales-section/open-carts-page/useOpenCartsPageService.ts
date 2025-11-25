@@ -467,6 +467,7 @@ export default function useOpenCartsPageService(
 
     dispatch(actions.setIsCustomerCardLoading(true));
     cancelCart(state.managedCart.id).then((res) => {
+      handleCardAction("customerCartCard");
       dispatch(actions.setIsCustomerCardLoading(false));
       if (res.error) {
         addToast({
@@ -605,17 +606,6 @@ export default function useOpenCartsPageService(
       model: { prepackedCartStatus: status },
     }).then((res) => {
       if (!res.error) {
-        dispatch(actions.refreshManagedCart(res.data));
-        dispatch(
-          actions.refreshOpenCartsGridRequestModel({
-            ...state.openCartsGridRequestModel,
-            items: state.openCartsGridRequestModel.items.map((item) =>
-              item.id === state.managedCart.id
-                ? { ...item, prepackedCartStatus: status }
-                : item,
-            ),
-          }),
-        );
         addToast({
           text: "Cart prepacked status updated successfully",
           type: "info",
@@ -708,6 +698,22 @@ export default function useOpenCartsPageService(
     });
   }
 
+  function selectReplacedVariantHandler() {
+    handleCardAction("replaceVariantCard");
+    addToast({
+      text: "Variant replaced successfully",
+      type: "info",
+    });
+  }
+
+  function selectCartWithSpecificProductHandler() {
+    handleCardAction("cartsWithSpecificProductCard");
+    addToast({
+      text: "Variant transferred successfully",
+      type: "info",
+    });
+  }
+
   return {
     state,
     appState,
@@ -755,5 +761,7 @@ export default function useOpenCartsPageService(
     openCartsWithSpecificProductCardHandler,
     closeCartsWithSpecificProductCardHandler,
     updateStockActionPriceHandler,
+    selectReplacedVariantHandler,
+    selectCartWithSpecificProductHandler,
   };
 }

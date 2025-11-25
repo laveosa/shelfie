@@ -175,6 +175,12 @@ export function OpenCartsPage() {
       case "updateStockActionPrice":
         service.updateStockActionPriceHandler(payload);
         break;
+      case "selectReplacedVariant":
+        service.selectReplacedVariantHandler();
+        break;
+      case "selectCartWithSpecificProduct":
+        service.selectCartWithSpecificProductHandler();
+        break;
     }
   }
 

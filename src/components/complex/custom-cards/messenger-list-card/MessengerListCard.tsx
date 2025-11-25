@@ -1,6 +1,6 @@
 import React from "react";
 
-import facebookLogo from "@/assets/images/facebook-messenger_logo.svg";
+import facebookLogo from "@/assets/images/facebook-messenger-logo.svg";
 
 import cs from "./MessengerListCard.module.scss";
 import SheCard from "@/components/complex/she-card/SheCard.tsx";
