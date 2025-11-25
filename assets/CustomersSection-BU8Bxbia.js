@@ -1,0 +1,1 @@
+import{j as t,n as s}from"./index-CqLEDb0h.js";const o="_CustomersSection_14utt_1",e={CustomersSection:o};function r(){return t.jsx("div",{className:e.CustomersSection,children:t.jsx(s,{})})}export{r as CustomersSection};
