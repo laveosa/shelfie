@@ -9,4 +9,7 @@ export interface GridFiltersModel {
   showDeleted?: boolean;
   traitOptions?: number[];
   status?: any;
+  statuses?: any;
+  prepackedCartStatus?: any;
+  customers?: number[];
 }

@@ -1,0 +1,69 @@
+{
+  "items": [
+    {
+      "stockActionId": 1001,
+      "customer": {
+        "thumbnailUrl": "https://randomuser.me/api/portraits/women/44.jpg",
+        "customerName": "Anna Kowalska",
+        "phone": "+48123456789",
+        "email": "anna.kowalska@gmail.com"
+      },
+      "cartId": 234,
+      "date": "2025-11-23T10:30:45.123Z",
+      "cartStatus": "New",
+      "unitsAmount": 5
+    },
+    {
+      "stockActionId": 1002,
+      "customer": {
+        "thumbnailUrl": "https://randomuser.me/api/portraits/men/32.jpg",
+        "customerName": "Piotr Nowak",
+        "phone": "+48987654321",
+        "email": "piotr.nowak@gmail.com"
+      },
+      "cartId": 235,
+      "date": "2025-11-22T14:15:30.456Z",
+      "cartStatus": "Draft",
+      "unitsAmount": 2
+    },
+    {
+      "stockActionId": 1003,
+      "customer": {
+        "thumbnailUrl": "https://randomuser.me/api/portraits/women/68.jpg",
+        "customerName": "Magdalena Wiśniewska",
+        "phone": null,
+        "email": "magdalena.wisn@gmail.com"
+      },
+      "cartId": 236,
+      "date": "2025-11-21T09:45:12.789Z",
+      "cartStatus": "Closed",
+      "unitsAmount": 1
+    },
+    {
+      "stockActionId": 1004,
+      "customer": {
+        "thumbnailUrl": "https://randomuser.me/api/portraits/men/51.jpg",
+        "customerName": "Tomasz Lewandowski",
+        "phone": "+48555666777",
+        "email": "tomasz.lew@gmail.com"
+      },
+      "cartId": 237,
+      "date": "2025-11-20T16:20:05.012Z",
+      "cartStatus": "Expired",
+      "unitsAmount": 6
+    },
+    {
+      "stockActionId": 1005,
+      "customer": {
+        "thumbnailUrl": "https://randomuser.me/api/portraits/women/23.jpg",
+        "customerName": "Ewa Szymańska",
+        "phone": null,
+        "email": "ewa.szymanska@gmail.com"
+      },
+      "cartId": 238,
+      "date": "2025-11-19T11:50:40.345Z",
+      "cartStatus": "Canceled",
+      "unitsAmount": 4
+    }
+  ]
+}

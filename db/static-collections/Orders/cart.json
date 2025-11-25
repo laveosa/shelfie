@@ -1,0 +1,450 @@
+{
+  "id": 456,
+  "customerId": 78,
+  "customer": {
+    "thumbnailUrl": "https://img.freepik.com/free-photo/front-view-business-woman-suit_23-2148603018.jpg",
+    "customerName": "Anna Kowalska",
+    "phone": "+48123456789",
+    "email": "anna.kowalska@gmail.com"
+  },
+  "date": "2025-11-23T10:30:45.123Z",
+  "status": "New",
+  "unitsAmount": 5,
+  "sumAmount": 1250.0,
+  "income": 375.0,
+  "profit": 225.0,
+  "currency": {
+    "id": 1,
+    "name": "złoty polski",
+    "briefName": "zł."
+  },
+  "stockActions": [
+    {
+      "stockActionId": 1001,
+      "productId": 501,
+      "variantId": 2001,
+      "variantName": "Nike Air Max 2024 - Black/White - Size 42",
+      "variantCode": "NAM24-BW-42",
+      "traitOptions": [
+        {
+          "optionId": 301,
+          "optionName": "Black",
+          "optionColor": "green",
+          "isRaw": false,
+          "sortOrder": 1,
+          "traitTypeId": 2,
+          "traitTypeName": "Color",
+          "traitId": 201,
+          "traitName": "Primary Color",
+          "isDeleted": false
+        },
+        {
+          "optionId": 302,
+          "optionName": "42",
+          "optionColor": null,
+          "isRaw": false,
+          "sortOrder": 2,
+          "traitTypeId": 1,
+          "traitTypeName": "Size",
+          "traitId": 202,
+          "traitName": "EU Size",
+          "isDeleted": false
+        }
+      ],
+      "photo": {
+        "originalName": "nike-air-max-2024.jpg",
+        "assetId": 8001,
+        "photoId": 9001,
+        "thumbnailUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200",
+        "adaptedUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800",
+        "width": 1200,
+        "height": 800,
+        "sortOrder": 1,
+        "isActive": true
+      },
+      "unitsAmount": 1,
+      "brand": {
+        "brandId": 10,
+        "brandName": "Nike",
+        "thumbnail": "https://logo.clearbit.com/nike.com"
+      },
+      "productCategory": {
+        "categoryId": 5,
+        "categoryName": "Footwear",
+        "thumbnail": "https://img.icons8.com/color/96/sneakers.png"
+      },
+      "stockDocumentPrice": {
+        "id": 3001,
+        "brutto": 450.0,
+        "taxAmount": 86.59,
+        "netto": 363.41,
+        "currencyId": 1,
+        "taxTypeId": 1,
+        "rateExchange": 1.0,
+        "activeUntil": "2025-12-31T23:59:59.999Z",
+        "createAt": "2025-11-20T08:00:00.000Z",
+        "currencyName": "zł.",
+        "taxTypeName": "VAT 23%"
+      },
+      "requestedPrice": {
+        "id": 3002,
+        "brutto": 450.0,
+        "taxAmount": 86.59,
+        "netto": 363.41,
+        "currencyId": 1,
+        "taxTypeId": 1,
+        "rateExchange": 1.0,
+        "activeUntil": "2025-12-31T23:59:59.999Z",
+        "createAt": "2025-11-23T10:30:00.000Z",
+        "currencyName": "zł.",
+        "taxTypeName": "VAT 23%"
+      },
+      "addedToCart": "2025-11-23T10:30:45.123Z",
+      "statusDecription": "Available in stock",
+      "highDemandReservation": true,
+      "status": 1
+    },
+    {
+      "stockActionId": 1002,
+      "productId": 502,
+      "variantId": 2002,
+      "variantName": "Adidas Ultraboost 22 - White/Blue - Size 41",
+      "variantCode": "AUB22-WB-41",
+      "traitOptions": [
+        {
+          "optionId": 303,
+          "optionName": "White",
+          "optionColor": "azure",
+          "isRaw": false,
+          "sortOrder": 1,
+          "traitTypeId": 2,
+          "traitTypeName": "Color",
+          "traitId": 201,
+          "traitName": "Primary Color",
+          "isDeleted": false
+        },
+        {
+          "optionId": 304,
+          "optionName": "41",
+          "optionColor": null,
+          "isRaw": false,
+          "sortOrder": 2,
+          "traitTypeId": 1,
+          "traitTypeName": "Size",
+          "traitId": 202,
+          "traitName": "EU Size",
+          "isDeleted": false
+        }
+      ],
+      "photo": {
+        "originalName": "adidas-ultraboost.jpg",
+        "assetId": 8002,
+        "photoId": 9002,
+        "thumbnailUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=200",
+        "adaptedUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=800",
+        "width": 1200,
+        "height": 800,
+        "sortOrder": 1,
+        "isActive": true
+      },
+      "unitsAmount": 2,
+      "brand": {
+        "brandId": 11,
+        "brandName": "Adidas",
+        "thumbnail": "https://logo.clearbit.com/adidas.com"
+      },
+      "productCategory": {
+        "categoryId": 5,
+        "categoryName": "Footwear",
+        "thumbnail": "https://img.icons8.com/color/96/sneakers.png"
+      },
+      "stockDocumentPrice": {
+        "id": 3003,
+        "brutto": 380.0,
+        "taxAmount": 73.09,
+        "netto": 306.91,
+        "currencyId": 1,
+        "taxTypeId": 1,
+        "rateExchange": 1.0,
+        "activeUntil": "2025-12-31T23:59:59.999Z",
+        "createAt": "2025-11-19T09:00:00.000Z",
+        "currencyName": "zł.",
+        "taxTypeName": "VAT 23%"
+      },
+      "requestedPrice": {
+        "id": 3004,
+        "brutto": 380.0,
+        "taxAmount": 73.09,
+        "netto": 306.91,
+        "currencyId": 1,
+        "taxTypeId": 1,
+        "rateExchange": 1.0,
+        "activeUntil": "2025-12-31T23:59:59.999Z",
+        "createAt": "2025-11-23T10:31:00.000Z",
+        "currencyName": "zł.",
+        "taxTypeName": "VAT 23%"
+      },
+      "addedToCart": "2025-11-23T10:31:15.456Z",
+      "statusDecription": "Available in stock",
+      "highDemandReservation": false,
+      "status": 1
+    },
+    {
+      "stockActionId": 1003,
+      "productId": 503,
+      "variantId": 2003,
+      "variantName": "Puma RS-X - Red/Black - Size 43",
+      "variantCode": "PRS-RB-43",
+      "traitOptions": [
+        {
+          "optionId": 305,
+          "optionName": "Red",
+          "optionColor": "#FF0000",
+          "isRaw": false,
+          "sortOrder": 1,
+          "traitTypeId": 2,
+          "traitTypeName": "Color",
+          "traitId": 201,
+          "traitName": "Primary Color",
+          "isDeleted": false
+        },
+        {
+          "optionId": 306,
+          "optionName": "43",
+          "optionColor": null,
+          "isRaw": false,
+          "sortOrder": 2,
+          "traitTypeId": 1,
+          "traitTypeName": "Size",
+          "traitId": 202,
+          "traitName": "EU Size",
+          "isDeleted": false
+        }
+      ],
+      "photo": {
+        "originalName": "puma-rsx.jpg",
+        "assetId": 8003,
+        "photoId": 9003,
+        "thumbnailUrl": "https://images.unsplash.com/photo-1539185441755-769473a23570?w=200",
+        "adaptedUrl": "https://images.unsplash.com/photo-1539185441755-769473a23570?w=800",
+        "width": 1200,
+        "height": 800,
+        "sortOrder": 1,
+        "isActive": true
+      },
+      "unitsAmount": 1,
+      "brand": {
+        "brandId": 12,
+        "brandName": "Puma",
+        "thumbnail": "https://logo.clearbit.com/puma.com"
+      },
+      "productCategory": {
+        "categoryId": 5,
+        "categoryName": "Footwear",
+        "thumbnail": "https://img.icons8.com/color/96/sneakers.png"
+      },
+      "stockDocumentPrice": {
+        "id": 3005,
+        "brutto": 320.0,
+        "taxAmount": 61.54,
+        "netto": 258.46,
+        "currencyId": 1,
+        "taxTypeId": 1,
+        "rateExchange": 1.0,
+        "activeUntil": "2025-12-31T23:59:59.999Z",
+        "createAt": "2025-11-18T10:00:00.000Z",
+        "currencyName": "zł.",
+        "taxTypeName": "VAT 23%"
+      },
+      "requestedPrice": {
+        "id": 3006,
+        "brutto": 320.0,
+        "taxAmount": 61.54,
+        "netto": 258.46,
+        "currencyId": 1,
+        "taxTypeId": 1,
+        "rateExchange": 1.0,
+        "activeUntil": "2025-12-31T23:59:59.999Z",
+        "createAt": "2025-11-23T10:32:00.000Z",
+        "currencyName": "zł.",
+        "taxTypeName": "VAT 23%"
+      },
+      "addedToCart": "2025-11-23T10:32:30.789Z",
+      "statusDecription": "Available in stock",
+      "highDemandReservation": true,
+      "status": 1
+    },
+    {
+      "stockActionId": 1004,
+      "productId": 504,
+      "variantId": 2004,
+      "variantName": "New Balance 574 - Grey/Navy - Size 44",
+      "variantCode": "NB574-GN-44",
+      "traitOptions": [
+        {
+          "optionId": 307,
+          "optionName": "Grey",
+          "optionColor": "#808080",
+          "isRaw": false,
+          "sortOrder": 1,
+          "traitTypeId": 2,
+          "traitTypeName": "Color",
+          "traitId": 201,
+          "traitName": "Primary Color",
+          "isDeleted": false
+        },
+        {
+          "optionId": 308,
+          "optionName": "44",
+          "optionColor": null,
+          "isRaw": false,
+          "sortOrder": 2,
+          "traitTypeId": 1,
+          "traitTypeName": "Size",
+          "traitId": 202,
+          "traitName": "EU Size",
+          "isDeleted": false
+        }
+      ],
+      "photo": {
+        "originalName": "newbalance-574.jpg",
+        "assetId": 8004,
+        "photoId": 9004,
+        "thumbnailUrl": "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=200",
+        "adaptedUrl": "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800",
+        "width": 1200,
+        "height": 800,
+        "sortOrder": 1,
+        "isActive": true
+      },
+      "unitsAmount": 1,
+      "brand": {
+        "brandId": 13,
+        "brandName": "New Balance",
+        "thumbnail": "https://logo.clearbit.com/newbalance.com"
+      },
+      "productCategory": {
+        "categoryId": 5,
+        "categoryName": "Footwear",
+        "thumbnail": "https://img.icons8.com/color/96/sneakers.png"
+      },
+      "stockDocumentPrice": {
+        "id": 3007,
+        "brutto": 280.0,
+        "taxAmount": 53.82,
+        "netto": 226.18,
+        "currencyId": 1,
+        "taxTypeId": 1,
+        "rateExchange": 1.0,
+        "activeUntil": "2025-12-31T23:59:59.999Z",
+        "createAt": "2025-11-17T11:00:00.000Z",
+        "currencyName": "zł.",
+        "taxTypeName": "VAT 23%"
+      },
+      "requestedPrice": {
+        "id": 3008,
+        "brutto": 280.0,
+        "taxAmount": 53.82,
+        "netto": 226.18,
+        "currencyId": 1,
+        "taxTypeId": 1,
+        "rateExchange": 1.0,
+        "activeUntil": "2025-12-31T23:59:59.999Z",
+        "createAt": "2025-11-23T10:33:00.000Z",
+        "currencyName": "zł.",
+        "taxTypeName": "VAT 23%"
+      },
+      "addedToCart": "2025-11-23T10:33:45.012Z",
+      "statusDecription": "Available in stock",
+      "highDemandReservation": false,
+      "status": 1
+    },
+    {
+      "stockActionId": 1005,
+      "productId": 505,
+      "variantId": 2005,
+      "variantName": "Reebok Classic Leather - White/Gum - Size 42",
+      "variantCode": "RCL-WG-42",
+      "traitOptions": [
+        {
+          "optionId": 309,
+          "optionName": "White",
+          "optionColor": "#FFDDFF",
+          "isRaw": false,
+          "sortOrder": 1,
+          "traitTypeId": 2,
+          "traitTypeName": "Color",
+          "traitId": 201,
+          "traitName": "Primary Color",
+          "isDeleted": false
+        },
+        {
+          "optionId": 310,
+          "optionName": "42",
+          "optionColor": null,
+          "isRaw": false,
+          "sortOrder": 2,
+          "traitTypeId": 1,
+          "traitTypeName": "Size",
+          "traitId": 202,
+          "traitName": "EU Size",
+          "isDeleted": false
+        }
+      ],
+      "photo": {
+        "originalName": "reebok-classic.jpg",
+        "assetId": 8005,
+        "photoId": 9005,
+        "thumbnailUrl": "https://images.unsplash.com/photo-1552346154-21d32810aba3?w=200",
+        "adaptedUrl": "https://images.unsplash.com/photo-1552346154-21d32810aba3?w=800",
+        "width": 1200,
+        "height": 800,
+        "sortOrder": 1,
+        "isActive": true
+      },
+      "unitsAmount": 1,
+      "brand": {
+        "brandId": 14,
+        "brandName": "Reebok",
+        "thumbnail": "https://logo.clearbit.com/reebok.com"
+      },
+      "productCategory": {
+        "categoryId": 5,
+        "categoryName": "Footwear",
+        "thumbnail": "https://img.icons8.com/color/96/sneakers.png"
+      },
+      "stockDocumentPrice": {
+        "id": 3009,
+        "brutto": 220.0,
+        "taxAmount": 42.28,
+        "netto": 177.72,
+        "currencyId": 1,
+        "taxTypeId": 1,
+        "rateExchange": 1.0,
+        "activeUntil": "2025-12-31T23:59:59.999Z",
+        "createAt": "2025-11-16T12:00:00.000Z",
+        "currencyName": "zł.",
+        "taxTypeName": "VAT 23%"
+      },
+      "requestedPrice": {
+        "id": 3010,
+        "brutto": 220.0,
+        "taxAmount": 42.28,
+        "netto": 177.72,
+        "currencyId": 1,
+        "taxTypeId": 1,
+        "rateExchange": 1.0,
+        "activeUntil": "2025-12-31T23:59:59.999Z",
+        "createAt": "2025-11-23T10:34:00.000Z",
+        "currencyName": "zł.",
+        "taxTypeName": "VAT 23%"
+      },
+      "addedToCart": "2025-11-23T10:34:20.345Z",
+      "statusDecription": "Available in stock",
+      "highDemandReservation": false,
+      "status": 1
+    }
+  ],
+  "countdown": "2d 14h 30m",
+  "prepackedCartStatus": "NotPrepacked"
+}

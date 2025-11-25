@@ -52,24 +52,27 @@ export function generateId(length: number = 8) {
 
 export function formatDate(
   dateString: string,
-  format: "date" | "time" = "date",
+  format: "date" | "time" | "datetime" = "date",
 ): string {
   const date = new Date(dateString);
 
-  if (format === "date") {
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Month is 0-based
-    const year = date.getFullYear();
-    return `${day}.${month}.${year}`;
-  }
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Month is 0-based
+  const year = date.getFullYear();
 
-  if (format === "time") {
-    const hours = String(date.getHours()).padStart(2, "0");
-    const minutes = String(date.getMinutes()).padStart(2, "0");
-    return `${hours}:${minutes}`;
-  }
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
 
-  return "";
+  switch (format) {
+    case "date":
+      return `${day}.${month}.${year}`;
+    case "time":
+      return `${hours}:${minutes}`;
+    case "datetime":
+      return `${day}.${month}.${year} ${hours}:${minutes}`;
+    default:
+      return "";
+  }
 }
 
 // Generic function to format date rows with custom format patterns

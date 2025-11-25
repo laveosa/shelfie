@@ -1,0 +1,74 @@
+.customerNameBlock {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .noImageIcon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .avatarInitials {
+    width: 40px;
+    height: 40px;
+    background-color: #ececec;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #555;
+    font-weight: 600;
+    font-size: 16px;
+    user-select: none;
+  }
+}
+
+.itemsCountCell {
+  .itemsCount {
+    padding-right: 5px;
+    font-weight: bold;
+  }
+}
+
+.cartStatus {
+  display: flex;
+  justify-content: center;
+  width: 80px;
+  padding: 0 8px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.cartStatusNew {
+  border: 1px solid #38BF5E;
+  background: #EBF9EF;
+  color: #38BF5E;
+}
+
+.cartStatusExpired {
+  border: 1px solid #d31515;
+  background: #F9EBEBFF;
+  color: #d31515;
+}
+
+.cartStatusDraft {
+  border: 1px solid #007AFF;
+  background: #D9EBFF;
+  color: #007AFF;
+}
+
+.cartStatusCancelled {
+  border: 1px solid #E4E4E7;
+  background: #F4F4F5;
+  color: #E4E4E7;
+}
+
+.cartStatusPurchased {
+  border: 1px solid #8439ED;
+  background: #F8F3FF;
+  color: #8439ED;
+}

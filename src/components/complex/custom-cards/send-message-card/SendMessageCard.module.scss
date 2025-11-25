@@ -1,0 +1,60 @@
+@use "@/styles/variables" as vars;
+
+.sendMessageCard {
+  .sendMessageCardContent {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .selectContactBlock {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      background-color: vars.$colorMuted;
+      border-radius: vars.$brdR_05;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+    .messageBlock {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .messageButtonsBlock {
+        display: flex;
+        justify-content: space-between;
+
+        .manageCartButtons {
+          display: flex;
+          gap: 10px;
+        }
+      }
+
+      .messageBlockFooter {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+  }
+}
+
+//======================================================= CUSTOMERS LIST
+
+.customersListItems {
+  border: vars.$brd;
+  border-radius: vars.$brdR_05;
+  min-width: 380px;
+  width: 100%;
+
+  & > div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    width: 100%;
+    padding: 5px;
+    cursor: pointer;
+  }
+}

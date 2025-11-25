@@ -12,10 +12,12 @@ import { IOrdersPageSlice } from "@/const/interfaces/store-slices/IOrdersPageSli
 import { StoreSliceEnum } from "@/const/enums/StoreSliceEnum.ts";
 import OrdersCard from "@/components/complex/custom-cards/orders-card/OrdersCard.tsx";
 import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
+import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice.ts";
 
 export function OrdersPage() {
   const service = useOrdersPageService();
   const state = useAppSelector<IOrdersPageSlice>(StoreSliceEnum.ORDERS);
+  const appState = useAppSelector<IAppSlice>(StoreSliceEnum.APP);
   const sortingItems = Object.values(GridSortingEnum).map((value) => ({
     value,
     description: GridSortingEnumLabels[value],
@@ -58,7 +60,7 @@ export function OrdersPage() {
         <OrdersCard
           isLoading={state.isOrdersCardLoading}
           isGridLoading={state.isOrdersGridLoading}
-          preferences={state.preferences}
+          preferences={appState.preferences}
           sortingOptions={sortingItems}
           ordersGridRequestModel={state.ordersGridRequestModel}
           onAction={onAction}

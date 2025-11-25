@@ -5,7 +5,7 @@ import SheCard from "@/components/complex/she-card/SheCard.tsx";
 import cs from "./MessengerConversationCard.module.scss";
 import { IMessengerConversationCard } from "@/const/interfaces/complex-components/custom-cards/IMessengerConversationCard.ts";
 import { getInitials } from "@/utils/helpers/quick-helper.ts";
-import facebookLogo from "@/assets/images/facebook-messenger_logo.svg";
+import facebookLogo from "@/assets/images/facebook-messenger-logo.svg";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import SheTextArea from "@/components/primitive/she-textarea/SheTextarea.tsx";

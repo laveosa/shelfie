@@ -1,0 +1,20 @@
+@use "@/styles/variables" as vars;
+
+.openCartsCard {
+  position: relative;
+
+  .openCartsCardContent {
+    width: 100%;
+    max-width: none;
+
+    .openCartsCardHeader {
+      min-height: 64px !important;
+    }
+  }
+
+  .createCartButton {
+    position: absolute;
+    left: 714px;
+    top: 15px;
+  }
+}

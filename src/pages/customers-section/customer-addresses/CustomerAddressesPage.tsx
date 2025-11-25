@@ -5,21 +5,22 @@ import {
   scrollToRefElement,
   setSelectedGridItem,
 } from "@/utils/helpers/quick-helper.ts";
+import {
+  GridSortingEnum,
+  GridSortingEnumLabels,
+} from "@/const/enums/GridSortingEnum.ts";
 import cs from "./CustomerAddressesPage.module.scss";
 import useCustomerAddressesPageService from "./useCustomerAddressesPageService.ts";
 import CustomerAddressCard from "@/components/complex/custom-cards/customer-address-card/CustomerAddressCard.tsx";
 import useDialogService from "@/utils/services/dialog/DialogService.ts";
 import CustomerAddressesCard from "@/components/complex/custom-cards/customer-addresses-card/CustomerAddressesCard.tsx";
-import {
-  GridSortingEnum,
-  GridSortingEnumLabels,
-} from "@/const/enums/GridSortingEnum.ts";
 import SheContextSidebar from "@/components/complex/she-context-sidebar/SheContextSidebar.tsx";
 
 export function CustomerAddressesPage() {
   // ==================================================================== UTILITIES
-  const { state, actions, customerId, dispatch, ...service } =
+  const { state, appState, actions, customerId, dispatch, ...service } =
     useCustomerAddressesPageService();
+
   const cardRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const { openConfirmationDialog } = useDialogService();
   const sortingItems = Object.values(GridSortingEnum).map((value) => ({
@@ -115,6 +116,12 @@ export function CustomerAddressesPage() {
       case "submitCustomerAddressData":
         service.resolveCustomerAddressData(data);
         break;
+      case "applyColumns":
+        service.updateUserPreferencesHandler(data);
+        break;
+      case "resetColumns":
+        service.resetUserPreferencesHandler("products");
+        break;
     }
   }
 
@@ -132,6 +139,7 @@ export function CustomerAddressesPage() {
           isLoading={state.isCustomerAddressesLoading}
           addresses={state.customerAddresses}
           gridRequestModel={state.customerAddressesGridRequestModel}
+          preferences={appState.preferences}
           onAction={onAction}
           sortingOptions={sortingItems}
         />
