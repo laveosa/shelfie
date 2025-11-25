@@ -54,7 +54,7 @@ export default function SheGridHeader({
               value={searchValue}
               onDelay={onInputChangeHandler}
               placeholder={"Search"}
-              minWidth="130px"
+              maxWidth="200px"
               icon={Search}
               showClearBtn
             />

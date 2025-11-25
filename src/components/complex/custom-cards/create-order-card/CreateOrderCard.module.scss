@@ -1,0 +1,102 @@
+.createOrderCard {
+  .createOrderCardContent {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 10px;
+
+    .customerDetailsContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      gap: 20px;
+      width: 100%;
+
+      .customerInfoBlock {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        gap: 10px;
+        width: 100%;
+
+        .customerDetailsItem {
+          display: flex;
+          align-items: center;
+          gap: 20px;
+          width: 100%;
+
+          span {
+            width: 50%;
+            font-size: 14px;
+            color: #474d54;
+          }
+
+          .subtitleText {
+            font-size: 16px;
+            font-weight: 500;
+          }
+
+          .customerInfoAvatarBlock {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 50%;
+
+            .avatarImage {
+              width: 40px;
+              height: 40px;
+              border-radius: 50%;
+            }
+
+            .avatarInitials {
+              width: 40px;
+              height: 40px;
+              min-width: 40px;
+              min-height: 40px;
+              background-color: #ececec;
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: #555;
+              font-weight: 600;
+              font-size: 16px;
+              user-select: none;
+            }
+
+            .customerName {
+              width: 100%;
+            }
+          }
+        }
+      }
+    }
+
+    .productsForOrder {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .summaryBlock {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        .summaryBlockItem {
+          display: flex;
+          align-items: center;
+
+          span {
+            width: 50%;
+          }
+        }
+      }
+    }
+
+    .footerButtonsBlock {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}
+

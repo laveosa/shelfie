@@ -10,6 +10,7 @@ import { CustomerRequestModel } from "@/const/models/CustomerRequestModel";
 import { AddressModel } from "@/const/models/AddressModel";
 import { AddressRequestModel } from "@/const/models/AddressRequestModel";
 import { CustomerCounterModel } from "@/const/models/CustomerCounterModel";
+import { CartModel } from "@/const/models/CartModel.ts";
 
 const apiConfig = new ApiConfigurationService(ApiUrlEnum.ORDERS_BASE_URL);
 type ControllerType = typeof controller;
@@ -324,6 +325,70 @@ export const OrdersApiService = createApi({
     >(
       apiConfig.getStaticData<ControllerType>(
         "confirmDeliveryData",
+        controller,
+      ),
+    ),
+
+    //=========================================================================
+
+    getCartsListForGrid: builder.mutation<GridRequestModel, GridRequestModel>(
+      apiConfig.getStaticData<ControllerType>(
+        "getCartsListForGrid",
+        controller,
+      ),
+    ),
+    getCartDetails: builder.query<void, number>(
+      apiConfig.getStaticData<ControllerType>("getCartDetails", controller),
+    ),
+    createCart: builder.mutation<CartModel, any>(
+      apiConfig.getStaticData<ControllerType>("createCart", controller),
+    ),
+
+    updateCartCustomer: builder.mutation<
+      void,
+      { cartId: number; customerId: any }
+    >(
+      apiConfig.getStaticData<ControllerType>("updateCartCustomer", controller),
+    ),
+    addVariantToCart: builder.mutation<void, { cartId: number; model: any }>(
+      apiConfig.getStaticData<ControllerType>("addVariantToCart", controller),
+    ),
+    deleteStockActionFromCart: builder.mutation<
+      void,
+      { cartId: number; stockActionId: number }
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "deleteStockActionFromCart",
+        controller,
+      ),
+    ),
+    cancelCart: builder.mutation<void, number>(
+      apiConfig.getStaticData<ControllerType>("cancelCart", controller),
+    ),
+    updateCartPrepackedStatus: builder.mutation<
+      any,
+      { cartId: number; model: any }
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "updateCartPrepackedStatus",
+        controller,
+      ),
+    ),
+    getCartsWithSearchedProduct: builder.query<
+      void,
+      { cartId: number; stockActionId: number }
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "getCartsWithSearchedProduct",
+        controller,
+      ),
+    ),
+    updateStockActionPriceInCart: builder.mutation<
+      any,
+      { cartId: number; stockActionId: number; model: any }
+    >(
+      apiConfig.getStaticData<ControllerType>(
+        "updateStockActionPriceInCart",
         controller,
       ),
     ),

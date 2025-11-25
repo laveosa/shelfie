@@ -1,0 +1,213 @@
+[
+  {
+    "id": 234,
+    "customerId": 34,
+    "customer": {
+      "customerId": 1,
+      "customerName": "Emma Richardson",
+      "email": "emma.richardson@email.com",
+      "phone": "+442079460958",
+      "thumbnailUrl": "https://img.freepik.com/free-photo/portrait-beautiful-business-office-business-center_1303-20365.jpg"
+    },
+    "date": "2025-11-20T11:38:59.709419Z",
+    "status": "New",
+    "count": 0,
+    "value": 0,
+    "income": 0,
+    "currency": {
+      "id": 1,
+      "name": "Złoty polski",
+      "briefName": "zł."
+    },
+    "prepackedCartStatus": "Prepacked"
+  },
+  {
+    "id": 235,
+    "customerId": 45,
+    "customer": {
+      "customerName": "Marcus Chen",
+      "email": "marcus.chen@techmail.com",
+      "phone": "+14155550142",
+      "thumbnailUrl": "https://img.freepik.com/premium-photo/smiling-business-man-full-black-suit-glasses-looking-camera-standing-cityscape-background_283617-8299.jpg"
+    },
+    "date": "2025-11-21T09:15:30.123456Z",
+    "status": "Draft",
+    "count": 5,
+    "value": 125.5,
+    "income": 37.65,
+    "currency": {
+      "id": 1,
+      "name": "Złoty polski",
+      "briefName": "zł."
+    },
+    "prepackedCartStatus": "Prepacked"
+  },
+  {
+    "id": 236,
+    "customerId": 56,
+    "customer": {
+      "customerName": "Sofia Martinez",
+      "email": "sofia.martinez@webmail.es",
+      "phone": "+34911234567",
+      "thumbnailUrl": "https://www.secure-medicine.org/hs-fs/hubfs/picture.jpeg?width=200&name=picture.jpeg"
+    },
+    "date": "2025-11-19T14:22:15.456789Z",
+    "status": "New",
+    "count": 3,
+    "value": 89.99,
+    "income": 26.99,
+    "currency": {
+      "id": 1,
+      "name": "Złoty polski",
+      "briefName": "zł."
+    },
+    "prepackedCartStatus": "Not Prepacked"
+  },
+  {
+    "id": 237,
+    "customerId": 67,
+    "customer": {
+      "customerName": "Lucas Bergström",
+      "email": "lucas.bergstrom@nordicmail.se",
+      "phone": "+46812345678",
+      "thumbnailUrl": "https://img.freepik.com/premium-photo/group-happy-business-man-business-women-dressed-suits-are-smiling-office_457222-5269.jpg"
+    },
+    "date": "2025-11-18T16:45:22.789012Z",
+    "status": "Expired",
+    "count": 8,
+    "value": 234.75,
+    "income": 70.43,
+    "currency": {
+      "id": 1,
+      "name": "Złoty polski",
+      "briefName": "zł."
+    },
+    "prepackedCartStatus": "Not Prepacked"
+  },
+  {
+    "id": 238,
+    "customerId": 78,
+    "customer": {
+      "customerName": "Amélie Dubois",
+      "email": "amelie.dubois@laposte.fr",
+      "phone": "+33142868200",
+      "thumbnailUrl": "https://img.freepik.com/premium-photo/portrait-smiling-brunette_53419-5937.jpg"
+    },
+    "date": "2025-11-17T10:30:45.012345Z",
+    "status": "Cancelled",
+    "count": 12,
+    "value": 456.8,
+    "income": 137.04,
+    "currency": {
+      "id": 1,
+      "name": "Złoty polski",
+      "briefName": "zł."
+    },
+    "prepackedCartStatus": "Not Prepacked"
+  },
+  {
+    "id": 239,
+    "customerId": 89,
+    "customer": {
+      "customerName": "Alessandro Rossi",
+      "email": "a.rossi@italmail.it",
+      "phone": "+390612345678",
+      "thumbnailUrl": "https://img.freepik.com/premium-photo/portrait-businessman-with-glasses-goes-work-office-business-suit-smiles_283470-7493.jpg"
+    },
+    "date": "2025-11-16T13:12:08.345678Z",
+    "status": "Purchased",
+    "count": 0,
+    "value": 0,
+    "income": 0,
+    "currency": {
+      "id": 1,
+      "name": "Złoty polski",
+      "briefName": "zł."
+    },
+    "prepackedCartStatus": "Prepacked"
+  },
+  {
+    "id": 240,
+    "customerId": 90,
+    "customer": {
+      "customerName": "Piotr Wójcik",
+      "email": "piotr.wojcik@gmail.com",
+      "phone": "+48987654321",
+      "thumbnailUrl": "https://img.freepik.com/free-photo/businessman-portrait_23-2148603021.jpg"
+    },
+    "date": "2025-11-15T08:25:33.678901Z",
+    "status": "Draft",
+    "count": 2,
+    "value": 67.4,
+    "income": 20.22,
+    "currency": {
+      "id": 1,
+      "name": "Złoty polski",
+      "briefName": "zł."
+    },
+    "prepackedCartStatus": "Prepacked"
+  },
+  {
+    "id": 241,
+    "customerId": 101,
+    "customer": {
+      "customerName": "Anna Lewandowska",
+      "email": "anna.lewandowska@gmail.com",
+      "phone": null,
+      "thumbnailUrl": "https://img.freepik.com/free-photo/beautiful-woman-in-office_23-2148603020.jpg"
+    },
+    "date": "2025-11-14T11:50:17.901234Z",
+    "status": "Expired",
+    "count": 6,
+    "value": 198.5,
+    "income": 59.55,
+    "currency": {
+      "id": 1,
+      "name": "Złoty polski",
+      "briefName": "zł."
+    },
+    "prepackedCartStatus": "Prepacked"
+  },
+  {
+    "id": 242,
+    "customerId": 112,
+    "customer": {
+      "customerName": "Magdalena Górska",
+      "email": "magdalena.gorska@gmail.com",
+      "phone": "+48123456789",
+      "thumbnailUrl": "https://img.freepik.com/free-photo/portrait-successful-businesswoman_23-2148603019.jpg"
+    },
+    "date": "2025-11-13T15:33:52.234567Z",
+    "status": "Purchased",
+    "count": 10,
+    "value": 320.0,
+    "income": 96.0,
+    "currency": {
+      "id": 1,
+      "name": "Złoty polski",
+      "briefName": "zł."
+    },
+    "prepackedCartStatus": "Prepacked"
+  },
+  {
+    "id": 243,
+    "customerId": 123,
+    "customer": {
+      "customerName": "Michał Borkowski",
+      "email": "michal.b@gmail.com",
+      "phone": null,
+      "thumbnailUrl": "https://img.freepik.com/free-photo/front-view-business-woman-suit_23-2148603018.jpg"
+    },
+    "date": "2025-11-12T09:47:26.567890Z",
+    "status": "Cancelled",
+    "count": 7,
+    "value": 289.6,
+    "income": 86.88,
+    "currency": {
+      "id": 1,
+      "name": "Złoty polski",
+      "briefName": "zł."
+    },
+    "prepackedCartStatus": "Not Prepacked"
+  }
+]

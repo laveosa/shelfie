@@ -1,0 +1,20 @@
+@use "@/styles/variables" as vars;
+
+.cartsWithSpecificProductCard {
+  .cartsWithSpecificProductCardContent {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .cartsGridBlock {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .cardFooter {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}

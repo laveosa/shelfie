@@ -1,0 +1,169 @@
+@use "@/styles/variables" as vars;
+
+.customerCartCard {
+  .customerCartCardContent {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .customerCartCardHeaderBlock {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .cardHeaderButtonBlock {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+    }
+
+    .customerCartCardTagsBlock {
+      .customerCartCardTags {
+        padding: 5px;
+        border: vars.$brd;
+        border-radius: vars.$brdR_03;
+        background: vars.$colorMuted;
+      }
+    }
+
+    .customerCartCardCartBlock {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .cartContentBlock {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .cartContentTitle {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          width: 100%;
+        }
+      }
+
+      .cardFooterBlock {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        .summaryBlock {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+
+          .summaryBlockItem {
+            display: flex;
+            align-items: center;
+
+            span {
+              width: 50%;
+            }
+          }
+        }
+
+        .expirationTimeManagementBlock {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          border-radius: 8px;
+          border: none;
+          padding: 10px;
+
+          .expirationTimeBlock {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            .cartStatus {
+              display: flex;
+              justify-content: center;
+              width: 80px;
+              padding: 0 8px;
+              border-radius: 8px;
+              text-align: center;
+              font-size: 12px;
+            }
+
+            .expirationTime {
+              display: flex;
+              flex-direction: column;
+              gap: 10px;
+
+              .expirationTimeText {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+              }
+
+              .expirationTimeSubtext {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+                max-height: 10px;
+              }
+            }
+          }
+
+          .expirationTimeButtonBlock {
+            display: flex;
+            gap: 10px;
+
+            .expirationTimeButton {
+              border: vars.$brd;
+            }
+
+            .addTimeButton {
+              padding: 8px 12px;
+            }
+          }
+        }
+
+        .footerButtonsBlock {
+          display: flex;
+          justify-content: space-between;
+        }
+      }
+    }
+  }
+}
+
+//=========================================================CART STATUSES STYLES
+
+.cartStatusNew {
+  border: 1px solid #38BF5E;
+  background: #EBF9EF !important;
+  color: #38BF5E;
+}
+
+.cartStatusExpired {
+  border: 1px solid #d31515;
+  background: #F9EBEBFF;
+  color: #d31515;
+}
+
+.cartStatusDraft {
+  border: 1px solid #007AFF;
+  background: #D9EBFF;
+  color: #007AFF;
+}
+
+.cartStatusCancelled {
+  border: 1px solid #E4E4E7;
+  background: #F4F4F5;
+  color: #E4E4E7;
+}
+
+.cartStatusPurchased {
+  border: 1px solid #8439ED;
+  background: #F8F3FF;
+  color: #8439ED;
+}
+
+.extendedRowStyles {
+  color: black;
+  border: none;
+}

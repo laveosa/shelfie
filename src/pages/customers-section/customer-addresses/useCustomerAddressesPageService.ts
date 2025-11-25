@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { merge } from "lodash";
 
 import { AppDispatch } from "@/state/store.ts";
 import { CustomersPageSliceActions as actions } from "@/state/slices/CustomersPageSlice";
@@ -18,6 +19,9 @@ import { AddressModel } from "@/const/models/AddressModel";
 import { GridRequestModel } from "@/const/models/GridRequestModel";
 import { ICustomersPageSlice } from "@/const/interfaces/store-slices/ICustomersPageSlice";
 import { IAppSlice } from "@/const/interfaces/store-slices/IAppSlice";
+import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
+import UsersApiHooks from "@/utils/services/api/UsersApiService.ts";
+import useAppService from "@/useAppService.ts";
 
 export default function useCustomerAddressesPageService() {
   const state = useAppSelector<ICustomersPageSlice>(StoreSliceEnum.CUSTOMERS);
@@ -32,10 +36,15 @@ export default function useCustomerAddressesPageService() {
   const [deleteCustomerAddress] = api.useDeleteCustomerAddressMutation();
   const [getCustomerAddressesForGrid] =
     api.useGetCustomerAddressesForGridMutation();
+  const [updateUserPreferences] =
+    UsersApiHooks.useUpdateUserPreferencesMutation();
+  const [resetUserPreferences] =
+    UsersApiHooks.useResetUserPreferencesMutation();
   const [getCountryCode] = DictionaryApiHooks.useLazyGetCountryCodeQuery();
   const [getCustomerInfo] = api.useLazyGetCustomerInfoQuery();
   const { customerId } = useParams();
   const { addToast } = useToast();
+  const appService = useAppService();
 
   function getCustomerAddressesForGridHandler(data?: GridRequestModel) {
     // if (_.isEqual(data, state.customerAddressesGridRequestModel)) return;
@@ -222,6 +231,19 @@ export default function useCustomerAddressesPageService() {
     });
   }
 
+  function updateUserPreferencesHandler(model: PreferencesModel) {
+    const modifiedModel = merge({}, appState.preferences, model);
+    return updateUserPreferences(modifiedModel).then(() => {
+      appService.getUserPreferencesHandler();
+    });
+  }
+
+  function resetUserPreferencesHandler(grid) {
+    return resetUserPreferences(grid).then(() => {
+      appService.getUserPreferencesHandler();
+    });
+  }
+
   return {
     state,
     appState,
@@ -237,5 +259,7 @@ export default function useCustomerAddressesPageService() {
     getCountryCodeHandler,
     resolveCustomerAddressData,
     getCustomerInfoHandler,
+    updateUserPreferencesHandler,
+    resetUserPreferencesHandler,
   };
 }

@@ -11,12 +11,14 @@ import useAppTranslation from "@/utils/hooks/useAppTranslation.ts";
 import { GridSortingModel } from "@/const/models/GridSortingModel";
 import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
 import { DataWithId } from "@/const/interfaces/complex-components/ISheGrid.ts";
+import { PreferencesModel } from "@/const/models/PreferencesModel.ts";
 
 interface ICustomerAddressesCard {
   isLoading?: boolean;
   addresses?: any[];
   gridRequestModel?: GridRequestModel;
   sortingOptions?: GridSortingModel[];
+  preferences?: PreferencesModel;
   onAction: (action: string, data?: any) => void;
 }
 
@@ -26,6 +28,7 @@ export default function CustomerAddressesCard({
   addresses,
   gridRequestModel,
   sortingOptions,
+  preferences,
 }: ICustomerAddressesCard) {
   // ==================================================================== UTILITIES
   const { translate } = useAppTranslation();
@@ -59,11 +62,11 @@ export default function CustomerAddressesCard({
         data={addresses}
         gridRequestModel={gridRequestModel}
         sortingItems={sortingOptions}
-        //columnsPreferences={appState.preferences}
-        //preferenceContext={"customerAddresses"}
+        columnsPreferences={preferences}
+        preferenceContext={"productReferences"}
         skeletonQuantity={3}
-        //onApplyColumns={onApplyColumnsHandler}
-        //onDefaultColumns={onResetColumnsHandler}
+        onApplyColumns={(model) => onAction("applyColumns", model)}
+        onDefaultColumns={() => onAction("resetColumns")}
         onGridRequestChange={(data) =>
           onAction("getCustomerAddressesForGrid", data)
         }

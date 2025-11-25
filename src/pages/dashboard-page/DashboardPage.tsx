@@ -1,44 +1,56 @@
 import { ArrowDown, ArrowUp, ChevronRight, FolderUp } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 
 import {
   GridSortingEnum,
-  GridSortingEnumLabels
+  GridSortingEnumLabels,
 } from "@/const/enums/GridSortingEnum.ts";
 import cs from "./DashboardPage.module.scss";
-import useDashboardPageService
-  from "@/pages/dashboard-page/useDashboardPageService.ts";
+import useDashboardPageService from "@/pages/dashboard-page/useDashboardPageService.ts";
 import { DesktopChart } from "@/components/complex/charts/DesktopChart.tsx";
 import SheButton from "@/components/primitive/she-button/SheButton.tsx";
 import { MobileChart } from "@/components/complex/charts/MobileChart.tsx";
 import SheIcon from "@/components/primitive/she-icon/SheIcon.tsx";
-import cardData
-  from "@/assets/static-collections/dashboard/DashboardCardsCollections.json";
-import productsData
-  from "@/assets/static-collections/dashboard/TopSellingProductsCollection.json";
+import cardData from "@/assets/static-collections/dashboard/DashboardCardsCollections.json";
+import productsData from "@/assets/static-collections/dashboard/TopSellingProductsCollection.json";
 import { Progress } from "@/components/ui/progress.tsx";
-import orderStatusesData
-  from "@/assets/static-collections/dashboard/OrdersStatusesCollection.json";
-import chartData
-  from "@/assets/static-collections/dashboard/ChartDataCollections.json";
+import orderStatusesData from "@/assets/static-collections/dashboard/OrdersStatusesCollection.json";
+import chartData from "@/assets/static-collections/dashboard/ChartDataCollections.json";
 import { SheGrid } from "@/components/complex/grid/SheGrid.tsx";
-import {
-  ordersListGridColumns
-} from "@/components/complex/grid/custom-grids/orders-list-grid/OrdersListGridColumns.tsx";
-import gridData
-  from "@/assets/static-collections/dashboard/OrdersCollection.json";
+import { ordersListGridColumns } from "@/components/complex/grid/custom-grids/orders-list-grid/OrdersListGridColumns.tsx";
+import gridData from "@/assets/static-collections/dashboard/OrdersCollection.json";
+import GridItemsFilter from "@/components/complex/grid/filters/grid-items-filter/GridItemsFilter.tsx";
+import { BrandModel } from "@/const/models/BrandModel.ts";
+import { CategoryModel } from "@/const/models/CategoryModel.ts";
+import { CustomerModel } from "@/const/models/CustomerModel.ts";
 
 export function DashboardPage() {
-  const service = useDashboardPageService();
-  const [selectedChart, setSelectedChart] = React.useState<string>("desktop");
+  const { state, appState, ...service } = useDashboardPageService();
   const sortingItems = Object.values(GridSortingEnum).map((value) => ({
     value,
     description: GridSortingEnumLabels[value],
   }));
   // ================================================================== STATE
+  const [selectedChart, setSelectedChart] = React.useState<string>("desktop");
 
-  // ================================================================== EVENT HANDLERS
+  // ==================================================================== SIDE EFFECTS
+  useEffect(() => {
+    service.getBrandsForFilterHandler();
+    service.getCategoriesForFilterHandler();
+    service.getCustomersForFilterHandler();
+  }, []);
 
+  // ==================================================================== EVENT HANDLERS
+  async function onAction(actionType: string, data?: any) {
+    switch (actionType) {
+      case "applyColumns":
+        service.updateUserPreferencesHandler(data);
+        break;
+      case "resetColumns":
+        service.resetUserPreferencesHandler("products");
+        break;
+    }
+  }
   // ================================================================== LOGIC
   // ================================================================== LAYOUT
   return (
@@ -227,7 +239,33 @@ export function DashboardPage() {
               skeletonQuantity={10}
               data={gridData}
               showPagination={false}
-            />
+              columnsPreferences={appState.preferences}
+              preferenceContext={"productReferences"}
+              onApplyColumns={(model) => onAction("applyColumns", model)}
+              onDefaultColumns={() => onAction("resetColumns")}
+            >
+              <GridItemsFilter
+                items={state.brands}
+                columnName={"Brands"}
+                getId={(item: BrandModel) => item.brandId}
+                getName={(item: BrandModel) => item.brandName}
+                selected={state.dashboardGridRequestModel?.filter?.brands}
+              />
+              <GridItemsFilter
+                items={state.categories}
+                columnName={"Categories"}
+                getId={(item: CategoryModel) => item.categoryId}
+                getName={(item: CategoryModel) => item.categoryName}
+                selected={state.dashboardGridRequestModel?.filter?.categories}
+              />
+              <GridItemsFilter
+                items={state.customers}
+                columnName={"Customers"}
+                getId={(item: CustomerModel) => item.customerId}
+                getName={(item: CustomerModel) => item.customerName}
+                selected={state.dashboardGridRequestModel?.filter?.customers}
+              />
+            </SheGrid>
           </div>
         </div>
       </div>

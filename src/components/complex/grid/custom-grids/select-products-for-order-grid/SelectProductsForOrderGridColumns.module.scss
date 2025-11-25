@@ -1,0 +1,24 @@
+.variantInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+
+  .variantInfoImage {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+
+  .variantNameTooltip {
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    .variantName {
+      font-weight: 700;
+    }
+  }
+}

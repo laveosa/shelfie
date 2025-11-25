@@ -1,0 +1,31 @@
+.iconCheck {
+  background: #EBF9EF;
+
+  svg {
+    color: #38BF5E;
+  }
+}
+
+.variantDetailsBlock {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  .variantTraits {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
+
+    .colorOptions {
+      min-width: 20px;
+      min-height: 20px;
+      border-radius: 50%;
+      border: 2px solid #ccc;
+    }
+  }
+}

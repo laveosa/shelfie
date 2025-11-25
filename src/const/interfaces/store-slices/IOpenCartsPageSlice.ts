@@ -1,1 +1,45 @@
-export interface IOpenCartsPageSlice {}
+import { GridRequestModel } from "@/const/models/GridRequestModel.ts";
+import { CustomerModel } from "@/const/models/CustomerModel.ts";
+import { TraitOptionModel } from "@/const/models/TraitOptionModel.ts";
+import { BrandModel } from "@/const/models/BrandModel.ts";
+import { CategoryModel } from "@/const/models/CategoryModel.ts";
+import { CartModel } from "@/const/models/CartModel.ts";
+import { VariantModel } from "@/const/models/VariantModel.ts";
+import { OrderModel } from "@/const/models/OrderModel.ts";
+import { VariantHistoryModel } from "@/const/models/VariantHistoryModel.ts";
+
+export interface IOpenCartsPageSlice {
+  isLoading?: boolean;
+  isOpenCartsCardLoading?: boolean;
+  isCustomerCartCardLoading?: boolean;
+  isSelectEntityCardLoading?: boolean;
+  isCustomerCardLoading?: boolean;
+  isFindProductsCardLoading?: boolean;
+  isCreateOrderCardLoading?: boolean;
+  isVariantHistoryCardLoading?: boolean;
+  isOpenCartsGridLoading?: boolean;
+  isCartContentGridLoading?: boolean;
+  isSelectEntityGridLoading?: boolean;
+  isFindProductsGridLoading?: boolean;
+  isReplaceVariantGridLoading?: boolean;
+  isCartsWithSpecificProductGridLoading?: boolean;
+  isCreateOrderGridLoading?: boolean;
+  isVariantsHistoryGridLoading?: boolean;
+  isImageUploaderLoading?: boolean;
+  activeCards?: any[];
+  openCartsGridRequestModel?: GridRequestModel;
+  customersGridRequestModel?: GridRequestModel;
+  variantsGridRequestModel?: GridRequestModel;
+  selectedCustomer?: CustomerModel;
+  managedCustomer?: CustomerModel;
+  colorsForFilter?: TraitOptionModel[];
+  sizesForFilter?: TraitOptionModel[];
+  brands?: BrandModel[];
+  categories?: CategoryModel[];
+  managedCart?: CartModel;
+  selectedVariant?: VariantModel;
+  variantsList?: VariantModel[];
+  selectedOrder?: OrderModel;
+  variantHistory?: VariantHistoryModel[];
+  cartsWithSpecificProduct?: CartModel[];
+}

@@ -1,0 +1,67 @@
+@use "@/styles/variables" as vars;
+
+.actionsCell {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: end;
+  width: 100%;
+
+  .buttonBlock {
+    display: flex;
+    justify-content: end;
+    gap: 10px;
+  }
+
+  .productTraits {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
+
+
+    .optionContainer {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .colorOptions {
+        min-width: 20px;
+        min-height: 20px;
+        border-radius: 50%;
+        border: 2px solid #ccc;
+      }
+
+      .sizeOptions {
+        font-weight: 600;
+        font-size: 16px;
+      }
+    }
+  }
+
+  .variantInfoBlock {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .reservationInfoBlock {
+      background: #FFF3E5;
+      border-radius: vars.$brdR_03;
+      padding: 5px 10px;
+      min-width: fit-content;
+    }
+
+    .expirationDateBlock {
+      display: flex;
+      align-items: center;
+      justify-content: end;
+      width: 100%;
+      gap: 5px;
+      height: 15px;
+    }
+  }
+}
